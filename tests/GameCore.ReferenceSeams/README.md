@@ -53,9 +53,9 @@ parallel. The marker is machine-readable: `TestOnlyMarker.cs` applies
 ## API snapshot
 
 `api/GameCore.Contracts.api.txt` is the frozen public surface of namespace `GameCore.Contracts`
-(types sorted by full name, members grouped and sorted, assembly name excluded). The committed file ships
-with the placeholder header `# snapshot pending generation on build host`; the orchestrator's build step
-regenerates it with `dotnet/tools/GameCore.ApiSnapshot`, and
-`dotnet/tests/GameCore.ReferenceSeams.Tests` fails while the placeholder is present or the listing differs.
+(types sorted by full name, members grouped and sorted, assembly name excluded from the listing body).
+The committed file was generated from the compiled reference seam on the Linux build host with
+`dotnet/tools/GameCore.ApiSnapshot`. `dotnet/tests/GameCore.ReferenceSeams.Tests` fails if the
+placeholder header is present or the listing differs.
 See `dotnet/README.md` for the exact command. Any seam change reopens the W0 interface gate before dependent
 modules compile (`docs/game-core/09-implementation-guide.md`, GC-002).

@@ -48,9 +48,9 @@ dotnet run --project dotnet/tools/GameCore.ApiSnapshot -c Release -- \
   --namespace GameCore.Contracts
 ```
 
-The committed file ships with the placeholder header
-`# snapshot pending generation on build host`; the test fails with an explicit message while that placeholder
-is present. Any public seam change additionally reopens the W0 interface gate before dependent modules
+The committed file was generated from the compiled seam on the Linux build host. The test fails if the
+placeholder header `# snapshot pending generation on build host` is present or the listing differs.
+Any public seam change additionally reopens the W0 interface gate before dependent modules
 compile (`docs/game-core/09-implementation-guide.md`, GC-002).
 
 ## Notes

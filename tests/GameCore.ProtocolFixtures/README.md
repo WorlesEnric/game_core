@@ -75,13 +75,12 @@ The test project writes `artifacts/protocol-fixtures/results.json` through `Resu
 
 * `Pass` — the oracle agreed with the case expectation.
 * `Fail` — the oracle disagreed, including a missing or different rejection code.
-* `NotRun` — the case was not executed on this host. The committed artifact directory carries the status
-  `NotRun (pending orchestrator build host)` until a build host runs the suite; nothing in this directory
-  claims a passing run.
+* `NotRun` — the case was not executed on the reporting host; it is not passing evidence.
 * `Blocked` — the case could not be evaluated because its data is malformed. A delivered run must contain
   neither `NotRun` nor `Blocked`; the suite asserts this.
 
 ## Evidence rule
 
-No test result is recorded here as passed. `artifacts/protocol-fixtures/README.md` states the pending status
-and the exact commands; the result document is produced only by the build host run.
+The Linux build host executed all 40 cases; `artifacts/protocol-fixtures/results.json` records the real
+outcomes. See `artifacts/gc-002/BUILD_REPORT.md` for commands, suite results and scope limits.
+The result document is produced only by an actual run, never by copying the example above.

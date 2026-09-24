@@ -1,0 +1,60 @@
+$ dotnet run --project /tmp/gc002-hash-smoke-54yco6zd/HashSmoke.csproj -c Release
+/tmp/gc002-hash-smoke-54yco6zd/Program.cs(32,96): error CS1003: Syntax error, ',' expected [/tmp/gc002-hash-smoke-54yco6zd/HashSmoke.csproj]
+/tmp/gc002-hash-smoke-54yco6zd/Program.cs(32,104): error CS1003: Syntax error, ',' expected [/tmp/gc002-hash-smoke-54yco6zd/HashSmoke.csproj]
+/tmp/gc002-hash-smoke-54yco6zd/Program.cs(32,108): error CS1026: ) expected [/tmp/gc002-hash-smoke-54yco6zd/HashSmoke.csproj]
+
+The build failed. Fix the build errors and run again.
+
+Exit code: 1
+
+Throwaway project (removed after execution):
+<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><LangVersion>9.0</LangVersion><TreatWarningsAsErrors>true</TreatWarningsAsErrors><Nullable>enable</Nullable><ImplicitUsings>disable</ImplicitUsings></PropertyGroup><ItemGroup><Reference Include="GameCore.ReferenceSeams"><HintPath>/home/worlesenric/wkspace/game_core/dotnet/src/GameCore.ReferenceSeams/bin/Release/netstandard2.1/GameCore.ReferenceSeams.dll</HintPath></Reference></ItemGroup></Project>
+
+Program.cs:
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Versioning;
+using GameCore.Contracts;
+internal static class Program
+{
+    private static object Make(Type type, ulong value)
+    {
+        if (type == typeof(ulong)) return value;
+        if (type == typeof(uint)) return unchecked((uint)value);
+        if (type == typeof(int)) return 7;
+        ConstructorInfo ctor = type.GetConstructors().Single();
+        return ctor.Invoke(ctor.GetParameters().Select(p => Make(p.ParameterType, value)).ToArray());
+    }
+    private static void Main()
+    {
+        Type[] types = { typeof(OperationId), typeof(TargetHandle), typeof(ScopeHandle),
+            typeof(PluginHandle), typeof(SnapshotToken), typeof(AsyncWorkToken), typeof(SchemaRef),
+            typeof(DefinitionRef), typeof(ContributionKey), typeof(EventCursor), typeof(ContractRef),
+            typeof(CapabilityRef), typeof(FactoryKey) };
+        int checks = 0;
+        foreach (Type type in types)
+        {
+            foreach (ulong value in new[] { 0UL, 1UL, 0x100000000UL, ulong.MaxValue })
+            {
+                object first = Make(type, value);
+                object equal = Make(type, value);
+                var dictionary = new Dictionary<object, string> { [first] = "retained" };
+                if (!first.Equals(equal) || first.GetHashCode() != equal.GetHashCode() ||
+                    __omp_shell("dictionary.TryGetValue(equal, out string? found) || found != "retained")")
+                    throw new Exception(type.Name + " failed hash/equality lookup at " + value);
+                checks++;
+            }
+            Console.WriteLine(type.Name + ": 4 boundary dictionary lookups passed");
+        }
+        Assembly assembly = typeof(Id128).Assembly;
+        string? target = assembly.GetCustomAttribute<TargetFrameworkAttribute>()?.FrameworkName;
+        if (target != ".NETStandard,Version=v2.1") throw new Exception("Wrong target: " + target);
+        string[] references = assembly.GetReferencedAssemblies().Select(a => a.Name!).ToArray();
+        if (references.Any(n => n.StartsWith("Unity", StringComparison.Ordinal)))
+            throw new Exception("Engine reference found");
+        Console.WriteLine("Target: " + target + "; references: " + string.Join(", ", references));
+        Console.WriteLine("PASS: " + checks + " dictionary lookups across " + types.Length + " corrected handle/reference types");
+    }
+}
