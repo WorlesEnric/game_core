@@ -68,12 +68,13 @@ namespace GameCore.Composition.Tests
                 operation,
                 rig.Host.Snapshot().Revision);
 
-            Assert.That(admission.Staged, Is.True, admission.Code.ToString());
-            rig.Host.Drain();
-
-            InstallSnapshot install = rig.Host.FindInstall(consumer)!;
-            Assert.That(install.Diagnostics, Is.Not.Empty);
-            Diagnostic diagnostic = install.Diagnostics[0];
+            Assert.That(admission.Code, Is.EqualTo(DiagnosticCode.ServiceConflict));
+            Assert.That(rig.Host.Read(admission.Handle).Entry!.Outcome, Is.EqualTo(Outcome.Rejected));
+            Assert.That(rig.Host.Drain(), Is.Empty);
+            Assert.That(rig.Host.FindInstall(consumer), Is.Null);
+            Assert.That(rig.Host.Snapshot().Revision.Value, Is.EqualTo(2UL));
+            Assert.That(admission.Diagnostics, Is.Not.Empty);
+            Diagnostic diagnostic = admission.Diagnostics[0];
 
             Assert.That(diagnostic.Code, Is.EqualTo(DiagnosticCode.ServiceConflict));
             Assert.That(diagnostic.CodeText, Is.EqualTo("ServiceConflict"));
@@ -191,6 +192,7 @@ namespace GameCore.Composition.Tests
                         rig.Host.Drain();
                         rig.Host.SubmitEdit(Payloads.ScopeCreate(child, parent), rig.Issuer.Next(), rig.Host.Snapshot().Revision);
                         rig.Host.Drain();
+                        operation = rig.Issuer.Next();
                         admission = rig.Host.SubmitEdit(Payloads.ScopeReparent(parent, child), operation, rig.Host.Snapshot().Revision);
                         break;
                     }

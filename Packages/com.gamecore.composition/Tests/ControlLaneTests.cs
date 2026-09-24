@@ -247,7 +247,7 @@ namespace GameCore.Composition.Tests
             host.OperationLedger.AdvanceRetention(new LogicalStepId(0UL));
             Assert.That(host.OperationLedger.RowCount, Is.EqualTo(1), "A settled row stays retained until it expires.");
 
-            CompositionHost small = NewHost(queued: 1, retained: 1);
+            CompositionHost small = NewHost(queued: 1, retained: 1, retainedSteps: 1UL);
             OperationIssuer recoveryIssuer = new OperationIssuer(World, new Id128(0x6973737565UL, 20UL));
             EditAdmission occupying = small.SubmitEdit(Payloads.ScopeCreate(Ids.Scope(), Root), recoveryIssuer.Next(), CompositionRevision.Zero);
             small.Drain();
@@ -255,6 +255,7 @@ namespace GameCore.Composition.Tests
             Assert.That(refused.Kind, Is.EqualTo(AdmissionKind.CapacityRejected));
 
             // The retained result expires once the window closes, freeing the row for a new operation.
+            Assert.That(small.AdvanceSteps(new LogicalStepId(2UL)), Is.EqualTo(1));
             Assert.That(small.Read(occupying.Handle).Outcome, Is.EqualTo(OperationReadOutcome.Expired));
             Assert.That(small.OperationLedger.RowCount, Is.EqualTo(0));
             EditAdmission admitted = small.SubmitEdit(Payloads.ScopeCreate(Ids.Scope(), Root), recoveryIssuer.Next(), new CompositionRevision(1UL));
@@ -357,7 +358,8 @@ namespace GameCore.Composition.Tests
 
             Assert.That(host.Read(first.Handle).Outcome, Is.EqualTo(OperationReadOutcome.Expired));
             Assert.That(host.Cancel(issuer.Next(), first.Handle.Operation), Is.EqualTo(CancelOutcome.ResultExpired));
-            Assert.That(host.Cancel(issuer.Next(), second.Handle.Operation), Is.EqualTo(CancelOutcome.TooLate));
+            Assert.That(host.Read(second.Handle).Outcome, Is.EqualTo(OperationReadOutcome.Expired), "The cancellation result displaced the last retained edit result.");
+            Assert.That(host.Cancel(issuer.Next(), second.Handle.Operation), Is.EqualTo(CancelOutcome.ResultExpired));
         }
 
         [Test]

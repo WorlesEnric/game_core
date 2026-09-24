@@ -78,13 +78,10 @@ namespace GameCore.Composition.Tests
             foreach (InstallationState state in EveryState())
             {
                 Assert.That(InstallationStateMachine.IsAllowed(state, state), Is.False, "A repeated lifecycle request is not an edge: " + state);
-                if (state != InstallationState.Disposed)
-                {
-                    Assert.That(
-                        InstallationStateMachine.IsAllowed(state, InstallationState.Disposed),
-                        Is.False,
-                        "Only a retiring installation reaches Disposed: " + state);
-                }
+                Assert.That(
+                    InstallationStateMachine.IsAllowed(state, InstallationState.Disposed),
+                    Is.EqualTo(state == InstallationState.Retiring),
+                    "Only a retiring installation reaches Disposed: " + state);
             }
 
             foreach (InstallationState state in EveryState())

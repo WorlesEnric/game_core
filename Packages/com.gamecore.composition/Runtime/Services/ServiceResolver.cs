@@ -193,17 +193,22 @@ namespace GameCore.Composition
         public ServiceResolution(
             DiagnosticCode code,
             IReadOnlyList<ServiceNodeResolution>? nodes,
-            IReadOnlyList<PluginInstanceId>? activationOrder)
+            IReadOnlyList<PluginInstanceId>? activationOrder,
+            IReadOnlyList<Diagnostic>? diagnostics)
         {
             Code = code;
             Nodes = ContractCollections.Freeze(nodes);
             ActivationOrder = ContractCollections.Freeze(activationOrder);
+            Diagnostics = ContractCollections.Freeze(diagnostics);
         }
 
         /// <summary><see cref="DiagnosticCode.None"/> when the whole graph resolved; otherwise the closure failure.</summary>
         public DiagnosticCode Code { get; }
 
         public IReadOnlyList<ServiceNodeResolution> Nodes { get; }
+
+        /// <summary>Structured closure failures; the owning plan supplies the operation identity.</summary>
+        public IReadOnlyList<Diagnostic> Diagnostics { get; }
 
         /// <summary>Providers before consumers for required edges (P-012), in canonical tie-broken order.</summary>
         public IReadOnlyList<PluginInstanceId> ActivationOrder { get; }
@@ -263,14 +268,15 @@ namespace GameCore.Composition
             {
                 if (ordered[i].Instance.Equals(ordered[i - 1].Instance))
                 {
-                    return new ServiceResolution(DiagnosticCode.OwnershipConflict, Array.Empty<ServiceNodeResolution>(), Array.Empty<PluginInstanceId>());
+                    return new ServiceResolution(DiagnosticCode.OwnershipConflict, Array.Empty<ServiceNodeResolution>(), Array.Empty<PluginInstanceId>(), null);
                 }
             }
 
             ScopeRegistry tree = scopes;
-            if (!ClosureOrder(tree, ordered, out List<PluginInstanceId>? activationOrder, out DiagnosticCode closureCode))
+            if (!ClosureOrder(tree, ordered, out List<PluginInstanceId>? activationOrder, out DiagnosticCode closureCode, out Diagnostic? closureDiagnostic))
             {
-                return new ServiceResolution(closureCode, Array.Empty<ServiceNodeResolution>(), Array.Empty<PluginInstanceId>());
+                return new ServiceResolution(closureCode, Array.Empty<ServiceNodeResolution>(), Array.Empty<PluginInstanceId>(),
+                    closureDiagnostic == null ? null : new[] { closureDiagnostic });
             }
 
             Dictionary<PluginInstanceId, int> indices = new Dictionary<PluginInstanceId, int>(ordered.Count);
@@ -292,7 +298,7 @@ namespace GameCore.Composition
 
             resolutions.Sort((left, right) => CompareNodes(left.Node, right.Node));
 
-            return new ServiceResolution(DiagnosticCode.None, resolutions, activationOrder);
+            return new ServiceResolution(DiagnosticCode.None, resolutions, activationOrder, null);
         }
 
         /// <summary>
@@ -325,6 +331,22 @@ namespace GameCore.Composition
                 0L,
                 RetryClassification.RequiresChangedInput,
                 summary + " consumer=" + consumer.Instance.ToString() + ".");
+        }
+
+        private static Diagnostic DependencyDiagnostic(
+            DiagnosticCode code,
+            ServiceDependency dependency,
+            ServiceNode consumer,
+            List<ProviderCandidate> visible)
+        {
+            List<ProviderInstallationId> providers = new List<ProviderInstallationId>(visible.Count);
+            for (int i = 0; i < visible.Count; i++)
+            {
+                providers.Add(new ProviderInstallationId(visible[i].Node.Instance.Value));
+            }
+
+            return DependencyDiagnostic(code, dependency, consumer, providers,
+                "Service " + dependency.Contract.ContractId.ToString() + " cannot resolve under domain " + dependency.Domain + ".");
         }
 
         private static ServiceNodeResolution ResolveNode(ScopeRegistry scopes, List<ServiceNode> all, ServiceNode consumer)
@@ -746,10 +768,12 @@ namespace GameCore.Composition
             ScopeRegistry scopes,
             List<ServiceNode> nodes,
             out List<PluginInstanceId>? order,
-            out DiagnosticCode code)
+            out DiagnosticCode code,
+            out Diagnostic? diagnostic)
         {
             order = null;
             code = DiagnosticCode.None;
+            diagnostic = null;
 
             Dictionary<Id128, ServiceNode> byInstance = new Dictionary<Id128, ServiceNode>();
             for (int i = 0; i < nodes.Count; i++)
@@ -805,6 +829,7 @@ namespace GameCore.Composition
                             }
 
                             code = selectionCode;
+                            diagnostic = DependencyDiagnostic(code, dependency, consumer, visible);
                             return false;
                         }
 
@@ -822,6 +847,7 @@ namespace GameCore.Composition
 
                             // A conflict is a real closure failure: providers and consumers cannot be ordered.
                             code = winnerCode;
+                            diagnostic = DependencyDiagnostic(code, dependency, consumer, visible);
                             return false;
                         }
                     }

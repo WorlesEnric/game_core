@@ -100,8 +100,27 @@ namespace GameCore.Composition
             new ConfigFieldValue(ConfigValueKind.Utf8, 0UL, 0L, false, Id128.Zero, null, value ?? throw new ArgumentNullException(nameof(value)), null);
 
         /// <summary>Canonical set-union value: duplicates are removed and the set is stored in ascending id order.</summary>
-        public static ConfigFieldValue OfIdSet(IReadOnlyList<Id128>? value) =>
-            new ConfigFieldValue(ConfigValueKind.IdSet, 0UL, 0L, false, Id128.Zero, null, null, CanonicalOrder.Sort(value, CanonicalOrder.Compare));
+        public static ConfigFieldValue OfIdSet(IReadOnlyList<Id128>? value)
+        {
+            if (value == null || value.Count == 0)
+            {
+                return new ConfigFieldValue(ConfigValueKind.IdSet, 0UL, 0L, false, Id128.Zero, null, null, Array.Empty<Id128>());
+            }
+
+            List<Id128> unique = new List<Id128>(value);
+            unique.Sort(CanonicalOrder.Compare);
+            int count = 1;
+            for (int i = 1; i < unique.Count; i++)
+            {
+                if (!unique[i].Equals(unique[count - 1]))
+                {
+                    unique[count++] = unique[i];
+                }
+            }
+
+            unique.RemoveRange(count, unique.Count - count);
+            return new ConfigFieldValue(ConfigValueKind.IdSet, 0UL, 0L, false, Id128.Zero, null, null, ContractCollections.Freeze(unique));
+        }
 
         public static ConfigFieldValue OfOrderedIds(IReadOnlyList<Id128>? value) =>
             new ConfigFieldValue(
@@ -143,18 +162,7 @@ namespace GameCore.Composition
             List<Id128> merged = new List<Id128>(AsIds.Count + other.AsIds.Count);
             merged.AddRange(AsIds);
             merged.AddRange(other.AsIds);
-            merged.Sort(CanonicalOrder.Compare);
-
-            List<Id128> unique = new List<Id128>(merged.Count);
-            for (int i = 0; i < merged.Count; i++)
-            {
-                if (i == 0 || !merged[i].Equals(merged[i - 1]))
-                {
-                    unique.Add(merged[i]);
-                }
-            }
-
-            return OfIdSet(unique);
+            return OfIdSet(merged);
         }
 
         public bool Equals(ConfigFieldValue other)

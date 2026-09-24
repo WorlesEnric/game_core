@@ -233,7 +233,7 @@ namespace GameCore.Composition.Tests
             Assert.That(move.Staged, Is.True, move.Code.ToString());
             host.Drain();
             Assert.That(host.FindScope(child)!.Parent, Is.EqualTo(keep));
-            Assert.That(host.Committed.Scopes.Depth(child), Is.EqualTo(1));
+            Assert.That(host.Committed.Scopes.Depth(child), Is.EqualTo(2));
 
             // The scope is now empty, so a plain removal no longer needs a destruction disposition.
             EditAdmission remove = host.SubmitEdit(Payloads.ScopeRemove(temporary, false), issuer.Next(), new CompositionRevision(4UL));

@@ -291,6 +291,9 @@ namespace GameCore.Composition.Tests
 
             // Without an override the same two visible providers conflict, so the override is load-bearing
             // rather than incidental: a plain nearest provider would not have been chosen.
+            rig.Unmount(consumer);
+            rig.Unmount(middleProvider);
+            rig.Mount(rig.Manifests.ManifestOf(plainType), rig.Ids.Instance(), inner);
             PluginTypeId plainConsumerType = rig.Ids.Type();
             rig.Add(Manifests.Plain(plainConsumerType, rig.Ids, null, null, new[] { Manifests.Requires(Contract(contract, 1U)) }));
             PluginInstanceId plainConsumer = rig.Ids.Instance();
@@ -593,14 +596,21 @@ namespace GameCore.Composition.Tests
             PluginTypeId upperType = rig.Ids.Type();
             rig.Add(Manifests.Plain(upperType, rig.Ids, null, new[] { Manifests.Export(Contract(contract, 2U), rig.Ids.NextId()) }));
             PluginInstanceId upper = rig.Ids.Instance();
-            rig.Mount(rig.Manifests.ManifestOf(upperType), upper, Root);
+            CompositionRevision beforeConflict = rig.Revision;
+            EditAdmission duplicate = rig.Host.SubmitEdit(
+                Payloads.Mount(rig.Manifests.ManifestOf(upperType), upper, Root, null),
+                rig.Issuer.Next(), rig.Revision);
+            Assert.That(duplicate.Code, Is.EqualTo(DiagnosticCode.ServiceConflict));
+            Assert.That(duplicate.Entry!.Outcome, Is.EqualTo(Outcome.Rejected));
+            Assert.That(rig.Host.Drain(), Is.Empty);
+            Assert.That(rig.Host.FindInstall(upper), Is.Null);
+            Assert.That(rig.Revision, Is.EqualTo(beforeConflict));
+            Assert.That(rig.StateOf(consumer), Is.EqualTo(InstallationState.Active));
+            Assert.That(rig.BindingsOf(consumer)[0].Provider, Is.EqualTo(new ProviderInstallationId(lower.Value)));
 
-            // Two providers are now visible, so the consumer waits for an explicit choice rather than guessing.
-            Assert.That(rig.StateOf(consumer), Is.EqualTo(InstallationState.WaitingForDependencies));
-            Assert.That(rig.Host.FindInstall(consumer)!.Diagnostics[0].CodeText, Is.EqualTo("ServiceConflict"));
-
-            // Removing the lower provider leaves exactly the upper endpoint, which the range accepts.
+            // Invalid graphs reject; remove the lower provider before retrying the upper endpoint (00 s9/O-03).
             rig.Unmount(lower);
+            rig.Mount(rig.Manifests.ManifestOf(upperType), upper, Root);
             Assert.That(rig.StateOf(consumer), Is.EqualTo(InstallationState.Active), "The upper endpoint 2 is inclusive.");
             Assert.That(rig.BindingsOf(consumer)[0].Provider, Is.EqualTo(new ProviderInstallationId(upper.Value)));
 

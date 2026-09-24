@@ -512,12 +512,9 @@ namespace GameCore.Composition
             switch (row.Phase)
             {
                 case LedgerPhase.Pending:
-                    row.Phase = LedgerPhase.Settled;
-                    row.Outcome = Outcome.Cancelled;
-                    row.Code = DiagnosticCode.Cancelled;
-                    settledOrder.Add(target);
+                    Settle(target, Outcome.Cancelled, DiagnosticCode.Cancelled,
+                        PublishedRevision, PublishedEpoch, null, CurrentStep);
                     CancelledCount++;
-                    TrimRetention();
                     return CancelOutcome.Cancelled;
                 case LedgerPhase.Applying:
                     TooLateCount++;

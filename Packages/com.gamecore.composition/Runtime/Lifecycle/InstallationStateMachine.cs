@@ -5,6 +5,7 @@
 // reported as a diagnostic value, never as an exception in normal control flow (P-051).
 #nullable enable
 using System;
+using System.Collections.Generic;
 using GameCore.Contracts;
 
 namespace GameCore.Composition

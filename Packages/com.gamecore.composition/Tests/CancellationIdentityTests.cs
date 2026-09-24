@@ -21,12 +21,12 @@ namespace GameCore.Composition.Tests
         private static readonly IdFactory Ids = new IdFactory(0x63616E63656CUL);
         private static readonly ScopeId Root = new ScopeId(new Id128(0x726F6F74UL, 6UL));
 
-        private static CompositionHost NewHost(int queued = 16)
+        private static CompositionHost NewHost(int queued = 16, ulong retainedSteps = 0UL)
         {
             TestManifestSource source = new TestManifestSource();
             CompositionHostSettings settings = new CompositionHostSettings(
                 new ControlLaneCapacitySettings(queued, 16),
-                new OperationExpirySettings(3, 0UL));
+                new OperationExpirySettings(3, retainedSteps));
             return new CompositionHost(World, Root, settings, source, null, PropagationMode.Automatic);
         }
 
@@ -138,7 +138,7 @@ namespace GameCore.Composition.Tests
             // bad session: the request itself belongs to another world incarnation (P-004)
             OperationId foreign = new OperationId(OtherWorld, issuer.Id, 900UL);
             Assert.That(host.Cancel(foreign, pendingFirst.Handle.Operation), Is.EqualTo(CancelOutcome.Rejected));
-            Assert.That(host.Read(foreign).Outcome, Is.EqualTo(OperationReadOutcome.Unknown), "A refused request leaves no ledger row.");
+            Assert.That(host.Read(new OperationStatusHandle(foreign, CompositionRevision.Zero)).Outcome, Is.EqualTo(OperationReadOutcome.Unknown), "A refused request leaves no ledger row.");
 
             // bad issuer: a default identity is not an issuer (P-004)
             OperationId ownerless = new OperationId(World, default(Id128), 901UL);
@@ -271,7 +271,7 @@ namespace GameCore.Composition.Tests
             OperationStatusHandle handle = host.OperationLedger.RowOf(cancellation)!.Handle;
             Assert.That(host.Read(handle).Entry!.Outcome, Is.EqualTo(Outcome.Rejected));
             Assert.That(host.Read(handle).Entry!.Code, Is.EqualTo(DiagnosticCode.StaleHandle));
-            Assert.That(host.Read(unknownTarget).Outcome, Is.EqualTo(OperationReadOutcome.Unknown));
+            Assert.That(host.Read(new OperationStatusHandle(unknownTarget, CompositionRevision.Zero)).Outcome, Is.EqualTo(OperationReadOutcome.Unknown));
         }
 
         [Test]
@@ -302,6 +302,33 @@ namespace GameCore.Composition.Tests
             Assert.That(host.FindScope(second), Is.Not.Null);
             Assert.That(host.FindScope(first), Is.Null);
             Assert.That(host.Snapshot().Revision.Value, Is.EqualTo(1UL));
+        }
+
+        [Test]
+        public void CancelledTargetRetentionStartsAtCancellationRatherThanWorldCreation()
+        {
+            CompositionHost host = NewHost(retainedSteps: 2UL);
+            OperationIssuer issuer = Issuer(0x63616E6342UL);
+            ScopeId scope = Ids.Scope();
+            EditAdmission pending = host.SubmitEdit(Payloads.ScopeCreate(scope, Root), issuer.Next(), CompositionRevision.Zero);
+            host.AdvanceSteps(new LogicalStepId(10UL));
+            OperationId cancellation = issuer.Next();
+            Assert.That(host.Cancel(cancellation, pending.Handle.Operation), Is.EqualTo(CancelOutcome.Cancelled));
+            OperationStatusHandle requestHandle = host.OperationLedger.RowOf(cancellation)!.Handle;
+
+            host.AdvanceSteps(new LogicalStepId(12UL));
+            Assert.That(host.Read(pending.Handle).Outcome, Is.EqualTo(OperationReadOutcome.Found));
+            Assert.That(host.Read(pending.Handle).Entry!.Outcome, Is.EqualTo(Outcome.Cancelled));
+            Assert.That(host.Read(requestHandle).Outcome, Is.EqualTo(OperationReadOutcome.Found));
+            Assert.That(host.Cancel(cancellation, pending.Handle.Operation), Is.EqualTo(CancelOutcome.Cancelled));
+
+            host.AdvanceSteps(new LogicalStepId(13UL));
+            Assert.That(host.Read(pending.Handle).Outcome, Is.EqualTo(OperationReadOutcome.Expired));
+            Assert.That(host.Read(requestHandle).Outcome, Is.EqualTo(OperationReadOutcome.Expired));
+            Assert.That(host.Cancel(cancellation, pending.Handle.Operation), Is.EqualTo(CancelOutcome.Rejected));
+            Assert.That(host.Drain(), Is.Empty);
+            Assert.That(host.FindScope(scope), Is.Null);
+            Assert.That(host.Snapshot().Revision, Is.EqualTo(CompositionRevision.Zero));
         }
 
         [Test]

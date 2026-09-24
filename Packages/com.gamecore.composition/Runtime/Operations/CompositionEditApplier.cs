@@ -223,9 +223,9 @@ namespace GameCore.Composition
                 return Rejected(current, payload, operation, inputHash, DiagnosticCode.MissingDependency, diagnostics);
             }
 
-            if (payload.Scope.Equals(current.Scopes.Root))
+            if (payload.Scope.Equals(current.Scopes.Root) || payload.Parent.IsDefault)
             {
-                diagnostics.Add(Diag(DiagnosticCode.OwnershipConflict, payload.Subject, operation, "The world root scope already exists (P-010)."));
+                diagnostics.Add(Diag(DiagnosticCode.OwnershipConflict, payload.Subject, operation, "The world already has its only root scope (P-010)."));
                 return Rejected(current, payload, operation, inputHash, DiagnosticCode.OwnershipConflict, diagnostics);
             }
 
@@ -750,7 +750,15 @@ namespace GameCore.Composition
             ServiceResolution resolution = ServiceResolver.Resolve(after.Scopes, nodes);
             if (!resolution.Succeeded)
             {
-                diagnostics.Add(Diag(resolution.Code, payload.Subject, operation, "The service dependency closure cannot be satisfied."));
+                for (int i = 0; i < resolution.Diagnostics.Count; i++)
+                {
+                    diagnostics.Add(Stamp(resolution.Diagnostics[i], operation));
+                }
+
+                if (resolution.Diagnostics.Count == 0)
+                {
+                    diagnostics.Add(Diag(resolution.Code, payload.Subject, operation, "The service dependency closure cannot be satisfied."));
+                }
                 return Rejected(before, payload, operation, inputHash, resolution.Code, diagnostics);
             }
 
@@ -829,14 +837,18 @@ namespace GameCore.Composition
                     continue;
                 }
 
-                resolvedInstalls.Add(entry.With(state: node.State, bindings: node.Bindings, diagnostics: node.Diagnostics));
+                List<Diagnostic> nodeDiagnostics = new List<Diagnostic>(node.Diagnostics.Count);
                 for (int d = 0; d < node.Diagnostics.Count; d++)
                 {
+                    Diagnostic diagnostic = Stamp(node.Diagnostics[d], operation);
+                    nodeDiagnostics.Add(diagnostic);
                     if (node.Diagnostics[d].Code != DiagnosticCode.None)
                     {
-                        diagnostics.Add(Stamp(node.Diagnostics[d], operation));
+                        diagnostics.Add(diagnostic);
                     }
                 }
+
+                resolvedInstalls.Add(entry.With(state: node.State, bindings: node.Bindings, diagnostics: nodeDiagnostics));
             }
 
             CompositionState resolvedState = after.With(installs: resolvedInstalls);
