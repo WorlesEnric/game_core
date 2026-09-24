@@ -124,7 +124,11 @@ namespace GameCore.Content.Compiler
         /// <summary>Stable identity of the precompiled implementation as 32 lowercase hexadecimal characters.</summary>
         public string ImplementationIdHex { get; }
 
-        /// <summary>Generated-code expression producing the implementation; may use the <c>{factoryKey}</c> placeholder.</summary>
+        /// <summary>
+        /// Generated-code expression producing the implementation, emitted verbatim as the third argument of the
+        /// entry's <c>BoundRegistration</c>. It may reference the entry's own generated key constant by name; a
+        /// fragment cannot contain braces, so no substitution placeholder exists (04 s8).
+        /// </summary>
         public string ImplementationExpression { get; }
     }
 
