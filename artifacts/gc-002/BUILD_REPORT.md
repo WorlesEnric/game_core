@@ -1,5 +1,9 @@
 # GC-002 Linux build report
 
+**Current result: Round 2 passes — 31 NUnit tests and 58 protocol cases.** See [Round 2](#round-2) below.
+The preceding Round 1 report is retained as historical evidence; its counts, hashes and commands apply only
+to that earlier revision.
+
 ## Outcome
 
 **Pass for the GC-002 pure-dotnet W0 checks.** The final run after committing the generated snapshot built all five projects with zero warnings/errors, passed all 13 NUnit tests, and executed all 40 protocol fixture cases: **40 Pass, 0 Fail, 0 NotRun, 0 Blocked**. No tests were skipped, ignored, deleted, or weakened. No fixture inputs or expected outcomes were changed.
@@ -181,3 +185,217 @@ Committed evidence includes the real API snapshot, `artifacts/protocol-fixtures/
 - Remote documentation URL checking or cross-platform compatibility.
 
 The W0 oracle agrees with its 40 fixtures. This does not establish production runtime conformance or authorize skipping any later integration gate.
+
+## Round 2
+
+### Outcome and revision
+
+**Pass for the updated GC-002 pure-dotnet W0 gate.** All five projects build with **0 warnings and 0 errors**.
+The final post-commit run passes **31/31 NUnit tests** and **58/58 protocol JSON cases**:
+**0 Fail, 0 skipped, 0 NotRun, 0 Blocked**. The JSON cases run inside the NUnit suite, not as 58 additional
+NUnit tests. Both documentation checks pass.
+
+Started from `origin/gc-002` at `9d29da6`, including HANDOFF section 7. Round 2 commits:
+
+- `17ae69c`: compiler, implementation and test-harness fixes described below.
+- `b626f45`: regenerated compiled W1-facing API snapshot.
+- `7b433bc`: current 58-case `results.json`, replacing `results-40-case-pre-review.json`.
+- The subsequent report/evidence commit contains this section, retained logs/TRX and refreshed evidence READMEs.
+
+No test was deleted, skipped, ignored or weakened. No fixture input or expected outcome changed. One
+NUnit expectation was corrected using explicit normative authority: shutdown cannot succeed while the
+test's failed dispatch still owns an unfinished quarantined job. Details below.
+
+### Host, constraints and scope
+
+- Linux x86_64 / Ubuntu 24.04, host `worlesenric`; kernel `7.0.0-31-generic`.
+- .NET SDK **8.0.425**, MSBuild **17.11.48+02bf66295**, .NET host/runtime **8.0.31**,
+  VSTest **17.11.1 x64**; Python **3.12.3**.
+- Both pure projects evaluate to `netstandard2.1`, C# **9.0**, nullable enabled,
+  warnings-as-errors enabled, analyzers disabled. Neither target nor language level was relaxed.
+- An explicit **whole-solution non-incremental rebuild** also passed with zero warnings/errors.
+- The two executable assembly-independence fixture cases pass. No engine/gameplay/fixture-namespace
+  references appear in the generated `GameCore.Contracts` API listing.
+- The configured Unity executable exists (`Path.is_file()` checked
+  `/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Unity`). Unity was **NotRun**:
+  HANDOFF section 3 assigns Unity/IL2CPP probing to GC-001, not this pure-dotnet task.
+  The installed Editor's actual version and license were not independently exercised.
+
+### Exact commands and run history
+
+Repository synchronization used a non-destructive fast-forward rather than a hard reset:
+
+```sh
+git fetch origin && git checkout gc-002
+git merge --ff-only origin/gc-002
+```
+
+Read HANDOFF first, then GC-002 in 09 and TEST-002/021/022/024 in 08. Relevant normative sections in
+00 and 05 were consulted before behavioral repairs and the corrected shutdown expectation.
+
+All build processes ran from the repository root with:
+
+```sh
+export DOTNET_ROOT=/home/worlesenric/.dotnet
+export PATH=/home/worlesenric/.dotnet:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+export DOTNET_CLI_TELEMETRY_OPTOUT=1
+```
+
+The full runner was invoked seven times, retaining separate logs:
+
+```sh
+ARTIFACTS=/home/worlesenric/wkspace/game_core/artifacts/gc-002/round-2/initial tools/run_w0_checks.sh
+ARTIFACTS=/home/worlesenric/wkspace/game_core/artifacts/gc-002/round-2/after-compiler-fixes tools/run_w0_checks.sh
+ARTIFACTS=/home/worlesenric/wkspace/game_core/artifacts/gc-002/round-2/before-snapshot tools/run_w0_checks.sh
+ARTIFACTS=/home/worlesenric/wkspace/game_core/artifacts/gc-002/round-2/compiled-tests tools/run_w0_checks.sh
+ARTIFACTS=/home/worlesenric/wkspace/game_core/artifacts/gc-002/round-2/after-behavior-fixes tools/run_w0_checks.sh
+ARTIFACTS=/home/worlesenric/wkspace/game_core/artifacts/gc-002/round-2/final tools/run_w0_checks.sh
+ARTIFACTS=/home/worlesenric/wkspace/game_core/artifacts/gc-002/round-2/post-commit tools/run_w0_checks.sh
+```
+
+Each runner invokes, in order and stopping on failure:
+
+```sh
+python3 tools/validate_game_core_docs.py --self-test
+python3 tools/validate_game_core_docs.py
+dotnet build dotnet/GameCore.sln -c Release
+dotnet test dotnet/GameCore.sln -c Release --logger trx
+```
+
+| Round 2 log directory | Build | ReferenceSeams NUnit | ProtocolFixtures NUnit | Protocol JSON |
+|---|---|---|---|---|
+| `initial/` | Fail: 5 compiler errors | NotRun | NotRun | NotRun |
+| `after-compiler-fixes/` | Fail: 7 missing-probe-member errors | NotRun | NotRun | NotRun |
+| `before-snapshot/` | Fail: 1 test constructor type error | NotRun | NotRun | NotRun |
+| `compiled-tests/` | Pass | 17 Pass, 4 Fail | 9 Pass, 1 Fail | 55 Pass, 3 Fail |
+| `after-behavior-fixes/` | Pass | 20 Pass, 1 Fail (snapshot placeholder) | 9 Pass, 1 Fail | 57 Pass, 1 Blocked (empty candidate) |
+| `final/` | Pass | 21 Pass | 10 Pass | 58 Pass |
+| `post-commit/` | Pass | 21 Pass | 10 Pass | 58 Pass |
+
+Every invocation passed the documentation self-test (9 isolated fixtures) and validator (14 Markdown
+documents). All successful builds had zero warnings/errors. No NUnit test was skipped in any executed run.
+`post-commit/` is the authoritative final gate, after the code, snapshot and fixture-result commits and
+the evidence README edits. It produces the same case document and per-test outcomes as `final/`.
+
+Additional executed commands, all exit 0:
+
+```sh
+dotnet build dotnet/GameCore.sln -c Release -t:Rebuild -p:LangVersion=9.0 -p:TreatWarningsAsErrors=true
+dotnet run --project dotnet/tools/GameCore.ApiSnapshot -c Release -- --assembly dotnet/src/GameCore.ReferenceSeams/bin/Release/netstandard2.1/GameCore.ReferenceSeams.dll --output tests/GameCore.ReferenceSeams/api/GameCore.Contracts.api.txt --namespace GameCore.Contracts
+dotnet --info
+uname -a
+python3 --version
+dotnet msbuild dotnet/src/GameCore.ReferenceSeams/GameCore.ReferenceSeams.csproj -getProperty:TargetFramework,LangVersion,TreatWarningsAsErrors,Nullable,EnableNETAnalyzers
+dotnet msbuild dotnet/src/GameCore.ProtocolFixtures/GameCore.ProtocolFixtures.csproj -getProperty:TargetFramework,LangVersion,TreatWarningsAsErrors,Nullable,EnableNETAnalyzers
+dotnet run --project dotnet/tools/GameCore.ApiSnapshot -c Release -- --assembly dotnet/src/GameCore.ReferenceSeams/bin/Release/netstandard2.1/GameCore.ReferenceSeams.dll --output /tmp/gc002-round2-snapshot-1praxj7i/second.api.txt --namespace GameCore.Contracts
+cmp tests/GameCore.ReferenceSeams/api/GameCore.Contracts.api.txt /tmp/gc002-round2-snapshot-1praxj7i/second.api.txt
+```
+
+The temporary second snapshot directory was removed after comparison. `round-2/commands.json` records
+the additional command argument vectors, exit statuses and log paths. The toolchain inspection
+`/home/worlesenric/.dotnet/dotnet --info` was also run once before the logged inspection above.
+
+### Every Round 2 fix and justification
+
+1. **`Identity/CanonicalHex.cs`: CS0675.** Widening the signed nibble directly to UInt64 triggered
+   the sign-extension warning-as-error. Convert its validated 0–15 value to UInt32 first, then combine
+   with the UInt64 accumulator. No suppression or parsing relaxation.
+2. **`Identity/Handles.cs`: typed generation comparison.** `AsyncWorkToken.IsAllocated` and its constructor
+   still compared the new `InstallationGeneration` struct against `ulong`. Compare `.Value` to zero,
+   retaining the generation-zero reservation; no public signature changed.
+3. **`Serialization/Envelope.cs`: header writer calls.** Two calls supplied a redundant buffer argument
+   to the existing two-argument instance `WriteUInt32BigEndian` helper. Removed only that argument.
+4. **`Oracle/EnvelopeOracle.cs`: missing probe result members.** Added the read-only `Accepted`, `Code`
+   and `Detail` properties already assigned by `EnvelopeProbe`'s constructor and consumed by the runner,
+   following the existing `OracleVerdict` pattern.
+5. **`SeamContractTests.cs`: missing schema wrapper.** Wrapped the unknown-schema test's existing `Id128`
+   in `SchemaId` to satisfy the typed `SchemaRef` constructor. Identity bits and `MissingDependency`
+   expectation are unchanged.
+6. **`Serialization/Envelope.cs`: float wire types rejected.** `IsKnownWireType` omitted `Float32` and
+   `Float64` despite their writers/readers being implemented. Added both cases. Before the fix, the
+   round-trip probe decoded only 5 of 14 fields and NaN decoding failed; both original fixtures now pass.
+   This implements 05 section 6's explicit IEEE-754 encoding.
+7. **`Oracle/CanonicalOrder.cs`: overly permissive independent parser.** `NumberStyles.HexNumber`
+   accepted uppercase/whitespace, disagreeing with HANDOFF section 7E and the canonical-form fixture.
+   Independently validate each character as `0–9` or `a–f`; parse spans with `AllowHexSpecifier`.
+   No seam-codec dependency was introduced, and substring allocations were removed.
+8. **`Fixtures/FixtureRunner.cs`: empty negative candidate blocked.** The generic non-empty string
+   helper rejected the fixture's intentional empty input before either parser could inspect it.
+   Added an opt-in `allowEmpty` argument used only for hex candidates. Required metadata and canonical
+   strings remain non-empty; the unchanged empty-string candidate now reaches both parsers and rejects.
+9. **`Stubs/InMemoryHost.cs`: matching retransmission rejected and sequence drifted.** `Record` returned
+   false for both duplicates and conflicts; `Submit` consequently rejected a valid retry. Matching
+   retries now return accepted without enqueueing, and receipts use the stored admission sequence,
+   not the next global sequence. The original conflict result and ledger-row preservation remain intact.
+   The existing test now also admits an intervening command, then verifies the retry keeps its original
+   sequence and does not enqueue again (P-050 and the receipt's replay-order contract).
+10. **`Stubs/ObservationStubs.cs`: capacity off-by-one.** The acquisition check refused even the single
+    retained image at capacity 1. Equality is now allowed; an over-capacity retained fixture set still
+    reports `SnapshotBackpressure`. The existing expiry/foreign-world/capacity test now passes unchanged.
+    This is the existing retained-image-count stub policy, not a production snapshot pool.
+11. **`SeamContractTests.cs`: incorrect successful-stop expectation.** The test explicitly leaves one
+    unfinished quarantined job after dispatch failure, then incorrectly expected `Published` from Stop.
+    [P-047](../../docs/game-core/00-core-protocols.md#p-047) requires executing jobs to finish before
+    release; [P-048](../../docs/game-core/00-core-protocols.md#p-048) requires unfinished users to remain
+    pinned and report `TeardownBlocked`; O-19 likewise requires a blocked/quarantined result.
+    Changed that one expected outcome to `Rejected` and added assertions for `TeardownBlocked`,
+    `Stopping`, and the outstanding/quarantined job remaining tracked. **The host Stop implementation
+    was not changed.** The existing separate stalled-job test still verifies successful disposal after
+    the job completes. This strengthens lifetime safety rather than weakening a failing assertion.
+12. **Generated freeze and evidence.** Replaced the intentional snapshot placeholder using the real
+    compiled-assembly CLI. Replaced the obsolete 40-case result artifact with the real 58-case run.
+    Refreshed `dotnet/README.md`, both protocol evidence READMEs, and made the illustrative one-row
+    result JSON's summary count one. HANDOFF remains a historical implementation-worker record.
+
+Paths above are relative to `tests/GameCore.ReferenceSeams/`, `tests/GameCore.ProtocolFixtures/`, or
+`dotnet/tests/GameCore.ReferenceSeams.Tests/` as indicated. No new protocol rule or design-gap workaround
+was needed. No expected JSON values, language settings, framework targets or compiler warnings were relaxed.
+Existing failing scenarios provide retained before/after regression evidence; no additional test method
+or permanent smoke project was added.
+
+### Final suite and per-test results
+
+| Executed check | Pass | Fail | NotRun / skipped | Blocked |
+|---|---:|---:|---:|---:|
+| Documentation validator self-test fixtures | 9 | 0 | 0 | 0 |
+| Documentation validator | 1 invocation / 14 documents | 0 | 0 | 0 |
+| ReferenceSeams NUnit tests | 21 | 0 | 0 | 0 |
+| ProtocolFixtures NUnit tests | 10 | 0 | 0 | 0 |
+| Protocol JSON cases | 58 | 0 | 0 | 0 |
+
+All 31 per-test names/outcomes are retained in `round-2/test-results.json` and the two
+`round-2/post-commit/*.trx` files. ReferenceSeams' 21 include the 18 seam contract tests and 3 API
+snapshot tests; ProtocolFixtures' 10 tests are the same named suite methods listed in the Round 1 table.
+
+| Primary validation ID | Current W0 fixture cases passing | Fail / NotRun / Blocked |
+|---|---:|---|
+| TEST-002 | 28 | 0 / 0 / 0 |
+| TEST-021 | 2 | 0 / 0 / 0 |
+| TEST-022 | 4 | 0 / 0 / 0 |
+| TEST-024 | 24 | 0 / 0 / 0 |
+
+Each individual case's expected-versus-observed detail is in `artifacts/protocol-fixtures/results.json`.
+The envelope probes deliberately exercise the seam codec; they are not an independent implementation
+of that codec, as documented by the fixture package.
+
+### API freeze, retained evidence and remaining limits
+
+- Generated API: **221 types, 1,589 member lines, 1,817 total lines, 152,655 bytes**.
+- Includes the intentionally expanded W1 surface; generated from the C# 9 / netstandard2.1 assembly.
+  The existing placeholder-failure test, deterministic-generation test and committed-file comparison
+  all pass, including after the snapshot commit. A second CLI generation is byte-identical.
+- Snapshot SHA-256: `89a54bc49ad543c5765bdf29dbbc44160a2fad6b1d286da41e222362e7a6c6e7`.
+- Result JSON SHA-256: `48a6f41f94a8d173f5d3ffaa75bd33a37f843cd364010808e3ba719b59e05f7d`.
+- `round-2/` retains all seven gate-run log directories, failure/success TRX, failing case documents,
+  toolchain/property/rebuild/generation logs, command metadata and per-test results. No evidence file
+  exceeds 2 MB, so no trimming was necessary. The obsolete result filename is absent from the working
+  tree; historical 40-case evidence remains in Git history.
+
+**No applicable GC-002 pure-dotnet check remains failing or blocked.** Unity Editor/EditMode/PlayMode,
+IL2CPP/Burst/player probing, package-lock validation, production ECS behavior, W1 real-module integration,
+the full broader TEST-002/021/022/024 acceptance, reference compositions, 10,000-step replay, performance
+and cross-platform runs are **NotRun**, not implied passes. No Unity package or package-lock change was
+required by this task. The snapshot format limitations documented in Round 1 still apply.
+
+This closes the requested build-host pass over the test seam/oracle; it does not claim production runtime
+conformance or the combined GC-001/GC-002 W0 exit gate.

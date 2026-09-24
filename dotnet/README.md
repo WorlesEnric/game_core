@@ -48,12 +48,11 @@ dotnet run --project dotnet/tools/GameCore.ApiSnapshot -c Release -- \
   --namespace GameCore.Contracts
 ```
 
-The committed file currently holds only the placeholder header
-`# snapshot pending generation on build host`: the GC-002 review round added the Wave 1 seams
-(`CompositionHost.cs`, `WorldHost.cs`, `CatalogContract.cs` and the envelope/counter changes), so the earlier
-generated listing is stale and was replaced rather than kept. The test fails with an explicit
-"pending generation" message while the placeholder is present, and with a line diff when the listing differs.
-Run the command above on the build host, then rerun the tests so the comparison and the file agree. Any public
+The committed snapshot was regenerated on the Linux build host after the Round 2 Wave 1 seam additions
+(`CompositionHost.cs`, `WorldHost.cs`, `CatalogContract.cs` and the envelope/counter changes).
+The compiled snapshot comparison passes; see `artifacts/gc-002/BUILD_REPORT.md`, Round 2, for evidence.
+The test fails explicitly if a placeholder is present and prints a line diff when the listing differs.
+After an intentional change, run the command above and rerun the tests. Any public
 seam change additionally reopens the W0 interface gate before dependent modules compile
 (`docs/game-core/09-implementation-guide.md`, GC-002).
 

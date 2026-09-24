@@ -1,0 +1,172 @@
+{
+  "nunit": [
+    {
+      "suite": "GameCore.ReferenceSeams.Tests",
+      "test": "ApiSnapshotAndFixtureRootsResolveFromTheRepository",
+      "outcome": "Passed"
+    },
+    {
+      "suite": "GameCore.ReferenceSeams.Tests",
+      "test": "CallbackGateRejectsForeignWorldAndStaleActivation",
+      "outcome": "Passed"
+    },
+    {
+      "suite": "GameCore.ReferenceSeams.Tests",
+      "test": "CanonicalMapOrderIsIndependentOfInsertionOrderAndReportsDuplicates",
+      "outcome": "Passed"
+    },
+    {
+      "suite": "GameCore.ReferenceSeams.Tests",
+      "test": "CatalogLookupReportsMissingKeysAndUnsupportedVersions",
+      "outcome": "Passed"
+    },
+    {
+      "suite": "GameCore.ReferenceSeams.Tests",
+      "test": "CompositionHostDoubleAdmitsStaleRejectsRetainsAndExpires",
+      "outcome": "Passed"
+    },
+    {
+      "suite": "GameCore.ReferenceSeams.Tests",
+      "test": "ContentHashParsingAcceptsOnlyTheCanonicalLowercaseForm",
+      "outcome": "Passed"
+    },
+    {
+      "suite": "GameCore.ReferenceSeams.Tests",
+      "test": "ExecutionDriverRetainsTimeDebtAndStopsDispatchAtTheFailingEntry",
+      "outcome": "Passed"
+    },
+    {
+      "suite": "GameCore.ReferenceSeams.Tests",
+      "test": "ExplanationPagingIsBoundedAndStagedPlanReadsAreLabelled",
+      "outcome": "Passed"
+    },
+    {
+      "suite": "GameCore.ReferenceSeams.Tests",
+      "test": "GeneratedListingIsDeterministicAndExcludesAssemblyName",
+      "outcome": "Passed"
+    },
+    {
+      "suite": "GameCore.ReferenceSeams.Tests",
+      "test": "HandleGenerationZeroIsNeverAllocatedAndSlotsAreUnsigned",
+      "outcome": "Passed"
+    },
+    {
+      "suite": "GameCore.ReferenceSeams.Tests",
+      "test": "HostLedgerDistinguishesUnknownFromExpired",
+      "outcome": "Passed"
+    },
+    {
+      "suite": "GameCore.ReferenceSeams.Tests",
+      "test": "HostLedgerKeepsTheOriginalResultOnConflictingReuse",
+      "outcome": "Passed"
+    },
+    {
+      "suite": "GameCore.ReferenceSeams.Tests",
+      "test": "Id128ParsingAcceptsOnlyTheCanonicalLowercaseForm",
+      "outcome": "Passed"
+    },
+    {
+      "suite": "GameCore.ReferenceSeams.Tests",
+      "test": "LifecycleObserverRecordsChangesAndCommittedSteps",
+      "outcome": "Passed"
+    },
+    {
+      "suite": "GameCore.ReferenceSeams.Tests",
+      "test": "ObservationReaderReturnsExpiryAndBackpressureInsteadOfThrowing",
+      "outcome": "Passed"
+    },
+    {
+      "suite": "GameCore.ReferenceSeams.Tests",
+      "test": "PendingHeaderIsTreatedAsFailureWithClearMessage",
+      "outcome": "Passed"
+    },
+    {
+      "suite": "GameCore.ReferenceSeams.Tests",
+      "test": "ResourceLedgerRetiresInReverseOrderAndQuarantinesTheFailedRelease",
+      "outcome": "Passed"
+    },
+    {
+      "suite": "GameCore.ReferenceSeams.Tests",
+      "test": "SeamApiSnapshotMatchesCommittedFile",
+      "outcome": "Passed"
+    },
+    {
+      "suite": "GameCore.ReferenceSeams.Tests",
+      "test": "StalledJobBlocksStopInsteadOfBeingFreedOnTimeout",
+      "outcome": "Passed"
+    },
+    {
+      "suite": "GameCore.ReferenceSeams.Tests",
+      "test": "TimeDebtRefusesToBecomeNegativeOrWrap",
+      "outcome": "Passed"
+    },
+    {
+      "suite": "GameCore.ReferenceSeams.Tests",
+      "test": "VersionDomainsUseTypedCounters",
+      "outcome": "Passed"
+    },
+    {
+      "suite": "GameCore.ProtocolFixtures.Tests",
+      "test": "CaseDirectoryContainsFixtureFiles",
+      "outcome": "Passed"
+    },
+    {
+      "suite": "GameCore.ProtocolFixtures.Tests",
+      "test": "CaseIdentifiersAreUniqueAcrossFiles",
+      "outcome": "Passed"
+    },
+    {
+      "suite": "GameCore.ProtocolFixtures.Tests",
+      "test": "CounterOracleRefusesOverflowForEveryCounter",
+      "outcome": "Passed"
+    },
+    {
+      "suite": "GameCore.ProtocolFixtures.Tests",
+      "test": "EveryCaseExecutesAndMatchesItsExpectation",
+      "outcome": "Passed"
+    },
+    {
+      "suite": "GameCore.ProtocolFixtures.Tests",
+      "test": "EveryDocumentedKindAndRequirementIsExercised",
+      "outcome": "Passed"
+    },
+    {
+      "suite": "GameCore.ProtocolFixtures.Tests",
+      "test": "FixtureLoaderRejectsMalformedCasesAndRunnerBlocksUnknownKinds",
+      "outcome": "Passed"
+    },
+    {
+      "suite": "GameCore.ProtocolFixtures.Tests",
+      "test": "OracleDistinguishesValidFromInvalidOutcomes",
+      "outcome": "Passed"
+    },
+    {
+      "suite": "GameCore.ProtocolFixtures.Tests",
+      "test": "ResultDocumentRoundTripsAndIsWrittenToTheDocumentedPath",
+      "outcome": "Passed"
+    },
+    {
+      "suite": "GameCore.ProtocolFixtures.Tests",
+      "test": "SeamCodecAgreesWithOracleCanonicalBytes",
+      "outcome": "Passed"
+    },
+    {
+      "suite": "GameCore.ProtocolFixtures.Tests",
+      "test": "ShuffledInsertionOrdersProduceIdenticalCanonicalOutput",
+      "outcome": "Passed"
+    }
+  ],
+  "protocolSummary": {
+    "caseCount": 58,
+    "pass": 58,
+    "fail": 0,
+    "notRun": 0,
+    "blocked": 0
+  },
+  "protocolPrimarySuiteCounts": {
+    "TEST-021": 2,
+    "TEST-024": 24,
+    "TEST-002": 28,
+    "TEST-022": 4
+  }
+}

@@ -73,7 +73,7 @@ The test project writes `artifacts/protocol-fixtures/results.json` through `Resu
       "detail": "expected invalid(StaleGeneration); observed StaleGeneration (dereference refused)"
     }
   ],
-  "summary": { "caseCount": 40, "pass": 40, "fail": 0, "notRun": 0, "blocked": 0 }
+  "summary": { "caseCount": 1, "pass": 1, "fail": 0, "notRun": 0, "blocked": 0 }
 }
 ```
 
@@ -85,6 +85,6 @@ The test project writes `artifacts/protocol-fixtures/results.json` through `Resu
 
 ## Evidence rule
 
-The Linux build host executed all 40 cases; `artifacts/protocol-fixtures/results.json` records the real
-outcomes. See `artifacts/gc-002/BUILD_REPORT.md` for commands, suite results and scope limits.
+The Linux build host executed all 58 cases in Round 2; `artifacts/protocol-fixtures/results.json` records
+the real outcomes. See `artifacts/gc-002/BUILD_REPORT.md`, Round 2, for commands, suite results and scope limits.
 The result document is produced only by an actual run, never by copying the example above.

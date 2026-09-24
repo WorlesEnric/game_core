@@ -1,16 +1,11 @@
 # Protocol fixture evidence (GC-002)
 
-Status: **stale — regenerate on the build host.** `results.json` records the previous run
-(40 Pass, 0 Fail, 0 NotRun, 0 Blocked on the Linux build host), but the fixture set has since grown from 40 to
-57 cases during the GC-002 review round: the case files `envelope-codec.json`, `identity-hex-parsing.json` and
-`diagnostic-codes.json` are newer than this document. The suite fails while `results.json` lags the committed
-cases, so treat the file as evidence of the earlier revision only until the build host reruns:
+Status: **Executed — 58 Pass, 0 Fail, 0 NotRun, 0 Blocked** on the Linux build host in Round 2.
+`results.json` was regenerated from the current 58-case fixture set, including the envelope, strict hex,
+diagnostic-code and additional counter cases. The obsolete `results-40-case-pre-review.json` was removed;
+Round 1 evidence remains in Git history.
 
-```sh
-dotnet test dotnet/GameCore.sln -c Release --logger trx
-```
-
-`artifacts/gc-002/BUILD_REPORT.md` covers the earlier revision (toolchain, commands, results, evidence limits).
+See `artifacts/gc-002/BUILD_REPORT.md`, Round 2, for exact commands, test results, fixes and scope limits.
 
 ## What this directory holds
 

@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="167ed826-578b-4194-97f3-b9beb94aa77f" name="@worlesenric 2026-09-25 05:02:38" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-25T05:02:38.9356495+08:00" queuing="2026-09-25T05:02:38.9356495+08:00" start="2026-09-25T05:02:38.5438095+08:00" finish="2026-09-25T05:02:38.9529693+08:00" />
+  <TestSettings name="default" id="0d91dbc7-3dfd-4f53-8050-9d3e4aea66b5">
+    <Deployment runDeploymentRoot="_worlesenric_2026-09-25_05_02_38" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="415540fe-33d2-43d9-b165-f0deb771d0ee" testId="95a97975-ec92-0a22-cf14-3aae83f3ac17" testName="EveryCaseExecutesAndMatchesItsExpectation" computerName="worlesenric" duration="00:00:00.0134570" startTime="2026-09-25T05:02:38.8667469+08:00" endTime="2026-09-25T05:02:38.8802038+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="415540fe-33d2-43d9-b165-f0deb771d0ee">
+      <Output>
+        <ErrorInfo>
+          <Message>  Fixture cases did not match their expectation (no case may be NotRun or Blocked in a delivered run):
+  envelope-field-types-round-trip -&gt; Fail: expected valid; observed FieldCountMismatch (decoded 5 of 14 fields)
+  envelope-nan-canonicalized -&gt; Fail: expected valid; observed NaNNotCanonical (float32 NaN bits 0x00000000)
+  hex-parsing-canonical-form-only -&gt; Fail: expected valid; observed ParserDisagreement (candidate 3 '0102030405060708090a0b0c0d0e0f1A': oracle True, seam False)
+  Expected: &lt;empty&gt;
+  But was:  &lt; "envelope-field-types-round-trip -&gt; Fail: expected valid; observed FieldCountMismatch (decoded 5 of 14 fields)", "envelope-nan-canonicalized -&gt; Fail: expected valid; observed NaNNotCanonical (float32 NaN bits 0x00000000)", "hex-parsing-canonical-form-only -&gt; Fail: expected valid; observed ParserDisagreement (candidate 3 '0102030405060708090a0b0c0d0e0f1A': oracle True, seam False)" &gt;
+</Message>
+          <StackTrace>   at GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests.EveryCaseExecutesAndMatchesItsExpectation() in /home/worlesenric/wkspace/game_core/dotnet/tests/GameCore.ProtocolFixtures.Tests/ProtocolFixtureTests.cs:line 86
+
+1)    at GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests.EveryCaseExecutesAndMatchesItsExpectation() in /home/worlesenric/wkspace/game_core/dotnet/tests/GameCore.ProtocolFixtures.Tests/ProtocolFixtureTests.cs:line 86
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="171eb15d-3222-4984-9852-cf81b1019e42" testId="c592da61-3c23-8daf-5360-366904c98fe4" testName="FixtureLoaderRejectsMalformedCasesAndRunnerBlocksUnknownKinds" computerName="worlesenric" duration="00:00:00.0028940" startTime="2026-09-25T05:02:38.8806046+08:00" endTime="2026-09-25T05:02:38.8834988+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="171eb15d-3222-4984-9852-cf81b1019e42" />
+    <UnitTestResult executionId="b5e92b97-c587-4a4e-9f19-d3378d8be5c0" testId="e676a311-23ee-3aaa-9c06-1983b5811a1d" testName="OracleDistinguishesValidFromInvalidOutcomes" computerName="worlesenric" duration="00:00:00.0004800" startTime="2026-09-25T05:02:38.8835131+08:00" endTime="2026-09-25T05:02:38.8839931+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b5e92b97-c587-4a4e-9f19-d3378d8be5c0" />
+    <UnitTestResult executionId="dca63bb9-b39a-4c2a-873f-3be63b7e7b86" testId="3a82b389-0295-d219-1bb3-746fb978023e" testName="CounterOracleRefusesOverflowForEveryCounter" computerName="worlesenric" duration="00:00:00.0035470" startTime="2026-09-25T05:02:38.8631890+08:00" endTime="2026-09-25T05:02:38.8667359+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="dca63bb9-b39a-4c2a-873f-3be63b7e7b86" />
+    <UnitTestResult executionId="cfd192da-0416-4016-b80e-15156c32b5c1" testId="918a3040-2407-3152-fa9f-699909b89e74" testName="ResultDocumentRoundTripsAndIsWrittenToTheDocumentedPath" computerName="worlesenric" duration="00:00:00.0043740" startTime="2026-09-25T05:02:38.8840100+08:00" endTime="2026-09-25T05:02:38.8883843+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cfd192da-0416-4016-b80e-15156c32b5c1" />
+    <UnitTestResult executionId="871f3e55-ae0e-48dc-b7eb-6c8c2058bf8c" testId="3339d259-2a0e-3cba-32b7-06e388c15c75" testName="CaseDirectoryContainsFixtureFiles" computerName="worlesenric" duration="00:00:00.0025490" startTime="2026-09-25T05:02:38.8595225+08:00" endTime="2026-09-25T05:02:38.8620383+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="871f3e55-ae0e-48dc-b7eb-6c8c2058bf8c" />
+    <UnitTestResult executionId="c7852dbd-42f1-4263-b0f7-e34dc91f26ce" testId="e265e2d3-8d4d-b4c0-97d5-3cabc1feb4d4" testName="SeamCodecAgreesWithOracleCanonicalBytes" computerName="worlesenric" duration="00:00:00.0018810" startTime="2026-09-25T05:02:38.8884010+08:00" endTime="2026-09-25T05:02:38.8902817+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c7852dbd-42f1-4263-b0f7-e34dc91f26ce" />
+    <UnitTestResult executionId="e3604ca8-7080-4c9e-a18a-6573358af6f5" testId="da0c4d64-65e6-733e-f028-8bd456ecebc2" testName="CaseIdentifiersAreUniqueAcrossFiles" computerName="worlesenric" duration="00:00:00.0003530" startTime="2026-09-25T05:02:38.8628228+08:00" endTime="2026-09-25T05:02:38.8631758+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e3604ca8-7080-4c9e-a18a-6573358af6f5" />
+    <UnitTestResult executionId="5877a0a6-f0ec-4377-9da0-42939aabce2f" testId="ee782fa7-6d41-c97b-54fd-d672d9d3f005" testName="EveryDocumentedKindAndRequirementIsExercised" computerName="worlesenric" duration="00:00:00.0003330" startTime="2026-09-25T05:02:38.8802624+08:00" endTime="2026-09-25T05:02:38.8805955+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5877a0a6-f0ec-4377-9da0-42939aabce2f" />
+    <UnitTestResult executionId="29aded5e-f0b5-4e49-9110-5c6aa1a066de" testId="af493c6d-8e0c-b6b1-4b5a-cf06780ce96f" testName="ShuffledInsertionOrdersProduceIdenticalCanonicalOutput" computerName="worlesenric" duration="00:00:00.0003669" startTime="2026-09-25T05:02:38.8902949+08:00" endTime="2026-09-25T05:02:38.8906614+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="29aded5e-f0b5-4e49-9110-5c6aa1a066de" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="ShuffledInsertionOrdersProduceIdenticalCanonicalOutput" storage="/home/worlesenric/wkspace/game_core/dotnet/tests/gamecore.protocolfixtures.tests/bin/release/net8.0/gamecore.protocolfixtures.tests.dll" id="af493c6d-8e0c-b6b1-4b5a-cf06780ce96f">
+      <Execution id="29aded5e-f0b5-4e49-9110-5c6aa1a066de" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/game_core/dotnet/tests/GameCore.ProtocolFixtures.Tests/bin/Release/net8.0/GameCore.ProtocolFixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests" name="ShuffledInsertionOrdersProduceIdenticalCanonicalOutput" />
+    </UnitTest>
+    <UnitTest name="CaseDirectoryContainsFixtureFiles" storage="/home/worlesenric/wkspace/game_core/dotnet/tests/gamecore.protocolfixtures.tests/bin/release/net8.0/gamecore.protocolfixtures.tests.dll" id="3339d259-2a0e-3cba-32b7-06e388c15c75">
+      <Execution id="871f3e55-ae0e-48dc-b7eb-6c8c2058bf8c" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/game_core/dotnet/tests/GameCore.ProtocolFixtures.Tests/bin/Release/net8.0/GameCore.ProtocolFixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests" name="CaseDirectoryContainsFixtureFiles" />
+    </UnitTest>
+    <UnitTest name="OracleDistinguishesValidFromInvalidOutcomes" storage="/home/worlesenric/wkspace/game_core/dotnet/tests/gamecore.protocolfixtures.tests/bin/release/net8.0/gamecore.protocolfixtures.tests.dll" id="e676a311-23ee-3aaa-9c06-1983b5811a1d">
+      <Execution id="b5e92b97-c587-4a4e-9f19-d3378d8be5c0" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/game_core/dotnet/tests/GameCore.ProtocolFixtures.Tests/bin/Release/net8.0/GameCore.ProtocolFixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests" name="OracleDistinguishesValidFromInvalidOutcomes" />
+    </UnitTest>
+    <UnitTest name="CaseIdentifiersAreUniqueAcrossFiles" storage="/home/worlesenric/wkspace/game_core/dotnet/tests/gamecore.protocolfixtures.tests/bin/release/net8.0/gamecore.protocolfixtures.tests.dll" id="da0c4d64-65e6-733e-f028-8bd456ecebc2">
+      <Execution id="e3604ca8-7080-4c9e-a18a-6573358af6f5" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/game_core/dotnet/tests/GameCore.ProtocolFixtures.Tests/bin/Release/net8.0/GameCore.ProtocolFixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests" name="CaseIdentifiersAreUniqueAcrossFiles" />
+    </UnitTest>
+    <UnitTest name="FixtureLoaderRejectsMalformedCasesAndRunnerBlocksUnknownKinds" storage="/home/worlesenric/wkspace/game_core/dotnet/tests/gamecore.protocolfixtures.tests/bin/release/net8.0/gamecore.protocolfixtures.tests.dll" id="c592da61-3c23-8daf-5360-366904c98fe4">
+      <Execution id="171eb15d-3222-4984-9852-cf81b1019e42" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/game_core/dotnet/tests/GameCore.ProtocolFixtures.Tests/bin/Release/net8.0/GameCore.ProtocolFixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests" name="FixtureLoaderRejectsMalformedCasesAndRunnerBlocksUnknownKinds" />
+    </UnitTest>
+    <UnitTest name="EveryCaseExecutesAndMatchesItsExpectation" storage="/home/worlesenric/wkspace/game_core/dotnet/tests/gamecore.protocolfixtures.tests/bin/release/net8.0/gamecore.protocolfixtures.tests.dll" id="95a97975-ec92-0a22-cf14-3aae83f3ac17">
+      <Execution id="415540fe-33d2-43d9-b165-f0deb771d0ee" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/game_core/dotnet/tests/GameCore.ProtocolFixtures.Tests/bin/Release/net8.0/GameCore.ProtocolFixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests" name="EveryCaseExecutesAndMatchesItsExpectation" />
+    </UnitTest>
+    <UnitTest name="EveryDocumentedKindAndRequirementIsExercised" storage="/home/worlesenric/wkspace/game_core/dotnet/tests/gamecore.protocolfixtures.tests/bin/release/net8.0/gamecore.protocolfixtures.tests.dll" id="ee782fa7-6d41-c97b-54fd-d672d9d3f005">
+      <Execution id="5877a0a6-f0ec-4377-9da0-42939aabce2f" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/game_core/dotnet/tests/GameCore.ProtocolFixtures.Tests/bin/Release/net8.0/GameCore.ProtocolFixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests" name="EveryDocumentedKindAndRequirementIsExercised" />
+    </UnitTest>
+    <UnitTest name="CounterOracleRefusesOverflowForEveryCounter" storage="/home/worlesenric/wkspace/game_core/dotnet/tests/gamecore.protocolfixtures.tests/bin/release/net8.0/gamecore.protocolfixtures.tests.dll" id="3a82b389-0295-d219-1bb3-746fb978023e">
+      <Execution id="dca63bb9-b39a-4c2a-873f-3be63b7e7b86" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/game_core/dotnet/tests/GameCore.ProtocolFixtures.Tests/bin/Release/net8.0/GameCore.ProtocolFixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests" name="CounterOracleRefusesOverflowForEveryCounter" />
+    </UnitTest>
+    <UnitTest name="SeamCodecAgreesWithOracleCanonicalBytes" storage="/home/worlesenric/wkspace/game_core/dotnet/tests/gamecore.protocolfixtures.tests/bin/release/net8.0/gamecore.protocolfixtures.tests.dll" id="e265e2d3-8d4d-b4c0-97d5-3cabc1feb4d4">
+      <Execution id="c7852dbd-42f1-4263-b0f7-e34dc91f26ce" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/game_core/dotnet/tests/GameCore.ProtocolFixtures.Tests/bin/Release/net8.0/GameCore.ProtocolFixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests" name="SeamCodecAgreesWithOracleCanonicalBytes" />
+    </UnitTest>
+    <UnitTest name="ResultDocumentRoundTripsAndIsWrittenToTheDocumentedPath" storage="/home/worlesenric/wkspace/game_core/dotnet/tests/gamecore.protocolfixtures.tests/bin/release/net8.0/gamecore.protocolfixtures.tests.dll" id="918a3040-2407-3152-fa9f-699909b89e74">
+      <Execution id="cfd192da-0416-4016-b80e-15156c32b5c1" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/game_core/dotnet/tests/GameCore.ProtocolFixtures.Tests/bin/Release/net8.0/GameCore.ProtocolFixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests" name="ResultDocumentRoundTripsAndIsWrittenToTheDocumentedPath" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="95a97975-ec92-0a22-cf14-3aae83f3ac17" executionId="415540fe-33d2-43d9-b165-f0deb771d0ee" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c592da61-3c23-8daf-5360-366904c98fe4" executionId="171eb15d-3222-4984-9852-cf81b1019e42" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e676a311-23ee-3aaa-9c06-1983b5811a1d" executionId="b5e92b97-c587-4a4e-9f19-d3378d8be5c0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3a82b389-0295-d219-1bb3-746fb978023e" executionId="dca63bb9-b39a-4c2a-873f-3be63b7e7b86" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="918a3040-2407-3152-fa9f-699909b89e74" executionId="cfd192da-0416-4016-b80e-15156c32b5c1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3339d259-2a0e-3cba-32b7-06e388c15c75" executionId="871f3e55-ae0e-48dc-b7eb-6c8c2058bf8c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e265e2d3-8d4d-b4c0-97d5-3cabc1feb4d4" executionId="c7852dbd-42f1-4263-b0f7-e34dc91f26ce" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="da0c4d64-65e6-733e-f028-8bd456ecebc2" executionId="e3604ca8-7080-4c9e-a18a-6573358af6f5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ee782fa7-6d41-c97b-54fd-d672d9d3f005" executionId="5877a0a6-f0ec-4377-9da0-42939aabce2f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="af493c6d-8e0c-b6b1-4b5a-cf06780ce96f" executionId="29aded5e-f0b5-4e49-9110-5c6aa1a066de" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="10" executed="10" passed="9" failed="1" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 4.5.0.0: Test execution started
+Running all tests in /home/worlesenric/wkspace/game_core/dotnet/tests/GameCore.ProtocolFixtures.Tests/bin/Release/net8.0/GameCore.ProtocolFixtures.Tests.dll
+   NUnit3TestExecutor discovered 10 of 10 NUnit test cases using Current Discovery mode, Non-Explicit run
+NUnit Adapter 4.5.0.0: Test execution complete
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>
