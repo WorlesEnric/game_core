@@ -10,7 +10,7 @@ The V1 qualification baseline is the following exact combination. These are deli
 
 | Item | V1 pin or setting | Evidence and purpose |
 | --- | --- | --- |
-| Unity Editor | **6000.0.75f1**, native Apple Silicon installation | Official released Editor with Mac IL2CPP module; [release record](https://unity.com/releases/editor/whats-new/6000.0.75f1) |
+| Unity Editor | **6000.0.75f1**, Linux x86_64 installation with the **Linux IL2CPP** build-support module | Official released Editor; [release record](https://unity.com/releases/editor/whats-new/6000.0.75f1) |
 | Entities | **1.4.6** | Registry requires at least Unity 2022.3.20f1; its dependency declarations select the packages below |
 | Collections | **2.6.6** | Exact Entities dependency; also requires at least Unity 2022.3.20f1 |
 | Burst | **1.8.28** | Exact dependency shared by Entities and Collections |
@@ -18,11 +18,11 @@ The V1 qualification baseline is the following exact combination. These are deli
 | Unity Test Framework | **1.4.6** | Exact Collections dependency; used for EditMode, PlayMode, and player qualification |
 | Performance Testing package | **3.0.3** | Exact Entities/Collections dependency; benchmarks remain separately gated |
 | Managed toolchain | Editor-bundled Roslyn, **C# 9**, **.NET Standard 2.1** API compatibility | No independent modern .NET runtime assumption; [compiler](https://docs.unity3d.com/6000.0/Documentation/Manual/csharp-compiler.html) and [API profile](https://docs.unity3d.com/6000.0/Documentation/Manual/dotnet-profile-support.html) |
-| First qualification host | **macOS 15.5, ARM64**, **Xcode 16.4**, its **macOS 15.5 SDK** and command-line tools | A concrete build-test host, not a restriction on the game's commercial platforms; [Apple toolchain support](https://developer.apple.com/xcode/system-requirements) |
-| First standalone target | **macOS ARM64**, **IL2CPP**, direct player build, Burst enabled | Compile on macOS; do not select “Create Xcode Project” for this Burst qualification path |
-| Release qualification | Managed Stripping Level **High**, development player additionally tested with diagnostics | Exposes missing AOT registrations and stripping assumptions before architecture freeze |
+| Qualification host | **Linux x86_64 (Ubuntu 24.04)**, the Editor's Linux IL2CPP toolchain, its **sysroot** and C++ toolchain from `com.unity.toolchain.linux-x86_64` **2.0.11** | The selected build host is Linux, so a Linux-hosted Linux player is the direct route; a concrete build-test host, not a restriction on the game's commercial platforms; [toolchain package](https://docs.unity3d.com/6000.0/Documentation/Manual/com.unity.toolchain.linux-x86_64.html) |
+| First standalone target | **StandaloneLinux64, x86_64**, **IL2CPP**, direct player build, Burst enabled, run headless with `-batchmode -nographics` | Build and run the player on the qualification host; no Xcode or Apple SDK is involved in this profile |
+| Unqualified targets | **macOS ARM64 and every other platform**, including the previously documented macOS 15.5 ARM64/Xcode 16.4 profile | Selecting a Linux build host replaced the macOS qualification profile; the macOS target stays unqualified until it has equivalent player evidence from its own build script |
 
-Unity's Editor requirements include Apple Silicon/macOS support; Apple lists Xcode 16.4 with a compatible host range containing macOS 15.5. The package graph declares an Editor floor below the pinned Editor. These sources establish a documented compatibility basis, **not evidence that this exact project has passed a build**. Record the Editor revision, host OS build, Xcode build number, compiler output, and resolved package lock in the first qualification artifact. [Unity requirements](https://docs.unity3d.com/6000.0/Documentation/Manual/system-requirements.html), [IL2CPP platform constraints](https://docs.unity3d.com/6000.0/Documentation/Manual/il2cpp-introduction.html), and [Burst platform/build constraints](https://docs.unity3d.com/Packages/com.unity.burst@1.8/manual/building-projects.html).
+The Editor is hosted on Linux x86_64 and builds a Linux IL2CPP player with the toolchain and sysroot supplied by `com.unity.toolchain.linux-x86_64`; no Apple SDK or Xcode is installed or required on this host, so the earlier macOS-ARM64-with-Xcode profile is documented as replaced (see the [evidence ledger](references/unity-evidence.md)) rather than assumed. The package graph declares an Editor floor below the pinned Editor, and [Unity's system requirements](https://docs.unity3d.com/6000.0/Documentation/Manual/system-requirements.html) cover this host architecture. These sources establish a documented compatibility basis, **not evidence that this exact project has passed a build**. Record the Editor revision, host OS build, native compiler and linker versions, sysroot, resolved package lock, and player exit codes in the first qualification artifact. [IL2CPP platform constraints](https://docs.unity3d.com/6000.0/Documentation/Manual/il2cpp-introduction.html) and [Burst platform/build constraints](https://docs.unity3d.com/Packages/com.unity.burst@1.8/manual/building-projects.html) apply unchanged; only the native toolchain differs from the macOS profile.
 
 The [evidence ledger](references/unity-evidence.md) records the exact official registry dependencies and archive hash inspected. Entities 1.4.6 includes an ECB exception-path corruption fix, which is one reason to choose it over earlier 1.4 releases; this does not make ECB playback transactional. The ledger distinguishes package evidence, release-line documentation, and unexecuted qualification.
 
@@ -36,12 +36,13 @@ The project created in the first implementation wave contains these explicit dir
     "com.unity.burst": "1.8.28",
     "com.unity.mathematics": "1.3.2",
     "com.unity.test-framework": "1.4.6",
-    "com.unity.test-framework.performance": "3.0.3"
+    "com.unity.test-framework.performance": "3.0.3",
+    "com.unity.toolchain.linux-x86_64": "2.0.11"
   }
 }
 ```
 
-This is the package-specific fragment, not a complete generated project manifest. Unity-provided module entries and the Editor-resolved transitive graph must be committed with it. Do not synthesize `packages-lock.json` from this table. Open a clean project in the pinned Editor, resolve, inspect every transitive override, compile Entities source generation, then repeat resolution on a clean machine and build the player. Any pin change is a reviewed baseline revision with the same gate. Rendering, Netcode, DOTS Physics, Input System, and Addressables packages are not kernel dependencies; add exact pins and qualification tests only when their optional adapter is implemented.
+This is the package-specific fragment, not a complete generated project manifest. `com.unity.toolchain.linux-x86_64` is a build-host pin: it supplies the Linux IL2CPP toolchain, compiler and sysroot for the qualification host and contributes nothing to the shipped runtime. Unity-provided module entries and the Editor-resolved transitive graph must be committed with it. Do not synthesize `packages-lock.json` from this table. Open a clean project in the pinned Editor, resolve, inspect every transitive override, compile Entities source generation, then repeat resolution on a clean machine and build the player. `unity/GameCore.Validation` is that qualification project for GC-001; it pins these versions and adds only the probe assemblies described in [validation and performance](08-validation-and-performance.md). Any pin change is a reviewed baseline revision with the same gate. Rendering, Netcode, DOTS Physics, Input System, and Addressables packages are not kernel dependencies; add exact pins and qualification tests only when their optional adapter is implemented.
 
 ## 2. Assemblies and dependency direction
 
@@ -204,8 +205,8 @@ The full test catalog and task ownership are in [Validation and performance](08-
 | PlayMode | Count requested steps versus actual system executions; idle command world executes zero steps; fixed world executes exactly admitted steps; inspect loop for duplicate routes |
 | Lifecycle faults | A job remains in flight while unmount is requested; resources live until completion. A thrown apply operation faults the world and preserves only the last published snapshot |
 | Editor lifecycle | Repeated enter/exit with domain and scene reload combinations produces no duplicate hosts, subscriptions, or stale callbacks |
-| Standalone IL2CPP | ARM64 executable launches and completes precompiled late-mount, generic-job, serialized-save, reconfiguration, reparent, unload, and disposal probes with High stripping |
-| Burst | Build logs/artifacts show intended jobs compiled for ARM64; a passing player build with Burst silently disabled does not pass this gate |
+| Standalone IL2CPP | The x86_64 Linux executable launches headless and completes precompiled late-mount, generic-job, serialized-save, reconfiguration, reparent, unload, and disposal probes with High stripping |
+| Burst | Build logs/artifacts show the intended jobs compiled natively for x86_64; a passing player build with Burst silently disabled does not pass this gate |
 | Physics/presentation | Dedicated physics scene advances once per declared step; ECS physical observation agrees at its synchronization boundary; headless card/narrative fixtures do not require it |
 
 Use Unity Test Framework's batch CLI for EditMode/PlayMode tests with `-batchmode -nographics -runTests -testPlatform ... -testResults ... -logFile ...`. Do not add `-quit` to a test-run command that relies on the runner to finish asynchronously. Build the standalone probe through a checked-in `-executeMethod` build entry point and launch the resulting application with the probe arguments; “Editor tests pass” is not a player result. A graphical PlayMode test that needs rendering belongs in a separate graphics-enabled job. [Test runner CLI](https://docs.unity3d.com/Packages/com.unity.test-framework@1.4/manual/reference-command-line.html).
