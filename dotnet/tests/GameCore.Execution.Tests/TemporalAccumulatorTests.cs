@@ -32,12 +32,12 @@ namespace GameCore.Execution.Tests
 
             TemporalSample second = accumulator.Sample(35UL * Millisecond, 0UL);
             Assert.That(second.AdmittedSteps, Is.EqualTo(1UL));
-            Assert.That(second.RetainedDebt, Is.EqualTo(TimeDebt.Zero), "5 retained + 10 elapsed funds exactly one step.");
+            Assert.That(second.RetainedDebt.Ticks, Is.EqualTo(5UL * Millisecond), "5 retained + 10 elapsed spends 10 and retains 5 (P-036).");
 
             TemporalSample third = accumulator.Sample(40UL * Millisecond, 0UL);
-            Assert.That(third.AdmittedSteps, Is.EqualTo(0UL), "Below one step duration nothing advances.");
-            Assert.That(third.RetainedDebt.Ticks, Is.EqualTo(5UL * Millisecond), "The sub-step remainder stays visible as debt.");
-            Assert.That(third.HasWork, Is.False);
+            Assert.That(third.AdmittedSteps, Is.EqualTo(1UL), "The retained 5 ms plus 5 elapsed funds one whole step.");
+            Assert.That(third.RetainedDebt, Is.EqualTo(TimeDebt.Zero));
+            Assert.That(third.HasWork, Is.True);
         }
 
         [Test]
@@ -50,8 +50,16 @@ namespace GameCore.Execution.Tests
             Assert.That(spike.RetainedDebt.Ticks, Is.EqualTo(70UL * Millisecond), "Unadmitted time stays as debt.");
 
             TemporalSample catchUp = accumulator.Sample((100UL * Millisecond) + 1UL, 0UL);
-            Assert.That(catchUp.AdmittedSteps, Is.EqualTo(7UL), "Retained debt is spent on later pumps instead of a longer step.");
-            Assert.That(catchUp.RetainedDebt.Ticks, Is.EqualTo(1UL), "Only the sub-step remainder stays as debt.");
+            Assert.That(catchUp.AdmittedSteps, Is.EqualTo(3UL), "Every pump obeys the catch-up limit (P-036).");
+            Assert.That(catchUp.RetainedDebt.Ticks, Is.EqualTo((40UL * Millisecond) + 1UL));
+
+            TemporalSample next = accumulator.Sample((100UL * Millisecond) + 1UL, 0UL);
+            Assert.That(next.AdmittedSteps, Is.EqualTo(3UL));
+            Assert.That(next.RetainedDebt.Ticks, Is.EqualTo((10UL * Millisecond) + 1UL));
+
+            TemporalSample last = accumulator.Sample((100UL * Millisecond) + 1UL, 0UL);
+            Assert.That(last.AdmittedSteps, Is.EqualTo(1UL));
+            Assert.That(last.RetainedDebt.Ticks, Is.EqualTo(1UL));
 
             TemporalSample idle = accumulator.Sample((100UL * Millisecond) + 1UL, 0UL);
             Assert.That(idle.AdmittedSteps, Is.EqualTo(0UL));

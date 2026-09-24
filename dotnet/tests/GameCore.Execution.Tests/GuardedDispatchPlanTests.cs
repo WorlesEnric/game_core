@@ -115,7 +115,7 @@ namespace GameCore.Execution.Tests
         {
             var buffer = new BufferId(new Id128(0x4743464958545552UL, 0x2000UL));
             var binding = new BufferBinding(buffer, new[] { Key(1) }, Stage(2));
-            var entries = new List<GuardedDispatchEntry> { Entry(0, 0), Entry(1, 1, 0) };
+            var entries = new List<GuardedDispatchEntry> { Entry(0, 0), Entry(1, 1, 0), Entry(2, 2, 1) };
             var plan = new GuardedDispatchPlan(entries, new[] { binding }, 3);
 
             var dispatched = new HashSet<FactoryKey> { Key(0), Key(1) };

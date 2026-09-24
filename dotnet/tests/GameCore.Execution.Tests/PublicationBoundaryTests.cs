@@ -148,7 +148,7 @@ namespace GameCore.Execution.Tests
             Assert.That(GameCoreThreading.IsCaptured, Is.True);
             Assert.That(GameCoreThreading.IsMainThread(), Is.True);
             Assert.DoesNotThrow(() => GameCoreThreading.RequireMainThread("fixture operation"));
-            Assert.That(GameCoreThreading.MainThreadId, Is.EqualTo(Environment.CurrentManagedThreadId()));
+            Assert.That(GameCoreThreading.MainThreadId, Is.EqualTo(Environment.CurrentManagedThreadId));
         }
 
         private sealed class CountingObserver : IWorldLifecycleObserver

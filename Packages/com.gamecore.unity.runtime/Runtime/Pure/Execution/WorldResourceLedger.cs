@@ -357,7 +357,7 @@ namespace GameCore.Execution
                 }
             }
 
-            return new RetirementOutcome(retired, failed, QuarantinedCount);
+            return new RetirementOutcome(retired, failed, RetainedResourceCount);
         }
 
         /// <summary>Immutable snapshot of the ledger at one epoch (03 s1, P-048).</summary>

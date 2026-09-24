@@ -128,8 +128,8 @@ namespace GameCore.Execution.Tests
             Assert.That(snapshot.World, Is.EqualTo(World));
             Assert.That(snapshot.Epoch, Is.EqualTo(AssemblyEpoch.First));
             Assert.That(snapshot.Resources.Count, Is.EqualTo(2));
-            Assert.That(snapshot.Resources[0].ResourceId, Is.EqualTo(first), "Resources are reported in canonical id order (P-008).");
-            Assert.That(snapshot.Resources[1].ResourceId, Is.EqualTo(third));
+            Assert.That(snapshot.Resources[0].ResourceId, Is.EqualTo(third), "Canonical order compares allocated resource IDs, not resource keys (P-008).");
+            Assert.That(snapshot.Resources[1].ResourceId, Is.EqualTo(first));
             Assert.That(snapshot.QuarantinedCount, Is.EqualTo(1));
             Assert.That(snapshot.QuarantinedBytes, Is.EqualTo(512UL));
             Assert.That(snapshot.Jobs.Count, Is.EqualTo(1));

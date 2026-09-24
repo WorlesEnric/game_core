@@ -342,11 +342,11 @@ namespace GameCore.Execution
         public static int MainThreadId => mainThreadId;
 
         /// <summary>Records the calling thread as the main thread. Called by the application reset/boot path.</summary>
-        public static void CaptureMainThread() => mainThreadId = Environment.CurrentManagedThreadId();
+        public static void CaptureMainThread() => mainThreadId = Environment.CurrentManagedThreadId;
 
         /// <summary>True when the main thread is unknown, or the caller is it.</summary>
         public static bool IsMainThread()
-            => mainThreadId < 0 || Environment.CurrentManagedThreadId() == mainThreadId;
+            => mainThreadId < 0 || Environment.CurrentManagedThreadId == mainThreadId;
 
         public static void RequireMainThread(string operation)
         {
