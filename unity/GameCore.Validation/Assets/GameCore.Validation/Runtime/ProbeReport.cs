@@ -155,7 +155,7 @@ namespace GameCore.Validation.ProbeHost
                 builder.Append("    {\n");
                 AppendString(builder, 3, "name", outcomes[i].Name);
                 AppendString(builder, 3, "status", outcomes[i].Status);
-                AppendString(builder, 3, "detail", outcomes[i].Detail);
+                AppendString(builder, 3, "detail", outcomes[i].Detail, trailingComma: false);
                 builder.Append("    }");
             }
 
@@ -164,9 +164,10 @@ namespace GameCore.Validation.ProbeHost
             return builder.ToString();
         }
 
-        private static void AppendString(StringBuilder builder, int depth, string name, string value)
+        private static void AppendString(StringBuilder builder, int depth, string name, string value, bool trailingComma = true)
         {
-            builder.Append(Indent(depth)).Append('"').Append(name).Append("\": \"").Append(Escape(value)).Append("\",\n");
+            builder.Append(Indent(depth)).Append('"').Append(name).Append("\": \"").Append(Escape(value))
+                .Append(trailingComma ? "\",\n" : "\"\n");
         }
 
         private static void AppendInt(StringBuilder builder, int depth, string name, int value)

@@ -2,7 +2,7 @@
 # GC-001 toolchain qualification: run the built probe player headless in both modes and record the evidence.
 #
 # Required environment:
-#   none; the player defaults to <repo>/unity/GameCore.Validation/Builds/Linux64/GameCoreProbe.x86_64
+#   python3 (strict JSON validation); the player defaults to <repo>/unity/GameCore.Validation/Builds/Linux64/GameCoreProbe.x86_64
 #
 # Optional environment:
 #   PROBE_PLAYER   path to the built probe executable
@@ -53,6 +53,11 @@ run_mode() {
   fi
   if [[ ! -f "${result_file}" ]]; then
     echo "   FAIL ${mode}: no result written to ${result_file}" >&2
+    failures=$((failures + 1))
+    return
+  fi
+  if ! python3 -m json.tool "${result_file}" >/dev/null; then
+    echo "   FAIL ${mode}: ${result_file} is not valid JSON" >&2
     failures=$((failures + 1))
     return
   fi
