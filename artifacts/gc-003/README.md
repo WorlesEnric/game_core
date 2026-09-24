@@ -1,7 +1,9 @@
 # GC-003 evidence
 
-Status: **NotRun (pending orchestrator build host)** for every dotnet and Unity check. Only the Python checks
-ran here, because this authoring host (macOS) has no .NET SDK, no Unity and no Mono.
+Status: **Pass on the Linux build host**. Release solution build: zero errors/warnings; all 126 dotnet tests
+passed. The IL2CPP player passed eight positive probes and the negative mode exited 3 as required.
+Real compiler catalog generation was byte-identical across runs and matched the committed catalog.
+See [BUILD_REPORT.md](BUILD_REPORT.md) for exact commands, fixes, counts, retained warnings and scope limits.
 
 ## What each file is
 
@@ -20,7 +22,9 @@ ran here, because this authoring host (macOS) has no .NET SDK, no Unity and no M
 | `dotnet-*.log`, `trx/` | build host | `dotnet build`/`dotnet test` output and TRX results |
 | `codegen.log`, `build.log`, `player-*.log`, `toolchain/` | build host | Unity codegen, IL2CPP player build and both player probe runs |
 
-## NotRun
+## Evidence provenance
 
-Nothing under `artifacts/gc-003/` may claim that a C# compilation, a test run or a player run happened on this
-host. The build host owns those files and their results; see `HANDOFF.md` §3 for the exact commands.
+`HANDOFF.md`, `host-tools.log`, the review logs and `artifact-hashes.json` preserve the original authoring-host
+record. Their `NotRun` statements describe that earlier host, not the completed Linux runs.
+`BUILD_REPORT.md`, `commands.json`, `suite-results.json`, `catalog-reproducibility.json`, `trx/` and `toolchain/`
+record the executed build-host results. Initial failure logs are retained separately from final passing logs.
