@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.gamecore.composition": "file:../../../Packages/com.gamecore.composition",
     "com.unity.burst": "1.8.28",
     "com.unity.collections": "2.6.6",
     "com.unity.entities": "1.4.6",
@@ -17,5 +18,8 @@
     "com.unity.modules.uielements": "1.0.0",
     "com.unity.modules.unityanalytics": "1.0.0",
     "com.unity.modules.unitywebrequest": "1.0.0"
-  }
+  },
+  "testables": [
+    "com.gamecore.composition"
+  ]
 }

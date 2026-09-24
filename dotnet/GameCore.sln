@@ -12,6 +12,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameCore.ReferenceSeams.Tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameCore.ProtocolFixtures.Tests", "tests\GameCore.ProtocolFixtures.Tests\GameCore.ProtocolFixtures.Tests.csproj", "{1A2B3C4D-0005-4A01-9A01-000000000005}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameCore.Composition", "src\GameCore.Composition\GameCore.Composition.csproj", "{1A2B3C4D-0006-4A01-9A01-000000000006}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameCore.Composition.Tests", "tests\GameCore.Composition.Tests\GameCore.Composition.Tests.csproj", "{1A2B3C4D-0007-4A01-9A01-000000000007}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +42,14 @@ Global
 		{1A2B3C4D-0005-4A01-9A01-000000000005}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A2B3C4D-0005-4A01-9A01-000000000005}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A2B3C4D-0005-4A01-9A01-000000000005}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A2B3C4D-0006-4A01-9A01-000000000006}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A2B3C4D-0006-4A01-9A01-000000000006}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A2B3C4D-0006-4A01-9A01-000000000006}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A2B3C4D-0006-4A01-9A01-000000000006}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A2B3C4D-0007-4A01-9A01-000000000007}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A2B3C4D-0007-4A01-9A01-000000000007}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A2B3C4D-0007-4A01-9A01-000000000007}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A2B3C4D-0007-4A01-9A01-000000000007}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
