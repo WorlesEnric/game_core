@@ -1,0 +1,38 @@
+{
+  "$comment": "Stable diagnostic codes: every required literal from 00 s9 plus the retention code P-007 requires must map one-to-one with its enum value, round-trip through text parsing, and an unknown literal must be rejected rather than accepted.",
+  "cases": [
+    {
+      "caseId": "diagnostic-codes-complete-and-round-trip",
+      "title": "every required diagnostic literal round-trips through the enum and no unknown literal is accepted",
+      "requirementIds": ["P-052", "P-055"],
+      "testIds": ["TEST-024"],
+      "kind": "diagnosticCodeText",
+      "expected": { "outcome": "valid" },
+      "parameters": {
+        "requiredLiterals": [
+          "StaleHandle",
+          "StalePlan",
+          "MissingDependency",
+          "ServiceConflict",
+          "CapabilityConflict",
+          "AmbiguousOrder",
+          "Cycle",
+          "Ineligible",
+          "UnsupportedVersion",
+          "OwnershipConflict",
+          "BudgetExceeded",
+          "MigrationRequired",
+          "ResourceUnavailable",
+          "Cancelled",
+          "TooLate",
+          "IdempotencyConflict",
+          "ResultExpired",
+          "ApplyFault",
+          "TeardownBlocked",
+          "CursorExpired",
+          "SnapshotBackpressure"
+        ]
+      }
+    }
+  ]
+}

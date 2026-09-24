@@ -5,6 +5,11 @@ Status of every executable check in this handoff: **NotRun (pending orchestrator
 has no .NET SDK, no Unity and no Mono, so nothing here has been compiled or executed. Only the Python
 documentation validator was run (it is the one check this host can execute).
 
+Round 1 review follow-up: the build host later compiled this revision, fixed four compiler defects and froze a
+real API snapshot; see `artifacts/gc-002/BUILD_REPORT.md`. The seam was then extended for Wave 1 in the same
+document's section 7, so the build-host pass applies to the earlier revision and the current state is again
+**NotRun** until the host reruns.
+
 ## 1. Summary
 
 Delivered the W0 contract-risk package in four parts:
@@ -42,8 +47,8 @@ Documentation and scripts
 
 - `dotnet/README.md`, `dotnet/Directory.Build.props`, `dotnet/GameCore.sln`, `.gitignore`, `tools/run_w0_checks.sh`
 - `tests/GameCore.ReferenceSeams/README.md`, `tests/GameCore.ProtocolFixtures/README.md`
-- `tests/GameCore.ReferenceSeams/api/GameCore.Contracts.api.txt` (pending header only)
-- `artifacts/protocol-fixtures/README.md`, `artifacts/gc-002/HANDOFF.md`
+- `tests/GameCore.ReferenceSeams/api/GameCore.Contracts.api.txt` (pending header only; see section 7 for why it is pending again)
+- `artifacts/protocol-fixtures/README.md`, `artifacts/protocol-fixtures/results-40-case-pre-review.json` (renamed from the live result path), `artifacts/gc-002/HANDOFF.md`
 
 dotnet projects
 
@@ -190,3 +195,109 @@ Recorded in full in `tests/GameCore.ReferenceSeams/README.md` (§Encoding decisi
   26 operations are out of scope and belong to GC-003 and later tasks.
 - The fixture suite asserts that a delivered run contains no `NotRun` and no `Blocked` rows, so a malformed
   case fails the suite instead of being skipped silently.
+
+## 7. Round 1 review closure (orchestrator feedback)
+
+The Linux build host fixed the first-round compile defects, froze a real API snapshot and recorded passing
+checks for that revision (`artifacts/gc-002/BUILD_REPORT.md`). This round closes the review gaps so Wave 1
+(GC-003/GC-004/GC-005) can compile against the seam independently. **Every change in this section is
+NotRun (pending orchestrator build host): nothing here has been compiled.** The build report's pass applies to
+the previous revision only.
+
+### A. W1-facing seams added
+
+| Item | Seam | Stubs |
+|---|---|---|
+| GC-004 control lane | `ICompositionHost` with `Submit`/`Read`/`Snapshot`/`FindScope`/`FindInstall`; `ScopeSnapshot` (scope, parent, mode, service/capability isolation, exclusions, installs); `InstallRecord`/`InstallSnapshot`; epoch-bound `ServiceBinding`; `OperationStatusHandle`, `OperationLedgerEntry`, `OperationReadResult`; `ControlLaneCapacitySettings`, `OperationExpirySettings`, `CompositionHostSettings`; `CompositionEditRequest` | `StubCompositionHost` (admission, stale/budget rejection, retention with observable expiry, canonical-order snapshot) |
+| GC-005 world/execution | `IWorldHost`, `IExecutionDriver`, `WorldCreateRequest`/`WorldCreateResult`, `FixedStepSettings`, `TimeDebt`, `StepAdvanceRequest`/`StepAdvanceResult`, `SystemDispatchEntry`/`OrderedDispatchTable`/`StageDispatchRequest`/`DispatchRunResult`, `StepCommitEvent`/`IWorldLifecycleObserver`/`WorldLifecycleChange`, `WorldResourceLedgerSnapshot` with `WorldResourceRecord`/`JobLedgerRecord` | `StubWorldHost`, `StubExecutionDriver`, `StubResourceLedger`, `StubWorldLifecycleObserver` |
+| Catalog | `ICatalog`, `CatalogLookup`, `CatalogRequest`, `FactoryRegistration`, `SchemaRegistration`, `FactoryKind` — in namespace `GameCore.Contracts`, not the fixture namespace | `StubCatalog : ICatalog` (explicit not-found, no reflection, duplicate registration rejected) |
+
+No Unity type appears in any of these shapes: dispatch entries carry stage/system/implementation keys and an
+ordinal, and the ledger carries ids, kinds, states and counts (04 §4, P-041).
+
+### B. 05 shape gaps closed
+
+`ChangePlan.BaseEpoch`; `ModeEdit.Scope`; `StagedLease.Dependencies` and `AcquisitionOrdinal`;
+`StageSpec.FactoryKeys`; `MigrationRequest.Config`; `IManagedResourceLease` with `Readiness`, `Disposer`,
+`Gate` and `IsDisposed` plus `IResourceGate`; `ICommandIngress.Submit` returning `CommandAdmissionReceipt`
+carrying `RequestResult` and the host-assigned `AdmissionSequence`; `ICompositionCommands.Submit` returning
+`OperationStatusHandle`; `IObservationReader.Acquire` returning `SnapshotAcquireResult`
+(`Acquired`/`Expired`/`Backpressure`/`ForeignWorld`, no throwing); `DiagnosticCode.SnapshotBackpressure`
+(P-007) and the `TimeDebt` type (P-036); paged `ExplanationPage`/`ExplanationPageRequest` with
+`ExplanationSource` labelling, plus `IStagedPlanDiagnostics` as the distinct staged-plan seam (05 §5).
+`InstallationStatus` was deleted after `InstallSnapshot` superseded it — one shape per concept.
+
+### C. Consistency
+
+`SnapshotToken` (`AssemblyEpoch`, `LogicalStepId`), `AsyncWorkToken` (`InstallationGeneration`,
+`ActivationEpoch`), `DefinitionRef.Revision` (`DefinitionRevision`) and `EventCursor.Sequence`
+(`EventSequence`) are typed counters; `OperationResult.Code` is the `DiagnosticCode` enum with `CodeText`;
+`TargetHandle`/`ScopeHandle`/`PluginHandle` reject generation 0 (`IsAllocated`) and use a `uint` slot.
+
+### D. Envelope (05 §6)
+
+Fixed header is magic, major, minor, schema id, schema version, required-feature count, then the feature ids,
+so an unknown required feature rejects before the body is allocated (P-055). Added: trailing FNV-1a checksum
+field (reserved id 0), `Int32`/`Int64` two's-complement wire types, `Float32`/`Float64` IEEE-754 bit types with
+one canonical quiet NaN and bit-exact comparison, list headers carrying a bounded byte length, canonical
+map-key ordering (`CanonicalMapOrder`) with duplicate reporting, and reader-side rejection of field ids above
+`int.MaxValue`, bool bytes other than 0/1 and truncated records. Capacity growth and every length check use
+wide arithmetic, so no document can overflow a 32-bit calculation.
+
+### E. Correctness
+
+`Id128Codec.TryParseHex` and `ContentHash.TryParseHex` accept only exact-length lowercase canonical hex
+(shared `CanonicalHex` helper) and no longer accept whitespace or uppercase. `InMemoryHost.Record` keeps the
+original ledger row on conflicting reuse and reports `IdempotencyConflict`; `Read` distinguishes `Unknown`
+from `Expired`. `StubCallbackGate` validates the token's world before generation and epoch, and
+`CallbackGateDecision.DiscardForeignWorld` was added for that case. Formatting the diagnostic-literal table
+also exposed a real defect: `DiagnosticCodeText.Of` was missing the `TooLate` case after the earlier edits, so
+`Of(DiagnosticCode.TooLate)` would have thrown; it is restored and the new fixture asserts the whole table.
+
+### F. Fixtures and tests for the new rules
+
+- New case kinds and files: `envelope-codec.json` (15 probes), `identity-hex-parsing.json` (13 candidate
+  forms), `diagnostic-codes.json` (literal table), plus one new counter case. The set is now **58 cases**
+  (28 valid / 30 invalid) across 10 files, and `Data/result-schema.json` documents every kind.
+- `Oracle/EnvelopeOracle.cs`: checksum round trip and tamper detection, per-wire-type round trip, canonical
+  NaN, the required-feature gate, writer-side bound refusals, and hand-assembled raw documents for the
+  reader-side limit checks. This is the one kind that drives the seam codec directly, because the envelope is
+  a codec whose declared rules are the thing under test; documented in the fixtures README and schema.
+- `dotnet/tests/GameCore.ReferenceSeams.Tests/SeamContractTests.cs`: 15 tests covering strict hex parsing
+  (both types), generation-0 reservation, ledger idempotency/conflict/unknown-vs-expired, callback-gate world
+  and epoch validation, observation expiry/backpressure/foreign world, catalog lookup misses, the composition
+  host double (stale, publish, retransmission, retention expiry, unknown), driver debt retention and
+  fail-stop dispatch with quarantined job retention, resource-ledger reverse retirement, stalled-job stop
+  blocking, lifecycle observation, time debt, canonical map ordering and explanation paging.
+
+### Evidence status after this round
+
+- `tests/GameCore.ReferenceSeams/api/GameCore.Contracts.api.txt` holds the placeholder header again: the Wave 1
+  seams changed the public surface, so the previously generated listing is stale and was not kept. The build
+  host must regenerate it before the snapshot test can pass.
+- `artifacts/protocol-fixtures/results.json` was renamed to `results-40-case-pre-review.json`. It is evidence
+  for the 40-case revision described in the build report; the live path is intentionally empty until the build
+  host regenerates it for the 58-case set.
+- Documentation gate on this host: `python3 tools/validate_game_core_docs.py --self-test` and
+  `python3 tools/validate_game_core_docs.py` both pass, and `tools/run_w0_checks.sh --docs-only` passes.
+  The dotnet steps are NotRun here.
+
+### Interpreter checks performed on this host (no compiler available)
+
+Static verification only, and it is the reason two real defects were found and fixed:
+
+- every `.cs` file: balanced braces/parens/brackets outside strings and comments, no `TODO`/`FIXME`/Unity
+  reference, no leftover draft statements.
+- every stub class implements each member of the interfaces it declares (`ICatalog`, `ICompositionHost`,
+  `IWorldHost`, `IExecutionDriver`, `IObservationReader`, `IExplanationReader`, `IStagedPlanDiagnostics`,
+  `IManagedResourceLease`, `IResourceGate`, `IWorldLifecycleObserver`, and the pre-existing ones).
+- `DiagnosticCode` enum ↔ `DiagnosticCodeText.Of` switch ↔ `Values` list ↔ fixture literal list: one-to-one
+  (this check found the missing `TooLate` case).
+- every fixture JSON file parses; case ids are unique; kind names, requirement/test id shapes and
+  `expected`/`parameters` presence are validated; all 11 kinds are exercised.
+- `await`-free pure fixtures were exercised in a Python mirror of the oracle rules to confirm each declared
+  expectation matches the rule it names (identity bytes, ordering, handles, counters, versions, hex parsing).
+
+Unverified by a compiler: everything above. The likely first-failure candidates are the same as in section 6
+plus the new `BitConverter.SingleToInt32Bits`/`Int32BitsToSingle` calls in the envelope (netstandard2.1
+includes them, but the host build is the proof).

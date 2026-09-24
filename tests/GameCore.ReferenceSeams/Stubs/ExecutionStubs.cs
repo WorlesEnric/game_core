@@ -37,16 +37,66 @@ namespace GameCore.TestFixtures
         public DiagnosticCode Code { get; }
     }
 
-    /// <summary>Stub lease with disposal-once semantics and observable counters (P-048).</summary>
+    /// <summary>
+    /// Inert gate for a staged resource. Prepared callbacks and subscriptions sit behind a closed gate until
+    /// their activation publishes; closing is irreversible for the activation epoch (P-047).
+    /// </summary>
+    public sealed class StubResourceGate : IResourceGate
+    {
+        public StubResourceGate(bool isOpen)
+        {
+            IsOpen = isOpen;
+        }
+
+        public bool IsOpen { get; private set; }
+
+        public int CloseCount { get; private set; }
+
+        public void Close()
+        {
+            if (!IsOpen)
+            {
+                return;
+            }
+
+            IsOpen = false;
+            CloseCount++;
+        }
+
+        /// <summary>Opens the gate exactly once at publication; a closed gate never reopens (P-047).</summary>
+        public bool OpenOnPublication()
+        {
+            if (CloseCount != 0)
+            {
+                return false;
+            }
+
+            IsOpen = true;
+            return true;
+        }
+    }
+
+    /// <summary>
+    /// Stub lease with disposal-once semantics, a recorded disposer key, an explicit readiness state and an
+    /// observable gate (P-007, P-048).
+    /// </summary>
     public sealed class StubResourceLease : IManagedResourceLease
     {
         private readonly Action<Id128> onDispose;
 
-        public StubResourceLease(ResourceKey resource, Id128 leaseId, AsyncWorkToken token, Action<Id128> onDispose)
+        public StubResourceLease(
+            ResourceKey resource,
+            Id128 leaseId,
+            AsyncWorkToken token,
+            FactoryKey disposer,
+            IResourceGate gate,
+            Action<Id128> onDispose)
         {
             Resource = resource;
             LeaseId = leaseId;
             Token = token;
+            Disposer = disposer;
+            Gate = gate ?? throw new ArgumentNullException(nameof(gate));
             this.onDispose = onDispose;
         }
 
@@ -56,9 +106,19 @@ namespace GameCore.TestFixtures
 
         public AsyncWorkToken Token { get; }
 
+        /// <summary>Staged until publication; a pending lease is not usable gameplay state (P-038).</summary>
+        public ResourceReadiness Readiness { get; private set; } = ResourceReadiness.Pending;
+
+        public FactoryKey Disposer { get; }
+
+        public IResourceGate Gate { get; }
+
         public bool IsDisposed { get; private set; }
 
         public int DisposeCount { get; private set; }
+
+        /// <summary>Marks the lease ready at publication, behind its still-gated callback path (P-047).</summary>
+        public void MarkReady() => Readiness = ResourceReadiness.Ready;
 
         public void Dispose()
         {
@@ -69,6 +129,7 @@ namespace GameCore.TestFixtures
 
             IsDisposed = true;
             DisposeCount++;
+            Gate.Close();
             onDispose(LeaseId);
         }
     }
@@ -87,6 +148,9 @@ namespace GameCore.TestFixtures
         /// <summary>When set, the next preparation throws and clears the flag (P-049 retry fixture).</summary>
         public bool FailNextPrepare { get; set; }
 
+        /// <summary>Disposer key recorded on every lease this factory hands out (P-048).</summary>
+        public FactoryKey DisposerKey { get; set; }
+
         public IManagedResourceLease Prepare(ManagedResourceRequest request)
         {
             if (request == null)
@@ -101,7 +165,13 @@ namespace GameCore.TestFixtures
             }
 
             PrepareCount++;
-            return new StubResourceLease(request.Resource, leaseIds.NextId(), request.Token, OnLeaseDisposed);
+            return new StubResourceLease(
+                request.Resource,
+                leaseIds.NextId(),
+                request.Token,
+                DisposerKey,
+                new StubResourceGate(false),
+                OnLeaseDisposed);
         }
 
         /// <summary>Records an acquisition attempt made after its async token was already discarded.</summary>

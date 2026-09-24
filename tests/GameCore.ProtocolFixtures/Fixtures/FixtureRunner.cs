@@ -92,6 +92,12 @@ namespace GameCore.ProtocolFixtures.Fixtures
                     return EvaluateVersionSupport(parameters);
                 case "assemblyIndependence":
                     return EvaluateAssemblyIndependence(parameters);
+                case "idHexParsing":
+                    return EvaluateIdHexParsing(parameters);
+                case "diagnosticCodeText":
+                    return EvaluateDiagnosticCodeText(parameters);
+                case "envelopeCodec":
+                    return EvaluateEnvelopeCodec(parameters);
                 default:
                     throw new FixtureFormatException(
                         "Case '" + fixtureCase.CaseId + "' uses unknown fixture kind '" + fixtureCase.Kind + "'.");
@@ -170,7 +176,7 @@ namespace GameCore.ProtocolFixtures.Fixtures
             WorldId handleWorld = new WorldId(RequireId(handleElement, "world"));
             TargetHandle handle = new TargetHandle(
                 handleWorld,
-                RequireInt(handleElement, "slot"),
+                RequireUint(handleElement, "slot"),
                 RequireUlong(handleElement, "generation"));
 
             WorldId liveWorld = new WorldId(RequireId(parameters, "liveWorld"));
@@ -199,11 +205,11 @@ namespace GameCore.ProtocolFixtures.Fixtures
             Id128 worldB = RequireId(parameters, "worldB");
             TargetHandle handleA = new TargetHandle(
                 new WorldId(worldA),
-                RequireInt(parameters, "slotA"),
+                RequireUint(parameters, "slotA"),
                 RequireUlong(parameters, "generationA"));
             TargetHandle handleB = new TargetHandle(
                 new WorldId(worldB),
-                RequireInt(parameters, "slotB"),
+                RequireUint(parameters, "slotB"),
                 RequireUlong(parameters, "generationB"));
 
             bool expectCollide = RequireBool(parameters, "expectCollide");
@@ -423,6 +429,239 @@ namespace GameCore.ProtocolFixtures.Fixtures
                 assemblyName + " references " + references.Count + " assemblies, none of them engine or gameplay");
         }
 
+        private static OracleVerdict EvaluateIdHexParsing(JsonElement parameters)
+        {
+            string canonical = RequireString(parameters, "canonical");
+            if (!CanonicalOrder.TryParseHex(canonical, out Id128 canonicalId))
+            {
+                throw new FixtureFormatException("'canonical' must be 32 lowercase hex characters.");
+            }
+
+            if (!CanonicalOrder.TryParseHex(CanonicalOrder.Hex(canonicalId), out Id128 roundTrip) || !roundTrip.Equals(canonicalId))
+            {
+                return OracleVerdict.Invalid("HexRoundTripMismatch", "the oracle hex form does not round-trip");
+            }
+
+            if (!Id128Codec.TryParseHex(canonical, out Id128 seamId) || !seamId.Equals(canonicalId))
+            {
+                return OracleVerdict.Invalid("SeamRejectedCanonicalHex", "the seam rejected the canonical form " + canonical);
+            }
+
+            if (!string.Equals(Id128Codec.ToHex(canonicalId), canonical, StringComparison.Ordinal))
+            {
+                return OracleVerdict.Invalid("SeamHexFormDiffers", "the seam wrote " + Id128Codec.ToHex(canonicalId));
+            }
+
+            if (!parameters.TryGetProperty("candidates", out JsonElement candidates) || candidates.ValueKind != JsonValueKind.Array)
+            {
+                throw new FixtureFormatException("'candidates' must be an array of { text, accepted } objects.");
+            }
+
+            int index = 0;
+            foreach (JsonElement candidate in candidates.EnumerateArray())
+            {
+                string? text = candidate.ValueKind == JsonValueKind.String ? candidate.GetString() : null;
+                bool declaredAccepted = text != null;
+                if (candidate.ValueKind == JsonValueKind.Object)
+                {
+                    text = RequireString(candidate, "text");
+                    declaredAccepted = RequireBool(candidate, "accepted");
+                }
+
+                bool oracleAccepted = CanonicalOrder.TryParseHex(text, out Id128 _);
+                bool seamAccepted = Id128Codec.TryParseHex(text, out Id128 _);
+                if (oracleAccepted != seamAccepted)
+                {
+                    return OracleVerdict.Invalid(
+                        "ParserDisagreement",
+                        "candidate " + index + " '" + text + "': oracle " + oracleAccepted + ", seam " + seamAccepted);
+                }
+
+                if (seamAccepted != declaredAccepted)
+                {
+                    return OracleVerdict.Invalid(
+                        "ParserExpectationMismatch",
+                        "candidate " + index + " '" + text + "' was declared accepted=" + declaredAccepted +
+                        " but every parser reported accepted=" + seamAccepted);
+                }
+
+                // The strict form is the only accepted one: it must round-trip to exactly the same text.
+                if (seamAccepted && (!Id128Codec.TryParseHex(text, out Id128 parsed) || !string.Equals(Id128Codec.ToHex(parsed), text, StringComparison.Ordinal)))
+                {
+                    return OracleVerdict.Invalid("NonCanonicalFormAccepted", "candidate " + index + " '" + text + "' is accepted but is not the canonical form");
+                }
+
+                index++;
+            }
+
+            return OracleVerdict.Valid("canonical form and " + index + " candidate forms judged identically by both parsers");
+        }
+
+        private static OracleVerdict EvaluateDiagnosticCodeText(JsonElement parameters)
+        {
+            if (!parameters.TryGetProperty("requiredLiterals", out JsonElement literals) || literals.ValueKind != JsonValueKind.Array)
+            {
+                throw new FixtureFormatException("'requiredLiterals' must be an array of code literals.");
+            }
+
+            HashSet<string> required = new HashSet<string>(StringComparer.Ordinal);
+            foreach (JsonElement literal in literals.EnumerateArray())
+            {
+                string? text = literal.ValueKind == JsonValueKind.String ? literal.GetString() : null;
+                if (text == null)
+                {
+                    throw new FixtureFormatException("'requiredLiterals' entries must be strings.");
+                }
+
+                required.Add(text);
+            }
+
+            HashSet<string> seen = new HashSet<string>(StringComparer.Ordinal);
+            foreach (DiagnosticCode code in DiagnosticCodeText.Values)
+            {
+                string text = DiagnosticCodeText.Of(code);
+                if (!seen.Add(text))
+                {
+                    return OracleVerdict.Invalid("DuplicateLiteral", "two enum values map to the literal " + text);
+                }
+
+                if (!DiagnosticCodeText.TryParse(text, out DiagnosticCode parsed) || parsed != code)
+                {
+                    return OracleVerdict.Invalid("LiteralRoundTripFailed", text + " did not parse back to " + code);
+                }
+
+                if (text != code.ToString())
+                {
+                    return OracleVerdict.Invalid("LiteralDiffersFromName", text + " differs from the enum name " + code);
+                }
+
+                required.Remove(text);
+            }
+
+            if (required.Count != 0)
+            {
+                List<string> missing = new List<string>();
+                foreach (string text in required)
+                {
+                    missing.Add(text);
+                }
+
+                missing.Sort(StringComparer.Ordinal);
+                return OracleVerdict.Invalid("RequiredLiteralMissing", "unmapped required literals: " + string.Join(", ", missing));
+            }
+
+            if (!DiagnosticCodeText.TryParse("NotARealCode", out DiagnosticCode _))
+            {
+                return OracleVerdict.Valid("every code literal round-trips; an unknown literal is rejected");
+            }
+
+            return OracleVerdict.Invalid("UnknownLiteralAccepted", "'NotARealCode' was accepted as a diagnostic code");
+        }
+
+        private static OracleVerdict EvaluateEnvelopeCodec(JsonElement parameters)
+        {
+            SchemaRef schema = new SchemaRef(
+                new SchemaId(RequireId(parameters, "schemaId")),
+                RequireUint(parameters, "schemaVersion"));
+            string probe = RequireString(parameters, "probe");
+
+            EnvelopeProbe result;
+            switch (probe)
+            {
+                case "checksumRoundTrip":
+                    result = EnvelopeOracle.ChecksumRoundTrip(schema, false);
+                    break;
+                case "checksumTamper":
+                    result = EnvelopeOracle.ChecksumRoundTrip(schema, true);
+                    break;
+                case "fieldTypeRoundTrip":
+                    result = EnvelopeOracle.FieldTypeRoundTrip(schema);
+                    break;
+                case "canonicalNaN":
+                    result = EnvelopeOracle.CanonicalNaN(schema);
+                    break;
+                case "unknownRequiredFeature":
+                    result = EnvelopeOracle.UnknownRequiredFeature(schema, false);
+                    break;
+                case "knownRequiredFeature":
+                    result = EnvelopeOracle.UnknownRequiredFeature(schema, true);
+                    break;
+                case "writerFieldIdZero":
+                    result = EnvelopeOracle.WriterFieldId(schema, 0);
+                    break;
+                case "writerFieldIdTooLarge":
+                    result = EnvelopeOracle.WriterFieldId(schema, unchecked((int)0x80000000));
+                    break;
+                case "writerListHeaderOverLimit":
+                    result = EnvelopeOracle.WriterListHeader(schema, 70000, 0);
+                    break;
+                case "writerListBytesOverLimit":
+                    result = EnvelopeOracle.WriterListHeader(schema, 1, 600000);
+                    break;
+                case "readerBoolByte":
+                case "readerFieldIdOutOfRange":
+                case "readerListCountExceeded":
+                case "readerListTooLarge":
+                case "readerTruncatedField":
+                    result = ReadRawEnvelopeProbe(probe, schema, parameters);
+                    break;
+                default:
+                    throw new FixtureFormatException("Unknown envelopeCodec probe '" + probe + "'.");
+            }
+
+            return result.Accepted
+                ? OracleVerdict.Valid(result.Detail)
+                : OracleVerdict.Invalid(result.Code, result.Detail);
+        }
+
+        private static EnvelopeProbe ReadRawEnvelopeProbe(string probe, SchemaRef schema, JsonElement parameters)
+        {
+            byte[] header = RawEnvelopeBuilder.Header(schema);
+            switch (probe)
+            {
+                case "readerBoolByte":
+                    return EnvelopeOracle.ReadFirstField(
+                        RawEnvelopeBuilder.Concat(header, RawEnvelopeBuilder.Field(1U, WireType.Bool, new[] { (byte)2 })),
+                        schema);
+                case "readerFieldIdOutOfRange":
+                    return EnvelopeOracle.ReadFirstField(
+                        RawEnvelopeBuilder.Concat(
+                            header,
+                            RawEnvelopeBuilder.Field(0x80000000U, WireType.UInt32, RawEnvelopeBuilder.UInt32Payload(1U))),
+                        schema);
+                case "readerListCountExceeded":
+                    return EnvelopeOracle.ReadFirstField(
+                        RawEnvelopeBuilder.Concat(
+                            header,
+                            RawEnvelopeBuilder.Field(
+                                1U,
+                                WireType.List,
+                                RawEnvelopeBuilder.ListPayload((uint)RequireUint(parameters, "declaredCount"), 0U))),
+                        schema);
+                case "readerListTooLarge":
+                    return EnvelopeOracle.ReadFirstField(
+                        RawEnvelopeBuilder.Concat(
+                            header,
+                            RawEnvelopeBuilder.Field(
+                                1U,
+                                WireType.List,
+                                RawEnvelopeBuilder.ListPayload(1U, (uint)RequireUint(parameters, "declaredBytes")))),
+                        schema);
+                case "readerTruncatedField":
+                    return EnvelopeOracle.ReadFirstField(
+                        RawEnvelopeBuilder.Concat(
+                            header,
+                            RawEnvelopeBuilder.Field(
+                                1U,
+                                WireType.Bytes,
+                                RawEnvelopeBuilder.BytesPayload(4, 0xAB),
+                                64)),
+                        schema);
+                default:
+                    throw new FixtureFormatException("Unknown raw envelope probe '" + probe + "'.");
+            }
+        }
+
         private static List<int[]> ReadPermutations(JsonElement parameters, int idCount)
         {
             List<int[]> orders = new List<int[]>();
@@ -640,6 +879,21 @@ namespace GameCore.ProtocolFixtures.Fixtures
             }
 
             return value.GetInt32();
+        }
+
+        private static uint RequireUint(JsonElement parameters, string name)
+        {
+            if (!parameters.TryGetProperty(name, out JsonElement value) || value.ValueKind != JsonValueKind.Number)
+            {
+                throw new FixtureFormatException("'" + name + "' must be a number.");
+            }
+
+            if (!value.TryGetUInt32(out uint number))
+            {
+                throw new FixtureFormatException("'" + name + "' must be an unsigned 32-bit value.");
+            }
+
+            return number;
         }
 
         private static ulong RequireUlong(JsonElement parameters, string name)

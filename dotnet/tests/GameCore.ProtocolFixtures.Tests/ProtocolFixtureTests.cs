@@ -25,6 +25,9 @@ namespace GameCore.ProtocolFixtures.Tests
             "publicationAdvance",
             "versionSupport",
             "assemblyIndependence",
+            "idHexParsing",
+            "diagnosticCodeText",
+            "envelopeCodec",
         };
 
         private static readonly string[] Gc002RequirementIds = { "P-001", "P-004", "P-005", "P-006", "P-008", "P-055", "P-057" };

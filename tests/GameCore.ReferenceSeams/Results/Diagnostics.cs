@@ -92,6 +92,7 @@ namespace GameCore.Contracts
                 case DiagnosticCode.IdempotencyConflict: return "IdempotencyConflict";
                 case DiagnosticCode.ResultExpired: return "ResultExpired";
                 case DiagnosticCode.ApplyFault: return "ApplyFault";
+                case DiagnosticCode.SnapshotBackpressure: return "SnapshotBackpressure";
                 case DiagnosticCode.TeardownBlocked: return "TeardownBlocked";
                 case DiagnosticCode.CursorExpired: return "CursorExpired";
                 default: throw new ArgumentOutOfRangeException(nameof(code), code, "Unknown diagnostic code.");
@@ -118,7 +119,10 @@ namespace GameCore.Contracts
             return false;
         }
 
-        /// <summary>Every required code in normative order, excluding <see cref="DiagnosticCode.None"/>.</summary>
+        /// <summary>
+        /// Every code required by the protocol, in 00 s9 order, excluding <see cref="DiagnosticCode.None"/>.
+        /// <see cref="DiagnosticCode.SnapshotBackpressure"/> follows the s9 list because P-007 requires it.
+        /// </summary>
         public static IReadOnlyList<DiagnosticCode> Values { get; } = Array.AsReadOnly(new[]
         {
             DiagnosticCode.StaleHandle,
@@ -141,6 +145,7 @@ namespace GameCore.Contracts
             DiagnosticCode.ApplyFault,
             DiagnosticCode.TeardownBlocked,
             DiagnosticCode.CursorExpired,
+            DiagnosticCode.SnapshotBackpressure,
         });
     }
 }

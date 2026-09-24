@@ -10,19 +10,32 @@ namespace GameCore.TestFixtures
 {
     /// <summary>
     /// Deterministic in-memory host double implementing the admission, status and cancellation seams.
-    /// Duplicate submissions with the same input hash return the original result; a reused operation id
-    /// with a different input hash is an <see cref="DiagnosticCode.IdempotencyConflict"/> (P-050).
+    /// A retransmission with the same input hash returns the original result; a reused operation id with a
+    /// different input hash reports <see cref="DiagnosticCode.IdempotencyConflict"/> and leaves the original
+    /// ledger row untouched, so a conflicting reuse can never overwrite a stored outcome (P-050).
     /// </summary>
     public sealed class InMemoryHost : ICompositionCommands, ICommandIngress, IOperationReader, IOperationControl
     {
         private readonly Dictionary<OperationId, OperationRecord> records = new Dictionary<OperationId, OperationRecord>();
         private readonly List<OperationId> submissionOrder = new List<OperationId>();
+        private readonly HashSet<OperationId> expired = new HashSet<OperationId>();
+        private readonly int retainedResultLimit;
         private readonly Outcome defaultOutcome;
+        private AdmissionSequence nextSequence = AdmissionSequence.Zero;
 
-        public InMemoryHost(Outcome defaultOutcome)
+        public InMemoryHost(Outcome defaultOutcome, int retainedResultLimit)
         {
             this.defaultOutcome = defaultOutcome;
+            if (retainedResultLimit <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(retainedResultLimit), "A retained-result limit must be positive.");
+            }
+
+            this.retainedResultLimit = retainedResultLimit;
         }
+
+        /// <summary>Last conflict observed, or <see cref="DiagnosticCode.None"/> when none has occurred.</summary>
+        public DiagnosticCode LastConflictCode { get; private set; }
 
         /// <summary>Every accepted operation id in submission order; the only ordering this stub exposes.</summary>
         public IReadOnlyList<OperationId> SubmissionOrder => submissionOrder;
@@ -33,40 +46,53 @@ namespace GameCore.TestFixtures
 
         public int ConflictCount { get; private set; }
 
-        public OperationId Submit(CompositionProposal proposal)
+        /// <summary>Operations whose retained result was dropped by retention, observable as Expired.</summary>
+        public int ExpiredCount => expired.Count;
+
+        public OperationStatusHandle Submit(CompositionProposal proposal)
         {
             if (proposal == null)
             {
                 throw new ArgumentNullException(nameof(proposal));
             }
 
-            Record(proposal.Operation, HashOf(proposal.EditPayload));
-            return proposal.Operation;
+            ContentHash inputHash = HashOf(proposal.EditPayload);
+            Record(proposal.Operation, inputHash);
+            CompositionRevision submittedAgainst = records.TryGetValue(proposal.Operation, out OperationRecord stored)
+                ? stored.Entry.Handle.SubmittedAgainst
+                : CompositionRevision.Zero;
+            return new OperationStatusHandle(proposal.Operation, submittedAgainst);
         }
 
-        public OperationId Submit(CommandEnvelope command)
+        public CommandAdmissionReceipt Submit(CommandEnvelope command)
         {
             if (command == null)
             {
                 throw new ArgumentNullException(nameof(command));
             }
 
-            Record(command.RequestId, HashOf(command.Payload));
-            return command.RequestId;
+            ContentHash inputHash = HashOf(command.Payload);
+            bool admitted = Record(command.RequestId, inputHash);
+            RequestResult result = admitted
+                ? new RequestResult(RequestResultKind.Accepted, DiagnosticCode.None, default(EventCursor))
+                : new RequestResult(RequestResultKind.Rejected, LastConflictCode, default(EventCursor));
+            return new CommandAdmissionReceipt(command.RequestId, result, nextSequence);
         }
 
-        public OperationResult Read(OperationId operation)
+        /// <summary>
+        /// Distinguishes a handle that was never admitted (<see cref="OperationReadOutcome.Unknown"/>) from one
+        /// whose retained result has been dropped (<see cref="OperationReadOutcome.Expired"/>) (05 s5, P-050).
+        /// </summary>
+        public OperationReadResult Read(OperationId operation)
         {
-            if (!records.TryGetValue(operation, out OperationRecord record))
+            if (expired.Contains(operation))
             {
-                return new OperationResult(
-                    operation,
-                    Outcome.Rejected,
-                    DiagnosticCodeText.Of(DiagnosticCode.ResultExpired),
-                    null);
+                return OperationReadResult.Expired();
             }
 
-            return record.Result;
+            return records.TryGetValue(operation, out OperationRecord record)
+                ? OperationReadResult.Found(record.Entry)
+                : OperationReadResult.Unknown();
         }
 
         public CancelOutcome Cancel(OperationId cancellationOperation, OperationId target)
@@ -76,52 +102,66 @@ namespace GameCore.TestFixtures
                 return CancelOutcome.Unknown;
             }
 
-            if (record.Result.IsTerminal)
+            if (record.Entry.IsTerminal)
             {
                 return CancelOutcome.TooLate;
             }
 
-            records[target] = new OperationRecord(record.InputHash, new OperationResult(
-                target,
+            records[target] = record.WithEntry(new OperationLedgerEntry(
+                record.Handle,
+                record.InputHash,
                 Outcome.Cancelled,
-                DiagnosticCodeText.Of(DiagnosticCode.Cancelled),
+                DiagnosticCode.Cancelled,
+                CompositionRevision.Zero,
+                AssemblyEpoch.Zero,
                 null));
-            records[cancellationOperation] = new OperationRecord(
-                ContentHash.Empty,
-                new OperationResult(
-                    cancellationOperation,
-                    Outcome.Published,
-                    string.Empty,
-                    null));
-            submissionOrder.Add(cancellationOperation);
+            Record(cancellationOperation, ContentHash.Empty);
             return CancelOutcome.Cancelled;
         }
 
-        private void Record(OperationId operation, ContentHash inputHash)
+        /// <summary>Returns true when the operation is newly admitted; false for a duplicate or a conflict.</summary>
+        private bool Record(OperationId operation, ContentHash inputHash)
         {
             if (records.TryGetValue(operation, out OperationRecord existing))
             {
                 if (existing.InputHash == inputHash)
                 {
                     DuplicateCount++;
-                    return;
+                    return false;
                 }
 
+                // Conflicting reuse is reported and the original ledger row is left exactly as it was (P-050).
                 ConflictCount++;
-                records[operation] = new OperationRecord(inputHash, new OperationResult(
-                    operation,
-                    Outcome.Rejected,
-                    DiagnosticCodeText.Of(DiagnosticCode.IdempotencyConflict),
-                    null));
-                return;
+                LastConflictCode = DiagnosticCode.IdempotencyConflict;
+                return false;
             }
 
-            records.Add(operation, new OperationRecord(inputHash, new OperationResult(
-                operation,
+            AdmissionSequence assigned = nextSequence;
+            nextSequence.TryIncrement(out AdmissionSequence incremented);
+            nextSequence = incremented;
+            OperationLedgerEntry entry = new OperationLedgerEntry(
+                new OperationStatusHandle(operation, CompositionRevision.Zero),
+                inputHash,
                 defaultOutcome,
-                string.Empty,
-                null)));
+                DiagnosticCode.None,
+                CompositionRevision.Zero,
+                AssemblyEpoch.Zero,
+                null);
+            records.Add(operation, new OperationRecord(inputHash, assigned, entry));
             submissionOrder.Add(operation);
+            Trim();
+            return true;
+        }
+
+        private void Trim()
+        {
+            while (submissionOrder.Count > retainedResultLimit)
+            {
+                OperationId oldest = submissionOrder[0];
+                submissionOrder.RemoveAt(0);
+                records.Remove(oldest);
+                expired.Add(oldest);
+            }
         }
 
         private static ContentHash HashOf(FrozenPayload payload)
@@ -138,13 +178,22 @@ namespace GameCore.TestFixtures
         private readonly struct OperationRecord
         {
             public readonly ContentHash InputHash;
-            public readonly OperationResult Result;
 
-            public OperationRecord(ContentHash inputHash, OperationResult result)
+            /// <summary>Host-assigned admitted sequence; canonical replay compares this order (P-037).</summary>
+            public readonly AdmissionSequence Sequence;
+
+            public readonly OperationLedgerEntry Entry;
+
+            public OperationRecord(ContentHash inputHash, AdmissionSequence sequence, OperationLedgerEntry entry)
             {
                 InputHash = inputHash;
-                Result = result;
+                Sequence = sequence;
+                Entry = entry;
             }
+
+            public OperationStatusHandle Handle => Entry.Handle;
+
+            public OperationRecord WithEntry(OperationLedgerEntry entry) => new OperationRecord(InputHash, Sequence, entry);
         }
     }
 }

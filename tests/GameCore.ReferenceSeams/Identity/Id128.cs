@@ -4,7 +4,6 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 
 namespace GameCore.Contracts
 {
@@ -103,25 +102,31 @@ namespace GameCore.Contracts
             return bytes;
         }
 
-        public static string ToHex(Id128 value) =>
-            value.High.ToString("x16", CultureInfo.InvariantCulture) +
-            value.Low.ToString("x16", CultureInfo.InvariantCulture);
+        /// <summary>Canonical 32-character lowercase hex; the inverse of <see cref="TryParseHex"/>.</summary>
+        public static string ToHex(Id128 value)
+        {
+            byte[] bytes = ToBigEndianBytes(value);
+            return CanonicalHex.ToHex(bytes, 0, bytes.Length);
+        }
 
-        /// <summary>Parses the canonical 32-character hex form produced by <see cref="ToHex"/>.</summary>
+        /// <summary>
+        /// Parses the one canonical form: exactly 32 lowercase hex characters, no whitespace, no sign, no
+        /// prefixes. Uppercase or padded input is rejected rather than normalized (P-004, P-054).
+        /// </summary>
         public static bool TryParseHex(string? text, out Id128 value)
         {
             value = Id128.Zero;
-            if (text == null || text.Length != 32)
+            if (text == null || text.Length != Id128.SizeInBytes * 2)
             {
                 return false;
             }
 
-            if (!ulong.TryParse(text.Substring(0, 16), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out ulong high))
+            if (!CanonicalHex.TryParseUInt64(text, 0, out ulong high))
             {
                 return false;
             }
 
-            if (!ulong.TryParse(text.Substring(16, 16), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out ulong low))
+            if (!CanonicalHex.TryParseUInt64(text, 16, out ulong low))
             {
                 return false;
             }

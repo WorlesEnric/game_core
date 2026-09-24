@@ -129,20 +129,12 @@ namespace GameCore.Contracts
             Id128Codec.WriteUInt64BigEndian(h3, destination, offset + 24);
         }
 
-        public string ToHex()
-        {
-            byte[] bytes = ToArray();
-            char[] text = new char[HexLength];
-            const string Digits = "0123456789abcdef";
-            for (int i = 0; i < bytes.Length; i++)
-            {
-                text[i * 2] = Digits[bytes[i] >> 4];
-                text[(i * 2) + 1] = Digits[bytes[i] & 0x0F];
-            }
+        public string ToHex() => CanonicalHex.ToHex(ToArray(), 0, SizeInBytes);
 
-            return new string(text);
-        }
-
+        /// <summary>
+        /// Parses the one canonical form: exactly 64 lowercase hex characters, no whitespace and no sign.
+        /// Uppercase input is rejected rather than normalized (P-054).
+        /// </summary>
         public static bool TryParseHex(string? text, out ContentHash value)
         {
             value = Empty;
@@ -152,16 +144,9 @@ namespace GameCore.Contracts
             }
 
             byte[] bytes = new byte[SizeInBytes];
-            for (int i = 0; i < SizeInBytes; i++)
+            if (!CanonicalHex.TryParseBytes(text, bytes, 0))
             {
-                int high = HexDigit(text[i * 2]);
-                int low = HexDigit(text[(i * 2) + 1]);
-                if (high < 0 || low < 0)
-                {
-                    return false;
-                }
-
-                bytes[i] = (byte)((high << 4) | low);
+                return false;
             }
 
             value = new ContentHash(bytes);
@@ -190,26 +175,6 @@ namespace GameCore.Contracts
         public static bool operator !=(ContentHash left, ContentHash right) => !left.Equals(right);
 
         public override string ToString() => "sha256:" + ToHex();
-
-        private static int HexDigit(char value)
-        {
-            if (value >= '0' && value <= '9')
-            {
-                return value - '0';
-            }
-
-            if (value >= 'a' && value <= 'f')
-            {
-                return (value - 'a') + 10;
-            }
-
-            if (value >= 'A' && value <= 'F')
-            {
-                return (value - 'A') + 10;
-            }
-
-            return -1;
-        }
     }
 
     /// <summary>Integer protocol version (P-055). Major changes are incompatible.</summary>

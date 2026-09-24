@@ -99,21 +99,30 @@ namespace GameCore.Contracts
         public ContentHash NewHash { get; }
     }
 
-    /// <summary>World-level propagation-mode edit (05 s4, P-014).</summary>
+    /// <summary>
+    /// Propagation-mode edit. The setting is world-level (P-013); <see cref="Scope"/> records the scope the
+    /// proposal was declared against, which is the world root in V1 and the only valid owner of the setting.
+    /// </summary>
     public readonly struct ModeEdit
     {
+        public readonly ScopeId Scope;
         public readonly PropagationMode OldMode;
         public readonly PropagationMode NewMode;
 
-        public ModeEdit(PropagationMode oldMode, PropagationMode newMode)
+        public ModeEdit(ScopeId scope, PropagationMode oldMode, PropagationMode newMode)
         {
+            Scope = scope;
             OldMode = oldMode;
             NewMode = newMode;
         }
 
+        /// <summary>True when the edit was declared at the world root rather than a descendant scope.</summary>
+        public bool IsWorldSetting => Scope.IsDefault;
+
         public bool IsNoChange => OldMode == NewMode;
 
-        public override string ToString() => OldMode.ToString() + " -> " + NewMode.ToString();
+        public override string ToString() =>
+            (IsWorldSetting ? "world" : Scope.ToString()) + ": " + OldMode.ToString() + " -> " + NewMode.ToString();
     }
 
     /// <summary>Complete composition delta of one plan (05 s4).</summary>
@@ -503,14 +512,30 @@ namespace GameCore.Contracts
         public readonly Id128 LeaseId;
         public readonly ResourceReadiness Readiness;
 
-        public StagedLease(ResourceKey resource, Id128 leaseId, ResourceReadiness readiness)
+        /// <summary>Resources that must be prepared before this one and retired after it (P-012, P-048).</summary>
+        public readonly IReadOnlyList<ResourceKey> Dependencies;
+
+        /// <summary>Acquisition ordinal within its instance; leases retire in reverse acquisition order (P-048).</summary>
+        public readonly uint AcquisitionOrdinal;
+
+        public StagedLease(
+            ResourceKey resource,
+            Id128 leaseId,
+            ResourceReadiness readiness,
+            IReadOnlyList<ResourceKey>? dependencies,
+            uint acquisitionOrdinal)
         {
             Resource = resource;
             LeaseId = leaseId;
             Readiness = readiness;
+            Dependencies = ContractCollections.Freeze(dependencies);
+            AcquisitionOrdinal = acquisitionOrdinal;
         }
 
-        public override string ToString() => Resource.ToString() + ":" + Readiness.ToString();
+        public bool HasDependencies => Dependencies.Count != 0;
+
+        public override string ToString() =>
+            Resource.ToString() + ":" + Readiness.ToString() + "@" + AcquisitionOrdinal.ToString(System.Globalization.CultureInfo.InvariantCulture);
     }
 
     /// <summary>Staged resource table of one plan (05 s4).</summary>

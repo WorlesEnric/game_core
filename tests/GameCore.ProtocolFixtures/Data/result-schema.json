@@ -4,19 +4,33 @@
   "title": "Game Core W0 protocol fixture case file",
   "description": "Canonical shape of every file under Data/cases. The companion result document shape is described in x-result-document, and the executable semantics of each kind in x-kinds.",
   "type": "object",
-  "required": ["cases"],
+  "required": [
+    "cases"
+  ],
   "properties": {
-    "$comment": { "type": "string" },
+    "$comment": {
+      "type": "string"
+    },
     "cases": {
       "type": "array",
       "minItems": 1,
-      "items": { "$ref": "#/definitions/case" }
+      "items": {
+        "$ref": "#/definitions/case"
+      }
     }
   },
   "definitions": {
     "case": {
       "type": "object",
-      "required": ["caseId", "title", "requirementIds", "testIds", "kind", "expected", "parameters"],
+      "required": [
+        "caseId",
+        "title",
+        "requirementIds",
+        "testIds",
+        "kind",
+        "expected",
+        "parameters"
+      ],
       "additionalProperties": false,
       "properties": {
         "caseId": {
@@ -24,17 +38,26 @@
           "pattern": "^[a-z0-9][a-z0-9-]+$",
           "description": "Stable identifier, unique across all case files."
         },
-        "title": { "type": "string", "minLength": 1 },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
         "requirementIds": {
           "type": "array",
           "minItems": 1,
-          "items": { "type": "string", "pattern": "^P-[0-9]{3}$" },
+          "items": {
+            "type": "string",
+            "pattern": "^P-[0-9]{3}$"
+          },
           "description": "Normative requirement anchors in docs/game-core/00-core-protocols.md that this case exercises."
         },
         "testIds": {
           "type": "array",
           "minItems": 1,
-          "items": { "type": "string", "pattern": "^TEST-[0-9]{3}$" },
+          "items": {
+            "type": "string",
+            "pattern": "^TEST-[0-9]{3}$"
+          },
           "description": "Acceptance suite anchors in docs/game-core/08-validation-and-performance.md; the first entry is the case's primary suite in the result document."
         },
         "kind": {
@@ -47,21 +70,33 @@
             "counterAdvance",
             "publicationAdvance",
             "versionSupport",
-            "assemblyIndependence"
+            "assemblyIndependence",
+            "idHexParsing",
+            "diagnosticCodeText",
+            "envelopeCodec"
           ]
         },
-        "expected": { "$ref": "#/definitions/expectation" },
-        "parameters": { "type": "object" }
+        "expected": {
+          "$ref": "#/definitions/expectation"
+        },
+        "parameters": {
+          "type": "object"
+        }
       }
     },
     "expectation": {
       "type": "object",
-      "required": ["outcome"],
+      "required": [
+        "outcome"
+      ],
       "additionalProperties": false,
       "properties": {
         "outcome": {
           "type": "string",
-          "enum": ["valid", "invalid"],
+          "enum": [
+            "valid",
+            "invalid"
+          ],
           "description": "What the case claims about the input: 'valid' means the input satisfies the protocol, 'invalid' means the oracle must refuse it."
         },
         "code": {
@@ -70,8 +105,18 @@
           "description": "Required rejection code when outcome is 'invalid'. It must be one of the required diagnostic code literals from 00 s9 or one of the oracle's detector codes listed in x-kinds."
         }
       },
-      "if": { "properties": { "outcome": { "const": "invalid" } } },
-      "then": { "required": ["code"] }
+      "if": {
+        "properties": {
+          "outcome": {
+            "const": "invalid"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "code"
+        ]
+      }
     }
   },
   "x-result-document": {
@@ -87,7 +132,9 @@
       "cases": [
         {
           "caseId": "case identifier from the case file",
-          "requirementIds": ["P-000"],
+          "requirementIds": [
+            "P-000"
+          ],
           "testId": "primary TEST-nnn suite of the case",
           "outcome": "Pass | Fail | NotRun | Blocked",
           "detail": "what was expected and what the oracle observed"
@@ -105,17 +152,26 @@
       "Pass": "the oracle agreed with the case's stated expectation",
       "Fail": "the oracle disagreed with the case's stated expectation, including a missing or different rejection code",
       "NotRun": "the case was not executed on this host",
-      "Blocked": "the case could not be evaluated because its data is malformed; a delivered run must contain neither NotRun nor Blocked"
+      "Blocked": "the case could not be evaluated because its data is malformed or its probe name is unknown; a delivered run must contain neither NotRun nor Blocked"
     }
   },
   "x-kinds": {
     "idCanonicalBytes": {
-      "requirements": ["P-004", "P-008"],
-      "parameters": { "id": "32 hex characters", "expectedBytesHex": "32 hex characters" },
+      "requirements": [
+        "P-004",
+        "P-008"
+      ],
+      "parameters": {
+        "id": "32 hex characters",
+        "expectedBytesHex": "32 hex characters"
+      },
       "asserts": "the canonical byte sequence of a stable id is the high word then the low word, each big-endian; refusal code CanonicalBytesMismatch or HexRoundTripMismatch"
     },
     "stableIdOrder": {
-      "requirements": ["P-004", "P-008"],
+      "requirements": [
+        "P-004",
+        "P-008"
+      ],
       "parameters": {
         "ids": "non-empty array of 32-character hex ids",
         "expectedCanonicalOrder": "the same ids in canonical order",
@@ -124,9 +180,17 @@
       "asserts": "numeric and canonical-byte sorting agree and are independent of insertion order; refusal codes PermutationOrderMismatch, ByteOrderMismatch, ComparisonPathsDisagree"
     },
     "handleValidation": {
-      "requirements": ["P-004", "P-005", "P-007"],
+      "requirements": [
+        "P-004",
+        "P-005",
+        "P-007"
+      ],
       "parameters": {
-        "handle": { "world": "hex", "slot": "integer", "generation": "unsigned 64-bit" },
+        "handle": {
+          "world": "hex",
+          "slot": "integer",
+          "generation": "unsigned 64-bit"
+        },
         "liveWorld": "hex",
         "slotKnown": "boolean",
         "liveLiveness": "live | retired",
@@ -139,7 +203,10 @@
       "asserts": "dereference validation order world, slot presence, generation, liveness, category, activation epoch; refusal codes are WrongWorld, MissingSlot, StaleGeneration, NotLive, WrongCategory, StaleActivationEpoch"
     },
     "worldCollision": {
-      "requirements": ["P-004", "P-005"],
+      "requirements": [
+        "P-004",
+        "P-005"
+      ],
       "parameters": {
         "worldA": "hex",
         "worldB": "hex",
@@ -152,12 +219,20 @@
       "asserts": "handles collide only for the same world incarnation, slot and generation, and a restored world rejects the previous incarnation's handle; refusal codes CollisionMismatch, IncarnationNotSeparated"
     },
     "counterAdvance": {
-      "requirements": ["P-005", "P-006"],
-      "parameters": { "counter": "CompositionRevision | AssemblyEpoch | ActivationEpoch | LogicalStepId | InstallationGeneration | DefinitionRevision | EventSequence", "current": "unsigned 64-bit, as a JSON number or a decimal string" },
+      "requirements": [
+        "P-005",
+        "P-006"
+      ],
+      "parameters": {
+        "counter": "CompositionRevision | AssemblyEpoch | ActivationEpoch | LogicalStepId | InstallationGeneration | DefinitionRevision | EventSequence",
+        "current": "unsigned 64-bit, as a JSON number or a decimal string"
+      },
       "asserts": "the counter advances by exactly one, or refuses at its maximum without wrapping; refusal code OverflowRejected or WrappedInsteadOfRejected"
     },
     "publicationAdvance": {
-      "requirements": ["P-006"],
+      "requirements": [
+        "P-006"
+      ],
       "parameters": {
         "phase": "firstPublication | publication | noChange | committedStep",
         "revision": "unsigned 64-bit",
@@ -170,7 +245,9 @@
       "asserts": "a publication moves revision and epoch but never the step, NoChange moves nothing, a committed step moves only the step, and an exhausted revision refuses; refusal codes OverflowRejected, PublicationInvariantViolated, StepChangedOnPublication, NoChangeMovedCounters, CompositionMovedOnStep"
     },
     "versionSupport": {
-      "requirements": ["P-055"],
+      "requirements": [
+        "P-055"
+      ],
       "parameters": {
         "hostMajor": "integer",
         "hostMinor": "integer",
@@ -183,7 +260,10 @@
       "asserts": "protocol version interpretation: majors are incompatible, minors must fall inside the declared window, unknown required features reject, and a mismatch is never accepted silently; refusal code UnsupportedVersion or SilentFallback"
     },
     "assemblyIndependence": {
-      "requirements": ["P-001", "P-057"],
+      "requirements": [
+        "P-001",
+        "P-057"
+      ],
       "parameters": {
         "assemblyName": "simple assembly name to inspect",
         "forbiddenNamespacePrefixes": "optional array of namespace prefixes that must not appear in exported types",
@@ -191,12 +271,49 @@
         "requiredReferences": "optional array of referenced assembly names that must appear"
       },
       "asserts": "the kernel-only boundary: the oracle and the reference seam reference neither an engine nor a gameplay assembly; refusal codes GameplayOrEngineDependency, MissingSeamReference, ForbiddenNamespace, AssemblyNotLoadable"
+    },
+    "idHexParsing": {
+      "requirements": [
+        "P-004",
+        "P-054"
+      ],
+      "parameters": {
+        "canonical": "one 32-character lowercase hex id",
+        "candidates": "array of { text, accepted } objects (a bare string or null is read as { text, accepted: true|false })"
+      },
+      "asserts": "there is exactly one accepted hexadecimal form: 32 lowercase characters, no whitespace, sign or prefix; the oracle parser and the seam parser agree on every candidate, an accepted candidate round-trips to identical text, and non-canonical near misses are refused; refusal codes ParserDisagreement, ParserExpectationMismatch, NonCanonicalFormAccepted, SeamRejectedCanonicalHex, SeamHexFormDiffers, HexRoundTripMismatch"
+    },
+    "diagnosticCodeText": {
+      "requirements": [
+        "P-052",
+        "P-055"
+      ],
+      "parameters": {
+        "requiredLiterals": "the code literals the implementation must expose"
+      },
+      "asserts": "every enum value maps to a unique literal equal to its name, text parsing round-trips to the same value, every declared required literal is present, and an unknown literal is refused; refusal codes DuplicateLiteral, LiteralRoundTripFailed, LiteralDiffersFromName, RequiredLiteralMissing, UnknownLiteralAccepted"
+    },
+    "envelopeCodec": {
+      "requirements": [
+        "P-054",
+        "P-055"
+      ],
+      "parameters": {
+        "schemaId": "32-character hex schema id carried in the header",
+        "schemaVersion": "unsigned schema version carried in the header",
+        "probe": "checksumRoundTrip | checksumTamper | fieldTypeRoundTrip | canonicalNaN | unknownRequiredFeature | knownRequiredFeature | writerFieldIdZero | writerFieldIdTooLarge | writerListHeaderOverLimit | writerListBytesOverLimit | readerBoolByte | readerFieldIdOutOfRange | readerListCountExceeded | readerListTooLarge | readerTruncatedField",
+        "declaredCount": "count declared by a hand-assembled list header (readerListCountExceeded)",
+        "declaredBytes": "byte length declared by a hand-assembled list header (readerListTooLarge)"
+      },
+      "asserts": "the trailing FNV-1a checksum verifies a written document and detects one flipped covered byte; every wire type round-trips bit-exactly, including signed integers and IEEE-754 floats; both NaN payloads become the single canonical quiet NaN; an unknown required feature rejects before the body is used; reserved or out-of-range field ids are refused on both sides; list count and byte length are bounded on both sides; a bool byte other than 0 or 1 and a truncated field record are refused",
+      "independence-note": "unlike the identity, counter and version oracles, these probes deliberately drive the seam's own envelope codec: the envelope is a codec whose declared read/write rules are what the fixtures pin down, and byte-level documents the writer would refuse are hand-assembled so the reader's limit checks are exercisable"
     }
   },
   "x-source-of-truth": [
     "docs/game-core/00-core-protocols.md is the only normative source; a case's expected outcome is derived from the requirement it names, never from the reference seam implementation.",
     "The oracle re-implements canonical byte order, comparison, handle validation, counter arithmetic and version interpretation instead of calling the seam, so the two can disagree and a seam defect is observable.",
     "A case's expected rejection code must be a required diagnostic literal from 00 s9 or a detector code documented in x-kinds; a typo fails the suite rather than passing silently.",
-    "Fixture data is never edited to make a failing oracle pass; a mismatch means either the fixture or the implementation is wrong and must be corrected at the normative source."
+    "Fixture data is never edited to make a failing oracle pass; a mismatch means either the fixture or the implementation is wrong and must be corrected at the normative source.",
+    "Envelope probes are the one kind that intentionally exercises the seam codec rather than an independent re-implementation; every other kind re-derives the semantics from 00 so a seam defect is observable as a disagreement."
   ]
 }

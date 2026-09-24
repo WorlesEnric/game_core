@@ -12,11 +12,12 @@ Test-only, Unity-free, independent protocol oracle. It references **only** `Game
 | `Oracle/IdentityOracle.cs` | Dereference validation (world, slot, generation, liveness, category, activation epoch), world-incarnation separation, collision detection |
 | `Oracle/CounterOracle.cs` | Counter/revision/epoch/step advancement, overflow rejection, publication boundary invariants |
 | `Oracle/VersionOracle.cs` | Protocol version interpretation and required-feature gate (P-055) |
+| `Oracle/EnvelopeOracle.cs` | Envelope probes: checksum verification/corruption, per-wire-type round trip, canonical NaN, required-feature gate, and hand-assembled documents for reader-side limit checks |
 | `Fixtures/FixtureModel.cs` | Case/expectation/result model |
 | `Fixtures/FixtureLoader.cs` | Strict loader for canonical case JSON |
 | `Fixtures/FixtureRunner.cs` | Executes one case per kind and compares the observed verdict with the case expectation |
 | `Fixtures/ResultDocument.cs` | Writes/reads `artifacts/protocol-fixtures/results.json` |
-| `Data/cases/*.json` | The canonical fixture data (valid **and** invalid cases with expected outcomes) |
+| `Data/cases/*.json` | The canonical fixture data (valid **and** invalid cases with expected outcomes): identity bytes, ordering, handles, counters/publication, version support, assembly independence, canonical hex parsing, diagnostic-code literals and the serialization envelope |
 | `Data/result-schema.json` | Case-file schema, result-document shape, per-kind parameter tables, outcome vocabulary and source-of-truth rules |
 | `RepoLayout.cs` | Repository-root discovery so fixture data and evidence always come from the committed tree |
 
@@ -30,6 +31,9 @@ Test-only, Unity-free, independent protocol oracle. It references **only** `Game
    paths.
 3. A case's `expected.code` must be a required diagnostic literal from 00 §9 or a detector code documented in
    `Data/result-schema.json` (`x-kinds`). A typo fails the suite instead of passing silently.
+   The `envelopeCodec` kind is the one deliberate exception to rule 2: it drives the seam's own envelope codec,
+   because the envelope *is* a codec and the fixtures exist to pin down its declared read/write rules. The
+   byte-level documents the writer would refuse are hand-assembled so the reader's limit checks are reachable.
 4. Fixture data is never edited to make a failing oracle pass. A mismatch means the fixture or the
    implementation is wrong, and the normative source is corrected first.
 

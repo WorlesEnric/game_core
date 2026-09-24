@@ -294,4 +294,45 @@ namespace GameCore.Contracts
         public static bool operator >=(EventSequence left, EventSequence right) => left.Value >= right.Value;
         public override string ToString() => "EventSequence(" + Value.ToString(CultureInfo.InvariantCulture) + ")";
     }
+
+    /// <summary>Host-assigned admitted input sequence; canonical replay compares this order (P-008, P-037).</summary>
+    /// <remarks>Overflow policy is a protocol decision made by callers (P-005). This seam exposes the pure
+    /// arithmetic predicate only.</remarks>
+    public readonly struct AdmissionSequence : IEquatable<AdmissionSequence>, IComparable<AdmissionSequence>
+    {
+        public static readonly AdmissionSequence Zero = new AdmissionSequence(0UL);
+        public static readonly AdmissionSequence First = new AdmissionSequence(1UL);
+        public static readonly AdmissionSequence MaxValue = new AdmissionSequence(ulong.MaxValue);
+
+        public readonly ulong Value;
+
+        public AdmissionSequence(ulong value)
+        {
+            Value = value;
+        }
+
+        public bool TryIncrement(out AdmissionSequence next)
+        {
+            if (Value == ulong.MaxValue)
+            {
+                next = this;
+                return false;
+            }
+
+            next = new AdmissionSequence(Value + 1UL);
+            return true;
+        }
+
+        public bool Equals(AdmissionSequence other) => Value == other.Value;
+        public override bool Equals(object? obj) => obj is AdmissionSequence other && Equals(other);
+        public override int GetHashCode() => Value.GetHashCode();
+        public int CompareTo(AdmissionSequence other) => Value.CompareTo(other.Value);
+        public static bool operator ==(AdmissionSequence left, AdmissionSequence right) => left.Equals(right);
+        public static bool operator !=(AdmissionSequence left, AdmissionSequence right) => !left.Equals(right);
+        public static bool operator <(AdmissionSequence left, AdmissionSequence right) => left.Value < right.Value;
+        public static bool operator >(AdmissionSequence left, AdmissionSequence right) => left.Value > right.Value;
+        public static bool operator <=(AdmissionSequence left, AdmissionSequence right) => left.Value <= right.Value;
+        public static bool operator >=(AdmissionSequence left, AdmissionSequence right) => left.Value >= right.Value;
+        public override string ToString() => "AdmissionSequence(" + Value.ToString(CultureInfo.InvariantCulture) + ")";
+    }
 }

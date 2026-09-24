@@ -223,13 +223,22 @@ namespace GameCore.Contracts
         CursorExpired = 1,
     }
 
-    /// <summary>Decision of a callback gate evaluated on dispatch and on completion (P-047).</summary>
+    /// <summary>Decision of a callback gate evaluated on dispatch and on completion (P-004, P-047).</summary>
     public enum CallbackGateDecision
     {
         Dispatch = 0,
-        DiscardStaleActivation = 1,
-        DiscardRetiredRoute = 2,
-        DiscardPostPublicationFence = 3,
+
+        /// <summary>The completion was stamped by another world incarnation (P-004).</summary>
+        DiscardForeignWorld = 1,
+
+        /// <summary>The activation epoch or installation generation is no longer current (P-005, P-047).</summary>
+        DiscardStaleActivation = 2,
+
+        /// <summary>The route was retired or suspended, so the work is discarded, not delivered (P-047).</summary>
+        DiscardRetiredRoute = 3,
+
+        /// <summary>The publication fence is closed, so nothing is delivered through it (P-047).</summary>
+        DiscardPostPublicationFence = 4,
     }
 
     /// <summary>Retry classification of a diagnostic (00 s9).</summary>
@@ -252,8 +261,10 @@ namespace GameCore.Contracts
     }
 
     /// <summary>
-    /// Stable diagnostic codes required by 00 s9. Literal names match the normative text exactly;
-    /// <see cref="Diagnostic.CodeText"/> maps each value to that literal string.
+    /// Stable diagnostic codes required by 00 s9 plus the retention code required by P-007, where bounded
+    /// snapshot retention rejects a new lease with SnapshotBackpressure instead of overwriting leased memory.
+    /// Literal names match the normative text exactly; <see cref="DiagnosticCodeText"/> maps each value to
+    /// that literal string.
     /// </summary>
     public enum DiagnosticCode
     {
@@ -278,5 +289,6 @@ namespace GameCore.Contracts
         ApplyFault = 18,
         TeardownBlocked = 19,
         CursorExpired = 20,
+        SnapshotBackpressure = 21,
     }
 }

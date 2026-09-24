@@ -320,6 +320,7 @@ namespace GameCore.Contracts
             uint stageVersion,
             Id128 ownerPackageId,
             HostAffinity affinity,
+            IReadOnlyList<FactoryKey>? factoryKeys,
             IReadOnlyList<Id128>? activationMemberships,
             AccessSet readWriteSet,
             IReadOnlyList<StageId>? requiredBefore,
@@ -333,6 +334,7 @@ namespace GameCore.Contracts
             StageVersion = stageVersion;
             OwnerPackageId = ownerPackageId;
             Affinity = affinity;
+            FactoryKeys = ContractCollections.Freeze(factoryKeys);
             ActivationMemberships = ContractCollections.Freeze(activationMemberships);
             ReadWriteSet = readWriteSet;
             RequiredBefore = ContractCollections.Freeze(requiredBefore);
@@ -350,6 +352,9 @@ namespace GameCore.Contracts
         public Id128 OwnerPackageId { get; }
 
         public HostAffinity Affinity { get; }
+
+        /// <summary>Stage-level generated factory keys; per-system keys live on each <see cref="SystemSpec"/>.</summary>
+        public IReadOnlyList<FactoryKey> FactoryKeys { get; }
 
         /// <summary>Declared activation membership keys; an empty list is explicit (P-009, P-039).</summary>
         public IReadOnlyList<Id128> ActivationMemberships { get; }

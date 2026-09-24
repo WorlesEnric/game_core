@@ -8,12 +8,146 @@ using GameCore.Contracts;
 
 namespace GameCore.TestFixtures
 {
-    /// <summary>Deterministic in-memory catalog of manifests with canonical-order enumeration (P-004, P-008).</summary>
-    public sealed class StubCatalog
+    /// <summary>
+    /// Deterministic in-memory catalog: manifests, explicitly registered generated keys and schemas, with
+    /// canonical-order enumeration. It implements the shared <see cref="ICatalog"/> lookup contract so W1 peers
+    /// compile against the same miss-reporting seam they will use in production. No reflection-based discovery
+    /// and no fallback to a convenient default (P-009, P-015).
+    /// </summary>
+    public sealed class StubCatalog : ICatalog
     {
         private readonly Dictionary<PluginTypeId, PluginManifest> byType = new Dictionary<PluginTypeId, PluginManifest>();
+        private readonly Dictionary<Id128, FactoryRegistration> factories = new Dictionary<Id128, FactoryRegistration>();
+        private readonly Dictionary<Id128, SchemaRegistration> schemas = new Dictionary<Id128, SchemaRegistration>();
 
         public int Count => byType.Count;
+
+        public int FactoryCount => factories.Count;
+
+        public int SchemaCount => schemas.Count;
+
+        /// <summary>Fingerprint over the registered keys and schemas, independent of registration order (P-008).</summary>
+        public ContentHash Fingerprint
+        {
+            get
+            {
+                IReadOnlyList<FactoryKey> keys = FactoryKeysInCanonicalOrder();
+                byte[] buffer = new byte[keys.Count * (Id128.SizeInBytes + 4)];
+                int offset = 0;
+                for (int i = 0; i < keys.Count; i++)
+                {
+                    Id128Codec.WriteBigEndian(keys[i].RegistrationKey, buffer, offset);
+                    offset += Id128.SizeInBytes;
+                    buffer[offset] = (byte)(keys[i].KeyVersion >> 24);
+                    buffer[offset + 1] = (byte)(keys[i].KeyVersion >> 16);
+                    buffer[offset + 2] = (byte)(keys[i].KeyVersion >> 8);
+                    buffer[offset + 3] = (byte)keys[i].KeyVersion;
+                    offset += 4;
+                }
+
+                return ContentHash.Compute(buffer);
+            }
+        }
+
+        /// <summary>Registers one generated key; an empty result means accepted.</summary>
+        public IReadOnlyList<Diagnostic> RegisterFactory(FactoryRegistration registration)
+        {
+            if (registration == null)
+            {
+                throw new ArgumentNullException(nameof(registration));
+            }
+
+            List<Diagnostic> diagnostics = new List<Diagnostic>();
+            if (registration.Key.RegistrationKey.IsDefault)
+            {
+                diagnostics.Add(Duplicate(DiagnosticCode.MissingDependency, "A default zero key is not a catalog identity.", registration.Key.RegistrationKey));
+                return diagnostics;
+            }
+
+            if (factories.ContainsKey(registration.Key.RegistrationKey))
+            {
+                diagnostics.Add(Duplicate(DiagnosticCode.OwnershipConflict, "Duplicate factory key.", registration.Key.RegistrationKey));
+                return diagnostics;
+            }
+
+            factories.Add(registration.Key.RegistrationKey, registration);
+            return diagnostics;
+        }
+
+        /// <summary>Registers one supported schema version; an empty result means accepted.</summary>
+        public IReadOnlyList<Diagnostic> RegisterSchema(SchemaRegistration registration)
+        {
+            if (registration == null)
+            {
+                throw new ArgumentNullException(nameof(registration));
+            }
+
+            List<Diagnostic> diagnostics = new List<Diagnostic>();
+            if (schemas.ContainsKey(registration.Schema.Id.Value))
+            {
+                diagnostics.Add(Duplicate(DiagnosticCode.OwnershipConflict, "Duplicate schema id.", registration.Schema.Id.Value));
+                return diagnostics;
+            }
+
+            schemas.Add(registration.Schema.Id.Value, registration);
+            return diagnostics;
+        }
+
+        public CatalogLookup Lookup(FactoryKey key)
+        {
+            if (key.RegistrationKey.IsDefault)
+            {
+                return CatalogLookup.MissingKey(key);
+            }
+
+            if (!factories.TryGetValue(key.RegistrationKey, out FactoryRegistration? found))
+            {
+                return CatalogLookup.MissingKey(key);
+            }
+
+            if (found.Key.KeyVersion != key.KeyVersion)
+            {
+                return CatalogLookup.MissingKey(key);
+            }
+
+            return CatalogLookup.FactoryFound(found);
+        }
+
+        public CatalogLookup LookupSchema(SchemaRef schema)
+        {
+            if (!schemas.TryGetValue(schema.Id.Value, out SchemaRegistration? found))
+            {
+                return CatalogLookup.MissingSchema(schema);
+            }
+
+            if (found.Schema.Version != schema.Version)
+            {
+                return CatalogLookup.UnsupportedSchemaVersion(schema);
+            }
+
+            return CatalogLookup.SchemaFound(found);
+        }
+
+        /// <summary>Registered keys in canonical identity order, never registration order (P-008).</summary>
+        public IReadOnlyList<FactoryKey> FactoryKeysInCanonicalOrder()
+        {
+            FactoryKey[] keys = new FactoryKey[factories.Count];
+            int index = 0;
+            foreach (FactoryRegistration registration in factories.Values)
+            {
+                keys[index] = registration.Key;
+                index++;
+            }
+
+            Array.Sort(keys, CompareFactoryKeys);
+            return Array.AsReadOnly(keys);
+        }
+
+        private static int CompareFactoryKeys(FactoryKey left, FactoryKey right)
+        {
+            int byId = left.RegistrationKey.CompareTo(right.RegistrationKey);
+            return byId != 0 ? byId : left.KeyVersion.CompareTo(right.KeyVersion);
+        }
 
         /// <summary>Adds one manifest; an empty result means accepted.</summary>
         public IReadOnlyList<Diagnostic> Add(PluginManifest manifest)

@@ -15,12 +15,12 @@ namespace GameCore.Contracts
     /// </summary>
     public sealed class OperationResult
     {
-        /// <summary>Skeleton-compatible shape: no revision/epoch or cleanup detail recorded.</summary>
-        public OperationResult(OperationId operation, Outcome outcome, string diagnosticCode, SnapshotToken? publishedSnapshot)
+        /// <summary>Skeleton-compatible arity: no revision/epoch or cleanup detail recorded.</summary>
+        public OperationResult(OperationId operation, Outcome outcome, DiagnosticCode code, SnapshotToken? publishedSnapshot)
             : this(
                 operation,
                 outcome,
-                diagnosticCode,
+                code,
                 publishedSnapshot,
                 CompositionRevision.Zero,
                 CompositionRevision.Zero,
@@ -35,7 +35,7 @@ namespace GameCore.Contracts
         public OperationResult(
             OperationId operation,
             Outcome outcome,
-            string diagnosticCode,
+            DiagnosticCode code,
             SnapshotToken? publishedSnapshot,
             CompositionRevision oldRevision,
             CompositionRevision newRevision,
@@ -47,7 +47,7 @@ namespace GameCore.Contracts
         {
             Operation = operation;
             Outcome = outcome;
-            DiagnosticCode = diagnosticCode ?? throw new ArgumentNullException(nameof(diagnosticCode));
+            Code = code;
             PublishedSnapshot = publishedSnapshot;
             OldRevision = oldRevision;
             NewRevision = newRevision;
@@ -62,8 +62,11 @@ namespace GameCore.Contracts
 
         public Outcome Outcome { get; }
 
-        /// <summary>Stable textual diagnostic code, empty when the outcome carries none.</summary>
-        public string DiagnosticCode { get; }
+        /// <summary>Structured code; <see cref="DiagnosticCode.None"/> when the outcome carries none.</summary>
+        public DiagnosticCode Code { get; }
+
+        /// <summary>The normative literal for <see cref="Code"/>, for diagnostics and cross-checking (00 s9).</summary>
+        public string CodeText => DiagnosticCodeText.Of(Code);
 
         public SnapshotToken? PublishedSnapshot { get; }
 
@@ -102,37 +105,5 @@ namespace GameCore.Contracts
 
         /// <summary>Committed event cursor when the request was committed; default when not applicable.</summary>
         public EventCursor CausalCursor { get; }
-    }
-
-    /// <summary>Installation state snapshot exposed by the composition host (P-046).</summary>
-    public sealed class InstallationStatus
-    {
-        public InstallationStatus(
-            PluginInstanceId instance,
-            ScopeId scope,
-            InstallationState state,
-            InstallationGeneration generation,
-            ActivationEpoch activationEpoch,
-            IReadOnlyList<Diagnostic>? diagnostics)
-        {
-            Instance = instance;
-            Scope = scope;
-            State = state;
-            Generation = generation;
-            ActivationEpoch = activationEpoch;
-            Diagnostics = ContractCollections.Freeze(diagnostics);
-        }
-
-        public PluginInstanceId Instance { get; }
-
-        public ScopeId Scope { get; }
-
-        public InstallationState State { get; }
-
-        public InstallationGeneration Generation { get; }
-
-        public ActivationEpoch ActivationEpoch { get; }
-
-        public IReadOnlyList<Diagnostic> Diagnostics { get; }
     }
 }

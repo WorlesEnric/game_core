@@ -15,6 +15,7 @@ namespace GameCore.Contracts
             OperationId operation,
             ContentHash inputHash,
             CompositionRevision baseRevision,
+            AssemblyEpoch baseEpoch,
             ContentHash catalogHash,
             ContentHash planHash,
             CompositionDelta composition,
@@ -26,6 +27,7 @@ namespace GameCore.Contracts
             Operation = operation;
             InputHash = inputHash;
             BaseRevision = baseRevision;
+            BaseEpoch = baseEpoch;
             CatalogHash = catalogHash;
             PlanHash = planHash;
             Composition = composition;
@@ -40,6 +42,9 @@ namespace GameCore.Contracts
         public ContentHash InputHash { get; }
 
         public CompositionRevision BaseRevision { get; }
+
+        /// <summary>Assembly epoch the plan was validated against; publication must match it (P-027, P-030).</summary>
+        public AssemblyEpoch BaseEpoch { get; }
 
         public ContentHash CatalogHash { get; }
 

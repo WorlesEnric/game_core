@@ -28,7 +28,7 @@ namespace GameCore.Contracts
             unchecked
             {
                 int hash = 17;
-                hash = (hash * 31) + (Session.GetHashCode());
+                hash = (hash * 31) + Session.GetHashCode();
                 return hash;
             }
         }
@@ -65,8 +65,8 @@ namespace GameCore.Contracts
             unchecked
             {
                 int hash = 17;
-                hash = (hash * 31) + (World.GetHashCode());
-                hash = (hash * 31) + (IssuerId.GetHashCode());
+                hash = (hash * 31) + World.GetHashCode();
+                hash = (hash * 31) + IssuerId.GetHashCode();
                 hash = (hash * 31) + IssuerSequence.GetHashCode();
                 return hash;
             }
@@ -78,17 +78,27 @@ namespace GameCore.Contracts
         public override string ToString() => "OperationId(" + World.ToString() + ", " + IssuerId.ToString() + ", " + IssuerSequence.ToString(CultureInfo.InvariantCulture) + ")";
     }
 
-    /// <summary>Runtime handle to one target; validate world, generation, liveness and expected category before use (P-005). Not persisted.</summary>
+    /// <summary>Runtime handle to one target. Validate world, generation, liveness and expected category before use (P-005). Not persisted.</summary>
     public readonly struct TargetHandle : IEquatable<TargetHandle>
     {
         public readonly WorldId World;
-        public readonly int Slot;
+        /// <summary>Owned runtime slot index; unsigned so a negative slot cannot be expressed.</summary>
+        public readonly uint Slot;
+        /// <summary>Non-zero; generation 0 is reserved so a default handle is never live (P-005).</summary>
         public readonly ulong Generation;
 
-        public TargetHandle(WorldId world, int slot, ulong generation)
+        /// <summary>False for a default value: generation 0 is never live (P-005).</summary>
+        public bool IsAllocated => Generation != 0UL;
+
+        public TargetHandle(WorldId world, uint slot, ulong generation)
         {
             World = world;
             Slot = slot;
+            // Generation 0 is reserved: a default handle is never live (P-005).
+            if (generation == 0UL)
+            {
+                throw new ArgumentOutOfRangeException(nameof(generation), "Generation 0 is reserved: a default handle is never live (P-005).");
+            }
             Generation = generation;
         }
 
@@ -104,8 +114,8 @@ namespace GameCore.Contracts
             unchecked
             {
                 int hash = 17;
-                hash = (hash * 31) + (World.GetHashCode());
-                hash = (hash * 31) + Slot;
+                hash = (hash * 31) + World.GetHashCode();
+                hash = (hash * 31) + Slot.GetHashCode();
                 hash = (hash * 31) + Generation.GetHashCode();
                 return hash;
             }
@@ -121,13 +131,22 @@ namespace GameCore.Contracts
     public readonly struct ScopeHandle : IEquatable<ScopeHandle>
     {
         public readonly WorldId World;
-        public readonly int Slot;
+        public readonly uint Slot;
+        /// <summary>Non-zero; generation 0 is reserved so a default handle is never live (P-005).</summary>
         public readonly ulong ScopeGeneration;
 
-        public ScopeHandle(WorldId world, int slot, ulong scopeGeneration)
+        /// <summary>False for a default value: generation 0 is never live (P-005).</summary>
+        public bool IsAllocated => ScopeGeneration != 0UL;
+
+        public ScopeHandle(WorldId world, uint slot, ulong scopeGeneration)
         {
             World = world;
             Slot = slot;
+            // Generation 0 is reserved: a default handle is never live (P-005).
+            if (scopeGeneration == 0UL)
+            {
+                throw new ArgumentOutOfRangeException(nameof(scopeGeneration), "Generation 0 is reserved: a default handle is never live (P-005).");
+            }
             ScopeGeneration = scopeGeneration;
         }
 
@@ -143,8 +162,8 @@ namespace GameCore.Contracts
             unchecked
             {
                 int hash = 17;
-                hash = (hash * 31) + (World.GetHashCode());
-                hash = (hash * 31) + Slot;
+                hash = (hash * 31) + World.GetHashCode();
+                hash = (hash * 31) + Slot.GetHashCode();
                 hash = (hash * 31) + ScopeGeneration.GetHashCode();
                 return hash;
             }
@@ -156,17 +175,26 @@ namespace GameCore.Contracts
         public override string ToString() => "ScopeHandle(" + World.ToString() + ", " + Slot.ToString(CultureInfo.InvariantCulture) + ", " + ScopeGeneration.ToString(CultureInfo.InvariantCulture) + ")";
     }
 
-    /// <summary>Runtime handle to one installation; adds an installation generation, which changes on unmount/remount (P-005).</summary>
+    /// <summary>Runtime handle to one installation; the installation generation changes on unmount/remount, not on ordinary reconfigure (P-005).</summary>
     public readonly struct PluginHandle : IEquatable<PluginHandle>
     {
         public readonly WorldId World;
-        public readonly int Slot;
+        public readonly uint Slot;
+        /// <summary>Non-zero; generation 0 is reserved so a default handle is never live (P-005).</summary>
         public readonly ulong InstallationGeneration;
 
-        public PluginHandle(WorldId world, int slot, ulong installationGeneration)
+        /// <summary>False for a default value: generation 0 is never live (P-005).</summary>
+        public bool IsAllocated => InstallationGeneration != 0UL;
+
+        public PluginHandle(WorldId world, uint slot, ulong installationGeneration)
         {
             World = world;
             Slot = slot;
+            // Generation 0 is reserved: a default handle is never live (P-005).
+            if (installationGeneration == 0UL)
+            {
+                throw new ArgumentOutOfRangeException(nameof(installationGeneration), "Generation 0 is reserved: a default handle is never live (P-005).");
+            }
             InstallationGeneration = installationGeneration;
         }
 
@@ -182,8 +210,8 @@ namespace GameCore.Contracts
             unchecked
             {
                 int hash = 17;
-                hash = (hash * 31) + (World.GetHashCode());
-                hash = (hash * 31) + Slot;
+                hash = (hash * 31) + World.GetHashCode();
+                hash = (hash * 31) + Slot.GetHashCode();
                 hash = (hash * 31) + InstallationGeneration.GetHashCode();
                 return hash;
             }
@@ -199,10 +227,10 @@ namespace GameCore.Contracts
     public readonly struct SnapshotToken : IEquatable<SnapshotToken>
     {
         public readonly WorldId World;
-        public readonly ulong AssemblyEpoch;
-        public readonly ulong LogicalStepId;
+        public readonly AssemblyEpoch AssemblyEpoch;
+        public readonly LogicalStepId LogicalStepId;
 
-        public SnapshotToken(WorldId world, ulong assemblyEpoch, ulong logicalStepId)
+        public SnapshotToken(WorldId world, AssemblyEpoch assemblyEpoch, LogicalStepId logicalStepId)
         {
             World = world;
             AssemblyEpoch = assemblyEpoch;
@@ -211,8 +239,8 @@ namespace GameCore.Contracts
 
         public bool Equals(SnapshotToken other) =>
             World.Equals(other.World)
-            && AssemblyEpoch == other.AssemblyEpoch
-            && LogicalStepId == other.LogicalStepId;
+            && AssemblyEpoch.Equals(other.AssemblyEpoch)
+            && LogicalStepId.Equals(other.LogicalStepId);
 
         public override bool Equals(object? obj) => obj is SnapshotToken other && Equals(other);
 
@@ -221,7 +249,7 @@ namespace GameCore.Contracts
             unchecked
             {
                 int hash = 17;
-                hash = (hash * 31) + (World.GetHashCode());
+                hash = (hash * 31) + World.GetHashCode();
                 hash = (hash * 31) + AssemblyEpoch.GetHashCode();
                 hash = (hash * 31) + LogicalStepId.GetHashCode();
                 return hash;
@@ -231,7 +259,7 @@ namespace GameCore.Contracts
         public static bool operator ==(SnapshotToken left, SnapshotToken right) => left.Equals(right);
         public static bool operator !=(SnapshotToken left, SnapshotToken right) => !left.Equals(right);
 
-        public override string ToString() => "SnapshotToken(" + World.ToString() + ", " + AssemblyEpoch.ToString(CultureInfo.InvariantCulture) + ", " + LogicalStepId.ToString(CultureInfo.InvariantCulture) + ")";
+        public override string ToString() => "SnapshotToken(" + World.ToString() + ", " + AssemblyEpoch.ToString() + ", " + LogicalStepId.ToString() + ")";
     }
 
     /// <summary>Async work identity; validated both at ingress and at completion dispatch (P-047).</summary>
@@ -239,19 +267,27 @@ namespace GameCore.Contracts
     {
         public readonly OperationId Operation;
         public readonly PluginInstanceId PluginInstanceId;
-        public readonly ulong InstallationGeneration;
-        public readonly ulong ActivationEpoch;
+        public readonly InstallationGeneration InstallationGeneration;
+        public readonly ActivationEpoch ActivationEpoch;
         public readonly uint WorkOrdinal;
+
+        /// <summary>False for a default value: generation 0 is never live (P-005).</summary>
+        public bool IsAllocated => InstallationGeneration != 0UL;
 
         public AsyncWorkToken(
             OperationId operation,
             PluginInstanceId pluginInstanceId,
-            ulong installationGeneration,
-            ulong activationEpoch,
+            InstallationGeneration installationGeneration,
+            ActivationEpoch activationEpoch,
             uint workOrdinal)
         {
             Operation = operation;
             PluginInstanceId = pluginInstanceId;
+            // Generation 0 is reserved: a default handle is never live (P-005).
+            if (installationGeneration == 0UL)
+            {
+                throw new ArgumentOutOfRangeException(nameof(installationGeneration), "Generation 0 is reserved: a default handle is never live (P-005).");
+            }
             InstallationGeneration = installationGeneration;
             ActivationEpoch = activationEpoch;
             WorkOrdinal = workOrdinal;
@@ -260,8 +296,8 @@ namespace GameCore.Contracts
         public bool Equals(AsyncWorkToken other) =>
             Operation.Equals(other.Operation)
             && PluginInstanceId.Equals(other.PluginInstanceId)
-            && InstallationGeneration == other.InstallationGeneration
-            && ActivationEpoch == other.ActivationEpoch
+            && InstallationGeneration.Equals(other.InstallationGeneration)
+            && ActivationEpoch.Equals(other.ActivationEpoch)
             && WorkOrdinal == other.WorkOrdinal;
 
         public override bool Equals(object? obj) => obj is AsyncWorkToken other && Equals(other);
@@ -271,8 +307,8 @@ namespace GameCore.Contracts
             unchecked
             {
                 int hash = 17;
-                hash = (hash * 31) + (Operation.GetHashCode());
-                hash = (hash * 31) + (PluginInstanceId.GetHashCode());
+                hash = (hash * 31) + Operation.GetHashCode();
+                hash = (hash * 31) + PluginInstanceId.GetHashCode();
                 hash = (hash * 31) + InstallationGeneration.GetHashCode();
                 hash = (hash * 31) + ActivationEpoch.GetHashCode();
                 hash = (hash * 31) + WorkOrdinal.GetHashCode();
@@ -283,7 +319,7 @@ namespace GameCore.Contracts
         public static bool operator ==(AsyncWorkToken left, AsyncWorkToken right) => left.Equals(right);
         public static bool operator !=(AsyncWorkToken left, AsyncWorkToken right) => !left.Equals(right);
 
-        public override string ToString() => "AsyncWorkToken(" + Operation.ToString() + ", " + PluginInstanceId.ToString() + ", " + InstallationGeneration.ToString(CultureInfo.InvariantCulture) + ", " + ActivationEpoch.ToString(CultureInfo.InvariantCulture) + ", " + WorkOrdinal.ToString(CultureInfo.InvariantCulture) + ")";
+        public override string ToString() => "AsyncWorkToken(" + Operation.ToString() + ", " + PluginInstanceId.ToString() + ", " + InstallationGeneration.ToString() + ", " + ActivationEpoch.ToString() + ", " + WorkOrdinal.ToString(CultureInfo.InvariantCulture) + ")";
     }
 
     /// <summary>Schema identity plus integer version; content compatibility, not liveness (P-006).</summary>
@@ -309,7 +345,7 @@ namespace GameCore.Contracts
             unchecked
             {
                 int hash = 17;
-                hash = (hash * 31) + (Id.GetHashCode());
+                hash = (hash * 31) + Id.GetHashCode();
                 hash = (hash * 31) + Version.GetHashCode();
                 return hash;
             }
@@ -326,9 +362,9 @@ namespace GameCore.Contracts
     {
         public readonly DefinitionId Id;
         public readonly SchemaRef Schema;
-        public readonly ulong Revision;
+        public readonly DefinitionRevision Revision;
 
-        public DefinitionRef(DefinitionId id, SchemaRef schema, ulong revision)
+        public DefinitionRef(DefinitionId id, SchemaRef schema, DefinitionRevision revision)
         {
             Id = id;
             Schema = schema;
@@ -338,7 +374,7 @@ namespace GameCore.Contracts
         public bool Equals(DefinitionRef other) =>
             Id.Equals(other.Id)
             && Schema.Equals(other.Schema)
-            && Revision == other.Revision;
+            && Revision.Equals(other.Revision);
 
         public override bool Equals(object? obj) => obj is DefinitionRef other && Equals(other);
 
@@ -347,8 +383,8 @@ namespace GameCore.Contracts
             unchecked
             {
                 int hash = 17;
-                hash = (hash * 31) + (Id.GetHashCode());
-                hash = (hash * 31) + (Schema.GetHashCode());
+                hash = (hash * 31) + Id.GetHashCode();
+                hash = (hash * 31) + Schema.GetHashCode();
                 hash = (hash * 31) + Revision.GetHashCode();
                 return hash;
             }
@@ -357,7 +393,7 @@ namespace GameCore.Contracts
         public static bool operator ==(DefinitionRef left, DefinitionRef right) => left.Equals(right);
         public static bool operator !=(DefinitionRef left, DefinitionRef right) => !left.Equals(right);
 
-        public override string ToString() => "DefinitionRef(" + Id.ToString() + ", " + Schema.ToString() + ", " + Revision.ToString(CultureInfo.InvariantCulture) + ")";
+        public override string ToString() => "DefinitionRef(" + Id.ToString() + ", " + Schema.ToString() + ", " + Revision.ToString() + ")";
     }
 
     /// <summary>Contribution identity, stable across payload reconfiguration (05 s2).</summary>
@@ -397,10 +433,10 @@ namespace GameCore.Contracts
             unchecked
             {
                 int hash = 17;
-                hash = (hash * 31) + (Provider.GetHashCode());
-                hash = (hash * 31) + (Rule.GetHashCode());
-                hash = (hash * 31) + (Target.GetHashCode());
-                hash = (hash * 31) + (Capability.GetHashCode());
+                hash = (hash * 31) + Provider.GetHashCode();
+                hash = (hash * 31) + Rule.GetHashCode();
+                hash = (hash * 31) + Target.GetHashCode();
+                hash = (hash * 31) + Capability.GetHashCode();
                 hash = (hash * 31) + OutputSlot.GetHashCode();
                 return hash;
             }
@@ -438,9 +474,9 @@ namespace GameCore.Contracts
             unchecked
             {
                 int hash = 17;
-                hash = (hash * 31) + (Target.GetHashCode());
-                hash = (hash * 31) + (Owner.GetHashCode());
-                hash = (hash * 31) + (Slot.GetHashCode());
+                hash = (hash * 31) + Target.GetHashCode();
+                hash = (hash * 31) + Owner.GetHashCode();
+                hash = (hash * 31) + Slot.GetHashCode();
                 return hash;
             }
         }
@@ -455,9 +491,9 @@ namespace GameCore.Contracts
     public readonly struct EventCursor : IEquatable<EventCursor>
     {
         public readonly WorldId World;
-        public readonly ulong Sequence;
+        public readonly EventSequence Sequence;
 
-        public EventCursor(WorldId world, ulong sequence)
+        public EventCursor(WorldId world, EventSequence sequence)
         {
             World = world;
             Sequence = sequence;
@@ -465,7 +501,7 @@ namespace GameCore.Contracts
 
         public bool Equals(EventCursor other) =>
             World.Equals(other.World)
-            && Sequence == other.Sequence;
+            && Sequence.Equals(other.Sequence);
 
         public override bool Equals(object? obj) => obj is EventCursor other && Equals(other);
 
@@ -474,7 +510,7 @@ namespace GameCore.Contracts
             unchecked
             {
                 int hash = 17;
-                hash = (hash * 31) + (World.GetHashCode());
+                hash = (hash * 31) + World.GetHashCode();
                 hash = (hash * 31) + Sequence.GetHashCode();
                 return hash;
             }
@@ -483,7 +519,7 @@ namespace GameCore.Contracts
         public static bool operator ==(EventCursor left, EventCursor right) => left.Equals(right);
         public static bool operator !=(EventCursor left, EventCursor right) => !left.Equals(right);
 
-        public override string ToString() => "EventCursor(" + World.ToString() + ", " + Sequence.ToString(CultureInfo.InvariantCulture) + ")";
+        public override string ToString() => "EventCursor(" + World.ToString() + ", " + Sequence.ToString() + ")";
     }
 
     /// <summary>Service contract identity plus version (P-011).</summary>
@@ -509,7 +545,7 @@ namespace GameCore.Contracts
             unchecked
             {
                 int hash = 17;
-                hash = (hash * 31) + (ContractId.GetHashCode());
+                hash = (hash * 31) + ContractId.GetHashCode();
                 hash = (hash * 31) + Version.GetHashCode();
                 return hash;
             }
@@ -544,7 +580,7 @@ namespace GameCore.Contracts
             unchecked
             {
                 int hash = 17;
-                hash = (hash * 31) + (Capability.GetHashCode());
+                hash = (hash * 31) + Capability.GetHashCode();
                 hash = (hash * 31) + Version.GetHashCode();
                 return hash;
             }
@@ -579,8 +615,8 @@ namespace GameCore.Contracts
             unchecked
             {
                 int hash = 17;
-                hash = (hash * 31) + (ProviderInstallationId.GetHashCode());
-                hash = (hash * 31) + (CapabilityId.GetHashCode());
+                hash = (hash * 31) + ProviderInstallationId.GetHashCode();
+                hash = (hash * 31) + CapabilityId.GetHashCode();
                 return hash;
             }
         }
@@ -614,8 +650,8 @@ namespace GameCore.Contracts
             unchecked
             {
                 int hash = 17;
-                hash = (hash * 31) + (CapabilityId.GetHashCode());
-                hash = (hash * 31) + (ProviderInstallationId.GetHashCode());
+                hash = (hash * 31) + CapabilityId.GetHashCode();
+                hash = (hash * 31) + ProviderInstallationId.GetHashCode();
                 return hash;
             }
         }
@@ -649,7 +685,7 @@ namespace GameCore.Contracts
             unchecked
             {
                 int hash = 17;
-                hash = (hash * 31) + (RegistrationKey.GetHashCode());
+                hash = (hash * 31) + RegistrationKey.GetHashCode();
                 hash = (hash * 31) + KeyVersion.GetHashCode();
                 return hash;
             }

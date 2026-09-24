@@ -1,0 +1,31 @@
+{
+  "$comment": "Canonical hexadecimal form for stable ids (P-004, P-054). Exactly one accepted form: 32 lowercase hex characters, no whitespace, no sign and no prefix. The oracle parser and the seam parser must agree on every candidate, and an accepted candidate must round-trip to the identical text.",
+  "cases": [
+    {
+      "caseId": "hex-parsing-canonical-form-only",
+      "title": "only the 32-character lowercase form is accepted; every near miss is rejected",
+      "requirementIds": ["P-004", "P-054"],
+      "testIds": ["TEST-002"],
+      "kind": "idHexParsing",
+      "expected": { "outcome": "valid" },
+      "parameters": {
+        "canonical": "0102030405060708090a0b0c0d0e0f10",
+        "candidates": [
+          { "text": "0102030405060708090a0b0c0d0e0f10", "accepted": true },
+          { "text": "00000000000000000000000000000000", "accepted": true },
+          { "text": "ffffffffffffffffffffffffffffffff", "accepted": true },
+          { "text": "0102030405060708090a0b0c0d0e0f1A", "accepted": false },
+          { "text": "0102030405060708090A0B0C0D0E0F10", "accepted": false },
+          { "text": " 0102030405060708090a0b0c0d0e0f10", "accepted": false },
+          { "text": "0102030405060708090a0b0c0d0e0f10 ", "accepted": false },
+          { "text": "0x0102030405060708090a0b0c0d0e0f", "accepted": false },
+          { "text": "0102030405060708090a0b0c0d0e0f1", "accepted": false },
+          { "text": "0102030405060708090a0b0c0d0e0f100", "accepted": false },
+          { "text": "0102030405060708090a0b0c0d0e0f1g", "accepted": false },
+          { "text": "", "accepted": false },
+          null
+        ]
+      }
+    }
+  ]
+}

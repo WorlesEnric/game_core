@@ -17,6 +17,7 @@ namespace GameCore.ProtocolFixtures.Oracle
         InstallationGeneration = 4,
         DefinitionRevision = 5,
         EventSequence = 6,
+        AdmissionSequence = 7,
     }
 
     /// <summary>Result of one counter advancement attempt.</summary>
