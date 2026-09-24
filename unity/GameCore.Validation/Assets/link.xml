@@ -1,0 +1,19 @@
+<!-- GC-001 qualification probe preservation roots (docs/game-core/04-unity-integration.md section 8 item 4).
+
+     Managed stripping High runs UnityLinker over every managed assembly. Two different mechanisms keep the
+     probe's registrations alive, and this file only covers the second one:
+
+     1. Reachability. The generated catalog in Assets/GameCore.Validation/Generated holds direct references to
+        the fixture plugin factory, the closed generic handler instantiation and the generic job, and the probe
+        runtime references the catalog. Those survive because real code uses them, not because of this file.
+     2. Explicit preservation. The fixture plugin assembly below must be linked into the player even though
+        nothing instantiates it at startup, and its mount happens only via the generated catalog key at
+        runtime. Preserving it here makes "linked but inactive" a guaranteed property of the build instead of an
+        accident of the current reachability graph.
+
+     This is not a substitute for the generated closed generic roots: linker preservation keeps code from being
+     stripped, it does not create a native generic specialization Burst or IL2CPP never saw (see Burst generic
+     jobs, 04 section 8). -->
+<linker>
+  <assembly fullname="GameCore.Validation.Fixture" preserve="all" />
+</linker>
