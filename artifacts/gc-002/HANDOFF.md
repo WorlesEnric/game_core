@@ -13,7 +13,8 @@ Delivered the W0 contract-risk package in four parts:
    (C# 9, nullable enable, warnings-as-errors, deterministic, implicit usings off, analyzers off),
    `dotnet/GameCore.sln` with five projects, root `.gitignore` entries for `dotnet/**/bin`,
    `dotnet/**/obj`, `dotnet/**/TestResults` and `artifacts/**/raw/`, and `dotnet/README.md` with the exact
-   commands.
+   commands. The validator code itself was reviewed and exercised (`--self-test` plus the full run) and no
+   validator bug was found or needed; the one real defect was a documentation link, fixed below.
 2. **Test-only compiled reference seam** `GameCore.ReferenceSeams` (assembly name fixed; all contract types in
    namespace `GameCore.Contracts`) covering the full shared 05 surface: identity types and every generated
    category wrapper, version/epoch/revision counters, runtime handles, manifest schema DTOs, plans/results,

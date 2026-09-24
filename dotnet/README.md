@@ -15,6 +15,9 @@ Unity qualification project and the player gates.
 | `tests/GameCore.ReferenceSeams.Tests` | NUnit 3 | net8.0 | API snapshot freeze test |
 | `tests/GameCore.ProtocolFixtures.Tests` | NUnit 3 | net8.0 | fixture execution tests |
 
+`tests/GameCore.ReferenceSeams.Tests` also references `GameCore.ProtocolFixtures` because repository-root
+discovery (`RepoLayout`) lives there; the seam itself has no dependency on the oracle.
+
 `GameCore.ReferenceSeams` is **test-only**: it freezes the shared compile-time surface of
 `docs/game-core/05-contracts-and-data-model.md` so Wave 1 peers can compile in parallel. GC-003 replaces it
 with production `GameCore.Contracts` without a surface change. Sources live under `tests/` so the same files
