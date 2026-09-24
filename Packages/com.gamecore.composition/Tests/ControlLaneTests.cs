@@ -176,7 +176,7 @@ namespace GameCore.Composition.Tests
             Assert.That(host.Mode, Is.EqualTo(PropagationMode.Conservative));
             Assert.That(host.Snapshot().Revision.Value, Is.EqualTo(1UL));
             Assert.That(admission.Plan!.Delta!.Mode.HasValue, Is.True);
-            Assert.That(admission.Plan.Delta!.Mode!.NewMode, Is.EqualTo(PropagationMode.Conservative));
+            Assert.That(admission.Plan.Delta!.Mode!.Value.NewMode, Is.EqualTo(PropagationMode.Conservative));
         }
 
         [Test]

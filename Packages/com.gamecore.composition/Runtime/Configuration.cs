@@ -473,7 +473,7 @@ namespace GameCore.Composition
         {
             if (layers == null || layers.Count == 0)
             {
-                return ConfigComposeResult.Composed(ConfigDocument.Empty, null);
+                return ConfigComposeResult.Composed(ConfigDocument.Empty, Array.Empty<ConfigFieldProvenance>());
             }
 
             Dictionary<Id128, ConfigFieldValue> values = new Dictionary<Id128, ConfigFieldValue>();

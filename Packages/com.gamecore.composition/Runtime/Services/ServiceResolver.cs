@@ -322,7 +322,7 @@ namespace GameCore.Composition
                 List<ProviderInstallationId> visibleIds = new List<ProviderInstallationId>(visible.Count);
                 for (int v = 0; v < visible.Count; v++)
                 {
-                    visibleIds.Add(visible[v].Node.Instance);
+                    visibleIds.Add(new ProviderInstallationId(visible[v].Node.Instance.Value));
                 }
 
                 List<ServiceBinding> bindings = new List<ServiceBinding>(chosen.Count);
@@ -330,7 +330,7 @@ namespace GameCore.Composition
                 {
                     bindings.Add(new ServiceBinding(
                         chosen[c].Export.Contract,
-                        chosen[c].Node.Instance,
+                        new ProviderInstallationId(chosen[c].Node.Instance.Value),
                         chosen[c].Node.ActivationEpoch,
                         chosen[c].LeaseId(),
                         chosen[c].Export.BindingKind,

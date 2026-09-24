@@ -958,7 +958,7 @@ namespace GameCore.Composition
                     return DiagnosticCode.MissingDependency;
                 }
 
-                if (!current.TryGetInstall(import.ProviderInstallationId, out InstallEntry? provider) || provider == null)
+                if (!current.TryGetInstall(new PluginInstanceId(import.ProviderInstallationId.Value), out InstallEntry? provider) || provider == null)
                 {
                     // A grant that names no provider installation cannot grant anything (P-013).
                     diagnostics.Add(Diag(DiagnosticCode.MissingDependency, payload.Subject, operation, "The imported provider installation is not registered in this world."));

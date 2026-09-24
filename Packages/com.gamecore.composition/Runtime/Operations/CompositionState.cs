@@ -325,8 +325,8 @@ namespace GameCore.Composition
                                 DocumentCodec.WriteIdList(scope, 5, 5, record.ServiceIsolation.Contracts);
                                 scope.WriteBoolField(6, record.CapabilityIsolation.AllContracts);
                                 DocumentCodec.WriteIdList(scope, 7, 7, record.CapabilityIsolation.Contracts);
-                                scope.WriteUInt32Field(8, record.Exclusions.Count);
-                                scope.WriteUInt32Field(9, record.Grants.Imports.Count);
+                                scope.WriteUInt32Field(8, (uint)record.Exclusions.Count);
+                                scope.WriteUInt32Field(9, (uint)record.Grants.Imports.Count);
                                 for (int g = 0; g < record.Grants.Imports.Count; g++)
                                 {
                                     scope.WriteId128Field(10, record.Grants.Imports[g].CapabilityId.Value);

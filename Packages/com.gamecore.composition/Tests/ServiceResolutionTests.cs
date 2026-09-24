@@ -117,7 +117,7 @@ namespace GameCore.Composition.Tests
             rig.Mount(rig.Manifests.ManifestOf(providerType), provider, left);
 
             EditAdmission mounted = rig.Host.SubmitEdit(
-                Payloads.Mount(rig.Manifests.ManifestOf(consumerType), consumer, right),
+                Payloads.Mount(rig.Manifests.ManifestOf(consumerType), consumer, right, null),
                 rig.Issuer.Next(),
                 rig.Revision);
             rig.Host.Drain();
@@ -216,7 +216,7 @@ namespace GameCore.Composition.Tests
 
             PluginInstanceId consumer = rig.Ids.Instance();
             OperationId operation = rig.Issuer.Next();
-            EditAdmission admission = rig.Host.SubmitEdit(Payloads.Mount(rig.Manifests.ManifestOf(consumerType), consumer, Root), operation, rig.Revision);
+            EditAdmission admission = rig.Host.SubmitEdit(Payloads.Mount(rig.Manifests.ManifestOf(consumerType), consumer, Root, null), operation, rig.Revision);
             Assert.That(admission.Staged, Is.True, admission.Code.ToString());
             rig.Host.Drain();
 
@@ -465,7 +465,7 @@ namespace GameCore.Composition.Tests
             rig.Mount(rig.Manifests.ManifestOf(leftType), left, Root);
             CompositionRevision revisionBefore = rig.Revision;
 
-            EditAdmission admission = rig.Host.SubmitEdit(Payloads.Mount(rig.Manifests.ManifestOf(rightType), right, Root), rig.Issuer.Next(), rig.Revision);
+            EditAdmission admission = rig.Host.SubmitEdit(Payloads.Mount(rig.Manifests.ManifestOf(rightType), right, Root, null), rig.Issuer.Next(), rig.Revision);
 
             Assert.That(admission.Code, Is.EqualTo(DiagnosticCode.Cycle), "A required dependency cycle rejects the whole proposal (P-012).");
             Assert.That(rig.Revision, Is.EqualTo(revisionBefore));
@@ -548,9 +548,9 @@ namespace GameCore.Composition.Tests
             host.Drain();
             PluginInstanceId provider = rig.Ids.Instance();
             PluginInstanceId consumer = rig.Ids.Instance();
-            host.SubmitEdit(Payloads.Mount(rig.Manifests.ManifestOf(providerType), provider, Root), issuer.Next(), host.Snapshot().Revision);
+            host.SubmitEdit(Payloads.Mount(rig.Manifests.ManifestOf(providerType), provider, Root, null), issuer.Next(), host.Snapshot().Revision);
             host.Drain();
-            host.SubmitEdit(Payloads.Mount(rig.Manifests.ManifestOf(consumerType), consumer, child), issuer.Next(), host.Snapshot().Revision);
+            host.SubmitEdit(Payloads.Mount(rig.Manifests.ManifestOf(consumerType), consumer, child, null), issuer.Next(), host.Snapshot().Revision);
             host.Drain();
 
             // The mode itself is excluded from the comparison: only resolution behaviour is under test.

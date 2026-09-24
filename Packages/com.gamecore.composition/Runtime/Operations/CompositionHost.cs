@@ -379,7 +379,7 @@ namespace GameCore.Composition
             }
 
             InstallationGeneration generation = InstallationGeneration.First;
-            ActivationEpoch epoch = committed.Epoch;
+            ActivationEpoch epoch = ActivationEpoch.First;
             if (committed.TryGetInstall(owner, out InstallEntry? entry) && entry != null)
             {
                 generation = entry.Record.Generation;
