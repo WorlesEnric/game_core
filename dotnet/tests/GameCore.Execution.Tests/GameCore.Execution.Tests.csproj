@@ -2,7 +2,8 @@
 
   <!-- Pure execution tests (GC-005): temporal debt and pause semantics, guarded dispatch plan validity and drain
        validation, world/job resource ledger retirement and quarantine, and the bounded step publication store.
-       In-process, sub-second, no Unity. -->
+       In-process, sub-second, no Unity. The W1 gate substituted the production GameCore.Contracts project for
+       the W0 test-only reference seam. -->
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -18,7 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="../../src/GameCore.Execution/GameCore.Execution.csproj" />
-    <ProjectReference Include="../../src/GameCore.ReferenceSeams/GameCore.ReferenceSeams.csproj" />
+    <ProjectReference Include="../../src/GameCore.Contracts/GameCore.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

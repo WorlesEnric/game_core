@@ -3,8 +3,8 @@
   <!-- Production composition assembly (GC-004): managed scopes, services, configuration, lifecycle/resource
        ledger and immutable composition snapshots (docs/game-core/01-architecture.md s1, 04 s2). The same
        sources are compiled by Unity through Packages/com.gamecore.composition/Runtime.
-       Until the W1 gate, GameCore.Contracts is satisfied by the frozen W0 reference seam; the gate replaces
-       this single ProjectReference with the production GameCore.Contracts project (identical namespace). -->
+       The W1 gate substituted the production GameCore.Contracts project for the W0 test-only reference seam,
+       so this project and Packages/com.gamecore.composition now compile against the same contract assembly. -->
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../GameCore.ReferenceSeams/GameCore.ReferenceSeams.csproj" />
+    <ProjectReference Include="../GameCore.Contracts/GameCore.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

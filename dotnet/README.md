@@ -20,6 +20,8 @@ Unity qualification project and the player gates.
 | `tests/GameCore.ProtocolFixtures.Production.Tests` | NUnit 3 | net8.0 | the same fixture suite against production `GameCore.Contracts` |
 | `tests/GameCore.Contracts.Tests` | NUnit 3 | net8.0 | contract behaviour and the API-compatibility gate |
 | `tests/GameCore.Content.Compiler.Tests` | NUnit 3 | net8.0 | catalog description rejection, emission reproducibility and the committed probe catalog |
+| `src/GameCore.Composition` | library | netstandard2.1 | `Packages/com.gamecore.composition/Runtime/**/*.cs` |
+| `tests/GameCore.Composition.Tests` | NUnit 3 | net8.0 | the composition package's own `Tests/**` sources |
 | `src/GameCore.Execution` | library | netstandard2.1 | `Packages/com.gamecore.unity.runtime/Runtime/Pure/**/*.cs` |
 | `tests/GameCore.Execution.Tests` | NUnit 3 | net8.0 | engine-free execution core tests |
 
@@ -27,9 +29,13 @@ The two fixture suites share one test source (`tests/GameCore.ProtocolFixtures.T
 They write separate evidence documents, `artifacts/protocol-fixtures/results.json` and
 `artifacts/protocol-fixtures/results-production-contracts.json`, so neither run overwrites the other.
 
-`tests/GameCore.Contracts.Tests` deliberately does **not** reference `GameCore.ReferenceSeams`: both assemblies
-declare the same types in the same namespace, so the frozen surface is compared as a committed text snapshot via
-`GameCore.ApiSnapshot.ApiSurfaceComparer` instead of by referencing two copies of the same types.
+The W1 gate substituted production `GameCore.Contracts` for the frozen W0 reference seam in every production
+consumer: `GameCore.Composition`, `GameCore.Execution` and their test projects reference
+`src/GameCore.Contracts` (the two fixture suites keep their seam builds, so the seam is still compiled and still
+compared against the API snapshot). `tests/GameCore.Contracts.Tests` deliberately does **not** reference
+`GameCore.ReferenceSeams`: both assemblies declare the same types in the same namespace, so the frozen surface is
+compared as a committed text snapshot via `GameCore.ApiSnapshot.ApiSurfaceComparer` instead of by referencing two
+copies of the same types. No assembly in this solution references both contract assemblies.
 
 `GameCore.Execution` compiles the engine-free execution core that also lives inside the Unity assembly
 `GameCore.Unity.Runtime` (namespace `GameCore.Execution`): the temporal accumulator, the guarded dispatch plan,
@@ -53,11 +59,18 @@ and forbidden-language-construct scan) because this repository's authoring host 
 python3 tools/check_game_core_csharp.py
 ```
 
-The whole gate — static checks, documentation validator, build, tests and, when `UNITY` is set, Unity codegen
-plus the IL2CPP probe — is one command:
+The GC-003 task gate — static checks, documentation validator, build, tests and, when `UNITY` is set, Unity
+codegen plus the IL2CPP probe — is one command:
 
 ```sh
 DOTNET=/usr/bin/dotnet PYTHON=/usr/bin/python3 tools/run_gc003_checks.sh
+```
+
+The W1 wave gate (this solution's build and tests, the package EditMode and PlayMode suites, the W1Gate EditMode
+integration assembly, the IL2CPP build and every player probe) is one command:
+
+```sh
+UNITY=~/Unity/Hub/Editor/6000.0.75f1/Editor/Unity DOTNET=/usr/bin/dotnet tools/run_w1_gate.sh
 ```
 
 ## Regenerating the committed probe catalog (GC-003)

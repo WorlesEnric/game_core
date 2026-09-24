@@ -2,6 +2,7 @@
   "name": "GameCore.Validation.ProbeHost",
   "rootNamespace": "GameCore.Validation.ProbeHost",
   "references": [
+    "GameCore.Composition",
     "GameCore.Contracts",
     "GameCore.Unity.Adapters",
     "GameCore.Unity.Fixtures",
@@ -10,8 +11,7 @@
     "GameCore.Validation.Generated",
     "Unity.Burst",
     "Unity.Collections",
-    "Unity.Entities",
-    "GameCore.Contracts"
+    "Unity.Entities"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],

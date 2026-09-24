@@ -2,7 +2,9 @@
 
   <!-- Pure composition resolver/control tests (GC-004). The test sources live in the Unity package's Tests
        folder so the same files run as EditMode tests (docs/game-core/04 s10: pure rules/composition are
-       validated by EditMode tests without a World, GameObjects or PlayerLoop) and here under plain dotnet. -->
+       validated by EditMode tests without a World, GameObjects or PlayerLoop) and here under plain dotnet.
+       The W1 gate substituted the production GameCore.Contracts project for the W0 test-only reference seam:
+       no test stubs in namespace GameCore.TestFixtures are referenced by these sources. -->
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -26,7 +28,7 @@
 
   <ItemGroup>
     <ProjectReference Include="../../src/GameCore.Composition/GameCore.Composition.csproj" />
-    <ProjectReference Include="../../src/GameCore.ReferenceSeams/GameCore.ReferenceSeams.csproj" />
+    <ProjectReference Include="../../src/GameCore.Contracts/GameCore.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

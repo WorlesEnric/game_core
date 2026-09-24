@@ -3,7 +3,8 @@
   <!-- Engine-free execution core (GC-005). The same sources are compiled into the Unity assembly
        GameCore.Unity.Runtime; here they build with a plain .NET SDK so the temporal accumulator, the guarded
        dispatch plan, the world/job resource ledger and the step publication boundary can be tested without Unity.
-       No UnityEngine or Unity.* reference is allowed in these files. -->
+       No UnityEngine or Unity.* reference is allowed in these files. The W1 gate substituted the production
+       GameCore.Contracts project for the W0 test-only reference seam. -->
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
@@ -18,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../GameCore.ReferenceSeams/GameCore.ReferenceSeams.csproj" />
+    <ProjectReference Include="../GameCore.Contracts/GameCore.Contracts.csproj" />
   </ItemGroup>
 
 </Project>
