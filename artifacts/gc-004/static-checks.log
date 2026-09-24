@@ -3,7 +3,7 @@ GC-004 composition package — interpreter static checks (NOT a build and NOT a 
 Host: macOS arm64, no .NET SDK, no Unity, no Mono. Nothing in this package has been compiled or executed.
 Build and test evidence belongs to the Linux build host: see HANDOFF.md section 3.
 
-Inventory: 19 C# files, 9077 lines
+Inventory: 19 C# files, 9080 lines
   Packages/com.gamecore.composition/Runtime/Configuration.cs                   553 lines
   Packages/com.gamecore.composition/Runtime/ConfigurationCodec.cs              281 lines
   Packages/com.gamecore.composition/Runtime/Documents.cs                       327 lines
@@ -22,33 +22,38 @@ Inventory: 19 C# files, 9077 lines
   Packages/com.gamecore.composition/Tests/Fixtures/ManifestBuilders.cs          89 lines
   Packages/com.gamecore.composition/Tests/ResourceGateTests.cs                 299 lines
   Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs        417 lines
-  Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs            607 lines
+  Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs            610 lines
 
 Checks performed (lexical/structural only; no compiler available on this host):
-  1. balanced braces/parens/brackets outside strings and comments                       -> PASS
+  1. balanced braces/parens/brackets outside strings and comments                            -> PASS
   2. no C# 10+ construct forbidden by the Unity profile (record, record struct, `required`,
-     `init`, global using, file-scoped namespace, raw string literal, static abstract)
-     and no UnityEngine/Unity.* reference                                              -> PASS
+     `init`, global using, file-scoped namespace, raw string literal, static abstract), and
+     no UnityEngine/Unity.* reference                                                        -> PASS
   3. every constructed type resolves to the frozen seam snapshot (tests/GameCore.ReferenceSeams
-     + api/GameCore.Contracts.api.txt), to this package, or to the BCL                    -> PASS
-  4. constructor arity of every seam type call matches the frozen API snapshot            -> PASS
-  5. constructor arity of every package type call matches its declaration                  -> PASS
-  6. every member access on a known seam/package type exists in the API snapshot or the
-     package's own declarations                                                           -> PASS
-  7. every interface implemented by a package type declares all of the interface's members -> PASS
-  8. no duplicate type declarations and no duplicate member signatures                      -> PASS
-  9. no unused private fields and no obviously unused locals (CS0414/CS0219 risk)           -> PASS
- 10. no assignment to a read-only property of a seam or package type                        -> PASS
+     plus api/GameCore.Contracts.api.txt), to this package, or to the BCL                     -> PASS
+  4. constructor arity of every seam type call matches the frozen API snapshot                 -> PASS
+  5. constructor arity of every package type call matches its declaration                      -> PASS
+  6. every member access on a known seam/package type exists in the API snapshot or in the
+     package's own declarations                                                                -> PASS
+  7. every interface implemented by a package type declares all of the interface's members      -> PASS
+  8. no duplicate type declarations and no duplicate member signatures                          -> PASS
+  9. no unused private fields and no obviously unused locals (CS0414/CS0219 risk)               -> PASS
+ 10. no assignment to a read-only property of a seam or package type                            -> PASS
 
-Negative controls (planted defects, checker must reject):
-  control A (`record struct`, `required`, `init`, UnityEngine using, unbalanced brace)
-    -> detected: unbalanced braces, forbidden record struct, forbidden required modifier,
-       forbidden init accessor, forbidden Unity reference.  CONFIRMED.
-  control B (`ContentHash.MakeFromNothing()`, `new InstallRecord()` with 0 arguments)
-    -> detected: member ContentHash.MakeFromNothing, ctor arity new InstallRecord(...) with 0
-       args vs [8].  CONFIRMED.
-  Scope limit: check 6 validates members of *known* owners only; a wholly unknown type name is
-  outside its reach, so it is a defect-hunter, not a complete type checker.
+Negative controls (planted defects the checker must reject):
+  control A (`record struct`, `required`, `init`, UnityEngine using, unbalanced brace):
+    detected unbalanced braces, forbidden record struct, forbidden required modifier, forbidden init
+    accessor and a forbidden Unity reference.  CONFIRMED.
+  control B (`ContentHash.MakeFromNothing()`, `new InstallRecord()` with zero arguments):
+    detected member ContentHash.MakeFromNothing and constructor arity new InstallRecord(...) with 0
+    arguments against the declared 8.  CONFIRMED.
+  Scope limit: check 6 validates members of *known* owners only, so a wholly unknown type name is
+  outside its reach; it is a defect hunter, not a complete type checker.
+
+Documentation gate (the one check this host can execute; this change adds no docs under docs/game-core):
+  python3 tools/validate_game_core_docs.py
+    -> "Game Core documentation validation passed: 14 Markdown documents; local links, anchors, IDs,
+        traceability, task DAG and wave ordering checked."
 
 NotRun (pending orchestrator build host):
   dotnet build dotnet/GameCore.sln -c Release

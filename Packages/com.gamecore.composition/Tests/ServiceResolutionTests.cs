@@ -347,9 +347,12 @@ namespace GameCore.Composition.Tests
             Assert.That(rig.StateOf(selecting), Is.EqualTo(InstallationState.Active));
             Assert.That(rig.BindingsOf(selecting)[0].Provider, Is.EqualTo(new ProviderInstallationId(outerProvider.Value)));
 
-            // Selecting a provider outside the visibility boundary is refused, never silently replaced.
+            // Selecting a provider outside the visibility boundary is refused, never silently replaced: a
+            // sibling scope's provider is not in this consumer's domain at all (P-011).
+            ScopeId elsewhere = rig.Ids.Scope();
+            rig.CreateScope(elsewhere, outer);
             PluginInstanceId foreign = rig.Ids.Instance();
-            rig.Mount(rig.Manifests.ManifestOf(providerType), foreign, Root);
+            rig.Mount(rig.Manifests.ManifestOf(providerType), foreign, elsewhere);
             PluginInstanceId badSelection = rig.Ids.Instance();
             OperationId operation = rig.Issuer.Next();
             EditAdmission admission = rig.Host.SubmitEdit(
