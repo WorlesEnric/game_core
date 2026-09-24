@@ -1,8 +1,10 @@
 # GameCore.ProtocolFixtures — independent pure oracle (GC-002)
 
-Test-only, Unity-free, independent protocol oracle. It references **only** `GameCore.ReferenceSeams` and
-`System.Text.Json`; it imports no engine and no gameplay assembly, and an executed case
-(`assembly-independence.json`) asserts that boundary rather than merely claiming it.
+Test-only, Unity-free, independent protocol oracle. Its seam build references only `GameCore.ReferenceSeams`
+and `System.Text.Json`; its production build references only `GameCore.Contracts` and `System.Text.Json`. It
+imports no engine and no gameplay assembly, and an executed case (`assembly-independence.json`) asserts that
+boundary rather than merely claiming it. Both builds compile these same sources and run the same test source
+(`dotnet/src/GameCore.ProtocolFixtures*`, `dotnet/tests/GameCore.ProtocolFixtures*.Tests`).
 
 ## What is here
 
@@ -57,7 +59,10 @@ declared `code`). Kind-specific parameters, the full list of refusal codes and t
 
 ## Result format
 
-The test project writes `artifacts/protocol-fixtures/results.json` through `ResultDocument`:
+The seam suite writes `artifacts/protocol-fixtures/results.json` through `ResultDocument`; the production suite
+sets `GAMECORE_FIXTURE_RESULT_NAME=results-production-contracts.json` (in
+`dotnet/tests/GameCore.ProtocolFixtures.Production.Tests/ProductionRunResultPath.cs`) and writes that file
+instead, so the two runs keep separate evidence:
 
 ```json
 {

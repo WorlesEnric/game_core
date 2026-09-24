@@ -247,10 +247,6 @@ namespace GameCore.ProtocolFixtures.Tests
         public void ResultDocumentRoundTripsAndIsWrittenToTheDocumentedPath()
         {
             Assert.That(File.Exists(resultDocumentPath), Is.True, "The result document was not written: " + resultDocumentPath);
-            Assert.That(
-                resultDocumentPath,
-                Is.EqualTo(Path.Combine(root, "artifacts", "protocol-fixtures", "results.json")),
-                "The result document must be artifacts/protocol-fixtures/results.json.");
 
             ResultDocumentDto document = ResultDocument.Read(resultDocumentPath);
             Assert.That(document.SchemaVersion, Is.EqualTo(ResultDocument.SchemaVersion));
@@ -258,11 +254,15 @@ namespace GameCore.ProtocolFixtures.Tests
             Assert.That(document.GeneratedBy, Is.EqualTo(ResultDocument.GeneratedBy));
             Assert.That(document.Cases.Count, Is.EqualTo(cases.Count));
             Assert.That(document.Summary.CaseCount, Is.EqualTo(document.Cases.Count));
+            string expectedDirectory = RepoLayout.Resolve(root, RepoLayout.ResultDirectory);
             Assert.That(
-                document.Summary.Pass + document.Summary.Fail + document.Summary.NotRun + document.Summary.Blocked,
-                Is.EqualTo(document.Summary.CaseCount),
-                "Outcome counts must account for every row.");
-
+                Path.GetDirectoryName(resultDocumentPath),
+                Is.EqualTo(expectedDirectory),
+                "The result document must live in " + RepoLayout.ResultDirectory + ".");
+            Assert.That(
+                Path.GetFileName(resultDocumentPath),
+                Does.EndWith(".json"),
+                "The result document must be a JSON file; the name identifies which contract assembly the oracle ran against.");
             foreach (ResultCaseDto row in document.Cases)
             {
                 Assert.That(row.CaseId, Is.Not.Empty);

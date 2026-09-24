@@ -348,10 +348,13 @@ namespace GameCore.ProtocolFixtures.Fixtures
 
         private static OracleVerdict EvaluateAssemblyIndependence(JsonElement parameters)
         {
-            string assemblyName = RequireString(parameters, "assemblyName");
+            // Two supported tokens keep one case file valid for both oracle runs: {oracleAssembly} is the
+            // assembly containing this runner, {kernelAssembly} is the assembly containing the contract types.
+            // Neither token weakens the check: each asserts the assembly actually loaded in this test process.
+            string assemblyName = SubstituteRunTokens(RequireString(parameters, "assemblyName"));
             IReadOnlyList<string> forbiddenPrefixes = OptionalStringArray(parameters, "forbiddenNamespacePrefixes");
             IReadOnlyList<string> forbiddenAssemblies = OptionalStringArray(parameters, "forbiddenAssemblyNames");
-            IReadOnlyList<string> requiredReferences = OptionalStringArray(parameters, "requiredReferences");
+            IReadOnlyList<string> requiredReferences = SubstituteRunTokens(OptionalStringArray(parameters, "requiredReferences"));
 
             Assembly assembly;
             try
@@ -427,6 +430,30 @@ namespace GameCore.ProtocolFixtures.Fixtures
 
             return OracleVerdict.Valid(
                 assemblyName + " references " + references.Count + " assemblies, none of them engine or gameplay");
+        }
+
+        /// <summary>Replaces the two documented run tokens with this test process's assembly names.</summary>
+        private static string SubstituteRunTokens(string text)
+        {
+            string oracle = typeof(RepoLayout).Assembly.GetName().Name ?? string.Empty;
+            string kernel = typeof(Id128).Assembly.GetName().Name ?? string.Empty;
+            return text.Replace("{oracleAssembly}", oracle).Replace("{kernelAssembly}", kernel);
+        }
+
+        private static IReadOnlyList<string> SubstituteRunTokens(IReadOnlyList<string> items)
+        {
+            if (items.Count == 0)
+            {
+                return items;
+            }
+
+            string[] substituted = new string[items.Count];
+            for (int i = 0; i < items.Count; i++)
+            {
+                substituted[i] = SubstituteRunTokens(items[i]);
+            }
+
+            return substituted;
         }
 
         private static OracleVerdict EvaluateIdHexParsing(JsonElement parameters)

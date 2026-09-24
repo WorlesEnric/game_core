@@ -265,12 +265,12 @@
         "P-057"
       ],
       "parameters": {
-        "assemblyName": "simple assembly name to inspect",
+        "assemblyName": "simple assembly name to inspect; the tokens {oracleAssembly} and {kernelAssembly} are substituted by the runner with the assembly actually loaded in the test process",
         "forbiddenNamespacePrefixes": "optional array of namespace prefixes that must not appear in exported types",
         "forbiddenAssemblyNames": "optional array of referenced assembly names that must not appear",
-        "requiredReferences": "optional array of referenced assembly names that must appear"
+        "requiredReferences": "optional array of referenced assembly names that must appear; the same two tokens are substituted here"
       },
-      "asserts": "the kernel-only boundary: the oracle and the reference seam reference neither an engine nor a gameplay assembly; refusal codes GameplayOrEngineDependency, MissingSeamReference, ForbiddenNamespace, AssemblyNotLoadable"
+      "asserts": "the kernel-only boundary: the oracle and the kernel contract assembly it compiles against reference neither an engine nor a gameplay assembly; refusal codes GameplayOrEngineDependency, MissingSeamReference, ForbiddenNamespace, AssemblyNotLoadable"
     },
     "idHexParsing": {
       "requirements": [

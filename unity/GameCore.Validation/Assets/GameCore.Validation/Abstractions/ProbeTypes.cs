@@ -1,4 +1,5 @@
 #nullable enable
+using GameCore.Contracts;
 namespace GameCore.Validation.Probe
 {
     /// <summary>
@@ -52,7 +53,8 @@ namespace GameCore.Validation.Probe
     /// </summary>
     public interface IProbeHandler<TInput, TOutput>
     {
-        ProbeKey HandlerKey { get; }
+        /// <summary>Generated registration key of this handler, in the production contract shape (P-009).</summary>
+        FactoryKey HandlerKey { get; }
 
         TOutput Handle(TInput input);
     }
@@ -64,12 +66,12 @@ namespace GameCore.Validation.Probe
     public sealed class ProbeScalarHandler<TValue> : IProbeHandler<TValue, int>
         where TValue : struct, IProbeScalarSource
     {
-        public ProbeScalarHandler(ProbeKey handlerKey)
+        public ProbeScalarHandler(FactoryKey handlerKey)
         {
             HandlerKey = handlerKey;
         }
 
-        public ProbeKey HandlerKey { get; }
+        public FactoryKey HandlerKey { get; }
 
         public int Handle(TValue input) => input.Scalar;
     }
@@ -88,7 +90,7 @@ namespace GameCore.Validation.Probe
         }
 
         /// <summary>Roots a closed generic handler instantiation and returns its key for diagnostics.</summary>
-        public static ProbeKey TrackHandler<TValue>(IProbeHandler<TValue, int> handler)
+        public static FactoryKey TrackHandler<TValue>(IProbeHandler<TValue, int> handler)
         {
             if (handler == null)
             {
