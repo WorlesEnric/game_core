@@ -1,5 +1,13 @@
 {
   "dependencies": {
+    "com.gamecore.composition": {
+      "version": "file:../../../Packages/com.gamecore.composition",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.gamecore.contracts": "file:../com.gamecore.contracts"
+      }
+    },
     "com.gamecore.content.compiler": {
       "version": "file:../../../Packages/com.gamecore.content.compiler",
       "depth": 0,
@@ -11,6 +19,24 @@
       "depth": 0,
       "source": "local",
       "dependencies": {}
+    },
+    "com.gamecore.unity.adapters": {
+      "version": "file:../../../Packages/com.gamecore.unity.adapters",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.unity.entities": "1.4.6"
+      }
+    },
+    "com.gamecore.unity.runtime": {
+      "version": "file:../../../Packages/com.gamecore.unity.runtime",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.unity.burst": "1.8.28",
+        "com.unity.collections": "2.6.6",
+        "com.unity.entities": "1.4.6"
+      }
     },
     "com.unity.burst": {
       "version": "1.8.28",
