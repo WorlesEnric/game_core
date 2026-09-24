@@ -308,7 +308,8 @@ Recorded here because 00 wins over 05, which wins over 09; each decision is the 
 
 ## 7. Proposed seam changes
 
-None. `tests/GameCore.ReferenceSeams/**`, its API snapshot and the W0 gate are unchanged. All additions to the
-production surface are listed in §5 items 2–5 and in `Packages/com.gamecore.contracts/README.md` §3, and
+**None proposed by this task.** `tests/GameCore.ReferenceSeams/**` is byte-identical to `origin/main`; the only
+seam change on this branch arrived through the merge (§5 item 13). All additions to the production surface are
+listed in §5 items 2–5 and in `Packages/com.gamecore.contracts/README.md` §3, and
 `dotnet/tests/GameCore.Contracts.Tests` enforces "strict superset, no removals" against the frozen snapshot as a
-committed test.
+committed test, with `tools/check_contract_surface_parity.py` backing the same rule on a compiler-less host.
