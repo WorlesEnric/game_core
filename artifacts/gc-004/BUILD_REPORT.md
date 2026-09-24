@@ -1,5 +1,7 @@
 # GC-004 Linux build report
 
+**Current result: see [Round 2](#round-2) below — Release build Pass; 124 tests passed, 0 failed, 0 skipped; cancellation identity blocker resolved.** The Round 1 sections and logs are retained as historical evidence, not current failures.
+
 ## Verdict
 
 **Release build: Pass. NUnit solution run: 98 passed, 0 failed, 0 skipped. Full P-050 conformance: Blocked by the frozen cancellation response seam; a separate cancellation-identity probe fails.**
@@ -299,3 +301,134 @@ Logical fix commits:
 Build/test evidence and this report are committed separately after those fixes. Publication command: `git push origin gc-004`. The push outcome is reported by the worker's final response rather than pre-claimed here.
 
 The implementation handoff remains historical; this report and its executable evidence supersede its “nothing compiled” status and qualify its coverage/assumption claims. Frozen seam reopening is required to resolve the cancellation blocker; it is not hidden behind the green NUnit count.
+
+## Round 2
+
+### Verdict and scope
+
+**Pass: clean Release rebuild, 124/124 solution tests, 12/12 focused cancellation tests, and standalone host smoke. Unity: NotRun by task instruction.**
+
+Starting revision was `56fffc8`, including the merged `CancelOutcome.IdempotencyConflict` / `Rejected` seam and cancellation ledger implementation. The requested synchronization command ran successfully before reading the handoff:
+
+```sh
+git fetch origin && git checkout gc-004 && git reset --hard origin/gc-004
+```
+
+The former cancellation blocker is resolved, not waived. The existing permanent test `CancellationIdentityTests.TheConformanceProbeForCancellationIdentityNowResolvesCorrectly` passed in the initial, repaired, focused, and final runs. It checks changed-target reuse returns `IdempotencyConflict`, the original target remains cancelled, the second remains pending and subsequently publishes, and the cancellation request remains retrievable. The standalone executable independently exercised that host path. No file under `tests/GameCore.ReferenceSeams/**` was changed; [SHA-256 evidence](round-2/frozen-seam-integrity.json) compares all files with the synchronized baseline.
+
+All 92 incoming composition tests remain present and execute; one cancellation-retention regression was added, giving 93 composition tests plus 31 W0 tests. No test was deleted, skipped, ignored, or disabled. Corrections to erroneous expectations and setups are justified below. This is evidence for the pure GC-004 surface, not full V1 or Unity integration conformance.
+
+### Host, toolchain, commands
+
+- Ubuntu 24.04, Linux x86_64; exact kernel: [host.log](round-2/host.log).
+- .NET SDK **8.0.425**, MSBuild **17.11.48+02bf66295**, runtime **8.0.31**, RID `linux-x64`: [dotnet-info.log](round-2/dotnet-info.log).
+- VSTest **17.11.1**. Resolved package/project libraries: [resolved-packages.json](round-2/resolved-packages.json).
+- Effective composition compiler contract remains **C# 9.0**, **netstandard2.1**, **TreatWarningsAsErrors=true**: [compiler-settings.json](round-2/compiler-settings.json). No framework/language relaxation or new dependency.
+- Actual compiled assembly inspection: Composition references `netstandard` and `GameCore.ReferenceSeams`; ReferenceSeams references `netstandard`. Neither references Unity: [smoke.log](round-2/smoke.log).
+
+All 14 toolchain/build/test/smoke process invocations, in order, with exact argv, working directory, expanded environment, exit status and output path are recorded in [commands.json](round-2/commands.json). Every dotnet process used:
+
+```sh
+export DOTNET_ROOT="$HOME/.dotnet"
+export PATH="$HOME/.dotnet:$PATH"
+export DOTNET_CLI_TELEMETRY_OPTOUT=1
+```
+
+Commands run from the repository root:
+
+```sh
+dotnet --info
+uname -a
+dotnet build dotnet/GameCore.sln -c Release --no-incremental
+dotnet test dotnet/GameCore.sln -c Release --no-build --logger trx \
+  --results-directory /home/worlesenric/wkspace/gc-wt/gc-004/artifacts/gc-004/round-2/tests-initial
+dotnet test dotnet/GameCore.sln -c Release --no-build --logger trx \
+  --results-directory /home/worlesenric/wkspace/gc-wt/gc-004/artifacts/gc-004/round-2/tests-fixed
+dotnet test dotnet/tests/GameCore.Composition.Tests/GameCore.Composition.Tests.csproj \
+  -c Release --filter FullyQualifiedName~CancelledTargetRetentionStartsAtCancellationRatherThanWorldCreation \
+  --logger trx --results-directory /home/worlesenric/wkspace/gc-wt/gc-004/artifacts/gc-004/round-2/retention-before
+dotnet test dotnet/tests/GameCore.Composition.Tests/GameCore.Composition.Tests.csproj \
+  -c Release --filter FullyQualifiedName~CancellationIdentityTests \
+  --logger trx --results-directory /home/worlesenric/wkspace/gc-wt/gc-004/artifacts/gc-004/round-2/cancellation-final
+dotnet test dotnet/GameCore.sln -c Release --logger trx \
+  --results-directory /home/worlesenric/wkspace/gc-wt/gc-004/artifacts/gc-004/round-2/tests-final
+dotnet msbuild dotnet/src/GameCore.Composition/GameCore.Composition.csproj \
+  -getProperty:LangVersion,TargetFramework,TreatWarningsAsErrors
+dotnet run --project /tmp/gc-004-round2-smoke-szuotwdu/Smoke.csproj -c Release
+```
+
+The `build --no-incremental` command ran five times: initial, second, compiled, fixed, and final, with separate logs in `round-2/`. The two initial build failures are retained. The standalone temporary net8.0/C# 9 project referenced the real composition project, not the NUnit assembly. It exercised staging, cancellation conflict, request retrieval, surviving publication, retransmission, canonical set deduplication, and assembly references. Its project/build outputs were removed after the successful run.
+
+### Real execution results
+
+| Run | Pass | Fail | Skipped | Status |
+|---|---:|---:|---:|---|
+| Initial rebuild | — | 1 compiler error | — | Fail: missing collection namespace |
+| Second rebuild | — | 2 compiler errors | — | Fail: wrong status-read argument types |
+| Compiled rebuild | — | 0 errors / 0 warnings | — | Pass |
+| Initial full solution | 112 | 11 | 0 | Fail |
+| Repaired rebuild | — | 0 errors / 0 warnings | — | Pass |
+| Repaired full solution | 123 | 0 | 0 | Pass |
+| New retention regression, before fix | 0 | 1 | 0 | Fail, reproduced premature expiry |
+| Focused cancellation suite, after fix | 12 | 0 | 0 | Pass |
+| Final clean Release rebuild | — | 0 errors / 0 warnings | — | Pass |
+| Final full solution | **124** | **0** | **0** | **Pass** |
+| Standalone host smoke | 1 scenario | 0 | — | Pass, exit 0 |
+| Unity EditMode / PlayMode / IL2CPP | — | — | — | **NotRun**, explicitly excluded |
+
+Final per-fixture counts, parsed from the actual TRX files:
+
+| Fixture | Pass | Fail | Skipped / NotRun |
+|---|---:|---:|---:|
+| ReferenceSeams / `ApiSnapshotTests` | 3 | 0 | 0 |
+| ReferenceSeams / `SeamContractTests` | 18 | 0 | 0 |
+| ProtocolFixtures / `ProtocolFixtureTests` | 10 | 0 | 0 |
+| Composition / `BuildHostRegressionTests` | 8 | 0 | 0 |
+| Composition / `CancellationIdentityTests` | 12 | 0 | 0 |
+| Composition / `ConfigurationTests` | 8 | 0 | 0 |
+| Composition / `ControlLaneTests` | 20 | 0 | 0 |
+| Composition / `DiagnosticContractTests` | 4 | 0 | 0 |
+| Composition / `InstallationLifecycleTests` | 5 | 0 | 0 |
+| Composition / `ResourceGateTests` | 7 | 0 | 0 |
+| Composition / `ScopeTreeTests` | 10 | 0 | 0 |
+| Composition / `ServiceResolutionTests` | 19 | 0 | 0 |
+| **Total** | **124** | **0** | **0** |
+
+[test-results.json](round-2/test-results.json) contains every test name, fixture, duration, outcome and failure message across all runs. [tests-final/](round-2/tests-final/) contains raw final TRX; [tests-final.log](round-2/tests-final.log) contains console output. Protocol fixture execution regenerated `artifacts/protocol-fixtures/results.json`: **58 data cases Pass**, nested inside the 10 NUnit tests, not 58 additional tests. Its contents were unchanged, so no new diff was needed. The existing merged API snapshot passed without regeneration. No Unity package lockfile was generated or changed. All evidence files are below 2 MB; no trimming was necessary.
+
+### Fixes and specification justification
+
+Source/test repairs are committed as **`b6619b8` — `fix(composition): repair Round 2 conformance and cancellation retention`**.
+
+| File / failure | Minimal correction and reason |
+|---|---|
+| `Runtime/Lifecycle/InstallationStateMachine.cs`: CS0246 | Import `System.Collections.Generic` for `IReadOnlyList<T>`. No lifecycle edge or language setting changed. |
+| `Tests/CancellationIdentityTests.cs`: two CS1503 errors | Wrap foreign/unknown operation IDs in `OperationStatusHandle(operation, CompositionRevision.Zero)` for `host.Read`, matching its existing API and test conventions. Both `Unknown` expectations remain unchanged. |
+| `Runtime/Configuration.cs`: `EveryFieldKindRoundTripsThroughTheCanonicalDocument` | `OfIdSet` sorted but retained duplicates. It now compacts the sorted copy and freezes the unique values. `UnionWith` delegates canonicalization to this single implementation rather than sorting/deduplicating twice. P-020 requires canonical set union; ordered arrays retain their distinct existing behavior. Original exact-member assertions are unchanged and now pass. |
+| `Runtime/Operations/CompositionEditApplier.cs`: second-root rejection | A nondefault scope with default parent is a second-root declaration, not a missing ordinary parent. Reject `OwnershipConflict` consistently with `ScopeRegistry.TryAdd` and the one-root P-010 invariant. The test's expected code is unchanged. Ordinary unknown parents still produce `MissingDependency`. |
+| `Runtime/Services/ServiceResolver.cs` and `CompositionEditApplier.cs`: service conflict diagnostics | Closure rejection previously discarded the contract/provider set and replaced it with a generic diagnostic. `ServiceResolution.Diagnostics` now transports the actual selection/conflict diagnostic; the applier stamps the owning operation and preserves its fields. All constructor callsites were migrated. This implements P-052's smallest-known-conflicting-set requirement without changing provider-selection rules. |
+| `CompositionEditApplier.cs`: missing-provider diagnostic operation | The plan-level diagnostic was stamped, but the published installation retained the resolver's default operation ID. Stamp once and use the same diagnostic for both installation and plan. `AMissingRequiredProviderDiagnosticNamesTheContractAndZeroProviders` now passes unchanged. |
+| `DiagnosticContractTests.AServiceConflictDiagnosticNamesTheOperationPhaseInvolvedProvidersAndRetry` | Corrected an invalid graph's expected staged/waiting publication to terminal `Rejected(ServiceConflict)`, reading the admission diagnostic. P-011 identifies duplicate single providers as conflict; 00 §9 and O-03 require invalid graphs to reject before publication, unlike missing dependencies. Added unchanged revision, absent consumer, empty drain and ledger rejection checks; provider IDs/count and operation assertions remain. |
+| `DiagnosticContractTests.EveryReachableRefusalCarriesItsCodePhaseOperationAndClassification` | Allocate the cycle request identity after its two setup operations. The old lower sequence was correctly refused as `ResultExpired` under P-050 before reaching cycle validation. The expected `Cycle` and structured diagnostic assertions remain unchanged. |
+| `ControlLaneTests.LaneCapacityRefusesFurtherAdmission` | Configure a nonzero step-retention window and actually advance past it before expecting expiry/capacity recovery. The old fixture configured no step expiry and never evicted the retained row. Existing refusal, expiry, admission and publication expectations remain. |
+| `ControlLaneTests.CancellingAnExpiredOperationReportsExpiry` | With retention count 1, the first cancellation request now correctly occupies the sole retained result and evicts the second edit result. Assert that eviction and expect `ResultExpired`, not `TooLate`, on the next target lookup. P-050 applies the ledger/retention rules to every mutating operation, including cancellation; O-18 requires explicit expired status. The dedicated before/after-cutoff test still proves `TooLate` for retained published targets. |
+| `InstallationLifecycleTests.NoStateIsItsOwnSuccessorAndDisposedIsTerminal` | Correct the assertion that accidentally forbade `Retiring -> Disposed`. Assert that an edge into Disposed is allowed exactly from Retiring. 06 §1 explicitly permits it when resources settle, consistent with P-046/P-048. Self-edge and terminal-state assertions remain; the exhaustive 81-pair test also passes. |
+| `ScopeTreeTests.AnEmptyScopeCanBeRemovedAfterItsMembersAreReparentedOut` | Expected depth corrected from 1 to 2: the new path is root (0) → keep (1) → child (2), down from depth 3 before the move. P-010's rooted-tree invariant and O-02 parent change require this value; parent identity and safe empty-scope removal checks remain. |
+| `ServiceResolutionTests.NearestAncestorProviderWinsWhenItDeclaresTheOverride` | The “without override” control still used the overriding provider, so its successful binding was correct. Remove the initial consumer/overriding provider and install a plain provider at the same inner scope before the control request. The positive nearest-ancestor binding and negative `ServiceConflict` expectations remain unchanged. |
+| `ServiceResolutionTests.DeclaredVersionRangeAcceptsBothEndpointsAndRejectsJustOutside` | Adding a second visible compatible single provider must reject the graph, not publish Waiting (P-011, 00 §9, O-03). Assert `Rejected(ServiceConflict)`, unchanged revision, absent candidate and preservation of the lower-endpoint binding. Then unmount the lower provider and mount the upper with a fresh operation before checking upper-bound inclusion. Both endpoint and out-of-range assertions remain. |
+| `Runtime/Operations/OperationLedger.cs`: premature cancelled-target expiry | Cancellation manually marked the target settled without setting its logical settlement step, leaving zero. A cancellation at step 10 with a two-step window therefore expired the target at step 12 while the request remained retained. Route target settlement through existing `Settle(..., CurrentStep)` so publication metadata and retention origin are recorded consistently. Permanent `CancelledTargetRetentionStartsAtCancellationRatherThanWorldCreation` failed before this fix and passed afterward: both rows survive through step 12, expire at 13, and expired retry cannot publish. |
+
+No frozen seam, Unity manifest, build configuration, package dependency, or unrelated runtime feature was changed. No new design decision was required from the seam owner. Diagnostic transport is package-local; the frozen API snapshot remains untouched. The report serves as this build-fix change record; implementation design documents were intentionally unchanged because the fixes restore their existing contracts.
+
+### Coverage qualification and remaining NotRun work
+
+- **TEST-002 / TEST-009 pure subset: Pass**, now including cancellation identity, retrieval, retransmission, conflict preservation, capacity/refusal, Applying cutoff and retention at nonzero steps. The Applying fixture uses the ledger's phase latch, not a concurrent Unity publication race.
+- **TEST-003 / TEST-006 pure service subset: Pass**, including corrected strict-ancestor override control, inclusive version endpoints, invalid-graph rejection and detailed conflict diagnostics.
+- **TEST-004 / TEST-008 scope subset: Pass**, including root restrictions, membership, move-depth and empty/subtree removal checks. Target derivation and the 50×500 differential index workload remain NotRun.
+- **TEST-015 / TEST-016 managed subset: Pass**, including exhaustive lifecycle edge-table checks, existing resource teardown/regression tests, and cancellation retention. No native jobs, world restart, 1,000-cycle churn or full fault-boundary matrix was run.
+- **P-052 remains partial conformance**, not a claim that every emitted code has complete structured payloads. The executed four diagnostic fixtures cover their named rejection and missing-provider cases; generic cycle/other closure diagnostics and later-wave plan/budget/provenance coverage are not promoted to full conformance by this run.
+- No dotnet test remains failing or blocked. Broader suite gaps in the Round 1 qualifications and handoff §8.5 remain unless explicitly covered above. Unity Editor availability, licensing, EditMode, PlayMode and IL2CPP were not probed; all remain **NotRun**, not Blocked by an assumed installation problem.
+
+### Publication
+
+Fixes were committed before the evidence/report commit. Publication command: `git push origin gc-004`; the worker's final response records the observed push outcome rather than this document pre-claiming it. No other worktree was touched.
