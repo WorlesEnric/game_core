@@ -295,14 +295,44 @@ namespace GameCore.Composition
             return new ServiceResolution(DiagnosticCode.None, resolutions, activationOrder);
         }
 
+        /// <summary>
+        /// One dependency diagnostic carrying what P-052 requires a caller to act on: the contract identity as
+        /// the involved id, the visible provider set as the smallest known conflicting/providing set, the count
+        /// of visible providers, the retry classification, and the resolution domain in the summary. The
+        /// operation identity is stamped in later by whichever operation owns the plan.
+        /// </summary>
+        private static Diagnostic DependencyDiagnostic(
+            DiagnosticCode code,
+            ServiceDependency dependency,
+            ServiceNode consumer,
+            List<ProviderInstallationId> visibleProviders,
+            string summary)
+        {
+            List<Id128> involved = new List<Id128>(visibleProviders.Count + 1) { dependency.Contract.ContractId };
+            for (int i = 0; i < visibleProviders.Count; i++)
+            {
+                involved.Add(visibleProviders[i].Value);
+            }
+
+            return new Diagnostic(
+                code,
+                OperationPhase.Validation,
+                default(OperationId),
+                ContentHash.Empty,
+                involved,
+                null,
+                visibleProviders.Count,
+                0L,
+                RetryClassification.RequiresChangedInput,
+                summary + " consumer=" + consumer.Instance.ToString() + ".");
+        }
+
         private static ServiceNodeResolution ResolveNode(ScopeRegistry scopes, List<ServiceNode> all, ServiceNode consumer)
         {
-            if (consumer.DeclaredState == InstallationState.Suspended ||
-                consumer.DeclaredState == InstallationState.Quiescing ||
-                consumer.DeclaredState == InstallationState.Retiring ||
-                consumer.DeclaredState == InstallationState.Disposed ||
-                consumer.DeclaredState == InstallationState.Failed)
+            if (!InstallationStateMachine.CanResolveActivation(consumer.DeclaredState))
             {
+                // Suspended, quiescing, retiring, disposed and failed installations expose no bindings at all
+                // rather than a stale set (P-012, P-046, P-047).
                 return new ServiceNodeResolution(consumer, consumer.DeclaredState, null, null);
             }
 
@@ -370,11 +400,13 @@ namespace GameCore.Composition
                     {
                         // P-012: a missing required provider leaves the installation waiting; never half-active.
                         waiting = true;
-                        diagnostics.Add(Diagnostic.Create(
+                        diagnostics.Add(DependencyDiagnostic(
                             code == DiagnosticCode.None ? DiagnosticCode.MissingDependency : code,
-                            OperationPhase.Validation,
-                            default(OperationId),
-                            "Required service " + dependency.Contract.ContractId.ToString() + " has no visible provider."));
+                            dependency,
+                            consumer,
+                            visibleIds,
+                            "Required service " + dependency.Contract.ContractId.ToString() +
+                            " has no visible provider under domain " + dependency.Domain + "."));
                     }
                     else if (dependency.HasFallback)
                     {
@@ -386,19 +418,22 @@ namespace GameCore.Composition
                             consumer.Instance.Value,
                             ServiceBindingKind.Single,
                             true));
-                        diagnostics.Add(Diagnostic.Create(
+                        diagnostics.Add(DependencyDiagnostic(
                             DiagnosticCode.MissingDependency,
-                            OperationPhase.Validation,
-                            default(OperationId),
-                            "Optional service " + dependency.Contract.ContractId.ToString() + " uses its declared fallback."));
+                            dependency,
+                            consumer,
+                            visibleIds,
+                            "Optional service " + dependency.Contract.ContractId.ToString() +
+                            " is absent and uses its declared fallback."));
                     }
                     else
                     {
                         // Optional absence is explicit: it is a diagnostic, not a silent substitute (P-011).
-                        diagnostics.Add(Diagnostic.Create(
+                        diagnostics.Add(DependencyDiagnostic(
                             DiagnosticCode.MissingDependency,
-                            OperationPhase.Validation,
-                            default(OperationId),
+                            dependency,
+                            consumer,
+                            visibleIds,
                             "Optional service " + dependency.Contract.ContractId.ToString() + " is absent."));
                     }
                 }

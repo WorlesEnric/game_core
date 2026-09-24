@@ -1,29 +1,35 @@
 GC-004 composition package — interpreter static checks (NOT a build and NOT a test run)
 
-Host: macOS arm64, no .NET SDK, no Unity, no Mono. Nothing in this package has been compiled or executed.
-Build and test evidence belongs to the Linux build host: see HANDOFF.md section 3.
+Host: macOS arm64, no .NET SDK, no Unity, no Mono. Nothing in this package has been compiled or executed here.
+Build and test evidence belongs to the Linux build host: see HANDOFF.md sections 3 and 8.
 
-Inventory: 19 C# files, 9080 lines
-  Packages/com.gamecore.composition/Runtime/Configuration.cs                   553 lines
-  Packages/com.gamecore.composition/Runtime/ConfigurationCodec.cs              281 lines
-  Packages/com.gamecore.composition/Runtime/Documents.cs                       327 lines
-  Packages/com.gamecore.composition/Runtime/Lifecycle/CallbackGate.cs          143 lines
-  Packages/com.gamecore.composition/Runtime/Lifecycle/InstallationStateMachine.cs   127 lines
-  Packages/com.gamecore.composition/Runtime/Lifecycle/ManagedResources.cs      663 lines
-  Packages/com.gamecore.composition/Runtime/Operations/CompositionEditApplier.cs  1142 lines
-  Packages/com.gamecore.composition/Runtime/Operations/CompositionEditPayload.cs   590 lines
-  Packages/com.gamecore.composition/Runtime/Operations/CompositionHost.cs      617 lines
-  Packages/com.gamecore.composition/Runtime/Operations/CompositionState.cs     367 lines
-  Packages/com.gamecore.composition/Runtime/Operations/OperationLedger.cs      441 lines
-  Packages/com.gamecore.composition/Runtime/Scopes/ScopeRecords.cs             564 lines
-  Packages/com.gamecore.composition/Runtime/Services/ServiceResolver.cs        853 lines
-  Packages/com.gamecore.composition/Tests/ControlLaneTests.cs                  496 lines
-  Packages/com.gamecore.composition/Tests/Fixtures/CompositionFixtures.cs      501 lines
-  Packages/com.gamecore.composition/Tests/Fixtures/ManifestBuilders.cs          89 lines
-  Packages/com.gamecore.composition/Tests/ResourceGateTests.cs                 299 lines
-  Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs        417 lines
-  Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs            610 lines
+Round 2: the cancellation-identity work merged the seam change from main and re-ran these checks against the
+merged API snapshot, which now also contains CancelOutcome.IdempotencyConflict and CancelOutcome.Rejected.
 
+Inventory: 23 C# files, 11080 lines, 92 NUnit test methods
+  Packages/com.gamecore.composition/Runtime/Configuration.cs                   553 lines     0 tests
+  Packages/com.gamecore.composition/Runtime/ConfigurationCodec.cs              281 lines     0 tests
+  Packages/com.gamecore.composition/Runtime/Documents.cs                       333 lines     0 tests
+  Packages/com.gamecore.composition/Runtime/Lifecycle/CallbackGate.cs          143 lines     0 tests
+  Packages/com.gamecore.composition/Runtime/Lifecycle/InstallationStateMachine.cs   141 lines     0 tests
+  Packages/com.gamecore.composition/Runtime/Lifecycle/ManagedResources.cs      680 lines     0 tests
+  Packages/com.gamecore.composition/Runtime/Operations/CompositionEditApplier.cs  1272 lines     0 tests
+  Packages/com.gamecore.composition/Runtime/Operations/CompositionEditPayload.cs   590 lines     0 tests
+  Packages/com.gamecore.composition/Runtime/Operations/CompositionHost.cs      682 lines     0 tests
+  Packages/com.gamecore.composition/Runtime/Operations/CompositionState.cs     367 lines     0 tests
+  Packages/com.gamecore.composition/Runtime/Operations/OperationLedger.cs      666 lines     0 tests
+  Packages/com.gamecore.composition/Runtime/Scopes/ScopeRecords.cs             564 lines     0 tests
+  Packages/com.gamecore.composition/Runtime/Services/ServiceResolver.cs        922 lines     0 tests
+  Packages/com.gamecore.composition/Tests/BuildHostRegressionTests.cs          206 lines     8 tests
+  Packages/com.gamecore.composition/Tests/CancellationIdentityTests.cs         326 lines    11 tests
+  Packages/com.gamecore.composition/Tests/ControlLaneTests.cs                  574 lines    20 tests
+  Packages/com.gamecore.composition/Tests/DiagnosticContractTests.cs           250 lines     4 tests
+  Packages/com.gamecore.composition/Tests/Fixtures/CompositionFixtures.cs      501 lines     0 tests
+  Packages/com.gamecore.composition/Tests/Fixtures/ManifestBuilders.cs          89 lines     0 tests
+  Packages/com.gamecore.composition/Tests/InstallationLifecycleTests.cs        205 lines     5 tests
+  Packages/com.gamecore.composition/Tests/ResourceGateTests.cs                 309 lines     7 tests
+  Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs        638 lines    18 tests
+  Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs            788 lines    19 tests
 Checks performed (lexical/structural only; no compiler available on this host):
   1. balanced braces/parens/brackets outside strings and comments                            -> PASS
   2. no C# 10+ construct forbidden by the Unity profile (record, record struct, `required`,
@@ -33,12 +39,14 @@ Checks performed (lexical/structural only; no compiler available on this host):
      plus api/GameCore.Contracts.api.txt), to this package, or to the BCL                     -> PASS
   4. constructor arity of every seam type call matches the frozen API snapshot                 -> PASS
   5. constructor arity of every package type call matches its declaration                      -> PASS
-  6. every member access on a known seam/package type exists in the API snapshot or in the
+  6. every member access on a known seam/package type exists in the API snapshot or in this
      package's own declarations                                                                -> PASS
   7. every interface implemented by a package type declares all of the interface's members      -> PASS
   8. no duplicate type declarations and no duplicate member signatures                          -> PASS
   9. no unused private fields and no obviously unused locals (CS0414/CS0219 risk)               -> PASS
  10. no assignment to a read-only property of a seam or package type                            -> PASS
+ 11. every [Test] attribute is bound to a test method (no orphaned or mangled attribute)        -> PASS
+ 12. every declared lifecycle edge equals the 17 edges of the 06 s1 diagram (test set == doc)    -> PASS
 
 Negative controls (planted defects the checker must reject):
   control A (`record struct`, `required`, `init`, UnityEngine using, unbalanced brace):
@@ -55,7 +63,7 @@ Documentation gate (the one check this host can execute; this change adds no doc
     -> "Game Core documentation validation passed: 14 Markdown documents; local links, anchors, IDs,
         traceability, task DAG and wave ordering checked."
 
-NotRun (pending orchestrator build host):
+NotRun (pending orchestrator build host) — round 2 code and tests have never been compiled or executed:
   dotnet build dotnet/GameCore.sln -c Release
   dotnet test dotnet/GameCore.sln -c Release --logger trx
   Unity EditMode run of GameCore.Composition.Tests (see HANDOFF.md section 3 for the exact command)

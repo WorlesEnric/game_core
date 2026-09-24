@@ -546,11 +546,25 @@ namespace GameCore.Composition
                 return Rejected(current, payload, operation, inputHash, DiagnosticCode.OwnershipConflict, diagnostics);
             }
 
-            LifecycleTransition toRetiring = InstallationStateMachine.Request(entry.State, InstallationState.Retiring);
-            if (!toRetiring.Allowed)
+            // Teardown walks the diagram's edges one at a time: an active installation quiesces before it can
+            // retire, and a state the diagram gives no teardown edge is refused rather than forced (P-046).
+            if (!InstallationStateMachine.TryTeardownPath(entry.State, out IReadOnlyList<InstallationState>? teardown) || teardown == null)
             {
-                diagnostics.Add(Diag(toRetiring.Code, payload.Subject, operation, "The installation cannot enter Retiring from its current state."));
-                return Rejected(current, payload, operation, inputHash, toRetiring.Code, diagnostics);
+                diagnostics.Add(Diag(DiagnosticCode.OwnershipConflict, payload.Subject, operation, "The installation has no lawful teardown path from " + entry.State + "."));
+                return Rejected(current, payload, operation, inputHash, DiagnosticCode.OwnershipConflict, diagnostics);
+            }
+
+            InstallationState cursor = entry.State;
+            for (int i = 0; i < teardown.Count; i++)
+            {
+                LifecycleTransition step = InstallationStateMachine.Request(cursor, teardown[i]);
+                if (!step.Allowed)
+                {
+                    diagnostics.Add(Diag(step.Code, payload.Subject, operation, "The teardown step " + cursor + " -> " + teardown[i] + " is not a legal lifecycle edge."));
+                    return Rejected(current, payload, operation, inputHash, step.Code, diagnostics);
+                }
+
+                cursor = teardown[i];
             }
 
             LifecycleTransition toDisposed = InstallationStateMachine.Request(InstallationState.Retiring, InstallationState.Disposed);
@@ -820,7 +834,7 @@ namespace GameCore.Composition
                 {
                     if (node.Diagnostics[d].Code != DiagnosticCode.None)
                     {
-                        diagnostics.Add(node.Diagnostics[d]);
+                        diagnostics.Add(Stamp(node.Diagnostics[d], operation));
                     }
                 }
             }
@@ -1207,7 +1221,52 @@ namespace GameCore.Composition
                 code,
                 diagnostics);
 
+        /// <summary>
+        /// One validation diagnostic. P-052 requires a stable code, the operation identity, the phase and a
+        /// retry classification on every diagnostic, so this assembly never emits a bare code: the classification
+        /// table below is the caller's contract for what a retry would have to change.
+        /// </summary>
         private static Diagnostic Diag(DiagnosticCode code, CompositionEditSubject subject, OperationId operation, string summary) =>
-            Diagnostic.Create(code, OperationPhase.Validation, operation, summary + " [" + subject + "]");
+            new Diagnostic(
+                code,
+                OperationPhase.Validation,
+                operation,
+                ContentHash.Empty,
+                null,
+                null,
+                0L,
+                0L,
+                RetryOf(code),
+                summary + " [" + subject + "]");
+
+        /// <summary>
+        /// What a caller has to change before retrying (P-049). Every code this applier emits rejects a
+        /// declaration the caller submitted — a stale base, a missing catalog entry, an illegal graph, a
+        /// conflicting identity, an unsupported version or a missing migration — so repeating the same input
+        /// reproduces the same refusal and a retry must change the input. Transient resource failures are
+        /// reported by the resource path as values, not as plan diagnostics.
+        /// </summary>
+        private static RetryClassification RetryOf(DiagnosticCode code)
+        {
+            _ = code;
+            return RetryClassification.RequiresChangedInput;
+        }
+
+        /// <summary>
+        /// Re-stamps one resolver diagnostic with the owning operation's identity, so a plan's diagnostics always
+        /// name the operation they belong to. Every other field is preserved unchanged (P-052).
+        /// </summary>
+        private static Diagnostic Stamp(Diagnostic source, OperationId operation) =>
+            new Diagnostic(
+                source.Code,
+                source.Phase,
+                operation,
+                source.PlanHash,
+                source.InvolvedIds,
+                source.InvolvedKeys,
+                source.Count,
+                source.BudgetLimit,
+                source.Retry,
+                source.Summary);
     }
 }

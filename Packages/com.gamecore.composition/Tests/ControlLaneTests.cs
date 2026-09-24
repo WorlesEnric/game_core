@@ -240,6 +240,27 @@ namespace GameCore.Composition.Tests
 
             host.Drain();
             Assert.That(host.Snapshot().Scopes.Count, Is.EqualTo(2), "The refused operation published nothing.");
+
+            // Capacity is released when settled rows leave the retention window, so the lane recovers rather
+            // than staying permanently full (P-050's bounded ledger).
+            Assert.That(host.Read(first.Handle).Outcome, Is.EqualTo(OperationReadOutcome.Found));
+            host.OperationLedger.AdvanceRetention(new LogicalStepId(0UL));
+            Assert.That(host.OperationLedger.RowCount, Is.EqualTo(1), "A settled row stays retained until it expires.");
+
+            CompositionHost small = NewHost(queued: 1, retained: 1);
+            OperationIssuer recoveryIssuer = new OperationIssuer(World, new Id128(0x6973737565UL, 20UL));
+            EditAdmission occupying = small.SubmitEdit(Payloads.ScopeCreate(Ids.Scope(), Root), recoveryIssuer.Next(), CompositionRevision.Zero);
+            small.Drain();
+            EditAdmission refused = small.SubmitEdit(Payloads.ScopeCreate(Ids.Scope(), Root), recoveryIssuer.Next(), new CompositionRevision(1UL));
+            Assert.That(refused.Kind, Is.EqualTo(AdmissionKind.CapacityRejected));
+
+            // The retained result expires once the window closes, freeing the row for a new operation.
+            Assert.That(small.Read(occupying.Handle).Outcome, Is.EqualTo(OperationReadOutcome.Expired));
+            Assert.That(small.OperationLedger.RowCount, Is.EqualTo(0));
+            EditAdmission admitted = small.SubmitEdit(Payloads.ScopeCreate(Ids.Scope(), Root), recoveryIssuer.Next(), new CompositionRevision(1UL));
+            Assert.That(admitted.Staged, Is.True, admitted.Code.ToString());
+            Assert.That(small.Drain().Count, Is.EqualTo(1));
+            Assert.That(small.Snapshot().Revision.Value, Is.EqualTo(2UL));
         }
 
         [Test]
@@ -272,26 +293,33 @@ namespace GameCore.Composition.Tests
             OperationIssuer issuer = new OperationIssuer(World, new Id128(0x6973737565UL, 12UL));
             ScopeId cancelled = Ids.Scope();
             ScopeId published = Ids.Scope();
-            OperationId cancellation = issuer.Next();
 
             EditAdmission pending = host.SubmitEdit(Payloads.ScopeCreate(cancelled, Root), issuer.Next(), CompositionRevision.Zero);
-            Assert.That(host.Cancel(cancellation, pending.Handle.Operation), Is.EqualTo(CancelOutcome.Cancelled));
+            OperationId beforeCutoff = issuer.Next();
+            Assert.That(host.Cancel(beforeCutoff, pending.Handle.Operation), Is.EqualTo(CancelOutcome.Cancelled));
             Assert.That(host.Snapshot().Revision.Value, Is.EqualTo(0UL), "A cancelled operation publishes no new epoch (P-051).");
             Assert.That(host.Read(pending.Handle).Entry!.Outcome, Is.EqualTo(Outcome.Cancelled));
             Assert.That(host.Read(pending.Handle).Entry!.Code, Is.EqualTo(DiagnosticCode.Cancelled));
             Assert.That(host.StagedPlan(pending.Handle.Operation), Is.Null, "A cancelled operation leaves no staged proposal.");
             Assert.That(host.Drain(), Is.Empty);
 
-            // A repeated cancel returns the same terminal result rather than a second outcome.
-            Assert.That(host.Cancel(cancellation, pending.Handle.Operation), Is.EqualTo(CancelOutcome.Cancelled));
+            // Retransmitting the same request returns its recorded result; it never decides a second time.
+            Assert.That(host.Cancel(beforeCutoff, pending.Handle.Operation), Is.EqualTo(CancelOutcome.Cancelled));
+            Assert.That(host.OperationLedger.CancelRetransmissionCount, Is.EqualTo(1));
 
             EditAdmission admitted = host.SubmitEdit(Payloads.ScopeCreate(published, Root), issuer.Next(), CompositionRevision.Zero);
             Assert.That(host.Drain().Count, Is.EqualTo(1));
-            Assert.That(host.Cancel(cancellation, admitted.Handle.Operation), Is.EqualTo(CancelOutcome.TooLate));
+
+            // A distinct request identity, submitted after publication, is the too-late case: the terminal
+            // result of the published target stands and the cancellation made no write (P-051).
+            OperationId afterCutoff = issuer.Next();
+            Assert.That(host.Cancel(afterCutoff, admitted.Handle.Operation), Is.EqualTo(CancelOutcome.TooLate));
             Assert.That(host.Read(admitted.Handle).Entry!.Outcome, Is.EqualTo(Outcome.Published), "A too-late cancellation never implies rollback (P-051).");
+            Assert.That(host.Read(host.OperationLedger.RowOf(afterCutoff)!.Handle).Entry!.Code, Is.EqualTo(DiagnosticCode.TooLate));
             Assert.That(host.Snapshot().Scopes.Count, Is.EqualTo(2), "The published scope stays published.");
 
-            Assert.That(host.Cancel(cancellation, new OperationId(World, issuer.Id, 99UL)), Is.EqualTo(CancelOutcome.Unknown));
+            // An unknown target that was never on this lane is reported as such, not as a cutoff outcome.
+            Assert.That(host.Cancel(issuer.Next(), new OperationId(World, issuer.Id, 99UL)), Is.EqualTo(CancelOutcome.Unknown));
         }
 
         [Test]
@@ -432,22 +460,68 @@ namespace GameCore.Composition.Tests
             Assert.That(decoded.Scope, Is.EqualTo(payload.Scope));
             Assert.That(decoded.Parent, Is.EqualTo(payload.Parent));
             Assert.That(decoded.DestroySubtree, Is.True);
+            Assert.That(decoded.ServiceIsolation.AllContracts, Is.False);
             Assert.That(decoded.ServiceIsolation.Contracts.Count, Is.EqualTo(1));
+            Assert.That(decoded.ServiceIsolation.Contracts[0], Is.EqualTo(contract));
             Assert.That(decoded.CapabilityIsolation.AllContracts, Is.True);
+            Assert.That(decoded.CapabilityIsolation.Contracts, Is.Empty);
             Assert.That(decoded.Exclusions.Count, Is.EqualTo(1));
+            Assert.That(decoded.Exclusions[0].Kind, Is.EqualTo(ExclusionTargetKind.Capability));
+            Assert.That(decoded.Exclusions[0].TargetId, Is.EqualTo(contract));
+            Assert.That(decoded.Exclusions[0].AtScope, Is.EqualTo(scope));
+            Assert.That(decoded.Exclusions[0].AppliesToSubtree, Is.True);
             Assert.That(decoded.Imports.Count, Is.EqualTo(1));
+            Assert.That(decoded.Imports[0].CapabilityId, Is.EqualTo(imported));
+            Assert.That(decoded.Imports[0].ProviderInstallationId, Is.EqualTo(new ProviderInstallationId(instance.Value)));
             Assert.That(decoded.PluginType, Is.EqualTo(payload.PluginType));
             Assert.That(decoded.Instance, Is.EqualTo(payload.Instance));
             Assert.That(decoded.ConfigRevision, Is.EqualTo(payload.ConfigRevision));
             Assert.That(decoded.ConfigHash, Is.EqualTo(payload.ConfigHash));
             Assert.That(decoded.Priority, Is.EqualTo(7));
             Assert.That(decoded.Selections.Count, Is.EqualTo(1));
+            Assert.That(decoded.Selections[0].Contract, Is.EqualTo(new ContractRef(contract, 1U)));
+            Assert.That(decoded.Selections[0].Provider, Is.EqualTo(new ProviderInstallationId(instance.Value)));
             Assert.That(decoded.Mode, Is.EqualTo(PropagationMode.Conservative));
             Assert.That(decoded.Config.Count, Is.EqualTo(1));
+            Assert.That(decoded.Config.TryGetField(contract, out ConfigFieldValue field), Is.True);
+            Assert.That(field.Kind, Is.EqualTo(ConfigValueKind.UInt32));
+            Assert.That(field.AsUInt32, Is.EqualTo(4U));
 
-            // Canonical encoding: the same declaration always produces the same bytes and the same input hash.
-            Assert.That(CompositionEditCodec.Encode(decoded!).Bytes[0], Is.EqualTo(encoded.Bytes[0]));
+            // Canonical encoding: the same declaration always produces identical bytes and the same input hash,
+            // which is what makes one operation identity idempotent against a retransmitted payload (P-050).
+            byte[] reencoded = DocumentCodec.ToBytes(CompositionEditCodec.Encode(decoded!));
+            byte[] original = DocumentCodec.ToBytes(encoded);
+            Assert.That(reencoded.Length, Is.EqualTo(original.Length));
+            for (int i = 0; i < original.Length; i++)
+            {
+                Assert.That(reencoded[i], Is.EqualTo(original[i]), "Byte " + i + " must match exactly.");
+            }
+
             Assert.That(CompositionEditApplier.InputHashOf(CompositionEditCodec.Encode(decoded!)), Is.EqualTo(CompositionEditApplier.InputHashOf(encoded)));
+
+            // Two documents that differ in one field must not share an input hash: exclusions carry their scope.
+            CompositionEditPayload otherScope = new CompositionEditPayload(
+                CompositionEditSubject.InstallMount,
+                scope,
+                Root,
+                true,
+                new IsolationSet(false, new[] { contract }),
+                new IsolationSet(true, null),
+                new[] { new ExclusionRule(ExclusionTargetKind.Capability, contract, Ids.Scope(), new TargetId(Ids.NextId()), true) },
+                new[] { new CapabilityImport(imported, new ProviderInstallationId(instance.Value)) },
+                type,
+                instance,
+                new DefinitionRevision(3UL),
+                ConfigDocumentCodec.HashOf(config),
+                config,
+                7,
+                new[] { new ServiceSelection(new ContractRef(contract, 1U), new ProviderInstallationId(instance.Value)) },
+                PropagationMode.Conservative);
+
+            Assert.That(
+                CompositionEditApplier.InputHashOf(CompositionEditCodec.Encode(otherScope)),
+                Is.Not.EqualTo(CompositionEditApplier.InputHashOf(encoded)),
+                "A semantic difference changes the canonical input hash (P-027).");
         }
 
         [Test]

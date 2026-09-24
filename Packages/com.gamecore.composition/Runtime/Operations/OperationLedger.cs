@@ -12,7 +12,10 @@
 //  * Retention is bounded in count and (optionally) in logical steps. A dropped result becomes
 //    `ResultExpired`, and expiry is distinct from an unknown handle (05 s5).
 //  * Cancellation is decided here against the phase cutoff: a pending operation is `Cancelled` with no new
-//    epoch; anything already applying or settled is `TooLate` and its terminal result stands (P-051).
+//    epoch; anything already applying or settled is `TooLate` and its terminal result stands (P-051). The
+//    cancellation *request* is itself ledgered: a retransmission of the same request returns its original
+//    outcome without touching the target again, and reusing one cancellation identity for a different target
+//    is an `IdempotencyConflict` that leaves both the original row and the second target untouched (P-050).
 //
 // Nothing in this file reads a clock or a thread; ordering is the admission ordinal the lane assigned.
 #nullable enable
@@ -35,6 +38,20 @@ namespace GameCore.Composition
         Settled = 2,
     }
 
+    /// <summary>
+    /// What one ledger row represents. A cancellation request is a first-class operation with its own identity
+    /// and input hash (P-050), but it is never a publication candidate: only a composition edit carries a plan
+    /// that a boundary can publish (P-051).
+    /// </summary>
+    public enum LedgerRowKind
+    {
+        /// <summary>A composition edit proposal that waits for the publication boundary.</summary>
+        CompositionEdit = 0,
+
+        /// <summary>A cancellation request; it is decided against the cutoff and settles in the same call.</summary>
+        Cancellation = 1,
+    }
+
     /// <summary>How one admission attempt resolved; the caller needs this to distinguish retry from conflict.</summary>
     public enum AdmissionKind
     {
@@ -51,7 +68,7 @@ namespace GameCore.Composition
         ResultExpired = 3,
 
         /// <summary>The lane is at capacity; the operation is refused with `BudgetExceeded`.</summary>
-        CapacityRejected = 5,
+        CapacityRejected = 4,
     }
 
     /// <summary>Result of one admission attempt, including the row the caller must use for status reads.</summary>
@@ -77,6 +94,40 @@ namespace GameCore.Composition
         public OperationLedgerEntry? Entry { get; }
 
         public bool Admitted => Kind == AdmissionKind.Fresh || Kind == AdmissionKind.Retransmission;
+    }
+
+    /// <summary>
+    /// Result of one cancellation request. The seam reports only the <see cref="CancelOutcome"/>; the admission
+    /// kind and the retrieval key are what let the host and its tests separate "this call decided the cutoff"
+    /// from "this call was coalesced, refused or rejected" (P-050, P-051).
+    /// </summary>
+    public sealed class CancellationResult
+    {
+        public CancellationResult(AdmissionKind kind, CancelOutcome outcome, OperationStatusHandle handle, OperationLedgerEntry? entry)
+        {
+            Kind = kind;
+            Outcome = outcome;
+            Handle = handle;
+            Entry = entry;
+        }
+
+        public AdmissionKind Kind { get; }
+
+        /// <summary>The terminal decision, or the original decision for a coalesced retransmission.</summary>
+        public CancelOutcome Outcome { get; }
+
+        /// <summary>Retrieval key of the cancellation request; meaningful whenever a row exists.</summary>
+        public OperationStatusHandle Handle { get; }
+
+        /// <summary>Recorded row of the cancellation request; null when the request was never admitted.</summary>
+        public OperationLedgerEntry? Entry { get; }
+
+        /// <summary>
+        /// True only when this call admitted the request and performed the cutoff decision. A coalesced
+        /// retransmission, a conflict and a refusal are all false, which is how the caller avoids repeating the
+        /// side effects of a cancellation it already performed (P-050).
+        /// </summary>
+        public bool Applied => Kind == AdmissionKind.Fresh;
     }
 
     /// <summary>
@@ -109,6 +160,12 @@ namespace GameCore.Composition
 
         public int ConflictCount { get; private set; }
 
+        /// <summary>
+        /// Last logical step this lane was told about. A settled row records it as its retention origin, so a
+        /// cancellation that decides at step N ages from step N like every other terminal result (P-050).
+        /// </summary>
+        public LogicalStepId CurrentStep { get; private set; } = LogicalStepId.Zero;
+
         public int SequenceViolationCount { get; private set; }
 
         public int CapacityRejectedCount { get; private set; }
@@ -119,6 +176,18 @@ namespace GameCore.Composition
 
         public int TooLateCount { get; private set; }
 
+        /// <summary>Cancellation requests admitted onto this lane (excluding retransmissions and refusals).</summary>
+        public int CancelRequestCount { get; private set; }
+
+        /// <summary>Cancellation retransmissions coalesced to their original recorded outcome (P-050).</summary>
+        public int CancelRetransmissionCount { get; private set; }
+
+        /// <summary>Cancellation identities reused with a different target; the second target is never cancelled.</summary>
+        public int CancelConflictCount { get; private set; }
+
+        /// <summary>Cancellation requests refused before admission; nothing changed (P-050).</summary>
+        public int CancelRejectedCount { get; private set; }
+
         /// <summary>Latest published revision this lane admitted against; a handle's base revision (P-027).</summary>
         public CompositionRevision PublishedRevision { get; private set; } = CompositionRevision.Zero;
 
@@ -127,13 +196,17 @@ namespace GameCore.Composition
         /// <summary>Last conflict code observed, or <see cref="DiagnosticCode.None"/> (inspection aid).</summary>
         public DiagnosticCode LastConflictCode { get; private set; }
 
-        /// <summary>Pending rows in admission order; only these are still cancellable (P-051).</summary>
+        /// <summary>
+        /// Composition edits waiting for the publication boundary, in admission order. These are the only
+        /// publication candidates: a cancellation request never carries a plan, so it is never drained or
+        /// published and can never block the queue behind it (P-051).
+        /// </summary>
         public IReadOnlyList<OperationId> PendingInAdmissionOrder()
         {
             List<LedgerRow> pending = new List<LedgerRow>();
             foreach (KeyValuePair<OperationId, LedgerRow> pair in rows)
             {
-                if (pair.Value.Phase == LedgerPhase.Pending)
+                if (pair.Value.Phase == LedgerPhase.Pending && pair.Value.Kind == LedgerRowKind.CompositionEdit)
                 {
                     pending.Add(pair.Value);
                 }
@@ -189,14 +262,30 @@ namespace GameCore.Composition
             rows.TryGetValue(operation, out LedgerRow? row) ? row : null;
 
         /// <summary>
-        /// One admission attempt. The row is created only for a fresh admission; a retransmission and a conflict
-        /// both return the original row, so a conflicting reuse can never overwrite a stored outcome (P-050).
+        /// Records that a cancellation request was refused by the host before admission (foreign world, unknown
+        /// issuer, cross-world or self target). Nothing else changes: no row, no retention entry and no issuer
+        /// sequence is consumed, so a later valid request is still a first submission (P-050).
         /// </summary>
-        public AdmissionResult Admit(OperationId operation, ContentHash inputHash, CompositionEditPayload? payload)
+        public void NoteCancellationRefused() => CancelRejectedCount++;
+
+        /// <summary>Admits one composition edit proposal (P-050).</summary>
+        public AdmissionResult Admit(OperationId operation, ContentHash inputHash, CompositionEditPayload? payload) =>
+            Admit(operation, inputHash, LedgerRowKind.CompositionEdit, payload);
+
+        /// <summary>
+        /// One admission attempt for either operation kind. The row is created only for a fresh admission; a
+        /// retransmission and a conflict both return the original row, so a conflicting reuse can never
+        /// overwrite a stored outcome (P-050).
+        /// </summary>
+        public AdmissionResult Admit(
+            OperationId operation,
+            ContentHash inputHash,
+            LedgerRowKind kind,
+            CompositionEditPayload? payload)
         {
             if (rows.TryGetValue(operation, out LedgerRow? existing))
             {
-                if (existing.InputHash.Equals(inputHash))
+                if (existing.InputHash.Equals(inputHash) && existing.Kind == kind)
                 {
                     DuplicateCount++;
                     return new AdmissionResult(AdmissionKind.Retransmission, DiagnosticCode.None, existing.Handle, existing.ToEntry());
@@ -233,12 +322,128 @@ namespace GameCore.Composition
                     null);
             }
 
-            LedgerRow row = new LedgerRow(operation, inputHash, payload, nextAdmissionOrdinal, PublishedRevision);
+            LedgerRow row = new LedgerRow(operation, inputHash, kind, payload, nextAdmissionOrdinal, PublishedRevision);
             nextAdmissionOrdinal++;
             rows.Add(operation, row);
             issuerHighWater[operation.IssuerId] = operation.IssuerSequence;
             AdmittedCount++;
             return new AdmissionResult(AdmissionKind.Fresh, DiagnosticCode.None, row.Handle, row.ToEntry());
+        }
+
+        /// <summary>
+        /// Canonical input hash of one cancellation request: the target operation identity under its own
+        /// document schema. The domain separation is what makes a cancellation identity that reuses an edit's
+        /// operation id a genuine conflict instead of a silent alias (P-050).
+        /// </summary>
+        public static ContentHash CancellationInputHash(OperationId target)
+        {
+            byte[] document = DocumentCodec.Write(
+                CompositionSchemas.CancellationRequest,
+                writer =>
+                {
+                    writer.WriteId128Field(1, target.World.Session);
+                    writer.WriteId128Field(2, target.IssuerId);
+                    writer.WriteUInt64Field(3, target.IssuerSequence);
+                });
+
+            return ContentHash.Compute(document);
+        }
+
+        /// <summary>
+        /// Decides and records one cancellation request against the serialized cutoff. Admission of the request
+        /// always happens before the target is touched:
+        /// a retransmission of the same request returns its original recorded outcome; reusing the identity for
+        /// a different target is an `IdempotencyConflict` that cancels nothing; and a request the lane cannot
+        /// admit leaves both the original row and the target untouched (P-050, P-051).
+        /// </summary>
+        public CancellationResult CancelRequest(OperationId cancellation, OperationId target)
+        {
+            AdmissionResult admission = Admit(cancellation, CancellationInputHash(target), LedgerRowKind.Cancellation, null);
+            switch (admission.Kind)
+            {
+                case AdmissionKind.Retransmission:
+                {
+                    LedgerRow? known = RowOf(cancellation);
+                    if (known == null || known.Kind != LedgerRowKind.Cancellation || !known.Cancellation.HasValue)
+                    {
+                        // Unreachable while the cancellation hash is domain-separated from every edit payload
+                        // hash; reported as a conflict rather than as a coalesced cancellation that never was.
+                        CancelConflictCount++;
+                        return new CancellationResult(AdmissionKind.IdempotencyConflict, CancelOutcome.IdempotencyConflict, admission.Handle, admission.Entry);
+                    }
+
+                    CancelRetransmissionCount++;
+                    return new CancellationResult(AdmissionKind.Retransmission, known.Cancellation.Value, admission.Handle, known.ToEntry());
+                }
+
+                case AdmissionKind.IdempotencyConflict:
+                    // The original cancellation row stands and the second target is never cancelled.
+                    CancelConflictCount++;
+                    return new CancellationResult(AdmissionKind.IdempotencyConflict, CancelOutcome.IdempotencyConflict, admission.Handle, admission.Entry);
+
+                case AdmissionKind.CapacityRejected:
+                case AdmissionKind.ResultExpired:
+                    // Not admitted: no row, no target change, nothing else observable.
+                    CancelRejectedCount++;
+                    return new CancellationResult(admission.Kind, CancelOutcome.Rejected, admission.Handle, admission.Entry);
+
+                default:
+                    break;
+            }
+
+            CancelRequestCount++;
+            CancelOutcome decision = Cancel(target);
+            SettleCancellation(cancellation, decision);
+            return new CancellationResult(AdmissionKind.Fresh, decision, admission.Handle, RowOf(cancellation)?.ToEntry());
+        }
+
+        /// <summary>
+        /// Records the terminal result of an admitted cancellation request so a retransmission can return it
+        /// unchanged. <see cref="CancelOutcome.Rejected"/> is refused here: it means the request was never
+        /// admitted, and a row that exists was admitted, so the two must not disagree (P-050).
+        /// </summary>
+        public bool SettleCancellation(OperationId cancellation, CancelOutcome outcome)
+        {
+            LedgerRow? row = RowOf(cancellation);
+            if (row == null || row.Kind != LedgerRowKind.Cancellation || outcome == CancelOutcome.Rejected)
+            {
+                return false;
+            }
+
+            Outcome settled = SettledOutcomeOf(outcome);
+            DiagnosticCode code = SettledCodeOf(outcome);
+            if (!Settle(cancellation, settled, code, PublishedRevision, PublishedEpoch, null, CurrentStep))
+            {
+                return false;
+            }
+
+            row.Cancellation = outcome;
+            return true;
+        }
+
+        /// <summary>
+        /// Terminal outcome of an admitted cancellation request. Only `Cancelled` mutated anything; every other
+        /// decision refused the request before any live write, which 00 s9 reports as `Rejected` (P-051).
+        /// </summary>
+        private static Outcome SettledOutcomeOf(CancelOutcome outcome) =>
+            outcome == CancelOutcome.Cancelled ? Outcome.Cancelled : Outcome.Rejected;
+
+        private static DiagnosticCode SettledCodeOf(CancelOutcome outcome)
+        {
+            switch (outcome)
+            {
+                case CancelOutcome.Cancelled:
+                    return DiagnosticCode.Cancelled;
+                case CancelOutcome.TooLate:
+                    return DiagnosticCode.TooLate;
+                case CancelOutcome.ResultExpired:
+                    return DiagnosticCode.ResultExpired;
+                case CancelOutcome.IdempotencyConflict:
+                    return DiagnosticCode.IdempotencyConflict;
+                default:
+                    // Unknown: the target operation is not in this lane and was never retained here.
+                    return DiagnosticCode.StaleHandle;
+            }
         }
 
         /// <summary>Sets the phase of a pending row before publication begins, passing the cancellation cutoff.</summary>
@@ -290,7 +495,12 @@ namespace GameCore.Composition
             return true;
         }
 
-        /// <summary>Cancels a pending row inside the cutoff; every later phase is `TooLate` (P-051, O-18).</summary>
+        /// <summary>
+        /// Applies the cancellation cutoff to one target row: a pending row is `Cancelled`, a row already
+        /// applying or settled is `TooLate`, and a row already cancelled returns that same terminal result
+        /// without implying a rollback (P-051, O-18). This is the *decision*; request admission is
+        /// <see cref="CancelRequest"/>.
+        /// </summary>
         public CancelOutcome Cancel(OperationId target)
         {
             LedgerRow? row = RowOf(target);
@@ -330,6 +540,7 @@ namespace GameCore.Composition
         /// </summary>
         public int AdvanceRetention(LogicalStepId step)
         {
+            CurrentStep = step;
             if (expiry.RetainedResultSteps == 0UL)
             {
                 return 0;
@@ -392,10 +603,17 @@ namespace GameCore.Composition
         /// <summary>One mutable ledger row. Only this assembly's host inspects it directly.</summary>
         public sealed class LedgerRow
         {
-            public LedgerRow(OperationId operation, ContentHash inputHash, CompositionEditPayload? payload, ulong admissionOrdinal, CompositionRevision submittedAgainst)
+            public LedgerRow(
+                OperationId operation,
+                ContentHash inputHash,
+                LedgerRowKind kind,
+                CompositionEditPayload? payload,
+                ulong admissionOrdinal,
+                CompositionRevision submittedAgainst)
             {
                 Operation = operation;
                 InputHash = inputHash;
+                Kind = kind;
                 Payload = payload;
                 AdmissionOrdinal = admissionOrdinal;
                 Outcome = Outcome.Pending;
@@ -405,6 +623,9 @@ namespace GameCore.Composition
             public OperationId Operation { get; }
 
             public ContentHash InputHash { get; }
+
+            /// <summary>What this row represents; only a composition edit is a publication candidate (P-051).</summary>
+            public LedgerRowKind Kind { get; }
 
             /// <summary>Decoded declaration of this operation; retained so a cancelled plan can be rebuilt.</summary>
             public CompositionEditPayload? Payload { get; }
@@ -429,6 +650,12 @@ namespace GameCore.Composition
             public CompositionEditPlan? Plan { get; set; }
 
             public CleanupReport Cleanup { get; set; } = CleanupReport.Empty;
+
+            /// <summary>
+            /// The recorded cancellation outcome, for a cancellation row only. A retransmission returns this
+            /// value unchanged instead of deciding again (P-050).
+            /// </summary>
+            public CancelOutcome? Cancellation { get; set; }
 
             public OperationStatusHandle Handle { get; }
 

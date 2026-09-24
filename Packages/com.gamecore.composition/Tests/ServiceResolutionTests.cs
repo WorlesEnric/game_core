@@ -271,18 +271,37 @@ namespace GameCore.Composition.Tests
             rig.Add(Manifests.Plain(overridingType, rig.Ids, null, new[] { Manifests.Export(Contract(contract, 1U), rig.Ids.NextId(), ServiceVisibility.ExportToDescendants, true) }));
             rig.Add(Manifests.Plain(consumerType, rig.Ids, null, null, new[] { Manifests.Requires(Contract(contract, 1U)) }));
 
+            // A three-level chain: the winning provider sits in a strict ancestor rather than in the consumer's
+            // own scope, so the explicit override is what decides the binding (P-011).
+            ScopeId deepest = rig.Ids.Scope();
             rig.CreateScope(outer, Root);
             rig.CreateScope(inner, outer);
+            rig.CreateScope(deepest, inner);
             PluginInstanceId outerProvider = rig.Ids.Instance();
-            PluginInstanceId innerProvider = rig.Ids.Instance();
+            PluginInstanceId middleProvider = rig.Ids.Instance();
             rig.Mount(rig.Manifests.ManifestOf(plainType), outerProvider, outer);
-            rig.Mount(rig.Manifests.ManifestOf(overridingType), innerProvider, inner);
+            rig.Mount(rig.Manifests.ManifestOf(overridingType), middleProvider, inner);
 
             PluginInstanceId consumer = rig.Ids.Instance();
-            rig.Mount(rig.Manifests.ManifestOf(consumerType), consumer, inner);
+            rig.Mount(rig.Manifests.ManifestOf(consumerType), consumer, deepest);
 
             Assert.That(rig.StateOf(consumer), Is.EqualTo(InstallationState.Active));
-            Assert.That(rig.BindingsOf(consumer)[0].Provider, Is.EqualTo(new ProviderInstallationId(innerProvider.Value)));
+            Assert.That(rig.BindingsOf(consumer).Count, Is.EqualTo(1));
+            Assert.That(rig.BindingsOf(consumer)[0].Provider, Is.EqualTo(new ProviderInstallationId(middleProvider.Value)));
+
+            // Without an override the same two visible providers conflict, so the override is load-bearing
+            // rather than incidental: a plain nearest provider would not have been chosen.
+            PluginTypeId plainConsumerType = rig.Ids.Type();
+            rig.Add(Manifests.Plain(plainConsumerType, rig.Ids, null, null, new[] { Manifests.Requires(Contract(contract, 1U)) }));
+            PluginInstanceId plainConsumer = rig.Ids.Instance();
+            EditAdmission conflicted = rig.Host.SubmitEdit(
+                Payloads.Mount(rig.Manifests.ManifestOf(plainConsumerType), plainConsumer, deepest, null),
+                rig.Issuer.Next(),
+                rig.Revision);
+
+            Assert.That(conflicted.Code, Is.EqualTo(DiagnosticCode.ServiceConflict));
+            Assert.That(rig.Host.FindInstall(plainConsumer), Is.Null);
+            Assert.That(rig.Host.Drain(), Is.Empty);
         }
 
         [Test]
@@ -320,6 +339,37 @@ namespace GameCore.Composition.Tests
                 Assert.That(bindings[i].BindingKind, Is.EqualTo(ServiceBindingKind.Multi));
                 Assert.That(bindings[i].Provider, Is.EqualTo(new ProviderInstallationId(providers[i].Value)));
             }
+        }
+
+        [Test]
+        public void AMixedSingleAndMultiDeclarationOfOneContractIsAConflict()
+        {
+            Rig rig = new Rig(0x7365727646UL);
+            Id128 contract = rig.Ids.Capability().Value;
+            PluginTypeId multiType = rig.Ids.Type();
+            PluginTypeId singleType = rig.Ids.Type();
+            PluginTypeId consumerType = rig.Ids.Type();
+
+            rig.Add(Manifests.Plain(multiType, rig.Ids, null, new[] { Manifests.Export(Contract(contract, 1U), rig.Ids.NextId(), ServiceVisibility.ExportToDescendants, false, ServiceBindingKind.Multi) }));
+            rig.Add(Manifests.Plain(singleType, rig.Ids, null, new[] { Manifests.Export(Contract(contract, 1U), rig.Ids.NextId(), ServiceVisibility.ExportToDescendants) }));
+            rig.Add(Manifests.Plain(consumerType, rig.Ids, null, null, new[] { Manifests.Requires(Contract(contract, 1U)) }));
+
+            rig.Mount(rig.Manifests.ManifestOf(multiType), rig.Ids.Instance(), Root);
+            rig.Mount(rig.Manifests.ManifestOf(singleType), rig.Ids.Instance(), Root);
+
+            // One contract cannot be both single- and multi-binding, so its visible set is ambiguous (P-011).
+            CompositionStateSnapshot before = rig.Host.Snapshot();
+            PluginInstanceId consumer = rig.Ids.Instance();
+            EditAdmission admission = rig.Host.SubmitEdit(
+                Payloads.Mount(rig.Manifests.ManifestOf(consumerType), consumer, Root, null),
+                rig.Issuer.Next(),
+                rig.Revision);
+
+            Assert.That(admission.Code, Is.EqualTo(DiagnosticCode.ServiceConflict));
+            Assert.That(admission.Entry!.Outcome, Is.EqualTo(Outcome.Rejected));
+            Assert.That(rig.Host.Drain(), Is.Empty);
+            Assert.That(rig.Host.FindInstall(consumer), Is.Null);
+            Assert.That(Projection.Of(rig.Host.Snapshot()), Is.EqualTo(Projection.Of(before)));
         }
 
         [Test]
@@ -377,6 +427,65 @@ namespace GameCore.Composition.Tests
             Assert.That(rig.Host.Drain(), Is.Empty);
             Assert.That(rig.Host.FindInstall(badSelection), Is.Null);
             Assert.That(Projection.Of(rig.Host.Snapshot()), Is.EqualTo(Projection.Of(before)));
+
+            // A selection that names no installation at all is a missing dependency rather than a conflict, and
+            // it still never degrades into another visible provider.
+            PluginInstanceId unknownSelection = rig.Ids.Instance();
+            EditAdmission missing = rig.Host.SubmitEdit(
+                Payloads.Mount(
+                    rig.Manifests.ManifestOf(consumerType),
+                    unknownSelection,
+                    inner,
+                    null,
+                    0,
+                    new[] { new ServiceSelection(Contract(contract, 1U), new ProviderInstallationId(rig.Ids.Instance().Value)) }),
+                rig.Issuer.Next(),
+                rig.Revision);
+
+            Assert.That(missing.Staged, Is.True, missing.Code.ToString());
+            rig.Host.Drain();
+            Assert.That(rig.StateOf(unknownSelection), Is.EqualTo(InstallationState.WaitingForDependencies));
+            Assert.That(rig.Host.FindInstall(unknownSelection)!.Diagnostics[0].CodeText, Is.EqualTo("MissingDependency"));
+            Assert.That(rig.BindingsOf(unknownSelection), Is.Empty, "A bad selection never degrades into another provider.");
+        }
+
+        [Test]
+        public void AnOptionalSelectedDependencyRebindsToItsDeclaredFallbackWhenTheSelectedProviderLeaves()
+        {
+            Rig rig = new Rig(0x7365727647UL);
+            Id128 contract = rig.Ids.Capability().Value;
+            PluginTypeId providerType = rig.Ids.Type();
+            PluginTypeId consumerType = rig.Ids.Type();
+
+            rig.Add(Manifests.Plain(providerType, rig.Ids, null, new[] { Manifests.Export(Contract(contract, 1U), rig.Ids.NextId()) }));
+            PluginInstanceId selectedProvider = rig.Ids.Instance();
+            rig.Add(Manifests.Plain(
+                consumerType,
+                rig.Ids,
+                null,
+                null,
+                new[] { Manifests.Requires(Contract(contract, 1U), isRequired: false, fallbackKey: rig.Ids.NextId()) }));
+
+            rig.Mount(rig.Manifests.ManifestOf(providerType), selectedProvider, Root);
+
+            PluginInstanceId consumer = rig.Ids.Instance();
+            rig.Mount(
+                rig.Manifests.ManifestOf(consumerType),
+                consumer,
+                Root,
+                new[] { new ServiceSelection(Contract(contract, 1U), new ProviderInstallationId(selectedProvider.Value)) });
+
+            Assert.That(rig.StateOf(consumer), Is.EqualTo(InstallationState.Active));
+            Assert.That(rig.BindingsOf(consumer).Count, Is.EqualTo(1));
+            Assert.That(rig.BindingsOf(consumer)[0].Provider, Is.EqualTo(new ProviderInstallationId(selectedProvider.Value)));
+            Assert.That(rig.BindingsOf(consumer)[0].IsFallback, Is.False);
+
+            // The provider leaves, so the optional dependency really rebinds to its declared fallback (P-012).
+            rig.Unmount(selectedProvider);
+            Assert.That(rig.StateOf(consumer), Is.EqualTo(InstallationState.Active), "An optional dependency keeps the consumer active.");
+            Assert.That(rig.BindingsOf(consumer).Count, Is.EqualTo(1));
+            Assert.That(rig.BindingsOf(consumer)[0].IsFallback, Is.True);
+            Assert.That(rig.Host.FindInstall(consumer)!.Diagnostics[0].CodeText, Is.EqualTo("MissingDependency"), "The absent optional service stays reported.");
         }
 
         [Test]
@@ -441,8 +550,67 @@ namespace GameCore.Composition.Tests
             rig.Mount(rig.Manifests.ManifestOf(providerType), provider, Root);
             rig.Mount(rig.Manifests.ManifestOf(consumerType), consumer, Root);
 
-            Assert.That(rig.StateOf(provider), Is.EqualTo(InstallationState.Active));
+            Assert.That(rig.StateOf(provider), Is.EqualTo(InstallationState.Active), "The provider serves its own version.");
             Assert.That(rig.StateOf(consumer), Is.EqualTo(InstallationState.WaitingForDependencies));
+            Assert.That(rig.BindingsOf(consumer), Is.Empty, "An incompatible version never binds.");
+            Assert.That(rig.Host.FindInstall(consumer)!.Diagnostics[0].CodeText, Is.EqualTo("MissingDependency"));
+        }
+
+        [Test]
+        public void DeclaredVersionRangeAcceptsBothEndpointsAndRejectsJustOutside()
+        {
+            Rig rig = new Rig(0x7365727648UL);
+            Id128 contract = rig.Ids.Capability().Value;
+            PluginTypeId consumerType = rig.Ids.Type();
+
+            rig.Add(Manifests.Plain(
+                consumerType,
+                rig.Ids,
+                null,
+                null,
+                new[]
+                {
+                    new ServiceDependency(
+                        Contract(contract, 1U),
+                        new VersionRange(1U, 2U),
+                        true,
+                        ServiceResolutionDomain.AncestorsAndSelf,
+                        default(ProviderInstallationId),
+                        default(FactoryKey)),
+                }));
+
+            PluginInstanceId consumer = rig.Ids.Instance();
+            rig.Mount(rig.Manifests.ManifestOf(consumerType), consumer, Root);
+            Assert.That(rig.StateOf(consumer), Is.EqualTo(InstallationState.WaitingForDependencies));
+
+            PluginTypeId lowerType = rig.Ids.Type();
+            rig.Add(Manifests.Plain(lowerType, rig.Ids, null, new[] { Manifests.Export(Contract(contract, 1U), rig.Ids.NextId()) }));
+            PluginInstanceId lower = rig.Ids.Instance();
+            rig.Mount(rig.Manifests.ManifestOf(lowerType), lower, Root);
+            Assert.That(rig.StateOf(consumer), Is.EqualTo(InstallationState.Active), "The lower endpoint 1 is inclusive.");
+            Assert.That(rig.BindingsOf(consumer)[0].Provider, Is.EqualTo(new ProviderInstallationId(lower.Value)));
+
+            PluginTypeId upperType = rig.Ids.Type();
+            rig.Add(Manifests.Plain(upperType, rig.Ids, null, new[] { Manifests.Export(Contract(contract, 2U), rig.Ids.NextId()) }));
+            PluginInstanceId upper = rig.Ids.Instance();
+            rig.Mount(rig.Manifests.ManifestOf(upperType), upper, Root);
+
+            // Two providers are now visible, so the consumer waits for an explicit choice rather than guessing.
+            Assert.That(rig.StateOf(consumer), Is.EqualTo(InstallationState.WaitingForDependencies));
+            Assert.That(rig.Host.FindInstall(consumer)!.Diagnostics[0].CodeText, Is.EqualTo("ServiceConflict"));
+
+            // Removing the lower provider leaves exactly the upper endpoint, which the range accepts.
+            rig.Unmount(lower);
+            Assert.That(rig.StateOf(consumer), Is.EqualTo(InstallationState.Active), "The upper endpoint 2 is inclusive.");
+            Assert.That(rig.BindingsOf(consumer)[0].Provider, Is.EqualTo(new ProviderInstallationId(upper.Value)));
+
+            // A version above the accepted range never binds, so the consumer returns to waiting.
+            rig.Unmount(upper);
+            PluginTypeId aboveType = rig.Ids.Type();
+            rig.Add(Manifests.Plain(aboveType, rig.Ids, null, new[] { Manifests.Export(Contract(contract, 3U), rig.Ids.NextId()) }));
+            rig.Mount(rig.Manifests.ManifestOf(aboveType), rig.Ids.Instance(), Root);
+            Assert.That(rig.StateOf(consumer), Is.EqualTo(InstallationState.WaitingForDependencies), "Version 3 is above the accepted window.");
+            Assert.That(rig.BindingsOf(consumer), Is.Empty);
         }
 
         [Test]

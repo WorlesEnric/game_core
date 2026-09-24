@@ -346,22 +346,47 @@ namespace GameCore.Composition
         }
 
         /// <summary>
-        /// Cancels one operation against the serialized cutoff: a pending operation is `Cancelled` with no new
-        /// epoch and its staged resources are released; anything already published is `TooLate` (P-051, O-18).
-        /// The cancellation's own identity is the caller's; the lane records the target's terminal result.
+        /// Cancels one operation against the serialized cutoff (P-051, O-18). The cancellation request is itself
+        /// an operation with an identity and an input hash, so it is admitted first (P-050):
+        ///
+        ///  * a valid new request decides the cutoff — a pending target is `Cancelled` with no new epoch and its
+        ///    staged resources are released, anything already applying or settled is `TooLate`;
+        ///  * a retransmission of the same request returns its original recorded outcome and repeats nothing;
+        ///  * reusing one request identity for a different target is `IdempotencyConflict`: the original row
+        ///    stands and the second target is not cancelled;
+        ///  * a request this lane cannot admit (foreign world, unknown issuer, cross-world target, self-target,
+        ///    full lane, already-used issuer sequence) is `Rejected` and changes no state.
         /// </summary>
         public CancelOutcome Cancel(OperationId cancellationOperation, OperationId target)
         {
-            _ = cancellationOperation;
-            CancelOutcome outcome = ledger.Cancel(target);
-            if (outcome == CancelOutcome.Cancelled)
+            if (!CancellationAdmissible(cancellationOperation, target))
             {
+                // Refused before admission: no ledger row, no target change, no counters beyond this refusal.
+                ledger.NoteCancellationRefused();
+                return CancelOutcome.Rejected;
+            }
+
+            CancellationResult result = ledger.CancelRequest(cancellationOperation, target);
+            if (result.Applied && result.Outcome == CancelOutcome.Cancelled)
+            {
+                // Only the call that actually decided the cutoff repeats the target's cleanup.
                 ReleaseStagedResources(target);
                 RebuildStaged();
             }
 
-            return outcome;
+            return result.Outcome;
         }
+
+        /// <summary>
+        /// Whether this lane can consider one cancellation request at all. The request must belong to this world,
+        /// name a real issuer identity, target an operation of this world, and not target its own identity — the
+        /// row it would cancel is the request itself (P-004, P-050).
+        /// </summary>
+        private bool CancellationAdmissible(OperationId cancellation, OperationId target) =>
+            cancellation.World.Equals(World) &&
+            !cancellation.IssuerId.IsDefault &&
+            target.World.Equals(World) &&
+            !cancellation.Equals(target);
 
         /// <summary>
         /// Stages one managed resource for an admitted operation. The lease is acquired behind a closed gate and

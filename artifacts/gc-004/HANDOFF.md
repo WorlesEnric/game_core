@@ -5,6 +5,13 @@ Branch: `gc-004` (worktree `/Users/yangcao/wkspace/gc-wt/gc-004`).
 no Unity and no Mono, so nothing here has been compiled or executed. Only interpreter-level static checks ran;
 they are recorded in `artifacts/gc-004/static-checks.log` and are explicitly not a build result.
 
+**Round 2 (cancellation identity) supersedes §7 and extends §4/§6:** the seam change it requested has landed,
+the cancellation contract of P-050 is now implemented, and the test additions and remaining gaps are recorded
+in `§8 Round 2 — cancellation identity and test strengthening` below. Sections 1–7 are the round 1 record and
+are kept as written; where they disagree with §8, §8 is current. The Linux build report
+(`artifacts/gc-004/BUILD_REPORT.md`) holds the executed round 1 evidence and must be reread for this round:
+**every check in §8 is again NotRun (pending the build host).**
+
 ## 1. Summary
 
 `Packages/com.gamecore.composition` (assembly `GameCore.Composition`, `noEngineReferences: true`, referencing
@@ -23,7 +30,6 @@ Layering, all Unity-free (so it also compiles under plain dotnet):
 | `Runtime/Scopes/ScopeRecords.cs` | `ScopeRecord`, `ScopeGrants`, `ScopeRegistry` (root, depth, ancestors, descendants, cycle test, add, reparent) |
 | `Runtime/Services/ServiceResolver.cs` | `ServiceNode`, `DependencyResolution`, `ServiceNodeResolution`, `ServiceResolution` and the pure resolver: visibility, isolation boundaries, conflicts, explicit selection, multi-binding, fallback, closure order/cycle |
 | `Runtime/Operations/CompositionState.cs` | `InstallEntry`, immutable `CompositionState`, snapshot assembly, definition fingerprint, `IPluginManifestSource` |
-| `Runtime/Operations/CompositionEditPayload.cs` | `CompositionEditSubject`, `CompositionEditPayload` and its canonical codec |
 | `Runtime/Operations/CompositionEditApplier.cs` | `CompositionEditPlan` and the pure applier for O-02…O-08 (plus suspend/resume), state dispositions and delta |
 | `Runtime/Operations/OperationLedger.cs` | Bounded ledger: admission kinds, idempotency, issuer sequence high-water, retention/expiry, phases and cancellation cutoffs |
 | `Runtime/Operations/CompositionHost.cs` | `EditAdmission`, `PublishedOperation`, the host: submit, drain/publish, cancel, staged resources, results, counters |
@@ -244,3 +250,150 @@ Recorded because 09 asks for the simplest reading consistent with 00:
 None. No file under `tests/GameCore.ReferenceSeams/` was modified and the API snapshot is untouched, so the W0
 interface gate stays closed. The two shared-file edits are additive (solution projects, Unity manifest lines)
 and are listed in §2.
+
+## 8. Round 2 — cancellation identity and test strengthening
+
+**Status: NotRun (pending orchestrator build host).** Nothing in this round has been compiled or executed here.
+The round 1 build report remains the only executed evidence; the build host must rerun
+`dotnet build dotnet/GameCore.sln -c Release` and `dotnet test dotnet/GameCore.sln -c Release` to cover it.
+
+### 8.1 Seam change consumed
+
+`main` added `CancelOutcome.IdempotencyConflict = 4` and `CancelOutcome.Rejected = 5` and regenerated
+`tests/GameCore.ReferenceSeams/api/GameCore.Contracts.api.txt`. This branch merged them (`8562623`); no frozen
+seam file was edited here, so the W0 interface gate is closed again and §7's request is answered.
+
+### 8.2 Cancellation is now a ledgered operation (P-050, P-051, O-18)
+
+`CompositionHost.Cancel` no longer discards `cancellationOperation`. The request is validated, admitted,
+decided and recorded in that order:
+
+| Case | Result | State that changes |
+|---|---|---|
+| Valid new request, target pending | `Cancelled` | target settled `Cancelled`; target's staged resources released; the staged tail is replanned |
+| Valid new request, target applying or settled | `TooLate` | nothing; the target's terminal result stands (no rollback) |
+| Valid new request, target never on this lane | `Unknown` | nothing |
+| Same identity + same target (retransmission) | the **original recorded outcome** | nothing; the cutoff is not applied twice |
+| Same identity + different target | `IdempotencyConflict` | nothing; the original row stands and the **second target is not cancelled** |
+| Identity reused from an edit | `IdempotencyConflict` | nothing; one operation id names one operation |
+| Foreign world, unknown issuer, cross-world target, self-target | `Rejected` | nothing: no ledger row, no retention entry, no issuer sequence consumed |
+| Lane at capacity, or an already-used/absent issuer sequence | `Rejected` | nothing, for the same reason |
+
+Implementation: `LedgerRowKind` (`CompositionEdit` / `Cancellation`), a shared `OperationLedger.Admit` for both
+kinds, `OperationLedger.CancellationInputHash(target)` (a canonical document under its own schema, so a
+cancellation hash can never alias an edit payload hash), `CancelRequest` (admission → decision → settlement) and
+`SettlementCancellation`; `CancellationResult` exposes the admission kind, the recorded outcome and the
+retrieval key. The publication queue (`PendingInAdmissionOrder`) is filtered to composition edits, so a
+cancellation can never occupy or block the publication order. Terminal mapping: `Cancelled` → `Outcome.Cancelled`;
+`TooLate`/`Unknown`/`ResultExpired`/`IdempotencyConflict` → `Outcome.Rejected` with `TooLate`/`StaleHandle`/
+`ResultExpired`/`IdempotencyConflict` (00 s9: a refusal before live writes is `Rejected(code)`).
+
+New counters for inspection: `CancelRequestCount`, `CancelRetransmissionCount`, `CancelConflictCount`,
+`CancelRejectedCount` (plus the existing `CancelledCount`/`TooLateCount`). `AdmissionKind.CapacityRejected` was
+renumbered from 5 to 4 to close the gap left when the obsolete sequence-violation variant was removed; no
+external consumer exists yet.
+
+### 8.3 The failing probe is now permanent conformance tests
+
+`CancellationIdentityTests` (11 tests) is the probe's permanent form, including
+`TheConformanceProbeForCancellationIdentityNowResolvesCorrectly`, which reproduces the recorded sequence
+(two pending edits, one cancellation identity, then the same identity aimed at the second target) and asserts
+`IdempotencyConflict`, a pending second target, a retrievable cancellation result and a successful publication
+of the second edit. The other cases cover retransmission coalescing (including after the target published),
+conflicting reuse, edit-identity reuse, every refusal class, capacity refusal, consumed issuer sequence,
+self-target, unknown target, the `Applying` latch, and cancellation-hash domain separation.
+
+Two existing tests had to change for the new contract, and the reason is itself the defect the report found:
+`CancelBeforeTheCutoffIsCancelledAndImmediatelyAfterIsTooLate` reused one cancellation identity against
+different targets, which is now a conflict rather than a second decision; it allocates a distinct, strictly
+increasing request identity per decision and asserts the coalesced retransmission separately.
+
+### 8.4 "Asserts too little" items from the round 1 test review
+
+Addressed in this round (each now asserts the behaviour its name claims):
+
+| Review item | What the test now does |
+|---|---|
+| P-010 root test did not try a second root or a root removal/move | second root → `OwnershipConflict`; root removal → `OwnershipConflict`; root moved under its own descendant → refusal; revision unchanged |
+| P-010 membership test asserted depth, not membership | mounts at a leaf and asserts exactly one scope lists it, no ancestor does, and the installation records that one owner scope |
+| P-010 removal test had no installation in the subtree | installs inside the subtree, asserts the refusal, the refusal publishes nothing, and `DestroySubtree` reports the installation in `RetiredInstances` and removes it |
+| P-010 "no ReparentTo removal path" | adds the lawful two-step path: reparent the member out, then remove the now-empty scope, asserting the moved member's depth and survival |
+| P-010 contradictory isolation published-nothing gap | asserts rejection outcome, unchanged revision, previous root isolation intact, empty drain |
+| P-011 override test used a shallow chain | three-level chain where the winner is in a strict ancestor, plus a plain-provider control that conflicts |
+| P-011 mixed single/multi declarations untested | new test: a mixed declaration of one contract is `ServiceConflict` and publishes nothing |
+| P-011 multi-binding across isolation, optional availability | not addressed here (multi-binding isolation variants remain unexercised; see §8.5) |
+| P-011 selection did not test an unknown selected id | new case → `MissingDependency`, waiting, empty bindings, never degrading to another provider |
+| P-011 optional fallback was never reached from a real provider loss | new test: real binding → provider unmount → binding is the declared fallback with the absence still reported |
+| P-011 version test asserted state only | asserts empty bindings and the `MissingDependency` diagnostic; new range test drives both inclusive endpoints and a version just above the window |
+| P-012 "optional rebinds" was not proven | same new fallback test |
+| P-013 mode switching one-way only | not addressed in this round (both-direction switching and grant survival remain unexercised; §8.5) |
+| P-046 lifecycle table never exhaustively exercised | `InstallationLifecycleTests` asserts all 9x9 state pairs against the 06 §1 edge set, no self-edge, `Disposed` terminal, the authority/contribution/definition predicates, and host-level refusal of an illegal edge (resume on Active, repeat suspend) plus the waiting→retiring→disposed path |
+| P-046 remount token not dispatched | covered by the existing stale-activation assertions on the suspend/resume and reconfiguration paths; remount generation is asserted |
+| P-046 the machine allowed three edges the diagram does not (`Active->Failed`, `Active->Retiring`, `Preparing->Retiring`) and one extra edge (`Preparing->WaitingForDependencies`) | corrected: the table is exactly the diagram's 17 edges, an active installation teardown walks `Active -> Quiescing -> Retiring`, and an active activation no longer becomes `Failed` (P-046 reserves that for a failing candidate). The exhaustive test compares the machine against the 17 edges extracted from the diagram, so the two cannot drift |
+| P-046 speculative predicates nothing consulted (`Contributes`, `RetainsDefinition`, `HasExecutionAuthority`, `IsTerminal`, `ChangesActivationEpoch`) | removed; `CanResolveActivation` replaces the resolver's own private state list so the "which states expose bindings" rule has one home, and `Contributes(Quiescing)` no longer contradicted the resolver |
+| P-050 capacity had no recovery case | asserts retention frees capacity: refuse while full, expire the settled row, admit and publish the next request |
+| P-050 cancellation identity | §8.2/§8.3 |
+| P-050 `Applying` latch never tested | `CancellationDecidedAtTheApplyingLatchIsTooLateAndRecordsWhy` holds the target at `Applying` through the lane API and asserts `TooLate` with `Rejected(TooLate)` recorded |
+| P-050 payload round trip asserted counts | asserts every nested value (isolation members, exclusion kind/target/scope/subtree, import pair, selection pair, config field kind and value), full byte-for-byte re-encoding, and that a one-field semantic difference changes the input hash |
+| P-052 no structured-diagnostic evidence | diagnostics now carry the contract id and the visible provider set as involved ids, the visible-provider count and a retry classification, and the plan's diagnostics are stamped with the owning operation; `DiagnosticContractTests` drives seven real rejections (StalePlan, MissingDependency, OwnershipConflict, CapabilityConflict, Cycle, UnsupportedVersion, MigrationRequired) and asserts code, code text, phase, operation identity, involved ids, count, retry classification, summary and the ledger's recorded code |
+| P-020 union size not members; cleared-field provenance by count | asserts the exact union members in canonical order, per-field provenance origin/source for both fields, explicit-null recording, and that an omitted field keeps its inherited value |
+| P-020 canonical hash used one text field | new test round-trips all ten value kinds with exact payloads, ordered-vs-set semantics, declaration-order independence, ascending key order, a truncated document and a tampered checksum |
+| P-020 mount compared a hash from the same helper | additionally asserts the stored effective value, revision and empty selections from the committed state |
+
+### 8.5 Review items deliberately not addressed in this round
+
+These are outside GC-004's owned surface or belong to a later task's gate; they are recorded rather than
+silently dropped. No test was deleted, skipped, disabled or weakened.
+
+| Remaining item | Why it is not GC-004's |
+|---|---|
+| Target-level eligibility, propagation to existing/future targets, Conservative grant gating, capability exclusion in both modes (TEST-004/TEST-006 remainder) | Derivation is GC-006's owned algorithm; GC-004 stores and validates the grant data only |
+| Both-direction mode switching, conflicts retaining the prior mode, stored grants surviving both switches | Needs derivation to produce a mode-gated conflict; the switch itself is already exercised one way |
+| Service replacement during use, fencing consumers before releasing old leases, full manifest/version matrix (TEST-003 remainder) | O-05 replacement *policy* for consumers is GC-006/GC-008 (planner + publisher); GC-004 resolves and records bindings |
+| Native handle reuse, world restart, 100 late completions (TEST-002/TEST-015 remainder) | Requires Unity worlds and adapters (GC-005/GC-008/GC-019) |
+| 1,000-cycle churn, unfinished-job quarantine, complete TEST-016 fault matrix | Unity worlds, jobs and player harnesses |
+| Full diagnostic payload contract for every emitted code (involved keys, plans, count/budget on every path) | GC-004 populates what it knows (contract, providers, count, retry); plan-hash and budget fields are filled at publication by GC-007/GC-008 |
+| Multi-binding across isolation boundaries, optional multi-binding availability changes | In scope but not yet covered; listed as a known gap rather than claimed |
+
+### 8.6 Files changed in this round
+
+- `Runtime/Lifecycle/InstallationStateMachine.cs`: the edge table is now exactly the 06 s1 diagram's 17
+  transitions (an active activation no longer jumps straight to `Retiring` or to `Failed`), plus
+  `TryTeardownPath` and `CanResolveActivation`, which the applier and the resolver now consult.
+- `Runtime/Documents.cs`: `CompositionSchemas.CancellationRequest`.
+- `Runtime/Operations/OperationLedger.cs`: `LedgerRowKind`, shared admission, cancellation hash, `CancelRequest`,
+  `SettleCancellation`, `CancellationResult`, `CurrentStep`, cancellation counters, `NoteCancellationRefused`,
+  publication-queue filter, `CapacityRejected` renumbered to 4.
+- `Runtime/Operations/CompositionHost.cs`: request validation, admission-first `Cancel`, refusal counter.
+- `Runtime/Services/ServiceResolver.cs`: dependency diagnostics carry the contract, the visible provider set,
+  the provider count and a retry classification.
+- `Runtime/Operations/CompositionEditApplier.cs`: diagnostics carry a retry classification; resolver
+  diagnostics are stamped with the owning operation.
+- Tests: new `CancellationIdentityTests`, `InstallationLifecycleTests`, `DiagnosticContractTests`; strengthened
+  `ScopeAndConfigurationTests`, `ServiceResolutionTests`, `ControlLaneTests`.
+
+### 8.7 Round 2 static check (not a build)
+
+`artifacts/gc-004/static-checks.log` was refreshed: 23 files / 11 080 lines, 92 test methods, balanced delimiters,
+no forbidden C# 10+ construct or Unity reference, every constructed type resolves against the merged API
+snapshot (including the new `CancelOutcome` values) or this package, constructor arities and member accesses all
+resolve, interfaces are complete, no duplicate declarations, no unused private members, no
+read-only-property assignment, every `[Test]` attribute bound to a method, and the lifecycle edge set asserted
+in `InstallationLifecycleTests` equal to the 17 edges extracted from the 06 s1 diagram. Negative controls still
+confirm the checker rejects planted defects. Every suite remains NotRun.
+
+### 8.8 Round 2 coverage mapping
+
+The table below lists only what this round changed or added; §4's mapping still holds for everything else.
+
+| Requirement | Implemented by | Executable evidence |
+|---|---|---|
+| P-050 cancellation identity | `CancellationInputHash`, `Admit(kind)`, `CancelRequest` | `CancellationIdentityTests` (11 tests) |
+| P-051 cutoff and refusal channel | `CancelRequest` decision order, `SettledCodeOf`, host validation | `TheConformanceProbeForCancellationIdentityNowResolvesCorrectly`, `CancellationDecidedAtTheApplyingLatchIsTooLateAndRecordsWhy`, `UnadmittedCancellationRequestIsRejectedAndChangesNothing`, `CancelBeforeTheCutoffIsCancelledAndImmediatelyAfterIsTooLate` |
+| P-046 lifecycle table | `InstallationStateMachine` (`IsAllowed`, `TryTeardownPath`, `CanResolveActivation`) | `InstallationLifecycleTests.EveryStatePairMatchesTheLifecycleDiagramExactly`, `NoStateIsItsOwnSuccessorAndDisposedIsTerminal`, `RefusalIsAValueAndContributionAuthorityFollowsTheState`, `HostRefusesAnIllegalLifecycleRequestAndKeepsTheInstallation`, `UnmountOfANeverActivatedInstallationIsAllowedAndRetiresIt` |
+| P-052 diagnostics | resolver and applier diagnostic construction, `Stamp` | `DiagnosticContractTests` (4 tests, seven real rejections) |
+| P-012 optional rebinding | resolver fallback path | `AnOptionalSelectedDependencyRebindsToItsDeclaredFallbackWhenTheSelectedProviderLeaves` |
+| P-011 visibility/conflict rules | resolver | `NearestAncestorProviderWinsWhenItDeclaresTheOverride`, `AMixedSingleAndMultiDeclarationOfOneContractIsAConflict`, selection and version tests |
+| P-010 scope rules | `ScopeRegistry`, applier | `ScopeTreeTests` (9 tests, incl. new root, membership, disposition, reparent-out cases) |
+| P-020 configuration | `ConfigDocument`, `ConfigComposer` | `ConfigurationTests` (8 tests, incl. all value kinds and value-level mount assertions) |
+| TEST-002/003/006/008/009/015/016 subsets | as in §4 | as in §4, plus the round 2 additions above |

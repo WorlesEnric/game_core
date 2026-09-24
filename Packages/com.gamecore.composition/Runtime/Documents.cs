@@ -49,6 +49,12 @@ namespace GameCore.Composition
         /// <summary>Canonical semantic fingerprint of a desired composition definition (P-027 plan identity).</summary>
         public static SchemaRef DefinitionFingerprint { get; } = Document("GameCore.Composition.DefinitionFingerprint");
 
+        /// <summary>
+        /// Canonical input hash document of one cancellation request (O-18): the target operation identity plus
+        /// the cancellation domain tag, so a cancellation id can never alias an edit request (P-050).
+        /// </summary>
+        public static SchemaRef CancellationRequest { get; } = Document("GameCore.Composition.CancellationRequest");
+
         /// <summary>Canonical schema version of every document in this table.</summary>
         public const uint CurrentVersion = 1U;
 
