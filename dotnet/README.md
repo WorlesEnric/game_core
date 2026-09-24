@@ -11,9 +11,11 @@ Unity qualification project and the player gates.
 |---|---|---|---|
 | `src/GameCore.ReferenceSeams` | library | netstandard2.1 | `tests/GameCore.ReferenceSeams/**/*.cs` |
 | `src/GameCore.ProtocolFixtures` | library | netstandard2.1 | `tests/GameCore.ProtocolFixtures/**/*.cs` |
+| `src/GameCore.Execution` | library | netstandard2.1 | `Packages/com.gamecore.unity.runtime/Runtime/Pure/**/*.cs` |
 | `tools/GameCore.ApiSnapshot` | console app | net8.0 | `tools/GameCore.ApiSnapshot/**/*.cs` |
 | `tests/GameCore.ReferenceSeams.Tests` | NUnit 3 | net8.0 | API snapshot freeze test |
 | `tests/GameCore.ProtocolFixtures.Tests` | NUnit 3 | net8.0 | fixture execution tests |
+| `tests/GameCore.Execution.Tests` | NUnit 3 | net8.0 | engine-free execution core tests |
 
 `tests/GameCore.ReferenceSeams.Tests` also references `GameCore.ProtocolFixtures` because repository-root
 discovery (`RepoLayout`) lives there; the seam itself has no dependency on the oracle.
@@ -22,6 +24,11 @@ discovery (`RepoLayout`) lives there; the seam itself has no dependency on the o
 `docs/game-core/05-contracts-and-data-model.md` so Wave 1 peers can compile in parallel. GC-003 replaces it
 with production `GameCore.Contracts` without a surface change. Sources live under `tests/` so the same files
 serve the fixture oracle and the dotnet build.
+
+`GameCore.Execution` compiles the engine-free execution core that also lives inside the Unity assembly
+`GameCore.Unity.Runtime` (namespace `GameCore.Execution`): the temporal accumulator, the guarded dispatch plan,
+the world/job resource ledger, the step publication boundary and the deterministic id sequence. It references
+no `UnityEngine` or `Unity.*` type, which is why the same sources build under the plain SDK.
 
 ## Commands
 
