@@ -47,10 +47,18 @@ namespace GameCore.Validation.ProbeHost
 
         internal static void Run(ProbeArguments arguments)
         {
-            ProbeReport report = new ProbeReport(
-                arguments.MissingRegistration ? "MissingRegistration" : "Positive",
-                ProbeEnvironment.DeclaredUnityVersion,
-                ProbeEnvironment.DeclaredTarget);
+            // The GC-005 owned-world mode runs in the same player and reports into the same result shape, but under
+            // its own task id so the GC-001 outcome is never restated as GC-005 evidence.
+            ProbeReport report = arguments.WorldDispatch
+                ? new ProbeReport(
+                    "WorldDispatch",
+                    ProbeEnvironment.DeclaredUnityVersion,
+                    ProbeEnvironment.DeclaredTarget,
+                    "GC-005")
+                : new ProbeReport(
+                    arguments.MissingRegistration ? "MissingRegistration" : "Positive",
+                    ProbeEnvironment.DeclaredUnityVersion,
+                    ProbeEnvironment.DeclaredTarget);
 
             if (!arguments.HasResultPath)
             {
@@ -69,6 +77,11 @@ namespace GameCore.Validation.ProbeHost
                     RunCatalogIntegrityProbe(report);
                     RunMissingRegistrationProbe(report);
                     report.CompleteNegative();
+                }
+                else if (arguments.WorldDispatch)
+                {
+                    ProbeWorldDispatch.Run(report);
+                    report.CompletePositive();
                 }
                 else
                 {
