@@ -168,8 +168,15 @@ namespace GameCore.Content.Compiler
                 schemas[s] = GeneratedSchema.Create(description.Schemas[s]);
             }
 
+            // Canonical emission order: groups by ordinal table name, schemas by schema identity. Declaration
+            // order never reaches the generated file, so two descriptions with the same declarations produce
+            // byte-identical output (P-008).
+            Array.Sort(groups, CompareTables);
             Array.Sort(schemas, CompareSchemas);
         }
+
+        private static int CompareTables(GeneratedTable left, GeneratedTable right) =>
+            string.CompareOrdinal(left.Group.TableName, right.Group.TableName);
 
         private static int CompareSchemas(GeneratedSchema left, GeneratedSchema right) =>
             left.SchemaId.CompareTo(right.SchemaId);
@@ -810,8 +817,7 @@ namespace GameCore.Content.Compiler
             builder.Append("            CatalogBuildResult result = BuildVerifiedCatalog(out observed);\n");
             builder.Append("            return result.Catalog != null && string.Equals(observed.ToHex(), CatalogFingerprint, StringComparison.Ordinal);\n");
             builder.Append("        }\n");
-
-
+            builder.Append('\n');
             if (description.Code.ClosedGenericRootStatements.Count != 0)
             {
                 builder.Append("        /// <summary>\n");

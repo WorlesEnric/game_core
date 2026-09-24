@@ -53,44 +53,14 @@ namespace GameCore.Validation.Generated
             new Id128(0x1BB26AF74E10EDC6UL, 0xF85C1657AB2D3E88UL),
         };
 
-        /// <summary>Generated key of gamecore.validation.plugin.fixture ('gamecore.validation.plugin.fixture').</summary>
-        public static readonly FactoryKey FixturePluginKey = new FactoryKey(new Id128(0x0284B6EC6D41B5AAUL, 0xD17744CF859C74B6UL), 1U);
-
         /// <summary>Generated key of gamecore.validation.handler.magnitude ('gamecore.validation.handler.magnitude').</summary>
         public static readonly FactoryKey ClosedGenericHandlerKey = new FactoryKey(new Id128(0x1C9A1F368FDAD8DDUL, 0x4E0CC4C0E9F7DA67UL), 1U);
 
+        /// <summary>Generated key of gamecore.validation.plugin.fixture ('gamecore.validation.plugin.fixture').</summary>
+        public static readonly FactoryKey FixturePluginKey = new FactoryKey(new Id128(0x0284B6EC6D41B5AAUL, 0xD17744CF859C74B6UL), 1U);
+
         /// <summary>Generated serializer key of schema 4bf5b435956d00ad605292d344334459 ('gamecore.validation.schema.probe-record').</summary>
         public static readonly FactoryKey ProbeRecordSerializerKey = new FactoryKey(new Id128(0xB917D6C4A639ECC8UL, 0xB217BB961E7592D3UL), 1U);
-
-        /// <summary>Generated registrations of PluginFactory, in canonical key order, each bound to a direct constructor reference.</summary>
-        public static readonly BoundRegistration<GameCore.Validation.Probe.IProbePluginFactory>[] PluginRegistrations =
-        {
-            new BoundRegistration<GameCore.Validation.Probe.IProbePluginFactory>(
-                FixturePluginKey,
-                "gamecore.validation.plugin.fixture",
-                new FixturePluginFactory()),
-        };
-
-        /// <summary>Generated keys of PluginRegistrations, in the same canonical order.</summary>
-        public static readonly FactoryKey[] PluginKeys =
-        {
-            FixturePluginKey,
-        };
-
-        /// <summary>
-        /// Catalog registrations of PluginFactory, in the same canonical order as PluginRegistrations.
-        /// Every entry carries its own owner package and precompiled implementation identity, so the
-        /// runtime catalog hashes exactly the declarations this file was generated from (P-009, P-028).
-        /// </summary>
-        public static readonly FactoryRegistration[] PluginRegistrationsCatalogRegistrations =
-        {
-            new FactoryRegistration(
-                FixturePluginKey,
-                FactoryKind.PluginFactory,
-                new Id128(0x0000000000000000UL, 0x0000000000000000UL),
-                new Id128(0xC522E8071CF2C14EUL, 0xCB0F3978E0E109BBUL),
-                1U),
-        };
 
         /// <summary>Generated registrations of Handler, in canonical key order, each bound to a direct constructor reference.</summary>
         public static readonly BoundRegistration<GameCore.Validation.Probe.IProbeHandler<GameCore.Validation.Probe.ProbeAmount, int>>[] HandlerRegistrations =
@@ -122,6 +92,36 @@ namespace GameCore.Validation.Generated
                 1U),
         };
 
+        /// <summary>Generated registrations of PluginFactory, in canonical key order, each bound to a direct constructor reference.</summary>
+        public static readonly BoundRegistration<GameCore.Validation.Probe.IProbePluginFactory>[] PluginRegistrations =
+        {
+            new BoundRegistration<GameCore.Validation.Probe.IProbePluginFactory>(
+                FixturePluginKey,
+                "gamecore.validation.plugin.fixture",
+                new FixturePluginFactory()),
+        };
+
+        /// <summary>Generated keys of PluginRegistrations, in the same canonical order.</summary>
+        public static readonly FactoryKey[] PluginKeys =
+        {
+            FixturePluginKey,
+        };
+
+        /// <summary>
+        /// Catalog registrations of PluginFactory, in the same canonical order as PluginRegistrations.
+        /// Every entry carries its own owner package and precompiled implementation identity, so the
+        /// runtime catalog hashes exactly the declarations this file was generated from (P-009, P-028).
+        /// </summary>
+        public static readonly FactoryRegistration[] PluginRegistrationsCatalogRegistrations =
+        {
+            new FactoryRegistration(
+                FixturePluginKey,
+                FactoryKind.PluginFactory,
+                new Id128(0x0000000000000000UL, 0x0000000000000000UL),
+                new Id128(0xC522E8071CF2C14EUL, 0xCB0F3978E0E109BBUL),
+                1U),
+        };
+
         /// <summary>Validated schema registrations, in canonical schema-id order.</summary>
         public static readonly SchemaRegistration[] SchemaRegistrations =
         {
@@ -136,13 +136,13 @@ namespace GameCore.Validation.Generated
         /// Resolves one generated registration by key. A key absent from this table returns false with a
         /// null implementation; nothing is constructed by reflection or runtime type discovery (04 section 8).
         /// </summary>
-        public static bool TryGetPluginFactory(FactoryKey key, out GameCore.Validation.Probe.IProbePluginFactory? implementation)
+        public static bool TryGetHandler(FactoryKey key, out GameCore.Validation.Probe.IProbeHandler<GameCore.Validation.Probe.ProbeAmount, int>? implementation)
         {
-            for (int i = 0; i < PluginRegistrations.Length; i++)
+            for (int i = 0; i < HandlerRegistrations.Length; i++)
             {
-                if (PluginRegistrations[i].Key.Equals(key))
+                if (HandlerRegistrations[i].Key.Equals(key))
                 {
-                    implementation = PluginRegistrations[i].Implementation;
+                    implementation = HandlerRegistrations[i].Implementation;
                     return true;
                 }
             }
@@ -155,13 +155,13 @@ namespace GameCore.Validation.Generated
         /// Resolves one generated registration by key. A key absent from this table returns false with a
         /// null implementation; nothing is constructed by reflection or runtime type discovery (04 section 8).
         /// </summary>
-        public static bool TryGetHandler(FactoryKey key, out GameCore.Validation.Probe.IProbeHandler<GameCore.Validation.Probe.ProbeAmount, int>? implementation)
+        public static bool TryGetPluginFactory(FactoryKey key, out GameCore.Validation.Probe.IProbePluginFactory? implementation)
         {
-            for (int i = 0; i < HandlerRegistrations.Length; i++)
+            for (int i = 0; i < PluginRegistrations.Length; i++)
             {
-                if (HandlerRegistrations[i].Key.Equals(key))
+                if (PluginRegistrations[i].Key.Equals(key))
                 {
-                    implementation = HandlerRegistrations[i].Implementation;
+                    implementation = PluginRegistrations[i].Implementation;
                     return true;
                 }
             }
@@ -413,9 +413,9 @@ namespace GameCore.Validation.Generated
         {
             FactoryRegistration[] all = new FactoryRegistration[2];
             int offset = 0;
-            Array.Copy(PluginRegistrationsCatalogRegistrations, 0, all, offset, 1);
-            offset += 1;
             Array.Copy(HandlerRegistrationsCatalogRegistrations, 0, all, offset, 1);
+            offset += 1;
+            Array.Copy(PluginRegistrationsCatalogRegistrations, 0, all, offset, 1);
             offset += 1;
             return all;
         }
@@ -461,6 +461,6 @@ namespace GameCore.Validation.Generated
         public const int SchemaCount = 1;
 
         /// <summary>Hash of the generated source that precedes this declaration.</summary>
-        public const string CatalogFileHash = "eac391ae0ec4f36a1f897d2879146f427b06ed72092ccb59eaa6987eb6c9ef17";
+        public const string CatalogFileHash = "f35a69b3380b0f9470f5dcdd3147698ec2ca49304bf00dc6df11d95f938ace23";
     }
 }

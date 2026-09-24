@@ -142,7 +142,7 @@ namespace GameCore.Content.Compiler
 
             CrossCheckStableNames(schemas, groups, diagnostics);
             CrossCheckKeys(groups, diagnostics);
-            CrossCheckMemberNames(schemas, groups, diagnostics);
+            CrossCheckMemberNames(className, schemas, groups, diagnostics);
             CrossCheckCatalog(schemas, groups, features, diagnostics);
 
             if (diagnostics.Count != 0)
@@ -832,12 +832,14 @@ namespace GameCore.Content.Compiler
         }
 
         /// <summary>
-        /// Reserves every member name the emitter writes into the generated class, so a description cannot
-        /// declare a member that collides with one of them and produce a file that fails to compile with CS0102.
-        /// The reserved set mirrors <c>CatalogEmitter</c>: constants, the schema table, the serializer array, the
-        /// lookup and build methods, the closed-generic root method and the per-schema generated type names.
+        /// Reserves every name the emitter writes inside the generated class, so a description cannot declare a
+        /// member that collides with one of them and produce a file that fails to compile (CS0102), or reuse the
+        /// enclosing class name (CS0542). The reserved set mirrors <c>CatalogEmitter</c>: the class name, its
+        /// constants, the schema table, the serializer array, the lookup and build methods, the closed-generic
+        /// root method and the per-schema generated type and key names.
         /// </summary>
         private static void CrossCheckMemberNames(
+            string className,
             IReadOnlyList<CatalogSchemaDeclaration> schemas,
             IReadOnlyList<CatalogRegistrationGroup> groups,
             CatalogDiagnosticBag diagnostics)
@@ -852,9 +854,19 @@ namespace GameCore.Content.Compiler
                 "HasClosedGenericRoots", "RegistrationGroupCount", "SchemaCount",
                 CatalogEmitter.ClosedGenericRootMethodName,
             };
+
+            // The class name is reserved first: a member with the same name as its enclosing type is CS0542, and
+            // a class named after one of its own generated members is the same error from the other side.
+            seen.Add(className);
             for (int i = 0; i < fixedMembers.Length; i++)
             {
-                seen.Add(fixedMembers[i]);
+                if (!seen.Add(fixedMembers[i]))
+                {
+                    diagnostics.Add(
+                        CatalogDiagnosticCode.DuplicateMemberName,
+                        "className",
+                        "the generated class name '" + className + "' is already the name of a generated member");
+                }
             }
 
             for (int s = 0; s < schemas.Count; s++)

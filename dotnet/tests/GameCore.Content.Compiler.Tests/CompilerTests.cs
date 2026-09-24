@@ -180,6 +180,22 @@ namespace GameCore.Content.Compiler.Tests
         }
 
         [Test]
+        public void MemberNamedAfterTheGeneratedClassRejects()
+        {
+            CatalogCompilationResult result = Read(Descriptions.ClassNameCollision);
+            AssertRejected(result, CatalogDiagnosticCode.DuplicateMemberName, "schemas[0]");
+            Assert.That(result.Describe(), Does.Contain("TestCatalog"));
+        }
+
+        [Test]
+        public void ClassNamedAfterAGeneratedMemberRejects()
+        {
+            CatalogCompilationResult result = Read(Descriptions.GeneratedMemberClassNameCollision);
+            AssertRejected(result, CatalogDiagnosticCode.DuplicateMemberName, "className");
+            Assert.That(result.Describe(), Does.Contain("Serializers"));
+        }
+
+        [Test]
         public void MalformedJsonIsReportedAsInvalidDocument()
         {
             CatalogCompilationResult result = Read("{ \"descriptionFormat\": ");
@@ -898,6 +914,36 @@ namespace GameCore.Content.Compiler.Tests
   ""className"": ""TestCatalog"",
   ""fileName"": ""TestCatalog.g.cs"",
   ""code"": { ""closedGenericRootStatements"": [""Test.Roots.Track(default(Test.Job<V>));""] }
+}";
+
+        internal const string GeneratedMemberClassNameCollision = @"{
+  ""descriptionFormat"": ""gamecore.catalog-description/1"",
+  ""protocolVersion"": ""1.0"",
+  ""namespace"": ""Test.Generated"",
+  ""className"": ""Serializers"",
+  ""fileName"": ""TestCatalog.g.cs"",
+  ""schemas"": [
+    { ""stableName"": ""test.schema.record"", ""valueTypeName"": ""RecordValue"",
+      ""serializerTypeName"": ""RecordSerializer"", ""serializerKeyName"": ""RecordSerializerKey"",
+      ""schemaId"": ""11111111111111112222222222222222"", ""schemaVersion"": 1, ""serializerKeyVersion"": 1,
+      ""ownerPackageId"": ""00000000000000000000000000000000"", ""required"": true, ""fields"": [] }
+  ],
+  ""groups"": []
+}";
+
+        internal const string ClassNameCollision = @"{
+  ""descriptionFormat"": ""gamecore.catalog-description/1"",
+  ""protocolVersion"": ""1.0"",
+  ""namespace"": ""Test.Generated"",
+  ""className"": ""TestCatalog"",
+  ""fileName"": ""TestCatalog.g.cs"",
+  ""schemas"": [
+    { ""stableName"": ""test.schema.record"", ""valueTypeName"": ""TestCatalog"",
+      ""serializerTypeName"": ""RecordSerializer"", ""serializerKeyName"": ""RecordSerializerKey"",
+      ""schemaId"": ""11111111111111112222222222222222"", ""schemaVersion"": 1, ""serializerKeyVersion"": 1,
+      ""ownerPackageId"": ""00000000000000000000000000000000"", ""required"": true, ""fields"": [] }
+  ],
+  ""groups"": []
 }";
 
         internal const string ReservedMemberCollision = @"{
