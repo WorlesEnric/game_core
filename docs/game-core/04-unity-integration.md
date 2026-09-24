@@ -15,7 +15,7 @@ The V1 qualification baseline is the following exact combination. These are deli
 | Collections | **2.6.6** | Exact Entities dependency; also requires at least Unity 2022.3.20f1 |
 | Burst | **1.8.28** | Exact dependency shared by Entities and Collections |
 | Mathematics | **1.3.2** | Exact dependency shared by Entities and Collections |
-| Unity Test Framework | **1.4.6** | Exact Collections dependency; used for EditMode, PlayMode, and player qualification |
+| Unity Test Framework | **1.6.0** | Editor-bundled version actually selected by Unity 6000.0.75f1; supersedes the Collections-declared 1.4.6 minimum |
 | Performance Testing package | **3.0.3** | Exact Entities/Collections dependency; benchmarks remain separately gated |
 | Managed toolchain | Editor-bundled Roslyn, **C# 9**, **.NET Standard 2.1** API compatibility | No independent modern .NET runtime assumption; [compiler](https://docs.unity3d.com/6000.0/Documentation/Manual/csharp-compiler.html) and [API profile](https://docs.unity3d.com/6000.0/Documentation/Manual/dotnet-profile-support.html) |
 | Qualification host | **Linux x86_64 (Ubuntu 24.04)**, the Editor's Linux IL2CPP toolchain, its **sysroot** and C++ toolchain from `com.unity.toolchain.linux-x86_64` **2.0.11** | The selected build host is Linux, so a Linux-hosted Linux player is the direct route; a concrete build-test host, not a restriction on the game's commercial platforms; [toolchain package](https://docs.unity3d.com/6000.0/Documentation/Manual/com.unity.toolchain.linux-x86_64.html) |
@@ -35,7 +35,7 @@ The project created in the first implementation wave contains these explicit dir
     "com.unity.collections": "2.6.6",
     "com.unity.burst": "1.8.28",
     "com.unity.mathematics": "1.3.2",
-    "com.unity.test-framework": "1.4.6",
+    "com.unity.test-framework": "1.6.0",
     "com.unity.test-framework.performance": "3.0.3",
     "com.unity.toolchain.linux-x86_64": "2.0.11"
   }
