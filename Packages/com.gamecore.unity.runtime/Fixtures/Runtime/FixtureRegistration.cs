@@ -86,7 +86,7 @@ namespace GameCore.Unity.Fixtures
                 IngressPlan(),
                 StepPlan(shape, includeFaultStage, declareCounterBuffer: shape == FixtureWorldShape.CommandDriven),
                 OutputPlan(),
-                FixtureWorldState.Seed);
+                world => FixtureWorldState.Seed(world));
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace GameCore.Unity.Fixtures
                 IngressPlan(),
                 plan,
                 OutputPlan(),
-                FixtureWorldState.Seed);
+                world => FixtureWorldState.Seed(world));
         }
 
         private static IReadOnlyList<StageRegistration> Stages()

@@ -17,8 +17,8 @@ namespace GameCore.Unity.Runtime
         private readonly IWorldExecutionContext context;
         private readonly ITemporalAccumulator temporal;
         private readonly GuardedDispatchPlan stepPlan;
-        private readonly NativeArray<Id128> stepJobIds;
-        private readonly NativeArray<JobHandle> stepJobHandles;
+        private NativeArray<Id128> stepJobIds;
+        private NativeArray<JobHandle> stepJobHandles;
 
         private int stepJobCount;
         private bool disposed;

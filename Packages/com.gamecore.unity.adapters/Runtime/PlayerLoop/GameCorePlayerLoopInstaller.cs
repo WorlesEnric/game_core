@@ -137,7 +137,7 @@ namespace GameCore.Unity.Adapters
             int insertAt = children.Length;
             for (int i = 0; i < children.Length; i++)
             {
-                if (children[i].type == typeof(ScriptRunBehaviourUpdate))
+                if (children[i].type == typeof(Update.ScriptRunBehaviourUpdate))
                 {
                     insertAt = i;
                     break;

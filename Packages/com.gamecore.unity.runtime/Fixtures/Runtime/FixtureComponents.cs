@@ -1,6 +1,7 @@
 #nullable enable
 using Unity.Burst;
 using Unity.Entities;
+using Unity.Jobs;
 
 namespace GameCore.Unity.Fixtures
 {

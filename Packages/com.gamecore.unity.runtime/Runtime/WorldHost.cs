@@ -68,6 +68,9 @@ namespace GameCore.Unity.Runtime
         public bool Pumped { get; }
 
         public bool Reentrant { get; }
+
+        public WorldLifecycleState Lifecycle { get; }
+
         public TemporalSample Sample { get; }
 
         /// <summary>Null when no step was requested, which is the normal idle or paused frame.</summary>
@@ -600,10 +603,15 @@ namespace GameCore.Unity.Runtime
                 return;
             }
 
+            OperationResult result = Stop(
+                new OperationId(World, HostOwner.Value, ulong.MaxValue),
+                "host disposal");
+            if (lifecycle != WorldLifecycleState.Disposed)
+            {
+                throw new InvalidOperationException("World disposal blocked: " + result.Code);
+            }
+
             disposed = true;
-            driver.Dispose();
-            DisposeEntityWorld();
-            UnityWorldRegistry.Remove(World);
         }
 
         private void CreateRegisteredSystems()

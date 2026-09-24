@@ -1,5 +1,6 @@
 #nullable enable
 using GameCore.Contracts;
+using GameCore.Execution;
 using GameCore.Unity.Fixtures;
 using GameCore.Unity.Runtime;
 using NUnit.Framework;
@@ -149,6 +150,26 @@ namespace GameCore.Unity.Runtime.Tests
             Assert.That(host.Lifecycle, Is.EqualTo(WorldLifecycleState.Disposed));
             Assert.That(host.IsEntityWorldCreated, Is.False);
             Assert.That(UnityWorldRegistry.Count, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void DirectDisposalSettlesFaultedJobsAndRetiresTheWorld()
+        {
+            UnityWorldHost host = CreateFaultEnabledWorld();
+            host.NotifyCommandAdmitted(1U);
+            host.PumpFrame(1_000_000UL);
+            int retained = host.Driver.RetainedJobs.Count;
+            Assert.That(retained, Is.GreaterThan(0));
+
+            host.Dispose();
+            host.Dispose();
+
+            Assert.That(host.SettledJobCount, Is.EqualTo(retained));
+            Assert.That(host.Ledger.OutstandingJobCount, Is.EqualTo(0));
+            Assert.That(host.Ledger.RetainedResourceCount, Is.EqualTo(0));
+            Assert.That(host.Lifecycle, Is.EqualTo(WorldLifecycleState.Disposed));
+            Assert.That(host.IsEntityWorldCreated, Is.False);
+            Assert.That(UnityWorldRegistry.TryGet(host.World, out _), Is.False);
         }
 
         [Test]
