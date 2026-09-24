@@ -1,0 +1,2936 @@
+[
+  {
+    "trx": "artifacts/gc-004/round-2/cancellation-final/_worlesenric_2026-09-25_06_37_56.trx",
+    "counters": {
+      "total": "12",
+      "executed": "12",
+      "passed": "12",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "tests": [
+      {
+        "name": "UnadmittedCancellationRequestIsRejectedAndChangesNothing",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005230",
+        "error": null
+      },
+      {
+        "name": "CancellationRequestAtAnAlreadyUsedIssuerSequenceIsRejected",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0011220",
+        "error": null
+      },
+      {
+        "name": "ReusingAnEditIdentityAsACancellationIsAConflictThatCancelsNothing",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0003560",
+        "error": null
+      },
+      {
+        "name": "CancellationInputHashIsDomainSeparatedFromEditInputs",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0008920",
+        "error": null
+      },
+      {
+        "name": "CancelledTargetRetentionStartsAtCancellationRatherThanWorldCreation",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0020209",
+        "error": null
+      },
+      {
+        "name": "ConflictingCancellationReuseKeepsTheOriginalAndLeavesTheSecondTargetUntouched",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005920",
+        "error": null
+      },
+      {
+        "name": "CancellationRetransmissionCoalescesToTheOriginalOutcomeWithoutRepeatingTheCutoff",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005710",
+        "error": null
+      },
+      {
+        "name": "CancellationRequestWithoutRemainingLaneCapacityIsRejectedAndDecidesNothing",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0004990",
+        "error": null
+      },
+      {
+        "name": "CancellationDecidedAtTheApplyingLatchIsTooLateAndRecordsWhy",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0014590",
+        "error": null
+      },
+      {
+        "name": "AdmittedCancellationBindsItsIdentityAndKeepsTheIssuerSequenceInStep",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0295110",
+        "error": null
+      },
+      {
+        "name": "CancellationOfAnUnknownTargetIsRejectedAgainstThatHandle",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005050",
+        "error": null
+      },
+      {
+        "name": "TheConformanceProbeForCancellationIdentityNowResolvesCorrectly",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0004100",
+        "error": null
+      }
+    ]
+  },
+  {
+    "trx": "artifacts/gc-004/round-2/retention-before/_worlesenric_2026-09-25_06_37_35.trx",
+    "counters": {
+      "total": "1",
+      "executed": "1",
+      "passed": "0",
+      "failed": "1",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "tests": [
+      {
+        "name": "CancelledTargetRetentionStartsAtCancellationRatherThanWorldCreation",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Failed",
+        "duration": "00:00:00.0396470",
+        "error": "  Expected: Found\n  But was:  Expired\n"
+      }
+    ]
+  },
+  {
+    "trx": "artifacts/gc-004/round-2/tests-final/_worlesenric_2026-09-25_06_37_59.trx",
+    "counters": {
+      "total": "10",
+      "executed": "10",
+      "passed": "10",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "tests": [
+      {
+        "name": "ShuffledInsertionOrdersProduceIdenticalCanonicalOutput",
+        "fixture": "GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005070",
+        "error": null
+      },
+      {
+        "name": "CaseDirectoryContainsFixtureFiles",
+        "fixture": "GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0027670",
+        "error": null
+      },
+      {
+        "name": "ResultDocumentRoundTripsAndIsWrittenToTheDocumentedPath",
+        "fixture": "GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0054480",
+        "error": null
+      },
+      {
+        "name": "FixtureLoaderRejectsMalformedCasesAndRunnerBlocksUnknownKinds",
+        "fixture": "GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0054820",
+        "error": null
+      },
+      {
+        "name": "CounterOracleRefusesOverflowForEveryCounter",
+        "fixture": "GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0051130",
+        "error": null
+      },
+      {
+        "name": "OracleDistinguishesValidFromInvalidOutcomes",
+        "fixture": "GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0007870",
+        "error": null
+      },
+      {
+        "name": "EveryCaseExecutesAndMatchesItsExpectation",
+        "fixture": "GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0009770",
+        "error": null
+      },
+      {
+        "name": "EveryDocumentedKindAndRequirementIsExercised",
+        "fixture": "GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0004370",
+        "error": null
+      },
+      {
+        "name": "CaseIdentifiersAreUniqueAcrossFiles",
+        "fixture": "GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005370",
+        "error": null
+      },
+      {
+        "name": "SeamCodecAgreesWithOracleCanonicalBytes",
+        "fixture": "GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0019690",
+        "error": null
+      }
+    ]
+  },
+  {
+    "trx": "artifacts/gc-004/round-2/tests-final/_worlesenric_2026-09-25_06_37_59[1].trx",
+    "counters": {
+      "total": "21",
+      "executed": "21",
+      "passed": "21",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "tests": [
+      {
+        "name": "ApiSnapshotAndFixtureRootsResolveFromTheRepository",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001230",
+        "error": null
+      },
+      {
+        "name": "HostLedgerDistinguishesUnknownFromExpired",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0019890",
+        "error": null
+      },
+      {
+        "name": "CompositionHostDoubleAdmitsStaleRejectsRetainsAndExpires",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0069350",
+        "error": null
+      },
+      {
+        "name": "CallbackGateRejectsForeignWorldAndStaleActivation",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0041830",
+        "error": null
+      },
+      {
+        "name": "SeamApiSnapshotMatchesCommittedFile",
+        "fixture": "GameCore.ReferenceSeams.Tests.ApiSnapshotTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0097090",
+        "error": null
+      },
+      {
+        "name": "ExecutionDriverRetainsTimeDebtAndStopsDispatchAtTheFailingEntry",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0076350",
+        "error": null
+      },
+      {
+        "name": "StalledJobBlocksStopInsteadOfBeingFreedOnTimeout",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001840",
+        "error": null
+      },
+      {
+        "name": "PendingHeaderIsTreatedAsFailureWithClearMessage",
+        "fixture": "GameCore.ReferenceSeams.Tests.ApiSnapshotTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0010940",
+        "error": null
+      },
+      {
+        "name": "TimeDebtRefusesToBecomeNegativeOrWrap",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001630",
+        "error": null
+      },
+      {
+        "name": "HandleGenerationZeroIsNeverAllocatedAndSlotsAreUnsigned",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0024180",
+        "error": null
+      },
+      {
+        "name": "ExplanationPagingIsBoundedAndStagedPlanReadsAreLabelled",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0033260",
+        "error": null
+      },
+      {
+        "name": "LifecycleObserverRecordsChangesAndCommittedSteps",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0007710",
+        "error": null
+      },
+      {
+        "name": "CanonicalMapOrderIsIndependentOfInsertionOrderAndReportsDuplicates",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0046290",
+        "error": null
+      },
+      {
+        "name": "VersionDomainsUseTypedCounters",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0003510",
+        "error": null
+      },
+      {
+        "name": "HostLedgerKeepsTheOriginalResultOnConflictingReuse",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0018200",
+        "error": null
+      },
+      {
+        "name": "GeneratedListingIsDeterministicAndExcludesAssemblyName",
+        "fixture": "GameCore.ReferenceSeams.Tests.ApiSnapshotTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0366780",
+        "error": null
+      },
+      {
+        "name": "ContentHashParsingAcceptsOnlyTheCanonicalLowercaseForm",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0007660",
+        "error": null
+      },
+      {
+        "name": "Id128ParsingAcceptsOnlyTheCanonicalLowercaseForm",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001590",
+        "error": null
+      },
+      {
+        "name": "ObservationReaderReturnsExpiryAndBackpressureInsteadOfThrowing",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0018970",
+        "error": null
+      },
+      {
+        "name": "CatalogLookupReportsMissingKeysAndUnsupportedVersions",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0064540",
+        "error": null
+      },
+      {
+        "name": "ResourceLedgerRetiresInReverseOrderAndQuarantinesTheFailedRelease",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0022320",
+        "error": null
+      }
+    ]
+  },
+  {
+    "trx": "artifacts/gc-004/round-2/tests-final/_worlesenric_2026-09-25_06_37_59[2].trx",
+    "counters": {
+      "total": "93",
+      "executed": "93",
+      "passed": "93",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "tests": [
+      {
+        "name": "ForgottenAndUnseenLowerSequencesRemainExpired",
+        "fixture": "GameCore.Composition.Tests.BuildHostRegressionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0014380",
+        "error": null
+      },
+      {
+        "name": "CancelBeforeTheCutoffIsCancelledAndImmediatelyAfterIsTooLate",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0013070",
+        "error": null
+      },
+      {
+        "name": "AnOptionalSelectedDependencyRebindsToItsDeclaredFallbackWhenTheSelectedProviderLeaves",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0010920",
+        "error": null
+      },
+      {
+        "name": "EveryReachableRefusalCarriesItsCodePhaseOperationAndClassification",
+        "fixture": "GameCore.Composition.Tests.DiagnosticContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0062460",
+        "error": null
+      },
+      {
+        "name": "WaitingInstallationActivatesWhenItsProviderAppearsAndWaitsAgainWhenItLeaves",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0006880",
+        "error": null
+      },
+      {
+        "name": "MountStoresTheComposedEffectiveConfiguration",
+        "fixture": "GameCore.Composition.Tests.ConfigurationTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0016290",
+        "error": null
+      },
+      {
+        "name": "SeamSubmissionRequiresTheDeclaredKindToMatchTheSubject",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0011080",
+        "error": null
+      },
+      {
+        "name": "ConflictingReuseIsRejectedAndKeepsTheOriginalResult",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0006230",
+        "error": null
+      },
+      {
+        "name": "RemountingAStableInstanceIdentityAdvancesItsInstallationGeneration",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0009280",
+        "error": null
+      },
+      {
+        "name": "OptionalAbsenceIsExplicitAndRebindsToItsDeclaredFallback",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0004740",
+        "error": null
+      },
+      {
+        "name": "ExportedProviderReachesDescendantsIncludingTheProvidersOwnScopeTargets",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0008340",
+        "error": null
+      },
+      {
+        "name": "CancellingAnExpiredOperationReportsExpiry",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0007150",
+        "error": null
+      },
+      {
+        "name": "AValidationRejectionDiagnosticCarriesTheOperationAndAClassification",
+        "fixture": "GameCore.Composition.Tests.DiagnosticContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005100",
+        "error": null
+      },
+      {
+        "name": "UndeclaredConfigurationFieldIsRejected",
+        "fixture": "GameCore.Composition.Tests.ConfigurationTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005210",
+        "error": null
+      },
+      {
+        "name": "CancellationRequestWithoutRemainingLaneCapacityIsRejectedAndDecidesNothing",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0004530",
+        "error": null
+      },
+      {
+        "name": "AdmittedCancellationBindsItsIdentityAndKeepsTheIssuerSequenceInStep",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0028520",
+        "error": null
+      },
+      {
+        "name": "DirectPublicationCannotOvertakeAnEarlierProposal",
+        "fixture": "GameCore.Composition.Tests.BuildHostRegressionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0390620",
+        "error": null
+      },
+      {
+        "name": "ConflictingCancellationReuseKeepsTheOriginalAndLeavesTheSecondTargetUntouched",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005770",
+        "error": null
+      },
+      {
+        "name": "DeclaredVersionRangeAcceptsBothEndpointsAndRejectsJustOutside",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0012530",
+        "error": null
+      },
+      {
+        "name": "ReusingAnEditIdentityAsACancellationIsAConflictThatCancelsNothing",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0003370",
+        "error": null
+      },
+      {
+        "name": "FailedPreparationReleasesEarlierStagedAcquisitions",
+        "fixture": "GameCore.Composition.Tests.ResourceGateTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0014189",
+        "error": null
+      },
+      {
+        "name": "SuspensionClosesAuthorityAndExplicitResumeUsesAFreshActivation",
+        "fixture": "GameCore.Composition.Tests.BuildHostRegressionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0010570",
+        "error": null
+      },
+      {
+        "name": "NearestAncestorProviderWinsWhenItDeclaresTheOverride",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0015110",
+        "error": null
+      },
+      {
+        "name": "RequiredProviderLossRetractsTheWholeChainAndReturnReactivatesIt",
+        "fixture": "GameCore.Composition.Tests.BuildHostRegressionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0071270",
+        "error": null
+      },
+      {
+        "name": "ResultsAlsoExpireByLogicalStepWindow",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0006690",
+        "error": null
+      },
+      {
+        "name": "ServiceResolutionIsIdenticalInBothPropagationModes",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0011080",
+        "error": null
+      },
+      {
+        "name": "UnmountPublishesCleanupErrorsWithRetainedReferences",
+        "fixture": "GameCore.Composition.Tests.ResourceGateTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0006420",
+        "error": null
+      },
+      {
+        "name": "IncompatibleContractVersionLeavesTheConsumerWaiting",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0004490",
+        "error": null
+      },
+      {
+        "name": "MultiBindingReturnsEveryVisibleProviderInCanonicalOrder",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0014460",
+        "error": null
+      },
+      {
+        "name": "CancelledTargetRetentionStartsAtCancellationRatherThanWorldCreation",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0009020",
+        "error": null
+      },
+      {
+        "name": "ConservativeGrantDataIsStoredAndValidatedAgainstRealProviders",
+        "fixture": "GameCore.Composition.Tests.ScopeTreeTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0008860",
+        "error": null
+      },
+      {
+        "name": "SameOperationIdAndSameInputCoalesceToOnePublication",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0008170",
+        "error": null
+      },
+      {
+        "name": "ForeignWorldOperationCannotMutateThisScopeTree",
+        "fixture": "GameCore.Composition.Tests.BuildHostRegressionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0022770",
+        "error": null
+      },
+      {
+        "name": "IsolationIsStoredPerScopeAndVisibleInTheSnapshot",
+        "fixture": "GameCore.Composition.Tests.ScopeTreeTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0002480",
+        "error": null
+      },
+      {
+        "name": "ExplicitSelectionIsHonoredInsideTheBoundaryAndNeverFallsBack",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0025200",
+        "error": null
+      },
+      {
+        "name": "DeclaredConfigurationHashMustDescribeTheComposedDocument",
+        "fixture": "GameCore.Composition.Tests.ConfigurationTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005070",
+        "error": null
+      },
+      {
+        "name": "SelfOnlyDomainNeverResolvesAnAncestorProvider",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0007040",
+        "error": null
+      },
+      {
+        "name": "AMissingRequiredProviderDiagnosticNamesTheContractAndZeroProviders",
+        "fixture": "GameCore.Composition.Tests.DiagnosticContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0021170",
+        "error": null
+      },
+      {
+        "name": "TwoVisibleAncestorProvidersConflictWithoutAnOverride",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0010390",
+        "error": null
+      },
+      {
+        "name": "PreparedLeaseStaysInertUntilPublication",
+        "fixture": "GameCore.Composition.Tests.ResourceGateTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0017330",
+        "error": null
+      },
+      {
+        "name": "AMixedSingleAndMultiDeclarationOfOneContractIsAConflict",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0011820",
+        "error": null
+      },
+      {
+        "name": "RetirementRunsConsumersBeforeTheirProviders",
+        "fixture": "GameCore.Composition.Tests.ResourceGateTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0016900",
+        "error": null
+      },
+      {
+        "name": "UnrelatedCleanupCannotChangeAnEarlierOperationResult",
+        "fixture": "GameCore.Composition.Tests.BuildHostRegressionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0014230",
+        "error": null
+      },
+      {
+        "name": "UnmountOfANeverActivatedInstallationIsAllowedAndRetiresIt",
+        "fixture": "GameCore.Composition.Tests.InstallationLifecycleTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0009940",
+        "error": null
+      },
+      {
+        "name": "ResolutionIsIndependentOfMountInsertionOrderForFixedSeeds",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0088850",
+        "error": null
+      },
+      {
+        "name": "HostRefusesAnIllegalLifecycleRequestAndKeepsTheInstallation",
+        "fixture": "GameCore.Composition.Tests.InstallationLifecycleTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0012740",
+        "error": null
+      },
+      {
+        "name": "ModeSwitchPublishesOneSettingAndKeepsAutomaticAsTheDefault",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0016540",
+        "error": null
+      },
+      {
+        "name": "CancellationInputHashIsDomainSeparatedFromEditInputs",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0008070",
+        "error": null
+      },
+      {
+        "name": "ReparentCyclesAndCrossAncestryMovesAreRejected",
+        "fixture": "GameCore.Composition.Tests.ScopeTreeTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0003210",
+        "error": null
+      },
+      {
+        "name": "AServiceConflictDiagnosticNamesTheOperationPhaseInvolvedProvidersAndRetry",
+        "fixture": "GameCore.Composition.Tests.DiagnosticContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0046930",
+        "error": null
+      },
+      {
+        "name": "ReconfigurationRetiresOnlyTheOldActivationResources",
+        "fixture": "GameCore.Composition.Tests.BuildHostRegressionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0176880",
+        "error": null
+      },
+      {
+        "name": "RootScopeIsTheOnlyScopeWithoutAParent",
+        "fixture": "GameCore.Composition.Tests.ScopeTreeTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0004360",
+        "error": null
+      },
+      {
+        "name": "RetiringAnInstanceDisposesEachLeaseOnceInReverseAcquisitionOrder",
+        "fixture": "GameCore.Composition.Tests.ResourceGateTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0013070",
+        "error": null
+      },
+      {
+        "name": "PlanHashIsCanonicalForTheSameDeclarationAndBaseRevision",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0009230",
+        "error": null
+      },
+      {
+        "name": "DuplicateScopeIdentityIsRejectedAsAnOwnershipConflict",
+        "fixture": "GameCore.Composition.Tests.ScopeTreeTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0002740",
+        "error": null
+      },
+      {
+        "name": "ComposedDocumentHasAStableCanonicalHashAndRoundTrips",
+        "fixture": "GameCore.Composition.Tests.ConfigurationTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0022360",
+        "error": null
+      },
+      {
+        "name": "SameScopeDuplicateSingleBindingsAlwaysConflict",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005599",
+        "error": null
+      },
+      {
+        "name": "CancellationOfAnUnknownTargetIsRejectedAgainstThatHandle",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005040",
+        "error": null
+      },
+      {
+        "name": "CancellationRetransmissionCoalescesToTheOriginalOutcomeWithoutRepeatingTheCutoff",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005270",
+        "error": null
+      },
+      {
+        "name": "SiblingScopesNeverSeeEachOthersProviders",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0006390",
+        "error": null
+      },
+      {
+        "name": "StaleExpectedRevisionIsRejectedWithoutPublishing",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0004540",
+        "error": null
+      },
+      {
+        "name": "CancellationRequestAtAnAlreadyUsedIssuerSequenceIsRejected",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0007720",
+        "error": null
+      },
+      {
+        "name": "SeveralAdmittedProposalsPublishInAdmissionOrder",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0008000",
+        "error": null
+      },
+      {
+        "name": "StagedProposalIsInspectableWhileTheCommittedRevisionIsUnchanged",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005850",
+        "error": null
+      },
+      {
+        "name": "FieldMaskDistinguishesNullFromMissingAndUnionsSets",
+        "fixture": "GameCore.Composition.Tests.ConfigurationTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0048310",
+        "error": null
+      },
+      {
+        "name": "PayloadEncodingRoundTripsEveryField",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0226670",
+        "error": null
+      },
+      {
+        "name": "ReorderedIssuerSequenceIsRefused",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0007860",
+        "error": null
+      },
+      {
+        "name": "CreatedScopeCarriesMembershipAndInheritsItsParentDepth",
+        "fixture": "GameCore.Composition.Tests.ScopeTreeTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0008570",
+        "error": null
+      },
+      {
+        "name": "RemovingANonemptyScopeRequiresAnExplicitSubtreeDisposition",
+        "fixture": "GameCore.Composition.Tests.ScopeTreeTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0008330",
+        "error": null
+      },
+      {
+        "name": "PrivateProviderInAnAncestorIsInvisible",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0004780",
+        "error": null
+      },
+      {
+        "name": "PublicationMovesRevisionAndEpochButNeverTheLogicalStep",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0006810",
+        "error": null
+      },
+      {
+        "name": "IsolationSetCannotNameContractsWhileDeclaringAll",
+        "fixture": "GameCore.Composition.Tests.ScopeTreeTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001900",
+        "error": null
+      },
+      {
+        "name": "ServiceIsolationBoundaryBlocksAncestorProvidersButNotBoundaryProviders",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0010470",
+        "error": null
+      },
+      {
+        "name": "CancellationDecidedAtTheApplyingLatchIsTooLateAndRecordsWhy",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0003260",
+        "error": null
+      },
+      {
+        "name": "RequiredDependencyCycleRejectsTheWholeProposal",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005870",
+        "error": null
+      },
+      {
+        "name": "UnadmittedCancellationRequestIsRejectedAndChangesNothing",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005220",
+        "error": null
+      },
+      {
+        "name": "ReparentPreservesDescendantIdentityAndRecomputesDepth",
+        "fixture": "GameCore.Composition.Tests.ScopeTreeTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0007440",
+        "error": null
+      },
+      {
+        "name": "TheConformanceProbeForCancellationIdentityNowResolvesCorrectly",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0004210",
+        "error": null
+      },
+      {
+        "name": "ConfigDocumentRejectsDuplicateFieldKeys",
+        "fixture": "GameCore.Composition.Tests.ConfigurationTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0031840",
+        "error": null
+      },
+      {
+        "name": "ReconfigurePreservesStateAndIncrementsOnlyTheActivationEpoch",
+        "fixture": "GameCore.Composition.Tests.ConfigurationTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0028670",
+        "error": null
+      },
+      {
+        "name": "CancellingARequiredStepRejectsTheDependentProposal",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0006250",
+        "error": null
+      },
+      {
+        "name": "NoChangeIncrementsNothing",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005180",
+        "error": null
+      },
+      {
+        "name": "AnEmptyScopeCanBeRemovedAfterItsMembersAreReparentedOut",
+        "fixture": "GameCore.Composition.Tests.ScopeTreeTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0008400",
+        "error": null
+      },
+      {
+        "name": "EveryStatePairMatchesTheLifecycleDiagramExactly",
+        "fixture": "GameCore.Composition.Tests.InstallationLifecycleTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0012539",
+        "error": null
+      },
+      {
+        "name": "RefusalIsAValueAndContributionAuthorityFollowsTheState",
+        "fixture": "GameCore.Composition.Tests.InstallationLifecycleTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0003470",
+        "error": null
+      },
+      {
+        "name": "CancellingAStagedOperationReleasesItsGatedLeases",
+        "fixture": "GameCore.Composition.Tests.ResourceGateTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0023260",
+        "error": null
+      },
+      {
+        "name": "EveryFieldKindRoundTripsThroughTheCanonicalDocument",
+        "fixture": "GameCore.Composition.Tests.ConfigurationTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0086009",
+        "error": null
+      },
+      {
+        "name": "LaneCapacityRefusesFurtherAdmission",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0013240",
+        "error": null
+      },
+      {
+        "name": "UndecodableProposalIsRejectedThroughTheFrozenSeam",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0002870",
+        "error": null
+      },
+      {
+        "name": "FailedReleaseQuarantinesTheResourceInsteadOfReportingADisposal",
+        "fixture": "GameCore.Composition.Tests.ResourceGateTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0014030",
+        "error": null
+      },
+      {
+        "name": "NoStateIsItsOwnSuccessorAndDisposedIsTerminal",
+        "fixture": "GameCore.Composition.Tests.InstallationLifecycleTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005390",
+        "error": null
+      },
+      {
+        "name": "TerminalRetransmissionKeepsItsOriginalHandle",
+        "fixture": "GameCore.Composition.Tests.BuildHostRegressionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0011340",
+        "error": null
+      },
+      {
+        "name": "ResultsExpireByCountAndAnExpiredOperationCannotReexecute",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0019880",
+        "error": null
+      }
+    ]
+  },
+  {
+    "trx": "artifacts/gc-004/round-2/tests-fixed/_worlesenric_2026-09-25_06_35_12.trx",
+    "counters": {
+      "total": "10",
+      "executed": "10",
+      "passed": "10",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "tests": [
+      {
+        "name": "ShuffledInsertionOrdersProduceIdenticalCanonicalOutput",
+        "fixture": "GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0003550",
+        "error": null
+      },
+      {
+        "name": "CaseIdentifiersAreUniqueAcrossFiles",
+        "fixture": "GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0003579",
+        "error": null
+      },
+      {
+        "name": "EveryDocumentedKindAndRequirementIsExercised",
+        "fixture": "GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0003150",
+        "error": null
+      },
+      {
+        "name": "EveryCaseExecutesAndMatchesItsExpectation",
+        "fixture": "GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0006620",
+        "error": null
+      },
+      {
+        "name": "SeamCodecAgreesWithOracleCanonicalBytes",
+        "fixture": "GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0018620",
+        "error": null
+      },
+      {
+        "name": "OracleDistinguishesValidFromInvalidOutcomes",
+        "fixture": "GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005190",
+        "error": null
+      },
+      {
+        "name": "ResultDocumentRoundTripsAndIsWrittenToTheDocumentedPath",
+        "fixture": "GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0038630",
+        "error": null
+      },
+      {
+        "name": "FixtureLoaderRejectsMalformedCasesAndRunnerBlocksUnknownKinds",
+        "fixture": "GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0038870",
+        "error": null
+      },
+      {
+        "name": "CaseDirectoryContainsFixtureFiles",
+        "fixture": "GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0023900",
+        "error": null
+      },
+      {
+        "name": "CounterOracleRefusesOverflowForEveryCounter",
+        "fixture": "GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0034550",
+        "error": null
+      }
+    ]
+  },
+  {
+    "trx": "artifacts/gc-004/round-2/tests-fixed/_worlesenric_2026-09-25_06_35_12[1].trx",
+    "counters": {
+      "total": "21",
+      "executed": "21",
+      "passed": "21",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "tests": [
+      {
+        "name": "VersionDomainsUseTypedCounters",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0002770",
+        "error": null
+      },
+      {
+        "name": "Id128ParsingAcceptsOnlyTheCanonicalLowercaseForm",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001580",
+        "error": null
+      },
+      {
+        "name": "TimeDebtRefusesToBecomeNegativeOrWrap",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001650",
+        "error": null
+      },
+      {
+        "name": "HandleGenerationZeroIsNeverAllocatedAndSlotsAreUnsigned",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0022920",
+        "error": null
+      },
+      {
+        "name": "ApiSnapshotAndFixtureRootsResolveFromTheRepository",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001120",
+        "error": null
+      },
+      {
+        "name": "GeneratedListingIsDeterministicAndExcludesAssemblyName",
+        "fixture": "GameCore.ReferenceSeams.Tests.ApiSnapshotTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0347330",
+        "error": null
+      },
+      {
+        "name": "PendingHeaderIsTreatedAsFailureWithClearMessage",
+        "fixture": "GameCore.ReferenceSeams.Tests.ApiSnapshotTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0015659",
+        "error": null
+      },
+      {
+        "name": "CallbackGateRejectsForeignWorldAndStaleActivation",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0041110",
+        "error": null
+      },
+      {
+        "name": "LifecycleObserverRecordsChangesAndCommittedSteps",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0006960",
+        "error": null
+      },
+      {
+        "name": "CatalogLookupReportsMissingKeysAndUnsupportedVersions",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0061010",
+        "error": null
+      },
+      {
+        "name": "CanonicalMapOrderIsIndependentOfInsertionOrderAndReportsDuplicates",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0041410",
+        "error": null
+      },
+      {
+        "name": "StalledJobBlocksStopInsteadOfBeingFreedOnTimeout",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001930",
+        "error": null
+      },
+      {
+        "name": "ResourceLedgerRetiresInReverseOrderAndQuarantinesTheFailedRelease",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0018150",
+        "error": null
+      },
+      {
+        "name": "ObservationReaderReturnsExpiryAndBackpressureInsteadOfThrowing",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0018340",
+        "error": null
+      },
+      {
+        "name": "HostLedgerKeepsTheOriginalResultOnConflictingReuse",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0016890",
+        "error": null
+      },
+      {
+        "name": "ContentHashParsingAcceptsOnlyTheCanonicalLowercaseForm",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0007290",
+        "error": null
+      },
+      {
+        "name": "SeamApiSnapshotMatchesCommittedFile",
+        "fixture": "GameCore.ReferenceSeams.Tests.ApiSnapshotTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0134660",
+        "error": null
+      },
+      {
+        "name": "ExplanationPagingIsBoundedAndStagedPlanReadsAreLabelled",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0032220",
+        "error": null
+      },
+      {
+        "name": "CompositionHostDoubleAdmitsStaleRejectsRetainsAndExpires",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0095310",
+        "error": null
+      },
+      {
+        "name": "ExecutionDriverRetainsTimeDebtAndStopsDispatchAtTheFailingEntry",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0070220",
+        "error": null
+      },
+      {
+        "name": "HostLedgerDistinguishesUnknownFromExpired",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0017900",
+        "error": null
+      }
+    ]
+  },
+  {
+    "trx": "artifacts/gc-004/round-2/tests-fixed/_worlesenric_2026-09-25_06_35_12[2].trx",
+    "counters": {
+      "total": "92",
+      "executed": "92",
+      "passed": "92",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "tests": [
+      {
+        "name": "LaneCapacityRefusesFurtherAdmission",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0009590",
+        "error": null
+      },
+      {
+        "name": "PrivateProviderInAnAncestorIsInvisible",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0004700",
+        "error": null
+      },
+      {
+        "name": "ServiceIsolationBoundaryBlocksAncestorProvidersButNotBoundaryProviders",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0010440",
+        "error": null
+      },
+      {
+        "name": "ExportedProviderReachesDescendantsIncludingTheProvidersOwnScopeTargets",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0008120",
+        "error": null
+      },
+      {
+        "name": "IsolationIsStoredPerScopeAndVisibleInTheSnapshot",
+        "fixture": "GameCore.Composition.Tests.ScopeTreeTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0002690",
+        "error": null
+      },
+      {
+        "name": "UnmountPublishesCleanupErrorsWithRetainedReferences",
+        "fixture": "GameCore.Composition.Tests.ResourceGateTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0006200",
+        "error": null
+      },
+      {
+        "name": "IsolationSetCannotNameContractsWhileDeclaringAll",
+        "fixture": "GameCore.Composition.Tests.ScopeTreeTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001870",
+        "error": null
+      },
+      {
+        "name": "ExplicitSelectionIsHonoredInsideTheBoundaryAndNeverFallsBack",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0024719",
+        "error": null
+      },
+      {
+        "name": "StaleExpectedRevisionIsRejectedWithoutPublishing",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0002400",
+        "error": null
+      },
+      {
+        "name": "NearestAncestorProviderWinsWhenItDeclaresTheOverride",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0015730",
+        "error": null
+      },
+      {
+        "name": "RequiredProviderLossRetractsTheWholeChainAndReturnReactivatesIt",
+        "fixture": "GameCore.Composition.Tests.BuildHostRegressionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0065520",
+        "error": null
+      },
+      {
+        "name": "ForeignWorldOperationCannotMutateThisScopeTree",
+        "fixture": "GameCore.Composition.Tests.BuildHostRegressionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0019450",
+        "error": null
+      },
+      {
+        "name": "CancellingARequiredStepRejectsTheDependentProposal",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0003280",
+        "error": null
+      },
+      {
+        "name": "CancelBeforeTheCutoffIsCancelledAndImmediatelyAfterIsTooLate",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0007159",
+        "error": null
+      },
+      {
+        "name": "CancellingAnExpiredOperationReportsExpiry",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0003800",
+        "error": null
+      },
+      {
+        "name": "SameOperationIdAndSameInputCoalesceToOnePublication",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0004450",
+        "error": null
+      },
+      {
+        "name": "WaitingInstallationActivatesWhenItsProviderAppearsAndWaitsAgainWhenItLeaves",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005290",
+        "error": null
+      },
+      {
+        "name": "UnrelatedCleanupCannotChangeAnEarlierOperationResult",
+        "fixture": "GameCore.Composition.Tests.BuildHostRegressionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0013780",
+        "error": null
+      },
+      {
+        "name": "CancellationRetransmissionCoalescesToTheOriginalOutcomeWithoutRepeatingTheCutoff",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0007850",
+        "error": null
+      },
+      {
+        "name": "AMissingRequiredProviderDiagnosticNamesTheContractAndZeroProviders",
+        "fixture": "GameCore.Composition.Tests.DiagnosticContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0011060",
+        "error": null
+      },
+      {
+        "name": "NoStateIsItsOwnSuccessorAndDisposedIsTerminal",
+        "fixture": "GameCore.Composition.Tests.InstallationLifecycleTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0003070",
+        "error": null
+      },
+      {
+        "name": "RefusalIsAValueAndContributionAuthorityFollowsTheState",
+        "fixture": "GameCore.Composition.Tests.InstallationLifecycleTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001560",
+        "error": null
+      },
+      {
+        "name": "ReparentPreservesDescendantIdentityAndRecomputesDepth",
+        "fixture": "GameCore.Composition.Tests.ScopeTreeTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0007010",
+        "error": null
+      },
+      {
+        "name": "ResultsAlsoExpireByLogicalStepWindow",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0004050",
+        "error": null
+      },
+      {
+        "name": "IncompatibleContractVersionLeavesTheConsumerWaiting",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0004350",
+        "error": null
+      },
+      {
+        "name": "ModeSwitchPublishesOneSettingAndKeepsAutomaticAsTheDefault",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0008670",
+        "error": null
+      },
+      {
+        "name": "SelfOnlyDomainNeverResolvesAnAncestorProvider",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0006910",
+        "error": null
+      },
+      {
+        "name": "CancellationRequestWithoutRemainingLaneCapacityIsRejectedAndDecidesNothing",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0004480",
+        "error": null
+      },
+      {
+        "name": "ResolutionIsIndependentOfMountInsertionOrderForFixedSeeds",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0088690",
+        "error": null
+      },
+      {
+        "name": "OptionalAbsenceIsExplicitAndRebindsToItsDeclaredFallback",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005180",
+        "error": null
+      },
+      {
+        "name": "PreparedLeaseStaysInertUntilPublication",
+        "fixture": "GameCore.Composition.Tests.ResourceGateTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0009690",
+        "error": null
+      },
+      {
+        "name": "TwoVisibleAncestorProvidersConflictWithoutAnOverride",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0006750",
+        "error": null
+      },
+      {
+        "name": "CancellingAStagedOperationReleasesItsGatedLeases",
+        "fixture": "GameCore.Composition.Tests.ResourceGateTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0012970",
+        "error": null
+      },
+      {
+        "name": "SameScopeDuplicateSingleBindingsAlwaysConflict",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005610",
+        "error": null
+      },
+      {
+        "name": "EveryFieldKindRoundTripsThroughTheCanonicalDocument",
+        "fixture": "GameCore.Composition.Tests.ConfigurationTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0054230",
+        "error": null
+      },
+      {
+        "name": "AServiceConflictDiagnosticNamesTheOperationPhaseInvolvedProvidersAndRetry",
+        "fixture": "GameCore.Composition.Tests.DiagnosticContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0023660",
+        "error": null
+      },
+      {
+        "name": "ForgottenAndUnseenLowerSequencesRemainExpired",
+        "fixture": "GameCore.Composition.Tests.BuildHostRegressionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0014220",
+        "error": null
+      },
+      {
+        "name": "CancellationRequestAtAnAlreadyUsedIssuerSequenceIsRejected",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0007660",
+        "error": null
+      },
+      {
+        "name": "PlanHashIsCanonicalForTheSameDeclarationAndBaseRevision",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0006950",
+        "error": null
+      },
+      {
+        "name": "PayloadEncodingRoundTripsEveryField",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0164290",
+        "error": null
+      },
+      {
+        "name": "ConfigDocumentRejectsDuplicateFieldKeys",
+        "fixture": "GameCore.Composition.Tests.ConfigurationTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0022169",
+        "error": null
+      },
+      {
+        "name": "DeclaredVersionRangeAcceptsBothEndpointsAndRejectsJustOutside",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0015760",
+        "error": null
+      },
+      {
+        "name": "PublicationMovesRevisionAndEpochButNeverTheLogicalStep",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005950",
+        "error": null
+      },
+      {
+        "name": "AnEmptyScopeCanBeRemovedAfterItsMembersAreReparentedOut",
+        "fixture": "GameCore.Composition.Tests.ScopeTreeTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0008009",
+        "error": null
+      },
+      {
+        "name": "StagedProposalIsInspectableWhileTheCommittedRevisionIsUnchanged",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0003190",
+        "error": null
+      },
+      {
+        "name": "TerminalRetransmissionKeepsItsOriginalHandle",
+        "fixture": "GameCore.Composition.Tests.BuildHostRegressionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0010610",
+        "error": null
+      },
+      {
+        "name": "ReconfigurePreservesStateAndIncrementsOnlyTheActivationEpoch",
+        "fixture": "GameCore.Composition.Tests.ConfigurationTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0016140",
+        "error": null
+      },
+      {
+        "name": "AValidationRejectionDiagnosticCarriesTheOperationAndAClassification",
+        "fixture": "GameCore.Composition.Tests.DiagnosticContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0002740",
+        "error": null
+      },
+      {
+        "name": "RemountingAStableInstanceIdentityAdvancesItsInstallationGeneration",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0006370",
+        "error": null
+      },
+      {
+        "name": "AnOptionalSelectedDependencyRebindsToItsDeclaredFallbackWhenTheSelectedProviderLeaves",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0010930",
+        "error": null
+      },
+      {
+        "name": "RetiringAnInstanceDisposesEachLeaseOnceInReverseAcquisitionOrder",
+        "fixture": "GameCore.Composition.Tests.ResourceGateTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0012500",
+        "error": null
+      },
+      {
+        "name": "ReparentCyclesAndCrossAncestryMovesAreRejected",
+        "fixture": "GameCore.Composition.Tests.ScopeTreeTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0003550",
+        "error": null
+      },
+      {
+        "name": "CancellationInputHashIsDomainSeparatedFromEditInputs",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0008040",
+        "error": null
+      },
+      {
+        "name": "ConflictingCancellationReuseKeepsTheOriginalAndLeavesTheSecondTargetUntouched",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0007980",
+        "error": null
+      },
+      {
+        "name": "HostRefusesAnIllegalLifecycleRequestAndKeepsTheInstallation",
+        "fixture": "GameCore.Composition.Tests.InstallationLifecycleTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0006320",
+        "error": null
+      },
+      {
+        "name": "CancellationOfAnUnknownTargetIsRejectedAgainstThatHandle",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005000",
+        "error": null
+      },
+      {
+        "name": "MultiBindingReturnsEveryVisibleProviderInCanonicalOrder",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0014050",
+        "error": null
+      },
+      {
+        "name": "CancellationDecidedAtTheApplyingLatchIsTooLateAndRecordsWhy",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0003050",
+        "error": null
+      },
+      {
+        "name": "SeveralAdmittedProposalsPublishInAdmissionOrder",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0004030",
+        "error": null
+      },
+      {
+        "name": "SiblingScopesNeverSeeEachOthersProviders",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0006330",
+        "error": null
+      },
+      {
+        "name": "ConflictingReuseIsRejectedAndKeepsTheOriginalResult",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0003750",
+        "error": null
+      },
+      {
+        "name": "RequiredDependencyCycleRejectsTheWholeProposal",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0006060",
+        "error": null
+      },
+      {
+        "name": "ConservativeGrantDataIsStoredAndValidatedAgainstRealProviders",
+        "fixture": "GameCore.Composition.Tests.ScopeTreeTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0008730",
+        "error": null
+      },
+      {
+        "name": "UndecodableProposalIsRejectedThroughTheFrozenSeam",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001370",
+        "error": null
+      },
+      {
+        "name": "EveryStatePairMatchesTheLifecycleDiagramExactly",
+        "fixture": "GameCore.Composition.Tests.InstallationLifecycleTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0006570",
+        "error": null
+      },
+      {
+        "name": "ServiceResolutionIsIdenticalInBothPropagationModes",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0011350",
+        "error": null
+      },
+      {
+        "name": "TheConformanceProbeForCancellationIdentityNowResolvesCorrectly",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005980",
+        "error": null
+      },
+      {
+        "name": "ReorderedIssuerSequenceIsRefused",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0003840",
+        "error": null
+      },
+      {
+        "name": "FieldMaskDistinguishesNullFromMissingAndUnionsSets",
+        "fixture": "GameCore.Composition.Tests.ConfigurationTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0027200",
+        "error": null
+      },
+      {
+        "name": "DeclaredConfigurationHashMustDescribeTheComposedDocument",
+        "fixture": "GameCore.Composition.Tests.ConfigurationTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0004270",
+        "error": null
+      },
+      {
+        "name": "UndeclaredConfigurationFieldIsRejected",
+        "fixture": "GameCore.Composition.Tests.ConfigurationTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0002920",
+        "error": null
+      },
+      {
+        "name": "UnmountOfANeverActivatedInstallationIsAllowedAndRetiresIt",
+        "fixture": "GameCore.Composition.Tests.InstallationLifecycleTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005770",
+        "error": null
+      },
+      {
+        "name": "ReusingAnEditIdentityAsACancellationIsAConflictThatCancelsNothing",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0004840",
+        "error": null
+      },
+      {
+        "name": "FailedReleaseQuarantinesTheResourceInsteadOfReportingADisposal",
+        "fixture": "GameCore.Composition.Tests.ResourceGateTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0007760",
+        "error": null
+      },
+      {
+        "name": "ComposedDocumentHasAStableCanonicalHashAndRoundTrips",
+        "fixture": "GameCore.Composition.Tests.ConfigurationTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0016910",
+        "error": null
+      },
+      {
+        "name": "SeamSubmissionRequiresTheDeclaredKindToMatchTheSubject",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0006150",
+        "error": null
+      },
+      {
+        "name": "ResultsExpireByCountAndAnExpiredOperationCannotReexecute",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0010480",
+        "error": null
+      },
+      {
+        "name": "RootScopeIsTheOnlyScopeWithoutAParent",
+        "fixture": "GameCore.Composition.Tests.ScopeTreeTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0004400",
+        "error": null
+      },
+      {
+        "name": "AdmittedCancellationBindsItsIdentityAndKeepsTheIssuerSequenceInStep",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0026909",
+        "error": null
+      },
+      {
+        "name": "SuspensionClosesAuthorityAndExplicitResumeUsesAFreshActivation",
+        "fixture": "GameCore.Composition.Tests.BuildHostRegressionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0009840",
+        "error": null
+      },
+      {
+        "name": "FailedPreparationReleasesEarlierStagedAcquisitions",
+        "fixture": "GameCore.Composition.Tests.ResourceGateTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0008080",
+        "error": null
+      },
+      {
+        "name": "ReconfigurationRetiresOnlyTheOldActivationResources",
+        "fixture": "GameCore.Composition.Tests.BuildHostRegressionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0167920",
+        "error": null
+      },
+      {
+        "name": "RemovingANonemptyScopeRequiresAnExplicitSubtreeDisposition",
+        "fixture": "GameCore.Composition.Tests.ScopeTreeTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0008040",
+        "error": null
+      },
+      {
+        "name": "UnadmittedCancellationRequestIsRejectedAndChangesNothing",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0007100",
+        "error": null
+      },
+      {
+        "name": "DuplicateScopeIdentityIsRejectedAsAnOwnershipConflict",
+        "fixture": "GameCore.Composition.Tests.ScopeTreeTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0002610",
+        "error": null
+      },
+      {
+        "name": "RetirementRunsConsumersBeforeTheirProviders",
+        "fixture": "GameCore.Composition.Tests.ResourceGateTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0018780",
+        "error": null
+      },
+      {
+        "name": "DirectPublicationCannotOvertakeAnEarlierProposal",
+        "fixture": "GameCore.Composition.Tests.BuildHostRegressionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0291460",
+        "error": null
+      },
+      {
+        "name": "MountStoresTheComposedEffectiveConfiguration",
+        "fixture": "GameCore.Composition.Tests.ConfigurationTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0008940",
+        "error": null
+      },
+      {
+        "name": "CreatedScopeCarriesMembershipAndInheritsItsParentDepth",
+        "fixture": "GameCore.Composition.Tests.ScopeTreeTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0008600",
+        "error": null
+      },
+      {
+        "name": "NoChangeIncrementsNothing",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0002200",
+        "error": null
+      },
+      {
+        "name": "AMixedSingleAndMultiDeclarationOfOneContractIsAConflict",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0011280",
+        "error": null
+      },
+      {
+        "name": "EveryReachableRefusalCarriesItsCodePhaseOperationAndClassification",
+        "fixture": "GameCore.Composition.Tests.DiagnosticContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0033200",
+        "error": null
+      }
+    ]
+  },
+  {
+    "trx": "artifacts/gc-004/round-2/tests-initial/_worlesenric_2026-09-25_06_27_10.trx",
+    "counters": {
+      "total": "10",
+      "executed": "10",
+      "passed": "10",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "tests": [
+      {
+        "name": "CounterOracleRefusesOverflowForEveryCounter",
+        "fixture": "GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0034930",
+        "error": null
+      },
+      {
+        "name": "EveryDocumentedKindAndRequirementIsExercised",
+        "fixture": "GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0003040",
+        "error": null
+      },
+      {
+        "name": "OracleDistinguishesValidFromInvalidOutcomes",
+        "fixture": "GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005630",
+        "error": null
+      },
+      {
+        "name": "FixtureLoaderRejectsMalformedCasesAndRunnerBlocksUnknownKinds",
+        "fixture": "GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0038330",
+        "error": null
+      },
+      {
+        "name": "SeamCodecAgreesWithOracleCanonicalBytes",
+        "fixture": "GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0036970",
+        "error": null
+      },
+      {
+        "name": "CaseDirectoryContainsFixtureFiles",
+        "fixture": "GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0025070",
+        "error": null
+      },
+      {
+        "name": "ShuffledInsertionOrdersProduceIdenticalCanonicalOutput",
+        "fixture": "GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005500",
+        "error": null
+      },
+      {
+        "name": "EveryCaseExecutesAndMatchesItsExpectation",
+        "fixture": "GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0006860",
+        "error": null
+      },
+      {
+        "name": "ResultDocumentRoundTripsAndIsWrittenToTheDocumentedPath",
+        "fixture": "GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0056500",
+        "error": null
+      },
+      {
+        "name": "CaseIdentifiersAreUniqueAcrossFiles",
+        "fixture": "GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0003790",
+        "error": null
+      }
+    ]
+  },
+  {
+    "trx": "artifacts/gc-004/round-2/tests-initial/_worlesenric_2026-09-25_06_27_11.trx",
+    "counters": {
+      "total": "21",
+      "executed": "21",
+      "passed": "21",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "tests": [
+      {
+        "name": "HostLedgerKeepsTheOriginalResultOnConflictingReuse",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0016060",
+        "error": null
+      },
+      {
+        "name": "LifecycleObserverRecordsChangesAndCommittedSteps",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0007060",
+        "error": null
+      },
+      {
+        "name": "ObservationReaderReturnsExpiryAndBackpressureInsteadOfThrowing",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0018580",
+        "error": null
+      },
+      {
+        "name": "GeneratedListingIsDeterministicAndExcludesAssemblyName",
+        "fixture": "GameCore.ReferenceSeams.Tests.ApiSnapshotTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0353880",
+        "error": null
+      },
+      {
+        "name": "ExplanationPagingIsBoundedAndStagedPlanReadsAreLabelled",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0030780",
+        "error": null
+      },
+      {
+        "name": "CallbackGateRejectsForeignWorldAndStaleActivation",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0038240",
+        "error": null
+      },
+      {
+        "name": "VersionDomainsUseTypedCounters",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0002440",
+        "error": null
+      },
+      {
+        "name": "ApiSnapshotAndFixtureRootsResolveFromTheRepository",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0000980",
+        "error": null
+      },
+      {
+        "name": "StalledJobBlocksStopInsteadOfBeingFreedOnTimeout",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001740",
+        "error": null
+      },
+      {
+        "name": "CatalogLookupReportsMissingKeysAndUnsupportedVersions",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0059699",
+        "error": null
+      },
+      {
+        "name": "HostLedgerDistinguishesUnknownFromExpired",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0017510",
+        "error": null
+      },
+      {
+        "name": "Id128ParsingAcceptsOnlyTheCanonicalLowercaseForm",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001440",
+        "error": null
+      },
+      {
+        "name": "TimeDebtRefusesToBecomeNegativeOrWrap",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001730",
+        "error": null
+      },
+      {
+        "name": "ExecutionDriverRetainsTimeDebtAndStopsDispatchAtTheFailingEntry",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0069430",
+        "error": null
+      },
+      {
+        "name": "ResourceLedgerRetiresInReverseOrderAndQuarantinesTheFailedRelease",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0018340",
+        "error": null
+      },
+      {
+        "name": "HandleGenerationZeroIsNeverAllocatedAndSlotsAreUnsigned",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0022280",
+        "error": null
+      },
+      {
+        "name": "ContentHashParsingAcceptsOnlyTheCanonicalLowercaseForm",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0006960",
+        "error": null
+      },
+      {
+        "name": "SeamApiSnapshotMatchesCommittedFile",
+        "fixture": "GameCore.ReferenceSeams.Tests.ApiSnapshotTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0091550",
+        "error": null
+      },
+      {
+        "name": "CompositionHostDoubleAdmitsStaleRejectsRetainsAndExpires",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0064170",
+        "error": null
+      },
+      {
+        "name": "CanonicalMapOrderIsIndependentOfInsertionOrderAndReportsDuplicates",
+        "fixture": "GameCore.ReferenceSeams.Tests.SeamContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0041540",
+        "error": null
+      },
+      {
+        "name": "PendingHeaderIsTreatedAsFailureWithClearMessage",
+        "fixture": "GameCore.ReferenceSeams.Tests.ApiSnapshotTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0010200",
+        "error": null
+      }
+    ]
+  },
+  {
+    "trx": "artifacts/gc-004/round-2/tests-initial/_worlesenric_2026-09-25_06_27_11[1].trx",
+    "counters": {
+      "total": "92",
+      "executed": "92",
+      "passed": "81",
+      "failed": "11",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "tests": [
+      {
+        "name": "NoStateIsItsOwnSuccessorAndDisposedIsTerminal",
+        "fixture": "GameCore.Composition.Tests.InstallationLifecycleTests",
+        "outcome": "Failed",
+        "duration": "00:00:00.0004850",
+        "error": "  Only a retiring installation reaches Disposed: Retiring\n  Expected: False\n  But was:  True\n"
+      },
+      {
+        "name": "ReorderedIssuerSequenceIsRefused",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0003630",
+        "error": null
+      },
+      {
+        "name": "PayloadEncodingRoundTripsEveryField",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0125590",
+        "error": null
+      },
+      {
+        "name": "SameOperationIdAndSameInputCoalesceToOnePublication",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0004210",
+        "error": null
+      },
+      {
+        "name": "PublicationMovesRevisionAndEpochButNeverTheLogicalStep",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0003650",
+        "error": null
+      },
+      {
+        "name": "TheConformanceProbeForCancellationIdentityNowResolvesCorrectly",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0004440",
+        "error": null
+      },
+      {
+        "name": "SameScopeDuplicateSingleBindingsAlwaysConflict",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005599",
+        "error": null
+      },
+      {
+        "name": "UnmountPublishesCleanupErrorsWithRetainedReferences",
+        "fixture": "GameCore.Composition.Tests.ResourceGateTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0006110",
+        "error": null
+      },
+      {
+        "name": "PrivateProviderInAnAncestorIsInvisible",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0004929",
+        "error": null
+      },
+      {
+        "name": "ReparentPreservesDescendantIdentityAndRecomputesDepth",
+        "fixture": "GameCore.Composition.Tests.ScopeTreeTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0007210",
+        "error": null
+      },
+      {
+        "name": "ResolutionIsIndependentOfMountInsertionOrderForFixedSeeds",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0089730",
+        "error": null
+      },
+      {
+        "name": "UnrelatedCleanupCannotChangeAnEarlierOperationResult",
+        "fixture": "GameCore.Composition.Tests.BuildHostRegressionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0013870",
+        "error": null
+      },
+      {
+        "name": "ForgottenAndUnseenLowerSequencesRemainExpired",
+        "fixture": "GameCore.Composition.Tests.BuildHostRegressionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0013850",
+        "error": null
+      },
+      {
+        "name": "MultiBindingReturnsEveryVisibleProviderInCanonicalOrder",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0023180",
+        "error": null
+      },
+      {
+        "name": "DirectPublicationCannotOvertakeAnEarlierProposal",
+        "fixture": "GameCore.Composition.Tests.BuildHostRegressionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0287090",
+        "error": null
+      },
+      {
+        "name": "ConflictingReuseIsRejectedAndKeepsTheOriginalResult",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0003420",
+        "error": null
+      },
+      {
+        "name": "ExplicitSelectionIsHonoredInsideTheBoundaryAndNeverFallsBack",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0024740",
+        "error": null
+      },
+      {
+        "name": "ConservativeGrantDataIsStoredAndValidatedAgainstRealProviders",
+        "fixture": "GameCore.Composition.Tests.ScopeTreeTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0008720",
+        "error": null
+      },
+      {
+        "name": "ExportedProviderReachesDescendantsIncludingTheProvidersOwnScopeTargets",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0009110",
+        "error": null
+      },
+      {
+        "name": "UnadmittedCancellationRequestIsRejectedAndChangesNothing",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0004960",
+        "error": null
+      },
+      {
+        "name": "IncompatibleContractVersionLeavesTheConsumerWaiting",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0008100",
+        "error": null
+      },
+      {
+        "name": "PreparedLeaseStaysInertUntilPublication",
+        "fixture": "GameCore.Composition.Tests.ResourceGateTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0014189",
+        "error": null
+      },
+      {
+        "name": "ComposedDocumentHasAStableCanonicalHashAndRoundTrips",
+        "fixture": "GameCore.Composition.Tests.ConfigurationTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0026080",
+        "error": null
+      },
+      {
+        "name": "SeamSubmissionRequiresTheDeclaredKindToMatchTheSubject",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005700",
+        "error": null
+      },
+      {
+        "name": "SelfOnlyDomainNeverResolvesAnAncestorProvider",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0006570",
+        "error": null
+      },
+      {
+        "name": "ReconfigurationRetiresOnlyTheOldActivationResources",
+        "fixture": "GameCore.Composition.Tests.BuildHostRegressionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0161800",
+        "error": null
+      },
+      {
+        "name": "RequiredProviderLossRetractsTheWholeChainAndReturnReactivatesIt",
+        "fixture": "GameCore.Composition.Tests.BuildHostRegressionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0065830",
+        "error": null
+      },
+      {
+        "name": "ConfigDocumentRejectsDuplicateFieldKeys",
+        "fixture": "GameCore.Composition.Tests.ConfigurationTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0035110",
+        "error": null
+      },
+      {
+        "name": "FieldMaskDistinguishesNullFromMissingAndUnionsSets",
+        "fixture": "GameCore.Composition.Tests.ConfigurationTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0027230",
+        "error": null
+      },
+      {
+        "name": "EveryStatePairMatchesTheLifecycleDiagramExactly",
+        "fixture": "GameCore.Composition.Tests.InstallationLifecycleTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0010550",
+        "error": null
+      },
+      {
+        "name": "ServiceIsolationBoundaryBlocksAncestorProvidersButNotBoundaryProviders",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0010750",
+        "error": null
+      },
+      {
+        "name": "AValidationRejectionDiagnosticCarriesTheOperationAndAClassification",
+        "fixture": "GameCore.Composition.Tests.DiagnosticContractTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0011190",
+        "error": null
+      },
+      {
+        "name": "ResultsExpireByCountAndAnExpiredOperationCannotReexecute",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0010420",
+        "error": null
+      },
+      {
+        "name": "DeclaredConfigurationHashMustDescribeTheComposedDocument",
+        "fixture": "GameCore.Composition.Tests.ConfigurationTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0006280",
+        "error": null
+      },
+      {
+        "name": "IsolationIsStoredPerScopeAndVisibleInTheSnapshot",
+        "fixture": "GameCore.Composition.Tests.ScopeTreeTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0002480",
+        "error": null
+      },
+      {
+        "name": "NoChangeIncrementsNothing",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0002200",
+        "error": null
+      },
+      {
+        "name": "TwoVisibleAncestorProvidersConflictWithoutAnOverride",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0006610",
+        "error": null
+      },
+      {
+        "name": "DuplicateScopeIdentityIsRejectedAsAnOwnershipConflict",
+        "fixture": "GameCore.Composition.Tests.ScopeTreeTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0002580",
+        "error": null
+      },
+      {
+        "name": "MountStoresTheComposedEffectiveConfiguration",
+        "fixture": "GameCore.Composition.Tests.ConfigurationTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0009630",
+        "error": null
+      },
+      {
+        "name": "ReconfigurePreservesStateAndIncrementsOnlyTheActivationEpoch",
+        "fixture": "GameCore.Composition.Tests.ConfigurationTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0015330",
+        "error": null
+      },
+      {
+        "name": "UndecodableProposalIsRejectedThroughTheFrozenSeam",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001510",
+        "error": null
+      },
+      {
+        "name": "RemountingAStableInstanceIdentityAdvancesItsInstallationGeneration",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0004890",
+        "error": null
+      },
+      {
+        "name": "AdmittedCancellationBindsItsIdentityAndKeepsTheIssuerSequenceInStep",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0025840",
+        "error": null
+      },
+      {
+        "name": "OptionalAbsenceIsExplicitAndRebindsToItsDeclaredFallback",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0010580",
+        "error": null
+      },
+      {
+        "name": "SiblingScopesNeverSeeEachOthersProviders",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0006310",
+        "error": null
+      },
+      {
+        "name": "StaleExpectedRevisionIsRejectedWithoutPublishing",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0002380",
+        "error": null
+      },
+      {
+        "name": "RetirementRunsConsumersBeforeTheirProviders",
+        "fixture": "GameCore.Composition.Tests.ResourceGateTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0016210",
+        "error": null
+      },
+      {
+        "name": "EveryReachableRefusalCarriesItsCodePhaseOperationAndClassification",
+        "fixture": "GameCore.Composition.Tests.DiagnosticContractTests",
+        "outcome": "Failed",
+        "duration": "00:00:00.0021520",
+        "error": "  Cycle must report its documented code.\n  Expected: Cycle\n  But was:  ResultExpired\n"
+      },
+      {
+        "name": "DeclaredVersionRangeAcceptsBothEndpointsAndRejectsJustOutside",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Failed",
+        "duration": "00:00:00.0009440",
+        "error": "  ServiceConflict\n  Expected: True\n  But was:  False\n"
+      },
+      {
+        "name": "ReparentCyclesAndCrossAncestryMovesAreRejected",
+        "fixture": "GameCore.Composition.Tests.ScopeTreeTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0003560",
+        "error": null
+      },
+      {
+        "name": "CancellingAnExpiredOperationReportsExpiry",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Failed",
+        "duration": "00:00:00.0006010",
+        "error": "  Expected: TooLate\n  But was:  ResultExpired\n"
+      },
+      {
+        "name": "ServiceResolutionIsIdenticalInBothPropagationModes",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0011290",
+        "error": null
+      },
+      {
+        "name": "RootScopeIsTheOnlyScopeWithoutAParent",
+        "fixture": "GameCore.Composition.Tests.ScopeTreeTests",
+        "outcome": "Failed",
+        "duration": "00:00:00.0005509",
+        "error": "  Expected: OwnershipConflict\n  But was:  MissingDependency\n"
+      },
+      {
+        "name": "CancellationInputHashIsDomainSeparatedFromEditInputs",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0008220",
+        "error": null
+      },
+      {
+        "name": "AMissingRequiredProviderDiagnosticNamesTheContractAndZeroProviders",
+        "fixture": "GameCore.Composition.Tests.DiagnosticContractTests",
+        "outcome": "Failed",
+        "duration": "00:00:00.0011790",
+        "error": "  Expected: OperationId(WorldId(000000776f726c640000000000000008), 00000064696167320000000000000001, 1)\n  But was:  OperationId(WorldId(00000000000000000000000000000000), 00000000000000000000000000000000, 0)\n"
+      },
+      {
+        "name": "ModeSwitchPublishesOneSettingAndKeepsAutomaticAsTheDefault",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0008600",
+        "error": null
+      },
+      {
+        "name": "FailedPreparationReleasesEarlierStagedAcquisitions",
+        "fixture": "GameCore.Composition.Tests.ResourceGateTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0007820",
+        "error": null
+      },
+      {
+        "name": "ForeignWorldOperationCannotMutateThisScopeTree",
+        "fixture": "GameCore.Composition.Tests.BuildHostRegressionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0019380",
+        "error": null
+      },
+      {
+        "name": "NearestAncestorProviderWinsWhenItDeclaresTheOverride",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Failed",
+        "duration": "00:00:00.0014130",
+        "error": "  Expected: ServiceConflict\n  But was:  None\n"
+      },
+      {
+        "name": "RetiringAnInstanceDisposesEachLeaseOnceInReverseAcquisitionOrder",
+        "fixture": "GameCore.Composition.Tests.ResourceGateTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0013150",
+        "error": null
+      },
+      {
+        "name": "UnmountOfANeverActivatedInstallationIsAllowedAndRetiresIt",
+        "fixture": "GameCore.Composition.Tests.InstallationLifecycleTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005060",
+        "error": null
+      },
+      {
+        "name": "AnOptionalSelectedDependencyRebindsToItsDeclaredFallbackWhenTheSelectedProviderLeaves",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0010590",
+        "error": null
+      },
+      {
+        "name": "CancellationOfAnUnknownTargetIsRejectedAgainstThatHandle",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005130",
+        "error": null
+      },
+      {
+        "name": "LaneCapacityRefusesFurtherAdmission",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Failed",
+        "duration": "00:00:00.0009660",
+        "error": "  Expected: Expired\n  But was:  Found\n"
+      },
+      {
+        "name": "TerminalRetransmissionKeepsItsOriginalHandle",
+        "fixture": "GameCore.Composition.Tests.BuildHostRegressionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0010620",
+        "error": null
+      },
+      {
+        "name": "IsolationSetCannotNameContractsWhileDeclaringAll",
+        "fixture": "GameCore.Composition.Tests.ScopeTreeTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0002080",
+        "error": null
+      },
+      {
+        "name": "CancellationRequestAtAnAlreadyUsedIssuerSequenceIsRejected",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0007880",
+        "error": null
+      },
+      {
+        "name": "CancelBeforeTheCutoffIsCancelledAndImmediatelyAfterIsTooLate",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0006560",
+        "error": null
+      },
+      {
+        "name": "RefusalIsAValueAndContributionAuthorityFollowsTheState",
+        "fixture": "GameCore.Composition.Tests.InstallationLifecycleTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001750",
+        "error": null
+      },
+      {
+        "name": "CancellationRequestWithoutRemainingLaneCapacityIsRejectedAndDecidesNothing",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0004510",
+        "error": null
+      },
+      {
+        "name": "SeveralAdmittedProposalsPublishInAdmissionOrder",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0003660",
+        "error": null
+      },
+      {
+        "name": "ReusingAnEditIdentityAsACancellationIsAConflictThatCancelsNothing",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0003340",
+        "error": null
+      },
+      {
+        "name": "FailedReleaseQuarantinesTheResourceInsteadOfReportingADisposal",
+        "fixture": "GameCore.Composition.Tests.ResourceGateTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0007850",
+        "error": null
+      },
+      {
+        "name": "WaitingInstallationActivatesWhenItsProviderAppearsAndWaitsAgainWhenItLeaves",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005050",
+        "error": null
+      },
+      {
+        "name": "StagedProposalIsInspectableWhileTheCommittedRevisionIsUnchanged",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0003160",
+        "error": null
+      },
+      {
+        "name": "ConflictingCancellationReuseKeepsTheOriginalAndLeavesTheSecondTargetUntouched",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005120",
+        "error": null
+      },
+      {
+        "name": "CancellationDecidedAtTheApplyingLatchIsTooLateAndRecordsWhy",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0003089",
+        "error": null
+      },
+      {
+        "name": "AServiceConflictDiagnosticNamesTheOperationPhaseInvolvedProvidersAndRetry",
+        "fixture": "GameCore.Composition.Tests.DiagnosticContractTests",
+        "outcome": "Failed",
+        "duration": "00:00:00.0014470",
+        "error": "  ServiceConflict\n  Expected: True\n  But was:  False\n"
+      },
+      {
+        "name": "CancellationRetransmissionCoalescesToTheOriginalOutcomeWithoutRepeatingTheCutoff",
+        "fixture": "GameCore.Composition.Tests.CancellationIdentityTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005350",
+        "error": null
+      },
+      {
+        "name": "ResultsAlsoExpireByLogicalStepWindow",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0004970",
+        "error": null
+      },
+      {
+        "name": "RequiredDependencyCycleRejectsTheWholeProposal",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0007450",
+        "error": null
+      },
+      {
+        "name": "RemovingANonemptyScopeRequiresAnExplicitSubtreeDisposition",
+        "fixture": "GameCore.Composition.Tests.ScopeTreeTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0008350",
+        "error": null
+      },
+      {
+        "name": "CancellingARequiredStepRejectsTheDependentProposal",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0003810",
+        "error": null
+      },
+      {
+        "name": "CreatedScopeCarriesMembershipAndInheritsItsParentDepth",
+        "fixture": "GameCore.Composition.Tests.ScopeTreeTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0008510",
+        "error": null
+      },
+      {
+        "name": "EveryFieldKindRoundTripsThroughTheCanonicalDocument",
+        "fixture": "GameCore.Composition.Tests.ConfigurationTests",
+        "outcome": "Failed",
+        "duration": "00:00:00.0192340",
+        "error": "  The set drops its duplicate.\n  Expected: 2\n  But was:  3\n"
+      },
+      {
+        "name": "PlanHashIsCanonicalForTheSameDeclarationAndBaseRevision",
+        "fixture": "GameCore.Composition.Tests.ControlLaneTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005019",
+        "error": null
+      },
+      {
+        "name": "SuspensionClosesAuthorityAndExplicitResumeUsesAFreshActivation",
+        "fixture": "GameCore.Composition.Tests.BuildHostRegressionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0009980",
+        "error": null
+      },
+      {
+        "name": "AMixedSingleAndMultiDeclarationOfOneContractIsAConflict",
+        "fixture": "GameCore.Composition.Tests.ServiceResolutionTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0011700",
+        "error": null
+      },
+      {
+        "name": "UndeclaredConfigurationFieldIsRejected",
+        "fixture": "GameCore.Composition.Tests.ConfigurationTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0002890",
+        "error": null
+      },
+      {
+        "name": "AnEmptyScopeCanBeRemovedAfterItsMembersAreReparentedOut",
+        "fixture": "GameCore.Composition.Tests.ScopeTreeTests",
+        "outcome": "Failed",
+        "duration": "00:00:00.0012849",
+        "error": "  Expected: 1\n  But was:  2\n"
+      },
+      {
+        "name": "CancellingAStagedOperationReleasesItsGatedLeases",
+        "fixture": "GameCore.Composition.Tests.ResourceGateTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0012120",
+        "error": null
+      },
+      {
+        "name": "HostRefusesAnIllegalLifecycleRequestAndKeepsTheInstallation",
+        "fixture": "GameCore.Composition.Tests.InstallationLifecycleTests",
+        "outcome": "Passed",
+        "duration": "00:00:00.0006610",
+        "error": null
+      }
+    ]
+  }
+]

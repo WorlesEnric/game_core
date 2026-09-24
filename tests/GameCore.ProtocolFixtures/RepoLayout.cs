@@ -21,8 +21,32 @@ namespace GameCore.ProtocolFixtures
 
         public static string ResultSchemaPath => "tests/GameCore.ProtocolFixtures/Data/result-schema.json";
 
-        public static string ResultDocumentPath => "artifacts/protocol-fixtures/results.json";
+        /// <summary>Environment override of the result file name, so two test projects can both run the oracle.</summary>
+        public const string ResultNameEnvironmentVariable = "GAMECORE_FIXTURE_RESULT_NAME";
 
+        /// <summary>Default result document name.</summary>
+        public const string DefaultResultName = "results.json";
+
+        /// <summary>
+        /// Repository-relative path of the executed-run evidence document. The seam-based suite writes
+        /// <c>results.json</c>; a suite that compiles the same oracle against production contracts sets
+        /// <see cref="ResultNameEnvironmentVariable"/> so its own evidence lands in a distinct file instead of
+        /// overwriting the other run's document.
+        /// </summary>
+        public static string ResultDocumentPath
+        {
+            get
+            {
+                string? overrideName = Environment.GetEnvironmentVariable(ResultNameEnvironmentVariable);
+                string name = string.IsNullOrEmpty(overrideName) ? DefaultResultName : overrideName!;
+                return "artifacts/protocol-fixtures/" + name;
+            }
+        }
+
+        /// <summary>Directory holding executed-run evidence documents.</summary>
+        public static string ResultDirectory => "artifacts/protocol-fixtures";
+
+        /// <summary>Committed frozen API snapshot of the shared contract surface (W0 reference seam).</summary>
         public static string ApiSnapshotPath => "tests/GameCore.ReferenceSeams/api/GameCore.Contracts.api.txt";
 
         /// <summary>Finds the repository root, or throws with the searched locations listed.</summary>

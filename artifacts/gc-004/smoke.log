@@ -1,0 +1,24 @@
+{
+  "status": "Pass",
+  "publications": 1,
+  "revision": 1,
+  "epoch": 1,
+  "logicalStep": 0,
+  "assemblies": [
+    {
+      "name": "GameCore.Composition",
+      "target": ".NETStandard,Version=v2.1",
+      "references": [
+        "netstandard",
+        "GameCore.ReferenceSeams"
+      ]
+    },
+    {
+      "name": "GameCore.ReferenceSeams",
+      "target": ".NETStandard,Version=v2.1",
+      "references": [
+        "netstandard"
+      ]
+    }
+  ]
+}

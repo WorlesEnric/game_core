@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Production-contract build of the pure oracle (GC-003). It compiles exactly the same oracle and fixture
+       sources as dotnet/src/GameCore.ProtocolFixtures, but against the production GameCore.Contracts assembly
+       instead of the W0 reference seam. The seam build keeps running unchanged, so a contract defect is visible
+       as a disagreement between the two runs of the same case data. -->
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>GameCore.ProtocolFixtures.Production</AssemblyName>
+    <RootNamespace>GameCore.ProtocolFixtures</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="../../../tests/GameCore.ProtocolFixtures/**/*.cs"
+             Exclude="../../../tests/GameCore.ProtocolFixtures/**/bin/**/*.cs;../../../tests/GameCore.ProtocolFixtures/**/obj/**/*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../GameCore.Contracts/GameCore.Contracts.csproj" />
+    <PackageReference Include="System.Text.Json" Version="8.0.5" />
+  </ItemGroup>
+
+</Project>

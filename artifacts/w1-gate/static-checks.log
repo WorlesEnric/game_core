@@ -1,0 +1,25 @@
+== host static checks (no C# compiler on this host) ==
+date_utc: 2026-09-24T23:11:00Z
+
+-- tools/check_game_core_csharp.py
+checked 68 C# file(s)
+ok
+
+-- tools/verify_generated_catalog.py
+unity/GameCore.Validation/Assets/GameCore.Validation/Generated/ProbeCatalog.g.cs: 3 factories, 1 schemas, 1 features, 22579 bytes
+file hash and catalog fingerprint both recompute correctly from the generated tables
+
+-- tools/check_contract_surface_parity.py
+tests/GameCore.ReferenceSeams/api/GameCore.Contracts.api.txt: 221 types (class 89, enum 41, interface 23, struct 68), 41 enums checked against Packages/com.gamecore.contracts/Runtime
+3 addition(s) beyond the frozen snapshot (allowed, must be listed in HANDOFF):
+  + enum EnvelopeError adds DuplicateField = 17
+  + enum EnvelopeError adds MissingRequiredField = 16
+  + enum FactoryKind adds Handler = 10
+every snapshotted enum and enum value exists in the production sources with the same numeric value
+
+-- tools/validate_game_core_docs.py --self-test
+Documentation validator self-test passed: 9 isolated positive/negative fixtures.
+
+-- tools/validate_game_core_docs.py
+Game Core documentation validation passed: 14 Markdown documents; local links, anchors, IDs, traceability, task DAG and wave ordering checked.
+No Unity builds, gameplay tests, runtime benchmarks, or remote URL checks were executed.

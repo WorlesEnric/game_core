@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="bb97fb28-8279-403a-bfac-e439ef635fb5" name="@worlesenric 2026-09-25 06:19:15" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-25T06:19:15.8797270+08:00" queuing="2026-09-25T06:19:15.8797270+08:00" start="2026-09-25T06:19:15.4819246+08:00" finish="2026-09-25T06:19:15.8832737+08:00" />
+  <TestSettings name="default" id="ab03f497-d5dd-4d4f-bcc0-1ff1260e6703">
+    <Deployment runDeploymentRoot="_worlesenric_2026-09-25_06_19_15" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="875579a7-eed3-4155-b07f-b831d6d04520" testId="ebc2e79d-0013-5ac5-1a10-fdc0f753882f" testName="CommittedGeneratedCatalogMatchesAFreshGeneration" computerName="worlesenric" duration="00:00:00.0202500" startTime="2026-09-25T06:19:15.7696432+08:00" endTime="2026-09-25T06:19:15.7898595+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="875579a7-eed3-4155-b07f-b831d6d04520" />
+    <UnitTestResult executionId="011df3aa-97ef-4d59-bf25-9a3b8042d940" testId="db5fa11c-61f1-b840-f7d8-d72274333fb9" testName="CommittedProbeCatalogFingerprintMatchesItsDeclarations" computerName="worlesenric" duration="00:00:00.0014610" startTime="2026-09-25T06:19:15.7939004+08:00" endTime="2026-09-25T06:19:15.7953615+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="011df3aa-97ef-4d59-bf25-9a3b8042d940" />
+    <UnitTestResult executionId="7ec80f30-867a-44d0-8fc0-7f530c237270" testId="4d635dde-9025-0f50-e5e6-4a0320b1f861" testName="CommittedGeneratedCatalogPassesItsOwnVerification" computerName="worlesenric" duration="00:00:00.0032429" startTime="2026-09-25T06:19:15.7906410+08:00" endTime="2026-09-25T06:19:15.7938839+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7ec80f30-867a-44d0-8fc0-7f530c237270" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="CommittedGeneratedCatalogPassesItsOwnVerification" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="4d635dde-9025-0f50-e5e6-4a0320b1f861">
+      <Execution id="7ec80f30-867a-44d0-8fc0-7f530c237270" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CommittedProbeCatalogTests" name="CommittedGeneratedCatalogPassesItsOwnVerification" />
+    </UnitTest>
+    <UnitTest name="CommittedGeneratedCatalogMatchesAFreshGeneration" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="ebc2e79d-0013-5ac5-1a10-fdc0f753882f">
+      <Execution id="875579a7-eed3-4155-b07f-b831d6d04520" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CommittedProbeCatalogTests" name="CommittedGeneratedCatalogMatchesAFreshGeneration" />
+    </UnitTest>
+    <UnitTest name="CommittedProbeCatalogFingerprintMatchesItsDeclarations" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="db5fa11c-61f1-b840-f7d8-d72274333fb9">
+      <Execution id="011df3aa-97ef-4d59-bf25-9a3b8042d940" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CommittedProbeCatalogTests" name="CommittedProbeCatalogFingerprintMatchesItsDeclarations" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="ebc2e79d-0013-5ac5-1a10-fdc0f753882f" executionId="875579a7-eed3-4155-b07f-b831d6d04520" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="db5fa11c-61f1-b840-f7d8-d72274333fb9" executionId="011df3aa-97ef-4d59-bf25-9a3b8042d940" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4d635dde-9025-0f50-e5e6-4a0320b1f861" executionId="7ec80f30-867a-44d0-8fc0-7f530c237270" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="3" executed="3" passed="3" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 4.5.0.0: Test execution started
+Running selected tests in /home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll
+   NUnit3TestExecutor discovered 3 of 3 NUnit test cases using Current Discovery mode, Non-Explicit run
+NUnit Adapter 4.5.0.0: Test execution complete
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

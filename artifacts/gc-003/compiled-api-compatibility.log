@@ -1,0 +1,70 @@
+frozen types: 221, production types: 233
+removed or changed lines: 0
+added lines: 66
++  type header: type class GameCore.Contracts.BoundRegistration<TImplementation>
++  type class GameCore.Contracts.BoundRegistration<TImplementation> :: ctor public BoundRegistration`1(GameCore.Contracts.FactoryKey key, System.String stableName, TImplementation implementation)
++  type class GameCore.Contracts.BoundRegistration<TImplementation> :: property public GameCore.Contracts.FactoryKey Key { get; }
++  type class GameCore.Contracts.BoundRegistration<TImplementation> :: property public System.String StableName { get; }
++  type class GameCore.Contracts.BoundRegistration<TImplementation> :: property public TImplementation Implementation { get; }
++  type class GameCore.Contracts.BoundRegistration<TImplementation> :: method public System.String ToString()
++  type header: type class GameCore.Contracts.CatalogBuildResult
++  type class GameCore.Contracts.CatalogBuildResult :: property public GameCore.Contracts.ImmutableCatalog? Catalog { get; }
++  type class GameCore.Contracts.CatalogBuildResult :: property public System.Boolean Succeeded { get; }
++  type class GameCore.Contracts.CatalogBuildResult :: property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Diagnostic> Diagnostics { get; }
++  type class GameCore.Contracts.CatalogBuildResult :: method public System.String Describe()
++  type class GameCore.Contracts.CatalogBuildResult :: method public static GameCore.Contracts.CatalogBuildResult Failure(System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Diagnostic>? diagnostics)
++  type header: type class GameCore.Contracts.CatalogFingerprint [static]
++  type class GameCore.Contracts.CatalogFingerprint [static] :: field public const System.String Scope
++  type class GameCore.Contracts.CatalogFingerprint [static] :: method public static GameCore.Contracts.ContentHash Compute(System.Collections.Generic.IReadOnlyList<GameCore.Contracts.FactoryRegistration>? factories, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.SchemaRegistration>? schemas, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128>? supportedFeatureIds)
++  type enum GameCore.Contracts.EnvelopeError : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable :: enumvalue public DuplicateField = 17
++  type enum GameCore.Contracts.EnvelopeError : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable :: enumvalue public MissingRequiredField = 16
++  type class GameCore.Contracts.EnvelopeReader :: method public System.Boolean TrySeekTo(System.Int32 offset)
++  type enum GameCore.Contracts.FactoryKind : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable :: enumvalue public Handler = 10
++  type header: type class GameCore.Contracts.GeneratedEnvelopeReader [static]
++  type class GameCore.Contracts.GeneratedEnvelopeReader [static] :: method public static System.Boolean TryReadDeclaredFields(System.Byte[] document, GameCore.Contracts.SchemaRef schema, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128> knownFeatureIds, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.GeneratedFieldSlot> declaredSlots, GameCore.Contracts.GeneratedFieldBuffer buffer, out GameCore.Contracts.EnvelopeError error)
++  type header: type class GameCore.Contracts.GeneratedFieldBuffer
++  type class GameCore.Contracts.GeneratedFieldBuffer :: ctor public GeneratedFieldBuffer()
++  type class GameCore.Contracts.GeneratedFieldBuffer :: property public System.Int32 Count { get; }
++  type class GameCore.Contracts.GeneratedFieldBuffer :: method public GameCore.Contracts.EnvelopeField Field(System.Int32 index)
++  type class GameCore.Contracts.GeneratedFieldBuffer :: method public System.Boolean Contains(System.Int32 fieldId)
++  type class GameCore.Contracts.GeneratedFieldBuffer :: method public System.Int32 RecordOffset(System.Int32 index)
++  type header: type struct GameCore.Contracts.GeneratedFieldSlot
++  type struct GameCore.Contracts.GeneratedFieldSlot :: field public readonly GameCore.Contracts.WireType Type
++  type struct GameCore.Contracts.GeneratedFieldSlot :: field public readonly System.Boolean Required
++  type struct GameCore.Contracts.GeneratedFieldSlot :: field public readonly System.Int32 FieldId
++  type struct GameCore.Contracts.GeneratedFieldSlot :: ctor public GeneratedFieldSlot(System.Int32 fieldId, GameCore.Contracts.WireType type, System.Boolean required)
++  type struct GameCore.Contracts.GeneratedFieldSlot :: method public System.String ToString()
++  type header: type class GameCore.Contracts.GeneratedSerializerBase : GameCore.Contracts.ISchemaSerializer
++  type class GameCore.Contracts.GeneratedSerializerBase : GameCore.Contracts.ISchemaSerializer :: property public GameCore.Contracts.FactoryKey Key { get; }
++  type class GameCore.Contracts.GeneratedSerializerBase : GameCore.Contracts.ISchemaSerializer :: property public GameCore.Contracts.SchemaRef Schema { get; }
++  type class GameCore.Contracts.GeneratedSerializerBase : GameCore.Contracts.ISchemaSerializer :: property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128> KnownFeatureIds { get; }
++  type class GameCore.Contracts.GeneratedSerializerBase : GameCore.Contracts.ISchemaSerializer :: method public System.Boolean TryValidate(System.Byte[] document, out GameCore.Contracts.EnvelopeError error)
++  type header: type interface GameCore.Contracts.ISchemaSerializer
++  type interface GameCore.Contracts.ISchemaSerializer :: property public GameCore.Contracts.FactoryKey Key { get; }
++  type interface GameCore.Contracts.ISchemaSerializer :: property public GameCore.Contracts.SchemaRef Schema { get; }
++  type interface GameCore.Contracts.ISchemaSerializer :: method public System.Boolean TryValidate(System.Byte[] document, out GameCore.Contracts.EnvelopeError error)
++  type header: type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog
++  type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog :: property public GameCore.Contracts.ContentHash Fingerprint { get; }
++  type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog :: property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.FactoryRegistration> Factories { get; }
++  type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog :: property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ISchemaSerializer> Serializers { get; }
++  type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog :: property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128> SupportedFeatureIds { get; }
++  type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog :: property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.SchemaRegistration> Schemas { get; }
++  type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog :: method public GameCore.Contracts.CatalogLookup Lookup(GameCore.Contracts.FactoryKey key)
++  type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog :: method public GameCore.Contracts.CatalogLookup LookupSchema(GameCore.Contracts.SchemaRef schema)
++  type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog :: method public System.Boolean SupportsFeature(GameCore.Contracts.Id128 featureId)
++  type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog :: method public System.Boolean TryGetSerializer(GameCore.Contracts.SchemaRef schema, out GameCore.Contracts.ISchemaSerializer? serializer)
++  type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog :: method public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.FactoryKey> FactoryKeysInCanonicalOrder()
++  type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog :: method public static GameCore.Contracts.CatalogBuildResult Build(System.Collections.Generic.IReadOnlyList<GameCore.Contracts.FactoryRegistration>? factories, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.SchemaRegistration>? schemas, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128>? supportedFeatureIds, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ISchemaSerializer>? serializers)
++  type header: type class GameCore.Contracts.ManifestValidationReport
++  type class GameCore.Contracts.ManifestValidationReport :: property public System.Boolean IsValid { get; }
++  type class GameCore.Contracts.ManifestValidationReport :: property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Diagnostic> Diagnostics { get; }
++  type class GameCore.Contracts.ManifestValidationReport :: property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.PluginTypeId> ValidatedPluginTypes { get; }
++  type class GameCore.Contracts.ManifestValidationReport :: method public System.String Describe()
++  type header: type class GameCore.Contracts.ManifestValidator [static]
++  type class GameCore.Contracts.ManifestValidator [static] :: method public static GameCore.Contracts.ManifestValidationReport Validate(System.Collections.Generic.IReadOnlyList<GameCore.Contracts.PluginManifest>? manifests, GameCore.Contracts.ICatalog catalog, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128>? supportedFeatureIds, GameCore.Contracts.ProtocolVersion protocol)
++  type header: type class GameCore.Contracts.StableNameKeyDerivation [static]
++  type class GameCore.Contracts.StableNameKeyDerivation [static] :: field public const System.String AllowedCharacters
++  type class GameCore.Contracts.StableNameKeyDerivation [static] :: field public const System.String Scope
++  type class GameCore.Contracts.StableNameKeyDerivation [static] :: method public static GameCore.Contracts.Id128 Derive(System.String stableName)
++  type class GameCore.Contracts.StableNameKeyDerivation [static] :: method public static System.Boolean IsCanonicalStableName(System.String? stableName)
+

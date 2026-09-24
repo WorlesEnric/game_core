@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Pure composition resolver/control tests (GC-004). The test sources live in the Unity package's Tests
+       folder so the same files run as EditMode tests (docs/game-core/04 s10: pure rules/composition are
+       validated by EditMode tests without a World, GameObjects or PlayerLoop) and here under plain dotnet.
+       The W1 gate substituted the production GameCore.Contracts project for the W0 test-only reference seam:
+       no test stubs in namespace GameCore.TestFixtures are referenced by these sources. -->
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <AssemblyName>GameCore.Composition.Tests</AssemblyName>
+    <RootNamespace>GameCore.Composition.Tests</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="../../../Packages/com.gamecore.composition/Tests/**/*.cs"
+             Exclude="../../../Packages/com.gamecore.composition/Tests/**/bin/**/*.cs;../../../Packages/com.gamecore.composition/Tests/**/obj/**/*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="NUnit" Version="3.14.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/GameCore.Composition/GameCore.Composition.csproj" />
+    <ProjectReference Include="../../src/GameCore.Contracts/GameCore.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

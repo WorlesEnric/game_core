@@ -85,8 +85,20 @@ namespace GameCore.Validation.ProbeHost
         /// <summary>Generated catalog file name reported by the generated catalog itself.</summary>
         public static string CatalogGeneratedFile => ProbeCatalog.GeneratedFileName;
 
-        /// <summary>Hash of the generated catalog file prefix, embedded by the generator.</summary>
+        /// <summary>Hash of the generated catalog file prefix, embedded by the content compiler.</summary>
         public static string CatalogFileHash => ProbeCatalog.CatalogFileHash;
+
+        /// <summary>Canonical fingerprint of the generated registrations (P-028, P-053).</summary>
+        public static string CatalogFingerprint => ProbeCatalog.CatalogFingerprint;
+
+        /// <summary>Description format the generated catalog was compiled from.</summary>
+        public static string CatalogDescriptionFormat => ProbeCatalog.DescriptionFormat;
+
+        /// <summary>Protocol version the generated catalog declares (P-055).</summary>
+        public static string CatalogProtocolVersion => ProbeCatalog.ProtocolVersion;
+
+        /// <summary>Declared protocol features this build supports, in canonical identity order (P-055).</summary>
+        public static int CatalogSupportedFeatureCount => ProbeCatalog.SupportedFeatureIds.Length;
 
         /// <summary>Hash algorithm of <see cref="CatalogFileHash"/>.</summary>
         public static string CatalogFileHashAlgorithm => ProbeCatalog.HashAlgorithm;

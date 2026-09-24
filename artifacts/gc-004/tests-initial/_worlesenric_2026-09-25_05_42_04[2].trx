@@ -1,0 +1,910 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="cbbebbfd-591f-4a0f-8b27-83e2491e395b" name="@worlesenric 2026-09-25 05:42:04" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-25T05:42:04.3348682+08:00" queuing="2026-09-25T05:42:04.3348683+08:00" start="2026-09-25T05:42:03.8680941+08:00" finish="2026-09-25T05:42:04.4071561+08:00" />
+  <TestSettings name="default" id="f1b5e323-8698-4e19-805b-aa3e3fa95347">
+    <Deployment runDeploymentRoot="_worlesenric_2026-09-25_05_42_04" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="22699dd3-c678-4e41-b6b9-bf9fbc992425" testId="d5768b35-dc03-397a-50b9-2e1152f1b7be" testName="DeclaredConfigurationHashMustDescribeTheComposedDocument" computerName="worlesenric" duration="00:00:00.0292970" startTime="2026-09-25T05:42:04.2058077+08:00" endTime="2026-09-25T05:42:04.2351048+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="22699dd3-c678-4e41-b6b9-bf9fbc992425">
+      <Output>
+        <ErrorInfo>
+          <Message>  Expected: UnsupportedVersion
+  But was:  None
+</Message>
+          <StackTrace>   at GameCore.Composition.Tests.ConfigurationTests.DeclaredConfigurationHashMustDescribeTheComposedDocument() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 356
+
+1)    at GameCore.Composition.Tests.ConfigurationTests.DeclaredConfigurationHashMustDescribeTheComposedDocument() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 356
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="85a718c8-5c23-47d2-91d2-1312f7593e74" testId="8217eecd-bb68-4934-0855-b5b50d426fce" testName="SameOperationIdAndSameInputCoalesceToOnePublication" computerName="worlesenric" duration="00:00:00.0015990" startTime="2026-09-25T05:42:04.2973733+08:00" endTime="2026-09-25T05:42:04.2989716+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="85a718c8-5c23-47d2-91d2-1312f7593e74" />
+    <UnitTestResult executionId="8c601e78-3bbd-4eec-843f-5913c75114b1" testId="03e7c345-24df-acf3-3bf5-d75f0a6fcefd" testName="MountStoresTheComposedEffectiveConfiguration" computerName="worlesenric" duration="00:00:00.0171580" startTime="2026-09-25T05:42:04.2427967+08:00" endTime="2026-09-25T05:42:04.2599546+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8c601e78-3bbd-4eec-843f-5913c75114b1" />
+    <UnitTestResult executionId="d4652b2f-48f1-4a55-9146-a2bd1e8c16cb" testId="fedac4ed-3f62-1cd0-f97e-1e17601a9f81" testName="SeamSubmissionRequiresTheDeclaredKindToMatchTheSubject" computerName="worlesenric" duration="00:00:00.0016690" startTime="2026-09-25T05:42:04.2989905+08:00" endTime="2026-09-25T05:42:04.3006592+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d4652b2f-48f1-4a55-9146-a2bd1e8c16cb" />
+    <UnitTestResult executionId="1f53278d-8568-493b-80bd-930376060198" testId="cd1e2f6c-34ee-8d4b-84e3-25ac4ed9f7e4" testName="SeveralAdmittedProposalsPublishInAdmissionOrder" computerName="worlesenric" duration="00:00:00.0009350" startTime="2026-09-25T05:42:04.3006887+08:00" endTime="2026-09-25T05:42:04.3016237+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1f53278d-8568-493b-80bd-930376060198" />
+    <UnitTestResult executionId="343d8d83-7f99-41d2-b593-f0ef6394afed" testId="91195187-9847-32fe-188e-3a47d0890635" testName="WaitingInstallationActivatesWhenItsProviderAppearsAndWaitsAgainWhenItLeaves" computerName="worlesenric" duration="00:00:00.0009260" startTime="2026-09-25T05:42:04.3651020+08:00" endTime="2026-09-25T05:42:04.3660281+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="343d8d83-7f99-41d2-b593-f0ef6394afed">
+      <Output>
+        <ErrorInfo>
+          <Message>  A restored provider activates waiting dependents without target wiring (P-012, O-04).
+  Expected: Active
+  But was:  WaitingForDependencies
+</Message>
+          <StackTrace>   at GameCore.Composition.Tests.ServiceResolutionTests.WaitingInstallationActivatesWhenItsProviderAppearsAndWaitsAgainWhenItLeaves() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 414
+
+1)    at GameCore.Composition.Tests.ServiceResolutionTests.WaitingInstallationActivatesWhenItsProviderAppearsAndWaitsAgainWhenItLeaves() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 414
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="4a1100d7-eb1f-492c-a0d1-132becafcd93" testId="8cee32ee-36fe-838e-1084-54f9fcb5341e" testName="IncompatibleContractVersionLeavesTheConsumerWaiting" computerName="worlesenric" duration="00:00:00.0014120" startTime="2026-09-25T05:42:04.3451860+08:00" endTime="2026-09-25T05:42:04.3465980+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4a1100d7-eb1f-492c-a0d1-132becafcd93">
+      <Output>
+        <ErrorInfo>
+          <Message>  The installation must exist in the committed composition.
+  Expected: not null
+  But was:  null
+</Message>
+          <StackTrace>   at GameCore.Composition.Tests.ServiceResolutionTests.Rig.StateOf(PluginInstanceId instance) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 67
+   at GameCore.Composition.Tests.ServiceResolutionTests.IncompatibleContractVersionLeavesTheConsumerWaiting() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 438
+
+1)    at GameCore.Composition.Tests.ServiceResolutionTests.Rig.StateOf(PluginInstanceId instance) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 67
+   at GameCore.Composition.Tests.ServiceResolutionTests.IncompatibleContractVersionLeavesTheConsumerWaiting() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 438
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="2271fda3-c04f-44be-816e-26c8e81c01c8" testId="19c576cd-c087-a1f3-2570-4008aa252d58" testName="RemovingANonemptyScopeRequiresAnExplicitSubtreeDisposition" computerName="worlesenric" duration="00:00:00.0010500" startTime="2026-09-25T05:42:04.3334641+08:00" endTime="2026-09-25T05:42:04.3345140+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2271fda3-c04f-44be-816e-26c8e81c01c8">
+      <Output>
+        <ErrorInfo>
+          <Message>  Expected: OwnershipConflict
+  But was:  None
+</Message>
+          <StackTrace>   at GameCore.Composition.Tests.ScopeTreeTests.RemovingANonemptyScopeRequiresAnExplicitSubtreeDisposition() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 139
+
+1)    at GameCore.Composition.Tests.ScopeTreeTests.RemovingANonemptyScopeRequiresAnExplicitSubtreeDisposition() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 139
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="f3c0bb16-7175-4da1-9048-4d203777e43f" testId="a89e8532-2832-3eee-f3ef-c48b648ea141" testName="ResolutionIsIndependentOfMountInsertionOrderForFixedSeeds" computerName="worlesenric" duration="00:00:00.0018090" startTime="2026-09-25T05:42:04.3548925+08:00" endTime="2026-09-25T05:42:04.3567009+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f3c0bb16-7175-4da1-9048-4d203777e43f">
+      <Output>
+        <ErrorInfo>
+          <Message>  None
+  Expected: True
+  But was:  False
+</Message>
+          <StackTrace>   at GameCore.Composition.Tests.ServiceResolutionTests.Rig.CreateScope(ScopeId scope, ScopeId parent) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 46
+   at GameCore.Composition.Tests.ServiceResolutionTests.MountInOrder(IReadOnlyList`1 order) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 586
+   at GameCore.Composition.Tests.ServiceResolutionTests.ResolutionIsIndependentOfMountInsertionOrderForFixedSeeds() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 516
+
+1)    at GameCore.Composition.Tests.ServiceResolutionTests.Rig.CreateScope(ScopeId scope, ScopeId parent) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 46
+   at GameCore.Composition.Tests.ServiceResolutionTests.MountInOrder(IReadOnlyList`1 order) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 586
+   at GameCore.Composition.Tests.ServiceResolutionTests.ResolutionIsIndependentOfMountInsertionOrderForFixedSeeds() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 516
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="fbb82392-41a4-4ccc-a472-fad85d5a5781" testId="eca8b4aa-e110-05ed-1e23-29c8d0377f5d" testName="UndecodableProposalIsRejectedThroughTheFrozenSeam" computerName="worlesenric" duration="00:00:00.0003690" startTime="2026-09-25T05:42:04.3056519+08:00" endTime="2026-09-25T05:42:04.3060206+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fbb82392-41a4-4ccc-a472-fad85d5a5781" />
+    <UnitTestResult executionId="8e9ff5e0-8381-4e23-8409-4b178dc744e5" testId="5285fa55-2655-a613-c672-ba1db4da43e3" testName="ServiceIsolationBoundaryBlocksAncestorProvidersButNotBoundaryProviders" computerName="worlesenric" duration="00:00:00.0010130" startTime="2026-09-25T05:42:04.3586743+08:00" endTime="2026-09-25T05:42:04.3596869+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8e9ff5e0-8381-4e23-8409-4b178dc744e5">
+      <Output>
+        <ErrorInfo>
+          <Message>  None
+  Expected: True
+  But was:  False
+</Message>
+          <StackTrace>   at GameCore.Composition.Tests.ServiceResolutionTests.Rig.CreateScope(ScopeId scope, ScopeId parent) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 46
+   at GameCore.Composition.Tests.ServiceResolutionTests.ServiceIsolationBoundaryBlocksAncestorProvidersButNotBoundaryProviders() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 176
+
+1)    at GameCore.Composition.Tests.ServiceResolutionTests.Rig.CreateScope(ScopeId scope, ScopeId parent) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 46
+   at GameCore.Composition.Tests.ServiceResolutionTests.ServiceIsolationBoundaryBlocksAncestorProvidersButNotBoundaryProviders() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 176
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="c7b5b3ec-5e5a-42ff-9316-97a9ac699f26" testId="8a4cf148-e7ff-e6da-3823-dc5e0f5d0bf3" testName="RetirementRunsConsumersBeforeTheirProviders" computerName="worlesenric" duration="00:00:00.0019719" startTime="2026-09-25T05:42:04.3227311+08:00" endTime="2026-09-25T05:42:04.3247034+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c7b5b3ec-5e5a-42ff-9316-97a9ac699f26">
+      <Output>
+        <ErrorInfo>
+          <Message>  Expected: True
+  But was:  False
+</Message>
+          <StackTrace>   at GameCore.Composition.Tests.ResourceGateTests.RetirementRunsConsumersBeforeTheirProviders() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ResourceGateTests.cs:line 278
+
+1)    at GameCore.Composition.Tests.ResourceGateTests.RetirementRunsConsumersBeforeTheirProviders() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ResourceGateTests.cs:line 278
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="ba553671-591f-4f85-ac3c-7a469859f436" testId="4e75beef-bd8f-da70-7301-2126ad0a9a26" testName="PublicationMovesRevisionAndEpochButNeverTheLogicalStep" computerName="worlesenric" duration="00:00:00.0012510" startTime="2026-09-25T05:42:04.2905205+08:00" endTime="2026-09-25T05:42:04.2917714+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ba553671-591f-4f85-ac3c-7a469859f436" />
+    <UnitTestResult executionId="bf63ffb4-c7ee-42a9-ad4b-89f2914a115e" testId="19a1793e-b4bd-7502-cbfa-6739cc0ccccc" testName="PrivateProviderInAnAncestorIsInvisible" computerName="worlesenric" duration="00:00:00.0009110" startTime="2026-09-25T05:42:04.3528157+08:00" endTime="2026-09-25T05:42:04.3537262+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bf63ffb4-c7ee-42a9-ad4b-89f2914a115e">
+      <Output>
+        <ErrorInfo>
+          <Message>  The installation must exist in the committed composition.
+  Expected: not null
+  But was:  null
+</Message>
+          <StackTrace>   at GameCore.Composition.Tests.ServiceResolutionTests.Rig.StateOf(PluginInstanceId instance) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 67
+   at GameCore.Composition.Tests.ServiceResolutionTests.PrivateProviderInAnAncestorIsInvisible() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 96
+
+1)    at GameCore.Composition.Tests.ServiceResolutionTests.Rig.StateOf(PluginInstanceId instance) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 67
+   at GameCore.Composition.Tests.ServiceResolutionTests.PrivateProviderInAnAncestorIsInvisible() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 96
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="bc2b3751-8bb3-4d9a-a115-0a71cda5a2ad" testId="fb33aa1c-a60e-b7d0-bbc3-6e1462a88992" testName="FieldMaskDistinguishesNullFromMissingAndUnionsSets" computerName="worlesenric" duration="00:00:00.0076210" startTime="2026-09-25T05:42:04.2351378+08:00" endTime="2026-09-25T05:42:04.2427579+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bc2b3751-8bb3-4d9a-a115-0a71cda5a2ad" />
+    <UnitTestResult executionId="865846e4-b75a-436f-82e0-73f1e482300b" testId="41da7d6e-a382-e1b2-29fa-1b1ae6b20d2a" testName="ResultsExpireByCountAndAnExpiredOperationCannotReexecute" computerName="worlesenric" duration="00:00:00.0017740" startTime="2026-09-25T05:42:04.2955808+08:00" endTime="2026-09-25T05:42:04.2973551+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="865846e4-b75a-436f-82e0-73f1e482300b">
+      <Output>
+        <ErrorInfo>
+          <Message>  None
+  Expected: True
+  But was:  False
+</Message>
+          <StackTrace>   at GameCore.Composition.Tests.ControlLaneTests.ResultsExpireByCountAndAnExpiredOperationCannotReexecute() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ControlLaneTests.cs:line 192
+
+1)    at GameCore.Composition.Tests.ControlLaneTests.ResultsExpireByCountAndAnExpiredOperationCannotReexecute() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ControlLaneTests.cs:line 192
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="4b412b4a-5800-4ea2-8759-06f7467b46b0" testId="aca02c10-7c03-4494-9aab-5b9e02118615" testName="CancelBeforeTheCutoffIsCancelledAndImmediatelyAfterIsTooLate" computerName="worlesenric" duration="00:00:00.0075210" startTime="2026-09-25T05:42:04.2652604+08:00" endTime="2026-09-25T05:42:04.2727814+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4b412b4a-5800-4ea2-8759-06f7467b46b0">
+      <Output>
+        <ErrorInfo>
+          <Message>  A cancelled operation leaves no staged proposal.
+  Expected: null
+  But was:  &lt;GameCore.Composition.CompositionEditPlan&gt;
+</Message>
+          <StackTrace>   at GameCore.Composition.Tests.ControlLaneTests.CancelBeforeTheCutoffIsCancelledAndImmediatelyAfterIsTooLate() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ControlLaneTests.cs:line 282
+
+1)    at GameCore.Composition.Tests.ControlLaneTests.CancelBeforeTheCutoffIsCancelledAndImmediatelyAfterIsTooLate() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ControlLaneTests.cs:line 282
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="4d182317-127b-4b5e-8ccf-ec239c93aa4a" testId="859c7e06-3c35-840b-20f5-bdfdde79bccd" testName="ResultsAlsoExpireByLogicalStepWindow" computerName="worlesenric" duration="00:00:00.0011450" startTime="2026-09-25T05:42:04.2944193+08:00" endTime="2026-09-25T05:42:04.2955640+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4d182317-127b-4b5e-8ccf-ec239c93aa4a" />
+    <UnitTestResult executionId="4513e520-fe67-4a00-bc96-24e9fb00ef34" testId="a6e5e0b9-d447-e7b3-1c16-3d6d92de1bf9" testName="PlanHashIsCanonicalForTheSameDeclarationAndBaseRevision" computerName="worlesenric" duration="00:00:00.0018980" startTime="2026-09-25T05:42:04.2886025+08:00" endTime="2026-09-25T05:42:04.2905003+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4513e520-fe67-4a00-bc96-24e9fb00ef34">
+      <Output>
+        <ErrorInfo>
+          <Message>  Expected: StalePlan
+  But was:  None
+</Message>
+          <StackTrace>   at GameCore.Composition.Tests.ControlLaneTests.PlanHashIsCanonicalForTheSameDeclarationAndBaseRevision() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ControlLaneTests.cs:line 483
+
+1)    at GameCore.Composition.Tests.ControlLaneTests.PlanHashIsCanonicalForTheSameDeclarationAndBaseRevision() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ControlLaneTests.cs:line 483
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="1fcd6e7e-86cd-4d10-b203-935a3e41f1de" testId="4c96fe44-0b62-c88f-8da2-919b56b11243" testName="IsolationIsStoredPerScopeAndVisibleInTheSnapshot" computerName="worlesenric" duration="00:00:00.0018400" startTime="2026-09-25T05:42:04.3308301+08:00" endTime="2026-09-25T05:42:04.3326702+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1fcd6e7e-86cd-4d10-b203-935a3e41f1de" />
+    <UnitTestResult executionId="bd2cf416-4955-476f-8d39-b019b162b51e" testId="668606b0-8c9a-15df-9229-970069cdfdde" testName="ServiceResolutionIsIdenticalInBothPropagationModes" computerName="worlesenric" duration="00:00:00.0035030" startTime="2026-09-25T05:42:04.3597090+08:00" endTime="2026-09-25T05:42:04.3632115+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bd2cf416-4955-476f-8d39-b019b162b51e">
+      <Output>
+        <ErrorInfo>
+          <Message>  Service resolution is identical in both modes (P-011).
+  String lengths are both 217. Strings differ at index 29.
+  Expected: "scope=ScopeId(000000006d6f64310000000000000002) parent=ScopeI..."
+  But was:  "scope=ScopeId(000000006d6f64320000000000000002) parent=ScopeI..."
+  ----------------------------------------^
+</Message>
+          <StackTrace>   at GameCore.Composition.Tests.ServiceResolutionTests.ServiceResolutionIsIdenticalInBothPropagationModes() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 505
+
+1)    at GameCore.Composition.Tests.ServiceResolutionTests.ServiceResolutionIsIdenticalInBothPropagationModes() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 505
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="a7d42c57-5f76-4248-9ae5-3ac379a5f5ea" testId="057e17ea-c0dd-7947-a172-ecd49394e0d9" testName="SelfOnlyDomainNeverResolvesAnAncestorProvider" computerName="worlesenric" duration="00:00:00.0008940" startTime="2026-09-25T05:42:04.3577592+08:00" endTime="2026-09-25T05:42:04.3586527+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a7d42c57-5f76-4248-9ae5-3ac379a5f5ea">
+      <Output>
+        <ErrorInfo>
+          <Message>  The installation must exist in the committed composition.
+  Expected: not null
+  But was:  null
+</Message>
+          <StackTrace>   at GameCore.Composition.Tests.ServiceResolutionTests.Rig.StateOf(PluginInstanceId instance) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 67
+   at GameCore.Composition.Tests.ServiceResolutionTests.SelfOnlyDomainNeverResolvesAnAncestorProvider() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 494
+
+1)    at GameCore.Composition.Tests.ServiceResolutionTests.Rig.StateOf(PluginInstanceId instance) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 67
+   at GameCore.Composition.Tests.ServiceResolutionTests.SelfOnlyDomainNeverResolvesAnAncestorProvider() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 494
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="bbd3a400-ba4c-439b-8418-b1ffce704f50" testId="09092977-dd53-d8ca-e920-a8eea97435d9" testName="ReparentCyclesAndCrossAncestryMovesAreRejected" computerName="worlesenric" duration="00:00:00.0010700" startTime="2026-09-25T05:42:04.3345390+08:00" endTime="2026-09-25T05:42:04.3356087+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bbd3a400-ba4c-439b-8418-b1ffce704f50">
+      <Output>
+        <ErrorInfo>
+          <Message>  Expected: Cycle
+  But was:  None
+</Message>
+          <StackTrace>   at GameCore.Composition.Tests.ScopeTreeTests.ReparentCyclesAndCrossAncestryMovesAreRejected() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 89
+
+1)    at GameCore.Composition.Tests.ScopeTreeTests.ReparentCyclesAndCrossAncestryMovesAreRejected() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 89
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="009051d7-ad86-40a5-a2a5-043eefac67df" testId="95cb9281-2148-910d-1241-9ad9fcb0ba5a" testName="NearestAncestorProviderWinsWhenItDeclaresTheOverride" computerName="worlesenric" duration="00:00:00.0008780" startTime="2026-09-25T05:42:04.3478902+08:00" endTime="2026-09-25T05:42:04.3487682+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="009051d7-ad86-40a5-a2a5-043eefac67df">
+      <Output>
+        <ErrorInfo>
+          <Message>  None
+  Expected: True
+  But was:  False
+</Message>
+          <StackTrace>   at GameCore.Composition.Tests.ServiceResolutionTests.Rig.CreateScope(ScopeId scope, ScopeId parent) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 46
+   at GameCore.Composition.Tests.ServiceResolutionTests.NearestAncestorProviderWinsWhenItDeclaresTheOverride() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 270
+
+1)    at GameCore.Composition.Tests.ServiceResolutionTests.Rig.CreateScope(ScopeId scope, ScopeId parent) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 46
+   at GameCore.Composition.Tests.ServiceResolutionTests.NearestAncestorProviderWinsWhenItDeclaresTheOverride() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 270
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d92f55c8-b2b1-4024-8e31-d03bc9c5c035" testId="477e8099-b329-c0d5-0257-031ad0de64c6" testName="ModeSwitchPublishesOneSettingAndKeepsAutomaticAsTheDefault" computerName="worlesenric" duration="00:00:00.0017500" startTime="2026-09-25T05:42:04.2789318+08:00" endTime="2026-09-25T05:42:04.2806813+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d92f55c8-b2b1-4024-8e31-d03bc9c5c035" />
+    <UnitTestResult executionId="15c65ef9-2dfd-4964-a464-44ab658b48d5" testId="272d932d-fbc5-4618-9012-9d9d508473cd" testName="FailedPreparationReleasesEarlierStagedAcquisitions" computerName="worlesenric" duration="00:00:00.0008320" startTime="2026-09-25T05:42:04.3151155+08:00" endTime="2026-09-25T05:42:04.3159476+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="15c65ef9-2dfd-4964-a464-44ab658b48d5" />
+    <UnitTestResult executionId="cb1f16ac-446f-41a6-8abc-b20759c137da" testId="fa00bb66-bb4d-2f59-ff2f-05d0a283036f" testName="ComposedDocumentHasAStableCanonicalHashAndRoundTrips" computerName="worlesenric" duration="00:00:00.0409670" startTime="2026-09-25T05:42:04.1603533+08:00" endTime="2026-09-25T05:42:04.2012401+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cb1f16ac-446f-41a6-8abc-b20759c137da">
+      <Output>
+        <ErrorInfo>
+          <Message>  Expected: True
+  But was:  False
+</Message>
+          <StackTrace>   at GameCore.Composition.Tests.ConfigurationTests.ComposedDocumentHasAStableCanonicalHashAndRoundTrips() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 272
+
+1)    at GameCore.Composition.Tests.ConfigurationTests.ComposedDocumentHasAStableCanonicalHashAndRoundTrips() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 272
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="71860854-04e8-4961-85e1-8a26a30ac973" testId="25cd2cbe-110f-4d9c-50ba-215ee14aa07c" testName="UnmountPublishesCleanupErrorsWithRetainedReferences" computerName="worlesenric" duration="00:00:00.0014210" startTime="2026-09-25T05:42:04.3260152+08:00" endTime="2026-09-25T05:42:04.3274360+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="71860854-04e8-4961-85e1-8a26a30ac973">
+      <Output>
+        <ErrorInfo>
+          <Message>  None
+  Expected: True
+  But was:  False
+</Message>
+          <StackTrace>   at GameCore.Composition.Tests.ResourceGateTests.UnmountPublishesCleanupErrorsWithRetainedReferences() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ResourceGateTests.cs:line 241
+
+1)    at GameCore.Composition.Tests.ResourceGateTests.UnmountPublishesCleanupErrorsWithRetainedReferences() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ResourceGateTests.cs:line 241
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="1f9f9bf4-e82f-4723-a14b-c95f31e2eb75" testId="a96ce2b6-282d-51e4-2ab3-bc8948818d86" testName="ConflictingReuseIsRejectedAndKeepsTheOriginalResult" computerName="worlesenric" duration="00:00:00.0014170" startTime="2026-09-25T05:42:04.2766563+08:00" endTime="2026-09-25T05:42:04.2780734+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1f9f9bf4-e82f-4723-a14b-c95f31e2eb75" />
+    <UnitTestResult executionId="0e95cd04-7a09-44b8-bdab-1648fbb4cf64" testId="00652cef-c533-aeaf-eb93-f18c5b1d6427" testName="LaneCapacityRefusesFurtherAdmission" computerName="worlesenric" duration="00:00:00.0008260" startTime="2026-09-25T05:42:04.2780908+08:00" endTime="2026-09-25T05:42:04.2789165+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0e95cd04-7a09-44b8-bdab-1648fbb4cf64" />
+    <UnitTestResult executionId="3f0bcbf0-8aaa-4d92-b5a4-114587ac9f80" testId="e287a0e9-674e-eea2-9aa4-90374ac0df05" testName="CreatedScopeCarriesMembershipAndInheritsItsParentDepth" computerName="worlesenric" duration="00:00:00.0009130" startTime="2026-09-25T05:42:04.3290433+08:00" endTime="2026-09-25T05:42:04.3299560+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3f0bcbf0-8aaa-4d92-b5a4-114587ac9f80">
+      <Output>
+        <ErrorInfo>
+          <Message>  Expected: True
+  But was:  False
+</Message>
+          <StackTrace>   at GameCore.Composition.Tests.ScopeTreeTests.CreatedScopeCarriesMembershipAndInheritsItsParentDepth() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 50
+
+1)    at GameCore.Composition.Tests.ScopeTreeTests.CreatedScopeCarriesMembershipAndInheritsItsParentDepth() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 50
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="b1db1c51-95d6-4ffb-a340-70df0fc54b85" testId="198de8bf-4eb8-ab77-c20c-16d9a0b349a1" testName="RequiredDependencyCycleRejectsTheWholeProposal" computerName="worlesenric" duration="00:00:00.0011260" startTime="2026-09-25T05:42:04.3537472+08:00" endTime="2026-09-25T05:42:04.3548732+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b1db1c51-95d6-4ffb-a340-70df0fc54b85">
+      <Output>
+        <ErrorInfo>
+          <Message>  A required dependency cycle rejects the whole proposal (P-012).
+  Expected: Cycle
+  But was:  None
+</Message>
+          <StackTrace>   at GameCore.Composition.Tests.ServiceResolutionTests.RequiredDependencyCycleRejectsTheWholeProposal() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 468
+
+1)    at GameCore.Composition.Tests.ServiceResolutionTests.RequiredDependencyCycleRejectsTheWholeProposal() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 468
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="0845fffd-9439-4a4f-a24c-9bb36103dd4d" testId="5f680456-742d-15f3-2491-76e1b2d523ef" testName="CancellingAnExpiredOperationReportsExpiry" computerName="worlesenric" duration="00:00:00.0019860" startTime="2026-09-25T05:42:04.2728230+08:00" endTime="2026-09-25T05:42:04.2748087+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0845fffd-9439-4a4f-a24c-9bb36103dd4d" />
+    <UnitTestResult executionId="08c276a9-cb5e-42e9-aa40-9e062cc7685e" testId="3d791aa6-1741-53c7-27cb-d4e2f083d98b" testName="CancellingAStagedOperationReleasesItsGatedLeases" computerName="worlesenric" duration="00:00:00.0088460" startTime="2026-09-25T05:42:04.3062332+08:00" endTime="2026-09-25T05:42:04.3150787+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="08c276a9-cb5e-42e9-aa40-9e062cc7685e" />
+    <UnitTestResult executionId="8ac25893-f4b1-41ca-b563-f8722ff47152" testId="268b7187-60a0-e397-1141-40bc9d2981c0" testName="ReorderedIssuerSequenceIsRefused" computerName="worlesenric" duration="00:00:00.0011650" startTime="2026-09-25T05:42:04.2932389+08:00" endTime="2026-09-25T05:42:04.2944042+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8ac25893-f4b1-41ca-b563-f8722ff47152">
+      <Output>
+        <ErrorInfo>
+          <Message>  None
+  Expected: True
+  But was:  False
+</Message>
+          <StackTrace>   at GameCore.Composition.Tests.ControlLaneTests.ReorderedIssuerSequenceIsRefused() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ControlLaneTests.cs:line 262
+
+1)    at GameCore.Composition.Tests.ControlLaneTests.ReorderedIssuerSequenceIsRefused() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ControlLaneTests.cs:line 262
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="348880c6-6102-4bc3-9dac-e9c5c06bca33" testId="8c821dea-bd2a-ebcf-f70e-0b8ee1f12b93" testName="TwoVisibleAncestorProvidersConflictWithoutAnOverride" computerName="worlesenric" duration="00:00:00.0008550" startTime="2026-09-25T05:42:04.3642248+08:00" endTime="2026-09-25T05:42:04.3650794+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="348880c6-6102-4bc3-9dac-e9c5c06bca33">
+      <Output>
+        <ErrorInfo>
+          <Message>  None
+  Expected: True
+  But was:  False
+</Message>
+          <StackTrace>   at GameCore.Composition.Tests.ServiceResolutionTests.Rig.CreateScope(ScopeId scope, ScopeId parent) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 46
+   at GameCore.Composition.Tests.ServiceResolutionTests.TwoVisibleAncestorProvidersConflictWithoutAnOverride() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 243
+
+1)    at GameCore.Composition.Tests.ServiceResolutionTests.Rig.CreateScope(ScopeId scope, ScopeId parent) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 46
+   at GameCore.Composition.Tests.ServiceResolutionTests.TwoVisibleAncestorProvidersConflictWithoutAnOverride() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 243
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="3ba4991d-e1c3-4e67-b49c-58937e13550f" testId="c30c2567-9f14-3da2-f26f-8749dd208ce1" testName="ConfigDocumentRejectsDuplicateFieldKeys" computerName="worlesenric" duration="00:00:00.0029200" startTime="2026-09-25T05:42:04.2028576+08:00" endTime="2026-09-25T05:42:04.2057771+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3ba4991d-e1c3-4e67-b49c-58937e13550f" />
+    <UnitTestResult executionId="1e6655f4-3e22-493e-822d-9fc848bed941" testId="272b77de-88bf-cc73-96d7-cf8d03976acd" testName="StagedProposalIsInspectableWhileTheCommittedRevisionIsUnchanged" computerName="worlesenric" duration="00:00:00.0028680" startTime="2026-09-25T05:42:04.3016460+08:00" endTime="2026-09-25T05:42:04.3045138+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1e6655f4-3e22-493e-822d-9fc848bed941" />
+    <UnitTestResult executionId="0f08be2f-9db2-4fa2-9e61-24ecad7aad0d" testId="476e20a8-40bd-68e7-92da-2b719fe8bd28" testName="SiblingScopesNeverSeeEachOthersProviders" computerName="worlesenric" duration="00:00:00.0009680" startTime="2026-09-25T05:42:04.3632370+08:00" endTime="2026-09-25T05:42:04.3642046+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0f08be2f-9db2-4fa2-9e61-24ecad7aad0d">
+      <Output>
+        <ErrorInfo>
+          <Message>  None
+  Expected: True
+  But was:  False
+</Message>
+          <StackTrace>   at GameCore.Composition.Tests.ServiceResolutionTests.Rig.CreateScope(ScopeId scope, ScopeId parent) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 46
+   at GameCore.Composition.Tests.ServiceResolutionTests.SiblingScopesNeverSeeEachOthersProviders() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 114
+
+1)    at GameCore.Composition.Tests.ServiceResolutionTests.Rig.CreateScope(ScopeId scope, ScopeId parent) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 46
+   at GameCore.Composition.Tests.ServiceResolutionTests.SiblingScopesNeverSeeEachOthersProviders() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 114
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="7cf32e7e-16f3-445e-8b23-507f039dd53e" testId="7de38da0-b145-7dd9-7f40-0caf8f045db2" testName="OptionalAbsenceIsExplicitAndRebindsToItsDeclaredFallback" computerName="worlesenric" duration="00:00:00.0039990" startTime="2026-09-25T05:42:04.3487895+08:00" endTime="2026-09-25T05:42:04.3527886+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7cf32e7e-16f3-445e-8b23-507f039dd53e">
+      <Output>
+        <ErrorInfo>
+          <Message>  The absent optional service is reported, not hidden.
+  Expected: greater than 0
+  But was:  0
+</Message>
+          <StackTrace>   at GameCore.Composition.Tests.ServiceResolutionTests.OptionalAbsenceIsExplicitAndRebindsToItsDeclaredFallback() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 394
+
+1)    at GameCore.Composition.Tests.ServiceResolutionTests.OptionalAbsenceIsExplicitAndRebindsToItsDeclaredFallback() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 394
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="6737fc78-9444-425b-99e6-b85f7de81b00" testId="e138f029-ad22-bc78-0978-2595b8b8e204" testName="CancellingARequiredStepRejectsTheDependentProposal" computerName="worlesenric" duration="00:00:00.0017950" startTime="2026-09-25T05:42:04.2748420+08:00" endTime="2026-09-25T05:42:04.2766367+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6737fc78-9444-425b-99e6-b85f7de81b00" />
+    <UnitTestResult executionId="0a97cfef-974d-4579-9492-8fca7c12956b" testId="944bffba-69ef-ffef-2f87-256c94db781e" testName="ExportedProviderReachesDescendantsIncludingTheProvidersOwnScopeTargets" computerName="worlesenric" duration="00:00:00.0009690" startTime="2026-09-25T05:42:04.3441947+08:00" endTime="2026-09-25T05:42:04.3451634+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0a97cfef-974d-4579-9492-8fca7c12956b">
+      <Output>
+        <ErrorInfo>
+          <Message>  None
+  Expected: True
+  But was:  False
+</Message>
+          <StackTrace>   at GameCore.Composition.Tests.ServiceResolutionTests.Rig.CreateScope(ScopeId scope, ScopeId parent) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 46
+   at GameCore.Composition.Tests.ServiceResolutionTests.ExportedProviderReachesDescendantsIncludingTheProvidersOwnScopeTargets() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 144
+
+1)    at GameCore.Composition.Tests.ServiceResolutionTests.Rig.CreateScope(ScopeId scope, ScopeId parent) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 46
+   at GameCore.Composition.Tests.ServiceResolutionTests.ExportedProviderReachesDescendantsIncludingTheProvidersOwnScopeTargets() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 144
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="75d3bd5b-f716-45cd-b136-275316ec12b2" testId="0250a10f-3247-0483-5e0a-89cecf8d0f54" testName="UndeclaredConfigurationFieldIsRejected" computerName="worlesenric" duration="00:00:00.0009180" startTime="2026-09-25T05:42:04.2620744+08:00" endTime="2026-09-25T05:42:04.2629922+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="75d3bd5b-f716-45cd-b136-275316ec12b2">
+      <Output>
+        <ErrorInfo>
+          <Message>  Expected: UnsupportedVersion
+  But was:  None
+</Message>
+          <StackTrace>   at GameCore.Composition.Tests.ConfigurationTests.UndeclaredConfigurationFieldIsRejected() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 333
+
+1)    at GameCore.Composition.Tests.ConfigurationTests.UndeclaredConfigurationFieldIsRejected() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 333
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="e5959ad8-faf7-4474-bc54-9a71684e246e" testId="4ed26c49-d84a-9f8e-075e-8f07cc920431" testName="ConservativeGrantDataIsStoredAndValidatedAgainstRealProviders" computerName="worlesenric" duration="00:00:00.0014200" startTime="2026-09-25T05:42:04.3275991+08:00" endTime="2026-09-25T05:42:04.3290194+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e5959ad8-faf7-4474-bc54-9a71684e246e">
+      <Output>
+        <ErrorInfo>
+          <Message>  Expected: True
+  But was:  False
+</Message>
+          <StackTrace>   at GameCore.Composition.Tests.ScopeTreeTests.ConservativeGrantDataIsStoredAndValidatedAgainstRealProviders() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 197
+
+1)    at GameCore.Composition.Tests.ScopeTreeTests.ConservativeGrantDataIsStoredAndValidatedAgainstRealProviders() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 197
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="5e3baa73-1c52-427b-9255-9fa2fc4c828b" testId="630a4335-da44-1730-192b-667807e8a05b" testName="RemountingAStableInstanceIdentityAdvancesItsInstallationGeneration" computerName="worlesenric" duration="00:00:00.0014340" startTime="2026-09-25T05:42:04.2917888+08:00" endTime="2026-09-25T05:42:04.2932231+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5e3baa73-1c52-427b-9255-9fa2fc4c828b">
+      <Output>
+        <ErrorInfo>
+          <Message>  Expected: Disposed
+  But was:  Active
+</Message>
+          <StackTrace>   at GameCore.Composition.Tests.ControlLaneTests.RemountingAStableInstanceIdentityAdvancesItsInstallationGeneration() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ControlLaneTests.cs:line 467
+
+1)    at GameCore.Composition.Tests.ControlLaneTests.RemountingAStableInstanceIdentityAdvancesItsInstallationGeneration() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ControlLaneTests.cs:line 467
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="da30a56c-65f6-4fdc-b6df-0929586e4d19" testId="fcec9f06-cae9-b2fb-e43f-7f548a93fa4c" testName="IsolationSetCannotNameContractsWhileDeclaringAll" computerName="worlesenric" duration="00:00:00.0007390" startTime="2026-09-25T05:42:04.3326992+08:00" endTime="2026-09-25T05:42:04.3334384+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="da30a56c-65f6-4fdc-b6df-0929586e4d19">
+      <Output>
+        <ErrorInfo>
+          <Message>  Expected: CapabilityConflict
+  But was:  None
+</Message>
+          <StackTrace>   at GameCore.Composition.Tests.ScopeTreeTests.IsolationSetCannotNameContractsWhileDeclaringAll() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 158
+
+1)    at GameCore.Composition.Tests.ScopeTreeTests.IsolationSetCannotNameContractsWhileDeclaringAll() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 158
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="fc9df537-2d29-4fdd-b019-0e0dbb1441e6" testId="1d3859db-660d-0a05-a1e2-2da642979b82" testName="NoChangeIncrementsNothing" computerName="worlesenric" duration="00:00:00.0005550" startTime="2026-09-25T05:42:04.2807104+08:00" endTime="2026-09-25T05:42:04.2812655+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fc9df537-2d29-4fdd-b019-0e0dbb1441e6" />
+    <UnitTestResult executionId="5157a070-aa62-4c31-9442-e120ec64bec1" testId="cbd1ddbe-0257-44cd-1b98-19b98446ed84" testName="ReparentPreservesDescendantIdentityAndRecomputesDepth" computerName="worlesenric" duration="00:00:00.0063730" startTime="2026-09-25T05:42:04.3356315+08:00" endTime="2026-09-25T05:42:04.3420041+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5157a070-aa62-4c31-9442-e120ec64bec1">
+      <Output>
+        <ErrorInfo>
+          <Message>  Expected: True
+  But was:  False
+</Message>
+          <StackTrace>   at GameCore.Composition.Tests.ScopeTreeTests.ReparentPreservesDescendantIdentityAndRecomputesDepth() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 116
+
+1)    at GameCore.Composition.Tests.ScopeTreeTests.ReparentPreservesDescendantIdentityAndRecomputesDepth() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 116
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d3ada5b0-9ae4-4b11-b9ec-d80d94568508" testId="5cf54d56-447c-7e26-514d-32eadd0cab5b" testName="PayloadEncodingRoundTripsEveryField" computerName="worlesenric" duration="00:00:00.0073000" startTime="2026-09-25T05:42:04.2812812+08:00" endTime="2026-09-25T05:42:04.2885806+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d3ada5b0-9ae4-4b11-b9ec-d80d94568508">
+      <Output>
+        <ErrorInfo>
+          <Message>  UnsupportedVersion
+  Expected: True
+  But was:  False
+</Message>
+          <StackTrace>   at GameCore.Composition.Tests.ControlLaneTests.PayloadEncodingRoundTripsEveryField() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ControlLaneTests.cs:line 429
+
+1)    at GameCore.Composition.Tests.ControlLaneTests.PayloadEncodingRoundTripsEveryField() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ControlLaneTests.cs:line 429
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="cc1e0d4b-767b-4558-9295-4538afeaeb2a" testId="909fd695-0692-4bfc-39a5-5c347cebf3b1" testName="DuplicateScopeIdentityIsRejectedAsAnOwnershipConflict" computerName="worlesenric" duration="00:00:00.0008340" startTime="2026-09-25T05:42:04.3299754+08:00" endTime="2026-09-25T05:42:04.3308090+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cc1e0d4b-767b-4558-9295-4538afeaeb2a">
+      <Output>
+        <ErrorInfo>
+          <Message>  Expected: True
+  But was:  False
+</Message>
+          <StackTrace>   at GameCore.Composition.Tests.ScopeTreeTests.DuplicateScopeIdentityIsRejectedAsAnOwnershipConflict() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 70
+
+1)    at GameCore.Composition.Tests.ScopeTreeTests.DuplicateScopeIdentityIsRejectedAsAnOwnershipConflict() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 70
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="37146881-1ecf-4a40-88b1-ead695e53dfc" testId="6842945e-c8c8-dc40-4786-d7467a84ac3b" testName="MultiBindingReturnsEveryVisibleProviderInCanonicalOrder" computerName="worlesenric" duration="00:00:00.0012510" startTime="2026-09-25T05:42:04.3466184+08:00" endTime="2026-09-25T05:42:04.3478696+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="37146881-1ecf-4a40-88b1-ead695e53dfc">
+      <Output>
+        <ErrorInfo>
+          <Message>  The installation must exist in the committed composition.
+  Expected: not null
+  But was:  null
+</Message>
+          <StackTrace>   at GameCore.Composition.Tests.ServiceResolutionTests.Rig.StateOf(PluginInstanceId instance) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 67
+   at GameCore.Composition.Tests.ServiceResolutionTests.MultiBindingReturnsEveryVisibleProviderInCanonicalOrder() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 309
+
+1)    at GameCore.Composition.Tests.ServiceResolutionTests.Rig.StateOf(PluginInstanceId instance) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 67
+   at GameCore.Composition.Tests.ServiceResolutionTests.MultiBindingReturnsEveryVisibleProviderInCanonicalOrder() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 309
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="1628b50e-3927-4e2d-9744-0e12ee958adc" testId="9c2c602f-2cb1-f811-0064-55b81e964302" testName="ReconfigurePreservesStateAndIncrementsOnlyTheActivationEpoch" computerName="worlesenric" duration="00:00:00.0020600" startTime="2026-09-25T05:42:04.2599887+08:00" endTime="2026-09-25T05:42:04.2620482+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1628b50e-3927-4e2d-9744-0e12ee958adc">
+      <Output>
+        <ErrorInfo>
+          <Message>  None
+  Expected: True
+  But was:  False
+</Message>
+          <StackTrace>   at GameCore.Composition.Tests.ConfigurationTests.ReconfigurePreservesStateAndIncrementsOnlyTheActivationEpoch() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 405
+
+1)    at GameCore.Composition.Tests.ConfigurationTests.ReconfigurePreservesStateAndIncrementsOnlyTheActivationEpoch() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 405
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="1d9a3f9b-74d3-4a76-8d98-35a40fd45823" testId="a5e951f4-e7fa-55c2-5dd2-ffc2a10677fc" testName="FailedReleaseQuarantinesTheResourceInsteadOfReportingADisposal" computerName="worlesenric" duration="00:00:00.0032630" startTime="2026-09-25T05:42:04.3159724+08:00" endTime="2026-09-25T05:42:04.3192356+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1d9a3f9b-74d3-4a76-8d98-35a40fd45823">
+      <Output>
+        <ErrorInfo>
+          <Message>  Expected: False
+  But was:  True
+</Message>
+          <StackTrace>   at GameCore.Composition.Tests.ResourceGateTests.FailedReleaseQuarantinesTheResourceInsteadOfReportingADisposal() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ResourceGateTests.cs:line 222
+
+1)    at GameCore.Composition.Tests.ResourceGateTests.FailedReleaseQuarantinesTheResourceInsteadOfReportingADisposal() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ResourceGateTests.cs:line 222
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="56e51ba0-26ea-432a-9548-ba9e4e34a24b" testId="e97a425c-882d-621d-a3c0-a0fedeacf8a6" testName="ExplicitSelectionIsHonoredInsideTheBoundaryAndNeverFallsBack" computerName="worlesenric" duration="00:00:00.0017400" startTime="2026-09-25T05:42:04.3424333+08:00" endTime="2026-09-25T05:42:04.3441728+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="56e51ba0-26ea-432a-9548-ba9e4e34a24b">
+      <Output>
+        <ErrorInfo>
+          <Message>  None
+  Expected: True
+  But was:  False
+</Message>
+          <StackTrace>   at GameCore.Composition.Tests.ServiceResolutionTests.Rig.CreateScope(ScopeId scope, ScopeId parent) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 46
+   at GameCore.Composition.Tests.ServiceResolutionTests.ExplicitSelectionIsHonoredInsideTheBoundaryAndNeverFallsBack() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 334
+
+1)    at GameCore.Composition.Tests.ServiceResolutionTests.Rig.CreateScope(ScopeId scope, ScopeId parent) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 46
+   at GameCore.Composition.Tests.ServiceResolutionTests.ExplicitSelectionIsHonoredInsideTheBoundaryAndNeverFallsBack() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 334
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="4e18ca1f-c1aa-4909-bfb1-47b9e4464889" testId="6b793962-8f1a-2783-00c4-2a681ce77567" testName="StaleExpectedRevisionIsRejectedWithoutPublishing" computerName="worlesenric" duration="00:00:00.0010810" startTime="2026-09-25T05:42:04.3045432+08:00" endTime="2026-09-25T05:42:04.3056239+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4e18ca1f-c1aa-4909-bfb1-47b9e4464889">
+      <Output>
+        <ErrorInfo>
+          <Message>  Expected: StalePlan
+  But was:  None
+</Message>
+          <StackTrace>   at GameCore.Composition.Tests.ControlLaneTests.StaleExpectedRevisionIsRejectedWithoutPublishing() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ControlLaneTests.cs:line 115
+
+1)    at GameCore.Composition.Tests.ControlLaneTests.StaleExpectedRevisionIsRejectedWithoutPublishing() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ControlLaneTests.cs:line 115
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="bd57606e-fe9a-4504-87be-025dc18df1dc" testId="35368635-0d76-5d61-23b3-562e82961fef" testName="RetiringAnInstanceDisposesEachLeaseOnceInReverseAcquisitionOrder" computerName="worlesenric" duration="00:00:00.0012600" startTime="2026-09-25T05:42:04.3247311+08:00" endTime="2026-09-25T05:42:04.3259908+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bd57606e-fe9a-4504-87be-025dc18df1dc" />
+    <UnitTestResult executionId="53ea7151-79d4-4c46-a2c7-922356e78ee0" testId="248fb20b-42a0-676a-a6d4-d0541cf7b15a" testName="SameScopeDuplicateSingleBindingsAlwaysConflict" computerName="worlesenric" duration="00:00:00.0010150" startTime="2026-09-25T05:42:04.3567236+08:00" endTime="2026-09-25T05:42:04.3577386+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="53ea7151-79d4-4c46-a2c7-922356e78ee0">
+      <Output>
+        <ErrorInfo>
+          <Message>  None
+  Expected: True
+  But was:  False
+</Message>
+          <StackTrace>   at GameCore.Composition.Tests.ServiceResolutionTests.SameScopeDuplicateSingleBindingsAlwaysConflict() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 220
+
+1)    at GameCore.Composition.Tests.ServiceResolutionTests.SameScopeDuplicateSingleBindingsAlwaysConflict() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 220
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="ffd262a8-df90-4e77-a533-cef9a570e603" testId="7be8c477-2609-5e07-b96c-45f15e035c0c" testName="PreparedLeaseStaysInertUntilPublication" computerName="worlesenric" duration="00:00:00.0034300" startTime="2026-09-25T05:42:04.3192686+08:00" endTime="2026-09-25T05:42:04.3226981+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ffd262a8-df90-4e77-a533-cef9a570e603" />
+    <UnitTestResult executionId="61eaae6b-2441-4cba-859c-190593ee1dff" testId="e462ef94-8d03-f652-ae61-479ec77c077d" testName="RootScopeIsTheOnlyScopeWithoutAParent" computerName="worlesenric" duration="00:00:00.0002670" startTime="2026-09-25T05:42:04.3420321+08:00" endTime="2026-09-25T05:42:04.3422987+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="61eaae6b-2441-4cba-859c-190593ee1dff" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="ReparentCyclesAndCrossAncestryMovesAreRejected" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="09092977-dd53-d8ca-e920-a8eea97435d9">
+      <Execution id="bbd3a400-ba4c-439b-8418-b1ffce704f50" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ScopeTreeTests" name="ReparentCyclesAndCrossAncestryMovesAreRejected" />
+    </UnitTest>
+    <UnitTest name="ServiceIsolationBoundaryBlocksAncestorProvidersButNotBoundaryProviders" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="5285fa55-2655-a613-c672-ba1db4da43e3">
+      <Execution id="8e9ff5e0-8381-4e23-8409-4b178dc744e5" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ServiceResolutionTests" name="ServiceIsolationBoundaryBlocksAncestorProvidersButNotBoundaryProviders" />
+    </UnitTest>
+    <UnitTest name="NearestAncestorProviderWinsWhenItDeclaresTheOverride" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="95cb9281-2148-910d-1241-9ad9fcb0ba5a">
+      <Execution id="009051d7-ad86-40a5-a2a5-043eefac67df" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ServiceResolutionTests" name="NearestAncestorProviderWinsWhenItDeclaresTheOverride" />
+    </UnitTest>
+    <UnitTest name="CancellingAnExpiredOperationReportsExpiry" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="5f680456-742d-15f3-2491-76e1b2d523ef">
+      <Execution id="0845fffd-9439-4a4f-a24c-9bb36103dd4d" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ControlLaneTests" name="CancellingAnExpiredOperationReportsExpiry" />
+    </UnitTest>
+    <UnitTest name="DeclaredConfigurationHashMustDescribeTheComposedDocument" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="d5768b35-dc03-397a-50b9-2e1152f1b7be">
+      <Execution id="22699dd3-c678-4e41-b6b9-bf9fbc992425" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ConfigurationTests" name="DeclaredConfigurationHashMustDescribeTheComposedDocument" />
+    </UnitTest>
+    <UnitTest name="StagedProposalIsInspectableWhileTheCommittedRevisionIsUnchanged" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="272b77de-88bf-cc73-96d7-cf8d03976acd">
+      <Execution id="1e6655f4-3e22-493e-822d-9fc848bed941" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ControlLaneTests" name="StagedProposalIsInspectableWhileTheCommittedRevisionIsUnchanged" />
+    </UnitTest>
+    <UnitTest name="FailedPreparationReleasesEarlierStagedAcquisitions" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="272d932d-fbc5-4618-9012-9d9d508473cd">
+      <Execution id="15c65ef9-2dfd-4964-a464-44ab658b48d5" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ResourceGateTests" name="FailedPreparationReleasesEarlierStagedAcquisitions" />
+    </UnitTest>
+    <UnitTest name="ConservativeGrantDataIsStoredAndValidatedAgainstRealProviders" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="4ed26c49-d84a-9f8e-075e-8f07cc920431">
+      <Execution id="e5959ad8-faf7-4474-bc54-9a71684e246e" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ScopeTreeTests" name="ConservativeGrantDataIsStoredAndValidatedAgainstRealProviders" />
+    </UnitTest>
+    <UnitTest name="ConflictingReuseIsRejectedAndKeepsTheOriginalResult" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="a96ce2b6-282d-51e4-2ab3-bc8948818d86">
+      <Execution id="1f9f9bf4-e82f-4723-a14b-c95f31e2eb75" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ControlLaneTests" name="ConflictingReuseIsRejectedAndKeepsTheOriginalResult" />
+    </UnitTest>
+    <UnitTest name="CancellingARequiredStepRejectsTheDependentProposal" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="e138f029-ad22-bc78-0978-2595b8b8e204">
+      <Execution id="6737fc78-9444-425b-99e6-b85f7de81b00" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ControlLaneTests" name="CancellingARequiredStepRejectsTheDependentProposal" />
+    </UnitTest>
+    <UnitTest name="UndeclaredConfigurationFieldIsRejected" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="0250a10f-3247-0483-5e0a-89cecf8d0f54">
+      <Execution id="75d3bd5b-f716-45cd-b136-275316ec12b2" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ConfigurationTests" name="UndeclaredConfigurationFieldIsRejected" />
+    </UnitTest>
+    <UnitTest name="OptionalAbsenceIsExplicitAndRebindsToItsDeclaredFallback" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="7de38da0-b145-7dd9-7f40-0caf8f045db2">
+      <Execution id="7cf32e7e-16f3-445e-8b23-507f039dd53e" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ServiceResolutionTests" name="OptionalAbsenceIsExplicitAndRebindsToItsDeclaredFallback" />
+    </UnitTest>
+    <UnitTest name="UnmountPublishesCleanupErrorsWithRetainedReferences" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="25cd2cbe-110f-4d9c-50ba-215ee14aa07c">
+      <Execution id="71860854-04e8-4961-85e1-8a26a30ac973" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ResourceGateTests" name="UnmountPublishesCleanupErrorsWithRetainedReferences" />
+    </UnitTest>
+    <UnitTest name="RetirementRunsConsumersBeforeTheirProviders" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="8a4cf148-e7ff-e6da-3823-dc5e0f5d0bf3">
+      <Execution id="c7b5b3ec-5e5a-42ff-9316-97a9ac699f26" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ResourceGateTests" name="RetirementRunsConsumersBeforeTheirProviders" />
+    </UnitTest>
+    <UnitTest name="RequiredDependencyCycleRejectsTheWholeProposal" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="198de8bf-4eb8-ab77-c20c-16d9a0b349a1">
+      <Execution id="b1db1c51-95d6-4ffb-a340-70df0fc54b85" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ServiceResolutionTests" name="RequiredDependencyCycleRejectsTheWholeProposal" />
+    </UnitTest>
+    <UnitTest name="ReparentPreservesDescendantIdentityAndRecomputesDepth" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="cbd1ddbe-0257-44cd-1b98-19b98446ed84">
+      <Execution id="5157a070-aa62-4c31-9442-e120ec64bec1" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ScopeTreeTests" name="ReparentPreservesDescendantIdentityAndRecomputesDepth" />
+    </UnitTest>
+    <UnitTest name="FieldMaskDistinguishesNullFromMissingAndUnionsSets" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="fb33aa1c-a60e-b7d0-bbc3-6e1462a88992">
+      <Execution id="bc2b3751-8bb3-4d9a-a115-0a71cda5a2ad" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ConfigurationTests" name="FieldMaskDistinguishesNullFromMissingAndUnionsSets" />
+    </UnitTest>
+    <UnitTest name="MultiBindingReturnsEveryVisibleProviderInCanonicalOrder" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="6842945e-c8c8-dc40-4786-d7467a84ac3b">
+      <Execution id="37146881-1ecf-4a40-88b1-ead695e53dfc" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ServiceResolutionTests" name="MultiBindingReturnsEveryVisibleProviderInCanonicalOrder" />
+    </UnitTest>
+    <UnitTest name="SameOperationIdAndSameInputCoalesceToOnePublication" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="8217eecd-bb68-4934-0855-b5b50d426fce">
+      <Execution id="85a718c8-5c23-47d2-91d2-1312f7593e74" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ControlLaneTests" name="SameOperationIdAndSameInputCoalesceToOnePublication" />
+    </UnitTest>
+    <UnitTest name="ConfigDocumentRejectsDuplicateFieldKeys" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="c30c2567-9f14-3da2-f26f-8749dd208ce1">
+      <Execution id="3ba4991d-e1c3-4e67-b49c-58937e13550f" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ConfigurationTests" name="ConfigDocumentRejectsDuplicateFieldKeys" />
+    </UnitTest>
+    <UnitTest name="PrivateProviderInAnAncestorIsInvisible" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="19a1793e-b4bd-7502-cbfa-6739cc0ccccc">
+      <Execution id="bf63ffb4-c7ee-42a9-ad4b-89f2914a115e" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ServiceResolutionTests" name="PrivateProviderInAnAncestorIsInvisible" />
+    </UnitTest>
+    <UnitTest name="ComposedDocumentHasAStableCanonicalHashAndRoundTrips" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="fa00bb66-bb4d-2f59-ff2f-05d0a283036f">
+      <Execution id="cb1f16ac-446f-41a6-8abc-b20759c137da" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ConfigurationTests" name="ComposedDocumentHasAStableCanonicalHashAndRoundTrips" />
+    </UnitTest>
+    <UnitTest name="ResultsExpireByCountAndAnExpiredOperationCannotReexecute" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="41da7d6e-a382-e1b2-29fa-1b1ae6b20d2a">
+      <Execution id="865846e4-b75a-436f-82e0-73f1e482300b" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ControlLaneTests" name="ResultsExpireByCountAndAnExpiredOperationCannotReexecute" />
+    </UnitTest>
+    <UnitTest name="PayloadEncodingRoundTripsEveryField" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="5cf54d56-447c-7e26-514d-32eadd0cab5b">
+      <Execution id="d3ada5b0-9ae4-4b11-b9ec-d80d94568508" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ControlLaneTests" name="PayloadEncodingRoundTripsEveryField" />
+    </UnitTest>
+    <UnitTest name="SiblingScopesNeverSeeEachOthersProviders" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="476e20a8-40bd-68e7-92da-2b719fe8bd28">
+      <Execution id="0f08be2f-9db2-4fa2-9e61-24ecad7aad0d" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ServiceResolutionTests" name="SiblingScopesNeverSeeEachOthersProviders" />
+    </UnitTest>
+    <UnitTest name="ResultsAlsoExpireByLogicalStepWindow" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="859c7e06-3c35-840b-20f5-bdfdde79bccd">
+      <Execution id="4d182317-127b-4b5e-8ccf-ec239c93aa4a" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ControlLaneTests" name="ResultsAlsoExpireByLogicalStepWindow" />
+    </UnitTest>
+    <UnitTest name="ServiceResolutionIsIdenticalInBothPropagationModes" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="668606b0-8c9a-15df-9229-970069cdfdde">
+      <Execution id="bd2cf416-4955-476f-8d39-b019b162b51e" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ServiceResolutionTests" name="ServiceResolutionIsIdenticalInBothPropagationModes" />
+    </UnitTest>
+    <UnitTest name="IsolationIsStoredPerScopeAndVisibleInTheSnapshot" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="4c96fe44-0b62-c88f-8da2-919b56b11243">
+      <Execution id="1fcd6e7e-86cd-4d10-b203-935a3e41f1de" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ScopeTreeTests" name="IsolationIsStoredPerScopeAndVisibleInTheSnapshot" />
+    </UnitTest>
+    <UnitTest name="ModeSwitchPublishesOneSettingAndKeepsAutomaticAsTheDefault" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="477e8099-b329-c0d5-0257-031ad0de64c6">
+      <Execution id="d92f55c8-b2b1-4024-8e31-d03bc9c5c035" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ControlLaneTests" name="ModeSwitchPublishesOneSettingAndKeepsAutomaticAsTheDefault" />
+    </UnitTest>
+    <UnitTest name="StaleExpectedRevisionIsRejectedWithoutPublishing" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="6b793962-8f1a-2783-00c4-2a681ce77567">
+      <Execution id="4e18ca1f-c1aa-4909-bfb1-47b9e4464889" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ControlLaneTests" name="StaleExpectedRevisionIsRejectedWithoutPublishing" />
+    </UnitTest>
+    <UnitTest name="RetiringAnInstanceDisposesEachLeaseOnceInReverseAcquisitionOrder" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="35368635-0d76-5d61-23b3-562e82961fef">
+      <Execution id="bd57606e-fe9a-4504-87be-025dc18df1dc" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ResourceGateTests" name="RetiringAnInstanceDisposesEachLeaseOnceInReverseAcquisitionOrder" />
+    </UnitTest>
+    <UnitTest name="SelfOnlyDomainNeverResolvesAnAncestorProvider" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="057e17ea-c0dd-7947-a172-ecd49394e0d9">
+      <Execution id="a7d42c57-5f76-4248-9ae5-3ac379a5f5ea" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ServiceResolutionTests" name="SelfOnlyDomainNeverResolvesAnAncestorProvider" />
+    </UnitTest>
+    <UnitTest name="DuplicateScopeIdentityIsRejectedAsAnOwnershipConflict" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="909fd695-0692-4bfc-39a5-5c347cebf3b1">
+      <Execution id="cc1e0d4b-767b-4558-9295-4538afeaeb2a" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ScopeTreeTests" name="DuplicateScopeIdentityIsRejectedAsAnOwnershipConflict" />
+    </UnitTest>
+    <UnitTest name="ExplicitSelectionIsHonoredInsideTheBoundaryAndNeverFallsBack" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="e97a425c-882d-621d-a3c0-a0fedeacf8a6">
+      <Execution id="56e51ba0-26ea-432a-9548-ba9e4e34a24b" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ServiceResolutionTests" name="ExplicitSelectionIsHonoredInsideTheBoundaryAndNeverFallsBack" />
+    </UnitTest>
+    <UnitTest name="CreatedScopeCarriesMembershipAndInheritsItsParentDepth" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="e287a0e9-674e-eea2-9aa4-90374ac0df05">
+      <Execution id="3f0bcbf0-8aaa-4d92-b5a4-114587ac9f80" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ScopeTreeTests" name="CreatedScopeCarriesMembershipAndInheritsItsParentDepth" />
+    </UnitTest>
+    <UnitTest name="PublicationMovesRevisionAndEpochButNeverTheLogicalStep" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="4e75beef-bd8f-da70-7301-2126ad0a9a26">
+      <Execution id="ba553671-591f-4f85-ac3c-7a469859f436" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ControlLaneTests" name="PublicationMovesRevisionAndEpochButNeverTheLogicalStep" />
+    </UnitTest>
+    <UnitTest name="CancellingAStagedOperationReleasesItsGatedLeases" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="3d791aa6-1741-53c7-27cb-d4e2f083d98b">
+      <Execution id="08c276a9-cb5e-42e9-aa40-9e062cc7685e" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ResourceGateTests" name="CancellingAStagedOperationReleasesItsGatedLeases" />
+    </UnitTest>
+    <UnitTest name="FailedReleaseQuarantinesTheResourceInsteadOfReportingADisposal" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="a5e951f4-e7fa-55c2-5dd2-ffc2a10677fc">
+      <Execution id="1d9a3f9b-74d3-4a76-8d98-35a40fd45823" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ResourceGateTests" name="FailedReleaseQuarantinesTheResourceInsteadOfReportingADisposal" />
+    </UnitTest>
+    <UnitTest name="TwoVisibleAncestorProvidersConflictWithoutAnOverride" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="8c821dea-bd2a-ebcf-f70e-0b8ee1f12b93">
+      <Execution id="348880c6-6102-4bc3-9dac-e9c5c06bca33" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ServiceResolutionTests" name="TwoVisibleAncestorProvidersConflictWithoutAnOverride" />
+    </UnitTest>
+    <UnitTest name="RemovingANonemptyScopeRequiresAnExplicitSubtreeDisposition" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="19c576cd-c087-a1f3-2570-4008aa252d58">
+      <Execution id="2271fda3-c04f-44be-816e-26c8e81c01c8" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ScopeTreeTests" name="RemovingANonemptyScopeRequiresAnExplicitSubtreeDisposition" />
+    </UnitTest>
+    <UnitTest name="PlanHashIsCanonicalForTheSameDeclarationAndBaseRevision" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="a6e5e0b9-d447-e7b3-1c16-3d6d92de1bf9">
+      <Execution id="4513e520-fe67-4a00-bc96-24e9fb00ef34" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ControlLaneTests" name="PlanHashIsCanonicalForTheSameDeclarationAndBaseRevision" />
+    </UnitTest>
+    <UnitTest name="CancelBeforeTheCutoffIsCancelledAndImmediatelyAfterIsTooLate" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="aca02c10-7c03-4494-9aab-5b9e02118615">
+      <Execution id="4b412b4a-5800-4ea2-8759-06f7467b46b0" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ControlLaneTests" name="CancelBeforeTheCutoffIsCancelledAndImmediatelyAfterIsTooLate" />
+    </UnitTest>
+    <UnitTest name="ReconfigurePreservesStateAndIncrementsOnlyTheActivationEpoch" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="9c2c602f-2cb1-f811-0064-55b81e964302">
+      <Execution id="1628b50e-3927-4e2d-9744-0e12ee958adc" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ConfigurationTests" name="ReconfigurePreservesStateAndIncrementsOnlyTheActivationEpoch" />
+    </UnitTest>
+    <UnitTest name="SeamSubmissionRequiresTheDeclaredKindToMatchTheSubject" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="fedac4ed-3f62-1cd0-f97e-1e17601a9f81">
+      <Execution id="d4652b2f-48f1-4a55-9146-a2bd1e8c16cb" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ControlLaneTests" name="SeamSubmissionRequiresTheDeclaredKindToMatchTheSubject" />
+    </UnitTest>
+    <UnitTest name="LaneCapacityRefusesFurtherAdmission" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="00652cef-c533-aeaf-eb93-f18c5b1d6427">
+      <Execution id="0e95cd04-7a09-44b8-bdab-1648fbb4cf64" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ControlLaneTests" name="LaneCapacityRefusesFurtherAdmission" />
+    </UnitTest>
+    <UnitTest name="RemountingAStableInstanceIdentityAdvancesItsInstallationGeneration" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="630a4335-da44-1730-192b-667807e8a05b">
+      <Execution id="5e3baa73-1c52-427b-9255-9fa2fc4c828b" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ControlLaneTests" name="RemountingAStableInstanceIdentityAdvancesItsInstallationGeneration" />
+    </UnitTest>
+    <UnitTest name="NoChangeIncrementsNothing" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="1d3859db-660d-0a05-a1e2-2da642979b82">
+      <Execution id="fc9df537-2d29-4fdd-b019-0e0dbb1441e6" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ControlLaneTests" name="NoChangeIncrementsNothing" />
+    </UnitTest>
+    <UnitTest name="SameScopeDuplicateSingleBindingsAlwaysConflict" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="248fb20b-42a0-676a-a6d4-d0541cf7b15a">
+      <Execution id="53ea7151-79d4-4c46-a2c7-922356e78ee0" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ServiceResolutionTests" name="SameScopeDuplicateSingleBindingsAlwaysConflict" />
+    </UnitTest>
+    <UnitTest name="ReorderedIssuerSequenceIsRefused" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="268b7187-60a0-e397-1141-40bc9d2981c0">
+      <Execution id="8ac25893-f4b1-41ca-b563-f8722ff47152" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ControlLaneTests" name="ReorderedIssuerSequenceIsRefused" />
+    </UnitTest>
+    <UnitTest name="IncompatibleContractVersionLeavesTheConsumerWaiting" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="8cee32ee-36fe-838e-1084-54f9fcb5341e">
+      <Execution id="4a1100d7-eb1f-492c-a0d1-132becafcd93" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ServiceResolutionTests" name="IncompatibleContractVersionLeavesTheConsumerWaiting" />
+    </UnitTest>
+    <UnitTest name="RootScopeIsTheOnlyScopeWithoutAParent" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="e462ef94-8d03-f652-ae61-479ec77c077d">
+      <Execution id="61eaae6b-2441-4cba-859c-190593ee1dff" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ScopeTreeTests" name="RootScopeIsTheOnlyScopeWithoutAParent" />
+    </UnitTest>
+    <UnitTest name="WaitingInstallationActivatesWhenItsProviderAppearsAndWaitsAgainWhenItLeaves" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="91195187-9847-32fe-188e-3a47d0890635">
+      <Execution id="343d8d83-7f99-41d2-b593-f0ef6394afed" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ServiceResolutionTests" name="WaitingInstallationActivatesWhenItsProviderAppearsAndWaitsAgainWhenItLeaves" />
+    </UnitTest>
+    <UnitTest name="ExportedProviderReachesDescendantsIncludingTheProvidersOwnScopeTargets" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="944bffba-69ef-ffef-2f87-256c94db781e">
+      <Execution id="0a97cfef-974d-4579-9492-8fca7c12956b" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ServiceResolutionTests" name="ExportedProviderReachesDescendantsIncludingTheProvidersOwnScopeTargets" />
+    </UnitTest>
+    <UnitTest name="UndecodableProposalIsRejectedThroughTheFrozenSeam" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="eca8b4aa-e110-05ed-1e23-29c8d0377f5d">
+      <Execution id="fbb82392-41a4-4ccc-a472-fad85d5a5781" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ControlLaneTests" name="UndecodableProposalIsRejectedThroughTheFrozenSeam" />
+    </UnitTest>
+    <UnitTest name="IsolationSetCannotNameContractsWhileDeclaringAll" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="fcec9f06-cae9-b2fb-e43f-7f548a93fa4c">
+      <Execution id="da30a56c-65f6-4fdc-b6df-0929586e4d19" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ScopeTreeTests" name="IsolationSetCannotNameContractsWhileDeclaringAll" />
+    </UnitTest>
+    <UnitTest name="MountStoresTheComposedEffectiveConfiguration" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="03e7c345-24df-acf3-3bf5-d75f0a6fcefd">
+      <Execution id="8c601e78-3bbd-4eec-843f-5913c75114b1" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ConfigurationTests" name="MountStoresTheComposedEffectiveConfiguration" />
+    </UnitTest>
+    <UnitTest name="PreparedLeaseStaysInertUntilPublication" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="7be8c477-2609-5e07-b96c-45f15e035c0c">
+      <Execution id="ffd262a8-df90-4e77-a533-cef9a570e603" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ResourceGateTests" name="PreparedLeaseStaysInertUntilPublication" />
+    </UnitTest>
+    <UnitTest name="ResolutionIsIndependentOfMountInsertionOrderForFixedSeeds" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="a89e8532-2832-3eee-f3ef-c48b648ea141">
+      <Execution id="f3c0bb16-7175-4da1-9048-4d203777e43f" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ServiceResolutionTests" name="ResolutionIsIndependentOfMountInsertionOrderForFixedSeeds" />
+    </UnitTest>
+    <UnitTest name="SeveralAdmittedProposalsPublishInAdmissionOrder" storage="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/gamecore.composition.tests/bin/release/net8.0/gamecore.composition.tests.dll" id="cd1e2f6c-34ee-8d4b-84e3-25ac4ed9f7e4">
+      <Execution id="1f53278d-8568-493b-80bd-930376060198" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Composition.Tests.ControlLaneTests" name="SeveralAdmittedProposalsPublishInAdmissionOrder" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="d5768b35-dc03-397a-50b9-2e1152f1b7be" executionId="22699dd3-c678-4e41-b6b9-bf9fbc992425" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8217eecd-bb68-4934-0855-b5b50d426fce" executionId="85a718c8-5c23-47d2-91d2-1312f7593e74" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="03e7c345-24df-acf3-3bf5-d75f0a6fcefd" executionId="8c601e78-3bbd-4eec-843f-5913c75114b1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fedac4ed-3f62-1cd0-f97e-1e17601a9f81" executionId="d4652b2f-48f1-4a55-9146-a2bd1e8c16cb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cd1e2f6c-34ee-8d4b-84e3-25ac4ed9f7e4" executionId="1f53278d-8568-493b-80bd-930376060198" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="91195187-9847-32fe-188e-3a47d0890635" executionId="343d8d83-7f99-41d2-b593-f0ef6394afed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8cee32ee-36fe-838e-1084-54f9fcb5341e" executionId="4a1100d7-eb1f-492c-a0d1-132becafcd93" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="19c576cd-c087-a1f3-2570-4008aa252d58" executionId="2271fda3-c04f-44be-816e-26c8e81c01c8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a89e8532-2832-3eee-f3ef-c48b648ea141" executionId="f3c0bb16-7175-4da1-9048-4d203777e43f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="eca8b4aa-e110-05ed-1e23-29c8d0377f5d" executionId="fbb82392-41a4-4ccc-a472-fad85d5a5781" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5285fa55-2655-a613-c672-ba1db4da43e3" executionId="8e9ff5e0-8381-4e23-8409-4b178dc744e5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8a4cf148-e7ff-e6da-3823-dc5e0f5d0bf3" executionId="c7b5b3ec-5e5a-42ff-9316-97a9ac699f26" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4e75beef-bd8f-da70-7301-2126ad0a9a26" executionId="ba553671-591f-4f85-ac3c-7a469859f436" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="19a1793e-b4bd-7502-cbfa-6739cc0ccccc" executionId="bf63ffb4-c7ee-42a9-ad4b-89f2914a115e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fb33aa1c-a60e-b7d0-bbc3-6e1462a88992" executionId="bc2b3751-8bb3-4d9a-a115-0a71cda5a2ad" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="41da7d6e-a382-e1b2-29fa-1b1ae6b20d2a" executionId="865846e4-b75a-436f-82e0-73f1e482300b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="aca02c10-7c03-4494-9aab-5b9e02118615" executionId="4b412b4a-5800-4ea2-8759-06f7467b46b0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="859c7e06-3c35-840b-20f5-bdfdde79bccd" executionId="4d182317-127b-4b5e-8ccf-ec239c93aa4a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a6e5e0b9-d447-e7b3-1c16-3d6d92de1bf9" executionId="4513e520-fe67-4a00-bc96-24e9fb00ef34" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4c96fe44-0b62-c88f-8da2-919b56b11243" executionId="1fcd6e7e-86cd-4d10-b203-935a3e41f1de" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="668606b0-8c9a-15df-9229-970069cdfdde" executionId="bd2cf416-4955-476f-8d39-b019b162b51e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="057e17ea-c0dd-7947-a172-ecd49394e0d9" executionId="a7d42c57-5f76-4248-9ae5-3ac379a5f5ea" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="09092977-dd53-d8ca-e920-a8eea97435d9" executionId="bbd3a400-ba4c-439b-8418-b1ffce704f50" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="95cb9281-2148-910d-1241-9ad9fcb0ba5a" executionId="009051d7-ad86-40a5-a2a5-043eefac67df" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="477e8099-b329-c0d5-0257-031ad0de64c6" executionId="d92f55c8-b2b1-4024-8e31-d03bc9c5c035" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="272d932d-fbc5-4618-9012-9d9d508473cd" executionId="15c65ef9-2dfd-4964-a464-44ab658b48d5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fa00bb66-bb4d-2f59-ff2f-05d0a283036f" executionId="cb1f16ac-446f-41a6-8abc-b20759c137da" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="25cd2cbe-110f-4d9c-50ba-215ee14aa07c" executionId="71860854-04e8-4961-85e1-8a26a30ac973" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a96ce2b6-282d-51e4-2ab3-bc8948818d86" executionId="1f9f9bf4-e82f-4723-a14b-c95f31e2eb75" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="00652cef-c533-aeaf-eb93-f18c5b1d6427" executionId="0e95cd04-7a09-44b8-bdab-1648fbb4cf64" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e287a0e9-674e-eea2-9aa4-90374ac0df05" executionId="3f0bcbf0-8aaa-4d92-b5a4-114587ac9f80" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="198de8bf-4eb8-ab77-c20c-16d9a0b349a1" executionId="b1db1c51-95d6-4ffb-a340-70df0fc54b85" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5f680456-742d-15f3-2491-76e1b2d523ef" executionId="0845fffd-9439-4a4f-a24c-9bb36103dd4d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3d791aa6-1741-53c7-27cb-d4e2f083d98b" executionId="08c276a9-cb5e-42e9-aa40-9e062cc7685e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="268b7187-60a0-e397-1141-40bc9d2981c0" executionId="8ac25893-f4b1-41ca-b563-f8722ff47152" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8c821dea-bd2a-ebcf-f70e-0b8ee1f12b93" executionId="348880c6-6102-4bc3-9dac-e9c5c06bca33" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c30c2567-9f14-3da2-f26f-8749dd208ce1" executionId="3ba4991d-e1c3-4e67-b49c-58937e13550f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="272b77de-88bf-cc73-96d7-cf8d03976acd" executionId="1e6655f4-3e22-493e-822d-9fc848bed941" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="476e20a8-40bd-68e7-92da-2b719fe8bd28" executionId="0f08be2f-9db2-4fa2-9e61-24ecad7aad0d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7de38da0-b145-7dd9-7f40-0caf8f045db2" executionId="7cf32e7e-16f3-445e-8b23-507f039dd53e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e138f029-ad22-bc78-0978-2595b8b8e204" executionId="6737fc78-9444-425b-99e6-b85f7de81b00" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="944bffba-69ef-ffef-2f87-256c94db781e" executionId="0a97cfef-974d-4579-9492-8fca7c12956b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0250a10f-3247-0483-5e0a-89cecf8d0f54" executionId="75d3bd5b-f716-45cd-b136-275316ec12b2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4ed26c49-d84a-9f8e-075e-8f07cc920431" executionId="e5959ad8-faf7-4474-bc54-9a71684e246e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="630a4335-da44-1730-192b-667807e8a05b" executionId="5e3baa73-1c52-427b-9255-9fa2fc4c828b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fcec9f06-cae9-b2fb-e43f-7f548a93fa4c" executionId="da30a56c-65f6-4fdc-b6df-0929586e4d19" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1d3859db-660d-0a05-a1e2-2da642979b82" executionId="fc9df537-2d29-4fdd-b019-0e0dbb1441e6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cbd1ddbe-0257-44cd-1b98-19b98446ed84" executionId="5157a070-aa62-4c31-9442-e120ec64bec1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5cf54d56-447c-7e26-514d-32eadd0cab5b" executionId="d3ada5b0-9ae4-4b11-b9ec-d80d94568508" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="909fd695-0692-4bfc-39a5-5c347cebf3b1" executionId="cc1e0d4b-767b-4558-9295-4538afeaeb2a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6842945e-c8c8-dc40-4786-d7467a84ac3b" executionId="37146881-1ecf-4a40-88b1-ead695e53dfc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9c2c602f-2cb1-f811-0064-55b81e964302" executionId="1628b50e-3927-4e2d-9744-0e12ee958adc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a5e951f4-e7fa-55c2-5dd2-ffc2a10677fc" executionId="1d9a3f9b-74d3-4a76-8d98-35a40fd45823" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e97a425c-882d-621d-a3c0-a0fedeacf8a6" executionId="56e51ba0-26ea-432a-9548-ba9e4e34a24b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6b793962-8f1a-2783-00c4-2a681ce77567" executionId="4e18ca1f-c1aa-4909-bfb1-47b9e4464889" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="35368635-0d76-5d61-23b3-562e82961fef" executionId="bd57606e-fe9a-4504-87be-025dc18df1dc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="248fb20b-42a0-676a-a6d4-d0541cf7b15a" executionId="53ea7151-79d4-4c46-a2c7-922356e78ee0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7be8c477-2609-5e07-b96c-45f15e035c0c" executionId="ffd262a8-df90-4e77-a533-cef9a570e603" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e462ef94-8d03-f652-ae61-479ec77c077d" executionId="61eaae6b-2441-4cba-859c-190593ee1dff" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="59" executed="59" passed="22" failed="37" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 4.5.0.0: Test execution started
+Running all tests in /home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll
+   NUnit3TestExecutor discovered 59 of 59 NUnit test cases using Current Discovery mode, Non-Explicit run
+NUnit Adapter 4.5.0.0: Test execution complete
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

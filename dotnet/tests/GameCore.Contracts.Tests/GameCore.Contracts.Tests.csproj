@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Contract tests (GC-003): production contract behaviour plus an API-compatibility gate against the frozen
+       W0 reference-seam snapshot. Also references the compiler because the generated catalog is built and
+       round-tripped through the production contract types. -->
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="NUnit" Version="3.14.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/GameCore.Contracts/GameCore.Contracts.csproj" />
+    <ProjectReference Include="../../src/GameCore.Content.Compiler/GameCore.Content.Compiler.csproj" />
+    <!-- Repository-root discovery comes from the production fixture library. The W0 reference-seam
+         assembly is deliberately NOT referenced: it declares the same types in the same namespace, so a
+         reference would make every contract type ambiguous instead of proving the surface is compatible. -->
+    <ProjectReference Include="../../src/GameCore.ProtocolFixtures.Production/GameCore.ProtocolFixtures.Production.csproj" />
+    <ProjectReference Include="../../tools/GameCore.ApiSnapshot/GameCore.ApiSnapshot.csproj" />
+  </ItemGroup>
+
+</Project>

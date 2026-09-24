@@ -11,17 +11,36 @@ Unity qualification project and the player gates.
 |---|---|---|---|
 | `src/GameCore.ReferenceSeams` | library | netstandard2.1 | `tests/GameCore.ReferenceSeams/**/*.cs` |
 | `src/GameCore.ProtocolFixtures` | library | netstandard2.1 | `tests/GameCore.ProtocolFixtures/**/*.cs` |
+| `src/GameCore.Contracts` | library | netstandard2.1 | `Packages/com.gamecore.contracts/Runtime/**/*.cs` |
+| `src/GameCore.Content.Compiler` | library | netstandard2.1 | `Packages/com.gamecore.content.compiler/Runtime/**/*.cs` |
+| `src/GameCore.ProtocolFixtures.Production` | library | netstandard2.1 | the same fixture sources, compiled against `GameCore.Contracts` |
 | `tools/GameCore.ApiSnapshot` | console app | net8.0 | `tools/GameCore.ApiSnapshot/**/*.cs` |
 | `tests/GameCore.ReferenceSeams.Tests` | NUnit 3 | net8.0 | API snapshot freeze test |
-| `tests/GameCore.ProtocolFixtures.Tests` | NUnit 3 | net8.0 | fixture execution tests |
+| `tests/GameCore.ProtocolFixtures.Tests` | NUnit 3 | net8.0 | fixture execution tests against the reference seam |
+| `tests/GameCore.ProtocolFixtures.Production.Tests` | NUnit 3 | net8.0 | the same fixture suite against production `GameCore.Contracts` |
+| `tests/GameCore.Contracts.Tests` | NUnit 3 | net8.0 | contract behaviour and the API-compatibility gate |
+| `tests/GameCore.Content.Compiler.Tests` | NUnit 3 | net8.0 | catalog description rejection, emission reproducibility and the committed probe catalog |
+| `src/GameCore.Composition` | library | netstandard2.1 | `Packages/com.gamecore.composition/Runtime/**/*.cs` |
+| `tests/GameCore.Composition.Tests` | NUnit 3 | net8.0 | the composition package's own `Tests/**` sources |
+| `src/GameCore.Execution` | library | netstandard2.1 | `Packages/com.gamecore.unity.runtime/Runtime/Pure/**/*.cs` |
+| `tests/GameCore.Execution.Tests` | NUnit 3 | net8.0 | engine-free execution core tests |
 
-`tests/GameCore.ReferenceSeams.Tests` also references `GameCore.ProtocolFixtures` because repository-root
-discovery (`RepoLayout`) lives there; the seam itself has no dependency on the oracle.
+The two fixture suites share one test source (`tests/GameCore.ProtocolFixtures.Tests/ProtocolFixtureTests.cs`).
+They write separate evidence documents, `artifacts/protocol-fixtures/results.json` and
+`artifacts/protocol-fixtures/results-production-contracts.json`, so neither run overwrites the other.
 
-`GameCore.ReferenceSeams` is **test-only**: it freezes the shared compile-time surface of
-`docs/game-core/05-contracts-and-data-model.md` so Wave 1 peers can compile in parallel. GC-003 replaces it
-with production `GameCore.Contracts` without a surface change. Sources live under `tests/` so the same files
-serve the fixture oracle and the dotnet build.
+The W1 gate substituted production `GameCore.Contracts` for the frozen W0 reference seam in every production
+consumer: `GameCore.Composition`, `GameCore.Execution` and their test projects reference
+`src/GameCore.Contracts` (the two fixture suites keep their seam builds, so the seam is still compiled and still
+compared against the API snapshot). `tests/GameCore.Contracts.Tests` deliberately does **not** reference
+`GameCore.ReferenceSeams`: both assemblies declare the same types in the same namespace, so the frozen surface is
+compared as a committed text snapshot via `GameCore.ApiSnapshot.ApiSurfaceComparer` instead of by referencing two
+copies of the same types. No assembly in this solution references both contract assemblies.
+
+`GameCore.Execution` compiles the engine-free execution core that also lives inside the Unity assembly
+`GameCore.Unity.Runtime` (namespace `GameCore.Execution`): the temporal accumulator, the guarded dispatch plan,
+the world/job resource ledger, the step publication boundary and the deterministic id sequence. It references
+no `UnityEngine` or `Unity.*` type, which is why the same sources build under the plain SDK.
 
 ## Commands
 
@@ -33,7 +52,39 @@ dotnet test dotnet/GameCore.sln -c Release --logger trx
 ```
 
 Everything a task's evidence needs is in the build and test output; no formatter, linter or Unity step is
-part of these commands.
+part of these commands. GC-003 additionally provides a host-side static check of the C# sources (brace balance
+and forbidden-language-construct scan) because this repository's authoring host has no C# compiler:
+
+```sh
+python3 tools/check_game_core_csharp.py
+```
+
+The GC-003 task gate — static checks, documentation validator, build, tests and, when `UNITY` is set, Unity
+codegen plus the IL2CPP probe — is one command:
+
+```sh
+DOTNET=/usr/bin/dotnet PYTHON=/usr/bin/python3 tools/run_gc003_checks.sh
+```
+
+The W1 wave gate (this solution's build and tests, the package EditMode and PlayMode suites, the W1Gate EditMode
+integration assembly, the IL2CPP build and every player probe) is one command:
+
+```sh
+UNITY=~/Unity/Hub/Editor/6000.0.75f1/Editor/Unity DOTNET=/usr/bin/dotnet tools/run_w1_gate.sh
+```
+
+## Regenerating the committed probe catalog (GC-003)
+
+`unity/GameCore.Validation/Assets/GameCore.Validation/Generated/ProbeCatalog.g.cs` is generated from
+`unity/GameCore.Validation/Catalogs/ProbeCatalog.catalog.json` by the production content compiler; the compiler
+is the only owner of that file. Regenerate it with the pinned Editor and commit the result:
+
+```sh
+UNITY=~/Unity/Hub/Editor/6000.0.75f1/Editor/Unity tools/unity/build_probe.sh
+```
+
+`CommittedProbeCatalogTests` fails when the committed file differs from a fresh generation of its description,
+and names the command above in the failure message.
 
 ## Regenerating the committed API snapshot
 

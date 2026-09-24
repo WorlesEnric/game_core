@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Engine-free execution core (GC-005). The same sources are compiled into the Unity assembly
+       GameCore.Unity.Runtime; here they build with a plain .NET SDK so the temporal accumulator, the guarded
+       dispatch plan, the world/job resource ledger and the step publication boundary can be tested without Unity.
+       No UnityEngine or Unity.* reference is allowed in these files. The W1 gate substituted the production
+       GameCore.Contracts project for the W0 test-only reference seam. -->
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>GameCore.Execution</AssemblyName>
+    <RootNamespace>GameCore.Execution</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="../../../Packages/com.gamecore.unity.runtime/Runtime/Pure/**/*.cs"
+             Exclude="../../../Packages/com.gamecore.unity.runtime/Runtime/Pure/**/bin/**/*.cs;../../../Packages/com.gamecore.unity.runtime/Runtime/Pure/**/obj/**/*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../GameCore.Contracts/GameCore.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

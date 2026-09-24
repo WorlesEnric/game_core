@@ -1,0 +1,472 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="5d51b5c4-1d03-4fde-bb0a-61900f49456f" name="@worlesenric 2026-09-25 06:12:15" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-25T06:12:15.4910326+08:00" queuing="2026-09-25T06:12:15.4910326+08:00" start="2026-09-25T06:12:15.0801302+08:00" finish="2026-09-25T06:12:15.5196188+08:00" />
+  <TestSettings name="default" id="657a4b75-b22f-44bb-9203-55abecf04841">
+    <Deployment runDeploymentRoot="_worlesenric_2026-09-25_06_12_15" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="467b2e77-f3e0-4d45-ab03-5d6edda2f5fb" testId="13e8be3f-a736-bbee-f765-0cd1b7840ac4" testName="EmittedFieldCasesCloseWithBreakAndBraceAndKeepBracesBalanced" computerName="worlesenric" duration="00:00:00.0006640" startTime="2026-09-25T06:12:15.4385584+08:00" endTime="2026-09-25T06:12:15.4392222+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="467b2e77-f3e0-4d45-ab03-5d6edda2f5fb">
+      <Output>
+        <ErrorInfo>
+          <Message>  rejected with 1 diagnostic(s):
+  - InvalidIdentifier: namespace: 'Test.Generated' is not a valid C# identifier
+  Expected: True
+  But was:  False
+</Message>
+          <StackTrace>   at GameCore.Content.Compiler.Tests.CatalogEmissionTests.EmittedFieldCasesCloseWithBreakAndBraceAndKeepBracesBalanced() in /home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/CompilerTests.cs:line 392
+
+1)    at GameCore.Content.Compiler.Tests.CatalogEmissionTests.EmittedFieldCasesCloseWithBreakAndBraceAndKeepBracesBalanced() in /home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/CompilerTests.cs:line 392
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="c3b6ccd8-7777-4c02-a180-f3e6f09e7a30" testId="957ea0be-e5c6-8b07-d28f-4de7d4fec13f" testName="UnknownMemberRejects" computerName="worlesenric" duration="00:00:00.0000600" startTime="2026-09-25T06:12:15.4361631+08:00" endTime="2026-09-25T06:12:15.4362231+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c3b6ccd8-7777-4c02-a180-f3e6f09e7a30" />
+    <UnitTestResult executionId="e2c7612e-8c90-4416-bbcb-b4936f2c8f76" testId="9c637530-027b-7de2-d98f-03650bbed66a" testName="DeclarationOrderDoesNotChangeGeneratedBytes" computerName="worlesenric" duration="00:00:00.0007730" startTime="2026-09-25T06:12:15.4377748+08:00" endTime="2026-09-25T06:12:15.4385476+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e2c7612e-8c90-4416-bbcb-b4936f2c8f76">
+      <Output>
+        <ErrorInfo>
+          <Message>  Expected: True
+  But was:  False
+</Message>
+          <StackTrace>   at GameCore.Content.Compiler.Tests.CatalogEmissionTests.DeclarationOrderDoesNotChangeGeneratedBytes() in /home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/CompilerTests.cs:line 280
+
+1)    at GameCore.Content.Compiler.Tests.CatalogEmissionTests.DeclarationOrderDoesNotChangeGeneratedBytes() in /home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/CompilerTests.cs:line 280
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="b48ccd46-7947-49ca-9be3-789467e43ba7" testId="3ba806a4-bbf3-7b7e-27b5-2f86df0fc91e" testName="RepeatedEmissionIsByteIdentical" computerName="worlesenric" duration="00:00:00.0007240" startTime="2026-09-25T06:12:15.4477181+08:00" endTime="2026-09-25T06:12:15.4484420+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b48ccd46-7947-49ca-9be3-789467e43ba7">
+      <Output>
+        <ErrorInfo>
+          <Message>  rejected with 1 diagnostic(s):
+  - InvalidIdentifier: namespace: 'Test.Generated' is not a valid C# identifier
+  Expected: True
+  But was:  False
+</Message>
+          <StackTrace>   at GameCore.Content.Compiler.Tests.CatalogEmissionTests.RepeatedEmissionIsByteIdentical() in /home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/CompilerTests.cs:line 309
+
+1)    at GameCore.Content.Compiler.Tests.CatalogEmissionTests.RepeatedEmissionIsByteIdentical() in /home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/CompilerTests.cs:line 309
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d6adfc30-ee5b-44c2-8ffb-869c714fc899" testId="d64d72ea-7173-f86a-f0f0-b80bbefcdcf6" testName="DuplicateJsonMemberRejectsAsInvalidDocument" computerName="worlesenric" duration="00:00:00.0001360" startTime="2026-09-25T06:12:15.4181885+08:00" endTime="2026-09-25T06:12:15.4183248+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d6adfc30-ee5b-44c2-8ffb-869c714fc899" />
+    <UnitTestResult executionId="a9f0ddc9-7f30-45ca-b7b4-08c0d1a3083b" testId="948f1c00-52cc-8709-370c-1146d5c9950c" testName="UnsupportedWireTypeRejects" computerName="worlesenric" duration="00:00:00.0000740" startTime="2026-09-25T06:12:15.4362817+08:00" endTime="2026-09-25T06:12:15.4363561+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a9f0ddc9-7f30-45ca-b7b4-08c0d1a3083b" />
+    <UnitTestResult executionId="06b5eac7-c0d3-4e3e-9118-c1e2db7aa36f" testId="7ed4bff5-de38-8fb8-34f1-2ff229d1b5c9" testName="InvalidIdentityHexRejects" computerName="worlesenric" duration="00:00:00.0000620" startTime="2026-09-25T06:12:15.4207316+08:00" endTime="2026-09-25T06:12:15.4207941+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="06b5eac7-c0d3-4e3e-9118-c1e2db7aa36f" />
+    <UnitTestResult executionId="8b47a40a-9976-4a0b-a92c-0eee0e19a5aa" testId="07bdb500-f0b7-2ee6-905c-d6571a555619" testName="UnsupportedProtocolVersionRejects" computerName="worlesenric" duration="00:00:00.0000520" startTime="2026-09-25T06:12:15.4362267+08:00" endTime="2026-09-25T06:12:15.4362787+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8b47a40a-9976-4a0b-a92c-0eee0e19a5aa" />
+    <UnitTestResult executionId="dbd0a692-839b-4a14-8674-472ef47d2fdf" testId="0fac49ff-9fc4-70da-0e12-4468b853b5ca" testName="FileHashCoversTheGeneratedPrefixAndDetectsEdits" computerName="worlesenric" duration="00:00:00.0015169" startTime="2026-09-25T06:12:15.4397811+08:00" endTime="2026-09-25T06:12:15.4412978+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="dbd0a692-839b-4a14-8674-472ef47d2fdf">
+      <Output>
+        <ErrorInfo>
+          <Message>System.ArgumentNullException : Value cannot be null. (Parameter 'generatedText')</Message>
+          <StackTrace>   at GameCore.Content.Compiler.CatalogGenerator.ExtractStringConstant(String generatedText, String constantName) in /home/worlesenric/wkspace/gc-wt/gc-003/Packages/com.gamecore.content.compiler/Runtime/Description/CatalogGenerator.cs:line 204
+   at GameCore.Content.Compiler.Tests.CatalogEmissionTests.FileHashCoversTheGeneratedPrefixAndDetectsEdits() in /home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/CompilerTests.cs:line 334
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="fdb30b44-9d9d-4364-8a87-6f213c90f582" testId="99e59fa0-006c-3199-9f95-8228467dab50" testName="MalformedJsonIsReportedAsInvalidDocument" computerName="worlesenric" duration="00:00:00.0001740" startTime="2026-09-25T06:12:15.4207973+08:00" endTime="2026-09-25T06:12:15.4209711+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fdb30b44-9d9d-4364-8a87-6f213c90f582" />
+    <UnitTestResult executionId="13bf4fbe-92b2-48bd-84a0-bdd44a5a6666" testId="191bd9eb-d6f4-9118-bbe7-31b63664155d" testName="ZeroVersionRejects" computerName="worlesenric" duration="00:00:00.0000860" startTime="2026-09-25T06:12:15.4365023+08:00" endTime="2026-09-25T06:12:15.4365882+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="13bf4fbe-92b2-48bd-84a0-bdd44a5a6666" />
+    <UnitTestResult executionId="bb6ad73b-f778-4082-93e5-c2711a3ee0af" testId="a368381b-c826-da5a-07f6-882159508464" testName="AllZeroImplementationIdentityRejects" computerName="worlesenric" duration="00:00:00.0121250" startTime="2026-09-25T06:12:15.3946497+08:00" endTime="2026-09-25T06:12:15.4067341+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bb6ad73b-f778-4082-93e5-c2711a3ee0af" />
+    <UnitTestResult executionId="112214cd-5dcd-4874-8452-417b3d704199" testId="c2a72dd0-27bf-137f-7c70-71c4bb2a9025" testName="InvalidDocumentRootRejects" computerName="worlesenric" duration="00:00:00.0000360" startTime="2026-09-25T06:12:15.4206931+08:00" endTime="2026-09-25T06:12:15.4207289+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="112214cd-5dcd-4874-8452-417b3d704199" />
+    <UnitTestResult executionId="49c12ab3-a6c0-4ffc-a55f-ace560d1cced" testId="ef277f34-d036-305a-c91f-b7c197fd6f5a" testName="UnimplementedMinorRejects" computerName="worlesenric" duration="00:00:00.0000360" startTime="2026-09-25T06:12:15.4360273+08:00" endTime="2026-09-25T06:12:15.4360637+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="49c12ab3-a6c0-4ffc-a55f-ace560d1cced" />
+    <UnitTestResult executionId="682b7922-647d-4ce9-b7b3-3b4ae5165518" testId="62555781-d38d-97ac-09ee-252bcd5b99d5" testName="UnknownFactoryKindRejects" computerName="worlesenric" duration="00:00:00.0000920" startTime="2026-09-25T06:12:15.4360668+08:00" endTime="2026-09-25T06:12:15.4361589+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="682b7922-647d-4ce9-b7b3-3b4ae5165518" />
+    <UnitTestResult executionId="cce932a4-eb01-4347-a9d6-900ab3cd8f72" testId="fa394697-3424-9c25-ece5-7e2d369a8920" testName="CodeFragmentWithStatementTerminatorRejects" computerName="worlesenric" duration="00:00:00.0004010" startTime="2026-09-25T06:12:15.4153022+08:00" endTime="2026-09-25T06:12:15.4157027+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cce932a4-eb01-4347-a9d6-900ab3cd8f72" />
+    <UnitTestResult executionId="924dbc4f-0013-4154-958f-dc7bb5945a8c" testId="8613c9dc-f124-68c2-ef82-d40b6dce25ca" testName="FingerprintLiteralMatchesTheDeclarations" computerName="worlesenric" duration="00:00:00.0004720" startTime="2026-09-25T06:12:15.4413102+08:00" endTime="2026-09-25T06:12:15.4417825+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="924dbc4f-0013-4154-958f-dc7bb5945a8c">
+      <Output>
+        <ErrorInfo>
+          <Message>  rejected with 1 diagnostic(s):
+  - InvalidIdentifier: namespace: 'Test.Generated' is not a valid C# identifier
+  Expected: True
+  But was:  False
+</Message>
+          <StackTrace>   at GameCore.Content.Compiler.Tests.CatalogEmissionTests.FingerprintLiteralMatchesTheDeclarations() in /home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/CompilerTests.cs:line 319
+
+1)    at GameCore.Content.Compiler.Tests.CatalogEmissionTests.FingerprintLiteralMatchesTheDeclarations() in /home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/CompilerTests.cs:line 319
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="3afa765c-f712-4d51-a85d-5537a0b3286a" testId="4a4f7ec1-0f1b-146c-8f0b-642d1643ee5c" testName="DuplicateStableNameRejects" computerName="worlesenric" duration="00:00:00.0002610" startTime="2026-09-25T06:12:15.4183316+08:00" endTime="2026-09-25T06:12:15.4185925+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3afa765c-f712-4d51-a85d-5537a0b3286a" />
+    <UnitTestResult executionId="9e71daaa-05ac-40e2-b969-5779bd8ed404" testId="435e0ca1-e757-c30d-ee9f-e04b15fca79d" testName="InvalidCodeFragmentRejects" computerName="worlesenric" duration="00:00:00.0000600" startTime="2026-09-25T06:12:15.4206292+08:00" endTime="2026-09-25T06:12:15.4206891+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9e71daaa-05ac-40e2-b969-5779bd8ed404" />
+    <UnitTestResult executionId="132ce198-38f2-4b23-83e8-c9c14db8f028" testId="1e9dac80-9afc-f5b6-3b75-0fc15f043b6f" testName="ReservedFieldIdRejects" computerName="worlesenric" duration="00:00:00.0001970" startTime="2026-09-25T06:12:15.4357436+08:00" endTime="2026-09-25T06:12:15.4359406+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="132ce198-38f2-4b23-83e8-c9c14db8f028" />
+    <UnitTestResult executionId="163ba51f-c139-43d9-8e0b-4f940ca3ed34" testId="ce07497c-4dc6-a0b3-bd22-bf118f2b179f" testName="ClassNamedAfterAGeneratedMemberRejects" computerName="worlesenric" duration="00:00:00.0077710" startTime="2026-09-25T06:12:15.4075034+08:00" endTime="2026-09-25T06:12:15.4152741+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="163ba51f-c139-43d9-8e0b-4f940ca3ed34" />
+    <UnitTestResult executionId="4ad0a39a-dfab-49ae-bd6a-ddc2d20363df" testId="5518edeb-57f1-cd40-289d-a92c12e305ae" testName="OptionalBytesFieldIsAcceptedAndEmittedAsNullable" computerName="worlesenric" duration="00:00:00.0145450" startTime="2026-09-25T06:12:15.4211355+08:00" endTime="2026-09-25T06:12:15.4356802+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4ad0a39a-dfab-49ae-bd6a-ddc2d20363df">
+      <Output>
+        <ErrorInfo>
+          <Message>  rejected with 1 diagnostic(s):
+  - InvalidIdentifier: namespace: 'Test.Generated' is not a valid C# identifier
+  Expected: True
+  But was:  False
+</Message>
+          <StackTrace>   at GameCore.Content.Compiler.Tests.CatalogDescriptionRejectionTests.OptionalBytesFieldIsAcceptedAndEmittedAsNullable() in /home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/CompilerTests.cs:line 116
+
+1)    at GameCore.Content.Compiler.Tests.CatalogDescriptionRejectionTests.OptionalBytesFieldIsAcceptedAndEmittedAsNullable() in /home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/CompilerTests.cs:line 116
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="4aee241f-4868-4213-ae24-76b2d92885de" testId="2386ee34-1c98-0e7e-f863-0e97b7c67c92" testName="WrongDescriptionFormatRejects" computerName="worlesenric" duration="00:00:00.0001380" startTime="2026-09-25T06:12:15.4363593+08:00" endTime="2026-09-25T06:12:15.4364973+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4aee241f-4868-4213-ae24-76b2d92885de" />
+    <UnitTestResult executionId="95821c42-75ee-4522-b448-e7a8a68b19f4" testId="10a632d9-c0aa-8090-0dd4-c44bfef506d7" testName="MissingRequiredMemberRejects" computerName="worlesenric" duration="00:00:00.0000370" startTime="2026-09-25T06:12:15.4210952+08:00" endTime="2026-09-25T06:12:15.4211326+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="95821c42-75ee-4522-b448-e7a8a68b19f4" />
+    <UnitTestResult executionId="9a5627a0-75c9-480f-875a-0dc591c0e00a" testId="eae65d2c-f5c2-f597-c2f6-823f72c30479" testName="GenerationReportVerifiesWhatItWrote" computerName="worlesenric" duration="00:00:00.0010090" startTime="2026-09-25T06:12:15.4433772+08:00" endTime="2026-09-25T06:12:15.4443858+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9a5627a0-75c9-480f-875a-0dc591c0e00a">
+      <Output>
+        <ErrorInfo>
+          <Message>  the catalog description was rejected:
+rejected with 1 diagnostic(s):
+  - InvalidIdentifier: namespace: 'Test.Generated' is not a valid C# identifier
+  Expected: True
+  But was:  False
+</Message>
+          <StackTrace>   at GameCore.Content.Compiler.Tests.CatalogEmissionTests.GenerationReportVerifiesWhatItWrote() in /home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/CompilerTests.cs:line 353
+
+1)    at GameCore.Content.Compiler.Tests.CatalogEmissionTests.GenerationReportVerifiesWhatItWrote() in /home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/CompilerTests.cs:line 353
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="4df355a2-5a59-47bd-bf52-1236997e1573" testId="22b95d6a-5061-f409-c55c-173dfdb0009d" testName="EveryRejectionReportsAPathOrAnExplicitDocumentScope" computerName="worlesenric" duration="00:00:00.0019070" startTime="2026-09-25T06:12:15.4186000+08:00" endTime="2026-09-25T06:12:15.4205071+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4df355a2-5a59-47bd-bf52-1236997e1573" />
+    <UnitTestResult executionId="c32865f4-77a6-45cc-9d6a-80dc84e94d70" testId="d661a575-f5db-dcc3-2651-f7a20a82908e" testName="SchemaMemberCollidingWithAReservedGeneratedMemberRejects" computerName="worlesenric" duration="00:00:00.0000730" startTime="2026-09-25T06:12:15.4359497+08:00" endTime="2026-09-25T06:12:15.4360231+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c32865f4-77a6-45cc-9d6a-80dc84e94d70" />
+    <UnitTestResult executionId="7e5ab7dc-cf55-438d-a891-a5c395fabc28" testId="15fffbf7-3b66-6103-20fd-b18305a69632" testName="DuplicateFieldIdRejects" computerName="worlesenric" duration="00:00:00.0005180" startTime="2026-09-25T06:12:15.4176601+08:00" endTime="2026-09-25T06:12:15.4181782+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7e5ab7dc-cf55-438d-a891-a5c395fabc28" />
+    <UnitTestResult executionId="9b0fdc65-ac19-4580-9399-c16088efff86" testId="db5fa11c-61f1-b840-f7d8-d72274333fb9" testName="CommittedProbeCatalogFingerprintMatchesItsDeclarations" computerName="worlesenric" duration="00:00:00.0005199" startTime="2026-09-25T06:12:15.4524561+08:00" endTime="2026-09-25T06:12:15.4529758+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9b0fdc65-ac19-4580-9399-c16088efff86">
+      <Output>
+        <ErrorInfo>
+          <Message>  rejected with 1 diagnostic(s):
+  - InvalidIdentifier: namespace: 'GameCore.Validation.Generated' is not a valid C# identifier
+  Expected: True
+  But was:  False
+</Message>
+          <StackTrace>   at GameCore.Content.Compiler.Tests.CommittedProbeCatalogTests.CommittedProbeCatalogFingerprintMatchesItsDeclarations() in /home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/CompilerTests.cs:line 517
+
+1)    at GameCore.Content.Compiler.Tests.CommittedProbeCatalogTests.CommittedProbeCatalogFingerprintMatchesItsDeclarations() in /home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/CompilerTests.cs:line 517
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="21a23cef-310c-4f60-8494-193a1fb76bb6" testId="99fbf920-1989-3afa-e14d-521d4d16a8a2" testName="GroupMemberCollidingWithAReservedGeneratedMemberRejects" computerName="worlesenric" duration="00:00:00.0001030" startTime="2026-09-25T06:12:15.4205198+08:00" endTime="2026-09-25T06:12:15.4206233+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="21a23cef-310c-4f60-8494-193a1fb76bb6" />
+    <UnitTestResult executionId="ca827db7-e88c-4b52-888c-06b5288a6344" testId="eda82127-ff29-41db-13bd-e18efa6bad16" testName="GeneratedSerializerDeclaresRequiredFieldsAndEnvelopeCalls" computerName="worlesenric" duration="00:00:00.0003660" startTime="2026-09-25T06:12:15.4430017+08:00" endTime="2026-09-25T06:12:15.4433672+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ca827db7-e88c-4b52-888c-06b5288a6344">
+      <Output>
+        <ErrorInfo>
+          <Message>System.ArgumentException : Expected: IEnumerable But was: null (Parameter 'actual')</Message>
+          <StackTrace>   at NUnit.Framework.Internal.ConstraintUtils.RequireActual[T](Object actual, String paramName, Boolean allowNull)
+   at NUnit.Framework.Constraints.SomeItemsConstraint.ApplyTo[TActual](TActual actual)
+   at NUnit.Framework.Constraints.ContainsConstraint.ApplyTo[TActual](TActual actual)
+   at NUnit.Framework.Assert.That[TActual](TActual actual, IResolveConstraint expression, String message, Object[] args)
+   at NUnit.Framework.Assert.That[TActual](TActual actual, IResolveConstraint expression)
+   at GameCore.Content.Compiler.Tests.CatalogEmissionTests.GeneratedSerializerDeclaresRequiredFieldsAndEnvelopeCalls() in /home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/CompilerTests.cs:line 376
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d71a8244-c882-4457-b759-c5b800197268" testId="a01acef7-6957-0e86-ccf9-6e0a07aed5f4" testName="UsedCatalogDescriptionHasNoClosedGenericRootsWhenNoneAreDeclared" computerName="worlesenric" duration="00:00:00.0004750" startTime="2026-09-25T06:12:15.4484578+08:00" endTime="2026-09-25T06:12:15.4489330+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d71a8244-c882-4457-b759-c5b800197268">
+      <Output>
+        <ErrorInfo>
+          <Message>  rejected with 1 diagnostic(s):
+  - InvalidIdentifier: namespace: 'Test.Generated' is not a valid C# identifier
+  Expected: True
+  But was:  False
+</Message>
+          <StackTrace>   at GameCore.Content.Compiler.Tests.CatalogEmissionTests.UsedCatalogDescriptionHasNoClosedGenericRootsWhenNoneAreDeclared() in /home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/CompilerTests.cs:line 441
+
+1)    at GameCore.Content.Compiler.Tests.CatalogEmissionTests.UsedCatalogDescriptionHasNoClosedGenericRootsWhenNoneAreDeclared() in /home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/CompilerTests.cs:line 441
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="f7fe1337-dfbe-4b1d-8fef-1359c4209d82" testId="f9352d4e-1c68-5156-44d6-9c0e393891bf" testName="ValidDescriptionEmitsDeterministicBytes" computerName="worlesenric" duration="00:00:00.0011160" startTime="2026-09-25T06:12:15.4489466+08:00" endTime="2026-09-25T06:12:15.4500622+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f7fe1337-dfbe-4b1d-8fef-1359c4209d82">
+      <Output>
+        <ErrorInfo>
+          <Message>  rejected with 1 diagnostic(s):
+  - InvalidIdentifier: namespace: 'Test.Generated' is not a valid C# identifier
+  Expected: True
+  But was:  False
+</Message>
+          <StackTrace>   at GameCore.Content.Compiler.Tests.CatalogEmissionTests.ValidDescriptionEmitsDeterministicBytes() in /home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/CompilerTests.cs:line 267
+
+1)    at GameCore.Content.Compiler.Tests.CatalogEmissionTests.ValidDescriptionEmitsDeterministicBytes() in /home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/CompilerTests.cs:line 267
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="b5d5067b-3dc1-4b53-a2a7-4925ae209559" testId="ebc2e79d-0013-5ac5-1a10-fdc0f753882f" testName="CommittedGeneratedCatalogMatchesAFreshGeneration" computerName="worlesenric" duration="00:00:00.0009500" startTime="2026-09-25T06:12:15.4502080+08:00" endTime="2026-09-25T06:12:15.4511575+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b5d5067b-3dc1-4b53-a2a7-4925ae209559">
+      <Output>
+        <ErrorInfo>
+          <Message>  rejected with 1 diagnostic(s):
+  - InvalidIdentifier: namespace: 'GameCore.Validation.Generated' is not a valid C# identifier
+  Expected: True
+  But was:  False
+</Message>
+          <StackTrace>   at GameCore.Content.Compiler.Tests.CommittedProbeCatalogTests.CommittedGeneratedCatalogMatchesAFreshGeneration() in /home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/CompilerTests.cs:line 488
+
+1)    at GameCore.Content.Compiler.Tests.CommittedProbeCatalogTests.CommittedGeneratedCatalogMatchesAFreshGeneration() in /home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/CompilerTests.cs:line 488
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="4d7c32ea-8cca-46b1-962f-7c92e9bcf3e9" testId="49ea4e69-52f4-11c0-268c-ff2c8e945926" testName="GeneratedClosedGenericRootsAndAttributesAreEmittedWithTerminators" computerName="worlesenric" duration="00:00:00.0011960" startTime="2026-09-25T06:12:15.4417937+08:00" endTime="2026-09-25T06:12:15.4429892+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4d7c32ea-8cca-46b1-962f-7c92e9bcf3e9">
+      <Output>
+        <ErrorInfo>
+          <Message>System.ArgumentException : Expected: IEnumerable But was: null (Parameter 'actual')</Message>
+          <StackTrace>   at NUnit.Framework.Internal.ConstraintUtils.RequireActual[T](Object actual, String paramName, Boolean allowNull)
+   at NUnit.Framework.Constraints.SomeItemsConstraint.ApplyTo[TActual](TActual actual)
+   at NUnit.Framework.Constraints.ContainsConstraint.ApplyTo[TActual](TActual actual)
+   at NUnit.Framework.Assert.That[TActual](TActual actual, IResolveConstraint expression, String message, Object[] args)
+   at NUnit.Framework.Assert.That[TActual](TActual actual, IResolveConstraint expression)
+   at GameCore.Content.Compiler.Tests.CatalogEmissionTests.GeneratedClosedGenericRootsAndAttributesAreEmittedWithTerminators() in /home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/CompilerTests.cs:line 428
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="8a609301-eeb5-4211-89c1-61dcdcdb4c85" testId="4d635dde-9025-0f50-e5e6-4a0320b1f861" testName="CommittedGeneratedCatalogPassesItsOwnVerification" computerName="worlesenric" duration="00:00:00.0012760" startTime="2026-09-25T06:12:15.4511686+08:00" endTime="2026-09-25T06:12:15.4524441+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8a609301-eeb5-4211-89c1-61dcdcdb4c85" />
+    <UnitTestResult executionId="2fe1ea8f-7327-46e5-8c6b-70847dc6a438" testId="4a59641e-8e86-0476-d892-39db58235546" testName="DescriptionThatWouldBuildAnInvalidCatalogRejects" computerName="worlesenric" duration="00:00:00.0019300" startTime="2026-09-25T06:12:15.4157163+08:00" endTime="2026-09-25T06:12:15.4176455+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2fe1ea8f-7327-46e5-8c6b-70847dc6a438" />
+    <UnitTestResult executionId="35c41822-0d15-4aa1-8971-643740fe6989" testId="7f00720d-4676-b91e-004b-d6d34e4dd4fa" testName="MemberNamedAfterTheGeneratedClassRejects" computerName="worlesenric" duration="00:00:00.0001060" startTime="2026-09-25T06:12:15.4209850+08:00" endTime="2026-09-25T06:12:15.4210906+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="35c41822-0d15-4aa1-8971-643740fe6989" />
+    <UnitTestResult executionId="6e93ba37-a367-4934-a896-f7791e3137ca" testId="e291aa66-ef60-353a-bdc1-17429cdfe2d3" testName="GeneratorArgumentsParseTheDocumentedCommandLine" computerName="worlesenric" duration="00:00:00.0033050" startTime="2026-09-25T06:12:15.4443978+08:00" endTime="2026-09-25T06:12:15.4477029+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6e93ba37-a367-4934-a896-f7791e3137ca" />
+    <UnitTestResult executionId="e5eed881-971a-4c78-9e97-e3b147383c3b" testId="8b8f1802-4a72-d248-a440-52463b95133b" testName="FeatureDeclarationOrderDoesNotChangeGeneratedBytes" computerName="worlesenric" duration="00:00:00.0005380" startTime="2026-09-25T06:12:15.4392337+08:00" endTime="2026-09-25T06:12:15.4397712+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e5eed881-971a-4c78-9e97-e3b147383c3b">
+      <Output>
+        <ErrorInfo>
+          <Message>  rejected with 1 diagnostic(s):
+  - InvalidIdentifier: namespace: 'Test.Generated' is not a valid C# identifier
+  Expected: True
+  But was:  False
+</Message>
+          <StackTrace>   at GameCore.Content.Compiler.Tests.CatalogEmissionTests.FeatureDeclarationOrderDoesNotChangeGeneratedBytes() in /home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/CompilerTests.cs:line 293
+
+1)    at GameCore.Content.Compiler.Tests.CatalogEmissionTests.FeatureDeclarationOrderDoesNotChangeGeneratedBytes() in /home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/CompilerTests.cs:line 293
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="InvalidIdentityHexRejects" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="7ed4bff5-de38-8fb8-34f1-2ff229d1b5c9">
+      <Execution id="06b5eac7-c0d3-4e3e-9118-c1e2db7aa36f" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CatalogDescriptionRejectionTests" name="InvalidIdentityHexRejects" />
+    </UnitTest>
+    <UnitTest name="InvalidCodeFragmentRejects" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="435e0ca1-e757-c30d-ee9f-e04b15fca79d">
+      <Execution id="9e71daaa-05ac-40e2-b969-5779bd8ed404" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CatalogDescriptionRejectionTests" name="InvalidCodeFragmentRejects" />
+    </UnitTest>
+    <UnitTest name="DuplicateFieldIdRejects" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="15fffbf7-3b66-6103-20fd-b18305a69632">
+      <Execution id="7e5ab7dc-cf55-438d-a891-a5c395fabc28" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CatalogDescriptionRejectionTests" name="DuplicateFieldIdRejects" />
+    </UnitTest>
+    <UnitTest name="CommittedGeneratedCatalogMatchesAFreshGeneration" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="ebc2e79d-0013-5ac5-1a10-fdc0f753882f">
+      <Execution id="b5d5067b-3dc1-4b53-a2a7-4925ae209559" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CommittedProbeCatalogTests" name="CommittedGeneratedCatalogMatchesAFreshGeneration" />
+    </UnitTest>
+    <UnitTest name="CommittedProbeCatalogFingerprintMatchesItsDeclarations" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="db5fa11c-61f1-b840-f7d8-d72274333fb9">
+      <Execution id="9b0fdc65-ac19-4580-9399-c16088efff86" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CommittedProbeCatalogTests" name="CommittedProbeCatalogFingerprintMatchesItsDeclarations" />
+    </UnitTest>
+    <UnitTest name="GroupMemberCollidingWithAReservedGeneratedMemberRejects" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="99fbf920-1989-3afa-e14d-521d4d16a8a2">
+      <Execution id="21a23cef-310c-4f60-8494-193a1fb76bb6" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CatalogDescriptionRejectionTests" name="GroupMemberCollidingWithAReservedGeneratedMemberRejects" />
+    </UnitTest>
+    <UnitTest name="SchemaMemberCollidingWithAReservedGeneratedMemberRejects" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="d661a575-f5db-dcc3-2651-f7a20a82908e">
+      <Execution id="c32865f4-77a6-45cc-9d6a-80dc84e94d70" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CatalogDescriptionRejectionTests" name="SchemaMemberCollidingWithAReservedGeneratedMemberRejects" />
+    </UnitTest>
+    <UnitTest name="FileHashCoversTheGeneratedPrefixAndDetectsEdits" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="0fac49ff-9fc4-70da-0e12-4468b853b5ca">
+      <Execution id="dbd0a692-839b-4a14-8674-472ef47d2fdf" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CatalogEmissionTests" name="FileHashCoversTheGeneratedPrefixAndDetectsEdits" />
+    </UnitTest>
+    <UnitTest name="UsedCatalogDescriptionHasNoClosedGenericRootsWhenNoneAreDeclared" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="a01acef7-6957-0e86-ccf9-6e0a07aed5f4">
+      <Execution id="d71a8244-c882-4457-b759-c5b800197268" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CatalogEmissionTests" name="UsedCatalogDescriptionHasNoClosedGenericRootsWhenNoneAreDeclared" />
+    </UnitTest>
+    <UnitTest name="OptionalBytesFieldIsAcceptedAndEmittedAsNullable" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="5518edeb-57f1-cd40-289d-a92c12e305ae">
+      <Execution id="4ad0a39a-dfab-49ae-bd6a-ddc2d20363df" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CatalogDescriptionRejectionTests" name="OptionalBytesFieldIsAcceptedAndEmittedAsNullable" />
+    </UnitTest>
+    <UnitTest name="RepeatedEmissionIsByteIdentical" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="3ba806a4-bbf3-7b7e-27b5-2f86df0fc91e">
+      <Execution id="b48ccd46-7947-49ca-9be3-789467e43ba7" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CatalogEmissionTests" name="RepeatedEmissionIsByteIdentical" />
+    </UnitTest>
+    <UnitTest name="ValidDescriptionEmitsDeterministicBytes" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="f9352d4e-1c68-5156-44d6-9c0e393891bf">
+      <Execution id="f7fe1337-dfbe-4b1d-8fef-1359c4209d82" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CatalogEmissionTests" name="ValidDescriptionEmitsDeterministicBytes" />
+    </UnitTest>
+    <UnitTest name="UnimplementedMinorRejects" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="ef277f34-d036-305a-c91f-b7c197fd6f5a">
+      <Execution id="49c12ab3-a6c0-4ffc-a55f-ace560d1cced" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CatalogDescriptionRejectionTests" name="UnimplementedMinorRejects" />
+    </UnitTest>
+    <UnitTest name="EmittedFieldCasesCloseWithBreakAndBraceAndKeepBracesBalanced" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="13e8be3f-a736-bbee-f765-0cd1b7840ac4">
+      <Execution id="467b2e77-f3e0-4d45-ab03-5d6edda2f5fb" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CatalogEmissionTests" name="EmittedFieldCasesCloseWithBreakAndBraceAndKeepBracesBalanced" />
+    </UnitTest>
+    <UnitTest name="MemberNamedAfterTheGeneratedClassRejects" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="7f00720d-4676-b91e-004b-d6d34e4dd4fa">
+      <Execution id="35c41822-0d15-4aa1-8971-643740fe6989" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CatalogDescriptionRejectionTests" name="MemberNamedAfterTheGeneratedClassRejects" />
+    </UnitTest>
+    <UnitTest name="GenerationReportVerifiesWhatItWrote" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="eae65d2c-f5c2-f597-c2f6-823f72c30479">
+      <Execution id="9a5627a0-75c9-480f-875a-0dc591c0e00a" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CatalogEmissionTests" name="GenerationReportVerifiesWhatItWrote" />
+    </UnitTest>
+    <UnitTest name="EveryRejectionReportsAPathOrAnExplicitDocumentScope" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="22b95d6a-5061-f409-c55c-173dfdb0009d">
+      <Execution id="4df355a2-5a59-47bd-bf52-1236997e1573" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CatalogDescriptionRejectionTests" name="EveryRejectionReportsAPathOrAnExplicitDocumentScope" />
+    </UnitTest>
+    <UnitTest name="GeneratedSerializerDeclaresRequiredFieldsAndEnvelopeCalls" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="eda82127-ff29-41db-13bd-e18efa6bad16">
+      <Execution id="ca827db7-e88c-4b52-888c-06b5288a6344" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CatalogEmissionTests" name="GeneratedSerializerDeclaresRequiredFieldsAndEnvelopeCalls" />
+    </UnitTest>
+    <UnitTest name="MalformedJsonIsReportedAsInvalidDocument" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="99e59fa0-006c-3199-9f95-8228467dab50">
+      <Execution id="fdb30b44-9d9d-4364-8a87-6f213c90f582" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CatalogDescriptionRejectionTests" name="MalformedJsonIsReportedAsInvalidDocument" />
+    </UnitTest>
+    <UnitTest name="ZeroVersionRejects" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="191bd9eb-d6f4-9118-bbe7-31b63664155d">
+      <Execution id="13bf4fbe-92b2-48bd-84a0-bdd44a5a6666" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CatalogDescriptionRejectionTests" name="ZeroVersionRejects" />
+    </UnitTest>
+    <UnitTest name="InvalidDocumentRootRejects" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="c2a72dd0-27bf-137f-7c70-71c4bb2a9025">
+      <Execution id="112214cd-5dcd-4874-8452-417b3d704199" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CatalogDescriptionRejectionTests" name="InvalidDocumentRootRejects" />
+    </UnitTest>
+    <UnitTest name="FeatureDeclarationOrderDoesNotChangeGeneratedBytes" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="8b8f1802-4a72-d248-a440-52463b95133b">
+      <Execution id="e5eed881-971a-4c78-9e97-e3b147383c3b" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CatalogEmissionTests" name="FeatureDeclarationOrderDoesNotChangeGeneratedBytes" />
+    </UnitTest>
+    <UnitTest name="UnsupportedWireTypeRejects" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="948f1c00-52cc-8709-370c-1146d5c9950c">
+      <Execution id="a9f0ddc9-7f30-45ca-b7b4-08c0d1a3083b" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CatalogDescriptionRejectionTests" name="UnsupportedWireTypeRejects" />
+    </UnitTest>
+    <UnitTest name="DuplicateStableNameRejects" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="4a4f7ec1-0f1b-146c-8f0b-642d1643ee5c">
+      <Execution id="3afa765c-f712-4d51-a85d-5537a0b3286a" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CatalogDescriptionRejectionTests" name="DuplicateStableNameRejects" />
+    </UnitTest>
+    <UnitTest name="UnsupportedProtocolVersionRejects" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="07bdb500-f0b7-2ee6-905c-d6571a555619">
+      <Execution id="8b47a40a-9976-4a0b-a92c-0eee0e19a5aa" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CatalogDescriptionRejectionTests" name="UnsupportedProtocolVersionRejects" />
+    </UnitTest>
+    <UnitTest name="MissingRequiredMemberRejects" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="10a632d9-c0aa-8090-0dd4-c44bfef506d7">
+      <Execution id="95821c42-75ee-4522-b448-e7a8a68b19f4" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CatalogDescriptionRejectionTests" name="MissingRequiredMemberRejects" />
+    </UnitTest>
+    <UnitTest name="DescriptionThatWouldBuildAnInvalidCatalogRejects" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="4a59641e-8e86-0476-d892-39db58235546">
+      <Execution id="2fe1ea8f-7327-46e5-8c6b-70847dc6a438" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CatalogDescriptionRejectionTests" name="DescriptionThatWouldBuildAnInvalidCatalogRejects" />
+    </UnitTest>
+    <UnitTest name="ClassNamedAfterAGeneratedMemberRejects" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="ce07497c-4dc6-a0b3-bd22-bf118f2b179f">
+      <Execution id="163ba51f-c139-43d9-8e0b-4f940ca3ed34" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CatalogDescriptionRejectionTests" name="ClassNamedAfterAGeneratedMemberRejects" />
+    </UnitTest>
+    <UnitTest name="GeneratorArgumentsParseTheDocumentedCommandLine" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="e291aa66-ef60-353a-bdc1-17429cdfe2d3">
+      <Execution id="6e93ba37-a367-4934-a896-f7791e3137ca" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CatalogEmissionTests" name="GeneratorArgumentsParseTheDocumentedCommandLine" />
+    </UnitTest>
+    <UnitTest name="AllZeroImplementationIdentityRejects" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="a368381b-c826-da5a-07f6-882159508464">
+      <Execution id="bb6ad73b-f778-4082-93e5-c2711a3ee0af" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CatalogDescriptionRejectionTests" name="AllZeroImplementationIdentityRejects" />
+    </UnitTest>
+    <UnitTest name="UnknownFactoryKindRejects" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="62555781-d38d-97ac-09ee-252bcd5b99d5">
+      <Execution id="682b7922-647d-4ce9-b7b3-3b4ae5165518" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CatalogDescriptionRejectionTests" name="UnknownFactoryKindRejects" />
+    </UnitTest>
+    <UnitTest name="FingerprintLiteralMatchesTheDeclarations" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="8613c9dc-f124-68c2-ef82-d40b6dce25ca">
+      <Execution id="924dbc4f-0013-4154-958f-dc7bb5945a8c" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CatalogEmissionTests" name="FingerprintLiteralMatchesTheDeclarations" />
+    </UnitTest>
+    <UnitTest name="DeclarationOrderDoesNotChangeGeneratedBytes" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="9c637530-027b-7de2-d98f-03650bbed66a">
+      <Execution id="e2c7612e-8c90-4416-bbcb-b4936f2c8f76" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CatalogEmissionTests" name="DeclarationOrderDoesNotChangeGeneratedBytes" />
+    </UnitTest>
+    <UnitTest name="UnknownMemberRejects" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="957ea0be-e5c6-8b07-d28f-4de7d4fec13f">
+      <Execution id="c3b6ccd8-7777-4c02-a180-f3e6f09e7a30" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CatalogDescriptionRejectionTests" name="UnknownMemberRejects" />
+    </UnitTest>
+    <UnitTest name="CodeFragmentWithStatementTerminatorRejects" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="fa394697-3424-9c25-ece5-7e2d369a8920">
+      <Execution id="cce932a4-eb01-4347-a9d6-900ab3cd8f72" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CatalogDescriptionRejectionTests" name="CodeFragmentWithStatementTerminatorRejects" />
+    </UnitTest>
+    <UnitTest name="CommittedGeneratedCatalogPassesItsOwnVerification" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="4d635dde-9025-0f50-e5e6-4a0320b1f861">
+      <Execution id="8a609301-eeb5-4211-89c1-61dcdcdb4c85" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CommittedProbeCatalogTests" name="CommittedGeneratedCatalogPassesItsOwnVerification" />
+    </UnitTest>
+    <UnitTest name="ReservedFieldIdRejects" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="1e9dac80-9afc-f5b6-3b75-0fc15f043b6f">
+      <Execution id="132ce198-38f2-4b23-83e8-c9c14db8f028" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CatalogDescriptionRejectionTests" name="ReservedFieldIdRejects" />
+    </UnitTest>
+    <UnitTest name="DuplicateJsonMemberRejectsAsInvalidDocument" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="d64d72ea-7173-f86a-f0f0-b80bbefcdcf6">
+      <Execution id="d6adfc30-ee5b-44c2-8ffb-869c714fc899" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CatalogDescriptionRejectionTests" name="DuplicateJsonMemberRejectsAsInvalidDocument" />
+    </UnitTest>
+    <UnitTest name="GeneratedClosedGenericRootsAndAttributesAreEmittedWithTerminators" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="49ea4e69-52f4-11c0-268c-ff2c8e945926">
+      <Execution id="4d7c32ea-8cca-46b1-962f-7c92e9bcf3e9" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CatalogEmissionTests" name="GeneratedClosedGenericRootsAndAttributesAreEmittedWithTerminators" />
+    </UnitTest>
+    <UnitTest name="WrongDescriptionFormatRejects" storage="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/gamecore.content.compiler.tests/bin/release/net8.0/gamecore.content.compiler.tests.dll" id="2386ee34-1c98-0e7e-f863-0e97b7c67c92">
+      <Execution id="4aee241f-4868-4213-ae24-76b2d92885de" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Content.Compiler.Tests.CatalogDescriptionRejectionTests" name="WrongDescriptionFormatRejects" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="13e8be3f-a736-bbee-f765-0cd1b7840ac4" executionId="467b2e77-f3e0-4d45-ab03-5d6edda2f5fb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="957ea0be-e5c6-8b07-d28f-4de7d4fec13f" executionId="c3b6ccd8-7777-4c02-a180-f3e6f09e7a30" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9c637530-027b-7de2-d98f-03650bbed66a" executionId="e2c7612e-8c90-4416-bbcb-b4936f2c8f76" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3ba806a4-bbf3-7b7e-27b5-2f86df0fc91e" executionId="b48ccd46-7947-49ca-9be3-789467e43ba7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d64d72ea-7173-f86a-f0f0-b80bbefcdcf6" executionId="d6adfc30-ee5b-44c2-8ffb-869c714fc899" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="948f1c00-52cc-8709-370c-1146d5c9950c" executionId="a9f0ddc9-7f30-45ca-b7b4-08c0d1a3083b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7ed4bff5-de38-8fb8-34f1-2ff229d1b5c9" executionId="06b5eac7-c0d3-4e3e-9118-c1e2db7aa36f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="07bdb500-f0b7-2ee6-905c-d6571a555619" executionId="8b47a40a-9976-4a0b-a92c-0eee0e19a5aa" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0fac49ff-9fc4-70da-0e12-4468b853b5ca" executionId="dbd0a692-839b-4a14-8674-472ef47d2fdf" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="99e59fa0-006c-3199-9f95-8228467dab50" executionId="fdb30b44-9d9d-4364-8a87-6f213c90f582" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="191bd9eb-d6f4-9118-bbe7-31b63664155d" executionId="13bf4fbe-92b2-48bd-84a0-bdd44a5a6666" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a368381b-c826-da5a-07f6-882159508464" executionId="bb6ad73b-f778-4082-93e5-c2711a3ee0af" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c2a72dd0-27bf-137f-7c70-71c4bb2a9025" executionId="112214cd-5dcd-4874-8452-417b3d704199" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ef277f34-d036-305a-c91f-b7c197fd6f5a" executionId="49c12ab3-a6c0-4ffc-a55f-ace560d1cced" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="62555781-d38d-97ac-09ee-252bcd5b99d5" executionId="682b7922-647d-4ce9-b7b3-3b4ae5165518" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fa394697-3424-9c25-ece5-7e2d369a8920" executionId="cce932a4-eb01-4347-a9d6-900ab3cd8f72" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8613c9dc-f124-68c2-ef82-d40b6dce25ca" executionId="924dbc4f-0013-4154-958f-dc7bb5945a8c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4a4f7ec1-0f1b-146c-8f0b-642d1643ee5c" executionId="3afa765c-f712-4d51-a85d-5537a0b3286a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="435e0ca1-e757-c30d-ee9f-e04b15fca79d" executionId="9e71daaa-05ac-40e2-b969-5779bd8ed404" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1e9dac80-9afc-f5b6-3b75-0fc15f043b6f" executionId="132ce198-38f2-4b23-83e8-c9c14db8f028" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ce07497c-4dc6-a0b3-bd22-bf118f2b179f" executionId="163ba51f-c139-43d9-8e0b-4f940ca3ed34" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5518edeb-57f1-cd40-289d-a92c12e305ae" executionId="4ad0a39a-dfab-49ae-bd6a-ddc2d20363df" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2386ee34-1c98-0e7e-f863-0e97b7c67c92" executionId="4aee241f-4868-4213-ae24-76b2d92885de" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="10a632d9-c0aa-8090-0dd4-c44bfef506d7" executionId="95821c42-75ee-4522-b448-e7a8a68b19f4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="eae65d2c-f5c2-f597-c2f6-823f72c30479" executionId="9a5627a0-75c9-480f-875a-0dc591c0e00a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="22b95d6a-5061-f409-c55c-173dfdb0009d" executionId="4df355a2-5a59-47bd-bf52-1236997e1573" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d661a575-f5db-dcc3-2651-f7a20a82908e" executionId="c32865f4-77a6-45cc-9d6a-80dc84e94d70" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="15fffbf7-3b66-6103-20fd-b18305a69632" executionId="7e5ab7dc-cf55-438d-a891-a5c395fabc28" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="db5fa11c-61f1-b840-f7d8-d72274333fb9" executionId="9b0fdc65-ac19-4580-9399-c16088efff86" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="99fbf920-1989-3afa-e14d-521d4d16a8a2" executionId="21a23cef-310c-4f60-8494-193a1fb76bb6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="eda82127-ff29-41db-13bd-e18efa6bad16" executionId="ca827db7-e88c-4b52-888c-06b5288a6344" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a01acef7-6957-0e86-ccf9-6e0a07aed5f4" executionId="d71a8244-c882-4457-b759-c5b800197268" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f9352d4e-1c68-5156-44d6-9c0e393891bf" executionId="f7fe1337-dfbe-4b1d-8fef-1359c4209d82" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ebc2e79d-0013-5ac5-1a10-fdc0f753882f" executionId="b5d5067b-3dc1-4b53-a2a7-4925ae209559" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="49ea4e69-52f4-11c0-268c-ff2c8e945926" executionId="4d7c32ea-8cca-46b1-962f-7c92e9bcf3e9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4d635dde-9025-0f50-e5e6-4a0320b1f861" executionId="8a609301-eeb5-4211-89c1-61dcdcdb4c85" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4a59641e-8e86-0476-d892-39db58235546" executionId="2fe1ea8f-7327-46e5-8c6b-70847dc6a438" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7f00720d-4676-b91e-004b-d6d34e4dd4fa" executionId="35c41822-0d15-4aa1-8971-643740fe6989" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e291aa66-ef60-353a-bdc1-17429cdfe2d3" executionId="6e93ba37-a367-4934-a896-f7791e3137ca" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8b8f1802-4a72-d248-a440-52463b95133b" executionId="e5eed881-971a-4c78-9e97-e3b147383c3b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="40" executed="40" passed="26" failed="14" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 4.5.0.0: Test execution started
+Running all tests in /home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll
+   NUnit3TestExecutor discovered 40 of 40 NUnit test cases using Current Discovery mode, Non-Explicit run
+NUnit Adapter 4.5.0.0: Test execution complete
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

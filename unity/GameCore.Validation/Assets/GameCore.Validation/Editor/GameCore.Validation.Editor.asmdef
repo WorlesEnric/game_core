@@ -3,7 +3,14 @@
   "rootNamespace": "GameCore.Validation.Editor",
   "references": [
     "GameCore.Validation.Probe",
-    "Unity.Burst"
+    "Unity.Burst",
+    "GameCore.Contracts",
+    "GameCore.Content.Compiler",
+    "GameCore.Unity.Runtime",
+    "GameCore.Unity.Fixtures",
+    "GameCore.Unity.Adapters",
+    "Unity.Collections",
+    "Unity.Entities"
   ],
   "includePlatforms": [
     "Editor"

@@ -1,10 +1,11 @@
 # GameCore.ReferenceSeams — test-only reference seam (GC-002)
 
 **This assembly is test-only.** It is not production code, is not shipped with any plugin, and is
-deliberately not a second supported ECS. GC-003 replaces it with production `GameCore.Contracts` without a
-surface change; until then it exists so Wave 1 peers can compile against the frozen shared surface in
-parallel. The marker is machine-readable: `TestOnlyMarker.cs` applies
-`[assembly: GameCore.TestOnlyReferenceSeam("GC-002", ...)]` plus `AssemblyMetadata` entries.
+deliberately not a second supported ECS. GC-003 supplied production `GameCore.Contracts` without a surface
+change, and the **W1 gate completed the substitution**: every production and test project that consumes the
+shared surface now references `dotnet/src/GameCore.Contracts`, and this folder is compiled only by the
+plain-dotnet seam build and the API-snapshot comparison. The marker is machine-readable: `TestOnlyMarker.cs`
+applies `[assembly: GameCore.TestOnlyReferenceSeam("GC-002", ...)]` plus `AssemblyMetadata` entries.
 
 - Assembly name: `GameCore.ReferenceSeams` (project `dotnet/src/GameCore.ReferenceSeams`).
 - Types are in namespace `GameCore.Contracts` with the exact names production will use.
@@ -87,3 +88,15 @@ The committed file was generated from the compiled reference seam on the Linux b
 placeholder header is present or the listing differs.
 See `dotnet/README.md` for the exact command. Any seam change reopens the W0 interface gate before dependent
 modules compile (`docs/game-core/09-implementation-guide.md`, GC-002).
+
+## Unity packaging (added by GC-005, removed by the W1 gate)
+
+GC-005 temporarily made this folder a local Unity package (`package.json` plus a `GameCore.Contracts.asmdef`
+declaring the assembly name `GameCore.Contracts` with `noEngineReferences: true`) so Wave 1 packages could
+compile inside Unity before production contracts existed.
+
+The W1 gate deleted both files. Two assemblies named `GameCore.Contracts` in one repository is a
+duplicate-assembly hazard, and `Packages/com.gamecore.contracts` is now the only Unity provider of that
+assembly. Nothing under `tests/` is inside a Unity project, so deleting the package cannot break a consumer;
+the dotnet project (`dotnet/src/GameCore.ReferenceSeams`) is unaffected, because `package.json` and `.asmdef`
+were never `.cs` inputs and the seam build still compiles exactly the `.cs` files under this folder.

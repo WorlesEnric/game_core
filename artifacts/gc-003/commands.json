@@ -1,0 +1,280 @@
+[
+  {
+    "command": [
+      "dotnet",
+      "build",
+      "dotnet/GameCore.sln",
+      "-c",
+      "Release"
+    ],
+    "environment": {},
+    "log": "artifacts/gc-003/dotnet-build-initial.log",
+    "exit": 1,
+    "started": "2026-09-24T22:10:10.774609+00:00"
+  },
+  {
+    "command": [
+      "dotnet",
+      "build",
+      "dotnet/GameCore.sln",
+      "-c",
+      "Release"
+    ],
+    "environment": {},
+    "log": "artifacts/gc-003/dotnet-build-second.log",
+    "exit": 1,
+    "started": "2026-09-24T22:10:45.736487+00:00"
+  },
+  {
+    "command": [
+      "dotnet",
+      "build",
+      "dotnet/GameCore.sln",
+      "-c",
+      "Release"
+    ],
+    "environment": {},
+    "log": "artifacts/gc-003/dotnet-build-third.log",
+    "exit": 1,
+    "started": "2026-09-24T22:11:28.892994+00:00"
+  },
+  {
+    "command": [
+      "dotnet",
+      "build",
+      "dotnet/GameCore.sln",
+      "-c",
+      "Release"
+    ],
+    "environment": {},
+    "log": "artifacts/gc-003/dotnet-build-fourth.log",
+    "exit": 1,
+    "started": "2026-09-24T22:11:48.319799+00:00"
+  },
+  {
+    "command": [
+      "dotnet",
+      "build",
+      "dotnet/GameCore.sln",
+      "-c",
+      "Release"
+    ],
+    "environment": {},
+    "log": "artifacts/gc-003/dotnet-build.log",
+    "exit": 0,
+    "started": "2026-09-24T22:12:12.730126+00:00"
+  },
+  {
+    "command": [
+      "dotnet",
+      "test",
+      "dotnet/GameCore.sln",
+      "-c",
+      "Release",
+      "--logger",
+      "trx",
+      "--results-directory",
+      "artifacts/gc-003/trx-initial"
+    ],
+    "environment": {},
+    "log": "artifacts/gc-003/dotnet-test-initial.log",
+    "exit": 1,
+    "started": "2026-09-24T22:12:13.589145+00:00"
+  },
+  {
+    "command": [
+      "dotnet",
+      "test",
+      "dotnet/GameCore.sln",
+      "-c",
+      "Release",
+      "--logger",
+      "trx",
+      "--results-directory",
+      "artifacts/gc-003/trx-second"
+    ],
+    "environment": {},
+    "log": "artifacts/gc-003/dotnet-test-second.log",
+    "exit": 0,
+    "started": "2026-09-24T22:12:54.397812+00:00"
+  },
+  {
+    "command": [
+      "bash",
+      "tools/unity/build_probe.sh"
+    ],
+    "environment": {
+      "UNITY": "/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Unity",
+      "ARTIFACTS": "/home/worlesenric/wkspace/gc-wt/gc-003/artifacts/gc-003/toolchain",
+      "DOTNET": "/home/worlesenric/.dotnet/dotnet"
+    },
+    "log": "artifacts/gc-003/unity-build-initial.log",
+    "exit": 0,
+    "started": "2026-09-24T22:13:08.875125+00:00"
+  },
+  {
+    "command": [
+      "dotnet",
+      "run",
+      "--project",
+      "dotnet/tools/GameCore.ApiSnapshot",
+      "-c",
+      "Release",
+      "--",
+      "--assembly",
+      "dotnet/src/GameCore.Contracts/bin/Release/netstandard2.1/GameCore.Contracts.dll",
+      "--output",
+      "artifacts/gc-003/GameCore.Contracts.production.api.txt"
+    ],
+    "environment": {},
+    "log": "artifacts/gc-003/production-api-snapshot.log",
+    "exit": 0,
+    "started": "2026-09-24T22:13:30.563356+00:00"
+  },
+  {
+    "command": [
+      "bash",
+      "tools/run_gc003_checks.sh"
+    ],
+    "environment": {
+      "DOTNET": "/home/worlesenric/.dotnet/dotnet",
+      "PYTHON": "/usr/bin/python3"
+    },
+    "log": "artifacts/gc-003/checks-initial.log",
+    "exit": 1,
+    "started": "2026-09-24T22:14:29.877246+00:00"
+  },
+  {
+    "command": [
+      "bash",
+      "tools/run_gc003_checks.sh"
+    ],
+    "environment": {
+      "DOTNET": "/home/worlesenric/.dotnet/dotnet",
+      "PYTHON": "/usr/bin/python3"
+    },
+    "log": "artifacts/gc-003/checks.log",
+    "exit": 0,
+    "started": "2026-09-24T22:14:50.267277+00:00"
+  },
+  {
+    "command": [
+      "dotnet",
+      "--info"
+    ],
+    "environment": {},
+    "log": "artifacts/gc-003/host-dotnet.log",
+    "exit": 0,
+    "started": "2026-09-24T22:15:13.424565+00:00"
+  },
+  {
+    "command": [
+      "uname",
+      "-a"
+    ],
+    "environment": {},
+    "log": "artifacts/gc-003/host-kernel.log",
+    "exit": 0,
+    "started": "2026-09-24T22:15:13.803027+00:00"
+  },
+  {
+    "command": [
+      "lscpu"
+    ],
+    "environment": {},
+    "log": "artifacts/gc-003/host-cpu.log",
+    "exit": 0,
+    "started": "2026-09-24T22:15:13.805534+00:00"
+  },
+  {
+    "command": [
+      "/home/worlesenric/.local/share/unity3d/cache/sysroots/linux-x86/llvm-9.0.1-1/bin/clang++",
+      "--version"
+    ],
+    "environment": {},
+    "log": "artifacts/gc-003/toolchain/native-compiler.log",
+    "exit": 0,
+    "started": "2026-09-24T22:17:20.073175+00:00"
+  },
+  {
+    "command": [
+      "bash",
+      "tools/unity/run_probe.sh",
+      "both"
+    ],
+    "environment": {
+      "UNITY": "/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Unity",
+      "ARTIFACTS": "/home/worlesenric/wkspace/gc-wt/gc-003/artifacts/gc-003/toolchain",
+      "DOTNET": "/home/worlesenric/.dotnet/dotnet"
+    },
+    "log": "artifacts/gc-003/unity-probes.log",
+    "exit": 0,
+    "started": "2026-09-24T22:17:20.086635+00:00"
+  },
+  {
+    "command": [
+      "/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Unity",
+      "-batchmode",
+      "-nographics",
+      "-quit",
+      "-projectPath",
+      "/home/worlesenric/wkspace/gc-wt/gc-003/unity/GameCore.Validation",
+      "-executeMethod",
+      "GameCore.Validation.Editor.ProbeCatalogGenerator.GenerateCatalog",
+      "-logFile",
+      "/home/worlesenric/wkspace/gc-wt/gc-003/artifacts/gc-003/toolchain/codegen-repeat.log"
+    ],
+    "environment": {},
+    "log": "artifacts/gc-003/unity-codegen-repeat.log",
+    "exit": 0,
+    "started": "2026-09-24T22:17:32.519638+00:00"
+  },
+  {
+    "command": [
+      "bash",
+      "tools/unity/build_probe.sh"
+    ],
+    "environment": {
+      "UNITY": "/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Unity",
+      "ARTIFACTS": "/home/worlesenric/wkspace/gc-wt/gc-003/artifacts/gc-003/toolchain",
+      "DOTNET": "/home/worlesenric/.dotnet/dotnet"
+    },
+    "log": "artifacts/gc-003/unity-build.log",
+    "exit": 0,
+    "started": "2026-09-24T22:18:19.296806+00:00"
+  },
+  {
+    "command": [
+      "bash",
+      "tools/unity/run_probe.sh",
+      "both"
+    ],
+    "environment": {
+      "UNITY": "/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Unity",
+      "ARTIFACTS": "/home/worlesenric/wkspace/gc-wt/gc-003/artifacts/gc-003/toolchain",
+      "DOTNET": "/home/worlesenric/.dotnet/dotnet"
+    },
+    "log": "artifacts/gc-003/unity-probes-final.log",
+    "exit": 0,
+    "started": "2026-09-24T22:19:13.544590+00:00"
+  },
+  {
+    "command": [
+      "dotnet",
+      "test",
+      "dotnet/tests/GameCore.Content.Compiler.Tests/GameCore.Content.Compiler.Tests.csproj",
+      "-c",
+      "Release",
+      "--filter",
+      "FullyQualifiedName~CommittedProbeCatalogTests",
+      "--logger",
+      "trx",
+      "--results-directory",
+      "artifacts/gc-003/trx-regenerated"
+    ],
+    "environment": {},
+    "log": "artifacts/gc-003/committed-catalog-tests.log",
+    "exit": 0,
+    "started": "2026-09-24T22:19:14.020239+00:00"
+  }
+]

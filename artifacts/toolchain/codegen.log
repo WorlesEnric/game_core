@@ -9,8 +9,15 @@ Architecture:            x86_64
 Available memory:        31897 MB
 [Licensing::Module] Trying to connect to existing licensing client channel...
 Initialize udev device monitor.
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-worlesenric" at "2026-09-24T20:59:03.691446Z"
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-worlesenric" at "2026-09-24T21:55:43.95693Z"
 [SignatureVerifier] Application signature verification not supported on this platform.
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.18.3+d7ffd15
+  Session Id:              adfa5f55855546b5a1b19ed57542ae1c
+  Correlation Id:          a4aac8f8da2bbfc2169791db8bc4c264
+  External correlation Id: 2997425989913811567
+  Machine Id:              jd93gYTNlAg1qIhTY9iII/nAhSo=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-worlesenric" (connect: 0.00s, validation: 0.00s, handshake: 0.00s)
 
 COMMAND LINE ARGUMENTS:
 /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Unity
@@ -18,32 +25,28 @@ COMMAND LINE ARGUMENTS:
 -nographics
 -quit
 -projectPath
-/home/worlesenric/wkspace/gc-wt/gc-001/unity/GameCore.Validation
+/home/worlesenric/wkspace/gc-wt/gc-005/unity/GameCore.Validation
 -executeMethod
 GameCore.Validation.Editor.ProbeCatalogGenerator.GenerateCatalog
 -logFile
-/home/worlesenric/wkspace/gc-wt/gc-001/artifacts/toolchain/codegen.log
-[Licensing::Client] Handshaking with LicensingClient:
-  Version:                 1.18.3+d7ffd15
-  Session Id:              89932b4902644224868e5c1fc58c5f53
-  Correlation Id:          a4aac8f8da2bbfc2169791db8bc4c264
-  External correlation Id: 1909132972274171051
-  Machine Id:              jd93gYTNlAg1qIhTY9iII/nAhSo=
-Successfully changed project path to: /home/worlesenric/wkspace/gc-wt/gc-001/unity/GameCore.Validation
-[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-worlesenric" (connect: 0.00s, validation: 0.00s, handshake: 0.00s)
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-worlesenric-notifications" at "2026-09-24T20:59:03.692698Z"
+/home/worlesenric/wkspace/gc-wt/gc-005/artifacts/toolchain/codegen.log
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-worlesenric-notifications" at "2026-09-24T21:55:43.958627Z"
 [Licensing::Module] Error: Access token is unavailable; failed to update
+Successfully changed project path to: /home/worlesenric/wkspace/gc-wt/gc-005/unity/GameCore.Validation
 
-(process:1919639): Gtk-CRITICAL **: 04:59:03.692: gtk_label_set_text: assertion 'GTK_IS_LABEL (label)' failed
-
-(process:1919639): Gtk-CRITICAL **: 04:59:03.693: gtk_label_set_text: assertion 'GTK_IS_LABEL (label)' failed
-/home/worlesenric/wkspace/gc-wt/gc-001/unity/GameCore.Validation
+(process:2072878): Gtk-CRITICAL **: 05:55:43.958: gtk_label_set_text: assertion 'GTK_IS_LABEL (label)' failed
 [Licensing::Client] Successfully resolved entitlement details
 [Licensing::Module] License group:
   Id: 1375999166540-UnityPersXXXX
   Product: Unity Personal
   Type: Assigned
   Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.00
+
+(process:2072878): Gtk-CRITICAL **: 05:55:43.959: gtk_label_set_text: assertion 'GTK_IS_LABEL (label)' failed
+/home/worlesenric/wkspace/gc-wt/gc-005/unity/GameCore.Validation
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Licensing Background thread has ended after 0.00s
 [UnityMemory] Configuration Parameters - Can be set up in boot.config
     "memorysetup-bucket-allocator-granularity=16"
     "memorysetup-bucket-allocator-bucket-count=8"
@@ -79,29 +82,26 @@ Successfully changed project path to: /home/worlesenric/wkspace/gc-wt/gc-001/uni
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gfx=262144"
-[Licensing::Client] Successfully updated license, isAsync: True, time: 0.00
-[Licensing::Client] Successfully resolved entitlement details
-[Licensing::Module] Licensing Background thread has ended after 0.00s
-Player connection [131609296262464]  Target information:
+Player connection [128208179123520]  Target information:
 
-Player connection [131609296262464]  * "[IP] 192.168.0.21 [Port] 55504 [Flags] 2 [Guid] 428439435 [EditorId] 428439435 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+Player connection [128208179123520]  * "[IP] 192.168.0.21 [Port] 55504 [Flags] 2 [Guid] 3940153992 [EditorId] 3940153992 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
 
-Player connection [131609296262464]  * "[IP] 100.66.195.58 [Port] 55504 [Flags] 2 [Guid] 428439435 [EditorId] 428439435 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+Player connection [128208179123520]  * "[IP] 100.66.195.58 [Port] 55504 [Flags] 2 [Guid] 3940153992 [EditorId] 3940153992 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
 
-Player connection [131609296262464]  * "[IP] 172.18.0.1 [Port] 55504 [Flags] 2 [Guid] 428439435 [EditorId] 428439435 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+Player connection [128208179123520]  * "[IP] 172.18.0.1 [Port] 55504 [Flags] 2 [Guid] 3940153992 [EditorId] 3940153992 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
 
-Player connection [131609296262464]  * "[IP] 172.17.0.1 [Port] 55504 [Flags] 2 [Guid] 428439435 [EditorId] 428439435 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+Player connection [128208179123520]  * "[IP] 172.17.0.1 [Port] 55504 [Flags] 2 [Guid] 3940153992 [EditorId] 3940153992 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
 
-Player connection [131609296262464]  * "[IP] 10.42.0.0 [Port] 55504 [Flags] 2 [Guid] 428439435 [EditorId] 428439435 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+Player connection [128208179123520]  * "[IP] 10.42.0.0 [Port] 55504 [Flags] 2 [Guid] 3940153992 [EditorId] 3940153992 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
 
-Player connection [131609296262464]  * "[IP] 10.42.0.1 [Port] 55504 [Flags] 2 [Guid] 428439435 [EditorId] 428439435 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+Player connection [128208179123520]  * "[IP] 10.42.0.1 [Port] 55504 [Flags] 2 [Guid] 3940153992 [EditorId] 3940153992 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
 
-Player connection [131609296262464] Host joined multi-casting on [225.0.0.222:54997]...
-Player connection [131609296262464] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Player connection [128208179123520] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [128208179123520] Host joined alternative multi-casting on [225.0.0.222:34997]...
 Input System module state changed to: Initialized.
 [Physics::Module] Initialized fallback backend.
 [Physics::Module] Id: 0xdecafbad
-[Package Manager] Connected to IPC stream "Upm-1919639" after 0.1 seconds.
+[Package Manager] Connected to IPC stream "Upm-2072878" after 0.1 seconds.
 Library Redirect Path: Library/
 [Physics::Module] Selected backend.
 [Physics::Module] Name: PhysX
@@ -109,11 +109,11 @@ Library Redirect Path: Library/
 [Physics::Module] SDK Version: 4.1.2
 [Physics::Module] Integration Version: 1.0.0
 [Physics::Module] Threading Mode: Multi-Threaded
-Artifact Garbage Collection - Removed 2 unused hashed content filesRefreshing native plugins compatible for Editor in 0.07 ms, found 0 plugins.
+Refreshing native plugins compatible for Editor in 0.06 ms, found 0 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 6000.0.75f1 (26349cd2a5c8)
 [Subsystems] Discovering subsystems at path /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Resources/UnitySubsystems
-[Subsystems] Discovering subsystems at path /home/worlesenric/wkspace/gc-wt/gc-001/unity/GameCore.Validation/Assets
+[Subsystems] Discovering subsystems at path /home/worlesenric/wkspace/gc-wt/gc-005/unity/GameCore.Validation/Assets
 Forcing GfxDevice: Null
 GfxDevice: creating device client; kGfxThreadingModeNonThreaded
 NullGfxDevice:
@@ -124,7 +124,7 @@ Initialize mono
 Mono path[0] = '/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Managed'
 Mono path[1] = '/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-linux'
 Mono config path = '/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56639
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56878
 Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
 Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
 ImportWorker Server TCP listen port: 0
@@ -133,42 +133,42 @@ Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll
 Register platform support module: /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll
-Registered in 0.000944 seconds.
-- Loaded All Assemblies, in  0.215 seconds
+Registered in 0.001028 seconds.
+- Loaded All Assemblies, in  0.226 seconds
 Native extension for LinuxStandalone target not found
 Package Manager log level set to [2]
 [Licensing::Client] Successfully resolved entitlement details
 Native extension for OSXStandalone target not found
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  5.930 seconds
-Domain Reload Profiling: 6144ms
-	BeginReloadAssembly (53ms)
+- Finished resetting the current domain, in  4.586 seconds
+Domain Reload Profiling: 4812ms
+	BeginReloadAssembly (54ms)
 		ExecutionOrderSort (0ms)
 		DisableScriptedObjects (0ms)
 		BackupInstance (0ms)
 		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (0ms)
-	RebuildCommonClasses (24ms)
+		CreateAndSetChildDomain (1ms)
+	RebuildCommonClasses (25ms)
 	RebuildNativeTypeToScriptingClass (5ms)
-	initialDomainReloadingComplete (36ms)
-	LoadAllAssembliesAndSetupDomain (97ms)
-		LoadAssemblies (52ms)
+	initialDomainReloadingComplete (41ms)
+	LoadAllAssembliesAndSetupDomain (101ms)
+		LoadAssemblies (53ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (95ms)
-			TypeCache.Refresh (94ms)
-				TypeCache.ScanAssembly (86ms)
+		AnalyzeDomain (99ms)
+			TypeCache.Refresh (98ms)
+				TypeCache.ScanAssembly (89ms)
 			BuildScriptInfoCaches (0ms)
 			ResolveRequiredComponents (0ms)
-	FinalizeReload (5930ms)
+	FinalizeReload (4587ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (5906ms)
+		SetupLoadedEditorAssemblies (4563ms)
 			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (5737ms)
+			InitializePlatformSupportModulesInManaged (4395ms)
 			SetLoadedEditorAssemblies (4ms)
 			BeforeProcessingInitializeOnLoad (41ms)
 			ProcessInitializeOnLoadAttributes (88ms)
-			ProcessInitializeOnLoadMethodAttributes (36ms)
+			ProcessInitializeOnLoadMethodAttributes (35ms)
 			AfterProcessingInitializeOnLoad (0ms)
 			EditorAssembliesLoaded (0ms)
 		ExecutionOrderSort2 (0ms)
@@ -177,47 +177,50 @@ Domain Reload Profiling: 6144ms
 Application.AssetDatabase Initial Refresh Start
 [Package Manager] Restoring resolved packages state from cache
 [Licensing::Client] Successfully resolved entitlement details
-[Package Manager] Registered 25 packages:
+[Package Manager] Registered 28 packages:
   Packages from [https://packages.unity.com]:
-    com.unity.burst@1.8.28 (location: /home/worlesenric/wkspace/gc-wt/gc-001/unity/GameCore.Validation/Library/PackageCache/com.unity.burst@07790c2d06d9)
-    com.unity.collections@2.6.6 (location: /home/worlesenric/wkspace/gc-wt/gc-001/unity/GameCore.Validation/Library/PackageCache/com.unity.collections@9796e5ee0d9e)
-    com.unity.entities@1.4.6 (location: /home/worlesenric/wkspace/gc-wt/gc-001/unity/GameCore.Validation/Library/PackageCache/com.unity.entities@e90944159b94)
-    com.unity.mathematics@1.3.2 (location: /home/worlesenric/wkspace/gc-wt/gc-001/unity/GameCore.Validation/Library/PackageCache/com.unity.mathematics@8017b507cc74)
-    com.unity.test-framework.performance@3.0.3 (location: /home/worlesenric/wkspace/gc-wt/gc-001/unity/GameCore.Validation/Library/PackageCache/com.unity.test-framework.performance@fb0dc592af8b)
-    com.unity.toolchain.linux-x86_64@2.0.11 (location: /home/worlesenric/wkspace/gc-wt/gc-001/unity/GameCore.Validation/Library/PackageCache/com.unity.toolchain.linux-x86_64@53b88ff74b51)
-    com.unity.sysroot@2.0.10 (location: /home/worlesenric/wkspace/gc-wt/gc-001/unity/GameCore.Validation/Library/PackageCache/com.unity.sysroot@7bbbb9339c14)
-    com.unity.sysroot.linux-x86_64@2.0.9 (location: /home/worlesenric/wkspace/gc-wt/gc-001/unity/GameCore.Validation/Library/PackageCache/com.unity.sysroot.linux-x86_64@1998d1c7730e)
-    com.unity.serialization@3.1.5 (location: /home/worlesenric/wkspace/gc-wt/gc-001/unity/GameCore.Validation/Library/PackageCache/com.unity.serialization@c463b52e88d7)
-    com.unity.profiling.core@1.0.3 (location: /home/worlesenric/wkspace/gc-wt/gc-001/unity/GameCore.Validation/Library/PackageCache/com.unity.profiling.core@8a49f7027d06)
-    com.unity.nuget.mono-cecil@1.11.6 (location: /home/worlesenric/wkspace/gc-wt/gc-001/unity/GameCore.Validation/Library/PackageCache/com.unity.nuget.mono-cecil@ecb9724e46ff)
-    com.unity.scriptablebuildpipeline@2.6.1 (location: /home/worlesenric/wkspace/gc-wt/gc-001/unity/GameCore.Validation/Library/PackageCache/com.unity.scriptablebuildpipeline@36e3b5898ee2)
+    com.unity.burst@1.8.28 (location: /home/worlesenric/wkspace/gc-wt/gc-005/unity/GameCore.Validation/Library/PackageCache/com.unity.burst@07790c2d06d9)
+    com.unity.collections@2.6.6 (location: /home/worlesenric/wkspace/gc-wt/gc-005/unity/GameCore.Validation/Library/PackageCache/com.unity.collections@9796e5ee0d9e)
+    com.unity.entities@1.4.6 (location: /home/worlesenric/wkspace/gc-wt/gc-005/unity/GameCore.Validation/Library/PackageCache/com.unity.entities@e90944159b94)
+    com.unity.mathematics@1.3.2 (location: /home/worlesenric/wkspace/gc-wt/gc-005/unity/GameCore.Validation/Library/PackageCache/com.unity.mathematics@8017b507cc74)
+    com.unity.test-framework.performance@3.0.3 (location: /home/worlesenric/wkspace/gc-wt/gc-005/unity/GameCore.Validation/Library/PackageCache/com.unity.test-framework.performance@fb0dc592af8b)
+    com.unity.toolchain.linux-x86_64@2.0.11 (location: /home/worlesenric/wkspace/gc-wt/gc-005/unity/GameCore.Validation/Library/PackageCache/com.unity.toolchain.linux-x86_64@53b88ff74b51)
+    com.unity.sysroot@2.0.10 (location: /home/worlesenric/wkspace/gc-wt/gc-005/unity/GameCore.Validation/Library/PackageCache/com.unity.sysroot@7bbbb9339c14)
+    com.unity.sysroot.linux-x86_64@2.0.9 (location: /home/worlesenric/wkspace/gc-wt/gc-005/unity/GameCore.Validation/Library/PackageCache/com.unity.sysroot.linux-x86_64@1998d1c7730e)
+    com.unity.serialization@3.1.5 (location: /home/worlesenric/wkspace/gc-wt/gc-005/unity/GameCore.Validation/Library/PackageCache/com.unity.serialization@c463b52e88d7)
+    com.unity.profiling.core@1.0.3 (location: /home/worlesenric/wkspace/gc-wt/gc-005/unity/GameCore.Validation/Library/PackageCache/com.unity.profiling.core@8a49f7027d06)
+    com.unity.nuget.mono-cecil@1.11.6 (location: /home/worlesenric/wkspace/gc-wt/gc-005/unity/GameCore.Validation/Library/PackageCache/com.unity.nuget.mono-cecil@ecb9724e46ff)
+    com.unity.scriptablebuildpipeline@2.6.1 (location: /home/worlesenric/wkspace/gc-wt/gc-005/unity/GameCore.Validation/Library/PackageCache/com.unity.scriptablebuildpipeline@36e3b5898ee2)
   Built-in packages:
-    com.unity.test-framework@1.6.0 (location: /home/worlesenric/wkspace/gc-wt/gc-001/unity/GameCore.Validation/Library/PackageCache/com.unity.test-framework@bd52b1c23814)
-    com.unity.modules.audio@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-001/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.audio)
-    com.unity.modules.assetbundle@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-001/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.assetbundle)
-    com.unity.modules.imageconversion@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-001/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.imageconversion)
-    com.unity.modules.imgui@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-001/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.imgui)
-    com.unity.modules.jsonserialize@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-001/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.jsonserialize)
-    com.unity.modules.physics@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-001/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.physics)
-    com.unity.modules.ui@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-001/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.ui)
-    com.unity.modules.uielements@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-001/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.uielements)
-    com.unity.modules.unityanalytics@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-001/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.unityanalytics)
-    com.unity.modules.unitywebrequest@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-001/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.unitywebrequest)
-    com.unity.modules.hierarchycore@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-001/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.hierarchycore)
-    com.unity.ext.nunit@2.0.5 (location: /home/worlesenric/wkspace/gc-wt/gc-001/unity/GameCore.Validation/Library/PackageCache/com.unity.ext.nunit@b16e6d09cd93)
+    com.unity.test-framework@1.6.0 (location: /home/worlesenric/wkspace/gc-wt/gc-005/unity/GameCore.Validation/Library/PackageCache/com.unity.test-framework@bd52b1c23814)
+    com.unity.modules.audio@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-005/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.audio)
+    com.unity.modules.assetbundle@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-005/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.assetbundle)
+    com.unity.modules.imageconversion@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-005/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.imageconversion)
+    com.unity.modules.imgui@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-005/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.imgui)
+    com.unity.modules.jsonserialize@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-005/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.jsonserialize)
+    com.unity.modules.physics@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-005/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.physics)
+    com.unity.modules.ui@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-005/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.ui)
+    com.unity.modules.uielements@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-005/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.uielements)
+    com.unity.modules.unityanalytics@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-005/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.unityanalytics)
+    com.unity.modules.unitywebrequest@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-005/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.unitywebrequest)
+    com.unity.modules.hierarchycore@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-005/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.hierarchycore)
+    com.unity.ext.nunit@2.0.5 (location: /home/worlesenric/wkspace/gc-wt/gc-005/unity/GameCore.Validation/Library/PackageCache/com.unity.ext.nunit@b16e6d09cd93)
+  Local packages:
+    com.gamecore.reference-seams@file:/home/worlesenric/wkspace/gc-wt/gc-005/tests/GameCore.ReferenceSeams (location: /home/worlesenric/wkspace/gc-wt/gc-005/tests/GameCore.ReferenceSeams)
+    com.gamecore.unity.adapters@file:/home/worlesenric/wkspace/gc-wt/gc-005/Packages/com.gamecore.unity.adapters (location: /home/worlesenric/wkspace/gc-wt/gc-005/Packages/com.gamecore.unity.adapters)
+    com.gamecore.unity.runtime@file:/home/worlesenric/wkspace/gc-wt/gc-005/Packages/com.gamecore.unity.runtime (location: /home/worlesenric/wkspace/gc-wt/gc-005/Packages/com.gamecore.unity.runtime)
 [Subsystems] No new subsystems found in resolved package list.
 [Package Manager] Done registering packages in 0.00 seconds
 Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
 Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
-[ScriptCompilation] Requested script compilation because: Assetdatabase observed changes in script compilation related files
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
-      Now listening on: http://unix:/tmp/ilpp.sock-90d62a44e4bdaa786507ccbfdb7e6cbb
+      Now listening on: http://unix:/tmp/ilpp.sock-3bdad12b5c8c917b4f3264729861cad7
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
       Application started. Press Ctrl+C to shut down.
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
       Hosting environment: Production
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Content root path: /home/worlesenric/wkspace/gc-wt/gc-001/unity/GameCore.Validation/
+      Content root path: /home/worlesenric/wkspace/gc-wt/gc-005/unity/GameCore.Validation/
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
       Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc -
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
@@ -225,10 +228,9 @@ Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Pro
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
       Executed endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
-      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 27.9447ms
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 29.3451ms
 Starting: /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/2400b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
-WorkingDir: /home/worlesenric/wkspace/gc-wt/gc-001/unity/GameCore.Validation
-DisplayProgressbar: Compiling Scripts
+WorkingDir: /home/worlesenric/wkspace/gc-wt/gc-005/unity/GameCore.Validation
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
       Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc -
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
@@ -237,6 +239,7 @@ DisplayProgressbar: Compiling Scripts
       Assembly system.runtime.interopservices.windowsruntime has duplicate hint path. Ignoring "/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Runtime.InteropServices.WindowsRuntime.dll" in favor of "/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/NetStandard/Extensions/2.0.0/System.Runtime.InteropServices.WindowsRuntime.dll"
 [40m[1m[33mwarn[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
       Assembly system.componentmodel.composition has duplicate hint path. Ignoring "/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.ComponentModel.Composition.dll" in favor of "/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/NetStandard/compat/2.1.0/shims/netfx/System.ComponentModel.Composition.dll"
+DisplayProgressbar: Compiling Scripts
 [40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
       Resolved Unity.Burst.Cecil, Version=0.11.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library/PackageCache/com.unity.burst@07790c2d06d9/Unity.Burst.CodeGen/Unity.Burst.Cecil.dll
 [40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
@@ -246,149 +249,98 @@ DisplayProgressbar: Compiling Scripts
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
       Executed endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
-      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc - - 200 - application/grpc 26.1717ms
-[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
-      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
-[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
-      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
-[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
-      Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.Validation.ProbeHost.dll, with 124 defines and 232 references
-[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
-      processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
-[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
-      running Unity.Entities.CodeGen.EntitiesILPostProcessors
-[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
-      Resolved Mono.Cecil.Rocks, Version=0.11.5.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library/PackageCache/com.unity.nuget.mono-cecil@ecb9724e46ff/Mono.Cecil.Rocks.dll
-[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
-      Resolved UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null with /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Managed/UnityEngine/UnityEngine.CoreModule.dll
-[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
-      Resolved Unity.Collections, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null with Library/Bee/artifacts/2400b0aE.dag/Unity.Collections.dll
-[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
-      Resolved Unity.Burst, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null with Library/Bee/artifacts/2400b0aE.dag/Unity.Burst.dll
-[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
-      Resolved Unity.Cecil.Awesome, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null with Library/PackageCache/com.unity.entities@e90944159b94/Unity.Entities.CodeGen/Unity.Cecil.Awesome.dll
-  - EILPP : GameCore.Validation.ProbeHost : : 174ms (~151ms)
-    - EILPP : GameCore.Validation.ProbeHost : GetAllComponentTypes: 2ms 
-    - EILPP : GameCore.Validation.ProbeHost : Cloner: 1ms 
-    - EILPP : GameCore.Validation.ProbeHost : ComponentDataPP: 15ms 
-    - EILPP : GameCore.Validation.ProbeHost : StaticTypeRegistryPostProcessor: 5ms 
-[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
-      running Unity.Jobs.CodeGen.JobsILPostProcessor
-[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
-      Resolved UnityEditor.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null with /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Managed/UnityEngine/UnityEditor.CoreModule.dll
-[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
-      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
-[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
-      Resolved Unity.Burst.Cecil.Rocks, Version=0.11.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library/PackageCache/com.unity.burst@07790c2d06d9/Unity.Burst.CodeGen/Unity.Burst.Cecil.Rocks.dll
-[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
-      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
-[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
-      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 440.0431ms
-ExitCode: 0 Duration: 1s694ms
-[434/553    0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
-[549/553    1s] Csc Library/Bee/artifacts/2400b0aE.dag/GameCore.Validation.ProbeHost.dll (+2 others)
-Assets/GameCore.Validation/Runtime/ProbeArguments.cs(53,60): warning CS8604: Possible null reference argument for parameter 'resultPath' in 'ProbeArguments.ProbeArguments(bool missingRegistration, string resultPath)'.
-[550/553    0s] ILPostProcess Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Validation.ProbeHost.dll (+pdb)
-Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.Validation.ProbeHost.dll, with 124 defines and 232 references
-processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
-running Unity.Entities.CodeGen.EntitiesILPostProcessors
-running Unity.Jobs.CodeGen.JobsILPostProcessor
-running zzzUnity.Burst.CodeGen.BurstILPostProcessor
-[551/553    0s] CopyFiles Library/ScriptAssemblies/GameCore.Validation.ProbeHost.pdb
-[552/553    0s] CopyFiles Library/ScriptAssemblies/GameCore.Validation.ProbeHost.dll
-*** Tundra build success (1.68 seconds), 5 items updated, 553 evaluated
-Assets/GameCore.Validation/Runtime/ProbeArguments.cs(53,60): warning CS8604: Possible null reference argument for parameter 'resultPath' in 'ProbeArguments.ProbeArguments(bool missingRegistration, string resultPath)'.
-Total cache size 70203599
-AssetDatabase: script compilation time: 1.996088s
-Total cache size after purge 70203599, took 00:00:00.0107215
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc - - 200 - application/grpc 34.1911ms
+ExitCode: 0 Duration: 0s120ms
+[471/607    0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+*** Tundra build success (0.11 seconds), 1 items updated, 607 evaluated
+Total cache size 71070459
+AssetDatabase: script compilation time: 0.424576s
+Total cache size after purge 71070459, took 00:00:00.0133920
 Begin MonoManager ReloadAssembly
-- Loaded All Assemblies, in  0.325 seconds
+- Loaded All Assemblies, in  0.319 seconds
 Refreshing native plugins compatible for Editor in 0.13 ms, found 1 plugins.
 Native extension for LinuxStandalone target not found
 Native extension for OSXStandalone target not found
 Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
-TypeManager.Initialize took: 83ms
+TypeManager.Initialize took: 100ms
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  1.587 seconds
-Domain Reload Profiling: 1917ms
-	BeginReloadAssembly (98ms)
+- Finished resetting the current domain, in  1.772 seconds
+Domain Reload Profiling: 2091ms
+	BeginReloadAssembly (94ms)
 		ExecutionOrderSort (0ms)
 		DisableScriptedObjects (6ms)
 		BackupInstance (0ms)
 		ReleaseScriptingObjects (0ms)
 		CreateAndSetChildDomain (25ms)
-	RebuildCommonClasses (23ms)
-	RebuildNativeTypeToScriptingClass (6ms)
+	RebuildCommonClasses (25ms)
+	RebuildNativeTypeToScriptingClass (5ms)
 	initialDomainReloadingComplete (19ms)
-	LoadAllAssembliesAndSetupDomain (178ms)
-		LoadAssemblies (155ms)
+	LoadAllAssembliesAndSetupDomain (175ms)
+		LoadAssemblies (148ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (63ms)
-			TypeCache.Refresh (50ms)
-				TypeCache.ScanAssembly (45ms)
-			BuildScriptInfoCaches (12ms)
+		AnalyzeDomain (68ms)
+			TypeCache.Refresh (53ms)
+				TypeCache.ScanAssembly (48ms)
+			BuildScriptInfoCaches (13ms)
 			ResolveRequiredComponents (0ms)
-	FinalizeReload (1593ms)
+	FinalizeReload (1773ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (1505ms)
+		SetupLoadedEditorAssemblies (1695ms)
 			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (33ms)
+			InitializePlatformSupportModulesInManaged (31ms)
 			SetLoadedEditorAssemblies (2ms)
 			BeforeProcessingInitializeOnLoad (76ms)
-			ProcessInitializeOnLoadAttributes (1289ms)
-			ProcessInitializeOnLoadMethodAttributes (102ms)
+			ProcessInitializeOnLoadAttributes (1478ms)
+			ProcessInitializeOnLoadMethodAttributes (105ms)
 			AfterProcessingInitializeOnLoad (2ms)
 			EditorAssembliesLoaded (0ms)
 		ExecutionOrderSort2 (0ms)
 		AwakeInstancesAfterBackupRestoration (4ms)
-Refreshing native plugins compatible for Editor in 0.15 ms, found 1 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Asset Pipeline Refresh (id=3fa2c2b0b21b0833eb25b0ef37565c91): Total: 4.322 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+Asset Pipeline Refresh (id=e7c5e5a4da3a1a48daf1634d663b2512): Total: 2.932 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
 	Summary:
 		Imports: total=0 (actual=0, local cache=0, cache server=0)
-		Asset DB Process Time: managed=0 ms, native=1769 ms
-		Asset DB Callback time: managed=207 ms, native=5 ms
-		Scripting: domain reloads=1, domain reload time=325 ms, compile time=1997 ms, other=15 ms
-		Project Asset Count: scripts=649, non-scripts=688
-		Asset File Changes: new=0, changed=1, moved=0, deleted=0
+		Asset DB Process Time: managed=0 ms, native=2010 ms
+		Asset DB Callback time: managed=99 ms, native=2 ms
+		Scripting: domain reloads=1, domain reload time=319 ms, compile time=482 ms, other=17 ms
+		Project Asset Count: scripts=678, non-scripts=692
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
 		Scan Filter Count: 1
 	InvokeCustomDependenciesCallbacks: 0.002ms
-	InvokePackagesCallback: 3.522ms
-	ApplyChangesToAssetFolders: 0.151ms
-	Scan: 88.540ms
-	OnSourceAssetsModified: 0.530ms
-	CategorizeAssetsWithTransientArtifact: 9.608ms
-	ProcessAssetsWithTransientArtifactChanges: 14.169ms
-	CategorizeAssets: 8.527ms
-	ImportOutOfDateAssets: 1595.221ms (-402.672ms without children)
-		CompileScripts: 1997.365ms
+	InvokePackagesCallback: 2.587ms
+	ApplyChangesToAssetFolders: 0.177ms
+	Scan: 148.139ms
+	OnSourceAssetsModified: 0.002ms
+	CategorizeAssetsWithTransientArtifact: 9.988ms
+	ProcessAssetsWithTransientArtifactChanges: 14.342ms
+	CategorizeAssets: 9.137ms
+	ImportOutOfDateAssets: 1775.085ms (1292.112ms without children)
+		CompileScripts: 482.251ms
 		ReloadNativeAssets: 0.000ms
-		UnloadImportedAssets: 0.171ms
-		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.154ms
+		UnloadImportedAssets: 0.182ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.178ms
 		InitializingProgressBar: 0.000ms
 		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
-		OnDemandSchedulerStart: 0.203ms
-	PostProcessAllAssets: 208.463ms
-	Hotreload: 0.696ms
+		OnDemandSchedulerStart: 0.360ms
+	PostProcessAllAssets: 99.681ms
 	GatherAllCurrentPrimaryArtifactRevisions: 0.000ms
-	UnloadStreamsBegin: 0.186ms
-	PersistCurrentRevisions: 0.033ms
+	UnloadStreamsBegin: 0.191ms
+	PersistCurrentRevisions: 0.040ms
 	UnloadStreamsEnd: 0.001ms
-	GenerateScriptTypeHashes: 1.171ms
-	Untracked: 2392.192ms
+	GenerateScriptTypeHashes: 1.363ms
+	Untracked: 872.521ms
 
 Application.AssetDatabase Initial Refresh End
-Scanning for USB devices : 0.829ms
+Scanning for USB devices : 0.748ms
 Initializing Unity extensions:
 UpdateMenuTitleForLanguage: 10
 [MODES] ModeService[none].Initialize
 [MODES] ModeService[none].LoadModes
 [MODES] Loading mode Default (0) for mode-current-id-GameCoreProbe
 Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 2502 unused Assets / (2.0 MB). Loaded Objects now: 2974.
-Memory consumption went from 105.0 MB to 103.0 MB.
-Total: 7.199614 ms (FindLiveObjects: 0.166041 ms CreateObjectMapping: 0.131846 ms MarkObjects: 5.450073 ms  DeleteObjects: 1.450777 ms)
+Unloading 2554 unused Assets / (1.8 MB). Loaded Objects now: 3026.
+Memory consumption went from 109.1 MB to 107.2 MB.
+Total: 6.923031 ms (FindLiveObjects: 0.162738 ms CreateObjectMapping: 0.157730 ms MarkObjects: 5.317855 ms  DeleteObjects: 1.284088 ms)
 
 [GC001] generated catalog Assets/GameCore.Validation/Generated/ProbeCatalog.g.cs (unchanged); bytes=6399; catalogFileHash=33ff04034018b48cdeb7d479c9217cc3ad72945d1b0fe47feb0b7fcc7734768c; hashScope=SHA-256 over the UTF-8 bytes, with LF line endings, of the file prefix that ends immediately before the eight-space-indented CatalogFileHash declaration; that prefix ends with the newline that terminates the previous line, and the declaration itself, its value and the rest of the file are excluded
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
@@ -401,13 +353,13 @@ GameCore.Validation.Editor.ProbeCatalogGenerator:GenerateCatalog () (at Assets/G
 
 (Filename: Assets/GameCore.Validation/Editor/ProbeCatalogGenerator.cs Line: 205)
 
-Asset Pipeline Refresh (id=65c7e3dc420c7438988f9e5fa5705970): Total: 0.047 seconds - Initiated by RefreshV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=cd3abad4101a24a39baca8a1121bbc57): Total: 0.056 seconds - Initiated by RefreshV2(NoUpdateAssetOptions)
 Batchmode quit successfully invoked - shutting down!
-Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
 Curl error 42: Callback aborted
-Unloading 3 unused Assets / (301.3 KB). Loaded Objects now: 2980.
-Memory consumption went from 96.1 MB to 95.8 MB.
-Total: 8.100737 ms (FindLiveObjects: 0.111362 ms CreateObjectMapping: 0.058427 ms MarkObjects: 7.736444 ms  DeleteObjects: 0.193936 ms)
+Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 3 unused Assets / (301.1 KB). Loaded Objects now: 3032.
+Memory consumption went from 100.2 MB to 99.9 MB.
+Total: 4.404915 ms (FindLiveObjects: 0.122619 ms CreateObjectMapping: 0.061149 ms MarkObjects: 4.078772 ms  DeleteObjects: 0.141679 ms)
 
 [Physics::Module] Cleanup current backned.
 [Physics::Module] Id: 0xf2b8ea05

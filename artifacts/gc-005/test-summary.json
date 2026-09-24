@@ -1,0 +1,539 @@
+{
+  "editmode-results.xml": {
+    "result": "Passed",
+    "total": 21,
+    "passed": 21,
+    "failed": 0,
+    "skipped": 0,
+    "cases": [
+      {
+        "name": "GameCore.Unity.Runtime.Tests.GuardedDispatchTests.ADisabledSystemForwardsItsFenceAndProducesNoNewWork",
+        "result": "Passed"
+      },
+      {
+        "name": "GameCore.Unity.Runtime.Tests.GuardedDispatchTests.AFaultedWorldAcceptsNoFurtherWork",
+        "result": "Passed"
+      },
+      {
+        "name": "GameCore.Unity.Runtime.Tests.GuardedDispatchTests.AnInfrastructureGroupEntryDispatchesItsOwnBoundTable",
+        "result": "Passed"
+      },
+      {
+        "name": "GameCore.Unity.Runtime.Tests.GuardedDispatchTests.DirectDisposalSettlesFaultedJobsAndRetiresTheWorld",
+        "result": "Passed"
+      },
+      {
+        "name": "GameCore.Unity.Runtime.Tests.GuardedDispatchTests.DispatchThroughTheSeamRejectsAStaleEpoch",
+        "result": "Passed"
+      },
+      {
+        "name": "GameCore.Unity.Runtime.Tests.GuardedDispatchTests.ManagedSystemThatWritesThenThrowsStopsTheStepAndFaultsTheWorld",
+        "result": "Passed"
+      },
+      {
+        "name": "GameCore.Unity.Runtime.Tests.GuardedDispatchTests.PendingJobsStayTrackedUntilTeardownCompletesThem",
+        "result": "Passed"
+      },
+      {
+        "name": "GameCore.Unity.Runtime.Tests.GuardedDispatchTests.UnconsumedDeclaredBufferFaultsTheWorldInsteadOfPublishingPartialSuccess",
+        "result": "Passed"
+      },
+      {
+        "name": "GameCore.Unity.Runtime.Tests.TemporalDriverTests.APumpBelowOneStepDurationAdvancesNothingAndKeepsTheRemainder",
+        "result": "Passed"
+      },
+      {
+        "name": "GameCore.Unity.Runtime.Tests.TemporalDriverTests.CommandDrivenHostIgnoresElapsedHostTimeWithoutDemand",
+        "result": "Passed"
+      },
+      {
+        "name": "GameCore.Unity.Runtime.Tests.TemporalDriverTests.FixedStepHostBoundsCatchUpAndRetainsTheUnspentRemainder",
+        "result": "Passed"
+      },
+      {
+        "name": "GameCore.Unity.Runtime.Tests.TemporalDriverTests.FixedStepHostSuppliesTheLogicalClockToWorldTime",
+        "result": "Passed"
+      },
+      {
+        "name": "GameCore.Unity.Runtime.Tests.WorldHostTests.CommandDrivenIdleExecutesZeroStepsOverManyFrames",
+        "result": "Passed"
+      },
+      {
+        "name": "GameCore.Unity.Runtime.Tests.WorldHostTests.CreationPublishesEpochOneAndStepZero",
+        "result": "Passed"
+      },
+      {
+        "name": "GameCore.Unity.Runtime.Tests.WorldHostTests.InvalidLifecycleRequestsAreRejectedWithoutMutation",
+        "result": "Passed"
+      },
+      {
+        "name": "GameCore.Unity.Runtime.Tests.WorldHostTests.NoSystemIsDispatchedTwiceInOneStep",
+        "result": "Passed"
+      },
+      {
+        "name": "GameCore.Unity.Runtime.Tests.WorldHostTests.PauseChangesHostStatusOnlyAndAddsNoDebt",
+        "result": "Passed"
+      },
+      {
+        "name": "GameCore.Unity.Runtime.Tests.WorldHostTests.RepeatedCreationOfTheSameSessionReturnsTheSameWorld",
+        "result": "Passed"
+      },
+      {
+        "name": "GameCore.Unity.Runtime.Tests.WorldHostTests.StopClosesIngressSettlesJobsAndDisposesStorage",
+        "result": "Passed"
+      },
+      {
+        "name": "GameCore.Unity.Runtime.Tests.WorldHostTests.TwoWorldsAdvanceIndependently",
+        "result": "Passed"
+      },
+      {
+        "name": "GameCore.Unity.Runtime.Tests.WorldHostTests.WakingACommandDrivenWorldAdvancesWithoutAPlayerCommand",
+        "result": "Passed"
+      }
+    ]
+  },
+  "playmode-results.xml": {
+    "result": "Passed",
+    "total": 6,
+    "passed": 6,
+    "failed": 0,
+    "skipped": 0,
+    "cases": [
+      {
+        "name": "GameCore.Unity.Adapters.Tests.PlayerLoopIntegrationTests.AStaleGenerationTrampolineRefusesToPump",
+        "result": "Passed"
+      },
+      {
+        "name": "GameCore.Unity.Adapters.Tests.PlayerLoopIntegrationTests.BootstrapInstalledExactlyOneApplicationWorldAndOneRoute",
+        "result": "Passed"
+      },
+      {
+        "name": "GameCore.Unity.Adapters.Tests.PlayerLoopIntegrationTests.CommandDrivenWorldAdvancesOncePerAdmittedCommand",
+        "result": "Passed"
+      },
+      {
+        "name": "GameCore.Unity.Adapters.Tests.PlayerLoopIntegrationTests.IdleCommandWorldAdvancesZeroStepsOverManyRealFrames",
+        "result": "Passed"
+      },
+      {
+        "name": "GameCore.Unity.Adapters.Tests.PlayerLoopIntegrationTests.InstallingThePumpNodeIsIdempotent",
+        "result": "Passed"
+      },
+      {
+        "name": "GameCore.Unity.Adapters.Tests.PlayerLoopIntegrationTests.ResetForNewSessionRemovesRoutesAndDisposesSurvivingHosts",
+        "result": "Passed"
+      }
+    ]
+  },
+  "play-session-smoke": {
+    "enabled": 10,
+    "disabled": 10,
+    "passed": 20,
+    "failed": 0
+  },
+  "_worlesenric_2026-09-25_05_49_03.trx": {
+    "counts": {
+      "total": "28",
+      "executed": "28",
+      "passed": "28",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "cases": [
+      {
+        "name": "FixedStepRejectsABackwardsHostClock",
+        "result": "Passed"
+      },
+      {
+        "name": "QuarantineRetainsUntilItsUsersEndAndThenAllowsRetirement",
+        "result": "Passed"
+      },
+      {
+        "name": "RetirementRunsFromDependentsTowardDependencies",
+        "result": "Passed"
+      },
+      {
+        "name": "FixedStepCatchUpIsBoundedAndDebtIsNeverDropped",
+        "result": "Passed"
+      },
+      {
+        "name": "AFailingDisposerIsQuarantinedWhileOtherCleanupStillRuns",
+        "result": "Passed"
+      },
+      {
+        "name": "CommandDrivenWorldExecutesZeroStepsWithoutDemand",
+        "result": "Passed"
+      },
+      {
+        "name": "DuplicateSystemKeysAreRejected",
+        "result": "Passed"
+      },
+      {
+        "name": "NonAscendingDispatchIndicesAreRejected",
+        "result": "Passed"
+      },
+      {
+        "name": "FixedStepPauseAddsNoDebtAndPreservesTheAccumulator",
+        "result": "Passed"
+      },
+      {
+        "name": "MainThreadDisciplineIsExplicitlyCaptured",
+        "result": "Passed"
+      },
+      {
+        "name": "ProducerWithoutItsConsumerStageFailsDrainValidation",
+        "result": "Passed"
+      },
+      {
+        "name": "IdSequenceIsDeterministicAndNeverWraps",
+        "result": "Passed"
+      },
+      {
+        "name": "ASubscriberFailureIsCountedAndCannotUndoTheCommit",
+        "result": "Passed"
+      },
+      {
+        "name": "ForwardOrSelfStageEdgesAreRejected",
+        "result": "Passed"
+      },
+      {
+        "name": "WellFormedPlanProjectsOntoTheEpochBoundTable",
+        "result": "Passed"
+      },
+      {
+        "name": "StepFingerprintIsScopedAndDeterministic",
+        "result": "Passed"
+      },
+      {
+        "name": "CommandDrivenWorldAdmitsDemandUpToItsPerPumpLimit",
+        "result": "Passed"
+      },
+      {
+        "name": "FixedStepAdmitsWholeStepsAndRetainsTheRemainder",
+        "result": "Passed"
+      },
+      {
+        "name": "UnknownResourcesAndJobsAreRefusedInsteadOfInvented",
+        "result": "Passed"
+      },
+      {
+        "name": "FactoriesRejectAnInvalidConfiguration",
+        "result": "Passed"
+      },
+      {
+        "name": "UnfinishedJobsStayTrackedAndQuarantined",
+        "result": "Passed"
+      },
+      {
+        "name": "ForeignWorldImagesAreRefusedAtPublication",
+        "result": "Passed"
+      },
+      {
+        "name": "StageIndexesOutsideTheDeclaredCountAreRejected",
+        "result": "Passed"
+      },
+      {
+        "name": "AcquireReportsAcquiredExpiredForeignWorldAndBackpressure",
+        "result": "Passed"
+      },
+      {
+        "name": "EmptyPlanIsAValidNoOp",
+        "result": "Passed"
+      },
+      {
+        "name": "PublishingOneStepExposesExactlyOneImage",
+        "result": "Passed"
+      },
+      {
+        "name": "SnapshotIsOrderedByResourceIdAndReportsQuarantineBytes",
+        "result": "Passed"
+      },
+      {
+        "name": "ResourcesAreDisposedAtMostOnce",
+        "result": "Passed"
+      }
+    ]
+  },
+  "_worlesenric_2026-09-25_05_49_03[1].trx": {
+    "counts": {
+      "total": "10",
+      "executed": "10",
+      "passed": "10",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "cases": [
+      {
+        "name": "CaseIdentifiersAreUniqueAcrossFiles",
+        "result": "Passed"
+      },
+      {
+        "name": "SeamCodecAgreesWithOracleCanonicalBytes",
+        "result": "Passed"
+      },
+      {
+        "name": "ShuffledInsertionOrdersProduceIdenticalCanonicalOutput",
+        "result": "Passed"
+      },
+      {
+        "name": "CounterOracleRefusesOverflowForEveryCounter",
+        "result": "Passed"
+      },
+      {
+        "name": "ResultDocumentRoundTripsAndIsWrittenToTheDocumentedPath",
+        "result": "Passed"
+      },
+      {
+        "name": "EveryCaseExecutesAndMatchesItsExpectation",
+        "result": "Passed"
+      },
+      {
+        "name": "FixtureLoaderRejectsMalformedCasesAndRunnerBlocksUnknownKinds",
+        "result": "Passed"
+      },
+      {
+        "name": "CaseDirectoryContainsFixtureFiles",
+        "result": "Passed"
+      },
+      {
+        "name": "OracleDistinguishesValidFromInvalidOutcomes",
+        "result": "Passed"
+      },
+      {
+        "name": "EveryDocumentedKindAndRequirementIsExercised",
+        "result": "Passed"
+      }
+    ]
+  },
+  "_worlesenric_2026-09-25_05_49_03[2].trx": {
+    "counts": {
+      "total": "21",
+      "executed": "21",
+      "passed": "21",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "cases": [
+      {
+        "name": "LifecycleObserverRecordsChangesAndCommittedSteps",
+        "result": "Passed"
+      },
+      {
+        "name": "TimeDebtRefusesToBecomeNegativeOrWrap",
+        "result": "Passed"
+      },
+      {
+        "name": "ExecutionDriverRetainsTimeDebtAndStopsDispatchAtTheFailingEntry",
+        "result": "Passed"
+      },
+      {
+        "name": "VersionDomainsUseTypedCounters",
+        "result": "Passed"
+      },
+      {
+        "name": "ContentHashParsingAcceptsOnlyTheCanonicalLowercaseForm",
+        "result": "Passed"
+      },
+      {
+        "name": "PendingHeaderIsTreatedAsFailureWithClearMessage",
+        "result": "Passed"
+      },
+      {
+        "name": "HandleGenerationZeroIsNeverAllocatedAndSlotsAreUnsigned",
+        "result": "Passed"
+      },
+      {
+        "name": "CompositionHostDoubleAdmitsStaleRejectsRetainsAndExpires",
+        "result": "Passed"
+      },
+      {
+        "name": "SeamApiSnapshotMatchesCommittedFile",
+        "result": "Passed"
+      },
+      {
+        "name": "ApiSnapshotAndFixtureRootsResolveFromTheRepository",
+        "result": "Passed"
+      },
+      {
+        "name": "StalledJobBlocksStopInsteadOfBeingFreedOnTimeout",
+        "result": "Passed"
+      },
+      {
+        "name": "ResourceLedgerRetiresInReverseOrderAndQuarantinesTheFailedRelease",
+        "result": "Passed"
+      },
+      {
+        "name": "ExplanationPagingIsBoundedAndStagedPlanReadsAreLabelled",
+        "result": "Passed"
+      },
+      {
+        "name": "CatalogLookupReportsMissingKeysAndUnsupportedVersions",
+        "result": "Passed"
+      },
+      {
+        "name": "HostLedgerKeepsTheOriginalResultOnConflictingReuse",
+        "result": "Passed"
+      },
+      {
+        "name": "CanonicalMapOrderIsIndependentOfInsertionOrderAndReportsDuplicates",
+        "result": "Passed"
+      },
+      {
+        "name": "Id128ParsingAcceptsOnlyTheCanonicalLowercaseForm",
+        "result": "Passed"
+      },
+      {
+        "name": "HostLedgerDistinguishesUnknownFromExpired",
+        "result": "Passed"
+      },
+      {
+        "name": "ObservationReaderReturnsExpiryAndBackpressureInsteadOfThrowing",
+        "result": "Passed"
+      },
+      {
+        "name": "CallbackGateRejectsForeignWorldAndStaleActivation",
+        "result": "Passed"
+      },
+      {
+        "name": "GeneratedListingIsDeterministicAndExcludesAssemblyName",
+        "result": "Passed"
+      }
+    ]
+  },
+  "probe-result.json": {
+    "result": "Pass",
+    "exitCode": 0,
+    "probes": [
+      {
+        "name": "generated-aot-roots",
+        "status": "Pass",
+        "detail": "rooted closed generic job ProbeAggregateJob<ProbeVector3Value> and closed generic handler ProbeScalarHandler<ProbeAmount>; handler key=0x1C9A1F368FDAD8DD-0x4E0CC4C0E9F7DA67; RegisterGenericJobType present=True"
+      },
+      {
+        "name": "entities-world-entity-query",
+        "status": "Pass",
+        "detail": "world='GameCoreValidationProbeWorld'; matched=3; arrayLength=3; sum=31; absentComponentQueryIsEmpty=True"
+      },
+      {
+        "name": "burst-generic-job",
+        "status": "Pass",
+        "detail": "BurstCompiler.IsEnabled=True; observed=97; expected=97; completed=true"
+      },
+      {
+        "name": "canonical-bytes-roundtrip",
+        "status": "Pass",
+        "detail": "length=25; bigEndianHigh=True; bigEndianLow=True; bigEndianVersion=True; bigEndianIntegerValue=True; flagsMatch=True; roundTrippedEqual=True; truncatedLengthRejected=True; oversizeLengthRejected=True"
+      },
+      {
+        "name": "generated-closed-generic-handler",
+        "status": "Pass",
+        "detail": "handlerKey=0x1C9A1F368FDAD8DD-0x4E0CC4C0E9F7DA67; input=amount(units=6, scale=7); observed=42; expected=42"
+      },
+      {
+        "name": "late-mount-linked-inactive-plugin",
+        "status": "Pass",
+        "detail": "pluginKey=0x0284B6EC6D41B5AA-0xD17744CF859C74B6; stableName='gamecore.validation.plugin.fixture'; createdBeforeMount=0; createdAfterFirstMount=1; createdAfterSecondMount=2; firstResult=36; secondResult=36; expected=36; preservation=declared: Assets/link.xml preserves the GameCore.Validation.Fixture assembly (preserve=\"all\"), and the generated catalog holds a direct FixturePluginFactory reference, so the plugin is linked into the player while nothing instantiates it at startup"
+      },
+      {
+        "name": "generated-catalog-integrity",
+        "status": "Pass",
+        "detail": "generatedFile=ProbeCatalog.g.cs; pluginRegistrations=1; handlerRegistrations=1; hasFixturePlugin=True; hasClosedGenericHandler=True; absentKeyMissing=True; keysUnique=True; catalogHash=33ff04034018b48cdeb7d479c9217cc3ad72945d1b0fe47feb0b7fcc7734768c; hashScope=SHA-256 over the UTF-8 bytes, with LF line endings, of the file prefix that ends immediately before the eight-space-indented CatalogFileHash declaration; that prefix ends with the newline that terminates the previous line, and the declaration itself, its value and the rest of the file are excluded"
+      }
+    ]
+  },
+  "probe-negative.json": {
+    "result": "ExpectedNegative",
+    "exitCode": 3,
+    "probes": [
+      {
+        "name": "generated-catalog-integrity",
+        "status": "Pass",
+        "detail": "generatedFile=ProbeCatalog.g.cs; pluginRegistrations=1; handlerRegistrations=1; hasFixturePlugin=True; hasClosedGenericHandler=True; absentKeyMissing=True; keysUnique=True; catalogHash=33ff04034018b48cdeb7d479c9217cc3ad72945d1b0fe47feb0b7fcc7734768c; hashScope=SHA-256 over the UTF-8 bytes, with LF line endings, of the file prefix that ends immediately before the eight-space-indented CatalogFileHash declaration; that prefix ends with the newline that terminates the previous line, and the declaration itself, its value and the rest of the file are excluded"
+      },
+      {
+        "name": "missing-registration-detected",
+        "status": "Pass",
+        "detail": "requestedKey=0x4771366F6C5F1EA9-0xCDD9BC836D9C05AE; pluginResolved=False; handlerResolved=False; instanceCreated=False; catalogHash=33ff04034018b48cdeb7d479c9217cc3ad72945d1b0fe47feb0b7fcc7734768c"
+      },
+      {
+        "name": "missing-registration-report",
+        "status": "ExpectedNegative",
+        "detail": "the generated catalog returned no factory for stable key 0x4771366F6C5F1EA9-0xCDD9BC836D9C05AE (stable name 'gamecore.validation.plugin.absent'); resolution failed explicitly instead of constructing an instance through reflection"
+      }
+    ]
+  },
+  "probe-world-dispatch.json": {
+    "result": "Pass",
+    "exitCode": 0,
+    "probes": [
+      {
+        "name": "world-bootstrap-and-loop-route",
+        "status": "Pass",
+        "detail": "bootstraps=1; loopRoutesBeforeInstall=1; loopRoutesAfterInstall=1; registeredWorlds=1; applicationWorld='GameCoreFixtureWorld:c59d15d07823760ce8eeb62a93c3b2bb'; fallbacks=0; bootstrapCode=None"
+      },
+      {
+        "name": "world-two-worlds-independent",
+        "status": "Pass",
+        "detail": "sessionA=50524f42455747430000000000000001; sessionB=50524f42455747430000000000000002; stepsA=2; stepsB=1; acceptA=2; acceptB=1; ingressB=2; outputB=2"
+      },
+      {
+        "name": "world-command-driven-idle-zero-steps",
+        "status": "Pass",
+        "detail": "frames=60; steps=0; dispatchRuns=0; publishedImages=1; acceptCount=0; ingressCount=60; outputCount=60; retainedDebtTicks=0"
+      },
+      {
+        "name": "world-no-system-double-update",
+        "status": "Pass",
+        "detail": "entriesPerStep=4; steps=3; totalDispatched=12; publishedImages=4; accept=3; settle=3; fault=3; project=3; counter=333; outstandingJobs=0"
+      },
+      {
+        "name": "world-fixed-step-debt-and-clock",
+        "status": "Pass",
+        "detail": "hostTicksPerSecond=10000000; hostTimeOrigin=0; admittedSteps=4; steps=4; retainedDebtTicks=9600000; unmanagedTickCount=4; worldElapsedSeconds=0.030000"
+      },
+      {
+        "name": "world-guarded-fail-stop",
+        "status": "Pass",
+        "detail": "outcome=Faulted; faultCode=ApplyFault; lifecycle=Faulted; step=0; epoch=1; publishedImages=1; failedStepImagePublished=False; accept=1; settle=1; fault=1; project=0; counter=111; outstandingJobs=2; quarantinedJobs=2; retainedHandles=2; faultDetail='FactoryKey(47434649585455520000000000000005, 235409088): GameCore.Unity.Fixtures.FixtureInjectedFaultException: fixture fault stage wrote authoritative state and then threw (deterministic fail-stop fixture)'"
+      },
+      {
+        "name": "world-guarded-fail-stop-teardown",
+        "status": "Pass",
+        "detail": "stopOutcome=Published; settledJobs=2; outstandingJobs=0; retainedResources=0; lifecycle=Disposed; entityWorldCreated=False; completionFailures=0"
+      }
+    ]
+  }
+}

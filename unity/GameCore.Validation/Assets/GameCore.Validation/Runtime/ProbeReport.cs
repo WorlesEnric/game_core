@@ -36,12 +36,20 @@ namespace GameCore.Validation.ProbeHost
     {
         private readonly List<ProbeOutcome> outcomes = new List<ProbeOutcome>();
 
-        public ProbeReport(string mode, string declaredUnityVersion, string declaredTarget)
+        /// <summary>
+        /// Creates a report for one probe mode. The task defaults to GC-001 so the existing probe output is
+        /// unchanged; a later task's probe passes its own task id and writes the same result shape.
+        /// </summary>
+        public ProbeReport(string mode, string declaredUnityVersion, string declaredTarget, string task = "GC-001")
         {
+            Task = task;
             Mode = mode;
             DeclaredUnityVersion = declaredUnityVersion;
             DeclaredTarget = declaredTarget;
         }
+
+        /// <summary>Task id recorded in the result document, e.g. <c>GC-001</c> or <c>GC-005</c>.</summary>
+        public string Task { get; }
 
         public string Mode { get; }
 
@@ -125,7 +133,7 @@ namespace GameCore.Validation.ProbeHost
         {
             var builder = new StringBuilder();
             builder.Append("{\n");
-            AppendString(builder, 1, "task", "GC-001");
+            AppendString(builder, 1, "task", Task);
             AppendString(builder, 1, "probe", "GameCore.Validation.ProbeHost.ProbeRunner");
             AppendString(builder, 1, "mode", Mode);
             AppendString(builder, 1, "result", Result);
@@ -143,8 +151,13 @@ namespace GameCore.Validation.ProbeHost
             AppendString(builder, 1, "managedStrippingLevelSource", ProbeEnvironment.ManagedStrippingLevelSource);
             AppendBool(builder, 1, "burstCompilerEnabled", ProbeEnvironment.BurstCompilerEnabled);
             AppendString(builder, 1, "fixturePluginPreservation", ProbeEnvironment.FixturePluginPreservation);
+            AppendString(builder, 1, "catalogGenerator", "GameCore.Content.Compiler (GC-003)");
             AppendString(builder, 1, "catalogGeneratedFile", ProbeEnvironment.CatalogGeneratedFile);
             AppendString(builder, 1, "catalogFileHash", ProbeEnvironment.CatalogFileHash);
+            AppendString(builder, 1, "catalogFingerprint", ProbeEnvironment.CatalogFingerprint);
+            AppendString(builder, 1, "catalogDescriptionFormat", ProbeEnvironment.CatalogDescriptionFormat);
+            AppendString(builder, 1, "catalogProtocolVersion", ProbeEnvironment.CatalogProtocolVersion);
+            AppendInt(builder, 1, "catalogSupportedFeatureCount", ProbeEnvironment.CatalogSupportedFeatureCount);
             AppendString(builder, 1, "catalogFileHashAlgorithm", ProbeEnvironment.CatalogFileHashAlgorithm);
             AppendString(builder, 1, "catalogFileHashScope", ProbeEnvironment.CatalogFileHashScope);
             AppendString(builder, 1, "failureReason", FailureReason);

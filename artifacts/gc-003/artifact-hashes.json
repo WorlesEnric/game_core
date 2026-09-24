@@ -1,0 +1,47 @@
+{
+  "task": "GC-003",
+  "status": "NotRun (pending orchestrator build host)",
+  "note": "Hashes of the artifacts this task owns. Nothing here has been compiled or executed on the authoring host.",
+  "sha256": {
+    "packages/com.gamecore.contracts/package.json": {
+      "path": "Packages/com.gamecore.contracts/package.json",
+      "sha256": "35de02989c9be907ec13b421cf47de7d0f9cd970bc855870653b6f61d8104424",
+      "bytes": 487
+    },
+    "packages/com.gamecore.contracts/runtime/GameCore.Contracts.asmdef": {
+      "path": "Packages/com.gamecore.contracts/Runtime/GameCore.Contracts.asmdef",
+      "sha256": "068a56902608ee90d44ca81a4d8a3bf8df8d8d6f531938f4fc985e2ec576249f",
+      "bytes": 346
+    },
+    "packages/com.gamecore.content.compiler/package.json": {
+      "path": "Packages/com.gamecore.content.compiler/package.json",
+      "sha256": "365eb3687a71d5a26a1a966bd3374893e95bb2bd8594ea0ae18182b8c3c40537",
+      "bytes": 596
+    },
+    "description/probe-catalog": {
+      "path": "unity/GameCore.Validation/Catalogs/ProbeCatalog.catalog.json",
+      "sha256": "f8495604c837618210d2f3ba76930e525e8f7f3bb78928e19bdc1b96f42303f0",
+      "bytes": 2850
+    },
+    "generated/probe-catalog": {
+      "path": "unity/GameCore.Validation/Assets/GameCore.Validation/Generated/ProbeCatalog.g.cs",
+      "sha256": "2f0e85d0d7c96b0b05404a0b5c7cc1639e625fe44a13e5d83e5f3c2d2406c005",
+      "bytes": 22579
+    },
+    "api/frozen-snapshot": {
+      "path": "tests/GameCore.ReferenceSeams/api/GameCore.Contracts.api.txt",
+      "sha256": "e4def11460b63ca11094a0afb7a4aed485a79b52be69f84946c8489fc25f4966",
+      "bytes": 152730
+    },
+    "api/seam-enums": {
+      "path": "tests/GameCore.ReferenceSeams/Manifest/ManifestEnums.cs",
+      "sha256": "4eee69d1496e6d7e46e14909f52b4187f74d5a31d591390eea39494c4e39c1a5",
+      "bytes": 8629
+    },
+    "unity/manifest.json": {
+      "path": "unity/GameCore.Validation/Packages/manifest.json",
+      "sha256": "70dcc404123bc62f1e3aea80fba27b98201cde6bb80a5bfaaba9345aefb401a3",
+      "bytes": 934
+    }
+  }
+}
