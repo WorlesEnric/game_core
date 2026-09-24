@@ -1,15 +1,14 @@
 {
-  "$comment": "The reference seam and the pure oracle must stay kernel-only: no UnityEngine/Unity reference and no gameplay package dependency (P-001, P-057, TEST-021).",
+  "$comment": "The kernel contract assembly and the pure oracle must stay kernel-only: no UnityEngine/Unity reference and no gameplay package dependency (P-001, P-057, TEST-021). The tokens {oracleAssembly} and {kernelAssembly} are substituted by the fixture runner with the assembly actually loaded in the test process, so one case file validates both the W0 reference-seam run and the production GameCore.Contracts run.",
   "cases": [
     {
       "caseId": "oracle-references-no-engine-or-gameplay-assembly",
-      "title": "the protocol fixture oracle references only the reference seam and its JSON package",
-      "requirementIds": ["P-001", "P-057"],
+      "title": "the protocol fixture oracle references only the kernel contract assembly and its JSON package",
       "testIds": ["TEST-021"],
       "kind": "assemblyIndependence",
       "expected": { "outcome": "valid" },
       "parameters": {
-        "assemblyName": "GameCore.ProtocolFixtures",
+        "assemblyName": "{oracleAssembly}",
         "forbiddenNamespacePrefixes": ["UnityEngine", "Unity.", "GameCore.Gameplay."],
         "forbiddenAssemblyNames": [
           "UnityEngine",
@@ -19,18 +18,18 @@
           "GameCore.Unity.Runtime",
           "GameCore.Unity.Adapters"
         ],
-        "requiredReferences": ["GameCore.ReferenceSeams"]
+        "requiredReferences": ["{kernelAssembly}"]
       }
     },
     {
-      "caseId": "reference-seam-references-no-engine-or-gameplay-assembly",
-      "title": "the test-only reference seam itself carries no Unity or gameplay dependency",
+      "caseId": "kernel-contract-assembly-references-no-engine-or-gameplay-assembly",
+      "title": "the kernel contract assembly the oracle compiles against carries no Unity or gameplay dependency",
       "requirementIds": ["P-001", "P-057"],
       "testIds": ["TEST-021"],
       "kind": "assemblyIndependence",
       "expected": { "outcome": "valid" },
       "parameters": {
-        "assemblyName": "GameCore.ReferenceSeams",
+        "assemblyName": "{kernelAssembly}",
         "forbiddenNamespacePrefixes": ["UnityEngine", "Unity.", "Unity.Entities", "GameCore.Gameplay."],
         "forbiddenAssemblyNames": [
           "UnityEngine",
