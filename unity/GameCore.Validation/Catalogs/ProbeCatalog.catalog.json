@@ -1,0 +1,72 @@
+{
+  "descriptionFormat": "gamecore.catalog-description/1",
+  "protocolVersion": "1.0",
+  "namespace": "GameCore.Validation.Generated",
+  "className": "ProbeCatalog",
+  "fileName": "ProbeCatalog.g.cs",
+  "supportedFeatureIds": ["1bb26af74e10edc6f85c1657ab2d3e88"],
+  "schemas": [
+    {
+      "stableName": "gamecore.validation.schema.probe-record",
+      "valueTypeName": "ProbeRecordValue",
+      "serializerTypeName": "ProbeRecordSerializer",
+      "serializerKeyName": "ProbeRecordSerializerKey",
+      "schemaId": "4bf5b435956d00ad605292d344334459",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "00000000000000000000000000000000",
+      "required": true,
+      "fields": [
+        { "id": 1, "name": "High", "wireType": "UInt64", "required": true },
+        { "id": 2, "name": "Low", "wireType": "UInt64", "required": true },
+        { "id": 3, "name": "Version", "wireType": "UInt32", "required": true },
+        { "id": 4, "name": "Value", "wireType": "Int32", "required": true },
+        { "id": 5, "name": "Flags", "wireType": "UInt32", "required": true }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "tableName": "PluginRegistrations",
+      "keysName": "PluginKeys",
+      "lookupMethodName": "TryGetPluginFactory",
+      "interfaceType": "GameCore.Validation.Probe.IProbePluginFactory",
+      "kind": "PluginFactory",
+      "entries": [
+        {
+          "stableName": "gamecore.validation.plugin.fixture",
+          "keyName": "FixturePluginKey",
+          "keyVersion": 1,
+          "ownerPackageId": "00000000000000000000000000000000",
+          "implementationId": "c522e8071cf2c14ecb0f3978e0e109bb",
+          "implementationExpression": "new FixturePluginFactory()"
+        }
+      ]
+    },
+    {
+      "tableName": "HandlerRegistrations",
+      "keysName": "HandlerKeys",
+      "lookupMethodName": "TryGetHandler",
+      "interfaceType": "GameCore.Validation.Probe.IProbeHandler<GameCore.Validation.Probe.ProbeAmount, int>",
+      "kind": "Handler",
+      "entries": [
+        {
+          "stableName": "gamecore.validation.handler.magnitude",
+          "keyName": "ClosedGenericHandlerKey",
+          "keyVersion": 1,
+          "ownerPackageId": "00000000000000000000000000000000",
+          "implementationId": "d13ebf56c8e9e58437c098b6b4543056",
+          "implementationExpression": "new ProbeScalarHandler<ProbeAmount>(ClosedGenericHandlerKey)"
+        }
+      ]
+    }
+  ],
+  "code": {
+    "usingDirectives": ["GameCore.Validation.Fixture", "GameCore.Validation.Probe", "Unity.Jobs"],
+    "assemblyAttributes": ["RegisterGenericJobType(typeof(ProbeAggregateJob<ProbeVector3Value>))"],
+    "closedGenericRootStatements": [
+      "ProbeAotRoots.TrackJob(default(ProbeAggregateJob<ProbeVector3Value>))",
+      "ProbeAotRoots.TrackHandler(HandlerRegistrations[0].Implementation)"
+    ]
+  }
+}

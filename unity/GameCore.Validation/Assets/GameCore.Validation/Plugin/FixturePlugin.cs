@@ -26,10 +26,10 @@ namespace GameCore.Validation.Fixture
                 throw new ArgumentNullException(nameof(handler));
             }
 
-            if (!handler.HandlerKey.Equals(ProbeKeys.ClosedGenericHandler))
+            if (!handler.HandlerKey.Equals(ProbeKeys.ClosedGenericHandlerKey))
             {
                 throw new InvalidOperationException(
-                    "closed generic handler key mismatch: expected " + ProbeKeys.ClosedGenericHandler
+                    "closed generic handler key mismatch: expected " + ProbeKeys.ClosedGenericHandlerKey
                     + " but the generated catalog supplied " + handler.HandlerKey);
             }
 

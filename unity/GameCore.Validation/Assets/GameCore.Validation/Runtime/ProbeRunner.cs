@@ -1,6 +1,7 @@
 #nullable enable
 using System;
 using System.IO;
+using GameCore.Contracts;
 using GameCore.Validation.Generated;
 using GameCore.Validation.Probe;
 using Unity.Burst;
@@ -78,6 +79,7 @@ namespace GameCore.Validation.ProbeHost
                     RunSerializationProbe(report);
                     RunClosedGenericHandlerProbe(report);
                     RunLateMountProbe(report);
+                    RunProductionCatalogProbe(report);
                     RunCatalogIntegrityProbe(report);
                     report.CompletePositive();
                 }
@@ -97,12 +99,13 @@ namespace GameCore.Validation.ProbeHost
             const string name = "generated-aot-roots";
             try
             {
-                ProbeKey rootedHandlerKey = ProbeCatalog.RootClosedGenericInstantiations();
-                bool registered = ProbeCatalog.HasGenericJobRegistration;
+                ProbeCatalog.RootClosedGenericInstantiations();
+                FactoryKey rootedHandlerKey = ProbeCatalog.HandlerRegistrations[0].Key;
+                bool registered = ProbeCatalog.HasClosedGenericRoots;
                 string detail = "rooted closed generic job ProbeAggregateJob<ProbeVector3Value> and closed generic "
                     + "handler ProbeScalarHandler<ProbeAmount>; handler key=" + rootedHandlerKey
-                    + "; RegisterGenericJobType present=" + registered;
-                bool pass = registered && rootedHandlerKey.Equals(ProbeKeys.ClosedGenericHandler);
+                    + "; closed generic roots present=" + registered;
+                bool pass = registered && rootedHandlerKey.Equals(ProbeKeys.ClosedGenericHandlerKey);
                 report.Add(pass ? ProbeOutcome.Pass(name, detail) : ProbeOutcome.Fail(name, detail));
             }
             catch (Exception exception)
@@ -269,24 +272,24 @@ namespace GameCore.Validation.ProbeHost
             const string name = "generated-closed-generic-handler";
             try
             {
-                if (!ProbeCatalog.TryGetHandler(ProbeKeys.ClosedGenericHandler, out var handler)
+                if (!ProbeCatalog.TryGetHandler(ProbeKeys.ClosedGenericHandlerKey, out var handler)
                     || handler == null)
                 {
                     report.Add(
                         ProbeOutcome.Fail(
                             name,
                             "the generated catalog has no handler registration for "
-                            + ProbeKeys.ClosedGenericHandler));
+                            + ProbeKeys.ClosedGenericHandlerKey));
                     return;
                 }
 
                 var input = new ProbeAmount(6, 7);
                 int observed = handler.Handle(input);
-                ProbeKey rooted = ProbeAotRoots.TrackHandler(handler);
+                FactoryKey rooted = ProbeAotRoots.TrackHandler(handler);
                 string detail = "handlerKey=" + rooted + "; input=" + input
                     + "; observed=" + observed + "; expected=" + input.Scalar;
                 report.Add(
-                    observed == input.Scalar && rooted.Equals(ProbeKeys.ClosedGenericHandler)
+                    observed == input.Scalar && rooted.Equals(ProbeKeys.ClosedGenericHandlerKey)
                         ? ProbeOutcome.Pass(name, detail)
                         : ProbeOutcome.Fail(name, detail));
             }
@@ -301,13 +304,13 @@ namespace GameCore.Validation.ProbeHost
             const string name = "late-mount-linked-inactive-plugin";
             try
             {
-                if (!ProbeCatalog.TryGetPluginFactory(ProbeKeys.FixturePlugin, out var factory)
+                if (!ProbeCatalog.TryGetPluginFactory(ProbeKeys.FixturePluginKey, out var factory)
                     || factory == null)
                 {
                     report.Add(
                         ProbeOutcome.Fail(
                             name,
-                            "the generated catalog has no plugin registration for " + ProbeKeys.FixturePlugin));
+                            "the generated catalog has no plugin registration for " + ProbeKeys.FixturePluginKey));
                     return;
                 }
 
@@ -322,14 +325,14 @@ namespace GameCore.Validation.ProbeHost
                     return;
                 }
 
-                if (!ProbeCatalog.TryGetHandler(ProbeKeys.ClosedGenericHandler, out var handler)
+                if (!ProbeCatalog.TryGetHandler(ProbeKeys.ClosedGenericHandlerKey, out var handler)
                     || handler == null)
                 {
                     report.Add(
                         ProbeOutcome.Fail(
                             name,
                             "the generated catalog has no handler registration for "
-                            + ProbeKeys.ClosedGenericHandler));
+                            + ProbeKeys.ClosedGenericHandlerKey));
                     return;
                 }
 
@@ -375,18 +378,114 @@ namespace GameCore.Validation.ProbeHost
             }
         }
 
+        /// <summary>
+        /// Production contract probe: validates the generated registration tables with the production
+        /// <see cref="ImmutableCatalog"/>, compares the rebuilt fingerprint with the literal emitted into the
+        /// generated file, resolves the fixture plugin and the probe schema by generated key, and round-trips a
+        /// value through the generated serializer (P-009, P-028, P-054, P-055).
+        /// </summary>
+        private static void RunProductionCatalogProbe(ProbeReport report)
+        {
+            const string name = "production-contract-catalog";
+            try
+            {
+                CatalogBuildResult build = ProbeCatalog.BuildVerifiedCatalog(out ContentHash observed);
+                if (build.Catalog == null)
+                {
+                    report.Add(ProbeOutcome.Fail(
+                        name,
+                        "the production catalog rejected the generated tables: " + build.Describe()));
+                    return;
+                }
+
+                bool fingerprintMatches = string.Equals(
+                    observed.ToHex(),
+                    ProbeCatalog.CatalogFingerprint,
+                    StringComparison.Ordinal);
+
+                var probeRecordSchema = new SchemaRef(
+                    new SchemaId(new Id128(0x4BF5B435956D00ADUL, 0x605292D344334459UL)),
+                    1U);
+                CatalogLookup plugin = build.Catalog.Lookup(ProbeCatalog.FixturePluginKey);
+                CatalogLookup handler = build.Catalog.Lookup(ProbeCatalog.ClosedGenericHandlerKey);
+                CatalogLookup schema = build.Catalog.LookupSchema(probeRecordSchema);
+                bool serializerBound = build.Catalog.TryGetSerializer(probeRecordSchema, out ISchemaSerializer? serializer)
+                    && serializer != null
+                    && serializer!.Schema.Equals(probeRecordSchema);
+                bool featureSupported = build.Catalog.SupportedFeatureIds.Count > 0
+                    && build.Catalog.SupportsFeature(build.Catalog.SupportedFeatureIds[0]);
+                CatalogLookup unknownSchema = build.Catalog.LookupSchema(new SchemaRef(
+                    new SchemaId(ProbeKeys.AbsentFixturePlugin.ToId128()),
+                    1U));
+                bool unknownSchemaRejected = !unknownSchema.Found
+                    && unknownSchema.Code == DiagnosticCode.MissingDependency;
+
+                var value = new ProbeRecordValue(0x0102030405060708UL, 0xF1F2F3F4F5F6F7F8UL, 3U, -123456789, 0x5AU);
+                var generatedSerializer = new ProbeRecordSerializer();
+                byte[] document = generatedSerializer.Serialize(value);
+                bool roundTrips = generatedSerializer.TryDeserialize(document, out ProbeRecordValue roundTripped, out EnvelopeError _)
+                    && roundTripped.High == value.High
+                    && roundTripped.Low == value.Low
+                    && roundTripped.Version == value.Version
+                    && roundTripped.Value == value.Value
+                    && roundTripped.Flags == value.Flags;
+
+                byte[] tampered = (byte[])document.Clone();
+                tampered[document.Length - 3] ^= 0xFF;
+                bool tamperRejected = !generatedSerializer.TryDeserialize(tampered, out ProbeRecordValue _, out EnvelopeError tamperError)
+                    && tamperError == EnvelopeError.ChecksumMismatch;
+
+                byte[] truncated = new byte[document.Length - 1];
+                Buffer.BlockCopy(document, 0, truncated, 0, truncated.Length);
+                bool truncationRejected = !generatedSerializer.TryDeserialize(truncated, out ProbeRecordValue _, out EnvelopeError truncationError)
+                    && truncationError == EnvelopeError.Truncated;
+
+                string detail = "catalogFingerprint=" + observed.ToHex()
+                    + "; fingerprintMatchesLiteral=" + fingerprintMatches
+                    + "; pluginLookup=" + plugin.Describe()
+                    + "; handlerLookup=" + handler.Describe()
+                    + "; schemaLookup=" + schema.Describe()
+                    + "; serializerBound=" + serializerBound
+                    + "; featureSupported=" + featureSupported
+                    + "; documentBytes=" + document.Length
+                    + "; roundTrips=" + roundTrips
+                    + "; tamperRejected=" + tamperRejected
+                    + "; truncationRejected=" + truncationRejected
+                    + "; unknownSchemaLookup=" + unknownSchema.Describe()
+                    + "; supportedFeatures=" + build.Catalog.SupportedFeatureIds.Count;
+
+                bool pass = fingerprintMatches
+                    && plugin.Found
+                    && handler.Found
+                    && handler.Factory != null
+                    && handler.Factory.Kind == FactoryKind.Handler
+                    && schema.Found
+                    && serializerBound
+                    && featureSupported
+                    && roundTrips
+                    && tamperRejected
+                    && truncationRejected
+                    && unknownSchemaRejected;
+                report.Add(pass ? ProbeOutcome.Pass(name, detail) : ProbeOutcome.Fail(name, detail));
+            }
+            catch (Exception exception)
+            {
+                report.Add(ProbeOutcome.Fail(name, Describe(exception)));
+            }
+        }
+
         private static void RunCatalogIntegrityProbe(ProbeReport report)
         {
             const string name = "generated-catalog-integrity";
             try
             {
-                ProbeKey[] pluginKeys = ProbeCatalog.PluginKeys;
-                ProbeKey[] handlerKeys = ProbeCatalog.HandlerKeys;
+                FactoryKey[] pluginKeys = ProbeCatalog.PluginKeys;
+                FactoryKey[] handlerKeys = ProbeCatalog.HandlerKeys;
 
-                bool hasFixture = ContainsKey(pluginKeys, ProbeKeys.FixturePlugin);
-                bool hasHandler = ContainsKey(handlerKeys, ProbeKeys.ClosedGenericHandler);
-                bool absentKeyMissing = !ContainsKey(pluginKeys, ProbeKeys.AbsentFixturePlugin)
-                    && !ContainsKey(handlerKeys, ProbeKeys.AbsentFixturePlugin);
+                bool hasFixture = ContainsKey(pluginKeys, ProbeKeys.FixturePluginKey);
+                bool hasHandler = ContainsKey(handlerKeys, ProbeKeys.ClosedGenericHandlerKey);
+                bool absentKeyMissing = !ContainsKey(pluginKeys, ProbeKeys.AbsentFixturePluginKey)
+                    && !ContainsKey(handlerKeys, ProbeKeys.AbsentFixturePluginKey);
                 bool uniqueKeys = AllDistinct(pluginKeys) && AllDistinct(handlerKeys);
 
                 string detail = "generatedFile=" + ProbeCatalog.GeneratedFileName
@@ -396,6 +495,7 @@ namespace GameCore.Validation.ProbeHost
                     + "; hasClosedGenericHandler=" + hasHandler
                     + "; absentKeyMissing=" + absentKeyMissing
                     + "; keysUnique=" + uniqueKeys
+                    + "; keysAreProductionFactoryKeys=true"
                     + "; catalogHash=" + ProbeCatalog.CatalogFileHash
                     + "; hashScope=" + ProbeCatalog.CatalogFileHashScope;
 
@@ -419,17 +519,26 @@ namespace GameCore.Validation.ProbeHost
             try
             {
                 bool pluginResolved = ProbeCatalog.TryGetPluginFactory(
-                    ProbeKeys.AbsentFixturePlugin, out IProbePluginFactory? factory);
+                    ProbeKeys.AbsentFixturePluginKey, out IProbePluginFactory? factory);
                 bool handlerResolved = ProbeCatalog.TryGetHandler(
-                    ProbeKeys.AbsentFixturePlugin, out IProbeHandler<ProbeAmount, int>? handler);
+                    ProbeKeys.AbsentFixturePluginKey, out IProbeHandler<ProbeAmount, int>? handler);
                 bool createdAnything = pluginResolved && factory != null && factory.CreatedInstanceCount > 0;
 
-                string detail = "requestedKey=" + ProbeKeys.AbsentFixturePlugin
+                CatalogBuildResult catalogResult = ProbeCatalog.BuildCatalog();
+                CatalogLookup productionLookup = catalogResult.Catalog == null
+                    ? CatalogLookup.MissingKey(ProbeKeys.AbsentFixturePluginKey)
+                    : catalogResult.Catalog.Lookup(ProbeKeys.AbsentFixturePluginKey);
+                bool productionMissReported = !productionLookup.Found
+                    && productionLookup.Code == DiagnosticCode.MissingDependency;
+
+                string detail = "requestedKey=" + ProbeKeys.AbsentFixturePluginKey
                     + "; pluginResolved=" + pluginResolved
                     + "; handlerResolved=" + handlerResolved
                     + "; instanceCreated=" + createdAnything
+                    + "; productionCatalogLookup=" + productionLookup.Describe()
+                    + "; productionMissReported=" + productionMissReported
                     + "; catalogHash=" + ProbeCatalog.CatalogFileHash;
-                if (pluginResolved || handlerResolved || createdAnything || handler != null)
+                if (pluginResolved || handlerResolved || createdAnything || handler != null || !productionMissReported)
                 {
                     report.Add(ProbeOutcome.Fail(name, detail + "; a missing registration was resolved"));
                     return;
@@ -439,7 +548,8 @@ namespace GameCore.Validation.ProbeHost
                 report.Add(
                     ProbeOutcome.ExpectedNegative(
                         "missing-registration-report",
-                        "the generated catalog returned no factory for stable key " + ProbeKeys.AbsentFixturePlugin
+                        "the generated catalog and the production immutable catalog returned no factory for stable key "
+                        + ProbeKeys.AbsentFixturePluginKey
                         + " (stable name '" + ProbeKeys.AbsentFixturePluginStableName
                         + "'); resolution failed explicitly instead of constructing an instance through reflection"));
             }
@@ -449,7 +559,7 @@ namespace GameCore.Validation.ProbeHost
             }
         }
 
-        private static bool ContainsKey(ProbeKey[] keys, ProbeKey key)
+        private static bool ContainsKey(FactoryKey[] keys, FactoryKey key)
         {
             for (int i = 0; i < keys.Length; i++)
             {
@@ -462,7 +572,7 @@ namespace GameCore.Validation.ProbeHost
             return false;
         }
 
-        private static bool AllDistinct(ProbeKey[] keys)
+        private static bool AllDistinct(FactoryKey[] keys)
         {
             for (int i = 0; i < keys.Length; i++)
             {
