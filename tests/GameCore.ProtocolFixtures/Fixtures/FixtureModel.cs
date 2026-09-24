@@ -98,7 +98,7 @@ namespace GameCore.ProtocolFixtures.Fixtures
     {
         public OracleVerdict(bool valid, string code, string detail)
         {
-            Valid = valid;
+            IsValid = valid;
             Code = code ?? string.Empty;
             Detail = detail ?? string.Empty;
         }
@@ -107,7 +107,7 @@ namespace GameCore.ProtocolFixtures.Fixtures
 
         public static OracleVerdict Invalid(string code, string detail) => new OracleVerdict(false, code, detail);
 
-        public bool Valid { get; }
+        public bool IsValid { get; }
 
         /// <summary>Stable rejection code; empty when the input is valid.</summary>
         public string Code { get; }

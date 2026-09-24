@@ -67,7 +67,7 @@ namespace GameCore.Contracts
                 int hash = 17;
                 hash = (hash * 31) + (World.GetHashCode());
                 hash = (hash * 31) + (IssuerId.GetHashCode());
-                hash = (hash * 31) + IssuerSequence;
+                hash = (hash * 31) + IssuerSequence.GetHashCode();
                 return hash;
             }
         }
@@ -106,7 +106,7 @@ namespace GameCore.Contracts
                 int hash = 17;
                 hash = (hash * 31) + (World.GetHashCode());
                 hash = (hash * 31) + Slot;
-                hash = (hash * 31) + Generation;
+                hash = (hash * 31) + Generation.GetHashCode();
                 return hash;
             }
         }
@@ -145,7 +145,7 @@ namespace GameCore.Contracts
                 int hash = 17;
                 hash = (hash * 31) + (World.GetHashCode());
                 hash = (hash * 31) + Slot;
-                hash = (hash * 31) + ScopeGeneration;
+                hash = (hash * 31) + ScopeGeneration.GetHashCode();
                 return hash;
             }
         }
@@ -184,7 +184,7 @@ namespace GameCore.Contracts
                 int hash = 17;
                 hash = (hash * 31) + (World.GetHashCode());
                 hash = (hash * 31) + Slot;
-                hash = (hash * 31) + InstallationGeneration;
+                hash = (hash * 31) + InstallationGeneration.GetHashCode();
                 return hash;
             }
         }
@@ -222,8 +222,8 @@ namespace GameCore.Contracts
             {
                 int hash = 17;
                 hash = (hash * 31) + (World.GetHashCode());
-                hash = (hash * 31) + AssemblyEpoch;
-                hash = (hash * 31) + LogicalStepId;
+                hash = (hash * 31) + AssemblyEpoch.GetHashCode();
+                hash = (hash * 31) + LogicalStepId.GetHashCode();
                 return hash;
             }
         }
@@ -273,9 +273,9 @@ namespace GameCore.Contracts
                 int hash = 17;
                 hash = (hash * 31) + (Operation.GetHashCode());
                 hash = (hash * 31) + (PluginInstanceId.GetHashCode());
-                hash = (hash * 31) + InstallationGeneration;
-                hash = (hash * 31) + ActivationEpoch;
-                hash = (hash * 31) + WorkOrdinal;
+                hash = (hash * 31) + InstallationGeneration.GetHashCode();
+                hash = (hash * 31) + ActivationEpoch.GetHashCode();
+                hash = (hash * 31) + WorkOrdinal.GetHashCode();
                 return hash;
             }
         }
@@ -310,7 +310,7 @@ namespace GameCore.Contracts
             {
                 int hash = 17;
                 hash = (hash * 31) + (Id.GetHashCode());
-                hash = (hash * 31) + Version;
+                hash = (hash * 31) + Version.GetHashCode();
                 return hash;
             }
         }
@@ -349,7 +349,7 @@ namespace GameCore.Contracts
                 int hash = 17;
                 hash = (hash * 31) + (Id.GetHashCode());
                 hash = (hash * 31) + (Schema.GetHashCode());
-                hash = (hash * 31) + Revision;
+                hash = (hash * 31) + Revision.GetHashCode();
                 return hash;
             }
         }
@@ -401,7 +401,7 @@ namespace GameCore.Contracts
                 hash = (hash * 31) + (Rule.GetHashCode());
                 hash = (hash * 31) + (Target.GetHashCode());
                 hash = (hash * 31) + (Capability.GetHashCode());
-                hash = (hash * 31) + OutputSlot;
+                hash = (hash * 31) + OutputSlot.GetHashCode();
                 return hash;
             }
         }
@@ -475,7 +475,7 @@ namespace GameCore.Contracts
             {
                 int hash = 17;
                 hash = (hash * 31) + (World.GetHashCode());
-                hash = (hash * 31) + Sequence;
+                hash = (hash * 31) + Sequence.GetHashCode();
                 return hash;
             }
         }
@@ -510,7 +510,7 @@ namespace GameCore.Contracts
             {
                 int hash = 17;
                 hash = (hash * 31) + (ContractId.GetHashCode());
-                hash = (hash * 31) + Version;
+                hash = (hash * 31) + Version.GetHashCode();
                 return hash;
             }
         }
@@ -545,7 +545,7 @@ namespace GameCore.Contracts
             {
                 int hash = 17;
                 hash = (hash * 31) + (Capability.GetHashCode());
-                hash = (hash * 31) + Version;
+                hash = (hash * 31) + Version.GetHashCode();
                 return hash;
             }
         }
@@ -650,7 +650,7 @@ namespace GameCore.Contracts
             {
                 int hash = 17;
                 hash = (hash * 31) + (RegistrationKey.GetHashCode());
-                hash = (hash * 31) + KeyVersion;
+                hash = (hash * 31) + KeyVersion.GetHashCode();
                 return hash;
             }
         }

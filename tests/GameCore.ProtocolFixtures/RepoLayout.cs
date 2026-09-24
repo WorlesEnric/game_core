@@ -21,6 +21,8 @@ namespace GameCore.ProtocolFixtures
 
         public static string ResultSchemaPath => "tests/GameCore.ProtocolFixtures/Data/result-schema.json";
 
+        public static string ResultDocumentPath => "artifacts/protocol-fixtures/results.json";
+
         public static string ApiSnapshotPath => "tests/GameCore.ReferenceSeams/api/GameCore.Contracts.api.txt";
 
         /// <summary>Finds the repository root, or throws with the searched locations listed.</summary>

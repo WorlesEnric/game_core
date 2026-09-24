@@ -102,7 +102,7 @@ namespace GameCore.ProtocolFixtures.Tests
                 {
                     invalidCases++;
                     OracleVerdict verdict = runner.Evaluate(fixtureCase);
-                    Assert.That(verdict.Valid, Is.False, "Case '" + fixtureCase.CaseId + "' was accepted although it must be refused.");
+                    Assert.That(verdict.IsValid, Is.False, "Case '" + fixtureCase.CaseId + "' was accepted although it must be refused.");
                     Assert.That(
                         verdict.Code,
                         Is.EqualTo(fixtureCase.ExpectedCode),

@@ -49,12 +49,12 @@ namespace GameCore.ProtocolFixtures.Fixtures
             string detail;
             if (fixtureCase.Expectation == FixtureExpectation.Valid)
             {
-                passed = verdict.Valid;
+                passed = verdict.IsValid;
                 detail = "expected valid; observed " + Describe(verdict);
             }
             else
             {
-                passed = !verdict.Valid && string.Equals(verdict.Code, fixtureCase.ExpectedCode, StringComparison.Ordinal);
+                passed = !verdict.IsValid && string.Equals(verdict.Code, fixtureCase.ExpectedCode, StringComparison.Ordinal);
                 detail = "expected invalid(" + fixtureCase.ExpectedCode + "); observed " + Describe(verdict);
             }
 
@@ -99,7 +99,7 @@ namespace GameCore.ProtocolFixtures.Fixtures
         }
 
         private static string Describe(OracleVerdict verdict) =>
-            verdict.Valid ? "valid (" + verdict.Detail + ")" : verdict.Code + " (" + verdict.Detail + ")";
+            verdict.IsValid ? "valid (" + verdict.Detail + ")" : verdict.Code + " (" + verdict.Detail + ")";
 
         private static OracleVerdict EvaluateCanonicalBytes(JsonElement parameters)
         {

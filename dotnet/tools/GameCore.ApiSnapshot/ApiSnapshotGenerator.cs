@@ -506,7 +506,7 @@ namespace GameCore.ApiSnapshot
         {
             try
             {
-                return context.Create(method).ReadState;
+                return context.Create(method.ReturnParameter).ReadState;
             }
             catch (InvalidOperationException)
             {
