@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Independent pure oracle (GC-002). Imports no Unity or gameplay assembly; references only the
+       test-only reference seam. Sources live under tests/GameCore.ProtocolFixtures. -->
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>GameCore.ProtocolFixtures</AssemblyName>
+    <RootNamespace>GameCore.ProtocolFixtures</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="../../../tests/GameCore.ProtocolFixtures/**/*.cs"
+             Exclude="../../../tests/GameCore.ProtocolFixtures/**/bin/**/*.cs;../../../tests/GameCore.ProtocolFixtures/**/obj/**/*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../GameCore.ReferenceSeams/GameCore.ReferenceSeams.csproj" />
+    <!-- JSON fixture loading/serialization. A hand-written parser is not acceptable; this package supplies
+         System.Text.Json for netstandard2.1. -->
+    <PackageReference Include="System.Text.Json" Version="8.0.5" />
+  </ItemGroup>
+
+</Project>

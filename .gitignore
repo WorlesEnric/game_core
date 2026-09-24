@@ -1,0 +1,10 @@
+# macOS / editor noise
+.DS_Store
+
+# plain-dotnet build output
+dotnet/**/bin/
+dotnet/**/obj/
+dotnet/**/TestResults/
+
+# raw run logs and measurements (summaries and result indexes stay versioned)
+artifacts/**/raw/

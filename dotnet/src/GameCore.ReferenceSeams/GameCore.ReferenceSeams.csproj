@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Test-only compiled reference seam (GC-002). Assembly name GameCore.ReferenceSeams, types in
+       namespace GameCore.Contracts with the names production will use. Sources live under
+       tests/GameCore.ReferenceSeams so the fixture oracle and the dotnet build share one copy. -->
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>GameCore.ReferenceSeams</AssemblyName>
+    <RootNamespace>GameCore.Contracts</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="../../../tests/GameCore.ReferenceSeams/**/*.cs"
+             Exclude="../../../tests/GameCore.ReferenceSeams/**/bin/**/*.cs;../../../tests/GameCore.ReferenceSeams/**/obj/**/*.cs" />
+  </ItemGroup>
+
+</Project>

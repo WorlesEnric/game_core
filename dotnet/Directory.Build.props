@@ -1,0 +1,20 @@
+<Project>
+
+  <!-- Shared build settings for every plain-dotnet project in this repository (owned by GC-002).
+       Unity compiles the same sources through its own packages and ignores these files. -->
+
+  <PropertyGroup>
+    <LangVersion>9.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Deterministic>true</Deterministic>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <!-- Compiler diagnostics are warnings-as-errors above; the optional .NET analyzers are disabled so the
+         host build is reproducible without the analyzer package surface. -->
+    <EnableNETAnalyzers>false</EnableNETAnalyzers>
+    <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+</Project>
