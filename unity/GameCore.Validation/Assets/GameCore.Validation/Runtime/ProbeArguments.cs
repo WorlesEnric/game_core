@@ -12,7 +12,7 @@ namespace GameCore.Validation.ProbeHost
         private const string ResultArgumentName = "-probeResult";
         private const string MissingRegistrationArgumentName = "-probeMissingRegistration";
 
-        private ProbeArguments(bool missingRegistration, string resultPath)
+        private ProbeArguments(bool missingRegistration, string? resultPath)
         {
             MissingRegistration = missingRegistration;
             ResultPath = resultPath;
