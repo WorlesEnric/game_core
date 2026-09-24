@@ -1,0 +1,139 @@
+[
+  {
+    "args": [
+      "dotnet",
+      "build",
+      "dotnet/GameCore.sln",
+      "-c",
+      "Release"
+    ],
+    "exit": 1,
+    "log": "artifacts/gc-005/dotnet-build-initial.log",
+    "seconds": 1.63
+  },
+  {
+    "args": [
+      "dotnet",
+      "build",
+      "dotnet/GameCore.sln",
+      "-c",
+      "Release"
+    ],
+    "exit": 1,
+    "log": "artifacts/gc-005/dotnet-build-second.log",
+    "seconds": 0.89
+  },
+  {
+    "args": [
+      "dotnet",
+      "test",
+      "dotnet/GameCore.sln",
+      "-c",
+      "Release",
+      "--logger",
+      "trx",
+      "--results-directory",
+      "/home/worlesenric/wkspace/gc-wt/gc-005/artifacts/gc-005/dotnet-results"
+    ],
+    "exit": 1,
+    "log": "artifacts/gc-005/dotnet-test-second.log",
+    "seconds": 1.96
+  },
+  {
+    "args": [
+      "dotnet",
+      "build",
+      "dotnet/GameCore.sln",
+      "-c",
+      "Release"
+    ],
+    "exit": 0,
+    "log": "artifacts/gc-005/dotnet-build.log",
+    "seconds": 0.83
+  },
+  {
+    "args": [
+      "dotnet",
+      "test",
+      "dotnet/GameCore.sln",
+      "-c",
+      "Release",
+      "--logger",
+      "trx",
+      "--results-directory",
+      "/home/worlesenric/wkspace/gc-wt/gc-005/artifacts/gc-005/dotnet-results"
+    ],
+    "exit": 1,
+    "log": "artifacts/gc-005/dotnet-test-initial-failures.log",
+    "seconds": 1.93
+  },
+  {
+    "args": [
+      "dotnet",
+      "test",
+      "dotnet/GameCore.sln",
+      "-c",
+      "Release",
+      "--logger",
+      "trx",
+      "--results-directory",
+      "/home/worlesenric/wkspace/gc-wt/gc-005/artifacts/gc-005/dotnet-results"
+    ],
+    "exit": 0,
+    "log": "artifacts/gc-005/dotnet-test.log",
+    "seconds": 1.77
+  },
+  {
+    "args": [
+      "python3",
+      "tools/validate_game_core_docs.py",
+      "--self-test"
+    ],
+    "exit": 0,
+    "log": "artifacts/gc-005/docs-self-test.log",
+    "seconds": 0.05
+  },
+  {
+    "args": [
+      "python3",
+      "tools/validate_game_core_docs.py"
+    ],
+    "exit": 0,
+    "log": "artifacts/gc-005/docs-validation.log",
+    "seconds": 0.13
+  },
+  {
+    "args": [
+      "uname",
+      "-a"
+    ],
+    "exit": 0,
+    "log": "artifacts/gc-005/host.log",
+    "seconds": 0.0
+  },
+  {
+    "args": [
+      "dotnet",
+      "--info"
+    ],
+    "exit": 0,
+    "log": "artifacts/gc-005/dotnet-info.log",
+    "seconds": 0.13
+  },
+  {
+    "args": [
+      "tools/unity/run_probe.sh"
+    ],
+    "exit": 0,
+    "log": "artifacts/gc-005/gc001-probe-run.log",
+    "seconds": 0.39
+  },
+  {
+    "args": [
+      "tools/unity/run_world_probe.sh"
+    ],
+    "exit": 0,
+    "log": "artifacts/gc-005/gc005-probe-run.log",
+    "seconds": 0.16
+  }
+]

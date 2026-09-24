@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="0ece36b9-6d0c-4b10-91c6-f45f0c13bc52" name="@worlesenric 2026-09-25 05:49:03" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-25T05:49:03.4934892+08:00" queuing="2026-09-25T05:49:03.4934892+08:00" start="2026-09-25T05:49:03.1289301+08:00" finish="2026-09-25T05:49:03.5149860+08:00" />
+  <TestSettings name="default" id="395060d3-8c8b-4cc5-9802-9f632dbe7474">
+    <Deployment runDeploymentRoot="_worlesenric_2026-09-25_05_49_03" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="abff5084-3045-4593-932d-64a35ffe955e" testId="303e6f04-20d7-e46b-e401-41725e6b09fc" testName="FixedStepRejectsABackwardsHostClock" computerName="worlesenric" duration="00:00:00.0001050" startTime="2026-09-25T05:49:03.4432129+08:00" endTime="2026-09-25T05:49:03.4433182+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="abff5084-3045-4593-932d-64a35ffe955e" />
+    <UnitTestResult executionId="8d57a610-0620-45e5-955d-86c95fb0e913" testId="545a557f-f478-224a-556c-fd0f92c9736d" testName="QuarantineRetainsUntilItsUsersEndAndThenAllowsRetirement" computerName="worlesenric" duration="00:00:00.0003270" startTime="2026-09-25T05:49:03.4461382+08:00" endTime="2026-09-25T05:49:03.4464652+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8d57a610-0620-45e5-955d-86c95fb0e913" />
+    <UnitTestResult executionId="0b6148d1-4769-4387-896a-ce9a963792dd" testId="2873c9c4-989d-7e04-6f99-7a10e9e110b5" testName="RetirementRunsFromDependentsTowardDependencies" computerName="worlesenric" duration="00:00:00.0002560" startTime="2026-09-25T05:49:03.4466415+08:00" endTime="2026-09-25T05:49:03.4468977+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0b6148d1-4769-4387-896a-ce9a963792dd" />
+    <UnitTestResult executionId="15157144-c4a9-44aa-a060-1651fe6f3bc8" testId="10e55d40-0090-581f-bc4b-35d4694553fd" testName="FixedStepCatchUpIsBoundedAndDebtIsNeverDropped" computerName="worlesenric" duration="00:00:00.0002210" startTime="2026-09-25T05:49:03.4427998+08:00" endTime="2026-09-25T05:49:03.4430211+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="15157144-c4a9-44aa-a060-1651fe6f3bc8" />
+    <UnitTestResult executionId="3c8c946d-e509-4376-a760-7f5dcfcc50fa" testId="45b65ac6-110a-86f7-06c6-019258709dd0" testName="AFailingDisposerIsQuarantinedWhileOtherCleanupStillRuns" computerName="worlesenric" duration="00:00:00.0027310" startTime="2026-09-25T05:49:03.4433882+08:00" endTime="2026-09-25T05:49:03.4461193+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3c8c946d-e509-4376-a760-7f5dcfcc50fa" />
+    <UnitTestResult executionId="a83f9bb5-21a3-4631-a984-0c1956d9547a" testId="4a8ec966-8828-ce32-4aa8-653ecc611411" testName="CommandDrivenWorldExecutesZeroStepsWithoutDemand" computerName="worlesenric" duration="00:00:00.0035270" startTime="2026-09-25T05:49:03.4373349+08:00" endTime="2026-09-25T05:49:03.4408615+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a83f9bb5-21a3-4631-a984-0c1956d9547a" />
+    <UnitTestResult executionId="f8918350-be0d-4e8f-bfa9-252c4273d77f" testId="31221740-9a3f-c3af-d481-4e0aecfed033" testName="DuplicateSystemKeysAreRejected" computerName="worlesenric" duration="00:00:00.0078490" startTime="2026-09-25T05:49:03.4106330+08:00" endTime="2026-09-25T05:49:03.4184401+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f8918350-be0d-4e8f-bfa9-252c4273d77f" />
+    <UnitTestResult executionId="51e6abb4-d79b-4b5b-a793-c9dfc9bc05b6" testId="43b54bab-a736-4e2a-6785-841b4dda0f6d" testName="NonAscendingDispatchIndicesAreRejected" computerName="worlesenric" duration="00:00:00.0001100" startTime="2026-09-25T05:49:03.4237505+08:00" endTime="2026-09-25T05:49:03.4238607+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="51e6abb4-d79b-4b5b-a793-c9dfc9bc05b6" />
+    <UnitTestResult executionId="917cd4d7-a65a-4711-8417-00d46a24011c" testId="34c9ba54-c5dd-8be4-82c8-a009fad9bf0b" testName="FixedStepPauseAddsNoDebtAndPreservesTheAccumulator" computerName="worlesenric" duration="00:00:00.0001789" startTime="2026-09-25T05:49:03.4430280+08:00" endTime="2026-09-25T05:49:03.4432072+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="917cd4d7-a65a-4711-8417-00d46a24011c" />
+    <UnitTestResult executionId="8aec94b0-f406-4574-9d78-30851b7c7bfa" testId="4135703b-cedb-85f4-913b-93148909a1fd" testName="MainThreadDisciplineIsExplicitlyCaptured" computerName="worlesenric" duration="00:00:00.0005960" startTime="2026-09-25T05:49:03.4345923+08:00" endTime="2026-09-25T05:49:03.4351877+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8aec94b0-f406-4574-9d78-30851b7c7bfa" />
+    <UnitTestResult executionId="8b1d2674-b655-44da-bae4-e9b1961f408b" testId="d7cc144d-d7ae-f5d8-3a71-1a938f56653e" testName="ProducerWithoutItsConsumerStageFailsDrainValidation" computerName="worlesenric" duration="00:00:00.0014660" startTime="2026-09-25T05:49:03.4238668+08:00" endTime="2026-09-25T05:49:03.4253326+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8b1d2674-b655-44da-bae4-e9b1961f408b" />
+    <UnitTestResult executionId="230a1edf-05ae-4aed-a672-f05de9075899" testId="2edc501e-8344-75cc-b669-23e1c4271271" testName="IdSequenceIsDeterministicAndNeverWraps" computerName="worlesenric" duration="00:00:00.0029270" startTime="2026-09-25T05:49:03.4208053+08:00" endTime="2026-09-25T05:49:03.4237325+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="230a1edf-05ae-4aed-a672-f05de9075899" />
+    <UnitTestResult executionId="2b0aab59-8969-46f9-92a9-383fae859148" testId="3ece3464-5e86-6076-b40f-bd3051d58713" testName="ASubscriberFailureIsCountedAndCannotUndoTheCommit" computerName="worlesenric" duration="00:00:00.0007940" startTime="2026-09-25T05:49:03.4335345+08:00" endTime="2026-09-25T05:49:03.4343279+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2b0aab59-8969-46f9-92a9-383fae859148" />
+    <UnitTestResult executionId="516e76fe-fd43-44ae-9089-23f04cf0c5e7" testId="94bb3ca6-8723-a1fc-2486-1ec35ee3c9c3" testName="ForwardOrSelfStageEdgesAreRejected" computerName="worlesenric" duration="00:00:00.0001789" startTime="2026-09-25T05:49:03.4206181+08:00" endTime="2026-09-25T05:49:03.4207971+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="516e76fe-fd43-44ae-9089-23f04cf0c5e7" />
+    <UnitTestResult executionId="b9d44829-3f81-4bac-a172-7a3637c50e3d" testId="1f60911d-0ec0-d0fd-779c-57b08ad082a3" testName="WellFormedPlanProjectsOntoTheEpochBoundTable" computerName="worlesenric" duration="00:00:00.0013070" startTime="2026-09-25T05:49:03.4254414+08:00" endTime="2026-09-25T05:49:03.4267483+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b9d44829-3f81-4bac-a172-7a3637c50e3d" />
+    <UnitTestResult executionId="ba4717c7-a4d2-4f9e-a817-cb95cabf940d" testId="42e2aa6d-4924-e333-b7de-502334166dc2" testName="StepFingerprintIsScopedAndDeterministic" computerName="worlesenric" duration="00:00:00.0007610" startTime="2026-09-25T05:49:03.4360456+08:00" endTime="2026-09-25T05:49:03.4368065+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ba4717c7-a4d2-4f9e-a817-cb95cabf940d" />
+    <UnitTestResult executionId="131e2682-d565-48ec-8263-2e80965598c3" testId="0d60feda-8f8d-eeaa-6f8a-8de4f9ff0377" testName="CommandDrivenWorldAdmitsDemandUpToItsPerPumpLimit" computerName="worlesenric" duration="00:00:00.0003890" startTime="2026-09-25T05:49:03.4369363+08:00" endTime="2026-09-25T05:49:03.4373255+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="131e2682-d565-48ec-8263-2e80965598c3" />
+    <UnitTestResult executionId="57462748-8ed6-440d-aa91-eca206720f92" testId="835ddafc-16ed-f669-1bd3-27b5b31a1825" testName="FixedStepAdmitsWholeStepsAndRetainsTheRemainder" computerName="worlesenric" duration="00:00:00.0005400" startTime="2026-09-25T05:49:03.4422485+08:00" endTime="2026-09-25T05:49:03.4427880+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="57462748-8ed6-440d-aa91-eca206720f92" />
+    <UnitTestResult executionId="0ba14fe1-2fb8-483b-bc9a-faaa83781b6a" testId="9b68467e-4c59-5308-7184-4397751bb0c8" testName="UnknownResourcesAndJobsAreRefusedInsteadOfInvented" computerName="worlesenric" duration="00:00:00.0001100" startTime="2026-09-25T05:49:03.4509151+08:00" endTime="2026-09-25T05:49:03.4510256+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0ba14fe1-2fb8-483b-bc9a-faaa83781b6a" />
+    <UnitTestResult executionId="f9e313e0-949c-425a-ba58-8fd96e43d3cc" testId="3035a382-336b-d9da-a4ed-2f3e7105ec85" testName="FactoriesRejectAnInvalidConfiguration" computerName="worlesenric" duration="00:00:00.0013530" startTime="2026-09-25T05:49:03.4408783+08:00" endTime="2026-09-25T05:49:03.4422313+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f9e313e0-949c-425a-ba58-8fd96e43d3cc" />
+    <UnitTestResult executionId="a9fc2c82-22f1-4021-a462-b79d306bfc86" testId="3c72f170-5caa-fce3-944a-843ab00df853" testName="UnfinishedJobsStayTrackedAndQuarantined" computerName="worlesenric" duration="00:00:00.0005190" startTime="2026-09-25T05:49:03.4503846+08:00" endTime="2026-09-25T05:49:03.4509036+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a9fc2c82-22f1-4021-a462-b79d306bfc86" />
+    <UnitTestResult executionId="385176f0-edc0-419c-ba1f-5724e2a68ca1" testId="5d1aedc4-d23b-8c74-fe8d-3b54ae90eb72" testName="ForeignWorldImagesAreRefusedAtPublication" computerName="worlesenric" duration="00:00:00.0002450" startTime="2026-09-25T05:49:03.4343392+08:00" endTime="2026-09-25T05:49:03.4345839+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="385176f0-edc0-419c-ba1f-5724e2a68ca1" />
+    <UnitTestResult executionId="732bea4d-2674-4878-bc8b-75dacdfece78" testId="9b4a2fc1-2d8a-024b-e548-b73a3749a522" testName="StageIndexesOutsideTheDeclaredCountAreRejected" computerName="worlesenric" duration="00:00:00.0000930" startTime="2026-09-25T05:49:03.4253430+08:00" endTime="2026-09-25T05:49:03.4254361+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="732bea4d-2674-4878-bc8b-75dacdfece78" />
+    <UnitTestResult executionId="dff2d6dd-85b9-4194-8f4e-596e2d10005c" testId="4d8779a6-a796-88ce-c981-a94903018e41" testName="AcquireReportsAcquiredExpiredForeignWorldAndBackpressure" computerName="worlesenric" duration="00:00:00.0056020" startTime="2026-09-25T05:49:03.4279119+08:00" endTime="2026-09-25T05:49:03.4335131+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="dff2d6dd-85b9-4194-8f4e-596e2d10005c" />
+    <UnitTestResult executionId="4b6a41f2-078e-4283-9cd0-6c78fa4d1a3f" testId="389608c6-b9a3-153f-efa7-9eadc9be4dfa" testName="EmptyPlanIsAValidNoOp" computerName="worlesenric" duration="00:00:00.0014430" startTime="2026-09-25T05:49:03.4191565+08:00" endTime="2026-09-25T05:49:03.4205994+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4b6a41f2-078e-4283-9cd0-6c78fa4d1a3f" />
+    <UnitTestResult executionId="ba637fea-ec68-40b1-b160-9e90d75be079" testId="9fa8b50d-476e-66b5-554b-ad67458320a6" testName="PublishingOneStepExposesExactlyOneImage" computerName="worlesenric" duration="00:00:00.0008370" startTime="2026-09-25T05:49:03.4351975+08:00" endTime="2026-09-25T05:49:03.4360347+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ba637fea-ec68-40b1-b160-9e90d75be079" />
+    <UnitTestResult executionId="2dd2f227-4dd0-4630-9c2c-03cbc696f80e" testId="d738f275-76d5-19cd-eea0-f021e2b8ec8d" testName="SnapshotIsOrderedByResourceIdAndReportsQuarantineBytes" computerName="worlesenric" duration="00:00:00.0034590" startTime="2026-09-25T05:49:03.4469054+08:00" endTime="2026-09-25T05:49:03.4503639+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2dd2f227-4dd0-4630-9c2c-03cbc696f80e" />
+    <UnitTestResult executionId="6264879e-c92a-4d66-9741-8561b27f2bea" testId="ffb320f3-6eb7-d529-f4d7-259c2e4eba0c" testName="ResourcesAreDisposedAtMostOnce" computerName="worlesenric" duration="00:00:00.0001530" startTime="2026-09-25T05:49:03.4464757+08:00" endTime="2026-09-25T05:49:03.4466284+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6264879e-c92a-4d66-9741-8561b27f2bea" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="AFailingDisposerIsQuarantinedWhileOtherCleanupStillRuns" storage="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/gamecore.execution.tests/bin/release/net8.0/gamecore.execution.tests.dll" id="45b65ac6-110a-86f7-06c6-019258709dd0">
+      <Execution id="3c8c946d-e509-4376-a760-7f5dcfcc50fa" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/GameCore.Execution.Tests/bin/Release/net8.0/GameCore.Execution.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Execution.Tests.WorldResourceLedgerTests" name="AFailingDisposerIsQuarantinedWhileOtherCleanupStillRuns" />
+    </UnitTest>
+    <UnitTest name="SnapshotIsOrderedByResourceIdAndReportsQuarantineBytes" storage="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/gamecore.execution.tests/bin/release/net8.0/gamecore.execution.tests.dll" id="d738f275-76d5-19cd-eea0-f021e2b8ec8d">
+      <Execution id="2dd2f227-4dd0-4630-9c2c-03cbc696f80e" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/GameCore.Execution.Tests/bin/Release/net8.0/GameCore.Execution.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Execution.Tests.WorldResourceLedgerTests" name="SnapshotIsOrderedByResourceIdAndReportsQuarantineBytes" />
+    </UnitTest>
+    <UnitTest name="FixedStepAdmitsWholeStepsAndRetainsTheRemainder" storage="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/gamecore.execution.tests/bin/release/net8.0/gamecore.execution.tests.dll" id="835ddafc-16ed-f669-1bd3-27b5b31a1825">
+      <Execution id="57462748-8ed6-440d-aa91-eca206720f92" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/GameCore.Execution.Tests/bin/Release/net8.0/GameCore.Execution.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Execution.Tests.TemporalAccumulatorTests" name="FixedStepAdmitsWholeStepsAndRetainsTheRemainder" />
+    </UnitTest>
+    <UnitTest name="UnfinishedJobsStayTrackedAndQuarantined" storage="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/gamecore.execution.tests/bin/release/net8.0/gamecore.execution.tests.dll" id="3c72f170-5caa-fce3-944a-843ab00df853">
+      <Execution id="a9fc2c82-22f1-4021-a462-b79d306bfc86" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/GameCore.Execution.Tests/bin/Release/net8.0/GameCore.Execution.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Execution.Tests.WorldResourceLedgerTests" name="UnfinishedJobsStayTrackedAndQuarantined" />
+    </UnitTest>
+    <UnitTest name="FixedStepRejectsABackwardsHostClock" storage="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/gamecore.execution.tests/bin/release/net8.0/gamecore.execution.tests.dll" id="303e6f04-20d7-e46b-e401-41725e6b09fc">
+      <Execution id="abff5084-3045-4593-932d-64a35ffe955e" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/GameCore.Execution.Tests/bin/Release/net8.0/GameCore.Execution.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Execution.Tests.TemporalAccumulatorTests" name="FixedStepRejectsABackwardsHostClock" />
+    </UnitTest>
+    <UnitTest name="IdSequenceIsDeterministicAndNeverWraps" storage="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/gamecore.execution.tests/bin/release/net8.0/gamecore.execution.tests.dll" id="2edc501e-8344-75cc-b669-23e1c4271271">
+      <Execution id="230a1edf-05ae-4aed-a672-f05de9075899" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/GameCore.Execution.Tests/bin/Release/net8.0/GameCore.Execution.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Execution.Tests.GuardedDispatchPlanTests" name="IdSequenceIsDeterministicAndNeverWraps" />
+    </UnitTest>
+    <UnitTest name="ForwardOrSelfStageEdgesAreRejected" storage="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/gamecore.execution.tests/bin/release/net8.0/gamecore.execution.tests.dll" id="94bb3ca6-8723-a1fc-2486-1ec35ee3c9c3">
+      <Execution id="516e76fe-fd43-44ae-9089-23f04cf0c5e7" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/GameCore.Execution.Tests/bin/Release/net8.0/GameCore.Execution.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Execution.Tests.GuardedDispatchPlanTests" name="ForwardOrSelfStageEdgesAreRejected" />
+    </UnitTest>
+    <UnitTest name="AcquireReportsAcquiredExpiredForeignWorldAndBackpressure" storage="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/gamecore.execution.tests/bin/release/net8.0/gamecore.execution.tests.dll" id="4d8779a6-a796-88ce-c981-a94903018e41">
+      <Execution id="dff2d6dd-85b9-4194-8f4e-596e2d10005c" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/GameCore.Execution.Tests/bin/Release/net8.0/GameCore.Execution.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Execution.Tests.PublicationBoundaryTests" name="AcquireReportsAcquiredExpiredForeignWorldAndBackpressure" />
+    </UnitTest>
+    <UnitTest name="ResourcesAreDisposedAtMostOnce" storage="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/gamecore.execution.tests/bin/release/net8.0/gamecore.execution.tests.dll" id="ffb320f3-6eb7-d529-f4d7-259c2e4eba0c">
+      <Execution id="6264879e-c92a-4d66-9741-8561b27f2bea" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/GameCore.Execution.Tests/bin/Release/net8.0/GameCore.Execution.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Execution.Tests.WorldResourceLedgerTests" name="ResourcesAreDisposedAtMostOnce" />
+    </UnitTest>
+    <UnitTest name="ASubscriberFailureIsCountedAndCannotUndoTheCommit" storage="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/gamecore.execution.tests/bin/release/net8.0/gamecore.execution.tests.dll" id="3ece3464-5e86-6076-b40f-bd3051d58713">
+      <Execution id="2b0aab59-8969-46f9-92a9-383fae859148" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/GameCore.Execution.Tests/bin/Release/net8.0/GameCore.Execution.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Execution.Tests.PublicationBoundaryTests" name="ASubscriberFailureIsCountedAndCannotUndoTheCommit" />
+    </UnitTest>
+    <UnitTest name="StageIndexesOutsideTheDeclaredCountAreRejected" storage="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/gamecore.execution.tests/bin/release/net8.0/gamecore.execution.tests.dll" id="9b4a2fc1-2d8a-024b-e548-b73a3749a522">
+      <Execution id="732bea4d-2674-4878-bc8b-75dacdfece78" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/GameCore.Execution.Tests/bin/Release/net8.0/GameCore.Execution.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Execution.Tests.GuardedDispatchPlanTests" name="StageIndexesOutsideTheDeclaredCountAreRejected" />
+    </UnitTest>
+    <UnitTest name="UnknownResourcesAndJobsAreRefusedInsteadOfInvented" storage="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/gamecore.execution.tests/bin/release/net8.0/gamecore.execution.tests.dll" id="9b68467e-4c59-5308-7184-4397751bb0c8">
+      <Execution id="0ba14fe1-2fb8-483b-bc9a-faaa83781b6a" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/GameCore.Execution.Tests/bin/Release/net8.0/GameCore.Execution.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Execution.Tests.WorldResourceLedgerTests" name="UnknownResourcesAndJobsAreRefusedInsteadOfInvented" />
+    </UnitTest>
+    <UnitTest name="RetirementRunsFromDependentsTowardDependencies" storage="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/gamecore.execution.tests/bin/release/net8.0/gamecore.execution.tests.dll" id="2873c9c4-989d-7e04-6f99-7a10e9e110b5">
+      <Execution id="0b6148d1-4769-4387-896a-ce9a963792dd" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/GameCore.Execution.Tests/bin/Release/net8.0/GameCore.Execution.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Execution.Tests.WorldResourceLedgerTests" name="RetirementRunsFromDependentsTowardDependencies" />
+    </UnitTest>
+    <UnitTest name="CommandDrivenWorldExecutesZeroStepsWithoutDemand" storage="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/gamecore.execution.tests/bin/release/net8.0/gamecore.execution.tests.dll" id="4a8ec966-8828-ce32-4aa8-653ecc611411">
+      <Execution id="a83f9bb5-21a3-4631-a984-0c1956d9547a" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/GameCore.Execution.Tests/bin/Release/net8.0/GameCore.Execution.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Execution.Tests.TemporalAccumulatorTests" name="CommandDrivenWorldExecutesZeroStepsWithoutDemand" />
+    </UnitTest>
+    <UnitTest name="ProducerWithoutItsConsumerStageFailsDrainValidation" storage="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/gamecore.execution.tests/bin/release/net8.0/gamecore.execution.tests.dll" id="d7cc144d-d7ae-f5d8-3a71-1a938f56653e">
+      <Execution id="8b1d2674-b655-44da-bae4-e9b1961f408b" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/GameCore.Execution.Tests/bin/Release/net8.0/GameCore.Execution.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Execution.Tests.GuardedDispatchPlanTests" name="ProducerWithoutItsConsumerStageFailsDrainValidation" />
+    </UnitTest>
+    <UnitTest name="NonAscendingDispatchIndicesAreRejected" storage="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/gamecore.execution.tests/bin/release/net8.0/gamecore.execution.tests.dll" id="43b54bab-a736-4e2a-6785-841b4dda0f6d">
+      <Execution id="51e6abb4-d79b-4b5b-a793-c9dfc9bc05b6" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/GameCore.Execution.Tests/bin/Release/net8.0/GameCore.Execution.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Execution.Tests.GuardedDispatchPlanTests" name="NonAscendingDispatchIndicesAreRejected" />
+    </UnitTest>
+    <UnitTest name="FixedStepCatchUpIsBoundedAndDebtIsNeverDropped" storage="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/gamecore.execution.tests/bin/release/net8.0/gamecore.execution.tests.dll" id="10e55d40-0090-581f-bc4b-35d4694553fd">
+      <Execution id="15157144-c4a9-44aa-a060-1651fe6f3bc8" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/GameCore.Execution.Tests/bin/Release/net8.0/GameCore.Execution.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Execution.Tests.TemporalAccumulatorTests" name="FixedStepCatchUpIsBoundedAndDebtIsNeverDropped" />
+    </UnitTest>
+    <UnitTest name="PublishingOneStepExposesExactlyOneImage" storage="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/gamecore.execution.tests/bin/release/net8.0/gamecore.execution.tests.dll" id="9fa8b50d-476e-66b5-554b-ad67458320a6">
+      <Execution id="ba637fea-ec68-40b1-b160-9e90d75be079" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/GameCore.Execution.Tests/bin/Release/net8.0/GameCore.Execution.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Execution.Tests.PublicationBoundaryTests" name="PublishingOneStepExposesExactlyOneImage" />
+    </UnitTest>
+    <UnitTest name="MainThreadDisciplineIsExplicitlyCaptured" storage="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/gamecore.execution.tests/bin/release/net8.0/gamecore.execution.tests.dll" id="4135703b-cedb-85f4-913b-93148909a1fd">
+      <Execution id="8aec94b0-f406-4574-9d78-30851b7c7bfa" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/GameCore.Execution.Tests/bin/Release/net8.0/GameCore.Execution.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Execution.Tests.PublicationBoundaryTests" name="MainThreadDisciplineIsExplicitlyCaptured" />
+    </UnitTest>
+    <UnitTest name="StepFingerprintIsScopedAndDeterministic" storage="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/gamecore.execution.tests/bin/release/net8.0/gamecore.execution.tests.dll" id="42e2aa6d-4924-e333-b7de-502334166dc2">
+      <Execution id="ba4717c7-a4d2-4f9e-a817-cb95cabf940d" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/GameCore.Execution.Tests/bin/Release/net8.0/GameCore.Execution.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Execution.Tests.PublicationBoundaryTests" name="StepFingerprintIsScopedAndDeterministic" />
+    </UnitTest>
+    <UnitTest name="QuarantineRetainsUntilItsUsersEndAndThenAllowsRetirement" storage="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/gamecore.execution.tests/bin/release/net8.0/gamecore.execution.tests.dll" id="545a557f-f478-224a-556c-fd0f92c9736d">
+      <Execution id="8d57a610-0620-45e5-955d-86c95fb0e913" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/GameCore.Execution.Tests/bin/Release/net8.0/GameCore.Execution.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Execution.Tests.WorldResourceLedgerTests" name="QuarantineRetainsUntilItsUsersEndAndThenAllowsRetirement" />
+    </UnitTest>
+    <UnitTest name="CommandDrivenWorldAdmitsDemandUpToItsPerPumpLimit" storage="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/gamecore.execution.tests/bin/release/net8.0/gamecore.execution.tests.dll" id="0d60feda-8f8d-eeaa-6f8a-8de4f9ff0377">
+      <Execution id="131e2682-d565-48ec-8263-2e80965598c3" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/GameCore.Execution.Tests/bin/Release/net8.0/GameCore.Execution.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Execution.Tests.TemporalAccumulatorTests" name="CommandDrivenWorldAdmitsDemandUpToItsPerPumpLimit" />
+    </UnitTest>
+    <UnitTest name="WellFormedPlanProjectsOntoTheEpochBoundTable" storage="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/gamecore.execution.tests/bin/release/net8.0/gamecore.execution.tests.dll" id="1f60911d-0ec0-d0fd-779c-57b08ad082a3">
+      <Execution id="b9d44829-3f81-4bac-a172-7a3637c50e3d" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/GameCore.Execution.Tests/bin/Release/net8.0/GameCore.Execution.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Execution.Tests.GuardedDispatchPlanTests" name="WellFormedPlanProjectsOntoTheEpochBoundTable" />
+    </UnitTest>
+    <UnitTest name="FactoriesRejectAnInvalidConfiguration" storage="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/gamecore.execution.tests/bin/release/net8.0/gamecore.execution.tests.dll" id="3035a382-336b-d9da-a4ed-2f3e7105ec85">
+      <Execution id="f9e313e0-949c-425a-ba58-8fd96e43d3cc" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/GameCore.Execution.Tests/bin/Release/net8.0/GameCore.Execution.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Execution.Tests.TemporalAccumulatorTests" name="FactoriesRejectAnInvalidConfiguration" />
+    </UnitTest>
+    <UnitTest name="DuplicateSystemKeysAreRejected" storage="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/gamecore.execution.tests/bin/release/net8.0/gamecore.execution.tests.dll" id="31221740-9a3f-c3af-d481-4e0aecfed033">
+      <Execution id="f8918350-be0d-4e8f-bfa9-252c4273d77f" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/GameCore.Execution.Tests/bin/Release/net8.0/GameCore.Execution.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Execution.Tests.GuardedDispatchPlanTests" name="DuplicateSystemKeysAreRejected" />
+    </UnitTest>
+    <UnitTest name="FixedStepPauseAddsNoDebtAndPreservesTheAccumulator" storage="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/gamecore.execution.tests/bin/release/net8.0/gamecore.execution.tests.dll" id="34c9ba54-c5dd-8be4-82c8-a009fad9bf0b">
+      <Execution id="917cd4d7-a65a-4711-8417-00d46a24011c" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/GameCore.Execution.Tests/bin/Release/net8.0/GameCore.Execution.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Execution.Tests.TemporalAccumulatorTests" name="FixedStepPauseAddsNoDebtAndPreservesTheAccumulator" />
+    </UnitTest>
+    <UnitTest name="EmptyPlanIsAValidNoOp" storage="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/gamecore.execution.tests/bin/release/net8.0/gamecore.execution.tests.dll" id="389608c6-b9a3-153f-efa7-9eadc9be4dfa">
+      <Execution id="4b6a41f2-078e-4283-9cd0-6c78fa4d1a3f" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/GameCore.Execution.Tests/bin/Release/net8.0/GameCore.Execution.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Execution.Tests.GuardedDispatchPlanTests" name="EmptyPlanIsAValidNoOp" />
+    </UnitTest>
+    <UnitTest name="ForeignWorldImagesAreRefusedAtPublication" storage="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/gamecore.execution.tests/bin/release/net8.0/gamecore.execution.tests.dll" id="5d1aedc4-d23b-8c74-fe8d-3b54ae90eb72">
+      <Execution id="385176f0-edc0-419c-ba1f-5724e2a68ca1" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/GameCore.Execution.Tests/bin/Release/net8.0/GameCore.Execution.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Execution.Tests.PublicationBoundaryTests" name="ForeignWorldImagesAreRefusedAtPublication" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="303e6f04-20d7-e46b-e401-41725e6b09fc" executionId="abff5084-3045-4593-932d-64a35ffe955e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="545a557f-f478-224a-556c-fd0f92c9736d" executionId="8d57a610-0620-45e5-955d-86c95fb0e913" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2873c9c4-989d-7e04-6f99-7a10e9e110b5" executionId="0b6148d1-4769-4387-896a-ce9a963792dd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="10e55d40-0090-581f-bc4b-35d4694553fd" executionId="15157144-c4a9-44aa-a060-1651fe6f3bc8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="45b65ac6-110a-86f7-06c6-019258709dd0" executionId="3c8c946d-e509-4376-a760-7f5dcfcc50fa" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4a8ec966-8828-ce32-4aa8-653ecc611411" executionId="a83f9bb5-21a3-4631-a984-0c1956d9547a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="31221740-9a3f-c3af-d481-4e0aecfed033" executionId="f8918350-be0d-4e8f-bfa9-252c4273d77f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="43b54bab-a736-4e2a-6785-841b4dda0f6d" executionId="51e6abb4-d79b-4b5b-a793-c9dfc9bc05b6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="34c9ba54-c5dd-8be4-82c8-a009fad9bf0b" executionId="917cd4d7-a65a-4711-8417-00d46a24011c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4135703b-cedb-85f4-913b-93148909a1fd" executionId="8aec94b0-f406-4574-9d78-30851b7c7bfa" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d7cc144d-d7ae-f5d8-3a71-1a938f56653e" executionId="8b1d2674-b655-44da-bae4-e9b1961f408b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2edc501e-8344-75cc-b669-23e1c4271271" executionId="230a1edf-05ae-4aed-a672-f05de9075899" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3ece3464-5e86-6076-b40f-bd3051d58713" executionId="2b0aab59-8969-46f9-92a9-383fae859148" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="94bb3ca6-8723-a1fc-2486-1ec35ee3c9c3" executionId="516e76fe-fd43-44ae-9089-23f04cf0c5e7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1f60911d-0ec0-d0fd-779c-57b08ad082a3" executionId="b9d44829-3f81-4bac-a172-7a3637c50e3d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="42e2aa6d-4924-e333-b7de-502334166dc2" executionId="ba4717c7-a4d2-4f9e-a817-cb95cabf940d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0d60feda-8f8d-eeaa-6f8a-8de4f9ff0377" executionId="131e2682-d565-48ec-8263-2e80965598c3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="835ddafc-16ed-f669-1bd3-27b5b31a1825" executionId="57462748-8ed6-440d-aa91-eca206720f92" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9b68467e-4c59-5308-7184-4397751bb0c8" executionId="0ba14fe1-2fb8-483b-bc9a-faaa83781b6a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3035a382-336b-d9da-a4ed-2f3e7105ec85" executionId="f9e313e0-949c-425a-ba58-8fd96e43d3cc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3c72f170-5caa-fce3-944a-843ab00df853" executionId="a9fc2c82-22f1-4021-a462-b79d306bfc86" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5d1aedc4-d23b-8c74-fe8d-3b54ae90eb72" executionId="385176f0-edc0-419c-ba1f-5724e2a68ca1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9b4a2fc1-2d8a-024b-e548-b73a3749a522" executionId="732bea4d-2674-4878-bc8b-75dacdfece78" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4d8779a6-a796-88ce-c981-a94903018e41" executionId="dff2d6dd-85b9-4194-8f4e-596e2d10005c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="389608c6-b9a3-153f-efa7-9eadc9be4dfa" executionId="4b6a41f2-078e-4283-9cd0-6c78fa4d1a3f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9fa8b50d-476e-66b5-554b-ad67458320a6" executionId="ba637fea-ec68-40b1-b160-9e90d75be079" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d738f275-76d5-19cd-eea0-f021e2b8ec8d" executionId="2dd2f227-4dd0-4630-9c2c-03cbc696f80e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ffb320f3-6eb7-d529-f4d7-259c2e4eba0c" executionId="6264879e-c92a-4d66-9741-8561b27f2bea" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="28" executed="28" passed="28" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 4.5.0.0: Test execution started
+Running all tests in /home/worlesenric/wkspace/gc-wt/gc-005/dotnet/tests/GameCore.Execution.Tests/bin/Release/net8.0/GameCore.Execution.Tests.dll
+   NUnit3TestExecutor discovered 28 of 28 NUnit test cases using Current Discovery mode, Non-Explicit run
+NUnit Adapter 4.5.0.0: Test execution complete
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>
