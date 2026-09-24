@@ -26,8 +26,9 @@ namespace GameCore.Validation.Editor
         public const string RelativeOutputPath = "Assets/GameCore.Validation/Generated/ProbeCatalog.g.cs";
 
         /// <summary>
-        /// Declaration line that starts the catalog hash constant. Everything before this line is the hash input,
-        /// which is why the hash line is emitted last inside the class.
+        /// Declaration text that starts the catalog hash constant. The hash input is exactly the file prefix that
+        /// ends immediately before this text, which is why the hash line is emitted last inside the class and why
+        /// the generated file records that scope beside the value.
         /// </summary>
         private const string HashDeclaration = "        public const string CatalogFileHash = ";
 
