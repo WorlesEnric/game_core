@@ -326,7 +326,8 @@ namespace GameCore.ReferenceSeams.Tests
             Assert.That(faulted.UnreachedSystemKeys.Count, Is.EqualTo(1), "The entry after the failure must not run (P-031).");
             Assert.That(driver.IsFaulted, Is.True);
             Assert.That(ledger.OutstandingJobCount, Is.EqualTo(1), "The failing entry's job stays tracked until safe teardown (P-041, P-048).");
-            Assert.That(ledger.Snapshot(WorldA, host.CurrentEpoch).Jobs[0].RetainedByQuarantine, Is.True);
+            Assert.That(ledger.QuarantinedJobCount, Is.EqualTo(1), "The unfinished job's buffers stay retained behind quarantine (P-048).");
+            Assert.That(ledger.Snapshot(WorldA, host.CurrentEpoch).Jobs.Count, Is.EqualTo(2));
 
             // A faulted world publishes nothing and refuses further steps.
             Assert.That(driver.Advance(new StepAdvanceRequest(WorldA, host.CurrentEpoch, host.CurrentStep, 1UL, TimeDebt.Zero)).Code, Is.EqualTo(DiagnosticCode.ApplyFault));

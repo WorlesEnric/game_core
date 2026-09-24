@@ -161,6 +161,24 @@ namespace GameCore.TestFixtures
             return true;
         }
 
+        /// <summary>Jobs retained behind quarantine because their buffers are still reachable (P-048).</summary>
+        public int QuarantinedJobCount
+        {
+            get
+            {
+                int count = 0;
+                for (int i = 0; i < jobOrder.Count; i++)
+                {
+                    if (jobs.TryGetValue(jobOrder[i], out JobLedgerRecord record) && record.RetainedByQuarantine)
+                    {
+                        count++;
+                    }
+                }
+
+                return count;
+            }
+        }
+
         public int OutstandingJobCount
         {
             get
