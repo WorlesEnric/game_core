@@ -1,0 +1,15 @@
+{
+  "status": "Fail",
+  "requirement": "P-050",
+  "expected": "Different target with the retained cancellation ID must reject IdempotencyConflict and leave second target Pending",
+  "first": "Cancelled",
+  "conflicting": "Cancelled",
+  "secondTarget": "Cancelled",
+  "frozenCancelOutcomes": [
+    "Cancelled",
+    "TooLate",
+    "Unknown",
+    "ResultExpired"
+  ],
+  "cancellationStatus": "Unknown"
+}

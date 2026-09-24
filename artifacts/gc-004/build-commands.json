@@ -1,0 +1,226 @@
+{
+  "workingDirectory": "/home/worlesenric/wkspace/gc-wt/gc-004",
+  "environment": {
+    "DOTNET_ROOT": "/home/worlesenric/.dotnet",
+    "PATH": "/home/worlesenric/.dotnet:/home/worlesenric/.dotnet:/home/worlesenric/.dotnet/tools:/home/worlesenric/.cargo/bin:/home/worlesenric/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin",
+    "DOTNET_CLI_TELEMETRY_OPTOUT": "1"
+  },
+  "commands": [
+    {
+      "command": [
+        "dotnet",
+        "--info"
+      ],
+      "exitCode": 0,
+      "log": "artifacts/gc-004/dotnet-info.log"
+    },
+    {
+      "command": [
+        "dotnet",
+        "build",
+        "dotnet/GameCore.sln",
+        "-c",
+        "Release"
+      ],
+      "exitCode": 1,
+      "log": "artifacts/gc-004/build-initial.log"
+    },
+    {
+      "command": [
+        "dotnet",
+        "build",
+        "dotnet/GameCore.sln",
+        "-c",
+        "Release"
+      ],
+      "exitCode": 1,
+      "log": "artifacts/gc-004/build-second.log"
+    },
+    {
+      "command": [
+        "dotnet",
+        "build",
+        "dotnet/GameCore.sln",
+        "-c",
+        "Release"
+      ],
+      "exitCode": 0,
+      "log": "artifacts/gc-004/build-compiled.log"
+    },
+    {
+      "command": [
+        "dotnet",
+        "test",
+        "dotnet/GameCore.sln",
+        "-c",
+        "Release",
+        "--logger",
+        "trx",
+        "--results-directory",
+        "/home/worlesenric/wkspace/gc-wt/gc-004/artifacts/gc-004/tests-initial"
+      ],
+      "exitCode": 1,
+      "log": "artifacts/gc-004/tests-initial.log"
+    },
+    {
+      "command": [
+        "dotnet",
+        "test",
+        "dotnet/GameCore.sln",
+        "-c",
+        "Release",
+        "--logger",
+        "trx",
+        "--results-directory",
+        "/home/worlesenric/wkspace/gc-wt/gc-004/artifacts/gc-004/tests-second"
+      ],
+      "exitCode": 1,
+      "log": "artifacts/gc-004/tests-second.log"
+    },
+    {
+      "command": [
+        "dotnet",
+        "test",
+        "dotnet/GameCore.sln",
+        "-c",
+        "Release",
+        "--logger",
+        "trx",
+        "--results-directory",
+        "/home/worlesenric/wkspace/gc-wt/gc-004/artifacts/gc-004/tests-third"
+      ],
+      "exitCode": 0,
+      "log": "artifacts/gc-004/tests-third.log"
+    },
+    {
+      "command": [
+        "dotnet",
+        "test",
+        "dotnet/tests/GameCore.Composition.Tests/GameCore.Composition.Tests.csproj",
+        "-c",
+        "Release",
+        "--logger",
+        "trx",
+        "--results-directory",
+        "/home/worlesenric/wkspace/gc-wt/gc-004/artifacts/gc-004/review-regressions-before"
+      ],
+      "exitCode": 1,
+      "log": "artifacts/gc-004/review-regressions-before.log"
+    },
+    {
+      "command": [
+        "dotnet",
+        "test",
+        "dotnet/tests/GameCore.Composition.Tests/GameCore.Composition.Tests.csproj",
+        "-c",
+        "Release",
+        "--logger",
+        "trx",
+        "--results-directory",
+        "/home/worlesenric/wkspace/gc-wt/gc-004/artifacts/gc-004/review-regressions-after"
+      ],
+      "exitCode": 0,
+      "log": "artifacts/gc-004/review-regressions-after.log"
+    },
+    {
+      "command": [
+        "dotnet",
+        "test",
+        "dotnet/tests/GameCore.Composition.Tests/GameCore.Composition.Tests.csproj",
+        "-c",
+        "Release",
+        "--filter",
+        "FullyQualifiedName~UnrelatedCleanupCannotChangeAnEarlierOperationResult|FullyQualifiedName~ReconfigurationRetiresOnlyTheOldActivationResources|FullyQualifiedName~UnmountPublishesCleanupErrorsWithRetainedReferences",
+        "--logger",
+        "trx",
+        "--results-directory",
+        "/home/worlesenric/wkspace/gc-wt/gc-004/artifacts/gc-004/cleanup-before"
+      ],
+      "exitCode": 1,
+      "log": "artifacts/gc-004/cleanup-before.log"
+    },
+    {
+      "command": [
+        "dotnet",
+        "test",
+        "dotnet/GameCore.sln",
+        "-c",
+        "Release",
+        "--logger",
+        "trx",
+        "--results-directory",
+        "/home/worlesenric/wkspace/gc-wt/gc-004/artifacts/gc-004/tests-reviewed"
+      ],
+      "exitCode": 0,
+      "log": "artifacts/gc-004/tests-reviewed.log"
+    },
+    {
+      "command": [
+        "dotnet",
+        "build",
+        "dotnet/GameCore.sln",
+        "-c",
+        "Release"
+      ],
+      "exitCode": 0,
+      "log": "artifacts/gc-004/build-final.log"
+    },
+    {
+      "command": [
+        "dotnet",
+        "test",
+        "dotnet/GameCore.sln",
+        "-c",
+        "Release",
+        "--logger",
+        "trx",
+        "--results-directory",
+        "/home/worlesenric/wkspace/gc-wt/gc-004/artifacts/gc-004/tests-final"
+      ],
+      "exitCode": 0,
+      "log": "artifacts/gc-004/tests-final.log"
+    },
+    {
+      "command": [
+        "uname",
+        "-a"
+      ],
+      "exitCode": 0,
+      "log": "artifacts/gc-004/host.log"
+    },
+    {
+      "command": [
+        "dotnet",
+        "run",
+        "--project",
+        "/tmp/gc-004-smoke-qjkev9kn/Smoke.csproj",
+        "-c",
+        "Release"
+      ],
+      "exitCode": 0,
+      "log": "artifacts/gc-004/smoke.log"
+    },
+    {
+      "command": [
+        "dotnet",
+        "msbuild",
+        "dotnet/src/GameCore.Composition/GameCore.Composition.csproj",
+        "-getProperty:LangVersion,TargetFramework,TreatWarningsAsErrors"
+      ],
+      "exitCode": 0,
+      "log": "artifacts/gc-004/compiler-settings.json"
+    },
+    {
+      "command": [
+        "dotnet",
+        "run",
+        "--project",
+        "/tmp/gc-004-cancel-seam-f114wd59/Smoke.csproj",
+        "-c",
+        "Release"
+      ],
+      "exitCode": 1,
+      "log": "artifacts/gc-004/cancellation-seam-blocker.log"
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  GameCore.ReferenceSeams -> /home/worlesenric/wkspace/gc-wt/gc-004/dotnet/src/GameCore.ReferenceSeams/bin/Release/netstandard2.1/GameCore.ReferenceSeams.dll
+  GameCore.Composition -> /home/worlesenric/wkspace/gc-wt/gc-004/dotnet/src/GameCore.Composition/bin/Release/netstandard2.1/GameCore.Composition.dll
+  GameCore.Composition.Tests -> /home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll
+Test run for /home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll (.NETCoreApp,Version=v8.0)
+VSTest version 17.11.1 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+  Failed DirectPublicationCannotOvertakeAnEarlierProposal [36 ms]
+  Error Message:
+     Publication must follow the serialized admission order.
+  Expected: null
+  But was:  <GameCore.Composition.PublishedOperation>
+
+  Stack Trace:
+     at GameCore.Composition.Tests.BuildHostRegressionTests.DirectPublicationCannotOvertakeAnEarlierProposal() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/BuildHostRegressionTests.cs:line 123
+
+1)    at GameCore.Composition.Tests.BuildHostRegressionTests.DirectPublicationCannotOvertakeAnEarlierProposal() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/BuildHostRegressionTests.cs:line 123
+
+
+  Failed ForeignWorldOperationCannotMutateThisScopeTree [5 ms]
+  Error Message:
+     Expected: StaleHandle
+  But was:  None
+
+  Stack Trace:
+     at GameCore.Composition.Tests.BuildHostRegressionTests.ForeignWorldOperationCannotMutateThisScopeTree() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/BuildHostRegressionTests.cs:line 135
+
+1)    at GameCore.Composition.Tests.BuildHostRegressionTests.ForeignWorldOperationCannotMutateThisScopeTree() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/BuildHostRegressionTests.cs:line 135
+
+
+  Failed ForgottenAndUnseenLowerSequencesRemainExpired [1 ms]
+  Error Message:
+     Evicting a tombstone cannot turn an expired ID into unknown.
+  Expected: True
+  But was:  False
+
+  Stack Trace:
+     at GameCore.Composition.Tests.BuildHostRegressionTests.ForgottenAndUnseenLowerSequencesRemainExpired() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/BuildHostRegressionTests.cs:line 154
+
+1)    at GameCore.Composition.Tests.BuildHostRegressionTests.ForgottenAndUnseenLowerSequencesRemainExpired() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/BuildHostRegressionTests.cs:line 154
+
+
+  Failed RequiredProviderLossRetractsTheWholeChainAndReturnReactivatesIt [14 ms]
+  Error Message:
+     Expected: DiscardRetiredRoute
+  But was:  Dispatch
+
+  Stack Trace:
+     at GameCore.Composition.Tests.BuildHostRegressionTests.RequiredProviderLossRetractsTheWholeChainAndReturnReactivatesIt() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/BuildHostRegressionTests.cs:line 96
+
+1)    at GameCore.Composition.Tests.BuildHostRegressionTests.RequiredProviderLossRetractsTheWholeChainAndReturnReactivatesIt() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/BuildHostRegressionTests.cs:line 96
+
+
+  Failed SuspensionClosesAuthorityAndExplicitResumeUsesAFreshActivation [1 ms]
+  Error Message:
+     Expected: DiscardRetiredRoute
+  But was:  Dispatch
+
+  Stack Trace:
+     at GameCore.Composition.Tests.BuildHostRegressionTests.SuspensionClosesAuthorityAndExplicitResumeUsesAFreshActivation() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/BuildHostRegressionTests.cs:line 59
+
+1)    at GameCore.Composition.Tests.BuildHostRegressionTests.SuspensionClosesAuthorityAndExplicitResumeUsesAFreshActivation() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/BuildHostRegressionTests.cs:line 59
+
+
+  Failed TerminalRetransmissionKeepsItsOriginalHandle [1 ms]
+  Error Message:
+     Expected: Handle(OperationId(WorldId(0000006275696c640000000000000001), 00726567726573730000000000000001, 1)@CompositionRevision(0))
+  But was:  Handle(OperationId(WorldId(0000006275696c640000000000000001), 00726567726573730000000000000001, 1)@CompositionRevision(1))
+
+  Stack Trace:
+     at GameCore.Composition.Tests.BuildHostRegressionTests.TerminalRetransmissionKeepsItsOriginalHandle() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/BuildHostRegressionTests.cs:line 111
+
+1)    at GameCore.Composition.Tests.BuildHostRegressionTests.TerminalRetransmissionKeepsItsOriginalHandle() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/BuildHostRegressionTests.cs:line 111
+
+
+  Failed FailedPreparationReleasesEarlierStagedAcquisitions [< 1 ms]
+  Error Message:
+     Expected: Rejected
+  But was:  Pending
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ResourceGateTests.FailedPreparationReleasesEarlierStagedAcquisitions() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ResourceGateTests.cs:line 155
+
+1)    at GameCore.Composition.Tests.ResourceGateTests.FailedPreparationReleasesEarlierStagedAcquisitions() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ResourceGateTests.cs:line 155
+
+
+Results File: /home/worlesenric/wkspace/gc-wt/gc-004/artifacts/gc-004/review-regressions-before/_worlesenric_2026-09-25_05_46_42.trx
+
+Failed!  - Failed:     7, Passed:    58, Skipped:     0, Total:    65, Duration: 134 ms - GameCore.Composition.Tests.dll (net8.0)
