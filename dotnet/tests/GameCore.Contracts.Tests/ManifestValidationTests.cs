@@ -503,8 +503,8 @@ namespace GameCore.Contracts.Tests
         public void StageCycleRejectsAsCycle()
         {
             PluginManifest manifest = ValidManifest();
-            StageSpec stageA = WithStageEdges(manifest.Stages[0], new[] { new StageId(StageB) }, null);
-            StageSpec stageB = WithStageEdges(manifest.Stages[1], new[] { new StageId(StageA) }, null);
+            StageSpec stageA = WithStageEdges(manifest.Stages[0], new[] { new StageId(StageB) }, Array.Empty<StageId>());
+            StageSpec stageB = WithStageEdges(manifest.Stages[1], new[] { new StageId(StageA) }, Array.Empty<StageId>());
 
             ManifestValidationReport report = Validate(WithStages(manifest, new[] { stageA, stageB }));
             AssertRejected(report, DiagnosticCode.Cycle, "cycle");

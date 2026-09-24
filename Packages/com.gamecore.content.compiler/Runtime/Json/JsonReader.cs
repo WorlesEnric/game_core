@@ -31,7 +31,7 @@ namespace GameCore.Content.Compiler.Json
         private readonly List<KeyValuePair<string, JsonValue>> members;
         private readonly List<JsonValue> items;
 
-        private JsonValue(JsonKind kind)
+        internal JsonValue(JsonKind kind)
         {
             Kind = kind;
             members = new List<KeyValuePair<string, JsonValue>>();

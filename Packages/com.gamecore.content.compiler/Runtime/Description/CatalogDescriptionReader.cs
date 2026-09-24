@@ -127,7 +127,7 @@ namespace GameCore.Content.Compiler
                     "expected '" + FormatId + "' but read " + Describe(root.Member("descriptionFormat")));
             }
 
-            string generatedNamespace = RequiredIdentifier(root, "namespace", "namespace", diagnostics) ?? "GameCore.Generated";
+            string generatedNamespace = RequiredIdentifier(root, "namespace", "namespace", diagnostics, allowDotted: true) ?? "GameCore.Generated";
             string className = RequiredIdentifier(root, "className", "className", diagnostics) ?? "GameCoreCatalog";
             string fileName = RequiredString(root, "fileName", "fileName", diagnostics) ?? string.Empty;
             ValidateFileName(fileName, diagnostics);
@@ -659,13 +659,13 @@ namespace GameCore.Content.Compiler
             JsonValue? element = root.Member("code");
             if (element == null || element.IsNull)
             {
-                return new CatalogCodeSection(null, null, null);
+                return new CatalogCodeSection(Array.Empty<string>(), Array.Empty<string>(), Array.Empty<string>());
             }
 
             if (element.Kind != JsonKind.Object)
             {
                 diagnostics.Add(CatalogDiagnosticCode.InvalidValue, "code", "must be an object of code directives; read " + element.Describe());
-                return new CatalogCodeSection(null, null, null);
+                return new CatalogCodeSection(Array.Empty<string>(), Array.Empty<string>(), Array.Empty<string>());
             }
 
             ReportUnknown(element, "code", new[] { "usingDirectives", "assemblyAttributes", "closedGenericRootStatements" }, diagnostics);
@@ -1132,7 +1132,7 @@ namespace GameCore.Content.Compiler
             return element.Text;
         }
 
-        private static string? RequiredIdentifier(JsonValue owner, string member, string path, CatalogDiagnosticBag diagnostics)
+        private static string? RequiredIdentifier(JsonValue owner, string member, string path, CatalogDiagnosticBag diagnostics, bool allowDotted = false)
         {
             string? text = RequiredString(owner, member, path, diagnostics);
             if (text == null)
@@ -1140,7 +1140,7 @@ namespace GameCore.Content.Compiler
                 return null;
             }
 
-            if (!IsIdentifier(text))
+            if (!(allowDotted ? IsDottedIdentifier(text) : IsIdentifier(text)))
             {
                 diagnostics.Add(
                     CatalogDiagnosticCode.InvalidIdentifier,

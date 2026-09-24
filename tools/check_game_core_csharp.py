@@ -189,7 +189,13 @@ def main() -> int:
         base = ROOT / target
         if not base.exists():
             continue
-        files.extend(sorted(base.rglob("*.cs")))
+        files.extend(sorted(
+            path for path in base.rglob("*.cs")
+            if not (
+                path.is_relative_to(ROOT / "dotnet")
+                and {"bin", "obj"}.intersection(path.relative_to(base).parts)
+            )
+        ))
 
     if not files:
         print("no C# files found; nothing checked")

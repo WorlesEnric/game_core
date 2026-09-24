@@ -39,7 +39,7 @@ namespace GameCore.Contracts.Tests
         private static SchemaRegistration SchemaRegistrationAt(SchemaRef schema, FactoryKey serializer, bool required)
             => new SchemaRegistration(schema, PackageA, serializer, required);
 
-        private static TestSerializer Serializer(FactoryKey key, IReadOnlyList<GeneratedFieldSlot> fields)
+        private static TestSerializer Serializer(FactoryKey key, GeneratedFieldSlot[] fields)
             => new TestSerializer(key, SchemaRefA, new[] { FeatureA }, fields);
 
         [Test]
@@ -251,7 +251,7 @@ namespace GameCore.Contracts.Tests
             Assert.That(a.Catalog.Fingerprint, Is.EqualTo(c.Catalog!.Fingerprint));
             Assert.That(
                 Describe(a.Catalog.FactoryKeysInCanonicalOrder()),
-                Is.EqualTo(Describe(new[] { KeyA, KeyB, KeyC })));
+                Is.EqualTo(Describe(new[] { new FactoryKey(KeyA, 1U), new FactoryKey(KeyB, 1U), new FactoryKey(KeyC, 1U) })));
         }
 
         [Test]
@@ -569,6 +569,46 @@ namespace GameCore.Contracts.Tests
                 comparison.ProductionTypes,
                 Is.GreaterThanOrEqualTo(comparison.FrozenTypes),
                 "A superset cannot have fewer types than the frozen surface.");
+
+            // GC-003's documented catalog/validation/serialization additions are the only permitted drift.
+            var addedTypes = new HashSet<string>(StringComparer.Ordinal)
+            {
+                "type class GameCore.Contracts.BoundRegistration<TImplementation>",
+                "type class GameCore.Contracts.CatalogBuildResult",
+                "type class GameCore.Contracts.CatalogFingerprint [static]",
+                "type class GameCore.Contracts.GeneratedEnvelopeReader [static]",
+                "type class GameCore.Contracts.GeneratedFieldBuffer",
+                "type class GameCore.Contracts.GeneratedSerializerBase : GameCore.Contracts.ISchemaSerializer",
+                "type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog",
+                "type class GameCore.Contracts.ManifestValidationReport",
+                "type class GameCore.Contracts.ManifestValidator [static]",
+                "type class GameCore.Contracts.StableNameKeyDerivation [static]",
+                "type interface GameCore.Contracts.ISchemaSerializer",
+                "type struct GameCore.Contracts.GeneratedFieldSlot",
+            };
+            foreach (string addition in comparison.AddedLines)
+            {
+                if (addition.StartsWith("type header: ", StringComparison.Ordinal))
+                {
+                    Assert.That(addedTypes, Does.Contain(addition.Substring("type header: ".Length)), addition);
+                    continue;
+                }
+
+                int separator = addition.IndexOf(" :: ", StringComparison.Ordinal);
+                string header = addition.Substring(0, separator);
+                string member = addition.Substring(separator + " :: ".Length);
+                bool allowed = addedTypes.Contains(header)
+                    || (header == "type class GameCore.Contracts.EnvelopeReader"
+                        && member == "method public System.Boolean TrySeekTo(System.Int32 offset)")
+                    || (header.StartsWith("type enum GameCore.Contracts.EnvelopeError :", StringComparison.Ordinal)
+                        && (member == "enumvalue public MissingRequiredField = 16"
+                            || member == "enumvalue public DuplicateField = 17"))
+                    || (header.StartsWith("type enum GameCore.Contracts.FactoryKind :", StringComparison.Ordinal)
+                        && member == "enumvalue public Handler = 10");
+                Assert.That(allowed, Is.True, "Undocumented production API addition: " + addition);
+            }
+
+            TestContext.Out.WriteLine(comparison.Describe());
         }
 
         [Test]

@@ -17,7 +17,7 @@ namespace GameCore.Contracts
         {
             Key = key;
             Schema = schema;
-            knownFeatureIds = CatalogOrdering.SortIds(knownFeatureIds);
+            this.knownFeatureIds = CatalogOrdering.SortIds(knownFeatureIds);
         }
 
         /// <summary>Generated registration key of this serializer; the catalog schema entry points at it.</summary>

@@ -273,7 +273,7 @@ namespace GameCore.Contracts
 
         private static int CompareServiceExports(ServiceExport left, ServiceExport right)
         {
-            int byContract = left.Contract.ContractId.Value.CompareTo(right.Contract.ContractId.Value);
+            int byContract = left.Contract.ContractId.CompareTo(right.Contract.ContractId);
             return byContract != 0 ? byContract : left.Contract.Version.CompareTo(right.Contract.Version);
         }
 
@@ -615,7 +615,7 @@ namespace GameCore.Contracts
         private static int CompareDescriptors(TargetDescriptor left, TargetDescriptor right)
         {
             int byId = left.Recipe.Id.Value.CompareTo(right.Recipe.Id.Value);
-            return byId != 0 ? byId : left.Recipe.SchemaVersion.CompareTo(right.Recipe.SchemaVersion);
+            return byId != 0 ? byId : left.Recipe.Schema.Version.CompareTo(right.Recipe.Schema.Version);
         }
 
         private static void ValidateStateSlots(

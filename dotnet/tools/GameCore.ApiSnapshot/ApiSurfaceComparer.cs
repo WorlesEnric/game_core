@@ -180,6 +180,8 @@ namespace GameCore.ApiSnapshot
                 Header = header;
             }
 
+            internal string Header { get; }
+
             internal void Add(string member)
             {
                 Members.Add(member);
