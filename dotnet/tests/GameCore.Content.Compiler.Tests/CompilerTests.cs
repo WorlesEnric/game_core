@@ -285,6 +285,20 @@ namespace GameCore.Content.Compiler.Tests
         }
 
         [Test]
+        public void FeatureDeclarationOrderDoesNotChangeGeneratedBytes()
+        {
+            CatalogCompilationResult canonical = CatalogDescriptionReader.Read(Descriptions.Valid);
+            CatalogCompilationResult permuted = CatalogDescriptionReader.Read(Descriptions.ValidPermutedFeatureOrder);
+
+            Assert.That(canonical.Succeeded, Is.True, canonical.Describe());
+            Assert.That(permuted.Succeeded, Is.True, permuted.Describe());
+            Assert.That(
+                permuted.GeneratedCode,
+                Is.EqualTo(canonical.GeneratedCode),
+                "declared feature ids are emitted in canonical identity order, not document order (P-008)");
+        }
+
+        [Test]
         public void RepeatedEmissionIsByteIdentical()
         {
             const int Attempts = 5;
@@ -526,7 +540,7 @@ namespace GameCore.Content.Compiler.Tests
   ""namespace"": ""Test.Generated"",
   ""className"": ""TestCatalog"",
   ""fileName"": ""TestCatalog.g.cs"",
-  ""supportedFeatureIds"": [""11111111111111112222222222222222""],
+  ""supportedFeatureIds"": [""00000000000000001111111111111111"", ""11111111111111112222222222222222""],
   ""schemas"": [
     {
       ""stableName"": ""test.schema.record"",
@@ -602,7 +616,7 @@ namespace GameCore.Content.Compiler.Tests
   ""namespace"": ""Test.Generated"",
   ""className"": ""TestCatalog"",
   ""fileName"": ""TestCatalog.g.cs"",
-  ""supportedFeatureIds"": [""11111111111111112222222222222222""],
+  ""supportedFeatureIds"": [""00000000000000001111111111111111"", ""11111111111111112222222222222222""],
   ""schemas"": [
     {
       ""stableName"": ""test.schema.record"",
@@ -660,6 +674,84 @@ namespace GameCore.Content.Compiler.Tests
           ""ownerPackageId"": ""55555555555555556666666666666666"",
           ""implementationId"": ""77777777777777778888888888888888"",
           ""implementationExpression"": ""new Test.AlphaFactory()""
+        }
+      ]
+    }
+  ],
+  ""code"": {
+    ""usingDirectives"": [""Test""],
+    ""assemblyAttributes"": [""RegisterGenericJobType(typeof(Test.Job<Test.Value>))""],
+    ""closedGenericRootStatements"": [""Test.Roots.Track(default(Test.Job<Test.Value>))""]
+  }
+}";
+        /// <summary>
+        /// The same declarations as <see cref="Valid"/> with the two supported feature ids listed in the
+        /// opposite order. Emission and the catalog fingerprint are independent of that order (P-008).
+        /// </summary>
+        internal const string ValidPermutedFeatureOrder = @"{
+  ""descriptionFormat"": ""gamecore.catalog-description/1"",
+  ""protocolVersion"": ""1.0"",
+  ""namespace"": ""Test.Generated"",
+  ""className"": ""TestCatalog"",
+  ""fileName"": ""TestCatalog.g.cs"",
+  ""supportedFeatureIds"": [""11111111111111112222222222222222"", ""00000000000000001111111111111111""],
+  ""schemas"": [
+    {
+      ""stableName"": ""test.schema.record"",
+      ""valueTypeName"": ""TestRecord"",
+      ""serializerTypeName"": ""TestRecordSerializer"",
+      ""serializerKeyName"": ""TestRecordSerializerKey"",
+      ""schemaId"": ""33333333333333334444444444444444"",
+      ""schemaVersion"": 1,
+      ""serializerKeyVersion"": 1,
+      ""ownerPackageId"": ""00000000000000000000000000000000"",
+      ""required"": true,
+      ""fields"": [
+        { ""id"": 1, ""name"": ""High"", ""wireType"": ""UInt64"", ""required"": true },
+        { ""id"": 2, ""name"": ""Label"", ""wireType"": ""Utf8"", ""required"": false }
+      ]
+    }
+  ],
+  ""groups"": [
+    {
+      ""tableName"": ""PluginRegistrations"",
+      ""keysName"": ""PluginKeys"",
+      ""lookupMethodName"": ""TryGetPluginFactory"",
+      ""interfaceType"": ""Test.IPluginFactory"",
+      ""kind"": ""PluginFactory"",
+      ""entries"": [
+        {
+          ""stableName"": ""test.plugin.alpha"",
+          ""keyName"": ""AlphaKey"",
+          ""keyVersion"": 1,
+          ""ownerPackageId"": ""55555555555555556666666666666666"",
+          ""implementationId"": ""77777777777777778888888888888888"",
+          ""implementationExpression"": ""new Test.AlphaFactory()""
+        },
+        {
+          ""stableName"": ""test.plugin.beta"",
+          ""keyName"": ""BetaKey"",
+          ""keyVersion"": 2,
+          ""ownerPackageId"": ""55555555555555556666666666666666"",
+          ""implementationId"": ""9999999999999999aaaaaaaaaaaaaaaa"",
+          ""implementationExpression"": ""new Test.BetaFactory()""
+        }
+      ]
+    },
+    {
+      ""tableName"": ""HandlerRegistrations"",
+      ""keysName"": ""HandlerKeys"",
+      ""lookupMethodName"": ""TryGetHandler"",
+      ""interfaceType"": ""Test.IHandler<Test.Value, int>"",
+      ""kind"": ""Handler"",
+      ""entries"": [
+        {
+          ""stableName"": ""test.handler.gamma"",
+          ""keyName"": ""GammaKey"",
+          ""keyVersion"": 1,
+          ""ownerPackageId"": ""55555555555555556666666666666666"",
+          ""implementationId"": ""bbbbbbbbbbbbbbbbcccccccccccccccc"",
+          ""implementationExpression"": ""new Test.GammaHandler(GammaKey)""
         }
       ]
     }

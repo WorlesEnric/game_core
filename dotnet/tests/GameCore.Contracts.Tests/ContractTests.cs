@@ -474,6 +474,32 @@ namespace GameCore.Contracts.Tests
         }
     }
 
+    /// <summary>
+    /// Pins the cancellation outcomes the W0 interface gate added for P-050. No test in this project would fail
+    /// if a member were renumbered, so the numbers are asserted explicitly: a caller switches on them, and a
+    /// silent renumber would change behaviour without changing a name.
+    /// </summary>
+    [TestFixture]
+    public sealed class CancelOutcomeContractTests
+    {
+        [Test]
+        public void CancelOutcomeCarriesTheIdempotencyConflictAndRejectedValues()
+        {
+            Assert.That((int)CancelOutcome.Cancelled, Is.EqualTo(0));
+            Assert.That((int)CancelOutcome.TooLate, Is.EqualTo(1));
+            Assert.That((int)CancelOutcome.Unknown, Is.EqualTo(2));
+            Assert.That((int)CancelOutcome.ResultExpired, Is.EqualTo(3));
+
+            // Added by the seam change on main; the original ledger row is kept on a conflict (P-050).
+            Assert.That((int)CancelOutcome.IdempotencyConflict, Is.EqualTo(4));
+            Assert.That((int)CancelOutcome.Rejected, Is.EqualTo(5));
+
+            Assert.That(Enum.GetValues(typeof(CancelOutcome)).Length, Is.EqualTo(6));
+            Assert.That(Enum.IsDefined(typeof(CancelOutcome), CancelOutcome.IdempotencyConflict), Is.True);
+            Assert.That(Enum.IsDefined(typeof(CancelOutcome), CancelOutcome.Rejected), Is.True);
+        }
+    }
+
     [TestFixture]
     public sealed class IdentityDerivationTests
     {

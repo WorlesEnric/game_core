@@ -1,0 +1,6 @@
+tests/GameCore.ReferenceSeams/api/GameCore.Contracts.api.txt: 221 types (class 89, enum 41, interface 23, struct 68), 41 enums checked against Packages/com.gamecore.contracts/Runtime
+3 addition(s) beyond the frozen snapshot (allowed, must be listed in HANDOFF):
+  + enum EnvelopeError adds DuplicateField = 17
+  + enum EnvelopeError adds MissingRequiredField = 16
+  + enum FactoryKind adds Handler = 10
+every snapshotted enum and enum value exists in the production sources with the same numeric value

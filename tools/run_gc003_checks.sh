@@ -33,6 +33,9 @@ echo "-- step 1/5: static host-side checks of the C# sources"
 echo "-- step 1b/5: verify the committed generated catalog without a C# compiler"
 "${PYTHON}" tools/verify_generated_catalog.py | tee "${ARTIFACTS}/generated-catalog-verification.log"
 
+echo "-- step 1c/5: check the production contract surface against the frozen snapshot"
+"${PYTHON}" tools/check_contract_surface_parity.py | tee "${ARTIFACTS}/surface-parity.log"
+
 echo "-- step 2/5: documentation validator"
 "${PYTHON}" tools/validate_game_core_docs.py --self-test | tee "${ARTIFACTS}/validator-self-test.log"
 "${PYTHON}" tools/validate_game_core_docs.py | tee "${ARTIFACTS}/validator.log"

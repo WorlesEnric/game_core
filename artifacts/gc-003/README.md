@@ -14,8 +14,9 @@ ran here, because this authoring host (macOS) has no .NET SDK, no Unity and no M
 | `validator-self-test.log` | executed here | `python3 tools/validate_game_core_docs.py --self-test` |
 | `validator.log` | executed here | `python3 tools/validate_game_core_docs.py` |
 | `host-*.log` | executed here | host tool inventory (compiler availability) |
-| `generated-catalog-verification.log` | executed here | `python3 tools/verify_generated_catalog.py`: recomputes the committed generated catalog's file hash and catalog fingerprint from its own tables |
-| `review-round-1.md`, `review-round-2.md` | executed here | the defect lists two independent review rounds produced, and how each item was closed |
+| `verify-generated-catalog.log` | executed here | `python3 tools/verify_generated_catalog.py`: recomputes the committed generated catalog's file hash and catalog fingerprint from its own tables |
+| `check-contract-surface-parity.log` | executed here | `python3 tools/check_contract_surface_parity.py`: every enum and enum value in the frozen snapshot exists in the production sources with the same numeric value |
+| `review-round-1.md`, `review-round-2.md` | executed here | the defect lists the two independent review rounds produced, and how each item was closed |
 | `dotnet-*.log`, `trx/` | build host | `dotnet build`/`dotnet test` output and TRX results |
 | `codegen.log`, `build.log`, `player-*.log`, `toolchain/` | build host | Unity codegen, IL2CPP player build and both player probe runs |
 

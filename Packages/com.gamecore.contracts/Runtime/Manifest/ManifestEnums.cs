@@ -60,6 +60,10 @@ namespace GameCore.Contracts
         TooLate = 1,
         Unknown = 2,
         ResultExpired = 3,
+        /// <summary>The cancellation operation ID was already used with a different target or input (P-050); the original row is kept.</summary>
+        IdempotencyConflict = 4,
+        /// <summary>The cancellation request itself was not admitted (session, issuer, capacity or validation failure); nothing changed.</summary>
+        Rejected = 5,
     }
 
     /// <summary>Installation lifecycle state (P-046).</summary>

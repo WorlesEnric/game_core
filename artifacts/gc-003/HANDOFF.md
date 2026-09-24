@@ -39,9 +39,16 @@ Delivered in five parts.
    including the negative mode (which now also asserts the immutable catalog reports an explicit miss).
 5. **Documentation and gates** — `Packages/com.gamecore.contracts/README.md` documents every shared DTO layout
    and who implements each interface; `Packages/com.gamecore.content.compiler/README.md` documents the input
-   form and the invocation; `tools/check_game_core_csharp.py` is the host-side static check; and
-   `tools/run_gc003_checks.sh` runs static checks, the documentation validator, the dotnet build/tests and (when
-   `UNITY` is set) Unity codegen plus both player probes.
+   form and the invocation; `tools/check_game_core_csharp.py` is the host-side static check;
+   `tools/verify_generated_catalog.py` recomputes the committed generated catalog's file hash and fingerprint;
+   `tools/check_contract_surface_parity.py` checks the production contract surface against the frozen snapshot;
+   and `tools/run_gc003_checks.sh` runs all three plus the documentation validator, the dotnet build/tests and
+   (when `UNITY` is set) Unity codegen plus both player probes.
+
+`main` was merged into this branch after the W0 interface gate reopened: the seam change added
+`CancelOutcome.IdempotencyConflict = 4` and `CancelOutcome.Rejected = 5` with the regenerated snapshot, and the
+production `CancelOutcome` now declares exactly the same six members. §4 records the coverage; §5 item 13
+records the decision.
 
 ## 2. Files
 
@@ -86,9 +93,11 @@ Delivered in five parts.
 
 - `unity/GameCore.Validation/Catalogs/ProbeCatalog.catalog.json` (the committed description document; inside the
   project but outside `Assets/`, so Unity does not import it and no `.meta` file is needed)
-- `tools/check_game_core_csharp.py`, `tools/run_gc003_checks.sh`
+- `tools/check_game_core_csharp.py`, `tools/verify_generated_catalog.py`,
+  `tools/check_contract_surface_parity.py`, `tools/run_gc003_checks.sh`
 - `artifacts/gc-003/`: `HANDOFF.md`, `README.md`, `artifact-hashes.json`, `api-surface-diff.log`,
-  `static-checks.log`, `validator.log`, `validator-self-test.log`, `host-tools.log`
+  `static-checks.log`, `verify-generated-catalog.log`, `check-contract-surface-parity.log`, `validator.log`,
+  `validator-self-test.log`, `host-tools.log`, `review-round-1.md`
 
 ### Modified (minimal, explained)
 
@@ -105,7 +114,12 @@ Delivered in five parts.
 | `unity/GameCore.Validation/Packages/manifest.json` | two `file:../../../Packages/...` lines added; every GC-001 pin untouched |
 | `unity/GameCore.Validation/Assets/GameCore.Validation/**` | probe sources, asmdef references and the generated catalog; see §1 item 4 |
 
-Not touched: `tests/GameCore.ReferenceSeams/**` (the frozen surface and its snapshot are unchanged),
+Merged in: `tests/GameCore.ReferenceSeams/Manifest/ManifestEnums.cs` and the regenerated
+`tests/GameCore.ReferenceSeams/api/GameCore.Contracts.api.txt` arrived from `origin/main` (the W0 gate reopened
+for `CancelOutcome`); that produced one corresponding production change, recorded in §5 item 13. Nothing else in
+the frozen surface changed.
+
+Not touched: `tests/GameCore.ReferenceSeams/**` beyond that merge,
 `unity/GameCore.Validation/ProjectSettings/**`, `Packages/packages-lock.json` (the host resolves it),
 `docs/**`, `tools/validate_game_core_docs.py`.
 
@@ -126,6 +140,8 @@ DOTNET=/usr/bin/dotnet PYTHON=/usr/bin/python3 tools/run_gc003_checks.sh
 
 ```sh
 python3 tools/check_game_core_csharp.py
+python3 tools/verify_generated_catalog.py
+python3 tools/check_contract_surface_parity.py
 python3 tools/validate_game_core_docs.py --self-test
 python3 tools/validate_game_core_docs.py
 dotnet build dotnet/GameCore.sln -c Release
@@ -180,6 +196,7 @@ Requirement sections named by `09-implementation-guide.md` GC-003:
 | P-054 serialization | `Envelope` (copied), `GeneratedSerializerBase`, `GeneratedEnvelopeReader`, generated serializers | `GeneratedSerializerContractTests` (valid/tampered/missing-required/duplicate/unknown-optional/foreign-schema/unknown-feature/truncation/trailing bytes); fixture case `envelope-codec` (both runs); probe step `production-contract-catalog` |
 | P-055 protocol evolution | `SupportedProtocolRange`, `EnvelopeHeader` feature gate, catalog supported features | `ManifestValidationTests` (protocol range, unknown required feature); `CatalogDescriptionRejectionTests` (major/minor); fixture case `version-support` (both runs); generated catalog feature gate in the probe |
 | P-058 V1 profile | package/asmdef boundary, generated registrations, closed generic roots, `RegisterGenericJobType`, fingerprint | probe: `generated-aot-roots`, `production-contract-catalog`; `CompilerTests` asserts emitted assembly attributes, root statements and their terminators; `noEngineReferences: true` on both packages |
+| P-050/P-051 cancellation ledger | `CancelOutcome`, `OperationId`, `CancelOutcome` reporting on the operation seam | `CancelOutcomeContractTests` pins all six values, including the two the reopened W0 gate added; `tools/check_contract_surface_parity.py` checks them against the regenerated snapshot |
 
 Suites named by GC-003:
 
@@ -196,6 +213,14 @@ Suites named by GC-003:
 
 Also: TEST-021/TEST-024's mechanical parts continue to run through the seam-based fixture suite and
 `tools/run_gc003_checks.sh`.
+
+Host-side gates that run without a C# compiler (they complement, never replace, the build-host gates):
+
+| Gate | What it proves |
+|---|---|
+| `tools/check_game_core_csharp.py` | brace balance, forbidden-language-construct scan, engine-reference scan, and a non-void method with no return (the CS0161 class of defect) |
+| `tools/verify_generated_catalog.py` | the committed generated catalog's `CatalogFileHash` covers its own prefix and its `CatalogFingerprint` equals an independent recomputation over the tables its `BuildCatalog()` builds |
+| `tools/check_contract_surface_parity.py` | every enum and enum value in the frozen snapshot exists in the production sources with the same numeric value (additions are reported, not failed) |
 
 ## 5. Decisions, assumptions and documentation ambiguities
 
@@ -241,16 +266,34 @@ Recorded here because 00 wins over 05, which wins over 09; each decision is the 
     the generated file stays inside `Assets/` where the existing `.meta` already exists.
 12. **`Store`, `HostContracts` and the GC-004/GC-005 seams are untouched.** They are other waves' surfaces; this
     task only added the catalog/validation/result behaviour they consume.
+13. **The merged `CancelOutcome` addition is mirrored verbatim.** `origin/main` reopened the W0 interface gate to
+    add `CancelOutcome.IdempotencyConflict = 4` and `CancelOutcome.Rejected = 5` for P-050, with a regenerated
+    snapshot (`# member count: 1591`). Production now declares all six members with the same numeric values and
+    the same documentation, and `CancelOutcomeContractTests` pins the numbers so a silent renumber fails. The
+    reason these two belong in production rather than only in the seam: a caller switches on the value, and the
+    ledger row conflict the code names is a production behaviour, not a test fixture concern.
+14. **Declared feature ids are canonicalised at read time.** The emitter previously emitted
+    `SupportedFeatureIds` in document order while the fingerprint sorted them, so two descriptions with the same
+    feature set listed in opposite order produced different bytes and the same fingerprint. `ReadFeatureIds` now
+    sorts by canonical identity order, and `FeatureDeclarationOrderDoesNotChangeGeneratedBytes` covers it.
+15. **Emitted member order is canonical, not declarative.** Group tables are sorted by ordinal table name and
+    schemas by schema identity, so `DeclarationOrderDoesNotChangeGeneratedBytes` (groups, entries and fields all
+    reversed) now holds; previously only the members *inside* a table were canonicalised.
 
 ## 6. Known gaps
 
 1. **Nothing here has been compiled or executed.** The dotnet projects, both Unity packages, the generated
    probe catalog and every test are `NotRun`. The most likely first-compile candidates are the two new test
-   projects (NUnit API usage and member arity) and the generated probe catalog.
+   projects (NUnit API usage and member arity) and the generated probe catalog. Two read-only review rounds ran
+   on this host and found ten defects in the pre-review revision; all are fixed and recorded in
+   `artifacts/gc-003/review-round-1.md`, and the fixed areas were re-reviewed (byte-for-byte reproduction of the
+   committed catalog confirmed against the emitter's own Append sequence).
 2. **The committed probe catalog was produced by a local mirror of the emitter**, because this host has no C#
-   compiler. `artifacts/gc-003/api-surface-diff.log` and the static checks raise confidence, but only
-   `CommittedProbeCatalogTests` can prove the file matches the compiler byte for byte. Remediation is one
-   command (§3.3) and touches only that file.
+   compiler. Its two recorded 64-hex values are independently recomputed from the file's own tables by
+   `tools/verify_generated_catalog.py` (the same computation the player performs), and a reviewer transcribed the
+   emitter's Append sequence by hand and reproduced the file byte for byte (22579 bytes). Only
+   `CommittedProbeCatalogTests` can prove it against the real compiler; remediation is one command (§3.3) and
+   touches only that file. The mirror itself is a scratch tool and is not committed — the emitter is the owner.
 3. **`Packages/packages-lock.json` for the Unity project is not updated here.** The two new `file:` package
    entries are resolved on the first Editor run; commit the resolved lock as GC-001 already requires.
 4. **Unity `.meta` files for the new package folders are not committed.** Unity creates them on first import;

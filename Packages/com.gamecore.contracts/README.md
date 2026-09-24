@@ -70,6 +70,8 @@ Everything the W0 seam froze is present unchanged. This release adds, and
 `artifacts/gc-003/HANDOFF.md` lists the review:
 
 1. `FactoryKind.Handler` — the W0 enum had no category for a generated closed generic handler registration.
+   `CancelOutcome.IdempotencyConflict` and `CancelOutcome.Rejected` are **not** an addition of this task: they
+   arrived from the reopened W0 gate on `main` and are declared here with the same values (P-050).
 2. `EnvelopeError.MissingRequiredField`, `EnvelopeError.DuplicateField` — the generated field-table walk needs
    to report a missing required field and an ambiguous repeated field.
 3. `EnvelopeReader.TrySeekTo` — a generated deserializer re-reads a recorded field record at its absolute

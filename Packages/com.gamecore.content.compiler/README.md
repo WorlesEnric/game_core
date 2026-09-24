@@ -94,8 +94,11 @@ Rules:
 ## Output
 
 Deterministic C# with LF line endings, no BOM, no timestamps and no machine paths. Regenerating from the same
-validated description reproduces the file byte for byte (the test suite asserts this, including under permuted
-declaration order). The generated class contains:
+validated description reproduces the file byte for byte, and so does a description whose declarations are
+permuted: group tables are emitted in ordinal table-name order, schema registrations in schema-identity order,
+entries in derived-key order, fields in field-id order and feature ids in canonical identity order. No
+declaration order in the document reaches the output, and the test suite asserts each of those permutations.
+The generated class contains:
 
 - `GeneratedFileName`, `DescriptionFormat`, `ProtocolVersion`, `HashAlgorithm`, `CatalogFileHash`,
   `CatalogFileHashScope`, `CatalogFingerprint`, `CatalogFingerprintScope`, `SupportedFeatureIds`;

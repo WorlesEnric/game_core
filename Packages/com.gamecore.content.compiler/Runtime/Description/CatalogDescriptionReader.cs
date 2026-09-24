@@ -340,7 +340,21 @@ namespace GameCore.Content.Compiler
                 features.Add(text);
             }
 
+            // Canonical identity order (P-008), so the emitted array and the catalog fingerprint depend on the
+            // declared feature set and not on the order the document lists it in.
+            features.Sort(CompareIdentityHex);
             return features;
+        }
+
+        private static int CompareIdentityHex(string left, string right)
+        {
+            if (!Id128Codec.TryParseHex(left, out Id128 leftId) || !Id128Codec.TryParseHex(right, out Id128 rightId))
+            {
+                // Unreachable for validated input; a lexical fallback keeps the ordering total.
+                return string.CompareOrdinal(left, right);
+            }
+
+            return leftId.CompareTo(rightId);
         }
 
         private static IReadOnlyList<CatalogSchemaDeclaration> ReadSchemas(JsonValue root, CatalogDiagnosticBag diagnostics)
