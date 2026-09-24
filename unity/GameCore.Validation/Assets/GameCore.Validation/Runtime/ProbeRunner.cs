@@ -48,18 +48,25 @@ namespace GameCore.Validation.ProbeHost
 
         internal static void Run(ProbeArguments arguments)
         {
-            // The GC-005 owned-world mode runs in the same player and reports into the same result shape, but under
-            // its own task id so the GC-001 outcome is never restated as GC-005 evidence.
+            // The GC-005 owned-world mode and the W1 integration gate run in the same player and report into the
+            // same result shape, but each under its own task id so no outcome is restated as another task's
+            // evidence.
             ProbeReport report = arguments.WorldDispatch
                 ? new ProbeReport(
                     "WorldDispatch",
                     ProbeEnvironment.DeclaredUnityVersion,
                     ProbeEnvironment.DeclaredTarget,
                     "GC-005")
-                : new ProbeReport(
-                    arguments.MissingRegistration ? "MissingRegistration" : "Positive",
-                    ProbeEnvironment.DeclaredUnityVersion,
-                    ProbeEnvironment.DeclaredTarget);
+                : arguments.W1Gate
+                    ? new ProbeReport(
+                        "W1Gate",
+                        ProbeEnvironment.DeclaredUnityVersion,
+                        ProbeEnvironment.DeclaredTarget,
+                        "W1-GATE")
+                    : new ProbeReport(
+                        arguments.MissingRegistration ? "MissingRegistration" : "Positive",
+                        ProbeEnvironment.DeclaredUnityVersion,
+                        ProbeEnvironment.DeclaredTarget);
 
             if (!arguments.HasResultPath)
             {
@@ -82,6 +89,11 @@ namespace GameCore.Validation.ProbeHost
                 else if (arguments.WorldDispatch)
                 {
                     ProbeWorldDispatch.Run(report);
+                    report.CompletePositive();
+                }
+                else if (arguments.W1Gate)
+                {
+                    ProbeW1Gate.Run(report);
                     report.CompletePositive();
                 }
                 else
