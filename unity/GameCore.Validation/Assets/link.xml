@@ -16,4 +16,19 @@
      jobs, 04 section 8). -->
 <linker>
   <assembly fullname="GameCore.Validation.Fixture" preserve="all" />
+
+  <!-- GC-005 owned worlds and guarded dispatch. The application pump is reached only through a PlayerLoop
+       updateDelegate, which native code invokes: no managed call site keeps it alive, so the bootstrap, the
+       installer, the pump and the reset entry point are preserved explicitly. The fixture assembly is preserved
+       like the GC-001 fixture plugin, because its stages are reached only through generated-style factory keys
+       resolved at runtime. -->
+  <assembly fullname="GameCore.Unity.Fixtures" preserve="all" />
+  <assembly fullname="GameCore.Unity.Adapters">
+    <type fullname="GameCore.Unity.Adapters.GameCoreApplicationBootstrap" preserve="all" />
+    <type fullname="GameCore.Unity.Adapters.GameCorePlayerLoopInstaller" preserve="all" />
+    <type fullname="GameCore.Unity.Adapters.GameCoreApplicationPump" preserve="all" />
+    <type fullname="GameCore.Unity.Adapters.GameCoreApplicationReset" preserve="all" />
+    <type fullname="GameCore.Unity.Adapters.GameCoreApplicationComposition" preserve="all" />
+    <type fullname="GameCore.Unity.Adapters.GameCorePumpLoop" preserve="all" />
+  </assembly>
 </linker>

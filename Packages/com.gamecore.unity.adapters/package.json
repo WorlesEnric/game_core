@@ -1,0 +1,10 @@
+{
+  "name": "com.gamecore.unity.adapters",
+  "version": "1.0.0",
+  "displayName": "GameCore Unity Adapters",
+  "description": "Application bootstrap and PlayerLoop integration for the GameCore V1 execution host: the single application ICustomBootstrap, one idempotent application-owned PlayerLoop node that pumps registered worlds, paused/idle pumping, and the RuntimeInitializeOnLoadMethod reset path for domain-reload-disabled Play Mode.",
+  "unity": "6000.0",
+  "dependencies": {
+    "com.unity.entities": "1.4.6"
+  }
+}

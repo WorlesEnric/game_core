@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="21" result="Passed" total="21" passed="21" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-09-24 21:55:27Z" end-time="2026-09-24 21:55:28Z" duration="0.2313707">
+  <test-suite type="TestSuite" id="1000" name="GameCoreProbe" fullname="GameCoreProbe" runstate="Runnable" testcasecount="21" result="Passed" start-time="2026-09-24 21:55:27Z" end-time="2026-09-24 21:55:28Z" duration="0.231371" total="21" passed="21" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1025" name="GameCore.Unity.Runtime.Tests.dll" fullname="/home/worlesenric/wkspace/gc-wt/gc-005/unity/GameCore.Validation/Library/ScriptAssemblies/GameCore.Unity.Runtime.Tests.dll" runstate="Runnable" testcasecount="21" result="Passed" start-time="2026-09-24 21:55:27Z" end-time="2026-09-24 21:55:28Z" duration="0.225917" total="21" passed="21" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="2071443" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1026" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="21" result="Passed" start-time="2026-09-24 21:55:27Z" end-time="2026-09-24 21:55:28Z" duration="0.225560" total="21" passed="21" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1027" name="Unity" fullname="GameCore.Unity" runstate="Runnable" testcasecount="21" result="Passed" start-time="2026-09-24 21:55:27Z" end-time="2026-09-24 21:55:28Z" duration="0.225335" total="21" passed="21" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1028" name="Runtime" fullname="GameCore.Unity.Runtime" runstate="Runnable" testcasecount="21" result="Passed" start-time="2026-09-24 21:55:27Z" end-time="2026-09-24 21:55:28Z" duration="0.225171" total="21" passed="21" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1029" name="Tests" fullname="GameCore.Unity.Runtime.Tests" runstate="Runnable" testcasecount="21" result="Passed" start-time="2026-09-24 21:55:27Z" end-time="2026-09-24 21:55:28Z" duration="0.224999" total="21" passed="21" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1001" name="GuardedDispatchTests" fullname="GameCore.Unity.Runtime.Tests.GuardedDispatchTests" classname="GameCore.Unity.Runtime.Tests.GuardedDispatchTests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-09-24 21:55:27Z" end-time="2026-09-24 21:55:28Z" duration="0.198138" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1007" name="ADisabledSystemForwardsItsFenceAndProducesNoNewWork" fullname="GameCore.Unity.Runtime.Tests.GuardedDispatchTests.ADisabledSystemForwardsItsFenceAndProducesNoNewWork" methodname="ADisabledSystemForwardsItsFenceAndProducesNoNewWork" classname="GameCore.Unity.Runtime.Tests.GuardedDispatchTests" runstate="Runnable" seed="1456007788" result="Passed" start-time="2026-09-24 21:55:27Z" end-time="2026-09-24 21:55:28Z" duration="0.170357" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1003" name="AFaultedWorldAcceptsNoFurtherWork" fullname="GameCore.Unity.Runtime.Tests.GuardedDispatchTests.AFaultedWorldAcceptsNoFurtherWork" methodname="AFaultedWorldAcceptsNoFurtherWork" classname="GameCore.Unity.Runtime.Tests.GuardedDispatchTests" runstate="Runnable" seed="1016552169" result="Passed" start-time="2026-09-24 21:55:28Z" end-time="2026-09-24 21:55:28Z" duration="0.004764" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1009" name="AnInfrastructureGroupEntryDispatchesItsOwnBoundTable" fullname="GameCore.Unity.Runtime.Tests.GuardedDispatchTests.AnInfrastructureGroupEntryDispatchesItsOwnBoundTable" methodname="AnInfrastructureGroupEntryDispatchesItsOwnBoundTable" classname="GameCore.Unity.Runtime.Tests.GuardedDispatchTests" runstate="Runnable" seed="968130777" result="Passed" start-time="2026-09-24 21:55:28Z" end-time="2026-09-24 21:55:28Z" duration="0.001672" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1005" name="DirectDisposalSettlesFaultedJobsAndRetiresTheWorld" fullname="GameCore.Unity.Runtime.Tests.GuardedDispatchTests.DirectDisposalSettlesFaultedJobsAndRetiresTheWorld" methodname="DirectDisposalSettlesFaultedJobsAndRetiresTheWorld" classname="GameCore.Unity.Runtime.Tests.GuardedDispatchTests" runstate="Runnable" seed="993948658" result="Passed" start-time="2026-09-24 21:55:28Z" end-time="2026-09-24 21:55:28Z" duration="0.002507" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1008" name="DispatchThroughTheSeamRejectsAStaleEpoch" fullname="GameCore.Unity.Runtime.Tests.GuardedDispatchTests.DispatchThroughTheSeamRejectsAStaleEpoch" methodname="DispatchThroughTheSeamRejectsAStaleEpoch" classname="GameCore.Unity.Runtime.Tests.GuardedDispatchTests" runstate="Runnable" seed="1145761234" result="Passed" start-time="2026-09-24 21:55:28Z" end-time="2026-09-24 21:55:28Z" duration="0.001002" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1002" name="ManagedSystemThatWritesThenThrowsStopsTheStepAndFaultsTheWorld" fullname="GameCore.Unity.Runtime.Tests.GuardedDispatchTests.ManagedSystemThatWritesThenThrowsStopsTheStepAndFaultsTheWorld" methodname="ManagedSystemThatWritesThenThrowsStopsTheStepAndFaultsTheWorld" classname="GameCore.Unity.Runtime.Tests.GuardedDispatchTests" runstate="Runnable" seed="318942068" result="Passed" start-time="2026-09-24 21:55:28Z" end-time="2026-09-24 21:55:28Z" duration="0.002177" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1004" name="PendingJobsStayTrackedUntilTeardownCompletesThem" fullname="GameCore.Unity.Runtime.Tests.GuardedDispatchTests.PendingJobsStayTrackedUntilTeardownCompletesThem" methodname="PendingJobsStayTrackedUntilTeardownCompletesThem" classname="GameCore.Unity.Runtime.Tests.GuardedDispatchTests" runstate="Runnable" seed="102458780" result="Passed" start-time="2026-09-24 21:55:28Z" end-time="2026-09-24 21:55:28Z" duration="0.001375" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1006" name="UnconsumedDeclaredBufferFaultsTheWorldInsteadOfPublishingPartialSuccess" fullname="GameCore.Unity.Runtime.Tests.GuardedDispatchTests.UnconsumedDeclaredBufferFaultsTheWorldInsteadOfPublishingPartialSuccess" methodname="UnconsumedDeclaredBufferFaultsTheWorldInsteadOfPublishingPartialSuccess" classname="GameCore.Unity.Runtime.Tests.GuardedDispatchTests" runstate="Runnable" seed="421381172" result="Passed" start-time="2026-09-24 21:55:28Z" end-time="2026-09-24 21:55:28Z" duration="0.001613" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1010" name="TemporalDriverTests" fullname="GameCore.Unity.Runtime.Tests.TemporalDriverTests" classname="GameCore.Unity.Runtime.Tests.TemporalDriverTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-09-24 21:55:28Z" end-time="2026-09-24 21:55:28Z" duration="0.010462" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1012" name="APumpBelowOneStepDurationAdvancesNothingAndKeepsTheRemainder" fullname="GameCore.Unity.Runtime.Tests.TemporalDriverTests.APumpBelowOneStepDurationAdvancesNothingAndKeepsTheRemainder" methodname="APumpBelowOneStepDurationAdvancesNothingAndKeepsTheRemainder" classname="GameCore.Unity.Runtime.Tests.TemporalDriverTests" runstate="Runnable" seed="1422884081" result="Passed" start-time="2026-09-24 21:55:28Z" end-time="2026-09-24 21:55:28Z" duration="0.004561" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA['GameCore.Unity.Fixtures.FixtureTickSystem' creates a query during OnUpdate. Please create queries in OnCreate and store them in the system for use in OnUpdate instead. This is significantly faster.
+]]></output>
+                </test-case>
+                <test-case id="1014" name="CommandDrivenHostIgnoresElapsedHostTimeWithoutDemand" fullname="GameCore.Unity.Runtime.Tests.TemporalDriverTests.CommandDrivenHostIgnoresElapsedHostTimeWithoutDemand" methodname="CommandDrivenHostIgnoresElapsedHostTimeWithoutDemand" classname="GameCore.Unity.Runtime.Tests.TemporalDriverTests" runstate="Runnable" seed="1619250898" result="Passed" start-time="2026-09-24 21:55:28Z" end-time="2026-09-24 21:55:28Z" duration="0.001656" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1011" name="FixedStepHostBoundsCatchUpAndRetainsTheUnspentRemainder" fullname="GameCore.Unity.Runtime.Tests.TemporalDriverTests.FixedStepHostBoundsCatchUpAndRetainsTheUnspentRemainder" methodname="FixedStepHostBoundsCatchUpAndRetainsTheUnspentRemainder" classname="GameCore.Unity.Runtime.Tests.TemporalDriverTests" runstate="Runnable" seed="2028247779" result="Passed" start-time="2026-09-24 21:55:28Z" end-time="2026-09-24 21:55:28Z" duration="0.001614" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA['GameCore.Unity.Fixtures.FixtureTickSystem' creates a query during OnUpdate. Please create queries in OnCreate and store them in the system for use in OnUpdate instead. This is significantly faster.
+]]></output>
+                </test-case>
+                <test-case id="1013" name="FixedStepHostSuppliesTheLogicalClockToWorldTime" fullname="GameCore.Unity.Runtime.Tests.TemporalDriverTests.FixedStepHostSuppliesTheLogicalClockToWorldTime" methodname="FixedStepHostSuppliesTheLogicalClockToWorldTime" classname="GameCore.Unity.Runtime.Tests.TemporalDriverTests" runstate="Runnable" seed="110092427" result="Passed" start-time="2026-09-24 21:55:28Z" end-time="2026-09-24 21:55:28Z" duration="0.001631" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA['GameCore.Unity.Fixtures.FixtureTickSystem' creates a query during OnUpdate. Please create queries in OnCreate and store them in the system for use in OnUpdate instead. This is significantly faster.
+]]></output>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1015" name="WorldHostTests" fullname="GameCore.Unity.Runtime.Tests.WorldHostTests" classname="GameCore.Unity.Runtime.Tests.WorldHostTests" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-09-24 21:55:28Z" end-time="2026-09-24 21:55:28Z" duration="0.014934" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1019" name="CommandDrivenIdleExecutesZeroStepsOverManyFrames" fullname="GameCore.Unity.Runtime.Tests.WorldHostTests.CommandDrivenIdleExecutesZeroStepsOverManyFrames" methodname="CommandDrivenIdleExecutesZeroStepsOverManyFrames" classname="GameCore.Unity.Runtime.Tests.WorldHostTests" runstate="Runnable" seed="683164236" result="Passed" start-time="2026-09-24 21:55:28Z" end-time="2026-09-24 21:55:28Z" duration="0.002373" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1016" name="CreationPublishesEpochOneAndStepZero" fullname="GameCore.Unity.Runtime.Tests.WorldHostTests.CreationPublishesEpochOneAndStepZero" methodname="CreationPublishesEpochOneAndStepZero" classname="GameCore.Unity.Runtime.Tests.WorldHostTests" runstate="Runnable" seed="645578000" result="Passed" start-time="2026-09-24 21:55:28Z" end-time="2026-09-24 21:55:28Z" duration="0.000925" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1022" name="InvalidLifecycleRequestsAreRejectedWithoutMutation" fullname="GameCore.Unity.Runtime.Tests.WorldHostTests.InvalidLifecycleRequestsAreRejectedWithoutMutation" methodname="InvalidLifecycleRequestsAreRejectedWithoutMutation" classname="GameCore.Unity.Runtime.Tests.WorldHostTests" runstate="Runnable" seed="134204387" result="Passed" start-time="2026-09-24 21:55:28Z" end-time="2026-09-24 21:55:28Z" duration="0.001307" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1020" name="NoSystemIsDispatchedTwiceInOneStep" fullname="GameCore.Unity.Runtime.Tests.WorldHostTests.NoSystemIsDispatchedTwiceInOneStep" methodname="NoSystemIsDispatchedTwiceInOneStep" classname="GameCore.Unity.Runtime.Tests.WorldHostTests" runstate="Runnable" seed="1783192826" result="Passed" start-time="2026-09-24 21:55:28Z" end-time="2026-09-24 21:55:28Z" duration="0.001398" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1021" name="PauseChangesHostStatusOnlyAndAddsNoDebt" fullname="GameCore.Unity.Runtime.Tests.WorldHostTests.PauseChangesHostStatusOnlyAndAddsNoDebt" methodname="PauseChangesHostStatusOnlyAndAddsNoDebt" classname="GameCore.Unity.Runtime.Tests.WorldHostTests" runstate="Runnable" seed="1621341982" result="Passed" start-time="2026-09-24 21:55:28Z" end-time="2026-09-24 21:55:28Z" duration="0.002107" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA['GameCore.Unity.Fixtures.FixtureTickSystem' creates a query during OnUpdate. Please create queries in OnCreate and store them in the system for use in OnUpdate instead. This is significantly faster.
+]]></output>
+                </test-case>
+                <test-case id="1017" name="RepeatedCreationOfTheSameSessionReturnsTheSameWorld" fullname="GameCore.Unity.Runtime.Tests.WorldHostTests.RepeatedCreationOfTheSameSessionReturnsTheSameWorld" methodname="RepeatedCreationOfTheSameSessionReturnsTheSameWorld" classname="GameCore.Unity.Runtime.Tests.WorldHostTests" runstate="Runnable" seed="578737443" result="Passed" start-time="2026-09-24 21:55:28Z" end-time="2026-09-24 21:55:28Z" duration="0.000948" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1023" name="StopClosesIngressSettlesJobsAndDisposesStorage" fullname="GameCore.Unity.Runtime.Tests.WorldHostTests.StopClosesIngressSettlesJobsAndDisposesStorage" methodname="StopClosesIngressSettlesJobsAndDisposesStorage" classname="GameCore.Unity.Runtime.Tests.WorldHostTests" runstate="Runnable" seed="1331401808" result="Passed" start-time="2026-09-24 21:55:28Z" end-time="2026-09-24 21:55:28Z" duration="0.000982" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1018" name="TwoWorldsAdvanceIndependently" fullname="GameCore.Unity.Runtime.Tests.WorldHostTests.TwoWorldsAdvanceIndependently" methodname="TwoWorldsAdvanceIndependently" classname="GameCore.Unity.Runtime.Tests.WorldHostTests" runstate="Runnable" seed="1151181783" result="Passed" start-time="2026-09-24 21:55:28Z" end-time="2026-09-24 21:55:28Z" duration="0.002842" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1024" name="WakingACommandDrivenWorldAdvancesWithoutAPlayerCommand" fullname="GameCore.Unity.Runtime.Tests.WorldHostTests.WakingACommandDrivenWorldAdvancesWithoutAPlayerCommand" methodname="WakingACommandDrivenWorldAdvancesWithoutAPlayerCommand" classname="GameCore.Unity.Runtime.Tests.WorldHostTests" runstate="Runnable" seed="359704047" result="Passed" start-time="2026-09-24 21:55:28Z" end-time="2026-09-24 21:55:28Z" duration="0.000908" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[Saving results to: /home/worlesenric/.config/unity3d/GameCore/GameCoreProbe/TestResults.xml
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

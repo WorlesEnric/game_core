@@ -20,6 +20,8 @@ Unity qualification project and the player gates.
 | `tests/GameCore.ProtocolFixtures.Production.Tests` | NUnit 3 | net8.0 | the same fixture suite against production `GameCore.Contracts` |
 | `tests/GameCore.Contracts.Tests` | NUnit 3 | net8.0 | contract behaviour and the API-compatibility gate |
 | `tests/GameCore.Content.Compiler.Tests` | NUnit 3 | net8.0 | catalog description rejection, emission reproducibility and the committed probe catalog |
+| `src/GameCore.Execution` | library | netstandard2.1 | `Packages/com.gamecore.unity.runtime/Runtime/Pure/**/*.cs` |
+| `tests/GameCore.Execution.Tests` | NUnit 3 | net8.0 | engine-free execution core tests |
 
 The two fixture suites share one test source (`tests/GameCore.ProtocolFixtures.Tests/ProtocolFixtureTests.cs`).
 They write separate evidence documents, `artifacts/protocol-fixtures/results.json` and
@@ -28,6 +30,11 @@ They write separate evidence documents, `artifacts/protocol-fixtures/results.jso
 `tests/GameCore.Contracts.Tests` deliberately does **not** reference `GameCore.ReferenceSeams`: both assemblies
 declare the same types in the same namespace, so the frozen surface is compared as a committed text snapshot via
 `GameCore.ApiSnapshot.ApiSurfaceComparer` instead of by referencing two copies of the same types.
+
+`GameCore.Execution` compiles the engine-free execution core that also lives inside the Unity assembly
+`GameCore.Unity.Runtime` (namespace `GameCore.Execution`): the temporal accumulator, the guarded dispatch plan,
+the world/job resource ledger, the step publication boundary and the deterministic id sequence. It references
+no `UnityEngine` or `Unity.*` type, which is why the same sources build under the plain SDK.
 
 ## Commands
 

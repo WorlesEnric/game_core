@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Pure execution tests (GC-005): temporal debt and pause semantics, guarded dispatch plan validity and drain
+       validation, world/job resource ledger retirement and quarantine, and the bounded step publication store.
+       In-process, sub-second, no Unity. -->
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="NUnit" Version="3.14.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/GameCore.Execution/GameCore.Execution.csproj" />
+    <ProjectReference Include="../../src/GameCore.ReferenceSeams/GameCore.ReferenceSeams.csproj" />
+  </ItemGroup>
+
+</Project>

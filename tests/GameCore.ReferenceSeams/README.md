@@ -87,3 +87,13 @@ The committed file was generated from the compiled reference seam on the Linux b
 placeholder header is present or the listing differs.
 See `dotnet/README.md` for the exact command. Any seam change reopens the W0 interface gate before dependent
 modules compile (`docs/game-core/09-implementation-guide.md`, GC-002).
+
+## Unity packaging (added by GC-005 for Wave 1)
+
+Wave 1 compiles inside Unity as well as with plain dotnet, so this folder is also a local Unity package:
+`package.json` names it `com.gamecore.reference-seams`, and `GameCore.Contracts.asmdef` declares the assembly
+**`GameCore.Contracts`** with `noEngineReferences: true`. Wave 1 package asmdefs reference `GameCore.Contracts`
+by name, which is the production assembly name, so the W1 gate can replace this package with
+`com.gamecore.contracts` without touching a consumer. The asmdef is not a surface change: it compiles exactly
+the `.cs` files under this folder and adds no API. The dotnet project (`dotnet/src/GameCore.ReferenceSeams`)
+is unaffected, because `package.json` and `.asmdef` are not `.cs` inputs.
