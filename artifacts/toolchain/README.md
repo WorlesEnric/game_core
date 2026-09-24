@@ -1,8 +1,9 @@
 # Toolchain qualification evidence (GC-001)
 
-Status: **NotRun (pending orchestrator build host)**. Nothing in this directory has been produced by an actual
-Unity resolve, build, or player execution. The files here describe exactly what the two scripts produce and
-which environment fields the qualification report must record.
+Status: **Pass for the GC-001 Linux qualification scope**. Unity 6000.0.75f1 resolved the committed lock,
+built the High-stripping IL2CPP player, and ran both headless modes. Positive: seven Pass outcomes and exit 0.
+Negative: two Pass outcomes, one ExpectedNegative outcome and exit 3. See [BUILD_REPORT](../gc-001/BUILD_REPORT.md)
+for exact commands, initial failures, fixes, toolchain versions and limits.
 
 Normative context: [P-058 and P-060](../../docs/game-core/00-core-protocols.md), [Unity integration section 10](../../docs/game-core/04-unity-integration.md),
 [TEST-001](../../docs/game-core/08-validation-and-performance.md).
@@ -20,7 +21,7 @@ qualification evidence. Overridable environment: `UNITY_PROJECT`, `ARTIFACTS`, `
 
 `build_probe.sh` runs two batchmode Editor invocations: first the deterministic catalog generator, then the
 player build. `run_probe.sh` launches the built player twice, headless, and compares the process exit code and
-the structured JSON result.
+the structured JSON result. Python 3 rejects malformed JSON before the result/status checks.
 
 ## Exit-code contract of the probe player
 
@@ -30,8 +31,8 @@ the structured JSON result.
 | negative (`-probeMissingRegistration`) | `"result": "ExpectedNegative"` | 3 |
 | any failure | `"result": "Fail"` | 1 |
 
-A nonzero-but-wrong code, a missing result file, any `"status": "Fail"` entry, or a missing `"status": "Pass"`
-entry makes `run_probe.sh` exit nonzero. `Pass` in a log is never evidence on its own; the JSON artifacts are.
+A nonzero-but-wrong code, a missing or malformed JSON result file, any `"status": "Fail"` entry, or a missing
+`"status": "Pass"` entry makes `run_probe.sh` exit nonzero. `Pass` in a log is never evidence on its own.
 
 ## Environment fields recorded
 
@@ -42,8 +43,8 @@ Both must be archived together, because several fields cannot be read from insid
 | --- | --- | --- |
 | Editor build | `PlayerSettings`/log (`Application.unityVersion` at build time) | Must equal `6000.0.75f1` |
 | Host OS / kernel | `uname -a`, `uname -m` | Linux x86_64 on the selected build host |
-| Native compiler | `gcc --version`, `clang --version`, `ld --version` | IL2CPP C++ toolchain actually used |
-| Sysroot | Linux IL2CPP sysroot path under the Editor's `PlaybackEngines` | Supplied by `com.unity.toolchain.linux-x86_64` |
+| Native compiler | `native-build-commands.json`, `unity-native-clang-version.txt`, `unity-native-lld-version.txt` | Actual Unity compiler/linker are 9.0.1; system compiler versions in `environment.txt` are not the IL2CPP compiler |
+| Sysroot | `unity-sdk.txt`, `native-build-commands.json` | Actual UPM-extracted cache path; glibc 2.17. The build script's legacy `sysroot_glibc` lookup is empty on this installation |
 | Scripting backend | build script re-read of `PlayerSettings.GetScriptingBackend` | Must be `IL2CPP` |
 | Managed stripping | build script re-read of `GetManagedStrippingLevel` | Must be `High`; a player cannot query it at runtime, so the result JSON labels it a declared value |
 | Architecture | both `environment.txt` (`uname -m`) and `"architecture"` in the JSON | Must agree note: `RuntimeInformation.ProcessArchitecture` in the player |
@@ -51,7 +52,7 @@ Both must be archived together, because several fields cannot be read from insid
 | Burst | `"burstCompilerEnabled"` in the JSON (`BurstCompiler.IsEnabled`) | In a build this is only true when Burst AOT compilation ran; a build with Burst silently disabled fails the probe |
 | Package pins | `Packages/manifest.json` hash in `environment.txt` plus the committed `packages-lock.json` | The lock is produced by the first resolve and must be committed as-is |
 | Catalog | `catalogFileHash` in the JSON and `catalog_sha256` in `environment.txt` | Hash of the generated catalog prefix, with the exact scope recorded beside it |
-| Player | `player_sha256`, `player_bytes` in `environment.txt` | Identifies the executed binary |
+| Player | `player_sha256`, `player_bytes` in `environment.txt`, plus `player-files-sha256.json` | Launcher and complete shipped player file hashes; the launcher alone does not identify gameplay code |
 
 ## Negative control
 
@@ -61,10 +62,17 @@ that an unregistered key is detected as missing rather than satisfied by reflect
 Because the two modes use different exit codes, a script-driven run cannot confuse "registration missing works"
 with "everything works".
 
-## NotRun
+## Scope and additional evidence
 
-- No Unity resolve, `packages-lock.json`, Editor compile, IL2CPP build, or player execution has happened.
-- `unity/GameCore.Validation/Assets/Scenes/GameCoreProbe.unity` does not exist yet: `BuildProbe` generates it
-  through the Editor API on the first build so the scene always matches the pinned Editor's serialization.
-- `unity/GameCore.Validation/Packages/packages-lock.json` must not be hand-written; it is an output of the first
-  resolve on the build host.
+- `codegen.log`, `build.log`, `run-probe.log`, both player logs and result JSON are the final successful run.
+- `catalog-initial-mismatch.json` records the original missing final LF; `catalog-determinism.json` proves
+  exact regeneration after committing the generator's output.
+- `probe-player-compiler.rsp` records C# 9 and .NET Standard 2.1 reference assemblies.
+- `burst-aot-methods.txt` includes the closed `ProbeAggregateJob<ProbeVector3Value>` compilation entry.
+- Initial compile errors, malformed reports and their strict-parser rejection are retained separately;
+  they are not final results. Logs are below 2 MB each.
+- Bootstrap scene and build binaries remain ignored; Unity-generated asset metadata, project settings and
+  the authoritative package lock are committed.
+- No EditMode/PlayMode NUnit suite was run. This task's assertions execute in the standalone player.
+  TEST-020 coverage is limited to linked inactive plugins/generated roots; later-task scenarios remain NotRun.
+  Other target platforms remain unqualified.

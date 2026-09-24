@@ -1,0 +1,26 @@
+[2026-09-24T20:59:15.837Z][INFO] Command-line: /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Resources/PackageManager/Server/UnityPackageManager -s 1920462 -ipc -ipc-path /tmp/Unity-Upm-1920462.sock -l 2
+[2026-09-24T20:59:15.838Z][INFO] Detected environment variables:
+  no_proxy=localhost,127.0.0.1,::1,packages.unity.com,download.packages.unity.com
+  https_proxy=http://127.0.0.1:7897
+  NO_PROXY=localhost,127.0.0.1,::1,packages.unity.com,download.packages.unity.com
+  HTTPS_PROXY=http://127.0.0.1:7897
+  HTTP_PROXY=http://127.0.0.1:7897
+  http_proxy=http://127.0.0.1:7897
+  ALL_PROXY=socks5h://127.0.0.1:7897
+  all_proxy=socks5h://127.0.0.1:7897
+  GIT_TERMINAL_PROMPT=0
+[2026-09-24T20:59:15.842Z][INFO] IPC server started (IPC path=/tmp/Unity-Upm-1920462.sock).
+[2026-09-24T20:59:15.843Z][INFO] Hint: To connect to this UPM instance, launch Unity with the command-line parameter -upmIpcPath Upm-1920462.
+[2026-09-24T20:59:16.181Z][INFO] project:add-dependency <-- Request received
+params: {
+  "packageId": "com.unity.toolchain.linux-x86_64"
+}
+[2026-09-24T20:59:22.150Z][INFO] project:add-dependency --> 200 (5969 ms)
+[2026-09-24T20:59:22.458Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-09-24T20:59:22.544Z][INFO] project:list-packages --> 200 (86 ms)
+[2026-09-24T20:59:23.689Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-09-24T20:59:23.753Z][INFO] project:list-packages --> 200 (64 ms)
+[2026-09-24T21:00:08.108Z][INFO] Received shutdown request (SIGINT), shutting down Unity Package Manager
+ running.

@@ -1,0 +1,133 @@
+{
+  "cwd": "/home/worlesenric/wkspace/gc-wt/gc-001",
+  "qualificationRuns": [
+    {
+      "command": "git fetch origin && git checkout gc-001 && git reset --hard origin/gc-001",
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Unity",
+        "-batchmode",
+        "-nographics",
+        "-quit",
+        "-projectPath",
+        "/home/worlesenric/wkspace/gc-wt/gc-001/unity/GameCore.Validation",
+        "-logFile",
+        "/home/worlesenric/wkspace/gc-wt/gc-001/artifacts/toolchain/resolve.log"
+      ],
+      "env": {
+        "DOTNET_ROOT": "/home/worlesenric/.dotnet",
+        "DOTNET_CLI_TELEMETRY_OPTOUT": "1",
+        "PATH": "/home/worlesenric/.dotnet:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      },
+      "result": "Cancelled after Burst archive download stalled; log archived as resolve-proxy-stalled.log"
+    },
+    {
+      "argv": [
+        "/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Unity",
+        "-batchmode",
+        "-nographics",
+        "-quit",
+        "-projectPath",
+        "/home/worlesenric/wkspace/gc-wt/gc-001/unity/GameCore.Validation",
+        "-logFile",
+        "/home/worlesenric/wkspace/gc-wt/gc-001/artifacts/toolchain/resolve.log"
+      ],
+      "env": {
+        "DOTNET_ROOT": "/home/worlesenric/.dotnet",
+        "DOTNET_CLI_TELEMETRY_OPTOUT": "1",
+        "PATH": "/home/worlesenric/.dotnet:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "NO_PROXY": "localhost,127.0.0.1,::1,packages.unity.com,download.packages.unity.com",
+        "no_proxy": "localhost,127.0.0.1,::1,packages.unity.com,download.packages.unity.com"
+      },
+      "exitCode": 1,
+      "result": "Packages resolved; compiler errors; log archived as resolve-initial-compile-errors.log"
+    },
+    {
+      "argv": [
+        "tools/unity/build_probe.sh"
+      ],
+      "env": {
+        "DOTNET_ROOT": "/home/worlesenric/.dotnet",
+        "DOTNET_CLI_TELEMETRY_OPTOUT": "1",
+        "PATH": "/home/worlesenric/.dotnet:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "NO_PROXY": "localhost,127.0.0.1,::1,packages.unity.com,download.packages.unity.com",
+        "no_proxy": "localhost,127.0.0.1,::1,packages.unity.com,download.packages.unity.com",
+        "UNITY": "/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Unity",
+        "DOTNET": "/home/worlesenric/.dotnet/dotnet"
+      },
+      "exitCode": 0,
+      "result": "Initial player built; build-before-json-fix.log, codegen-initial.log"
+    },
+    {
+      "argv": [
+        "tools/unity/run_probe.sh"
+      ],
+      "exitCode": 0,
+      "result": "Initial grep-only runner accepted malformed JSON, preserved in *.invalid-json.txt"
+    },
+    {
+      "argv": [
+        "tools/unity/run_probe.sh"
+      ],
+      "exitCode": 1,
+      "result": "After runner fix, old real player rejected in both modes; run-invalid-json-rejected.log"
+    },
+    {
+      "argv": [
+        "tools/unity/build_probe.sh"
+      ],
+      "env": {
+        "DOTNET_ROOT": "/home/worlesenric/.dotnet",
+        "DOTNET_CLI_TELEMETRY_OPTOUT": "1",
+        "PATH": "/home/worlesenric/.dotnet:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "NO_PROXY": "localhost,127.0.0.1,::1,packages.unity.com,download.packages.unity.com",
+        "no_proxy": "localhost,127.0.0.1,::1,packages.unity.com,download.packages.unity.com",
+        "UNITY": "/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Unity",
+        "DOTNET": "/home/worlesenric/.dotnet/dotnet"
+      },
+      "exitCode": 0,
+      "result": "Final corrected player; build.log, codegen.log"
+    },
+    {
+      "argv": [
+        "tools/unity/run_probe.sh"
+      ],
+      "exitCode": 0,
+      "result": "Final both modes and strict parser pass; run-probe.log"
+    }
+  ],
+  "supportingCapturedCommands": [
+    [
+      "/home/worlesenric/.dotnet/dotnet",
+      "--info"
+    ],
+    [
+      "uname",
+      "-a"
+    ],
+    [
+      "clang",
+      "--version"
+    ],
+    [
+      "ld.lld",
+      "--version"
+    ],
+    [
+      "tools/unity/run_probe.sh"
+    ],
+    [
+      "/home/worlesenric/.local/share/unity3d/cache/sysroots/linux-x86/llvm-9.0.1-1/bin/clang++",
+      "--version"
+    ],
+    [
+      "/home/worlesenric/.local/share/unity3d/cache/sysroots/linux-x86/llvm-9.0.1-1/bin/ld.lld",
+      "--version"
+    ],
+    [
+      "tools/unity/run_probe.sh"
+    ]
+  ]
+}

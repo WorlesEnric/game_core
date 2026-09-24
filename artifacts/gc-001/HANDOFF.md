@@ -1,8 +1,8 @@
 # GC-001 handoff — Qualify the exact Unity and IL2CPP toolchain (Wave 0)
 
-Status: **NotRun (pending orchestrator build host)**. No Unity resolve, Editor compile, IL2CPP build, or player
-execution happened for this task. The machine that produced this branch has no Unity, no .NET SDK, and no mono,
-so nothing here is a claim that a build or test passed.
+Historical implementation handoff: **NotRun when authored**. The Linux build worker subsequently resolved,
+compiled and ran the probe; see [BUILD_REPORT.md](BUILD_REPORT.md) for executed results and fixes.
+The remaining sections preserve the original pre-build assumptions and commands, not current status claims.
 
 ## 1. Summary
 
