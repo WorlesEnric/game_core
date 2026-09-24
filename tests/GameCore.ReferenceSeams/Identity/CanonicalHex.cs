@@ -33,7 +33,7 @@ namespace GameCore.Contracts
                     return false;
                 }
 
-                accumulator = (accumulator << 4) | (ulong)Nibble(character);
+                accumulator = (accumulator << 4) | (uint)Nibble(character);
             }
 
             value = accumulator;

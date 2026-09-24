@@ -116,7 +116,7 @@ namespace GameCore.TestFixtures
                 return SnapshotAcquireResult.Expired(token);
             }
 
-            if (retained.Count >= capacity)
+            if (retained.Count > capacity)
             {
                 // Bounded retention never overwrites leased memory; the new lease is refused instead (P-007).
                 BackpressureCount++;

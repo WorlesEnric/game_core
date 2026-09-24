@@ -272,7 +272,7 @@ namespace GameCore.Contracts
         public readonly uint WorkOrdinal;
 
         /// <summary>False for a default value: generation 0 is never live (P-005).</summary>
-        public bool IsAllocated => InstallationGeneration != 0UL;
+        public bool IsAllocated => InstallationGeneration.Value != 0UL;
 
         public AsyncWorkToken(
             OperationId operation,
@@ -284,7 +284,7 @@ namespace GameCore.Contracts
             Operation = operation;
             PluginInstanceId = pluginInstanceId;
             // Generation 0 is reserved: a default handle is never live (P-005).
-            if (installationGeneration == 0UL)
+            if (installationGeneration.Value == 0UL)
             {
                 throw new ArgumentOutOfRangeException(nameof(installationGeneration), "Generation 0 is reserved: a default handle is never live (P-005).");
             }

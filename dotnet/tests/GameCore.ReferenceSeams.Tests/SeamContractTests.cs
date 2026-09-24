@@ -106,10 +106,17 @@ namespace GameCore.ReferenceSeams.Tests
             CommandAdmissionReceipt receipt = host.Submit(first);
             Assert.That(receipt.Admitted, Is.True);
 
+            CommandEnvelope later = new CommandEnvelope(new OperationId(WorldA, Id128.Zero, 2UL), first.RouteId, first.TargetId, schema, null, first.Payload);
+            CommandAdmissionReceipt laterReceipt = host.Submit(later);
+            Assert.That(laterReceipt.Admitted, Is.True);
+            Assert.That(laterReceipt.AcceptedSequence, Is.GreaterThan(receipt.AcceptedSequence));
+
             // Same operation id, same payload: a retransmission returns the original outcome (P-050).
             CommandAdmissionReceipt duplicate = host.Submit(first);
             Assert.That(duplicate.Admitted, Is.True);
             Assert.That(host.DuplicateCount, Is.EqualTo(1));
+            Assert.That(duplicate.AcceptedSequence, Is.EqualTo(receipt.AcceptedSequence), "A retransmission keeps its original replay order after later admissions (P-050).");
+            Assert.That(host.SubmissionCount, Is.EqualTo(2), "A retransmission must not enqueue a second command.");
 
             // Same operation id, different payload: reported as a conflict, original row preserved (P-050).
             CommandEnvelope conflicting = new CommandEnvelope(operation, first.RouteId, first.TargetId, schema, null, new FrozenPayload(new byte[] { 9 }));
@@ -216,7 +223,7 @@ namespace GameCore.ReferenceSeams.Tests
 
             Assert.That(catalog.LookupSchema(new SchemaRef(schemaId, 1U)).Found, Is.True);
             Assert.That(catalog.LookupSchema(new SchemaRef(schemaId, 2U)).Code, Is.EqualTo(DiagnosticCode.UnsupportedVersion));
-            Assert.That(catalog.LookupSchema(new SchemaRef(new Id128(0x2000UL, 9UL), 1U)).Code, Is.EqualTo(DiagnosticCode.MissingDependency));
+            Assert.That(catalog.LookupSchema(new SchemaRef(new SchemaId(new Id128(0x2000UL, 9UL)), 1U)).Code, Is.EqualTo(DiagnosticCode.MissingDependency));
 
             // A duplicate registration is rejected rather than silently replacing the first owner (P-009).
             Assert.That(catalog.RegisterFactory(new FactoryRegistration(known, FactoryKind.Reducer, Id128.Zero, Id128.Zero, 1U)), Is.Not.Empty);
@@ -332,7 +339,13 @@ namespace GameCore.ReferenceSeams.Tests
             // A faulted world publishes nothing and refuses further steps.
             Assert.That(driver.Advance(new StepAdvanceRequest(WorldA, host.CurrentEpoch, host.CurrentStep, 1UL, TimeDebt.Zero)).Code, Is.EqualTo(DiagnosticCode.ApplyFault));
             host.FaultForFixture();
-            Assert.That(host.Stop(new OperationId(WorldA, Id128.Zero, 9UL), "test").Outcome, Is.EqualTo(Outcome.Published));
+            // The failing entry still owns an unfinished job; P-047/P-048 forbid disposal before it ends.
+            OperationResult stopped = host.Stop(new OperationId(WorldA, Id128.Zero, 9UL), "test");
+            Assert.That(stopped.Outcome, Is.EqualTo(Outcome.Rejected));
+            Assert.That(stopped.Code, Is.EqualTo(DiagnosticCode.TeardownBlocked));
+            Assert.That(host.Lifecycle, Is.EqualTo(WorldLifecycleState.Stopping));
+            Assert.That(ledger.OutstandingJobCount, Is.EqualTo(1));
+            Assert.That(ledger.QuarantinedJobCount, Is.EqualTo(1));
         }
 
         [Test]

@@ -445,8 +445,8 @@ namespace GameCore.Contracts
             buffer[4] = header.Major;
             buffer[5] = header.Minor;
             Id128Codec.WriteBigEndian(header.Schema.Id.Value, buffer, 6);
-            WriteUInt32BigEndian(header.Schema.Version, buffer, EnvelopeFormat.SchemaVersionOffset);
-            WriteUInt32BigEndian((uint)header.RequiredFeatureIds.Count, buffer, EnvelopeFormat.FeatureCountOffset);
+            WriteUInt32BigEndian(header.Schema.Version, EnvelopeFormat.SchemaVersionOffset);
+            WriteUInt32BigEndian((uint)header.RequiredFeatureIds.Count, EnvelopeFormat.FeatureCountOffset);
             int offset = EnvelopeFormat.FixedHeaderSize;
             for (int i = 0; i < header.RequiredFeatureIds.Count; i++)
             {
@@ -957,6 +957,8 @@ namespace GameCore.Contracts
                 case WireType.UInt64:
                 case WireType.Int32:
                 case WireType.Int64:
+                case WireType.Float32:
+                case WireType.Float64:
                 case WireType.Bool:
                 case WireType.Id128:
                 case WireType.Bytes:

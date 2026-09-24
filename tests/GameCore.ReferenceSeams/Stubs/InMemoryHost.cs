@@ -76,7 +76,8 @@ namespace GameCore.TestFixtures
             RequestResult result = admitted
                 ? new RequestResult(RequestResultKind.Accepted, DiagnosticCode.None, default(EventCursor))
                 : new RequestResult(RequestResultKind.Rejected, LastConflictCode, default(EventCursor));
-            return new CommandAdmissionReceipt(command.RequestId, result, nextSequence);
+            AdmissionSequence sequence = records[command.RequestId].Sequence;
+            return new CommandAdmissionReceipt(command.RequestId, result, sequence);
         }
 
         /// <summary>
@@ -119,7 +120,7 @@ namespace GameCore.TestFixtures
             return CancelOutcome.Cancelled;
         }
 
-        /// <summary>Returns true when the operation is newly admitted; false for a duplicate or a conflict.</summary>
+        /// <summary>Returns true for a new admission or matching retransmission; false for a conflict.</summary>
         private bool Record(OperationId operation, ContentHash inputHash)
         {
             if (records.TryGetValue(operation, out OperationRecord existing))
@@ -127,7 +128,7 @@ namespace GameCore.TestFixtures
                 if (existing.InputHash == inputHash)
                 {
                     DuplicateCount++;
-                    return false;
+                    return true;
                 }
 
                 // Conflicting reuse is reported and the original ledger row is left exactly as it was (P-050).

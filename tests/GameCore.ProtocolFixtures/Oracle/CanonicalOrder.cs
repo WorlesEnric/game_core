@@ -46,12 +46,21 @@ namespace GameCore.ProtocolFixtures.Oracle
                 return false;
             }
 
-            if (!ulong.TryParse(text.Substring(0, 16), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out ulong high))
+            for (int i = 0; i < text.Length; i++)
+            {
+                char digit = text[i];
+                if (!((digit >= '0' && digit <= '9') || (digit >= 'a' && digit <= 'f')))
+                {
+                    return false;
+                }
+            }
+
+            if (!ulong.TryParse(text.AsSpan(0, 16), NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out ulong high))
             {
                 return false;
             }
 
-            if (!ulong.TryParse(text.Substring(16, 16), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out ulong low))
+            if (!ulong.TryParse(text.AsSpan(16, 16), NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out ulong low))
             {
                 return false;
             }

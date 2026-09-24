@@ -19,6 +19,12 @@ namespace GameCore.ProtocolFixtures.Oracle
             Detail = detail ?? string.Empty;
         }
 
+        public bool Accepted { get; }
+
+        public string Code { get; }
+
+        public string Detail { get; }
+
         public static EnvelopeProbe Accept(string detail) => new EnvelopeProbe(true, string.Empty, detail);
 
         public static EnvelopeProbe Reject(string code, string detail) => new EnvelopeProbe(false, code, detail);

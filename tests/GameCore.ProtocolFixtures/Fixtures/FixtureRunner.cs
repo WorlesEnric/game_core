@@ -464,7 +464,7 @@ namespace GameCore.ProtocolFixtures.Fixtures
                 bool declaredAccepted = text != null;
                 if (candidate.ValueKind == JsonValueKind.Object)
                 {
-                    text = RequireString(candidate, "text");
+                    text = RequireString(candidate, "text", allowEmpty: true);
                     declaredAccepted = RequireBool(candidate, "accepted");
                 }
 
@@ -844,15 +844,15 @@ namespace GameCore.ProtocolFixtures.Fixtures
             return value;
         }
 
-        private static string RequireString(JsonElement parameters, string name)
+        private static string RequireString(JsonElement parameters, string name, bool allowEmpty = false)
         {
             if (!parameters.TryGetProperty(name, out JsonElement value) || value.ValueKind != JsonValueKind.String)
             {
-                throw new FixtureFormatException("'" + name + "' must be a non-empty string.");
+                throw new FixtureFormatException("'" + name + "' must be " + (allowEmpty ? "a string." : "a non-empty string."));
             }
 
             string? text = value.GetString();
-            if (string.IsNullOrEmpty(text))
+            if (text == null || (!allowEmpty && text.Length == 0))
             {
                 throw new FixtureFormatException("'" + name + "' must be a non-empty string.");
             }
