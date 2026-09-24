@@ -1,0 +1,1885 @@
+# GameCore reference seam API snapshot
+# source: GameCore.Contracts
+# namespace filter: GameCore.Contracts
+# type count: 233
+# canonical form: types sorted by full name (ordinal); members grouped fields, enum values, constructors, properties, methods, events and sorted ordinally; operators included, property accessors and inherited System.Object members omitted.
+
+type struct GameCore.Contracts.AccessDeclaration : System.IEquatable<GameCore.Contracts.AccessDeclaration>
+  field public readonly GameCore.Contracts.AccessMode Mode
+  field public readonly GameCore.Contracts.Id128 PartitionId
+  field public readonly GameCore.Contracts.SchemaRef Schema
+  ctor public AccessDeclaration(GameCore.Contracts.SchemaRef schema, GameCore.Contracts.AccessMode mode, GameCore.Contracts.Id128 partitionId)
+  property public System.Boolean IsPartitioned { get; }
+  method public System.Boolean Equals(GameCore.Contracts.AccessDeclaration other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static System.Boolean operator !=(GameCore.Contracts.AccessDeclaration left, GameCore.Contracts.AccessDeclaration right)
+  method public static System.Boolean operator ==(GameCore.Contracts.AccessDeclaration left, GameCore.Contracts.AccessDeclaration right)
+type enum GameCore.Contracts.AccessMode : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public Read = 0
+  enumvalue public ReadWrite = 2
+  enumvalue public Write = 1
+type class GameCore.Contracts.AccessSet
+  ctor public AccessSet(System.Collections.Generic.IReadOnlyList<GameCore.Contracts.AccessDeclaration>? declarations)
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.AccessDeclaration> Declarations { get; }
+type struct GameCore.Contracts.ActivationEpoch : System.IComparable<GameCore.Contracts.ActivationEpoch>, System.IEquatable<GameCore.Contracts.ActivationEpoch>
+  field public readonly System.UInt64 Value
+  field public static readonly GameCore.Contracts.ActivationEpoch First
+  field public static readonly GameCore.Contracts.ActivationEpoch MaxValue
+  field public static readonly GameCore.Contracts.ActivationEpoch Zero
+  ctor public ActivationEpoch(System.UInt64 value)
+  method public System.Boolean Equals(GameCore.Contracts.ActivationEpoch other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Boolean TryIncrement(out GameCore.Contracts.ActivationEpoch next)
+  method public System.Int32 CompareTo(GameCore.Contracts.ActivationEpoch other)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static System.Boolean operator !=(GameCore.Contracts.ActivationEpoch left, GameCore.Contracts.ActivationEpoch right)
+  method public static System.Boolean operator <(GameCore.Contracts.ActivationEpoch left, GameCore.Contracts.ActivationEpoch right)
+  method public static System.Boolean operator <=(GameCore.Contracts.ActivationEpoch left, GameCore.Contracts.ActivationEpoch right)
+  method public static System.Boolean operator ==(GameCore.Contracts.ActivationEpoch left, GameCore.Contracts.ActivationEpoch right)
+  method public static System.Boolean operator >(GameCore.Contracts.ActivationEpoch left, GameCore.Contracts.ActivationEpoch right)
+  method public static System.Boolean operator >=(GameCore.Contracts.ActivationEpoch left, GameCore.Contracts.ActivationEpoch right)
+type struct GameCore.Contracts.AdmissionSequence : System.IComparable<GameCore.Contracts.AdmissionSequence>, System.IEquatable<GameCore.Contracts.AdmissionSequence>
+  field public readonly System.UInt64 Value
+  field public static readonly GameCore.Contracts.AdmissionSequence First
+  field public static readonly GameCore.Contracts.AdmissionSequence MaxValue
+  field public static readonly GameCore.Contracts.AdmissionSequence Zero
+  ctor public AdmissionSequence(System.UInt64 value)
+  method public System.Boolean Equals(GameCore.Contracts.AdmissionSequence other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Boolean TryIncrement(out GameCore.Contracts.AdmissionSequence next)
+  method public System.Int32 CompareTo(GameCore.Contracts.AdmissionSequence other)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static System.Boolean operator !=(GameCore.Contracts.AdmissionSequence left, GameCore.Contracts.AdmissionSequence right)
+  method public static System.Boolean operator <(GameCore.Contracts.AdmissionSequence left, GameCore.Contracts.AdmissionSequence right)
+  method public static System.Boolean operator <=(GameCore.Contracts.AdmissionSequence left, GameCore.Contracts.AdmissionSequence right)
+  method public static System.Boolean operator ==(GameCore.Contracts.AdmissionSequence left, GameCore.Contracts.AdmissionSequence right)
+  method public static System.Boolean operator >(GameCore.Contracts.AdmissionSequence left, GameCore.Contracts.AdmissionSequence right)
+  method public static System.Boolean operator >=(GameCore.Contracts.AdmissionSequence left, GameCore.Contracts.AdmissionSequence right)
+type class GameCore.Contracts.AffectedCounts
+  ctor public AffectedCounts(System.Int32 targets, System.Int32 installs, System.Int32 contributionsAdded, System.Int32 contributionsRetracted, System.Int32 stages)
+  property public System.Int32 ContributionsAdded { get; }
+  property public System.Int32 ContributionsRetracted { get; }
+  property public System.Int32 Installs { get; }
+  property public System.Int32 Stages { get; }
+  property public System.Int32 Targets { get; }
+type enum GameCore.Contracts.ApplyOutcome : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public Applied = 0
+  enumvalue public FaultedAfterWrite = 2
+  enumvalue public RejectedBeforeWrite = 1
+type struct GameCore.Contracts.AssemblyEpoch : System.IComparable<GameCore.Contracts.AssemblyEpoch>, System.IEquatable<GameCore.Contracts.AssemblyEpoch>
+  field public readonly System.UInt64 Value
+  field public static readonly GameCore.Contracts.AssemblyEpoch First
+  field public static readonly GameCore.Contracts.AssemblyEpoch MaxValue
+  field public static readonly GameCore.Contracts.AssemblyEpoch Zero
+  ctor public AssemblyEpoch(System.UInt64 value)
+  method public System.Boolean Equals(GameCore.Contracts.AssemblyEpoch other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Boolean TryIncrement(out GameCore.Contracts.AssemblyEpoch next)
+  method public System.Int32 CompareTo(GameCore.Contracts.AssemblyEpoch other)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static System.Boolean operator !=(GameCore.Contracts.AssemblyEpoch left, GameCore.Contracts.AssemblyEpoch right)
+  method public static System.Boolean operator <(GameCore.Contracts.AssemblyEpoch left, GameCore.Contracts.AssemblyEpoch right)
+  method public static System.Boolean operator <=(GameCore.Contracts.AssemblyEpoch left, GameCore.Contracts.AssemblyEpoch right)
+  method public static System.Boolean operator ==(GameCore.Contracts.AssemblyEpoch left, GameCore.Contracts.AssemblyEpoch right)
+  method public static System.Boolean operator >(GameCore.Contracts.AssemblyEpoch left, GameCore.Contracts.AssemblyEpoch right)
+  method public static System.Boolean operator >=(GameCore.Contracts.AssemblyEpoch left, GameCore.Contracts.AssemblyEpoch right)
+type struct GameCore.Contracts.AssetAdapterDescriptor
+  field public readonly GameCore.Contracts.Id128 AdapterId
+  field public readonly System.UInt32 Version
+  ctor public AssetAdapterDescriptor(GameCore.Contracts.Id128 adapterId, System.UInt32 version)
+  method public System.String ToString()
+type struct GameCore.Contracts.AsyncWorkToken : System.IEquatable<GameCore.Contracts.AsyncWorkToken>
+  field public readonly GameCore.Contracts.ActivationEpoch ActivationEpoch
+  field public readonly GameCore.Contracts.InstallationGeneration InstallationGeneration
+  field public readonly GameCore.Contracts.OperationId Operation
+  field public readonly GameCore.Contracts.PluginInstanceId PluginInstanceId
+  field public readonly System.UInt32 WorkOrdinal
+  ctor public AsyncWorkToken(GameCore.Contracts.OperationId operation, GameCore.Contracts.PluginInstanceId pluginInstanceId, GameCore.Contracts.InstallationGeneration installationGeneration, GameCore.Contracts.ActivationEpoch activationEpoch, System.UInt32 workOrdinal)
+  property public System.Boolean IsAllocated { get; }
+  method public System.Boolean Equals(GameCore.Contracts.AsyncWorkToken other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static System.Boolean operator !=(GameCore.Contracts.AsyncWorkToken left, GameCore.Contracts.AsyncWorkToken right)
+  method public static System.Boolean operator ==(GameCore.Contracts.AsyncWorkToken left, GameCore.Contracts.AsyncWorkToken right)
+type class GameCore.Contracts.BoundRegistration<TImplementation>
+  ctor public BoundRegistration`1(GameCore.Contracts.FactoryKey key, System.String stableName, TImplementation implementation)
+  property public GameCore.Contracts.FactoryKey Key { get; }
+  property public System.String StableName { get; }
+  property public TImplementation Implementation { get; }
+  method public System.String ToString()
+type class GameCore.Contracts.BufferBinding
+  ctor public BufferBinding(GameCore.Contracts.BufferId buffer, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.FactoryKey>? producers, GameCore.Contracts.StageId consumerStage)
+  property public GameCore.Contracts.BufferId Buffer { get; }
+  property public GameCore.Contracts.StageId ConsumerStage { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.FactoryKey> Producers { get; }
+type enum GameCore.Contracts.BufferCancellationPolicy : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public Discard = 1
+  enumvalue public Drain = 0
+  enumvalue public RebindToCompatibleOwner = 2
+type struct GameCore.Contracts.BufferId : System.IComparable<GameCore.Contracts.BufferId>, System.IEquatable<GameCore.Contracts.BufferId>
+  field public readonly GameCore.Contracts.Id128 Value
+  ctor public BufferId(GameCore.Contracts.Id128 value)
+  property public System.Boolean IsDefault { get; }
+  method public System.Boolean Equals(GameCore.Contracts.BufferId other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 CompareTo(GameCore.Contracts.BufferId other)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static GameCore.Contracts.BufferId FromRaw(System.UInt64 high, System.UInt64 low)
+  method public static System.Boolean operator !=(GameCore.Contracts.BufferId left, GameCore.Contracts.BufferId right)
+  method public static System.Boolean operator ==(GameCore.Contracts.BufferId left, GameCore.Contracts.BufferId right)
+type enum GameCore.Contracts.BufferLifetime : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public BoundedNextStep = 2
+  enumvalue public Stage = 0
+  enumvalue public Step = 1
+type enum GameCore.Contracts.BufferOverflowPolicy : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public LossyWithCounters = 1
+  enumvalue public RejectBeforeMutation = 0
+type struct GameCore.Contracts.BufferPort
+  field public readonly GameCore.Contracts.BufferId Buffer
+  field public readonly GameCore.Contracts.PortDirection Direction
+  field public readonly GameCore.Contracts.StageId Stage
+  ctor public BufferPort(GameCore.Contracts.BufferId buffer, GameCore.Contracts.PortDirection direction, GameCore.Contracts.StageId stage)
+  method public System.String ToString()
+type class GameCore.Contracts.BufferSpec
+  ctor public BufferSpec(GameCore.Contracts.BufferId bufferId, GameCore.Contracts.SchemaRef schema, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.FactoryKey>? producers, GameCore.Contracts.StageId ownerStage, GameCore.Contracts.StageId consumerStage, GameCore.Contracts.FactoryKey orderKey, GameCore.Contracts.BufferLifetime lifetime, System.Int32 capacity, GameCore.Contracts.BufferOverflowPolicy overflow, GameCore.Contracts.BufferCancellationPolicy cancellation)
+  property public GameCore.Contracts.BufferCancellationPolicy Cancellation { get; }
+  property public GameCore.Contracts.BufferId BufferId { get; }
+  property public GameCore.Contracts.BufferLifetime Lifetime { get; }
+  property public GameCore.Contracts.BufferOverflowPolicy Overflow { get; }
+  property public GameCore.Contracts.FactoryKey OrderKey { get; }
+  property public GameCore.Contracts.SchemaRef Schema { get; }
+  property public GameCore.Contracts.StageId ConsumerStage { get; }
+  property public GameCore.Contracts.StageId OwnerStage { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.FactoryKey> Producers { get; }
+  property public System.Int32 Capacity { get; }
+type enum GameCore.Contracts.CallbackGateDecision : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public DiscardForeignWorld = 1
+  enumvalue public DiscardPostPublicationFence = 4
+  enumvalue public DiscardRetiredRoute = 3
+  enumvalue public DiscardStaleActivation = 2
+  enumvalue public Dispatch = 0
+type enum GameCore.Contracts.CancelOutcome : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public Cancelled = 0
+  enumvalue public IdempotencyConflict = 4
+  enumvalue public Rejected = 5
+  enumvalue public ResultExpired = 3
+  enumvalue public TooLate = 1
+  enumvalue public Unknown = 2
+type class GameCore.Contracts.CanonicalHex [static]
+  method public static System.Boolean IsCanonicalDigit(System.Char value)
+  method public static System.Boolean TryParseBytes(System.String? text, System.Byte[] destination, System.Int32 offset)
+  method public static System.Boolean TryParseUInt64(System.String? text, System.Int32 offset, out System.UInt64 value)
+  method public static System.String ToHex(System.Byte[] bytes, System.Int32 offset, System.Int32 count)
+type class GameCore.Contracts.CanonicalMapOrder [static]
+  method public static System.Collections.Generic.IReadOnlyList<System.Collections.Generic.KeyValuePair<GameCore.Contracts.Id128, TValue>> ByIdKey<TValue>(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<GameCore.Contracts.Id128, TValue>> entries, out System.Boolean hasDuplicateKeys)
+  method public static System.Collections.Generic.IReadOnlyList<System.Collections.Generic.KeyValuePair<System.String, TValue>> ByOrdinalStringKey<TValue>(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, TValue>> entries, out System.Boolean hasDuplicateKeys)
+  method public static System.Collections.Generic.IReadOnlyList<System.Collections.Generic.KeyValuePair<System.UInt64, TValue>> ByUnsignedKey<TValue>(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.UInt64, TValue>> entries, out System.Boolean hasDuplicateKeys)
+  method public static System.Int32 CompareId(GameCore.Contracts.Id128 left, GameCore.Contracts.Id128 right)
+  method public static System.Int32 CompareOrdinalUtf8(System.String? left, System.String? right)
+  method public static System.Int32 CompareUInt64(System.UInt64 left, System.UInt64 right)
+type class GameCore.Contracts.CapabilityContract
+  ctor public CapabilityContract(GameCore.Contracts.CapabilityRef capability, System.Int32 stratum, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.OutputSlotSchema>? outputSlots, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.SlotCompositionPolicy>? slotPolicies, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.CapabilityId>? incompatibleCapabilities)
+  property public GameCore.Contracts.CapabilityRef Capability { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.CapabilityId> IncompatibleCapabilities { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.OutputSlotSchema> OutputSlots { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.SlotCompositionPolicy> SlotPolicies { get; }
+  property public System.Int32 Stratum { get; }
+type struct GameCore.Contracts.CapabilityId : System.IComparable<GameCore.Contracts.CapabilityId>, System.IEquatable<GameCore.Contracts.CapabilityId>
+  field public readonly GameCore.Contracts.Id128 Value
+  ctor public CapabilityId(GameCore.Contracts.Id128 value)
+  property public System.Boolean IsDefault { get; }
+  method public System.Boolean Equals(GameCore.Contracts.CapabilityId other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 CompareTo(GameCore.Contracts.CapabilityId other)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static GameCore.Contracts.CapabilityId FromRaw(System.UInt64 high, System.UInt64 low)
+  method public static System.Boolean operator !=(GameCore.Contracts.CapabilityId left, GameCore.Contracts.CapabilityId right)
+  method public static System.Boolean operator ==(GameCore.Contracts.CapabilityId left, GameCore.Contracts.CapabilityId right)
+type struct GameCore.Contracts.CapabilityImport : System.IEquatable<GameCore.Contracts.CapabilityImport>
+  field public readonly GameCore.Contracts.CapabilityId CapabilityId
+  field public readonly GameCore.Contracts.ProviderInstallationId ProviderInstallationId
+  ctor public CapabilityImport(GameCore.Contracts.CapabilityId capabilityId, GameCore.Contracts.ProviderInstallationId providerInstallationId)
+  method public System.Boolean Equals(GameCore.Contracts.CapabilityImport other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static System.Boolean operator !=(GameCore.Contracts.CapabilityImport left, GameCore.Contracts.CapabilityImport right)
+  method public static System.Boolean operator ==(GameCore.Contracts.CapabilityImport left, GameCore.Contracts.CapabilityImport right)
+type struct GameCore.Contracts.CapabilityRef : System.IEquatable<GameCore.Contracts.CapabilityRef>
+  field public readonly GameCore.Contracts.CapabilityId Capability
+  field public readonly System.UInt32 Version
+  ctor public CapabilityRef(GameCore.Contracts.CapabilityId capability, System.UInt32 version)
+  method public System.Boolean Equals(GameCore.Contracts.CapabilityRef other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static System.Boolean operator !=(GameCore.Contracts.CapabilityRef left, GameCore.Contracts.CapabilityRef right)
+  method public static System.Boolean operator ==(GameCore.Contracts.CapabilityRef left, GameCore.Contracts.CapabilityRef right)
+type class GameCore.Contracts.CatalogBuildResult
+  property public GameCore.Contracts.ImmutableCatalog? Catalog { get; }
+  property public System.Boolean Succeeded { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Diagnostic> Diagnostics { get; }
+  method public System.String Describe()
+  method public static GameCore.Contracts.CatalogBuildResult Failure(System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Diagnostic>? diagnostics)
+type class GameCore.Contracts.CatalogFingerprint [static]
+  field public const System.String Scope
+  method public static GameCore.Contracts.ContentHash Compute(System.Collections.Generic.IReadOnlyList<GameCore.Contracts.FactoryRegistration>? factories, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.SchemaRegistration>? schemas, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128>? supportedFeatureIds)
+type class GameCore.Contracts.CatalogLookup
+  property public GameCore.Contracts.CatalogRequest Request { get; }
+  property public GameCore.Contracts.DiagnosticCode Code { get; }
+  property public GameCore.Contracts.FactoryRegistration? Factory { get; }
+  property public GameCore.Contracts.SchemaRegistration? Schema { get; }
+  property public System.Boolean Found { get; }
+  method public System.String Describe()
+  method public static GameCore.Contracts.CatalogLookup FactoryFound(GameCore.Contracts.FactoryRegistration registration)
+  method public static GameCore.Contracts.CatalogLookup MissingKey(GameCore.Contracts.FactoryKey key)
+  method public static GameCore.Contracts.CatalogLookup MissingSchema(GameCore.Contracts.SchemaRef schema)
+  method public static GameCore.Contracts.CatalogLookup SchemaFound(GameCore.Contracts.SchemaRegistration registration)
+  method public static GameCore.Contracts.CatalogLookup UnsupportedSchemaVersion(GameCore.Contracts.SchemaRef schema)
+type struct GameCore.Contracts.CatalogRequest
+  field public readonly GameCore.Contracts.FactoryKey Key
+  field public readonly GameCore.Contracts.SchemaRef Schema
+  method public System.String ToString()
+  method public static GameCore.Contracts.CatalogRequest ForKey(GameCore.Contracts.FactoryKey key)
+  method public static GameCore.Contracts.CatalogRequest ForSchema(GameCore.Contracts.SchemaRef schema)
+type class GameCore.Contracts.ChangePlan
+  ctor public ChangePlan(GameCore.Contracts.OperationId operation, GameCore.Contracts.ContentHash inputHash, GameCore.Contracts.CompositionRevision baseRevision, GameCore.Contracts.AssemblyEpoch baseEpoch, GameCore.Contracts.ContentHash catalogHash, GameCore.Contracts.ContentHash planHash, GameCore.Contracts.CompositionDelta composition, GameCore.Contracts.DerivationDelta derivation, GameCore.Contracts.RuntimeDelta runtime, GameCore.Contracts.ResourceStaging resources, GameCore.Contracts.ValidityAndCost validity)
+  property public GameCore.Contracts.AssemblyEpoch BaseEpoch { get; }
+  property public GameCore.Contracts.CompositionDelta Composition { get; }
+  property public GameCore.Contracts.CompositionRevision BaseRevision { get; }
+  property public GameCore.Contracts.ContentHash CatalogHash { get; }
+  property public GameCore.Contracts.ContentHash InputHash { get; }
+  property public GameCore.Contracts.ContentHash PlanHash { get; }
+  property public GameCore.Contracts.DerivationDelta Derivation { get; }
+  property public GameCore.Contracts.OperationId Operation { get; }
+  property public GameCore.Contracts.ResourceStaging Resources { get; }
+  property public GameCore.Contracts.RuntimeDelta Runtime { get; }
+  property public GameCore.Contracts.ValidityAndCost Validity { get; }
+type class GameCore.Contracts.CommandAdmissionReceipt
+  ctor public CommandAdmissionReceipt(GameCore.Contracts.OperationId request, GameCore.Contracts.RequestResult result, GameCore.Contracts.AdmissionSequence acceptedSequence)
+  property public GameCore.Contracts.AdmissionSequence AcceptedSequence { get; }
+  property public GameCore.Contracts.OperationId Request { get; }
+  property public GameCore.Contracts.RequestResult Result { get; }
+  property public System.Boolean Admitted { get; }
+type class GameCore.Contracts.CommandEnvelope
+  ctor public CommandEnvelope(GameCore.Contracts.OperationId requestId, GameCore.Contracts.RouteId routeId, GameCore.Contracts.TargetId targetId, GameCore.Contracts.SchemaRef schema, System.UInt64? expectedDomainVersion, GameCore.Contracts.FrozenPayload payload)
+  property public GameCore.Contracts.FrozenPayload Payload { get; }
+  property public GameCore.Contracts.OperationId RequestId { get; }
+  property public GameCore.Contracts.RouteId RouteId { get; }
+  property public GameCore.Contracts.SchemaRef Schema { get; }
+  property public GameCore.Contracts.TargetId TargetId { get; }
+  property public System.UInt64? ExpectedDomainVersion { get; }
+type class GameCore.Contracts.CommittedEvent
+  ctor public CommittedEvent(GameCore.Contracts.EventCursor cursor, GameCore.Contracts.SchemaRef schema, GameCore.Contracts.AssemblyEpoch epoch, GameCore.Contracts.LogicalStepId step, GameCore.Contracts.OperationId causalRequest, GameCore.Contracts.FrozenPayload payload)
+  property public GameCore.Contracts.AssemblyEpoch Epoch { get; }
+  property public GameCore.Contracts.EventCursor Cursor { get; }
+  property public GameCore.Contracts.FrozenPayload Payload { get; }
+  property public GameCore.Contracts.LogicalStepId Step { get; }
+  property public GameCore.Contracts.OperationId CausalRequest { get; }
+  property public GameCore.Contracts.SchemaRef Schema { get; }
+type class GameCore.Contracts.CommittedEventPage
+  ctor public CommittedEventPage(GameCore.Contracts.CursorOutcome outcome, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.CommittedEvent>? events, GameCore.Contracts.EventCursor nextCursor)
+  property public GameCore.Contracts.CursorOutcome Outcome { get; }
+  property public GameCore.Contracts.EventCursor NextCursor { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.CommittedEvent> Events { get; }
+type class GameCore.Contracts.CompositionDelta
+  ctor public CompositionDelta(System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ScopeEdit>? scopes, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.InstallEdit>? installs, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.MembershipEdit>? memberships, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ConfigEdit>? configs, GameCore.Contracts.ModeEdit? mode)
+  property public GameCore.Contracts.ModeEdit? Mode { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ConfigEdit> Configs { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.InstallEdit> Installs { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.MembershipEdit> Memberships { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ScopeEdit> Scopes { get; }
+type enum GameCore.Contracts.CompositionEditKind : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public Add = 0
+  enumvalue public Remove = 2
+  enumvalue public Reparent = 3
+  enumvalue public Update = 1
+type class GameCore.Contracts.CompositionEditRequest
+  ctor public CompositionEditRequest(GameCore.Contracts.OperationId operation, GameCore.Contracts.CompositionRevision expectedRevision, GameCore.Contracts.CompositionEditKind kind, GameCore.Contracts.FrozenPayload editPayload)
+  property public GameCore.Contracts.CompositionEditKind Kind { get; }
+  property public GameCore.Contracts.CompositionRevision ExpectedRevision { get; }
+  property public GameCore.Contracts.FrozenPayload EditPayload { get; }
+  property public GameCore.Contracts.OperationId Operation { get; }
+type class GameCore.Contracts.CompositionHostSettings
+  ctor public CompositionHostSettings(GameCore.Contracts.ControlLaneCapacitySettings capacity, GameCore.Contracts.OperationExpirySettings expiry)
+  property public GameCore.Contracts.ControlLaneCapacitySettings Capacity { get; }
+  property public GameCore.Contracts.OperationExpirySettings Expiry { get; }
+type enum GameCore.Contracts.CompositionPolicy : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public Additive = 0
+  enumvalue public Exclusive = 3
+  enumvalue public Incompatible = 4
+  enumvalue public Ordered = 2
+  enumvalue public Replace = 1
+type class GameCore.Contracts.CompositionProposal
+  ctor public CompositionProposal(GameCore.Contracts.OperationId operation, System.UInt64 expectedRevision, GameCore.Contracts.FrozenPayload catalogHash, GameCore.Contracts.SchemaRef editSchema, GameCore.Contracts.FrozenPayload editPayload)
+  property public GameCore.Contracts.FrozenPayload CatalogHash { get; }
+  property public GameCore.Contracts.FrozenPayload EditPayload { get; }
+  property public GameCore.Contracts.OperationId Operation { get; }
+  property public GameCore.Contracts.SchemaRef EditSchema { get; }
+  property public System.UInt64 ExpectedRevision { get; }
+type class GameCore.Contracts.CompositionPublishedEvent
+  ctor public CompositionPublishedEvent(GameCore.Contracts.OperationId operation, GameCore.Contracts.CompositionRevision oldRevision, GameCore.Contracts.CompositionRevision newRevision, GameCore.Contracts.AssemblyEpoch oldEpoch, GameCore.Contracts.AssemblyEpoch newEpoch, GameCore.Contracts.ContentHash planHash, GameCore.Contracts.AffectedCounts counts)
+  property public GameCore.Contracts.AffectedCounts Counts { get; }
+  property public GameCore.Contracts.AssemblyEpoch NewEpoch { get; }
+  property public GameCore.Contracts.AssemblyEpoch OldEpoch { get; }
+  property public GameCore.Contracts.CompositionRevision NewRevision { get; }
+  property public GameCore.Contracts.CompositionRevision OldRevision { get; }
+  property public GameCore.Contracts.ContentHash PlanHash { get; }
+  property public GameCore.Contracts.OperationId Operation { get; }
+type class GameCore.Contracts.CompositionRejectedEvent
+  ctor public CompositionRejectedEvent(GameCore.Contracts.OperationId operation, GameCore.Contracts.ContentHash planHash, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Diagnostic>? diagnostics)
+  property public GameCore.Contracts.ContentHash PlanHash { get; }
+  property public GameCore.Contracts.OperationId Operation { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Diagnostic> Diagnostics { get; }
+type struct GameCore.Contracts.CompositionRevision : System.IComparable<GameCore.Contracts.CompositionRevision>, System.IEquatable<GameCore.Contracts.CompositionRevision>
+  field public readonly System.UInt64 Value
+  field public static readonly GameCore.Contracts.CompositionRevision First
+  field public static readonly GameCore.Contracts.CompositionRevision MaxValue
+  field public static readonly GameCore.Contracts.CompositionRevision Zero
+  ctor public CompositionRevision(System.UInt64 value)
+  method public System.Boolean Equals(GameCore.Contracts.CompositionRevision other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Boolean TryIncrement(out GameCore.Contracts.CompositionRevision next)
+  method public System.Int32 CompareTo(GameCore.Contracts.CompositionRevision other)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static System.Boolean operator !=(GameCore.Contracts.CompositionRevision left, GameCore.Contracts.CompositionRevision right)
+  method public static System.Boolean operator <(GameCore.Contracts.CompositionRevision left, GameCore.Contracts.CompositionRevision right)
+  method public static System.Boolean operator <=(GameCore.Contracts.CompositionRevision left, GameCore.Contracts.CompositionRevision right)
+  method public static System.Boolean operator ==(GameCore.Contracts.CompositionRevision left, GameCore.Contracts.CompositionRevision right)
+  method public static System.Boolean operator >(GameCore.Contracts.CompositionRevision left, GameCore.Contracts.CompositionRevision right)
+  method public static System.Boolean operator >=(GameCore.Contracts.CompositionRevision left, GameCore.Contracts.CompositionRevision right)
+type class GameCore.Contracts.CompositionStateSnapshot
+  ctor public CompositionStateSnapshot(GameCore.Contracts.WorldId world, GameCore.Contracts.CompositionRevision revision, GameCore.Contracts.AssemblyEpoch epoch, GameCore.Contracts.LogicalStepId step, GameCore.Contracts.PropagationMode mode, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ScopeSnapshot>? scopes, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.InstallSnapshot>? installs)
+  property public GameCore.Contracts.AssemblyEpoch Epoch { get; }
+  property public GameCore.Contracts.CompositionRevision Revision { get; }
+  property public GameCore.Contracts.LogicalStepId Step { get; }
+  property public GameCore.Contracts.PropagationMode Mode { get; }
+  property public GameCore.Contracts.WorldId World { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.InstallSnapshot> Installs { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ScopeSnapshot> Scopes { get; }
+type class GameCore.Contracts.ConfigEdit
+  ctor public ConfigEdit(GameCore.Contracts.PluginInstanceId instance, GameCore.Contracts.DefinitionRevision oldRevision, GameCore.Contracts.DefinitionRevision newRevision, GameCore.Contracts.ContentHash oldHash, GameCore.Contracts.ContentHash newHash)
+  property public GameCore.Contracts.ContentHash NewHash { get; }
+  property public GameCore.Contracts.ContentHash OldHash { get; }
+  property public GameCore.Contracts.DefinitionRevision NewRevision { get; }
+  property public GameCore.Contracts.DefinitionRevision OldRevision { get; }
+  property public GameCore.Contracts.PluginInstanceId Instance { get; }
+type struct GameCore.Contracts.ContentHash : System.IEquatable<GameCore.Contracts.ContentHash>
+  field public const System.Int32 SizeInBytes
+  field public static readonly GameCore.Contracts.ContentHash Empty
+  ctor public ContentHash(System.Byte[] source)
+  property public System.Boolean IsEmpty { get; }
+  method public System.Boolean Equals(GameCore.Contracts.ContentHash other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Byte[] ToArray()
+  method public System.Int32 GetHashCode()
+  method public System.String ToHex()
+  method public System.String ToString()
+  method public System.Void CopyTo(System.Byte[] destination, System.Int32 offset)
+  method public static GameCore.Contracts.ContentHash Compute(System.Byte[] data)
+  method public static System.Boolean TryParseHex(System.String? text, out GameCore.Contracts.ContentHash value)
+  method public static System.Boolean operator !=(GameCore.Contracts.ContentHash left, GameCore.Contracts.ContentHash right)
+  method public static System.Boolean operator ==(GameCore.Contracts.ContentHash left, GameCore.Contracts.ContentHash right)
+type class GameCore.Contracts.ContractCollections [static]
+  method public static System.Collections.Generic.IReadOnlyList<T> Freeze<T>(System.Collections.Generic.IReadOnlyList<T>? source)
+type struct GameCore.Contracts.ContractRef : System.IEquatable<GameCore.Contracts.ContractRef>
+  field public readonly GameCore.Contracts.Id128 ContractId
+  field public readonly System.UInt32 Version
+  ctor public ContractRef(GameCore.Contracts.Id128 contractId, System.UInt32 version)
+  method public System.Boolean Equals(GameCore.Contracts.ContractRef other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static System.Boolean operator !=(GameCore.Contracts.ContractRef left, GameCore.Contracts.ContractRef right)
+  method public static System.Boolean operator ==(GameCore.Contracts.ContractRef left, GameCore.Contracts.ContractRef right)
+type struct GameCore.Contracts.ContributionKey : System.IEquatable<GameCore.Contracts.ContributionKey>
+  field public readonly GameCore.Contracts.CapabilityId Capability
+  field public readonly GameCore.Contracts.ProviderInstallationId Provider
+  field public readonly GameCore.Contracts.RuleId Rule
+  field public readonly GameCore.Contracts.TargetId Target
+  field public readonly System.UInt32 OutputSlot
+  ctor public ContributionKey(GameCore.Contracts.ProviderInstallationId provider, GameCore.Contracts.RuleId rule, GameCore.Contracts.TargetId target, GameCore.Contracts.CapabilityId capability, System.UInt32 outputSlot)
+  method public System.Boolean Equals(GameCore.Contracts.ContributionKey other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static System.Boolean operator !=(GameCore.Contracts.ContributionKey left, GameCore.Contracts.ContributionKey right)
+  method public static System.Boolean operator ==(GameCore.Contracts.ContributionKey left, GameCore.Contracts.ContributionKey right)
+type class GameCore.Contracts.ControlLaneCapacitySettings
+  ctor public ControlLaneCapacitySettings(System.Int32 maxQueuedOperations, System.Int32 maxRetainedResults)
+  property public System.Int32 MaxQueuedOperations { get; }
+  property public System.Int32 MaxRetainedResults { get; }
+  property public static GameCore.Contracts.ControlLaneCapacitySettings Default { get; }
+type enum GameCore.Contracts.CursorOutcome : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public CursorExpired = 1
+  enumvalue public Ok = 0
+type struct GameCore.Contracts.DefinitionId : System.IComparable<GameCore.Contracts.DefinitionId>, System.IEquatable<GameCore.Contracts.DefinitionId>
+  field public readonly GameCore.Contracts.Id128 Value
+  ctor public DefinitionId(GameCore.Contracts.Id128 value)
+  property public System.Boolean IsDefault { get; }
+  method public System.Boolean Equals(GameCore.Contracts.DefinitionId other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 CompareTo(GameCore.Contracts.DefinitionId other)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static GameCore.Contracts.DefinitionId FromRaw(System.UInt64 high, System.UInt64 low)
+  method public static System.Boolean operator !=(GameCore.Contracts.DefinitionId left, GameCore.Contracts.DefinitionId right)
+  method public static System.Boolean operator ==(GameCore.Contracts.DefinitionId left, GameCore.Contracts.DefinitionId right)
+type struct GameCore.Contracts.DefinitionRef : System.IEquatable<GameCore.Contracts.DefinitionRef>
+  field public readonly GameCore.Contracts.DefinitionId Id
+  field public readonly GameCore.Contracts.DefinitionRevision Revision
+  field public readonly GameCore.Contracts.SchemaRef Schema
+  ctor public DefinitionRef(GameCore.Contracts.DefinitionId id, GameCore.Contracts.SchemaRef schema, GameCore.Contracts.DefinitionRevision revision)
+  method public System.Boolean Equals(GameCore.Contracts.DefinitionRef other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static System.Boolean operator !=(GameCore.Contracts.DefinitionRef left, GameCore.Contracts.DefinitionRef right)
+  method public static System.Boolean operator ==(GameCore.Contracts.DefinitionRef left, GameCore.Contracts.DefinitionRef right)
+type struct GameCore.Contracts.DefinitionRevision : System.IComparable<GameCore.Contracts.DefinitionRevision>, System.IEquatable<GameCore.Contracts.DefinitionRevision>
+  field public readonly System.UInt64 Value
+  field public static readonly GameCore.Contracts.DefinitionRevision First
+  field public static readonly GameCore.Contracts.DefinitionRevision MaxValue
+  field public static readonly GameCore.Contracts.DefinitionRevision Zero
+  ctor public DefinitionRevision(System.UInt64 value)
+  method public System.Boolean Equals(GameCore.Contracts.DefinitionRevision other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Boolean TryIncrement(out GameCore.Contracts.DefinitionRevision next)
+  method public System.Int32 CompareTo(GameCore.Contracts.DefinitionRevision other)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static System.Boolean operator !=(GameCore.Contracts.DefinitionRevision left, GameCore.Contracts.DefinitionRevision right)
+  method public static System.Boolean operator <(GameCore.Contracts.DefinitionRevision left, GameCore.Contracts.DefinitionRevision right)
+  method public static System.Boolean operator <=(GameCore.Contracts.DefinitionRevision left, GameCore.Contracts.DefinitionRevision right)
+  method public static System.Boolean operator ==(GameCore.Contracts.DefinitionRevision left, GameCore.Contracts.DefinitionRevision right)
+  method public static System.Boolean operator >(GameCore.Contracts.DefinitionRevision left, GameCore.Contracts.DefinitionRevision right)
+  method public static System.Boolean operator >=(GameCore.Contracts.DefinitionRevision left, GameCore.Contracts.DefinitionRevision right)
+type class GameCore.Contracts.DerivationDelta
+  ctor public DerivationDelta(System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ContributionKey>? added, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ContributionKey>? removed, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ContributionKey>? changed, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.SlotDelta>? effectiveSlots, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.SupportRecord>? supports, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ExplanationReference>? explanations)
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ContributionKey> Added { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ContributionKey> Changed { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ContributionKey> Removed { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ExplanationReference> Explanations { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.SlotDelta> EffectiveSlots { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.SupportRecord> Supports { get; }
+type class GameCore.Contracts.DerivationRule
+  ctor public DerivationRule(GameCore.Contracts.RuleId ruleId, GameCore.Contracts.CapabilityRef outputCapability, System.Int32 outputStratum, System.UInt32 maxOutputSlots, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.SchemaRef>? selectorContracts, GameCore.Contracts.FactoryKey staticPredicate, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.CapabilityRef>? inputCapabilities, GameCore.Contracts.PropagationReach reach, System.Boolean exportToDescendants, System.Int32 priority, GameCore.Contracts.CompositionPolicy policy, GameCore.Contracts.FrozenPayload payloadDefinition)
+  property public GameCore.Contracts.CapabilityRef OutputCapability { get; }
+  property public GameCore.Contracts.CompositionPolicy Policy { get; }
+  property public GameCore.Contracts.FactoryKey StaticPredicate { get; }
+  property public GameCore.Contracts.FrozenPayload PayloadDefinition { get; }
+  property public GameCore.Contracts.PropagationReach Reach { get; }
+  property public GameCore.Contracts.RuleId RuleId { get; }
+  property public System.Boolean ExportToDescendants { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.CapabilityRef> InputCapabilities { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.SchemaRef> SelectorContracts { get; }
+  property public System.Int32 OutputStratum { get; }
+  property public System.Int32 Priority { get; }
+  property public System.UInt32 MaxOutputSlots { get; }
+type class GameCore.Contracts.Diagnostic
+  ctor public Diagnostic(GameCore.Contracts.DiagnosticCode code, GameCore.Contracts.OperationPhase phase, GameCore.Contracts.OperationId operation, GameCore.Contracts.ContentHash planHash, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128>? involvedIds, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.FactoryKey>? involvedKeys, System.Int64 count, System.Int64 budgetLimit, GameCore.Contracts.RetryClassification retry, System.String summary)
+  property public GameCore.Contracts.ContentHash PlanHash { get; }
+  property public GameCore.Contracts.DiagnosticCode Code { get; }
+  property public GameCore.Contracts.OperationId Operation { get; }
+  property public GameCore.Contracts.OperationPhase Phase { get; }
+  property public GameCore.Contracts.RetryClassification Retry { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.FactoryKey> InvolvedKeys { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128> InvolvedIds { get; }
+  property public System.Int64 BudgetLimit { get; }
+  property public System.Int64 Count { get; }
+  property public System.String CodeText { get; }
+  property public System.String Summary { get; }
+  method public static GameCore.Contracts.Diagnostic Create(GameCore.Contracts.DiagnosticCode code, GameCore.Contracts.OperationPhase phase, GameCore.Contracts.OperationId operation, System.String summary)
+type enum GameCore.Contracts.DiagnosticCode : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public AmbiguousOrder = 6
+  enumvalue public ApplyFault = 18
+  enumvalue public BudgetExceeded = 11
+  enumvalue public Cancelled = 14
+  enumvalue public CapabilityConflict = 5
+  enumvalue public CursorExpired = 20
+  enumvalue public Cycle = 7
+  enumvalue public IdempotencyConflict = 16
+  enumvalue public Ineligible = 8
+  enumvalue public MigrationRequired = 12
+  enumvalue public MissingDependency = 3
+  enumvalue public None = 0
+  enumvalue public OwnershipConflict = 10
+  enumvalue public ResourceUnavailable = 13
+  enumvalue public ResultExpired = 17
+  enumvalue public ServiceConflict = 4
+  enumvalue public SnapshotBackpressure = 21
+  enumvalue public StaleHandle = 1
+  enumvalue public StalePlan = 2
+  enumvalue public TeardownBlocked = 19
+  enumvalue public TooLate = 15
+  enumvalue public UnsupportedVersion = 9
+type class GameCore.Contracts.DiagnosticCodeText [static]
+  property public static System.Collections.Generic.IReadOnlyList<GameCore.Contracts.DiagnosticCode> Values { get; }
+  method public static System.Boolean TryParse(System.String? text, out GameCore.Contracts.DiagnosticCode code)
+  method public static System.String Of(GameCore.Contracts.DiagnosticCode code)
+type class GameCore.Contracts.DispatchRunResult
+  ctor public DispatchRunResult(System.Boolean completed, System.Int32 dispatchedCount, System.Int32 stoppedAtIndex, GameCore.Contracts.DiagnosticCode code, GameCore.Contracts.FactoryKey failingSystemKey, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.FactoryKey>? unreachedSystemKeys)
+  property public GameCore.Contracts.DiagnosticCode Code { get; }
+  property public GameCore.Contracts.FactoryKey FailingSystemKey { get; }
+  property public System.Boolean Completed { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.FactoryKey> UnreachedSystemKeys { get; }
+  property public System.Int32 DispatchedCount { get; }
+  property public System.Int32 StoppedAtIndex { get; }
+type enum GameCore.Contracts.EnvelopeError : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public BadMagic = 2
+  enumvalue public ChecksumMismatch = 12
+  enumvalue public DocumentTooLarge = 10
+  enumvalue public DuplicateField = 17
+  enumvalue public FieldIdOutOfRange = 14
+  enumvalue public FieldLengthMismatch = 5
+  enumvalue public FieldTooLong = 7
+  enumvalue public InvalidBooleanValue = 13
+  enumvalue public InvalidUtf8 = 11
+  enumvalue public ListCountExceeded = 8
+  enumvalue public ListTooLarge = 9
+  enumvalue public MissingRequiredField = 16
+  enumvalue public None = 0
+  enumvalue public StringTooLong = 6
+  enumvalue public Truncated = 1
+  enumvalue public UnknownRequiredFeature = 15
+  enumvalue public UnknownWireType = 4
+  enumvalue public UnsupportedVersion = 3
+type struct GameCore.Contracts.EnvelopeField
+  field public readonly GameCore.Contracts.WireType Type
+  field public readonly System.Int32 ByteLength
+  field public readonly System.Int32 FieldId
+  ctor public EnvelopeField(System.Int32 fieldId, GameCore.Contracts.WireType type, System.Int32 byteLength)
+  property public System.Boolean IsChecksum { get; }
+  method public System.String ToString()
+type class GameCore.Contracts.EnvelopeFloats [static]
+  field public const System.UInt32 CanonicalNaN32
+  field public const System.UInt64 CanonicalNaN64
+  method public static System.Boolean BitsEqual(System.Double left, System.Double right)
+  method public static System.Boolean BitsEqual(System.Single left, System.Single right)
+  method public static System.Boolean IsCanonicalNaN(System.UInt32 bits)
+  method public static System.Boolean IsCanonicalNaN(System.UInt64 bits)
+  method public static System.Double CanonicalizeNaN(System.Double value)
+  method public static System.Double FromBits(System.UInt64 bits)
+  method public static System.Single CanonicalizeNaN(System.Single value)
+  method public static System.Single FromBits(System.UInt32 bits)
+  method public static System.UInt32 Bits(System.Single value)
+  method public static System.UInt64 Bits(System.Double value)
+type class GameCore.Contracts.EnvelopeFormat [static]
+  field public const System.Byte Magic0
+  field public const System.Byte Magic1
+  field public const System.Byte Magic2
+  field public const System.Byte Magic3
+  field public const System.Int32 ChecksumFieldId
+  field public const System.Int32 FeatureCountOffset
+  field public const System.Int32 FeatureIdSize
+  field public const System.Int32 FieldHeaderSize
+  field public const System.Int32 FixedHeaderSize
+  field public const System.Int32 MaxFieldId
+  field public const System.Int32 SchemaVersionOffset
+  field public const System.UInt64 FnvOffsetBasis
+  field public const System.UInt64 FnvPrime
+type class GameCore.Contracts.EnvelopeHeader
+  ctor public EnvelopeHeader(System.Byte major, System.Byte minor, GameCore.Contracts.SchemaRef schema, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128>? requiredFeatureIds)
+  property public GameCore.Contracts.SchemaRef Schema { get; }
+  property public System.Byte Major { get; }
+  property public System.Byte Minor { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128> RequiredFeatureIds { get; }
+  property public System.Int32 SizeInBytes { get; }
+  method public System.Boolean IsKnownFeatures(System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128> knownFeatureIds)
+  method public System.String ToString()
+  method public static GameCore.Contracts.EnvelopeHeader Current(GameCore.Contracts.SchemaRef schema)
+type class GameCore.Contracts.EnvelopeReader
+  ctor public EnvelopeReader(System.Byte[] data, GameCore.Contracts.SerializationLimits? limits = null)
+  property public GameCore.Contracts.EnvelopeError LastError { get; }
+  property public System.Int32 Position { get; }
+  method public System.Boolean Skip(GameCore.Contracts.EnvelopeField field)
+  method public System.Boolean TryReadBool(GameCore.Contracts.EnvelopeField field, out System.Boolean value)
+  method public System.Boolean TryReadBytes(GameCore.Contracts.EnvelopeField field, out System.Byte[] value)
+  method public System.Boolean TryReadField(out GameCore.Contracts.EnvelopeField field)
+  method public System.Boolean TryReadFloat32(GameCore.Contracts.EnvelopeField field, out System.Single value, out System.UInt32 bits)
+  method public System.Boolean TryReadFloat64(GameCore.Contracts.EnvelopeField field, out System.Double value, out System.UInt64 bits)
+  method public System.Boolean TryReadHeader(System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128> knownRequiredFeatureIds, out GameCore.Contracts.EnvelopeHeader header)
+  method public System.Boolean TryReadHeader(out GameCore.Contracts.EnvelopeHeader header)
+  method public System.Boolean TryReadId128(GameCore.Contracts.EnvelopeField field, out GameCore.Contracts.Id128 value)
+  method public System.Boolean TryReadInt32(GameCore.Contracts.EnvelopeField field, out System.Int32 value)
+  method public System.Boolean TryReadInt64(GameCore.Contracts.EnvelopeField field, out System.Int64 value)
+  method public System.Boolean TryReadListCount(GameCore.Contracts.EnvelopeField field, out System.Int32 count, out System.Int32 payloadByteLength)
+  method public System.Boolean TryReadNull(GameCore.Contracts.EnvelopeField field)
+  method public System.Boolean TryReadUInt32(GameCore.Contracts.EnvelopeField field, out System.UInt32 value)
+  method public System.Boolean TryReadUInt64(GameCore.Contracts.EnvelopeField field, out System.UInt64 value)
+  method public System.Boolean TryReadUtf8(GameCore.Contracts.EnvelopeField field, out System.String? value)
+  method public System.Boolean TrySeekTo(System.Int32 offset)
+  method public System.Boolean TryVerifyChecksum(GameCore.Contracts.EnvelopeField checksumField, out System.UInt64 declaredChecksum)
+  method public System.UInt64 ComputeChecksum(System.Int32 offset, System.Int32 count)
+type class GameCore.Contracts.EnvelopeWriter
+  ctor public EnvelopeWriter(GameCore.Contracts.EnvelopeHeader header, GameCore.Contracts.SerializationLimits? limits = null)
+  ctor public EnvelopeWriter(GameCore.Contracts.SchemaRef schema, GameCore.Contracts.SerializationLimits? limits = null)
+  property public GameCore.Contracts.EnvelopeHeader Header { get; }
+  property public System.Int32 Length { get; }
+  method public System.Byte[] ToArray()
+  method public System.UInt64 ComputeChecksum(System.Int32 offset, System.Int32 count)
+  method public System.UInt64 WriteChecksum()
+  method public System.Void WriteBoolField(System.Int32 fieldId, System.Boolean value)
+  method public System.Void WriteBytesField(System.Int32 fieldId, System.Byte[] value)
+  method public System.Void WriteFloat32Field(System.Int32 fieldId, System.Single value)
+  method public System.Void WriteFloat64Field(System.Int32 fieldId, System.Double value)
+  method public System.Void WriteId128Field(System.Int32 fieldId, GameCore.Contracts.Id128 value)
+  method public System.Void WriteInt32Field(System.Int32 fieldId, System.Int32 value)
+  method public System.Void WriteInt64Field(System.Int32 fieldId, System.Int64 value)
+  method public System.Void WriteListHeader(System.Int32 fieldId, System.Int32 count, System.Int32 payloadByteLength)
+  method public System.Void WriteNullField(System.Int32 fieldId)
+  method public System.Void WriteUInt32Field(System.Int32 fieldId, System.UInt32 value)
+  method public System.Void WriteUInt64Field(System.Int32 fieldId, System.UInt64 value)
+  method public System.Void WriteUtf8Field(System.Int32 fieldId, System.String? value)
+type struct GameCore.Contracts.EventCursor : System.IEquatable<GameCore.Contracts.EventCursor>
+  field public readonly GameCore.Contracts.EventSequence Sequence
+  field public readonly GameCore.Contracts.WorldId World
+  ctor public EventCursor(GameCore.Contracts.WorldId world, GameCore.Contracts.EventSequence sequence)
+  method public System.Boolean Equals(GameCore.Contracts.EventCursor other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static System.Boolean operator !=(GameCore.Contracts.EventCursor left, GameCore.Contracts.EventCursor right)
+  method public static System.Boolean operator ==(GameCore.Contracts.EventCursor left, GameCore.Contracts.EventCursor right)
+type struct GameCore.Contracts.EventSequence : System.IComparable<GameCore.Contracts.EventSequence>, System.IEquatable<GameCore.Contracts.EventSequence>
+  field public readonly System.UInt64 Value
+  field public static readonly GameCore.Contracts.EventSequence First
+  field public static readonly GameCore.Contracts.EventSequence MaxValue
+  field public static readonly GameCore.Contracts.EventSequence Zero
+  ctor public EventSequence(System.UInt64 value)
+  method public System.Boolean Equals(GameCore.Contracts.EventSequence other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Boolean TryIncrement(out GameCore.Contracts.EventSequence next)
+  method public System.Int32 CompareTo(GameCore.Contracts.EventSequence other)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static System.Boolean operator !=(GameCore.Contracts.EventSequence left, GameCore.Contracts.EventSequence right)
+  method public static System.Boolean operator <(GameCore.Contracts.EventSequence left, GameCore.Contracts.EventSequence right)
+  method public static System.Boolean operator <=(GameCore.Contracts.EventSequence left, GameCore.Contracts.EventSequence right)
+  method public static System.Boolean operator ==(GameCore.Contracts.EventSequence left, GameCore.Contracts.EventSequence right)
+  method public static System.Boolean operator >(GameCore.Contracts.EventSequence left, GameCore.Contracts.EventSequence right)
+  method public static System.Boolean operator >=(GameCore.Contracts.EventSequence left, GameCore.Contracts.EventSequence right)
+type struct GameCore.Contracts.ExclusionRule
+  field public readonly GameCore.Contracts.ExclusionTargetKind Kind
+  field public readonly GameCore.Contracts.Id128 TargetId
+  field public readonly GameCore.Contracts.ScopeId AtScope
+  field public readonly GameCore.Contracts.TargetId AtTarget
+  field public readonly System.Boolean AppliesToSubtree
+  ctor public ExclusionRule(GameCore.Contracts.ExclusionTargetKind kind, GameCore.Contracts.Id128 targetId, GameCore.Contracts.ScopeId atScope, GameCore.Contracts.TargetId atTarget, System.Boolean appliesToSubtree)
+  property public System.Boolean HasScope { get; }
+  property public System.Boolean HasTarget { get; }
+  method public System.String ToString()
+type enum GameCore.Contracts.ExclusionTargetKind : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public Capability = 0
+  enumvalue public Provider = 2
+  enumvalue public Rule = 1
+type class GameCore.Contracts.ExecutionPlan
+  ctor public ExecutionPlan(System.Collections.Generic.IReadOnlyList<GameCore.Contracts.PlanNode>? nodes, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.PlanEdge>? edges, GameCore.Contracts.ContentHash planHash)
+  property public GameCore.Contracts.ContentHash PlanHash { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.PlanEdge> Edges { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.PlanNode> Nodes { get; }
+type class GameCore.Contracts.ExplanationPage
+  ctor public ExplanationPage(GameCore.Contracts.TargetId target, GameCore.Contracts.CapabilityId capability, GameCore.Contracts.SnapshotToken token, GameCore.Contracts.ExplanationSource source, GameCore.Contracts.ExplanationPageRequest request, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ExplanationRecord>? matching, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ExplanationRecord>? rejected, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ScopeId>? scopePath, GameCore.Contracts.PropagationMode mode, System.Int32 stratum, GameCore.Contracts.ContentHash recipeHash, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.StateDisposition>? stateDispositions, System.UInt64 totalMatching, System.UInt64 totalRejected)
+  property public GameCore.Contracts.CapabilityId Capability { get; }
+  property public GameCore.Contracts.ContentHash RecipeHash { get; }
+  property public GameCore.Contracts.ExplanationPageRequest Request { get; }
+  property public GameCore.Contracts.ExplanationSource Source { get; }
+  property public GameCore.Contracts.PropagationMode Mode { get; }
+  property public GameCore.Contracts.SnapshotToken Token { get; }
+  property public GameCore.Contracts.TargetId Target { get; }
+  property public System.Boolean HasMore { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ExplanationRecord> Matching { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ExplanationRecord> Rejected { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ScopeId> ScopePath { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.StateDisposition> StateDispositions { get; }
+  property public System.Int32 Stratum { get; }
+  property public System.UInt32 NextOffset { get; }
+  property public System.UInt64 TotalMatching { get; }
+  property public System.UInt64 TotalRejected { get; }
+type struct GameCore.Contracts.ExplanationPageRequest
+  field public readonly System.UInt32 MaxRecords
+  field public readonly System.UInt32 Offset
+  ctor public ExplanationPageRequest(System.UInt32 offset, System.UInt32 maxRecords)
+  property public System.Boolean IsValid { get; }
+  method public System.String ToString()
+  method public static GameCore.Contracts.ExplanationPageRequest FirstPage(System.UInt32 maxRecords)
+type class GameCore.Contracts.ExplanationRecord
+  ctor public ExplanationRecord(GameCore.Contracts.Id128 recordKey, GameCore.Contracts.RuleId rule, GameCore.Contracts.ProviderInstallationId provider, GameCore.Contracts.DiagnosticCode rejection, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128>? evidenceKeys)
+  property public GameCore.Contracts.DiagnosticCode Rejection { get; }
+  property public GameCore.Contracts.Id128 RecordKey { get; }
+  property public GameCore.Contracts.ProviderInstallationId Provider { get; }
+  property public GameCore.Contracts.RuleId Rule { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128> EvidenceKeys { get; }
+type struct GameCore.Contracts.ExplanationReference
+  field public readonly GameCore.Contracts.CapabilityId Capability
+  field public readonly GameCore.Contracts.Id128 ExplanationKey
+  field public readonly GameCore.Contracts.TargetId Target
+  ctor public ExplanationReference(GameCore.Contracts.TargetId target, GameCore.Contracts.CapabilityId capability, GameCore.Contracts.Id128 explanationKey)
+  method public System.Boolean Equals(GameCore.Contracts.ExplanationReference other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+type enum GameCore.Contracts.ExplanationSource : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public PublishedComposition = 0
+  enumvalue public StagedPlan = 1
+type struct GameCore.Contracts.FactoryKey : System.IEquatable<GameCore.Contracts.FactoryKey>
+  field public readonly GameCore.Contracts.Id128 RegistrationKey
+  field public readonly System.UInt32 KeyVersion
+  ctor public FactoryKey(GameCore.Contracts.Id128 registrationKey, System.UInt32 keyVersion)
+  method public System.Boolean Equals(GameCore.Contracts.FactoryKey other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static System.Boolean operator !=(GameCore.Contracts.FactoryKey left, GameCore.Contracts.FactoryKey right)
+  method public static System.Boolean operator ==(GameCore.Contracts.FactoryKey left, GameCore.Contracts.FactoryKey right)
+type enum GameCore.Contracts.FactoryKind : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public Handler = 10
+  enumvalue public LayoutApply = 7
+  enumvalue public Migration = 5
+  enumvalue public PluginFactory = 0
+  enumvalue public Reducer = 2
+  enumvalue public ResourceFactory = 6
+  enumvalue public SchemaFactory = 8
+  enumvalue public Serializer = 4
+  enumvalue public StatePolicy = 9
+  enumvalue public StaticPredicate = 3
+  enumvalue public SystemFactory = 1
+type class GameCore.Contracts.FactoryRegistration
+  ctor public FactoryRegistration(GameCore.Contracts.FactoryKey key, GameCore.Contracts.FactoryKind kind, GameCore.Contracts.Id128 ownerPackageId, GameCore.Contracts.Id128 implementationId, System.UInt32 contractVersion)
+  property public GameCore.Contracts.FactoryKey Key { get; }
+  property public GameCore.Contracts.FactoryKind Kind { get; }
+  property public GameCore.Contracts.Id128 ImplementationId { get; }
+  property public GameCore.Contracts.Id128 OwnerPackageId { get; }
+  property public System.UInt32 ContractVersion { get; }
+type enum GameCore.Contracts.FailureClassification : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public CorrectnessRequiresChangedInput = 1
+  enumvalue public Fatal = 2
+  enumvalue public Retriable = 0
+type struct GameCore.Contracts.FieldOwnership
+  field public readonly GameCore.Contracts.Id128 FieldKey
+  field public readonly GameCore.Contracts.SchemaRef ComponentSchema
+  ctor public FieldOwnership(GameCore.Contracts.SchemaRef componentSchema, GameCore.Contracts.Id128 fieldKey)
+  method public System.String ToString()
+type class GameCore.Contracts.FixedStepSettings
+  ctor public FixedStepSettings(System.UInt64 stepDurationTicks, System.UInt64 ticksPerSecond, System.UInt32 maxStepsPerPump, System.Boolean usesUnscaledHostClock)
+  property public System.Boolean IsValid { get; }
+  property public System.Boolean UsesUnscaledHostClock { get; }
+  property public System.UInt32 MaxStepsPerPump { get; }
+  property public System.UInt64 StepDurationTicks { get; }
+  property public System.UInt64 TicksPerSecond { get; }
+type class GameCore.Contracts.FrozenPayload
+  ctor public FrozenPayload(System.Byte[] source)
+  property public System.Collections.Generic.IReadOnlyList<System.Byte> Bytes { get; }
+  property public System.Int32 Length { get; }
+type class GameCore.Contracts.GeneratedEnvelopeReader [static]
+  method public static System.Boolean TryReadDeclaredFields(System.Byte[] document, GameCore.Contracts.SchemaRef schema, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128> knownFeatureIds, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.GeneratedFieldSlot> declaredSlots, GameCore.Contracts.GeneratedFieldBuffer buffer, out GameCore.Contracts.EnvelopeError error)
+type class GameCore.Contracts.GeneratedFieldBuffer
+  ctor public GeneratedFieldBuffer()
+  property public System.Int32 Count { get; }
+  method public GameCore.Contracts.EnvelopeField Field(System.Int32 index)
+  method public System.Boolean Contains(System.Int32 fieldId)
+  method public System.Int32 RecordOffset(System.Int32 index)
+type struct GameCore.Contracts.GeneratedFieldSlot
+  field public readonly GameCore.Contracts.WireType Type
+  field public readonly System.Boolean Required
+  field public readonly System.Int32 FieldId
+  ctor public GeneratedFieldSlot(System.Int32 fieldId, GameCore.Contracts.WireType type, System.Boolean required)
+  method public System.String ToString()
+type class GameCore.Contracts.GeneratedSerializerBase : GameCore.Contracts.ISchemaSerializer
+  property public GameCore.Contracts.FactoryKey Key { get; }
+  property public GameCore.Contracts.SchemaRef Schema { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128> KnownFeatureIds { get; }
+  method public System.Boolean TryValidate(System.Byte[] document, out GameCore.Contracts.EnvelopeError error)
+type class GameCore.Contracts.HardBudgetUsage
+  ctor public HardBudgetUsage(System.UInt64 prepareBytesLimit, System.UInt64 applyBytesLimit, System.UInt64 prepareBytesUsed, System.UInt64 applyBytesUsed)
+  property public System.Boolean Exceeded { get; }
+  property public System.UInt64 ApplyBytesLimit { get; }
+  property public System.UInt64 ApplyBytesUsed { get; }
+  property public System.UInt64 PrepareBytesLimit { get; }
+  property public System.UInt64 PrepareBytesUsed { get; }
+type enum GameCore.Contracts.HostAffinity : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public AdapterMainThread = 2
+  enumvalue public BurstJob = 1
+  enumvalue public ManagedMain = 0
+type interface GameCore.Contracts.IAssemblyPublisher
+  method public GameCore.Contracts.OperationResult Publish(GameCore.Contracts.ChangePlan plan)
+type interface GameCore.Contracts.ICallbackGate
+  method public GameCore.Contracts.CallbackGateDecision Evaluate(GameCore.Contracts.AsyncWorkToken token)
+type interface GameCore.Contracts.ICatalog
+  property public GameCore.Contracts.ContentHash Fingerprint { get; }
+  method public GameCore.Contracts.CatalogLookup Lookup(GameCore.Contracts.FactoryKey key)
+  method public GameCore.Contracts.CatalogLookup LookupSchema(GameCore.Contracts.SchemaRef schema)
+  method public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.FactoryKey> FactoryKeysInCanonicalOrder()
+type interface GameCore.Contracts.ICommandIngress
+  method public GameCore.Contracts.CommandAdmissionReceipt Submit(GameCore.Contracts.CommandEnvelope command)
+type interface GameCore.Contracts.ICommittedEventReader
+  method public GameCore.Contracts.CommittedEventPage Read(GameCore.Contracts.EventCursor cursor, System.Int32 maxEvents)
+type interface GameCore.Contracts.ICompositionCommands
+  method public GameCore.Contracts.OperationStatusHandle Submit(GameCore.Contracts.CompositionProposal proposal)
+type interface GameCore.Contracts.ICompositionHost
+  property public GameCore.Contracts.CompositionHostSettings Settings { get; }
+  property public GameCore.Contracts.WorldId World { get; }
+  method public GameCore.Contracts.CompositionStateSnapshot Snapshot()
+  method public GameCore.Contracts.InstallSnapshot? FindInstall(GameCore.Contracts.PluginInstanceId instance)
+  method public GameCore.Contracts.OperationReadResult Read(GameCore.Contracts.OperationStatusHandle handle)
+  method public GameCore.Contracts.OperationStatusHandle Submit(GameCore.Contracts.CompositionEditRequest request)
+  method public GameCore.Contracts.ScopeSnapshot? FindScope(GameCore.Contracts.ScopeId scope)
+type interface GameCore.Contracts.ICompositionObserver
+  method public System.Void OnCompositionPublished(GameCore.Contracts.CompositionPublishedEvent published)
+  method public System.Void OnCompositionRejected(GameCore.Contracts.CompositionRejectedEvent rejected)
+type interface GameCore.Contracts.IExecutionDriver
+  property public GameCore.Contracts.AssemblyEpoch CurrentEpoch { get; }
+  property public GameCore.Contracts.DiagnosticCode FaultCode { get; }
+  property public GameCore.Contracts.LogicalStepId CurrentStep { get; }
+  property public GameCore.Contracts.WorldId World { get; }
+  property public System.Boolean IsFaulted { get; }
+  method public GameCore.Contracts.DispatchRunResult Dispatch(GameCore.Contracts.StageDispatchRequest request)
+  method public GameCore.Contracts.StepAdvanceResult Advance(GameCore.Contracts.StepAdvanceRequest request)
+type interface GameCore.Contracts.IExplanationReader
+  method public GameCore.Contracts.ExplanationPage Explain(GameCore.Contracts.TargetId target, GameCore.Contracts.CapabilityId capability, GameCore.Contracts.SnapshotToken token, GameCore.Contracts.ExplanationPageRequest page)
+type interface GameCore.Contracts.IFencedWorldState
+  property public GameCore.Contracts.AssemblyEpoch BaseEpoch { get; }
+  property public GameCore.Contracts.WorldId World { get; }
+  property public System.Boolean JobsSettled { get; }
+type interface GameCore.Contracts.IManagedResourceFactory
+  method public GameCore.Contracts.IManagedResourceLease Prepare(GameCore.Contracts.ManagedResourceRequest request)
+type interface GameCore.Contracts.IManagedResourceLease : System.IDisposable
+  property public GameCore.Contracts.AsyncWorkToken Token { get; }
+  property public GameCore.Contracts.FactoryKey Disposer { get; }
+  property public GameCore.Contracts.IResourceGate Gate { get; }
+  property public GameCore.Contracts.Id128 LeaseId { get; }
+  property public GameCore.Contracts.ResourceKey Resource { get; }
+  property public GameCore.Contracts.ResourceReadiness Readiness { get; }
+  property public System.Boolean IsDisposed { get; }
+type interface GameCore.Contracts.IObservationReader
+  method public GameCore.Contracts.SnapshotAcquireResult Acquire(GameCore.Contracts.SnapshotToken token)
+type interface GameCore.Contracts.IOperationControl
+  method public GameCore.Contracts.CancelOutcome Cancel(GameCore.Contracts.OperationId cancellationOperation, GameCore.Contracts.OperationId target)
+type interface GameCore.Contracts.IOperationReader
+  method public GameCore.Contracts.OperationReadResult Read(GameCore.Contracts.OperationId operation)
+type interface GameCore.Contracts.IRecipeApplyBridge
+  method public GameCore.Contracts.RecipeApplyResult ApplyRecipe(GameCore.Contracts.RecipeApplyRequest request, GameCore.Contracts.IFencedWorldState world)
+type interface GameCore.Contracts.IResourceGate
+  property public System.Boolean IsOpen { get; }
+  method public System.Void Close()
+type interface GameCore.Contracts.ISchemaSerializer
+  property public GameCore.Contracts.FactoryKey Key { get; }
+  property public GameCore.Contracts.SchemaRef Schema { get; }
+  method public System.Boolean TryValidate(System.Byte[] document, out GameCore.Contracts.EnvelopeError error)
+type interface GameCore.Contracts.ISnapshotLease : System.IDisposable
+  property public GameCore.Contracts.FrozenPayload State { get; }
+  property public GameCore.Contracts.SnapshotToken Token { get; }
+type interface GameCore.Contracts.IStagedPlanDiagnostics
+  method public GameCore.Contracts.ExplanationPage ReadStaged(GameCore.Contracts.OperationId operation, GameCore.Contracts.TargetId target, GameCore.Contracts.CapabilityId capability, GameCore.Contracts.ExplanationPageRequest page)
+type interface GameCore.Contracts.IStateMigrator
+  method public GameCore.Contracts.MigrationResult Migrate(GameCore.Contracts.MigrationRequest request)
+type interface GameCore.Contracts.IWorldHost
+  property public GameCore.Contracts.AssemblyEpoch CurrentEpoch { get; }
+  property public GameCore.Contracts.LogicalStepId CurrentStep { get; }
+  property public GameCore.Contracts.TemporalModel TemporalModel { get; }
+  property public GameCore.Contracts.TimeDebt RetainedDebt { get; }
+  property public GameCore.Contracts.WorldId World { get; }
+  property public GameCore.Contracts.WorldLifecycleState Lifecycle { get; }
+  method public GameCore.Contracts.OperationResult SetRunState(GameCore.Contracts.OperationId operation, GameCore.Contracts.WorldLifecycleState destination)
+  method public GameCore.Contracts.OperationResult Stop(GameCore.Contracts.OperationId operation, System.String reason)
+  method public GameCore.Contracts.WorldCreateResult Create(GameCore.Contracts.WorldCreateRequest request)
+  method public GameCore.Contracts.WorldResourceLedgerSnapshot ReadResourceLedger()
+type interface GameCore.Contracts.IWorldLifecycleObserver
+  method public System.Void OnStepCommitted(GameCore.Contracts.StepCommitEvent committed)
+  method public System.Void OnWorldLifecycleChanged(GameCore.Contracts.WorldLifecycleChange change)
+type struct GameCore.Contracts.Id128 : System.IComparable<GameCore.Contracts.Id128>, System.IEquatable<GameCore.Contracts.Id128>
+  field public const System.Int32 SizeInBytes
+  field public readonly System.UInt64 High
+  field public readonly System.UInt64 Low
+  field public static readonly GameCore.Contracts.Id128 Zero
+  ctor public Id128(System.UInt64 high, System.UInt64 low)
+  property public System.Boolean IsDefault { get; }
+  method public System.Boolean Equals(GameCore.Contracts.Id128 other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 CompareTo(GameCore.Contracts.Id128 other)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static System.Boolean operator !=(GameCore.Contracts.Id128 left, GameCore.Contracts.Id128 right)
+  method public static System.Boolean operator <(GameCore.Contracts.Id128 left, GameCore.Contracts.Id128 right)
+  method public static System.Boolean operator <=(GameCore.Contracts.Id128 left, GameCore.Contracts.Id128 right)
+  method public static System.Boolean operator ==(GameCore.Contracts.Id128 left, GameCore.Contracts.Id128 right)
+  method public static System.Boolean operator >(GameCore.Contracts.Id128 left, GameCore.Contracts.Id128 right)
+  method public static System.Boolean operator >=(GameCore.Contracts.Id128 left, GameCore.Contracts.Id128 right)
+type class GameCore.Contracts.Id128Codec [static]
+  property public static System.Collections.Generic.IComparer<GameCore.Contracts.Id128> CanonicalComparer { get; }
+  method public static GameCore.Contracts.Id128 ReadBigEndian(System.Byte[] source, System.Int32 offset)
+  method public static System.Boolean TryParseHex(System.String? text, out GameCore.Contracts.Id128 value)
+  method public static System.Byte[] ToBigEndianBytes(GameCore.Contracts.Id128 value)
+  method public static System.Int32 CompareBigEndian(GameCore.Contracts.Id128 left, GameCore.Contracts.Id128 right)
+  method public static System.String ToHex(GameCore.Contracts.Id128 value)
+  method public static System.Void WriteBigEndian(GameCore.Contracts.Id128 value, System.Byte[] destination, System.Int32 offset)
+type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog
+  property public GameCore.Contracts.ContentHash Fingerprint { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.FactoryRegistration> Factories { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ISchemaSerializer> Serializers { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128> SupportedFeatureIds { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.SchemaRegistration> Schemas { get; }
+  method public GameCore.Contracts.CatalogLookup Lookup(GameCore.Contracts.FactoryKey key)
+  method public GameCore.Contracts.CatalogLookup LookupSchema(GameCore.Contracts.SchemaRef schema)
+  method public System.Boolean SupportsFeature(GameCore.Contracts.Id128 featureId)
+  method public System.Boolean TryGetSerializer(GameCore.Contracts.SchemaRef schema, out GameCore.Contracts.ISchemaSerializer? serializer)
+  method public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.FactoryKey> FactoryKeysInCanonicalOrder()
+  method public static GameCore.Contracts.CatalogBuildResult Build(System.Collections.Generic.IReadOnlyList<GameCore.Contracts.FactoryRegistration>? factories, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.SchemaRegistration>? schemas, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128>? supportedFeatureIds, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ISchemaSerializer>? serializers)
+type class GameCore.Contracts.InstallEdit
+  ctor public InstallEdit(GameCore.Contracts.CompositionEditKind kind, GameCore.Contracts.PluginInstanceId instance, GameCore.Contracts.ScopeId oldScope, GameCore.Contracts.ScopeId newScope, GameCore.Contracts.InstallationState oldState, GameCore.Contracts.InstallationState newState)
+  property public GameCore.Contracts.CompositionEditKind Kind { get; }
+  property public GameCore.Contracts.InstallationState NewState { get; }
+  property public GameCore.Contracts.InstallationState OldState { get; }
+  property public GameCore.Contracts.PluginInstanceId Instance { get; }
+  property public GameCore.Contracts.ScopeId NewScope { get; }
+  property public GameCore.Contracts.ScopeId OldScope { get; }
+type class GameCore.Contracts.InstallRecord
+  ctor public InstallRecord(GameCore.Contracts.PluginInstanceId instance, GameCore.Contracts.PluginTypeId pluginType, GameCore.Contracts.ScopeId scope, GameCore.Contracts.DefinitionRevision configRevision, GameCore.Contracts.ContentHash configHash, System.Int32 priority, GameCore.Contracts.InstallationGeneration generation, GameCore.Contracts.ActivationEpoch activationEpoch)
+  property public GameCore.Contracts.ActivationEpoch ActivationEpoch { get; }
+  property public GameCore.Contracts.ContentHash ConfigHash { get; }
+  property public GameCore.Contracts.DefinitionRevision ConfigRevision { get; }
+  property public GameCore.Contracts.InstallationGeneration Generation { get; }
+  property public GameCore.Contracts.PluginInstanceId Instance { get; }
+  property public GameCore.Contracts.PluginTypeId PluginType { get; }
+  property public GameCore.Contracts.ScopeId Scope { get; }
+  property public System.Int32 Priority { get; }
+type class GameCore.Contracts.InstallSnapshot
+  ctor public InstallSnapshot(GameCore.Contracts.InstallRecord record, GameCore.Contracts.InstallationState state, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ServiceBinding>? bindings, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Diagnostic>? diagnostics)
+  property public GameCore.Contracts.InstallRecord Record { get; }
+  property public GameCore.Contracts.InstallationState State { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Diagnostic> Diagnostics { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ServiceBinding> Bindings { get; }
+type struct GameCore.Contracts.InstallationGeneration : System.IComparable<GameCore.Contracts.InstallationGeneration>, System.IEquatable<GameCore.Contracts.InstallationGeneration>
+  field public readonly System.UInt64 Value
+  field public static readonly GameCore.Contracts.InstallationGeneration First
+  field public static readonly GameCore.Contracts.InstallationGeneration MaxValue
+  field public static readonly GameCore.Contracts.InstallationGeneration Zero
+  ctor public InstallationGeneration(System.UInt64 value)
+  method public System.Boolean Equals(GameCore.Contracts.InstallationGeneration other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Boolean TryIncrement(out GameCore.Contracts.InstallationGeneration next)
+  method public System.Int32 CompareTo(GameCore.Contracts.InstallationGeneration other)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static System.Boolean operator !=(GameCore.Contracts.InstallationGeneration left, GameCore.Contracts.InstallationGeneration right)
+  method public static System.Boolean operator <(GameCore.Contracts.InstallationGeneration left, GameCore.Contracts.InstallationGeneration right)
+  method public static System.Boolean operator <=(GameCore.Contracts.InstallationGeneration left, GameCore.Contracts.InstallationGeneration right)
+  method public static System.Boolean operator ==(GameCore.Contracts.InstallationGeneration left, GameCore.Contracts.InstallationGeneration right)
+  method public static System.Boolean operator >(GameCore.Contracts.InstallationGeneration left, GameCore.Contracts.InstallationGeneration right)
+  method public static System.Boolean operator >=(GameCore.Contracts.InstallationGeneration left, GameCore.Contracts.InstallationGeneration right)
+type class GameCore.Contracts.InstallationSpec
+  ctor public InstallationSpec(GameCore.Contracts.PluginInstanceId pluginInstanceId, GameCore.Contracts.ScopeId scope, GameCore.Contracts.DefinitionRevision configRevision, GameCore.Contracts.FrozenPayload configBlob, System.Int32 priority, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ServiceSelection>? serviceSelections)
+  property public GameCore.Contracts.DefinitionRevision ConfigRevision { get; }
+  property public GameCore.Contracts.FrozenPayload ConfigBlob { get; }
+  property public GameCore.Contracts.PluginInstanceId PluginInstanceId { get; }
+  property public GameCore.Contracts.ScopeId Scope { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ServiceSelection> ServiceSelections { get; }
+  property public System.Int32 Priority { get; }
+type enum GameCore.Contracts.InstallationState : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public Active = 3
+  enumvalue public Disposed = 7
+  enumvalue public Failed = 8
+  enumvalue public Preparing = 2
+  enumvalue public Quiescing = 4
+  enumvalue public Registered = 0
+  enumvalue public Retiring = 6
+  enumvalue public Suspended = 5
+  enumvalue public WaitingForDependencies = 1
+type class GameCore.Contracts.IsolationSet
+  ctor public IsolationSet(System.Boolean allContracts, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128>? contracts)
+  property public System.Boolean AllContracts { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128> Contracts { get; }
+type struct GameCore.Contracts.JobLedgerRecord
+  field public readonly GameCore.Contracts.AssemblyEpoch Epoch
+  field public readonly GameCore.Contracts.FactoryKey SystemKey
+  field public readonly GameCore.Contracts.Id128 JobId
+  field public readonly GameCore.Contracts.LogicalStepId Step
+  field public readonly GameCore.Contracts.StageId Stage
+  field public readonly System.Boolean Completed
+  field public readonly System.Boolean RetainedByQuarantine
+  ctor public JobLedgerRecord(GameCore.Contracts.Id128 jobId, GameCore.Contracts.StageId stage, GameCore.Contracts.FactoryKey systemKey, GameCore.Contracts.AssemblyEpoch epoch, GameCore.Contracts.LogicalStepId step, System.Boolean completed, System.Boolean retainedByQuarantine)
+  method public System.String ToString()
+type enum GameCore.Contracts.LastSupportPolicy : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public PreserveDormant = 1
+  enumvalue public RemoveDerived = 0
+  enumvalue public TransferTo = 2
+type class GameCore.Contracts.LayoutOperation
+  ctor public LayoutOperation(GameCore.Contracts.CompositionEditKind kind, GameCore.Contracts.TargetId target, GameCore.Contracts.SchemaRef schema)
+  property public GameCore.Contracts.CompositionEditKind Kind { get; }
+  property public GameCore.Contracts.SchemaRef Schema { get; }
+  property public GameCore.Contracts.TargetId Target { get; }
+type struct GameCore.Contracts.LogicalStepId : System.IComparable<GameCore.Contracts.LogicalStepId>, System.IEquatable<GameCore.Contracts.LogicalStepId>
+  field public readonly System.UInt64 Value
+  field public static readonly GameCore.Contracts.LogicalStepId First
+  field public static readonly GameCore.Contracts.LogicalStepId MaxValue
+  field public static readonly GameCore.Contracts.LogicalStepId Zero
+  ctor public LogicalStepId(System.UInt64 value)
+  method public System.Boolean Equals(GameCore.Contracts.LogicalStepId other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Boolean TryIncrement(out GameCore.Contracts.LogicalStepId next)
+  method public System.Int32 CompareTo(GameCore.Contracts.LogicalStepId other)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static System.Boolean operator !=(GameCore.Contracts.LogicalStepId left, GameCore.Contracts.LogicalStepId right)
+  method public static System.Boolean operator <(GameCore.Contracts.LogicalStepId left, GameCore.Contracts.LogicalStepId right)
+  method public static System.Boolean operator <=(GameCore.Contracts.LogicalStepId left, GameCore.Contracts.LogicalStepId right)
+  method public static System.Boolean operator ==(GameCore.Contracts.LogicalStepId left, GameCore.Contracts.LogicalStepId right)
+  method public static System.Boolean operator >(GameCore.Contracts.LogicalStepId left, GameCore.Contracts.LogicalStepId right)
+  method public static System.Boolean operator >=(GameCore.Contracts.LogicalStepId left, GameCore.Contracts.LogicalStepId right)
+type class GameCore.Contracts.ManagedResourceRequest
+  ctor public ManagedResourceRequest(GameCore.Contracts.ResourceKey resource, GameCore.Contracts.AsyncWorkToken token, GameCore.Contracts.FrozenPayload frozenConfig)
+  property public GameCore.Contracts.AsyncWorkToken Token { get; }
+  property public GameCore.Contracts.FrozenPayload FrozenConfig { get; }
+  property public GameCore.Contracts.ResourceKey Resource { get; }
+type class GameCore.Contracts.ManifestValidationReport
+  property public System.Boolean IsValid { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Diagnostic> Diagnostics { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.PluginTypeId> ValidatedPluginTypes { get; }
+  method public System.String Describe()
+type class GameCore.Contracts.ManifestValidator [static]
+  method public static GameCore.Contracts.ManifestValidationReport Validate(System.Collections.Generic.IReadOnlyList<GameCore.Contracts.PluginManifest>? manifests, GameCore.Contracts.ICatalog catalog, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128>? supportedFeatureIds, GameCore.Contracts.ProtocolVersion protocol)
+type class GameCore.Contracts.MembershipEdit
+  ctor public MembershipEdit(GameCore.Contracts.TargetId target, GameCore.Contracts.ScopeId oldScope, GameCore.Contracts.ScopeId newScope)
+  property public GameCore.Contracts.ScopeId NewScope { get; }
+  property public GameCore.Contracts.ScopeId OldScope { get; }
+  property public GameCore.Contracts.TargetId Target { get; }
+type class GameCore.Contracts.MigrationRequest
+  ctor public MigrationRequest(GameCore.Contracts.StateSlotKey slot, GameCore.Contracts.SchemaRef fromSchema, GameCore.Contracts.SchemaRef toSchema, GameCore.Contracts.FrozenPayload oldState, GameCore.Contracts.FrozenPayload config)
+  property public GameCore.Contracts.FrozenPayload Config { get; }
+  property public GameCore.Contracts.FrozenPayload OldState { get; }
+  property public GameCore.Contracts.SchemaRef FromSchema { get; }
+  property public GameCore.Contracts.SchemaRef ToSchema { get; }
+  property public GameCore.Contracts.StateSlotKey Slot { get; }
+type class GameCore.Contracts.MigrationResult
+  ctor public MigrationResult(System.Boolean succeeded, GameCore.Contracts.DiagnosticCode code, GameCore.Contracts.FrozenPayload? newState)
+  property public GameCore.Contracts.DiagnosticCode Code { get; }
+  property public GameCore.Contracts.FrozenPayload? NewState { get; }
+  property public System.Boolean Succeeded { get; }
+type struct GameCore.Contracts.ModeEdit
+  field public readonly GameCore.Contracts.PropagationMode NewMode
+  field public readonly GameCore.Contracts.PropagationMode OldMode
+  field public readonly GameCore.Contracts.ScopeId Scope
+  ctor public ModeEdit(GameCore.Contracts.ScopeId scope, GameCore.Contracts.PropagationMode oldMode, GameCore.Contracts.PropagationMode newMode)
+  property public System.Boolean IsNoChange { get; }
+  property public System.Boolean IsWorldSetting { get; }
+  method public System.String ToString()
+type class GameCore.Contracts.OperationExpirySettings
+  ctor public OperationExpirySettings(System.Int32 boundedTransientAttempts, System.UInt64 retainedResultSteps)
+  property public System.Int32 BoundedTransientAttempts { get; }
+  property public System.UInt64 RetainedResultSteps { get; }
+  property public static GameCore.Contracts.OperationExpirySettings Default { get; }
+type struct GameCore.Contracts.OperationId : System.IEquatable<GameCore.Contracts.OperationId>
+  field public readonly GameCore.Contracts.Id128 IssuerId
+  field public readonly GameCore.Contracts.WorldId World
+  field public readonly System.UInt64 IssuerSequence
+  ctor public OperationId(GameCore.Contracts.WorldId world, GameCore.Contracts.Id128 issuerId, System.UInt64 issuerSequence)
+  method public System.Boolean Equals(GameCore.Contracts.OperationId other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static System.Boolean operator !=(GameCore.Contracts.OperationId left, GameCore.Contracts.OperationId right)
+  method public static System.Boolean operator ==(GameCore.Contracts.OperationId left, GameCore.Contracts.OperationId right)
+type class GameCore.Contracts.OperationLedgerEntry
+  ctor public OperationLedgerEntry(GameCore.Contracts.OperationStatusHandle handle, GameCore.Contracts.ContentHash inputHash, GameCore.Contracts.Outcome outcome, GameCore.Contracts.DiagnosticCode code, GameCore.Contracts.CompositionRevision publishedRevision, GameCore.Contracts.AssemblyEpoch publishedEpoch, GameCore.Contracts.SnapshotToken? publishedSnapshot)
+  property public GameCore.Contracts.AssemblyEpoch PublishedEpoch { get; }
+  property public GameCore.Contracts.CompositionRevision PublishedRevision { get; }
+  property public GameCore.Contracts.ContentHash InputHash { get; }
+  property public GameCore.Contracts.DiagnosticCode Code { get; }
+  property public GameCore.Contracts.OperationStatusHandle Handle { get; }
+  property public GameCore.Contracts.Outcome Outcome { get; }
+  property public GameCore.Contracts.SnapshotToken? PublishedSnapshot { get; }
+  property public System.Boolean IsTerminal { get; }
+type enum GameCore.Contracts.OperationPhase : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public Apply = 3
+  enumvalue public Cleanup = 5
+  enumvalue public Planning = 1
+  enumvalue public Preparation = 2
+  enumvalue public Publication = 4
+  enumvalue public Validation = 0
+type enum GameCore.Contracts.OperationReadOutcome : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public Expired = 2
+  enumvalue public Found = 0
+  enumvalue public Unknown = 1
+type class GameCore.Contracts.OperationReadResult
+  property public GameCore.Contracts.DiagnosticCode Code { get; }
+  property public GameCore.Contracts.OperationLedgerEntry? Entry { get; }
+  property public GameCore.Contracts.OperationReadOutcome Outcome { get; }
+  method public static GameCore.Contracts.OperationReadResult Expired()
+  method public static GameCore.Contracts.OperationReadResult Found(GameCore.Contracts.OperationLedgerEntry entry)
+  method public static GameCore.Contracts.OperationReadResult Unknown()
+type class GameCore.Contracts.OperationResult
+  ctor public OperationResult(GameCore.Contracts.OperationId operation, GameCore.Contracts.Outcome outcome, GameCore.Contracts.DiagnosticCode code, GameCore.Contracts.SnapshotToken? publishedSnapshot)
+  ctor public OperationResult(GameCore.Contracts.OperationId operation, GameCore.Contracts.Outcome outcome, GameCore.Contracts.DiagnosticCode code, GameCore.Contracts.SnapshotToken? publishedSnapshot, GameCore.Contracts.CompositionRevision oldRevision, GameCore.Contracts.CompositionRevision newRevision, GameCore.Contracts.AssemblyEpoch oldEpoch, GameCore.Contracts.AssemblyEpoch newEpoch, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Diagnostic>? diagnostics, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128>? cleanupReferences, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128>? quarantineReferences)
+  property public GameCore.Contracts.AssemblyEpoch NewEpoch { get; }
+  property public GameCore.Contracts.AssemblyEpoch OldEpoch { get; }
+  property public GameCore.Contracts.CompositionRevision NewRevision { get; }
+  property public GameCore.Contracts.CompositionRevision OldRevision { get; }
+  property public GameCore.Contracts.DiagnosticCode Code { get; }
+  property public GameCore.Contracts.OperationId Operation { get; }
+  property public GameCore.Contracts.Outcome Outcome { get; }
+  property public GameCore.Contracts.SnapshotToken? PublishedSnapshot { get; }
+  property public System.Boolean IsTerminal { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Diagnostic> Diagnostics { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128> CleanupReferences { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128> QuarantineReferences { get; }
+  property public System.String CodeText { get; }
+type struct GameCore.Contracts.OperationStatusHandle : System.IEquatable<GameCore.Contracts.OperationStatusHandle>
+  field public readonly GameCore.Contracts.CompositionRevision SubmittedAgainst
+  field public readonly GameCore.Contracts.OperationId Operation
+  ctor public OperationStatusHandle(GameCore.Contracts.OperationId operation, GameCore.Contracts.CompositionRevision submittedAgainst)
+  method public System.Boolean Equals(GameCore.Contracts.OperationStatusHandle other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static System.Boolean operator !=(GameCore.Contracts.OperationStatusHandle left, GameCore.Contracts.OperationStatusHandle right)
+  method public static System.Boolean operator ==(GameCore.Contracts.OperationStatusHandle left, GameCore.Contracts.OperationStatusHandle right)
+type class GameCore.Contracts.OrderedDispatchTable
+  ctor public OrderedDispatchTable(GameCore.Contracts.AssemblyEpoch epoch, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.SystemDispatchEntry>? entries, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.BufferBinding>? bufferBindings)
+  property public GameCore.Contracts.AssemblyEpoch Epoch { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.BufferBinding> BufferBindings { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.SystemDispatchEntry> Entries { get; }
+  method public System.Boolean IsWellFormed()
+type enum GameCore.Contracts.Outcome : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public Accepted = 1
+  enumvalue public Cancelled = 7
+  enumvalue public Committed = 2
+  enumvalue public Faulted = 8
+  enumvalue public NoChange = 5
+  enumvalue public Pending = 0
+  enumvalue public Published = 3
+  enumvalue public PublishedWithCleanupErrors = 4
+  enumvalue public Rejected = 6
+type class GameCore.Contracts.OutputSlotSchema
+  ctor public OutputSlotSchema(GameCore.Contracts.SlotId slot, GameCore.Contracts.SchemaRef schema)
+  property public GameCore.Contracts.SchemaRef Schema { get; }
+  property public GameCore.Contracts.SlotId Slot { get; }
+type struct GameCore.Contracts.OwnerGrant
+  field public readonly GameCore.Contracts.OwnerId Owner
+  field public readonly GameCore.Contracts.StateSlotKey Slot
+  field public readonly System.UInt32 OwnerVersion
+  ctor public OwnerGrant(GameCore.Contracts.OwnerId owner, GameCore.Contracts.StateSlotKey slot, System.UInt32 ownerVersion)
+  method public System.String ToString()
+type struct GameCore.Contracts.OwnerId : System.IComparable<GameCore.Contracts.OwnerId>, System.IEquatable<GameCore.Contracts.OwnerId>
+  field public readonly GameCore.Contracts.Id128 Value
+  ctor public OwnerId(GameCore.Contracts.Id128 value)
+  property public System.Boolean IsDefault { get; }
+  method public System.Boolean Equals(GameCore.Contracts.OwnerId other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 CompareTo(GameCore.Contracts.OwnerId other)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static GameCore.Contracts.OwnerId FromRaw(System.UInt64 high, System.UInt64 low)
+  method public static System.Boolean operator !=(GameCore.Contracts.OwnerId left, GameCore.Contracts.OwnerId right)
+  method public static System.Boolean operator ==(GameCore.Contracts.OwnerId left, GameCore.Contracts.OwnerId right)
+type class GameCore.Contracts.PlanCostEstimate
+  ctor public PlanCostEstimate(System.UInt64 prepareBytes, System.UInt64 applyBytes)
+  property public System.UInt64 ApplyBytes { get; }
+  property public System.UInt64 PrepareBytes { get; }
+type struct GameCore.Contracts.PlanEdge
+  field public readonly GameCore.Contracts.PlanNode From
+  field public readonly GameCore.Contracts.PlanNode To
+  field public readonly System.Boolean Required
+  ctor public PlanEdge(GameCore.Contracts.PlanNode from, GameCore.Contracts.PlanNode to, System.Boolean required)
+  method public System.Boolean Equals(GameCore.Contracts.PlanEdge other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+type struct GameCore.Contracts.PlanNode
+  field public readonly GameCore.Contracts.FactoryKey System
+  field public readonly GameCore.Contracts.PlanNodeKind Kind
+  field public readonly GameCore.Contracts.StageId Stage
+  method public System.Boolean Equals(GameCore.Contracts.PlanNode other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static GameCore.Contracts.PlanNode ForStage(GameCore.Contracts.StageId stage)
+  method public static GameCore.Contracts.PlanNode ForSystem(GameCore.Contracts.StageId stage, GameCore.Contracts.FactoryKey system)
+type enum GameCore.Contracts.PlanNodeKind : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public Stage = 0
+  enumvalue public System = 1
+type struct GameCore.Contracts.PluginHandle : System.IEquatable<GameCore.Contracts.PluginHandle>
+  field public readonly GameCore.Contracts.WorldId World
+  field public readonly System.UInt32 Slot
+  field public readonly System.UInt64 InstallationGeneration
+  ctor public PluginHandle(GameCore.Contracts.WorldId world, System.UInt32 slot, System.UInt64 installationGeneration)
+  property public System.Boolean IsAllocated { get; }
+  method public System.Boolean Equals(GameCore.Contracts.PluginHandle other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static System.Boolean operator !=(GameCore.Contracts.PluginHandle left, GameCore.Contracts.PluginHandle right)
+  method public static System.Boolean operator ==(GameCore.Contracts.PluginHandle left, GameCore.Contracts.PluginHandle right)
+type struct GameCore.Contracts.PluginInstanceId : System.IComparable<GameCore.Contracts.PluginInstanceId>, System.IEquatable<GameCore.Contracts.PluginInstanceId>
+  field public readonly GameCore.Contracts.Id128 Value
+  ctor public PluginInstanceId(GameCore.Contracts.Id128 value)
+  property public System.Boolean IsDefault { get; }
+  method public System.Boolean Equals(GameCore.Contracts.PluginInstanceId other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 CompareTo(GameCore.Contracts.PluginInstanceId other)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static GameCore.Contracts.PluginInstanceId FromRaw(System.UInt64 high, System.UInt64 low)
+  method public static System.Boolean operator !=(GameCore.Contracts.PluginInstanceId left, GameCore.Contracts.PluginInstanceId right)
+  method public static System.Boolean operator ==(GameCore.Contracts.PluginInstanceId left, GameCore.Contracts.PluginInstanceId right)
+type class GameCore.Contracts.PluginManifest
+  ctor public PluginManifest(GameCore.Contracts.PluginTypeId pluginTypeId, System.String packageVersion, GameCore.Contracts.ContentHash packageContentHash, GameCore.Contracts.SupportedProtocolRange protocolRange, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128>? requiredFeatureIds, GameCore.Contracts.SchemaRef configSchema, GameCore.Contracts.FactoryKey factoryKey, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ServiceExport>? serviceExports, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ServiceDependency>? serviceDependencies, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.CapabilityContract>? capabilityContracts, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.DerivationRule>? derivationRules, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.TargetDescriptor>? targetDescriptors, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.StateSlotSpec>? stateSlots, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.StageSpec>? stages, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.BufferSpec>? buffers, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ResourceSpec>? resources)
+  property public GameCore.Contracts.ContentHash PackageContentHash { get; }
+  property public GameCore.Contracts.FactoryKey FactoryKey { get; }
+  property public GameCore.Contracts.PluginTypeId PluginTypeId { get; }
+  property public GameCore.Contracts.SchemaRef ConfigSchema { get; }
+  property public GameCore.Contracts.SupportedProtocolRange ProtocolRange { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.BufferSpec> Buffers { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.CapabilityContract> CapabilityContracts { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.DerivationRule> DerivationRules { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128> RequiredFeatureIds { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ResourceSpec> Resources { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ServiceDependency> ServiceDependencies { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ServiceExport> ServiceExports { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.StageSpec> Stages { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.StateSlotSpec> StateSlots { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.TargetDescriptor> TargetDescriptors { get; }
+  property public System.String PackageVersion { get; }
+type struct GameCore.Contracts.PluginTypeId : System.IComparable<GameCore.Contracts.PluginTypeId>, System.IEquatable<GameCore.Contracts.PluginTypeId>
+  field public readonly GameCore.Contracts.Id128 Value
+  ctor public PluginTypeId(GameCore.Contracts.Id128 value)
+  property public System.Boolean IsDefault { get; }
+  method public System.Boolean Equals(GameCore.Contracts.PluginTypeId other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 CompareTo(GameCore.Contracts.PluginTypeId other)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static GameCore.Contracts.PluginTypeId FromRaw(System.UInt64 high, System.UInt64 low)
+  method public static System.Boolean operator !=(GameCore.Contracts.PluginTypeId left, GameCore.Contracts.PluginTypeId right)
+  method public static System.Boolean operator ==(GameCore.Contracts.PluginTypeId left, GameCore.Contracts.PluginTypeId right)
+type enum GameCore.Contracts.PortDirection : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public Consumer = 1
+  enumvalue public Producer = 0
+type enum GameCore.Contracts.PropagationMode : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public Automatic = 0
+  enumvalue public Conservative = 1
+type enum GameCore.Contracts.PropagationReach : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public DescendantsOnly = 1
+  enumvalue public LocalOnly = 2
+  enumvalue public SelfAndDescendants = 0
+type struct GameCore.Contracts.ProtocolVersion : System.IComparable<GameCore.Contracts.ProtocolVersion>, System.IEquatable<GameCore.Contracts.ProtocolVersion>
+  field public readonly System.Int32 Major
+  field public readonly System.Int32 Minor
+  ctor public ProtocolVersion(System.Int32 major, System.Int32 minor)
+  method public System.Boolean Equals(GameCore.Contracts.ProtocolVersion other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 CompareTo(GameCore.Contracts.ProtocolVersion other)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static System.Boolean operator !=(GameCore.Contracts.ProtocolVersion left, GameCore.Contracts.ProtocolVersion right)
+  method public static System.Boolean operator ==(GameCore.Contracts.ProtocolVersion left, GameCore.Contracts.ProtocolVersion right)
+type struct GameCore.Contracts.ProviderInstallationId : System.IComparable<GameCore.Contracts.ProviderInstallationId>, System.IEquatable<GameCore.Contracts.ProviderInstallationId>
+  field public readonly GameCore.Contracts.Id128 Value
+  ctor public ProviderInstallationId(GameCore.Contracts.Id128 value)
+  property public System.Boolean IsDefault { get; }
+  method public System.Boolean Equals(GameCore.Contracts.ProviderInstallationId other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 CompareTo(GameCore.Contracts.ProviderInstallationId other)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static GameCore.Contracts.ProviderInstallationId FromRaw(System.UInt64 high, System.UInt64 low)
+  method public static System.Boolean operator !=(GameCore.Contracts.ProviderInstallationId left, GameCore.Contracts.ProviderInstallationId right)
+  method public static System.Boolean operator ==(GameCore.Contracts.ProviderInstallationId left, GameCore.Contracts.ProviderInstallationId right)
+type class GameCore.Contracts.RecipeApplyRequest
+  ctor public RecipeApplyRequest(GameCore.Contracts.DefinitionRef recipe, GameCore.Contracts.TargetHandle target)
+  property public GameCore.Contracts.DefinitionRef Recipe { get; }
+  property public GameCore.Contracts.TargetHandle Target { get; }
+type class GameCore.Contracts.RecipeApplyResult
+  ctor public RecipeApplyResult(GameCore.Contracts.ApplyOutcome outcome, GameCore.Contracts.DiagnosticCode code, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128>? writtenSchemas)
+  property public GameCore.Contracts.ApplyOutcome Outcome { get; }
+  property public GameCore.Contracts.DiagnosticCode Code { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128> WrittenSchemas { get; }
+type class GameCore.Contracts.RecipeOperation
+  ctor public RecipeOperation(GameCore.Contracts.CompositionEditKind kind, GameCore.Contracts.TargetId target, GameCore.Contracts.DefinitionRef recipe, GameCore.Contracts.FactoryKey applyKey)
+  property public GameCore.Contracts.CompositionEditKind Kind { get; }
+  property public GameCore.Contracts.DefinitionRef Recipe { get; }
+  property public GameCore.Contracts.FactoryKey ApplyKey { get; }
+  property public GameCore.Contracts.TargetId Target { get; }
+type class GameCore.Contracts.RequestResult
+  ctor public RequestResult(GameCore.Contracts.RequestResultKind kind, GameCore.Contracts.DiagnosticCode reason, GameCore.Contracts.EventCursor causalCursor)
+  property public GameCore.Contracts.DiagnosticCode Reason { get; }
+  property public GameCore.Contracts.EventCursor CausalCursor { get; }
+  property public GameCore.Contracts.RequestResultKind Kind { get; }
+type enum GameCore.Contracts.RequestResultKind : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public Accepted = 0
+  enumvalue public Cancelled = 2
+  enumvalue public Committed = 3
+  enumvalue public Rejected = 1
+type struct GameCore.Contracts.ResourceKey : System.IComparable<GameCore.Contracts.ResourceKey>, System.IEquatable<GameCore.Contracts.ResourceKey>
+  field public readonly GameCore.Contracts.Id128 Value
+  ctor public ResourceKey(GameCore.Contracts.Id128 value)
+  property public System.Boolean IsDefault { get; }
+  method public System.Boolean Equals(GameCore.Contracts.ResourceKey other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 CompareTo(GameCore.Contracts.ResourceKey other)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static GameCore.Contracts.ResourceKey FromRaw(System.UInt64 high, System.UInt64 low)
+  method public static System.Boolean operator !=(GameCore.Contracts.ResourceKey left, GameCore.Contracts.ResourceKey right)
+  method public static System.Boolean operator ==(GameCore.Contracts.ResourceKey left, GameCore.Contracts.ResourceKey right)
+type enum GameCore.Contracts.ResourceReadiness : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public Failed = 2
+  enumvalue public Pending = 0
+  enumvalue public Ready = 1
+  enumvalue public Retiring = 3
+type enum GameCore.Contracts.ResourceRetirementState : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public Acquired = 0
+  enumvalue public Failed = 5
+  enumvalue public Quarantined = 4
+  enumvalue public Ready = 1
+  enumvalue public Retired = 3
+  enumvalue public Retiring = 2
+type class GameCore.Contracts.ResourceSpec
+  ctor public ResourceSpec(GameCore.Contracts.ResourceKey resourceKey, GameCore.Contracts.FactoryKey factory, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ResourceKey>? dependencies, GameCore.Contracts.FactoryKey preparationGate, GameCore.Contracts.OwnerId lifetimeOwner, GameCore.Contracts.FactoryKey disposer, GameCore.Contracts.FailureClassification failure)
+  property public GameCore.Contracts.FactoryKey Disposer { get; }
+  property public GameCore.Contracts.FactoryKey Factory { get; }
+  property public GameCore.Contracts.FactoryKey PreparationGate { get; }
+  property public GameCore.Contracts.FailureClassification Failure { get; }
+  property public GameCore.Contracts.OwnerId LifetimeOwner { get; }
+  property public GameCore.Contracts.ResourceKey ResourceKey { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ResourceKey> Dependencies { get; }
+type class GameCore.Contracts.ResourceStaging
+  ctor public ResourceStaging(System.Collections.Generic.IReadOnlyList<GameCore.Contracts.StagedLease>? handles, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128>? retiringLeaseIds, System.UInt64 scratchCapacityBytes)
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128> RetiringLeaseIds { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.StagedLease> Handles { get; }
+  property public System.UInt64 ScratchCapacityBytes { get; }
+type enum GameCore.Contracts.RetryClassification : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public NotRetryable = 0
+  enumvalue public RequiresChangedInput = 2
+  enumvalue public RetrySameInput = 1
+type struct GameCore.Contracts.RouteId : System.IComparable<GameCore.Contracts.RouteId>, System.IEquatable<GameCore.Contracts.RouteId>
+  field public readonly GameCore.Contracts.Id128 Value
+  ctor public RouteId(GameCore.Contracts.Id128 value)
+  property public System.Boolean IsDefault { get; }
+  method public System.Boolean Equals(GameCore.Contracts.RouteId other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 CompareTo(GameCore.Contracts.RouteId other)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static GameCore.Contracts.RouteId FromRaw(System.UInt64 high, System.UInt64 low)
+  method public static System.Boolean operator !=(GameCore.Contracts.RouteId left, GameCore.Contracts.RouteId right)
+  method public static System.Boolean operator ==(GameCore.Contracts.RouteId left, GameCore.Contracts.RouteId right)
+type struct GameCore.Contracts.RuleId : System.IComparable<GameCore.Contracts.RuleId>, System.IEquatable<GameCore.Contracts.RuleId>
+  field public readonly GameCore.Contracts.Id128 Value
+  ctor public RuleId(GameCore.Contracts.Id128 value)
+  property public System.Boolean IsDefault { get; }
+  method public System.Boolean Equals(GameCore.Contracts.RuleId other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 CompareTo(GameCore.Contracts.RuleId other)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static GameCore.Contracts.RuleId FromRaw(System.UInt64 high, System.UInt64 low)
+  method public static System.Boolean operator !=(GameCore.Contracts.RuleId left, GameCore.Contracts.RuleId right)
+  method public static System.Boolean operator ==(GameCore.Contracts.RuleId left, GameCore.Contracts.RuleId right)
+type class GameCore.Contracts.RuntimeDelta
+  ctor public RuntimeDelta(System.Collections.Generic.IReadOnlyList<GameCore.Contracts.RecipeOperation>? recipes, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.LayoutOperation>? layouts, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.OwnerGrant>? ownerGrants, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.StateDisposition>? stateDispositions, GameCore.Contracts.ExecutionPlan? executionPlan, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.BufferBinding>? bufferBindings)
+  property public GameCore.Contracts.ExecutionPlan? Plan { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.BufferBinding> BufferBindings { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.LayoutOperation> Layouts { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.OwnerGrant> OwnerGrants { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.RecipeOperation> Recipes { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.StateDisposition> StateDispositions { get; }
+type struct GameCore.Contracts.SchemaId : System.IComparable<GameCore.Contracts.SchemaId>, System.IEquatable<GameCore.Contracts.SchemaId>
+  field public readonly GameCore.Contracts.Id128 Value
+  ctor public SchemaId(GameCore.Contracts.Id128 value)
+  property public System.Boolean IsDefault { get; }
+  method public System.Boolean Equals(GameCore.Contracts.SchemaId other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 CompareTo(GameCore.Contracts.SchemaId other)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static GameCore.Contracts.SchemaId FromRaw(System.UInt64 high, System.UInt64 low)
+  method public static System.Boolean operator !=(GameCore.Contracts.SchemaId left, GameCore.Contracts.SchemaId right)
+  method public static System.Boolean operator ==(GameCore.Contracts.SchemaId left, GameCore.Contracts.SchemaId right)
+type struct GameCore.Contracts.SchemaRef : System.IEquatable<GameCore.Contracts.SchemaRef>
+  field public readonly GameCore.Contracts.SchemaId Id
+  field public readonly System.UInt32 Version
+  ctor public SchemaRef(GameCore.Contracts.SchemaId id, System.UInt32 version)
+  method public System.Boolean Equals(GameCore.Contracts.SchemaRef other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static System.Boolean operator !=(GameCore.Contracts.SchemaRef left, GameCore.Contracts.SchemaRef right)
+  method public static System.Boolean operator ==(GameCore.Contracts.SchemaRef left, GameCore.Contracts.SchemaRef right)
+type class GameCore.Contracts.SchemaRegistration
+  ctor public SchemaRegistration(GameCore.Contracts.SchemaRef schema, GameCore.Contracts.Id128 ownerPackageId, GameCore.Contracts.FactoryKey serializer, System.Boolean isRequired)
+  property public GameCore.Contracts.FactoryKey Serializer { get; }
+  property public GameCore.Contracts.Id128 OwnerPackageId { get; }
+  property public GameCore.Contracts.SchemaRef Schema { get; }
+  property public System.Boolean IsRequired { get; }
+type class GameCore.Contracts.ScopeEdit
+  ctor public ScopeEdit(GameCore.Contracts.CompositionEditKind kind, GameCore.Contracts.ScopeId scope, GameCore.Contracts.ScopeId oldParent, GameCore.Contracts.ScopeId newParent)
+  property public GameCore.Contracts.CompositionEditKind Kind { get; }
+  property public GameCore.Contracts.ScopeId NewParent { get; }
+  property public GameCore.Contracts.ScopeId OldParent { get; }
+  property public GameCore.Contracts.ScopeId Scope { get; }
+type struct GameCore.Contracts.ScopeHandle : System.IEquatable<GameCore.Contracts.ScopeHandle>
+  field public readonly GameCore.Contracts.WorldId World
+  field public readonly System.UInt32 Slot
+  field public readonly System.UInt64 ScopeGeneration
+  ctor public ScopeHandle(GameCore.Contracts.WorldId world, System.UInt32 slot, System.UInt64 scopeGeneration)
+  property public System.Boolean IsAllocated { get; }
+  method public System.Boolean Equals(GameCore.Contracts.ScopeHandle other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static System.Boolean operator !=(GameCore.Contracts.ScopeHandle left, GameCore.Contracts.ScopeHandle right)
+  method public static System.Boolean operator ==(GameCore.Contracts.ScopeHandle left, GameCore.Contracts.ScopeHandle right)
+type struct GameCore.Contracts.ScopeId : System.IComparable<GameCore.Contracts.ScopeId>, System.IEquatable<GameCore.Contracts.ScopeId>
+  field public readonly GameCore.Contracts.Id128 Value
+  ctor public ScopeId(GameCore.Contracts.Id128 value)
+  property public System.Boolean IsDefault { get; }
+  method public System.Boolean Equals(GameCore.Contracts.ScopeId other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 CompareTo(GameCore.Contracts.ScopeId other)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static GameCore.Contracts.ScopeId FromRaw(System.UInt64 high, System.UInt64 low)
+  method public static System.Boolean operator !=(GameCore.Contracts.ScopeId left, GameCore.Contracts.ScopeId right)
+  method public static System.Boolean operator ==(GameCore.Contracts.ScopeId left, GameCore.Contracts.ScopeId right)
+type class GameCore.Contracts.ScopeSnapshot
+  ctor public ScopeSnapshot(GameCore.Contracts.ScopeId scope, GameCore.Contracts.ScopeId parent, GameCore.Contracts.PropagationMode mode, GameCore.Contracts.IsolationSet serviceIsolation, GameCore.Contracts.IsolationSet capabilityIsolation, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ExclusionRule>? exclusions, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.PluginInstanceId>? installs)
+  property public GameCore.Contracts.IsolationSet CapabilityIsolation { get; }
+  property public GameCore.Contracts.IsolationSet ServiceIsolation { get; }
+  property public GameCore.Contracts.PropagationMode Mode { get; }
+  property public GameCore.Contracts.ScopeId Parent { get; }
+  property public GameCore.Contracts.ScopeId Scope { get; }
+  property public System.Boolean IsRoot { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ExclusionRule> Exclusions { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.PluginInstanceId> Installs { get; }
+type class GameCore.Contracts.SerializationLimits
+  ctor public SerializationLimits(System.Int32 maxDocumentBytes, System.Int32 maxFieldBytes, System.Int32 maxStringBytes, System.Int32 maxListCount, System.Int32 maxListBytes)
+  property public System.Int32 MaxDocumentBytes { get; }
+  property public System.Int32 MaxFieldBytes { get; }
+  property public System.Int32 MaxListBytes { get; }
+  property public System.Int32 MaxListCount { get; }
+  property public System.Int32 MaxStringBytes { get; }
+  property public static GameCore.Contracts.SerializationLimits Default { get; }
+type class GameCore.Contracts.ServiceBinding
+  ctor public ServiceBinding(GameCore.Contracts.ContractRef contract, GameCore.Contracts.ProviderInstallationId provider, GameCore.Contracts.ActivationEpoch activationEpoch, GameCore.Contracts.Id128 leaseId, GameCore.Contracts.ServiceBindingKind bindingKind, System.Boolean isFallback)
+  property public GameCore.Contracts.ActivationEpoch ActivationEpoch { get; }
+  property public GameCore.Contracts.ContractRef Contract { get; }
+  property public GameCore.Contracts.Id128 LeaseId { get; }
+  property public GameCore.Contracts.ProviderInstallationId Provider { get; }
+  property public GameCore.Contracts.ServiceBindingKind BindingKind { get; }
+  property public System.Boolean IsFallback { get; }
+type enum GameCore.Contracts.ServiceBindingKind : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public Multi = 1
+  enumvalue public Single = 0
+type class GameCore.Contracts.ServiceDependency
+  ctor public ServiceDependency(GameCore.Contracts.ContractRef contract, GameCore.Contracts.VersionRange supportedVersions, System.Boolean required, GameCore.Contracts.ServiceResolutionDomain domain, GameCore.Contracts.ProviderInstallationId selectedProvider, GameCore.Contracts.FactoryKey fallbackFactory)
+  property public GameCore.Contracts.ContractRef Contract { get; }
+  property public GameCore.Contracts.FactoryKey FallbackFactory { get; }
+  property public GameCore.Contracts.ProviderInstallationId SelectedProvider { get; }
+  property public GameCore.Contracts.ServiceResolutionDomain Domain { get; }
+  property public GameCore.Contracts.VersionRange SupportedVersions { get; }
+  property public System.Boolean HasFallback { get; }
+  property public System.Boolean HasSelectedProvider { get; }
+  property public System.Boolean Required { get; }
+type class GameCore.Contracts.ServiceExport
+  ctor public ServiceExport(GameCore.Contracts.ContractRef contract, GameCore.Contracts.FactoryKey factory, GameCore.Contracts.ServiceVisibility visibility, System.Boolean overridesAncestor, GameCore.Contracts.ServiceBindingKind bindingKind)
+  property public GameCore.Contracts.ContractRef Contract { get; }
+  property public GameCore.Contracts.FactoryKey Factory { get; }
+  property public GameCore.Contracts.ServiceBindingKind BindingKind { get; }
+  property public GameCore.Contracts.ServiceVisibility Visibility { get; }
+  property public System.Boolean OverridesAncestor { get; }
+type enum GameCore.Contracts.ServiceResolutionDomain : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public AncestorsAndSelf = 0
+  enumvalue public SelfOnly = 1
+  enumvalue public WorldImported = 2
+type struct GameCore.Contracts.ServiceSelection
+  field public readonly GameCore.Contracts.ContractRef Contract
+  field public readonly GameCore.Contracts.ProviderInstallationId Provider
+  ctor public ServiceSelection(GameCore.Contracts.ContractRef contract, GameCore.Contracts.ProviderInstallationId provider)
+  method public System.String ToString()
+type enum GameCore.Contracts.ServiceVisibility : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public ExportToDescendants = 1
+  enumvalue public Private = 0
+type class GameCore.Contracts.SlotCompositionPolicy
+  ctor public SlotCompositionPolicy(GameCore.Contracts.SlotId slot, GameCore.Contracts.CompositionPolicy policy, GameCore.Contracts.FactoryKey reducer)
+  property public GameCore.Contracts.CompositionPolicy Policy { get; }
+  property public GameCore.Contracts.FactoryKey Reducer { get; }
+  property public GameCore.Contracts.SlotId Slot { get; }
+type class GameCore.Contracts.SlotDelta
+  ctor public SlotDelta(GameCore.Contracts.StateSlotKey slot, GameCore.Contracts.StateDispositionKind disposition, GameCore.Contracts.CompositionPolicy policy, System.UInt32 oldVersion, System.UInt32 newVersion)
+  property public GameCore.Contracts.CompositionPolicy Policy { get; }
+  property public GameCore.Contracts.StateDispositionKind Disposition { get; }
+  property public GameCore.Contracts.StateSlotKey Slot { get; }
+  property public System.UInt32 NewVersion { get; }
+  property public System.UInt32 OldVersion { get; }
+type struct GameCore.Contracts.SlotId : System.IComparable<GameCore.Contracts.SlotId>, System.IEquatable<GameCore.Contracts.SlotId>
+  field public readonly GameCore.Contracts.Id128 Value
+  ctor public SlotId(GameCore.Contracts.Id128 value)
+  property public System.Boolean IsDefault { get; }
+  method public System.Boolean Equals(GameCore.Contracts.SlotId other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 CompareTo(GameCore.Contracts.SlotId other)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static GameCore.Contracts.SlotId FromRaw(System.UInt64 high, System.UInt64 low)
+  method public static System.Boolean operator !=(GameCore.Contracts.SlotId left, GameCore.Contracts.SlotId right)
+  method public static System.Boolean operator ==(GameCore.Contracts.SlotId left, GameCore.Contracts.SlotId right)
+type enum GameCore.Contracts.SnapshotAcquireOutcome : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public Acquired = 0
+  enumvalue public Backpressure = 2
+  enumvalue public Expired = 1
+  enumvalue public ForeignWorld = 3
+type class GameCore.Contracts.SnapshotAcquireResult
+  property public GameCore.Contracts.DiagnosticCode Code { get; }
+  property public GameCore.Contracts.ISnapshotLease? Lease { get; }
+  property public GameCore.Contracts.SnapshotAcquireOutcome Outcome { get; }
+  property public GameCore.Contracts.SnapshotToken Token { get; }
+  property public System.Boolean Succeeded { get; }
+  method public static GameCore.Contracts.SnapshotAcquireResult Acquired(GameCore.Contracts.SnapshotToken token, GameCore.Contracts.ISnapshotLease lease)
+  method public static GameCore.Contracts.SnapshotAcquireResult Backpressure(GameCore.Contracts.SnapshotToken token)
+  method public static GameCore.Contracts.SnapshotAcquireResult Expired(GameCore.Contracts.SnapshotToken token)
+  method public static GameCore.Contracts.SnapshotAcquireResult ForeignWorld(GameCore.Contracts.SnapshotToken token)
+type struct GameCore.Contracts.SnapshotToken : System.IEquatable<GameCore.Contracts.SnapshotToken>
+  field public readonly GameCore.Contracts.AssemblyEpoch AssemblyEpoch
+  field public readonly GameCore.Contracts.LogicalStepId LogicalStepId
+  field public readonly GameCore.Contracts.WorldId World
+  ctor public SnapshotToken(GameCore.Contracts.WorldId world, GameCore.Contracts.AssemblyEpoch assemblyEpoch, GameCore.Contracts.LogicalStepId logicalStepId)
+  method public System.Boolean Equals(GameCore.Contracts.SnapshotToken other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static System.Boolean operator !=(GameCore.Contracts.SnapshotToken left, GameCore.Contracts.SnapshotToken right)
+  method public static System.Boolean operator ==(GameCore.Contracts.SnapshotToken left, GameCore.Contracts.SnapshotToken right)
+type class GameCore.Contracts.StableNameKeyDerivation [static]
+  field public const System.String AllowedCharacters
+  field public const System.String Scope
+  method public static GameCore.Contracts.Id128 Derive(System.String stableName)
+  method public static System.Boolean IsCanonicalStableName(System.String? stableName)
+type class GameCore.Contracts.StageDispatchRequest
+  ctor public StageDispatchRequest(GameCore.Contracts.WorldId world, GameCore.Contracts.AssemblyEpoch baseEpoch, GameCore.Contracts.LogicalStepId step, GameCore.Contracts.OrderedDispatchTable table)
+  property public GameCore.Contracts.AssemblyEpoch BaseEpoch { get; }
+  property public GameCore.Contracts.LogicalStepId Step { get; }
+  property public GameCore.Contracts.OrderedDispatchTable Table { get; }
+  property public GameCore.Contracts.WorldId World { get; }
+type struct GameCore.Contracts.StageId : System.IComparable<GameCore.Contracts.StageId>, System.IEquatable<GameCore.Contracts.StageId>
+  field public readonly GameCore.Contracts.Id128 Value
+  ctor public StageId(GameCore.Contracts.Id128 value)
+  property public System.Boolean IsDefault { get; }
+  method public System.Boolean Equals(GameCore.Contracts.StageId other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 CompareTo(GameCore.Contracts.StageId other)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static GameCore.Contracts.StageId FromRaw(System.UInt64 high, System.UInt64 low)
+  method public static System.Boolean operator !=(GameCore.Contracts.StageId left, GameCore.Contracts.StageId right)
+  method public static System.Boolean operator ==(GameCore.Contracts.StageId left, GameCore.Contracts.StageId right)
+type class GameCore.Contracts.StageSpec
+  ctor public StageSpec(GameCore.Contracts.StageId stageId, System.UInt32 stageVersion, GameCore.Contracts.Id128 ownerPackageId, GameCore.Contracts.HostAffinity affinity, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.FactoryKey>? factoryKeys, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128>? activationMemberships, GameCore.Contracts.AccessSet readWriteSet, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.StageId>? requiredBefore, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.StageId>? requiredAfter, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.StageId>? optionalBefore, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.StageId>? optionalAfter, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.SystemSpec>? systems, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.BufferPort>? bufferPorts)
+  property public GameCore.Contracts.AccessSet ReadWriteSet { get; }
+  property public GameCore.Contracts.HostAffinity Affinity { get; }
+  property public GameCore.Contracts.Id128 OwnerPackageId { get; }
+  property public GameCore.Contracts.StageId StageId { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.BufferPort> BufferPorts { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.FactoryKey> FactoryKeys { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128> ActivationMemberships { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.StageId> OptionalAfter { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.StageId> OptionalBefore { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.StageId> RequiredAfter { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.StageId> RequiredBefore { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.SystemSpec> Systems { get; }
+  property public System.UInt32 StageVersion { get; }
+type struct GameCore.Contracts.StagedLease
+  field public readonly GameCore.Contracts.Id128 LeaseId
+  field public readonly GameCore.Contracts.ResourceKey Resource
+  field public readonly GameCore.Contracts.ResourceReadiness Readiness
+  field public readonly System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ResourceKey> Dependencies
+  field public readonly System.UInt32 AcquisitionOrdinal
+  ctor public StagedLease(GameCore.Contracts.ResourceKey resource, GameCore.Contracts.Id128 leaseId, GameCore.Contracts.ResourceReadiness readiness, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ResourceKey>? dependencies, System.UInt32 acquisitionOrdinal)
+  property public System.Boolean HasDependencies { get; }
+  method public System.String ToString()
+type struct GameCore.Contracts.StateDisposition
+  field public readonly GameCore.Contracts.FactoryKey MigrationKey
+  field public readonly GameCore.Contracts.StateDispositionKind Kind
+  field public readonly GameCore.Contracts.StateSlotKey Slot
+  field public readonly GameCore.Contracts.TargetId TransferTo
+  ctor public StateDisposition(GameCore.Contracts.StateSlotKey slot, GameCore.Contracts.StateDispositionKind kind, GameCore.Contracts.TargetId transferTo, GameCore.Contracts.FactoryKey migrationKey)
+  method public System.String ToString()
+type enum GameCore.Contracts.StateDispositionKind : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public Migrate = 3
+  enumvalue public Retain = 0
+  enumvalue public Retract = 1
+  enumvalue public Transfer = 2
+type struct GameCore.Contracts.StateSlotKey : System.IEquatable<GameCore.Contracts.StateSlotKey>
+  field public readonly GameCore.Contracts.OwnerId Owner
+  field public readonly GameCore.Contracts.SlotId Slot
+  field public readonly GameCore.Contracts.TargetId Target
+  ctor public StateSlotKey(GameCore.Contracts.TargetId target, GameCore.Contracts.OwnerId owner, GameCore.Contracts.SlotId slot)
+  method public System.Boolean Equals(GameCore.Contracts.StateSlotKey other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static System.Boolean operator !=(GameCore.Contracts.StateSlotKey left, GameCore.Contracts.StateSlotKey right)
+  method public static System.Boolean operator ==(GameCore.Contracts.StateSlotKey left, GameCore.Contracts.StateSlotKey right)
+type class GameCore.Contracts.StateSlotSpec
+  ctor public StateSlotSpec(GameCore.Contracts.SlotId slotId, GameCore.Contracts.OwnerId owner, GameCore.Contracts.SchemaRef schema, GameCore.Contracts.FactoryKey physicalLayoutKey, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.FieldOwnership>? fieldOwnership, GameCore.Contracts.FactoryKey initPolicy, GameCore.Contracts.FactoryKey configChangePolicy, GameCore.Contracts.FactoryKey versionChangePolicy, GameCore.Contracts.LastSupportPolicy lastSupport, GameCore.Contracts.FactoryKey transferPolicy, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.FactoryKey>? migrationKeys)
+  property public GameCore.Contracts.FactoryKey ConfigChangePolicy { get; }
+  property public GameCore.Contracts.FactoryKey InitPolicy { get; }
+  property public GameCore.Contracts.FactoryKey PhysicalLayoutKey { get; }
+  property public GameCore.Contracts.FactoryKey TransferPolicy { get; }
+  property public GameCore.Contracts.FactoryKey VersionChangePolicy { get; }
+  property public GameCore.Contracts.LastSupportPolicy LastSupport { get; }
+  property public GameCore.Contracts.OwnerId Owner { get; }
+  property public GameCore.Contracts.SchemaRef Schema { get; }
+  property public GameCore.Contracts.SlotId SlotId { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.FactoryKey> MigrationKeys { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.FieldOwnership> FieldOwnership { get; }
+type class GameCore.Contracts.StepAdvanceRequest
+  ctor public StepAdvanceRequest(GameCore.Contracts.WorldId world, GameCore.Contracts.AssemblyEpoch baseEpoch, GameCore.Contracts.LogicalStepId expectedStep, System.UInt64 requestedSteps, GameCore.Contracts.TimeDebt retainedDebt)
+  property public GameCore.Contracts.AssemblyEpoch BaseEpoch { get; }
+  property public GameCore.Contracts.LogicalStepId ExpectedStep { get; }
+  property public GameCore.Contracts.TimeDebt RetainedDebt { get; }
+  property public GameCore.Contracts.WorldId World { get; }
+  property public System.UInt64 RequestedSteps { get; }
+type class GameCore.Contracts.StepAdvanceResult
+  ctor public StepAdvanceResult(System.Boolean accepted, GameCore.Contracts.Outcome outcome, GameCore.Contracts.DiagnosticCode code, GameCore.Contracts.LogicalStepId step, GameCore.Contracts.AssemblyEpoch epoch, GameCore.Contracts.TimeDebt debt, GameCore.Contracts.SnapshotToken? publishedSnapshot)
+  property public GameCore.Contracts.AssemblyEpoch Epoch { get; }
+  property public GameCore.Contracts.DiagnosticCode Code { get; }
+  property public GameCore.Contracts.LogicalStepId Step { get; }
+  property public GameCore.Contracts.Outcome Outcome { get; }
+  property public GameCore.Contracts.SnapshotToken? PublishedSnapshot { get; }
+  property public GameCore.Contracts.TimeDebt Debt { get; }
+  property public System.Boolean Accepted { get; }
+type class GameCore.Contracts.StepCommitEvent
+  ctor public StepCommitEvent(GameCore.Contracts.SnapshotToken token, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.CommittedEvent>? events, GameCore.Contracts.EventSequence firstEventSequence, GameCore.Contracts.ContentHash stateHash)
+  property public GameCore.Contracts.ContentHash StateHash { get; }
+  property public GameCore.Contracts.EventSequence FirstEventSequence { get; }
+  property public GameCore.Contracts.SnapshotToken Token { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.CommittedEvent> Events { get; }
+type struct GameCore.Contracts.SupportRecord
+  field public readonly GameCore.Contracts.CapabilityId Capability
+  field public readonly GameCore.Contracts.ProviderInstallationId Provider
+  field public readonly GameCore.Contracts.RuleId Rule
+  field public readonly GameCore.Contracts.StateSlotKey Slot
+  ctor public SupportRecord(GameCore.Contracts.StateSlotKey slot, GameCore.Contracts.ProviderInstallationId provider, GameCore.Contracts.RuleId rule, GameCore.Contracts.CapabilityId capability)
+  method public System.Boolean Equals(GameCore.Contracts.SupportRecord other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+type struct GameCore.Contracts.SupportedProtocolRange
+  field public readonly System.Int32 Major
+  field public readonly System.Int32 MaxMinor
+  field public readonly System.Int32 MinMinor
+  ctor public SupportedProtocolRange(System.Int32 major, System.Int32 minMinor, System.Int32 maxMinor)
+  method public System.String ToString()
+type struct GameCore.Contracts.SystemDispatchEntry
+  field public readonly GameCore.Contracts.FactoryKey SystemKey
+  field public readonly GameCore.Contracts.StageId Stage
+  field public readonly GameCore.Contracts.SystemDispatchKind Kind
+  field public readonly System.Int32 DispatchIndex
+  ctor public SystemDispatchEntry(GameCore.Contracts.StageId stage, GameCore.Contracts.FactoryKey systemKey, GameCore.Contracts.SystemDispatchKind kind, System.Int32 dispatchIndex)
+  method public System.Boolean Equals(GameCore.Contracts.SystemDispatchEntry other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+type enum GameCore.Contracts.SystemDispatchKind : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public InfrastructureGroup = 2
+  enumvalue public ManagedSystem = 0
+  enumvalue public UnmanagedSystem = 1
+type enum GameCore.Contracts.SystemMultiplicity : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public PerPartition = 1
+  enumvalue public World = 0
+type class GameCore.Contracts.SystemSpec
+  ctor public SystemSpec(GameCore.Contracts.FactoryKey systemKey, GameCore.Contracts.SystemMultiplicity multiplicity, GameCore.Contracts.AccessSet access, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.FactoryKey>? requiredBeforeSystems, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.FactoryKey>? requiredAfterSystems, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.FactoryKey>? optionalBeforeSystems, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.FactoryKey>? optionalAfterSystems)
+  property public GameCore.Contracts.AccessSet Access { get; }
+  property public GameCore.Contracts.FactoryKey SystemKey { get; }
+  property public GameCore.Contracts.SystemMultiplicity Multiplicity { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.FactoryKey> OptionalAfterSystems { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.FactoryKey> OptionalBeforeSystems { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.FactoryKey> RequiredAfterSystems { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.FactoryKey> RequiredBeforeSystems { get; }
+type class GameCore.Contracts.TargetDescriptor
+  ctor public TargetDescriptor(GameCore.Contracts.DefinitionRef recipe, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.SchemaRef>? supportedSchemas, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.CapabilityRef>? supportedCapabilities, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128>? tags, GameCore.Contracts.AssetAdapterDescriptor assetAdapter, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.DefinitionRef>? localPatches, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.CapabilityImport>? imports, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.TargetOptIn>? optIns, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ExclusionRule>? exclusions)
+  property public GameCore.Contracts.AssetAdapterDescriptor AssetAdapter { get; }
+  property public GameCore.Contracts.DefinitionRef Recipe { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.CapabilityImport> Imports { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.CapabilityRef> SupportedCapabilities { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.DefinitionRef> LocalPatches { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.ExclusionRule> Exclusions { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128> Tags { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.SchemaRef> SupportedSchemas { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.TargetOptIn> OptIns { get; }
+type struct GameCore.Contracts.TargetHandle : System.IEquatable<GameCore.Contracts.TargetHandle>
+  field public readonly GameCore.Contracts.WorldId World
+  field public readonly System.UInt32 Slot
+  field public readonly System.UInt64 Generation
+  ctor public TargetHandle(GameCore.Contracts.WorldId world, System.UInt32 slot, System.UInt64 generation)
+  property public System.Boolean IsAllocated { get; }
+  method public System.Boolean Equals(GameCore.Contracts.TargetHandle other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static System.Boolean operator !=(GameCore.Contracts.TargetHandle left, GameCore.Contracts.TargetHandle right)
+  method public static System.Boolean operator ==(GameCore.Contracts.TargetHandle left, GameCore.Contracts.TargetHandle right)
+type struct GameCore.Contracts.TargetId : System.IComparable<GameCore.Contracts.TargetId>, System.IEquatable<GameCore.Contracts.TargetId>
+  field public readonly GameCore.Contracts.Id128 Value
+  ctor public TargetId(GameCore.Contracts.Id128 value)
+  property public System.Boolean IsDefault { get; }
+  method public System.Boolean Equals(GameCore.Contracts.TargetId other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 CompareTo(GameCore.Contracts.TargetId other)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static GameCore.Contracts.TargetId FromRaw(System.UInt64 high, System.UInt64 low)
+  method public static System.Boolean operator !=(GameCore.Contracts.TargetId left, GameCore.Contracts.TargetId right)
+  method public static System.Boolean operator ==(GameCore.Contracts.TargetId left, GameCore.Contracts.TargetId right)
+type struct GameCore.Contracts.TargetOptIn : System.IEquatable<GameCore.Contracts.TargetOptIn>
+  field public readonly GameCore.Contracts.CapabilityId CapabilityId
+  field public readonly GameCore.Contracts.ProviderInstallationId ProviderInstallationId
+  ctor public TargetOptIn(GameCore.Contracts.ProviderInstallationId providerInstallationId, GameCore.Contracts.CapabilityId capabilityId)
+  method public System.Boolean Equals(GameCore.Contracts.TargetOptIn other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static System.Boolean operator !=(GameCore.Contracts.TargetOptIn left, GameCore.Contracts.TargetOptIn right)
+  method public static System.Boolean operator ==(GameCore.Contracts.TargetOptIn left, GameCore.Contracts.TargetOptIn right)
+type enum GameCore.Contracts.TemporalModel : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public CommandDriven = 1
+  enumvalue public FixedStep = 0
+type struct GameCore.Contracts.TimeDebt : System.IComparable<GameCore.Contracts.TimeDebt>, System.IEquatable<GameCore.Contracts.TimeDebt>
+  field public readonly System.UInt64 Ticks
+  field public static readonly GameCore.Contracts.TimeDebt Zero
+  ctor public TimeDebt(System.UInt64 ticks)
+  method public GameCore.Contracts.TimeDebt Add(System.UInt64 elapsedTicks, out System.Boolean accepted)
+  method public GameCore.Contracts.TimeDebt Subtract(System.UInt64 consumedTicks, out System.Boolean accepted)
+  method public System.Boolean Equals(GameCore.Contracts.TimeDebt other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 CompareTo(GameCore.Contracts.TimeDebt other)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public System.UInt64 WholeSteps(System.UInt64 stepDurationTicks, out System.Boolean valid)
+  method public static System.Boolean operator !=(GameCore.Contracts.TimeDebt left, GameCore.Contracts.TimeDebt right)
+  method public static System.Boolean operator <(GameCore.Contracts.TimeDebt left, GameCore.Contracts.TimeDebt right)
+  method public static System.Boolean operator ==(GameCore.Contracts.TimeDebt left, GameCore.Contracts.TimeDebt right)
+  method public static System.Boolean operator >(GameCore.Contracts.TimeDebt left, GameCore.Contracts.TimeDebt right)
+type class GameCore.Contracts.ValidityAndCost
+  ctor public ValidityAndCost(System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Diagnostic>? invalidation, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128>? preconditions, GameCore.Contracts.AffectedCounts affected, GameCore.Contracts.PlanCostEstimate estimate, GameCore.Contracts.HardBudgetUsage budget)
+  property public GameCore.Contracts.AffectedCounts Affected { get; }
+  property public GameCore.Contracts.HardBudgetUsage Budget { get; }
+  property public GameCore.Contracts.PlanCostEstimate Estimate { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Diagnostic> Invalidation { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.Id128> Preconditions { get; }
+type struct GameCore.Contracts.VersionRange : System.IEquatable<GameCore.Contracts.VersionRange>
+  field public readonly System.UInt32 MaxVersion
+  field public readonly System.UInt32 MinVersion
+  ctor public VersionRange(System.UInt32 minVersion, System.UInt32 maxVersion)
+  method public System.Boolean Equals(GameCore.Contracts.VersionRange other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static System.Boolean operator !=(GameCore.Contracts.VersionRange left, GameCore.Contracts.VersionRange right)
+  method public static System.Boolean operator ==(GameCore.Contracts.VersionRange left, GameCore.Contracts.VersionRange right)
+type enum GameCore.Contracts.WireType : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public Bool = 3
+  enumvalue public Bytes = 5
+  enumvalue public Float32 = 11
+  enumvalue public Float64 = 12
+  enumvalue public Id128 = 4
+  enumvalue public Int32 = 9
+  enumvalue public Int64 = 10
+  enumvalue public List = 8
+  enumvalue public None = 0
+  enumvalue public Null = 7
+  enumvalue public UInt32 = 1
+  enumvalue public UInt64 = 2
+  enumvalue public Utf8 = 6
+type class GameCore.Contracts.WorldCreateRequest
+  ctor public WorldCreateRequest(GameCore.Contracts.WorldId world, GameCore.Contracts.WorldDefinitionId definition, GameCore.Contracts.TemporalModel temporalModel, GameCore.Contracts.PropagationMode mode, GameCore.Contracts.ContentHash catalogHash, GameCore.Contracts.OperationId operation, GameCore.Contracts.FixedStepSettings? fixedStep)
+  property public GameCore.Contracts.ContentHash CatalogHash { get; }
+  property public GameCore.Contracts.FixedStepSettings? FixedStep { get; }
+  property public GameCore.Contracts.OperationId Operation { get; }
+  property public GameCore.Contracts.PropagationMode Mode { get; }
+  property public GameCore.Contracts.TemporalModel TemporalModel { get; }
+  property public GameCore.Contracts.WorldDefinitionId Definition { get; }
+  property public GameCore.Contracts.WorldId World { get; }
+  property public System.Boolean IsValid { get; }
+type class GameCore.Contracts.WorldCreateResult
+  ctor public WorldCreateResult(System.Boolean created, GameCore.Contracts.WorldId world, GameCore.Contracts.WorldLifecycleState lifecycle, GameCore.Contracts.DiagnosticCode code, System.String detail)
+  property public GameCore.Contracts.DiagnosticCode Code { get; }
+  property public GameCore.Contracts.WorldId World { get; }
+  property public GameCore.Contracts.WorldLifecycleState Lifecycle { get; }
+  property public System.Boolean Created { get; }
+  property public System.String Detail { get; }
+type struct GameCore.Contracts.WorldDefinitionId : System.IComparable<GameCore.Contracts.WorldDefinitionId>, System.IEquatable<GameCore.Contracts.WorldDefinitionId>
+  field public readonly GameCore.Contracts.Id128 Value
+  ctor public WorldDefinitionId(GameCore.Contracts.Id128 value)
+  property public System.Boolean IsDefault { get; }
+  method public System.Boolean Equals(GameCore.Contracts.WorldDefinitionId other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 CompareTo(GameCore.Contracts.WorldDefinitionId other)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static GameCore.Contracts.WorldDefinitionId FromRaw(System.UInt64 high, System.UInt64 low)
+  method public static System.Boolean operator !=(GameCore.Contracts.WorldDefinitionId left, GameCore.Contracts.WorldDefinitionId right)
+  method public static System.Boolean operator ==(GameCore.Contracts.WorldDefinitionId left, GameCore.Contracts.WorldDefinitionId right)
+type struct GameCore.Contracts.WorldId : System.IEquatable<GameCore.Contracts.WorldId>
+  field public readonly GameCore.Contracts.Id128 Session
+  ctor public WorldId(GameCore.Contracts.Id128 session)
+  method public System.Boolean Equals(GameCore.Contracts.WorldId other)
+  method public System.Boolean Equals(System.Object? obj)
+  method public System.Int32 GetHashCode()
+  method public System.String ToString()
+  method public static System.Boolean operator !=(GameCore.Contracts.WorldId left, GameCore.Contracts.WorldId right)
+  method public static System.Boolean operator ==(GameCore.Contracts.WorldId left, GameCore.Contracts.WorldId right)
+type class GameCore.Contracts.WorldLifecycleChange
+  ctor public WorldLifecycleChange(GameCore.Contracts.WorldId world, GameCore.Contracts.WorldLifecycleState previous, GameCore.Contracts.WorldLifecycleState current, GameCore.Contracts.DiagnosticCode code)
+  property public GameCore.Contracts.DiagnosticCode Code { get; }
+  property public GameCore.Contracts.WorldId World { get; }
+  property public GameCore.Contracts.WorldLifecycleState Current { get; }
+  property public GameCore.Contracts.WorldLifecycleState Previous { get; }
+type enum GameCore.Contracts.WorldLifecycleState : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public Created = 0
+  enumvalue public Disposed = 4
+  enumvalue public Faulted = 5
+  enumvalue public Paused = 2
+  enumvalue public Running = 1
+  enumvalue public Stopping = 3
+type enum GameCore.Contracts.WorldResourceKind : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+  enumvalue public IdentityIndex = 7
+  enumvalue public ManagedLease = 0
+  enumvalue public NativeContainer = 3
+  enumvalue public ScheduledJob = 4
+  enumvalue public ScratchAllocation = 5
+  enumvalue public Subscription = 1
+  enumvalue public SystemRegistration = 2
+  enumvalue public WorldStorage = 6
+type class GameCore.Contracts.WorldResourceLedgerSnapshot
+  ctor public WorldResourceLedgerSnapshot(GameCore.Contracts.WorldId world, GameCore.Contracts.AssemblyEpoch epoch, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.WorldResourceRecord>? resources, System.Collections.Generic.IReadOnlyList<GameCore.Contracts.JobLedgerRecord>? jobs, System.UInt64 quarantinedBytes)
+  property public GameCore.Contracts.AssemblyEpoch Epoch { get; }
+  property public GameCore.Contracts.WorldId World { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.JobLedgerRecord> Jobs { get; }
+  property public System.Collections.Generic.IReadOnlyList<GameCore.Contracts.WorldResourceRecord> Resources { get; }
+  property public System.Int32 QuarantinedCount { get; }
+  property public System.UInt64 QuarantinedBytes { get; }
+type struct GameCore.Contracts.WorldResourceRecord
+  field public readonly GameCore.Contracts.Id128 DependsOn
+  field public readonly GameCore.Contracts.Id128 ResourceId
+  field public readonly GameCore.Contracts.OwnerId Owner
+  field public readonly GameCore.Contracts.PluginInstanceId Instance
+  field public readonly GameCore.Contracts.ResourceKey Key
+  field public readonly GameCore.Contracts.ResourceRetirementState State
+  field public readonly GameCore.Contracts.WorldResourceKind Kind
+  field public readonly System.UInt32 AcquisitionOrdinal
+  field public readonly System.UInt64 Bytes
+  ctor public WorldResourceRecord(GameCore.Contracts.Id128 resourceId, GameCore.Contracts.WorldResourceKind kind, GameCore.Contracts.ResourceKey key, GameCore.Contracts.OwnerId owner, GameCore.Contracts.PluginInstanceId instance, GameCore.Contracts.ResourceRetirementState state, GameCore.Contracts.Id128 dependsOn, System.UInt32 acquisitionOrdinal, System.UInt64 bytes)
+  property public System.Boolean HasDependency { get; }
+  property public System.Boolean IsRetained { get; }
+  method public System.String ToString()
+# member count: 1645

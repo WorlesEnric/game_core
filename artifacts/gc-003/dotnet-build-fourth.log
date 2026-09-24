@@ -1,0 +1,27 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  GameCore.ApiSnapshot -> /home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tools/GameCore.ApiSnapshot/bin/Release/net8.0/GameCore.ApiSnapshot.dll
+  GameCore.Contracts -> /home/worlesenric/wkspace/gc-wt/gc-003/dotnet/src/GameCore.Contracts/bin/Release/netstandard2.1/GameCore.Contracts.dll
+  GameCore.ReferenceSeams -> /home/worlesenric/wkspace/gc-wt/gc-003/dotnet/src/GameCore.ReferenceSeams/bin/Release/netstandard2.1/GameCore.ReferenceSeams.dll
+  GameCore.ProtocolFixtures -> /home/worlesenric/wkspace/gc-wt/gc-003/dotnet/src/GameCore.ProtocolFixtures/bin/Release/netstandard2.1/GameCore.ProtocolFixtures.dll
+  GameCore.Content.Compiler -> /home/worlesenric/wkspace/gc-wt/gc-003/dotnet/src/GameCore.Content.Compiler/bin/Release/netstandard2.1/GameCore.Content.Compiler.dll
+  GameCore.ProtocolFixtures.Production -> /home/worlesenric/wkspace/gc-wt/gc-003/dotnet/src/GameCore.ProtocolFixtures.Production/bin/Release/netstandard2.1/GameCore.ProtocolFixtures.Production.dll
+  GameCore.ProtocolFixtures.Tests -> /home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.ProtocolFixtures.Tests/bin/Release/net8.0/GameCore.ProtocolFixtures.Tests.dll
+  GameCore.ProtocolFixtures.Production.Tests -> /home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.ProtocolFixtures.Production.Tests/bin/Release/net8.0/GameCore.ProtocolFixtures.Production.Tests.dll
+  GameCore.ReferenceSeams.Tests -> /home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.ReferenceSeams.Tests/bin/Release/net8.0/GameCore.ReferenceSeams.Tests.dll
+/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Contracts.Tests/ContractTests.cs(43,72): error CS1503: Argument 4: cannot convert from 'System.Collections.Generic.IReadOnlyList<GameCore.Contracts.GeneratedFieldSlot>' to 'GameCore.Contracts.GeneratedFieldSlot[]' [/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Contracts.Tests/GameCore.Contracts.Tests.csproj]
+/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Contracts.Tests/ContractTests.cs(254,37): error CS1503: Argument 1: cannot convert from 'GameCore.Contracts.Id128[]' to 'System.Collections.Generic.IReadOnlyList<GameCore.Contracts.FactoryKey>' [/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Contracts.Tests/GameCore.Contracts.Tests.csproj]
+/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Contracts.Tests/ManifestValidationTests.cs(506,98): error CS8625: Cannot convert null literal to non-nullable reference type. [/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Contracts.Tests/GameCore.Contracts.Tests.csproj]
+/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Contracts.Tests/ManifestValidationTests.cs(507,98): error CS8625: Cannot convert null literal to non-nullable reference type. [/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Contracts.Tests/GameCore.Contracts.Tests.csproj]
+  GameCore.Content.Compiler.Tests -> /home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Content.Compiler.Tests/bin/Release/net8.0/GameCore.Content.Compiler.Tests.dll
+
+Build FAILED.
+
+/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Contracts.Tests/ContractTests.cs(43,72): error CS1503: Argument 4: cannot convert from 'System.Collections.Generic.IReadOnlyList<GameCore.Contracts.GeneratedFieldSlot>' to 'GameCore.Contracts.GeneratedFieldSlot[]' [/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Contracts.Tests/GameCore.Contracts.Tests.csproj]
+/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Contracts.Tests/ContractTests.cs(254,37): error CS1503: Argument 1: cannot convert from 'GameCore.Contracts.Id128[]' to 'System.Collections.Generic.IReadOnlyList<GameCore.Contracts.FactoryKey>' [/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Contracts.Tests/GameCore.Contracts.Tests.csproj]
+/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Contracts.Tests/ManifestValidationTests.cs(506,98): error CS8625: Cannot convert null literal to non-nullable reference type. [/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Contracts.Tests/GameCore.Contracts.Tests.csproj]
+/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Contracts.Tests/ManifestValidationTests.cs(507,98): error CS8625: Cannot convert null literal to non-nullable reference type. [/home/worlesenric/wkspace/gc-wt/gc-003/dotnet/tests/GameCore.Contracts.Tests/GameCore.Contracts.Tests.csproj]
+    0 Warning(s)
+    4 Error(s)
+
+Time Elapsed 00:00:00.73
