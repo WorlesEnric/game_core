@@ -161,6 +161,8 @@ type enum GameCore.Contracts.CallbackGateDecision : System.IComparable, System.I
   enumvalue public Dispatch = 0
 type enum GameCore.Contracts.CancelOutcome : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
   enumvalue public Cancelled = 0
+  enumvalue public IdempotencyConflict = 4
+  enumvalue public Rejected = 5
   enumvalue public ResultExpired = 3
   enumvalue public TooLate = 1
   enumvalue public Unknown = 2
@@ -1814,4 +1816,4 @@ type struct GameCore.Contracts.WorldResourceRecord
   property public System.Boolean HasDependency { get; }
   property public System.Boolean IsRetained { get; }
   method public System.String ToString()
-# member count: 1589
+# member count: 1591
