@@ -24,6 +24,152 @@
       "detail": "expected valid; observed valid (GameCore.ReferenceSeams references 1 assemblies, none of them engine or gameplay)"
     },
     {
+      "caseId": "diagnostic-codes-complete-and-round-trip",
+      "requirementIds": [
+        "P-052",
+        "P-055"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected valid; observed valid (every code literal round-trips; an unknown literal is rejected)"
+    },
+    {
+      "caseId": "envelope-checksum-round-trip",
+      "requirementIds": [
+        "P-054"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected valid; observed valid (checksum 1673cf42bb7bff4d verified)"
+    },
+    {
+      "caseId": "envelope-checksum-detects-corruption",
+      "requirementIds": [
+        "P-054"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected invalid(ChecksumMismatch); observed ChecksumMismatch (checksum rejected)"
+    },
+    {
+      "caseId": "envelope-field-types-round-trip",
+      "requirementIds": [
+        "P-054"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected valid; observed valid (12 field types plus 2 list elements round-tripped bit-exactly)"
+    },
+    {
+      "caseId": "envelope-nan-canonicalized",
+      "requirementIds": [
+        "P-054"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected valid; observed valid (both NaN payloads became the canonical quiet NaN)"
+    },
+    {
+      "caseId": "envelope-unknown-required-feature-rejected",
+      "requirementIds": [
+        "P-054",
+        "P-055"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected invalid(UnknownRequiredFeature); observed UnknownRequiredFeature (declared features were refused)"
+    },
+    {
+      "caseId": "envelope-known-required-feature-accepted",
+      "requirementIds": [
+        "P-055"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected valid; observed valid (one required feature accepted)"
+    },
+    {
+      "caseId": "envelope-field-id-zero-refused-on-write",
+      "requirementIds": [
+        "P-054"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected invalid(FieldIdOutOfRange); observed FieldIdOutOfRange (field id 0 refused on write)"
+    },
+    {
+      "caseId": "envelope-field-id-negative-refused-on-write",
+      "requirementIds": [
+        "P-054"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected invalid(FieldIdOutOfRange); observed FieldIdOutOfRange (field id -2147483648 refused on write)"
+    },
+    {
+      "caseId": "envelope-list-count-over-limit-refused-on-write",
+      "requirementIds": [
+        "P-054"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected invalid(ListBoundsRefused); observed ListBoundsRefused (list header refused on write)"
+    },
+    {
+      "caseId": "envelope-list-bytes-over-limit-refused-on-write",
+      "requirementIds": [
+        "P-054"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected invalid(ListBoundsRefused); observed ListBoundsRefused (list header refused on write)"
+    },
+    {
+      "caseId": "envelope-bool-byte-value-rejected",
+      "requirementIds": [
+        "P-054"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected invalid(InvalidBooleanValue); observed InvalidBooleanValue (field 1:Bool(1) rejected)"
+    },
+    {
+      "caseId": "envelope-field-id-out-of-range-on-read",
+      "requirementIds": [
+        "P-054"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected invalid(FieldIdOutOfRange); observed FieldIdOutOfRange (field header rejected)"
+    },
+    {
+      "caseId": "envelope-list-count-over-limit-on-read",
+      "requirementIds": [
+        "P-054"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected invalid(ListCountExceeded); observed ListCountExceeded (field 1:List(8) rejected)"
+    },
+    {
+      "caseId": "envelope-list-bytes-over-limit-on-read",
+      "requirementIds": [
+        "P-054"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected invalid(ListTooLarge); observed ListTooLarge (field 1:List(8) rejected)"
+    },
+    {
+      "caseId": "envelope-truncated-field-rejected",
+      "requirementIds": [
+        "P-054"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected invalid(Truncated); observed Truncated (field header rejected)"
+    },
+    {
       "caseId": "id-canonical-bytes-word-order",
       "requirementIds": [
         "P-004",
@@ -166,6 +312,16 @@
       "detail": "expected valid; observed valid (collide=False, distinct world incarnations stay separated)"
     },
     {
+      "caseId": "hex-parsing-canonical-form-only",
+      "requirementIds": [
+        "P-004",
+        "P-054"
+      ],
+      "testId": "TEST-002",
+      "outcome": "Pass",
+      "detail": "expected valid; observed valid (canonical form and 13 candidate forms judged identically by both parsers)"
+    },
+    {
       "caseId": "id-order-high-word-then-low-word",
       "requirementIds": [
         "P-004",
@@ -305,6 +461,16 @@
       "detail": "expected invalid(OverflowRejected); observed OverflowRejected (publication refused at rev=18446744073709551615,epoch=1,step=0)"
     },
     {
+      "caseId": "counter-admission-sequence-overflow-rejected",
+      "requirementIds": [
+        "P-005",
+        "P-008"
+      ],
+      "testId": "TEST-022",
+      "outcome": "Pass",
+      "detail": "expected invalid(OverflowRejected); observed OverflowRejected (AdmissionSequence at 18446744073709551615 refused further allocation without wraparound)"
+    },
+    {
       "caseId": "version-window-accepts-host-minor",
       "requirementIds": [
         "P-055"
@@ -378,8 +544,8 @@
     }
   ],
   "summary": {
-    "caseCount": 40,
-    "pass": 40,
+    "caseCount": 58,
+    "pass": 58,
     "fail": 0,
     "notRun": 0,
     "blocked": 0
