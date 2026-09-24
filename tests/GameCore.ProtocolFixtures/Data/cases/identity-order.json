@@ -1,0 +1,100 @@
+{
+  "$comment": "Canonical ordering must not depend on insertion, dictionary or worker order (P-008, TEST-022). 'permutations' lists explicit insertion orders as indices into 'ids'.",
+  "cases": [
+    {
+      "caseId": "id-order-high-word-then-low-word",
+      "title": "ordering compares the high word first and breaks ties with the low word",
+      "requirementIds": ["P-004", "P-008"],
+      "testIds": ["TEST-002", "TEST-022"],
+      "kind": "stableIdOrder",
+      "expected": { "outcome": "valid" },
+      "parameters": {
+        "ids": [
+          "00000000000000010000000000000001",
+          "00000000000000010000000000000002",
+          "00000000000000020000000000000001",
+          "0000000000000000ffffffffffffffff"
+        ],
+        "expectedCanonicalOrder": [
+          "0000000000000000ffffffffffffffff",
+          "00000000000000010000000000000001",
+          "00000000000000010000000000000002",
+          "00000000000000020000000000000001"
+        ],
+        "permutations": [
+          [0, 1, 2, 3],
+          [3, 2, 1, 0],
+          [1, 3, 0, 2],
+          [2, 0, 3, 1],
+          [3, 0, 1, 2]
+        ]
+      }
+    },
+    {
+      "caseId": "id-order-every-insertion-order",
+      "title": "all insertion orders of three ids produce one canonical sequence",
+      "requirementIds": ["P-008"],
+      "testIds": ["TEST-022"],
+      "kind": "stableIdOrder",
+      "expected": { "outcome": "valid" },
+      "parameters": {
+        "ids": [
+          "00000000000000010000000000000002",
+          "0000000000000000ffffffffffffffff",
+          "00000000000000020000000000000001"
+        ],
+        "expectedCanonicalOrder": [
+          "0000000000000000ffffffffffffffff",
+          "00000000000000010000000000000002",
+          "00000000000000020000000000000001"
+        ]
+      }
+    },
+    {
+      "caseId": "id-order-duplicate-ids-stay-sorted",
+      "title": "equal identities sort together without depending on insertion order",
+      "requirementIds": ["P-008"],
+      "testIds": ["TEST-022"],
+      "kind": "stableIdOrder",
+      "expected": { "outcome": "valid" },
+      "parameters": {
+        "ids": [
+          "00000000000000010000000000000002",
+          "00000000000000010000000000000001",
+          "00000000000000010000000000000002"
+        ],
+        "expectedCanonicalOrder": [
+          "00000000000000010000000000000001",
+          "00000000000000010000000000000002",
+          "00000000000000010000000000000002"
+        ],
+        "permutations": [
+          [0, 1, 2],
+          [1, 0, 2],
+          [2, 1, 0]
+        ]
+      }
+    },
+    {
+      "caseId": "id-order-reversed-expectation-detected",
+      "title": "a wrong canonical expectation is detected instead of accepted",
+      "requirementIds": ["P-008"],
+      "testIds": ["TEST-022"],
+      "kind": "stableIdOrder",
+      "expected": { "outcome": "invalid", "code": "PermutationOrderMismatch" },
+      "parameters": {
+        "ids": [
+          "00000000000000010000000000000001",
+          "00000000000000020000000000000001"
+        ],
+        "expectedCanonicalOrder": [
+          "00000000000000020000000000000001",
+          "00000000000000010000000000000001"
+        ],
+        "permutations": [
+          [0, 1]
+        ]
+      }
+    }
+  ]
+}

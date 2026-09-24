@@ -1,0 +1,162 @@
+{
+  "$comment": "Counter, epoch and revision advancement and overflow rejection (P-005, P-006, TEST-002). Overflow rejects further allocation and requires world recreation; a value must never wrap.",
+  "cases": [
+    {
+      "caseId": "counter-installation-generation-overflow-rejected",
+      "title": "an installation generation at its maximum refuses further allocation",
+      "requirementIds": ["P-005"],
+      "testIds": ["TEST-002"],
+      "kind": "counterAdvance",
+      "expected": { "outcome": "invalid", "code": "OverflowRejected" },
+      "parameters": {
+        "counter": "InstallationGeneration",
+        "current": "18446744073709551615"
+      }
+    },
+    {
+      "caseId": "counter-composition-revision-overflow-rejected",
+      "title": "a composition revision at its maximum refuses further publication",
+      "requirementIds": ["P-005", "P-006"],
+      "testIds": ["TEST-002"],
+      "kind": "counterAdvance",
+      "expected": { "outcome": "invalid", "code": "OverflowRejected" },
+      "parameters": {
+        "counter": "CompositionRevision",
+        "current": "18446744073709551615"
+      }
+    },
+    {
+      "caseId": "counter-logical-step-overflow-rejected",
+      "title": "a logical step counter at its maximum refuses further commit",
+      "requirementIds": ["P-006"],
+      "testIds": ["TEST-002"],
+      "kind": "counterAdvance",
+      "expected": { "outcome": "invalid", "code": "OverflowRejected" },
+      "parameters": {
+        "counter": "LogicalStepId",
+        "current": "18446744073709551615"
+      }
+    },
+    {
+      "caseId": "counter-activation-epoch-overflow-rejected",
+      "title": "an activation epoch at its maximum refuses further reconfiguration",
+      "requirementIds": ["P-005", "P-006"],
+      "testIds": ["TEST-002"],
+      "kind": "counterAdvance",
+      "expected": { "outcome": "invalid", "code": "OverflowRejected" },
+      "parameters": {
+        "counter": "ActivationEpoch",
+        "current": "18446744073709551615"
+      }
+    },
+    {
+      "caseId": "counter-assembly-epoch-advances",
+      "title": "an epoch below its maximum advances by exactly one",
+      "requirementIds": ["P-006"],
+      "testIds": ["TEST-002"],
+      "kind": "counterAdvance",
+      "expected": { "outcome": "valid" },
+      "parameters": {
+        "counter": "AssemblyEpoch",
+        "current": "0"
+      }
+    },
+    {
+      "caseId": "counter-one-below-maximum-advances",
+      "title": "one below the maximum still advances without wrapping",
+      "requirementIds": ["P-005"],
+      "testIds": ["TEST-002"],
+      "kind": "counterAdvance",
+      "expected": { "outcome": "valid" },
+      "parameters": {
+        "counter": "InstallationGeneration",
+        "current": "18446744073709551614"
+      }
+    },
+    {
+      "caseId": "publication-first-publishes-epoch-and-revision-one",
+      "title": "the initial assembly publishes revision and epoch 1 while the step stays 0",
+      "requirementIds": ["P-006"],
+      "testIds": ["TEST-002"],
+      "kind": "publicationAdvance",
+      "expected": { "outcome": "valid" },
+      "parameters": {
+        "phase": "firstPublication",
+        "revision": "0",
+        "epoch": "0",
+        "step": "0",
+        "expectRevision": "1",
+        "expectEpoch": "1",
+        "expectStep": "0"
+      }
+    },
+    {
+      "caseId": "publication-moves-revision-and-epoch-not-step",
+      "title": "an ordinary publication increments revision and epoch but never the step",
+      "requirementIds": ["P-006"],
+      "testIds": ["TEST-002"],
+      "kind": "publicationAdvance",
+      "expected": { "outcome": "valid" },
+      "parameters": {
+        "phase": "publication",
+        "revision": "5",
+        "epoch": "5",
+        "step": "12",
+        "expectRevision": "6",
+        "expectEpoch": "6",
+        "expectStep": "12"
+      }
+    },
+    {
+      "caseId": "publication-no-change-moves-nothing",
+      "title": "a no-op proposal returns NoChange without increments",
+      "requirementIds": ["P-006"],
+      "testIds": ["TEST-002"],
+      "kind": "publicationAdvance",
+      "expected": { "outcome": "valid" },
+      "parameters": {
+        "phase": "noChange",
+        "revision": "5",
+        "epoch": "5",
+        "step": "12",
+        "expectRevision": "5",
+        "expectEpoch": "5",
+        "expectStep": "12"
+      }
+    },
+    {
+      "caseId": "publication-committed-step-moves-step-only",
+      "title": "a committed logical step increments only the step counter",
+      "requirementIds": ["P-006"],
+      "testIds": ["TEST-002"],
+      "kind": "publicationAdvance",
+      "expected": { "outcome": "valid" },
+      "parameters": {
+        "phase": "committedStep",
+        "revision": "5",
+        "epoch": "5",
+        "step": "12",
+        "expectRevision": "5",
+        "expectEpoch": "5",
+        "expectStep": "13"
+      }
+    },
+    {
+      "caseId": "publication-revision-overflow-rejected",
+      "title": "a publication at maximum revision is refused instead of wrapping",
+      "requirementIds": ["P-005", "P-006"],
+      "testIds": ["TEST-002"],
+      "kind": "publicationAdvance",
+      "expected": { "outcome": "invalid", "code": "OverflowRejected" },
+      "parameters": {
+        "phase": "publication",
+        "revision": "18446744073709551615",
+        "epoch": "1",
+        "step": "0",
+        "expectRevision": "18446744073709551615",
+        "expectEpoch": "1",
+        "expectStep": "0"
+      }
+    }
+  ]
+}

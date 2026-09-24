@@ -1,0 +1,196 @@
+{
+  "$comment": "Runtime handle validation, world-incarnation collision and stale-handle detection (P-004, P-005, TEST-002). Validation order: world, slot presence, generation, liveness, expected category, activation epoch.",
+  "cases": [
+    {
+      "caseId": "handle-live-target-accepted",
+      "title": "a live target handle in the same world is accepted",
+      "requirementIds": ["P-005"],
+      "testIds": ["TEST-002"],
+      "kind": "handleValidation",
+      "expected": { "outcome": "valid" },
+      "parameters": {
+        "handle": { "world": "11111111111111111111111111111111", "slot": 7, "generation": 3 },
+        "liveWorld": "11111111111111111111111111111111",
+        "slotKnown": true,
+        "liveLiveness": "live",
+        "liveGeneration": 3,
+        "liveCategory": "target",
+        "expectedCategory": "target"
+      }
+    },
+    {
+      "caseId": "handle-execution-authority-needs-activation-epoch",
+      "title": "an execution dereference with the current activation epoch is accepted",
+      "requirementIds": ["P-005", "P-007"],
+      "testIds": ["TEST-002"],
+      "kind": "handleValidation",
+      "expected": { "outcome": "valid" },
+      "parameters": {
+        "handle": { "world": "11111111111111111111111111111111", "slot": 7, "generation": 3 },
+        "liveWorld": "11111111111111111111111111111111",
+        "slotKnown": true,
+        "liveLiveness": "live",
+        "liveGeneration": 3,
+        "liveCategory": "target",
+        "expectedCategory": "target",
+        "requiredActivationEpoch": 5,
+        "providedActivationEpoch": 5
+      }
+    },
+    {
+      "caseId": "handle-other-world-incarnation-rejected",
+      "title": "a handle from another world incarnation is rejected even with the same slot and generation",
+      "requirementIds": ["P-004", "P-005"],
+      "testIds": ["TEST-002"],
+      "kind": "handleValidation",
+      "expected": { "outcome": "invalid", "code": "WrongWorld" },
+      "parameters": {
+        "handle": { "world": "22222222222222222222222222222222", "slot": 7, "generation": 3 },
+        "liveWorld": "11111111111111111111111111111111",
+        "slotKnown": true,
+        "liveLiveness": "live",
+        "liveGeneration": 3,
+        "liveCategory": "target",
+        "expectedCategory": "target"
+      }
+    },
+    {
+      "caseId": "handle-stale-generation-rejected",
+      "title": "destroying and recreating storage invalidates the old generation",
+      "requirementIds": ["P-005"],
+      "testIds": ["TEST-002"],
+      "kind": "handleValidation",
+      "expected": { "outcome": "invalid", "code": "StaleGeneration" },
+      "parameters": {
+        "handle": { "world": "11111111111111111111111111111111", "slot": 7, "generation": 3 },
+        "liveWorld": "11111111111111111111111111111111",
+        "slotKnown": true,
+        "liveLiveness": "live",
+        "liveGeneration": 4,
+        "liveCategory": "target",
+        "expectedCategory": "target"
+      }
+    },
+    {
+      "caseId": "handle-retired-slot-rejected",
+      "title": "a retired slot is refused even when the generation still matches",
+      "requirementIds": ["P-005"],
+      "testIds": ["TEST-002"],
+      "kind": "handleValidation",
+      "expected": { "outcome": "invalid", "code": "NotLive" },
+      "parameters": {
+        "handle": { "world": "11111111111111111111111111111111", "slot": 7, "generation": 3 },
+        "liveWorld": "11111111111111111111111111111111",
+        "slotKnown": true,
+        "liveLiveness": "retired",
+        "liveGeneration": 3,
+        "liveCategory": "target",
+        "expectedCategory": "target"
+      }
+    },
+    {
+      "caseId": "handle-unknown-slot-rejected",
+      "title": "a slot the world never allocated is refused rather than guessed",
+      "requirementIds": ["P-005"],
+      "testIds": ["TEST-002"],
+      "kind": "handleValidation",
+      "expected": { "outcome": "invalid", "code": "MissingSlot" },
+      "parameters": {
+        "handle": { "world": "11111111111111111111111111111111", "slot": 99, "generation": 1 },
+        "liveWorld": "11111111111111111111111111111111",
+        "slotKnown": false,
+        "liveLiveness": "retired",
+        "liveGeneration": 0,
+        "liveCategory": "target",
+        "expectedCategory": "target"
+      }
+    },
+    {
+      "caseId": "handle-wrong-category-rejected",
+      "title": "a scope slot cannot be dereferenced as a target",
+      "requirementIds": ["P-005"],
+      "testIds": ["TEST-002"],
+      "kind": "handleValidation",
+      "expected": { "outcome": "invalid", "code": "WrongCategory" },
+      "parameters": {
+        "handle": { "world": "11111111111111111111111111111111", "slot": 2, "generation": 1 },
+        "liveWorld": "11111111111111111111111111111111",
+        "slotKnown": true,
+        "liveLiveness": "live",
+        "liveGeneration": 1,
+        "liveCategory": "scope",
+        "expectedCategory": "target"
+      }
+    },
+    {
+      "caseId": "handle-stale-activation-epoch-rejected",
+      "title": "execution authority is refused for a stale activation epoch",
+      "requirementIds": ["P-005", "P-007"],
+      "testIds": ["TEST-002"],
+      "kind": "handleValidation",
+      "expected": { "outcome": "invalid", "code": "StaleActivationEpoch" },
+      "parameters": {
+        "handle": { "world": "11111111111111111111111111111111", "slot": 7, "generation": 3 },
+        "liveWorld": "11111111111111111111111111111111",
+        "slotKnown": true,
+        "liveLiveness": "live",
+        "liveGeneration": 3,
+        "liveCategory": "target",
+        "expectedCategory": "target",
+        "requiredActivationEpoch": 5,
+        "providedActivationEpoch": 4
+      }
+    },
+    {
+      "caseId": "collision-local-slot-reuse-across-worlds",
+      "title": "two worlds may reuse local slots and generations without handles colliding",
+      "requirementIds": ["P-004", "P-005"],
+      "testIds": ["TEST-002"],
+      "kind": "worldCollision",
+      "expected": { "outcome": "valid" },
+      "parameters": {
+        "worldA": "11111111111111111111111111111111",
+        "worldB": "22222222222222222222222222222222",
+        "slotA": 7,
+        "slotB": 7,
+        "generationA": 3,
+        "generationB": 3,
+        "expectCollide": false
+      }
+    },
+    {
+      "caseId": "collision-identical-handle-detected",
+      "title": "the same world, slot and generation describe the same storage",
+      "requirementIds": ["P-005"],
+      "testIds": ["TEST-002"],
+      "kind": "worldCollision",
+      "expected": { "outcome": "valid" },
+      "parameters": {
+        "worldA": "11111111111111111111111111111111",
+        "worldB": "11111111111111111111111111111111",
+        "slotA": 7,
+        "slotB": 7,
+        "generationA": 3,
+        "generationB": 3,
+        "expectCollide": true
+      }
+    },
+    {
+      "caseId": "collision-generation-bump-separates-handles",
+      "title": "a generation bump separates otherwise identical handles",
+      "requirementIds": ["P-005"],
+      "testIds": ["TEST-002"],
+      "kind": "worldCollision",
+      "expected": { "outcome": "valid" },
+      "parameters": {
+        "worldA": "11111111111111111111111111111111",
+        "worldB": "11111111111111111111111111111111",
+        "slotA": 7,
+        "slotB": 7,
+        "generationA": 3,
+        "generationB": 4,
+        "expectCollide": false
+      }
+    }
+  ]
+}
