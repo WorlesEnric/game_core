@@ -106,7 +106,7 @@ namespace GameCore.Composition.Tests
 
             host.SubmitEdit(Payloads.ScopeCreate(left, Root), issuer.Next(), CompositionRevision.Zero);
             host.Drain();
-            host.SubmitEdit(Payloads.ScopeCreate(right, Root), issuer.Next(), new CompositionRevision(1UL));
+            host.SubmitEdit(Payloads.ScopeCreate(right, left), issuer.Next(), new CompositionRevision(1UL));
             host.Drain();
             host.SubmitEdit(Payloads.ScopeCreate(moved, left), issuer.Next(), new CompositionRevision(2UL));
             host.Drain();
@@ -117,8 +117,8 @@ namespace GameCore.Composition.Tests
             Assert.That(reparent.Staged, Is.True);
             host.Drain();
 
-            Assert.That(host.Committed.Scopes.Depth(moved), Is.EqualTo(2));
-            Assert.That(host.Committed.Scopes.Depth(leaf), Is.EqualTo(3));
+            Assert.That(host.Committed.Scopes.Depth(moved), Is.EqualTo(3));
+            Assert.That(host.Committed.Scopes.Depth(leaf), Is.EqualTo(4));
             Assert.That(host.FindScope(moved)!.Parent, Is.EqualTo(right));
             Assert.That(host.FindScope(leaf)!.Scope, Is.EqualTo(leaf), "Moving a subtree preserves descendant identities (P-025).");
         }

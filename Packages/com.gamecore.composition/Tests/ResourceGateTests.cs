@@ -152,6 +152,10 @@ namespace GameCore.Composition.Tests
             Assert.That(failureCode, Is.EqualTo(DiagnosticCode.ResourceUnavailable));
             Assert.That(rig.Factory.DisposeCount, Is.EqualTo(1), "The earlier staged acquisition is released in reverse order (P-029).");
             Assert.That(rig.Host.Resources.RetainedResourceIds(), Is.Empty);
+            Assert.That(rig.Host.Read(new OperationStatusHandle(operation, CompositionRevision.Zero)).Entry!.Outcome, Is.EqualTo(Outcome.Rejected));
+            Assert.That(rig.Host.Drain(), Is.Empty, "A failed preparation must not publish the now-resource-less plan.");
+            Assert.That(rig.Host.FindInstall(instance), Is.Null);
+            Assert.That(rig.Host.Snapshot().Epoch, Is.EqualTo(AssemblyEpoch.Zero));
         }
 
         [Test]
@@ -185,6 +189,12 @@ namespace GameCore.Composition.Tests
 
             Assert.That(report.Retired.Count, Is.EqualTo(3));
             Assert.That(rig.Factory.DisposeCount, Is.EqualTo(3));
+            Assert.That(rig.Factory.DisposedOrder, Is.EqualTo(new[]
+            {
+                rig.Factory.Leases[2].Resource.Value,
+                rig.Factory.Leases[1].Resource.Value,
+                rig.Factory.Leases[0].Resource.Value,
+            }));
             Assert.That(rig.Factory.Leases[2].IsDisposed, Is.True);
             Assert.That(rig.Factory.Leases[2].DisposeCount, Is.EqualTo(1));
 
@@ -245,7 +255,7 @@ namespace GameCore.Composition.Tests
             Assert.That(published.Count, Is.EqualTo(1));
             Assert.That(published[0].Outcome, Is.EqualTo(Outcome.PublishedWithCleanupErrors), "A cleanup failure after publication cannot roll it back (P-048).");
             Assert.That(published[0].Cleanup!.Failed.Count, Is.EqualTo(1));
-            Assert.That(rig.Host.FindInstall(instance)!.State, Is.EqualTo(InstallationState.Disposed));
+            Assert.That(rig.Host.FindInstall(instance)!.State, Is.EqualTo(InstallationState.Retiring), "Cleanup has not settled every resource (P-048; 06 §1).");
             Assert.That(rig.Host.Callbacks.LiveActivationCount, Is.EqualTo(0), "A removed installation's activation is retired (P-047).");
 
             OperationResult? result = rig.Host.ResultOf(unmount);

@@ -279,6 +279,12 @@ namespace GameCore.Composition
                 return null;
             }
 
+            IReadOnlyList<OperationId> pending = ledger.PendingInAdmissionOrder();
+            if (pending.Count == 0 || !pending[0].Equals(operation))
+            {
+                return null;
+            }
+
             CompositionEditPlan plan = row.Plan;
             if (!plan.Succeeded)
             {
@@ -312,15 +318,17 @@ namespace GameCore.Composition
 
             // The published definition is the plan's After state with the new version domains applied; a
             // publication never increments the logical step (P-006).
-            CompositionState next = plan.After.With(revision: nextRevision, epoch: nextEpoch);
+            CompositionState next = plan.After.With(revision: nextRevision, epoch: nextEpoch, step: committed.Step);
             SnapshotToken token = new SnapshotToken(World, nextEpoch, next.Step);
 
             // The fence is closed across the swap, so no callback is delivered against a half-published view.
             Callbacks.CloseFence();
-            committed = next;
+            committed = RemovalStates(next, plan);
             staged = staged.With(revision: nextRevision, epoch: nextEpoch);
             ApplyActivations(plan, next);
             CleanupReport cleanup = RetireRemoved(plan);
+            committed = RemovalStates(next, plan);
+            row.Cleanup = cleanup;
             int ready = PublishStagedResources(operation);
             Callbacks.OpenFence();
             PublicationCount++;
@@ -329,6 +337,10 @@ namespace GameCore.Composition
             Outcome outcome = cleanup.HasCleanupErrors ? Outcome.PublishedWithCleanupErrors : Outcome.Published;
             DiagnosticCode code = cleanup.HasCleanupErrors ? DiagnosticCode.ResourceUnavailable : DiagnosticCode.None;
             ledger.Settle(operation, outcome, code, nextRevision, nextEpoch, token, next.Step);
+            if (cleanup.HasCleanupErrors)
+            {
+                RebuildStaged();
+            }
 
             return new PublishedOperation(operation, outcome, code, token, cleanup);
         }
@@ -383,20 +395,24 @@ namespace GameCore.Composition
                 stagedResources.Add(operation, set);
             }
 
-            InstallationGeneration generation = InstallationGeneration.First;
-            ActivationEpoch epoch = ActivationEpoch.First;
-            if (committed.TryGetInstall(owner, out InstallEntry? entry) && entry != null)
+            if (!row.Plan.After.TryGetInstall(owner, out InstallEntry? entry) || entry == null ||
+                entry.State != InstallationState.Active || !set.Owner.Equals(owner))
             {
-                generation = entry.Record.Generation;
-                epoch = entry.Record.ActivationEpoch;
+                code = DiagnosticCode.OwnershipConflict;
+                return false;
             }
+
+            InstallationGeneration generation = entry.Record.Generation;
+            ActivationEpoch epoch = entry.Record.ActivationEpoch;
 
             AsyncWorkToken token = new AsyncWorkToken(operation, owner, generation, epoch, (uint)set.Count);
             if (!set.TryPrepare(resource, token, config, dependencies, out Id128 leaseId, out code))
             {
                 // A failed preparation releases the earlier staged acquisitions in reverse order (P-029).
-                set.ReleaseStaged();
+                row.Cleanup = set.ReleaseStaged();
                 stagedResources.Remove(operation);
+                ledger.Settle(operation, Outcome.Rejected, code, committed.Revision, committed.Epoch, null, committed.Step);
+                RebuildStaged();
                 _ = leaseId;
                 return false;
             }
@@ -420,33 +436,18 @@ namespace GameCore.Composition
                 return null;
             }
 
-            List<Id128> cleanup = new List<Id128>();
-            List<Id128> quarantine = new List<Id128>();
-            IReadOnlyList<WorldResourceRecord> records = resources.Records();
-            for (int i = 0; i < records.Count; i++)
-            {
-                if (records[i].State == ResourceRetirementState.Quarantined)
-                {
-                    quarantine.Add(records[i].ResourceId);
-                }
-                else if (records[i].State == ResourceRetirementState.Failed)
-                {
-                    cleanup.Add(records[i].ResourceId);
-                }
-            }
-
             return new OperationResult(
                 operation,
                 row.Outcome,
                 row.Code,
                 row.PublishedSnapshot,
-                row.Plan != null ? row.Plan.BaseRevision : committed.Revision,
+                row.Plan != null ? row.Plan.BaseRevision : row.Handle.SubmittedAgainst,
                 row.PublishedRevision,
-                row.Plan != null ? row.Plan.BaseEpoch : committed.Epoch,
+                row.Plan != null ? row.Plan.BaseEpoch : row.PublishedEpoch,
                 row.PublishedEpoch,
                 null,
-                cleanup,
-                quarantine);
+                row.Cleanup.Failed,
+                row.Cleanup.Quarantined);
         }
 
         /// <summary>Advances this lane's retention window and the committed logical step (P-050, P-006).</summary>
@@ -551,13 +552,36 @@ namespace GameCore.Composition
             List<Id128> quarantined = new List<Id128>();
             for (int i = 0; i < plan.RetiredInstances.Count; i++)
             {
-                CleanupReport report = resources.RetireInstance(plan.RetiredInstances[i], null);
+                InstallEntry previous = plan.Before.TryGetInstall(plan.RetiredInstances[i], out InstallEntry? entry) && entry != null
+                    ? entry : throw new InvalidOperationException("A retired activation must exist in the previous assembly.");
+                CleanupReport report = resources.RetireInstance(previous.Instance, null,
+                    new ActivationStamp(previous.Record.Generation, previous.Record.ActivationEpoch));
                 retired.AddRange(report.Retired);
                 failed.AddRange(report.Failed);
                 quarantined.AddRange(report.Quarantined);
             }
 
             return new CleanupReport(retired, failed, quarantined);
+        }
+
+        private CompositionState RemovalStates(CompositionState state, CompositionEditPlan plan)
+        {
+            for (int i = 0; i < plan.RetiredInstances.Count; i++)
+            {
+                PluginInstanceId instance = plan.RetiredInstances[i];
+                if (state.TryGetInstall(instance, out InstallEntry? entry) && entry != null &&
+                    (entry.State == InstallationState.Disposed || entry.State == InstallationState.Retiring))
+                {
+                    InstallationState settled = resources.RetainedCountFor(instance) == 0
+                        ? InstallationState.Disposed : InstallationState.Retiring;
+                    if (entry.State != settled)
+                    {
+                        state = state.WithInstall(entry.With(state: settled));
+                    }
+                }
+            }
+
+            return state;
         }
 
         private int PublishStagedResources(OperationId operation)
@@ -577,7 +601,12 @@ namespace GameCore.Composition
         {
             if (stagedResources.TryGetValue(operation, out ResourcePreparationSet? set) && set != null)
             {
-                set.ReleaseStaged();
+                CleanupReport cleanup = set.ReleaseStaged();
+                OperationLedger.LedgerRow? row = ledger.RowOf(operation);
+                if (row != null)
+                {
+                    row.Cleanup = cleanup;
+                }
                 stagedResources.Remove(operation);
             }
         }

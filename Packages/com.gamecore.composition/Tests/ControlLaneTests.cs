@@ -253,8 +253,8 @@ namespace GameCore.Composition.Tests
 
             EditAdmission reordered = host.SubmitEdit(Payloads.ScopeCreate(Ids.Scope(), Root), issuer.At(3UL), new CompositionRevision(1UL));
 
-            Assert.That(reordered.Kind, Is.EqualTo(AdmissionKind.SequenceViolation));
-            Assert.That(reordered.Code, Is.EqualTo(DiagnosticCode.StalePlan));
+            Assert.That(reordered.Kind, Is.EqualTo(AdmissionKind.ResultExpired));
+            Assert.That(reordered.Code, Is.EqualTo(DiagnosticCode.ResultExpired), "P-050 includes unseen IDs below the issuer high-water mark.");
             Assert.That(host.OperationLedger.SequenceViolationCount, Is.EqualTo(1));
             Assert.That(host.Snapshot().Revision.Value, Is.EqualTo(1UL));
 
@@ -482,15 +482,19 @@ namespace GameCore.Composition.Tests
             CompositionHost host = NewHost();
             OperationIssuer issuer = new OperationIssuer(World, new Id128(0x6973737565UL, 18UL));
             ScopeId scope = Ids.Scope();
+            CompositionEditPayload payload = Payloads.ScopeCreate(scope, Root);
+            ContentHash input = CompositionEditApplier.InputHashOf(CompositionEditCodec.Encode(payload));
+            TestManifestSource manifests = new TestManifestSource();
+            CompositionState baseline = host.Committed;
+            CompositionEditPlan first = CompositionEditApplier.Plan(baseline, payload, issuer.Next(), baseline.Revision, input, manifests);
+            CompositionEditPlan same = CompositionEditApplier.Plan(baseline, payload, issuer.Next(), baseline.Revision, input, manifests);
+            Assert.That(first.Succeeded, Is.True);
+            Assert.That(same.PlanHash(), Is.EqualTo(first.PlanHash()), "Operation issuer sequence does not change semantic plan identity.");
 
-            EditAdmission admission = host.SubmitEdit(Payloads.ScopeCreate(scope, Root), issuer.Next(), CompositionRevision.Zero);
-            ContentHash planHash = admission.Plan!.PlanHash();
-            host.Drain();
-
-            // The same declaration against the new base revision is a different plan (P-027).
-            EditAdmission repeated = host.SubmitEdit(Payloads.ScopeCreate(Ids.Scope(), Root), issuer.Next(), CompositionRevision.Zero);
-            Assert.That(repeated.Code, Is.EqualTo(DiagnosticCode.StalePlan));
-            Assert.That(planHash.Equals(ContentHash.Empty), Is.False);
+            CompositionState later = baseline.With(revision: new CompositionRevision(1UL));
+            CompositionEditPlan changedBase = CompositionEditApplier.Plan(later, payload, issuer.Next(), later.Revision, input, manifests);
+            Assert.That(changedBase.Succeeded, Is.True);
+            Assert.That(changedBase.PlanHash(), Is.Not.EqualTo(first.PlanHash()), "P-027 plan identity includes the base revision.");
         }
     }
 }

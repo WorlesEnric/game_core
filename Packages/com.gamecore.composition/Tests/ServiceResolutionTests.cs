@@ -51,6 +51,7 @@ namespace GameCore.Composition.Tests
             {
                 OperationId operation = Issuer.Next();
                 EditAdmission admission = Host.SubmitEdit(Payloads.Mount(manifest, instance, scope, null, 0, selections), operation, Revision);
+                Assert.That(admission.Staged, Is.True, admission.Code.ToString());
                 Host.Drain();
                 return operation;
             }
@@ -89,8 +90,8 @@ namespace GameCore.Composition.Tests
             rig.Add(Manifests.Plain(consumerType, rig.Ids, null, null, new[] { Manifests.Requires(Contract(contract, 1U)) }));
 
             rig.CreateScope(chapter, Root);
-            rig.Mount(rig.Manifests.ManifestOf(providerType), provider, chapter);
-            rig.Mount(rig.Manifests.ManifestOf(consumerType), consumer, Root);
+            rig.Mount(rig.Manifests.ManifestOf(providerType), provider, Root);
+            rig.Mount(rig.Manifests.ManifestOf(consumerType), consumer, chapter);
 
             // A provider is private to its scope unless it exports to descendants (P-011).
             Assert.That(rig.StateOf(consumer), Is.EqualTo(InstallationState.WaitingForDependencies));
@@ -558,6 +559,9 @@ namespace GameCore.Composition.Tests
             host.Drain();
             host.SubmitEdit(Payloads.Mount(rig.Manifests.ManifestOf(consumerType), consumer, child, null), issuer.Next(), host.Snapshot().Revision);
             host.Drain();
+            Assert.That(host.FindInstall(consumer)!.State, Is.EqualTo(InstallationState.Active));
+            Assert.That(host.FindInstall(consumer)!.Bindings.Count, Is.EqualTo(1));
+            Assert.That(host.FindInstall(consumer)!.Bindings[0].Provider, Is.EqualTo(new ProviderInstallationId(provider.Value)));
 
             // The mode itself is excluded from the comparison: only resolution behaviour is under test.
             List<string> lines = new List<string>(Projection.Of(host.Snapshot()).Split('\n'));

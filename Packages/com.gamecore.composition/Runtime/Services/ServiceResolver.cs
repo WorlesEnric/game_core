@@ -150,6 +150,11 @@ namespace GameCore.Composition
         {
             get
             {
+                if (!IsActive)
+                {
+                    return Array.Empty<ServiceBinding>();
+                }
+
                 List<ServiceBinding> bindings = new List<ServiceBinding>();
                 for (int i = 0; i < Dependencies.Count; i++)
                 {
@@ -268,10 +273,16 @@ namespace GameCore.Composition
                 return new ServiceResolution(closureCode, Array.Empty<ServiceNodeResolution>(), Array.Empty<PluginInstanceId>());
             }
 
+            Dictionary<PluginInstanceId, int> indices = new Dictionary<PluginInstanceId, int>(ordered.Count);
+            for (int i = 0; i < ordered.Count; i++)
+            {
+                indices.Add(ordered[i].Instance, i);
+            }
+
             List<ServiceNodeResolution> resolutions = new List<ServiceNodeResolution>(ordered.Count);
             for (int i = 0; i < activationOrder!.Count; i++)
             {
-                int index = ordered.FindIndex(node => node.Instance.Equals(activationOrder[i]));
+                int index = indices[activationOrder[i]];
                 ServiceNode node = ordered[index];
                 ServiceNodeResolution resolved = ResolveNode(tree, ordered, node);
                 resolutions.Add(resolved);

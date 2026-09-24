@@ -50,9 +50,6 @@ namespace GameCore.Composition
         /// <summary>The retained result is gone; an expired operation cannot re-execute (P-050).</summary>
         ResultExpired = 3,
 
-        /// <summary>The issuer reused or reordered a sequence number; refused before admission (P-050).</summary>
-        SequenceViolation = 4,
-
         /// <summary>The lane is at capacity; the operation is refused with `BudgetExceeded`.</summary>
         CapacityRejected = 5,
     }
@@ -170,7 +167,10 @@ namespace GameCore.Composition
         /// True when a result was retained and has since been dropped: `Expired` is distinct from `Unknown`
         /// (05 s5), and an expired operation id is refused rather than re-executed (P-050).
         /// </summary>
-        public bool IsExpired(OperationId operation) => expired.Contains(operation);
+        public bool IsExpired(OperationId operation) =>
+            !rows.ContainsKey(operation) &&
+            issuerHighWater.TryGetValue(operation.IssuerId, out ulong highWater) &&
+            operation.IssuerSequence <= highWater;
 
         public bool TryGet(OperationId operation, out OperationLedgerEntry? entry)
         {
@@ -207,23 +207,17 @@ namespace GameCore.Composition
                 return new AdmissionResult(AdmissionKind.IdempotencyConflict, DiagnosticCode.IdempotencyConflict, existing.Handle, existing.ToEntry());
             }
 
-            if (expired.Contains(operation))
+            if (IsExpired(operation))
             {
+                if (!expired.Contains(operation))
+                {
+                    SequenceViolationCount++;
+                }
+
                 ExpireCount++;
                 return new AdmissionResult(
                     AdmissionKind.ResultExpired,
                     DiagnosticCode.ResultExpired,
-                    new OperationStatusHandle(operation, PublishedRevision),
-                    null);
-            }
-
-            if (issuerHighWater.TryGetValue(operation.IssuerId, out ulong highWater) && operation.IssuerSequence <= highWater)
-            {
-                // A lower sequence is not a retransmission (the id would be known) and cannot start new work.
-                SequenceViolationCount++;
-                return new AdmissionResult(
-                    AdmissionKind.SequenceViolation,
-                    DiagnosticCode.StalePlan,
                     new OperationStatusHandle(operation, PublishedRevision),
                     null);
             }
@@ -239,7 +233,7 @@ namespace GameCore.Composition
                     null);
             }
 
-            LedgerRow row = new LedgerRow(operation, inputHash, payload, nextAdmissionOrdinal);
+            LedgerRow row = new LedgerRow(operation, inputHash, payload, nextAdmissionOrdinal, PublishedRevision);
             nextAdmissionOrdinal++;
             rows.Add(operation, row);
             issuerHighWater[operation.IssuerId] = operation.IssuerSequence;
@@ -302,7 +296,7 @@ namespace GameCore.Composition
             LedgerRow? row = RowOf(target);
             if (row == null)
             {
-                return expired.Contains(target) ? CancelOutcome.ResultExpired : CancelOutcome.Unknown;
+                return IsExpired(target) ? CancelOutcome.ResultExpired : CancelOutcome.Unknown;
             }
 
             switch (row.Phase)
@@ -381,6 +375,7 @@ namespace GameCore.Composition
             {
                 return;
             }
+            settledOrder.Remove(operation);
 
             expired.AddLast(operation);
             while (expired.Count > capacity.MaxRetainedResults)
@@ -397,13 +392,14 @@ namespace GameCore.Composition
         /// <summary>One mutable ledger row. Only this assembly's host inspects it directly.</summary>
         public sealed class LedgerRow
         {
-            public LedgerRow(OperationId operation, ContentHash inputHash, CompositionEditPayload? payload, ulong admissionOrdinal)
+            public LedgerRow(OperationId operation, ContentHash inputHash, CompositionEditPayload? payload, ulong admissionOrdinal, CompositionRevision submittedAgainst)
             {
                 Operation = operation;
                 InputHash = inputHash;
                 Payload = payload;
                 AdmissionOrdinal = admissionOrdinal;
                 Outcome = Outcome.Pending;
+                Handle = new OperationStatusHandle(operation, submittedAgainst);
             }
 
             public OperationId Operation { get; }
@@ -432,7 +428,9 @@ namespace GameCore.Composition
             /// <summary>The staged proposal of this operation, inspected by tests and staging diagnostics.</summary>
             public CompositionEditPlan? Plan { get; set; }
 
-            public OperationStatusHandle Handle => new OperationStatusHandle(Operation, PublishedRevision);
+            public CleanupReport Cleanup { get; set; } = CleanupReport.Empty;
+
+            public OperationStatusHandle Handle { get; }
 
             public OperationLedgerEntry ToEntry() =>
                 new OperationLedgerEntry(Handle, InputHash, Outcome, Code, PublishedRevision, PublishedEpoch, PublishedSnapshot);

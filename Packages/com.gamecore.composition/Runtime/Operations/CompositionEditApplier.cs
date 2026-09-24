@@ -145,6 +145,12 @@ namespace GameCore.Composition
 
             List<Diagnostic> diagnostics = new List<Diagnostic>();
 
+            if (!operation.World.Equals(current.World))
+            {
+                diagnostics.Add(Diag(DiagnosticCode.StaleHandle, payload.Subject, operation, "The operation belongs to another world."));
+                return Rejected(current, payload, operation, inputHash, DiagnosticCode.StaleHandle, diagnostics);
+            }
+
             if (expectedRevision.Value != current.Revision.Value)
             {
                 // A proposal is checked against the last published revision (00 s9, P-028).
@@ -678,7 +684,7 @@ namespace GameCore.Composition
             }
 
             LifecycleTransition second = InstallationStateMachine.Request(intermediate, destination);
-            if (!second.Allowed)
+            if (intermediate != destination && !second.Allowed)
             {
                 diagnostics.Add(Diag(second.Code, payload.Subject, operation, "The requested lifecycle step is not a legal edge (P-046)."));
                 return Rejected(current, payload, operation, inputHash, second.Code, diagnostics);
@@ -734,6 +740,71 @@ namespace GameCore.Composition
                 return Rejected(before, payload, operation, inputHash, resolution.Code, diagnostics);
             }
 
+            List<PluginInstanceId> retiredActivations = retired == null
+                ? new List<PluginInstanceId>() : new List<PluginInstanceId>(retired);
+            List<StateDisposition> allDispositions = dispositions == null
+                ? new List<StateDisposition>() : new List<StateDisposition>(dispositions);
+            List<InstallEntry> epochInstalls = new List<InstallEntry>(after.Installs.Count);
+            bool epochsChanged = false;
+            for (int i = 0; i < after.Installs.Count; i++)
+            {
+                InstallEntry entry = after.Installs[i];
+                InstallationState nextState = resolution.TryGet(entry.Instance, out ServiceNodeResolution? resolved) && resolved != null
+                    ? resolved.State : entry.State;
+                if (before.TryGetInstall(entry.Instance, out InstallEntry? previous) && previous != null)
+                {
+                    if (nextState == InstallationState.Active &&
+                        previous.State != InstallationState.Active && previous.State != InstallationState.Disposed &&
+                        entry.Record.ActivationEpoch.Equals(previous.Record.ActivationEpoch))
+                    {
+                        if (!entry.Record.ActivationEpoch.TryIncrement(out ActivationEpoch epoch))
+                        {
+                            diagnostics.Add(Diag(DiagnosticCode.BudgetExceeded, payload.Subject, operation, "The activation epoch is exhausted."));
+                            return Rejected(before, payload, operation, inputHash, DiagnosticCode.BudgetExceeded, diagnostics);
+                        }
+
+                        InstallRecord record = entry.Record;
+                        entry = entry.With(record: new InstallRecord(record.Instance, record.PluginType, record.Scope,
+                            record.ConfigRevision, record.ConfigHash, record.Priority, record.Generation, epoch));
+                        epochsChanged = true;
+                    }
+
+                    if (previous.State == InstallationState.Active &&
+                        (nextState != InstallationState.Active || !previous.Record.ActivationEpoch.Equals(entry.Record.ActivationEpoch)) &&
+                        !retiredActivations.Contains(entry.Instance))
+                    {
+                        retiredActivations.Add(entry.Instance);
+                        if (!entry.Instance.Equals(payload.Instance))
+                        {
+                            List<Diagnostic> policyDiagnostics = new List<Diagnostic>();
+                            allDispositions.AddRange(DispositionsFor(previous, payload.Subject, operation, policyDiagnostics));
+                            if (policyDiagnostics.Count != 0)
+                            {
+                                diagnostics.AddRange(policyDiagnostics);
+                                return Rejected(before, payload, operation, inputHash, policyDiagnostics[0].Code, diagnostics);
+                            }
+                        }
+                    }
+                }
+
+                epochInstalls.Add(entry);
+            }
+
+            if (epochsChanged)
+            {
+                after = after.With(installs: epochInstalls);
+                nodes.Clear();
+                for (int i = 0; i < after.Installs.Count; i++)
+                {
+                    if (after.Installs[i].State != InstallationState.Disposed)
+                    {
+                        nodes.Add(after.Installs[i].ToServiceNode());
+                    }
+                }
+
+                resolution = ServiceResolver.Resolve(after.Scopes, nodes);
+            }
+
             List<InstallEntry> resolvedInstalls = new List<InstallEntry>(after.Installs.Count);
             for (int i = 0; i < after.Installs.Count; i++)
             {
@@ -766,9 +837,9 @@ namespace GameCore.Composition
                 resolvedState,
                 delta,
                 resolution,
-                dispositions,
+                allDispositions,
                 resolution.ActivationOrder,
-                OrderForTeardown(before, retired),
+                OrderForTeardown(before, retiredActivations),
                 DiagnosticCode.None,
                 diagnostics);
         }

@@ -384,12 +384,15 @@ namespace GameCore.Composition
         /// Retires one instance's leases in reverse acquisition order, attempting every independent cleanup and
         /// aggregating failures (P-048). Leases whose jobs are still outstanding are quarantined instead.
         /// </summary>
-        public CleanupReport RetireInstance(PluginInstanceId instance, IReadOnlyList<Id128>? outstandingJobResourceIds)
+        public CleanupReport RetireInstance(PluginInstanceId instance, IReadOnlyList<Id128>? outstandingJobResourceIds, ActivationStamp activation)
         {
             List<Id128> mine = new List<Id128>();
             for (int i = 0; i < acquisitionOrder.Count; i++)
             {
-                if (records[acquisitionOrder[i]].Instance.Equals(instance) && records[acquisitionOrder[i]].IsRetained)
+                Id128 id = acquisitionOrder[i];
+                AsyncWorkToken token = leases[id].Lease.Token;
+                if (records[id].Instance.Equals(instance) && records[id].IsRetained &&
+                    token.InstallationGeneration.Equals(activation.Generation) && token.ActivationEpoch.Equals(activation.ActivationEpoch))
                 {
                     mine.Add(acquisitionOrder[i]);
                 }
@@ -417,6 +420,10 @@ namespace GameCore.Composition
                 else
                 {
                     failed.Add(mine[i]);
+                    if (records[mine[i]].State == ResourceRetirementState.Quarantined)
+                    {
+                        quarantined.Add(mine[i]);
+                    }
                 }
             }
 
@@ -622,6 +629,7 @@ namespace GameCore.Composition
 
             List<Id128> retired = new List<Id128>();
             List<Id128> failed = new List<Id128>();
+            List<Id128> quarantined = new List<Id128>();
             for (int i = 0; i < ordered.Count; i++)
             {
                 Id128 leaseId = ordered[i].Lease.LeaseId;
@@ -632,11 +640,12 @@ namespace GameCore.Composition
                 else
                 {
                     failed.Add(leaseId);
+                    quarantined.Add(leaseId);
                 }
             }
 
             entries.Clear();
-            return new CleanupReport(retired, failed, Array.Empty<Id128>());
+            return new CleanupReport(retired, failed, quarantined);
         }
 
         private static int CompareEntries(PreparedEntry left, PreparedEntry right) => left.Ordinal.CompareTo(right.Ordinal);
