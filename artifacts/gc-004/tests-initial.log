@@ -1,0 +1,488 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  GameCore.ReferenceSeams -> /home/worlesenric/wkspace/gc-wt/gc-004/dotnet/src/GameCore.ReferenceSeams/bin/Release/netstandard2.1/GameCore.ReferenceSeams.dll
+  GameCore.Composition -> /home/worlesenric/wkspace/gc-wt/gc-004/dotnet/src/GameCore.Composition/bin/Release/netstandard2.1/GameCore.Composition.dll
+  GameCore.ProtocolFixtures -> /home/worlesenric/wkspace/gc-wt/gc-004/dotnet/src/GameCore.ProtocolFixtures/bin/Release/netstandard2.1/GameCore.ProtocolFixtures.dll
+  GameCore.ApiSnapshot -> /home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tools/GameCore.ApiSnapshot/bin/Release/net8.0/GameCore.ApiSnapshot.dll
+  GameCore.Composition.Tests -> /home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll
+  GameCore.ProtocolFixtures.Tests -> /home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.ProtocolFixtures.Tests/bin/Release/net8.0/GameCore.ProtocolFixtures.Tests.dll
+Test run for /home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.Composition.Tests/bin/Release/net8.0/GameCore.Composition.Tests.dll (.NETCoreApp,Version=v8.0)
+Test run for /home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.ProtocolFixtures.Tests/bin/Release/net8.0/GameCore.ProtocolFixtures.Tests.dll (.NETCoreApp,Version=v8.0)
+  GameCore.ReferenceSeams.Tests -> /home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.ReferenceSeams.Tests/bin/Release/net8.0/GameCore.ReferenceSeams.Tests.dll
+Test run for /home/worlesenric/wkspace/gc-wt/gc-004/dotnet/tests/GameCore.ReferenceSeams.Tests/bin/Release/net8.0/GameCore.ReferenceSeams.Tests.dll (.NETCoreApp,Version=v8.0)
+VSTest version 17.11.1 (x64)VSTest version 17.11.1 (x64)
+
+
+
+VSTest version 17.11.1 (x64)
+
+Starting test execution, please wait...
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+A total of 1 test files matched the specified pattern.
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+Results File: /home/worlesenric/wkspace/gc-wt/gc-004/artifacts/gc-004/tests-initial/_worlesenric_2026-09-25_05_42_04.trx
+
+Passed!  - Failed:     0, Passed:    10, Skipped:     0, Total:    10, Duration: 20 ms - GameCore.ProtocolFixtures.Tests.dll (net8.0)
+  Failed ComposedDocumentHasAStableCanonicalHashAndRoundTrips [40 ms]
+  Error Message:
+     Expected: True
+  But was:  False
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ConfigurationTests.ComposedDocumentHasAStableCanonicalHashAndRoundTrips() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 272
+
+1)    at GameCore.Composition.Tests.ConfigurationTests.ComposedDocumentHasAStableCanonicalHashAndRoundTrips() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 272
+
+
+  Failed DeclaredConfigurationHashMustDescribeTheComposedDocument [29 ms]
+  Error Message:
+     Expected: UnsupportedVersion
+  But was:  None
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ConfigurationTests.DeclaredConfigurationHashMustDescribeTheComposedDocument() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 356
+
+1)    at GameCore.Composition.Tests.ConfigurationTests.DeclaredConfigurationHashMustDescribeTheComposedDocument() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 356
+
+
+  Failed ReconfigurePreservesStateAndIncrementsOnlyTheActivationEpoch [2 ms]
+  Error Message:
+     None
+  Expected: True
+  But was:  False
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ConfigurationTests.ReconfigurePreservesStateAndIncrementsOnlyTheActivationEpoch() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 405
+
+1)    at GameCore.Composition.Tests.ConfigurationTests.ReconfigurePreservesStateAndIncrementsOnlyTheActivationEpoch() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 405
+
+
+  Failed UndeclaredConfigurationFieldIsRejected [< 1 ms]
+  Error Message:
+     Expected: UnsupportedVersion
+  But was:  None
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ConfigurationTests.UndeclaredConfigurationFieldIsRejected() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 333
+
+1)    at GameCore.Composition.Tests.ConfigurationTests.UndeclaredConfigurationFieldIsRejected() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 333
+
+
+  Failed CancelBeforeTheCutoffIsCancelledAndImmediatelyAfterIsTooLate [7 ms]
+  Error Message:
+     A cancelled operation leaves no staged proposal.
+  Expected: null
+  But was:  <GameCore.Composition.CompositionEditPlan>
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ControlLaneTests.CancelBeforeTheCutoffIsCancelledAndImmediatelyAfterIsTooLate() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ControlLaneTests.cs:line 282
+
+1)    at GameCore.Composition.Tests.ControlLaneTests.CancelBeforeTheCutoffIsCancelledAndImmediatelyAfterIsTooLate() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ControlLaneTests.cs:line 282
+
+
+  Failed PayloadEncodingRoundTripsEveryField [7 ms]
+  Error Message:
+     UnsupportedVersion
+  Expected: True
+  But was:  False
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ControlLaneTests.PayloadEncodingRoundTripsEveryField() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ControlLaneTests.cs:line 429
+
+1)    at GameCore.Composition.Tests.ControlLaneTests.PayloadEncodingRoundTripsEveryField() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ControlLaneTests.cs:line 429
+
+
+  Failed PlanHashIsCanonicalForTheSameDeclarationAndBaseRevision [1 ms]
+  Error Message:
+     Expected: StalePlan
+  But was:  None
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ControlLaneTests.PlanHashIsCanonicalForTheSameDeclarationAndBaseRevision() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ControlLaneTests.cs:line 483
+
+1)    at GameCore.Composition.Tests.ControlLaneTests.PlanHashIsCanonicalForTheSameDeclarationAndBaseRevision() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ControlLaneTests.cs:line 483
+
+
+  Failed RemountingAStableInstanceIdentityAdvancesItsInstallationGeneration [1 ms]
+  Error Message:
+     Expected: Disposed
+  But was:  Active
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ControlLaneTests.RemountingAStableInstanceIdentityAdvancesItsInstallationGeneration() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ControlLaneTests.cs:line 467
+
+1)    at GameCore.Composition.Tests.ControlLaneTests.RemountingAStableInstanceIdentityAdvancesItsInstallationGeneration() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ControlLaneTests.cs:line 467
+
+
+  Failed ReorderedIssuerSequenceIsRefused [1 ms]
+  Error Message:
+     None
+  Expected: True
+  But was:  False
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ControlLaneTests.ReorderedIssuerSequenceIsRefused() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ControlLaneTests.cs:line 262
+
+1)    at GameCore.Composition.Tests.ControlLaneTests.ReorderedIssuerSequenceIsRefused() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ControlLaneTests.cs:line 262
+
+
+  Failed ResultsExpireByCountAndAnExpiredOperationCannotReexecute [1 ms]
+  Error Message:
+     None
+  Expected: True
+  But was:  False
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ControlLaneTests.ResultsExpireByCountAndAnExpiredOperationCannotReexecute() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ControlLaneTests.cs:line 192
+
+1)    at GameCore.Composition.Tests.ControlLaneTests.ResultsExpireByCountAndAnExpiredOperationCannotReexecute() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ControlLaneTests.cs:line 192
+
+
+  Failed StaleExpectedRevisionIsRejectedWithoutPublishing [1 ms]
+  Error Message:
+     Expected: StalePlan
+  But was:  None
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ControlLaneTests.StaleExpectedRevisionIsRejectedWithoutPublishing() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ControlLaneTests.cs:line 115
+
+1)    at GameCore.Composition.Tests.ControlLaneTests.StaleExpectedRevisionIsRejectedWithoutPublishing() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ControlLaneTests.cs:line 115
+
+
+  Failed FailedReleaseQuarantinesTheResourceInsteadOfReportingADisposal [3 ms]
+  Error Message:
+     Expected: False
+  But was:  True
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ResourceGateTests.FailedReleaseQuarantinesTheResourceInsteadOfReportingADisposal() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ResourceGateTests.cs:line 222
+
+1)    at GameCore.Composition.Tests.ResourceGateTests.FailedReleaseQuarantinesTheResourceInsteadOfReportingADisposal() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ResourceGateTests.cs:line 222
+
+
+  Failed RetirementRunsConsumersBeforeTheirProviders [1 ms]
+  Error Message:
+     Expected: True
+  But was:  False
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ResourceGateTests.RetirementRunsConsumersBeforeTheirProviders() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ResourceGateTests.cs:line 278
+
+1)    at GameCore.Composition.Tests.ResourceGateTests.RetirementRunsConsumersBeforeTheirProviders() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ResourceGateTests.cs:line 278
+
+
+  Failed UnmountPublishesCleanupErrorsWithRetainedReferences [1 ms]
+  Error Message:
+     None
+  Expected: True
+  But was:  False
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ResourceGateTests.UnmountPublishesCleanupErrorsWithRetainedReferences() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ResourceGateTests.cs:line 241
+
+1)    at GameCore.Composition.Tests.ResourceGateTests.UnmountPublishesCleanupErrorsWithRetainedReferences() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ResourceGateTests.cs:line 241
+
+
+  Failed ConservativeGrantDataIsStoredAndValidatedAgainstRealProviders [1 ms]
+  Error Message:
+     Expected: True
+  But was:  False
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ScopeTreeTests.ConservativeGrantDataIsStoredAndValidatedAgainstRealProviders() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 197
+
+1)    at GameCore.Composition.Tests.ScopeTreeTests.ConservativeGrantDataIsStoredAndValidatedAgainstRealProviders() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 197
+
+
+  Failed CreatedScopeCarriesMembershipAndInheritsItsParentDepth [< 1 ms]
+  Error Message:
+     Expected: True
+  But was:  False
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ScopeTreeTests.CreatedScopeCarriesMembershipAndInheritsItsParentDepth() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 50
+
+1)    at GameCore.Composition.Tests.ScopeTreeTests.CreatedScopeCarriesMembershipAndInheritsItsParentDepth() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 50
+
+
+  Failed DuplicateScopeIdentityIsRejectedAsAnOwnershipConflict [< 1 ms]
+  Error Message:
+     Expected: True
+  But was:  False
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ScopeTreeTests.DuplicateScopeIdentityIsRejectedAsAnOwnershipConflict() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 70
+
+1)    at GameCore.Composition.Tests.ScopeTreeTests.DuplicateScopeIdentityIsRejectedAsAnOwnershipConflict() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 70
+
+
+  Failed IsolationSetCannotNameContractsWhileDeclaringAll [< 1 ms]
+  Error Message:
+     Expected: CapabilityConflict
+  But was:  None
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ScopeTreeTests.IsolationSetCannotNameContractsWhileDeclaringAll() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 158
+
+1)    at GameCore.Composition.Tests.ScopeTreeTests.IsolationSetCannotNameContractsWhileDeclaringAll() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 158
+
+
+  Failed RemovingANonemptyScopeRequiresAnExplicitSubtreeDisposition [1 ms]
+  Error Message:
+     Expected: OwnershipConflict
+  But was:  None
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ScopeTreeTests.RemovingANonemptyScopeRequiresAnExplicitSubtreeDisposition() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 139
+
+1)    at GameCore.Composition.Tests.ScopeTreeTests.RemovingANonemptyScopeRequiresAnExplicitSubtreeDisposition() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 139
+
+
+  Failed ReparentCyclesAndCrossAncestryMovesAreRejected [1 ms]
+  Error Message:
+     Expected: Cycle
+  But was:  None
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ScopeTreeTests.ReparentCyclesAndCrossAncestryMovesAreRejected() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 89
+
+1)    at GameCore.Composition.Tests.ScopeTreeTests.ReparentCyclesAndCrossAncestryMovesAreRejected() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 89
+
+
+  Failed ReparentPreservesDescendantIdentityAndRecomputesDepth [6 ms]
+  Error Message:
+     Expected: True
+  But was:  False
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ScopeTreeTests.ReparentPreservesDescendantIdentityAndRecomputesDepth() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 116
+
+1)    at GameCore.Composition.Tests.ScopeTreeTests.ReparentPreservesDescendantIdentityAndRecomputesDepth() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ScopeAndConfigurationTests.cs:line 116
+
+
+  Failed ExplicitSelectionIsHonoredInsideTheBoundaryAndNeverFallsBack [1 ms]
+  Error Message:
+     None
+  Expected: True
+  But was:  False
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ServiceResolutionTests.Rig.CreateScope(ScopeId scope, ScopeId parent) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 46
+   at GameCore.Composition.Tests.ServiceResolutionTests.ExplicitSelectionIsHonoredInsideTheBoundaryAndNeverFallsBack() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 334
+
+1)    at GameCore.Composition.Tests.ServiceResolutionTests.Rig.CreateScope(ScopeId scope, ScopeId parent) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 46
+   at GameCore.Composition.Tests.ServiceResolutionTests.ExplicitSelectionIsHonoredInsideTheBoundaryAndNeverFallsBack() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 334
+
+
+  Failed ExportedProviderReachesDescendantsIncludingTheProvidersOwnScopeTargets [< 1 ms]
+  Error Message:
+     None
+  Expected: True
+  But was:  False
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ServiceResolutionTests.Rig.CreateScope(ScopeId scope, ScopeId parent) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 46
+   at GameCore.Composition.Tests.ServiceResolutionTests.ExportedProviderReachesDescendantsIncludingTheProvidersOwnScopeTargets() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 144
+
+1)    at GameCore.Composition.Tests.ServiceResolutionTests.Rig.CreateScope(ScopeId scope, ScopeId parent) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 46
+   at GameCore.Composition.Tests.ServiceResolutionTests.ExportedProviderReachesDescendantsIncludingTheProvidersOwnScopeTargets() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 144
+
+
+  Failed IncompatibleContractVersionLeavesTheConsumerWaiting [1 ms]
+  Error Message:
+     The installation must exist in the committed composition.
+  Expected: not null
+  But was:  null
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ServiceResolutionTests.Rig.StateOf(PluginInstanceId instance) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 67
+   at GameCore.Composition.Tests.ServiceResolutionTests.IncompatibleContractVersionLeavesTheConsumerWaiting() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 438
+
+1)    at GameCore.Composition.Tests.ServiceResolutionTests.Rig.StateOf(PluginInstanceId instance) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 67
+   at GameCore.Composition.Tests.ServiceResolutionTests.IncompatibleContractVersionLeavesTheConsumerWaiting() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 438
+
+
+  Failed MultiBindingReturnsEveryVisibleProviderInCanonicalOrder [1 ms]
+  Error Message:
+     The installation must exist in the committed composition.
+  Expected: not null
+  But was:  null
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ServiceResolutionTests.Rig.StateOf(PluginInstanceId instance) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 67
+   at GameCore.Composition.Tests.ServiceResolutionTests.MultiBindingReturnsEveryVisibleProviderInCanonicalOrder() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 309
+
+1)    at GameCore.Composition.Tests.ServiceResolutionTests.Rig.StateOf(PluginInstanceId instance) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 67
+   at GameCore.Composition.Tests.ServiceResolutionTests.MultiBindingReturnsEveryVisibleProviderInCanonicalOrder() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 309
+
+
+  Failed NearestAncestorProviderWinsWhenItDeclaresTheOverride [< 1 ms]
+  Error Message:
+     None
+  Expected: True
+  But was:  False
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ServiceResolutionTests.Rig.CreateScope(ScopeId scope, ScopeId parent) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 46
+   at GameCore.Composition.Tests.ServiceResolutionTests.NearestAncestorProviderWinsWhenItDeclaresTheOverride() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 270
+
+1)    at GameCore.Composition.Tests.ServiceResolutionTests.Rig.CreateScope(ScopeId scope, ScopeId parent) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 46
+   at GameCore.Composition.Tests.ServiceResolutionTests.NearestAncestorProviderWinsWhenItDeclaresTheOverride() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 270
+
+
+  Failed OptionalAbsenceIsExplicitAndRebindsToItsDeclaredFallback [3 ms]
+  Error Message:
+     The absent optional service is reported, not hidden.
+  Expected: greater than 0
+  But was:  0
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ServiceResolutionTests.OptionalAbsenceIsExplicitAndRebindsToItsDeclaredFallback() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 394
+
+1)    at GameCore.Composition.Tests.ServiceResolutionTests.OptionalAbsenceIsExplicitAndRebindsToItsDeclaredFallback() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 394
+
+
+  Failed PrivateProviderInAnAncestorIsInvisible [< 1 ms]
+  Error Message:
+     The installation must exist in the committed composition.
+  Expected: not null
+  But was:  null
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ServiceResolutionTests.Rig.StateOf(PluginInstanceId instance) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 67
+   at GameCore.Composition.Tests.ServiceResolutionTests.PrivateProviderInAnAncestorIsInvisible() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 96
+
+1)    at GameCore.Composition.Tests.ServiceResolutionTests.Rig.StateOf(PluginInstanceId instance) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 67
+   at GameCore.Composition.Tests.ServiceResolutionTests.PrivateProviderInAnAncestorIsInvisible() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 96
+
+
+  Failed RequiredDependencyCycleRejectsTheWholeProposal [1 ms]
+  Error Message:
+     A required dependency cycle rejects the whole proposal (P-012).
+  Expected: Cycle
+  But was:  None
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ServiceResolutionTests.RequiredDependencyCycleRejectsTheWholeProposal() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 468
+
+1)    at GameCore.Composition.Tests.ServiceResolutionTests.RequiredDependencyCycleRejectsTheWholeProposal() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 468
+
+
+  Failed ResolutionIsIndependentOfMountInsertionOrderForFixedSeeds [1 ms]
+  Error Message:
+     None
+  Expected: True
+  But was:  False
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ServiceResolutionTests.Rig.CreateScope(ScopeId scope, ScopeId parent) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 46
+   at GameCore.Composition.Tests.ServiceResolutionTests.MountInOrder(IReadOnlyList`1 order) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 586
+   at GameCore.Composition.Tests.ServiceResolutionTests.ResolutionIsIndependentOfMountInsertionOrderForFixedSeeds() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 516
+
+1)    at GameCore.Composition.Tests.ServiceResolutionTests.Rig.CreateScope(ScopeId scope, ScopeId parent) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 46
+   at GameCore.Composition.Tests.ServiceResolutionTests.MountInOrder(IReadOnlyList`1 order) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 586
+   at GameCore.Composition.Tests.ServiceResolutionTests.ResolutionIsIndependentOfMountInsertionOrderForFixedSeeds() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 516
+
+
+  Failed SameScopeDuplicateSingleBindingsAlwaysConflict [1 ms]
+  Error Message:
+     None
+  Expected: True
+  But was:  False
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ServiceResolutionTests.SameScopeDuplicateSingleBindingsAlwaysConflict() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 220
+
+1)    at GameCore.Composition.Tests.ServiceResolutionTests.SameScopeDuplicateSingleBindingsAlwaysConflict() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 220
+
+
+  Failed SelfOnlyDomainNeverResolvesAnAncestorProvider [< 1 ms]
+  Error Message:
+     The installation must exist in the committed composition.
+  Expected: not null
+  But was:  null
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ServiceResolutionTests.Rig.StateOf(PluginInstanceId instance) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 67
+   at GameCore.Composition.Tests.ServiceResolutionTests.SelfOnlyDomainNeverResolvesAnAncestorProvider() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 494
+
+1)    at GameCore.Composition.Tests.ServiceResolutionTests.Rig.StateOf(PluginInstanceId instance) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 67
+   at GameCore.Composition.Tests.ServiceResolutionTests.SelfOnlyDomainNeverResolvesAnAncestorProvider() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 494
+
+
+Results File: /home/worlesenric/wkspace/gc-wt/gc-004/artifacts/gc-004/tests-initial/_worlesenric_2026-09-25_05_42_04[1].trx
+
+Passed!  - Failed:     0, Passed:    21, Skipped:     0, Total:    21, Duration: 117 ms - GameCore.ReferenceSeams.Tests.dll (net8.0)
+  Failed ServiceIsolationBoundaryBlocksAncestorProvidersButNotBoundaryProviders [1 ms]
+  Error Message:
+     None
+  Expected: True
+  But was:  False
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ServiceResolutionTests.Rig.CreateScope(ScopeId scope, ScopeId parent) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 46
+   at GameCore.Composition.Tests.ServiceResolutionTests.ServiceIsolationBoundaryBlocksAncestorProvidersButNotBoundaryProviders() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 176
+
+1)    at GameCore.Composition.Tests.ServiceResolutionTests.Rig.CreateScope(ScopeId scope, ScopeId parent) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 46
+   at GameCore.Composition.Tests.ServiceResolutionTests.ServiceIsolationBoundaryBlocksAncestorProvidersButNotBoundaryProviders() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 176
+
+
+  Failed ServiceResolutionIsIdenticalInBothPropagationModes [3 ms]
+  Error Message:
+     Service resolution is identical in both modes (P-011).
+  String lengths are both 217. Strings differ at index 29.
+  Expected: "scope=ScopeId(000000006d6f64310000000000000002) parent=ScopeI..."
+  But was:  "scope=ScopeId(000000006d6f64320000000000000002) parent=ScopeI..."
+  ----------------------------------------^
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ServiceResolutionTests.ServiceResolutionIsIdenticalInBothPropagationModes() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 505
+
+1)    at GameCore.Composition.Tests.ServiceResolutionTests.ServiceResolutionIsIdenticalInBothPropagationModes() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 505
+
+
+  Failed SiblingScopesNeverSeeEachOthersProviders [< 1 ms]
+  Error Message:
+     None
+  Expected: True
+  But was:  False
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ServiceResolutionTests.Rig.CreateScope(ScopeId scope, ScopeId parent) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 46
+   at GameCore.Composition.Tests.ServiceResolutionTests.SiblingScopesNeverSeeEachOthersProviders() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 114
+
+1)    at GameCore.Composition.Tests.ServiceResolutionTests.Rig.CreateScope(ScopeId scope, ScopeId parent) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 46
+   at GameCore.Composition.Tests.ServiceResolutionTests.SiblingScopesNeverSeeEachOthersProviders() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 114
+
+
+  Failed TwoVisibleAncestorProvidersConflictWithoutAnOverride [< 1 ms]
+  Error Message:
+     None
+  Expected: True
+  But was:  False
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ServiceResolutionTests.Rig.CreateScope(ScopeId scope, ScopeId parent) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 46
+   at GameCore.Composition.Tests.ServiceResolutionTests.TwoVisibleAncestorProvidersConflictWithoutAnOverride() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 243
+
+1)    at GameCore.Composition.Tests.ServiceResolutionTests.Rig.CreateScope(ScopeId scope, ScopeId parent) in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 46
+   at GameCore.Composition.Tests.ServiceResolutionTests.TwoVisibleAncestorProvidersConflictWithoutAnOverride() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 243
+
+
+  Failed WaitingInstallationActivatesWhenItsProviderAppearsAndWaitsAgainWhenItLeaves [< 1 ms]
+  Error Message:
+     A restored provider activates waiting dependents without target wiring (P-012, O-04).
+  Expected: Active
+  But was:  WaitingForDependencies
+
+  Stack Trace:
+     at GameCore.Composition.Tests.ServiceResolutionTests.WaitingInstallationActivatesWhenItsProviderAppearsAndWaitsAgainWhenItLeaves() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 414
+
+1)    at GameCore.Composition.Tests.ServiceResolutionTests.WaitingInstallationActivatesWhenItsProviderAppearsAndWaitsAgainWhenItLeaves() in /home/worlesenric/wkspace/gc-wt/gc-004/Packages/com.gamecore.composition/Tests/ServiceResolutionTests.cs:line 414
+
+
+Results File: /home/worlesenric/wkspace/gc-wt/gc-004/artifacts/gc-004/tests-initial/_worlesenric_2026-09-25_05_42_04[2].trx
+
+Failed!  - Failed:    37, Passed:    22, Skipped:     0, Total:    59, Duration: 205 ms - GameCore.Composition.Tests.dll (net8.0)

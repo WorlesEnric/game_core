@@ -1,0 +1,11 @@
+PASS both scopes staged, no publication
+PASS first cancellation accepted
+PASS changed-target reuse rejected
+PASS cancellation status retained
+PASS only uncancelled scope publishes
+PASS retransmission returns original cancellation
+PASS configuration set sorted and deduplicated
+GameCore.Composition references: netstandard, GameCore.ReferenceSeams
+PASS pure assembly has no Unity references
+GameCore.ReferenceSeams references: netstandard
+PASS pure assembly has no Unity references
