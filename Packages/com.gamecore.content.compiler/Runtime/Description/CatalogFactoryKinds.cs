@@ -166,9 +166,15 @@ namespace GameCore.Content.Compiler
                         parentheses--;
                         break;
                 }
-            }
-        }
 
+                if (angles < 0 || parentheses < 0)
+                {
+                    return false;
+                }
+            }
+
+            return angles == 0 && parentheses == 0;
+        }
         /// <summary>
         /// True when the fragment starts with an identifier and otherwise contains only identifier, generic,
         /// invocation, member-access and argument characters. A stray operator, string literal or keyword

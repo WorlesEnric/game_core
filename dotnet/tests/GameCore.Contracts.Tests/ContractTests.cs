@@ -62,7 +62,10 @@ namespace GameCore.Contracts.Tests
             Assert.That(result.Catalog.Serializers.Count, Is.EqualTo(1));
             Assert.That(result.Catalog.SupportedFeatureIds.Count, Is.EqualTo(1));
             Assert.That(result.Catalog.SupportsFeature(FeatureA), Is.True);
-            Assert.That(result.Catalog.SupportsFeature(FeatureA ^ new Id128(1UL, 0UL)), Is.False);
+            Assert.That(
+                result.Catalog.SupportsFeature(new Id128(0x5555555555555555UL, 0x6666666666666667UL)),
+                Is.False,
+                "a feature the build does not declare must not be reported as supported");
         }
 
         [Test]
@@ -332,7 +335,9 @@ namespace GameCore.Contracts.Tests
         private static readonly Id128 SerializerKey = new Id128(0x0A0A0A0A0A0A0A0AUL, 0x0B0B0B0B0B0B0B0BUL);
         private static readonly Id128 Feature = new Id128(0x0C0C0C0C0C0C0C0CUL, 0x0D0D0D0D0D0D0D0DUL);
         private static readonly SchemaRef Schema = new SchemaRef(new SchemaId(new Id128(0x0E0E0E0E0E0E0E0EUL, 0x0F0F0F0F0F0F0F0FUL)), 1U);
-        private static readonly SchemaRef OtherSchema = new SchemaRef(new SchemaId(Schema.Id.Value ^ new Id128(1UL, 0UL)), 1U);
+        private static readonly SchemaRef OtherSchema = new SchemaRef(
+            new SchemaId(new Id128(0x0E0E0E0E0E0E0E0FUL, 0x0F0F0F0F0F0F0F0FUL)),
+            1U);
 
         private static TestSerializer NewSerializer(IReadOnlyList<Id128>? features = null) =>
             new TestSerializer(new FactoryKey(SerializerKey, 1U), Schema, features ?? new[] { Feature }, TestSerializer.DefaultFields);

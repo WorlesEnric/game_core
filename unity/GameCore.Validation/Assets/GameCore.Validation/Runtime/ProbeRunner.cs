@@ -420,10 +420,10 @@ namespace GameCore.Validation.ProbeHost
                 bool unknownSchemaRejected = !unknownSchema.Found
                     && unknownSchema.Code == DiagnosticCode.MissingDependency;
 
-                var value = new ProbeRecordValue(0x0102030405060708UL, 0xF1F2F3F4F5F6F7F8UL, 3U, -123456789, 0x5AU);
-                var generatedSerializer = new ProbeRecordSerializer();
+                var value = new ProbeCatalog.ProbeRecordValue(0x0102030405060708UL, 0xF1F2F3F4F5F6F7F8UL, 3U, -123456789, 0x5AU);
+                var generatedSerializer = new ProbeCatalog.ProbeRecordSerializer();
                 byte[] document = generatedSerializer.Serialize(value);
-                bool roundTrips = generatedSerializer.TryDeserialize(document, out ProbeRecordValue roundTripped, out EnvelopeError _)
+                bool roundTrips = generatedSerializer.TryDeserialize(document, out ProbeCatalog.ProbeRecordValue roundTripped, out EnvelopeError _)
                     && roundTripped.High == value.High
                     && roundTripped.Low == value.Low
                     && roundTripped.Version == value.Version
@@ -432,12 +432,12 @@ namespace GameCore.Validation.ProbeHost
 
                 byte[] tampered = (byte[])document.Clone();
                 tampered[document.Length - 3] ^= 0xFF;
-                bool tamperRejected = !generatedSerializer.TryDeserialize(tampered, out ProbeRecordValue _, out EnvelopeError tamperError)
+                bool tamperRejected = !generatedSerializer.TryDeserialize(tampered, out ProbeCatalog.ProbeRecordValue _, out EnvelopeError tamperError)
                     && tamperError == EnvelopeError.ChecksumMismatch;
 
                 byte[] truncated = new byte[document.Length - 1];
                 Buffer.BlockCopy(document, 0, truncated, 0, truncated.Length);
-                bool truncationRejected = !generatedSerializer.TryDeserialize(truncated, out ProbeRecordValue _, out EnvelopeError truncationError)
+                bool truncationRejected = !generatedSerializer.TryDeserialize(truncated, out ProbeCatalog.ProbeRecordValue _, out EnvelopeError truncationError)
                     && truncationError == EnvelopeError.Truncated;
 
                 string detail = "catalogFingerprint=" + observed.ToHex()

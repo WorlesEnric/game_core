@@ -142,7 +142,7 @@ namespace GameCore.Content.Compiler
 
             CrossCheckStableNames(schemas, groups, diagnostics);
             CrossCheckKeys(groups, diagnostics);
-            CrossCheckMemberNames(groups, diagnostics);
+            CrossCheckMemberNames(schemas, groups, diagnostics);
             CrossCheckCatalog(schemas, groups, features, diagnostics);
 
             if (diagnostics.Count != 0)
@@ -831,13 +831,51 @@ namespace GameCore.Content.Compiler
             }
         }
 
-        private static void CrossCheckMemberNames(IReadOnlyList<CatalogRegistrationGroup> groups, CatalogDiagnosticBag diagnostics)
+        /// <summary>
+        /// Reserves every member name the emitter writes into the generated class, so a description cannot
+        /// declare a member that collides with one of them and produce a file that fails to compile with CS0102.
+        /// The reserved set mirrors <c>CatalogEmitter</c>: constants, the schema table, the serializer array, the
+        /// lookup and build methods, the closed-generic root method and the per-schema generated type names.
+        /// </summary>
+        private static void CrossCheckMemberNames(
+            IReadOnlyList<CatalogSchemaDeclaration> schemas,
+            IReadOnlyList<CatalogRegistrationGroup> groups,
+            CatalogDiagnosticBag diagnostics)
         {
             HashSet<string> seen = new HashSet<string>(StringComparer.Ordinal);
-            string[] fixedMembers = { "GeneratedFileName", "HashAlgorithm", "CatalogFileHash", "CatalogFileHashScope", "CatalogFingerprintScope" };
+            string[] fixedMembers =
+            {
+                "GeneratedFileName", "DescriptionFormat", "ProtocolVersion", "HashAlgorithm",
+                "CatalogFileHash", "CatalogFileHashScope", "CatalogFingerprint", "CatalogFingerprintScope",
+                "SupportedFeatureIds", "SchemaRegistrations", "Serializers", "BuildCatalog",
+                "GroupCatalogRegistrations", "BuildVerifiedCatalog", "FingerprintMatchesGeneratedCatalog",
+                "HasClosedGenericRoots", "RegistrationGroupCount", "SchemaCount",
+                CatalogEmitter.ClosedGenericRootMethodName,
+            };
             for (int i = 0; i < fixedMembers.Length; i++)
             {
                 seen.Add(fixedMembers[i]);
+            }
+
+            for (int s = 0; s < schemas.Count; s++)
+            {
+                string schemaPath = "schemas[" + s.ToString(CultureInfo.InvariantCulture) + "]";
+                string[] schemaMembers =
+                {
+                    schemas[s].ValueTypeName,
+                    schemas[s].SerializerTypeName,
+                    schemas[s].SerializerKeyName,
+                };
+                for (int m = 0; m < schemaMembers.Length; m++)
+                {
+                    if (!seen.Add(schemaMembers[m]))
+                    {
+                        diagnostics.Add(
+                            CatalogDiagnosticCode.DuplicateMemberName,
+                            schemaPath,
+                            "generated member name '" + schemaMembers[m] + "' is already declared");
+                    }
+                }
             }
 
             for (int g = 0; g < groups.Count; g++)
@@ -886,6 +924,13 @@ namespace GameCore.Content.Compiler
             HashSet<string> schemaIds = new HashSet<string>(StringComparer.Ordinal);
             List<FactoryRegistration> factories = new List<FactoryRegistration>();
             List<SchemaRegistration> schemaRegistrations = new List<SchemaRegistration>();
+            List<ISchemaSerializer> serializers = new List<ISchemaSerializer>();
+
+            List<Id128> featureIds = new List<Id128>();
+            for (int i = 0; i < features.Count; i++)
+            {
+                featureIds.Add(ParseIdentity(features[i]));
+            }
 
             for (int g = 0; g < groups.Count; g++)
             {
@@ -918,33 +963,113 @@ namespace GameCore.Content.Compiler
                 }
 
                 Id128 serializerKey = StableNameKeyDerivation.Derive(schema.StableName);
+                Id128 schemaId = ParseIdentity(schema.SchemaIdHex);
+                Id128 owner = ParseIdentity(schema.OwnerPackageIdHex);
                 factories.Add(new FactoryRegistration(
                     new FactoryKey(serializerKey, schema.SerializerKeyVersion),
                     FactoryKind.Serializer,
-                    ParseIdentity(schema.OwnerPackageIdHex),
-                    ParseIdentity(schema.SchemaIdHex),
+                    owner,
+                    schemaId,
                     schema.SchemaVersion));
 
                 schemaRegistrations.Add(new SchemaRegistration(
-                    new SchemaRef(new SchemaId(ParseIdentity(schema.SchemaIdHex)), schema.SchemaVersion),
-                    ParseIdentity(schema.OwnerPackageIdHex),
+                    new SchemaRef(new SchemaId(schemaId), schema.SchemaVersion),
+                    owner,
                     new FactoryKey(serializerKey, schema.SerializerKeyVersion),
                     schema.IsRequired));
+
+                // The catalog rule this checks is the binding between a schema and its precompiled serializer.
+                // At generation time the serializer class does not exist yet, so the declaration itself stands
+                // in for it: same key, same schema, and the declared field table, which is what the emitted
+                // class will walk (05 s6).
+                serializers.Add(DeclaredSerializer.Of(
+                    new FactoryKey(serializerKey, schema.SerializerKeyVersion),
+                    new SchemaRef(new SchemaId(schemaId), schema.SchemaVersion),
+                    schema,
+                    featureIds));
             }
 
-            List<Id128> featureIds = new List<Id128>();
-            for (int i = 0; i < features.Count; i++)
-            {
-                featureIds.Add(ParseIdentity(features[i]));
-            }
-
-            CatalogBuildResult build = ImmutableCatalog.Build(factories, schemaRegistrations, featureIds, null);
+            CatalogBuildResult build = ImmutableCatalog.Build(factories, schemaRegistrations, featureIds, serializers);
             if (!build.Succeeded)
             {
                 diagnostics.Add(
                     CatalogDiagnosticCode.InvalidCatalog,
                     string.Empty,
                     "the description does not produce a valid catalog: " + build.Describe());
+            }
+        }
+
+        /// <summary>
+        /// Declaration-time stand-in for the serializer the emitter is about to generate: same registration key,
+        /// same schema, and the same declared field table the generated class will walk. It exists so the
+        /// catalog rule "every schema has a bound precompiled serializer" is checked while the description is
+        /// validated, before any C# exists (P-009, 05 s6).
+        /// </summary>
+        private sealed class DeclaredSerializer : ISchemaSerializer
+        {
+            private readonly GeneratedFieldSlot[] slots;
+            private readonly Id128[] knownFeatureIds;
+
+            private DeclaredSerializer(FactoryKey key, SchemaRef schema, GeneratedFieldSlot[] slots, Id128[] knownFeatureIds)
+            {
+                Key = key;
+                Schema = schema;
+                this.slots = slots;
+                this.knownFeatureIds = knownFeatureIds;
+            }
+
+            public FactoryKey Key { get; }
+
+            public SchemaRef Schema { get; }
+
+            internal static DeclaredSerializer Of(
+                FactoryKey key,
+                SchemaRef schema,
+                CatalogSchemaDeclaration declaration,
+                IReadOnlyList<Id128> knownFeatureIds)
+            {
+                GeneratedFieldSlot[] fieldSlots = new GeneratedFieldSlot[declaration.Fields.Count];
+                for (int i = 0; i < fieldSlots.Length; i++)
+                {
+                    CatalogFieldDeclaration field = declaration.Fields[i];
+                    CatalogWireType? wire = CatalogWireTypes.Find(field.WireType);
+
+                    // An unsupported wire type is already reported as a diagnostic and never reaches this
+                    // declaration, so the fallback is defensive only: the slot still occupies its field id, and
+                    // the description is rejected regardless.
+                    fieldSlots[i] = new GeneratedFieldSlot(
+                        field.FieldId,
+                        wire == null ? WireType.None : wire.WireType,
+                        field.Required);
+                }
+
+                Id128[] features = new Id128[knownFeatureIds.Count];
+                for (int i = 0; i < features.Length; i++)
+                {
+                    features[i] = knownFeatureIds[i];
+                }
+
+                return new DeclaredSerializer(key, schema, fieldSlots, features);
+            }
+
+            /// <summary>
+            /// Validates a document against the declared field table with the same walk the generated class
+            /// performs: header, schema identity, required-feature gate, required declared fields and checksum.
+            /// </summary>
+            public bool TryValidate(byte[] document, out EnvelopeError error)
+            {
+                if (document == null)
+                {
+                    throw new ArgumentNullException(nameof(document));
+                }
+
+                return GeneratedEnvelopeReader.TryReadDeclaredFields(
+                    document,
+                    Schema,
+                    knownFeatureIds,
+                    slots,
+                    new GeneratedFieldBuffer(),
+                    out error);
             }
         }
 

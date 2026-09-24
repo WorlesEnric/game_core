@@ -26,6 +26,7 @@ namespace GameCore.Contracts.Tests
         private static readonly Id128 LayoutKeyId = new Id128(0x2000000000000007UL, 0x0000000000000007UL);
         private static readonly Id128 StatePolicyKeyId = new Id128(0x2000000000000008UL, 0x0000000000000008UL);
         private static readonly Id128 OrderKeyId = new Id128(0x2000000000000009UL, 0x0000000000000009UL);
+        private static readonly Id128 SecondSystemKeyId = new Id128(0x200000000000000AUL, 0x000000000000000AUL);
         private static readonly Id128 UnknownKeyId = new Id128(0x20000000000000FFUL, 0x00000000000000FFUL);
 
         private static readonly Id128 ConfigSchemaId = new Id128(0x3000000000000001UL, 0x0000000000000001UL);
@@ -60,6 +61,7 @@ namespace GameCore.Contracts.Tests
                 new FactoryRegistration(new FactoryKey(LayoutKeyId, 1U), FactoryKind.LayoutApply, PackageId, LayoutKeyId, 1U),
                 new FactoryRegistration(new FactoryKey(StatePolicyKeyId, 1U), FactoryKind.StatePolicy, PackageId, StatePolicyKeyId, 1U),
                 new FactoryRegistration(new FactoryKey(OrderKeyId, 1U), FactoryKind.SystemFactory, PackageId, OrderKeyId, 1U),
+                new FactoryRegistration(new FactoryKey(SecondSystemKeyId, 1U), FactoryKind.SystemFactory, PackageId, SecondSystemKeyId, 1U),
             };
 
             var schemas = new List<SchemaRegistration>
@@ -526,7 +528,7 @@ namespace GameCore.Contracts.Tests
                 null,
                 null);
             var second = new SystemSpec(
-                new FactoryKey(new Id128(0x200000000000000AUL, 0x000000000000000AUL), 1U),
+                new FactoryKey(SecondSystemKeyId, 1U),
                 SystemMultiplicity.World,
                 access,
                 null,
@@ -558,7 +560,7 @@ namespace GameCore.Contracts.Tests
 
             var first = new SystemSpec(new FactoryKey(SystemKeyId, 1U), SystemMultiplicity.World, partitionOne, null, null, null, null);
             var second = new SystemSpec(
-                new FactoryKey(new Id128(0x200000000000000AUL, 0x000000000000000AUL), 1U),
+                new FactoryKey(SecondSystemKeyId, 1U),
                 SystemMultiplicity.World,
                 partitionTwo,
                 null,

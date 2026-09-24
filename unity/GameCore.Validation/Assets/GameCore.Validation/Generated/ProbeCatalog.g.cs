@@ -45,7 +45,7 @@ namespace GameCore.Validation.Generated
         public const string CatalogFingerprintScope = "SHA-256 over, in this fixed order: (1) every registered factory key in canonical ascending order as 16-byte big-endian id, 4-byte big-endian key version, 4-byte big-endian factory kind, 16-byte big-endian owner package id, 16-byte big-endian implementation id, 4-byte big-endian contract version; (2) every accepted schema in ascending schema-id order as 16-byte big-endian id, 4-byte big-endian schema version, one byte 1 when required and 0 when optional, 16-byte big-endian serializer key id, 4-byte big-endian serializer key version, 16-byte big-endian owner package id; (3) every supported feature id in ascending order as 16 bytes. Declaration order, registration timing, machine paths and timestamps are excluded (P-008, P-028, P-053).";
 
         /// <summary>Canonical fingerprint of the registrations below (P-028, P-053).</summary>
-        public const string CatalogFingerprint = "e2fa337839a639c18f6310c1d19bcedbde8e63460e81b45425c4256135c91ac0";
+        public const string CatalogFingerprint = "a4ea6f9190c40054b6733e6bcdfe060f478e77f0f3f8a0020c5a341381d353e7";
 
         /// <summary>Supported protocol feature ids, in canonical identity order (P-055).</summary>
         public static readonly Id128[] SupportedFeatureIds =
@@ -461,6 +461,6 @@ namespace GameCore.Validation.Generated
         public const int SchemaCount = 1;
 
         /// <summary>Hash of the generated source that precedes this declaration.</summary>
-        public const string CatalogFileHash = "089a69d4a8a9045e4b5cfd7df92410d1c1020cdc9d0ae92ec0969278f8214295";
+        public const string CatalogFileHash = "eac391ae0ec4f36a1f897d2879146f427b06ed72092ccb59eaa6987eb6c9ef17";
     }
 }

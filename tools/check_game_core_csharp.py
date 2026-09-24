@@ -52,10 +52,14 @@ def strip_code(text: str) -> str:
         if c == "/" and i + 1 < n and text[i + 1] == "/":
             while i < n and text[i] != "\n":
                 i += 1
+            # Keep the newline: line-oriented checks (missing returns, member scans) depend on line structure.
+            out.append("\n")
             continue
         if c == "/" and i + 1 < n and text[i + 1] == "*":
             i += 2
             while i + 1 < n and not (text[i] == "*" and text[i + 1] == "/"):
+                if text[i] == "\n":
+                    out.append("\n")
                 i += 1
             i += 2
             continue
@@ -85,6 +89,77 @@ def strip_code(text: str) -> str:
         out.append(c)
         i += 1
     return "".join(out)
+
+
+MODIFIERS = {
+    "public", "private", "protected", "internal", "static", "virtual", "override", "sealed", "abstract",
+    "async", "new", "extern", "unsafe", "partial", "readonly", "const", "event", "delegate",
+}
+
+# Return types that never need a `return` statement.
+VOID_LIKE = {"void"}
+
+# Tokens that appear in a declaration-like line but never name a method.
+NOT_A_METHOD = {
+    "if", "while", "for", "foreach", "switch", "catch", "using", "lock", "fixed", "return", "this", "base",
+    "do", "else", "try", "get", "set", "add", "remove", "when",
+}
+
+IDENTIFIER = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+RETURN_TYPE = re.compile(r"^[A-Za-z_][A-Za-z0-9_\.]*(?:\?)?(?:<[^ ]*>)?(?:\[\])*$")
+
+METHOD_TAIL = re.compile(r"\(([^()]*)\)\s*(?:where[^{]*)?$")
+
+
+def check_missing_return(path: Path, code: str, problems: list[str]) -> None:
+    """Flags a non-void method whose block body contains no `return` (C# error CS0161).
+
+    Conservative: it only inspects declarations of the form `<modifiers> <type> <Name>(...)` followed by a line
+    containing only `{`, so constructors, expression-bodied members, properties and lambdas are not matched.
+    """
+    lines = code.split("\n")
+    for index, line in enumerate(lines):
+        stripped = line.strip()
+        if not stripped.endswith(")") or not METHOD_TAIL.search(stripped):
+            continue
+
+        head = stripped[: stripped.rindex("(")].strip()
+        tokens = head.replace("(", " ").split()
+        if len(tokens) < 2:
+            continue
+
+        name = tokens[-1]
+        return_type = tokens[-2]
+        if not IDENTIFIER.match(name) or name in NOT_A_METHOD or name in MODIFIERS:
+            continue
+        if not RETURN_TYPE.match(return_type) or return_type in MODIFIERS or return_type in VOID_LIKE:
+            continue
+
+        # The body must open on the next non-blank line, otherwise this is not a block-bodied method.
+        body_start = None
+        for probe in range(index + 1, min(index + 4, len(lines))):
+            if lines[probe].strip() == "":
+                continue
+            if lines[probe].strip() == "{":
+                body_start = probe
+            break
+
+        if body_start is None:
+            continue
+
+        depth = 0
+        body: list[str] = []
+        for probe in range(body_start, len(lines)):
+            depth += lines[probe].count("{") - lines[probe].count("}")
+            body.append(lines[probe])
+            if depth <= 0 and probe > body_start:
+                break
+
+        joined = "\n".join(body)
+        if not re.search(r"\breturn\b", joined) and "throw " not in joined:
+            problems.append(
+                f"{path}:{index + 1}: non-void method '{name}' has no return statement (CS0161)"
+            )
 
 
 def check_balance(path: Path, text: str, problems: list[str]) -> None:
@@ -130,6 +205,8 @@ def main() -> int:
         text = path.read_text(encoding="utf-8")
         rel = path.relative_to(ROOT)
         check_balance(rel, text, problems)
+
+        check_missing_return(rel, strip_code(text), problems)
 
         for name, pattern in FORBIDDEN.items():
             if pattern.search(strip_code(text)) or pattern.search(text):

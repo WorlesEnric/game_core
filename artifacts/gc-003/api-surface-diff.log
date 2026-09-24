@@ -1,0 +1,64 @@
+# GC-003 contract surface check: non-comment differences between the frozen W0 seam and the production package
+# command: for each copied file, diff <(grep -v '^[[:space:]]*//' seam | grep -v '^[[:space:]]*$') <(same for production)
+# host: Darwin yangdeMac-mini.local 25.3.0 Darwin Kernel Version 25.3.0: Wed Jan 28 20:56:34 PST 2026; root:xnu-12377.91.3~2/RELEASE_ARM64_T8112 arm64 Darwin
+# date_utc: 2026-09-24T21:36:18Z
+
+== Identity/Id128.cs: identical outside comments
+== Identity/GeneratedIdWrappers.cs: identical outside comments
+== Identity/Counters.cs: identical outside comments
+== Identity/Handles.cs: identical outside comments
+== Identity/CanonicalHex.cs: identical outside comments
+== Identity/TimeDebt.cs: identical outside comments
+== Manifest/ManifestEnums.cs: identical outside comments
+== Manifest/SharedValueTypes.cs: identical outside comments
+== Manifest/Declarations.cs: identical outside comments
+== Manifest/PluginManifest.cs: identical outside comments
+== Plans/PlanDeltas.cs: identical outside comments
+== Plans/ChangePlan.cs: identical outside comments
+== Results/Diagnostics.cs: identical outside comments
+== Results/OperationResult.cs: identical outside comments
+== Results/Events.cs: identical outside comments
+== Contracts/HostContracts.cs: identical outside comments
+== Contracts/CompositionHost.cs: identical outside comments
+== Contracts/WorldHost.cs: identical outside comments
+== Contracts/CatalogContract.cs: differences below (expected: additions only)
+--- /dev/fd/106
++++ /dev/fd/107
+@@ -15,6 +15,7 @@
+         LayoutApply = 7,
+         SchemaFactory = 8,
+         StatePolicy = 9,
++        Handler = 10,
+     }
+     public sealed class FactoryRegistration
+     {
+== Serialization/Envelope.cs: differences below (expected: additions only)
+--- /dev/fd/106
++++ /dev/fd/107
+@@ -38,6 +38,8 @@
+         InvalidBooleanValue = 13,
+         FieldIdOutOfRange = 14,
+         UnknownRequiredFeature = 15,
++        MissingRequiredField = 16,
++        DuplicateField = 17,
+     }
+     public static class EnvelopeFormat
+     {
+@@ -388,6 +390,16 @@
+         }
+         public EnvelopeError LastError { get; private set; }
+         public int Position => position;
++        public bool TrySeekTo(int offset)
++        {
++            if (offset < 0 || offset > data.Length)
++            {
++                return Fail(EnvelopeError.Truncated);
++            }
++            position = offset;
++            LastError = EnvelopeError.None;
++            return true;
++        }
+         public bool TryReadHeader(out EnvelopeHeader header)
+         {
+             header = EnvelopeHeader.Current(default(SchemaRef));
+== Serialization/CanonicalMapOrder.cs: identical outside comments

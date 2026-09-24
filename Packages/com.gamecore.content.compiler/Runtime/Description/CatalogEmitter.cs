@@ -24,6 +24,12 @@ namespace GameCore.Content.Compiler
         /// <summary>Rendered name of the generated closed-generic AOT root method.</summary>
         public const string ClosedGenericRootMethodName = "RootClosedGenericInstantiations";
 
+        /// <summary>
+        /// Prefix <see cref="FilePrefixHash"/> returns when the recorded hash does not cover the file content,
+        /// so a caller can distinguish a mismatch verdict from a hash value without a second API.
+        /// </summary>
+        public const string MismatchPrefix = "mismatch:";
+
         /// <summary>Emits the complete generated file (header comments, assembly attributes, catalog class).</summary>
         public static string Emit(CatalogDescription description)
         {
@@ -74,7 +80,7 @@ namespace GameCore.Content.Compiler
 
             string declared = generatedText.Substring(firstQuote + 1, secondQuote - firstQuote - 1);
             string computed = Sha256Hex(hashInput);
-            return string.Equals(declared, computed, StringComparison.Ordinal) ? computed : "mismatch:" + declared;
+            return string.Equals(declared, computed, StringComparison.Ordinal) ? computed : MismatchPrefix + declared;
         }
 
         /// <summary>
@@ -713,6 +719,8 @@ namespace GameCore.Content.Compiler
             builder.Append('\n');
             builder.Append(indent).Append("    value").Append(index.ToString(CultureInfo.InvariantCulture))
                 .Append(" = ").Append(valueVar).Append(";\n");
+            builder.Append(indent).Append("    break;\n");
+            builder.Append(indent).Append("}\n");
         }
 
         private static void EmitCatalogFactory(

@@ -165,6 +165,21 @@ namespace GameCore.Content.Compiler.Tests
         }
 
         [Test]
+        public void GroupMemberCollidingWithAReservedGeneratedMemberRejects()
+        {
+            CatalogCompilationResult result = Read(Descriptions.ReservedMemberCollision);
+            AssertRejected(result, CatalogDiagnosticCode.DuplicateMemberName, "groups[0]");
+            Assert.That(result.Describe(), Does.Contain("Serializers"));
+        }
+
+        [Test]
+        public void SchemaMemberCollidingWithAReservedGeneratedMemberRejects()
+        {
+            CatalogCompilationResult result = Read(Descriptions.ReservedSchemaMemberCollision);
+            AssertRejected(result, CatalogDiagnosticCode.DuplicateMemberName, "schemas[0]");
+        }
+
+        [Test]
         public void MalformedJsonIsReportedAsInvalidDocument()
         {
             CatalogCompilationResult result = Read("{ \"descriptionFormat\": ");
@@ -338,6 +353,43 @@ namespace GameCore.Content.Compiler.Tests
             Assert.That(text, Does.Contain(": GeneratedSerializerBase"));
             Assert.That(text, Does.Contain("public byte[] Serialize("));
             Assert.That(text, Does.Contain("out EnvelopeError error"));
+        }
+
+        [Test]
+        public void EmittedFieldCasesCloseWithBreakAndBraceAndKeepBracesBalanced()
+        {
+            CatalogCompilationResult result = CatalogDescriptionReader.Read(Descriptions.Valid, out CatalogDescription? description);
+            Assert.That(result.Succeeded, Is.True, result.Describe());
+            string text = result.GeneratedCode!;
+
+            int declaredFields = 0;
+            foreach (CatalogSchemaDeclaration schema in description!.Schemas)
+            {
+                declaredFields += schema.Fields.Count;
+            }
+
+            Assert.That(declaredFields, Is.GreaterThan(0));
+            Assert.That(
+                CountOf(text, "                            break;\n"),
+                Is.GreaterThanOrEqualTo(declaredFields),
+                "every field case must terminate with a break so no case falls through (CS0163)");
+
+            int open = CountOf(text, "{");
+            int close = CountOf(text, "}");
+            Assert.That(close, Is.EqualTo(open), "the generated file must have balanced braces (CS1513/CS1022)");
+        }
+
+        private static int CountOf(string text, string needle)
+        {
+            int count = 0;
+            int index = text.IndexOf(needle, StringComparison.Ordinal);
+            while (index >= 0)
+            {
+                count++;
+                index = text.IndexOf(needle, index + needle.Length, StringComparison.Ordinal);
+            }
+
+            return count;
         }
 
         [Test]
@@ -846,6 +898,33 @@ namespace GameCore.Content.Compiler.Tests
   ""className"": ""TestCatalog"",
   ""fileName"": ""TestCatalog.g.cs"",
   ""code"": { ""closedGenericRootStatements"": [""Test.Roots.Track(default(Test.Job<V>));""] }
+}";
+
+        internal const string ReservedMemberCollision = @"{
+  ""descriptionFormat"": ""gamecore.catalog-description/1"",
+  ""protocolVersion"": ""1.0"",
+  ""namespace"": ""Test.Generated"",
+  ""className"": ""TestCatalog"",
+  ""fileName"": ""TestCatalog.g.cs"",
+  ""groups"": [
+    { ""tableName"": ""Serializers"", ""keysName"": ""AKeys"", ""lookupMethodName"": ""TryA"",
+      ""interfaceType"": ""Test.IFactory"", ""kind"": ""PluginFactory"", ""entries"": [] }
+  ]
+}";
+
+        internal const string ReservedSchemaMemberCollision = @"{
+  ""descriptionFormat"": ""gamecore.catalog-description/1"",
+  ""protocolVersion"": ""1.0"",
+  ""namespace"": ""Test.Generated"",
+  ""className"": ""TestCatalog"",
+  ""fileName"": ""TestCatalog.g.cs"",
+  ""schemas"": [
+    { ""stableName"": ""test.schema.record"", ""valueTypeName"": ""SchemaRegistrations"",
+      ""serializerTypeName"": ""RecordSerializer"", ""serializerKeyName"": ""RecordSerializerKey"",
+      ""schemaId"": ""11111111111111112222222222222222"", ""schemaVersion"": 1, ""serializerKeyVersion"": 1,
+      ""ownerPackageId"": ""00000000000000000000000000000000"", ""required"": true, ""fields"": [] }
+  ],
+  ""groups"": []
 }";
 
         internal const string DuplicateJsonMember = @"{ ""descriptionFormat"": ""a"", ""descriptionFormat"": ""b"" }";

@@ -30,6 +30,9 @@ echo "artifacts : ${ARTIFACTS}"
 echo "-- step 1/5: static host-side checks of the C# sources"
 "${PYTHON}" tools/check_game_core_csharp.py | tee "${ARTIFACTS}/static-checks.log"
 
+echo "-- step 1b/5: verify the committed generated catalog without a C# compiler"
+"${PYTHON}" tools/verify_generated_catalog.py | tee "${ARTIFACTS}/generated-catalog-verification.log"
+
 echo "-- step 2/5: documentation validator"
 "${PYTHON}" tools/validate_game_core_docs.py --self-test | tee "${ARTIFACTS}/validator-self-test.log"
 "${PYTHON}" tools/validate_game_core_docs.py | tee "${ARTIFACTS}/validator.log"

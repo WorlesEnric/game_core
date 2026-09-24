@@ -11,8 +11,10 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="../../src/GameCore.ReferenceSeams/GameCore.ReferenceSeams.csproj" />
-  </ItemGroup>
+  <!-- No project reference: the tool loads the assembly under test by path (--assembly) or receives it as a
+       System.Reflection.Assembly argument, so it needs no compile-time dependency on any contract assembly.
+       Referencing the seam here would flow it transitively into every consumer, and because the seam declares
+       the same type names in the same namespace as production GameCore.Contracts, that would make every
+       contract type ambiguous (CS0433) in the consuming test projects. -->
 
 </Project>

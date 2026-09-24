@@ -46,6 +46,9 @@ namespace GameCore.ProtocolFixtures
         /// <summary>Directory holding executed-run evidence documents.</summary>
         public static string ResultDirectory => "artifacts/protocol-fixtures";
 
+        /// <summary>Committed frozen API snapshot of the shared contract surface (W0 reference seam).</summary>
+        public static string ApiSnapshotPath => "tests/GameCore.ReferenceSeams/api/GameCore.Contracts.api.txt";
+
         /// <summary>Finds the repository root, or throws with the searched locations listed.</summary>
         public static string FindRoot()
         {
