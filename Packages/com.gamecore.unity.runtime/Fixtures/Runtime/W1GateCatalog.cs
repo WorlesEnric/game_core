@@ -46,7 +46,7 @@ namespace GameCore.Unity.Fixtures
         };
 
         public W1GateRecordSerializer()
-            : base(W1GateKeys.SerializerKey, W1GateKeys.CatalogSchema, W1GateCatalog.SupportedFeatureIds)
+            : base(W1GateCatalog.SerializerKey, W1GateKeys.CatalogSchema, W1GateCatalog.SupportedFeatureIds)
         {
         }
 

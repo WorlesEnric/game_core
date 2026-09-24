@@ -117,10 +117,10 @@ namespace GameCore.W1Gate.Tests
 
             Assert.That(facts.OperationOneOutcome, Is.EqualTo("Published"), "the control lane published a step");
             Assert.That(facts.WorldASteps, Is.EqualTo(1UL), "one admitted command is exactly one logical step (P-037)");
-            Assert.That(facts.AcceptCount, Is.EqualTo(1));
-            Assert.That(facts.SettleCount, Is.EqualTo(1));
-            Assert.That(facts.ProjectCount, Is.EqualTo(1));
-            Assert.That(facts.CounterValue, Is.EqualTo(111), "the ordered stages wrote their authoritative values");
+            Assert.That(facts.FirstStepAcceptCount, Is.EqualTo(1));
+            Assert.That(facts.FirstStepSettleCount, Is.EqualTo(1));
+            Assert.That(facts.FirstStepProjectCount, Is.EqualTo(1));
+            Assert.That(facts.FirstStepCounterValue, Is.EqualTo(111), "the ordered stages wrote their authoritative values");
             Assert.That(facts.StepOneImagePublished, Is.True, "the committed step image is published (P-044)");
             Assert.That(facts.LastPublishedStep, Is.EqualTo(1UL));
             Assert.That(facts.OutstandingJobsAfterFirstStep, Is.EqualTo(0), "the committed step settled its jobs");

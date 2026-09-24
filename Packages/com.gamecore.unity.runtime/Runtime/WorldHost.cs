@@ -585,6 +585,9 @@ namespace GameCore.Unity.Runtime
             FaultDetail = detail ?? string.Empty;
             FaultCount++;
 
+            // A faulted world can never execute queued commands or wakes; do not expose them as runnable demand.
+            pendingDemand = 0UL;
+
             // Admission stays closed and no epoch or new snapshot is published; the last committed image remains
             // inspectable (P-031).
             observations.NotifyLifecycle(new WorldLifecycleChange(World, previous, lifecycle, code));

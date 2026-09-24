@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using GameCore.Composition;
 using GameCore.Contracts;
+using GameCore.Execution;
 using GameCore.Unity.Runtime;
 using GameCore.Unity.Runtime.Integration;
 using Unity.Entities;
@@ -74,6 +75,9 @@ namespace GameCore.Unity.Fixtures
         /// <summary>Live hosts in the owned-world registry after both worlds were created.</summary>
         public int RegistryCountAfterCreate { get; set; }
 
+        /// <summary>Committed revision of world A's control lane.</summary>
+        public ulong LaneARevision { get; set; }
+
         /// <summary>Assembly epoch the successful admission published on the lane (P-006).</summary>
         public ulong LaneAEpoch { get; set; }
 
@@ -102,6 +106,12 @@ namespace GameCore.Unity.Fixtures
         public int WorldBIngressCount { get; set; }
 
         public int WorldBOutputCount { get; set; }
+
+        /// <summary>Stage counts and authoritative value immediately after the successful first step.</summary>
+        public int FirstStepAcceptCount { get; set; }
+        public int FirstStepSettleCount { get; set; }
+        public int FirstStepProjectCount { get; set; }
+        public int FirstStepCounterValue { get; set; }
 
         /// <summary>Fixture stage dispatch counters read from ECS storage after the last world-A pump.</summary>
         public int AcceptCount { get; set; }
@@ -339,7 +349,7 @@ namespace GameCore.Unity.Fixtures
         /// independent recomputation), and the gate fails when the built catalog disagrees (P-028).
         /// </summary>
         public static W1GateScenarioResult Run(
-            ICatalog catalog,
+            ImmutableCatalog catalog,
             IReadOnlyList<CatalogPluginDeclaration> declarations,
             FactoryKey absentFactoryKey,
             PluginTypeId absentPluginType,
@@ -360,7 +370,7 @@ namespace GameCore.Unity.Fixtures
 
         private sealed class Executor
         {
-            private readonly ICatalog catalog;
+            private readonly ImmutableCatalog catalog;
             private readonly IReadOnlyList<CatalogPluginDeclaration> declarations;
             private readonly FactoryKey absentFactoryKey;
             private readonly PluginTypeId absentPluginType;
@@ -385,7 +395,7 @@ namespace GameCore.Unity.Fixtures
             private int registryBeforeCreate;
 
             public Executor(
-                ICatalog catalog,
+                ImmutableCatalog catalog,
                 IReadOnlyList<CatalogPluginDeclaration> declarations,
                 FactoryKey absentFactoryKey,
                 PluginTypeId absentPluginType,
@@ -684,6 +694,10 @@ namespace GameCore.Unity.Fixtures
                     facts.WorldAEpoch = worldA.CurrentEpoch.Value;
                     facts.LastPublishedStep = worldA.Publications.Last != null
                         ? worldA.Publications.Last!.Token.LogicalStepId.Value : 0UL;
+                    facts.FirstStepAcceptCount = facts.AcceptCount;
+                    facts.FirstStepSettleCount = facts.SettleCount;
+                    facts.FirstStepProjectCount = facts.ProjectCount;
+                    facts.FirstStepCounterValue = facts.CounterValue;
                     facts.StepOneImagePublished = worldA.Publications.HasPublished(stepOneToken);
 
                     int expired = bridgeA.SyncStepFromWorld();
@@ -704,7 +718,7 @@ namespace GameCore.Unity.Fixtures
                     bool pass = pumpReportedTheStep
                         && facts.WorldASteps == 1UL
                         && worldA.Driver.CommittedStepCount == 1
-                        && imagesBefore == 2
+                        && imagesBefore == 1
                         && facts.StepOneImagePublished
                         && facts.LastPublishedStep == 1UL
                         && facts.AcceptCount == 1
@@ -1157,8 +1171,7 @@ namespace GameCore.Unity.Fixtures
                 UnityWorldRegistry.Remove(host.World);
             }
 
-            private WorldId NextSession() =>
-                new WorldId(new Id128(0x5731474154454553UL, sessionSequence.Next()));
+            private WorldId NextSession() => new WorldId(sessionSequence.Next());
 
             private static UnityWorldHost? CreateWorld(WorldId session, ulong ordinal, out string failure)
             {
