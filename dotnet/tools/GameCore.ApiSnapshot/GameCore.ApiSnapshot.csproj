@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- API snapshot generator (GC-002). Tooling only: reflection over a compiled assembly is allowed here.
+       The snapshot test project links this project and regenerates the listing in-process. -->
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>GameCore.ApiSnapshot</AssemblyName>
+    <RootNamespace>GameCore.ApiSnapshot</RootNamespace>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/GameCore.ReferenceSeams/GameCore.ReferenceSeams.csproj" />
+  </ItemGroup>
+
+</Project>

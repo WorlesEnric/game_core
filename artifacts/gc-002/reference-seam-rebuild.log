@@ -1,0 +1,10 @@
+$ dotnet build dotnet/src/GameCore.ReferenceSeams/GameCore.ReferenceSeams.csproj -c Release -t:Rebuild -p:LangVersion=9.0 -p:TargetFramework=netstandard2.1 -p:TreatWarningsAsErrors=true --no-restore
+  GameCore.ReferenceSeams -> /home/worlesenric/wkspace/game_core/dotnet/src/GameCore.ReferenceSeams/bin/Release/netstandard2.1/GameCore.ReferenceSeams.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:00.37
+
+Exit code: 0

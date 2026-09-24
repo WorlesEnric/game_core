@@ -34,7 +34,7 @@ The supplied request first requested Chinese and finally required all documents 
 
 “Ownership” here names document responsibility, not an assumed person/team. Protocol changes require an update to 00, affected implementation mappings, examples, and acceptance tests in one change. A Unity API detail belongs in 04, not a new rule in 03. Example packages may choose different semantics without editing the kernel. If implementation discovers a contradiction, correct the source requirement before modifying mappings; do not silently redefine a term locally.
 
-The previous [single-file design](../Game_Core_Implementation_Design_v1.md) is retained as historical input only. Its Arch candidate, combat protocol, and conservative default are superseded. Nothing in that file overrides this set.
+The previous single-file design (`Game_Core_Implementation_Design_v1.md`, not part of this repository's tracked files) is retained as historical input only. Its Arch candidate, combat protocol, and conservative default are superseded. Nothing in that file overrides this set.
 
 ## Evidence and maintenance
 

@@ -1,0 +1,107 @@
+[
+  {
+    "args": [
+      "dotnet",
+      "build",
+      "dotnet/GameCore.sln",
+      "-c",
+      "Release",
+      "-t:Rebuild",
+      "-p:LangVersion=9.0",
+      "-p:TreatWarningsAsErrors=true"
+    ],
+    "exit": 0,
+    "log": "artifacts/gc-002/round-2/strict-rebuild.log"
+  },
+  {
+    "args": [
+      "dotnet",
+      "run",
+      "--project",
+      "dotnet/tools/GameCore.ApiSnapshot",
+      "-c",
+      "Release",
+      "--",
+      "--assembly",
+      "dotnet/src/GameCore.ReferenceSeams/bin/Release/netstandard2.1/GameCore.ReferenceSeams.dll",
+      "--output",
+      "tests/GameCore.ReferenceSeams/api/GameCore.Contracts.api.txt",
+      "--namespace",
+      "GameCore.Contracts"
+    ],
+    "exit": 0,
+    "log": "artifacts/gc-002/round-2/snapshot-generation.log"
+  },
+  {
+    "args": [
+      "dotnet",
+      "--info"
+    ],
+    "exit": 0,
+    "log": "artifacts/gc-002/round-2/host-dotnet.log"
+  },
+  {
+    "args": [
+      "uname",
+      "-a"
+    ],
+    "exit": 0,
+    "log": "artifacts/gc-002/round-2/host-kernel.log"
+  },
+  {
+    "args": [
+      "python3",
+      "--version"
+    ],
+    "exit": 0,
+    "log": "artifacts/gc-002/round-2/host-python.log"
+  },
+  {
+    "args": [
+      "dotnet",
+      "msbuild",
+      "dotnet/src/GameCore.ReferenceSeams/GameCore.ReferenceSeams.csproj",
+      "-getProperty:TargetFramework,LangVersion,TreatWarningsAsErrors,Nullable,EnableNETAnalyzers"
+    ],
+    "exit": 0,
+    "log": "artifacts/gc-002/round-2/reference-seam-properties.log"
+  },
+  {
+    "args": [
+      "dotnet",
+      "msbuild",
+      "dotnet/src/GameCore.ProtocolFixtures/GameCore.ProtocolFixtures.csproj",
+      "-getProperty:TargetFramework,LangVersion,TreatWarningsAsErrors,Nullable,EnableNETAnalyzers"
+    ],
+    "exit": 0,
+    "log": "artifacts/gc-002/round-2/protocol-fixture-properties.log"
+  },
+  {
+    "args": [
+      "dotnet",
+      "run",
+      "--project",
+      "dotnet/tools/GameCore.ApiSnapshot",
+      "-c",
+      "Release",
+      "--",
+      "--assembly",
+      "dotnet/src/GameCore.ReferenceSeams/bin/Release/netstandard2.1/GameCore.ReferenceSeams.dll",
+      "--output",
+      "/tmp/gc002-round2-snapshot-1praxj7i/second.api.txt",
+      "--namespace",
+      "GameCore.Contracts"
+    ],
+    "exit": 0,
+    "log": "artifacts/gc-002/round-2/snapshot-regeneration.log"
+  },
+  {
+    "args": [
+      "cmp",
+      "tests/GameCore.ReferenceSeams/api/GameCore.Contracts.api.txt",
+      "/tmp/gc002-round2-snapshot-1praxj7i/second.api.txt"
+    ],
+    "exit": 0,
+    "log": "artifacts/gc-002/round-2/snapshot-comparison.log"
+  }
+]

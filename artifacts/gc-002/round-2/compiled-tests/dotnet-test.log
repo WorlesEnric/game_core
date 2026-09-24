@@ -1,0 +1,82 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  GameCore.ReferenceSeams -> /home/worlesenric/wkspace/game_core/dotnet/src/GameCore.ReferenceSeams/bin/Release/netstandard2.1/GameCore.ReferenceSeams.dll
+  GameCore.ProtocolFixtures -> /home/worlesenric/wkspace/game_core/dotnet/src/GameCore.ProtocolFixtures/bin/Release/netstandard2.1/GameCore.ProtocolFixtures.dll
+  GameCore.ApiSnapshot -> /home/worlesenric/wkspace/game_core/dotnet/tools/GameCore.ApiSnapshot/bin/Release/net8.0/GameCore.ApiSnapshot.dll
+  GameCore.ProtocolFixtures.Tests -> /home/worlesenric/wkspace/game_core/dotnet/tests/GameCore.ProtocolFixtures.Tests/bin/Release/net8.0/GameCore.ProtocolFixtures.Tests.dll
+Test run for /home/worlesenric/wkspace/game_core/dotnet/tests/GameCore.ProtocolFixtures.Tests/bin/Release/net8.0/GameCore.ProtocolFixtures.Tests.dll (.NETCoreApp,Version=v8.0)
+  GameCore.ReferenceSeams.Tests -> /home/worlesenric/wkspace/game_core/dotnet/tests/GameCore.ReferenceSeams.Tests/bin/Release/net8.0/GameCore.ReferenceSeams.Tests.dll
+Test run for /home/worlesenric/wkspace/game_core/dotnet/tests/GameCore.ReferenceSeams.Tests/bin/Release/net8.0/GameCore.ReferenceSeams.Tests.dll (.NETCoreApp,Version=v8.0)
+VSTest version 17.11.1 (x64)
+
+VSTest version 17.11.1 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+  Failed EveryCaseExecutesAndMatchesItsExpectation [13 ms]
+  Error Message:
+     Fixture cases did not match their expectation (no case may be NotRun or Blocked in a delivered run):
+  envelope-field-types-round-trip -> Fail: expected valid; observed FieldCountMismatch (decoded 5 of 14 fields)
+  envelope-nan-canonicalized -> Fail: expected valid; observed NaNNotCanonical (float32 NaN bits 0x00000000)
+  hex-parsing-canonical-form-only -> Fail: expected valid; observed ParserDisagreement (candidate 3 '0102030405060708090a0b0c0d0e0f1A': oracle True, seam False)
+  Expected: <empty>
+  But was:  < "envelope-field-types-round-trip -> Fail: expected valid; observed FieldCountMismatch (decoded 5 of 14 fields)", "envelope-nan-canonicalized -> Fail: expected valid; observed NaNNotCanonical (float32 NaN bits 0x00000000)", "hex-parsing-canonical-form-only -> Fail: expected valid; observed ParserDisagreement (candidate 3 '0102030405060708090a0b0c0d0e0f1A': oracle True, seam False)" >
+
+  Stack Trace:
+     at GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests.EveryCaseExecutesAndMatchesItsExpectation() in /home/worlesenric/wkspace/game_core/dotnet/tests/GameCore.ProtocolFixtures.Tests/ProtocolFixtureTests.cs:line 86
+
+1)    at GameCore.ProtocolFixtures.Tests.ProtocolFixtureTests.EveryCaseExecutesAndMatchesItsExpectation() in /home/worlesenric/wkspace/game_core/dotnet/tests/GameCore.ProtocolFixtures.Tests/ProtocolFixtureTests.cs:line 86
+
+
+Results File: /home/worlesenric/wkspace/game_core/dotnet/tests/GameCore.ProtocolFixtures.Tests/TestResults/_worlesenric_2026-09-25_05_02_38.trx
+
+Failed!  - Failed:     1, Passed:     9, Skipped:     0, Total:    10, Duration: 31 ms - GameCore.ProtocolFixtures.Tests.dll (net8.0)
+  Failed SeamApiSnapshotMatchesCommittedFile [21 ms]
+  Error Message:
+   Committed API snapshot still carries the placeholder header '# snapshot pending generation on build host', so no seam surface has been frozen yet. The generated listing has 1817 lines.
+Regenerate on the build host with:
+  dotnet run --project dotnet/tools/GameCore.ApiSnapshot -c Release -- --assembly dotnet/src/GameCore.ReferenceSeams/bin/Release/netstandard2.1/GameCore.ReferenceSeams.dll --output tests/GameCore.ReferenceSeams/api/GameCore.Contracts.api.txt --namespace GameCore.Contracts
+  Stack Trace:
+     at GameCore.ReferenceSeams.Tests.ApiSnapshotTests.SeamApiSnapshotMatchesCommittedFile() in /home/worlesenric/wkspace/game_core/dotnet/tests/GameCore.ReferenceSeams.Tests/ApiSnapshotTests.cs:line 39
+
+1)    at GameCore.ReferenceSeams.Tests.ApiSnapshotTests.SeamApiSnapshotMatchesCommittedFile() in /home/worlesenric/wkspace/game_core/dotnet/tests/GameCore.ReferenceSeams.Tests/ApiSnapshotTests.cs:line 39
+
+
+  Failed ExecutionDriverRetainsTimeDebtAndStopsDispatchAtTheFailingEntry [8 ms]
+  Error Message:
+     Expected: Published
+  But was:  Rejected
+
+  Stack Trace:
+     at GameCore.ReferenceSeams.Tests.SeamContractTests.ExecutionDriverRetainsTimeDebtAndStopsDispatchAtTheFailingEntry() in /home/worlesenric/wkspace/game_core/dotnet/tests/GameCore.ReferenceSeams.Tests/SeamContractTests.cs:line 335
+
+1)    at GameCore.ReferenceSeams.Tests.SeamContractTests.ExecutionDriverRetainsTimeDebtAndStopsDispatchAtTheFailingEntry() in /home/worlesenric/wkspace/game_core/dotnet/tests/GameCore.ReferenceSeams.Tests/SeamContractTests.cs:line 335
+
+
+  Failed HostLedgerKeepsTheOriginalResultOnConflictingReuse [< 1 ms]
+  Error Message:
+     Expected: True
+  But was:  False
+
+  Stack Trace:
+     at GameCore.ReferenceSeams.Tests.SeamContractTests.HostLedgerKeepsTheOriginalResultOnConflictingReuse() in /home/worlesenric/wkspace/game_core/dotnet/tests/GameCore.ReferenceSeams.Tests/SeamContractTests.cs:line 110
+
+1)    at GameCore.ReferenceSeams.Tests.SeamContractTests.HostLedgerKeepsTheOriginalResultOnConflictingReuse() in /home/worlesenric/wkspace/game_core/dotnet/tests/GameCore.ReferenceSeams.Tests/SeamContractTests.cs:line 110
+
+
+  Failed ObservationReaderReturnsExpiryAndBackpressureInsteadOfThrowing [1 ms]
+  Error Message:
+     Expected: True
+  But was:  False
+
+  Stack Trace:
+     at GameCore.ReferenceSeams.Tests.SeamContractTests.ObservationReaderReturnsExpiryAndBackpressureInsteadOfThrowing() in /home/worlesenric/wkspace/game_core/dotnet/tests/GameCore.ReferenceSeams.Tests/SeamContractTests.cs:line 187
+
+1)    at GameCore.ReferenceSeams.Tests.SeamContractTests.ObservationReaderReturnsExpiryAndBackpressureInsteadOfThrowing() in /home/worlesenric/wkspace/game_core/dotnet/tests/GameCore.ReferenceSeams.Tests/SeamContractTests.cs:line 187
+
+
+Results File: /home/worlesenric/wkspace/game_core/dotnet/tests/GameCore.ReferenceSeams.Tests/TestResults/_worlesenric_2026-09-25_05_02_38.trx
+
+Failed!  - Failed:     4, Passed:    17, Skipped:     0, Total:    21, Duration: 100 ms - GameCore.ReferenceSeams.Tests.dll (net8.0)

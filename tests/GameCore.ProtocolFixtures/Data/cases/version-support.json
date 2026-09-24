@@ -1,0 +1,129 @@
+{
+  "$comment": "Protocol version interpretation (P-055, TEST-024): majors are incompatible, minors are accepted inside the declared window, and an unknown required feature rejects before mount with no silent fallback.",
+  "cases": [
+    {
+      "caseId": "version-window-accepts-host-minor",
+      "title": "a manifest window containing the host minor version is accepted",
+      "requirementIds": ["P-055"],
+      "testIds": ["TEST-024"],
+      "kind": "versionSupport",
+      "expected": { "outcome": "valid" },
+      "parameters": {
+        "hostMajor": 1,
+        "hostMinor": 0,
+        "manifestMajor": 1,
+        "minMinor": 0,
+        "maxMinor": 3
+      }
+    },
+    {
+      "caseId": "version-minor-extension-accepted",
+      "title": "a minor extension inside the window does not change existing semantics",
+      "requirementIds": ["P-055"],
+      "testIds": ["TEST-024"],
+      "kind": "versionSupport",
+      "expected": { "outcome": "valid" },
+      "parameters": {
+        "hostMajor": 1,
+        "hostMinor": 3,
+        "manifestMajor": 1,
+        "minMinor": 0,
+        "maxMinor": 3
+      }
+    },
+    {
+      "caseId": "version-major-mismatch-rejected",
+      "title": "a different protocol major is incompatible",
+      "requirementIds": ["P-055"],
+      "testIds": ["TEST-024"],
+      "kind": "versionSupport",
+      "expected": { "outcome": "invalid", "code": "UnsupportedVersion" },
+      "parameters": {
+        "hostMajor": 2,
+        "hostMinor": 0,
+        "manifestMajor": 1,
+        "minMinor": 0,
+        "maxMinor": 3
+      }
+    },
+    {
+      "caseId": "version-host-minor-below-window-rejected",
+      "title": "a host older than the manifest minimum minor rejects",
+      "requirementIds": ["P-055"],
+      "testIds": ["TEST-024"],
+      "kind": "versionSupport",
+      "expected": { "outcome": "invalid", "code": "UnsupportedVersion" },
+      "parameters": {
+        "hostMajor": 1,
+        "hostMinor": 0,
+        "manifestMajor": 1,
+        "minMinor": 2,
+        "maxMinor": 3
+      }
+    },
+    {
+      "caseId": "version-host-minor-above-window-rejected",
+      "title": "a host newer than the manifest maximum minor rejects",
+      "requirementIds": ["P-055"],
+      "testIds": ["TEST-024"],
+      "kind": "versionSupport",
+      "expected": { "outcome": "invalid", "code": "UnsupportedVersion" },
+      "parameters": {
+        "hostMajor": 1,
+        "hostMinor": 5,
+        "manifestMajor": 1,
+        "minMinor": 0,
+        "maxMinor": 3
+      }
+    },
+    {
+      "caseId": "version-unknown-required-feature-rejected",
+      "title": "an unknown required feature rejects before mount",
+      "requirementIds": ["P-055"],
+      "testIds": ["TEST-024"],
+      "kind": "versionSupport",
+      "expected": { "outcome": "invalid", "code": "UnsupportedVersion" },
+      "parameters": {
+        "hostMajor": 1,
+        "hostMinor": 0,
+        "knownFeatures": ["00000000000000a10000000000000001"],
+        "manifestMajor": 1,
+        "minMinor": 0,
+        "maxMinor": 3,
+        "requiredFeatures": ["00000000000000a10000000000000002"]
+      }
+    },
+    {
+      "caseId": "version-known-required-feature-accepted",
+      "title": "a known required feature passes the gate",
+      "requirementIds": ["P-055"],
+      "testIds": ["TEST-024"],
+      "kind": "versionSupport",
+      "expected": { "outcome": "valid" },
+      "parameters": {
+        "hostMajor": 1,
+        "hostMinor": 0,
+        "knownFeatures": ["00000000000000a10000000000000001"],
+        "manifestMajor": 1,
+        "minMinor": 0,
+        "maxMinor": 3,
+        "requiredFeatures": ["00000000000000a10000000000000001"]
+      }
+    },
+    {
+      "caseId": "version-inverted-window-rejected",
+      "title": "an inverted minor window is a malformed declaration and rejects",
+      "requirementIds": ["P-055"],
+      "testIds": ["TEST-024"],
+      "kind": "versionSupport",
+      "expected": { "outcome": "invalid", "code": "UnsupportedVersion" },
+      "parameters": {
+        "hostMajor": 1,
+        "hostMinor": 1,
+        "manifestMajor": 1,
+        "minMinor": 3,
+        "maxMinor": 1
+      }
+    }
+  ]
+}

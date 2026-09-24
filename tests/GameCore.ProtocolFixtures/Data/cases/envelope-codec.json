@@ -1,0 +1,202 @@
+{
+  "$comment": "Serialization envelope rules from 05 s6 and P-054. These probes deliberately drive the seam's own envelope codec: the envelope is a codec whose declared read/write rules are what the fixtures pin down. Byte-level documents the writer would refuse are hand-assembled so the reader's limit checks are exercisable.",
+  "cases": [
+    {
+      "caseId": "envelope-checksum-round-trip",
+      "title": "a written document verifies against its trailing checksum",
+      "requirementIds": ["P-054"],
+      "testIds": ["TEST-024"],
+      "kind": "envelopeCodec",
+      "expected": { "outcome": "valid" },
+      "parameters": {
+        "schemaId": "00000000000000ab0000000000000001",
+        "schemaVersion": 1,
+        "probe": "checksumRoundTrip"
+      }
+    },
+    {
+      "caseId": "envelope-checksum-detects-corruption",
+      "title": "one flipped covered byte fails checksum verification",
+      "requirementIds": ["P-054"],
+      "testIds": ["TEST-024"],
+      "kind": "envelopeCodec",
+      "expected": { "outcome": "invalid", "code": "ChecksumMismatch" },
+      "parameters": {
+        "schemaId": "00000000000000ab0000000000000001",
+        "schemaVersion": 1,
+        "probe": "checksumTamper"
+      }
+    },
+    {
+      "caseId": "envelope-field-types-round-trip",
+      "title": "every writable wire type round-trips, including signed integers and IEEE-754 bits",
+      "requirementIds": ["P-054"],
+      "testIds": ["TEST-024"],
+      "kind": "envelopeCodec",
+      "expected": { "outcome": "valid" },
+      "parameters": {
+        "schemaId": "00000000000000ab0000000000000001",
+        "schemaVersion": 1,
+        "probe": "fieldTypeRoundTrip"
+      }
+    },
+    {
+      "caseId": "envelope-nan-canonicalized",
+      "title": "two different NaN payloads both read back as the single canonical quiet NaN",
+      "requirementIds": ["P-054"],
+      "testIds": ["TEST-024"],
+      "kind": "envelopeCodec",
+      "expected": { "outcome": "valid" },
+      "parameters": {
+        "schemaId": "00000000000000ab0000000000000001",
+        "schemaVersion": 1,
+        "probe": "canonicalNaN"
+      }
+    },
+    {
+      "caseId": "envelope-unknown-required-feature-rejected",
+      "title": "a document whose required feature is unknown rejects before the body is used",
+      "requirementIds": ["P-054", "P-055"],
+      "testIds": ["TEST-024"],
+      "kind": "envelopeCodec",
+      "expected": { "outcome": "invalid", "code": "UnknownRequiredFeature" },
+      "parameters": {
+        "schemaId": "00000000000000ab0000000000000001",
+        "schemaVersion": 1,
+        "probe": "unknownRequiredFeature"
+      }
+    },
+    {
+      "caseId": "envelope-known-required-feature-accepted",
+      "title": "a document whose required feature is known is accepted",
+      "requirementIds": ["P-055"],
+      "testIds": ["TEST-024"],
+      "kind": "envelopeCodec",
+      "expected": { "outcome": "valid" },
+      "parameters": {
+        "schemaId": "00000000000000ab0000000000000001",
+        "schemaVersion": 1,
+        "probe": "knownRequiredFeature"
+      }
+    },
+    {
+      "caseId": "envelope-field-id-zero-refused-on-write",
+      "title": "field id 0 is reserved for the checksum and is refused as a caller field",
+      "requirementIds": ["P-054"],
+      "testIds": ["TEST-024"],
+      "kind": "envelopeCodec",
+      "expected": { "outcome": "invalid", "code": "FieldIdOutOfRange" },
+      "parameters": {
+        "schemaId": "00000000000000ab0000000000000001",
+        "schemaVersion": 1,
+        "probe": "writerFieldIdZero"
+      }
+    },
+    {
+      "caseId": "envelope-field-id-negative-refused-on-write",
+      "title": "a field id outside the positive 31-bit range is refused on write",
+      "requirementIds": ["P-054"],
+      "testIds": ["TEST-024"],
+      "kind": "envelopeCodec",
+      "expected": { "outcome": "invalid", "code": "FieldIdOutOfRange" },
+      "parameters": {
+        "schemaId": "00000000000000ab0000000000000001",
+        "schemaVersion": 1,
+        "probe": "writerFieldIdTooLarge"
+      }
+    },
+    {
+      "caseId": "envelope-list-count-over-limit-refused-on-write",
+      "title": "a list header above the maximum element count is refused on write",
+      "requirementIds": ["P-054"],
+      "testIds": ["TEST-024"],
+      "kind": "envelopeCodec",
+      "expected": { "outcome": "invalid", "code": "ListBoundsRefused" },
+      "parameters": {
+        "schemaId": "00000000000000ab0000000000000001",
+        "schemaVersion": 1,
+        "probe": "writerListHeaderOverLimit"
+      }
+    },
+    {
+      "caseId": "envelope-list-bytes-over-limit-refused-on-write",
+      "title": "a list header above the maximum byte length is refused on write",
+      "requirementIds": ["P-054"],
+      "testIds": ["TEST-024"],
+      "kind": "envelopeCodec",
+      "expected": { "outcome": "invalid", "code": "ListBoundsRefused" },
+      "parameters": {
+        "schemaId": "00000000000000ab0000000000000001",
+        "schemaVersion": 1,
+        "probe": "writerListBytesOverLimit"
+      }
+    },
+    {
+      "caseId": "envelope-bool-byte-value-rejected",
+      "title": "a bool field carrying a byte other than 0 or 1 is rejected",
+      "requirementIds": ["P-054"],
+      "testIds": ["TEST-024"],
+      "kind": "envelopeCodec",
+      "expected": { "outcome": "invalid", "code": "InvalidBooleanValue" },
+      "parameters": {
+        "schemaId": "00000000000000ab0000000000000001",
+        "schemaVersion": 1,
+        "probe": "readerBoolByte"
+      }
+    },
+    {
+      "caseId": "envelope-field-id-out-of-range-on-read",
+      "title": "a field id above the positive 31-bit range is rejected before it is indexed",
+      "requirementIds": ["P-054"],
+      "testIds": ["TEST-024"],
+      "kind": "envelopeCodec",
+      "expected": { "outcome": "invalid", "code": "FieldIdOutOfRange" },
+      "parameters": {
+        "schemaId": "00000000000000ab0000000000000001",
+        "schemaVersion": 1,
+        "probe": "readerFieldIdOutOfRange"
+      }
+    },
+    {
+      "caseId": "envelope-list-count-over-limit-on-read",
+      "title": "a declared list count above the maximum is rejected before allocation",
+      "requirementIds": ["P-054"],
+      "testIds": ["TEST-024"],
+      "kind": "envelopeCodec",
+      "expected": { "outcome": "invalid", "code": "ListCountExceeded" },
+      "parameters": {
+        "schemaId": "00000000000000ab0000000000000001",
+        "schemaVersion": 1,
+        "probe": "readerListCountExceeded",
+        "declaredCount": 70000
+      }
+    },
+    {
+      "caseId": "envelope-list-bytes-over-limit-on-read",
+      "title": "a declared list byte length above the maximum is rejected before allocation",
+      "requirementIds": ["P-054"],
+      "testIds": ["TEST-024"],
+      "kind": "envelopeCodec",
+      "expected": { "outcome": "invalid", "code": "ListTooLarge" },
+      "parameters": {
+        "schemaId": "00000000000000ab0000000000000001",
+        "schemaVersion": 1,
+        "probe": "readerListTooLarge",
+        "declaredBytes": 600000
+      }
+    },
+    {
+      "caseId": "envelope-truncated-field-rejected",
+      "title": "a field claiming more bytes than the document holds is rejected as truncated",
+      "requirementIds": ["P-054"],
+      "testIds": ["TEST-024"],
+      "kind": "envelopeCodec",
+      "expected": { "outcome": "invalid", "code": "Truncated" },
+      "parameters": {
+        "schemaId": "00000000000000ab0000000000000001",
+        "schemaVersion": 1,
+        "probe": "readerTruncatedField"
+      }
+    }
+  ]
+}

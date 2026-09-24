@@ -1,0 +1,53 @@
+{
+  "$comment": "Canonical stable-ID byte order (P-004, P-008). Words are written high first, each big-endian; platform Guid memory order is never canonical.",
+  "cases": [
+    {
+      "caseId": "id-canonical-bytes-word-order",
+      "title": "canonical bytes are the high word then the low word, each big-endian",
+      "requirementIds": ["P-004", "P-008"],
+      "testIds": ["TEST-002", "TEST-022"],
+      "kind": "idCanonicalBytes",
+      "expected": { "outcome": "valid" },
+      "parameters": {
+        "id": "0102030405060708090a0b0c0d0e0f10",
+        "expectedBytesHex": "0102030405060708090a0b0c0d0e0f10"
+      }
+    },
+    {
+      "caseId": "id-canonical-bytes-high-word-bit",
+      "title": "the most significant bit of the high word is written first",
+      "requirementIds": ["P-004", "P-008"],
+      "testIds": ["TEST-002"],
+      "kind": "idCanonicalBytes",
+      "expected": { "outcome": "valid" },
+      "parameters": {
+        "id": "00000000000000018000000000000000",
+        "expectedBytesHex": "00000000000000018000000000000000"
+      }
+    },
+    {
+      "caseId": "id-canonical-bytes-zero-high-word",
+      "title": "a zero high word still occupies the first eight canonical bytes",
+      "requirementIds": ["P-004"],
+      "testIds": ["TEST-002"],
+      "kind": "idCanonicalBytes",
+      "expected": { "outcome": "valid" },
+      "parameters": {
+        "id": "0000000000000000ffffffffffffffff",
+        "expectedBytesHex": "0000000000000000ffffffffffffffff"
+      }
+    },
+    {
+      "caseId": "id-canonical-bytes-word-swapped-detected",
+      "title": "a word-swapped expectation is detected instead of accepted",
+      "requirementIds": ["P-004", "P-008"],
+      "testIds": ["TEST-002"],
+      "kind": "idCanonicalBytes",
+      "expected": { "outcome": "invalid", "code": "CanonicalBytesMismatch" },
+      "parameters": {
+        "id": "0102030405060708090a0b0c0d0e0f10",
+        "expectedBytesHex": "0807060504030201100f0e0d0c0b0a09"
+      }
+    }
+  ]
+}

@@ -1,0 +1,553 @@
+{
+  "schemaVersion": 1,
+  "status": "Executed",
+  "generatedBy": "dotnet/tests/GameCore.ProtocolFixtures.Tests",
+  "cases": [
+    {
+      "caseId": "oracle-references-no-engine-or-gameplay-assembly",
+      "requirementIds": [
+        "P-001",
+        "P-057"
+      ],
+      "testId": "TEST-021",
+      "outcome": "Pass",
+      "detail": "expected valid; observed valid (GameCore.ProtocolFixtures references 3 assemblies, none of them engine or gameplay)"
+    },
+    {
+      "caseId": "reference-seam-references-no-engine-or-gameplay-assembly",
+      "requirementIds": [
+        "P-001",
+        "P-057"
+      ],
+      "testId": "TEST-021",
+      "outcome": "Pass",
+      "detail": "expected valid; observed valid (GameCore.ReferenceSeams references 1 assemblies, none of them engine or gameplay)"
+    },
+    {
+      "caseId": "diagnostic-codes-complete-and-round-trip",
+      "requirementIds": [
+        "P-052",
+        "P-055"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected valid; observed valid (every code literal round-trips; an unknown literal is rejected)"
+    },
+    {
+      "caseId": "envelope-checksum-round-trip",
+      "requirementIds": [
+        "P-054"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected valid; observed valid (checksum 1673cf42bb7bff4d verified)"
+    },
+    {
+      "caseId": "envelope-checksum-detects-corruption",
+      "requirementIds": [
+        "P-054"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected invalid(ChecksumMismatch); observed ChecksumMismatch (checksum rejected)"
+    },
+    {
+      "caseId": "envelope-field-types-round-trip",
+      "requirementIds": [
+        "P-054"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected valid; observed valid (12 field types plus 2 list elements round-tripped bit-exactly)"
+    },
+    {
+      "caseId": "envelope-nan-canonicalized",
+      "requirementIds": [
+        "P-054"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected valid; observed valid (both NaN payloads became the canonical quiet NaN)"
+    },
+    {
+      "caseId": "envelope-unknown-required-feature-rejected",
+      "requirementIds": [
+        "P-054",
+        "P-055"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected invalid(UnknownRequiredFeature); observed UnknownRequiredFeature (declared features were refused)"
+    },
+    {
+      "caseId": "envelope-known-required-feature-accepted",
+      "requirementIds": [
+        "P-055"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected valid; observed valid (one required feature accepted)"
+    },
+    {
+      "caseId": "envelope-field-id-zero-refused-on-write",
+      "requirementIds": [
+        "P-054"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected invalid(FieldIdOutOfRange); observed FieldIdOutOfRange (field id 0 refused on write)"
+    },
+    {
+      "caseId": "envelope-field-id-negative-refused-on-write",
+      "requirementIds": [
+        "P-054"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected invalid(FieldIdOutOfRange); observed FieldIdOutOfRange (field id -2147483648 refused on write)"
+    },
+    {
+      "caseId": "envelope-list-count-over-limit-refused-on-write",
+      "requirementIds": [
+        "P-054"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected invalid(ListBoundsRefused); observed ListBoundsRefused (list header refused on write)"
+    },
+    {
+      "caseId": "envelope-list-bytes-over-limit-refused-on-write",
+      "requirementIds": [
+        "P-054"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected invalid(ListBoundsRefused); observed ListBoundsRefused (list header refused on write)"
+    },
+    {
+      "caseId": "envelope-bool-byte-value-rejected",
+      "requirementIds": [
+        "P-054"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected invalid(InvalidBooleanValue); observed InvalidBooleanValue (field 1:Bool(1) rejected)"
+    },
+    {
+      "caseId": "envelope-field-id-out-of-range-on-read",
+      "requirementIds": [
+        "P-054"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected invalid(FieldIdOutOfRange); observed FieldIdOutOfRange (field header rejected)"
+    },
+    {
+      "caseId": "envelope-list-count-over-limit-on-read",
+      "requirementIds": [
+        "P-054"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected invalid(ListCountExceeded); observed ListCountExceeded (field 1:List(8) rejected)"
+    },
+    {
+      "caseId": "envelope-list-bytes-over-limit-on-read",
+      "requirementIds": [
+        "P-054"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected invalid(ListTooLarge); observed ListTooLarge (field 1:List(8) rejected)"
+    },
+    {
+      "caseId": "envelope-truncated-field-rejected",
+      "requirementIds": [
+        "P-054"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected invalid(Truncated); observed Truncated (field header rejected)"
+    },
+    {
+      "caseId": "id-canonical-bytes-word-order",
+      "requirementIds": [
+        "P-004",
+        "P-008"
+      ],
+      "testId": "TEST-002",
+      "outcome": "Pass",
+      "detail": "expected valid; observed valid (canonical bytes 0102030405060708090a0b0c0d0e0f10)"
+    },
+    {
+      "caseId": "id-canonical-bytes-high-word-bit",
+      "requirementIds": [
+        "P-004",
+        "P-008"
+      ],
+      "testId": "TEST-002",
+      "outcome": "Pass",
+      "detail": "expected valid; observed valid (canonical bytes 00000000000000018000000000000000)"
+    },
+    {
+      "caseId": "id-canonical-bytes-zero-high-word",
+      "requirementIds": [
+        "P-004"
+      ],
+      "testId": "TEST-002",
+      "outcome": "Pass",
+      "detail": "expected valid; observed valid (canonical bytes 0000000000000000ffffffffffffffff)"
+    },
+    {
+      "caseId": "id-canonical-bytes-word-swapped-detected",
+      "requirementIds": [
+        "P-004",
+        "P-008"
+      ],
+      "testId": "TEST-002",
+      "outcome": "Pass",
+      "detail": "expected invalid(CanonicalBytesMismatch); observed CanonicalBytesMismatch (expected 0807060504030201100f0e0d0c0b0a09, observed 0102030405060708090a0b0c0d0e0f10)"
+    },
+    {
+      "caseId": "handle-live-target-accepted",
+      "requirementIds": [
+        "P-005"
+      ],
+      "testId": "TEST-002",
+      "outcome": "Pass",
+      "detail": "expected valid; observed valid (dereference accepted)"
+    },
+    {
+      "caseId": "handle-execution-authority-needs-activation-epoch",
+      "requirementIds": [
+        "P-005",
+        "P-007"
+      ],
+      "testId": "TEST-002",
+      "outcome": "Pass",
+      "detail": "expected valid; observed valid (dereference accepted)"
+    },
+    {
+      "caseId": "handle-other-world-incarnation-rejected",
+      "requirementIds": [
+        "P-004",
+        "P-005"
+      ],
+      "testId": "TEST-002",
+      "outcome": "Pass",
+      "detail": "expected invalid(WrongWorld); observed WrongWorld (dereference refused)"
+    },
+    {
+      "caseId": "handle-stale-generation-rejected",
+      "requirementIds": [
+        "P-005"
+      ],
+      "testId": "TEST-002",
+      "outcome": "Pass",
+      "detail": "expected invalid(StaleGeneration); observed StaleGeneration (dereference refused)"
+    },
+    {
+      "caseId": "handle-retired-slot-rejected",
+      "requirementIds": [
+        "P-005"
+      ],
+      "testId": "TEST-002",
+      "outcome": "Pass",
+      "detail": "expected invalid(NotLive); observed NotLive (dereference refused)"
+    },
+    {
+      "caseId": "handle-unknown-slot-rejected",
+      "requirementIds": [
+        "P-005"
+      ],
+      "testId": "TEST-002",
+      "outcome": "Pass",
+      "detail": "expected invalid(MissingSlot); observed MissingSlot (dereference refused)"
+    },
+    {
+      "caseId": "handle-wrong-category-rejected",
+      "requirementIds": [
+        "P-005"
+      ],
+      "testId": "TEST-002",
+      "outcome": "Pass",
+      "detail": "expected invalid(WrongCategory); observed WrongCategory (dereference refused)"
+    },
+    {
+      "caseId": "handle-stale-activation-epoch-rejected",
+      "requirementIds": [
+        "P-005",
+        "P-007"
+      ],
+      "testId": "TEST-002",
+      "outcome": "Pass",
+      "detail": "expected invalid(StaleActivationEpoch); observed StaleActivationEpoch (dereference refused)"
+    },
+    {
+      "caseId": "collision-local-slot-reuse-across-worlds",
+      "requirementIds": [
+        "P-004",
+        "P-005"
+      ],
+      "testId": "TEST-002",
+      "outcome": "Pass",
+      "detail": "expected valid; observed valid (collide=False, distinct world incarnations stay separated)"
+    },
+    {
+      "caseId": "collision-identical-handle-detected",
+      "requirementIds": [
+        "P-005"
+      ],
+      "testId": "TEST-002",
+      "outcome": "Pass",
+      "detail": "expected valid; observed valid (collide=True, distinct world incarnations stay separated)"
+    },
+    {
+      "caseId": "collision-generation-bump-separates-handles",
+      "requirementIds": [
+        "P-005"
+      ],
+      "testId": "TEST-002",
+      "outcome": "Pass",
+      "detail": "expected valid; observed valid (collide=False, distinct world incarnations stay separated)"
+    },
+    {
+      "caseId": "hex-parsing-canonical-form-only",
+      "requirementIds": [
+        "P-004",
+        "P-054"
+      ],
+      "testId": "TEST-002",
+      "outcome": "Pass",
+      "detail": "expected valid; observed valid (canonical form and 13 candidate forms judged identically by both parsers)"
+    },
+    {
+      "caseId": "id-order-high-word-then-low-word",
+      "requirementIds": [
+        "P-004",
+        "P-008"
+      ],
+      "testId": "TEST-002",
+      "outcome": "Pass",
+      "detail": "expected valid; observed valid (canonical order 0000000000000000ffffffffffffffff,00000000000000010000000000000001,00000000000000010000000000000002,00000000000000020000000000000001 stable across 5 insertion orders)"
+    },
+    {
+      "caseId": "id-order-every-insertion-order",
+      "requirementIds": [
+        "P-008"
+      ],
+      "testId": "TEST-022",
+      "outcome": "Pass",
+      "detail": "expected valid; observed valid (canonical order 0000000000000000ffffffffffffffff,00000000000000010000000000000002,00000000000000020000000000000001 stable across 6 insertion orders)"
+    },
+    {
+      "caseId": "id-order-duplicate-ids-stay-sorted",
+      "requirementIds": [
+        "P-008"
+      ],
+      "testId": "TEST-022",
+      "outcome": "Pass",
+      "detail": "expected valid; observed valid (canonical order 00000000000000010000000000000001,00000000000000010000000000000002,00000000000000010000000000000002 stable across 3 insertion orders)"
+    },
+    {
+      "caseId": "id-order-reversed-expectation-detected",
+      "requirementIds": [
+        "P-008"
+      ],
+      "testId": "TEST-022",
+      "outcome": "Pass",
+      "detail": "expected invalid(PermutationOrderMismatch); observed PermutationOrderMismatch (insertion order [0,1] produced 00000000000000010000000000000001,00000000000000020000000000000001)"
+    },
+    {
+      "caseId": "counter-installation-generation-overflow-rejected",
+      "requirementIds": [
+        "P-005"
+      ],
+      "testId": "TEST-002",
+      "outcome": "Pass",
+      "detail": "expected invalid(OverflowRejected); observed OverflowRejected (InstallationGeneration at 18446744073709551615 refused further allocation without wraparound)"
+    },
+    {
+      "caseId": "counter-composition-revision-overflow-rejected",
+      "requirementIds": [
+        "P-005",
+        "P-006"
+      ],
+      "testId": "TEST-002",
+      "outcome": "Pass",
+      "detail": "expected invalid(OverflowRejected); observed OverflowRejected (CompositionRevision at 18446744073709551615 refused further allocation without wraparound)"
+    },
+    {
+      "caseId": "counter-logical-step-overflow-rejected",
+      "requirementIds": [
+        "P-006"
+      ],
+      "testId": "TEST-002",
+      "outcome": "Pass",
+      "detail": "expected invalid(OverflowRejected); observed OverflowRejected (LogicalStepId at 18446744073709551615 refused further allocation without wraparound)"
+    },
+    {
+      "caseId": "counter-activation-epoch-overflow-rejected",
+      "requirementIds": [
+        "P-005",
+        "P-006"
+      ],
+      "testId": "TEST-002",
+      "outcome": "Pass",
+      "detail": "expected invalid(OverflowRejected); observed OverflowRejected (ActivationEpoch at 18446744073709551615 refused further allocation without wraparound)"
+    },
+    {
+      "caseId": "counter-assembly-epoch-advances",
+      "requirementIds": [
+        "P-006"
+      ],
+      "testId": "TEST-002",
+      "outcome": "Pass",
+      "detail": "expected valid; observed valid (AssemblyEpoch advanced to 1)"
+    },
+    {
+      "caseId": "counter-one-below-maximum-advances",
+      "requirementIds": [
+        "P-005"
+      ],
+      "testId": "TEST-002",
+      "outcome": "Pass",
+      "detail": "expected valid; observed valid (InstallationGeneration advanced to 18446744073709551615)"
+    },
+    {
+      "caseId": "publication-first-publishes-epoch-and-revision-one",
+      "requirementIds": [
+        "P-006"
+      ],
+      "testId": "TEST-002",
+      "outcome": "Pass",
+      "detail": "expected valid; observed valid (firstPublication produced rev=1,epoch=1,step=0)"
+    },
+    {
+      "caseId": "publication-moves-revision-and-epoch-not-step",
+      "requirementIds": [
+        "P-006"
+      ],
+      "testId": "TEST-002",
+      "outcome": "Pass",
+      "detail": "expected valid; observed valid (publication produced rev=6,epoch=6,step=12)"
+    },
+    {
+      "caseId": "publication-no-change-moves-nothing",
+      "requirementIds": [
+        "P-006"
+      ],
+      "testId": "TEST-002",
+      "outcome": "Pass",
+      "detail": "expected valid; observed valid (noChange produced rev=5,epoch=5,step=12)"
+    },
+    {
+      "caseId": "publication-committed-step-moves-step-only",
+      "requirementIds": [
+        "P-006"
+      ],
+      "testId": "TEST-002",
+      "outcome": "Pass",
+      "detail": "expected valid; observed valid (committedStep produced rev=5,epoch=5,step=13)"
+    },
+    {
+      "caseId": "publication-revision-overflow-rejected",
+      "requirementIds": [
+        "P-005",
+        "P-006"
+      ],
+      "testId": "TEST-002",
+      "outcome": "Pass",
+      "detail": "expected invalid(OverflowRejected); observed OverflowRejected (publication refused at rev=18446744073709551615,epoch=1,step=0)"
+    },
+    {
+      "caseId": "counter-admission-sequence-overflow-rejected",
+      "requirementIds": [
+        "P-005",
+        "P-008"
+      ],
+      "testId": "TEST-022",
+      "outcome": "Pass",
+      "detail": "expected invalid(OverflowRejected); observed OverflowRejected (AdmissionSequence at 18446744073709551615 refused further allocation without wraparound)"
+    },
+    {
+      "caseId": "version-window-accepts-host-minor",
+      "requirementIds": [
+        "P-055"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected valid; observed valid (manifest major 1 minor window 0..3 accepted)"
+    },
+    {
+      "caseId": "version-minor-extension-accepted",
+      "requirementIds": [
+        "P-055"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected valid; observed valid (manifest major 1 minor window 0..3 accepted)"
+    },
+    {
+      "caseId": "version-major-mismatch-rejected",
+      "requirementIds": [
+        "P-055"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected invalid(UnsupportedVersion); observed UnsupportedVersion (UnsupportedMajor: host major 2 does not accept manifest major 1)"
+    },
+    {
+      "caseId": "version-host-minor-below-window-rejected",
+      "requirementIds": [
+        "P-055"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected invalid(UnsupportedVersion); observed UnsupportedVersion (MinorBelowMinimum: host minor 0 is below manifest minimum 2)"
+    },
+    {
+      "caseId": "version-host-minor-above-window-rejected",
+      "requirementIds": [
+        "P-055"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected invalid(UnsupportedVersion); observed UnsupportedVersion (MinorAboveMaximum: host minor 5 is above manifest maximum 3)"
+    },
+    {
+      "caseId": "version-unknown-required-feature-rejected",
+      "requirementIds": [
+        "P-055"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected invalid(UnsupportedVersion); observed UnsupportedVersion (UnknownRequiredFeature: unknown required feature 00000000000000a10000000000000002)"
+    },
+    {
+      "caseId": "version-known-required-feature-accepted",
+      "requirementIds": [
+        "P-055"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected valid; observed valid (manifest major 1 minor window 0..3 accepted)"
+    },
+    {
+      "caseId": "version-inverted-window-rejected",
+      "requirementIds": [
+        "P-055"
+      ],
+      "testId": "TEST-024",
+      "outcome": "Pass",
+      "detail": "expected invalid(UnsupportedVersion); observed UnsupportedVersion (MalformedRange: manifest minor range is inverted: 3..1)"
+    }
+  ],
+  "summary": {
+    "caseCount": 58,
+    "pass": 58,
+    "fail": 0,
+    "notRun": 0,
+    "blocked": 0
+  }
+}
