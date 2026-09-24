@@ -1,0 +1,27 @@
+{
+  "task": "GC-001",
+  "result": "Pass",
+  "scope": "Linux x86_64 StandaloneLinux64 IL2CPP High stripping; TEST-001 and GC-001 subset of TEST-020",
+  "positive": {
+    "exitCode": 0,
+    "Pass": 7,
+    "Fail": 0,
+    "ExpectedNegative": 0
+  },
+  "negative": {
+    "exitCode": 3,
+    "Pass": 2,
+    "Fail": 0,
+    "ExpectedNegative": 1
+  },
+  "strictJsonValidation": "Pass",
+  "generatorByteIdentical": "Pass",
+  "build": {
+    "result": "Succeeded",
+    "errors": 0,
+    "warnings": 2
+  },
+  "nunitEditMode": "NotRun",
+  "nunitPlayMode": "NotRun",
+  "otherPlatforms": "NotRun"
+}

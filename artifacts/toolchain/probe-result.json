@@ -1,0 +1,62 @@
+{
+  "task": "GC-001",
+  "probe": "GameCore.Validation.ProbeHost.ProbeRunner",
+  "mode": "Positive",
+  "result": "Pass",
+  "exitCode": 0,
+  "declaredUnityVersion": "6000.0.75f1",
+  "unityVersion": "6000.0.75f1",
+  "declaredTarget": "StandaloneLinux64",
+  "platform": "LinuxPlayer",
+  "architecture": "X64",
+  "processorType": "12th Gen Intel(R) Core(TM) i7-12700KF",
+  "scriptingBackend": "IL2CPP",
+  "isIl2Cpp": true,
+  "is64BitProcess": true,
+  "managedStrippingLevel": "High",
+  "managedStrippingLevelSource": "declared: GameCore.Validation.Editor.BuildProbe sets and re-reads PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, ManagedStrippingLevel.High); a player cannot query the stripping level at runtime",
+  "burstCompilerEnabled": true,
+  "fixturePluginPreservation": "declared: Assets/link.xml preserves the GameCore.Validation.Fixture assembly (preserve=\"all\"), and the generated catalog holds a direct FixturePluginFactory reference, so the plugin is linked into the player while nothing instantiates it at startup",
+  "catalogGeneratedFile": "ProbeCatalog.g.cs",
+  "catalogFileHash": "33ff04034018b48cdeb7d479c9217cc3ad72945d1b0fe47feb0b7fcc7734768c",
+  "catalogFileHashAlgorithm": "SHA-256",
+  "catalogFileHashScope": "SHA-256 over the UTF-8 bytes, with LF line endings, of the file prefix that ends immediately before the eight-space-indented CatalogFileHash declaration; that prefix ends with the newline that terminates the previous line, and the declaration itself, its value and the rest of the file are excluded",
+  "failureReason": "",
+  "probes": [
+    {
+      "name": "generated-aot-roots",
+      "status": "Pass",
+      "detail": "rooted closed generic job ProbeAggregateJob<ProbeVector3Value> and closed generic handler ProbeScalarHandler<ProbeAmount>; handler key=0x1C9A1F368FDAD8DD-0x4E0CC4C0E9F7DA67; RegisterGenericJobType present=True"
+    },
+    {
+      "name": "entities-world-entity-query",
+      "status": "Pass",
+      "detail": "world='GameCoreValidationProbeWorld'; matched=3; arrayLength=3; sum=31; absentComponentQueryIsEmpty=True"
+    },
+    {
+      "name": "burst-generic-job",
+      "status": "Pass",
+      "detail": "BurstCompiler.IsEnabled=True; observed=97; expected=97; completed=true"
+    },
+    {
+      "name": "canonical-bytes-roundtrip",
+      "status": "Pass",
+      "detail": "length=25; bigEndianHigh=True; bigEndianLow=True; bigEndianVersion=True; bigEndianIntegerValue=True; flagsMatch=True; roundTrippedEqual=True; truncatedLengthRejected=True; oversizeLengthRejected=True"
+    },
+    {
+      "name": "generated-closed-generic-handler",
+      "status": "Pass",
+      "detail": "handlerKey=0x1C9A1F368FDAD8DD-0x4E0CC4C0E9F7DA67; input=amount(units=6, scale=7); observed=42; expected=42"
+    },
+    {
+      "name": "late-mount-linked-inactive-plugin",
+      "status": "Pass",
+      "detail": "pluginKey=0x0284B6EC6D41B5AA-0xD17744CF859C74B6; stableName='gamecore.validation.plugin.fixture'; createdBeforeMount=0; createdAfterFirstMount=1; createdAfterSecondMount=2; firstResult=36; secondResult=36; expected=36; preservation=declared: Assets/link.xml preserves the GameCore.Validation.Fixture assembly (preserve=\"all\"), and the generated catalog holds a direct FixturePluginFactory reference, so the plugin is linked into the player while nothing instantiates it at startup"
+    },
+    {
+      "name": "generated-catalog-integrity",
+      "status": "Pass",
+      "detail": "generatedFile=ProbeCatalog.g.cs; pluginRegistrations=1; handlerRegistrations=1; hasFixturePlugin=True; hasClosedGenericHandler=True; absentKeyMissing=True; keysUnique=True; catalogHash=33ff04034018b48cdeb7d479c9217cc3ad72945d1b0fe47feb0b7fcc7734768c; hashScope=SHA-256 over the UTF-8 bytes, with LF line endings, of the file prefix that ends immediately before the eight-space-indented CatalogFileHash declaration; that prefix ends with the newline that terminates the previous line, and the declaration itself, its value and the rest of the file are excluded"
+    }
+  ]
+}

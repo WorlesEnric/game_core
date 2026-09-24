@@ -1,0 +1,33 @@
+[2026-09-24T20:38:50.094Z][INFO] Command-line: /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Resources/PackageManager/Server/UnityPackageManager -s 1857415 -ipc -ipc-path /tmp/Unity-Upm-1857415.sock -l 2
+[2026-09-24T20:38:50.095Z][INFO] Detected environment variables:
+  ALL_PROXY=socks5h://127.0.0.1:7897
+  GIT_TERMINAL_PROMPT=0
+  HTTPS_PROXY=http://127.0.0.1:7897
+  HTTP_PROXY=http://127.0.0.1:7897
+  NO_PROXY=localhost,127.0.0.1,::1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.cluster.local,.local
+  all_proxy=socks5h://127.0.0.1:7897
+  http_proxy=http://127.0.0.1:7897
+  https_proxy=http://127.0.0.1:7897
+  no_proxy=localhost,127.0.0.1,::1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.cluster.local,.local
+[2026-09-24T20:38:50.099Z][INFO] IPC server started (IPC path=/tmp/Unity-Upm-1857415.sock).
+[2026-09-24T20:38:50.100Z][INFO] Hint: To connect to this UPM instance, launch Unity with the command-line parameter -upmIpcPath Upm-1857415.
+[2026-09-24T20:38:50.732Z][INFO] project:add-dependency <-- Request received
+params: {
+  "packageId": "com.unity.toolchain.linux-x86_64"
+}
+[2026-09-24T20:38:51.861Z][INFO] Downloading package [com.unity.package-manager.metadata-6000.0@0.0.201] from registry 'https://packages.unity.com'
+[2026-09-24T20:38:54.140Z][INFO] Finished downloading package [com.unity.package-manager.metadata-6000.0@0.0.201] from registry 'https://packages.unity.com' (size: 11.1 kB, time: 2.2s)
+[2026-09-24T20:39:00.104Z][INFO] Downloading package [com.unity.burst@1.8.28] from registry 'https://packages.unity.com'
+[2026-09-24T20:39:00.104Z][INFO] Downloading package [com.unity.collections@2.6.6] from registry 'https://packages.unity.com'
+[2026-09-24T20:39:00.105Z][INFO] Downloading package [com.unity.entities@1.4.6] from registry 'https://packages.unity.com'
+[2026-09-24T20:39:00.106Z][INFO] Downloading package [com.unity.test-framework.performance@3.0.3] from registry 'https://packages.unity.com'
+[2026-09-24T20:39:00.106Z][INFO] Downloading package [com.unity.toolchain.linux-x86_64@2.0.11] from registry 'https://packages.unity.com'
+[2026-09-24T20:39:00.107Z][INFO] Downloading package [com.unity.sysroot@2.0.10] from registry 'https://packages.unity.com'
+[2026-09-24T20:39:00.107Z][INFO] Downloading package [com.unity.sysroot.linux-x86_64@2.0.9] from registry 'https://packages.unity.com'
+[2026-09-24T20:39:02.439Z][INFO] Finished downloading package [com.unity.sysroot@2.0.10] from registry 'https://packages.unity.com' (size: 481 kB, time: 2.3s)
+[2026-09-24T20:39:03.173Z][INFO] Finished downloading package [com.unity.collections@2.6.6] from registry 'https://packages.unity.com' (size: 1.01 MB, time: 3s)
+[2026-09-24T20:39:05.088Z][INFO] Finished downloading package [com.unity.test-framework.performance@3.0.3] from registry 'https://packages.unity.com' (size: 441 kB, time: 4.9s)
+[2026-09-24T20:39:07.326Z][INFO] Finished downloading package [com.unity.entities@1.4.6] from registry 'https://packages.unity.com' (size: 16.6 MB, time: 7.2s)
+[2026-09-24T20:39:10.535Z][INFO] Finished downloading package [com.unity.toolchain.linux-x86_64@2.0.11] from registry 'https://packages.unity.com' (size: 21.9 MB, time: 10.4s)
+[2026-09-24T20:39:17.968Z][INFO] Finished downloading package [com.unity.sysroot.linux-x86_64@2.0.9] from registry 'https://packages.unity.com' (size: 81.7 MB, time: 17.8s)
+[2026-09-24T20:51:19.986Z][INFO] Received shutdown request (SIGTERM), shutting down Unity Package Manager

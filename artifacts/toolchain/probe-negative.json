@@ -1,0 +1,42 @@
+{
+  "task": "GC-001",
+  "probe": "GameCore.Validation.ProbeHost.ProbeRunner",
+  "mode": "MissingRegistration",
+  "result": "ExpectedNegative",
+  "exitCode": 3,
+  "declaredUnityVersion": "6000.0.75f1",
+  "unityVersion": "6000.0.75f1",
+  "declaredTarget": "StandaloneLinux64",
+  "platform": "LinuxPlayer",
+  "architecture": "X64",
+  "processorType": "12th Gen Intel(R) Core(TM) i7-12700KF",
+  "scriptingBackend": "IL2CPP",
+  "isIl2Cpp": true,
+  "is64BitProcess": true,
+  "managedStrippingLevel": "High",
+  "managedStrippingLevelSource": "declared: GameCore.Validation.Editor.BuildProbe sets and re-reads PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, ManagedStrippingLevel.High); a player cannot query the stripping level at runtime",
+  "burstCompilerEnabled": true,
+  "fixturePluginPreservation": "declared: Assets/link.xml preserves the GameCore.Validation.Fixture assembly (preserve=\"all\"), and the generated catalog holds a direct FixturePluginFactory reference, so the plugin is linked into the player while nothing instantiates it at startup",
+  "catalogGeneratedFile": "ProbeCatalog.g.cs",
+  "catalogFileHash": "33ff04034018b48cdeb7d479c9217cc3ad72945d1b0fe47feb0b7fcc7734768c",
+  "catalogFileHashAlgorithm": "SHA-256",
+  "catalogFileHashScope": "SHA-256 over the UTF-8 bytes, with LF line endings, of the file prefix that ends immediately before the eight-space-indented CatalogFileHash declaration; that prefix ends with the newline that terminates the previous line, and the declaration itself, its value and the rest of the file are excluded",
+  "failureReason": "",
+  "probes": [
+    {
+      "name": "generated-catalog-integrity",
+      "status": "Pass",
+      "detail": "generatedFile=ProbeCatalog.g.cs; pluginRegistrations=1; handlerRegistrations=1; hasFixturePlugin=True; hasClosedGenericHandler=True; absentKeyMissing=True; keysUnique=True; catalogHash=33ff04034018b48cdeb7d479c9217cc3ad72945d1b0fe47feb0b7fcc7734768c; hashScope=SHA-256 over the UTF-8 bytes, with LF line endings, of the file prefix that ends immediately before the eight-space-indented CatalogFileHash declaration; that prefix ends with the newline that terminates the previous line, and the declaration itself, its value and the rest of the file are excluded"
+    },
+    {
+      "name": "missing-registration-detected",
+      "status": "Pass",
+      "detail": "requestedKey=0x4771366F6C5F1EA9-0xCDD9BC836D9C05AE; pluginResolved=False; handlerResolved=False; instanceCreated=False; catalogHash=33ff04034018b48cdeb7d479c9217cc3ad72945d1b0fe47feb0b7fcc7734768c"
+    },
+    {
+      "name": "missing-registration-report",
+      "status": "ExpectedNegative",
+      "detail": "the generated catalog returned no factory for stable key 0x4771366F6C5F1EA9-0xCDD9BC836D9C05AE (stable name 'gamecore.validation.plugin.absent'); resolution failed explicitly instead of constructing an instance through reflection"
+    }
+  ]
+}
