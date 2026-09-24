@@ -216,14 +216,13 @@ namespace GameCore.Composition.Tests
 
             PluginInstanceId consumer = rig.Ids.Instance();
             OperationId operation = rig.Issuer.Next();
+            CompositionStateSnapshot before = rig.Host.Snapshot();
             EditAdmission admission = rig.Host.SubmitEdit(Payloads.Mount(rig.Manifests.ManifestOf(consumerType), consumer, Root, null), operation, rig.Revision);
-            Assert.That(admission.Staged, Is.True, admission.Code.ToString());
-            rig.Host.Drain();
-
-            Assert.That(rig.StateOf(consumer), Is.EqualTo(InstallationState.WaitingForDependencies));
-            InstallSnapshot install = rig.Host.FindInstall(consumer)!;
-            Assert.That(install.Diagnostics.Count, Is.GreaterThan(0));
-            Assert.That(install.Diagnostics[0].CodeText, Is.EqualTo("ServiceConflict"));
+            Assert.That(admission.Code, Is.EqualTo(DiagnosticCode.ServiceConflict));
+            Assert.That(admission.Entry!.Outcome, Is.EqualTo(Outcome.Rejected), "Invalid dependency graphs reject; only absent services wait (O-03).");
+            Assert.That(rig.Host.Drain(), Is.Empty);
+            Assert.That(rig.Host.FindInstall(consumer), Is.Null);
+            Assert.That(Projection.Of(rig.Host.Snapshot()), Is.EqualTo(Projection.Of(before)));
         }
 
         [Test]
@@ -245,10 +244,15 @@ namespace GameCore.Composition.Tests
             rig.Mount(rig.Manifests.ManifestOf(providerType), rig.Ids.Instance(), inner);
 
             PluginInstanceId consumer = rig.Ids.Instance();
-            rig.Mount(rig.Manifests.ManifestOf(consumerType), consumer, inner);
+            CompositionStateSnapshot before = rig.Host.Snapshot();
+            EditAdmission admission = rig.Host.SubmitEdit(
+                Payloads.Mount(rig.Manifests.ManifestOf(consumerType), consumer, inner, null), rig.Issuer.Next(), rig.Revision);
 
-            Assert.That(rig.StateOf(consumer), Is.EqualTo(InstallationState.WaitingForDependencies));
-            Assert.That(rig.Host.FindInstall(consumer)!.Diagnostics[0].CodeText, Is.EqualTo("ServiceConflict"));
+            Assert.That(admission.Code, Is.EqualTo(DiagnosticCode.ServiceConflict));
+            Assert.That(admission.Entry!.Outcome, Is.EqualTo(Outcome.Rejected));
+            Assert.That(rig.Host.Drain(), Is.Empty);
+            Assert.That(rig.Host.FindInstall(consumer), Is.Null);
+            Assert.That(Projection.Of(rig.Host.Snapshot()), Is.EqualTo(Projection.Of(before)));
         }
 
         [Test]
@@ -355,6 +359,7 @@ namespace GameCore.Composition.Tests
             rig.Mount(rig.Manifests.ManifestOf(providerType), foreign, elsewhere);
             PluginInstanceId badSelection = rig.Ids.Instance();
             OperationId operation = rig.Issuer.Next();
+            CompositionStateSnapshot before = rig.Host.Snapshot();
             EditAdmission admission = rig.Host.SubmitEdit(
                 Payloads.Mount(
                     rig.Manifests.ManifestOf(consumerType),
@@ -366,10 +371,11 @@ namespace GameCore.Composition.Tests
                 operation,
                 rig.Revision);
 
-            Assert.That(admission.Staged, Is.True, admission.Code.ToString());
-            rig.Host.Drain();
-            Assert.That(rig.StateOf(badSelection), Is.EqualTo(InstallationState.WaitingForDependencies));
-            Assert.That(rig.Host.FindInstall(badSelection)!.Diagnostics[0].CodeText, Is.EqualTo("ServiceConflict"));
+            Assert.That(admission.Code, Is.EqualTo(DiagnosticCode.ServiceConflict));
+            Assert.That(admission.Entry!.Outcome, Is.EqualTo(Outcome.Rejected));
+            Assert.That(rig.Host.Drain(), Is.Empty);
+            Assert.That(rig.Host.FindInstall(badSelection), Is.Null);
+            Assert.That(Projection.Of(rig.Host.Snapshot()), Is.EqualTo(Projection.Of(before)));
         }
 
         [Test]
@@ -526,7 +532,7 @@ namespace GameCore.Composition.Tests
 
         private static string ResolutionProjection(PropagationMode mode)
         {
-            Rig rig = new Rig(mode == PropagationMode.Automatic ? 0x6D6F6431UL : 0x6D6F6432UL);
+            Rig rig = new Rig(0x6D6F6431UL);
             Id128 contract = rig.Ids.Capability().Value;
             ScopeId child = rig.Ids.Scope();
             PluginTypeId providerType = rig.Ids.Type();

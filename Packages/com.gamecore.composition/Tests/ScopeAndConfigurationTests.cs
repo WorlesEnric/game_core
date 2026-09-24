@@ -91,7 +91,7 @@ namespace GameCore.Composition.Tests
             Assert.That(host.Snapshot().Revision.Value, Is.EqualTo(2UL));
 
             EditAdmission self = host.SubmitEdit(Payloads.ScopeReparent(parent, parent), issuer.Next(), new CompositionRevision(2UL));
-            Assert.That(self.Code, Is.EqualTo(DiagnosticCode.OwnershipConflict));
+            Assert.That(self.Code, Is.EqualTo(DiagnosticCode.Cycle), "A self-parent edge is also a cycle (P-010, O-02).");
         }
 
         [Test]

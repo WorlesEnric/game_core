@@ -148,7 +148,7 @@ namespace GameCore.Composition
         {
             field = default(ConfigField);
             EnvelopeReader reader = new EnvelopeReader(document);
-            if (!reader.TryReadHeader(out EnvelopeHeader header) || !header.Schema.Id.Equals(CompositionSchemas.ConfigDocument.Id))
+            if (!reader.TryReadHeader(out EnvelopeHeader header) || !header.Schema.Id.Equals(CompositionSchemas.ConfigEntry.Id))
             {
                 return false;
             }

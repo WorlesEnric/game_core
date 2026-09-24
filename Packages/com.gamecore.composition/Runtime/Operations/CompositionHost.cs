@@ -243,7 +243,11 @@ namespace GameCore.Composition
             committed.TryGetInstall(instance, out InstallEntry? entry) && entry != null ? entry.ToSnapshot() : null;
 
         /// <summary>The staged proposal of one still-unpublished operation; null when there is none (00 s9).</summary>
-        public CompositionEditPlan? StagedPlan(OperationId operation) => ledger.RowOf(operation)?.Plan;
+        public CompositionEditPlan? StagedPlan(OperationId operation)
+        {
+            OperationLedger.LedgerRow? row = ledger.RowOf(operation);
+            return row != null && row.Phase == LedgerPhase.Pending ? row.Plan : null;
+        }
 
         /// <summary>
         /// Publishes every pending proposal in admission order at one boundary. Each publication is one atomic
@@ -314,6 +318,7 @@ namespace GameCore.Composition
             // The fence is closed across the swap, so no callback is delivered against a half-published view.
             Callbacks.CloseFence();
             committed = next;
+            staged = staged.With(revision: nextRevision, epoch: nextEpoch);
             ApplyActivations(plan, next);
             CleanupReport cleanup = RetireRemoved(plan);
             int ready = PublishStagedResources(operation);
@@ -488,6 +493,12 @@ namespace GameCore.Composition
             if (row != null)
             {
                 row.Plan = plan;
+            }
+
+            if (!plan.Succeeded)
+            {
+                ledger.Settle(operation, Outcome.Rejected, plan.Code, committed.Revision, committed.Epoch, null, committed.Step);
+                return new EditAdmission(AdmissionKind.Fresh, plan.Code, admission.Handle, RowEntry(operation), null, plan.Diagnostics);
             }
 
             if (plan.IsNoChange)

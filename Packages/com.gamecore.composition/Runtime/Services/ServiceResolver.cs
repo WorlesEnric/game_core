@@ -269,16 +269,32 @@ namespace GameCore.Composition
             }
 
             List<ServiceNodeResolution> resolutions = new List<ServiceNodeResolution>(ordered.Count);
-            for (int i = 0; i < ordered.Count; i++)
+            for (int i = 0; i < activationOrder!.Count; i++)
             {
-                resolutions.Add(ResolveNode(tree, ordered, ordered[i]));
+                int index = ordered.FindIndex(node => node.Instance.Equals(activationOrder[i]));
+                ServiceNode node = ordered[index];
+                ServiceNodeResolution resolved = ResolveNode(tree, ordered, node);
+                resolutions.Add(resolved);
+                ordered[index] = new ServiceNode(node.Instance, node.PluginType, node.Scope, resolved.State,
+                    node.ActivationEpoch, node.Exports, node.Dependencies, node.Selections);
             }
+
+            resolutions.Sort((left, right) => CompareNodes(left.Node, right.Node));
 
             return new ServiceResolution(DiagnosticCode.None, resolutions, activationOrder);
         }
 
         private static ServiceNodeResolution ResolveNode(ScopeRegistry scopes, List<ServiceNode> all, ServiceNode consumer)
         {
+            if (consumer.DeclaredState == InstallationState.Suspended ||
+                consumer.DeclaredState == InstallationState.Quiescing ||
+                consumer.DeclaredState == InstallationState.Retiring ||
+                consumer.DeclaredState == InstallationState.Disposed ||
+                consumer.DeclaredState == InstallationState.Failed)
+            {
+                return new ServiceNodeResolution(consumer, consumer.DeclaredState, null, null);
+            }
+
             List<DependencyResolution> resolutions = new List<DependencyResolution>(consumer.Dependencies.Count);
             List<Diagnostic> diagnostics = new List<Diagnostic>();
             bool waiting = false;
@@ -359,6 +375,11 @@ namespace GameCore.Composition
                             consumer.Instance.Value,
                             ServiceBindingKind.Single,
                             true));
+                        diagnostics.Add(Diagnostic.Create(
+                            DiagnosticCode.MissingDependency,
+                            OperationPhase.Validation,
+                            default(OperationId),
+                            "Optional service " + dependency.Contract.ContractId.ToString() + " uses its declared fallback."));
                     }
                     else
                     {
@@ -401,7 +422,7 @@ namespace GameCore.Composition
             code = DiagnosticCode.None;
             for (int i = 0; i < visible.Count; i++)
             {
-                if (visible[i].Node.Instance.Equals(selected))
+                if (visible[i].Node.Instance.Value.Equals(selected.Value))
                 {
                     return visible[i];
                 }
@@ -411,7 +432,7 @@ namespace GameCore.Composition
             bool exists = false;
             for (int i = 0; i < all.Count; i++)
             {
-                if (all[i].Instance.Equals(selected))
+                if (all[i].Instance.Value.Equals(selected.Value))
                 {
                     exists = true;
                     break;
@@ -542,7 +563,8 @@ namespace GameCore.Composition
             ScopeRegistry scopes,
             List<ServiceNode> all,
             ServiceNode consumer,
-            ServiceDependency dependency)
+            ServiceDependency dependency,
+            bool includeWaiting = false)
         {
             List<ProviderCandidate> visible = new List<ProviderCandidate>();
             IReadOnlyList<ScopeId> domain = Domain(scopes, consumer.Scope, dependency.Domain);
@@ -559,7 +581,8 @@ namespace GameCore.Composition
                 for (int n = 0; n < all.Count; n++)
                 {
                     ServiceNode provider = all[n];
-                    if (provider.Instance.Equals(consumer.Instance) || !provider.Scope.Equals(scope) || !provider.CanProvide)
+                    if (provider.Instance.Equals(consumer.Instance) || !provider.Scope.Equals(scope) ||
+                        (!provider.CanProvide && !(includeWaiting && provider.DeclaredState == InstallationState.WaitingForDependencies)))
                     {
                         continue;
                     }
@@ -708,7 +731,7 @@ namespace GameCore.Composition
                         continue;
                     }
 
-                    List<ProviderCandidate> visible = VisibleProviders(scopes, nodes, consumer, dependency);
+                    List<ProviderCandidate> visible = VisibleProviders(scopes, nodes, consumer, dependency, true);
                     if (visible.Count == 0)
                     {
                         // Absence is not a closure cycle: the consumer simply becomes Waiting (P-012).

@@ -96,6 +96,7 @@ namespace GameCore.Composition
     public sealed class ManagedResourceLease : IManagedResourceLease
     {
         private readonly Action<Id128>? onDispose;
+        private bool disposeAttempted;
 
         public ManagedResourceLease(
             ResourceKey resource,
@@ -139,13 +140,18 @@ namespace GameCore.Composition
 
         public void Dispose()
         {
-            if (IsDisposed)
+            if (disposeAttempted)
             {
                 // P-048: dispose each lease at most once; a repeat is not a second release.
+                if (!IsDisposed)
+                {
+                    throw new InvalidOperationException("The previous release failed; the resource remains retained.");
+                }
+
                 return;
             }
 
-            IsDisposed = true;
+            disposeAttempted = true;
             DisposeCount++;
             Readiness = ResourceReadiness.Retiring;
             Gate.Close();
@@ -153,6 +159,8 @@ namespace GameCore.Composition
             {
                 onDispose(LeaseId);
             }
+
+            IsDisposed = true;
         }
     }
 
