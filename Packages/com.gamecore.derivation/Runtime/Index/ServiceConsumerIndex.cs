@@ -64,10 +64,10 @@ namespace GameCore.Derivation
                 {
                     ServiceConsumerEdge edge = new ServiceConsumerEdge(install, dependencies[d]);
                     edges.Add(edge);
-                    if (!byContract.TryGetValue(edge.Contract.ContractId.Value, out List<ServiceConsumerEdge>? list))
+                    if (!byContract.TryGetValue(edge.Contract.ContractId, out List<ServiceConsumerEdge>? list))
                     {
                         list = new List<ServiceConsumerEdge>();
-                        byContract.Add(edge.Contract.ContractId.Value, list);
+                        byContract.Add(edge.Contract.ContractId, list);
                     }
 
                     list.Add(edge);
@@ -76,7 +76,7 @@ namespace GameCore.Derivation
                 IReadOnlyList<ServiceExport> exports = install.Manifest.ServiceExports;
                 for (int e = 0; e < exports.Count; e++)
                 {
-                    Id128 contract = exports[e].Contract.ContractId.Value;
+                    Id128 contract = exports[e].Contract.ContractId;
                     if (!providersByContract.TryGetValue(contract, out List<PluginInstanceId>? list))
                     {
                         list = new List<PluginInstanceId>();
@@ -113,13 +113,13 @@ namespace GameCore.Derivation
 
         /// <summary>Installations declaring a dependency on one service contract (P-011).</summary>
         public IReadOnlyList<ServiceConsumerEdge> ConsumersOf(ContractRef contract) =>
-            byContract.TryGetValue(contract.ContractId.Value, out List<ServiceConsumerEdge>? list)
+            byContract.TryGetValue(contract.ContractId, out List<ServiceConsumerEdge>? list)
                 ? list
                 : (IReadOnlyList<ServiceConsumerEdge>)Array.Empty<ServiceConsumerEdge>();
 
         /// <summary>Installations declaring an export of one service contract, canonical order (P-011).</summary>
         public IReadOnlyList<PluginInstanceId> ProvidersOf(ContractRef contract) =>
-            providersByContract.TryGetValue(contract.ContractId.Value, out List<PluginInstanceId>? list)
+            providersByContract.TryGetValue(contract.ContractId, out List<PluginInstanceId>? list)
                 ? list
                 : (IReadOnlyList<PluginInstanceId>)Array.Empty<PluginInstanceId>();
 

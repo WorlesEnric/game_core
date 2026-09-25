@@ -217,7 +217,7 @@ namespace GameCore.Derivation
                 {
                     if (seen.Add(imports[i].ProviderInstallationId.Value))
                     {
-                        providers.Add(imports[i].ProviderInstallationId);
+                        providers.Add(new PluginInstanceId(imports[i].ProviderInstallationId.Value));
                     }
                 }
             }

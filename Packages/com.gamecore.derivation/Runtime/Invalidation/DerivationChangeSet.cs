@@ -240,6 +240,11 @@ namespace GameCore.Derivation
                 reasons.Add(InvalidationReasons.OverrideChanged);
             }
 
+            if (ChangedRuleKeys.Count != 0)
+            {
+                reasons.Add(InvalidationReasons.RuleKeysChanged);
+            }
+
             reasons.Sort(StringComparer.Ordinal);
             return reasons.AsReadOnly();
         }
@@ -368,7 +373,7 @@ namespace GameCore.Derivation
                 }
             }
 
-            List<RuleId> changedRuleKeys = ChangedRuleKeys(previous, next);
+            List<RuleId> changedRuleKeys = FindChangedRuleKeys(previous, next);
             bool overridesChanged = !OverridesEqual(previous, next);
             List<ScopeId> overrideScopes = new List<ScopeId>();
             List<TargetId> overrideTargets = new List<TargetId>();
@@ -565,7 +570,7 @@ namespace GameCore.Derivation
             left.Contracts.Count == right.Contracts.Count
             && CapabilityCatalogHash.Text(left) == CapabilityCatalogHash.Text(right);
 
-        private static List<RuleId> ChangedRuleKeys(DerivationSnapshot previous, DerivationSnapshot next)
+        private static List<RuleId> FindChangedRuleKeys(DerivationSnapshot previous, DerivationSnapshot next)
         {
             List<RuleId> changed = new List<RuleId>();
             for (int i = 0; i < next.RuleKeys.Count; i++)

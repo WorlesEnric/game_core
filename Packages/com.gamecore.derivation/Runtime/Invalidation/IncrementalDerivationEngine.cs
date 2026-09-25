@@ -105,9 +105,13 @@ namespace GameCore.Derivation
             DerivationChangeSet declared = changeSet
                 ?? DerivationChangeSet.Diff(previous.Snapshot, snapshot, counters);
 
-            // A carried explanation needs the previous run to have collected them.
+            // A carried explanation needs the previous run to have collected them. A previous run with accepted
+            // assemblies but *no* decisions provably had nothing to explain (its dirty targets lost every reaching
+            // rule), which is a legitimate empty provenance set rather than a missing one, so it stays usable as
+            // a base: only a run that made decisions yet recorded no explanations lacks the provenance to carry.
             bool explanationsUsable = !effective.CollectExplanations
                 || previous.Explanations.Count != 0
+                || previous.Decisions.Count == 0
                 || previous.Assemblies.Count == 0;
 
             if (!explanationsUsable)
@@ -280,6 +284,7 @@ namespace GameCore.Derivation
             counters.CarriedTargets = snapshot.Targets.Count - dirtyTargets.Count;
 
             List<CandidateDecision> decisions = new List<CandidateDecision>();
+            List<CandidateDecision> freshDecisions = new List<CandidateDecision>();
             List<CompositionFailure> failures = new List<CompositionFailure>();
             CapabilityLedger ledger = new CapabilityLedger();
             Dictionary<SlotGroupKey, EffectiveSlot> accepted = new Dictionary<SlotGroupKey, EffectiveSlot>();
@@ -323,7 +328,13 @@ namespace GameCore.Derivation
                         dirtyTargetsByRule.Add(rule.Rule.RuleId.Value, list);
                     }
 
-                    list.Add(target);
+                    // Two installations may declare the same rule identity; the map is keyed by rule id, so the
+                    // target must be recorded once per rule id, not once per declaring install, or the stratum
+                    // loop would evaluate it once per RuleSource and duplicate the decision (P-026).
+                    if (!ContainsTarget(list, target.Target))
+                    {
+                        list.Add(target);
+                    }
                 }
             }
 
@@ -395,7 +406,7 @@ namespace GameCore.Derivation
 
                         if (evaluation.Status != CandidateStatus.Emitted)
                         {
-                            decisions.Add(DerivationEngine.Decision(source, rule, target, 0U, evaluation, snapshot, stratum));
+                            freshDecisions.Add(DerivationEngine.Decision(source, rule, target, 0U, evaluation, snapshot, stratum));
                             continue;
                         }
 
@@ -408,7 +419,7 @@ namespace GameCore.Derivation
                                 rule.OutputCapability.Capability,
                                 slot);
                             evaluated.Add(key);
-                            decisions.Add(DerivationEngine.Decision(source, rule, target, slot, evaluation, snapshot, stratum));
+                            freshDecisions.Add(DerivationEngine.Decision(source, rule, target, slot, evaluation, snapshot, stratum));
 
                             CapabilityContract? outputContract = snapshot.Contracts.Find(rule.OutputCapability.Capability);
                             OutputSlotSchema? schema;
@@ -650,8 +661,10 @@ namespace GameCore.Derivation
             allContributions.Sort(DerivationEngine.CompareContributions);
 
             // Losers are recorded as shadowed after composition for this run's decisions; carried decisions were
-            // reclassified by the run that produced them (P-017, P-019).
-            DerivationEngine.ReclassifyShadowed(decisions, accepted);
+            // reclassified by the run that produced them and this run's accepted map covers the dirty targets
+            // only, so they must be excluded from the pass (P-017, P-019, P-026).
+            DerivationEngine.ReclassifyShadowed(freshDecisions, accepted);
+            decisions.AddRange(freshDecisions);
             decisions.Sort(DerivationEngine.CompareDecisions);
 
             if (effective.CollectExplanations)
@@ -731,6 +744,19 @@ namespace GameCore.Derivation
             }
 
             return target.DeclaresCapabilityId(rule.OutputCapability.Capability);
+        }
+
+        private static bool ContainsTarget(List<DerivationTarget> targets, TargetId target)
+        {
+            for (int i = 0; i < targets.Count; i++)
+            {
+                if (targets[i].Target.Equals(target))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private static void SeedLedgerFromPrevious(

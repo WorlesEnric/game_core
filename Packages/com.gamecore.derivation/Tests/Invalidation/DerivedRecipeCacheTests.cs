@@ -8,6 +8,7 @@
 // can change what derives on a target changes its fingerprint (so the entry is recomputed, never reused), and an
 // edit outside the target's path leaves its variant reusable.
 #nullable enable
+using System.Collections.Generic;
 using GameCore.Contracts;
 using GameCore.Derivation.Fixtures;
 using NUnit.Framework;

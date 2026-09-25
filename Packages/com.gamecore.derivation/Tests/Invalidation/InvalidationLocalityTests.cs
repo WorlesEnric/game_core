@@ -7,6 +7,7 @@
 // Each test below therefore asserts both halves: the semantic result (equal to the independent reference
 // evaluator) and the counter that proves the incremental path did not walk the untouched part of the world.
 #nullable enable
+using System.Collections.Generic;
 using System.Globalization;
 using GameCore.Contracts;
 using GameCore.Derivation.Fixtures;
@@ -46,11 +47,11 @@ namespace GameCore.Derivation.Tests
 
             Assert.That(
                 closure.DirtyScopes,
-                Does.Not.Contain(FixtureIds.Scope(CardComposition.SeatAScope)),
+                Has.None.EqualTo(FixtureIds.Scope(CardComposition.SeatAScope)),
                 "A league B provider is not a reason to visit a league A seat (P-023).");
             Assert.That(
                 closure.DirtyScopes,
-                Does.Not.Contain(FixtureIds.Scope(CardComposition.SeatBScope)));
+                Has.None.EqualTo(FixtureIds.Scope(CardComposition.SeatBScope)));
             Assert.That(
                 closure.DirtyTargets.Count,
                 Is.EqualTo(1),
@@ -346,7 +347,7 @@ namespace GameCore.Derivation.Tests
             Assert.That(closure.Counters.Reasons, Does.Contain(InvalidationReasons.ScopeFactsChanged));
             Assert.That(
                 closure.DirtyScopes,
-                Does.Not.Contain(FixtureIds.Scope(CardComposition.SeatAScope)),
+                Has.None.EqualTo(FixtureIds.Scope(CardComposition.SeatAScope)),
                 "A boundary on league B is not a reason to visit a league A seat (P-016).");
 
             IncrementalDerivationOutcome outcome = IncrementalDerivationEngine.Derive(
@@ -393,7 +394,7 @@ namespace GameCore.Derivation.Tests
             Assert.That(closure.Counters.Reasons, Does.Contain(InvalidationReasons.RuleKeysChanged));
             Assert.That(
                 closure.DirtyScopes,
-                Does.Not.Contain(FixtureIds.Scope(NarrativeComposition.Harbor)),
+                Has.None.EqualTo(FixtureIds.Scope(NarrativeComposition.Harbor)),
                 "Chapter two's harbour declares no encounter hook (P-023).");
 
             IncrementalDerivationOutcome outcome = IncrementalDerivationEngine.Derive(

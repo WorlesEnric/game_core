@@ -234,7 +234,7 @@ namespace GameCore.Derivation
             return closure;
         }
 
-        private IReadOnlyDictionary<Id128, IReadOnlyList<DerivationInstall>> InstallPathCache { get; }
+        private Dictionary<Id128, IReadOnlyList<DerivationInstall>> InstallPathCache { get; }
 
         internal static int CompareRules(IndexedRule left, IndexedRule right)
         {

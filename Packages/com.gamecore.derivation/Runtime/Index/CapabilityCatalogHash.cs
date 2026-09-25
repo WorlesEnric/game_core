@@ -69,7 +69,7 @@ namespace GameCore.Derivation
                     text.Append("  policy=").Append(policies[p].Slot.ToString())
                         .Append('/').Append(policies[p].Policy.ToString())
                         .Append('/').Append(policies[p].Reducer.RegistrationKey.ToString())
-                        .Append('/').Append(PayloadCodec.PriorityText((int)policies[p].Reducer.Version)).Append('\n');
+                        .Append('@').Append(policies[p].Reducer.KeyVersion).Append('\n');
                 }
 
                 IReadOnlyList<CapabilityId> incompatible = contract.IncompatibleCapabilities;

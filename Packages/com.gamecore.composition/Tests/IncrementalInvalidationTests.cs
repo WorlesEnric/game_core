@@ -21,13 +21,13 @@ namespace GameCore.Composition.Tests
         private static readonly IdFactory Ids = new IdFactory(0x696E7661UL);
         private static readonly ScopeId Root = new ScopeId(new Id128(0x726F6F74UL, 13UL));
 
-        private static CompositionHost NewHost(ICompositionEditValidator? validator = null)
+        private static CompositionHost NewHost(ICompositionEditValidator? validator = null, TestManifestSource? source = null)
         {
-            TestManifestSource source = new TestManifestSource();
+            TestManifestSource manifests = source ?? new TestManifestSource();
             CompositionHostSettings settings = new CompositionHostSettings(
                 new ControlLaneCapacitySettings(16, 16),
                 new OperationExpirySettings(3, 0UL));
-            return new CompositionHost(World, Root, settings, source, null, PropagationMode.Automatic, default(CompositionLaneSeed), validator);
+            return new CompositionHost(World, Root, settings, manifests, null, PropagationMode.Automatic, default(CompositionLaneSeed), validator);
         }
 
         private static ScopeId NewScope(CompositionHost host, OperationIssuer issuer, ScopeId parent)
@@ -136,7 +136,8 @@ namespace GameCore.Composition.Tests
         [Test]
         public void AnExclusionEditAndAnImportEditAreBothReportedAsScopeFacts()
         {
-            CompositionHost host = NewHost();
+            TestManifestSource source = new TestManifestSource();
+            CompositionHost host = NewHost(null, source);
             OperationIssuer issuer = new OperationIssuer(World, new Id128(0x6973737565UL, 135UL));
             ScopeId scope = NewScope(host, issuer, Root);
 
@@ -176,9 +177,21 @@ namespace GameCore.Composition.Tests
 
             Assert.That(sawExclusions, Is.True, "An exclusion edit is a scope fact (P-016).");
 
+            // P-013: an import grant must name a provider installation registered in this world, so the provider
+            // is mounted at the scope before it is imported (a fresh unregistered id would be rejected).
+            PluginTypeId providerType = Ids.Type();
             PluginInstanceId provider = Ids.Instance();
+            PluginManifest providerManifest = Manifests.Plain(providerType, Ids);
+            source.Add(providerManifest, null);
+            EditAdmission mounted = host.SubmitEdit(
+                Payloads.Mount(providerManifest, provider, scope, null),
+                issuer.Next(),
+                host.Snapshot().Revision);
+            Assert.That(mounted.Staged, Is.True, mounted.Code.ToString());
+            host.Drain();
+
             EditAdmission granted = host.SubmitEdit(
-                Payloads.ScopeGrants(scope, new[] { new CapabilityImport(capability, provider) }),
+                Payloads.ScopeGrants(scope, new[] { new CapabilityImport(capability, new ProviderInstallationId(provider.Value)) }),
                 issuer.Next(),
                 host.Snapshot().Revision);
             host.Drain();
@@ -195,6 +208,7 @@ namespace GameCore.Composition.Tests
             Assert.That(sawImports, Is.True, "A Conservative import edit is a scope fact (P-013).");
             Assert.That(granted.Plan.ChangeSet.Reasons(), Does.Contain(CompositionChangeReasons.ScopeFacts));
         }
+
 
         [Test]
         public void AScopeReparentReportsTheMoveAndItsNewParent()

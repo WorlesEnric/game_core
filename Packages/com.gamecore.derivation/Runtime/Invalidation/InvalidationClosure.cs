@@ -263,7 +263,7 @@ namespace GameCore.Derivation
                 dirty.Add(new TargetId(value));
             }
 
-            dirty.Sort(CanonicalDerivationOrder.CompareTargets);
+            dirty.Sort((left, right) => left.Value.CompareTo(right.Value));
             List<ScopeId> scopes = new List<ScopeId>(dirtyScopes.Count);
             foreach (Id128 value in dirtyScopes)
             {
