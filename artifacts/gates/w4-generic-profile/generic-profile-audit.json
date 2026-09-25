@@ -575,6 +575,25 @@
       "externalReferences": [],
       "guidReferences": [],
       "includePlatforms": [],
+      "name": "GameCore.Validation.FamilyEntries",
+      "noEngineReferences": false,
+      "packageRoot": "unity/GameCore.Validation/Assets/GameCore.Validation/FamilyEntries",
+      "path": "unity/GameCore.Validation/Assets/GameCore.Validation/FamilyEntries/GameCore.Validation.FamilyEntries.asmdef",
+      "references": [
+        "GameCore.Contracts",
+        "GameCore.Gameplay.Cards",
+        "GameCore.Gameplay.Narrative.Fixtures",
+        "GameCore.Rules.Cards",
+        "GameCore.Rules.Narrative",
+        "GameCore.Unity.Runtime"
+      ],
+      "unresolvedReferences": []
+    },
+    {
+      "classification": "validation",
+      "externalReferences": [],
+      "guidReferences": [],
+      "includePlatforms": [],
       "name": "GameCore.Validation.Fixture",
       "noEngineReferences": false,
       "packageRoot": "unity/GameCore.Validation/Assets/GameCore.Validation/Plugin",
@@ -598,6 +617,7 @@
       "path": "unity/GameCore.Validation/Assets/GameCore.Validation/Generated/GameCore.Validation.Generated.asmdef",
       "references": [
         "GameCore.Contracts",
+        "GameCore.Validation.FamilyEntries",
         "GameCore.Validation.Fixture",
         "GameCore.Validation.Probe"
       ],
@@ -615,7 +635,8 @@
       "references": [
         "GameCore.Contracts",
         "GameCore.Gameplay.Cards",
-        "GameCore.Rules.Cards"
+        "GameCore.Rules.Cards",
+        "GameCore.Validation.FamilyEntries"
       ],
       "unresolvedReferences": []
     },
@@ -662,6 +683,7 @@
         "GameCore.Unity.Adapters",
         "GameCore.Unity.Fixtures",
         "GameCore.Unity.Runtime",
+        "GameCore.Validation.FamilyEntries",
         "GameCore.Validation.Generated",
         "GameCore.Validation.GeneratedCards",
         "GameCore.Validation.Probe"
@@ -790,6 +812,7 @@
         "GameCore.Unity.Adapters",
         "GameCore.Unity.Fixtures",
         "GameCore.Unity.Runtime",
+        "GameCore.Validation.FamilyEntries",
         "GameCore.Validation.Generated",
         "GameCore.Validation.GeneratedCards",
         "GameCore.Validation.ProbeHost"
@@ -832,7 +855,7 @@
     "gameplay": 8,
     "kernel": 14,
     "other": 8,
-    "validation": 6
+    "validation": 7
   },
   "execution": {
     "testResult": "NotRun (pending orchestrator build host)",
@@ -844,7 +867,7 @@
     "kernelToValidation": []
   },
   "genreTokenScan": {
-    "hitCount": 323,
+    "hitCount": 324,
     "hits": [
       {
         "file": "Packages/com.gamecore.composition/Runtime/Documents.cs",
@@ -1358,43 +1381,37 @@
       },
       {
         "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
-        "line": 90,
-        "lineText": "    /// about the domain: the kernel sees \"this target's version is N\", never a table, a flag or a turn counter.",
-        "token": "turn"
-      },
-      {
-        "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
-        "line": 252,
+        "line": 238,
         "lineText": "    /// Gate in front of a prepared managed callback or subscription. A prepared resource routes to an inert",
         "token": "gate"
       },
       {
         "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
-        "line": 253,
+        "line": 239,
         "lineText": "    /// gate, never directly to a gameplay handler, and a closed gate stays closed across retirement (P-047).",
         "token": "gate"
       },
       {
         "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
-        "line": 259,
+        "line": 245,
         "lineText": "        /// <summary>Irreversible for this gate: an activation epoch that closes it never reopens it.</summary>",
         "token": "gate"
       },
       {
         "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
-        "line": 275,
+        "line": 261,
         "lineText": "        /// <summary>Pending while the lease is staged behind its gate; a staged lease is not usable yet.</summary>",
         "token": "gate"
       },
       {
         "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
-        "line": 282,
+        "line": 268,
         "lineText": "        IResourceGate Gate { get; }",
         "token": "gate"
       },
       {
         "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
-        "line": 561,
+        "line": 547,
         "lineText": "    /// Callback gate evaluated on dispatch and again on completion; a stale activation or retired route is",
         "token": "gate"
       },
@@ -2521,6 +2538,18 @@
         "token": "turn"
       },
       {
+        "file": "Packages/com.gamecore.unity.runtime/Runtime/Messages/WorldMessagePlane.cs",
+        "line": 26,
+        "lineText": "    /// domain: the kernel sees \"this target's version is N\", never a table, a flag or a turn counter.",
+        "token": "turn"
+      },
+      {
+        "file": "Packages/com.gamecore.unity.runtime/Runtime/Messages/WorldMessagePlane.cs",
+        "line": 29,
+        "lineText": "    /// because the contract surface is frozen by the W0 interface gate (GC-002); a family registers its own",
+        "token": "gate"
+      },
+      {
         "file": "Packages/com.gamecore.unity.runtime/Runtime/Time/WorldTimeDriver.cs",
         "line": 201,
         "lineText": "        /// One wrapped host frame: seal the next step's input, hand the world its demand, pump, then advance plugin",
@@ -2795,7 +2824,7 @@
       "damage": 0,
       "deck": 0,
       "gameobject": 0,
-      "gate": 134,
+      "gate": 135,
       "hand": 10,
       "hit": 0,
       "inventory": 0,
@@ -2846,10 +2875,10 @@
   "requirement": "P-001",
   "schemaVersion": 1,
   "summary": {
-    "assemblyCount": 37,
+    "assemblyCount": 38,
     "deterministic": true,
     "gameplayAssemblyCount": 8,
-    "genreTokenHitCount": 323,
+    "genreTokenHitCount": 324,
     "kernelAssemblyCount": 14,
     "kernelNoEngineReferenceViolationCount": 0,
     "kernelToGameplayEdgeCount": 0,
@@ -3634,194 +3663,188 @@
     },
     {
       "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
-      "kind": "interface",
-      "line": 92,
-      "name": "IDomainVersionAuthority"
-    },
-    {
-      "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
       "kind": "class",
-      "line": 102,
+      "line": 88,
       "name": "ExplanationRecord"
     },
     {
       "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
       "kind": "enum",
-      "line": 131,
+      "line": 117,
       "name": "ExplanationSource"
     },
     {
       "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
       "kind": "struct",
-      "line": 141,
+      "line": 127,
       "name": "ExplanationPageRequest"
     },
     {
       "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
       "kind": "class",
-      "line": 165,
+      "line": 151,
       "name": "ExplanationPage"
     },
     {
       "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
       "kind": "class",
-      "line": 235,
+      "line": 221,
       "name": "ManagedResourceRequest"
     },
     {
       "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
       "kind": "interface",
-      "line": 255,
+      "line": 241,
       "name": "IResourceGate"
     },
     {
       "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
       "kind": "interface",
-      "line": 267,
+      "line": 253,
       "name": "IManagedResourceLease"
     },
     {
       "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
       "kind": "interface",
-      "line": 289,
+      "line": 275,
       "name": "IFencedWorldState"
     },
     {
       "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
       "kind": "enum",
-      "line": 299,
+      "line": 285,
       "name": "ApplyOutcome"
     },
     {
       "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
       "kind": "class",
-      "line": 307,
+      "line": 293,
       "name": "RecipeApplyRequest"
     },
     {
       "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
       "kind": "class",
-      "line": 321,
+      "line": 307,
       "name": "RecipeApplyResult"
     },
     {
       "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
       "kind": "class",
-      "line": 338,
+      "line": 324,
       "name": "MigrationRequest"
     },
     {
       "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
       "kind": "class",
-      "line": 367,
+      "line": 353,
       "name": "MigrationResult"
     },
     {
       "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
       "kind": "interface",
-      "line": 384,
+      "line": 370,
       "name": "ICompositionCommands"
     },
     {
       "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
       "kind": "class",
-      "line": 394,
+      "line": 380,
       "name": "CommandAdmissionReceipt"
     },
     {
       "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
       "kind": "interface",
-      "line": 414,
+      "line": 400,
       "name": "ICommandIngress"
     },
     {
       "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
       "kind": "interface",
-      "line": 420,
+      "line": 406,
       "name": "IOperationReader"
     },
     {
       "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
       "kind": "interface",
-      "line": 426,
+      "line": 412,
       "name": "IOperationControl"
     },
     {
       "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
       "kind": "interface",
-      "line": 432,
+      "line": 418,
       "name": "ISnapshotLease"
     },
     {
       "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
       "kind": "enum",
-      "line": 440,
+      "line": 426,
       "name": "SnapshotAcquireOutcome"
     },
     {
       "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
       "kind": "class",
-      "line": 458,
+      "line": 444,
       "name": "SnapshotAcquireResult"
     },
     {
       "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
       "kind": "interface",
-      "line": 500,
+      "line": 486,
       "name": "IObservationReader"
     },
     {
       "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
       "kind": "interface",
-      "line": 506,
+      "line": 492,
       "name": "IExplanationReader"
     },
     {
       "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
       "kind": "interface",
-      "line": 516,
+      "line": 502,
       "name": "IStagedPlanDiagnostics"
     },
     {
       "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
       "kind": "interface",
-      "line": 523,
+      "line": 509,
       "name": "IManagedResourceFactory"
     },
     {
       "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
       "kind": "interface",
-      "line": 529,
+      "line": 515,
       "name": "IRecipeApplyBridge"
     },
     {
       "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
       "kind": "interface",
-      "line": 535,
+      "line": 521,
       "name": "IStateMigrator"
     },
     {
       "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
       "kind": "interface",
-      "line": 541,
+      "line": 527,
       "name": "IAssemblyPublisher"
     },
     {
       "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
       "kind": "interface",
-      "line": 547,
+      "line": 533,
       "name": "ICompositionObserver"
     },
     {
       "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
       "kind": "interface",
-      "line": 555,
+      "line": 541,
       "name": "ICommittedEventReader"
     },
     {
       "file": "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
       "kind": "interface",
-      "line": 564,
+      "line": 550,
       "name": "ICallbackGate"
     },
     {
@@ -4265,31 +4288,31 @@
     {
       "file": "Packages/com.gamecore.contracts/Runtime/Manifest/Declarations.cs",
       "kind": "class",
-      "line": 265,
+      "line": 325,
       "name": "SystemSpec"
     },
     {
       "file": "Packages/com.gamecore.contracts/Runtime/Manifest/Declarations.cs",
       "kind": "struct",
-      "line": 301,
+      "line": 361,
       "name": "BufferPort"
     },
     {
       "file": "Packages/com.gamecore.contracts/Runtime/Manifest/Declarations.cs",
       "kind": "class",
-      "line": 318,
+      "line": 378,
       "name": "StageSpec"
     },
     {
       "file": "Packages/com.gamecore.contracts/Runtime/Manifest/Declarations.cs",
       "kind": "class",
-      "line": 380,
+      "line": 440,
       "name": "BufferSpec"
     },
     {
       "file": "Packages/com.gamecore.contracts/Runtime/Manifest/Declarations.cs",
       "kind": "class",
-      "line": 428,
+      "line": 488,
       "name": "ResourceSpec"
     },
     {
@@ -6196,14 +6219,20 @@
     },
     {
       "file": "Packages/com.gamecore.unity.runtime/Runtime/Messages/WorldMessagePlane.cs",
+      "kind": "interface",
+      "line": 32,
+      "name": "IDomainVersionAuthority"
+    },
+    {
+      "file": "Packages/com.gamecore.unity.runtime/Runtime/Messages/WorldMessagePlane.cs",
       "kind": "class",
-      "line": 27,
+      "line": 45,
       "name": "MessagePlaneRegistration"
     },
     {
       "file": "Packages/com.gamecore.unity.runtime/Runtime/Messages/WorldMessagePlane.cs",
       "kind": "class",
-      "line": 150,
+      "line": 168,
       "name": "WorldMessagePlane"
     },
     {

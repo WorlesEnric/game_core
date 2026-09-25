@@ -1,13 +1,10 @@
 # GC-012 — generic contract / assembly audit (Wave 4)
 
-**Status of every executable check in this document: `NotRun (pending orchestrator build host)`.** This host has no
-.NET SDK, no C# compiler, no Mono and no Unity, so nothing in this change set has been compiled, imported or
-executed here. The only thing that ran is the host-side audit tool described below, whose output is committed beside
-this report as `generic-profile-audit.json`. That tool is a *static source scan*; it is not a build and not a test
-result. The build-host halves of the same audit are the loaded-assembly audit inside the player
-(`KernelAssemblyAudit.AuditLoadedAssemblies`, exercised by `-probeW4Profile` and `-probeW3Gate`) and the
-build-time `.asmdef` audit (`KernelAssemblyAudit.AuditAsmdefReferences`, exercised by `GameCore.W4Profile.Tests`
-and `GameCore.W3Gate.Tests`).
+**Status: static and runtime halves evidenced on the Linux build host.** The regenerated
+`generic-profile-audit.json` scans 38 assembly definitions (including the dedicated family-entry assembly);
+the full EditMode suite passed 613/613 and the High-stripping IL2CPP `-probeW4Profile` ran cleanly 5/5.
+Its runtime audit reports zero forbidden kernel references, zero duplicate kernel assemblies and zero inspection
+failures. See `artifacts/gc-012/BUILD_REPORT.md` and the committed XML/JSON results for command and revision pins.
 
 ## 1. What was audited, and against what
 
@@ -35,15 +32,15 @@ byte-identical.
 
 ## 2. Assembly reference graph
 
-Extracted from every `*.asmdef` under `Packages/` and `unity/GameCore.Validation/Assets/` — 37 assemblies:
+Extracted from every `*.asmdef` under `Packages/` and `unity/GameCore.Validation/Assets/` — 38 assemblies:
 
 | Classification | Count | Members |
 | --- | ---: | --- |
-| kernel | 14 | `GameCore.Contracts`, `GameCore.Composition`, `GameCore.Derivation`, `GameCore.Planning`, `GameCore.Unity.Runtime`, `GameCore.Unity.Adapters`, `GameCore.Content.Compiler` (+ `Editor`), `GameCore.Derivation.Fixtures`, and the five Editor test assemblies of those packages |
-| gameplay / rules | 8 | `GameCore.Gameplay.{Narrative,Cards}` (+ both `Fixtures`), `GameCore.Rules.{Narrative,Cards}` (+ both `Tests`) |
-| validation | 6 | the qualification project's `Probe`, `ProbeHost`, `Editor`, `Generated`, `GeneratedCards`, `Fixture` |
-| fixture | 1 | `GameCore.Unity.Fixtures` |
-| other | 8 | the remaining `GameCore.Unity.*` and `GameCore.*.Tests` Editor assemblies |
+| kernel | 14 | `GameCore.Contracts`, `GameCore.Composition`, `GameCore.Derivation`, `GameCore.Planning`, `GameCore.Unity.Runtime`, `GameCore.Unity.Adapters`, `GameCore.Content.Compiler` (+ `Editor`), `GameCore.Derivation.Fixtures`, and five Editor test assemblies. |
+| gameplay / rules | 8 | `GameCore.Gameplay.{Narrative,Cards}` (+ both `Fixtures`), `GameCore.Rules.{Narrative,Cards}` (+ both `Tests`). |
+| validation | 7 | `Probe`, `ProbeHost`, `Editor`, `Generated`, `GeneratedCards`, `Fixture` and the separate `FamilyEntries` assembly. |
+| fixture | 1 | `GameCore.Unity.Fixtures`. |
+| other | 8 | Remaining `GameCore.Unity.*` and `GameCore.*.Tests` Editor assemblies. |
 
 **Forbidden edges found: none.** Every kernel assembly's declared references resolve inside the kernel set (or to
 `Unity.*`/`UnityEngine.TestRunner` for the Unity-side kernel assemblies), and every gameplay/rules assembly
@@ -70,18 +67,19 @@ No kernel assembly's reference list contains a `GameCore.Gameplay.*`, `GameCore.
 697 public/internal top-level types are declared across the kernel packages. The scan looks for 25 genre-specific
 tokens as whole identifiers in those files: `actor, action, turn, combat, hit, vitality, quest, inventory, damage,
 card, deck, hand, narrative, chapter, physics, animation, reward, transform, gameobject, monobehaviour, prefab,
-story, villager, seat, gate`. It found 323 textual hits, and **not one is a genre-specific type requirement**. The
+story, villager, seat, gate`. It found 324 textual hits, and **not one is a genre-specific type requirement**. The
 classification below is the audit's actual result, including the cases that look alarming:
 
 | Token group | Hits | What they are | Verdict |
 | --- | ---: | --- | --- |
-| `gate` | 134 | Two generic mechanisms: the **propagation-mode gate** (`DerivationPolicy.ModeGateDecision`, `EvaluateModeGate` — the P-013 mode gate) and the **resource/acquisition gate** (`IPlanResourceGate`, `ManagedResourceGate`, `InertAcquisitionSet.gate`, the ingress-callback gate). Also prose in comments. | Not a narrative gate. Generic. |
+| `gate` | 135 | Two generic mechanisms: the **propagation-mode gate** (`DerivationPolicy.ModeGateDecision`, `EvaluateModeGate` — the P-013 mode gate) and the **resource/acquisition gate** (`IPlanResourceGate`, `ManagedResourceGate`, `InertAcquisitionSet.gate`, the ingress-callback gate). Also prose in comments. | Not a narrative gate. Generic. |
 | `action` | 9 | `System.Action<T>` — the BCL delegate, in `Documents.cs` (envelope writer callback) and `ManagedResources.cs` (dispose callback). | Not an action schema. BCL. |
 | `chapter`, `story`, `villager`, `seat`, `narrative`, `card`, `quest`, `reward` | 97 | Test/fixture-local names: a derivation test names the scope or target it is deriving for (`CardComposition.SeatB`, `Story`, `Village`), and a fixture key uses `fixture.migrate.quest.v1-v2` as its diagnostic stable name. **All in `Tests/` and `Fixtures/` inside the kernel packages, none in kernel `Runtime/` production code.** | Fixture data, not a kernel dependency. |
 | `turn`, `combat`, `physics`, `animation`, `actor`, `vitality` | 12 | Literal entries of *negative* assertions: `string[] forbidden = { "combat", "physics", "animation", "turn", "actor", "vitality" }` in `ScheduleCompilerTests`/`ScheduleAdapterTests`. The kernel tests assert these names never reach a compiled schedule. | The opposite of a dependency. |
 | `hand` | 10 | Prose ("do not edit by hand", "hand the world"). The whole-word match means `Handle`/`handful`/`shader` never match (proved with a synthetic file during tool development). | Prose. |
 | `transform` | 3 | Prose ("the pure transform ran on the copied value") for a state migration function. | Prose. |
-| `gameobject`, `monobehaviour`, `prefab`, `deck`, `hit`, `inventory`, `damage` | 0 | — | Absent. |
+| `gameobject`, `monobehaviour`, `deck`, `hit`, `inventory`, `damage` | 0 | — | Absent. |
+| `prefab` | 1 | Comment in `SpawnRecipeCatalog.cs` describing allowed recipe references; no runtime type dependency. | Prose. |
 
 The one kernel-runtime token concentration worth naming explicitly: `Packages/com.gamecore.derivation/Runtime/Policy/DerivationPolicy.cs`
 (13 hits, all `gate`, all `ModeGateDecision`/`EvaluateModeGate`) and
@@ -109,20 +107,14 @@ GC-012 added kernel surface; each addition was checked against P-001 before it l
 | --- | --- | --- |
 | `GameCore.Planning.CapabilitySupport` (+ `TargetBindingRow.Supports`, `DerivedBindingRule.Supports`, `ProposedCapability.Supporters`) | Yes | Provider installation, activation generation, derivation rule, an `int` value and a priority — the five fields of `ContributionKey` plus rank data. No family concept. |
 | `GameCore.Unity.Runtime.CapabilitySupportRow` (`IBufferElementData`) | Yes | The published form of the same record; capability, output slot, provider, rule, value, priority. |
-| `GameCore.Contracts.IDomainVersionAuthority` | Yes | "Read the current version of the domain you own for one target." The kernel never learns what the number means; the card table reports its table version, the narrative dialogue reports its conversation node. |
+| `GameCore.Unity.Runtime.IDomainVersionAuthority` | Yes | "Read the current version of the domain you own for one target." The kernel never learns what the number means; the card table reports its table version, the narrative dialogue reports its conversation node. |
 | `WorldMessagePlane.BindDomainVersion` / `DomainVersionOf` | Yes | Route → authority binding, keyed by the declared route identity. |
 
 `generic-profile-audit.json` was regenerated *after* those additions and reports the same zero forbidden edges.
 
 ## 5. What this audit does NOT establish
 
-1. **No runtime claim.** The loaded-assembly half and the stripping claim run on the Linux build host through
-   `tools/run_w4_profile_gate.sh`. This document records them as `NotRun (pending orchestrator build host)`.
-2. **No claim about types only referenced through IL2CPP-generated code.** The audit reads the source tree. A type
-   reachable only through a native generic instantiation would not appear here; that is what the player's
-   `KernelAssemblyAudit` and the `-probeW4Profile` run exist for.
-3. **The token scan is a heuristic, not a proof.** It is deliberately over-inclusive (it reports 323 hits of which
-   zero are real dependencies) so that a real genre type entering a kernel file is loud. The proof is the reference
-   graph in §2 plus the runtime audit; §3 is the evidence that the heuristic's hits are explainable.
-4. **No third-party assembly audit.** Only project assemblies are classified; `Unity.*` and the BCL are listed as
-   external references and not inspected.
+1. **Runtime checked, not universal.** The loaded-assembly half passed in five Linux IL2CPP runs; it says nothing about other target platforms or an assembly not loaded by these scenarios.
+2. **No claim about unexecuted native generic instantiations.** The player ran the registered narrative and card systems, readers, reducer, predicate and additive fixture; an unrelated unreachable generic shape would need its own root and probe.
+3. **The token scan is heuristic.** Its hits require classification; the reference graph and the runtime audit establish the assembly boundary for the tested binary.
+4. **No third-party assembly audit.** Only project assemblies are classified; `Unity.*` and the BCL are listed as external references and not inspected.

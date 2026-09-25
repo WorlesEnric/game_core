@@ -1,10 +1,8 @@
 # GameCore Protocol 1.0 — provisional generic-execution profile candidate (GC-012)
 
-**Status of every executable claim in this document: `NotRun (pending orchestrator build host)`.** GC-012 was
-authored on a host with no .NET SDK, no C# compiler, no Mono and no Unity, so the profile below records the exact
-*configuration* the gate will run and the source revision it is pinned to — not a result. One non-Unity command did
-run here and is reproducible on any host with Python 3: `python3 tools/w4_generic_profile_audit.py`, whose output is
-committed beside this file. That is a static source scan and is not a build, import or test result.
+**Status: measured on the Linux build host.** The complete .NET and Unity suites passed, and the
+High-stripping IL2CPP player passed all nine probe modes five times each. Raw XML, JSON, environment and build
+logs are committed under `artifacts/gates/w4-generic-profile/`; see `artifacts/gc-012/BUILD_REPORT.md`.
 
 This is a **candidate** record for provisional generic execution. It is not a final conformance freeze (GC-028/029)
 and it claims no support for any product platform that was not built and run (GC-030).
@@ -13,13 +11,13 @@ and it claims no support for any product platform that was not built and run (GC
 
 | Item | Value |
 | --- | --- |
-| Source revision | `aae136bd4c29a69f443ec0efe53c783b0485979a` (branch `gc-012`, based on the Wave 3 integration `b697ff6`) |
+| Source revision | Branch `gc-012` after the build-host correction commits; exact revision and player hash are recorded in `artifacts/gc-012/BUILD_REPORT.md` and `toolchain/environment.txt`. |
 | Protocol version | `1.0` (00 §1; every generated catalog declares `ProtocolVersion = "1.0"`) |
 | Description format | `gamecore.catalog-description/1` |
-| Probe catalog | `unity/GameCore.Validation/Assets/GameCore.Validation/Generated/ProbeCatalog.g.cs` — fingerprint `02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff`, file hash `37e1d3614050a633f8261c7d7b1c559cd3166bdda8df40a56385a838680da731` |
-| Card catalog | `unity/GameCore.Validation/Assets/GameCore.Validation/GeneratedCards/CardCatalog.g.cs` — fingerprint `77838f4766f9086a0fa32b4fb30d8d5fceeb3a8072e61594fa2177946ad3315d`, file hash `902402a6f03fcf28dd242f23f573fcb9ddd53d013efb06f08aa513f689ff3bf8` |
+| Probe catalog | `unity/GameCore.Validation/Assets/GameCore.Validation/Generated/ProbeCatalog.g.cs` — fingerprint `02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff`, generated-prefix hash `03bdcd23fd8ec0515d93d7c54d7f7c695f3860a850a7280b82316aaacd14c5c1` |
+| Card catalog | `unity/GameCore.Validation/Assets/GameCore.Validation/GeneratedCards/CardCatalog.g.cs` — fingerprint `77838f4766f9086a0fa32b4fb30d8d5fceeb3a8072e61594fa2177946ad3315d`, generated-prefix hash `75a60968c3c59ac69e0c2b6b806c792f48e5b243a526b1ae29c7615e8c1a2e9e` |
 | Package manifest | `unity/GameCore.Validation/Packages/manifest.json`, SHA-256 `1758389a1910da9710ee7c9cafd875731813b81a54508d3445106d7efc944921` |
-| Resolved lock | `unity/GameCore.Validation/Packages/packages-lock.json`, SHA-256 `9a243cfbdb35d1d901102cd68219448f8189ba9d9dc8c2ba86f32ada22dc7597` (**expected to change** on the build host: step 4 of `tools/run_w4_profile_gate.sh` regenerates it, and 04 §1 forbids synthesizing it here) |
+| Resolved lock | `unity/GameCore.Validation/Packages/packages-lock.json`, SHA-256 `9a243cfbdb35d1d901102cd68219448f8189ba9d9dc8c2ba86f32ada22dc7597` (Unity resolve left it byte-identical). |
 | Editor | Unity `6000.0.75f1`, Linux x86_64 with the Linux IL2CPP module |
 | Editor-packed versions | Entities `1.4.6`, Collections `2.6.6`, Burst `1.8.28`, Mathematics `1.3.2`, Test Framework `1.6.0`, Performance Testing `3.0.3`, `com.unity.toolchain.linux-x86_64` `2.0.11` |
 | Managed toolchain | Editor Roslyn, C# 9, .NET Standard 2.1 API compatibility |
@@ -33,8 +31,7 @@ and it claims no support for any product platform that was not built and run (GC
 Exactly four things, each observed by `-probeW4Profile` in the built player (and by `GameCore.W4Profile.Tests` in
 the Editor):
 
-1. **Both families are mounted late, not at startup, in one process.** The probe asserts `registryAtStart=0`,
-   mounts narrative and cards by key through their committed generated catalogs, and asserts `registryAfterAll=0`.
+1. **Both families mount late, not at startup, in one process.** In the player `registryAtStart=1`: the existing application bootstrap owns one unrelated world before `AfterSceneLoad`; `startupWorldIsBootstrap=True` checks its identity. In EditMode there is no bootstrap world (`registryAtStart=0`). The family entries themselves mount nothing; narrative and cards run later by key, and `registryAfterAll=0` after fixture teardown.
 2. **Reachability comes from generated roots, not linker preservation.** Each family has a generated inactive plugin
    entry (04 §8 item 3, TEST-001): `ProbeCatalog.NarrativeFamilyEntryKey` →
    `new GameCore.Validation.Slices.NarrativeFamilyPluginEntry()` and `CardCatalog.CardFamilyEntryKey` →
@@ -49,11 +46,9 @@ the Editor):
      trace declaration (`artifacts/gc-010/narrative-trace.json`, regenerated by
      `NarrativeScenarioTrace.ExpectedDocument()`, digest `NarrativeScenarioTrace.ExpectedDocumentDigest()`), plus a
      key-by-key equality of the two runs' pipeline values;
-   * **cards**: the two runs' canonical facts digests (`CardFacts.Describe()`) must be equal. GC-011 recorded that
-     the card slice has no declared trace document comparable to the narrative one; this gate therefore compares the
-     two runs against each other and records that asymmetry rather than inventing a declaration.
+   * **cards**: the two runs' facts (`CardFacts.Describe()`) are compared after excluding only the catalog-fingerprint prefix: the two catalogs have different registration sets, while every remaining world observation must agree. GC-011 recorded that the card slice has no declared trace document comparable to the narrative one; this gate compares runs against each other, not against an invented declaration.
 4. **No generic contract requires a genre-specific type.** Zero `kernel → gameplay/rules/validation/generated`
-   assembly edges (37 assemblies), zero `noEngineReferences` violations, no duplicate kernel assembly, every loaded
+   assembly edges (38 assemblies), zero `noEngineReferences` violations, no duplicate kernel assembly, every loaded
    gameplay/rules assembly referencing the kernel. See `audit.md`.
 
 Additionally, this profile records the correction of the two kernel gaps GC-011 handed to Wave 4, because a generic
@@ -136,5 +131,4 @@ python3 tools/w4_generic_profile_audit.py --out artifacts/gates/w4-generic-profi
   -logFile artifacts/gates/w4-generic-profile/unity/w4profile-editmode.log
 ```
 
-Artifacts the gate writes: `artifacts/gates/w4-generic-profile/{trx,unity,toolchain,generic-profile-audit.json}`.
-Only `profile.md`, `audit.md`, `inventory.md`, `inventory.json` and this document's revision are committed by GC-012.
+The integrated `tools/run_w4_profile_gate.sh` passed on implementation commit `0a5614861739215b951bc7b683a5c996f08ff620`. Artifacts include `trx/` (655 passing .NET tests), `unity/editmode-results.xml` (613 passing tests), `unity/playmode-results.xml` (6 passing tests), and `toolchain/` (nine modes, five clean runs each). `trx-final/` retains an earlier independent whole-solution confirmation. Initial failed attempts and their fixes are recorded in `artifacts/gc-012/BUILD_REPORT.md`.
