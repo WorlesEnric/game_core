@@ -1161,7 +1161,14 @@ namespace GameCore.Gameplay.Cards.Fixtures
                     int gateBefore = lane!.Callbacks.LiveActivationCount;
 
                     OperationId operation = NextOperation();
-                    LifecycleRequestReport report = SubmitLifecycle(CardLifecyclePayloads.Suspend(provider), operation);
+                    LifecycleRequestReport report = SubmitLifecycle(
+                        CardLifecyclePayloads.Suspend(provider), operation, out string worldFailure);
+
+                    if (worldFailure.Length != 0)
+                    {
+                        steps.Add(new CardLifecycleStep(name, false, worldFailure));
+                        return;
+                    }
 
                     // The provider's own live activation is what suspension retires (P-047); the gate's total
                     // count must therefore have fallen by exactly the one entry the install held.
@@ -1234,7 +1241,14 @@ namespace GameCore.Gameplay.Cards.Fixtures
                     }
 
                     OperationId operation = NextOperation();
-                    LifecycleRequestReport report = SubmitLifecycle(CardLifecyclePayloads.Resume(provider), operation);
+                    LifecycleRequestReport report = SubmitLifecycle(
+                        CardLifecyclePayloads.Resume(provider), operation, out string worldFailure);
+
+                    if (worldFailure.Length != 0)
+                    {
+                        steps.Add(new CardLifecycleStep(name, false, worldFailure));
+                        return;
+                    }
 
                     facts.Set(CardLifecycleKeys.FactResumeState, StateTextOf(provider));
                     facts.Set(CardLifecycleKeys.FactResumeRowsAfter, AttributedRowsOf(provider));
@@ -1671,6 +1685,8 @@ namespace GameCore.Gameplay.Cards.Fixtures
                         steps.Add(new CardLifecycleStep(name, false, "the probe's staged lease was refused: " + stageCode));
                         return;
                     }
+                    // The factory assigns the lease identity; the resource key is only its preparation key.
+                    leaseId = lane.StagedLeases(mountOperation)[0].LeaseId;
 
                     IReadOnlyList<PublishedOperation> mountPublished = lane.Drain();
                     PublishedOperation? mountedProbe = FindPublished(mountPublished, mountOperation);
@@ -2140,11 +2156,74 @@ namespace GameCore.Gameplay.Cards.Fixtures
                 return true;
             }
 
-            /// <summary>Submits one lifecycle edit through the controller, which owns the three-seam sequence.</summary>
-            private LifecycleRequestReport SubmitLifecycle(CompositionEditPayload payload, OperationId operation)
+            /// <summary>
+            /// Submits one lifecycle edit through the controller, which owns the three-seam sequence, and then
+            /// completes the world's half of that same publication. A lifecycle edit whose derivation changed no
+            /// effective binding is answered `NoTargetChange`, and P-006 still counts it as one publication of the
+            /// one series: the world must adopt it and publish its unchanged assembly, exactly as
+            /// `CardMarketScenario.PublishEdit` does for its own edits. Without this the lane ends one publication
+            /// ahead and every later adoption - here and in every later step - is refused `StalePlan`.
+            /// </summary>
+            private LifecycleRequestReport SubmitLifecycle(
+                CompositionEditPayload payload,
+                OperationId operation,
+                out string failure)
             {
                 admittedOperations++;
-                return controller!.Submit(payload, operation);
+                LifecycleRequestReport report = controller!.Submit(payload, operation);
+                failure = string.Empty;
+
+                if (report.Lifecycle == null
+                    || report.Derived == null
+                    || report.Derived.Outcome != DerivedAssemblyOutcome.NoTargetChange)
+                {
+                    return report;
+                }
+
+                if (AssemblyPublisher.MatchesPublishedAssembly(
+                        lane!.Committed.Revision,
+                        lane.Committed.Epoch,
+                        publisher!.PublishedRevision,
+                        host!.CurrentEpoch))
+                {
+                    // The world already answered this publication - a controller that completes its own
+                    // `NoTargetChange` half leaves nothing to do here, and one number is never published twice
+                    // (P-006).
+                    return report;
+                }
+
+                // A delta-empty answer never adopted the pair, so the unchanged publication is exactly the
+                // world's half. A planner `NoChange` after an adoption leaves the pair adopted and pending, and
+                // publishing it as unchanged would give one number two assemblies; that case is reported as the
+                // honest refusal it is (P-006).
+                if (publisher.HasAdoptedPublication)
+                {
+                    failure = "the derivation adopted composition publication "
+                        + lane.Committed.Revision.Value.ToString(CultureInfo.InvariantCulture)
+                        + "/" + lane.Committed.Epoch.Value.ToString(CultureInfo.InvariantCulture)
+                        + " but published no assembly for it; the pair stays pending and cannot be reused (P-006)";
+                    return report;
+                }
+
+                AssemblyPublicationReport unchanged = publisher.PublishUnchangedAssembly(
+                    operation, lane.Committed.Revision, lane.Committed.Epoch);
+                if (!unchanged.Published)
+                {
+                    failure = "the world refused the unchanged assembly of the lifecycle publication: "
+                        + unchanged.Detail;
+                    return report;
+                }
+
+                if (!AssemblyPublisher.MatchesPublishedAssembly(
+                        lane.Committed.Revision,
+                        lane.Committed.Epoch,
+                        publisher.PublishedRevision,
+                        host.CurrentEpoch))
+                {
+                    failure = "the lane and the world assembly counters are not joined after the lifecycle publication";
+                }
+
+                return report;
             }
 
             /// <summary>Admits one edit on the lane, counting the ledger row it creates (P-050).</summary>

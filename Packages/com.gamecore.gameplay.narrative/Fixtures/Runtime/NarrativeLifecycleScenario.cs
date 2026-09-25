@@ -38,6 +38,7 @@ using GameCore.Composition;
 using GameCore.Contracts;
 using GameCore.Derivation;
 using GameCore.Execution;
+using GameCore.Execution.Time;
 using GameCore.Planning;
 using GameCore.Rules.Narrative;
 using GameCore.Unity.Runtime;
@@ -47,6 +48,7 @@ using GameCore.Unity.Runtime.Time;
 using Unity.Entities;
 using Unity.Jobs;
 using CompiledSchedule = GameCore.Planning.Scheduling.CompiledSchedule;
+using RulesNarrativeFacts = GameCore.Rules.Narrative.NarrativeFacts;
 
 namespace GameCore.Gameplay.Narrative.Fixtures
 {
@@ -493,7 +495,7 @@ namespace GameCore.Gameplay.Narrative.Fixtures
             /// <summary>Staged lease ceiling of the scenario's plan resource gate, in bytes.</summary>
             private const ulong StagedByteCeiling = 1024UL * 1024UL;
 
-            /// <summary>Identity salt of the carrier targets a no-change publication is paired with (P-006, P-024).</summary>
+            /// <summary>Identity salt of the no-row carriers that consume an adopted-and-pending publication pair (P-006, P-024).</summary>
             private static readonly Id128 CarrierSalt = new Id128(0x4E4C434152524945UL, 1UL);
 
             /// <summary>Stable contract identity of the required service steps 4 and 5 remove and restore (P-011).</summary>
@@ -502,6 +504,24 @@ namespace GameCore.Gameplay.Narrative.Fixtures
             /// <summary>Factory key the required service's export names (the exporter's registration identity).</summary>
             private static readonly FactoryKey RequiredServiceFactory =
                 NarrativeKeys.Key("narrative.lifecycle.service-factory");
+
+            // ---------------------------------------------------------------- lifecycle installation identities
+
+            /// <summary>Installation of the required service's consumer (P-011).</summary>
+            private static readonly PluginInstanceId ServiceConsumerInstall =
+                NarrativeKeys.Instance(11UL);
+
+            /// <summary>Installation of the required service's provider (P-011).</summary>
+            private static readonly PluginInstanceId ServiceProviderInstall =
+                NarrativeKeys.Instance(12UL);
+
+            /// <summary>Installation of the compatible provider whose return resumes the consumer.</summary>
+            private static readonly PluginInstanceId ServiceProviderReplacementInstall =
+                NarrativeKeys.Instance(13UL);
+
+            /// <summary>Installation of the job-fence step's tracked lease (P-047).</summary>
+            private static readonly PluginInstanceId FencedInstall =
+                NarrativeKeys.Instance(14UL);
 
             /// <summary>Every fact key one run sets; the same set on a passing and on a failing run (P-060).</summary>
             private static readonly string[] DeclaredFactKeys =
@@ -599,7 +619,7 @@ namespace GameCore.Gameplay.Narrative.Fixtures
             private long providerRowsBefore;
             private long consumerRowsBeforeLoss;
             private long consumerBindingsBeforeLoss;
-            private uint providerEpochBefore;
+            private ulong providerEpochBefore;
             private ulong providerGenerationBefore;
             private string buildFailure = string.Empty;
             private string seedFailure = string.Empty;
@@ -752,16 +772,20 @@ namespace GameCore.Gameplay.Narrative.Fixtures
 
                     PluginInstanceId provider = NarrativeKeys.ChapterOneInstall;
                     bool before = lane.Committed.TryGetInstall(provider, out InstallEntry? entry) && entry != null;
-                    uint epochBefore = before ? entry!.Record.ActivationEpoch.Value : 0U;
+                    ulong epochBefore = before ? entry!.Record.ActivationEpoch.Value : 0UL;
                     InstallationGeneration generation = before ? entry!.Record.Generation : default(InstallationGeneration);
                     int liveBefore = lane.Callbacks.LiveActivationCount;
 
                     OperationId operation = NextLaneOperation();
                     suspendOperation = operation;
                     suspendOperationKnown = true;
-                    LifecycleRequestReport report = controller.Submit(
-                        NarrativeLifecyclePayloads.Suspend(provider), operation);
-                    PublishedOperation? published = FindPublished(report, operation);
+                    bool joined = SubmitChapterEdit(
+                        NarrativeLifecyclePayloads.Suspend(provider),
+                        operation,
+                        out EditAdmission _,
+                        out IReadOnlyList<PublishedOperation> chapterPublished,
+                        out DerivedAssemblyReport _);
+                    PublishedOperation? published = PublishedOf(chapterPublished, operation);
 
                     state = StateOf(provider);
                     rows = AttributedRows(provider);
@@ -769,7 +793,8 @@ namespace GameCore.Gameplay.Narrative.Fixtures
                     liveActivations = lane.Callbacks.LiveActivationCount;
                     bool gateRetired = liveActivations < liveBefore;
 
-                    ContributionRetraction? retraction = RetractionOf(report.Lifecycle, provider);
+                    LifecycleCommitReport? lifecycle = published != null ? published.Lifecycle : null;
+                    ContributionRetraction? retraction = RetractionOf(lifecycle, provider);
                     closedRoutes = retraction != null ? retraction.ClosedRoutes : -1;
                     bool retracted = retraction != null && retraction.AttributedRows > 0;
 
@@ -777,7 +802,7 @@ namespace GameCore.Gameplay.Narrative.Fixtures
                     // it instead of delivering it into an installation without authority (P-047).
                     lateCompletion = "notEvaluated";
                     CallbackGateDecision decision = CallbackGateDecision.Dispatch;
-                    if (epochBefore != 0U)
+                    if (epochBefore != 0UL)
                     {
                         AsyncWorkToken token = new AsyncWorkToken(operation, provider, generation, new ActivationEpoch(epochBefore), 1U);
                         decision = lane.Lifecycle.EvaluateCompletion(token);
@@ -786,8 +811,9 @@ namespace GameCore.Gameplay.Narrative.Fixtures
 
                     bool lateDiscarded = decision == CallbackGateDecision.DiscardRetiredRoute
                         || decision == CallbackGateDecision.DiscardStaleActivation;
-                    bool publicationOk = report.Lifecycle != null
-                        && report.Lifecycle.Operation.Equals(operation)
+                    bool publicationOk = joined
+                        && lifecycle != null
+                        && lifecycle.Operation.Equals(operation)
                         && published != null
                         && published.Outcome == Outcome.Published;
 
@@ -843,8 +869,12 @@ namespace GameCore.Gameplay.Narrative.Fixtures
 
                     PluginInstanceId provider = NarrativeKeys.ChapterOneInstall;
                     OperationId operation = NextLaneOperation();
-                    LifecycleRequestReport report = controller.Submit(
-                        NarrativeLifecyclePayloads.Resume(provider), operation);
+                    bool joined = SubmitChapterEdit(
+                        NarrativeLifecyclePayloads.Resume(provider),
+                        operation,
+                        out EditAdmission _,
+                        out _,
+                        out DerivedAssemblyReport derived);
 
                     state = StateOf(provider);
                     rows = AttributedRows(provider);
@@ -861,20 +891,20 @@ namespace GameCore.Gameplay.Narrative.Fixtures
                         dispatched = lane.Lifecycle.EvaluateCompletion(fresh) == CallbackGateDecision.Dispatch;
                     }
 
-                    bool pass = state == InstallationState.Active.ToString()
+
+                    bool pass = joined
+                        && state == InstallationState.Active.ToString()
                         && holdsAuthority
                         && rowsRestored
                         && dispatched
-                        && report.Lifecycle != null
-                        && report.Derived != null
-                        && report.Derived.Succeeded;
+                        && derived.Outcome != DerivedAssemblyOutcome.Refused;
 
                     steps.Add(new NarrativeLifecycleStep(name, pass,
                         "state=" + state
                         + "; holdsAuthority=" + holdsAuthority
                         + "; rows=" + Text(rows) + "/before=" + Text(providerRowsBefore)
                         + "; freshToken=" + (dispatched ? CallbackGateDecision.Dispatch.ToString() : "<discarded>")
-                        + "; derived=" + DescribeDerived(report)));
+                        + "; derived=" + derived.Outcome + "(" + DiagnosticCodeText.Of(derived.Code) + ")"));
                 }
                 catch (Exception exception)
                 {
@@ -909,7 +939,7 @@ namespace GameCore.Gameplay.Narrative.Fixtures
                     consumerBindingsBeforeLoss = BindingCount(ServiceConsumerInstall);
 
                     OperationId operation = NextLaneOperation();
-                    LifecycleRequestReport report = controller.Submit(
+                    LifecycleRequestReport report = SubmitAndPublish(
                         NarrativeLifecyclePayloads.Unmount(ServiceProviderInstall), operation);
                     PublishedOperation? published = FindPublished(report, operation);
 
@@ -932,7 +962,7 @@ namespace GameCore.Gameplay.Narrative.Fixtures
                         && consumerBindingsBeforeLoss > 0
                         && retractedAsBefore
                         && report.Derived != null
-                        && report.Derived.Succeeded;
+                        && report.Derived.Outcome != DerivedAssemblyOutcome.Refused;
 
                     steps.Add(new NarrativeLifecycleStep(name, pass,
                         "consumerState=" + state
@@ -975,7 +1005,7 @@ namespace GameCore.Gameplay.Narrative.Fixtures
 
                     // A compatible provider: the same contract, its own installation identity and its own type.
                     OperationId operation = NextLaneOperation();
-                    LifecycleRequestReport report = controller.Submit(
+                    LifecycleRequestReport report = SubmitAndPublish(
                         NarrativeLifecyclePayloads.Mount(
                             ProviderReplacementManifest(), ServiceProviderReplacementInstall, NarrativeKeys.RootScope),
                         operation);
@@ -995,7 +1025,7 @@ namespace GameCore.Gameplay.Narrative.Fixtures
                         && bindings == (int)consumerBindingsBeforeLoss
                         && rows == consumerRowsBeforeLoss
                         && report.Derived != null
-                        && report.Derived.Succeeded;
+                        && report.Derived.Outcome != DerivedAssemblyOutcome.Refused;
 
                     steps.Add(new NarrativeLifecycleStep(name, pass,
                         "consumerState=" + state
@@ -1065,11 +1095,12 @@ namespace GameCore.Gameplay.Narrative.Fixtures
                     CompositionEditPayload reconfigurePayload = NarrativeLifecyclePayloads.Reconfigure(
                         entry.Manifest, provider, revision, ConfigDocumentCodec.HashOf(composed.Value), ConfigDocument.Empty);
 
+                    OperationId operation = NextLaneOperation();
                     int replacementsBefore = lane.Lifecycle.Activations.CommittedReplacementCount;
 
                     // A staged resource for the provider, acquired under the activation epoch the reconfigure is about
                     // to publish: the unmount of step 7 retires exactly the leases of the epoch that acquired them.
-                    OperationId operation = NextLaneOperation();
+                    DeclareChapterIngress();
                     EditAdmission admission = lane.SubmitEdit(reconfigurePayload, operation, lane.Committed.Revision);
 
                     // Phase 1 of the plan: staging really happened and the running activation is untouched. These two
@@ -1099,18 +1130,15 @@ namespace GameCore.Gameplay.Narrative.Fixtures
                     // predecessor's leases (P-046). Read before the carrier of a no-change publication below.
                     rows = AttributedRows(provider);
                     LifecycleCommitReport? lifecycle = LifecycleOf(published, operation);
-                    bool displacedTornDown = HasTeardownWithOtherEpoch(lifecycle, provider, providerEpochBefore);
+                    bool displacedTornDown = HasTeardownAtEpoch(lifecycle, provider, providerEpochBefore);
                     oldHeldAuthority = oldRanAtStaging && displacedTornDown;
                     bool leaseAccepted = stagedLease && leases.Count == 1;
 
                     // A reconfiguration changes no target's effective assembly, so the world's half of this
-                    // publication is a spawn carrying the lane's own numbers (P-006, P-024) - the same idiom the
-                    // slice's scenario uses for its no-target-change provider.
-                    bool carried = true;
-                    if (derived.Outcome == DerivedAssemblyOutcome.NoTargetChange)
-                    {
-                        carried = PublishCarrier().CountersJoined;
-                    }
+                    // publication is its unchanged assembly, not a spawn carrier: a carrier would copy the
+                    // chapter's published rules onto the carrier target and inflate the installation's attributed
+                    // rows (P-006).
+                    bool carried = CompleteWorldHalf(operation, derived);
 
                     bool pass = admission.Staged
                         && leaseAccepted
@@ -1186,26 +1214,30 @@ namespace GameCore.Gameplay.Narrative.Fixtures
                     int disposedBefore = resources != null ? resources.DisposeCount : 0;
 
                     bool epochKnown = lane.Committed.TryGetInstall(provider, out InstallEntry? entry) && entry != null;
-                    uint epoch = epochKnown ? entry!.Record.ActivationEpoch.Value : 0U;
+                    ulong epoch = epochKnown ? entry!.Record.ActivationEpoch.Value : 0UL;
                     InstallationGeneration generation = epochKnown ? entry!.Record.Generation : default(InstallationGeneration);
 
                     OperationId operation = NextLaneOperation();
-                    LifecycleRequestReport report = controller.Submit(
-                        NarrativeLifecyclePayloads.Unmount(provider), operation);
-                    PublishedOperation? published = FindPublished(report, operation);
+                    bool joined = SubmitChapterEdit(
+                        NarrativeLifecyclePayloads.Unmount(provider),
+                        operation,
+                        out EditAdmission _,
+                        out IReadOnlyList<PublishedOperation> chapterPublished,
+                        out DerivedAssemblyReport _);
+                    PublishedOperation? published = PublishedOf(chapterPublished, operation);
 
                     state = StateOf(provider);
                     ingressClosed = controller.Binding.ClosedInstallationCount - closedBefore;
                     long routesRetired = controller.Binding.RetiredRouteCount - routesBefore;
 
-                    TeardownReport? teardown = TeardownOf(report.Lifecycle, provider);
+                    TeardownReport? teardown = TeardownOf(published != null ? published.Lifecycle : null, provider);
                     retractedRows = teardown != null ? teardown.Retraction.AttributedRows : -1;
                     retiredLeases = teardown != null ? teardown.Cleanup.Retired.Count : -1;
                     quarantined = teardown != null ? teardown.Quarantined.Count : -1;
 
                     bool lateDiscarded = false;
                     lateCompletion = "notEvaluated";
-                    if (epochKnown && epoch != 0U)
+                    if (epochKnown && epoch != 0UL)
                     {
                         AsyncWorkToken token = new AsyncWorkToken(
                             suspendOperationKnown ? suspendOperation : operation, provider, generation, new ActivationEpoch(epoch), 1U);
@@ -1220,7 +1252,8 @@ namespace GameCore.Gameplay.Narrative.Fixtures
                         && resources != null
                         && resources.DisposeCount > disposedBefore;
 
-                    bool pass = state == InstallationState.Disposed.ToString()
+                    bool pass = joined
+                        && state == InstallationState.Disposed.ToString()
                         && ingressClosed >= 1
                         && routesRetired >= 1
                         && routesClosed
@@ -1291,10 +1324,10 @@ namespace GameCore.Gameplay.Narrative.Fixtures
                     IReadOnlyList<StagedLease> leases = lane.StagedLeases(mountOperation);
                     lane.Drain();
                     DerivedAssemblyReport derived = pipeline.PublishDerived(mountOperation);
-                    if (derived.Outcome == DerivedAssemblyOutcome.NoTargetChange)
-                    {
-                        PublishCarrier();
-                    }
+
+                    // The fenced mount derives no target change, so the world's half of its publication is the
+                    // unchanged assembly (P-006), not a spawn carrier.
+                    CompleteWorldHalf(mountOperation, derived);
 
                     if (!staged || leases.Count != 1 || !admission.Staged)
                     {
@@ -1946,10 +1979,10 @@ namespace GameCore.Gameplay.Narrative.Fixtures
                 }
 
                 bool ok = true;
-                for (int i = 0; i < NarrativeFacts.DeclaredFactKeys.Count; i++)
+                for (int i = 0; i < RulesNarrativeFacts.DeclaredFactKeys.Count; i++)
                 {
-                    string factKey = NarrativeFacts.DeclaredFactKeys[i];
-                    if (!NarrativeFacts.TryGetFactSlotTag(factKey, out string slotTag))
+                    string factKey = RulesNarrativeFacts.DeclaredFactKeys[i];
+                    if (!RulesNarrativeFacts.TryGetFactSlotTag(factKey, out string slotTag))
                     {
                         ok = false;
                         continue;
@@ -1957,10 +1990,10 @@ namespace GameCore.Gameplay.Narrative.Fixtures
 
                     ok &= seeder.TrySeedSlot(
                         NarrativeKeys.QuestLedger, NarrativeKeys.QuestOwner, NarrativeKeys.FactValueSlot(slotTag),
-                        NarrativeKeys.QuestDomain.Version, NarrativeFacts.InitialValue, out DiagnosticCode _, out string _);
+                        NarrativeKeys.QuestDomain.Version, RulesNarrativeFacts.InitialValue, out DiagnosticCode _, out string _);
                     ok &= seeder.TrySeedSlot(
                         NarrativeKeys.QuestLedger, NarrativeKeys.QuestOwner, NarrativeKeys.FactVersionSlot(slotTag),
-                        NarrativeKeys.QuestDomain.Version, NarrativeFacts.InitialVersion, out DiagnosticCode _, out string _);
+                        NarrativeKeys.QuestDomain.Version, RulesNarrativeFacts.InitialVersion, out DiagnosticCode _, out string _);
                 }
 
                 ok &= seeder.TrySeedSlot(
@@ -2062,52 +2095,139 @@ namespace GameCore.Gameplay.Narrative.Fixtures
 
             /// <summary>
             /// Submits one lifecycle payload through the controller, which performs the lane submission, the drain and
-            /// the derived publication in the fixed order of P-046 (P-033, P-051). A publication whose derivation
-            /// changes no target carries no assembly, so the world's half of it is a spawn (P-006, P-024).
+            /// the derived publication in the fixed order of P-046 (P-033, P-051), then completes the world's half of
+            /// that same publication (P-006). The chapter's ingress declaration is restored after the controller's
+            /// own refresh rebuilt every declaration from the manifests, so a later close of the chapter installation
+            /// still finds the ChoiceRoute owner (P-047).
             /// </summary>
-            private LifecycleRequestReport SubmitAndPublish(CompositionEditPayload payload)
+            private LifecycleRequestReport SubmitAndPublish(CompositionEditPayload payload) =>
+                SubmitAndPublish(payload, NextLaneOperation());
+
+            private LifecycleRequestReport SubmitAndPublish(CompositionEditPayload payload, OperationId operation)
             {
                 if (controller == null)
                 {
                     throw new InvalidOperationException("The lifecycle controller is not attached.");
                 }
 
-                OperationId operation = NextLaneOperation();
+                DeclareChapterIngress();
                 LifecycleRequestReport report = controller.Submit(payload, operation);
-                if (report.Derived != null && report.Derived.Outcome == DerivedAssemblyOutcome.NoTargetChange)
+                DeclareChapterIngress();
+                if (report.Derived != null)
                 {
-                    PublishCarrier();
+                    CompleteWorldHalf(operation, report.Derived);
                 }
 
                 return report;
             }
 
             /// <summary>
-            /// Publishes a spawned target as the world's assembly for the lane's committed publication. P-006 asks for
-            /// one publication series, so a composition publication that changes no target still needs its own
-            /// assembly; a spawn is exactly that publication, and the slice's scenario uses the same idiom (P-024).
-            /// </summary>
-            private DerivedAssemblyReport PublishCarrier()
+            /// Submits a lifecycle edit of the chapter installation over the same three seams the controller drives,
+            /// with the chapter's ingress declaration live at the publication boundary. The controller's own
+            /// pre-submission refresh rebuilds every declaration from the manifests, and the chapter manifest's
+            private bool SubmitChapterEdit(
+                CompositionEditPayload payload,
+                OperationId operation,
+                out EditAdmission admission,
+                out IReadOnlyList<PublishedOperation> published,
+                out DerivedAssemblyReport derived)
             {
-                if (pipeline == null || targets == null || publisher == null || module == null)
+                if (lane == null || pipeline == null)
                 {
-                    throw new InvalidOperationException("The derived assembly pipeline is not attached.");
+                    throw new InvalidOperationException("The composition lane is not attached.");
                 }
 
-                carrierOrdinal++;
-                TargetId carrier = new TargetId(new Id128(CarrierSalt, (ulong)carrierOrdinal));
-                DerivedAssemblyReport spawn = pipeline.PublishSpawn(
-                    NextWorldOperation(), carrier, NarrativeKeys.VillagerRecipe, NarrativeKeys.VillageScope);
-
-                if (spawn.Succeeded
-                    && targets.TryRegister(carrier, NarrativeKeys.VillageScope, NarrativeKeys.VillagerRecipe, out DiagnosticCode _, out string _)
-                    && publisher.Registry.TryResolveTarget(carrier, out _, out Entity entity))
-                {
-                    module.MapTarget(carrier, entity);
-                }
-
-                return spawn;
+                DeclareChapterIngress();
+                admission = lane.SubmitEdit(payload, operation, lane.Committed.Revision);
+                published = lane.Drain();
+                derived = pipeline.PublishDerived(operation);
+                return CompleteWorldHalf(operation, derived);
             }
+
+            /// <summary>
+            /// Completes the world's half of one lifecycle publication. A lifecycle edit whose derivation changed no
+            /// effective binding is answered `NoTargetChange`, and P-006 still counts it as one publication of the one
+            /// series, so the world must publish its assembly for that pair — exactly as the slice's own scenario
+            /// completes every publication it drains. Two shapes exist:
+            ///
+            ///   * a derivation that never adopted (an empty delta) leaves the pair free, so the world publishes its
+            ///     unchanged assembly for it;
+            ///   * a derivation that adopted and then collapsed to a planner no-op leaves the pair adopted and
+            ///     pending, and the one legal consumer of a pending pair is a spawn: the carrier is seeded from the
+            ///     ledger recipe, which no chapter rule selects, so it adds zero binding rows and no installation's
+            ///     attributed rows change (P-006, P-024).
+            /// </summary>
+            private bool CompleteWorldHalf(OperationId operation, DerivedAssemblyReport derived)
+            {
+                if (lane == null || publisher == null || host == null || pipeline == null)
+                {
+                    throw new InvalidOperationException("The world's assembly publisher is not attached.");
+                }
+
+                if (derived.Outcome != DerivedAssemblyOutcome.NoTargetChange
+                    || AssemblyPublisher.MatchesPublishedAssembly(
+                        lane.Committed.Revision,
+                        lane.Committed.Epoch,
+                        publisher.PublishedRevision,
+                        host.CurrentEpoch))
+                {
+                    // The derivation published its own assembly, or this publication's numbers are already joined.
+                    return true;
+                }
+
+                if (!publisher.HasAdoptedPublication)
+                {
+                    publisher.PublishUnchangedAssembly(operation, lane.Committed.Revision, lane.Committed.Epoch);
+                }
+                else
+                {
+                    // The pair is adopted and pending: only a spawn may consume it, and a ledger-recipe carrier
+                    // carries no derived row, so the completion changes no installation's contribution.
+                    carrierOrdinal++;
+                    TargetId carrier = TargetId.FromRaw(CarrierSalt.High, CarrierSalt.Low + (ulong)carrierOrdinal);
+                    DerivedAssemblyReport consumed = pipeline.PublishSpawn(
+                        NextWorldOperation(), carrier, NarrativeKeys.QuestLedgerRecipe, NarrativeKeys.RootScope);
+                    if (!consumed.Succeeded)
+                    {
+                        return false;
+                    }
+                }
+
+                return AssemblyPublisher.MatchesPublishedAssembly(
+                    lane.Committed.Revision,
+                    lane.Committed.Epoch,
+                    publisher.PublishedRevision,
+                    host.CurrentEpoch);
+            }
+
+            /// <summary>
+            /// Declares the chapter installation's ingress owners: the manifest's own state-slot owners plus the
+            /// world's ingress routing owner (the ChoiceRoute owner, which no state slot names). The controller's
+            /// refresh rebuilds declarations from manifests only, so this is redeclared around every submission —
+            /// idempotently, as a redeclaration of the same entry yields the same owners (P-047).
+            /// </summary>
+            private void DeclareChapterIngress()
+            {
+                if (controller == null || lane == null)
+                {
+                    return;
+                }
+
+                if (lane.Committed.TryGetInstall(NarrativeKeys.ChapterOneInstall, out InstallEntry? entry)
+                    && entry != null)
+                {
+                    var owners = new List<OwnerId>(
+                        InstallationIngressOwners.FromManifest(entry.Instance, entry).Owners);
+                    if (!ContainsOwner(owners, NarrativeKeys.IngressOwner))
+                    {
+                        owners.Add(NarrativeKeys.IngressOwner);
+                    }
+
+                    controller.Binding.DeclareIngressOwners(
+                        new InstallationIngressOwners(entry.Instance, owners));
+                }
+            }
+
 
             /// <summary>
             /// Unloads every remaining installation and disposes the world, so the registry returns to its baseline
@@ -2445,7 +2565,7 @@ namespace GameCore.Gameplay.Narrative.Fixtures
             /// </summary>
             private string FactVersionText()
             {
-                int version = NarrativeFacts.InitialVersion;
+                int version = RulesNarrativeFacts.InitialVersion;
                 if (host != null
                     && module != null
                     && module.TryEntity(NarrativeKeys.QuestLedger, out Entity entity)
@@ -2543,15 +2663,15 @@ namespace GameCore.Gameplay.Narrative.Fixtures
             }
 
             /// <summary>
-            /// True when this publication tore down an activation of the installation that carried a different
-            /// activation epoch than the published one: that is the displaced predecessor of an in-place replacement,
-            /// and its teardown running in this publication is what proves the old activation was still live while the
-            /// candidate staged (P-046).
+            /// True when this publication ran a P-048 pass for an activation of the installation stamped with the
+            /// given epoch. A replacement's displaced predecessor tears down under the *old* activation epoch
+            /// (P-005, P-048), so that pass running in the same publication is what proves the old activation was
+            /// still live while the candidate staged (P-046) — the same witness the card fixture reads.
             /// </summary>
-            private static bool HasTeardownWithOtherEpoch(
+            private static bool HasTeardownAtEpoch(
                 LifecycleCommitReport? report,
                 PluginInstanceId instance,
-                uint epochBefore)
+                ulong epoch)
             {
                 if (report == null)
                 {
@@ -2561,13 +2681,28 @@ namespace GameCore.Gameplay.Narrative.Fixtures
                 for (int i = 0; i < report.Teardowns.Count; i++)
                 {
                     if (report.Teardowns[i].Instance.Equals(instance)
-                        && report.Teardowns[i].Stamp.ActivationEpoch.Value != epochBefore)
+                        && report.Teardowns[i].Stamp.ActivationEpoch.Value == epoch)
                     {
                         return true;
                     }
                 }
 
                 return false;
+            }
+
+            private static PublishedOperation? PublishedOf(
+                IReadOnlyList<PublishedOperation> published,
+                OperationId operation)
+            {
+                for (int i = 0; i < published.Count; i++)
+                {
+                    if (published[i].Operation.Equals(operation))
+                    {
+                        return published[i];
+                    }
+                }
+
+                return null;
             }
 
             private static LifecycleCommitReport? LifecycleOf(

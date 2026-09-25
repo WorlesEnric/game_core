@@ -212,14 +212,14 @@ namespace GameCore.Composition
     /// </summary>
     public sealed class InstallationLifecycleCoordinator
     {
-        private readonly HashSet<Id128> committedOperations = new HashSet<Id128>();
-        private readonly Dictionary<Id128, List<PluginInstanceId>> stagedCandidates = new Dictionary<Id128, List<PluginInstanceId>>();
+        private readonly HashSet<OperationId> committedOperations = new HashSet<OperationId>();
+        private readonly Dictionary<OperationId, List<PluginInstanceId>> stagedCandidates = new Dictionary<OperationId, List<PluginInstanceId>>();
         private readonly List<Diagnostic> diagnostics = new List<Diagnostic>();
 
         public InstallationLifecycleCoordinator(
             WorldId world,
             ResourceLedger resources,
-            ICallbackGate callbacks,
+            CallbackGate callbacks,
             LifecycleSettings settings,
             ILifecycleWorldBinding? binding)
         {
@@ -247,7 +247,7 @@ namespace GameCore.Composition
         /// <summary>The P-048 teardown sequencer this coordinator uses; one pass per retired activation.</summary>
         public TeardownSequencer Teardown { get; }
 
-        public ICallbackGate Callbacks { get; }
+        public CallbackGate Callbacks { get; }
 
         public LifecycleSettings Settings { get; }
 
@@ -296,6 +296,7 @@ namespace GameCore.Composition
             }
 
             Binding = binding;
+            Teardown.AttachWorldBinding(binding);
         }
 
         /// <summary>
@@ -495,7 +496,7 @@ namespace GameCore.Composition
             {
                 for (int i = 0; i < staged.Count; i++)
                 {
-                    if (Activations.AbortCandidate(staged[i], out ActivationAttempt? _))
+                    if (Activations.AbortCandidate(staged[i], out ActivationAttempt? _).Allowed)
                     {
                         aborted.Add(staged[i]);
                     }

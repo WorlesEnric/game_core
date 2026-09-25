@@ -14,6 +14,7 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using GameCore.Contracts;
 
 namespace GameCore.Composition

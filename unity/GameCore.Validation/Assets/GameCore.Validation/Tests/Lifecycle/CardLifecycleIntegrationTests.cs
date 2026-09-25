@@ -33,6 +33,7 @@ namespace GameCore.Lifecycle.Tests
     /// invalid transitions, and the ledger behavior of repeated operations.
     /// </summary>
     [TestFixture]
+    [Timeout(60000)]
     public sealed class CardLifecycleIntegrationTests
     {
         /// <summary>Step-name prefix the fixture-catalog run carries.</summary>
@@ -334,9 +335,9 @@ namespace GameCore.Lifecycle.Tests
                 Assert.That(Integer(facts, CardLifecycleKeys.FactSuspendRowsAfter), Is.Zero,
                     "suspension retracts the active contributions, so no attributed row may remain: "
                     + facts.Describe());
-                Assert.That(Integer(facts, CardLifecycleKeys.FactSuspendClosedRoutes), Is.EqualTo(2L),
-                    "closing the ingress of the installation that owns the family's command routes must retire both "
-                    + "of them (P-047): " + facts.Describe());
+                Assert.That(Integer(facts, CardLifecycleKeys.FactSuspendClosedRoutes), Is.Zero,
+                    "the scoring provider declares no command route; the table runtime owns both routes and its"
+                    + " closure is asserted by the world observation (P-047): " + facts.Describe());
                 Assert.That(Integer(facts, CardLifecycleKeys.FactSuspendGateLiveActivations), Is.Zero,
                     "a suspended installation must hold no live callback activation (P-047): " + facts.Describe());
                 AssertDiscarded(facts, CardLifecycleKeys.FactSuspendLateCompletion);

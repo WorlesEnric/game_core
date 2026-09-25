@@ -183,14 +183,14 @@ namespace GameCore.Composition
         private readonly ResourceLedger resources;
         private readonly JobFenceRegistry jobs;
         private readonly QuarantineRegistry quarantine;
-        private readonly ICallbackGate callbacks;
-        private readonly ILifecycleWorldBinding binding;
+        private readonly CallbackGate callbacks;
+        private ILifecycleWorldBinding binding;
 
         public TeardownSequencer(
             ResourceLedger resources,
             JobFenceRegistry jobs,
             QuarantineRegistry quarantine,
-            ICallbackGate callbacks,
+            CallbackGate callbacks,
             ILifecycleWorldBinding binding)
         {
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
@@ -199,6 +199,9 @@ namespace GameCore.Composition
             this.callbacks = callbacks ?? throw new ArgumentNullException(nameof(callbacks));
             this.binding = binding ?? throw new ArgumentNullException(nameof(binding));
         }
+
+        public void AttachWorldBinding(ILifecycleWorldBinding worldBinding) =>
+            binding = worldBinding ?? throw new ArgumentNullException(nameof(worldBinding));
 
         /// <summary>Teardown passes executed; one per retired or unloaded installation.</summary>
         public int PassCount { get; private set; }

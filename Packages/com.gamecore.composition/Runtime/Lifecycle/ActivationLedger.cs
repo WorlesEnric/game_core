@@ -387,7 +387,9 @@ namespace GameCore.Composition
                 RetiredCount++;
             }
 
-            entry.Current = entry.Candidate.With(InstallationState.Active);
+            entry.Current = new ActivationAttempt(entry.Candidate.AttemptId, instance,
+                entry.Candidate.Generation, entry.Candidate.ActivationEpoch, entry.Candidate.Operation,
+                InstallationState.Active, false, entry.Candidate.Ordinal);
             entry.Candidate = null;
             CommittedReplacementCount++;
             return LifecycleTransition.Permit(InstallationState.Preparing, InstallationState.Active);

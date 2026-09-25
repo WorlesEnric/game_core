@@ -28,6 +28,7 @@ namespace GameCore.Lifecycle.Tests
     /// qualification project - see the scenario's own header).
     /// </summary>
     [TestFixture]
+    [Timeout(60000)]
     public sealed class NarrativeLifecycleIntegrationTests
     {
         /// <summary>Step-name prefix the fixture-catalog run carries.</summary>
@@ -579,7 +580,7 @@ namespace GameCore.Lifecycle.Tests
                     Is.EqualTo((long)NarrativeGateRules.Closed),
                     "retracting the chapter's contribution must leave the gate closed (P-046): " + facts.Describe());
                 Assert.That(Integer(facts, NarrativeLifecycleKeys.FactFactVersionAfterResume),
-                    Is.GreaterThanOrEqualTo((long)NarrativeFacts.InitialVersion),
+                    Is.GreaterThanOrEqualTo((long)GameCore.Rules.Narrative.NarrativeFacts.InitialVersion),
                     "resume must rederive the durable quest fact at a declared version: " + facts.Describe());
             }
         }

@@ -40,7 +40,7 @@ namespace GameCore.Unity.Runtime.Lifecycle
         {
             Operation = operation;
             Admission = admission;
-            Published = published;
+            Published = published ?? Array.Empty<PublishedOperation>();
             Derived = derived;
             Lifecycle = lifecycle;
             Code = code;
@@ -285,7 +285,7 @@ namespace GameCore.Unity.Runtime.Lifecycle
             FactoryKey systemKey,
             LogicalStepId step,
             IReadOnlyList<Id128>? resourceIds,
-            Unity.Jobs.JobHandle handle) =>
+            global::Unity.Jobs.JobHandle handle) =>
             JobFence.Track(jobId, instance, stage, systemKey, world.CurrentEpoch, step, resourceIds, handle);
 
         /// <summary>Declares (or refreshes) which owners an installation's ingress closes with (P-047).</summary>

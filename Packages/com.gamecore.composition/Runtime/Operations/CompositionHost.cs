@@ -682,6 +682,7 @@ namespace GameCore.Composition
                 {
                     continue;
                 }
+                CompositionEditPlan? previousPlan = row.Plan;
 
                 CompositionEditPlan replanned = CompositionEditApplier.Plan(
                     next,
@@ -695,7 +696,10 @@ namespace GameCore.Composition
                 {
                     // A dependent proposal whose base disappeared is rejected rather than published blindly, and
                     // whatever activation candidate it had staged is released (P-046, P-051).
-                    Lifecycle.Abort(row.Plan, replanned.Code);
+                    if (previousPlan != null)
+                    {
+                        Lifecycle.Abort(previousPlan, replanned.Code);
+                    }
                     ledger.Settle(row.Operation, Outcome.Rejected, replanned.Code, committed.Revision, committed.Epoch, null, committed.Step);
                     ReleaseStagedResources(row.Operation);
                     continue;
@@ -703,7 +707,11 @@ namespace GameCore.Composition
 
                 // The surviving proposal is re-staged against the rebuilt base: its lifecycle phase is rebuilt with
                 // it, so no candidate is left behind for a plan that no longer describes the assembled closure.
-                Lifecycle.Abort(row.Plan, DiagnosticCode.None);
+                if (previousPlan != null)
+                {
+                    Lifecycle.Abort(previousPlan, DiagnosticCode.None);
+                }
+                row.Plan = replanned;
                 if (!replanned.IsNoChange)
                 {
                     Lifecycle.Stage(replanned);

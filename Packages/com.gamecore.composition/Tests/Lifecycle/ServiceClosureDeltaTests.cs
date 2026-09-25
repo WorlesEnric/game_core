@@ -170,7 +170,7 @@ namespace GameCore.Composition.Tests
             Assert.That(delta.WaitingConsumers[0].Equals(pair.Consumer), Is.True, "the waiting consumer is the one that required the provider.");
             Assert.That(delta.Waits(pair.Consumer), Is.True);
             Assert.That(delta.WaitingDiagnostics.Count, Is.GreaterThan(0), "each wait carries the reason it waits (P-052).");
-            Assert.That(HasCode(delta.WaitingDiagnostics, DiagnosticCode.MissingDependency), Is.True);
+            Assert.That(delta.WaitingDiagnostics, Has.Some.Property(nameof(Diagnostic.Code)).EqualTo(DiagnosticCode.MissingDependency));
             Assert.That(delta.RetractedConsumers, Does.Contain(pair.Consumer), "a consumer that starts waiting retracts its contribution in the same plan (P-012).");
             Assert.That(delta.RetiredInstances, Is.EqualTo(plan.RetiredInstances), "the delta copies the plan's retirement list; the plan is the authority on what retires (P-048).");
             Assert.That(delta.RetiredInstances, Does.Contain(pair.Provider), "the removed provider is one of the retired activations.");

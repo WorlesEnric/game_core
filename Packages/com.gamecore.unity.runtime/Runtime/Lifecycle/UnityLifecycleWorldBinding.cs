@@ -21,6 +21,8 @@ using GameCore.Composition;
 using GameCore.Contracts;
 using GameCore.Execution;
 using GameCore.Execution.Messages;
+using GameCore.Planning;
+using GameCore.Unity.Runtime.Messages;
 
 namespace GameCore.Unity.Runtime.Lifecycle
 {
@@ -128,7 +130,10 @@ namespace GameCore.Unity.Runtime.Lifecycle
                 throw new ArgumentNullException(nameof(entry));
             }
 
-            owners[entry.Instance.Value] = InstallationIngressOwners.FromManifest(entry.Instance, entry);
+            if (!owners.ContainsKey(entry.Instance.Value))
+            {
+                owners.Add(entry.Instance.Value, InstallationIngressOwners.FromManifest(entry.Instance, entry));
+            }
         }
 
         /// <summary>Declares the owner mapping explicitly, for a host that resolves owners outside a manifest.</summary>
