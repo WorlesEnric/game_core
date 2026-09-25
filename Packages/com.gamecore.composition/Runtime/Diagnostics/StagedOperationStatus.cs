@@ -66,7 +66,7 @@ namespace GameCore.Composition.Diagnostics
             Source = source;
             IsTerminal = isTerminal;
             HasStagedPlan = hasStagedPlan;
-            StagedPlanHash = stagedPlanHash ?? ContentHash.Empty;
+            StagedPlanHash = stagedPlanHash;
             StagedIsNoChange = stagedIsNoChange;
             StagedCode = stagedCode;
             StagedActivationCount = stagedActivationCount;

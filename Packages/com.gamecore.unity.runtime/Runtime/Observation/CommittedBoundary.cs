@@ -165,7 +165,7 @@ namespace GameCore.Execution.Observation
         /// <summary>Hash the publisher recorded for this image's semantic state (P-044).</summary>
         ContentHash StateHash { get; }
 
-        /// <summary>Hash of exactly the bytes <see cref="State"/> carries, so a reader verifies its own image.</summary>
+        /// <summary>SHA-256 of the frozen bytes in <see cref="State"/>.</summary>
         ContentHash PayloadHash { get; }
 
         /// <summary>The immutable bytes of the committed image; never live world memory (P-007, P-045).</summary>
@@ -355,13 +355,14 @@ namespace GameCore.Execution.Observation
         public bool IsDisposed { get; private set; }
 
         /// <summary>
-        /// Verifies that the bytes of this lease are exactly the bytes of the committed image of its own token: the
-        /// read-side proof that a reader never observes a mixed or half-written image (P-045, TEST-014).
+        /// Verifies the leased bytes against this committed image's payload hash
+        /// (P-045, TEST-014).
         /// </summary>
         public bool Verify()
         {
             IReadOnlyList<byte> leased = imageLease.State.Bytes;
-            return leased.Count == ContentHash.SizeInBytes && ContentHash.Compute(ToArray(leased)).Equals(payloadHash);
+            return leased.Count == ContentHash.SizeInBytes
+                && payloadHash.Equals(ContentHash.Compute(ToArray(leased)));
         }
 
         public void Dispose()

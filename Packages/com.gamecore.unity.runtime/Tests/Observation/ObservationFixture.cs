@@ -62,9 +62,9 @@ namespace GameCore.Execution.Tests.Observation
             return Commit(step, events);
         }
 
-        /// <summary>The image hash a lease of <paramref name="step"/> must carry.</summary>
+        /// <summary>SHA-256 of the frozen bytes a lease of <paramref name="step"/> carries.</summary>
         public static ContentHash ExpectedHash(ulong step) =>
-            StepFingerprint.Compute(World, AssemblyEpoch.First, new LogicalStepId(step), Dispatched);
+            ContentHash.Compute(StepFingerprint.Compute(World, AssemblyEpoch.First, new LogicalStepId(step), Dispatched).ToArray());
 
         /// <summary>Explicit boundary facts: never gathered from a world, never guessed.</summary>
         internal sealed class Facts : ICommittedBoundaryFactsSource

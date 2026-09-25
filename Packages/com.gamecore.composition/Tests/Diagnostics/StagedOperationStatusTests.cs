@@ -95,8 +95,10 @@ namespace GameCore.Composition.Tests.Diagnostics
 
             Assert.That(admission.Rejected, Is.True, admission.Code.ToString());
             Assert.That(admission.Code, Is.Not.EqualTo(DiagnosticCode.None));
-            Assert.That(admission.Plan, Is.Not.Null);
-            Assert.That(admission.Plan!.Diagnostics.Count, Is.GreaterThan(0), "A rejection names its reasons (P-052).");
+            Assert.That(admission.Plan, Is.Null, "A refused edit hands back no plan object; the lane keeps the refused plan itself (P-029).");
+            CompositionEditPlan? refusedPlan = host.OperationLedger.RowOf(operation)?.Plan;
+            Assert.That(refusedPlan, Is.Not.Null, "The lane retains the refused plan for status reads (05 s5).");
+            Assert.That(refusedPlan!.Diagnostics.Count, Is.GreaterThan(0), "A rejection names its reasons (P-052).");
             Assert.That(host.FindInstall(instance), Is.Null, "A refused mount never registers an installation (P-012).");
 
             StagedOperationStatus refused = reader.Read(operation);

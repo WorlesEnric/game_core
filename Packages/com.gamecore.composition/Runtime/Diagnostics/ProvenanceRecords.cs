@@ -118,8 +118,8 @@ namespace GameCore.Composition.Diagnostics
             Stratum = stratum;
             Mode = mode;
             ProviderDepth = providerDepth;
-            RecipeHash = recipeHash ?? ContentHash.Empty;
-            SlotHash = slotHash ?? ContentHash.Empty;
+            RecipeHash = recipeHash;
+            SlotHash = slotHash;
             EvidenceKeys = ContractCollections.Freeze(evidenceKeys);
         }
 

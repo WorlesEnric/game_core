@@ -126,6 +126,12 @@ namespace GameCore.Composition.Tests.Diagnostics
             ProvenanceStore store = SeededStore();
             var reader = new ProvenanceExplanationReader(store);
 
+            // The retained baseline first: one real page for the seeded epoch, so the counts below prove the
+            // expired, unknown and invalid lookups added no pages of their own.
+            ExplanationPage retained = reader.Explain(Target, Capability, Token(1UL), ExplanationPageRequest.FirstPage(4U));
+            Assert.That(retained.Matching.Count, Is.EqualTo(1));
+            Assert.That(reader.PageCount, Is.EqualTo(1));
+
             ExplanationPage expired = reader.Explain(Target, Capability, Token(7UL), ExplanationPageRequest.FirstPage(4U));
             Assert.That(expired.Matching.Count, Is.Zero);
             Assert.That(expired.Rejected.Count, Is.Zero);

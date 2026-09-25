@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using GameCore.Contracts;
+using GameCore.Execution.Messages;
 
 namespace GameCore.Execution.Observation
 {

@@ -81,7 +81,7 @@ namespace GameCore.Composition.Diagnostics
             Code = code;
             Phase = phase;
             Operation = operation;
-            PlanHash = planHash ?? ContentHash.Empty;
+            PlanHash = planHash;
             InvolvedIds = ContractCollections.Freeze(involvedIds);
             InvolvedKeys = ContractCollections.Freeze(involvedKeys);
             Count = count;
@@ -221,7 +221,7 @@ namespace GameCore.Composition.Diagnostics
                 return order;
             }
 
-            order = ((int)left.Code).CompareTo((int)right.Code);
+            order = CompareCodes(left.Code, right.Code);
             if (order != 0)
             {
                 return order;
@@ -291,6 +291,15 @@ namespace GameCore.Composition.Diagnostics
             order = left.IssuerId.CompareTo(right.IssuerId);
             return order != 0 ? order : left.IssuerSequence.CompareTo(right.IssuerSequence);
         }
+
+        /// <summary>
+        /// Order of one code inside a phase: the ordinal order of the code's stable literal (P-008 "ordinal
+        /// identifiers"). The frozen enum's numeric order (GC-003, W0 seam) is an allocation convenience, not a
+        /// stated precedence — `StalePlan = 2` must not outrank `Ineligible = 8` — so precedence reads the same
+        /// normative literal <see cref="DiagnosticCodeText"/> maps the value to, never the wording of a summary.
+        /// </summary>
+        private static int CompareCodes(DiagnosticCode left, DiagnosticCode right) =>
+            string.CompareOrdinal(DiagnosticCodeText.Of(left), DiagnosticCodeText.Of(right));
 
         private static int CompareIdLists(IReadOnlyList<Id128> left, IReadOnlyList<Id128> right)
         {

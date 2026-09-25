@@ -21,7 +21,13 @@ namespace GameCore.Execution
             State = state ?? throw new ArgumentNullException(nameof(state));
             StateHash = stateHash;
             EventCount = eventCount;
-            PayloadHash = ContentHash.Compute(ToBytes(State));
+            byte[] payload = new byte[State.Length];
+            for (int i = 0; i < payload.Length; i++)
+            {
+                payload[i] = State.Bytes[i];
+            }
+
+            PayloadHash = ContentHash.Compute(payload);
         }
 
         public SnapshotToken Token { get; }
@@ -33,9 +39,9 @@ namespace GameCore.Execution
         public int EventCount { get; }
 
         /// <summary>
-        /// Canonical hash of exactly the bytes <see cref="State"/> carries (GC-016). Two readers of the same
-        /// committed image compute the same value from the bytes they hold, so a torn or substituted image is
-        /// detectable without knowing the publisher's internal counters.
+        /// SHA-256 of the frozen image bytes, independently verifiable from a leased copy.
+        /// The image currently carries the canonical state fingerprint bytes, so this digest differs
+        /// from <see cref="StateHash"/>.
         /// </summary>
         public ContentHash PayloadHash { get; }
 
@@ -43,18 +49,6 @@ namespace GameCore.Execution
         public bool IsImageOf(SnapshotToken token) => Token.Equals(token);
 
         public override string ToString() => "image:" + Token.ToString();
-
-        private static byte[] ToBytes(FrozenPayload payload)
-        {
-            IReadOnlyList<byte> bytes = payload.Bytes;
-            var copy = new byte[bytes.Count];
-            for (int i = 0; i < copy.Length; i++)
-            {
-                copy[i] = bytes[i];
-            }
-
-            return copy;
-        }
     }
 
     /// <summary>
@@ -224,38 +218,35 @@ namespace GameCore.Execution
                     nameof(committed));
             }
 
-            PublishedStepImage? last = Last;
-            if (last != null)
-            {
-                SnapshotToken previous = last.Token;
-                bool staleStep = token.LogicalStepId.CompareTo(previous.LogicalStepId) < 0;
-                bool duplicate = token.Equals(previous);
-                bool staleEpoch = token.AssemblyEpoch.CompareTo(previous.AssemblyEpoch) < 0;
-                if (staleStep || duplicate || staleEpoch)
-                {
-                    RefusedPublicationCount++;
-                    return false;
-                }
-            }
-
-            byte[] state = committed.StateHash.ToArray();
-            var image = new PublishedStepImage(
-                token,
-                new FrozenPayload(state),
-                committed.StateHash,
-                committed.Events.Count);
-
-            // The image is complete before the pointer moves, and the pointer is the last write: a reader either
-            // sees the previous complete image or this complete image, never a half-built one (P-045).
-            Last = image;
-            PublishedCount++;
             lock (gate)
             {
-                retained.Add(image);
-            }
+                PublishedStepImage? last = Last;
+                if (last != null)
+                {
+                    SnapshotToken previous = last.Token;
+                    bool staleStep = token.LogicalStepId.CompareTo(previous.LogicalStepId) < 0;
+                    bool duplicate = token.Equals(previous);
+                    bool staleEpoch = token.AssemblyEpoch.CompareTo(previous.AssemblyEpoch) < 0;
+                    if (staleStep || duplicate || staleEpoch)
+                    {
+                        RefusedPublicationCount++;
+                        return false;
+                    }
+                }
 
-            TrimRetention();
-            return true;
+                byte[] state = committed.StateHash.ToArray();
+                var image = new PublishedStepImage(
+                    token,
+                    new FrozenPayload(state),
+                    committed.StateHash,
+                    committed.Events.Count);
+
+                retained.Add(image);
+                Last = image;
+                PublishedCount++;
+                TrimRetention();
+                return true;
+            }
         }
 
         /// <summary>True when the token identifies a retained committed image (P-045).</summary>
@@ -352,16 +343,20 @@ namespace GameCore.Execution
         /// </summary>
         public bool TryResync(out SnapshotToken token)
         {
-            PublishedStepImage? last = Last;
-            if (last == null)
+            lock (gate)
             {
-                token = default(SnapshotToken);
-                return false;
-            }
+                PublishedStepImage? last = Last;
+                if (last == null)
+                {
+                    token = default(SnapshotToken);
+                    return false;
+                }
 
-            token = last.Token;
-            return true;
+                token = last.Token;
+                return true;
+            }
         }
+
 
         /// <summary>
         /// Verifies that a lease's bytes are exactly the committed image of the lease's own token. A granted lease

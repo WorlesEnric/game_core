@@ -85,8 +85,8 @@ namespace GameCore.Execution.Tests.Observation
             Assert.That(lease.World.Session, Is.EqualTo(ObservationFixture.World.Session));
             Assert.That(lease.Step, Is.EqualTo(new LogicalStepId(3UL)));
             Assert.That(lease.Epoch, Is.EqualTo(AssemblyEpoch.First));
-            Assert.That(lease.StateHash, Is.EqualTo(ObservationFixture.ExpectedHash(3UL)));
-            Assert.That(lease.PayloadHash, Is.EqualTo(lease.StateHash));
+            Assert.That(lease.StateHash, Is.EqualTo(StepFingerprint.Compute(ObservationFixture.World, AssemblyEpoch.First, new LogicalStepId(3UL), ObservationFixture.Dispatched)));
+            Assert.That(lease.PayloadHash, Is.EqualTo(ObservationFixture.ExpectedHash(3UL)));
             Assert.That(lease.EventCount, Is.EqualTo(3));
             Assert.That(lease.FirstEventCursor.Sequence, Is.EqualTo(EventSequence.First));
             Assert.That(lease.LastEventCursor.Sequence, Is.EqualTo(new EventSequence(3UL)));

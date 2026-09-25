@@ -27,6 +27,7 @@ namespace GameCore.Execution.Tests.Observation
         {
             var store = new StepPublicationStore(ObservationFixture.World, 8, 4);
             var failures = new List<string>();
+            Assert.That(store.Publish(ObservationFixture.Commit(1UL)), Is.True);
             var gate = new object();
             var verifiedByReaders = new int[1];
 
@@ -39,7 +40,7 @@ namespace GameCore.Execution.Tests.Observation
                 reader.Start();
             }
 
-            for (ulong step = 1UL; step <= PublishedSteps; step++)
+            for (ulong step = 2UL; step <= PublishedSteps; step++)
             {
                 if (!store.Publish(ObservationFixture.Commit(step)))
                 {
