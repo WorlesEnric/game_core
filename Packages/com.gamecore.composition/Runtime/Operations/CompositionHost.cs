@@ -97,6 +97,7 @@ namespace GameCore.Composition
         private readonly Dictionary<OperationId, ResourcePreparationSet> stagedResources = new Dictionary<OperationId, ResourcePreparationSet>();
         private readonly IPluginManifestSource manifests;
         private readonly IManagedResourceFactory? resourceFactory;
+        private readonly ICompositionEditValidator? validator;
         private CompositionState committed;
         private CompositionState staged;
 
@@ -107,7 +108,8 @@ namespace GameCore.Composition
             IPluginManifestSource manifests,
             IManagedResourceFactory? resourceFactory,
             PropagationMode mode,
-            CompositionLaneSeed seed = default(CompositionLaneSeed))
+            CompositionLaneSeed seed = default(CompositionLaneSeed),
+            ICompositionEditValidator? validator = null)
         {
             if (rootScope.IsDefault)
             {
@@ -129,6 +131,7 @@ namespace GameCore.Composition
             Settings = settings ?? throw new ArgumentNullException(nameof(settings));
             this.manifests = manifests ?? throw new ArgumentNullException(nameof(manifests));
             this.resourceFactory = resourceFactory;
+            this.validator = validator;
             Seed = seed;
 
             // A standalone lane starts at the pre-publication 0/0; a lane joined to a world that already published
@@ -162,7 +165,8 @@ namespace GameCore.Composition
             ScopeId rootScope,
             IPluginManifestSource manifests,
             IManagedResourceFactory? resourceFactory,
-            CompositionLaneSeed seed = default(CompositionLaneSeed)) =>
+            CompositionLaneSeed seed = default(CompositionLaneSeed),
+            ICompositionEditValidator? validator = null) =>
             new CompositionHost(
                 world,
                 rootScope,
@@ -170,7 +174,8 @@ namespace GameCore.Composition
                 manifests,
                 resourceFactory,
                 PropagationMode.Automatic,
-                seed);
+                seed,
+                validator);
 
         public WorldId World { get; }
 
@@ -198,6 +203,12 @@ namespace GameCore.Composition
 
         /// <summary>Callback gate of this world; a publication fence closes it while the swap happens (P-047).</summary>
         public CallbackGate Callbacks { get; }
+
+        /// <summary>
+        /// Published-consequence validator of this lane, or null when it has none. It is consulted while planning,
+        /// before anything is staged or published, so a refusal keeps the committed composition (GC-013, P-014).
+        /// </summary>
+        public ICompositionEditValidator? Validator => validator;
 
         /// <summary>How many staged resource gates a publication has opened so far.</summary>
         public int ResourceGatesOpened { get; private set; }
@@ -545,7 +556,8 @@ namespace GameCore.Composition
                 return new EditAdmission(admission.Kind, DiagnosticCode.None, admission.Handle, admission.Entry, known?.Plan, null);
             }
 
-            CompositionEditPlan plan = CompositionEditApplier.Plan(staged, payload, operation, expectedRevision, inputHash, manifests);
+            CompositionEditPlan plan = CompositionEditApplier.Plan(
+                staged, payload, operation, expectedRevision, inputHash, manifests, validator);
             OperationLedger.LedgerRow? row = ledger.RowOf(operation);
             if (row != null)
             {
@@ -690,7 +702,8 @@ namespace GameCore.Composition
                     row.Operation,
                     committed.Revision,
                     row.InputHash,
-                    manifests);
+                    manifests,
+                    validator);
 
                 row.Plan = replanned;
                 if (!replanned.Succeeded)

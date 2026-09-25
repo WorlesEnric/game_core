@@ -27,6 +27,7 @@ namespace GameCore.Composition
             CompositionState before,
             CompositionState after,
             CompositionDelta? delta,
+            CompositionChangeSet? changeSet,
             ServiceResolution? services,
             IReadOnlyList<StateDisposition>? stateDispositions,
             IReadOnlyList<PluginInstanceId>? activationOrder,
@@ -42,6 +43,7 @@ namespace GameCore.Composition
             Before = before;
             After = after;
             Delta = delta;
+            ChangeSet = changeSet ?? CompositionChangeSet.Of(before, after);
             Services = services;
             StateDispositions = ContractCollections.Freeze(stateDispositions);
             ActivationOrder = ContractCollections.Freeze(activationOrder);
@@ -66,6 +68,12 @@ namespace GameCore.Composition
         public CompositionState After { get; }
 
         public CompositionDelta? Delta { get; }
+
+        /// <summary>
+        /// What this proposal changed, as an invalidation view over the composition facts (GC-013, P-023). It is
+        /// always present, even for a change the delta cannot express, such as an isolation or import edit.
+        /// </summary>
+        public CompositionChangeSet ChangeSet { get; }
 
         public ServiceResolution? Services { get; }
 
@@ -126,7 +134,8 @@ namespace GameCore.Composition
             OperationId operation,
             CompositionRevision expectedRevision,
             ContentHash inputHash,
-            IPluginManifestSource manifests)
+            IPluginManifestSource manifests,
+            ICompositionEditValidator? validator = null)
         {
             if (current == null)
             {
@@ -158,6 +167,37 @@ namespace GameCore.Composition
                 return Rejected(current, payload, operation, inputHash, DiagnosticCode.StalePlan, diagnostics);
             }
 
+            CompositionEditPlan plan = PlanSubject(current, payload, operation, inputHash, manifests, diagnostics);
+            if (validator == null || !plan.Succeeded)
+            {
+                // A lane without a derivation view plans and publishes as before; a rejected plan is already final.
+                return plan;
+            }
+
+            // P-014/P-028: validate the planned consequence before anyone prepares or publishes it. A refusal here
+            // keeps the old composition - including the old mode - exactly as published.
+            EditValidationResult validation = validator.Validate(plan.Before, plan.After, plan.ChangeSet);
+            if (validation.Accepted)
+            {
+                return plan;
+            }
+
+            diagnostics.Add(Diag(validation.Code, payload.Subject, operation, validation.Detail));
+            return Rejected(current, payload, operation, inputHash, validation.Code, diagnostics);
+        }
+
+        /// <summary>
+        /// The subject dispatch of <see cref="Plan"/>: one pure planner per edit subject. It is separate so the
+        /// published-consequence validator above runs on every subject rather than on a hand-picked one.
+        /// </summary>
+        private static CompositionEditPlan PlanSubject(
+            CompositionState current,
+            CompositionEditPayload payload,
+            OperationId operation,
+            ContentHash inputHash,
+            IPluginManifestSource manifests,
+            List<Diagnostic> diagnostics)
+        {
             switch (payload.Subject)
             {
                 case CompositionEditSubject.ScopeCreate:
@@ -853,6 +893,7 @@ namespace GameCore.Composition
 
             CompositionState resolvedState = after.With(installs: resolvedInstalls);
             CompositionDelta delta = ComputeDelta(before, resolvedState, payload);
+            CompositionChangeSet changeSet = CompositionChangeSet.Of(before, resolvedState);
             return new CompositionEditPlan(
                 operation,
                 payload.Subject,
@@ -862,6 +903,7 @@ namespace GameCore.Composition
                 before,
                 resolvedState,
                 delta,
+                changeSet,
                 resolution,
                 allDispositions,
                 resolution.ActivationOrder,
@@ -947,6 +989,13 @@ namespace GameCore.Composition
                 {
                     scopeEdits.Add(new ScopeEdit(CompositionEditKind.Reparent, record.Scope, previous.Parent, record.Parent));
                 }
+                else if (!ScopeFactsEqual(previous, record))
+                {
+                    // A scope's isolation, exclusions or import grants are content, not a tree edge, so the record
+                    // is reachable by `Update`: without it an exclusion or boundary edit would produce an empty
+                    // delta and its invalidating consequence would be invisible (GC-013, P-016).
+                    scopeEdits.Add(new ScopeEdit(CompositionEditKind.Update, record.Scope, record.Parent, record.Parent));
+                }
             }
 
             for (int i = 0; i < beforeScopes.Count; i++)
@@ -991,6 +1040,77 @@ namespace GameCore.Composition
             ModeEdit? mode = before.Mode != after.Mode ? new ModeEdit(payload.Scope, before.Mode, after.Mode) : (ModeEdit?)null;
 
             return new CompositionDelta(scopeEdits, installEdits, null, configEdits, mode);
+        }
+
+        /// <summary>
+        /// True when the two records of one scope disagree on a composition fact: either isolation set, the
+        /// exclusion set or the Conservative import grants (P-013, P-016).
+        /// </summary>
+        private static bool ScopeFactsEqual(ScopeRecord left, ScopeRecord right) =>
+            IsolationEqual(left.ServiceIsolation, right.ServiceIsolation)
+            && IsolationEqual(left.CapabilityIsolation, right.CapabilityIsolation)
+            && ExclusionsEqual(left.Exclusions, right.Exclusions)
+            && ImportsEqual(left.Grants, right.Grants);
+
+        private static bool IsolationEqual(IsolationSet left, IsolationSet right)
+        {
+            if (left.AllContracts != right.AllContracts || left.Contracts.Count != right.Contracts.Count)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < left.Contracts.Count; i++)
+            {
+                if (!left.Contracts[i].Equals(right.Contracts[i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private static bool ExclusionsEqual(IReadOnlyList<ExclusionRule> left, IReadOnlyList<ExclusionRule> right)
+        {
+            if (left.Count != right.Count)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < left.Count; i++)
+            {
+                if (left[i].Kind != right[i].Kind
+                    || !left[i].TargetId.Equals(right[i].TargetId)
+                    || !left[i].AtScope.Equals(right[i].AtScope)
+                    || !left[i].AtTarget.Equals(right[i].AtTarget)
+                    || left[i].AppliesToSubtree != right[i].AppliesToSubtree)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private static bool ImportsEqual(ScopeGrants? left, ScopeGrants? right)
+        {
+            IReadOnlyList<CapabilityImport> a = left == null ? Array.Empty<CapabilityImport>() : left.Imports;
+            IReadOnlyList<CapabilityImport> b = right == null ? Array.Empty<CapabilityImport>() : right.Imports;
+            if (a.Count != b.Count)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < a.Count; i++)
+            {
+                if (!a[i].CapabilityId.Equals(b[i].CapabilityId)
+                    || !a[i].ProviderInstallationId.Equals(b[i].ProviderInstallationId))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -1225,6 +1345,7 @@ namespace GameCore.Composition
                 current.Epoch,
                 current,
                 current,
+                null,
                 null,
                 null,
                 null,
