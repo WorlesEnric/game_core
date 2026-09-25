@@ -584,7 +584,7 @@ namespace GameCore.Contracts.Tests
                 Is.GreaterThanOrEqualTo(comparison.FrozenTypes),
                 "A superset cannot have fewer types than the frozen surface.");
 
-            // GC-003's documented catalog/validation/serialization additions are the only permitted drift.
+            // Documented GC-003 catalog additions and GC-015 state-disposition additions are the only permitted drift.
             var addedTypes = new HashSet<string>(StringComparer.Ordinal)
             {
                 "type class GameCore.Contracts.BoundRegistration<TImplementation>",
@@ -624,7 +624,15 @@ namespace GameCore.Contracts.Tests
                     || (header.StartsWith("type enum GameCore.Contracts.FactoryKind :", StringComparison.Ordinal)
                         && member == "enumvalue public Handler = 10")
                     || (header.StartsWith("type class GameCore.Contracts.StateSlotSpec", StringComparison.Ordinal)
-                        && IsStateSlotResetAddition(member));
+                        && IsStateSlotResetAddition(member))
+                    || (header == "type struct GameCore.Contracts.StateDisposition"
+                        && (member == "field public readonly GameCore.Contracts.OwnerId DestinationOwner"
+                            || member == "field public readonly System.UInt32 ToVersion"
+                            || member == "ctor public StateDisposition(GameCore.Contracts.StateSlotKey slot, GameCore.Contracts.StateDispositionKind kind, GameCore.Contracts.TargetId transferTo, GameCore.Contracts.FactoryKey migrationKey, GameCore.Contracts.OwnerId destinationOwner)"
+                            || member == "ctor public StateDisposition(GameCore.Contracts.StateSlotKey slot, GameCore.Contracts.StateDispositionKind kind, GameCore.Contracts.TargetId transferTo, GameCore.Contracts.FactoryKey migrationKey, GameCore.Contracts.OwnerId destinationOwner, System.UInt32 toVersion)"))
+                    || (header.StartsWith("type enum GameCore.Contracts.StateDispositionKind :", StringComparison.Ordinal)
+                        && (member == "enumvalue public RetainDormant = 4"
+                            || member == "enumvalue public Reset = 5"));
                 Assert.That(allowed, Is.True, "Undocumented production API addition: " + addition);
             }
 

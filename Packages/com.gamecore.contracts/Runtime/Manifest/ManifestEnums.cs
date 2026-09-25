@@ -201,6 +201,18 @@ namespace GameCore.Contracts
         Retract = 1,
         Transfer = 2,
         Migrate = 3,
+
+        /// <summary>
+        /// Persistent state stays in storage with no active writer: dormant, excluded from active queries, and
+        /// serialized (P-032 `PreserveDormant`). GC-015.
+        /// </summary>
+        RetainDormant = 4,
+
+        /// <summary>
+        /// The slot's mutable state is reinitialized from its declared initialization policy, which requires the
+        /// explicit manifest-supported proposal field and reason P-032 demands. GC-015.
+        /// </summary>
+        Reset = 5,
     }
 
     /// <summary>Readiness of a staged managed-resource acquisition (05 s4).</summary>
