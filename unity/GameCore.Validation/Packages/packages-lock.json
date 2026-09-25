@@ -28,8 +28,25 @@
         "com.gamecore.contracts": "0.1.0"
       }
     },
+    "com.gamecore.gameplay.narrative": {
+      "version": "file:../../../Packages/com.gamecore.gameplay.narrative",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.gamecore.contracts": "0.1.0",
+        "com.gamecore.rules.narrative": "0.1.0"
+      }
+    },
     "com.gamecore.planning": {
       "version": "file:../../../Packages/com.gamecore.planning",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.gamecore.contracts": "0.1.0"
+      }
+    },
+    "com.gamecore.rules.narrative": {
+      "version": "file:../../../Packages/com.gamecore.rules.narrative",
       "depth": 0,
       "source": "local",
       "dependencies": {
