@@ -1,11 +1,10 @@
 {
-  "name": "GameCore.Validation.ProbeHost",
-  "rootNamespace": "GameCore.Validation.ProbeHost",
+  "name": "GameCore.Gc013.Tests",
+  "rootNamespace": "GameCore.Gc013.Tests",
   "references": [
     "GameCore.Composition",
     "GameCore.Contracts",
     "GameCore.Derivation",
-    "GameCore.Derivation.Fixtures",
     "GameCore.Gameplay.Cards",
     "GameCore.Gameplay.Cards.Fixtures",
     "GameCore.Gameplay.Narrative",
@@ -19,17 +18,25 @@
     "GameCore.Validation.Generated",
     "GameCore.Validation.GeneratedCards",
     "GameCore.Validation.Probe",
-    "Unity.Burst",
+    "GameCore.Validation.ProbeHost",
     "Unity.Collections",
-    "Unity.Entities"
+    "Unity.Entities",
+    "UnityEngine.TestRunner",
+    "UnityEditor.TestRunner"
   ],
-  "includePlatforms": [],
+  "includePlatforms": [
+    "Editor"
+  ],
   "excludePlatforms": [],
   "allowUnsafeCode": false,
-  "overrideReferences": false,
-  "precompiledReferences": [],
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
   "autoReferenced": false,
-  "defineConstraints": [],
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
   "versionDefines": [],
   "noEngineReferences": false
 }

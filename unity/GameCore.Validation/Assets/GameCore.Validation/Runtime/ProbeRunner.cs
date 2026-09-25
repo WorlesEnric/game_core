@@ -76,22 +76,28 @@ namespace GameCore.Validation.ProbeHost
                                 ProbeEnvironment.DeclaredUnityVersion,
                                 ProbeEnvironment.DeclaredTarget,
                                 "GC-010")
-                            : arguments.Cards
+                            : arguments.Gc013
                                 ? new ProbeReport(
-                                    "Cards",
+                                    "Gc013",
                                     ProbeEnvironment.DeclaredUnityVersion,
                                     ProbeEnvironment.DeclaredTarget,
-                                    "GC-011")
-                                : arguments.W3Gate
+                                    "GC-013")
+                                : arguments.Cards
                                     ? new ProbeReport(
-                                        "W3Gate",
+                                        "Cards",
                                         ProbeEnvironment.DeclaredUnityVersion,
                                         ProbeEnvironment.DeclaredTarget,
-                                        "W3-GATE")
-                                    : new ProbeReport(
-                                        arguments.MissingRegistration ? "MissingRegistration" : "Positive",
-                                        ProbeEnvironment.DeclaredUnityVersion,
-                                        ProbeEnvironment.DeclaredTarget);
+                                        "GC-011")
+                                    : arguments.W3Gate
+                                        ? new ProbeReport(
+                                            "W3Gate",
+                                            ProbeEnvironment.DeclaredUnityVersion,
+                                            ProbeEnvironment.DeclaredTarget,
+                                            "W3-GATE")
+                                        : new ProbeReport(
+                                            arguments.MissingRegistration ? "MissingRegistration" : "Positive",
+                                            ProbeEnvironment.DeclaredUnityVersion,
+                                            ProbeEnvironment.DeclaredTarget);
 
             if (!arguments.HasResultPath)
             {
@@ -129,6 +135,11 @@ namespace GameCore.Validation.ProbeHost
                 else if (arguments.Narrative)
                 {
                     ProbeNarrative.Run(report);
+                    report.CompletePositive();
+                }
+                else if (arguments.Gc013)
+                {
+                    ProbeGc013.Run(report);
                     report.CompletePositive();
                 }
                 else if (arguments.Cards)
