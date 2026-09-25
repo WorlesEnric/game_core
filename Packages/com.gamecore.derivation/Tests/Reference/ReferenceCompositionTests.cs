@@ -70,7 +70,7 @@ namespace GameCore.Derivation.Tests
 
             builder.RemoveInstall(CardComposition.FestivalScoring);
             DerivationResult after = DerivationAssert.Accepted(DerivationEngine.Derive(
-                builder.Build(PropagationMode.Automatic, new CompositionRevision(2UL), AssemblyEpoch.Second).ToSnapshot(),
+                builder.Build(PropagationMode.Automatic, new CompositionRevision(2UL), new AssemblyEpoch(2UL)).ToSnapshot(),
                 CardComposition.ValueSource(),
                 DerivationOptions.Default,
                 nested));
@@ -78,7 +78,9 @@ namespace GameCore.Derivation.Tests
             EffectiveSlot remaining = DerivationAssert.SlotOf(after, Seat(CardComposition.SeatA), CardComposition.SetBonus);
             Assert.That(DerivationAssert.Int32Value(remaining), Is.EqualTo(CardComposition.NestedFestivalBonus));
             Assert.That(remaining.Support.Count, Is.EqualTo(1), "Only the departing source's entry is removed (REF-C04).");
-            Assert.That(after.Delta!.Removed.Count, Is.EqualTo(1));
+            // The ancestor festival reached every league-A seat, so its retraction removes both of its
+            // contributions (seat A and seat B); the nested +3 keeps seat A bound (REF-C04).
+            Assert.That(after.Delta!.Removed.Count, Is.EqualTo(2));
         }
 
         [Test]
@@ -92,7 +94,7 @@ namespace GameCore.Derivation.Tests
 
             builder.MoveTarget(CardComposition.SeatA, CardComposition.SeatCScope);
             DerivationResult after = DerivationAssert.Accepted(DerivationEngine.Derive(
-                builder.Build(PropagationMode.Automatic, new CompositionRevision(2UL), AssemblyEpoch.Second).ToSnapshot(),
+                builder.Build(PropagationMode.Automatic, new CompositionRevision(2UL), new AssemblyEpoch(2UL)).ToSnapshot(),
                 CardComposition.ValueSource(),
                 DerivationOptions.Default,
                 before));
@@ -134,7 +136,7 @@ namespace GameCore.Derivation.Tests
                 null));
 
             DerivationResult conservative = DerivationAssert.Accepted(DerivationEngine.Derive(
-                builder.Build(PropagationMode.Conservative, new CompositionRevision(2UL), AssemblyEpoch.Second).ToSnapshot(),
+                builder.Build(PropagationMode.Conservative, new CompositionRevision(2UL), new AssemblyEpoch(2UL)).ToSnapshot(),
                 values,
                 DerivationOptions.Default,
                 automatic));
@@ -159,7 +161,7 @@ namespace GameCore.Derivation.Tests
         {
             FixtureBuilder builder = CardComposition.Builder(mountDrawPolicyConflict: true);
             DerivationSnapshot snapshot = builder
-                .Build(PropagationMode.Automatic, new CompositionRevision(2UL), AssemblyEpoch.Second)
+                .Build(PropagationMode.Automatic, new CompositionRevision(2UL), new AssemblyEpoch(2UL))
                 .ToSnapshot();
 
             DerivationResult published = Cards(CardComposition.Builder());
@@ -250,7 +252,7 @@ namespace GameCore.Derivation.Tests
 
             builder.MoveTarget(NarrativeComposition.Mara, NarrativeComposition.Harbor);
             DerivationResult after = DerivationAssert.Accepted(DerivationEngine.Derive(
-                builder.Build(PropagationMode.Automatic, new CompositionRevision(2UL), AssemblyEpoch.Second).ToSnapshot(),
+                builder.Build(PropagationMode.Automatic, new CompositionRevision(2UL), new AssemblyEpoch(2UL)).ToSnapshot(),
                 NarrativeComposition.ValueSource(),
                 DerivationOptions.Default,
                 before));
@@ -283,7 +285,7 @@ namespace GameCore.Derivation.Tests
 
             builder.RemoveInstall(NarrativeComposition.ChapterOneInstall);
             DerivationResult unbound = DerivationAssert.Accepted(DerivationEngine.Derive(
-                builder.Build(PropagationMode.Automatic, new CompositionRevision(2UL), AssemblyEpoch.Second).ToSnapshot(),
+                builder.Build(PropagationMode.Automatic, new CompositionRevision(2UL), new AssemblyEpoch(2UL)).ToSnapshot(),
                 NarrativeComposition.ValueSource(),
                 DerivationOptions.Default,
                 bound));

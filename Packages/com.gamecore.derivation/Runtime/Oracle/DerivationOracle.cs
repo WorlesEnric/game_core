@@ -85,6 +85,11 @@ namespace GameCore.Derivation
                                 // loop evaluates it (P-021).
                                 continue;
                             }
+                            if (!WithinReach(snapshot, install.Scope, target.Scope, rule.Reach))
+                            {
+                                continue;
+                            }
+
 
                             counters.ExaminedCandidates++;
                             counters.IndexTargetsVisited++;
@@ -136,7 +141,8 @@ namespace GameCore.Derivation
                                 group.Add(new RankedCandidate(
                                     new CapabilityContribution(
                                         new ContributionKey(
-                                            install.Instance, rule.RuleId, target.Target, groupKey.Capability, slot),
+                                            new ProviderInstallationId(install.Instance.Value),
+                                            rule.RuleId, target.Target, groupKey.Capability, slot),
                                         schema.Schema,
                                         policy.Policy,
                                         rule.PayloadDefinition,
@@ -315,6 +321,33 @@ namespace GameCore.Derivation
                 AssemblyHash.ComputeResult(snapshot, assemblies));
         }
 
+        private static bool WithinReach(
+            DerivationSnapshot snapshot,
+            ScopeId providerScope,
+            ScopeId targetScope,
+            PropagationReach reach)
+        {
+            if (reach == PropagationReach.LocalOnly)
+            {
+                return providerScope.Equals(targetScope);
+            }
+
+            ScopeId current = reach == PropagationReach.DescendantsOnly
+                ? snapshot.ParentOf(targetScope)
+                : targetScope;
+            while (!current.IsDefault)
+            {
+                if (current.Equals(providerScope))
+                {
+                    return true;
+                }
+
+                current = snapshot.ParentOf(current);
+            }
+
+            return false;
+        }
+
         private static List<TargetId> CanonicalTargets(DerivationSnapshot snapshot)
         {
             List<TargetId> targets = new List<TargetId>(snapshot.Targets.Count);
@@ -344,10 +377,10 @@ namespace GameCore.Derivation
             return keys;
         }
 
-        private static int DeclaredSlots(DerivationSnapshot snapshot, DerivationRule rule)
+        private static uint DeclaredSlots(DerivationSnapshot snapshot, DerivationRule rule)
         {
             CapabilityContract? contract = snapshot.Contracts.Find(rule.OutputCapability.Capability);
-            return contract == null ? 0 : contract.OutputSlots.Count;
+            return contract == null ? 0U : (uint)contract.OutputSlots.Count;
         }
 
         private static int CountDeclaredRules(DerivationSnapshot snapshot)
@@ -402,11 +435,13 @@ namespace GameCore.Derivation
             uint slot,
             CandidateEvaluation evaluation,
             DerivationSnapshot snapshot,
-            int stratum) =>
-            new CandidateDecision(
+            int stratum)
+        {
+            ProviderInstallationId provider = new ProviderInstallationId(install.Instance.Value);
+            return new CandidateDecision(
                 EvidenceKeys.Derive(EvidenceKeys.CandidateKey(
-                    install.Instance, rule.RuleId, target.Target, rule.OutputCapability.Capability, slot)),
-                install.Instance,
+                    provider, rule.RuleId, target.Target, rule.OutputCapability.Capability, slot)),
+                provider,
                 rule.RuleId,
                 target.Target,
                 rule.OutputCapability.Capability,
@@ -424,5 +459,6 @@ namespace GameCore.Derivation
                 evaluation.Boundaries,
                 evaluation.MissingInputs,
                 evaluation.EvidenceKeys);
+        }
     }
 }

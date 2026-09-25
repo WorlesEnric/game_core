@@ -31,6 +31,11 @@ namespace GameCore.Derivation.Tests
             WorldId world = new WorldId(FixtureIds.Id("gamecore.world.random"));
             string prefix = "rnd.s" + seed.ToString(System.Globalization.CultureInfo.InvariantCulture);
 
+            // The recipe vocabulary: one shared schema most targets declare, one alternate for the rest, so
+            // recipe identity varies per seed and rules that select a recipe see two distinct populations.
+            string recipe = prefix + ".recipe";
+            string otherRecipe = prefix + ".recipe-alt";
+
             // Scope tree: root, two to four children, and up to two grandchildren under the first child.
             string root = prefix + ".root";
             FixtureBuilder builder = new FixtureBuilder(world);

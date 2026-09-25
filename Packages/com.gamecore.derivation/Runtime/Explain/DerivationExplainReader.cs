@@ -96,7 +96,10 @@ namespace GameCore.Derivation
             List<ExplanationRecord> matchingPage = new List<ExplanationRecord>();
             List<ExplanationRecord> rejectedPage = new List<ExplanationRecord>();
             int start = (int)page.Offset;
-            int total = matching.Count + rejected.Count;
+            int budget = (int)page.MaxRecords;
+            int totalMatching = matching.Count;
+            int totalRejected = rejected.Count;
+            int total = totalMatching + totalRejected;
             for (int index = start; index < total && matchingPage.Count + rejectedPage.Count < budget; index++)
             {
                 if (index < matching.Count)
@@ -113,6 +116,7 @@ namespace GameCore.Derivation
                 target,
                 capability,
                 token,
+                source,
                 page,
                 matchingPage,
                 rejectedPage,
@@ -121,8 +125,8 @@ namespace GameCore.Derivation
                 explanation.Stratum,
                 explanation.RecipeHash,
                 null,
-                totalMatching,
-                totalRejected);
+                (ulong)totalMatching,
+                (ulong)totalRejected);
         }
     }
 }

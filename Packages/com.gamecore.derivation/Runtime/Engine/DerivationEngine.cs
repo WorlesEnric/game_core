@@ -380,7 +380,7 @@ namespace GameCore.Derivation
                         for (uint slot = 0; slot < boundedSlots; slot++)
                         {
                             ContributionKey key = new ContributionKey(
-                                source.Install.Instance,
+                                new ProviderInstallationId(source.Install.Instance.Value),
                                 rule.RuleId,
                                 target.Target,
                                 rule.OutputCapability.Capability,
@@ -555,10 +555,10 @@ namespace GameCore.Derivation
             effectiveTargetIds.Sort(Id128Codec.CompareBigEndian);
             foreach (Id128 targetId in effectiveTargetIds)
             {
-                List<CapabilityId> effective = EffectiveCapabilitiesOf(slotsByTarget[targetId]);
+                List<CapabilityId> effectiveCapabilities = EffectiveCapabilitiesOf(slotsByTarget[targetId]);
                 CompositionFailure? conflict;
                 if (!SlotComposer.TryCheckIncompatibility(
-                        snapshot, new TargetId(targetId), effective, out conflict))
+                        snapshot, new TargetId(targetId), effectiveCapabilities, out conflict))
                 {
                     if (conflict != null)
                     {
@@ -709,6 +709,7 @@ namespace GameCore.Derivation
                 null);
             rejection = DerivationResult.Reject(
                 DerivationRejectionKind.BudgetExceeded, snapshot, null, null, counters);
+            return false;
         }
 
         private static void ReclassifyShadowed(
@@ -837,8 +838,8 @@ namespace GameCore.Derivation
             int stratum) =>
             new CandidateDecision(
                 EvidenceKeys.Derive(EvidenceKeys.CandidateKey(
-                    source.Install.Instance, rule.RuleId, target.Target, rule.OutputCapability.Capability, slot)),
-                source.Install.Instance,
+                    new ProviderInstallationId(source.Install.Instance.Value), rule.RuleId, target.Target, rule.OutputCapability.Capability, slot)),
+                new ProviderInstallationId(source.Install.Instance.Value),
                 rule.RuleId,
                 target.Target,
                 rule.OutputCapability.Capability,
@@ -930,10 +931,9 @@ namespace GameCore.Derivation
                     shadowed.Sort(CompareContributions);
 
                     int stratum = -1;
-                    for (int d = 0; d < pairDecisions.Count; d++)
+                    if (pairDecisions.Count > 0)
                     {
-                        stratum = pairDecisions[d].Stratum;
-                        break;
+                        stratum = pairDecisions[0].Stratum;
                     }
 
                     CapabilityContract? contract = snapshot.Contracts.Find(capability);

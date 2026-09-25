@@ -20,6 +20,7 @@ namespace GameCore.Derivation.Tests
         private const string Outside = "iso.outside";
         private const string Boundary = "iso.boundary";
         private const string InsideBoundary = "iso.boundary-inside";
+        private const string InnerProviderScope = "iso.inner-provider-scope";
         private const string OtherBranch = "iso.other-branch";
 
         private const string Capability = "iso.role-grant";
@@ -121,7 +122,6 @@ namespace GameCore.Derivation.Tests
         {
             FixtureBuilder builder = Builder(isolateAllCapabilities: false);
             AddSecondCapability(builder);
-            builder.AddScopeIsolation(Boundary, Capability);
 
             DerivationResult result = DerivationAssert.Accepted(
                 DerivationEngine.Derive(Snapshot(builder, PropagationMode.Automatic), Source(), DerivationOptions.Default, null));
@@ -258,7 +258,7 @@ namespace GameCore.Derivation.Tests
                 .Scope(Root, null)
                 .Scope(ProviderScope, Root)
                 .Scope(Outside, ProviderScope)
-                .Scope(OtherBranch, Root);
+                .Scope(OtherBranch, ProviderScope);
 
             if (isolateAllCapabilities)
             {
@@ -266,21 +266,22 @@ namespace GameCore.Derivation.Tests
             }
             else
             {
-                builder.Scope(Boundary, ProviderScope);
+                builder.Scope(Boundary, ProviderScope, isolatedCapabilities: new[] { Capability });
             }
 
             builder
                 .Scope(InsideBoundary, Boundary)
+                .Scope(InnerProviderScope, InsideBoundary)
                 .Contract(Capability, 0, new[] { new FixtureSlot(Recipe, CompositionPolicy.Replace) });
 
             builder
                 .Target(OutsideTarget, Outside, Recipe)
                 .Target(InsideTarget, InsideBoundary, Recipe)
                 .Target(SiblingTarget, OtherBranch, Recipe)
-                .Target(InsideProviderTarget, InsideBoundary, Recipe);
+                .Target(InsideProviderTarget, InnerProviderScope, Recipe);
 
             builder.Install(Provider, ProviderScope, 0, Rules(), state: InstallationState.Active);
-            builder.Install(InnerProvider, InsideBoundary, 0, Rules(), state: InstallationState.Active);
+            builder.Install(InnerProvider, InnerProviderScope, 0, RulesFor(InnerProvider, Capability), state: InstallationState.Active);
 
             return builder;
         }
@@ -294,7 +295,9 @@ namespace GameCore.Derivation.Tests
 
         private static void AddSecondRule(FixtureBuilder builder, string provider, string capability)
         {
-            builder.Install(provider, ProviderScope, 0, RulesFor(provider, capability), state: InstallationState.Active);
+            builder
+                .Contract(capability, 0, new[] { new FixtureSlot(Recipe, CompositionPolicy.Replace) })
+                .Install(provider, ProviderScope, 0, RulesFor(provider, capability), state: InstallationState.Active);
         }
 
         private static IReadOnlyList<DerivationRule> Rules() => RulesFor(Provider, Capability);

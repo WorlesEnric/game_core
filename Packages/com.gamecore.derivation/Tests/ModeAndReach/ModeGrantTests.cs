@@ -118,7 +118,8 @@ namespace GameCore.Derivation.Tests
                 .Scope(ProviderScope, Root)
                 .Scope(Child, ProviderScope, importProviderPairs: new[] { DescendantCapability, Provider })
                 .Scope(OtherBranch, Root)
-                .Target(ChildTarget, Child, DescendantSchema)
+                .Contract(LocalOnlyCapability, 0, new[] { new FixtureSlot(LocalOnlySchema, CompositionPolicy.Replace) })
+                .Target(ChildTarget, Child, DescendantSchema, tags: new[] { EligibleTag })
                 .Contract(DescendantCapability, 0, new[] { new FixtureSlot(DescendantSchema, CompositionPolicy.Replace) })
                 .Install(Provider, ProviderScope, 0, Rules(), state: InstallationState.Active);
 

@@ -278,7 +278,7 @@ namespace GameCore.Derivation
             IReadOnlyList<EffectiveSlot>? slots,
             IReadOnlyList<Id128>? descriptorEvidence,
             IReadOnlyList<ExclusionRule>? targetExclusions,
-            IReadOnlyList<Id128>? effectiveCapabilities,
+            IReadOnlyList<CapabilityId>? effectiveCapabilities,
             ContentHash recipeHash,
             ContentHash slotHash)
         {

@@ -102,7 +102,7 @@ namespace GameCore.Derivation.Tests
 
             builder.RemoveInstall(NarrativeComposition.ChapterOneInstall);
             DerivationSnapshot after = builder
-                .Build(PropagationMode.Automatic, new CompositionRevision(2UL), AssemblyEpoch.Second)
+                .Build(PropagationMode.Automatic, new CompositionRevision(2UL), new AssemblyEpoch(2UL))
                 .ToSnapshot();
 
             DerivationResult runtime = DerivationEngine.Derive(after, values, DerivationOptions.Default, published);
@@ -214,6 +214,10 @@ namespace GameCore.Derivation.Tests
             private readonly List<string> providerNames = new List<string>();
             private readonly Dictionary<string, string> providerTags = new Dictionary<string, string>();
             private int providerCounter;
+            private PropagationMode mode = PropagationMode.Automatic;
+            private CompositionRevision revision = CompositionRevision.First;
+            private AssemblyEpoch epoch = AssemblyEpoch.First;
+            private int spawnCounter;
 
             public SequenceState(uint seed)
             {

@@ -30,8 +30,9 @@ namespace GameCore.Derivation.Tests
         [Test]
         public void AHigherExplicitPriorityBeatsANearerProviderScope()
         {
-            // 02 s6: raising A's explicit priority above B chooses A even though B is nearer.
-            FixtureBuilder builder = Builder(CompositionPolicy.Replace, nearPriority: 10, farPriority: 0);
+            // 02 s6: raising the far provider's explicit priority above the near one chooses the far value
+            // even though the near provider is nearer (P-018: higher signed priority first).
+            FixtureBuilder builder = Builder(CompositionPolicy.Replace, nearPriority: 0, farPriority: 10);
             DerivationResult result = Derivation(Of(builder));
 
             EffectiveSlot slot = DerivationAssert.SlotOf(result, FixtureIds.Target(Target), Capability);
@@ -51,15 +52,17 @@ namespace GameCore.Derivation.Tests
         [Test]
         public void EqualPriorityAndDepthAreBrokenByAscendingProviderIdentity()
         {
+            // Two providers installed in the same far scope at equal priority: only the ascending provider
+            // installation identity can separate them, so the near provider is left out of this fixture.
             FixtureBuilder builder = Builder(CompositionPolicy.Replace, nearPriority: 0, farPriority: 0);
-            // A second provider installed in the same scope as the far one: only the identity can separate them.
+            builder.RemoveInstall(NearProvider);
             builder.Install("prec.far-provider-two", Far, 0, Rules("prec.far-provider-two", "prec.far-two.value", CompositionPolicy.Replace, 0), state: InstallationState.Active);
 
             DerivationResult result = Derivation(Of(builder));
             EffectiveSlot slot = DerivationAssert.SlotOf(result, FixtureIds.Target(Target), Capability);
 
-            Id128 first = FixtureIds.Instance(FarProvider).Value;
-            Id128 second = FixtureIds.Instance("prec.far-provider-two").Value;
+            Id128 first = FixtureIds.Installation(FarProvider).Value;
+            Id128 second = FixtureIds.Installation("prec.far-provider-two").Value;
             Id128 expected = first.CompareTo(second) < 0
                 ? FixtureIds.Id(FarProvider + ".value")
                 : FixtureIds.Id("prec.far-two.value");
@@ -165,12 +168,12 @@ namespace GameCore.Derivation.Tests
 
             EffectiveSlot surviving = DerivationAssert.SlotOf(after, FixtureIds.Target(Target), Capability);
             Assert.That(surviving.Support.Count, Is.EqualTo(1), "The surviving support is preserved, not deleted (TEST-005).");
-            Assert.That(surviving.Support[0].Provider, Is.EqualTo(FixtureIds.Instance(NearProvider)));
+            Assert.That(surviving.Support[0].Provider, Is.EqualTo(FixtureIds.Installation(NearProvider)));
             Assert.That(surviving.IsEmpty, Is.False);
 
             DerivationDelta delta = after.Delta!;
             Assert.That(delta.Removed.Count, Is.EqualTo(1));
-            Assert.That(delta.Removed[0].Provider, Is.EqualTo(FixtureIds.Instance(FarProvider)));
+            Assert.That(delta.Removed[0].Provider, Is.EqualTo(FixtureIds.Installation(FarProvider)));
             Assert.That(delta.AffectedTargets.Count, Is.EqualTo(1));
             Assert.That(delta.AffectedTargets[0], Is.EqualTo(FixtureIds.Target(Target)));
             Assert.That(
@@ -196,7 +199,7 @@ namespace GameCore.Derivation.Tests
             Assert.That(after.AssemblyOf(FixtureIds.Target(Target))!.IsBaseOnly, Is.True);
             Assert.That(after.Delta!.Slots.Count, Is.EqualTo(1));
             Assert.That(after.Delta!.Slots[0].Removed, Is.True);
-            Assert.That(after.Delta!.Slots[0].LostSupport.Count, Is.EqualTo(2));
+            Assert.That(after.Delta!.Slots[0].LostSupport.Count, Is.EqualTo(1), "A Replace slot is supported by exactly its winner; the loser was shadowed, not support (P-019).");
         }
 
         [Test]
@@ -238,7 +241,7 @@ namespace GameCore.Derivation.Tests
 
             EffectiveSlot slot = DerivationAssert.SlotOf(after, FixtureIds.Target(Target), Capability);
             Assert.That(slot.Support.Count, Is.EqualTo(1));
-            Assert.That(slot.Support[0].Provider, Is.EqualTo(FixtureIds.Instance(FarProvider)));
+            Assert.That(slot.Support[0].Provider, Is.EqualTo(FixtureIds.Installation(FarProvider)));
             Assert.That(after.Delta!.Removed.Count, Is.EqualTo(1));
         }
 

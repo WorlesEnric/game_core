@@ -34,7 +34,7 @@ namespace GameCore.Derivation.Tests
         [Test]
         public void ReplaceChoosesTheHighestRankedCandidateAndKeepsTheLosersAsProvenance()
         {
-            DerivationResult result = Derive(CompositionPolicy.Replace);
+            DerivationResult result = Derive(CompositionPolicy.Replace, payloadIsIdentity: true);
 
             EffectiveSlot slot = DerivationAssert.SlotOf(result, FixtureIds.Target(Target), ValueCapability);
             Assert.That(
@@ -63,9 +63,18 @@ namespace GameCore.Derivation.Tests
         [Test]
         public void AdditiveWithoutAReducerProducesTheCanonicalSetUnion()
         {
-            DerivationResult result = Derive(CompositionPolicy.Additive, payloadIsIdentity: true);
+            // The contract declares no reducer key, so the kernel composes the canonical set union itself
+            // instead of folding through a registered one (P-019).
+            FixtureBuilder builder = Builder(CompositionPolicy.Additive, payloadIsIdentity: true, declareReducer: false);
 
-            EffectiveSlot slot = DerivationAssert.SlotOf(result, FixtureIds.Target(Target), ValueCapability);
+            EffectiveSlot slot = DerivationAssert.SlotOf(
+                DerivationAssert.Accepted(DerivationEngine.Derive(
+                    SnapshotOf(builder),
+                    Source(),
+                    DerivationOptions.Default,
+                    null)),
+                FixtureIds.Target(Target),
+                ValueCapability);
             Assert.That(slot.Values.Count, Is.EqualTo(4), "A reducer-less Additive slot is the canonical set union (P-019).");
             List<Id128> values = new List<Id128>();
             for (int i = 0; i < slot.Values.Count; i++)
@@ -134,6 +143,54 @@ namespace GameCore.Derivation.Tests
             DerivationResult result = DerivationAssert.Accepted(
                 DerivationEngine.Derive(SnapshotOf(builder), Source(), DerivationOptions.Default, null));
             Assert.That(DerivationAssert.SlotOf(result, FixtureIds.Target(Target), ValueCapability).Values.Count, Is.EqualTo(4));
+        }
+
+        [Test]
+        public void CrossCapabilityIncompatibilityRejectsTheWholeProposalWhenBothWouldBeActive()
+        {
+            const string Rival = "policy.rival";
+
+            // P-019 reads the declared list as set membership: one declaration from either side forms the
+            // set, so the value contract names its rival here. Both capabilities must be *effective* on the
+            // target — a natively advertised descriptor capability is never derived data, so the rival is
+            // produced by a real rule instead of added to the descriptor.
+            FixtureBuilder builder = Builder(
+                    CompositionPolicy.Replace,
+                    payloadIsIdentity: false,
+                    incompatibleCapabilities: new[] { Rival })
+                .Contract(Rival, 0, new[] { new FixtureSlot("policy.rival-schema", CompositionPolicy.Replace) })
+                .AddTargetCapability(Target, Rival)
+                .Install(
+                    "policy.rival-provider",
+                    Root,
+                    0,
+                    new List<DerivationRule>
+                    {
+                        FixtureBuilder.Rule(
+                            "policy.rival-provider.rule",
+                            Rival,
+                            0,
+                            1U,
+                            FixtureBuilder.Selector(Recipe),
+                            FixtureIds.Key("policy.predicate.always"),
+                            null,
+                            PropagationReach.SelfAndDescendants,
+                            true,
+                            0,
+                            CompositionPolicy.Replace,
+                            FixturePayload.Int32(1)),
+                    },
+                    state: InstallationState.Active);
+
+            DerivationResult result = DerivationAssert.Rejected(
+                DerivationEngine.Derive(SnapshotOf(builder), Source(), DerivationOptions.Default, null),
+                DerivationRejectionKind.IncompatibleCapabilities);
+
+            Assert.That(result.CompositionFailures[0].Code, Is.EqualTo(DiagnosticCode.CapabilityConflict));
+            Assert.That(
+                result.CompositionFailures[0].WitnessKeys.Count,
+                Is.EqualTo(2),
+                "Both members of the incompatibility set are named as witnesses (P-019).");
         }
 
         [Test]
@@ -234,24 +291,6 @@ namespace GameCore.Derivation.Tests
             Assert.That(DerivationAssert.SlotOf(result, FixtureIds.Target(Target), ValueCapability).Support.Count, Is.EqualTo(1));
         }
 
-        [Test]
-        public void CrossCapabilityIncompatibilityRejectsTheWholeProposalWhenBothWouldBeActive()
-        {
-            FixtureBuilder builder = Builder(CompositionPolicy.Replace, payloadIsIdentity: false);
-            builder
-                .Contract("policy.rival", 0, new[] { new FixtureSlot("policy.rival-schema", CompositionPolicy.Replace) })
-                .AddTargetCapability(Target, "policy.rival");
-
-            DerivationResult result = DerivationAssert.Rejected(
-                DerivationEngine.Derive(SnapshotOf(builder), Source(), DerivationOptions.Default, null),
-                DerivationRejectionKind.IncompatibleCapabilities);
-
-            Assert.That(result.CompositionFailures[0].Code, Is.EqualTo(DiagnosticCode.CapabilityConflict));
-            Assert.That(
-                result.CompositionFailures[0].WitnessKeys.Count,
-                Is.EqualTo(2),
-                "Both members of the incompatibility set are named as witnesses (P-019).");
-        }
 
         [Test]
         public void AdditiveReducerOverflowRejectsTheWholeProposal()
@@ -371,7 +410,11 @@ namespace GameCore.Derivation.Tests
                 DerivationOptions.Default,
                 null));
 
-        private static FixtureBuilder Builder(CompositionPolicy policy, bool payloadIsIdentity)
+        private static FixtureBuilder Builder(
+            CompositionPolicy policy,
+            bool payloadIsIdentity,
+            bool declareReducer = true,
+            IReadOnlyList<string>? incompatibleCapabilities = null)
         {
             FixtureBuilder builder = new FixtureBuilder(World)
                 .Scope(Root, null)
@@ -380,13 +423,18 @@ namespace GameCore.Derivation.Tests
                 .Scope(Depth3, Depth2)
                 .Scope(Depth4, Depth3);
 
-            // Only the Additive policy declares a reducer key; the others compose by declaration (P-019).
-            FactoryKey reducer = policy == CompositionPolicy.Additive
+            // Only the Additive policy declares a reducer key; the others compose by declaration (P-019). A
+            // reducer-less Additive contract exercises the kernel's own canonical set union.
+            FactoryKey reducer = policy == CompositionPolicy.Additive && declareReducer
                 ? FixtureIds.Key("policy.reducer.int32-sum")
                 : default(FactoryKey);
 
             builder
-                .Contract(ValueCapability, 0, new[] { new FixtureSlot("policy.value-schema", policy, reducer: reducer) })
+                .Contract(
+                    ValueCapability,
+                    0,
+                    new[] { new FixtureSlot("policy.value-schema", policy, reducer: reducer) },
+                    incompatibleCapabilities: incompatibleCapabilities)
                 .Target(Target, Depth4, Recipe);
 
             for (int i = 0; i < Providers.Length; i++)

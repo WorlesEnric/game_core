@@ -30,7 +30,7 @@ namespace GameCore.Derivation.Tests
             Assert.That(explanation!.Winners.Count, Is.EqualTo(1), "The matching rule is listed with its support.");
             Assert.That(
                 explanation.Winners[0].Provider,
-                Is.EqualTo(FixtureIds.Instance(NarrativeComposition.ChapterOneInstall)));
+                Is.EqualTo(new ProviderInstallationId(FixtureIds.Instance(NarrativeComposition.ChapterOneInstall).Value)));
             Assert.That(
                 explanation.Winners[0].Rule,
                 Is.EqualTo(FixtureIds.Rule(NarrativeComposition.DialogueRule("chapter-one"))));
@@ -95,7 +95,7 @@ namespace GameCore.Derivation.Tests
             Assert.That(explanation.Shadowed.Count, Is.EqualTo(1), "The losing candidate stays inspectable (P-019).");
             Assert.That(
                 explanation.Shadowed[0].Provider,
-                Is.EqualTo(FixtureIds.Instance("prov.far-provider")));
+                Is.EqualTo(new ProviderInstallationId(FixtureIds.Instance("prov.far-provider").Value)));
             Assert.That(
                 explanation.Winners[0].Key,
                 Is.Not.EqualTo(explanation.Shadowed[0].Key),
@@ -239,7 +239,7 @@ namespace GameCore.Derivation.Tests
                 {
                     CandidateDecision decision = result.Decisions[i];
                     Assert.That(
-                        snapshot.TryGetInstall(decision.Provider, out DerivationInstall? install),
+                        snapshot.TryGetInstall(new PluginInstanceId(decision.Provider.Value), out DerivationInstall? install),
                         Is.True,
                         "Seed " + seed + ": a decision names a declared installation.");
                     Assert.That(install!.Manifest.DerivationRules.Count, Is.GreaterThan(0));

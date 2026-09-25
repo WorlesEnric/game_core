@@ -34,6 +34,9 @@ namespace GameCore.Derivation.Fixtures
 
         public static PluginInstanceId Instance(string stableName) => new PluginInstanceId(Id(stableName));
 
+        public static ProviderInstallationId Installation(string stableName) =>
+            new ProviderInstallationId(Instance(stableName).Value);
+
         public static DefinitionId Definition(string stableName) => new DefinitionId(Id(stableName));
 
         /// <summary>A generated registration key for a fixture reducer, predicate or factory (P-009).</summary>
@@ -370,7 +373,7 @@ namespace GameCore.Derivation.Fixtures
         }
 
         /// <summary>A stable sort key for item <paramref name="index"/>: a seeded modular walk of the list.</summary>
-        public int KeyFor(int index) => unchecked((index * (step + 1)) ^ (seed * 2654435761));
+        public int KeyFor(int index) => unchecked((int)((index * (step + 1)) ^ (seed * 2654435761)));
 
         /// <summary>The same items, reordered by the seeded key; ties keep their relative order.</summary>
         public IReadOnlyList<T> Apply<T>(IReadOnlyList<T> source)

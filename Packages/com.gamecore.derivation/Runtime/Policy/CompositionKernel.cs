@@ -285,7 +285,7 @@ namespace GameCore.Derivation
                             capability.Capability,
                             slotIndex,
                             KeysOf(eligible),
-                            KeysOf(eligible),
+                            CandidateWitnessKeys("exclusiveConflict", eligible),
                             "Exclusive accepts at most one candidate and no selection override names one; rank does "
                             + "not hide the conflict (P-018, P-019).");
                         return false;
@@ -308,7 +308,7 @@ namespace GameCore.Derivation
                             capability.Capability,
                             slotIndex,
                             KeysOf(eligible),
-                            KeysOf(eligible),
+                            CandidateWitnessKeys("incompatibleConflict", eligible),
                             "Incompatible accepts at most one active member per incompatibility set; priority cannot "
                             + "destroy an incompatible capability (P-019).");
                         return false;
@@ -876,6 +876,18 @@ namespace GameCore.Derivation
             }
 
             return keys;
+        }
+
+        private static IReadOnlyList<Id128> CandidateWitnessKeys(string kind, IReadOnlyList<RankedCandidate> eligible)
+        {
+            List<Id128> keys = new List<Id128>(eligible.Count);
+            for (int i = 0; i < eligible.Count; i++)
+            {
+                keys.Add(EvidenceKeys.Derive(EvidenceKeys.EvidenceKey(kind, eligible[i].Key.ToString())));
+            }
+
+            keys.Sort(Id128Codec.CompareBigEndian);
+            return keys.AsReadOnly();
         }
 
         private static IReadOnlyList<Id128> OverrideWitnessKeys(IReadOnlyList<ProviderSelectionOverride> ambiguous)

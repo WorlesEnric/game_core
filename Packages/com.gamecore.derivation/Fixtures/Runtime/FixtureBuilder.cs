@@ -71,7 +71,7 @@ namespace GameCore.Derivation.Fixtures
                 {
                     imports.Add(new CapabilityImport(
                         FixtureIds.Capability(importProviderPairs[i]),
-                        FixtureIds.Instance(importProviderPairs[i + 1])));
+                        FixtureIds.Installation(importProviderPairs[i + 1])));
                 }
             }
 
@@ -134,7 +134,7 @@ namespace GameCore.Derivation.Fixtures
                 for (int i = 0; i < optInProviderPairs.Count; i += 2)
                 {
                     optIns.Add(new TargetOptIn(
-                        FixtureIds.Instance(optInProviderPairs[i + 1]),
+                        FixtureIds.Installation(optInProviderPairs[i + 1]),
                         FixtureIds.Capability(optInProviderPairs[i])));
                 }
             }
@@ -351,7 +351,7 @@ namespace GameCore.Derivation.Fixtures
                 descriptor.Tags,
                 descriptor.AssetAdapter,
                 descriptor.LocalPatches,
-                Append(descriptor.Imports, new CapabilityImport(FixtureIds.Capability(capability), FixtureIds.Instance(provider))),
+                Append(descriptor.Imports, new CapabilityImport(FixtureIds.Capability(capability), FixtureIds.Installation(provider))),
                 descriptor.OptIns,
                 descriptor.Exclusions));
 
@@ -365,7 +365,7 @@ namespace GameCore.Derivation.Fixtures
                 descriptor.AssetAdapter,
                 descriptor.LocalPatches,
                 descriptor.Imports,
-                Append(descriptor.OptIns, new TargetOptIn(FixtureIds.Instance(provider), FixtureIds.Capability(capability))),
+                Append(descriptor.OptIns, new TargetOptIn(FixtureIds.Installation(provider), FixtureIds.Capability(capability))),
                 descriptor.Exclusions));
 
         /// <summary>Replaces one target's descriptor while keeping its identity and owner scope (P-015).</summary>
@@ -469,7 +469,7 @@ namespace GameCore.Derivation.Fixtures
                 atScope == null ? default(ScopeId) : FixtureIds.Scope(atScope),
                 atTarget == null ? default(TargetId) : FixtureIds.Target(atTarget),
                 FixtureIds.Capability(capability),
-                FixtureIds.Instance(provider),
+                FixtureIds.Installation(provider),
                 subtree));
             return this;
         }
@@ -497,7 +497,7 @@ namespace GameCore.Derivation.Fixtures
                     for (int j = 0; j < optInProviderPairs.Count; j += 2)
                     {
                         optIns.Add(new TargetOptIn(
-                            FixtureIds.Instance(optInProviderPairs[j + 1]),
+                            FixtureIds.Installation(optInProviderPairs[j + 1]),
                             FixtureIds.Capability(optInProviderPairs[j])));
                     }
                 }
@@ -615,7 +615,7 @@ namespace GameCore.Derivation.Fixtures
 
                 List<CapabilityImport> combined = new List<CapabilityImport>(scopes[i].Imports)
                 {
-                    new CapabilityImport(FixtureIds.Capability(capability), FixtureIds.Instance(provider)),
+                    new CapabilityImport(FixtureIds.Capability(capability), FixtureIds.Installation(provider)),
                 };
 
                 scopes[i] = new DerivationScope(
@@ -761,7 +761,7 @@ namespace GameCore.Derivation.Fixtures
             List<CapabilityImport> imports = new List<CapabilityImport>(pairs.Count / 2);
             for (int i = 0; i < pairs.Count; i += 2)
             {
-                imports.Add(new CapabilityImport(FixtureIds.Capability(pairs[i]), FixtureIds.Instance(pairs[i + 1])));
+                imports.Add(new CapabilityImport(FixtureIds.Capability(pairs[i]), FixtureIds.Installation(pairs[i + 1])));
             }
 
             return imports;

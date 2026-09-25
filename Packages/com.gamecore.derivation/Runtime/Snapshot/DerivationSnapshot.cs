@@ -720,7 +720,7 @@ namespace GameCore.Derivation
                             nameof(source));
                     }
 
-                    current = source[index[current].Parent];
+                    current = source[index[current.Value]].Parent;
                 }
             }
 

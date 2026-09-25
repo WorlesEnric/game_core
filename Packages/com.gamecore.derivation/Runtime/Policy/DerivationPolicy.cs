@@ -297,7 +297,7 @@ namespace GameCore.Derivation
             }
 
             CapabilityId capability = rule.OutputCapability.Capability;
-            ProviderInstallationId provider = install.Instance;
+            ProviderInstallationId provider = new ProviderInstallationId(install.Instance.Value);
             if (rule.ExportToDescendants && ImportsCapability(snapshot, target, capability, provider))
             {
                 return ModeGateDecision.ConservativeExportedAndImported;
