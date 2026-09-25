@@ -19,4 +19,17 @@ no UnityEngine/Unity.Entities token in the two pure packages
 verdict: ok
 
 ## 4. meta guidance uniqueness
-meta files: 506, guids: 506, duplicates: 0
+meta files: 513, guids: 513, duplicates: 0
+
+## 5. re-run after the Unity half was added (2026-09-25T06:00:43Z)
+checked 289 C# file(s)
+ok
+exit=0
+
+## 6. probe script and asmdefs
+run_gc013_probe.sh: bash syntax ok
+all 12 asmdef files parse as JSON
+
+## 7. digest reproducibility (independent recomputation)
+narrative: matches the asserted literal
+cards: matches the asserted literal
