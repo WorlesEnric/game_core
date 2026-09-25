@@ -15,6 +15,11 @@ group-agnostic: a new registration group in a catalog description (GC-012 adds `
 catalogs) is verified without changing this script, because the registration table names are discovered from the
 `GroupCatalogRegistrations` method the emitter writes, and each table's declared `FactoryKind` is read from its own
 `new FactoryRegistration(...)` rows.
+A catalog that declares schemas only -- zero registration groups, as GC-018's checkpoint catalog does -- is
+legal: `CatalogEmitter` then emits `Array.Empty<FactoryRegistration>()` from `GroupCatalogRegistrations`, this
+script discovers zero tables, `RegistrationGroupCount` must be 0, and the fingerprint is computed over the
+per-schema serializer rows, the schema registrations and the declared features only. The probe and card
+catalogs, which each declare groups, are unaffected.
 
 usage: python3 tools/verify_generated_catalog.py [path to generated .cs]   (default: the committed probe catalog)
 """
@@ -88,14 +93,15 @@ def initializer_body(text: str, name: str) -> str:
 
 
 def group_registration_tables(text: str) -> list[str]:
-    """Every `*CatalogRegistrations` table `GroupCatalogRegistrations` copies, in the emitter's canonical order."""
+    """Every `*CatalogRegistrations` table `GroupCatalogRegistrations` copies, in the emitter's canonical order.
+
+    A catalog that declares schemas only copies none, which the emitter renders as
+    `return Array.Empty<FactoryRegistration>();`; an empty list is then the correct result, not an error.
+    """
     match = GROUP_METHOD.search(text)
     if match is None:
         raise SystemExit("generated file has no GroupCatalogRegistrations method")
-    tables = [name for name, _ in GROUP_REGISTRATIONS.findall(match.group(1))]
-    if not tables:
-        raise SystemExit("the generated GroupCatalogRegistrations copies no registration table")
-    return tables
+    return [name for name, _ in GROUP_REGISTRATIONS.findall(match.group(1))]
 
 
 def key_of(text: str, name: str) -> tuple[int, int, int]:

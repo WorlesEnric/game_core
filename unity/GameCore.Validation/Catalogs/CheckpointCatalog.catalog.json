@@ -1,0 +1,1339 @@
+{
+  "descriptionFormat": "gamecore.catalog-description/1",
+  "protocolVersion": "1.0",
+  "namespace": "GameCore.Validation.GeneratedCheckpoint",
+  "className": "CheckpointCatalog",
+  "fileName": "CheckpointCatalog.g.cs",
+  "supportedFeatureIds": [
+    "9138c1dcda9a0a872360071679d5859a"
+  ],
+  "schemas": [
+    {
+      "stableName": "gamecore.checkpoint.schema.header",
+      "valueTypeName": "HeaderRecordValue",
+      "serializerTypeName": "HeaderRecordSerializer",
+      "serializerKeyName": "HeaderRecordSerializerKey",
+      "schemaId": "d578e5fe72e484be8d8c015a17d8b66b",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "00000000000000000000000000000000",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "WorldDefinitionHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 2,
+          "name": "WorldDefinitionLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 3,
+          "name": "SourceSessionHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 4,
+          "name": "SourceSessionLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 5,
+          "name": "ProtocolMajor",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 6,
+          "name": "ProtocolMinor",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 7,
+          "name": "TemporalModel",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 8,
+          "name": "StepDurationTicks",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 9,
+          "name": "TicksPerSecond",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 10,
+          "name": "MaxStepsPerPump",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 11,
+          "name": "UsesUnscaledHostClock",
+          "wireType": "Bool",
+          "required": true
+        },
+        {
+          "id": 12,
+          "name": "LogicalStep",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 13,
+          "name": "TimeDebtTicks",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 14,
+          "name": "DomainSeconds",
+          "wireType": "Float64",
+          "required": true
+        },
+        {
+          "id": 15,
+          "name": "PendingDemand",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 16,
+          "name": "PropagationMode",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 17,
+          "name": "CatalogFingerprintA",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 18,
+          "name": "CatalogFingerprintB",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 19,
+          "name": "CatalogFingerprintC",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 20,
+          "name": "CatalogFingerprintD",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 21,
+          "name": "QueuePolicy",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 22,
+          "name": "AdmissionCutoff",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 23,
+          "name": "RejectedQueuedCount",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 24,
+          "name": "LastEventSequence",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 25,
+          "name": "ScopeCount",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 26,
+          "name": "InstallCount",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 27,
+          "name": "SelectionCount",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 28,
+          "name": "TargetCount",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 29,
+          "name": "SlotCount",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 30,
+          "name": "GrantCount",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 31,
+          "name": "ClockCount",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 32,
+          "name": "CommandCount",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 33,
+          "name": "MessageCount",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 34,
+          "name": "RngStreamCount",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 35,
+          "name": "CursorCount",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 36,
+          "name": "SourcePublishedRevision",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 37,
+          "name": "SourcePublishedEpoch",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 38,
+          "name": "SourceHostTicksPerSecond",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 39,
+          "name": "ContentRevisionCount",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gamecore.checkpoint.schema.scope",
+      "valueTypeName": "ScopeRecordValue",
+      "serializerTypeName": "ScopeRecordSerializer",
+      "serializerKeyName": "ScopeRecordSerializerKey",
+      "schemaId": "1bb5c533dab84e7604c8b98f1b97066a",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "00000000000000000000000000000000",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "ScopeHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 2,
+          "name": "ScopeLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 3,
+          "name": "ParentHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 4,
+          "name": "ParentLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 5,
+          "name": "Depth",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 6,
+          "name": "Mode",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 7,
+          "name": "InstallCount",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 8,
+          "name": "GrantCount",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 9,
+          "name": "ServiceIsolationAll",
+          "wireType": "Bool",
+          "required": true
+        },
+        {
+          "id": 10,
+          "name": "CapabilityIsolationAll",
+          "wireType": "Bool",
+          "required": true
+        },
+        {
+          "id": 11,
+          "name": "ServiceIsolationCount",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 12,
+          "name": "CapabilityIsolationCount",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gamecore.checkpoint.schema.install",
+      "valueTypeName": "InstallRecordValue",
+      "serializerTypeName": "InstallRecordSerializer",
+      "serializerKeyName": "InstallRecordSerializerKey",
+      "schemaId": "5666c5db5d34ad37d470140f8c18808f",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "00000000000000000000000000000000",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "InstanceHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 2,
+          "name": "InstanceLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 3,
+          "name": "PluginTypeHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 4,
+          "name": "PluginTypeLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 5,
+          "name": "ScopeHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 6,
+          "name": "ScopeLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 7,
+          "name": "ConfigRevision",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 8,
+          "name": "ConfigHashA",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 9,
+          "name": "ConfigHashB",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 10,
+          "name": "ConfigHashC",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 11,
+          "name": "ConfigHashD",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 12,
+          "name": "Priority",
+          "wireType": "Int32",
+          "required": true
+        },
+        {
+          "id": 13,
+          "name": "Generation",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 14,
+          "name": "ActivationEpoch",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 15,
+          "name": "State",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 16,
+          "name": "ConfigFieldCount",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 17,
+          "name": "ConfigBytes",
+          "wireType": "Bytes",
+          "required": true
+        },
+        {
+          "id": 18,
+          "name": "SelectionCount",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 19,
+          "name": "HasConfigDocument",
+          "wireType": "Bool",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gamecore.checkpoint.schema.selection",
+      "valueTypeName": "SelectionRecordValue",
+      "serializerTypeName": "SelectionRecordSerializer",
+      "serializerKeyName": "SelectionRecordSerializerKey",
+      "schemaId": "4736afccc12b5b625adb5bcdbb714e3f",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "00000000000000000000000000000000",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "InstanceHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 2,
+          "name": "InstanceLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 3,
+          "name": "ContractHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 4,
+          "name": "ContractLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 5,
+          "name": "ContractVersion",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 6,
+          "name": "ProviderHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 7,
+          "name": "ProviderLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 8,
+          "name": "Order",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gamecore.checkpoint.schema.target",
+      "valueTypeName": "TargetRecordValue",
+      "serializerTypeName": "TargetRecordSerializer",
+      "serializerKeyName": "TargetRecordSerializerKey",
+      "schemaId": "b780328c6fa158f7bd88603db3ebae2f",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "00000000000000000000000000000000",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "TargetHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 2,
+          "name": "TargetLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 3,
+          "name": "ScopeHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 4,
+          "name": "ScopeLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 5,
+          "name": "DefinitionHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 6,
+          "name": "DefinitionLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 7,
+          "name": "SchemaHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 8,
+          "name": "SchemaLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 9,
+          "name": "SchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 10,
+          "name": "ContentRevision",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 11,
+          "name": "SourceSlot",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 12,
+          "name": "SourceGeneration",
+          "wireType": "UInt64",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gamecore.checkpoint.schema.slot",
+      "valueTypeName": "SlotRecordValue",
+      "serializerTypeName": "SlotRecordSerializer",
+      "serializerKeyName": "SlotRecordSerializerKey",
+      "schemaId": "325ebfc76f751ee2c2b4985df3d088a0",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "00000000000000000000000000000000",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "TargetHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 2,
+          "name": "TargetLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 3,
+          "name": "OwnerHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 4,
+          "name": "OwnerLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 5,
+          "name": "SlotHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 6,
+          "name": "SlotLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 7,
+          "name": "SchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 8,
+          "name": "Value",
+          "wireType": "Int32",
+          "required": true
+        },
+        {
+          "id": 9,
+          "name": "Active",
+          "wireType": "Bool",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gamecore.checkpoint.schema.grant",
+      "valueTypeName": "GrantRecordValue",
+      "serializerTypeName": "GrantRecordSerializer",
+      "serializerKeyName": "GrantRecordSerializerKey",
+      "schemaId": "54d0f9cccec243b78414ec19245173c6",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "00000000000000000000000000000000",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "Kind",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 2,
+          "name": "ScopeHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 3,
+          "name": "ScopeLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 4,
+          "name": "TargetHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 5,
+          "name": "TargetLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 6,
+          "name": "CapabilityHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 7,
+          "name": "CapabilityLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 8,
+          "name": "CapabilityVersion",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 9,
+          "name": "ProviderHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 10,
+          "name": "ProviderLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 11,
+          "name": "RuleHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 12,
+          "name": "RuleLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 13,
+          "name": "ContractHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 14,
+          "name": "ContractLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 15,
+          "name": "ContractVersion",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 16,
+          "name": "SubjectHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 17,
+          "name": "SubjectLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 18,
+          "name": "AppliesToSubtree",
+          "wireType": "Bool",
+          "required": true
+        },
+        {
+          "id": 19,
+          "name": "AllContracts",
+          "wireType": "Bool",
+          "required": true
+        },
+        {
+          "id": 20,
+          "name": "ExclusionKind",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 21,
+          "name": "Order",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gamecore.checkpoint.schema.clock",
+      "valueTypeName": "ClockRecordValue",
+      "serializerTypeName": "ClockRecordSerializer",
+      "serializerKeyName": "ClockRecordSerializerKey",
+      "schemaId": "49f4779fa88d83ea0440e2bab679d545",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "00000000000000000000000000000000",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "RowKind",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 2,
+          "name": "ClockHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 3,
+          "name": "ClockLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 4,
+          "name": "ClockKind",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 5,
+          "name": "PausePolicy",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 6,
+          "name": "Persists",
+          "wireType": "Bool",
+          "required": true
+        },
+        {
+          "id": 7,
+          "name": "WakeHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 8,
+          "name": "WakeLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 9,
+          "name": "PayloadSchemaHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 10,
+          "name": "PayloadSchemaLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 11,
+          "name": "PayloadSchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 12,
+          "name": "ScheduledAtSequence",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 13,
+          "name": "RemainingSteps",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 14,
+          "name": "RemainingTicks",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 15,
+          "name": "WakeState",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 16,
+          "name": "Order",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gamecore.checkpoint.schema.command",
+      "valueTypeName": "CommandRecordValue",
+      "serializerTypeName": "CommandRecordSerializer",
+      "serializerKeyName": "CommandRecordSerializerKey",
+      "schemaId": "efe5ab3007e3f7b821d96f9264ab31ef",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "00000000000000000000000000000000",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "IssuerHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 2,
+          "name": "IssuerLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 3,
+          "name": "IssuerSequence",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 4,
+          "name": "RouteHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 5,
+          "name": "RouteLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 6,
+          "name": "TargetHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 7,
+          "name": "TargetLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 8,
+          "name": "SchemaHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 9,
+          "name": "SchemaLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 10,
+          "name": "SchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 11,
+          "name": "AdmittedStep",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 12,
+          "name": "AdmittedEpoch",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 13,
+          "name": "AdmissionSequence",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 14,
+          "name": "OrderOrdinal",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 15,
+          "name": "OriginKind",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 16,
+          "name": "InputHashA",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 17,
+          "name": "InputHashB",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 18,
+          "name": "InputHashC",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 19,
+          "name": "InputHashD",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 20,
+          "name": "Payload",
+          "wireType": "Bytes",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gamecore.checkpoint.schema.message",
+      "valueTypeName": "MessageRecordValue",
+      "serializerTypeName": "MessageRecordSerializer",
+      "serializerKeyName": "MessageRecordSerializerKey",
+      "schemaId": "744d60d006798058b50b656c613a21f3",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "00000000000000000000000000000000",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "Step",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 2,
+          "name": "Epoch",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 3,
+          "name": "RequestIssuerHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 4,
+          "name": "RequestIssuerLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 5,
+          "name": "RequestSequence",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 6,
+          "name": "RouteHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 7,
+          "name": "RouteLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 8,
+          "name": "OwnerHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 9,
+          "name": "OwnerLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 10,
+          "name": "TargetHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 11,
+          "name": "TargetLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 12,
+          "name": "PayloadSchemaHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 13,
+          "name": "PayloadSchemaLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 14,
+          "name": "PayloadSchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 15,
+          "name": "MessageKind",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 16,
+          "name": "OrderAdmitted",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 17,
+          "name": "OrderOrdinal",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 18,
+          "name": "OriginKeyHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 19,
+          "name": "OriginKeyLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 20,
+          "name": "ProducerKeyHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 21,
+          "name": "ProducerKeyLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 22,
+          "name": "ProducerKeyVersion",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 23,
+          "name": "BufferHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 24,
+          "name": "BufferLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 25,
+          "name": "HasPayload",
+          "wireType": "Bool",
+          "required": true
+        },
+        {
+          "id": 26,
+          "name": "HasRequest",
+          "wireType": "Bool",
+          "required": true
+        },
+        {
+          "id": 27,
+          "name": "IsOutcome",
+          "wireType": "Bool",
+          "required": true
+        },
+        {
+          "id": 28,
+          "name": "Payload",
+          "wireType": "Bytes",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gamecore.checkpoint.schema.rng",
+      "valueTypeName": "RngRecordValue",
+      "serializerTypeName": "RngRecordSerializer",
+      "serializerKeyName": "RngRecordSerializerKey",
+      "schemaId": "cd069d4291975928edb3f9e9af5e037d",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "00000000000000000000000000000000",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "StreamHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 2,
+          "name": "StreamLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 3,
+          "name": "State",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 4,
+          "name": "StreamKey",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 5,
+          "name": "DrawCount",
+          "wireType": "UInt64",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gamecore.checkpoint.schema.cursor",
+      "valueTypeName": "CursorRecordValue",
+      "serializerTypeName": "CursorRecordSerializer",
+      "serializerKeyName": "CursorRecordSerializerKey",
+      "schemaId": "1ddc64b87daa5363e1c1951d44ad5f07",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "00000000000000000000000000000000",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "RowKind",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 2,
+          "name": "IssuerHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 3,
+          "name": "IssuerLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 4,
+          "name": "Sequence",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 5,
+          "name": "SessionHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 6,
+          "name": "SessionLow",
+          "wireType": "UInt64",
+          "required": true
+        }
+      ]
+    }
+  ],
+  "groups": []
+}
