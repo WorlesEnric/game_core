@@ -309,12 +309,19 @@ filtered commands above exist so a failure can be localised quickly.
 ## 9. What actually ran on this host
 
 ```sh
-python3 tools/check_game_core_csharp.py     # checked 389 C# file(s); ok (brace balance, forbidden constructs,
-                                            # missing-return scan, #nullable enable, no TODO/FIXME)
-python3 tools/make_unity_metas.py           # generated the missing metas once; a second run creates nothing
-bash -n tools/unity/run_gc019_probe.sh      # the probe harness parses
-# .meta GUID uniqueness over the whole worktree: every meta carries a unique GUID, checked after the last creation
+python3 tools/check_game_core_csharp.py                  # checked 389 C# file(s); ok (brace balance,
+                                                        # forbidden constructs, missing-return scan,
+                                                        # #nullable enable, no TODO/FIXME)
+python3 tools/validate_game_core_docs.py --self-test     # 9 isolated fixtures passed
+python3 tools/validate_game_core_docs.py                 # 14 documents; links, anchors, IDs, traceability,
+                                                        # DAG, wave ordering
+python3 tools/make_unity_metas.py                        # idempotent; a second run reports 0 creations
+bash -n tools/unity/run_gc019_probe.sh                   # the probe harness parses
+# .meta GUID uniqueness over the whole worktree: 607 metas, 607 unique, 0 duplicates
 # digest recomputation: both GC-019 literals reproduced independently from the observation-name table
+# member audit: every adapter member the suite and the scenario call was read at its definition
 ```
 
-None of that is a build, an import, a test or a player run.
+None of that is a build, an import, a test or a player run. In particular the brace/forbidden-construct checker is a
+smoke check, not a compiler: it does not resolve types, check overloads or validate nullability, and the first real
+signal about this change set is the build host's build.
