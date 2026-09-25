@@ -1,0 +1,13 @@
+# GC-006 static checks (authoring host: no .NET SDK, no Unity; these are NOT build or test results)
+
+$ python3 tools/check_game_core_csharp.py
+checked 99 C# file(s)
+ok
+
+$ python3 tools/validate_game_core_docs.py
+Game Core documentation validation passed: 14 Markdown documents; local links, anchors, IDs, traceability, task DAG and wave ordering checked.
+No Unity builds, gameplay tests, runtime benchmarks, or remote URL checks were executed.
+
+$ python3 (brace/paren/bracket balance + forbidden-construct scan over Packages/com.gamecore.derivation/**/*.cs)
+checked 31 file(s)
+ok

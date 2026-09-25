@@ -48,8 +48,8 @@ namespace GameCore.Validation.ProbeHost
 
         internal static void Run(ProbeArguments arguments)
         {
-            // The GC-005 owned-world mode and the W1 integration gate run in the same player and report into the
-            // same result shape, but each under its own task id so no outcome is restated as another task's
+            // The GC-005 owned-world mode and the W1/W2 integration gates run in the same player and report into
+            // the same result shape, but each under its own task id so no outcome is restated as another task's
             // evidence.
             ProbeReport report = arguments.WorldDispatch
                 ? new ProbeReport(
@@ -63,10 +63,16 @@ namespace GameCore.Validation.ProbeHost
                         ProbeEnvironment.DeclaredUnityVersion,
                         ProbeEnvironment.DeclaredTarget,
                         "W1-GATE")
-                    : new ProbeReport(
-                        arguments.MissingRegistration ? "MissingRegistration" : "Positive",
-                        ProbeEnvironment.DeclaredUnityVersion,
-                        ProbeEnvironment.DeclaredTarget);
+                    : arguments.W2Gate
+                        ? new ProbeReport(
+                            "W2Gate",
+                            ProbeEnvironment.DeclaredUnityVersion,
+                            ProbeEnvironment.DeclaredTarget,
+                            "W2-GATE")
+                        : new ProbeReport(
+                            arguments.MissingRegistration ? "MissingRegistration" : "Positive",
+                            ProbeEnvironment.DeclaredUnityVersion,
+                            ProbeEnvironment.DeclaredTarget);
 
             if (!arguments.HasResultPath)
             {
@@ -94,6 +100,11 @@ namespace GameCore.Validation.ProbeHost
                 else if (arguments.W1Gate)
                 {
                     ProbeW1Gate.Run(report);
+                    report.CompletePositive();
+                }
+                else if (arguments.W2Gate)
+                {
+                    ProbeW2Gate.Run(report);
                     report.CompletePositive();
                 }
                 else

@@ -19,9 +19,16 @@
 // `CompositionHost` and `UnityWorldHost` stay the authorities for their own state; this type owns no durable
 // state of its own beyond the counters it reports. The real live-publication path (mapping a plan to component
 // and binding diffs) is GC-008's; what lives here is only the admission/execution handoff W1 can honestly prove.
+//
+// P-006 asks for ONE publication series, so this bridge is also where the lane's publication is *joined* to the
+// world's: when a joined [AssemblyPublisher] is supplied, the bridge hands it the composition publication to adopt
+// (and the publisher publishes the assembly, asserting the equality); without one, the bridge asks the world to
+// adopt the composition publication itself. Either way the world's published epoch is the composition epoch the
+// operation reported, and a world that cannot advance to that value refuses the admission instead of diverging.
 #nullable enable
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using GameCore.Composition;
 using GameCore.Contracts;
 using GameCore.Execution;
@@ -155,9 +162,24 @@ namespace GameCore.Unity.Runtime.Integration
     public sealed class WorldCompositionBridge
     {
         public WorldCompositionBridge(UnityWorldHost world, CompositionHost composition)
+            : this(world, composition, null)
+        {
+        }
+
+        /// <summary>
+        /// Joins one lane to one world, optionally through the world's assembly publisher (P-006, P-030). A joined
+        /// lane must already agree with the world it is joined to, which for a world that has published only its
+        /// initial assembly means the seed `CompositionLaneSeed.InitialAssembly`; a lane that disagrees is refused
+        /// rather than published on top of a series it does not share.
+        /// </summary>
+        public WorldCompositionBridge(
+            UnityWorldHost world,
+            CompositionHost composition,
+            AssemblyPublisher? publisher)
         {
             World = world ?? throw new ArgumentNullException(nameof(world));
             Composition = composition ?? throw new ArgumentNullException(nameof(composition));
+            Publisher = publisher;
 
             if (!composition.World.Session.Equals(world.World.Session))
             {
@@ -166,11 +188,48 @@ namespace GameCore.Unity.Runtime.Integration
                     "The control lane belongs to another world incarnation than the host (P-004).",
                     nameof(composition));
             }
+
+            if (publisher != null && !ReferenceEquals(publisher.World, world))
+            {
+                throw new ArgumentException(
+                    "The assembly publisher belongs to another world incarnation than the host (P-004).",
+                    nameof(publisher));
+            }
+
+            if (!AssemblyPublisher.MatchesPublishedAssembly(
+                    composition.Committed.Revision,
+                    composition.Committed.Epoch,
+                    Publisher != null ? Publisher.PublishedRevision : world.PublishedCompositionRevision,
+                    world.CurrentEpoch))
+            {
+                // P-006: the lane and the world publish one series. A lane that was not seeded from the world would
+                // otherwise report an epoch the world never publishes, which is the split this join removes.
+                throw new ArgumentException(
+                    "The control lane publishes revision "
+                    + composition.Committed.Revision.Value.ToString(CultureInfo.InvariantCulture)
+                    + "/epoch " + composition.Committed.Epoch.Value.ToString(CultureInfo.InvariantCulture)
+                    + " but its world publishes revision "
+                    + (Publisher != null ? Publisher.PublishedRevision : world.PublishedCompositionRevision)
+                        .Value.ToString(CultureInfo.InvariantCulture)
+                    + "/epoch " + world.CurrentEpoch.Value.ToString(CultureInfo.InvariantCulture)
+                    + "; a joined lane must be seeded from the world it joins (P-006).",
+                    nameof(composition));
+            }
         }
 
         public UnityWorldHost World { get; }
 
         public CompositionHost Composition { get; }
+
+        /// <summary>The world's assembly publisher, when this bridge is the live publication path (P-030).</summary>
+        public AssemblyPublisher? Publisher { get; }
+
+        /// <summary>Admissions whose composition publication the world could not advance to (P-006).</summary>
+        public int PublicationJoinRefusalCount { get; private set; }
+
+        public DiagnosticCode LastPublicationJoinCode { get; private set; }
+
+        public string LastPublicationJoinDetail { get; private set; } = string.Empty;
 
         /// <summary>Operations this bridge admitted and handed to the world.</summary>
         public int SubmittedCount { get; private set; }
@@ -304,6 +363,33 @@ namespace GameCore.Unity.Runtime.Integration
                 };
             }
 
+            // P-006 has one publication series: the composition publication just published must become the world's
+            // next assembly, so the epoch the operation reports is the epoch the world publishes. A world that cannot
+            // advance to it refuses the handoff and gains no demand (the lane keeps its honest published result).
+            CompositionPublicationJoin join = JoinPublishedComposition(mine!.Token!.Value);
+            if (!join.Joined)
+            {
+                PublicationJoinRefusalCount++;
+                LastPublicationJoinCode = join.Code;
+                LastPublicationJoinDetail = join.Detail;
+
+                return new WorldAdmissionReport
+                {
+                    Operation = operation,
+                    Outcome = BridgeOutcome.PublicationRejected,
+                    RefusalCode = join.Code,
+                    RefusalDetail = join.Detail,
+                    ExpectedRevision = expected,
+                    LaneRowCount = Composition.OperationLedger.RowCount,
+                    Admission = admission.Kind,
+                    AdmissionCode = admission.Code,
+                    Staged = true,
+                    PublicationOutcome = mine.Outcome,
+                    PublicationCode = mine.Code,
+                    PublishedToken = mine.Token,
+                };
+            }
+
             // The admitted and published result becomes demand; the guarded driver turns one admitted command into
             // exactly one logical step (P-036, P-037). The bridge does not run the step itself.
             World.NotifyCommandAdmitted(1U);
@@ -324,6 +410,57 @@ namespace GameCore.Unity.Runtime.Integration
                 CommandSubmitted = true,
                 DemandAfter = World.PendingDemand,
             };
+        }
+
+        /// <summary>
+        /// Joins one published composition operation to the world's assembly series (P-006). With an assembly
+        /// publisher this is an adoption the publisher asserts at its next publication; without one (the W1 path) the
+        /// world's epoch mirror advances to the composition publication itself, because the lane and the world
+        /// publish the same series. Either way a publication that is not exactly the next assembly is refused.
+        /// </summary>
+        private CompositionPublicationJoin JoinPublishedComposition(SnapshotToken token)
+        {
+            AssemblyEpoch laneEpoch = token.AssemblyEpoch;
+
+            if (Publisher != null)
+            {
+                if (!Publisher.TryAdoptLanePublication(Composition.Committed.Revision, laneEpoch, out _, out DiagnosticCode adoptCode))
+                {
+                    return new CompositionPublicationJoin(
+                        false,
+                        adoptCode,
+                        "the assembly publisher refused to adopt composition publication revision "
+                        + Composition.Committed.Revision.Value.ToString(CultureInfo.InvariantCulture)
+                        + "/epoch " + laneEpoch.Value.ToString(CultureInfo.InvariantCulture)
+                        + "; it must be exactly the next assembly of the world's series (P-006).");
+                }
+
+                return new CompositionPublicationJoin(true, DiagnosticCode.None, string.Empty);
+            }
+
+            if (!World.TryAdoptPublishedComposition(Composition.Committed.Revision, laneEpoch, out DiagnosticCode code, out string detail))
+            {
+                return new CompositionPublicationJoin(false, code, detail);
+            }
+
+            return new CompositionPublicationJoin(true, DiagnosticCode.None, string.Empty);
+        }
+
+        /// <summary>Outcome of joining one published composition operation to the world's assembly series.</summary>
+        private readonly struct CompositionPublicationJoin
+        {
+            public CompositionPublicationJoin(bool joined, DiagnosticCode code, string detail)
+            {
+                Joined = joined;
+                Code = code;
+                Detail = detail ?? string.Empty;
+            }
+
+            public bool Joined { get; }
+
+            public DiagnosticCode Code { get; }
+
+            public string Detail { get; }
         }
 
         /// <summary>

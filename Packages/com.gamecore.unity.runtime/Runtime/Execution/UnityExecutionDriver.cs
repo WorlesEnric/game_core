@@ -2,6 +2,8 @@
 using System;
 using GameCore.Contracts;
 using GameCore.Execution;
+using GameCore.Execution.Messages;
+using GameCore.Unity.Runtime.Messages;
 using Unity.Collections;
 using Unity.Jobs;
 
@@ -144,6 +146,11 @@ namespace GameCore.Unity.Runtime
                 // The logical clock is host-supplied; command-driven worlds supply zero delta (04 s3, P-036, P-038).
                 context.ApplyStepClock(step);
 
+                // Step admission seals the admitted input prefix: commands arriving after this cutoff wait for the
+                // next step, and the sealed batch is what this step's owners may consume (P-037).
+                WorldMessagePlane? messages = context.Messages;
+                messages?.SealStep(step, epoch);
+
                 DispatchRunResult run = context.StepGroup.DispatchRun(epoch, step, context.StepGroup.BoundTable);
                 if (!run.Completed)
                 {
@@ -160,6 +167,17 @@ namespace GameCore.Unity.Runtime
                     // Unconsumed reliable data fails the commit rather than publishing partial success (P-043, O-16).
                     LatchFault(drains.Code, "Unconsumed step buffer " + drains.UnconsumedBuffer.ToString() + " at commit.");
                     return FaultResult(request, drains.Code);
+                }
+                if (messages != null)
+                {
+                    StepBufferCommitReport messageDrains = messages.ValidateCommit(context.StepGroup, out string messageDetail);
+                    if (!messageDrains.Succeeded)
+                    {
+                        // A reliable declared buffer a producer wrote must have been drained by its consumer stage;
+                        // otherwise the commit fails instead of publishing partial success (P-043, O-16).
+                        LatchFault(messageDrains.Code, messageDetail);
+                        return FaultResult(request, messageDrains.Code);
+                    }
                 }
 
                 if (!context.StepGroup.Fences!.CompleteAndReset())
@@ -186,6 +204,7 @@ namespace GameCore.Unity.Runtime
 
                 published = token;
                 CommittedStepCount++;
+                messages?.EndStep();
                 context.ConsumeDemand(1UL);
             }
 

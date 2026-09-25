@@ -18,6 +18,7 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using GameCore.Contracts;
 
 namespace GameCore.Composition
@@ -105,20 +106,33 @@ namespace GameCore.Composition
             CompositionHostSettings settings,
             IPluginManifestSource manifests,
             IManagedResourceFactory? resourceFactory,
-            PropagationMode mode)
+            PropagationMode mode,
+            CompositionLaneSeed seed = default(CompositionLaneSeed))
         {
             if (rootScope.IsDefault)
             {
                 throw new ArgumentException("A world requires a real root scope identity (P-010).", nameof(rootScope));
             }
 
+            if (!seed.IsConsistent)
+            {
+                // P-006 increments revision and epoch together, so a seed with two different numbers is two series
+                // in one value and would reintroduce exactly the split this seed exists to remove.
+                throw new ArgumentException(
+                    "A lane seed must name one publication: revision "
+                    + seed.Revision.Value.ToString(CultureInfo.InvariantCulture) + " with epoch "
+                    + seed.Epoch.Value.ToString(CultureInfo.InvariantCulture) + " is inconsistent (P-006).",
+                    nameof(seed));
+            }
+
             World = world;
             Settings = settings ?? throw new ArgumentNullException(nameof(settings));
             this.manifests = manifests ?? throw new ArgumentNullException(nameof(manifests));
             this.resourceFactory = resourceFactory;
+            Seed = seed;
 
-            // A fresh session starts at revision/epoch/step 0; the initial publication takes them to 1/1/0 and
-            // the logical step stays 0 (05 s2). The world-level mode defaults to Automatic (P-013).
+            // A standalone lane starts at the pre-publication 0/0; a lane joined to a world that already published
+            // its initial assembly starts at 1/1 and stays on the world's series (05 s2, P-006).
             ScopeRecord root = new ScopeRecord(
                 rootScope,
                 default(ScopeId),
@@ -127,29 +141,41 @@ namespace GameCore.Composition
                 new IsolationSet(false, null),
                 null,
                 null);
-            committed = CompositionState.CreateEmpty(world, root, mode);
+            committed = CompositionState.CreateEmpty(world, root, mode, seed.Revision, seed.Epoch);
             staged = committed;
             ledger = new OperationLedger(Settings.Capacity, Settings.Expiry);
             Callbacks = new CallbackGate(world);
         }
 
-        /// <summary>Convenience construction with the protocol defaults of the frozen settings DTOs.</summary>
+        /// <summary>
+        /// Convenience construction with the protocol defaults of the frozen settings DTOs.
+        /// <paramref name="seed"/> joins the lane to a world's published assembly; leaving it unset keeps the
+        /// standalone pre-publication 0/0 behaviour (05 s2).
+        /// </summary>
         public static CompositionHost CreateDefault(
             WorldId world,
             ScopeId rootScope,
             IPluginManifestSource manifests,
-            IManagedResourceFactory? resourceFactory) =>
+            IManagedResourceFactory? resourceFactory,
+            CompositionLaneSeed seed = default(CompositionLaneSeed)) =>
             new CompositionHost(
                 world,
                 rootScope,
                 new CompositionHostSettings(ControlLaneCapacitySettings.Default, OperationExpirySettings.Default),
                 manifests,
                 resourceFactory,
-                PropagationMode.Automatic);
+                PropagationMode.Automatic,
+                seed);
 
         public WorldId World { get; }
 
         public CompositionHostSettings Settings { get; }
+
+        /// <summary>
+        /// Published assembly this lane was joined to, or <see cref="CompositionLaneSeed.Unpublished"/> for a
+        /// standalone lane. A joined lane's committed revision/epoch equal the world's published ones (P-006).
+        /// </summary>
+        public CompositionLaneSeed Seed { get; }
 
         /// <summary>The committed, published composition. Staged edits are never visible here (00 s9).</summary>
         public CompositionState Committed => committed;

@@ -151,12 +151,24 @@ namespace GameCore.Composition
             canonicalInstalls.Sort(CompareInstalls);
         }
 
-        /// <summary>Opens a fresh unexposed world state at revision/epoch 0 with a single root scope (05 s2).</summary>
+        /// <summary>Opens a fresh unexposed world state at the pre-publication revision/epoch 0 (05 s2).</summary>
         public static CompositionState CreateEmpty(WorldId world, ScopeRecord root, PropagationMode mode) =>
+            CreateEmpty(world, root, mode, CompositionRevision.Zero, AssemblyEpoch.Zero);
+
+        /// <summary>
+        /// Opens a state at an explicit published assembly revision/epoch: the world's initial assembly is 1/1, so a
+        /// lane joined to that world starts there and keeps one publication series (05 s2, P-006).
+        /// </summary>
+        public static CompositionState CreateEmpty(
+            WorldId world,
+            ScopeRecord root,
+            PropagationMode mode,
+            CompositionRevision revision,
+            AssemblyEpoch epoch) =>
             new CompositionState(
                 world,
-                CompositionRevision.Zero,
-                AssemblyEpoch.Zero,
+                revision,
+                epoch,
                 LogicalStepId.Zero,
                 mode,
                 new ScopeRegistry(root, null),

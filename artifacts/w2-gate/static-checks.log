@@ -1,0 +1,40 @@
+== host-side checks actually run on this host (NotRun for every build/test; no toolchain present)
+
+== python3 tools/check_game_core_csharp.py
+checked 196 C# file(s)
+ok
+
+== python3 tools/validate_game_core_docs.py --self-test
+Documentation validator self-test passed: 9 isolated positive/negative fixtures.
+
+== python3 tools/validate_game_core_docs.py
+Game Core documentation validation passed: 14 Markdown documents; local links, anchors, IDs, traceability, task DAG and wave ordering checked.
+No Unity builds, gameplay tests, runtime benchmarks, or remote URL checks were executed.
+
+== bash -n (every shell script this gate touches)
+tools/run_w2_gate.sh                       ok
+tools/unity/run_w2_gate_probe.sh           ok
+tools/unity/probe_runs.sh                  ok
+tools/unity/run_probe.sh                   ok
+tools/unity/run_world_probe.sh             ok
+tools/unity/run_w1_gate_probe.sh           ok
+
+== .meta GUID uniqueness (whole tree)
+guid count: 371 duplicate guids: 0
+
+== W2-GATE merged-symbol presence in the shared WorldHost.cs (both tasks' members survive the merge)
+AttachAssemblySlot               2
+TryPublishAssembly               2
+IsPumping                        1
+assemblySlot                     5
+PublishedCompositionRevision     1
+TryAdoptPublishedComposition     2
+EnterFaulted                     4
+Messages                         6
+messagePlane                     2
+TryCommitStep                    2
+TryGetByEntityWorld              1
+
+== forbidden-construct / #nullable scan over the 16 W2-GATE sources (repository patterns)
+scanned 16 file(s)
+ok

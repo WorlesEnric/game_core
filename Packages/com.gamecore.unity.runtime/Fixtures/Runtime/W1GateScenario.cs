@@ -82,13 +82,19 @@ namespace GameCore.Unity.Fixtures
         public ulong LaneAEpoch { get; set; }
 
         /// <summary>
-        /// World A's own assembly epoch. It advances only through the world's published assembly (04 s5); the
-        /// composition epoch the lane published is a separate counter that live publication (GC-008) joins to it.
+        /// World A's published assembly epoch. P-006 has one publication series, so this equals
+        /// <see cref="LaneAEpoch"/>: the epoch the composition operation reported is the epoch the world published.
         /// </summary>
         public ulong WorldAEpoch { get; set; }
 
         /// <summary>Revision of world B's lane: it admitted nothing (P-002).</summary>
         public ulong LaneBRevision { get; set; }
+
+        /// <summary>
+        /// True when the composition lane's published epoch and revision are exactly the world's published ones
+        /// (P-006's one-series equality, the join GC-008 performs).
+        /// </summary>
+        public bool CompositionMatchesWorldEpoch { get; set; }
 
         /// <summary>Committed logical step of world A after the successful guarded step.</summary>
         public ulong WorldASteps { get; set; }
@@ -204,6 +210,7 @@ namespace GameCore.Unity.Fixtures
                 + "; laneAEpoch=" + LaneAEpoch
                 + "; laneBRevision=" + LaneBRevision
                 + "; worldAEpoch=" + WorldAEpoch
+                + "; compositionMatchesWorldEpoch=" + CompositionMatchesWorldEpoch
                 + "; stepsA=" + WorldASteps
                 + "; stepsB=" + WorldBSteps
                 + "; imagesA=" + WorldAPublishedImages
@@ -562,8 +569,20 @@ namespace GameCore.Unity.Fixtures
                         return;
                     }
 
-                    laneA = CompositionHost.CreateDefault(worldA.World, W1GateKeys.RootScope(1UL), manifests, null);
-                    laneB = CompositionHost.CreateDefault(worldB.World, W1GateKeys.RootScope(2UL), manifests, null);
+                    // A joined lane starts where its world is: the world published its initial assembly as
+                    // revision/epoch 1 (05 s2), so the lane is seeded with exactly that pair (P-006).
+                    laneA = CompositionHost.CreateDefault(
+                        worldA.World,
+                        W1GateKeys.RootScope(1UL),
+                        manifests,
+                        null,
+                        CompositionLaneSeed.InitialAssembly);
+                    laneB = CompositionHost.CreateDefault(
+                        worldB.World,
+                        W1GateKeys.RootScope(2UL),
+                        manifests,
+                        null,
+                        CompositionLaneSeed.InitialAssembly);
                     bridgeA = new WorldCompositionBridge(worldA, laneA);
                     bridgeB = new WorldCompositionBridge(worldB, laneB);
 
@@ -571,17 +590,30 @@ namespace GameCore.Unity.Fixtures
                         && laneA.World.Session.Equals(worldA.World.Session)
                         && laneB!.World.Session.Equals(worldB.World.Session);
 
+                    // The join is the equality P-006 asks for: the lane publishes what its world publishes.
+                    bool laneMatchesItsWorld = AssemblyPublisher.MatchesPublishedAssembly(
+                        laneA.Committed.Revision,
+                        laneA.Committed.Epoch,
+                        worldA.PublishedCompositionRevision,
+                        worldA.CurrentEpoch);
+
                     bool pass = linksMatchTheOwnWorld
-                        && laneA.Committed.Revision.Equals(CompositionRevision.Zero)
-                        && laneA.Committed.Epoch.Equals(AssemblyEpoch.Zero)
-                        && laneB.Committed.Revision.Equals(CompositionRevision.Zero)
+                        && laneMatchesItsWorld
+                        && laneA.Committed.Revision.Equals(CompositionRevision.First)
+                        && laneA.Committed.Epoch.Equals(AssemblyEpoch.First)
+                        && laneB.Committed.Revision.Equals(CompositionRevision.First)
                         && laneA.Committed.Mode == PropagationMode.Automatic;
 
                     facts.LaneARevision = laneA.Committed.Revision.Value;
                     facts.LaneBRevision = laneB.Committed.Revision.Value;
 
+                    facts.CompositionMatchesWorldEpoch = laneMatchesItsWorld;
+
                     string detail = "laneARevision=" + facts.LaneARevision
                         + "; laneAEpoch=" + laneA.Committed.Epoch.Value
+                        + "; worldARevision=" + worldA.PublishedCompositionRevision.Value
+                        + "; worldAEpoch=" + worldA.CurrentEpoch.Value
+                        + "; laneMatchesWorld=" + laneMatchesItsWorld
                         + "; laneAMode=" + laneA.Committed.Mode
                         + "; laneBRevision=" + facts.LaneBRevision
                         + "; laneARootMatchesWorld=" + laneA.World.Session.Equals(worldA.World.Session);
@@ -629,6 +661,17 @@ namespace GameCore.Unity.Fixtures
                         && result.Outcome == Outcome.Published
                         && result.Code == DiagnosticCode.None
                         && result.PublishedSnapshot.HasValue;
+                    // P-006's equality after the publication: the composition epoch the operation reported is the
+                    // world's published epoch, because the lane was seeded from the world and the bridge joined the
+                    // publication to it.
+                    bool countersAgree = AssemblyPublisher.MatchesPublishedAssembly(
+                        laneA.Committed.Revision,
+                        laneA.Committed.Epoch,
+                        worldA.PublishedCompositionRevision,
+                        worldA.CurrentEpoch);
+                    facts.CompositionMatchesWorldEpoch = countersAgree;
+                    facts.WorldAEpoch = worldA.CurrentEpoch.Value;
+
                     bool pass = resultReadable
                         && report.Outcome == BridgeOutcome.Executed
                         && report.Admission == AdmissionKind.Fresh
@@ -638,11 +681,13 @@ namespace GameCore.Unity.Fixtures
                         && tokenOwnedByA
                         && report.CommandSubmitted
                         && report.DemandAfter == 1UL
-                        && facts.LaneARevision == 1UL
-                        && facts.LaneAEpoch == 1UL
+                        && facts.LaneARevision == 2UL
+                        && facts.LaneAEpoch == 2UL
+                        && facts.WorldAEpoch == 2UL
+                        && countersAgree
                         && laneA.PublicationCount == 1
                         && laneA.FindInstall(W1GateKeys.Instance(1UL)) != null
-                        && laneA.OperationLedger.PublishedRevision.Value == 1UL;
+                        && laneA.OperationLedger.PublishedRevision.Value == 2UL;
 
                     string detail = "bridgeOutcome=" + report.Outcome
                         + "; admission=" + report.Admission
@@ -655,6 +700,9 @@ namespace GameCore.Unity.Fixtures
                         + "; demand=" + report.DemandAfter
                         + "; revision=" + facts.LaneARevision
                         + "; epoch=" + facts.LaneAEpoch
+                        + "; worldRevision=" + worldA.PublishedCompositionRevision.Value
+                        + "; worldEpoch=" + facts.WorldAEpoch
+                        + "; countersAgree=" + countersAgree
                         + "; publications=" + laneA.PublicationCount
                         + "; installationPublished=" + (laneA.FindInstall(W1GateKeys.Instance(1UL)) != null);
 
@@ -679,7 +727,9 @@ namespace GameCore.Unity.Fixtures
                     }
 
                     int imagesBefore = worldA.Publications.PublishedCount;
-                    var stepOneToken = new SnapshotToken(worldA.World, AssemblyEpoch.First, LogicalStepId.First);
+                    // The world is at the assembly the composition publication produced (revision/epoch 2), so the
+                    // step token names that epoch, not the initial one.
+                    var stepOneToken = new SnapshotToken(worldA.World, worldA.CurrentEpoch, LogicalStepId.First);
 
                     WorldPumpResult pump = worldA.PumpFrame(HostTicks);
                     FixtureWorldState.TryReadTrail(worldA.EntityWorld.EntityManager, out FixtureTrail trail);
@@ -730,7 +780,8 @@ namespace GameCore.Unity.Fixtures
                         && worldA.Ledger.OutstandingJobCount == 0
                         && worldA.PendingDemand == 0UL
                         && worldA.Lifecycle == WorldLifecycleState.Running
-                        && worldA.CurrentEpoch.Equals(AssemblyEpoch.First)
+                        && worldA.CurrentEpoch.Equals(new AssemblyEpoch(2UL))
+                        && worldA.PublishedCompositionRevision.Equals(laneA.Committed.Revision)
                         && facts.LaneSyncedStep == 1UL;
 
                     string detail = "outcome=" + (pump.Advance != null ? pump.Advance.Outcome.ToString() : "<none>")
@@ -745,6 +796,8 @@ namespace GameCore.Unity.Fixtures
                         + "; project=" + facts.ProjectCount
                         + "; counter=" + facts.CounterValue
                         + "; worldEpoch=" + facts.WorldAEpoch
+                        + "; worldRevision=" + worldA.PublishedCompositionRevision.Value
+                        + "; laneEpoch=" + laneA.Committed.Epoch.Value
                         + "; pendingDemand=" + worldA.PendingDemand
                         + "; laneSyncedStep=" + facts.LaneSyncedStep
                         + "; retentionExpiredRows=" + facts.RetentionExpiredRows;
@@ -795,7 +848,7 @@ namespace GameCore.Unity.Fixtures
                         && facts.WorldBOutputCount == worldB.PumpCount
                         && trail.AcceptCount == 0
                         && trail.ProjectCount == 0
-                        && facts.LaneBRevision == 0UL
+                        && facts.LaneBRevision == 1UL
                         && laneB.PublicationCount == 0
                         && worldB.RetainedDebt.Ticks == 0UL
                         && worldB.Lifecycle == WorldLifecycleState.Running
@@ -852,6 +905,17 @@ namespace GameCore.Unity.Fixtures
                     WorldAdmissionReport admitted = bridgeA.SubmitAndExecute(payload, operationTwo);
                     int imagesBeforeStep = worldA.Publications.PublishedCount;
 
+                    // The second composition publication (revision/epoch 3) was joined to the world before its
+                    // operation executed, so the composition series and the published series still agree (P-006).
+                    bool countersAgree = AssemblyPublisher.MatchesPublishedAssembly(
+                        laneA.Committed.Revision,
+                        laneA.Committed.Epoch,
+                        worldA.PublishedCompositionRevision,
+                        worldA.CurrentEpoch);
+                    facts.CompositionMatchesWorldEpoch = countersAgree;
+                    ulong secondLaneEpoch = laneA.Committed.Epoch.Value;
+                    ulong secondWorldEpoch = worldA.CurrentEpoch.Value;
+
                     WorldPumpResult pump = worldA.PumpFrame(HostTicks * 2UL);
                     FixtureWorldState.TryReadTrail(worldA.EntityWorld.EntityManager, out FixtureTrail trail);
 
@@ -885,6 +949,9 @@ namespace GameCore.Unity.Fixtures
                     bool pass = admitted.Outcome == BridgeOutcome.Executed
                         && admitted.PublicationOutcome == Outcome.Published
                         && admitted.CommandSubmitted
+                        && countersAgree
+                        && secondLaneEpoch == 3UL
+                        && secondWorldEpoch == 3UL
                         && pumpReportedTheFault
                         && worldA.Driver.IsFaulted
                         && worldA.Driver.FaultCode == DiagnosticCode.ApplyFault
@@ -921,6 +988,9 @@ namespace GameCore.Unity.Fixtures
                         + "; quarantinedJobs=" + facts.QuarantinedJobs
                         + "; retainedHandles=" + facts.RetainedHandles
                         + "; outstandingJobs=" + facts.OutstandingJobsBeforeTeardown
+                        + "; laneEpoch=" + secondLaneEpoch
+                        + "; worldEpoch=" + secondWorldEpoch
+                        + "; countersAgree=" + countersAgree
                         + "; pendingDemand=" + worldA.PendingDemand;
 
                     steps.Add(new W1GateStep(name, pass, detail));
@@ -958,6 +1028,11 @@ namespace GameCore.Unity.Fixtures
                     facts.WorldFaultCount = report.WorldFaultCount;
                     facts.WorldLifecycleAfterFault = report.WorldLifecycle.ToString();
                     facts.LaneAuditRevisionAfterFault = laneA.Committed.Revision.Value;
+                    facts.CompositionMatchesWorldEpoch = AssemblyPublisher.MatchesPublishedAssembly(
+                        laneA.Committed.Revision,
+                        laneA.Committed.Epoch,
+                        worldA.PublishedCompositionRevision,
+                        worldA.CurrentEpoch);
                     facts.LastPublishedStep = report.LastCommittedToken.HasValue
                         ? report.LastCommittedToken.Value.LogicalStepId.Value : 0UL;
 
@@ -966,7 +1041,9 @@ namespace GameCore.Unity.Fixtures
                         && report.OperationOutcome == Outcome.Published
                         && report.OperationCode == DiagnosticCode.None
                         && report.OperationToken.HasValue
-                        && report.OperationToken!.Value.AssemblyEpoch.Equals(new AssemblyEpoch(2UL))
+                        && report.OperationToken!.Value.AssemblyEpoch.Equals(new AssemblyEpoch(3UL))
+                        && report.OperationToken!.Value.AssemblyEpoch.Equals(worldA.CurrentEpoch)
+                        && report.OperationToken!.Value.AssemblyEpoch.Equals(laneA.Committed.Epoch)
                         && report.WorldFaulted
                         && report.WorldFaultCode == DiagnosticCode.ApplyFault
                         && report.WorldFaultCount == 1
@@ -978,7 +1055,8 @@ namespace GameCore.Unity.Fixtures
                         && report.CommittedStepCount == 1
                         && report.PublishedImageCount == 2
                         && report.WorldFaultDetail.Length > 0
-                        && facts.LaneAuditRevisionAfterFault == 2UL;
+                        && facts.LaneAuditRevisionAfterFault == 3UL
+                        && laneA.Committed.Revision.Equals(worldA.PublishedCompositionRevision);
 
                     string detail = "status=" + report.StatusOutcome
                         + "; hasResult=" + report.HasResult

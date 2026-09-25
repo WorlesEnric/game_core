@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using GameCore.Contracts;
 using GameCore.Execution;
+using GameCore.Execution.Messages;
+using GameCore.Unity.Runtime.Messages;
 using Unity.Core;
 using Unity.Entities;
 using UnityWorld = Unity.Entities.World;
@@ -23,6 +25,12 @@ namespace GameCore.Unity.Runtime
         AssemblyEpoch CurrentEpoch { get; }
 
         LogicalStepId CurrentStep { get; }
+
+        /// <summary>
+        /// The world's bounded message plane, or null when the registration declares none. The driver seals step
+        /// input and validates declared buffers through it; the owner commits through its port (P-037, P-043).
+        /// </summary>
+        WorldMessagePlane? Messages { get; }
 
         WorldResourceLedger Ledger { get; }
 
@@ -88,7 +96,7 @@ namespace GameCore.Unity.Runtime
     /// <see cref="Unity.Entities.World"/>, one ordered dispatch path and one resource ledger; there is no global
     /// mutable host state and no World singleton.
     /// </summary>
-    public sealed class UnityWorldHost : IWorldHost, IWorldExecutionContext, IDisposable
+    public sealed class UnityWorldHost : IWorldHost, IWorldExecutionContext, ICommandIngress, IDisposable
     {
         /// <summary>Synthetic owner of host-owned infrastructure resources (never plugin state).</summary>
         public static readonly OwnerId HostOwner =
@@ -109,17 +117,33 @@ namespace GameCore.Unity.Runtime
         private readonly ITemporalAccumulator temporal;
         private readonly UnityExecutionDriver driver;
         private readonly GameCoreIngressGroup ingressGroup;
+        private readonly WorldMessagePlane? messages;
         private readonly GameCoreStepGroup stepGroup;
         private readonly GameCoreOutputGroup outputGroup;
         private readonly IdSequence resourceKeys = new IdSequence(ResourceKeySalt);
 
+        /// <summary>
+        /// One published assembly reference of this world (GC-008). Null until an
+        /// <see cref="AssemblyPublisher"/> joins the world; from then on it is the authority for the published
+        /// epoch, so a reader of <see cref="CurrentEpoch"/> and a reader of the assembly can never disagree (P-030).
+        /// </summary>
+        private PublishedAssemblySlot? assemblySlot;
+
         private Id128 worldStorageResource;
         private Id128 identityIndexResource;
+        private Id128 messagePlaneResource;
         private EventSequence lastEventSequence = EventSequence.Zero;
 
         private WorldLifecycleState lifecycle = WorldLifecycleState.Created;
         private AssemblyEpoch currentEpoch = AssemblyEpoch.Zero;
         private LogicalStepId currentStep = LogicalStepId.Zero;
+
+        /// <summary>
+        /// Published composition revision of this world before an assembly publisher joined it. The initial assembly
+        /// publishes revision 1 together with epoch 1 (05 s2), so a world that has just been created already
+        /// publishes the first publication of the one series.
+        /// </summary>
+        private CompositionRevision publishedCompositionRevision = CompositionRevision.First;
 
         private ulong pendingDemand;
         private double domainSeconds;
@@ -159,6 +183,13 @@ namespace GameCore.Unity.Runtime
 
             driver = new UnityExecutionDriver(this, temporal, registration.StepPlan);
 
+            if (registration.Messages != null)
+            {
+                // The plane is created with the world and before the first publication: its routes are generated
+                // data, and an invalid declaration refuses world creation instead of mounting a partial plane (P-042).
+                messages = new WorldMessagePlane(request.World, registration.Messages, registration.MessageReaders ?? new CommandPayloadReaders());
+            }
+
             ingressGroup.Bind(registration.IngressPlan, AssemblyEpoch.First, catalog, driver);
             stepGroup.Bind(registration.StepPlan, AssemblyEpoch.First, catalog, driver);
             outputGroup.Bind(registration.OutputPlan, AssemblyEpoch.First, catalog, driver);
@@ -177,7 +208,19 @@ namespace GameCore.Unity.Runtime
 
         public WorldLifecycleState Lifecycle => lifecycle;
 
-        public AssemblyEpoch CurrentEpoch => currentEpoch;
+        /// <summary>
+        /// Published assembly epoch (P-006). Once an assembly publisher has joined the world this reads the one
+        /// published view, so the epoch a caller sees and the bindings/schedule an observer sees come from the same
+        /// switch; before that it is the epoch the world published at creation.
+        /// </summary>
+        public AssemblyEpoch CurrentEpoch
+        {
+            get
+            {
+                PublishedAssemblySlot? slot = assemblySlot;
+                return slot != null ? slot.Read().Epoch : currentEpoch;
+            }
+        }
 
         public LogicalStepId CurrentStep => currentStep;
 
@@ -196,6 +239,12 @@ namespace GameCore.Unity.Runtime
         public StepPublicationStore Publications => publications;
 
         public ObservationHub Observations => observations;
+
+        /// <summary>
+        /// This world's bounded message plane, or null when its registration declares none. It is the only path by
+        /// which a command is admitted and a committed event becomes observable (P-042, P-045).
+        /// </summary>
+        public WorldMessagePlane? Messages => messages;
 
         public GameCoreIngressGroup IngressGroup => ingressGroup;
 
@@ -234,6 +283,177 @@ namespace GameCore.Unity.Runtime
         public ulong HostTimeOrigin => hostTimeOrigin;
 
         public bool IsEntityWorldCreated => entityWorld.IsCreated;
+
+        /// <summary>True while a host pump is executing, i.e. inside the step boundary (P-030).</summary>
+        public bool IsPumping => pumping;
+
+        /// <summary>
+        /// Joins the one assembly publisher of this world (GC-008). From this point the published view is the
+        /// authority for the current assembly epoch, and the assembly publication commit is a single switch (P-030).
+        /// </summary>
+        internal void AttachAssemblySlot(PublishedAssemblySlot slot)
+        {
+            if (slot == null)
+            {
+                throw new ArgumentNullException(nameof(slot));
+            }
+
+            GameCoreThreading.RequireMainThread("UnityWorldHost.AttachAssemblySlot");
+
+            assemblySlot = slot;
+        }
+
+        /// <summary>
+        /// The one serialized assembly commit (P-030, 04 s5): publish the immutable image for the new epoch, move the
+        /// epoch mirror, then switch the complete published view in a single reference write. Nothing in this method
+        /// throws at a point where the world would be left without a published view, and a refusal changes nothing.
+        /// </summary>
+        internal bool TryPublishAssembly(AssemblyEpoch nextEpoch, PublishedWorldView view, out SnapshotToken token)
+        {
+            token = default(SnapshotToken);
+            GameCoreThreading.RequireMainThread("UnityWorldHost.TryPublishAssembly");
+
+            PublishedAssemblySlot? slot = assemblySlot;
+            if (slot == null)
+            {
+                return false;
+            }
+
+            if (lifecycle != WorldLifecycleState.Running && lifecycle != WorldLifecycleState.Paused)
+            {
+                return false;
+            }
+
+            if (pumping)
+            {
+                // The assembly may only be replaced at an end-of-step or idle boundary (P-030).
+                return false;
+            }
+
+            PublishedWorldView current = slot.Read();
+            if (nextEpoch.CompareTo(current.Epoch) <= 0)
+            {
+                return false;
+            }
+
+            if (!view.Epoch.Equals(nextEpoch))
+            {
+                return false;
+            }
+
+            var committedToken = new SnapshotToken(World, nextEpoch, currentStep);
+            if (!view.Token.Equals(committedToken))
+            {
+                // The preconstructed view must name exactly the image being published; a mismatch would expose a
+                // view whose token points at another publication (P-030).
+                return false;
+            }
+
+            ContentHash stateHash = StepFingerprint.Compute(World, nextEpoch, currentStep, view.BindingRowCount);
+            var committed = new StepCommitEvent(committedToken, null, lastEventSequence, stateHash);
+            if (!publications.Publish(committed))
+            {
+                return false;
+            }
+
+            currentEpoch = nextEpoch;
+            slot.Switch(view);
+            token = committedToken;
+
+            // Delivery happens after the switch, so a subscriber failure is a delivery diagnostic that cannot
+            // unpublish the assembly (P-030, P-045).
+            observations.NotifyStepCommitted(committed);
+            return true;
+        }
+
+        /// <summary>
+        /// Published composition revision of this world (P-006). It is the revision of the last assembly the world
+        /// published, which is the same publication as <see cref="CurrentEpoch"/>; before any assembly publisher or
+        /// adoption the world has published only its initial assembly, which 05 s2 places at revision 1.
+        /// </summary>
+        public CompositionRevision PublishedCompositionRevision
+        {
+            get
+            {
+                PublishedAssemblySlot? slot = assemblySlot;
+                return slot != null ? slot.Read().Revision : publishedCompositionRevision;
+            }
+        }
+
+        /// <summary>
+        /// Adopts one published composition operation as the world's next assembly (P-006), which is the W1 path when
+        /// no <see cref="AssemblyPublisher"/> owns the world's assembly: the composition publication *is* the
+        /// published assembly, so the epoch mirror advances to the number the operation reported instead of to an
+        /// offset of it. The pair must be exactly the next publication of the one series and the world must be able
+        /// to accept it, otherwise nothing changes (P-005, P-006, P-031).
+        /// </summary>
+        internal bool TryAdoptPublishedComposition(
+            CompositionRevision revision,
+            AssemblyEpoch epoch,
+            out DiagnosticCode code,
+            out string detail)
+        {
+            GameCoreThreading.RequireMainThread("UnityWorldHost.TryAdoptPublishedComposition");
+
+            code = DiagnosticCode.None;
+            detail = string.Empty;
+
+            if (lifecycle != WorldLifecycleState.Running && lifecycle != WorldLifecycleState.Paused)
+            {
+                code = FaultCode == DiagnosticCode.None ? DiagnosticCode.ApplyFault : FaultCode;
+                detail = "world " + DiagnosticName + " is " + lifecycle + " and accepts no publication (P-031).";
+                return false;
+            }
+
+            if (pumping)
+            {
+                code = DiagnosticCode.TooLate;
+                detail = "a step is in progress; a composition publication belongs at a boundary (P-030).";
+                return false;
+            }
+
+            if (!revision.Value.Equals(epoch.Value))
+            {
+                // P-006 increments revision and epoch together; a pair that disagrees is two series in one value.
+                code = DiagnosticCode.UnsupportedVersion;
+                detail = "composition revision " + revision.Value.ToString(CultureInfo.InvariantCulture)
+                    + " and epoch " + epoch.Value.ToString(CultureInfo.InvariantCulture)
+                    + " name different publications (P-006).";
+                return false;
+            }
+
+            if (!currentEpoch.TryIncrement(out AssemblyEpoch nextEpoch) ||
+                !publishedCompositionRevision.TryIncrement(out CompositionRevision nextRevision))
+            {
+                code = DiagnosticCode.BudgetExceeded;
+                detail = "the world's publication counters are exhausted; a world cannot wrap (P-005).";
+                return false;
+            }
+
+            if (!nextEpoch.Equals(epoch) || !nextRevision.Equals(revision))
+            {
+                code = DiagnosticCode.StalePlan;
+                detail = "the composition publication is revision "
+                    + revision.Value.ToString(CultureInfo.InvariantCulture)
+                    + "/epoch " + epoch.Value.ToString(CultureInfo.InvariantCulture)
+                    + " but the world's next assembly is revision "
+                    + nextRevision.Value.ToString(CultureInfo.InvariantCulture)
+                    + "/epoch " + nextEpoch.Value.ToString(CultureInfo.InvariantCulture)
+                    + "; a stale composition publication never advances the world (P-006, P-028).";
+                return false;
+            }
+
+            currentEpoch = nextEpoch;
+            publishedCompositionRevision = nextRevision;
+            return true;
+        }
+
+        /// <summary>
+        /// Enters the terminal fault state from the publication path (P-031): admission stays closed, no epoch or
+        /// new image is published, and the last committed image remains the only safe observation.
+        /// </summary>
+        internal void EnterFaulted(DiagnosticCode code, string detail) =>
+            ((IWorldExecutionContext)this).EnterFaulted(code, detail);
 
         /// <summary>
         /// Creates the Unity world, its explicitly approved systems and its initial published assembly. A failure
@@ -409,6 +629,7 @@ namespace GameCore.Unity.Runtime
             // The world is terminal, so the driver's ledger buffers are released here as well: a stopped world that
             // is never explicitly disposed must not retain native allocations. Dispose() stays idempotent.
             driver.Dispose();
+            messages?.Dispose();
             UnityWorldRegistry.Remove(World);
             return new OperationResult(operation, Outcome.Published, DiagnosticCode.None, null);
         }
@@ -558,7 +779,14 @@ namespace GameCore.Unity.Runtime
         {
             ContentHash stateHash = StepFingerprint.Compute(World, currentEpoch, committedStep, dispatchedCount);
             token = new SnapshotToken(World, currentEpoch, committedStep);
-            var committed = new StepCommitEvent(token, null, lastEventSequence, stateHash);
+
+            // The step's committed events and its immutable image are prepared together and exposed together: a
+            // step that faults before this point publishes neither (P-044, P-045).
+            IReadOnlyList<CommittedEvent> stepEvents = messages == null
+                ? Array.Empty<CommittedEvent>()
+                : messages.StageCommittedEvents(committedStep, currentEpoch);
+            EventSequence firstEventSequence = messages == null ? lastEventSequence : messages.LastEventSequence;
+            var committed = new StepCommitEvent(token, stepEvents, firstEventSequence, stateHash);
 
             // Publish first, advance the step second, so a refused publication leaves the committed image untouched
             // and the step counter and the exposed image always move together (P-044).
@@ -567,9 +795,53 @@ namespace GameCore.Unity.Runtime
                 return false;
             }
 
+            messages?.ConfirmPublished(stepEvents);
+            if (messages != null && stepEvents.Count != 0)
+            {
+                lastEventSequence = messages.LastEventSequence;
+            }
+
             currentStep = committedStep;
             observations.NotifyStepCommitted(committed);
             return true;
+        }
+
+        /// <summary>
+        /// Host admission of one immutable command envelope (O-13). A world with no declared plane, or one that
+        /// cannot execute, refuses before admission so no ledger row is created for work it cannot run (P-031, P-042).
+        /// </summary>
+        public CommandAdmissionReceipt Submit(CommandEnvelope command)
+        {
+            if (command == null)
+            {
+                throw new ArgumentNullException(nameof(command));
+            }
+
+            if (messages == null)
+            {
+                return new CommandAdmissionReceipt(
+                    command.RequestId,
+                    new RequestResult(RequestResultKind.Rejected, DiagnosticCode.MissingDependency, default(EventCursor)),
+                    AdmissionSequence.Zero);
+            }
+
+            if (lifecycle != WorldLifecycleState.Running && lifecycle != WorldLifecycleState.Paused)
+            {
+                return new CommandAdmissionReceipt(
+                    command.RequestId,
+                    new RequestResult(RequestResultKind.Rejected, LifecycleRefusalCode(), default(EventCursor)),
+                    AdmissionSequence.Zero);
+            }
+
+            AdmissionSequence before = messages.Requests.LastAdmissionSequence;
+            CommandAdmissionReceipt receipt = messages.SubmitCommand(command, currentStep, currentEpoch);
+            if (receipt.Admitted && receipt.AcceptedSequence > before)
+            {
+                // Only a fresh admission creates demand; retransmission never runs the command twice.
+                NotifyCommandAdmitted(1U);
+            }
+
+            return receipt;
         }
 
         void IWorldExecutionContext.EnterFaulted(DiagnosticCode code, string detail)
@@ -656,6 +928,19 @@ namespace GameCore.Unity.Runtime
                 default(PluginInstanceId),
                 worldStorageResource,
                 0UL);
+
+            if (messages != null)
+            {
+                // The plane's bounded lanes are native allocations with a declared lifetime: tracked here so
+                // teardown retires them in reverse dependency order and a stuck user keeps them pinned (P-048).
+                messagePlaneResource = ledger.Acquire(
+                    WorldResourceKind.NativeContainer,
+                    new ResourceKey(resourceKeys.Next()),
+                    HostOwner,
+                    default(PluginInstanceId),
+                    identityIndexResource,
+                    messages.RetainedNativeBytes);
+            }
 
             // Every created system is a tracked registration: a system stays allocated while it is scheduled, and
             // removal retires it in reverse dependency order (04 s4, P-048).
@@ -768,6 +1053,30 @@ namespace GameCore.Unity.Runtime
 
         public static bool TryGet(WorldId world, out UnityWorldHost? host)
             => bySession.TryGetValue(world.Session, out host);
+
+        /// <summary>
+        /// Resolves the owned host that drives one Unity world. A gameplay system uses this to reach its own world's
+        /// bounded ports; it never scans for hosts or assumes a globally reachable one (P-002, P-058).
+        /// </summary>
+        public static bool TryGetByEntityWorld(UnityWorld world, out UnityWorldHost? host)
+        {
+            if (world == null)
+            {
+                throw new ArgumentNullException(nameof(world));
+            }
+
+            for (int i = 0; i < hosts.Count; i++)
+            {
+                if (ReferenceEquals(hosts[i].EntityWorld, world))
+                {
+                    host = hosts[i];
+                    return true;
+                }
+            }
+
+            host = null;
+            return false;
+        }
 
         /// <summary>
         /// Creates one owned world. A repeated request for a live session returns that same world; a second world

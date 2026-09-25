@@ -94,8 +94,16 @@ namespace GameCore.W1Gate.Tests
                 Is.EqualTo(facts.RegistryBeforeCreate + 2),
                 "the gate creates exactly two owned worlds (P-002, P-004)");
             Assert.That(facts.WorldASession, Is.Not.EqualTo(facts.WorldBSession), "each world has its own session");
-            Assert.That(facts.LaneARevision, Is.EqualTo(1UL), "the admitted operation published revision 1");
-            Assert.That(facts.LaneBRevision, Is.EqualTo(0UL), "world B's lane admitted nothing");
+            // P-006 has one publication series. World A published its initial assembly as revision/epoch 1 (05 s2)
+            // and its lane was seeded from that, so the admitted operation published revision 2 — and the world
+            // published assembly epoch 2 as well, which is the equality GC-008 now asserts.
+            Assert.That(facts.LaneARevision, Is.EqualTo(2UL), "the admitted operation published revision 2");
+            Assert.That(facts.LaneAEpoch, Is.EqualTo(2UL), "revision and epoch name the same publication (P-006)");
+            Assert.That(facts.WorldAEpoch, Is.EqualTo(facts.LaneAEpoch),
+                "the world publishes the composition epoch its operation reported (P-006)");
+            Assert.That(facts.CompositionMatchesWorldEpoch, Is.True, "the composition and published series are one");
+            Assert.That(facts.LaneBRevision, Is.EqualTo(1UL),
+                "world B's lane admitted nothing and still reports the assembly its world published");
             Assert.That(facts.WorldBSteps, Is.EqualTo(0UL), "an idle command-driven world commits zero steps (P-036)");
             Assert.That(facts.WorldBStepGroupDispatchRuns, Is.EqualTo(0), "no step group dispatch runs when idle");
             Assert.That(facts.WorldBPublishedImages, Is.EqualTo(1), "only the initial assembly is published");
@@ -168,7 +176,10 @@ namespace GameCore.W1Gate.Tests
                 facts.OperationTwoResultRetained,
                 Is.True,
                 "the published operation result is not restated as a failure by a later execution fault (P-031)");
-            Assert.That(facts.LaneAuditRevisionAfterFault, Is.EqualTo(2UL), "the lane still reports what it published");
+            Assert.That(facts.LaneAuditRevisionAfterFault, Is.EqualTo(3UL),
+                "the lane still reports what it published: the second operation's composition revision 3");
+            Assert.That(facts.CompositionMatchesWorldEpoch, Is.True,
+                "the faulted world still agrees with the lane it was joined to (P-006)");
             Assert.That(facts.WorldFaultCount, Is.EqualTo(1), "the world faults exactly once");
             Assert.That(facts.WorldRefusalCount, Is.EqualTo(1), "a faulted world accepts no further work");
             Assert.That(facts.WorldRefusalCode, Is.EqualTo("ApplyFault"));

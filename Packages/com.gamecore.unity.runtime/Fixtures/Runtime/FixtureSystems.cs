@@ -157,6 +157,8 @@ namespace GameCore.Unity.Fixtures
 
             Entity entity = trailQuery.GetSingletonEntity();
             FixtureTrail trail = EntityManager.GetComponentData<FixtureTrail>(entity);
+            // The preceding stage's component-writing job must be visible before this dependent read.
+            trail.ProjectObservedJobValue = EntityManager.GetComponentData<FixtureJobResult>(entity).Value;
             trail.ProjectCount++;
             EntityManager.SetComponentData(entity, trail);
         }

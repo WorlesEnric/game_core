@@ -6,20 +6,27 @@
 # script only launches it and validates the structured result, exactly like tools/unity/run_probe.sh does for the
 # GC-001 probes.
 #
+# Each probe is executed PROBE_RUNS times (default 5) through tools/unity/probe_runs.sh, and any run that crashes
+# (exit >= 128, no result file, invalid JSON, wrong exit code or a Fail step) fails this script: a flaky crash
+# during engine teardown can never hide behind a clean retry.
+#
 # Required environment:
 #   python3 (strict JSON validation)
 #
 # Optional environment:
 #   PROBE_PLAYER   path to the built probe executable
 #                  (default: <repo>/unity/GameCore.Validation/Builds/Linux64/GameCoreProbe.x86_64)
+#   PROBE_RUNS     times the probe is executed (default 5)
 #   UNITY_PROJECT  Unity project path (default: <repo>/unity/GameCore.Validation)
 #   ARTIFACTS      artifact directory (default: <repo>/artifacts/toolchain)
 #
-# Exit codes: 0 the world-dispatch probe reported Pass with exit code 0; nonzero on any mismatch.
+# Exit codes: 0 the world-dispatch probe reported Pass with exit code 0 on every run; nonzero on any mismatch.
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+# shellcheck source=probe_runs.sh
+source "${SCRIPT_DIR}/probe_runs.sh"
 UNITY_PROJECT="${UNITY_PROJECT:-${REPO_ROOT}/unity/GameCore.Validation}"
 ARTIFACTS="${ARTIFACTS:-${REPO_ROOT}/artifacts/toolchain}"
 PROBE_PLAYER="${PROBE_PLAYER:-${UNITY_PROJECT}/Builds/Linux64/GameCoreProbe.x86_64}"
@@ -35,20 +42,8 @@ result_file="${ARTIFACTS}/probe-world-dispatch.json"
 log_file="${ARTIFACTS}/player-world-dispatch.log"
 
 # -batchmode -nographics keep the player headless. -quit is deliberately NOT passed: the probe exits itself
-# through Application.Quit with a code that encodes its result.
-rc=0
-echo "-- running world-dispatch probe"
-"${PROBE_PLAYER}" \
-  -batchmode \
-  -nographics \
-  -logFile "${log_file}" \
-  -probeWorldDispatch \
-  -probeResult "${result_file}" || rc=$?
-
-if [[ "${rc}" -ne 0 ]]; then
-  echo "   FAIL world-dispatch: exit code ${rc}, expected 0" >&2
-  failures=$((failures + 1))
-fi
+# through Application.Quit with a code that encodes its result. probe_runs.sh owns the repetition and the verdict.
+probe_run_n "world-dispatch" "${result_file}" "${log_file}" 0 "Pass" "-probeWorldDispatch" || failures=$((failures + 1))
 
 if [[ ! -f "${result_file}" ]]; then
   echo "   FAIL world-dispatch: no result written to ${result_file}" >&2
@@ -85,19 +80,15 @@ if ! grep -q '"status": "Pass"' "${result_file}"; then
   failures=$((failures + 1))
 fi
 
-for required in \
+PROBE_LABEL="world-dispatch"
+probe_require_steps "${result_file}" \
   '"name": "world-bootstrap-and-loop-route"' \
   '"name": "world-two-worlds-independent"' \
   '"name": "world-command-driven-idle-zero-steps"' \
   '"name": "world-no-system-double-update"' \
   '"name": "world-fixed-step-debt-and-clock"' \
   '"name": "world-guarded-fail-stop"' \
-  '"name": "world-guarded-fail-stop-teardown"'; do
-  if ! grep -q "${required}" "${result_file}"; then
-    echo "   FAIL world-dispatch: required probe step ${required} is absent" >&2
-    failures=$((failures + 1))
-  fi
-done
+  '"name": "world-guarded-fail-stop-teardown"'
 
 if [[ "${failures}" -ne 0 ]]; then
   echo "== world-dispatch probe run FAILED (${failures} mismatch(es)) ==" >&2

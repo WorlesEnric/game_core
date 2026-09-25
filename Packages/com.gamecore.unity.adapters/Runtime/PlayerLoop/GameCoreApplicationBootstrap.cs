@@ -35,6 +35,8 @@ namespace GameCore.Unity.Adapters
 
             // One application-owned route: remove any node a previous session left behind, then install one.
             GameCorePlayerLoopInstaller.EnsureInstalled();
+            // The application owns exactly one quit hook, beside the one pump node.
+            GameCorePlayerLoopInstaller.InstallQuitHook();
 
             GameCoreApplicationCompositionRoot root =
                 GameCoreApplicationComposition.TryCreateRoot() ?? GameCoreApplicationComposition.DefaultRoot();
