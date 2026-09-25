@@ -1,101 +1,90 @@
-# W4-GATE build and test report
+# W4-GATE Linux build and test report
 
-## Status
+## Verdict
 
-**NotRun (pending orchestrator build host).** Every command this report would record is unrun. This worktree is on
-macOS (`darwin 25.3.0`, arm64) and has no Unity, no .NET SDK, no C# compiler and no Mono, so no build, no test, no
-import and no player run was attempted here. Nothing below is a result; the sections are the exact commands and the
-exact acceptance criteria the build host must satisfy.
+**Pass — Wave 4 integration gate.** `tools/run_w4_gate.sh` completed end to end with `PROBE_RUNS=5`. The integrated `W4GateScenario` passed in Editor and the Linux64 IL2CPP player for narrative and cards, each over the committed generated catalog and the fixture catalog. This is not a claim that all V1 requirements or later stress/fault suites pass.
 
-What the host *did* run is in §3. It is host-side static checking only.
+## Host and reproducible command
 
-## 1. Revision and intended host
+- Starting revision: `9acd160c3f7a333e5d59ec48a44af407ccb8ef08` (`origin/w4-gate`); fixes and this report committed subsequently on `w4-gate`.
+- Linux x86_64, kernel `7.0.0-31-generic`, Intel Core i7-12700KF (12 cores, 20 logical CPUs); .NET SDK `8.0.425`; Unity `6000.0.75f1`; Python `3.12.3`; GCC `13.3.0`, Clang `18.1.3`, GNU ld `2.42`. See `toolchain/environment.txt` for host, date, manifest hash, player hash and compiler versions.
+- Unity project: `unity/GameCore.Validation`; Entities `1.4.6`, Burst `1.8.28`, Collections `2.6.6`. Pure assemblies retain C# 9 and .NET Standard 2.1; no UnityEngine reference was added to them.
+- Executed from repository root with `DOTNET_ROOT=$HOME/.dotnet`, `PATH=$HOME/.dotnet:$PATH`, `DOTNET_CLI_TELEMETRY_OPTOUT=1`, `UNITY=$HOME/Unity/Hub/Editor/6000.0.75f1/Editor/Unity`, `DOTNET=$HOME/.dotnet/dotnet`, `PROBE_RUNS=5`:
 
-- Branch `w4-gate`, worktree `/Users/yangcao/wkspace/gc-wt/w4-gate`. Base `d3dc961` (`main` + GC-012); three
-  `--no-ff` merges of `origin/gc-013`, `origin/gc-014`, `origin/gc-015`.
-- Target host (from the worker brief): Linux x86_64, .NET 8 SDK used with `LangVersion 9` / `netstandard2.1` for the
-  pure assemblies, Unity 6000.0.75f1 with Linux IL2CPP support at
-  `~/Unity/Hub/Editor/6000.0.75f1/Editor/Unity`.
-- The IL2CPP player profile this gate must be built with (unchanged from GC-012's gate): StandaloneLinux64, x86_64,
-  IL2CPP, Release, Burst enabled, High managed stripping, and `Assets/link.xml` still carrying **no**
-  `preserve="all"` entry for a kernel or gameplay assembly.
+```sh
+tools/run_w4_gate.sh
+```
 
-## 2. Commands to run, and what each must report
+The script executed these commands in order (absolute artifact paths resolve under the repository root):
 
-Run from the repository root. The one command that runs all of them is
-`UNITY=<editor> DOTNET=<dotnet> PROBE_RUNS=5 tools/run_w4_gate.sh`.
+```sh
+$DOTNET build dotnet/GameCore.sln -c Release
+$DOTNET test dotnet/GameCore.sln -c Release --logger trx --results-directory artifacts/w4-gate/trx
+timeout --signal=TERM --kill-after=60 1800 "$UNITY" -batchmode -nographics -quit -projectPath unity/GameCore.Validation -logFile artifacts/w4-gate/unity/resolve.log
+timeout --signal=TERM --kill-after=60 1800 "$UNITY" -batchmode -nographics -projectPath unity/GameCore.Validation -runTests -testPlatform EditMode -testResults artifacts/w4-gate/unity/editmode-results.xml -logFile artifacts/w4-gate/unity/editmode.log
+timeout --signal=TERM --kill-after=60 1800 "$UNITY" -batchmode -nographics -projectPath unity/GameCore.Validation -runTests -testPlatform PlayMode -testResults artifacts/w4-gate/unity/playmode-results.xml -logFile artifacts/w4-gate/unity/playmode.log
+timeout --signal=TERM --kill-after=60 1800 "$UNITY" -batchmode -nographics -quit -projectPath unity/GameCore.Validation -executeMethod GameCore.Validation.Editor.CardCatalogGenerator.GenerateCatalog -logFile artifacts/w4-gate/unity/card-codegen.log
+UNITY="$UNITY" ARTIFACTS=artifacts/w4-gate/toolchain tools/unity/build_probe.sh
+git diff --exit-code -- unity/GameCore.Validation/Assets/GameCore.Validation/Generated/ProbeCatalog.g.cs
+git diff --exit-code -- unity/GameCore.Validation/Assets/GameCore.Validation/GeneratedCards/CardCatalog.g.cs
+PROBE_RUNS=5 ARTIFACTS=artifacts/w4-gate/toolchain tools/unity/run_probe.sh both
+PROBE_RUNS=5 ARTIFACTS=artifacts/w4-gate/toolchain tools/unity/run_world_probe.sh
+PROBE_RUNS=5 ARTIFACTS=artifacts/w4-gate/toolchain tools/unity/run_w1_gate_probe.sh
+PROBE_RUNS=5 ARTIFACTS=artifacts/w4-gate/toolchain tools/unity/run_w2_gate_probe.sh
+PROBE_RUNS=5 ARTIFACTS=artifacts/w4-gate/toolchain tools/unity/run_narrative_probe.sh
+PROBE_RUNS=5 ARTIFACTS=artifacts/w4-gate/toolchain tools/unity/run_cards_probe.sh
+PROBE_RUNS=5 ARTIFACTS=artifacts/w4-gate/toolchain tools/unity/run_w3_gate_probe.sh
+PROBE_RUNS=5 ARTIFACTS=artifacts/w4-gate/toolchain tools/unity/run_w4_profile_probe.sh
+PROBE_RUNS=5 ARTIFACTS=artifacts/w4-gate/toolchain tools/unity/run_gc013_probe.sh
+PROBE_RUNS=5 ARTIFACTS=artifacts/w4-gate/toolchain tools/unity/run_w4_gate_probe.sh
+python3 tools/validate_game_core_docs.py --self-test
+python3 tools/validate_game_core_docs.py
+```
 
-| # | Command | Required result |
-| --- | --- | --- |
-| 1 | `dotnet build dotnet/GameCore.sln -c Release` | 0 errors, 0 warnings. |
-| 2 | `dotnet test dotnet/GameCore.sln -c Release --logger trx --results-directory artifacts/w4-gate/trx` | every test passes, including the three new `GameCore.Planning.Tests` cases that make the manifest reset field falsifiable (`AManifestSupportedResetProducesAResettablePolicy`, `AManifestWithoutResetSupportRefusesAnExecutedReset`, `AManifestSupportedResetWithoutAReasonIsADeclarationError`) and the W0-gate contract test that now accepts both waves' documented additions. |
-| 3 | `"$UNITY" -batchmode -nographics -quit -projectPath unity/GameCore.Validation -logFile artifacts/w4-gate/unity/resolve.log` | packages resolve; `packages-lock.json` unchanged; every new `.cs` and `.meta` imported without a duplicate-GUID or missing-reference error; all scripts compile. |
-| 4 | `"$UNITY" -batchmode -nographics -projectPath unity/GameCore.Validation -runTests -testPlatform EditMode -testResults artifacts/w4-gate/unity/editmode-results.xml -logFile artifacts/w4-gate/unity/editmode.log` | 0 failures. Must include `GameCore.W4Gate.Tests` (3 cases) **and** the pre-existing GC-013, GC-012, GC-014, GC-015 and W1–W3 assemblies, since the merge touched shared kernel files. |
-| 5 | `"$UNITY" -batchmode -nographics -projectPath unity/GameCore.Validation -runTests -testPlatform PlayMode -testResults artifacts/w4-gate/unity/playmode-results.xml -logFile artifacts/w4-gate/unity/playmode.log` | 0 failures. |
-| 6 | `"$UNITY" -batchmode -nographics -quit -projectPath unity/GameCore.Validation -executeMethod GameCore.Validation.Editor.CardCatalogGenerator.GenerateCatalog -logFile artifacts/w4-gate/unity/card-codegen.log` | the production compiler regenerates the card catalog. |
-| 7 | `UNITY="$UNITY" ARTIFACTS=artifacts/w4-gate/toolchain tools/unity/build_probe.sh` | probe catalog regenerated and the StandaloneLinux64 IL2CPP Release player built with High stripping. |
-| 8 | `git diff --exit-code -- unity/.../Generated/ProbeCatalog.g.cs` and `-- unity/.../GeneratedCards/CardCatalog.g.cs` | both committed catalogs byte-identical to the fresh generation. |
-| 9–18 | every `tools/unity/run_*_probe.sh` at `PROBE_RUNS=5`: `run_probe.sh both`, `run_world_probe.sh`, `run_w1_gate_probe.sh`, `run_w2_gate_probe.sh`, `run_narrative_probe.sh`, `run_cards_probe.sh`, `run_w3_gate_probe.sh`, `run_w4_profile_probe.sh`, `run_gc013_probe.sh`, `run_w4_gate_probe.sh` | five clean runs each. `run_probe.sh both` reports `Pass` 5/5 and the deliberate missing registration `ExpectedNegative` 5/5 (exit 3). |
-| 19 | `python3 tools/validate_game_core_docs.py --self-test` | 9 fixtures pass. |
-| 20 | `python3 tools/validate_game_core_docs.py` | all 14 documents pass. |
+`build_probe.sh` independently bounds both Unity invocations with `timeout --signal=TERM --kill-after=60 1800`; `probe_runs.sh` bounds each player invocation at 600 seconds. No timeout or ten-minute no-progress hang occurred; no GDB attachment was needed. Focused pre-gate EditMode qualification used `timeout --signal=TERM --kill-after=60 600 "$UNITY" -batchmode -nographics -projectPath unity/GameCore.Validation -runTests -testPlatform EditMode -testFilter GameCore.W4Gate.Tests -testResults artifacts/w4-gate/unity/w4gate-editmode.xml -logFile artifacts/w4-gate/unity/w4gate-editmode.log` and passed 3/3. Test runs omit `-quit` as required by the runner.
 
-### 2.1 The gate's own acceptance criteria (step 18)
+## Results on the final run
 
-`artifacts/w4-gate/toolchain/probe-w4-gate.json` must report `"task": "W4-GATE"`, `"mode": "W4Gate"`, `"result":
-"Pass"`, at least one `"status": "Pass"`, no `"status": "Fail"`, every observation name (17 × 2 catalogs × 2 families
-plus the two digest steps), the two digest literals
-(`d73e1a15e3d5f997b47087d02ea73ed809b73692b35900c3f2feeeff65cebaab` narrative,
-`4a1bdb460ab366c5a0ffed77f09aaca881b4fdfea142195290ee5ad73283b018` cards), and these fragments of the step details:
-`mode=Automatic->Conservative`, `mode=Conservative->Automatic`, `mismatches=0`, `reverseOrder=True`,
-`lateCompletion=discarded`, `dormant=True`, `namedExactly=True`, `shapeHeld=True`,
-`supportProviderIsSecond=True`, `policyHostScoped=True`.
+| Suite / artifact | Pass | Fail | Skipped / not run |
+| --- | ---: | ---: | ---: |
+| .NET solution build | 0 warnings, 0 errors | 0 | — |
+| .NET tests, 11 TRX projects | 750 | 0 | 0 |
+| Unity resolve and import | completed | 0 errors | — |
+| Unity EditMode, 17 assemblies | 781 | 0 | 0 |
+| Unity PlayMode | 6 | 0 | 0 |
+| Card and narrative catalog regeneration | 2 byte-identical | 0 | — |
+| Linux64 IL2CPP player, High stripping | built | 0 build failures | — |
+| Documentation validator self-test | 9 fixtures | 0 | 0 |
+| Documentation validator | 14 documents | 0 | 0 |
 
-`run_w4_gate_probe.sh` fails the gate on any missing one, on any unclean run, and on a crash exit (`>= 128`).
-`probe_runs.sh` treats a signal death as a crash rather than a verdict and never lets a later clean run repair an
-earlier dirty one.
+The .NET TRX counts by assembly: Composition 144, Content.Compiler 44, Contracts 45, Derivation 114, Execution 58, Planning 160, ProtocolFixtures.Production 10, ProtocolFixtures 10, ReferenceSeams 21, Rules.Cards 26, Rules.Narrative 118. `GameCore.Derivation.Tests` includes the two 50-seed × 500-operation incremental/oracle differential sweeps (narrative and cards). Unity EditMode includes `GameCore.W4Gate.Tests` 3/3, `GameCore.Gc013.Tests` 2/2, Lifecycle 58/58, Planning 160/160 and the earlier gates. TRX files under `trx/` are the final invocation only; earlier failed-attempt TRX files were removed to avoid ambiguous evidence. The Unity compiler emitted existing `CS8604` nullable warnings in `ProbeWorldDispatch.cs`; the .NET build had zero warnings.
 
-### 2.2 The Editor-invocation timeout policy (steps 3–6)
+| Player mode (`toolchain/probe-*.json`) | Repetitions | Canonical result / step count |
+| --- | ---: | --- |
+| GC-001 Positive and MissingRegistration | 5 each | Pass 8/8; ExpectedNegative 1/1 (two ancillary Pass steps) |
+| GC-005 WorldDispatch | 5 | Pass 7/7 |
+| W1Gate | 5 | Pass 23/23 |
+| W2Gate | 5 | Pass 24/24 |
+| GC-010 Narrative | 5 | Pass 24/24 |
+| GC-011 Cards | 5 | Pass 28/28 |
+| W3Gate | 5 | Pass 11/11 |
+| GC-012 W4Profile | 5 | Pass 7/7 |
+| GC-013 transition | 5 | Pass 62/62 |
+| W4Gate | 5 | Pass 70/70 |
 
-Every Unity Editor invocation is wrapped in `timeout --signal=TERM --kill-after=60 "${UNITY_TIMEOUT}"` (default
-3600 s). A timed-out invocation is retried **exactly once**, with the retry logged; a second timeout is fatal. Any
-other non-zero exit is fatal immediately, because a compile or test error is not the known intermittent pre-dispatch
-hang. Player probes are not additionally retried here: `probe_runs.sh` already runs each probe `PROBE_RUNS` times and
-fails the gate if any single run is unclean.
+The gate has ten probe scripts, with GC-001 executing two player modes; all 55 player invocations produced the expected result and exit code. W4Gate's 70 steps are 17 observations × 2 catalogs × 2 families plus both digest checks. Digests: narrative `d73e1a15e3d5f997b47087d02ea73ed809b73692b35900c3f2feeeff65cebaab`; cards `4a1bdb460ab366c5a0ffed77f09aaca881b4fdfea142195290ee5ad73283b018`. Player evidence records both mode directions over existing and future targets; provider-changing subtree move with identity and live state preserved; required-service loss/wait and return/resume; suspend/resume; actual reverse-order unmount teardown; Preserve, PreserveDormant, RemoveDerived, TransferTo and manifest-supported Reset; and 0 lane/world publication mismatches (17 narrative / 18 card checked publications per catalog). The player JSON reports IL2CPP, x64, High stripping and Burst enabled; `Assets/link.xml` has no kernel/gameplay `preserve="all"` entries.
 
-## 3. What was actually run on the authoring host
+Generated catalog SHA-256: narrative `5298bbc853b35424c7b7e8300b7c39afe6e27ec493027a22a47336a5cb567625`; cards `4761d745e8386cd5831005cd532ae26615c13f252ef064f45bb0888ca9e764a7`. `packages-lock.json` SHA-256 `9a243cfbdb35d1d901102cd68219448f8189ba9d9dc8c2ba86f32ada22dc7597` and remained unchanged by resolve. Player executable SHA-256 `aeaf13e291886fbd5a99b7dbd7c113b8ee13ed462a419a4d31a8ecbc3241ac70`; `toolchain/environment.txt` records it. Generated catalogs, package lock and .meta files did not change and therefore require no new commit.
 
-| Command | Result |
-| --- | --- |
-| `python3 tools/check_game_core_csharp.py` | `checked 359 C# file(s)` / `ok` (brace/paren/bracket balance, forbidden-construct scan, the engine-free rule for the pure assemblies). |
-| `python3 tools/validate_game_core_docs.py --self-test` | passed: 9 isolated positive/negative fixtures. |
-| `python3 tools/validate_game_core_docs.py` | passed: 14 Markdown documents; local links, anchors, ids, traceability, task DAG and wave ordering. |
-| `bash -n tools/run_w4_gate.sh tools/unity/run_w4_gate_probe.sh tools/run_w3_gate.sh` | all clean. |
-| `.meta` GUID scan over the whole worktree | 568 metas, 568 unique GUIDs, 0 duplicates. |
-| scripted `IW4GateFamily` conformance check | 30 interface members; 0 missing and 0 duplicated in `W4GateNarrativeHost.cs` and `W4GateCardsHost.cs`; neither part redefines an `IGc013Family` member. |
-| digest recomputation from the exported observation table | both literals reproduced independently of the implementation, with the 15-name GC-013 table used as the control (its two known literals also reproduce). |
+## Fixes made on the Linux host
 
-**None of these is a build, an import, a test, a probe or a player run.** `check_game_core_csharp.py` reads text; it
-does not type-check.
+1. `W4GateFamily.cs`, `W4GateScenario.cs`: added missing composition/integration/ownership namespace imports and qualified the planning proposal type; supplied missing effective-provider/int32 helpers; fixed undefined case names, enum/string comparison and provider generation formatting. These were real Unity compiler errors not detectable on the authoring host.
+2. `W4GateScenario.cs`: mount required provider before its consumer, seed and publish the explicit opted-in target before Conservative mode, and capture the isolated baseline after the providers exist. Otherwise consumer/opt-in observations falsely had no active subjects and the isolated comparison used an uninitialized baseline.
+3. `W4GateScenario.cs`, `Gc013NarrativeHost.cs`: published spawn's derivation report covers pre-spawn targets, so the future target must be read from published binding rows. Added a real villager in GroveScope to materialize the matching `(VillagerRecipe, GroveScope)` rule before spawning the future villager. The new existing target joins the mode-switch assertions; no assertion was weakened.
+4. `W4GateScenario.cs`: mount the unload installation once, with its two staged leases, then publish its actual unmount via `LifecycleController.Submit`. A bare `Unload` only disposes resources but leaves the installation Active in the lane; the unmount publishes the terminal Disposed state and matching world assembly.
+5. `W4GateCardsHost.cs`: four lifecycle installations sharing one capability produced only winner-attributed binding rows; the consumer had zero rows even while Active. Give each real installation its own capability/schema and keep the same required service binding, scopes, selectors, values and registered reducer. Provider loss now retracts positive consumer rows in the same publication; return restores them.
+6. `ProbeArguments.cs`, `ProbeRunner.cs`: wire `-probeW4Gate` into flag parsing, report identity (`W4-GATE`/`W4Gate`) and dispatch. Before the fix the player silently ran GC-001 Positive 5/5 for that flag, while the strict W4 probe verifier correctly rejected 84 missing identity/observation checks.
+7. `tools/run_w4_gate.sh`, `tools/unity/build_probe.sh`: bound all Unity invocations, including the two nested Unity build invocations, with watchdogs. Full editor suites and IL2CPP build use 1800 seconds; player probes and focused tests use 600 seconds.
+8. `inventory.json`, `inventory.md`: promote only `O-02` and `O-08` from Partial to Implemented+Evidenced, citing the distinguishing W4 and GC-013 Editor/player observations. Other partial requirements retain named unproven subclauses; P-053 and O-20..O-22 remain Not yet.
 
-## 4. Risk carried into the first build-host run
-
-Ordered by likelihood, from the handoff's §6:
-
-1. A `IW4GateFamily`/adapter member shape mismatch — caught by the compiler, not by the name check.
-2. A step's detail string not matching a clause fragment the probe script greps for, when that step took an
-   early-return path.
-3. The gate's policy publication order (pass first, then the lane advances on the case's neutral edit) differing from
-   GC-015's scenario (lane first, then resynchronize). Both are independent paths on purpose.
-4. `InstallEntry.Manifest.ServiceDependencies` / `InstallEntry.Bindings` property names in the mount step's
-   resolution check.
-5. A family's `PolicyTargets` set containing a live row the revision's manifests do not declare — the executor decides
-   on every live slot it is shown, so an undeclared row makes a pass refuse.
-
-## 5. Non-claims
-
-- **No status in `artifacts/gates/w4-generic-profile/inventory.{md,json}` was promoted.** The gate is `Authored,
-  NotRun`; 23 rows carry a `w4Gate` note naming what the gate's scenario covers and stating that the status is
-  unchanged because nothing has run.
-- **The Wave 4 exit gate is not claimed.** It cannot be claimed until §2 passes.
-- \*\*`artifacts/gc-012/BUILD_REPORT.md` remains the current executable evidence for the provisional generic execution
-  freeze.** This gate reruns it (step 17) but does not re-evidence it.
+No tests were ignored, weakened, skipped or deleted; no expected values or normative design documents changed. The initial gate failed at Unity compilation; the next full attempt found 779/781 EditMode passing and exposed the integration defects above; a later full run reached the player and exposed the missing `-probeW4Gate` dispatch. The final full invocation passed. No required suite remains failing or blocked. Later V1 stress/fault, checkpoint/recovery, action-family and performance work is outside this Wave 4 gate and is not claimed here.

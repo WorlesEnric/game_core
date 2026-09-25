@@ -6,11 +6,11 @@
     "Partial",
     "Not yet"
   ],
-  "statusAsOf": "gc-012 Linux build-host evidence; see artifacts/gc-012/BUILD_REPORT.md for source and player hashes",
+  "statusAsOf": "W4-GATE Linux build-host run; see artifacts/w4-gate/BUILD_REPORT.md and toolchain/probe-w4-gate.json",
   "counts": {
     "total": 86,
-    "implementedEvidenced": 35,
-    "partial": 47,
+    "implementedEvidenced": 37,
+    "partial": 45,
     "notYet": 4
   },
   "requirements": [
@@ -87,14 +87,17 @@
       "evidence": [
         "artifacts/w3-gate/unity/editmode-results.xml",
         "artifacts/w3-gate/trx/",
-        "artifacts/w3-gate/toolchain/probe-cards.json"
+        "artifacts/w3-gate/toolchain/probe-cards.json",
+        "artifacts/w4-gate/unity/editmode-results.xml",
+        "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "artifacts/w4-gate/toolchain/probe-gc013.json",
+        "artifacts/w4-gate/BUILD_REPORT.md"
       ],
-      "gap": "Managed-resource effects, capability retraction and a committed card domain transfer are evidenced, but no archived run unloads a provider while its committed gameplay effect must survive, and the cross-family reward path is unrun.",
+      "gap": "An unload with committed gameplay effect survival and the cross-family reward path remain unrun.",
       "nextOwner": "GC-014",
       "w4Gate": {
         "delta": "W4-GATE authors the integrated demonstration the Wave 4 exit gate names: one runner (W4GateScenario) over two family adapters (W4GateNarrativeHost / W4GateCardsHost), seventeen named observations per family over each family's committed generated catalog and its hand-written generated-style catalog. It drives GC-013's indexed move/mode changes, GC-014's service-closure lifecycle and GC-015's slot policies through ONE real world: both propagation-mode directions over the same existing and future targets, the subtree move with its live state and binding shape preserved while the supporting provider changes, suspend/resume, required-provider loss that makes consumers wait in the same publication and its compatible return that resumes them, an unload disposed in reverse acquisition order, and Preserve / PreserveDormant / RemoveDerived / TransferTo / manifest-supported Reset executed against copies of the live slots and applied by the real publisher. P-006's one publication series is checked after every publication of the run.",
-        "rowCoverage": "The run's unload step retires one installation's leases in reverse acquisition order and reports contribution retraction, resource disposal and gameplay effect separately through TeardownReport, so the three kinds of change are observed apart in one publication (P-003).",
-        "statusUnchangedBecause": "NotRun (pending orchestrator build host): the scenario, the EditMode assembly GameCore.W4Gate.Tests and the -probeW4Gate player mode are authored on this branch but have not been compiled or executed anywhere, so no row may be promoted. This is the documented rule the rest of this inventory follows: nothing is Implemented+Evidenced on the strength of a document that says NotRun.",
+        "rowCoverage": "The unmount step retracts capability rows and disposes two managed leases in reverse order. A committed gameplay effect surviving the unload is not observed by this gate.",
         "authoredEvidence": [
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateScenario.cs",
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateFamily.cs",
@@ -103,12 +106,13 @@
           "tools/run_w4_gate.sh",
           "tools/unity/run_w4_gate_probe.sh"
         ],
-        "expectedEvidenceOnceRun": [
-          "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "executedEvidence": [
           "artifacts/w4-gate/unity/editmode-results.xml",
-          "artifacts/w4-gate/unity/playmode-results.xml",
+          "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+          "artifacts/w4-gate/toolchain/probe-gc013.json",
           "artifacts/w4-gate/BUILD_REPORT.md"
-        ]
+        ],
+        "statusDecision": "Unchanged: An unload with committed gameplay effect survival and the cross-family reward path remain unrun."
       }
     },
     {
@@ -248,14 +252,17 @@
       ],
       "evidence": [
         "artifacts/w3-gate/unity/editmode-results.xml",
-        "artifacts/w3-gate/trx/"
+        "artifacts/w3-gate/trx/",
+        "artifacts/w4-gate/unity/editmode-results.xml",
+        "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "artifacts/w4-gate/toolchain/probe-gc013.json",
+        "artifacts/w4-gate/BUILD_REPORT.md"
       ],
-      "gap": "Scope creation, depth and cycle rejection are evidenced; an atomic subtree move that diffs inheritance and preserves slot state, plus indexed membership at scale, are GC-013's and unarchived.",
+      "gap": "The live subtree move and state preservation now pass in Editor and player; indexed membership at scale remains unevidenced.",
       "nextOwner": "GC-013",
       "w4Gate": {
         "delta": "W4-GATE authors the integrated demonstration the Wave 4 exit gate names: one runner (W4GateScenario) over two family adapters (W4GateNarrativeHost / W4GateCardsHost), seventeen named observations per family over each family's committed generated catalog and its hand-written generated-style catalog. It drives GC-013's indexed move/mode changes, GC-014's service-closure lifecycle and GC-015's slot policies through ONE real world: both propagation-mode directions over the same existing and future targets, the subtree move with its live state and binding shape preserved while the supporting provider changes, suspend/resume, required-provider loss that makes consumers wait in the same publication and its compatible return that resumes them, an unload disposed in reverse acquisition order, and Preserve / PreserveDormant / RemoveDerived / TransferTo / manifest-supported Reset executed against copies of the live slots and applied by the real publisher. P-006's one publication series is checked after every publication of the run.",
-        "rowCoverage": "The move step reparents a live branch atomically and checks the committed scope tree's parent edge, the moved target's owner scope and its indexed membership in the same publication (P-010).",
-        "statusUnchangedBecause": "NotRun (pending orchestrator build host): the scenario, the EditMode assembly GameCore.W4Gate.Tests and the -probeW4Gate player mode are authored on this branch but have not been compiled or executed anywhere, so no row may be promoted. This is the documented rule the rest of this inventory follows: nothing is Implemented+Evidenced on the strength of a document that says NotRun.",
+        "rowCoverage": "The move checks the committed parent edge, moved target identity and owner scope, preserved live value, and dirty-target invalidation in the same published revision.",
         "authoredEvidence": [
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateScenario.cs",
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateFamily.cs",
@@ -264,12 +271,13 @@
           "tools/run_w4_gate.sh",
           "tools/unity/run_w4_gate_probe.sh"
         ],
-        "expectedEvidenceOnceRun": [
-          "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "executedEvidence": [
           "artifacts/w4-gate/unity/editmode-results.xml",
-          "artifacts/w4-gate/unity/playmode-results.xml",
+          "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+          "artifacts/w4-gate/toolchain/probe-gc013.json",
           "artifacts/w4-gate/BUILD_REPORT.md"
-        ]
+        ],
+        "statusDecision": "Unchanged: The live subtree move and state preservation now pass in Editor and player; indexed membership at scale remains unevidenced."
       }
     },
     {
@@ -283,14 +291,17 @@
       ],
       "evidence": [
         "artifacts/w3-gate/trx/",
-        "artifacts/w3-gate/unity/editmode-results.xml"
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w4-gate/unity/editmode-results.xml",
+        "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "artifacts/w4-gate/toolchain/probe-gc013.json",
+        "artifacts/w4-gate/BUILD_REPORT.md"
       ],
-      "gap": "Single-binding conflict, isolation boundary, override and multi-binding ordering are evidenced; the complete visibility/conflict matrix (version ranges, mixed single/multi bindings, isolation with unrelated contracts) in both modes is not.",
+      "gap": "The complete visibility/conflict matrix across versions, mixed binding kinds and isolation boundaries remains unrun.",
       "nextOwner": "GC-014",
       "w4Gate": {
         "delta": "W4-GATE authors the integrated demonstration the Wave 4 exit gate names: one runner (W4GateScenario) over two family adapters (W4GateNarrativeHost / W4GateCardsHost), seventeen named observations per family over each family's committed generated catalog and its hand-written generated-style catalog. It drives GC-013's indexed move/mode changes, GC-014's service-closure lifecycle and GC-015's slot policies through ONE real world: both propagation-mode directions over the same existing and future targets, the subtree move with its live state and binding shape preserved while the supporting provider changes, suspend/resume, required-provider loss that makes consumers wait in the same publication and its compatible return that resumes them, an unload disposed in reverse acquisition order, and Preserve / PreserveDormant / RemoveDerived / TransferTo / manifest-supported Reset executed against copies of the live slots and applied by the real publisher. P-006's one publication series is checked after every publication of the run.",
         "rowCoverage": "The required-service pair is a real required ServiceDependency on a real ServiceExport resolved by the real ServiceResolver: the consumer's install entry reports Dependencies.Count != 0 with no unresolved dependency after the provider mounts (P-011).",
-        "statusUnchangedBecause": "NotRun (pending orchestrator build host): the scenario, the EditMode assembly GameCore.W4Gate.Tests and the -probeW4Gate player mode are authored on this branch but have not been compiled or executed anywhere, so no row may be promoted. This is the documented rule the rest of this inventory follows: nothing is Implemented+Evidenced on the strength of a document that says NotRun.",
         "authoredEvidence": [
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateScenario.cs",
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateFamily.cs",
@@ -299,12 +310,13 @@
           "tools/run_w4_gate.sh",
           "tools/unity/run_w4_gate_probe.sh"
         ],
-        "expectedEvidenceOnceRun": [
-          "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "executedEvidence": [
           "artifacts/w4-gate/unity/editmode-results.xml",
-          "artifacts/w4-gate/unity/playmode-results.xml",
+          "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+          "artifacts/w4-gate/toolchain/probe-gc013.json",
           "artifacts/w4-gate/BUILD_REPORT.md"
-        ]
+        ],
+        "statusDecision": "Unchanged: The complete visibility/conflict matrix across versions, mixed binding kinds and isolation boundaries remains unrun."
       }
     },
     {
@@ -318,14 +330,17 @@
         "GC-028"
       ],
       "evidence": [
-        "artifacts/w3-gate/trx/"
+        "artifacts/w3-gate/trx/",
+        "artifacts/w4-gate/unity/editmode-results.xml",
+        "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "artifacts/w4-gate/toolchain/probe-gc013.json",
+        "artifacts/w4-gate/BUILD_REPORT.md"
       ],
-      "gap": "Waiting-installation activation, required-cycle rejection and reverse retirement order are evidenced; policy/migration failure inside the closure and automatic resumption of every affected consumer are not archived.",
+      "gap": "Required-provider loss and return now pass in the same publication; policy/migration failure in the closure and unexpected-provider-failure behavior remain unrun.",
       "nextOwner": "GC-014",
       "w4Gate": {
         "delta": "W4-GATE authors the integrated demonstration the Wave 4 exit gate names: one runner (W4GateScenario) over two family adapters (W4GateNarrativeHost / W4GateCardsHost), seventeen named observations per family over each family's committed generated catalog and its hand-written generated-style catalog. It drives GC-013's indexed move/mode changes, GC-014's service-closure lifecycle and GC-015's slot policies through ONE real world: both propagation-mode directions over the same existing and future targets, the subtree move with its live state and binding shape preserved while the supporting provider changes, suspend/resume, required-provider loss that makes consumers wait in the same publication and its compatible return that resumes them, an unload disposed in reverse acquisition order, and Preserve / PreserveDormant / RemoveDerived / TransferTo / manifest-supported Reset executed against copies of the live slots and applied by the real publisher. P-006's one publication series is checked after every publication of the run.",
         "rowCoverage": "Removing the required provider makes its consumer wait in the SAME publication (PublishedOperation.WaitingConsumers names it, its bindings are retracted with no live row left), and a compatible provider's return resumes it in one publication (ResumedConsumers), with its rows restored (P-012).",
-        "statusUnchangedBecause": "NotRun (pending orchestrator build host): the scenario, the EditMode assembly GameCore.W4Gate.Tests and the -probeW4Gate player mode are authored on this branch but have not been compiled or executed anywhere, so no row may be promoted. This is the documented rule the rest of this inventory follows: nothing is Implemented+Evidenced on the strength of a document that says NotRun.",
         "authoredEvidence": [
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateScenario.cs",
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateFamily.cs",
@@ -334,12 +349,13 @@
           "tools/run_w4_gate.sh",
           "tools/unity/run_w4_gate_probe.sh"
         ],
-        "expectedEvidenceOnceRun": [
-          "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "executedEvidence": [
           "artifacts/w4-gate/unity/editmode-results.xml",
-          "artifacts/w4-gate/unity/playmode-results.xml",
+          "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+          "artifacts/w4-gate/toolchain/probe-gc013.json",
           "artifacts/w4-gate/BUILD_REPORT.md"
-        ]
+        ],
+        "statusDecision": "Unchanged: Required-provider loss and return now pass in the same publication; policy/migration failure in the closure and unexpected-provider-failure behavior remain unrun."
       }
     },
     {
@@ -357,14 +373,17 @@
       ],
       "evidence": [
         "artifacts/w3-gate/trx/",
-        "artifacts/w3-gate/unity/editmode-results.xml"
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w4-gate/unity/editmode-results.xml",
+        "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "artifacts/w4-gate/toolchain/probe-gc013.json",
+        "artifacts/w4-gate/BUILD_REPORT.md"
       ],
-      "gap": "Conservative denial and export/import grants are evidenced; the mode gate over future descendants, same-scope Descendants selection and the LocalOnly rule in both modes are not archived.",
+      "gap": "Both mode directions and future targets pass; same-scope Descendants selection and LocalOnly in both modes remain unevidenced.",
       "nextOwner": "GC-013",
       "w4Gate": {
         "delta": "W4-GATE authors the integrated demonstration the Wave 4 exit gate names: one runner (W4GateScenario) over two family adapters (W4GateNarrativeHost / W4GateCardsHost), seventeen named observations per family over each family's committed generated catalog and its hand-written generated-style catalog. It drives GC-013's indexed move/mode changes, GC-014's service-closure lifecycle and GC-015's slot policies through ONE real world: both propagation-mode directions over the same existing and future targets, the subtree move with its live state and binding shape preserved while the supporting provider changes, suspend/resume, required-provider loss that makes consumers wait in the same publication and its compatible return that resumes them, an unload disposed in reverse acquisition order, and Preserve / PreserveDormant / RemoveDerived / TransferTo / manifest-supported Reset executed against copies of the live slots and applied by the real publisher. P-006's one publication series is checked after every publication of the run.",
         "rowCoverage": "Every one of the two mode directions is asserted over the same existing automatically eligible targets AND a future target spawned before the first switch, with the isolated and ineligible targets clear, zero per-instance imports and zero scope imports in Automatic (P-013).",
-        "statusUnchangedBecause": "NotRun (pending orchestrator build host): the scenario, the EditMode assembly GameCore.W4Gate.Tests and the -probeW4Gate player mode are authored on this branch but have not been compiled or executed anywhere, so no row may be promoted. This is the documented rule the rest of this inventory follows: nothing is Implemented+Evidenced on the strength of a document that says NotRun.",
         "authoredEvidence": [
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateScenario.cs",
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateFamily.cs",
@@ -373,12 +392,13 @@
           "tools/run_w4_gate.sh",
           "tools/unity/run_w4_gate_probe.sh"
         ],
-        "expectedEvidenceOnceRun": [
-          "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "executedEvidence": [
           "artifacts/w4-gate/unity/editmode-results.xml",
-          "artifacts/w4-gate/unity/playmode-results.xml",
+          "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+          "artifacts/w4-gate/toolchain/probe-gc013.json",
           "artifacts/w4-gate/BUILD_REPORT.md"
-        ]
+        ],
+        "statusDecision": "Unchanged: Both mode directions and future targets pass; same-scope Descendants selection and LocalOnly in both modes remain unevidenced."
       }
     },
     {
@@ -391,14 +411,17 @@
         "GC-028"
       ],
       "evidence": [
-        "artifacts/w3-gate/trx/"
+        "artifacts/w3-gate/trx/",
+        "artifacts/w4-gate/unity/editmode-results.xml",
+        "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "artifacts/w4-gate/toolchain/probe-gc013.json",
+        "artifacts/w4-gate/BUILD_REPORT.md"
       ],
-      "gap": "One switch direction is archived; no archived run switches back with existing and future targets, recomputes all dispositions, or shows a conflict/budget rejection retaining the old mode and assembly.",
+      "gap": "Successful directions and conflict rejection pass; missing-migration and budget rejection retaining the old mode are unrun.",
       "nextOwner": "GC-013",
       "w4Gate": {
         "delta": "W4-GATE authors the integrated demonstration the Wave 4 exit gate names: one runner (W4GateScenario) over two family adapters (W4GateNarrativeHost / W4GateCardsHost), seventeen named observations per family over each family's committed generated catalog and its hand-written generated-style catalog. It drives GC-013's indexed move/mode changes, GC-014's service-closure lifecycle and GC-015's slot policies through ONE real world: both propagation-mode directions over the same existing and future targets, the subtree move with its live state and binding shape preserved while the supporting provider changes, suspend/resume, required-provider loss that makes consumers wait in the same publication and its compatible return that resumes them, an unload disposed in reverse acquisition order, and Preserve / PreserveDormant / RemoveDerived / TransferTo / manifest-supported Reset executed against copies of the live slots and applied by the real publisher. P-006's one publication series is checked after every publication of the run.",
         "rowCoverage": "The two directions run in order (Automatic -> Conservative -> Automatic) and each reports the published closure through the incremental engine, with the lane's validator consulted before anything stages (P-014).",
-        "statusUnchangedBecause": "NotRun (pending orchestrator build host): the scenario, the EditMode assembly GameCore.W4Gate.Tests and the -probeW4Gate player mode are authored on this branch but have not been compiled or executed anywhere, so no row may be promoted. This is the documented rule the rest of this inventory follows: nothing is Implemented+Evidenced on the strength of a document that says NotRun.",
         "authoredEvidence": [
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateScenario.cs",
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateFamily.cs",
@@ -407,12 +430,13 @@
           "tools/run_w4_gate.sh",
           "tools/unity/run_w4_gate_probe.sh"
         ],
-        "expectedEvidenceOnceRun": [
-          "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "executedEvidence": [
           "artifacts/w4-gate/unity/editmode-results.xml",
-          "artifacts/w4-gate/unity/playmode-results.xml",
+          "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+          "artifacts/w4-gate/toolchain/probe-gc013.json",
           "artifacts/w4-gate/BUILD_REPORT.md"
-        ]
+        ],
+        "statusDecision": "Unchanged: Successful directions and conflict rejection pass; missing-migration and budget rejection retaining the old mode are unrun."
       }
     },
     {
@@ -445,14 +469,17 @@
       ],
       "evidence": [
         "artifacts/w3-gate/trx/",
-        "artifacts/w3-gate/unity/editmode-results.xml"
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w4-gate/unity/editmode-results.xml",
+        "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "artifacts/w4-gate/toolchain/probe-gc013.json",
+        "artifacts/w4-gate/BUILD_REPORT.md"
       ],
-      "gap": "Isolation storage, one boundary case and capability-level exclusion are evidenced; the full exclusion/boundary matrix in both modes with sibling and subtree exclusions is not archived.",
+      "gap": "Isolation holds across both switches, but the full exclusion/boundary matrix is unrun.",
       "nextOwner": "GC-013",
       "w4Gate": {
         "delta": "W4-GATE authors the integrated demonstration the Wave 4 exit gate names: one runner (W4GateScenario) over two family adapters (W4GateNarrativeHost / W4GateCardsHost), seventeen named observations per family over each family's committed generated catalog and its hand-written generated-style catalog. It drives GC-013's indexed move/mode changes, GC-014's service-closure lifecycle and GC-015's slot policies through ONE real world: both propagation-mode directions over the same existing and future targets, the subtree move with its live state and binding shape preserved while the supporting provider changes, suspend/resume, required-provider loss that makes consumers wait in the same publication and its compatible return that resumes them, an unload disposed in reverse acquisition order, and Preserve / PreserveDormant / RemoveDerived / TransferTo / manifest-supported Reset executed against copies of the live slots and applied by the real publisher. P-006's one publication series is checked after every publication of the run.",
-        "rowCoverage": "The isolated branch's assembly fingerprint (recipe hash + effective capability set + slot count) is captured before the first switch and compared byte-for-byte after every publication of the run, and every candidate the derivation recorded for it is a denial (P-016).",
-        "statusUnchangedBecause": "NotRun (pending orchestrator build host): the scenario, the EditMode assembly GameCore.W4Gate.Tests and the -probeW4Gate player mode are authored on this branch but have not been compiled or executed anywhere, so no row may be promoted. This is the documented rule the rest of this inventory follows: nothing is Implemented+Evidenced on the strength of a document that says NotRun.",
+        "rowCoverage": "The isolated branch fingerprint is captured after provider mounts and checked across the move and both mode switches; the full exclusion matrix is outside this gate.",
         "authoredEvidence": [
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateScenario.cs",
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateFamily.cs",
@@ -461,12 +488,13 @@
           "tools/run_w4_gate.sh",
           "tools/unity/run_w4_gate_probe.sh"
         ],
-        "expectedEvidenceOnceRun": [
-          "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "executedEvidence": [
           "artifacts/w4-gate/unity/editmode-results.xml",
-          "artifacts/w4-gate/unity/playmode-results.xml",
+          "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+          "artifacts/w4-gate/toolchain/probe-gc013.json",
           "artifacts/w4-gate/BUILD_REPORT.md"
-        ]
+        ],
+        "statusDecision": "Unchanged: Isolation holds across both switches, but the full exclusion/boundary matrix is unrun."
       }
     },
     {
@@ -482,9 +510,13 @@
       "evidence": [
         "artifacts/w3-gate/trx/",
         "artifacts/gates/w4-generic-profile/unity/editmode-results.xml",
-        "artifacts/gates/w4-generic-profile/toolchain/probe-w4-profile.json"
+        "artifacts/gates/w4-generic-profile/toolchain/probe-w4-profile.json",
+        "artifacts/w4-gate/unity/editmode-results.xml",
+        "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "artifacts/w4-gate/toolchain/probe-gc013.json",
+        "artifacts/w4-gate/BUILD_REPORT.md"
       ],
-      "gap": "Live additive composition and exact single-supporter retraction now pass in the W4 player; ContributionId stability across reconfiguration and the broader TEST-005 insertion/removal permutation matrix remain open.",
+      "gap": "Support rows and provider switch pass; contribution ID stability under reconfiguration and TEST-005 permutations remain unrun.",
       "nextOwner": "GC-013",
       "gc012": {
         "delta": "GC-012 implemented the missing representation: a binding row now carries a support SET (GameCore.Planning.CapabilitySupport, TargetBindingRow.Supports, DerivedBindingRule.Supports, ProposedCapability.Supporters) and the published storage carries one GameCore.Unity.Runtime.CapabilitySupportRow per supporter. The derivation-to-publication seam no longer refuses a multi-supporter slot, and AssemblyPlanner consumes the composed value and the support set instead of publishing the top-ranked candidate's raw value. A new card fixture (Packages/com.gamecore.gameplay.cards/Fixtures/Runtime/CardAdditiveScenario.cs) mounts two scoring providers on Seat A's single cards.set-bonus slot and observes the composed value with two support rows.",
@@ -502,7 +534,6 @@
       "w4Gate": {
         "delta": "W4-GATE authors the integrated demonstration the Wave 4 exit gate names: one runner (W4GateScenario) over two family adapters (W4GateNarrativeHost / W4GateCardsHost), seventeen named observations per family over each family's committed generated catalog and its hand-written generated-style catalog. It drives GC-013's indexed move/mode changes, GC-014's service-closure lifecycle and GC-015's slot policies through ONE real world: both propagation-mode directions over the same existing and future targets, the subtree move with its live state and binding shape preserved while the supporting provider changes, suspend/resume, required-provider loss that makes consumers wait in the same publication and its compatible return that resumes them, an unload disposed in reverse acquisition order, and Preserve / PreserveDormant / RemoveDerived / TransferTo / manifest-supported Reset executed against copies of the live slots and applied by the real publisher. P-006's one publication series is checked after every publication of the run.",
         "rowCoverage": "The moved target's published binding shape - the set of (capability, output slot) identities and their support counts - is identical across the move while the supporting provider switches to the second provider's installation, and the multi-supporter rows GC-012 added are read back from storage (P-017).",
-        "statusUnchangedBecause": "NotRun (pending orchestrator build host): the scenario, the EditMode assembly GameCore.W4Gate.Tests and the -probeW4Gate player mode are authored on this branch but have not been compiled or executed anywhere, so no row may be promoted. This is the documented rule the rest of this inventory follows: nothing is Implemented+Evidenced on the strength of a document that says NotRun.",
         "authoredEvidence": [
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateScenario.cs",
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateFamily.cs",
@@ -511,12 +542,13 @@
           "tools/run_w4_gate.sh",
           "tools/unity/run_w4_gate_probe.sh"
         ],
-        "expectedEvidenceOnceRun": [
-          "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "executedEvidence": [
           "artifacts/w4-gate/unity/editmode-results.xml",
-          "artifacts/w4-gate/unity/playmode-results.xml",
+          "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+          "artifacts/w4-gate/toolchain/probe-gc013.json",
           "artifacts/w4-gate/BUILD_REPORT.md"
-        ]
+        ],
+        "statusDecision": "Unchanged: Support rows and provider switch pass; contribution ID stability under reconfiguration and TEST-005 permutations remain unrun."
       }
     },
     {
@@ -618,14 +650,17 @@
         "GC-028"
       ],
       "evidence": [
-        "artifacts/w3-gate/trx/"
+        "artifacts/w3-gate/trx/",
+        "artifacts/w4-gate/unity/editmode-results.xml",
+        "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "artifacts/w4-gate/toolchain/probe-gc013.json",
+        "artifacts/w4-gate/BUILD_REPORT.md"
       ],
-      "gap": "Indexed derivation agrees with the full oracle for 50x40 fixture sweeps; the required 50x500 differential workload and the untouched-sibling index counters (TEST-008) have not been run.",
+      "gap": "Both 50x500 differential tests pass, but untouched-sibling index counters and the complete index inventory at scale remain unevidenced.",
       "nextOwner": "GC-013",
       "w4Gate": {
         "delta": "W4-GATE authors the integrated demonstration the Wave 4 exit gate names: one runner (W4GateScenario) over two family adapters (W4GateNarrativeHost / W4GateCardsHost), seventeen named observations per family over each family's committed generated catalog and its hand-written generated-style catalog. It drives GC-013's indexed move/mode changes, GC-014's service-closure lifecycle and GC-015's slot policies through ONE real world: both propagation-mode directions over the same existing and future targets, the subtree move with its live state and binding shape preserved while the supporting provider changes, suspend/resume, required-provider loss that makes consumers wait in the same publication and its compatible return that resumes them, an unload disposed in reverse acquisition order, and Preserve / PreserveDormant / RemoveDerived / TransferTo / manifest-supported Reset executed against copies of the live slots and applied by the real publisher. P-006's one publication series is checked after every publication of the run.",
         "rowCoverage": "Every publication of the run reports its InvalidationClosureResult from GC-013's incremental engine, and the move step asserts the moved target is in the dirty set rather than carried (P-023).",
-        "statusUnchangedBecause": "NotRun (pending orchestrator build host): the scenario, the EditMode assembly GameCore.W4Gate.Tests and the -probeW4Gate player mode are authored on this branch but have not been compiled or executed anywhere, so no row may be promoted. This is the documented rule the rest of this inventory follows: nothing is Implemented+Evidenced on the strength of a document that says NotRun.",
         "authoredEvidence": [
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateScenario.cs",
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateFamily.cs",
@@ -634,12 +669,13 @@
           "tools/run_w4_gate.sh",
           "tools/unity/run_w4_gate_probe.sh"
         ],
-        "expectedEvidenceOnceRun": [
-          "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "executedEvidence": [
           "artifacts/w4-gate/unity/editmode-results.xml",
-          "artifacts/w4-gate/unity/playmode-results.xml",
+          "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+          "artifacts/w4-gate/toolchain/probe-gc013.json",
           "artifacts/w4-gate/BUILD_REPORT.md"
-        ]
+        ],
+        "statusDecision": "Unchanged: Both 50x500 differential tests pass, but untouched-sibling index counters and the complete index inventory at scale remain unevidenced."
       }
     },
     {
@@ -677,14 +713,17 @@
       ],
       "evidence": [
         "artifacts/w3-gate/unity/editmode-results.xml",
-        "artifacts/w3-gate/trx/"
+        "artifacts/w3-gate/trx/",
+        "artifacts/w4-gate/unity/editmode-results.xml",
+        "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "artifacts/w4-gate/toolchain/probe-gc013.json",
+        "artifacts/w4-gate/BUILD_REPORT.md"
       ],
-      "gap": "Reparent depth/identity recomputation and cycle rejection are evidenced; no archived run moves a subtree that diffs ancestor rule/service sets while preserving target-local state, and replacement under a different installation identity is unrun.",
+      "gap": "The live subtree move preserves state and swaps provider; different-identity replacement mapping and full service closure diff remain unrun.",
       "nextOwner": "GC-013",
       "w4Gate": {
         "delta": "W4-GATE authors the integrated demonstration the Wave 4 exit gate names: one runner (W4GateScenario) over two family adapters (W4GateNarrativeHost / W4GateCardsHost), seventeen named observations per family over each family's committed generated catalog and its hand-written generated-style catalog. It drives GC-013's indexed move/mode changes, GC-014's service-closure lifecycle and GC-015's slot policies through ONE real world: both propagation-mode directions over the same existing and future targets, the subtree move with its live state and binding shape preserved while the supporting provider changes, suspend/resume, required-provider loss that makes consumers wait in the same publication and its compatible return that resumes them, an unload disposed in reverse acquisition order, and Preserve / PreserveDormant / RemoveDerived / TransferTo / manifest-supported Reset executed against copies of the live slots and applied by the real publisher. P-006's one publication series is checked after every publication of the run.",
         "rowCoverage": "A live subtree moves under another branch while the run holds non-default runtime state: the moved target keeps its identity, its owner scope, its seeded live value and its binding shape, and its inherited capability is afterwards named by the new provider's own installation (P-025).",
-        "statusUnchangedBecause": "NotRun (pending orchestrator build host): the scenario, the EditMode assembly GameCore.W4Gate.Tests and the -probeW4Gate player mode are authored on this branch but have not been compiled or executed anywhere, so no row may be promoted. This is the documented rule the rest of this inventory follows: nothing is Implemented+Evidenced on the strength of a document that says NotRun.",
         "authoredEvidence": [
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateScenario.cs",
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateFamily.cs",
@@ -693,12 +732,13 @@
           "tools/run_w4_gate.sh",
           "tools/unity/run_w4_gate_probe.sh"
         ],
-        "expectedEvidenceOnceRun": [
-          "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "executedEvidence": [
           "artifacts/w4-gate/unity/editmode-results.xml",
-          "artifacts/w4-gate/unity/playmode-results.xml",
+          "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+          "artifacts/w4-gate/toolchain/probe-gc013.json",
           "artifacts/w4-gate/BUILD_REPORT.md"
-        ]
+        ],
+        "statusDecision": "Unchanged: The live subtree move preserves state and swaps provider; different-identity replacement mapping and full service closure diff remain unrun."
       }
     },
     {
@@ -768,12 +808,15 @@
       ],
       "evidence": [
         "artifacts/w3-gate/trx/",
-        "artifacts/w3-gate/unity/editmode-results.xml"
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w4-gate/unity/editmode-results.xml",
+        "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "artifacts/w4-gate/toolchain/probe-gc013.json",
+        "artifacts/w4-gate/BUILD_REPORT.md"
       ],
       "w4Gate": {
         "delta": "W4-GATE authors the integrated demonstration the Wave 4 exit gate names: one runner (W4GateScenario) over two family adapters (W4GateNarrativeHost / W4GateCardsHost), seventeen named observations per family over each family's committed generated catalog and its hand-written generated-style catalog. It drives GC-013's indexed move/mode changes, GC-014's service-closure lifecycle and GC-015's slot policies through ONE real world: both propagation-mode directions over the same existing and future targets, the subtree move with its live state and binding shape preserved while the supporting provider changes, suspend/resume, required-provider loss that makes consumers wait in the same publication and its compatible return that resumes them, an unload disposed in reverse acquisition order, and Preserve / PreserveDormant / RemoveDerived / TransferTo / manifest-supported Reset executed against copies of the live slots and applied by the real publisher. P-006's one publication series is checked after every publication of the run.",
         "rowCoverage": "Each slot case's policy pass runs to completion before the lane advances, so a refused pass leaves no unpublished composition publication behind; the plan the publisher applies carries the pass's own staged values (P-029).",
-        "statusUnchangedBecause": "NotRun (pending orchestrator build host): the scenario, the EditMode assembly GameCore.W4Gate.Tests and the -probeW4Gate player mode are authored on this branch but have not been compiled or executed anywhere, so no row may be promoted. This is the documented rule the rest of this inventory follows: nothing is Implemented+Evidenced on the strength of a document that says NotRun.",
         "authoredEvidence": [
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateScenario.cs",
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateFamily.cs",
@@ -782,12 +825,13 @@
           "tools/run_w4_gate.sh",
           "tools/unity/run_w4_gate_probe.sh"
         ],
-        "expectedEvidenceOnceRun": [
-          "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "executedEvidence": [
           "artifacts/w4-gate/unity/editmode-results.xml",
-          "artifacts/w4-gate/unity/playmode-results.xml",
+          "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+          "artifacts/w4-gate/toolchain/probe-gc013.json",
           "artifacts/w4-gate/BUILD_REPORT.md"
-        ]
+        ],
+        "statusDecision": "Unchanged: Previously evidenced; current gate adds passing integration evidence."
       }
     },
     {
@@ -836,14 +880,17 @@
       ],
       "evidence": [
         "artifacts/w3-gate/trx/",
-        "artifacts/w3-gate/unity/editmode-results.xml"
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w4-gate/unity/editmode-results.xml",
+        "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "artifacts/w4-gate/toolchain/probe-gc013.json",
+        "artifacts/w4-gate/BUILD_REPORT.md"
       ],
-      "gap": "Preserve, Migrate, explicit Reset rejection and disposable-slot removal are evidenced; RemoveDerived/PreserveDormant/TransferTo last-support-loss policies and owner transfer on a real target's non-default state are not.",
+      "gap": "All five state policies and manifest-gated reset pass in live ECS; dormant serialization/checkpoint and broader migration/version boundary remain open.",
       "nextOwner": "GC-015",
       "w4Gate": {
         "delta": "W4-GATE authors the integrated demonstration the Wave 4 exit gate names: one runner (W4GateScenario) over two family adapters (W4GateNarrativeHost / W4GateCardsHost), seventeen named observations per family over each family's committed generated catalog and its hand-written generated-style catalog. It drives GC-013's indexed move/mode changes, GC-014's service-closure lifecycle and GC-015's slot policies through ONE real world: both propagation-mode directions over the same existing and future targets, the subtree move with its live state and binding shape preserved while the supporting provider changes, suspend/resume, required-provider loss that makes consumers wait in the same publication and its compatible return that resumes them, an unload disposed in reverse acquisition order, and Preserve / PreserveDormant / RemoveDerived / TransferTo / manifest-supported Reset executed against copies of the live slots and applied by the real publisher. P-006's one publication series is checked after every publication of the run.",
         "rowCoverage": "All four P-032 outcomes plus the explicit manifest-supported Reset execute in a live world: PreserveDormant keeps the value with no active writer, RemoveDerived drops the row, TransferTo moves the value to a declared available destination owner and retires the source, and Reset writes the declared initialization value because the manifest declares reset support - with the same declaration without that field refusing the identical request as OwnershipConflict (P-032).",
-        "statusUnchangedBecause": "NotRun (pending orchestrator build host): the scenario, the EditMode assembly GameCore.W4Gate.Tests and the -probeW4Gate player mode are authored on this branch but have not been compiled or executed anywhere, so no row may be promoted. This is the documented rule the rest of this inventory follows: nothing is Implemented+Evidenced on the strength of a document that says NotRun.",
         "authoredEvidence": [
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateScenario.cs",
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateFamily.cs",
@@ -852,12 +899,13 @@
           "tools/run_w4_gate.sh",
           "tools/unity/run_w4_gate_probe.sh"
         ],
-        "expectedEvidenceOnceRun": [
-          "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "executedEvidence": [
           "artifacts/w4-gate/unity/editmode-results.xml",
-          "artifacts/w4-gate/unity/playmode-results.xml",
+          "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+          "artifacts/w4-gate/toolchain/probe-gc013.json",
           "artifacts/w4-gate/BUILD_REPORT.md"
-        ]
+        ],
+        "statusDecision": "Unchanged: All five state policies and manifest-gated reset pass in live ECS; dormant serialization/checkpoint and broader migration/version boundary remain open."
       }
     },
     {
@@ -871,12 +919,15 @@
         "GC-028"
       ],
       "evidence": [
-        "artifacts/w3-gate/trx/"
+        "artifacts/w3-gate/trx/",
+        "artifacts/w4-gate/unity/editmode-results.xml",
+        "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "artifacts/w4-gate/toolchain/probe-gc013.json",
+        "artifacts/w4-gate/BUILD_REPORT.md"
       ],
       "w4Gate": {
         "delta": "W4-GATE authors the integrated demonstration the Wave 4 exit gate names: one runner (W4GateScenario) over two family adapters (W4GateNarrativeHost / W4GateCardsHost), seventeen named observations per family over each family's committed generated catalog and its hand-written generated-style catalog. It drives GC-013's indexed move/mode changes, GC-014's service-closure lifecycle and GC-015's slot policies through ONE real world: both propagation-mode directions over the same existing and future targets, the subtree move with its live state and binding shape preserved while the supporting provider changes, suspend/resume, required-provider loss that makes consumers wait in the same publication and its compatible return that resumes them, an unload disposed in reverse acquisition order, and Preserve / PreserveDormant / RemoveDerived / TransferTo / manifest-supported Reset executed against copies of the live slots and applied by the real publisher. P-006's one publication series is checked after every publication of the run.",
         "rowCoverage": "Each policy slot owns its own physical layout and field mapping, and the publisher's apply stage is the only writer: the observations read live TargetSlotState rows rather than a report (P-033).",
-        "statusUnchangedBecause": "NotRun (pending orchestrator build host): the scenario, the EditMode assembly GameCore.W4Gate.Tests and the -probeW4Gate player mode are authored on this branch but have not been compiled or executed anywhere, so no row may be promoted. This is the documented rule the rest of this inventory follows: nothing is Implemented+Evidenced on the strength of a document that says NotRun.",
         "authoredEvidence": [
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateScenario.cs",
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateFamily.cs",
@@ -885,12 +936,13 @@
           "tools/run_w4_gate.sh",
           "tools/unity/run_w4_gate_probe.sh"
         ],
-        "expectedEvidenceOnceRun": [
-          "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "executedEvidence": [
           "artifacts/w4-gate/unity/editmode-results.xml",
-          "artifacts/w4-gate/unity/playmode-results.xml",
+          "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+          "artifacts/w4-gate/toolchain/probe-gc013.json",
           "artifacts/w4-gate/BUILD_REPORT.md"
-        ]
+        ],
+        "statusDecision": "Unchanged: Previously evidenced; current gate adds passing integration evidence."
       }
     },
     {
@@ -1056,7 +1108,11 @@
         "artifacts/w3-gate/toolchain/probe-cards.json",
         "artifacts/gates/w4-generic-profile/unity/editmode-results.xml",
         "artifacts/gates/w4-generic-profile/toolchain/probe-w4-profile.json",
-        "artifacts/gates/w4-generic-profile/toolchain/environment.txt"
+        "artifacts/gates/w4-generic-profile/toolchain/environment.txt",
+        "artifacts/w4-gate/unity/editmode-results.xml",
+        "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "artifacts/w4-gate/toolchain/probe-gc013.json",
+        "artifacts/w4-gate/BUILD_REPORT.md"
       ],
       "gc012": {
         "delta": "A previous over-claim corrected and the gap closed. The archived evidence covered envelope admission, route resolution, capacity/backpressure, dedup and RequestResult; it did not cover the envelope's optional 'expected domain version if needed' clause, which was DEAD DATA (written in the constructor, read nowhere, and excluded even from the admission idempotency hash). GC-012 added GameCore.Unity.Runtime.IDomainVersionAuthority and WorldMessagePlane.BindDomainVersion: the guard is now checked at admission against the route's declared authority, a mismatch is refused as StalePlan before the owner's lane, and the guard participates in the idempotency hash. The card table's CardTableDomainVersion and the narrative dialogue's DialogueDomainVersion are the two declared authorities.",
@@ -1072,7 +1128,6 @@
       "w4Gate": {
         "delta": "W4-GATE authors the integrated demonstration the Wave 4 exit gate names: one runner (W4GateScenario) over two family adapters (W4GateNarrativeHost / W4GateCardsHost), seventeen named observations per family over each family's committed generated catalog and its hand-written generated-style catalog. It drives GC-013's indexed move/mode changes, GC-014's service-closure lifecycle and GC-015's slot policies through ONE real world: both propagation-mode directions over the same existing and future targets, the subtree move with its live state and binding shape preserved while the supporting provider changes, suspend/resume, required-provider loss that makes consumers wait in the same publication and its compatible return that resumes them, an unload disposed in reverse acquisition order, and Preserve / PreserveDormant / RemoveDerived / TransferTo / manifest-supported Reset executed against copies of the live slots and applied by the real publisher. P-006's one publication series is checked after every publication of the run.",
         "rowCoverage": "Both families' derived publications are produced by a lane whose routes carry their declared domain-version authority bound by GC-012's guard (P-042).",
-        "statusUnchangedBecause": "NotRun (pending orchestrator build host): the scenario, the EditMode assembly GameCore.W4Gate.Tests and the -probeW4Gate player mode are authored on this branch but have not been compiled or executed anywhere, so no row may be promoted. This is the documented rule the rest of this inventory follows: nothing is Implemented+Evidenced on the strength of a document that says NotRun.",
         "authoredEvidence": [
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateScenario.cs",
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateFamily.cs",
@@ -1081,12 +1136,13 @@
           "tools/run_w4_gate.sh",
           "tools/unity/run_w4_gate_probe.sh"
         ],
-        "expectedEvidenceOnceRun": [
-          "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "executedEvidence": [
           "artifacts/w4-gate/unity/editmode-results.xml",
-          "artifacts/w4-gate/unity/playmode-results.xml",
+          "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+          "artifacts/w4-gate/toolchain/probe-gc013.json",
           "artifacts/w4-gate/BUILD_REPORT.md"
-        ]
+        ],
+        "statusDecision": "Unchanged: Previously evidenced; current gate adds passing integration evidence."
       }
     },
     {
@@ -1167,14 +1223,17 @@
       ],
       "evidence": [
         "artifacts/w3-gate/trx/",
-        "artifacts/w3-gate/unity/editmode-results.xml"
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w4-gate/unity/editmode-results.xml",
+        "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "artifacts/w4-gate/toolchain/probe-gc013.json",
+        "artifacts/w4-gate/BUILD_REPORT.md"
       ],
-      "gap": "Waiting instances, suspension/resume authority and reconfiguration are evidenced; exhaustive legal/illegal/repeated lifecycle edges and 1,000-cycle mount/unmount churn (TEST-015) are not archived.",
+      "gap": "Suspend/resume, wait/return and unload pass; exhaustive invalid/repeated lifecycle transitions and 1,000-cycle churn remain unrun.",
       "nextOwner": "GC-014",
       "w4Gate": {
         "delta": "W4-GATE authors the integrated demonstration the Wave 4 exit gate names: one runner (W4GateScenario) over two family adapters (W4GateNarrativeHost / W4GateCardsHost), seventeen named observations per family over each family's committed generated catalog and its hand-written generated-style catalog. It drives GC-013's indexed move/mode changes, GC-014's service-closure lifecycle and GC-015's slot policies through ONE real world: both propagation-mode directions over the same existing and future targets, the subtree move with its live state and binding shape preserved while the supporting provider changes, suspend/resume, required-provider loss that makes consumers wait in the same publication and its compatible return that resumes them, an unload disposed in reverse acquisition order, and Preserve / PreserveDormant / RemoveDerived / TransferTo / manifest-supported Reset executed against copies of the live slots and applied by the real publisher. P-006's one publication series is checked after every publication of the run.",
         "rowCoverage": "Suspend publishes Suspended with the activation's authority withdrawn and a shrunk live-activation count, a token minted before the suspend is discarded at completion, the resume re-derives and restores exactly the rows the suspend retracted, and a fresh token dispatches again (P-046).",
-        "statusUnchangedBecause": "NotRun (pending orchestrator build host): the scenario, the EditMode assembly GameCore.W4Gate.Tests and the -probeW4Gate player mode are authored on this branch but have not been compiled or executed anywhere, so no row may be promoted. This is the documented rule the rest of this inventory follows: nothing is Implemented+Evidenced on the strength of a document that says NotRun.",
         "authoredEvidence": [
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateScenario.cs",
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateFamily.cs",
@@ -1183,12 +1242,13 @@
           "tools/run_w4_gate.sh",
           "tools/unity/run_w4_gate_probe.sh"
         ],
-        "expectedEvidenceOnceRun": [
-          "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "executedEvidence": [
           "artifacts/w4-gate/unity/editmode-results.xml",
-          "artifacts/w4-gate/unity/playmode-results.xml",
+          "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+          "artifacts/w4-gate/toolchain/probe-gc013.json",
           "artifacts/w4-gate/BUILD_REPORT.md"
-        ]
+        ],
+        "statusDecision": "Unchanged: Suspend/resume, wait/return and unload pass; exhaustive invalid/repeated lifecycle transitions and 1,000-cycle churn remain unrun."
       }
     },
     {
@@ -1207,14 +1267,17 @@
       ],
       "evidence": [
         "artifacts/w3-gate/trx/",
-        "artifacts/w3-gate/unity/editmode-results.xml"
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w4-gate/unity/editmode-results.xml",
+        "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "artifacts/w4-gate/toolchain/probe-gc013.json",
+        "artifacts/w4-gate/BUILD_REPORT.md"
       ],
-      "gap": "Stale-epoch callback rejection and job quarantine are evidenced; 100 late completions after unload or world recreation and unexecuted commands finishing Cancelled(RouteRetired) are not archived.",
+      "gap": "Late tokens discard at suspend/unload; 100 delayed completions, blocked jobs and RouteRetired command disposition remain unrun.",
       "nextOwner": "GC-014",
       "w4Gate": {
         "delta": "W4-GATE authors the integrated demonstration the Wave 4 exit gate names: one runner (W4GateScenario) over two family adapters (W4GateNarrativeHost / W4GateCardsHost), seventeen named observations per family over each family's committed generated catalog and its hand-written generated-style catalog. It drives GC-013's indexed move/mode changes, GC-014's service-closure lifecycle and GC-015's slot policies through ONE real world: both propagation-mode directions over the same existing and future targets, the subtree move with its live state and binding shape preserved while the supporting provider changes, suspend/resume, required-provider loss that makes consumers wait in the same publication and its compatible return that resumes them, an unload disposed in reverse acquisition order, and Preserve / PreserveDormant / RemoveDerived / TransferTo / manifest-supported Reset executed against copies of the live slots and applied by the real publisher. P-006's one publication series is checked after every publication of the run.",
         "rowCoverage": "The suspend retires the installation's ingress (its declared owners' routes close) and the unload's P-048 pass closes ingress, settles the step and fences users before any live write, with a pre-unload token discarded (P-047).",
-        "statusUnchangedBecause": "NotRun (pending orchestrator build host): the scenario, the EditMode assembly GameCore.W4Gate.Tests and the -probeW4Gate player mode are authored on this branch but have not been compiled or executed anywhere, so no row may be promoted. This is the documented rule the rest of this inventory follows: nothing is Implemented+Evidenced on the strength of a document that says NotRun.",
         "authoredEvidence": [
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateScenario.cs",
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateFamily.cs",
@@ -1223,12 +1286,13 @@
           "tools/run_w4_gate.sh",
           "tools/unity/run_w4_gate_probe.sh"
         ],
-        "expectedEvidenceOnceRun": [
-          "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "executedEvidence": [
           "artifacts/w4-gate/unity/editmode-results.xml",
-          "artifacts/w4-gate/unity/playmode-results.xml",
+          "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+          "artifacts/w4-gate/toolchain/probe-gc013.json",
           "artifacts/w4-gate/BUILD_REPORT.md"
-        ]
+        ],
+        "statusDecision": "Unchanged: Late tokens discard at suspend/unload; 100 delayed completions, blocked jobs and RouteRetired command disposition remain unrun."
       }
     },
     {
@@ -1250,12 +1314,15 @@
       "evidence": [
         "artifacts/w3-gate/trx/",
         "artifacts/w3-gate/unity/editmode-results.xml",
-        "artifacts/w3-gate/toolchain/probe-world-dispatch.json"
+        "artifacts/w3-gate/toolchain/probe-world-dispatch.json",
+        "artifacts/w4-gate/unity/editmode-results.xml",
+        "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "artifacts/w4-gate/toolchain/probe-gc013.json",
+        "artifacts/w4-gate/BUILD_REPORT.md"
       ],
       "w4Gate": {
         "delta": "W4-GATE authors the integrated demonstration the Wave 4 exit gate names: one runner (W4GateScenario) over two family adapters (W4GateNarrativeHost / W4GateCardsHost), seventeen named observations per family over each family's committed generated catalog and its hand-written generated-style catalog. It drives GC-013's indexed move/mode changes, GC-014's service-closure lifecycle and GC-015's slot policies through ONE real world: both propagation-mode directions over the same existing and future targets, the subtree move with its live state and binding shape preserved while the supporting provider changes, suspend/resume, required-provider loss that makes consumers wait in the same publication and its compatible return that resumes them, an unload disposed in reverse acquisition order, and Preserve / PreserveDormant / RemoveDerived / TransferTo / manifest-supported Reset executed against copies of the live slots and applied by the real publisher. P-006's one publication series is checked after every publication of the run.",
         "rowCoverage": "The unload step stages two leases in acquisition order, runs the six named P-048 steps, and the resource factory's own disposal log must be the exact reverse of the acquisition order with nothing quarantined and no failed release (P-048).",
-        "statusUnchangedBecause": "NotRun (pending orchestrator build host): the scenario, the EditMode assembly GameCore.W4Gate.Tests and the -probeW4Gate player mode are authored on this branch but have not been compiled or executed anywhere, so no row may be promoted. This is the documented rule the rest of this inventory follows: nothing is Implemented+Evidenced on the strength of a document that says NotRun.",
         "authoredEvidence": [
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateScenario.cs",
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateFamily.cs",
@@ -1264,12 +1331,13 @@
           "tools/run_w4_gate.sh",
           "tools/unity/run_w4_gate_probe.sh"
         ],
-        "expectedEvidenceOnceRun": [
-          "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "executedEvidence": [
           "artifacts/w4-gate/unity/editmode-results.xml",
-          "artifacts/w4-gate/unity/playmode-results.xml",
+          "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+          "artifacts/w4-gate/toolchain/probe-gc013.json",
           "artifacts/w4-gate/BUILD_REPORT.md"
-        ]
+        ],
+        "statusDecision": "Unchanged: Previously evidenced; current gate adds passing integration evidence."
       }
     },
     {
@@ -1526,14 +1594,17 @@
       "evidence": [
         "artifacts/w3-gate/BUILD_REPORT.md",
         "artifacts/w3-gate/toolchain/environment.txt",
-        "artifacts/w3-gate/trx/"
+        "artifacts/w3-gate/trx/",
+        "artifacts/w4-gate/unity/editmode-results.xml",
+        "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "artifacts/w4-gate/toolchain/probe-gc013.json",
+        "artifacts/w4-gate/BUILD_REPORT.md"
       ],
-      "gap": "Exact Unity/package/native-compiler/backend/stripping settings, catalog hashes, commands and logs are archived, but the provisional budgets are unmeasured and failures/unload, checkpoint recovery and no-per-frame-traversal evidence are outstanding.",
+      "gap": "Actual tools, logs, results and hashes are archived; measured budgets, checkpoint recovery and full stress/fault evidence remain outstanding.",
       "nextOwner": "GC-026",
       "w4Gate": {
         "delta": "W4-GATE authors the integrated demonstration the Wave 4 exit gate names: one runner (W4GateScenario) over two family adapters (W4GateNarrativeHost / W4GateCardsHost), seventeen named observations per family over each family's committed generated catalog and its hand-written generated-style catalog. It drives GC-013's indexed move/mode changes, GC-014's service-closure lifecycle and GC-015's slot policies through ONE real world: both propagation-mode directions over the same existing and future targets, the subtree move with its live state and binding shape preserved while the supporting provider changes, suspend/resume, required-provider loss that makes consumers wait in the same publication and its compatible return that resumes them, an unload disposed in reverse acquisition order, and Preserve / PreserveDormant / RemoveDerived / TransferTo / manifest-supported Reset executed against copies of the live slots and applied by the real publisher. P-006's one publication series is checked after every publication of the run.",
         "rowCoverage": "The gate records its own evidence: exact Unity/Editor and player invocation, catalogs, PROBE_RUNS, per-family digests over the named observation sequence, and every publication's join state (P-060).",
-        "statusUnchangedBecause": "NotRun (pending orchestrator build host): the scenario, the EditMode assembly GameCore.W4Gate.Tests and the -probeW4Gate player mode are authored on this branch but have not been compiled or executed anywhere, so no row may be promoted. This is the documented rule the rest of this inventory follows: nothing is Implemented+Evidenced on the strength of a document that says NotRun.",
         "authoredEvidence": [
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateScenario.cs",
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateFamily.cs",
@@ -1542,12 +1613,13 @@
           "tools/run_w4_gate.sh",
           "tools/unity/run_w4_gate_probe.sh"
         ],
-        "expectedEvidenceOnceRun": [
-          "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "executedEvidence": [
           "artifacts/w4-gate/unity/editmode-results.xml",
-          "artifacts/w4-gate/unity/playmode-results.xml",
+          "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+          "artifacts/w4-gate/toolchain/probe-gc013.json",
           "artifacts/w4-gate/BUILD_REPORT.md"
-        ]
+        ],
+        "statusDecision": "Unchanged: Actual tools, logs, results and hashes are archived; measured budgets, checkpoint recovery and full stress/fault evidence remain outstanding."
       }
     }
   ],
@@ -1587,7 +1659,7 @@
     {
       "id": "O-02",
       "title": "EditScopes: create/edit/drop/reparent descriptors, memberships, boundaries",
-      "status": "Partial",
+      "status": "Implemented+Evidenced",
       "ownerTasks": [
         "GC-004",
         "GC-006",
@@ -1606,24 +1678,28 @@
       "evidence": [
         "Packages/com.gamecore.composition/Runtime/Operations/CompositionEditApplier.cs",
         "artifacts/w3-gate/unity/editmode-results.xml",
-        "artifacts/w3-gate/trx/"
+        "artifacts/w3-gate/trx/",
+        "artifacts/w4-gate/unity/editmode-results.xml",
+        "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "artifacts/w4-gate/toolchain/probe-gc013.json",
+        "artifacts/w4-gate/BUILD_REPORT.md"
       ],
-      "gap": "Cycle, cross-world and nonempty-drop rejection are evidenced, but the distinguishing probe (a branch move that changes inheritance and retains slot state atomically) is not archived.",
-      "nextOwner": "GC-013",
       "w4Gate": {
         "delta": "W4-GATE authors the integrated demonstration the Wave 4 exit gate names: one runner (W4GateScenario) over two family adapters (W4GateNarrativeHost / W4GateCardsHost), seventeen named observations per family over each family's committed generated catalog and its hand-written generated-style catalog. It drives GC-013's indexed move/mode changes, GC-014's service-closure lifecycle and GC-015's slot policies through ONE real world: both propagation-mode directions over the same existing and future targets, the subtree move with its live state and binding shape preserved while the supporting provider changes, suspend/resume, required-provider loss that makes consumers wait in the same publication and its compatible return that resumes them, an unload disposed in reverse acquisition order, and Preserve / PreserveDormant / RemoveDerived / TransferTo / manifest-supported Reset executed against copies of the live slots and applied by the real publisher. P-006's one publication series is checked after every publication of the run.",
         "rowCoverage": "The move step is exactly the distinguishing probe: a branch move that changes the inherited binding set and retains the moved target's slot state atomically, with the committed parent edge checked (O-02).",
-        "statusUnchangedBecause": "NotRun (pending orchestrator build host): the scenario, the EditMode assembly GameCore.W4Gate.Tests and the -probeW4Gate player mode are authored on this branch but have not been compiled or executed anywhere, so no row may be promoted. This is the documented rule the rest of this inventory follows: nothing is Implemented+Evidenced on the strength of a document that says NotRun.",
         "authoredEvidence": [
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateScenario.cs",
           "unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W4Gate/W4GateIntegrationTests.cs",
           "tools/run_w4_gate.sh",
           "tools/unity/run_w4_gate_probe.sh"
         ],
-        "expectedEvidenceOnceRun": [
+        "executedEvidence": [
+          "artifacts/w4-gate/unity/editmode-results.xml",
           "artifacts/w4-gate/toolchain/probe-w4-gate.json",
-          "artifacts/w4-gate/unity/editmode-results.xml"
-        ]
+          "artifacts/w4-gate/toolchain/probe-gc013.json",
+          "artifacts/w4-gate/BUILD_REPORT.md"
+        ],
+        "statusDecision": "Promoted: distinguishing probe passed in Editor and IL2CPP player for both families and catalogs. O-08 also uses GC-013 player conflict rejection and committed-mode spawn."
       }
     },
     {
@@ -1738,24 +1814,30 @@
       "evidence": [
         "Packages/com.gamecore.composition/Runtime/Operations/CompositionEditApplier.cs",
         "artifacts/w3-gate/trx/",
-        "artifacts/w3-gate/unity/editmode-results.xml"
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w4-gate/unity/editmode-results.xml",
+        "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "artifacts/w4-gate/toolchain/probe-gc013.json",
+        "artifacts/w4-gate/BUILD_REPORT.md"
       ],
-      "gap": "Contribution retraction and closed authority on suspension are evidenced, but dormant state of a real target surviving a suspend/resume is not archived (last-support-loss slot policy is GC-015's).",
+      "gap": "Suspension/resumption of active rows passes, but dormant state surviving a suspend/resume of that installation remains unproven.",
       "nextOwner": "GC-015",
       "w4Gate": {
         "delta": "W4-GATE authors the integrated demonstration the Wave 4 exit gate names: one runner (W4GateScenario) over two family adapters (W4GateNarrativeHost / W4GateCardsHost), seventeen named observations per family over each family's committed generated catalog and its hand-written generated-style catalog. It drives GC-013's indexed move/mode changes, GC-014's service-closure lifecycle and GC-015's slot policies through ONE real world: both propagation-mode directions over the same existing and future targets, the subtree move with its live state and binding shape preserved while the supporting provider changes, suspend/resume, required-provider loss that makes consumers wait in the same publication and its compatible return that resumes them, an unload disposed in reverse acquisition order, and Preserve / PreserveDormant / RemoveDerived / TransferTo / manifest-supported Reset executed against copies of the live slots and applied by the real publisher. P-006's one publication series is checked after every publication of the run.",
         "rowCoverage": "The suspend step retracts the installation's attributed rows, withdraws its authority, retires its ingress and discards a pre-suspend completion; the resume restores the rows (O-06).",
-        "statusUnchangedBecause": "NotRun (pending orchestrator build host): the scenario, the EditMode assembly GameCore.W4Gate.Tests and the -probeW4Gate player mode are authored on this branch but have not been compiled or executed anywhere, so no row may be promoted. This is the documented rule the rest of this inventory follows: nothing is Implemented+Evidenced on the strength of a document that says NotRun.",
         "authoredEvidence": [
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateScenario.cs",
           "unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W4Gate/W4GateIntegrationTests.cs",
           "tools/run_w4_gate.sh",
           "tools/unity/run_w4_gate_probe.sh"
         ],
-        "expectedEvidenceOnceRun": [
+        "executedEvidence": [
+          "artifacts/w4-gate/unity/editmode-results.xml",
           "artifacts/w4-gate/toolchain/probe-w4-gate.json",
-          "artifacts/w4-gate/unity/editmode-results.xml"
-        ]
+          "artifacts/w4-gate/toolchain/probe-gc013.json",
+          "artifacts/w4-gate/BUILD_REPORT.md"
+        ],
+        "statusDecision": "Unchanged: Suspension/resumption of active rows passes, but dormant state surviving a suspend/resume of that installation remains unproven."
       }
     },
     {
@@ -1793,7 +1875,7 @@
     {
       "id": "O-08",
       "title": "SetMode: expected revision, Automatic/Conservative -> plan/result",
-      "status": "Partial",
+      "status": "Implemented+Evidenced",
       "ownerTasks": [
         "GC-003",
         "GC-004",
@@ -1814,24 +1896,28 @@
       ],
       "evidence": [
         "Packages/com.gamecore.composition/Runtime/Operations/CompositionEditApplier.cs",
-        "artifacts/w3-gate/trx/"
+        "artifacts/w3-gate/trx/",
+        "artifacts/w4-gate/unity/editmode-results.xml",
+        "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "artifacts/w4-gate/toolchain/probe-gc013.json",
+        "artifacts/w4-gate/BUILD_REPORT.md"
       ],
-      "gap": "One switch direction is archived; a conflicting switch retaining the prior mode and a spawn after the switch following the committed setting are not.",
-      "nextOwner": "GC-013",
       "w4Gate": {
         "delta": "W4-GATE authors the integrated demonstration the Wave 4 exit gate names: one runner (W4GateScenario) over two family adapters (W4GateNarrativeHost / W4GateCardsHost), seventeen named observations per family over each family's committed generated catalog and its hand-written generated-style catalog. It drives GC-013's indexed move/mode changes, GC-014's service-closure lifecycle and GC-015's slot policies through ONE real world: both propagation-mode directions over the same existing and future targets, the subtree move with its live state and binding shape preserved while the supporting provider changes, suspend/resume, required-provider loss that makes consumers wait in the same publication and its compatible return that resumes them, an unload disposed in reverse acquisition order, and Preserve / PreserveDormant / RemoveDerived / TransferTo / manifest-supported Reset executed against copies of the live slots and applied by the real publisher. P-006's one publication series is checked after every publication of the run.",
         "rowCoverage": "Both switch directions are published and reported, over existing and future targets, and the lane's own validator is consulted before anything stages (O-08).",
-        "statusUnchangedBecause": "NotRun (pending orchestrator build host): the scenario, the EditMode assembly GameCore.W4Gate.Tests and the -probeW4Gate player mode are authored on this branch but have not been compiled or executed anywhere, so no row may be promoted. This is the documented rule the rest of this inventory follows: nothing is Implemented+Evidenced on the strength of a document that says NotRun.",
         "authoredEvidence": [
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateScenario.cs",
           "unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W4Gate/W4GateIntegrationTests.cs",
           "tools/run_w4_gate.sh",
           "tools/unity/run_w4_gate_probe.sh"
         ],
-        "expectedEvidenceOnceRun": [
+        "executedEvidence": [
+          "artifacts/w4-gate/unity/editmode-results.xml",
           "artifacts/w4-gate/toolchain/probe-w4-gate.json",
-          "artifacts/w4-gate/unity/editmode-results.xml"
-        ]
+          "artifacts/w4-gate/toolchain/probe-gc013.json",
+          "artifacts/w4-gate/BUILD_REPORT.md"
+        ],
+        "statusDecision": "Promoted: distinguishing probe passed in Editor and IL2CPP player for both families and catalogs. O-08 also uses GC-013 player conflict rejection and committed-mode spawn."
       }
     },
     {
@@ -2177,22 +2263,28 @@
       "evidence": [
         "Packages/com.gamecore.unity.runtime/Runtime/WorldHost.cs",
         "artifacts/w3-gate/unity/editmode-results.xml",
-        "artifacts/w3-gate/toolchain/probe-world-dispatch.json"
+        "artifacts/w3-gate/toolchain/probe-world-dispatch.json",
+        "artifacts/w4-gate/unity/editmode-results.xml",
+        "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "artifacts/w4-gate/toolchain/probe-gc013.json",
+        "artifacts/w4-gate/BUILD_REPORT.md"
       ],
       "w4Gate": {
         "delta": "W4-GATE authors the integrated demonstration the Wave 4 exit gate names: one runner (W4GateScenario) over two family adapters (W4GateNarrativeHost / W4GateCardsHost), seventeen named observations per family over each family's committed generated catalog and its hand-written generated-style catalog. It drives GC-013's indexed move/mode changes, GC-014's service-closure lifecycle and GC-015's slot policies through ONE real world: both propagation-mode directions over the same existing and future targets, the subtree move with its live state and binding shape preserved while the supporting provider changes, suspend/resume, required-provider loss that makes consumers wait in the same publication and its compatible return that resumes them, an unload disposed in reverse acquisition order, and Preserve / PreserveDormant / RemoveDerived / TransferTo / manifest-supported Reset executed against copies of the live slots and applied by the real publisher. P-006's one publication series is checked after every publication of the run.",
-        "rowCoverage": "The unload step runs the full P-048 order and reports reverse-order disposal, six recorded steps and a settled disposer ledger (O-19).",
-        "statusUnchangedBecause": "NotRun (pending orchestrator build host): the scenario, the EditMode assembly GameCore.W4Gate.Tests and the -probeW4Gate player mode are authored on this branch but have not been compiled or executed anywhere, so no row may be promoted. This is the documented rule the rest of this inventory follows: nothing is Implemented+Evidenced on the strength of a document that says NotRun.",
+        "rowCoverage": "The gate unmounts one installation and then stops and disposes its world; reverse-order resource retirement is an unmount observation, not the StopWorld operation itself.",
         "authoredEvidence": [
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateScenario.cs",
           "unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W4Gate/W4GateIntegrationTests.cs",
           "tools/run_w4_gate.sh",
           "tools/unity/run_w4_gate_probe.sh"
         ],
-        "expectedEvidenceOnceRun": [
+        "executedEvidence": [
+          "artifacts/w4-gate/unity/editmode-results.xml",
           "artifacts/w4-gate/toolchain/probe-w4-gate.json",
-          "artifacts/w4-gate/unity/editmode-results.xml"
-        ]
+          "artifacts/w4-gate/toolchain/probe-gc013.json",
+          "artifacts/w4-gate/BUILD_REPORT.md"
+        ],
+        "statusDecision": "Unchanged: Previously evidenced; current gate adds passing integration evidence."
       }
     },
     {
@@ -2319,24 +2411,30 @@
       ],
       "evidence": [
         "Packages/com.gamecore.composition/Runtime/Lifecycle/CallbackGate.cs",
-        "artifacts/w3-gate/trx/"
+        "artifacts/w3-gate/trx/",
+        "artifacts/w4-gate/unity/editmode-results.xml",
+        "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+        "artifacts/w4-gate/toolchain/probe-gc013.json",
+        "artifacts/w4-gate/BUILD_REPORT.md"
       ],
-      "gap": "Stale and foreign completions are fenced and release only their own acquisitions, but no host path installs an accepted async result as staged data or a typed command, and duplicate-completion lease rules are absent.",
+      "gap": "Discarded stale completions pass; no accepted-completion host staging path or duplicate-completion lease behavior is evidenced.",
       "nextOwner": "GC-014",
       "w4Gate": {
         "delta": "W4-GATE authors the integrated demonstration the Wave 4 exit gate names: one runner (W4GateScenario) over two family adapters (W4GateNarrativeHost / W4GateCardsHost), seventeen named observations per family over each family's committed generated catalog and its hand-written generated-style catalog. It drives GC-013's indexed move/mode changes, GC-014's service-closure lifecycle and GC-015's slot policies through ONE real world: both propagation-mode directions over the same existing and future targets, the subtree move with its live state and binding shape preserved while the supporting provider changes, suspend/resume, required-provider loss that makes consumers wait in the same publication and its compatible return that resumes them, an unload disposed in reverse acquisition order, and Preserve / PreserveDormant / RemoveDerived / TransferTo / manifest-supported Reset executed against copies of the live slots and applied by the real publisher. P-006's one publication series is checked after every publication of the run.",
         "rowCoverage": "The suspend and unload steps evaluate completions minted before the authority change and require them to be discarded rather than delivered (O-24).",
-        "statusUnchangedBecause": "NotRun (pending orchestrator build host): the scenario, the EditMode assembly GameCore.W4Gate.Tests and the -probeW4Gate player mode are authored on this branch but have not been compiled or executed anywhere, so no row may be promoted. This is the documented rule the rest of this inventory follows: nothing is Implemented+Evidenced on the strength of a document that says NotRun.",
         "authoredEvidence": [
           "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4GateScenario.cs",
           "unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W4Gate/W4GateIntegrationTests.cs",
           "tools/run_w4_gate.sh",
           "tools/unity/run_w4_gate_probe.sh"
         ],
-        "expectedEvidenceOnceRun": [
+        "executedEvidence": [
+          "artifacts/w4-gate/unity/editmode-results.xml",
           "artifacts/w4-gate/toolchain/probe-w4-gate.json",
-          "artifacts/w4-gate/unity/editmode-results.xml"
-        ]
+          "artifacts/w4-gate/toolchain/probe-gc013.json",
+          "artifacts/w4-gate/BUILD_REPORT.md"
+        ],
+        "statusDecision": "Unchanged: Discarded stale completions pass; no accepted-completion host staging path or duplicate-completion lease behavior is evidenced."
       }
     },
     {
@@ -2569,8 +2667,16 @@
       "O-19",
       "O-24"
     ],
-    "statusChanged": [],
-    "statusUnchangedBecause": "NotRun (pending orchestrator build host): the scenario, the EditMode assembly GameCore.W4Gate.Tests and the -probeW4Gate player mode are authored on this branch but have not been compiled or executed anywhere, so no row may be promoted. This is the documented rule the rest of this inventory follows: nothing is Implemented+Evidenced on the strength of a document that says NotRun.",
-    "verdict": "Authored, NotRun. The W4 exit gate cannot be claimed from this revision until tools/run_w4_gate.sh completes on the Linux build host (dotnet build/test, Unity resolve, EditMode+PlayMode, both catalogs byte-identical, IL2CPP build, every probe including -probeW4Gate x PROBE_RUNS, documentation validator)."
+    "statusChanged": [
+      "O-02",
+      "O-08"
+    ],
+    "verdict": "Executed: tools/run_w4_gate.sh passed with PROBE_RUNS=5; two operation rows promoted, other partial V1 gaps remain.",
+    "evidence": [
+      "artifacts/w4-gate/unity/editmode-results.xml",
+      "artifacts/w4-gate/toolchain/probe-w4-gate.json",
+      "artifacts/w4-gate/toolchain/probe-gc013.json",
+      "artifacts/w4-gate/BUILD_REPORT.md"
+    ]
   }
 }

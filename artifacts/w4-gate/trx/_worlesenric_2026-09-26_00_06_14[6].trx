@@ -1,0 +1,462 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="e28dccb8-e6d9-4800-8732-085f23a2429d" name="@worlesenric 2026-09-26 00:06:14" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-26T00:06:14.6889290+08:00" queuing="2026-09-26T00:06:14.6889291+08:00" start="2026-09-26T00:06:13.3993076+08:00" finish="2026-09-26T00:06:14.7764037+08:00" />
+  <TestSettings name="default" id="136cdb35-0702-49d4-b3e3-227cd7c58350">
+    <Deployment runDeploymentRoot="_worlesenric_2026-09-26_00_06_14" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="9572a892-f257-46e4-a2cb-1fb237a2cff4" testId="23d39db5-2d70-2d9c-589d-2769e44c1b56" testName="DuplicateDeclaredFieldRejects" computerName="worlesenric" duration="00:00:00.0004060" startTime="2026-09-26T00:06:14.6398569+08:00" endTime="2026-09-26T00:06:14.6402629+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9572a892-f257-46e4-a2cb-1fb237a2cff4" />
+    <UnitTestResult executionId="5dc3a87d-8a2a-4e66-a7ac-78b194e52408" testId="8cca09f9-2e38-adec-1086-a7f56e584373" testName="TransferToWithoutATransferPolicyRejects" computerName="worlesenric" duration="00:00:00.0003220" startTime="2026-09-26T00:06:14.7114634+08:00" endTime="2026-09-26T00:06:14.7117857+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5dc3a87d-8a2a-4e66-a7ac-78b194e52408" />
+    <UnitTestResult executionId="b4c2e722-69b7-401d-a6b6-c3537dc3192c" testId="c36d962f-f988-52fe-e9e0-65c74450dc27" testName="DerivationIsDeterministicAndRejectsNonCanonicalNames" computerName="worlesenric" duration="00:00:00.0031340" startTime="2026-09-26T00:06:14.6694277+08:00" endTime="2026-09-26T00:06:14.6725618+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b4c2e722-69b7-401d-a6b6-c3537dc3192c" />
+    <UnitTestResult executionId="aa6e41d8-c37f-4ad8-a4a2-88d01669fd0b" testId="710fd52c-a087-f30a-a7ea-121d2afcc6d2" testName="UnacceptedSchemaVersionRejectsAsUnsupportedVersion" computerName="worlesenric" duration="00:00:00.0003070" startTime="2026-09-26T00:06:14.7118006+08:00" endTime="2026-09-26T00:06:14.7121074+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="aa6e41d8-c37f-4ad8-a4a2-88d01669fd0b" />
+    <UnitTestResult executionId="b00c2663-8521-4698-a9b3-a621f10fb82d" testId="243b80a2-0258-1628-eb36-f5313203219c" testName="UnsupportedFeatureDeclarationIsReportedAsMissingIdentity" computerName="worlesenric" duration="00:00:00.0000980" startTime="2026-09-26T00:06:14.6198383+08:00" endTime="2026-09-26T00:06:14.6199362+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b00c2663-8521-4698-a9b3-a621f10fb82d" />
+    <UnitTestResult executionId="309307a2-ac33-4926-acd0-3caeec18ba0b" testId="a3c061e6-b5e1-7570-180b-932ff5121c31" testName="UnregisteredSerializerRejects" computerName="worlesenric" duration="00:00:00.0001499" startTime="2026-09-26T00:06:14.6196777+08:00" endTime="2026-09-26T00:06:14.6198277+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="309307a2-ac33-4926-acd0-3caeec18ba0b" />
+    <UnitTestResult executionId="cd5ceefd-596d-4fcc-9cc7-542482d42da0" testId="c767f894-c18e-045d-dde6-04509e2d40ad" testName="MissingRequiredFieldRejectsAndMissingOptionalFieldIsAccepted" computerName="worlesenric" duration="00:00:00.0002620" startTime="2026-09-26T00:06:14.6438495+08:00" endTime="2026-09-26T00:06:14.6441114+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cd5ceefd-596d-4fcc-9cc7-542482d42da0" />
+    <UnitTestResult executionId="a5c4a228-b279-4ac9-ad6b-ed72541198e3" testId="9f689456-0cb0-133c-7142-bc46471f7794" testName="ValidDocumentPassesValidationAndTamperingIsDetected" computerName="worlesenric" duration="00:00:00.0003260" startTime="2026-09-26T00:06:14.6668307+08:00" endTime="2026-09-26T00:06:14.6671575+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a5c4a228-b279-4ac9-ad6b-ed72541198e3" />
+    <UnitTestResult executionId="072a868d-9b33-4d53-b716-9c918f4e00ac" testId="87ba53a0-32d3-11c2-b471-5bafa982b663" testName="BufferWithoutAPositiveCapacityRejects" computerName="worlesenric" duration="00:00:00.0003350" startTime="2026-09-26T00:06:14.7002890+08:00" endTime="2026-09-26T00:06:14.7006241+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="072a868d-9b33-4d53-b716-9c918f4e00ac" />
+    <UnitTestResult executionId="f8fa9cbd-6c7e-4040-99ea-ce16ba84565c" testId="b0190318-ff2c-0f99-73b5-26b4af19ff06" testName="DocumentsForAnotherSchemaOrUnknownFeatureReject" computerName="worlesenric" duration="00:00:00.0004580" startTime="2026-09-26T00:06:14.6388303+08:00" endTime="2026-09-26T00:06:14.6392884+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f8fa9cbd-6c7e-4040-99ea-ce16ba84565c" />
+    <UnitTestResult executionId="c48d5bc3-da8c-4ab4-8f8a-c0896f9de7b6" testId="02407b9f-9356-a577-87a4-c51f32a21259" testName="CapabilitySlotWithoutCompositionPolicyRejects" computerName="worlesenric" duration="00:00:00.0005070" startTime="2026-09-26T00:06:14.7023355+08:00" endTime="2026-09-26T00:06:14.7028425+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c48d5bc3-da8c-4ab4-8f8a-c0896f9de7b6" />
+    <UnitTestResult executionId="f9c538c3-6f60-47fa-8d72-b2b36d798101" testId="704ba0cc-1144-3071-d52d-548d85c9377d" testName="UnsupportedProtocolRangeRejects" computerName="worlesenric" duration="00:00:00.0003959" startTime="2026-09-26T00:06:14.7125001+08:00" endTime="2026-09-26T00:06:14.7128958+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f9c538c3-6f60-47fa-8d72-b2b36d798101" />
+    <UnitTestResult executionId="80243c62-1cf0-4aa8-a2d4-0b05e08578dd" testId="77b737f0-c8e7-4fbf-be01-943919968bb6" testName="LookupMissReportsMissingDependencyAndNeverSubstitutes" computerName="worlesenric" duration="00:00:00.0016300" startTime="2026-09-26T00:06:14.6068275+08:00" endTime="2026-09-26T00:06:14.6084583+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="80243c62-1cf0-4aa8-a2d4-0b05e08578dd" />
+    <UnitTestResult executionId="eeb31dbb-409a-4255-98fd-5ad4672d1071" testId="b42f0c6f-a212-6cc3-e0a5-235811ff7bbf" testName="DuplicatePluginTypeIdAcrossTheBatchRejects" computerName="worlesenric" duration="00:00:00.0002280" startTime="2026-09-26T00:06:14.7037800+08:00" endTime="2026-09-26T00:06:14.7040076+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="eeb31dbb-409a-4255-98fd-5ad4672d1071" />
+    <UnitTestResult executionId="40b3c26c-1419-44f6-884e-672828680626" testId="deb2fa5e-7979-9df7-3b96-3b1a40ea064b" testName="DeclaredFieldBufferRecordsPresentFieldsForForwardReads" computerName="worlesenric" duration="00:00:00.0128790" startTime="2026-09-26T00:06:14.6200492+08:00" endTime="2026-09-26T00:06:14.6329283+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="40b3c26c-1419-44f6-884e-672828680626" />
+    <UnitTestResult executionId="524358ea-a8d0-446e-ab39-b026a64d0d01" testId="a68ef81f-e8d8-d746-44c7-9b3ac0b73972" testName="BufferNamingAnUnknownStageRejects" computerName="worlesenric" duration="00:00:00.0250570" startTime="2026-09-26T00:06:14.6749757+08:00" endTime="2026-09-26T00:06:14.7000326+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="524358ea-a8d0-446e-ab39-b026a64d0d01" />
+    <UnitTestResult executionId="06a42c2f-f483-4d0c-81ac-759eb2bbc476" testId="a88aaa27-bdd5-d8c8-30e5-9f5802afc2b9" testName="DuplicateFactoryKeyRejectsWithOwnershipConflict" computerName="worlesenric" duration="00:00:00.0002840" startTime="2026-09-26T00:06:14.6029611+08:00" endTime="2026-09-26T00:06:14.6032450+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="06a42c2f-f483-4d0c-81ac-759eb2bbc476" />
+    <UnitTestResult executionId="d50384fb-dcb4-4f6e-b51d-3a4699ee9c07" testId="fac9c019-f9f8-1ac1-cf2a-9eafd4207a9e" testName="CapabilityStratumOutsideTheDeclaredRangeRejects" computerName="worlesenric" duration="00:00:00.0002090" startTime="2026-09-26T00:06:14.7030591+08:00" endTime="2026-09-26T00:06:14.7032686+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d50384fb-dcb4-4f6e-b51d-3a4699ee9c07" />
+    <UnitTestResult executionId="761a2146-3531-4f62-9d9a-2fe35f6f671f" testId="5261c47a-c193-5745-1ae5-29fd541da276" testName="OverlappingWriteAccessWithoutAnEdgeRejects" computerName="worlesenric" duration="00:00:00.0008460" startTime="2026-09-26T00:06:14.7047809+08:00" endTime="2026-09-26T00:06:14.7056265+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="761a2146-3531-4f62-9d9a-2fe35f6f671f" />
+    <UnitTestResult executionId="afd8d2d4-8b85-497e-91f5-21c865509f87" testId="122c272d-75fa-9961-3088-66d9af67c18d" testName="SchemaLookupDistinguishesUnknownIdentityFromUnacceptedVersion" computerName="worlesenric" duration="00:00:00.0041840" startTime="2026-09-26T00:06:14.6148266+08:00" endTime="2026-09-26T00:06:14.6190106+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="afd8d2d4-8b85-497e-91f5-21c865509f87" />
+    <UnitTestResult executionId="288d3e69-6cf2-44d9-adb2-5da383fc188a" testId="724752dc-210b-653f-848e-3ff5f0ef2388" testName="ComparerReportsRemovedAndChangedLinesAndAcceptsAdditions" computerName="worlesenric" duration="00:00:00.0209890" startTime="2026-09-26T00:06:14.3892180+08:00" endTime="2026-09-26T00:06:14.4101502+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="288d3e69-6cf2-44d9-adb2-5da383fc188a" />
+    <UnitTestResult executionId="931f87ac-3272-49a2-9349-07de6cd4e02b" testId="3599fa26-5d36-de91-baa0-c68e517b6e93" testName="DefaultZeroKeyRejectsAsMissingIdentity" computerName="worlesenric" duration="00:00:00.0029740" startTime="2026-09-26T00:06:14.5997030+08:00" endTime="2026-09-26T00:06:14.6026771+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="931f87ac-3272-49a2-9349-07de6cd4e02b" />
+    <UnitTestResult executionId="45631744-504e-47e1-aaea-9369471c68b5" testId="ce9665bd-b4c0-2ee2-bb73-70ba0fcbede1" testName="RuleReadingItsOwnStratumRejects" computerName="worlesenric" duration="00:00:00.0005780" startTime="2026-09-26T00:06:14.7070291+08:00" endTime="2026-09-26T00:06:14.7076073+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="45631744-504e-47e1-aaea-9369471c68b5" />
+    <UnitTestResult executionId="5424c622-deaf-4892-93e1-c44119ad3347" testId="d1a0265d-86d5-0dab-0d03-e80d1a693823" testName="SchemaWithoutRegisteredSerializerRejectsAsMissingDependency" computerName="worlesenric" duration="00:00:00.0003650" startTime="2026-09-26T00:06:14.6190366+08:00" endTime="2026-09-26T00:06:14.6194009+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5424c622-deaf-4892-93e1-c44119ad3347" />
+    <UnitTestResult executionId="5466fc1a-484e-472f-b331-668057050c36" testId="6c837055-6593-a088-0589-c8b9556a7ea9" testName="BuildAcceptsConsistentTablesAndReportsNoDiagnostics" computerName="worlesenric" duration="00:00:00.0093560" startTime="2026-09-26T00:06:14.5858732+08:00" endTime="2026-09-26T00:06:14.5952288+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5466fc1a-484e-472f-b331-668057050c36" />
+    <UnitTestResult executionId="e8bf9459-7f67-4d33-b626-b5a21af79a63" testId="e63dccbe-df28-b897-b719-fc2d0026486a" testName="CancelOutcomeCarriesTheIdempotencyConflictAndRejectedValues" computerName="worlesenric" duration="00:00:00.0003010" startTime="2026-09-26T00:06:14.5850750+08:00" endTime="2026-09-26T00:06:14.5853763+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e8bf9459-7f67-4d33-b626-b5a21af79a63" />
+    <UnitTestResult executionId="57f59566-b09a-4533-9e9b-6f5981e65414" testId="5f086b5f-dad1-b624-5c5c-36d8d4d1ddf3" testName="UnknownOptionalFieldIsSkippedAndDocumentStillValidates" computerName="worlesenric" duration="00:00:00.0003790" startTime="2026-09-26T00:06:14.6598311+08:00" endTime="2026-09-26T00:06:14.6602111+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="57f59566-b09a-4533-9e9b-6f5981e65414" />
+    <UnitTestResult executionId="7b672d92-7a31-432d-bc16-3b79738fd712" testId="49cade89-af32-3fd5-dd4a-fcee56f97f7c" testName="SystemWithoutAnAccessSetRejects" computerName="worlesenric" duration="00:00:00.0007760" startTime="2026-09-26T00:06:14.7106703+08:00" endTime="2026-09-26T00:06:14.7114463+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7b672d92-7a31-432d-bc16-3b79738fd712" />
+    <UnitTestResult executionId="dc0b08a0-d934-4df1-a9ff-fc1f043fd03a" testId="b4ef1f9f-e19c-ab42-43a2-548b48f15ce4" testName="StageCycleRejectsAsCycle" computerName="worlesenric" duration="00:00:00.0010900" startTime="2026-09-26T00:06:14.7091703+08:00" endTime="2026-09-26T00:06:14.7102601+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="dc0b08a0-d934-4df1-a9ff-fc1f043fd03a" />
+    <UnitTestResult executionId="143dfb2c-d2a3-419e-a249-06beeb32a7d3" testId="571fb6e8-1ec4-d044-c903-d340775f8be1" testName="DuplicateCapabilityContractRejectsAsCapabilityConflict" computerName="worlesenric" duration="00:00:00.0002390" startTime="2026-09-26T00:06:14.7034035+08:00" endTime="2026-09-26T00:06:14.7036428+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="143dfb2c-d2a3-419e-a249-06beeb32a7d3" />
+    <UnitTestResult executionId="ad9dfb95-aafa-4925-aaf6-71617c699719" testId="9c321c59-d14e-d56c-00f4-51a11e03ec13" testName="ValidManifestIsAccepted" computerName="worlesenric" duration="00:00:00.0002160" startTime="2026-09-26T00:06:14.7129062+08:00" endTime="2026-09-26T00:06:14.7131222+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ad9dfb95-aafa-4925-aaf6-71617c699719" />
+    <UnitTestResult executionId="9fcdd934-5838-46e7-b9ff-5d49613fc6fe" testId="54fd4bb0-f5c7-6e1d-7a9e-354e4f2ed17c" testName="OneKeyIdentityAtTwoVersionsRejects" computerName="worlesenric" duration="00:00:00.0002410" startTime="2026-09-26T00:06:14.6108701+08:00" endTime="2026-09-26T00:06:14.6111107+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9fcdd934-5838-46e7-b9ff-5d49613fc6fe" />
+    <UnitTestResult executionId="a121dceb-e1b2-4aa3-83d8-fbd34d4b64fc" testId="7d3bb89e-576e-3a62-b426-fdb6cf34b025" testName="RuleOutputtingAnUndeclaredCapabilityRejects" computerName="worlesenric" duration="00:00:00.0003890" startTime="2026-09-26T00:06:14.7064932+08:00" endTime="2026-09-26T00:06:14.7068817+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a121dceb-e1b2-4aa3-83d8-fbd34d4b64fc" />
+    <UnitTestResult executionId="7625d767-3ec2-4ea4-b4bc-a89e600757c4" testId="f5751006-6a8c-2e31-37ea-63912290d59e" testName="UnknownRequiredFeatureRejects" computerName="worlesenric" duration="00:00:00.0002320" startTime="2026-09-26T00:06:14.7122584+08:00" endTime="2026-09-26T00:06:14.7124908+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7625d767-3ec2-4ea4-b4bc-a89e600757c4" />
+    <UnitTestResult executionId="3fdcc2ef-8a8b-418b-92dc-1cb19d3b9b83" testId="cd486b2b-95af-732a-0baf-3dce7ba81779" testName="PartitionedWritersWithDistinctPartitionsAreAccepted" computerName="worlesenric" duration="00:00:00.0005509" startTime="2026-09-26T00:06:14.7057810+08:00" endTime="2026-09-26T00:06:14.7063324+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3fdcc2ef-8a8b-418b-92dc-1cb19d3b9b83" />
+    <UnitTestResult executionId="7648932e-d643-4304-ad0a-3a589915f7a8" testId="fb8028ae-2b7d-b310-653b-83a587740698" testName="ProductionListingIsDeterministicAndEngineFree" computerName="worlesenric" duration="00:00:00.1326000" startTime="2026-09-26T00:06:14.4258332+08:00" endTime="2026-09-26T00:06:14.5584337+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7648932e-d643-4304-ad0a-3a589915f7a8" />
+    <UnitTestResult executionId="8f7abef9-ee04-474b-bf2d-cdc921f71577" testId="be757aba-b7a1-cfa9-de8d-0d631f760b3c" testName="ProductionSurfaceIsAStrictSupersetOfTheFrozenSeamSnapshot" computerName="worlesenric" duration="00:00:00.0173740" startTime="2026-09-26T00:06:14.5584863+08:00" endTime="2026-09-26T00:06:14.5758599+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8f7abef9-ee04-474b-bf2d-cdc921f71577">
+      <Output>
+        <StdOut>frozen types: 221, production types: 233
+removed or changed lines: 0
+added lines: 75
++  type header: type class GameCore.Contracts.BoundRegistration&lt;TImplementation&gt;
++  type class GameCore.Contracts.BoundRegistration&lt;TImplementation&gt; :: ctor public BoundRegistration`1(GameCore.Contracts.FactoryKey key, System.String stableName, TImplementation implementation)
++  type class GameCore.Contracts.BoundRegistration&lt;TImplementation&gt; :: property public GameCore.Contracts.FactoryKey Key { get; }
++  type class GameCore.Contracts.BoundRegistration&lt;TImplementation&gt; :: property public System.String StableName { get; }
++  type class GameCore.Contracts.BoundRegistration&lt;TImplementation&gt; :: property public TImplementation Implementation { get; }
++  type class GameCore.Contracts.BoundRegistration&lt;TImplementation&gt; :: method public System.String ToString()
++  type header: type class GameCore.Contracts.CatalogBuildResult
++  type class GameCore.Contracts.CatalogBuildResult :: property public GameCore.Contracts.ImmutableCatalog? Catalog { get; }
++  type class GameCore.Contracts.CatalogBuildResult :: property public System.Boolean Succeeded { get; }
++  type class GameCore.Contracts.CatalogBuildResult :: property public System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.Diagnostic&gt; Diagnostics { get; }
++  type class GameCore.Contracts.CatalogBuildResult :: method public System.String Describe()
++  type class GameCore.Contracts.CatalogBuildResult :: method public static GameCore.Contracts.CatalogBuildResult Failure(System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.Diagnostic&gt;? diagnostics)
++  type header: type class GameCore.Contracts.CatalogFingerprint [static]
++  type class GameCore.Contracts.CatalogFingerprint [static] :: field public const System.String Scope
++  type class GameCore.Contracts.CatalogFingerprint [static] :: method public static GameCore.Contracts.ContentHash Compute(System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.FactoryRegistration&gt;? factories, System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.SchemaRegistration&gt;? schemas, System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.Id128&gt;? supportedFeatureIds)
++  type enum GameCore.Contracts.EnvelopeError : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable :: enumvalue public DuplicateField = 17
++  type enum GameCore.Contracts.EnvelopeError : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable :: enumvalue public MissingRequiredField = 16
++  type class GameCore.Contracts.EnvelopeReader :: method public System.Boolean TrySeekTo(System.Int32 offset)
++  type enum GameCore.Contracts.FactoryKind : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable :: enumvalue public Handler = 10
++  type header: type class GameCore.Contracts.GeneratedEnvelopeReader [static]
++  type class GameCore.Contracts.GeneratedEnvelopeReader [static] :: method public static System.Boolean TryReadDeclaredFields(System.Byte[] document, GameCore.Contracts.SchemaRef schema, System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.Id128&gt; knownFeatureIds, System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.GeneratedFieldSlot&gt; declaredSlots, GameCore.Contracts.GeneratedFieldBuffer buffer, out GameCore.Contracts.EnvelopeError error)
++  type header: type class GameCore.Contracts.GeneratedFieldBuffer
++  type class GameCore.Contracts.GeneratedFieldBuffer :: ctor public GeneratedFieldBuffer()
++  type class GameCore.Contracts.GeneratedFieldBuffer :: property public System.Int32 Count { get; }
++  type class GameCore.Contracts.GeneratedFieldBuffer :: method public GameCore.Contracts.EnvelopeField Field(System.Int32 index)
++  type class GameCore.Contracts.GeneratedFieldBuffer :: method public System.Boolean Contains(System.Int32 fieldId)
++  type class GameCore.Contracts.GeneratedFieldBuffer :: method public System.Int32 RecordOffset(System.Int32 index)
++  type header: type struct GameCore.Contracts.GeneratedFieldSlot
++  type struct GameCore.Contracts.GeneratedFieldSlot :: field public readonly GameCore.Contracts.WireType Type
++  type struct GameCore.Contracts.GeneratedFieldSlot :: field public readonly System.Boolean Required
++  type struct GameCore.Contracts.GeneratedFieldSlot :: field public readonly System.Int32 FieldId
++  type struct GameCore.Contracts.GeneratedFieldSlot :: ctor public GeneratedFieldSlot(System.Int32 fieldId, GameCore.Contracts.WireType type, System.Boolean required)
++  type struct GameCore.Contracts.GeneratedFieldSlot :: method public System.String ToString()
++  type header: type class GameCore.Contracts.GeneratedSerializerBase : GameCore.Contracts.ISchemaSerializer
++  type class GameCore.Contracts.GeneratedSerializerBase : GameCore.Contracts.ISchemaSerializer :: property public GameCore.Contracts.FactoryKey Key { get; }
++  type class GameCore.Contracts.GeneratedSerializerBase : GameCore.Contracts.ISchemaSerializer :: property public GameCore.Contracts.SchemaRef Schema { get; }
++  type class GameCore.Contracts.GeneratedSerializerBase : GameCore.Contracts.ISchemaSerializer :: property public System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.Id128&gt; KnownFeatureIds { get; }
++  type class GameCore.Contracts.GeneratedSerializerBase : GameCore.Contracts.ISchemaSerializer :: method public System.Boolean TryValidate(System.Byte[] document, out GameCore.Contracts.EnvelopeError error)
++  type header: type interface GameCore.Contracts.ISchemaSerializer
++  type interface GameCore.Contracts.ISchemaSerializer :: property public GameCore.Contracts.FactoryKey Key { get; }
++  type interface GameCore.Contracts.ISchemaSerializer :: property public GameCore.Contracts.SchemaRef Schema { get; }
++  type interface GameCore.Contracts.ISchemaSerializer :: method public System.Boolean TryValidate(System.Byte[] document, out GameCore.Contracts.EnvelopeError error)
++  type header: type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog
++  type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog :: property public GameCore.Contracts.ContentHash Fingerprint { get; }
++  type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog :: property public System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.FactoryRegistration&gt; Factories { get; }
++  type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog :: property public System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.ISchemaSerializer&gt; Serializers { get; }
++  type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog :: property public System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.Id128&gt; SupportedFeatureIds { get; }
++  type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog :: property public System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.SchemaRegistration&gt; Schemas { get; }
++  type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog :: method public GameCore.Contracts.CatalogLookup Lookup(GameCore.Contracts.FactoryKey key)
++  type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog :: method public GameCore.Contracts.CatalogLookup LookupSchema(GameCore.Contracts.SchemaRef schema)
++  type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog :: method public System.Boolean SupportsFeature(GameCore.Contracts.Id128 featureId)
++  type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog :: method public System.Boolean TryGetSerializer(GameCore.Contracts.SchemaRef schema, out GameCore.Contracts.ISchemaSerializer? serializer)
++  type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog :: method public System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.FactoryKey&gt; FactoryKeysInCanonicalOrder()
++  type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog :: method public static GameCore.Contracts.CatalogBuildResult Build(System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.FactoryRegistration&gt;? factories, System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.SchemaRegistration&gt;? schemas, System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.Id128&gt;? supportedFeatureIds, System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.ISchemaSerializer&gt;? serializers)
++  type header: type class GameCore.Contracts.ManifestValidationReport
++  type class GameCore.Contracts.ManifestValidationReport :: property public System.Boolean IsValid { get; }
++  type class GameCore.Contracts.ManifestValidationReport :: property public System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.Diagnostic&gt; Diagnostics { get; }
++  type class GameCore.Contracts.ManifestValidationReport :: property public System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.PluginTypeId&gt; ValidatedPluginTypes { get; }
++  type class GameCore.Contracts.ManifestValidationReport :: method public System.String Describe()
++  type header: type class GameCore.Contracts.ManifestValidator [static]
++  type class GameCore.Contracts.ManifestValidator [static] :: method public static GameCore.Contracts.ManifestValidationReport Validate(System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.PluginManifest&gt;? manifests, GameCore.Contracts.ICatalog catalog, System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.Id128&gt;? supportedFeatureIds, GameCore.Contracts.ProtocolVersion protocol)
++  type header: type class GameCore.Contracts.StableNameKeyDerivation [static]
++  type class GameCore.Contracts.StableNameKeyDerivation [static] :: field public const System.String AllowedCharacters
++  type class GameCore.Contracts.StableNameKeyDerivation [static] :: field public const System.String Scope
++  type class GameCore.Contracts.StableNameKeyDerivation [static] :: method public static GameCore.Contracts.Id128 Derive(System.String stableName)
++  type class GameCore.Contracts.StableNameKeyDerivation [static] :: method public static System.Boolean IsCanonicalStableName(System.String? stableName)
++  type struct GameCore.Contracts.StateDisposition :: field public readonly GameCore.Contracts.OwnerId DestinationOwner
++  type struct GameCore.Contracts.StateDisposition :: field public readonly System.UInt32 ToVersion
++  type struct GameCore.Contracts.StateDisposition :: ctor public StateDisposition(GameCore.Contracts.StateSlotKey slot, GameCore.Contracts.StateDispositionKind kind, GameCore.Contracts.TargetId transferTo, GameCore.Contracts.FactoryKey migrationKey, GameCore.Contracts.OwnerId destinationOwner)
++  type struct GameCore.Contracts.StateDisposition :: ctor public StateDisposition(GameCore.Contracts.StateSlotKey slot, GameCore.Contracts.StateDispositionKind kind, GameCore.Contracts.TargetId transferTo, GameCore.Contracts.FactoryKey migrationKey, GameCore.Contracts.OwnerId destinationOwner, System.UInt32 toVersion)
++  type enum GameCore.Contracts.StateDispositionKind : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable :: enumvalue public Reset = 5
++  type enum GameCore.Contracts.StateDispositionKind : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable :: enumvalue public RetainDormant = 4
++  type class GameCore.Contracts.StateSlotSpec :: ctor public StateSlotSpec(GameCore.Contracts.SlotId slotId, GameCore.Contracts.OwnerId owner, GameCore.Contracts.SchemaRef schema, GameCore.Contracts.FactoryKey physicalLayoutKey, System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.FieldOwnership&gt;? fieldOwnership, GameCore.Contracts.FactoryKey initPolicy, GameCore.Contracts.FactoryKey configChangePolicy, GameCore.Contracts.FactoryKey versionChangePolicy, GameCore.Contracts.LastSupportPolicy lastSupport, GameCore.Contracts.FactoryKey transferPolicy, System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.FactoryKey&gt;? migrationKeys, System.Boolean resetSupported, System.String? resetReason)
++  type class GameCore.Contracts.StateSlotSpec :: property public System.Boolean ResetSupported { get; }
++  type class GameCore.Contracts.StateSlotSpec :: property public System.String ResetReason { get; }</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="6bfd6f9a-e629-4533-8df5-dbc9e174f6b4" testId="ff276a8f-8ef1-5caa-5163-2a62463c513b" testName="StateSlotWithoutAnOwnerRejects" computerName="worlesenric" duration="00:00:00.0003680" startTime="2026-09-26T00:06:14.7102852+08:00" endTime="2026-09-26T00:06:14.7106527+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6bfd6f9a-e629-4533-8df5-dbc9e174f6b4" />
+    <UnitTestResult executionId="24fe830f-eead-427a-bff6-cdec1c742558" testId="b6021b0f-db46-8881-c2c7-f8e5a962a943" testName="UnknownConfigSchemaRejects" computerName="worlesenric" duration="00:00:00.0001260" startTime="2026-09-26T00:06:14.7121242+08:00" endTime="2026-09-26T00:06:14.7122506+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="24fe830f-eead-427a-bff6-cdec1c742558" />
+    <UnitTestResult executionId="427c5f8f-3bfb-4cf9-ab6c-28804429c87b" testId="58aa9815-e395-5bf2-6a80-ab588fbda59a" testName="TruncatedAndTrailingBytesReject" computerName="worlesenric" duration="00:00:00.0002540" startTime="2026-09-26T00:06:14.6528317+08:00" endTime="2026-09-26T00:06:14.6530867+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="427c5f8f-3bfb-4cf9-ab6c-28804429c87b" />
+    <UnitTestResult executionId="4a7ce6c4-8ac4-4f89-a631-8f18163fb5fe" testId="111eade1-27e8-d618-d0b7-e65d251069b2" testName="CanonicalOrderIsIndependentOfRegistrationOrder" computerName="worlesenric" duration="00:00:00.0039280" startTime="2026-09-26T00:06:14.5955044+08:00" endTime="2026-09-26T00:06:14.5994326+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4a7ce6c4-8ac4-4f89-a631-8f18163fb5fe" />
+    <UnitTestResult executionId="c58c998d-a94c-45ec-8c17-1467791a2b66" testId="aedb8dd1-cf63-61f4-52ec-0f76714756a8" testName="EmptyCatalogIsLegalAndHasAStableFingerprint" computerName="worlesenric" duration="00:00:00.0003890" startTime="2026-09-26T00:06:14.6034198+08:00" endTime="2026-09-26T00:06:14.6038087+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c58c998d-a94c-45ec-8c17-1467791a2b66" />
+    <UnitTestResult executionId="7ec4d783-d6c0-41bb-9ec6-c38e07c72e38" testId="209c9b96-edc9-4485-5d17-5f6238d32ef1" testName="SerializerServingAnotherSchemaRejects" computerName="worlesenric" duration="00:00:00.0002470" startTime="2026-09-26T00:06:14.6194164+08:00" endTime="2026-09-26T00:06:14.6196633+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7ec4d783-d6c0-41bb-9ec6-c38e07c72e38" />
+    <UnitTestResult executionId="ce2d2ffd-4db8-4eb8-9166-dec1b672e0cb" testId="c13ed9d1-cbaa-4b50-a629-db01745429b4" testName="MissingPrecompiledFactoryKeyRejects" computerName="worlesenric" duration="00:00:00.0004840" startTime="2026-09-26T00:06:14.7041570+08:00" endTime="2026-09-26T00:06:14.7046408+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ce2d2ffd-4db8-4eb8-9166-dec1b672e0cb" />
+    <UnitTestResult executionId="ee3f7f4e-b0fe-4473-83c8-9d10f529b27b" testId="14e511a7-3698-d993-1f3e-cf74995f25e1" testName="DerivationMatchesTheCommittedProbeKeyLiterals" computerName="worlesenric" duration="00:00:00.0003060" startTime="2026-09-26T00:06:14.6725800+08:00" endTime="2026-09-26T00:06:14.6728863+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ee3f7f4e-b0fe-4473-83c8-9d10f529b27b" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="SchemaWithoutRegisteredSerializerRejectsAsMissingDependency" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="d1a0265d-86d5-0dab-0d03-e80d1a693823">
+      <Execution id="5424c622-deaf-4892-93e1-c44119ad3347" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.CatalogBuildTests" name="SchemaWithoutRegisteredSerializerRejectsAsMissingDependency" />
+    </UnitTest>
+    <UnitTest name="CapabilityStratumOutsideTheDeclaredRangeRejects" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="fac9c019-f9f8-1ac1-cf2a-9eafd4207a9e">
+      <Execution id="d50384fb-dcb4-4f6e-b51d-3a4699ee9c07" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.ManifestValidationTests" name="CapabilityStratumOutsideTheDeclaredRangeRejects" />
+    </UnitTest>
+    <UnitTest name="UnsupportedFeatureDeclarationIsReportedAsMissingIdentity" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="243b80a2-0258-1628-eb36-f5313203219c">
+      <Execution id="b00c2663-8521-4698-a9b3-a621f10fb82d" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.CatalogBuildTests" name="UnsupportedFeatureDeclarationIsReportedAsMissingIdentity" />
+    </UnitTest>
+    <UnitTest name="DuplicateCapabilityContractRejectsAsCapabilityConflict" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="571fb6e8-1ec4-d044-c903-d340775f8be1">
+      <Execution id="143dfb2c-d2a3-419e-a249-06beeb32a7d3" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.ManifestValidationTests" name="DuplicateCapabilityContractRejectsAsCapabilityConflict" />
+    </UnitTest>
+    <UnitTest name="BufferWithoutAPositiveCapacityRejects" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="87ba53a0-32d3-11c2-b471-5bafa982b663">
+      <Execution id="072a868d-9b33-4d53-b716-9c918f4e00ac" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.ManifestValidationTests" name="BufferWithoutAPositiveCapacityRejects" />
+    </UnitTest>
+    <UnitTest name="StageCycleRejectsAsCycle" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="b4ef1f9f-e19c-ab42-43a2-548b48f15ce4">
+      <Execution id="dc0b08a0-d934-4df1-a9ff-fc1f043fd03a" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.ManifestValidationTests" name="StageCycleRejectsAsCycle" />
+    </UnitTest>
+    <UnitTest name="UnknownConfigSchemaRejects" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="b6021b0f-db46-8881-c2c7-f8e5a962a943">
+      <Execution id="24fe830f-eead-427a-bff6-cdec1c742558" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.ManifestValidationTests" name="UnknownConfigSchemaRejects" />
+    </UnitTest>
+    <UnitTest name="DerivationIsDeterministicAndRejectsNonCanonicalNames" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="c36d962f-f988-52fe-e9e0-65c74450dc27">
+      <Execution id="b4c2e722-69b7-401d-a6b6-c3537dc3192c" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.IdentityDerivationTests" name="DerivationIsDeterministicAndRejectsNonCanonicalNames" />
+    </UnitTest>
+    <UnitTest name="MissingPrecompiledFactoryKeyRejects" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="c13ed9d1-cbaa-4b50-a629-db01745429b4">
+      <Execution id="ce2d2ffd-4db8-4eb8-9166-dec1b672e0cb" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.ManifestValidationTests" name="MissingPrecompiledFactoryKeyRejects" />
+    </UnitTest>
+    <UnitTest name="RuleReadingItsOwnStratumRejects" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="ce9665bd-b4c0-2ee2-bb73-70ba0fcbede1">
+      <Execution id="45631744-504e-47e1-aaea-9369471c68b5" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.ManifestValidationTests" name="RuleReadingItsOwnStratumRejects" />
+    </UnitTest>
+    <UnitTest name="ValidManifestIsAccepted" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="9c321c59-d14e-d56c-00f4-51a11e03ec13">
+      <Execution id="ad9dfb95-aafa-4925-aaf6-71617c699719" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.ManifestValidationTests" name="ValidManifestIsAccepted" />
+    </UnitTest>
+    <UnitTest name="DerivationMatchesTheCommittedProbeKeyLiterals" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="14e511a7-3698-d993-1f3e-cf74995f25e1">
+      <Execution id="ee3f7f4e-b0fe-4473-83c8-9d10f529b27b" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.IdentityDerivationTests" name="DerivationMatchesTheCommittedProbeKeyLiterals" />
+    </UnitTest>
+    <UnitTest name="BuildAcceptsConsistentTablesAndReportsNoDiagnostics" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="6c837055-6593-a088-0589-c8b9556a7ea9">
+      <Execution id="5466fc1a-484e-472f-b331-668057050c36" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.CatalogBuildTests" name="BuildAcceptsConsistentTablesAndReportsNoDiagnostics" />
+    </UnitTest>
+    <UnitTest name="UnregisteredSerializerRejects" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="a3c061e6-b5e1-7570-180b-932ff5121c31">
+      <Execution id="309307a2-ac33-4926-acd0-3caeec18ba0b" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.CatalogBuildTests" name="UnregisteredSerializerRejects" />
+    </UnitTest>
+    <UnitTest name="SystemWithoutAnAccessSetRejects" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="49cade89-af32-3fd5-dd4a-fcee56f97f7c">
+      <Execution id="7b672d92-7a31-432d-bc16-3b79738fd712" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.ManifestValidationTests" name="SystemWithoutAnAccessSetRejects" />
+    </UnitTest>
+    <UnitTest name="MissingRequiredFieldRejectsAndMissingOptionalFieldIsAccepted" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="c767f894-c18e-045d-dde6-04509e2d40ad">
+      <Execution id="cd5ceefd-596d-4fcc-9cc7-542482d42da0" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.GeneratedSerializerContractTests" name="MissingRequiredFieldRejectsAndMissingOptionalFieldIsAccepted" />
+    </UnitTest>
+    <UnitTest name="ProductionListingIsDeterministicAndEngineFree" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="fb8028ae-2b7d-b310-653b-83a587740698">
+      <Execution id="7648932e-d643-4304-ad0a-3a589915f7a8" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.ApiCompatibilityTests" name="ProductionListingIsDeterministicAndEngineFree" />
+    </UnitTest>
+    <UnitTest name="OneKeyIdentityAtTwoVersionsRejects" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="54fd4bb0-f5c7-6e1d-7a9e-354e4f2ed17c">
+      <Execution id="9fcdd934-5838-46e7-b9ff-5d49613fc6fe" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.CatalogBuildTests" name="OneKeyIdentityAtTwoVersionsRejects" />
+    </UnitTest>
+    <UnitTest name="BufferNamingAnUnknownStageRejects" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="a68ef81f-e8d8-d746-44c7-9b3ac0b73972">
+      <Execution id="524358ea-a8d0-446e-ab39-b026a64d0d01" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.ManifestValidationTests" name="BufferNamingAnUnknownStageRejects" />
+    </UnitTest>
+    <UnitTest name="TransferToWithoutATransferPolicyRejects" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="8cca09f9-2e38-adec-1086-a7f56e584373">
+      <Execution id="5dc3a87d-8a2a-4e66-a7ac-78b194e52408" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.ManifestValidationTests" name="TransferToWithoutATransferPolicyRejects" />
+    </UnitTest>
+    <UnitTest name="OverlappingWriteAccessWithoutAnEdgeRejects" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="5261c47a-c193-5745-1ae5-29fd541da276">
+      <Execution id="761a2146-3531-4f62-9d9a-2fe35f6f671f" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.ManifestValidationTests" name="OverlappingWriteAccessWithoutAnEdgeRejects" />
+    </UnitTest>
+    <UnitTest name="StateSlotWithoutAnOwnerRejects" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="ff276a8f-8ef1-5caa-5163-2a62463c513b">
+      <Execution id="6bfd6f9a-e629-4533-8df5-dbc9e174f6b4" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.ManifestValidationTests" name="StateSlotWithoutAnOwnerRejects" />
+    </UnitTest>
+    <UnitTest name="SchemaLookupDistinguishesUnknownIdentityFromUnacceptedVersion" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="122c272d-75fa-9961-3088-66d9af67c18d">
+      <Execution id="afd8d2d4-8b85-497e-91f5-21c865509f87" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.CatalogBuildTests" name="SchemaLookupDistinguishesUnknownIdentityFromUnacceptedVersion" />
+    </UnitTest>
+    <UnitTest name="EmptyCatalogIsLegalAndHasAStableFingerprint" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="aedb8dd1-cf63-61f4-52ec-0f76714756a8">
+      <Execution id="c58c998d-a94c-45ec-8c17-1467791a2b66" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.CatalogBuildTests" name="EmptyCatalogIsLegalAndHasAStableFingerprint" />
+    </UnitTest>
+    <UnitTest name="ValidDocumentPassesValidationAndTamperingIsDetected" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="9f689456-0cb0-133c-7142-bc46471f7794">
+      <Execution id="a5c4a228-b279-4ac9-ad6b-ed72541198e3" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.GeneratedSerializerContractTests" name="ValidDocumentPassesValidationAndTamperingIsDetected" />
+    </UnitTest>
+    <UnitTest name="DocumentsForAnotherSchemaOrUnknownFeatureReject" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="b0190318-ff2c-0f99-73b5-26b4af19ff06">
+      <Execution id="f8fa9cbd-6c7e-4040-99ea-ce16ba84565c" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.GeneratedSerializerContractTests" name="DocumentsForAnotherSchemaOrUnknownFeatureReject" />
+    </UnitTest>
+    <UnitTest name="ComparerReportsRemovedAndChangedLinesAndAcceptsAdditions" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="724752dc-210b-653f-848e-3ff5f0ef2388">
+      <Execution id="288d3e69-6cf2-44d9-adb2-5da383fc188a" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.ApiCompatibilityTests" name="ComparerReportsRemovedAndChangedLinesAndAcceptsAdditions" />
+    </UnitTest>
+    <UnitTest name="DefaultZeroKeyRejectsAsMissingIdentity" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="3599fa26-5d36-de91-baa0-c68e517b6e93">
+      <Execution id="931f87ac-3272-49a2-9349-07de6cd4e02b" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.CatalogBuildTests" name="DefaultZeroKeyRejectsAsMissingIdentity" />
+    </UnitTest>
+    <UnitTest name="UnknownOptionalFieldIsSkippedAndDocumentStillValidates" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="5f086b5f-dad1-b624-5c5c-36d8d4d1ddf3">
+      <Execution id="57f59566-b09a-4533-9e9b-6f5981e65414" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.GeneratedSerializerContractTests" name="UnknownOptionalFieldIsSkippedAndDocumentStillValidates" />
+    </UnitTest>
+    <UnitTest name="CancelOutcomeCarriesTheIdempotencyConflictAndRejectedValues" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="e63dccbe-df28-b897-b719-fc2d0026486a">
+      <Execution id="e8bf9459-7f67-4d33-b626-b5a21af79a63" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.CancelOutcomeContractTests" name="CancelOutcomeCarriesTheIdempotencyConflictAndRejectedValues" />
+    </UnitTest>
+    <UnitTest name="DuplicateDeclaredFieldRejects" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="23d39db5-2d70-2d9c-589d-2769e44c1b56">
+      <Execution id="9572a892-f257-46e4-a2cb-1fb237a2cff4" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.GeneratedSerializerContractTests" name="DuplicateDeclaredFieldRejects" />
+    </UnitTest>
+    <UnitTest name="DeclaredFieldBufferRecordsPresentFieldsForForwardReads" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="deb2fa5e-7979-9df7-3b96-3b1a40ea064b">
+      <Execution id="40b3c26c-1419-44f6-884e-672828680626" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.GeneratedSerializerContractTests" name="DeclaredFieldBufferRecordsPresentFieldsForForwardReads" />
+    </UnitTest>
+    <UnitTest name="PartitionedWritersWithDistinctPartitionsAreAccepted" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="cd486b2b-95af-732a-0baf-3dce7ba81779">
+      <Execution id="3fdcc2ef-8a8b-418b-92dc-1cb19d3b9b83" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.ManifestValidationTests" name="PartitionedWritersWithDistinctPartitionsAreAccepted" />
+    </UnitTest>
+    <UnitTest name="ProductionSurfaceIsAStrictSupersetOfTheFrozenSeamSnapshot" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="be757aba-b7a1-cfa9-de8d-0d631f760b3c">
+      <Execution id="8f7abef9-ee04-474b-bf2d-cdc921f71577" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.ApiCompatibilityTests" name="ProductionSurfaceIsAStrictSupersetOfTheFrozenSeamSnapshot" />
+    </UnitTest>
+    <UnitTest name="CanonicalOrderIsIndependentOfRegistrationOrder" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="111eade1-27e8-d618-d0b7-e65d251069b2">
+      <Execution id="4a7ce6c4-8ac4-4f89-a631-8f18163fb5fe" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.CatalogBuildTests" name="CanonicalOrderIsIndependentOfRegistrationOrder" />
+    </UnitTest>
+    <UnitTest name="RuleOutputtingAnUndeclaredCapabilityRejects" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="7d3bb89e-576e-3a62-b426-fdb6cf34b025">
+      <Execution id="a121dceb-e1b2-4aa3-83d8-fbd34d4b64fc" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.ManifestValidationTests" name="RuleOutputtingAnUndeclaredCapabilityRejects" />
+    </UnitTest>
+    <UnitTest name="DuplicateFactoryKeyRejectsWithOwnershipConflict" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="a88aaa27-bdd5-d8c8-30e5-9f5802afc2b9">
+      <Execution id="06a42c2f-f483-4d0c-81ac-759eb2bbc476" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.CatalogBuildTests" name="DuplicateFactoryKeyRejectsWithOwnershipConflict" />
+    </UnitTest>
+    <UnitTest name="UnacceptedSchemaVersionRejectsAsUnsupportedVersion" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="710fd52c-a087-f30a-a7ea-121d2afcc6d2">
+      <Execution id="aa6e41d8-c37f-4ad8-a4a2-88d01669fd0b" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.ManifestValidationTests" name="UnacceptedSchemaVersionRejectsAsUnsupportedVersion" />
+    </UnitTest>
+    <UnitTest name="CapabilitySlotWithoutCompositionPolicyRejects" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="02407b9f-9356-a577-87a4-c51f32a21259">
+      <Execution id="c48d5bc3-da8c-4ab4-8f8a-c0896f9de7b6" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.ManifestValidationTests" name="CapabilitySlotWithoutCompositionPolicyRejects" />
+    </UnitTest>
+    <UnitTest name="SerializerServingAnotherSchemaRejects" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="209c9b96-edc9-4485-5d17-5f6238d32ef1">
+      <Execution id="7ec4d783-d6c0-41bb-9ec6-c38e07c72e38" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.CatalogBuildTests" name="SerializerServingAnotherSchemaRejects" />
+    </UnitTest>
+    <UnitTest name="UnknownRequiredFeatureRejects" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="f5751006-6a8c-2e31-37ea-63912290d59e">
+      <Execution id="7625d767-3ec2-4ea4-b4bc-a89e600757c4" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.ManifestValidationTests" name="UnknownRequiredFeatureRejects" />
+    </UnitTest>
+    <UnitTest name="TruncatedAndTrailingBytesReject" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="58aa9815-e395-5bf2-6a80-ab588fbda59a">
+      <Execution id="427c5f8f-3bfb-4cf9-ab6c-28804429c87b" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.GeneratedSerializerContractTests" name="TruncatedAndTrailingBytesReject" />
+    </UnitTest>
+    <UnitTest name="DuplicatePluginTypeIdAcrossTheBatchRejects" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="b42f0c6f-a212-6cc3-e0a5-235811ff7bbf">
+      <Execution id="eeb31dbb-409a-4255-98fd-5ad4672d1071" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.ManifestValidationTests" name="DuplicatePluginTypeIdAcrossTheBatchRejects" />
+    </UnitTest>
+    <UnitTest name="LookupMissReportsMissingDependencyAndNeverSubstitutes" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="77b737f0-c8e7-4fbf-be01-943919968bb6">
+      <Execution id="80243c62-1cf0-4aa8-a2d4-0b05e08578dd" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.CatalogBuildTests" name="LookupMissReportsMissingDependencyAndNeverSubstitutes" />
+    </UnitTest>
+    <UnitTest name="UnsupportedProtocolRangeRejects" storage="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/gamecore.contracts.tests/bin/release/net8.0/gamecore.contracts.tests.dll" id="704ba0cc-1144-3071-d52d-548d85c9377d">
+      <Execution id="f9c538c3-6f60-47fa-8d72-b2b36d798101" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Contracts.Tests.ManifestValidationTests" name="UnsupportedProtocolRangeRejects" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="23d39db5-2d70-2d9c-589d-2769e44c1b56" executionId="9572a892-f257-46e4-a2cb-1fb237a2cff4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8cca09f9-2e38-adec-1086-a7f56e584373" executionId="5dc3a87d-8a2a-4e66-a7ac-78b194e52408" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c36d962f-f988-52fe-e9e0-65c74450dc27" executionId="b4c2e722-69b7-401d-a6b6-c3537dc3192c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="710fd52c-a087-f30a-a7ea-121d2afcc6d2" executionId="aa6e41d8-c37f-4ad8-a4a2-88d01669fd0b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="243b80a2-0258-1628-eb36-f5313203219c" executionId="b00c2663-8521-4698-a9b3-a621f10fb82d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a3c061e6-b5e1-7570-180b-932ff5121c31" executionId="309307a2-ac33-4926-acd0-3caeec18ba0b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c767f894-c18e-045d-dde6-04509e2d40ad" executionId="cd5ceefd-596d-4fcc-9cc7-542482d42da0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9f689456-0cb0-133c-7142-bc46471f7794" executionId="a5c4a228-b279-4ac9-ad6b-ed72541198e3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="87ba53a0-32d3-11c2-b471-5bafa982b663" executionId="072a868d-9b33-4d53-b716-9c918f4e00ac" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b0190318-ff2c-0f99-73b5-26b4af19ff06" executionId="f8fa9cbd-6c7e-4040-99ea-ce16ba84565c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="02407b9f-9356-a577-87a4-c51f32a21259" executionId="c48d5bc3-da8c-4ab4-8f8a-c0896f9de7b6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="704ba0cc-1144-3071-d52d-548d85c9377d" executionId="f9c538c3-6f60-47fa-8d72-b2b36d798101" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="77b737f0-c8e7-4fbf-be01-943919968bb6" executionId="80243c62-1cf0-4aa8-a2d4-0b05e08578dd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b42f0c6f-a212-6cc3-e0a5-235811ff7bbf" executionId="eeb31dbb-409a-4255-98fd-5ad4672d1071" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="deb2fa5e-7979-9df7-3b96-3b1a40ea064b" executionId="40b3c26c-1419-44f6-884e-672828680626" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a68ef81f-e8d8-d746-44c7-9b3ac0b73972" executionId="524358ea-a8d0-446e-ab39-b026a64d0d01" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a88aaa27-bdd5-d8c8-30e5-9f5802afc2b9" executionId="06a42c2f-f483-4d0c-81ac-759eb2bbc476" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fac9c019-f9f8-1ac1-cf2a-9eafd4207a9e" executionId="d50384fb-dcb4-4f6e-b51d-3a4699ee9c07" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5261c47a-c193-5745-1ae5-29fd541da276" executionId="761a2146-3531-4f62-9d9a-2fe35f6f671f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="122c272d-75fa-9961-3088-66d9af67c18d" executionId="afd8d2d4-8b85-497e-91f5-21c865509f87" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="724752dc-210b-653f-848e-3ff5f0ef2388" executionId="288d3e69-6cf2-44d9-adb2-5da383fc188a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3599fa26-5d36-de91-baa0-c68e517b6e93" executionId="931f87ac-3272-49a2-9349-07de6cd4e02b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ce9665bd-b4c0-2ee2-bb73-70ba0fcbede1" executionId="45631744-504e-47e1-aaea-9369471c68b5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d1a0265d-86d5-0dab-0d03-e80d1a693823" executionId="5424c622-deaf-4892-93e1-c44119ad3347" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6c837055-6593-a088-0589-c8b9556a7ea9" executionId="5466fc1a-484e-472f-b331-668057050c36" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e63dccbe-df28-b897-b719-fc2d0026486a" executionId="e8bf9459-7f67-4d33-b626-b5a21af79a63" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5f086b5f-dad1-b624-5c5c-36d8d4d1ddf3" executionId="57f59566-b09a-4533-9e9b-6f5981e65414" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="49cade89-af32-3fd5-dd4a-fcee56f97f7c" executionId="7b672d92-7a31-432d-bc16-3b79738fd712" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b4ef1f9f-e19c-ab42-43a2-548b48f15ce4" executionId="dc0b08a0-d934-4df1-a9ff-fc1f043fd03a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="571fb6e8-1ec4-d044-c903-d340775f8be1" executionId="143dfb2c-d2a3-419e-a249-06beeb32a7d3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9c321c59-d14e-d56c-00f4-51a11e03ec13" executionId="ad9dfb95-aafa-4925-aaf6-71617c699719" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="54fd4bb0-f5c7-6e1d-7a9e-354e4f2ed17c" executionId="9fcdd934-5838-46e7-b9ff-5d49613fc6fe" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7d3bb89e-576e-3a62-b426-fdb6cf34b025" executionId="a121dceb-e1b2-4aa3-83d8-fbd34d4b64fc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f5751006-6a8c-2e31-37ea-63912290d59e" executionId="7625d767-3ec2-4ea4-b4bc-a89e600757c4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cd486b2b-95af-732a-0baf-3dce7ba81779" executionId="3fdcc2ef-8a8b-418b-92dc-1cb19d3b9b83" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fb8028ae-2b7d-b310-653b-83a587740698" executionId="7648932e-d643-4304-ad0a-3a589915f7a8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="be757aba-b7a1-cfa9-de8d-0d631f760b3c" executionId="8f7abef9-ee04-474b-bf2d-cdc921f71577" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ff276a8f-8ef1-5caa-5163-2a62463c513b" executionId="6bfd6f9a-e629-4533-8df5-dbc9e174f6b4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b6021b0f-db46-8881-c2c7-f8e5a962a943" executionId="24fe830f-eead-427a-bff6-cdec1c742558" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="58aa9815-e395-5bf2-6a80-ab588fbda59a" executionId="427c5f8f-3bfb-4cf9-ab6c-28804429c87b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="111eade1-27e8-d618-d0b7-e65d251069b2" executionId="4a7ce6c4-8ac4-4f89-a631-8f18163fb5fe" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="aedb8dd1-cf63-61f4-52ec-0f76714756a8" executionId="c58c998d-a94c-45ec-8c17-1467791a2b66" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="209c9b96-edc9-4485-5d17-5f6238d32ef1" executionId="7ec4d783-d6c0-41bb-9ec6-c38e07c72e38" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c13ed9d1-cbaa-4b50-a629-db01745429b4" executionId="ce2d2ffd-4db8-4eb8-9166-dec1b672e0cb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="14e511a7-3698-d993-1f3e-cf74995f25e1" executionId="ee3f7f4e-b0fe-4473-83c8-9d10f529b27b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="45" executed="45" passed="45" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 4.5.0.0: Test execution started
+Running all tests in /home/worlesenric/wkspace/gc-wt/w4-gate/dotnet/tests/GameCore.Contracts.Tests/bin/Release/net8.0/GameCore.Contracts.Tests.dll
+   NUnit3TestExecutor discovered 45 of 45 NUnit test cases using Current Discovery mode, Non-Explicit run
+NUnit Adapter 4.5.0.0: Test execution complete
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="worlesenric" outcome="Warning" timestamp="2026-09-26T00:06:14.5837571+08:00">
+        <Text>frozen types: 221, production types: 233
+removed or changed lines: 0
+added lines: 75
++  type header: type class GameCore.Contracts.BoundRegistration&lt;TImplementation&gt;
++  type class GameCore.Contracts.BoundRegistration&lt;TImplementation&gt; :: ctor public BoundRegistration`1(GameCore.Contracts.FactoryKey key, System.String stableName, TImplementation implementation)
++  type class GameCore.Contracts.BoundRegistration&lt;TImplementation&gt; :: property public GameCore.Contracts.FactoryKey Key { get; }
++  type class GameCore.Contracts.BoundRegistration&lt;TImplementation&gt; :: property public System.String StableName { get; }
++  type class GameCore.Contracts.BoundRegistration&lt;TImplementation&gt; :: property public TImplementation Implementation { get; }
++  type class GameCore.Contracts.BoundRegistration&lt;TImplementation&gt; :: method public System.String ToString()
++  type header: type class GameCore.Contracts.CatalogBuildResult
++  type class GameCore.Contracts.CatalogBuildResult :: property public GameCore.Contracts.ImmutableCatalog? Catalog { get; }
++  type class GameCore.Contracts.CatalogBuildResult :: property public System.Boolean Succeeded { get; }
++  type class GameCore.Contracts.CatalogBuildResult :: property public System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.Diagnostic&gt; Diagnostics { get; }
++  type class GameCore.Contracts.CatalogBuildResult :: method public System.String Describe()
++  type class GameCore.Contracts.CatalogBuildResult :: method public static GameCore.Contracts.CatalogBuildResult Failure(System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.Diagnostic&gt;? diagnostics)
++  type header: type class GameCore.Contracts.CatalogFingerprint [static]
++  type class GameCore.Contracts.CatalogFingerprint [static] :: field public const System.String Scope
++  type class GameCore.Contracts.CatalogFingerprint [static] :: method public static GameCore.Contracts.ContentHash Compute(System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.FactoryRegistration&gt;? factories, System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.SchemaRegistration&gt;? schemas, System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.Id128&gt;? supportedFeatureIds)
++  type enum GameCore.Contracts.EnvelopeError : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable :: enumvalue public DuplicateField = 17
++  type enum GameCore.Contracts.EnvelopeError : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable :: enumvalue public MissingRequiredField = 16
++  type class GameCore.Contracts.EnvelopeReader :: method public System.Boolean TrySeekTo(System.Int32 offset)
++  type enum GameCore.Contracts.FactoryKind : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable :: enumvalue public Handler = 10
++  type header: type class GameCore.Contracts.GeneratedEnvelopeReader [static]
++  type class GameCore.Contracts.GeneratedEnvelopeReader [static] :: method public static System.Boolean TryReadDeclaredFields(System.Byte[] document, GameCore.Contracts.SchemaRef schema, System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.Id128&gt; knownFeatureIds, System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.GeneratedFieldSlot&gt; declaredSlots, GameCore.Contracts.GeneratedFieldBuffer buffer, out GameCore.Contracts.EnvelopeError error)
++  type header: type class GameCore.Contracts.GeneratedFieldBuffer
++  type class GameCore.Contracts.GeneratedFieldBuffer :: ctor public GeneratedFieldBuffer()
++  type class GameCore.Contracts.GeneratedFieldBuffer :: property public System.Int32 Count { get; }
++  type class GameCore.Contracts.GeneratedFieldBuffer :: method public GameCore.Contracts.EnvelopeField Field(System.Int32 index)
++  type class GameCore.Contracts.GeneratedFieldBuffer :: method public System.Boolean Contains(System.Int32 fieldId)
++  type class GameCore.Contracts.GeneratedFieldBuffer :: method public System.Int32 RecordOffset(System.Int32 index)
++  type header: type struct GameCore.Contracts.GeneratedFieldSlot
++  type struct GameCore.Contracts.GeneratedFieldSlot :: field public readonly GameCore.Contracts.WireType Type
++  type struct GameCore.Contracts.GeneratedFieldSlot :: field public readonly System.Boolean Required
++  type struct GameCore.Contracts.GeneratedFieldSlot :: field public readonly System.Int32 FieldId
++  type struct GameCore.Contracts.GeneratedFieldSlot :: ctor public GeneratedFieldSlot(System.Int32 fieldId, GameCore.Contracts.WireType type, System.Boolean required)
++  type struct GameCore.Contracts.GeneratedFieldSlot :: method public System.String ToString()
++  type header: type class GameCore.Contracts.GeneratedSerializerBase : GameCore.Contracts.ISchemaSerializer
++  type class GameCore.Contracts.GeneratedSerializerBase : GameCore.Contracts.ISchemaSerializer :: property public GameCore.Contracts.FactoryKey Key { get; }
++  type class GameCore.Contracts.GeneratedSerializerBase : GameCore.Contracts.ISchemaSerializer :: property public GameCore.Contracts.SchemaRef Schema { get; }
++  type class GameCore.Contracts.GeneratedSerializerBase : GameCore.Contracts.ISchemaSerializer :: property public System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.Id128&gt; KnownFeatureIds { get; }
++  type class GameCore.Contracts.GeneratedSerializerBase : GameCore.Contracts.ISchemaSerializer :: method public System.Boolean TryValidate(System.Byte[] document, out GameCore.Contracts.EnvelopeError error)
++  type header: type interface GameCore.Contracts.ISchemaSerializer
++  type interface GameCore.Contracts.ISchemaSerializer :: property public GameCore.Contracts.FactoryKey Key { get; }
++  type interface GameCore.Contracts.ISchemaSerializer :: property public GameCore.Contracts.SchemaRef Schema { get; }
++  type interface GameCore.Contracts.ISchemaSerializer :: method public System.Boolean TryValidate(System.Byte[] document, out GameCore.Contracts.EnvelopeError error)
++  type header: type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog
++  type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog :: property public GameCore.Contracts.ContentHash Fingerprint { get; }
++  type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog :: property public System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.FactoryRegistration&gt; Factories { get; }
++  type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog :: property public System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.ISchemaSerializer&gt; Serializers { get; }
++  type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog :: property public System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.Id128&gt; SupportedFeatureIds { get; }
++  type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog :: property public System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.SchemaRegistration&gt; Schemas { get; }
++  type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog :: method public GameCore.Contracts.CatalogLookup Lookup(GameCore.Contracts.FactoryKey key)
++  type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog :: method public GameCore.Contracts.CatalogLookup LookupSchema(GameCore.Contracts.SchemaRef schema)
++  type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog :: method public System.Boolean SupportsFeature(GameCore.Contracts.Id128 featureId)
++  type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog :: method public System.Boolean TryGetSerializer(GameCore.Contracts.SchemaRef schema, out GameCore.Contracts.ISchemaSerializer? serializer)
++  type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog :: method public System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.FactoryKey&gt; FactoryKeysInCanonicalOrder()
++  type class GameCore.Contracts.ImmutableCatalog : GameCore.Contracts.ICatalog :: method public static GameCore.Contracts.CatalogBuildResult Build(System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.FactoryRegistration&gt;? factories, System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.SchemaRegistration&gt;? schemas, System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.Id128&gt;? supportedFeatureIds, System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.ISchemaSerializer&gt;? serializers)
++  type header: type class GameCore.Contracts.ManifestValidationReport
++  type class GameCore.Contracts.ManifestValidationReport :: property public System.Boolean IsValid { get; }
++  type class GameCore.Contracts.ManifestValidationReport :: property public System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.Diagnostic&gt; Diagnostics { get; }
++  type class GameCore.Contracts.ManifestValidationReport :: property public System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.PluginTypeId&gt; ValidatedPluginTypes { get; }
++  type class GameCore.Contracts.ManifestValidationReport :: method public System.String Describe()
++  type header: type class GameCore.Contracts.ManifestValidator [static]
++  type class GameCore.Contracts.ManifestValidator [static] :: method public static GameCore.Contracts.ManifestValidationReport Validate(System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.PluginManifest&gt;? manifests, GameCore.Contracts.ICatalog catalog, System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.Id128&gt;? supportedFeatureIds, GameCore.Contracts.ProtocolVersion protocol)
++  type header: type class GameCore.Contracts.StableNameKeyDerivation [static]
++  type class GameCore.Contracts.StableNameKeyDerivation [static] :: field public const System.String AllowedCharacters
++  type class GameCore.Contracts.StableNameKeyDerivation [static] :: field public const System.String Scope
++  type class GameCore.Contracts.StableNameKeyDerivation [static] :: method public static GameCore.Contracts.Id128 Derive(System.String stableName)
++  type class GameCore.Contracts.StableNameKeyDerivation [static] :: method public static System.Boolean IsCanonicalStableName(System.String? stableName)
++  type struct GameCore.Contracts.StateDisposition :: field public readonly GameCore.Contracts.OwnerId DestinationOwner
++  type struct GameCore.Contracts.StateDisposition :: field public readonly System.UInt32 ToVersion
++  type struct GameCore.Contracts.StateDisposition :: ctor public StateDisposition(GameCore.Contracts.StateSlotKey slot, GameCore.Contracts.StateDispositionKind kind, GameCore.Contracts.TargetId transferTo, GameCore.Contracts.FactoryKey migrationKey, GameCore.Contracts.OwnerId destinationOwner)
++  type struct GameCore.Contracts.StateDisposition :: ctor public StateDisposition(GameCore.Contracts.StateSlotKey slot, GameCore.Contracts.StateDispositionKind kind, GameCore.Contracts.TargetId transferTo, GameCore.Contracts.FactoryKey migrationKey, GameCore.Contracts.OwnerId destinationOwner, System.UInt32 toVersion)
++  type enum GameCore.Contracts.StateDispositionKind : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable :: enumvalue public Reset = 5
++  type enum GameCore.Contracts.StateDispositionKind : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable :: enumvalue public RetainDormant = 4
++  type class GameCore.Contracts.StateSlotSpec :: ctor public StateSlotSpec(GameCore.Contracts.SlotId slotId, GameCore.Contracts.OwnerId owner, GameCore.Contracts.SchemaRef schema, GameCore.Contracts.FactoryKey physicalLayoutKey, System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.FieldOwnership&gt;? fieldOwnership, GameCore.Contracts.FactoryKey initPolicy, GameCore.Contracts.FactoryKey configChangePolicy, GameCore.Contracts.FactoryKey versionChangePolicy, GameCore.Contracts.LastSupportPolicy lastSupport, GameCore.Contracts.FactoryKey transferPolicy, System.Collections.Generic.IReadOnlyList&lt;GameCore.Contracts.FactoryKey&gt;? migrationKeys, System.Boolean resetSupported, System.String? resetReason)
++  type class GameCore.Contracts.StateSlotSpec :: property public System.Boolean ResetSupported { get; }
++  type class GameCore.Contracts.StateSlotSpec :: property public System.String ResetReason { get; }
+
+</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>
