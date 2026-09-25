@@ -37,6 +37,7 @@ using System.Globalization;
 using GameCore.Contracts;
 using GameCore.Execution;
 using GameCore.Planning;
+using GameCore.Unity.Runtime.Faults;
 using Unity.Entities;
 
 namespace GameCore.Unity.Runtime
@@ -144,9 +145,25 @@ namespace GameCore.Unity.Runtime
             + (Detail.Length == 0 ? string.Empty : ": " + Detail);
     }
 
-    /// <summary>Injected faults for the fault-boundary tests; a production pipeline never arms these (TEST-016).</summary>
+    /// <summary>
+    /// Injected faults for the fault-boundary tests; a production pipeline never arms these (TEST-016, GC-017).
+    ///
+    /// Two shapes live here and both are needed. <see cref="FailDuringMigration"/> and
+    /// <see cref="FailAfterFirstLiveWrite"/> are the original GC-008 switches that throw directly out of the
+    /// migration stage and out of the apply stage. <see cref="Arm"/> and <see cref="TryReach"/> are the GC-017
+    /// enumerated latch: every TEST-016 boundary is named by <see cref="FaultBoundary"/>, armed by identity,
+    /// reached at exactly one place in the real code path, and recorded — with its operation and plan identity —
+    /// in <see cref="Trace"/>, so an evidence file shows the sequence instead of a boolean.
+    ///
+    /// Nothing arms a boundary in production, and a compilation that does not define
+    /// <see cref="FaultCompilation.Symbol"/> carries no reaching implementation at all
+    /// (<see cref="IsCompiledIn"/> reports which build this is).
+    /// </summary>
     public sealed class AssemblyFaultInjection
     {
+        private readonly bool[] armed = new bool[FaultBoundaryText.Count];
+        private readonly int[] reachCounts = new int[FaultBoundaryText.Count];
+
         /// <summary>Throws inside the prewrite migration stage, i.e. before any live write (P-029).</summary>
         public bool FailDuringMigration { get; set; }
 
@@ -157,6 +174,36 @@ namespace GameCore.Unity.Runtime
         public int MigrationInjections { get; private set; }
 
         public int PostWriteInjections { get; private set; }
+
+        /// <summary>True when this compilation carries the GC-017 latch implementation at all.</summary>
+        public bool IsCompiledIn => FaultCompilation.IsCompiledIn;
+
+        /// <summary>Ordered trace of every boundary this world reached, injected or not (GC-017 evidence).</summary>
+        public FaultTrace Trace { get; } = new FaultTrace();
+
+        /// <summary>Boundary reaches attempted; every one is recorded in <see cref="Trace"/>.</summary>
+        public int ReachCount { get; private set; }
+
+        /// <summary>Faults actually raised; equals <see cref="FaultTrace.InjectedCount"/>.</summary>
+        public int InjectedCount { get; private set; }
+
+        /// <summary>Armed boundaries, so a test can assert a boundary was armed and then disarmed.</summary>
+        public int ArmedBoundaryCount
+        {
+            get
+            {
+                int count = 0;
+                for (int i = 0; i < armed.Length; i++)
+                {
+                    if (armed[i])
+                    {
+                        count++;
+                    }
+                }
+
+                return count;
+            }
+        }
 
         /// <summary>Raises the prewrite injection if armed; called by the publisher inside the migration stage.</summary>
         public void MaybeFailDuringMigration()
@@ -182,6 +229,103 @@ namespace GameCore.Unity.Runtime
             PostWriteInjections++;
             throw new InvalidOperationException(
                 "injected postwrite failure: the world must fault without publishing or resuming (P-031)");
+        }
+
+        /// <summary>Arms one boundary; chained so a test arms several in one expression.</summary>
+        public AssemblyFaultInjection Arm(FaultBoundary boundary)
+        {
+            armed[Index(boundary)] = true;
+            return this;
+        }
+
+        public AssemblyFaultInjection Disarm(FaultBoundary boundary)
+        {
+            armed[Index(boundary)] = false;
+            return this;
+        }
+
+        /// <summary>Disarms every boundary; a test calls this before its next case so latches never leak.</summary>
+        public AssemblyFaultInjection DisarmAll()
+        {
+            for (int i = 0; i < armed.Length; i++)
+            {
+                armed[i] = false;
+            }
+
+            return this;
+        }
+
+        public bool IsArmed(FaultBoundary boundary) => armed[Index(boundary)];
+
+        /// <summary>Times one boundary was reached, whether or not it was armed.</summary>
+        public int ReachCountOf(FaultBoundary boundary) => reachCounts[Index(boundary)];
+
+        /// <summary>
+        /// Reaches one boundary: records the reach with its operation and plan provenance, and raises
+        /// <see cref="FaultInjectedException"/> when that boundary is armed (P-052: a failure names its phase and
+        /// its operation). Returns false — having only recorded the reach — otherwise.
+        /// </summary>
+        public bool TryReach(FaultBoundary boundary, OperationId operation, ContentHash planHash, string detail)
+        {
+            int index = Index(boundary);
+            ReachCount++;
+            reachCounts[index]++;
+            bool injected = armed[index];
+            string text = detail ?? string.Empty;
+            Trace.Add(boundary, operation, planHash, injected, text);
+            if (!injected)
+            {
+                return false;
+            }
+
+            InjectedCount++;
+            throw new FaultInjectedException(
+                boundary,
+                "injected " + FaultBoundaryText.Of(boundary) + " fault: " + text);
+        }
+
+        /// <summary>
+        /// Reaches one boundary whose failure is a refusal value rather than an exception — the staged-resource
+        /// gate's contract reports <c>ResourceUnavailable</c> instead of throwing (P-029). Records the reach with
+        /// the same trace as <see cref="TryReach"/> and returns true when the armed boundary refused the call.
+        /// </summary>
+        public bool TryRefuse(FaultBoundary boundary, string detail)
+        {
+            int index = Index(boundary);
+            ReachCount++;
+            reachCounts[index]++;
+            if (!armed[index])
+            {
+                return false;
+            }
+
+            InjectedCount++;
+            Trace.Add(
+                boundary,
+                default(OperationId),
+                ContentHash.Empty,
+                true,
+                (detail ?? string.Empty) + " (refused as a value)");
+            return true;
+        }
+
+        /// <summary>One-line summary of the latch state and its trace, for a failure message or an evidence file.</summary>
+        public string Describe() =>
+            "compiledIn=" + (IsCompiledIn ? "1" : "0")
+            + " armed=" + ArmedBoundaryCount.ToString(CultureInfo.InvariantCulture)
+            + " reached=" + ReachCount.ToString(CultureInfo.InvariantCulture)
+            + " injected=" + InjectedCount.ToString(CultureInfo.InvariantCulture)
+            + " records=" + Trace.Count.ToString(CultureInfo.InvariantCulture);
+
+        private static int Index(FaultBoundary boundary)
+        {
+            int index = (int)boundary;
+            if (index < 0 || index >= FaultBoundaryText.Count)
+            {
+                throw new ArgumentOutOfRangeException(nameof(boundary), "Unknown fault boundary " + index + ".");
+            }
+
+            return index;
         }
     }
 
@@ -232,6 +376,11 @@ namespace GameCore.Unity.Runtime
                     nameof(descriptor));
             }
 
+            // The fault latch belongs to the world, not to this publisher: the execution driver, the staged-resource
+            // gate and the publisher of one world share one latch, so a boundary armed by a test is the boundary the
+            // real apply path reaches (GC-017). `Faults` below reads that one instance.
+            Faults = world.Faults;
+
             PublishedRevision = CompositionRevision.First;
             AdoptedLaneRevision = CompositionRevision.Zero;
             AdoptedLaneEpoch = AssemblyEpoch.Zero;
@@ -262,8 +411,11 @@ namespace GameCore.Unity.Runtime
 
         public OwnershipStageDescriptor Descriptor => descriptor;
 
-        /// <summary>Injected-fault switches; unset in production (TEST-016).</summary>
-        public AssemblyFaultInjection Faults { get; } = new AssemblyFaultInjection();
+        /// <summary>
+        /// The fault latch of this world; unarmed in production (TEST-016). It is the instance the world's driver
+        /// and staged-resource gate reach as well, so one arm covers the whole apply boundary.
+        /// </summary>
+        public AssemblyFaultInjection Faults { get; }
 
         /// <summary>The one published assembly reference; every reader captures one reference from here (P-030).</summary>
         public PublishedWorldView Published => assembly.Read();
@@ -380,7 +532,21 @@ namespace GameCore.Unity.Runtime
                     "the plan is not prepared; publication requires a validated, prepared plan (P-027).");
             }
 
-            // 2. Recheck the expected revision and base epoch before touching anything (P-028, P-030).
+            // 2. Validation boundary (GC-017, TEST-016 row 1). An injected validation fault is a prewrite refusal:
+            //    the prior published epoch, its live state and its registrations all remain active (P-028, P-029).
+            AssemblyPublicationReport? validationFault = ReachPrewriteFault(
+                publication,
+                epochBefore,
+                laneEpoch,
+                0,
+                FaultBoundary.Validation,
+                "injected validation fault: the prepared plan is refused before the fence");
+            if (validationFault != null)
+            {
+                return validationFault;
+            }
+
+            // 3. Recheck the expected revision and base epoch before touching anything (P-028, P-030).
             if (!publication.State.RecheckBase(PublishedRevision, epochBefore, out DiagnosticCode recheckCode))
             {
                 StalePlanCount++;
@@ -473,14 +639,37 @@ namespace GameCore.Unity.Runtime
                     + "; the composition series and the published series must be the same one (P-006).");
             }
 
-            // P-006 increments the revision and the epoch at the same publication, so both are taken from the
-            // adopted composition publication rather than recomputed: the numbers are the lane's, not an offset.
-            AssemblyEpoch nextEpoch = AdoptedLaneEpoch;
-            CompositionRevision nextRevision = AdoptedLaneRevision;
+            // 4. Acquisition boundary (GC-017, TEST-016 row 2): the staged leases of this plan are still inert and
+            //    unpublished here, so a fault rejects and releases exactly what the plan staged.
+            AssemblyPublicationReport? acquisitionFault = ReachPrewriteFault(
+                publication,
+                epochBefore,
+                laneEpoch,
+                0,
+                FaultBoundary.Acquisition,
+                "injected acquisition fault: the plan's staged leases are released and the old assembly stays active");
+            if (acquisitionFault != null)
+            {
+                return acquisitionFault;
+            }
 
-            // 4. The fence: admission closes and every tracked handle of the old assembly completes before its
+            // 5. The fence: admission closes and every tracked handle of the old assembly completes before its
             //    storage is touched (P-030, P-041, P-047).
             int drained = FenceOldAssembly();
+
+            // 5b. Fence boundary (GC-017, TEST-016 row 4): the fence itself completed, so the tracked handle count
+            //     is reported with the refusal while the old assembly remains the published one.
+            AssemblyPublicationReport? fenceFault = ReachPrewriteFault(
+                publication,
+                epochBefore,
+                laneEpoch,
+                drained,
+                FaultBoundary.Fence,
+                "injected fence fault: every tracked handle was settled and the old assembly stays active");
+            if (fenceFault != null)
+            {
+                return fenceFault;
+            }
 
             // 5. Migration on scratch. Everything here works on copied values, so failure leaves live state alone.
             if (!TryMigrateOnScratch(
@@ -489,31 +678,8 @@ namespace GameCore.Unity.Runtime
                 out DiagnosticCode migrationCode,
                 out string migrationDetail))
             {
-                PrewriteFailureCount++;
-                AcquisitionCleanup cleanup = publication.Acquisitions.ReleaseAll();
-                publication.Scratch.ReleaseAll();
-                publication.State.TryReject(migrationCode, migrationDetail);
-                return new AssemblyPublicationReport(
-                    new PublicationRecord(
-                        publication.Plan.Operation,
-                        Outcome.Rejected,
-                        migrationCode,
-                        migrationDetail,
-                        null,
-                        PublishedRevision,
-                        PublishedRevision,
-                        epochBefore,
-                        epochBefore,
-                        cleanup.Failed.Count != 0 ? cleanup.Failed : null,
-                        cleanup.Quarantined.Count != 0 ? cleanup.Quarantined : null),
-                    epochBefore,
-                    epochBefore,
-                    laneEpoch,
-                    0,
-                    0,
-                    drained,
-                    null,
-                    migrationDetail);
+                return PrewriteRefusal(
+                    publication, epochBefore, laneEpoch, drained, migrationCode, migrationDetail);
             }
 
             // 6. Apply. From here on a failure is a postwrite fault: no epoch, no image and no resumption (P-031).
@@ -522,15 +688,28 @@ namespace GameCore.Unity.Runtime
             try
             {
                 ApplyStructuralAndState(publication, ref writes);
+
+                // The stamp of every affected target names the epoch being published, and it is written inside the
+                // fence with the rest of the apply stage rather than after the commit (P-030, 04 s5). It is inside
+                // this guard because a failure after the first live write is postwrite, whether it happens in the
+                // apply stage or in the stamp that belongs to the same fence (P-031).
+                writes += StampTargets(publication.AffectedTargets, nextEpoch, nextRevision);
+
+                // 6b. First-live-write boundary (GC-017, TEST-016 row 5): reached after the last authoritative write
+                //     of this fence, so an injected fault is exactly the "failure after the first authoritative
+                //     mutation" the matrix names: the world faults, no epoch or image publishes and the last
+                //     committed image stays the only safe observation (P-031).
+                FaultReach.Reach(
+                    Faults,
+                    FaultBoundary.FirstLiveWrite,
+                    publication.Plan.Operation,
+                    publication.Plan.PlanHash,
+                    "injected postwrite fault: the world must fault without publishing or resuming");
             }
             catch (Exception exception)
             {
                 return FaultAfterLiveWrite(publication, epochBefore, laneEpoch, drained, writes, exception);
             }
-
-            // The stamp of every affected target names the epoch being published, and it is written inside the fence
-            // with the rest of the apply stage rather than after the commit (P-030, 04 s5).
-            writes += StampTargets(publication.AffectedTargets, nextEpoch, nextRevision);
 
             // 7. Commit: construct the complete image and switch it once through the host (P-030).
             return Commit(publication, epochBefore, laneEpoch, nextEpoch, nextRevision, drained, migratedSlots, writes);
@@ -1025,6 +1204,16 @@ namespace GameCore.Unity.Runtime
             try
             {
                 Faults.MaybeFailDuringMigration();
+
+                // Migration boundary (GC-017, TEST-016 row 5): this runs on copied values only, so a fault here
+                // releases the staged leases in reverse dependency order and leaves the old assembly, its state and
+                // its registrations untouched and running (P-029).
+                FaultReach.Reach(
+                    Faults,
+                    FaultBoundary.Migration,
+                    publication.Plan.Operation,
+                    publication.Plan.PlanHash,
+                    "injected migration fault: the old assembly keeps its state and keeps running");
             }
             catch (Exception exception)
             {
@@ -1294,6 +1483,26 @@ namespace GameCore.Unity.Runtime
                 gates,
                 ordinal);
 
+            // Gate-installation boundary (GC-017, TEST-016 row 5): installing the new execution graph and its
+            // closed ingress gates happens after the apply stage wrote live storage, so an injected fault here is a
+            // postwrite fault — no epoch or image publishes and the world never resumes (P-030, P-031).
+            if (publication != null)
+            {
+                try
+                {
+                    FaultReach.Reach(
+                        Faults,
+                        FaultBoundary.GateInstallation,
+                        operation,
+                        publication.Plan.PlanHash,
+                        "injected gate-installation fault: the world must fault without publishing or resuming");
+                }
+                catch (FaultInjectedException gateFault)
+                {
+                    return FaultAfterLiveWrite(publication, epochBefore, laneEpoch, drained, writes, gateFault);
+                }
+            }
+
             // The execution graph of the new assembly is installed at the fence with gates validated closed; nothing
             // dispatches in this window because the world is not pumping (P-030, 04 s4).
             if (publication != null && !TryRebindSchedule(publication, nextEpoch, out string rebindDetail))
@@ -1474,6 +1683,98 @@ namespace GameCore.Unity.Runtime
                 drained,
                 null,
                 detail);
+        }
+
+        /// <summary>
+        /// One prewrite refusal (P-029): the plan's staged leases are released in reverse acquisition order, its
+        /// bounded scratch is dropped, the plan is terminal `Rejected` and the old assembly stays the published one.
+        /// Every prewrite boundary of GC-017 reports through here, and the cleanup boundary (test row 8) is reached
+        /// first: an injected cleanup fault keeps every staged lease retained and reported instead of pretending the
+        /// release succeeded, which is P-048's rule for ownership that cannot be proven safe.
+        /// </summary>
+        private AssemblyPublicationReport PrewriteRefusal(
+            PlannedPublication publication,
+            AssemblyEpoch epochBefore,
+            AssemblyEpoch laneEpoch,
+            int drained,
+            DiagnosticCode code,
+            string detail)
+        {
+            OperationId operation = publication.Plan.Operation;
+            string reason = detail ?? string.Empty;
+            PrewriteFailureCount++;
+
+            bool cleanupInjected = false;
+            try
+            {
+                FaultReach.Reach(
+                    Faults,
+                    FaultBoundary.Cleanup,
+                    operation,
+                    publication.Plan.PlanHash,
+                    "injected cleanup fault: staged work is retained rather than released");
+            }
+            catch (FaultInjectedException cleanupFault)
+            {
+                cleanupInjected = true;
+                code = DiagnosticCode.ResourceUnavailable;
+                reason = reason + "; " + cleanupFault.Message;
+            }
+
+            AcquisitionCleanup cleanup = cleanupInjected
+                ? new AcquisitionCleanup(null, null, publication.Acquisitions.RetainedLeaseIds(), 0)
+                : publication.Acquisitions.ReleaseAll();
+            if (!cleanupInjected)
+            {
+                publication.Scratch.ReleaseAll();
+            }
+
+            publication.State.TryReject(code, reason);
+            return new AssemblyPublicationReport(
+                new PublicationRecord(
+                    operation,
+                    Outcome.Rejected,
+                    code,
+                    reason,
+                    null,
+                    PublishedRevision,
+                    PublishedRevision,
+                    epochBefore,
+                    epochBefore,
+                    cleanup.Failed.Count != 0 ? cleanup.Failed : null,
+                    cleanup.Quarantined.Count != 0 ? cleanup.Quarantined : null),
+                epochBefore,
+                epochBefore,
+                laneEpoch,
+                0,
+                0,
+                drained,
+                null,
+                reason);
+        }
+
+        /// <summary>
+        /// Reaches one prewrite boundary of GC-017: returns null when nothing was injected (the production path and
+        /// every path in a compilation without the latch), or the refusal report the boundary produced.
+        /// </summary>
+        private AssemblyPublicationReport? ReachPrewriteFault(
+            PlannedPublication publication,
+            AssemblyEpoch epochBefore,
+            AssemblyEpoch laneEpoch,
+            int drained,
+            FaultBoundary boundary,
+            string detail)
+        {
+            try
+            {
+                FaultReach.Reach(Faults, boundary, publication.Plan.Operation, publication.Plan.PlanHash, detail);
+                return null;
+            }
+            catch (FaultInjectedException fault)
+            {
+                return PrewriteRefusal(
+                    publication, epochBefore, laneEpoch, drained, DiagnosticCode.ResourceUnavailable, fault.Message);
+            }
         }
 
         private AssemblyPublicationReport Refuse(

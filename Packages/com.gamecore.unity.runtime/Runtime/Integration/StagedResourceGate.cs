@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using GameCore.Contracts;
 using GameCore.Planning;
+using GameCore.Unity.Runtime.Faults;
 
 namespace GameCore.Unity.Runtime.Integration
 {
@@ -42,13 +43,26 @@ namespace GameCore.Unity.Runtime.Integration
         private readonly Dictionary<Id128, StagedResourceLease> leases = new Dictionary<Id128, StagedResourceLease>();
         private readonly ulong byteCeiling;
         private readonly Id128 category;
+        private readonly AssemblyFaultInjection? faults;
 
         private ulong nextLease;
 
         public StagedResourceGate(ulong byteCeiling, Id128 category)
+            : this(byteCeiling, category, null)
+        {
+        }
+
+        /// <summary>
+        /// The gate of one world when a fault latch is available (GC-017). The latch is the world's
+        /// (<see cref="UnityWorldHost.Faults"/>), so the acquisition and cleanup boundaries of TEST-016 rows 2 and
+        /// 8 are reachable through the same instance the publisher and the driver use. A null latch is the
+        /// production and pure-test shape and behaves exactly as before.
+        /// </summary>
+        public StagedResourceGate(ulong byteCeiling, Id128 category, AssemblyFaultInjection? faults)
         {
             this.byteCeiling = byteCeiling;
             this.category = category;
+            this.faults = faults;
         }
 
         /// <summary>Leases handed out so far; the acquisition counter of the gate (P-029).</summary>
@@ -72,6 +86,16 @@ namespace GameCore.Unity.Runtime.Integration
         /// <inheritdoc />
         public bool TryAcquire(ResourceKey resource, ulong bytes, out Id128 leaseId, out DiagnosticCode code)
         {
+            // Acquisition boundary (GC-017, TEST-016 row 2): the refusal is a value, not a throw, so the plan's
+            // staged set records a failed acquisition and the caller refuses the plan without touching live state.
+            if (FaultReach.Refuse(faults, FaultBoundary.Acquisition, "injected acquisition fault: the lease is refused"))
+            {
+                BudgetExceededCount++;
+                leaseId = default(Id128);
+                code = DiagnosticCode.ResourceUnavailable;
+                return false;
+            }
+
             if (StagedBytes + bytes > byteCeiling)
             {
                 BudgetExceededCount++;
@@ -92,6 +116,15 @@ namespace GameCore.Unity.Runtime.Integration
         /// <inheritdoc />
         public bool Release(Id128 leaseId, out DiagnosticCode code)
         {
+            // Cleanup boundary (GC-017, TEST-016 row 8): a refused release is reported to the caller's aggregation
+            // (P-048) and the lease stays owned here, so "other safe cleanup proceeds" remains observable while the
+            // failed release is never reported as a successful disposal.
+            if (FaultReach.Refuse(faults, FaultBoundary.Cleanup, "injected cleanup fault: the release is refused"))
+            {
+                code = DiagnosticCode.ResourceUnavailable;
+                return false;
+            }
+
             if (leaseId.IsDefault || !leases.TryGetValue(leaseId, out StagedResourceLease lease))
             {
                 UnknownReleaseCount++;
