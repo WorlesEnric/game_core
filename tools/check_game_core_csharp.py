@@ -232,6 +232,10 @@ def main() -> int:
         ROOT / "Packages/com.gamecore.composition/Runtime",
         ROOT / "Packages/com.gamecore.rules.narrative",
         ROOT / "Packages/com.gamecore.rules.cards",
+        # GC-016: the observation storage of the Unity runtime package (bounded retention, snapshot leases,
+        # resynchronization, delayed-consumer delivery, the committed-boundary lease) is engine-free on purpose: it
+        # is compiled by dotnet/src/GameCore.Execution and must stay free of every Unity type.
+        ROOT / "Packages/com.gamecore.unity.runtime/Runtime/Observation",
         ROOT / "dotnet/src",
     )
 
