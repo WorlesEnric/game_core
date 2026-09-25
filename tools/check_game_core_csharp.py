@@ -47,6 +47,13 @@ TARGETS = [
     "Packages/com.gamecore.composition",
     "Packages/com.gamecore.rules.cards",
     "Packages/com.gamecore.gameplay.cards",
+    # GC-019: the adapter package holds the Unity-free adapter core (Runtime/Pure plus the shared Fixtures/Runtime
+    # doubles) and the engine halves (Input/, Assets/, Views/), so the balance and forbidden-construct checks cover
+    # the whole package while only Runtime/Pure and Fixtures/Runtime join `engine_free` below.
+    "Packages/com.gamecore.unity.adapters",
+    "Packages/com.gamecore.unity.adapters/Fixtures",
+    "dotnet/src/GameCore.Adapters",
+    "dotnet/tests/GameCore.Adapters.Tests",
 ]
 
 FORBIDDEN = {
@@ -227,6 +234,10 @@ def main() -> int:
         ROOT / "Packages/com.gamecore.contracts",
         ROOT / "Packages/com.gamecore.content.compiler/Runtime",
         ROOT / "Packages/com.gamecore.derivation",
+        # GC-019: the adapter core and its shared doubles reference no Unity type (the Unity halves live beside
+        # them under Runtime/Input, Runtime/Assets and Runtime/Views and are deliberately excluded here).
+        ROOT / "Packages/com.gamecore.unity.adapters/Runtime/Pure",
+        ROOT / "Packages/com.gamecore.unity.adapters/Fixtures/Runtime",
         # GC-014: the composition package (lifecycle ledgers, teardown sequencer, quarantine registry, service
         # resolution) references no Unity type, so it is engine-free exactly like the contracts package.
         ROOT / "Packages/com.gamecore.composition/Runtime",
