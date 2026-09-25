@@ -408,22 +408,6 @@ namespace GameCore.Derivation
         internal IReadOnlyList<RuleSource> RulesAtStratum(int stratum) =>
             stratum < 0 || stratum >= StratumCount ? Array.Empty<RuleSource>() : rulesByStratum[stratum];
 
-        /// <summary>True when the snapshot declares at least one active rule in a valid stratum.</summary>
-        internal bool HasRules
-        {
-            get
-            {
-                for (int i = 0; i < StratumCount; i++)
-                {
-                    if (rulesByStratum[i].Length > 0)
-                    {
-                        return true;
-                    }
-                }
-
-                return outOfRangeRules.Length > 0;
-            }
-        }
 
         /// Candidate targets of one rule in the stable indexed order of P-023: the reach domain intersected with
         /// the targets that advertise either an accepted selector contract or the rule's output capability.
