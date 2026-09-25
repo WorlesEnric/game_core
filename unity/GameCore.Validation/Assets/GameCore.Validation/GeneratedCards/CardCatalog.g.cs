@@ -522,7 +522,6 @@ namespace GameCore.Validation.GeneratedCards
             offset += 1;
             Array.Copy(SystemFactoryRegistrationsCatalogRegistrations, 0, all, offset, 4);
             offset += 4;
-
             return all;
         }
 
@@ -557,6 +556,6 @@ namespace GameCore.Validation.GeneratedCards
         public const int SchemaCount = 1;
 
         /// <summary>Hash of the generated source that precedes this declaration.</summary>
-        public const string CatalogFileHash = "902402a6f03fcf28dd242f23f573fcb9ddd53d013efb06f08aa513f689ff3bf8";
+        public const string CatalogFileHash = "75a60968c3c59ac69e0c2b6b806c792f48e5b243a526b1ae29c7615e8c1a2e9e";
     }
 }

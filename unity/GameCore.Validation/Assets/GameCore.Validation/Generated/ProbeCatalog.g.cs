@@ -472,7 +472,6 @@ namespace GameCore.Validation.Generated
             offset += 1;
             Array.Copy(PluginRegistrationsCatalogRegistrations, 0, all, offset, 1);
             offset += 1;
-
             return all;
         }
 
@@ -517,6 +516,6 @@ namespace GameCore.Validation.Generated
         public const int SchemaCount = 1;
 
         /// <summary>Hash of the generated source that precedes this declaration.</summary>
-        public const string CatalogFileHash = "37e1d3614050a633f8261c7d7b1c559cd3166bdda8df40a56385a838680da731";
+        public const string CatalogFileHash = "03bdcd23fd8ec0515d93d7c54d7f7c695f3860a850a7280b82316aaacd14c5c1";
     }
 }

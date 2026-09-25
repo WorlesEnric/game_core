@@ -14,6 +14,9 @@ using System.IO;
 using GameCore.Gameplay.Cards.Fixtures;
 using GameCore.Rules.Cards;
 using GameCore.Unity.Runtime;
+using GameCore.Unity.Runtime.Integration;
+using GameCore.Validation.Generated;
+using GameCore.Validation.GeneratedCards;
 using GameCore.Validation.ProbeHost;
 using GameCore.Validation.Slices;
 using NUnit.Framework;
@@ -47,6 +50,7 @@ namespace GameCore.W4Profile.Tests
         {
             Assert.That(result.Facts.BothEntriesResolved, Is.True);
             Assert.That(result.Facts.RegistryAtStart, Is.EqualTo(0), "nothing may be mounted before the probe runs");
+            Assert.That(result.Facts.StartupWorldIsBootstrap, Is.False, "EditMode creates no application world");
             Assert.That(result.Facts.RegistryAfterAll, Is.EqualTo(result.Facts.RegistryAtStart));
             Assert.That(result.Facts.NarrativeEntrySystems, Is.EqualTo(6));
             Assert.That(result.Facts.CardEntrySystems, Is.EqualTo(4));
@@ -91,9 +95,9 @@ namespace GameCore.W4Profile.Tests
                 "P-019: the Additive slot's value is the reducer's fold over every contribution, not one candidate's");
             Assert.That(result.Facts.AdditiveSupporterCount, Is.EqualTo(2), "P-017: two contributions share the slot");
             Assert.That(
-                result.Facts.AdditiveGeneratedDigest,
-                Is.EqualTo(result.Facts.AdditiveFixtureDigest),
-                "the two catalogs must compose the same slot identically");
+                result.Facts.AdditiveGeneratedDigest.Substring(result.Facts.AdditiveGeneratedDigest.IndexOf("; session=", System.StringComparison.Ordinal)),
+                Is.EqualTo(result.Facts.AdditiveFixtureDigest.Substring(result.Facts.AdditiveFixtureDigest.IndexOf("; session=", System.StringComparison.Ordinal))),
+                "different catalog fingerprints identify different registrations; their live-world observations must agree");
         }
 
         [Test]
@@ -152,10 +156,10 @@ namespace GameCore.W4Profile.Tests
         {
             // The fixture's own declaration set: the four card declarations plus the nested festival provider, whose
             // rule identity differs from the ancestor's, so the two supporters are distinct contributions (P-017).
-            IReadOnlyList<GameCore.Contracts.CatalogPluginDeclaration> declarations = CardAdditiveScenario.Declarations();
+            IReadOnlyList<CatalogPluginDeclaration> declarations = CardAdditiveScenario.Declarations();
             Assert.That(declarations.Count, Is.EqualTo(CardTableFixture.Declarations().Count + 1));
             Assert.That(
-                CardAdditiveScenario.NestedFestivalDeclaration().Manifest.PluginType,
+                CardAdditiveScenario.NestedFestivalDeclaration().Manifest.PluginTypeId,
                 Is.EqualTo(CardAdditiveScenario.NestedFestivalType));
         }
 

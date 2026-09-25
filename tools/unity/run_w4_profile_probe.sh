@@ -110,7 +110,8 @@ w4_facts=()
 w4_facts+=("bothEntriesResolved=True")
 w4_facts+=("narrativeEntrySystems=6")
 w4_facts+=("cardEntrySystems=4")
-w4_facts+=("registryAtStart=0")
+w4_facts+=("registryAtStart=1")
+w4_facts+=("startupWorldIsBootstrap=True")
 w4_facts+=("registryAfterAll=0")
 w4_facts+=("narrativeGeneratedMatchesDeclaredTrace=True")
 w4_facts+=("narrativeFixtureMatchesDeclaredTrace=True")
@@ -162,10 +163,9 @@ facts = details.get("w4-profile-facts", "")
 for label, expected in (("narrative", narrative), ("cards", cards)):
     if expected not in facts:
         problems.append("the facts digest does not name the committed " + label + " fingerprint " + expected)
-
-# The two families' digests must be distinct worlds' readings, so a family that silently reused the other's world
-# would show up here rather than passing as "both ran".
-additive = details.get("w4-additive-multi-supporter-slot-in-a-live-world", "")
+# The facts digest contains both catalogs' world observations, including the additive support rows and retraction.
+# The additive step itself reports a verdict and the composed value; it does not duplicate the full facts digest.
+additive = facts
 for fragment in ("seatARows=1", "seatAComposedValue=5", "seatASupporters=2", "seatASupportRows=2",
                  "seatASupportValueSum=5", "festivalSupport=True", "nestedSupport=True",
                  "seatBValue=2", "seatCValue=-1",

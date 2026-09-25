@@ -85,6 +85,17 @@ namespace GameCore.Planning
             && Priority == other.Priority;
 
         public override bool Equals(object? obj) => obj is CapabilitySupport other && Equals(other);
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hash = Provider.GetHashCode();
+                hash = (hash * 397) ^ ProviderGeneration.GetHashCode();
+                hash = (hash * 397) ^ Rule.GetHashCode();
+                hash = (hash * 397) ^ Value;
+                return (hash * 397) ^ Priority;
+            }
+        }
 
         public static bool operator ==(CapabilitySupport left, CapabilitySupport right) => left.Equals(right);
 

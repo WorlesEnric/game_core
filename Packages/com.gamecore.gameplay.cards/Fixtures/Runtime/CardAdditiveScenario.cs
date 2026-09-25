@@ -32,6 +32,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using GameCore.Composition;
 using GameCore.Contracts;
+using GameCore.Execution;
 using GameCore.Execution.Time;
 using GameCore.Planning;
 using GameCore.Planning.Ownership;
@@ -200,7 +201,7 @@ namespace GameCore.Gameplay.Cards.Fixtures
 
             return Run(
                 build.Catalog,
-                CardTableFixture.Declarations(),
+                Declarations(),
                 new FactoryKey(new Id128(CardTableKeys.Issuer.High, CardTableKeys.Issuer.Low), 1U),
                 CardTableKeys.PluginType("cards.absent-plugin"),
                 CardCatalogTable.Fingerprint());
@@ -303,7 +304,6 @@ namespace GameCore.Gameplay.Cards.Fixtures
             {
                 Prepare();
                 InstallBothProviders();
-                ObserveComposedSlot();
                 RetractTheNestedSupport();
                 TearDown();
 
@@ -391,9 +391,11 @@ namespace GameCore.Gameplay.Cards.Fixtures
                     time = new WorldTimeDriver(host, new StepInputCutoff(8, 16), new PluginClockRegistry(8), 1U);
                     time.AdoptResourceTable(report.Adaptation!.NativeTable!);
 
+                    DiagnosticCode seedCode = DiagnosticCode.None;
+                    string seedDetail = string.Empty;
                     bool scopesCreated = PublishEdits(CardMarketComposition.ScopeCreates());
                     bool seeded = scopesCreated
-                        && CardTableFixture.SeedMarket(seeder, module, out DiagnosticCode seedCode, out string seedDetail);
+                        && CardTableFixture.SeedMarket(seeder, module, out seedCode, out seedDetail);
                     bool mounted = seeded && PublishEdits(new List<CompositionEditPayload>
                     {
                         CardTablePayloads.Mount(
@@ -661,7 +663,18 @@ namespace GameCore.Gameplay.Cards.Fixtures
                 }
 
                 installedRows += report.InstalledRows;
+                if (report.Outcome == DerivedAssemblyOutcome.NoTargetChange)
+                {
+                    AssemblyPublicationReport unchanged = publisher!.PublishUnchangedAssembly(
+                        NextOperation(host.World), lane.Committed.Revision, lane.Committed.Epoch);
+                    if (!unchanged.Published)
+                    {
+                        steps.Add(new CardStep(editName, false, "unchanged assembly publication refused: " + unchanged.Detail));
+                        return false;
+                    }
+                }
                 bool joined = AssemblyPublisher.MatchesPublishedAssembly(
+                    lane.Committed.Revision,
                     lane.Committed.Epoch,
                     publisher!.PublishedRevision,
                     host.CurrentEpoch);

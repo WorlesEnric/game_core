@@ -327,8 +327,13 @@ namespace GameCore.Unity.Runtime.Messages
 
             if (!admission.Admitted)
             {
-                // A refusal created no row and no lane entry; the caller reads the reason from the receipt (P-042).
-                return new CommandAdmissionReceipt(command.RequestId, admission.Outcome.ToRequestResult(), AdmissionSequence.Zero);
+                // A conflicting reuse must report its own refusal, not the prior request's settled outcome.
+                return new CommandAdmissionReceipt(
+                    command.RequestId,
+                    admission.Kind == RequestAdmissionKind.IdempotencyConflict
+                        ? new RequestResult(RequestResultKind.Rejected, admission.Code, default(EventCursor))
+                        : admission.Outcome.ToRequestResult(),
+                    AdmissionSequence.Zero);
             }
 
             if (admission.Kind == RequestAdmissionKind.Retransmission)

@@ -431,7 +431,7 @@ namespace GameCore.Planning
                 // derivation already produced, and rejects a declaration that carries neither instead of inventing
                 // a winner-take-all value.
                 int effectiveValue = winner.Value;
-                IReadOnlyList<CapabilitySupport> supports = TargetBindingRow.SingleSupport(
+                IReadOnlyList<CapabilitySupport> rowSupports = TargetBindingRow.SingleSupport(
                     winner.Provider,
                     winner.ProviderGeneration,
                     winner.Declaration.Rule,
@@ -482,7 +482,7 @@ namespace GameCore.Planning
                     }
 
                     effectiveValue = winner.Declaration.Value;
-                    supports = winner.Declaration.Supporters;
+                    rowSupports = winner.Declaration.Supporters;
                 }
 
                 TargetBindingRow row = new TargetBindingRow(
@@ -495,7 +495,7 @@ namespace GameCore.Planning
                     winner.ProviderGeneration,
                     winner.Priority,
                     winner.Declaration.Schema,
-                    supports,
+                    rowSupports,
                     winner.Declaration.Rule);
 
                 bool isNewRow = !current.TryGet(

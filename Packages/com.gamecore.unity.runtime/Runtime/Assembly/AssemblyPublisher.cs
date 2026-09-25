@@ -720,8 +720,10 @@ namespace GameCore.Unity.Runtime
                 // visible image is already its complete effective assembly (P-013, P-024) — including each row's
                 // full support set, so a spawned target inherits a composed `Additive` binding with all its
                 // supporters rather than only its top-ranked candidate (P-017, P-019).
-                DynamicBuffer<CapabilityBinding> bindings = entityManager.AddBuffer<CapabilityBinding>(entity);
-                DynamicBuffer<CapabilitySupportRow> spawnedSupports = entityManager.AddBuffer<CapabilitySupportRow>(entity);
+                entityManager.AddBuffer<CapabilityBinding>(entity);
+                entityManager.AddBuffer<CapabilitySupportRow>(entity);
+                DynamicBuffer<CapabilityBinding> bindings = entityManager.GetBuffer<CapabilityBinding>(entity);
+                DynamicBuffer<CapabilitySupportRow> spawnedSupports = entityManager.GetBuffer<CapabilitySupportRow>(entity);
                 for (int i = 0; i < matching.Count; i++)
                 {
                     bindings.Add(ToBinding(matching[i]));
@@ -1078,8 +1080,9 @@ namespace GameCore.Unity.Runtime
                 TargetBindingRow row = publication.Installs[i];
                 if (registry.TryResolveTarget(row.Target, out _, out Entity entity))
                 {
+                    int before = writes;
                     writes += InstallBindingRow(entityManager, entity, row);
-                    if (writes == 1) Faults.MaybeFailAfterFirstLiveWrite();
+                    if (before == 0 && writes > 0) Faults.MaybeFailAfterFirstLiveWrite();
                 }
             }
 
@@ -1088,8 +1091,9 @@ namespace GameCore.Unity.Runtime
                 TargetBindingRow row = publication.Removals[i];
                 if (registry.TryResolveTarget(row.Target, out _, out Entity entity))
                 {
+                    int before = writes;
                     writes += RemoveBindingRow(entityManager, entity, row);
-                    if (writes == 1) Faults.MaybeFailAfterFirstLiveWrite();
+                    if (before == 0 && writes > 0) Faults.MaybeFailAfterFirstLiveWrite();
                 }
             }
 
@@ -1114,18 +1118,20 @@ namespace GameCore.Unity.Runtime
                             "scratch holds no migrated value for " + disposition.Slot.ToString());
                     }
 
+                    int before = writes;
                     writes += WriteSlotState(
                         entityManager,
                         entity,
                         disposition.Slot,
                         migrated,
                         SchemaVersionOf(disposition.Slot.Slot));
-                    if (writes == 1) Faults.MaybeFailAfterFirstLiveWrite();
+                    if (before == 0 && writes > 0) Faults.MaybeFailAfterFirstLiveWrite();
                 }
                 else if (disposition.Kind == StateDispositionKind.Retract)
                 {
+                    int before = writes;
                     writes += ClearSlotState(entityManager, entity, disposition.Slot);
-                    if (writes == 1) Faults.MaybeFailAfterFirstLiveWrite();
+                    if (before == 0 && writes > 0) Faults.MaybeFailAfterFirstLiveWrite();
                 }
             }
 
@@ -1854,33 +1860,6 @@ namespace GameCore.Unity.Runtime
             return current;
         }
 
-        private static CapabilityBinding ToBinding(DerivedBindingRule rule)
-        {
-            return new CapabilityBinding
-            {
-                Capability = rule.Capability,
-                CapabilityVersion = rule.CapabilityVersion,
-                OutputSlot = rule.OutputSlot,
-                Value = rule.Value,
-                Priority = rule.Priority,
-                Schema = rule.Schema,
-                Provider = rule.Provider,
-                ProviderGeneration = rule.ProviderGeneration,
-                Active = 1,
-            };
-        }
-
-        private static TargetBindingRow RowOf(DerivedBindingRule rule, TargetId target) =>
-            new TargetBindingRow(
-                target,
-                rule.Capability,
-                rule.CapabilityVersion,
-                rule.OutputSlot,
-                rule.Value,
-                rule.Provider,
-                rule.ProviderGeneration,
-                rule.Priority,
-                rule.Schema);
 
         /// <summary>
         /// The next assembly epoch after one publication (05 s2: the initial assembly is 1, so the first composition
