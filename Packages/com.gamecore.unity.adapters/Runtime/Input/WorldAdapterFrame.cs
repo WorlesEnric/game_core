@@ -236,17 +236,4 @@ namespace GameCore.Unity.Adapters.Input
             + (Assets == null ? string.Empty : "; assets=" + Assets.ToString());
     }
 
-    /// <summary>
-    /// The device half of input sampling. A Unity implementation reads the engine's own input; a headless or test
-    /// implementation supplies queued samples. Either way the source is a producer of raw readings, never of
-    /// commands: stamping and admission stay with the ingress (04 s7).
-    /// </summary>
-    public interface IDeviceInputSource
-    {
-        /// <summary>Stable identity of this sampling source; it owns one sequence namespace (P-050).</summary>
-        Id128 SourceId { get; }
-
-        /// <summary>Samples the devices once, in a deterministic order; an empty list is the idle answer.</summary>
-        IReadOnlyList<DeviceInputSample> Sample();
-    }
 }

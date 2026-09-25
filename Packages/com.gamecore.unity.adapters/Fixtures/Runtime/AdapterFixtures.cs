@@ -427,7 +427,7 @@ namespace GameCore.Unity.Adapters.Fixtures
                 return false;
             }
 
-            FrozenPayload payload = valuesByTarget.TryGetValue(target.Value, out FrozenPayload found)
+            FrozenPayload payload = valuesByTarget.TryGetValue(target.Value, out FrozenPayload? found)
                 ? found
                 : new FrozenPayload(CommandPayloadCodec.Int32(0));
             OwnerId authority = ReportedAuthority.IsDefault ? ExternalOwner : ReportedAuthority;

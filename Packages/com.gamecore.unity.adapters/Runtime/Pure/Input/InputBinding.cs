@@ -53,6 +53,16 @@ namespace GameCore.Unity.Adapters.Input
             + "=" + Value.ToString(CultureInfo.InvariantCulture);
     }
 
+    /// <summary>Producer of raw device readings; command stamping and admission stay with the ingress.</summary>
+    public interface IDeviceInputSource
+    {
+        /// <summary>Stable source identity for its sequence namespace.</summary>
+        Id128 SourceId { get; }
+
+        /// <summary>Samples once in deterministic order; an empty list means idle.</summary>
+        IReadOnlyList<DeviceInputSample> Sample();
+    }
+
     /// <summary>
     /// One device-to-command binding. The payload shape is the canonical 05 s6 scalar stream, so the adapter needs no
     /// domain knowledge to stamp a press into a legal envelope (P-042).

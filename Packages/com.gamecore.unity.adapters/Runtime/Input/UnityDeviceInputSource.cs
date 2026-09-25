@@ -73,13 +73,13 @@ namespace GameCore.Unity.Adapters.Input
             for (int i = 0; i < keys.Length; i++)
             {
                 KeyCode code = keys[i];
-                bool held = Input.GetKey(code);
+                bool held = UnityEngine.Input.GetKey(code);
                 if (!held)
                 {
                     continue;
                 }
 
-                bool edge = Input.GetKeyDown(code);
+                bool edge = UnityEngine.Input.GetKeyDown(code);
                 if (!edge && !ReportHeldKeysEveryFrame)
                 {
                     continue;
