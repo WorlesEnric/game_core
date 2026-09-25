@@ -35,6 +35,16 @@ namespace GameCore.Unity.Runtime
 
         WorldResourceLedger Ledger { get; }
 
+#if GAMECORE_FAULT_INJECTION
+        /// <summary>
+        /// The world's deterministic fault latch (GC-017). The publisher, the execution driver and the staged
+        /// resource gate of one world share this one instance, so a TEST-016 boundary armed by a fault test is the
+        /// boundary the real apply path reaches. Neither this member nor the type it names exists in a shipping
+        /// compilation.
+        /// </summary>
+        AssemblyFaultInjection Faults { get; }
+#endif
+
         GameCoreStepGroup StepGroup { get; }
 
         /// <summary>Supplies the simulation clock of one step before its systems run (04 s3, P-036, P-038).</summary>
@@ -240,6 +250,17 @@ namespace GameCore.Unity.Runtime
         public UnityExecutionDriver Driver => driver;
 
         public WorldResourceLedger Ledger => ledger;
+
+#if GAMECORE_FAULT_INJECTION
+        /// <summary>
+        /// This world's fault latch (GC-017). It reaches the fault boundaries the publisher, the driver and the
+        /// staged-resource gate of this world own, so one arm covers the whole apply boundary. The whole member —
+        /// including this allocation — is inside the qualification guard, so a shipping world allocates no latch.
+        /// </summary>
+        public AssemblyFaultInjection Faults { get; } = new AssemblyFaultInjection();
+
+        AssemblyFaultInjection IWorldExecutionContext.Faults => Faults;
+#endif
 
         /// <summary>This world's registered system catalog: key to concrete instance, never discovered reflectively.</summary>
         public ISystemDispatchCatalog Systems => catalog;

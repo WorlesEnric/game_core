@@ -1,0 +1,7 @@
+Unity 6000.0.75f1 StandaloneLinux64 IL2CPP Release, High stripping
+Qualification assembly rsp: -define:GAMECORE_FAULT_INJECTION present
+Test-framework-free release project manifest: marker com.gamecore.fault-qualification absent; com.unity.test-framework still present transitively.
+Release assembly rsp: -define:GAMECORE_FAULT_INJECTION absent; -langversion:9.0; NET_STANDARD_2_1 present.
+Generated IL2CPP C++ GameCore.Unity.Runtime__3.cpp: FaultCompilation.IsCompiledIn, FaultReach.Reach and FaultReach.Refuse each return false with no latch call.
+Release player: release-player.json, Pass (8/8 baseline steps); five-run GC-017 qualification player: probe-gc017-faults.json[.run2..run5], Pass (62/62 each).
+Limit: generated code still contains metadata, empty reach methods, AssemblyFaultInjection and per-world object/arrays. No unconditional claim of zero cost or no latch code is supported by this inspection.

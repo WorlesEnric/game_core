@@ -103,6 +103,12 @@ namespace GameCore.Validation.ProbeHost
                                                     ProbeEnvironment.DeclaredUnityVersion,
                                                     ProbeEnvironment.DeclaredTarget,
                                                     "W4-GATE")
+                                                : arguments.Faults
+                                                    ? new ProbeReport(
+                                                        "Faults",
+                                                        ProbeEnvironment.DeclaredUnityVersion,
+                                                        ProbeEnvironment.DeclaredTarget,
+                                                        "GC-017")
                                                 : new ProbeReport(
                                                     arguments.MissingRegistration
                                                         ? "MissingRegistration"
@@ -171,6 +177,11 @@ namespace GameCore.Validation.ProbeHost
                 else if (arguments.W4Gate)
                 {
                     ProbeW4Gate.Run(report);
+                    report.CompletePositive();
+                }
+                else if (arguments.Faults)
+                {
+                    ProbeFaults.Run(report);
                     report.CompletePositive();
                 }
                 else
