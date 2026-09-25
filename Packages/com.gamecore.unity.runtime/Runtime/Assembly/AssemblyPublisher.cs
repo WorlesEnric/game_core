@@ -528,6 +528,38 @@ namespace GameCore.Unity.Runtime
             return Commit(publication, epochBefore, laneEpoch, nextEpoch, nextRevision, drained, migratedSlots, writes);
         }
 
+        /// <summary>Publishes a composition revision whose validated derivation changed no target bindings.</summary>
+        public AssemblyPublicationReport PublishUnchangedAssembly(OperationId operation, CompositionRevision laneRevision, AssemblyEpoch laneEpoch)
+        {
+            GameCoreThreading.RequireMainThread("AssemblyPublisher.PublishUnchangedAssembly");
+            AssemblyEpoch epochBefore = world.CurrentEpoch;
+            if ((world.Lifecycle != WorldLifecycleState.Running && world.Lifecycle != WorldLifecycleState.Paused)
+                || world.IsPumping)
+            {
+                return Refuse(operation, epochBefore, laneEpoch, DiagnosticCode.ApplyFault,
+                    "the world cannot publish at this boundary");
+            }
+
+            if (!TryAdoptLanePublication(laneRevision, laneEpoch, out _, out DiagnosticCode code))
+            {
+                return Refuse(operation, epochBefore, laneEpoch, code, "the composition publication is not next");
+            }
+
+            PublishedWorldView previous = Published;
+            AssemblyPublicationReport report = CommitView(
+                operation, null, previous, previous.Bindings, previous.Rules, Array.Empty<TargetId>(),
+                epochBefore, laneEpoch, laneRevision, publicationOrdinal + 1, laneEpoch, 0, 0, 0,
+                "published an unchanged target assembly for the next composition revision");
+            if (report.Published)
+            {
+                PublishedRevision = laneRevision;
+                publicationOrdinal++;
+                MarkPublicationUsed(laneRevision, laneEpoch);
+            }
+
+            return report;
+        }
+
         /// <summary>
         /// Records the composition publication the next assembly belongs to. P-006 has one series, so the pair must
         /// be exactly the next value of the published one: the world publishes the numbers the composition lane

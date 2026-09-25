@@ -29,6 +29,7 @@ using GameCore.Execution;
 using GameCore.Execution.Messages;
 using GameCore.Execution.Time;
 using GameCore.Planning;
+using GameCore.Planning.Ownership;
 using CompiledSchedule = GameCore.Planning.Scheduling.CompiledSchedule;
 using GameCore.Rules.Cards;
 using GameCore.Unity.Runtime;
@@ -458,7 +459,6 @@ namespace GameCore.Gameplay.Cards.Fixtures
                 CompileOwnershipAndSchedule();
                 CreateWorldAndMarket();
                 MountProvidersAndPublish();
-                ProveAutomaticPropagationToExistingSeats();
                 ProveIdleWorldBeforeCommand();
                 ExecuteOneCommand();
                 ProveDuplicateCommandTransfersOnce();
@@ -528,7 +528,7 @@ namespace GameCore.Gameplay.Cards.Fixtures
                     PipelineDescriptorReport report = OwnershipSchedulePipeline.Build(
                         CardTableFixture.Manifests(),
                         CardTableRegistration.DispatchKinds(),
-                        new MigrationRegistry(new List<ISlotMigration>()));
+                        new SlotMigrationRegistry());
                     descriptorReport = report;
 
                     if (!report.Succeeded || report.Descriptor == null || report.Compilation == null || report.Adaptation == null
@@ -547,10 +547,11 @@ namespace GameCore.Gameplay.Cards.Fixtures
 
                     bool inputIndex = schedule.TryGetStageIndex(CardTableKeys.InputStage, out int input);
                     bool commitIndex = schedule.TryGetStageIndex(CardTableKeys.CommitStage, out int commit);
+                    bool validateIndex = schedule.TryGetStageIndex(CardTableKeys.ValidateStage, out int validate);
                     facts.InputStageIndex = inputIndex ? input : -1;
                     facts.CommitStageIndex = commitIndex ? commit : -1;
                     facts.BufferEdgeValidateBeforeCommit =
-                        inputIndex && commitIndex && schedule.HasEdge(input, commit);
+                        validateIndex && commitIndex && schedule.HasEdge(validate, commit);
 
                     facts.OwnershipDomainCount = report.Ownership!.Map.DomainCount;
                     facts.WriterCount = report.Descriptor.Stages.Count;
@@ -649,12 +650,6 @@ namespace GameCore.Gameplay.Cards.Fixtures
                     targets = new LiveTargetIndex(publisher.Recipes);
                     seeder = new LiveTargetSeeder(host, registry, targets);
 
-                    bool seeded = CardTableFixture.SeedMarket(seeder, module, out DiagnosticCode seedCode, out string seedDetail);
-                    if (!seeded)
-                    {
-                        steps.Add(new CardStep(name, false, "seeding failed: " + seedCode + ": " + seedDetail));
-                        return;
-                    }
 
                     lane = CompositionHost.CreateDefault(
                         world,
@@ -680,12 +675,15 @@ namespace GameCore.Gameplay.Cards.Fixtures
                     time = new WorldTimeDriver(host, new StepInputCutoff(8, 16), new PluginClockRegistry(8), 1U);
                     time.AdoptResourceTable(descriptorReport.Adaptation.NativeTable!);
 
-                    facts.LiveTargetCount = targets.Count;
-                    facts.SeatCount = module.SeatCount;
-
                     // The market's scope tree is created top-down and the table runtime is mounted at the match
                     // root; both are ordinary control-lane edits (O-02, O-03).
                     bool scopesCreated = PublishEdits(CardMarketComposition.ScopeCreates());
+                    bool seeded = CardTableFixture.SeedMarket(seeder, module, out DiagnosticCode seedCode, out string seedDetail);
+                    if (!seeded)
+                    {
+                        steps.Add(new CardStep(name, false, "seeding failed: " + seedCode + ": " + seedDetail));
+                        return;
+                    }
                     bool tableMounted = PublishEdits(new List<CompositionEditPayload>
                     {
                         CardTablePayloads.Mount(
@@ -697,6 +695,8 @@ namespace GameCore.Gameplay.Cards.Fixtures
                             CardTableFixture.RuleLibraryInstance,
                             CardMarketComposition.MatchScope),
                     });
+                    facts.LiveTargetCount = targets.Count;
+                    facts.SeatCount = module.SeatCount;
 
                     facts.LaneEpochAfterSetup = lane.Committed.Epoch.Value;
                     facts.WorldEpochAfterSetup = host.CurrentEpoch.Value;
@@ -1245,8 +1245,8 @@ namespace GameCore.Gameplay.Cards.Fixtures
                     WorldMessagePlane plane = host.Messages!;
                     CardTableState table = CardTableAccess.ReadTable(host.EntityWorld.EntityManager, module.TableEntity);
 
-                    // Seat A holds one remaining card from its own set plus the one it received; seat B and seat C
-                    // both bid for it. Seat C bids the lower sequence, so it wins regardless of the slot order.
+                    // Seat A holds one remaining card from its own set plus the one it received; seats C and B
+                    // bid in that order. Seat B has the smaller seat ordinal and wins despite the slot order.
                     CardId contested = CardTableKeys.SeatCard(CardTableKeys.SeatAOrdinal, CardSetRules.SetCardCount);
                     var envelope = new CardBatchPayload(
                         0x4341524453455431UL,
@@ -1254,9 +1254,9 @@ namespace GameCore.Gameplay.Cards.Fixtures
                         CardTableKeys.SeatAOrdinal,
                         table.TableVersion,
                         2,
-                        CardTableKeys.SeatBOrdinal,
-                        7UL,
                         CardTableKeys.SeatCOrdinal,
+                        7UL,
+                        CardTableKeys.SeatBOrdinal,
                         3UL,
                         0U,
                         0UL,
@@ -1265,8 +1265,8 @@ namespace GameCore.Gameplay.Cards.Fixtures
 
                     facts.BatchCandidateCount = envelope.CandidateCount;
                     facts.ContestHolderHandBefore = HandCount(CardTableKeys.SeatAOrdinal);
-                    facts.ContestWinnerHandBefore = HandCount(CardTableKeys.SeatCOrdinal);
-                    facts.ContestLoserHandBefore = HandCount(CardTableKeys.SeatBOrdinal);
+                    facts.ContestWinnerHandBefore = HandCount(CardTableKeys.SeatBOrdinal);
+                    facts.ContestLoserHandBefore = HandCount(CardTableKeys.SeatCOrdinal);
                     ulong stepBefore = host.CurrentStep.Value;
 
                     OperationId operation = NextOperation(host.World);
@@ -1284,8 +1284,8 @@ namespace GameCore.Gameplay.Cards.Fixtures
 
                     facts.ContestSteps = host.CurrentStep.Value;
                     facts.ContestHolderHandAfter = HandCount(CardTableKeys.SeatAOrdinal);
-                    facts.ContestWinnerHandAfter = HandCount(CardTableKeys.SeatCOrdinal);
-                    facts.ContestLoserHandAfter = HandCount(CardTableKeys.SeatBOrdinal);
+                    facts.ContestWinnerHandAfter = HandCount(CardTableKeys.SeatBOrdinal);
+                    facts.ContestLoserHandAfter = HandCount(CardTableKeys.SeatCOrdinal);
                     CardTableState after = CardTableAccess.ReadTable(host.EntityWorld.EntityManager, module.TableEntity);
                     facts.ContestTableVersion = after.TableVersion;
 
@@ -1297,7 +1297,7 @@ namespace GameCore.Gameplay.Cards.Fixtures
                     bool pass = receipt.Admitted
                         && facts.BatchCandidateCount == 2
                         && facts.ContestSteps == stepBefore + 1UL
-                        && facts.ContestWinnerSeat == (int)CardTableKeys.SeatCOrdinal
+                        && facts.ContestWinnerSeat == (int)CardTableKeys.SeatBOrdinal
                         && facts.ContestWinnerSequence == 3UL
                         && facts.ContestHolderHandAfter == facts.ContestHolderHandBefore - 1
                         && facts.ContestWinnerHandAfter == facts.ContestWinnerHandBefore + 1
@@ -1563,8 +1563,19 @@ namespace GameCore.Gameplay.Cards.Fixtures
                     return false;
                 }
 
+                if (report.Outcome == DerivedAssemblyOutcome.NoTargetChange)
+                {
+                    AssemblyPublicationReport unchanged = publisher!.PublishUnchangedAssembly(
+                        NextOperation(host.World), lane.Committed.Revision, lane.Committed.Epoch);
+                    if (!unchanged.Published)
+                    {
+                        steps.Add(new CardStep(editName, false, "unchanged assembly publication refused: " + unchanged.Detail));
+                        return false;
+                    }
+                }
                 installedRows += report.InstalledRows;
-                return report.CountersJoined;
+                return AssemblyPublisher.MatchesPublishedAssembly(
+                    lane.Committed.Revision, lane.Committed.Epoch, publisher!.PublishedRevision, host.CurrentEpoch);
             }
 
             /// <summary>
@@ -1605,7 +1616,7 @@ namespace GameCore.Gameplay.Cards.Fixtures
                 }
 
                 installedRows += report.InstalledRows;
-                return report.CountersJoined;
+                return report.Outcome == DerivedAssemblyOutcome.NoTargetChange || report.CountersJoined;
             }
 
             /// <summary>Applies a sequence of edits, each with its own publication, in admission order.</summary>

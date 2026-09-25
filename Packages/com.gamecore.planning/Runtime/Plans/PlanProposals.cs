@@ -27,7 +27,8 @@ namespace GameCore.Planning
             CompositionPolicy policy,
             int value,
             int priority,
-            IReadOnlyList<DefinitionRef>? targetRecipes)
+            IReadOnlyList<DefinitionRef>? targetRecipes,
+            IReadOnlyList<TargetId>? targetIds = null)
         {
             Rule = rule;
             Capability = capability;
@@ -37,6 +38,7 @@ namespace GameCore.Planning
             Value = value;
             Priority = priority;
             TargetRecipes = ContractCollections.Freeze(targetRecipes);
+            TargetIds = ContractCollections.Freeze(targetIds);
         }
 
         /// <summary>Stable derivation-rule identity of this declaration; it is part of the contribution key (P-017).</summary>
@@ -58,6 +60,21 @@ namespace GameCore.Planning
 
         /// <summary>Recipes this rule is eligible for; Automatic needs no per-instance import (P-013, P-015).</summary>
         public IReadOnlyList<DefinitionRef> TargetRecipes { get; }
+        /// <summary>Explicit target identities when the declaration comes from a derived target assembly.</summary>
+        public IReadOnlyList<TargetId> TargetIds { get; }
+
+        public bool AppliesTo(DefinitionRef recipe, TargetId target)
+        {
+            if (!AppliesTo(recipe)) return false;
+            if (TargetIds.Count == 0) return true;
+            for (int i = 0; i < TargetIds.Count; i++)
+            {
+                if (TargetIds[i].Equals(target)) return true;
+            }
+
+            return false;
+        }
+
 
         /// <summary>True when this declaration is eligible for a target of the given recipe (P-015).</summary>
         public bool AppliesTo(DefinitionRef recipe)

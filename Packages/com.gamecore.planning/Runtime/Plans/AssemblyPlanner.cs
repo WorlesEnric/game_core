@@ -345,7 +345,7 @@ namespace GameCore.Planning
                     for (int t = 0; t < definitions.Count; t++)
                     {
                         TargetDefinition definition = definitions[t];
-                        if (!declared.AppliesTo(definition.Recipe))
+                        if (!declared.AppliesTo(definition.Recipe, definition.Target))
                         {
                             continue;
                         }
@@ -1271,7 +1271,7 @@ namespace GameCore.Planning
                     ProposedCapability candidate = mount.Capabilities[c];
                     if (candidate.Capability.Capability.Equals(row.Capability)
                         && candidate.OutputSlot == row.OutputSlot
-                        && candidate.AppliesTo(recipe))
+                        && candidate.AppliesTo(recipe, row.Target))
                     {
                         declared = candidate;
                         return true;

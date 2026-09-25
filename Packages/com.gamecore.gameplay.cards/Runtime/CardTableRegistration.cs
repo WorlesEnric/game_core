@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using GameCore.Contracts;
 using GameCore.Execution;
 using GameCore.Execution.Messages;
+using GameCore.Rules.Cards;
 using GameCore.Unity.Runtime;
 using GameCore.Unity.Runtime.Messages;
 using GameCore.Unity.Runtime.Time;

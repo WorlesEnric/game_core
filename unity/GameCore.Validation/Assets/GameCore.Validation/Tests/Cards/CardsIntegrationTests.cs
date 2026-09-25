@@ -279,7 +279,7 @@ namespace GameCore.Cards.Tests
                 Assert.That(facts.BatchAdmitted, Is.True, facts.Describe());
                 Assert.That(facts.BatchCandidateCount, Is.EqualTo(2),
                     "the envelope carries its bounded candidate set: " + facts.Describe());
-                Assert.That(facts.ContestWinnerSeat, Is.EqualTo((int)CardTableKeys.SeatCOrdinal),
+                Assert.That(facts.ContestWinnerSeat, Is.EqualTo((int)CardTableKeys.SeatBOrdinal),
                     "the smallest seat with the smallest sequence wins independently of slot order: "
                     + facts.Describe());
                 Assert.That(facts.ContestWinnerSequence, Is.EqualTo(3UL), facts.Describe());

@@ -145,6 +145,7 @@ namespace GameCore.Composition
             Add(root);
             if (additional != null)
             {
+                var parentFirst = new List<ScopeRecord>(additional.Count);
                 for (int i = 0; i < additional.Count; i++)
                 {
                     ScopeRecord record = additional[i];
@@ -153,7 +154,17 @@ namespace GameCore.Composition
                         throw new ArgumentException("A scope record must not be null.", nameof(additional));
                     }
 
-                    Add(record);
+                    parentFirst.Add(record);
+                }
+
+                parentFirst.Sort((left, right) =>
+                {
+                    int depth = left.Depth.CompareTo(right.Depth);
+                    return depth != 0 ? depth : CompareRecords(left, right);
+                });
+                for (int i = 0; i < parentFirst.Count; i++)
+                {
+                    Add(parentFirst[i]);
                 }
             }
 

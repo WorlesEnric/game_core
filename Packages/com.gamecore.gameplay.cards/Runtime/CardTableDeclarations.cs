@@ -18,6 +18,7 @@
 #nullable enable
 using System.Collections.Generic;
 using GameCore.Contracts;
+using GameCore.Rules.Cards;
 
 namespace GameCore.Gameplay.Cards
 {
@@ -46,8 +47,6 @@ namespace GameCore.Gameplay.Cards
                 configSchema,
                 serviceExports,
                 serviceDependencies,
-                null,
-                null,
                 new List<CapabilityContract>(),
                 new List<DerivationRule>(),
                 Slots(),
@@ -76,7 +75,6 @@ namespace GameCore.Gameplay.Cards
                 null,
                 new List<CapabilityContract> { SetBonusContract() },
                 new List<DerivationRule> { SetBonusRule(ruleStableName, bonus) },
-                null,
                 null,
                 null,
                 null);
@@ -299,7 +297,6 @@ namespace GameCore.Gameplay.Cards
                     CardTableKeys.TableSlot,
                     CardTableKeys.TableDomain,
                     CardTableKeys.TableLayout,
-                    CardTableKeys.TableComponent,
                     new[]
                     {
                         CardTableKeys.ActiveSeatField,
@@ -311,7 +308,6 @@ namespace GameCore.Gameplay.Cards
                     CardTableKeys.SeatSlot,
                     CardTableKeys.SeatDomain,
                     CardTableKeys.SeatLayout,
-                    CardTableKeys.SeatComponent,
                     new[]
                     {
                         CardTableKeys.SeatOrdinalField,
@@ -323,7 +319,6 @@ namespace GameCore.Gameplay.Cards
                     CardTableKeys.CommandDraftSlot,
                     CardTableKeys.CommandDraftDomain,
                     CardTableKeys.CommandDraftLayout,
-                    CardTableKeys.CommandDraftComponent,
                     new[] { CardTableKeys.CommandDraftField },
                     LastSupportPolicy.PreserveDormant),
                 // A draft is step-scoped derived data: it is disposable, and losing its support must not preserve
@@ -332,14 +327,12 @@ namespace GameCore.Gameplay.Cards
                     CardTableKeys.DecisionDraftSlot,
                     CardTableKeys.DecisionDraftDomain,
                     CardTableKeys.DecisionDraftLayout,
-                    CardTableKeys.DecisionDraftComponent,
                     new[] { CardTableKeys.DecisionDraftField },
                     LastSupportPolicy.RemoveDerived),
                 Slot(
                     CardTableKeys.OutputSlot,
                     CardTableKeys.OutputDomain,
                     CardTableKeys.OutputLayout,
-                    CardTableKeys.OutputComponent,
                     new[] { CardTableKeys.OutputField },
                     LastSupportPolicy.PreserveDormant),
             };
@@ -380,14 +373,13 @@ namespace GameCore.Gameplay.Cards
             SlotId slot,
             SchemaRef domain,
             FactoryKey layout,
-            SchemaRef component,
             IReadOnlyList<FactoryKey> fields,
             LastSupportPolicy lastSupport)
         {
             var ownership = new List<FieldOwnership>(fields.Count);
             for (int i = 0; i < fields.Count; i++)
             {
-                ownership.Add(new FieldOwnership(component, fields[i]));
+                ownership.Add(new FieldOwnership(domain, fields[i].RegistrationKey));
             }
 
             return new StateSlotSpec(
