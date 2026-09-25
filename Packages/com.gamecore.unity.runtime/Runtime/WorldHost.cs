@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using GameCore.Contracts;
 using GameCore.Execution;
+using GameCore.Execution.Messages;
 using GameCore.Unity.Runtime.Messages;
 using Unity.Core;
 using Unity.Entities;
@@ -123,6 +124,7 @@ namespace GameCore.Unity.Runtime
 
         private Id128 worldStorageResource;
         private Id128 identityIndexResource;
+        private Id128 messagePlaneResource;
         private EventSequence lastEventSequence = EventSequence.Zero;
 
         private WorldLifecycleState lifecycle = WorldLifecycleState.Created;
@@ -634,10 +636,11 @@ namespace GameCore.Unity.Runtime
                     AdmissionSequence.Zero);
             }
 
+            AdmissionSequence before = messages.Requests.LastAdmissionSequence;
             CommandAdmissionReceipt receipt = messages.SubmitCommand(command, currentStep, currentEpoch);
-            if (receipt.Admitted)
+            if (receipt.Admitted && receipt.AcceptedSequence > before)
             {
-                // An admitted command is exactly one unit of demand for a command-driven world (P-036, P-037).
+                // Only a fresh admission creates demand; retransmission never runs the command twice.
                 NotifyCommandAdmitted(1U);
             }
 

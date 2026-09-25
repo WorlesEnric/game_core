@@ -43,7 +43,7 @@ namespace GameCore.Unity.Runtime.Tests.Messages
             WorldPumpResult pump = host.PumpFrame(1_000_000UL);
             Assert.That(pump.Pumped, Is.True);
             Assert.That(pump.Advance, Is.Not.Null);
-            Assert.That(pump.Advance!.Outcome, Is.EqualTo(Outcome.Published));
+            Assert.That(pump.Advance!.Outcome, Is.EqualTo(Outcome.Published), host.FaultDetail);
             Assert.That(host.CurrentStep, Is.EqualTo(LogicalStepId.First), "One admitted command is exactly one logical step (P-036).");
 
             MessageProbeState state = ReadProbe(host);
@@ -122,7 +122,7 @@ namespace GameCore.Unity.Runtime.Tests.Messages
 
             host.RequestWake(1U);
             WorldPumpResult pump = host.PumpFrame(1_000_000UL);
-            Assert.That(pump.Advance!.Outcome, Is.EqualTo(Outcome.Published), "The refusal happens before mutation, so the step still commits.");
+            Assert.That(pump.Advance!.Outcome, Is.EqualTo(Outcome.Published), host.FaultDetail);
 
             Assert.That(Producer(host, MessageFixtureKeys.ProducerA).RefusedCount, Is.EqualTo(0));
             Assert.That(Producer(host, MessageFixtureKeys.ProducerB).RefusedCount, Is.EqualTo(1), "A reliable lane at its bound refuses (P-043).");

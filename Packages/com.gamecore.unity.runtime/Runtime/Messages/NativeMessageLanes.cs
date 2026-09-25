@@ -15,7 +15,9 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using GameCore.Contracts;
+using GameCore.Execution.Messages;
 using Unity.Collections;
+using Unity.Jobs;
 
 namespace GameCore.Unity.Runtime.Messages
 {
@@ -31,6 +33,7 @@ namespace GameCore.Unity.Runtime.Messages
         private int rowCount;
         private int payloadWatermark;
         private bool consumerHeld;
+        private JobHandle payloadWriter;
         private bool disposed;
 
         public NativeMessageLane(MessageBufferDescriptor descriptor, Allocator allocator)
@@ -59,6 +62,11 @@ namespace GameCore.Unity.Runtime.Messages
 
         /// <summary>Native payload arena; a job producer writes here before publishing a row.</summary>
         public NativeArray<byte> Payload => payloadArena;
+        /// <summary>Outstanding writer of this lane's shared payload arena.</summary>
+        public JobHandle PayloadWriter => payloadWriter;
+
+        /// <summary>Records the writer whose handle subsequent writes to this arena must depend on.</summary>
+        public void TrackPayloadWriter(JobHandle handle) => payloadWriter = handle;
 
         /// <summary>Rows a reliable lane had to refuse because it was full (P-043; zero is the expected value).</summary>
         public int RejectedCount { get; private set; }
@@ -74,6 +82,13 @@ namespace GameCore.Unity.Runtime.Messages
         /// <summary>True once the consuming owner took this step's sealed batch.</summary>
         public bool WasConsumed => consumerHeld;
 
+        /// <summary>Completes the tracked payload writer before any main-thread arena read or reset.</summary>
+        public void CompletePayloadWriter()
+        {
+            payloadWriter.Complete();
+            payloadWriter = default(JobHandle);
+        }
+
         /// <summary>
         /// Reserves payload space, so a job can write its bytes into <see cref="Payload"/> and then publish the row.
         /// A refusal changes nothing: the caller must abandon the affected command or batch (P-043).
@@ -88,6 +103,19 @@ namespace GameCore.Unity.Runtime.Messages
             if (byteCount < 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(byteCount), "A payload length cannot be negative.");
+            }
+            if (rowCount >= Descriptor.Capacity)
+            {
+                detail = "buffer " + Buffer + " is at its declared row capacity (P-043)";
+                offset = -1;
+                if (Descriptor.IsReliable)
+                {
+                    RejectedCount++;
+                    return BufferAppendOutcome.RejectedCapacity;
+                }
+
+                DroppedCount++;
+                return BufferAppendOutcome.DroppedLossy;
             }
 
             detail = string.Empty;
@@ -251,6 +279,7 @@ namespace GameCore.Unity.Runtime.Messages
                 throw new ArgumentNullException(nameof(destination));
             }
 
+            CompletePayloadWriter();
             destination.Clear();
             if (rowCount == 0)
             {
@@ -277,6 +306,7 @@ namespace GameCore.Unity.Runtime.Messages
         /// <summary>Payload bytes of one row from this lane's arena.</summary>
         public byte[] PayloadOf(in StepMessage row)
         {
+            CompletePayloadWriter();
             var copy = new byte[row.PayloadLength];
             for (int i = 0; i < row.PayloadLength; i++)
             {
@@ -293,6 +323,7 @@ namespace GameCore.Unity.Runtime.Messages
             {
                 throw new ObjectDisposedException(nameof(NativeMessageLane));
             }
+            CompletePayloadWriter();
 
             consumerHeld = true;
             if (releaseRows)
@@ -313,7 +344,8 @@ namespace GameCore.Unity.Runtime.Messages
                 rowCount = 0;
                 payloadWatermark = 0;
                 consumerHeld = false;
-                return new NextStepCarryReport(Descriptor.Buffer, null, null, 0);
+                payloadWriter = default(JobHandle);
+                return new NextStepCarryReport(Descriptor.Buffer, Array.Empty<StepMessage>(), Array.Empty<RequestOutcome>(), 0);
             }
 
             var ordered = new List<StepMessage>(rowCount);
@@ -456,6 +488,7 @@ namespace GameCore.Unity.Runtime.Messages
         private readonly Dictionary<Id128, NativeMessageLane> lanes = new Dictionary<Id128, NativeMessageLane>();
         private readonly List<NativeMessageLane> order = new List<NativeMessageLane>();
         private readonly List<StepMessage> mergeScratch = new List<StepMessage>();
+        private readonly List<StepMessage> laneScratch = new List<StepMessage>();
         private readonly Allocator allocator;
         private bool disposed;
 
@@ -540,7 +573,8 @@ namespace GameCore.Unity.Runtime.Messages
                     continue;
                 }
 
-                lane.MergeInto(mergeScratch);
+                lane.MergeInto(laneScratch);
+                mergeScratch.AddRange(laneScratch);
             }
 
             if (mergeScratch.Count > 1)

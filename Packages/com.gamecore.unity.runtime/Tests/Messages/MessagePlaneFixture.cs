@@ -236,8 +236,8 @@ namespace GameCore.Unity.Runtime.Tests.Messages
                 Offset = offset,
                 Value = value,
                 Ordinal = ordinal,
-            }.Schedule(dependency);
-
+            }.Schedule(JobHandle.CombineDependencies(dependency, lane.PayloadWriter));
+            lane.TrackPayloadWriter(dependency);
             var row = new StepMessage(
                 LogicalStepId.Zero,
                 AssemblyEpoch.First,
@@ -476,7 +476,7 @@ namespace GameCore.Unity.Runtime.Tests.Messages
         public const string WorldName = "GameCoreMessageFixture";
 
         /// <summary>Seeds the single probe entity carrying the fixture's observable state.</summary>
-        public static Entity Seed(World world)
+        public static void Seed(World world)
         {
             if (world == null)
             {
@@ -486,7 +486,6 @@ namespace GameCore.Unity.Runtime.Tests.Messages
             EntityManager entityManager = world.EntityManager;
             Entity entity = entityManager.CreateEntity(typeof(MessageProbeState));
             entityManager.SetName(entity, "MessageProbe");
-            return entity;
         }
 
         public static WorldCreateRequest CommandDrivenRequest(WorldId world, OperationId operation, ContentHash catalogHash)
@@ -551,6 +550,7 @@ namespace GameCore.Unity.Runtime.Tests.Messages
                     new[] { MessageFixtureKeys.HostIngressProducer },
                     MessageFixtureKeys.ProbeOwner,
                     MessageFixtureKeys.OwnerStage,
+                    MessageFixtureKeys.OwnerStage,
                     MessageFixtureKeys.HostIngressProducer,
                     BufferLifetime.Step,
                     capacity: 8,
@@ -569,6 +569,7 @@ namespace GameCore.Unity.Runtime.Tests.Messages
                     MessageFixtureKeys.ProducerA,
                     BufferLifetime.Step,
                     counterCapacity,
+                    byteCapacity: counterCapacity * MessageFixtureKeys.PayloadBytes,
                     BufferOverflowPolicy.RejectBeforeMutation,
                     BufferCancellationPolicy.Drain),
 

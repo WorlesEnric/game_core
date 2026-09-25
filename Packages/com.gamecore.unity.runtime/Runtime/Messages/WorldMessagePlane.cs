@@ -82,6 +82,7 @@ namespace GameCore.Unity.Runtime.Messages
                 return false;
             }
 
+            var declared = new HashSet<Id128>();
             for (int i = 0; i < Buffers.Count; i++)
             {
                 MessageBufferDescriptor buffer = Buffers[i];
@@ -365,6 +366,17 @@ namespace GameCore.Unity.Runtime.Messages
         /// <summary>Commit-time validation of the declared message buffers against what actually ran (P-043, O-16).</summary>
         public StepBufferCommitReport ValidateCommit(IStepDispatchFacts facts, out string detail)
         {
+            for (int i = 0; i < lanes.Lanes.Count; i++)
+            {
+                NativeMessageLane lane = lanes.Lanes[i];
+                MessageDrainReport drain = lane.ValidateDrain();
+                if (!drain.Succeeded)
+                {
+                    detail = drain.Detail;
+                    return new StepBufferCommitReport(false, drain.Code, new[] { drain }, detail);
+                }
+            }
+
             StepBufferCommitReport report = schedule.ValidateCommit(facts);
             detail = report.Detail;
             return report;
@@ -617,7 +629,7 @@ namespace GameCore.Unity.Runtime.Messages
             lanes.Dispose();
         }
 
-        private BufferAppendOutcome AppendToLane(BufferId buffer, StepMessage message, byte[] payload, out string detail)
+        private BufferAppendOutcome AppendToLane(BufferId buffer, StepMessage message, IReadOnlyList<byte>? payload, out string detail)
         {
             if (!lanes.TryGetLane(buffer, out NativeMessageLane? lane) || lane == null)
             {
@@ -637,9 +649,20 @@ namespace GameCore.Unity.Runtime.Messages
                 message.Order,
                 message.Producer,
                 message.PayloadOffset,
-                payload.Length);
+                payload?.Count ?? 0);
 
-            return lane.TryAppend(placed, payload, out detail);
+            return lane.TryAppend(placed, payload == null ? Array.Empty<byte>() : CopyBytes(payload), out detail);
+        }
+
+        private static byte[] CopyBytes(IReadOnlyList<byte> bytes)
+        {
+            var copy = new byte[bytes.Count];
+            for (int i = 0; i < bytes.Count; i++)
+            {
+                copy[i] = bytes[i];
+            }
+
+            return copy;
         }
 
         private static byte[] CopyPayload(CommandEnvelope command)
