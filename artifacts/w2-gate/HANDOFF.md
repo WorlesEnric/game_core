@@ -41,10 +41,10 @@ Four things were added:
    gate (no implementation of `IPlanResourceGate` existed in production code).
 2. **The gate fixture**: `W2GateKeys`/`W2GateDeclarations`/`W2GateWorld` in `GameCore.Unity.Fixtures` (four declared
    stages, five systems, one declared buffer, three owned slots, two providers, a bounded command lane and a real
-   job writing a native container) and `W2GateScenario` — the twelve-observation scenario shared by the Editor and
+   job writing a native container) and `W2GateScenario` — the eleven-observation scenario shared by the Editor and
    the player.
 3. **The EditMode half and the player half**: `unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W2Gate/`
-   (`GameCore.W2Gate.Tests`, 13 cases) and `-probeW2Gate` (`W2GateScenarioHost`, `ProbeW2Gate`, `ProbeArguments`,
+   (`GameCore.W2Gate.Tests`, 11 cases) and `-probeW2Gate` (`W2GateScenarioHost`, `ProbeW2Gate`, `ProbeArguments`,
    `ProbeRunner`).
 4. **Probe-run robustness**: the flaky positive-probe crash (GC-007's build host saw Pass JSON written, then exit
    139) is addressed twice — every probe now runs `PROBE_RUNS` times (default 5) and fails on any crash
@@ -73,12 +73,12 @@ Gate fixture (`Packages/com.gamecore.unity.runtime/Fixtures/Runtime/`, assembly 
 | `W2GateKeys.cs` | Stable identities (reusing the GC-006 narrative recipes/rule names through `FixtureIds`), the gate's stages/systems/buffers/domains/slots/fields, the components `W2GateTrait`/`W2GateTrail` and the generated `W2GatePayloadReader` |
 | `W2GateDeclarations.cs` | `W2GateQuestMigration`, `W2GateSlotMigrations`, `W2GateRecipeApplier`, the two provider manifests (rules, capability contracts, stages, buffer, slots) |
 | `W2GateWorld.cs` | `W2GateSettleJob`, `W2GateModule` (compiled schedule, adapter result, native dependency table, root entity), the five systems, `W2GateRecipes`, `W2GateRegistration` (message plane, readers, registration) |
-| `W2GateScenario.cs` | `W2GateStep`, `W2GateFacts`, `W2GateScenarioResult`, `W2GateScenario` (12 observations per run) |
+| `W2GateScenario.cs` | `W2GateStep`, `W2GateFacts`, `W2GateScenarioResult`, `W2GateScenario` (11 observations per run) |
 
 Unity qualification project:
 
 - `Assets/GameCore.Validation/Tests/W2Gate/GameCore.W2Gate.Tests.asmdef`
-- `Assets/GameCore.Validation/Tests/W2Gate/W2GateIntegrationTests.cs` (13 cases, both catalogs)
+- `Assets/GameCore.Validation/Tests/W2Gate/W2GateIntegrationTests.cs` (11 cases, both catalogs)
 - `Assets/GameCore.Validation/Runtime/W2GateScenarioHost.cs`
 - `Assets/GameCore.Validation/Runtime/ProbeW2Gate.cs`
 
@@ -300,7 +300,7 @@ on a registered `DomainExplicit` clock is demand for exactly one further step, w
 
 | Gate clause / requirement | Where proven | Evidence |
 |---|---|---|
-| the whole chain runs on real modules | `W2GateScenario`, `DerivedAssemblyPipeline` | 12 observations `gate2-*` per catalog, `EveryGateCheckPassesOverTheGeneratedCatalog`, `…FixtureCatalog` |
+| the whole chain runs on real modules | `W2GateScenario`, `DerivedAssemblyPipeline` | 11 observations `gate2-*` per catalog, `EveryGateCheckPassesOverTheGeneratedCatalog`, `…FixtureCatalog` |
 | P-004/P-005 identity and handles | `LiveTargetIndex`/`LiveTargetSeeder` refuse a default or duplicate identity; the owner resolves `TargetId` | `gate2-world-and-live-targets`, `gate2-one-bounded-command-committed` |
 | P-006 one publication series | `DerivedAssemblyPipeline` adopts the lane's own pair; `CountersJoined` asserted after every assembly boundary | `gate2-provider-mounted-and-published`, `gate2-forward-provider-and-spawned-target` |
 | P-008 canonical order | GC-009's compiler over the declared graph; GC-007's canonical partition ids | `gate2-ownership-and-schedule-compiled` (`scheduleHash`) |
@@ -311,7 +311,7 @@ on a registered `DomainExplicit` clock is demand for exactly one further step, w
 | P-024 spawn | `AssemblyPublisher.Spawn` with the composition publication's own numbers | `gate2-forward-provider-and-spawned-target` |
 | P-027/P-028 plan states and recheck | `AssemblyPlanner` rechecks the world's published pair; the descriptor validates | `gate2-provider-mounted-and-published` |
 | P-029/P-032 migration on scratch, one authoritative store | 4 live slots migrated, value = seeded + delta, version = descriptor's | `gate2-derived-layout-in-entities`, `gate2-one-bounded-command-committed` |
-| P-030 one visible epoch | the published view switch and the stamp epoch | `gate2-derived-layout-in-entities` (stamp == published epoch) |
+| P-030 one visible epoch | the captured observer holds the complete old image while the switch replaces the reference; the stamp names the published epoch | `gate2-provider-mounted-and-published` (`observerOneCompleteImage`), `gate2-derived-layout-in-entities` (stamp == published epoch) |
 | P-034 one owner per domain, generated partitions | GC-007's `OwnershipReport` | `gate2-ownership-and-schedule-compiled` (disjoint trait writers, ordered trail writers) |
 | P-035/P-036/P-038 lifecycle, temporal models, clocks | `WorldTimeDriver` frames; a registered wake advances exactly one step; the idle world advances none | `gate2-registered-wake-advances-one-step`, `gate2-idle-world-performs-zero-steps` |
 | P-039/P-040 stage declarations and the compiled DAG | GC-009's compiler, the adapter's table, the plan's rebind at every epoch | `gate2-ownership-and-schedule-compiled`, `gate2-ordered-dispatch-and-dependent-read` |

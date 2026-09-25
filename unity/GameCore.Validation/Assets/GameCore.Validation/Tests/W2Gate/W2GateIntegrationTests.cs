@@ -108,6 +108,11 @@ namespace GameCore.W2Gate.Tests
                 Assert.That(facts.WorldEpochAfterMount, Is.EqualTo(2UL),
                     "P-006 has one publication series, so the world publishes the composition epoch itself: " + facts.Describe());
                 Assert.That(facts.CountersJoinedAfterMount, Is.True, facts.Describe());
+                Assert.That(facts.ObserverSeesOneCompleteImage, Is.True,
+                    "an observer's captured image must be the old assembly in full, and the switch must replace the"
+                    + " reference instead of mutating it (P-030): " + facts.Describe());
+                Assert.That(facts.ObserverCapturedEpoch, Is.EqualTo(1UL), facts.Describe());
+                Assert.That(facts.ObserverCapturedRows, Is.Zero, facts.Describe());
             }
         }
 

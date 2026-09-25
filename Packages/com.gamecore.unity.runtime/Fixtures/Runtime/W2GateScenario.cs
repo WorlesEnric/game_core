@@ -142,6 +142,15 @@ namespace GameCore.Unity.Fixtures
 
         public string PublicationOutcome { get; set; } = string.Empty;
 
+        /// <summary>Epoch of the image an observer captured before the publication: the pre-publication assembly.</summary>
+        public ulong ObserverCapturedEpoch { get; set; }
+
+        /// <summary>Binding rows that captured image held: none, because it is the initial assembly (P-030).</summary>
+        public int ObserverCapturedRows { get; set; }
+
+        /// <summary>True when the switch replaced the reference instead of mutating the old image (P-030).</summary>
+        public bool ObserverSeesOneCompleteImage { get; set; }
+
         // ---------------------------------------------------------------- the derived layout in real storage
 
         public int MaraBindingRowCount { get; set; }
@@ -318,6 +327,9 @@ namespace GameCore.Unity.Fixtures
                 + "; migratedSlots=" + PlanMigratedSlotCount.ToString(CultureInfo.InvariantCulture)
                 + "; structuralWrites=" + PublishedStructuralWrites.ToString(CultureInfo.InvariantCulture)
                 + "; publicationOutcome=" + PublicationOutcome
+                + "; observerCapturedEpoch=" + ObserverCapturedEpoch.ToString(CultureInfo.InvariantCulture)
+                + "; observerCapturedRows=" + ObserverCapturedRows.ToString(CultureInfo.InvariantCulture)
+                + "; observerOneCompleteImage=" + ObserverSeesOneCompleteImage
                 + "; maraRows=" + MaraBindingRowCount.ToString(CultureInfo.InvariantCulture)
                 + "; maraValue=" + MaraBindingValue.ToString(CultureInfo.InvariantCulture)
                 + "; maraActive=" + MaraBindingIsActive
@@ -908,11 +920,23 @@ namespace GameCore.Unity.Fixtures
                         W2GateKeys.RootScope,
                         declarations[0].SchemaDefaults);
 
+                    // An observer's single read before the publication: it holds the pre-publication image, and the
+                    // switch that follows replaces the reference rather than mutating the image, so no reader can
+                    // ever hold a mixture of the two assemblies (P-030).
+                    PublishedWorldView capturedBefore = publisher.Published;
+
                     EditAdmission admission = lane.SubmitEdit(payload, operation, lane.Committed.Revision);
                     IReadOnlyList<PublishedOperation> published = lane.Drain();
 
                     DerivedAssemblyReport report = pipeline.PublishDerived(operation);
 
+                    facts.ObserverCapturedEpoch = capturedBefore.Epoch.Value;
+                    facts.ObserverCapturedRows = capturedBefore.BindingRowCount;
+                    facts.ObserverSeesOneCompleteImage = capturedBefore.Epoch.Value == AssemblyEpoch.First.Value
+                        && capturedBefore.BindingRowCount == 0
+                        && !ReferenceEquals(capturedBefore, publisher.Published)
+                        && publisher.Published.Epoch.Value == 2UL
+                        && publisher.Published.BindingRowCount == 2;
                     facts.LaneRevisionAfterMount = lane.Committed.Revision.Value;
                     facts.LaneEpochAfterMount = lane.Committed.Epoch.Value;
                     facts.WorldEpochAfterMount = host.CurrentEpoch.Value;
@@ -943,6 +967,7 @@ namespace GameCore.Unity.Fixtures
                         && facts.LaneEpochAfterMount == 2UL
                         && facts.WorldEpochAfterMount == 2UL
                         && facts.CountersJoinedAfterMount
+                        && facts.ObserverSeesOneCompleteImage
                         && facts.MigrationInvocations >= 4;
 
                     steps.Add(new W2GateStep(name, pass, report.Describe()
@@ -950,8 +975,9 @@ namespace GameCore.Unity.Fixtures
                         + "; drained=" + published.Count.ToString(CultureInfo.InvariantCulture)
                         + "; lane=" + facts.LaneRevisionAfterMount.ToString(CultureInfo.InvariantCulture)
                         + "/" + facts.LaneEpochAfterMount.ToString(CultureInfo.InvariantCulture)
-                        + "; worldEpoch=" + facts.WorldEpochAfterMount.ToString(CultureInfo.InvariantCulture)
                         + "; joined=" + facts.CountersJoinedAfterMount
+                        + "; observerOneCompleteImage=" + facts.ObserverSeesOneCompleteImage
+                        + "; observerCapturedEpoch=" + facts.ObserverCapturedEpoch.ToString(CultureInfo.InvariantCulture)
                         + "; migrations=" + facts.MigrationInvocations.ToString(CultureInfo.InvariantCulture)));
                 }
                 catch (Exception exception)
