@@ -58,7 +58,7 @@ namespace GameCore.Derivation.Tests
         public const int MaxTargets = 8;
 
         /// <summary>Installations a sequence keeps mounted at once.</summary>
-        public const int MaxInstalls = 3;
+        public const int MaxInstalls = 5;
 
         /// <summary>Operation kinds the sequence can apply; TEST-008's vocabulary.</summary>
         public const int OperationKinds = 13;
@@ -282,8 +282,7 @@ namespace GameCore.Derivation.Tests
 
             if (Family == SequenceFamily.Narrative)
             {
-                builder.Install(name, scope, random.NextInclusive(-1, 1), NarrativeComposition.Rules(tag), state);
-                NarrativeComposition.RegisterHookKeys(builder, tag);
+                builder.Install(name, scope, random.NextInclusive(-1, 1), ChapterRules(tag), state);
                 RegisterProvider(name, scope, tag, NarrativeComposition.DialogueRule(tag), ProviderKind.Chapter);
             }
             else if (random.NextBool())
@@ -424,8 +423,7 @@ namespace GameCore.Derivation.Tests
             string name = "seq.s" + seed.ToString(CultureInfo.InvariantCulture) + ".rp" + replaceCounter.ToString(CultureInfo.InvariantCulture);
             if (kind == ProviderKind.Chapter)
             {
-                builder.Install(name, scope, random.NextInclusive(-1, 1), NarrativeComposition.Rules(tag), InstallationState.Active);
-                NarrativeComposition.RegisterHookKeys(builder, tag);
+                builder.Install(name, scope, random.NextInclusive(-1, 1), ChapterRules(tag), InstallationState.Active);
                 RegisterProvider(name, scope, tag, NarrativeComposition.DialogueRule(tag), ProviderKind.Chapter);
             }
             else if (kind == ProviderKind.Scoring)
@@ -467,6 +465,44 @@ namespace GameCore.Derivation.Tests
             isolationApplied = true;
             return "isolate(" + isolated + "@" + scope + ")";
         }
+
+        /// <summary>
+        /// The two stratum-0 rules of one randomly mounted chapter: the dialogue binding and the gate condition.
+        /// The reference fixture's own two chapters declare the full six-rule chain (including the `Ordered` hook
+        /// slots and the strata-1/2 chain), so the sweep exercises those; a random provider declares the subset to
+        /// bound the rule count the deliberately slow reference evaluator has to walk 25,000 times, which is what
+        /// keeps 500 operations per seed practical without changing the operation vocabulary.
+        /// </summary>
+        private static IReadOnlyList<DerivationRule> ChapterRules(string chapterTag) =>
+            new List<DerivationRule>
+            {
+                FixtureBuilder.Rule(
+                    NarrativeComposition.DialogueRule(chapterTag),
+                    NarrativeComposition.ConversationBinding,
+                    NarrativeComposition.BindingStratum,
+                    1U,
+                    FixtureBuilder.Selector(NarrativeComposition.VillagerRecipe),
+                    FixtureIds.Key(NarrativeComposition.AlwaysPredicate),
+                    null,
+                    PropagationReach.SelfAndDescendants,
+                    true,
+                    0,
+                    CompositionPolicy.Replace,
+                    FixturePayload.Tag(chapterTag + ".dialogue-graph")),
+                FixtureBuilder.Rule(
+                    NarrativeComposition.GateRule(chapterTag),
+                    NarrativeComposition.GateConditionBinding,
+                    NarrativeComposition.BindingStratum,
+                    1U,
+                    FixtureBuilder.Selector(NarrativeComposition.QuestGateRecipe),
+                    FixtureIds.Key(NarrativeComposition.AlwaysPredicate),
+                    null,
+                    PropagationReach.SelfAndDescendants,
+                    true,
+                    0,
+                    CompositionPolicy.Replace,
+                    FixturePayload.Tag(chapterTag + ".gate-condition")),
+            };
 
         private void RemoveProvider(string name)
         {
