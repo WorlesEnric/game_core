@@ -295,6 +295,14 @@ on a registered `DomainExplicit` clock is demand for exactly one further step, w
 6. **The settle stage publishes its job handle only through `NativeDependencyTable`** (not through
    `SystemBase.Dependency`), so the later project stage's wait is load-bearing; the project stage records whether the
    combined fence was non-default, which is the observable proof (P-041).
+7. **The gate reuses the GC-006 narrative fixture's *identities and descriptor shapes*, not its chapter rules.**
+   The live targets are the 07 §3 narrative targets (`npc-mara`, `gate-east`, `crowd-prop`, `encounter-oak`) with the
+   narrative recipes as their schemas, and the two rules the gate mounts are named with the narrative fixture's own
+   rule-name helpers (`NarrativeComposition.DialogueRule("chapter-one")`, `.GateRule("chapter-one")`), so nothing in
+   the gate can drift from the descriptors GC-010 will build on. The gate declares its *own* capability contracts
+   and rules on top of them, because the chapter's rules publish opaque tag payloads whose domain wiring (dialogue
+   graphs, gate conditions, choice surfaces, encounter hooks) is GC-010's work, and a binding row can only carry
+   the one int32 value this gate transfers (§7.3).
 
 ## 8. Requirement and test coverage mapping
 
