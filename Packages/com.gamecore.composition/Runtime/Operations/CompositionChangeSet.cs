@@ -277,7 +277,6 @@ namespace GameCore.Composition
                 {
                     scopeEdits.Add(new ScopeEdit(CompositionEditKind.Reparent, record.Scope, previous.Parent, record.Parent));
                     scopeFacts.Add(new ScopeFactChange(record.Scope, ScopeFactChangeReason.Parent));
-                    continue;
                 }
 
                 if (!IsolationEquals(previous.CapabilityIsolation, record.CapabilityIsolation)

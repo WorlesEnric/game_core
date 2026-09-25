@@ -289,7 +289,6 @@ namespace GameCore.Derivation
                 if (!old.Parent.Equals(scope.Parent))
                 {
                     moves.Add(new ScopeMove(scope.Scope, old.Parent, scope.Parent));
-                    continue;
                 }
 
                 if (!ScopeFactsEqual(old, scope))
@@ -326,7 +325,6 @@ namespace GameCore.Derivation
                 if (!old.Scope.Equals(target.Scope))
                 {
                     targetMoves.Add(new TargetScopeMove(target.Target, old.Scope, target.Scope));
-                    continue;
                 }
 
                 if (!DescriptorTargetIndex.DescriptorsEqual(old.Descriptor, target.Descriptor))
