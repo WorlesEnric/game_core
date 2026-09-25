@@ -711,8 +711,10 @@ namespace GameCore.Narrative.Tests
                     AssemblyEpoch epochBefore = host!.CurrentEpoch;
                     CompositionRevision revisionBefore = publisher!.PublishedRevision;
 
+                    // The transferred fact slot now belongs to the gate owner, so the revision that must read it
+                    // declares that ownership (P-032, P-034).
                     AssemblyPublicationReport? publication = PublishPolicyEdit(
-                        NextChapterTwoEdit(), null, null, out StatePolicyPlan? plan, out DerivedAssemblyReport? _);
+                        NextChapterTwoEdit(), null, SetWith(GateOwnedFact()), out StatePolicyPlan? plan, out DerivedAssemblyReport? _);
 
                     bool kept = ReadSlot(NarrativeKeys.Mara, NarrativeKeys.DialogueOwner, NarrativeKeys.ConversationNodeSlot, out int value, out uint version);
 
@@ -762,9 +764,10 @@ namespace GameCore.Narrative.Tests
                         policyCatalog.InitialValues,
                         new MigrationScratch(ScratchCapacityBytes, ScratchBytesPerSlot));
 
+                    SlotStatePolicySet afterTransfer = SetWith(GateOwnedFact());
                     var tinyPolicies = new StateMigrationPipeline(host, publisher!, seeder!, policyCatalog, tinyBudget);
                     AssemblyPublicationReport? publication = PublishPolicyEdit(
-                        NextChapterTwoEdit(), null, null, out StatePolicyPlan? plan, out DerivedAssemblyReport? _, tinyPolicies);
+                        NextChapterTwoEdit(), null, afterTransfer, out StatePolicyPlan? plan, out DerivedAssemblyReport? _, tinyPolicies);
                     bool kept = ReadSlot(NarrativeKeys.Mara, NarrativeKeys.DialogueOwner, NarrativeKeys.ConversationNodeSlot, out int value, out uint version);
 
                     steps.Add(new NarrativeStatePolicyStep(
@@ -996,6 +999,26 @@ namespace GameCore.Narrative.Tests
                     NarrativeKeys.ConversationInit,
                     NarrativeKeys.ConversationConfigChange,
                     NarrativeKeys.ConversationNodeMigration);
+
+            /// <summary>
+            /// The bridge-permit fact slot as the revision after the transfer declares it: the gate owner holds it,
+            /// which is what an ownership transfer publishes (P-025, P-032).
+            /// </summary>
+            private static SlotStatePolicy GateOwnedFact()
+                => new SlotStatePolicy(
+                    new SlotAuthorityDeclaration(
+                        NarrativeKeys.BridgePermitValueSlot,
+                        NarrativeKeys.GateOwner,
+                        NarrativeKeys.QuestDomain,
+                        NarrativeKeys.QuestLayout,
+                        null,
+                        LastSupportPolicy.PreserveDormant,
+                        NarrativeKeys.QuestTransfer,
+                        null,
+                        SlotAuthorityOptions.Dormant()),
+                    NarrativeKeys.QuestInit,
+                    NarrativeKeys.QuestConfigChange,
+                    default(FactoryKey));
 
             /// <summary>The bridge-permit fact slot with the declared `TransferTo` last-support policy (P-032).</summary>
             private static SlotStatePolicy Transferable()

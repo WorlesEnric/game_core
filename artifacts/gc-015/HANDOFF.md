@@ -191,7 +191,11 @@ IL2CPP; IL2CPP composition is GC-012's gate).
    destination owner to be an owner this revision declares — that is what "a named available owner" can mean at
    validation time, since the live ECS storage is never consulted during planning. Cards declare a single owner
    (`cards.owner.table`), so the card transfer observation declares an audit owner as a GC-015 test-declared slot
-   owner rather than inventing a second card owner (which would change that package).
+   owner rather than inventing a second card owner (which would change that package). A revision *after* a transfer
+   declares the destination ownership for that slot — which is what an ownership transfer publishes (P-025) — and the
+   two GC-015 passes that run after the transfer (the failed-migration and budget observations) therefore carry that
+   declaration; a live key whose declaration does not cover it is an ownership conflict by P-034, not a policy the
+   executor may guess at.
 3. **The card and narrative catalogs declare no `TransferTo` last-support slot and no reset permission**, so
    "each slot policy" in a family world is proven as: the *declared* policies executed over declared slots
    (`Preserve`, `PreserveDormant`, `RemoveDerived`, `Migrate`) plus the *declared-by-this-test* variants of the

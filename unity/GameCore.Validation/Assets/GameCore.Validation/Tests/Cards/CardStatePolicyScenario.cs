@@ -738,9 +738,10 @@ namespace GameCore.Cards.Tests
                         InitialValues(),
                         new MigrationScratch(ScratchCapacityBytes, ScratchBytesPerSlot));
 
+                    SlotStatePolicySet afterTransfer = SetWith(AuditOwnedOutput());
                     var tinyPolicies = new StateMigrationPipeline(host, publisher!, seeder!, policyCatalog, tinyBudget);
                     AssemblyPublicationReport? publication = PublishPolicyEdit(
-                        NextQuietScoringEdit(), null, null, out StatePolicyPlan? plan, out DerivedAssemblyReport? _, tinyPolicies, tinyBudget);
+                        NextQuietScoringEdit(), null, afterTransfer, out StatePolicyPlan? plan, out DerivedAssemblyReport? _, tinyPolicies, tinyBudget);
                     bool kept = ReadSlot(table, CardTableKeys.TableOwner, CardTableKeys.TableSlot, out int turn, out uint _);
 
                     steps.Add(new CardStatePolicyStep(
@@ -993,6 +994,26 @@ namespace GameCore.Cards.Tests
                         SeatTransferPolicy,
                         null,
                         SlotAuthorityOptions.Durable()),
+                    default(FactoryKey),
+                    default(FactoryKey),
+                    default(FactoryKey));
+
+            /// <summary>
+            /// The committed-output slot as the revision after the transfer declares it: the audit owner holds it,
+            /// which is what an ownership transfer publishes (P-025, P-032).
+            /// </summary>
+            private static SlotStatePolicy AuditOwnedOutput()
+                => new SlotStatePolicy(
+                    new SlotAuthorityDeclaration(
+                        CardTableKeys.OutputSlot,
+                        AuditOwner,
+                        CardTableKeys.OutputDomain,
+                        CardTableKeys.OutputLayout,
+                        null,
+                        LastSupportPolicy.PreserveDormant,
+                        default(FactoryKey),
+                        null,
+                        SlotAuthorityOptions.Dormant()),
                     default(FactoryKey),
                     default(FactoryKey),
                     default(FactoryKey));
