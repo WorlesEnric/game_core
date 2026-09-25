@@ -456,8 +456,9 @@ namespace GameCore.Unity.Adapters.Views
         }
 
         /// <summary>
-        /// Applies committed presentation data to one live view. An apply whose token is not newer than the last
-        /// applied token is refused, so a stale image can never overwrite a newer one (P-045).
+        /// Applies committed presentation data to one live view. The view's first presentation is always accepted —
+        /// a view created from the currently committed image must be able to present it — and every later apply must
+        /// be strictly newer than the last one, so a stale image can never overwrite a newer one (P-045).
         /// </summary>
         public bool TryApply(ViewKey key, PresentationApplyData data, IViewBinder? binder)
         {
@@ -591,7 +592,12 @@ namespace GameCore.Unity.Adapters.Views
             return destroyed;
         }
 
-        /// <summary>Applies a token to the record; a token at or behind the last applied one is not newer (P-045).</summary>
+        /// <summary>
+        /// Strictly-newer test used from a view's second presentation on: a later step wins, and at the same step a
+        /// later assembly epoch wins, because a composition publication keeps the logical step and moves the epoch
+        /// (P-006). A default <paramref name="current"/> never matches a live candidate, which is why the first
+        /// presentation is decided by <see cref="ViewRecord.HasApplied"/> rather than by this test (P-045).
+        /// </summary>
         private static bool IsNewer(SnapshotToken candidate, SnapshotToken current)
         {
             if (!candidate.World.Session.Equals(current.World.Session))
