@@ -280,7 +280,8 @@ namespace GameCore.Unity.Runtime.Integration
                         slot.Policy,
                         value,
                         install.Record.Priority,
-                        new List<DefinitionRef> { assembly.BaseRecipe });
+                        new List<DefinitionRef> { assembly.BaseRecipe },
+                        new List<TargetId> { assembly.Target });
 
                     if (!capabilitiesByProvider.TryGetValue(providerKey, out List<ProposedCapability>? list) || list == null)
                     {
