@@ -9,7 +9,7 @@ Architecture:            x86_64
 Available memory:        31897 MB
 [Licensing::Module] Trying to connect to existing licensing client channel...
 Initialize udev device monitor.
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-worlesenric" at "2026-09-25T20:16:25.613309Z"
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-worlesenric" at "2026-09-25T20:19:31.02408Z"
 [SignatureVerifier] Application signature verification not supported on this platform.
 
 COMMAND LINE ARGUMENTS:
@@ -18,35 +18,26 @@ COMMAND LINE ARGUMENTS:
 -nographics
 -quit
 -projectPath
-/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation
+/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck
 -executeMethod
 GameCore.Validation.Editor.BuildProbe.BuildLinuxIL2CPP
 -logFile
-/home/worlesenric/wkspace/gc-wt/gc-017/artifacts/faults/toolchain/build.log
+/home/worlesenric/wkspace/gc-wt/gc-017/artifacts/faults/release/build.log
+Successfully changed project path to: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck
+
+(process:2477354): Gtk-CRITICAL **: 04:19:31.025: gtk_label_set_text: assertion 'GTK_IS_LABEL (label)' failed
+
+(process:2477354): Gtk-CRITICAL **: 04:19:31.025: gtk_label_set_text: assertion 'GTK_IS_LABEL (label)' failed
+/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck
 [Licensing::Client] Handshaking with LicensingClient:
   Version:                 1.18.3+d7ffd15
-  Session Id:              32c1bf0d9a69473997cec81955b68b6c
+  Session Id:              893886e1d05c4f6bad5634541fca5cc8
   Correlation Id:          a4aac8f8da2bbfc2169791db8bc4c264
-  External correlation Id: 8022704056938853384
+  External correlation Id: 2748889910320006146
   Machine Id:              jd93gYTNlAg1qIhTY9iII/nAhSo=
-Successfully changed project path to: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation
 [Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-worlesenric" (connect: 0.00s, validation: 0.00s, handshake: 0.00s)
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-worlesenric-notifications" at "2026-09-25T20:16:25.614562Z"
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-worlesenric-notifications" at "2026-09-25T20:19:31.025863Z"
 [Licensing::Module] Error: Access token is unavailable; failed to update
-
-(process:2465642): Gtk-CRITICAL **: 04:16:25.614: gtk_label_set_text: assertion 'GTK_IS_LABEL (label)' failed
-[Licensing::Client] Successfully resolved entitlement details
-[Licensing::Module] License group:
-  Id: 1375999166540-UnityPersXXXX
-  Product: Unity Personal
-  Type: Assigned
-  Expiration: Unlimited
-[Licensing::Client] Successfully updated license, isAsync: True, time: 0.00
-[Licensing::Client] Successfully resolved entitlement details
-[Licensing::Module] Licensing Background thread has ended after 0.00s
-
-(process:2465642): Gtk-CRITICAL **: 04:16:25.616: gtk_label_set_text: assertion 'GTK_IS_LABEL (label)' failed
-/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation
 [UnityMemory] Configuration Parameters - Can be set up in boot.config
     "memorysetup-bucket-allocator-granularity=16"
     "memorysetup-bucket-allocator-bucket-count=8"
@@ -82,26 +73,35 @@ Successfully changed project path to: /home/worlesenric/wkspace/gc-wt/gc-017/uni
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gfx=262144"
-Player connection [132658363962688]  Target information:
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: 1375999166540-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.00
+Player connection [129505548506432]  Target information:
 
-Player connection [132658363962688]  * "[IP] 192.168.0.21 [Port] 55504 [Flags] 2 [Guid] 589409196 [EditorId] 589409196 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+Player connection [129505548506432]  * "[IP] 192.168.0.21 [Port] 55504 [Flags] 2 [Guid] 1241060767 [EditorId] 1241060767 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
 
-Player connection [132658363962688]  * "[IP] 100.66.195.58 [Port] 55504 [Flags] 2 [Guid] 589409196 [EditorId] 589409196 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+Player connection [129505548506432]  * "[IP] 100.66.195.58 [Port] 55504 [Flags] 2 [Guid] 1241060767 [EditorId] 1241060767 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
 
-Player connection [132658363962688]  * "[IP] 172.18.0.1 [Port] 55504 [Flags] 2 [Guid] 589409196 [EditorId] 589409196 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+Player connection [129505548506432]  * "[IP] 172.18.0.1 [Port] 55504 [Flags] 2 [Guid] 1241060767 [EditorId] 1241060767 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
 
-Player connection [132658363962688]  * "[IP] 172.17.0.1 [Port] 55504 [Flags] 2 [Guid] 589409196 [EditorId] 589409196 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+Player connection [129505548506432]  * "[IP] 172.17.0.1 [Port] 55504 [Flags] 2 [Guid] 1241060767 [EditorId] 1241060767 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
 
-Player connection [132658363962688]  * "[IP] 10.42.0.0 [Port] 55504 [Flags] 2 [Guid] 589409196 [EditorId] 589409196 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+Player connection [129505548506432]  * "[IP] 10.42.0.0 [Port] 55504 [Flags] 2 [Guid] 1241060767 [EditorId] 1241060767 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
 
-Player connection [132658363962688]  * "[IP] 10.42.0.1 [Port] 55504 [Flags] 2 [Guid] 589409196 [EditorId] 589409196 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+Player connection [129505548506432]  * "[IP] 10.42.0.1 [Port] 55504 [Flags] 2 [Guid] 1241060767 [EditorId] 1241060767 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
 
-Player connection [132658363962688] Host joined multi-casting on [225.0.0.222:54997]...
-Player connection [132658363962688] Host joined alternative multi-casting on [225.0.0.222:34997]...
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Licensing Background thread has ended after 0.00s
+Player connection [129505548506432] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [129505548506432] Host joined alternative multi-casting on [225.0.0.222:34997]...
 Input System module state changed to: Initialized.
 [Physics::Module] Initialized fallback backend.
 [Physics::Module] Id: 0xdecafbad
-[Package Manager] Connected to IPC stream "Upm-2465642" after 0.1 seconds.
+[Package Manager] Connected to IPC stream "Upm-2477354" after 0.1 seconds.
 Library Redirect Path: Library/
 [Physics::Module] Selected backend.
 [Physics::Module] Name: PhysX
@@ -109,11 +109,11 @@ Library Redirect Path: Library/
 [Physics::Module] SDK Version: 4.1.2
 [Physics::Module] Integration Version: 1.0.0
 [Physics::Module] Threading Mode: Multi-Threaded
-Refreshing native plugins compatible for Editor in 0.13 ms, found 0 plugins.
+Refreshing native plugins compatible for Editor in 0.06 ms, found 0 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 6000.0.75f1 (26349cd2a5c8)
 [Subsystems] Discovering subsystems at path /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Resources/UnitySubsystems
-[Subsystems] Discovering subsystems at path /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation/Assets
+[Subsystems] Discovering subsystems at path /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Assets
 Forcing GfxDevice: Null
 GfxDevice: creating device client; kGfxThreadingModeNonThreaded
 NullGfxDevice:
@@ -124,7 +124,7 @@ Initialize mono
 Mono path[0] = '/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Managed'
 Mono path[1] = '/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-linux'
 Mono config path = '/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56642
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56354
 Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
 Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
 ImportWorker Server TCP listen port: 0
@@ -133,42 +133,42 @@ Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll
 Register platform support module: /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll
-Registered in 0.000929 seconds.
-- Loaded All Assemblies, in  0.214 seconds
+Registered in 0.000939 seconds.
+- Loaded All Assemblies, in  0.212 seconds
 Native extension for LinuxStandalone target not found
 Package Manager log level set to [2]
 [Licensing::Client] Successfully resolved entitlement details
 Native extension for OSXStandalone target not found
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  6.986 seconds
-Domain Reload Profiling: 7200ms
+- Finished resetting the current domain, in  8.507 seconds
+Domain Reload Profiling: 8719ms
 	BeginReloadAssembly (53ms)
 		ExecutionOrderSort (0ms)
 		DisableScriptedObjects (0ms)
 		BackupInstance (0ms)
 		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (0ms)
+		CreateAndSetChildDomain (1ms)
 	RebuildCommonClasses (24ms)
-	RebuildNativeTypeToScriptingClass (5ms)
-	initialDomainReloadingComplete (35ms)
-	LoadAllAssembliesAndSetupDomain (98ms)
+	RebuildNativeTypeToScriptingClass (6ms)
+	initialDomainReloadingComplete (34ms)
+	LoadAllAssembliesAndSetupDomain (95ms)
 		LoadAssemblies (52ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (96ms)
-			TypeCache.Refresh (95ms)
-				TypeCache.ScanAssembly (86ms)
+		AnalyzeDomain (93ms)
+			TypeCache.Refresh (92ms)
+				TypeCache.ScanAssembly (84ms)
 			BuildScriptInfoCaches (0ms)
 			ResolveRequiredComponents (0ms)
-	FinalizeReload (6986ms)
+	FinalizeReload (8507ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (6963ms)
+		SetupLoadedEditorAssemblies (8484ms)
 			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (6798ms)
+			InitializePlatformSupportModulesInManaged (8315ms)
 			SetLoadedEditorAssemblies (4ms)
-			BeforeProcessingInitializeOnLoad (40ms)
-			ProcessInitializeOnLoadAttributes (87ms)
-			ProcessInitializeOnLoadMethodAttributes (33ms)
+			BeforeProcessingInitializeOnLoad (41ms)
+			ProcessInitializeOnLoadAttributes (88ms)
+			ProcessInitializeOnLoadMethodAttributes (36ms)
 			AfterProcessingInitializeOnLoad (0ms)
 			EditorAssembliesLoaded (0ms)
 		ExecutionOrderSort2 (0ms)
@@ -177,40 +177,39 @@ Domain Reload Profiling: 7200ms
 Application.AssetDatabase Initial Refresh Start
 [Package Manager] Restoring resolved packages state from cache
 [Licensing::Client] Successfully resolved entitlement details
-[Package Manager] Registered 37 packages:
+[Package Manager] Registered 36 packages:
   Packages from [https://packages.unity.com]:
-    com.unity.burst@1.8.28 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation/Library/PackageCache/com.unity.burst@07790c2d06d9)
-    com.unity.collections@2.6.6 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation/Library/PackageCache/com.unity.collections@9796e5ee0d9e)
-    com.unity.entities@1.4.6 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation/Library/PackageCache/com.unity.entities@e90944159b94)
-    com.unity.mathematics@1.3.2 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation/Library/PackageCache/com.unity.mathematics@8017b507cc74)
-    com.unity.test-framework.performance@3.0.3 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation/Library/PackageCache/com.unity.test-framework.performance@fb0dc592af8b)
-    com.unity.toolchain.linux-x86_64@2.0.11 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation/Library/PackageCache/com.unity.toolchain.linux-x86_64@53b88ff74b51)
-    com.unity.sysroot@2.0.10 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation/Library/PackageCache/com.unity.sysroot@7bbbb9339c14)
-    com.unity.sysroot.linux-x86_64@2.0.9 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation/Library/PackageCache/com.unity.sysroot.linux-x86_64@1998d1c7730e)
-    com.unity.serialization@3.1.5 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation/Library/PackageCache/com.unity.serialization@c463b52e88d7)
-    com.unity.profiling.core@1.0.3 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation/Library/PackageCache/com.unity.profiling.core@8a49f7027d06)
-    com.unity.nuget.mono-cecil@1.11.6 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation/Library/PackageCache/com.unity.nuget.mono-cecil@ecb9724e46ff)
-    com.unity.scriptablebuildpipeline@2.6.1 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation/Library/PackageCache/com.unity.scriptablebuildpipeline@36e3b5898ee2)
+    com.unity.burst@1.8.28 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/PackageCache/com.unity.burst@07790c2d06d9)
+    com.unity.collections@2.6.6 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/PackageCache/com.unity.collections@9796e5ee0d9e)
+    com.unity.entities@1.4.6 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/PackageCache/com.unity.entities@e90944159b94)
+    com.unity.mathematics@1.3.2 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/PackageCache/com.unity.mathematics@8017b507cc74)
+    com.unity.toolchain.linux-x86_64@2.0.11 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/PackageCache/com.unity.toolchain.linux-x86_64@53b88ff74b51)
+    com.unity.sysroot@2.0.10 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/PackageCache/com.unity.sysroot@7bbbb9339c14)
+    com.unity.sysroot.linux-x86_64@2.0.9 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/PackageCache/com.unity.sysroot.linux-x86_64@1998d1c7730e)
+    com.unity.serialization@3.1.5 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/PackageCache/com.unity.serialization@c463b52e88d7)
+    com.unity.profiling.core@1.0.3 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/PackageCache/com.unity.profiling.core@8a49f7027d06)
+    com.unity.nuget.mono-cecil@1.11.6 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/PackageCache/com.unity.nuget.mono-cecil@ecb9724e46ff)
+    com.unity.scriptablebuildpipeline@2.6.1 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/PackageCache/com.unity.scriptablebuildpipeline@36e3b5898ee2)
+    com.unity.test-framework.performance@3.4.0 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/PackageCache/com.unity.test-framework.performance@aa81a99c4a75)
   Built-in packages:
-    com.unity.modules.assetbundle@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.assetbundle)
-    com.unity.modules.audio@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.audio)
-    com.unity.modules.imageconversion@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.imageconversion)
-    com.unity.modules.imgui@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.imgui)
-    com.unity.modules.jsonserialize@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.jsonserialize)
-    com.unity.modules.physics@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.physics)
-    com.unity.modules.ui@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.ui)
-    com.unity.modules.uielements@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.uielements)
-    com.unity.modules.unityanalytics@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.unityanalytics)
-    com.unity.modules.unitywebrequest@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.unitywebrequest)
-    com.unity.test-framework@1.6.0 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation/Library/PackageCache/com.unity.test-framework@bd52b1c23814)
-    com.unity.ext.nunit@2.0.5 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation/Library/PackageCache/com.unity.ext.nunit@b16e6d09cd93)
-    com.unity.modules.hierarchycore@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.hierarchycore)
+    com.unity.modules.assetbundle@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/PackageCache/com.unity.modules.assetbundle)
+    com.unity.modules.audio@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/PackageCache/com.unity.modules.audio)
+    com.unity.modules.imageconversion@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/PackageCache/com.unity.modules.imageconversion)
+    com.unity.modules.imgui@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/PackageCache/com.unity.modules.imgui)
+    com.unity.modules.jsonserialize@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/PackageCache/com.unity.modules.jsonserialize)
+    com.unity.modules.physics@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/PackageCache/com.unity.modules.physics)
+    com.unity.modules.ui@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/PackageCache/com.unity.modules.ui)
+    com.unity.modules.uielements@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/PackageCache/com.unity.modules.uielements)
+    com.unity.modules.unityanalytics@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/PackageCache/com.unity.modules.unityanalytics)
+    com.unity.modules.unitywebrequest@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/PackageCache/com.unity.modules.unitywebrequest)
+    com.unity.modules.hierarchycore@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/PackageCache/com.unity.modules.hierarchycore)
+    com.unity.test-framework@1.6.0 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/PackageCache/com.unity.test-framework@bd52b1c23814)
+    com.unity.ext.nunit@2.0.5 (location: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/PackageCache/com.unity.ext.nunit@b16e6d09cd93)
   Local packages:
     com.gamecore.composition@file:/home/worlesenric/wkspace/gc-wt/gc-017/Packages/com.gamecore.composition (location: /home/worlesenric/wkspace/gc-wt/gc-017/Packages/com.gamecore.composition)
     com.gamecore.contracts@file:/home/worlesenric/wkspace/gc-wt/gc-017/Packages/com.gamecore.contracts (location: /home/worlesenric/wkspace/gc-wt/gc-017/Packages/com.gamecore.contracts)
     com.gamecore.content.compiler@file:/home/worlesenric/wkspace/gc-wt/gc-017/Packages/com.gamecore.content.compiler (location: /home/worlesenric/wkspace/gc-wt/gc-017/Packages/com.gamecore.content.compiler)
     com.gamecore.derivation@file:/home/worlesenric/wkspace/gc-wt/gc-017/Packages/com.gamecore.derivation (location: /home/worlesenric/wkspace/gc-wt/gc-017/Packages/com.gamecore.derivation)
-    com.gamecore.fault-qualification@file:/home/worlesenric/wkspace/gc-wt/gc-017/Packages/com.gamecore.fault-qualification (location: /home/worlesenric/wkspace/gc-wt/gc-017/Packages/com.gamecore.fault-qualification)
     com.gamecore.gameplay.cards@file:/home/worlesenric/wkspace/gc-wt/gc-017/Packages/com.gamecore.gameplay.cards (location: /home/worlesenric/wkspace/gc-wt/gc-017/Packages/com.gamecore.gameplay.cards)
     com.gamecore.gameplay.narrative@file:/home/worlesenric/wkspace/gc-wt/gc-017/Packages/com.gamecore.gameplay.narrative (location: /home/worlesenric/wkspace/gc-wt/gc-017/Packages/com.gamecore.gameplay.narrative)
     com.gamecore.planning@file:/home/worlesenric/wkspace/gc-wt/gc-017/Packages/com.gamecore.planning (location: /home/worlesenric/wkspace/gc-wt/gc-017/Packages/com.gamecore.planning)
@@ -223,13 +222,13 @@ Application.AssetDatabase Initial Refresh Start
 Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
 Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
-      Now listening on: http://unix:/tmp/ilpp.sock-b26d17c2f6b0515cc3f668b281567c41
+      Now listening on: http://unix:/tmp/ilpp.sock-872d4cf0094d01656b5d83256ebf6548
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
       Application started. Press Ctrl+C to shut down.
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
       Hosting environment: Production
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Content root path: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation/
+      Content root path: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
       Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc -
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
@@ -237,9 +236,9 @@ Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Pro
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
       Executed endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
-      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 27.5397ms
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 28.4720ms
 Starting: /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/2400b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
-WorkingDir: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation
+WorkingDir: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
       Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc -
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
@@ -252,104 +251,104 @@ WorkingDir: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation
       Resolved Unity.Burst.Cecil, Version=0.11.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library/PackageCache/com.unity.burst@07790c2d06d9/Unity.Burst.CodeGen/Unity.Burst.Cecil.dll
 [40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
       Resolved Mono.Cecil, Version=0.11.5.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library/PackageCache/com.unity.nuget.mono-cecil@ecb9724e46ff/Mono.Cecil.dll
+DisplayProgressbar: Compiling Scripts
 [40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
       Resolved Unity.Entities, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null with Library/Bee/artifacts/2400b0aE.dag/Unity.Entities.dll
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
       Executed endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
-      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc - - 200 - application/grpc 32.5611ms
-DisplayProgressbar: Compiling Scripts
-ExitCode: 0 Duration: 0s117ms
-[669/904    0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
-*** Tundra build success (0.11 seconds), 1 items updated, 904 evaluated
-AssetDatabase: script compilation time: 0.422120s
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc - - 200 - application/grpc 26.7574ms
+ExitCode: 0 Duration: 0s111ms
+[543/715    0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+*** Tundra build success (0.10 seconds), 1 items updated, 715 evaluated
+AssetDatabase: script compilation time: 0.417477s
 Begin MonoManager ReloadAssembly
 Total cache size 212129262
-Total cache size after purge 212129262, took 00:00:00.0869929
-- Loaded All Assemblies, in  0.331 seconds
+Total cache size after purge 212129262, took 00:00:00.0821705
+- Loaded All Assemblies, in  0.324 seconds
 Refreshing native plugins compatible for Editor in 0.13 ms, found 1 plugins.
 Native extension for LinuxStandalone target not found
 Native extension for OSXStandalone target not found
 Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
-TypeManager.Initialize took: 95ms
+TypeManager.Initialize took: 67ms
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  1.870 seconds
-Domain Reload Profiling: 2200ms
+- Finished resetting the current domain, in  1.764 seconds
+Domain Reload Profiling: 2088ms
 	BeginReloadAssembly (100ms)
 		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (8ms)
+		DisableScriptedObjects (7ms)
 		BackupInstance (0ms)
 		ReleaseScriptingObjects (0ms)
 		CreateAndSetChildDomain (27ms)
 	RebuildCommonClasses (23ms)
 	RebuildNativeTypeToScriptingClass (5ms)
 	initialDomainReloadingComplete (19ms)
-	LoadAllAssembliesAndSetupDomain (182ms)
+	LoadAllAssembliesAndSetupDomain (176ms)
 		LoadAssemblies (143ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (79ms)
-			TypeCache.Refresh (59ms)
-				TypeCache.ScanAssembly (53ms)
-			BuildScriptInfoCaches (18ms)
+		AnalyzeDomain (75ms)
+			TypeCache.Refresh (58ms)
+				TypeCache.ScanAssembly (52ms)
+			BuildScriptInfoCaches (16ms)
 			ResolveRequiredComponents (0ms)
-	FinalizeReload (1870ms)
+	FinalizeReload (1765ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (1789ms)
+		SetupLoadedEditorAssemblies (1682ms)
 			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (34ms)
-			SetLoadedEditorAssemblies (3ms)
-			BeforeProcessingInitializeOnLoad (81ms)
-			ProcessInitializeOnLoadAttributes (1565ms)
-			ProcessInitializeOnLoadMethodAttributes (104ms)
-			AfterProcessingInitializeOnLoad (3ms)
+			InitializePlatformSupportModulesInManaged (33ms)
+			SetLoadedEditorAssemblies (4ms)
+			BeforeProcessingInitializeOnLoad (89ms)
+			ProcessInitializeOnLoadAttributes (1479ms)
+			ProcessInitializeOnLoadMethodAttributes (75ms)
+			AfterProcessingInitializeOnLoad (2ms)
 			EditorAssembliesLoaded (0ms)
 		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (5ms)
-Asset Pipeline Refresh (id=3758c54b73c44bf5f9b1803bf8529c06): Total: 2.950 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+		AwakeInstancesAfterBackupRestoration (4ms)
+Asset Pipeline Refresh (id=8916fbf2548b636509b688f1c093c13d): Total: 2.809 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
 	Summary:
 		Imports: total=0 (actual=0, local cache=0, cache server=0)
-		Asset DB Process Time: managed=0 ms, native=2161 ms
-		Asset DB Callback time: managed=9 ms, native=2 ms
-		Scripting: domain reloads=1, domain reload time=331 ms, compile time=424 ms, other=20 ms
-		Project Asset Count: scripts=814, non-scripts=703
+		Asset DB Process Time: managed=0 ms, native=2032 ms
+		Asset DB Callback time: managed=10 ms, native=2 ms
+		Scripting: domain reloads=1, domain reload time=325 ms, compile time=419 ms, other=19 ms
+		Project Asset Count: scripts=792, non-scripts=702
 		Asset File Changes: new=0, changed=0, moved=0, deleted=0
 		Scan Filter Count: 1
-	InvokeCustomDependenciesCallbacks: 0.003ms
-	InvokePackagesCallback: 3.399ms
-	ApplyChangesToAssetFolders: 0.190ms
-	Scan: 189.109ms
-	OnSourceAssetsModified: 0.003ms
-	CategorizeAssetsWithTransientArtifact: 12.286ms
-	ProcessAssetsWithTransientArtifactChanges: 16.882ms
-	CategorizeAssets: 10.454ms
-	ImportOutOfDateAssets: 1872.767ms (1448.604ms without children)
-		CompileScripts: 423.543ms
+	InvokeCustomDependenciesCallbacks: 0.002ms
+	InvokePackagesCallback: 3.305ms
+	ApplyChangesToAssetFolders: 0.179ms
+	Scan: 168.668ms
+	OnSourceAssetsModified: 0.002ms
+	CategorizeAssetsWithTransientArtifact: 12.953ms
+	ProcessAssetsWithTransientArtifactChanges: 16.320ms
+	CategorizeAssets: 10.091ms
+	ImportOutOfDateAssets: 1767.166ms (1347.654ms without children)
+		CompileScripts: 418.770ms
 		ReloadNativeAssets: 0.000ms
-		UnloadImportedAssets: 0.164ms
-		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.209ms
+		UnloadImportedAssets: 0.172ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.225ms
 		InitializingProgressBar: 0.000ms
 		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
-		OnDemandSchedulerStart: 0.245ms
-	PostProcessAllAssets: 9.882ms
+		OnDemandSchedulerStart: 0.345ms
+	PostProcessAllAssets: 10.004ms
 	GatherAllCurrentPrimaryArtifactRevisions: 0.000ms
-	UnloadStreamsBegin: 0.179ms
-	PersistCurrentRevisions: 0.044ms
-	UnloadStreamsEnd: 0.000ms
-	GenerateScriptTypeHashes: 1.154ms
-	Untracked: 835.061ms
+	UnloadStreamsBegin: 0.180ms
+	PersistCurrentRevisions: 0.043ms
+	UnloadStreamsEnd: 0.001ms
+	GenerateScriptTypeHashes: 1.104ms
+	Untracked: 820.098ms
 
 Application.AssetDatabase Initial Refresh End
-Scanning for USB devices : 0.763ms
+Scanning for USB devices : 0.750ms
 Initializing Unity extensions:
 UpdateMenuTitleForLanguage: 10
 [MODES] ModeService[none].Initialize
 [MODES] ModeService[none].LoadModes
 [MODES] Loading mode Default (0) for mode-current-id-GameCoreProbe
 Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 2857 unused Assets / (2.1 MB). Loaded Objects now: 3329.
-Memory consumption went from 113.5 MB to 111.3 MB.
-Total: 7.267879 ms (FindLiveObjects: 0.175249 ms CreateObjectMapping: 0.166916 ms MarkObjects: 5.467469 ms  DeleteObjects: 1.457655 ms)
+Unloading 2842 unused Assets / (2.3 MB). Loaded Objects now: 3314.
+Memory consumption went from 110.9 MB to 108.6 MB.
+Total: 8.343781 ms (FindLiveObjects: 0.183910 ms CreateObjectMapping: 0.179437 ms MarkObjects: 6.256459 ms  DeleteObjects: 1.722807 ms)
 
 [GC001] build started; editorVersion=6000.0.75f1; expectedEditorVersion=6000.0.75f1; target=StandaloneLinux64; backend=IL2CPP; stripping=High; apiCompatibility=.NET Standard 2.1; burstCompilerAvailable=True
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
@@ -375,7 +374,7 @@ GameCore.Validation.Editor.BuildProbe:BuildLinuxIL2CPP () (at Assets/GameCore.Va
 
 (Filename: Assets/GameCore.Validation/Editor/BuildProbe.cs Line: 106)
 
-[GC003] unchanged /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation/Assets/GameCore.Validation/Generated/ProbeCatalog.g.cs; bytes=25321; catalogFingerprint=02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff; bytes=25321; catalogFileHash=03bdcd23fd8ec0515d93d7c54d7f7c695f3860a850a7280b82316aaacd14c5c1; catalogFingerprint=02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff
+[GC003] unchanged /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Assets/GameCore.Validation/Generated/ProbeCatalog.g.cs; bytes=25321; catalogFingerprint=02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff; bytes=25321; catalogFileHash=03bdcd23fd8ec0515d93d7c54d7f7c695f3860a850a7280b82316aaacd14c5c1; catalogFingerprint=02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -388,7 +387,7 @@ GameCore.Validation.Editor.BuildProbe:BuildLinuxIL2CPP () (at Assets/GameCore.Va
 
 (Filename: Assets/GameCore.Validation/Editor/ProbeCatalogGenerator.cs Line: 66)
 
-Asset Pipeline Refresh (id=41ebb843a41ddc1cda66b18ea0bbf50a): Total: 0.093 seconds - Initiated by RefreshV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=cec8fbddff07c7708bf10ef8643add11): Total: 0.079 seconds - Initiated by RefreshV2(NoUpdateAssetOptions)
 [GC001] bootstrap scene present at Assets/Scenes/GameCoreProbe.unity
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
@@ -402,7 +401,7 @@ GameCore.Validation.Editor.BuildProbe:BuildLinuxIL2CPP () (at Assets/GameCore.Va
 
 (Filename: Assets/GameCore.Validation/Editor/BuildProbe.cs Line: 217)
 
-[GC001] building player; location=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation/Builds/Linux64/GameCoreProbe.x86_64; scenes=Assets/Scenes/GameCoreProbe.unity
+[GC001] building player; location=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Builds/Linux64/GameCoreProbe.x86_64; scenes=Assets/Scenes/GameCoreProbe.unity
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -414,17 +413,17 @@ GameCore.Validation.Editor.BuildProbe:BuildLinuxIL2CPP () (at Assets/GameCore.Va
 
 (Filename: Assets/GameCore.Validation/Editor/BuildProbe.cs Line: 159)
 
-Start importing Assets/Resources using Guid(4279081b00a9a45509d94c40d5445bcc) (DefaultImporter) -> (artifact id: '71f429d2c53d61aef58ce826ff968a63') in 0.005535163 seconds
-Refreshing native plugins compatible for Editor in 0.17 ms, found 1 plugins.
+Start importing Assets/Resources using Guid(2863d090ef7b37f589f9e6b9061e5748) (DefaultImporter) -> (artifact id: '52decde7815f1b810bbc70891d7f9cd7') in 0.003506927 seconds
+Refreshing native plugins compatible for Editor in 0.18 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-Asset Pipeline Refresh (id=853d93975ecd2a87cb2eea85812df5e3): Total: 0.084 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
-Start importing ProjectSettings/ProjectSettings.asset using Guid(00000000000000004000000000000000) (LibraryAssetImporter) -> (artifact id: '178bf7067d38e3e04409e2d58fbbdb59') in 0.000607748 seconds
-Start importing Assets/Resources/PerformanceTestRunInfo.json using Guid(47c207984072aabd9be82c2a40bf1ea0) (TextScriptImporter) -> (artifact id: '405d91c4add14b637aaab178b29750b3') in 0.000872926 seconds
-Start importing Assets/Resources/PerformanceTestRunSettings.json using Guid(0a56af20cf0f2e88f9211ee3c57fddb3) (TextScriptImporter) -> (artifact id: '431291120395b877d76491a05fa102ea') in 0.000572934 seconds
-Refreshing native plugins compatible for Editor in 0.14 ms, found 1 plugins.
+Asset Pipeline Refresh (id=a4e6ca4e669f2a625b23dd9cf84b882e): Total: 0.080 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing ProjectSettings/ProjectSettings.asset using Guid(00000000000000004000000000000000) (LibraryAssetImporter) -> (artifact id: '178bf7067d38e3e04409e2d58fbbdb59') in 0.00068932 seconds
+Start importing Assets/Resources/PerformanceTestRunSettings.json using Guid(072956ebe24dd33ec92d1f26c22c97d3) (TextScriptImporter) -> (artifact id: 'e6c4cd70968d4166b2399d398e118119') in 0.001876723 seconds
+Start importing Assets/Resources/PerformanceTestRunInfo.json using Guid(5a1441416c463264287457b25a3eac80) (TextScriptImporter) -> (artifact id: '395a6c2b79cb58fc1cac1ba238ad8f09') in 0.000636706 seconds
+Refreshing native plugins compatible for Editor in 0.13 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-Asset Pipeline Refresh (id=b942890a047e13911a40039689ba0e13): Total: 0.049 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
-Launched and connected shader compiler UnityShaderCompiler after 0.02 seconds
+Asset Pipeline Refresh (id=0f3175e9a8697443380ec8706043c77e): Total: 0.057 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Launched and connected shader compiler UnityShaderCompiler after 0.03 seconds
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
       Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc -
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
@@ -432,16 +431,17 @@ Launched and connected shader compiler UnityShaderCompiler after 0.02 seconds
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
       Executed endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
-      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 0.5467ms
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 0.5739ms
 Starting: /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/2400b0aESkipCompile.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssembliesAndTypeDB
-WorkingDir: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation
-ExitCode: 0 Duration: 0s86ms
-*** Tundra build success (0.05 seconds), 0 items updated, 3 evaluated
-Asset Pipeline Refresh (id=567b0395e8ed3ff64bfe8ad15742e8ec): Total: 0.030 seconds - Initiated by RefreshV2(NoUpdateAssetOptions)
+WorkingDir: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck
+ExitCode: 0 Duration: 0s751ms
+[2/3        0s] BuildPlayerDataGenerator Library/BuildPlayerData/Editor/TypeDb-All.json
+*** Tundra build success (0.71 seconds), 1 items updated, 3 evaluated
+Asset Pipeline Refresh (id=02c752e9decf38a468184693d2b45092): Total: 0.033 seconds - Initiated by RefreshV2(NoUpdateAssetOptions)
 [ScriptCompilation] Requested script compilation because: Recompiling scripts for player build.
 BuildPlayer: start building target 24
 Total cache size 212129262
-Total cache size after purge 212129262, took 00:00:00.0647533
+Total cache size after purge 212129262, took 00:00:00.0639985
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
       Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc -
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
@@ -449,9 +449,9 @@ Total cache size after purge 212129262, took 00:00:00.0647533
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
       Executed endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
-      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 0.1603ms
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 0.1976ms
 Starting: /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/2400b0aP.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssembliesAndTypeDB
-WorkingDir: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation
+WorkingDir: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
       Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc -
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
@@ -471,100 +471,161 @@ WorkingDir: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
       Executed endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
-      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc - - 200 - application/grpc 10.6464ms
-ExitCode: 0 Duration: 0s182ms
-[485/599    0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
-[523/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.InternalAPIEngineBridge.002.dll
-[524/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Deformations.dll
-[525/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Transforms.Hybrid.dll
-[526/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Cards.Fixtures.dll
-[527/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Contracts.dll
-[528/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Derivation.dll
-[529/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Rules.Narrative.dll
-[530/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Narrative.dll
-[531/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Validation.Probe.dll
-[532/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Derivation.Fixtures.dll
-[533/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Scenes.dll
-[534/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Validation.Fixture.dll
-[535/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Narrative.Fixtures.dll
-[536/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Validation.Generated.dll
-[537/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Entities.Hybrid.dll
-[538/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Cards.dll
-[539/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Entities.UI.dll
-[540/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.ScriptableBuildPipeline.dll
-[541/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Mathematics.Extensions.Hybrid.dll
-[542/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Burst.dll
-[543/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Transforms.dll
-[544/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Entities.Hybrid.HybridComponents.dll
-[545/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Entities.dll
-[546/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Validation.FamilyEntries.dll
-[547/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Rules.Cards.dll
-[548/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Profiling.Core.dll
-[549/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Mathematics.dll
-[550/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Unity.Adapters.pdb
-[551/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Mathematics.Extensions.Hybrid.pdb
-[552/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Collections.dll
-[553/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Validation.GeneratedCards.dll
-[554/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Composition.dll
-[555/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Unity.Fixtures.dll
-[556/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.InternalAPIEngineBridge.002.pdb
-[557/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Serialization.dll
-[558/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Mathematics.Extensions.dll
-[559/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Validation.ProbeHost.dll
-[560/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Unity.Runtime.dll
-[561/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Scenes.pdb
-[562/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Serialization.pdb
-[563/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Derivation.pdb
-[564/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Profiling.Core.pdb
-[565/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Planning.dll
-[566/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Unity.Adapters.dll
-[567/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Deformations.pdb
-[568/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Validation.Generated.pdb
-[569/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Validation.GeneratedCards.pdb
-[570/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Entities.Hybrid.HybridComponents.pdb
-[571/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Transforms.Hybrid.pdb
-[572/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Planning.pdb
-[573/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Rules.Cards.pdb
-[574/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.ScriptableBuildPipeline.pdb
-[575/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Mathematics.Extensions.pdb
-[576/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Entities.UI.pdb
-[577/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Entities.Hybrid.pdb
-[578/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Cards.pdb
-[579/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Validation.Fixture.pdb
-[580/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Unity.Runtime.pdb
-[581/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Collections.pdb
-[582/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Burst.pdb
-[583/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Narrative.Fixtures.pdb
-[584/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Rules.Narrative.pdb
-[585/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Transforms.pdb
-[586/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Validation.Probe.pdb
-[587/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Mathematics.pdb
-[588/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Contracts.pdb
-[589/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Composition.pdb
-[591/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Validation.ProbeHost.pdb
-[592/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Cards.Fixtures.pdb
-[593/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Narrative.pdb
-[594/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Validation.FamilyEntries.pdb
-[595/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Unity.Fixtures.pdb
-[596/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Derivation.Fixtures.pdb
-[597/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Entities.pdb
-*** Tundra build success (0.15 seconds), 75 items updated, 599 evaluated
-Rebuilding Data files because Assets/Resources/PerformanceTestRunSettings.json is dirty (hash)
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc - - 200 - application/grpc 7.8930ms
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/2400b0aP.dag/GameCore.Validation.ProbeHost.dll, with 113 defines and 197 references
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Entities.CodeGen.EntitiesILPostProcessors
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Mono.Cecil.Rocks, Version=0.11.5.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library/PackageCache/com.unity.nuget.mono-cecil@ecb9724e46ff/Mono.Cecil.Rocks.dll
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null with /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Managed/UnityEngine/UnityEngine.CoreModule.dll
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Collections, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null with Library/Bee/artifacts/StandaloneLinux64_CodeGen/Unity.Collections.dll
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Burst, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null with Library/Bee/artifacts/StandaloneLinux64_CodeGen/Unity.Burst.dll
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Cecil.Awesome, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null with Library/PackageCache/com.unity.entities@e90944159b94/Unity.Entities.CodeGen/Unity.Cecil.Awesome.dll
+  - EILPP : GameCore.Validation.ProbeHost : : 177ms (~153ms)
+    - EILPP : GameCore.Validation.ProbeHost : GetAllComponentTypes: 1ms 
+    - EILPP : GameCore.Validation.ProbeHost : Cloner: 1ms 
+    - EILPP : GameCore.Validation.ProbeHost : ComponentDataPP: 16ms 
+    - EILPP : GameCore.Validation.ProbeHost : StaticTypeRegistryPostProcessor: 6ms 
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved UnityEditor.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null with /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Managed/UnityEngine/UnityEditor.CoreModule.dll
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Burst.Cecil.Rocks, Version=0.11.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library/PackageCache/com.unity.burst@07790c2d06d9/Unity.Burst.CodeGen/Unity.Burst.Cecil.Rocks.dll
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 463.3331ms
+Assets/GameCore.Validation/Runtime/ProbeWorldDispatch.cs(201,30): warning CS8604: Possible null reference argument for parameter 'host' in 'void ProbeWorldDispatch.ReleaseWorld(UnityWorldHost host, ulong operationSequence)'.
+Assets/GameCore.Validation/Runtime/ProbeWorldDispatch.cs(202,30): warning CS8604: Possible null reference argument for parameter 'host' in 'void ProbeWorldDispatch.ReleaseWorld(UnityWorldHost host, ulong operationSequence)'.
+Assets/GameCore.Validation/Runtime/ProbeWorldDispatch.cs(252,30): warning CS8604: Possible null reference argument for parameter 'host' in 'void ProbeWorldDispatch.ReleaseWorld(UnityWorldHost host, ulong operationSequence)'.
+Assets/GameCore.Validation/Runtime/ProbeWorldDispatch.cs(310,30): warning CS8604: Possible null reference argument for parameter 'host' in 'void ProbeWorldDispatch.ReleaseWorld(UnityWorldHost host, ulong operationSequence)'.
+Assets/GameCore.Validation/Runtime/ProbeWorldDispatch.cs(355,30): warning CS8604: Possible null reference argument for parameter 'host' in 'void ProbeWorldDispatch.ReleaseWorld(UnityWorldHost host, ulong operationSequence)'.
+Assets/GameCore.Validation/Runtime/ProbeWorldDispatch.cs(451,30): warning CS8604: Possible null reference argument for parameter 'host' in 'void ProbeWorldDispatch.ReleaseWorld(UnityWorldHost host, ulong operationSequence)'.
+Assets/GameCore.Validation/Runtime/ProbeWorldDispatch.cs(252,30): warning CS8604: Possible null reference argument for parameter 'host' in 'void ProbeWorldDispatch.ReleaseWorld(UnityWorldHost host, ulong operationSequence)'.
+Assets/GameCore.Validation/Runtime/ProbeWorldDispatch.cs(310,30): warning CS8604: Possible null reference argument for parameter 'host' in 'void ProbeWorldDispatch.ReleaseWorld(UnityWorldHost host, ulong operationSequence)'.
+Assets/GameCore.Validation/Runtime/ProbeWorldDispatch.cs(355,30): warning CS8604: Possible null reference argument for parameter 'host' in 'void ProbeWorldDispatch.ReleaseWorld(UnityWorldHost host, ulong operationSequence)'.
+Assets/GameCore.Validation/Runtime/ProbeWorldDispatch.cs(451,30): warning CS8604: Possible null reference argument for parameter 'host' in 'void ProbeWorldDispatch.ReleaseWorld(UnityWorldHost host, ulong operationSequence)'.
 Total cache size 212129262
-Total cache size after purge 212129262, took 00:00:00.0568516
+Total cache size after purge 212129262, took 00:00:00.0522421
+ExitCode: 0 Duration: 2s397ms
+[484/599    1s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+[515/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Transforms.dll
+[516/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Deformations.dll
+[517/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Serialization.dll
+[519/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Derivation.dll
+[524/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Rules.Cards.dll
+[526/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Unity.Adapters.dll
+[527/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Composition.dll
+[528/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Unity.Runtime.dll
+[529/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Mathematics.dll
+[530/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Validation.Generated.dll
+[531/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Cards.dll
+[532/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Derivation.Fixtures.dll
+[533/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Validation.FamilyEntries.dll
+[534/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.ScriptableBuildPipeline.dll
+[535/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Narrative.dll
+[536/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Validation.GeneratedCards.dll
+[537/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Validation.Probe.dll
+[538/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Cards.Fixtures.dll
+[539/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.InternalAPIEngineBridge.002.dll
+[540/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Mathematics.Extensions.Hybrid.dll
+[541/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Collections.pdb
+[542/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.InternalAPIEngineBridge.002.pdb
+[543/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Entities.Hybrid.pdb
+[544/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Entities.dll
+[545/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Entities.pdb
+[546/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Validation.Probe.pdb
+[547/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Validation.GeneratedCards.pdb
+[548/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Entities.UI.pdb
+[549/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Validation.Generated.pdb
+[550/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Mathematics.Extensions.pdb
+[551/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Narrative.Fixtures.pdb
+[552/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Cards.Fixtures.pdb
+[553/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Burst.pdb
+[554/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Cards.pdb
+[555/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Unity.Runtime.pdb
+[556/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Transforms.Hybrid.pdb
+[557/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Validation.Fixture.pdb
+[558/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Scenes.pdb
+[559/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Mathematics.Extensions.Hybrid.pdb
+[560/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Contracts.pdb
+[561/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Unity.Fixtures.dll
+[562/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Mathematics.Extensions.dll
+[563/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Entities.Hybrid.dll
+[564/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Burst.dll
+[565/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Transforms.pdb
+[566/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Narrative.pdb
+[567/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Planning.pdb
+[568/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Rules.Narrative.dll
+[569/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Planning.dll
+[570/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Scenes.dll
+[571/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Entities.UI.dll
+[572/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Derivation.Fixtures.pdb
+[573/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Narrative.Fixtures.dll
+[574/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Validation.FamilyEntries.pdb
+[575/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.ScriptableBuildPipeline.pdb
+[576/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Contracts.dll
+[577/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Collections.dll
+[578/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Profiling.Core.pdb
+[579/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Transforms.Hybrid.dll
+[580/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Validation.Fixture.dll
+[581/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Profiling.Core.dll
+[582/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Rules.Cards.pdb
+[583/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Entities.Hybrid.HybridComponents.dll
+[584/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Unity.Adapters.pdb
+[585/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Deformations.pdb
+[586/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Unity.Fixtures.pdb
+[587/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Mathematics.pdb
+[588/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Composition.pdb
+[589/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Derivation.pdb
+[590/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Rules.Narrative.pdb
+[591/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Serialization.pdb
+[592/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Entities.Hybrid.HybridComponents.pdb
+[593/599    1s] Csc Library/Bee/artifacts/2400b0aP.dag/GameCore.Validation.ProbeHost.dll (+2 others)
+Assets/GameCore.Validation/Runtime/ProbeWorldDispatch.cs(201,30): warning CS8604: Possible null reference argument for parameter 'host' in 'void ProbeWorldDispatch.ReleaseWorld(UnityWorldHost host, ulong operationSequence)'.
+Assets/GameCore.Validation/Runtime/ProbeWorldDispatch.cs(202,30): warning CS8604: Possible null reference argument for parameter 'host' in 'void ProbeWorldDispatch.ReleaseWorld(UnityWorldHost host, ulong operationSequence)'.
+Assets/GameCore.Validation/Runtime/ProbeWorldDispatch.cs(252,30): warning CS8604: Possible null reference argument for parameter 'host' in 'void ProbeWorldDispatch.ReleaseWorld(UnityWorldHost host, ulong operationSequence)'.
+Assets/GameCore.Validation/Runtime/ProbeWorldDispatch.cs(310,30): warning CS8604: Possible null reference argument for parameter 'host' in 'void ProbeWorldDispatch.ReleaseWorld(UnityWorldHost host, ulong operationSequence)'.
+Assets/GameCore.Validation/Runtime/ProbeWorldDispatch.cs(355,30): warning CS8604: Possible null reference argument for parameter 'host' in 'void ProbeWorldDispatch.ReleaseWorld(UnityWorldHost host, ulong operationSequence)'.
+Assets/GameCore.Validation/Runtime/ProbeWorldDispatch.cs(451,30): warning CS8604: Possible null reference argument for parameter 'host' in 'void ProbeWorldDispatch.ReleaseWorld(UnityWorldHost host, ulong operationSequence)'.
+[594/599    0s] ILPostProcess Library/Bee/artifacts/2400b0aP.dag/post-processed/GameCore.Validation.ProbeHost.dll (+pdb)
+Processing assembly Library/Bee/artifacts/2400b0aP.dag/GameCore.Validation.ProbeHost.dll, with 113 defines and 197 references
+processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+running Unity.Entities.CodeGen.EntitiesILPostProcessors
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[595/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Validation.ProbeHost.pdb
+[596/599    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/GameCore.Validation.ProbeHost.dll
+[598/599    0s] BuildPlayerDataGenerator Library/BuildPlayerData/Player/RuntimeInitializeOnLoads.json (+1 other)
+*** Tundra build success (2.26 seconds), 78 items updated, 599 evaluated
+Rebuilding Data files because Assets/Resources/PerformanceTestRunSettings.json is dirty (hash)
 Opening scene 'Assets/Scenes/GameCoreProbe.unity'
 Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
 Loaded scene 'Assets/Scenes/GameCoreProbe.unity'
-	Deserialize:            0.503 ms
-	Integration:            96.691 ms
+	Deserialize:            0.219 ms
+	Integration:            105.901 ms
 	Integration of assets:  0.001 ms
-	Thread Wait Time:       0.005 ms
-	Total Operation Time:   97.200 ms
-Unloading 57 unused Assets / (0.7 MB). Loaded Objects now: 3365.
-Memory consumption went from 116.4 MB to 115.7 MB.
-Total: 5.933031 ms (FindLiveObjects: 0.106492 ms CreateObjectMapping: 0.051252 ms MarkObjects: 5.503676 ms  DeleteObjects: 0.271063 ms)
+	Thread Wait Time:       0.074 ms
+	Total Operation Time:   106.195 ms
+Unloading 57 unused Assets / (0.7 MB). Loaded Objects now: 3350.
+Memory consumption went from 111.9 MB to 111.2 MB.
+Total: 8.971714 ms (FindLiveObjects: 0.104790 ms CreateObjectMapping: 0.053844 ms MarkObjects: 8.531844 ms  DeleteObjects: 0.280840 ms)
 
-Created GICache directory at /home/worlesenric/.cache/unity3d/GiCache. Took: 0.001s, timestamps: [11.790 - 11.791]
+Created GICache directory at /home/worlesenric/.cache/unity3d/GiCache. Took: 0.001s, timestamps: [15.989 - 15.990]
 
 
 Mono dependencies included in the build
@@ -825,19 +886,19 @@ Dependency assembly - Unity.Entities.dll
 Dependency assembly - System.Diagnostics.Process.dll
 
 Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 52 unused Assets / (0.7 MB). Loaded Objects now: 3372.
-Memory consumption went from 117.4 MB to 116.7 MB.
-Total: 4.997455 ms (FindLiveObjects: 0.098908 ms CreateObjectMapping: 0.053675 ms MarkObjects: 4.608134 ms  DeleteObjects: 0.236095 ms)
+Unloading 52 unused Assets / (0.7 MB). Loaded Objects now: 3357.
+Memory consumption went from 112.7 MB to 112.0 MB.
+Total: 4.958238 ms (FindLiveObjects: 0.090486 ms CreateObjectMapping: 0.054026 ms MarkObjects: 4.580224 ms  DeleteObjects: 0.232993 ms)
 
 Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 0 unused Assets / (66.8 KB). Loaded Objects now: 3372.
-Memory consumption went from 116.6 MB to 116.6 MB.
-Total: 4.116638 ms (FindLiveObjects: 0.098226 ms CreateObjectMapping: 0.045113 ms MarkObjects: 3.968581 ms  DeleteObjects: 0.004286 ms)
+Unloading 0 unused Assets / (55.1 KB). Loaded Objects now: 3357.
+Memory consumption went from 112.0 MB to 111.9 MB.
+Total: 4.198064 ms (FindLiveObjects: 0.093790 ms CreateObjectMapping: 0.044704 ms MarkObjects: 4.054677 ms  DeleteObjects: 0.004515 ms)
 
 Unloading 1 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 181 unused Assets / (136.8 MB). Loaded Objects now: 3372.
-Memory consumption went from 254.3 MB to 117.5 MB.
-Total: 11.610560 ms (FindLiveObjects: 0.087427 ms CreateObjectMapping: 0.047633 ms MarkObjects: 4.893374 ms  DeleteObjects: 6.581211 ms)
+Unloading 181 unused Assets / (136.8 MB). Loaded Objects now: 3357.
+Memory consumption went from 249.7 MB to 112.8 MB.
+Total: 11.589561 ms (FindLiveObjects: 0.087457 ms CreateObjectMapping: 0.045186 ms MarkObjects: 4.534687 ms  DeleteObjects: 6.921796 ms)
 
 Compiling shader "Sprites/Default" pass "" (vp)
     Full variant space:         16
@@ -846,7 +907,7 @@ Compiling shader "Sprites/Default" pass "" (vp)
     After scriptable stripping: 8
     Processed in 0.00 seconds
     starting compilation...
-    finished in 0.01 seconds. Local cache hits 8 (0.02s CPU time), remote cache hits 0 (0.00s CPU time), compiled 0 variants (0.00s CPU time), skipped 0 variants
+    finished in 0.00 seconds. Local cache hits 8 (0.00s CPU time), remote cache hits 0 (0.00s CPU time), compiled 0 variants (0.00s CPU time), skipped 0 variants
     Prepared data for serialisation in 0.00s
 Serialized binary data for shader Sprites/Default in 0.00s
     glcore (total internal programs: 4, unique: 4)
@@ -993,7 +1054,7 @@ Compiling shader "Hidden/Internal-ScreenSpaceShadows" pass "" (vp)
     After scriptable stripping: 8
     Processed in 0.00 seconds
     starting compilation...
-    finished in 0.00 seconds. Local cache hits 8 (0.01s CPU time), remote cache hits 0 (0.00s CPU time), compiled 0 variants (0.00s CPU time), skipped 0 variants
+    finished in 0.00 seconds. Local cache hits 8 (0.00s CPU time), remote cache hits 0 (0.00s CPU time), compiled 0 variants (0.00s CPU time), skipped 0 variants
     Prepared data for serialisation in 0.00s
 Compiling shader "Hidden/Internal-ScreenSpaceShadows" pass "" (vp)
     Full variant space:         8
@@ -1062,7 +1123,7 @@ Compiling shader "Hidden/Internal-DeferredShading" pass "" (vp)
     After scriptable stripping: 52
     Processed in 0.00 seconds
     starting compilation...
-    finished in 0.00 seconds. Local cache hits 52 (0.04s CPU time), remote cache hits 0 (0.00s CPU time), compiled 0 variants (0.00s CPU time), skipped 0 variants
+    finished in 0.02 seconds. Local cache hits 52 (0.20s CPU time), remote cache hits 0 (0.00s CPU time), compiled 0 variants (0.00s CPU time), skipped 0 variants
     Prepared data for serialisation in 0.00s
 Compiling shader "Hidden/Internal-DeferredShading" pass "" (vp)
     Full variant space:         2
@@ -1647,28 +1708,92 @@ Serialized binary data for shader Hidden/TextCore/Distance Field SSD in 0.00s
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
       Executed endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
-      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 0.1528ms
-Starting: /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/bee_backend --ipc --dagfile="Library/Bee/Playera87d42db.dag" --profile="Library/Bee/backend1.traceevents" Player
-WorkingDir: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation
-[  16/1053  0s] CopyFiles Builds/Linux64/GameCoreProbe_Data/sharedassets0.assets
-[  17/1053  0s] CopyFiles Builds/Linux64/GameCoreProbe_Data/StreamingAssets/EntityScenes/scene_info.bin
-[  18/1053  0s] CopyFiles Builds/Linux64/GameCoreProbe_Data/globalgamemanagers.assets
-[  19/1053  0s] CopyFiles Builds/Linux64/GameCoreProbe_Data/resources.assets
-[  20/1053  0s] CopyFiles Builds/Linux64/GameCoreProbe_Data/Resources/unity_builtin_extra
-[  21/1053  0s] CopyFiles Builds/Linux64/GameCoreProbe_Data/level0
-[  22/1053  0s] CopyFiles Builds/Linux64/GameCoreProbe_Data/globalgamemanagers.assets.resS
-[  23/1053  0s] CopyFiles Builds/Linux64/GameCoreProbe_Data/sharedassets0.assets.resS
-[  25/1053  0s] CopyFiles Builds/Linux64/GameCoreProbe_Data/globalgamemanagers
-[1051/1053  0s] AddBootConfigGUID Library/Bee/artifacts/LinuxPlayerBuildProgram/boot.config
-[1052/1053  0s] CopyFiles Builds/Linux64/GameCoreProbe_Data/boot.config
-*** Tundra build success (0.08 seconds), 11 items updated, 1053 evaluated
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 0.1726ms
+Starting: /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/bee_backend --ipc --dagfile="Library/Bee/Playera427b639.dag" --profile="Library/Bee/backend1.traceevents" Player
+WorkingDir: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck
+[             ] Require frontend run.  Library/Bee/Playera427b639.dag couldn't be loaded
+Starting: /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Tools/netcorerun/netcorerun "/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/LinuxPlayerBuildProgram.exe" "/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Bee:/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Tools/BuildPipeline" "Library/Bee/Playera427b639.dag.json" "Library/Bee/Playera427b639-inputdata.json" "Library/Bee/buildprogram0.traceevents"
+WorkingDir: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck
+ExitCode: 4 Duration: 0s117ms
 DisplayProgressbar: Incremental Player Build
+ExitCode: 0 Duration: 0s512ms
+Starting: /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/bee_backend --ipc --dagfile="Library/Bee/Playera427b639.dag" --dagfilejson="Library/Bee/Playera427b639.dag.json" --profile="Library/Bee/backend2.traceevents" Player
+WorkingDir: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck
+Finished compiling graph: 1236 nodes, 3480 flattened edges (3478 ToBuild, 2 ToUse), maximum node priority 1027
+[  15/1047  0s] CopyFiles Builds/Linux64/GameCoreProbe_Data/globalgamemanagers.assets
+[  16/1047  0s] CopyFiles Builds/Linux64/GameCoreProbe_Data/StreamingAssets/EntityScenes/scene_info.bin
+[  17/1047  0s] CopyFiles Builds/Linux64/GameCoreProbe_Data/level0
+[  18/1047  0s] WriteText Library/Bee/artifacts/csharpactions/boot.config_16d3.info
+[  19/1047  0s] CopyFiles Builds/Linux64/GameCoreProbe_Data/Resources/unity_builtin_extra
+[  20/1047  0s] CopyFiles Builds/Linux64/GameCoreProbe_Data/globalgamemanagers
+[  21/1047  0s] CopyFiles Builds/Linux64/GameCoreProbe_Data/resources.assets
+[  22/1047  0s] CopyFiles Builds/Linux64/GameCoreProbe_Data/sharedassets0.assets
+[  23/1047  0s] CopyFiles Builds/Linux64/GameCoreProbe_Data/sharedassets0.assets.resS
+[  24/1047  0s] CopyFiles Builds/Linux64/GameCoreProbe_Data/globalgamemanagers.assets.resS
+[  26/1047  0s] AddBootConfigGUID Library/Bee/artifacts/LinuxPlayerBuildProgram/boot.config
+[  27/1047  0s] CopyFiles Builds/Linux64/GameCoreProbe_Data/boot.config
+[BUSY       6s] UnityLinker /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/artifacts/unitylinker_1ofc.traceevents
+[  28/1047  6s] UnityLinker /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/artifacts/unitylinker_1ofc.traceevents
+/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/il2cpp/build/deploy/UnityLinker --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.AIModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.AccessibilityModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.AndroidJNIModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.AnimationModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.AssetBundleModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.AudioModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.ClothModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.ClusterInputModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.ClusterRendererModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.ContentLoadModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.CoreModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.CrashReportingModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.DSPGraphModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.DirectorModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.GIModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.GameCenterModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.GraphicsStateCollectionSerializerModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.GridModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.HierarchyCoreModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.HotReloadModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.IMGUIModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.IdentifiersModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.ImageConversionModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.InputForUIModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.InputLegacyModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.InputModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.JSONSerializeModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.LocalizationModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.MarshallingModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.MultiplayerModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.ParticleSystemModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.PerformanceReportingModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.Physics2DModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.PhysicsModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.PropertiesModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.ScreenCaptureModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.ShaderVariantAnalyticsModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.SharedInternalsModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.SpriteMaskModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.SpriteShapeModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.StreamingModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.SubstanceModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.SubsystemsModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.TLSModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.TerrainModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.TerrainPhysicsModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.TextCoreFontEngineModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.TextCoreTextEngineModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.TextRenderingModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.TilemapModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.UIElementsModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.UIModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.UmbraModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.UnityAnalyticsCommonModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.UnityAnalyticsModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.UnityConnectModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.UnityConsentModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.UnityCurlModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.UnityTestProtocolModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.UnityWebRequestAssetBundleModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.UnityWebRequestAudioModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.UnityWebRequestModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.UnityWebRequestTextureModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.UnityWebRequestWWWModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.VFXModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.VRModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.VehiclesModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.VideoModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.VirtualTexturingModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.WindModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.XRModule.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed/UnityEngine.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/GameCore.Composition.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/GameCore.Contracts.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/GameCore.Derivation.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/GameCore.Derivation.Fixtures.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Cards.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Cards.Fixtures.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Narrative.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/GameCore.Gameplay.Narrative.Fixtures.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/GameCore.Planning.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/GameCore.Rules.Cards.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/GameCore.Rules.Narrative.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/GameCore.Unity.Adapters.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/GameCore.Unity.Fixtures.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/GameCore.Unity.Runtime.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/GameCore.Validation.FamilyEntries.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/GameCore.Validation.Fixture.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/GameCore.Validation.Generated.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/GameCore.Validation.GeneratedCards.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/GameCore.Validation.Probe.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/GameCore.Validation.ProbeHost.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/Unity.Burst.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/Unity.Collections.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/Unity.Deformations.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/Unity.Entities.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/Unity.Entities.Hybrid.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/Unity.Entities.Hybrid.HybridComponents.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/Unity.Entities.UI.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/Unity.InternalAPIEngineBridge.002.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/Unity.Mathematics.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/Unity.Mathematics.Extensions.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/Unity.Mathematics.Extensions.Hybrid.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/Unity.Profiling.Core.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/Unity.Scenes.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/Unity.ScriptableBuildPipeline.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/Unity.Serialization.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/Unity.Transforms.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/Unity.Transforms.Hybrid.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/PackageCache/com.unity.collections@9796e5ee0d9e/Unity.Collections.LowLevel.ILSupport/Unity.Collections.LowLevel.ILSupport.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/PackageCache/com.unity.collections@9796e5ee0d9e/Unity.Collections.Tests/System.IO.Hashing/System.IO.Hashing.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/PackageCache/com.unity.burst@07790c2d06d9/Unity.Burst.Unsafe.dll --allowed-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/PackageCache/com.unity.collections@9796e5ee0d9e/Unity.Collections.Tests/System.Runtime.CompilerServices.Unsafe/System.Runtime.CompilerServices.Unsafe.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Accessibility.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/Microsoft.Win32.Primitives.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/Microsoft.Win32.Registry.AccessControl.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/Microsoft.Win32.Registry.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.AppContext.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Buffers.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Collections.Concurrent.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Collections.NonGeneric.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Collections.Specialized.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Collections.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.ComponentModel.Annotations.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.ComponentModel.EventBasedAsync.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.ComponentModel.Primitives.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.ComponentModel.TypeConverter.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.ComponentModel.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Console.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Data.Common.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Data.SqlClient.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Diagnostics.Contracts.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Diagnostics.Debug.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Diagnostics.FileVersionInfo.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Diagnostics.Process.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Diagnostics.StackTrace.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Diagnostics.TextWriterTraceListener.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Diagnostics.Tools.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Diagnostics.TraceEvent.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Diagnostics.TraceSource.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Diagnostics.Tracing.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Drawing.Primitives.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Dynamic.Runtime.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Globalization.Calendars.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Globalization.Extensions.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Globalization.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.IO.Compression.ZipFile.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.IO.FileSystem.AccessControl.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.IO.FileSystem.DriveInfo.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.IO.FileSystem.Primitives.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.IO.FileSystem.Watcher.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.IO.FileSystem.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.IO.IsolatedStorage.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.IO.MemoryMappedFiles.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.IO.Pipes.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.IO.UnmanagedMemoryStream.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.IO.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Linq.Expressions.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Linq.Parallel.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Linq.Queryable.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Linq.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Memory.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Net.AuthenticationManager.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Net.Cache.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Net.HttpListener.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Net.Mail.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Net.NameResolution.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Net.NetworkInformation.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Net.Ping.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Net.Primitives.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Net.Requests.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Net.Security.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Net.ServicePoint.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Net.Sockets.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Net.Utilities.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Net.WebHeaderCollection.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Net.WebSockets.Client.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Net.WebSockets.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.ObjectModel.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Reflection.DispatchProxy.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Reflection.Emit.ILGeneration.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Reflection.Emit.Lightweight.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Reflection.Emit.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Reflection.Extensions.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Reflection.Primitives.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Reflection.TypeExtensions.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Reflection.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Resources.Reader.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Resources.ReaderWriter.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Resources.ResourceManager.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Resources.Writer.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Runtime.CompilerServices.VisualC.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Runtime.Extensions.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Runtime.Handles.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Runtime.InteropServices.RuntimeInformation.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Runtime.InteropServices.WindowsRuntime.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Runtime.InteropServices.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Runtime.Loader.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Runtime.Numerics.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Runtime.Serialization.Formatters.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Runtime.Serialization.Json.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Runtime.Serialization.Primitives.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Runtime.Serialization.Xml.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Runtime.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Security.AccessControl.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Security.Claims.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Security.Cryptography.Algorithms.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Security.Cryptography.Cng.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Security.Cryptography.Csp.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Security.Cryptography.DeriveBytes.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Security.Cryptography.Encoding.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Security.Cryptography.Encryption.Aes.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Security.Cryptography.Encryption.ECDiffieHellman.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Security.Cryptography.Encryption.ECDsa.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Security.Cryptography.Encryption.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Security.Cryptography.Hashing.Algorithms.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Security.Cryptography.Hashing.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Security.Cryptography.OpenSsl.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Security.Cryptography.Pkcs.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Security.Cryptography.Primitives.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Security.Cryptography.ProtectedData.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Security.Cryptography.RSA.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Security.Cryptography.RandomNumberGenerator.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Security.Cryptography.X509Certificates.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Security.Principal.Windows.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Security.Principal.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Security.SecureString.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.ServiceModel.Duplex.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.ServiceModel.Http.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.ServiceModel.NetTcp.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.ServiceModel.Primitives.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.ServiceModel.Security.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.ServiceProcess.ServiceController.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Text.Encoding.CodePages.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Text.Encoding.Extensions.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Text.Encoding.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Text.RegularExpressions.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Threading.AccessControl.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Threading.Overlapped.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Threading.Tasks.Extensions.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Threading.Tasks.Parallel.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Threading.Tasks.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Threading.Thread.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Threading.ThreadPool.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Threading.Timer.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Threading.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.ValueTuple.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Xml.ReaderWriter.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Xml.XDocument.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Xml.XPath.XDocument.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Xml.XPath.XmlDocument.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Xml.XPath.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Xml.XmlDocument.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Xml.XmlSerializer.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/System.Xml.Xsl.Primitives.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades/netstandard.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/I18N.CJK.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/I18N.MidEast.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/I18N.Other.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/I18N.Rare.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/I18N.West.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/I18N.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Microsoft.CSharp.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Mono.Data.Sqlite.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Mono.Data.Tds.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Mono.Security.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.ComponentModel.Composition.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.ComponentModel.DataAnnotations.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Configuration.Install.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Configuration.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Core.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Data.DataSetExtensions.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Data.Entity.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Data.Linq.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Data.OracleClient.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Data.Services.Client.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Data.Services.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Data.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Design.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.DirectoryServices.Protocols.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.DirectoryServices.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Drawing.Design.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Drawing.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.EnterpriseServices.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.IO.Compression.FileSystem.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.IO.Compression.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.IdentityModel.Selectors.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.IdentityModel.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Json.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Management.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Messaging.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Net.Http.WebRequest.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Net.Http.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Net.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Numerics.Vectors.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Numerics.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Reflection.Context.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Runtime.Caching.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Runtime.DurableInstancing.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Runtime.Remoting.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Runtime.Serialization.Formatters.Soap.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Runtime.Serialization.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Security.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.ServiceModel.Activation.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.ServiceModel.Discovery.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.ServiceModel.Internals.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.ServiceModel.Routing.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.ServiceModel.Web.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.ServiceModel.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.ServiceProcess.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Transactions.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Web.ApplicationServices.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Web.DynamicData.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Web.Extensions.Design.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Web.Extensions.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Web.RegularExpressions.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Web.Services.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Web.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Windows.Forms.DataVisualization.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Windows.Forms.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Windows.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Xaml.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Xml.Linq.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Xml.Serialization.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.Xml.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/System.dll --allowed-assembly=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/mscorlib.dll --out=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped --include-link-xml=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/artifacts/UnityLinkerInputs/TypesInScenes.xml --include-link-xml=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Assets/link.xml --include-directory=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies --include-directory=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/Variations/il2cpp/Managed --include-directory=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCo/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/PackageCache/com.unity.burst@07790c2d06d9/.Runtime/bcl.exe exited after 1537 ms.
+stdout:
+Starting 1 library requests
+Done
+stderr:
+
+[W] opendir() failed: /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/artifacts/LinuxPlayerBuildProgram/il2cppOutput/cpp/Symbols
+re.ReleaseCheck/Library/PackageCache/com.unity.collections@9796e5ee0d9e/Unity.Collections.LowLevel.ILSupport --include-directory=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/PackageCache/com.unity.collections@9796e5ee0d9e/Unity.Collections.Tests/System.IO.Hashing --include-directory=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/PackageCache/com.unity.burst@07790c2d06d9 --include-directory=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/PackageCache/com.unity.collections@9796e5ee0d9e/Unity.Collections.Tests/System.Runtime.CompilerServices.Unsafe --include-directory=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux --include-directory=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityaot-linux/Facades --rule-set=Experimental --profiler-report --profiler-output-file=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/artifacts/unitylinker_1ofc.traceevents --dotnetprofile=unityaot-linux --dotnetruntime=Il2Cpp --architecture=x64 --platform=Linux --use-editor-options --engine-modules-asset-file=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/modules.asset --editor-data-file=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/artifacts/UnityLinkerInputs/EditorToUnityLinkerData.json --include-unity-root-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/GameCore.Validation.FamilyEntries.dll --include-unity-root-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/GameCore.Validation.Fixture.dll --include-unity-root-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/GameCore.Validation.Generated.dll --include-unity-root-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/GameCore.Validation.GeneratedCards.dll --include-unity-root-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/GameCore.Validation.Probe.dll --include-unity-root-assembly=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/PlayerScriptAssemblies/GameCore.Validation.ProbeHost.dll --print-command-line --enable-analytics
+[  80/1047  0s] CopyFiles Builds/Linux64/GameCoreProbe_BackUpThisFolder_ButDontShipItWithYourGame/Managed/GameCore.Validation.ProbeHost.pdb
+[ 109/1047  0s] CopyFiles Builds/Linux64/GameCoreProbe_BackUpThisFolder_ButDontShipItWithYourGame/Managed/GameCore.Validation.ProbeHost.dll
+[ 172/1047  1s] GenerateNativePluginsForAssemblies Library/Bee/artifacts/LinuxPlayerBuildProgram/AsyncPluginsFromLinker
+[ 174/1047  5s] IL2CPP_CodeGen /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/artifacts/il2cpp_conv_4cko.traceevents
+/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/il2cpp/build/deploy/il2cpp --convert-to-cpp --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Composition.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Contracts.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Derivation.Fixtures.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Derivation.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Gameplay.Cards.Fixtures.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Gameplay.Cards.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Gameplay.Narrative.Fixtures.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Gameplay.Narrative.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Planning.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Rules.Cards.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Rules.Narrative.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Unity.Adapters.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Unity.Fixtures.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Unity.Runtime.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Validation.FamilyEntries.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Validation.Fixture.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Validation.Generated.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Validation.GeneratedCards.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Validation.Probe.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/GameCore.Validation.ProbeHost.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/System.Core.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/System.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/Unity.Burst.Unsafe.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/Unity.Burst.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/Unity.Collections.LowLevel.ILSupport.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/Unity.Collections.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/Unity.Entities.Hybrid.HybridComponents.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/Unity.Entities.Hybrid.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/Unity.Entities.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/Unity.Mathematics.Extensions.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/Unity.Mathematics.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/Unity.Scenes.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/Unity.Serialization.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/Unity.Transforms.Hybrid.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/Unity.Transforms.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.AIModule.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.AccessibilityModule.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.AndroidJNIModule.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.AnimationModule.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.AssetBundleModule.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.AudioModule.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.ContentLoadModule.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.CoreModule.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.DirectorModule.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.GridModule.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.HierarchyCoreModule.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.IMGUIModule.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.InputForUIModule.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.InputLegacyModule.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.InputModule.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.ParticleSystemModule.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.Physics2DModule.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.PhysicsModule.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.PropertiesModule.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.SharedInternalsModule.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.SubsystemsModule.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.TerrainModule.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.TextCoreFontEngineModule.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.TextCoreTextEngineModule.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.TextRenderingModule.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.TilemapModule.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.UIElementsModule.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.UIModule.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.UnityAnalyticsCommonModule.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.UnityAnalyticsModule.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.UnityConsentModule.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.UnityWebRequestModule.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.VFXModule.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.VRModule.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.VideoModule.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.XRModule.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/UnityEngine.dll --assembly=Library/Bee/artifacts/LinuxPlayerBuildProgram/ManagedStripped/mscorlib.dll --extra-types-file=Temp/extra-types.txt --generatedcppdir=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/artifacts/LinuxPlayerBuildProgram/il2cppOutput/cpp --symbols-folder=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/artifacts/LinuxPlayerBuildProgram/il2cppOutput/cpp/Symbols --enable-analytics --emit-null-checks --enable-array-bounds-check --dotnetprofile=unityaot-linux --usymtool-path=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Tools/usymtool --profiler-report --profiler-output-file=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/artifacts/il2cpp_conv_4cko.traceevents --print-command-line --static-lib-il2-cpp --data-folder=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/artifacts/LinuxPlayerBuildProgram/il2cppOutput/data
+WARNING: Cannot add extra type Unity.Entities.FastEquality+ManagedGetHashCodeImpl`1[Unity.Entities.Editor.EntitySelectionProxy]. Skipping.
+[ 659/1047  0s] CopyFiles Builds/Linux64/GameCoreProbe_BackUpThisFolder_ButDontShipItWithYourGame/Data/Resources/mscorlib.dll-resources.dat
+[ 679/1047  0s] CopyFiles Builds/Linux64/GameCoreProbe_BackUpThisFolder_ButDontShipItWithYourGame/il2cppOutput/GameCore.Validation.ProbeHost.cpp
+[ 924/1047  0s] CopyFiles Builds/Linux64/GameCoreProbe_Data/il2cpp_data/Resources/mscorlib.dll-resources.dat
+[1033/1047  0s] CopyFiles Builds/Linux64/GameCoreProbe_BackUpThisFolder_ButDontShipItWithYourGame/Data/Metadata/global-metadata.dat
+[1034/1047  0s] CopyFiles Builds/Linux64/GameCoreProbe_Data/il2cpp_data/Metadata/global-metadata.dat
+[1037/1047  4s] C_Linux_x64_Clang Library/Bee/artifacts/LinuxPlayerBuildProgram/zbz95/qxvkbwz18aw8.o
+[BUSY       6s] Link_Linux_x64_Clang Library/Bee/artifacts/LinuxPlayerBuildProgram/zbz95/linker-output/GameAssembly.so
+[1038/1047  7s] Link_Linux_x64_Clang Library/Bee/artifacts/LinuxPlayerBuildProgram/zbz95/linker-output/GameAssembly.so
+[1039/1047  0s] SeparateFullDebugSymbols Library/Bee/artifacts/LinuxPlayerBuildProgram/zbz95/GameAssembly.debug
+[1040/1047  0s] StripFullDebugSymbolsFromBuiltProgram Library/Bee/artifacts/LinuxPlayerBuildProgram/zbz95/strip-output-without-debug/GameAssembly.so
+[1041/1047  0s] CopyFiles Builds/Linux64/GameCoreProbe_BackUpThisFolder_ButDontShipItWithYourGame/GameAssembly.debug
+[1042/1047  0s] SeparateStrippedDebugSymbols Library/Bee/artifacts/LinuxPlayerBuildProgram/zbz95/GameAssembly_s.debug
+[1043/1047  0s] StripSymbolNamesFromBuiltProgram Library/Bee/artifacts/LinuxPlayerBuildProgram/zbz95/strip-output-without-symbols/GameAssembly.so
+[1044/1047  1s] AssociateBuiltProgramWithDebugSymbols Library/Bee/artifacts/LinuxPlayerBuildProgram/zbz95/GameAssembly.so
+[1045/1047  0s] CopyFiles /home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/artifacts/LinuxPlayerBuildProgram/il2cppOutput/build/GameAssembly.so
+[1046/1047  0s] CopyFiles Builds/Linux64/GameAssembly.so
+*** Tundra build success (26.16 seconds), 32 items updated, 1047 evaluated
+/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Library/Bee/artifacts/LinuxPlayerBuildProgram/il2cppOutput/cpp: Cannot add extra type Unity.Entities.FastEquality+ManagedGetHashCodeImpl`1[Unity.Entities.Editor.EntitySelectionProxy]. Skipping.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+UnityEditor.Modules.BeeBuildPostprocessor:DefaultResultProcessor (Bee.BinLog.NodeFinishedMessage,bool,bool) (at /home/bokken/build/output/unity/unity/Editor/Mono/Modules/BeeBuildPostprocessor.cs:621)
+UnityEditor.Modules.BeeBuildPostprocessor:PrintStdoutOnErrorProcessor (Bee.BinLog.NodeFinishedMessage) (at /home/bokken/build/output/unity/unity/Editor/Mono/Modules/BeeBuildPostprocessor.cs:572)
+UnityEditor.Modules.BeeBuildPostprocessor:ReportBuildResults () (at /home/bokken/build/output/unity/unity/Editor/Mono/Modules/BeeBuildPostprocessor.cs:634)
+UnityEditor.Modules.BeeBuildPostprocessor:PostProcess (UnityEditor.Modules.BuildPostProcessArgs) (at /home/bokken/build/output/unity/unity/Editor/Mono/Modules/BeeBuildPostprocessor.cs:794)
+UnityEditor.Modules.BeeBuildPostprocessor:PostProcess (UnityEditor.Modules.BuildPostProcessArgs,UnityEditor.BuildProperties&) (at /home/bokken/build/output/unity/unity/Editor/Mono/Modules/BeeBuildPostprocessor.cs:38)
+UnityEditor.PostprocessBuildPlayer:Postprocess (UnityEditor.BuildTarget,int,string,string,string,UnityEditor.BuildOptions,UnityEditor.RuntimeClassRegistry,UnityEditor.Build.Reporting.BuildReport) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline/PostprocessBuildPlayer.cs:285)
+UnityEditor.BuildPipeline:BuildPlayerInternalNoCheck (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[],bool)
+UnityEditor.BuildPipeline:BuildPlayerInternal (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:534)
+UnityEditor.BuildPipeline:BuildPlayer (string[],string,string,UnityEditor.BuildTargetGroup,UnityEditor.BuildTarget,int,UnityEditor.BuildOptions,string[]) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:418)
+UnityEditor.BuildPipeline:BuildPlayer (UnityEditor.BuildPlayerOptions) (at /home/bokken/build/output/unity/unity/Editor/Mono/BuildPipeline.bindings.cs:364)
+GameCore.Validation.Editor.BuildProbe:Run () (at Assets/GameCore.Validation/Editor/BuildProbe.cs:160)
+GameCore.Validation.Editor.BuildProbe:BuildLinuxIL2CPP () (at Assets/GameCore.Validation/Editor/BuildProbe.cs:57)
+
+(Filename: /home/bokken/build/output/unity/unity/Editor/Mono/Modules/BeeBuildPostprocessor.cs Line: 621)
+
 Total cache size 212129262
-Total cache size after purge 212129262, took 00:00:00.0685089
-Refreshing native plugins compatible for Editor in 0.14 ms, found 1 plugins.
+ExitCode: 0 Duration: 26s
+Total cache size after purge 212129262, took 00:00:00.1593840
+Refreshing native plugins compatible for Editor in 0.16 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-Asset Pipeline Refresh (id=d3450cec9f237fa179a7897ff5ed7f81): Total: 0.070 seconds - Initiated by RefreshV2(NoUpdateAssetOptions)
-Refreshing native plugins compatible for Editor in 0.12 ms, found 1 plugins.
+Asset Pipeline Refresh (id=1339261e0e17996b6a2eaec090391417): Total: 0.082 seconds - Initiated by RefreshV2(NoUpdateAssetOptions)
+Refreshing native plugins compatible for Editor in 0.13 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 
 -------------------------------------------------------------------------------
@@ -1681,7 +1806,7 @@ Sounds                 0.0 kb	 0.0%
 Shaders                20.1 kb	 0.6% 
 Other Assets           3.3 kb	 0.1% 
 Levels                 0.0 kb	 0.0% 
-File headers           26.4 kb	 0.8% 
+File headers           26.2 kb	 0.8% 
 Total User Assets      3.3 mb	 100.0% 
 Complete build size    1.2 gb
 Used Assets and files from the Resources folder, sorted by uncompressed size:
@@ -1771,8 +1896,6 @@ Used Assets and files from the Resources folder, sorted by uncompressed size:
  0.1 kb	 0.0% Assets/GameCore.Validation/Runtime/ProbeWorldDispatch.cs
  0.1 kb	 0.0% Assets/GameCore.Validation/Runtime/KernelAssemblyAudit.cs
  0.1 kb	 0.0% Assets/GameCore.Validation/Runtime/Gc013NarrativeHost.cs
- 0.1 kb	 0.0% Assets/GameCore.Validation/Runtime/FaultScenarioStep.cs
- 0.1 kb	 0.0% Assets/GameCore.Validation/Runtime/FaultScenarioHost.cs
  0.1 kb	 0.0% Assets/GameCore.Validation/Runtime/CardsScenarioHost.cs
  0.1 kb	 0.0% Packages/com.unity.serialization/Runtime/Unity.Serialization/Json/Parser/UnsafeSerializedObjectReader.cs
  0.1 kb	 0.0% Packages/com.unity.serialization/Runtime/Unity.Serialization/Json/Parser/Internal/SerializationConfiguration.cs
@@ -1834,7 +1957,6 @@ Used Assets and files from the Resources folder, sorted by uncompressed size:
  0.1 kb	 0.0% Packages/com.gamecore.unity.runtime/Runtime/Messages/NativeMessageLanes.cs
  0.1 kb	 0.0% Packages/com.gamecore.unity.runtime/Runtime/Lifecycle/LifecycleJobFence.cs
  0.1 kb	 0.0% Packages/com.gamecore.unity.runtime/Runtime/Lifecycle/LifecycleController.cs
- 0.1 kb	 0.0% Packages/com.gamecore.unity.runtime/Runtime/Faults/AssemblyFaultInjection.cs
  0.1 kb	 0.0% Packages/com.gamecore.unity.adapters/Runtime/PlayerLoop/GameCoreApplicationReset.cs
  0.1 kb	 0.0% Packages/com.gamecore.unity.adapters/Runtime/PlayerLoop/GameCoreApplicationPump.cs
  0.1 kb	 0.0% Packages/com.gamecore.rules.narrative/Runtime/NarrativeScenarioTrace.cs
@@ -1862,7 +1984,6 @@ Used Assets and files from the Resources folder, sorted by uncompressed size:
  0.1 kb	 0.0% Assets/GameCore.Validation/Runtime/ProbeArguments.cs
  0.1 kb	 0.0% Assets/GameCore.Validation/Runtime/Gc013Scenario.cs
  0.1 kb	 0.0% Assets/GameCore.Validation/Runtime/Gc013CardsHost.cs
- 0.1 kb	 0.0% Assets/GameCore.Validation/Runtime/FaultScenario.cs
  0.1 kb	 0.0% Assets/GameCore.Validation/Abstractions/ProbeCanonicalCodec.cs
  0.1 kb	 0.0% Packages/com.unity.serialization/Runtime/Unity.Serialization/Json/Views/SerializedPrimitiveView.cs
  0.1 kb	 0.0% Packages/com.unity.serialization/Runtime/Unity.Serialization/Json/Views/Internal/UnsafePrimitiveView.cs
@@ -1885,7 +2006,6 @@ Used Assets and files from the Resources folder, sorted by uncompressed size:
  0.1 kb	 0.0% Packages/com.gamecore.unity.runtime/Runtime/Pure/Messages/BoundedMessageBuffer.cs
  0.1 kb	 0.0% Packages/com.gamecore.unity.runtime/Runtime/Integration/LiveTargetSeeder.cs
  0.1 kb	 0.0% Packages/com.gamecore.unity.runtime/Runtime/Integration/LiveTargetIndex.cs
- 0.1 kb	 0.0% Packages/com.gamecore.unity.runtime/Runtime/Faults/FaultBoundaries.cs
  0.1 kb	 0.0% Packages/com.gamecore.planning/Runtime/StatePolicies/StatePolicyExecutor.cs
  0.1 kb	 0.0% Packages/com.gamecore.planning/Runtime/StatePolicies/SlotLayoutGenerator.cs
  0.1 kb	 0.0% Packages/com.gamecore.planning/Runtime/Ownership/OwnershipDeclarations.cs
@@ -1988,7 +2108,6 @@ Used Assets and files from the Resources folder, sorted by uncompressed size:
  0.1 kb	 0.0% Assets/GameCore.Validation/Runtime/ProbeRunner.cs
  0.1 kb	 0.0% Assets/GameCore.Validation/Runtime/ProbeReport.cs
  0.1 kb	 0.0% Assets/GameCore.Validation/Runtime/ProbeGc013.cs
- 0.1 kb	 0.0% Assets/GameCore.Validation/Runtime/ProbeFaults.cs
  0.1 kb	 0.0% Assets/GameCore.Validation/Runtime/ProbeCards.cs
  0.1 kb	 0.0% Assets/GameCore.Validation/Plugin/FixturePlugin.cs
  0.1 kb	 0.0% Assets/GameCore.Validation/Abstractions/ProbeTypes.cs
@@ -2549,25 +2668,24 @@ Used Assets and files from the Resources folder, sorted by uncompressed size:
  0.1 kb	 0.0% Assets/Resources/PerformanceTestRunSettings.json
 -------------------------------------------------------------------------------
 Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
-ExitCode: 0 Duration: 0s213ms
-Unloading 58 unused Assets / (0.7 MB). Loaded Objects now: 3379.
-Memory consumption went from 117.3 MB to 116.6 MB.
-Total: 6.895185 ms (FindLiveObjects: 0.114338 ms CreateObjectMapping: 0.059083 ms MarkObjects: 6.209367 ms  DeleteObjects: 0.511722 ms)
+Unloading 58 unused Assets / (0.7 MB). Loaded Objects now: 3364.
+Memory consumption went from 112.7 MB to 112.0 MB.
+Total: 39.590261 ms (FindLiveObjects: 0.142637 ms CreateObjectMapping: 0.095633 ms MarkObjects: 38.759141 ms  DeleteObjects: 0.591928 ms)
 
 Build Finished, Result: Success.
-##utp:{"type":"PlayerBuildInfo","version":2,"phase":"Immediate","time":1790367398422,"processId":2465642,"steps":[{"description":"Preprocess Player","duration":101},{"description":"Prepare For Build","duration":1},{"description":"ProducePlayerScriptAssemblies","duration":487},{"description":"Verify Build setup","duration":25},{"description":"Prepare assets for target platform","duration":1},{"description":"Prepare splash screen","duration":0},{"description":"Building scenes","duration":134},{"description":"Build scripts DLLs","duration":12},{"description":"Build GlobalGameManagers file","duration":292},{"description":"Writing asset files","duration":22},{"description":"Building Resources/unity_builtin_extra","duration":56},{"description":"Write data build dirty tracking information","duration":14},{"description":"Postprocess built player","duration":325}],"duration":1470}
+##utp:{"type":"PlayerBuildInfo","version":2,"phase":"Immediate","time":1790367615992,"processId":2477354,"steps":[{"description":"Preprocess Player","duration":100},{"description":"Prepare For Build","duration":1},{"description":"ProducePlayerScriptAssemblies","duration":3402},{"description":"Verify Build setup","duration":22},{"description":"Prepare assets for target platform","duration":1},{"description":"Prepare splash screen","duration":0},{"description":"Building scenes","duration":145},{"description":"Build scripts DLLs","duration":12},{"description":"Build GlobalGameManagers file","duration":75},{"description":"Writing asset files","duration":16},{"description":"Building Resources/unity_builtin_extra","duration":65},{"description":"Write data build dirty tracking information","duration":7},{"description":"Postprocess built player","duration":27150}],"duration":30996}
 Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
 Loaded scene 'Temp/__Backupscenes/0.backup'
-	Deserialize:            1.051 ms
-	Integration:            101.925 ms
-	Integration of assets:  0.004 ms
-	Thread Wait Time:       0.010 ms
-	Total Operation Time:   102.989 ms
-Unloading 0 unused Assets / (0.6 KB). Loaded Objects now: 3372.
-Memory consumption went from 116.4 MB to 116.4 MB.
-Total: 6.054129 ms (FindLiveObjects: 0.114362 ms CreateObjectMapping: 0.077472 ms MarkObjects: 5.853901 ms  DeleteObjects: 0.007765 ms)
+	Deserialize:            0.537 ms
+	Integration:            107.434 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       0.006 ms
+	Total Operation Time:   107.977 ms
+Unloading 0 unused Assets / (0.6 KB). Loaded Objects now: 3357.
+Memory consumption went from 111.8 MB to 111.8 MB.
+Total: 6.152400 ms (FindLiveObjects: 0.113640 ms CreateObjectMapping: 0.079496 ms MarkObjects: 5.943955 ms  DeleteObjects: 0.014334 ms)
 
-[GC001] build finished; result=Succeeded; totalSize=1258800771; totalErrors=0; totalWarnings=0; output=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation/Builds/Linux64/GameCoreProbe.x86_64; platform=StandaloneLinux64; buildStarted=2026-09-25T20:16:36.5528110; buildEnded=2026-09-25T20:16:38.1958193
+[GC001] build finished; result=Succeeded; totalSize=1253509704; totalErrors=0; totalWarnings=11; output=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Builds/Linux64/GameCoreProbe.x86_64; platform=StandaloneLinux64; buildStarted=2026-09-25T20:19:43.2330970; buildEnded=2026-09-25T20:20:14.6320751
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -2579,7 +2697,7 @@ GameCore.Validation.Editor.BuildProbe:BuildLinuxIL2CPP () (at Assets/GameCore.Va
 
 (Filename: Assets/GameCore.Validation/Editor/BuildProbe.cs Line: 163)
 
-[GC001] probe player built; executable=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.Validation/Builds/Linux64/GameCoreProbe.x86_64; catalog=Assets/GameCore.Validation/Generated/ProbeCatalog.g.cs; catalog hash and hash scope are logged by ProbeCatalogGenerator.GenerateCatalog above
+[GC001] probe player built; executable=/home/worlesenric/wkspace/gc-wt/gc-017/unity/GameCore.ReleaseCheck/Builds/Linux64/GameCoreProbe.x86_64; catalog=Assets/GameCore.Validation/Generated/ProbeCatalog.g.cs; catalog hash and hash scope are logged by ProbeCatalogGenerator.GenerateCatalog above
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -2604,9 +2722,9 @@ GameCore.Validation.Editor.BuildProbe:BuildLinuxIL2CPP () (at Assets/GameCore.Va
 (Filename: Assets/GameCore.Validation/Editor/BuildProbe.cs Line: 242)
 
 Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 10 unused Assets / (0 B). Loaded Objects now: 3362.
-Memory consumption went from 113.3 MB to 113.3 MB.
-Total: 5.081580 ms (FindLiveObjects: 0.103733 ms CreateObjectMapping: 0.046185 ms MarkObjects: 4.893209 ms  DeleteObjects: 0.037587 ms)
+Unloading 10 unused Assets / (0 B). Loaded Objects now: 3347.
+Memory consumption went from 108.6 MB to 108.6 MB.
+Total: 4.901463 ms (FindLiveObjects: 0.112261 ms CreateObjectMapping: 0.055579 ms MarkObjects: 4.700910 ms  DeleteObjects: 0.032193 ms)
 
 [Physics::Module] Cleanup current backned.
 [Physics::Module] Id: 0xf2b8ea05
@@ -2625,4 +2743,4 @@ debugger-agent: Unable to listen on 42
 [Package Manager] Server process was shutdown
 Checking for leaked weakptr:
   Found no leaked weakptrs.
-##utp:{"type":"MemoryLeaks","version":2,"phase":"Immediate","time":1790367403573,"processId":2465642,"allocatedMemory":11804614,"memoryLabels":[{"Default":23549},{"Permanent":16147},{"Thread":1084616},{"Manager":2816902},{"VertexData":8},{"Geometry":408},{"VFX":-104},{"Texture":160},{"Shader":79299},{"Material":24},{"GfxDevice":35976},{"Animation":456},{"Audio":4032},{"FontEngine":320},{"Physics":2081},{"Serialization":472},{"Input":26752},{"JobScheduler":33024},{"TextLib":160},{"Mono":32},{"ScriptingNativeRuntime":155096},{"BaseObject":1622832},{"Resource":1032},{"Renderer":2928},{"Transform":4678},{"File":3757},{"WebCam":80},{"Culling":32},{"Terrain":11298},{"Wind":24},{"String":32054},{"DynamicArray":91911},{"HashMap":96039},{"Utility":2665104},{"PoolAlloc":3680},{"AI":72},{"TypeTree":5005},{"ScriptManager":512},{"RuntimeInitializeOnLoadManager":64},{"SpriteAtlas":112},{"GI":7448},{"Director":8208},{"CloudService":11792},{"WebRequest":20647},{"VR":45689},{"SceneManager":528},{"Video":64},{"LazyScriptCache":32},{"Camera":17},{"Secure":8401},{"SerializationCache":1576},{"APIUpdating":10320},{"Subsystems":336},{"VirtualTexturing":57552},{"StaticSafetyDebugInfo":278528},{"Analytics":384},{"Hierarchy":832},{"CoreStats":12456},{"Identifiers":12384},{"Gui":112},{"EditorUtility":22907},{"VersionControl":4},{"Undo":979},{"AssetDatabase":2442656},{"EditorGi":328},{"UnityConnect":24792},{"Upm":1852},{"DrivenProperties":72},{"LocalIPC":210},{"ProfilerEditor":9746},{"CoreBusinessMetrics":2386},{"Licensing":688},{"AssetReference":32},{"IPCStream":32}]}
+##utp:{"type":"MemoryLeaks","version":2,"phase":"Immediate","time":1790367620470,"processId":2477354,"allocatedMemory":11767014,"memoryLabels":[{"Default":23549},{"Permanent":16147},{"Thread":1084616},{"Manager":2811358},{"VertexData":8},{"Geometry":408},{"VFX":-104},{"Texture":160},{"Shader":79299},{"Material":24},{"GfxDevice":35976},{"Animation":456},{"Audio":4032},{"FontEngine":320},{"Physics":2081},{"Serialization":472},{"Input":26752},{"JobScheduler":33024},{"TextLib":160},{"Mono":32},{"ScriptingNativeRuntime":155096},{"BaseObject":1622832},{"Resource":1032},{"Renderer":2928},{"Transform":4678},{"File":3757},{"WebCam":80},{"Culling":32},{"Terrain":11298},{"Wind":24},{"String":32379},{"DynamicArray":91674},{"HashMap":84117},{"Utility":2665104},{"PoolAlloc":3632},{"AI":72},{"TypeTree":5005},{"ScriptManager":512},{"RuntimeInitializeOnLoadManager":64},{"SpriteAtlas":112},{"GI":7448},{"Director":8208},{"CloudService":11792},{"WebRequest":808},{"VR":45689},{"SceneManager":528},{"Video":64},{"LazyScriptCache":32},{"Camera":17},{"Secure":8401},{"SerializationCache":1576},{"APIUpdating":10320},{"Subsystems":336},{"VirtualTexturing":57552},{"StaticSafetyDebugInfo":278528},{"Analytics":384},{"Hierarchy":832},{"CoreStats":12456},{"Identifiers":12384},{"Gui":112},{"EditorUtility":22907},{"VersionControl":4},{"Undo":979},{"AssetDatabase":2441818},{"EditorGi":328},{"UnityConnect":24792},{"Upm":1852},{"DrivenProperties":72},{"LocalIPC":210},{"ProfilerEditor":9746},{"CoreBusinessMetrics":2345},{"Licensing":1232},{"AssetReference":32},{"IPCStream":32}]}
