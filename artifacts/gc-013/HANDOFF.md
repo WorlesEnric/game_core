@@ -70,12 +70,11 @@ EditMode + IL2CPP probe work described in §7.
 
 - `Runtime/Integration/DerivationModeSwitchValidator.cs`
 
-`unity/GameCore.Validation/Assets/GameCore.Validation/` (the Unity qualification surface,
-delegated in parallel and listed separately in the sub-commit that adds it):
+`unity/GameCore.Validation/Assets/GameCore.Validation/` (the Unity qualification surface;
+each file with a committed sibling `.meta`, and the folder meta for `Tests/Gc013`):
 
 - `Runtime/Gc013Scenario.cs`, `Runtime/Gc013NarrativeHost.cs`, `Runtime/Gc013CardsHost.cs`, `Runtime/ProbeGc013.cs`
 - `Tests/Gc013/GameCore.Gc013.Tests.asmdef`, `Tests/Gc013/Gc013IntegrationTests.cs`
-- edits to `Runtime/ProbeArguments.cs`, `Runtime/ProbeRunner.cs` and the probe-result constants
 - `tools/unity/run_gc013_probe.sh`
 
 Evidence: `artifacts/gc-013/HANDOFF.md` (this file), `artifacts/gc-013/static-checks.log`.
@@ -91,6 +90,9 @@ Evidence: `artifacts/gc-013/HANDOFF.md` (this file), `artifacts/gc-013/static-ch
 | `Packages/com.gamecore.composition/Runtime/Operations/CompositionEditApplier.cs` | `Plan` takes an optional validator; the subject dispatch moved to `PlanSubject`; `CompositionEditPlan` gained `ChangeSet`; `ComputeDelta` reports an `Update` scope edit for an isolation/exclusion/import change | See §4. |
 | `Packages/com.gamecore.composition/Runtime/Operations/CompositionHost.cs` | the constructor and `CreateDefault` take an optional trailing `ICompositionEditValidator`; `Validator` exposes it | See §4. |
 | `Packages/com.gamecore.unity.runtime/Runtime/Integration/DerivedAssemblyPipeline.cs` | `Derive` calls `IncrementalDerivationEngine`; the report gained `Invalidation`/`IncrementalCounters`; the pipeline exposes `PreviousInvalidation`; the constructor takes an optional trailing `DerivedRecipeCache` | See §4. |
+| `unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/ProbeArguments.cs` | added the `-probeGc013` flag and its property | The new probe mode needs an argument and a report identity, exactly as every sibling probe has one. |
+| `unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/ProbeRunner.cs` | added the `Gc013` report identity and dispatch | Same. |
+| `unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/GameCore.Validation.ProbeHost.asmdef` | added references `GameCore.Derivation`, `GameCore.Derivation.Fixtures`, `GameCore.Planning` | The GC-013 scenario uses GC-006's snapshot/rule types and a fixture value source, which the probe-host assembly did not previously reference. Additions only. |
 
 ## 4. Contract changes
 
@@ -186,23 +188,67 @@ assembly list on both paths.
 | TEST-004 automatic future descendants | unchanged policy + `CreatedTargets` seed | `BothModeDirectionsApplyToExistingAndFutureTargets`, existing TEST-004 cases |
 | TEST-006 isolation/modes | as P-013/P-016 | `ReferenceMoveAndModeTests`, existing `IsolationAndExclusionTests` |
 | TEST-008 incremental indexes and subtree movement | all of the above; `PropagationBudget.CostCounters` evidence | `InvalidationAgreementTests`, `InvalidationLocalityTests` |
+| GC-013 DoD: reparent + both mode directions in both early genres, no per-instance imports in Automatic | the incremental engine + `ICompositionEditValidator` + `DerivationModeSwitchValidator` | `ReferenceMoveAndModeTests` (pure, both reference compositions) **and** the Unity half: fifteen observations per family over both catalogs in `GameCore.Gc013.Tests`, repeated in the IL2CPP player by `run_gc013_probe.sh` |
 
 ## 7. Unity EditMode and probe surface
 
-`unity/GameCore.Validation/Assets/GameCore.Validation/` gains a GC-013 scenario runner, one
-adapter per family, an EditMode suite and a probe mode, and `tools/unity/run_gc013_probe.sh`
-drives the player. The observations and the exact commands are listed in
-`artifacts/gc-013/unity-surface.md`, written by the parallel worker that owns those files.
+One scenario, two family adapters, both surfaces:
 
-The clauses they must prove, all of which are also asserted at derivation level in
-`ReferenceMoveAndModeTests` so a Unity-side failure can be localised:
+| File | What it is |
+|---|---|
+| `Assets/GameCore.Validation/Runtime/Gc013Scenario.cs` | The shared scripted sequence over an `IGc013Family`: a real world per family (`UnityWorldRegistry.TryCreate` + the family registration), real live targets (`TargetRegistry`, `LiveTargetIndex`, `LiveTargetSeeder`), the real lane (`CompositionHost.CreateDefault` wired to `DerivationModeSwitchValidator`), the real chain (`WorldCompositionBridge`, `DerivedAssemblyPipeline` over the incremental engine) and real storage publication. |
+| `Assets/GameCore.Validation/Runtime/Gc013NarrativeHost.cs` | The narrative family: catalog declarations, the chapter tree's declared scopes, the seeded targets, the reparent/mode/conflict payloads, and the exclusive pair the narrative vocabulary lacks (a declared `CompositionPolicy.Exclusive` capability). |
+| `Assets/GameCore.Validation/Runtime/Gc013CardsHost.cs` | The card family: `CardTableFixture`/`CardVocabulary` declarations, the league tree, the reparent through `CardTablePayloads.ScopeReparent` (07 s2.4's own builder, which had no caller until now), and a draw-policy pair over the real `cards.draw-policy` identity. |
+| `Assets/GameCore.Validation/Runtime/ProbeGc013.cs` | The player probe: both families over both catalogs, every observation into the shared probe report, and both digest literals asserted after recomputing them from the observed steps. |
+| `Assets/GameCore.Validation/Tests/Gc013/Gc013IntegrationTests.cs` (+ asmdef) | The EditMode suite: one case per family over the committed generated catalog *and* the hand-written generated-style catalog. |
+| `tools/unity/run_gc013_probe.sh` | The player-probe harness: `PROBE_RUNS` runs, strict JSON validation, the fifteen names per family per catalog, both digest literals. |
+| `Runtime/ProbeArguments.cs`, `Runtime/ProbeRunner.cs`, `Runtime/GameCore.Validation.ProbeHost.asmdef` | Additive wiring for the `-probeGc013` mode and three assembly references (`GameCore.Derivation`, `GameCore.Derivation.Fixtures`, `GameCore.Planning`) the new runtime code needs. |
 
-- reparent preserves state (stable `TargetId`, seeded slot values) and updates inherited
-  bindings;
-- both mode-switch directions for existing and future targets;
-- isolated branches unchanged across every published edit;
-- a conflict preserves the old membership/mode/assembly;
-- no per-instance import or opt-in is added in Automatic.
+**Fifteen named observations per family, in order** (the digest is over exactly these
+`<label>/<name>=pass` lines, LF separated, no trailing newline):
+
+1. `gc013-world-and-live-targets`
+2. `gc013-mount-inherits-to-every-eligible-target`
+3. `gc013-reparent-preserves-target-state-and-inheritance`
+4. `gc013-isolated-branch-unchanged-across-the-reparent`
+5. `gc013-opt-in-target-declared-and-derived`
+6. `gc013-isolated-branch-unchanged-across-the-opt-in-target`
+7. `gc013-mode-switch-automatic-to-conservative`
+8. `gc013-isolated-branch-unchanged-across-the-conservative-switch`
+9. `gc013-future-target-in-conservative-derives-nothing`
+10. `gc013-isolated-branch-unchanged-across-the-future-spawn`
+11. `gc013-mode-switch-conservative-to-automatic`
+12. `gc013-isolated-branch-unchanged-across-the-automatic-switch`
+13. `gc013-exclusive-conflict-preserves-mode-and-membership`
+14. `gc013-isolated-branch-unchanged-across-the-conflict`
+15. `gc013-teardown-settles-and-disposes`
+
+The two digest literals the suite, the probe and the shell script all assert are
+`8d0ca4d2e31cdf6e1ead4a57fa6427acb1dfb4d7c11ab9cab1590857ee81befd` (narrative) and
+`ac6dc0b11d32a60328cfcc2724ce23a36919afd88aa01e6afa0a135ac470c5c9` (cards). Both were
+**recomputed independently on this host** from the fifteen qualified names above and the
+documented `NarrativeDigest.OfLines` formula, and both match.
+
+### 7.1 One defect found before the build host, and fixed
+
+The scenario qualified a step name with its family label in the isolated-branch path only, so
+it recorded nine bare names and six qualified ones; the digest that produces is
+`025fcf81eb8175d3cd0492a08dfc45fa6dbac32f807dda10965c3386cb7a8f5f`, not the literal the
+suite, the probe and `run_gc013_probe.sh` assert, and the probe's expected names
+(`narrative/gc013-…` and `fixture:narrative/gc013-…`) would not have appeared at all — three
+independent CI failures. The qualification now happens at the single recording point
+(`Gc013Scenario.Executor.Add`), so the sequence is exactly the qualified list and both
+digests reproduce. Found by recomputing the digests from the name table rather than trusting
+the implementation's own numbers.
+
+### 7.2 What the Unity half adds over the pure tests
+
+`ReferenceMoveAndModeTests` proves the same clauses on the pure derivation engine. The Unity
+half proves them through the *real* path: a produced `CompositionHost` publication, the
+incremental engine inside `DerivedAssemblyPipeline`, a compiled schedule, and binding rows in
+actual ECS storage — including the parts a pure test cannot reach (the validator refusing a
+staged proposal, the seeded live slot surviving the move, the rows moving with the binding).
+A Unity-side failure is localised because the same clause is asserted at derivation level.
 
 ## 8. Exact commands for the Linux build host
 
@@ -327,3 +373,24 @@ criterion and the world size is not.
   6.2). Conservative in the dirty direction.
 - **The state-slot support index of P-023 is not here.** It belongs to the ownership/state
   model (GC-007/GC-008) and GC-013 was not given that data; the other five P-023 indexes are.
+- **The recipe cache is wired into the derivation path, not the spawn publication's variant
+  cache.** `DerivedRecipeCache` resolves the reaching rules for a dirty target and
+  `ScopeInheritanceFingerprint` is the value `DerivedVariantKey` (declared in GC-008's
+  `SpawnRecipeCatalog.cs` and, until this task, never constructed by anything) was waiting
+  for. Passing that fingerprint into the spawn path means editing `AssemblyPublisher.Spawn`,
+  which every existing probe and gate exercises; the resolver and the key now exist side by
+  side, and connecting them is the follow-up that would make a spawn reuse a derived variant
+  instead of recomputing it (P-024's "fast repeated spawning").
+- **`IncrementalDerivationEngine` is on the production path, but `GameCore.Planning` is not
+  told about it.** The plan's `AffectedCounts` and `ValidityAndCost` still come from the
+  proposal rather than from the invalidation closure, so a plan's reported cost is not yet
+  the incremental cost. Wiring it is a small change in the plan assembly, which this task
+  does not own.
+- **Two scenario steps assert a reading, not a bare boolean, where the vocabulary does not
+  reach.** Step D of the Unity scenario asserts the *refused switch* (the validator's
+  rejection with the old mode, membership and revision intact) rather than a conflict raised
+  by a mount, because in Conservative the descendant-reach rules of the pair are denied and
+  so no mount can conflict there; the reverse direction cannot conflict either, since a grant
+  that makes the rule applicable in Conservative makes it applicable in Automatic too. The
+  step detail says so in prose. The same clause is asserted on the pure engine in
+  `AConflictOnTheOtherModeLeavesTheOldAssemblyPublished`.
