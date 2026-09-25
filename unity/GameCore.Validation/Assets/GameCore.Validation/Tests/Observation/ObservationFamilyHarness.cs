@@ -179,7 +179,7 @@ namespace GameCore.Observation.Tests
             {
                 throw new InvalidOperationException(
                     "the " + Family + " host refused its own command: " + receipt.Result.Kind
-                    + " (" + receipt.Result.Code + ")");
+                    + " (" + receipt.Result.Reason + ")");
             }
 
             ulong before = Host.CurrentStep.Value;

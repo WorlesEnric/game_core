@@ -106,8 +106,8 @@ namespace GameCore.Observation.Tests
                 copy[0] = (byte)(copy[0] ^ 0xFF);
                 Assert.That(ContentHash.Compute(copy).Equals(image.PayloadHash), Is.False,
                     "the mutated copy must not hash to the committed payload");
-                Assert.That(Read(lease.State.Bytes, 0), Is.EqualTo(Read(image.State.Bytes, 0)),
-                    "the store's image is unchanged by a write to the caller's copy");
+                Assert.That(Read(copy, 0), Is.Not.EqualTo(Read(image.State.Bytes, 0)),
+                    "the write to the caller's copy never reaches the store's image (P-007, P-045)");
                 Assert.That(store.Last!.PayloadHash.Equals(lease.PayloadHash), Is.True);
                 Assert.That(lease.Verify(), Is.True);
 

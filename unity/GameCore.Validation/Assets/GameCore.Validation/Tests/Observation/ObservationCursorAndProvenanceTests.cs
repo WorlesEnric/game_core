@@ -91,7 +91,12 @@ namespace GameCore.Observation.Tests
                     new WorldId(new Id128(0x4743303136464F52UL, 0x4549474E574F524CUL)), EventSequence.Zero);
                 CommittedEventPage refused = observation.Read(foreign, 8);
                 Assert.That(refused.Outcome, Is.EqualTo(CursorOutcome.CursorExpired));
-                Assert.That(observation.NoEventPlaneRefusalCount, Is.EqualTo(1));
+                Assert.That(observation.EventGapReportCount, Is.EqualTo(2),
+                    "a cursor of another world incarnation is refused as a counted gap, never answered from "
+                    + "this world's stream");
+                Assert.That(observation.NoEventPlaneRefusalCount, Is.EqualTo(0),
+                    "a world whose own event plane refuses the foreign cursor never refuses through the "
+                    + "no-plane path");
             }
         }
 
@@ -405,7 +410,8 @@ namespace GameCore.Observation.Tests
             Assert.That(page.Token.Equals(token), Is.True);
             Assert.That(page.Matching.Count, Is.EqualTo(pair.Winners.Count));
             Assert.That(page.Rejected.Count, Is.EqualTo(pair.Page.Count - pair.Winners.Count));
-            Assert.That(page.TotalMatching, Is.EqualTo((ulong)pair.Winners.Count));
+            Assert.That(page.TotalMatching, Is.EqualTo((ulong)WinnerCount(pair.Records)),
+                "the page total covers the whole retained record set, not the requested window");
             Assert.That(page.TotalMatching + page.TotalRejected, Is.EqualTo((ulong)pair.Records.Count));
             Assert.That(page.TotalRejected, Is.EqualTo((ulong)pair.Records.Count - page.TotalMatching));
             Assert.That(page.StateDispositions.Count, Is.EqualTo(pair.StateDispositions.Count));
@@ -464,6 +470,20 @@ namespace GameCore.Observation.Tests
             Assert.That(wide.Page.Count, Is.EqualTo(wide.Records.Count));
             Assert.That(wide.HasMore, Is.False);
             Assert.That(store.DigestOf(token, target, capability).Equals(digest), Is.True);
+        }
+
+        private static int WinnerCount(IReadOnlyList<CapabilityProvenance> records)
+        {
+            int winners = 0;
+            for (int i = 0; i < records.Count; i++)
+            {
+                if (records[i].Kind == ProvenanceKind.Winner)
+                {
+                    winners++;
+                }
+            }
+
+            return winners;
         }
 
         private static List<string> SupportKeys(TargetAssembly assembly, CapabilityId capability)

@@ -87,9 +87,9 @@ namespace GameCore.Observation.Tests
                 Assert.That(staged.StagedIsNoChange, Is.False);
                 Assert.That(staged.IsTerminal, Is.False, "a staged proposal has not settled yet");
                 Assert.That(staged.Outcome, Is.EqualTo(Outcome.Pending));
-                Assert.That(staged.StagedActivationCount, Is.EqualTo(admission.Plan.ActivationOrder.Count));
-                Assert.That(staged.StagedRetirementCount, Is.EqualTo(admission.Plan.RetiredInstances.Count));
-                Assert.That(staged.StagedDispositionCount, Is.EqualTo(admission.Plan.StateDispositions.Count));
+                Assert.That(staged.StagedActivationCount, Is.EqualTo(admission.Plan!.ActivationOrder.Count));
+                Assert.That(staged.StagedRetirementCount, Is.EqualTo(admission.Plan!.RetiredInstances.Count));
+                Assert.That(staged.StagedDispositionCount, Is.EqualTo(admission.Plan!.StateDispositions.Count));
                 Assert.That(staged.StagedResourceLeaseCount, Is.EqualTo(lane.StagedLeases(operation).Count));
                 Assert.That(staged.Detail.Length, Is.GreaterThan(0));
 
@@ -102,8 +102,13 @@ namespace GameCore.Observation.Tests
                 Assert.That(lane.Committed.Revision.Equals(committedBefore), Is.True,
                     "a staged proposal increments no published revision (P-006)");
                 Assert.That(lane.Committed.Epoch.Equals(committedEpochBefore), Is.True);
-                Assert.That(lane.StagedState.Revision.CompareTo(lane.Committed.Revision) > 0, Is.True,
-                    "the staged tail is ahead of the committed state, which is why the two are reported apart");
+                Assert.That(lane.StagedState.Revision.Equals(lane.Committed.Revision), Is.True,
+                    "staging plans against the published revision and increments no revision at all (00 s9, P-006)");
+                Assert.That(
+                    lane.StagedPlan(operation)!.After.Fingerprint().Equals(lane.Committed.Fingerprint()),
+                    Is.False,
+                    "the staged tail's definition differs from the committed one, which is why the two are "
+                    + "reported apart");
                 Assert.That(lane.StagedPlan(operation), Is.Not.Null);
 
                 // Draining publishes the proposal; the world assembly for it is published by the real pipeline.
@@ -415,7 +420,13 @@ namespace GameCore.Observation.Tests
 
                 Assert.That(admission.Code, Is.Not.EqualTo(DiagnosticCode.None));
                 var diagnostics = new List<Diagnostic>(admission.Diagnostics);
-                ContentHash planHash = admission.Plan != null ? admission.Plan.PlanHash() : ContentHash.Empty;
+                // A refused admission hands back no plan object, but the lane retains the refused plan on its own
+                // ledger row (CompositionHost.SubmitInternal stores it before it settles), so the rejection carries
+                // the real semantic hash the applier computed instead of an invented empty one (05 s4).
+                CompositionEditPlan? refusedPlan = world.Lane.OperationLedger.RowOf(operation)?.Plan;
+                Assert.That(refusedPlan, Is.Not.Null, "the lane retains the plan of an operation it refused");
+                ContentHash planHash = refusedPlan!.PlanHash();
+                Assert.That(planHash.IsEmpty, Is.False, "a refused plan still carries a real plan hash (05 s4)");
                 return new RefusedEdit(operation, planHash, diagnostics);
             }
 
@@ -526,7 +537,7 @@ namespace GameCore.Observation.Tests
             return reversed;
         }
 
-        /// <summary>One really refused edit: the operation, its plan hash when it had one, and its diagnostics.</summary>
+        /// <summary>One really refused edit: the operation, the plan hash the lane retained for it, and its diagnostics.</summary>
         private readonly struct RefusedEdit
         {
             public RefusedEdit(OperationId operation, ContentHash planHash, IReadOnlyList<Diagnostic> diagnostics)
