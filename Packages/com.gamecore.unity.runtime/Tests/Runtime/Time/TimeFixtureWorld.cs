@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using GameCore.Contracts;
 using GameCore.Execution;
+using GameCore.Execution.Time;
 using GameCore.Unity.Runtime.Time;
 using Unity.Collections;
 using Unity.Entities;

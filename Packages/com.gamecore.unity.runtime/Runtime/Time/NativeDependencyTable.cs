@@ -26,7 +26,7 @@ namespace GameCore.Unity.Runtime.Time
     /// </summary>
     public sealed class NativeDependencyTable : IDisposable
     {
-        private readonly NativeArray<JobHandle> slots;
+        private NativeArray<JobHandle> slots;
         private JobHandle stepFence;
         private bool disposed;
 
@@ -124,26 +124,23 @@ namespace GameCore.Unity.Runtime.Time
                 return slots[resourceSlots[0]];
             }
 
-            var handles = new NativeArray<JobHandle>(resourceSlots.Count, Allocator.Temp);
-            try
+            JobHandle combined = default(JobHandle);
+            for (int i = 0; i < resourceSlots.Count; i++)
             {
-                for (int i = 0; i < resourceSlots.Count; i++)
+                RequireSlot(resourceSlots[i]);
+                JobHandle handle = slots[resourceSlots[i]];
+                if (handle.Equals(default(JobHandle)))
                 {
-                    RequireSlot(resourceSlots[i]);
-                    if (slots[resourceSlots[i]].Equals(default(JobHandle)))
-                    {
-                        UnproducedReadCount++;
-                    }
-
-                    handles[i] = slots[resourceSlots[i]];
+                    UnproducedReadCount++;
+                    continue;
                 }
 
-                return JobHandle.CombineDependencies(handles);
+                combined = combined.Equals(default(JobHandle))
+                    ? handle
+                    : JobHandle.CombineDependencies(combined, handle);
             }
-            finally
-            {
-                handles.Dispose();
-            }
+
+            return combined;
         }
 
         /// <summary>Convenience for the single-slot case.</summary>

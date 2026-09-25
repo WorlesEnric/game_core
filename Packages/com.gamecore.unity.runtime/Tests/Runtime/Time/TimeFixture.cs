@@ -23,6 +23,7 @@ namespace GameCore.Unity.Runtime.Tests.Time
 
         public static readonly StageId ProduceStage = Stage(1UL);
         public static readonly StageId ConsumeStage = Stage(2UL);
+        public static readonly StageId CaptureStage = Stage(3UL);
 
         public static readonly FactoryKey ProduceSystem = Key(1UL, "time.fixture.produce");
         public static readonly FactoryKey ConsumeSystem = Key(2UL, "time.fixture.consume");

@@ -43,6 +43,7 @@ namespace GameCore.Unity.Runtime.Tests.Time
                 world,
                 operation,
                 fixedStep,
+                perStepCapacity,
                 out UnityWorldHost? worldHost,
                 out TimeFixtureModule? module,
                 out WorldCreateResult result);
