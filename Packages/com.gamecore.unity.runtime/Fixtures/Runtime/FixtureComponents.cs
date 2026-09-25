@@ -20,6 +20,7 @@ namespace GameCore.Unity.Fixtures
         public int FaultCount;
 
         public int ProjectCount;
+        public int ProjectObservedJobValue;
 
         public int TickCount;
 

@@ -143,6 +143,9 @@ namespace GameCore.Unity.Runtime.Tests
             Assert.That(ReadTrail(second).AcceptCount, Is.EqualTo(1));
             Assert.That(ReadTrail(second).IngressCount, Is.EqualTo(2), "Ingress still runs on host frames of an idle world.");
             Assert.That(ReadTrail(second).OutputCount, Is.EqualTo(2), "Presentation still runs on host frames of an idle world.");
+            Assert.That(ReadTrail(first).ProjectObservedJobValue, Is.EqualTo(222),
+                "the project stage must observe the component job scheduled by the preceding stage");
+            Assert.That(ReadTrail(second).ProjectObservedJobValue, Is.EqualTo(111));
         }
 
         [Test]
