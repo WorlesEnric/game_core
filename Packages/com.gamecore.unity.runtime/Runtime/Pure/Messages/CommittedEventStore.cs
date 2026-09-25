@@ -200,11 +200,17 @@ namespace GameCore.Execution.Messages
     /// Bounded retained-event reader of one world (P-045, O-17). It answers cursor pages from committed events only,
     /// reports a gap as `CursorExpired` instead of pretending continuity, and counts a repeated delivery so a
     /// subscriber can be at-least-once within retention without an external dedup protocol of its own.
+    ///
+    /// GC-016 bounds the redelivery ledger as well: the identities this store remembers are exactly the sequences it
+    /// still retains, and an event dropped by retention releases its identity with it. A long-running world therefore
+    /// cannot grow this set without limit (TEST-023), and per-consumer dedup belongs to the consumer's own window
+    /// (`DelayedConsumerDelivery`), which is where `(world, sequence)` dedup is offered to a subscriber.
     /// </summary>
     public sealed class CommittedEventStore : ICommittedEventReader
     {
         private readonly List<CommittedEvent> retained = new List<CommittedEvent>();
         private readonly HashSet<ulong> deliveredSequences = new HashSet<ulong>();
+        private readonly Queue<ulong> deliveredOrder = new Queue<ulong>();
 
         public CommittedEventStore(WorldId world, int retention)
         {
@@ -277,8 +283,17 @@ namespace GameCore.Execution.Messages
 
             while (retained.Count > Retention)
             {
+                EventSequence dropped = retained[0].Cursor.Sequence;
                 retained.RemoveAt(0);
                 DroppedCount++;
+                if (deliveredSequences.Remove(dropped.Value))
+                {
+                    // The identity window is bounded by retention, not by how long the world runs.
+                    while (deliveredOrder.Count > 0 && !deliveredSequences.Contains(deliveredOrder.Peek()))
+                    {
+                        deliveredOrder.Dequeue();
+                    }
+                }
             }
         }
 
@@ -320,7 +335,11 @@ namespace GameCore.Execution.Messages
                     continue;
                 }
 
-                if (!deliveredSequences.Add(committed.Cursor.Sequence.Value))
+                if (deliveredSequences.Add(committed.Cursor.Sequence.Value))
+                {
+                    deliveredOrder.Enqueue(committed.Cursor.Sequence.Value);
+                }
+                else
                 {
                     // A repeated read with the same identity is a redelivery: counted, never treated as a new fact.
                     RedeliveryCount++;
