@@ -88,8 +88,6 @@ namespace GameCore.Composition
     /// </summary>
     public sealed class QuarantineRegistry
     {
-        private readonly int maxEntries;
-        private readonly ulong maxBytes;
         private readonly Dictionary<Id128, QuarantinedResource> entries = new Dictionary<Id128, QuarantinedResource>();
         private readonly List<Id128> canonicalOrder = new List<Id128>();
 
@@ -100,8 +98,6 @@ namespace GameCore.Composition
                 throw new ArgumentOutOfRangeException(nameof(maxEntries), "A quarantine registry is bounded by a positive entry count (06 s6).");
             }
 
-            this.maxEntries = maxEntries;
-            this.maxBytes = maxBytes;
             MaxEntries = maxEntries;
             MaxBytes = maxBytes;
         }

@@ -1,6 +1,6 @@
 GC-014 static checks (interpreter-level only; NOT a build or a test result)
 host: Darwin 25.3.0 arm64  no Unity, no .NET SDK, no Mono/C# compiler
-revision: c8b10daef1d76f9abd8efdddc2d5cc224bcde7b8
+revision: 90297f652807124c151d1235e8c22ac03fae32ba
 
 == python3 tools/check_game_core_csharp.py
 checked 309 C# file(s)
@@ -55,6 +55,9 @@ ok  tools/unity/run_world_probe.sh
 +0 +0  Packages/com.gamecore.unity.runtime/Runtime/Lifecycle/UnityLifecycleWorldBinding.cs
 +0 +0  unity/GameCore.Validation/Assets/GameCore.Validation/Tests/Lifecycle/CardLifecycleIntegrationTests.cs
 +0 +0  unity/GameCore.Validation/Assets/GameCore.Validation/Tests/Lifecycle/NarrativeLifecycleIntegrationTests.cs
+
+== unread private fields / unused locals in the dotnet-compiled composition sources (TreatWarningsAsErrors risk)
+unread private fields: none
 
 == .meta GUID uniqueness across Packages/ and unity/
 meta files scanned: 465 distinct guids: 465
