@@ -1065,6 +1065,15 @@ namespace GameCore.Validation.ProbeHost
                         && binder.LiveViewCount == 0
                         && binder.DestroyedCount == destroyed;
 
+                    // The view-only operation must leave gameplay unchanged; the following command may change it.
+                    bool rowsUnchanged = string.Equals(PublishedRowsFingerprint(), rowsBefore, StringComparison.Ordinal);
+                    bool scopesUnchanged = string.Equals(ScopeFingerprint(), scopesBefore, StringComparison.Ordinal);
+                    bool gameplayUnchanged = rowsUnchanged && scopesUnchanged
+                        && publisher.PublishedRevision.Equals(revisionBefore)
+                        && host.CurrentEpoch.Equals(epochBefore)
+                        && host.CurrentStep.Equals(stepBefore)
+                        && host.Ledger.ResourceCount == ledgerBefore;
+
                     // ... and gameplay keeps running: one more typed command commits exactly one step (P-042).
                     SampledInputCommand sample = new SampledInputCommand(
                         MintStamp(host.World, sequence: 3UL),
@@ -1078,12 +1087,7 @@ namespace GameCore.Validation.ProbeHost
                     TimeFrameReport frameAfter = time.PumpFrame(IdlePumpTicks);
 
                     bool pass = destroyedAll
-                        && string.Equals(PublishedRowsFingerprint(), rowsBefore, StringComparison.Ordinal)
-                        && string.Equals(ScopeFingerprint(), scopesBefore, StringComparison.Ordinal)
-                        && publisher.PublishedRevision.Equals(revisionBefore)
-                        && host.CurrentEpoch.Equals(epochBefore)
-                        && host.CurrentStep.Equals(stepBefore)
-                        && host.Ledger.ResourceCount == ledgerBefore
+                        && gameplayUnchanged
                         && admission.Outcome == InputAdmissionOutcome.Admitted
                         && frameAfter.StepsCommitted == 1UL
                         && host.CurrentStep.Value == commandStepBefore.Value + 1UL
@@ -1094,8 +1098,9 @@ namespace GameCore.Validation.ProbeHost
                         + "; liveViews=" + liveBefore.ToString(CultureInfo.InvariantCulture)
                         + "->" + views.LiveViewCount.ToString(CultureInfo.InvariantCulture)
                         + "; binderViews=" + binder.LiveViewCount.ToString(CultureInfo.InvariantCulture)
-                        + "; rowsUnchanged=" + string.Equals(PublishedRowsFingerprint(), rowsBefore, StringComparison.Ordinal)
-                        + "; scopesUnchanged=" + string.Equals(ScopeFingerprint(), scopesBefore, StringComparison.Ordinal)
+                        + "; rowsUnchanged=" + rowsUnchanged
+                        + "; scopesUnchanged=" + scopesUnchanged
+                        + "; gameplayUnchanged=" + gameplayUnchanged
                         + "; revision=" + revisionBefore.Value.ToString(CultureInfo.InvariantCulture)
                         + "; epoch=" + epochBefore.Value.ToString(CultureInfo.InvariantCulture)
                         + "; step=" + stepBefore.Value.ToString(CultureInfo.InvariantCulture)
