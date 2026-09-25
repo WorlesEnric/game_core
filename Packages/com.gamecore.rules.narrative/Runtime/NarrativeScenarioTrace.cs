@@ -64,7 +64,7 @@ namespace GameCore.Rules.Narrative
                 Entry("questFactValueAfterCommand", "1"),
                 Entry("questFactVersionAfterCommand", "2"),
                 Entry("committedEventCountAfterCommand", "2"),
-                Entry("committedEventSchemaAfterCommand", "4a396c0a9abe7f1de442889d30077ac0|ba1f284d15dd28bc2bd2e01281932572"),
+                Entry("committedEventSchemaAfterCommand", "ba1f284d15dd28bc2bd2e01281932572|4a396c0a9abe7f1de442889d30077ac0"),
                 Entry("stepsAfterCommand", "1"),
                 Entry("stepsAfterDuplicate", "1"),
                 Entry("duplicatePumpSteps", "0"),

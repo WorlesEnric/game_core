@@ -1,16 +1,7 @@
 #!/usr/bin/env bash
 # GC-010 narrative vertical slice (GC-010).
-#
-# Runs, in order:
-#   1. the whole plain-dotnet solution: build and test (every Unity-free assembly, including the narrative rules
-#      package this task adds),
-#   2. Unity package resolution on the qualification project (refreshes packages-lock.json),
-#   3. the Unity EditMode suite of the narrative slice (`GameCore.Narrative.Tests`),
-#   4. the Unity PlayMode suite of the testable packages,
-#   5. the StandaloneLinux64 IL2CPP player build (with catalog code generation),
-#   6. the player probes, each executed PROBE_RUNS times (default 5): GC-001 positive and negative, and the GC-010
-#      narrative slice over both the generated and the fixture catalog,
-#   7. the documentation validator.
+# Runs the complete dotnet solution, Unity resolve, all EditMode and PlayMode testables,
+# the IL2CPP player build, and every player probe five times by default.
 #
 # The slice is an integrated gate: it is never claimed from the dotnet half alone, and it never substitutes a seam
 # fixture for a real module.
@@ -83,15 +74,12 @@ run_step unity-resolve "${UNITY}" \
   -projectPath "${UNITY_PROJECT}" \
   -logFile "${ARTIFACTS}/unity/resolve.log"
 
-# 3. EditMode tests: the narrative slice's own assembly and the Unity-free rules package's suite. The other
-#    packages' Unity-free halves are covered by step 1, so this gate filters on the two narrative suites instead of
-#    re-running every Editor assembly. The filter accepts a comma-separated list of assembly names.
-#    Do not add -quit to a test-run command that relies on the runner to finish asynchronously (04 s10).
+# 3. Every EditMode testable, including composition, W1Gate, W2Gate and narrative.
+#    Do not add -quit to a test-run command that relies on the runner to finish asynchronously.
 run_step unity-editmode "${UNITY}" \
   -batchmode -nographics \
   -projectPath "${UNITY_PROJECT}" \
   -runTests -testPlatform EditMode \
-  -testFilter "GameCore.Narrative.Tests,GameCore.Rules.Narrative.Tests" \
   -testResults "${ARTIFACTS}/unity/editmode-results.xml" \
   -logFile "${ARTIFACTS}/unity/editmode.log"
 
@@ -118,6 +106,12 @@ export PROBE_PLAYER UNITY_PROJECT
 export PROBE_RUNS="${PROBE_RUNS:-5}"
 PROBE_PLAYER="${PROBE_PLAYER}" UNITY_PROJECT="${UNITY_PROJECT}" ARTIFACTS="${ARTIFACTS}/toolchain" \
   "tools/unity/run_probe.sh" both
+PROBE_PLAYER="${PROBE_PLAYER}" UNITY_PROJECT="${UNITY_PROJECT}" ARTIFACTS="${ARTIFACTS}/toolchain" \
+  "tools/unity/run_world_probe.sh"
+PROBE_PLAYER="${PROBE_PLAYER}" UNITY_PROJECT="${UNITY_PROJECT}" ARTIFACTS="${ARTIFACTS}/toolchain" \
+  "tools/unity/run_w1_gate_probe.sh"
+PROBE_PLAYER="${PROBE_PLAYER}" UNITY_PROJECT="${UNITY_PROJECT}" ARTIFACTS="${ARTIFACTS}/toolchain" \
+  "tools/unity/run_w2_gate_probe.sh"
 PROBE_PLAYER="${PROBE_PLAYER}" UNITY_PROJECT="${UNITY_PROJECT}" ARTIFACTS="${ARTIFACTS}/toolchain" PROBE_RUNS="${PROBE_RUNS}" \
   "tools/unity/run_narrative_probe.sh"
 
