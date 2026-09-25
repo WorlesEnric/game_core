@@ -115,6 +115,23 @@ namespace GameCore.Composition.Tests
             return default(LifecycleEdge);
         }
 
+        /// How many edges this publication recorded for one installation. A displaced activation is not a removal,
+        /// so its state change must appear exactly once even though the plan also lists it as retiring (P-046).
+        /// </summary>
+        private static int EdgeCountFor(IReadOnlyList<LifecycleEdge> edges, PluginInstanceId instance)
+        {
+            int count = 0;
+            for (int i = 0; i < edges.Count; i++)
+            {
+                if (edges[i].Instance.Equals(instance))
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
         private static bool HasBindingFor(
             IReadOnlyList<BindingDelta> bindings,
             PluginInstanceId consumer,
@@ -195,6 +212,8 @@ namespace GameCore.Composition.Tests
             Assert.That(edge.From, Is.EqualTo(InstallationState.Active));
             Assert.That(edge.To, Is.EqualTo(InstallationState.Suspended), "a suspend publishes the Active -> Suspended edge (P-046).");
             Assert.That(delta.RetractedConsumers, Does.Contain(instance), "a suspended installation retracts its active contribution (P-046).");
+            Assert.That(EdgeCountFor(delta.LifecycleEdges, instance), Is.EqualTo(1),
+                "a displaced activation reports its state change once: the plan lists it as retiring, but only its real edge belongs in the closure (P-046).");
             Assert.That(delta.Changed, Is.True);
         }
 
@@ -212,10 +231,13 @@ namespace GameCore.Composition.Tests
             ServiceClosureDelta addition = ServiceClosureDelta.Compute(rig.Staged(remount));
 
             IReadOnlyList<BindingDelta> removed = removal.RemovedBindings();
-            Assert.That(removed.Count, Is.GreaterThan(0), "losing the provider removes the consumer's binding to it.");
+            Assert.That(removed.Count, Is.EqualTo(1), "losing the provider removes exactly one binding: the consumer's to it.");
             Assert.That(HasBindingFor(removed, pair.Consumer, pair.Contract, pair.Provider, false), Is.True,
                 "the removed binding names the consumer, the contract and the provider that left.");
             Assert.That(removal.AddedBindings(), Is.Empty);
+            Assert.That(EdgeCountFor(removal.LifecycleEdges, pair.Provider), Is.EqualTo(1), "the removed provider reports one edge, Active -> Disposed.");
+            Assert.That(EdgeCountFor(removal.LifecycleEdges, pair.Consumer), Is.EqualTo(1),
+                "the consumer that starts waiting reports its Active -> WaitingForDependencies edge once, not a second removal edge.");
 
             IReadOnlyList<BindingDelta> added = addition.AddedBindings();
             Assert.That(added.Count, Is.EqualTo(1), "a returned provider adds one binding: the consumer's to it.");
