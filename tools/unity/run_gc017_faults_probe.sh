@@ -143,7 +143,7 @@ for clause in \
   "crossedLiveWriteBoundary=False" \
   "crossedLiveWriteBoundary=True" \
   "worldState=Faulted" \
-  "stagedLeasesReleased=true" \
+  "stagedLeasesReleased=True" \
   "cancelOutcome=Cancelled" \
   "cancelOutcome=TooLate" \
   "armed=True" \

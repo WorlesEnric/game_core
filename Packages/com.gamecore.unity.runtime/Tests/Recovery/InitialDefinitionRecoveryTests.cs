@@ -47,6 +47,7 @@ namespace GameCore.Unity.Runtime.Tests.Recovery
 
             WorldId source = fixture.Source.World;
             int sourceFaults = fixture.Source.FaultCount;
+            int sourceLiveWriteReaches = fixture.Source.Faults.ReachCountOf(FaultBoundary.FirstLiveWrite);
             int sourceRows = fixture.PublishedBindingRowCount;
             Assert.That(sourceRows, Is.EqualTo(2), "the source's last committed image is the contrast this case reads");
             Assert.That(UnityWorldRegistry.TryGet(source, out UnityWorldHost? beforeRecovery), Is.True);
@@ -80,7 +81,7 @@ namespace GameCore.Unity.Runtime.Tests.Recovery
             Assert.That(report.RegistryCountAfter, Is.EqualTo(registryBefore + 1));
             Assert.That(UnityWorldRegistry.Count, Is.EqualTo(registryBefore + 1), "exactly one world was added");
 
-            // The source: same lifecycle, same fault count, and its latch is still armed and still reached once.
+            // The source: same lifecycle, same fault count, and its latch is still armed with no new reach.
             Assert.That(report.SourceUnchanged, Is.True, report.Describe());
             Assert.That(report.SourceLifecycleBefore, Is.EqualTo(WorldLifecycleState.Faulted));
             Assert.That(report.SourceLifecycleAfter, Is.EqualTo(WorldLifecycleState.Faulted));
@@ -91,7 +92,7 @@ namespace GameCore.Unity.Runtime.Tests.Recovery
             Assert.That(fixture.Source.FaultCount, Is.EqualTo(sourceFaults), "recovery adds no fault to the source");
             Assert.That(fixture.Source.Faults.IsArmed(FaultBoundary.FirstLiveWrite), Is.True,
                 "recovery never clears the source's fault latch");
-            Assert.That(fixture.Source.Faults.ReachCountOf(FaultBoundary.FirstLiveWrite), Is.EqualTo(1));
+            Assert.That(fixture.Source.Faults.ReachCountOf(FaultBoundary.FirstLiveWrite), Is.EqualTo(sourceLiveWriteReaches));
 
             // The source never resumes: a host frame is still refused and no step advances (P-031).
             WorldPumpResult pump = fixture.PumpSource(9_000_000UL);

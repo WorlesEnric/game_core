@@ -497,6 +497,8 @@ namespace GameCore.Unity.Runtime
 
             AssemblyEpoch epochBefore = world.CurrentEpoch;
             AssemblyEpoch laneEpoch = AdoptedLaneEpoch;
+            AssemblyEpoch nextEpoch = laneEpoch;
+            CompositionRevision nextRevision = AdoptedLaneRevision;
 
             // 1. A world that cannot publish refuses before anything else happens; a faulted world never resumes.
             if (world.Lifecycle != WorldLifecycleState.Running && world.Lifecycle != WorldLifecycleState.Paused)

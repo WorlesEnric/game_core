@@ -304,6 +304,11 @@ namespace GameCore.Validation.ProbeHost
             /// and before the revision recheck, so an injected fault is a prewrite refusal: the plan's staged leases
             /// are released, nothing is written, and the previously published epoch, its state and its bindings all
             /// remain active (P-028, P-029).
+            ///
+            /// The trace's provenance is the refused plan's own identity: the operation of the derivation that
+            /// prepared it and the plan hash. It is deliberately not the composition edit's operation — P-052 names
+            /// the operation and the plan of the thing that failed, and the thing that failed here is the plan the
+            /// publisher refused, not the edit the lane already published.
             /// </summary>
             private void RefuseTheAssemblyAtTheValidationBoundary()
             {
@@ -331,7 +336,8 @@ namespace GameCore.Validation.ProbeHost
 
                     AssemblyFaultInjection faults = primary.Host.Faults;
                     faults.Arm(FaultBoundary.Validation);
-                    DerivedAssemblyReport derived = primary.Pipeline.PublishDerived(NextOperation(primary.World));
+                    OperationId derivation = NextOperation(primary.World);
+                    DerivedAssemblyReport derived = primary.Pipeline.PublishDerived(derivation);
                     AssemblyPublicationReport? publication = derived.Publication;
                     // This is the pair's first derivation, so it is the one that builds the proposal the
                     // acquisition step then publishes without re-deriving (P-006).
@@ -364,7 +370,8 @@ namespace GameCore.Validation.ProbeHost
                     IReadOnlyList<FaultRecord> records = faults.Trace.Of(FaultBoundary.Validation);
                     bool traced = records.Count == 1
                         && records[0].Injected
-                        && records[0].Operation.Equals(edit)
+                        && records[0].Operation.Equals(derivation)
+                        && !records[0].Operation.Equals(edit)
                         && !records[0].PlanHash.Equals(ContentHash.Empty);
 
                     bool pass = armedAtReach
@@ -721,11 +728,21 @@ namespace GameCore.Validation.ProbeHost
             // ================================================================== 5. row 5: the migration boundary
 
             /// <summary>
-            /// Row 5, prewrite half. One declared state slot is put back to an older schema version, so the next plan
-            /// really carries a migration and the boundary is reached inside the migration stage — after the fence
-            /// and before any live write. An armed fault is a prewrite refusal with `ResourceUnavailable`: nothing is
-            /// written, the live slot keeps its value *and* the version it had, and the world stays `Running` and
-            /// still commits a step afterwards (P-029, P-031).
+            /// Row 5, prewrite half. The migration boundary sits at the top of `AssemblyPublisher`'s migration
+            /// stage — after the fence, before any live write — so an armed fault is a prewrite refusal with
+            /// `ResourceUnavailable`: nothing is written, the live slots keep the values *and the versions* they
+            /// had, and the world stays `Running` and still commits a step afterwards (P-029, P-031).
+            ///
+            /// Which slot the plan migrates is the family's own declaration, never a version this step invents.
+            /// A live row put back to an older version by hand would make the planner reject the *whole plan* with
+            /// `MigrationRequired` before the boundary is ever reached (P-032), so the migration this step rides
+            /// is one the revision really declares: <see cref="FindDeclaredMigration"/> looks the descriptor's
+            /// slots up for one that declares a version-change policy with a registered handler, and seeds that
+            /// slot to the handler's source version through the world's own seeder. The narrative family's
+            /// conversation domain declares exactly that (version 2 with a registered 1->2 handler), so its
+            /// observation also asserts the planned-migration count and the handler's source version. A family
+            /// whose revision declares no migration — the card catalog does not — still proves the boundary at its
+            /// real position, over a plan the publisher really prepares and refuses inside the migration stage.
             /// </summary>
             private void RefuseTheAssemblyAtTheMigrationBoundary()
             {
@@ -738,22 +755,30 @@ namespace GameCore.Validation.ProbeHost
                         return;
                     }
 
-                    W4GateSlotCase slotCase = family.SlotCases[0];
-                    uint declaredVersion = slotCase.SchemaVersion;
-                    uint staleVersion = declaredVersion == 0U ? 1U : 0U;
-                    if (!primary.Seeder.TrySeedSlot(
-                            slotCase.Slot.Target,
-                            slotCase.Slot.Owner,
-                            slotCase.Slot.Slot,
-                            staleVersion,
-                            slotCase.Value,
-                            out DiagnosticCode seedCode,
-                            out string seedDetail))
+                    DeclaredMigration declared = FindDeclaredMigration(primary);
+                    uint seedVersion = declared.Found ? declared.FromVersion : 0U;
+                    DiagnosticCode seedCode = DiagnosticCode.None;
+                    string seedDetail = string.Empty;
+                    bool slotSeeded = !declared.Found
+                        || primary.Seeder.TrySeedSlot(
+                            declared.Slot.Target,
+                            declared.Slot.Owner,
+                            declared.Slot.Slot,
+                            declared.FromVersion,
+                            declared.Value,
+                            out seedCode,
+                            out seedDetail);
+                    if (!slotSeeded)
                     {
-                        Add(name, false, "the declared slot could not be moved to an older version: "
+                        Add(name, false, "the declared migratable slot could not be moved to its handler's source version: "
                             + seedCode + ": " + seedDetail);
                         return;
                     }
+
+                    // The live slot rows as the world owns them right now, so "live state was kept" is a comparison
+                    // against what really existed before the refused derivation ran, not against a remembered
+                    // constant (P-029).
+                    IReadOnlyList<LiveSlotState> slotsBefore = primary.Seeder.ReadLiveSlots(TargetIds(primary));
 
                     OperationId edit = NextOperation(primary.World);
                     bool staged = SubmitAndDrain(
@@ -766,8 +791,10 @@ namespace GameCore.Validation.ProbeHost
 
                     AssemblyFaultInjection faults = primary.Host.Faults;
                     AssemblyEpoch epochBefore = primary.Host.CurrentEpoch;
+                    int reachesBefore = faults.ReachCountOf(FaultBoundary.Migration);
                     faults.Arm(FaultBoundary.Migration);
-                    DerivedAssemblyReport derived = primary.Pipeline.PublishDerived(NextOperation(primary.World));
+                    OperationId derivation = NextOperation(primary.World);
+                    DerivedAssemblyReport derived = primary.Pipeline.PublishDerived(derivation);
                     AssemblyPublicationReport? publication = derived.Publication;
                     faults.Disarm(FaultBoundary.Migration);
 
@@ -776,9 +803,31 @@ namespace GameCore.Validation.ProbeHost
                     NotePendingProposal(primary, derived);
 
                     int migrationsPlanned = derived.Plan != null ? derived.Plan.Migrations.Count : -1;
-                    bool liveStateKept = ReadSlot(primary, slotCase.Slot, out int value, out uint version)
-                        && version == staleVersion
-                        && value == slotCase.Value;
+                    IReadOnlyList<FaultRecord> records = faults.Trace.Of(FaultBoundary.Migration);
+                    int reaches = faults.ReachCountOf(FaultBoundary.Migration) - reachesBefore;
+
+                    // The armed refusal happened inside the migration stage: the plan was prepared (or it could not
+                    // have reached any boundary), the reach fired exactly once for this publication, and the record
+                    // carries the plan's own identity (P-052).
+                    bool boundaryReached = reaches == 1
+                        && records.Count >= 1
+                        && records[records.Count - 1].Injected
+                        && records[records.Count - 1].Operation.Equals(derivation)
+                        && !records[records.Count - 1].PlanHash.Equals(ContentHash.Empty);
+
+                    // A family that declares a migration proves the deeper fact: this plan really staged one, on
+                    // scratch, for the slot and source version its handler declares (P-029, P-032).
+                    bool migrationPlanned = !declared.Found || migrationsPlanned >= 1;
+
+                    // Every live slot row is exactly what it was — same key, same version, same value — because a
+                    // prewrite refusal touches nothing the publisher's migration stage had not already copied
+                    // (P-029). For a family whose revision declares a migration, its seeded row is additionally the
+                    // handler's source version, which is what makes the refusal "before the migration ran".
+                    IReadOnlyList<LiveSlotState> slotsAfter = primary.Seeder.ReadLiveSlots(TargetIds(primary));
+                    bool liveStateKept = LiveSlotsEqual(slotsBefore, slotsAfter)
+                        && (!declared.Found
+                            || (ReadSlot(primary, declared.Slot, out int _, out uint seededVersion)
+                                && seededVersion == declared.FromVersion));
 
                     int stepsBefore = primary.Host.Driver.CommittedStepCount;
                     ulong pumped = PumpOneFrame(primary);
@@ -786,7 +835,8 @@ namespace GameCore.Validation.ProbeHost
                         && primary.Host.Driver.CommittedStepCount == stepsBefore + 1
                         && primary.Host.Lifecycle == WorldLifecycleState.Running;
 
-                    bool pass = migrationsPlanned >= 1
+                    bool pass = migrationPlanned
+                        && boundaryReached
                         && derived.Outcome == DerivedAssemblyOutcome.Refused
                         && publication != null
                         && publication.Outcome == Outcome.Rejected
@@ -796,30 +846,37 @@ namespace GameCore.Validation.ProbeHost
                         && publication.MigratedSlots == 0
                         && primary.Host.CurrentEpoch.Equals(epochBefore)
                         && liveStateKept
-                        && stillPumping
-                        && faults.ReachCountOf(FaultBoundary.Migration) >= 1;
+                        && stillPumping;
+
+                    int liveValue = declared.Found ? declared.Value : 0;
+                    uint liveVersion = declared.Found ? declared.FromVersion : 0U;
+                    if (declared.Found && ReadSlot(primary, declared.Slot, out int kept, out uint keptVersion))
+                    {
+                        liveValue = kept;
+                        liveVersion = keptVersion;
+                    }
 
                     Add(name, pass,
                         "edit=mount-second-provider"
-                        + "; slot=" + slotCase.Slot.ToString()
-                        + "; staleVersion=" + staleVersion.ToString(CultureInfo.InvariantCulture)
-                        + "; declaredVersion=" + declaredVersion.ToString(CultureInfo.InvariantCulture)
+                        + "; slot=" + (declared.Found ? declared.Slot.ToString() : "<none-declared>")
+                        + "; declaredVersion=" + declared.ToVersion.ToString(CultureInfo.InvariantCulture)
+                        + "; handlerFromVersion=" + seedVersion.ToString(CultureInfo.InvariantCulture)
                         + "; migrationsPlanned=" + migrationsPlanned.ToString(CultureInfo.InvariantCulture)
                         + "; armed=True"
                         + "; outcome=" + DescribePublication(publication)
                         + "; structuralWrites=" + (publication != null ? publication.StructuralWrites : -1).ToString(CultureInfo.InvariantCulture)
                         + "; crossedLiveWriteBoundary=" + (publication != null && publication.CrossedLiveWriteBoundary)
                         + "; migratedSlots=" + (publication != null ? publication.MigratedSlots : -1).ToString(CultureInfo.InvariantCulture)
-                        + "; liveSlotVersion=" + version.ToString(CultureInfo.InvariantCulture)
-                        + "; liveSlotValue=" + value.ToString(CultureInfo.InvariantCulture)
+                        + "; liveSlotVersion=" + liveVersion.ToString(CultureInfo.InvariantCulture)
+                        + "; liveSlotValue=" + liveValue.ToString(CultureInfo.InvariantCulture)
                         + "; liveStateKept=" + liveStateKept
                         + "; epoch=" + primary.Host.CurrentEpoch.Value.ToString(CultureInfo.InvariantCulture)
                         + "; worldState=" + primary.Host.Lifecycle
                         + "; pumpedSteps=" + pumped.ToString(CultureInfo.InvariantCulture)
                         + "; stillPumping=" + stillPumping
-                        + "; boundaryReaches=" + faults.ReachCountOf(FaultBoundary.Migration).ToString(CultureInfo.InvariantCulture)
+                        + "; boundaryReaches=" + reaches.ToString(CultureInfo.InvariantCulture)
                         + "; injected=" + faults.Trace.InjectedCount.ToString(CultureInfo.InvariantCulture)
-                        + "; traceRecord=" + TraceLineOf(faults.Trace.Of(FaultBoundary.Migration))
+                        + "; traceRecord=" + TraceLineOf(records)
                         + DescribeFailure());
                 }
                 catch (Exception exception)
@@ -836,6 +893,11 @@ namespace GameCore.Validation.ProbeHost
             /// crossed, no epoch and no image published, `PublishedToken` null, the last committed view still the
             /// only safe observation, and `PumpFrame` refusing every later frame (P-031). A faulted world is
             /// terminal, so this observation stands up its own world rather than pretending the first one continued.
+            ///
+            /// The fault this path latches is the *world's*: `AssemblyPublisher` refuses through
+            /// `EnterFaulted`, so the observable terminal state is the host's `FaultCode`/`FaultCount` beside the
+            /// `Faulted` lifecycle. The execution driver latches only its own faults (a throwing system, a failed
+            /// commit), which is why no driver assertion belongs here (P-031, P-052).
             /// </summary>
             private void FaultTheWorldAfterItsFirstLiveWrite()
             {
@@ -883,8 +945,8 @@ namespace GameCore.Validation.ProbeHost
                         && publication.PublishedToken == null
                         && publication.StructuralWrites > 0
                         && chain.Host.Lifecycle == WorldLifecycleState.Faulted
-                        && chain.Host.Driver.IsFaulted
-                        && chain.Host.Driver.FaultCode == DiagnosticCode.ApplyFault
+                        && chain.Host.FaultCode == DiagnosticCode.ApplyFault
+                        && chain.Host.FaultDetail.Length > 0
                         && chain.Host.FaultCount == faultsBefore + 1
                         && chain.Host.CurrentEpoch.Equals(epochBefore)
                         && chain.Host.Publications.PublishedCount == imagesBefore
@@ -901,8 +963,8 @@ namespace GameCore.Validation.ProbeHost
                         + "; structuralWrites=" + (publication != null ? publication.StructuralWrites : -1).ToString(CultureInfo.InvariantCulture)
                         + "; publishedToken=" + (publication == null || publication.PublishedToken == null ? "<null>" : "set")
                         + "; worldState=" + chain.Host.Lifecycle
-                        + "; driverFaulted=" + chain.Host.Driver.IsFaulted
-                        + "; driverCode=" + chain.Host.Driver.FaultCode
+                        + "; hostFaultCode=" + chain.Host.FaultCode
+                        + "; hostFaultDetail=" + chain.Host.FaultDetail
                         + "; faultCount=" + chain.Host.FaultCount.ToString(CultureInfo.InvariantCulture)
                         + " (was " + faultsBefore.ToString(CultureInfo.InvariantCulture) + ")"
                         + "; epoch=" + chain.Host.CurrentEpoch.Value.ToString(CultureInfo.InvariantCulture)
@@ -930,6 +992,11 @@ namespace GameCore.Validation.ProbeHost
             /// accepted, `PublishedSnapshot` is null, the driver latches `ApplyFault`, the world faults, the logical
             /// step does not move and no step image publishes — while the ledger shows no abandoned work and no
             /// handle retained (P-031, P-041, P-044, P-047).
+            ///
+            /// The one ledger fact that is *not* zero here is retained resources, and that is the protocol: a
+            /// faulted world never releases what unfinished work may still reach, so its staged leases stay
+            /// retained until `Stop` settles them (P-048). Teardown observes that settlement — the final step
+            /// asserts the same ledger at zero after every world was stopped and disposed.
             /// </summary>
             private void FaultTheStepAfterItsStructuralPlayback()
             {
@@ -947,6 +1014,7 @@ namespace GameCore.Validation.ProbeHost
                     AssemblyEpoch epochBefore = chain.Host.CurrentEpoch;
                     int imagesBefore = chain.Host.Publications.PublishedCount;
                     int dispatchedBefore = chain.Host.StepGroup.TotalDispatchedCount;
+                    int retainedResourcesBefore = chain.Host.Ledger.RetainedResourceCount;
 
                     chain.Host.Faults.Arm(FaultBoundary.StructuralPlayback);
                     chain.Host.NotifyCommandAdmitted(1U);
@@ -957,6 +1025,7 @@ namespace GameCore.Validation.ProbeHost
                     int outstanding = chain.Host.Ledger.OutstandingJobCount;
                     int quarantined = chain.Host.Ledger.QuarantinedJobCount;
                     int retainedHandles = chain.Host.Driver.RetainedJobs.Count;
+                    int retainedResourcesAfter = chain.Host.Ledger.RetainedResourceCount;
 
                     bool pass = frame.StepsCommitted == 0UL
                         && advance != null
@@ -973,7 +1042,12 @@ namespace GameCore.Validation.ProbeHost
                         && outstanding == 0
                         && quarantined == 0
                         && retainedHandles == 0
-                        && chain.Host.Ledger.RetainedResourceCount == 0;
+                        // P-048: the faulted world releases nothing unfinished work may still reach. Its host
+                        // resources (world storage, identity index, the message plane, the system registrations)
+                        // were acquired at creation and stay retained until `Stop` settles them; the teardown
+                        // observation is where that settlement reaches zero.
+                        && retainedResourcesBefore > 0
+                        && retainedResourcesAfter == retainedResourcesBefore;
 
                     Add(name, pass,
                         "world=fresh"
@@ -995,8 +1069,8 @@ namespace GameCore.Validation.ProbeHost
                         + "; ledgerJobs=" + chain.Host.Ledger.JobCount.ToString(CultureInfo.InvariantCulture)
                         + "; outstandingJobs=" + outstanding.ToString(CultureInfo.InvariantCulture)
                         + "; quarantinedJobs=" + quarantined.ToString(CultureInfo.InvariantCulture)
-                        + "; retainedHandles=" + retainedHandles.ToString(CultureInfo.InvariantCulture)
-                        + "; retainedResources=" + chain.Host.Ledger.RetainedResourceCount.ToString(CultureInfo.InvariantCulture)
+                        + "; retainedResources=" + retainedResourcesAfter.ToString(CultureInfo.InvariantCulture)
+                        + " (was " + retainedResourcesBefore.ToString(CultureInfo.InvariantCulture) + ")"
                         + "; boundaryReaches=" + chain.Host.Faults.ReachCountOf(FaultBoundary.StructuralPlayback).ToString(CultureInfo.InvariantCulture)
                         + "; injected=" + chain.Host.Faults.Trace.InjectedCount.ToString(CultureInfo.InvariantCulture)
                         + "; traceRecord=" + TraceLineOf(chain.Host.Faults.Trace.Of(FaultBoundary.StructuralPlayback))
@@ -1014,7 +1088,8 @@ namespace GameCore.Validation.ProbeHost
             /// Row 5's third face. Installing the new execution graph and its closed ingress gates happens after the
             /// apply stage wrote live storage, so a fault here has exactly the postwrite shape: the world faults, no
             /// epoch or image publishes, the token is null, the live-write boundary was crossed and the boundary was
-            /// reached exactly once (P-030, P-031).
+            /// reached exactly once (P-030, P-031). Like every publisher postwrite path, the terminal state is the
+            /// host's own fault latch (`EnterFaulted`), not the driver's (P-052).
             /// </summary>
             private void FaultTheWorldWhenItInstallsTheNewSchedule()
             {
@@ -1058,7 +1133,7 @@ namespace GameCore.Validation.ProbeHost
                         && publication.PublishedToken == null
                         && publication.StructuralWrites > 0
                         && chain.Host.Lifecycle == WorldLifecycleState.Faulted
-                        && chain.Host.Driver.FaultCode == DiagnosticCode.ApplyFault
+                        && chain.Host.FaultCode == DiagnosticCode.ApplyFault
                         && chain.Host.FaultCount == faultsBefore + 1
                         && chain.Host.CurrentEpoch.Equals(epochBefore)
                         && chain.Host.Publications.PublishedCount == imagesBefore
@@ -1074,7 +1149,7 @@ namespace GameCore.Validation.ProbeHost
                         + "; structuralWrites=" + (publication != null ? publication.StructuralWrites : -1).ToString(CultureInfo.InvariantCulture)
                         + "; publishedToken=" + (publication == null || publication.PublishedToken == null ? "<null>" : "set")
                         + "; worldState=" + chain.Host.Lifecycle
-                        + "; driverCode=" + chain.Host.Driver.FaultCode
+                        + "; hostFaultCode=" + chain.Host.FaultCode
                         + "; faultCount=" + chain.Host.FaultCount.ToString(CultureInfo.InvariantCulture)
                         + "; epoch=" + chain.Host.CurrentEpoch.Value.ToString(CultureInfo.InvariantCulture)
                         + "; images=" + chain.Host.Publications.PublishedCount.ToString(CultureInfo.InvariantCulture)
@@ -1382,7 +1457,7 @@ namespace GameCore.Validation.ProbeHost
                     // A real handle of the source world: it names the source's session, so the destination's own
                     // registry refuses it instead of re-mapping a reused slot (P-005).
                     bool minted = source.Registry.TryGetHandle(source.Targets.Targets[0].Target, out TargetHandle handle);
-                    bool resolvable = recovered.Publisher.TryResolveHandle(handle, out TargetId _, out Unity.Entities.Entity _);
+                    bool resolvable = recovered.Publisher.TryResolveHandle(handle, out TargetId _, out global::Unity.Entities.Entity _);
 
                     bool freshIncarnation = report.DestinationIsFreshIncarnation
                         && !recovered.World.Session.Equals(source.World.Session)
@@ -1943,6 +2018,72 @@ namespace GameCore.Validation.ProbeHost
                 return false;
             }
 
+            /// <summary>
+            /// The migration this revision really declares, if it declares one: the first descriptor slot that
+            /// carries a version-change policy key the world's own migration registry resolves to a registered
+            /// handler (P-032, P-029). The handler's source version is the version the plan migrates *from*, and
+            /// the current live value of that slot is the value the migration must leave untouched. A family whose
+            /// revision declares no migration gets <see cref="DeclaredMigration.None"/>, and the migration
+            /// observation then proves the boundary at its real position without claiming a migration was staged.
+            /// </summary>
+            private static DeclaredMigration FindDeclaredMigration(WorldChain chain)
+            {
+                IReadOnlyList<OwnedSlotSpec> slots = chain.Publisher.Descriptor.Slots;
+                for (int i = 0; i < slots.Count; i++)
+                {
+                    OwnedSlotSpec spec = slots[i];
+                    if (!spec.HasVersionChangePolicy
+                        || !chain.Publisher.Migrations.TryFind(spec.VersionChangePolicy, out ISlotMigration? handler)
+                        || handler == null)
+                    {
+                        continue;
+                    }
+
+                    IReadOnlyList<LiveTarget> live = chain.Targets.Targets;
+                    for (int t = 0; t < live.Count; t++)
+                    {
+                        StateSlotKey candidate = new StateSlotKey(live[t].Target, spec.Owner, spec.Slot);
+                        if (ReadSlot(chain, candidate, out int value, out uint _))
+                        {
+                            return new DeclaredMigration(candidate, value, handler.FromVersion, spec.Schema.Version);
+                        }
+                    }
+                }
+
+                return DeclaredMigration.None;
+            }
+
+            /// <summary>Whether two live-slot snapshots hold the same rows — same key, version and value.</summary>
+            private static bool LiveSlotsEqual(IReadOnlyList<LiveSlotState> before, IReadOnlyList<LiveSlotState> after)
+            {
+                if (before.Count != after.Count)
+                {
+                    return false;
+                }
+
+                for (int i = 0; i < before.Count; i++)
+                {
+                    bool found = false;
+                    for (int j = 0; j < after.Count; j++)
+                    {
+                        if (before[i].Slot.Equals(after[j].Slot)
+                            && before[i].SchemaVersion == after[j].SchemaVersion
+                            && before[i].Value == after[j].Value)
+                        {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (!found)
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
             private static ulong PumpIdleFrames(WorldChain chain)
             {
                 ulong committed = 0UL;
@@ -2053,7 +2194,7 @@ namespace GameCore.Validation.ProbeHost
                     return "<none>";
                 }
 
-                return string.Join(",", values.ToArray());
+                return string.Join(",", (IEnumerable<string>)values);
             }
         }
 
@@ -2151,6 +2292,37 @@ namespace GameCore.Validation.ProbeHost
             public InertAcquisitionSet? Acquisitions { get; }
 
             public IReadOnlyList<Id128> LeaseIds { get; }
+        }
+
+        /// <summary>
+        /// One migration this revision really declares: the live slot the plan migrates, the value that live row
+        /// holds, and the version pair of its registered handler (`from` the plan migrates out of, `to` the
+        /// descriptor declares) (P-029, P-032). <see cref="None"/> is the honest answer for a revision that
+        /// declares no version-change policy at all.
+        /// </summary>
+        private readonly struct DeclaredMigration
+        {
+            public DeclaredMigration(StateSlotKey slot, int value, uint fromVersion, uint toVersion)
+            {
+                Slot = slot;
+                Value = value;
+                FromVersion = fromVersion;
+                ToVersion = toVersion;
+                Found = true;
+            }
+
+            /// <summary>The "no migration is declared" value; `default` already has `Found == false`.</summary>
+            public static DeclaredMigration None => default;
+
+            public bool Found { get; }
+
+            public StateSlotKey Slot { get; }
+
+            public int Value { get; }
+
+            public uint FromVersion { get; }
+
+            public uint ToVersion { get; }
         }
 
         /// <summary>

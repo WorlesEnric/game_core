@@ -200,7 +200,7 @@ namespace GameCore.Unity.Runtime
                     FaultReach.Reach(
                         context.Faults,
                         FaultBoundary.StructuralPlayback,
-                        context.World,
+                        new OperationId(context.World, context.World.Session, step.Value),
                         ContentHash.Empty,
                         "injected structural-playback fault: advancement and committed output stop here");
                 }

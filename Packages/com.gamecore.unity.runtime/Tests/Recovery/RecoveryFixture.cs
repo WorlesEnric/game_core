@@ -394,11 +394,46 @@ namespace GameCore.Unity.Runtime.Tests.Recovery
                 value);
         }
 
-        /// <summary>The live slot values of the two seeded targets, at the pre-migration schema version.</summary>
+        /// <summary>
+        /// The seeded quest-slot values at the pre-migration schema version, which is the state the *first*
+        /// publication's plan is prepared against: its migration is what moves live storage to the descriptor's
+        /// version (P-029, P-032).
+        /// </summary>
         public static IReadOnlyList<LiveSlotState> SeededSlots() => new List<LiveSlotState>
         {
             QuestSlot(RecoveryFixtureKeys.Target(1UL), 7, 1U),
             QuestSlot(RecoveryFixtureKeys.Target(2UL), 9, 1U),
+        };
+
+        /// <summary>
+        /// The live quest-slot state of the two seeded targets, read back out of the publisher's own storage the
+        /// same way `LiveTargetSeeder.ReadLiveSlots` projects it. The first publication migrates the seeded
+        /// version-1 slots to the descriptor's version, so every later plan must be prepared against this
+        /// read-back; one naming the pre-migration seed values is a stale plan the publisher refuses before any
+        /// write (P-028, P-032).
+        /// </summary>
+        public static IReadOnlyList<LiveSlotState> LiveSlotsOf(AssemblyPublisher publisher)
+        {
+            var slots = new List<LiveSlotState>();
+            IReadOnlyList<TargetId> targets = LiveTargetIds();
+            for (int i = 0; i < targets.Count; i++)
+            {
+                IReadOnlyList<TargetSlotState> rows = publisher.ReadSlotStates(targets[i]);
+                Assert.That(rows.Count, Is.EqualTo(1), "each seeded target holds its quest slot in live storage");
+                slots.Add(new LiveSlotState(
+                    new StateSlotKey(targets[i], rows[0].Owner, rows[0].Slot),
+                    rows[0].SchemaVersion,
+                    rows[0].Value));
+            }
+
+            return slots;
+        }
+
+        /// <summary>The stable identities of the two seeded targets, for a read-back of exactly those (P-013).</summary>
+        public static IReadOnlyList<TargetId> LiveTargetIds() => new List<TargetId>
+        {
+            RecoveryFixtureKeys.Target(1UL),
+            RecoveryFixtureKeys.Target(2UL),
         };
 
         /// <summary>
@@ -547,13 +582,14 @@ namespace GameCore.Unity.Runtime.Tests.Recovery
                 Source.Faults.IsCompiledIn,
                 Is.True,
                 "the fault latches need GAMECORE_FAULT_INJECTION; it is declared by GameCore.Unity.Runtime.asmdef's"
-                + " versionDefines entry on com.unity.test-framework, so a false here means the symbol is missing.");
+                + " versionDefines entry on com.gamecore.fault-qualification, so a false here means the symbol is missing.");
             Assert.That(Source.Lifecycle, Is.EqualTo(WorldLifecycleState.Running), "the source must be live before the fault");
 
             AssemblyEpoch epochBefore = Source.CurrentEpoch;
             int imagesBefore = Source.Publications.PublishedCount;
             int rowsBefore = PublishedBindingRowCount;
             int faultsBefore = Source.FaultCount;
+            int liveWriteReachesBefore = Source.Faults.ReachCountOf(FaultBoundary.FirstLiveWrite);
 
             Source.Faults.Arm(FaultBoundary.FirstLiveWrite);
             Assert.That(Source.Faults.IsArmed(FaultBoundary.FirstLiveWrite), Is.True);
@@ -567,7 +603,7 @@ namespace GameCore.Unity.Runtime.Tests.Recovery
             Assert.That(report.CrossedLiveWriteBoundary, Is.True, "the failure is after live writes (P-031)");
             Assert.That(report.PublishedToken, Is.Null, "no epoch or image publishes after a postwrite fault (P-031)");
             Assert.That(report.StructuralWrites, Is.GreaterThan(0), "the injected boundary is reached after real writes");
-            Assert.That(Source.Faults.ReachCountOf(FaultBoundary.FirstLiveWrite), Is.EqualTo(1));
+            Assert.That(Source.Faults.ReachCountOf(FaultBoundary.FirstLiveWrite), Is.EqualTo(liveWriteReachesBefore + 1));
             Assert.That(Source.Faults.InjectedCount, Is.EqualTo(1));
             Assert.That(Source.Faults.FailAfterFirstLiveWrite, Is.False, "the GC-008 boolean switch is not set");
             Assert.That(
@@ -660,10 +696,26 @@ namespace GameCore.Unity.Runtime.Tests.Recovery
             Assert.That(acquisitions.CanEmitGameplay, Is.False, "a staged lease cannot emit gameplay (P-029)");
 
             CompositionProposal proposal = RecoveryFixturePlans.MountProposal(Publisher, ordinal, priority);
+
+            // A plan is prepared against the state the world holds now. The first publication migrates the seeded
+            // version-1 slots to the descriptor's version, so every later plan must be built from the read-back of
+            // live storage; one naming the seed values again is a stale plan the publisher refuses before any
+            // write, which is the runtime correctly rejecting it (P-028, P-032).
+            IReadOnlyList<LiveSlotState> liveSlots = ordinal == 1UL
+                ? RecoveryFixturePlans.SeededSlots()
+                : RecoveryFixturePlans.LiveSlotsOf(Publisher);
+            if (ordinal != 1UL)
+            {
+                Assert.That(liveSlots[0].SchemaVersion, Is.EqualTo(RecoveryFixtureKeys.QuestSchemaVersion),
+                    "the second plan is prepared against the already-migrated live state (P-032)");
+                Assert.That(liveSlots[1].SchemaVersion, Is.EqualTo(RecoveryFixtureKeys.QuestSchemaVersion),
+                    "the second plan is prepared against the already-migrated live state (P-032)");
+            }
+
             PlannedPublication plan = RecoveryFixturePlans.Plan(
                 Publisher,
                 proposal,
-                liveSlots: RecoveryFixturePlans.SeededSlots(),
+                liveSlots: liveSlots,
                 acquisitions: acquisitions);
             Assert.That(plan.IsPrepared, Is.True, plan.State.Describe());
             return Publisher.Publish(plan);
