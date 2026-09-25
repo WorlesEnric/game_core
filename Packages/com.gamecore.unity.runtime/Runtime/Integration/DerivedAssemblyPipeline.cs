@@ -64,6 +64,15 @@ namespace GameCore.Unity.Runtime.Integration
 
         public DerivationResult? Derivation { get; set; }
 
+        /// <summary>
+        /// The invalidation of this run's derivation: which targets were re-derived and which were carried, with
+        /// the P-023 counters behind it (GC-013). Null when the run refused before deriving.
+        /// </summary>
+        public InvalidationClosureResult? Invalidation { get; set; }
+
+        /// <summary>The work counters of the incremental path; the same object as the derivation's counters.</summary>
+        public InvalidationCounters? IncrementalCounters { get; set; }
+
         public DerivationProposalReport? Proposal { get; set; }
 
         public PlannedPublication? Plan { get; set; }
@@ -121,6 +130,11 @@ namespace GameCore.Unity.Runtime.Integration
                     .Append(')');
             }
 
+            if (Invalidation != null)
+            {
+                text.Append("; ").Append(Invalidation.Describe());
+            }
+
             if (Proposal != null)
             {
                 text.Append("; ").Append(Proposal.Describe());
@@ -162,6 +176,7 @@ namespace GameCore.Unity.Runtime.Integration
         private readonly PlanBudget budget;
 
         private DerivationResult? previousDerivation;
+        private readonly DerivedRecipeCache? recipeCache;
 
         public DerivedAssemblyPipeline(
             UnityWorldHost world,
@@ -174,7 +189,8 @@ namespace GameCore.Unity.Runtime.Integration
             IReadOnlyList<ProviderSelectionOverride>? overrides,
             MigrationRegistry migrations,
             IPlanResourceGate gates,
-            PlanBudget budget)
+            PlanBudget budget,
+            DerivedRecipeCache? recipeCache = null)
         {
             this.world = world ?? throw new ArgumentNullException(nameof(world));
             this.lane = lane ?? throw new ArgumentNullException(nameof(lane));
@@ -187,6 +203,7 @@ namespace GameCore.Unity.Runtime.Integration
             this.migrations = migrations ?? throw new ArgumentNullException(nameof(migrations));
             this.gates = gates ?? throw new ArgumentNullException(nameof(gates));
             this.budget = budget ?? throw new ArgumentNullException(nameof(budget));
+            this.recipeCache = recipeCache;
 
             if (!lane.World.Session.Equals(world.World.Session))
             {
@@ -204,6 +221,12 @@ namespace GameCore.Unity.Runtime.Integration
 
         /// <summary>The most recent accepted derivation, used as the delta base of the next one (P-023).</summary>
         public DerivationResult? PreviousDerivation => previousDerivation;
+
+        /// <summary>
+        /// The invalidation of the most recent derivation: the dirty targets, their scopes and the P-023 counters
+        /// that show the incremental path visited only the affected part of the world (GC-013).
+        /// </summary>
+        public InvalidationClosureResult? PreviousInvalidation { get; private set; }
 
         /// <summary>Chain runs that ended in a publication.</summary>
         public int PublishedCount { get; private set; }
@@ -346,12 +369,23 @@ namespace GameCore.Unity.Runtime.Integration
                 return report;
             }
 
-            DerivationResult derivation = DerivationEngine.Derive(
+            // GC-013: the incremental engine. It computes exactly what a full recomputation would - the
+            // differential sweep against the reference evaluator asserts that after every one of 50 x 500
+            // operations - while examining only the invalidated part of the world: it falls back to the full engine
+            // whenever there is no accepted base, the world mode moved, the catalog changed or the previous run
+            // had no provenance to carry, and otherwise re-derives the dirty targets and carries the rest.
+            IncrementalDerivationOutcome incremental = IncrementalDerivationEngine.Derive(
                 input.Snapshot,
                 values,
                 DerivationOptions.Default,
-                previousDerivation);
+                previousDerivation,
+                null,
+                recipeCache);
+            DerivationResult derivation = incremental.Result;
             report.Derivation = derivation;
+            report.Invalidation = incremental.Invalidation;
+            PreviousInvalidation = incremental.Invalidation;
+            report.IncrementalCounters = incremental.Counters;
             if (!derivation.Accepted)
             {
                 report.Outcome = DerivedAssemblyOutcome.Refused;
