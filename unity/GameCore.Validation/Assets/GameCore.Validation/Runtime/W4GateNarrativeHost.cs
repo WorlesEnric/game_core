@@ -703,13 +703,17 @@ namespace GameCore.Validation.ProbeHost
                     default(OwnerId),
                     default(TargetId),
                     string.Empty),
+                // The transfer's destination target is `Sailor`, deliberately outside `PolicyTargets`: a later pass
+                // reads every live slot row of the policy targets, and `SlotStatePolicySet.TryFind` refuses a live row
+                // whose owner differs from the slot's declaration (P-034). The moved row therefore lands where no
+                // later pass re-reads it, and the destination owner is `GateOwner`, which this revision declares.
                 new W4GateSlotCase(
                     W4GateSlotPolicy.TransferTo,
                     new StateSlotKey(NarrativeKeys.QuestLedger, NarrativeKeys.DialogueOwner, TransferSlot),
                     1U,
                     17,
                     NarrativeKeys.GateOwner,
-                    default(TargetId),
+                    NarrativeKeys.Sailor,
                     string.Empty),
                 new W4GateSlotCase(
                     W4GateSlotPolicy.Reset,
