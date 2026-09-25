@@ -261,7 +261,7 @@ UNITY=<editor> DOTNET=<dotnet> PROBE_RUNS=5 tools/run_w3_gate.sh
 | P-029/P-030 (inert staging, atomic publication) | `ResourcePreparationSet`, `CallbackGate.CloseFence/OpenFence`, `Lifecycle.Stage` before `Commit` | `PreparedLeaseStaysInertUntilPublication` (existing), `…-replacement-stages-while-old-runs`, `StagingACandidateKeepsTheRunningActivationInCharge` |
 | P-035 (world lifecycle) | unchanged; the scenarios assert `host.Lifecycle == Running` throughout | `worldLifecycle` fact in both families |
 | P-046 (installation lifecycle, all edges) | `ActivationLedger` + `InstallationStateMachine` | pure: all 17 legal edges (`EveryStatePairMatchesTheLifecycleDiagramExactly`), `SuspendWalksThroughQuiescingAndResumeRecordsANewAttempt`, `CommitMovesTheCandidateInAndDisplacesTheRunningActivationToRetiring`, `AbortingACandidateFailsItAndLeavesTheRunningActivationInCharge`, `RetireWalksTheTeardownPathAndSettlingRequiresEveryResourceSettled`; world: all eleven behavioural steps in both families |
-| P-047 (in-flight lifetime) | `CallbackGate`, `JobFenceRegistry`, `LifecycleJobFence`, ingress closure in `UnityLifecycleWorldBinding` | `…-suspend-retracts-behavior` (gate retired, late token discarded), `…-blocked-job-prevents-buffer-release`, pure: `ABlockedJobPreventsTheBufferReleaseUntilTheJobCompletes` |
+| P-047 (in-flight lifetime) | `CallbackGate`, `JobFenceRegistry`, `LifecycleJobFence`, ingress closure in `UnityLifecycleWorldBinding`, `LifecycleController.RefreshIngressOwners` | `…-suspend-retracts-behavior` (gate retired, late token discarded, and in the card family both real command routes of the table runtime genuinely retired then reopened), `…-unload-closes-ingress-and-retracts` (narrative: `DeclaredRoutesAreRetired` over the chapter's real `ChoiceRoute`), `…-blocked-job-prevents-buffer-release`, pure: `ABlockedJobPreventsTheBufferReleaseUntilTheJobCompletes` |
 | P-048 (teardown order) | `TeardownSequencer` (six named steps) | pure: `TheTeardownReportNamesTheSixP048StepsInOrder`, `TeardownDisposesLeasesInReverseAcquisitionOrderAndSettlesCleanly`, `AThrowingDisposerKeepsItsReferenceAndIndependentCleanupContinues`; world: `…-unload-closes-ingress-and-retracts`, `…-teardown-settles-and-disposes` |
 | P-050/P-051 (identity, idempotency, cutoffs) | `OperationLedger` (unchanged) + `InstallationLifecycleCoordinator`'s committed-operation set | `…-repeated-operations-obey-ledger` (`repeatRetransmissionKind`, `repeatSuspendRefusedCode`, `repeatUnmountRefusedCode`, `ledgerRowCount`); pure: `ARefusedEdgeCountsTheRefusalAndLeavesTheStoredStateUntouched` |
 | 06 §6 (bounded quarantine registry) | `QuarantineRegistry` | pure: `QuarantineExhaustionAndDuplicateAdmissionAreRefusedWithoutDroppingReferences`, `QuarantineReleaseRemovesExactlyOneReferenceAndItsBytes`, `ReleaseInstanceReleasesOnlyThatInstancesEntries`; world: `…-blocked-job-prevents-buffer-release` |
@@ -299,29 +299,40 @@ both scenario runs.
 3. **Steps 4/5 for cards use `CardTableKeys.LookupContract` as the contract, with the real
    `CardTableDeclarations.RuleLibrary` manifest as the provider.** The consumer's capability
    (`cards.lifecycle-score`) uses the registered Int32-sum reducer and the registered predicate.
-4. **`plan.RetiredInstances` names displaced activations as well as removals** (§5.1). Both the coordinator and the
+4. **Route-level P-047 closure is asymmetric between the families, deliberately.** The narrative scenario adds
+   `NarrativeKeys.IngressOwner` (the owner of the slice's real `ChoiceRoute`) to the chapter installation's declared
+   owners and asserts `DeclaredRoutesAreRetired`, so its suspend/unload retires a real route. In the card family the
+   installation the lifecycle acts on is a *scoring* provider, which declares no state slot and therefore owns no
+   command route at all; the family's two real routes belong to the table runtime (`CardTableKeys.TableOwner`). The
+   card suspend step therefore closes the table runtime's ingress through the same binding a suspend calls and
+   asserts both routes are genuinely retired, and the resume step asserts they are reopened — same mechanism, the
+   installation that owns the routes. The step detail and the step's comment say so.
+   `LifecycleController.RefreshIngressOwners` exists because of this: an installation mounted after the controller
+   was constructed still needs its owners declared, so it is called at construction, before every lifecycle
+   submission and after every publication (a redeclaration is idempotent).
+5. **`plan.RetiredInstances` names displaced activations as well as removals** (§5.1). Both the coordinator and the
    closure delta decide removal with the same private `IsRemoved` rule. If a reviewer wants the distinction in the
    plan DTO itself, that is a contract change for a later wave; GC-014 deliberately did not make one.
-5. **`ActivationLedger.Retire` is idempotent** for an already-`Retiring`/`Disposed` activation (it returns `Permit`
+6. **`ActivationLedger.Retire` is idempotent** for an already-`Retiring`/`Disposed` activation (it returns `Permit`
    and changes no counter). The alternative — refusing — would make the coordinator's post-teardown bookkeeping an
    illegal edge for a reason unrelated to the protocol.
-6. **`tools/check_game_core_csharp.py` gained `Packages/com.gamecore.composition`** in `TARGETS` and its `Runtime`
+7. **`tools/check_game_core_csharp.py` gained `Packages/com.gamecore.composition`** in `TARGETS` and its `Runtime`
    in `engine_free` (separate `shared:` commit). Purely additive: no existing target, rule or set membership changed.
    The package was verified engine-free before being added.
-7. **The `GameCore.Unity.Runtime` lifecycle glue is compiled but not separately exercised by a dedicated test
+8. **The `GameCore.Unity.Runtime` lifecycle glue is compiled but not separately exercised by a dedicated test
    assembly of its own.** It is exercised end-to-end by the two family scenarios (which is where its behaviour is
    observable: ingress closure, step settling, fencing, attributed rows, the `JobHandle` bridge). A unit-level
    `GameCore.Unity.Runtime.Tests` case for `LifecycleJobFence` would need a real `JobHandle`, i.e. a Unity world;
    the family scenarios already provide one, so no separate fixture was added.
-8. **`unity/GameCore.Validation/Packages/packages-lock.json` is untouched and needs no regeneration**: no package
+9. **`unity/GameCore.Validation/Packages/packages-lock.json` is untouched and needs no regeneration**: no package
    was added or removed, and the new test assembly lives inside the existing project.
-9. **No `.meta` file was authored for `unity/GameCore.Validation` itself or for its `Assets`, `Packages`,
+10. **No `.meta` file was authored for `unity/GameCore.Validation` itself or for its `Assets`, `Packages`,
    `ProjectSettings`, `Catalogs` folders** — those have never carried metas in this repository, and adding them now
    would be an unrelated change to the project layout.
-10. **No Unity scene or visual inspection was performed**, and the IL2CPP player was not built here. The EditMode
+11. **No Unity scene or visual inspection was performed**, and the IL2CPP player was not built here. The EditMode
     scenario/assemblies are the exercised surfaces in the commands above; `tools/run_w3_gate.sh` remains the gate
     that builds and runs the player.
-11. **Nothing in this change set has been compiled, imported or executed.** The most likely first failures, in
+12. **Nothing in this change set has been compiled, imported or executed.** The most likely first failures, in
     order: (a) an expectation mismatch in a scenario step's literal (the values a step asserts are computed from the
     run wherever possible — `rows == providerRowsBefore`, `retractedRows == consumerRowsBeforeLoss` — but the fixed
     ones are `providerRows > 0`, `stagedCandidates == 1`, `rejected == 6`, `waiting == 1`, `resumed == 1`);

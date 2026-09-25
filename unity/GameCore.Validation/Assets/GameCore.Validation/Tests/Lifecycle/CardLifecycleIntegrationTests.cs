@@ -334,8 +334,9 @@ namespace GameCore.Lifecycle.Tests
                 Assert.That(Integer(facts, CardLifecycleKeys.FactSuspendRowsAfter), Is.Zero,
                     "suspension retracts the active contributions, so no attributed row may remain: "
                     + facts.Describe());
-                Assert.That(Integer(facts, CardLifecycleKeys.FactSuspendClosedRoutes),
-                    Is.GreaterThanOrEqualTo(0L), facts.Describe());
+                Assert.That(Integer(facts, CardLifecycleKeys.FactSuspendClosedRoutes), Is.EqualTo(2L),
+                    "closing the ingress of the installation that owns the family's command routes must retire both "
+                    + "of them (P-047): " + facts.Describe());
                 Assert.That(Integer(facts, CardLifecycleKeys.FactSuspendGateLiveActivations), Is.Zero,
                     "a suspended installation must hold no live callback activation (P-047): " + facts.Describe());
                 AssertDiscarded(facts, CardLifecycleKeys.FactSuspendLateCompletion);

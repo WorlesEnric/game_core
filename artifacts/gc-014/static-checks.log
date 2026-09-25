@@ -1,6 +1,6 @@
 GC-014 static checks (interpreter-level only; NOT a build or a test result)
 host: Darwin 25.3.0 arm64  no Unity, no .NET SDK, no Mono/C# compiler
-revision: 000430a37668ef0ea07192223d4126b84795af11
+revision: c8b10daef1d76f9abd8efdddc2d5cc224bcde7b8
 
 == python3 tools/check_game_core_csharp.py
 checked 309 C# file(s)
@@ -35,7 +35,7 @@ ok  tools/unity/run_w2_gate_probe.sh
 ok  tools/unity/run_w3_gate_probe.sh
 ok  tools/unity/run_world_probe.sh
 
-== brace/paren balance of every file GC-014 added or edited
+== brace/paren balance of every file GC-014 added or edited (main...HEAD + untracked)
 +0 +0  Packages/com.gamecore.composition/Runtime/Lifecycle/ActivationLedger.cs
 +0 +0  Packages/com.gamecore.composition/Runtime/Lifecycle/InstallationLifecycleCoordinator.cs
 +0 +0  Packages/com.gamecore.composition/Runtime/Lifecycle/JobFenceRegistry.cs

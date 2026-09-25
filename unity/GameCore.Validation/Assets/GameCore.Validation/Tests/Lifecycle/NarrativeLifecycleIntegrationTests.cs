@@ -329,9 +329,9 @@ namespace GameCore.Lifecycle.Tests
                 Assert.That(Integer(facts, NarrativeLifecycleKeys.FactSuspendRowsAfter), Is.Zero,
                     "suspension retracts the active contributions, so no attributed row may remain: "
                     + facts.Describe());
-                Assert.That(Integer(facts, NarrativeLifecycleKeys.FactSuspendClosedRoutes),
-                    Is.GreaterThanOrEqualTo(0L), facts.Describe());
-                // The gate's live-activation counter is read after the suspend, so it still counts the other
+                Assert.That(Integer(facts, NarrativeLifecycleKeys.FactSuspendClosedRoutes), Is.EqualTo(1L),
+                    "the chapter installation owns exactly one command route (ChoiceRoute), so suspending it must "
+                    + "retire exactly that one (P-047): " + facts.Describe());
                 // installations this world committed; what P-047 requires is that the suspended installation's own
                 // activation was retired — the observation's own conjunction asserts the strict decrease, and the
                 // value here must be a real count rather than an unset sentinel.
