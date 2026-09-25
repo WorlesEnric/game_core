@@ -21,6 +21,24 @@ using Unity.Collections;
 namespace GameCore.Unity.Runtime.Messages
 {
     /// <summary>
+    /// One state owner's declared domain version for one target (P-042, P-034). The owner binds it to the route it
+    /// answers, so the host can enforce an envelope's `ExpectedDomainVersion` without knowing anything about the
+    /// domain: the kernel sees "this target's version is N", never a table, a flag or a turn counter.
+    ///
+    /// The port lives here rather than in `GameCore.Contracts` because it is consulted by this assembly's plane and
+    /// because the contract surface is frozen by the W0 interface gate (GC-002); a family registers its own
+    /// implementation and both families already reference this assembly.
+    /// </summary>
+    public interface IDomainVersionAuthority
+    {
+        /// <summary>
+        /// Reads the current version of the domain this authority owns for one target. False means the domain does
+        /// not currently hold that target, which is a different refusal from a version mismatch (P-005, P-042).
+        /// </summary>
+        bool TryGetDomainVersion(TargetId target, out ulong version);
+    }
+
+    /// <summary>
     /// Immutable registration of one world's message plane. A generated registration emits it; the plane validates it
     /// before the world exposes anything, and a defect is a refusal, never a silently missing route (04 s8).
     /// </summary>

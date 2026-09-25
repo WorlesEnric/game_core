@@ -43,7 +43,7 @@ namespace GameCore.Contracts
     /// <remarks>
     /// `ExpectedDomainVersion` is the envelope's optional guard on the target domain's own version. It is
     /// versioned composition data, not decoration: when it is present, the host compares it against the version
-    /// its route's declared <see cref="IDomainVersionAuthority"/> reports for the target *before* the command
+    /// its route's declared domain-version authority reports for the target *before* the command
     /// reaches the owner's lane, and a disagreement is admitted as a `StalePlan` rejection rather than executed
     /// against a domain state the issuer did not read (P-042, P-037). It also participates in the admission
     /// idempotency hash, so reusing a request key with a different expected version is an `IdempotencyConflict`
@@ -82,20 +82,6 @@ namespace GameCore.Contracts
         public ulong? ExpectedDomainVersion { get; }
 
         public FrozenPayload Payload { get; }
-    }
-
-    /// <summary>
-    /// One state owner's declared domain version for one target (P-042, P-034). The owner registers it against the
-    /// route it answers, so the host can enforce an envelope's `ExpectedDomainVersion` without knowing anything
-    /// about the domain: the kernel sees "this target's version is N", never a table, a flag or a turn counter.
-    /// </summary>
-    public interface IDomainVersionAuthority
-    {
-        /// <summary>
-        /// Reads the current version of the domain this authority owns for one target. False means the domain does
-        /// not currently hold that target, which is a different refusal from a version mismatch (P-005, P-042).
-        /// </summary>
-        bool TryGetDomainVersion(TargetId target, out ulong version);
     }
 
     /// <summary>One matching or rejected derivation record inside an explanation page (P-029).</summary>
