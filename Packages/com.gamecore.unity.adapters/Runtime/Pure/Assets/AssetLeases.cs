@@ -510,7 +510,7 @@ namespace GameCore.Unity.Adapters.Assets
 
                 if (poll.Status == AssetLoadStatus.Failed)
                 {
-                    Fail(lease, poll.Code, poll.Detail);
+                    FailCompletion(lease.LeaseId, poll.Code, poll.Detail);
                     continue;
                 }
 
@@ -522,47 +522,18 @@ namespace GameCore.Unity.Adapters.Assets
         }
 
         /// <summary>
-        /// Installs one completion. The completion is validated *now*: a token whose world, installation generation,
-        /// activation epoch or route has moved on is discarded and only its own acquisition is released (P-007).
+        /// Installs one completed load. The completion is validated *now*: a token whose world, installation
+        /// generation, activation epoch or route has moved on is discarded and only its own acquisition is released
+        /// (P-007), and after <see cref="Retire"/> no completion can install anything at all.
         /// </summary>
         public AssetCompletionResult Complete(Id128 leaseId, FrozenPayload payload)
         {
-            if (!leases.TryGetValue(leaseId, out AssetLease? lease) || lease == null)
+            if (!TryAdmitCompletion(leaseId, out AssetLease? lease, out AssetCompletionResult? refusal))
             {
-                return new AssetCompletionResult(
-                    AssetCompletionOutcome.UnknownLease,
-                    leaseId,
-                    CallbackGateDecision.DiscardRetiredRoute,
-                    DiagnosticCode.StaleHandle,
-                    "no such asset lease in this table (P-005)");
+                return refusal!;
             }
 
-            if (lease.IsTerminal || lease.State == AssetLeaseState.Failed)
-            {
-                // A repeated completion is not a second completion, and it never re-acquires authority (P-050).
-                return new AssetCompletionResult(
-                    AssetCompletionOutcome.AlreadyTerminal,
-                    leaseId,
-                    CallbackGateDecision.DiscardRetiredRoute,
-                    DiagnosticCode.IdempotencyConflict,
-                    "the lease is already terminal (" + lease.State + ")");
-            }
-
-            if (IsRetired)
-            {
-                // The world is gone: the completion may only release its own acquisition (P-007).
-                PostRetireCompletionCount++;
-                StaleDiscardCount++;
-                Discard(lease);
-                return new AssetCompletionResult(
-                    AssetCompletionOutcome.DiscardedStale,
-                    leaseId,
-                    CallbackGateDecision.DiscardRetiredRoute,
-                    DiagnosticCode.Cancelled,
-                    "the table was retired before the completion arrived; nothing is installed (P-007)");
-            }
-
-            CallbackGateDecision decision = gate.Evaluate(lease.Token);
+            CallbackGateDecision decision = gate.Evaluate(lease!.Token);
             if (decision != CallbackGateDecision.Dispatch)
             {
                 StaleDiscardCount++;
@@ -586,6 +557,90 @@ namespace GameCore.Unity.Adapters.Assets
                 decision,
                 DiagnosticCode.None,
                 "the token still held authority, so the payload became a read-only lease (P-007)");
+        }
+
+        /// <summary>
+        /// Reports one failed load. Nothing is installed, the lease is released at once, and the failure stays
+        /// observable instead of looking like a completion that never arrived (P-029, P-049).
+        /// </summary>
+        public AssetCompletionResult FailCompletion(Id128 leaseId, DiagnosticCode code, string detail)
+        {
+            if (!TryAdmitCompletion(leaseId, out AssetLease? lease, out AssetCompletionResult? refusal))
+            {
+                return refusal!;
+            }
+
+            lease!.State = AssetLeaseState.Failed;
+            lease.CompletionCount++;
+            FailureCount++;
+            Release(lease.LeaseId);
+            return new AssetCompletionResult(
+                AssetCompletionOutcome.Failed,
+                leaseId,
+                CallbackGateDecision.DiscardRetiredRoute,
+                code,
+                detail);
+        }
+
+        /// <summary>
+        /// The shared admission check: an unknown lease, a terminal one and a retired table are all refusals that
+        /// install nothing, and the retired case is counted separately because it is the case P-007 forbids
+        /// outright (\"late completions cannot write retired worlds\").
+        /// </summary>
+        private bool TryAdmitCompletion(Id128 leaseId, out AssetLease? lease, out AssetCompletionResult? refusal)
+        {
+            lease = null;
+            refusal = null;
+            if (!leases.TryGetValue(leaseId, out lease) || lease == null)
+            {
+                refusal = new AssetCompletionResult(
+                    AssetCompletionOutcome.UnknownLease,
+                    leaseId,
+                    CallbackGateDecision.DiscardRetiredRoute,
+                    DiagnosticCode.StaleHandle,
+                    "no such asset lease in this table (P-005)");
+                return false;
+            }
+
+            if (IsRetired)
+            {
+                // The world is gone: the completion may only release its own acquisition (P-007).
+                PostRetireCompletionCount++;
+                if (lease.IsTerminal)
+                {
+                    refusal = new AssetCompletionResult(
+                        AssetCompletionOutcome.AlreadyTerminal,
+                        leaseId,
+                        CallbackGateDecision.DiscardRetiredRoute,
+                        DiagnosticCode.IdempotencyConflict,
+                        "the lease was already terminal (" + lease.State + ") when the completion arrived");
+                    return false;
+                }
+
+                StaleDiscardCount++;
+                Discard(lease);
+                refusal = new AssetCompletionResult(
+                    AssetCompletionOutcome.DiscardedStale,
+                    leaseId,
+                    CallbackGateDecision.DiscardRetiredRoute,
+                    DiagnosticCode.Cancelled,
+                    "the table was retired before the completion arrived; nothing is installed (P-007)");
+                return false;
+            }
+
+            if (lease.IsTerminal || lease.State == AssetLeaseState.Failed)
+            {
+                // A repeated completion is not a second completion, and it never re-acquires authority (P-050).
+                refusal = new AssetCompletionResult(
+                    AssetCompletionOutcome.AlreadyTerminal,
+                    leaseId,
+                    CallbackGateDecision.DiscardRetiredRoute,
+                    DiagnosticCode.IdempotencyConflict,
+                    "the lease is already terminal (" + lease.State + ")");
+                return false;
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -762,17 +817,6 @@ namespace GameCore.Unity.Adapters.Assets
 
             payload = lease.Payload;
             return true;
-        }
-
-        private void Fail(AssetLease lease, DiagnosticCode code, string detail)
-        {
-            _ = code;
-            _ = detail;
-            lease.State = AssetLeaseState.Failed;
-            lease.CompletionCount++;
-            FailureCount++;
-            // A failed acquisition is released immediately: nothing was installed, so nothing may be retained.
-            Release(lease.LeaseId);
         }
 
         private void Discard(AssetLease lease)

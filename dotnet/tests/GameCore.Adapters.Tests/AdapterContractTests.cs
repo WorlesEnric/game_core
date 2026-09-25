@@ -443,6 +443,50 @@ namespace GameCore.Adapters.Tests
             Assert.That(table.TryReadPayload(leaseId, out FrozenPayload? payload), Is.False);
             Assert.That(payload, Is.Null);
             Assert.That(backend.OutstandingLoadCount, Is.Zero, "a failed acquisition is released at once (P-029).");
+
+            AssetCompletionResult reported = table.FailCompletion(leaseId, DiagnosticCode.ResourceUnavailable, "probe");
+            Assert.That(reported.Outcome, Is.EqualTo(AssetCompletionOutcome.AlreadyTerminal), reported.ToString());
+            Assert.That(table.FailureCount, Is.EqualTo(1), "a repeated failure report is not a second failure.");
+        }
+
+        /// <summary>
+        /// The table's own report of a failed load is a value the caller can act on, and a completion that arrives
+        /// after the table retired is counted as exactly that (P-007, P-049).
+        /// </summary>
+        [Test]
+        public void AFailedCompletionIsReportedAndAPostRetireCompletionIsCounted()
+        {
+            WorldId world = NextWorld();
+            var backend = new DeterministicAssetBackend();
+            var gate = new CallbackGate(world);
+            var ledger = new WorldResourceLedger(world);
+            var instance = new PluginInstanceId(new Id128(0x4743303139415353UL, 6UL));
+            var table = new AssetLeaseTable(world, backend, gate, ledger, PhysicsOwner, instance, 4U, 4096UL);
+            var token = new AsyncWorkToken(
+                new OperationId(world, Issuer, 1UL),
+                instance,
+                new InstallationGeneration(1UL),
+                new ActivationEpoch(1UL),
+                1U);
+            gate.RegisterActivation(instance, new InstallationGeneration(1UL), new ActivationEpoch(1UL));
+
+            table.TryRequest(Resource(), token, EmptyConfig(), 16UL, out Id128 failedLease, out _, out _);
+            AssetCompletionResult failure = table.FailCompletion(
+                failedLease, DiagnosticCode.ResourceUnavailable, "the backend reported a missing asset");
+            Assert.That(failure.Outcome, Is.EqualTo(AssetCompletionOutcome.Failed), failure.ToString());
+            Assert.That(failure.Code, Is.EqualTo(DiagnosticCode.ResourceUnavailable));
+            Assert.That(failure.Detail, Is.Not.Empty);
+            Assert.That(backend.OutstandingLoadCount, Is.Zero);
+
+            table.TryRequest(Resource(), token, EmptyConfig(), 16UL, out Id128 pendingLease, out _, out _);
+            AssetReleaseReport retired = table.Retire();
+            Assert.That(retired.AllReleased, Is.True, retired.ToString());
+
+            AssetCompletionResult late = table.Complete(pendingLease, new FrozenPayload(new byte[] { 7 }));
+            Assert.That(late.Outcome, Is.EqualTo(AssetCompletionOutcome.AlreadyTerminal), late.ToString());
+            Assert.That(table.PostRetireCompletionCount, Is.EqualTo(1));
+            Assert.That(table.TryReadPayload(pendingLease, out _), Is.False,
+                "a completion after retirement cannot install data (P-007).");
         }
 
         // ------------------------------------------------------------------ views and presentation

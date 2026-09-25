@@ -20,7 +20,6 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using GameCore.Composition;
 using GameCore.Contracts;
 
 namespace GameCore.Unity.Adapters.Input
