@@ -41,7 +41,7 @@ namespace GameCore.Validation.ProbeHost
     /// narrative scenario is run against, exactly as <see cref="NarrativeScenarioHost"/> does for GC-010, and hands
     /// the resulting observations to the caller.
     /// </summary>
-    public static class Gc013NarrativeHost
+    public static partial class Gc013NarrativeHost
     {
         /// <summary>Family label every observation name of this family carries.</summary>
         public const string Label = "narrative";
@@ -142,7 +142,7 @@ namespace GameCore.Validation.ProbeHost
         /// O-02: create one scope under an existing parent, with no isolation, no exclusions and no grants. The
         /// sequence uses two of these as publications that change no live target's assembly (P-010).
         /// </summary>
-        public static CompositionEditPayload ScopeCreate(ScopeId scope, ScopeId parent)
+        internal static CompositionEditPayload ScopeCreate(ScopeId scope, ScopeId parent)
         {
             return new CompositionEditPayload(
                 CompositionEditSubject.ScopeCreate,
@@ -232,7 +232,7 @@ namespace GameCore.Validation.ProbeHost
         /// providers of the exclusive pair. Every declaration resolves the catalog's registered plugin factory and
         /// configuration schema (P-009).
         /// </summary>
-        private static IReadOnlyList<CatalogPluginDeclaration> Declarations(FactoryKey factoryKey, SchemaRef configSchema)
+        internal static IReadOnlyList<CatalogPluginDeclaration> Declarations(FactoryKey factoryKey, SchemaRef configSchema)
         {
             return new List<CatalogPluginDeclaration>
             {
@@ -318,7 +318,9 @@ namespace GameCore.Validation.ProbeHost
                 null);
         }
 
-        private sealed class NarrativeFamily : IGc013Family
+        // The W4 integration gate's lifecycle and state-policy half lives in `W4GateNarrativeHost.cs`: the type is
+        // partial so that file adds the `IW4GateFamily` surface without re-declaring anything here (P-011, P-032).
+        public sealed partial class NarrativeFamily : IGc013Family
         {
             private readonly ICatalog catalog;
             private readonly IReadOnlyList<CatalogPluginDeclaration> declarations;
