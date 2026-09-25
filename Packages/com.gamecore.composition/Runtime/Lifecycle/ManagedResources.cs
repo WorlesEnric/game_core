@@ -253,6 +253,13 @@ namespace GameCore.Composition
             return all;
         }
 
+        /// <summary>
+        /// One lease record by identity; used by teardown to report a retained reference's key, bytes and state
+        /// instead of guessing them (P-048, 06 s6).
+        /// </summary>
+        public bool TryGetRecord(Id128 leaseId, out WorldResourceRecord record) =>
+            records.TryGetValue(leaseId, out record);
+
         /// <summary>Registers a lease with its owner and acquisition ordinal, before anything can observe it.</summary>
         public bool Acquire(
             IManagedResourceLease lease,
