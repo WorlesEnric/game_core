@@ -113,6 +113,13 @@ namespace GameCore.Unity.Runtime
         private readonly GameCoreOutputGroup outputGroup;
         private readonly IdSequence resourceKeys = new IdSequence(ResourceKeySalt);
 
+        /// <summary>
+        /// One published assembly reference of this world (GC-008). Null until an
+        /// <see cref="AssemblyPublisher"/> joins the world; from then on it is the authority for the published
+        /// epoch, so a reader of <see cref="CurrentEpoch"/> and a reader of the assembly can never disagree (P-030).
+        /// </summary>
+        private PublishedAssemblySlot? assemblySlot;
+
         private Id128 worldStorageResource;
         private Id128 identityIndexResource;
         private EventSequence lastEventSequence = EventSequence.Zero;
@@ -177,7 +184,19 @@ namespace GameCore.Unity.Runtime
 
         public WorldLifecycleState Lifecycle => lifecycle;
 
-        public AssemblyEpoch CurrentEpoch => currentEpoch;
+        /// <summary>
+        /// Published assembly epoch (P-006). Once an assembly publisher has joined the world this reads the one
+        /// published view, so the epoch a caller sees and the bindings/schedule an observer sees come from the same
+        /// switch; before that it is the epoch the world published at creation.
+        /// </summary>
+        public AssemblyEpoch CurrentEpoch
+        {
+            get
+            {
+                PublishedAssemblySlot? slot = assemblySlot;
+                return slot != null ? slot.Read().Epoch : currentEpoch;
+            }
+        }
 
         public LogicalStepId CurrentStep => currentStep;
 
@@ -234,6 +253,95 @@ namespace GameCore.Unity.Runtime
         public ulong HostTimeOrigin => hostTimeOrigin;
 
         public bool IsEntityWorldCreated => entityWorld.IsCreated;
+
+        /// <summary>True while a host pump is executing, i.e. inside the step boundary (P-030).</summary>
+        public bool IsPumping => pumping;
+
+        /// <summary>
+        /// Joins the one assembly publisher of this world (GC-008). From this point the published view is the
+        /// authority for the current assembly epoch, and the assembly publication commit is a single switch (P-030).
+        /// </summary>
+        internal void AttachAssemblySlot(PublishedAssemblySlot slot)
+        {
+            if (slot == null)
+            {
+                throw new ArgumentNullException(nameof(slot));
+            }
+
+            GameCoreThreading.RequireMainThread("UnityWorldHost.AttachAssemblySlot");
+
+            assemblySlot = slot;
+        }
+
+        /// <summary>
+        /// The one serialized assembly commit (P-030, 04 s5): publish the immutable image for the new epoch, move the
+        /// epoch mirror, then switch the complete published view in a single reference write. Nothing in this method
+        /// throws at a point where the world would be left without a published view, and a refusal changes nothing.
+        /// </summary>
+        internal bool TryPublishAssembly(AssemblyEpoch nextEpoch, PublishedWorldView view, out SnapshotToken token)
+        {
+            token = default(SnapshotToken);
+            GameCoreThreading.RequireMainThread("UnityWorldHost.TryPublishAssembly");
+
+            PublishedAssemblySlot? slot = assemblySlot;
+            if (slot == null)
+            {
+                return false;
+            }
+
+            if (lifecycle != WorldLifecycleState.Running && lifecycle != WorldLifecycleState.Paused)
+            {
+                return false;
+            }
+
+            if (pumping)
+            {
+                // The assembly may only be replaced at an end-of-step or idle boundary (P-030).
+                return false;
+            }
+
+            PublishedWorldView current = slot.Read();
+            if (nextEpoch.CompareTo(current.Epoch) <= 0)
+            {
+                return false;
+            }
+
+            if (!view.Epoch.Equals(nextEpoch))
+            {
+                return false;
+            }
+
+            var committedToken = new SnapshotToken(World, nextEpoch, currentStep);
+            if (!view.Token.Equals(committedToken))
+            {
+                // The preconstructed view must name exactly the image being published; a mismatch would expose a
+                // view whose token points at another publication (P-030).
+                return false;
+            }
+
+            ContentHash stateHash = StepFingerprint.Compute(World, nextEpoch, currentStep, view.BindingRowCount);
+            var committed = new StepCommitEvent(committedToken, null, lastEventSequence, stateHash);
+            if (!publications.Publish(committed))
+            {
+                return false;
+            }
+
+            currentEpoch = nextEpoch;
+            slot.Switch(view);
+            token = committedToken;
+
+            // Delivery happens after the switch, so a subscriber failure is a delivery diagnostic that cannot
+            // unpublish the assembly (P-030, P-045).
+            observations.NotifyStepCommitted(committed);
+            return true;
+        }
+
+        /// <summary>
+        /// Enters the terminal fault state from the publication path (P-031): admission stays closed, no epoch or
+        /// new image is published, and the last committed image remains the only safe observation.
+        /// </summary>
+        internal void EnterFaulted(DiagnosticCode code, string detail) =>
+            ((IWorldExecutionContext)this).EnterFaulted(code, detail);
 
         /// <summary>
         /// Creates the Unity world, its explicitly approved systems and its initial published assembly. A failure
