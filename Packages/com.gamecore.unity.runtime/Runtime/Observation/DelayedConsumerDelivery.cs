@@ -134,6 +134,12 @@ namespace GameCore.Execution.Observation
         /// <summary>Polls that found nothing new.</summary>
         public int IdlePollCount { get; private set; }
 
+        /// <summary>Resynchronizations this consumer performed.</summary>
+        public int ResyncCount { get; private set; }
+
+        /// <summary>Identities currently remembered; never above <see cref="DeliveredWindow"/>.</summary>
+        public int RememberedIdentities => delivered.Count;
+
         /// <summary>
         /// Polls one bounded page from this consumer's own cursor: the normal at-least-once path.
         /// </summary>
