@@ -203,6 +203,13 @@ namespace GameCore.Unity.Adapters.Views
         /// <summary>Applies refused because the token was not newer than the last applied one (P-045).</summary>
         public int StaleApplyCount { get; internal set; }
 
+        /// <summary>
+        /// False until the view's first presentation. A view created from the currently committed image must be
+        /// presentable at that image (the alternative would be a view that can never show what it was created for);
+        /// every later apply must then be strictly newer (P-045).
+        /// </summary>
+        public bool HasApplied { get; internal set; }
+
         /// <summary>True once an explicit visual reparent moved this view (presentation only).</summary>
         public bool VisualParentChanged { get; internal set; }
 
@@ -418,7 +425,6 @@ namespace GameCore.Unity.Adapters.Views
             {
                 return ViewDestroyOutcome.AlreadyAbsent;
             }
-
             if (binder != null && record.Handle != 0L && !binder.TryDestroy(record.Handle, out string detail))
             {
                 _ = detail;
@@ -466,13 +472,26 @@ namespace GameCore.Unity.Adapters.Views
                 return false;
             }
 
-            if (!IsNewer(data.Token, record.LastAppliedToken))
+            // A token from another world incarnation is refused first, so the first-apply rule below can never let a
+            // foreign image in (P-004).
+            if (!data.Token.World.Session.Equals(World.Session))
             {
                 record.StaleApplyCount++;
                 StaleApplyRefusalCount++;
                 return false;
             }
 
+            // The first presentation of a view is always applied: a view created from the currently committed image
+            // would otherwise be unable to present that image at all, which would leave a freshly spawned target's
+            // view one publication behind forever. From then on a stale image never overwrites a newer one (P-045).
+            if (record.HasApplied && !IsNewer(data.Token, record.LastAppliedToken))
+            {
+                record.StaleApplyCount++;
+                StaleApplyRefusalCount++;
+                return false;
+            }
+
+            record.HasApplied = true;
             record.LastAppliedToken = data.Token;
             record.CompositionParent = data.CompositionParent;
             record.ApplyCount++;

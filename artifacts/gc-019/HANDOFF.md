@@ -123,7 +123,7 @@ both keep their previous behaviour when no adapter frame is registered.
 | P-034 one owner per authoritative domain; engine-owned domains are stamped observation | `ExternalAuthorityLedger`, `EngineObservation`, `ExternalAuthority.Classify` | `AWorldWithNoExternalDomainNeedsNoPhysicsAdapter`, `AnExternallyOwnedDomainHasOneOwnerAndRefusesGameplayWrites`, `ASampleFromTheWrongAuthorityOrAnOlderStepIsRefused`; scenario step 10 |
 | P-038 clocks (presentation never advances the authoritative clock) | `CommittedOutputPresenter` (reads, never produces, an image), `CommittedImageSource.Refresh` | `ThePresenterReadsCommittedOutputAndRemovesOrphanedViews` (`source.RefreshCount == 1`), scenario step 7 |
 | P-041/P-043 bounded work and buffers (a full table refuses explicitly) | `AssetLeaseTable` count + byte budgets, `PendingInputCompletionTable` capacity | `TheAssetTableIsBoundedByCountAndByBytes`, `AFullPendingTableRefusesInsteadOfDroppingInFlightWork` |
-| P-045 committed output only (immutable images, stale images never overwrite) | `CommittedAssemblyImage`, `ViewRegistry.TryApply`, `PresentationReport` | `AStalePresentationApplyIsRefused`, `ThePresenterReadsCommittedOutputAndRemovesOrphanedViews`, `AHeadlessCompositionPresentsNothingAndKeepsRunning` |
+| P-045 committed output only (immutable images, stale images never overwrite) | `CommittedAssemblyImage`, `ViewRegistry.TryApply` (first apply at the creation token, strict afterwards), `PresentationReport` | `AStalePresentationApplyIsRefused`, `TheFirstPresentationAtTheCreationTokenIsAcceptedAndLaterOnesMustBeNewer`, `AForeignWorldsImageIsNeverAcceptedAsAFirstPresentation`, `ThePresenterReadsCommittedOutputAndRemovesOrphanedViews`, `AHeadlessCompositionPresentsNothingAndKeepsRunning` |
 | P-047 in-flight lifetime (gates checked on dispatch and completion) | `PendingInputCompletionTable.Complete`, `AssetLeaseTable.Complete`, `AssetLeaseTable.Discard` | `ADelayedInputCompletionWithALiveActivationReachesTheCommandPort`, `ACompletionFromAStaleActivationIsDiscardedAndReleased` |
 | P-048 teardown (dispose at most once, retain quarantine, aggregate failures) | `AssetLeaseTable.Release`/`Retire`/`ReleaseQuarantine`, `AssetReleaseReport` | `ALeaseWithAConsumerIsRetainedAndAFailingReleaseIsQuarantined`, `AFailedCompletionIsReportedAndAPostRetireCompletionIsCounted`; scenario step 11 |
 | P-010 scope membership ≠ Transform parent | `ViewRecord.CompositionParent`, `ViewRegistry.TrySetVisualParent`, `CommittedTargetEntry.CompositionParent` | `AVisualReparentDoesNotMoveComposition`; scenario step 9 |
@@ -192,6 +192,17 @@ from the name table (narrative `c812ccdce22cee6098d3f8dba5c23cfb744c7644aa83a99a
     reach a retired table (repeats included) rather than only distinct installations, because P-007 makes "the world
     stopped before this arrival" the observable fact. The scenario's repeat-completion expectation follows that
     reading; a reviewer who prefers the other reading changes one counter and one assertion.
+11. **The first presentation of a view is a decision.** `ViewRegistry.TryApply` accepts a view's first apply even at
+    the token it was created from, and is strict afterwards. Without that rule a view created from the currently
+    committed image could never present that image, which is not what "present the last published snapshot" can mean
+    (04 s3); the alternative — a view permanently one publication behind — is worse than the exception. The exception
+    is guarded by a world-identity check that runs first, so a foreign image is refused at every point including the
+    first. Two tests defend it: `TheFirstPresentationAtTheCreationTokenIsAcceptedAndLaterOnesMustBeNewer` and
+    `AForeignWorldsImageIsNeverAcceptedAsAFirstPresentation`.
+12. **One housekeeping wart.** Six `.meta` files belonging to the package test assemblies were swept into an earlier
+    commit (`487113f`) by an over-broad `git add` while a subagent was still writing them; their content is exactly
+    what that subagent wrote and their source files are committed in the next commit, so the revision is complete,
+    but the meta/source split is not the tidy single commit it should have been.
 
 ## 7. Proposed generic-profile inventory rows (proposals only; the build host promotes them)
 

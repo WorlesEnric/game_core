@@ -283,6 +283,7 @@ namespace GameCore.Unity.Adapters.Input
             {
                 throw new ArgumentNullException(nameof(command));
             }
+            SubmittedCount++;
 
             InputSourceStamp stamp = command.Stamp;
             if (!stamp.World.Equals(World))

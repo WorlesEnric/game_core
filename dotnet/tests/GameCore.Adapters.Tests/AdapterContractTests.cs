@@ -538,6 +538,62 @@ namespace GameCore.Adapters.Tests
             Assert.That(registry.DuplicateCreateRefusalCount, Is.EqualTo(1));
         }
 
+        /// <summary>
+        /// A view created from the currently committed image presents that image: the first apply is accepted even at
+        /// the creation token, because otherwise a view could never show what it was created for. Every later apply
+        /// must still be strictly newer, and a foreign world is refused at every point (P-004, P-045).
+        /// </summary>
+        [Test]
+        public void TheFirstPresentationAtTheCreationTokenIsAcceptedAndLaterOnesMustBeNewer()
+        {
+            WorldId world = NextWorld();
+            var binder = new RecordingViewBinder();
+            var registry = new ViewRegistry(world, 4U);
+            SnapshotToken creation = Token(world, 3UL, 7UL);
+
+            Assert.That(registry.Create(Key(Target), creation, targetIsInCommittedAssembly: true, binder, out ViewRecord? record),
+                Is.EqualTo(ViewCreateOutcome.Created));
+            Assert.That(record!.HasApplied, Is.False, "a freshly created view has presented nothing yet.");
+
+            Assert.That(registry.TryApply(Key(Target), ApplyData(Target, creation), binder), Is.True,
+                "the image the view was created from must be presentable.");
+            Assert.That(record.HasApplied, Is.True);
+            Assert.That(record.ApplyCount, Is.EqualTo(1));
+            Assert.That(registry.StaleApplyRefusalCount, Is.Zero);
+
+            // From the first apply on, the rule is strict: the same token and an older one are both refused.
+            Assert.That(registry.TryApply(Key(Target), ApplyData(Target, creation), binder), Is.False);
+            Assert.That(registry.TryApply(Key(Target), ApplyData(Target, Token(world, 3UL, 6UL)), binder), Is.False);
+            Assert.That(registry.StaleApplyRefusalCount, Is.EqualTo(2));
+
+            // An older assembly epoch at the same step is not newer either, while a newer one is.
+            Assert.That(registry.TryApply(Key(Target), ApplyData(Target, Token(world, 2UL, 7UL)), binder), Is.False);
+            Assert.That(registry.TryApply(Key(Target), ApplyData(Target, Token(world, 4UL, 7UL)), binder), Is.True);
+            Assert.That(registry.TryApply(Key(Target), ApplyData(Target, Token(world, 4UL, 8UL)), binder), Is.True);
+            Assert.That(record.ApplyCount, Is.EqualTo(3));
+            Assert.That(binder.ApplyCount, Is.EqualTo(3));
+        }
+
+        /// <summary>A foreign world's image is refused even as a view's first presentation (P-004).</summary>
+        [Test]
+        public void AForeignWorldsImageIsNeverAcceptedAsAFirstPresentation()
+        {
+            WorldId world = NextWorld();
+            var binder = new RecordingViewBinder();
+            var registry = new ViewRegistry(world, 4U);
+            registry.Create(Key(Target), Token(world, 1UL, 1UL), targetIsInCommittedAssembly: true, binder, out ViewRecord? record);
+
+            Assert.That(registry.TryApply(Key(Target), ApplyData(Target, Token(NextWorld(), 9UL, 9UL)), binder), Is.False);
+            Assert.That(record!.HasApplied, Is.False, "a refused foreign image does not count as a first presentation.");
+            Assert.That(record.ApplyCount, Is.Zero);
+            Assert.That(binder.ApplyCount, Is.Zero);
+            Assert.That(registry.StaleApplyRefusalCount, Is.EqualTo(1));
+
+            // The view's own world can still present it afterwards.
+            Assert.That(registry.TryApply(Key(Target), ApplyData(Target, Token(world, 1UL, 1UL)), binder), Is.True);
+            Assert.That(record.HasApplied, Is.True);
+        }
+
         /// <summary>A stale apply cannot overwrite a newer image; the same token is refused too (P-045).</summary>
         [Test]
         public void AStalePresentationApplyIsRefused()

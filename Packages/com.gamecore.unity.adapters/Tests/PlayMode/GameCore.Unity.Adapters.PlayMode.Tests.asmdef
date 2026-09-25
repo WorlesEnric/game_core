@@ -1,0 +1,30 @@
+{
+    "name": "GameCore.Unity.Adapters.PlayMode.Tests",
+    "rootNamespace": "GameCore.Unity.Adapters.Tests.PlayMode",
+    "references": [
+        "GameCore.Composition",
+        "GameCore.Contracts",
+        "GameCore.Planning",
+        "GameCore.Unity.Adapters",
+        "GameCore.Unity.Adapters.Fixtures",
+        "GameCore.Unity.Fixtures",
+        "GameCore.Unity.Runtime",
+        "Unity.Collections",
+        "Unity.Entities",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

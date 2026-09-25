@@ -1,0 +1,32 @@
+{
+    "name": "GameCore.Unity.Adapters.Contract.Tests",
+    "rootNamespace": "GameCore.Unity.Adapters.Tests.Contract",
+    "references": [
+        "GameCore.Composition",
+        "GameCore.Contracts",
+        "GameCore.Planning",
+        "GameCore.Unity.Adapters",
+        "GameCore.Unity.Adapters.Fixtures",
+        "GameCore.Unity.Fixtures",
+        "GameCore.Unity.Runtime",
+        "Unity.Collections",
+        "Unity.Entities",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -358,7 +358,11 @@ namespace GameCore.Unity.Adapters.Assets
         /// <summary>Completions discarded because their world/activation/route had moved on (P-007, P-047).</summary>
         public int StaleDiscardCount { get; private set; }
 
-        /// <summary>Completions that arrived after `Retire()`; none of them may write anything (P-007).</summary>
+        /// <summary>
+        /// Completion attempts that reached this table after <see cref="Retire"/>, repeated attempts on an already
+        /// terminal lease included; none of them may install anything (P-007). The attempt is what is counted,
+        /// because "a world stopped before this completion arrived" is the fact P-007 makes observable.
+        /// </summary>
         public int PostRetireCompletionCount { get; private set; }
 
         public int FailureCount { get; private set; }
