@@ -358,15 +358,15 @@ namespace GameCore.Planning.StatePolicies
 
             if (live.SchemaVersion == policy.Schema.Version)
             {
-                return StatePolicyRequest.Preserve();
+                return StatePolicyRequest.Preserve(live.Slot);
             }
 
             if (policy.LastSupport == LastSupportPolicy.RemoveDerived && policy.Options.DisposableDerived)
             {
-                return StatePolicyRequest.RemoveDerived();
+                return StatePolicyRequest.RemoveDerived(live.Slot);
             }
 
-            return StatePolicyRequest.Migrate(policy.VersionChangePolicy);
+            return StatePolicyRequest.Migrate(live.Slot, policy.VersionChangePolicy);
         }
 
         private sealed class ExecutionContext
