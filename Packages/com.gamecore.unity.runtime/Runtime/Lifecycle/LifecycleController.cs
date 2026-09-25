@@ -140,12 +140,24 @@ namespace GameCore.Unity.Runtime.Lifecycle
             Binding = new UnityLifecycleWorldBinding(world, publisher);
             JobFence = new LifecycleJobFence(lane.Lifecycle.Jobs);
             lane.Lifecycle.AttachWorldBinding(Binding);
+            RefreshIngressOwners();
+        }
 
-            for (int i = 0; i < lane.Committed.Installs.Count; i++)
+        /// <summary>
+        /// Declares, for every installation the lane has committed, the owners whose command routes close with it
+        /// (P-047). A caller mounts through its own helper, so this is called again before every lifecycle submission
+        /// and after every publication: an installation mounted since the last call gets its ingress declared without
+        /// the caller having to remember, and a redeclaration is idempotent (the same entry yields the same owners).
+        /// </summary>
+        public int RefreshIngressOwners()
+        {
+            IReadOnlyList<InstallEntry> installs = lane.Committed.Installs;
+            for (int i = 0; i < installs.Count; i++)
             {
-                // Every published installation declares the owners whose routes close with it (P-047).
-                Binding.DeclareIngressOwners(lane.Committed.Installs[i]);
+                Binding.DeclareIngressOwners(installs[i]);
             }
+
+            return installs.Count;
         }
 
         public WorldId World => world.World;
@@ -181,6 +193,9 @@ namespace GameCore.Unity.Runtime.Lifecycle
                 throw new ArgumentNullException(nameof(payload));
             }
 
+            // The installation this request acts on may have been mounted since the last call, so its ingress owners
+            // are declared before the close is attempted (P-047).
+            RefreshIngressOwners();
             RequestCount++;
             EditAdmission admission = lane.SubmitEdit(payload, operation, lane.Committed.Revision);
             if (admission.Kind != AdmissionKind.Fresh || admission.Code != DiagnosticCode.None || admission.Plan == null)
@@ -202,6 +217,7 @@ namespace GameCore.Unity.Runtime.Lifecycle
             }
 
             IReadOnlyList<PublishedOperation> published = lane.Drain();
+            RefreshIngressOwners();
             LifecycleCommitReport? lifecycle = null;
             for (int i = 0; i < published.Count; i++)
             {

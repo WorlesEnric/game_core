@@ -1175,6 +1175,14 @@ namespace GameCore.Gameplay.Cards.Fixtures
                     ContributionRetraction? retraction = RetractionOf(report.Lifecycle, provider);
                     facts.Set(CardLifecycleKeys.FactSuspendClosedRoutes, retraction != null ? retraction.ClosedRoutes : -1L);
 
+                    // P-047 at the route level, on the installation that owns routes. The scoring provider this step
+                    // suspends declares no state slot and therefore owns no command route in the card vocabulary, so
+                    // its closure retires nothing; the table runtime owns both of the family's command routes
+                    // (CardTableRegistration.Messages: CommandRoute and BatchRoute, owner CardTableKeys.TableOwner).
+                    // Closing its ingress through the same binding a suspend calls is what makes "accepted but
+                    // unexecuted commands finish Cancelled(RouteRetired)" observable rather than merely claimed.
+                    routesRetiredByClosure = CloseTableRuntimeIngress();
+
                     var lateToken = new AsyncWorkToken(operation, provider, new InstallationGeneration((ulong)generation), new ActivationEpoch((ulong)epoch), 0U);
                     CallbackGateDecision decision = controller!.Lifecycle.EvaluateCompletion(lateToken);
                     facts.Set(CardLifecycleKeys.FactSuspendLateCompletion, decision.ToString());
@@ -1188,6 +1196,7 @@ namespace GameCore.Gameplay.Cards.Fixtures
                         && retraction.AttributedRows == ExpectedProviderRows
                         && retraction.ClosedRoutes >= 0
                         && AttributedRowsOf(provider) == 0L
+                        && routesRetiredByClosure == 2 && CommandRoutesAreRetired()
                         && host!.Lifecycle == WorldLifecycleState.Running
                         && (decision == CallbackGateDecision.DiscardRetiredRoute
                             || decision == CallbackGateDecision.DiscardStaleActivation);
@@ -1202,6 +1211,7 @@ namespace GameCore.Gameplay.Cards.Fixtures
                         + "->" + AttributedRowsOf(provider).ToString(CultureInfo.InvariantCulture)
                         + "; retracted=" + (retraction != null ? retraction.AttributedRows.ToString(CultureInfo.InvariantCulture) : "<none>")
                         + "; closedRoutes=" + facts.ValueOf(CardLifecycleKeys.FactSuspendClosedRoutes)
+                        + "; tableRuntimeRoutesRetired=" + routesRetiredByClosure.ToString(CultureInfo.InvariantCulture)
                         + "; lateCompletion=" + decision));
                 }
                 catch (Exception exception)
@@ -1240,11 +1250,18 @@ namespace GameCore.Gameplay.Cards.Fixtures
                     CallbackGateDecision decision = controller!.Lifecycle.EvaluateCompletion(freshToken);
 
                     bool authority = controller.Lifecycle.HoldsAuthority(provider);
+
+                    // The other half of P-047's route closure: reopening the table runtime's ingress puts both real
+                    // command routes back, so a resumed installation's callers can be admitted again. The closed-route
+                    // count itself is the suspend step's fact; this step reports the reopen as a boolean.
+                    bool routesReopened = ReopenTableRuntimeIngress();
+
                     bool pass = report.Succeeded
                         && StateTextOf(provider) == InstallationState.Active.ToString()
                         && authority
                         && AttributedRowsOf(provider) == ExpectedProviderRows
                         && decision == CallbackGateDecision.Dispatch
+                        && routesReopened
                         && host!.Lifecycle == WorldLifecycleState.Running;
 
                     steps.Add(new CardLifecycleStep(name, pass,
@@ -1254,6 +1271,7 @@ namespace GameCore.Gameplay.Cards.Fixtures
                         + "; rows=" + facts.ValueOf(CardLifecycleKeys.FactProviderRowsBefore)
                         + "->" + AttributedRowsOf(provider).ToString(CultureInfo.InvariantCulture)
                         + "; freshCompletion=" + decision
+                        + "; tableRuntimeRoutesReopened=" + routesReopened
                         + "; epoch=" + CommittedEpochOf(provider).ToString(CultureInfo.InvariantCulture)));
                 }
                 catch (Exception exception)
@@ -2133,6 +2151,10 @@ namespace GameCore.Gameplay.Cards.Fixtures
             private EditAdmission Submit(CompositionEditPayload payload, OperationId operation)
             {
                 admittedOperations++;
+
+                // An installation mounted since the last refresh still needs its ingress owners declared before a
+                // close can retire its routes (P-047); a redeclaration is idempotent.
+                controller?.RefreshIngressOwners();
                 return lane!.SubmitEdit(payload, operation, lane.Committed.Revision);
             }
 
@@ -2324,8 +2346,68 @@ namespace GameCore.Gameplay.Cards.Fixtures
                 return null;
             }
 
+            /// <summary>
+            /// Closes the table runtime's ingress through the same binding a P-046 suspend calls, and reports how many
+            /// real command routes that retired (P-047). The table runtime is the card installation that owns the
+            /// family's two command routes, so this is where route-level ingress closure is observable.
+            /// </summary>
+            private int CloseTableRuntimeIngress()
+            {
+                if (controller == null || host == null)
+                {
+                    return -1;
+                }
+
+                int before = controller.Binding.RetiredRouteCount;
+                InstallEntry? entry = CommittedEntryOf(CardTableFixture.TableRuntimeInstance);
+                if (entry == null)
+                {
+                    return -1;
+                }
+
+                controller.Binding.CloseIngress(
+                    entry.Instance,
+                    new ActivationStamp(entry.Record.Generation, entry.Record.ActivationEpoch));
+                return controller.Binding.RetiredRouteCount - before;
+            }
+
+            /// <summary>Reopens the table runtime's ingress and reports whether both routes came back (06 s1, P-047).</summary>
+            private bool ReopenTableRuntimeIngress()
+            {
+                if (controller == null)
+                {
+                    return false;
+                }
+
+                InstallEntry? entry = CommittedEntryOf(CardTableFixture.TableRuntimeInstance);
+                if (entry == null)
+                {
+                    return false;
+                }
+
+                bool reopened = controller.Binding.ReopenIngress(
+                    entry.Instance,
+                    new ActivationStamp(entry.Record.Generation, entry.Record.ActivationEpoch));
+                return reopened && !CommandRoutesAreRetired();
+            }
+
+            /// <summary>True while both of the family's command routes are retired in the world's route table.</summary>
+            private bool CommandRoutesAreRetired()
+            {
+                if (host == null || host.Messages == null)
+                {
+                    return false;
+                }
+
+                return host.Messages.Routes.IsRetired(CardTableKeys.CommandRoute)
+                    && host.Messages.Routes.IsRetired(CardTableKeys.BatchRoute);
+            }
+
             /// <summary>The next tracked job identity of this run (P-041).</summary>
             private ulong jobSequence;
+
+            /// <summary>Command routes this run retired on the table runtime, so both runs carry the value.</summary>
+            private int routesRetiredByClosure;
 
             /// <summary>The lease step 7 staged for the provider, retired by the unload publication (P-048).</summary>
             private Id128 providerLease;
