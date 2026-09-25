@@ -7,6 +7,7 @@
 // Each test below therefore asserts both halves: the semantic result (equal to the independent reference
 // evaluator) and the counter that proves the incremental path did not walk the untouched part of the world.
 #nullable enable
+using System.Globalization;
 using GameCore.Contracts;
 using GameCore.Derivation.Fixtures;
 using NUnit.Framework;
@@ -256,6 +257,75 @@ namespace GameCore.Derivation.Tests
             Assert.That(outcome.Result.Delta.Slots[0].Support.Count, Is.EqualTo(1));
         }
 
+        /// <summary>
+        /// The target-set claim at a size where it is not vacuous: twenty league A seats and twenty league B
+        /// seats, one provider mounted in the league B branch, and the counter has to show that the twenty league
+        /// A seats were carried rather than re-derived (TEST-008 "untouched sibling scopes are not rescanned").
+        /// </summary>
+        [Test]
+        public void ALocalEditCarriesEveryTargetOfTheUntouchedBranch()
+        {
+            const int PerBranch = 20;
+            FixtureBuilder initial = CardComposition.Builder();
+            for (int i = 0; i < PerBranch; i++)
+            {
+                initial.Target("seat-a-" + i.ToString(CultureInfo.InvariantCulture), CardComposition.SeatAScope, CardComposition.CardSeatRecipe);
+                initial.Target("seat-b-" + i.ToString(CultureInfo.InvariantCulture), CardComposition.LeagueB, CardComposition.CardSeatRecipe);
+            }
+
+            DerivationSnapshot before = initial
+                .Build(PropagationMode.Automatic, new CompositionRevision(1UL), AssemblyEpoch.First)
+                .ToSnapshot();
+            DerivationResult published = DerivationAssert.Accepted(
+                DerivationEngine.Derive(before, CardSource(), DerivationOptions.Default, null));
+
+            FixtureBuilder builder = CardComposition.Builder();
+            for (int i = 0; i < PerBranch; i++)
+            {
+                builder.Target("seat-a-" + i.ToString(CultureInfo.InvariantCulture), CardComposition.SeatAScope, CardComposition.CardSeatRecipe);
+                builder.Target("seat-b-" + i.ToString(CultureInfo.InvariantCulture), CardComposition.LeagueB, CardComposition.CardSeatRecipe);
+            }
+
+            builder.Install(
+                HolidayScoring,
+                CardComposition.LeagueB,
+                0,
+                CardComposition.ScoringRules(HolidayScoring, 4),
+                state: InstallationState.Active);
+            DerivationSnapshot after = builder
+                .Build(PropagationMode.Automatic, new CompositionRevision(2UL), new AssemblyEpoch(2UL))
+                .ToSnapshot();
+
+            IncrementalDerivationOutcome outcome = IncrementalDerivationEngine.Derive(
+                after, CardSource(), DerivationOptions.Default, published, null);
+            DerivationAssert.Accepted(outcome.Result);
+            AssertMatchesReference(after, published, outcome.Result);
+
+            // The new provider reaches the whole league B branch (twenty seats plus the fixture's seat C), and
+            // every league A target is carried untouched.
+            Assert.That(
+                outcome.Counters.DirtyTargets,
+                Is.EqualTo(PerBranch + 1),
+                "Only the changed provider's reach domain is re-derived (P-023).");
+            Assert.That(
+                outcome.Counters.CarriedTargets,
+                Is.EqualTo(after.Targets.Count - outcome.Counters.DirtyTargets));
+            Assert.That(
+                outcome.Counters.CarriedTargets,
+                Is.GreaterThanOrEqualTo(PerBranch),
+                "Every league A seat is carried.");
+            for (int i = 0; i < PerBranch; i++)
+            {
+                Assert.That(
+                    DerivationAssert.HasCapability(
+                        outcome.Result,
+                        FixtureIds.Target("seat-a-" + i.ToString(CultureInfo.InvariantCulture)),
+                        CardComposition.SetBonus),
+                    Is.True,
+                    "The untouched branch keeps the assembly it had.");
+            }
+        }
+
         [Test]
         public void ABoundaryEditOnOneScopeLeavesSiblingsUntouched()
         {
@@ -448,6 +518,18 @@ namespace GameCore.Derivation.Tests
                 Is.EqualTo(DerivationProjection.SemanticsText(reference)));
             Assert.That(DerivationProjection.MissingDecisions(result, reference), Is.Empty);
             Assert.That(DerivationProjection.MissingDecisions(reference, result), Is.Empty);
+        }
+
+        private static void AssertMatchesReference(
+            DerivationSnapshot snapshot,
+            DerivationResult previous,
+            DerivationResult result)
+        {
+            DerivationResult reference = DerivationOracle.Derive(
+                snapshot, CardSource(), DerivationOptions.Default, previous);
+            Assert.That(
+                DerivationProjection.SemanticsText(result),
+                Is.EqualTo(DerivationProjection.SemanticsText(reference)));
         }
 
         private static bool ContainsRule(IReadOnlyList<IndexedRule> rules, string ruleName)
