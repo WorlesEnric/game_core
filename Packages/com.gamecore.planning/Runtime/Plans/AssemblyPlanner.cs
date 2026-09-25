@@ -424,16 +424,79 @@ namespace GameCore.Planning
                     }
                 }
 
+                // P-019: an `Additive` slot's effective value is what its registered reducer folded over every
+                // eligible contribution, and every one of them stays a supporter (P-017) rather than all but the
+                // top-ranked candidate being dropped. The planner deliberately does not fold numbers itself — a
+                // reducer is contract-owned pure code — so it consumes the composed value and the support set the
+                // derivation already produced, and rejects a declaration that carries neither instead of inventing
+                // a winner-take-all value.
+                int effectiveValue = winner.Value;
+                IReadOnlyList<CapabilitySupport> rowSupports = TargetBindingRow.SingleSupport(
+                    winner.Provider,
+                    winner.ProviderGeneration,
+                    winner.Declaration.Rule,
+                    winner.Value,
+                    winner.Priority);
+                if (winner.Declaration.Policy == CompositionPolicy.Additive)
+                {
+                    if (winner.Declaration.Supporters.Count == 0)
+                    {
+                        return Reject(
+                            proposal,
+                            descriptor,
+                            current,
+                            rules,
+                            acquisitions,
+                            scratch,
+                            budget,
+                            DiagnosticCode.MissingDependency,
+                            "slot " + winner.Declaration.Capability.ToString()
+                            + "#" + winner.Declaration.OutputSlot.ToString(CultureInfo.InvariantCulture)
+                            + " on target " + winner.Definition.Target.ToString()
+                            + " is declared Additive but carries no support set; the composed value of P-019 is the"
+                            + " registered reducer's fold over its contributions, so the planner refuses to publish"
+                            + " one candidate's raw value in its place.");
+                    }
+
+                    for (int g = 1; g < group.Count; g++)
+                    {
+                        if (!CapabilitySupport.SetEquals(
+                                winner.Declaration.Supporters,
+                                group[g].Declaration.Supporters))
+                        {
+                            return Reject(
+                                proposal,
+                                descriptor,
+                                current,
+                                rules,
+                                acquisitions,
+                                scratch,
+                                budget,
+                                DiagnosticCode.CapabilityConflict,
+                                "two declarations of the Additive slot " + winner.Declaration.Capability.ToString()
+                                + "#" + winner.Declaration.OutputSlot.ToString(CultureInfo.InvariantCulture)
+                                + " on target " + winner.Definition.Target.ToString()
+                                + " carry different support sets; the planner does not fold values itself, so it"
+                                + " cannot compose them and will not pick one (P-018, P-019).");
+                        }
+                    }
+
+                    effectiveValue = winner.Declaration.Value;
+                    rowSupports = winner.Declaration.Supporters;
+                }
+
                 TargetBindingRow row = new TargetBindingRow(
                     winner.Definition.Target,
                     winner.Declaration.Capability.Capability,
                     winner.Declaration.Capability.Version,
                     winner.Declaration.OutputSlot,
-                    winner.Value,
+                    effectiveValue,
                     winner.Provider,
                     winner.ProviderGeneration,
                     winner.Priority,
-                    winner.Declaration.Schema);
+                    winner.Declaration.Schema,
+                    rowSupports,
+                    winner.Declaration.Rule);
 
                 bool isNewRow = !current.TryGet(
                     winner.Definition.Target,
@@ -693,7 +756,8 @@ namespace GameCore.Planning
         /// <summary>
         /// Records the winning candidate as the rule of its `(recipe, scope, capability, output slot)` identity. One
         /// identity holds one rule, so the rule set a future spawn derives from is the effective assembly rather than
-        /// an accumulating history (P-017, P-024).
+        /// an accumulating history (P-017, P-024). The rule carries the row's support set, so a spawned target
+        /// inherits the composed value *and* how many contributions it was composed from (P-017, P-019).
         /// </summary>
         private static void AddRule(Dictionary<string, DerivedBindingRule> rules, Candidate winner, TargetBindingRow row)
         {
@@ -708,7 +772,9 @@ namespace GameCore.Planning
                 row.ProviderGeneration,
                 row.Priority,
                 winner.Declaration.Policy,
-                row.Schema);
+                row.Schema,
+                row.Supports,
+                winner.Declaration.Rule);
 
             rules[rule.RuleIdentity()] = rule;
         }

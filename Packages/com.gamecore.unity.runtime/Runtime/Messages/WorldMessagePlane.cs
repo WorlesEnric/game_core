@@ -21,6 +21,24 @@ using Unity.Collections;
 namespace GameCore.Unity.Runtime.Messages
 {
     /// <summary>
+    /// One state owner's declared domain version for one target (P-042, P-034). The owner binds it to the route it
+    /// answers, so the host can enforce an envelope's `ExpectedDomainVersion` without knowing anything about the
+    /// domain: the kernel sees "this target's version is N", never a table, a flag or a turn counter.
+    ///
+    /// The port lives here rather than in `GameCore.Contracts` because it is consulted by this assembly's plane and
+    /// because the contract surface is frozen by the W0 interface gate (GC-002); a family registers its own
+    /// implementation and both families already reference this assembly.
+    /// </summary>
+    public interface IDomainVersionAuthority
+    {
+        /// <summary>
+        /// Reads the current version of the domain this authority owns for one target. False means the domain does
+        /// not currently hold that target, which is a different refusal from a version mismatch (P-005, P-042).
+        /// </summary>
+        bool TryGetDomainVersion(TargetId target, out ulong version);
+    }
+
+    /// <summary>
     /// Immutable registration of one world's message plane. A generated registration emits it; the plane validates it
     /// before the world exposes anything, and a defect is a refusal, never a silently missing route (04 s8).
     /// </summary>
@@ -155,6 +173,7 @@ namespace GameCore.Unity.Runtime.Messages
         private readonly CommittedEventStore events;
         private readonly NativeMessageLanes lanes;
         private readonly Dictionary<Id128, CommandRoute> routesByBuffer = new Dictionary<Id128, CommandRoute>();
+        private readonly Dictionary<Id128, IDomainVersionAuthority> domainVersions = new Dictionary<Id128, IDomainVersionAuthority>();
         private readonly List<StepMessage> ownerBatch = new List<StepMessage>();
         private readonly List<CommittedEvent> publishedScratch = new List<CommittedEvent>();
 
@@ -254,6 +273,34 @@ namespace GameCore.Unity.Runtime.Messages
             => liveness = targets ?? AlwaysLiveTargets.Instance;
 
         /// <summary>
+        /// Binds the state owner's domain-version authority to one declared route (P-042), which is what makes an
+        /// envelope's `ExpectedDomainVersion` a real guard instead of dead data. The route must already be declared:
+        /// an authority for an unknown route is a registration defect and is refused rather than stored. Binding
+        /// twice replaces the previous authority, so a replaced owner cannot leave a stale reader behind (P-047).
+        /// </summary>
+        public void BindDomainVersion(RouteId route, IDomainVersionAuthority authority)
+        {
+            if (authority == null)
+            {
+                throw new ArgumentNullException(nameof(authority));
+            }
+
+            if (!Routes.TryResolve(route, out CommandRoute? resolved) || resolved == null)
+            {
+                throw new ArgumentException(
+                    "route " + route.ToString() + " is not declared by this world's message plane, so a domain"
+                    + " version authority cannot be bound to it (P-042).",
+                    nameof(route));
+            }
+
+            domainVersions[route.Value] = authority;
+        }
+
+        /// <summary>The domain-version authority bound to one route, or null when the route declares none (P-042).</summary>
+        public IDomainVersionAuthority? DomainVersionOf(RouteId route)
+            => domainVersions.TryGetValue(route.Value, out IDomainVersionAuthority? authority) ? authority : null;
+
+        /// <summary>
         /// Host admission of one immutable command envelope (O-13, P-042). The host validates world, route and
         /// capacity; the state owner validates gameplay later, so an admitted command reports `Accepted` only.
         /// </summary>
@@ -280,8 +327,13 @@ namespace GameCore.Unity.Runtime.Messages
 
             if (!admission.Admitted)
             {
-                // A refusal created no row and no lane entry; the caller reads the reason from the receipt (P-042).
-                return new CommandAdmissionReceipt(command.RequestId, admission.Outcome.ToRequestResult(), AdmissionSequence.Zero);
+                // A conflicting reuse must report its own refusal, not the prior request's settled outcome.
+                return new CommandAdmissionReceipt(
+                    command.RequestId,
+                    admission.Kind == RequestAdmissionKind.IdempotencyConflict
+                        ? new RequestResult(RequestResultKind.Rejected, admission.Code, default(EventCursor))
+                        : admission.Outcome.ToRequestResult(),
+                    AdmissionSequence.Zero);
             }
 
             if (admission.Kind == RequestAdmissionKind.Retransmission)
@@ -297,6 +349,43 @@ namespace GameCore.Unity.Runtime.Messages
                     command.RequestId,
                     new RequestResult(RequestResultKind.Rejected, DiagnosticCode.MissingDependency, default(EventCursor)),
                     AdmissionSequence.Zero);
+            }
+
+            // P-042's "expected domain version if needed" is enforced here, before the owner's lane, and never by
+            // the kernel guessing domain semantics: the route names the authority its owner registered, and the
+            // authority reports the target's current version. A stale guard is admitted as a `StalePlan` rejection
+            // with no lane entry, exactly like the other pre-mutation refusals, so a caller that read an old domain
+            // version cannot mutate a domain it no longer describes (P-037, P-044).
+            if (command.ExpectedDomainVersion.HasValue)
+            {
+                IDomainVersionAuthority? authority = DomainVersionOf(command.RouteId);
+                DiagnosticCode guardCode;
+                if (authority == null)
+                {
+                    // The envelope demands a guard the route never declared: refusing beats admitting an
+                    // unverifiable expectation, which would be the dead-data behaviour this replaced.
+                    guardCode = DiagnosticCode.MissingDependency;
+                }
+                else if (!authority.TryGetDomainVersion(command.TargetId, out ulong currentVersion))
+                {
+                    // The domain does not hold the target at all: a different refusal from a version mismatch.
+                    guardCode = DiagnosticCode.StaleHandle;
+                }
+                else
+                {
+                    guardCode = currentVersion == command.ExpectedDomainVersion.Value
+                        ? DiagnosticCode.None
+                        : DiagnosticCode.StalePlan;
+                }
+
+                if (guardCode != DiagnosticCode.None)
+                {
+                    Requests.TrySettle(command.RequestId, RequestResultKind.Rejected, guardCode, default(EventCursor), step);
+                    return new CommandAdmissionReceipt(
+                        command.RequestId,
+                        new RequestResult(RequestResultKind.Rejected, guardCode, default(EventCursor)),
+                        admission.Outcome.Order.Admitted);
+                }
             }
 
             var message = new StepMessage(
@@ -679,20 +768,44 @@ namespace GameCore.Unity.Runtime.Messages
 
         private static ContentHash HashOf(CommandEnvelope command, byte[] payload)
         {
-            // The input hash covers the envelope identity and the payload bytes, so a reused request key with a
-            // different command is an IdempotencyConflict rather than a silent second execution (P-050).
-            const int HeaderBytes = Id128.SizeInBytes + Id128.SizeInBytes + Id128.SizeInBytes + 4;
+            // The input hash covers the envelope identity, the optional domain-version guard and the payload bytes,
+            // so a reused request key with a different command is an IdempotencyConflict rather than a silent second
+            // execution (P-050). The guard is part of the command's meaning: an envelope that expects version 3 is a
+            // different request from one that expects version 4, and hashing them alike would let a caller retrieve
+            // the wrong attempt's result.
+            const int HeaderBytes = Id128.SizeInBytes + Id128.SizeInBytes + Id128.SizeInBytes + 4 + 1
+                + sizeof(ulong);
             var record = new byte[HeaderBytes + payload.Length];
             Id128Codec.WriteBigEndian(command.TargetId.Value, record, 0);
             Id128Codec.WriteBigEndian(command.RouteId.Value, record, Id128.SizeInBytes);
             Id128Codec.WriteBigEndian(command.Schema.Id.Value, record, Id128.SizeInBytes * 2);
             WriteUInt32BigEndian(command.Schema.Version, record, Id128.SizeInBytes * 3);
+
+            // One presence byte plus the sixty-four-bit version when present, so an absent guard hashes differently
+            // from a guard of zero instead of colliding with it.
+            int versionOffset = Id128.SizeInBytes * 3 + 4;
+            bool hasVersion = command.ExpectedDomainVersion.HasValue;
+            record[versionOffset] = hasVersion ? (byte)1 : (byte)0;
+            WriteUInt64BigEndian(hasVersion ? command.ExpectedDomainVersion!.Value : 0UL, record, versionOffset + 1);
+
             for (int i = 0; i < payload.Length; i++)
             {
                 record[HeaderBytes + i] = payload[i];
             }
 
             return ContentHash.Compute(record);
+        }
+
+        private static void WriteUInt64BigEndian(ulong value, byte[] destination, int offset)
+        {
+            destination[offset] = (byte)(value >> 56);
+            destination[offset + 1] = (byte)(value >> 48);
+            destination[offset + 2] = (byte)(value >> 40);
+            destination[offset + 3] = (byte)(value >> 32);
+            destination[offset + 4] = (byte)(value >> 24);
+            destination[offset + 5] = (byte)(value >> 16);
+            destination[offset + 6] = (byte)(value >> 8);
+            destination[offset + 7] = (byte)value;
         }
 
 

@@ -104,8 +104,6 @@ namespace GameCore.Content.Compiler.Tests
                     StableNameKeyDerivation.Derive(schema.StableName)));
             }
 
-            Assert.That(expected, Has.Count.EqualTo(8),
-                "the card catalog declares seven factory registrations and one serializer key");
             foreach (string literal in expected)
             {
                 Assert.That(

@@ -134,8 +134,61 @@ namespace GameCore.Gameplay.Cards
             Modules.Clear();
         }
 
-        /// <summary>Records the table entity the seeding step created.</summary>
-        public void BindTable(Entity table) => TableEntity = table;
+        /// <summary>
+        /// Records the table entity the seeding step created and binds the route's domain-version authority
+        /// (P-042), so a command envelope's `ExpectedDomainVersion` is checked against the live table version
+        /// before the owner's lane rather than ignored.
+        /// </summary>
+        public void BindTable(Entity table)
+        {
+            TableEntity = table;
+            WorldMessagePlane? plane = Host.Messages;
+            if (plane != null)
+            {
+                plane.BindDomainVersion(CardTableKeys.CommandRoute, new CardTableDomainVersion(this));
+            }
+        }
+
+        /// <summary>
+        /// The card table's declared domain version for one target (P-042): the live `CardTableState.TableVersion`
+        /// of the table entity this module owns, or a false result when the module does not hold that target. The
+        /// owner reports a number; the kernel never learns that the number is a table version.
+        /// </summary>
+        private sealed class CardTableDomainVersion : IDomainVersionAuthority
+        {
+            private readonly CardTableModule module;
+
+            public CardTableDomainVersion(CardTableModule module)
+            {
+                this.module = module;
+            }
+
+            /// <summary>
+            /// Reports the version only for the table target this module holds: a command addressed at a seat is
+            /// not answered by the table's version, so it is reported as "no such domain" rather than being given
+            /// the table's number (P-005, P-042).
+            /// </summary>
+            public bool TryGetDomainVersion(TargetId target, out ulong version)
+            {
+                version = 0UL;
+                if (!target.Equals(CardIdentity.Target(CardVocabulary.TableOne)))
+                {
+                    return false;
+                }
+
+                if (module.TableEntity == Entity.Null
+                    || !module.Host.EntityWorld.EntityManager.Exists(module.TableEntity))
+                {
+                    return false;
+                }
+
+                CardTableState table =
+                    module.Host.EntityWorld.EntityManager.GetComponentData<CardTableState>(module.TableEntity);
+                version = table.TableVersion;
+                return true;
+            }
+        }
+
 
         /// <summary>Records one seat entity and its declared ordinal.</summary>
         public void BindSeat(uint ordinal, Entity seat) => seatsByOrdinal[ordinal] = seat;

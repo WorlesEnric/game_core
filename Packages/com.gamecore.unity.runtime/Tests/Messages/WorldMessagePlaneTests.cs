@@ -114,6 +114,58 @@ namespace GameCore.Unity.Runtime.Tests.Messages
         }
 
         [Test]
+        public void ExpectedDomainVersionRefusesStaleCommandsAndChangesIdempotencyIdentity()
+        {
+            UnityWorldHost host = CreateWorld(MessageFixtureRegistration.Create());
+            WorldMessagePlane plane = Plane(host);
+            var authority = new FixtureDomainVersion(7UL);
+            plane.BindDomainVersion(MessageFixtureKeys.ProbeRoute, authority);
+
+            CommandEnvelope stale = GuardedEnvelope(host, 1UL, 6UL);
+            CommandAdmissionReceipt rejected = host.Submit(stale);
+            Assert.That(rejected.Result.Kind, Is.EqualTo(RequestResultKind.Rejected));
+            Assert.That(rejected.Result.Reason, Is.EqualTo(DiagnosticCode.StalePlan));
+            Assert.That(plane.Requests.PendingCount, Is.EqualTo(0));
+            Assert.That(host.PendingDemand, Is.EqualTo(0UL));
+
+            CommandAdmissionReceipt duplicate = host.Submit(stale);
+            Assert.That(duplicate.Result.Reason, Is.EqualTo(DiagnosticCode.StalePlan));
+            Assert.That(plane.Requests.AdmittedCount, Is.EqualTo(1));
+
+            CommandAdmissionReceipt conflict = host.Submit(GuardedEnvelope(host, 1UL, 7UL));
+            Assert.That(conflict.Result.Reason, Is.EqualTo(DiagnosticCode.IdempotencyConflict));
+            Assert.That(plane.Requests.PendingCount, Is.EqualTo(0));
+
+            CommandAdmissionReceipt fresh = host.Submit(GuardedEnvelope(host, 2UL, 7UL));
+            Assert.That(fresh.Result.Kind, Is.EqualTo(RequestResultKind.Accepted));
+            Assert.That(plane.Requests.PendingCount, Is.EqualTo(1));
+            host.PumpFrame(1_000_000UL);
+            Assert.That(ReadProbe(host).LastValue, Is.EqualTo(42));
+        }
+
+        private sealed class FixtureDomainVersion : IDomainVersionAuthority
+        {
+            private readonly ulong version;
+
+            public FixtureDomainVersion(ulong version) => this.version = version;
+
+            public bool TryGetDomainVersion(TargetId target, out ulong current)
+            {
+                current = version;
+                return target.Equals(MessageFixtureRegistration.ProbeTarget);
+            }
+        }
+
+        private static CommandEnvelope GuardedEnvelope(UnityWorldHost host, ulong sequence, ulong expected)
+            => new CommandEnvelope(
+                new OperationId(host.World, Issuer, sequence),
+                MessageFixtureKeys.ProbeRoute,
+                MessageFixtureRegistration.ProbeTarget,
+                MessageFixtureKeys.Command,
+                expected,
+                new FrozenPayload(ProbePayloads.Command(42, (uint)sequence)));
+
+        [Test]
         public void OverflowRejectsBeforeMutationAndLeavesStateUnchanged()
         {
             // The counter lane is declared with capacity 1, so the second producer's row cannot be accepted.

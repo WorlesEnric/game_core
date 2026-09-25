@@ -49,7 +49,8 @@ namespace GameCore.Validation.ProbeHost
         internal static void Run(ProbeArguments arguments)
         {
             // The GC-005 owned-world mode, the W1/W2 integration gates, the two Wave 3 slices (GC-010 narrative,
-            // GC-011 cards) and the W3 gate that runs both slices in one process run in the same player and report
+            // GC-011 cards), the W3 gate that runs both slices in one process and the GC-012 Wave 4 profile gate
+            // run in the same player and report
             // into the same result shape, but each under its own task id so no outcome is restated as another task's
             // evidence.
             ProbeReport report = arguments.WorldDispatch
@@ -88,6 +89,12 @@ namespace GameCore.Validation.ProbeHost
                                         ProbeEnvironment.DeclaredUnityVersion,
                                         ProbeEnvironment.DeclaredTarget,
                                         "W3-GATE")
+                                    : arguments.W4Profile
+                                        ? new ProbeReport(
+                                            "W4Profile",
+                                            ProbeEnvironment.DeclaredUnityVersion,
+                                            ProbeEnvironment.DeclaredTarget,
+                                            "GC-012")
                                     : new ProbeReport(
                                         arguments.MissingRegistration ? "MissingRegistration" : "Positive",
                                         ProbeEnvironment.DeclaredUnityVersion,
@@ -139,6 +146,11 @@ namespace GameCore.Validation.ProbeHost
                 else if (arguments.W3Gate)
                 {
                     ProbeW3Gate.Run(report);
+                    report.CompletePositive();
+                }
+                else if (arguments.W4Profile)
+                {
+                    ProbeW4Profile.Run(report);
                     report.CompletePositive();
                 }
                 else

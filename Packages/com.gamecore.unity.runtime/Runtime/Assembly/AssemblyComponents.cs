@@ -13,6 +13,9 @@
 //   * `TargetSlotState` — owner state with its own schema version, separate from derived data (P-032).
 // All three are blittable and contain no managed references, so they are safe in Burst jobs and IL2CPP.
 #nullable enable
+using System;
+using System.Collections.Generic;
+using System.Globalization;
 using GameCore.Contracts;
 using Unity.Entities;
 
@@ -63,7 +66,11 @@ namespace GameCore.Unity.Runtime
 
         public int Value;
 
-        /// <summary>Provider installation that supports this row; removing its support removes only its own rows (P-033).</summary>
+        /// <summary>
+        /// Provider installation that supports this row; removing its support removes only its own supports (P-033).
+        /// The full set of supporters is the parallel `CapabilitySupportRow` buffer, and this field is the
+        /// highest-ranked member of it, so a reader that wants "who owns this row" still has one answer.
+        /// </summary>
         public ProviderInstallationId Provider;
 
         public ulong ProviderGeneration;
@@ -75,7 +82,45 @@ namespace GameCore.Unity.Runtime
         /// <summary>1 while the row participates in active queries; 0 when it is dormant (P-032).</summary>
         public byte Active;
 
+        /// <summary>Number of contributions that support this row; 1 is the ordinary single-provider case (P-017).</summary>
+        public int SupporterCount;
+
         public bool IsActive => Active != 0;
+
+        /// <summary>True when more than one contribution supports this row (P-017).</summary>
+        public bool IsMultiSupport => SupporterCount > 1;
+    }
+
+    /// <summary>
+    /// One contribution that supports an effective binding row (P-017). This is the published form of
+    /// `GameCore.Planning.CapabilitySupport`: the row keyed by `(capability, output slot)` carries the composed
+    /// value of P-019, and one of these rows carries each supporter's own contribution value, so an `Additive` slot
+    /// that a reducer folded from two providers is inspectable in a live world instead of collapsing to its
+    /// top-ranked candidate. Removing one provider removes exactly its own support rows (P-033).
+    /// </summary>
+    public struct CapabilitySupportRow : IBufferElementData
+    {
+        public CapabilityId Capability;
+
+        public uint OutputSlot;
+
+        /// <summary>The supporter's provider installation (P-017).</summary>
+        public ProviderInstallationId Provider;
+
+        public ulong ProviderGeneration;
+
+        /// <summary>The derivation rule that emitted this contribution; part of its `ContributionKey` (P-017).</summary>
+        public RuleId Rule;
+
+        /// <summary>The supporter's own contribution value, before the slot policy composed the effective value.</summary>
+        public int Value;
+
+        public int Priority;
+
+        public override string ToString() =>
+            Capability.ToString() + "#" + OutputSlot.ToString(CultureInfo.InvariantCulture)
+            + "@" + Provider.ToString() + "/" + Rule.ToString()
+            + "=" + Value.ToString(CultureInfo.InvariantCulture);
     }
 
     /// <summary>
@@ -119,6 +164,77 @@ namespace GameCore.Unity.Runtime
 
             binding = default(CapabilityBinding);
             return false;
+        }
+
+        /// <summary>
+        /// Collects the support rows of one binding row in canonical order (P-017). The buffer is small and already
+        /// in canonical order, so this is a bounded scan and never a managed allocation beyond the returned list.
+        /// </summary>
+        public static void CollectSupports(
+            DynamicBuffer<CapabilitySupportRow> supports,
+            CapabilityId capability,
+            uint outputSlot,
+            List<CapabilitySupportRow> destination)
+        {
+            if (destination == null)
+            {
+                throw new ArgumentNullException(nameof(destination));
+            }
+
+            for (int i = 0; i < supports.Length; i++)
+            {
+                CapabilitySupportRow row = supports[i];
+                if (row.Capability.Equals(capability) && row.OutputSlot == outputSlot)
+                {
+                    destination.Add(row);
+                }
+            }
+        }
+
+        /// <summary>
+        /// True when the support buffer holds a support with this identity (P-017, P-033): the exact test a
+        /// retraction uses to remove one provider's support without disturbing a co-supporter's.
+        /// </summary>
+        public static bool TryFindSupport(
+            DynamicBuffer<CapabilitySupportRow> supports,
+            CapabilityId capability,
+            uint outputSlot,
+            ProviderInstallationId provider,
+            RuleId rule,
+            out int index)
+        {
+            for (int i = 0; i < supports.Length; i++)
+            {
+                CapabilitySupportRow row = supports[i];
+                if (row.Capability.Equals(capability) && row.OutputSlot == outputSlot
+                    && row.Provider.Equals(provider) && row.Rule.Equals(rule))
+                {
+                    index = i;
+                    return true;
+                }
+            }
+
+            index = -1;
+            return false;
+        }
+
+        /// <summary>Counts the support rows of one binding row (P-017).</summary>
+        public static int CountSupports(
+            DynamicBuffer<CapabilitySupportRow> supports,
+            CapabilityId capability,
+            uint outputSlot)
+        {
+            int count = 0;
+            for (int i = 0; i < supports.Length; i++)
+            {
+                CapabilitySupportRow row = supports[i];
+                if (row.Capability.Equals(capability) && row.OutputSlot == outputSlot)
+                {
+                    count++;
+                }
+            }
+
+            return count;
         }
 
         /// <summary>Finds one state slot row by `(owner, slot)`; a miss means the target has no such state (P-032).</summary>

@@ -538,6 +538,20 @@ namespace GameCore.Contracts.Tests
     {
         private const string SurfaceNamespace = "GameCore.Contracts";
 
+        /// <summary>
+        /// The members GC-012 added to <c>StateSlotSpec</c> (P-032's manifest-supported reset): an additive
+        /// constructor overload and the two read-only properties it assigns. Matched by shape rather than by a full
+        /// signature, because the snapshot generator qualifies parameter types and renders default values in its own
+        /// way. The declaring type is rendered with its short name, as the frozen listing shows
+        /// ("ctor public StateSlotSpec(...)").
+        /// </summary>
+        private static bool IsStateSlotResetAddition(string member) =>
+            (member.StartsWith("ctor public StateSlotSpec(", StringComparison.Ordinal)
+                && member.Contains("System.Boolean resetSupported", StringComparison.Ordinal)
+                && member.Contains("System.String? resetReason", StringComparison.Ordinal))
+            || member == "property public System.Boolean ResetSupported { get; }"
+            || member == "property public System.String ResetReason { get; }";
+
         private const string RegenerationHint =
             "The production listing is a superset of the frozen W0 snapshot. If a line was intentionally " +
             "removed or changed, the change must go through the W0 interface gate: regenerate the frozen " +
@@ -597,6 +611,10 @@ namespace GameCore.Contracts.Tests
                 int separator = addition.IndexOf(" :: ", StringComparison.Ordinal);
                 string header = addition.Substring(0, separator);
                 string member = addition.Substring(separator + " :: ".Length);
+                // GC-012 records one more documented addition: P-032 requires a `Reset` to be
+                // "manifest-supported", which the manifest's StateSlotSpec had no field to express; the two new
+                // members are appended optional parameters plus their read-only properties, in
+                // artifacts/gc-012/HANDOFF.md section 6.
                 bool allowed = addedTypes.Contains(header)
                     || (header == "type class GameCore.Contracts.EnvelopeReader"
                         && member == "method public System.Boolean TrySeekTo(System.Int32 offset)")
@@ -604,7 +622,9 @@ namespace GameCore.Contracts.Tests
                         && (member == "enumvalue public MissingRequiredField = 16"
                             || member == "enumvalue public DuplicateField = 17"))
                     || (header.StartsWith("type enum GameCore.Contracts.FactoryKind :", StringComparison.Ordinal)
-                        && member == "enumvalue public Handler = 10");
+                        && member == "enumvalue public Handler = 10")
+                    || (header.StartsWith("type class GameCore.Contracts.StateSlotSpec", StringComparison.Ordinal)
+                        && IsStateSlotResetAddition(member));
                 Assert.That(allowed, Is.True, "Undocumented production API addition: " + addition);
             }
 

@@ -41,12 +41,12 @@ The production compiler accepts a versioned declarative manifest and emits a val
 | `CapabilityContract` | CapabilityId/version, stratum, output-slot schemas, per-slot composition policy and reducer key/version, incompatibility IDs. |
 | `DerivationRule` | RuleId, output capability/stratum, fixed output-slot bound, selector/contract versions, static predicate key, lower-stratum inputs, reach, export flag, priority, immutable payload definition. |
 | `TargetDescriptor` | Recipe/version, supported schemas/capabilities, immutable tag set, asset-adapter descriptor, sparse local patches/imports/opt-ins/exclusions. |
-| `StateSlotSpec` | SlotId, OwnerId, schema/version, physical layout key/field ownership, init/config-change/version-change/last-support/transfer policies and migration keys. |
+| `StateSlotSpec` | SlotId, OwnerId, schema/version, physical layout key/field ownership, init/config-change/version-change/last-support/transfer policies, **reset support and its recorded reason**, and migration keys. |
 | `StageSpec` | StageId/version, factory keys, system multiplicity, required/optional stage edges, per-system keys/access declarations and inner-DAG edges, buffer ports, affinity. |
 | `BufferSpec` | BufferId/schema, producer IDs, one owner/consumer stage, order key, lifetime, bounded capacity, overflow and cancellation/rebind policy. |
 | `ResourceSpec` | Resource key, factory, dependency keys, preparation gate, lifetime owner, disposer, failure classification. |
 
-Catalog constructors validate duplicates and version ranges. Runtime mounts cannot fill an omitted owner policy from a convenient default or discover missing types by reflection. A schema can explicitly declare `PreserveDormant`; this is recorded policy, not an implicit behavior of arbitrary components.
+Catalog constructors validate duplicates and version ranges. Runtime mounts cannot fill an omitted owner policy from a convenient default or discover missing types by reflection. A slot is resettable only when its own declaration carries `resetSupported` together with a recorded reason; an unpermitted reset is rejected rather than applied as zero initialization, and a supported reset without a reason is a declaration error (P-032). The reset a *proposal* requests carries its own explicit reason as well, so the two reasons are independent: the declaration says why the slot may ever be reset, the proposal says why this publication does. A schema can explicitly declare `PreserveDormant`; this is recorded policy, not an implicit behavior of arbitrary components.
 
 Illustrative **pseudodata** for a reusable descriptor and rule:
 
@@ -73,7 +73,7 @@ In Automatic every compatible card beneath the installation receives the limit. 
 | Identity | OperationId, input hash, base CompositionRevision, catalog hash, plan hash. |
 | Composition delta | Scope/install/membership/config/mode updates with old/new keys. |
 | Derivation delta | Added/removed/changed contribution keys, effective slot changes, supports, explanation references. |
-| Runtime delta | Generated recipe/layout operations, owner-grant table, state disposition/migration keys, execution plan, buffer binding table. |
+| Runtime delta | Generated recipe/layout operations, owner-grant table, state disposition/migration keys (including an explicit `Reset` request with its own reason, legal only where the slot's manifest declares reset support), execution plan, buffer binding table. |
 | Resources | Staged acquisition handles, dependencies, readiness status, retiring lease IDs, scratch capacity. |
 | Validity/cost | Invalidation summary, preconditions, affected counts, prepare/apply estimates, hard budget usage. |
 | `OperationResult` | Outcome, old/new revision/epoch, diagnostics, publication snapshot token if any, cleanup/quarantine references. |
