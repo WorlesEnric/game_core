@@ -1,0 +1,11 @@
+== GC-001 toolchain build ==
+editor      : /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Unity
+project     : /home/worlesenric/wkspace/gc-wt/gc-018/unity/GameCore.Validation
+artifacts   : artifacts/gc-018/toolchain
+-- step 1/2: generate closed registration catalog
+-- step 2/2: build StandaloneLinux64 IL2CPP player (High stripping)
+== build complete ==
+player   : /home/worlesenric/wkspace/gc-wt/gc-018/unity/GameCore.Validation/Builds/Linux64/GameCoreProbe.x86_64
+catalog  : /home/worlesenric/wkspace/gc-wt/gc-018/unity/GameCore.Validation/Assets/GameCore.Validation/Generated/ProbeCatalog.g.cs
+lock file: /home/worlesenric/wkspace/gc-wt/gc-018/unity/GameCore.Validation/Packages/packages-lock.json (produced by this resolve; commit it)
+next     : tools/unity/run_probe.sh

@@ -31,27 +31,27 @@
     {
       "name": "narrative/gc018-world-lane-and-live-state",
       "status": "Pass",
-      "detail": "session=4e415247433031330000000000000001; catalogFingerprint=02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff; registryBefore=1; liveTargets=7; scopes=8; setupEdits=True; targetsSeeded=True; activeSlot=2/7; dormantSlot=2/3 active=False; spareScope=True; enrichedScope=ScopeId(05cfbe283381aab8902e93d508ff031c) exclusions=1 capIsolationMembers=1; rngStreams=2 draws=33ebfe9a4f6d54c80000000000000064=3,33ebfe9a4f6d54c80000000000000065=3; clock=33ebfe9a4f6d069b1aca623a6c073300 wakes=1; auxiliaryIndices=14..17; idleFrames=4 idleSteps=0; mode=Automatic; joined=True; sourceHandles=TargetId(040136f12eb3c37110927a2853650e1b)@idx24=slot6/1,TargetId(4c61e7ee6939de7bd16d3cab476ff6da)@idx22=slot4/1,TargetId(4ca6220f97ef579a48891902bcef4dfa)@idx19=slot1/1,TargetId(5c63f1314f90924ad5990c531fa9e5b7)@idx23=slot5/1,TargetId(967aebcd3dbf137cbdc41d194205b514)@idx21=slot3/1,TargetId(a300fa762c702f9e90dbcb691ea84e96)@idx18=slot0/1,TargetId(dce95d184...(+38 chars); laneJoined=True; lifecycle=Running"
+      "detail": "session=4e415247433031330000000000000001; catalogFingerprint=02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff; registryBefore=1; liveTargets=7; scopes=8; setupEdits=True; targetsSeeded=True; activeSlot=2/7; dormantSlot=2/3 active=False; spareScope=True; enrichedScope=ScopeId(05cfbe283381aab8902e93d508ff031c) exclusions=1 capIsolationMembers=1 imports=1; importProvider=PluginInstanceId(8d5ac0121d3d8b7c453e967325c9158b)@ScopeId(7aa963e13ea0810e4158dd909fdfac0b) capability=CapabilityId(a54b600e13612649cc9424903c07bc1c) importScope=ScopeId(05cfbe283381aab8902e93d508ff031c); rngStreams=2 draws=33ebfe9a4f6d54c80000000000000064=3,33ebfe9a4f6d54c80000000000000065=3; clock=33ebfe9a4f6d069b1aca623a6c073300 wakes=1; auxiliaryIndices=14..17; idleFrames=4 idleSteps=0; mode=Automatic->Conservative; joined=True; sourceHandles=TargetId(040136f12eb3c37110927a2853650e1b)@idx24=slot6/1,TargetId(4c61e7ee6939de7bd16d3cab476ff6da)@idx22=slot4/1,TargetId(4ca6220f97ef579a48891902bcef4dfa)@idx19=slot1/1,TargetId(5c63f1314f90924ad5990c531fa9e5b7)@idx23=slot5/1,TargetId(967aebcd3dbf137cbdc41d194205b514)@idx21=slot3/1,TargetId(a300fa762c702f9e90dbcb691ea84e96)@idx18=slot0/1,TargetId(dce95d184...(+38 chars); laneJoined=True; lifecycle=Running"
     },
     {
       "name": "narrative/gc018-committed-boundary-capture",
       "status": "Pass",
-      "detail": "session=4e415247433031330000000000000001; atBoundary=True; bytes=6985; documentHash=db34bb109b63b58ebeafa58098a1c0aa49fa7a775743d9e61187ae122bd3e990; counts=counts(scope=8,install=0,target=7,slot=2,grant=2,command=0,message=0); header=header(def=WorldDefinitionId(ed00c0fd976caad86a2e518fb4389df6),step=0,scope=8,install=0,target=7,slot=2); definition=WorldDefinitionId(ed00c0fd976caad86a2e518fb4389df6); step=0; debtTicks=0; pendingDemand=1; protocol=1.0; mode=Automatic; fingerprint=02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff; published=3/3; admissionCutoff=1; activeSlots=1; dormantSlots=1; rngStreams=2"
+      "detail": "session=4e415247433031330000000000000001; atBoundary=True; bytes=7744; documentHash=b0c9ae391238a32bebee3ae415c9b7f32bd09da9c8e724146382bcfbfe629a03; counts=counts(scope=8,install=1,target=7,slot=2,grant=3,command=0,message=0); header=header(def=WorldDefinitionId(ed00c0fd976caad86a2e518fb4389df6),step=0,scope=8,install=1,target=7,slot=2); definition=WorldDefinitionId(ed00c0fd976caad86a2e518fb4389df6); step=0; debtTicks=0; pendingDemand=1; protocol=1.0; mode=Conservative; fingerprint=02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff; published=6/6; admissionCutoff=1; activeSlots=1; dormantSlots=1; rngStreams=2"
     },
     {
       "name": "narrative/gc018-queued-commands-are-dispositioned-not-omitted",
       "status": "Pass",
-      "detail": "queued=OperationId(WorldId(4e415247433031330000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 8); route=RouteId(750f2574f941becaf655620cc55ce2fe); target=TargetId(a300fa762c702f9e90dbcb691ea84e96); schema=SchemaRef(SchemaId(4fbc5dc51eb55373de0c85621aae7d56), 1); payloadBytes=8; rejectQueued(queue(RejectQueued,offered=1,included=0,rejected=1) accounted=True headerCommands=0 headerRejected=1); includeQueued(queue(IncludeQueued,offered=1,included=1,rejected=0) accounted=True headerCommands=1 headerRejected=0); cutoff=1"
+      "detail": "queued=OperationId(WorldId(4e415247433031330000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 17); route=RouteId(750f2574f941becaf655620cc55ce2fe); target=TargetId(a300fa762c702f9e90dbcb691ea84e96); schema=SchemaRef(SchemaId(4fbc5dc51eb55373de0c85621aae7d56), 1); payloadBytes=8; rejectQueued(queue(RejectQueued,offered=1,included=0,rejected=1) accounted=True headerCommands=0 headerRejected=1); includeQueued(queue(IncludeQueued,offered=1,included=1,rejected=0) accounted=True headerCommands=1 headerRejected=0); cutoff=1"
     },
     {
       "name": "narrative/gc018-capture-refuses-outside-a-boundary",
       "status": "Pass",
-      "detail": "laneRevision=3->4; laneEpoch=4; worldEpoch=3; laneAhead=True; atCommittedBoundary=False; readRefusal=NotAtBoundary/TooLate; captureRefusal=TooLate; documentBytes=0; healed=True; joined=True; refusalDetail=world GameCoreNarrativeWorld:4e415247433031330000000000000001 is not at a committed boundary (lifecycle Running, pumping False, faulted False); a checkpoint is ...(+49 chars)"
+      "detail": "laneRevision=6->7; laneEpoch=7; worldEpoch=6; laneAhead=True; atCommittedBoundary=False; readRefusal=NotAtBoundary/TooLate; captureRefusal=TooLate; documentBytes=0; healed=True; joined=True; refusalDetail=world GameCoreNarrativeWorld:4e415247433031330000000000000001 is not at a committed boundary (lifecycle Running, pumping False, faulted False); a checkpoint is ...(+49 chars)"
     },
     {
       "name": "narrative/gc018-corrupt-and-truncated-documents-reject",
       "status": "Pass",
-      "detail": "bytes=7385; tampered=UnsupportedVersion (envelope=UnsupportedVersion(the Target record at field 104 was refused: UnsupportedVersion (P-054).); restoreStage=Read/...(+18 chars)); truncated=UnsupportedVersion (envelope=UnsupportedVersion(the checkpoint document carries no trailing checksum (05 s6).); restoreStage=Read/Unsupporte...(+8 chars)); padded=ResourceUnavailable (envelope=ResourceUnavailable(the checkpoint document carries 1 byte(s) after its checksum (05 s6).); restoreStage=Read/R...(+18 chars)); registry=2->2; builderBuilds=0"
+      "detail": "bytes=8144; tampered=UnsupportedVersion (envelope=UnsupportedVersion(the Target record at field 104 was refused: UnsupportedVersion (P-054).); restoreStage=Read/...(+18 chars)); truncated=UnsupportedVersion (envelope=UnsupportedVersion(the checkpoint document carries no trailing checksum (05 s6).); restoreStage=Read/Unsupporte...(+8 chars)); padded=ResourceUnavailable (envelope=ResourceUnavailable(the checkpoint document carries 1 byte(s) after its checksum (05 s6).); restoreStage=Read/R...(+18 chars)); registry=2->2; builderBuilds=0"
     },
     {
       "name": "narrative/gc018-unknown-required-schema-rejects-restore",
@@ -61,7 +61,7 @@
     {
       "name": "narrative/gc018-ambiguous-migration-rejects-restore",
       "status": "Pass",
-      "detail": "steps=3; registryWellFormed=True; directPlan=Ambiguous(SchemaRef(SchemaId(16c046a5f21f63826550023b6cc1e663), 2)->SchemaRef(SchemaId(16c046a5f21f63826550023b6cc1e663), 3),steps=0,paths=2); plannerRefusal=MigrationRejected/OwnershipConflict; executorStage=Plan/OwnershipConflict; builderBuilds=0; registry=2->2; plannerDetail=schema SchemaId(16c046a5f21f63826550023b6cc1e663): the catalog registers 2 distinct chains into version 3 for schema SchemaId(16c046a5f21f63826550023b6cc1e663);...(+67 chars)"
+      "detail": "steps=3; registryWellFormed=True; directPlan=Ambiguous(SchemaRef(SchemaId(16c046a5f21f63826550023b6cc1e663), 2)->SchemaRef(SchemaId(16c046a5f21f63826550023b6cc1e663), 3),steps=0,paths=2); plannerRefusal=MigrationRejected/OwnershipConflict; executorStage=Plan/OwnershipConflict; builderBuilds=0; registry=2->2; plannerDetail=schema SchemaId(16c046a5f21f63826550023b6cc1e663): the catalog registers 2 distinct chains from version 2 to 3 for schema SchemaId(16c046a5f21f63826550023b6cc1e...(+72 chars)"
     },
     {
       "name": "narrative/gc018-corrupt-reference-rejects-restore",
@@ -71,7 +71,7 @@
     {
       "name": "narrative/gc018-restore-happens-into-a-new-unexposed-world",
       "status": "Pass",
-      "detail": "sourceSession=4e415247433031330000000000000001; restoredSession=4e41524743303133000000000000000b; registryBaseline=2; registryAfterStaging=2; registryAfterExpose=3; stage=Expose; code=None; restoredTargets=7; restoredSlots=2; dormantSlots=1; migrations=0; replayedScopes=1; replayedBoundaries=1; replayedModes=0; readmittedCommands=1; clocks=1 wakes=1; assembliesPublished=2; restoredEpoch=3; exposureDetail=restored into a new session from a checkpoint of 4e415247433031330000000000000001."
+      "detail": "sourceSession=4e415247433031330000000000000001; restoredSession=4e41524743303133000000000000000b; registryBaseline=2; registryAfterStaging=2; registryAfterExpose=3; stage=Expose; code=None; restoredTargets=7; restoredSlots=2; dormantSlots=1; migrations=0; replayedScopes=1; replayedBoundaries=1; replayedInstalls=1/1; replayedImports=1/1; replayedModes=1; readmittedCommands=1; clocks=1 wakes=1; assembliesPublished=5; restoredEpoch=6; exposureDetail=restored into a new session from a checkpoint of 4e415247433031330000000000000001."
     },
     {
       "name": "narrative/gc018-restore-recreates-state-at-different-native-indices",
@@ -86,12 +86,12 @@
     {
       "name": "narrative/gc018-restore-preserves-mode-imports-and-exclusions",
       "status": "Pass",
-      "detail": "mode=Automatic->Automatic (captured=Automatic planned=Automatic); scopes=8->8 treeEqual=True; grants=2->2 rowsEqual=True; imports=0->0; exclusions=1->1; capabilityIsolationMembers=1->1; serviceIsolationMembers=0->0; replayedBoundaries=1"
+      "detail": "mode=Conservative->Conservative (captured=Conservative planned=Conservative); scopes=8->8 treeEqual=True; grants=3->3 rowsEqual=True; installs=1->1 rowsEqual=True; imports=1->1; exclusions=1->1; capabilityIsolationMembers=1->1; serviceIsolationMembers=0->0; replayedBoundaries=1; replayedInstalls=1; replayedImports=1; replayedModes=1"
     },
     {
       "name": "narrative/gc018-restore-continues-clocks-rng-and-cursors",
       "status": "Pass",
-      "detail": "rngStreams=2->2 positionsEqual=True draws=3,3; clocks=2->2 rowsEqual=True wakes=1; cursors=2->2 rowsEqual=True; lastEventSequence=0->0; issuerHighWater=8->8; pendingCommands=1; stampsRestamped=True"
+      "detail": "rngStreams=2->2 positionsEqual=True draws=3,3; clocks=2->2 rowsEqual=True wakes=1; cursors=2->2 rowsEqual=True; lastEventSequence=0->0; issuerHighWater=17->17; pendingCommands=1; stampsRestamped=True"
     },
     {
       "name": "narrative/gc018-old-callbacks-cannot-target-the-new-session",
@@ -111,27 +111,27 @@
     {
       "name": "fixture:narrative/gc018-world-lane-and-live-state",
       "status": "Pass",
-      "detail": "session=4e415247433031330000000000000001; catalogFingerprint=e30e5c5248fc6ed5393960bbaab9838502227e516a55d4cb9f532fe167cf3bb7; registryBefore=1; liveTargets=7; scopes=8; setupEdits=True; targetsSeeded=True; activeSlot=2/7; dormantSlot=2/3 active=False; spareScope=True; enrichedScope=ScopeId(05cfbe283381aab8902e93d508ff031c) exclusions=1 capIsolationMembers=1; rngStreams=2 draws=33ebfe9a4f6d54c80000000000000064=3,33ebfe9a4f6d54c80000000000000065=3; clock=33ebfe9a4f6d069b1aca623a6c073300 wakes=1; auxiliaryIndices=14..17; idleFrames=4 idleSteps=0; mode=Automatic; joined=True; sourceHandles=TargetId(040136f12eb3c37110927a2853650e1b)@idx24=slot6/1,TargetId(4c61e7ee6939de7bd16d3cab476ff6da)@idx22=slot4/1,TargetId(4ca6220f97ef579a48891902bcef4dfa)@idx19=slot1/1,TargetId(5c63f1314f90924ad5990c531fa9e5b7)@idx23=slot5/1,TargetId(967aebcd3dbf137cbdc41d194205b514)@idx21=slot3/1,TargetId(a300fa762c702f9e90dbcb691ea84e96)@idx18=slot0/1,TargetId(dce95d184...(+38 chars); laneJoined=True; lifecycle=Running"
+      "detail": "session=4e415247433031330000000000000001; catalogFingerprint=e30e5c5248fc6ed5393960bbaab9838502227e516a55d4cb9f532fe167cf3bb7; registryBefore=1; liveTargets=7; scopes=8; setupEdits=True; targetsSeeded=True; activeSlot=2/7; dormantSlot=2/3 active=False; spareScope=True; enrichedScope=ScopeId(05cfbe283381aab8902e93d508ff031c) exclusions=1 capIsolationMembers=1 imports=1; importProvider=PluginInstanceId(8d5ac0121d3d8b7c453e967325c9158b)@ScopeId(7aa963e13ea0810e4158dd909fdfac0b) capability=CapabilityId(a54b600e13612649cc9424903c07bc1c) importScope=ScopeId(05cfbe283381aab8902e93d508ff031c); rngStreams=2 draws=33ebfe9a4f6d54c80000000000000064=3,33ebfe9a4f6d54c80000000000000065=3; clock=33ebfe9a4f6d069b1aca623a6c073300 wakes=1; auxiliaryIndices=14..17; idleFrames=4 idleSteps=0; mode=Automatic->Conservative; joined=True; sourceHandles=TargetId(040136f12eb3c37110927a2853650e1b)@idx24=slot6/1,TargetId(4c61e7ee6939de7bd16d3cab476ff6da)@idx22=slot4/1,TargetId(4ca6220f97ef579a48891902bcef4dfa)@idx19=slot1/1,TargetId(5c63f1314f90924ad5990c531fa9e5b7)@idx23=slot5/1,TargetId(967aebcd3dbf137cbdc41d194205b514)@idx21=slot3/1,TargetId(a300fa762c702f9e90dbcb691ea84e96)@idx18=slot0/1,TargetId(dce95d184...(+38 chars); laneJoined=True; lifecycle=Running"
     },
     {
       "name": "fixture:narrative/gc018-committed-boundary-capture",
       "status": "Pass",
-      "detail": "session=4e415247433031330000000000000001; atBoundary=True; bytes=6985; documentHash=0929e56bde903a9b86c1c7de06c69749c30248a60be0e2871424becaa5eeb89b; counts=counts(scope=8,install=0,target=7,slot=2,grant=2,command=0,message=0); header=header(def=WorldDefinitionId(ed00c0fd976caad86a2e518fb4389df6),step=0,scope=8,install=0,target=7,slot=2); definition=WorldDefinitionId(ed00c0fd976caad86a2e518fb4389df6); step=0; debtTicks=0; pendingDemand=1; protocol=1.0; mode=Automatic; fingerprint=e30e5c5248fc6ed5393960bbaab9838502227e516a55d4cb9f532fe167cf3bb7; published=3/3; admissionCutoff=1; activeSlots=1; dormantSlots=1; rngStreams=2"
+      "detail": "session=4e415247433031330000000000000001; atBoundary=True; bytes=7744; documentHash=aaad189e940c40f0f7c66bab8a996044567a63dcf829882030093d6ca7778c82; counts=counts(scope=8,install=1,target=7,slot=2,grant=3,command=0,message=0); header=header(def=WorldDefinitionId(ed00c0fd976caad86a2e518fb4389df6),step=0,scope=8,install=1,target=7,slot=2); definition=WorldDefinitionId(ed00c0fd976caad86a2e518fb4389df6); step=0; debtTicks=0; pendingDemand=1; protocol=1.0; mode=Conservative; fingerprint=e30e5c5248fc6ed5393960bbaab9838502227e516a55d4cb9f532fe167cf3bb7; published=6/6; admissionCutoff=1; activeSlots=1; dormantSlots=1; rngStreams=2"
     },
     {
       "name": "fixture:narrative/gc018-queued-commands-are-dispositioned-not-omitted",
       "status": "Pass",
-      "detail": "queued=OperationId(WorldId(4e415247433031330000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 8); route=RouteId(750f2574f941becaf655620cc55ce2fe); target=TargetId(a300fa762c702f9e90dbcb691ea84e96); schema=SchemaRef(SchemaId(4fbc5dc51eb55373de0c85621aae7d56), 1); payloadBytes=8; rejectQueued(queue(RejectQueued,offered=1,included=0,rejected=1) accounted=True headerCommands=0 headerRejected=1); includeQueued(queue(IncludeQueued,offered=1,included=1,rejected=0) accounted=True headerCommands=1 headerRejected=0); cutoff=1"
+      "detail": "queued=OperationId(WorldId(4e415247433031330000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 17); route=RouteId(750f2574f941becaf655620cc55ce2fe); target=TargetId(a300fa762c702f9e90dbcb691ea84e96); schema=SchemaRef(SchemaId(4fbc5dc51eb55373de0c85621aae7d56), 1); payloadBytes=8; rejectQueued(queue(RejectQueued,offered=1,included=0,rejected=1) accounted=True headerCommands=0 headerRejected=1); includeQueued(queue(IncludeQueued,offered=1,included=1,rejected=0) accounted=True headerCommands=1 headerRejected=0); cutoff=1"
     },
     {
       "name": "fixture:narrative/gc018-capture-refuses-outside-a-boundary",
       "status": "Pass",
-      "detail": "laneRevision=3->4; laneEpoch=4; worldEpoch=3; laneAhead=True; atCommittedBoundary=False; readRefusal=NotAtBoundary/TooLate; captureRefusal=TooLate; documentBytes=0; healed=True; joined=True; refusalDetail=world GameCoreNarrativeWorld:4e415247433031330000000000000001 is not at a committed boundary (lifecycle Running, pumping False, faulted False); a checkpoint is ...(+49 chars)"
+      "detail": "laneRevision=6->7; laneEpoch=7; worldEpoch=6; laneAhead=True; atCommittedBoundary=False; readRefusal=NotAtBoundary/TooLate; captureRefusal=TooLate; documentBytes=0; healed=True; joined=True; refusalDetail=world GameCoreNarrativeWorld:4e415247433031330000000000000001 is not at a committed boundary (lifecycle Running, pumping False, faulted False); a checkpoint is ...(+49 chars)"
     },
     {
       "name": "fixture:narrative/gc018-corrupt-and-truncated-documents-reject",
       "status": "Pass",
-      "detail": "bytes=7385; tampered=UnsupportedVersion (envelope=UnsupportedVersion(the Target record at field 104 was refused: UnsupportedVersion (P-054).); restoreStage=Read/...(+18 chars)); truncated=UnsupportedVersion (envelope=UnsupportedVersion(the checkpoint document carries no trailing checksum (05 s6).); restoreStage=Read/Unsupporte...(+8 chars)); padded=ResourceUnavailable (envelope=ResourceUnavailable(the checkpoint document carries 1 byte(s) after its checksum (05 s6).); restoreStage=Read/R...(+18 chars)); registry=2->2; builderBuilds=0"
+      "detail": "bytes=8144; tampered=UnsupportedVersion (envelope=UnsupportedVersion(the Target record at field 104 was refused: UnsupportedVersion (P-054).); restoreStage=Read/...(+18 chars)); truncated=UnsupportedVersion (envelope=UnsupportedVersion(the checkpoint document carries no trailing checksum (05 s6).); restoreStage=Read/Unsupporte...(+8 chars)); padded=ResourceUnavailable (envelope=ResourceUnavailable(the checkpoint document carries 1 byte(s) after its checksum (05 s6).); restoreStage=Read/R...(+18 chars)); registry=2->2; builderBuilds=0"
     },
     {
       "name": "fixture:narrative/gc018-unknown-required-schema-rejects-restore",
@@ -141,7 +141,7 @@
     {
       "name": "fixture:narrative/gc018-ambiguous-migration-rejects-restore",
       "status": "Pass",
-      "detail": "steps=3; registryWellFormed=True; directPlan=Ambiguous(SchemaRef(SchemaId(16c046a5f21f63826550023b6cc1e663), 2)->SchemaRef(SchemaId(16c046a5f21f63826550023b6cc1e663), 3),steps=0,paths=2); plannerRefusal=MigrationRejected/OwnershipConflict; executorStage=Plan/OwnershipConflict; builderBuilds=0; registry=2->2; plannerDetail=schema SchemaId(16c046a5f21f63826550023b6cc1e663): the catalog registers 2 distinct chains into version 3 for schema SchemaId(16c046a5f21f63826550023b6cc1e663);...(+67 chars)"
+      "detail": "steps=3; registryWellFormed=True; directPlan=Ambiguous(SchemaRef(SchemaId(16c046a5f21f63826550023b6cc1e663), 2)->SchemaRef(SchemaId(16c046a5f21f63826550023b6cc1e663), 3),steps=0,paths=2); plannerRefusal=MigrationRejected/OwnershipConflict; executorStage=Plan/OwnershipConflict; builderBuilds=0; registry=2->2; plannerDetail=schema SchemaId(16c046a5f21f63826550023b6cc1e663): the catalog registers 2 distinct chains from version 2 to 3 for schema SchemaId(16c046a5f21f63826550023b6cc1e...(+72 chars)"
     },
     {
       "name": "fixture:narrative/gc018-corrupt-reference-rejects-restore",
@@ -151,7 +151,7 @@
     {
       "name": "fixture:narrative/gc018-restore-happens-into-a-new-unexposed-world",
       "status": "Pass",
-      "detail": "sourceSession=4e415247433031330000000000000001; restoredSession=4e41524743303133000000000000000b; registryBaseline=2; registryAfterStaging=2; registryAfterExpose=3; stage=Expose; code=None; restoredTargets=7; restoredSlots=2; dormantSlots=1; migrations=0; replayedScopes=1; replayedBoundaries=1; replayedModes=0; readmittedCommands=1; clocks=1 wakes=1; assembliesPublished=2; restoredEpoch=3; exposureDetail=restored into a new session from a checkpoint of 4e415247433031330000000000000001."
+      "detail": "sourceSession=4e415247433031330000000000000001; restoredSession=4e41524743303133000000000000000b; registryBaseline=2; registryAfterStaging=2; registryAfterExpose=3; stage=Expose; code=None; restoredTargets=7; restoredSlots=2; dormantSlots=1; migrations=0; replayedScopes=1; replayedBoundaries=1; replayedInstalls=1/1; replayedImports=1/1; replayedModes=1; readmittedCommands=1; clocks=1 wakes=1; assembliesPublished=5; restoredEpoch=6; exposureDetail=restored into a new session from a checkpoint of 4e415247433031330000000000000001."
     },
     {
       "name": "fixture:narrative/gc018-restore-recreates-state-at-different-native-indices",
@@ -166,12 +166,12 @@
     {
       "name": "fixture:narrative/gc018-restore-preserves-mode-imports-and-exclusions",
       "status": "Pass",
-      "detail": "mode=Automatic->Automatic (captured=Automatic planned=Automatic); scopes=8->8 treeEqual=True; grants=2->2 rowsEqual=True; imports=0->0; exclusions=1->1; capabilityIsolationMembers=1->1; serviceIsolationMembers=0->0; replayedBoundaries=1"
+      "detail": "mode=Conservative->Conservative (captured=Conservative planned=Conservative); scopes=8->8 treeEqual=True; grants=3->3 rowsEqual=True; installs=1->1 rowsEqual=True; imports=1->1; exclusions=1->1; capabilityIsolationMembers=1->1; serviceIsolationMembers=0->0; replayedBoundaries=1; replayedInstalls=1; replayedImports=1; replayedModes=1"
     },
     {
       "name": "fixture:narrative/gc018-restore-continues-clocks-rng-and-cursors",
       "status": "Pass",
-      "detail": "rngStreams=2->2 positionsEqual=True draws=3,3; clocks=2->2 rowsEqual=True wakes=1; cursors=2->2 rowsEqual=True; lastEventSequence=0->0; issuerHighWater=8->8; pendingCommands=1; stampsRestamped=True"
+      "detail": "rngStreams=2->2 positionsEqual=True draws=3,3; clocks=2->2 rowsEqual=True wakes=1; cursors=2->2 rowsEqual=True; lastEventSequence=0->0; issuerHighWater=17->17; pendingCommands=1; stampsRestamped=True"
     },
     {
       "name": "fixture:narrative/gc018-old-callbacks-cannot-target-the-new-session",
@@ -196,27 +196,27 @@
     {
       "name": "cards/gc018-world-lane-and-live-state",
       "status": "Pass",
-      "detail": "session=43415247433031330000000000000001; catalogFingerprint=77838f4766f9086a0fa32b4fb30d8d5fceeb3a8072e61594fa2177946ad3315d; registryBefore=1; liveTargets=6; scopes=10; setupEdits=True; targetsSeeded=True; activeSlot=1/4242; dormantSlot=1/99 active=False; spareScope=True; enrichedScope=ScopeId(a1c83965a76625f59ef4110c6bfa0478) exclusions=1 capIsolationMembers=1; rngStreams=2 draws=1136f3c211173b350000000000000064=3,1136f3c211173b350000000000000065=3; clock=1136f3c2111769669eef02c58dc86caf wakes=1; auxiliaryIndices=12..15; idleFrames=4 idleSteps=0; mode=Automatic; joined=True; sourceHandles=TargetId(5767cc31ae9cbe923b031aa7db4a8512)@idx16=slot0/1,TargetId(709f4ce6dacd0abd01d516a7a46bf656)@idx19=slot3/1,TargetId(92c9bac8559ecae0a6a4b0c54831bf88)@idx21=slot5/1,TargetId(b6e34cb04119c878ee0a4dfe81d7d905)@idx20=slot4/1,TargetId(c203b09deb766da6f8e93773ca6dd65c)@idx17=slot1/1,TargetId(ff80dc9b9ed2790f4681afa020eb8e4c)@idx18=slot2/1; laneJoined=True; lifecycle=Running"
+      "detail": "session=43415247433031330000000000000001; catalogFingerprint=77838f4766f9086a0fa32b4fb30d8d5fceeb3a8072e61594fa2177946ad3315d; registryBefore=1; liveTargets=6; scopes=10; setupEdits=True; targetsSeeded=True; activeSlot=1/4242; dormantSlot=1/99 active=False; spareScope=True; enrichedScope=ScopeId(a1c83965a76625f59ef4110c6bfa0478) exclusions=1 capIsolationMembers=1 imports=1; importProvider=PluginInstanceId(c5b1e152e048358db420aefd223b5e1a)@ScopeId(a1c83965a76625f59ef4110c6bfa0478) capability=CapabilityId(62603a901bedf0f5982a2bc89d75054a) importScope=ScopeId(a1c83965a76625f59ef4110c6bfa0478); rngStreams=2 draws=1136f3c211173b350000000000000064=3,1136f3c211173b350000000000000065=3; clock=1136f3c2111769669eef02c58dc86caf wakes=1; auxiliaryIndices=12..15; idleFrames=4 idleSteps=0; mode=Automatic->Conservative; joined=True; sourceHandles=TargetId(5767cc31ae9cbe923b031aa7db4a8512)@idx16=slot0/1,TargetId(709f4ce6dacd0abd01d516a7a46bf656)@idx19=slot3/1,TargetId(92c9bac8559ecae0a6a4b0c54831bf88)@idx21=slot5/1,TargetId(b6e34cb04119c878ee0a4dfe81d7d905)@idx20=slot4/1,TargetId(c203b09deb766da6f8e93773ca6dd65c)@idx17=slot1/1,TargetId(ff80dc9b9ed2790f4681afa020eb8e4c)@idx18=slot2/1; laneJoined=True; lifecycle=Running"
     },
     {
       "name": "cards/gc018-committed-boundary-capture",
       "status": "Pass",
-      "detail": "session=43415247433031330000000000000001; atBoundary=True; bytes=7193; documentHash=c0c9d901520de2e197a0bd3a74bd2a09dc70ee98df28725001f6f29e3c73cc90; counts=counts(scope=10,install=0,target=6,slot=2,grant=2,command=0,message=0); header=header(def=WorldDefinitionId(87d5e5770aff9e1b4d35c6e94f39e658),step=0,scope=10,install=0,target=6,slot=2); definition=WorldDefinitionId(87d5e5770aff9e1b4d35c6e94f39e658); step=0; debtTicks=0; pendingDemand=1; protocol=1.0; mode=Automatic; fingerprint=77838f4766f9086a0fa32b4fb30d8d5fceeb3a8072e61594fa2177946ad3315d; published=3/3; admissionCutoff=1; activeSlots=1; dormantSlots=1; rngStreams=2"
+      "detail": "session=43415247433031330000000000000001; atBoundary=True; bytes=7952; documentHash=bd3edf9ccc8dabce2f82e148a639f20ea2ea2b45cce90cbdc33544a82371cecf; counts=counts(scope=10,install=1,target=6,slot=2,grant=3,command=0,message=0); header=header(def=WorldDefinitionId(87d5e5770aff9e1b4d35c6e94f39e658),step=0,scope=10,install=1,target=6,slot=2); definition=WorldDefinitionId(87d5e5770aff9e1b4d35c6e94f39e658); step=0; debtTicks=0; pendingDemand=1; protocol=1.0; mode=Conservative; fingerprint=77838f4766f9086a0fa32b4fb30d8d5fceeb3a8072e61594fa2177946ad3315d; published=6/6; admissionCutoff=1; activeSlots=1; dormantSlots=1; rngStreams=2"
     },
     {
       "name": "cards/gc018-queued-commands-are-dispositioned-not-omitted",
       "status": "Pass",
-      "detail": "queued=OperationId(WorldId(43415247433031330000000000000001), c4d3f9becdf691d69ff6f056d4f2e274, 8); route=RouteId(b85a21dd9ba6a4cd99fafcea95c1036c); target=TargetId(5767cc31ae9cbe923b031aa7db4a8512); schema=SchemaRef(SchemaId(6f8b4189041961322b8f6f5f74f94838), 1); payloadBytes=40; rejectQueued(queue(RejectQueued,offered=1,included=0,rejected=1) accounted=True headerCommands=0 headerRejected=1); includeQueued(queue(IncludeQueued,offered=1,included=1,rejected=0) accounted=True headerCommands=1 headerRejected=0); cutoff=1"
+      "detail": "queued=OperationId(WorldId(43415247433031330000000000000001), c4d3f9becdf691d69ff6f056d4f2e274, 16); route=RouteId(b85a21dd9ba6a4cd99fafcea95c1036c); target=TargetId(5767cc31ae9cbe923b031aa7db4a8512); schema=SchemaRef(SchemaId(6f8b4189041961322b8f6f5f74f94838), 1); payloadBytes=40; rejectQueued(queue(RejectQueued,offered=1,included=0,rejected=1) accounted=True headerCommands=0 headerRejected=1); includeQueued(queue(IncludeQueued,offered=1,included=1,rejected=0) accounted=True headerCommands=1 headerRejected=0); cutoff=1"
     },
     {
       "name": "cards/gc018-capture-refuses-outside-a-boundary",
       "status": "Pass",
-      "detail": "laneRevision=3->4; laneEpoch=4; worldEpoch=3; laneAhead=True; atCommittedBoundary=False; readRefusal=NotAtBoundary/TooLate; captureRefusal=TooLate; documentBytes=0; healed=True; joined=True; refusalDetail=world GameCoreCardTableWorld:43415247433031330000000000000001 is not at a committed boundary (lifecycle Running, pumping False, faulted False); a checkpoint is ...(+49 chars)"
+      "detail": "laneRevision=6->7; laneEpoch=7; worldEpoch=6; laneAhead=True; atCommittedBoundary=False; readRefusal=NotAtBoundary/TooLate; captureRefusal=TooLate; documentBytes=0; healed=True; joined=True; refusalDetail=world GameCoreCardTableWorld:43415247433031330000000000000001 is not at a committed boundary (lifecycle Running, pumping False, faulted False); a checkpoint is ...(+49 chars)"
     },
     {
       "name": "cards/gc018-corrupt-and-truncated-documents-reject",
       "status": "Pass",
-      "detail": "bytes=7625; tampered=MissingDependency (envelope=MissingDependency(the Target record at field 104 was refused: Truncated (P-054).); restoreStage=Read/MissingDep...(+7 chars)); truncated=UnsupportedVersion (envelope=UnsupportedVersion(the checkpoint document carries no trailing checksum (05 s6).); restoreStage=Read/Unsupporte...(+8 chars)); padded=ResourceUnavailable (envelope=ResourceUnavailable(the checkpoint document carries 1 byte(s) after its checksum (05 s6).); restoreStage=Read/R...(+18 chars)); registry=2->2; builderBuilds=0"
+      "detail": "bytes=8384; tampered=ResourceUnavailable (envelope=ResourceUnavailable(the Target record at field 104 was refused: ChecksumMismatch (P-054).); restoreStage=Read/R...(+18 chars)); truncated=UnsupportedVersion (envelope=UnsupportedVersion(the checkpoint document carries no trailing checksum (05 s6).); restoreStage=Read/Unsupporte...(+8 chars)); padded=ResourceUnavailable (envelope=ResourceUnavailable(the checkpoint document carries 1 byte(s) after its checksum (05 s6).); restoreStage=Read/R...(+18 chars)); registry=2->2; builderBuilds=0"
     },
     {
       "name": "cards/gc018-unknown-required-schema-rejects-restore",
@@ -226,7 +226,7 @@
     {
       "name": "cards/gc018-ambiguous-migration-rejects-restore",
       "status": "Pass",
-      "detail": "steps=3; registryWellFormed=True; directPlan=Ambiguous(SchemaRef(SchemaId(c9a030b64976fc6e5c482785eb0e6f39), 1)->SchemaRef(SchemaId(c9a030b64976fc6e5c482785eb0e6f39), 3),steps=0,paths=2); plannerRefusal=MigrationRejected/OwnershipConflict; executorStage=Plan/OwnershipConflict; builderBuilds=0; registry=2->2; plannerDetail=schema SchemaId(c9a030b64976fc6e5c482785eb0e6f39): the catalog registers 2 distinct chains into version 3 for schema SchemaId(c9a030b64976fc6e5c482785eb0e6f39);...(+67 chars)"
+      "detail": "steps=3; registryWellFormed=True; directPlan=Ambiguous(SchemaRef(SchemaId(c9a030b64976fc6e5c482785eb0e6f39), 1)->SchemaRef(SchemaId(c9a030b64976fc6e5c482785eb0e6f39), 3),steps=0,paths=2); plannerRefusal=MigrationRejected/OwnershipConflict; executorStage=Plan/OwnershipConflict; builderBuilds=0; registry=2->2; plannerDetail=schema SchemaId(c9a030b64976fc6e5c482785eb0e6f39): the catalog registers 2 distinct chains from version 1 to 3 for schema SchemaId(c9a030b64976fc6e5c482785eb0e6...(+72 chars)"
     },
     {
       "name": "cards/gc018-corrupt-reference-rejects-restore",
@@ -236,7 +236,7 @@
     {
       "name": "cards/gc018-restore-happens-into-a-new-unexposed-world",
       "status": "Pass",
-      "detail": "sourceSession=43415247433031330000000000000001; restoredSession=4341524743303133000000000000000b; registryBaseline=2; registryAfterStaging=2; registryAfterExpose=3; stage=Expose; code=None; restoredTargets=6; restoredSlots=2; dormantSlots=1; migrations=0; replayedScopes=1; replayedBoundaries=1; replayedModes=0; readmittedCommands=1; clocks=1 wakes=1; assembliesPublished=2; restoredEpoch=3; exposureDetail=restored into a new session from a checkpoint of 43415247433031330000000000000001."
+      "detail": "sourceSession=43415247433031330000000000000001; restoredSession=4341524743303133000000000000000b; registryBaseline=2; registryAfterStaging=2; registryAfterExpose=3; stage=Expose; code=None; restoredTargets=6; restoredSlots=2; dormantSlots=1; migrations=0; replayedScopes=1; replayedBoundaries=1; replayedInstalls=1/1; replayedImports=1/1; replayedModes=1; readmittedCommands=1; clocks=1 wakes=1; assembliesPublished=5; restoredEpoch=6; exposureDetail=restored into a new session from a checkpoint of 43415247433031330000000000000001."
     },
     {
       "name": "cards/gc018-restore-recreates-state-at-different-native-indices",
@@ -251,12 +251,12 @@
     {
       "name": "cards/gc018-restore-preserves-mode-imports-and-exclusions",
       "status": "Pass",
-      "detail": "mode=Automatic->Automatic (captured=Automatic planned=Automatic); scopes=10->10 treeEqual=True; grants=2->2 rowsEqual=True; imports=0->0; exclusions=1->1; capabilityIsolationMembers=1->1; serviceIsolationMembers=0->0; replayedBoundaries=1"
+      "detail": "mode=Conservative->Conservative (captured=Conservative planned=Conservative); scopes=10->10 treeEqual=True; grants=3->3 rowsEqual=True; installs=1->1 rowsEqual=True; imports=1->1; exclusions=1->1; capabilityIsolationMembers=1->1; serviceIsolationMembers=0->0; replayedBoundaries=1; replayedInstalls=1; replayedImports=1; replayedModes=1"
     },
     {
       "name": "cards/gc018-restore-continues-clocks-rng-and-cursors",
       "status": "Pass",
-      "detail": "rngStreams=2->2 positionsEqual=True draws=3,3; clocks=2->2 rowsEqual=True wakes=1; cursors=2->2 rowsEqual=True; lastEventSequence=0->0; issuerHighWater=8->8; pendingCommands=1; stampsRestamped=True"
+      "detail": "rngStreams=2->2 positionsEqual=True draws=3,3; clocks=2->2 rowsEqual=True wakes=1; cursors=2->2 rowsEqual=True; lastEventSequence=0->0; issuerHighWater=16->16; pendingCommands=1; stampsRestamped=True"
     },
     {
       "name": "cards/gc018-old-callbacks-cannot-target-the-new-session",
@@ -276,27 +276,27 @@
     {
       "name": "fixture:cards/gc018-world-lane-and-live-state",
       "status": "Pass",
-      "detail": "session=43415247433031330000000000000001; catalogFingerprint=815b89a5ad754aeafabf7a6ad0dbd1bd277a17d63fc0b5845f58ae9d80b3c08a; registryBefore=1; liveTargets=6; scopes=10; setupEdits=True; targetsSeeded=True; activeSlot=1/4242; dormantSlot=1/99 active=False; spareScope=True; enrichedScope=ScopeId(a1c83965a76625f59ef4110c6bfa0478) exclusions=1 capIsolationMembers=1; rngStreams=2 draws=1136f3c211173b350000000000000064=3,1136f3c211173b350000000000000065=3; clock=1136f3c2111769669eef02c58dc86caf wakes=1; auxiliaryIndices=12..15; idleFrames=4 idleSteps=0; mode=Automatic; joined=True; sourceHandles=TargetId(5767cc31ae9cbe923b031aa7db4a8512)@idx16=slot0/1,TargetId(709f4ce6dacd0abd01d516a7a46bf656)@idx19=slot3/1,TargetId(92c9bac8559ecae0a6a4b0c54831bf88)@idx21=slot5/1,TargetId(b6e34cb04119c878ee0a4dfe81d7d905)@idx20=slot4/1,TargetId(c203b09deb766da6f8e93773ca6dd65c)@idx17=slot1/1,TargetId(ff80dc9b9ed2790f4681afa020eb8e4c)@idx18=slot2/1; laneJoined=True; lifecycle=Running"
+      "detail": "session=43415247433031330000000000000001; catalogFingerprint=815b89a5ad754aeafabf7a6ad0dbd1bd277a17d63fc0b5845f58ae9d80b3c08a; registryBefore=1; liveTargets=6; scopes=10; setupEdits=True; targetsSeeded=True; activeSlot=1/4242; dormantSlot=1/99 active=False; spareScope=True; enrichedScope=ScopeId(a1c83965a76625f59ef4110c6bfa0478) exclusions=1 capIsolationMembers=1 imports=1; importProvider=PluginInstanceId(c5b1e152e048358db420aefd223b5e1a)@ScopeId(a1c83965a76625f59ef4110c6bfa0478) capability=CapabilityId(62603a901bedf0f5982a2bc89d75054a) importScope=ScopeId(a1c83965a76625f59ef4110c6bfa0478); rngStreams=2 draws=1136f3c211173b350000000000000064=3,1136f3c211173b350000000000000065=3; clock=1136f3c2111769669eef02c58dc86caf wakes=1; auxiliaryIndices=12..15; idleFrames=4 idleSteps=0; mode=Automatic->Conservative; joined=True; sourceHandles=TargetId(5767cc31ae9cbe923b031aa7db4a8512)@idx16=slot0/1,TargetId(709f4ce6dacd0abd01d516a7a46bf656)@idx19=slot3/1,TargetId(92c9bac8559ecae0a6a4b0c54831bf88)@idx21=slot5/1,TargetId(b6e34cb04119c878ee0a4dfe81d7d905)@idx20=slot4/1,TargetId(c203b09deb766da6f8e93773ca6dd65c)@idx17=slot1/1,TargetId(ff80dc9b9ed2790f4681afa020eb8e4c)@idx18=slot2/1; laneJoined=True; lifecycle=Running"
     },
     {
       "name": "fixture:cards/gc018-committed-boundary-capture",
       "status": "Pass",
-      "detail": "session=43415247433031330000000000000001; atBoundary=True; bytes=7193; documentHash=70194fe222aed560bea7b62bcb41e89faeaf2cecc6c7bbe14d0dc6c2ffcf68a1; counts=counts(scope=10,install=0,target=6,slot=2,grant=2,command=0,message=0); header=header(def=WorldDefinitionId(87d5e5770aff9e1b4d35c6e94f39e658),step=0,scope=10,install=0,target=6,slot=2); definition=WorldDefinitionId(87d5e5770aff9e1b4d35c6e94f39e658); step=0; debtTicks=0; pendingDemand=1; protocol=1.0; mode=Automatic; fingerprint=815b89a5ad754aeafabf7a6ad0dbd1bd277a17d63fc0b5845f58ae9d80b3c08a; published=3/3; admissionCutoff=1; activeSlots=1; dormantSlots=1; rngStreams=2"
+      "detail": "session=43415247433031330000000000000001; atBoundary=True; bytes=7952; documentHash=36cbc371be242a9adfd58f5cf300844b146ff9a691b8f301e71f3c9940319c1e; counts=counts(scope=10,install=1,target=6,slot=2,grant=3,command=0,message=0); header=header(def=WorldDefinitionId(87d5e5770aff9e1b4d35c6e94f39e658),step=0,scope=10,install=1,target=6,slot=2); definition=WorldDefinitionId(87d5e5770aff9e1b4d35c6e94f39e658); step=0; debtTicks=0; pendingDemand=1; protocol=1.0; mode=Conservative; fingerprint=815b89a5ad754aeafabf7a6ad0dbd1bd277a17d63fc0b5845f58ae9d80b3c08a; published=6/6; admissionCutoff=1; activeSlots=1; dormantSlots=1; rngStreams=2"
     },
     {
       "name": "fixture:cards/gc018-queued-commands-are-dispositioned-not-omitted",
       "status": "Pass",
-      "detail": "queued=OperationId(WorldId(43415247433031330000000000000001), c4d3f9becdf691d69ff6f056d4f2e274, 8); route=RouteId(b85a21dd9ba6a4cd99fafcea95c1036c); target=TargetId(5767cc31ae9cbe923b031aa7db4a8512); schema=SchemaRef(SchemaId(6f8b4189041961322b8f6f5f74f94838), 1); payloadBytes=40; rejectQueued(queue(RejectQueued,offered=1,included=0,rejected=1) accounted=True headerCommands=0 headerRejected=1); includeQueued(queue(IncludeQueued,offered=1,included=1,rejected=0) accounted=True headerCommands=1 headerRejected=0); cutoff=1"
+      "detail": "queued=OperationId(WorldId(43415247433031330000000000000001), c4d3f9becdf691d69ff6f056d4f2e274, 16); route=RouteId(b85a21dd9ba6a4cd99fafcea95c1036c); target=TargetId(5767cc31ae9cbe923b031aa7db4a8512); schema=SchemaRef(SchemaId(6f8b4189041961322b8f6f5f74f94838), 1); payloadBytes=40; rejectQueued(queue(RejectQueued,offered=1,included=0,rejected=1) accounted=True headerCommands=0 headerRejected=1); includeQueued(queue(IncludeQueued,offered=1,included=1,rejected=0) accounted=True headerCommands=1 headerRejected=0); cutoff=1"
     },
     {
       "name": "fixture:cards/gc018-capture-refuses-outside-a-boundary",
       "status": "Pass",
-      "detail": "laneRevision=3->4; laneEpoch=4; worldEpoch=3; laneAhead=True; atCommittedBoundary=False; readRefusal=NotAtBoundary/TooLate; captureRefusal=TooLate; documentBytes=0; healed=True; joined=True; refusalDetail=world GameCoreCardTableWorld:43415247433031330000000000000001 is not at a committed boundary (lifecycle Running, pumping False, faulted False); a checkpoint is ...(+49 chars)"
+      "detail": "laneRevision=6->7; laneEpoch=7; worldEpoch=6; laneAhead=True; atCommittedBoundary=False; readRefusal=NotAtBoundary/TooLate; captureRefusal=TooLate; documentBytes=0; healed=True; joined=True; refusalDetail=world GameCoreCardTableWorld:43415247433031330000000000000001 is not at a committed boundary (lifecycle Running, pumping False, faulted False); a checkpoint is ...(+49 chars)"
     },
     {
       "name": "fixture:cards/gc018-corrupt-and-truncated-documents-reject",
       "status": "Pass",
-      "detail": "bytes=7625; tampered=MissingDependency (envelope=MissingDependency(the Target record at field 104 was refused: Truncated (P-054).); restoreStage=Read/MissingDep...(+7 chars)); truncated=UnsupportedVersion (envelope=UnsupportedVersion(the checkpoint document carries no trailing checksum (05 s6).); restoreStage=Read/Unsupporte...(+8 chars)); padded=ResourceUnavailable (envelope=ResourceUnavailable(the checkpoint document carries 1 byte(s) after its checksum (05 s6).); restoreStage=Read/R...(+18 chars)); registry=2->2; builderBuilds=0"
+      "detail": "bytes=8384; tampered=ResourceUnavailable (envelope=ResourceUnavailable(the Target record at field 104 was refused: ChecksumMismatch (P-054).); restoreStage=Read/R...(+18 chars)); truncated=UnsupportedVersion (envelope=UnsupportedVersion(the checkpoint document carries no trailing checksum (05 s6).); restoreStage=Read/Unsupporte...(+8 chars)); padded=ResourceUnavailable (envelope=ResourceUnavailable(the checkpoint document carries 1 byte(s) after its checksum (05 s6).); restoreStage=Read/R...(+18 chars)); registry=2->2; builderBuilds=0"
     },
     {
       "name": "fixture:cards/gc018-unknown-required-schema-rejects-restore",
@@ -306,7 +306,7 @@
     {
       "name": "fixture:cards/gc018-ambiguous-migration-rejects-restore",
       "status": "Pass",
-      "detail": "steps=3; registryWellFormed=True; directPlan=Ambiguous(SchemaRef(SchemaId(c9a030b64976fc6e5c482785eb0e6f39), 1)->SchemaRef(SchemaId(c9a030b64976fc6e5c482785eb0e6f39), 3),steps=0,paths=2); plannerRefusal=MigrationRejected/OwnershipConflict; executorStage=Plan/OwnershipConflict; builderBuilds=0; registry=2->2; plannerDetail=schema SchemaId(c9a030b64976fc6e5c482785eb0e6f39): the catalog registers 2 distinct chains into version 3 for schema SchemaId(c9a030b64976fc6e5c482785eb0e6f39);...(+67 chars)"
+      "detail": "steps=3; registryWellFormed=True; directPlan=Ambiguous(SchemaRef(SchemaId(c9a030b64976fc6e5c482785eb0e6f39), 1)->SchemaRef(SchemaId(c9a030b64976fc6e5c482785eb0e6f39), 3),steps=0,paths=2); plannerRefusal=MigrationRejected/OwnershipConflict; executorStage=Plan/OwnershipConflict; builderBuilds=0; registry=2->2; plannerDetail=schema SchemaId(c9a030b64976fc6e5c482785eb0e6f39): the catalog registers 2 distinct chains from version 1 to 3 for schema SchemaId(c9a030b64976fc6e5c482785eb0e6...(+72 chars)"
     },
     {
       "name": "fixture:cards/gc018-corrupt-reference-rejects-restore",
@@ -316,7 +316,7 @@
     {
       "name": "fixture:cards/gc018-restore-happens-into-a-new-unexposed-world",
       "status": "Pass",
-      "detail": "sourceSession=43415247433031330000000000000001; restoredSession=4341524743303133000000000000000b; registryBaseline=2; registryAfterStaging=2; registryAfterExpose=3; stage=Expose; code=None; restoredTargets=6; restoredSlots=2; dormantSlots=1; migrations=0; replayedScopes=1; replayedBoundaries=1; replayedModes=0; readmittedCommands=1; clocks=1 wakes=1; assembliesPublished=2; restoredEpoch=3; exposureDetail=restored into a new session from a checkpoint of 43415247433031330000000000000001."
+      "detail": "sourceSession=43415247433031330000000000000001; restoredSession=4341524743303133000000000000000b; registryBaseline=2; registryAfterStaging=2; registryAfterExpose=3; stage=Expose; code=None; restoredTargets=6; restoredSlots=2; dormantSlots=1; migrations=0; replayedScopes=1; replayedBoundaries=1; replayedInstalls=1/1; replayedImports=1/1; replayedModes=1; readmittedCommands=1; clocks=1 wakes=1; assembliesPublished=5; restoredEpoch=6; exposureDetail=restored into a new session from a checkpoint of 43415247433031330000000000000001."
     },
     {
       "name": "fixture:cards/gc018-restore-recreates-state-at-different-native-indices",
@@ -331,12 +331,12 @@
     {
       "name": "fixture:cards/gc018-restore-preserves-mode-imports-and-exclusions",
       "status": "Pass",
-      "detail": "mode=Automatic->Automatic (captured=Automatic planned=Automatic); scopes=10->10 treeEqual=True; grants=2->2 rowsEqual=True; imports=0->0; exclusions=1->1; capabilityIsolationMembers=1->1; serviceIsolationMembers=0->0; replayedBoundaries=1"
+      "detail": "mode=Conservative->Conservative (captured=Conservative planned=Conservative); scopes=10->10 treeEqual=True; grants=3->3 rowsEqual=True; installs=1->1 rowsEqual=True; imports=1->1; exclusions=1->1; capabilityIsolationMembers=1->1; serviceIsolationMembers=0->0; replayedBoundaries=1; replayedInstalls=1; replayedImports=1; replayedModes=1"
     },
     {
       "name": "fixture:cards/gc018-restore-continues-clocks-rng-and-cursors",
       "status": "Pass",
-      "detail": "rngStreams=2->2 positionsEqual=True draws=3,3; clocks=2->2 rowsEqual=True wakes=1; cursors=2->2 rowsEqual=True; lastEventSequence=0->0; issuerHighWater=8->8; pendingCommands=1; stampsRestamped=True"
+      "detail": "rngStreams=2->2 positionsEqual=True draws=3,3; clocks=2->2 rowsEqual=True wakes=1; cursors=2->2 rowsEqual=True; lastEventSequence=0->0; issuerHighWater=16->16; pendingCommands=1; stampsRestamped=True"
     },
     {
       "name": "fixture:cards/gc018-old-callbacks-cannot-target-the-new-session",
