@@ -37,7 +37,7 @@ namespace GameCore.Validation.ProbeHost
     /// scenario is run against, exactly as <see cref="CardsScenarioHost"/> does for GC-011, and hands the resulting
     /// observations to the caller.
     /// </summary>
-    public static class Gc013CardsHost
+    public static partial class Gc013CardsHost
     {
         /// <summary>Family label every observation name of this family carries.</summary>
         public const string Label = "cards";
@@ -206,11 +206,14 @@ namespace GameCore.Validation.ProbeHost
         }
 
         /// <summary>
-        /// The card declaration set one run mounts: the table runtime, both scoring providers, the rule library and the
-        /// two draw-policy providers of step D. Every declaration resolves the card catalog's registered plugin
-        /// factory and configuration schema (P-009).
+        /// The card declaration set one run mounts: the table runtime, both scoring providers, the rule library, the
+        /// two draw-policy providers of step D and the W4 gate's state-policy provider. Every declaration resolves the
+        /// card catalog's registered plugin factory and configuration schema (P-009). The state-policy provider is
+        /// declared here because its six slots belong to this revision's compiled ownership surface, which is what
+        /// makes a policy pass over live rows of those slots legal (P-032, P-034); the W4 gate's other manifests drive
+        /// no ownership or schedule surface, so they reach the lane through the gate's own manifest source.
         /// </summary>
-        private static IReadOnlyList<CatalogPluginDeclaration> Declarations()
+        internal static IReadOnlyList<CatalogPluginDeclaration> Declarations()
         {
             var declarations = new List<CatalogPluginDeclaration>(CardTableFixture.Declarations())
             {
@@ -228,6 +231,7 @@ namespace GameCore.Validation.ProbeHost
                         false,
                         CardVocabulary.QuietBonus),
                     ConfigDocument.Empty),
+                new CatalogPluginDeclaration(W4GateCardsHost.StatePolicyManifest, ConfigDocument.Empty),
             };
 
             return declarations;
@@ -303,7 +307,10 @@ namespace GameCore.Validation.ProbeHost
                 CardTableDeclarations.WriteInt32(value));
         }
 
-        private sealed class CardFamily : IGc013Family
+        // The W4 integration gate's half of this family — the GC-014 lifecycle surface and the GC-015 declared
+        // state-policy surface — is in `W4GateCardsHost.cs`, which declares this class's other partial part and
+        // implements `IW4GateFamily` over exactly the declarations above.
+        public sealed partial class CardFamily : IGc013Family
         {
             private readonly ICatalog catalog;
             private readonly IReadOnlyList<CatalogPluginDeclaration> declarations;
