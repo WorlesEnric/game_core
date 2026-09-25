@@ -23,6 +23,23 @@
   ],
   "groups": [
     {
+      "tableName": "FamilyEntryRegistrations",
+      "keysName": "FamilyEntryKeys",
+      "lookupMethodName": "TryGetFamilyEntry",
+      "interfaceType": "GameCore.Validation.Slices.IFamilyPluginEntry",
+      "kind": "PluginFactory",
+      "entries": [
+        {
+          "stableName": "gamecore.validation.entry.cards",
+          "keyName": "CardFamilyEntryKey",
+          "keyVersion": 1,
+          "ownerPackageId": "00000000000000000000000000000000",
+          "implementationId": "6924a730dae9add6de4fc185bd76c778",
+          "implementationExpression": "new GameCore.Validation.Slices.CardFamilyPluginEntry()"
+        }
+      ]
+    },
+    {
       "tableName": "StaticPredicateRegistrations",
       "keysName": "StaticPredicateKeys",
       "lookupMethodName": "TryGetStaticPredicate",
@@ -116,6 +133,6 @@
     }
   ],
   "code": {
-    "usingDirectives": ["GameCore.Rules.Cards", "GameCore.Gameplay.Cards"]
+    "usingDirectives": ["GameCore.Rules.Cards", "GameCore.Gameplay.Cards", "GameCore.Validation.Slices"]
   }
 }
