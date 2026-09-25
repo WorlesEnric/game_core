@@ -101,8 +101,38 @@ Evidence: `artifacts/gc-010/narrative-trace.json` — the canonical narrative tr
 | `dotnet/GameCore.sln`, `dotnet/README.md` | two project entries + documentation rows | the pure rules package builds under plain dotnet |
 | `tools/check_game_core_csharp.py` | `+ Packages/com.gamecore.rules.narrative` (TARGETS and `engine_free`), `+ Packages/com.gamecore.gameplay.narrative` (TARGETS only) | the host-side balance/forbidden-construct checks now cover both new packages; the gameplay package legitimately references `Unity.Entities`, so it is not in `engine_free` |
 
-No existing kernel file was modified. **Kernel changes: none.** No package outside `Packages/com.gamecore.rules.narrative`
-and `Packages/com.gamecore.gameplay.narrative` was touched except the shared wiring files above.
+No package outside `Packages/com.gamecore.rules.narrative` and `Packages/com.gamecore.gameplay.narrative` was touched
+except the shared wiring files above and the four kernel fixes below.
+
+### 3.1 Kernel changes (separate `kernel:` commits)
+
+The slice exposed one genuine generic gap and two generic defects. Each is minimal, carries no genre content, and
+would block GC-011's league/seat tree in exactly the same way, so all three are fixed in the kernel rather than
+worked around in a fixture. They are in three commits:
+
+**`kernel:` a world definition may declare its scope tree in the lane seed.**
+`CompositionLaneSeed` gains an optional `InitialScopes` (with a 3-argument constructor, `WithScopes` and
+`DeclaresScopes`); `CompositionState.CreateEmpty` gains an optional `declaredScopes` parameter and passes it to
+`ScopeRegistry`; `CompositionHost`'s constructor passes `seed.InitialScopes`. Additive and source-compatible: the
+two-argument seed, `InitialAssembly`, `Unpublished` and `FromPublishedAssembly` all keep working, and every existing
+call site is unaffected.
+*Why it is a genuine gap rather than a fixture convenience.* P-006 has one publication series and
+`AssemblyPublisher.TryAdoptLanePublication` requires the lane pair to be exactly the next value of the world's
+(`AssemblyPublisher.cs:549-553`). A `ScopeCreate` publication has no derivable target change, so no assembly can be
+published for it — `DerivedAssemblyPipeline` refuses to publish a plan without an effective change and the world can
+never catch up. Every other task in Waves 0–2 used a root-only scope, so nothing had hit it; 07 §3.1 and 07 §2 both
+need a tree. P-010 says scopes form one rooted acyclic tree per world and P-002 gives the host the desired graph, so
+declaring the tree in the world definition is the reading the protocol already implies.
+**`kernel:` one root scope per registry, and the reported root is the real one.** `ScopeRegistry.Add` accepted a
+second record whose parent is default, although `TryAdd` refused the same case; and `ScopeRegistry.Root` returned
+`canonicalScopes[0]`, the numerically smallest scope id rather than the depth-0 world root. That second defect was
+invisible while every fixture allocated its root before its children, but the narrative tree has `village`
+(sorting below `story-world`), which made `PlanModeSet`, `PlanScopeCreate` and `RebuildWithRoot` act on the wrong
+scope. Both are now refused/remembered correctly, with the depth invariant enforced on declaration.
+Tests: `Packages/com.gamecore.composition/Tests/DeclaredScopeTreeTests.cs` (six cases: a declared tree opens and
+enumerates as declared, declaration order is irrelevant, the `*` boundary and depths survive, a root-only seed is
+unchanged, `WithScopes` preserves the publication, and duplicate id / unknown parent / wrong depth / second root /
+null record are each refused before the lane is exposed).
 
 ## 4. Exact commands for the Linux build host
 
