@@ -23,12 +23,12 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
-using System.Globalization;
+using GameCore.Composition;
 using GameCore.Contracts;
 using GameCore.Execution.Messages;
 using GameCore.Execution.Persistence;
 using GameCore.Execution.Time;
-using GameCore.Planning;
+using GameCore.Unity.Runtime.Integration;
 using GameCore.Unity.Runtime.Messages;
 using Unity.Entities;
 
@@ -491,7 +491,9 @@ namespace GameCore.Unity.Runtime.Persistence
                     continue;
                 }
 
-                IReadOnlyList<WakeRecord> wakes = context.Clocks.WakesOf(spec.ClockId);
+                IReadOnlyList<WakeRecord> wakes = context.Clocks == null
+                    ? Array.Empty<WakeRecord>()
+                    : context.Clocks.WakesOf(spec.ClockId);
                 for (int w = 0; w < wakes.Count; w++)
                 {
                     WakeRecord wake = wakes[w];

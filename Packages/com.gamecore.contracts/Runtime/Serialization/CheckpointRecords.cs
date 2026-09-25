@@ -1095,10 +1095,16 @@ namespace GameCore.Contracts
         public override string ToString() => "cursor(" + Row.ToString() + "," + Sequence.ToString(CultureInfo.InvariantCulture) + ")";
     }
 
-    /// <summary>Collates four big-endian 64-bit words into the 32-byte content hash they encode (05 s6, P-054).</summary>
-    internal static class CanonicalId32
+    /// <summary>
+    /// Collates four big-endian 64-bit words into the 32-byte content hash they encode, and back (05 s6, P-054).
+    /// It is public because a capture and a restore run outside this assembly: the checkpoint records carry a
+    /// `ContentHash` as four `UInt64` fields, which is the envelope's only 256-bit representation, and both the
+    /// engine-free persistence layer and the Unity reader have to convert between the two forms.
+    /// </summary>
+    public static class CanonicalId32
     {
-        internal static ContentHash Collate(ulong a, ulong b, ulong c, ulong d)
+        /// <summary>The 32-byte hash whose bytes are the four words in big-endian order (05 s6).</summary>
+        public static ContentHash Collate(ulong a, ulong b, ulong c, ulong d)
         {
             var bytes = new byte[ContentHash.SizeInBytes];
             WriteBigEndian(a, bytes, 0);
@@ -1108,7 +1114,8 @@ namespace GameCore.Contracts
             return new ContentHash(bytes);
         }
 
-        internal static void Split(ContentHash hash, out ulong a, out ulong b, out ulong c, out ulong d)
+        /// <summary>The four big-endian words of one hash, i.e. the exact inverse of <see cref="Collate"/>.</summary>
+        public static void Split(ContentHash hash, out ulong a, out ulong b, out ulong c, out ulong d)
         {
             byte[] bytes = hash.ToArray();
             a = ReadBigEndian(bytes, 0);

@@ -16,11 +16,12 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
+using GameCore.Composition;
 using GameCore.Contracts;
 using GameCore.Execution.Messages;
+using GameCore.Execution.Persistence;
 using GameCore.Execution.Time;
 using GameCore.Unity.Runtime.Integration;
-using GameCore.Unity.Runtime.Messages;
 
 namespace GameCore.Unity.Runtime.Persistence
 {
@@ -34,6 +35,7 @@ namespace GameCore.Unity.Runtime.Persistence
             Integration.LiveTargetIndex targets,
             Assembly.TargetRegistry registry,
             IReadOnlyList<PluginClockSpec>? clockSpecs,
+            PluginClockRegistry? clocks,
             RngStreamTable rng,
             PropagationMode mode,
             ulong stepDurationTicks,
@@ -51,6 +53,7 @@ namespace GameCore.Unity.Runtime.Persistence
             Targets = targets ?? throw new ArgumentNullException(nameof(targets));
             Registry = registry ?? throw new ArgumentNullException(nameof(registry));
             ClockSpecs = ContractCollections.Freeze(clockSpecs);
+            Clocks = clocks;
             Rng = rng ?? throw new ArgumentNullException(nameof(rng));
             Mode = mode;
             StepDurationTicks = stepDurationTicks;
@@ -84,8 +87,18 @@ namespace GameCore.Unity.Runtime.Persistence
         /// <summary>Target registry, the only place a `TargetId` resolves to an `Entity` for the copy (P-005).</summary>
         public Assembly.TargetRegistry Registry { get; }
 
-        /// <summary>Declared plugin clocks of this world, including the transient ones (P-038).</summary>
+        /// <summary>
+        /// Declared plugin clocks of this world, including the transient ones (P-038). The declarations are supplied
+        /// separately from the registry because the registry exposes no enumeration of its own registrations, only
+        /// the wakes of a clock a caller already knows about.
+        /// </summary>
         public IReadOnlyList<PluginClockSpec> ClockSpecs { get; }
+
+        /// <summary>
+        /// The world's clock registry, or null when it declares none. The reader needs it to read each persistent
+        /// clock's pending wakes with their remaining delay (P-053).
+        /// </summary>
+        public PluginClockRegistry? Clocks { get; }
 
         /// <summary>Random streams of this world; their current positions are part of a checkpoint (P-008, P-053).</summary>
         public RngStreamTable Rng { get; }

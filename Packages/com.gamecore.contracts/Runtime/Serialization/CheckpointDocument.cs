@@ -433,6 +433,17 @@ namespace GameCore.Contracts
                     }
 
                     sawChecksum = true;
+                    if (reader.Position != document.Length)
+                    {
+                        // The checksum is the last record of a canonical document; a byte after it means the file
+                        // carries content the writer did not checksum, which is a different document (05 s6).
+                        code = DiagnosticCode.ResourceUnavailable;
+                        detail = "the checkpoint document carries "
+                            + (document.Length - reader.Position).ToString(CultureInfo.InvariantCulture)
+                            + " byte(s) after its checksum (05 s6).";
+                        return false;
+                    }
+
                     break;
                 }
 
