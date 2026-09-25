@@ -683,7 +683,7 @@ namespace GameCore.Derivation
             return capabilities;
         }
 
-        private static bool TryCheckDeadline(
+        internal static bool TryCheckDeadline(
             DerivationSnapshot snapshot,
             DerivationOptions effective,
             CostCounters counters,
@@ -712,7 +712,7 @@ namespace GameCore.Derivation
             return false;
         }
 
-        private static void ReclassifyShadowed(
+        internal static void ReclassifyShadowed(
             List<CandidateDecision> decisions,
             Dictionary<SlotGroupKey, EffectiveSlot> accepted)
         {
@@ -746,13 +746,13 @@ namespace GameCore.Derivation
             }
         }
 
-        private static int SlotsOf(DerivationSnapshot snapshot, DerivationRule rule)
+        internal static int SlotsOf(DerivationSnapshot snapshot, DerivationRule rule)
         {
             CapabilityContract? contract = snapshot.Contracts.Find(rule.OutputCapability.Capability);
             return contract == null ? 0 : contract.OutputSlots.Count;
         }
 
-        private static bool WithinBudget(
+        internal static bool WithinBudget(
             CostCounters counters,
             PropagationBudget budget,
             out BudgetDimension dimension,
@@ -792,7 +792,7 @@ namespace GameCore.Derivation
             return true;
         }
 
-        private static void MarkExceeded(
+        internal static void MarkExceeded(
             CostCounters counters,
             BudgetDimension dimension,
             long observed,
@@ -806,7 +806,7 @@ namespace GameCore.Derivation
             counters.TopFanOutCauses = causes ?? Array.Empty<Id128>();
         }
 
-        private static IReadOnlyList<Id128> TopFanOutCauses(List<Id128> causes)
+        internal static IReadOnlyList<Id128> TopFanOutCauses(List<Id128> causes)
         {
             if (causes.Count == 0)
             {
@@ -828,7 +828,7 @@ namespace GameCore.Derivation
             return unique.AsReadOnly();
         }
 
-        private static CandidateDecision Decision(
+        internal static CandidateDecision Decision(
             RuleSource source,
             DerivationRule rule,
             DerivationTarget target,
@@ -858,7 +858,7 @@ namespace GameCore.Derivation
                 evaluation.MissingInputs,
                 evaluation.EvidenceKeys);
 
-        private static List<DerivationExplanation> BuildExplanations(
+        internal static List<DerivationExplanation> BuildExplanations(
             DerivationSnapshot snapshot,
             IReadOnlyList<TargetAssembly> assemblies,
             IReadOnlyList<CandidateDecision> decisions,

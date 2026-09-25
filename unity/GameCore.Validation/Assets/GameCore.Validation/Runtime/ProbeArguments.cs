@@ -18,6 +18,7 @@ namespace GameCore.Validation.ProbeHost
         private const string NarrativeArgumentName = "-probeNarrative";
         private const string CardsArgumentName = "-probeCards";
         private const string W4ProfileArgumentName = "-probeW4Profile";
+        private const string Gc013ArgumentName = "-probeGc013";
 
         private ProbeArguments(
             bool missingRegistration,
@@ -28,6 +29,7 @@ namespace GameCore.Validation.ProbeHost
             bool narrative,
             bool cards,
             bool w4Profile,
+            bool gc013,
             string? resultPath)
         {
             MissingRegistration = missingRegistration;
@@ -38,6 +40,7 @@ namespace GameCore.Validation.ProbeHost
             Narrative = narrative;
             Cards = cards;
             W4Profile = w4Profile;
+            Gc013 = gc013;
             ResultPath = resultPath;
         }
 
@@ -95,12 +98,23 @@ namespace GameCore.Validation.ProbeHost
         /// </summary>
         public bool W4Profile { get; }
 
+        /// <summary>
+        /// Runs the GC-013 wave-4 transition mode: the GC-010 narrative composition and the GC-011 card composition,
+        /// each over the committed generated catalog and over its hand-written generated-style catalog, with the
+        /// providers mounted in Automatic, a branch reparented while its identity and live state survive, both
+        /// propagation-mode directions applied, a future target spawned in Conservative, an exclusive conflict
+        /// refused with the old mode and membership intact, and the isolated branch unchanged throughout
+        /// (P-013, P-014, P-016, P-025).
+        /// </summary>
+        public bool Gc013 { get; }
+
         /// <summary>Destination path of the structured JSON result.</summary>
         public string? ResultPath { get; }
 
         /// <summary>True when the process was launched as a probe rather than as a normal player run.</summary>
         public bool IsProbeInvocation =>
             MissingRegistration || WorldDispatch || W1Gate || W2Gate || W3Gate || Narrative || Cards || W4Profile
+            || Gc013
             || !string.IsNullOrEmpty(ResultPath);
 
         /// <summary>True when a result destination was supplied; without it the probe cannot record evidence.</summary>
@@ -116,6 +130,7 @@ namespace GameCore.Validation.ProbeHost
             bool narrative = false;
             bool cards = false;
             bool w4Profile = false;
+            bool gc013 = false;
             string? resultPath = null;
             for (int i = 0; i < arguments.Length; i++)
             {
@@ -152,6 +167,10 @@ namespace GameCore.Validation.ProbeHost
                 {
                     w4Profile = true;
                 }
+                else if (argument == Gc013ArgumentName)
+                {
+                    gc013 = true;
+                }
                 else if (argument == ResultArgumentName && i + 1 < arguments.Length)
                 {
                     resultPath = arguments[i + 1];
@@ -159,7 +178,8 @@ namespace GameCore.Validation.ProbeHost
             }
 
             return new ProbeArguments(
-                missingRegistration, worldDispatch, w1Gate, w2Gate, w3Gate, narrative, cards, w4Profile, resultPath);
+                missingRegistration, worldDispatch, w1Gate, w2Gate, w3Gate, narrative, cards, w4Profile, gc013,
+                resultPath);
         }
     }
 }

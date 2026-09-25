@@ -333,6 +333,29 @@ namespace GameCore.Derivation
 
         public ContentHash SlotHash { get; }
 
+        /// <summary>
+        /// The same explanation at another snapshot token. Carrying an unchanged target's provenance forward across
+        /// a publication keeps every clause of the record (decisions, support, hash, evidence) and re-stamps only
+        /// the token, because a token names the observation image, not the composition (P-006, P-026).
+        /// </summary>
+        public DerivationExplanation WithToken(SnapshotToken token) =>
+            new DerivationExplanation(
+                Target,
+                Capability,
+                token,
+                Mode,
+                Stratum,
+                ScopePath,
+                Decisions,
+                Winners,
+                Shadowed,
+                Slots,
+                DescriptorEvidence,
+                TargetExclusions,
+                EffectiveCapabilities,
+                RecipeHash,
+                SlotHash);
+
         public bool HasSupport => Winners.Count > 0;
 
         public override string ToString() =>

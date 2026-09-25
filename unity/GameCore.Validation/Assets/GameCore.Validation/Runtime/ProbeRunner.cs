@@ -49,10 +49,9 @@ namespace GameCore.Validation.ProbeHost
         internal static void Run(ProbeArguments arguments)
         {
             // The GC-005 owned-world mode, the W1/W2 integration gates, the two Wave 3 slices (GC-010 narrative,
-            // GC-011 cards), the W3 gate that runs both slices in one process and the GC-012 Wave 4 profile gate
-            // run in the same player and report
-            // into the same result shape, but each under its own task id so no outcome is restated as another task's
-            // evidence.
+            // GC-011 cards), the W3 gate that runs both slices in one process, the GC-012 Wave 4 profile gate and the
+            // GC-013 live-transition mode run in the same player and report into the same result shape, but each
+            // under its own task id so no outcome is restated as another task's evidence.
             ProbeReport report = arguments.WorldDispatch
                 ? new ProbeReport(
                     "WorldDispatch",
@@ -77,28 +76,36 @@ namespace GameCore.Validation.ProbeHost
                                 ProbeEnvironment.DeclaredUnityVersion,
                                 ProbeEnvironment.DeclaredTarget,
                                 "GC-010")
-                            : arguments.Cards
+                            : arguments.Gc013
                                 ? new ProbeReport(
-                                    "Cards",
+                                    "Gc013",
                                     ProbeEnvironment.DeclaredUnityVersion,
                                     ProbeEnvironment.DeclaredTarget,
-                                    "GC-011")
-                                : arguments.W3Gate
+                                    "GC-013")
+                                : arguments.Cards
                                     ? new ProbeReport(
-                                        "W3Gate",
+                                        "Cards",
                                         ProbeEnvironment.DeclaredUnityVersion,
                                         ProbeEnvironment.DeclaredTarget,
-                                        "W3-GATE")
-                                    : arguments.W4Profile
+                                        "GC-011")
+                                    : arguments.W3Gate
                                         ? new ProbeReport(
-                                            "W4Profile",
+                                            "W3Gate",
                                             ProbeEnvironment.DeclaredUnityVersion,
                                             ProbeEnvironment.DeclaredTarget,
-                                            "GC-012")
-                                    : new ProbeReport(
-                                        arguments.MissingRegistration ? "MissingRegistration" : "Positive",
-                                        ProbeEnvironment.DeclaredUnityVersion,
-                                        ProbeEnvironment.DeclaredTarget);
+                                            "W3-GATE")
+                                        : arguments.W4Profile
+                                            ? new ProbeReport(
+                                                "W4Profile",
+                                                ProbeEnvironment.DeclaredUnityVersion,
+                                                ProbeEnvironment.DeclaredTarget,
+                                                "GC-012")
+                                            : new ProbeReport(
+                                                arguments.MissingRegistration
+                                                    ? "MissingRegistration"
+                                                    : "Positive",
+                                                ProbeEnvironment.DeclaredUnityVersion,
+                                                ProbeEnvironment.DeclaredTarget);
 
             if (!arguments.HasResultPath)
             {
@@ -136,6 +143,11 @@ namespace GameCore.Validation.ProbeHost
                 else if (arguments.Narrative)
                 {
                     ProbeNarrative.Run(report);
+                    report.CompletePositive();
+                }
+                else if (arguments.Gc013)
+                {
+                    ProbeGc013.Run(report);
                     report.CompletePositive();
                 }
                 else if (arguments.Cards)

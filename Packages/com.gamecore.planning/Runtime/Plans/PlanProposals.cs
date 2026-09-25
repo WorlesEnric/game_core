@@ -200,7 +200,8 @@ namespace GameCore.Planning
             ContentHash catalogHash,
             PropagationMode mode,
             IReadOnlyList<ProposedMount>? mounts,
-            IReadOnlyList<ProposedUnmount>? unmounts)
+            IReadOnlyList<ProposedUnmount>? unmounts,
+            bool retractsAbsentSupport = false)
         {
             Operation = operation;
             InputHash = inputHash;
@@ -210,6 +211,7 @@ namespace GameCore.Planning
             Mode = mode;
             Mounts = ContractCollections.Freeze(mounts);
             Unmounts = ContractCollections.Freeze(unmounts);
+            RetractsAbsentSupport = retractsAbsentSupport;
         }
 
         public OperationId Operation { get; }
@@ -227,6 +229,14 @@ namespace GameCore.Planning
         public IReadOnlyList<ProposedMount> Mounts { get; }
 
         public IReadOnlyList<ProposedUnmount> Unmounts { get; }
+
+        /// <summary>
+        /// True when this proposal is the complete effective support of its composition — a re-derivation of the
+        /// whole published assembly — so a currently effective row whose slot the proposal no longer declares must be
+        /// retracted rather than carried (05 s4, P-017). False keeps the ordinary incremental mount/unmount meaning:
+        /// a row the proposal does not mention is another provider's surviving support.
+        /// </summary>
+        public bool RetractsAbsentSupport { get; }
 
         public bool IsEmpty => Mounts.Count == 0 && Unmounts.Count == 0;
     }

@@ -402,6 +402,14 @@ namespace GameCore.Unity.Runtime
             // (P-006). A state migration or retraction alone *is* an effective change, so it still publishes.
             if (!HasEffectiveChange(publication))
             {
+                // The adopted composition publication produced no assembly, so it stays available: one number is
+                // never consumed by a no-op, and the world's unchanged-assembly (or spawn) publication for it may
+                // still adopt the same pair (P-006, P-024).
+                if (HasAdoptedPublication)
+                {
+                    HasAdoptedPublication = false;
+                }
+
                 publication.Scratch.ReleaseAll();
                 publication.State.TryNoChange("the proposal changed no effective binding");
                 return new AssemblyPublicationReport(

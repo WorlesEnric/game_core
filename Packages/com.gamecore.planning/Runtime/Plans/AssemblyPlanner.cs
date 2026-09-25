@@ -318,6 +318,40 @@ namespace GameCore.Planning
                 }
             }
 
+            // 3b. A complete re-derivation states the whole effective support: a row whose slot the proposal no
+            //     longer declares lost its last supporter in the new composition, so it is retracted and its rule
+            //     retires with it. Without this, a mode switch that denies every descendant rule would leave the old
+            //     rows effective forever and report the transition as no change (P-013, P-017, 05 s4).
+            if (proposal.RetractsAbsentSupport)
+            {
+                for (int r = 0; r < current.Rows.Count; r++)
+                {
+                    TargetBindingRow row = current.Rows[r];
+                    if (RowIsRetracted(proposal.Unmounts, row))
+                    {
+                        continue;
+                    }
+
+                    if (!TryFindDefinition(definitions, row.Target, out TargetDefinition definition))
+                    {
+                        // A live target the planner cannot name has no declaration either; its row can only be
+                        // another composition's leftover and is retracted with the rest.
+                        removals.Add(row);
+                        removedContributions.Add(ContributionKeyOf(row));
+                        AddAffected(affected, row.Target);
+                        continue;
+                    }
+
+                    if (!TryFindDeclaration(proposal, row, definition, out _))
+                    {
+                        removals.Add(row);
+                        removedContributions.Add(ContributionKeyOf(row));
+                        AddAffected(affected, row.Target);
+                        rulesAfter.Remove(RuleIdentityOf(row, definition));
+                    }
+                }
+            }
+
             // 4. Rank every candidate per contribution identity (P-017, P-018) and detect policy conflicts (P-019).
             var candidates = new Dictionary<string, List<Candidate>>();
             var order = new List<string>();
@@ -1096,6 +1130,41 @@ namespace GameCore.Planning
 
         private static ContributionKey ContributionKeyOf(TargetBindingRow row) =>
             new ContributionKey(row.Provider, new RuleId(row.Capability.Value), row.Target, row.Capability, row.OutputSlot);
+
+        /// <summary>True when this row is already retracted by an explicit unmount, so 3b must not duplicate it.</summary>
+        private static bool RowIsRetracted(IReadOnlyList<ProposedUnmount> unmounts, TargetBindingRow row)
+        {
+            for (int i = 0; i < unmounts.Count; i++)
+            {
+                if (row.Provider.Equals(unmounts[i].Provider))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// The rule identity a retired row's rule was recorded under: `(recipe, scope, capability, output slot)` of
+        /// the row's target (P-017). A row carries no recipe or scope of its own, so the definition supplies them.
+        /// </summary>
+        private static string RuleIdentityOf(TargetBindingRow row, TargetDefinition definition)
+        {
+            var rule = new DerivedBindingRule(
+                definition.Recipe,
+                definition.Scope,
+                row.Capability,
+                row.CapabilityVersion,
+                row.OutputSlot,
+                row.Value,
+                row.Provider,
+                row.ProviderGeneration,
+                row.Priority,
+                CompositionPolicy.Replace,
+                row.Schema);
+            return rule.RuleIdentity();
+        }
 
         private static Id128 ExplanationKeyOf(TargetBindingRow row)
         {

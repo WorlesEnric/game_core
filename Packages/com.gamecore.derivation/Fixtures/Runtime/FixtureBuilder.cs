@@ -545,6 +545,84 @@ namespace GameCore.Derivation.Fixtures
         }
 
         /// <summary>
+        /// Moves one scope under another parent: the P-025 subtree reparent, and the composition side's O-02
+        /// `ScopeReparent`. Depth is not stored on a scope record — the snapshot derives it from the parent chain —
+        /// so a move is one record replacement, and every descendant's depth follows automatically.
+        /// </summary>
+        public FixtureBuilder MoveScope(string name, string? newParent)
+        {
+            ScopeId scope = FixtureIds.Scope(name);
+            for (int i = 0; i < scopes.Count; i++)
+            {
+                if (!scopes[i].Scope.Equals(scope))
+                {
+                    continue;
+                }
+
+                scopes[i] = new DerivationScope(
+                    scopes[i].Scope,
+                    newParent == null ? default(ScopeId) : FixtureIds.Scope(newParent),
+                    scopes[i].CapabilityIsolation,
+                    scopes[i].Exclusions,
+                    scopes[i].Imports);
+                break;
+            }
+
+            return this;
+        }
+
+        /// <summary>Replaces one scope's exclusion set wholesale, the way an edit proposal replaces a record.</summary>
+        public FixtureBuilder ReplaceScopeExclusions(string scopeName, IReadOnlyList<ExclusionRule>? exclusions)
+        {
+            ScopeId scope = FixtureIds.Scope(scopeName);
+            for (int i = 0; i < scopes.Count; i++)
+            {
+                if (!scopes[i].Scope.Equals(scope))
+                {
+                    continue;
+                }
+
+                scopes[i] = new DerivationScope(
+                    scopes[i].Scope,
+                    scopes[i].Parent,
+                    scopes[i].CapabilityIsolation,
+                    exclusions,
+                    scopes[i].Imports);
+                break;
+            }
+
+            return this;
+        }
+
+        /// <summary>Replaces one scope's capability-isolation set wholesale (P-016).</summary>
+        public FixtureBuilder ReplaceScopeIsolation(string scopeName, IsolationSet isolation)
+        {
+            if (isolation == null)
+            {
+                throw new ArgumentNullException(nameof(isolation));
+            }
+
+            ScopeId scope = FixtureIds.Scope(scopeName);
+            for (int i = 0; i < scopes.Count; i++)
+            {
+                if (!scopes[i].Scope.Equals(scope))
+                {
+                    continue;
+                }
+
+                scopes[i] = new DerivationScope(
+                    scopes[i].Scope,
+                    scopes[i].Parent,
+                    isolation,
+                    scopes[i].Exclusions,
+                    scopes[i].Imports);
+                break;
+            }
+
+            return this;
+        }
+
+        /// <summary>
         /// Adds one exclusion to an already-declared scope (P-016). A scope record is immutable, so this replaces
         /// it; the alternative — declaring the scope twice — would be a duplicate identity, not a variant.
         /// </summary>
