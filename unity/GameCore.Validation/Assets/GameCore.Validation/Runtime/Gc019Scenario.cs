@@ -1739,13 +1739,13 @@ namespace GameCore.Validation.ProbeHost
                 {
                     TargetBindingRow row = publishedRows[r];
                     bool presented = TryFindPresented(applied.Fields, row.Capability, row.OutputSlot, out int presentedValue);
-                    bool live = TryFindLive(liveRows, row.Capability, row.OutputSlot, out int liveValue);
-                    if (!presented || presentedValue != row.Value || !live || liveValue != row.Value)
+                    bool liveMatch = TryFindLive(liveRows, row.Capability, row.OutputSlot, out int liveValue);
+                    if (!presented || presentedValue != row.Value || !liveMatch || liveValue != row.Value)
                     {
                         dissent = target.ToString() + ":" + row.ToString()
                             + " published=" + row.Value.ToString(CultureInfo.InvariantCulture)
                             + " presented=" + (presented ? presentedValue.ToString(CultureInfo.InvariantCulture) : "<missing>")
-                            + " live=" + (live ? liveValue.ToString(CultureInfo.InvariantCulture) : "<missing>");
+                            + " live=" + (liveMatch ? liveValue.ToString(CultureInfo.InvariantCulture) : "<missing>");
                         return false;
                     }
                 }

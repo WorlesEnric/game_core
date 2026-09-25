@@ -27,6 +27,7 @@ using GameCore.Gameplay.Narrative.Fixtures;
 using GameCore.Rules.Narrative;
 using GameCore.Validation.Generated;
 using GameCore.Validation.Probe;
+using GameCore.Unity.Fixtures;
 
 namespace GameCore.Validation.ProbeHost
 {
