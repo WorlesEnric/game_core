@@ -91,8 +91,9 @@ for family in narrative cards; do
   for base in \
     w4-world-lane-and-extra-manifests \
     w4-extra-providers-mount-onto-the-same-revision \
-    w4-mode-automatic-to-conservative-retracts-existing-and-future \
+    w4-automatic-inheritance-and-the-future-target \
     w4-subtree-move-preserves-state-and-switches-binding \
+    w4-mode-automatic-to-conservative-retracts-existing-and-future \
     w4-mode-conservative-to-automatic-restores-existing-and-future \
     w4-suspend-retracts-and-resume-restores \
     w4-required-provider-loss-makes-consumers-wait \
@@ -115,8 +116,8 @@ probe_require_steps "${result_file}" "${w4_steps[@]}"
 
 # Both digest literals must be exactly the expected ones: the digest is over the observation names and their pass
 # flags, so this is the whole claim that both catalogs ran the named sequence and every step of it passed.
-narrative_digest="113c17f030d7840398fbf6737bc3bedcd6bbd37bdb86745e514845ecc2cd9cdc"
-cards_digest="fada14b67acd65af73453cc00a7f0ad7016af88573dbd51a986614521148bf21"
+narrative_digest="d73e1a15e3d5f997b47087d02ea73ed809b73692b35900c3f2feeeff65cebaab"
+cards_digest="4a1bdb460ab366c5a0ffed77f09aaca881b4fdfea142195290ee5ad73283b018"
 if ! grep -q "generatedDigest=${narrative_digest}; fixtureDigest=${narrative_digest}" "${result_file}"; then
   echo "run_w4_gate_probe.sh: the narrative digest is not the expected value" >&2
   echo "  expected generatedDigest=${narrative_digest} and fixtureDigest=${narrative_digest}" >&2
@@ -132,12 +133,16 @@ fi
 # The gate's own clauses, asserted as fragments of the step details rather than as bare pass flags: a run that
 # recorded the right step names but did not really demonstrate the clause cannot satisfy these.
 for clause in \
+  "mode=Automatic->Conservative" \
+  "mode=Conservative->Automatic" \
   "mismatches=0" \
   "reverseOrder=True" \
   "lateCompletion=discarded" \
   "dormant=True" \
   "namedExactly=True" \
-  "futureRowsConservative=0"; do
+  "shapeHeld=True" \
+  "supportProviderIsSecond=True" \
+  "policyHostScoped=True"; do
   if ! grep -q "${clause}" "${result_file}"; then
     echo "run_w4_gate_probe.sh: the gate clause fragment '${clause}' is absent from the result" >&2
     failures=$((failures + 1))

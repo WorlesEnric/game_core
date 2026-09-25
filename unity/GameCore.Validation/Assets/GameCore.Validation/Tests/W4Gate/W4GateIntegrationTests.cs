@@ -75,9 +75,9 @@ namespace GameCore.W4Gate.Tests
         [Test]
         public void TheGateObservationTableIsExactlyThePublishedSequence()
         {
-            Assert.That(W4GateScenario.ObservationNames.Length, Is.EqualTo(16),
-                "the gate records exactly sixteen named observations");
-            Assert.That(W4GateScenario.QualifiedNames(W4GateNarrativeHost.Label).Length, Is.EqualTo(16));
+            Assert.That(W4GateScenario.ObservationNames.Length, Is.EqualTo(17),
+                "the gate records exactly seventeen named observations");
+            Assert.That(W4GateScenario.QualifiedNames(W4GateNarrativeHost.Label).Length, Is.EqualTo(17));
             Assert.That(W4GateScenario.QualifiedNames(W4GateNarrativeHost.Label)[0],
                 Is.EqualTo(W4GateNarrativeHost.Label + "/" + W4GateScenario.ObservationNames[0]));
 

@@ -29,6 +29,50 @@ documents remain authoring-host handoffs, not run evidence; the current run is `
 
 Ids marked `Not yet`: `P-053`, `O-20`, `O-21`, `O-22`.
 
+## W4-GATE revision notes (Wave 4 integration gate)
+
+**No status moved in this revision, and nothing was promoted.** W4-GATE authors the integrated demonstration the
+Wave 4 exit gate names, but every executable check it adds is `NotRun (pending orchestrator build host)`: the
+scenario, the EditMode assembly and the player probe have not been compiled or executed anywhere. That is exactly
+the case this inventory's own rule forbids promoting on, so the counts above are unchanged (`35 / 47 / 4`) and the
+rows below carry a `w4Gate` note in `inventory.json` instead of a new status.
+
+What the gate adds, as *authored* coverage:
+
+* **One runner, two families.** `W4GateScenario.Run(IW4GateFamily)` over `W4GateNarrativeHost` and
+  `W4GateCardsHost`, seventeen named observations per family, each family run twice (committed generated catalog and
+  hand-written generated-style catalog), with per-family digests over the observation-name table.
+* **The four Wave 4 tasks in one world.** GC-013's indexed move/mode changes (`DerivedAssemblyPipeline` over the
+  incremental engine, with each publication's `InvalidationClosureResult` reported), GC-014's service-closure
+  lifecycle (`LifecycleController` driving suspend/resume/loss/return/unload), GC-015's slot policies
+  (`StateMigrationPipeline` over copies of the live slots, with the plan the real publisher applies), and GC-012's
+  provisional generic-execution freeze (both families from one compile, no genre type in the kernel).
+* **The exit sentence, clause by clause.** Both mode directions over the *same* existing and future targets; the
+  subtree move with the moved target's live value and published binding shape preserved while its supporting
+  provider switches; suspend/resume with a pre-suspend completion discarded; required-provider loss that makes the
+  consumer wait in the same publication and a compatible return that resumes it; an unload disposed in reverse
+  acquisition order; and `Preserve` / `PreserveDormant` / `RemoveDerived` / `TransferTo` / manifest-supported
+  `Reset` each applied to real storage, with the same declaration *without* the GC-012 field required to refuse the
+  identical reset request.
+* **P-006 held throughout.** `NotePublication` re-checks the one-publication-series invariant after every publication
+  the run makes and counts mismatches; the `w4-lane-epoch-equals-world-epoch-throughout` observation requires zero
+  mismatches over at least one observed publication.
+
+Rows this gate's authored coverage names (each gets a `w4Gate.rowCoverage` sentence in `inventory.json`):
+
+`P-003`, `P-010`, `P-011`, `P-012`, `P-013`, `P-014`, `P-016`, `P-017`, `P-023`, `P-025`, `P-029`, `P-032`,
+`P-033`, `P-042`, `P-046`, `P-047`, `P-048`, `P-060`, `O-02`, `O-06`, `O-08`, `O-19`, `O-24`.
+
+Authored artifacts (source only, no run record yet):
+`unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/{W4GateFamily,W4GateScenario,ProbeW4Gate,W4GateNarrativeHost,W4GateCardsHost}.cs`,
+`unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W4Gate/`, `tools/run_w4_gate.sh`,
+`tools/unity/run_w4_gate_probe.sh`. Once `tools/run_w4_gate.sh` completes on the build host, the evidence to cite is
+`artifacts/w4-gate/toolchain/probe-w4-gate.json`, `artifacts/w4-gate/unity/editmode-results.xml`,
+`artifacts/w4-gate/unity/playmode-results.xml` and `artifacts/w4-gate/BUILD_REPORT.md`.
+
+**Verdict: Authored, NotRun.** The Wave 4 exit gate cannot be claimed from this revision until that script passes;
+the rows above keep their previous statuses until it does.
+
 ## Requirements `P-001`..`P-060`
 
 | Id | Title | Status | Owner tasks (registry) | Evidence (paths that exist) | Gap | Next owner |

@@ -20,9 +20,11 @@ namespace GameCore.Validation.ProbeHost
     /// </summary>
     public static class ProbeW4Gate
     {
-        public const string NarrativeDigest = "113c17f030d7840398fbf6737bc3bedcd6bbd37bdb86745e514845ecc2cd9cdc";
+        /// <summary>Digest the narrative run must report over its 17 named observations, all passing (P-008).</summary>
+        public const string NarrativeDigest = "d73e1a15e3d5f997b47087d02ea73ed809b73692b35900c3f2feeeff65cebaab";
 
-        public const string CardsDigest = "fada14b67acd65af73453cc00a7f0ad7016af88573dbd51a986614521148bf21";
+        /// <summary>Digest the card run must report over its 17 named observations, all passing (P-008).</summary>
+        public const string CardsDigest = "4a1bdb460ab366c5a0ffed77f09aaca881b4fdfea142195290ee5ad73283b018";
 
         public static void Run(ProbeReport report)
         {

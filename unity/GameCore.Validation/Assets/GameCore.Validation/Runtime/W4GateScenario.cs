@@ -653,18 +653,38 @@ namespace GameCore.Validation.ProbeHost
                         family.MountInstall(family.UnloadManifest, family.UnloadInstall, family.UnloadScope),
                         "mount-unload-installation");
 
-                    // The consumer really resolves the provider's export, and the provider really carries the rows a
-                    // removal retracts: both are read from the live modules, never assumed.
-                    bool consumerActive = StateOf(family.RequiredConsumerInstall) == InstallationState.Active;
-                    bool providerActive = StateOf(family.RequiredProviderInstall) == InstallationState.Active;
-                    bool consumerResolved = lane.Committed.TryGetInstall(
-                        family.RequiredConsumerInstall, out InstallEntry? consumerEntry)
-                        && consumerEntry != null
-                        && consumerEntry.Dependencies.Count != 0
-                        && !consumerEntry.HasUnresolvedDependency;
                     int providerRows = AttributedRows(family.RequiredProviderInstall);
                     int consumerRows = AttributedRows(family.RequiredConsumerInstall);
                     bool lifecycleProviderRows = AttributedRows(family.LifecycleProviderInstall) > 0;
+
+                    // The consumer really declares the contract as a REQUIRED dependency and really resolved it: its
+                    // manifest names a ServiceDependency on the pair's contract, and the publication gave it a
+                    // binding to the provider's export (P-011, P-012). Neither is assumed from the edit's success.
+                    bool consumerResolved = false;
+                    if (lane.Committed.TryGetInstall(family.RequiredConsumerInstall, out InstallEntry? consumerEntry)
+                        && consumerEntry != null)
+                    {
+                        IReadOnlyList<ServiceDependency> declared = consumerEntry.Manifest.ServiceDependencies;
+                        for (int i = 0; i < declared.Count; i++)
+                        {
+                            if (declared[i].Required && declared[i].Contract.ContractId.Equals(family.RequiredService.ContractId))
+                            {
+                                consumerResolved = true;
+                                break;
+                            }
+                        }
+
+                        consumerResolved &= consumerEntry.Bindings.Count > 0;
+                    }
+
+                    // The policy surface is a second real installation of this revision, mounted at its declared
+                    // scope, so the gate's five policy slots belong to a mounted provider rather than to a manifest
+                    // the lane never resolved (P-009).
+                    bool policyHostActive = StateOf(family.StatePolicyInstall) == InstallationState.Active;
+                    bool policyHostScoped = lane.Committed.TryGetInstall(
+                            family.StatePolicyInstall, out InstallEntry? policyEntry)
+                        && policyEntry != null
+                        && policyEntry.Scope.Equals(family.StatePolicyScope);
 
                     bool pass = provider
                         && policyHost
@@ -677,6 +697,8 @@ namespace GameCore.Validation.ProbeHost
                         && providerRows > 0
                         && consumerRows > 0
                         && lifecycleProviderRows
+                        && policyHostActive
+                        && policyHostScoped
                         && MatchesPublishedAssembly();
 
                     Add(name, pass,
@@ -690,7 +712,8 @@ namespace GameCore.Validation.ProbeHost
                         + "; consumerResolved=" + consumerResolved
                         + "; providerRows=" + providerRows.ToString(CultureInfo.InvariantCulture)
                         + "; consumerRows=" + consumerRows.ToString(CultureInfo.InvariantCulture)
-                        + "; lifecycleProviderRows=" + lifecycleProviderRows.ToString(CultureInfo.InvariantCulture)
+                        + "; policyHostState=" + StateOf(family.StatePolicyInstall)
+                        + "; policyHostScoped=" + policyHostScoped
                         + DescribeFailure());
                 }
                 catch (Exception exception)
@@ -1217,7 +1240,8 @@ namespace GameCore.Validation.ProbeHost
                     bool destinationRead = ReadSlot(destination, out int destinationValue, out uint destinationVersion);
                     bool writerAfter = policies.HasActiveWriter(slot);
                     bool dormantRecorded = policies.Dormant.TryGet(slot, out DormantSlotRecord dormant)
-                        && dormant.Value == valueBefore;
+                        && dormant.RetainedValue == valueBefore
+                        && dormant.SchemaVersion == versionBefore;
 
                     bool pass;
                     string expectation;
@@ -1662,38 +1686,53 @@ namespace GameCore.Validation.ProbeHost
             }
 
             /// <summary>
-            /// Runs an explicit reset against the *same slot declaration without the manifest's reset support* and
+            /// Runs an explicit reset against the *same slot declarations without the manifest's reset support* and
             /// requires the refusal P-032 mandates. This is the falsification half of the reset case: the reset slot the
             /// manifest declares through the GC-012 field must be permitted, and the identical declaration without that
             /// field must be refused, so a gate whose reset succeeded for any other reason cannot pass. The alternative
             /// reading — probing the live catalog — would ask the same policy set to both permit and refuse one reset.
+            ///
+            /// The probe set is built from *every* manifest of this revision with the options derived from each slot's
+            /// last-support policy alone, so no live row of a policy target can fail the pass for an unrelated reason
+            /// (an undeclared target-resident slot would otherwise report `MissingDependency` first and hide the reset
+            /// refusal this step exists to prove).
             /// </summary>
             private bool UndeclaredResetIsRefused(StateSlotKey slot, out DiagnosticCode code)
             {
                 code = DiagnosticCode.None;
-                if (seeder == null || publisher == null || family.StatePolicyManifest == null)
+                if (seeder == null || publisher == null)
                 {
                     return false;
                 }
 
-                // Exactly the pre-GC-012 declaration of the same slot: every declared fact kept, the options derived
-                // from the last-support policy alone, so `ResetPermitted` is false (P-032).
                 var policies = new List<SlotStatePolicy>();
-                IReadOnlyList<StateSlotSpec> specs = family.StatePolicyManifest.StateSlots;
-                for (int i = 0; i < specs.Count; i++)
+                IReadOnlyList<PluginManifest> manifests = ManifestSet();
+                for (int m = 0; m < manifests.Count; m++)
                 {
-                    StateSlotSpec spec = specs[i];
-                    if (spec == null)
+                    PluginManifest manifest = manifests[m];
+                    if (manifest == null)
                     {
                         continue;
                     }
 
-                    policies.Add(new SlotStatePolicy(
-                        SlotAuthorityDeclaration.FromSpec(
-                            spec, SlotAuthorityOptionsFactory.ForLastSupport(spec.LastSupport)),
-                        spec.InitPolicy,
-                        spec.ConfigChangePolicy,
-                        FirstMigrationKeyOf(spec)));
+                    IReadOnlyList<StateSlotSpec> specs = manifest.StateSlots;
+                    for (int i = 0; i < specs.Count; i++)
+                    {
+                        StateSlotSpec spec = specs[i];
+                        if (spec == null)
+                        {
+                            continue;
+                        }
+
+                        // Exactly the pre-GC-012 declaration of the same slot: every declared fact kept, the options
+                        // derived from the last-support policy alone, so `ResetPermitted` is false (P-032).
+                        policies.Add(new SlotStatePolicy(
+                            SlotAuthorityDeclaration.FromSpec(
+                                spec, SlotAuthorityOptionsFactory.ForLastSupport(spec.LastSupport)),
+                            spec.InitPolicy,
+                            spec.ConfigChangePolicy,
+                            FirstMigrationKeyOf(spec)));
+                    }
                 }
 
                 var undeclared = new SlotStatePolicySet(policies);
