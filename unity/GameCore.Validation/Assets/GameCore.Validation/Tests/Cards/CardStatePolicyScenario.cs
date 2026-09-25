@@ -19,9 +19,12 @@ using System.Collections.Generic;
 using System.Globalization;
 using GameCore.Composition;
 using GameCore.Contracts;
+using GameCore.Derivation;
 using GameCore.Execution;
 using GameCore.Gameplay.Cards;
+using GameCore.Gameplay.Cards.Fixtures;
 using GameCore.Planning;
+using PlanningCompositionProposal = GameCore.Planning.CompositionProposal;
 using GameCore.Planning.Ownership;
 using GameCore.Planning.Scheduling;
 using GameCore.Planning.StatePolicies;
@@ -29,6 +32,7 @@ using GameCore.Rules.Cards;
 using GameCore.Unity.Runtime;
 using GameCore.Unity.Runtime.Integration;
 using GameCore.Unity.Runtime.StateMigration;
+using GameCore.Unity.Runtime.Time;
 using Unity.Entities;
 
 namespace GameCore.Cards.Tests
@@ -74,7 +78,7 @@ namespace GameCore.Cards.Tests
 
         private static readonly FactoryKey SeatTransferPolicy = CardIdentity.Key("gc015.transfer.seat-state");
 
-        private static readonly FactoryKey AuditSlot = CardIdentity.Slot("gc015.slot.audit-cursor");
+        private static readonly SlotId AuditSlot = CardIdentity.Slot("gc015.slot.audit-cursor");
 
         private static readonly OwnerId AuditOwner = CardIdentity.Owner("gc015.owner.audit");
 
@@ -108,6 +112,8 @@ namespace GameCore.Cards.Tests
             private DerivedAssemblyPipeline? pipeline;
             private StateMigrationPipeline? policies;
             private ulong operationSequence;
+
+            private DerivationResult? previousPolicyDerivation;
 
             public IReadOnlyList<CardStatePolicyStep> Run()
             {
@@ -186,7 +192,7 @@ namespace GameCore.Cards.Tests
             }
 
             private bool HasLastSupport(SlotId slot, LastSupportPolicy expected)
-                => policyCatalog.Policies!.TryFind(slot, out SlotStatePolicy? policy, out DiagnosticCode _, out string _)
+                => policyCatalog.Policies!.TryFind(slot, out SlotStatePolicy? policy)
                     && policy != null
                     && policy.LastSupport == expected;
 
@@ -615,8 +621,8 @@ namespace GameCore.Cards.Tests
                         && keptAfterRefusal && afterRefusal == before
                         && publication != null && publication.Published
                         && plan != null && plan.Succeeded && plan.ResetCount == 1
-                        && plan.Decisions[0].Reason == ResetReason
-                        && plan.Decisions[0].PolicyKey.Equals(SeatInitPolicy)
+                        && DecisionOf(plan, seat).Reason == ResetReason
+                        && DecisionOf(plan, seat).PolicyKey.Equals(SeatInitPolicy)
                         && afterRead && after == 0,
                         "undeclaredReset=" + undeclared.Code.ToString() + ": " + undeclared.Detail
                         + "; valueAfterRefusal=" + Value(keptAfterRefusal, afterRefusal)
@@ -659,8 +665,8 @@ namespace GameCore.Cards.Tests
                         seeded
                         && publication != null && publication.Published
                         && plan != null && plan.Succeeded && plan.TransferredCount == 1
-                        && plan.Dispositions[0].DestinationOwner.Equals(AuditOwner)
-                        && plan.Decisions[0].MovesToAnotherOwner
+                        && DispositionOf(plan, source).DestinationOwner.Equals(AuditOwner)
+                        && DecisionOf(plan, source).MovesToAnotherOwner
                         && sourceRetired
                         && destinationHolds && moved == 21 && movedVersion == 1U
                         && policies!.Transfers.Count == 1,
@@ -690,8 +696,12 @@ namespace GameCore.Cards.Tests
                     AssemblyEpoch epochBefore = host!.CurrentEpoch;
                     CompositionRevision revisionBefore = publisher!.PublishedRevision;
 
+                    // The world's revision after the transfer names the audit owner as the output's owner, so this
+                    // pass declares it: the refusal under observation is the seat's ahead-of-schema version, not an
+                    // undeclared live row of the transfer's own making (P-025, P-032).
+                    SlotStatePolicySet failedSet = SetWith(AuditOwnedOutput());
                     AssemblyPublicationReport? publication = PublishPolicyEdit(
-                        NextQuietScoringEdit(), null, null, out StatePolicyPlan? plan, out DerivedAssemblyReport? _);
+                        NextQuietScoringEdit(), null, failedSet, out StatePolicyPlan? plan, out DerivedAssemblyReport? failedDerived);
                     bool kept = ReadSlot(seatA, CardTableKeys.TableOwner, CardTableKeys.SeatSlot, out int value, out uint version);
 
                     steps.Add(new CardStatePolicyStep(
@@ -709,6 +719,8 @@ namespace GameCore.Cards.Tests
                         + "; epoch=" + epochBefore.Value.ToString(CultureInfo.InvariantCulture)
                         + "->" + host.CurrentEpoch.Value.ToString(CultureInfo.InvariantCulture)
                         + "; live=" + Value(kept, value, version)));
+
+                    PublishCatchUpAfterObservedFailure(failedDerived);
                 }
                 catch (Exception exception)
                 {
@@ -723,12 +735,14 @@ namespace GameCore.Cards.Tests
                 {
                     TargetId seatA = CardTableFixture.SeatTarget(CardTableKeys.SeatAOrdinal);
                     TargetId table = CardIdentity.Target(CardVocabulary.TableOne);
-                    bool seeded = SeedSlot(table, CardTableKeys.TableOwner, CardTableKeys.TableSlot, 1U, NonDefaultTurnNumber);
+                    bool seeded = SeedSlot(table, CardTableKeys.TableOwner, CardTableKeys.TableSlot, 1U, NonDefaultTurnNumber)
+                        && SeedSlot(seatA, CardTableKeys.TableOwner, CardTableKeys.SeatSlot, 1U, 8);
                     AssemblyEpoch epochBefore = host!.CurrentEpoch;
                     var tinyBudget = new PlanBudget(1024UL * 1024UL, 1024UL * 1024UL, 32UL, 64UL);
 
-                    // A migratable declaration, so the pass really tries to reserve scratch for two slots.
-                    SlotStatePolicySet migratableSet = SetWith(Migratable());
+                    // A migratable declaration and a version-1 live seat force a real scratch reservation; the
+                    // audit-owned output declaration keeps the earlier transfer's destination declared.
+                    SlotStatePolicySet migratableSet = SetWith(Migratable(), AuditOwnedOutput());
                     StatePolicyPlan measured = StatePolicyExecutor.Execute(
                         migratableSet,
                         seeder!.ReadLiveSlots(TargetIds()),
@@ -738,10 +752,10 @@ namespace GameCore.Cards.Tests
                         InitialValues(),
                         new MigrationScratch(ScratchCapacityBytes, ScratchBytesPerSlot));
 
-                    SlotStatePolicySet afterTransfer = SetWith(AuditOwnedOutput());
+                    SlotStatePolicySet boundedSet = SetWith(Migratable(), AuditOwnedOutput());
                     var tinyPolicies = new StateMigrationPipeline(host, publisher!, seeder!, policyCatalog, tinyBudget);
                     AssemblyPublicationReport? publication = PublishPolicyEdit(
-                        NextQuietScoringEdit(), null, afterTransfer, out StatePolicyPlan? plan, out DerivedAssemblyReport? _, tinyPolicies, tinyBudget);
+                        NextQuietScoringEdit(), null, boundedSet, out StatePolicyPlan? plan, out DerivedAssemblyReport? _, tinyPolicies, tinyBudget);
                     bool kept = ReadSlot(table, CardTableKeys.TableOwner, CardTableKeys.TableSlot, out int turn, out uint _);
 
                     steps.Add(new CardStatePolicyStep(
@@ -781,7 +795,7 @@ namespace GameCore.Cards.Tests
                     return false;
                 }
 
-                DerivedAssemblyReport derived = pipeline!.PublishDerived(NextOperation(host!.World.Session));
+                DerivedAssemblyReport derived = pipeline!.PublishDerived(NextOperation(host!.World));
                 if (derived.Outcome == DerivedAssemblyOutcome.Refused)
                 {
                     return false;
@@ -790,7 +804,7 @@ namespace GameCore.Cards.Tests
                 if (derived.Outcome == DerivedAssemblyOutcome.NoTargetChange)
                 {
                     AssemblyPublicationReport unchanged = publisher!.PublishUnchangedAssembly(
-                        NextOperation(host.World.Session), lane!.Committed.Revision, lane.Committed.Epoch);
+                        NextOperation(host.World), lane!.Committed.Revision, lane.Committed.Epoch);
                     if (!unchanged.Published)
                     {
                         return false;
@@ -816,6 +830,8 @@ namespace GameCore.Cards.Tests
 
             /// <summary>
             /// Publishes one composition edit whose state dispositions are GC-015's own policy pass (P-029, P-032).
+            /// The ordinary derived pipeline publishes as part of <c>Derive</c>; this path derives a proposal without
+            /// consuming the lane publication so the policy dispositions and derived binding rows share one assembly.
             /// </summary>
             private AssemblyPublicationReport? PublishPolicyEdit(
                 CompositionEditPayload payload,
@@ -838,13 +854,28 @@ namespace GameCore.Cards.Tests
                     return null;
                 }
 
-                derived = pipeline.Derive(NextOperation(host.World.Session));
-                if (derived.Proposal == null || derived.Proposal.Proposal == null)
+                OperationId operation = NextOperation(host.World);
+                derived = DerivePolicyProposal(operation);
+                if (derived.Outcome == DerivedAssemblyOutcome.Refused)
                 {
                     return null;
                 }
 
                 policyPlan = (policyPipeline ?? policies!).Execute(TargetIds(), requests, policyOverride);
+                PlanningCompositionProposal? proposal = derived.Proposal != null ? derived.Proposal.Proposal : null;
+                if (proposal == null)
+                {
+                    if (policyPlan.Succeeded && !HasEffectivePolicyChange(policyPlan))
+                    {
+                        AssemblyPublicationReport unchanged = publisher.PublishUnchangedAssembly(
+                            operation, lane!.Committed.Revision, lane.Committed.Epoch);
+                        FinishDerivedReport(derived, null, unchanged);
+                        return unchanged;
+                    }
+
+                    proposal = EmptyPolicyProposal(operation, derived);
+                }
+
                 if (!publisher.TryAdoptLanePublication(
                         lane!.Committed.Revision, lane.Committed.Epoch, out AssemblyEpoch _, out DiagnosticCode _))
                 {
@@ -852,7 +883,7 @@ namespace GameCore.Cards.Tests
                 }
 
                 PlannedPublication plan = AssemblyPlanner.Build(
-                    derived.Proposal.Proposal,
+                    proposal,
                     publisher.Descriptor,
                     publisher.PublishedRevision,
                     host.CurrentEpoch,
@@ -863,16 +894,217 @@ namespace GameCore.Cards.Tests
                     publisher.Migrations,
                     new MigrationScratch(ScratchCapacityBytes, ScratchBytesPerSlot),
                     new InertAcquisitionSet(new StagedResourceGate(StagedByteCeiling, CardTableKeys.Issuer),
-                        NextOperation(host.World.Session)),
+                        NextOperation(host.World)),
                     policyBudget ?? DefaultBudget(),
                     policyPlan);
 
-                return publisher.Publish(plan);
+                AssemblyPublicationReport publication = publisher.Publish(plan);
+                FinishDerivedReport(derived, plan, publication);
+                return publication;
+            }
+
+            private DerivedAssemblyReport DerivePolicyProposal(OperationId operation)
+            {
+                var report = new DerivedAssemblyReport
+                {
+                    Operation = operation,
+                    LaneRevision = lane!.Committed.Revision,
+                    LaneEpoch = lane.Committed.Epoch,
+                    WorldEpochBefore = host!.CurrentEpoch,
+                    WorldEpochAfter = host.CurrentEpoch,
+                };
+
+                DerivationInputTargets targetView = targets!.BuildDerivationTargets();
+                if (!targetView.Succeeded)
+                {
+                    report.Outcome = DerivedAssemblyOutcome.Refused;
+                    report.Code = targetView.Code;
+                    report.Detail = targetView.Detail;
+                    return report;
+                }
+
+                DerivationInputReport input = CompositionDerivationInput.Build(
+                    lane.Committed,
+                    targetView.Targets,
+                    null,
+                    null);
+                report.Input = input;
+                if (!input.Succeeded || input.Snapshot == null)
+                {
+                    report.Outcome = DerivedAssemblyOutcome.Refused;
+                    report.Code = input.Code;
+                    report.Detail = input.Detail;
+                    return report;
+                }
+
+                DerivationResult derivation = DerivationEngine.Derive(
+                    input.Snapshot,
+                    values,
+                    DerivationOptions.Default,
+                    previousPolicyDerivation ?? pipeline!.PreviousDerivation);
+                report.Derivation = derivation;
+                if (!derivation.Accepted)
+                {
+                    report.Outcome = DerivedAssemblyOutcome.Refused;
+                    report.Code = derivation.DiagnosticCode;
+                    report.Detail = "derivation rejected: " + derivation.Rejection.ToString();
+                    return report;
+                }
+
+                previousPolicyDerivation = derivation;
+                if (derivation.Delta != null && derivation.Delta.IsEmpty)
+                {
+                    report.Outcome = DerivedAssemblyOutcome.NoTargetChange;
+                    report.Code = DiagnosticCode.None;
+                    report.Detail = "derivation changed no target assembly relative to the published composition";
+                    return report;
+                }
+
+                DerivationProposalReport proposal = DerivedCompositionProposal.Build(
+                    derivation,
+                    lane.Committed,
+                    publisher!.PublishedRevision,
+                    host.CurrentEpoch,
+                    DerivedCompositionProposal.InputHashOf(derivation),
+                    input.Snapshot.SnapshotHash,
+                    operation);
+                report.Proposal = proposal;
+                if (proposal.Outcome == DerivationProposalOutcome.NoAssemblies)
+                {
+                    report.Outcome = DerivedAssemblyOutcome.NoTargetChange;
+                    report.Code = DiagnosticCode.None;
+                    report.Detail = proposal.Detail;
+                    return report;
+                }
+
+                if (!proposal.Succeeded || proposal.Proposal == null)
+                {
+                    report.Outcome = DerivedAssemblyOutcome.Refused;
+                    report.Code = proposal.Code;
+                    report.Detail = proposal.Detail;
+                    return report;
+                }
+
+                report.Outcome = DerivedAssemblyOutcome.Published;
+                report.Code = DiagnosticCode.None;
+                report.Detail = "derivation proposal built; publication pending";
+                return report;
+            }
+
+            private PlanningCompositionProposal EmptyPolicyProposal(OperationId operation, DerivedAssemblyReport report)
+            {
+                ContentHash inputHash = report.Derivation != null
+                    ? DerivedCompositionProposal.InputHashOf(report.Derivation)
+                    : ContentHash.Empty;
+                ContentHash catalogHash = report.Input != null && report.Input.Snapshot != null
+                    ? report.Input.Snapshot.SnapshotHash
+                    : ContentHash.Empty;
+
+                return new PlanningCompositionProposal(
+                    operation,
+                    inputHash,
+                    publisher!.PublishedRevision,
+                    host!.CurrentEpoch,
+                    catalogHash,
+                    lane!.Committed.Mode,
+                    null,
+                    null);
+            }
+
+            private void FinishDerivedReport(
+                DerivedAssemblyReport report,
+                PlannedPublication? plan,
+                AssemblyPublicationReport publication)
+            {
+                report.Plan = plan;
+                report.Publication = publication;
+                report.WorldEpochAfter = host!.CurrentEpoch;
+                report.CountersJoined = AssemblyPublisher.MatchesPublishedAssembly(
+                    lane!.Committed.Revision,
+                    lane.Committed.Epoch,
+                    publisher!.PublishedRevision,
+                    host.CurrentEpoch);
+
+                if (publication.Published)
+                {
+                    report.Outcome = DerivedAssemblyOutcome.Published;
+                    report.Code = DiagnosticCode.None;
+                    report.Detail = string.Empty;
+                    return;
+                }
+
+                report.Outcome = publication.Outcome == Outcome.NoChange
+                    ? DerivedAssemblyOutcome.NoTargetChange
+                    : DerivedAssemblyOutcome.Refused;
+                report.Code = publication.Code;
+                report.Detail = publication.Detail;
+            }
+
+            private static bool HasEffectivePolicyChange(StatePolicyPlan plan)
+            {
+                if (!plan.Succeeded)
+                {
+                    return true;
+                }
+
+                for (int i = 0; i < plan.Dispositions.Count; i++)
+                {
+                    if (plan.Dispositions[i].Kind != StateDispositionKind.Retain)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+
+            private void PublishCatchUpAfterObservedFailure(DerivedAssemblyReport? failed)
+            {
+                try
+                {
+                    if (failed == null || failed.Proposal == null || failed.Proposal.Proposal == null
+                        || publisher == null || host == null)
+                    {
+                        return;
+                    }
+
+                    StatePolicyPlan catchUpPolicies = policies!.Execute(
+                        TargetIds(),
+                        null,
+                        SetWith(Migratable(), AuditOwnedOutput()));
+                    if (!catchUpPolicies.Succeeded)
+                    {
+                        return;
+                    }
+
+                    PlannedPublication catchUp = AssemblyPlanner.Build(
+                        failed.Proposal.Proposal,
+                        publisher.Descriptor,
+                        publisher.PublishedRevision,
+                        host.CurrentEpoch,
+                        publisher.Published.Bindings,
+                        publisher.Published.Rules,
+                        targets!.PlannerTargets(),
+                        seeder!.ReadLiveSlots(TargetIds()),
+                        publisher.Migrations,
+                        new MigrationScratch(ScratchCapacityBytes, ScratchBytesPerSlot),
+                        new InertAcquisitionSet(new StagedResourceGate(StagedByteCeiling, CardTableKeys.Issuer),
+                            NextOperation(host.World)),
+                        DefaultBudget(),
+                        catchUpPolicies);
+
+                    publisher.Publish(catchUp);
+                }
+                catch (Exception)
+                {
+                    // The observation above is already complete; failing to resynchronise only makes the final
+                    // bounds probe report no publication, never a false pass for the failed migration.
+                }
             }
 
             private bool PublishCompositionEdit(CompositionEditPayload payload)
             {
-                EditAdmission admission = lane!.SubmitEdit(payload, NextOperation(lane.World.Session), lane.Committed.Revision);
+                EditAdmission admission = lane!.SubmitEdit(payload, NextOperation(lane.World), lane.Committed.Revision);
                 if (!admission.Staged)
                 {
                     return false;
@@ -882,13 +1114,18 @@ namespace GameCore.Cards.Tests
                 return published != null && published.Outcome == Outcome.Published;
             }
 
-            /// <summary>Alternates the league-B scoring provider, so each policy observation has a real publication.</summary>
+            /// <summary>
+            /// Alternates the league-B scoring provider, so each policy observation has a real publication. An
+            /// unmount leaves the installation in the committed state as <c>Disposed</c> (P-046), so only a live
+            /// entry counts as mounted: a disposed one must remount, never unmount again.
+            /// </summary>
             private CompositionEditPayload NextQuietScoringEdit()
             {
                 // The toggle reads the lane's committed state rather than a local flag, so a mount that some other
                 // step already performed can never be repeated (P-010).
                 bool mounted = lane!.Committed.TryGetInstall(CardTableFixture.QuietScoringInstance, out InstallEntry? entry)
-                    && entry != null;
+                    && entry != null
+                    && entry.State != InstallationState.Disposed;
                 return mounted
                     ? CardTablePayloads.Unmount(CardTableFixture.QuietScoringInstance)
                     : CardTablePayloads.Mount(
@@ -1047,6 +1284,38 @@ namespace GameCore.Cards.Tests
                 }
 
                 return ids;
+            }
+
+            /// <summary>
+            /// The decision one plan made for a named slot. Decisions are canonically ordered by (target, owner,
+            /// slot) rather than by the order the scenario seeded them, so an observation names its slot instead of
+            /// assuming index 0 (P-008).
+            /// </summary>
+            private static StatePolicyDecision DecisionOf(StatePolicyPlan plan, StateSlotKey slot)
+            {
+                for (int i = 0; i < plan.Decisions.Count; i++)
+                {
+                    if (plan.Decisions[i].Live.Equals(slot))
+                    {
+                        return plan.Decisions[i];
+                    }
+                }
+
+                return null!;
+            }
+
+            /// <summary>The disposition one plan staged for a named slot, in the plan's own canonical order (P-008).</summary>
+            private static StateDisposition DispositionOf(StatePolicyPlan plan, StateSlotKey slot)
+            {
+                for (int i = 0; i < plan.Dispositions.Count; i++)
+                {
+                    if (plan.Dispositions[i].Slot.Equals(slot))
+                    {
+                        return plan.Dispositions[i];
+                    }
+                }
+
+                return default;
             }
 
             private bool ReadSlot(TargetId target, OwnerId owner, SlotId slot, out int value, out uint version)
