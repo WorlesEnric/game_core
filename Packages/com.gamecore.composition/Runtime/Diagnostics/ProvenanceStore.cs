@@ -495,13 +495,15 @@ namespace GameCore.Composition.Diagnostics
                 }
             }
 
+            // The retained form is frozen on the way in: a caller that passed a mutable list cannot reach the
+            // retained records afterwards, so a reconstruction never depends on the producer's later edits (P-026).
             var epoch = new ProvenanceEpoch(
                 token,
                 operation,
                 isStaged,
-                ordered,
-                interned,
-                dispositionList);
+                ContractCollections.Freeze(ordered),
+                ContractCollections.Freeze(interned),
+                ContractCollections.Freeze(dispositionList));
 
             ProvenancePublishOutcome outcome;
             if (isStaged)
