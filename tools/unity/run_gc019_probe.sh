@@ -137,7 +137,7 @@ for clause in \
   "parentChanges=1" \
   "reparentsWithoutCompositionChange=1" \
   "externalDomains=0" \
-  "physicsStages=; physicsSystems=" \
+  "physicsStages=<none>; physicsSystems=<none>" \
   "unregistered=True" \
   "idleSteps=0"; do
   if ! grep -q "${clause}" "${result_file}"; then
