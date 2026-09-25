@@ -1,28 +1,42 @@
-<!-- GC-001 qualification probe preservation roots (docs/game-core/04-unity-integration.md section 8 item 4).
+<!-- GameCore qualification probe preservation roots (docs/game-core/04-unity-integration.md section 8 item 4).
 
-     Managed stripping High runs UnityLinker over every managed assembly. Two different mechanisms keep the
-     probe's registrations alive, and this file only covers the second one:
+     Managed stripping High runs UnityLinker over every managed assembly. Two different mechanisms keep the probe's
+     registrations alive, and this file only covers the second one:
 
-     1. Reachability. The generated catalog in Assets/GameCore.Validation/Generated holds direct references to
-        the fixture plugin factory, the closed generic handler instantiation and the generic job, and the probe
-        runtime references the catalog. Those survive because real code uses them, not because of this file.
-     2. Explicit preservation. The fixture plugin assembly below must be linked into the player even though
-        nothing instantiates it at startup, and its mount happens only via the generated catalog key at
-        runtime. Preserving it here makes "linked but inactive" a guaranteed property of the build instead of an
-        accident of the current reachability graph.
+     1. Reachability from generated roots. The generated catalogs hold direct references and survive because real
+        code uses them, not because of this file:
+          * `Assets/GameCore.Validation/Generated/ProbeCatalog.g.cs` registers `NarrativeFamilyEntryKey` ->
+            `new GameCore.Validation.Slices.NarrativeFamilyPluginEntry()`, whose constructor calls the narrative
+            package's own `NarrativeRegistration.Systems()` / `Readers()` / `Messages()`, `NarrativeDeclarations`
+            and `NarrativeRegistrations`. That is what keeps `GameCore.Rules.Narrative`,
+            `GameCore.Gameplay.Narrative` and `GameCore.Gameplay.Narrative.Fixtures` in a stripped player since
+            GC-012, together with the probe host's own call sites into the narrative scenario.
+          * `Assets/GameCore.Validation/GeneratedCards/CardCatalog.g.cs` registers `CardFamilyEntryKey` ->
+            `new GameCore.Validation.Slices.CardFamilyPluginEntry()` plus the card plugin factory, the registered
+            reducer, the registered predicate and the four system factories. `GameCore.Rules.Cards` and
+            `GameCore.Gameplay.Cards` are therefore reachable without any entry in this file.
 
-     This is not a substitute for the generated closed generic roots: linker preservation keeps code from being
-     stripped, it does not create a native generic specialization Burst or IL2CPP never saw (see Burst generic
-     jobs, 04 section 8). -->
+     2. Explicit preservation. Only entry points that no managed call site can keep alive, and the two test-only
+        fixture assemblies whose whole purpose is to be linked but not referenced:
+          * `GameCore.Unity.Adapters`: the PlayerLoop nodes are invoked by native code through
+            `updateDelegate`/`RuntimeInitializeOnLoadMethod`, so nothing managed references them.
+          * `GameCore.Validation.Fixture` and `GameCore.Unity.Fixtures`: the GC-001 negative-registration proof and
+            the W1/W2 gate fixtures are deliberately reached only through generated-style factory keys resolved at
+            runtime, and GC-001's acceptance requires a linked-but-inactive plugin whose factory nothing else
+            calls.
+
+     Removing the GC-001-era `preserve="all"` entries for the narrative gameplay and rules assemblies was the point
+     of GC-012: reachability must come from generated roots, and a stripped type would be fixed by correcting
+     generation rather than by widening this file. -->
+
 <linker>
   <assembly fullname="GameCore.Validation.Fixture" preserve="all" />
 
+  <assembly fullname="GameCore.Unity.Fixtures" preserve="all" />
+
   <!-- GC-005 owned worlds and guarded dispatch. The application pump is reached only through a PlayerLoop
        updateDelegate, which native code invokes: no managed call site keeps it alive, so the bootstrap, the
-       installer, the pump and the reset entry point are preserved explicitly. The fixture assembly is preserved
-       like the GC-001 fixture plugin, because its stages are reached only through generated-style factory keys
-       resolved at runtime. -->
-  <assembly fullname="GameCore.Unity.Fixtures" preserve="all" />
+       installer, the pump and the reset entry point are preserved explicitly. -->
   <assembly fullname="GameCore.Unity.Adapters">
     <type fullname="GameCore.Unity.Adapters.GameCoreApplicationBootstrap" preserve="all" />
     <type fullname="GameCore.Unity.Adapters.GameCorePlayerLoopInstaller" preserve="all" />
@@ -31,13 +45,4 @@
     <type fullname="GameCore.Unity.Adapters.GameCoreApplicationComposition" preserve="all" />
     <type fullname="GameCore.Unity.Adapters.GameCorePumpLoop" preserve="all" />
   </assembly>
-
-  <!-- GC-010 narrative vertical slice. The narrative gameplay assembly holds the chapter providers' declarations,
-       the fact owner, the five command stages and their systems; the rules assembly holds the pure rules those
-       stages call and the Fixtures assembly holds the scenario shared by the EditMode suite and the player probe.
-       Every one of them is reached through a generated-style registration or a player probe mode, so none is kept
-       alive by an ordinary managed call site. -->
-  <assembly fullname="GameCore.Rules.Narrative" preserve="all" />
-  <assembly fullname="GameCore.Gameplay.Narrative" preserve="all" />
-  <assembly fullname="GameCore.Gameplay.Narrative.Fixtures" preserve="all" />
 </linker>

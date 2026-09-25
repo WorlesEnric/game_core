@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using GameCore.Contracts;
 using GameCore.Rules.Cards;
 using GameCore.Gameplay.Cards;
+using GameCore.Validation.Slices;
 
 namespace GameCore.Validation.GeneratedCards
 {
@@ -42,12 +43,15 @@ namespace GameCore.Validation.GeneratedCards
         public const string CatalogFingerprintScope = "SHA-256 over, in this fixed order: (1) every registered factory key in canonical ascending order as 16-byte big-endian id, 4-byte big-endian key version, 4-byte big-endian factory kind, 16-byte big-endian owner package id, 16-byte big-endian implementation id, 4-byte big-endian contract version; (2) every accepted schema in ascending schema-id order as 16-byte big-endian id, 4-byte big-endian schema version, one byte 1 when required and 0 when optional, 16-byte big-endian serializer key id, 4-byte big-endian serializer key version, 16-byte big-endian owner package id; (3) every supported feature id in ascending order as 16 bytes. Declaration order, registration timing, machine paths and timestamps are excluded (P-008, P-028, P-053).";
 
         /// <summary>Canonical fingerprint of the registrations below (P-028, P-053).</summary>
-        public const string CatalogFingerprint = "e74c3be5264c100622f6fe122bf8d2e9711ae6944a183bd230205a662ac742a6";
+        public const string CatalogFingerprint = "77838f4766f9086a0fa32b4fb30d8d5fceeb3a8072e61594fa2177946ad3315d";
 
         /// <summary>Supported protocol feature ids, in canonical identity order (P-055).</summary>
         public static readonly Id128[] SupportedFeatureIds =
         {
         };
+
+        /// <summary>Generated key of gamecore.validation.entry.cards ('gamecore.validation.entry.cards').</summary>
+        public static readonly FactoryKey CardFamilyEntryKey = new FactoryKey(new Id128(0x6924A730DAE9ADD6UL, 0xDE4FC185BD76C778UL), 1U);
 
         /// <summary>Generated key of cards.factory.card-table-plugin ('cards.factory.card-table-plugin').</summary>
         public static readonly FactoryKey CardTablePluginKey = new FactoryKey(new Id128(0xBB026AC0599E6783UL, 0x83F12FFCA82E5B2BUL), 1U);
@@ -72,6 +76,36 @@ namespace GameCore.Validation.GeneratedCards
 
         /// <summary>Generated serializer key of schema 02bb49501222979cfea308ce5f5f2ca1 ('cards.schema.card-config').</summary>
         public static readonly FactoryKey CardConfigSerializerKey = new FactoryKey(new Id128(0x02BB49501222979CUL, 0xFEA308CE5F5F2CA1UL), 1U);
+
+        /// <summary>Generated registrations of PluginFactory, in canonical key order, each bound to a direct constructor reference.</summary>
+        public static readonly BoundRegistration<GameCore.Validation.Slices.IFamilyPluginEntry>[] FamilyEntryRegistrations =
+        {
+            new BoundRegistration<GameCore.Validation.Slices.IFamilyPluginEntry>(
+                CardFamilyEntryKey,
+                "gamecore.validation.entry.cards",
+                new GameCore.Validation.Slices.CardFamilyPluginEntry()),
+        };
+
+        /// <summary>Generated keys of FamilyEntryRegistrations, in the same canonical order.</summary>
+        public static readonly FactoryKey[] FamilyEntryKeys =
+        {
+            CardFamilyEntryKey,
+        };
+
+        /// <summary>
+        /// Catalog registrations of PluginFactory, in the same canonical order as FamilyEntryRegistrations.
+        /// Every entry carries its own owner package and precompiled implementation identity, so the
+        /// runtime catalog hashes exactly the declarations this file was generated from (P-009, P-028).
+        /// </summary>
+        public static readonly FactoryRegistration[] FamilyEntryRegistrationsCatalogRegistrations =
+        {
+            new FactoryRegistration(
+                CardFamilyEntryKey,
+                FactoryKind.PluginFactory,
+                new Id128(0x0000000000000000UL, 0x0000000000000000UL),
+                new Id128(0x6924A730DAE9ADD6UL, 0xDE4FC185BD76C778UL),
+                1U),
+        };
 
         /// <summary>Generated registrations of PluginFactory, in canonical key order, each bound to a direct constructor reference.</summary>
         public static readonly BoundRegistration<GameCore.Gameplay.Cards.ICardTablePluginFactory>[] PluginRegistrations =
@@ -235,6 +269,25 @@ namespace GameCore.Validation.GeneratedCards
                 CardConfigSerializerKey,
                 true),
         };
+
+        /// <summary>
+        /// Resolves one generated registration by key. A key absent from this table returns false with a
+        /// null implementation; nothing is constructed by reflection or runtime type discovery (04 section 8).
+        /// </summary>
+        public static bool TryGetFamilyEntry(FactoryKey key, out GameCore.Validation.Slices.IFamilyPluginEntry? implementation)
+        {
+            for (int i = 0; i < FamilyEntryRegistrations.Length; i++)
+            {
+                if (FamilyEntryRegistrations[i].Key.Equals(key))
+                {
+                    implementation = FamilyEntryRegistrations[i].Implementation;
+                    return true;
+                }
+            }
+
+            implementation = null;
+            return false;
+        }
 
         /// <summary>
         /// Resolves one generated registration by key. A key absent from this table returns false with a
@@ -457,8 +510,10 @@ namespace GameCore.Validation.GeneratedCards
         /// <summary>Every group's catalog registrations concatenated in declaration order.</summary>
         private static FactoryRegistration[] GroupCatalogRegistrations()
         {
-            FactoryRegistration[] all = new FactoryRegistration[7];
+            FactoryRegistration[] all = new FactoryRegistration[8];
             int offset = 0;
+            Array.Copy(FamilyEntryRegistrationsCatalogRegistrations, 0, all, offset, 1);
+            offset += 1;
             Array.Copy(PluginRegistrationsCatalogRegistrations, 0, all, offset, 1);
             offset += 1;
             Array.Copy(ReducerRegistrationsCatalogRegistrations, 0, all, offset, 1);
@@ -467,6 +522,7 @@ namespace GameCore.Validation.GeneratedCards
             offset += 1;
             Array.Copy(SystemFactoryRegistrationsCatalogRegistrations, 0, all, offset, 4);
             offset += 4;
+
             return all;
         }
 
@@ -495,12 +551,12 @@ namespace GameCore.Validation.GeneratedCards
         public const bool HasClosedGenericRoots = false;
 
         /// <summary>Number of generated registration groups.</summary>
-        public const int RegistrationGroupCount = 4;
+        public const int RegistrationGroupCount = 5;
 
         /// <summary>Number of declared schemas.</summary>
         public const int SchemaCount = 1;
 
         /// <summary>Hash of the generated source that precedes this declaration.</summary>
-        public const string CatalogFileHash = "175cad2795ed8aac02ac3e70fa8676e3a1e5a3655c44cf25f248fd0a1b9b3148";
+        public const string CatalogFileHash = "902402a6f03fcf28dd242f23f573fcb9ddd53d013efb06f08aa513f689ff3bf8";
     }
 }

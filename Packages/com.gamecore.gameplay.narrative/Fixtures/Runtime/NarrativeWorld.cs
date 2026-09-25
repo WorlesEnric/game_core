@@ -239,7 +239,57 @@ namespace GameCore.Gameplay.Narrative.Fixtures
             var module = new NarrativeModule(host, schedule);
             module.ResolveStageIndexes();
             modules.Add(module);
+
+            // The choice route's declared domain version is the addressed target's committed conversation node
+            // (P-042): the issuer reads the node it is deciding from and the host checks it before the owner's lane,
+            // so a choice formed against a conversation the world has already advanced past is refused rather than
+            // applied to a conversation it no longer describes.
+            WorldMessagePlane? plane = host.Messages;
+            if (plane != null)
+            {
+                plane.BindDomainVersion(
+                    NarrativeKeys.ChoiceRoute,
+                    new DialogueDomainVersion(module));
+            }
+
             return module;
+        }
+
+        /// <summary>
+        /// The narrative domain version of one addressed target (P-042): the committed conversation node of the
+        /// dialogue owner's state on that target, or a false result when the module holds no such live target. The
+        /// module's own map is the resolver here because the narrative scenario owns the target registry, so this
+        /// authority never reaches for a second one.
+        /// </summary>
+        private sealed class DialogueDomainVersion : IDomainVersionAuthority
+        {
+            private readonly NarrativeModule module;
+
+            public DialogueDomainVersion(NarrativeModule module)
+            {
+                this.module = module;
+            }
+
+            public bool TryGetDomainVersion(TargetId target, out ulong version)
+            {
+                version = 0UL;
+                EntityManager entityManager = module.host.EntityWorld.EntityManager;
+                if (!module.TryEntity(target, out Entity entity)
+                    || !entityManager.Exists(entity)
+                    || !NarrativeState.TryRead(
+                        entityManager,
+                        entity,
+                        NarrativeKeys.DialogueOwner,
+                        NarrativeKeys.ConversationNodeSlot,
+                        out int node,
+                        out uint _))
+                {
+                    return false;
+                }
+
+                version = unchecked((ulong)node);
+                return true;
+            }
         }
 
         public static bool TryGet(World world, out NarrativeModule? module)
