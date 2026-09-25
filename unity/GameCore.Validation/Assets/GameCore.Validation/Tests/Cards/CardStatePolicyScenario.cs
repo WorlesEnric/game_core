@@ -102,6 +102,13 @@ namespace GameCore.Cards.Tests
             private PipelineDescriptorReport descriptorReport = null!;
             private StatePolicyCatalog policyCatalog = null!;
 
+            /// <summary>
+            /// The same revision with the seat slot's reset support declared in its manifest
+            /// (`StateSlotSpec.ResetSupported` and its reason), so the declared-reset pass reads a policy the manifest
+            /// produced rather than a hand-built `SlotAuthorityOptions` (P-032).
+            /// </summary>
+            private StatePolicyCatalog resetPolicyCatalog = null!;
+
             private UnityWorldHost? host;
             private CardTableModule? module;
             private CompositionHost? lane;
@@ -154,6 +161,14 @@ namespace GameCore.Cards.Tests
 
                     policyCatalog = StatePolicyCatalog.Build(
                         CardTableFixture.Manifests(),
+                        new List<ISlotMigration> { new SeatStateMigration() },
+                        InitialValues());
+
+                    // The declared reset is a manifest declaration, never a hand-built option: this revision's seat
+                    // slot carries the reset support on its own `StateSlotSpec`, and its policy set comes from the
+                    // same production builder (P-032).
+                    resetPolicyCatalog = StatePolicyCatalog.Build(
+                        ManifestsWithDeclaredReset(),
                         new List<ISlotMigration> { new SeatStateMigration() },
                         InitialValues());
 
@@ -578,9 +593,10 @@ namespace GameCore.Cards.Tests
             }
 
             /// <summary>
-            /// The card catalog permits no reset either, so an undeclared reset is refused and the value stays; the
-            /// declared reset — GC-015's test-declared initialization policy with its reason — is published and the
-            /// row keeps the declared value (P-032).
+            /// The catalog this scenario mounts permits no reset, so an undeclared reset is refused and the value
+            /// stays; the same production executor then publishes a declared reset — a mounted revision whose manifest
+            /// declares the reset support, its reason and GC-015's test-declared initialization policy — and the row
+            /// keeps the declared value (P-032).
             /// </summary>
             private void DeclaredResetInTheWorld()
             {
@@ -602,11 +618,13 @@ namespace GameCore.Cards.Tests
 
                     bool keptAfterRefusal = ReadSlot(seatA, CardTableKeys.TableOwner, CardTableKeys.SeatSlot, out int afterRefusal, out uint _);
 
-                    SlotStatePolicySet declaredSet = SetWith(Resettable());
+                    // The declared reset: the same slot, a mounted revision whose manifest declares the reset support
+                    // on its own `StateSlotSpec` and whose policy set `StatePolicyCatalog.Build` produced — never a
+                    // hand-built option — executed by the same executor and applied by the same publisher.
                     AssemblyPublicationReport? publication = PublishPolicyEdit(
                         NextQuietScoringEdit(),
                         new List<StatePolicyRequest> { StatePolicyRequest.Reset(seat, ResetReason) },
-                        declaredSet,
+                        resetPolicyCatalog.Policies,
                         out StatePolicyPlan? plan,
                         out DerivedAssemblyReport? _);
 
@@ -619,6 +637,7 @@ namespace GameCore.Cards.Tests
                         && undeclared.Code == DiagnosticCode.OwnershipConflict
                         && undeclared.Detail.Contains("does not declare a permitted reset")
                         && keptAfterRefusal && afterRefusal == before
+                        && resetPolicyCatalog.Succeeded
                         && publication != null && publication.Published
                         && plan != null && plan.Succeeded && plan.ResetCount == 1
                         && DecisionOf(plan, seat).Reason == ResetReason
@@ -967,7 +986,8 @@ namespace GameCore.Cards.Tests
                     host.CurrentEpoch,
                     DerivedCompositionProposal.InputHashOf(derivation),
                     input.Snapshot.SnapshotHash,
-                    operation);
+                    operation,
+                    publisher!.Published.Bindings);
                 report.Proposal = proposal;
                 if (proposal.Outcome == DerivationProposalOutcome.NoAssemblies)
                 {
@@ -1136,7 +1156,11 @@ namespace GameCore.Cards.Tests
 
             private const string ResetReason = "table repair";
 
-            /// <summary>The catalog's declared policies with one slot's declaration replaced (never duplicated).</summary>
+            /// <summary>
+            /// The catalog's declared policies with revision-level declarations replaced (never duplicated): the
+            /// declared version change, the owner-transfer last-support policy and the transferred row's ownership
+            /// fact (P-032, P-034). A reset permission is never built here — only a manifest declares one (P-032).
+            /// </summary>
             private SlotStatePolicySet SetWith(params SlotStatePolicy[] replacements)
             {
                 var policies = new List<SlotStatePolicy>();
@@ -1201,22 +1225,80 @@ namespace GameCore.Cards.Tests
                     default(FactoryKey),
                     default(FactoryKey));
 
-            /// <summary>The seat slot with the manifest-supported reset GC-015 declares for this pass (P-032).</summary>
-            private static SlotStatePolicy Resettable()
-                => new SlotStatePolicy(
-                    new SlotAuthorityDeclaration(
-                        CardTableKeys.SeatSlot,
-                        CardTableKeys.TableOwner,
-                        CardTableKeys.SeatDomain,
-                        CardTableKeys.SeatLayout,
-                        null,
-                        LastSupportPolicy.PreserveDormant,
-                        default(FactoryKey),
-                        null,
-                        SlotAuthorityOptions.Resettable(ResetReason, true, false)),
-                    SeatInitPolicy,
-                    default(FactoryKey),
-                    default(FactoryKey));
+            /// <summary>
+            /// The manifests this scenario mounts with the seat slot's reset support declared on its own
+            /// `StateSlotSpec` (P-032). A manifest is the only place a reset permission may come from, so the
+            /// declared-reset publication reads its resettable policy from `StatePolicyCatalog.Build` over these
+            /// declarations instead of from a hand-written option value.
+            /// </summary>
+            private static IReadOnlyList<PluginManifest> ManifestsWithDeclaredReset()
+            {
+                IReadOnlyList<PluginManifest> mounted = CardTableFixture.Manifests();
+                var manifests = new List<PluginManifest>(mounted.Count);
+                for (int i = 0; i < mounted.Count; i++)
+                {
+                    manifests.Add(DeclaringReset(mounted[i]));
+                }
+
+                return manifests;
+            }
+
+            /// <summary>One manifest with the seat slot's declared reset support (P-032).</summary>
+            private static PluginManifest DeclaringReset(PluginManifest manifest)
+            {
+                var slots = new List<StateSlotSpec>(manifest.StateSlots.Count);
+                bool declared = false;
+                for (int i = 0; i < manifest.StateSlots.Count; i++)
+                {
+                    StateSlotSpec spec = manifest.StateSlots[i];
+                    if (!spec.SlotId.Equals(CardTableKeys.SeatSlot))
+                    {
+                        slots.Add(spec);
+                        continue;
+                    }
+
+                    declared = true;
+                    // The reset support, its reason and the initialization policy a declared reset reads its value
+                    // from; every other declared fact stays the manifest's own (P-032).
+                    slots.Add(new StateSlotSpec(
+                        spec.SlotId,
+                        spec.Owner,
+                        spec.Schema,
+                        spec.PhysicalLayoutKey,
+                        spec.FieldOwnership,
+                        SeatInitPolicy,
+                        spec.ConfigChangePolicy,
+                        spec.VersionChangePolicy,
+                        spec.LastSupport,
+                        spec.TransferPolicy,
+                        spec.MigrationKeys,
+                        true,
+                        ResetReason));
+                }
+
+                if (!declared)
+                {
+                    return manifest;
+                }
+
+                return new PluginManifest(
+                    manifest.PluginTypeId,
+                    manifest.PackageVersion,
+                    manifest.PackageContentHash,
+                    manifest.ProtocolRange,
+                    manifest.RequiredFeatureIds,
+                    manifest.ConfigSchema,
+                    manifest.FactoryKey,
+                    manifest.ServiceExports,
+                    manifest.ServiceDependencies,
+                    manifest.CapabilityContracts,
+                    manifest.DerivationRules,
+                    manifest.TargetDescriptors,
+                    slots,
+                    manifest.Stages,
+                    manifest.Buffers,
+                    manifest.Resources);
+            }
 
             /// <summary>The committed-output slot with the declared `TransferTo` last-support policy (P-032).</summary>
             private static SlotStatePolicy Transferable()

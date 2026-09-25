@@ -5,6 +5,7 @@
 // declarations P-032 requires, and the tests then assert on `StatePolicyExecutor`'s and `SlotLayoutGenerator`'s own
 // verdicts.
 #nullable enable
+using System;
 using System.Collections.Generic;
 using GameCore.Contracts;
 using GameCore.Planning.Ownership;
@@ -110,7 +111,12 @@ namespace GameCore.Planning.Tests
     /// <summary>Declaration builders of the GC-015 fixture.</summary>
     internal static class StatePoliciesFixture
     {
-        /// <summary>A durable slot: `PreserveDormant` last support, a registered version change (P-032).</summary>
+        /// <summary>
+        /// A durable slot: `PreserveDormant` last support, a registered version change (P-032). The reset support is
+        /// declared on the slot's own `StateSlotSpec` — the manifest field P-032 requires — and projected through
+        /// `SlotStatePolicySet.TryBuild`, so the fixture proves the declared field produces the resettable policy
+        /// instead of hand-building a `SlotAuthorityOptions` (P-032).
+        /// </summary>
         internal static SlotStatePolicy Durable(
             SlotId slot,
             OwnerId owner,
@@ -121,19 +127,27 @@ namespace GameCore.Planning.Tests
             bool resetPermitted = false,
             string resetReason = "")
         {
-            var declaration = new SlotAuthorityDeclaration(
+            StateSlotSpec spec = Spec(
                 slot,
                 owner,
                 schema,
                 layoutKey,
                 fields,
                 LastSupportPolicy.PreserveDormant,
+                migrationKey,
                 default(FactoryKey),
-                migrationKey.RegistrationKey.IsDefault ? null : new List<FactoryKey> { migrationKey },
-                resetPermitted
-                    ? SlotAuthorityOptions.Resettable(resetReason, true, false)
-                    : SlotAuthorityOptions.Dormant());
-            return new SlotStatePolicy(declaration, StatePolicyFixtureIds.QuestInit, StatePolicyFixtureIds.QuestConfigChange, migrationKey);
+                resetPermitted,
+                resetReason);
+            var specs = new List<StateSlotSpec> { spec };
+            if (!SlotStatePolicySet.TryBuild(specs, out SlotStatePolicySet? set, out DiagnosticCode code, out string detail)
+                || set == null
+                || set.Count != 1)
+            {
+                throw new InvalidOperationException(
+                    "the fixture's durable slot declaration was refused: " + code.ToString() + ": " + detail);
+            }
+
+            return set.Policies[0];
         }
 
         /// <summary>A disposable derived slot: `RemoveDerived` last support, no migration (P-032, P-033).</summary>
@@ -190,7 +204,11 @@ namespace GameCore.Planning.Tests
             return registry;
         }
 
-        /// <summary>One state slot specification, so the layout generator and the policy set read the same input.</summary>
+        /// <summary>
+        /// One state slot specification, so the layout generator and the policy set read the same input. The reset
+        /// support is the manifest's own declaration (P-032): it is carried through the 13-argument overload, never
+        /// inferred from a caller-supplied option object.
+        /// </summary>
         internal static StateSlotSpec Spec(
             SlotId slot,
             OwnerId owner,
@@ -199,7 +217,9 @@ namespace GameCore.Planning.Tests
             IReadOnlyList<FieldOwnership>? fields,
             LastSupportPolicy lastSupport,
             FactoryKey versionChangePolicy,
-            FactoryKey transferPolicy)
+            FactoryKey transferPolicy,
+            bool resetSupported = false,
+            string resetReason = "")
         {
             return new StateSlotSpec(
                 slot,
@@ -212,7 +232,9 @@ namespace GameCore.Planning.Tests
                 versionChangePolicy,
                 lastSupport,
                 transferPolicy,
-                versionChangePolicy.RegistrationKey.IsDefault ? null : new List<FactoryKey> { versionChangePolicy });
+                versionChangePolicy.RegistrationKey.IsDefault ? null : new List<FactoryKey> { versionChangePolicy },
+                resetSupported,
+                resetReason);
         }
 
         /// <summary>The quest value field of the fixture's shared quest layout.</summary>

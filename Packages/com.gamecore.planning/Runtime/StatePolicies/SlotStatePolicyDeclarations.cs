@@ -219,7 +219,11 @@ namespace GameCore.Planning.StatePolicies
             VersionChangePolicy = versionChangePolicy;
         }
 
-        /// <summary>Projects one catalog declaration, keeping its generated policy keys (never inferring them).</summary>
+        /// <summary>
+        /// Projects one catalog declaration, keeping its generated policy keys (never inferring them). The slot's own
+        /// manifest decides whether a `Reset` is permitted: `ResetSupported` records the explicit support and reason
+        /// P-032 requires, and that field is the only way `Options.ResetPermitted` ever becomes true (P-032).
+        /// </summary>
         public static SlotStatePolicy FromSpec(StateSlotSpec spec)
         {
             if (spec == null)
@@ -227,8 +231,11 @@ namespace GameCore.Planning.StatePolicies
                 throw new ArgumentNullException(nameof(spec));
             }
 
+            SlotAuthorityOptions options = spec.ResetSupported
+                ? SlotAuthorityOptionsFactory.WithReset(spec.LastSupport, spec.ResetReason)
+                : SlotAuthorityOptionsFactory.ForLastSupport(spec.LastSupport);
             return new SlotStatePolicy(
-                SlotAuthorityDeclaration.FromSpec(spec, SlotAuthorityOptionsFactory.ForLastSupport(spec.LastSupport)),
+                SlotAuthorityDeclaration.FromSpec(spec, options),
                 spec.InitPolicy,
                 spec.ConfigChangePolicy,
                 FirstMigrationKeyOf(spec));
@@ -284,8 +291,9 @@ namespace GameCore.Planning.StatePolicies
 
     /// <summary>
     /// The one mapping from a declared last-support policy to the generated slot options, so the ownership validator
-    /// and this folder read the same policy (P-032, P-033). `ResetPermitted` stays false here: only a manifest that
-    /// explicitly supports a reset records the reason that permits one.
+    /// and this folder read the same policy (P-032, P-033). `ResetPermitted` is false unless the manifest says
+    /// otherwise: `WithReset` is the single production path that carries a manifest's `ResetSupported`/`ResetReason`
+    /// through, so a resettable declaration always comes from the manifest rather than from a hand-written option.
     /// </summary>
     public static class SlotAuthorityOptionsFactory
     {
@@ -304,7 +312,8 @@ namespace GameCore.Planning.StatePolicies
 
         /// <summary>
         /// The same options with an explicit manifest-supported reset. The reason is part of the declaration: a
-        /// permitted reset without a recorded reason is rejected by `SlotPolicyValidator` (P-032).
+        /// permitted reset without a recorded reason is rejected by `SlotPolicyValidator` (P-032). This is the one
+        /// production caller of `SlotAuthorityOptions.Resettable`.
         /// </summary>
         public static SlotAuthorityOptions WithReset(LastSupportPolicy lastSupport, string? reason)
         {

@@ -93,6 +93,13 @@ namespace GameCore.Narrative.Tests
             private PipelineDescriptorReport descriptorReport = null!;
             private StatePolicyCatalog policyCatalog = null!;
 
+            /// <summary>
+            /// The same revision with the conversation node slot's reset support declared in its manifest
+            /// (`StateSlotSpec.ResetSupported` and its reason), so the declared-reset pass reads a policy the manifest
+            /// produced rather than a hand-built `SlotAuthorityOptions` (P-032).
+            /// </summary>
+            private StatePolicyCatalog resetPolicyCatalog = null!;
+
             private UnityWorldHost? host;
             private NarrativeModule? module;
             private CompositionHost? lane;
@@ -156,6 +163,14 @@ namespace GameCore.Narrative.Tests
 
                     policyCatalog = StatePolicyCatalog.Build(
                         Manifests(),
+                        MigrationHandlers(),
+                        NarrativeInitialValues());
+
+                    // The declared reset is a manifest declaration, never a hand-built option: this revision's
+                    // conversation node slot carries the reset support on its own `StateSlotSpec`, and its policy set
+                    // comes from the same production builder (P-032).
+                    resetPolicyCatalog = StatePolicyCatalog.Build(
+                        ManifestsWithDeclaredReset(),
                         MigrationHandlers(),
                         NarrativeInitialValues());
 
@@ -599,10 +614,11 @@ namespace GameCore.Narrative.Tests
             }
 
             /// <summary>
-            /// A reset is legal only for a schema/policy that explicitly permits it (P-032). The narrative catalog
-            /// permits none, so the world refuses an undeclared reset and keeps the value; the same production
-            /// executor then performs a declared reset — a manifest-supported reason plus the declared
-            /// initialization policy — as a real publication over the same live row.
+            /// A reset is legal only for a schema/policy that explicitly permits it (P-032). The catalog this scenario
+            /// mounts declares no reset, so the world refuses an undeclared reset and keeps the value; the same
+            /// production executor then performs a declared reset — a mounted revision whose manifest declares the
+            /// reset support and reason, with the declared initialization policy — as a real publication over the
+            /// same live row.
             /// </summary>
             private void DeclaredResetInTheWorld()
             {
@@ -627,13 +643,13 @@ namespace GameCore.Narrative.Tests
                     bool keptAfterRefusal = ReadSlot(
                         NarrativeKeys.Mara, NarrativeKeys.DialogueOwner, NarrativeKeys.ConversationNodeSlot, out int afterRefusal, out uint _);
 
-                    // The declared reset: the same slot, a manifest-supported reason and the declared
-                    // initialization policy, executed by the same executor and applied by the same publisher.
-                    SlotStatePolicySet declaredSet = SetWith(Resettable(ResetReason));
+                    // The declared reset: the same slot, a mounted revision whose manifest declares the reset support
+                    // on its own `StateSlotSpec` and whose policy set `StatePolicyCatalog.Build` produced — never a
+                    // hand-built option — executed by the same executor and applied by the same publisher.
                     AssemblyPublicationReport? publication = PublishPolicyEdit(
                         NextChapterTwoEdit(),
                         new List<StatePolicyRequest> { StatePolicyRequest.Reset(node, ResetReason) },
-                        declaredSet,
+                        resetPolicyCatalog.Policies,
                         out StatePolicyPlan? plan,
                         out DerivedAssemblyReport? _);
 
@@ -646,6 +662,7 @@ namespace GameCore.Narrative.Tests
                         && undeclared.Code == DiagnosticCode.OwnershipConflict
                         && undeclared.Detail.Contains("does not declare a permitted reset")
                         && keptAfterRefusal && afterRefusal == before
+                        && resetPolicyCatalog.Succeeded
                         && publication != null && publication.Published
                         && plan != null && plan.Succeeded && plan.ResetCount == 1
                         && TryFindDecision(plan, node, out StatePolicyDecision resetDecision)
@@ -1143,7 +1160,8 @@ namespace GameCore.Narrative.Tests
                     host.CurrentEpoch,
                     DerivedCompositionProposal.InputHashOf(derivation),
                     input.Snapshot.SnapshotHash,
-                    operation);
+                    operation,
+                    publisher!.Published.Bindings);
                 report.Proposal = proposal;
                 if (!proposal.Succeeded || proposal.Proposal == null)
                 {
@@ -1343,7 +1361,11 @@ namespace GameCore.Narrative.Tests
                     PropagationMode.Automatic);
             }
 
-            /// <summary>The catalog's declared policies with one slot's declaration replaced (never duplicated).</summary>
+            /// <summary>
+            /// The catalog's declared policies with one revision-level declaration replaced (never duplicated): the
+            /// owner-transfer last-support policy and the transferred row's ownership fact (P-025, P-034). A reset
+            /// permission is never built here — only a manifest declares one (P-032).
+            /// </summary>
             private SlotStatePolicySet SetWith(SlotStatePolicy replacement)
             {
                 var policies = new List<SlotStatePolicy>();
@@ -1360,22 +1382,78 @@ namespace GameCore.Narrative.Tests
                 return new SlotStatePolicySet(policies);
             }
 
-            /// <summary>The conversation node slot with the manifest-supported reset P-032 requires.</summary>
-            private static SlotStatePolicy Resettable(string reason)
-                => new SlotStatePolicy(
-                    new SlotAuthorityDeclaration(
-                        NarrativeKeys.ConversationNodeSlot,
-                        NarrativeKeys.DialogueOwner,
-                        NarrativeKeys.ConversationDomain,
-                        NarrativeKeys.ConversationLayout,
-                        null,
-                        LastSupportPolicy.PreserveDormant,
-                        default(FactoryKey),
-                        new List<FactoryKey> { NarrativeKeys.ConversationNodeMigration },
-                        SlotAuthorityOptions.Resettable(reason, true, false)),
-                    NarrativeKeys.ConversationInit,
-                    NarrativeKeys.ConversationConfigChange,
-                    NarrativeKeys.ConversationNodeMigration);
+            /// <summary>
+            /// The manifests this scenario mounts with the conversation node slot's reset support declared on its own
+            /// `StateSlotSpec` (P-032). A manifest is the only place a reset permission may come from, so the
+            /// declared-reset publication reads its resettable policy from `StatePolicyCatalog.Build` over these
+            /// declarations instead of from a hand-written option value.
+            /// </summary>
+            private IReadOnlyList<PluginManifest> ManifestsWithDeclaredReset()
+            {
+                IReadOnlyList<PluginManifest> mounted = Manifests();
+                var manifests = new List<PluginManifest>(mounted.Count);
+                for (int i = 0; i < mounted.Count; i++)
+                {
+                    manifests.Add(DeclaringReset(mounted[i]));
+                }
+
+                return manifests;
+            }
+
+            /// <summary>One manifest with the conversation node slot's declared reset support (P-032).</summary>
+            private static PluginManifest DeclaringReset(PluginManifest manifest)
+            {
+                var slots = new List<StateSlotSpec>(manifest.StateSlots.Count);
+                bool declared = false;
+                for (int i = 0; i < manifest.StateSlots.Count; i++)
+                {
+                    StateSlotSpec spec = manifest.StateSlots[i];
+                    if (!spec.SlotId.Equals(NarrativeKeys.ConversationNodeSlot))
+                    {
+                        slots.Add(spec);
+                        continue;
+                    }
+
+                    declared = true;
+                    slots.Add(new StateSlotSpec(
+                        spec.SlotId,
+                        spec.Owner,
+                        spec.Schema,
+                        spec.PhysicalLayoutKey,
+                        spec.FieldOwnership,
+                        spec.InitPolicy,
+                        spec.ConfigChangePolicy,
+                        spec.VersionChangePolicy,
+                        spec.LastSupport,
+                        spec.TransferPolicy,
+                        spec.MigrationKeys,
+                        true,
+                        ResetReason));
+                }
+
+                if (!declared)
+                {
+                    return manifest;
+                }
+
+                return new PluginManifest(
+                    manifest.PluginTypeId,
+                    manifest.PackageVersion,
+                    manifest.PackageContentHash,
+                    manifest.ProtocolRange,
+                    manifest.RequiredFeatureIds,
+                    manifest.ConfigSchema,
+                    manifest.FactoryKey,
+                    manifest.ServiceExports,
+                    manifest.ServiceDependencies,
+                    manifest.CapabilityContracts,
+                    manifest.DerivationRules,
+                    manifest.TargetDescriptors,
+                    slots,
+                    manifest.Stages,
+                    manifest.Buffers,
+                    manifest.Resources);
+            }
 
             /// <summary>
             /// The bridge-permit fact slot as the revision after the transfer declares it: the gate owner holds it,

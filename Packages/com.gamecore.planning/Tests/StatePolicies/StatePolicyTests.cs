@@ -5,6 +5,7 @@
 // apply: which dispositions it carries and which values the bounded scratch holds. Nothing is asserted from the
 // fixture's own bookkeeping.
 #nullable enable
+using System;
 using System.Collections.Generic;
 using GameCore.Contracts;
 using GameCore.Planning.Ownership;
@@ -524,6 +525,95 @@ namespace GameCore.Planning.Tests
             Assert.That(plan.Detail, Does.Contain("no registered value"));
         }
 
+        [Test]
+        public void AManifestSupportedResetProducesAResettablePolicy()
+        {
+            SlotStatePolicy policy = DeclaredPolicy(resetSupported: true, resetReason: "content repair");
+            SlotStatePolicySet set = StatePoliciesFixture.Set(policy);
+            var scratch = new MigrationScratch(4096UL, 64UL);
+
+            Assert.That(policy.Options.ResetPermitted, Is.True,
+                "a slot's own manifest declaration is the only authority for a reset (P-032)");
+            Assert.That(policy.Options.ResetReason, Is.EqualTo("content repair"));
+
+            StatePolicyPlan plan = StatePolicyExecutor.Execute(
+                set,
+                new List<LiveSlotState> { StatePoliciesFixture.Live(ValueSlot, 2U, 41) },
+                new List<StatePolicyRequest>
+                {
+                    StatePolicyRequest.Reset(StatePoliciesFixture.Key(ValueSlot, StatePolicyFixtureIds.QuestOwner), "content repair"),
+                },
+                new MigrationRegistry(null),
+                new DeclaredSlotMigrationRegistry(set),
+                StatePoliciesFixture.InitialValues(),
+                scratch);
+
+            Assert.That(plan.Succeeded, Is.True, plan.Detail);
+            Assert.That(plan.ResetCount, Is.EqualTo(1));
+            Assert.That(plan.Dispositions[0].Kind, Is.EqualTo(StateDispositionKind.Reset));
+            Assert.That(plan.Decisions[0].PolicyKey, Is.EqualTo(StatePolicyFixtureIds.QuestInit));
+            Assert.That(plan.Decisions[0].Reason, Is.EqualTo("content repair"));
+            Assert.That(scratch.TryRead(plan.Decisions[0].Live, out int staged), Is.True);
+            Assert.That(staged, Is.EqualTo(7), "a reset writes the declared initialization policy, never an implicit zero");
+        }
+
+        [Test]
+        public void AManifestWithoutResetSupportRefusesAnExecutedReset()
+        {
+            SlotStatePolicy policy = DeclaredPolicy(resetSupported: false, resetReason: string.Empty);
+            SlotStatePolicySet set = StatePoliciesFixture.Set(policy);
+            var key = StatePoliciesFixture.Key(ValueSlot, StatePolicyFixtureIds.QuestOwner);
+            var scratch = new MigrationScratch(4096UL, 64UL);
+
+            Assert.That(policy.Options.ResetPermitted, Is.False,
+                "a manifest that declares no reset support permits none (P-032)");
+
+            StatePolicyPlan plan = StatePolicyExecutor.Execute(
+                set,
+                new List<LiveSlotState> { StatePoliciesFixture.Live(ValueSlot, 2U, 41) },
+                new List<StatePolicyRequest> { StatePolicyRequest.Reset(key, "content repair") },
+                new MigrationRegistry(null),
+                new DeclaredSlotMigrationRegistry(set),
+                StatePoliciesFixture.InitialValues(),
+                scratch);
+
+            Assert.That(plan.Succeeded, Is.False,
+                "an unpermitted reset is refused, never applied as zero initialization (P-032)");
+            Assert.That(plan.Code, Is.EqualTo(DiagnosticCode.OwnershipConflict));
+            Assert.That(plan.Detail, Does.Contain("does not declare a permitted reset"));
+            Assert.That(plan.RefusedCount, Is.EqualTo(1));
+            Assert.That(plan.Dispositions, Is.Empty);
+            Assert.That(plan.StagedValues, Is.Empty);
+            Assert.That(scratch.TryRead(key, out int _), Is.False, "a refused reset stages nothing");
+        }
+
+        [Test]
+        public void AManifestSupportedResetWithoutAReasonIsADeclarationError()
+        {
+            StateSlotSpec spec = StatePoliciesFixture.Spec(
+                ValueSlot,
+                StatePolicyFixtureIds.QuestOwner,
+                StatePolicyFixtureIds.QuestSchema,
+                QuestLayout,
+                StatePoliciesFixture.QuestFields(0x10UL),
+                LastSupportPolicy.PreserveDormant,
+                StatePolicyFixtureIds.QuestMigration,
+                default(FactoryKey),
+                true,
+                string.Empty);
+            SlotStatePolicy policy = SlotStatePolicy.FromSpec(spec);
+
+            SlotPolicyResult declared = SlotPolicyValidator.ValidateDeclaration(policy.Declaration);
+
+            Assert.That(declared.Succeeded, Is.False, "a supported reset must record the reason P-032 requires");
+            Assert.That(declared.Code, Is.EqualTo(DiagnosticCode.OwnershipConflict));
+            Assert.That(declared.Detail, Does.Contain("without recording the explicit reason"));
+
+            SlotStatePolicySet set = StatePoliciesFixture.Set(policy);
+            Assert.That(set.TryValidateDeclarations(out DiagnosticCode code, out string detail), Is.False, detail);
+            Assert.That(code, Is.EqualTo(DiagnosticCode.OwnershipConflict));
+        }
+
         // ------------------------------------------------------------------ TransferTo and owner transfer (P-025, P-032)
 
         [Test]
@@ -765,6 +855,35 @@ namespace GameCore.Planning.Tests
                 StatePolicyFixtureIds.QuestMigration,
                 resetPermitted,
                 resetReason);
+
+        /// <summary>
+        /// The quest value slot as one manifest declaration with its own reset support, projected through the
+        /// production set builder, so a test reads the policy its declaration actually produces (P-032).
+        /// </summary>
+        private static SlotStatePolicy DeclaredPolicy(bool resetSupported, string resetReason)
+        {
+            StateSlotSpec spec = StatePoliciesFixture.Spec(
+                ValueSlot,
+                StatePolicyFixtureIds.QuestOwner,
+                StatePolicyFixtureIds.QuestSchema,
+                QuestLayout,
+                StatePoliciesFixture.QuestFields(0x10UL),
+                LastSupportPolicy.PreserveDormant,
+                StatePolicyFixtureIds.QuestMigration,
+                default(FactoryKey),
+                resetSupported,
+                resetReason);
+            var specs = new List<StateSlotSpec> { spec };
+            if (!SlotStatePolicySet.TryBuild(specs, out SlotStatePolicySet? set, out DiagnosticCode code, out string detail)
+                || set == null
+                || set.Count != 1)
+            {
+                throw new InvalidOperationException(
+                    "the declared slot was refused: " + code.ToString() + ": " + detail);
+            }
+
+            return set.Policies[0];
+        }
 
         /// <summary>
         /// The transfer fixture: the fact slot's last support transfers to `TransferOwner`, and that owner is a
