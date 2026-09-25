@@ -276,6 +276,12 @@ namespace GameCore.Gameplay.Narrative.Fixtures
         public int ForbiddenGenreNameCount { get; set; }
 
         /// <summary>Names of the whole slice inventory (rules content plus gameplay names) the audit examined.</summary>
+        /// <summary>True when this run's recorded observations equal the committed trace's declaration (P-060).</summary>
+        public bool TraceMatchesDeclaration { get; set; }
+
+        /// <summary>Observations that disagree with the declared canonical trace; empty is the required value.</summary>
+        public string TraceMismatchDetail { get; set; } = string.Empty;
+
         public int InventoryAuditChecked { get; set; }
 
         public bool InventoryAuditNeutral { get; set; }
@@ -397,6 +403,8 @@ namespace GameCore.Gameplay.Narrative.Fixtures
                 + "; genreChecked=" + I(GenreAuditChecked)
                 + "; genreNeutral=" + GenreAuditNeutral
                 + "; forbiddenNames=" + I(ForbiddenGenreNameCount)
+                + "; traceMatchesDeclaration=" + TraceMatchesDeclaration
+                + "; traceMismatchDetail=" + TraceMismatchDetail
                 + "; inventoryChecked=" + I(InventoryAuditChecked)
                 + "; inventoryNeutral=" + InventoryAuditNeutral
                 + "; inventoryForbiddenNames=" + I(InventoryForbiddenNameCount)
@@ -1811,7 +1819,19 @@ namespace GameCore.Gameplay.Narrative.Fixtures
                     // The composition the world published registers no actor, vitality, physics or animation schema
                     // or stage: every name is narrative vocabulary, and the component inventory is what the slice
                     // declares (P-001, TEST-021).
-                    bool pass = content.Neutral
+                    // The run's own recording of its observations must equal the committed canonical trace's
+                    // declaration, key by key: a run that disagrees with the trace, or records an observation the
+                    // trace does not declare, is a drift in the slice (P-060).
+                    bool declared = NarrativeScenarioTrace.TryCompare(
+                        PipelineEntries(),
+                        out IReadOnlyList<string> mismatches);
+                    facts.TraceMatchesDeclaration = declared;
+                    facts.TraceMismatchDetail = mismatches.Count == 0
+                        ? "<none>"
+                        : string.Join(" | ", ToArray(mismatches));
+
+                    bool pass = declared
+                        && content.Neutral
                         && inventory.Neutral
                         && components.Neutral
                         && content.CheckedCount == NarrativeRegistrations.Count
@@ -1828,7 +1848,9 @@ namespace GameCore.Gameplay.Narrative.Fixtures
                         + "; components=" + GenreAuditReportText(components)
                         + "; registrations=" + NarrativeRegistrations.Count.ToString(CultureInfo.InvariantCulture)
                         + "; gameplayNames=" + NarrativeInventory.GameplayNames.Count.ToString(CultureInfo.InvariantCulture)
-                        + "; componentTypes=" + NarrativeComponentInventory.Count.ToString(CultureInfo.InvariantCulture)));
+                        + "; componentTypes=" + NarrativeComponentInventory.Count.ToString(CultureInfo.InvariantCulture)
+                        + "; traceMatchesDeclaration=" + facts.TraceMatchesDeclaration
+                        + "; traceMismatches=" + facts.TraceMismatchDetail));
                 }
                 catch (Exception exception)
                 {
@@ -1932,6 +1954,17 @@ namespace GameCore.Gameplay.Narrative.Fixtures
                 return entityManager.HasComponent<AssemblyStamp>(entity)
                     ? entityManager.GetComponentData<AssemblyStamp>(entity).AssemblyEpoch
                     : 0UL;
+            }
+
+            private static string[] ToArray(IReadOnlyList<string> values)
+            {
+                var array = new string[values.Count];
+                for (int i = 0; i < values.Count; i++)
+                {
+                    array[i] = values[i];
+                }
+
+                return array;
             }
 
             private static string GenreAuditReportText(GenreAuditReport report)
