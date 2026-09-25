@@ -23,7 +23,10 @@ some latch metadata and per-world allocation still remain (see BUILD_REPORT.md).
 
 | Path | Contents |
 | --- | --- |
-| `Packages/com.gamecore.unity.runtime/Runtime/Faults/FaultBoundaries.cs` (+ `.meta`, folder `.meta`) | `FaultBoundary` (the eight boundaries), `FaultBoundaryText`, `FaultRecord`/`FaultTrace` (ordered provenance: boundary, operation, plan hash, injected flag), `FaultInjectedException`, `FaultCompilation` (`Symbol`, `IsCompiledIn`) and the internal `FaultReach.Reach`/`FaultReach.Refuse` helpers. |
+| `Packages/com.gamecore.unity.runtime/Runtime/Faults/FaultBoundaries.cs` (+ `.meta`, folder `.meta`) | `FaultBoundary` (the eight boundaries), `FaultBoundaryText`, `FaultRecord`/`FaultTrace` (ordered provenance: boundary, operation, plan hash, injected flag), `FaultInjectedException`, `FaultCompilation` (`Symbol`, `IsCompiledIn`) and the internal `FaultReach.Reach`/`FaultReach.Refuse` helpers. **The whole body is inside one `#if GAMECORE_FAULT_INJECTION`**; only the namespace declaration stays outside, so a release compilation of this file contributes nothing but an empty namespace. |
+| `Packages/com.gamecore.unity.runtime/Runtime/Faults/AssemblyFaultInjection.cs` (+ `.meta`) | The latch itself, moved out of `AssemblyPublisher.cs` in the release-surface round. Same public name and namespace, so no caller changed; the move makes the entire latch engine-free and therefore compilable by plain dotnet in both configurations, which is what `dotnet/src/GameCore.Faults.ReleaseCheck` uses. Guarded exactly like `FaultBoundaries.cs`. |
+| `dotnet/src/GameCore.Faults.ReleaseCheck/GameCore.Faults.ReleaseCheck.csproj` | The qualification-only project that compiles `Runtime/Faults/**` twice (Release must be empty, Qualification must carry everything). Deliberately outside `dotnet/GameCore.sln` so the solution build stays the shipping shape. |
+| `tools/check_release_fault_free.py`, `tools/check_player_fault_free.py` | The release-surface checks (see §10). |
 | `Packages/com.gamecore.unity.runtime/Runtime/Recovery/InitialDefinitionRecovery.cs` (+ `.meta`, folder `.meta`) | `IRecoveryRepair`, `RecoveryRequest`, `RecoveryReport`, `InitialDefinitionRecovery.Recover`. |
 
 ### Unity fault fixtures and the player probe
@@ -47,9 +50,10 @@ some latch metadata and per-world allocation still remain (see BUILD_REPORT.md).
 
 | Path | Contents |
 | --- | --- |
-| `tools/run_gc017_gate.sh` | The gate sequence; every Unity invocation bounded by `timeout`, a timeout retried exactly once. |
+| `tools/run_gc017_gate.sh` | The gate sequence; every Unity invocation bounded by `timeout`, a timeout retried exactly once. Step 7 is now the release-surface check. |
 | `tools/unity/run_gc017_faults_probe.sh` | The player-probe harness: `PROBE_RUNS` runs, strict JSON, all 62 required step fragments, both digest literals, 15 clause fragments. |
-| `artifacts/faults/README.md`, `boundaries.json`, `trace-format.md` | The ten TEST-016 rows mapped to their cases and evidence paths (29 rows), the trace grammar, and the exact commands. Every row's status is `NotRun (pending orchestrator build host)`. |
+| `artifacts/faults/README.md`, `boundaries.json`, `trace-format.md` | The ten TEST-016 rows mapped to their cases and evidence paths (29 rows), the trace grammar, and the exact commands. |
+| `artifacts/faults/release-surface.md` | The release-surface requirement, the mechanism, the three checks and the authoring-host self-test. |
 | `artifacts/gc-017/HANDOFF.md` | This file. |
 
 ## 3. Files modified
@@ -57,10 +61,11 @@ some latch metadata and per-world allocation still remain (see BUILD_REPORT.md).
 | Path | Change | Why |
 | --- | --- | --- |
 | `Packages/.../Runtime/Assembly/AssemblyPublisher.cs` | `AssemblyFaultInjection` gained `Arm`/`Disarm`/`IsArmed`/`TryReach`/`TryRefuse`/`Trace`/`ReachCountOf` alongside the two original booleans; `Faults` now returns the world's latch; `Publish` reaches the validation, acquisition, fence, first-live-write, gate-installation and cleanup boundaries; `StampTargets` moved inside the postwrite guard; `PrewriteRefusal`/`ReachPrewriteFault` added; the header and inline step list renumbered. | The only place a validated plan becomes visible storage is where the apply boundaries live (P-002, P-029..P-031). |
-| `Packages/.../Runtime/Execution/UnityExecutionDriver.cs` | Reaches `FaultBoundary.StructuralPlayback` between the step's systems and its commit. | TEST-016 row 6 needs an injection point after the step's writes and before its publication. |
-| `Packages/.../Runtime/Integration/StagedResourceGate.cs` | Optional latch (3-arg ctor); acquisition and cleanup boundaries refuse as values; `InjectionRefusalCount`/`InjectionReleaseRefusalCount` kept apart from `BudgetExceededCount`. | TEST-016 rows 2 and 8; a budget reading must not absorb a fault refusal. |
-| `Packages/.../Runtime/WorldHost.cs` | `UnityWorldHost.Faults` + `IWorldExecutionContext.Faults`. | One latch per world, shared by its publisher, driver and gate. |
-| `Packages/.../Runtime/GameCore.Unity.Runtime.asmdef` | `versionDefines` on `com.unity.test-framework` defines `GAMECORE_FAULT_INJECTION`. | Puts the latches in the validation project and the player, and keeps them out of a build that does not reference the Test Framework. |
+| `Packages/.../Runtime/Assembly/AssemblyPublisher.cs` (release round) | `AssemblyFaultInjection` moved to `Runtime/Faults/`; the `Faults` property, the ctor assignment and every reach/legacy call site are inside `#if`; the seven identical legacy first-live-write sites collapsed into one `[Conditional("GAMECORE_FAULT_INJECTION")]`-masked helper called from unconditioned code, so those call sites vanish from a release compilation. | No latch code and no latch cost outside the qualification build. |
+| `Packages/.../Runtime/Execution/UnityExecutionDriver.cs` | Reaches `FaultBoundary.StructuralPlayback` between the step's systems and its commit; guarded. | TEST-016 row 6 needs an injection point after the step's writes and before its publication. |
+| `Packages/.../Runtime/Integration/StagedResourceGate.cs` | Optional latch (3-arg ctor); acquisition and cleanup boundaries refuse as values; `InjectionRefusalCount`/`InjectionReleaseRefusalCount` kept apart from `BudgetExceededCount`. The latch field, that constructor and both counters are inside `#if`. | TEST-016 rows 2 and 8; a budget reading must not absorb a fault refusal; a shipping gate has no latch field at all. |
+| `Packages/.../Runtime/WorldHost.cs` | `UnityWorldHost.Faults` + `IWorldExecutionContext.Faults`, both inside `#if` — including the `new AssemblyFaultInjection()` — so a shipping world allocates no latch. | One latch per world, shared by its publisher, driver and gate. |
+| `Packages/.../Runtime/GameCore.Unity.Runtime.asmdef` | `versionDefines` on the **marker package `com.gamecore.fault-qualification`** defines `GAMECORE_FAULT_INJECTION`. | The marker is referenced only by the validation project's manifest, so a shipping project cannot obtain the symbol — keying it on `com.unity.test-framework` did not work, because Unity packages resolve the Test Framework transitively. |
 | `Packages/com.gamecore.planning/Runtime/Plans/PlanStateMachine.cs` | `HasCrossedLiveWriteBoundary` includes `PlanPhase.Faulted`. | `shared:` — see §5. |
 | `unity/.../Runtime/ProbeArguments.cs`, `ProbeRunner.cs` | The `-probeFaults` flag, its property, `IsProbeInvocation`, `Parse`, the report identity (`GC-017`/`Faults`) and the dispatch arm. | One new probe mode; every existing arm untouched. |
 
@@ -125,6 +130,16 @@ Four commits touch shared surfaces; all are additive or a strict widening, and e
    (`PlanStateMachineTests` Draft `false`, `AssemblyPlannerTests`, `AssemblyPublisherTests`) are unaffected: none of
    them asserts the predicate on a faulted plan, and the Draft case is still `false`.
 
+**Release-surface round.** One further shared change, and it is a narrowing rather than an addition:
+`AssemblyFaultInjection` moved from `AssemblyPublisher.cs` to `Runtime/Faults/AssemblyFaultInjection.cs` — same
+public name, same `GameCore.Unity.Runtime` namespace, same members, so no caller changed. What *is* different is that
+in a compilation without `GAMECORE_FAULT_INJECTION` these members no longer exist at all rather than existing
+inertly: `AssemblyPublisher.Faults`, `UnityWorldHost.Faults`, `IWorldExecutionContext.Faults`,
+`StagedResourceGate`'s 3-argument constructor, `StagedResourceGate.InjectionRefusalCount` /
+`InjectionReleaseRefusalCount`, `FaultCompilation.IsCompiledIn`, `FaultReach`, and every latch type. That is the
+point of the round: a shipping consumer cannot name them. No shipping caller ever existed — this whole surface was
+introduced by GC-017 in this wave.
+
 No public contract was renamed or removed. `GameCore.Contracts` and the plan DTOs are unchanged.
 
 ## 6. Known gaps, assumptions and doc ambiguities
@@ -180,7 +195,25 @@ UNITY=~/Unity/Hub/Editor/6000.0.75f1/Editor/Unity DOTNET=$HOME/.dotnet/dotnet \
 
 In order: `dotnet build` + `dotnet test dotnet/GameCore.sln -c Release` (trx into `artifacts/faults/trx`); the Unity
 resolve; EditMode; PlayMode; the IL2CPP player through `tools/unity/build_probe.sh`; the `-probeFaults` probe; the
-documentation validator.
+release-surface check; the documentation validator.
+
+The release-surface step is the one this round added, and it is the only place GC-017's release claim is settled:
+
+```sh
+python3 tools/check_release_fault_free.py --dotnet "$DOTNET" --json artifacts/faults/release-surface.json
+```
+
+To also settle it against a **built** release player — one whose project manifest omits
+`com.gamecore.fault-qualification` — build that player (the build report's recipe: copy the validation project, drop
+the marker and the direct Test Framework dependencies, build StandaloneLinux64 IL2CPP Release/High) and then:
+
+```sh
+python3 tools/check_player_fault_free.py --player <release-player-dir> --il2cpp <generated-cpp-dir> \
+  --json artifacts/faults/release-player-surface.json
+```
+
+or pass `RELEASE_PLAYER` / `RELEASE_IL2CPP` to `tools/run_gc017_gate.sh` so step 7 runs it in place. Without them the
+gate prints `release-player: NOT RUN (RELEASE_PLAYER unset)` rather than implying it inspected a player.
 
 ### 7.2 The GC-017 suites alone
 
@@ -235,7 +268,25 @@ python3 -m json.tool artifacts/faults/boundaries.json   # clean, 29 rows, rows 1
 #   11 defects found and fixed (4 compile-blocking), plus 5 assertions made discriminating
 ```
 
-None of that is a build, an import, a test or a player run.
+Release-surface round, on this host:
+
+```sh
+python3 tools/check_release_fault_free.py --no-build
+# PASS. releaseLatchReferences=0 in all four boundary owners; qualificationLatchReferences 17/3/1/1;
+# 2 runtime latch sources evaluate to an empty namespace in release; the apply-path mask is intact;
+# no manifest other than the validation project's references the marker package.
+python3 tools/check_player_fault_free.py --player <synthetic player dir>     # self-test, see below
+# falsifiability self-test: an unguarded `FaultReach.Refuse(Faults, FaultBoundary.Fence, ...)` injected into
+#   AssemblyPublisher.Publish made the check FAIL ("release …/AssemblyPublisher.cs still references
+#   FaultBoundary, FaultReach"); restoring the file returned it to PASS. The player tool fails on an assembly
+#   containing `AssemblyFaultInjection` and passes on one containing nothing.
+python3 tools/check_game_core_csharp.py                 # checked 372 C# file(s); ok
+bash -n tools/run_gc017_gate.sh                         # clean
+# .meta GUID uniqueness over the whole worktree: 591 metas, 591 unique, 0 duplicates
+```
+
+None of that is a build, an import, a test or a player run. The compiled-assembly half of the release check needs
+the .NET SDK and the release-player half needs a release-configuration player; both are for the build host.
 
 ## 9. Fixes applied after the read-only audits
 
@@ -282,3 +333,46 @@ The audited findings and their fixes (each is in the tree and in the commit mess
     committed; a prewrite refusal deliberately leaves the lane one publication ahead of the world, so that term could
     never hold. Replaced with `PendingRefusalHeld`, which asserts the state a refusal really leaves (the pair is still
     adopted, the world published nothing, and the lane is exactly one publication ahead on both counters).
+
+## 10. Release-surface round: the acceptance defect the first Linux build found
+
+**The finding** (`artifacts/gc-017/BUILD_REPORT.md`, "Shipping build limit: latch exclusion is incomplete"): a
+define-less IL2CPP player's generated C++ returned `false` from the reach helpers, but still contained the empty
+reach functions, the boundary metadata, `AssemblyFaultInjection` and a per-world latch allocation. The reach path was
+verified; the requirement — **no latch code and no latch cost in release** — was not.
+
+**What changed.** Everything latch-shaped is now inside `#if GAMECORE_FAULT_INJECTION`, and the symbol is keyed on the
+empty marker package `com.gamecore.fault-qualification`, which only the validation project's manifest references
+(keying it on `com.unity.test-framework` could not work: Unity packages resolve the Test Framework transitively, so
+the symbol survived in a project that had removed its direct dependency — the build report says so explicitly).
+
+| Requirement | Mechanism | Where |
+| --- | --- | --- |
+| no per-world latch object/array/dictionary | the `Faults` member, its `new AssemblyFaultInjection()` and the latch's two `bool[]`/`int[]` are inside `#if`; so is `StagedResourceGate`'s latch field | `WorldHost.cs`, `AssemblyFaultInjection.cs`, `StagedResourceGate.cs` |
+| no boundary metadata in a release assembly | the name table, the enum and every trace type are inside `#if`; the two files evaluate to a bare namespace declaration | `FaultBoundaries.cs`, `AssemblyFaultInjection.cs` |
+| reach calls compile to nothing | every typed reach site is inside `#if`; the one apply-path call that sits in unconditioned code is masked by `[Conditional("GAMECORE_FAULT_INJECTION")]`, so the call site — argument evaluation included — is removed and the method is left as a discarded empty stub | `AssemblyPublisher.cs`, `UnityExecutionDriver.cs`, `StagedResourceGate.cs` |
+
+The namespace declaration deliberately stays outside the guard: it emits no metadata, and keeping it is what makes the
+assembly's `using GameCore.Unity.Runtime.Faults;` directives valid in the release configuration instead of a
+missing-namespace error.
+
+**Why `#if` and not `[Conditional]` everywhere.** `[Conditional]` can only remove a call whose *arguments* still
+compile, and every reach site passes `FaultBoundary.X`; once the enum is gone, those call sites cannot compile at all,
+so they must be guarded. `[Conditional]` is used exactly where it buys something: the apply loop's single per-write
+call, whose arguments are plain locals. `FaultCompilation.IsCompiledIn` is now the constant `true` rather than an
+`#if`-driven stub, because the type exists only when the latch does — a shipping build has nothing to ask.
+
+**The check.** `tools/check_release_fault_free.py` (three halves, each independently failable) plus
+`tools/check_player_fault_free.py` for a built release player; both are wired into `tools/run_gc017_gate.sh` step 7,
+and the player half is announced as `NOT RUN` rather than silently skipped when `RELEASE_PLAYER` is unset.
+`artifacts/faults/release-surface.md` is the full account, including the falsifiability self-test.
+
+**Behaviour where the symbol *is* defined is unchanged**, which is what keeps the 29 cases passing: the reach
+sequence, the trace contents and the injected counters are byte-for-byte what they were, and the one refactor on the
+apply path (seven identical legacy first-live-write sites collapsed into one helper) preserves the firing condition
+at every site.
+
+**Residual limits.** (1) The compiled-assembly and release-player halves are `NotRun` here; the gate runs them. (2)
+The check's source half strips comments, so a doc comment may name a latch type while code may not — deliberate, and
+stated in the tool. (3) A release player must be built from a project that does not reference the marker package; the
+gate cannot build one itself without a second Unity project, so it inspects one when given and says so when not.

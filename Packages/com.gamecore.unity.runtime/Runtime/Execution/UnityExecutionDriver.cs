@@ -187,14 +187,15 @@ namespace GameCore.Unity.Runtime
                     return FaultResult(request, DiagnosticCode.ApplyFault);
                 }
 
-                // Every recorded handle of this step is covered by the fence that just completed (P-041). The
-                // structural-playback boundary (GC-017, TEST-016 row 6) is reached between the systems' own writes
-                // and the step's commit: the structural work they recorded has played back, the step's committed
-                // output has not been produced yet, and an injected fault here is therefore a postwrite failure —
-                // the fault latches, the step is never published and the last committed image stays the only safe
-                // observation, exactly as a throwing system behaves (P-031, P-044).
+                // Every recorded handle of this step is covered by the fence that just completed (P-041).
                 CompleteStepJobs();
 
+#if GAMECORE_FAULT_INJECTION
+                // The structural-playback boundary (GC-017, TEST-016 row 6) is reached between the systems' own
+                // writes and the step's commit: the structural work they recorded has played back, the step's
+                // committed output has not been produced yet, and an injected fault here is therefore a postwrite
+                // failure — the fault latches, the step is never published and the last committed image stays the
+                // only safe observation, exactly as a throwing system behaves (P-031, P-044).
                 try
                 {
                     FaultReach.Reach(
@@ -209,6 +210,7 @@ namespace GameCore.Unity.Runtime
                     LatchFault(DiagnosticCode.ApplyFault, playbackFault.Message);
                     return FaultResult(request, DiagnosticCode.ApplyFault);
                 }
+#endif
 
                 LogicalStepId committed;
                 if (!step.TryIncrement(out committed))

@@ -43,20 +43,27 @@ namespace GameCore.Unity.Runtime.Integration
         private readonly Dictionary<Id128, StagedResourceLease> leases = new Dictionary<Id128, StagedResourceLease>();
         private readonly ulong byteCeiling;
         private readonly Id128 category;
+#if GAMECORE_FAULT_INJECTION
         private readonly AssemblyFaultInjection? faults;
+#endif
 
         private ulong nextLease;
 
         public StagedResourceGate(ulong byteCeiling, Id128 category)
-            : this(byteCeiling, category, null)
         {
+            this.byteCeiling = byteCeiling;
+            this.category = category;
+#if GAMECORE_FAULT_INJECTION
+            this.faults = null;
+#endif
         }
 
+#if GAMECORE_FAULT_INJECTION
         /// <summary>
         /// The gate of one world when a fault latch is available (GC-017). The latch is the world's
         /// (<see cref="UnityWorldHost.Faults"/>), so the acquisition and cleanup boundaries of TEST-016 rows 2 and
-        /// 8 are reachable through the same instance the publisher and the driver use. A null latch is the
-        /// production and pure-test shape and behaves exactly as before.
+        /// 8 are reachable through the same instance the publisher and the driver use. This constructor does not
+        /// exist in a shipping compilation, and neither does the latch it takes.
         /// </summary>
         public StagedResourceGate(ulong byteCeiling, Id128 category, AssemblyFaultInjection? faults)
         {
@@ -64,6 +71,7 @@ namespace GameCore.Unity.Runtime.Integration
             this.category = category;
             this.faults = faults;
         }
+#endif
 
         /// <summary>Leases handed out so far; the acquisition counter of the gate (P-029).</summary>
         public int AcquiredCount { get; private set; }
@@ -74,6 +82,7 @@ namespace GameCore.Unity.Runtime.Integration
         /// <summary>Acquisition attempts refused because the byte ceiling was reached (P-022, P-029).</summary>
         public int BudgetExceededCount { get; private set; }
 
+#if GAMECORE_FAULT_INJECTION
         /// <summary>
         /// Acquisition attempts refused by an injected fault, kept apart from <see cref="BudgetExceededCount"/> so a
         /// budget reading never absorbs a fault refusal (GC-017, TEST-016 row 2).
@@ -82,6 +91,7 @@ namespace GameCore.Unity.Runtime.Integration
 
         /// <summary>Releases refused by an injected fault; the lease stays owned here (GC-017, row 8).</summary>
         public int InjectionReleaseRefusalCount { get; private set; }
+#endif
 
         /// <summary>Releases for an identity this gate never handed out; a caller defect, reported not thrown.</summary>
         public int UnknownReleaseCount { get; private set; }
@@ -95,6 +105,7 @@ namespace GameCore.Unity.Runtime.Integration
         /// <inheritdoc />
         public bool TryAcquire(ResourceKey resource, ulong bytes, out Id128 leaseId, out DiagnosticCode code)
         {
+#if GAMECORE_FAULT_INJECTION
             // Acquisition boundary (GC-017, TEST-016 row 2): the refusal is a value, not a throw, so the plan's
             // staged set records a failed acquisition and the caller refuses the plan without touching live state.
             if (FaultReach.Refuse(faults, FaultBoundary.Acquisition, "injected acquisition fault: the lease is refused"))
@@ -104,6 +115,7 @@ namespace GameCore.Unity.Runtime.Integration
                 code = DiagnosticCode.ResourceUnavailable;
                 return false;
             }
+#endif
 
             if (StagedBytes + bytes > byteCeiling)
             {
@@ -125,6 +137,7 @@ namespace GameCore.Unity.Runtime.Integration
         /// <inheritdoc />
         public bool Release(Id128 leaseId, out DiagnosticCode code)
         {
+#if GAMECORE_FAULT_INJECTION
             // Cleanup boundary (GC-017, TEST-016 row 8): a refused release is reported to the caller's aggregation
             // (P-048) and the lease stays owned here, so "other safe cleanup proceeds" remains observable while the
             // failed release is never reported as a successful disposal.
@@ -134,6 +147,7 @@ namespace GameCore.Unity.Runtime.Integration
                 code = DiagnosticCode.ResourceUnavailable;
                 return false;
             }
+#endif
 
             if (leaseId.IsDefault || !leases.TryGetValue(leaseId, out StagedResourceLease lease))
             {

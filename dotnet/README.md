@@ -24,6 +24,7 @@ Unity qualification project and the player gates.
 | `tests/GameCore.Composition.Tests` | NUnit 3 | net8.0 | the composition package's own `Tests/**` sources |
 | `src/GameCore.Execution` | library | netstandard2.1 | `Packages/com.gamecore.unity.runtime/Runtime/Pure/**/*.cs` |
 | `tests/GameCore.Execution.Tests` | NUnit 3 | net8.0 | engine-free execution core tests |
+| `src/GameCore.Faults.ReleaseCheck` | library (not in the solution) | netstandard2.1 | `Packages/com.gamecore.unity.runtime/Runtime/Faults/**/*.cs`, compiled twice by `tools/check_release_fault_free.py`: `-c Release` must contain no type and no boundary literal, `-c Qualification` must contain all of them (GC-017) |
 | `src/GameCore.Derivation` | library | netstandard2.1 | `Packages/com.gamecore.derivation/Runtime/**/*.cs` |
 | `tests/GameCore.Derivation.Tests` | NUnit 3 | net8.0 | the derivation package's own `Tests/**` sources |
 | `src/GameCore.Planning` | library | netstandard2.1 | `Packages/com.gamecore.planning/Runtime/**/*.cs` |

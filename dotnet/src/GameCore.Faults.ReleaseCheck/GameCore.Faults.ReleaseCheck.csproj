@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Release-profile compilation of the GC-017 fault latch (qualification only).
+       ==========================================================================================
+       This project exists for ONE reason: to make "a shipping build contains no fault latch" a
+       checked fact rather than a claim. `Packages/com.gamecore.unity.runtime/Runtime/Faults/**`
+       is the whole latch — the boundary enum, the boundary name table, the trace, the exception
+       and the latch itself — and it is engine-free on purpose, so it can be compiled here without
+       Unity in both configurations:
+
+         -c Release        -> GAMECORE_FAULT_INJECTION undefined, i.e. what a shipping project sees
+         -c Qualification  -> GAMECORE_FAULT_INJECTION defined,  i.e. what the validation project sees
+
+       Every type in those sources sits inside one `#if GAMECORE_FAULT_INJECTION`, so the Release
+       assembly must define no type at all and must contain none of the boundary name literals.
+       `tools/check_release_fault_free.py` builds both configurations, inspects both assemblies and
+       fails if the Release one carries anything, or if the Qualification one does not (which is
+       what stops the check from passing by inspecting nothing).
+
+       The Release configuration is also the compilation that would break first if someone added an
+       unguarded reference, so keeping this project buildable is the regression guard for the
+       release surface: it is deliberately NOT in `dotnet/GameCore.sln`, because the qualification
+       configuration needs a non-standard `-c Qualification` and the solution build must stay
+       exactly the shipping shape. The GC-017 gate builds both configurations explicitly. -->
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>GameCore.Faults.ReleaseCheck</AssemblyName>
+    <RootNamespace>GameCore.Unity.Runtime</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <Configurations>Debug;Release;Qualification</Configurations>
+  </PropertyGroup>
+
+  <!-- The one difference between the two configurations: the qualification symbol. -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Qualification'">
+    <DefineConstants>$(DefineConstants);GAMECORE_FAULT_INJECTION</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="../../../Packages/com.gamecore.unity.runtime/Runtime/Faults/**/*.cs"
+             Exclude="../../../Packages/com.gamecore.unity.runtime/Runtime/Faults/**/bin/**/*.cs;../../../Packages/com.gamecore.unity.runtime/Runtime/Faults/**/obj/**/*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../GameCore.Contracts/GameCore.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

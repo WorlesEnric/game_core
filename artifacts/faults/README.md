@@ -1,7 +1,8 @@
 # GC-017 — fault injection at every apply and cancellation boundary
 
-`artifacts/faults/` holds GC-017's evidence surface: the machine-readable matrix (`boundaries.json`), the trace line
-format (`trace-format.md`), and the directory tree the gate writes its results into (`unity/`, `toolchain/`, `trx/`).
+`artifacts/faults/` holds GC-017's evidence surface: the machine-readable matrix (`boundaries.json`), the release
+surface requirement and its check (`release-surface.md`), the trace line format (`trace-format.md`), and the
+directory tree the gate writes its results into (`unity/`, `toolchain/`, `trx/`).
 
 * Task: GC-017 — "Inject failure at every apply and cancellation boundary"
   (`docs/game-core/09-implementation-guide.md#gc-017`), Wave 5.
@@ -20,6 +21,15 @@ All 29 cases indexed in `boundaries.json` were matched to a passing XML case or 
 The separate IL2CPP release build omitted the explicit fault-qualification marker; its compiler response
 omitted `GAMECORE_FAULT_INJECTION`, and generated C++ returned false without reaching a latch.
 This verifies the reach path, not complete removal of fault types and their per-world allocation.
+
+**Release surface: strengthened after that finding, and re-checked on the next build.** Nothing latch-shaped now
+survives a compilation without the qualification symbol: the latch sources, the boundary name table, the per-world
+latch allocation and every reach call site are inside one `#if GAMECORE_FAULT_INJECTION` (or masked by
+`[Conditional]` where they sit in unconditioned code), and the symbol is keyed on the marker package
+`com.gamecore.fault-qualification`, which no shipping project references. `release-surface.md` is the requirement and
+the mechanism; `tools/check_release_fault_free.py` is the check that must pass with it. Its compiled-assembly and
+source halves are `NotRun (pending orchestrator build host)`; its source half and its falsifiability self-test ran on
+the authoring host and are recorded in that file's §5.
 
 ## What GC-017 proves
 
@@ -116,6 +126,9 @@ reordered or dropped observation fails the suite instead of shrinking it.
 | `trx/` | whole plain-dotnet solution, 11 projects | Pass (750/750) |
 | `validator-self-test.log`, `validator.log` | documentation validator | Pass |
 | `boundaries.json` | machine-readable TEST-016 case index | Pass (29/29 indexed cases) |
+| `release-surface.json` | `tools/check_release_fault_free.py`: the latch compiled Release (must be empty) and Qualification (must carry everything), the source-level release configuration, and the qualification switch | NotRun (pending orchestrator build host) |
+| `release-player-surface.json` | `tools/check_player_fault_free.py` over a release-configuration player's managed assemblies and generated C++ — only when `RELEASE_PLAYER` is set | NotRun (pending orchestrator build host) |
+| `release-surface.md` | what "no latch code and no latch cost in release" means, the mechanism, and the check | Reference |
 | `trace-format.md` | trace grammar, descriptive rather than runnable | Reference |
 
 `boundaries.json` is the file to read for the row-by-row claim; it lists, per row, the `FaultBoundary`, the injection

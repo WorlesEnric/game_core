@@ -13,12 +13,19 @@
 //   * **A latch is deterministic, never probabilistic.** Every boundary is named once, armed by identity and
 //     reached at one place in the real code path. A test arms a boundary, drives the real operation and asserts
 //     the observable outcome; "random fault probability" would prove nothing about coverage.
-//   * **A latch costs a release build nothing.** The reaching code exists only when GAMECORE_FAULT_INJECTION is
-//     defined (`FaultCompilation.Symbol`); without it `FaultReach.Reach` is an inlined no-op and no boundary can
-//     fire, and `AssemblyFaultInjection.IsCompiledIn` reports that plainly so a test that needs the latches fails
-//     with an actionable message instead of passing vacuously. The boundary sites are publication and step
-//     boundaries — never per entity, per frame or per system — so the compilation switch is the only reason a
-//     release build differs from a build carrying the latches.
+//   * **A latch costs a release build nothing, by construction.** Every type below is inside one
+//     `#if GAMECORE_FAULT_INJECTION`, and that symbol reaches a compilation only through
+//     `GameCore.Unity.Runtime.asmdef`'s `versionDefines` entry on the qualification marker package
+//     `com.gamecore.fault-qualification`, which only the validation project's manifest references. A shipping
+//     project that omits the marker compiles this namespace with an empty body: no latch type, no boundary name
+//     table, no per-world array or object. Every call site in the runtime assembly is guarded the same way, so no
+//     reach call survives either, and `FaultCompilation.IsCompiledIn` is the constant `true` rather than a runtime
+//     answer — a build without the latch has no such type to ask. The namespace declaration stays outside the guard
+//     so the assembly's `using GameCore.Unity.Runtime.Faults;` directives remain valid in both configurations; a
+//     namespace declaration on its own emits no metadata.
+namespace GameCore.Unity.Runtime.Faults
+{
+#if GAMECORE_FAULT_INJECTION
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -26,8 +33,6 @@ using System.Globalization;
 using System.Runtime.CompilerServices;
 using GameCore.Contracts;
 
-namespace GameCore.Unity.Runtime.Faults
-{
     /// <summary>
     /// The named boundaries a fault can be injected at, exactly the rows of TEST-016's matrix that have an
     /// injection point in the apply/cancellation path. The order is the order of the matrix.
@@ -156,18 +161,12 @@ namespace GameCore.Unity.Runtime.Faults
         /// <summary>Preprocessor symbol that compiles the fault latches in.</summary>
         public const string Symbol = "GAMECORE_FAULT_INJECTION";
 
-        /// <summary>True when this compilation carries the latch implementation.</summary>
-        public static bool IsCompiledIn
-        {
-            get
-            {
-#if GAMECORE_FAULT_INJECTION
-                return true;
-#else
-                return false;
-#endif
-            }
-        }
+        /// <summary>
+        /// True, always: this type exists only in a compilation that carries the latch implementation (the whole
+        /// namespace body is inside the guard), so a test's assertion of it states that the qualification symbol is
+        /// active rather than asking a runtime question. A shipping build has neither the type nor the call.
+        /// </summary>
+        public static bool IsCompiledIn => true;
     }
 
     /// <summary>
@@ -185,9 +184,9 @@ namespace GameCore.Unity.Runtime.Faults
     internal static class FaultReach
     {
         /// <summary>
-        /// Reaches one boundary for one operation. Returns false when nothing was injected (the normal production
-        /// path, and every path in a compilation without the symbol); raises <see cref="FaultInjectedException"/>
-        /// when the boundary is armed.
+        /// Reaches one boundary for one operation. Returns false when nothing was injected; raises
+        /// <see cref="FaultInjectedException"/> when the boundary is armed. This method does not exist in a
+        /// shipping compilation, and neither does any call to it, because every call site is inside the same guard.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool Reach(
@@ -195,36 +194,16 @@ namespace GameCore.Unity.Runtime.Faults
             FaultBoundary boundary,
             OperationId operation,
             ContentHash planHash,
-            string detail)
-        {
-#if GAMECORE_FAULT_INJECTION
-            return faults != null && faults.TryReach(boundary, operation, planHash, detail);
-#else
-            _ = faults;
-            _ = boundary;
-            _ = operation;
-            _ = planHash;
-            _ = detail;
-            return false;
-#endif
-        }
+            string detail) =>
+            faults != null && faults.TryReach(boundary, operation, planHash, detail);
 
         /// <summary>
         /// Reaches one boundary whose failure is expressed as a refusal value rather than an exception. Returns
         /// true when the armed boundary refused the call, false on the production path.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool Refuse(AssemblyFaultInjection? faults, FaultBoundary boundary, string detail)
-        {
-#if GAMECORE_FAULT_INJECTION
-            return faults != null && faults.TryRefuse(boundary, detail);
-#else
-            _ = faults;
-            _ = boundary;
-            _ = detail;
-            return false;
-#endif
-        }
+        public static bool Refuse(AssemblyFaultInjection? faults, FaultBoundary boundary, string detail) =>
+            faults != null && faults.TryRefuse(boundary, detail);
     }
 
     /// <summary>
@@ -301,4 +280,5 @@ namespace GameCore.Unity.Runtime.Faults
             return string.Join("\n", lines.ToArray());
         }
     }
+#endif
 }
