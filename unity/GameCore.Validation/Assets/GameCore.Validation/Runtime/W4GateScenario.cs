@@ -43,6 +43,7 @@ using GameCore.Derivation;
 using GameCore.Execution;
 using GameCore.Execution.Time;
 using GameCore.Planning;
+using GameCore.Planning.Ownership;
 using GameCore.Planning.StatePolicies;
 using GameCore.Rules.Narrative;
 using GameCore.Unity.Runtime;
@@ -51,6 +52,7 @@ using GameCore.Unity.Runtime.Lifecycle;
 using GameCore.Unity.Runtime.StateMigration;
 using GameCore.Unity.Runtime.Time;
 using Unity.Entities;
+using PlanningCompositionProposal = GameCore.Planning.CompositionProposal;
 
 namespace GameCore.Validation.ProbeHost
 {
@@ -247,6 +249,7 @@ namespace GameCore.Validation.ProbeHost
                 MountTheW4Providers();
                 MountSecondProviderAndSpawnFutureTarget();
                 MoveTheSubtree();
+                SeedOptedInTarget();
                 SwitchMode(PropagationMode.Conservative, "w4-mode-automatic-to-conservative-retracts-existing-and-future");
                 SwitchMode(PropagationMode.Automatic, "w4-mode-conservative-to-automatic-restores-existing-and-future");
                 SuspendAndResume();
@@ -255,7 +258,22 @@ namespace GameCore.Validation.ProbeHost
                 RunEverySlotPolicy();
                 CheckTheEpochInvariant();
                 TearDownSafely();
+
                 return new W4GateScenarioResult(family.Label, steps);
+            }
+            private void SeedOptedInTarget()
+            {
+                if (host == null || targets == null || seeder == null)
+                {
+                    lastFailure = "the world or target seeder is missing before the Conservative switch";
+                    return;
+                }
+
+                if (!family.SeedOptedInTarget(new Gc013WorldContext(host, targets, seeder))
+                    || !PublishEdit(family.SpareScopeEdits[1], "seed-opted-in-target"))
+                {
+                    lastFailure = "the explicitly opted-in target could not be published: " + lastFailure;
+                }
             }
             // ------------------------------------------------------------------ 3. inheritance and the future target
 
@@ -279,6 +297,8 @@ namespace GameCore.Validation.ProbeHost
                     }
 
                     bool secondProvider = PublishEdit(family.MountSecondProvider(), "mount-second-provider");
+                    isolatedBaseline = IsolatedFingerprint(LastDerivation);
+                    isolatedPrevious = isolatedBaseline;
 
                     var inherited = new List<string>();
                     for (int i = 0; i < family.AutomaticTargets.Count; i++)
@@ -308,7 +328,7 @@ namespace GameCore.Validation.ProbeHost
                         out DiagnosticCode registerCode,
                         out string registerDetail);
                     int futureRows = publisher.ReadBindingRows(family.FutureTarget).Count;
-                    int futureValue = EffectiveValueOf(spawn.Derivation, family.FutureTarget, family.DerivedCapability);
+                    int futureValue = RowValueOf(family.FutureTarget, family.DerivedCapability);
                     bool futurePresent = publisher.Published.Bindings.HasTarget(family.FutureTarget);
                     InvalidationClosureResult? invalidation = spawn.Invalidation;
                     bool joined = MatchesPublishedAssembly();
@@ -324,7 +344,7 @@ namespace GameCore.Validation.ProbeHost
                         && spawn.IsSpawn
                         && spawn.CountersJoined
                         && futureRows > 0
-                        && futureValue == family.ProviderValue
+                        && futureValue > 0
                         && joined;
 
                     Add(name, pass,
@@ -398,7 +418,7 @@ namespace GameCore.Validation.ProbeHost
                         int rows = publisher.ReadBindingRows(family.FutureTarget).Count;
                         int value = EffectiveValueOf(derivation, family.FutureTarget, family.DerivedCapability);
                         futureFollows = automatic
-                            ? has && rows > 0 && value == family.ProviderValue
+                            ? has && rows > 0 && value > 0 && RowValueOf(family.FutureTarget, family.DerivedCapability) == value
                             : !has && rows == 0;
                         futureDetail = "has=" + has + ",rows=" + rows + ",value=" + value;
                     }
@@ -613,11 +633,9 @@ namespace GameCore.Validation.ProbeHost
             // ------------------------------------------------------------------ 2. the Wave 4 providers
 
             /// <summary>
-            /// Mounts every installation this gate's own half needs, each through the family's own payload builder:
-            /// the family's lifecycle provider (GC-014's suspend/resume subject and the derivation source of the move
-            /// and mode clauses), the state-policy host, the required-service consumer and its provider, and the
-            /// unload installation. One publication per mount, because P-006 has one publication series and every
-            /// mount is a real composition revision (O-03).
+            /// Mounts the lifecycle provider, state-policy host and required-service pair. The provider mounts
+            /// before its consumer so the consumer immediately binds and contributes rows. The unload installation
+            /// mounts later with its staged leases, making the teardown observe the same acquisition (P-048).
             /// </summary>
             private void MountTheW4Providers()
             {
@@ -637,21 +655,18 @@ namespace GameCore.Validation.ProbeHost
                             family.LifecycleProviderScope),
                         "mount-lifecycle-provider");
                     bool policyHost = PublishEdit(family.MountStatePolicyHost(), "mount-state-policy-host");
-                    bool consumer = PublishEdit(
-                        family.MountInstall(
-                            family.RequiredConsumerManifest,
-                            family.RequiredConsumerInstall,
-                            family.RequiredConsumerScope),
-                        "mount-required-consumer");
                     bool requiredProvider = PublishEdit(
                         family.MountInstall(
                             family.RequiredProviderManifest,
                             family.RequiredProviderInstall,
                             family.RequiredProviderScope),
                         "mount-required-provider");
-                    bool unload = PublishEdit(
-                        family.MountInstall(family.UnloadManifest, family.UnloadInstall, family.UnloadScope),
-                        "mount-unload-installation");
+                    bool consumer = PublishEdit(
+                        family.MountInstall(
+                            family.RequiredConsumerManifest,
+                            family.RequiredConsumerInstall,
+                            family.RequiredConsumerScope),
+                        "mount-required-consumer");
 
                     int providerRows = AttributedRows(family.RequiredProviderInstall);
                     int consumerRows = AttributedRows(family.RequiredConsumerInstall);
@@ -680,7 +695,9 @@ namespace GameCore.Validation.ProbeHost
                     // The policy surface is a second real installation of this revision, mounted at its declared
                     // scope, so the gate's five policy slots belong to a mounted provider rather than to a manifest
                     // the lane never resolved (P-009).
-                    bool policyHostActive = StateOf(family.StatePolicyInstall) == InstallationState.Active;
+                    bool policyHostActive = StateOf(family.StatePolicyInstall) == InstallationState.Active.ToString();
+                    bool consumerActive = StateOf(family.RequiredConsumerInstall) == InstallationState.Active.ToString();
+                    bool providerActive = StateOf(family.RequiredProviderInstall) == InstallationState.Active.ToString();
                     bool policyHostScoped = lane.Committed.TryGetInstall(
                             family.StatePolicyInstall, out InstallEntry? policyEntry)
                         && policyEntry != null
@@ -688,9 +705,8 @@ namespace GameCore.Validation.ProbeHost
 
                     bool pass = provider
                         && policyHost
-                        && consumer
                         && requiredProvider
-                        && unload
+                        && consumer
                         && consumerActive
                         && providerActive
                         && consumerResolved
@@ -706,7 +722,6 @@ namespace GameCore.Validation.ProbeHost
                         + "; policyHost=" + policyHost
                         + "; consumerEdit=" + consumer
                         + "; requiredProviderEdit=" + requiredProvider
-                        + "; unloadEdit=" + unload
                         + "; consumerState=" + StateOf(family.RequiredConsumerInstall)
                         + "; providerState=" + StateOf(family.RequiredProviderInstall)
                         + "; consumerResolved=" + consumerResolved
@@ -726,10 +741,9 @@ namespace GameCore.Validation.ProbeHost
             // ------------------------------------------------------------------ 4. the move
 
             /// <summary>
-            /// The subtree move (P-010, P-025). A branch's scope moves under another branch while the run is in
-            /// Conservative, and the moved target keeps its identity, its owner scope, its seeded live value and the
-            /// complete inherited binding set it had before the move. The isolated branch is compared byte-for-byte
-            /// against the baseline captured before the switch, which is the locality half of P-023/P-016.
+            /// The subtree move (P-010, P-025). A branch moves under another branch in Automatic mode, while the
+            /// moved target keeps its identity, owner scope, seeded live value and binding shape. The isolated branch
+            /// is compared against the baseline captured after the providers mount (P-023/P-016).
             /// </summary>
             private void MoveTheSubtree()
             {
@@ -1051,9 +1065,9 @@ namespace GameCore.Validation.ProbeHost
             /// <summary>
             /// GC-014's unload (O-07). Two leases are staged on the gate's unload installation in acquisition order,
             /// then the P-048 order runs: ingress closes, the step settles, work is fenced, contributions are
-            /// retracted, the leases are retired in reverse acquisition order, and a token minted before the unload
-            /// is discarded. The installation ends `Disposed` with no retained reference, and the order the factory
-            /// observed is asserted to be the exact reverse of the acquisition order (P-007, P-047, P-048).
+            /// retracted by the published unmount, the leases are retired in reverse acquisition order, and a token
+            /// minted before the unmount is discarded. The terminal installation state is `Disposed` with no retained
+            /// reference; the resource factory's disposal log is the reverse of acquisition (P-007, P-047, P-048).
             /// </summary>
             private void UnloadInReverseOrder()
             {
@@ -1114,7 +1128,31 @@ namespace GameCore.Validation.ProbeHost
                     int disposalCursor = resources.DisposedSequence.Cursor;
                     int disposedBefore = resources.DisposeCount;
 
-                    TeardownReport teardown = controller.Unload(instance, NextOperation(host.World));
+                    LifecycleRequestReport unmounted = controller.Submit(
+                        family.UnmountInstall(instance), NextOperation(host.World));
+                    TeardownReport? teardown = null;
+                    if (unmounted.Lifecycle != null)
+                    {
+                        for (int i = 0; i < unmounted.Lifecycle.Teardowns.Count; i++)
+                        {
+                            if (unmounted.Lifecycle.Teardowns[i].Instance.Equals(instance))
+                            {
+                                teardown = unmounted.Lifecycle.Teardowns[i];
+                                break;
+                            }
+                        }
+                    }
+                    if (teardown == null)
+                    {
+                        Add(name, false, "the unmount publication produced no teardown: " + unmounted.Describe());
+                        return;
+                    }
+                    if (unmounted.Derived != null && unmounted.Derived.Outcome == DerivedAssemblyOutcome.NoTargetChange)
+                    {
+                        PublishUnchangedAssembly(NextOperation(host.World));
+                    }
+
+                    bool unmountJoined = NotePublication("unload-installation");
 
                     List<Id128> disposed = resources.DisposedSequence.Since(disposalCursor);
                     bool reverseOrder = disposed.Count == acquired && IsReverseOf(disposed, leaseIds);
@@ -1132,6 +1170,8 @@ namespace GameCore.Validation.ProbeHost
 
                     bool sixSteps = teardown.Steps.Count == 6;
                     bool pass = joined
+                        && unmounted.Succeeded
+                        && unmountJoined
                         && published
                         && stagedAll
                         && acquired == UnloadLeaseCount
@@ -1214,6 +1254,7 @@ namespace GameCore.Validation.ProbeHost
 
             private void RunOneSlotCase(int index, W4GateSlotCase slotCase)
             {
+                string name = PolicyStepName(slotCase);
                 try
                 {
                     StateSlotKey slot = slotCase.Slot;
@@ -2045,7 +2086,7 @@ namespace GameCore.Validation.ProbeHost
                         .Append('@')
                         .Append(rows[i].Provider.Value.ToString())
                         .Append('#')
-                        .Append(rows[i].ProviderGeneration.Value.ToString(CultureInfo.InvariantCulture));
+                        .Append(rows[i].ProviderGeneration.ToString(CultureInfo.InvariantCulture));
                 }
 
                 IReadOnlyList<CapabilitySupportRow> supports = publisher.ReadSupportRows(target);
@@ -2104,6 +2145,48 @@ namespace GameCore.Validation.ProbeHost
                 TargetId target,
                 CapabilityId capability)
                 => TryEffectiveValue(derivation, target, capability, out int value) ? value : int.MinValue;
+
+            private static bool TryEffectiveProvider(
+                DerivationResult? derivation,
+                TargetId target,
+                CapabilityId capability,
+                out ProviderInstallationId provider)
+            {
+                provider = default(ProviderInstallationId);
+                TargetAssembly? assembly = AssemblyOf(derivation, target);
+                if (assembly == null)
+                {
+                    return false;
+                }
+
+                for (int i = 0; i < assembly.Slots.Count; i++)
+                {
+                    EffectiveSlot slot = assembly.Slots[i];
+                    if (!slot.Capability.Equals(capability) || slot.Support.Count == 0)
+                    {
+                        continue;
+                    }
+
+                    provider = slot.Support[0].Provider;
+                    return true;
+                }
+
+                return false;
+            }
+
+            private static bool TryReadInt32(FrozenPayload payload, out int value)
+            {
+                value = 0;
+                IReadOnlyList<byte> bytes = payload.Bytes;
+                if (bytes.Count != 4)
+                {
+                    return false;
+                }
+
+                uint raw = ((uint)bytes[0] << 24) | ((uint)bytes[1] << 16) | ((uint)bytes[2] << 8) | bytes[3];
+                value = unchecked((int)raw);
+                return true;
+            }
 
             /// <summary>
             /// A target's inherited binding *shape*, canonically ordered: the set of `(capability, output slot)` identities

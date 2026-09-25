@@ -21,9 +21,12 @@
 //     manifests: a scoring-shaped consumer whose dependency on <see cref="W4GateCardsHost.ServiceContract"/> is
 //     **required**, and two scoring-shaped providers that export that contract — the second is the compatible
 //     replacement whose return resumes the waiting consumer, which is the other half of P-012. Every one of them
-//     declares a contribution, so "the provider's rows are gone and the consumer waits" and "the consumer's rows
-//     are back" are statements about real attributed rows. The contract identity is this gate's own, so it never
-//     contends with the revision's definition-lookup contract.
+//     declares a contribution on **its own capability identity**, because a published row is attributed to the
+//     ranked winner of one `(target, capability, slot)` group (P-017): two installations sharing one capability
+//     would leave all of that slot's rows with one of them and the other with nothing attributable. So "the
+//     provider's rows are gone and the consumer waits" and "the consumer's rows are back" are statements about
+//     real attributed rows. The service contract identity is this gate's own, so it never contends with the
+//     revision's definition-lookup contract.
 //   * **The second owner.** The card revision declares exactly one logical state owner
 //     (`CardTableKeys.TableOwner`): one table runtime owns the table and every seat, which is what makes a
 //     settlement of several entities one bounded domain decision (P-034). P-032's `TransferTo` names an
@@ -97,14 +100,43 @@ namespace GameCore.Validation.ProbeHost
         private const string UnloadInstallName = "cards.w4gate.unload-install";
 
         /// <summary>
-        /// The capability all four of those installations declare: one output slot folded by the card rules
-        /// package's *registered* Int32 sum reducer, exactly as the family's own scoring contract declares its slot
-        /// (P-017, P-019, P-028). One identical declaration is deduplicated, so all four contribute to one slot.
+        /// The consumer's own capability: one output slot folded by the card rules package's *registered* Int32 sum
+        /// reducer, exactly as the family's own scoring contract declares its slot (P-017, P-019, P-028). It is the
+        /// consumer's alone because a published binding row is attributed to the ranked winner of one `(target,
+        /// capability, slot)` group: an installation sharing another's capability would hold none of that slot's
+        /// rows, and "the consumer's rows are gone and back" would have no subject (P-011, P-012, P-017).
         /// </summary>
-        private const string RequiredCapability = "cards.w4gate.required-score";
+        private const string RequiredConsumerCapability = "cards.w4gate.consumer-score";
 
-        /// <summary>Payload schema of that capability's single output slot.</summary>
-        private const string RequiredPayload = "cards.w4gate.required-score-value";
+        /// <summary>Payload schema of the consumer's capability's single output slot.</summary>
+        private const string RequiredConsumerPayload = "cards.w4gate.consumer-score-value";
+
+        /// <summary>
+        /// The required provider's own capability, same shape and same reason: its rows are the ones the pair's loss
+        /// retracts, so they must be attributable to it alone (P-012, P-017).
+        /// </summary>
+        private const string RequiredProviderCapability = "cards.w4gate.provider-score";
+
+        /// <summary>Payload schema of the required provider's capability's single output slot.</summary>
+        private const string RequiredProviderPayload = "cards.w4gate.provider-score-value";
+
+        /// <summary>
+        /// The compatible replacement's own capability, same shape: its return restores the consumer and
+        /// contributes its own attributable rows under its own identity (P-009, P-012, P-017).
+        /// </summary>
+        private const string RequiredReplacementCapability = "cards.w4gate.replacement-score";
+
+        /// <summary>Payload schema of the compatible replacement's capability's single output slot.</summary>
+        private const string RequiredReplacementPayload = "cards.w4gate.replacement-score-value";
+
+        /// <summary>
+        /// The unload installation's own capability, same shape: its teardown retracts its own rows beside retiring
+        /// its leases (P-047, P-048, P-017).
+        /// </summary>
+        private const string UnloadCapability = "cards.w4gate.unload-score";
+
+        /// <summary>Payload schema of the unload installation's capability's single output slot.</summary>
+        private const string UnloadPayload = "cards.w4gate.unload-score-value";
 
         /// <summary>Rule identity of the consumer's own contribution; one declaration per rule identity (P-021).</summary>
         private const string RequiredConsumerRule = "cards.w4gate.required-consumer.score";
@@ -119,8 +151,8 @@ namespace GameCore.Validation.ProbeHost
         private const string UnloadRule = "cards.w4gate.unload-install.score";
 
         /// <summary>
-        /// Value each of those four rules carries. The registered Int32 sum reducer folds them, so every mounted
-        /// installation contributes one observable row per eligible seat beneath its scope (07 s2.1, P-019).
+        /// Value each of those four rules carries, one per seat beneath its scope (07 s2.1, P-019). Each folds alone
+        /// in its own capability's slot, so each row's value is its own rule's value.
         /// </summary>
         private const int RequiredConsumerValue = 1;
 
@@ -132,10 +164,6 @@ namespace GameCore.Validation.ProbeHost
 
         /// <summary>Payload value of the unloaded installation's rule.</summary>
         private const int UnloadValue = 4;
-
-        /// <summary>The single output slot of that capability, derived as a contract declaration derives it (05 s2).</summary>
-        public static readonly SlotId RequiredCapabilitySlot =
-            CardIdentity.Slot(RequiredCapability + ".slot-0");
 
         /// <summary>
         /// The contract the consumer requires and both providers export (P-011). It is this gate's own identity, so
@@ -333,51 +361,66 @@ namespace GameCore.Validation.ProbeHost
         // ------------------------------------------------ the lifecycle manifests
 
         /// <summary>
-        /// The consumer of the required service: a scoring-shaped provider whose capability is this gate's own
-        /// (`cards.w4gate.required-score`, foldable by the registered Int32 sum reducer) and whose dependency on
-        /// <see cref="ServiceContract"/> is **required**, so removing the exporting provider leaves it
-        /// `WaitingForDependencies` in that same publication (P-011, P-012).
+        /// The consumer of the required service: a scoring-shaped provider whose capability is its own
+        /// (`cards.w4gate.consumer-score`, foldable by the registered Int32 sum reducer, so its rows are attributed
+        /// to it alone) and whose dependency on <see cref="ServiceContract"/> is **required**, so removing the
+        /// exporting provider leaves it `WaitingForDependencies` in that same publication (P-011, P-012, P-017).
         /// </summary>
         public static PluginManifest ConsumerManifest()
             => LifecycleManifest(
                 RequiredConsumerName,
                 RequiredConsumerRule,
+                RequiredConsumerCapability,
+                RequiredConsumerPayload,
                 RequiredConsumerValue,
                 null,
                 RequiredDependency());
 
         /// <summary>
-        /// The required service's provider: it exports <see cref="ServiceContract"/> and contributes its own rule,
-        /// so its removal both makes the consumer wait and retracts real attributed rows (P-012).
+        /// The required service's provider: it exports <see cref="ServiceContract"/> and contributes its own rule
+        /// under its own capability, so its removal both makes the consumer wait and retracts real attributed rows
+        /// (P-012, P-017).
         /// </summary>
         public static PluginManifest ProviderManifest()
             => LifecycleManifest(
                 RequiredProviderName,
                 RequiredProviderRule,
+                RequiredProviderCapability,
+                RequiredProviderPayload,
                 RequiredProviderValue,
                 ServiceExports(),
                 null);
 
         /// <summary>
-        /// The compatible provider whose return resumes the waiting consumer: the same contract and factory under its
-        /// own plugin type, installation identity and rule identity, so the consumer's new binding names a
-        /// *different* provider than the one it lost (P-009, P-012).
+        /// The compatible provider whose return resumes the waiting consumer: the same exported contract and
+        /// factory under its own plugin type, installation identity, rule identity and capability, so the consumer's
+        /// new binding names a *different* provider than the one it lost (P-009, P-012).
         /// </summary>
         public static PluginManifest ReplacementProviderManifest()
             => LifecycleManifest(
                 RequiredReplacementName,
                 RequiredReplacementRule,
+                RequiredReplacementCapability,
+                RequiredReplacementPayload,
                 RequiredReplacementValue,
                 ServiceExports(),
                 null);
 
         /// <summary>
         /// The installation the unload step tears down: the same lifecycle-shaped manifest as the pair's providers
-        /// (a contribution, no stage, no buffer, no state slot), so its teardown is an accounting statement about the
-        /// leases the sequence staged on it while its rows are a real contribution that goes with it (P-047, P-048).
+        /// (a contribution under its own capability, no stage, no buffer, no state slot), so its teardown is an
+        /// accounting statement about the leases the sequence staged on it while its rows are a real contribution
+        /// that goes with it (P-047, P-048, P-017).
         /// </summary>
         public static PluginManifest UnloadInstallManifest()
-            => LifecycleManifest(UnloadInstallName, UnloadRule, UnloadValue, null, null);
+            => LifecycleManifest(
+                UnloadInstallName,
+                UnloadRule,
+                UnloadCapability,
+                UnloadPayload,
+                UnloadValue,
+                null,
+                null);
 
         // ------------------------------------------------ the state-policy manifest
 
@@ -516,14 +559,18 @@ namespace GameCore.Validation.ProbeHost
         // ------------------------------------------------ the lifecycle manifest builder
 
         /// <summary>
-        /// One lifecycle-shaped installation: its own plugin type and rule identity, the shared capability contract
-        /// (declared identically by every one of them, so it deduplicates), an optional service export and an
-        /// optional dependency. It declares no stage, buffer, state slot or resource, so it never enters the compiled
-        /// schedule and its lifecycle is the only thing it can be observed through (P-011, P-046, P-048).
+        /// One lifecycle-shaped installation: its own plugin type, rule identity and capability contract, an
+        /// optional service export and an optional dependency. Its own capability is the point: a published row is
+        /// attributed to the ranked winner of one `(target, capability, slot)` group (P-017), so each installation
+        /// must be the only contributor of its own capability for its rows to be attributable to it. It declares no
+        /// stage, buffer, state slot or resource, so it never enters the compiled schedule and its lifecycle is the
+        /// only thing it can be observed through (P-011, P-046, P-048).
         /// </summary>
         private static PluginManifest LifecycleManifest(
             string stableName,
             string ruleStableName,
+            string capability,
+            string payloadSchema,
             int value,
             IReadOnlyList<ServiceExport>? exports,
             IReadOnlyList<ServiceDependency>? dependencies)
@@ -538,8 +585,8 @@ namespace GameCore.Validation.ProbeHost
                 CardTableKeys.PluginFactoryKey,
                 exports,
                 dependencies,
-                new List<CapabilityContract> { RequiredContract() },
-                new List<DerivationRule> { RequiredRule(ruleStableName, value) },
+                new List<CapabilityContract> { RequiredContract(capability, payloadSchema) },
+                new List<DerivationRule> { RequiredRule(ruleStableName, capability, value) },
                 null,
                 null,
                 null,
@@ -581,23 +628,25 @@ namespace GameCore.Validation.ProbeHost
         }
 
         /// <summary>
-        /// The shared capability contract: one output slot under the `Additive` policy with the card rules package's
-        /// *registered* Int32 sum reducer, exactly as the family's own scoring contract declares its slot (P-017,
-        /// P-019, P-028). The registered path is what makes the contribution appear in real derived storage.
+        /// One lifecycle installation's capability contract: one output slot under the `Additive` policy with the
+        /// card rules package's *registered* Int32 sum reducer, exactly as the family's own scoring contract
+        /// declares its slot (P-017, P-019, P-028). The registered path is what makes the contribution appear in
+        /// real derived storage.
         /// </summary>
-        private static CapabilityContract RequiredContract()
+        private static CapabilityContract RequiredContract(string capability, string payloadSchema)
         {
+            SlotId slot = CardIdentity.Slot(capability + ".slot-0");
             return new CapabilityContract(
-                CardIdentity.CapabilityRef(RequiredCapability),
+                CardIdentity.CapabilityRef(capability),
                 CardVocabulary.BonusStratum,
                 new List<OutputSlotSchema>
                 {
-                    new OutputSlotSchema(RequiredCapabilitySlot, CardIdentity.SchemaRef(RequiredPayload)),
+                    new OutputSlotSchema(slot, CardIdentity.SchemaRef(payloadSchema)),
                 },
                 new List<SlotCompositionPolicy>
                 {
                     new SlotCompositionPolicy(
-                        RequiredCapabilitySlot,
+                        slot,
                         CompositionPolicy.Additive,
                         CardVocabulary.BonusReducerKey),
                 },
@@ -609,11 +658,11 @@ namespace GameCore.Validation.ProbeHost
         /// the seats beneath its scope and nothing else, and the registered always-accepting predicate selects them
         /// (P-013, P-015).
         /// </summary>
-        private static DerivationRule RequiredRule(string ruleStableName, int value)
+        private static DerivationRule RequiredRule(string ruleStableName, string capability, int value)
         {
             return new DerivationRule(
                 CardIdentity.Rule(ruleStableName),
-                CardIdentity.CapabilityRef(RequiredCapability),
+                CardIdentity.CapabilityRef(capability),
                 CardVocabulary.BonusStratum,
                 1U,
                 new List<SchemaRef> { CardVocabulary.SelectorSchema(CardVocabulary.CardSeatRecipe) },

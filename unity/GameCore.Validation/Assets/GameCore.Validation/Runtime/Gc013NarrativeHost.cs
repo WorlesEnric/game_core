@@ -74,6 +74,13 @@ namespace GameCore.Validation.ProbeHost
         /// <summary>The future villager's owner scope: the grove branch the move leaves untouched.</summary>
         public static readonly ScopeId FutureBranchScope = NarrativeKeys.GroveScope;
 
+        /// <summary>
+        /// A plain villager already living in the future branch. It materializes the published
+        /// `(VillagerRecipe, GroveScope)` rule a later villager spawn inherits (P-024), while the village move leaves
+        /// the branch under chapter one.
+        /// </summary>
+        public static readonly TargetId GroveVillager = NarrativeIds.Target("gc013.narrative.grove-villager");
+
         /// <summary>The one target whose descriptor declares the complete explicit opt-in (P-013).</summary>
         public static readonly TargetId OptedInTarget = NarrativeIds.Target("gc013.narrative.opted-in-villager");
 
@@ -359,14 +366,15 @@ namespace GameCore.Validation.ProbeHost
                 };
 
                 // The eligible existing targets that Automatic must reach with no import and no opt-in of their own
-                // (P-013). Eligibility for the derived dialogue binding is selector-based: only villagers carry the
-                // villager recipe, so the villagers are the set — Mara in the branch the move relocates under the
-                // chapter-two provider and Sailor in the harbor the move leaves alone. The gate and encounter targets
-                // are eligible for their own capabilities, not for this one, and the grove branch is covered by the
-                // declared opt-in target and the future villager instead.
+                // (P-013). Eligibility for the derived dialogue binding is selector-based: the villager recipe is the
+                // set. Mara is in the branch the move relocates under the chapter-two provider, the grove villager is
+                // the existing same-scope rule source the future villager inherits from, and Sailor lives in the
+                // chapter-two harbor the move leaves alone. The gate and encounter targets are eligible for their own
+                // capabilities, not for this one.
                 automaticTargets = new List<TargetId>
                 {
                     NarrativeKeys.Mara,
+                    GroveVillager,
                     NarrativeKeys.Sailor,
                 };
             }
@@ -428,6 +436,7 @@ namespace GameCore.Validation.ProbeHost
                 Seed(context, NarrativeKeys.Mara, NarrativeKeys.VillageScope, NarrativeKeys.VillagerRecipe);
                 Seed(context, NarrativeKeys.GateEast, NarrativeKeys.VillageScope, NarrativeKeys.QuestGateRecipe);
                 Seed(context, NarrativeKeys.EncounterOak, NarrativeKeys.GroveScope, NarrativeKeys.QuestEncounterRecipe);
+                Seed(context, GroveVillager, NarrativeKeys.GroveScope, NarrativeKeys.VillagerRecipe);
                 Seed(context, NarrativeKeys.CrowdProp, NarrativeKeys.VillageScope, NarrativeKeys.DecorativeCrowdRecipe);
                 Seed(context, NarrativeKeys.Sailor, NarrativeKeys.HarborScope, NarrativeKeys.VillagerRecipe);
                 Seed(context, NarrativeKeys.Display, NarrativeKeys.MuseumScope, NarrativeKeys.VillagerRecipe);

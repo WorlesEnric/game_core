@@ -32,9 +32,11 @@
 // genres are driven through exactly the same sequence (P-001).
 #nullable enable
 using System.Collections.Generic;
+using GameCore.Composition;
 using GameCore.Contracts;
 using GameCore.Planning;
 using GameCore.Planning.StatePolicies;
+using GameCore.Unity.Runtime.Integration;
 
 namespace GameCore.Validation.ProbeHost
 {

@@ -37,7 +37,7 @@
 #   UNITY_PROJECT   Unity project path (default: <repo>/unity/GameCore.Validation)
 #   ARTIFACTS       artifact directory (default: <repo>/artifacts/w4-gate)
 #   PROBE_RUNS      repetitions of every player probe (default 5; any crashing run fails the gate)
-#   UNITY_TIMEOUT   seconds a single Unity Editor invocation may take (default 3600)
+#   UNITY_TIMEOUT   seconds a full Unity Editor invocation may take (default 1800)
 #
 # Exit codes: 0 every step passed; nonzero on the first failing step (2 for a missing prerequisite).
 set -euo pipefail
@@ -59,7 +59,7 @@ UNITY_PROJECT="${UNITY_PROJECT:-${REPO_ROOT}/unity/GameCore.Validation}"
 ARTIFACTS="${ARTIFACTS:-${REPO_ROOT}/artifacts/w4-gate}"
 PROBE_PLAYER="${UNITY_PROJECT}/Builds/Linux64/GameCoreProbe.x86_64"
 PROBE_RUNS="${PROBE_RUNS:-5}"
-UNITY_TIMEOUT="${UNITY_TIMEOUT:-3600}"
+UNITY_TIMEOUT="${UNITY_TIMEOUT:-1800}"
 
 mkdir -p "${ARTIFACTS}/trx" "${ARTIFACTS}/unity" "${ARTIFACTS}/toolchain"
 cd "${REPO_ROOT}"
