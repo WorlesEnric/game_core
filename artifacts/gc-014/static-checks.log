@@ -1,0 +1,61 @@
+GC-014 static checks (interpreter-level only; NOT a build or a test result)
+host: Darwin 25.3.0 arm64  no Unity, no .NET SDK, no Mono/C# compiler
+revision: 000430a37668ef0ea07192223d4126b84795af11
+
+== python3 tools/check_game_core_csharp.py
+checked 309 C# file(s)
+ok
+exit=0
+
+== python3 tools/validate_game_core_docs.py --self-test
+Documentation validator self-test passed: 9 isolated positive/negative fixtures.
+exit=0
+
+== python3 tools/validate_game_core_docs.py
+Game Core documentation validation passed: 14 Markdown documents; local links, anchors, IDs, traceability, task DAG and wave ordering checked.
+No Unity builds, gameplay tests, runtime benchmarks, or remote URL checks were executed.
+exit=0
+
+== bash -n over every tools/**/*.sh
+ok  tools/run_gc003_checks.sh
+ok  tools/run_gc008_gate.sh
+ok  tools/run_gc010_gate.sh
+ok  tools/run_gc014_checks.sh
+ok  tools/run_w0_checks.sh
+ok  tools/run_w1_gate.sh
+ok  tools/run_w2_gate.sh
+ok  tools/run_w3_gate.sh
+ok  tools/unity/build_probe.sh
+ok  tools/unity/probe_runs.sh
+ok  tools/unity/run_cards_probe.sh
+ok  tools/unity/run_narrative_probe.sh
+ok  tools/unity/run_probe.sh
+ok  tools/unity/run_w1_gate_probe.sh
+ok  tools/unity/run_w2_gate_probe.sh
+ok  tools/unity/run_w3_gate_probe.sh
+ok  tools/unity/run_world_probe.sh
+
+== brace/paren balance of every file GC-014 added or edited
++0 +0  Packages/com.gamecore.composition/Runtime/Lifecycle/ActivationLedger.cs
++0 +0  Packages/com.gamecore.composition/Runtime/Lifecycle/InstallationLifecycleCoordinator.cs
++0 +0  Packages/com.gamecore.composition/Runtime/Lifecycle/JobFenceRegistry.cs
++0 +0  Packages/com.gamecore.composition/Runtime/Lifecycle/LifecycleWorldBinding.cs
++0 +0  Packages/com.gamecore.composition/Runtime/Lifecycle/ManagedResources.cs
++0 +0  Packages/com.gamecore.composition/Runtime/Lifecycle/QuarantineRegistry.cs
++0 +0  Packages/com.gamecore.composition/Runtime/Lifecycle/ServiceClosureDelta.cs
++0 +0  Packages/com.gamecore.composition/Runtime/Lifecycle/TeardownSequencer.cs
++0 +0  Packages/com.gamecore.composition/Runtime/Operations/CompositionHost.cs
++0 +0  Packages/com.gamecore.composition/Tests/Lifecycle/ActivationLedgerTests.cs
++0 +0  Packages/com.gamecore.composition/Tests/Lifecycle/ServiceClosureDeltaTests.cs
++0 +0  Packages/com.gamecore.composition/Tests/Lifecycle/TeardownAndQuarantineTests.cs
++0 +0  Packages/com.gamecore.gameplay.cards/Fixtures/Runtime/CardLifecycleScenario.cs
++0 +0  Packages/com.gamecore.gameplay.narrative/Fixtures/Runtime/NarrativeLifecycleScenario.cs
++0 +0  Packages/com.gamecore.unity.runtime/Runtime/Lifecycle/LifecycleController.cs
++0 +0  Packages/com.gamecore.unity.runtime/Runtime/Lifecycle/LifecycleJobFence.cs
++0 +0  Packages/com.gamecore.unity.runtime/Runtime/Lifecycle/UnityLifecycleWorldBinding.cs
++0 +0  unity/GameCore.Validation/Assets/GameCore.Validation/Tests/Lifecycle/CardLifecycleIntegrationTests.cs
++0 +0  unity/GameCore.Validation/Assets/GameCore.Validation/Tests/Lifecycle/NarrativeLifecycleIntegrationTests.cs
+
+== .meta GUID uniqueness across Packages/ and unity/
+meta files scanned: 465 distinct guids: 465
+duplicate guids: none
