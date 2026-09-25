@@ -24,6 +24,8 @@ using GameCore.Contracts;
 using GameCore.Gameplay.Cards;
 using GameCore.Gameplay.Cards.Fixtures;
 using GameCore.Rules.Cards;
+using GameCore.Unity.Runtime;
+using GameCore.Unity.Runtime.Integration;
 using GameCore.Validation.GeneratedCards;
 
 namespace GameCore.Validation.ProbeHost
@@ -130,6 +132,19 @@ namespace GameCore.Validation.ProbeHost
             /// has a committed binding row to be equal to (P-045).
             /// </summary>
             public IReadOnlyList<TargetId> ViewTargets => AutomaticTargets;
+
+            /// <summary>
+            /// Attaches the card genre's own stage runtime: the same module `CardMarketScenario` attaches, with the
+            /// seeded table and every seat bound. A card world whose systems dispatch without one leaves the command
+            /// lane unconsumed and faults the step commit (P-043), so this is the table runtime's real stage the
+            /// adapter gate drives (P-005).
+            /// </summary>
+            public Gc019StageRuntime AttachStageRuntime(
+                UnityWorldHost host,
+                PipelineDescriptorReport descriptor,
+                LiveTargetIndex targets,
+                LiveTargetSeeder seeder) =>
+                Gc019StageRuntime.AttachCards(host, targets, seeder);
         }
     }
 }

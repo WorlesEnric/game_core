@@ -21,9 +21,18 @@
 //   * nothing else: the observation-name table, the executor and the step order stay in `Gc019Scenario`, exactly the
 //     way `W4GateScenario` owns its own table.
 #nullable enable
+using System;
 using System.Collections.Generic;
 using GameCore.Contracts;
+using GameCore.Gameplay.Cards;
+using GameCore.Gameplay.Cards.Fixtures;
+using GameCore.Gameplay.Narrative.Fixtures;
+using GameCore.Rules.Cards;
 using GameCore.Rules.Narrative;
+using GameCore.Unity.Runtime;
+using GameCore.Unity.Runtime.Integration;
+using Unity.Entities;
+using CompiledSchedule = GameCore.Planning.Scheduling.CompiledSchedule;
 
 namespace GameCore.Validation.ProbeHost
 {
@@ -101,8 +110,115 @@ namespace GameCore.Validation.ProbeHost
     }
 
     /// <summary>
+    /// The fixture-side stage runtime one genre's compiled systems resolve while they dispatch: the narrative
+    /// module or the card-table module its own genre's scenarios attach, plus the world's live target map. A genre's
+    /// systems early-return without it (they resolve it first, exactly as `NarrativeScenario` and
+    /// `CardMarketScenario` attach theirs), so a world that pumps steps must have one attached or its step commit
+    /// faults on the unconsumed ingress lane (P-043). It owns no gameplay rule; it is the same object the genre's
+    /// own scenario attaches, held by the runner so both worlds of this gate run the genre's real step stage.
+    /// </summary>
+    public sealed class Gc019StageRuntime : IDisposable
+    {
+        /// <summary>Which genre's module this runtime holds.</summary>
+        public string Kind { get; }
+
+        /// <summary>The narrative module, when <see cref="Kind"/> is the narrative family's label.</summary>
+        public NarrativeModule? Narrative { get; }
+
+        /// <summary>The card-table module, when <see cref="Kind"/> is the card family's label.</summary>
+        public CardTableModule? Cards { get; }
+
+        private Gc019StageRuntime(string kind, NarrativeModule? narrative, CardTableModule? cards)
+        {
+            Kind = kind;
+            Narrative = narrative;
+            Cards = cards;
+        }
+
+        /// <summary>
+        /// Attaches the narrative genre's stage runtime: the module its own scenario attaches over the compiled
+        /// schedule, with every live target mapped so the dialogue owner resolves the entities its rules read
+        /// (07 s3.2, P-005).
+        /// </summary>
+        public static Gc019StageRuntime AttachNarrative(
+            UnityWorldHost host,
+            CompiledSchedule schedule,
+            LiveTargetIndex targets,
+            LiveTargetSeeder seeder)
+        {
+            NarrativeModule module = NarrativeModule.Attach(host, schedule);
+            MapEveryTarget(targets, seeder, module.MapTarget);
+            return new Gc019StageRuntime(Gc013NarrativeHost.Label, module, null);
+        }
+
+        /// <summary>
+        /// Attaches the card genre's stage runtime: the module its own market scenario attaches, with the table and
+        /// every seeded seat bound, so the table runtime's systems resolve the entities they commit against
+        /// (07 s2.2, P-005).
+        /// </summary>
+        public static Gc019StageRuntime AttachCards(
+            UnityWorldHost host,
+            LiveTargetIndex targets,
+            LiveTargetSeeder seeder)
+        {
+            CardTableModule module = CardTableModule.Attach(host);
+            MapEveryTarget(targets, seeder, delegate (TargetId target, Entity entity)
+            {
+                if (target.Equals(CardIdentity.Target(CardVocabulary.TableOne)))
+                {
+                    module.BindTable(entity);
+                    return;
+                }
+
+                // The market's own fixture binds seats by their declared ordinal; the ordinal is the seat's own
+                // identity in this world, so resolving it here is the same binding its scenario performs.
+                if (target.Equals(CardIdentity.Target(CardVocabulary.PracticeSeat)))
+                {
+                    module.BindSeat(CardTableKeys.PracticeOrdinal, entity);
+                    return;
+                }
+
+                for (uint ordinal = CardTableKeys.SeatAOrdinal; ordinal <= CardTableKeys.SeatCOrdinal; ordinal++)
+                {
+                    if (target.Equals(CardTableFixture.SeatTarget(ordinal)))
+                    {
+                        module.BindSeat(ordinal, entity);
+                        return;
+                    }
+                }
+            });
+
+            return new Gc019StageRuntime(Gc013CardsHost.Label, null, module);
+        }
+
+        /// <summary>
+        /// Detaches this runtime's module after its world stopped, so the module list of a process that runs both
+        /// catalogs holds only live worlds (the genre's own scenario detaches its module the same way).
+        /// </summary>
+        public void Dispose()
+        {
+            Narrative?.Dispose();
+            Cards?.Dispose();
+        }
+
+        private static void MapEveryTarget(LiveTargetIndex targets, LiveTargetSeeder seeder, Action<TargetId, Entity> map)
+        {
+            IReadOnlyList<LiveTarget> live = targets.Targets;
+            for (int i = 0; i < live.Count; i++)
+            {
+                TargetId target = live[i].Target;
+                if (seeder.TryGetEntity(target, out Entity entity) && entity != Entity.Null)
+                {
+                    map(target, entity);
+                }
+            }
+        }
+    }
+
+    /// <summary>
     /// One genre's declared facts for the GC-019 adapter gate: everything <see cref="IGc013Family"/> declares, plus
-    /// the one command identity, the one command payload and the committed view targets the adapters need.
+    /// the one command identity, the one command payload, the committed view targets the adapters need, and the
+    /// genre's own stage runtime its compiled systems resolve while they dispatch.
     /// </summary>
     public interface IGc019Family : IGc013Family
     {
@@ -135,5 +251,17 @@ namespace GameCore.Validation.ProbeHost
         /// be a live target of the seeded world with at least one row in the published assembly.
         /// </summary>
         IReadOnlyList<TargetId> ViewTargets { get; }
+
+        /// <summary>
+        /// Attaches the genre's own stage runtime to its just-seeded world: the module its compiled systems resolve
+        /// (and its own scenario attaches), with every live target mapped. Called once per world, right after
+        /// <see cref="SeedTargets"/> built the context's targets; the runner disposes the returned runtime in its
+        /// teardown.
+        /// </summary>
+        Gc019StageRuntime AttachStageRuntime(
+            UnityWorldHost host,
+            PipelineDescriptorReport descriptor,
+            LiveTargetIndex targets,
+            LiveTargetSeeder seeder);
     }
 }

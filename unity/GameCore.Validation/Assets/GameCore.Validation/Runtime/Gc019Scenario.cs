@@ -177,6 +177,13 @@ namespace GameCore.Validation.ProbeHost
             private InputBindingTable? bindings;
             private WorldAdapterFrame? frame;
 
+            /// <summary>
+            /// The genre's own stage runtime this run's world dispatches through: attached once the family seeded its
+            /// targets, disposed in the teardown, so the world's systems resolve the module its own genre's scenario
+            /// attaches instead of dispatching against no stage at all (P-043, P-005).
+            /// </summary>
+            private Gc019StageRuntime? stageRuntime;
+
             private PluginInstanceId providerInstance;
             private bool providerInstanceKnown;
             private ulong operationSequence;
@@ -297,6 +304,13 @@ namespace GameCore.Validation.ProbeHost
                     time.AdoptResourceTable(descriptorReport.Adaptation.NativeTable!);
 
                     bool seeded = family.SeedTargets(new Gc013WorldContext(host, targets, seeder));
+
+                    // The genre's own stage runtime, attached exactly where its own scenario attaches it: after the
+                    // world exists and its targets are seeded, before any step is pumped. Without it the genre's
+                    // systems resolve no module, every command stays unconsumed in its ingress lane and the step
+                    // commit faults the world (P-043) — the adapter gate would then observe a faulted world rather
+                    // than the adapters it exists to qualify.
+                    stageRuntime = family.AttachStageRuntime(host, descriptorReport, targets, seeder);
 
                     // The family's own provider mounts are the publications that give the world its complete binding
                     // set, so every adapter observation afterwards has a committed assembly to observe (P-030, P-042).
@@ -1313,6 +1327,11 @@ namespace GameCore.Validation.ProbeHost
                         NextOperation(host.World), "gc-019 adapter gate teardown");
                     UnityWorldHost stopped = host;
                     stopped.Dispose();
+
+                    // The genre's stage runtime leaves with its world, so a process that runs both catalogs holds
+                    // only the modules of live worlds (the genre's own teardown detaches its module the same way).
+                    stageRuntime?.Dispose();
+                    stageRuntime = null;
 
                     int outstanding = stopped.Ledger.OutstandingJobCount;
                     int retained = stopped.Ledger.RetainedResourceCount;

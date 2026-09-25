@@ -25,9 +25,11 @@ using GameCore.Contracts;
 using GameCore.Gameplay.Narrative;
 using GameCore.Gameplay.Narrative.Fixtures;
 using GameCore.Rules.Narrative;
+using GameCore.Unity.Runtime;
+using GameCore.Unity.Runtime.Integration;
+using GameCore.Unity.Fixtures;
 using GameCore.Validation.Generated;
 using GameCore.Validation.Probe;
-using GameCore.Unity.Fixtures;
 
 namespace GameCore.Validation.ProbeHost
 {
@@ -134,6 +136,23 @@ namespace GameCore.Validation.ProbeHost
             /// committed binding row to be equal to (P-045).
             /// </summary>
             public IReadOnlyList<TargetId> ViewTargets => AutomaticTargets;
+
+            /// <summary>
+            /// Attaches the narrative genre's own stage runtime: the same module `NarrativeScenario` attaches over
+            /// its compiled schedule, with every live target of this world mapped to its entity. A narrative world
+            /// whose systems dispatch without one leaves the choice lane unconsumed and faults the step commit
+            /// (P-043), so this is the world's real step stage the adapter gate drives (P-005).
+            /// </summary>
+            public Gc019StageRuntime AttachStageRuntime(
+                UnityWorldHost host,
+                PipelineDescriptorReport descriptor,
+                LiveTargetIndex targets,
+                LiveTargetSeeder seeder) =>
+                Gc019StageRuntime.AttachNarrative(
+                    host,
+                    descriptor.Compilation!.Schedule!,
+                    targets,
+                    seeder);
         }
     }
 }
