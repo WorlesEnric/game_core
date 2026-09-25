@@ -848,6 +848,7 @@ namespace GameCore.Gameplay.Narrative.Fixtures
                     facts.CompiledSystemCount = schedule.SystemCount;
 
                     registryBeforeCreate = UnityWorldRegistry.Count;
+                    facts.RegistryBeforeCreate = registryBeforeCreate;
                     WorldId world = NextSession();
                     facts.WorldSession = world.Session.ToString();
 
