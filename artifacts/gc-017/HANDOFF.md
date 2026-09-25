@@ -268,7 +268,13 @@ The audited findings and their fixes (each is in the tree and in the commit mess
     had moved on and the planner rejected it `StalePlan`. `NotePendingProposal` is now called at the migration step
     too (the derivation that leaves *that* pair pending), and `PendingProposalFor` returns a cached proposal only
     while its `(ExpectedRevision, BaseEpoch)` pair still equals the pair `AssemblyPlanner.Build` is about to be given.
-15. `FaultScenario.cs` — the fence step asserted `MatchesPublishedAssembly`, which is true only after an assembly
+15. `FaultScenario.cs` — the fence step asserted an *absolute* `ReachCountOf(Fence) == 1`, but the fence boundary sits
+    on the common path of every publication that gets past the acquisition boundary, so the count was already 3 before
+    this step's own reach. It now captures the count before arming and asserts the delta is 1, which is what the step
+    actually proves and which survives a step reorder. The same absolute form was checked at every other reach site
+    and is sound there: the gate-installation and structural-playback chains have exactly one publication (or one step)
+    after arming, the migration step asserts `>= 1`, and the validation, acquisition and cleanup sites only log theirs.
+16. `FaultScenario.cs` — the fence step asserted `MatchesPublishedAssembly`, which is true only after an assembly
     committed; a prewrite refusal deliberately leaves the lane one publication ahead of the world, so that term could
     never hold. Replaced with `PendingRefusalHeld`, which asserts the state a refusal really leaves (the pair is still
     adopted, the world published nothing, and the lane is exactly one publication ahead on both counters).

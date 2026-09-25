@@ -1120,9 +1120,14 @@ namespace GameCore.Validation.ProbeHost
                         return;
                     }
 
+                    // The fence boundary sits on the common path of every publication that gets past the acquisition
+                    // boundary, so its reach count is already positive here; what this step proves is that *this*
+                    // publication reached it exactly once, which is a delta and not an absolute.
+                    int fenceReachesBefore = faults.ReachCountOf(FaultBoundary.Fence);
                     faults.Arm(FaultBoundary.Fence);
                     AssemblyPublicationReport refused = primary.Publisher.Publish(plan);
                     faults.Disarm(FaultBoundary.Fence);
+                    int fenceReachesDelta = faults.ReachCountOf(FaultBoundary.Fence) - fenceReachesBefore;
 
                     bool pass = refused.Outcome == Outcome.Rejected
                         && refused.Code == DiagnosticCode.ResourceUnavailable
@@ -1132,7 +1137,7 @@ namespace GameCore.Validation.ProbeHost
                         && primary.Publisher.Published.BindingRowCount == rowsBefore
                         && staging.Plan != null
                         && staging.Plan.State.Phase == PlanPhase.Rejected
-                        && faults.ReachCountOf(FaultBoundary.Fence) == 1
+                        && fenceReachesDelta == 1
                         && primary.Host.Lifecycle == WorldLifecycleState.Running
                         && PendingRefusalHeld(primary, epochBefore);
                     Add(name, pass,
@@ -1140,7 +1145,7 @@ namespace GameCore.Validation.ProbeHost
                         + "; outcome=" + DescribePublication(refused)
                         + "; drainedHandles=" + refused.DrainedHandles.ToString(CultureInfo.InvariantCulture)
                         + "; planPhase=" + (staging.Plan != null ? staging.Plan.State.Phase.ToString() : "<none>")
-                        + "; fenceReaches=" + faults.ReachCountOf(FaultBoundary.Fence).ToString(CultureInfo.InvariantCulture)
+                        + "; fenceReachesDelta=" + fenceReachesDelta.ToString(CultureInfo.InvariantCulture)
                         + "; structuralWrites=" + refused.StructuralWrites.ToString(CultureInfo.InvariantCulture)
                         + "; crossedLiveWriteBoundary=" + refused.CrossedLiveWriteBoundary
                         + "; epoch=" + primary.Host.CurrentEpoch.Value.ToString(CultureInfo.InvariantCulture)
