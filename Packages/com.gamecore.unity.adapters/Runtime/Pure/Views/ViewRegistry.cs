@@ -538,8 +538,11 @@ namespace GameCore.Unity.Adapters.Views
             record.VisualParentChanged = true;
             record.CompositionParent = committedCompositionParent;
             VisualReparentCount++;
-            if (before.Equals(committedCompositionParent))
+            if (!record.HasApplied || before.Equals(committedCompositionParent))
             {
+                // The view had not presented an image yet, so there was no committed composition parent to move;
+                // or the snapshot reported the same scope after the reparent. Either way composition did not
+                // change, which is exactly what a visual-only reparent promises (P-010).
                 VisualReparentsWithoutCompositionChange++;
             }
 

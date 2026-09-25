@@ -233,6 +233,11 @@ namespace GameCore.Unity.Adapters.Input
         private readonly Dictionary<Id128, Dictionary<ulong, RetainedAdmission>> retained =
             new Dictionary<Id128, Dictionary<ulong, RetainedAdmission>>();
         private readonly List<RetainedKey> retainedOrder = new List<RetainedKey>();
+        // Keys whose recorded admission was evicted from the bounded retention, kept like the kernel ledger's
+        // tombstones: a retry of an evicted key is `ResultExpired`, not a silent re-execution and not a regression
+        // (P-050). The list is bounded by the same capacity; past it the source high-water mark still refuses the key.
+        private readonly HashSet<RetainedKey> evictedAdmissions = new HashSet<RetainedKey>();
+        private readonly Queue<RetainedKey> evictedOrder = new Queue<RetainedKey>();
 
         public TypedInputIngress(WorldId world, ICommandIngress ingress, uint retainedAdmissions = 64U)
         {
@@ -306,9 +311,26 @@ namespace GameCore.Unity.Adapters.Input
                     stamp);
             }
 
+            // A key at or below the source's high-water mark that is no longer retained is an evicted admission,
+            // not a regression: P-050's ledger returns `ResultExpired` for "any absent ID at/below the issuer's
+            // retained admission high-water mark", including retransmissions of evicted keys — so the eviction
+            // check comes before the strictly-increasing rule, exactly as the kernel's `OperationLedger` looks up
+            // its rows before its high-water expiry test (P-050).
+            if (evictedAdmissions.Contains(new RetainedKey(stamp.Source, stamp.Sequence)))
+            {
+                ExpiredResultCount++;
+                RefusedCount++;
+                return Reject(
+                    InputAdmissionOutcome.RejectedResultExpired,
+                    DiagnosticCode.ResultExpired,
+                    "the request key was admitted earlier but its recorded result was evicted from the bounded retention (P-050)",
+                    stamp);
+            }
+
             ulong last = lastSequenceBySource.TryGetValue(stamp.Source, out ulong seen) ? seen : 0UL;
             if (stamp.Sequence < last)
             {
+                RegressionCount++;
                 RefusedCount++;
                 return Reject(
                     InputAdmissionOutcome.RejectedSequenceRegression,
@@ -337,7 +359,6 @@ namespace GameCore.Unity.Adapters.Input
                 || bySequence == null
                 || !bySequence.TryGetValue(stamp.Sequence, out RetainedAdmission previous))
             {
-                RegressionCount++;
                 ExpiredResultCount++;
                 RefusedCount++;
                 return Reject(
@@ -416,6 +437,18 @@ namespace GameCore.Unity.Adapters.Input
                 {
                     table.Remove(oldest.Sequence);
                 }
+
+                // The eviction is remembered like the kernel ledger's tombstones: a retry of this key is
+                // `ResultExpired` forever, because an expired id must not re-execute (P-050).
+                if (evictedAdmissions.Add(oldest))
+                {
+                    evictedOrder.Enqueue(oldest);
+                }
+
+                while ((uint)evictedOrder.Count > RetainedAdmissionCapacity)
+                {
+                    evictedAdmissions.Remove(evictedOrder.Dequeue());
+                }
             }
         }
 
@@ -431,7 +464,7 @@ namespace GameCore.Unity.Adapters.Input
             }
         }
 
-        private readonly struct RetainedKey
+        private readonly struct RetainedKey : IEquatable<RetainedKey>
         {
             public readonly Id128 Source;
             public readonly ulong Sequence;
@@ -441,6 +474,12 @@ namespace GameCore.Unity.Adapters.Input
                 Source = source;
                 Sequence = sequence;
             }
+
+            public bool Equals(RetainedKey other) => Source.Equals(other.Source) && Sequence == other.Sequence;
+
+            public override bool Equals(object? obj) => obj is RetainedKey other && Equals(other);
+
+            public override int GetHashCode() => unchecked((Source.GetHashCode() * 31) ^ Sequence.GetHashCode());
         }
     }
 
