@@ -1,0 +1,33 @@
+# GC-015 host-side static checks (this host has no .NET SDK, no Unity, no Mono)
+# NotRun (pending orchestrator build host) applies to every build/test command below.
+
+$ python3 tools/check_game_core_csharp.py
+checked 279 C# file(s)
+ok
+
+$ python3 tools/check_contract_surface_parity.py
+tests/GameCore.ReferenceSeams/api/GameCore.Contracts.api.txt: 221 types (class 89, enum 41, interface 23, struct 68), 41 enums checked against Packages/com.gamecore.contracts/Runtime
+5 addition(s) beyond the frozen snapshot (allowed, must be listed in HANDOFF):
+  + enum EnvelopeError adds DuplicateField = 17
+  + enum EnvelopeError adds MissingRequiredField = 16
+  + enum FactoryKind adds Handler = 10
+  + enum StateDispositionKind adds Reset = 5
+  + enum StateDispositionKind adds RetainDormant = 4
+every snapshotted enum and enum value exists in the production sources with the same numeric value
+
+$ python3 tools/validate_game_core_docs.py
+Game Core documentation validation passed: 14 Markdown documents; local links, anchors, IDs, traceability, task DAG and wave ordering checked.
+No Unity builds, gameplay tests, runtime benchmarks, or remote URL checks were executed.
+
+$ bash -n tools/run_w3_gate.sh
+shell syntax ok
+
+# Final rerun after the last fixes
+# 2026-09-25T05:33:18Z
+
+$ python3 tools/check_game_core_csharp.py
+checked 279 C# file(s)
+ok
+
+$ python3 tools/validate_game_core_docs.py --self-test
+Documentation validator self-test passed: 9 isolated positive/negative fixtures.
