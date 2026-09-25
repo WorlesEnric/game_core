@@ -540,7 +540,11 @@ namespace GameCore.Gameplay.Narrative.Fixtures
         }
     }
 
-    /// <summary>Mount payloads of the narrative scenario, carrying the configuration hash a mount must declare.</summary>
+    /// <summary>
+    /// Mount payloads of the narrative scenario, carrying the configuration hash a mount must declare. The chapter
+    /// tree is not here: the world definition declares it (see `NarrativeScopes`), so the slice publishes no
+    /// scope-edit revision and its composition and assembly counters stay on one series (P-006, P-010).
+    /// </summary>
     public static class NarrativeMounts
     {
         /// <summary>
@@ -583,32 +587,6 @@ namespace GameCore.Gameplay.Narrative.Fixtures
                 DefinitionRevision.First,
                 ConfigDocumentCodec.HashOf(effective),
                 local,
-                0,
-                null,
-                PropagationMode.Automatic);
-        }
-
-        /// <summary>O-02 creation of one scope under an existing parent, with an optional capability isolation set.</summary>
-        public static CompositionEditPayload ScopeCreate(ScopeId scope, ScopeId parent, bool isolateCapabilities)
-        {
-            IsolationSet isolation = isolateCapabilities
-                ? new IsolationSet(true, null)
-                : new IsolationSet(false, null);
-
-            return new CompositionEditPayload(
-                CompositionEditSubject.ScopeCreate,
-                scope,
-                parent,
-                false,
-                null,
-                isolation,
-                null,
-                null,
-                default(PluginTypeId),
-                default(PluginInstanceId),
-                DefinitionRevision.Zero,
-                ContentHash.Empty,
-                null,
                 0,
                 null,
                 PropagationMode.Automatic);

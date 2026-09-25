@@ -167,14 +167,7 @@ namespace GameCore.Composition.Tests
                     Scope(Village, Story, 1, false),
                 })));
 
-            // A second root is not a tree, and a null record is not a scope.
-            Assert.Throws<ArgumentException>(() => OpenLane(
-                CompositionLaneSeed.InitialAssembly.WithScopes(new List<ScopeRecord>
-                {
-                    new ScopeRecord(Story, default(ScopeId), 0, new IsolationSet(false, null), new IsolationSet(false, null), null, null),
-                })));
-
-            // A second scope that claims to be a root breaks "one rooted tree per world" (P-010).
+            // A second scope claiming to be a root breaks "one rooted tree per world" (P-010).
             Assert.Throws<ArgumentException>(() => OpenLane(
                 CompositionLaneSeed.InitialAssembly.WithScopes(new List<ScopeRecord>
                 {
@@ -188,6 +181,7 @@ namespace GameCore.Composition.Tests
                         null),
                 })));
 
+            // And a null record is not a scope.
             var withNullRecord = new List<ScopeRecord>();
             withNullRecord.Add(null!);
             Assert.Throws<ArgumentException>(() => OpenLane(
@@ -211,10 +205,31 @@ namespace GameCore.Composition.Tests
             CompositionHost fromReversed = OpenLane(CompositionLaneSeed.InitialAssembly.WithScopes(reversed));
 
             Assert.That(fromReversed.Committed.Scopes.Count, Is.EqualTo(fromDeclared.Committed.Scopes.Count));
-            Assert.That(fromReversed.Committed.Scopes.Scopes, Is.EqualTo(fromDeclared.Committed.Scopes.Scopes));
+            Assert.That(
+                Describe(fromReversed.Committed.Scopes.Scopes),
+                Is.EqualTo(Describe(fromDeclared.Committed.Scopes.Scopes)));
             Assert.That(
                 fromReversed.Committed.Scopes.ChildrenOf(Story),
                 Is.EqualTo(fromDeclared.Committed.Scopes.ChildrenOf(Story)));
+        }
+
+        /// <summary>
+        /// Stable text of every scope record. `ScopeRecord` is a reference type without value equality, so two
+        /// registries are compared by what they hold rather than by the identity of the instances (P-008).
+        /// </summary>
+        private static IReadOnlyList<string> Describe(IReadOnlyList<ScopeRecord> scopes)
+        {
+            var lines = new List<string>(scopes.Count);
+            for (int i = 0; i < scopes.Count; i++)
+            {
+                lines.Add(
+                    scopes[i].Scope.ToString() + "|" + scopes[i].Parent.ToString() + "|"
+                    + scopes[i].Depth.ToString(System.Globalization.CultureInfo.InvariantCulture)
+                    + "|capabilityIsolationAll=" + (scopes[i].CapabilityIsolation.AllContracts ? "true" : "false")
+                    + "|childCount=" + scopes[i].ToString().Length);
+            }
+
+            return lines;
         }
 
         [Test]

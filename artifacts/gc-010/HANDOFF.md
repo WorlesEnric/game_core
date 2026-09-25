@@ -76,7 +76,8 @@ Fixture assembly `Packages/com.gamecore.gameplay.narrative/Fixtures/Runtime/` (a
 | `NarrativeWorld.cs` | `NarrativeState` (owner-slot access + chapter resolution from the effective assembly), `NarrativeModule`, and the six stages: input, dialogue, quest, gates, encounters, output |
 | `NarrativeRegistration.cs` | the message plane (1 route, 5 bounded lanes), the readers, the six system registrations, the world registration and the creation request |
 | `NarrativeMigrations.cs` | the two registered conversation migrations and the validation-side `ISlotMigrationRegistry` |
-| `NarrativeScenario.cs` | `NarrativeStep`, `NarrativeFacts` (observed facts + `PipelineEntries`), `NarrativeScenarioResult`, `NarrativeMounts` (mount + scope-create payloads) and the eleven-step scenario |
+| `NarrativeScopes.cs` | the world definition's declared chapter tree (P-010): the six child scopes with their parents, depths and the museum's `*` capability boundary |
+| `NarrativeScenario.cs` | `NarrativeStep`, `NarrativeFacts` (observed facts + `PipelineEntries`), `NarrativeScenarioResult`, `NarrativeMounts` (the mount payload) and the eleven-step scenario |
 
 Unity qualification project (authored by the Unity-wiring worker under this task's spec): `Runtime/NarrativeScenarioHost.cs`,
 `Runtime/ProbeNarrative.cs`, the `-probeNarrative` mode in `ProbeArguments.cs`/`ProbeRunner.cs`,
