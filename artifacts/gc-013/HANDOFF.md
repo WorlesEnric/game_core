@@ -278,8 +278,13 @@ dotnet test dotnet/tests/GameCore.Composition.Tests/GameCore.Composition.Tests.c
   -testResults artifacts/gc-013/unity/all-editmode.xml \
   -logFile artifacts/gc-013/unity/all-editmode.log
 
-# 8.5 the player probe (IL2CPP), PROBE_RUNS=5
+# 8.5 the player probe (IL2CPP), PROBE_RUNS=5. The GC-013 mode adds one probe; the other four
+#     modes must keep passing because the derived-assembly chain now runs the incremental engine.
+bash tools/unity/build_probe.sh
 PROBE_RUNS=5 UNITY="$UNITY" bash tools/unity/run_gc013_probe.sh
+PROBE_RUNS=5 UNITY="$UNITY" bash tools/unity/run_narrative_probe.sh
+PROBE_RUNS=5 UNITY="$UNITY" bash tools/unity/run_cards_probe.sh
+PROBE_RUNS=5 UNITY="$UNITY" bash tools/unity/run_w3_gate_probe.sh
 
 # 8.6 host-side checks (already run on this host; rerun for the record)
 python3 tools/check_game_core_csharp.py
