@@ -275,6 +275,23 @@ namespace GameCore.Planning
         /// <summary>Reads a staged result; false means this slot has no reserved scratch value.</summary>
         public bool TryRead(StateSlotKey slot, out int value) => values.TryGetValue(slot, out value);
 
+        /// <summary>
+        /// Stages one already-computed value on bounded scratch (GC-015). A reset is not a migration but it is the
+        /// same kind of staged prewrite work: the value is reserved within the same hard temporary-storage budget, and
+        /// a refused reservation is `BudgetExceeded` without staging anything (P-022, P-029).
+        /// </summary>
+        public bool TryStage(StateSlotKey slot, int value, out DiagnosticCode code)
+        {
+            if (!TryReserve(slot, out code))
+            {
+                return false;
+            }
+
+            values[slot] = value;
+            code = DiagnosticCode.None;
+            return true;
+        }
+
         /// <summary>Releases one reservation; false when the slot held none.</summary>
         public bool Release(StateSlotKey slot)
         {

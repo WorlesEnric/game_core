@@ -1031,38 +1031,81 @@ namespace GameCore.Unity.Runtime
                 }
             }
 
-            // State dispositions: a migrated scratch value replaces its live slot value, a retraction clears derived
-            // data, and every other slot keeps exactly the value it had (P-029, P-032 `Preserve`).
+            // State dispositions: a staged scratch value (migration or reset) replaces its live slot value, a
+            // retraction clears disposable derived data, a dormant retention keeps the value with no active writer, a
+            // transfer moves it to the named owner, and every other slot keeps exactly the value it had (GC-015,
+            // P-029, P-032, P-033).
             for (int i = 0; i < publication.Dispositions.Count; i++)
             {
                 StateDisposition disposition = publication.Dispositions[i];
+
+                if (disposition.Kind == StateDispositionKind.Transfer)
+                {
+                    // A transfer needs no scratch: the value moves between two live rows inside the fence, and the
+                    // source row is retired in the same write set (P-025, P-032).
+                    if (!registry.TryResolveTarget(disposition.Slot.Target, out _, out Entity sourceEntity))
+                    {
+                        continue;
+                    }
+
+                    TargetId destinationTarget = disposition.TransferTo.Value.IsDefault
+                        ? disposition.Slot.Target
+                        : disposition.TransferTo;
+                    if (!registry.TryResolveTarget(destinationTarget, out _, out Entity destinationEntity))
+                    {
+                        continue;
+                    }
+
+                    if (!TryReadLiveSlot(disposition.Slot, out int transferred, out uint transferredVersion))
+                    {
+                        continue;
+                    }
+
+                    var destination = new StateSlotKey(
+                        destinationTarget,
+                        disposition.DestinationOwner.Value.IsDefault ? disposition.Slot.Owner : disposition.DestinationOwner,
+                        disposition.Slot.Slot);
+                    writes += WriteSlotState(entityManager, destinationEntity, destination, transferred, transferredVersion);
+                    if (writes == 1) Faults.MaybeFailAfterFirstLiveWrite();
+                    writes += ClearSlotState(entityManager, sourceEntity, disposition.Slot);
+                    if (writes == 1) Faults.MaybeFailAfterFirstLiveWrite();
+                    continue;
+                }
+
                 if (!registry.TryResolveTarget(disposition.Slot.Target, out _, out Entity entity))
                 {
                     continue;
                 }
 
-                if (disposition.Kind == StateDispositionKind.Migrate)
+                if (disposition.Kind == StateDispositionKind.Migrate || disposition.Kind == StateDispositionKind.Reset)
                 {
-                    if (!publication.Scratch.TryRead(disposition.Slot, out int migrated))
+                    if (!publication.Scratch.TryRead(disposition.Slot, out int staged))
                     {
                         // Scratch was validated before this point, so a missing value means the plan and the
                         // migration account disagree; substituting a default here would be implicit zero
                         // initialisation, which P-032 forbids.
                         throw new InvalidOperationException(
-                            "scratch holds no migrated value for " + disposition.Slot.ToString());
+                            "scratch holds no staged value for " + disposition.Slot.ToString());
                     }
 
                     writes += WriteSlotState(
                         entityManager,
                         entity,
                         disposition.Slot,
-                        migrated,
+                        staged,
                         SchemaVersionOf(disposition.Slot.Slot));
                     if (writes == 1) Faults.MaybeFailAfterFirstLiveWrite();
                 }
                 else if (disposition.Kind == StateDispositionKind.Retract)
                 {
                     writes += ClearSlotState(entityManager, entity, disposition.Slot);
+                    if (writes == 1) Faults.MaybeFailAfterFirstLiveWrite();
+                }
+                else if (disposition.Kind == StateDispositionKind.RetainDormant)
+                {
+                    // The value stays exactly as it is and its row is marked dormant: no active writer, excluded from
+                    // active queries, still serialized (P-032 `PreserveDormant`).
+                    writes += MarkSlotDormant(entityManager, entity, disposition.Slot);
                     if (writes == 1) Faults.MaybeFailAfterFirstLiveWrite();
                 }
             }
@@ -1078,8 +1121,9 @@ namespace GameCore.Unity.Runtime
 
             for (int i = 0; i < publication.Dispositions.Count; i++)
             {
-                StateDispositionKind kind = publication.Dispositions[i].Kind;
-                if (kind == StateDispositionKind.Migrate || kind == StateDispositionKind.Retract)
+                // Any disposition other than a plain `Retain` changes live state, so it publishes a new epoch even
+                // when no binding row moved (P-006, GC-015).
+                if (publication.Dispositions[i].Kind != StateDispositionKind.Retain)
                 {
                     return true;
                 }
@@ -1503,6 +1547,38 @@ namespace GameCore.Unity.Runtime
                 Active = 1,
             });
             return 1;
+        }
+
+        /// <summary>
+        /// Marks one live slot dormant: the value and its version stay exactly as they were, the row stops
+        /// participating in active queries, and it is still part of the target's storage (P-032 `PreserveDormant`).
+        /// A missing row is left missing rather than created: dormant state is retained state, never invented state.
+        /// </summary>
+        private static int MarkSlotDormant(EntityManager entityManager, Entity entity, StateSlotKey slot)
+        {
+            if (!entityManager.HasBuffer<TargetSlotState>(entity))
+            {
+                return 0;
+            }
+
+            DynamicBuffer<TargetSlotState> slots = entityManager.GetBuffer<TargetSlotState>(entity);
+            for (int i = 0; i < slots.Length; i++)
+            {
+                if (slots[i].Owner.Equals(slot.Owner) && slots[i].Slot.Equals(slot.Slot))
+                {
+                    if (slots[i].Active == 0)
+                    {
+                        return 0;
+                    }
+
+                    TargetSlotState dormant = slots[i];
+                    dormant.Active = 0;
+                    slots[i] = dormant;
+                    return 1;
+                }
+            }
+
+            return 0;
         }
 
         private static int ClearSlotState(EntityManager entityManager, Entity entity, StateSlotKey slot)

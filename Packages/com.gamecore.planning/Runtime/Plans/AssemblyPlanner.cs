@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using GameCore.Contracts;
+using GameCore.Planning.StatePolicies;
 
 namespace GameCore.Planning
 {
@@ -186,6 +187,12 @@ namespace GameCore.Planning
     /// </summary>
     public static class AssemblyPlanner
     {
+        /// <summary>
+        /// Builds one plan. <paramref name="policies"/> is GC-015's executed state-policy result; when it is supplied
+        /// its dispositions and migrations *are* the plan's, so the slot policies of one catalog revision have exactly
+        /// one implementation. When it is null the planner derives the same compatibility behaviour from the
+        /// descriptor alone, which is what keeps a plan valid before the policy layer exists (P-032).
+        /// </summary>
         public static PlannedPublication Build(
             CompositionProposal proposal,
             OwnershipStageDescriptor descriptor,
@@ -198,7 +205,8 @@ namespace GameCore.Planning
             MigrationRegistry migrations,
             MigrationScratch scratch,
             InertAcquisitionSet acquisitions,
-            PlanBudget budget)
+            PlanBudget budget,
+            StatePolicies.StatePolicyPlan? policies = null)
         {
             if (proposal == null)
             {
@@ -479,7 +487,14 @@ namespace GameCore.Planning
                 AddRule(rulesAfter, winner, row);
             }
 
-            // 5. State dispositions and required migrations for every slot the descriptor owns (P-032).
+            // 4c. P-033: the final removal of a structure is allowed only if nothing else still requires it, and a
+            //     retraction removes exactly the unmounting provider's support. When another provider still supports
+            //     an identity, the ranking above already produced that survivor's row, and applying the removal of the
+            //     departed provider's row afterwards would delete the surviving support's row instead. The removal of
+            //     an identity this same plan installs is therefore dropped; the identity stays, written by whoever
+            //     supports it now. (GC-015.)
+            RemoveInstalledIdentities(removals, installs);
+
             var plannedMigrations = new List<PlannedMigration>();
             var dispositions = new List<StateDisposition>();
             var ownerGrants = new List<OwnerGrant>();
@@ -489,12 +504,10 @@ namespace GameCore.Planning
                 ownerGrants.Add(new OwnerGrant(spec.Owner, new StateSlotKey(default(TargetId), spec.Owner, spec.Slot), spec.OwnerVersion));
             }
 
-            for (int i = 0; i < slots.Count; i++)
+            if (policies != null)
             {
-                LiveSlotState live = slots[i];
-                if (!descriptor.TryGetSlot(live.Slot.Slot, out OwnedSlotSpec? spec) || spec == null)
+                if (!policies.Succeeded)
                 {
-                    // A live slot the descriptor does not declare cannot be migrated by this revision (P-032).
                     return Reject(
                         proposal,
                         descriptor,
@@ -503,36 +516,52 @@ namespace GameCore.Planning
                         acquisitions,
                         scratch,
                         budget,
-                        DiagnosticCode.MigrationRequired,
-                        "live state slot " + live.Slot.ToString()
-                        + " is not declared by the descriptor; a missing compatible policy is a validation error (P-032).");
+                        policies.Code == DiagnosticCode.None ? DiagnosticCode.MigrationRequired : policies.Code,
+                        "the state-policy execution was refused: " + policies.Detail);
                 }
 
-                if (live.SchemaVersion == spec.Schema.Version)
+                for (int i = 0; i < policies.Dispositions.Count; i++)
                 {
-                    dispositions.Add(new StateDisposition(live.Slot, StateDispositionKind.Retain, default(TargetId), default(FactoryKey)));
-                    continue;
+                    dispositions.Add(policies.Dispositions[i]);
                 }
 
-                if (spec.LastSupport == LastSupportPolicy.RemoveDerived)
+                for (int i = 0; i < policies.Migrations.Count; i++)
                 {
-                    dispositions.Add(new StateDisposition(live.Slot, StateDispositionKind.Retract, default(TargetId), default(FactoryKey)));
-                }
-                else
-                {
-                    dispositions.Add(new StateDisposition(
-                        live.Slot,
-                        StateDispositionKind.Migrate,
-                        default(TargetId),
-                        spec.VersionChangePolicy));
+                    plannedMigrations.Add(policies.Migrations[i]);
                 }
 
-                plannedMigrations.Add(new PlannedMigration(
-                    live.Slot.Target,
-                    live.Slot,
-                    live.SchemaVersion,
-                    spec.Schema.Version,
-                    spec.VersionChangePolicy));
+                // The pass staged migrated and reset values on its own bounded scratch. The publication needs them
+                // on the scratch *it* owns, because the apply stage reads exactly that account; a value that cannot
+                // be reserved here is the same hard temporary-storage limit P-022 makes it (GC-015, P-029).
+                for (int i = 0; i < policies.StagedValues.Count; i++)
+                {
+                    StagedSlotValue stagedValue = policies.StagedValues[i];
+                    if (!scratch.TryStage(stagedValue.Slot, stagedValue.Value, out DiagnosticCode stageCode))
+                    {
+                        return Reject(
+                            proposal,
+                            descriptor,
+                            current,
+                            rules,
+                            acquisitions,
+                            scratch,
+                            budget,
+                            stageCode,
+                            "the publication cannot reserve scratch for the staged value of "
+                            + stagedValue.Slot.ToString()
+                            + "; temporary storage is a hard configured limit (P-022).");
+                    }
+                }
+            }
+            else
+            {
+                if (!TryPlanSlotDispositions(
+                        proposal, descriptor, current, rules, slots, migrations, scratch, acquisitions, budget,
+                        dispositions, plannedMigrations, out PlannedPublication? slotRejection)
+                    || slotRejection != null)
+                {
+                    return slotRejection!;
+                }
             }
 
             // 6. Every required migration must resolve to a registered handler whose source version matches, because a
@@ -848,6 +877,101 @@ namespace GameCore.Planning
             detail = string.Empty;
             return ordered;
         }
+
+        /// <summary>
+        /// The compatibility default of one revision with no policy layer: an unchanged schema is retained, a
+        /// disposable derived slot is retracted, and anything else crosses its version through the declared
+        /// migration (P-032). GC-015's executor produces exactly these decisions through its own declared policies.
+        /// </summary>
+        private static bool TryPlanSlotDispositions(
+            CompositionProposal proposal,
+            OwnershipStageDescriptor descriptor,
+            TargetBindingTable current,
+            IReadOnlyList<DerivedBindingRule> rules,
+            IReadOnlyList<LiveSlotState> slots,
+            MigrationRegistry migrations,
+            MigrationScratch scratch,
+            InertAcquisitionSet acquisitions,
+            PlanBudget budget,
+            List<StateDisposition> dispositions,
+            List<PlannedMigration> plannedMigrations,
+            out PlannedPublication? rejection)
+        {
+            rejection = null;
+            for (int i = 0; i < slots.Count; i++)
+            {
+                LiveSlotState live = slots[i];
+                if (!descriptor.TryGetSlot(live.Slot.Slot, out OwnedSlotSpec? spec) || spec == null)
+                {
+                    // A live slot the descriptor does not declare cannot be migrated by this revision (P-032).
+                    rejection = Reject(
+                        proposal,
+                        descriptor,
+                        current,
+                        rules,
+                        acquisitions,
+                        scratch,
+                        budget,
+                        DiagnosticCode.MigrationRequired,
+                        "live state slot " + live.Slot.ToString()
+                        + " is not declared by the descriptor; a missing compatible policy is a validation error (P-032).");
+                    return false;
+                }
+
+                if (live.SchemaVersion == spec.Schema.Version)
+                {
+                    dispositions.Add(new StateDisposition(live.Slot, StateDispositionKind.Retain, default(TargetId), default(FactoryKey)));
+                    continue;
+                }
+
+                if (spec.LastSupport == LastSupportPolicy.RemoveDerived)
+                {
+                    dispositions.Add(new StateDisposition(live.Slot, StateDispositionKind.Retract, default(TargetId), default(FactoryKey)));
+                }
+                else
+                {
+                    dispositions.Add(new StateDisposition(
+                        live.Slot,
+                        StateDispositionKind.Migrate,
+                        default(TargetId),
+                        spec.VersionChangePolicy));
+                }
+
+                plannedMigrations.Add(new PlannedMigration(
+                    live.Slot.Target,
+                    live.Slot,
+                    live.SchemaVersion,
+                    spec.Schema.Version,
+                    spec.VersionChangePolicy));
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Drops every removal whose `(target, capability, output slot)` identity this plan also installs: the
+        /// identity survives under another support, so only its provider changed (P-033, GC-015).
+        /// </summary>
+        private static void RemoveInstalledIdentities(List<TargetBindingRow> removals, List<TargetBindingRow> installs)
+        {
+            for (int r = removals.Count - 1; r >= 0; r--)
+            {
+                TargetBindingRow removal = removals[r];
+                for (int i = 0; i < installs.Count; i++)
+                {
+                    if (SameIdentity(removal, installs[i]))
+                    {
+                        removals.RemoveAt(r);
+                        break;
+                    }
+                }
+            }
+        }
+
+        private static bool SameIdentity(TargetBindingRow left, TargetBindingRow right)
+            => left.Target.Equals(right.Target)
+                && left.Capability.Equals(right.Capability)
+                && left.OutputSlot == right.OutputSlot;
 
         private static bool HasUnemittedDependency(DescriptorSystem system, List<DescriptorSystem> remaining)
         {

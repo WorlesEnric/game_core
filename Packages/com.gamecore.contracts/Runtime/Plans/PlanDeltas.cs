@@ -435,7 +435,11 @@ namespace GameCore.Contracts
         public override string ToString() => Owner.ToString() + ":" + Slot.ToString();
     }
 
-    /// <summary>Staged state disposition or migration for one slot (05 s4, P-033).</summary>
+    /// <summary>
+    /// Staged state disposition or migration for one slot (05 s4, P-032, P-033). A `Transfer` names both the target
+    /// and the owner that takes the state over, because P-032 requires a named *available owner*, not only a target
+    /// (GC-015).
+    /// </summary>
     public readonly struct StateDisposition
     {
         public readonly StateSlotKey Slot;
@@ -443,12 +447,26 @@ namespace GameCore.Contracts
         public readonly TargetId TransferTo;
         public readonly FactoryKey MigrationKey;
 
+        /// <summary>Owner that takes the state over; default when the disposition is not a transfer (P-032).</summary>
+        public readonly OwnerId DestinationOwner;
+
         public StateDisposition(StateSlotKey slot, StateDispositionKind kind, TargetId transferTo, FactoryKey migrationKey)
+            : this(slot, kind, transferTo, migrationKey, default(OwnerId))
+        {
+        }
+
+        public StateDisposition(
+            StateSlotKey slot,
+            StateDispositionKind kind,
+            TargetId transferTo,
+            FactoryKey migrationKey,
+            OwnerId destinationOwner)
         {
             Slot = slot;
             Kind = kind;
             TransferTo = transferTo;
             MigrationKey = migrationKey;
+            DestinationOwner = destinationOwner;
         }
 
         public override string ToString() => Kind.ToString() + ":" + Slot.ToString();
