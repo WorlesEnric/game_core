@@ -132,6 +132,7 @@ def main() -> int:
         for hit in result["hits"]:
             report["finding"].append("%s: %s x%d" % (result["path"], hit["marker"], hit["count"]))
 
+    report["status"] = "Fail" if report["finding"] else "Pass"
     if arguments.json:
         with open(arguments.json, "w", encoding="utf-8") as handle:
             json.dump(report, handle, indent=2, sort_keys=True)
@@ -148,7 +149,6 @@ def main() -> int:
               file=sys.stderr)
         return 1
 
-    report["status"] = "Pass"
     print("GC-017 release player: PASS")
     print("  %d managed assembly(ies) and %d generated source(s) contain no latch type, no boundary name "
           "and no trace prefix" % (len(managed), len(generated)))

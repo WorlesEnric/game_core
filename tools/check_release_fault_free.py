@@ -465,16 +465,17 @@ def check_assemblies(dotnet: str) -> dict:
     with open(os.path.join(REPO_ROOT, qualify_dll), "rb") as handle:
         qualify = handle.read()
 
+    # The assembly's own name is GameCore.Faults.ReleaseCheck; "Fault" alone is not a
+    # type check. CLR identifiers are UTF-8 in metadata; C# string literals are UTF-16LE.
+    # Check both encodings for boundary literals so a real compiled name table is visible.
     problems = []
-    if contains(release, "Fault"):
-        problems.append("the release assembly contains the text `Fault`: a latch type or member survived.")
     for name in LATCH_TYPES:
         if contains(release, name):
             problems.append("the release assembly contains the latch type name %s." % name)
     for name in DISTINCTIVE_NAMES:
-        if contains(release, name):
+        if contains(release, name) or name.encode("utf-16le") in release:
             problems.append("the release assembly contains the boundary name literal %r." % name)
-    if contains(release, "boundary="):
+    if contains(release, "boundary=") or "boundary=".encode("utf-16le") in release:
         problems.append("the release assembly contains the trace line prefix `boundary=`.")
     if contains(release, SYMBOL):
         problems.append("the release assembly contains the qualification symbol string `%s`." % SYMBOL)
@@ -484,7 +485,7 @@ def check_assemblies(dotnet: str) -> dict:
             problems.append("the qualification assembly is missing the latch type name %s, so the "
                             "release check above could pass by inspecting nothing." % name)
     for name in DISTINCTIVE_NAMES:
-        if not contains(qualify, name):
+        if not (contains(qualify, name) or name.encode("utf-16le") in qualify):
             problems.append("the qualification assembly is missing the boundary name literal %r." % name)
 
     if problems:
