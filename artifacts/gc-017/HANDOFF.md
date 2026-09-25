@@ -1,0 +1,274 @@
+# GC-017 handoff — inject failure at every apply and cancellation boundary (Wave 5)
+
+Branch `gc-017` (worktree `/Users/yangcao/wkspace/gc-wt/gc-017`), starting from `main` = `f28a4af` (Wave 4 gate).
+
+**Status of every executable check this change set adds: `NotRun (pending orchestrator build host)`.** This host has no
+Unity, no .NET SDK, no Mono and no C# compiler, so nothing here has been compiled, imported or executed. What *did* run
+on this host is in §8. None of it is a build, an import, a test or a player run.
+
+## 1. Summary
+
+Deterministic fault latches at every TEST-016 boundary in the apply and cancellation path, a real cross-family
+scenario that arms each one and observes the protocol outcome, the package-level regression suites, the cancella-
+tion/cutoff race, and recovery from initial definitions into a new world. The latches are compiled into the
+qualification project and the player and out of a shipping build by one `versionDefines` entry.
+
+## 2. Files created
+
+### Production (the latch and the recovery contract)
+
+| Path | Contents |
+| --- | --- |
+| `Packages/com.gamecore.unity.runtime/Runtime/Faults/FaultBoundaries.cs` (+ `.meta`, folder `.meta`) | `FaultBoundary` (the eight boundaries), `FaultBoundaryText`, `FaultRecord`/`FaultTrace` (ordered provenance: boundary, operation, plan hash, injected flag), `FaultInjectedException`, `FaultCompilation` (`Symbol`, `IsCompiledIn`) and the internal `FaultReach.Reach`/`FaultReach.Refuse` helpers. |
+| `Packages/com.gamecore.unity.runtime/Runtime/Recovery/InitialDefinitionRecovery.cs` (+ `.meta`, folder `.meta`) | `IRecoveryRepair`, `RecoveryRequest`, `RecoveryReport`, `InitialDefinitionRecovery.Recover`. |
+
+### Unity fault fixtures and the player probe
+
+| Path | Contents |
+| --- | --- |
+| `unity/.../Runtime/FaultScenarioStep.cs` + `.meta` | `FaultScenarioStep`, `FaultScenarioResult` (digest over `name=pass|fail` lines). |
+| `unity/.../Runtime/FaultScenario.cs` + `.meta` | `FaultScenario`: `ObservationNames` (the 15 frozen names), `QualifiedNames`, `Run(IW4GateFamily)` and the executor that drives the whole sequence over one real family world. |
+| `unity/.../Runtime/FaultScenarioHost.cs` + `.meta` | The four single-catalog entry points plus the two `out`-pair helpers, over both families. |
+| `unity/.../Runtime/ProbeFaults.cs` + `.meta` | The `-probeFaults` player mode and both digest literals. |
+| `unity/.../Tests/Faults/` (+ folder `.meta`), `GameCore.Faults.Tests.asmdef` + `.meta`, `FaultScenarioIntegrationTests.cs` + `.meta` | The EditMode half: one case per family, one that recomputes both digest literals from `FaultScenario.QualifiedNames`. |
+
+### Package regression suites
+
+| Path | Contents |
+| --- | --- |
+| `Packages/.../Tests/Faults/` (+ folder `.meta`), `GameCore.Unity.Faults.Tests.asmdef` + `.meta`, `FaultBoundaryTests.cs`, `GuardedDispatchFaultTests.cs`, `LifecycleFaultTests.cs` (+ metas) | The publisher/driver/gate latch boundaries, the guarded-dispatch fail-stop rows (including the stock-group contrast) and the lifecycle rows (in-flight fence, throwing disposer). |
+| `Packages/.../Tests/Recovery/` (+ folder `.meta`), `GameCore.Unity.Recovery.Tests.asmdef` + `.meta`, `RecoveryFixture.cs`, `InitialDefinitionRecoveryTests.cs` (+ metas) | The initial-definition recovery suite and its fixture. |
+
+### Tooling and evidence
+
+| Path | Contents |
+| --- | --- |
+| `tools/run_gc017_gate.sh` | The gate sequence; every Unity invocation bounded by `timeout`, a timeout retried exactly once. |
+| `tools/unity/run_gc017_faults_probe.sh` | The player-probe harness: `PROBE_RUNS` runs, strict JSON, all 62 required step fragments, both digest literals, 15 clause fragments. |
+| `artifacts/faults/README.md`, `boundaries.json`, `trace-format.md` | The ten TEST-016 rows mapped to their cases and evidence paths (29 rows), the trace grammar, and the exact commands. Every row's status is `NotRun (pending orchestrator build host)`. |
+| `artifacts/gc-017/HANDOFF.md` | This file. |
+
+## 3. Files modified
+
+| Path | Change | Why |
+| --- | --- | --- |
+| `Packages/.../Runtime/Assembly/AssemblyPublisher.cs` | `AssemblyFaultInjection` gained `Arm`/`Disarm`/`IsArmed`/`TryReach`/`TryRefuse`/`Trace`/`ReachCountOf` alongside the two original booleans; `Faults` now returns the world's latch; `Publish` reaches the validation, acquisition, fence, first-live-write, gate-installation and cleanup boundaries; `StampTargets` moved inside the postwrite guard; `PrewriteRefusal`/`ReachPrewriteFault` added; the header and inline step list renumbered. | The only place a validated plan becomes visible storage is where the apply boundaries live (P-002, P-029..P-031). |
+| `Packages/.../Runtime/Execution/UnityExecutionDriver.cs` | Reaches `FaultBoundary.StructuralPlayback` between the step's systems and its commit. | TEST-016 row 6 needs an injection point after the step's writes and before its publication. |
+| `Packages/.../Runtime/Integration/StagedResourceGate.cs` | Optional latch (3-arg ctor); acquisition and cleanup boundaries refuse as values; `InjectionRefusalCount`/`InjectionReleaseRefusalCount` kept apart from `BudgetExceededCount`. | TEST-016 rows 2 and 8; a budget reading must not absorb a fault refusal. |
+| `Packages/.../Runtime/WorldHost.cs` | `UnityWorldHost.Faults` + `IWorldExecutionContext.Faults`. | One latch per world, shared by its publisher, driver and gate. |
+| `Packages/.../Runtime/GameCore.Unity.Runtime.asmdef` | `versionDefines` on `com.unity.test-framework` defines `GAMECORE_FAULT_INJECTION`. | Puts the latches in the validation project and the player, and keeps them out of a build that does not reference the Test Framework. |
+| `Packages/com.gamecore.planning/Runtime/Plans/PlanStateMachine.cs` | `HasCrossedLiveWriteBoundary` includes `PlanPhase.Faulted`. | `shared:` — see §5. |
+| `unity/.../Runtime/ProbeArguments.cs`, `ProbeRunner.cs` | The `-probeFaults` flag, its property, `IsProbeInvocation`, `Parse`, the report identity (`GC-017`/`Faults`) and the dispatch arm. | One new probe mode; every existing arm untouched. |
+
+## 4. Requirement / test coverage map
+
+| Requirement / test | Where implemented | Where observed |
+| --- | --- | --- |
+| P-002 participants and authority | `UnityWorldHost.Faults` is per-world; `InitialDefinitionRecovery` is a static entry that never becomes a second authority | the fault scenario's step 1; every recovery case |
+| P-004 stable identities, fresh WorldId | `RecoveryRequest.IsValid`, `RecoveryReport.DestinationIsFreshIncarnation` | `gc017-recovery-...`, `ARecoveryWithAStaleSourceHandleIsRefused` |
+| P-005 runtime handles | `TryResolveHandle` on the recovered world's publisher | `gc017-recovery-...` (source handle never resolves in the destination) |
+| P-027 plan states | `PlanStateMachine` driven by the publisher across the faulted boundary | `FaultBoundaryTests.AnInjectedFirstLiveWriteFault...` |
+| P-028 validation, stale plans | validation boundary placed after the prepared check and before the recheck | `gc017-validation-...`, `AnInjectedValidationFaultRejectsBeforeAnyLiveWrite` |
+| P-029 preparation, scratch migration, release | migration boundary on scratch; `PrewriteRefusal` releases in reverse order | `gc017-prewrite-migration-...`, `AnInjectedMigrationFaultAndTheOriginalPrewriteSwitchBothPreserveTheOldAssembly` |
+| P-030 the fence and the one commit | fence and gate-installation boundaries | `gc017-fence-...`, `gc017-gate-installation-...` |
+| P-031 apply failure faults the world | first-live-write, structural-playback and gate-installation boundaries | `gc017-postwrite-...`, `gc017-structural-playback-...` |
+| P-035 lifecycle | recovery exposes a world only after its initial publication; a destination that never became Running is disposed | `AFailedReferenceRepairNeverExposesARunningWorld`, `RecoveryFromInitialDefinitions...` |
+| P-041 structural work | the structural-playback boundary sits at the step boundary | `AStructuralPlaybackFaultStopsTheStepCommitAndKeepsTheQuarantine` |
+| P-047 in-flight lifetime | job fence + quarantine; an old callback is discarded by world identity | `AJobHeldInFlightWhileUnloadBeginsIsFencedAndItsResourceQuarantined`, `gc017-old-callback-...` |
+| P-048 teardown and aggregated cleanup | cleanup boundary; throwing disposer | `AThrowingDisposerIsRecordedAndOtherCleanupStillProceeds`, `gc017-cleanup-...` |
+| P-049 recovery limits | `InitialDefinitionRecovery` in full | all eight recovery cases |
+| P-050 identity and idempotency | operation identity in every `FaultRecord`; destination reservation rules | `ARecoveryIntoAnAlreadyOwnedDestinationSessionIsRefused`, `TheLatchRecordsEveryReachInOrderWithProvenance` |
+| P-051 the serialized cutoff | cancellation before/after `Drain`; `TooLate` never claims rollback | `gc017-cancellation-before/after-...` |
+| P-052 diagnostics | `FaultRecord.ToLine()` carries boundary, operation and plan hash | `artifacts/faults/trace-format.md`, the probe's `traceRecord=` clause |
+| TEST-009 | prepared plans, atomic visibility, cancellation | the observer in step 1; both cancellation steps |
+| TEST-016 | all ten rows — see the table below | the fault scenario + the package suites |
+| TEST-018 | guarded zero-cost compilation switch; world dispatch fail-stop | `AStockGroupSwallowsTheSameExceptionAndTheGuardedGroupDoesNot`, `AThrowingGuardedSystemStopsTheNextRegisteredStageAndPublishesNothing` |
+
+### 4.1 TEST-016 boundary → case (the required table)
+
+| # | Boundary | Case |
+| --- | --- | --- |
+| 1 | validation | `narrative/gc017-validation-fault-rejects-and-keeps-the-old-assembly`, `cards/...`; `FaultBoundaryTests.AnInjectedValidationFaultRejectsBeforeAnyLiveWrite` |
+| 2 | acquisition | `gc017-acquisition-fault-releases-staged-leases` (both families); `FaultBoundaryTests.AnInjectedAcquisitionFaultRefusesTheLeaseAndReleasesWhatWasStaged` |
+| 3 | cancellation vs the cutoff (not a latch) | `gc017-cancellation-before-the-cutoff-releases-staged-work`, `gc017-cancellation-after-the-cutoff-is-too-late-and-keeps-the-publication` |
+| 4 | fence / job held in flight while unload begins | `gc017-fence-fault-settles-handles-and-keeps-the-old-assembly`; `LifecycleFaultTests.AJobHeldInFlightWhileUnloadBeginsIsFencedAndItsResourceQuarantined` |
+| 5 | migration / after the first authoritative mutation | `gc017-prewrite-migration-fault-preserves-live-state`, `gc017-postwrite-fault-faults-the-world-and-keeps-the-last-image`, `gc017-gate-installation-fault-stops-after-live-writes`; `FaultBoundaryTests.{AnInjectedMigrationFaultAndTheOriginalPrewriteSwitchBothPreserveTheOldAssembly, AnInjectedFirstLiveWriteFaultAndTheOriginalPostwriteSwitchBothFaultTheWorld, AnInjectedGateInstallationFaultFaultsAfterTheApplyStage}` |
+| 6 | authoritative system throws after a partial update | `gc017-structural-playback-fault-stops-the-step-commit`; `GuardedDispatchFaultTests.AThrowingGuardedSystemStopsTheNextRegisteredStageAndPublishesNothing` (+ the stock-group contrast) |
+| 7 | adapter output fails after a simulation commit | `GuardedDispatchFaultTests.AFailingOutputGroupDoesNotRewindTheCommittedStep` |
+| 8 | one disposer throws | `gc017-cleanup-fault-retains-staged-ownership`, `gc017-cleanup-boundary-releases-what-a-refusal-staged`; `FaultBoundaryTests.AnInjectedCleanupFaultRetainsStagedOwnershipInsteadOfReportingRelease`; `LifecycleFaultTests.AThrowingDisposerIsRecordedAndOtherCleanupStillProceeds` |
+| 9 | old callback arrives after restart | `gc017-old-callback-after-recovery-is-rejected` |
+| 10 | restore fails during reference repair | `InitialDefinitionRecoveryTests.AFailedReferenceRepairNeverExposesARunningWorld` — the **initial-definition** form; the checkpoint form is GC-018/GC-027 and is not claimed here |
+
+## 5. Contract changes (`shared:` commits)
+
+Four commits touch shared surfaces; all are additive or a strict widening, and each is in its own commit.
+
+1. **`Faults` on the world and the publisher.** New members only: `UnityWorldHost.Faults`,
+   `IWorldExecutionContext.Faults`, `AssemblyPublisher.Faults` (was a per-publisher instance; now the world's, which
+   is a behavioural change only for a caller that armed one publisher's latch and expected another publisher in the
+   same world to be unaffected — no such caller exists). `StagedResourceGate` gained a 3-arg overload; the 2-arg
+   constructor is unchanged.
+2. **`AssemblyFaultInjection` additions.** `Arm`/`Disarm`/`DisarmAll`/`IsArmed`/`TryReach`/`TryRefuse`/`Trace`/
+   `ReachCount`/`ReachCountOf`/`InjectedCount`/`ArmedBoundaryCount`/`IsCompiledIn`/`Describe`. The two existing
+   booleans and their two counters are untouched, and the existing GC-008 tests that use them still describe the
+   same behaviour.
+3. **`StagedResourceGate` counters.** `InjectionRefusalCount`/`InjectionReleaseRefusalCount` are new;
+   `BudgetExceededCount` no longer increments on an injected refusal. This is the one shared change that *narrows*
+   an existing counter's meaning, and it is the correct reading of P-022 (a budget is a sizing limit, not a fault).
+4. **`PlanStateMachine.HasCrossedLiveWriteBoundary` now includes `Faulted`.** P-031 forbids re-applying a partially
+   applied plan; `TryFault` is legal only from `Applying`, so a faulted plan has by definition crossed the boundary.
+   Reporting `false` let a caller conclude that no live write happened. The three existing assertions
+   (`PlanStateMachineTests` Draft `false`, `AssemblyPlannerTests`, `AssemblyPublisherTests`) are unaffected: none of
+   them asserts the predicate on a faulted plan, and the Draft case is still `false`.
+
+No public contract was renamed or removed. `GameCore.Contracts` and the plan DTOs are unchanged.
+
+## 6. Known gaps, assumptions and doc ambiguities
+
+1. **Nothing has been compiled or executed.** The highest-risk items, in the order a compiler would find them:
+   (a) the fault scenario is 2100 lines of hand-written Unity-free code across five large modules and two family
+   hosts — every external call site was audited against its declaration (§8) and eleven defects were fixed, but only
+   a compiler settles it; (b) `FaultReach` is `internal`, so it must only be reached from inside `GameCore.Unity.Runtime`
+   (it is); (c) the probe's 15 clause fragments were co-designed with `ProbeFaults` and cross-checked against the
+   scenario's detail strings, but a detail that takes an early-return path would not contain them.
+2. **The scenario drives the publisher directly for the prewrite observations.** A prewrite refusal happens after
+   `TryAdoptLanePublication` recorded the adoption and before any commit clears it, so the pair is left
+   adopted-and-pending and a second `TryAdoptLanePublication` for it is refused `StalePlan` (P-006). The runner
+   therefore builds the plan for that one pair with the real `Derive` + `AssemblyPlanner.Build` +
+   `AssemblyPublisher.Publish` — the same shape `W4GateScenario.PublishPolicyCase` uses — and carries the module's
+   own proposal from the pair's first derivation (`WorldChain.PendingProposal`) rather than re-deriving, because a
+   later `Derive` against an unchanged composition legitimately returns `NoTargetChange` with no proposal.
+   `pipeline.PublishDerived` is still used where it is the honest path. Nothing is re-implemented and no second
+   interpretation of the composition is introduced; recorded because it differs from the task's most obvious reading.
+3. **The recoverable window is "owned and not Running".** `UnityWorldHost.Stop` disposes the storage *and* removes the
+   world from `UnityWorldRegistry`, so a `Disposed` source session is genuinely unregistered and recovery refuses it
+   `StaleHandle` — there is no live fault record left to recover from. `RecoveryFromInitialDefinitions...` and
+   `AStoppedWorldIsRefusedWhileAFaultedOwnedWorldRecovers` assert exactly that. A caller that wants recovery after a
+   stop must recover from the checkpoint, which is GC-018's.
+4. **Recovery restores initial state only.** No gameplay state, clock or RNG stream crosses a recovery; carrying
+   committed state is checkpoint restore, deliberately not implemented here (GC-017's definition of done says the
+   supported recovery source is explicitly initial definitions until checkpoint work integrates).
+5. **The latches are compiled out of a shipping build by a `versionDefines` entry.** `GAMECORE_FAULT_INJECTION` is
+   defined whenever `com.unity.test-framework` is present, which is true for the qualification project and its
+   player. If the orchestrator builds the validation player from a project that does not reference the Test
+   Framework, every fault test fails loudly at its `IsCompiledIn` assertion rather than passing vacuously — that is
+   the intended failure mode, but it means the gate's dotnet half and its Unity half differ in exactly this one
+   respect.
+6. **`artifacts/gates/w4-generic-profile/inventory.json` is not updated.** GC-017 evidences fault boundaries, not a
+   generic-profile row; the orchestrator promotes rows it has run. Proposals, if wanted: `P-049` and `P-052` move
+   from Partial toward Implemented on the strength of `artifacts/faults/` **once the gate has run** — not before.
+7. **`dotnet/README.md` was not updated** (no new dotnet project was created; the fault and recovery suites are
+   Unity-only). Recorded as a deliberate omission rather than a silent one.
+8. **Row 10 is the initial-definition form only.** TEST-016's last row also covers "checkpoint restore fails during
+   reference repair"; `IRecoveryRepair` is the seam for it and GC-018/GC-027 own the checkpoint source.
+9. **No native crash containment, no arbitrary history replay, no memory undo journal** — GC-017's stated non-goals.
+
+## 7. Exact commands for the Linux build host
+
+Everything runs from the repository root. Nothing below has been run.
+
+### 7.1 One command (the whole gate)
+
+```sh
+UNITY=~/Unity/Hub/Editor/6000.0.75f1/Editor/Unity DOTNET=$HOME/.dotnet/dotnet \
+  PROBE_RUNS=5 tools/run_gc017_gate.sh
+```
+
+In order: `dotnet build` + `dotnet test dotnet/GameCore.sln -c Release` (trx into `artifacts/faults/trx`); the Unity
+resolve; EditMode; PlayMode; the IL2CPP player through `tools/unity/build_probe.sh`; the `-probeFaults` probe; the
+documentation validator.
+
+### 7.2 The GC-017 suites alone
+
+```sh
+"$UNITY" -batchmode -nographics -projectPath unity/GameCore.Validation \
+  -runTests -testPlatform EditMode -testFilter GameCore.Faults.Tests \
+  -testResults artifacts/faults/unity/faults-editmode.xml -logFile artifacts/faults/unity/faults-editmode.log
+
+"$UNITY" -batchmode -nographics -projectPath unity/GameCore.Validation \
+  -runTests -testPlatform EditMode -testFilter GameCore.Unity.Faults.Tests \
+  -testResults artifacts/faults/unity/package-faults-editmode.xml -logFile artifacts/faults/unity/package-faults-editmode.log
+
+"$UNITY" -batchmode -nographics -projectPath unity/GameCore.Validation \
+  -runTests -testPlatform EditMode -testFilter GameCore.Unity.Recovery.Tests \
+  -testResults artifacts/faults/unity/recovery-editmode.xml -logFile artifacts/faults/unity/recovery-editmode.log
+```
+
+Do not add `-quit` to a `-runTests` command (04 §10).
+
+### 7.3 The probe alone
+
+```sh
+PROBE_RUNS=5 ARTIFACTS=artifacts/faults/toolchain tools/unity/run_gc017_faults_probe.sh
+```
+
+### 7.4 The pure half
+
+```sh
+dotnet build dotnet/GameCore.sln -c Release
+dotnet test  dotnet/GameCore.sln -c Release
+```
+
+`FaultBoundaries.cs` and `InitialDefinitionRecovery.cs` reference `UnityEngine`/`Unity.Entities` through
+`UnityWorldHost`, so they are Unity-only and are not part of the dotnet solution; `FaultInjectedException`,
+`FaultCompilation` and the `FaultRecord`/`FaultTrace` shapes are engine-free but live in that file, so the dotnet
+half does not compile them. `PlanStateMachine.cs` **is** in the dotnet solution and its change is covered by
+`GameCore.Planning.Tests` (`PlanStateMachineTests`).
+
+## 8. What actually ran on this host
+
+```sh
+python3 tools/check_game_core_csharp.py                 # checked 371 C# file(s); ok
+python3 tools/validate_game_core_docs.py --self-test    # 9 isolated fixtures passed
+python3 tools/validate_game_core_docs.py                # 14 documents; links, anchors, IDs, traceability, DAG, waves
+bash -n tools/run_gc017_gate.sh tools/unity/run_gc017_faults_probe.sh   # clean
+python3 -m json.tool artifacts/faults/boundaries.json   # clean, 29 rows, rows 1..10
+# .meta GUID uniqueness over the whole worktree: 588 metas, 588 unique, 0 duplicates
+# digest literals recomputed independently from the frozen observation table:
+#   narrative 701a3c286098501456390975bbdc7e4bdb7218d3094f23e39e61b3744fa52b61
+#   cards     5cd97d38a1023fe0c8b5239d611061e5696454be9ec7cc68d440506810201732
+# independent read-only audits: 585 external call sites in FaultScenario, 961 across the five test files;
+#   11 defects found and fixed (4 compile-blocking), plus 5 assertions made discriminating
+```
+
+None of that is a build, an import, a test or a player run.
+
+## 9. Fixes applied after the read-only audits
+
+The audited findings and their fixes (each is in the tree and in the commit message):
+
+1. `FaultScenario.cs` — a unary `+` applied to a string literal in the fence step's detail argument (CS0023).
+2. `FaultScenario.cs` — `disarmed` read in the acquisition step but declared in the sibling validation step (CS0103);
+   the step now computes and reports both `armedAtReach` and `disarmed`.
+3. `FaultScenario.cs` — `WorldId` passed as `AsyncWorkToken`'s first argument, which is an `OperationId` (CS1503);
+   the token now carries a real operation for the source world.
+4. `FaultScenario.cs` — an `out`-variable declared inside a short-circuiting `&&` chain read afterwards (CS0165); the
+   observer check is now invoked unconditionally.
+5. `FaultScenario.cs` — `BuildThePendingPlan` re-derived an unchanged composition and got `NoTargetChange` with a
+   null proposal, which would have failed four observations. The module's own proposal is now carried from the pair's
+   first derivation.
+6. `FaultScenario.cs` — a nullable dereference in the acquisition step (CS8602) and two conjuncts that could not fail
+   (`DrainedHandles >= 0`, `staging.Plan != null`) replaced with checks that can; the "three controls" comment
+   corrected to the two the method implements.
+7. `FaultBoundaryTests.cs` — asserted `BudgetExceededCount` for an injected refusal; now
+   `InjectionRefusalCount`, with the ceiling counter asserted `0`.
+8. `FaultBoundaryTests.cs` — two `ReachCount` expectations were one low because a staged gate's value refusal counts
+   a reach; corrected to 12 and 13.
+9. `FaultBoundaryTests.cs` — asserted `plan.State.HasCrossedLiveWriteBoundary` while the plan was `Faulted`, which is
+   the shared-contract fix in §5.4.
+10. `FaultBoundaryTests.cs` — a self-referential `PlanHash.IsEmpty` check replaced by `hashA != hashB`.
+11. `GuardedDispatchFaultTests.cs` — asserted a `FaultDetail` substring the driver can never record on that path
+    (`OnDispatchFaulted` early-returns once latched); now asserts the first latch's real detail.
+12. `RecoveryFixture.cs` — a vacuous `PostWriteInjections == 0` now also asserts both legacy switches are false and
+    the migration counter is zero, making the enumerated-path claim falsifiable.
+13. `LifecycleFaultTests.cs` — the recording binding's step counters were incremented but never asserted; both cases
+    now assert them (2/2/2/2 across two passes, and 1/0/1/1 for the publication-boundary pass).
+14. `FaultScenario.cs` — the pending-proposal cache was written only where the validation step and
+    `BuildThePendingPlan` could reach it, so the fence and both cleanup steps fell back to a proposal whose base pair
+    had moved on and the planner rejected it `StalePlan`. `NotePendingProposal` is now called at the migration step
+    too (the derivation that leaves *that* pair pending), and `PendingProposalFor` returns a cached proposal only
+    while its `(ExpectedRevision, BaseEpoch)` pair still equals the pair `AssemblyPlanner.Build` is about to be given.
+15. `FaultScenario.cs` — the fence step asserted `MatchesPublishedAssembly`, which is true only after an assembly
+    committed; a prewrite refusal deliberately leaves the lane one publication ahead of the world, so that term could
+    never hold. Replaced with `PendingRefusalHeld`, which asserts the state a refusal really leaves (the pair is still
+    adopted, the world published nothing, and the lane is exactly one publication ahead on both counters).

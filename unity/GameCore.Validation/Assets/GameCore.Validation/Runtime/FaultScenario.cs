@@ -333,12 +333,9 @@ namespace GameCore.Validation.ProbeHost
                     faults.Arm(FaultBoundary.Validation);
                     DerivedAssemblyReport derived = primary.Pipeline.PublishDerived(NextOperation(primary.World));
                     AssemblyPublicationReport? publication = derived.Publication;
-                    if (derived.Proposal != null && derived.Proposal.Proposal != null)
-                    {
-                        // This is the pair's first derivation, so it is the one that builds the proposal the
-                        // acquisition, fence and cleanup steps then publish without re-deriving (P-006).
-                        primary.PendingProposal = derived.Proposal;
-                    }
+                    // This is the pair's first derivation, so it is the one that builds the proposal the
+                    // acquisition step then publishes without re-deriving (P-006).
+                    NotePendingProposal(primary, derived);
 
                     bool armedAtReach = faults.IsArmed(FaultBoundary.Validation);
                     faults.Disarm(FaultBoundary.Validation);
@@ -774,6 +771,10 @@ namespace GameCore.Validation.ProbeHost
                     AssemblyPublicationReport? publication = derived.Publication;
                     faults.Disarm(FaultBoundary.Migration);
 
+                    // This is the derivation that adopts the pair a refusal then leaves pending, so it is the one that
+                    // records the module's own proposal for the fence and cleanup steps (P-006).
+                    NotePendingProposal(primary, derived);
+
                     int migrationsPlanned = derived.Plan != null ? derived.Plan.Migrations.Count : -1;
                     bool liveStateKept = ReadSlot(primary, slotCase.Slot, out int value, out uint version)
                         && version == staleVersion
@@ -1133,7 +1134,7 @@ namespace GameCore.Validation.ProbeHost
                         && staging.Plan.State.Phase == PlanPhase.Rejected
                         && faults.ReachCountOf(FaultBoundary.Fence) == 1
                         && primary.Host.Lifecycle == WorldLifecycleState.Running
-                        && MatchesPublishedAssembly(primary);
+                        && PendingRefusalHeld(primary, epochBefore);
                     Add(name, pass,
                         "fence=prewrite-refusal"
                         + "; outcome=" + DescribePublication(refused)
@@ -1145,7 +1146,10 @@ namespace GameCore.Validation.ProbeHost
                         + "; epoch=" + primary.Host.CurrentEpoch.Value.ToString(CultureInfo.InvariantCulture)
                         + "; rows=" + primary.Publisher.Published.BindingRowCount.ToString(CultureInfo.InvariantCulture)
                         + "; worldState=" + primary.Host.Lifecycle
-                        + "; joined=" + MatchesPublishedAssembly(primary)
+                        + "; pendingRefusalHeld=" + PendingRefusalHeld(primary, epochBefore)
+                        + "; adoptedPair=" + primary.Lane.Committed.Revision.Value.ToString(CultureInfo.InvariantCulture)
+                        + "/" + primary.Lane.Committed.Epoch.Value.ToString(CultureInfo.InvariantCulture)
+                        + "; worldEpoch=" + primary.Host.CurrentEpoch.Value.ToString(CultureInfo.InvariantCulture)
                         + "; boundaryReaches=" + faults.ReachCountOf(FaultBoundary.Fence).ToString(CultureInfo.InvariantCulture)
                         + "; injected=" + faults.Trace.InjectedCount.ToString(CultureInfo.InvariantCulture)
                         + "; traceRecord=" + TraceLineOf(faults.Trace.Of(FaultBoundary.Fence))
@@ -1758,14 +1762,9 @@ namespace GameCore.Validation.ProbeHost
                 staging = default(PlanStaging);
 
                 DerivedAssemblyReport derived = chain.Pipeline.Derive(operation);
-                if (derived.Proposal != null && derived.Proposal.Proposal != null)
-                {
-                    // The first derivation of an adopted publication really builds the proposal; every later one
-                    // against the same unchanged composition is a `NoTargetChange` with no proposal.
-                    chain.PendingProposal = derived.Proposal;
-                }
+                NotePendingProposal(chain, derived);
 
-                DerivationProposalReport? proposal = derived.Proposal ?? chain.PendingProposal;
+                DerivationProposalReport? proposal = derived.Proposal ?? PendingProposalFor(chain);
                 if (proposal == null || proposal.Proposal == null)
                 {
                     lastFailure = "the real chain holds no proposal for the pending composition publication: "
@@ -1774,6 +1773,46 @@ namespace GameCore.Validation.ProbeHost
                 }
 
                 return BuildPlan(chain, operation, proposal.Proposal, stagedLeases, out staging);
+            }
+
+            /// <summary>
+            /// Records the real pipeline's own proposal for a composition publication this world has adopted and not
+            /// yet answered with an assembly. `DerivedAssemblyPipeline.Derive` reports `NoTargetChange` with a null
+            /// `Proposal` once the committed composition is unchanged, and a prewrite refusal deliberately leaves the
+            /// pair adopted-and-pending, so the runner's own plan for that pair must be built from the module's own
+            /// proposal: nothing is re-derived and no second interpretation of the composition is introduced
+            /// (P-002, P-006). Every site that can leave a pair pending calls this, so the two cannot drift.
+            /// </summary>
+            private static void NotePendingProposal(WorldChain chain, DerivedAssemblyReport derived)
+            {
+                if (derived != null && derived.Proposal != null && derived.Proposal.Proposal != null)
+                {
+                    chain.PendingProposal = derived.Proposal;
+                }
+            }
+
+            /// <summary>
+            /// The cached proposal, but only while it still describes the composition the world publishes now. A
+            /// cached proposal whose base pair has moved on would make the planner reject `StalePlan` rather than
+            /// publish a stale assembly, which is honest but useless as evidence, so this returns null and the
+            /// caller fails loudly with the reason (P-006, P-028).
+            /// </summary>
+            private static DerivationProposalReport? PendingProposalFor(WorldChain chain)
+            {
+                DerivationProposalReport? proposal = chain.PendingProposal;
+                if (proposal == null || proposal.Proposal == null)
+                {
+                    return null;
+                }
+
+                // `CompositionProposal` states the pair it was derived against as (`ExpectedRevision`, `BaseEpoch`).
+                if (!proposal.Proposal.BaseEpoch.Equals(chain.Host.CurrentEpoch)
+                    || !proposal.Proposal.ExpectedRevision.Equals(chain.Publisher.PublishedRevision))
+                {
+                    return null;
+                }
+
+                return proposal;
             }
 
             /// <summary>
@@ -1860,6 +1899,19 @@ namespace GameCore.Validation.ProbeHost
 
                 return ids;
             }
+
+            /// <summary>
+            /// The invariant a prewrite refusal leaves behind: the composition publication was adopted and is still
+            /// pending, so the lane is exactly one publication ahead of the world and the world published nothing.
+            /// `MatchesPublishedAssembly` is the wrong check here — it is true only after an assembly committed, and
+            /// an uncommitted pair is deliberately not that (P-006, P-029).
+            /// </summary>
+            private static bool PendingRefusalHeld(WorldChain chain, AssemblyEpoch worldEpochBefore) =>
+                chain.Publisher.HasAdoptedPublication
+                && chain.Host.CurrentEpoch.Equals(worldEpochBefore)
+                && chain.Publisher.Published.Epoch.Equals(worldEpochBefore)
+                && chain.Lane.Committed.Epoch.Value == worldEpochBefore.Value + 1UL
+                && chain.Lane.Committed.Revision.Value == chain.Lane.Committed.Epoch.Value;
 
             private bool MatchesPublishedAssembly(WorldChain chain) =>
                 AssemblyPublisher.MatchesPublishedAssembly(
