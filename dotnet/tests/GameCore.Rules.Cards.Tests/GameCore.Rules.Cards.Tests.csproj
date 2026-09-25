@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Pure card-rules tests; sources live in Packages/com.gamecore.rules.cards/Tests/ and also run as Unity
+       EditMode tests. They never reference UnityEngine (04 s10). -->
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <AssemblyName>GameCore.Rules.Cards.Tests</AssemblyName>
+    <RootNamespace>GameCore.Rules.Cards.Tests</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="../../../Packages/com.gamecore.rules.cards/Tests/**/*.cs"
+             Exclude="../../../Packages/com.gamecore.rules.cards/Tests/**/bin/**/*.cs;../../../Packages/com.gamecore.rules.cards/Tests/**/obj/**/*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="NUnit" Version="3.14.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/GameCore.Rules.Cards/GameCore.Rules.Cards.csproj" />
+    <ProjectReference Include="../../src/GameCore.Contracts/GameCore.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

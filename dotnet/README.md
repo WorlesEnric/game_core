@@ -28,6 +28,8 @@ Unity qualification project and the player gates.
 | `tests/GameCore.Derivation.Tests` | NUnit 3 | net8.0 | the derivation package's own `Tests/**` sources |
 | `src/GameCore.Planning` | library | netstandard2.1 | `Packages/com.gamecore.planning/Runtime/**/*.cs` |
 | `tests/GameCore.Planning.Tests` | NUnit 3 | net8.0 | the planning package's own `Tests/**` sources |
+| `src/GameCore.Rules.Cards` | library | netstandard2.1 | `Packages/com.gamecore.rules.cards/Runtime/**/*.cs` |
+| `tests/GameCore.Rules.Cards.Tests` | NUnit 3 | net8.0 | the card-rules package's own `Tests/**` sources |
 
 The two fixture suites share one test source (`tests/GameCore.ProtocolFixtures.Tests/ProtocolFixtureTests.cs`).
 They write separate evidence documents, `artifacts/protocol-fixtures/results.json` and
