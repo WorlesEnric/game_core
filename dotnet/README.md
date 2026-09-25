@@ -24,6 +24,8 @@ Unity qualification project and the player gates.
 | `tests/GameCore.Composition.Tests` | NUnit 3 | net8.0 | the composition package's own `Tests/**` sources |
 | `src/GameCore.Execution` | library | netstandard2.1 | `Packages/com.gamecore.unity.runtime/Runtime/Pure/**/*.cs` |
 | `tests/GameCore.Execution.Tests` | NUnit 3 | net8.0 | engine-free execution core tests |
+| `src/GameCore.Derivation` | library | netstandard2.1 | `Packages/com.gamecore.derivation/Runtime/**/*.cs` |
+| `tests/GameCore.Derivation.Tests` | NUnit 3 | net8.0 | the derivation package's own `Tests/**` sources |
 
 The two fixture suites share one test source (`tests/GameCore.ProtocolFixtures.Tests/ProtocolFixtureTests.cs`).
 They write separate evidence documents, `artifacts/protocol-fixtures/results.json` and
