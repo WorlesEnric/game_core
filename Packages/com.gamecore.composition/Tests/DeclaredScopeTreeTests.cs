@@ -225,8 +225,7 @@ namespace GameCore.Composition.Tests
                 lines.Add(
                     scopes[i].Scope.ToString() + "|" + scopes[i].Parent.ToString() + "|"
                     + scopes[i].Depth.ToString(System.Globalization.CultureInfo.InvariantCulture)
-                    + "|capabilityIsolationAll=" + (scopes[i].CapabilityIsolation.AllContracts ? "true" : "false")
-                    + "|childCount=" + scopes[i].ToString().Length);
+                    + "|capabilityIsolationAll=" + (scopes[i].CapabilityIsolation.AllContracts ? "true" : "false"));
             }
 
             return lines;

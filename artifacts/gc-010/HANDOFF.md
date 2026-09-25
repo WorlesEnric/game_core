@@ -311,7 +311,7 @@ hard defects, all fixed in this change set:
 | `ForwardProvider` passed fourteen arguments to the same constructor | all five trailing declaration lists are supplied explicitly |
 | `NarrativeCatalogSerializerKeyHolder` — a left-over property naming a type that does not exist | deleted |
 | `NarrativeIds.SchemaRef` built a `SchemaRef` from a raw `Id128`; the constructor takes a `SchemaId` | `new SchemaRef(Schema(stableName), version)`, matching `FixtureIds.SchemaRef` |
-| `BuildScopeTree()` ran before the control lane existed, so it always returned false and the world would have been empty | the lane and the bridge are created first, the scope tree next, and the targets after it |
+| the chapter tree was built by publishing scope edits on the world-joined lane, which no assembly can ever match | the world definition now **declares** the tree (`NarrativeScopes`) and the lane seed carries it, so the slice publishes no scope-edit revision (§3.1, `kernel:` commit) |
 | the second chapter's manifest re-declared the shared state slots, stages and buffers; the schedule compiler rejects a duplicate buffer contract, so the whole catalog revision would have been uncompilable | only the first provider declares the execution and ownership surface; a second chapter declares exactly what it contributes (its contracts and its rules), like the W2 gate's second provider |
 
 Reviewer-verified as correct and unchanged: the whole-chain call sequence against `W2GateScenario` (world creation,
