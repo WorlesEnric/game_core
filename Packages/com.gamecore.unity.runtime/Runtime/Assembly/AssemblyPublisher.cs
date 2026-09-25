@@ -13,16 +13,26 @@
 // and 04 s5 (staging is unobservable; the commit is a nonthrowing single-reference switch).
 //
 // The step order below is the protocol's order, and every step that can fail happens *before* the first live write
-// except the apply itself:
+// except the apply, the gate installation and the commit, whose failures fault the world:
 //
 //   1. refuse a world that cannot publish (faulted, stopping, disposed, created) or a step already in progress;
-//   2. refuse a plan that is not validated and prepared, and recheck its expected revision/base epoch -> StalePlan;
-//   3. fence: complete every tracked fence and handle of the old assembly, and close admission while it swaps;
-//   4. migrate on scratch: read the planned live slot values, run the registered pure migrations on the copies; a
+//   2. validation boundary (GC-017 / TEST-016 row 1): refuse a plan that is not validated and prepared;
+//   3. recheck the plan's expected revision/base epoch -> StalePlan (P-028);
+//   4. a plan with no effective change is a `NoChange` and consumes no publication number (P-006);
+//   5. the composition publication this assembly belongs to must be exactly the next one (P-006);
+//   6. acquisition boundary (row 2): the plan's staged leases are still inert and unpublished;
+//   7. fence: complete every tracked fence and handle of the old assembly and close admission while it swaps;
+//      the fence boundary (row 4) is reached once that fence has settled;
+//   8. migrate on scratch: read the planned live slot values, run the registered pure migrations on the copies; a
 //      failure here releases the staged acquisitions and leaves the old assembly and its state untouched (P-029);
-//   5. apply: binding rows and state dispositions are written to live storage; this is the postwrite cutoff;
-//   6. commit: rebuild the execution order, construct the complete view (bindings + rules + schedule + gates +
+//   9. apply: binding rows and state dispositions are written to live storage; this is the postwrite cutoff, and the
+//      first-live-write boundary (row 5) is reached after the last authoritative write of the fence;
+//  10. gate installation (row 5): the new execution graph and its closed ingress gates are installed;
+//  11. commit: rebuild the execution order, construct the complete view (bindings + rules + schedule + gates +
 //      snapshot token) and switch it once through the host (P-030).
+//
+// The GC-017 boundaries are named by `FaultBoundary` and reached through `FaultReach`, which is a no-op in a
+// compilation that does not define `GAMECORE_FAULT_INJECTION`.
 //
 // There is ONE publication series here (P-006): the counters a composition operation reports are the counters the
 // world publishes. A lane joined to a world is seeded from that world's published assembly at construction
@@ -564,7 +574,7 @@ namespace GameCore.Unity.Runtime
                     + "; it is discarded without mutation and regenerated under a new operation id (P-028).");
             }
 
-            // A plan whose assembly is effectively identical is a no-op: nothing increments and no image publishes
+            // 4. A plan whose assembly is effectively identical is a no-op: nothing increments and no image publishes
             // (P-006). A state migration or retraction alone *is* an effective change, so it still publishes.
             if (!HasEffectiveChange(publication))
             {
@@ -601,7 +611,7 @@ namespace GameCore.Unity.Runtime
                     "no assembly change");
             }
 
-            // 3. P-006 has one publication series: the composition publication this assembly belongs to must be
+            // 5. P-006 has one publication series: the composition publication this assembly belongs to must be
             //    exactly the next value of the published one, on both counters. Anything else is stale and is
             //    refused before a single live write (P-006, P-028).
             if (!HasAdoptedPublication)
@@ -639,7 +649,7 @@ namespace GameCore.Unity.Runtime
                     + "; the composition series and the published series must be the same one (P-006).");
             }
 
-            // 4. Acquisition boundary (GC-017, TEST-016 row 2): the staged leases of this plan are still inert and
+            // 6. Acquisition boundary (GC-017, TEST-016 row 2): the staged leases of this plan are still inert and
             //    unpublished here, so a fault rejects and releases exactly what the plan staged.
             AssemblyPublicationReport? acquisitionFault = ReachPrewriteFault(
                 publication,
@@ -653,11 +663,11 @@ namespace GameCore.Unity.Runtime
                 return acquisitionFault;
             }
 
-            // 5. The fence: admission closes and every tracked handle of the old assembly completes before its
+            // 7. The fence: admission closes and every tracked handle of the old assembly completes before its
             //    storage is touched (P-030, P-041, P-047).
             int drained = FenceOldAssembly();
 
-            // 5b. Fence boundary (GC-017, TEST-016 row 4): the fence itself completed, so the tracked handle count
+            // 8. Fence boundary (GC-017, TEST-016 row 4): the fence itself completed, so the tracked handle count
             //     is reported with the refusal while the old assembly remains the published one.
             AssemblyPublicationReport? fenceFault = ReachPrewriteFault(
                 publication,
@@ -671,7 +681,7 @@ namespace GameCore.Unity.Runtime
                 return fenceFault;
             }
 
-            // 5. Migration on scratch. Everything here works on copied values, so failure leaves live state alone.
+            // 9. Migration on scratch. Everything here works on copied values, so failure leaves live state alone.
             if (!TryMigrateOnScratch(
                 publication,
                 out int migratedSlots,
@@ -682,7 +692,7 @@ namespace GameCore.Unity.Runtime
                     publication, epochBefore, laneEpoch, drained, migrationCode, migrationDetail);
             }
 
-            // 6. Apply. From here on a failure is a postwrite fault: no epoch, no image and no resumption (P-031).
+            // 10. Apply. From here on a failure is a postwrite fault: no epoch, no image and no resumption (P-031).
             publication.State.TryBeginApplying(out _);
             int writes = 0;
             try
@@ -695,7 +705,7 @@ namespace GameCore.Unity.Runtime
                 // apply stage or in the stamp that belongs to the same fence (P-031).
                 writes += StampTargets(publication.AffectedTargets, nextEpoch, nextRevision);
 
-                // 6b. First-live-write boundary (GC-017, TEST-016 row 5): reached after the last authoritative write
+                // 10b. First-live-write boundary (GC-017, TEST-016 row 5): reached after the last authoritative write
                 //     of this fence, so an injected fault is exactly the "failure after the first authoritative
                 //     mutation" the matrix names: the world faults, no epoch or image publishes and the last
                 //     committed image stays the only safe observation (P-031).
@@ -711,7 +721,7 @@ namespace GameCore.Unity.Runtime
                 return FaultAfterLiveWrite(publication, epochBefore, laneEpoch, drained, writes, exception);
             }
 
-            // 7. Commit: construct the complete image and switch it once through the host (P-030).
+            // 11. Commit: construct the complete image and switch it once through the host (P-030).
             return Commit(publication, epochBefore, laneEpoch, nextEpoch, nextRevision, drained, migratedSlots, writes);
         }
 
