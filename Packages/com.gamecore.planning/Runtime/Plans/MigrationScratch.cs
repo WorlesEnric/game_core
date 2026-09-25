@@ -228,12 +228,6 @@ namespace GameCore.Planning
                 throw new ArgumentNullException(nameof(registry));
             }
 
-            if (!TryReserve(slot, out DiagnosticCode reserveCode))
-            {
-                outcome = Failed(slot, migrationKey, sourceValue, fromVersion, reserveCode);
-                return false;
-            }
-
             if (!registry.TryFind(migrationKey, out ISlotMigration? migration) || migration == null)
             {
                 // P-032: no compatible registered policy is a validation error, never implicit reinitialisation.
@@ -249,9 +243,19 @@ namespace GameCore.Planning
                 return false;
             }
 
+            // The reservation is taken only once a compatible handler exists, and the pure transform runs only
+            // after it: a refused migration stages nothing and never leaves an implicit zero value behind
+            // (P-029, P-032).
+            if (!TryReserve(slot, out DiagnosticCode reserveCode))
+            {
+                outcome = Failed(slot, migrationKey, sourceValue, fromVersion, reserveCode);
+                return false;
+            }
+
             if (!migration.TryMigrate(sourceValue, out int migrated))
             {
                 RefusedMigrationCount++;
+                Release(slot);
                 outcome = Failed(slot, migrationKey, sourceValue, fromVersion, DiagnosticCode.MigrationRequired);
                 return false;
             }

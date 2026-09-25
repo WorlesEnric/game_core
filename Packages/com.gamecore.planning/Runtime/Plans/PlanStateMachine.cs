@@ -262,7 +262,7 @@ namespace GameCore.Planning
             Detail = transition.Reason;
             Outcome = outcome;
             history.Add(transition);
-            refusedCode = DiagnosticCode.None;
+            refusedCode = code;
             return true;
         }
     }

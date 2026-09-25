@@ -75,7 +75,12 @@ namespace GameCore.Planning.Tests
                 new CompositionRevision(PlansFixture.Revision.Value + 3UL),
                 PlansFixture.Epoch);
 
-            PlannedPublication plan = PlansFixture.Plan(proposal);
+            // The snapshot stays at the fixture's published revision; only the proposal claims a future one,
+            // because the helper would otherwise mirror the proposal and the plan could never be stale (P-028).
+            PlannedPublication plan = PlansFixture.Plan(
+                proposal,
+                currentRevision: PlansFixture.Revision,
+                currentEpoch: PlansFixture.Epoch);
 
             Assert.That(plan.IsRejected, Is.True);
             Assert.That(plan.State.Code, Is.EqualTo(DiagnosticCode.StalePlan));
@@ -252,13 +257,22 @@ namespace GameCore.Planning.Tests
         [Test]
         public void ThePlanHashIsIndependentOfMountDeclarationOrder()
         {
+            var declared = new List<ProposedMount>
+            {
+                PlansFixture.Mount(1UL, null),
+                PlansFixture.Mount(2UL, null),
+            };
             var reversed = new List<ProposedMount>
             {
                 PlansFixture.Mount(2UL, null),
                 PlansFixture.Mount(1UL, null),
             };
 
-            CompositionProposal proposal = PlansFixture.MountProposal(World, PlansFixture.Revision, PlansFixture.Epoch);
+            CompositionProposal proposal = PlansFixture.MountProposal(
+                World,
+                PlansFixture.Revision,
+                PlansFixture.Epoch,
+                mounts: declared);
             PlannedPublication a = PlansFixture.Plan(proposal, targets: PlansFixture.TwoTargets());
 
             // Same operation, same input hash and the same declarations in the opposite order: the canonical plan
@@ -340,7 +354,7 @@ namespace GameCore.Planning.Tests
             TargetId target = PlansFixtureKeys.Target(1UL);
             var targets = new List<TargetDefinition>
             {
-                new TargetDefinition(target, PlansFixture.CardRecipe, PlansFixtureKeys.RootScope),
+                new TargetDefinition(target, PlansFixtureKeys.CardRecipe, PlansFixtureKeys.RootScope),
             };
 
             PlannedPublication retained = PlansFixture.Plan(
@@ -363,7 +377,7 @@ namespace GameCore.Planning.Tests
             TargetId target = PlansFixtureKeys.Target(1UL);
             var targets = new List<TargetDefinition>
             {
-                new TargetDefinition(target, PlansFixture.CardRecipe, PlansFixtureKeys.RootScope),
+                new TargetDefinition(target, PlansFixtureKeys.CardRecipe, PlansFixtureKeys.RootScope),
             };
 
             var slots = new List<LiveSlotState> { PlansFixture.QuestSlotState(target, value: 7, version: 1U) };
@@ -400,7 +414,7 @@ namespace GameCore.Planning.Tests
             TargetId target = PlansFixtureKeys.Target(1UL);
             var targets = new List<TargetDefinition>
             {
-                new TargetDefinition(target, PlansFixture.CardRecipe, PlansFixtureKeys.RootScope),
+                new TargetDefinition(target, PlansFixtureKeys.CardRecipe, PlansFixtureKeys.RootScope),
             };
 
             // A descriptor that declares no version-change policy cannot migrate the slot, and P-032 makes that a
@@ -450,7 +464,7 @@ namespace GameCore.Planning.Tests
             TargetId target = PlansFixtureKeys.Target(1UL);
             var targets = new List<TargetDefinition>
             {
-                new TargetDefinition(target, PlansFixture.CardRecipe, PlansFixtureKeys.RootScope),
+                new TargetDefinition(target, PlansFixtureKeys.CardRecipe, PlansFixtureKeys.RootScope),
             };
 
             var migrations = new MigrationRegistry(new List<ISlotMigration>
@@ -483,7 +497,7 @@ namespace GameCore.Planning.Tests
             TargetId target = PlansFixtureKeys.Target(1UL);
             var targets = new List<TargetDefinition>
             {
-                new TargetDefinition(target, PlansFixture.CardRecipe, PlansFixtureKeys.RootScope),
+                new TargetDefinition(target, PlansFixtureKeys.CardRecipe, PlansFixtureKeys.RootScope),
             };
 
             var migrations = new MigrationRegistry(new List<ISlotMigration>

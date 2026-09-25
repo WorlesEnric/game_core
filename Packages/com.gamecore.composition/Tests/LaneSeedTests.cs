@@ -23,35 +23,35 @@ namespace GameCore.Composition.Tests
         private static readonly IdFactory Ids = new IdFactory(0x73656564UL);
         private static readonly ScopeId Root = new ScopeId(new Id128(0x726F6F74UL, 8UL));
 
-        private static CompositionHost NewHost(CompositionLaneSeed seed)
+        private static CompositionHost NewHost(CompositionLaneSeed seed, TestManifestSource manifests)
         {
-            var source = new TestManifestSource();
             return new CompositionHost(
                 World,
                 Root,
                 new CompositionHostSettings(
                     new ControlLaneCapacitySettings(8, 8),
                     new OperationExpirySettings(3, 0UL)),
-                source,
+                manifests,
                 null,
                 PropagationMode.Automatic,
                 seed);
         }
 
-        private static CompositionHost NewStandaloneHost() => NewHost(default(CompositionLaneSeed));
-
-        private static CompositionEditPayload MountPayload()
-        {
-            PluginTypeId type = Ids.Type();
-            PluginInstanceId instance = Ids.Instance();
-            PluginManifest manifest = Manifests.Plain(type, Ids);
-            return Payloads.Mount(manifest, instance, Root, ConfigDocument.Empty);
-        }
+        private static CompositionHost NewStandaloneHost(TestManifestSource manifests) =>
+            NewHost(default(CompositionLaneSeed), manifests);
 
         /// <summary>One admitted, published mount; returns the committed epoch it produced (P-006).</summary>
-        private static ulong AdmitAndPublish(CompositionHost host, OperationIssuer issuer)
+        private static ulong AdmitAndPublish(CompositionHost host, TestManifestSource manifests, OperationIssuer issuer)
         {
-            EditAdmission admission = host.SubmitEdit(MountPayload(), issuer.Next(), host.Committed.Revision);
+            // P-009: the catalog must already carry the manifest a mount declares; nothing is discovered later.
+            PluginInstanceId instance = Ids.Instance();
+            PluginManifest manifest = Manifests.Plain(Ids.Type(), Ids);
+            manifests.Add(manifest, null);
+
+            EditAdmission admission = host.SubmitEdit(
+                Payloads.Mount(manifest, instance, Root, ConfigDocument.Empty),
+                issuer.Next(),
+                host.Committed.Revision);
             Assert.That(admission.Staged, Is.True, admission.Code.ToString());
 
             IReadOnlyList<PublishedOperation> published = host.Drain();
@@ -63,7 +63,7 @@ namespace GameCore.Composition.Tests
         [Test]
         public void ASeedJoinsTheLaneToTheWorldsPublishedAssembly()
         {
-            CompositionHost host = NewHost(CompositionLaneSeed.InitialAssembly);
+            CompositionHost host = NewHost(CompositionLaneSeed.InitialAssembly, new TestManifestSource());
 
             Assert.That(host.Seed.IsJoined, Is.True);
             Assert.That(host.Seed.IsConsistent, Is.True, "P-006 increments revision and epoch together");
@@ -80,7 +80,7 @@ namespace GameCore.Composition.Tests
         [Test]
         public void AStandaloneLaneKeepsThePrePublicationCounters()
         {
-            CompositionHost host = NewStandaloneHost();
+            CompositionHost host = NewStandaloneHost(new TestManifestSource());
 
             Assert.That(host.Seed.IsUnpublished, Is.True);
             Assert.That(host.Seed.IsJoined, Is.False);
@@ -92,12 +92,13 @@ namespace GameCore.Composition.Tests
         [Test]
         public void EveryPublicationMovesRevisionAndEpochTogether()
         {
-            CompositionHost host = NewHost(CompositionLaneSeed.InitialAssembly);
+            TestManifestSource manifests = new TestManifestSource();
+            CompositionHost host = NewHost(CompositionLaneSeed.InitialAssembly, manifests);
             var issuer = new OperationIssuer(World, new Id128(0x73656564UL, 0x0100UL));
 
             for (ulong sequence = 1UL; sequence <= 4UL; sequence++)
             {
-                ulong epoch = AdmitAndPublish(host, issuer);
+                ulong epoch = AdmitAndPublish(host, manifests, issuer);
 
                 Assert.That(epoch, Is.EqualTo(sequence + 1UL),
                     "the seeded lane's first publication is the world's second assembly (P-006)");
@@ -113,12 +114,13 @@ namespace GameCore.Composition.Tests
         [Test]
         public void AStandaloneLaneStillPublishesFromZero()
         {
-            CompositionHost host = NewStandaloneHost();
+            TestManifestSource manifests = new TestManifestSource();
+            CompositionHost host = NewStandaloneHost(manifests);
             var issuer = new OperationIssuer(World, new Id128(0x73656564UL, 0x0200UL));
 
-            Assert.That(AdmitAndPublish(host, issuer), Is.EqualTo(1UL),
+            Assert.That(AdmitAndPublish(host, manifests, issuer), Is.EqualTo(1UL),
                 "with no seed the first publication is revision/epoch 1 (05 s2)");
-            Assert.That(AdmitAndPublish(host, issuer), Is.EqualTo(2UL));
+            Assert.That(AdmitAndPublish(host, manifests, issuer), Is.EqualTo(2UL));
             Assert.That(host.Committed.Revision.Value, Is.EqualTo(host.Committed.Epoch.Value));
         }
 
@@ -151,9 +153,10 @@ namespace GameCore.Composition.Tests
         [Test]
         public void TheSeedIsVisibleOnTheHostAndItsCommittedSnapshot()
         {
-            CompositionHost host = NewHost(CompositionLaneSeed.FromPublishedAssembly(
-                new CompositionRevision(7UL),
-                new AssemblyEpoch(7UL)));
+            TestManifestSource manifests = new TestManifestSource();
+            CompositionHost host = NewHost(
+                CompositionLaneSeed.FromPublishedAssembly(new CompositionRevision(7UL), new AssemblyEpoch(7UL)),
+                manifests);
 
             Assert.That(host.Seed.Revision.Value, Is.EqualTo(7UL));
             Assert.That(host.Seed.Epoch.Value, Is.EqualTo(7UL));
@@ -165,7 +168,7 @@ namespace GameCore.Composition.Tests
 
             // A publication from a seeded lane names the next value of that one series, not an offset from zero.
             var issuer = new OperationIssuer(World, new Id128(0x73656564UL, 0x0300UL));
-            Assert.That(AdmitAndPublish(host, issuer), Is.EqualTo(8UL));
+            Assert.That(AdmitAndPublish(host, manifests, issuer), Is.EqualTo(8UL));
             Assert.That(host.Committed.Revision.Value, Is.EqualTo(8UL));
         }
     }
