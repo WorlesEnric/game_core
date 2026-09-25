@@ -1,0 +1,15 @@
+# GC-009 host-side static checks
+
+NotRun (pending orchestrator build host): no .NET SDK, no C# compiler, no Unity on the authoring host.
+
+## tools/check_game_core_csharp.py (brace balance + forbidden-language-construct scan)
+# 2026-09-25T00:11:37Z
+checked 68 C# file(s)
+ok
+
+## tools/validate_game_core_docs.py --self-test
+Documentation validator self-test passed: 9 isolated positive/negative fixtures.
+
+## tools/validate_game_core_docs.py
+Game Core documentation validation passed: 14 Markdown documents; local links, anchors, IDs, traceability, task DAG and wave ordering checked.
+No Unity builds, gameplay tests, runtime benchmarks, or remote URL checks were executed.
