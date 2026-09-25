@@ -450,6 +450,9 @@ namespace GameCore.Contracts
         /// <summary>Owner that takes the state over; default when the disposition is not a transfer (P-032).</summary>
         public readonly OwnerId DestinationOwner;
 
+        /// <summary>Declared version of a staged migration/reset; zero uses the descriptor for legacy plans.</summary>
+        public readonly uint ToVersion;
+
         public StateDisposition(StateSlotKey slot, StateDispositionKind kind, TargetId transferTo, FactoryKey migrationKey)
             : this(slot, kind, transferTo, migrationKey, default(OwnerId))
         {
@@ -461,12 +464,24 @@ namespace GameCore.Contracts
             TargetId transferTo,
             FactoryKey migrationKey,
             OwnerId destinationOwner)
+            : this(slot, kind, transferTo, migrationKey, destinationOwner, 0U)
+        {
+        }
+
+        public StateDisposition(
+            StateSlotKey slot,
+            StateDispositionKind kind,
+            TargetId transferTo,
+            FactoryKey migrationKey,
+            OwnerId destinationOwner,
+            uint toVersion)
         {
             Slot = slot;
             Kind = kind;
             TransferTo = transferTo;
             MigrationKey = migrationKey;
             DestinationOwner = destinationOwner;
+            ToVersion = toVersion;
         }
 
         public override string ToString() => Kind.ToString() + ":" + Slot.ToString();

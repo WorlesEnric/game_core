@@ -607,7 +607,9 @@ namespace GameCore.Contracts.Tests
                         && member == "enumvalue public Handler = 10")
                     || (header == "type struct GameCore.Contracts.StateDisposition"
                         && (member == "field public readonly GameCore.Contracts.OwnerId DestinationOwner"
-                            || member == "ctor public StateDisposition(GameCore.Contracts.StateSlotKey slot, GameCore.Contracts.StateDispositionKind kind, GameCore.Contracts.TargetId transferTo, GameCore.Contracts.FactoryKey migrationKey, GameCore.Contracts.OwnerId destinationOwner)"))
+                            || member == "field public readonly System.UInt32 ToVersion"
+                            || member == "ctor public StateDisposition(GameCore.Contracts.StateSlotKey slot, GameCore.Contracts.StateDispositionKind kind, GameCore.Contracts.TargetId transferTo, GameCore.Contracts.FactoryKey migrationKey, GameCore.Contracts.OwnerId destinationOwner)"
+                            || member == "ctor public StateDisposition(GameCore.Contracts.StateSlotKey slot, GameCore.Contracts.StateDispositionKind kind, GameCore.Contracts.TargetId transferTo, GameCore.Contracts.FactoryKey migrationKey, GameCore.Contracts.OwnerId destinationOwner, System.UInt32 toVersion)"))
                     || (header.StartsWith("type enum GameCore.Contracts.StateDispositionKind :", StringComparison.Ordinal)
                         && (member == "enumvalue public RetainDormant = 4"
                             || member == "enumvalue public Reset = 5"));

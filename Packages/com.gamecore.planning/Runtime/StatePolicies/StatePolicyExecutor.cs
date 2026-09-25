@@ -883,7 +883,8 @@ namespace GameCore.Planning.StatePolicies
                     decision.Kind,
                     decision.Destination.Target.Equals(decision.Live.Target) ? default(TargetId) : decision.Destination.Target,
                     decision.Kind == StateDispositionKind.Migrate ? decision.PolicyKey : default(FactoryKey),
-                    decision.Destination.Owner));
+                    decision.Destination.Owner,
+                    decision.ToVersion));
 
                 if (decision.Kind == StateDispositionKind.Migrate)
                 {

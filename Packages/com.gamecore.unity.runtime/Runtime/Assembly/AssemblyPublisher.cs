@@ -1093,7 +1093,7 @@ namespace GameCore.Unity.Runtime
                         entity,
                         disposition.Slot,
                         staged,
-                        SchemaVersionOf(disposition.Slot.Slot));
+                        disposition.ToVersion == 0U ? SchemaVersionOf(disposition.Slot.Slot) : disposition.ToVersion);
                     if (writes == 1) Faults.MaybeFailAfterFirstLiveWrite();
                 }
                 else if (disposition.Kind == StateDispositionKind.Retract)
