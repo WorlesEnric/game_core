@@ -1,0 +1,27 @@
+GC-007 host-side static checks (interpreter level only; NOT a build, NOT a test run)
+host: Darwin yangdeMac-mini.local 25.3.0 Darwin Kernel Version 25.3.0: Wed Jan 28 20:56:34 PST 2026; root:xnu-12377.91.3~2/RELEASE_ARM64_T8112 arm64 Darwin
+date: 2026-09-25T00:03:19Z
+
+== 1. documentation validator ==
+Game Core documentation validation passed: 14 Markdown documents; local links, anchors, IDs, traceability, task DAG and wave ordering checked.
+No Unity builds, gameplay tests, runtime benchmarks, or remote URL checks were executed.
+
+== 2. contract surface parity ==
+tests/GameCore.ReferenceSeams/api/GameCore.Contracts.api.txt: 221 types (class 89, enum 41, interface 23, struct 68), 41 enums checked against Packages/com.gamecore.contracts/Runtime
+3 addition(s) beyond the frozen snapshot (allowed, must be listed in HANDOFF):
+  + enum EnvelopeError adds DuplicateField = 17
+  + enum EnvelopeError adds MissingRequiredField = 16
+  + enum FactoryKind adds Handler = 10
+every snapshotted enum and enum value exists in the production sources with the same numeric value
+
+== 3. C# balance / forbidden-construct / missing-return scan (tools/check_game_core_csharp.py) ==
+checked 78 C# file(s); 0 problem(s)
+
+== 4. Unity meta GUID uniqueness across the whole repository ==
+243 unique guid(s); 0 duplicate(s)
+
+== 5. new project/asset wiring ==
+1
+1
+1
+(each must be 1: both new source trees are already globbed by the existing projects)

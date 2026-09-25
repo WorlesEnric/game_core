@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using GameCore.Contracts;
 using GameCore.Execution;
+using GameCore.Execution.Messages;
+using GameCore.Unity.Runtime.Messages;
 using Unity.Core;
 using Unity.Entities;
 using UnityWorld = Unity.Entities.World;
@@ -23,6 +25,12 @@ namespace GameCore.Unity.Runtime
         AssemblyEpoch CurrentEpoch { get; }
 
         LogicalStepId CurrentStep { get; }
+
+        /// <summary>
+        /// The world's bounded message plane, or null when the registration declares none. The driver seals step
+        /// input and validates declared buffers through it; the owner commits through its port (P-037, P-043).
+        /// </summary>
+        WorldMessagePlane? Messages { get; }
 
         WorldResourceLedger Ledger { get; }
 
@@ -88,7 +96,7 @@ namespace GameCore.Unity.Runtime
     /// <see cref="Unity.Entities.World"/>, one ordered dispatch path and one resource ledger; there is no global
     /// mutable host state and no World singleton.
     /// </summary>
-    public sealed class UnityWorldHost : IWorldHost, IWorldExecutionContext, IDisposable
+    public sealed class UnityWorldHost : IWorldHost, IWorldExecutionContext, ICommandIngress, IDisposable
     {
         /// <summary>Synthetic owner of host-owned infrastructure resources (never plugin state).</summary>
         public static readonly OwnerId HostOwner =
@@ -109,12 +117,14 @@ namespace GameCore.Unity.Runtime
         private readonly ITemporalAccumulator temporal;
         private readonly UnityExecutionDriver driver;
         private readonly GameCoreIngressGroup ingressGroup;
+        private readonly WorldMessagePlane? messages;
         private readonly GameCoreStepGroup stepGroup;
         private readonly GameCoreOutputGroup outputGroup;
         private readonly IdSequence resourceKeys = new IdSequence(ResourceKeySalt);
 
         private Id128 worldStorageResource;
         private Id128 identityIndexResource;
+        private Id128 messagePlaneResource;
         private EventSequence lastEventSequence = EventSequence.Zero;
 
         private WorldLifecycleState lifecycle = WorldLifecycleState.Created;
@@ -159,6 +169,13 @@ namespace GameCore.Unity.Runtime
 
             driver = new UnityExecutionDriver(this, temporal, registration.StepPlan);
 
+            if (registration.Messages != null)
+            {
+                // The plane is created with the world and before the first publication: its routes are generated
+                // data, and an invalid declaration refuses world creation instead of mounting a partial plane (P-042).
+                messages = new WorldMessagePlane(request.World, registration.Messages, registration.MessageReaders ?? new CommandPayloadReaders());
+            }
+
             ingressGroup.Bind(registration.IngressPlan, AssemblyEpoch.First, catalog, driver);
             stepGroup.Bind(registration.StepPlan, AssemblyEpoch.First, catalog, driver);
             outputGroup.Bind(registration.OutputPlan, AssemblyEpoch.First, catalog, driver);
@@ -196,6 +213,12 @@ namespace GameCore.Unity.Runtime
         public StepPublicationStore Publications => publications;
 
         public ObservationHub Observations => observations;
+
+        /// <summary>
+        /// This world's bounded message plane, or null when its registration declares none. It is the only path by
+        /// which a command is admitted and a committed event becomes observable (P-042, P-045).
+        /// </summary>
+        public WorldMessagePlane? Messages => messages;
 
         public GameCoreIngressGroup IngressGroup => ingressGroup;
 
@@ -409,6 +432,7 @@ namespace GameCore.Unity.Runtime
             // The world is terminal, so the driver's ledger buffers are released here as well: a stopped world that
             // is never explicitly disposed must not retain native allocations. Dispose() stays idempotent.
             driver.Dispose();
+            messages?.Dispose();
             UnityWorldRegistry.Remove(World);
             return new OperationResult(operation, Outcome.Published, DiagnosticCode.None, null);
         }
@@ -558,7 +582,14 @@ namespace GameCore.Unity.Runtime
         {
             ContentHash stateHash = StepFingerprint.Compute(World, currentEpoch, committedStep, dispatchedCount);
             token = new SnapshotToken(World, currentEpoch, committedStep);
-            var committed = new StepCommitEvent(token, null, lastEventSequence, stateHash);
+
+            // The step's committed events and its immutable image are prepared together and exposed together: a
+            // step that faults before this point publishes neither (P-044, P-045).
+            IReadOnlyList<CommittedEvent> stepEvents = messages == null
+                ? Array.Empty<CommittedEvent>()
+                : messages.StageCommittedEvents(committedStep, currentEpoch);
+            EventSequence firstEventSequence = messages == null ? lastEventSequence : messages.LastEventSequence;
+            var committed = new StepCommitEvent(token, stepEvents, firstEventSequence, stateHash);
 
             // Publish first, advance the step second, so a refused publication leaves the committed image untouched
             // and the step counter and the exposed image always move together (P-044).
@@ -567,9 +598,53 @@ namespace GameCore.Unity.Runtime
                 return false;
             }
 
+            messages?.ConfirmPublished(stepEvents);
+            if (messages != null && stepEvents.Count != 0)
+            {
+                lastEventSequence = messages.LastEventSequence;
+            }
+
             currentStep = committedStep;
             observations.NotifyStepCommitted(committed);
             return true;
+        }
+
+        /// <summary>
+        /// Host admission of one immutable command envelope (O-13). A world with no declared plane, or one that
+        /// cannot execute, refuses before admission so no ledger row is created for work it cannot run (P-031, P-042).
+        /// </summary>
+        public CommandAdmissionReceipt Submit(CommandEnvelope command)
+        {
+            if (command == null)
+            {
+                throw new ArgumentNullException(nameof(command));
+            }
+
+            if (messages == null)
+            {
+                return new CommandAdmissionReceipt(
+                    command.RequestId,
+                    new RequestResult(RequestResultKind.Rejected, DiagnosticCode.MissingDependency, default(EventCursor)),
+                    AdmissionSequence.Zero);
+            }
+
+            if (lifecycle != WorldLifecycleState.Running && lifecycle != WorldLifecycleState.Paused)
+            {
+                return new CommandAdmissionReceipt(
+                    command.RequestId,
+                    new RequestResult(RequestResultKind.Rejected, LifecycleRefusalCode(), default(EventCursor)),
+                    AdmissionSequence.Zero);
+            }
+
+            AdmissionSequence before = messages.Requests.LastAdmissionSequence;
+            CommandAdmissionReceipt receipt = messages.SubmitCommand(command, currentStep, currentEpoch);
+            if (receipt.Admitted && receipt.AcceptedSequence > before)
+            {
+                // Only a fresh admission creates demand; retransmission never runs the command twice.
+                NotifyCommandAdmitted(1U);
+            }
+
+            return receipt;
         }
 
         void IWorldExecutionContext.EnterFaulted(DiagnosticCode code, string detail)
@@ -656,6 +731,19 @@ namespace GameCore.Unity.Runtime
                 default(PluginInstanceId),
                 worldStorageResource,
                 0UL);
+
+            if (messages != null)
+            {
+                // The plane's bounded lanes are native allocations with a declared lifetime: tracked here so
+                // teardown retires them in reverse dependency order and a stuck user keeps them pinned (P-048).
+                messagePlaneResource = ledger.Acquire(
+                    WorldResourceKind.NativeContainer,
+                    new ResourceKey(resourceKeys.Next()),
+                    HostOwner,
+                    default(PluginInstanceId),
+                    identityIndexResource,
+                    messages.RetainedNativeBytes);
+            }
 
             // Every created system is a tracked registration: a system stays allocated while it is scheduled, and
             // removal retires it in reverse dependency order (04 s4, P-048).
@@ -768,6 +856,30 @@ namespace GameCore.Unity.Runtime
 
         public static bool TryGet(WorldId world, out UnityWorldHost? host)
             => bySession.TryGetValue(world.Session, out host);
+
+        /// <summary>
+        /// Resolves the owned host that drives one Unity world. A gameplay system uses this to reach its own world's
+        /// bounded ports; it never scans for hosts or assumes a globally reachable one (P-002, P-058).
+        /// </summary>
+        public static bool TryGetByEntityWorld(UnityWorld world, out UnityWorldHost? host)
+        {
+            if (world == null)
+            {
+                throw new ArgumentNullException(nameof(world));
+            }
+
+            for (int i = 0; i < hosts.Count; i++)
+            {
+                if (ReferenceEquals(hosts[i].EntityWorld, world))
+                {
+                    host = hosts[i];
+                    return true;
+                }
+            }
+
+            host = null;
+            return false;
+        }
 
         /// <summary>
         /// Creates one owned world. A repeated request for a live session returns that same world; a second world
