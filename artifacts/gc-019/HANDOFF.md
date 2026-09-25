@@ -23,9 +23,11 @@ without adding an update path**:
   installed and only the completion's own acquisition is released. Count and byte budgets both refuse as values.
 * **Stable target-to-view maps and committed-output presentation.** A view is addressed by `ViewKey = (TargetId,
   Slot)`; presentation reads an immutable `CommittedAssemblyImage` DTO projected from the published assembly
-  (`LiveAssemblyImageBuilder`). Stale applies are refused, orphaned views are destroyed when their target leaves the
-  committed assembly, and **composition parent (a `ScopeId` read from the snapshot) is reported next to Transform
-  parent rather than derived from it** — so reparenting a Transform cannot move composition (P-010).
+  (`LiveAssemblyImageBuilder`). A view's first presentation is accepted at the token it was created from and every
+  later apply must be strictly newer, so a view can show what it was created for and a stale image still cannot
+  overwrite a newer one; orphaned views are destroyed when their target leaves the committed assembly, and
+  **composition parent (a `ScopeId` read from the snapshot) is reported next to Transform parent rather than derived
+  from it** — so reparenting a Transform cannot move composition (P-010).
 * **An external physical-authority descriptor and seam with no physics requirement.** `ExternalAuthorityDescriptor`
   declares the single owner of one physical domain; a recipe nobody declares is explicitly ECS-owned kinematic, so a
   card or narrative world needs no adapter, no rigidbody and no simulation stage. Gameplay writes to an externally
@@ -45,7 +47,7 @@ without adding an update path**:
 | `.../Runtime/Pure/Input/InputIngress.cs` | `InputSourceStamp`, `SampledInputCommand` (+ `ToEnvelope`, `InputHash`), `InputAdmissionOutcome`/`InputAdmissionResult`, `TypedInputIngress` (stamp/validate/retain/idempotent retry), `PendingInputCompletionTable` with `InputCompletionOutcome`/`InputCompletionResult`. |
 | `.../Runtime/Pure/Input/InputBinding.cs` | `InputDeviceKind`, `DeviceInputSample`, `InputCommandBinding`, `InputBindingTable` and `CommandPayloadCodec` (canonical big-endian `int32`, 05 s6). |
 | `.../Runtime/Pure/Assets/AssetLeases.cs` | `AssetLeaseState`, `AssetLoadStatus`/`AssetLoadPoll`, `IAssetBackend`, `AssetLoadRequest`, `AssetCompletionOutcome`/`AssetCompletionResult`, `AssetReleaseOutcome`, `AssetLease`, `AssetReleaseReport` and `AssetLeaseTable`. |
-| `.../Runtime/Pure/Views/ViewRegistry.cs` | `ViewKey`, `ViewCreateOutcome`/`ViewDestroyOutcome`, `IViewBinder`, `PresentationApplyData`, `PresentationField`, `ViewRecord` and `ViewRegistry`. |
+| `.../Runtime/Pure/Views/ViewRegistry.cs` | `ViewKey`, `ViewCreateOutcome`/`ViewDestroyOutcome`, `IViewBinder`, `PresentationApplyData`, `PresentationField`, `ViewRecord` (including `HasApplied`, the first-presentation state) and `ViewRegistry`. |
 | `.../Runtime/Pure/Views/Presentation.cs` | `PresentationTarget`, `IPresentationSource`, `PresentationOutcome`/`PresentationReport` and `CommittedOutputPresenter`. |
 | `.../Runtime/Pure/Views/CommittedImage.cs` | The engine-observation DTOs: `ITargetScopeIndex`, `TargetScopeTable`, `CommittedTargetEntry`, `CommittedAssemblyImage`, `ICommittedValueReader` and `CommittedImageSource`. |
 | `.../Runtime/Pure/Authority/ExternalAuthority.cs` | `MotionAuthority`, `ExternalAuthorityDescriptor`, `EngineObservation`, `AuthorityIntentKind`/`AuthorityIntent`, `AuthorityIntentOutcome`, `IExternalAuthorityAdapter`, `ObservationOutcome` and `ExternalAuthorityLedger`. |
