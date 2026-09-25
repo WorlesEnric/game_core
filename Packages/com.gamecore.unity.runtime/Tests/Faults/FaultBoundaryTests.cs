@@ -486,7 +486,7 @@ namespace GameCore.Unity.Runtime.Tests.Faults
                 fixture.World.Faults.IsCompiledIn,
                 Is.True,
                 "the fault latches need GAMECORE_FAULT_INJECTION; it is declared by GameCore.Unity.Runtime.asmdef's"
-                + " versionDefines entry on com.unity.test-framework, so a false here means the symbol is missing.");
+                + " versionDefines entry on com.gamecore.fault-qualification, so a false here means the symbol is missing.");
         }
 
         /// <summary>The staged-resource gate of one world, with the world's own latch so both boundaries meet it.</summary>

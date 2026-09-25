@@ -344,7 +344,7 @@ namespace GameCore.Unity.Runtime.Tests.Faults
                 host.Faults.IsCompiledIn,
                 Is.True,
                 "the fault latches need GAMECORE_FAULT_INJECTION; it is declared by GameCore.Unity.Runtime.asmdef's"
-                + " versionDefines entry on com.unity.test-framework, so a false here means the symbol is missing.");
+                + " versionDefines entry on com.gamecore.fault-qualification, so a false here means the symbol is missing.");
 
             Assert.That(FixtureWorldState.SetFaultEnabled(host.EntityWorld.EntityManager, true), Is.True);
             host.NotifyCommandAdmitted(1U);
@@ -422,7 +422,7 @@ namespace GameCore.Unity.Runtime.Tests.Faults
                 host.Faults.IsCompiledIn,
                 Is.True,
                 "the fault latches need GAMECORE_FAULT_INJECTION; it is declared by GameCore.Unity.Runtime.asmdef's"
-                + " versionDefines entry on com.unity.test-framework, so a false here means the symbol is missing.");
+                + " versionDefines entry on com.gamecore.fault-qualification, so a false here means the symbol is missing.");
 
             // 1. The stock loop: the throwing system's exception is logged, and the next system still runs.
             FaultProbeStockGroup stock = host.EntityWorld.CreateSystemManaged<FaultProbeStockGroup>();
@@ -513,7 +513,7 @@ namespace GameCore.Unity.Runtime.Tests.Faults
                 host.Faults.IsCompiledIn,
                 Is.True,
                 "the fault latches need GAMECORE_FAULT_INJECTION; it is declared by GameCore.Unity.Runtime.asmdef's"
-                + " versionDefines entry on com.unity.test-framework, so a false here means the symbol is missing.");
+                + " versionDefines entry on com.gamecore.fault-qualification, so a false here means the symbol is missing.");
 
             FaultProbeFlaggedOutputSystem output =
                 host.EntityWorld.CreateSystemManaged<FaultProbeFlaggedOutputSystem>();
@@ -624,7 +624,7 @@ namespace GameCore.Unity.Runtime.Tests.Faults
                 host.Faults.IsCompiledIn,
                 Is.True,
                 "the fault latches need GAMECORE_FAULT_INJECTION; it is declared by GameCore.Unity.Runtime.asmdef's"
-                + " versionDefines entry on com.unity.test-framework, so a false here means the symbol is missing.");
+                + " versionDefines entry on com.gamecore.fault-qualification, so a false here means the symbol is missing.");
 
             host.Faults.Arm(FaultBoundary.StructuralPlayback);
             Assert.That(host.Faults.IsArmed(FaultBoundary.StructuralPlayback), Is.True);

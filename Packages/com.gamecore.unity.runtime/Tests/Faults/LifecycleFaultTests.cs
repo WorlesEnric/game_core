@@ -43,7 +43,7 @@ namespace GameCore.Unity.Runtime.Tests.Faults
         /// <summary>The one message that explains a false <c>IsCompiledIn</c> anywhere in this suite.</summary>
         private const string CompilationMessage =
             "the fault latches need GAMECORE_FAULT_INJECTION; it is declared by GameCore.Unity.Runtime.asmdef's"
-            + " versionDefines entry on com.unity.test-framework, so a false here means the symbol is missing.";
+            + " versionDefines entry on com.gamecore.fault-qualification, so a false here means the symbol is missing.";
 
         [TearDown]
         public void TearDown() => UnityWorldRegistry.ResetAll();

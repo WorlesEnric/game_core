@@ -149,7 +149,7 @@ namespace GameCore.Unity.Runtime.Faults
     /// <see cref="Symbol"/> carries no reaching implementation at all, so no boundary can fire and no fault record
     /// can be produced; <see cref="IsCompiledIn"/> exists so that fact is assertable rather than silent.
     /// The Unity validation project defines the symbol through the asmdef `versionDefines` entry on
-    /// `com.unity.test-framework`; a shipping project that does not reference the Test Framework does not.
+    /// `com.gamecore.fault-qualification`; shipping projects omit that explicit qualification package.
     /// </summary>
     public static class FaultCompilation
     {
