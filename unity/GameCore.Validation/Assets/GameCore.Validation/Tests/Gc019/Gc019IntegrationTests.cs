@@ -11,7 +11,7 @@ namespace GameCore.Gc019.Tests
     /// GC-019 adapter gate, EditMode half (docs/game-core/09-implementation-guide.md, Wave 5 — GC-019; tests
     /// TEST-002, TEST-015, TEST-018, TEST-019, TEST-020).
     ///
-    /// The runner (`Gc019Scenario` over `Gc019NarrativeHost` and `Gc019CardsHost`) runs only real modules: the GC-013
+    /// The runner (`Gc019Scenario` over `Gc013NarrativeHost` and `Gc013CardsHost`) runs only real modules: the GC-013
     /// world construction (GC-004's `CompositionHost` lane wired to GC-013's production mode-switch validator, GC-006's
     /// derivation through the incremental engine inside `DerivedAssemblyPipeline`, GC-007's ownership validation,
     /// GC-009's schedule compiler, GC-008's planner and publisher into a real `Unity.Entities.World`), GC-019's real
@@ -66,8 +66,8 @@ namespace GameCore.Gc019.Tests
         [Timeout(RunTimeout)]
         public void RunBothFamiliesOverBothCatalogs()
         {
-            narrativeCombined = Gc019NarrativeHost.RunBothGc019(out narrativeGenerated, out narrativeFixture);
-            cardsCombined = Gc019CardsHost.RunBothGc019(out cardsGenerated, out cardsFixture);
+            narrativeCombined = Gc013NarrativeHost.RunBothGc019(out narrativeGenerated, out narrativeFixture);
+            cardsCombined = Gc013CardsHost.RunBothGc019(out cardsGenerated, out cardsFixture);
         }
 
         [TearDown]
@@ -236,26 +236,26 @@ namespace GameCore.Gc019.Tests
         {
             Assert.That(Gc019Scenario.ObservationNames.Length, Is.EqualTo(11),
                 "the gate records exactly eleven named observations");
-            Assert.That(Gc019Scenario.QualifiedNames(Gc019NarrativeHost.Label).Length, Is.EqualTo(11));
-            Assert.That(Gc019Scenario.QualifiedNames(Gc019NarrativeHost.Label)[0],
-                Is.EqualTo(Gc019NarrativeHost.Label + "/" + Gc019Scenario.ObservationNames[0]));
+            Assert.That(Gc019Scenario.QualifiedNames(Gc013NarrativeHost.Label).Length, Is.EqualTo(11));
+            Assert.That(Gc019Scenario.QualifiedNames(Gc013NarrativeHost.Label)[0],
+                Is.EqualTo(Gc013NarrativeHost.Label + "/" + Gc019Scenario.ObservationNames[0]));
 
             // The literals are the table's own digests, not a recorded run's: an all-passing run built from the
             // observation-name table must hash to them.
             var tableNarrative = new Gc019ScenarioResult(
-                Gc019NarrativeHost.Label,
-                PassingSteps(Gc019NarrativeHost.Label));
+                Gc013NarrativeHost.Label,
+                PassingSteps(Gc013NarrativeHost.Label));
             var tableCards = new Gc019ScenarioResult(
-                Gc019CardsHost.Label,
-                PassingSteps(Gc019CardsHost.Label));
+                Gc013CardsHost.Label,
+                PassingSteps(Gc013CardsHost.Label));
             Assert.That(tableNarrative.Digest, Is.EqualTo(NarrativeDigest),
                 "the narrative digest literal must be the one this observation table produces");
             Assert.That(tableCards.Digest, Is.EqualTo(CardsDigest),
                 "the card digest literal must be the one this observation table produces");
 
             // The real runs: the same named sequence, in order, per catalog, and every one of them all-passing.
-            AssertFamily(Gc019NarrativeHost.Label, narrativeCombined, narrativeGenerated, narrativeFixture, NarrativeDigest);
-            AssertFamily(Gc019CardsHost.Label, cardsCombined, cardsGenerated, cardsFixture, CardsDigest);
+            AssertFamily(Gc013NarrativeHost.Label, narrativeCombined, narrativeGenerated, narrativeFixture, NarrativeDigest);
+            AssertFamily(Gc013CardsHost.Label, cardsCombined, cardsGenerated, cardsFixture, CardsDigest);
 
             Assert.That(narrativeGenerated.Digest, Is.Not.EqualTo(cardsGenerated.Digest),
                 "the two families must not share one literal, or a family could report the other's run");
@@ -277,8 +277,8 @@ namespace GameCore.Gc019.Tests
 
         private void AssertObservation(string bareName)
         {
-            AssertObservationFor(Gc019NarrativeHost.Label, narrativeCombined, bareName);
-            AssertObservationFor(Gc019CardsHost.Label, cardsCombined, bareName);
+            AssertObservationFor(Gc013NarrativeHost.Label, narrativeCombined, bareName);
+            AssertObservationFor(Gc013CardsHost.Label, cardsCombined, bareName);
         }
 
         private static void AssertObservationFor(string label, IReadOnlyList<Gc019Step> combined, string bareName)
