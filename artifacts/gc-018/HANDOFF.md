@@ -302,3 +302,33 @@ digests are over the LF-joined `<label>/<name>=pass` lines with no trailing newl
 * cards `fe1aaae38982be120fe3c668742990504f984b54b053de3b2d7886ff899b5256`
 
 They were recomputed independently on this host from the name table, not read out of the implementation.
+
+## 12. Review findings fixed during authoring (recorded because they were found by reading, not compiling)
+
+Five defects in this change set were found by cross-checking symbols against their declarations after the files were
+written. All are fixed (commit `256b0f6` plus the scenario's import fix in `f251c0e`); they are recorded because each
+is the kind of error a compiler would have caught first, and they name what to look at if the build still fails:
+
+1. `CanonicalId32` was `internal` while `GameCore.Execution` and `GameCore.Unity.Runtime` both use it to convert a
+   `ContentHash` to and from the four `UInt64` words the records carry. Now public, with its inverse documented.
+2. `RestoreReservationLedger` named `WorldId`/`OperationId`/`ContentHash`/`DiagnosticCode` with no
+   `using GameCore.Contracts;`.
+3. `CaptureContext` was missing `GameCore.Execution.Persistence` and `GameCore.Composition`, and exposed no clock
+   registry at all — so the wake rows `P-053` requires could not be read. It now carries an optional
+   `PluginClockRegistry`.
+4. `UnityCommittedBoundaryReader` was missing `GameCore.Composition` (for `CompositionState`, `ScopeRecord`,
+   `InstallEntry`, `ConfigDocumentCodec`) and `GameCore.Unity.Runtime.Integration` (for `LiveTarget`).
+5. `Gc018Scenario` was missing `using GameCore.Execution;` for `IdSequence` — the one the sibling `W4GateScenario`
+   has and the copy dropped.
+
+Two behavioural corrections:
+
+6. `CheckpointDocument.TryRead` accepted bytes appended after the trailing checksum. It now compares the reader's
+   position with the document length and refuses with `ResourceUnavailable`, matching the envelope rule that the
+   checksum is a document's last record. The contract test that had asserted the old behaviour was corrected with it.
+7. Imports that named nothing in their file were removed, so no file carries a dependency its content does not use.
+
+Host-side detection method, for reuse: index every `public`/`internal` type declaration by namespace across
+`Packages/`, then for each new file check that every referenced type name is reachable from its `using` set or its own
+enclosing namespaces, and that no referenced `GameCore.*` type is `internal`-only. That check reports zero findings
+across every file in this change set now; `python3 tools/check_game_core_csharp.py` does not perform it.
