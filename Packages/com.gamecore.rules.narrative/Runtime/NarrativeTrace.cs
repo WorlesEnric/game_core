@@ -260,7 +260,6 @@ namespace GameCore.Rules.Narrative
             return false;
         }
 
-
         private static string ConversationLine(int currentStatus, int requestedStatus)
         {
             bool accepted = NarrativeDialogueRules.TryTransition(

@@ -32,7 +32,7 @@ namespace GameCore.Rules.Narrative.Tests
 
             Assert.That(accepted, Is.False);
             Assert.That(nextStatus, Is.EqualTo(NarrativeEncounterStatus.Idle));
-            Assert.That(refusalCode, Is.EqualTo(NarrativeRefusals.FactUnchanged));
+            Assert.That(refusalCode, Is.EqualTo(NarrativeRefusals.EncounterUnchanged));
             Assert.That(
                 NarrativeEncounterRules.TryReactToCondition(NarrativeEncounterStatus.Idle, false, out int nextWithoutCode),
                 Is.False);

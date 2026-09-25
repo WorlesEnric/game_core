@@ -13,6 +13,7 @@
 using System.Collections.Generic;
 using GameCore.Contracts;
 using GameCore.Rules.Narrative;
+using RulesNarrativeFacts = GameCore.Rules.Narrative.NarrativeFacts;
 using GameCore.Unity.Runtime;
 using Unity.Entities;
 
@@ -70,19 +71,19 @@ namespace GameCore.Gameplay.Narrative.Fixtures
             else if (recipe.Recipe.Equals(NarrativeKeys.QuestLedgerRecipe))
             {
                 // The ledger's durable facts: one value slot and one version slot per declared fact key (P-032).
-                for (int i = 0; i < NarrativeFacts.DeclaredFactKeys.Count; i++)
+                for (int i = 0; i < RulesNarrativeFacts.DeclaredFactKeys.Count; i++)
                 {
-                    string factKey = NarrativeFacts.DeclaredFactKeys[i];
-                    bool known = NarrativeFacts.TryGetFactSlotTag(factKey, out string slotTag);
+                    string factKey = RulesNarrativeFacts.DeclaredFactKeys[i];
+                    bool known = RulesNarrativeFacts.TryGetFactSlotTag(factKey, out string slotTag);
                     if (!known)
                     {
                         continue;
                     }
 
                     Add(slots, NarrativeKeys.FactValueSlot(slotTag), NarrativeKeys.QuestOwner,
-                        NarrativeKeys.QuestDomain.Version, NarrativeFacts.InitialValue);
+                        NarrativeKeys.QuestDomain.Version, RulesNarrativeFacts.InitialValue);
                     Add(slots, NarrativeKeys.FactVersionSlot(slotTag), NarrativeKeys.QuestOwner,
-                        NarrativeKeys.QuestDomain.Version, NarrativeFacts.InitialVersion);
+                        NarrativeKeys.QuestDomain.Version, RulesNarrativeFacts.InitialVersion);
                 }
 
                 // The trail's five slots: the compiled order's own observability (P-034, P-040).

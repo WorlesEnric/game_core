@@ -25,6 +25,7 @@ using GameCore.Execution.Messages;
 using GameCore.Planning;
 using CompiledSchedule = GameCore.Planning.Scheduling.CompiledSchedule;
 using GameCore.Rules.Narrative;
+using RulesNarrativeFacts = GameCore.Rules.Narrative.NarrativeFacts;
 using GameCore.Unity.Runtime;
 using GameCore.Unity.Runtime.Messages;
 using GameCore.Unity.Runtime.Time;
@@ -491,7 +492,7 @@ namespace GameCore.Gameplay.Narrative.Fixtures
 
                 // The quest owner is the single writer of the facts, so the dialogue owner never writes one: it
                 // requests the transition through the declared buffer edge (P-034, P-042).
-                if (!NarrativeFacts.TryGetFactOrdinal(validation.FactKey, out int factOrdinal))
+                if (!RulesNarrativeFacts.TryGetFactOrdinal(validation.FactKey, out int factOrdinal))
                 {
                     continue;
                 }
@@ -558,8 +559,8 @@ namespace GameCore.Gameplay.Narrative.Fixtures
                     continue;
                 }
 
-                if (!NarrativeFacts.TryGetFactKeyByOrdinal(mutation.FactOrdinal, out string factKey)
-                    || !NarrativeFacts.TryGetFactSlotTag(factKey, out string slotTag))
+                if (!RulesNarrativeFacts.TryGetFactKeyByOrdinal(mutation.FactOrdinal, out string factKey)
+                    || !RulesNarrativeFacts.TryGetFactSlotTag(factKey, out string slotTag))
                 {
                     continue;
                 }
@@ -569,11 +570,11 @@ namespace GameCore.Gameplay.Narrative.Fixtures
                 SlotId versionSlot = NarrativeKeys.FactVersionSlot(slotTag);
 
                 int current = NarrativeState.ReadOrDefault(
-                    entityManager, ledger, NarrativeKeys.QuestOwner, valueSlot, NarrativeFacts.InitialValue);
+                    entityManager, ledger, NarrativeKeys.QuestOwner, valueSlot, RulesNarrativeFacts.InitialValue);
                 int version = NarrativeState.ReadOrDefault(
-                    entityManager, ledger, NarrativeKeys.QuestOwner, versionSlot, NarrativeFacts.InitialVersion);
+                    entityManager, ledger, NarrativeKeys.QuestOwner, versionSlot, RulesNarrativeFacts.InitialVersion);
 
-                if (!NarrativeFacts.TryTransition(current, mutation.RequestedValue, out int next, out string _))
+                if (!RulesNarrativeFacts.TryTransition(current, mutation.RequestedValue, out int next, out string _))
                 {
                     // A request that changes nothing is not a transition: the fact keeps its value and version, and
                     // no second committed result can appear (REF-N02).
@@ -581,7 +582,7 @@ namespace GameCore.Gameplay.Narrative.Fixtures
                     continue;
                 }
 
-                int nextVersion = NarrativeFacts.NextVersion(version);
+                int nextVersion = RulesNarrativeFacts.NextVersion(version);
                 NarrativeState.Write(
                     entityManager, ledger, NarrativeKeys.QuestOwner, valueSlot,
                     NarrativeKeys.QuestDomain.Version, next);
@@ -809,7 +810,7 @@ namespace GameCore.Gameplay.Narrative.Fixtures
 
                 if (!NarrativeEncounterRules.TryReactToCondition(
                         status,
-                        observation.Value == NarrativeFacts.True,
+                        observation.Value == RulesNarrativeFacts.True,
                         out int next))
                 {
                     continue;

@@ -51,6 +51,7 @@ Pure rules package `Packages/com.gamecore.rules.narrative/` (assembly `GameCore.
 | `Runtime/NarrativeTrace.cs` | deterministic writer/reader of the canonical trace document (`RulesSectionLines`, `RulesDigest`, `Write`, `TryReadPipelineEntries`) |
 | `Runtime/NarrativeScenarioTrace.cs` | the declared canonical trace: `ExpectedPipeline()` (46 keys), `ExpectedDocument()`, `TryCompare` |
 | `Tests/**` (12 files, authored by the dotnet-wiring worker under this task's spec) | 112 NUnit test methods/cases: identity agreement with the GC-006 fixture, chapter content, fact rules, dialogue, conversation transitions, gates, encounters, the derivation plan, the genre audit, digests, trace documents |
+| `Tests/GameCore.Rules.Narrative.Tests.asmdef` | the package's EditMode assembly, so the same 112 cases that run under plain dotnet also run in Unity (`testables` already lists the package) |
 | `Tests/Trace/CommittedTraceTests.cs` | the committed-trace regression: regenerate offline, byte-compare, pipeline/expectation comparison, slot tags |
 
 Gameplay package `Packages/com.gamecore.gameplay.narrative/` (assembly `GameCore.Gameplay.Narrative`):
@@ -250,18 +251,46 @@ Recorded because 00 wins over 05, which wins over 09.
    `input → dialogue`, and P-042 routes a request to the owner that validates gameplay, so the ingress lane is owned
    by a routing owner, and the forwarded row keeps the original identity and causal request. The dialogue owner's
    single `Commit` therefore settles the host's ledger row (P-037, P-042).
-6. **Twenty-five declared names the rules package does not own are added by the gameplay inventory** (the trail
+6. **The encounter rule reports one refusal code for "not a transition"** (`encounter-unchanged`), whether an idle
+   encounter's condition does not hold or a live encounter keeps running; the fact rule's code is reserved for the
+   fact domain.
+7. **Twenty-five declared names the rules package does not own are added by the gameplay inventory** (the trail
    domain, the gameplay slots and fields, the extra lane/order/schema and migration identities, the routing owners and
    the provider words). `NarrativeInventory.Count == NarrativeRegistrations.Count + GameplayNames.Count` is asserted,
    so the neutrality claim covers every name either package registers.
-7. **`NarrativeScenarioTrace` declares the trace's pipeline values.** The committed document is therefore an
+8. **`NarrativeScenarioTrace` declares the trace's pipeline values.** The committed document is therefore an
    *expectation* file for the run, not a recording: the run's own trace is written beside it by the probe. The rules
    half is genuinely reproducible offline and is byte-compared by a dotnet test.
-8. **The museum target is a villager recipe under a `CapabilityIsolation: *` scope** and receives nothing, which is
+9. **The museum target is a villager recipe under a `CapabilityIsolation: *` scope** and receives nothing, which is
    the slice's proof that P-016's boundary is not bypassed by a compatible recipe (07 §3.1). The sibling chapter is
    the second proof: chapter two's rows appear only on `npc-sailor`.
 
-## 9. Known gaps and risks
+## 9. Independent review findings, and what was fixed
+
+Two read-only reviewers audited the new packages against the real kernel sources (they also reported the rules
+package's `Tests/` folder shipped without an EditMode asmdef, which is now added). The gameplay audit found seven
+hard defects, all fixed in this change set:
+
+| Defect | Fix |
+|---|---|
+| `NarrativeFacts` — the fixture's observed-facts class sits in the same namespace as the fixture's *uses* of the rules type, and C# namespace lookup precedes `using` imports, so every `NarrativeFacts.X` in `Fixtures/**` bound to the instance class | the three fixture files now alias the rules type (`using RulesNarrativeFacts = GameCore.Rules.Narrative.NarrativeFacts;`) and use the alias. The public name the Unity suite aliases is unchanged |
+| `Id128.ToHex(value)` — `ToHex` is a static member of `Id128Codec`, not of `Id128` | `Id128Codec.ToHex(...)` |
+| `BufferSpec` was constructed with eleven arguments; it declares ten and has no byte capacity (that field belongs to the plane's `MessageBufferDescriptor`) | the extra argument is gone; the plane lanes still declare their byte capacity |
+| the shared `Manifest(...)` helper passed fifteen arguments to `PluginManifest`'s sixteen-parameter constructor (the `targetDescriptors` slot was missing) | the missing `null` is passed explicitly |
+| `ForwardProvider` passed fourteen arguments to the same constructor | all five trailing declaration lists are supplied explicitly |
+| `NarrativeCatalogSerializerKeyHolder` — a left-over property naming a type that does not exist | deleted |
+| `NarrativeIds.SchemaRef` built a `SchemaRef` from a raw `Id128`; the constructor takes a `SchemaId` | `new SchemaRef(Schema(stableName), version)`, matching `FixtureIds.SchemaRef` |
+| `BuildScopeTree()` ran before the control lane existed, so it always returned false and the world would have been empty | the lane and the bridge are created first, the scope tree next, and the targets after it |
+| the second chapter's manifest re-declared the shared state slots, stages and buffers; the schedule compiler rejects a duplicate buffer contract, so the whole catalog revision would have been uncompilable | only the first provider declares the execution and ownership surface; a second chapter declares exactly what it contributes (its contracts and its rules), like the W2 gate's second provider |
+
+Reviewer-verified as correct and unchanged: the whole-chain call sequence against `W2GateScenario` (world creation,
+publisher construction, mount payload, `PublishDerived`/`PublishSpawn`, `host.Submit` + `PumpFrame`, teardown), every
+constructor arity in the rules package, the rules package's 112 test expectations, the 96-name audit, and the
+committed trace (an independent regeneration was byte-identical). The trace artifact was regenerated after the
+encounter refusal code was unified (`Idle + condition-not-holding` now reports `encounter-unchanged` rather than the
+fact rule's code), and the one test that asserted the old value was updated with it.
+
+## 10. Known gaps and risks
 
 * **Nothing here has been compiled, imported or executed.** The most likely first failures, in order:
   1. a member-name/arity slip in `NarrativeScenario.cs` or `NarrativeWorld.cs` against the real kernel surface;
@@ -289,5 +318,9 @@ Recorded because 00 wins over 05, which wins over 09.
   contains; that belongs to GC-016/GC-021 and is not claimed here.
 * **No IL2CPP/stripping evidence exists yet** for the new assemblies; `link.xml` preserves them, and the gate above is
   what produces the player evidence (TEST-001/TEST-020's player half).
+* **The EditMode half of the rules package must now be listed by its asmdef** (`Tests/GameCore.Rules.Narrative.Tests.asmdef`);
+  without it the `testables` entry is inert. The package's tests reference `GameCore.Derivation.Fixtures`, which is a
+  Unity assembly, so the asmdef references it (07's reuse rule keeps that a test-only dependency; the package's own
+  `Runtime/` is Unity-free and has no such reference).
 * **`dotnet/README.md`, `dotnet/GameCore.sln` and the rules package's own tests were authored by a delegated worker**
   under this task's specification; their content was reviewed here, but they carry the same `NotRun` status.

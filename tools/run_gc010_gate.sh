@@ -83,14 +83,15 @@ run_step unity-resolve "${UNITY}" \
   -projectPath "${UNITY_PROJECT}" \
   -logFile "${ARTIFACTS}/unity/resolve.log"
 
-# 3. EditMode tests: the narrative slice's own assembly. The Unity-free half of the other packages is covered by
-#    step 1, so this gate filters on the narrative suite instead of re-running every Editor assembly.
+# 3. EditMode tests: the narrative slice's own assembly and the Unity-free rules package's suite. The other
+#    packages' Unity-free halves are covered by step 1, so this gate filters on the two narrative suites instead of
+#    re-running every Editor assembly. The filter accepts a comma-separated list of assembly names.
 #    Do not add -quit to a test-run command that relies on the runner to finish asynchronously (04 s10).
 run_step unity-editmode "${UNITY}" \
   -batchmode -nographics \
   -projectPath "${UNITY_PROJECT}" \
   -runTests -testPlatform EditMode \
-  -testFilter GameCore.Narrative.Tests \
+  -testFilter "GameCore.Narrative.Tests,GameCore.Rules.Narrative.Tests" \
   -testResults "${ARTIFACTS}/unity/editmode-results.xml" \
   -logFile "${ARTIFACTS}/unity/editmode.log"
 

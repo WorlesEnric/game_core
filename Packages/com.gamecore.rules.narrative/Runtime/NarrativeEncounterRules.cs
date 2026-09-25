@@ -88,9 +88,9 @@ namespace GameCore.Rules.Narrative
                 return true;
             }
 
-            refusalCode = currentStatus == NarrativeEncounterStatus.Idle
-                ? NarrativeRefusals.FactUnchanged
-                : NarrativeRefusals.EncounterUnchanged;
+            // Either way the encounter is unchanged: the condition does not hold for an idle encounter, or a live
+            // encounter keeps running while its condition still holds. One code says exactly that.
+            refusalCode = NarrativeRefusals.EncounterUnchanged;
             return false;
         }
 

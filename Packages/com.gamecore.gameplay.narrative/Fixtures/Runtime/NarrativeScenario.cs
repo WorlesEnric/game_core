@@ -33,6 +33,7 @@ using GameCore.Planning.Ownership;
 using GameCore.Planning.Scheduling;
 using CompiledSchedule = GameCore.Planning.Scheduling.CompiledSchedule;
 using GameCore.Rules.Narrative;
+using RulesNarrativeFacts = GameCore.Rules.Narrative.NarrativeFacts;
 using GameCore.Unity.Runtime;
 using GameCore.Unity.Runtime.Integration;
 using GameCore.Unity.Runtime.Messages;
@@ -909,6 +910,16 @@ namespace GameCore.Gameplay.Narrative.Fixtures
                     targets = new LiveTargetIndex(publisher.Recipes);
                     seeder = new LiveTargetSeeder(host, registry, targets);
 
+                    // The control lane owns the scope tree, so it exists before any scope is created; the composition
+                    // publication series starts at the world's initial assembly (05 section 2, P-006).
+                    lane = CompositionHost.CreateDefault(
+                        world,
+                        NarrativeKeys.RootScope,
+                        new CatalogManifestSource(catalog, declarations),
+                        null,
+                        CompositionLaneSeed.InitialAssembly);
+                    bridge = new WorldCompositionBridge(host, lane, publisher);
+
                     bool scopes = BuildScopeTree();
 
                     bool seeded = scopes
@@ -919,14 +930,6 @@ namespace GameCore.Gameplay.Narrative.Fixtures
                         && SeedTarget(NarrativeKeys.Display, NarrativeKeys.MuseumScope, NarrativeKeys.VillagerRecipe)
                         && SeedTarget(NarrativeKeys.Sailor, NarrativeKeys.HarborScope, NarrativeKeys.VillagerRecipe)
                         && SeedTarget(NarrativeKeys.QuestLedger, NarrativeKeys.RootScope, NarrativeKeys.QuestLedgerRecipe);
-
-                    lane = CompositionHost.CreateDefault(
-                        world,
-                        NarrativeKeys.RootScope,
-                        new CatalogManifestSource(catalog, declarations),
-                        null,
-                        CompositionLaneSeed.InitialAssembly);
-                    bridge = new WorldCompositionBridge(host, lane, publisher);
 
                     pipeline = new DerivedAssemblyPipeline(
                         host,
@@ -1099,10 +1102,10 @@ namespace GameCore.Gameplay.Narrative.Fixtures
                 }
 
                 bool ok = true;
-                for (int i = 0; i < NarrativeFacts.DeclaredFactKeys.Count; i++)
+                for (int i = 0; i < RulesNarrativeFacts.DeclaredFactKeys.Count; i++)
                 {
-                    string factKey = NarrativeFacts.DeclaredFactKeys[i];
-                    if (!NarrativeFacts.TryGetFactSlotTag(factKey, out string slotTag))
+                    string factKey = RulesNarrativeFacts.DeclaredFactKeys[i];
+                    if (!RulesNarrativeFacts.TryGetFactSlotTag(factKey, out string slotTag))
                     {
                         ok = false;
                         continue;
@@ -1110,10 +1113,10 @@ namespace GameCore.Gameplay.Narrative.Fixtures
 
                     ok &= seeder.TrySeedSlot(
                         NarrativeKeys.QuestLedger, NarrativeKeys.QuestOwner, NarrativeKeys.FactValueSlot(slotTag),
-                        NarrativeKeys.QuestDomain.Version, NarrativeFacts.InitialValue, out DiagnosticCode _, out string _);
+                        NarrativeKeys.QuestDomain.Version, RulesNarrativeFacts.InitialValue, out DiagnosticCode _, out string _);
                     ok &= seeder.TrySeedSlot(
                         NarrativeKeys.QuestLedger, NarrativeKeys.QuestOwner, NarrativeKeys.FactVersionSlot(slotTag),
-                        NarrativeKeys.QuestDomain.Version, NarrativeFacts.InitialVersion, out DiagnosticCode _, out string _);
+                        NarrativeKeys.QuestDomain.Version, RulesNarrativeFacts.InitialVersion, out DiagnosticCode _, out string _);
                 }
 
                 ok &= seeder.TrySeedSlot(
@@ -1505,7 +1508,7 @@ namespace GameCore.Gameplay.Narrative.Fixtures
                             facts.CommittedEventSchemaAfterCommand += "|";
                         }
 
-                        facts.CommittedEventSchemaAfterCommand += Id128.ToHex(page.Events[i].Schema.Id.Value);
+                        facts.CommittedEventSchemaAfterCommand += Id128Codec.ToHex(page.Events[i].Schema.Id.Value);
                     }
 
                     if (page.Events.Count > 0)
@@ -1529,9 +1532,9 @@ namespace GameCore.Gameplay.Narrative.Fixtures
                         && facts.EncounterHookCount == 1
                         && facts.GateDecisionBeforeCommand == NarrativeGateRules.Closed
                         && facts.GateDecisionAfterCommand == NarrativeGateRules.Open
-                        && facts.GateEvaluatedFactVersion == NarrativeFacts.NextVersion(NarrativeFacts.InitialVersion)
-                        && facts.QuestFactValueAfterCommand == NarrativeFacts.True
-                        && facts.QuestFactVersionAfterCommand == NarrativeFacts.NextVersion(NarrativeFacts.InitialVersion)
+                        && facts.GateEvaluatedFactVersion == RulesNarrativeFacts.NextVersion(RulesNarrativeFacts.InitialVersion)
+                        && facts.QuestFactValueAfterCommand == RulesNarrativeFacts.True
+                        && facts.QuestFactVersionAfterCommand == RulesNarrativeFacts.NextVersion(RulesNarrativeFacts.InitialVersion)
                         && facts.CommittedEventCountAfterCommand == 2
                         && facts.CommittedEventStepAfterCommand == 1UL
                         && facts.CommittedEventEpochAfterCommand == facts.WorldEpochAfterChapterTwo

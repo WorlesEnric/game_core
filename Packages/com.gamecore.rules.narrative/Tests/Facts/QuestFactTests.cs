@@ -121,7 +121,7 @@ namespace GameCore.Rules.Narrative.Tests
         }
 
         [Test]
-        public void AVersionsAdvancesByExactlyOneTransition()
+        public void AVersionAdvancesByExactlyOneTransition()
         {
             Assert.That(NarrativeFacts.NextVersion(NarrativeFacts.InitialVersion), Is.EqualTo(NarrativeFacts.InitialVersion + 1));
             Assert.That(NarrativeFacts.NextVersion(41), Is.EqualTo(42));

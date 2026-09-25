@@ -11,7 +11,6 @@
 // Fixing the names here is what makes the identity rule verifiable: a schema, slot, stage or system identity of
 // this package is `SHA-256(name)[0..16]`, never a CLR name and never a registration ordinal (P-054).
 #nullable enable
-using System;
 using GameCore.Contracts;
 
 namespace GameCore.Rules.Narrative
@@ -316,7 +315,8 @@ namespace GameCore.Rules.Narrative
 
         public static FactoryKey Key(string stableName, uint version = 1U) => new FactoryKey(Id(stableName), version);
 
-        public static SchemaRef SchemaRef(string stableName, uint version = 1U) => new SchemaRef(Id(stableName), version);
+        public static SchemaRef SchemaRef(string stableName, uint version = 1U) =>
+            new SchemaRef(Schema(stableName), version);
 
         public static SchemaId Schema(string stableName) => new SchemaId(Id(stableName));
 

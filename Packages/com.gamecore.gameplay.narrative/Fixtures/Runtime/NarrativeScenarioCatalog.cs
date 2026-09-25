@@ -37,8 +37,6 @@ namespace GameCore.Gameplay.Narrative.Fixtures
         {
             new GeneratedFieldSlot(1, WireType.Int32, true),
         };
-        public NarrativeCatalogSerializerKeyHolder Keys { get; } = new NarrativeCatalogSerializerKeyHolder();
-
         public NarrativeCatalogRecordSerializer()
             : base(NarrativeScenarioCatalog.SerializerKey, NarrativeScenarioCatalog.RecordSchema, NarrativeScenarioCatalog.SupportedFeatureIds)
         {

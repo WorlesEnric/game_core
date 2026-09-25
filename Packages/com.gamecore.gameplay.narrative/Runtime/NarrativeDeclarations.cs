@@ -29,9 +29,6 @@ namespace GameCore.Gameplay.Narrative
         /// <summary>Version string a manifest of this package declares.</summary>
         public const string PackageVersion = "0.1.0";
 
-        /// <summary>Bytes one declared lane row may carry; the choice payload is 8 bytes.</summary>
-        private const int LaneByteCapacity = 64;
-
         /// <summary>Declared row capacity of one bounded lane.</summary>
         private const int LaneCapacity = 4;
 
@@ -137,7 +134,7 @@ namespace GameCore.Gameplay.Narrative
             FactoryKey factoryKey,
             SchemaRef configSchema)
         {
-            return Manifest(pluginType, factoryKey, configSchema, NarrativeChapters.ChapterOneTag);
+            return Manifest(pluginType, factoryKey, configSchema, NarrativeChapters.ChapterOneTag, true);
         }
 
         /// <summary>
@@ -149,7 +146,7 @@ namespace GameCore.Gameplay.Narrative
             FactoryKey factoryKey,
             SchemaRef configSchema)
         {
-            return Manifest(pluginType, factoryKey, configSchema, NarrativeChapters.ChapterTwoTag);
+            return Manifest(pluginType, factoryKey, configSchema, NarrativeChapters.ChapterTwoTag, false);
         }
 
         /// <summary>
@@ -195,14 +192,23 @@ namespace GameCore.Gameplay.Narrative
                 },
                 null,
                 null,
+                null,
+                null,
                 null);
         }
 
+        /// <summary>
+        /// One chapter's manifest. Only the first provider declares the slice's execution and ownership surface
+        /// (stages, buffers, state slots): a repeated buffer contract is rejected by the schedule compiler, so a
+        /// second provider that re-declared it would make the whole catalog revision uncompilable (P-039, P-043).
+        /// A second chapter therefore declares exactly what it contributes — its capability contracts and its rules.
+        /// </summary>
         private static PluginManifest Manifest(
             PluginTypeId pluginType,
             FactoryKey factoryKey,
             SchemaRef configSchema,
-            string chapterTag)
+            string chapterTag,
+            bool declareExecutionSurface)
         {
             int ordinal = NarrativeChapters.Get(chapterTag).BindingOrdinal;
 
@@ -218,9 +224,10 @@ namespace GameCore.Gameplay.Narrative
                 null,
                 Contracts(),
                 Rules(chapterTag, ordinal),
-                Slots(),
-                Stages(),
-                Buffers(),
+                null,
+                declareExecutionSurface ? Slots() : null,
+                declareExecutionSurface ? Stages() : null,
+                declareExecutionSurface ? Buffers() : null,
                 null);
         }
 
@@ -444,7 +451,6 @@ namespace GameCore.Gameplay.Narrative
                 orderKey,
                 lifetime,
                 capacity,
-                LaneByteCapacity,
                 BufferOverflowPolicy.RejectBeforeMutation,
                 BufferCancellationPolicy.Drain);
         }

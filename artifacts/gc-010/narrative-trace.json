@@ -25,7 +25,7 @@
     "dialogue=chapter-one;status=3;node=1;choice=1;accepted=false;resultingNode=0;resultingStatus=0;factKey=<none>;factValue=0;refusal=conversation-not-idle",
     "gate=fact0;factVersion=1;accepted=true;decision=0;evaluatedFactVersion=1;refusal=<none>",
     "gate=fact1;factVersion=2;accepted=true;decision=1;evaluatedFactVersion=2;refusal=<none>",
-    "encounter=status0;condition=false;accepted=false;next=0;refusal=fact-unchanged",
+    "encounter=status0;condition=false;accepted=false;next=0;refusal=encounter-unchanged",
     "encounter=status0;condition=true;accepted=true;next=1;refusal=<none>",
     "encounter=status1;condition=false;accepted=true;next=2;refusal=<none>",
     "conversation.from=0;requested=1;accepted=true;to=1;refusal=<none>",
@@ -37,7 +37,7 @@
     "migration.conversation.source=0;accepted=true;migrated=1",
     "migration.conversation.source=-1;accepted=false;refusal=migration-source-refused"
   ],
-  "rulesDigest": "d4856e93e7a5f88d6c1a0754438e486544c514f28aae88ef01726c788388c57a",
+  "rulesDigest": "81260bc26aeb1730e7086a7132128b509cb591041a20b45a0e44f7fda113087f",
   "genres": {
     "checked": 96,
     "neutral": true,

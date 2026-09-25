@@ -37,9 +37,6 @@ namespace GameCore.Rules.Narrative
         /// <summary>A gate decision value outside the declared domain.</summary>
         public const string GateDecisionOutOfDomain = "gate-decision-out-of-domain";
 
-        /// <summary>An encounter hook index outside the chapter's declared plan.</summary>
-        public const string HookOutOfPlan = "hook-out-of-plan";
-
         /// <summary>An encounter transition was requested that would not change the encounter.</summary>
         public const string EncounterUnchanged = "encounter-unchanged";
 
