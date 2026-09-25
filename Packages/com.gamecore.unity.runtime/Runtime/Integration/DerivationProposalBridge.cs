@@ -192,7 +192,8 @@ namespace GameCore.Unity.Runtime.Integration
             AssemblyEpoch baseEpoch,
             ContentHash inputHash,
             ContentHash catalogHash,
-            OperationId operation)
+            OperationId operation,
+            TargetBindingTable publishedBindings)
         {
             if (derivation == null)
             {
@@ -204,6 +205,11 @@ namespace GameCore.Unity.Runtime.Integration
                 throw new ArgumentNullException(nameof(committed));
             }
 
+            if (publishedBindings == null)
+            {
+                throw new ArgumentNullException(nameof(publishedBindings));
+            }
+
             if (!derivation.Accepted)
             {
                 return DerivationProposalReport.Refused(
@@ -213,18 +219,13 @@ namespace GameCore.Unity.Runtime.Integration
                     + " nothing and leaves the old assembly usable (P-028).");
             }
 
-            if (derivation.Assemblies.Count == 0)
-            {
-                return DerivationProposalReport.Refused(
-                    DerivationProposalOutcome.NoAssemblies,
-                    DiagnosticCode.None,
-                    "derivation produced no target assembly; there is no effective change to publish (P-028).");
-            }
+            // An empty effective assembly can still retract every previously published provider.
 
             var capabilitiesByProvider = new Dictionary<Id128, List<ProposedCapability>>();
             var providerOrder = new List<Id128>();
             var mounts = new List<ProposedMount>();
             int capabilityCount = 0;
+            var unmounts = new List<ProposedUnmount>();
 
             for (int a = 0; a < derivation.Assemblies.Count; a++)
             {
@@ -398,7 +399,9 @@ namespace GameCore.Unity.Runtime.Integration
             // A re-derivation with no supported slot is a complete denial, not an empty world: the proposal is the
             // whole effective support of the new composition (P-013's Conservative case), so it still publishes and
             // retracts every row the previous assembly carried. Refusing here would leave those rows effective
-            // forever and misreport the transition as no change (P-006, P-017).
+            // forever and misreport the transition as no change (P-006, P-017). A zero-support result is therefore a
+            // real retraction whenever previously published rows remain, which is what the explicit unmounts below
+            // and the proposal's own retractsAbsentSupport flag both express.
             for (int i = 0; i < providerOrder.Count; i++)
             {
                 Id128 providerKey = providerOrder[i];
@@ -419,6 +422,28 @@ namespace GameCore.Unity.Runtime.Integration
                     capabilitiesByProvider[providerKey]));
             }
 
+            var retiredProviders = new HashSet<Id128>();
+            for (int i = 0; i < publishedBindings.Rows.Count; i++)
+            {
+                Id128 provider = publishedBindings.Rows[i].Provider.Value;
+                if (capabilitiesByProvider.ContainsKey(provider) || !retiredProviders.Add(provider))
+                {
+                    continue;
+                }
+
+                if (committed.TryGetInstall(new PluginInstanceId(provider), out InstallEntry? previous) && previous != null)
+                {
+                    unmounts.Add(new ProposedUnmount(previous.Record.Instance,
+                        new ProviderInstallationId(provider), previous.Record.Scope));
+                }
+            }
+
+            if (mounts.Count == 0 && unmounts.Count == 0)
+            {
+                return DerivationProposalReport.Refused(DerivationProposalOutcome.NoAssemblies,
+                    DiagnosticCode.None, "the effective assembly contains no derived contributions");
+            }
+
             var proposal = new CompositionProposal(
                 operation,
                 inputHash,
@@ -427,7 +452,7 @@ namespace GameCore.Unity.Runtime.Integration
                 catalogHash,
                 committed.Mode,
                 mounts,
-                null,
+                unmounts,
                 retractsAbsentSupport: true);
 
             return DerivationProposalReport.Built(proposal, mounts.Count, capabilityCount, derivation.Assemblies.Count);

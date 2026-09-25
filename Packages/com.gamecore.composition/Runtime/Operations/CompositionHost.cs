@@ -65,13 +65,20 @@ namespace GameCore.Composition
     /// <summary>What one drain pass published for one operation, in admission order.</summary>
     public sealed class PublishedOperation
     {
-        public PublishedOperation(OperationId operation, Outcome outcome, DiagnosticCode code, SnapshotToken? token, CleanupReport? cleanup)
+        public PublishedOperation(
+            OperationId operation,
+            Outcome outcome,
+            DiagnosticCode code,
+            SnapshotToken? token,
+            CleanupReport? cleanup,
+            LifecycleCommitReport? lifecycle)
         {
             Operation = operation;
             Outcome = outcome;
             Code = code;
             Token = token;
             Cleanup = cleanup;
+            Lifecycle = lifecycle;
         }
 
         public OperationId Operation { get; }
@@ -84,6 +91,21 @@ namespace GameCore.Composition
 
         /// <summary>Cleanup outcome of retired installations; null when nothing retired.</summary>
         public CleanupReport? Cleanup { get; }
+
+        /// <summary>
+        /// P-046 lifecycle facts of this publication: the activation edges, one P-048 teardown per retired or
+        /// displaced activation, retained references and the service-closure delta (waiting and resumed consumers,
+        /// binding changes). Null for an operation that published no assembly.
+        /// </summary>
+        public LifecycleCommitReport? Lifecycle { get; }
+
+        /// <summary>Consumers whose required provider left in this publication, and which now wait (P-012).</summary>
+        public IReadOnlyList<PluginInstanceId> WaitingConsumers =>
+            Lifecycle != null ? Lifecycle.Closure.WaitingConsumers : Array.Empty<PluginInstanceId>();
+
+        /// <summary>Consumers resumed by a returned provider in this publication (P-012).</summary>
+        public IReadOnlyList<PluginInstanceId> ResumedConsumers =>
+            Lifecycle != null ? Lifecycle.Closure.ResumedConsumers : Array.Empty<PluginInstanceId>();
     }
 
     /// <summary>
@@ -153,6 +175,7 @@ namespace GameCore.Composition
             staged = committed;
             ledger = new OperationLedger(Settings.Capacity, Settings.Expiry);
             Callbacks = new CallbackGate(world);
+            Lifecycle = new InstallationLifecycleCoordinator(world, resources, Callbacks, LifecycleSettings.Default, null);
         }
 
         /// <summary>
@@ -209,6 +232,15 @@ namespace GameCore.Composition
         /// before anything is staged or published, so a refusal keeps the committed composition (GC-013, P-014).
         /// </summary>
         public ICompositionEditValidator? Validator => validator;
+
+        /// <summary>
+        /// P-046 lifecycle of this host: activation attempts, staged replacements, the P-048 teardown sequencer,
+        /// tracked job fences and the bounded quarantine registry. A published plan drives it through
+        /// <see cref="InstallationLifecycleCoordinator.Stage"/> and
+        /// <see cref="InstallationLifecycleCoordinator.Commit"/>, so the lifecycle facts of one publication are
+        /// recorded in exactly one place.
+        /// </summary>
+        public InstallationLifecycleCoordinator Lifecycle { get; }
 
         /// <summary>How many staged resource gates a publication has opened so far.</summary>
         public int ResourceGatesOpened { get; private set; }
@@ -330,27 +362,31 @@ namespace GameCore.Composition
             CompositionEditPlan plan = row.Plan;
             if (!plan.Succeeded)
             {
-                // A rejected proposal made no live writes; publication keeps the old visible revision (00 s9).
+                // A rejected proposal made no live writes; publication keeps the old visible revision (00 s9) and
+                // any candidate this plan staged is released before it could touch the running activation (P-046).
+                Lifecycle.Abort(plan, plan.Code);
                 ledger.Settle(operation, Outcome.Rejected, plan.Code, committed.Revision, committed.Epoch, null, committed.Step);
                 ReleaseStagedResources(operation);
-                return new PublishedOperation(operation, Outcome.Rejected, plan.Code, null, null);
+                return new PublishedOperation(operation, Outcome.Rejected, plan.Code, null, null, null);
             }
 
             if (plan.IsNoChange)
             {
                 // NoChange increments nothing and publishes no new snapshot (P-006).
+                Lifecycle.Abort(plan, DiagnosticCode.None);
                 ledger.Settle(operation, Outcome.NoChange, DiagnosticCode.None, committed.Revision, committed.Epoch, null, committed.Step);
                 ReleaseStagedResources(operation);
-                return new PublishedOperation(operation, Outcome.NoChange, DiagnosticCode.None, null, null);
+                return new PublishedOperation(operation, Outcome.NoChange, DiagnosticCode.None, null, null, null);
             }
 
             if (!committed.Revision.TryIncrement(out CompositionRevision nextRevision) ||
                 !committed.Epoch.TryIncrement(out AssemblyEpoch nextEpoch))
             {
                 // Counter exhaustion rejects further reconfiguration instead of wrapping (P-005).
+                Lifecycle.Abort(plan, DiagnosticCode.BudgetExceeded);
                 ledger.Settle(operation, Outcome.Rejected, DiagnosticCode.BudgetExceeded, committed.Revision, committed.Epoch, null, committed.Step);
                 ReleaseStagedResources(operation);
-                return new PublishedOperation(operation, Outcome.Rejected, DiagnosticCode.BudgetExceeded, null, null);
+                return new PublishedOperation(operation, Outcome.Rejected, DiagnosticCode.BudgetExceeded, null, null, null);
             }
 
             if (!ledger.BeginApplying(operation))
@@ -363,13 +399,15 @@ namespace GameCore.Composition
             CompositionState next = plan.After.With(revision: nextRevision, epoch: nextEpoch, step: committed.Step);
             SnapshotToken token = new SnapshotToken(World, nextEpoch, next.Step);
 
-            // The fence is closed across the swap, so no callback is delivered against a half-published view.
+            // The fence is closed across the swap, so no callback is delivered against a half-published view. The
+            // lifecycle coordinator walks the P-046 transitions of this one moment - activations registered or
+            // retired, contributions retracted, predecessors and removals torn down in the P-048 order - and
+            // reports the service-closure delta of the same publication (P-012, P-046, P-048).
             Callbacks.CloseFence();
+            LifecycleCommitReport lifecycle = Lifecycle.Commit(plan, token);
+            CleanupReport cleanup = lifecycle.Cleanup;
             committed = RemovalStates(next, plan);
             staged = staged.With(revision: nextRevision, epoch: nextEpoch);
-            ApplyActivations(plan, next);
-            CleanupReport cleanup = RetireRemoved(plan);
-            committed = RemovalStates(next, plan);
             row.Cleanup = cleanup;
             int ready = PublishStagedResources(operation);
             Callbacks.OpenFence();
@@ -384,7 +422,7 @@ namespace GameCore.Composition
                 RebuildStaged();
             }
 
-            return new PublishedOperation(operation, outcome, code, token, cleanup);
+            return new PublishedOperation(operation, outcome, code, token, cleanup, lifecycle);
         }
 
         /// <summary>
@@ -411,7 +449,14 @@ namespace GameCore.Composition
             CancellationResult result = ledger.CancelRequest(cancellationOperation, target);
             if (result.Applied && result.Outcome == CancelOutcome.Cancelled)
             {
-                // Only the call that actually decided the cutoff repeats the target's cleanup.
+                // Only the call that actually decided the cutoff repeats the target's cleanup. The cancelled
+                // proposal's staged lifecycle candidate is released and the old activation keeps its gates (P-046).
+                OperationLedger.LedgerRow? row = ledger.RowOf(target);
+                if (row != null && row.Plan != null)
+                {
+                    Lifecycle.Abort(row.Plan, DiagnosticCode.Cancelled);
+                }
+
                 ReleaseStagedResources(target);
                 RebuildStaged();
             }
@@ -576,61 +621,15 @@ namespace GameCore.Composition
                 return new EditAdmission(AdmissionKind.Fresh, DiagnosticCode.None, admission.Handle, RowEntry(operation), plan, plan.Diagnostics);
             }
 
-            // The proposal is staged, not published: queries still see the committed revision (00 s9).
+            // The proposal is staged, not published: queries still see the committed revision (00 s9). Its
+            // lifecycle phase is staged with it, so an in-place replacement prepares a candidate activation while
+            // the published activation keeps running (P-046, P-029).
+            Lifecycle.Stage(plan);
             staged = plan.After;
             return new EditAdmission(AdmissionKind.Fresh, DiagnosticCode.None, admission.Handle, RowEntry(operation), plan, plan.Diagnostics);
         }
 
         private OperationLedgerEntry? RowEntry(OperationId operation) => ledger.RowOf(operation)?.ToEntry();
-
-        private void ApplyActivations(CompositionEditPlan plan, CompositionState next)
-        {
-            for (int i = 0; i < plan.RetiredInstances.Count; i++)
-            {
-                Callbacks.RetireActivation(plan.RetiredInstances[i]);
-            }
-
-            IReadOnlyList<InstallEntry> installs = next.Installs;
-            for (int i = 0; i < installs.Count; i++)
-            {
-                InstallEntry entry = installs[i];
-                if (entry.State == InstallationState.Active)
-                {
-                    Callbacks.RegisterActivation(entry.Instance, entry.Record.Generation, entry.Record.ActivationEpoch);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Retires the removed installations' leases in reverse activation order: consumers before providers
-        /// (P-012) and, within one instance, reverse acquisition order (P-048). A release that throws keeps the
-        /// resource retained, so the result can report `PublishedWithCleanupErrors` honestly.
-        /// </summary>
-        private CleanupReport RetireRemoved(CompositionEditPlan plan)
-        {
-            if (plan.RetiredInstances.Count == 0)
-            {
-                return CleanupReport.Empty;
-            }
-
-            // The plan already ordered the removals for teardown: consumers before providers (P-012), and
-            // within one instance the ledger retires leases in reverse acquisition order (P-048).
-            List<Id128> retired = new List<Id128>();
-            List<Id128> failed = new List<Id128>();
-            List<Id128> quarantined = new List<Id128>();
-            for (int i = 0; i < plan.RetiredInstances.Count; i++)
-            {
-                InstallEntry previous = plan.Before.TryGetInstall(plan.RetiredInstances[i], out InstallEntry? entry) && entry != null
-                    ? entry : throw new InvalidOperationException("A retired activation must exist in the previous assembly.");
-                CleanupReport report = resources.RetireInstance(previous.Instance, null,
-                    new ActivationStamp(previous.Record.Generation, previous.Record.ActivationEpoch));
-                retired.AddRange(report.Retired);
-                failed.AddRange(report.Failed);
-                quarantined.AddRange(report.Quarantined);
-            }
-
-            return new CleanupReport(retired, failed, quarantined);
-        }
 
         private CompositionState RemovalStates(CompositionState state, CompositionEditPlan plan)
         {
@@ -695,6 +694,7 @@ namespace GameCore.Composition
                 {
                     continue;
                 }
+                CompositionEditPlan? previousPlan = row.Plan;
 
                 CompositionEditPlan replanned = CompositionEditApplier.Plan(
                     next,
@@ -705,17 +705,29 @@ namespace GameCore.Composition
                     manifests,
                     validator);
 
-                row.Plan = replanned;
                 if (!replanned.Succeeded)
                 {
-                    // A dependent proposal whose base disappeared is rejected rather than published blindly.
+                    // A dependent proposal whose base disappeared is rejected rather than published blindly, and
+                    // whatever activation candidate it had staged is released (P-046, P-051).
+                    if (previousPlan != null)
+                    {
+                        Lifecycle.Abort(previousPlan, replanned.Code);
+                    }
                     ledger.Settle(row.Operation, Outcome.Rejected, replanned.Code, committed.Revision, committed.Epoch, null, committed.Step);
                     ReleaseStagedResources(row.Operation);
                     continue;
                 }
 
+                // The surviving proposal is re-staged against the rebuilt base: its lifecycle phase is rebuilt with
+                // it, so no candidate is left behind for a plan that no longer describes the assembled closure.
+                if (previousPlan != null)
+                {
+                    Lifecycle.Abort(previousPlan, DiagnosticCode.None);
+                }
+                row.Plan = replanned;
                 if (!replanned.IsNoChange)
                 {
+                    Lifecycle.Stage(replanned);
                     next = replanned.After;
                 }
             }

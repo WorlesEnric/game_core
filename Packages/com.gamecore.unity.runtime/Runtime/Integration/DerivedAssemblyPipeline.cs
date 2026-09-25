@@ -411,7 +411,8 @@ namespace GameCore.Unity.Runtime.Integration
                 world.CurrentEpoch,
                 DerivedCompositionProposal.InputHashOf(derivation),
                 input.Snapshot.SnapshotHash,
-                operation);
+                operation,
+                publisher.Published.Bindings);
             report.Proposal = proposal;
             if (proposal.Outcome == DerivationProposalOutcome.NoAssemblies)
             {
