@@ -26,6 +26,8 @@ Unity qualification project and the player gates.
 | `tests/GameCore.Execution.Tests` | NUnit 3 | net8.0 | engine-free execution core tests |
 | `src/GameCore.Derivation` | library | netstandard2.1 | `Packages/com.gamecore.derivation/Runtime/**/*.cs` |
 | `tests/GameCore.Derivation.Tests` | NUnit 3 | net8.0 | the derivation package's own `Tests/**` sources |
+| `src/GameCore.Planning` | library | netstandard2.1 | `Packages/com.gamecore.planning/Runtime/**/*.cs` |
+| `tests/GameCore.Planning.Tests` | NUnit 3 | net8.0 | the planning package's own `Tests/**` sources |
 
 The two fixture suites share one test source (`tests/GameCore.ProtocolFixtures.Tests/ProtocolFixtureTests.cs`).
 They write separate evidence documents, `artifacts/protocol-fixtures/results.json` and
@@ -73,6 +75,13 @@ integration assembly, the IL2CPP build and every player probe) is one command:
 
 ```sh
 UNITY=~/Unity/Hub/Editor/6000.0.75f1/Editor/Unity DOTNET=/usr/bin/dotnet tools/run_w1_gate.sh
+```
+
+The W2 wave gate (this solution's build and tests, the package EditMode and PlayMode suites, the W1 and W2 gate
+EditMode assemblies, the IL2CPP build and every player probe repeated `PROBE_RUNS` times) is one command:
+
+```sh
+UNITY=~/Unity/Hub/Editor/6000.0.75f1/Editor/Unity DOTNET=/usr/bin/dotnet tools/run_w2_gate.sh
 ```
 
 ## Regenerating the committed probe catalog (GC-003)

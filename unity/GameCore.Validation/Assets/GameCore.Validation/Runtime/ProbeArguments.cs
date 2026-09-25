@@ -13,12 +13,14 @@ namespace GameCore.Validation.ProbeHost
         private const string MissingRegistrationArgumentName = "-probeMissingRegistration";
         private const string WorldDispatchArgumentName = "-probeWorldDispatch";
         private const string W1GateArgumentName = "-probeW1Gate";
+        private const string W2GateArgumentName = "-probeW2Gate";
 
-        private ProbeArguments(bool missingRegistration, bool worldDispatch, bool w1Gate, string? resultPath)
+        private ProbeArguments(bool missingRegistration, bool worldDispatch, bool w1Gate, bool w2Gate, string? resultPath)
         {
             MissingRegistration = missingRegistration;
             WorldDispatch = worldDispatch;
             W1Gate = w1Gate;
+            W2Gate = w2Gate;
             ResultPath = resultPath;
         }
 
@@ -37,12 +39,19 @@ namespace GameCore.Validation.ProbeHost
         /// </summary>
         public bool W1Gate { get; }
 
+        /// <summary>
+        /// Runs the W2 integration gate: a mounted provider derived and published into a real world, one bounded
+        /// command committed, a compiled schedule executed with GC-009's temporal drivers, a future target spawned
+        /// fully assembled and an idle world that performs no step.
+        /// </summary>
+        public bool W2Gate { get; }
+
         /// <summary>Destination path of the structured JSON result.</summary>
         public string? ResultPath { get; }
 
         /// <summary>True when the process was launched as a probe rather than as a normal player run.</summary>
         public bool IsProbeInvocation =>
-            MissingRegistration || WorldDispatch || W1Gate || !string.IsNullOrEmpty(ResultPath);
+            MissingRegistration || WorldDispatch || W1Gate || W2Gate || !string.IsNullOrEmpty(ResultPath);
 
         /// <summary>True when a result destination was supplied; without it the probe cannot record evidence.</summary>
         public bool HasResultPath => !string.IsNullOrEmpty(ResultPath);
@@ -52,32 +61,34 @@ namespace GameCore.Validation.ProbeHost
             bool missingRegistration = false;
             bool worldDispatch = false;
             bool w1Gate = false;
+            bool w2Gate = false;
             string? resultPath = null;
-            if (arguments != null)
+            for (int i = 0; i < arguments.Length; i++)
             {
-                for (int i = 0; i < arguments.Length; i++)
+                string argument = arguments[i];
+                if (argument == MissingRegistrationArgumentName)
                 {
-                    string argument = arguments[i];
-                    if (argument == MissingRegistrationArgumentName)
-                    {
-                        missingRegistration = true;
-                    }
-                    else if (argument == WorldDispatchArgumentName)
-                    {
-                        worldDispatch = true;
-                    }
-                    else if (argument == W1GateArgumentName)
-                    {
-                        w1Gate = true;
-                    }
-                    else if (argument == ResultArgumentName && i + 1 < arguments.Length)
-                    {
-                        resultPath = arguments[i + 1];
-                    }
+                    missingRegistration = true;
+                }
+                else if (argument == WorldDispatchArgumentName)
+                {
+                    worldDispatch = true;
+                }
+                else if (argument == W1GateArgumentName)
+                {
+                    w1Gate = true;
+                }
+                else if (argument == W2GateArgumentName)
+                {
+                    w2Gate = true;
+                }
+                else if (argument == ResultArgumentName && i + 1 < arguments.Length)
+                {
+                    resultPath = arguments[i + 1];
                 }
             }
 
-            return new ProbeArguments(missingRegistration, worldDispatch, w1Gate, resultPath);
+            return new ProbeArguments(missingRegistration, worldDispatch, w1Gate, w2Gate, resultPath);
         }
     }
 }

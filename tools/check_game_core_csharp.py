@@ -27,6 +27,11 @@ TARGETS = [
     "dotnet/tools/GameCore.ApiSnapshot",
     # GC-006: the derivation package and its fixtures are engine-free too, so the same host-side checks apply.
     "Packages/com.gamecore.derivation",
+    # W2 gate: the planning package and the Unity runtime package hold the Wave 2 modules and the integration glue,
+    # so the balance and forbidden-construct checks cover them as well. They are not in `engine_free`: both
+    # legitimately reference Unity types.
+    "Packages/com.gamecore.planning",
+    "Packages/com.gamecore.unity.runtime",
 ]
 
 FORBIDDEN = {

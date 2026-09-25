@@ -1,6 +1,7 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.LowLevel;
 using UnityEngine.PlayerLoop;
 
@@ -19,6 +20,9 @@ namespace GameCore.Unity.Adapters
     /// recursively, inserts exactly one node before <c>Update.ScriptRunBehaviourUpdate</c>, and never uses
     /// <c>ScriptBehaviourUpdateOrder.AppendWorldToCurrentPlayerLoop</c>: the owned worlds are driven only by this
     /// application node (04 s3).
+    /// The quit hook (<see cref="InstallQuitHook"/>) exists because <c>Application.Quit</c> is deferred to the end
+    /// of the frame, and a pump node that outlives the engine's world/native teardown would step a world whose
+    /// storage is being released. The hook is idempotent and never removes unrelated nodes.
     /// </summary>
     public static class GameCorePlayerLoopInstaller
     {
@@ -35,6 +39,20 @@ namespace GameCore.Unity.Adapters
 
         /// <summary>Installations that first had to remove a node left by an earlier session.</summary>
         public static int DuplicateInstallRefusalCount { get; private set; }
+
+        /// <summary>First-time subscriptions of the single application-quit hook; exactly one is expected.</summary>
+        public static int QuitHookInstallCount { get; private set; }
+
+        /// <summary>Times the application-quit hook has run.</summary>
+        public static int QuitHookFireCount { get; private set; }
+
+        /// <summary>Pump nodes the application-quit hook removed.</summary>
+        public static int QuitRemovalCount { get; private set; }
+
+        /// <summary>True once the single application-quit hook is subscribed.</summary>
+        public static bool IsQuitHookInstalled => quitHookInstalled;
+
+        private static bool quitHookInstalled;
 
         public static bool IsInstalled() => CountInstalledNodes() > 0;
 
@@ -91,6 +109,33 @@ namespace GameCore.Unity.Adapters
             return removed;
         }
 
+        /// <summary>
+        /// Subscribes the single application-quit hook exactly once. <c>Application.quitting</c> is raised while the
+        /// PlayerLoop is still intact, so the hook detaches the pump node before the engine releases its worlds and
+        /// native memory. A repeated call never double-subscribes.
+        /// </summary>
+        public static void InstallQuitHook()
+        {
+            if (quitHookInstalled)
+            {
+                return;
+            }
+
+            Application.quitting += OnApplicationQuitting;
+            quitHookInstalled = true;
+            QuitHookInstallCount++;
+        }
+
+        private static void OnApplicationQuitting()
+        {
+            QuitHookFireCount++;
+
+            // No owned world may be pumped once the engine has begun tearing down: a node that stepped a world
+            // whose storage is being released would corrupt memory.
+            GameCoreApplicationPump.IsEnabled = false;
+            QuitRemovalCount += Remove();
+        }
+
         /// <summary>Invalidates delegates installed before this call; they refuse to pump afterwards (04 s9).</summary>
         public static void BumpGeneration() => Generation++;
 
@@ -99,6 +144,11 @@ namespace GameCore.Unity.Adapters
             InstallCount = 0;
             RemoveCount = 0;
             DuplicateInstallRefusalCount = 0;
+            QuitHookInstallCount = 0;
+            QuitHookFireCount = 0;
+            QuitRemovalCount = 0;
+            // quitHookInstalled is deliberately NOT cleared: the Application.quitting subscription survives a
+            // domain-reload-disabled session, so clearing the flag would let a later call double-subscribe.
         }
 
         private static bool InsertBeforeScriptRunBehaviourUpdate(ref PlayerLoopSystem loop, PlayerLoopSystem node)

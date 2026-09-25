@@ -68,6 +68,15 @@ namespace GameCore.Unity.Runtime.Messages
         /// <summary>Records the writer whose handle subsequent writes to this arena must depend on.</summary>
         public void TrackPayloadWriter(JobHandle handle) => payloadWriter = handle;
 
+        /// <summary>True while a scheduled producer job still targets this lane's payload arena.</summary>
+        public bool HasOutstandingPayloadWriter => !payloadWriter.Equals(default(JobHandle));
+
+        /// <summary>
+        /// Payload writers this lane's dispose had to complete and could not; any non-zero value is a defect, because
+        /// the job may have written into the arena around the moment it was freed.
+        /// </summary>
+        public int PayloadWriterCompletionFailureCount { get; private set; }
+
         /// <summary>Rows a reliable lane had to refuse because it was full (P-043; zero is the expected value).</summary>
         public int RejectedCount { get; private set; }
 
@@ -394,6 +403,26 @@ namespace GameCore.Unity.Runtime.Messages
             }
 
             disposed = true;
+
+            // Freeing the arena while a scheduled producer job still targets it is a use-after-free, so the lane
+            // settles its own writer first; a failure is counted, never thrown out of Dispose.
+            if (HasOutstandingPayloadWriter)
+            {
+                try
+                {
+                    CompletePayloadWriter();
+                }
+                catch (Exception)
+                {
+                    PayloadWriterCompletionFailureCount++;
+                }
+                finally
+                {
+                    // Zero the handle so a repeated dispose cannot double-complete it.
+                    payloadWriter = default(JobHandle);
+                }
+            }
+
             if (rows.IsCreated)
             {
                 rows.Dispose();
@@ -527,6 +556,11 @@ namespace GameCore.Unity.Runtime.Messages
 
         public IReadOnlyList<NativeMessageLane> Lanes => order;
 
+        /// <summary>
+        /// Lane payload writers this plane's dispose had to complete and could not; any non-zero value is a defect.
+        /// </summary>
+        public int PayloadWriterCompletionFailureCount { get; private set; }
+
         public bool TryGetLane(BufferId buffer, out NativeMessageLane? lane)
             => lanes.TryGetValue(buffer.Value, out lane);
 
@@ -613,6 +647,28 @@ namespace GameCore.Unity.Runtime.Messages
             }
 
             disposed = true;
+
+            // A producer job that still targets a lane's arena when that arena is freed is a use-after-free, so every
+            // lane settles its own writer before any lane's storage is released (a lane's own Dispose then finds
+            // nothing outstanding) and a failure is counted, never thrown.
+            for (int i = 0; i < order.Count; i++)
+            {
+                NativeMessageLane lane = order[i];
+                if (!lane.HasOutstandingPayloadWriter)
+                {
+                    continue;
+                }
+
+                try
+                {
+                    lane.CompletePayloadWriter();
+                }
+                catch (Exception)
+                {
+                    PayloadWriterCompletionFailureCount++;
+                }
+            }
+
             for (int i = 0; i < order.Count; i++)
             {
                 order[i].Dispose();

@@ -1,0 +1,34 @@
+{
+  "name": "GameCore.W2Gate.Tests",
+  "rootNamespace": "GameCore.W2Gate.Tests",
+  "references": [
+    "GameCore.Composition",
+    "GameCore.Contracts",
+    "GameCore.Derivation",
+    "GameCore.Planning",
+    "GameCore.Unity.Adapters",
+    "GameCore.Unity.Fixtures",
+    "GameCore.Unity.Runtime",
+    "GameCore.Validation.Generated",
+    "GameCore.Validation.ProbeHost",
+    "Unity.Collections",
+    "Unity.Entities",
+    "UnityEngine.TestRunner",
+    "UnityEditor.TestRunner"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": true,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
