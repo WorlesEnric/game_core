@@ -260,7 +260,7 @@ The new cases live in `GameCore.Contracts.Tests` (`CheckpointDocumentTests`, `Ch
 ```sh
 UNITY=~/Unity/Hub/Editor/6000.0.75f1/Editor/Unity
 "$UNITY" -batchmode -nographics -quit -projectPath unity/GameCore.Validation \
-  -executeMethod GameCore.Validation.Editor.CatalogGenerator.GenerateCatalog \
+  -executeMethod GameCore.Validation.Editor.ProbeCatalogGenerator.GenerateCatalog \
   -logFile artifacts/gc-018/unity/catalog-codegen.log
 "$UNITY" -batchmode -nographics -quit -projectPath unity/GameCore.Validation \
   -executeMethod GameCore.Validation.Editor.CheckpointCatalogGenerator.GenerateCatalog \
@@ -274,6 +274,11 @@ git diff --exit-code -- unity/GameCore.Validation/Assets/GameCore.Validation/Gen
 ```
 
 Do not add `-quit` to a test-run command (04 §10).
+
+`-testResults` with a relative path is resolved against the Unity **project** path, not the shell cwd (unlike
+`-logFile`): the run above writes `unity/GameCore.Validation/artifacts/gc-018/unity/gc018-editmode.xml`. Pass an
+absolute path or copy the file out afterwards. The card catalog regenerates the same way with
+`GameCore.Validation.Editor.CardCatalogGenerator.GenerateCatalog`.
 
 ### 10.3 The GC-018 player probe (Linux IL2CPP, five runs)
 
