@@ -400,16 +400,18 @@ namespace GameCore.Composition
             List<Id128> failed = new List<Id128>();
             List<Id128> quarantined = new List<Id128>();
 
-            IReadOnlyList<InstallEntry> after = plan.After.Installs;
-            for (int i = 0; i < after.Count; i++)
-            {
-                InstallEntry entry = after[i];
-                plan.Before.TryGetInstall(entry.Instance, out InstallEntry? before);
-                ApplyTransition(plan, before, entry, edges, teardowns, retractions, retired, failed, quarantined);
-            }
-
-            // Removed and displaced installations run the P-048 order: close ingress, fence users, retract the
-            // closure, retire resources in reverse order, admit quarantines.
+            // PLAN CONTRACT: `plan.RetiredInstances` names the *activations* this publication displaces, not the
+            // installations it removes. The composition applier adds an instance there whenever its previous
+            // activation was Active and it either stops being Active (suspend, lost provider) or its activation
+            // epoch changed (reconfigure = P-046's in-place replacement). So two different things share that list,
+            // and conflating them destroys a suspended installation's ability to resume:
+            //
+            //   * a **removed** installation (after-state Retiring/Disposed) runs the whole P-048 order and is then
+            //     settled - it may become Disposed;
+            //   * a **displaced activation** (suspend, lost provider, in-place replacement) runs the same P-048
+            //     order for the epoch it retires, but the installation itself stays in the state the new assembly
+            //     declares, so a later resume reaches `Suspended -> Preparing -> Active` (06 s1) instead of being
+            //     refused from Disposed.
             for (int i = 0; i < plan.RetiredInstances.Count; i++)
             {
                 PluginInstanceId instance = plan.RetiredInstances[i];
@@ -418,6 +420,8 @@ namespace GameCore.Composition
                     continue;
                 }
 
+                // The teardown acts on the OLD activation stamp, so exactly the leases acquired under the retired
+                // activation epoch are the ones released (P-005, P-048).
                 TeardownReport teardown = Teardown.Unload(
                     instance,
                     new ActivationStamp(before.Record.Generation, before.Record.ActivationEpoch),
@@ -427,8 +431,30 @@ namespace GameCore.Composition
                 Append(teardown.Cleanup.Retired, retired);
                 Append(teardown.Cleanup.Failed, failed);
                 Append(teardown.Quarantined, quarantined);
+            }
+
+            IReadOnlyList<InstallEntry> after = plan.After.Installs;
+            for (int i = 0; i < after.Count; i++)
+            {
+                InstallEntry entry = after[i];
+                plan.Before.TryGetInstall(entry.Instance, out InstallEntry? before);
+                ApplyTransition(plan, before, entry, edges, teardowns, retractions, retired, failed, quarantined);
+            }
+
+            // Only a removal is settled, and only after its teardown reported every resource settled. A retained
+            // reference (a job fence, a failed release) keeps the installation `Retiring` and is reported as
+            // `TeardownBlocked` rather than as a false `Disposed` (P-048).
+            for (int i = 0; i < plan.RetiredInstances.Count; i++)
+            {
+                PluginInstanceId instance = plan.RetiredInstances[i];
+                if (!IsRemoved(plan, instance))
+                {
+                    continue;
+                }
+
                 Activations.Retire(instance);
-                Activations.Settle(instance, teardown.DisposeSettled && Quarantine.EntriesFor(instance).Count == 0);
+                bool settled = Resources.RetainedCountFor(instance) == 0 && Quarantine.EntriesFor(instance).Count == 0;
+                Activations.Settle(instance, settled);
             }
 
             stagedCandidates.Remove(plan.Operation);
@@ -530,6 +556,21 @@ namespace GameCore.Composition
         }
 
         /// <summary>
+        /// True when this publication removes the installation rather than merely displacing its activation: the
+        /// after-state is Retiring or Disposed, or the identity left the assembly entirely. `ServiceClosureDelta`
+        /// decides the same fact with the same rule, so a delta and a commit never disagree about what was removed.
+        /// </summary>
+        private static bool IsRemoved(CompositionEditPlan plan, PluginInstanceId instance)
+        {
+            if (!plan.After.TryGetInstall(instance, out InstallEntry? after) || after == null)
+            {
+                return true;
+            }
+
+            return after.State == InstallationState.Retiring || after.State == InstallationState.Disposed;
+        }
+
+        /// <summary>
         /// A late completion: evaluated against the world, the fence, liveness and the activation stamp, in that
         /// order (P-047). A suspended or retired installation has no registered activation, so its old tokens are
         /// discarded rather than delivered — which is what stops a late completion resurrecting it.
@@ -574,24 +615,12 @@ namespace GameCore.Composition
                     }
                     else if (IsInPlaceReplacement(before, entry))
                     {
-                        // The candidate staged during preparation takes over; its predecessor retires through the
-                        // P-048 order with the *old* stamp, so its leases retire under the epoch that acquired them.
+                        // The candidate staged during preparation takes over and the displaced activation walks
+                        // `Active -> Quiescing -> Retiring` at this one publication (P-046). Its P-048 teardown -
+                        // with the *old* activation stamp, so exactly the leases the old epoch acquired - already ran
+                        // in the retired-activation pass above; repeating it here would report the same pass twice.
                         transition = Activations.CommitCandidate(entry.Instance, out ActivationAttempt? displaced);
-                        if (transition.Allowed && displaced != null)
-                        {
-                            // The displaced activation retires under its OWN stamp, so the leases it acquired under
-                            // the old activation epoch are exactly the ones retired (P-005, P-048). The installation
-                            // stays Active: the replacement is in place, not a removal.
-                            TeardownReport teardown = Teardown.Unload(
-                                entry.Instance,
-                                displaced.Stamp(),
-                                plan.Operation,
-                                false);
-                            teardowns.Add(teardown);
-                            Append(teardown.Cleanup.Retired, retired);
-                            Append(teardown.Cleanup.Failed, failed);
-                            Append(teardown.Quarantined, quarantined);
-                        }
+                        _ = displaced;
                     }
                     else if (before.State == InstallationState.WaitingForDependencies)
                     {

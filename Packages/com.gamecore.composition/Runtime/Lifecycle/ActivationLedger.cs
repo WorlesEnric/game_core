@@ -624,6 +624,13 @@ namespace GameCore.Composition
             }
 
             InstallationState origin = entry.Current.State;
+            if (origin == InstallationState.Retiring || origin == InstallationState.Disposed)
+            {
+                // Already on the retirement path: repeating the bookkeeping after its teardown is not a new
+                // lifecycle request and must not be reported as an illegal edge (P-048: dispose at most once).
+                return LifecycleTransition.Permit(origin, InstallationState.Retiring);
+            }
+
             IReadOnlyList<InstallationState>? path;
             if (!InstallationStateMachine.TryTeardownPath(origin, out path) || path == null)
             {

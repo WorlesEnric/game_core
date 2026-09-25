@@ -190,17 +190,37 @@ namespace GameCore.Composition
                 DiffBindings(entry.Instance, previousBindings, entry.Bindings, bindings);
             }
 
-            // A retired installation's bindings disappear with it, which is a closure fact too (P-012).
+            // A retired activation is not automatically a removal: the applier also lists an installation whose
+            // *activation* was displaced (suspend, lost required provider, in-place replacement). Only an
+            // installation whose after-state is Retiring or Disposed is removed, so only that one contributes a
+            // disappearance edge and a removed binding here. The main loop above already reported the state change
+            // and the binding change of a suspend or a lost provider, so without this filter a suspend would report
+            // itself twice - which is itself a false statement about the closure.
             for (int i = 0; i < plan.RetiredInstances.Count; i++)
             {
                 PluginInstanceId instance = plan.RetiredInstances[i];
-                if (plan.Before.TryGetInstall(instance, out InstallEntry? before) && before != null)
+                if (!plan.Before.TryGetInstall(instance, out InstallEntry? before) || before == null)
                 {
-                    DiffBindings(instance, before.Bindings, Array.Empty<ServiceBinding>(), bindings);
+                    continue;
+                }
+
+                if (!IsRemoved(plan, instance))
+                {
+                    continue;
+                }
+
+                // The main loop already reported the Active -> Retiring/Disposed edge of an install entry that is
+                // present in the new assembly, so this only adds the edge for an identity that vanished entirely.
+                if (!ContainsEdge(edges, new LifecycleEdge(instance, before.State, InstallationState.Disposed)))
+                {
                     edges.Add(new LifecycleEdge(instance, before.State, InstallationState.Disposed));
                 }
+
+                DiffBindings(instance, before.Bindings, Array.Empty<ServiceBinding>(), bindings);
             }
 
+            // The RetiredInstances list keeps the plan's own teardown order (consumers before providers), while the
+            // edges and binding deltas above are canonical and de-duplicated.
             bindings.Sort(CompareBindingDeltas);
             return new ServiceClosureDelta(
                 plan.Operation,
@@ -212,6 +232,35 @@ namespace GameCore.Composition
                 bindings,
                 waitingDiagnostics,
                 plan.Services != null ? plan.Services.Diagnostics : null);
+        }
+
+        /// <summary>
+        /// True when this publication *removes* the installation rather than merely displacing its activation: the
+        /// after-state is Retiring or Disposed. This is the one place the difference is decided, so the delta and
+        /// the coordinator agree by construction.
+        /// </summary>
+        private static bool IsRemoved(CompositionEditPlan plan, PluginInstanceId instance)
+        {
+            if (!plan.After.TryGetInstall(instance, out InstallEntry? after) || after == null)
+            {
+                // A vanished install entry is a removal too: nothing in the new assembly owns that identity.
+                return true;
+            }
+
+            return after.State == InstallationState.Retiring || after.State == InstallationState.Disposed;
+        }
+
+        private static bool ContainsEdge(List<LifecycleEdge> edges, LifecycleEdge candidate)
+        {
+            for (int i = 0; i < edges.Count; i++)
+            {
+                if (edges[i].Instance.Equals(candidate.Instance) && edges[i].From == candidate.From && edges[i].To == candidate.To)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>Canonical, stable rendering of the delta; the evidence form archived with a run (P-026).</summary>
