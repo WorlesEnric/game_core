@@ -20,8 +20,12 @@ using System.Collections.Generic;
 using System.Globalization;
 using GameCore.Composition;
 using GameCore.Contracts;
+using GameCore.Derivation;
 using GameCore.Execution;
+using GameCore.Gameplay.Narrative;
+using GameCore.Gameplay.Narrative.Fixtures;
 using GameCore.Planning;
+using PlanningCompositionProposal = GameCore.Planning.CompositionProposal;
 using GameCore.Planning.Ownership;
 using GameCore.Planning.Scheduling;
 using GameCore.Planning.StatePolicies;
@@ -29,8 +33,10 @@ using GameCore.Rules.Narrative;
 using GameCore.Unity.Runtime;
 using GameCore.Unity.Runtime.Integration;
 using GameCore.Unity.Runtime.StateMigration;
+using GameCore.Unity.Runtime.Time;
 using Unity.Entities;
 using NarrativeFacts = GameCore.Rules.Narrative.NarrativeFacts;
+using NarrativeKeys = GameCore.Gameplay.Narrative.NarrativeKeys;
 
 namespace GameCore.Narrative.Tests
 {
@@ -68,6 +74,11 @@ namespace GameCore.Narrative.Tests
         /// <summary>A trail counter written by committed steps, so accidental reconstruction is visible.</summary>
         private const int SeedTrailSteps = 7;
 
+        /// <summary>The chapter-one opening node the registered migration writes for a version-1 zero (P-029).</summary>
+        private static readonly int OpeningNode =
+            GameCore.Rules.Narrative.NarrativeChapters.Get(GameCore.Rules.Narrative.NarrativeChapters.ChapterOneTag)
+                .OpeningNodeOrdinal;
+
         public static IReadOnlyList<NarrativeStatePolicyStep> Run()
             => new Executor().Run();
 
@@ -75,8 +86,7 @@ namespace GameCore.Narrative.Tests
         {
             private readonly List<NarrativeStatePolicyStep> steps = new List<NarrativeStatePolicyStep>();
             private readonly IdSequence sessionSequence = new IdSequence(0x47433031354E4152UL);
-            private readonly GameCore.Gameplay.Narrative.Fixtures.NarrativeRecipeApplier applier =
-                new GameCore.Gameplay.Narrative.Fixtures.NarrativeRecipeApplier();
+            private readonly NarrativeRecipeApplier applier = new NarrativeRecipeApplier();
 
             private ImmutableCatalog catalog = null!;
             private IReadOnlyList<CatalogPluginDeclaration> declarations = null!;
@@ -84,7 +94,7 @@ namespace GameCore.Narrative.Tests
             private StatePolicyCatalog policyCatalog = null!;
 
             private UnityWorldHost? host;
-            private GameCore.Gameplay.Narrative.Fixtures.NarrativeModule? module;
+            private NarrativeModule? module;
             private CompositionHost? lane;
             private AssemblyPublisher? publisher;
             private TargetRegistry? registry;
@@ -93,6 +103,7 @@ namespace GameCore.Narrative.Tests
             private DerivedAssemblyPipeline? pipeline;
             private StateMigrationPipeline? policies;
             private ulong operationSequence;
+            private DerivationResult? previousPolicyDerivation;
 
             public IReadOnlyList<NarrativeStatePolicyStep> Run()
             {
@@ -118,17 +129,17 @@ namespace GameCore.Narrative.Tests
                 const string name = "gc015-narrative-policy-surface";
                 try
                 {
-                    CatalogBuildResult build = GameCore.Gameplay.Narrative.Fixtures.NarrativeScenarioCatalog.Build();
+                    CatalogBuildResult build = NarrativeScenarioCatalog.Build();
                     catalog = build.Catalog!;
                     declarations = new List<CatalogPluginDeclaration>
                     {
                         ChapterDeclaration(1UL, true),
                         ChapterDeclaration(2UL, false),
                         new CatalogPluginDeclaration(
-                            GameCore.Gameplay.Narrative.Fixtures.NarrativeDeclarations.ForwardProvider(
+                            NarrativeDeclarations.ForwardProvider(
                                 NarrativeKeys.PluginTypeId(4UL),
-                                GameCore.Gameplay.Narrative.Fixtures.NarrativeScenarioCatalog.PluginFactoryKey,
-                                GameCore.Gameplay.Narrative.Fixtures.NarrativeScenarioCatalog.RecordSchema),
+                                NarrativeScenarioCatalog.PluginFactoryKey,
+                                NarrativeScenarioCatalog.RecordSchema),
                             ConfigDocument.Empty),
                     };
 
@@ -141,9 +152,12 @@ namespace GameCore.Narrative.Tests
                         .Add(NarrativeKeys.OutputSystem, SystemDispatchKind.ManagedSystem);
 
                     descriptorReport = OwnershipSchedulePipeline.Build(
-                        Manifests(), kinds, new GameCore.Gameplay.Narrative.Fixtures.NarrativeSlotMigrations());
+                        Manifests(), kinds, new NarrativeSlotMigrations());
 
-                    policyCatalog = StatePolicyCatalog.Build(MigrationHandlers(), NarrativeInitialValues());
+                    policyCatalog = StatePolicyCatalog.Build(
+                        Manifests(),
+                        MigrationHandlers(),
+                        NarrativeInitialValues());
 
                     bool descriptorBuilt = descriptorReport.Descriptor != null && descriptorReport.Adaptation != null;
 
@@ -179,14 +193,14 @@ namespace GameCore.Narrative.Tests
             private static CatalogPluginDeclaration ChapterDeclaration(ulong ordinal, bool first)
             {
                 PluginManifest manifest = first
-                    ? GameCore.Gameplay.Narrative.Fixtures.NarrativeDeclarations.ChapterProvider(
+                    ? NarrativeDeclarations.ChapterProvider(
                         NarrativeKeys.PluginTypeId(ordinal),
-                        GameCore.Gameplay.Narrative.Fixtures.NarrativeScenarioCatalog.PluginFactoryKey,
-                        GameCore.Gameplay.Narrative.Fixtures.NarrativeScenarioCatalog.RecordSchema)
-                    : GameCore.Gameplay.Narrative.Fixtures.NarrativeDeclarations.ChapterTwoProvider(
+                        NarrativeScenarioCatalog.PluginFactoryKey,
+                        NarrativeScenarioCatalog.RecordSchema)
+                    : NarrativeDeclarations.ChapterTwoProvider(
                         NarrativeKeys.PluginTypeId(ordinal),
-                        GameCore.Gameplay.Narrative.Fixtures.NarrativeScenarioCatalog.PluginFactoryKey,
-                        GameCore.Gameplay.Narrative.Fixtures.NarrativeScenarioCatalog.RecordSchema);
+                        NarrativeScenarioCatalog.PluginFactoryKey,
+                        NarrativeScenarioCatalog.RecordSchema);
 
                 return new CatalogPluginDeclaration(manifest, ConfigDocument.Empty);
             }
@@ -205,8 +219,8 @@ namespace GameCore.Narrative.Tests
             private static IReadOnlyList<ISlotMigration> MigrationHandlers()
                 => new List<ISlotMigration>
                 {
-                    new GameCore.Gameplay.Narrative.Fixtures.NarrativeConversationNodeMigration(),
-                    new GameCore.Gameplay.Narrative.Fixtures.NarrativeConversationStatusMigration(),
+                    new NarrativeConversationNodeMigration(),
+                    new NarrativeConversationStatusMigration(),
                 };
 
             /// <summary>
@@ -232,10 +246,10 @@ namespace GameCore.Narrative.Tests
                 try
                 {
                     WorldId world = NextSession();
-                    WorldCreateRequest request = GameCore.Gameplay.Narrative.Fixtures.NarrativeRegistration.CommandDrivenRequest(
+                    WorldCreateRequest request = NarrativeRegistration.CommandDrivenRequest(
                         world, NextOperation(world), ContentHash.Empty);
-                    UnityWorldRegistration registration = GameCore.Gameplay.Narrative.Fixtures.NarrativeRegistration.Create(
-                        descriptorReport.Adaptation!, GameCore.Gameplay.Narrative.Fixtures.NarrativeRegistration.Systems());
+                    UnityWorldRegistration registration = NarrativeRegistration.Create(
+                        descriptorReport.Adaptation!, NarrativeRegistration.Systems());
 
                     bool created = UnityWorldRegistry.TryCreate(request, registration, out UnityWorldHost? createdHost, out WorldCreateResult result);
                     host = createdHost;
@@ -245,14 +259,14 @@ namespace GameCore.Narrative.Tests
                         return;
                     }
 
-                    module = GameCore.Gameplay.Narrative.Fixtures.NarrativeModule.Attach(
+                    module = NarrativeModule.Attach(
                         host, descriptorReport.Compilation!.Schedule!);
 
                     registry = new TargetRegistry(world, 16);
                     publisher = new AssemblyPublisher(
                         host,
                         registry,
-                        GameCore.Gameplay.Narrative.Fixtures.NarrativeRecipes.Catalog(applier),
+                        NarrativeRecipes.Catalog(applier),
                         new MigrationRegistry(MigrationHandlers()),
                         descriptorReport.Descriptor!);
                     targets = new LiveTargetIndex(publisher.Recipes);
@@ -269,7 +283,7 @@ namespace GameCore.Narrative.Tests
                         new CatalogManifestSource(catalog, declarations),
                         null,
                         CompositionLaneSeed.InitialAssembly.WithScopes(
-                            GameCore.Gameplay.Narrative.Fixtures.NarrativeScopes.DeclaredChildren()));
+                            NarrativeScopes.DeclaredChildren()));
 
                     pipeline = new DerivedAssemblyPipeline(
                         host, lane, publisher, targets, seeder, NarrativeValues(), null, null,
@@ -293,7 +307,7 @@ namespace GameCore.Narrative.Tests
                     steps.Add(new NarrativeStatePolicyStep(
                         name,
                         seeded
-                        && lane.Committed.Scopes.Count == GameCore.Gameplay.Narrative.Fixtures.NarrativeScopes.DeclaredScopeCount
+                        && lane.Committed.Scopes.Count == NarrativeScopes.DeclaredScopeCount
                         && host.Lifecycle == WorldLifecycleState.Running
                         && AssemblyPublisher.MatchesPublishedAssembly(
                             lane.Committed.Revision, lane.Committed.Epoch, publisher.PublishedRevision, host.CurrentEpoch),
@@ -336,11 +350,11 @@ namespace GameCore.Narrative.Tests
                 try
                 {
                     AssemblyPublicationReport? publication = PublishPolicyEdit(
-                        GameCore.Gameplay.Narrative.Fixtures.NarrativeMounts.Mount(
-                            GameCore.Gameplay.Narrative.Fixtures.NarrativeDeclarations.ChapterProvider(
+                        NarrativeMounts.Mount(
+                            NarrativeDeclarations.ChapterProvider(
                                 NarrativeKeys.PluginTypeId(1UL),
-                                GameCore.Gameplay.Narrative.Fixtures.NarrativeScenarioCatalog.PluginFactoryKey,
-                                GameCore.Gameplay.Narrative.Fixtures.NarrativeScenarioCatalog.RecordSchema),
+                                NarrativeScenarioCatalog.PluginFactoryKey,
+                                NarrativeScenarioCatalog.RecordSchema),
                             NarrativeKeys.ChapterOneInstall,
                             NarrativeKeys.ChapterOneScope,
                             null),
@@ -454,7 +468,8 @@ namespace GameCore.Narrative.Tests
                 try
                 {
                     bool factHasTransferPolicy = policyCatalog.Policies!.TryFind(
-                            NarrativeKeys.BridgePermitValueSlot, out SlotStatePolicy? fact, out DiagnosticCode _, out string _)
+                            new StateSlotKey(NarrativeKeys.QuestLedger, NarrativeKeys.QuestOwner, NarrativeKeys.BridgePermitValueSlot),
+                            out SlotStatePolicy? fact, out DiagnosticCode _, out string _)
                         && fact != null
                         && fact.HasTransferPolicy
                         && fact.LastSupport == LastSupportPolicy.PreserveDormant;
@@ -524,8 +539,8 @@ namespace GameCore.Narrative.Tests
 
                     bool removed = !ReadSlot(NarrativeKeys.QuestLedger, NarrativeKeys.TrailOwner, NarrativeKeys.TrailProjectedSlot, out int _, out uint _);
                     bool siblingOfSameComponentKept = ReadSlot(
-                        NarrativeKeys.QuestLedger, NarrativeKeys.TrailOwner, NarrativeKeys.TrailStepsSlot, out int steps, out uint _)
-                        && steps == SeedTrailSteps;
+                        NarrativeKeys.QuestLedger, NarrativeKeys.TrailOwner, NarrativeKeys.TrailStepsSlot, out int trailSteps, out uint _)
+                        && trailSteps == SeedTrailSteps;
 
                     steps.Add(new NarrativeStatePolicyStep(
                         name,
@@ -600,12 +615,15 @@ namespace GameCore.Narrative.Tests
                     StatePolicyPlan undeclared = StatePolicyExecutor.Execute(
                         policyCatalog.Policies!,
                         seeder!.ReadLiveSlots(TargetIds()),
-                        new List<StatePolicyRequest> { StatePolicyRequest.Reset(node, "content repair") },
+                        new List<StatePolicyRequest> { StatePolicyRequest.Reset(node, ResetReason) },
                         policyCatalog.Migrations,
                         new DeclaredSlotMigrationRegistry(policyCatalog.Policies!),
                         policyCatalog.InitialValues,
                         new MigrationScratch(ScratchCapacityBytes, ScratchBytesPerSlot));
 
+                    // The migration observation already carried the node into chapter one's opening node at version 2,
+                    // so the value an undeclared reset must keep is that migrated value, not the seeded one.
+                    bool beforeValue = beforeRead && before == OpeningNode;
                     bool keptAfterRefusal = ReadSlot(
                         NarrativeKeys.Mara, NarrativeKeys.DialogueOwner, NarrativeKeys.ConversationNodeSlot, out int afterRefusal, out uint _);
 
@@ -623,14 +641,15 @@ namespace GameCore.Narrative.Tests
 
                     steps.Add(new NarrativeStatePolicyStep(
                         name,
-                        beforeRead
+                        beforeRead && beforeValue
                         && !undeclared.Succeeded
                         && undeclared.Code == DiagnosticCode.OwnershipConflict
                         && undeclared.Detail.Contains("does not declare a permitted reset")
-                        && keptAfterRefusal && afterRefusal == SeedNodeOrdinal
+                        && keptAfterRefusal && afterRefusal == before
                         && publication != null && publication.Published
                         && plan != null && plan.Succeeded && plan.ResetCount == 1
-                        && plan.Decisions[0].Reason == ResetReason
+                        && TryFindDecision(plan, node, out StatePolicyDecision resetDecision)
+                        && resetDecision.Reason == ResetReason
                         && afterRead && after == NarrativeConversationStatus.Idle,
                         "undeclaredReset=" + undeclared.Code.ToString() + ": " + undeclared.Detail
                         + "; valueAfterRefusal=" + Value(keptAfterRefusal, afterRefusal, 0U)
@@ -675,9 +694,11 @@ namespace GameCore.Narrative.Tests
                         seeded
                         && publication != null && publication.Published
                         && plan != null && plan.Succeeded && plan.TransferredCount == 1
-                        && plan.Dispositions[0].DestinationOwner.Equals(NarrativeKeys.GateOwner)
-                        && plan.Decisions[0].MovesToAnotherOwner
-                        && plan.Decisions[0].DeclaredLastSupportTransfer
+                        && TryFindDisposition(plan, source, out StateDisposition transferDisposition)
+                        && transferDisposition.DestinationOwner.Equals(NarrativeKeys.GateOwner)
+                        && TryFindDecision(plan, source, out StatePolicyDecision transferDecision)
+                        && transferDecision.MovesToAnotherOwner
+                        && transferDecision.DeclaredLastSupportTransfer
                         && sourceRetired
                         && destinationHolds && moved == 12 && movedVersion == 1U
                         && policies!.Transfers.Count == 1,
@@ -714,7 +735,7 @@ namespace GameCore.Narrative.Tests
                     // The transferred fact slot now belongs to the gate owner, so the revision that must read it
                     // declares that ownership (P-032, P-034).
                     AssemblyPublicationReport? publication = PublishPolicyEdit(
-                        NextChapterTwoEdit(), null, SetWith(GateOwnedFact()), out StatePolicyPlan? plan, out DerivedAssemblyReport? _);
+                        NextChapterTwoEdit(), null, SetWith(GateOwnedFact()), out StatePolicyPlan? plan, out DerivedAssemblyReport? failedDerived);
 
                     bool kept = ReadSlot(NarrativeKeys.Mara, NarrativeKeys.DialogueOwner, NarrativeKeys.ConversationNodeSlot, out int value, out uint version);
 
@@ -733,6 +754,10 @@ namespace GameCore.Narrative.Tests
                         + "; epoch=" + epochBefore.Value.ToString(CultureInfo.InvariantCulture)
                         + "->" + host.CurrentEpoch.Value.ToString(CultureInfo.InvariantCulture)
                         + "; live=" + Value(kept, value, version)));
+
+                    // The refused plan published no number, so the composition publication it belonged to is still
+                    // without an assembly; the next observation rejoins the series here (P-006, P-029).
+                    PublishCatchUpAfterObservedFailure(failedDerived);
                 }
                 catch (Exception exception)
                 {
@@ -753,18 +778,20 @@ namespace GameCore.Narrative.Tests
                     bool seeded = SeedSlot(NarrativeKeys.Mara, NarrativeKeys.DialogueOwner, NarrativeKeys.ConversationNodeSlot, 1U, SeedNodeOrdinal);
                     AssemblyEpoch epochBefore = host!.CurrentEpoch;
                     var tinyBudget = new PlanBudget(1024UL * 1024UL, 1024UL * 1024UL, 32UL, 64UL);
+                    SlotStatePolicySet afterTransfer = SetWith(GateOwnedFact());
 
                     // The measured pass first: it reports the temporary storage it needed (P-022).
                     StatePolicyPlan measured = StatePolicyExecutor.Execute(
-                        policyCatalog.Policies!,
+                        afterTransfer,
                         seeder!.ReadLiveSlots(TargetIds()),
                         null,
                         policyCatalog.Migrations,
-                        new DeclaredSlotMigrationRegistry(policyCatalog.Policies!),
+                        new DeclaredSlotMigrationRegistry(afterTransfer),
                         policyCatalog.InitialValues,
                         new MigrationScratch(ScratchCapacityBytes, ScratchBytesPerSlot));
 
-                    SlotStatePolicySet afterTransfer = SetWith(GateOwnedFact());
+                    // The refused pass still belongs to a real composition publication, so the observation proves a
+                    // refused plan publishes no epoch and consumes no number (P-022, P-029).
                     var tinyPolicies = new StateMigrationPipeline(host, publisher!, seeder!, policyCatalog, tinyBudget);
                     AssemblyPublicationReport? publication = PublishPolicyEdit(
                         NextChapterTwoEdit(), null, afterTransfer, out StatePolicyPlan? plan, out DerivedAssemblyReport? _, tinyPolicies);
@@ -806,7 +833,7 @@ namespace GameCore.Narrative.Tests
                     return false;
                 }
 
-                OperationId operation = NextOperation(host!.World.Session);
+                OperationId operation = NextOperation(host!.World);
                 DerivedAssemblyReport derived = pipeline!.PublishDerived(operation);
                 if (derived.Outcome == DerivedAssemblyOutcome.Refused)
                 {
@@ -816,7 +843,7 @@ namespace GameCore.Narrative.Tests
                 if (derived.Outcome == DerivedAssemblyOutcome.NoTargetChange)
                 {
                     AssemblyPublicationReport unchanged = publisher!.PublishUnchangedAssembly(
-                        NextOperation(host.World.Session), lane!.Committed.Revision, lane.Committed.Epoch);
+                        NextOperation(host.World), lane!.Committed.Revision, lane.Committed.Epoch);
                     if (!unchanged.Published)
                     {
                         return false;
@@ -831,6 +858,11 @@ namespace GameCore.Narrative.Tests
             /// Publishes one composition edit whose state dispositions are GC-015's own policy pass (P-029, P-032):
             /// the edit is admitted and published, the derivation is GC-006's, and the plan the publisher applies
             /// carries the executor's dispositions instead of the planner's compatibility fallback.
+            ///
+            /// The lane is resynchronized to one publication behind its committed pair *before* anything is
+            /// derived or planned, so the proposal, the plan and the adoption all name the same base. A pass whose
+            /// plan is refused publishes no number (P-029), which leaves the world one behind the lane until the
+            /// next call rejoins the series (P-006).
             /// </summary>
             private AssemblyPublicationReport? PublishPolicyEdit(
                 CompositionEditPayload payload,
@@ -852,41 +884,286 @@ namespace GameCore.Narrative.Tests
                     return null;
                 }
 
-                derived = pipeline.Derive(NextOperation(host.World.Session));
-                if (derived.Proposal == null || derived.Proposal.Proposal == null)
+                if (!SyncWorldBehindLane())
+                {
+                    return null;
+                }
+
+                OperationId operation = NextOperation(host.World);
+                derived = DerivePolicyProposal(operation);
+                if (derived.Outcome == DerivedAssemblyOutcome.Refused)
                 {
                     return null;
                 }
 
                 policyPlan = (policyPipeline ?? policies!).Execute(TargetIds(), requests, policyOverride);
-                if (!publisher.TryAdoptLanePublication(
-                        lane!.Committed.Revision, lane.Committed.Epoch, out AssemblyEpoch _, out DiagnosticCode _))
+
+                // A derivation with no proposal is a binding delta that changes no target: the pass's own
+                // dispositions decide whether this publication is an unchanged assembly or a state-only one, so it
+                // is planned exactly like any other publication (GC-015, P-006).
+                PlanningCompositionProposal? proposal =
+                    derived.Proposal != null ? derived.Proposal.Proposal : null;
+                return PublishPolicyProposal(
+                    operation, derived, proposal ?? EmptyPolicyProposal(operation, derived), policyPlan);
+            }
+
+            /// <summary>
+            /// Plans the lane's committed publication with GC-015's policy dispositions and publishes it through
+            /// the real publisher (P-006, P-029, P-032). A refused plan publishes without consuming a number — the
+            /// publisher refuses it before it ever looks for an adoption — while a no-op plan is the unchanged
+            /// assembly itself; only an effective plan adopts the lane pair it lands on.
+            /// </summary>
+            private AssemblyPublicationReport? PublishPolicyProposal(
+                OperationId operation,
+                DerivedAssemblyReport derived,
+                PlanningCompositionProposal proposal,
+                StatePolicyPlan policyPlan)
+            {
+                if (publisher == null || host == null || lane == null || targets == null || seeder == null)
                 {
                     return null;
                 }
 
                 PlannedPublication plan = AssemblyPlanner.Build(
-                    derived.Proposal.Proposal,
+                    proposal,
                     publisher.Descriptor,
                     publisher.PublishedRevision,
                     host.CurrentEpoch,
                     publisher.Published.Bindings,
                     publisher.Published.Rules,
-                    targets!.PlannerTargets(),
-                    seeder!.ReadLiveSlots(TargetIds()),
+                    targets.PlannerTargets(),
+                    seeder.ReadLiveSlots(TargetIds()),
                     publisher.Migrations,
                     new MigrationScratch(ScratchCapacityBytes, ScratchBytesPerSlot),
                     new InertAcquisitionSet(new StagedResourceGate(StagedByteCeiling, NarrativeKeys.Issuer),
-                        NextOperation(host.World.Session)),
+                        NextOperation(host.World)),
                     DefaultBudget(),
                     policyPlan);
 
-                return publisher.Publish(plan);
+                if (plan.IsRejected)
+                {
+                    // The policy pass was refused, so the plan carries no dispositions: the publisher refuses it
+                    // before the first live write, consumes no number and leaves the old assembly intact (P-029).
+                    AssemblyPublicationReport refused = publisher.Publish(plan);
+                    FinishDerivedReport(derived, plan, refused);
+                    return refused;
+                }
+
+                if (!HasEffectiveChange(plan))
+                {
+                    // A genuinely unchanged binding delta whose policy dispositions change nothing: the world's
+                    // assembly for this composition publication is the unchanged one, a real publication of the
+                    // lane's own pair (P-006, GC-015).
+                    AssemblyPublicationReport unchanged = publisher.PublishUnchangedAssembly(
+                        operation, lane.Committed.Revision, lane.Committed.Epoch);
+                    FinishDerivedReport(derived, null, unchanged);
+                    return unchanged;
+                }
+
+                if (!publisher.TryAdoptLanePublication(
+                        lane.Committed.Revision, lane.Committed.Epoch, out AssemblyEpoch _, out DiagnosticCode adoptCode))
+                {
+                    derived.Outcome = DerivedAssemblyOutcome.Refused;
+                    derived.Code = adoptCode;
+                    derived.Detail = "the assembly publisher refused to adopt composition publication "
+                        + lane.Committed.Revision.Value.ToString(CultureInfo.InvariantCulture)
+                        + "/" + lane.Committed.Epoch.Value.ToString(CultureInfo.InvariantCulture)
+                        + " for the state-policy publication.";
+                    return null;
+                }
+
+                AssemblyPublicationReport publication = publisher.Publish(plan);
+                FinishDerivedReport(derived, plan, publication);
+                return publication;
+            }
+
+            /// <summary>
+            /// Whether the plan changes anything the publisher would publish: a binding row that moves, or any
+            /// disposition that is not a plain retain — the publisher's own effective-change rule, read from the
+            /// plan it is about to publish (P-006, GC-015).
+            /// </summary>
+            private static bool HasEffectiveChange(PlannedPublication plan)
+            {
+                if (plan.Installs.Count != 0 || plan.Removals.Count != 0)
+                {
+                    return true;
+                }
+
+                for (int i = 0; i < plan.Dispositions.Count; i++)
+                {
+                    if (plan.Dispositions[i].Kind != StateDispositionKind.Retain)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+
+            /// <summary>
+            /// Brings the world to exactly one publication behind the lane's committed pair, so the publication
+            /// the caller is about to make adopts that pair as its own number. A composition publication whose
+            /// assembly was refused published no number and left the world behind; every pair in between is
+            /// published as the unchanged assembly it turned out to be, which keeps P-006's one series unbroken on
+            /// both sides. A world already at or past the committed pair is a caller bug and refuses.
+            /// </summary>
+            private bool SyncWorldBehindLane()
+            {
+                while (true)
+                {
+                    if (!publisher!.PublishedRevision.TryIncrement(out CompositionRevision nextRevision)
+                        || !host!.CurrentEpoch.TryIncrement(out AssemblyEpoch nextEpoch))
+                    {
+                        return false;
+                    }
+
+                    if (nextRevision.Equals(lane!.Committed.Revision) && nextEpoch.Equals(lane.Committed.Epoch))
+                    {
+                        return true;
+                    }
+
+                    if (!nextRevision.Value.Equals(nextEpoch.Value)
+                        || nextRevision.CompareTo(lane.Committed.Revision) > 0)
+                    {
+                        return false;
+                    }
+
+                    AssemblyPublicationReport resynchronized = publisher.PublishUnchangedAssembly(
+                        NextOperation(host.World), nextRevision, nextEpoch);
+                    if (!resynchronized.Published)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            /// <summary>
+            /// Rejoins the world with the lane right after an observed refusal: the refused plan published no
+            /// number, so the composition publication it belonged to still has no assembly. The same proposal is
+            /// re-planned with a pass that succeeds — the failing slot takes its declared last-support policy
+            /// instead of the version change it cannot cross — and published as that pair's assembly (P-006,
+            /// P-029). A failure here only leaves the next observation to resynchronize; it can never turn the
+            /// observed refusal into a false pass.
+            /// </summary>
+            private void PublishCatchUpAfterObservedFailure(DerivedAssemblyReport? failed)
+            {
+                try
+                {
+                    if (failed == null || failed.Proposal == null || failed.Proposal.Proposal == null
+                        || publisher == null || host == null)
+                    {
+                        return;
+                    }
+
+                    var node = new StateSlotKey(
+                        NarrativeKeys.Mara, NarrativeKeys.DialogueOwner, NarrativeKeys.ConversationNodeSlot);
+                    StatePolicyPlan catchUpPolicies = policies!.Execute(
+                        TargetIds(),
+                        new List<StatePolicyRequest> { StatePolicyRequest.PreserveDormant(node) },
+                        SetWith(GateOwnedFact()));
+                    if (!catchUpPolicies.Succeeded)
+                    {
+                        return;
+                    }
+
+                    PublishPolicyProposal(
+                        NextOperation(host.World), failed, failed.Proposal.Proposal, catchUpPolicies);
+                }
+                catch (Exception)
+                {
+                    // The observation above is already complete; failing to resynchronise only makes the final
+                    // bounds probe report no publication, never a false pass for the failed migration.
+                }
+            }
+
+            private DerivedAssemblyReport DerivePolicyProposal(OperationId operation)
+            {
+                var report = new DerivedAssemblyReport
+                {
+                    Operation = operation,
+                    LaneRevision = lane!.Committed.Revision,
+                    LaneEpoch = lane.Committed.Epoch,
+                    WorldEpochBefore = host!.CurrentEpoch,
+                    WorldEpochAfter = host.CurrentEpoch,
+                };
+
+                DerivationInputTargets targetView = targets!.BuildDerivationTargets();
+                if (!targetView.Succeeded)
+                {
+                    report.Outcome = DerivedAssemblyOutcome.Refused;
+                    report.Code = targetView.Code;
+                    report.Detail = targetView.Detail;
+                    return report;
+                }
+
+                DerivationInputReport input = CompositionDerivationInput.Build(
+                    lane.Committed,
+                    targetView.Targets,
+                    null,
+                    null);
+                report.Input = input;
+                if (!input.Succeeded || input.Snapshot == null)
+                {
+                    report.Outcome = DerivedAssemblyOutcome.Refused;
+                    report.Code = input.Code;
+                    report.Detail = input.Detail;
+                    return report;
+                }
+
+                // The baseline is the last derivation this policy path published: reusing the setup pipeline's
+                // would re-report every row that path already published, and the delta decides whether this
+                // composition publication changes any target (P-023).
+                DerivationResult derivation = DerivationEngine.Derive(
+                    input.Snapshot,
+                    NarrativeValues(),
+                    DerivationOptions.Default,
+                    previousPolicyDerivation ?? pipeline!.PreviousDerivation);
+                report.Derivation = derivation;
+                if (!derivation.Accepted)
+                {
+                    report.Outcome = DerivedAssemblyOutcome.Refused;
+                    report.Code = derivation.DiagnosticCode;
+                    report.Detail = "derivation rejected: " + derivation.Rejection.ToString();
+                    return report;
+                }
+
+                previousPolicyDerivation = derivation;
+                if (derivation.Delta != null && derivation.Delta.IsEmpty)
+                {
+                    report.Outcome = DerivedAssemblyOutcome.NoTargetChange;
+                    report.Code = DiagnosticCode.None;
+                    report.Detail = "derivation changed no target assembly relative to the last policy publication";
+                    return report;
+                }
+
+                DerivationProposalReport proposal = DerivedCompositionProposal.Build(
+                    derivation,
+                    lane.Committed,
+                    publisher!.PublishedRevision,
+                    host.CurrentEpoch,
+                    DerivedCompositionProposal.InputHashOf(derivation),
+                    input.Snapshot.SnapshotHash,
+                    operation);
+                report.Proposal = proposal;
+                if (!proposal.Succeeded || proposal.Proposal == null)
+                {
+                    report.Outcome = proposal.Outcome == DerivationProposalOutcome.NoAssemblies
+                        ? DerivedAssemblyOutcome.NoTargetChange
+                        : DerivedAssemblyOutcome.Refused;
+                    report.Code = proposal.Code;
+                    report.Detail = proposal.Detail;
+                    return report;
+                }
+
+                report.Outcome = DerivedAssemblyOutcome.Published;
+                report.Code = DiagnosticCode.None;
+                report.Detail = "policy proposal prepared; publication waits for the GC-015 state-policy plan";
+                return report;
             }
 
             private bool PublishCompositionEdit(CompositionEditPayload payload)
             {
-                EditAdmission admission = lane!.SubmitEdit(payload, NextOperation(lane.World.Session), lane.Committed.Revision);
+                EditAdmission admission = lane!.SubmitEdit(payload, NextOperation(lane.World), lane.Committed.Revision);
                 if (!admission.Staged)
                 {
                     return false;
@@ -896,6 +1173,104 @@ namespace GameCore.Narrative.Tests
                 return published != null && published.Outcome == Outcome.Published;
             }
 
+
+            /// <summary>
+            /// The proposal a state-only publication carries: no mount and no unmount, so the plan's only effective
+            /// change is the policy pass's dispositions (GC-015, P-006).
+            /// </summary>
+            private PlanningCompositionProposal EmptyPolicyProposal(OperationId operation, DerivedAssemblyReport report)
+            {
+                ContentHash inputHash = report.Derivation != null
+                    ? DerivedCompositionProposal.InputHashOf(report.Derivation)
+                    : ContentHash.Empty;
+                ContentHash catalogHash = report.Input != null && report.Input.Snapshot != null
+                    ? report.Input.Snapshot.SnapshotHash
+                    : ContentHash.Empty;
+
+                return new PlanningCompositionProposal(
+                    operation,
+                    inputHash,
+                    publisher!.PublishedRevision,
+                    host!.CurrentEpoch,
+                    catalogHash,
+                    lane!.Committed.Mode,
+                    null,
+                    null);
+            }
+
+            private void FinishDerivedReport(
+                DerivedAssemblyReport report,
+                PlannedPublication? plan,
+                AssemblyPublicationReport publication)
+            {
+                report.Plan = plan;
+                report.Publication = publication;
+                report.WorldEpochAfter = host!.CurrentEpoch;
+                report.CountersJoined = AssemblyPublisher.MatchesPublishedAssembly(
+                    lane!.Committed.Revision,
+                    lane.Committed.Epoch,
+                    publisher!.PublishedRevision,
+                    host.CurrentEpoch);
+
+                if (publication.Published)
+                {
+                    report.Outcome = DerivedAssemblyOutcome.Published;
+                    report.Code = DiagnosticCode.None;
+                    report.Detail = string.Empty;
+                    return;
+                }
+
+                report.Outcome = publication.Outcome == Outcome.NoChange
+                    ? DerivedAssemblyOutcome.NoTargetChange
+                    : DerivedAssemblyOutcome.Refused;
+                report.Code = publication.Code;
+                report.Detail = publication.Detail;
+            }
+
+            /// <summary>Finds one plan's decision for a slot, so an observation never depends on decision order.</summary>
+            private static bool TryFindDecision(
+                StatePolicyPlan? plan,
+                StateSlotKey slot,
+                out StatePolicyDecision decision)
+            {
+                if (plan != null)
+                {
+                    for (int i = 0; i < plan.Decisions.Count; i++)
+                    {
+                        if (plan.Decisions[i].Live.Equals(slot))
+                        {
+                            decision = plan.Decisions[i];
+                            return true;
+                        }
+                    }
+                }
+
+                decision = null!;
+                return false;
+            }
+
+            /// <summary>Finds one plan's disposition for a slot, so an observation never depends on disposition order.</summary>
+            private static bool TryFindDisposition(
+                StatePolicyPlan? plan,
+                StateSlotKey slot,
+                out StateDisposition disposition)
+            {
+                if (plan != null)
+                {
+                    for (int i = 0; i < plan.Dispositions.Count; i++)
+                    {
+                        if (plan.Dispositions[i].Slot.Equals(slot))
+                        {
+                            disposition = plan.Dispositions[i];
+                            return true;
+                        }
+                    }
+                }
+
+                disposition = default(StateDisposition);
+                return false;
+            }
+
             /// <summary>
             /// Alternates the chapter-two mount and unmount, so every GC-015 policy observation is published with a
             /// real composition publication whose derivation also changes a target (P-006, P-024).
@@ -903,19 +1278,21 @@ namespace GameCore.Narrative.Tests
             private CompositionEditPayload NextChapterTwoEdit()
             {
                 // The toggle reads the lane's committed state rather than a local flag, so a mount that some other
-                // step already performed can never be repeated (P-010).
+                // step already performed can never be repeated — and an unmounted installation stays recorded as
+                // `Disposed`, which is not a live mount and may be remounted (P-010, P-046).
                 bool mounted = lane!.Committed.TryGetInstall(NarrativeKeys.ChapterTwoInstall, out InstallEntry? entry)
-                    && entry != null;
+                    && entry != null
+                    && entry.State != InstallationState.Disposed;
                 return mounted ? Unmount(NarrativeKeys.ChapterTwoInstall) : ChapterTwoMount();
             }
 
             /// <summary>O-03 mount of the sibling chapter provider (07 section 3.1).</summary>
             private static CompositionEditPayload ChapterTwoMount()
-                => GameCore.Gameplay.Narrative.Fixtures.NarrativeMounts.Mount(
-                    GameCore.Gameplay.Narrative.Fixtures.NarrativeDeclarations.ChapterTwoProvider(
+                => NarrativeMounts.Mount(
+                    NarrativeDeclarations.ChapterTwoProvider(
                         NarrativeKeys.PluginTypeId(2UL),
-                        GameCore.Gameplay.Narrative.Fixtures.NarrativeScenarioCatalog.PluginFactoryKey,
-                        GameCore.Gameplay.Narrative.Fixtures.NarrativeScenarioCatalog.RecordSchema),
+                        NarrativeScenarioCatalog.PluginFactoryKey,
+                        NarrativeScenarioCatalog.RecordSchema),
                     NarrativeKeys.ChapterTwoInstall,
                     NarrativeKeys.ChapterTwoScope,
                     null);
