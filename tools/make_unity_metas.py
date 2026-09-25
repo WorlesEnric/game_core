@@ -16,6 +16,7 @@ script is idempotent: a second run reports zero creations.
 import os
 import re
 import sys
+from pathlib import Path
 import uuid
 
 SKIP_DIRS = {"bin", "obj", ".git", "Library", "Temp", "Logs", "obj~", ".vs", ".idea", "Artifacts~"}
@@ -101,8 +102,24 @@ def scan(roots):
     return created
 
 
+def default_roots():
+    """The two trees Unity actually imports: embedded packages and each qualification project's Assets folder.
+
+    Anything else in this repository (dotnet/, tools/, tests/, docs/, artifacts/, ProjectSettings/) is outside the
+    asset database, so a `.meta` there would be noise rather than a fix. Restricting the default to these trees is
+    what keeps a run from scattering metas across the repository.
+    """
+
+    roots = sorted(str(path) for path in Path("Packages").glob("com.gamecore.*") if path.is_dir())
+    roots.extend(sorted(str(path) for path in Path("unity").glob("*/Assets") if path.is_dir()))
+    return roots
+
+
 def main(argv):
-    roots = argv[1:] or ["."]
+    roots = argv[1:] or default_roots()
+    if not roots:
+        print("no Package or Unity project tree found; nothing to do", file=sys.stderr)
+        return 2
     for root in roots:
         if not os.path.isdir(root):
             print("not a directory: " + root, file=sys.stderr)
