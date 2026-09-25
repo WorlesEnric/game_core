@@ -27,6 +27,12 @@ TARGETS = [
     "dotnet/tools/GameCore.ApiSnapshot",
     # GC-006: the derivation package and its fixtures are engine-free too, so the same host-side checks apply.
     "Packages/com.gamecore.derivation",
+    # GC-010: the narrative rules package is engine-free like the derivation package (no UnityEngine anywhere in
+    # its Runtime), so it belongs in TARGETS and in `engine_free` below.
+    "Packages/com.gamecore.rules.narrative",
+    # GC-010: the narrative gameplay package declares real Unity components, so it is checked for balance and
+    # forbidden constructs but is deliberately NOT in `engine_free` below (it references Unity.Entities).
+    "Packages/com.gamecore.gameplay.narrative",
     # W2 gate: the planning package and the Unity runtime package hold the Wave 2 modules and the integration glue,
     # so the balance and forbidden-construct checks cover them as well. They are not in `engine_free`: both
     # legitimately reference Unity types.
@@ -212,6 +218,7 @@ def main() -> int:
         ROOT / "Packages/com.gamecore.contracts",
         ROOT / "Packages/com.gamecore.content.compiler/Runtime",
         ROOT / "Packages/com.gamecore.derivation",
+        ROOT / "Packages/com.gamecore.rules.narrative",
         ROOT / "dotnet/src",
     )
 

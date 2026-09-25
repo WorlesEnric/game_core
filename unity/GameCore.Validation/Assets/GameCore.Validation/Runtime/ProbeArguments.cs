@@ -14,13 +14,21 @@ namespace GameCore.Validation.ProbeHost
         private const string WorldDispatchArgumentName = "-probeWorldDispatch";
         private const string W1GateArgumentName = "-probeW1Gate";
         private const string W2GateArgumentName = "-probeW2Gate";
+        private const string NarrativeArgumentName = "-probeNarrative";
 
-        private ProbeArguments(bool missingRegistration, bool worldDispatch, bool w1Gate, bool w2Gate, string? resultPath)
+        private ProbeArguments(
+            bool missingRegistration,
+            bool worldDispatch,
+            bool w1Gate,
+            bool w2Gate,
+            bool narrative,
+            string? resultPath)
         {
             MissingRegistration = missingRegistration;
             WorldDispatch = worldDispatch;
             W1Gate = w1Gate;
             W2Gate = w2Gate;
+            Narrative = narrative;
             ResultPath = resultPath;
         }
 
@@ -46,12 +54,19 @@ namespace GameCore.Validation.ProbeHost
         /// </summary>
         public bool W2Gate { get; }
 
+        /// <summary>
+        /// Runs the GC-010 narrative vertical slice: the chapter providers mounted over a real catalog, the derived
+        /// binding layout published into a real world, one choice command committed with its durable fact, the
+        /// chapter-two mount, the spawned target, an idle world that performs no step and the genre neutrality audit.
+        /// </summary>
+        public bool Narrative { get; }
+
         /// <summary>Destination path of the structured JSON result.</summary>
         public string? ResultPath { get; }
 
         /// <summary>True when the process was launched as a probe rather than as a normal player run.</summary>
         public bool IsProbeInvocation =>
-            MissingRegistration || WorldDispatch || W1Gate || W2Gate || !string.IsNullOrEmpty(ResultPath);
+            MissingRegistration || WorldDispatch || W1Gate || W2Gate || Narrative || !string.IsNullOrEmpty(ResultPath);
 
         /// <summary>True when a result destination was supplied; without it the probe cannot record evidence.</summary>
         public bool HasResultPath => !string.IsNullOrEmpty(ResultPath);
@@ -62,6 +77,7 @@ namespace GameCore.Validation.ProbeHost
             bool worldDispatch = false;
             bool w1Gate = false;
             bool w2Gate = false;
+            bool narrative = false;
             string? resultPath = null;
             for (int i = 0; i < arguments.Length; i++)
             {
@@ -82,13 +98,17 @@ namespace GameCore.Validation.ProbeHost
                 {
                     w2Gate = true;
                 }
+                else if (argument == NarrativeArgumentName)
+                {
+                    narrative = true;
+                }
                 else if (argument == ResultArgumentName && i + 1 < arguments.Length)
                 {
                     resultPath = arguments[i + 1];
                 }
             }
 
-            return new ProbeArguments(missingRegistration, worldDispatch, w1Gate, w2Gate, resultPath);
+            return new ProbeArguments(missingRegistration, worldDispatch, w1Gate, w2Gate, narrative, resultPath);
         }
     }
 }

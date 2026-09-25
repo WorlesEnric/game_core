@@ -69,10 +69,16 @@ namespace GameCore.Validation.ProbeHost
                             ProbeEnvironment.DeclaredUnityVersion,
                             ProbeEnvironment.DeclaredTarget,
                             "W2-GATE")
-                        : new ProbeReport(
-                            arguments.MissingRegistration ? "MissingRegistration" : "Positive",
-                            ProbeEnvironment.DeclaredUnityVersion,
-                            ProbeEnvironment.DeclaredTarget);
+                        : arguments.Narrative
+                            ? new ProbeReport(
+                                "Narrative",
+                                ProbeEnvironment.DeclaredUnityVersion,
+                                ProbeEnvironment.DeclaredTarget,
+                                "GC-010")
+                            : new ProbeReport(
+                                arguments.MissingRegistration ? "MissingRegistration" : "Positive",
+                                ProbeEnvironment.DeclaredUnityVersion,
+                                ProbeEnvironment.DeclaredTarget);
 
             if (!arguments.HasResultPath)
             {
@@ -105,6 +111,11 @@ namespace GameCore.Validation.ProbeHost
                 else if (arguments.W2Gate)
                 {
                     ProbeW2Gate.Run(report);
+                    report.CompletePositive();
+                }
+                else if (arguments.Narrative)
+                {
+                    ProbeNarrative.Run(report);
                     report.CompletePositive();
                 }
                 else

@@ -345,7 +345,7 @@ namespace GameCore.Planning
                     for (int t = 0; t < definitions.Count; t++)
                     {
                         TargetDefinition definition = definitions[t];
-                        if (!declared.AppliesTo(definition.Recipe))
+                        if (!declared.AppliesTo(definition))
                         {
                             continue;
                         }
@@ -379,7 +379,7 @@ namespace GameCore.Planning
                     continue;
                 }
 
-                if (!TryFindDeclaration(proposal, existingRow, known.Recipe, out ProposedCapability? declaredForRow)
+                if (!TryFindDeclaration(proposal, existingRow, known, out ProposedCapability? declaredForRow)
                     || declaredForRow == null)
                 {
                     continue;
@@ -1078,6 +1078,13 @@ namespace GameCore.Planning
                     }
 
                     recipes.Sort(StringComparer.Ordinal);
+                    var eligibleTargets = new List<string>(capability.EligibleTargets.Count);
+                    for (int t = 0; t < capability.EligibleTargets.Count; t++)
+                    {
+                        eligibleTargets.Add(PlanHashing.IdText(capability.EligibleTargets[t].Value));
+                    }
+
+                    eligibleTargets.Sort(StringComparer.Ordinal);
                     capabilities.Add(
                         PlanHashing.IdText(capability.Rule.Value) + ";"
                         + PlanHashing.IdText(capability.Capability.Capability.Value) + ";"
@@ -1088,7 +1095,8 @@ namespace GameCore.Planning
                         + capability.Priority.ToString(CultureInfo.InvariantCulture) + ";"
                         + PlanHashing.IdText(capability.Schema.Id.Value) + ";"
                         + capability.Schema.Version.ToString(CultureInfo.InvariantCulture) + ";"
-                        + string.Join("|", recipes.ToArray()));
+                        + string.Join("|", recipes.ToArray()) + ";"
+                        + string.Join("|", eligibleTargets.ToArray()));
                 }
 
                 capabilities.Sort(StringComparer.Ordinal);
@@ -1260,7 +1268,7 @@ namespace GameCore.Planning
         private static bool TryFindDeclaration(
             CompositionProposal proposal,
             TargetBindingRow row,
-            DefinitionRef recipe,
+            TargetDefinition definition,
             out ProposedCapability? declared)
         {
             for (int m = 0; m < proposal.Mounts.Count; m++)
@@ -1271,7 +1279,7 @@ namespace GameCore.Planning
                     ProposedCapability candidate = mount.Capabilities[c];
                     if (candidate.Capability.Capability.Equals(row.Capability)
                         && candidate.OutputSlot == row.OutputSlot
-                        && candidate.AppliesTo(recipe))
+                        && candidate.AppliesTo(definition))
                     {
                         declared = candidate;
                         return true;
