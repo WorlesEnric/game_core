@@ -1,0 +1,322 @@
+{
+  "artifact": "gamecore.gc017.fault-boundaries/1",
+  "task": "GC-017",
+  "title": "Inject failure at every apply and cancellation boundary",
+  "matrix": "docs/game-core/08-validation-and-performance.md#test-016",
+  "matrixTitle": "TEST-016 - Fault injection and recovery boundaries",
+  "matrixRowCount": 10,
+  "status": "NotRun (pending orchestrator build host)",
+  "statusNote": "Every row below is NotRun (pending orchestrator build host): this file maps the matrix to the cases that will evidence it, it does not report that any case ran. This host has no Unity Editor, no .NET SDK and no C# compiler, so no test, probe or player build was executed here. A row's status changes only when tools/run_gc017_gate.sh has produced the artifact in its evidence field.",
+  "statusVocabulary": [
+    "NotRun (pending orchestrator build host)"
+  ],
+  "boundaryVocabulary": [
+    "validation",
+    "acquisition",
+    "fence",
+    "migration",
+    "first-live-write",
+    "structural-playback",
+    "gate-installation",
+    "cleanup"
+  ],
+  "boundarySource": "Packages/com.gamecore.unity.runtime/Runtime/Faults/FaultBoundaries.cs (FaultBoundary / FaultBoundaryText.Names)",
+  "probeResult": "artifacts/faults/toolchain/probe-gc017-faults.json",
+  "probeResultRuns": "artifacts/faults/toolchain/probe-gc017-faults.json.run<N> (PROBE_RUNS=5)",
+  "probeLog": "artifacts/faults/toolchain/player-gc017-faults.log",
+  "editModeResults": "artifacts/faults/unity/editmode-results.xml",
+  "frameNote": "The probe's observation gc017-initial-world-lane-and-observer is the frame every row runs inside (the world, the lane pair and the read-only observer exist and share one epoch), not a TEST-016 injection row, so it carries no entry below; it is still asserted by every {narrative,cards} run of the -probeFaults mode.",
+  "digestNote": "Both families' 15-observation sequences are frozen by FaultScenario.ObservationNames and are claimed by two SHA-256 literals (narrative 701a3c286098501456390975bbdc7e4bdb7218d3094f23e39e61b3744fa52b61, cards 5cd97d38a1023fe0c8b5239d611061e5696454be9ec7cc68d440506810201732), recomputed by GameCore.Faults.Tests from FaultScenario.QualifiedNames(label) so a renamed or reordered observation fails the suite instead of shrinking it.",
+  "rows": [
+    {
+      "row": 1,
+      "boundary": "validation",
+      "injection": "Manifest, dependency, capability closure or schedule validation",
+      "requiredObservation": "Explicit rejection; prior published epoch, state and registrations remain active",
+      "case": "narrative/gc017-validation-fault-rejects-and-keeps-the-old-assembly",
+      "evidence": "artifacts/faults/toolchain/probe-gc017-faults.json",
+      "status": "NotRun (pending orchestrator build host)",
+      "note": "Family observation (FaultScenario), asserted for both families over the committed generated catalog and the hand-written generated-style catalog: the step detail carries structuralWrites=0 and crossedLiveWriteBoundary=False."
+    },
+    {
+      "row": 1,
+      "boundary": "validation",
+      "injection": "Manifest, dependency, capability closure or schedule validation",
+      "requiredObservation": "Explicit rejection; prior published epoch, state and registrations remain active",
+      "case": "GameCore.Unity.Runtime.Tests.Faults.FaultBoundaryTests.AnInjectedValidationFaultRejectsBeforeAnyLiveWrite",
+      "evidence": "artifacts/faults/unity/editmode-results.xml",
+      "status": "NotRun (pending orchestrator build host)",
+      "note": "Package fixture case (Unity EditMode): the armed validation latch rejects before any live write and the previously published assembly stays published."
+    },
+    {
+      "row": 2,
+      "boundary": "acquisition",
+      "injection": "Resource acquisition or plan preparation",
+      "requiredObservation": "Staged acquisitions are released; old assembly remains active; failure includes operation ID and provenance",
+      "case": "narrative/gc017-acquisition-fault-releases-staged-leases",
+      "evidence": "artifacts/faults/toolchain/probe-gc017-faults.json",
+      "status": "NotRun (pending orchestrator build host)",
+      "note": "Family observation: the step detail carries stagedLeasesReleased=true and crossedLiveWriteBoundary=False."
+    },
+    {
+      "row": 2,
+      "boundary": "acquisition",
+      "injection": "Resource acquisition or plan preparation",
+      "requiredObservation": "Staged acquisitions are released; old assembly remains active; failure includes operation ID and provenance",
+      "case": "GameCore.Unity.Runtime.Tests.Faults.FaultBoundaryTests.AnInjectedAcquisitionFaultRefusesTheLeaseAndReleasesWhatWasStaged",
+      "evidence": "artifacts/faults/unity/editmode-results.xml",
+      "status": "NotRun (pending orchestrator build host)",
+      "note": "Package fixture case (real inputs): StagedResourceGate.TryAcquire refuses the lease as a value with ResourceUnavailable and the plan releases exactly what it staged. The provenance half of this row is the traceRecord= fragment (one verbatim FaultRecord.ToLine(), boundary=acquisition op=<id> plan=<64-hex> fired=1) that the family observation archives into the probe JSON."
+    },
+    {
+      "row": 3,
+      "boundary": null,
+      "injection": "After preparation but before apply, including cancellation",
+      "requiredObservation": "No partial publication; staged resources are reclaimed; stale expected epoch has a separate outcome",
+      "case": "narrative/gc017-acquisition-fault-releases-staged-leases",
+      "evidence": "artifacts/faults/toolchain/probe-gc017-faults.json",
+      "status": "NotRun (pending orchestrator build host)",
+      "note": "Family observation (shared with row 2): a plan refused after preparation but before apply publishes nothing and reclaims its staged resources. boundary is null because this half of the row is not an injected boundary of its own; it is the shape the acquisition refusal leaves behind."
+    },
+    {
+      "row": 3,
+      "boundary": null,
+      "injection": "After preparation but before apply, including cancellation",
+      "requiredObservation": "No partial publication; staged resources are reclaimed; stale expected epoch has a separate outcome",
+      "case": "narrative/gc017-cancellation-before-the-cutoff-releases-staged-work",
+      "evidence": "artifacts/faults/toolchain/probe-gc017-faults.json",
+      "status": "NotRun (pending orchestrator build host)",
+      "note": "Family observation: cancellation raced against the serialized cutoff, step detail carries cancelOutcome=Cancelled, the staged plan is gone and Drain() is empty. Cancellation is not a FaultBoundary member, so boundary is null."
+    },
+    {
+      "row": 3,
+      "boundary": null,
+      "injection": "After preparation but before apply, including cancellation",
+      "requiredObservation": "No partial publication; staged resources are reclaimed; stale expected epoch has a separate outcome",
+      "case": "narrative/gc017-cancellation-after-the-cutoff-is-too-late-and-keeps-the-publication",
+      "evidence": "artifacts/faults/toolchain/probe-gc017-faults.json",
+      "status": "NotRun (pending orchestrator build host)",
+      "note": "Family observation for the separate outcome: step detail carries cancelOutcome=TooLate and the publication is kept; too-late cancellation never claims rollback."
+    },
+    {
+      "row": 4,
+      "boundary": "fence",
+      "injection": "Affected job held in flight while unload begins",
+      "requiredObservation": "No access-after-release; the documented draining/quarantine/fault behavior remains observable until ownership is resolved",
+      "case": "GameCore.Unity.Runtime.Tests.Faults.LifecycleFaultTests.AJobHeldInFlightWhileUnloadBeginsIsFencedAndItsResourceQuarantined",
+      "evidence": "artifacts/faults/unity/editmode-results.xml",
+      "status": "NotRun (pending orchestrator build host)",
+      "note": "Package fixture case: the in-flight job is fenced at unload and its resource is quarantined rather than released, so no access-after-release is possible."
+    },
+    {
+      "row": 4,
+      "boundary": "fence",
+      "injection": "Affected job held in flight while unload begins",
+      "requiredObservation": "No access-after-release; the documented draining/quarantine/fault behavior remains observable until ownership is resolved",
+      "case": "narrative/gc017-fence-fault-settles-handles-and-keeps-the-old-assembly",
+      "evidence": "artifacts/faults/toolchain/probe-gc017-faults.json",
+      "status": "NotRun (pending orchestrator build host)",
+      "note": "Family observation: the fence ran, its drained-handle count is reported with the refusal and the old assembly stays the published one (crossedLiveWriteBoundary=False)."
+    },
+    {
+      "row": 4,
+      "boundary": "fence",
+      "injection": "Affected job held in flight while unload begins",
+      "requiredObservation": "No access-after-release; the documented draining/quarantine/fault behavior remains observable until ownership is resolved",
+      "case": "GameCore.Unity.Runtime.Tests.Faults.FaultBoundaryTests.AnInjectedFenceFaultSettlesTrackedHandlesAndKeepsTheOldAssembly",
+      "evidence": "artifacts/faults/unity/editmode-results.xml",
+      "status": "NotRun (pending orchestrator build host)",
+      "note": "Package fixture case for the fence boundary itself: tracked handles are settled first and the reported DrainedHandles is the fence's count."
+    },
+    {
+      "row": 4,
+      "boundary": "fence",
+      "injection": "Affected job held in flight while unload begins",
+      "requiredObservation": "No access-after-release; the documented draining/quarantine/fault behavior remains observable until ownership is resolved",
+      "case": "narrative/gc017-teardown-settles-and-disposes",
+      "evidence": "artifacts/faults/toolchain/probe-gc017-faults.json",
+      "status": "NotRun (pending orchestrator build host)",
+      "note": "Family observation for the resolution end of this row: Clear, Stop and Dispose settle the tracked work and return the registry to baseline, so the draining/quarantine behaviour stays observable until ownership is resolved and is then resolved."
+    },
+    {
+      "row": 5,
+      "boundary": "migration",
+      "injection": "Migration/application after the first authoritative mutation",
+      "requiredObservation": "World enters Faulted, keeps its last good observation image, and never resumes the partially changed storage; no ECB rollback",
+      "case": "narrative/gc017-prewrite-migration-fault-preserves-live-state",
+      "evidence": "artifacts/faults/toolchain/probe-gc017-faults.json",
+      "status": "NotRun (pending orchestrator build host)",
+      "note": "Family observation: migration runs on copied scratch only, so a fault there releases the staged leases in reverse dependency order and leaves the old assembly, its state and its registrations running (crossedLiveWriteBoundary=False)."
+    },
+    {
+      "row": 5,
+      "boundary": "migration",
+      "injection": "Migration/application after the first authoritative mutation",
+      "requiredObservation": "World enters Faulted, keeps its last good observation image, and never resumes the partially changed storage; no ECB rollback",
+      "case": "GameCore.Unity.Runtime.Tests.Faults.FaultBoundaryTests.AnInjectedMigrationFaultAndTheOriginalPrewriteSwitchBothPreserveTheOldAssembly",
+      "evidence": "artifacts/faults/unity/editmode-results.xml",
+      "status": "NotRun (pending orchestrator build host)",
+      "note": "Package fixture case: the GC-017 migration latch and GC-008's original FailDuringMigration switch both refuse prewrite and preserve the old assembly."
+    },
+    {
+      "row": 5,
+      "boundary": "first-live-write",
+      "injection": "Migration/application after the first authoritative mutation",
+      "requiredObservation": "World enters Faulted, keeps its last good observation image, and never resumes the partially changed storage; no ECB rollback",
+      "case": "narrative/gc017-postwrite-fault-faults-the-world-and-keeps-the-last-image",
+      "evidence": "artifacts/faults/toolchain/probe-gc017-faults.json",
+      "status": "NotRun (pending orchestrator build host)",
+      "note": "Family observation: step detail carries crossedLiveWriteBoundary=True and worldState=Faulted; no epoch or image publishes and the last committed image stays the only safe observation."
+    },
+    {
+      "row": 5,
+      "boundary": "first-live-write",
+      "injection": "Migration/application after the first authoritative mutation",
+      "requiredObservation": "World enters Faulted, keeps its last good observation image, and never resumes the partially changed storage; no ECB rollback",
+      "case": "GameCore.Unity.Runtime.Tests.Faults.FaultBoundaryTests.AnInjectedFirstLiveWriteFaultAndTheOriginalPostwriteSwitchBothFaultTheWorld",
+      "evidence": "artifacts/faults/unity/editmode-results.xml",
+      "status": "NotRun (pending orchestrator build host)",
+      "note": "Package fixture case: reached inside the postwrite guard after the last write and stamp; the GC-017 latch and GC-008's original FailAfterFirstLiveWrite switch both fault the world, and neither resumes it."
+    },
+    {
+      "row": 5,
+      "boundary": "gate-installation",
+      "injection": "Migration/application after the first authoritative mutation",
+      "requiredObservation": "World enters Faulted, keeps its last good observation image, and never resumes the partially changed storage; no ECB rollback",
+      "case": "narrative/gc017-gate-installation-fault-stops-after-live-writes",
+      "evidence": "artifacts/faults/toolchain/probe-gc017-faults.json",
+      "status": "NotRun (pending orchestrator build host)",
+      "note": "Family observation: installing the new execution graph and opening staged gates happens after the apply stage wrote live storage, so the fault is postwrite (crossedLiveWriteBoundary=True, worldState=Faulted)."
+    },
+    {
+      "row": 5,
+      "boundary": "gate-installation",
+      "injection": "Migration/application after the first authoritative mutation",
+      "requiredObservation": "World enters Faulted, keeps its last good observation image, and never resumes the partially changed storage; no ECB rollback",
+      "case": "GameCore.Unity.Runtime.Tests.Faults.FaultBoundaryTests.AnInjectedGateInstallationFaultFaultsAfterTheApplyStage",
+      "evidence": "artifacts/faults/unity/editmode-results.xml",
+      "status": "NotRun (pending orchestrator build host)",
+      "note": "Package fixture case: CommitView faults after the apply stage and before TryRebindSchedule, so no epoch or image publishes."
+    },
+    {
+      "row": 6,
+      "boundary": "structural-playback",
+      "injection": "Authoritative system throws after a partial update",
+      "requiredObservation": "Advancement and ordinary committed output stop; corruption is not concealed by continuing subsequent systems",
+      "case": "narrative/gc017-structural-playback-fault-stops-the-step-commit",
+      "evidence": "artifacts/faults/toolchain/probe-gc017-faults.json",
+      "status": "NotRun (pending orchestrator build host)",
+      "note": "Family observation: the boundary is reached after the step's systems ran and before TryCommitStep, so the step is never committed, StepAdvanceResult.Accepted is false, PublishedSnapshot is null and worldState=Faulted."
+    },
+    {
+      "row": 6,
+      "boundary": "structural-playback",
+      "injection": "Authoritative system throws after a partial update",
+      "requiredObservation": "Advancement and ordinary committed output stop; corruption is not concealed by continuing subsequent systems",
+      "case": "GameCore.Unity.Runtime.Tests.Faults.GuardedDispatchFaultTests.AStructuralPlaybackFaultStopsTheStepCommitAndKeepsTheQuarantine",
+      "evidence": "artifacts/faults/unity/editmode-results.xml",
+      "status": "NotRun (pending orchestrator build host)",
+      "note": "Package fixture case: the structural work the systems recorded has played back, the commit has not happened, and the quarantine is kept."
+    },
+    {
+      "row": 6,
+      "boundary": "structural-playback",
+      "injection": "Authoritative system throws after a partial update",
+      "requiredObservation": "Advancement and ordinary committed output stop; corruption is not concealed by continuing subsequent systems",
+      "case": "GameCore.Unity.Runtime.Tests.Faults.GuardedDispatchFaultTests.AThrowingGuardedSystemStopsTheNextRegisteredStageAndPublishesNothing",
+      "evidence": "artifacts/faults/unity/editmode-results.xml",
+      "status": "NotRun (pending orchestrator build host)",
+      "note": "Package fixture case for the partial update itself: a system that writes then throws stops the next registered stage and publishes no step and no snapshot."
+    },
+    {
+      "row": 6,
+      "boundary": "structural-playback",
+      "injection": "Authoritative system throws after a partial update",
+      "requiredObservation": "Advancement and ordinary committed output stop; corruption is not concealed by continuing subsequent systems",
+      "case": "GameCore.Unity.Runtime.Tests.Faults.GuardedDispatchFaultTests.AStockGroupSwallowsTheSameExceptionAndTheGuardedGroupDoesNot",
+      "evidence": "artifacts/faults/unity/editmode-results.xml",
+      "status": "NotRun (pending orchestrator build host)",
+      "note": "Package contrast case for the second half of the row: the stock group loop logs the same exception and continues, the guarded group does not, which is what stops corruption being concealed by continuing subsequent systems."
+    },
+    {
+      "row": 7,
+      "boundary": null,
+      "injection": "Adapter output fails after a successful simulation commit",
+      "requiredObservation": "Simulation history is not rewound; adapter degradation/retry follows its contract",
+      "case": "GameCore.Unity.Runtime.Tests.Faults.GuardedDispatchFaultTests.AFailingOutputGroupDoesNotRewindTheCommittedStep",
+      "evidence": "artifacts/faults/unity/editmode-results.xml",
+      "status": "NotRun (pending orchestrator build host)",
+      "note": "Package fixture case. boundary is null because no FaultBoundary member has an injection point on this row: the engine adapters that own the post-commit output stage are GC-019's, so GC-017 evidences the row only through the output group's commit boundary, not through an injected adapter fault."
+    },
+    {
+      "row": 8,
+      "boundary": "cleanup",
+      "injection": "One disposer throws",
+      "requiredObservation": "Other safe cleanup proceeds; failed release is recorded; ownership that cannot be proven safe stays retained/quarantined",
+      "case": "narrative/gc017-cleanup-fault-retains-staged-ownership",
+      "evidence": "artifacts/faults/toolchain/probe-gc017-faults.json",
+      "status": "NotRun (pending orchestrator build host)",
+      "note": "Family observation: step detail carries retainedStaged=1; every staged lease stays retained and reported (Quarantined) instead of a release being claimed."
+    },
+    {
+      "row": 8,
+      "boundary": "cleanup",
+      "injection": "One disposer throws",
+      "requiredObservation": "Other safe cleanup proceeds; failed release is recorded; ownership that cannot be proven safe stays retained/quarantined",
+      "case": "narrative/gc017-cleanup-boundary-releases-what-a-refusal-staged",
+      "evidence": "artifacts/faults/toolchain/probe-gc017-faults.json",
+      "status": "NotRun (pending orchestrator build host)",
+      "note": "Family observation for the other half of the row: with the refusal path taken, the ordinary release of what the refusal staged still proceeds and is reported."
+    },
+    {
+      "row": 8,
+      "boundary": "cleanup",
+      "injection": "One disposer throws",
+      "requiredObservation": "Other safe cleanup proceeds; failed release is recorded; ownership that cannot be proven safe stays retained/quarantined",
+      "case": "GameCore.Unity.Runtime.Tests.Faults.FaultBoundaryTests.AnInjectedCleanupFaultRetainsStagedOwnershipInsteadOfReportingRelease",
+      "evidence": "artifacts/faults/unity/editmode-results.xml",
+      "status": "NotRun (pending orchestrator build host)",
+      "note": "Package fixture case: the cleanup latch is reached first on the refusal path, so the staged lease is retained and reported rather than released."
+    },
+    {
+      "row": 8,
+      "boundary": "cleanup",
+      "injection": "One disposer throws",
+      "requiredObservation": "Other safe cleanup proceeds; failed release is recorded; ownership that cannot be proven safe stays retained/quarantined",
+      "case": "GameCore.Unity.Runtime.Tests.Faults.LifecycleFaultTests.AThrowingDisposerIsRecordedAndOtherCleanupStillProceeds",
+      "evidence": "artifacts/faults/unity/editmode-results.xml",
+      "status": "NotRun (pending orchestrator build host)",
+      "note": "Package fixture case for the throwing disposer itself (P-048): the failed release is recorded, the reference is kept and independent cleanup continues."
+    },
+    {
+      "row": 9,
+      "boundary": null,
+      "injection": "Old callback arrives after restart",
+      "requiredObservation": "New world is unchanged; stale result is rejected and its own resources are released",
+      "case": "narrative/gc017-old-callback-after-recovery-is-rejected",
+      "evidence": "artifacts/faults/toolchain/probe-gc017-faults.json",
+      "status": "NotRun (pending orchestrator build host)",
+      "note": "Family observation: step detail carries disposition=DiscardForeignWorld; the post-recovery world is unchanged and the stale token's own resources are released. boundary is null because a foreign callback is a CallbackGate decision, not an armed FaultBoundary."
+    },
+    {
+      "row": 10,
+      "boundary": null,
+      "injection": "Checkpoint restore fails during reference repair",
+      "requiredObservation": "Incomplete destination never becomes the running published world",
+      "case": "narrative/gc017-recovery-from-initial-definitions-into-a-new-world",
+      "evidence": "artifacts/faults/toolchain/probe-gc017-faults.json",
+      "status": "NotRun (pending orchestrator build host)",
+      "note": "GC-017 covers the initial-definition form of this row (step detail carries recovered=True); the checkpoint form is GC-018/GC-027. boundary is null because the recovery repair seam is not an armed FaultBoundary."
+    },
+    {
+      "row": 10,
+      "boundary": null,
+      "injection": "Checkpoint restore fails during reference repair",
+      "requiredObservation": "Incomplete destination never becomes the running published world",
+      "case": "GameCore.Unity.Runtime.Tests.Recovery.InitialDefinitionRecoveryTests.AFailedReferenceRepairNeverExposesARunningWorld",
+      "evidence": "artifacts/faults/unity/editmode-results.xml",
+      "status": "NotRun (pending orchestrator build host)",
+      "note": "Package fixture case for the repair refusal itself: the repair runs before any world is created, so a failure leaves the registry exactly as it was and no incomplete destination is exposed. GC-017 evidences the initial-definition form; the checkpoint form is GC-018/GC-027."
+    }
+  ]
+}

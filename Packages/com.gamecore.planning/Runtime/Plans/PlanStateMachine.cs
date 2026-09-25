@@ -101,8 +101,14 @@ namespace GameCore.Planning
         /// <summary>True once the plan's staged resources are known and the fence may copy/migrate state (P-029).</summary>
         public bool IsPrepared => Phase == PlanPhase.Prepared || Phase == PlanPhase.Applying;
 
-        /// <summary>True once live writes may have happened, i.e. the postwrite fault cutoff (P-031).</summary>
-        public bool HasCrossedLiveWriteBoundary => Phase == PlanPhase.Applying || Phase == PlanPhase.Published;
+        /// <summary>
+        /// True once live writes may have happened, i.e. the postwrite fault cutoff (P-031). `Faulted` is included
+        /// because `TryFault` is legal only from `Applying` (see <see cref="IsLegalTransition"/>): a faulted plan has
+        /// by definition crossed the boundary, and reporting false for it would let a caller conclude that no live
+        /// write happened and that the same storage may be re-applied.
+        /// </summary>
+        public bool HasCrossedLiveWriteBoundary =>
+            Phase == PlanPhase.Applying || Phase == PlanPhase.Published || Phase == PlanPhase.Faulted;
 
         /// <summary>True when the plan published with cleanup errors, which is still an authoritative assembly.</summary>
         public bool PublishedWithCleanupErrors =>
