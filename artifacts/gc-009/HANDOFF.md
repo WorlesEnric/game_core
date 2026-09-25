@@ -2,11 +2,14 @@
 
 Branch: `gc-009` (worktree `/Users/yangcao/wkspace/gc-wt/gc-009`).
 
-**Status of every executable check in this handoff: `NotRun (pending orchestrator build host)`.** This host has no
-.NET SDK, no C# compiler, no Mono and no Unity, so nothing here has been compiled, imported or executed. Only
-interpreter-level host checks ran; they are recorded in `artifacts/gc-009/static-checks.log` and are explicitly
-**not** build evidence: `tools/check_game_core_csharp.py` (68 files, brace/forbidden-construct scan) and
-`tools/validate_game_core_docs.py` (+ `--self-test`).
+**Build status.** Round 1 was built and executed on the Linux host; its results are in
+`artifacts/gc-009/BUILD_REPORT.md` (287 dotnet tests, 189 Unity EditMode, 6 PlayMode, IL2CPP player probes — all
+passing). The orchestrator then asked for two GC-009 acceptance items the report listed **NotRun** to be evidenced:
+real Unity EditMode tests for "disjoint work overlaps safely" and for "actual jobs complete before dependent
+reads/playback". **Those two new test files are `NotRun (pending orchestrator build host)`** — nothing in this round
+has been compiled or executed here. Everything else in this handoff describes the round-1 change set that the build
+host verified. Only interpreter-level host checks ran in this round; they are recorded in
+`artifacts/gc-009/static-checks.log`.
 
 ## 1. Summary
 
@@ -126,8 +129,8 @@ python3 tools/check_game_core_csharp.py
 | P-037 step admission and cutoffs | monotonic host-assigned admission sequences, capacity-bounded sealing, retained remainder, duplicate refusal with the original sequence, bounded-queue backpressure, unrun input returned in its original order | `TemporalDriverTests.OneAdmittedCommandAdvancesExactlyOneStepAndConsumesItsSeal`, `ACommandArrivingAfterTheCutoffWaitsForTheNextStep`, `ADuplicateRequestKeyIsRefusedWithItsOriginalSequence`, `AFullPendingQueueBackpressuresInsteadOfDroppingInput` |
 | P-038 clocks | `LogicalStepId`, committed simulation ticks and domain-explicit clocks are distinct; a wake is typed data feeding demand; pause applies each clock's declared policy | `TemporalDriverTests.ADomainClockWakeFiresOnlyWhenTheDomainAdvancesItsClock`, `AFixedDurationClockAdvancesOnlyByCommittedStepTime`, `PauseAppliesEachClocksDeclaredWakePolicyAndAddsNoDebt` |
 | P-039 stage registration | coalescing only for matching contract version/owner/affinity; inner system keys are unique per stage; required/optional edges resolved by exact identity; buffer ports validated against their contract | `ScheduleCompilerTests.TwoCompatibleStageDeclarationsCoalesceIntoOneStage`, `CoalescedDeclarationsMustAgreeOnVersionOwnerAndAffinity`, `TwoConflictingDeclarationsOfOneSystemKeyReject*`, `OptionalStageEdgesDisappearWhileRequiredOnesRejectWhenAbsent` |
-| P-040 execution plan | required/optional stage edges, inner DAGs, buffer edges, playback order and access sets are compiled into one expanded DAG with a canonical order and a semantic plan hash; unordered overlap is `AmbiguousOrder`, cycles are `Cycle` with a path | `DeclaredEdgesAndBufferEdgesProduceOneStableTopologicalOrder`, `UnorderedWriterConflictRejectsWithBothDeclarationsAsWitness`, `StageCycleIsRejectedWithItsPath`, `InnerSystemCycleIsRejectedWithItsPath`, `ValidDisjointPartitionsMayOverlapWithoutAnEdge`, `ChangingOnlyAnAccessSetChangesThePlanHash`, `ChangingOnlyABufferLifetimeOrCapacityChangesThePlanHash` |
-| P-041 concurrency and structural work | a stage fence carries non-component producer handles; a dependent read combines and completes them; the table resets at step admission; playback binds to its producer slots | `NativeDependencyTests.ADependentReadWaitsForAnUnregisteredNonComponentProducer`, `TheStepFenceCarriesTheNonComponentHandle`, `StepAdmissionResetsTheTableAndKeepsThePublicationFenceHonest`, `APlaybackBindingCombinesExactlyItsProducerSlots`, `ADisabledProducerLeavesTheConsumerWithoutAWaitAndTheStepStillCommits` |
+| P-040 execution plan | required/optional stage edges, inner DAGs, buffer edges, playback order and access sets are compiled into one expanded DAG with a canonical order and a semantic plan hash; unordered overlap is `AmbiguousOrder`, cycles are `Cycle` with a path; the compiled order is what the real world executes, and two disjoint stages compile with no edge so neither entry is given a producer | `DeclaredEdgesAndBufferEdgesProduceOneStableTopologicalOrder`, `UnorderedWriterConflictRejectsWithBothDeclarationsAsWitness`, `StageCycleIsRejectedWithItsPath`, `InnerSystemCycleIsRejectedWithItsPath`, `ValidDisjointPartitionsMayOverlapWithoutAnEdge`, `ChangingOnlyAnAccessSetChangesThePlanHash`, `ChangingOnlyABufferLifetimeOrCapacityChangesThePlanHash`; `ScheduleExecutionTests.TheCompilerOrdersTwoDisjointStagesWithNoEdgeBetweenThem`, `NeitherDisjointJobReceivesTheOthersHandleAndBothWritesSurvive`, `TheCompiledScheduleBindsThePlaybackPointToItsProducerAndConsumerStages` |
+| P-041 concurrency and structural work | a stage fence carries non-component producer handles; a dependent read combines and completes them; the table resets at step admission; playback binds to its producer slots; a compiled schedule with no edge between two disjoint stages gives neither entry a producer, while a stage that declares both receives their combination; a structural playback whose producer publishes only natively waits for it | `NativeDependencyTests.ADependentReadWaitsForAnUnregisteredNonComponentProducer`, `TheStepFenceCarriesTheNonComponentHandle`, `StepAdmissionResetsTheTableAndKeepsThePublicationFenceHonest`, `APlaybackBindingCombinesExactlyItsProducerSlots`, `ADisabledProducerLeavesTheConsumerWithoutAWaitAndTheStepStillCommits`; `ScheduleExecutionTests.NeitherDisjointJobReceivesTheOthersHandleAndBothWritesSurvive`, `AStructuralPlaybackWaitsForItsProducerAndObservesItsWrittenComponent`, `APlaybackThatReadsWithoutWaitingIsRejectedByTheSafetySystem` |
 | P-043 buffers and bounded work | buffers are validated against their producer/consumer/owner stages, bound for the commit-time drain check, and rejected when active producers have no consumer or a port contradicts its contract | `ABufferWhoseActiveProducersHaveNoConsumerRejects`, `AStagePortWithoutABufferContractRejects`, `AProducerPortForABufferWhoseContractNamesNoSuchProducerRejects`, `TwoBufferContractsForOneBufferRejectAsDuplicate`, `ABufferBindsItsProducersAndConsumerCanonically`, `ABufferWhoseOwnerStageIsAbsentWhileItsProducerIsActiveRejects` |
 | P-044 commit | the compiled schedule drives the real guarded step group; drain validation uses the compiled bindings; a committed step completes its non-component fences | `ScheduleAdapterTests.TheCompiledScheduleDrivesTheRealStepGroupInItsCompiledOrder`, `TheCompiledScheduleBecomesAnOrderedDispatchTableWithNativeResourceSlots` |
 | P-001/P-059 genre neutrality | the compiler owns no stage list: an empty declaration set compiles to an empty valid schedule, and no schedule needs a combat, physics or animation stage | `ScheduleCompilerTests.AnEmptyDeclarationSetCompilesToAnEmptyValidSchedule`, `NoScheduleRequiresACombatPhysicsOrAnimationStage`, `ScheduleAdapterTests.AnEmptyScheduleInstallsAnEmptyValidTable`, `NoCompiledScheduleRequiresACombatPhysicsOrAnimationStage` |
@@ -135,8 +138,11 @@ python3 tools/check_game_core_csharp.py
 Suites (08): **TEST-011** (both temporal models, idle worlds, pause, registered wake), **TEST-012** (stage/system
 composition, cycle and missing-edge witnesses, coalescing, access conflicts, partitioned writers, buffer edges, job
 synchronization, structural playback), **TEST-013** (ordered dispatch, buffer binding and drain semantics through the
-compiled table), **TEST-022** (canonical ordering and hash stability under shuffled declaration order). TEST-021's
-"no compulsory phase" clause is asserted as the genre-neutrality cases above; the full suite belongs to GC-028.
+compiled table), **TEST-022** (canonical ordering and hash stability under shuffled declaration order). TEST-012's
+"independent jobs overlap without missing dependencies" and "structural playback waits for its producers" clauses now
+have execution evidence too (`ScheduleExecutionTests`, round 2 §10); the 10,000-step / 1-2-4-worker replay of TEST-022
+and the full multi-template run remain TEST-028's scope. TEST-021's "no compulsory phase" clause is asserted as the
+genre-neutrality cases above.
 
 ## 6. Decisions, assumptions and doc ambiguities
 
@@ -290,3 +296,104 @@ witness), and the deepest-queue counter is now asserted.
 Judge calls the reviewers raised are recorded above rather than "fixed" (the sealed-batch-per-frame rule in decision
 9, the `dotnet/tests/GameCore.Execution.Tests` boundary, and the Planning `.meta` situation). Nothing else the review
 found was left unfixed.
+
+
+## 10. Round 2 — the two remaining acceptance items (this round)
+
+The BUILD_REPORT's "Coverage limits" listed two GC-009 acceptance items as **NotRun**: no evidence for actual parallel
+overlap of disjoint jobs, and none for a structural playback waiting on a live job. Both are now covered by real Unity
+EditMode tests, added in `Packages/com.gamecore.unity.runtime/Tests/Runtime/Time/` (the discovered test asmdef path
+the build host established in round 1).
+
+### 10.1 Files added
+
+- `Tests/Runtime/Time/ScheduleExecutionFixture.cs` — fixture for both items. Its worlds are built the way the product
+  builds one: `ScheduleExecutionRegistration.Declarations` is compiled by the **real** `ScheduleCompiler`, the result
+  is adapted by `CompiledScheduleAdapter`, and the adapted table is what the world's `GameCoreStepGroup` installs. No
+  hand-written dispatch table is involved, so the order, the edges and the incoming-dependency sets under test are the
+  compiler's own output. Two shapes: `Overlap` (two stages with disjoint schemas and no edge between them, plus an
+  observer stage ordered after both) and `Playback` (a producer and a later playback stage joined only by a declared
+  buffer contract).
+- `Tests/Runtime/Time/ScheduleExecutionTests.cs` — 5 cases: the compiled-order/edge assertions for both shapes, the
+  disjoint dispatch behaviour, the playback wait, and the safety-system control.
+
+### 10.2 Item 1 — "disjoint work overlaps safely"
+
+Two stages declare different schemas and no edge, so the compiler accepts them unordered and the adapter installs two
+entries with no predecessor. Deterministic dispatch-level evidence, not wall-clock overlap:
+
+| Claim | Assertion |
+|---|---|
+| No ordering edge exists | `HasEdge(left, right)` and `HasEdge(right, left)` both false; both `PredecessorStages` empty |
+| Neither entry was given a producer | each entry's `PredecessorStages.Count == 0`, and each system's own dependency resolved to the default handle |
+| A real producer existed and still was not chained | `RightSawLeftSlot == LeftHandle` — the left job's handle was already recorded in the dispatcher's own stage fence when the right entry ran — while the right entry waited on nothing |
+| The mechanism is live where an edge exists | the ordered observer stage's `ObserveWaitsOn` is a genuine two-handle combination: not default, and equal to neither job's handle |
+| Both jobs ran and both writes survived | per-job timing stamps written by each job's own body; each component holds the value only its own job could write; neither sentinel survived |
+| No safety rejection | `IsFaulted` false, `FaultCount == 0`, step committed, ledger outstanding/quarantined zero after the step |
+
+**Wall-clock overlap is deliberately not asserted.** Unity may execute a short `IJob` inline on the thread that
+completes it, so "the two intervals overlapped in time" is an Editor configuration property, not a dispatch property,
+and asserting it would be flaky. TEST-012's requirement is that independent jobs overlap *without missing
+dependencies*; the dependency facts above are that requirement, and they are deterministic.
+
+One measurement caveat is recorded in the fixture: `SystemBase.Dependency` read inside `OnUpdate` is recomputed by the
+safety manager from the system's declared component types, so it is "what this system would wait on", not literally the
+dispatcher's incoming fence. The tests therefore take the decisive reading from the dispatcher's own per-stage fence
+table through the public `NativeFenceTable`, and treat the `Dependency` readings as a secondary consistency check.
+
+### 10.3 Item 2 — "actual jobs complete before dependent reads/playback"
+
+The producer stage schedules a job that writes a component **and** a non-component container, and deliberately does not
+publish its handle through `SystemBase.Dependency` (as GC-005's non-component fixture also does not). Its only carrier
+is `NativeDependencyTable`, which also forwards the handle into the host stage fence. The test asserts:
+
+| Claim | Assertion |
+|---|---|
+| The producer publishes only natively | the produce stage's own fence slot is the **default** handle, while `Native.FenceOf(slot)` equals the producer's handle |
+| The playback waits for its producer | `PlaybackIncoming != default` and `PlaybackIncoming == ProduceHandle` |
+| The wait is real and the step retires it | one step job recorded, `OutstandingJobCount` 1 during playback and 0 after commit, quarantined 0, publish count 2 |
+| The played-back structural change ran | `SetComponent` on the pre-existing target and `AddComponent` on the bare target both carry the produced value; the seeded sentinels were overwritten |
+| No safety rejection | `IsFaulted` false, `FaultCount == 0`, drain validation succeeded |
+
+The value assertions are labelled **corroboration, not proof**: a main-thread read of a declared component type is
+synchronized by the safety manager even without an explicit wait, so those values would also be correct if the wait were
+missing. The structural handle identity is the proof, and the negative case supplies the missing control: with
+`SkipProducerWait` the playback reads the producer's *container* — a resource the safety manager does gate — with the
+handle outstanding, and the test requires the guarded dispatcher's fault latch (`ApplyFault`, detail naming
+`InvalidOperationException`), no step id, no new image, and no played-back structural change. If an Editor
+configuration ever runs with job safety off, that case reports `Assert.Ignore` with an accurate message instead of
+passing silently.
+
+### 10.4 Round-2 verification and the fixes it drove
+
+Two independent read-only reviewers audited both new files against the real GC-003/GC-005 sources before commit. They
+found, and this round fixed:
+
+| Finding | Fix |
+|---|---|
+| A duplicate `RightIncoming` property and a missing `SourceEntity` property — the test assembly could not compile | the stray line became the missing declaration |
+| `ObserveIncoming = Dependency` can never report the ordered entry's incoming fence (the safety manager recomputes over an empty declared-access set) | the observer now reads the dispatcher's own per-stage fences through the public `NativeFenceTable` |
+| The producer published through `Dependency`, which made the native-table wait non-load-bearing and made the negative case unreachable | the write-back is gone; the native table is the only carrier, and the test asserts that |
+| The negative case read an ECS component, which `EntityManager.GetComponentData` completes for you, so it always self-ignored | it now reads the producer's non-component container, which job safety really does gate |
+| `LeftWaitsOn`/`RightWaitsOn` were tautological for stages with no declared access | renamed to `LeftWaitValue`/`RightWaitValue`, re-documented as a secondary check, and the decisive slot reading added |
+| Ledger counts were described as "jobs in flight" | re-documented as host bookkeeping; the slot readings carry the "in flight" claim |
+| The value assertions were described as proof of the wait | re-documented as corroboration, with the handle identity and the container negative as the proof |
+
+### 10.5 Round-2 status
+
+- The two new test files are **`NotRun (pending orchestrator build host)`**: no compiler or Unity here, so they are
+  verified by two independent hand traces plus the interpreter-level checks, not by execution.
+- Command for the build host (same invocation as round 1 §4.2, which discovers `Tests/Runtime/Time/**`):
+
+```sh
+UNITY=$HOME/Unity/Hub/Editor/6000.0.75f1/Editor/Unity
+"$UNITY" -batchmode -nographics -projectPath "$PWD/unity/GameCore.Validation" \
+  -runTests -testPlatform EditMode -testFilter GameCore.Unity.Runtime.Tests \
+  -testResults "$PWD/artifacts/gc-009/editmode-round2.xml" -logFile "$PWD/artifacts/gc-009/editmode-round2.log"
+```
+
+  Expected: the previous 48 runtime cases plus these 5. If `APlaybackThatReadsWithoutWaitingIsRejectedByTheSafetySystem`
+  reports Ignored rather than Passed, job safety is off in that Editor configuration and the report should say so.
+- Still **NotRun** and unchanged from the BUILD_REPORT: the 10,000-step / 1-2-4-worker replay, and the W2 integration
+  gate with GC-007/GC-008's real ownership validator and publisher.
+- `.meta` files were authored for both new files with GUIDs checked against the 247 already in the tree.

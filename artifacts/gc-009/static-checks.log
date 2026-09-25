@@ -1,10 +1,15 @@
 # GC-009 host-side static checks
 
-NotRun (pending orchestrator build host): no .NET SDK, no C# compiler, no Unity on the authoring host.
+Round 2: the two new execution-test files are NotRun (pending orchestrator build host): no .NET SDK, no C#
+compiler and no Unity on the authoring host. Round 1's executed results are in BUILD_REPORT.md, not here.
 
-## tools/check_game_core_csharp.py (brace balance + forbidden-language-construct scan)
-# 2026-09-25T00:11:37Z
+## tools/check_game_core_csharp.py (its own TARGETS: contracts/content-compiler only)
+# 2026-09-25T01:17:46Z
 checked 68 C# file(s)
+ok
+
+## the same checker's rules applied to this task's directories
+checked 20 file(s)
 ok
 
 ## tools/validate_game_core_docs.py --self-test
