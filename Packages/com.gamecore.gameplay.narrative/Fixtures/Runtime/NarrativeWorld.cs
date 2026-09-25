@@ -178,9 +178,10 @@ namespace GameCore.Gameplay.Narrative.Fixtures
         {
             this.host = host;
             Schedule = schedule;
-            EntityManager entityManager = host.EntityWorld.EntityManager;
-            RootEntity = entityManager.CreateEntity();
-            entityManager.SetName(RootEntity, "NarrativeRoot");
+
+            // The trail lives on the world-level ledger target, which the scenario seeds; until then there is no
+            // entity to write to and every write is a no-op, so the module never creates an entity nobody owns.
+            RootEntity = Entity.Null;
         }
 
         public UnityWorldHost Host => host;

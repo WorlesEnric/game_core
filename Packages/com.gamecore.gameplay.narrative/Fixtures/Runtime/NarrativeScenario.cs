@@ -734,7 +734,6 @@ namespace GameCore.Gameplay.Narrative.Fixtures
             private int registryBeforeCreate;
             private CommandEnvelope? choiceEnvelope;
             private string compileFailure = string.Empty;
-            private string scopeFailure = string.Empty;
             private string seedFailure = string.Empty;
 
             public Executor(
@@ -910,17 +909,19 @@ namespace GameCore.Gameplay.Narrative.Fixtures
                     targets = new LiveTargetIndex(publisher.Recipes);
                     seeder = new LiveTargetSeeder(host, registry, targets);
 
-                    // The control lane owns the scope tree, so it exists before any scope is created; the composition
-                    // publication series starts at the world's initial assembly (05 section 2, P-006).
+                    // The world definition declares the chapter tree, so the lane opens with it and publishes nothing
+                    // for it: a scope is not an assembly, and a scope-edit publication after the join would leave the
+                    // composition counter ahead of the world's for good (P-006, P-010). The lane's first publication is
+                    // therefore chapter one's mount, at the publication after the world's initial assembly (05 s2).
                     lane = CompositionHost.CreateDefault(
                         world,
                         NarrativeKeys.RootScope,
                         new CatalogManifestSource(catalog, declarations),
                         null,
-                        CompositionLaneSeed.InitialAssembly);
+                        CompositionLaneSeed.InitialAssembly.WithScopes(NarrativeScopes.DeclaredChildren()));
                     bridge = new WorldCompositionBridge(host, lane, publisher);
 
-                    bool scopes = BuildScopeTree();
+                    bool scopes = NarrativeScopes.DeclaredChildren().Count + 1 == lane.Committed.Scopes.Count;
 
                     bool seeded = scopes
                         && SeedTarget(NarrativeKeys.Mara, NarrativeKeys.VillageScope, NarrativeKeys.VillagerRecipe)
@@ -977,7 +978,11 @@ namespace GameCore.Gameplay.Narrative.Fixtures
                     bool pass = scopes
                         && seeded
                         && factSlots
-                        && lane.Committed.Scopes.Count == 7
+                        && lane.Committed.Scopes.Count == NarrativeScopes.DeclaredScopeCount
+                        && lane.Committed.Scopes.Depth(NarrativeKeys.MuseumScope) == 2
+                        && lane.Committed.Scopes.TryGet(NarrativeKeys.MuseumScope, out ScopeRecord? museum)
+                        && museum != null
+                        && museum.CapabilityIsolation.AllContracts
                         && clockRegistered
                         && facts.MessagePlanePresent
                         && laneJoined
@@ -1009,63 +1014,6 @@ namespace GameCore.Gameplay.Narrative.Fixtures
                 {
                     steps.Add(new NarrativeStep(name, false, DescribeException(exception)));
                 }
-            }
-
-            /// <summary>
-            /// Builds the seven-scope chapter tree of 07 section 3.1 through the control lane, including the museum's
-            /// capability isolation boundary (P-010, P-016).
-            /// </summary>
-            /// <summary>
-            /// Builds the seven-scope chapter tree of 07 section 3.1 through the control lane, including the museum's
-            /// capability isolation boundary (P-010, P-016).
-            /// </summary>
-            private bool BuildScopeTree()
-            {
-                if (lane == null)
-                {
-                    return false;
-                }
-
-                bool created =
-                    CreateScope(NarrativeKeys.ChapterOneScope, NarrativeKeys.RootScope, false)
-                    && CreateScope(NarrativeKeys.ChapterTwoScope, NarrativeKeys.RootScope, false)
-                    && CreateScope(NarrativeKeys.VillageScope, NarrativeKeys.ChapterOneScope, false)
-                    && CreateScope(NarrativeKeys.GroveScope, NarrativeKeys.ChapterOneScope, false)
-                    && CreateScope(NarrativeKeys.MuseumScope, NarrativeKeys.ChapterOneScope, true)
-                    && CreateScope(NarrativeKeys.HarborScope, NarrativeKeys.ChapterTwoScope, false);
-
-                if (!created || lane.Committed.Scopes.Count != 7)
-                {
-                    scopeFailure = "the scope tree is "
-                        + lane.Committed.Scopes.Count.ToString(CultureInfo.InvariantCulture)
-                        + " scope(s), not the seven the reference composition declares (07 section 3.1)";
-                    return false;
-                }
-
-                return true;
-            }
-
-            private bool CreateScope(ScopeId scope, ScopeId parent, bool isolateCapabilities)
-            {
-                if (lane == null)
-                {
-                    return false;
-                }
-
-                EditAdmission admission = lane.SubmitEdit(
-                    NarrativeMounts.ScopeCreate(scope, parent, isolateCapabilities),
-                    NextOperation(lane.World),
-                    lane.Committed.Revision);
-
-                if (!admission.Staged)
-                {
-                    scopeFailure = "scope " + scope.ToString() + " was refused: " + admission.Code
-                        + ": " + DescribeDiagnostics(admission);
-                    return false;
-                }
-
-                lane.Drain();
-                return true;
             }
 
             private bool SeedTarget(TargetId target, ScopeId scope, DefinitionRef recipe)
@@ -1981,11 +1929,6 @@ namespace GameCore.Gameplay.Narrative.Fixtures
                 if (compileFailure.Length != 0)
                 {
                     text.Append("; compileFailure=").Append(compileFailure);
-                }
-
-                if (scopeFailure.Length != 0)
-                {
-                    text.Append("; scopeFailure=").Append(scopeFailure);
                 }
 
                 if (seedFailure.Length != 0)
