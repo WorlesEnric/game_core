@@ -68,8 +68,17 @@
         "artifacts/w3-gate/toolchain/probe-w1-gate.json",
         "artifacts/w3-gate/toolchain/probe-w3-gate.json"
       ],
-      "gap": "WorldHost, CompositionHost, AssemblyPlanner/Publisher, ExecutionDriver and Observer roles are integrated and exercised, but the EngineAdapter observation boundary (TEST-019) has no archived run.",
-      "nextOwner": "GC-019"
+      "gap": "The adapter boundary is exercised in GC-019 EditMode, PlayMode and headless IL2CPP; the full P-002 participant role table and optional engine integrations remain incomplete.",
+      "nextOwner": "GC-019",
+      "gc019": {
+        "delta": "The existing PlayerLoop pump calls adapter input before host dispatch and presentation after it. Typed input reaches the world command port, while the view registry projects only committed snapshots; five IL2CPP GC-019 probe runs cover both narrative and cards over generated and fixture catalogs.",
+        "statusUnchangedBecause": "The complete participant role table is not yet evidenced for every optional adapter.",
+        "evidenceAdded": [
+          "artifacts/gc-019/editmode-results.xml",
+          "artifacts/gc-019/playmode-results.xml",
+          "artifacts/gc-019/toolchain/probe-gc019.json"
+        ]
+      }
     },
     {
       "id": "P-003",
@@ -989,8 +998,17 @@
         "artifacts/w3-gate/trx/",
         "artifacts/w3-gate/unity/editmode-results.xml"
       ],
-      "gap": "Undeclared-writer rejection, validated partitions and direct owner writes are evidenced; the declared external-authority domain (engine-owned state stamped as observation, intent submitted through the adapter) is unrun.",
-      "nextOwner": "GC-019"
+      "gap": "The descriptor, stamped external observation, intent route and ownership refusals are exercised in the GC-019 adapter tests; card and narrative IL2CPP worlds declare no external physical domain. No rigidbody or physics stage integration is evidenced (GC-020).",
+      "nextOwner": "GC-019",
+      "gc019": {
+        "delta": "The authority ledger rejects writes to externally owned domains and foreign or stale observations. GC-019 player observations show ECS-owned kinematic card/narrative recipes with zero external domains and no physics stage or system.",
+        "statusUnchangedBecause": "A real physics solver adapter and synchronization stage remain GC-020 scope.",
+        "evidenceAdded": [
+          "artifacts/gc-019/trx-final/",
+          "artifacts/gc-019/editmode-results.xml",
+          "artifacts/gc-019/toolchain/probe-gc019.json"
+        ]
+      }
     },
     {
       "id": "P-035",
