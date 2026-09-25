@@ -107,4 +107,4 @@ No tests were skipped, ignored or deleted. Expected values were changed only whe
 
 ## Still failing / blocked
 
-None observed in the required GC-006 checks. No PlayMode suite was requested or run for this task.
+No failures remain in the GC-006 derivation checks that ran. The differential sweep is **50 fixed seeds × 40 operations**, not the full TEST-008 specification of 50 × 500; GC-013 owns incremental invalidation and its untouched-sibling counter proof. This run does not establish those TEST-008 claims. GC-006 produces immutable deltas, not live publication: TEST-009's Unity-world atomic visibility, cancellation and postwrite failure boundaries were not run here. TEST-004's actual Entities/player and non-spatial runtime path was not run; only the pure derivation assertions in dotnet and Unity EditMode were exercised. No PlayMode or player suite was run.
