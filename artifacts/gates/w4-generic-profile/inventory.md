@@ -278,3 +278,37 @@ GC-012 changed seven rows below. The statuses remain conservative: full requirem
 
 Never `Implemented+Evidenced` on the strength of a document that itself says `NotRun (pending orchestrator build
 host)`. Remaining V1 capabilities stay open tasks and never become optional.
+
+## GC-018 revision notes (Wave 5, proposal only)
+
+**No row was promoted by this section.** GC-018 (`gc-018`) adds the checkpoint surface the W4 revision notes above
+name as the reason `P-053` and `O-20`..`O-22` are `Not yet`. Until `tools/unity/run_gc018_probe.sh` and the
+`GameCore.Gc018.Tests` EditMode assembly actually pass on the Linux build host, every row below keeps its current
+status and this table is a proposal. Nothing here is evidence: `/artifacts/gc-018/HANDOFF.md` states
+`NotRun (pending orchestrator build host)` for the whole change set.
+
+What exists now: the versioned container format and its generated serializers, committed-boundary capture with an
+explicit queued-command disposition, stable reference-table validation, unique directed schema migration planning,
+an unexposed restore target with validation before exposure, deterministic RNG streams, a bounded restore
+reservation ledger, and committed versioned fixture data. 16 observations × 2 families × 2 catalogs.
+
+| Id | Current | Proposed | Observation that would carry it |
+| --- | --- | --- | --- |
+| `P-053` | `Not yet` | `Implemented+Evidenced` | `gc018-committed-boundary-capture`, `gc018-queued-commands-are-dispositioned-not-omitted`, `gc018-capture-refuses-outside-a-boundary` |
+| `P-054` | `Partial` | `Implemented+Evidenced` | `gc018-ambiguous-migration-rejects-restore`, `gc018-unknown-required-schema-rejects-restore`, plus the migration-path fixture table |
+| `O-20` | `Not yet` | `Implemented+Evidenced` | `gc018-committed-boundary-capture`, `gc018-capture-refuses-outside-a-boundary` |
+| `O-21` | `Not yet` | `Implemented+Evidenced` | `gc018-restore-happens-into-a-new-unexposed-world`, `gc018-restore-recreates-state-at-different-native-indices`, `gc018-old-callbacks-cannot-target-the-new-session` |
+| `P-004` | `Partial` | `Partial` (unchanged) | stable identities are now also persisted and re-resolved, but TEST-002's small-width counter-exhaustion fixture is still absent |
+| `P-005` | `Partial` | `Partial` (unchanged) | no handle is persisted, but restore/restart invalidation at counter boundaries is still absent |
+| `P-032` | `Partial` | `Partial` (unchanged) | dormant slots now round-trip; the row's other sub-clauses belong to GC-015 |
+| `P-055` | `Partial` | `Partial` (unchanged) | the checkpoint declares and gates one required feature id, but evolution across a second protocol minor is not exercised |
+| `O-22` | `Not yet` | **`Not yet` (not proposed)** | `RecoverWorld` composes this task's restore path and GC-017's fault latch; that composition is GC-027's work |
+
+Carried gaps this section does not close: `O-22` is not composed; GC-016's observation lease is not consumed (the
+`CommittedBoundary` seam is frozen and independent, so neither task blocks the other); definition-revision
+resolution belongs to GC-025; and re-admitting an included queued command into the restored plane is the ingress
+adapter boundary (GC-019) — what is proven here is the recorded set, the cutoff and the restored high-water.
+
+Contract changes (additive only, each in its own `shared:` commit, listed in `/artifacts/gc-018/HANDOFF.md` §5):
+`UnityWorldRegistry.TryExpose`, `UnityWorldHost.TryCreateUnexposed`, and a `LiveTargetSeeder.TrySeedSlot` overload
+carrying the active/dormant flag.

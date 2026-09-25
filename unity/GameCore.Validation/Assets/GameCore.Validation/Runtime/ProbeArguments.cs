@@ -20,6 +20,7 @@ namespace GameCore.Validation.ProbeHost
         private const string W4ProfileArgumentName = "-probeW4Profile";
         private const string Gc013ArgumentName = "-probeGc013";
         private const string W4GateArgumentName = "-probeW4Gate";
+        private const string Gc018ArgumentName = "-probeGc018";
 
         private ProbeArguments(
             bool missingRegistration,
@@ -32,6 +33,7 @@ namespace GameCore.Validation.ProbeHost
             bool w4Profile,
             bool gc013,
             bool w4Gate,
+            bool gc018,
             string? resultPath)
         {
             MissingRegistration = missingRegistration;
@@ -44,6 +46,7 @@ namespace GameCore.Validation.ProbeHost
             W4Profile = w4Profile;
             Gc013 = gc013;
             W4Gate = w4Gate;
+            Gc018 = gc018;
             ResultPath = resultPath;
         }
 
@@ -114,13 +117,21 @@ namespace GameCore.Validation.ProbeHost
         /// <summary>Runs the integrated Wave 4 gate over both families and both catalogs.</summary>
         public bool W4Gate { get; }
 
+        /// <summary>
+        /// Runs the GC-018 checkpoint round-trip mode: a committed-boundary capture with an explicit queued-command
+        /// disposition, the tampered/truncated/unknown-schema/ambiguous-migration/corrupt-reference refusals, and a
+        /// restore into a fresh unexposed world that keeps active and dormant state, the mode, the boundaries, the
+        /// clocks and the cursors while refusing every old handle (P-032, P-049, P-053, P-054).
+        /// </summary>
+        public bool Gc018 { get; }
+
         /// <summary>Destination path of the structured JSON result.</summary>
         public string? ResultPath { get; }
 
         /// <summary>True when the process was launched as a probe rather than as a normal player run.</summary>
         public bool IsProbeInvocation =>
             MissingRegistration || WorldDispatch || W1Gate || W2Gate || W3Gate || Narrative || Cards || W4Profile
-            || Gc013 || W4Gate
+            || Gc013 || W4Gate || Gc018
             || !string.IsNullOrEmpty(ResultPath);
 
         /// <summary>True when a result destination was supplied; without it the probe cannot record evidence.</summary>
@@ -138,6 +149,7 @@ namespace GameCore.Validation.ProbeHost
             bool w4Profile = false;
             bool gc013 = false;
             bool w4Gate = false;
+            bool gc018 = false;
             string? resultPath = null;
             for (int i = 0; i < arguments.Length; i++)
             {
@@ -182,6 +194,10 @@ namespace GameCore.Validation.ProbeHost
                 {
                     w4Gate = true;
                 }
+                else if (argument == Gc018ArgumentName)
+                {
+                    gc018 = true;
+                }
                 else if (argument == ResultArgumentName && i + 1 < arguments.Length)
                 {
                     resultPath = arguments[i + 1];
@@ -190,7 +206,7 @@ namespace GameCore.Validation.ProbeHost
 
             return new ProbeArguments(
                 missingRegistration, worldDispatch, w1Gate, w2Gate, w3Gate, narrative, cards, w4Profile, gc013,
-                w4Gate, resultPath);
+                w4Gate, gc018, resultPath);
         }
     }
 }

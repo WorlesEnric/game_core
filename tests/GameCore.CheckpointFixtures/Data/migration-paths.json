@@ -1,0 +1,218 @@
+{
+  "format": "gamecore.checkpoint-fixtures/migration-paths/1",
+  "schemaStableName": "gamecore.checkpoint.schema.document",
+  "cases": [
+    {
+      "id": "migration-current-version",
+      "title": "a document already at the catalog version needs no step and reports the destination as current",
+      "requirementIds": [
+        "P-054"
+      ],
+      "testIds": [
+        "TEST-001",
+        "TEST-017"
+      ],
+      "steps": [],
+      "fromVersion": 1,
+      "toVersion": 1,
+      "expectedOutcome": "Current",
+      "expectedCode": "None",
+      "expectedPathCount": 0,
+      "expectedStepFromVersions": [],
+      "expectedDetailContains": "already declares the destination version"
+    },
+    {
+      "id": "migration-unique-chain-v1-v2-v3",
+      "title": "a graph registered as v1->v2 and v2->v3 is planned as the ordered two-step chain v1->v3",
+      "requirementIds": [
+        "P-054"
+      ],
+      "testIds": [
+        "TEST-001",
+        "TEST-017",
+        "TEST-020"
+      ],
+      "steps": [
+        {
+          "fromVersion": 1,
+          "toVersion": 2,
+          "keyStableName": "gamecore.checkpoint.migration.document.v1-to-v2"
+        },
+        {
+          "fromVersion": 2,
+          "toVersion": 3,
+          "keyStableName": "gamecore.checkpoint.migration.document.v2-to-v3"
+        }
+      ],
+      "fromVersion": 1,
+      "toVersion": 3,
+      "expectedOutcome": "Unique",
+      "expectedCode": "None",
+      "expectedPathCount": 1,
+      "expectedStepFromVersions": [
+        1,
+        2
+      ],
+      "expectedDetailContains": "exactly one registered chain reaches the destination"
+    },
+    {
+      "id": "migration-direct-edge-v1-v3",
+      "title": "a single registered v1->v3 step is planned as a one-step chain and is not ambiguous with an absent detour",
+      "requirementIds": [
+        "P-054"
+      ],
+      "testIds": [
+        "TEST-001",
+        "TEST-017",
+        "TEST-020"
+      ],
+      "steps": [
+        {
+          "fromVersion": 1,
+          "toVersion": 3,
+          "keyStableName": "gamecore.checkpoint.migration.document.v1-to-v3"
+        }
+      ],
+      "fromVersion": 1,
+      "toVersion": 3,
+      "expectedOutcome": "Unique",
+      "expectedCode": "None",
+      "expectedPathCount": 1,
+      "expectedStepFromVersions": [
+        1
+      ],
+      "expectedDetailContains": "exactly one registered chain reaches the destination"
+    },
+    {
+      "id": "migration-ambiguous-two-chains",
+      "title": "v1->v3 registered beside v1->v2 and v2->v3 makes the requested v1->v3 pair ambiguous and is refused",
+      "requirementIds": [
+        "P-054"
+      ],
+      "testIds": [
+        "TEST-001",
+        "TEST-020"
+      ],
+      "steps": [
+        {
+          "fromVersion": 1,
+          "toVersion": 2,
+          "keyStableName": "gamecore.checkpoint.migration.document.v1-to-v2"
+        },
+        {
+          "fromVersion": 2,
+          "toVersion": 3,
+          "keyStableName": "gamecore.checkpoint.migration.document.v2-to-v3"
+        },
+        {
+          "fromVersion": 1,
+          "toVersion": 3,
+          "keyStableName": "gamecore.checkpoint.migration.document.v1-to-v3"
+        }
+      ],
+      "fromVersion": 1,
+      "toVersion": 3,
+      "expectedOutcome": "Ambiguous",
+      "expectedCode": "OwnershipConflict",
+      "expectedPathCount": 2,
+      "expectedStepFromVersions": [],
+      "expectedDetailContains": "distinct chains"
+    },
+    {
+      "id": "migration-unreachable-missing-edge",
+      "title": "only v1->v2 is registered, so a request for v1->v3 has no chain and is refused as unreachable",
+      "requirementIds": [
+        "P-054"
+      ],
+      "testIds": [
+        "TEST-001",
+        "TEST-017",
+        "TEST-020"
+      ],
+      "steps": [
+        {
+          "fromVersion": 1,
+          "toVersion": 2,
+          "keyStableName": "gamecore.checkpoint.migration.document.v1-to-v2"
+        }
+      ],
+      "fromVersion": 1,
+      "toVersion": 3,
+      "expectedOutcome": "Unreachable",
+      "expectedCode": "MigrationRequired",
+      "expectedPathCount": 0,
+      "expectedStepFromVersions": [],
+      "expectedDetailContains": "no registered chain of migration steps reaches"
+    },
+    {
+      "id": "migration-downgrade-refused",
+      "title": "a document newer than the catalog is never migrated backwards; the directed graph is forward only",
+      "requirementIds": [
+        "P-054"
+      ],
+      "testIds": [
+        "TEST-001",
+        "TEST-017"
+      ],
+      "steps": [
+        {
+          "fromVersion": 1,
+          "toVersion": 2,
+          "keyStableName": "gamecore.checkpoint.migration.document.v1-to-v2"
+        }
+      ],
+      "fromVersion": 3,
+      "toVersion": 1,
+      "expectedOutcome": "Unreachable",
+      "expectedCode": "MigrationRequired",
+      "expectedPathCount": 0,
+      "expectedStepFromVersions": [],
+      "expectedDetailContains": "only forward migration steps are registered"
+    },
+    {
+      "id": "migration-cross-schema-refused",
+      "title": "a request whose destination names another schema is refused even at the same version number",
+      "requirementIds": [
+        "P-054"
+      ],
+      "testIds": [
+        "TEST-001",
+        "TEST-017"
+      ],
+      "toSchemaStableName": "gamecore.checkpoint.schema.target",
+      "steps": [],
+      "fromVersion": 1,
+      "toVersion": 1,
+      "expectedOutcome": "UnknownSchema",
+      "expectedCode": "UnsupportedVersion",
+      "expectedPathCount": 0,
+      "expectedStepFromVersions": [],
+      "expectedDetailContains": "never crosses schema identities"
+    },
+    {
+      "id": "migration-gap-exceeds-chain-bound",
+      "title": "a version gap wider than the registry's chain bound is refused before any chain is searched",
+      "requirementIds": [
+        "P-054"
+      ],
+      "testIds": [
+        "TEST-001",
+        "TEST-022"
+      ],
+      "steps": [
+        {
+          "fromVersion": 1,
+          "toVersion": 2,
+          "keyStableName": "gamecore.checkpoint.migration.document.v1-to-v2"
+        }
+      ],
+      "fromVersion": 1,
+      "toVersion": 66,
+      "expectedOutcome": "Unreachable",
+      "expectedCode": "MigrationRequired",
+      "expectedPathCount": 0,
+      "expectedStepFromVersions": [],
+      "expectedDetailContains": "chain bound this registry searches"
+    }
+  ]
+}

@@ -103,12 +103,18 @@ namespace GameCore.Validation.ProbeHost
                                                     ProbeEnvironment.DeclaredUnityVersion,
                                                     ProbeEnvironment.DeclaredTarget,
                                                     "W4-GATE")
-                                                : new ProbeReport(
-                                                    arguments.MissingRegistration
-                                                        ? "MissingRegistration"
-                                                        : "Positive",
-                                                    ProbeEnvironment.DeclaredUnityVersion,
-                                                    ProbeEnvironment.DeclaredTarget);
+                                                : arguments.Gc018
+                                                    ? new ProbeReport(
+                                                        "Gc018",
+                                                        ProbeEnvironment.DeclaredUnityVersion,
+                                                        ProbeEnvironment.DeclaredTarget,
+                                                        "GC-018")
+                                                    : new ProbeReport(
+                                                        arguments.MissingRegistration
+                                                            ? "MissingRegistration"
+                                                            : "Positive",
+                                                        ProbeEnvironment.DeclaredUnityVersion,
+                                                        ProbeEnvironment.DeclaredTarget);
 
             if (!arguments.HasResultPath)
             {
@@ -171,6 +177,11 @@ namespace GameCore.Validation.ProbeHost
                 else if (arguments.W4Gate)
                 {
                     ProbeW4Gate.Run(report);
+                    report.CompletePositive();
+                }
+                else if (arguments.Gc018)
+                {
+                    ProbeGc018.Run(report);
                     report.CompletePositive();
                 }
                 else
