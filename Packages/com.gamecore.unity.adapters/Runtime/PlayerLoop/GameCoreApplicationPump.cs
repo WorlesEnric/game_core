@@ -136,6 +136,7 @@ namespace GameCore.Unity.Adapters
         public static void Reset()
         {
             frameHosts.Clear();
+            IsEnabled = true;
             FrameCount = 0;
             PumpedWorldFrameCount = 0;
             RefusedFrameCount = 0;
