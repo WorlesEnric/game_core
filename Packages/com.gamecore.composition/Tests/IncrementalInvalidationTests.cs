@@ -301,6 +301,11 @@ namespace GameCore.Composition.Tests
             Assert.That(host.Mode, Is.EqualTo(PropagationMode.Conservative));
         }
 
+        /// <summary>
+        /// Refuses a mode switch and a subtree move, which are the two proposals whose published consequence a
+        /// derivation view has to judge (P-014, P-025); every other subject is accepted so a test can build the
+        /// world the refusal is about.
+        /// </summary>
         private sealed class RefusingValidator : ICompositionEditValidator
         {
             public const string Detail = "the switch would expose an unresolved capability conflict";
@@ -312,8 +317,28 @@ namespace GameCore.Composition.Tests
                 CompositionState after,
                 CompositionChangeSet changeSet)
             {
+                _ = before;
+                _ = after;
+                if (!changeSet.ModeChanged && !MovesAScope(changeSet))
+                {
+                    return EditValidationResult.Accept;
+                }
+
                 Invocations++;
                 return EditValidationResult.Refuse(DiagnosticCode.CapabilityConflict, Detail);
+            }
+
+            private static bool MovesAScope(CompositionChangeSet changeSet)
+            {
+                for (int i = 0; i < changeSet.ScopeEdits.Count; i++)
+                {
+                    if (changeSet.ScopeEdits[i].Kind == CompositionEditKind.Reparent)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
             }
         }
 
