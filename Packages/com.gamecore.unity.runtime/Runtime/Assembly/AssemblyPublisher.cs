@@ -24,11 +24,12 @@
 //   6. commit: rebuild the execution order, construct the complete view (bindings + rules + schedule + gates +
 //      snapshot token) and switch it once through the host (P-030).
 //
-// Two epoch series meet here. 05 s2 gives the world's initial assembly epoch 1 while a composition lane joined
-// right after creation still reports pre-publication counters at 0, so a lane publication at composition epoch E
-// publishes world assembly epoch E + 1 (`LaneEpochToWorldEpoch`); the invariant this file enforces is one number
-// per publication and no two publications sharing a number, with `LastLaneEpoch` recording which lane publication
-// produced which world epoch. See artifacts/gc-008/HANDOFF.md, decision 2.
+// There is ONE publication series here (P-006): the counters a composition operation reports are the counters the
+// world publishes. A lane joined to a world is seeded from that world's published assembly at construction
+// (`GameCore.Composition.CompositionLaneSeed`), so `CompositionRevision`/`AssemblyEpoch` each move by one per
+// publication on both sides, and the publisher *asserts* the equality: a plan adopted at a lane epoch other than
+// the published one is refused as `StalePlan` before any write. The invariant this file enforces is one number per
+// publication and no two publications sharing a number.
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -47,13 +48,15 @@ namespace GameCore.Unity.Runtime
         public readonly ScopeId Scope;
 
         /// <summary>
-        /// Composition revision the variant was prepared against (P-024): the spawn is validated against the
-        /// published revision, and a variant prepared before an intervening edit is recomputed or rejected, never
-        /// published half-assembled.
+        /// Composition revision the caller's derived variant was computed against (P-024). It must be the revision
+        /// the world publishes now: a variant prepared before an intervening edit is rejected `StalePlan` and
+        /// recomputed, never published half-assembled.
         /// </summary>
+        public readonly CompositionRevision PreparedRevision;
+
+        /// <summary>The composition publication this spawn belongs to; it is exactly the world's next assembly.</summary>
         public readonly CompositionRevision LaneRevision;
 
-        /// <summary>The composition-lane publication this spawn is part of; its mapped value is the new epoch.</summary>
         public readonly AssemblyEpoch LaneEpoch;
 
         public AssemblySpawnRequest(
@@ -61,6 +64,7 @@ namespace GameCore.Unity.Runtime
             ScopeId scope,
             TargetId target,
             OperationId operation,
+            CompositionRevision preparedRevision,
             CompositionRevision laneRevision,
             AssemblyEpoch laneEpoch)
         {
@@ -68,6 +72,7 @@ namespace GameCore.Unity.Runtime
             Scope = scope;
             Target = target;
             Operation = operation;
+            PreparedRevision = preparedRevision;
             LaneRevision = laneRevision;
             LaneEpoch = laneEpoch;
         }
@@ -185,15 +190,14 @@ namespace GameCore.Unity.Runtime
     /// </summary>
     public sealed class AssemblyPublisher
     {
-        /// <summary>World-series epoch of the initial assembly; a lane's pre-publication counters start one below it.</summary>
-        public const ulong InitialAssemblyEpoch = 1UL;
-
         private readonly UnityWorldHost world;
         private readonly TargetRegistry registry;
         private readonly SpawnRecipeCatalog recipes;
         private readonly MigrationRegistry migrations;
         private readonly OwnershipStageDescriptor descriptor;
         private readonly PublishedAssemblySlot assembly;
+
+        private readonly List<UsedPublication> usedPublications = new List<UsedPublication>();
 
         private int publicationOrdinal;
         private int appliedBindingRowCount;
@@ -227,8 +231,9 @@ namespace GameCore.Unity.Runtime
             }
 
             PublishedRevision = CompositionRevision.First;
-            LastLaneEpoch = AssemblyEpoch.Zero;
-            LastLaneRevision = CompositionRevision.Zero;
+            AdoptedLaneRevision = CompositionRevision.Zero;
+            AdoptedLaneEpoch = AssemblyEpoch.Zero;
+            HasAdoptedPublication = false;
 
             assembly = new PublishedAssemblySlot(new PublishedWorldView(
                 world.CurrentEpoch,
@@ -264,10 +269,12 @@ namespace GameCore.Unity.Runtime
         /// <summary>World-series composition revision this publisher has published (05 s2: it starts at 1).</summary>
         public CompositionRevision PublishedRevision { get; private set; }
 
-        /// <summary>Lane publication epoch of the latest assembly; <see cref="AssemblyEpoch.Zero"/> before any.</summary>
-        public AssemblyEpoch LastLaneEpoch { get; private set; }
-
-        public CompositionRevision LastLaneRevision { get; private set; }
+        /// <summary>
+        /// Published assembly epoch of the last publication, which is also the composition epoch that produced it:
+        /// P-006 has one series, so there is no second counter to report (see <see cref="AdoptedLaneEpoch"/> for the
+        /// composition publication a caller is about to turn into an assembly).
+        /// </summary>
+        public AssemblyEpoch PublishedEpoch => Published.Epoch;
 
         /// <summary>Assembly publications committed, the world's initial assembly included.</summary>
         public int PublicationCount => assembly.SwitchCount;
@@ -296,43 +303,24 @@ namespace GameCore.Unity.Runtime
         public int AppliedBindingRowCount => appliedBindingRowCount;
 
         /// <summary>
-        /// Maps a composition-lane publication epoch onto the world's assembly series (decision 2): the world's
-        /// initial assembly published epoch 1, so a lane that started at pre-publication epoch 0 publishes world
-        /// epoch E + 1. Overflow refuses instead of wrapping (P-005).
+        /// True when the lane's published revision/epoch pair is exactly the world's published pair. This is the
+        /// equality P-006 asks for between the two modules, checked as one value so a half-advanced pair cannot pass.
         /// </summary>
-        public static bool TryLaneEpochToWorldEpoch(AssemblyEpoch laneEpoch, out AssemblyEpoch worldEpoch)
-        {
-            if (laneEpoch.Value > ulong.MaxValue - InitialAssemblyEpoch)
-            {
-                worldEpoch = laneEpoch;
-                return false;
-            }
-
-            worldEpoch = new AssemblyEpoch(laneEpoch.Value + InitialAssemblyEpoch);
-            return true;
-        }
-
-        /// <summary>
-        /// Maps a composition-lane revision onto the world's published composition-revision series, exactly as
-        /// <see cref="TryLaneEpochToWorldEpoch"/> maps the epoch: P-006 increments both at the same publication, while
-        /// a lane joined right after world creation still reports its pre-publication zero.
-        /// </summary>
-        public static CompositionRevision LaneRevisionToWorldRevision(CompositionRevision laneRevision)
-        {
-            if (laneRevision.Value > ulong.MaxValue - InitialAssemblyEpoch)
-            {
-                return CompositionRevision.MaxValue;
-            }
-
-            return new CompositionRevision(laneRevision.Value + InitialAssemblyEpoch);
-        }
+        public static bool MatchesPublishedAssembly(
+            CompositionRevision laneRevision,
+            AssemblyEpoch laneEpoch,
+            CompositionRevision worldRevision,
+            AssemblyEpoch worldEpoch) =>
+            laneRevision.Equals(worldRevision) && laneEpoch.Equals(worldEpoch);
 
         /// <summary>
         /// Publishes one planned assembly at a step boundary (P-030). The outcome is `NoChange` (no increment),
         /// `Rejected` (no live write), `Published`/`PublishedWithCleanupErrors`, or `Faulted` (postwrite failure).
-        /// The publication belongs to the composition-lane publication previously adopted through
-        /// <see cref="TryAdoptLanePublication"/>; a publication without one is refused as `StalePlan`, because the
-        /// world epoch it maps to would not advance.
+        ///
+        /// The publication belongs to the composition publication adopted through
+        /// <see cref="TryAdoptLanePublication"/>, and the equality P-006 requires is *asserted* here: the adopted
+        /// composition epoch must be the world epoch this publication lands on. A mismatch — a stale adoption, a
+        /// repeated one, or a lane that was never seeded from the world — is `StalePlan` and no write happens.
         /// </summary>
         public AssemblyPublicationReport Publish(PlannedPublication publication)
         {
@@ -344,7 +332,7 @@ namespace GameCore.Unity.Runtime
             GameCoreThreading.RequireMainThread("AssemblyPublisher.Publish");
 
             AssemblyEpoch epochBefore = world.CurrentEpoch;
-            AssemblyEpoch laneEpoch = LastLaneEpoch;
+            AssemblyEpoch laneEpoch = AdoptedLaneEpoch;
 
             // 1. A world that cannot publish refuses before anything else happens; a faulted world never resumes.
             if (world.Lifecycle != WorldLifecycleState.Running && world.Lifecycle != WorldLifecycleState.Paused)
@@ -436,25 +424,48 @@ namespace GameCore.Unity.Runtime
                     "no assembly change");
             }
 
-            // 3. The epoch this publication will land on is decided before anything is written, so an exhausted
-            //    counter or a non-advancing mapping rejects while the old assembly is still untouched (P-005, P-006).
-            if (!TryLaneEpochToWorldEpoch(laneEpoch, out AssemblyEpoch nextEpoch) || nextEpoch.CompareTo(epochBefore) <= 0)
+            // 3. P-006 has one publication series: the composition publication this assembly belongs to must be
+            //    exactly the next value of the published one, on both counters. Anything else is stale and is
+            //    refused before a single live write (P-006, P-028).
+            if (!HasAdoptedPublication)
             {
-                publication.State.TryReject(DiagnosticCode.StalePlan, "the mapped world epoch does not advance");
+                publication.State.TryReject(
+                    DiagnosticCode.StalePlan,
+                    "no composition publication was adopted for this assembly");
                 return Refuse(
                     publication.Plan.Operation,
                     epochBefore,
                     laneEpoch,
                     DiagnosticCode.StalePlan,
-                    "lane epoch " + laneEpoch.Value.ToString(CultureInfo.InvariantCulture)
-                    + " maps to world epoch " + nextEpoch.Value.ToString(CultureInfo.InvariantCulture)
-                    + ", which does not advance the published epoch "
+                    "no composition publication was adopted; the world publishes epoch "
                     + epochBefore.Value.ToString(CultureInfo.InvariantCulture)
-                    + "; adopt the composition-lane publication first (P-006).");
+                    + " and cannot advance to an assembly nobody proposed (P-006).");
             }
 
-            // P-006 increments the revision and the epoch at the same publication, so both are decided here.
-            CompositionRevision nextRevision = NextRevision(PublishedRevision);
+            if (!NextEpoch(epochBefore).Equals(AdoptedLaneEpoch) ||
+                !NextRevision(PublishedRevision).Equals(AdoptedLaneRevision))
+            {
+                publication.State.TryReject(
+                    DiagnosticCode.StalePlan,
+                    "the adopted composition publication is not the next assembly");
+                return Refuse(
+                    publication.Plan.Operation,
+                    epochBefore,
+                    laneEpoch,
+                    DiagnosticCode.StalePlan,
+                    "the adopted composition publication is revision "
+                    + AdoptedLaneRevision.Value.ToString(CultureInfo.InvariantCulture)
+                    + "/epoch " + AdoptedLaneEpoch.Value.ToString(CultureInfo.InvariantCulture)
+                    + " but the next assembly of this world is revision "
+                    + NextRevision(PublishedRevision).Value.ToString(CultureInfo.InvariantCulture)
+                    + "/epoch " + NextEpoch(epochBefore).Value.ToString(CultureInfo.InvariantCulture)
+                    + "; the composition series and the published series must be the same one (P-006).");
+            }
+
+            // P-006 increments the revision and the epoch at the same publication, so both are taken from the
+            // adopted composition publication rather than recomputed: the numbers are the lane's, not an offset.
+            AssemblyEpoch nextEpoch = AdoptedLaneEpoch;
+            CompositionRevision nextRevision = AdoptedLaneRevision;
 
             // 4. The fence: admission closes and every tracked handle of the old assembly completes before its
             //    storage is touched (P-030, P-041, P-047).
@@ -525,8 +536,10 @@ namespace GameCore.Unity.Runtime
         }
 
         /// <summary>
-        /// Records the composition-lane publication counters an integration is about to publish. The world epoch a
-        /// publication lands on is derived from these, so the join is explicit instead of guessed (decision 2).
+        /// Records the composition publication the next assembly belongs to. P-006 has one series, so the pair must
+        /// be exactly the next value of the published one: the world publishes the numbers the composition lane
+        /// published, with no offset in either direction. A pair that is not the next publication — a repeated or
+        /// stale one, or a lane that was never seeded from the world — is refused (P-006, P-050).
         /// </summary>
         public bool TryAdoptLanePublication(
             CompositionRevision laneRevision,
@@ -534,32 +547,49 @@ namespace GameCore.Unity.Runtime
             out AssemblyEpoch worldEpoch,
             out DiagnosticCode code)
         {
-            if (!TryLaneEpochToWorldEpoch(laneEpoch, out worldEpoch))
+            worldEpoch = world.CurrentEpoch;
+
+            if (!laneRevision.Value.Equals(laneEpoch.Value))
             {
-                code = DiagnosticCode.BudgetExceeded;
+                // P-006 increments revision and epoch together; a pair that disagrees is two series in one value.
+                code = DiagnosticCode.UnsupportedVersion;
                 return false;
             }
 
-            if (worldEpoch.CompareTo(world.CurrentEpoch) <= 0)
+            if (!NextRevision(PublishedRevision).Equals(laneRevision) ||
+                !NextEpoch(world.CurrentEpoch).Equals(laneEpoch))
             {
-                // A publication that does not advance the assembly epoch would publish a second image at an epoch
-                // that already exists, which P-006 forbids.
-                code = DiagnosticCode.StalePlan;
-                worldEpoch = world.CurrentEpoch;
-                return false;
-            }
-
-            if (laneRevision.CompareTo(LastLaneRevision) <= 0)
-            {
+                // The composition publication is not the next assembly of the one series this world publishes.
                 code = DiagnosticCode.StalePlan;
                 return false;
             }
 
-            LastLaneRevision = laneRevision;
-            LastLaneEpoch = laneEpoch;
+            if (!IsUnusedPublication(laneRevision, laneEpoch, adopting: true))
+            {
+                // One number per publication and never shared: a pair that was already published, or that is
+                // already adopted and pending, cannot be adopted again (P-006, P-050).
+                code = DiagnosticCode.StalePlan;
+                return false;
+            }
+
+            AdoptedLaneRevision = laneRevision;
+            AdoptedLaneEpoch = laneEpoch;
+            HasAdoptedPublication = true;
+            worldEpoch = laneEpoch;
             code = DiagnosticCode.None;
             return true;
         }
+
+        /// <summary>
+        /// The composition publication this publisher will turn into the next assembly; null-valued (the default)
+        /// until <see cref="TryAdoptLanePublication"/> accepted one. <see cref="Publish"/> refuses without it.
+        /// </summary>
+        public CompositionRevision AdoptedLaneRevision { get; private set; }
+
+        public AssemblyEpoch AdoptedLaneEpoch { get; private set; }
+
+        /// <summary>True once an adopted composition publication is waiting for its assembly.</summary>
+        public bool HasAdoptedPublication { get; private set; }
 
         /// <summary>
         /// Spawns one target from a precompiled recipe and publishes it with its complete effective assembly in one
@@ -571,6 +601,7 @@ namespace GameCore.Unity.Runtime
             GameCoreThreading.RequireMainThread("AssemblyPublisher.Spawn");
 
             AssemblyEpoch epochBefore = world.CurrentEpoch;
+            CompositionRevision laneRevision = request.LaneRevision;
             AssemblyEpoch laneEpoch = request.LaneEpoch;
 
             if (world.Lifecycle != WorldLifecycleState.Running && world.Lifecycle != WorldLifecycleState.Paused)
@@ -580,25 +611,36 @@ namespace GameCore.Unity.Runtime
                     "world " + world.DiagnosticName + " is " + world.Lifecycle + " and accepts no spawn (P-031).");
             }
 
-            if (!TryLaneEpochToWorldEpoch(laneEpoch, out AssemblyEpoch nextEpoch) || nextEpoch.CompareTo(epochBefore) <= 0)
+            // P-006 has one publication series: the composition publication the spawn belongs to must name one
+            // publication and be exactly the next value of the published one, on both counters.
+            if (!laneRevision.Value.Equals(laneEpoch.Value) ||
+                !NextEpoch(epochBefore).Equals(laneEpoch) ||
+                !NextRevision(PublishedRevision).Equals(laneRevision))
             {
                 SpawnRejectionCount++;
                 return Refuse(request.Operation, epochBefore, laneEpoch, DiagnosticCode.StalePlan,
-                    "a spawn publishes a new assembly epoch; lane epoch "
-                    + laneEpoch.Value.ToString(CultureInfo.InvariantCulture) + " maps to world epoch "
-                    + nextEpoch.Value.ToString(CultureInfo.InvariantCulture) + " which does not advance "
-                    + epochBefore.Value.ToString(CultureInfo.InvariantCulture) + " (P-006).");
+                    "a spawn publishes the next assembly of the one publication series; the request names revision "
+                    + laneRevision.Value.ToString(CultureInfo.InvariantCulture) + "/epoch "
+                    + laneEpoch.Value.ToString(CultureInfo.InvariantCulture) + " but the next assembly is revision "
+                    + NextRevision(PublishedRevision).Value.ToString(CultureInfo.InvariantCulture) + "/epoch "
+                    + NextEpoch(epochBefore).Value.ToString(CultureInfo.InvariantCulture) + " (P-006).");
             }
 
-            PublishedWorldView view = assembly.Read();
-            // A spawn request carries the composition revision it was prepared against; that revision is mapped into
-            // the world's series, so a request prepared before an intervening edit is rejected instead of activating
-            // stale capabilities (P-024). A lane that never published maps to the initial assembly's revision 1.
-            CompositionRevision expectedRevision = LaneRevisionToWorldRevision(request.LaneRevision);
+            if (!IsUnusedPublication(laneRevision, laneEpoch, adopting: false))
+            {
+                SpawnRejectionCount++;
+                return Refuse(request.Operation, epochBefore, laneEpoch, DiagnosticCode.StalePlan,
+                    "composition publication " + laneEpoch.Value.ToString(CultureInfo.InvariantCulture)
+                    + " was already consumed; one number is never shared by two publications (P-006).");
+            }
+
+            // The variant was computed against a composition revision; P-024 validates it against the revision the
+            // world publishes now, so a variant prepared before an intervening edit is refused rather than
+            // activated stale.
             if (!recipes.TryValidateForPublication(
                     request.Recipe,
                     PublishedRevision,
-                    expectedRevision,
+                    request.PreparedRevision,
                     out SpawnRecipe? recipe,
                     out DiagnosticCode recipeCode)
                 || recipe == null)
@@ -606,8 +648,8 @@ namespace GameCore.Unity.Runtime
                 SpawnRejectionCount++;
                 return Refuse(request.Operation, epochBefore, laneEpoch, recipeCode,
                     "recipe " + request.Recipe.ToString() + " cannot be spawned against published revision "
-                    + PublishedRevision.Value.ToString(CultureInfo.InvariantCulture) + " (expected "
-                    + expectedRevision.Value.ToString(CultureInfo.InvariantCulture) + ") (P-024).");
+                    + PublishedRevision.Value.ToString(CultureInfo.InvariantCulture) + " (prepared against "
+                    + request.PreparedRevision.Value.ToString(CultureInfo.InvariantCulture) + ") (P-024).");
             }
 
             int drained = FenceOldAssembly();
@@ -621,9 +663,12 @@ namespace GameCore.Unity.Runtime
                     "target " + request.Target.ToString() + " was refused by the registry (P-004, P-005).");
             }
 
-            // P-006 increments the revision and the epoch at the same publication (decision 2 maps the lane's).
-            CompositionRevision nextRevision = NextRevision(PublishedRevision);
+            // P-006 increments the revision and the epoch at the same publication, so both are the request's own
+            // numbers: the composition series and the published series are the same one.
+            AssemblyEpoch nextEpoch = laneEpoch;
+            CompositionRevision nextRevision = laneRevision;
 
+            PublishedWorldView view = assembly.Read();
             Entity entity = registry.EntityOf(request.Target);
             IReadOnlyList<DerivedBindingRule> matching = view.RulesFor(request.Recipe, request.Scope);
             try
@@ -693,8 +738,7 @@ namespace GameCore.Unity.Runtime
                 SpawnedCount++;
                 publicationOrdinal++;
                 PublishedRevision = nextRevision;
-                LastLaneEpoch = laneEpoch;
-                LastLaneRevision = request.LaneRevision;
+                MarkPublicationUsed(laneRevision, laneEpoch);
             }
 
             return report;
@@ -721,13 +765,23 @@ namespace GameCore.Unity.Runtime
                     "handle " + handle.ToString() + " does not name a live target of this world (P-005).");
             }
 
-            if (!TryLaneEpochToWorldEpoch(laneEpoch, out AssemblyEpoch nextEpoch) || nextEpoch.CompareTo(epochBefore) <= 0)
+            // P-006 has one publication series: the composition publication the despawn belongs to must be exactly
+            // the next value of the published one, on both counters.
+            if (!laneRevision.Value.Equals(laneEpoch.Value) ||
+                !NextEpoch(epochBefore).Equals(laneEpoch) ||
+                !NextRevision(PublishedRevision).Equals(laneRevision) ||
+                !IsUnusedPublication(laneRevision, laneEpoch, adopting: false))
             {
                 return Refuse(operation, epochBefore, laneEpoch, DiagnosticCode.StalePlan,
-                    "a despawn publishes a new assembly epoch that must advance the current one (P-006).");
+                    "a despawn publishes the next assembly of the one publication series; the request names revision "
+                    + laneRevision.Value.ToString(CultureInfo.InvariantCulture) + "/epoch "
+                    + laneEpoch.Value.ToString(CultureInfo.InvariantCulture) + " but the next assembly is revision "
+                    + NextRevision(PublishedRevision).Value.ToString(CultureInfo.InvariantCulture) + "/epoch "
+                    + NextEpoch(epochBefore).Value.ToString(CultureInfo.InvariantCulture) + " (P-006).");
             }
 
-            CompositionRevision nextRevision = NextRevision(PublishedRevision);
+            AssemblyEpoch nextEpoch = laneEpoch;
+            CompositionRevision nextRevision = laneRevision;
             PublishedWorldView view = assembly.Read();
             int drained = FenceOldAssembly();
 
@@ -767,8 +821,7 @@ namespace GameCore.Unity.Runtime
                 DespawnedCount++;
                 publicationOrdinal++;
                 PublishedRevision = nextRevision;
-                LastLaneEpoch = laneEpoch;
-                LastLaneRevision = laneRevision;
+                MarkPublicationUsed(laneRevision, laneEpoch);
             }
 
             return report;
@@ -1046,6 +1099,7 @@ namespace GameCore.Unity.Runtime
                 // The revision decided before the apply stage is the one this publication lands on; the lane counters
                 // were recorded when the publication was adopted (TryAdoptLanePublication).
                 PublishedRevision = nextRevision;
+                MarkPublicationUsed(AdoptedLaneRevision, AdoptedLaneEpoch);
             }
 
             return report;
@@ -1559,6 +1613,77 @@ namespace GameCore.Unity.Runtime
                 rule.ProviderGeneration,
                 rule.Priority,
                 rule.Schema);
+
+        /// <summary>
+        /// The next assembly epoch after one publication (05 s2: the initial assembly is 1, so the first composition
+        /// publication lands on 2). An exhausted counter returns the same value, which the callers then reject rather
+        /// than wrap (P-005).
+        /// </summary>
+        private static AssemblyEpoch NextEpoch(AssemblyEpoch current)
+        {
+            if (current.TryIncrement(out AssemblyEpoch next))
+            {
+                return next;
+            }
+
+            return current;
+        }
+
+        /// <summary>
+        /// Whether one composition publication is still available: a number is used by exactly one assembly, so a
+        /// pair that was published, or that some earlier publication already consumed, cannot be used again
+        /// (P-006). <paramref name="adopting"/> additionally refuses the pair that is currently adopted and waiting,
+        /// which the adoption path must reject; a spawn or despawn that is *consuming* its own adopted publication
+        /// passes false, because that pair is exactly the one it is about to publish.
+        /// </summary>
+        private bool IsUnusedPublication(CompositionRevision revision, AssemblyEpoch epoch, bool adopting)
+        {
+            if (revision.CompareTo(PublishedRevision) <= 0 || epoch.CompareTo(Published.Epoch) <= 0)
+            {
+                return false;
+            }
+
+            if (adopting
+                && HasAdoptedPublication
+                && AdoptedLaneRevision.Equals(revision)
+                && AdoptedLaneEpoch.Equals(epoch))
+            {
+                // Already adopted: a second adoption of the same publication would publish two assemblies for one
+                // composition change, which P-006 forbids.
+                return false;
+            }
+
+            for (int i = 0; i < usedPublications.Count; i++)
+            {
+                if (usedPublications[i].Revision.Equals(revision) && usedPublications[i].Epoch.Equals(epoch))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>Records that one composition publication produced an assembly; it can never be reused (P-006).</summary>
+        private void MarkPublicationUsed(CompositionRevision revision, AssemblyEpoch epoch)
+        {
+            HasAdoptedPublication = false;
+            usedPublications.Add(new UsedPublication(revision, epoch));
+        }
+
+        /// <summary>One composition publication that already produced an assembly in this world.</summary>
+        private readonly struct UsedPublication
+        {
+            public UsedPublication(CompositionRevision revision, AssemblyEpoch epoch)
+            {
+                Revision = revision;
+                Epoch = epoch;
+            }
+
+            public CompositionRevision Revision { get; }
+
+            public AssemblyEpoch Epoch { get; }
+        }
 
         private static string Describe(Exception exception) =>
             exception.GetType().FullName + ": " + exception.Message;

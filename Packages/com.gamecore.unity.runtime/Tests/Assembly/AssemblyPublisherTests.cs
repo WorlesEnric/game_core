@@ -65,8 +65,8 @@ namespace GameCore.Unity.Runtime.Tests.Assembly
 
         /// <summary>
         /// One owned command-driven world, its real publisher and the two targets that exist before any publication.
-        /// The initial assembly publishes epoch 1, so a composition publication at lane epoch 1 lands on world
-        /// epoch 2 (`AssemblyPublisher.TryLaneEpochToWorldEpoch`, decision 2).
+        /// The world's initial assembly publishes revision/epoch 1 (05 s2), which is the first publication of the one
+        /// series this world and its composition lane share (P-006).
         /// </summary>
         private Fixture CreateFixture(uint capacity = 8U, bool seedTargets = true)
         {
@@ -112,19 +112,29 @@ namespace GameCore.Unity.Runtime.Tests.Assembly
             return fixture;
         }
 
+        /// <summary>
+        /// Adopts the next composition publication of the world's ONE series (P-006) and returns the inert
+        /// acquisitions for it. The fixture's world publishes its initial assembly as revision/epoch 1 (05 s2), so
+        /// the `ordinal`-th publication of this world is revision/epoch `ordinal + 1`: there is no offset between the
+        /// composition publication and the assembly it becomes.
+        /// </summary>
         private static InertAcquisitionSet AdoptAndAcquire(
             Fixture fixture,
-            ulong laneSequence,
+            ulong ordinal,
             out CompositionRevision laneRevision,
             out AssemblyEpoch laneEpoch)
         {
-            laneRevision = new CompositionRevision(laneSequence);
-            laneEpoch = new AssemblyEpoch(laneSequence);
+            laneRevision = new CompositionRevision(ordinal + 1UL);
+            laneEpoch = new AssemblyEpoch(ordinal + 1UL);
+
             Assert.That(
-                fixture.Publisher.TryAdoptLanePublication(laneRevision, laneEpoch, out _, out DiagnosticCode code),
+                fixture.Publisher.TryAdoptLanePublication(laneRevision, laneEpoch, out AssemblyEpoch worldEpoch, out DiagnosticCode code),
                 Is.True,
-                "a publication must belong to an adopted composition-lane publication: " + code);
-            return new InertAcquisitionSet(fixture.Gate, AssemblyFixtureKeys.Operation(fixture.World.World, laneSequence));
+                "a publication must belong to an adopted composition publication: " + code);
+            Assert.That(worldEpoch, Is.EqualTo(laneEpoch),
+                "P-006: the composition publication IS the world's next assembly, with no offset");
+
+            return new InertAcquisitionSet(fixture.Gate, AssemblyFixtureKeys.Operation(fixture.World.World, ordinal));
         }
 
         private static PlannedPublication MountPlan(
@@ -180,15 +190,13 @@ namespace GameCore.Unity.Runtime.Tests.Assembly
             Assert.That(report.Outcome, Is.EqualTo(Outcome.Published));
             Assert.That(report.WorldEpochBefore, Is.EqualTo(epochBefore));
             Assert.That(
-                AssemblyPublisher.TryLaneEpochToWorldEpoch(laneEpoch, out AssemblyEpoch mapped),
-                Is.True);
-            Assert.That(
-                report.WorldEpochAfter.Value,
-                Is.EqualTo(mapped.Value),
-                "the world epoch is the mapped lane publication epoch (decision 2)");
+                report.WorldEpochAfter,
+                Is.EqualTo(laneEpoch),
+                "P-006: the published assembly epoch is exactly the composition epoch the operation reported");
             Assert.That(fixture.World.CurrentEpoch, Is.EqualTo(report.WorldEpochAfter));
-            Assert.That(fixture.Publisher.LastLaneEpoch, Is.EqualTo(laneEpoch));
-            Assert.That(fixture.Publisher.PublishedRevision.Value, Is.EqualTo(laneRevision.Value + 1UL));
+            Assert.That(fixture.Publisher.AdoptedLaneEpoch, Is.EqualTo(laneEpoch));
+            Assert.That(fixture.Publisher.PublishedRevision, Is.EqualTo(laneRevision),
+                "P-006: the published assembly revision is exactly the composition revision the operation reported");
             Assert.That(report.MigratedSlots, Is.EqualTo(2), "both live slots were migrated on scratch (P-029)");
             Assert.That(report.StructuralWrites, Is.GreaterThanOrEqualTo(2), "both targets received a live binding row");
 
@@ -283,7 +291,10 @@ namespace GameCore.Unity.Runtime.Tests.Assembly
                     PlannedPublication plan = MountPlan(fixture, sequence, mounts, acquisitions: acquisitions);
                     AssemblyPublicationReport report = fixture.Publisher.Publish(plan);
                     Assert.That(report.Published, Is.True, report.ToString());
-                    Assert.That(report.WorldEpochAfter.Value, Is.EqualTo(laneEpoch.Value + 1UL));
+                    Assert.That(report.WorldEpochAfter, Is.EqualTo(laneEpoch),
+                        "every publication lands on exactly the composition epoch it came from (P-006)");
+                    Assert.That(fixture.Publisher.PublishedRevision.Value, Is.EqualTo(fixture.World.CurrentEpoch.Value),
+                        "revision and epoch name the same publication (P-006)");
                 }
             }
             finally
@@ -347,6 +358,158 @@ namespace GameCore.Unity.Runtime.Tests.Assembly
             Assert.That(epochReport.Code, Is.EqualTo(DiagnosticCode.StalePlan),
                 "the base epoch is rechecked as well as the revision (P-030)");
             Assert.That(fixture.Publisher.StalePlanCount, Is.EqualTo(2));
+        }
+
+        /// <summary>
+        /// P-006's one publication series, checked as the equality the orchestrator review asked for: after the join
+        /// and after every publication, the composition lane's published revision/epoch ARE the world's published
+        /// ones. There is no offset in either direction and no second counter to report.
+        /// </summary>
+        [Test]
+        public void TheCompositionAndPublishedSeriesAreOneAfterEveryPublication()
+        {
+            Fixture fixture = CreateFixture();
+
+            // After the join: the world published its initial assembly as revision/epoch 1 (05 s2), and a lane joined
+            // to it reports exactly that pair — that is what CompositionLaneSeed.InitialAssembly is for.
+            Assert.That(fixture.World.CurrentEpoch, Is.EqualTo(AssemblyEpoch.First));
+            Assert.That(fixture.World.PublishedCompositionRevision, Is.EqualTo(CompositionRevision.First));
+            Assert.That(fixture.Publisher.PublishedEpoch, Is.EqualTo(fixture.World.CurrentEpoch));
+            Assert.That(fixture.Publisher.PublishedRevision, Is.EqualTo(fixture.World.PublishedCompositionRevision));
+
+            for (ulong ordinal = 1UL; ordinal <= 3UL; ordinal++)
+            {
+                InertAcquisitionSet acquisitions = AdoptAndAcquire(
+                    fixture,
+                    ordinal,
+                    out CompositionRevision laneRevision,
+                    out AssemblyEpoch laneEpoch);
+
+                // Each publication raises the priority, so every iteration is a real change of the effective row; an
+                // identical re-proposal would be a `NoChange` and would publish no epoch at all (P-006, P-018).
+                IReadOnlyList<ProposedMount> stronger = new List<ProposedMount>
+                {
+                    AssemblyFixturePlans.Mount(
+                        1UL,
+                        capability: AssemblyFixturePlans.LimitCapability(
+                            value: 3,
+                            priority: 10 + (int)ordinal)),
+                };
+
+                AssemblyPublicationReport report = fixture.Publisher.Publish(
+                    MountPlan(fixture, ordinal, stronger, acquisitions: acquisitions));
+                Assert.That(report.Published, Is.True, report.ToString());
+
+                // Equality, not agreement-by-offset: the numbers published are the numbers the composition
+                // publication carried, and the plan's own base recheck saw the same pair before the write.
+                Assert.That(report.WorldEpochAfter, Is.EqualTo(laneEpoch));
+                Assert.That(fixture.World.CurrentEpoch, Is.EqualTo(laneEpoch));
+                Assert.That(fixture.Publisher.PublishedRevision, Is.EqualTo(laneRevision));
+                Assert.That(fixture.World.PublishedCompositionRevision, Is.EqualTo(laneRevision));
+                Assert.That(
+                    AssemblyPublisher.MatchesPublishedAssembly(
+                        laneRevision,
+                        laneEpoch,
+                        fixture.World.PublishedCompositionRevision,
+                        fixture.World.CurrentEpoch),
+                    Is.True);
+                Assert.That(fixture.Publisher.Published.Token.AssemblyEpoch, Is.EqualTo(laneEpoch));
+                Assert.That(fixture.Publisher.Published.Revision, Is.EqualTo(laneRevision));
+            }
+
+            Assert.That(fixture.Publisher.PublicationCount, Is.EqualTo(1 + 3),
+                "the slot counts the initial assembly it was constructed with, plus the three publications");
+        }
+
+        /// <summary>
+        /// A composition publication that is not the next assembly of the series is refused before any live write, and
+        /// one number is never shared by two publications (P-006, P-050).
+        /// </summary>
+        [Test]
+        public void AStaleOrRepeatedCompositionPublicationIsRefusedBeforeAnyWrite()
+        {
+            Fixture fixture = CreateFixture();
+
+            AssemblyEpoch published = fixture.World.CurrentEpoch;
+            CompositionRevision publishedRevision = fixture.Publisher.PublishedRevision;
+
+            // 1. A publication behind the series: the epoch the world already published.
+            Assert.That(
+                fixture.Publisher.TryAdoptLanePublication(publishedRevision, published, out _, out DiagnosticCode stale),
+                Is.False);
+            Assert.That(stale, Is.EqualTo(DiagnosticCode.StalePlan));
+
+            // 2. A publication ahead of the series: skipping a number would publish an assembly nobody proposed.
+            Assert.That(
+                fixture.Publisher.TryAdoptLanePublication(
+                    new CompositionRevision(publishedRevision.Value + 2UL),
+                    new AssemblyEpoch(published.Value + 2UL),
+                    out _,
+                    out DiagnosticCode ahead),
+                Is.False);
+            Assert.That(ahead, Is.EqualTo(DiagnosticCode.StalePlan));
+
+            // 3. Two different numbers in one pair: P-006 increments them together.
+            Assert.That(
+                fixture.Publisher.TryAdoptLanePublication(
+                    new CompositionRevision(publishedRevision.Value + 1UL),
+                    new AssemblyEpoch(published.Value + 2UL),
+                    out _,
+                    out DiagnosticCode inconsistent),
+                Is.False);
+            Assert.That(inconsistent, Is.EqualTo(DiagnosticCode.UnsupportedVersion));
+
+            Assert.That(fixture.World.CurrentEpoch, Is.EqualTo(published), "no refused adoption moves the world");
+
+            // 4. The real next publication is adopted and published; the same number can never be used twice.
+            InertAcquisitionSet first = AdoptAndAcquire(fixture, 1UL, out CompositionRevision laneRevision, out AssemblyEpoch laneEpoch);
+            AssemblyPublicationReport report = fixture.Publisher.Publish(
+                MountPlan(fixture, 1UL, acquisitions: first));
+            Assert.That(report.Published, Is.True, report.ToString());
+            Assert.That(report.WorldEpochAfter, Is.EqualTo(laneEpoch));
+
+            Assert.That(
+                fixture.Publisher.TryAdoptLanePublication(laneRevision, laneEpoch, out _, out DiagnosticCode repeated),
+                Is.False,
+                "a publication that already produced an assembly cannot produce a second one (P-006)");
+            Assert.That(repeated, Is.EqualTo(DiagnosticCode.StalePlan));
+
+            // 5. A plan published without adopting a composition publication is refused as stale as well. The
+            //    proposal is a real change (a higher-priority declaration), so the refusal can only come from the
+            //    missing adoption — a no-op plan would return NoChange earlier and prove nothing.
+            IReadOnlyList<ProposedMount> stronger = new List<ProposedMount>
+            {
+                AssemblyFixturePlans.Mount(
+                    2UL,
+                    capability: AssemblyFixturePlans.LimitCapability(value: 5, priority: 50)),
+            };
+
+            CompositionProposal orphanProposal = AssemblyFixturePlans.MountProposal(
+                fixture.Publisher,
+                2UL,
+                stronger);
+
+            PlannedPublication orphan = AssemblyFixturePlans.Plan(
+                fixture.Publisher,
+                orphanProposal,
+                acquisitions: new InertAcquisitionSet(
+                    fixture.Gate,
+                    AssemblyFixtureKeys.Operation(fixture.World.World, 2UL)));
+
+            Assert.That(orphan.IsPrepared, Is.True, "the stronger declaration is a real change: " + orphan.State.Describe());
+
+            AssemblyEpoch before = fixture.World.CurrentEpoch;
+            int imagesBefore = fixture.World.Publications.PublishedCount;
+            AssemblyPublicationReport refused = fixture.Publisher.Publish(orphan);
+
+            Assert.That(refused.Outcome, Is.EqualTo(Outcome.Rejected),
+                "a publication that belongs to no composition publication cannot be an assembly (P-006)");
+            Assert.That(refused.Code, Is.EqualTo(DiagnosticCode.StalePlan));
+            Assert.That(refused.StructuralWrites, Is.EqualTo(0));
+            Assert.That(refused.CrossedLiveWriteBoundary, Is.False);
+            Assert.That(fixture.World.CurrentEpoch, Is.EqualTo(before));
+            Assert.That(fixture.World.Publications.PublishedCount, Is.EqualTo(imagesBefore));
+            Assert.That(orphan.State.Phase, Is.EqualTo(PlanPhase.Rejected));
         }
 
         [Test]
@@ -495,22 +658,24 @@ namespace GameCore.Unity.Runtime.Tests.Assembly
 
             // A target that did not exist when either publication happened. It must appear with its complete
             // effective assembly in one epoch, not progressively wired over later frames (P-024).
-            // The spawn is proposed after the second lane publication, so it carries lane revision 2 — the value
-            // that maps to the world revision the spawn is validated against (P-024, decision 2).
-            InertAcquisitionSet spawn = AdoptAndAcquire(fixture, 3UL, out _, out AssemblyEpoch spawnEpoch);
+            // The spawn belongs to the next composition publication of the one series (revision/epoch 4 here), and
+            // it is validated against the published revision it was prepared from (P-006, P-024).
+            InertAcquisitionSet spawn = AdoptAndAcquire(fixture, 3UL, out CompositionRevision spawnRevision, out AssemblyEpoch spawnEpoch);
             var request = new AssemblySpawnRequest(
                 AssemblyFixtureKeys.CardRecipe,
                 AssemblyFixtureKeys.RootScope,
                 AssemblyFixtureKeys.Target(3UL),
                 AssemblyFixtureKeys.Operation(fixture.World.World, 3UL),
-                new CompositionRevision(2UL),
+                fixture.Publisher.PublishedRevision,
+                spawnRevision,
                 spawnEpoch);
 
             AssemblyPublicationReport spawned = fixture.Publisher.Spawn(request);
 
             Assert.That(spawned.Published, Is.True, spawned.ToString());
             Assert.That(fixture.Publisher.SpawnedCount, Is.EqualTo(1));
-            Assert.That(spawned.WorldEpochAfter.Value, Is.EqualTo(spawnEpoch.Value + 1UL));
+            Assert.That(spawned.WorldEpochAfter, Is.EqualTo(spawnEpoch),
+                "the spawn lands on exactly the composition epoch its request named (P-006)");
 
             Entity entity = fixture.Publisher.Registry.EntityOf(AssemblyFixtureKeys.Target(3UL));
             Assert.That(entity, Is.Not.EqualTo(Entity.Null));
@@ -529,15 +694,19 @@ namespace GameCore.Unity.Runtime.Tests.Assembly
             Assert.That(fixture.Publisher.Published.Bindings.HasTarget(AssemblyFixtureKeys.Target(3UL)), Is.True);
             Assert.That(fixture.Publisher.Published.BindingRowCount, Is.EqualTo(3));
 
-            // A spawn prepared against an older composition revision is refused rather than activated stale (P-024).
-            InertAcquisitionSet stale = AdoptAndAcquire(fixture, 4UL, out _, out AssemblyEpoch staleEpoch);
+            // A spawn prepared against an older composition revision is refused rather than activated stale (P-024):
+            // composition revision 1 is the world's initial assembly, not the next publication.
+            InertAcquisitionSet stale = AdoptAndAcquire(fixture, 4UL, out CompositionRevision staleRevision, out AssemblyEpoch staleEpoch);
             var staleRequest = new AssemblySpawnRequest(
                 AssemblyFixtureKeys.CardRecipe,
                 AssemblyFixtureKeys.RootScope,
                 AssemblyFixtureKeys.Target(4UL),
                 AssemblyFixtureKeys.Operation(fixture.World.World, 4UL),
                 new CompositionRevision(1UL),
+                staleRevision,
                 staleEpoch);
+            Assert.That(staleRequest.PreparedRevision.Equals(fixture.Publisher.PublishedRevision), Is.False,
+                "the request deliberately names a revision the world no longer publishes (P-024)");
 
             AssemblyPublicationReport refused = fixture.Publisher.Spawn(staleRequest);
             Assert.That(refused.Outcome, Is.EqualTo(Outcome.Rejected));
@@ -563,7 +732,7 @@ namespace GameCore.Unity.Runtime.Tests.Assembly
             AssemblyPublicationReport despawned = fixture.Publisher.Despawn(
                 handle,
                 AssemblyFixtureKeys.Operation(fixture.World.World, 20UL),
-                new CompositionRevision(2UL),
+                new CompositionRevision(despawnEpoch.Value),
                 despawnEpoch);
 
             Assert.That(despawned.Published, Is.True, despawned.ToString());

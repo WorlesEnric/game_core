@@ -128,6 +128,13 @@ namespace GameCore.Unity.Runtime
         private AssemblyEpoch currentEpoch = AssemblyEpoch.Zero;
         private LogicalStepId currentStep = LogicalStepId.Zero;
 
+        /// <summary>
+        /// Published composition revision of this world before an assembly publisher joined it. The initial assembly
+        /// publishes revision 1 together with epoch 1 (05 s2), so a world that has just been created already
+        /// publishes the first publication of the one series.
+        /// </summary>
+        private CompositionRevision publishedCompositionRevision = CompositionRevision.First;
+
         private ulong pendingDemand;
         private double domainSeconds;
         private float stepSeconds;
@@ -333,6 +340,88 @@ namespace GameCore.Unity.Runtime
             // Delivery happens after the switch, so a subscriber failure is a delivery diagnostic that cannot
             // unpublish the assembly (P-030, P-045).
             observations.NotifyStepCommitted(committed);
+            return true;
+        }
+
+        /// <summary>
+        /// Published composition revision of this world (P-006). It is the revision of the last assembly the world
+        /// published, which is the same publication as <see cref="CurrentEpoch"/>; before any assembly publisher or
+        /// adoption the world has published only its initial assembly, which 05 s2 places at revision 1.
+        /// </summary>
+        public CompositionRevision PublishedCompositionRevision
+        {
+            get
+            {
+                PublishedAssemblySlot? slot = assemblySlot;
+                return slot != null ? slot.Read().Revision : publishedCompositionRevision;
+            }
+        }
+
+        /// <summary>
+        /// Adopts one published composition operation as the world's next assembly (P-006), which is the W1 path when
+        /// no <see cref="AssemblyPublisher"/> owns the world's assembly: the composition publication *is* the
+        /// published assembly, so the epoch mirror advances to the number the operation reported instead of to an
+        /// offset of it. The pair must be exactly the next publication of the one series and the world must be able
+        /// to accept it, otherwise nothing changes (P-005, P-006, P-031).
+        /// </summary>
+        internal bool TryAdoptPublishedComposition(
+            CompositionRevision revision,
+            AssemblyEpoch epoch,
+            out DiagnosticCode code,
+            out string detail)
+        {
+            GameCoreThreading.RequireMainThread("UnityWorldHost.TryAdoptPublishedComposition");
+
+            code = DiagnosticCode.None;
+            detail = string.Empty;
+
+            if (lifecycle != WorldLifecycleState.Running && lifecycle != WorldLifecycleState.Paused)
+            {
+                code = FaultCode == DiagnosticCode.None ? DiagnosticCode.ApplyFault : FaultCode;
+                detail = "world " + DiagnosticName + " is " + lifecycle + " and accepts no publication (P-031).";
+                return false;
+            }
+
+            if (pumping)
+            {
+                code = DiagnosticCode.TooLate;
+                detail = "a step is in progress; a composition publication belongs at a boundary (P-030).";
+                return false;
+            }
+
+            if (!revision.Value.Equals(epoch.Value))
+            {
+                // P-006 increments revision and epoch together; a pair that disagrees is two series in one value.
+                code = DiagnosticCode.UnsupportedVersion;
+                detail = "composition revision " + revision.Value.ToString(CultureInfo.InvariantCulture)
+                    + " and epoch " + epoch.Value.ToString(CultureInfo.InvariantCulture)
+                    + " name different publications (P-006).";
+                return false;
+            }
+
+            if (!currentEpoch.TryIncrement(out AssemblyEpoch nextEpoch) ||
+                !publishedCompositionRevision.TryIncrement(out CompositionRevision nextRevision))
+            {
+                code = DiagnosticCode.BudgetExceeded;
+                detail = "the world's publication counters are exhausted; a world cannot wrap (P-005).";
+                return false;
+            }
+
+            if (!nextEpoch.Equals(epoch) || !nextRevision.Equals(revision))
+            {
+                code = DiagnosticCode.StalePlan;
+                detail = "the composition publication is revision "
+                    + revision.Value.ToString(CultureInfo.InvariantCulture)
+                    + "/epoch " + epoch.Value.ToString(CultureInfo.InvariantCulture)
+                    + " but the world's next assembly is revision "
+                    + nextRevision.Value.ToString(CultureInfo.InvariantCulture)
+                    + "/epoch " + nextEpoch.Value.ToString(CultureInfo.InvariantCulture)
+                    + "; a stale composition publication never advances the world (P-006, P-028).";
+                return false;
+            }
+
+            currentEpoch = nextEpoch;
+            publishedCompositionRevision = nextRevision;
             return true;
         }
 

@@ -152,7 +152,12 @@ namespace GameCore.Unity.Runtime
     public sealed class PublishedAssemblySlot
     {
         private PublishedWorldView current;
-        private int switches;
+
+        /// <summary>
+        /// Published views, counting the initial view constructed with this slot: a world that has published only
+        /// its initial assembly reports 1, and the first <see cref="Switch"/> takes it to 2.
+        /// </summary>
+        private int switches = 1;
 
         public PublishedAssemblySlot(PublishedWorldView initial)
         {

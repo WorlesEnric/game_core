@@ -27,7 +27,8 @@ apply itself:
 
 1. refuse a world that cannot publish (faulted/stopping/disposed/created) or a step already in progress;
 2. refuse an unprepared or already-rejected plan, and recheck its expected revision/base epoch → `StalePlan`;
-3. decide the new revision/epoch (P-006 increments both at one publication) while nothing is written yet;
+3. take the new revision/epoch from the adopted composition publication (P-006 increments both at one publication,
+   and the two modules share that one series), while nothing is written yet;
 4. fence: complete every tracked fence and handle of the old assembly;
 5. migrate on scratch: copy the planned live slot values, run the registered pure migrations on the copies; failure
    releases the staged acquisitions and leaves the old assembly and its state untouched;
@@ -74,6 +75,13 @@ Unity runtime package (`Packages/com.gamecore.unity.runtime/`):
 | `Tests/Assembly/AssemblyTestFixture.cs` | Fixture keys, descriptor over the fixture world's real system keys, recipes/appliers, migrations, plan and seed helpers |
 | `Tests/Assembly/AssemblyPublisherTests.cs` | The eight EditMode cases below, plus the concurrent observer |
 
+GameCore.Composition (the authorized cross-module change that joins the two counters into one series):
+
+| File | Contents |
+|---|---|
+| `Runtime/Operations/CompositionLaneSeed.cs` | `CompositionLaneSeed`: the published revision/epoch pair a lane starts from, `Unpublished` (0/0) and `InitialAssembly` (1/1), `IsJoined`/`IsConsistent` |
+| `Tests/LaneSeedTests.cs` | six cases: the join, the standalone default, revision/epoch moving together for N publications, an inconsistent seed refusal, and the seed being visible on the host and its snapshot |
+
 Tooling and evidence: `tools/run_gc008_gate.sh`, `artifacts/gc-008/static-checks.log`, this file.
 
 `.meta` files were authored for all 22 new files and the 2 new folders, with GUIDs derived deterministically from
@@ -85,7 +93,12 @@ the repository-relative path and checked for uniqueness against the 215 GUIDs al
 |---|---|---|
 | `Packages/com.gamecore.unity.runtime/Runtime/GameCore.Unity.Runtime.asmdef` | `+ "GameCore.Planning"` | 04 §2 lists Planning among the runtime assembly's allowed references; the publisher consumes the plan/table/schedule types |
 | `Packages/com.gamecore.unity.runtime/Runtime/WorldHost.cs` | `+ assemblySlot` field; `CurrentEpoch` now reads the published view when one is attached; `+ IsPumping`; `+ internal AttachAssemblySlot`; `+ internal TryPublishAssembly`; `+ internal EnterFaulted` | This is the one shared file GC-008 must touch: the world is the authority for the assembly epoch (P-002) and 04 §5 requires the switch to be one serialized nonthrowing reference swap plus one image publication. Nothing else in the host changed; with no publisher attached the host behaves exactly as before |
+| `Packages/com.gamecore.composition/Runtime/Operations/CompositionHost.cs` | `+ CompositionLaneSeed seed = default` constructor parameter (and on `CreateDefault`); `Seed` property; the committed state starts at the seed; a seed whose two counters disagree is refused | **the authorized minimal change in GC-004's module**: P-006 has one publication series, so a lane joined to a world must start where that world is. The default is `default(CompositionLaneSeed)` = unpublished 0/0, so every standalone-lane GC-004 test keeps its behaviour |
+| `Packages/com.gamecore.composition/Runtime/Operations/CompositionState.cs` | `+ CreateEmpty(world, root, mode, revision, epoch)`; the existing overload delegates at 0/0 | the seeded start value (05 s2) |
 | `Packages/com.gamecore.planning/Runtime/Plans/.gitkeep`, `Packages/com.gamecore.planning/Tests/Plans/.gitkeep` | deleted | the folders they held open now contain real sources |
+| `Packages/com.gamecore.unity.runtime/Runtime/Integration/WorldCompositionBridge.cs` | `+ optional AssemblyPublisher`; the construction-time seed equality check; `JoinPublishedComposition` after each publication; `PublicationJoinRefusalCount`/`LastPublicationJoinCode`/`LastPublicationJoinDetail` | the W1 glue now joins the composition publication to the world instead of leaving the two counters apart |
+| `Packages/com.gamecore.unity.runtime/Fixtures/Runtime/W1GateScenario.cs` | lanes seeded with `CompositionLaneSeed.InitialAssembly`; new fact `CompositionMatchesWorldEpoch`; epoch expectations 1 → 2 and 2 → 3 | the W1 gate's recorded lane-2/world-1 split is gone: the gate now asserts they are equal at every point |
+| `unity/.../Tests/W1Gate/W1GateIntegrationTests.cs` | the same expectation updates for the EditMode half | the W1 gate's EditMode suite now asserts the equality |
 | `tools/run_gc008_gate.sh` | new | additive: runs the dotnet solution, then this task's two EditMode assemblies (`FULL=1` widens it) |
 
 Not touched: `GameCore.Contracts` (no additions were needed), the reference seams, the API snapshot, `GameCore.sln`
@@ -147,7 +160,7 @@ package). It reports `checked 21 GC-008 C# file(s) / ok`. Both documentation com
 |---|---|---|
 | P-002 participants/authority | `AssemblyPlanner` is a pure consumer of immutable snapshots; `AssemblyPublisher` is the only live writer and never creates a second host | `OnePublicationChangesEveryTargetInOneVisibleEpoch` (one publisher per world is asserted by construction: the registry is bound to `world.World.Session`) |
 | P-004/P-005 identity and handles | `TargetSlotLedger` + `TargetRegistry`; generations advance on retire; foreign/out-of-range/wrong-generation handles refuse | `TargetSlotLedgerTests.*`, `ADespawnedHandleIsRejectedForeverAndOnlyItsOwnStorageIsDestroyed` |
-| P-006 version domains | revision and epoch move at one publication; the logical step never moves; `NoChange` increments nothing | `OnePublicationChangesEveryTargetInOneVisibleEpoch` (`view.Token.LogicalStepId == 0`), `APlanThatChangesNothingPublishesNoEpoch`, `PlanStateMachineTests.NoChangeIsAnOutcomeOfATerminalNonErrorState` |
+| P-006 version domains | one publication series: revision and epoch move together on both modules and are equal after the join and after every publication; the logical step never moves; `NoChange` increments nothing | `TheCompositionAndPublishedSeriesAreOneAfterEveryPublication`, `AStaleOrRepeatedCompositionPublicationIsRefusedBeforeAnyWrite`, `OnePublicationChangesEveryTargetInOneVisibleEpoch` (`view.Token.LogicalStepId == 0`), `APlanThatChangesNothingPublishesNoEpoch`, `LaneSeedTests.EveryPublicationMovesRevisionAndEpochTogether`, `PlanStateMachineTests.NoChangeIsAnOutcomeOfATerminalNonErrorState` |
 | P-013/P-015/P-018/P-019 eligibility, precedence, policies | recipe-matched declarations, canonical rank over declared *and* effective candidates, `Exclusive`/`Incompatible` rejection with the witnesses | `AssemblyPlannerTests.HigherPriorityWinsAndTheLoserStaysProvenance`, `.ALowerPriorityDeclarationCannotDisplaceAHigherPriorityEffectiveRow`, `.ExclusiveWithTwoCandidatesRejectsAndNamesThem`, `.AnIneligibleRecipeReceivesNothing` |
 | P-017/P-033 contribution identity and support | `ContributionKey` per target/slot; one rule slot per recipe/scope/capability; retraction removes exactly the unmounting provider's rows | `AssemblyPlannerTests.UnmountRetractsExactlyTheUnmountingProvidersSupport`, `.OneMountDerivesTheSameBindingForEveryMatchingTarget` |
 | P-022 budgets | bounded scratch, hard prepare/apply byte limits, `BudgetExceeded` with the counts | `MigrationAndAcquisitionTests.ScratchReservesWithinItsBudgetAndRefusesBeyondIt`, `AssemblyPlannerTests.ScratchThatCannotReserveTheMigrationsRejectsThePlan`, `.APlanBeyondTheConfiguredHardBudgetRejectsWithItsCounts` |
@@ -180,17 +193,34 @@ Recorded because 00 wins over 05, which wins over 09.
    contract shape (slots+owners, stages+systems+backward edges, buffer bindings) with real validation, and both the
    pure and the Unity test fixtures build it from their own literal keys. Substituting the real validator/compiler
    changes the *producer* of this type, not its consumers.
-2. **Joining the two epoch counters (the W1 gate's recorded gap).** 05 §2 gives the world's initial assembly
-   epoch **1** while a composition lane joined right after creation still reports its pre-publication counters as
-   **0**, so a lane publication at composition epoch `E` publishes world assembly epoch `E + 1`
-   (`AssemblyPublisher.TryLaneEpochToWorldEpoch`, `LaneRevisionToWorldRevision`, `InitialAssemblyEpoch = 1`). The
-   invariant the publisher enforces is one number per publication and no two publications sharing a number: a
-   mapped epoch that does not advance the published one is refused as `StalePlan`, a repeated lane publication is
-   refused, and `LastLaneEpoch`/`LastLaneRevision` record which composition publication produced which world
-   assembly. Dropping the offset requires GC-004 to seed a joined lane's committed revision/epoch at the world's
-   initial assembly value; I did not change `CompositionHost` because this task does not own it. **Ambiguity:**
-   05 §2 does not say whether a lane's counters include the world's initial assembly; I chose the reading that
-   keeps one publication series and states it in code and tests.
+2. **One publication series, and the lane is seeded from the world (rewritten after orchestrator review).** P-006
+   defines ONE series: `CompositionRevision` and `AssemblyEpoch` both increment at the same publication, so the
+   counters a composition operation reports ARE the counters the world publishes. The first delivery of this task
+   published the world assembly at `lane + 1` (the world's initial assembly is epoch 1 per 05 §2 while a joined lane
+   reported its pre-publication 0); that offset is **removed**, because two counters related by an offset would leak
+   into observers, snapshots, checkpoints (GC-018) and diagnostics.
+
+   The join is now explicit and one-directional: `GameCore.Composition.CompositionLaneSeed` is an additive
+   constructor parameter of `CompositionHost` (`CreateDefault(..., seed)`), with `Unpublished` (0/0, the default, so
+   every standalone-lane test of GC-004 is unchanged) and `InitialAssembly` (1/1, 05 §2). A lane joined to a world
+   is constructed with the world's published pair, so:
+
+   * `AssemblyPublisher.Publish` takes the adopted composition publication's own numbers as the assembly it
+     publishes (`nextEpoch = AdoptedLaneEpoch`, `nextRevision = AdoptedLaneRevision`) — no arithmetic;
+   * `TryAdoptLanePublication` accepts only exactly the next value of the series on both counters, refuses a
+     repeated/consumed publication and refuses a pair whose two counters disagree (`UnsupportedVersion`);
+   * `Publish`, `Spawn` and `Despawn` assert equality across the two modules with
+     `AssemblyPublisher.MatchesPublishedAssembly(laneRevision, laneEpoch, worldRevision, worldEpoch)`; a mismatch is
+     `StalePlan` before any live write;
+   * the W1 path has no publisher, so `WorldCompositionBridge` joins the composition publication to the world
+     through `UnityWorldHost.TryAdoptPublishedComposition`, which likewise requires exactly the next publication and
+     moves the epoch mirror and the published composition revision together. The bridge also refuses at construction
+     a lane whose seed does not match the world it is joined to.
+
+   `WorldHost.PublishedCompositionRevision` is the published revision of the same publication as `CurrentEpoch`, so
+   the equality is checkable as one pair on the world side too. **Doc ambiguity:** 05 §2 does not say whether a
+   joined lane's counters include the world's initial assembly; the reading implemented here is that they do, which
+   is what makes the two modules share one series rather than needing a reconciliation step.
 3. **Rules are per `(recipe, scope, capability, output slot)`, not per target.** A `DerivedBindingRule` is the
    recipe-level derivation template a future spawn reads; each target's own effective rows live in
    `TargetBindingTable`. A winning candidate therefore *replaces* the rule of its identity instead of appending,
@@ -199,9 +229,10 @@ Recorded because 00 wins over 05, which wins over 09.
 4. **Already-effective rows are candidates.** Otherwise a new declaration would silently displace a
    higher-priority provider, which is exactly what P-018 forbids. A repeated declaration that re-derives an
    identical row is not a change, so `NoChange` publishes nothing (P-006).
-5. **A publication belongs to an adopted lane publication.** `Publish` uses the counters adopted through
-   `TryAdoptLanePublication`; a publication without one maps to a non-advancing epoch and is refused rather than
-   guessed. `Spawn`/`Despawn` take the lane counters in their request.
+5. **A publication belongs to an adopted composition publication.** `Publish` uses the pair adopted through
+   `TryAdoptLanePublication`, which must be exactly the next publication of the one series; `Spawn`/`Despawn` name
+   the pair in their request and are checked by the same rule. `MarkPublicationUsed` records the numbers a
+   publication consumed, so "one number per publication, never shared" is enforced rather than asserted.
 6. **Stamps are written inside the fence.** A target's `AssemblyStamp` names the epoch being published and is
    written with the rest of the apply stage, so nothing is written after the switch; the switch itself is the only
    visibility point.
@@ -248,6 +279,19 @@ Two design gaps were also found while writing the tests and fixed in the planner
 tests: rule identity composition (decision 3) and ranking against already-effective rows (decision 4). Both are
 recorded above with the requirement they implement, and the second is why the `NoChange` case exists.
 
-Also fixed during that pass: `PlanStateMachine.TryNoChange` (a `NoChange` plan must be terminal without being an
+### Round 1 (orchestrator review): the epoch offset removed
+
+| Defect | Where | Fix |
+|---|---|---|
+| The publisher published the world assembly at `lane + 1`, i.e. two counters for one publication series | `Runtime/Assembly/AssemblyPublisher.cs` | `TryLaneEpochToWorldEpoch`/`LaneRevisionToWorldRevision`/`InitialAssemblyEpoch`/`LastLaneEpoch`/`LastLaneRevision` deleted; the published pair *is* the adopted composition pair, and `MatchesPublishedAssembly` asserts the cross-module equality (mismatch → `StalePlan`, no write). The drift test `TheCompositionAndPublishedSeriesAreOneAfterEveryPublication` and the refusal test `AStaleOrRepeatedCompositionPublicationIsRefusedBeforeAnyWrite` cover it |
+| A lane joined to a world started at the pre-publication 0/0, so the two counters could never agree without arithmetic | `Packages/com.gamecore.composition` (GC-004) | additive `CompositionLaneSeed` on `CompositionHost`/`CreateDefault` + `CompositionState.CreateEmpty(world, root, mode, revision, epoch)`; standalone lanes keep 0/0, so GC-004's own tests are unchanged |
+| The W1 path had no publisher, so nothing joined the lane's publication to the world | `Runtime/Integration/WorldCompositionBridge.cs`, `Runtime/WorldHost.cs` | the bridge adopts the composition publication (through the publisher when present, otherwise `UnityWorldHost.TryAdoptPublishedComposition`, which moves the epoch mirror and `PublishedCompositionRevision` together) and refuses a lane whose seed disagrees with its world at construction |
+| The W1 gate asserted lane epoch 2 against world epoch 1 | `Fixtures/Runtime/W1GateScenario.cs`, `Tests/W1Gate/W1GateIntegrationTests.cs` | lanes seeded at 1/1; expectations now 2/2 after the first publication and 3/3 after the second, with `CompositionMatchesWorldEpoch` asserted in both halves |
+| The spawn request conflated "the revision the variant was prepared against" (P-024, must equal the published one) with "the publication this spawn lands on" (must be the next one), so its recipe validation could never pass | `Runtime/Assembly/AssemblyPublisher.cs` | the request carries both explicitly (`PreparedRevision` and the `LaneRevision`/`LaneEpoch` pair); the variant is validated against `PublishedRevision`, the epoch comes from the pair |
+| The availability check refused the pair a spawn or despawn had just adopted, so both paths were dead after an adoption | `Runtime/Assembly/AssemblyPublisher.cs` | `IsUnusedPublication(revision, epoch, adopting)`: the pending-adoption clause applies only to the adoption path |
+| `PublishedAssemblySlot.SwitchCount` did not count the initial view although its own doc and `PublicationCount` claimed it did | `Runtime/Assembly/PublishedWorldView.cs` | the counter starts at 1 for the constructed view |
+| The series-drift test re-proposed an identical mount, which is a `NoChange` and publishes nothing | `Tests/Assembly/AssemblyPublisherTests.cs` | each iteration raises the priority, so every publication is a real change (P-018) |
+
+Also fixed during the first pass: `PlanStateMachine.TryNoChange` (a `NoChange` plan must be terminal without being an
 error), the hard prepare/apply byte-limit rejection (P-022), and the observer test now waits for its thread to take
 its first view instead of relying on scheduling.

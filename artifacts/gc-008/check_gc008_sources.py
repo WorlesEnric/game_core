@@ -21,6 +21,9 @@ TARGETS = [
     "Packages/com.gamecore.planning/Tests/Plans",
     "Packages/com.gamecore.unity.runtime/Runtime/Assembly",
     "Packages/com.gamecore.unity.runtime/Tests/Assembly",
+    "Packages/com.gamecore.composition/Runtime/Operations",
+    "Packages/com.gamecore.composition/Tests",
+    "Packages/com.gamecore.unity.runtime/Runtime/Integration",
 ]
 
 ENGINE_FREE = [
