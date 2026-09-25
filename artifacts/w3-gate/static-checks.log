@@ -1,0 +1,36 @@
+# W3-GATE host-side checks (interpreter level only; NOT a build or a test result)
+# host: Darwin yangdeMac-mini.local 25.3.0 Darwin Kernel Version 25.3.0: Wed Jan 28 20:56:34 PST 2026; root:xnu-12377.91.3~2/RELEASE_ARM64_T8112 arm64 Darwin
+# date_utc: 2026-09-25T04:50:02Z
+
+$ python3 tools/check_game_core_csharp.py
+checked 266 C# file(s)
+ok
+
+$ python3 tools/validate_game_core_docs.py --self-test
+Documentation validator self-test passed: 9 isolated positive/negative fixtures.
+
+$ python3 tools/validate_game_core_docs.py
+Game Core documentation validation passed: 14 Markdown documents; local links, anchors, IDs, traceability, task DAG and wave ordering checked.
+No Unity builds, gameplay tests, runtime benchmarks, or remote URL checks were executed.
+
+$ bash -n tools/run_w3_gate.sh tools/unity/run_w3_gate_probe.sh tools/unity/probe_runs.sh tools/unity/run_cards_probe.sh tools/unity/run_narrative_probe.sh tools/unity/run_w2_gate_probe.sh
+bash -n: ok
+
+$ git grep -n "<<<<<<<\|>>>>>>>" (conflict markers, excluding .git)
+no conflict markers
+
+$ python3 - (repository-wide .meta GUID uniqueness scan)
+guids: 483 duplicates: 0
+
+$ python3 - (W3 gate step-name contract: scenario vs probe script vs EditMode cases)
+scenario observations : ['w3-kernel-assemblies-reference-no-gameplay', 'w3-narrative-composition-passes-on-this-kernel', 'w3-card-composition-passes-on-this-kernel', 'w3-two-worlds-on-one-kernel-image', 'w3-zero-idle-command-steps-in-both', 'w3-automatic-existing-and-future-targets-in-both', 'w3-narrative-state-change-through-committed-snapshot', 'w3-card-domain-transfer-committed-atomically', 'w3-narrative-facts', 'w3-card-facts']
+script requires       : ['w3-kernel-assemblies-reference-no-gameplay', 'w3-narrative-composition-passes-on-this-kernel', 'w3-card-composition-passes-on-this-kernel', 'w3-two-worlds-on-one-kernel-image', 'w3-zero-idle-command-steps-in-both', 'w3-automatic-existing-and-future-targets-in-both', 'w3-narrative-state-change-through-committed-snapshot', 'w3-card-domain-transfer-committed-atomically', 'w3-narrative-facts', 'w3-card-facts', 'w3-gate-facts']
+not required by script: []
+required but unknown  : []
+tests reference gate  : True
+
+$ python3 - (independent replication of the gate asmdef audit over the repository tree)
+kernel asmdefs: 17 declared references: 73
+gameplay/rules asmdefs: 8 referencing the kernel: 8
+missing package dirs: []
+expected gate values: KernelAsmdefs>=10, Violations==0, GameplayAsmdefsOnKernel==GameplayAsmdefs, MissingPackages==0
