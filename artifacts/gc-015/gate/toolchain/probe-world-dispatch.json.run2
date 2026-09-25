@@ -1,0 +1,67 @@
+{
+  "task": "GC-005",
+  "probe": "GameCore.Validation.ProbeHost.ProbeRunner",
+  "mode": "WorldDispatch",
+  "result": "Pass",
+  "exitCode": 0,
+  "declaredUnityVersion": "6000.0.75f1",
+  "unityVersion": "6000.0.75f1",
+  "declaredTarget": "StandaloneLinux64",
+  "platform": "LinuxPlayer",
+  "architecture": "X64",
+  "processorType": "12th Gen Intel(R) Core(TM) i7-12700KF",
+  "scriptingBackend": "IL2CPP",
+  "isIl2Cpp": true,
+  "is64BitProcess": true,
+  "managedStrippingLevel": "High",
+  "managedStrippingLevelSource": "declared: GameCore.Validation.Editor.BuildProbe sets and re-reads PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, ManagedStrippingLevel.High); a player cannot query the stripping level at runtime",
+  "burstCompilerEnabled": true,
+  "fixturePluginPreservation": "declared: Assets/link.xml preserves the GameCore.Validation.Fixture assembly (preserve=\"all\"), and the generated catalog holds a direct FixturePluginFactory reference, so the plugin is linked into the player while nothing instantiates it at startup",
+  "catalogGenerator": "GameCore.Content.Compiler (GC-003)",
+  "catalogGeneratedFile": "ProbeCatalog.g.cs",
+  "catalogFileHash": "f35a69b3380b0f9470f5dcdd3147698ec2ca49304bf00dc6df11d95f938ace23",
+  "catalogFingerprint": "a4ea6f9190c40054b6733e6bcdfe060f478e77f0f3f8a0020c5a341381d353e7",
+  "catalogDescriptionFormat": "gamecore.catalog-description/1",
+  "catalogProtocolVersion": "1.0",
+  "catalogSupportedFeatureCount": 1,
+  "catalogFileHashAlgorithm": "SHA-256",
+  "catalogFileHashScope": "SHA-256 over the UTF-8 bytes, with LF line endings, of the file prefix that ends immediately before the eight-space-indented CatalogFileHash declaration; that prefix ends with the newline that terminates the previous line, and the declaration itself, its value and the rest of the file are excluded",
+  "failureReason": "",
+  "probes": [
+    {
+      "name": "world-bootstrap-and-loop-route",
+      "status": "Pass",
+      "detail": "bootstraps=1; loopRoutesBeforeInstall=1; loopRoutesAfterInstall=1; registeredWorlds=1; applicationWorld='GameCoreFixtureWorld:c4d93d5a42116be2d8ffb91dd4cc56a2'; fallbacks=0; bootstrapCode=None"
+    },
+    {
+      "name": "world-two-worlds-independent",
+      "status": "Pass",
+      "detail": "sessionA=50524f42455747430000000000000001; sessionB=50524f42455747430000000000000002; stepsA=2; stepsB=1; acceptA=2; acceptB=1; ingressB=2; outputB=2"
+    },
+    {
+      "name": "world-command-driven-idle-zero-steps",
+      "status": "Pass",
+      "detail": "frames=60; steps=0; dispatchRuns=0; publishedImages=1; acceptCount=0; ingressCount=60; outputCount=60; retainedDebtTicks=0"
+    },
+    {
+      "name": "world-no-system-double-update",
+      "status": "Pass",
+      "detail": "entriesPerStep=4; steps=3; totalDispatched=12; publishedImages=4; accept=3; settle=3; fault=3; project=3; counter=333; outstandingJobs=0"
+    },
+    {
+      "name": "world-fixed-step-debt-and-clock",
+      "status": "Pass",
+      "detail": "hostTicksPerSecond=10000000; hostTimeOrigin=0; admittedSteps=4; steps=4; retainedDebtTicks=9600000; unmanagedTickCount=4; worldElapsedSeconds=0.030000"
+    },
+    {
+      "name": "world-guarded-fail-stop",
+      "status": "Pass",
+      "detail": "outcome=Faulted; faultCode=ApplyFault; lifecycle=Faulted; step=0; epoch=1; publishedImages=1; failedStepImagePublished=False; accept=1; settle=1; fault=1; project=0; counter=111; outstandingJobs=2; quarantinedJobs=2; retainedHandles=2; faultDetail='FactoryKey(47434649585455520000000000000005, 235409088): GameCore.Unity.Fixtures.FixtureInjectedFaultException: fixture fault stage wrote authoritative state and then threw (deterministic fail-stop fixture)'"
+    },
+    {
+      "name": "world-guarded-fail-stop-teardown",
+      "status": "Pass",
+      "detail": "stopOutcome=Published; settledJobs=2; outstandingJobs=0; retainedResources=0; lifecycle=Disposed; entityWorldCreated=False; completionFailures=0"
+    }
+  ]
+}
