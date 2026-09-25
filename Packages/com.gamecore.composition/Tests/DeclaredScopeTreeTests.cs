@@ -174,6 +174,20 @@ namespace GameCore.Composition.Tests
                     new ScopeRecord(Story, default(ScopeId), 0, new IsolationSet(false, null), new IsolationSet(false, null), null, null),
                 })));
 
+            // A second scope that claims to be a root breaks "one rooted tree per world" (P-010).
+            Assert.Throws<ArgumentException>(() => OpenLane(
+                CompositionLaneSeed.InitialAssembly.WithScopes(new List<ScopeRecord>
+                {
+                    new ScopeRecord(
+                        Story,
+                        default(ScopeId),
+                        0,
+                        new IsolationSet(false, null),
+                        new IsolationSet(false, null),
+                        null,
+                        null),
+                })));
+
             var withNullRecord = new List<ScopeRecord>();
             withNullRecord.Add(null!);
             Assert.Throws<ArgumentException>(() => OpenLane(
@@ -216,9 +230,9 @@ namespace GameCore.Composition.Tests
             Assert.That(withTree.FindScope(Harbor), Is.Not.Null);
             Assert.That(withoutTree.FindScope(Harbor), Is.Null);
             Assert.That(
-                withTree.FindScope(Story)!.Depth,
+                withTree.Committed.Scopes.Depth(Story),
                 Is.EqualTo(1),
-                "the scope snapshot reports the declared depth");
+                "a declared scope keeps the depth its parentage implies");
         }
     }
 }

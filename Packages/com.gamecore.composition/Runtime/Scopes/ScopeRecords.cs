@@ -126,6 +126,13 @@ namespace GameCore.Composition
         private readonly Dictionary<Id128, List<ScopeId>> children;
         private readonly List<ScopeRecord> canonicalScopes;
 
+        /// <summary>
+        /// The depth-0 world root this registry was opened with. It is remembered rather than derived from the
+        /// canonical order: canonical order is by stable identity (P-008), so a child whose id sorts below its root
+        /// would otherwise be reported as the world root.
+        /// </summary>
+        private readonly ScopeRecord worldRoot;
+
         public ScopeRegistry(ScopeRecord root, IReadOnlyList<ScopeRecord>? additional)
         {
             if (root == null)
@@ -143,6 +150,7 @@ namespace GameCore.Composition
             canonicalScopes = new List<ScopeRecord>();
 
             Add(root);
+            worldRoot = root;
             if (additional != null)
             {
                 // A caller may declare its scopes in any order, so the additional records are added shallowest first:
@@ -179,7 +187,7 @@ namespace GameCore.Composition
 
         public int Count => canonicalScopes.Count;
 
-        public ScopeId Root => canonicalScopes[0].Scope;
+        public ScopeId Root => worldRoot.Scope;
 
         public bool TryGet(ScopeId scope, out ScopeRecord? record)
         {
@@ -433,6 +441,13 @@ namespace GameCore.Composition
             if (byScope.ContainsKey(record.Scope.Value))
             {
                 throw new ArgumentException("A scope identity appears once in one world (P-004).", nameof(record));
+            }
+
+            if (record.IsRoot && byScope.Count != 0)
+            {
+                // One rooted acyclic tree per world: a registry holds the world root and nothing else that claims to
+                // be one, exactly as TryAdd refuses a second root (P-010).
+                throw new ArgumentException("A world has exactly one root scope (P-010).", nameof(record));
             }
 
             if (!record.IsRoot && !byScope.ContainsKey(record.Parent.Value))
