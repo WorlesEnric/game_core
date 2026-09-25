@@ -651,16 +651,28 @@ namespace GameCore.Unity.Runtime.Integration
             return true;
         }
 
+        /// <summary>
+        /// The generated slot options of one manifest declaration (P-032). The last-support policy selects the
+        /// dormant/derived/durable shape, and the declaration's own reset support carries through, so a slot becomes
+        /// resettable because its manifest says so rather than because a caller passed a bespoke option value.
+        /// `SlotAuthorityOptions.Resettable` enforces that the recorded reason is present.
+        /// </summary>
         private static SlotAuthorityOptions OptionsOf(StateSlotSpec spec)
         {
             switch (spec.LastSupport)
             {
                 case LastSupportPolicy.PreserveDormant:
-                    return SlotAuthorityOptions.Dormant();
+                    return spec.ResetSupported
+                        ? SlotAuthorityOptions.Resettable(spec.ResetReason, true, false)
+                        : SlotAuthorityOptions.Dormant();
                 case LastSupportPolicy.RemoveDerived:
-                    return SlotAuthorityOptions.DerivedData();
+                    return spec.ResetSupported
+                        ? SlotAuthorityOptions.Resettable(spec.ResetReason, false, true)
+                        : SlotAuthorityOptions.DerivedData();
                 default:
-                    return SlotAuthorityOptions.Durable();
+                    return spec.ResetSupported
+                        ? SlotAuthorityOptions.Resettable(spec.ResetReason, false, false)
+                        : SlotAuthorityOptions.Durable();
             }
         }
 

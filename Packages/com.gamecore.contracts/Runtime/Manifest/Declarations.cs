@@ -212,6 +212,11 @@ namespace GameCore.Contracts
     /// <summary>State slot owned by one registered owner, with lifecycle policies (05 s3, P-021).</summary>
     public sealed class StateSlotSpec
     {
+        /// <summary>
+        /// Builds one state slot declaration that does not support a `Reset` (P-032). This is the original
+        /// signature: a declaration that predates the reset support keeps exactly its previous behaviour, and a
+        /// reset of such a slot is rejected rather than applied as zero initialization.
+        /// </summary>
         public StateSlotSpec(
             SlotId slotId,
             OwnerId owner,
@@ -224,6 +229,47 @@ namespace GameCore.Contracts
             LastSupportPolicy lastSupport,
             FactoryKey transferPolicy,
             IReadOnlyList<FactoryKey>? migrationKeys)
+            : this(
+                slotId,
+                owner,
+                schema,
+                physicalLayoutKey,
+                fieldOwnership,
+                initPolicy,
+                configChangePolicy,
+                versionChangePolicy,
+                lastSupport,
+                transferPolicy,
+                migrationKeys,
+                false,
+                null)
+        {
+        }
+
+        /// <summary>
+        /// Builds one state slot declaration with explicit P-032 reset support. A slot is resettable only when its
+        /// own manifest says so *and* records the reason; the proposal that requests the reset carries its own
+        /// explicit reason as well, so the two reasons are independent (the declaration says why the slot may ever
+        /// be reset, the proposal says why this publication does). A supported reset with an empty reason is left
+        /// for validation to reject rather than being silently tolerated here.
+        ///
+        /// This overload is additive: `GameCore.Contracts` is a frozen W0 surface, and appending parameters to the
+        /// signature above would have removed a frozen line rather than adding one.
+        /// </summary>
+        public StateSlotSpec(
+            SlotId slotId,
+            OwnerId owner,
+            SchemaRef schema,
+            FactoryKey physicalLayoutKey,
+            IReadOnlyList<FieldOwnership>? fieldOwnership,
+            FactoryKey initPolicy,
+            FactoryKey configChangePolicy,
+            FactoryKey versionChangePolicy,
+            LastSupportPolicy lastSupport,
+            FactoryKey transferPolicy,
+            IReadOnlyList<FactoryKey>? migrationKeys,
+            bool resetSupported,
+            string? resetReason)
         {
             SlotId = slotId;
             Owner = owner;
@@ -236,6 +282,8 @@ namespace GameCore.Contracts
             LastSupport = lastSupport;
             TransferPolicy = transferPolicy;
             MigrationKeys = ContractCollections.Freeze(migrationKeys);
+            ResetSupported = resetSupported;
+            ResetReason = resetSupported ? (resetReason ?? string.Empty) : string.Empty;
         }
 
         public SlotId SlotId { get; }
@@ -259,6 +307,18 @@ namespace GameCore.Contracts
         public FactoryKey TransferPolicy { get; }
 
         public IReadOnlyList<FactoryKey> MigrationKeys { get; }
+
+        /// <summary>
+        /// True only when this manifest explicitly supports a `Reset` of this slot (P-032). A reset is never
+        /// implicit: an unpermitted reset is rejected rather than applied as zero initialization.
+        /// </summary>
+        public bool ResetSupported { get; }
+
+        /// <summary>
+        /// The reason recorded with that support; empty when <see cref="ResetSupported"/> is false. A supported
+        /// reset without a recorded reason is a declaration error, not a permissive default (P-032).
+        /// </summary>
+        public string ResetReason { get; }
     }
 
     /// <summary>One system entry inside a stage, with its own access set and inner-DAG edges (P-039).</summary>

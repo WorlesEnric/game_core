@@ -1,0 +1,2062 @@
+{
+  "artifact": "gamecore.w4.required-inventory/1",
+  "generatedFor": "GC-012",
+  "statusVocabulary": [
+    "Implemented+Evidenced",
+    "Partial",
+    "Not yet"
+  ],
+  "statusAsOf": "aae136bd4c29a69f443ec0efe53c783b0485979a",
+  "counts": {
+    "total": 86,
+    "implementedEvidenced": 35,
+    "partial": 47,
+    "notYet": 4
+  },
+  "requirements": [
+    {
+      "id": "P-001",
+      "title": "Genre independence and boundaries",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-002",
+        "GC-010",
+        "GC-011",
+        "GC-012",
+        "GC-020",
+        "GC-024",
+        "GC-028",
+        "GC-029",
+        "GC-030"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/toolchain/probe-w3-gate.json",
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w3-gate/BUILD_REPORT.md"
+      ],
+      "gap": "Only narrative and cards run on this revision; the fixed-step action family and the cross-family composition are unrun, so genre independence is proven for two of three families.",
+      "nextOwner": "GC-012",
+      "gc012": {
+        "delta": "The genre-independence audit gained a reproducible host-side half: tools/w4_generic_profile_audit.py extracts the full assembly reference graph and the kernel type inventory from the source tree and reports every kernel->gameplay/rules/validation edge and every genre-specific token. On this revision it finds zero forbidden edges over 37 assemblies and 697 kernel types. The runtime half (loaded assembly graph in the stripped player) is -probeW4Profile's first clause.",
+        "statusUnchangedBecause": "Two of three families run; the fixed-step action family and the cross-family composition are still unrun.",
+        "evidenceAdded": [
+          "tools/w4_generic_profile_audit.py",
+          "artifacts/gates/w4-generic-profile/generic-profile-audit.json",
+          "artifacts/gates/w4-generic-profile/audit.md"
+        ]
+      }
+    },
+    {
+      "id": "P-002",
+      "title": "Participants and authority (WorldHost, CompositionHost, planner, publisher, driver, adapters)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-005",
+        "GC-008",
+        "GC-017",
+        "GC-019",
+        "GC-020",
+        "GC-025",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w3-gate/toolchain/probe-w1-gate.json",
+        "artifacts/w3-gate/toolchain/probe-w3-gate.json"
+      ],
+      "gap": "WorldHost, CompositionHost, AssemblyPlanner/Publisher, ExecutionDriver and Observer roles are integrated and exercised, but the EngineAdapter observation boundary (TEST-019) has no archived run.",
+      "nextOwner": "GC-019"
+    },
+    {
+      "id": "P-003",
+      "title": "Three distinct kinds of change (resource effect, capability contribution, gameplay effect)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-010",
+        "GC-011",
+        "GC-014",
+        "GC-021",
+        "GC-022",
+        "GC-024",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w3-gate/trx/",
+        "artifacts/w3-gate/toolchain/probe-cards.json"
+      ],
+      "gap": "Managed-resource effects, capability retraction and a committed card domain transfer are evidenced, but no archived run unloads a provider while its committed gameplay effect must survive, and the cross-family reward path is unrun.",
+      "nextOwner": "GC-014"
+    },
+    {
+      "id": "P-004",
+      "title": "Stable identities (128-bit IDs, no reuse, keys stored in content/checkpoints/replay)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-002",
+        "GC-003",
+        "GC-018",
+        "GC-027",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/protocol-fixtures/results.json"
+      ],
+      "gap": "Identity categories, generations and canonical ordering are evidenced for live sessions and content; installation/spawn keys stored in a checkpoint or replay record are unproven because checkpointing does not exist (GC-018).",
+      "nextOwner": "GC-018"
+    },
+    {
+      "id": "P-005",
+      "title": "Runtime handles (world/generation/activation validation, 64-bit counters, no wraparound)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-002",
+        "GC-003",
+        "GC-005",
+        "GC-018",
+        "GC-025",
+        "GC-027",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w3-gate/trx/",
+        "artifacts/protocol-fixtures/results.json"
+      ],
+      "gap": "Handle validation, despawn tombstones and generation/epoch separation are evidenced; restore/restart invalidation and the small-width counter-exhaustion boundary fixture (TEST-002) are not archived.",
+      "nextOwner": "GC-018"
+    },
+    {
+      "id": "P-006",
+      "title": "Version domains (revision, assembly epoch, activation epoch, logical step, snapshot token)",
+      "status": "Implemented+Evidenced",
+      "ownerTasks": [
+        "GC-003",
+        "GC-008",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w3-gate/trx/",
+        "artifacts/w3-gate/toolchain/probe-w1-gate.json"
+      ]
+    },
+    {
+      "id": "P-007",
+      "title": "References and leases (epoch-bound bindings, async work tokens, bounded retention)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-004",
+        "GC-007",
+        "GC-014",
+        "GC-016",
+        "GC-019",
+        "GC-022",
+        "GC-023",
+        "GC-026",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/trx/",
+        "artifacts/w3-gate/unity/editmode-results.xml"
+      ],
+      "gap": "Epoch-bound bindings, stale-callback fencing and observation backpressure are evidenced; no archived run shows bindings resolving once per assembly rather than per target per frame, nor retention backpressure under load (TEST-023).",
+      "nextOwner": "GC-026"
+    },
+    {
+      "id": "P-008",
+      "title": "Stable ordering and determinism boundary (canonical bytes, no timing-dependent precedence)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-002",
+        "GC-009",
+        "GC-023",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/trx/",
+        "artifacts/w3-gate/toolchain/probe-w3-gate.json"
+      ],
+      "gap": "Canonical stable-ID ordering is evidenced in fixtures and probes; the 10,000-step replay with shuffled producer/completion order and 1/2/4 workers (TEST-022) has not been run.",
+      "nextOwner": "GC-023"
+    },
+    {
+      "id": "P-009",
+      "title": "Manifest (declared protocol range, services, capabilities, slots, stages, policies)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-001",
+        "GC-003",
+        "GC-004",
+        "GC-012",
+        "GC-025",
+        "GC-028",
+        "GC-029"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w3-gate/trx/"
+      ],
+      "gap": "Manifest validation, catalog rejection and late mounting of a precompiled inactive plugin are evidenced; full TEST-020 (baking vs runtime recipes, descendant/reparent/unload in the player) is unrun.",
+      "nextOwner": "GC-012",
+      "gc012": {
+        "delta": "The registered-entry half of this requirement now has a family-specific generated inactive plugin entry for BOTH families, not only the GC-001 fixture plugin: each catalog registers an entry whose direct constructor reference roots that family's registration surface, so 'a linked inactive plugin is mountable without rebuilding the running player' is proven for the two real families rather than only for a fixture plugin.",
+        "statusUnchangedBecause": "TEST-020's baking-versus-runtime-recipe half, the descendant/reparent/unload sequence in the player and the unknown-executable-plugin rejection remain unrun.",
+        "evidenceAdded": [
+          "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/GeneratedFamilyEntries.cs",
+          "unity/GameCore.Validation/Catalogs/ProbeCatalog.catalog.json",
+          "unity/GameCore.Validation/Catalogs/CardCatalog.catalog.json"
+        ]
+      }
+    },
+    {
+      "id": "P-010",
+      "title": "Scope membership (one rooted acyclic tree, explicit subtree removal disposition)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-004",
+        "GC-013",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w3-gate/trx/"
+      ],
+      "gap": "Scope creation, depth and cycle rejection are evidenced; an atomic subtree move that diffs inheritance and preserves slot state, plus indexed membership at scale, are GC-013's and unarchived.",
+      "nextOwner": "GC-013"
+    },
+    {
+      "id": "P-011",
+      "title": "Service visibility (private by default, export/import, isolation, override, multi-binding)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-004",
+        "GC-014",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/trx/",
+        "artifacts/w3-gate/unity/editmode-results.xml"
+      ],
+      "gap": "Single-binding conflict, isolation boundary, override and multi-binding ordering are evidenced; the complete visibility/conflict matrix (version ranges, mixed single/multi bindings, isolation with unrelated contracts) in both modes is not.",
+      "nextOwner": "GC-014"
+    },
+    {
+      "id": "P-012",
+      "title": "Dependency closure (providers prepare first, loss retracts, failure rejects the proposal)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-004",
+        "GC-014",
+        "GC-022",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/trx/"
+      ],
+      "gap": "Waiting-installation activation, required-cycle rejection and reverse retirement order are evidenced; policy/migration failure inside the closure and automatic resumption of every affected consumer are not archived.",
+      "nextOwner": "GC-014"
+    },
+    {
+      "id": "P-013",
+      "title": "Mode semantics (Automatic default, Conservative export/import/opt-in gate, LocalOnly)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-004",
+        "GC-006",
+        "GC-010",
+        "GC-011",
+        "GC-013",
+        "GC-024",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/trx/",
+        "artifacts/w3-gate/unity/editmode-results.xml"
+      ],
+      "gap": "Conservative denial and export/import grants are evidenced; the mode gate over future descendants, same-scope Descendants selection and the LocalOnly rule in both modes are not archived.",
+      "nextOwner": "GC-013"
+    },
+    {
+      "id": "P-014",
+      "title": "Mode transition (atomic proposal, recomputed closure, rejection keeps old mode)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-013",
+        "GC-024",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/trx/"
+      ],
+      "gap": "One switch direction is archived; no archived run switches back with existing and future targets, recomputes all dispositions, or shows a conflict/budget rejection retaining the old mode and assembly.",
+      "nextOwner": "GC-013"
+    },
+    {
+      "id": "P-015",
+      "title": "Eligibility (immutable descriptors, reach, predicates, Ineligible explanation)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-006",
+        "GC-010",
+        "GC-011",
+        "GC-013",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w3-gate/trx/"
+      ],
+      "gap": "Descriptor-based eligibility with existing/future targets is evidenced; instance declarations, explicit descriptor-update enqueue and adapter-derived descriptors are not archived.",
+      "nextOwner": "GC-013"
+    },
+    {
+      "id": "P-016",
+      "title": "Isolation and exclusions (named isolation sets, capability boundaries, denial wins)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-006",
+        "GC-013",
+        "GC-024",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/trx/",
+        "artifacts/w3-gate/unity/editmode-results.xml"
+      ],
+      "gap": "Isolation storage, one boundary case and capability-level exclusion are evidenced; the full exclusion/boundary matrix in both modes with sibling and subtree exclusions is not archived.",
+      "nextOwner": "GC-013"
+    },
+    {
+      "id": "P-017",
+      "title": "Contribution identity and ownership (ContributionId, provenance, immutable revision)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-006",
+        "GC-013",
+        "GC-015",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/trx/"
+      ],
+      "gap": "Support retraction, provenance of losing candidates and shared-support lifetime are evidenced in fixtures; multi-contribution composition per target/slot across real targets and ContributionId stability across reconfiguration are not.",
+      "nextOwner": "GC-013",
+      "gc012": {
+        "delta": "GC-012 implemented the missing representation: a binding row now carries a support SET (GameCore.Planning.CapabilitySupport, TargetBindingRow.Supports, DerivedBindingRule.Supports, ProposedCapability.Supporters) and the published storage carries one GameCore.Unity.Runtime.CapabilitySupportRow per supporter. The derivation-to-publication seam no longer refuses a multi-supporter slot, and AssemblyPlanner consumes the composed value and the support set instead of publishing the top-ranked candidate's raw value. A new card fixture (Packages/com.gamecore.gameplay.cards/Fixtures/Runtime/CardAdditiveScenario.cs) mounts two scoring providers on Seat A's single cards.set-bonus slot and observes the composed value with two support rows.",
+        "statusUnchangedBecause": "The status vocabulary requires an ARCHIVED executable artifact on the build host. GC-012's probe has not run on this host, so the mechanism is implemented but not yet evidenced. ContributionId stability across reconfiguration remains unimplemented as well.",
+        "evidenceAdded": [
+          "Packages/com.gamecore.planning/Runtime/Plans/BindingSupport.cs",
+          "Packages/com.gamecore.unity.runtime/Runtime/Assembly/AssemblyComponents.cs",
+          "Packages/com.gamecore.gameplay.cards/Fixtures/Runtime/CardAdditiveScenario.cs",
+          "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4ProfileScenario.cs",
+          "tools/unity/run_w4_profile_probe.sh"
+        ]
+      }
+    },
+    {
+      "id": "P-018",
+      "title": "Precedence (priority, scope depth, ascending stable-ID bytes, bounded priority)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-006",
+        "GC-023",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/trx/"
+      ],
+      "gap": "Priority and identity ties are exercised in pure fixtures; explicit SelectProvider overrides, equal-priority ties and rank ordering under shuffled worker completion and replay (TEST-022) are not archived at reference scale.",
+      "nextOwner": "GC-023"
+    },
+    {
+      "id": "P-019",
+      "title": "Composition policies (Additive, Replace, Ordered, Exclusive, Incompatible)",
+      "status": "Implemented+Evidenced",
+      "ownerTasks": [
+        "GC-006",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/trx/",
+        "artifacts/protocol-fixtures/results.json"
+      ],
+      "gc012": {
+        "delta": "Strengthened, and a previous over-claim corrected. The archive that supported this row evidenced the five policies in the pure composition kernel and the protocol fixtures; it did NOT evidence an Additive slot reaching a live world with its composed value, because the seam refused any slot with more than one supporter (GC-011 recorded exactly that). GC-012 removed the refusal and added the end-to-end fixture, so the row's claim is now true of the implementation as well as of the kernel.",
+        "statusUnchangedBecause": "The row stays Implemented+Evidenced on its existing kernel/fixture evidence; the new end-to-end run is required before the player-level half of the claim is evidenced.",
+        "evidenceAdded": [
+          "Packages/com.gamecore.planning/Runtime/Plans/AssemblyPlanner.cs",
+          "Packages/com.gamecore.unity.runtime/Runtime/Integration/DerivationProposalBridge.cs"
+        ]
+      }
+    },
+    {
+      "id": "P-020",
+      "title": "Configuration and overrides (provenance layers, masks, no deep merge, no state reset)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-004",
+        "GC-006",
+        "GC-015",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/trx/"
+      ],
+      "gap": "Field masks, null-versus-missing and canonical composed documents are evidenced; reconfiguration must not reset mutable state or rewrite committed history, and no archived run reconfigures a world holding non-default runtime state (TEST-010).",
+      "nextOwner": "GC-015"
+    },
+    {
+      "id": "P-021",
+      "title": "Termination (strata 0..31, no same-stratum reads, bounded slots, no fixed point)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-006",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/trx/"
+      ],
+      "gap": "Finite closure, duplicate suppression, same-stratum rejection and quota overflow are evidenced; catalog-level strata validation and the bounded output-slot limit as a catalog error are not exercised.",
+      "nextOwner": "GC-028"
+    },
+    {
+      "id": "P-022",
+      "title": "Budgets (candidate/contribution/target/byte/deadline limits, BudgetExceeded with causes)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-006",
+        "GC-013",
+        "GC-023",
+        "GC-026",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/trx/"
+      ],
+      "gap": "Quota rejection and preparation-deadline exhaustion are exercised in fixtures; no measured run on a named machine validates the provisional default limits or the BudgetExceeded top-fan-out report.",
+      "nextOwner": "GC-026"
+    },
+    {
+      "id": "P-023",
+      "title": "Incrementality (indexes, invalidation closure, full-recompute oracle agreement)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-013",
+        "GC-023",
+        "GC-026",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/trx/"
+      ],
+      "gap": "Indexed derivation agrees with the full oracle for 50x40 fixture sweeps; the required 50x500 differential workload and the untouched-sibling index counters (TEST-008) have not been run.",
+      "nextOwner": "GC-013"
+    },
+    {
+      "id": "P-024",
+      "title": "Spawn and despawn (recipe, variant cache, first-visibility assembly, tombstone)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-008",
+        "GC-010",
+        "GC-011",
+        "GC-012",
+        "GC-013",
+        "GC-019",
+        "GC-025",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w3-gate/toolchain/probe-narrative.json",
+        "artifacts/w3-gate/toolchain/probe-cards.json"
+      ],
+      "gap": "First-visibility complete assembly, forward spawn and tombstoned despawn are evidenced in the player; derived-variant caching by recipe revision/inheritance fingerprint/mode/catalog hash and StalePlan rederivation are not.",
+      "nextOwner": "GC-013"
+    },
+    {
+      "id": "P-025",
+      "title": "Reparenting and provider change (subtree diff, state preservation, epoch advance)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-013",
+        "GC-014",
+        "GC-015",
+        "GC-024",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w3-gate/trx/"
+      ],
+      "gap": "Reparent depth/identity recomputation and cycle rejection are evidenced; no archived run moves a subtree that diffs ancestor rule/service sets while preserving target-local state, and replacement under a different installation identity is unrun.",
+      "nextOwner": "GC-013"
+    },
+    {
+      "id": "P-026",
+      "title": "Explanation (rules, scope path, descriptor evidence, candidates, support, dispositions)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-006",
+        "GC-010",
+        "GC-013",
+        "GC-016",
+        "GC-023",
+        "GC-026",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/trx/",
+        "artifacts/w3-gate/toolchain/probe-narrative.json",
+        "artifacts/w3-gate/toolchain/probe-cards.json"
+      ],
+      "gap": "Explain paging, losing-candidate provenance and per-target provenance digests are evidenced; the complete retained record (mode gate, stratum, state disposition, recipe hash) and CompositionPublished/Rejected diagnostic payloads are not archived.",
+      "nextOwner": "GC-016"
+    },
+    {
+      "id": "P-027",
+      "title": "Change plans (proof inputs, plan states, one Applying per world, content hash)",
+      "status": "Implemented+Evidenced",
+      "ownerTasks": [
+        "GC-003",
+        "GC-008",
+        "GC-013",
+        "GC-017",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/trx/",
+        "artifacts/w3-gate/unity/editmode-results.xml"
+      ]
+    },
+    {
+      "id": "P-028",
+      "title": "Validation (catalog/graph/eligibility/ownership/buffer/budget checks before preparation)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-006",
+        "GC-008",
+        "GC-013",
+        "GC-017",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/trx/",
+        "artifacts/w3-gate/unity/editmode-results.xml"
+      ],
+      "gap": "Stale revision, graph, ownership, buffer and migration rejections are evidenced individually; the deterministic fault-injection matrix over every validation boundary (TEST-016) is unrun.",
+      "nextOwner": "GC-017"
+    },
+    {
+      "id": "P-029",
+      "title": "Preparation (unpublished bindings, gated leases, bounded migration scratch)",
+      "status": "Implemented+Evidenced",
+      "ownerTasks": [
+        "GC-008",
+        "GC-015",
+        "GC-017",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/trx/",
+        "artifacts/w3-gate/unity/editmode-results.xml"
+      ]
+    },
+    {
+      "id": "P-030",
+      "title": "Publication (drain, revalidate, apply, one atomic pointer switch, no mixed image)",
+      "status": "Implemented+Evidenced",
+      "ownerTasks": [
+        "GC-008",
+        "GC-017",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w3-gate/trx/",
+        "artifacts/w3-gate/toolchain/probe-w2-gate.json"
+      ]
+    },
+    {
+      "id": "P-031",
+      "title": "Apply failure (post-write fault, closed admission, no epoch/snapshot, last image preserved)",
+      "status": "Implemented+Evidenced",
+      "ownerTasks": [
+        "GC-005",
+        "GC-008",
+        "GC-017",
+        "GC-027",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w3-gate/toolchain/probe-world-dispatch.json"
+      ]
+    },
+    {
+      "id": "P-032",
+      "title": "State dispositions (per-slot policies, registered Migrate, explicit Reset, support loss)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-007",
+        "GC-008",
+        "GC-015",
+        "GC-018",
+        "GC-024",
+        "GC-027",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/trx/",
+        "artifacts/w3-gate/unity/editmode-results.xml"
+      ],
+      "gap": "Preserve, Migrate, explicit Reset rejection and disposable-slot removal are evidenced; RemoveDerived/PreserveDormant/TransferTo last-support-loss policies and owner transfer on a real target's non-default state are not.",
+      "nextOwner": "GC-015"
+    },
+    {
+      "id": "P-033",
+      "title": "Shared support and component lifetime (union of supports, exact retraction, base recipe)",
+      "status": "Implemented+Evidenced",
+      "ownerTasks": [
+        "GC-007",
+        "GC-008",
+        "GC-015",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/trx/"
+      ]
+    },
+    {
+      "id": "P-034",
+      "title": "State authority (one OwnerId per domain, validated partitions, DI read snapshots)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-007",
+        "GC-010",
+        "GC-011",
+        "GC-012",
+        "GC-015",
+        "GC-019",
+        "GC-020",
+        "GC-024",
+        "GC-026",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/trx/",
+        "artifacts/w3-gate/unity/editmode-results.xml"
+      ],
+      "gap": "Undeclared-writer rejection, validated partitions and direct owner writes are evidenced; the declared external-authority domain (engine-owned state stamped as observation, intent submitted through the adapter) is unrun.",
+      "nextOwner": "GC-019"
+    },
+    {
+      "id": "P-035",
+      "title": "World lifecycle (Created/Running/Paused/Stopping/Disposed/Faulted, pause semantics)",
+      "status": "Implemented+Evidenced",
+      "ownerTasks": [
+        "GC-005",
+        "GC-009",
+        "GC-014",
+        "GC-017",
+        "GC-020",
+        "GC-022",
+        "GC-025",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w3-gate/trx/",
+        "artifacts/w3-gate/toolchain/probe-world-dispatch.json"
+      ]
+    },
+    {
+      "id": "P-036",
+      "title": "Temporal models (FixedStep or CommandDriven, bounded catch-up, retained debt)",
+      "status": "Implemented+Evidenced",
+      "ownerTasks": [
+        "GC-005",
+        "GC-009",
+        "GC-010",
+        "GC-011",
+        "GC-012",
+        "GC-020",
+        "GC-024",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w3-gate/trx/",
+        "artifacts/w3-gate/toolchain/probe-world-dispatch.json"
+      ]
+    },
+    {
+      "id": "P-037",
+      "title": "Step admission (input cutoff, sealed batch, one command or wake per step, dedup)",
+      "status": "Implemented+Evidenced",
+      "ownerTasks": [
+        "GC-007",
+        "GC-009",
+        "GC-011",
+        "GC-023",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w3-gate/trx/"
+      ]
+    },
+    {
+      "id": "P-038",
+      "title": "Clocks (distinct step/time/timer domains, registered plugin clocks, pause policy)",
+      "status": "Implemented+Evidenced",
+      "ownerTasks": [
+        "GC-009",
+        "GC-019",
+        "GC-020",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w3-gate/trx/"
+      ]
+    },
+    {
+      "id": "P-039",
+      "title": "Stage registration (StageId, deps, access sets, buffer ports, coalescing, one instance per key)",
+      "status": "Implemented+Evidenced",
+      "ownerTasks": [
+        "GC-003",
+        "GC-009",
+        "GC-020",
+        "GC-023",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w3-gate/trx/"
+      ]
+    },
+    {
+      "id": "P-040",
+      "title": "Execution plan (compiled DAG, buffer edges, playback boundaries, AmbiguousOrder)",
+      "status": "Implemented+Evidenced",
+      "ownerTasks": [
+        "GC-009",
+        "GC-020",
+        "GC-023",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w3-gate/trx/"
+      ]
+    },
+    {
+      "id": "P-041",
+      "title": "Concurrency and structural work (tracked handles, ECB playback, no detached job)",
+      "status": "Implemented+Evidenced",
+      "ownerTasks": [
+        "GC-005",
+        "GC-007",
+        "GC-009",
+        "GC-019",
+        "GC-020",
+        "GC-023",
+        "GC-025",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w3-gate/trx/"
+      ]
+    },
+    {
+      "id": "P-042",
+      "title": "Commands and requests (envelope, typed requests, Accepted/Rejected/Cancelled/Committed)",
+      "status": "Implemented+Evidenced",
+      "ownerTasks": [
+        "GC-003",
+        "GC-007",
+        "GC-010",
+        "GC-011",
+        "GC-021",
+        "GC-024",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w3-gate/trx/",
+        "artifacts/w3-gate/toolchain/probe-cards.json"
+      ],
+      "gc012": {
+        "delta": "A previous over-claim corrected and the gap closed. The archived evidence covered envelope admission, route resolution, capacity/backpressure, dedup and RequestResult; it did not cover the envelope's optional 'expected domain version if needed' clause, which was DEAD DATA (written in the constructor, read nowhere, and excluded even from the admission idempotency hash). GC-012 added GameCore.Contracts.IDomainVersionAuthority and WorldMessagePlane.BindDomainVersion: the guard is now checked at admission against the route's declared authority, a mismatch is refused as StalePlan before the owner's lane, and the guard participates in the idempotency hash. The card table's CardTableDomainVersion and the narrative dialogue's DialogueDomainVersion are the two declared authorities.",
+        "statusUnchangedBecause": "The row's existing evidence is unaffected and the correction is strictly additive to the observable contract; the new guard's own player run is pending.",
+        "evidenceAdded": [
+          "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
+          "Packages/com.gamecore.unity.runtime/Runtime/Messages/WorldMessagePlane.cs",
+          "Packages/com.gamecore.gameplay.cards/Runtime/CardTableSystems.cs"
+        ]
+      }
+    },
+    {
+      "id": "P-043",
+      "title": "Buffers and bounded work (lifetime, producer/consumer, no silent drop, drain validation)",
+      "status": "Implemented+Evidenced",
+      "ownerTasks": [
+        "GC-003",
+        "GC-007",
+        "GC-009",
+        "GC-011",
+        "GC-021",
+        "GC-023",
+        "GC-024",
+        "GC-026",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w3-gate/trx/"
+      ]
+    },
+    {
+      "id": "P-044",
+      "title": "Commit and domain transactions (bounded write set, drains, no inferred rollback)",
+      "status": "Implemented+Evidenced",
+      "ownerTasks": [
+        "GC-005",
+        "GC-007",
+        "GC-009",
+        "GC-010",
+        "GC-011",
+        "GC-016",
+        "GC-020",
+        "GC-021",
+        "GC-023",
+        "GC-024",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w3-gate/trx/",
+        "artifacts/w3-gate/toolchain/probe-cards.json"
+      ]
+    },
+    {
+      "id": "P-045",
+      "title": "Observation and external output (immutable images, dedup, cursors, outbox)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-007",
+        "GC-016",
+        "GC-019",
+        "GC-020",
+        "GC-021",
+        "GC-023",
+        "GC-024",
+        "GC-027",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w3-gate/trx/"
+      ],
+      "gap": "Committed-event publication, at-least-once page reads, subscriber-failure isolation and retention gaps are evidenced; a crash-durable outbox for irreversible output adapters is unrun.",
+      "nextOwner": "GC-021"
+    },
+    {
+      "id": "P-046",
+      "title": "Installation lifecycle (Registered..Failed, waiting, suspend/resume, replacement)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-004",
+        "GC-010",
+        "GC-014",
+        "GC-022",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/trx/",
+        "artifacts/w3-gate/unity/editmode-results.xml"
+      ],
+      "gap": "Waiting instances, suspension/resume authority and reconfiguration are evidenced; exhaustive legal/illegal/repeated lifecycle edges and 1,000-cycle mount/unmount churn (TEST-015) are not archived.",
+      "nextOwner": "GC-014"
+    },
+    {
+      "id": "P-047",
+      "title": "In-flight lifetime (quiescing, cooperative job completion, stale epoch discarded)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-005",
+        "GC-014",
+        "GC-017",
+        "GC-019",
+        "GC-022",
+        "GC-025",
+        "GC-027",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/trx/",
+        "artifacts/w3-gate/unity/editmode-results.xml"
+      ],
+      "gap": "Stale-epoch callback rejection and job quarantine are evidenced; 100 late completions after unload or world recreation and unexecuted commands finishing Cancelled(RouteRetired) are not archived.",
+      "nextOwner": "GC-014"
+    },
+    {
+      "id": "P-048",
+      "title": "Teardown (ingress, settle, fence, reverse retirement, quarantine, no false Disposed)",
+      "status": "Implemented+Evidenced",
+      "ownerTasks": [
+        "GC-005",
+        "GC-014",
+        "GC-017",
+        "GC-019",
+        "GC-022",
+        "GC-023",
+        "GC-025",
+        "GC-026",
+        "GC-027",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/trx/",
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w3-gate/toolchain/probe-world-dispatch.json"
+      ]
+    },
+    {
+      "id": "P-049",
+      "title": "Recovery limits (pre/post-mutation behaviour, recreate from checkpoint or catalog)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-017",
+        "GC-018",
+        "GC-021",
+        "GC-022",
+        "GC-027",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w3-gate/trx/"
+      ],
+      "gap": "Pre-mutation rejection, post-mutation fail-stop and retained-job quarantine are evidenced; recreation of a new WorldId from a verified checkpoint or the initial catalog does not exist.",
+      "nextOwner": "GC-018"
+    },
+    {
+      "id": "P-050",
+      "title": "Cancellation and idempotency (OperationId, input hash, ledger retransmission, expiry)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-004",
+        "GC-008",
+        "GC-014",
+        "GC-016",
+        "GC-017",
+        "GC-021",
+        "GC-022",
+        "GC-027",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/trx/",
+        "artifacts/protocol-fixtures/results.json"
+      ],
+      "gap": "Cancellation identity binding, idempotency conflict, retransmission coalescing and expiry high-water are evidenced; the caller-reserved session reservation used by restore (GC-018) and bounded retries with new operation IDs are unproven.",
+      "nextOwner": "GC-014"
+    },
+    {
+      "id": "P-051",
+      "title": "Operation discipline (complete operation set, control lane, handles, pure queries)",
+      "status": "Implemented+Evidenced",
+      "ownerTasks": [
+        "GC-004",
+        "GC-008",
+        "GC-014",
+        "GC-016",
+        "GC-017",
+        "GC-028",
+        "GC-029"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/trx/",
+        "artifacts/w3-gate/validator.log"
+      ]
+    },
+    {
+      "id": "P-052",
+      "title": "Diagnostics (stable codes, identity, phase, involved IDs, counts, retry class)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-004",
+        "GC-016",
+        "GC-017",
+        "GC-023",
+        "GC-026",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/trx/",
+        "artifacts/w3-gate/unity/editmode-results.xml"
+      ],
+      "gap": "Rejection codes are exercised individually, but full payloads (world/operation/plan identity, smallest conflicting set, retrieval keys, retry classification) are not established; GC-004's own review records P-052 conformance as not established.",
+      "nextOwner": "GC-016"
+    },
+    {
+      "id": "P-053",
+      "title": "Checkpoint (committed boundary, full contents, explicit command disposition)",
+      "status": "Not yet",
+      "ownerTasks": [
+        "GC-018",
+        "GC-021",
+        "GC-023",
+        "GC-027",
+        "GC-028"
+      ],
+      "evidence": [],
+      "gap": "No checkpoint capture code exists anywhere in Packages/ and no TEST-017 artifact exists in artifacts/.",
+      "nextOwner": "GC-018"
+    },
+    {
+      "id": "P-054",
+      "title": "Serialization (schema IDs, field IDs, canonical bytes, directed migrations)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-001",
+        "GC-003",
+        "GC-015",
+        "GC-018",
+        "GC-021",
+        "GC-025",
+        "GC-027",
+        "GC-028"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/trx/",
+        "artifacts/protocol-fixtures/results.json"
+      ],
+      "gap": "Generated serializers, canonical big-endian round trips, unknown-field rejection and registered slot migrations are evidenced; save/checkpoint data and directed cross-version migration paths are not.",
+      "nextOwner": "GC-018"
+    },
+    {
+      "id": "P-055",
+      "title": "Protocol evolution (major/minor ranges, required features, no silent fallback)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-002",
+        "GC-003",
+        "GC-012",
+        "GC-018",
+        "GC-025",
+        "GC-027",
+        "GC-028",
+        "GC-029",
+        "GC-030"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/toolchain/probe-w3-gate.json",
+        "artifacts/w3-gate/trx/"
+      ],
+      "gap": "The committed catalog declares protocol 1.0 with one supported feature and rejects unknown keys or unsupported versions in the player; the manifest major/minor matrix and required-feature rejection across packages are not archived, and restore-time catalog validation does not exist.",
+      "nextOwner": "GC-012"
+    },
+    {
+      "id": "P-056",
+      "title": "Extension points (registered reducers, schemas, owners, clocks, stages, adapters)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-010",
+        "GC-011",
+        "GC-012",
+        "GC-020",
+        "GC-024",
+        "GC-028",
+        "GC-029",
+        "GC-030"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/trx/",
+        "artifacts/w3-gate/unity/editmode-results.xml"
+      ],
+      "gap": "Reducers, schemas, state owners, stage contracts, request ports and serializer migrations are evidenced as registered seams; asset/presentation/input adapters are not implemented (GC-019).",
+      "nextOwner": "GC-012"
+    },
+    {
+      "id": "P-057",
+      "title": "Conformance (all P-001..P-060, mandatory operations, both modes and temporal models)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-002",
+        "GC-012",
+        "GC-024",
+        "GC-028",
+        "GC-029",
+        "GC-030"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/BUILD_REPORT.md",
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w3-gate/trx/"
+      ],
+      "gap": "No single revision yet carries executable evidence for every requirement and operation: O-20..O-22 are unimplemented, the action and cross-family reference compositions have not run, and the 10,000-step replay and measured budgets are outstanding.",
+      "nextOwner": "GC-028"
+    },
+    {
+      "id": "P-058",
+      "title": "V1 implementation profile (C# + Unity Entities, IL2CPP, stripping, exact baseline)",
+      "status": "Implemented+Evidenced",
+      "ownerTasks": [
+        "GC-001",
+        "GC-003",
+        "GC-005",
+        "GC-012",
+        "GC-020",
+        "GC-022",
+        "GC-025",
+        "GC-028",
+        "GC-029",
+        "GC-030"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/toolchain/environment.txt",
+        "artifacts/w3-gate/toolchain/probe-w3-gate.json",
+        "artifacts/gc-001/BUILD_REPORT.md"
+      ],
+      "gc012": {
+        "delta": "The stripping configuration this row's archived evidence was produced under no longer exists. That run built the player with Assets/link.xml preserving GameCore.Rules.Narrative, GameCore.Gameplay.Narrative and GameCore.Gameplay.Narrative.Fixtures with preserve=\"all\", so reachability of the narrative family was not attributable to generated roots. GC-012 removed those three entries and replaced them with generated roots in both catalogs (ProbeCatalog.NarrativeFamilyEntryKey -> NarrativeFamilyPluginEntry, CardCatalog.CardFamilyEntryKey -> CardFamilyPluginEntry).",
+        "statusUnchangedBecause": "The IL2CPP/High-stripping claim itself was evidenced; what changed is which mechanism carries the narrative family. The new configuration needs its own player run, which tools/run_w4_profile_gate.sh performs.",
+        "evidenceAdded": [
+          "unity/GameCore.Validation/Assets/link.xml",
+          "unity/GameCore.Validation/Assets/GameCore.Validation/Generated/ProbeCatalog.g.cs",
+          "unity/GameCore.Validation/Assets/GameCore.Validation/GeneratedCards/CardCatalog.g.cs"
+        ]
+      }
+    },
+    {
+      "id": "P-059",
+      "title": "Genre validation before freeze (cards and narrative now; action and cross-family before V1)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-010",
+        "GC-011",
+        "GC-012",
+        "GC-020",
+        "GC-024",
+        "GC-028",
+        "GC-029",
+        "GC-030"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/toolchain/probe-narrative.json",
+        "artifacts/w3-gate/toolchain/probe-cards.json",
+        "artifacts/w3-gate/toolchain/probe-w3-gate.json"
+      ],
+      "gap": "Cards and narrative execute on one kernel image with distinct world sessions; the fixed-step action family and the cross-family card-to-narrative reward composition have not run.",
+      "nextOwner": "GC-020"
+    },
+    {
+      "id": "P-060",
+      "title": "Evidence and release status (recorded versions, commands, logs, measured budgets)",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-001",
+        "GC-002",
+        "GC-012",
+        "GC-022",
+        "GC-023",
+        "GC-025",
+        "GC-026",
+        "GC-028",
+        "GC-029",
+        "GC-030"
+      ],
+      "evidence": [
+        "artifacts/w3-gate/BUILD_REPORT.md",
+        "artifacts/w3-gate/toolchain/environment.txt",
+        "artifacts/w3-gate/trx/"
+      ],
+      "gap": "Exact Unity/package/native-compiler/backend/stripping settings, catalog hashes, commands and logs are archived, but the provisional budgets are unmeasured and failures/unload, checkpoint recovery and no-per-frame-traversal evidence are outstanding.",
+      "nextOwner": "GC-026"
+    }
+  ],
+  "operations": [
+    {
+      "id": "O-01",
+      "title": "CreateWorld: definition, mode, temporal config -> new WorldId",
+      "status": "Implemented+Evidenced",
+      "ownerTasks": [
+        "GC-002",
+        "GC-003",
+        "GC-004",
+        "GC-005",
+        "GC-008",
+        "GC-014",
+        "GC-016",
+        "GC-017",
+        "GC-018",
+        "GC-019",
+        "GC-020",
+        "GC-022",
+        "GC-025",
+        "GC-027",
+        "GC-028"
+      ],
+      "suites": [
+        "TEST-002",
+        "TEST-018"
+      ],
+      "evidence": [
+        "Packages/com.gamecore.unity.runtime/Runtime/WorldHost.cs",
+        "Packages/com.gamecore.unity.runtime/Runtime/UnityWorldRegistration.cs",
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w3-gate/toolchain/probe-w3-gate.json"
+      ]
+    },
+    {
+      "id": "O-02",
+      "title": "EditScopes: create/edit/drop/reparent descriptors, memberships, boundaries",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-004",
+        "GC-006",
+        "GC-013",
+        "GC-014",
+        "GC-016",
+        "GC-023",
+        "GC-024",
+        "GC-026",
+        "GC-028"
+      ],
+      "suites": [
+        "TEST-006",
+        "TEST-008"
+      ],
+      "evidence": [
+        "Packages/com.gamecore.composition/Runtime/Operations/CompositionEditApplier.cs",
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w3-gate/trx/"
+      ],
+      "gap": "Cycle, cross-world and nonempty-drop rejection are evidenced, but the distinguishing probe (a branch move that changes inheritance and retains slot state atomically) is not archived.",
+      "nextOwner": "GC-013"
+    },
+    {
+      "id": "O-03",
+      "title": "Mount: manifest instance/config/scope -> Active or WaitingForDependencies",
+      "status": "Implemented+Evidenced",
+      "ownerTasks": [
+        "GC-003",
+        "GC-004",
+        "GC-006",
+        "GC-010",
+        "GC-011",
+        "GC-013",
+        "GC-014",
+        "GC-019",
+        "GC-021",
+        "GC-022",
+        "GC-028"
+      ],
+      "suites": [
+        "TEST-003",
+        "TEST-004",
+        "TEST-015"
+      ],
+      "evidence": [
+        "Packages/com.gamecore.composition/Runtime/Operations/CompositionHost.cs",
+        "artifacts/w3-gate/toolchain/probe-narrative.json",
+        "artifacts/w3-gate/toolchain/probe-cards.json",
+        "artifacts/w3-gate/toolchain/probe-w2-gate.json"
+      ]
+    },
+    {
+      "id": "O-04",
+      "title": "ActivateOrResume: registered/waiting/suspended instance -> staged activation",
+      "status": "Implemented+Evidenced",
+      "ownerTasks": [
+        "GC-003",
+        "GC-004",
+        "GC-010",
+        "GC-014",
+        "GC-019",
+        "GC-021",
+        "GC-022",
+        "GC-028"
+      ],
+      "suites": [
+        "TEST-003",
+        "TEST-015"
+      ],
+      "evidence": [
+        "Packages/com.gamecore.composition/Runtime/Operations/CompositionHost.cs",
+        "artifacts/w3-gate/trx/",
+        "artifacts/w3-gate/unity/editmode-results.xml"
+      ]
+    },
+    {
+      "id": "O-05",
+      "title": "ReconfigureOrReplace: immutable patch or replacement revision -> new activation epoch",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-004",
+        "GC-006",
+        "GC-007",
+        "GC-008",
+        "GC-010",
+        "GC-013",
+        "GC-014",
+        "GC-015",
+        "GC-018",
+        "GC-019",
+        "GC-021",
+        "GC-022",
+        "GC-024",
+        "GC-027",
+        "GC-028"
+      ],
+      "suites": [
+        "TEST-005",
+        "TEST-010",
+        "TEST-015"
+      ],
+      "evidence": [
+        "Packages/com.gamecore.composition/Runtime/Operations/CompositionEditApplier.cs",
+        "artifacts/w3-gate/trx/"
+      ],
+      "gap": "Stable contribution identity, activation-epoch advance and stale-activation rejection are evidenced, but no archived run reconfigures an instance that holds non-default mutable runtime state and proves it survives (TEST-010).",
+      "nextOwner": "GC-015"
+    },
+    {
+      "id": "O-06",
+      "title": "Suspend: instance(s) plus reason -> Suspended with retained slot dispositions",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-004",
+        "GC-007",
+        "GC-008",
+        "GC-010",
+        "GC-014",
+        "GC-015",
+        "GC-018",
+        "GC-019",
+        "GC-021",
+        "GC-022",
+        "GC-024",
+        "GC-027",
+        "GC-028"
+      ],
+      "suites": [
+        "TEST-010",
+        "TEST-015"
+      ],
+      "evidence": [
+        "Packages/com.gamecore.composition/Runtime/Operations/CompositionEditApplier.cs",
+        "artifacts/w3-gate/trx/",
+        "artifacts/w3-gate/unity/editmode-results.xml"
+      ],
+      "gap": "Contribution retraction and closed authority on suspension are evidenced, but dormant state of a real target surviving a suspend/resume is not archived (last-support-loss slot policy is GC-015's).",
+      "nextOwner": "GC-015"
+    },
+    {
+      "id": "O-07",
+      "title": "Unmount: instance(s) -> removed installation plus terminal teardown record",
+      "status": "Implemented+Evidenced",
+      "ownerTasks": [
+        "GC-004",
+        "GC-005",
+        "GC-006",
+        "GC-008",
+        "GC-010",
+        "GC-013",
+        "GC-014",
+        "GC-015",
+        "GC-016",
+        "GC-017",
+        "GC-019",
+        "GC-021",
+        "GC-022",
+        "GC-027",
+        "GC-028"
+      ],
+      "suites": [
+        "TEST-005",
+        "TEST-015",
+        "TEST-016"
+      ],
+      "evidence": [
+        "Packages/com.gamecore.composition/Runtime/Operations/CompositionEditApplier.cs",
+        "artifacts/w3-gate/trx/",
+        "artifacts/w3-gate/toolchain/probe-cards.json"
+      ]
+    },
+    {
+      "id": "O-08",
+      "title": "SetMode: expected revision, Automatic/Conservative -> plan/result",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-003",
+        "GC-004",
+        "GC-005",
+        "GC-006",
+        "GC-007",
+        "GC-008",
+        "GC-013",
+        "GC-015",
+        "GC-016",
+        "GC-017",
+        "GC-024",
+        "GC-028"
+      ],
+      "suites": [
+        "TEST-006",
+        "TEST-009"
+      ],
+      "evidence": [
+        "Packages/com.gamecore.composition/Runtime/Operations/CompositionEditApplier.cs",
+        "artifacts/w3-gate/trx/"
+      ],
+      "gap": "One switch direction is archived; a conflicting switch retaining the prior mode and a spawn after the switch following the committed setting are not.",
+      "nextOwner": "GC-013"
+    },
+    {
+      "id": "O-09",
+      "title": "BuildPlan: immutable base+proposal+catalog -> validated plan or diagnostics",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-003",
+        "GC-004",
+        "GC-005",
+        "GC-006",
+        "GC-007",
+        "GC-008",
+        "GC-013",
+        "GC-014",
+        "GC-015",
+        "GC-016",
+        "GC-017",
+        "GC-023",
+        "GC-024",
+        "GC-026",
+        "GC-028"
+      ],
+      "suites": [
+        "TEST-005",
+        "TEST-007",
+        "TEST-008",
+        "TEST-009"
+      ],
+      "evidence": [
+        "Packages/com.gamecore.derivation/Runtime/Engine/DerivationEngine.cs",
+        "Packages/com.gamecore.planning/Runtime/Plans/AssemblyPlanner.cs",
+        "artifacts/w3-gate/trx/"
+      ],
+      "gap": "Plan hashing and validation without live writes are evidenced; oracle parity of the incremental plan hash at the TEST-008 50x500 scale is not.",
+      "nextOwner": "GC-013"
+    },
+    {
+      "id": "O-10",
+      "title": "PreparePlan: validated plan -> prepared plan with leases and bounded scratch",
+      "status": "Implemented+Evidenced",
+      "ownerTasks": [
+        "GC-003",
+        "GC-004",
+        "GC-005",
+        "GC-006",
+        "GC-007",
+        "GC-008",
+        "GC-013",
+        "GC-014",
+        "GC-015",
+        "GC-016",
+        "GC-017",
+        "GC-021",
+        "GC-022",
+        "GC-027",
+        "GC-028"
+      ],
+      "suites": [
+        "TEST-009",
+        "TEST-016"
+      ],
+      "evidence": [
+        "Packages/com.gamecore.planning/Runtime/Plans/PlanStateMachine.cs",
+        "Packages/com.gamecore.planning/Runtime/Plans/MigrationScratch.cs",
+        "artifacts/w3-gate/trx/",
+        "artifacts/w3-gate/unity/editmode-results.xml"
+      ]
+    },
+    {
+      "id": "O-11",
+      "title": "PublishPlan: prepared plan -> new epoch/result at a safe boundary",
+      "status": "Implemented+Evidenced",
+      "ownerTasks": [
+        "GC-003",
+        "GC-004",
+        "GC-005",
+        "GC-006",
+        "GC-007",
+        "GC-008",
+        "GC-013",
+        "GC-014",
+        "GC-015",
+        "GC-016",
+        "GC-017",
+        "GC-021",
+        "GC-022",
+        "GC-027",
+        "GC-028"
+      ],
+      "suites": [
+        "TEST-009",
+        "TEST-016"
+      ],
+      "evidence": [
+        "Packages/com.gamecore.unity.runtime/Runtime/Assembly/AssemblyPublisher.cs",
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w3-gate/trx/"
+      ]
+    },
+    {
+      "id": "O-12",
+      "title": "SpawnOrDespawn: recipe/spawn key/scope or target handle -> complete handle or tombstone",
+      "status": "Implemented+Evidenced",
+      "ownerTasks": [
+        "GC-001",
+        "GC-003",
+        "GC-004",
+        "GC-006",
+        "GC-008",
+        "GC-010",
+        "GC-011",
+        "GC-012",
+        "GC-013",
+        "GC-019",
+        "GC-025",
+        "GC-028"
+      ],
+      "suites": [
+        "TEST-004",
+        "TEST-020"
+      ],
+      "evidence": [
+        "Packages/com.gamecore.unity.runtime/Runtime/Assembly/AssemblyPublisher.cs",
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w3-gate/toolchain/probe-w2-gate.json",
+        "artifacts/w3-gate/toolchain/probe-cards.json"
+      ]
+    },
+    {
+      "id": "O-13",
+      "title": "SubmitCommand: envelope -> admission/result handle, deduped before enqueue",
+      "status": "Implemented+Evidenced",
+      "ownerTasks": [
+        "GC-002",
+        "GC-003",
+        "GC-004",
+        "GC-005",
+        "GC-007",
+        "GC-008",
+        "GC-009",
+        "GC-010",
+        "GC-011",
+        "GC-012",
+        "GC-014",
+        "GC-015",
+        "GC-016",
+        "GC-018",
+        "GC-019",
+        "GC-020",
+        "GC-021",
+        "GC-024",
+        "GC-026",
+        "GC-027",
+        "GC-028"
+      ],
+      "suites": [
+        "TEST-002",
+        "TEST-013"
+      ],
+      "evidence": [
+        "Packages/com.gamecore.unity.runtime/Runtime/Messages/WorldMessagePlane.cs",
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w3-gate/toolchain/probe-cards.json"
+      ]
+    },
+    {
+      "id": "O-14",
+      "title": "Advance: elapsed sample or queued command/wake -> zero or more step attempts",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-002",
+        "GC-005",
+        "GC-009",
+        "GC-012",
+        "GC-018",
+        "GC-020",
+        "GC-023",
+        "GC-028"
+      ],
+      "suites": [
+        "TEST-011",
+        "TEST-022"
+      ],
+      "evidence": [
+        "Packages/com.gamecore.unity.runtime/Runtime/Time/WorldTimeDriver.cs",
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w3-gate/trx/"
+      ],
+      "gap": "Zero idle steps and retained fixed-step debt are evidenced; the replayed admission/batch order over 10,000 steps (TEST-022) is not.",
+      "nextOwner": "GC-023"
+    },
+    {
+      "id": "O-15",
+      "title": "ExecuteStage: sealed step/bindings/buffers -> tracked jobs and deferred operations",
+      "status": "Implemented+Evidenced",
+      "ownerTasks": [
+        "GC-003",
+        "GC-005",
+        "GC-007",
+        "GC-009",
+        "GC-010",
+        "GC-011",
+        "GC-012",
+        "GC-014",
+        "GC-015",
+        "GC-017",
+        "GC-019",
+        "GC-020",
+        "GC-021",
+        "GC-022",
+        "GC-023",
+        "GC-024",
+        "GC-025",
+        "GC-026",
+        "GC-028"
+      ],
+      "suites": [
+        "TEST-012",
+        "TEST-013",
+        "TEST-018"
+      ],
+      "evidence": [
+        "Packages/com.gamecore.unity.runtime/Runtime/Execution/GuardedDispatch.cs",
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w3-gate/trx/"
+      ]
+    },
+    {
+      "id": "O-16",
+      "title": "CommitStep: completed step -> step id, committed events and one snapshot",
+      "status": "Implemented+Evidenced",
+      "ownerTasks": [
+        "GC-003",
+        "GC-005",
+        "GC-007",
+        "GC-009",
+        "GC-010",
+        "GC-011",
+        "GC-012",
+        "GC-015",
+        "GC-016",
+        "GC-020",
+        "GC-021",
+        "GC-023",
+        "GC-024",
+        "GC-026",
+        "GC-027",
+        "GC-028"
+      ],
+      "suites": [
+        "TEST-013",
+        "TEST-014"
+      ],
+      "evidence": [
+        "Packages/com.gamecore.unity.runtime/Runtime/WorldHost.cs",
+        "Packages/com.gamecore.unity.runtime/Runtime/Pure/Messages/CommittedEventStore.cs",
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w3-gate/trx/"
+      ]
+    },
+    {
+      "id": "O-17",
+      "title": "Observe: snapshot/event cursor and limits -> immutable lease/page",
+      "status": "Implemented+Evidenced",
+      "ownerTasks": [
+        "GC-007",
+        "GC-016",
+        "GC-021",
+        "GC-023",
+        "GC-024",
+        "GC-027",
+        "GC-028"
+      ],
+      "suites": [
+        "TEST-014"
+      ],
+      "evidence": [
+        "Packages/com.gamecore.unity.runtime/Runtime/Pure/Messages/CommittedEventStore.cs",
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w3-gate/trx/"
+      ]
+    },
+    {
+      "id": "O-18",
+      "title": "CancelOperation: operation id -> Cancelled or TooLate plus status, never rollback",
+      "status": "Implemented+Evidenced",
+      "ownerTasks": [
+        "GC-002",
+        "GC-003",
+        "GC-004",
+        "GC-005",
+        "GC-006",
+        "GC-007",
+        "GC-008",
+        "GC-013",
+        "GC-014",
+        "GC-015",
+        "GC-016",
+        "GC-017",
+        "GC-018",
+        "GC-019",
+        "GC-021",
+        "GC-022",
+        "GC-027",
+        "GC-028"
+      ],
+      "suites": [
+        "TEST-002",
+        "TEST-009",
+        "TEST-016"
+      ],
+      "evidence": [
+        "Packages/com.gamecore.composition/Runtime/Operations/CompositionHost.cs",
+        "artifacts/w3-gate/trx/"
+      ]
+    },
+    {
+      "id": "O-19",
+      "title": "StopWorld: world plus reason -> Stopping then Disposed or blocked/quarantined",
+      "status": "Implemented+Evidenced",
+      "ownerTasks": [
+        "GC-004",
+        "GC-005",
+        "GC-008",
+        "GC-010",
+        "GC-014",
+        "GC-016",
+        "GC-017",
+        "GC-019",
+        "GC-020",
+        "GC-021",
+        "GC-022",
+        "GC-025",
+        "GC-027",
+        "GC-028"
+      ],
+      "suites": [
+        "TEST-015",
+        "TEST-016",
+        "TEST-018"
+      ],
+      "evidence": [
+        "Packages/com.gamecore.unity.runtime/Runtime/WorldHost.cs",
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w3-gate/toolchain/probe-world-dispatch.json"
+      ]
+    },
+    {
+      "id": "O-20",
+      "title": "CaptureCheckpoint: snapshot boundary plus command option -> versioned blob/checksum",
+      "status": "Not yet",
+      "ownerTasks": [
+        "GC-003",
+        "GC-015",
+        "GC-018",
+        "GC-021",
+        "GC-025",
+        "GC-027",
+        "GC-028"
+      ],
+      "suites": [
+        "TEST-017"
+      ],
+      "evidence": [],
+      "gap": "No checkpoint capture code exists anywhere in Packages/ and no TEST-017 artifact exists in artifacts/.",
+      "nextOwner": "GC-018"
+    },
+    {
+      "id": "O-21",
+      "title": "RestoreCheckpoint: verified blob -> new WorldId and fully published world",
+      "status": "Not yet",
+      "ownerTasks": [
+        "GC-002",
+        "GC-003",
+        "GC-004",
+        "GC-008",
+        "GC-014",
+        "GC-015",
+        "GC-016",
+        "GC-018",
+        "GC-019",
+        "GC-021",
+        "GC-025",
+        "GC-027",
+        "GC-028"
+      ],
+      "suites": [
+        "TEST-002",
+        "TEST-017"
+      ],
+      "evidence": [],
+      "gap": "No restore path, catalog/migration validation or unexposed destination world exists in Packages/.",
+      "nextOwner": "GC-018"
+    },
+    {
+      "id": "O-22",
+      "title": "RecoverWorld: Faulted world plus checkpoint or definition -> new session",
+      "status": "Not yet",
+      "ownerTasks": [
+        "GC-003",
+        "GC-004",
+        "GC-005",
+        "GC-008",
+        "GC-014",
+        "GC-015",
+        "GC-016",
+        "GC-017",
+        "GC-018",
+        "GC-021",
+        "GC-022",
+        "GC-025",
+        "GC-027",
+        "GC-028"
+      ],
+      "suites": [
+        "TEST-016",
+        "TEST-017"
+      ],
+      "evidence": [],
+      "gap": "WorldHost can enter Faulted, but no procedure selects a recovery source and publishes a new world session.",
+      "nextOwner": "GC-018"
+    },
+    {
+      "id": "O-23",
+      "title": "BindServiceOrAcquireLease: contract/provider/token -> epoch-bound binding or lease",
+      "status": "Implemented+Evidenced",
+      "ownerTasks": [
+        "GC-003",
+        "GC-004",
+        "GC-010",
+        "GC-014",
+        "GC-019",
+        "GC-021",
+        "GC-022",
+        "GC-028"
+      ],
+      "suites": [
+        "TEST-003",
+        "TEST-015"
+      ],
+      "evidence": [
+        "Packages/com.gamecore.composition/Runtime/Services/ServiceResolver.cs",
+        "Packages/com.gamecore.composition/Runtime/Lifecycle/ManagedResources.cs",
+        "artifacts/w3-gate/trx/"
+      ]
+    },
+    {
+      "id": "O-24",
+      "title": "CompleteAsyncWork: stamped completion/result/leases -> accepted staged result",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-002",
+        "GC-003",
+        "GC-004",
+        "GC-008",
+        "GC-010",
+        "GC-014",
+        "GC-016",
+        "GC-018",
+        "GC-019",
+        "GC-021",
+        "GC-022",
+        "GC-027",
+        "GC-028"
+      ],
+      "suites": [
+        "TEST-002",
+        "TEST-015"
+      ],
+      "evidence": [
+        "Packages/com.gamecore.composition/Runtime/Lifecycle/CallbackGate.cs",
+        "artifacts/w3-gate/trx/"
+      ],
+      "gap": "Stale and foreign completions are fenced and release only their own acquisitions, but no host path installs an accepted async result as staged data or a typed command, and duplicate-completion lease rules are absent.",
+      "nextOwner": "GC-014"
+    },
+    {
+      "id": "O-25",
+      "title": "ExplainOrInspectOperation: target/capability/token or operation id -> explanation/status",
+      "status": "Implemented+Evidenced",
+      "ownerTasks": [
+        "GC-004",
+        "GC-006",
+        "GC-007",
+        "GC-010",
+        "GC-011",
+        "GC-013",
+        "GC-015",
+        "GC-016",
+        "GC-021",
+        "GC-023",
+        "GC-024",
+        "GC-027",
+        "GC-028"
+      ],
+      "suites": [
+        "TEST-004",
+        "TEST-005",
+        "TEST-014"
+      ],
+      "evidence": [
+        "Packages/com.gamecore.derivation/Runtime/Explain/DerivationExplainReader.cs",
+        "Packages/com.gamecore.composition/Runtime/Operations/OperationLedger.cs",
+        "artifacts/w3-gate/trx/",
+        "artifacts/w3-gate/toolchain/probe-narrative.json"
+      ]
+    },
+    {
+      "id": "O-26",
+      "title": "SetWorldRunState: Running/Paused -> new host status, same snapshot token",
+      "status": "Partial",
+      "ownerTasks": [
+        "GC-003",
+        "GC-004",
+        "GC-005",
+        "GC-006",
+        "GC-007",
+        "GC-008",
+        "GC-009",
+        "GC-012",
+        "GC-013",
+        "GC-014",
+        "GC-015",
+        "GC-016",
+        "GC-017",
+        "GC-019",
+        "GC-020",
+        "GC-022",
+        "GC-025",
+        "GC-028"
+      ],
+      "suites": [
+        "TEST-009",
+        "TEST-011",
+        "TEST-018"
+      ],
+      "evidence": [
+        "Packages/com.gamecore.unity.runtime/Runtime/WorldHost.cs",
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/w3-gate/trx/"
+      ],
+      "gap": "Status-only change, no paused-time debt, retained debt on resume and unchanged step/epoch are evidenced; no archived run pauses while a tracked job is executing to prove the boundary wait.",
+      "nextOwner": "GC-017"
+    }
+  ],
+  "gc012Revisions": [
+    {
+      "id": "P-017",
+      "previousStatus": "Partial",
+      "status": "Partial",
+      "delta": "GC-012 implemented the missing representation: a binding row now carries a support SET (GameCore.Planning.CapabilitySupport, TargetBindingRow.Supports, DerivedBindingRule.Supports, ProposedCapability.Supporters) and the published storage carries one GameCore.Unity.Runtime.CapabilitySupportRow per supporter. The derivation-to-publication seam no longer refuses a multi-supporter slot, and AssemblyPlanner consumes the composed value and the support set instead of publishing the top-ranked candidate's raw value. A new card fixture (Packages/com.gamecore.gameplay.cards/Fixtures/Runtime/CardAdditiveScenario.cs) mounts two scoring providers on Seat A's single cards.set-bonus slot and observes the composed value with two support rows.",
+      "whyStatusUnchanged": "The status vocabulary requires an ARCHIVED executable artifact on the build host. GC-012's probe has not run on this host, so the mechanism is implemented but not yet evidenced. ContributionId stability across reconfiguration remains unimplemented as well.",
+      "nextOwner": "GC-012",
+      "evidenceAdded": [
+        "Packages/com.gamecore.planning/Runtime/Plans/BindingSupport.cs",
+        "Packages/com.gamecore.unity.runtime/Runtime/Assembly/AssemblyComponents.cs",
+        "Packages/com.gamecore.gameplay.cards/Fixtures/Runtime/CardAdditiveScenario.cs",
+        "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W4ProfileScenario.cs",
+        "tools/unity/run_w4_profile_probe.sh"
+      ]
+    },
+    {
+      "id": "P-019",
+      "previousStatus": "Implemented+Evidenced",
+      "status": "Implemented+Evidenced",
+      "delta": "Strengthened, and a previous over-claim corrected. The archive that supported this row evidenced the five policies in the pure composition kernel and the protocol fixtures; it did NOT evidence an Additive slot reaching a live world with its composed value, because the seam refused any slot with more than one supporter (GC-011 recorded exactly that). GC-012 removed the refusal and added the end-to-end fixture, so the row's claim is now true of the implementation as well as of the kernel.",
+      "whyStatusUnchanged": "The row stays Implemented+Evidenced on its existing kernel/fixture evidence; the new end-to-end run is required before the player-level half of the claim is evidenced.",
+      "nextOwner": null,
+      "evidenceAdded": [
+        "Packages/com.gamecore.planning/Runtime/Plans/AssemblyPlanner.cs",
+        "Packages/com.gamecore.unity.runtime/Runtime/Integration/DerivationProposalBridge.cs"
+      ]
+    },
+    {
+      "id": "P-042",
+      "previousStatus": "Implemented+Evidenced",
+      "status": "Implemented+Evidenced",
+      "delta": "A previous over-claim corrected and the gap closed. The archived evidence covered envelope admission, route resolution, capacity/backpressure, dedup and RequestResult; it did not cover the envelope's optional 'expected domain version if needed' clause, which was DEAD DATA (written in the constructor, read nowhere, and excluded even from the admission idempotency hash). GC-012 added GameCore.Contracts.IDomainVersionAuthority and WorldMessagePlane.BindDomainVersion: the guard is now checked at admission against the route's declared authority, a mismatch is refused as StalePlan before the owner's lane, and the guard participates in the idempotency hash. The card table's CardTableDomainVersion and the narrative dialogue's DialogueDomainVersion are the two declared authorities.",
+      "whyStatusUnchanged": "The row's existing evidence is unaffected and the correction is strictly additive to the observable contract; the new guard's own player run is pending.",
+      "nextOwner": null,
+      "evidenceAdded": [
+        "Packages/com.gamecore.contracts/Runtime/Contracts/HostContracts.cs",
+        "Packages/com.gamecore.unity.runtime/Runtime/Messages/WorldMessagePlane.cs",
+        "Packages/com.gamecore.gameplay.cards/Runtime/CardTableSystems.cs"
+      ]
+    },
+    {
+      "id": "P-058",
+      "previousStatus": "Implemented+Evidenced",
+      "status": "Implemented+Evidenced",
+      "delta": "The stripping configuration this row's archived evidence was produced under no longer exists. That run built the player with Assets/link.xml preserving GameCore.Rules.Narrative, GameCore.Gameplay.Narrative and GameCore.Gameplay.Narrative.Fixtures with preserve=\"all\", so reachability of the narrative family was not attributable to generated roots. GC-012 removed those three entries and replaced them with generated roots in both catalogs (ProbeCatalog.NarrativeFamilyEntryKey -> NarrativeFamilyPluginEntry, CardCatalog.CardFamilyEntryKey -> CardFamilyPluginEntry).",
+      "whyStatusUnchanged": "The IL2CPP/High-stripping claim itself was evidenced; what changed is which mechanism carries the narrative family. The new configuration needs its own player run, which tools/run_w4_profile_gate.sh performs.",
+      "nextOwner": null,
+      "evidenceAdded": [
+        "unity/GameCore.Validation/Assets/link.xml",
+        "unity/GameCore.Validation/Assets/GameCore.Validation/Generated/ProbeCatalog.g.cs",
+        "unity/GameCore.Validation/Assets/GameCore.Validation/GeneratedCards/CardCatalog.g.cs"
+      ]
+    },
+    {
+      "id": "P-009",
+      "previousStatus": "Partial",
+      "status": "Partial",
+      "delta": "The registered-entry half of this requirement now has a family-specific generated inactive plugin entry for BOTH families, not only the GC-001 fixture plugin: each catalog registers an entry whose direct constructor reference roots that family's registration surface, so 'a linked inactive plugin is mountable without rebuilding the running player' is proven for the two real families rather than only for a fixture plugin.",
+      "whyStatusUnchanged": "TEST-020's baking-versus-runtime-recipe half, the descendant/reparent/unload sequence in the player and the unknown-executable-plugin rejection remain unrun.",
+      "nextOwner": "GC-012",
+      "evidenceAdded": [
+        "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/GeneratedFamilyEntries.cs",
+        "unity/GameCore.Validation/Catalogs/ProbeCatalog.catalog.json",
+        "unity/GameCore.Validation/Catalogs/CardCatalog.catalog.json"
+      ]
+    },
+    {
+      "id": "P-001",
+      "previousStatus": "Partial",
+      "status": "Partial",
+      "delta": "The genre-independence audit gained a reproducible host-side half: tools/w4_generic_profile_audit.py extracts the full assembly reference graph and the kernel type inventory from the source tree and reports every kernel->gameplay/rules/validation edge and every genre-specific token. On this revision it finds zero forbidden edges over 37 assemblies and 697 kernel types. The runtime half (loaded assembly graph in the stripped player) is -probeW4Profile's first clause.",
+      "whyStatusUnchanged": "Two of three families run; the fixed-step action family and the cross-family composition are still unrun.",
+      "nextOwner": "GC-012",
+      "evidenceAdded": [
+        "tools/w4_generic_profile_audit.py",
+        "artifacts/gates/w4-generic-profile/generic-profile-audit.json",
+        "artifacts/gates/w4-generic-profile/audit.md"
+      ]
+    },
+    {
+      "id": "P-032",
+      "previousStatus": null,
+      "status": null,
+      "delta": "Doc gap closed on GC-015's report: 00 P-032 requires a `Reset` to be 'manifest-supported', but 05's `StateSlotSpec` row and the `GameCore.Contracts.StateSlotSpec` manifest DTO had no reset member, and `OwnershipSchedulePipeline.OptionsOf` derived its options only from `LastSupport`, so no manifest could ever declare reset support. Fixed additively: `StateSlotSpec` gained a second constructor overload (`bool resetSupported, string? resetReason`) plus `ResetSupported` and `ResetReason` properties, the original constructor chains to it, `OptionsOf` now reads the manifest, and 05 section 3/4 name both the reset policy and the explicit `Reset` request. The proposal half (`SlotChangeKind.Reset` + `SlotPolicyRequest.Reason`) already existed and is reused, so GC-015's executors need no change.",
+      "whyStatusUnchanged": "The row's status is unchanged by this correction: the change makes the existing P-032 machinery reachable from content rather than adding a new capability.",
+      "nextOwner": null,
+      "evidenceAdded": [
+        "Packages/com.gamecore.contracts/Runtime/Manifest/Declarations.cs",
+        "Packages/com.gamecore.unity.runtime/Runtime/Integration/OwnershipSchedulePipeline.cs",
+        "docs/game-core/05-contracts-and-data-model.md",
+        "dotnet/tests/GameCore.Contracts.Tests/ContractTests.cs"
+      ]
+    }
+  ]
+}
