@@ -123,17 +123,20 @@ python3 tools/check_release_fault_free.py --no-build
 # boundary owners: releaseLatchReferences=0 in all four, qualificationLatchReferences 17/3/1/1
 ```
 
-**Falsifiability, checked by injecting the defect class the first audit found** — an unguarded reach in
-`AssemblyPublisher.Publish`:
+**Falsifiability.** Five defect classes were injected into the real sources one at a time; the check failed on every
+one of them and returned to PASS when the file was restored byte-for-byte (`git status` clean after each):
 
-```
-GC-017 release surface: FAIL
-  - release …/AssemblyPublisher.cs still references FaultBoundary, FaultReach
-```
+| Injected defect | Result |
+| --- | --- |
+| an unguarded `Faults` reference in `AssemblyPublisher.Publish` | FAIL — "still references Faults" |
+| an unguarded `InjectionReleaseRefusalCount` in `StagedResourceGate.TryAcquire` | FAIL — "still references InjectionReleaseRefusalCount" |
+| an unguarded `FaultReach.Refuse(Faults, FaultBoundary.Fence, …)` in `Publish` | FAIL — "still references FaultBoundary, FaultReach, Faults" |
+| the `[Conditional]` attribute deleted from `NoteFirstLiveWrite` | FAIL — "the apply path's latch call is not masked by …" |
+| the guard deleted from `FaultBoundaries.cs` | FAIL — "release …/FaultBoundaries.cs still references …" |
 
-Restoring the file returns the check to PASS. The player tool was self-tested the same way against a synthetic
-player directory: an assembly containing `AssemblyFaultInjection` fails with the marker and count named, and an
-assembly containing nothing passes.
+The player tool was self-tested the same way against a synthetic player directory: an assembly containing
+`AssemblyFaultInjection` fails with the marker and its count named, an assembly containing nothing passes, and a
+directory with no assembly at all fails as "inspected nothing" rather than passing vacuously.
 
 Nothing above is a build or a test of the Unity assemblies. The compiled-assembly half needs the .NET SDK and the
 release-player half needs a release-configuration player; both are for the build host.

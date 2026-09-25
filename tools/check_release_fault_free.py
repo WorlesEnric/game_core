@@ -76,6 +76,27 @@ LATCH_TYPES = (
     "FaultInjectedException",
 )
 
+# Latch *members* that vanish with the types. The pattern catches the per-world latch reference without
+# matching `PostwriteFaultCount` or an ordinary word such as "defaults".
+LATCH_MEMBERS = ("InjectionRefusalCount", "InjectionReleaseRefusalCount")
+LATCH_MEMBER_PATTERN = re.compile(r"\bFaults\b")
+
+# The latch namespace. It is declared in both configurations (that is what keeps the assembly's `using`
+# directives valid), so it is removed from the text before looking for the per-world latch *member*, which
+# is what the guard actually removes.
+LATCH_NAMESPACE = "GameCore.Unity.Runtime.Faults"
+
+# Latch *members* that vanish with the types. The pattern catches the per-world latch reference without
+# matching the namespace, `PostwriteFaultCount`, or an ordinary word such as "defaults".
+LATCH_MEMBERS = ("InjectionRefusalCount", "InjectionReleaseRefusalCount")
+LATCH_MEMBER_PATTERN = re.compile(r"\bFaults\b")
+
+
+def latch_member_leak(text: str) -> bool:
+    """True when the compiled text references the latch member rather than only its namespace."""
+    return bool(LATCH_MEMBER_PATTERN.search(text.replace(LATCH_NAMESPACE, "")))
+
+
 # The boundary name table `FaultBoundaryText.Names`, verbatim. Two of them ("migration", "cleanup") are
 # ordinary words, so the assembly check uses the distinctive ones; the source check uses all of them
 # only inside the file that must be empty in release.
@@ -265,7 +286,9 @@ def check_source_configurations() -> dict:
         qualify_text = evaluate(text, {SYMBOL}, path)
         assert_balanced(release, "release " + path)
         assert_balanced(qualify_text, "qualification " + path)
-        leaked = sorted(name for name in LATCH_TYPES if name in release)
+        leaked = sorted(name for name in LATCH_TYPES + LATCH_MEMBERS if name in release)
+        if latch_member_leak(release):
+            leaked.append("Faults")
         if leaked:
             findings.append("release %s still references %s" % (path, ", ".join(leaked)))
         qualify = evaluate(text, {SYMBOL}, path)
@@ -287,7 +310,9 @@ def check_source_configurations() -> dict:
         text = strip_comments(read(path))
         release = evaluate(text, set(), path)
         qualify = evaluate(text, {SYMBOL}, path)
-        leaked = sorted(name for name in LATCH_TYPES if name in release)
+        leaked = sorted(name for name in LATCH_TYPES + LATCH_MEMBERS if name in release)
+        if latch_member_leak(release):
+            leaked.append("Faults")
         if leaked:
             findings.append("release %s still references %s" % (path, ", ".join(leaked)))
         if required not in qualify:
