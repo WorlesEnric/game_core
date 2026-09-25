@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using GameCore.Contracts;
+using GameCore.Planning.Scheduling;
 
 namespace GameCore.Planning.Tests.Scheduling
 {
@@ -139,8 +140,7 @@ namespace GameCore.Planning.Tests.Scheduling
                     {
                         System(
                             settleSystem,
-                            AccessSetOf(Access(receipt, AccessMode.Write)),
-                            requiredAfter: new[] { acceptSystem }),
+                            AccessSetOf(Access(receipt, AccessMode.Write))),
                     },
                     requiredAfter: new[] { accept },
                     ports: new[] { new BufferPort(receiptBuffer, PortDirection.Producer, settle) }),

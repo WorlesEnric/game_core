@@ -538,7 +538,7 @@ namespace GameCore.Planning.Scheduling
                 }
 
                 producerKeys.Sort(FactoryKeyComparer.Instance);
-                producerStages.Sort(CompareStages);
+                producerStages.Sort((left, right) => left.Id.CompareTo(right.Id));
 
                 if (!byStageId.TryGetValue(spec.ConsumerStage.Value, out StageNode? consumer))
                 {
@@ -964,13 +964,13 @@ namespace GameCore.Planning.Scheduling
 
             private static bool IsOrdered(SystemNode left, SystemNode right, bool[,] stageReach)
             {
-                if (left.StageIndex == right.StageIndex)
+                if (left.Stage.StageIndex == right.Stage.StageIndex)
                 {
                     bool[,]? inner = left.Stage.InnerReach;
                     return inner != null && inner[left.OrderInStage, right.OrderInStage];
                 }
 
-                return stageReach[left.StageIndex, right.StageIndex];
+                return stageReach[left.Stage.StageIndex, right.Stage.StageIndex];
             }
 
             private void ReportAccessConflicts(SystemNode left, SystemNode right)
