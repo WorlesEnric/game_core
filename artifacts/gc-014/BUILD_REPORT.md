@@ -1,52 +1,39 @@
-# GC-014 BUILD REPORT — Wave 4 live lifecycle and required-service closure
+# GC-014 Linux build and test report
 
-**Every executable result below is `NotRun (pending orchestrator build host)`.** This worktree was produced on
-macOS with no Unity, no .NET SDK, no Mono and no C# compiler; nothing here has been compiled, imported or executed.
-This file records what the Linux build host must run and what each step is expected to establish. Filling it in is
-the build host's job, not this task's.
+## Host and toolchain
 
-| # | Step | Command | Status | Establishes |
-|---|---|---|---|---|
-| 1 | Build the Unity-free half | `dotnet build dotnet/GameCore.sln -c Release` | NotRun (pending orchestrator build host) | the composition package's lifecycle sources compile under C# 9 / netstandard2.1 with `TreatWarningsAsErrors` |
-| 2 | Pure lifecycle suites | `dotnet test dotnet/GameCore.sln -c Release --logger trx --results-directory artifacts/gc-014/trx` | NotRun (pending orchestrator build host) | 28 lifecycle tests over the activation ledger, the teardown sequencer/quarantine registry and the closure delta |
-| 3 | Unity package resolution | `"$UNITY" -batchmode -nographics -quit -projectPath unity/GameCore.Validation -logFile artifacts/gc-014/unity/resolve.log` | NotRun (pending orchestrator build host) | the new `GameCore.Lifecycle.Tests` assembly and the `GameCore.Unity.Runtime/Lifecycle` folder import; no package added, so the committed lock is unchanged |
-| 4 | All EditMode testables | `"$UNITY" -batchmode -nographics -projectPath unity/GameCore.Validation -runTests -testPlatform EditMode -testResults artifacts/gc-014/unity/editmode-results.xml -logFile artifacts/gc-014/unity/editmode.log` | NotRun (pending orchestrator build host) | every existing suite plus both lifecycle world suites |
-| 5 | Lifecycle suites alone | `"$UNITY" -batchmode -nographics -projectPath unity/GameCore.Validation -runTests -testPlatform EditMode -testFilter GameCore.Lifecycle.Tests -testResults artifacts/gc-014/unity/lifecycle-results.xml -logFile artifacts/gc-014/unity/lifecycle-editmode.log` | NotRun (pending orchestrator build host) | all twelve P-046 observations and every invalid transition, in both families, in real owned worlds |
-| 6 | PlayMode | `"$UNITY" -batchmode -nographics -projectPath unity/GameCore.Validation -runTests -testPlatform PlayMode -testResults artifacts/gc-014/unity/playmode-results.xml -logFile artifacts/gc-014/unity/playmode.log` | NotRun (pending orchestrator build host) | PlayerLoop/reset behaviour is unchanged by this task |
-| 7 | Wave 3 gate on the same revision | `UNITY=<editor> DOTNET=<dotnet> PROBE_RUNS=5 tools/run_w3_gate.sh` | NotRun (pending orchestrator build host) | the lifecycle additions did not disturb either running family, the IL2CPP player, or the catalogs |
-| 8 | Documentation gate | `python3 tools/validate_game_core_docs.py --self-test && python3 tools/validate_game_core_docs.py` | **Run here (interpreter-level, not a build result)** — see `artifacts/gc-014/static-checks.log` | link/anchor/traceability/DAG consistency |
+- Linux x86_64, kernel `7.0.0-31-generic` (Ubuntu 24.04 family); .NET SDK `8.0.425`; Unity Editor `6000.0.75f1`; StandaloneLinux64 IL2CPP, High managed stripping.
+- Worktree synchronized with `git fetch origin && git checkout gc-014 && git reset --hard origin/gc-014` before modifications. Initial commit: `f0618aa`.
+- Runtime constraints retained: C# 9, .NET Standard 2.1, pure composition assemblies without UnityEngine dependencies. `python3 tools/check_game_core_csharp.py` checked 309 files: OK.
 
-## What this task expects the build host to confirm
+## Commands and actual results
 
-1. `Packages/com.gamecore.composition` compiles with the new `Lifecycle/` sources under
-   `TreatWarningsAsErrors=true` on netstandard2.1 (C# 9). The most likely strictness trap is an unused local; the
-   scenario steps were written so every local is read in the verdict and in the detail string.
-2. `GameCore.Unity.Runtime` compiles with the new `Lifecycle/` folder (it references `Unity.Jobs.JobHandle`,
-   `Unity.Entities`, `GameCore.Execution` and `GameCore.Execution.Messages`).
-3. The new `GameCore.Lifecycle.Tests` EditMode assembly resolves its 17 references, including
-   `GameCore.Validation.ProbeHost` (used by the two committed-catalog cases).
-4. Both family scenario runs report all twelve steps `Passed`, and the two committed-catalog cases report the
-   families' slice observations passing.
-5. `UnityWorldRegistry.Count` returns to its pre-create baseline after every run (asserted by the teardown step and
-   by the suite's `[TearDown]`).
-6. `git diff --exit-code` stays clean for
-   `unity/GameCore.Validation/Assets/GameCore.Validation/Generated/ProbeCatalog.g.cs` and
-   `.../GeneratedCards/CardCatalog.g.cs` (GC-014 changes no catalog input).
+Run from the worktree root with `DOTNET_ROOT=$HOME/.dotnet`, `PATH=$HOME/.dotnet:$PATH`, and `DOTNET_CLI_TELEMETRY_OPTOUT=1` for .NET. `UNITY=$HOME/Unity/Hub/Editor/6000.0.75f1/Editor/Unity`; project `unity/GameCore.Validation`. For every final Unity invocation the external watchdog was `timeout 600` (the player runner also applies this per player process). Paths below are relative to the worktree.
 
-## Failure triage pointers
+| Command / suite | Actual verdict | Evidence |
+|---|---|---|
+| `dotnet build dotnet/GameCore.sln -c Release` | Pass, 0 errors, 0 warnings after repairs | Build command output |
+| `dotnet test dotnet/GameCore.sln -c Release --logger trx --results-directory artifacts/gc-014/trx` | Pass: 683/683, 0 failed, 0 skipped, 11 test projects. Project totals: Narrative Rules 118; Protocol Fixtures 10; Execution 58; Production Fixtures 10; Content Compiler 44; Planning 129; Contracts 45; Reference Seams 21; Derivation 88; Cards Rules 26; Composition 134. | `artifacts/gc-014/trx/*.trx` (only final run retained) |
+| `Unity -batchmode -nographics -quit -projectPath unity/GameCore.Validation -logFile artifacts/gc-014/unity/resolve.log` | Pass after compile fixes, packages resolved; committed lock unchanged | `artifacts/gc-014/unity/resolve.log` |
+| `Unity -batchmode -nographics -projectPath unity/GameCore.Validation -runTests -testPlatform EditMode -testResults artifacts/gc-014/unity/editmode-results.xml -logFile artifacts/gc-014/unity/editmode.log` | Pass: 688/688, 0 failed, 0 skipped; W1–W3, narrative, cards, lifecycle and all testables | XML and log |
+| Same Unity EditMode command with `-testFilter GameCore.Lifecycle.Tests`, results/log `lifecycle-results.xml`/`lifecycle-editmode.log` | Pass: 58/58, 29 narrative and 29 cards, 0 failed, 0 skipped | XML and log |
+| Same Unity command with `-testPlatform PlayMode`, results/log `playmode-results.xml`/`playmode.log` | Pass: 6/6, 0 failed, 0 skipped | XML and log |
+| `Unity -batchmode -nographics -quit -projectPath unity/GameCore.Validation -executeMethod GameCore.Validation.Editor.CardCatalogGenerator.GenerateCatalog -logFile artifacts/gc-014/unity/card-codegen.log`; then `UNITY=$UNITY ARTIFACTS=artifacts/gc-014/toolchain tools/unity/build_probe.sh` (external 600-second watchdog) | Pass: closed probe catalog generated; StandaloneLinux64 IL2CPP player built. Both generated catalogs and `packages-lock.json` byte-identical to tracked files (`git diff --exit-code`). | `artifacts/gc-014/unity/card-codegen.log`, `artifacts/gc-014/toolchain/{codegen,build}.log`, `environment.txt` |
+| `PROBE_RUNS=5` with `tools/unity/run_probe.sh both`, `run_world_probe.sh`, `run_w1_gate_probe.sh`, `run_w2_gate_probe.sh`, `run_narrative_probe.sh`, `run_cards_probe.sh`, `run_w3_gate_probe.sh` | Pass: 40/40 independent player processes clean (8 probe modes × 5); positive/world/W1/W2/narrative/cards/W3 each Pass ×5; negative ExpectedNegative with exit 3 ×5. Each player invocation guarded by `timeout 600` in `probe_runs.sh`. | `artifacts/gc-014/toolchain/probe-*.json[.run2-.run5]` and `player-*.log[.run2-.run5]` |
+| `python3 tools/validate_game_core_docs.py --self-test && python3 tools/validate_game_core_docs.py` | Pass: 9 self-test fixtures; 14 documents validated | Command output |
 
-- The per-step `Detail` strings carry every value each verdict was computed from, and the EditMode assertion message
-  includes the whole fact bag, so a failure XML is self-explanatory. `artifacts/gc-014/HANDOFF.md` §8 lists the
-  literal expectations most likely to need adjusting, with the family suite each value came from.
-- A failure in *both* families' `…-provider-loss-makes-consumers-wait` is a kernel issue (the wait must appear in the
-  same `PublishedOperation` as the removal), not a fixture issue.
-- A failure in *both* families' `…-replacement-stages-while-old-runs` on `oldRanAtStaging` is the P-046 staging
-  clause, i.e. `InstallationLifecycleCoordinator.Stage` / `ActivationLedger.StageCandidate`.
-- A failure in *both* families' `…-blocked-job-prevents-buffer-release` on `fenceRetainedWhileOutstanding` means a
-  buffer was released while a job still owned it — the single most severe outcome this task exists to prevent.
+Per-case isolation after the hang: each of the 58 lifecycle test full names from the NUnit XML was invoked separately with a 90-second external watchdog. One Card `TheScenarioRecordsEveryObservationTwiceInOrder` invocation stalled after project load without a result; the editor was terminated, then the same test passed twice independently. All other 57 cases passed independently. Both complete lifecycle and full EditMode suites subsequently passed. This is not evidence that the intermittent startup hang cannot recur. NUnit fixture-level `[Timeout(60000)]` limits test execution *once NUnit begins the fixture*; it does not cover a Unity Editor stall before test dispatch, so retain the external watchdog.
 
-## Evidence files this task committed
+## Fixes and reasons
 
-- `artifacts/gc-014/HANDOFF.md` — summary, file lists, contract changes, coverage mapping, gaps.
-- `artifacts/gc-014/static-checks.log` — verbatim output of the interpreter-level checks that did run here.
-- `artifacts/gc-014/{trx,unity}/` — produced by `tools/run_gc014_checks.sh`; nothing is pre-populated.
+1. **Pure compilation and activation:** added missing `CultureInfo` import; keyed lifecycle operation sets by `OperationId` rather than `Id128`; used `LifecycleTransition.Allowed` for candidate abort; used concrete `CallbackGate` where activation registration/retirement is required (the frozen `ICallbackGate` only exposes evaluation); guarded nullable previous plans and updated the replanned ledger row; fixed the test's nonexistent diagnostic helper with an equivalent NUnit property assertion. Candidate promotion now clears `IsCandidate`, giving the published replacement execution authority instead of leaving it inert. No tests removed or skipped.
+2. **Unity compilation:** qualified Unity Jobs handle to avoid `GameCore.Unity` namespace capture; imported actual `WorldMessagePlane` and `TargetBindingTable` namespaces; made lifecycle report publications non-null. Corrected missing narrative fixture installation IDs, clock/facts namespaces, 64-bit epoch types, carrier identity, seed slot arguments, and omitted counters/operation locals. Resolved ambiguous `NarrativeFacts` in the integration test.
+3. **Real lifecycle world behavior:** `DerivedCompositionProposal.Build` now includes unmounts for providers absent from the effective derived assembly but still present in the *published* binding table; the planner can therefore retract their rows when suspended/removed/waiting. `InstallationLifecycleCoordinator.AttachWorldBinding` also updates its teardown sequencer, which previously retained the composition-only binding and falsely reported ingress closure/retraction. Manifest owner refresh now preserves an explicit owner declaration; the narrative choice route is no longer silently overwritten.
+4. **Fixture protocol flow:** narrative and card scenarios complete the world's half of each composition publication, including a legitimate no-target-change; narrative uses a no-row carrier when an adopted pair requires one rather than creating a target with extra attributed rows. Narrative replacement checks teardown against the displaced activation's own epoch (not a different epoch). The card blocked-job fixture now fences the factory-assigned *lease ID*, not its separate preparation key: the pre-fix teardown freed the buffer while the job was outstanding, and the world test caught it. The only changed expected value is card `suspendClosedRoutes`: `2 -> 0`, proven by `CardTableDeclarations.ScoringProvider` declaring no state slots/routes and `CardTableRegistration.Messages` assigning both routes to the separate table runtime. The scenario independently closes and verifies both real table-runtime routes; this is owner-correct rather than weakening route coverage.
+5. **Watchdogs:** added `[Timeout(60000)]` to both long lifecycle test fixtures and per-player `timeout 600` in `tools/unity/probe_runs.sh`. Original unbounded focused EditMode run hung for 2h49m immediately after test start with no progress and was killed externally (PID 542831). No result XML was produced; it was **NotRun/Blocked** for that attempt, not a pass. A later per-case run stalled at the same startup phase on one card method; `gdb -p 1152328 -batch -ex 'thread apply all bt 12'` could not attach because Linux ptrace policy denied it, so no thread stack/root cause was obtained. The test passed on retries and both final suites passed; an intermittent pre-dispatch Editor deadlock remains **unresolved**, bounded by the external watchdog. No test was disabled.
+
+## Scope and limits
+
+- TEST-002/003/008/015/016/018: actual narrative/card lifecycle worlds ran in EditMode; both family suites passed all 29 cases, including provider wait/return, suspension, blocked-job retention/quarantine, invalid/repeated operations and unload. The broad 08 validation plan's 1,000 mount cycles, 100 callbacks, 50×500 randomized operations and Play Mode reload matrix were not separately executed by this worker; the reported results prove the present suites, not every aspirational stress quantity in 08.
+- Pure `.NET` suite is separate from Unity-world coverage. Player probes are W1–W3 and family probes; GC-014 adds no dedicated lifecycle player probe, so lifecycle-specific behavior is verified in Editor worlds, not claimed from IL2CPP probes.
+- Intermittent Editor startup hang is an outstanding risk. The final 58-case, 688-case and 6-case runs had real result XML and clean exit statuses. The 600-second watchdog is required for future Unity runs; a hung invocation is never a pass.
