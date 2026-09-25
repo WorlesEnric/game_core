@@ -109,6 +109,29 @@ EditMode and PlayMode suites, the IL2CPP build and every player probe repeated `
 UNITY=~/Unity/Hub/Editor/6000.0.75f1/Editor/Unity DOTNET=/usr/bin/dotnet tools/run_w3_gate.sh
 ```
 
+The Wave 4 provisional generic-execution profile gate (GC-012) adds the generated inactive family entries, the
+canonical comparison of both families against their own fixture runs, the P-017/P-019 multi-supporter slot in a live
+world, the host-side generic-profile audit and the kernel-separation clauses. It runs this solution's build and
+tests, the host-side C# checks and audit, the whole EditMode and PlayMode suites, the IL2CPP build with High managed
+stripping and every player probe repeated `PROBE_RUNS` times:
+
+```sh
+UNITY=~/Unity/Hub/Editor/6000.0.75f1/Editor/Unity DOTNET=/usr/bin/dotnet tools/run_w4_profile_gate.sh
+```
+
+The generic-profile audit alone needs no Unity and no SDK; it reads the source tree and writes JSON:
+
+```sh
+python3 tools/w4_generic_profile_audit.py --out artifacts/gates/w4-generic-profile/generic-profile-audit.json
+```
+
+A generated catalog is normally produced by the content compiler through the Editor bridge. On a host with no SDK
+and no Unity, a single new leading registration group can be applied to a committed catalog with
+`tools/regen_catalog_group.py <description.json> <generated.cs>`, and the result verified independently with
+`tools/verify_generated_catalog.py <generated.cs>` (which recomputes both the file hash and the catalog
+fingerprint from the file's own text). The Editor bridge regenerates and is authoritative: the gate refuses a build
+when a committed catalog differs from a fresh generation.
+
 ## Regenerating the committed probe catalog (GC-003)
 
 `unity/GameCore.Validation/Assets/GameCore.Validation/Generated/ProbeCatalog.g.cs` is generated from

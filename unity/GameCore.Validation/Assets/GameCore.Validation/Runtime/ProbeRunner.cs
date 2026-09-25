@@ -48,10 +48,7 @@ namespace GameCore.Validation.ProbeHost
 
         internal static void Run(ProbeArguments arguments)
         {
-            // The GC-005 owned-world mode, the W1/W2 integration gates, the two Wave 3 slices (GC-010 narrative,
-            // GC-011 cards) and the W3 gate that runs both slices in one process run in the same player and report
-            // into the same result shape, but each under its own task id so no outcome is restated as another task's
-            // evidence.
+            // Every mode runs in the same player and result shape, but under its own task identity.
             ProbeReport report = arguments.WorldDispatch
                 ? new ProbeReport(
                     "WorldDispatch",
@@ -76,22 +73,42 @@ namespace GameCore.Validation.ProbeHost
                                 ProbeEnvironment.DeclaredUnityVersion,
                                 ProbeEnvironment.DeclaredTarget,
                                 "GC-010")
-                            : arguments.Cards
+                            : arguments.Gc013
                                 ? new ProbeReport(
-                                    "Cards",
+                                    "Gc013",
                                     ProbeEnvironment.DeclaredUnityVersion,
                                     ProbeEnvironment.DeclaredTarget,
-                                    "GC-011")
-                                : arguments.W3Gate
+                                    "GC-013")
+                                : arguments.Cards
                                     ? new ProbeReport(
-                                        "W3Gate",
+                                        "Cards",
                                         ProbeEnvironment.DeclaredUnityVersion,
                                         ProbeEnvironment.DeclaredTarget,
-                                        "W3-GATE")
-                                    : new ProbeReport(
-                                        arguments.MissingRegistration ? "MissingRegistration" : "Positive",
-                                        ProbeEnvironment.DeclaredUnityVersion,
-                                        ProbeEnvironment.DeclaredTarget);
+                                        "GC-011")
+                                    : arguments.W3Gate
+                                        ? new ProbeReport(
+                                            "W3Gate",
+                                            ProbeEnvironment.DeclaredUnityVersion,
+                                            ProbeEnvironment.DeclaredTarget,
+                                            "W3-GATE")
+                                        : arguments.W4Profile
+                                            ? new ProbeReport(
+                                                "W4Profile",
+                                                ProbeEnvironment.DeclaredUnityVersion,
+                                                ProbeEnvironment.DeclaredTarget,
+                                                "GC-012")
+                                            : arguments.W4Gate
+                                                ? new ProbeReport(
+                                                    "W4Gate",
+                                                    ProbeEnvironment.DeclaredUnityVersion,
+                                                    ProbeEnvironment.DeclaredTarget,
+                                                    "W4-GATE")
+                                                : new ProbeReport(
+                                                    arguments.MissingRegistration
+                                                        ? "MissingRegistration"
+                                                        : "Positive",
+                                                    ProbeEnvironment.DeclaredUnityVersion,
+                                                    ProbeEnvironment.DeclaredTarget);
 
             if (!arguments.HasResultPath)
             {
@@ -131,6 +148,11 @@ namespace GameCore.Validation.ProbeHost
                     ProbeNarrative.Run(report);
                     report.CompletePositive();
                 }
+                else if (arguments.Gc013)
+                {
+                    ProbeGc013.Run(report);
+                    report.CompletePositive();
+                }
                 else if (arguments.Cards)
                 {
                     ProbeCards.Run(report);
@@ -139,6 +161,16 @@ namespace GameCore.Validation.ProbeHost
                 else if (arguments.W3Gate)
                 {
                     ProbeW3Gate.Run(report);
+                    report.CompletePositive();
+                }
+                else if (arguments.W4Profile)
+                {
+                    ProbeW4Profile.Run(report);
+                    report.CompletePositive();
+                }
+                else if (arguments.W4Gate)
+                {
+                    ProbeW4Gate.Run(report);
                     report.CompletePositive();
                 }
                 else

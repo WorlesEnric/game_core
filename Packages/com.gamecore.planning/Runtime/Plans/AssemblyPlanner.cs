@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using GameCore.Contracts;
+using GameCore.Planning.StatePolicies;
 
 namespace GameCore.Planning
 {
@@ -186,6 +187,12 @@ namespace GameCore.Planning
     /// </summary>
     public static class AssemblyPlanner
     {
+        /// <summary>
+        /// Builds one plan. <paramref name="policies"/> is GC-015's executed state-policy result; when it is supplied
+        /// its dispositions and migrations *are* the plan's, so the slot policies of one catalog revision have exactly
+        /// one implementation. When it is null the planner derives the same compatibility behaviour from the
+        /// descriptor alone, which is what keeps a plan valid before the policy layer exists (P-032).
+        /// </summary>
         public static PlannedPublication Build(
             CompositionProposal proposal,
             OwnershipStageDescriptor descriptor,
@@ -198,7 +205,8 @@ namespace GameCore.Planning
             MigrationRegistry migrations,
             MigrationScratch scratch,
             InertAcquisitionSet acquisitions,
-            PlanBudget budget)
+            PlanBudget budget,
+            StatePolicies.StatePolicyPlan? policies = null)
         {
             if (proposal == null)
             {
@@ -318,6 +326,40 @@ namespace GameCore.Planning
                 }
             }
 
+            // 3b. A complete re-derivation states the whole effective support: a row whose slot the proposal no
+            //     longer declares lost its last supporter in the new composition, so it is retracted and its rule
+            //     retires with it. Without this, a mode switch that denies every descendant rule would leave the old
+            //     rows effective forever and report the transition as no change (P-013, P-017, 05 s4).
+            if (proposal.RetractsAbsentSupport)
+            {
+                for (int r = 0; r < current.Rows.Count; r++)
+                {
+                    TargetBindingRow row = current.Rows[r];
+                    if (RowIsRetracted(proposal.Unmounts, row))
+                    {
+                        continue;
+                    }
+
+                    if (!TryFindDefinition(definitions, row.Target, out TargetDefinition definition))
+                    {
+                        // A live target the planner cannot name has no declaration either; its row can only be
+                        // another composition's leftover and is retracted with the rest.
+                        removals.Add(row);
+                        removedContributions.Add(ContributionKeyOf(row));
+                        AddAffected(affected, row.Target);
+                        continue;
+                    }
+
+                    if (!TryFindDeclaration(proposal, row, definition, out _))
+                    {
+                        removals.Add(row);
+                        removedContributions.Add(ContributionKeyOf(row));
+                        AddAffected(affected, row.Target);
+                        rulesAfter.Remove(RuleIdentityOf(row, definition));
+                    }
+                }
+            }
+
             // 4. Rank every candidate per contribution identity (P-017, P-018) and detect policy conflicts (P-019).
             var candidates = new Dictionary<string, List<Candidate>>();
             var order = new List<string>();
@@ -424,16 +466,79 @@ namespace GameCore.Planning
                     }
                 }
 
+                // P-019: an `Additive` slot's effective value is what its registered reducer folded over every
+                // eligible contribution, and every one of them stays a supporter (P-017) rather than all but the
+                // top-ranked candidate being dropped. The planner deliberately does not fold numbers itself — a
+                // reducer is contract-owned pure code — so it consumes the composed value and the support set the
+                // derivation already produced, and rejects a declaration that carries neither instead of inventing
+                // a winner-take-all value.
+                int effectiveValue = winner.Value;
+                IReadOnlyList<CapabilitySupport> rowSupports = TargetBindingRow.SingleSupport(
+                    winner.Provider,
+                    winner.ProviderGeneration,
+                    winner.Declaration.Rule,
+                    winner.Value,
+                    winner.Priority);
+                if (winner.Declaration.Policy == CompositionPolicy.Additive)
+                {
+                    if (winner.Declaration.Supporters.Count == 0)
+                    {
+                        return Reject(
+                            proposal,
+                            descriptor,
+                            current,
+                            rules,
+                            acquisitions,
+                            scratch,
+                            budget,
+                            DiagnosticCode.MissingDependency,
+                            "slot " + winner.Declaration.Capability.ToString()
+                            + "#" + winner.Declaration.OutputSlot.ToString(CultureInfo.InvariantCulture)
+                            + " on target " + winner.Definition.Target.ToString()
+                            + " is declared Additive but carries no support set; the composed value of P-019 is the"
+                            + " registered reducer's fold over its contributions, so the planner refuses to publish"
+                            + " one candidate's raw value in its place.");
+                    }
+
+                    for (int g = 1; g < group.Count; g++)
+                    {
+                        if (!CapabilitySupport.SetEquals(
+                                winner.Declaration.Supporters,
+                                group[g].Declaration.Supporters))
+                        {
+                            return Reject(
+                                proposal,
+                                descriptor,
+                                current,
+                                rules,
+                                acquisitions,
+                                scratch,
+                                budget,
+                                DiagnosticCode.CapabilityConflict,
+                                "two declarations of the Additive slot " + winner.Declaration.Capability.ToString()
+                                + "#" + winner.Declaration.OutputSlot.ToString(CultureInfo.InvariantCulture)
+                                + " on target " + winner.Definition.Target.ToString()
+                                + " carry different support sets; the planner does not fold values itself, so it"
+                                + " cannot compose them and will not pick one (P-018, P-019).");
+                        }
+                    }
+
+                    effectiveValue = winner.Declaration.Value;
+                    rowSupports = winner.Declaration.Supporters;
+                }
+
                 TargetBindingRow row = new TargetBindingRow(
                     winner.Definition.Target,
                     winner.Declaration.Capability.Capability,
                     winner.Declaration.Capability.Version,
                     winner.Declaration.OutputSlot,
-                    winner.Value,
+                    effectiveValue,
                     winner.Provider,
                     winner.ProviderGeneration,
                     winner.Priority,
-                    winner.Declaration.Schema);
+                    winner.Declaration.Schema,
+                    rowSupports,
+                    winner.Declaration.Rule);
 
                 bool isNewRow = !current.TryGet(
                     winner.Definition.Target,
@@ -479,7 +584,14 @@ namespace GameCore.Planning
                 AddRule(rulesAfter, winner, row);
             }
 
-            // 5. State dispositions and required migrations for every slot the descriptor owns (P-032).
+            // 4c. P-033: the final removal of a structure is allowed only if nothing else still requires it, and a
+            //     retraction removes exactly the unmounting provider's support. When another provider still supports
+            //     an identity, the ranking above already produced that survivor's row, and applying the removal of the
+            //     departed provider's row afterwards would delete the surviving support's row instead. The removal of
+            //     an identity this same plan installs is therefore dropped; the identity stays, written by whoever
+            //     supports it now. (GC-015.)
+            RemoveInstalledIdentities(removals, installs);
+
             var plannedMigrations = new List<PlannedMigration>();
             var dispositions = new List<StateDisposition>();
             var ownerGrants = new List<OwnerGrant>();
@@ -489,12 +601,10 @@ namespace GameCore.Planning
                 ownerGrants.Add(new OwnerGrant(spec.Owner, new StateSlotKey(default(TargetId), spec.Owner, spec.Slot), spec.OwnerVersion));
             }
 
-            for (int i = 0; i < slots.Count; i++)
+            if (policies != null)
             {
-                LiveSlotState live = slots[i];
-                if (!descriptor.TryGetSlot(live.Slot.Slot, out OwnedSlotSpec? spec) || spec == null)
+                if (!policies.Succeeded)
                 {
-                    // A live slot the descriptor does not declare cannot be migrated by this revision (P-032).
                     return Reject(
                         proposal,
                         descriptor,
@@ -503,36 +613,52 @@ namespace GameCore.Planning
                         acquisitions,
                         scratch,
                         budget,
-                        DiagnosticCode.MigrationRequired,
-                        "live state slot " + live.Slot.ToString()
-                        + " is not declared by the descriptor; a missing compatible policy is a validation error (P-032).");
+                        policies.Code == DiagnosticCode.None ? DiagnosticCode.MigrationRequired : policies.Code,
+                        "the state-policy execution was refused: " + policies.Detail);
                 }
 
-                if (live.SchemaVersion == spec.Schema.Version)
+                for (int i = 0; i < policies.Dispositions.Count; i++)
                 {
-                    dispositions.Add(new StateDisposition(live.Slot, StateDispositionKind.Retain, default(TargetId), default(FactoryKey)));
-                    continue;
+                    dispositions.Add(policies.Dispositions[i]);
                 }
 
-                if (spec.LastSupport == LastSupportPolicy.RemoveDerived)
+                for (int i = 0; i < policies.Migrations.Count; i++)
                 {
-                    dispositions.Add(new StateDisposition(live.Slot, StateDispositionKind.Retract, default(TargetId), default(FactoryKey)));
-                }
-                else
-                {
-                    dispositions.Add(new StateDisposition(
-                        live.Slot,
-                        StateDispositionKind.Migrate,
-                        default(TargetId),
-                        spec.VersionChangePolicy));
+                    plannedMigrations.Add(policies.Migrations[i]);
                 }
 
-                plannedMigrations.Add(new PlannedMigration(
-                    live.Slot.Target,
-                    live.Slot,
-                    live.SchemaVersion,
-                    spec.Schema.Version,
-                    spec.VersionChangePolicy));
+                // The pass staged migrated and reset values on its own bounded scratch. The publication needs them
+                // on the scratch *it* owns, because the apply stage reads exactly that account; a value that cannot
+                // be reserved here is the same hard temporary-storage limit P-022 makes it (GC-015, P-029).
+                for (int i = 0; i < policies.StagedValues.Count; i++)
+                {
+                    StagedSlotValue stagedValue = policies.StagedValues[i];
+                    if (!scratch.TryStage(stagedValue.Slot, stagedValue.Value, out DiagnosticCode stageCode))
+                    {
+                        return Reject(
+                            proposal,
+                            descriptor,
+                            current,
+                            rules,
+                            acquisitions,
+                            scratch,
+                            budget,
+                            stageCode,
+                            "the publication cannot reserve scratch for the staged value of "
+                            + stagedValue.Slot.ToString()
+                            + "; temporary storage is a hard configured limit (P-022).");
+                    }
+                }
+            }
+            else
+            {
+                if (!TryPlanSlotDispositions(
+                        proposal, descriptor, current, rules, slots, migrations, scratch, acquisitions, budget,
+                        dispositions, plannedMigrations, out PlannedPublication? slotRejection)
+                    || slotRejection != null)
+                {
+                    return slotRejection!;
+                }
             }
 
             // 6. Every required migration must resolve to a registered handler whose source version matches, because a
@@ -693,7 +819,8 @@ namespace GameCore.Planning
         /// <summary>
         /// Records the winning candidate as the rule of its `(recipe, scope, capability, output slot)` identity. One
         /// identity holds one rule, so the rule set a future spawn derives from is the effective assembly rather than
-        /// an accumulating history (P-017, P-024).
+        /// an accumulating history (P-017, P-024). The rule carries the row's support set, so a spawned target
+        /// inherits the composed value *and* how many contributions it was composed from (P-017, P-019).
         /// </summary>
         private static void AddRule(Dictionary<string, DerivedBindingRule> rules, Candidate winner, TargetBindingRow row)
         {
@@ -708,7 +835,9 @@ namespace GameCore.Planning
                 row.ProviderGeneration,
                 row.Priority,
                 winner.Declaration.Policy,
-                row.Schema);
+                row.Schema,
+                row.Supports,
+                winner.Declaration.Rule);
 
             rules[rule.RuleIdentity()] = rule;
         }
@@ -848,6 +977,101 @@ namespace GameCore.Planning
             detail = string.Empty;
             return ordered;
         }
+
+        /// <summary>
+        /// The compatibility default of one revision with no policy layer: an unchanged schema is retained, a
+        /// disposable derived slot is retracted, and anything else crosses its version through the declared
+        /// migration (P-032). GC-015's executor produces exactly these decisions through its own declared policies.
+        /// </summary>
+        private static bool TryPlanSlotDispositions(
+            CompositionProposal proposal,
+            OwnershipStageDescriptor descriptor,
+            TargetBindingTable current,
+            IReadOnlyList<DerivedBindingRule> rules,
+            IReadOnlyList<LiveSlotState> slots,
+            MigrationRegistry migrations,
+            MigrationScratch scratch,
+            InertAcquisitionSet acquisitions,
+            PlanBudget budget,
+            List<StateDisposition> dispositions,
+            List<PlannedMigration> plannedMigrations,
+            out PlannedPublication? rejection)
+        {
+            rejection = null;
+            for (int i = 0; i < slots.Count; i++)
+            {
+                LiveSlotState live = slots[i];
+                if (!descriptor.TryGetSlot(live.Slot.Slot, out OwnedSlotSpec? spec) || spec == null)
+                {
+                    // A live slot the descriptor does not declare cannot be migrated by this revision (P-032).
+                    rejection = Reject(
+                        proposal,
+                        descriptor,
+                        current,
+                        rules,
+                        acquisitions,
+                        scratch,
+                        budget,
+                        DiagnosticCode.MigrationRequired,
+                        "live state slot " + live.Slot.ToString()
+                        + " is not declared by the descriptor; a missing compatible policy is a validation error (P-032).");
+                    return false;
+                }
+
+                if (live.SchemaVersion == spec.Schema.Version)
+                {
+                    dispositions.Add(new StateDisposition(live.Slot, StateDispositionKind.Retain, default(TargetId), default(FactoryKey)));
+                    continue;
+                }
+
+                if (spec.LastSupport == LastSupportPolicy.RemoveDerived)
+                {
+                    dispositions.Add(new StateDisposition(live.Slot, StateDispositionKind.Retract, default(TargetId), default(FactoryKey)));
+                }
+                else
+                {
+                    dispositions.Add(new StateDisposition(
+                        live.Slot,
+                        StateDispositionKind.Migrate,
+                        default(TargetId),
+                        spec.VersionChangePolicy));
+                }
+
+                plannedMigrations.Add(new PlannedMigration(
+                    live.Slot.Target,
+                    live.Slot,
+                    live.SchemaVersion,
+                    spec.Schema.Version,
+                    spec.VersionChangePolicy));
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Drops every removal whose `(target, capability, output slot)` identity this plan also installs: the
+        /// identity survives under another support, so only its provider changed (P-033, GC-015).
+        /// </summary>
+        private static void RemoveInstalledIdentities(List<TargetBindingRow> removals, List<TargetBindingRow> installs)
+        {
+            for (int r = removals.Count - 1; r >= 0; r--)
+            {
+                TargetBindingRow removal = removals[r];
+                for (int i = 0; i < installs.Count; i++)
+                {
+                    if (SameIdentity(removal, installs[i]))
+                    {
+                        removals.RemoveAt(r);
+                        break;
+                    }
+                }
+            }
+        }
+
+        private static bool SameIdentity(TargetBindingRow left, TargetBindingRow right)
+            => left.Target.Equals(right.Target)
+                && left.Capability.Equals(right.Capability)
+                && left.OutputSlot == right.OutputSlot;
 
         private static bool HasUnemittedDependency(DescriptorSystem system, List<DescriptorSystem> remaining)
         {
@@ -1030,6 +1254,41 @@ namespace GameCore.Planning
 
         private static ContributionKey ContributionKeyOf(TargetBindingRow row) =>
             new ContributionKey(row.Provider, new RuleId(row.Capability.Value), row.Target, row.Capability, row.OutputSlot);
+
+        /// <summary>True when this row is already retracted by an explicit unmount, so 3b must not duplicate it.</summary>
+        private static bool RowIsRetracted(IReadOnlyList<ProposedUnmount> unmounts, TargetBindingRow row)
+        {
+            for (int i = 0; i < unmounts.Count; i++)
+            {
+                if (row.Provider.Equals(unmounts[i].Provider))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// The rule identity a retired row's rule was recorded under: `(recipe, scope, capability, output slot)` of
+        /// the row's target (P-017). A row carries no recipe or scope of its own, so the definition supplies them.
+        /// </summary>
+        private static string RuleIdentityOf(TargetBindingRow row, TargetDefinition definition)
+        {
+            var rule = new DerivedBindingRule(
+                definition.Recipe,
+                definition.Scope,
+                row.Capability,
+                row.CapabilityVersion,
+                row.OutputSlot,
+                row.Value,
+                row.Provider,
+                row.ProviderGeneration,
+                row.Priority,
+                CompositionPolicy.Replace,
+                row.Schema);
+            return rule.RuleIdentity();
+        }
 
         private static Id128 ExplanationKeyOf(TargetBindingRow row)
         {

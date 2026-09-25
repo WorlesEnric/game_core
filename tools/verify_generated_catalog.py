@@ -1,16 +1,20 @@
 #!/usr/bin/env python3
-"""Verify a generated GameCore catalog without a C# compiler (GC-003).
+"""Verify a generated GameCore catalog without a C# compiler (GC-003; extended for GC-012).
 
-The committed probe catalog is produced by `GameCore.Content.Compiler.CatalogEmitter` (through the Editor
-bridge). On a host with no .NET SDK, two properties of the generated file can still be checked exactly as the
-player checks them:
+A generated catalog is produced by `GameCore.Content.Compiler.CatalogEmitter` (through the Editor bridge). On a
+host with no .NET SDK, two properties of the generated file can still be checked exactly as the player checks them:
 
 1. `CatalogFileHash` covers the UTF-8 bytes of the file prefix that ends immediately before its declaration.
 2. `CatalogFingerprint` equals `GameCore.Contracts.CatalogFingerprint.Compute` over the tables the generated
-   `BuildCatalog()` builds: every registration table entry, one serializer registration per schema, the schema
-   registrations and the declared features, all in canonical key/id order.
+   `BuildCatalog()` builds: every registration table entry (from EVERY declared group, whatever its kind), one
+   serializer registration per schema, the schema registrations and the declared features, all in canonical
+   key/id order.
 
-This is an independent recomputation from the file's own text; it does not call the compiler.
+This is an independent recomputation from the file's own text; it does not call the compiler. It is
+group-agnostic: a new registration group in a catalog description (GC-012 adds `FamilyEntryRegistrations` to both
+catalogs) is verified without changing this script, because the registration table names are discovered from the
+`GroupCatalogRegistrations` method the emitter writes, and each table's declared `FactoryKind` is read from its own
+`new FactoryRegistration(...)` rows.
 
 usage: python3 tools/verify_generated_catalog.py [path to generated .cs]   (default: the committed probe catalog)
 """
@@ -40,12 +44,58 @@ KIND = {
     "Handler": 10,
 }
 
+GROUP_METHOD = re.compile(
+    r"private static FactoryRegistration\[\] GroupCatalogRegistrations\(\)\n        \{\n(.*?)\n        \}",
+    re.S,
+)
 
-def block_of(text: str, name: str) -> str:
-    match = re.search(re.escape(name) + r" =\n        \{\n(.*?)\n        \};", text, re.S)
+GROUP_REGISTRATIONS = re.compile(r"Array\.Copy\((\w+CatalogRegistrations), 0, all, offset, (\d+)\)")
+
+FACTORY_ROW = re.compile(
+    r"new FactoryRegistration\(\s*(\w+),\s*FactoryKind\.(\w+),\s*new Id128\(0x([0-9A-F]{16})UL, 0x([0-9A-F]{16})UL\),"
+    r"\s*new Id128\(0x([0-9A-F]{16})UL, 0x([0-9A-F]{16})UL\),\s*(\d+)U\)",
+    re.S,
+)
+
+SCHEMA_ROW = re.compile(
+    r"new SchemaRegistration\(\s*new SchemaRef\(new SchemaId\(new Id128\(0x([0-9A-F]{16})UL, 0x([0-9A-F]{16})UL\)\), (\d+)U\),"
+    r"\s*new Id128\(0x([0-9A-F]{16})UL, 0x([0-9A-F]{16})UL\),\s*(\w+),\s*(true|false)\)",
+    re.S,
+)
+
+
+def initializer_body(text: str, name: str) -> str:
+    """The initializer body lines of an array field `name = { ... };` at the emitter's eight-space indentation.
+
+    An empty array is emitted as `{\\n        };`, so a regex that demands a newline before the closer would skip
+    past it and swallow the following declarations; the scan below stops at the first eight-space-indented `};`
+    line instead, which handles the empty and non-empty forms identically.
+    """
+    lines = text.split("\n")
+    declaration = "        public static readonly "
+    for index, line in enumerate(lines):
+        if not line.startswith(declaration) or name + " =" not in line:
+            continue
+        if index + 1 >= len(lines) or lines[index + 1] != "        {":
+            continue
+        body: list[str] = []
+        for candidate in lines[index + 2:]:
+            if candidate == "        };":
+                return "\n".join(body)
+            body.append(candidate)
+        break
+    raise SystemExit("generated file has no array table named " + name)
+
+
+def group_registration_tables(text: str) -> list[str]:
+    """Every `*CatalogRegistrations` table `GroupCatalogRegistrations` copies, in the emitter's canonical order."""
+    match = GROUP_METHOD.search(text)
     if match is None:
-        raise SystemExit("generated file has no table named " + name)
-    return match.group(1)
+        raise SystemExit("generated file has no GroupCatalogRegistrations method")
+    tables = [name for name, _ in GROUP_REGISTRATIONS.findall(match.group(1))]
+    if not tables:
+        raise SystemExit("the generated GroupCatalogRegistrations copies no registration table")
+    return tables
 
 
 def key_of(text: str, name: str) -> tuple[int, int, int]:
@@ -59,7 +109,13 @@ def key_of(text: str, name: str) -> tuple[int, int, int]:
     return int(match.group(1), 16), int(match.group(2), 16), int(match.group(3))
 
 
-def pack_factory(key: tuple[int, int, int], kind: int, owner: tuple[int, int], impl: tuple[int, int], contract: int) -> bytes:
+def pack_factory(
+    key: tuple[int, int, int],
+    kind: int,
+    owner: tuple[int, int],
+    impl: tuple[int, int],
+    contract: int,
+) -> bytes:
     return (
         key[0].to_bytes(8, "big")
         + key[1].to_bytes(8, "big")
@@ -80,7 +136,7 @@ def main() -> int:
         return 2
 
     text = path.read_text(encoding="utf-8")
-    problems = []
+    problems: list[str] = []
 
     # 1. file-prefix hash
     marker = text.find(HASH_DECLARATION)
@@ -96,19 +152,14 @@ def main() -> int:
                 "CatalogFileHash mismatch: recorded %s, recomputed %s" % (declared_hash.group(1), computed_hash)
             )
 
-    # 2. fingerprint over the generated tables
+    # 2. fingerprint over every generated registration table the catalog factory concatenates
+    tables = group_registration_tables(text)
     factories = []
-    for table, kind_name in (
-        ("PluginRegistrationsCatalogRegistrations", None),
-        ("HandlerRegistrationsCatalogRegistrations", None),
-    ):
-        if table not in text:
-            continue
-        for key_name, entry_kind, oh, ol, ih, il, version in re.findall(
-            r"new FactoryRegistration\(\s*(\w+),\s*FactoryKind\.(\w+),\s*new Id128\(0x([0-9A-F]{16})UL, 0x([0-9A-F]{16})UL\),"
-            r"\s*new Id128\(0x([0-9A-F]{16})UL, 0x([0-9A-F]{16})UL\),\s*(\d+)U\)",
-            block_of(text, table),
-        ):
+    for table in tables:
+        rows = FACTORY_ROW.findall(initializer_body(text, table))
+        if not rows:
+            problems.append("registration table " + table + " has no readable FactoryRegistration row")
+        for key_name, entry_kind, oh, ol, ih, il, version in rows:
             if entry_kind not in KIND:
                 problems.append("unknown FactoryKind." + entry_kind + " in " + table)
                 continue
@@ -123,10 +174,8 @@ def main() -> int:
             )
 
     schemas = []
-    for sh, sl, sver, oh, ol, key_name, required in re.findall(
-        r"new SchemaRegistration\(\s*new SchemaRef\(new SchemaId\(new Id128\(0x([0-9A-F]{16})UL, 0x([0-9A-F]{16})UL\)\), (\d+)U\),"
-        r"\s*new Id128\(0x([0-9A-F]{16})UL, 0x([0-9A-F]{16})UL\),\s*(\w+),\s*(true|false)\)",
-        block_of(text, "SchemaRegistrations"),
+    for sh, sl, sver, oh, ol, key_name, required in SCHEMA_ROW.findall(
+        initializer_body(text, "SchemaRegistrations")
     ):
         schemas.append(
             (
@@ -144,10 +193,12 @@ def main() -> int:
 
     factories.sort(key=lambda entry: (entry[0][0], entry[0][1], entry[0][2]))
     schemas.sort(key=lambda entry: entry[0])
+
     features = sorted(
         (int(h, 16), int(l, 16))
         for h, l in re.findall(
-            r"new Id128\(0x([0-9A-F]{16})UL, 0x([0-9A-F]{16})UL\)", block_of(text, "SupportedFeatureIds")
+            r"new Id128\(0x([0-9A-F]{16})UL, 0x([0-9A-F]{16})UL\)",
+            initializer_body(text, "SupportedFeatureIds"),
         )
     )
 
@@ -179,9 +230,18 @@ def main() -> int:
             % (declared_fingerprint.group(1), computed_fingerprint, len(factories), len(schemas), len(features))
         )
 
+    declared_groups = re.search(r"RegistrationGroupCount = (\d+);", text)
+    if declared_groups is None:
+        problems.append("the file has no RegistrationGroupCount declaration")
+    elif int(declared_groups.group(1)) != len(tables):
+        problems.append(
+            "RegistrationGroupCount says %s but GroupCatalogRegistrations copies %d tables"
+            % (declared_groups.group(1), len(tables))
+        )
+
     print(
-        "%s: %d factories, %d schemas, %d features, %d bytes"
-        % (path, len(factories), len(schemas), len(features), len(text.encode("utf-8")))
+        "%s: %d groups, %d factories, %d schemas, %d features, %d bytes"
+        % (path, len(tables), len(factories), len(schemas), len(features), len(text.encode("utf-8")))
     )
     if problems:
         print("%d problem(s):" % len(problems))

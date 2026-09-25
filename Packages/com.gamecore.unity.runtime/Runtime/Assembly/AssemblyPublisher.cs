@@ -402,6 +402,14 @@ namespace GameCore.Unity.Runtime
             // (P-006). A state migration or retraction alone *is* an effective change, so it still publishes.
             if (!HasEffectiveChange(publication))
             {
+                // The adopted composition publication produced no assembly, so it stays available: one number is
+                // never consumed by a no-op, and the world's unchanged-assembly (or spawn) publication for it may
+                // still adopt the same pair (P-006, P-024).
+                if (HasAdoptedPublication)
+                {
+                    HasAdoptedPublication = false;
+                }
+
                 publication.Scratch.ReleaseAll();
                 publication.State.TryNoChange("the proposal changed no effective binding");
                 return new AssemblyPublicationReport(
@@ -717,11 +725,17 @@ namespace GameCore.Unity.Runtime
                 recipe.Applier.ApplyBaseLayout(entityManager, entity, recipe);
 
                 // One row per currently derived rule that matches this recipe and scope, so the target's first
-                // visible image is already its complete effective assembly (P-013, P-024).
-                DynamicBuffer<CapabilityBinding> bindings = entityManager.AddBuffer<CapabilityBinding>(entity);
+                // visible image is already its complete effective assembly (P-013, P-024) — including each row's
+                // full support set, so a spawned target inherits a composed `Additive` binding with all its
+                // supporters rather than only its top-ranked candidate (P-017, P-019).
+                entityManager.AddBuffer<CapabilityBinding>(entity);
+                entityManager.AddBuffer<CapabilitySupportRow>(entity);
+                DynamicBuffer<CapabilityBinding> bindings = entityManager.GetBuffer<CapabilityBinding>(entity);
+                DynamicBuffer<CapabilitySupportRow> spawnedSupports = entityManager.GetBuffer<CapabilitySupportRow>(entity);
                 for (int i = 0; i < matching.Count; i++)
                 {
                     bindings.Add(ToBinding(matching[i]));
+                    AppendSupportRows(spawnedSupports, matching[i]);
                 }
             }
             catch (Exception exception)
@@ -888,6 +902,64 @@ namespace GameCore.Unity.Runtime
             return rows;
         }
 
+        /// <summary>
+        /// Copies the live support rows of one target in canonical order (P-017), optionally narrowed to one
+        /// `(capability, output slot)`. This is how a caller observes that an `Additive` slot was composed from
+        /// several providers and which value each of them contributed (P-019, P-026).
+        /// </summary>
+        public IReadOnlyList<CapabilitySupportRow> ReadSupportRows(TargetId target)
+        {
+            var rows = new List<CapabilitySupportRow>();
+            if (!registry.TryResolveTarget(target, out _, out Entity entity))
+            {
+                return rows;
+            }
+
+            EntityManager entityManager = world.EntityWorld.EntityManager;
+            if (!entityManager.HasBuffer<CapabilitySupportRow>(entity))
+            {
+                return rows;
+            }
+
+            DynamicBuffer<CapabilitySupportRow> supports = entityManager.GetBuffer<CapabilitySupportRow>(entity);
+            for (int i = 0; i < supports.Length; i++)
+            {
+                rows.Add(supports[i]);
+            }
+
+            return rows;
+        }
+
+        /// <summary>
+        /// Copies the support rows of one target's specific binding slot; a slot with no support rows returns an
+        /// empty list rather than a synthesised single entry, so a caller can tell "no support recorded" from
+        /// "one supporter recorded" (P-017).
+        /// </summary>
+        public IReadOnlyList<CapabilitySupportRow> ReadSupportRows(
+            TargetId target,
+            CapabilityId capability,
+            uint outputSlot)
+        {
+            var rows = new List<CapabilitySupportRow>();
+            if (!registry.TryResolveTarget(target, out _, out Entity entity))
+            {
+                return rows;
+            }
+
+            EntityManager entityManager = world.EntityWorld.EntityManager;
+            if (!entityManager.HasBuffer<CapabilitySupportRow>(entity))
+            {
+                return rows;
+            }
+
+            AssemblyStorage.CollectSupports(
+                entityManager.GetBuffer<CapabilitySupportRow>(entity),
+                capability,
+                outputSlot,
+                rows);
+            return rows;
+        }
+
         /// <summary>Copies the live state slots of one target, for tests and diagnostics (P-032).</summary>
         public IReadOnlyList<TargetSlotState> ReadSlotStates(TargetId target)
         {
@@ -1016,8 +1088,9 @@ namespace GameCore.Unity.Runtime
                 TargetBindingRow row = publication.Installs[i];
                 if (registry.TryResolveTarget(row.Target, out _, out Entity entity))
                 {
+                    int before = writes;
                     writes += InstallBindingRow(entityManager, entity, row);
-                    if (writes == 1) Faults.MaybeFailAfterFirstLiveWrite();
+                    if (before == 0 && writes > 0) Faults.MaybeFailAfterFirstLiveWrite();
                 }
             }
 
@@ -1026,43 +1099,89 @@ namespace GameCore.Unity.Runtime
                 TargetBindingRow row = publication.Removals[i];
                 if (registry.TryResolveTarget(row.Target, out _, out Entity entity))
                 {
+                    int before = writes;
                     writes += RemoveBindingRow(entityManager, entity, row);
-                    if (writes == 1) Faults.MaybeFailAfterFirstLiveWrite();
+                    if (before == 0 && writes > 0) Faults.MaybeFailAfterFirstLiveWrite();
                 }
             }
 
-            // State dispositions: a migrated scratch value replaces its live slot value, a retraction clears derived
-            // data, and every other slot keeps exactly the value it had (P-029, P-032 `Preserve`).
+            // State dispositions: a staged scratch value (migration or reset) replaces its live slot value, a
+            // retraction clears disposable derived data, a dormant retention keeps the value with no active writer, a
+            // transfer moves it to the named owner, and every other slot keeps exactly the value it had (GC-015,
+            // P-029, P-032, P-033).
             for (int i = 0; i < publication.Dispositions.Count; i++)
             {
                 StateDisposition disposition = publication.Dispositions[i];
+
+                if (disposition.Kind == StateDispositionKind.Transfer)
+                {
+                    // A transfer needs no scratch: the value moves between two live rows inside the fence, and the
+                    // source row is retired in the same write set (P-025, P-032).
+                    if (!registry.TryResolveTarget(disposition.Slot.Target, out _, out Entity sourceEntity))
+                    {
+                        continue;
+                    }
+
+                    TargetId destinationTarget = disposition.TransferTo.Value.IsDefault
+                        ? disposition.Slot.Target
+                        : disposition.TransferTo;
+                    if (!registry.TryResolveTarget(destinationTarget, out _, out Entity destinationEntity))
+                    {
+                        continue;
+                    }
+
+                    if (!TryReadLiveSlot(disposition.Slot, out int transferred, out uint transferredVersion))
+                    {
+                        continue;
+                    }
+
+                    var destination = new StateSlotKey(
+                        destinationTarget,
+                        disposition.DestinationOwner.Value.IsDefault ? disposition.Slot.Owner : disposition.DestinationOwner,
+                        disposition.Slot.Slot);
+                    writes += WriteSlotState(entityManager, destinationEntity, destination, transferred, transferredVersion);
+                    if (writes == 1) Faults.MaybeFailAfterFirstLiveWrite();
+                    writes += ClearSlotState(entityManager, sourceEntity, disposition.Slot);
+                    if (writes == 1) Faults.MaybeFailAfterFirstLiveWrite();
+                    continue;
+                }
+
                 if (!registry.TryResolveTarget(disposition.Slot.Target, out _, out Entity entity))
                 {
                     continue;
                 }
 
-                if (disposition.Kind == StateDispositionKind.Migrate)
+                if (disposition.Kind == StateDispositionKind.Migrate || disposition.Kind == StateDispositionKind.Reset)
                 {
-                    if (!publication.Scratch.TryRead(disposition.Slot, out int migrated))
+                    if (!publication.Scratch.TryRead(disposition.Slot, out int staged))
                     {
                         // Scratch was validated before this point, so a missing value means the plan and the
                         // migration account disagree; substituting a default here would be implicit zero
                         // initialisation, which P-032 forbids.
                         throw new InvalidOperationException(
-                            "scratch holds no migrated value for " + disposition.Slot.ToString());
+                            "scratch holds no staged value for " + disposition.Slot.ToString());
                     }
 
+                    int before = writes;
                     writes += WriteSlotState(
                         entityManager,
                         entity,
                         disposition.Slot,
-                        migrated,
-                        SchemaVersionOf(disposition.Slot.Slot));
-                    if (writes == 1) Faults.MaybeFailAfterFirstLiveWrite();
+                        staged,
+                        disposition.ToVersion == 0U ? SchemaVersionOf(disposition.Slot.Slot) : disposition.ToVersion);
+                    if (before == 0 && writes > 0) Faults.MaybeFailAfterFirstLiveWrite();
                 }
                 else if (disposition.Kind == StateDispositionKind.Retract)
                 {
+                    int before = writes;
                     writes += ClearSlotState(entityManager, entity, disposition.Slot);
+                    if (before == 0 && writes > 0) Faults.MaybeFailAfterFirstLiveWrite();
+                }
+                else if (disposition.Kind == StateDispositionKind.RetainDormant)
+                {
+                    // The value stays exactly as it is and its row is marked dormant: no active writer, excluded from
+                    // active queries, still serialized (P-032 `PreserveDormant`).
+                    writes += MarkSlotDormant(entityManager, entity, disposition.Slot);
                     if (writes == 1) Faults.MaybeFailAfterFirstLiveWrite();
                 }
             }
@@ -1078,8 +1197,9 @@ namespace GameCore.Unity.Runtime
 
             for (int i = 0; i < publication.Dispositions.Count; i++)
             {
-                StateDispositionKind kind = publication.Dispositions[i].Kind;
-                if (kind == StateDispositionKind.Migrate || kind == StateDispositionKind.Retract)
+                // Any disposition other than a plain `Retain` changes live state, so it publishes a new epoch even
+                // when no binding row moved (P-006, GC-015).
+                if (publication.Dispositions[i].Kind != StateDispositionKind.Retain)
                 {
                     return true;
                 }
@@ -1438,21 +1558,120 @@ namespace GameCore.Unity.Runtime
                 Priority = row.Priority,
                 Schema = row.Schema,
                 Active = 1,
+                SupporterCount = row.SupporterCount,
             };
 
+            int written = 1;
+            bool replaced = false;
             for (int i = 0; i < bindings.Length; i++)
             {
                 if (bindings[i].Capability.Equals(row.Capability) && bindings[i].OutputSlot == row.OutputSlot)
                 {
                     // Replacing a row keeps its identity and changes only its content (P-017).
                     bindings[i] = installed;
-                    return 1;
+                    replaced = true;
+                    break;
                 }
             }
 
-            bindings.Add(installed);
-            return 1;
+            if (!replaced)
+            {
+                bindings.Add(installed);
+            }
+
+            written += WriteSupportRows(entityManager, entity, row);
+            return written;
         }
+
+        /// <summary>
+        /// Publishes one row's support set (P-017): one `CapabilitySupportRow` per supporter, replacing the rows of
+        /// the same `(capability, output slot)` so a re-derivation cannot leave a stale supporter behind, and
+        /// removing the rows of supporters this publication no longer names — which is how removing one of two
+        /// providers stays observable in the published storage (P-033).
+        /// </summary>
+        private static int WriteSupportRows(EntityManager entityManager, Entity entity, TargetBindingRow row)
+        {
+            DynamicBuffer<CapabilitySupportRow> supports = entityManager.HasBuffer<CapabilitySupportRow>(entity)
+                ? entityManager.GetBuffer<CapabilitySupportRow>(entity)
+                : entityManager.AddBuffer<CapabilitySupportRow>(entity);
+
+            int written = 0;
+            for (int i = supports.Length - 1; i >= 0; i--)
+            {
+                CapabilitySupportRow existing = supports[i];
+                if (!existing.Capability.Equals(row.Capability) || existing.OutputSlot != row.OutputSlot)
+                {
+                    continue;
+                }
+
+                if (!ContainsSupportIdentity(row.Supports, existing.Provider, existing.Rule))
+                {
+                    supports.RemoveAt(i);
+                    written++;
+                }
+            }
+
+            for (int s = 0; s < row.Supports.Count; s++)
+            {
+                CapabilitySupport support = row.Supports[s];
+                var published = new CapabilitySupportRow
+                {
+                    Capability = row.Capability,
+                    OutputSlot = row.OutputSlot,
+                    Provider = support.Provider,
+                    ProviderGeneration = support.ProviderGeneration,
+                    Rule = support.Rule,
+                    Value = support.Value,
+                    Priority = support.Priority,
+                };
+
+                int existingIndex;
+                if (AssemblyStorage.TryFindSupport(
+                        supports,
+                        row.Capability,
+                        row.OutputSlot,
+                        support.Provider,
+                        support.Rule,
+                        out existingIndex))
+                {
+                    if (!SupportsEqual(supports[existingIndex], published))
+                    {
+                        supports[existingIndex] = published;
+                        written++;
+                    }
+
+                    continue;
+                }
+
+                supports.Add(published);
+                written++;
+            }
+
+            return written;
+        }
+
+        private static bool ContainsSupportIdentity(
+            IReadOnlyList<CapabilitySupport> supports,
+            ProviderInstallationId provider,
+            RuleId rule)
+        {
+            for (int i = 0; i < supports.Count; i++)
+            {
+                if (supports[i].Provider.Equals(provider) && supports[i].Rule.Equals(rule))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static bool SupportsEqual(CapabilitySupportRow left, CapabilitySupportRow right) =>
+            left.Provider.Equals(right.Provider)
+            && left.Rule.Equals(right.Rule)
+            && left.ProviderGeneration == right.ProviderGeneration
+            && left.Value == right.Value
+            && left.Priority == right.Priority;
 
         private static int RemoveBindingRow(EntityManager entityManager, Entity entity, TargetBindingRow row)
         {
@@ -1461,6 +1680,7 @@ namespace GameCore.Unity.Runtime
                 return 0;
             }
 
+            int removed = 0;
             DynamicBuffer<CapabilityBinding> bindings = entityManager.GetBuffer<CapabilityBinding>(entity);
             for (int i = 0; i < bindings.Length; i++)
             {
@@ -1468,11 +1688,34 @@ namespace GameCore.Unity.Runtime
                 {
                     // Exactly one support is removed; state another contributor still supports survives (P-033).
                     bindings.RemoveAt(i);
-                    return 1;
+                    removed = 1;
+                    break;
                 }
             }
 
-            return 0;
+            if (removed == 0)
+            {
+                return 0;
+            }
+
+            if (entityManager.HasBuffer<CapabilitySupportRow>(entity))
+            {
+                DynamicBuffer<CapabilitySupportRow> supports = entityManager.GetBuffer<CapabilitySupportRow>(entity);
+                for (int i = supports.Length - 1; i >= 0; i--)
+                {
+                    CapabilitySupportRow existing = supports[i];
+                    if (existing.Capability.Equals(row.Capability)
+                        && existing.OutputSlot == row.OutputSlot
+                        && existing.Provider.Equals(row.Provider))
+                    {
+                        // The retracting provider loses exactly its own support rows; a co-supporter keeps its own.
+                        supports.RemoveAt(i);
+                        removed++;
+                    }
+                }
+            }
+
+            return removed;
         }
 
         private int WriteSlotState(EntityManager entityManager, Entity entity, StateSlotKey slot, int value, uint version)
@@ -1502,7 +1745,92 @@ namespace GameCore.Unity.Runtime
                 Value = value,
                 Active = 1,
             });
+
             return 1;
+        }
+
+        /// <summary>
+        /// Appends one rule's support rows to a freshly created support buffer (P-017). Used by the spawn path,
+        /// which builds the whole buffer at once and therefore needs no replace/remove pass.
+        /// </summary>
+        private static void AppendSupportRows(DynamicBuffer<CapabilitySupportRow> destination, DerivedBindingRule rule)
+        {
+            for (int s = 0; s < rule.Supports.Count; s++)
+            {
+                CapabilitySupport support = rule.Supports[s];
+                destination.Add(new CapabilitySupportRow
+                {
+                    Capability = rule.Capability,
+                    OutputSlot = rule.OutputSlot,
+                    Provider = support.Provider,
+                    ProviderGeneration = support.ProviderGeneration,
+                    Rule = support.Rule,
+                    Value = support.Value,
+                    Priority = support.Priority,
+                });
+            }
+        }
+
+        private static CapabilityBinding ToBinding(DerivedBindingRule rule)
+        {
+            return new CapabilityBinding
+            {
+                Capability = rule.Capability,
+                CapabilityVersion = rule.CapabilityVersion,
+                OutputSlot = rule.OutputSlot,
+                Value = rule.Value,
+                Priority = rule.Priority,
+                Schema = rule.Schema,
+                Provider = rule.Provider,
+                ProviderGeneration = rule.ProviderGeneration,
+                Active = 1,
+                SupporterCount = rule.SupporterCount,
+            };
+        }
+
+        private static TargetBindingRow RowOf(DerivedBindingRule rule, TargetId target) =>
+            new TargetBindingRow(
+                target,
+                rule.Capability,
+                rule.CapabilityVersion,
+                rule.OutputSlot,
+                rule.Value,
+                rule.Provider,
+                rule.ProviderGeneration,
+                rule.Priority,
+                rule.Schema,
+                rule.Supports);
+
+        /// <summary>
+        /// Marks one live slot dormant: the value and its version stay exactly as they were, the row stops
+        /// participating in active queries, and it is still part of the target's storage (P-032 `PreserveDormant`).
+        /// A missing row is left missing rather than created: dormant state is retained state, never invented state.
+        /// </summary>
+        private static int MarkSlotDormant(EntityManager entityManager, Entity entity, StateSlotKey slot)
+        {
+            if (!entityManager.HasBuffer<TargetSlotState>(entity))
+            {
+                return 0;
+            }
+
+            DynamicBuffer<TargetSlotState> slots = entityManager.GetBuffer<TargetSlotState>(entity);
+            for (int i = 0; i < slots.Length; i++)
+            {
+                if (slots[i].Owner.Equals(slot.Owner) && slots[i].Slot.Equals(slot.Slot))
+                {
+                    if (slots[i].Active == 0)
+                    {
+                        return 0;
+                    }
+
+                    TargetSlotState dormant = slots[i];
+                    dormant.Active = 0;
+                    slots[i] = dormant;
+                    return 1;
+                }
+            }
+
+            return 0;
         }
 
         private static int ClearSlotState(EntityManager entityManager, Entity entity, StateSlotKey slot)
@@ -1616,33 +1944,6 @@ namespace GameCore.Unity.Runtime
             return current;
         }
 
-        private static CapabilityBinding ToBinding(DerivedBindingRule rule)
-        {
-            return new CapabilityBinding
-            {
-                Capability = rule.Capability,
-                CapabilityVersion = rule.CapabilityVersion,
-                OutputSlot = rule.OutputSlot,
-                Value = rule.Value,
-                Priority = rule.Priority,
-                Schema = rule.Schema,
-                Provider = rule.Provider,
-                ProviderGeneration = rule.ProviderGeneration,
-                Active = 1,
-            };
-        }
-
-        private static TargetBindingRow RowOf(DerivedBindingRule rule, TargetId target) =>
-            new TargetBindingRow(
-                target,
-                rule.Capability,
-                rule.CapabilityVersion,
-                rule.OutputSlot,
-                rule.Value,
-                rule.Provider,
-                rule.ProviderGeneration,
-                rule.Priority,
-                rule.Schema);
 
         /// <summary>
         /// The next assembly epoch after one publication (05 s2: the initial assembly is 1, so the first composition

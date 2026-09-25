@@ -40,6 +40,15 @@ namespace GameCore.Contracts
     }
 
     /// <summary>Immutable command envelope submitted for host admission (P-042).</summary>
+    /// <remarks>
+    /// `ExpectedDomainVersion` is the envelope's optional guard on the target domain's own version. It is
+    /// versioned composition data, not decoration: when it is present, the host compares it against the version
+    /// its route's declared domain-version authority reports for the target *before* the command
+    /// reaches the owner's lane, and a disagreement is admitted as a `StalePlan` rejection rather than executed
+    /// against a domain state the issuer did not read (P-042, P-037). It also participates in the admission
+    /// idempotency hash, so reusing a request key with a different expected version is an `IdempotencyConflict`
+    /// and never a silent second attempt (P-050).
+    /// </remarks>
     public sealed class CommandEnvelope
     {
         public CommandEnvelope(
@@ -66,6 +75,10 @@ namespace GameCore.Contracts
 
         public SchemaRef Schema { get; }
 
+        /// <summary>
+        /// The target domain version the issuer read, or null when the issuer accepts any current version. The
+        /// guard is enforced at host admission against the route's bound authority (P-042).
+        /// </summary>
         public ulong? ExpectedDomainVersion { get; }
 
         public FrozenPayload Payload { get; }

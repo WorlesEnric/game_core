@@ -1,10 +1,12 @@
 // GameCore.Unity.Runtime — W2 integration seam: the derivation result (GC-006) as an assembly proposal (GC-008).
 //
 // P-013/P-015 say a provider's contributions reach a target without any per-instance import; P-017 says a
-// contribution's identity survives a payload reconfiguration; P-018 ranks candidates and P-019 composes them. GC-006
+// contribution's identity survives a payload reconfiguration and that "support from multiple contributions is a
+// set of IDs, not a boolean owned by the last plugin"; P-018 ranks candidates and P-019 composes them. GC-006
 // computes exactly that as an immutable effective assembly per target. GC-008 consumes a `CompositionProposal`
 // (mounts with per-capability declarations) and publishes binding rows. This file is the one translation between
-// the two, and it refuses rather than guesses at every point where the frozen shapes cannot express GC-006's result:
+// the two, and it refuses rather than guesses at every point where the frozen shapes cannot express GC-006's
+// result:
 //
 //   * the provider installation of a contribution must be a live installation of the same committed composition,
 //     so a mount is always built from a real install record (never a synthesised provider);
@@ -12,10 +14,12 @@
 //     scalar convention of 05 section 6 — the same four bytes `FixturePayload.Int32` writes — so the reference
 //     descriptors and this transfer cannot disagree on a value. A payload that is not exactly one such int32 is
 //     refused: truncating or zero-filling it would publish a value nobody derived;
-//   * an effective slot that more than one contribution supports has no representation in a row set keyed by
-//     (target, capability, output slot), so it is refused with a detail naming the slot. Derivation's own suite
-//     proves the multi-contribution policies; the exact transfer of a composed value to a binding row is the seam
-//     that does not exist yet, and inventing a winner here would silently drop it.
+//   * a slot that composes several *values* (reducer-less `Additive`, `Ordered`) is refused explicitly, because
+//     one binding row publishes one int32 and dropping members would publish an assembly nobody derived;
+//   * a slot that several contributions *support* is no longer refused. GC-012 closed that gap: the composed
+//     value the kernel folded (`EffectiveSlot.Values[0]`) becomes the row's value, and every supporter
+//     (`EffectiveSlot.Support`) becomes a `CapabilitySupport` on that row, so an `Additive` slot with two or more
+//     providers reaches a live world with both its composed value and its full provenance (P-017, P-019).
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -92,11 +96,17 @@ namespace GameCore.Unity.Runtime.Integration
         /// <summary>A contribution names a provider installation the committed composition does not hold.</summary>
         UnknownProvider = 2,
 
-        /// <summary>An effective slot has no single int32 value, or more than one supporter (see the file header).</summary>
+        /// <summary>A slot's composed value is not one canonical int32 scalar, so no binding row could carry it.</summary>
         UnsupportedSlotValue = 3,
 
         /// <summary>A derived capability has no stable identity, so no contribution key could be built (P-004).</summary>
         InvalidContribution = 4,
+
+        /// <summary>
+        /// A slot composes more than one value (reducer-less `Additive`, `Ordered`). The composed value of P-019 is
+        /// then a set, and a binding row publishes one int32; the set is refused rather than truncated.
+        /// </summary>
+        MultiValueSlot = 5,
     }
 
     /// <summary>Result of translating one derivation result into an assembly proposal.</summary>
@@ -182,7 +192,8 @@ namespace GameCore.Unity.Runtime.Integration
             AssemblyEpoch baseEpoch,
             ContentHash inputHash,
             ContentHash catalogHash,
-            OperationId operation)
+            OperationId operation,
+            TargetBindingTable publishedBindings)
         {
             if (derivation == null)
             {
@@ -194,6 +205,11 @@ namespace GameCore.Unity.Runtime.Integration
                 throw new ArgumentNullException(nameof(committed));
             }
 
+            if (publishedBindings == null)
+            {
+                throw new ArgumentNullException(nameof(publishedBindings));
+            }
+
             if (!derivation.Accepted)
             {
                 return DerivationProposalReport.Refused(
@@ -203,18 +219,13 @@ namespace GameCore.Unity.Runtime.Integration
                     + " nothing and leaves the old assembly usable (P-028).");
             }
 
-            if (derivation.Assemblies.Count == 0)
-            {
-                return DerivationProposalReport.Refused(
-                    DerivationProposalOutcome.NoAssemblies,
-                    DiagnosticCode.None,
-                    "derivation produced no target assembly; there is no effective change to publish (P-028).");
-            }
+            // An empty effective assembly can still retract every previously published provider.
 
             var capabilitiesByProvider = new Dictionary<Id128, List<ProposedCapability>>();
             var providerOrder = new List<Id128>();
             var mounts = new List<ProposedMount>();
             int capabilityCount = 0;
+            var unmounts = new List<ProposedUnmount>();
 
             for (int a = 0; a < derivation.Assemblies.Count; a++)
             {
@@ -229,80 +240,168 @@ namespace GameCore.Unity.Runtime.Integration
                         continue;
                     }
 
-                    if (slot.Support.Count != 1)
+                    if (slot.Values.Count != 1)
                     {
+                        // `Ordered` and reducer-less `Additive` compose a *set* of values, and one binding row holds
+                        // one int32. A set is therefore refused explicitly rather than truncated to a member: the
+                        // representation for a multi-value slot is a later task's, and dropping members here would
+                        // publish an assembly nobody derived (P-017, P-019).
                         return DerivationProposalReport.Refused(
-                            DerivationProposalOutcome.UnsupportedSlotValue,
-                            DiagnosticCode.CapabilityConflict,
+                            DerivationProposalOutcome.MultiValueSlot,
+                            DiagnosticCode.UnsupportedVersion,
                             "target " + assembly.Target.ToString() + " slot " + slot.Capability.ToString()
-                            + "#" + slot.Slot.ToString(CultureInfo.InvariantCulture) + " is supported by "
-                            + slot.Support.Count.ToString(CultureInfo.InvariantCulture) + " contributions under the "
-                            + slot.Policy.ToString() + " policy; a binding row holds one value per (capability, output"
-                            + " slot), so a composed multi-contribution value has no representation here (P-019).");
+                            + "#" + slot.Slot.ToString(CultureInfo.InvariantCulture) + " composes "
+                            + slot.Values.Count.ToString(CultureInfo.InvariantCulture) + " values under the "
+                            + slot.Policy.ToString() + " policy, and a binding row publishes exactly one canonical"
+                            + " int32 scalar (P-019).");
                     }
 
-                    CapabilityContribution contribution = slot.Support[0];
-                    if (contribution.Capability.IsDefault || contribution.OutputSlot > int.MaxValue)
-                    {
-                        return DerivationProposalReport.Refused(
-                            DerivationProposalOutcome.InvalidContribution,
-                            DiagnosticCode.MissingDependency,
-                            "contribution " + contribution.Key.ToString() + " has no usable output slot (P-004).");
-                    }
-
-                    if (!IntegrationSlotValues.TryReadInt32(contribution.Payload, out int value))
+                    if (!IntegrationSlotValues.TryReadInt32(slot.Values[0], out int composedValue))
                     {
                         return DerivationProposalReport.Refused(
                             DerivationProposalOutcome.UnsupportedSlotValue,
                             DiagnosticCode.UnsupportedVersion,
-                            "contribution " + contribution.Key.ToString() + " carries a "
-                            + (contribution.Payload != null ? contribution.Payload.Length : 0).ToString(CultureInfo.InvariantCulture)
-                            + "-byte payload; a binding row's value is exactly one canonical int32 scalar, and a"
-                            + " different payload is refused rather than truncated (P-017, P-019).");
+                            "target " + assembly.Target.ToString() + " slot " + slot.Capability.ToString()
+                            + "#" + slot.Slot.ToString(CultureInfo.InvariantCulture)
+                            + " has a composed value that is not exactly one canonical int32 scalar; a different"
+                            + " payload is refused rather than truncated (P-017, P-019).");
                     }
 
-                    Id128 providerKey = contribution.Key.Provider.Value;
-                    if (!committed.TryGetInstall(new PluginInstanceId(providerKey), out InstallEntry? install) || install == null)
+                    // P-017: the support set is the *set of contributions* that produce this slot's effective value,
+                    // so a slot with several supporters publishes several of them. Each supporter reports its own
+                    // contribution value, which is what makes the composed value explainable (P-026).
+                    //
+                    // The (support, contribution) pairs are de-duplicated and canonically ordered here as *pairs*, not
+                    // as two independently sorted lists: the declaration for a supporter must carry that supporter's
+                    // own rule, schema and slot identity, so the two lists must never be indexed against each other.
+                    var pairs = new List<KeyValuePair<CapabilitySupport, CapabilityContribution>>(slot.Support.Count);
+                    for (int k = 0; k < slot.Support.Count; k++)
+                    {
+                        CapabilityContribution supporter = slot.Support[k];
+                        if (supporter.OutputSlot > int.MaxValue)
+                        {
+                            return DerivationProposalReport.Refused(
+                                DerivationProposalOutcome.InvalidContribution,
+                                DiagnosticCode.MissingDependency,
+                                "contribution " + supporter.Key.ToString() + " has no usable output slot (P-004).");
+                        }
+
+                        if (!IntegrationSlotValues.TryReadInt32(supporter.Payload, out int supporterValue))
+                        {
+                            return DerivationProposalReport.Refused(
+                                DerivationProposalOutcome.UnsupportedSlotValue,
+                                DiagnosticCode.UnsupportedVersion,
+                                "contribution " + supporter.Key.ToString() + " carries a "
+                                + (supporter.Payload != null ? supporter.Payload.Length : 0).ToString(CultureInfo.InvariantCulture)
+                                + "-byte payload; a contribution value is exactly one canonical int32 scalar, and a"
+                                + " different payload is refused rather than truncated (P-017, P-019).");
+                        }
+
+                        if (!committed.TryGetInstall(
+                                new PluginInstanceId(supporter.Key.Provider.Value),
+                                out InstallEntry? supporterInstall)
+                            || supporterInstall == null)
+                        {
+                            return DerivationProposalReport.Refused(
+                                DerivationProposalOutcome.UnknownProvider,
+                                DiagnosticCode.StaleHandle,
+                                "contribution " + supporter.Key.ToString() + " is supported by installation "
+                                + supporter.Key.Provider.ToString() + ", which the committed composition does not"
+                                + " hold; a mount is never built from a synthesised provider (P-009, P-044).");
+                        }
+
+                        var record = new CapabilitySupport(
+                            supporter.Key.Provider,
+                            supporterInstall.Record.Generation.Value,
+                            supporter.Key.Rule,
+                            supporterValue,
+                            supporterInstall.Record.Priority);
+
+                        bool duplicate = false;
+                        for (int p = 0; p < pairs.Count; p++)
+                        {
+                            if (pairs[p].Key.HasSameIdentity(record))
+                            {
+                                duplicate = true;
+                                break;
+                            }
+                        }
+
+                        if (!duplicate)
+                        {
+                            pairs.Add(new KeyValuePair<CapabilitySupport, CapabilityContribution>(record, supporter));
+                        }
+                    }
+
+                    if (pairs.Count == 0)
                     {
                         return DerivationProposalReport.Refused(
-                            DerivationProposalOutcome.UnknownProvider,
-                            DiagnosticCode.StaleHandle,
-                            "contribution " + contribution.Key.ToString() + " is supported by installation "
-                            + contribution.Key.Provider.ToString() + ", which the committed composition does not hold;"
-                            + " a mount is never built from a synthesised provider (P-009, P-044).");
+                            DerivationProposalOutcome.InvalidContribution,
+                            DiagnosticCode.MissingDependency,
+                            "target " + assembly.Target.ToString() + " slot " + slot.Capability.ToString()
+                            + "#" + slot.Slot.ToString(CultureInfo.InvariantCulture)
+                            + " reports support without a single usable contribution identity (P-004, P-017).");
                     }
 
-                    var declared = new ProposedCapability(
-                        contribution.Rule,
-                        new CapabilityRef(contribution.Capability, slot.Version),
-                        contribution.Schema,
-                        contribution.OutputSlot,
-                        slot.Policy,
-                        value,
-                        install.Record.Priority,
-                        new List<DefinitionRef> { assembly.BaseRecipe },
-                        new List<TargetId> { assembly.Target });
-
-                    if (!capabilitiesByProvider.TryGetValue(providerKey, out List<ProposedCapability>? list) || list == null)
+                    pairs.Sort(CompareSupportPairs);
+                    var orderedSupports = new List<CapabilitySupport>(pairs.Count);
+                    for (int p = 0; p < pairs.Count; p++)
                     {
-                        list = new List<ProposedCapability>();
-                        capabilitiesByProvider.Add(providerKey, list);
-                        providerOrder.Add(providerKey);
+                        orderedSupports.Add(pairs[p].Key);
                     }
 
-                    list.Add(declared);
-                    capabilityCount++;
+                    IReadOnlyList<CapabilitySupport> frozenSupports = CapabilitySupport.Freeze(orderedSupports);
+
+                    // One declaration per supporter, all carrying the slot's one composed value and its full support
+                    // set. The planner ranks the declarations by P-018 like any other candidates and installs one
+                    // row, so an `Additive` slot with N supporters no longer collapses to its top-ranked candidate.
+                    for (int p = 0; p < pairs.Count; p++)
+                    {
+                        CapabilitySupport support = pairs[p].Key;
+                        CapabilityContribution contributor = pairs[p].Value;
+                        Id128 providerKey = support.Provider.Value;
+                        if (!committed.TryGetInstall(new PluginInstanceId(providerKey), out InstallEntry? install)
+                            || install == null)
+                        {
+                            return DerivationProposalReport.Refused(
+                                DerivationProposalOutcome.UnknownProvider,
+                                DiagnosticCode.StaleHandle,
+                                "contribution " + contributor.Key.ToString() + " is supported by installation "
+                                + support.Provider.ToString() + ", which the committed composition does not hold;"
+                                + " a mount is never built from a synthesised provider (P-009, P-044).");
+                        }
+
+                        var declared = new ProposedCapability(
+                            contributor.Rule,
+                            new CapabilityRef(contributor.Capability, slot.Version),
+                            contributor.Schema,
+                            contributor.OutputSlot,
+                            slot.Policy,
+                            composedValue,
+                            install.Record.Priority,
+                            new List<DefinitionRef> { assembly.BaseRecipe },
+                            new List<TargetId> { assembly.Target },
+                            frozenSupports);
+
+                        if (!capabilitiesByProvider.TryGetValue(providerKey, out List<ProposedCapability>? list) || list == null)
+                        {
+                            list = new List<ProposedCapability>();
+                            capabilitiesByProvider.Add(providerKey, list);
+                            providerOrder.Add(providerKey);
+                        }
+
+                        list.Add(declared);
+                        capabilityCount++;
+                    }
                 }
             }
 
-            if (providerOrder.Count == 0)
-            {
-                return DerivationProposalReport.Refused(
-                    DerivationProposalOutcome.NoAssemblies,
-                    DiagnosticCode.None,
-                    "the derivation result carries no supported slot, so no contribution would be published (P-017).");
-            }
-
+            // A re-derivation with no supported slot is a complete denial, not an empty world: the proposal is the
+            // whole effective support of the new composition (P-013's Conservative case), so it still publishes and
+            // retracts every row the previous assembly carried. Refusing here would leave those rows effective
+            // forever and misreport the transition as no change (P-006, P-017). A zero-support result is therefore a
+            // real retraction whenever previously published rows remain, which is what the explicit unmounts below
+            // and the proposal's own retractsAbsentSupport flag both express.
             for (int i = 0; i < providerOrder.Count; i++)
             {
                 Id128 providerKey = providerOrder[i];
@@ -323,6 +422,28 @@ namespace GameCore.Unity.Runtime.Integration
                     capabilitiesByProvider[providerKey]));
             }
 
+            var retiredProviders = new HashSet<Id128>();
+            for (int i = 0; i < publishedBindings.Rows.Count; i++)
+            {
+                Id128 provider = publishedBindings.Rows[i].Provider.Value;
+                if (capabilitiesByProvider.ContainsKey(provider) || !retiredProviders.Add(provider))
+                {
+                    continue;
+                }
+
+                if (committed.TryGetInstall(new PluginInstanceId(provider), out InstallEntry? previous) && previous != null)
+                {
+                    unmounts.Add(new ProposedUnmount(previous.Record.Instance,
+                        new ProviderInstallationId(provider), previous.Record.Scope));
+                }
+            }
+
+            if (mounts.Count == 0 && unmounts.Count == 0)
+            {
+                return DerivationProposalReport.Refused(DerivationProposalOutcome.NoAssemblies,
+                    DiagnosticCode.None, "the effective assembly contains no derived contributions");
+            }
+
             var proposal = new CompositionProposal(
                 operation,
                 inputHash,
@@ -331,10 +452,21 @@ namespace GameCore.Unity.Runtime.Integration
                 catalogHash,
                 committed.Mode,
                 mounts,
-                null);
+                unmounts,
+                retractsAbsentSupport: true);
 
             return DerivationProposalReport.Built(proposal, mounts.Count, capabilityCount, derivation.Assemblies.Count);
         }
+
+        /// <summary>
+        /// Canonical order of one slot's (support, contribution) pairs (P-008): the same order
+        /// <see cref="CapabilitySupport.CompareCanonical"/> defines, applied to the pair so the two lists stay
+        /// aligned. Reporting order only — the effective value was already composed by the slot's policy (P-019).
+        /// </summary>
+        private static int CompareSupportPairs(
+            KeyValuePair<CapabilitySupport, CapabilityContribution> left,
+            KeyValuePair<CapabilitySupport, CapabilityContribution> right)
+            => CapabilitySupport.CompareCanonical(left.Key, right.Key);
 
         /// <summary>
         /// Canonical input hash of one derivation result for the plan record: the result hash derivation itself

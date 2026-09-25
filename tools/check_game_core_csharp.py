@@ -41,6 +41,10 @@ TARGETS = [
     # GC-011: the card rules package is engine-free (it holds no Unity type at all), so it joins the engine-free
     # set; the card gameplay package holds the settlement systems and the integration glue, so it is only covered
     # by the balance and forbidden-construct checks.
+    # GC-014: the composition package holds the Unity-free lifecycle ledgers, the teardown sequencer and the
+    # quarantine registry, so the same host-side balance/forbidden-construct checks cover them (it is engine-free
+    # and therefore also belongs in the `engine_free` tuple below).
+    "Packages/com.gamecore.composition",
     "Packages/com.gamecore.rules.cards",
     "Packages/com.gamecore.gameplay.cards",
 ]
@@ -223,6 +227,9 @@ def main() -> int:
         ROOT / "Packages/com.gamecore.contracts",
         ROOT / "Packages/com.gamecore.content.compiler/Runtime",
         ROOT / "Packages/com.gamecore.derivation",
+        # GC-014: the composition package (lifecycle ledgers, teardown sequencer, quarantine registry, service
+        # resolution) references no Unity type, so it is engine-free exactly like the contracts package.
+        ROOT / "Packages/com.gamecore.composition/Runtime",
         ROOT / "Packages/com.gamecore.rules.narrative",
         ROOT / "Packages/com.gamecore.rules.cards",
         ROOT / "dotnet/src",

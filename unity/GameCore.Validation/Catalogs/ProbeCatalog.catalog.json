@@ -27,6 +27,23 @@
   ],
   "groups": [
     {
+      "tableName": "FamilyEntryRegistrations",
+      "keysName": "FamilyEntryKeys",
+      "lookupMethodName": "TryGetFamilyEntry",
+      "interfaceType": "GameCore.Validation.Slices.IFamilyPluginEntry",
+      "kind": "PluginFactory",
+      "entries": [
+        {
+          "stableName": "gamecore.validation.entry.narrative",
+          "keyName": "NarrativeFamilyEntryKey",
+          "keyVersion": 1,
+          "ownerPackageId": "00000000000000000000000000000000",
+          "implementationId": "81c6ee94c5a5ea51e32ce40f411f56cd",
+          "implementationExpression": "new GameCore.Validation.Slices.NarrativeFamilyPluginEntry()"
+        }
+      ]
+    },
+    {
       "tableName": "PluginRegistrations",
       "keysName": "PluginKeys",
       "lookupMethodName": "TryGetPluginFactory",
@@ -62,7 +79,7 @@
     }
   ],
   "code": {
-    "usingDirectives": ["GameCore.Validation.Fixture", "GameCore.Validation.Probe", "Unity.Jobs"],
+    "usingDirectives": ["GameCore.Validation.Fixture", "GameCore.Validation.Probe", "GameCore.Validation.Slices", "Unity.Jobs"],
     "assemblyAttributes": ["RegisterGenericJobType(typeof(ProbeAggregateJob<ProbeVector3Value>))"],
     "closedGenericRootStatements": [
       "ProbeAotRoots.TrackJob(default(ProbeAggregateJob<ProbeVector3Value>))",

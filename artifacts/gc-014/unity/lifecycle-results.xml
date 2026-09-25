@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="58" result="Passed" total="58" passed="58" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-09-25 13:13:14Z" end-time="2026-09-25 13:13:15Z" duration="0.6961886">
+  <test-suite type="TestSuite" id="1000" name="GameCoreProbe" fullname="GameCoreProbe" runstate="Runnable" testcasecount="688" result="Passed" start-time="2026-09-25 13:13:14Z" end-time="2026-09-25 13:13:15Z" duration="0.696189" total="58" passed="58" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1333" name="GameCore.Lifecycle.Tests.dll" fullname="/home/worlesenric/wkspace/gc-wt/gc-014/unity/GameCore.Validation/Library/ScriptAssemblies/GameCore.Lifecycle.Tests.dll" runstate="Runnable" testcasecount="58" result="Passed" start-time="2026-09-25 13:13:14Z" end-time="2026-09-25 13:13:15Z" duration="0.687935" total="58" passed="58" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="1067296" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1334" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="58" result="Passed" start-time="2026-09-25 13:13:14Z" end-time="2026-09-25 13:13:15Z" duration="0.687730" total="58" passed="58" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1335" name="Lifecycle" fullname="GameCore.Lifecycle" runstate="Runnable" testcasecount="58" result="Passed" start-time="2026-09-25 13:13:14Z" end-time="2026-09-25 13:13:15Z" duration="0.687649" total="58" passed="58" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1336" name="Tests" fullname="GameCore.Lifecycle.Tests" runstate="Runnable" testcasecount="58" result="Passed" start-time="2026-09-25 13:13:14Z" end-time="2026-09-25 13:13:15Z" duration="0.687565" total="58" passed="58" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1273" name="CardLifecycleIntegrationTests" fullname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests" classname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests" runstate="Runnable" testcasecount="29" result="Passed" start-time="2026-09-25 13:13:14Z" end-time="2026-09-25 13:13:15Z" duration="0.530978" total="29" passed="29" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties>
+                <property name="Timeout" value="60000" />
+              </properties>
+              <test-case id="1297" name="AnOutstandingJobBlocksBufferReleaseUntilItCompletes" fullname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests.AnOutstandingJobBlocksBufferReleaseUntilItCompletes" methodname="AnOutstandingJobBlocksBufferReleaseUntilItCompletes" classname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests" runstate="Runnable" seed="959356100" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.015774" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1289" name="BothRunsCarryExactlyTheDocumentedFacts" fullname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests.BothRunsCarryExactlyTheDocumentedFacts" methodname="BothRunsCarryExactlyTheDocumentedFacts" classname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests" runstate="Runnable" seed="972678791" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.005030" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1298" name="EveryInvalidTransitionIsRefusedWithoutChangingState" fullname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests.EveryInvalidTransitionIsRefusedWithoutChangingState" methodname="EveryInvalidTransitionIsRefusedWithoutChangingState" classname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests" runstate="Runnable" seed="511276496" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.002446" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1275" name="EveryObservationPassesOverTheFixtureCatalog" fullname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests.EveryObservationPassesOverTheFixtureCatalog" methodname="EveryObservationPassesOverTheFixtureCatalog" classname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests" runstate="Runnable" seed="1109537377" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000446" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1274" name="EveryObservationPassesOverTheGeneratedCatalog" fullname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests.EveryObservationPassesOverTheGeneratedCatalog" methodname="EveryObservationPassesOverTheGeneratedCatalog" classname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests" runstate="Runnable" seed="1476519203" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000096" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1293" name="LosingAProviderMakesTheConsumerWaitInTheSamePublication" fullname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests.LosingAProviderMakesTheConsumerWaitInTheSamePublication" methodname="LosingAProviderMakesTheConsumerWaitInTheSamePublication" classname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests" runstate="Runnable" seed="310093289" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000656" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1299" name="RepeatedOperationsObeyTheLedger" fullname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests.RepeatedOperationsObeyTheLedger" methodname="RepeatedOperationsObeyTheLedger" classname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests" runstate="Runnable" seed="760879212" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000732" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1295" name="ReplacementStagesACandidateWhileTheOldActivationHoldsAuthority" fullname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests.ReplacementStagesACandidateWhileTheOldActivationHoldsAuthority" methodname="ReplacementStagesACandidateWhileTheOldActivationHoldsAuthority" classname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests" runstate="Runnable" seed="1180224330" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000947" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1292" name="ResumeRestoresTheSameContribution" fullname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests.ResumeRestoresTheSameContribution" methodname="ResumeRestoresTheSameContribution" classname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests" runstate="Runnable" seed="238940796" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000462" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1294" name="ReturningAProviderResumesTheConsumerInTheSamePublication" fullname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests.ReturningAProviderResumesTheConsumerInTheSamePublication" methodname="ReturningAProviderResumesTheConsumerInTheSamePublication" classname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests" runstate="Runnable" seed="57491781" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000587" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1291" name="SuspensionRetractsTheContributionAndDiscardsLateCompletions" fullname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests.SuspensionRetractsTheContributionAndDiscardsLateCompletions" methodname="SuspensionRetractsTheContributionAndDiscardsLateCompletions" classname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests" runstate="Runnable" seed="918273060" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000830" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1300" name="TeardownSettlesWorkAndReturnsTheRegistryToBaseline" fullname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests.TeardownSettlesWorkAndReturnsTheRegistryToBaseline" methodname="TeardownSettlesWorkAndReturnsTheRegistryToBaseline" classname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests" runstate="Runnable" seed="1401747249" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000708" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1284" name="TheBlockedJobObservationPasses" fullname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests.TheBlockedJobObservationPasses" methodname="TheBlockedJobObservationPasses" classname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests" runstate="Runnable" seed="523802292" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000274" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1301" name="TheCardScoreAndTableVersionReflectTheLifecycle" fullname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests.TheCardScoreAndTableVersionReflectTheLifecycle" methodname="TheCardScoreAndTableVersionReflectTheLifecycle" classname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests" runstate="Runnable" seed="1513481187" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000382" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1302" name="TheCommittedGeneratedCatalogStillRunsItsOwnSlice" fullname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests.TheCommittedGeneratedCatalogStillRunsItsOwnSlice" methodname="TheCommittedGeneratedCatalogStillRunsItsOwnSlice" classname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests" runstate="Runnable" seed="886706998" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.054124" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1288" name="TheFactObservationCarriesTheDigest" fullname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests.TheFactObservationCarriesTheDigest" methodname="TheFactObservationCarriesTheDigest" classname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests" runstate="Runnable" seed="546056184" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000127" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1285" name="TheInvalidTransitionsObservationPasses" fullname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests.TheInvalidTransitionsObservationPasses" methodname="TheInvalidTransitionsObservationPasses" classname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests" runstate="Runnable" seed="1525292142" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000080" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1280" name="TheProviderLossObservationPasses" fullname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests.TheProviderLossObservationPasses" methodname="TheProviderLossObservationPasses" classname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests" runstate="Runnable" seed="138516082" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000081" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1281" name="TheProviderReturnObservationPasses" fullname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests.TheProviderReturnObservationPasses" methodname="TheProviderReturnObservationPasses" classname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests" runstate="Runnable" seed="317777971" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000070" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1286" name="TheRepeatedOperationsObservationPasses" fullname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests.TheRepeatedOperationsObservationPasses" methodname="TheRepeatedOperationsObservationPasses" classname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests" runstate="Runnable" seed="1983751669" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000064" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1282" name="TheReplacementObservationPasses" fullname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests.TheReplacementObservationPasses" methodname="TheReplacementObservationPasses" classname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests" runstate="Runnable" seed="93848661" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000063" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1279" name="TheResumeObservationPasses" fullname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests.TheResumeObservationPasses" methodname="TheResumeObservationPasses" classname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests" runstate="Runnable" seed="1397717694" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000062" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1276" name="TheScenarioRecordsEveryObservationTwiceInOrder" fullname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests.TheScenarioRecordsEveryObservationTwiceInOrder" methodname="TheScenarioRecordsEveryObservationTwiceInOrder" classname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests" runstate="Runnable" seed="1160627347" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000761" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1278" name="TheSuspendObservationPasses" fullname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests.TheSuspendObservationPasses" methodname="TheSuspendObservationPasses" classname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests" runstate="Runnable" seed="794313267" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000088" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1287" name="TheTeardownObservationPasses" fullname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests.TheTeardownObservationPasses" methodname="TheTeardownObservationPasses" classname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests" runstate="Runnable" seed="324399679" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000069" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1283" name="TheUnloadObservationPasses" fullname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests.TheUnloadObservationPasses" methodname="TheUnloadObservationPasses" classname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests" runstate="Runnable" seed="1734246976" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000063" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1277" name="TheWorldAndProviderObservationPasses" fullname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests.TheWorldAndProviderObservationPasses" methodname="TheWorldAndProviderObservationPasses" classname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests" runstate="Runnable" seed="1417335478" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000061" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1290" name="TheWorldOwnsTheLaneAndTheProviderIsActive" fullname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests.TheWorldOwnsTheLaneAndTheProviderIsActive" methodname="TheWorldOwnsTheLaneAndTheProviderIsActive" classname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests" runstate="Runnable" seed="878130492" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000762" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1296" name="UnloadClosesIngressRetractsAndDisposes" fullname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests.UnloadClosesIngressRetractsAndDisposes" methodname="UnloadClosesIngressRetractsAndDisposes" classname="GameCore.Lifecycle.Tests.CardLifecycleIntegrationTests" runstate="Runnable" seed="413324330" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000949" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1303" name="NarrativeLifecycleIntegrationTests" fullname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests" classname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests" runstate="Runnable" testcasecount="29" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.155633" total="29" passed="29" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties>
+                <property name="Timeout" value="60000" />
+              </properties>
+              <test-case id="1327" name="AnOutstandingJobBlocksBufferReleaseUntilItCompletes" fullname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests.AnOutstandingJobBlocksBufferReleaseUntilItCompletes" methodname="AnOutstandingJobBlocksBufferReleaseUntilItCompletes" classname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests" runstate="Runnable" seed="595980776" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.004403" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1319" name="BothRunsCarryExactlyTheDocumentedFacts" fullname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests.BothRunsCarryExactlyTheDocumentedFacts" methodname="BothRunsCarryExactlyTheDocumentedFacts" classname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests" runstate="Runnable" seed="1670311100" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.022354" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1328" name="EveryInvalidTransitionIsRefusedWithoutChangingState" fullname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests.EveryInvalidTransitionIsRefusedWithoutChangingState" methodname="EveryInvalidTransitionIsRefusedWithoutChangingState" classname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests" runstate="Runnable" seed="1602862702" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.001810" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1305" name="EveryObservationPassesOverTheFixtureCatalog" fullname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests.EveryObservationPassesOverTheFixtureCatalog" methodname="EveryObservationPassesOverTheFixtureCatalog" classname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests" runstate="Runnable" seed="183831945" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000526" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1304" name="EveryObservationPassesOverTheGeneratedCatalog" fullname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests.EveryObservationPassesOverTheGeneratedCatalog" methodname="EveryObservationPassesOverTheGeneratedCatalog" classname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests" runstate="Runnable" seed="140114422" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000112" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1323" name="LosingAProviderMakesTheConsumerWaitInTheSamePublication" fullname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests.LosingAProviderMakesTheConsumerWaitInTheSamePublication" methodname="LosingAProviderMakesTheConsumerWaitInTheSamePublication" classname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests" runstate="Runnable" seed="173928160" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000827" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1329" name="RepeatedOperationsObeyTheLedger" fullname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests.RepeatedOperationsObeyTheLedger" methodname="RepeatedOperationsObeyTheLedger" classname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests" runstate="Runnable" seed="784694661" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000927" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1325" name="ReplacementStagesACandidateWhileTheOldActivationHoldsAuthority" fullname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests.ReplacementStagesACandidateWhileTheOldActivationHoldsAuthority" methodname="ReplacementStagesACandidateWhileTheOldActivationHoldsAuthority" classname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests" runstate="Runnable" seed="1788085354" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.001178" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1322" name="ResumeRestoresTheSameContribution" fullname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests.ResumeRestoresTheSameContribution" methodname="ResumeRestoresTheSameContribution" classname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests" runstate="Runnable" seed="1186897254" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000557" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1324" name="ReturningAProviderResumesTheConsumerInTheSamePublication" fullname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests.ReturningAProviderResumesTheConsumerInTheSamePublication" methodname="ReturningAProviderResumesTheConsumerInTheSamePublication" classname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests" runstate="Runnable" seed="497230953" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000706" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1321" name="SuspensionRetractsTheContributionAndDiscardsLateCompletions" fullname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests.SuspensionRetractsTheContributionAndDiscardsLateCompletions" methodname="SuspensionRetractsTheContributionAndDiscardsLateCompletions" classname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests" runstate="Runnable" seed="1127623254" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.001035" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1330" name="TeardownSettlesWorkAndReturnsTheRegistryToBaseline" fullname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests.TeardownSettlesWorkAndReturnsTheRegistryToBaseline" methodname="TeardownSettlesWorkAndReturnsTheRegistryToBaseline" classname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests" runstate="Runnable" seed="1969793726" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000879" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1314" name="TheBlockedJobObservationPasses" fullname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests.TheBlockedJobObservationPasses" methodname="TheBlockedJobObservationPasses" classname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests" runstate="Runnable" seed="206770118" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000325" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1332" name="TheCommittedGeneratedCatalogStillRunsItsOwnSlice" fullname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests.TheCommittedGeneratedCatalogStillRunsItsOwnSlice" methodname="TheCommittedGeneratedCatalogStillRunsItsOwnSlice" classname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests" runstate="Runnable" seed="2040428546" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.030548" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1318" name="TheFactObservationCarriesTheDigest" fullname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests.TheFactObservationCarriesTheDigest" methodname="TheFactObservationCarriesTheDigest" classname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests" runstate="Runnable" seed="893839720" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000121" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1315" name="TheInvalidTransitionsObservationPasses" fullname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests.TheInvalidTransitionsObservationPasses" methodname="TheInvalidTransitionsObservationPasses" classname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests" runstate="Runnable" seed="562348400" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000080" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1331" name="TheNarrativeGateAndFactVersionReflectTheLifecycle" fullname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests.TheNarrativeGateAndFactVersionReflectTheLifecycle" methodname="TheNarrativeGateAndFactVersionReflectTheLifecycle" classname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests" runstate="Runnable" seed="1257870522" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000515" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1310" name="TheProviderLossObservationPasses" fullname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests.TheProviderLossObservationPasses" methodname="TheProviderLossObservationPasses" classname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests" runstate="Runnable" seed="1523926286" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000084" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1311" name="TheProviderReturnObservationPasses" fullname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests.TheProviderReturnObservationPasses" methodname="TheProviderReturnObservationPasses" classname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests" runstate="Runnable" seed="1286122936" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000067" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1316" name="TheRepeatedOperationsObservationPasses" fullname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests.TheRepeatedOperationsObservationPasses" methodname="TheRepeatedOperationsObservationPasses" classname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests" runstate="Runnable" seed="1007460819" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000068" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1312" name="TheReplacementObservationPasses" fullname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests.TheReplacementObservationPasses" methodname="TheReplacementObservationPasses" classname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests" runstate="Runnable" seed="1329310450" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000059" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1309" name="TheResumeObservationPasses" fullname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests.TheResumeObservationPasses" methodname="TheResumeObservationPasses" classname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests" runstate="Runnable" seed="1942634255" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000057" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1306" name="TheScenarioRecordsEveryObservationTwiceInOrder" fullname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests.TheScenarioRecordsEveryObservationTwiceInOrder" methodname="TheScenarioRecordsEveryObservationTwiceInOrder" classname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests" runstate="Runnable" seed="738147270" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000490" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1308" name="TheSuspendObservationPasses" fullname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests.TheSuspendObservationPasses" methodname="TheSuspendObservationPasses" classname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests" runstate="Runnable" seed="1972397203" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000080" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1317" name="TheTeardownObservationPasses" fullname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests.TheTeardownObservationPasses" methodname="TheTeardownObservationPasses" classname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests" runstate="Runnable" seed="2083909046" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000066" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1313" name="TheUnloadObservationPasses" fullname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests.TheUnloadObservationPasses" methodname="TheUnloadObservationPasses" classname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests" runstate="Runnable" seed="1345932959" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000062" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1307" name="TheWorldAndProviderObservationPasses" fullname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests.TheWorldAndProviderObservationPasses" methodname="TheWorldAndProviderObservationPasses" classname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests" runstate="Runnable" seed="1204718052" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000059" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1320" name="TheWorldOwnsTheLaneAndTheProviderIsActive" fullname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests.TheWorldOwnsTheLaneAndTheProviderIsActive" methodname="TheWorldOwnsTheLaneAndTheProviderIsActive" classname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests" runstate="Runnable" seed="1041915317" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.000893" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1326" name="UnloadClosesIngressRetractsAndDisposes" fullname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests.UnloadClosesIngressRetractsAndDisposes" methodname="UnloadClosesIngressRetractsAndDisposes" classname="GameCore.Lifecycle.Tests.NarrativeLifecycleIntegrationTests" runstate="Runnable" seed="47548175" result="Passed" start-time="2026-09-25 13:13:15Z" end-time="2026-09-25 13:13:15Z" duration="0.001158" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: /home/worlesenric/.config/unity3d/GameCore/GameCoreProbe/TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

@@ -104,8 +104,12 @@ namespace GameCore.Derivation
             + ", applyUs<=" + MaxApplyCostEstimateMicroseconds + ")";
     }
 
-    /// <summary>Live cost counters of one derivation: the P-022 accounting plus the P-023 index-visit evidence.</summary>
-    public sealed class CostCounters
+    /// <summary>
+    /// Live cost counters of one derivation: the P-022 accounting plus the P-023 index-visit evidence. Not sealed:
+    /// `InvalidationCounters` extends it with the invalidation report so one derivation reports one counter object
+    /// (GC-013).
+    /// </summary>
+    public class CostCounters
     {
         public int ExaminedCandidates { get; internal set; }
 
@@ -137,7 +141,7 @@ namespace GameCore.Derivation
         public long ExceededLimit { get; internal set; }
 
         /// <summary>Canonical, stable text used in diagnostics and evidence files.</summary>
-        public string Describe() =>
+        public virtual string Describe() =>
             "candidates=" + ExaminedCandidates
             + ";contributions=" + EmittedContributions
             + ";targets=" + AffectedTargets

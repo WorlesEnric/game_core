@@ -1,0 +1,152 @@
+{
+  "task": "W2-GATE",
+  "probe": "GameCore.Validation.ProbeHost.ProbeRunner",
+  "mode": "W2Gate",
+  "result": "Pass",
+  "exitCode": 0,
+  "declaredUnityVersion": "6000.0.75f1",
+  "unityVersion": "6000.0.75f1",
+  "declaredTarget": "StandaloneLinux64",
+  "platform": "LinuxPlayer",
+  "architecture": "X64",
+  "processorType": "12th Gen Intel(R) Core(TM) i7-12700KF",
+  "scriptingBackend": "IL2CPP",
+  "isIl2Cpp": true,
+  "is64BitProcess": true,
+  "managedStrippingLevel": "High",
+  "managedStrippingLevelSource": "declared: GameCore.Validation.Editor.BuildProbe sets and re-reads PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, ManagedStrippingLevel.High); a player cannot query the stripping level at runtime",
+  "burstCompilerEnabled": true,
+  "fixturePluginPreservation": "declared: Assets/link.xml preserves the GameCore.Validation.Fixture assembly (preserve=\"all\"), and the generated catalog holds a direct FixturePluginFactory reference, so the plugin is linked into the player while nothing instantiates it at startup",
+  "catalogGenerator": "GameCore.Content.Compiler (GC-003)",
+  "catalogGeneratedFile": "ProbeCatalog.g.cs",
+  "catalogFileHash": "f35a69b3380b0f9470f5dcdd3147698ec2ca49304bf00dc6df11d95f938ace23",
+  "catalogFingerprint": "a4ea6f9190c40054b6733e6bcdfe060f478e77f0f3f8a0020c5a341381d353e7",
+  "catalogDescriptionFormat": "gamecore.catalog-description/1",
+  "catalogProtocolVersion": "1.0",
+  "catalogSupportedFeatureCount": 1,
+  "catalogFileHashAlgorithm": "SHA-256",
+  "catalogFileHashScope": "SHA-256 over the UTF-8 bytes, with LF line endings, of the file prefix that ends immediately before the eight-space-indented CatalogFileHash declaration; that prefix ends with the newline that terminates the previous line, and the declaration itself, its value and the rest of the file are excluded",
+  "failureReason": "",
+  "probes": [
+    {
+      "name": "gate2-catalog-and-declarations",
+      "status": "Pass",
+      "detail": "fingerprint=a4ea6f9190c40054b6733e6bcdfe060f478e77f0f3f8a0020c5a341381d353e7; fingerprintAsDeclared=True; declaredFingerprint=a4ea6f9190c40054b6733e6bcdfe060f478e77f0f3f8a0020c5a341381d353e7; acceptedDeclarations=2; rejectedDeclarations=0; factoryLookup=found; unknownKeyLookup=MissingDependency(key:FactoryKey(4771366f6c5f1ea9cdd9bc836d9c05ae, 1)); unregisteredResolved=False"
+    },
+    {
+      "name": "gate2-ownership-and-schedule-compiled",
+      "status": "Pass",
+      "detail": "compilation=compiled: schedule(stages=4, systems=5, playback=1, edges=3, hash=fc24e0addeddbfade6e84cd72904d95dfbdb23bb1cf38f4fd4fc5e0225053e8d); adaptation=adapted: 5 entries, 1 buffers; descriptor=descriptor(4 stages, 3 slots, 1 buffers, revision 49d79771664aaf58ba4fe1cfc935b22d04ad413af9d87280c6db363a98083491); ownershipValid=True; domains=3; partitions=2; traitDisjoint=True; schedule=schedule(stages=4, systems=5, playback=1, edges=3, hash=fc24e0addeddbfade6e84cd72904d95dfbdb23bb1cf38f4fd4fc5e0225053e8d)\n  0:StageId(a1a6714e15e834cb36052143383d1aa0)(1 systems)\n    0:StageId(a1a6714e15e834cb36052143383d1aa0)/FactoryKey(07d7ec6ebdeb1fdbfc800fc4eaed2f65, 1)\n  1:StageId(9e83ef902ade34f17a7a778d6e13e070)(1 systems)\n    1:StageId(9e83ef902ade34f17a7a778d6e13e070)/FactoryKey(bdb4d25521a63e71e884fee097cbdd02, 1) afterStages=0\n    playback[0]:BufferId(78c9249e30f02361de9cb9418d026bf1) owner=1 consumer=2\n  2:StageId(31bcf69c3db4e53ac9d739342ed4c3df)(1 systems)\n    2:StageId(31bcf69c3db4e53ac9d739342ed4c3df)/FactoryKey(d072c72de0e78a3a06f8baddf87a7775, 1) afterStages=1\n  3:StageId(f5356b988bc978ce52a8f037e7c09c75)(2 systems)\n    3:StageId(f5356b988bc978ce52a8f037e7c09c75)/FactoryKey(7edbb965ff4aab1b8f567c1d2086a4ef, 1) afterStages=1\n    4:StageId(f5356b988bc978ce52a8f037e7c09c75)/FactoryKey(937cd395b444ca641a35defe1a6bf24e, 1) afterStages=1"
+    },
+    {
+      "name": "gate2-world-and-live-targets",
+      "status": "Pass",
+      "detail": "session=57324741544532320000000000000001; registryBefore=1; registryAfter=2; liveTargets=4; mappedTargets=4; plane=True; laneJoined=True; lane=1/1; worldEpoch=1; clockRegistered=True; lifecycle=Running"
+    },
+    {
+      "name": "gate2-provider-mounted-and-published",
+      "status": "Pass",
+      "detail": "publish OperationId(WorldId(57324741544532320000000000000001), b99e985e92062decd5d4a8a661fbf3f3, 2): Published; lane=2/2; worldEpoch=1->2; joined=True; derivation input built: scopes=1, installs=1, targets=4, contracts=2, hash=71a104423dba0525b5ff0a6013c0801dae8f8682f520c85a10413fa7ed61fac0; derivation=accepted(4 targets, <no delta>); proposal(mounts=1, capabilities=2, targets=4); publication=Published(writes=8, migrations=4); admission=Fresh; drained=1; lane=2/2; joined=True; observerOneCompleteImage=True; observerCapturedEpoch=1; migrations=4"
+    },
+    {
+      "name": "gate2-derived-layout-in-entities",
+      "status": "Pass",
+      "detail": "maraRows=1; maraValue=41; maraActive=True; maraStampEpoch=2; migratedSlot=110; migratedVersion=2; targetSlotCount=1; gateRows=1; gateValue=42; crowdRows=0; encounterRows=0"
+    },
+    {
+      "name": "gate2-one-bounded-command-committed",
+      "status": "Pass",
+      "detail": "admitted=True; admission=Accepted; steps=1; questSlot=115; questSlotVersion=2; events=1; eventPayload=115; eventStep=1; eventEpoch=2; ledgerRows=1; ledgerCommitted=1; demand=0"
+    },
+    {
+      "name": "gate2-ordered-dispatch-and-dependent-read",
+      "status": "Pass",
+      "detail": "dispatchRuns=1; dispatchedEntries=5; trailSteps=1; projected=1; settleJobs=1; waitedOnNativeFence=True; traitLeft=1; traitRight=1; nativeProduced=1; nativeReads=1; nativeUnproducedReads=0; faulted=False; drain=True"
+    },
+    {
+      "name": "gate2-registered-wake-advances-one-step",
+      "status": "Pass",
+      "detail": "scheduled=True; dueWakes=1; stepsCommitted=1; worldStep=2; trailSteps=2; events=1"
+    },
+    {
+      "name": "gate2-forward-provider-and-spawned-target",
+      "status": "Pass",
+      "detail": "forward=NoTargetChange; noTargetChange=True; spawn=spawn OperationId(WorldId(57324741544532320000000000000001), b99e985e92062decd5d4a8a661fbf3f3, 5): Published; lane=3/3; worldEpoch=2->3; joined=True; derivation input built: scopes=1, installs=2, targets=4, contracts=3, hash=ad81b6cb867994adeab51244bc709a9545765538232f7c6b592d3f676470a1bd; derivation=accepted(4 targets, Delta(+=0, -=0, ~=0, slots=0)); publication=Published(writes=1, migrations=0); derivation changed no target assembly relative to the published composition; laneEpoch=3; worldEpoch=3; joined=True; spawnedRows=1; spawnedValue=41; spawnedStampEpoch=3; spawnedPublished=True; spawnedInView=True; publishedRows=3; recipeApplies=1; indexRegistered=True"
+    },
+    {
+      "name": "gate2-idle-world-performs-zero-steps",
+      "status": "Pass",
+      "detail": "frames=8; steps=0; stepBefore=2; stepAfter=2; images=5->5; dispatchRuns=2->2; demand=0; pendingWakes=0"
+    },
+    {
+      "name": "gate2-teardown-settles-and-disposes",
+      "status": "Pass",
+      "detail": "stop=Published(None); outstandingBefore=0; outstandingAfter=0; retainedResources=0; registryAfter=1; registryBefore=1"
+    },
+    {
+      "name": "fixture:gate2-catalog-and-declarations",
+      "status": "Pass",
+      "detail": "fingerprint=c104d3c9cc5b2741ad7fc07884b55a7a8afc9a6bad0df6905a5b05aff7523d7e; fingerprintAsDeclared=True; declaredFingerprint=c104d3c9cc5b2741ad7fc07884b55a7a8afc9a6bad0df6905a5b05aff7523d7e; acceptedDeclarations=2; rejectedDeclarations=0; factoryLookup=found; unknownKeyLookup=MissingDependency(key:FactoryKey(473147415445573100000000000000a1, 1)); unregisteredResolved=False"
+    },
+    {
+      "name": "fixture:gate2-ownership-and-schedule-compiled",
+      "status": "Pass",
+      "detail": "compilation=compiled: schedule(stages=4, systems=5, playback=1, edges=3, hash=fc24e0addeddbfade6e84cd72904d95dfbdb23bb1cf38f4fd4fc5e0225053e8d); adaptation=adapted: 5 entries, 1 buffers; descriptor=descriptor(4 stages, 3 slots, 1 buffers, revision 49d79771664aaf58ba4fe1cfc935b22d04ad413af9d87280c6db363a98083491); ownershipValid=True; domains=3; partitions=2; traitDisjoint=True; schedule=schedule(stages=4, systems=5, playback=1, edges=3, hash=fc24e0addeddbfade6e84cd72904d95dfbdb23bb1cf38f4fd4fc5e0225053e8d)\n  0:StageId(a1a6714e15e834cb36052143383d1aa0)(1 systems)\n    0:StageId(a1a6714e15e834cb36052143383d1aa0)/FactoryKey(07d7ec6ebdeb1fdbfc800fc4eaed2f65, 1)\n  1:StageId(9e83ef902ade34f17a7a778d6e13e070)(1 systems)\n    1:StageId(9e83ef902ade34f17a7a778d6e13e070)/FactoryKey(bdb4d25521a63e71e884fee097cbdd02, 1) afterStages=0\n    playback[0]:BufferId(78c9249e30f02361de9cb9418d026bf1) owner=1 consumer=2\n  2:StageId(31bcf69c3db4e53ac9d739342ed4c3df)(1 systems)\n    2:StageId(31bcf69c3db4e53ac9d739342ed4c3df)/FactoryKey(d072c72de0e78a3a06f8baddf87a7775, 1) afterStages=1\n  3:StageId(f5356b988bc978ce52a8f037e7c09c75)(2 systems)\n    3:StageId(f5356b988bc978ce52a8f037e7c09c75)/FactoryKey(7edbb965ff4aab1b8f567c1d2086a4ef, 1) afterStages=1\n    4:StageId(f5356b988bc978ce52a8f037e7c09c75)/FactoryKey(937cd395b444ca641a35defe1a6bf24e, 1) afterStages=1"
+    },
+    {
+      "name": "fixture:gate2-world-and-live-targets",
+      "status": "Pass",
+      "detail": "session=57324741544532320000000000000001; registryBefore=1; registryAfter=2; liveTargets=4; mappedTargets=4; plane=True; laneJoined=True; lane=1/1; worldEpoch=1; clockRegistered=True; lifecycle=Running"
+    },
+    {
+      "name": "fixture:gate2-provider-mounted-and-published",
+      "status": "Pass",
+      "detail": "publish OperationId(WorldId(57324741544532320000000000000001), b99e985e92062decd5d4a8a661fbf3f3, 2): Published; lane=2/2; worldEpoch=1->2; joined=True; derivation input built: scopes=1, installs=1, targets=4, contracts=2, hash=71a104423dba0525b5ff0a6013c0801dae8f8682f520c85a10413fa7ed61fac0; derivation=accepted(4 targets, <no delta>); proposal(mounts=1, capabilities=2, targets=4); publication=Published(writes=8, migrations=4); admission=Fresh; drained=1; lane=2/2; joined=True; observerOneCompleteImage=True; observerCapturedEpoch=1; migrations=4"
+    },
+    {
+      "name": "fixture:gate2-derived-layout-in-entities",
+      "status": "Pass",
+      "detail": "maraRows=1; maraValue=41; maraActive=True; maraStampEpoch=2; migratedSlot=110; migratedVersion=2; targetSlotCount=1; gateRows=1; gateValue=42; crowdRows=0; encounterRows=0"
+    },
+    {
+      "name": "fixture:gate2-one-bounded-command-committed",
+      "status": "Pass",
+      "detail": "admitted=True; admission=Accepted; steps=1; questSlot=115; questSlotVersion=2; events=1; eventPayload=115; eventStep=1; eventEpoch=2; ledgerRows=1; ledgerCommitted=1; demand=0"
+    },
+    {
+      "name": "fixture:gate2-ordered-dispatch-and-dependent-read",
+      "status": "Pass",
+      "detail": "dispatchRuns=1; dispatchedEntries=5; trailSteps=1; projected=1; settleJobs=1; waitedOnNativeFence=True; traitLeft=1; traitRight=1; nativeProduced=1; nativeReads=1; nativeUnproducedReads=0; faulted=False; drain=True"
+    },
+    {
+      "name": "fixture:gate2-registered-wake-advances-one-step",
+      "status": "Pass",
+      "detail": "scheduled=True; dueWakes=1; stepsCommitted=1; worldStep=2; trailSteps=2; events=1"
+    },
+    {
+      "name": "fixture:gate2-forward-provider-and-spawned-target",
+      "status": "Pass",
+      "detail": "forward=NoTargetChange; noTargetChange=True; spawn=spawn OperationId(WorldId(57324741544532320000000000000001), b99e985e92062decd5d4a8a661fbf3f3, 5): Published; lane=3/3; worldEpoch=2->3; joined=True; derivation input built: scopes=1, installs=2, targets=4, contracts=3, hash=ad81b6cb867994adeab51244bc709a9545765538232f7c6b592d3f676470a1bd; derivation=accepted(4 targets, Delta(+=0, -=0, ~=0, slots=0)); publication=Published(writes=1, migrations=0); derivation changed no target assembly relative to the published composition; laneEpoch=3; worldEpoch=3; joined=True; spawnedRows=1; spawnedValue=41; spawnedStampEpoch=3; spawnedPublished=True; spawnedInView=True; publishedRows=3; recipeApplies=1; indexRegistered=True"
+    },
+    {
+      "name": "fixture:gate2-idle-world-performs-zero-steps",
+      "status": "Pass",
+      "detail": "frames=8; steps=0; stepBefore=2; stepAfter=2; images=5->5; dispatchRuns=2->2; demand=0; pendingWakes=0"
+    },
+    {
+      "name": "fixture:gate2-teardown-settles-and-disposes",
+      "status": "Pass",
+      "detail": "stop=Published(None); outstandingBefore=0; outstandingAfter=0; retainedResources=0; registryAfter=1; registryBefore=1"
+    },
+    {
+      "name": "gate2-generated-catalog-facts",
+      "status": "Pass",
+      "detail": "catalogFingerprint=a4ea6f9190c40054b6733e6bcdfe060f478e77f0f3f8a0020c5a341381d353e7; stages=4; systems=5; scheduleHash=fc24e0addeddbfade6e84cd72904d95dfbdb23bb1cf38f4fd4fc5e0225053e8d; edges=3; playback=1; settleStage=1; projectStage=2; bufferEdge=True; domains=3; partitions=2; traitWritersDisjoint=True; trailWritersOrdered=True; slotPolicies=4; descriptorRevision=49d79771664aaf58ba4fe1cfc935b22d04ad413af9d87280c6db363a98083491; session=57324741544532320000000000000001; liveTargets=4; mappedTargets=4; plane=True; laneRevisionAfterMount=2; laneEpochAfterMount=2; worldEpochAfterMount=2; joinedAfterMount=True; derivedTargets=2; derivedContributions=2; proposalMounts=1; proposalCapabilities=2; installedRows=2; migratedSlots=4; structuralWrites=8; publicationOutcome=Published; observerCapturedEpoch=1; observerCapturedRows=0; observerOneCompleteImage=True; maraRows=1; maraValue=41; maraActive=True; maraStampEpoch=2; gateRows=1; gateValue=42; crowdRows=0; encounterRows=0; migrationInvocations=4; commandAdmitted=True; commandAdmission=Accepted; steps=1; questSlot=115; questSlotVersion=2; events=1; eventPayload=115; eventStep=1; eventEpoch=2; ledgerRows=1; ledgerCommitted=1; ledgerPending=0; firstStepImage=True; dispatchRuns=1; dispatchedEntries=5; trailSteps=1; trailProjected=1; trailWaited=True; traitLeft=1; traitRight=1; settleJobs=1; nativeProduced=1; nativeReads=1; nativeUnproducedReads=0; wakeScheduled=True; wakeDue=1; stepsAfterWake=2; eventsAfterWake=1; laneEpochAfterForward=3; worldEpochAfterSpawn=3; joinedAfterSpawn=True; forwardNoTargetChange=True; spawnedRows=1; spawnedValue=41; spawnedStampEpoch=3; spawnedPublished=True; spawnedInView=True; publishedRows=3; recipeApplies=1; idleFrames=8; idleSteps=0; idleImages=5; idleDispatchRuns=0; pendingDemandAfterIdle=0; outstandingJobsBeforeTeardown=0; outstandingJobsAfterTeardown=0; retainedResourcesAfterTeardown=0; registryAfterTeardown=1"
+    },
+    {
+      "name": "gate2-fixture-catalog-facts",
+      "status": "Pass",
+      "detail": "catalogFingerprint=c104d3c9cc5b2741ad7fc07884b55a7a8afc9a6bad0df6905a5b05aff7523d7e; stages=4; systems=5; scheduleHash=fc24e0addeddbfade6e84cd72904d95dfbdb23bb1cf38f4fd4fc5e0225053e8d; edges=3; playback=1; settleStage=1; projectStage=2; bufferEdge=True; domains=3; partitions=2; traitWritersDisjoint=True; trailWritersOrdered=True; slotPolicies=4; descriptorRevision=49d79771664aaf58ba4fe1cfc935b22d04ad413af9d87280c6db363a98083491; session=57324741544532320000000000000001; liveTargets=4; mappedTargets=4; plane=True; laneRevisionAfterMount=2; laneEpochAfterMount=2; worldEpochAfterMount=2; joinedAfterMount=True; derivedTargets=2; derivedContributions=2; proposalMounts=1; proposalCapabilities=2; installedRows=2; migratedSlots=4; structuralWrites=8; publicationOutcome=Published; observerCapturedEpoch=1; observerCapturedRows=0; observerOneCompleteImage=True; maraRows=1; maraValue=41; maraActive=True; maraStampEpoch=2; gateRows=1; gateValue=42; crowdRows=0; encounterRows=0; migrationInvocations=4; commandAdmitted=True; commandAdmission=Accepted; steps=1; questSlot=115; questSlotVersion=2; events=1; eventPayload=115; eventStep=1; eventEpoch=2; ledgerRows=1; ledgerCommitted=1; ledgerPending=0; firstStepImage=True; dispatchRuns=1; dispatchedEntries=5; trailSteps=1; trailProjected=1; trailWaited=True; traitLeft=1; traitRight=1; settleJobs=1; nativeProduced=1; nativeReads=1; nativeUnproducedReads=0; wakeScheduled=True; wakeDue=1; stepsAfterWake=2; eventsAfterWake=1; laneEpochAfterForward=3; worldEpochAfterSpawn=3; joinedAfterSpawn=True; forwardNoTargetChange=True; spawnedRows=1; spawnedValue=41; spawnedStampEpoch=3; spawnedPublished=True; spawnedInView=True; publishedRows=3; recipeApplies=1; idleFrames=8; idleSteps=0; idleImages=5; idleDispatchRuns=0; pendingDemandAfterIdle=0; outstandingJobsBeforeTeardown=0; outstandingJobsAfterTeardown=0; retainedResourcesAfterTeardown=0; registryAfterTeardown=1"
+    }
+  ]
+}

@@ -16,7 +16,15 @@ using GameCore.Contracts;
 
 namespace GameCore.Planning
 {
-    /// <summary>One capability a mount contributes to matching targets, with its per-slot policy (P-017, P-019).</summary>
+    /// <summary>
+    /// One capability a mount contributes to matching targets, with its per-slot policy (P-017, P-019).
+    ///
+    /// `Value` is the effective value of the slot. For a slot with exactly one contribution that is that
+    /// contribution's value; for an `Additive` slot whose registered reducer folded several contributions it is the
+    /// *composed* value, and <see cref="Supporters"/> names each input with its own value (P-017, P-019). The
+    /// planner never folds numbers itself — a reducer is contract-owned pure code (P-019), so the fold happens in
+    /// derivation and arrives here as data.
+    /// </summary>
     public sealed class ProposedCapability
     {
         public ProposedCapability(
@@ -28,7 +36,8 @@ namespace GameCore.Planning
             int value,
             int priority,
             IReadOnlyList<DefinitionRef>? targetRecipes,
-            IReadOnlyList<TargetId>? eligibleTargets = null)
+            IReadOnlyList<TargetId>? eligibleTargets = null,
+            IReadOnlyList<CapabilitySupport>? supporters = null)
         {
             Rule = rule;
             Capability = capability;
@@ -39,6 +48,7 @@ namespace GameCore.Planning
             Priority = priority;
             TargetRecipes = ContractCollections.Freeze(targetRecipes);
             EligibleTargets = ContractCollections.Freeze(eligibleTargets);
+            Supporters = CapabilitySupport.Freeze(supporters);
         }
 
         /// <summary>Stable derivation-rule identity of this declaration; it is part of the contribution key (P-017).</summary>
@@ -53,6 +63,7 @@ namespace GameCore.Planning
 
         public CompositionPolicy Policy { get; }
 
+        /// <summary>The slot's effective value: the contribution's own value, or the composed value for `Additive`.</summary>
         public int Value { get; }
 
         /// <summary>Bounded 32-bit manifest priority; higher wins before any identity tie-break (P-018).</summary>
@@ -62,6 +73,19 @@ namespace GameCore.Planning
         public IReadOnlyList<DefinitionRef> TargetRecipes { get; }
         /// <summary>When supplied by derivation, the exact eligible live targets after scope and boundary checks.</summary>
         public IReadOnlyList<TargetId> EligibleTargets { get; }
+
+        /// <summary>
+        /// The contributions this slot's effective value was composed from, canonically ordered (P-017). Empty when
+        /// the declaration was built without derivation data, in which case the declaration itself is the single
+        /// supporter; never a boolean that one provider owns an `Additive` slot alone.
+        /// </summary>
+        public IReadOnlyList<CapabilitySupport> Supporters { get; }
+
+        /// <summary>Number of contributions this declaration composes; one is the ordinary single-provider case.</summary>
+        public int SupporterCount => Supporters.Count == 0 ? 1 : Supporters.Count;
+
+        /// <summary>True when this declaration composes more than one contribution (P-017).</summary>
+        public bool IsMultiSupport => Supporters.Count > 1;
 
         public bool AppliesTo(TargetDefinition target)
         {
@@ -102,7 +126,9 @@ namespace GameCore.Planning
         }
 
         public override string ToString() =>
-            Capability.ToString() + "#" + OutputSlot.ToString(CultureInfo.InvariantCulture);
+            Capability.ToString() + "#" + OutputSlot.ToString(CultureInfo.InvariantCulture)
+            + "=" + Value.ToString(CultureInfo.InvariantCulture)
+            + "[support=" + SupporterCount.ToString(CultureInfo.InvariantCulture) + "]";
     }
 
     /// <summary>One proposed mount: a precompiled plugin instance, its scope and its derived contributions (O-03).</summary>
@@ -174,7 +200,8 @@ namespace GameCore.Planning
             ContentHash catalogHash,
             PropagationMode mode,
             IReadOnlyList<ProposedMount>? mounts,
-            IReadOnlyList<ProposedUnmount>? unmounts)
+            IReadOnlyList<ProposedUnmount>? unmounts,
+            bool retractsAbsentSupport = false)
         {
             Operation = operation;
             InputHash = inputHash;
@@ -184,6 +211,7 @@ namespace GameCore.Planning
             Mode = mode;
             Mounts = ContractCollections.Freeze(mounts);
             Unmounts = ContractCollections.Freeze(unmounts);
+            RetractsAbsentSupport = retractsAbsentSupport;
         }
 
         public OperationId Operation { get; }
@@ -201,6 +229,14 @@ namespace GameCore.Planning
         public IReadOnlyList<ProposedMount> Mounts { get; }
 
         public IReadOnlyList<ProposedUnmount> Unmounts { get; }
+
+        /// <summary>
+        /// True when this proposal is the complete effective support of its composition — a re-derivation of the
+        /// whole published assembly — so a currently effective row whose slot the proposal no longer declares must be
+        /// retracted rather than carried (05 s4, P-017). False keeps the ordinary incremental mount/unmount meaning:
+        /// a row the proposal does not mention is another provider's surviving support.
+        /// </summary>
+        public bool RetractsAbsentSupport { get; }
 
         public bool IsEmpty => Mounts.Count == 0 && Unmounts.Count == 0;
     }

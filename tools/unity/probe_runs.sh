@@ -51,7 +51,7 @@ probe_run_once() {
 
   # -batchmode -nographics keep the player headless. -quit is deliberately NOT passed: the probe exits itself
   # through Application.Quit with a code that encodes its result.
-  "${PROBE_PLAYER}" \
+  timeout --signal=TERM --kill-after=10 600 "${PROBE_PLAYER}" \
     -batchmode \
     -nographics \
     -logFile "${log_file}" \

@@ -8,9 +8,11 @@
 // composition kernel of `SlotComposer`. Traversal, indexing, budget accounting and assembly construction are
 // deliberately not shared: those are the parts a differential test is supposed to falsify.
 //
-// The oracle also evaluates rules against targets the indexed engine never visits (a target advertising neither a
-// selector schema nor the rule's output capability). That is the point: the oracle's decision set is a superset, so
-// a test can assert both semantic equality and that the engine invented no decision the oracle cannot reproduce.
+// The oracle applies the same candidate population boundary as the indexed engine (`TargetsInReach`): a target
+// advertising neither an accepted selector schema nor the rule's output capability is outside every rule's
+// population and receives no decision from either evaluator. Population membership is a function of the snapshot
+// alone, so applying it here does not import any engine traversal — it keeps the two decision sets exactly equal,
+// which is what P-026's provenance parity asserts after every step of the differential sweep.
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -90,6 +92,16 @@ namespace GameCore.Derivation
                                 continue;
                             }
 
+                            // The candidate population of a rule is its reach domain intersected with the targets
+                            // that advertise either an accepted selector schema or the output capability itself
+                            // (P-015, P-023). The oracle must apply the same population boundary the indexed
+                            // engine's `TargetsInReach` applies, because parity here means "the same decisions a
+                            // full recomputation makes", not "every conceivable pair": a target advertising
+                            // neither is outside every rule's population and never receives a decision.
+                            if (!IsInPopulation(rule, target))
+                            {
+                                continue;
+                            }
 
                             counters.ExaminedCandidates++;
                             counters.IndexTargetsVisited++;
@@ -459,6 +471,31 @@ namespace GameCore.Derivation
                 evaluation.Boundaries,
                 evaluation.MissingInputs,
                 evaluation.EvidenceKeys);
+        }
+
+        /// <summary>
+        /// Candidate population test of one rule for one target, mirroring the population predicate the indexed
+        /// engine's `TargetsInReach` applies (P-015, P-023): a target is in the population when it advertises any
+        /// selector schema at any version, the rule's output capability at any version, or the rule declares no
+        /// selector at all. Targets outside the population never receive a decision from either evaluator.
+        /// </summary>
+        private static bool IsInPopulation(DerivationRule rule, DerivationTarget target)
+        {
+            IReadOnlyList<SchemaRef> selectors = rule.SelectorContracts;
+            if (selectors.Count == 0)
+            {
+                return true;
+            }
+
+            for (int i = 0; i < selectors.Count; i++)
+            {
+                if (target.DeclaresSchemaId(selectors[i].Id))
+                {
+                    return true;
+                }
+            }
+
+            return target.DeclaresCapabilityId(rule.OutputCapability.Capability);
         }
     }
 }
