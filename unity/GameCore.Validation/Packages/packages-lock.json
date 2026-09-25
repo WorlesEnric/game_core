@@ -20,6 +20,14 @@
       "source": "local",
       "dependencies": {}
     },
+    "com.gamecore.planning": {
+      "version": "file:../../../Packages/com.gamecore.planning",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.gamecore.contracts": "file:../com.gamecore.contracts"
+      }
+    },
     "com.gamecore.unity.adapters": {
       "version": "file:../../../Packages/com.gamecore.unity.adapters",
       "depth": 0,
