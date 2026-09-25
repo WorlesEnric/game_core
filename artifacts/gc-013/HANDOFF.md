@@ -1,0 +1,329 @@
+# GC-013 — incremental invalidation, reparenting and live mode changes
+
+**Every executable check named below is `NotRun (pending orchestrator build host)`.** This
+host (macOS, no Unity, no .NET SDK, no Mono) cannot compile or run any of it. What *was* run
+here is interpreter-level only, recorded verbatim in `static-checks.log`:
+
+- `python3 tools/check_game_core_csharp.py` → `checked 284 C# file(s)` / `ok` (brace/paren/
+  bracket balance, forbidden-construct scan, engine-free rule for the pure assemblies).
+- `python3 tools/validate_game_core_docs.py` → the documentation validator, unchanged by
+  this task (no doc or traceability edit was made).
+- A GUID-uniqueness scan over every `*.meta` in the repository before the new `.meta` files
+  were written (483 existing GUIDs, none reused).
+
+No build, test, probe, IL2CPP player or Unity import was performed. Nothing in this change
+set has been compiled.
+
+## 1. Summary
+
+GC-013 makes automatic composition scale with a change instead of a world, and makes live
+mode changes, reparents and boundary edits report their consequence before they publish.
+
+**`GameCore.Derivation`** (six new source folders' worth, twelve new files):
+
+| Module | What it is |
+|---|---|
+| `Runtime/Index/ScopeMembershipIndex.cs` | Ancestry/membership index: depth, parent, subtree, reach containment, subtree target enumeration, with work counters on every query. |
+| `Runtime/Index/DescriptorTargetIndex.cs` | Descriptor-to-target buckets in both directions (schema/capability/tag/recipe) plus the structural descriptor comparison the change detector needs. |
+| `Runtime/Index/ProviderContributionIndex.cs` | Provider/rule-to-source index by output capability, by provider and by rule identity; the reverse-capability closure (`RulesCovering`, `CapabilitiesReaching`) and the declared provider set of a scope's imports. |
+| `Runtime/Index/ServiceConsumerIndex.cs` | The P-011/P-012 consumer adjacency: who consumes a contract, who provides it, and which consumers a provider change can reach. |
+| `Runtime/Index/DerivationIndexSet.cs` | One build of all of them plus the install-path index (`InstallsOnPath`) and the per-scope provider closure (`ProviderClosure`). |
+| `Runtime/Index/CapabilityCatalogHash.cs` | The P-024 catalog dimension of a derived-variant key. |
+| `Runtime/Index/InvalidationCounters.cs` | The P-022/P-023 evidence: detection, closure and evaluation work separated, whole-world flag, stable reason keys. Extends `CostCounters`, so one derivation reports one counter object. |
+| `Runtime/Invalidation/DerivationChangeSet.cs` | The canonical diff of two snapshots over every fact derivation reads (scope parent/isolation/exclusions/imports, installation record and every declared rule, target scope/descriptor, contracts, rule ordering keys, overrides). |
+| `Runtime/Invalidation/InvalidationClosure.cs` | The dependency closure of one change set, with the whole-world report a mode switch must state (TEST-008). |
+| `Runtime/Invalidation/IncrementalDerivationEngine.cs` | The dirty-target derivation engine: same result as a full recomputation, over the invalidated part only. |
+| `Runtime/Invalidation/DerivedRecipeCache.cs` | P-024 variant reuse keyed by recipe + scope inheritance fingerprint + mode + catalog hash, with explicit stale recomputation. |
+| `Runtime/Invalidation/ProviderClosureDiff.cs` | P-025's old/new ancestor rule diff for a moved subtree. |
+
+**`GameCore.Composition`**: `Runtime/Operations/CompositionChangeSet.cs` (the invalidation
+view of a proposal: `ScopeFactChange` for parent/isolation/exclusions/imports, install and
+config edits, mode, stable reason keys, canonical `Describe()`), an optional
+`ICompositionEditValidator` seam, and small additive changes to `CompositionEditPlan`,
+`CompositionEditApplier` and `CompositionHost`.
+
+**`GameCore.Unity.Runtime`**: `Runtime/Integration/DerivationModeSwitchValidator.cs`, the
+production validator behind that seam, and the derived-assembly chain now runs on the
+incremental engine.
+
+**Tests**: two pure differential sweeps (50 seeds × 500 operations, one per family), a
+locality/provenance suite on the counters, a reparent/mode/boundary suite for the reference
+compositions, a recipe-cache suite, a composition-side invalidation suite, and the Unity
+EditMode + IL2CPP probe work described in §7.
+
+## 2. Files created
+
+`Packages/com.gamecore.derivation` (each `.cs` with a committed sibling `.meta`):
+
+- `Runtime/Index/{ScopeMembershipIndex,DescriptorTargetIndex,ProviderContributionIndex,ServiceConsumerIndex,DerivationIndexSet,CapabilityCatalogHash,InvalidationCounters}.cs` (+ folder `Runtime/Index.meta`)
+- `Runtime/Invalidation/{DerivationChangeSet,InvalidationClosure,IncrementalDerivationEngine,DerivedRecipeCache,ProviderClosureDiff}.cs` (+ folder `Runtime/Invalidation.meta`)
+- `Tests/Support/OperationSequence.cs`
+- `Tests/Differential/IncrementalAgreementTests.cs`
+- `Tests/Invalidation/{InvalidationLocalityTests,DerivedRecipeCacheTests,ReferenceMoveAndModeTests}.cs` (+ folder `Tests/Invalidation.meta`)
+
+`Packages/com.gamecore.composition`:
+
+- `Runtime/Operations/CompositionChangeSet.cs`
+- `Tests/IncrementalInvalidationTests.cs`
+
+`Packages/com.gamecore.unity.runtime`:
+
+- `Runtime/Integration/DerivationModeSwitchValidator.cs`
+
+`unity/GameCore.Validation/Assets/GameCore.Validation/` (the Unity qualification surface,
+delegated in parallel and listed separately in the sub-commit that adds it):
+
+- `Runtime/Gc013Scenario.cs`, `Runtime/Gc013NarrativeHost.cs`, `Runtime/Gc013CardsHost.cs`, `Runtime/ProbeGc013.cs`
+- `Tests/Gc013/GameCore.Gc013.Tests.asmdef`, `Tests/Gc013/Gc013IntegrationTests.cs`
+- edits to `Runtime/ProbeArguments.cs`, `Runtime/ProbeRunner.cs` and the probe-result constants
+- `tools/unity/run_gc013_probe.sh`
+
+Evidence: `artifacts/gc-013/HANDOFF.md` (this file), `artifacts/gc-013/static-checks.log`.
+
+## 3. Files modified (all shared; each change is minimal and additive)
+
+| Path | Change | Why |
+|---|---|---|
+| `Packages/com.gamecore.derivation/Runtime/Budget/PropagationBudget.cs` | `CostCounters` is no longer `sealed`; `Describe()` is `virtual` | `InvalidationCounters` extends it so one derivation reports one counter object instead of two (P-022 + P-023 in one report). No member changed shape; `Describe()` still starts with the same `candidates=…` text. |
+| `Packages/com.gamecore.derivation/Runtime/Engine/DerivationEngine.cs` | eight private helpers became `internal` (`TryCheckDeadline`, `ReclassifyShadowed`, `SlotsOf`, `WithinBudget`, `MarkExceeded`, `TopFanOutCauses`, `Decision`, `BuildExplanations`) | The incremental engine reuses the same pure helpers instead of copying them, which is what keeps the two paths from drifting. `Derive` itself is unchanged. |
+| `Packages/com.gamecore.derivation/Runtime/Model/Evidence.cs` | added `DerivationExplanation.WithToken(SnapshotToken)` | A carried explanation is the same record at a new observation image: a token names the image, not the composition (P-006, P-026). |
+| `Packages/com.gamecore.derivation/Fixtures/Runtime/FixtureBuilder.cs` | added `MoveScope`, `ReplaceScopeExclusions`, `ReplaceScopeIsolation` | The reparent and boundary edits of GC-013 need them; the builder had `MoveTarget` and additive helpers only. Existing behaviour untouched. |
+| `Packages/com.gamecore.composition/Runtime/Operations/CompositionEditApplier.cs` | `Plan` takes an optional validator; the subject dispatch moved to `PlanSubject`; `CompositionEditPlan` gained `ChangeSet`; `ComputeDelta` reports an `Update` scope edit for an isolation/exclusion/import change | See §4. |
+| `Packages/com.gamecore.composition/Runtime/Operations/CompositionHost.cs` | the constructor and `CreateDefault` take an optional trailing `ICompositionEditValidator`; `Validator` exposes it | See §4. |
+| `Packages/com.gamecore.unity.runtime/Runtime/Integration/DerivedAssemblyPipeline.cs` | `Derive` calls `IncrementalDerivationEngine`; the report gained `Invalidation`/`IncrementalCounters`; the pipeline exposes `PreviousInvalidation`; the constructor takes an optional trailing `DerivedRecipeCache` | See §4. |
+
+## 4. Contract changes
+
+Additions only; no existing signature, member or semantic was removed or reinterpreted.
+
+- `GameCore.Composition.CompositionEditPlan.ChangeSet { get; }`
+  (`CompositionChangeSet`, never null). New file `CompositionChangeSet.cs` also adds
+  `CompositionChangeReasons`, `ScopeFactChangeReason`, `ScopeFactChange`,
+  `EditValidationResult` and `ICompositionEditValidator`.
+- `GameCore.Composition.CompositionEditApplier.Plan(..., ICompositionEditValidator? validator = null)`.
+- `GameCore.Composition.CompositionHost` / `CompositionHost.CreateDefault`: trailing optional
+  `ICompositionEditValidator? validator = null`; new property `Validator`.
+- `GameCore.Derivation`: new public types (indexes, change set, closure, incremental engine,
+  recipe cache, closure diff, counters) and `DerivationExplanation.WithToken`. `CostCounters`
+  is unsealed and `Describe()` virtual.
+- `GameCore.Unity.Runtime.Integration.DerivedAssemblyReport.{Invalidation,IncrementalCounters}`;
+  `DerivedAssemblyPipeline.PreviousInvalidation`; optional trailing `DerivedRecipeCache` ctor
+  argument.
+- `GameCore.Unity.Runtime.Integration.DerivationModeSwitchValidator` (new type).
+
+All additions are trailing-optional or new members, so every existing construction site in
+the repository still compiles unchanged. `ICompositionHost`, the frozen `ChangePlan` DTOs,
+`CompositionDelta`, `DerivationDelta` (contracts) and every `GameCore.Contracts` type are
+untouched.
+
+### 4.1 Why the validator seam exists
+
+P-014 says a mode switch that cannot be honoured "rejects the switch and keeps the old
+mode/assembly", and 02 §5 says a Conservative→Automatic switch "may reveal an exclusive
+conflict; the result is a diagnostic and the old mode intact". Whether that conflict exists
+is a *derivation* fact (eligibility, contracts, descriptors, slot policies), and
+`GameCore.Composition` deliberately owns none of it — it references only
+`GameCore.Contracts`. Rather than move derivation facts into the composition model or let
+the composition model guess, the lane accepts an optional validator and consults it while
+planning, before anything is staged. A null validator is "this lane has no derivation view"
+and keeps the old behaviour exactly, which is what the existing pure composition tests rely
+on. `DerivationModeSwitchValidator` is the production implementation and lives in the one
+assembly that sees both sides.
+
+## 5. How the incremental path stays equal to a full recomputation
+
+The differential sweep (§6) is the proof, and these are the invariants it rests on:
+
+1. **Locality is derived, not assumed.** Every P-013 reach selector selects targets inside
+   the provider's own subtree, so a rule can reach a target only if the provider is installed
+   at the target's scope or one of its ancestors. The install-path index
+   (`DerivationIndexSet.InstallsOnPath`) therefore contains *every* rule that can reach a
+   target, and the engine inverts the enumeration: each dirty target asks which rules reach
+   it. A rule with no dirty candidate is never enumerated (`SkippedRules` counts them).
+2. **Carried means provably unchanged.** A target stays clean only when its owner scope, its
+   descriptor, the mode, the contract table, the override set and every rule that can reach
+   it are unchanged — because each of those is a seed of `DerivationChangeSet` and each seed
+   dirties the affected targets through an index. A changed installation dirties its rules'
+   populations in *both* snapshots (the old reach to retract, the new reach to apply).
+3. **Nothing is carried that a full run would recompute.** Clean targets contribute their
+   previous assembly, contributions, decisions and explanations (re-stamped with the new
+   observation token); dirty targets are rebuilt from scratch, including their lower-stratum
+   ledger entries and their candidate decisions.
+4. **The whole input is still validated.** `DerivationValidation.Validate` runs on the whole
+   snapshot on both paths, because a catalog problem is a property of the input rather than
+   of the dirty set (P-028).
+5. **The whole-world cases are explicit.** A mode switch, a contract-table change, a new
+   world incarnation, a missing accepted base or a previous run without provenance delegate
+   to the full engine and report `WholeWorld` with a stable reason key, which is what
+   TEST-008 asks a switch to state.
+
+Known deliberate asymmetry: budget accounting on the incremental path counts only the work it
+actually performed, so a proposal that the reference budget accepts could in principle report
+a different `BudgetExceeded` dimension than a full run. The sweeps use the reference budget
+(1,000,000 candidates) on small worlds, so no budget path is reached here; the composition is
+otherwise identical, including the apply-cost estimate, which is computed from the full
+assembly list on both paths.
+
+## 6. Requirement and test coverage mapping
+
+| Requirement / clause | Where implemented | Where asserted |
+|---|---|---|
+| P-010 scope membership | `ScopeMembershipIndex`, `DerivationChangeSet.Diff` (moves, target scope) | `InvalidationLocalityTests`, `ReferenceMoveAndModeTests`, `IncrementalAgreementTests` (per-step) |
+| P-013 mode semantics | `DerivationPolicy` (unchanged) + `DerivationChangeSet.ModeChanged` → whole-world closure | `BothModeDirectionsApplyToExistingAndFutureTargets`, `ACompleteOptInKeepsItsBindingInConservative`, `ModeGrantTests` (existing) |
+| P-014 mode transition | `InvalidationClosure` whole-world report; `ICompositionEditValidator` + `DerivationModeSwitchValidator` | `AConflictOnTheOtherModeLeavesTheOldAssemblyPublished`, `AModeSwitchReportsTheWholeWorldAsItsCost`, `AModeSwitchPublishesAWholeWorldChangeSet`, `BothModeSwitchDirectionsPublishAndAreReported`, `AValidatorRefusalRejectsTheSwitchAndKeepsTheOldModeAndRevision` |
+| P-015 eligibility | `DescriptorTargetIndex` buckets + structural comparison, `IsInPopulation` | `ADescriptorChangeOnOneTargetTouchesNoOtherTarget`, per-step sweep |
+| P-016 isolation and exclusions | `DerivationChangeSet` scope facts, `InvalidationClosure` subtree seeds | `ABoundaryEditOnOneScopeLeavesSiblingsUntouched`, `AnExclusionEditAndAnImportEditAreBothReportedAsScopeFacts`, `ANoChange…` |
+| P-017 contribution identity and support | `DerivationDeltaBuilder` (unchanged) driven by the carried/dirty split | `ACarriedTargetKeepsItsProvenanceAndSupportExactly`, `UnmountingTheLastProviderRetractsExactlyItsSupport`, `TheOldAndNewProviderClosureOfAMovedScopeAreDiffed`, per-step delta equality |
+| P-018 precedence and overrides | `DerivationChangeSet` override domains, `ScopeMembershipIndex.DepthOf` | `ADescriptorChangeOnOneTargetTouchesNoOtherTarget`, override reversal in the sweep's provider replacement |
+| P-019 composition policies | `SlotComposer` (unchanged) + `ChangedRuleKeys` | `AnOrderingKeyChangeTouchesOnlyThatRulesPopulation`, conflict tests |
+| P-021 termination | stratum loop (unchanged, shared by both paths) | per-step sweep |
+| P-022 budgets | `CostCounters` + `PropagationBudget` (unchanged limits; new `InvalidationCounters` report) | `TerminationAndBudgetTests` (existing) + `EvaluateApplyCostMicroseconds` on both paths |
+| P-023 incrementality | the whole `Runtime/Index` + `Runtime/Invalidation` layer | `TheIncrementalEngineMatchesTheOracleOnEverySeedAndStep` (50×500), `…OnTheCardVocabularyToo` (50×500), `AProviderChangeInOneBranchDoesNotVisitTheOtherBranch`, `AModeSwitchReportsTheWholeWorldAsItsCost` |
+| P-024 spawn and recipe caching | `DerivedRecipeCache`, `ScopeInheritanceFingerprint` | `DerivedRecipeCacheTests` (hit, stale recomputation, passive reuse, mode/catalog sensitivity, `IsCurrent`, bounded eviction, sibling spawn) |
+| P-025 reparenting | `ProviderClosureDiff`, `InvalidationClosure` move seeds, `DerivationChangeSet.ScopeMoves` | `TheOldAndNewProviderClosureOfAMovedScopeAreDiffed`, `ReparentingASubtreeDiffsTheOldAndTheNewProviderClosure`, `ReparentingTheVillageSelectsTheNewChaptersBindings` |
+| P-026 explanation | `DerivationExplanation.WithToken` + carried records | `TheIncrementalEngineAlsoAgreesWithAFullRecomputationOnExplanations` |
+| P-027 change plans / P-028 validation | `CompositionChangeSet`, full-snapshot validation on both paths | `AnIsolationEditIsVisibleAsAChangeRatherThanAnEmptyDelta`, sweep (validation parity) |
+| TEST-004 automatic future descendants | unchanged policy + `CreatedTargets` seed | `BothModeDirectionsApplyToExistingAndFutureTargets`, existing TEST-004 cases |
+| TEST-006 isolation/modes | as P-013/P-016 | `ReferenceMoveAndModeTests`, existing `IsolationAndExclusionTests` |
+| TEST-008 incremental indexes and subtree movement | all of the above; `PropagationBudget.CostCounters` evidence | `InvalidationAgreementTests`, `InvalidationLocalityTests` |
+
+## 7. Unity EditMode and probe surface
+
+`unity/GameCore.Validation/Assets/GameCore.Validation/` gains a GC-013 scenario runner, one
+adapter per family, an EditMode suite and a probe mode, and `tools/unity/run_gc013_probe.sh`
+drives the player. The observations and the exact commands are listed in
+`artifacts/gc-013/unity-surface.md`, written by the parallel worker that owns those files.
+
+The clauses they must prove, all of which are also asserted at derivation level in
+`ReferenceMoveAndModeTests` so a Unity-side failure can be localised:
+
+- reparent preserves state (stable `TargetId`, seeded slot values) and updates inherited
+  bindings;
+- both mode-switch directions for existing and future targets;
+- isolated branches unchanged across every published edit;
+- a conflict preserves the old membership/mode/assembly;
+- no per-instance import or opt-in is added in Automatic.
+
+## 8. Exact commands for the Linux build host
+
+Run from the repository root. Nothing below has been run.
+
+```sh
+# 8.1 the pure half: builds and runs every assembly incl. the new GC-013 modules
+dotnet build dotnet/GameCore.sln -c Release
+dotnet test  dotnet/GameCore.sln -c Release --logger trx --results-directory artifacts/gc-013/trx
+
+# 8.2 GC-013's own suites alone, with the failing seed and operation visible
+dotnet test dotnet/tests/GameCore.Derivation.Tests/GameCore.Derivation.Tests.csproj -c Release \
+  --logger "console;verbosity=detailed" \
+  --filter "FullyQualifiedName~IncrementalAgreementTests|FullyQualifiedName~InvalidationLocalityTests|FullyQualifiedName~DerivedRecipeCacheTests|FullyQualifiedName~ReferenceMoveAndModeTests"
+dotnet test dotnet/tests/GameCore.Composition.Tests/GameCore.Composition.Tests.csproj -c Release \
+  --logger "console;verbosity=detailed" --filter "FullyQualifiedName~IncrementalInvalidationTests"
+
+# 8.3 the same derivation sources through Unity EditMode
+"$UNITY" -batchmode -nographics -projectPath unity/GameCore.Validation \
+  -runTests -testPlatform EditMode -testFilter GameCore.Gc013.Tests \
+  -testResults artifacts/gc-013/unity/gc013-editmode.xml \
+  -logFile artifacts/gc-013/unity/gc013-editmode.log
+
+# 8.4 the two families' existing EditMode suites, because the chain now runs incrementally
+"$UNITY" -batchmode -nographics -projectPath unity/GameCore.Validation \
+  -runTests -testPlatform EditMode \
+  -testResults artifacts/gc-013/unity/all-editmode.xml \
+  -logFile artifacts/gc-013/unity/all-editmode.log
+
+# 8.5 the player probe (IL2CPP), PROBE_RUNS=5
+PROBE_RUNS=5 UNITY="$UNITY" bash tools/unity/run_gc013_probe.sh
+
+# 8.6 host-side checks (already run on this host; rerun for the record)
+python3 tools/check_game_core_csharp.py
+python3 tools/validate_game_core_docs.py
+```
+
+Do not add `-quit` to a Unity test-run command (04 §10). The Unity run needs
+`com.gamecore.derivation` and `com.gamecore.composition` in
+`unity/GameCore.Validation/Packages/manifest.json` and in `testables` (both already there
+from GC-006/GC-004); the new `Assets/.../Tests/Gc013` assembly is Editor-only and declared
+`UNITY_INCLUDE_TESTS`, so no manifest change is required for it.
+
+**Cost warning (measured nowhere, inferred).** The sweep is 50 seeds × 500 operations ×
+(oracle + incremental + canonical projections), and the reference evaluator walks every
+target × installation × rule for each of the 32 strata. That is the single largest addition
+to the dotnet suite in this wave; `IncrementalAgreementTests.SeedCount`/`StepsPerSeed` and
+`OperationSequence.MaxTargets`/`MaxInstalls`/`ChapterRules` are the four constants that bound
+it, and all four are named in the files. If the suite budget is exceeded, lower `MaxInstalls`
+before lowering the seed or step counts, because the operation vocabulary is the acceptance
+criterion and the world size is not.
+
+## 9. Assumptions, decisions and doc ambiguities
+
+1. **The composition change set is the invalidation *report*, not the invalidation *input*.**
+   The incremental engine derives its own canonical diff from the two snapshots and exposes
+   `DerivationChangeSet` for a caller that already knows what an edit did. A translator from
+   `CompositionChangeSet` to `DerivationChangeSet` was deliberately not written: it would be a
+   second, weaker change detector that could disagree with the snapshot diff, which is exactly
+   the class of bug TEST-008's oracle comparison exists to catch. The composition change set
+   is consumed where it is the right shape — the mode-switch validator and the proposal's own
+   report.
+2. **A mode switch is not derived incrementally.** P-023 permits a mode switch to invalidate
+   the world; `DerivationChangeSet.ModeChanged` short-circuits to the full engine and reports
+   `WholeWorld`, which is what TEST-008 asks a switch to state. Trying to bound it would mean
+   re-evaluating every gated candidate anyway.
+3. **A moved scope's fact changes are reported as well as its move** (§4/§3 of this file), so
+   the report cannot hide one of two facts that changed together.
+4. **`InstallsPath` is the reach invariant.** The install-path index assumes every reach
+   selector selects inside the provider's subtree, which is what `PropagationReach` means and
+   what the snapshot's own `Reach`/`TargetsInReach` implement. A future reach selector that
+   selects *outside* the provider's subtree would invalidate that assumption, and it would be
+   a protocol change (P-013), not a local edit. Recorded so the next reader checks it.
+5. **The service-consumer closure is a sound superset.** A provider change can flip a
+   consumer into `WaitingForDependencies` (P-012), which is a state change the change set
+   already detects; the consumer adjacency additionally dirties the consumer's rule
+   populations, which is redundant but harmless and matches 02 §7's wording.
+6. **The carried explanation keeps its `Mode`.** A carried record is only produced when the
+   mode did not change (a mode change is whole-world), so re-stamping the token is the only
+   field that moves. `WithToken` copies every other clause verbatim.
+7. **`DerivationModeSwitchValidator` accepts an unbuildable input.** An input that cannot be
+   built refuses *every* proposal at the pipeline's own step, so refusing a mode switch for
+   that reason would attribute an unrelated failure to the mode. The pipeline reports the
+   condition with its own code.
+8. **Empty scope-edit vs scope-fact:** an isolation/exclusion/import edit now yields a
+   `CompositionEditKind.Update` entry in `CompositionDelta.Scopes` as well as a
+   `CompositionChangeSet.ScopeFacts` entry. The delta DTO has no dedicated kind for those
+   facts, and leaving the delta empty for a real change would make `IsNoChange`'s inputs
+   inconsistent with the reported change; the vocabulary addition belongs to a future
+   contract review, not to this task.
+9. **Reparenting an installation is not expressible.** `InstallRecord.Scope` changes only
+   through a fresh mount, so a provider change that moves an installation is modelled as an
+   unmount plus a mount (the task's "provider replacement"). Recorded because P-025's
+   "replacing a provider under the same installation identity" is a GC-014/replacement-mapping
+   concern rather than this one.
+10. **`CostCounters` is unsealed to avoid a second counter object.** The alternative was a
+    separate invalidation report beside the cost counters; one object means one
+    `DerivationResult.Counters` and no chance of the two reports disagreeing.
+
+## 10. Known gaps
+
+- **No measurement exists.** Every perf claim here is structural (index lookups and bounded
+  closure walks), not measured. TEST-023's counters still need the standalone player run.
+- **The incremental path is wired into the chain but not into `GameCore.Planning`.** The
+  planner's own `AffectedCounts` come from the proposal, not from the invalidation closure;
+  feeding `AffectedCounts` from `InvalidationClosureResult` is a natural follow-up and
+  belongs to whoever owns the plan assembly.
+- **`DerivationModeSwitchValidator` is Unity-only.** There is no plain-dotnet project for
+  `com.gamecore.unity.runtime`, so the validator compiles only in Unity and is covered by the
+  EditMode suite rather than by a dotnet test.
+- **`DerivationChangeSet` ignores `InstallRecord.ConfigRevision`/`ConfigHash`.** Derivation
+  reads a rule's `PayloadDefinition` from the manifest, never the install record's config
+  hash, and the reference oracle reads the same, so both engines agree; a *real* runtime
+  reconfiguration that changes an effective value without changing the declared rule payload
+  would be invisible to derivation today. That is GC-006's declared model (payload revision
+  lives in the rule), not something this task changed — recorded as the most likely place a
+  reviewer would expect a difference.
+- **`RuleKeysChanged` is detected per rule identity, not per installation.** An ordering-key
+  change dirties that rule's populations in both snapshots; a rule identity declared by two
+  installations is therefore handled, but the closure cannot distinguish which installation's
+  key set changed, because `DerivationRuleKeys` is keyed by rule identity (GC-006's decision
+  6.2). Conservative in the dirty direction.
+- **The state-slot support index of P-023 is not here.** It belongs to the ownership/state
+  model (GC-007/GC-008) and GC-013 was not given that data; the other five P-023 indexes are.

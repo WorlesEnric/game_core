@@ -1,0 +1,22 @@
+# GC-013 host-side checks — 2026-09-25T05:39:17Z
+
+Every executable check in HANDOFF.md is NotRun (pending orchestrator build host): this host has no
+.NET SDK, no C# compiler, no Mono and no Unity. The commands below are interpreter-level only.
+
+## 1. tools/check_game_core_csharp.py
+checked 284 C# file(s)
+ok
+exit=0
+
+## 2. tools/validate_game_core_docs.py
+Game Core documentation validation passed: 14 Markdown documents; local links, anchors, IDs, traceability, task DAG and wave ordering checked.
+No Unity builds, gameplay tests, runtime benchmarks, or remote URL checks were executed.
+exit=0
+
+## 3. independent scan over the files this task created/modified (20 files)
+balanced braces/parens, #nullable enable present, no forbidden C# 10+ construct,
+no UnityEngine/Unity.Entities token in the two pure packages
+verdict: ok
+
+## 4. meta guidance uniqueness
+meta files: 506, guids: 506, duplicates: 0

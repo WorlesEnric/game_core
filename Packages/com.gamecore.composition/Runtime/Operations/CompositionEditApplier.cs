@@ -991,8 +991,8 @@ namespace GameCore.Composition
                 }
                 else if (!ScopeFactsEqual(previous, record))
                 {
-                    // A scope's isolation, exclusions or import grants are content, not a tree edge, so the record
-                    // is reachable by `Update`: without it an exclusion or boundary edit would produce an empty
+                    // A scope's isolation, exclusions or import grants are content, not a tree edge, so an
+                    // `Update` entry names it: without one an exclusion or boundary edit would produce an empty
                     // delta and its invalidating consequence would be invisible (GC-013, P-016).
                     scopeEdits.Add(new ScopeEdit(CompositionEditKind.Update, record.Scope, record.Parent, record.Parent));
                 }

@@ -61,7 +61,7 @@ namespace GameCore.Composition
         /// <summary>An installation's immutable configuration changed (P-020).</summary>
         public const string InstallConfig = "install-config";
 
-        /// <summary>An installation's record changed in another way, such as its priority (P-018).</summary>
+        /// <summary>An installation's saved identity data changed in another way, such as its priority (P-018).</summary>
         public const string InstallRecord = "install-record";
     }
 
@@ -125,7 +125,7 @@ namespace GameCore.Composition
         /// <summary>Per-scope fact changes, canonical order (P-013, P-016).</summary>
         public IReadOnlyList<ScopeFactChange> ScopeFacts { get; }
 
-        /// <summary>Installation additions, removals, moves, state changes and record changes (P-046).</summary>
+        /// <summary>Installation additions, removals, moves, lifecycle-state changes and priority changes (P-046).</summary>
         public IReadOnlyList<InstallEdit> InstallEdits { get; }
 
         /// <summary>Configuration changes (P-020).</summary>
