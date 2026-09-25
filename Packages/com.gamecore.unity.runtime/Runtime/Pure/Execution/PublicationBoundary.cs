@@ -307,10 +307,11 @@ namespace GameCore.Execution
         }
 
         /// <summary>
-        /// Restores the nominal window by evicting the oldest images no live lease pins. A pinned image is never
-        /// evicted, so the retained window may stay above <see cref="Retention"/> while readers hold leases; a trim
-        /// whose every candidate is pinned stops and counts the stall rather than dropping leased memory. Returns
-        /// the number of images this call evicted.
+        /// Restores the nominal window by evicting the oldest images no live lease pins. Two images are never
+        /// evicted: one a live lease holds (P-007), and the newest — the published pointer must always name a
+        /// retained image, or `Last` and `HasPublished(Last.Token)` would disagree the moment a window is full of
+        /// pins. A trim whose every candidate is pinned stops and counts the stall rather than dropping memory a
+        /// reader may be reading. Returns the number of images this call evicted.
         /// </summary>
         public int TrimRetention()
         {
@@ -320,7 +321,7 @@ namespace GameCore.Execution
             {
                 while (retained.Count > Retention)
                 {
-                    int index = OldestUnpinnedLocked();
+                    int index = OldestEvictableLocked();
                     if (index < 0)
                     {
                         stalled = 1;
@@ -479,9 +480,14 @@ namespace GameCore.Execution
             return false;
         }
 
-        private int OldestUnpinnedLocked()
+        /// <summary>
+        /// The oldest image that may leave the window: unpinned, and never the newest published image. -1 when
+        /// every candidate is pinned, which is the stall the trim reports instead of evicting leased memory.
+        /// </summary>
+        private int OldestEvictableLocked()
         {
-            for (int i = 0; i < retained.Count; i++)
+            int candidates = retained.Count - 1;
+            for (int i = 0; i < candidates; i++)
             {
                 if (!IsPinnedLocked(retained[i].Token))
                 {

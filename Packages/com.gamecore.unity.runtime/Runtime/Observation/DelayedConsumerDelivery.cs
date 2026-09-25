@@ -134,21 +134,22 @@ namespace GameCore.Execution.Observation
         /// <summary>Polls that found nothing new.</summary>
         public int IdlePollCount { get; private set; }
 
-        /// <summary>Resynchronizations this consumer performed.</summary>
-        public int ResyncCount { get; private set; }
-
-        /// <summary>Identities currently remembered; never above <see cref="DeliveredWindow"/>.</summary>
-        public int RememberedIdentities => delivered.Count;
+        /// <summary>
+        /// Polls one bounded page from this consumer's own cursor: the normal at-least-once path.
+        /// </summary>
+        public DeliveryBatch Poll() => PollFrom(cursor);
 
         /// <summary>
-        /// Polls one bounded page. A page whose events were all delivered before is reported as
+        /// Polls one bounded page from an explicit cursor, which is how a consumer retries a delivery it never
+        /// acknowledged (P-045: delivery is at-least-once within retention, so the same identities may arrive
+        /// twice). A page whose events were all delivered before is reported as
         /// <see cref="DeliveryDisposition.Duplicate"/> and hands out nothing; a cursor behind retention is reported
         /// as <see cref="DeliveryDisposition.ResyncRequired"/> so the consumer resnapshots instead of pretending
-        /// continuity.
+        /// continuity. The consumer's cursor only ever moves forward.
         /// </summary>
-        public DeliveryBatch Poll()
+        public DeliveryBatch PollFrom(EventCursor from)
         {
-            CommittedEventPage page = observation.Read(cursor, MaxEventsPerPage);
+            CommittedEventPage page = observation.Read(from, MaxEventsPerPage);
             if (page.Outcome == CursorOutcome.CursorExpired)
             {
                 ResyncRequiredCount++;
@@ -176,7 +177,11 @@ namespace GameCore.Execution.Observation
                 fresh.Add(committed);
             }
 
-            cursor = page.NextCursor;
+            if (page.NextCursor.Sequence.CompareTo(cursor.Sequence) > 0)
+            {
+                cursor = page.NextCursor;
+            }
+
             DuplicateCount += duplicates;
             if (fresh.Count == 0)
             {
@@ -188,6 +193,7 @@ namespace GameCore.Execution.Observation
             return new DeliveryBatch(
                 DeliveryDisposition.Delivered, fresh, cursor, duplicates, MaxEventsPerPage);
         }
+
 
         /// <summary>
         /// Resynchronizes after <see cref="DeliveryDisposition.ResyncRequired"/>: adopts the boundary cursor of the
