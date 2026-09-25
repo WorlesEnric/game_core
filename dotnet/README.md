@@ -30,6 +30,8 @@ Unity qualification project and the player gates.
 | `tests/GameCore.Planning.Tests` | NUnit 3 | net8.0 | the planning package's own `Tests/**` sources |
 | `src/GameCore.Rules.Narrative` | library | netstandard2.1 | `Packages/com.gamecore.rules.narrative/Runtime/**/*.cs` |
 | `tests/GameCore.Rules.Narrative.Tests` | NUnit 3 | net8.0 | the narrative rules package's own `Tests/**` sources |
+| `src/GameCore.Rules.Cards` | library | netstandard2.1 | `Packages/com.gamecore.rules.cards/Runtime/**/*.cs` |
+| `tests/GameCore.Rules.Cards.Tests` | NUnit 3 | net8.0 | the card-rules package's own `Tests/**` sources |
 
 The two fixture suites share one test source (`tests/GameCore.ProtocolFixtures.Tests/ProtocolFixtureTests.cs`).
 They write separate evidence documents, `artifacts/protocol-fixtures/results.json` and
@@ -97,6 +99,14 @@ EditMode assemblies, the IL2CPP build and every player probe repeated `PROBE_RUN
 
 ```sh
 UNITY=~/Unity/Hub/Editor/6000.0.75f1/Editor/Unity DOTNET=/usr/bin/dotnet tools/run_w2_gate.sh
+```
+
+The W3 wave gate (two genuinely different running compositions on one kernel) adds the GC-010 narrative slice, the
+GC-011 card slice and the W3 gate that runs both in one process; it runs this solution's build and tests, the whole
+EditMode and PlayMode suites, the IL2CPP build and every player probe repeated `PROBE_RUNS` times:
+
+```sh
+UNITY=~/Unity/Hub/Editor/6000.0.75f1/Editor/Unity DOTNET=/usr/bin/dotnet tools/run_w3_gate.sh
 ```
 
 ## Regenerating the committed probe catalog (GC-003)

@@ -1,0 +1,38 @@
+{
+  "name": "GameCore.Cards.Tests",
+  "rootNamespace": "GameCore.Cards.Tests",
+  "references": [
+    "GameCore.Composition",
+    "GameCore.Contracts",
+    "GameCore.Derivation",
+    "GameCore.Gameplay.Cards",
+    "GameCore.Gameplay.Cards.Fixtures",
+    "GameCore.Planning",
+    "GameCore.Rules.Cards",
+    "GameCore.Unity.Adapters",
+    "GameCore.Unity.Fixtures",
+    "GameCore.Unity.Runtime",
+    "GameCore.Validation.Generated",
+    "GameCore.Validation.GeneratedCards",
+    "GameCore.Validation.ProbeHost",
+    "Unity.Collections",
+    "Unity.Entities",
+    "UnityEngine.TestRunner",
+    "UnityEditor.TestRunner"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": true,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

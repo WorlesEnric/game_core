@@ -86,6 +86,7 @@ namespace GameCore.Planning
             return false;
         }
 
+
         /// <summary>True when this declaration is eligible for a target of the given recipe (P-015).</summary>
         public bool AppliesTo(DefinitionRef recipe)
         {

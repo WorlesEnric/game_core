@@ -1,0 +1,525 @@
+{
+  "task": "GC-011",
+  "title": "Automatic vertical slice: the card-game composition (command-driven set collection)",
+  "source": "docs/game-core/09-implementation-guide.md#gc-011",
+  "wave": 3,
+  "dependsOn": [
+    "GC-006",
+    "GC-007",
+    "GC-008",
+    "GC-009"
+  ],
+  "gateSentence": "Run narrative and cards with the same kernel. Show zero idle command steps, automatic existing/future targets, a narrative state change and a card domain transfer.",
+  "gateSentenceSource": "docs/game-core/09-implementation-guide.md, Wave 3 \u2014 Two genuinely different running compositions",
+  "protocolSources": [
+    "docs/game-core/00-core-protocols.md",
+    "docs/game-core/07-reference-compositions.md#2-card-market-command-driven-set-collection",
+    "docs/game-core/08-validation-and-performance.md",
+    "docs/game-core/09-implementation-guide.md#gc-011"
+  ],
+  "result": "NotRun (pending orchestrator build host)",
+  "resultNote": "Nothing in this change set has been compiled, imported or executed on the authoring host: it has no .NET SDK, no C# compiler, no Mono and no Unity. Every result field in this document is the literal 'NotRun (pending orchestrator build host)' until tools/run_gc011.sh (or the individual commands below) has run on the Linux build host and its raw logs are archived beside this file. A suite result may only be replaced by Pass when the archived player log, EditMode xml, trx and probe JSON exist and agree with the assertions listed here.",
+  "packages": [
+    {
+      "name": "com.gamecore.rules.cards",
+      "path": "Packages/com.gamecore.rules.cards",
+      "unityFree": true,
+      "assemblies": [
+        "GameCore.Rules.Cards"
+      ],
+      "namespace": "GameCore.Rules.Cards",
+      "contents": "CardIdentity, CardVocabulary, CardSetRules, CardWriteSets, CardCommands, CardRegistrations (the pure settlement rules and the reducer/predicate seam)",
+      "role": "the card slice's rule layer: no Unity type, no clock, no ECS storage"
+    },
+    {
+      "name": "com.gamecore.gameplay.cards",
+      "path": "Packages/com.gamecore.gameplay.cards",
+      "unityFree": false,
+      "assemblies": [
+        "GameCore.Gameplay.Cards",
+        "GameCore.Gameplay.Cards.Fixtures"
+      ],
+      "namespace": "GameCore.Gameplay.Cards",
+      "contents": "CardTableKeys, CardTableComponents, CardResultPayload, CardTableDeclarations, CardTableSystems, CardTableRegistration, CardMarketComposition, and the fixtures CardCatalogTable, CardTableFixture, CardMarketScenario",
+      "role": "the card slice's gameplay layer: one table owner over several entities, an inherited scoring modifier, a bounded command lane and the four-stage settlement"
+    },
+    {
+      "name": "com.gamecore.contracts",
+      "path": "Packages/com.gamecore.contracts",
+      "unityFree": true,
+      "assemblies": [
+        "GameCore.Contracts"
+      ],
+      "role": "identities, versions, catalog and publication contracts the card slice consumes unchanged"
+    },
+    {
+      "name": "com.gamecore.composition",
+      "path": "Packages/com.gamecore.composition",
+      "unityFree": false,
+      "assemblies": [
+        "GameCore.Composition"
+      ],
+      "role": "GC-004's CompositionHost and control lane: the market's scope tree, its mounts and their publications"
+    },
+    {
+      "name": "com.gamecore.derivation",
+      "path": "Packages/com.gamecore.derivation",
+      "unityFree": true,
+      "assemblies": [
+        "GameCore.Derivation"
+      ],
+      "role": "GC-006: the effective scoring configuration derived for every live seat over the committed composition"
+    },
+    {
+      "name": "com.gamecore.planning",
+      "path": "Packages/com.gamecore.planning",
+      "unityFree": false,
+      "assemblies": [
+        "GameCore.Planning"
+      ],
+      "role": "GC-007's ownership validator and slot policies, GC-009's schedule compiler"
+    },
+    {
+      "name": "com.gamecore.unity.runtime",
+      "path": "Packages/com.gamecore.unity.runtime",
+      "unityFree": false,
+      "assemblies": [
+        "GameCore.Unity.Runtime"
+      ],
+      "role": "the message plane, the guarded driver, the temporal drivers, the planner/publisher and the integration glue"
+    },
+    {
+      "name": "com.gamecore.unity.adapters",
+      "path": "Packages/com.gamecore.unity.adapters",
+      "unityFree": false,
+      "assemblies": [
+        "GameCore.Unity.Adapters"
+      ],
+      "role": "the player loop pump the probe player uses"
+    }
+  ],
+  "assembliesInTheSlice": [
+    "GameCore.Contracts (kernel contracts)",
+    "GameCore.Rules.Cards (pure card rules)",
+    "GameCore.Gameplay.Cards (card table, systems, registrations)",
+    "GameCore.Gameplay.Cards.Fixtures (catalog table, world fixture, scenario)",
+    "GameCore.Composition (control lane)",
+    "GameCore.Derivation (derivation engine)",
+    "GameCore.Planning (ownership, schedule)",
+    "GameCore.Unity.Runtime (world host, message plane, publisher)",
+    "GameCore.Validation.GeneratedCards (the committed generated card catalog)",
+    "GameCore.Validation.ProbeHost (the slice host and the player probe)",
+    "GameCore.Cards.Tests (the EditMode half)"
+  ],
+  "entryPoints": {
+    "scenario": "Packages/com.gamecore.gameplay.cards/Fixtures/Runtime/CardMarketScenario.cs (CardMarketScenario.Run and CardMarketScenario.RunFixtureCatalog)",
+    "editMode": "unity/GameCore.Validation/Assets/GameCore.Validation/Tests/Cards/CardsIntegrationTests.cs (assembly GameCore.Cards.Tests)",
+    "playerProbe": "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/ProbeCards.cs via -probeCards (task id GC-011, mode Cards)",
+    "host": "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/CardsScenarioHost.cs (RunGeneratedCatalog, RunFixtureCatalog, RunBoth)",
+    "probeScript": "tools/unity/run_cards_probe.sh"
+  },
+  "observations": [
+    {
+      "index": 1,
+      "name": "cards-catalog-and-declarations",
+      "shows": "the committed catalog resolves the card plugin factory (FactoryKind.PluginFactory) and the configuration schema, every generated-style declaration is accepted, an unregistered key is a MissingDependency miss and the key derivation holds (P-009, P-028)",
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    {
+      "index": 2,
+      "name": "cards-ownership-and-schedule-compiled",
+      "shows": "GC-007 and GC-009 build one real descriptor: four stages, four systems, one playback point, a declared validate-to-commit buffer edge, one owner per declared domain and every slot policy validated (P-034, P-040, P-043)",
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    {
+      "index": 3,
+      "name": "cards-world-and-market-seeded",
+      "shows": "a CommandDriven world is created in Automatic mode, the market's scope tree and the table runtime are mounted as control-lane edits, and the six live targets (four seats, the table, the scoreboard) are seeded in real ECS storage (P-006, P-032)",
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    {
+      "index": 4,
+      "name": "cards-mount-reaches-existing-seats",
+      "shows": "the festival provider mounted at League A reaches seats A and B (+2) and the quiet provider at League B reaches seat C (+1) with no per-instance import, while the ineligible scoreboard and the isolated practice seat receive no row, and mounting awards no points (P-013, P-015, P-016)",
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    {
+      "index": 5,
+      "name": "cards-idle-before-command-commits-zero-steps",
+      "shows": "eight host frames of a CommandDriven world before any command commit zero logical steps, publish nothing and leave no demand (P-035, P-036)",
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    {
+      "index": 6,
+      "name": "cards-one-command-commits-both-sides",
+      "shows": "one admitted SubmitSet commits in one logical step: three cards leave seat A's hand, its score becomes 16 (seeded 4 + 10 base + 2 festival) and the table advances to version 2, turn 1, with exactly one committed event carrying delta 12 over three cards and matching live state (P-042, P-044, P-045)",
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    {
+      "index": 7,
+      "name": "cards-duplicate-command-transfers-once",
+      "shows": "the same request key submitted twice executes once: the second submission returns the recorded result, the giver's hand shrank by exactly one card and the step counter advanced once (P-037, P-050)",
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    {
+      "index": 8,
+      "name": "cards-rejected-settlement-changes-nothing",
+      "shows": "an admitted command whose gameplay the domain rejects still commits an observable rejected result in a logical step, and no hand, score or table version moves (P-037, P-042)",
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    {
+      "index": 9,
+      "name": "cards-transfer-commits-both-sides",
+      "shows": "one transfer commits both sides in one step: the receiver gained exactly the card the giver lost, no card was copied and the table advanced once (P-044)",
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    {
+      "index": 10,
+      "name": "cards-batch-envelope-resolves-one-winner",
+      "shows": "the declared atomic batch envelope (P-037) travels its own route: one admitted contest envelope carries two paired candidates, is decoded by the reader bound to its schema, and exactly one bid consumes the contested card - the holder loses it, the smallest (seat, sequence) bidder gains it, the losing bidder's hand is unchanged and the table advances once (07 s2.3, P-042, P-044)",
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    {
+      "index": 11,
+      "name": "cards-future-seat-inherits-modifier",
+      "shows": "a seat created after the provider mounted obtains the same +2 contribution in its first visible image, with no local import, and is published only with its complete assembly at one epoch (P-013, P-024)",
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    {
+      "index": 12,
+      "name": "cards-idle-world-performs-zero-steps",
+      "shows": "after the last command the world is idle again: eight frames commit zero steps, run no dispatch and leave no demand (P-035, P-036)",
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    {
+      "index": 13,
+      "name": "cards-teardown-settles-and-disposes",
+      "shows": "the world stops cleanly, its retained jobs settled, no host resource stayed retained and the owned-world registry returned to its pre-run size (P-047, P-048)",
+      "result": "NotRun (pending orchestrator build host)"
+    }
+  ],
+  "requirementEvidence": [
+    {
+      "requirement": "P-001",
+      "source": "docs/game-core/00-core-protocols.md#p-001",
+      "claim": "the card slice adds no actor, action, turn, combat, physics, animation, resource or reward schema to the kernel; a plugin scope is composition membership, not an ECS parent or a Transform, and the composition tree, the ECS entity graph and the scope tree are separate structures",
+      "evidence": "cards-world-and-market-seeded (one table runtime owns several entities across scopes, so there is no one-to-one plugin/scope/entity mapping); cards-ownership-and-schedule-compiled (every declared domain names a logical owner, not an entity); the package surface: Packages/com.gamecore.gameplay.cards declares only card components, and Packages/com.gamecore.rules.cards references no Unity assembly at all",
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    {
+      "requirement": "P-003",
+      "source": "docs/game-core/00-core-protocols.md#p-003",
+      "claim": "the three kinds of change stay distinct: the scoring modifier is a CapabilityContribution with provenance, the provider mounts and the rule-library unmount are ManagedResourceEffect with a lifetime, and a settled set is a GameplayEffect that no later retraction or disposal undoes",
+      "evidence": "cards-mount-reaches-existing-seats (a contribution installs a derived binding row and awards no points); cards-one-command-commits-both-sides (the committed score and hand are authoritative gameplay state, not a re-derivable contribution); cards-future-seat-inherits-modifier (unmounting the rule library is a managed-resource change whose publication leaves every seat's state and modifier untouched)",
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    {
+      "requirement": "P-013",
+      "source": "docs/game-core/00-core-protocols.md#p-013",
+      "claim": "one world-level Automatic mode makes every Descendants rule reach all eligible targets inside its scope domain, including targets created later, with no target imports",
+      "evidence": "cards-world-and-market-seeded (PropagationMode.Automatic is the lane's committed mode); cards-mount-reaches-existing-seats (SeatABonusValue == SeatBBonusValue == CardVocabulary.FestivalBonus, SeatCBonusValue == CardVocabulary.QuietBonus, and the eligible-but-isolated practice seat and the ineligible scoreboard get no row); cards-future-seat-inherits-modifier (SpawnedSeatBonusValue == CardVocabulary.FestivalBonus before the seat's first executable step)",
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    {
+      "requirement": "P-015",
+      "source": "docs/game-core/00-core-protocols.md#p-015",
+      "claim": "eligibility comes from immutable reusable descriptors: the seat recipe advertises the scoring target schema and derives a row, the market table recipe advertises its own contract, and the scoreboard recipe advertises neither and stays on its base layout",
+      "evidence": "cards-mount-reaches-existing-seats (SeatABonusRowCount == 1, ScoreboardRowCount == 0, PracticeSeatBonusRowCount == 0, ReducerRegistrations >= 3 with PredicateEvaluations reported); the recipes are declared once in CardTableRecipes and applied to every instance, including the future seat",
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    {
+      "requirement": "P-024",
+      "source": "docs/game-core/00-core-protocols.md#p-024",
+      "claim": "a spawned target is validated against the current composition revision and first becomes visible with its complete effective assembly and its ownership binding, at one epoch, with no frame of manual wiring",
+      "evidence": "cards-future-seat-inherits-modifier (spawn.Outcome == Published and IsSpawn, CountersJoinedAfterSpawn, SpawnedSeatStampEpoch == WorldEpochAfterSpawn, SpawnedSeatStampPublished, SpawnedSeatInView, ForwardDerivationHadNoTargetChange for the publication the spawn rides on)",
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    {
+      "requirement": "P-034",
+      "source": "docs/game-core/00-core-protocols.md#p-034",
+      "claim": "every authoritative domain has one owner, its systems write only their declared slots and one commit stage settles the table entity and every seat entity as one multi-entity decision; partition disjointness is validated, not asserted by query predicates",
+      "evidence": "cards-ownership-and-schedule-compiled (SingleOwnerPerDomain over all five declared slots, OwnershipDomainCount == 5, ValidatedSlotPolicyCount >= 5 with every policy succeeded, WriterCount == CompiledStageCount == 4); cards-one-command-commits-both-sides (CommittedWrites == CardSetRules.SetCardCount + 2 is the one bounded write set the single owner applied)",
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    {
+      "requirement": "P-036",
+      "source": "docs/game-core/00-core-protocols.md#p-036",
+      "claim": "a world chooses CommandDriven at creation and then advances only for an accepted command or a registered wake, so no inputs and no wakes means zero logical steps while composition processing may still continue",
+      "evidence": "cards-world-and-market-seeded (CardTableRegistration.CommandDrivenRequest); cards-idle-before-command-commits-zero-steps and cards-idle-world-performs-zero-steps (IdleStepsCommitted == 0, IdleDispatchRuns == 0, PendingDemandAfterIdle == 0 over eight host frames each, with no step, no image and no wake)",
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    {
+      "requirement": "P-037",
+      "source": "docs/game-core/00-core-protocols.md#p-037",
+      "claim": "each step seals its admitted batch with a monotonic admission sequence; a CommandDriven world admits one pending command per step; duplicate request keys return their recorded result instead of executing again; and a domain rejection still commits an observable rejected result in a logical step",
+      "evidence": "cards-one-command-commits-both-sides (StepsAfterCommand == 1); cards-duplicate-command-transfers-once (DuplicateRejections >= 1, StepsAfterDuplicate == 2, SeatBHandAfterDuplicate == SeededHandCount - 1, PendingDemandAfterDuplicate == 0); cards-rejected-settlement-changes-nothing (the rejected request still advanced exactly one step and produced RejectedDecisionCount >= 1)",
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    {
+      "requirement": "P-042",
+      "source": "docs/game-core/00-core-protocols.md#p-042",
+      "claim": "the host validates the envelope and the state owner validates the gameplay, so admission acceptance is not gameplay success; the committed result names the event the step published",
+      "evidence": "cards-one-command-commits-both-sides (CommandAdmitted and CommittedEventMatchesLiveState over the same values live ECS storage holds); cards-rejected-settlement-changes-nothing (RejectedCommandAdmitted is true while RejectedRequestKind is the domain's rejection, with no state change); cards-duplicate-command-transfers-once (the second submission is a recorded result, not a second execution)",
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    {
+      "requirement": "P-043",
+      "source": "docs/game-core/00-core-protocols.md#p-043",
+      "claim": "each buffer declares schema, lifetime, producers, exactly one consuming owner, order key, capacity and overflow behavior, and no consumer reads a buffer before its producer completed",
+      "evidence": "cards-ownership-and-schedule-compiled (BufferEdgeValidateBeforeCommit is a real producer-to-consumer stage edge from cards.validate to cards.commit, InputStageIndex < CommitStageIndex, one playback point); cards-one-command-commits-both-sides (CommittedWrites == 5 stays inside CardSetRules.MaxWriteEntries == 12 and one entry inside CardTableKeys.DraftCapacity == 8)",
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    {
+      "requirement": "P-044",
+      "source": "docs/game-core/00-core-protocols.md#p-044",
+      "claim": "a multi-entity atomic decision gathers intents, validates versions and resources, computes one bounded write set and applies it under its single owner before any tentative receipt becomes a committed event; the step advances only after the required drains and the consistent snapshot are prepared",
+      "evidence": "cards-one-command-commits-both-sides (exactly one committed event, its delta/score/table version equal to live state, the logical step advanced once); cards-transfer-commits-both-sides (both hands moved in one step, no conservation violation: TransferGainedCard == 1 and TransferLostCard == 0); cards-rejected-settlement-changes-nothing (a rejection writes nothing)",
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    {
+      "requirement": "P-056",
+      "source": "docs/game-core/00-core-protocols.md#p-056",
+      "claim": "the card slice extends the kernel only through registered seams: a precompiled plugin factory, a registered Int32 sum reducer, a registered static predicate, four registered system factories and a registered schema serializer, all resolved by key from the committed generated catalog and never by reflection",
+      "evidence": "cards-catalog-and-declarations (the factory lookup is a PluginFactory, every generated-style declaration is accepted, key derivation holds, and an unregistered key is reported MissingDependency rather than constructed); CardCatalog.g.cs: RegistrationGroupCount == 4 and SchemaCount == 1 with direct constructor references",
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    {
+      "requirement": "P-059",
+      "source": "docs/game-core/00-core-protocols.md#p-059",
+      "claim": "the card composition executes with the same kernel binaries and adds no mandatory kernel gameplay schema or phase, which is what the genre validation before freeze requires",
+      "evidence": "the twelve observations run over two catalogs in one process (the committed generated catalog and the hand-written generated-style one), the slice's whole assembly reference list is kernel packages plus the card package, and no kernel source file was modified by this slice (see HANDOFF section 'Kernel changes')",
+      "result": "NotRun (pending orchestrator build host)"
+    }
+  ],
+  "testSuiteEvidence": [
+    {
+      "test": "TEST-004",
+      "source": "docs/game-core/08-validation-and-performance.md#test-004",
+      "clauseCovered": "repeat the propagation case with a card-rule provider and with a non-spatial target lacking any GameObject",
+      "evidence": "cards-mount-reaches-existing-seats plus cards-future-seat-inherits-modifier on both catalogs, and the EditMode case AFutureSeatInheritsTheModifierOnFirstVisibility: every eligible existing and future target receives the expected derived assembly, incompatible (scoreboard) and isolated (practice) targets do not, and the card slice has no Transform or GameObject at all",
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    {
+      "test": "TEST-013",
+      "source": "docs/game-core/08-validation-and-performance.md#test-013",
+      "clauseCovered": "use a card resource transfer rather than combat arbitration: direct owner writes inside one stage, bounded request buffers, duplicate requests, stale versions, rejection, and conservation",
+      "evidence": "cards-one-command-commits-both-sides, cards-duplicate-command-transfers-once, cards-rejected-settlement-changes-nothing and cards-transfer-commits-both-sides, with the ownership half in cards-ownership-and-schedule-compiled (one owner per domain, validated slot policies, the declared decision buffer)",
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    {
+      "test": "TEST-021",
+      "source": "docs/game-core/08-validation-and-performance.md#test-021",
+      "clauseCovered": "run the command-driven card game and assert that it registers no compulsory combat, actor, action, vitality, physics or animation state/stage",
+      "evidence": "the card package declares only its own tables, hands, scores and settlement stages; the generated card catalog registers one plugin factory, one reducer, one predicate and four system factories, none of them gameplay-genre state; the same kernel assemblies drive the narrative and W2 gates (artifacts/w2-gate) on the same revision",
+      "result": "NotRun (pending orchestrator build host)"
+    }
+  ],
+  "seededState": {
+    "source": "Packages/com.gamecore.gameplay.cards/Fixtures/Runtime/CardTableFixture.cs (SeedMarket/SeedSeat) and Packages/com.gamecore.gameplay.cards/Runtime/CardTableKeys.cs",
+    "seatScores": 4,
+    "seatScoresSource": "CardTableKeys.SeededSeatScore (07 s2.3: 'its score is 4')",
+    "seededCardsPerSeat": 4,
+    "seededCardsPerSeatSource": "CardTableKeys.SeededHandCount (07 s2.3: {c1,c2,c3} plus one spare), card n of a seat being CardTableKeys.SeatCard(ordinal, n)",
+    "tableVersion": 1,
+    "tableVersionSource": "CardTableKeys.SeededTableVersion",
+    "activeSeatOrdinal": 0,
+    "activeSeatOrdinalSource": "CardTableKeys.SeededActiveSeat (seat-a)",
+    "turnNumber": 0,
+    "festivalBonus": 2,
+    "festivalBonusSource": "CardVocabulary.FestivalBonus",
+    "quietBonus": 1,
+    "quietBonusSource": "CardVocabulary.QuietBonus",
+    "liveTargets": 6,
+    "liveTargetsNote": "four seats (seat-a, seat-b, seat-c, practice-seat), the market table and the scoreboard",
+    "seats": 4,
+    "seatOrdinals": {
+      "seat-a": 0,
+      "seat-b": 1,
+      "seat-c": 2,
+      "practice-seat": 4
+    },
+    "marketCapacity": 8,
+    "deckCapacity": 8,
+    "draftCapacity": 8,
+    "maxWriteEntries": 12,
+    "result": "NotRun (pending orchestrator build host)"
+  },
+  "expectedPostCommandState": {
+    "source": "docs/game-core/07-reference-compositions.md#23-execution-plan-and-settlement and the scenario's own assertions in CardMarketScenario.ExecuteOneCommand",
+    "command": "SubmitSet(seat-a, seat-a, expectedTableVersion 1, cards c1..c3 of seat-a)",
+    "seatAScore": 16,
+    "seatAScoreArithmetic": "4 + 10 + 2 = 16 (seeded 4, CardSetRules.BaseSetScore 10, CardVocabulary.FestivalBonus 2)",
+    "seatAScoreSource": "CardTableKeys.ScoreAfterOneSet(CardVocabulary.FestivalBonus) == CardTableKeys.SeededSeatScore + CardSetRules.SetScoreDelta(CardVocabulary.FestivalBonus)",
+    "seatAHand": 1,
+    "seatAHandSource": "CardTableKeys.SeededHandCount - CardSetRules.SetCardCount",
+    "tableVersion": 2,
+    "tableVersionSource": "CardTableKeys.TableVersionAfterOneCommit",
+    "turnNumber": 1,
+    "committedEvents": 1,
+    "committedEventScoreDelta": 12,
+    "committedEventScoreDeltaSource": "CardSetRules.SetScoreDelta(CardVocabulary.FestivalBonus) == 10 + 2",
+    "committedEventScoreAfter": 16,
+    "committedEventCards": 3,
+    "committedEventCardsSource": "CardSetRules.SetCardCount",
+    "committedEventStep": 1,
+    "committedWrites": 5,
+    "committedWritesSource": "CardSetRules.SetCardCount + 2 (three cards plus the owner's table and score rows)",
+    "committedEventMatchesLiveState": true,
+    "logicalStepsAfterCommand": 1,
+    "pendingDemandAfterCommand": 0,
+    "result": "NotRun (pending orchestrator build host)"
+  },
+  "subsequentExpectedStates": {
+    "afterDuplicate": {
+      "logicalSteps": 2,
+      "giverHandSeatB": 3,
+      "duplicateRejections": 1,
+      "pendingDemand": 0,
+      "committedSettlements": 2,
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    "afterRejection": {
+      "logicalSteps": 3,
+      "seatAHand": 2,
+      "seatBHand": 3,
+      "seatAScore": 16,
+      "tableVersion": 3,
+      "rejectedDecisions": 1,
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    "afterTransfer": {
+      "logicalSteps": 4,
+      "giverHandSeatC": 3,
+      "receiverHandSeatB": 4,
+      "tableVersion": 4,
+      "gained": 1,
+      "stillHeldByGiver": 0,
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    "afterSpawn": {
+      "spawnedSeatBonus": 2,
+      "spawnedSeatStampPublished": true,
+      "spawnedSeatInView": true,
+      "countersJoined": true,
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    "afterBatchContest": {
+      "contestedCard": "seat A's remaining card (seatCard(0,3))",
+      "candidates": "seat B at sequence 7, seat C at sequence 3",
+      "winner": "seat C (smallest seat with the smallest sequence, independent of slot order)",
+      "expected": "seat A's hand -1, seat C's hand +1, seat B's hand unchanged, table version +1, exactly one logical step",
+      "result": "NotRun (pending orchestrator build host)"
+    }
+  },
+  "commands": {
+    "note": "Everything runs from the repository root on the Linux build host. Nothing below has been run on the authoring host.",
+    "gateDriverNote": "No single-command GC-011 driver is part of this change set: the orchestrator runs the steps below in order (tools/run_w2_gate.sh is the structural model for such a driver, and it lives outside the files this slice was allowed to touch).",
+    "dotnetHalf": [
+      "dotnet build dotnet/GameCore.sln -c Release",
+      "dotnet test dotnet/GameCore.sln -c Release --logger trx --results-directory artifacts/gc-011/trx"
+    ],
+    "cardRulesDotnet": [
+      "dotnet build dotnet/src/GameCore.Rules.Cards/GameCore.Rules.Cards.csproj -c Release",
+      "dotnet test dotnet/tests/GameCore.Rules.Cards.Tests/GameCore.Rules.Cards.Tests.csproj -c Release --logger trx --results-directory artifacts/gc-011/trx"
+    ],
+    "unityResolve": "$UNITY -batchmode -nographics -quit -projectPath unity/GameCore.Validation -logFile artifacts/gc-011/unity/resolve.log",
+    "unityEditModeCardsOnly": "$UNITY -batchmode -nographics -projectPath unity/GameCore.Validation -runTests -testPlatform EditMode -testFilter GameCore.Cards.Tests -testResults artifacts/gc-011/unity/cards-editmode.xml -logFile artifacts/gc-011/unity/cards-editmode.log",
+    "unityEditModeAll": "$UNITY -batchmode -nographics -projectPath unity/GameCore.Validation -runTests -testPlatform EditMode -testResults artifacts/gc-011/unity/editmode-results.xml -logFile artifacts/gc-011/unity/editmode.log",
+    "unityPlayModeAll": "$UNITY -batchmode -nographics -projectPath unity/GameCore.Validation -runTests -testPlatform PlayMode -testResults artifacts/gc-011/unity/playmode-results.xml -logFile artifacts/gc-011/unity/playmode.log",
+    "playerBuild": "UNITY=\"$UNITY\" tools/unity/build_probe.sh",
+    "cardsProbe": "PROBE_RUNS=5 UNITY_PROJECT=unity/GameCore.Validation ARTIFACTS=artifacts/gc-011/toolchain tools/unity/run_cards_probe.sh",
+    "regressionProbes": [
+      "PROBE_RUNS=5 tools/unity/run_probe.sh both",
+      "PROBE_RUNS=5 tools/unity/run_world_probe.sh",
+      "PROBE_RUNS=5 tools/unity/run_w1_gate_probe.sh",
+      "PROBE_RUNS=5 tools/unity/run_w2_gate_probe.sh"
+    ],
+    "hostSideChecks": [
+      "python3 tools/check_game_core_csharp.py",
+      "bash -n tools/unity/run_cards_probe.sh",
+      "python3 tools/validate_game_core_docs.py --self-test",
+      "python3 tools/validate_game_core_docs.py"
+    ],
+    "doNotPassQuitToTestRuns": "docs/game-core/04-unity-integration.md section 10: do not add -quit to a test-run command. The probe commands also omit -quit because the probe exits itself through Application.Quit with a code that encodes its result.",
+    "result": "NotRun (pending orchestrator build host)"
+  },
+  "expectedEvidenceArtifacts": [
+    {
+      "path": "artifacts/gc-011/dotnet-build.log",
+      "producedBy": "dotnet build dotnet/GameCore.sln -c Release",
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    {
+      "path": "artifacts/gc-011/dotnet-test.log",
+      "producedBy": "dotnet test dotnet/GameCore.sln -c Release --logger trx",
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    {
+      "path": "artifacts/gc-011/unity/cards-editmode.xml",
+      "producedBy": "Unity EditMode run filtered to GameCore.Cards.Tests",
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    {
+      "path": "artifacts/gc-011/unity/editmode-results.xml",
+      "producedBy": "the whole Unity EditMode suite (every testables package plus the Cards, W1 and W2 gate assemblies)",
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    {
+      "path": "artifacts/gc-011/unity/playmode-results.xml",
+      "producedBy": "the whole Unity PlayMode suite",
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    {
+      "path": "artifacts/gc-011/toolchain/build.log",
+      "producedBy": "tools/unity/build_probe.sh (catalog codegen plus StandaloneLinux64 IL2CPP with High stripping)",
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    {
+      "path": "artifacts/gc-011/toolchain/probe-cards.json",
+      "producedBy": "tools/unity/run_cards_probe.sh (run 1, the retained evidence; later runs write .run<N>)",
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    {
+      "path": "artifacts/gc-011/toolchain/player-cards.log",
+      "producedBy": "the -probeCards player invocation",
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    {
+      "path": "artifacts/gc-011/static-checks.log",
+      "producedBy": "the host-side checks that did run here (check_game_core_csharp.py, bash -n, the documentation validator)",
+      "result": "NotRun (pending orchestrator build host)"
+    },
+    {
+      "path": "artifacts/gc-011/HANDOFF.md",
+      "producedBy": "this slice's handoff note, with the requirement/test coverage mapping and the known gaps",
+      "result": "NotRun (pending orchestrator build host)"
+    }
+  ],
+  "blockingDiagnostics": {
+    "note": "A `cards-edit-<Subject>` step only exists when a composition edit was refused, so its presence is a failure even though its name carries no observation number. tools/unity/run_cards_probe.sh fails on any `\"status\": \"Fail\"` outcome in the result, whichever name it carries, and GameCore.Cards.Tests fails on any such step as well.",
+    "result": "NotRun (pending orchestrator build host)"
+  },
+  "revisionRecording": {
+    "note": "docs/game-core/08-validation-and-performance.md, 'Evidence and test layers': each run records the source revision, content and catalog hashes, exact Editor and package lock versions, OS and CPU architecture, machine model, worker count, scripting backend, stripping level, Burst configuration, safety-check settings, seed and input/observation trace. The probe result JSON carries the platform, architecture, scripting backend, stripping level and catalog fields; the package lock and player binary hashes belong beside it in artifacts/gc-011/toolchain.",
+    "result": "NotRun (pending orchestrator build host)"
+  },
+  "batchEnvelope": {
+    "route": "cards.route.batch",
+    "ingressBuffer": "cards.buffer.batch-lane",
+    "payloadSchema": "cards.schema.card-batch",
+    "capacity": 4,
+    "byteCapacity": "4 * CardPayloadCodec.BatchBytes (76) = 304",
+    "overflowPolicy": "RejectBeforeMutation",
+    "cancellationPolicy": "Drain",
+    "reader": "CardBatchReader, bound to the schema by CardTableRegistration.Readers (04 section 8)",
+    "note": "P-037: one atomic batch envelope is one admitted command and consumes one logical step; an envelope with zero or more than four paired candidates is refused instead of truncated"
+  },
+  "boundedWork": {
+    "draftCapacity": 8,
+    "maxHandCards": 8,
+    "maxCandidates": 4,
+    "maxWriteEntries": 12,
+    "laneCapacity": "command lane 8 rows, batch lane 4 rows, both RejectBeforeMutation (P-043)",
+    "note": "the command draft is bounded by CardTableKeys.DraftCapacity, which the input stage enforces before it appends, so a full draft refuses the command before any mutation"
+  }
+}

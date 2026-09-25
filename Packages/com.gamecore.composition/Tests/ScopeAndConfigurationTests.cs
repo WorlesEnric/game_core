@@ -60,6 +60,22 @@ namespace GameCore.Composition.Tests
         }
 
         [Test]
+        public void NestedScopesSurviveCanonicalIdentityOrdering()
+        {
+            CompositionHost host = NewHost();
+            var issuer = new OperationIssuer(World, new Id128(0x686F7374UL, 21UL));
+            ScopeId parent = new ScopeId(new Id128(9UL, 0UL));
+            ScopeId child = new ScopeId(new Id128(1UL, 0UL));
+
+            Assert.That(host.SubmitEdit(Payloads.ScopeCreate(parent, Root), issuer.Next(), CompositionRevision.Zero).Staged, Is.True);
+            host.Drain();
+            Assert.That(host.SubmitEdit(Payloads.ScopeCreate(child, parent), issuer.Next(), new CompositionRevision(1UL)).Staged, Is.True);
+            Assert.DoesNotThrow(() => host.Drain());
+            Assert.That(host.Committed.Scopes.Depth(child), Is.EqualTo(2));
+            Assert.That(host.Committed.Scopes.Ancestors(child), Does.Contain(parent));
+        }
+
+        [Test]
         public void CreatedScopeCarriesMembershipAndInheritsItsParentDepth()
         {
             CompositionHost host = NewHostWithSource(out TestManifestSource source);

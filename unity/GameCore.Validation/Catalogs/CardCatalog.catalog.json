@@ -1,0 +1,121 @@
+{
+  "descriptionFormat": "gamecore.catalog-description/1",
+  "protocolVersion": "1.0",
+  "namespace": "GameCore.Validation.GeneratedCards",
+  "className": "CardCatalog",
+  "fileName": "CardCatalog.g.cs",
+  "supportedFeatureIds": [],
+  "schemas": [
+    {
+      "stableName": "cards.schema.card-config",
+      "valueTypeName": "CardConfigValue",
+      "serializerTypeName": "CardConfigSerializer",
+      "serializerKeyName": "CardConfigSerializerKey",
+      "schemaId": "02bb49501222979cfea308ce5f5f2ca1",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "00000000000000000000000000000000",
+      "required": true,
+      "fields": [
+        { "id": 1, "name": "SchemaVersion", "wireType": "UInt32", "required": true }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "tableName": "StaticPredicateRegistrations",
+      "keysName": "StaticPredicateKeys",
+      "lookupMethodName": "TryGetStaticPredicate",
+      "interfaceType": "GameCore.Rules.Cards.ICardTargetPredicate",
+      "kind": "StaticPredicate",
+      "entries": [
+        {
+          "stableName": "cards.predicate.always",
+          "keyName": "CardAlwaysPredicateKey",
+          "keyVersion": 1,
+          "ownerPackageId": "00000000000000000000000000000000",
+          "implementationId": "d8cabb8f16c64380102de6820045df34",
+          "implementationExpression": "new CardAlwaysPredicate(CardAlwaysPredicateKey)"
+        }
+      ]
+    },
+    {
+      "tableName": "PluginRegistrations",
+      "keysName": "PluginKeys",
+      "lookupMethodName": "TryGetPluginFactory",
+      "interfaceType": "GameCore.Gameplay.Cards.ICardTablePluginFactory",
+      "kind": "PluginFactory",
+      "entries": [
+        {
+          "stableName": "cards.factory.card-table-plugin",
+          "keyName": "CardTablePluginKey",
+          "keyVersion": 1,
+          "ownerPackageId": "00000000000000000000000000000000",
+          "implementationId": "bb026ac0599e678383f12ffca82e5b2b",
+          "implementationExpression": "new CardTablePluginFactory(CardTablePluginKey)"
+        }
+      ]
+    },
+    {
+      "tableName": "SystemFactoryRegistrations",
+      "keysName": "SystemFactoryKeys",
+      "lookupMethodName": "TryGetSystemFactory",
+      "interfaceType": "GameCore.Gameplay.Cards.ICardTableSystemFactory",
+      "kind": "SystemFactory",
+      "entries": [
+        {
+          "stableName": "cards.system.input",
+          "keyName": "CardInputSystemKey",
+          "keyVersion": 1,
+          "ownerPackageId": "00000000000000000000000000000000",
+          "implementationId": "4522ee4e182f61dce6e7466b929dee07",
+          "implementationExpression": "new CardTableSystemFactory(CardInputSystemKey)"
+        },
+        {
+          "stableName": "cards.system.validate",
+          "keyName": "CardValidateSystemKey",
+          "keyVersion": 1,
+          "ownerPackageId": "00000000000000000000000000000000",
+          "implementationId": "e113f54073e28d830803e540be4eedfb",
+          "implementationExpression": "new CardTableSystemFactory(CardValidateSystemKey)"
+        },
+        {
+          "stableName": "cards.system.commit",
+          "keyName": "CardCommitSystemKey",
+          "keyVersion": 1,
+          "ownerPackageId": "00000000000000000000000000000000",
+          "implementationId": "a61b22df091d9ac4c299ae0d0ae30f30",
+          "implementationExpression": "new CardTableSystemFactory(CardCommitSystemKey)"
+        },
+        {
+          "stableName": "cards.system.output",
+          "keyName": "CardOutputSystemKey",
+          "keyVersion": 1,
+          "ownerPackageId": "00000000000000000000000000000000",
+          "implementationId": "2cb9bbfc9bb6cc9495666c211e20ee0f",
+          "implementationExpression": "new CardTableSystemFactory(CardOutputSystemKey)"
+        }
+      ]
+    },
+    {
+      "tableName": "ReducerRegistrations",
+      "keysName": "ReducerKeys",
+      "lookupMethodName": "TryGetReducer",
+      "interfaceType": "GameCore.Rules.Cards.ICardBonusReducer",
+      "kind": "Reducer",
+      "entries": [
+        {
+          "stableName": "cards.reducer.int32-sum",
+          "keyName": "CardSetBonusReducerKey",
+          "keyVersion": 1,
+          "ownerPackageId": "00000000000000000000000000000000",
+          "implementationId": "f85b12f56c1232b270108056acb54b19",
+          "implementationExpression": "new CardSetBonusReducer(CardSetBonusReducerKey)"
+        }
+      ]
+    }
+  ],
+  "code": {
+    "usingDirectives": ["GameCore.Rules.Cards", "GameCore.Gameplay.Cards"]
+  }
+}

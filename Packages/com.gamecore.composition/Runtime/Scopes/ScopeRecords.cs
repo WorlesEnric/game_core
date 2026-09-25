@@ -168,7 +168,13 @@ namespace GameCore.Composition
                     ordered.Add(record);
                 }
 
-                ordered.Sort((left, right) => left.Depth.CompareTo(right.Depth));
+                // Depth first so a parent always precedes its child; equal depths in canonical identity order so the
+                // result does not depend on the declaration order or on an unstable sort (P-008).
+                ordered.Sort((left, right) =>
+                {
+                    int depth = left.Depth.CompareTo(right.Depth);
+                    return depth != 0 ? depth : CompareRecords(left, right);
+                });
                 for (int i = 0; i < ordered.Count; i++)
                 {
                     Add(ordered[i]);
