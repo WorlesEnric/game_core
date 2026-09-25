@@ -472,7 +472,7 @@ namespace GameCore.Unity.Runtime.Tests.Time
                 Target = module.LeftEntity,
                 Value = value,
                 Timing = module.LeftTiming,
-            }.Schedule(default(JobHandle));
+            }.Schedule(module.LeftWaitValue);
 
             module.LeftHandle = handle;
             module.LeftWritten = value;
@@ -506,7 +506,7 @@ namespace GameCore.Unity.Runtime.Tests.Time
                 Target = module.RightEntity,
                 Value = value,
                 Timing = module.RightTiming,
-            }.Schedule(default(JobHandle));
+            }.Schedule(module.RightWaitValue);
 
             module.RightHandle = handle;
             module.RightWritten = value;
@@ -889,11 +889,11 @@ namespace GameCore.Unity.Runtime.Tests.Time
             return true;
         }
 
-        private static SystemSpec SystemSpecOf(FactoryKey key, AccessDeclaration? access)
+        private static SystemSpec SystemSpecOf(FactoryKey key, params AccessDeclaration[]? accesses)
             => new SystemSpec(
                 key,
                 SystemMultiplicity.World,
-                access.HasValue ? new AccessSet(new[] { access.Value }) : new AccessSet(null),
+                new AccessSet(accesses),
                 null,
                 null,
                 null,
