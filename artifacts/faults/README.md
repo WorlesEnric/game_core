@@ -12,14 +12,14 @@ format (`trace-format.md`), and the directory tree the gate writes its results i
 
 ## Status
 
-**NotRun (pending orchestrator build host).**
+**Pass (Linux qualification build), with limits noted below.**
 
-Every status line in this directory says `NotRun (pending orchestrator build host)`, and that is literal: nothing
-here is a recorded run on this revision. The GC-017 authoring host is macOS with no Unity Editor, no .NET SDK and no
-C# compiler, so no `dotnet build`/`dotnet test`, no Unity resolve, no EditMode or PlayMode run, no IL2CPP player
-build and no `-probeFaults` player run was executed while this directory was written. The commands below are the ones
-that produce the artifacts; a status may only be changed to a run result by the host that actually runs them, and
-only for the artifact it wrote.
+The full dotnet solution passed 750/750 tests; Unity EditMode passed 807/807 and PlayMode passed 6/6.
+The qualification IL2CPP player passed all 62 GC-017 observations on five independent launches.
+All 29 cases indexed in `boundaries.json` were matched to a passing XML case or player observation.
+The separate IL2CPP release build omitted the explicit fault-qualification marker; its compiler response
+omitted `GAMECORE_FAULT_INJECTION`, and generated C++ returned false without reaching a latch.
+This verifies the reach path, not complete removal of fault types and their per-world allocation.
 
 ## What GC-017 proves
 
@@ -106,17 +106,17 @@ reordered or dropped observation fails the suite instead of shrinking it.
 
 | Artifact | Contents | Status |
 | --- | --- | --- |
-| `toolchain/probe-gc017-faults.json` | the `-probeFaults` result: `task` `GC-017`, `mode` `Faults`, one `probes[]` entry per observation of both families over both catalogs, plus the two digest steps | NotRun (pending orchestrator build host) |
-| `toolchain/probe-gc017-faults.json.run<N>` | runs 2..`PROBE_RUNS` of the same probe, retained so a later clean run can never repair an earlier dirty one | NotRun (pending orchestrator build host) |
-| `toolchain/player-gc017-faults.log` (+ `.run<N>`) | the player's own stdout/stderr per run | NotRun (pending orchestrator build host) |
-| `unity/editmode-results.xml` | the EditMode suite result: `GameCore.Faults.Tests` and the package fault fixtures | NotRun (pending orchestrator build host) |
-| `unity/playmode-results.xml` | the PlayMode suite result of the same revision | NotRun (pending orchestrator build host) |
-| `unity/resolve.log`, `unity/editmode.log`, `unity/playmode.log` | the Editor logs of the three invocations above | NotRun (pending orchestrator build host) |
-| `toolchain/codegen.log`, `toolchain/build.log`, `toolchain/environment.txt` | generated-catalog pass, IL2CPP player build and the host/toolchain fingerprint, written by `tools/unity/build_probe.sh` | NotRun (pending orchestrator build host) |
-| `trx/` | the plain-dotnet TRX results of `dotnet/GameCore.sln` | NotRun (pending orchestrator build host) |
-| `validator-self-test.log`, `validator.log` | `tools/validate_game_core_docs.py --self-test` and the documentation validator | NotRun (pending orchestrator build host) |
-| `boundaries.json` | the machine-readable TEST-016 matrix (this directory's index) | NotRun (pending orchestrator build host) |
-| `trace-format.md` | the `FaultRecord.ToLine()` grammar and how the probe archives a trace line | NotRun (pending orchestrator build host) |
+| `toolchain/probe-gc017-faults.json` | 62 passing observations, both families and catalogs plus digests | Pass (62/62) |
+| `toolchain/probe-gc017-faults.json.run<N>` | runs 2–5 of the same 62-case probe | Pass (4/4 repeat runs) |
+| `toolchain/player-gc017-faults.log` (+ `.run<N>`) | the player's own log per run | Pass (5 player exits) |
+| `unity/editmode-results.xml` | all testable EditMode assemblies including faults and recovery | Pass (807/807) |
+| `unity/playmode-results.xml` | all testable PlayMode assemblies | Pass (6/6) |
+| `unity/resolve.log`, `unity/editmode.log`, `unity/playmode.log` | Unity project resolution and test invocations | Pass |
+| `toolchain/codegen.log`, `toolchain/build.log`, `toolchain/environment.txt` | generated catalog, IL2CPP build and toolchain fingerprint | Pass |
+| `trx/` | whole plain-dotnet solution, 11 projects | Pass (750/750) |
+| `validator-self-test.log`, `validator.log` | documentation validator | Pass |
+| `boundaries.json` | machine-readable TEST-016 case index | Pass (29/29 indexed cases) |
+| `trace-format.md` | trace grammar, descriptive rather than runnable | Reference |
 
 `boundaries.json` is the file to read for the row-by-row claim; it lists, per row, the `FaultBoundary`, the injection
 point and required observation quoted from TEST-016, the case that evidences it, its artifact and its status.
@@ -159,16 +159,16 @@ provenance" is archived as text, not asserted as a bare pass flag.
 
 | Row | `FaultBoundary` | Case | Status |
 | --- | --- | --- | --- |
-| 1 | `validation` | `narrative/gc017-validation-fault-rejects-and-keeps-the-old-assembly`; `…Faults.FaultBoundaryTests.AnInjectedValidationFaultRejectsBeforeAnyLiveWrite` | NotRun (pending orchestrator build host) |
-| 2 | `acquisition` | `narrative/gc017-acquisition-fault-releases-staged-leases`; `…FaultBoundaryTests.AnInjectedAcquisitionFaultRefusesTheLeaseAndReleasesWhatWasStaged` | NotRun (pending orchestrator build host) |
-| 3 | — (cutoff race) | `narrative/gc017-cancellation-before-the-cutoff-releases-staged-work`; `narrative/gc017-cancellation-after-the-cutoff-is-too-late-and-keeps-the-publication` | NotRun (pending orchestrator build host) |
-| 4 | `fence` | `…LifecycleFaultTests.AJobHeldInFlightWhileUnloadBeginsIsFencedAndItsResourceQuarantined`; `narrative/gc017-fence-fault-settles-handles-and-keeps-the-old-assembly`; `…FaultBoundaryTests.AnInjectedFenceFaultSettlesTrackedHandlesAndKeepsTheOldAssembly`; `narrative/gc017-teardown-settles-and-disposes` | NotRun (pending orchestrator build host) |
-| 5 | `migration`, `first-live-write`, `gate-installation` | the three `narrative/gc017-…` observations plus `…FaultBoundaryTests.AnInjectedMigrationFaultAndTheOriginalPrewriteSwitchBothPreserveTheOldAssembly`, `…AnInjectedFirstLiveWriteFaultAndTheOriginalPostwriteSwitchBothFaultTheWorld`, `…AnInjectedGateInstallationFaultFaultsAfterTheApplyStage` | NotRun (pending orchestrator build host) |
-| 6 | `structural-playback` | `narrative/gc017-structural-playback-fault-stops-the-step-commit`; `…GuardedDispatchFaultTests.AStructuralPlaybackFaultStopsTheStepCommitAndKeepsTheQuarantine`, `…AThrowingGuardedSystemStopsTheNextRegisteredStageAndPublishesNothing`, `…AStockGroupSwallowsTheSameExceptionAndTheGuardedGroupDoesNot` | NotRun (pending orchestrator build host) |
-| 7 | — (adapter stage, GC-019) | `…GuardedDispatchFaultTests.AFailingOutputGroupDoesNotRewindTheCommittedStep` | NotRun (pending orchestrator build host) |
-| 8 | `cleanup` | `narrative/gc017-cleanup-fault-retains-staged-ownership`; `narrative/gc017-cleanup-boundary-releases-what-a-refusal-staged`; `…FaultBoundaryTests.AnInjectedCleanupFaultRetainsStagedOwnershipInsteadOfReportingRelease`; `…LifecycleFaultTests.AThrowingDisposerIsRecordedAndOtherCleanupStillProceeds` | NotRun (pending orchestrator build host) |
-| 9 | — (callback gate) | `narrative/gc017-old-callback-after-recovery-is-rejected` | NotRun (pending orchestrator build host) |
-| 10 | — (recovery seam) | `narrative/gc017-recovery-from-initial-definitions-into-a-new-world`; `…Recovery.InitialDefinitionRecoveryTests.AFailedReferenceRepairNeverExposesARunningWorld` | NotRun (pending orchestrator build host) |
+| 1 | `validation` | `narrative/gc017-validation-fault-rejects-and-keeps-the-old-assembly`; `…Faults.FaultBoundaryTests.AnInjectedValidationFaultRejectsBeforeAnyLiveWrite` | Pass |
+| 2 | `acquisition` | `narrative/gc017-acquisition-fault-releases-staged-leases`; `…FaultBoundaryTests.AnInjectedAcquisitionFaultRefusesTheLeaseAndReleasesWhatWasStaged` | Pass |
+| 3 | — (cutoff race) | `narrative/gc017-cancellation-before-the-cutoff-releases-staged-work`; `narrative/gc017-cancellation-after-the-cutoff-is-too-late-and-keeps-the-publication` | Pass |
+| 4 | `fence` | `…LifecycleFaultTests.AJobHeldInFlightWhileUnloadBeginsIsFencedAndItsResourceQuarantined`; `narrative/gc017-fence-fault-settles-handles-and-keeps-the-old-assembly`; `…FaultBoundaryTests.AnInjectedFenceFaultSettlesTrackedHandlesAndKeepsTheOldAssembly`; `narrative/gc017-teardown-settles-and-disposes` | Pass |
+| 5 | `migration`, `first-live-write`, `gate-installation` | the three `narrative/gc017-…` observations plus `…FaultBoundaryTests.AnInjectedMigrationFaultAndTheOriginalPrewriteSwitchBothPreserveTheOldAssembly`, `…AnInjectedFirstLiveWriteFaultAndTheOriginalPostwriteSwitchBothFaultTheWorld`, `…AnInjectedGateInstallationFaultFaultsAfterTheApplyStage` | Pass |
+| 6 | `structural-playback` | `narrative/gc017-structural-playback-fault-stops-the-step-commit`; `…GuardedDispatchFaultTests.AStructuralPlaybackFaultStopsTheStepCommitAndKeepsTheQuarantine`, `…AThrowingGuardedSystemStopsTheNextRegisteredStageAndPublishesNothing`, `…AStockGroupSwallowsTheSameExceptionAndTheGuardedGroupDoesNot` | Pass |
+| 7 | — (adapter stage, GC-019) | `…GuardedDispatchFaultTests.AFailingOutputGroupDoesNotRewindTheCommittedStep` | Pass |
+| 8 | `cleanup` | `narrative/gc017-cleanup-fault-retains-staged-ownership`; `narrative/gc017-cleanup-boundary-releases-what-a-refusal-staged`; `…FaultBoundaryTests.AnInjectedCleanupFaultRetainsStagedOwnershipInsteadOfReportingRelease`; `…LifecycleFaultTests.AThrowingDisposerIsRecordedAndOtherCleanupStillProceeds` | Pass |
+| 9 | — (callback gate) | `narrative/gc017-old-callback-after-recovery-is-rejected` | Pass |
+| 10 | — (recovery seam) | `narrative/gc017-recovery-from-initial-definitions-into-a-new-world`; `…Recovery.InitialDefinitionRecoveryTests.AFailedReferenceRepairNeverExposesARunningWorld` | Pass (initial definitions only) |
 
 `…Faults.FaultBoundaryTests` and its siblings are `GameCore.Unity.Runtime.Tests.Faults.*`;
 `…Recovery.InitialDefinitionRecoveryTests` is `GameCore.Unity.Runtime.Tests.Recovery.InitialDefinitionRecoveryTests`.

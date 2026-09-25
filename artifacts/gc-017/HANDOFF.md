@@ -2,6 +2,9 @@
 
 Branch `gc-017` (worktree `/Users/yangcao/wkspace/gc-wt/gc-017`), starting from `main` = `f28a4af` (Wave 4 gate).
 
+**Linux build-host verification:** see `artifacts/gc-017/BUILD_REPORT.md` for executed checks, fixes and the
+remaining release-latch allocation defect. The `NotRun` statement below describes the original authoring host only.
+
 **Status of every executable check this change set adds: `NotRun (pending orchestrator build host)`.** This host has no
 Unity, no .NET SDK, no Mono and no C# compiler, so nothing here has been compiled, imported or executed. What *did* run
 on this host is in §8. None of it is a build, an import, a test or a player run.
@@ -11,7 +14,8 @@ on this host is in §8. None of it is a build, an import, a test or a player run
 Deterministic fault latches at every TEST-016 boundary in the apply and cancellation path, a real cross-family
 scenario that arms each one and observes the protocol outcome, the package-level regression suites, the cancella-
 tion/cutoff race, and recovery from initial definitions into a new world. The latches are compiled into the
-qualification project and the player and out of a shipping build by one `versionDefines` entry.
+qualification project and the player; a shipping build omits the explicit fault-qualification marker, though
+some latch metadata and per-world allocation still remain (see BUILD_REPORT.md).
 
 ## 2. Files created
 
@@ -148,12 +152,12 @@ No public contract was renamed or removed. `GameCore.Contracts` and the plan DTO
 4. **Recovery restores initial state only.** No gameplay state, clock or RNG stream crosses a recovery; carrying
    committed state is checkpoint restore, deliberately not implemented here (GC-017's definition of done says the
    supported recovery source is explicitly initial definitions until checkpoint work integrates).
-5. **The latches are compiled out of a shipping build by a `versionDefines` entry.** `GAMECORE_FAULT_INJECTION` is
-   defined whenever `com.unity.test-framework` is present, which is true for the qualification project and its
-   player. If the orchestrator builds the validation player from a project that does not reference the Test
-   Framework, every fault test fails loudly at its `IsCompiledIn` assertion rather than passing vacuously — that is
-   the intended failure mode, but it means the gate's dotnet half and its Unity half differ in exactly this one
-   respect.
+5. **Release compilation required an explicit qualification switch.** The original `versionDefines` entry on
+   `com.unity.test-framework` did not compile the latches out of a shipping project: Unity Entities and other
+   dependencies pull that package transitively, so a test-framework-free manifest still set the symbol. The
+   validation project now explicitly depends on `com.gamecore.fault-qualification`, and the runtime asmdef defines
+   `GAMECORE_FAULT_INJECTION` only when that package is installed. The separate release check removes the marker,
+   builds an IL2CPP player, and inspects the actual C# 9 compiler defines and generated C++ reach functions.
 6. **`artifacts/gates/w4-generic-profile/inventory.json` is not updated.** GC-017 evidences fault boundaries, not a
    generic-profile row; the orchestrator promotes rows it has run. Proposals, if wanted: `P-049` and `P-052` move
    from Partial toward Implemented on the strength of `artifacts/faults/` **once the gate has run** — not before.
