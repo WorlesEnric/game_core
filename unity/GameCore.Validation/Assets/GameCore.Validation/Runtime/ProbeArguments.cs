@@ -14,13 +14,21 @@ namespace GameCore.Validation.ProbeHost
         private const string WorldDispatchArgumentName = "-probeWorldDispatch";
         private const string W1GateArgumentName = "-probeW1Gate";
         private const string W2GateArgumentName = "-probeW2Gate";
+        private const string CardsArgumentName = "-probeCards";
 
-        private ProbeArguments(bool missingRegistration, bool worldDispatch, bool w1Gate, bool w2Gate, string? resultPath)
+        private ProbeArguments(
+            bool missingRegistration,
+            bool worldDispatch,
+            bool w1Gate,
+            bool w2Gate,
+            bool cards,
+            string? resultPath)
         {
             MissingRegistration = missingRegistration;
             WorldDispatch = worldDispatch;
             W1Gate = w1Gate;
             W2Gate = w2Gate;
+            Cards = cards;
             ResultPath = resultPath;
         }
 
@@ -46,12 +54,21 @@ namespace GameCore.Validation.ProbeHost
         /// </summary>
         public bool W2Gate { get; }
 
+        /// <summary>
+        /// Runs the GC-011 card-game Automatic vertical slice: the market's scope tree and its provider mounts, the
+        /// inherited scoring modifier on every eligible existing seat, one bounded command that commits both sides,
+        /// a duplicate that transfers once, a rejected settlement that changes nothing, a transfer that commits both
+        /// sides, a future seat that inherits the modifier before its first step, an idle world that performs no
+        /// step and a teardown that settles and disposes.
+        /// </summary>
+        public bool Cards { get; }
+
         /// <summary>Destination path of the structured JSON result.</summary>
         public string? ResultPath { get; }
 
         /// <summary>True when the process was launched as a probe rather than as a normal player run.</summary>
         public bool IsProbeInvocation =>
-            MissingRegistration || WorldDispatch || W1Gate || W2Gate || !string.IsNullOrEmpty(ResultPath);
+            MissingRegistration || WorldDispatch || W1Gate || W2Gate || Cards || !string.IsNullOrEmpty(ResultPath);
 
         /// <summary>True when a result destination was supplied; without it the probe cannot record evidence.</summary>
         public bool HasResultPath => !string.IsNullOrEmpty(ResultPath);
@@ -62,6 +79,7 @@ namespace GameCore.Validation.ProbeHost
             bool worldDispatch = false;
             bool w1Gate = false;
             bool w2Gate = false;
+            bool cards = false;
             string? resultPath = null;
             for (int i = 0; i < arguments.Length; i++)
             {
@@ -82,13 +100,17 @@ namespace GameCore.Validation.ProbeHost
                 {
                     w2Gate = true;
                 }
+                else if (argument == CardsArgumentName)
+                {
+                    cards = true;
+                }
                 else if (argument == ResultArgumentName && i + 1 < arguments.Length)
                 {
                     resultPath = arguments[i + 1];
                 }
             }
 
-            return new ProbeArguments(missingRegistration, worldDispatch, w1Gate, w2Gate, resultPath);
+            return new ProbeArguments(missingRegistration, worldDispatch, w1Gate, w2Gate, cards, resultPath);
         }
     }
 }

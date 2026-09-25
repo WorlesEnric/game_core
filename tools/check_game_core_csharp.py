@@ -32,6 +32,11 @@ TARGETS = [
     # legitimately reference Unity types.
     "Packages/com.gamecore.planning",
     "Packages/com.gamecore.unity.runtime",
+    # GC-011: the card rules package is engine-free (it holds no Unity type at all), so it joins the engine-free
+    # set; the card gameplay package holds the settlement systems and the integration glue, so it is only covered
+    # by the balance and forbidden-construct checks.
+    "Packages/com.gamecore.rules.cards",
+    "Packages/com.gamecore.gameplay.cards",
 ]
 
 FORBIDDEN = {
@@ -212,7 +217,7 @@ def main() -> int:
         ROOT / "Packages/com.gamecore.contracts",
         ROOT / "Packages/com.gamecore.content.compiler/Runtime",
         ROOT / "Packages/com.gamecore.derivation",
-        ROOT / "dotnet/src",
+        ROOT / "Packages/com.gamecore.rules.cards",
     )
 
     for path in files:

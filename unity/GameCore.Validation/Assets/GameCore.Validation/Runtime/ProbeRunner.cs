@@ -48,9 +48,9 @@ namespace GameCore.Validation.ProbeHost
 
         internal static void Run(ProbeArguments arguments)
         {
-            // The GC-005 owned-world mode and the W1/W2 integration gates run in the same player and report into
-            // the same result shape, but each under its own task id so no outcome is restated as another task's
-            // evidence.
+            // The GC-005 owned-world mode, the W1/W2 integration gates and the GC-011 card slice run in the same
+            // player and report into the same result shape, but each under its own task id so no outcome is restated
+            // as another task's evidence.
             ProbeReport report = arguments.WorldDispatch
                 ? new ProbeReport(
                     "WorldDispatch",
@@ -69,10 +69,16 @@ namespace GameCore.Validation.ProbeHost
                             ProbeEnvironment.DeclaredUnityVersion,
                             ProbeEnvironment.DeclaredTarget,
                             "W2-GATE")
-                        : new ProbeReport(
-                            arguments.MissingRegistration ? "MissingRegistration" : "Positive",
-                            ProbeEnvironment.DeclaredUnityVersion,
-                            ProbeEnvironment.DeclaredTarget);
+                        : arguments.Cards
+                            ? new ProbeReport(
+                                "Cards",
+                                ProbeEnvironment.DeclaredUnityVersion,
+                                ProbeEnvironment.DeclaredTarget,
+                                "GC-011")
+                            : new ProbeReport(
+                                arguments.MissingRegistration ? "MissingRegistration" : "Positive",
+                                ProbeEnvironment.DeclaredUnityVersion,
+                                ProbeEnvironment.DeclaredTarget);
 
             if (!arguments.HasResultPath)
             {
@@ -105,6 +111,11 @@ namespace GameCore.Validation.ProbeHost
                 else if (arguments.W2Gate)
                 {
                     ProbeW2Gate.Run(report);
+                    report.CompletePositive();
+                }
+                else if (arguments.Cards)
+                {
+                    ProbeCards.Run(report);
                     report.CompletePositive();
                 }
                 else
