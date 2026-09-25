@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using GameCore.Composition;
 using GameCore.Contracts;
+using GameCore.Derivation;
 using GameCore.Gameplay.Cards;
 using GameCore.Gameplay.Cards.Fixtures;
 using GameCore.Planning;
@@ -104,6 +105,41 @@ namespace GameCore.Validation.ProbeHost
         private const int MutableStateValue = 4242;
 
         public const ulong SessionSalt = 0x4341524743303133UL;
+
+        /// <summary>
+        /// The market's declared scope tree as lane-seed records: the world definition's own tree, opened with the
+        /// initial composition rather than published as eight scope-create edits, exactly as the narrative family
+        /// declares its chapter tree (P-010, P-006). A scope is not an assembly, so publishing creates for it would
+        /// advance the composition counter with no matching assembly publication and the world could never rejoin.
+        /// </summary>
+        private static IReadOnlyList<ScopeRecord> DeclaredMarketScopes()
+        {
+            return new List<ScopeRecord>
+            {
+                Scope(CardVocabulary.TableArea, CardVocabulary.Match, 1, false),
+                Scope(CardVocabulary.LeagueA, CardVocabulary.Match, 1, false),
+                Scope(CardVocabulary.LeagueB, CardVocabulary.Match, 1, false),
+                Scope(CardVocabulary.Spectators, CardVocabulary.Match, 1, false),
+                Scope(CardVocabulary.SeatAScope, CardVocabulary.LeagueA, 2, false),
+                Scope(CardVocabulary.SeatBScope, CardVocabulary.LeagueA, 2, false),
+                Scope(CardVocabulary.SeatCScope, CardVocabulary.LeagueB, 2, false),
+                // The practice seat is eligible and beneath the festival provider, but its isolation boundary
+                // blocks the contribution in either mode (P-016, 07 s2.1).
+                Scope(CardVocabulary.Practice, CardVocabulary.LeagueA, 2, true),
+            };
+        }
+
+        private static ScopeRecord Scope(string scope, string parent, int depth, bool isolateAllCapabilities)
+        {
+            return new ScopeRecord(
+                CardIdentity.Scope(scope),
+                CardIdentity.Scope(parent),
+                depth,
+                new IsolationSet(false, null),
+                new IsolationSet(isolateAllCapabilities, null),
+                null,
+                null);
+        }
 
         /// <summary>Runs the GC-013 sequence against the committed generated catalog (GC-011 compiler output).</summary>
         public static Gc013ScenarioResult RunGeneratedCatalog()
@@ -326,9 +362,15 @@ namespace GameCore.Validation.ProbeHost
 
             public ScopeId WorldRootScope => CardMarketComposition.MatchScope;
 
-            public CompositionLaneSeed LaneSeed => CompositionLaneSeed.InitialAssembly;
+            /// <summary>
+            /// The lane opens joined to the world's initial assembly with the market's declared tree attached, so the
+            /// scope tree is part of the initial composition rather than eight publications with no assembly (P-006).
+            /// </summary>
+            public CompositionLaneSeed LaneSeed =>
+                CompositionLaneSeed.InitialAssembly.WithScopes(DeclaredMarketScopes());
 
-            public IReadOnlyList<CompositionEditPayload> SetupEdits => CardMarketComposition.ScopeCreates();
+            /// <summary>The tree is declared, not published: no setup edit exists (P-010, P-006).</summary>
+            public IReadOnlyList<CompositionEditPayload> SetupEdits => Array.Empty<CompositionEditPayload>();
 
             public IReadOnlyList<CompositionEditPayload> SpareScopeEdits => spareScopes;
 

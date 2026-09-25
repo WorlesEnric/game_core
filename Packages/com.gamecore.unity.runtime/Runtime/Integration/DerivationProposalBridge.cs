@@ -295,14 +295,10 @@ namespace GameCore.Unity.Runtime.Integration
                 }
             }
 
-            if (providerOrder.Count == 0)
-            {
-                return DerivationProposalReport.Refused(
-                    DerivationProposalOutcome.NoAssemblies,
-                    DiagnosticCode.None,
-                    "the derivation result carries no supported slot, so no contribution would be published (P-017).");
-            }
-
+            // A re-derivation with no supported slot is a complete denial, not an empty world: the proposal is the
+            // whole effective support of the new composition (P-013's Conservative case), so it still publishes and
+            // retracts every row the previous assembly carried. Refusing here would leave those rows effective
+            // forever and misreport the transition as no change (P-006, P-017).
             for (int i = 0; i < providerOrder.Count; i++)
             {
                 Id128 providerKey = providerOrder[i];
@@ -331,7 +327,8 @@ namespace GameCore.Unity.Runtime.Integration
                 catalogHash,
                 committed.Mode,
                 mounts,
-                null);
+                null,
+                retractsAbsentSupport: true);
 
             return DerivationProposalReport.Built(proposal, mounts.Count, capabilityCount, derivation.Assemblies.Count);
         }

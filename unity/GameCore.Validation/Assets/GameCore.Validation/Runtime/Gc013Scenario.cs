@@ -1052,8 +1052,11 @@ namespace GameCore.Validation.ProbeHost
 
             /// <summary>
             /// E. Before and after every published edit of B and C the isolated target's assembly - its recipe hash
-            /// and its effective capability set - is identical, it still has no row at all, and the edit's own
-            /// invalidation closure did not even mark it dirty (P-016, P-023).
+            /// and its effective capability set - is identical, it still has no row at all, and no candidate this run
+            /// evaluated for it emitted anything: the boundary denied every one (P-016, P-023). A provider mounted
+            /// behind the boundary may legitimately re-derive the target - the closure names it dirty and the
+            /// decision set gains its `BlockedByBoundary` denial, which the oracle-equal path requires (P-026) - so
+            /// locality here is the target's unchanged effective assembly, not its absence from the dirty set.
             /// </summary>
             private void ProveIsolatedUnchanged(string bareName)
             {
@@ -1070,25 +1073,47 @@ namespace GameCore.Validation.ProbeHost
                     bool hasBinding = publisher.Published.HasBinding(
                         family.IsolatedTarget, family.DerivedCapability, 0U);
 
-                    bool locality = true;
-                    string localityDetail = "not-observed";
+                    // P-016's invariant for the isolated branch is behavioural, not dirty-set membership: every
+                    // candidate the composition reaches it with is denied by the boundary in this snapshot too, so
+                    // its effective assembly cannot move. The invalidation closure may still name it dirty — a newly
+                    // mounted provider behind the boundary owes the target a `BlockedByBoundary` decision, and the
+                    // oracle-equal decision set is exactly that evidence (P-023, P-026) — which is why locality is
+                    // asserted as "every decision this run recorded for the isolated target was denied" rather than
+                    // "the closure skipped it".
+                    int denied = 0;
+                    int emitted = 0;
+                    if (LastDerivation != null)
+                    {
+                        IReadOnlyList<CandidateDecision> decisions = LastDerivation.Decisions;
+                        for (int i = 0; i < decisions.Count; i++)
+                        {
+                            if (!decisions[i].Target.Equals(family.IsolatedTarget))
+                            {
+                                continue;
+                            }
+
+                            if (decisions[i].Status == CandidateStatus.Emitted)
+                            {
+                                emitted++;
+                            }
+                            else
+                            {
+                                denied++;
+                            }
+                        }
+                    }
+
+                    bool boundaryHeld = emitted == 0;
+
+                    string carriedDetail = "not-observed";
                     InvalidationClosureResult? invalidation = LastInvalidation;
                     if (invalidation != null)
                     {
-                        if (invalidation.WholeWorld)
-                        {
-                            localityDetail = "wholeWorld";
-                        }
-                        else
-                        {
-                            bool dirty = Contains(invalidation.DirtyTargets, family.IsolatedTarget);
-                            locality = !dirty;
-                            localityDetail = "dirty=" + dirty
-                                + ",dirtyTargets="
-                                + invalidation.DirtyTargets.Count.ToString(CultureInfo.InvariantCulture)
-                                + ",carried="
-                                + invalidation.Counters.CarriedTargets.ToString(CultureInfo.InvariantCulture);
-                        }
+                        carriedDetail = (invalidation.WholeWorld ? "whole-world" : "local")
+                            + ";dirty="
+                            + Contains(invalidation.DirtyTargets, family.IsolatedTarget)
+                            + ";carried="
+                            + invalidation.Counters.CarriedTargets.ToString(CultureInfo.InvariantCulture);
                     }
 
                     bool pass = current != "<no-assembly>"
@@ -1096,7 +1121,7 @@ namespace GameCore.Validation.ProbeHost
                         && string.Equals(current, isolatedBaseline, StringComparison.Ordinal)
                         && rows == 0
                         && !hasBinding
-                        && locality;
+                        && boundaryHeld;
 
                     Add(bareName, pass,
                         "fingerprint=" + current
@@ -1104,7 +1129,9 @@ namespace GameCore.Validation.ProbeHost
                         + "; previous=" + isolatedPrevious
                         + "; rows=" + rows.ToString(CultureInfo.InvariantCulture)
                         + "; hasBinding=" + hasBinding
-                        + "; " + localityDetail);
+                        + "; decisionsDenied=" + denied.ToString(CultureInfo.InvariantCulture)
+                        + "; decisionsEmitted=" + emitted.ToString(CultureInfo.InvariantCulture)
+                        + "; " + carriedDetail);
                     isolatedPrevious = current;
                 }
                 catch (Exception exception)

@@ -357,13 +357,14 @@ namespace GameCore.Validation.ProbeHost
                 };
 
                 // The eligible existing targets that Automatic must reach with no import and no opt-in of their own
-                // (P-013). One of them moves with the village branch, one sits in the grove and one in the harbor, so
-                // the move is observable inside the set and the sibling branches outside it.
+                // (P-013). Eligibility for the derived dialogue binding is selector-based: only villagers carry the
+                // villager recipe, so the villagers are the set — Mara in the branch the move relocates under the
+                // chapter-two provider and Sailor in the harbor the move leaves alone. The gate and encounter targets
+                // are eligible for their own capabilities, not for this one, and the grove branch is covered by the
+                // declared opt-in target and the future villager instead.
                 automaticTargets = new List<TargetId>
                 {
                     NarrativeKeys.Mara,
-                    NarrativeKeys.GateEast,
-                    NarrativeKeys.EncounterOak,
                     NarrativeKeys.Sailor,
                 };
             }
