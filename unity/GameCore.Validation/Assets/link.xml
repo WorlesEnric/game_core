@@ -31,4 +31,13 @@
     <type fullname="GameCore.Unity.Adapters.GameCoreApplicationComposition" preserve="all" />
     <type fullname="GameCore.Unity.Adapters.GameCorePumpLoop" preserve="all" />
   </assembly>
+
+  <!-- GC-010 narrative vertical slice. The narrative gameplay assembly holds the chapter providers' declarations,
+       the fact owner, the five command stages and their systems; the rules assembly holds the pure rules those
+       stages call and the Fixtures assembly holds the scenario shared by the EditMode suite and the player probe.
+       Every one of them is reached through a generated-style registration or a player probe mode, so none is kept
+       alive by an ordinary managed call site. -->
+  <assembly fullname="GameCore.Rules.Narrative" preserve="all" />
+  <assembly fullname="GameCore.Gameplay.Narrative" preserve="all" />
+  <assembly fullname="GameCore.Gameplay.Narrative.Fixtures" preserve="all" />
 </linker>
