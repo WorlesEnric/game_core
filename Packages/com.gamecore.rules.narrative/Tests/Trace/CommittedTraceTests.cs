@@ -171,7 +171,28 @@ namespace GameCore.Rules.Narrative.Tests
 
         private static string FindTracePath()
         {
-            DirectoryInfo? directory = new DirectoryInfo(AppContext.BaseDirectory);
+            // The Unity Editor runs tests from its installation but opens the project as its working directory.
+            // Plain dotnet tests use the test assembly directory instead; walk both without an engine reference.
+            string workingTree = FindTraceAbove(Directory.GetCurrentDirectory());
+            if (workingTree.Length != 0)
+            {
+                return workingTree;
+            }
+
+            string assemblyTree = FindTraceAbove(AppContext.BaseDirectory);
+            if (assemblyTree.Length != 0)
+            {
+                return assemblyTree;
+            }
+
+            throw new FileNotFoundException(
+                "the committed canonical trace " + RelativeTracePath + " was not found above "
+                + Directory.GetCurrentDirectory() + " or " + AppContext.BaseDirectory);
+        }
+
+        private static string FindTraceAbove(string startingDirectory)
+        {
+            DirectoryInfo? directory = new DirectoryInfo(startingDirectory);
             for (int depth = 0; directory != null && depth < 12; depth++)
             {
                 string candidate = Path.Combine(directory.FullName, RelativeTracePath.Replace('/', Path.DirectorySeparatorChar));
@@ -183,9 +204,7 @@ namespace GameCore.Rules.Narrative.Tests
                 directory = directory.Parent;
             }
 
-            throw new FileNotFoundException(
-                "the committed canonical trace " + RelativeTracePath + " was not found above "
-                + AppContext.BaseDirectory);
+            return string.Empty;
         }
 
         private static string[] ToArray(IReadOnlyList<string> values)

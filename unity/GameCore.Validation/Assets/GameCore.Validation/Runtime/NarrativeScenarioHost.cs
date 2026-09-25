@@ -5,6 +5,7 @@ using GameCore.Composition;
 using GameCore.Contracts;
 using GameCore.Gameplay.Narrative;
 using GameCore.Gameplay.Narrative.Fixtures;
+using GameCore.Unity.Runtime.Integration;
 using GameCore.Unity.Fixtures;
 using GameCore.Validation.Generated;
 using GameCore.Validation.Probe;
@@ -61,6 +62,12 @@ namespace GameCore.Validation.ProbeHost
             {
                 new CatalogPluginDeclaration(chapterOne, ConfigDocument.Empty),
                 new CatalogPluginDeclaration(chapterTwo, ConfigDocument.Empty),
+                new CatalogPluginDeclaration(
+                    NarrativeDeclarations.ForwardProvider(
+                        NarrativeKeys.PluginTypeId(4UL),
+                        ProbeCatalog.FixturePluginKey,
+                        W1GateKeys.CatalogSchema),
+                    ConfigDocument.Empty),
             };
 
             return NarrativeScenario.Run(

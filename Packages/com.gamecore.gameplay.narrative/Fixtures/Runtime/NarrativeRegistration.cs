@@ -12,6 +12,7 @@ using GameCore.Execution;
 using GameCore.Execution.Messages;
 using GameCore.Planning;
 using GameCore.Unity.Runtime;
+using GameCore.Unity.Runtime.Time;
 using GameCore.Unity.Runtime.Messages;
 
 namespace GameCore.Gameplay.Narrative.Fixtures

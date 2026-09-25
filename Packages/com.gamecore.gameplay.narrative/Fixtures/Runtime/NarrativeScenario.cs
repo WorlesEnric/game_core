@@ -28,6 +28,7 @@ using GameCore.Contracts;
 using GameCore.Derivation;
 using GameCore.Execution;
 using GameCore.Execution.Messages;
+using GameCore.Execution.Time;
 using GameCore.Planning;
 using GameCore.Planning.Ownership;
 using GameCore.Planning.Scheduling;
@@ -1752,7 +1753,7 @@ namespace GameCore.Gameplay.Narrative.Fixtures
                     // declaration, key by key: a run that disagrees with the trace, or records an observation the
                     // trace does not declare, is a drift in the slice (P-060).
                     bool declared = NarrativeScenarioTrace.TryCompare(
-                        PipelineEntries(),
+                        facts.PipelineEntries(),
                         out IReadOnlyList<string> mismatches);
                     facts.TraceMatchesDeclaration = declared;
                     facts.TraceMismatchDetail = mismatches.Count == 0
