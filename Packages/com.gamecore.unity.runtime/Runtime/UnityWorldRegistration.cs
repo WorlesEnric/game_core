@@ -3,8 +3,9 @@ using System;
 using System.Collections.Generic;
 using GameCore.Contracts;
 using GameCore.Execution;
+using GameCore.Execution.Messages;
+using GameCore.Unity.Runtime.Messages;
 using Unity.Entities;
-
 namespace GameCore.Unity.Runtime
 {
     /// <summary>
@@ -251,7 +252,9 @@ namespace GameCore.Unity.Runtime
             GuardedDispatchPlan ingressPlan,
             GuardedDispatchPlan stepPlan,
             GuardedDispatchPlan outputPlan,
-            Action<World>? seedWorldState)
+            Action<World>? seedWorldState,
+            MessagePlaneRegistration? messages = null,
+            CommandPayloadReaders? messageReaders = null)
         {
             WorldName = string.IsNullOrEmpty(worldName) ? "GameCoreWorld" : worldName;
             Stages = ContractCollections.Freeze(stages);
@@ -260,6 +263,8 @@ namespace GameCore.Unity.Runtime
             StepPlan = stepPlan ?? throw new ArgumentNullException(nameof(stepPlan));
             OutputPlan = outputPlan ?? throw new ArgumentNullException(nameof(outputPlan));
             SeedWorldState = seedWorldState;
+            Messages = messages;
+            MessageReaders = messageReaders;
         }
 
         public string WorldName { get; }
@@ -276,6 +281,15 @@ namespace GameCore.Unity.Runtime
 
         /// <summary>Optional typed seeding of world-scoped entities; never discovered by reflection (04 s6).</summary>
         public Action<World>? SeedWorldState { get; }
+
+        /// <summary>
+        /// Optional bounded message plane of this world (GC-007). A registration without one has no command plane at
+        /// all: no route exists, so a submitted command is refused instead of being queued invisibly (P-042).
+        /// </summary>
+        public MessagePlaneRegistration? Messages { get; }
+
+        /// <summary>Generated typed payload readers of that plane; a missing reader is reported, never inferred.</summary>
+        public CommandPayloadReaders? MessageReaders { get; }
 
         /// <summary>
         /// Registration validation: every plan is well formed, every plan entry resolves to exactly one

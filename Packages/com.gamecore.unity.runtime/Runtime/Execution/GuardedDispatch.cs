@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using GameCore.Contracts;
 using GameCore.Execution;
+using GameCore.Execution.Messages;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
@@ -314,7 +315,7 @@ namespace GameCore.Unity.Runtime
     /// managed or unmanaged system exception stops the remaining systems instead of being logged and skipped by the
     /// stock group loop (04 s3, 04 s4, P-031).
     /// </summary>
-    public abstract partial class GuardedSystemGroup : ComponentSystemGroup
+    public abstract partial class GuardedSystemGroup : ComponentSystemGroup, IStepDispatchFacts
     {
         private GuardedDispatchPlan plan = GuardedDispatchPlan.Empty;
         private OrderedDispatchTable boundTable = GuardedDispatchPlan.Empty.ToOrderedTable(AssemblyEpoch.Zero);
@@ -672,6 +673,33 @@ namespace GameCore.Unity.Runtime
             }
 
             return new List<FactoryKey>(unreachedKeys);
+        }
+
+        /// <summary>
+        /// True when this system key was dispatched by the most recent run. Commit-time buffer validation uses what
+        /// actually ran, not what was installed (P-043, O-16).
+        /// </summary>
+        public bool Ran(FactoryKey producer) => dispatchedSet.Contains(producer);
+
+        /// <summary>True when at least one entry of the given stage ran in the most recent dispatch (P-043).</summary>
+        public bool RanStage(StageId stage)
+        {
+            IReadOnlyList<GuardedDispatchEntry> entries = plan.Entries;
+            for (int i = 0; i < entries.Count; i++)
+            {
+                GuardedDispatchEntry entry = entries[i];
+                if (!entry.Stage.Equals(stage))
+                {
+                    continue;
+                }
+
+                if (entry.StageIndex >= 0 && entry.StageIndex < stageDispatched.Length && stageDispatched[entry.StageIndex])
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private static string Describe(Exception exception)
