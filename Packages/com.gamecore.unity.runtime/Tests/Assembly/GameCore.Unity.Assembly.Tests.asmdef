@@ -1,0 +1,29 @@
+{
+    "name": "GameCore.Unity.Assembly.Tests",
+    "rootNamespace": "GameCore.Unity.Runtime.Tests.Assembly",
+    "references": [
+        "GameCore.Contracts",
+        "GameCore.Planning",
+        "GameCore.Unity.Fixtures",
+        "GameCore.Unity.Runtime",
+        "Unity.Collections",
+        "Unity.Entities",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
