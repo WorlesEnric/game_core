@@ -53,7 +53,7 @@ This is the package-specific fragment, not a complete generated project manifest
 | `GameCore.Derivation` | Contracts, supported BCL | Pure finite derivation, contribution composition, provenance and change-driven indexes |
 | `GameCore.Planning` | Contracts, Composition, Derivation | Immutable plans, state-disposition validation and semantic schedule compilation; no Entity/query facade |
 | `GameCore.Rules.<Name>` | Contracts and small value types only | Game-specific value schemas and reusable pure rules; the Burst-callable subset stays allocation-free and unmanaged. Assembly placement alone does not make a method Burst-compatible |
-| `GameCore.Unity.Runtime` | Contracts, Composition, Planning, Unity Entities/Collections/Jobs/Burst/Mathematics | World host, bindings, stage dispatch, structural application, snapshot extraction |
+| `GameCore.Unity.Runtime` | Contracts, Composition, Derivation, Planning, Unity Entities/Collections/Jobs/Burst/Mathematics | World host, bindings, stage dispatch, structural application, snapshot extraction and the committed-composition derivation-to-publication bridge |
 | `GameCore.Unity.Adapters` | Runtime, UnityEngine | Bootstrap/PlayerLoop, input, GameObject, audio, animation, assets, and optional physical-simulation adapters |
 | `GameCore.Content.Compiler` | Contracts, Planning, Unity Runtime, Unity Editor APIs; Editor-only | Authoring adapters, bakers, build-time recipe/registry generation and validation |
 | `GameCore.Gameplay.<Name>` | Corresponding Rules assembly, Unity Runtime and explicitly required adapters | Concrete unmanaged components, declarations and precompiled `ISystem`/job implementations |
