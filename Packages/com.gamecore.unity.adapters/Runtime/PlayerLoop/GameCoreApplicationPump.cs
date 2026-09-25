@@ -34,6 +34,12 @@ namespace GameCore.Unity.Adapters
         /// <summary>Trampoline invocations refused because the node belongs to an earlier session (04 s9).</summary>
         public static int StaleTrampolineRefusalCount { get; private set; }
 
+
+        /// <summary>Last adapter input report of this frame; `Skipped` when the world installed no adapter frame.</summary>
+        public static AdapterFrameReport LastAdapterInputReport { get; private set; }
+
+        /// <summary>Last presentation report of this frame; `Skipped` when the world installed no adapter frame.</summary>
+        public static AdapterFrameReport LastAdapterPresentationReport { get; private set; }
         public static ulong LastHostTicks { get; private set; }
 
         /// <summary>PlayerLoop entry point. A stale generation refuses to pump anything.</summary>
@@ -67,6 +73,13 @@ namespace GameCore.Unity.Adapters
                 ulong hostTicksNow = HostTicksNow(host);
                 LastHostTicks = hostTicksNow;
 
+                // The pump algorithm's two adapter points (04 s3): adapter input and completed host callbacks are
+                // collected before the host admits this frame's steps, and presentation runs after the host has
+                // committed whatever it was going to commit. A world with no registered adapter frame reports
+                // `Skipped`, so nothing changes for an application that installs no adapters (GC-019).
+                AdapterFrameReport input = AdapterFrameRegistry.CollectInput(host.World);
+                LastAdapterInputReport = input;
+
                 WorldPumpResult result = host.PumpFrame(hostTicksNow);
                 if (result.Pumped)
                 {
@@ -76,6 +89,11 @@ namespace GameCore.Unity.Adapters
                 {
                     ReentrantRefusalCount++;
                 }
+
+                LastAdapterPresentationReport = AdapterFrameRegistry.Present(host.World);
+
+                // Presentation runs on host frames even when a command-driven world is idle; an idle world still
+                // commits no step, which is why the two adapter calls cannot advance the logical clock (P-036).
             }
 
             frameHosts.Clear();
@@ -124,7 +142,8 @@ namespace GameCore.Unity.Adapters
             ReentrantRefusalCount = 0;
             StaleTrampolineRefusalCount = 0;
             LastHostTicks = 0UL;
-            IsEnabled = true;
+            LastAdapterInputReport = AdapterFrameReport.Skipped("reset");
+            LastAdapterPresentationReport = AdapterFrameReport.Skipped("reset");
         }
     }
 }

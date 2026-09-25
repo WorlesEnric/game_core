@@ -55,8 +55,10 @@ namespace GameCore.Unity.Adapters
             LastDisposedWorldCount = UnityWorldRegistry.ResetAll();
 
             GameCoreApplicationPump.Reset();
+            // Adapter frames belong to one world incarnation, so a surviving registration from the previous session
+            // would present or ingest into a world that no longer exists (04 s9, P-004).
+            AdapterFrameRegistry.Reset();
             GameCoreThreading.CaptureMainThread();
-            GameCoreApplicationComposition.ResetSequence();
 
             InstallEditorHook();
         }
@@ -67,6 +69,7 @@ namespace GameCore.Unity.Adapters
             GameCorePlayerLoopInstaller.Remove();
             UnityWorldRegistry.ResetAll();
             GameCoreApplicationPump.Reset();
+            AdapterFrameRegistry.Reset();
         }
 
         private static void InstallEditorHook()

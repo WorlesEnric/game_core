@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Adapter-core tests (GC-019), in-process and sub-second. The adapter fixtures (`Fixtures/Runtime`, the same
+       sources the Unity EditMode suite compiles through their own asmdef) are included directly, so one suite's
+       doubles cannot drift from the other's. -->
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="**/*.cs" Exclude="bin/**/*.cs;obj/**/*.cs" />
+    <Compile Include="../../../Packages/com.gamecore.unity.adapters/Fixtures/**/*.cs"
+             Exclude="../../../Packages/com.gamecore.unity.adapters/Fixtures/**/bin/**/*.cs;../../../Packages/com.gamecore.unity.adapters/Fixtures/**/obj/**/*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="NUnit" Version="3.14.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/GameCore.Adapters/GameCore.Adapters.csproj" />
+    <ProjectReference Include="../../src/GameCore.Composition/GameCore.Composition.csproj" />
+    <ProjectReference Include="../../src/GameCore.Contracts/GameCore.Contracts.csproj" />
+    <ProjectReference Include="../../src/GameCore.Execution/GameCore.Execution.csproj" />
+  </ItemGroup>
+
+</Project>
