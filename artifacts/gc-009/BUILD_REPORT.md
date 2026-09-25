@@ -43,6 +43,28 @@ The initial dotnet build had 5 scheduler compile errors, then 3 fixture import e
 
 ## Coverage limits and outstanding work
 
-- GC-009's scheduling conflict/cycle witnesses, disjoint partitions, declaration-order-independent hash/order, idle command worlds, bounded fixed-step catch-up, registered wakes, native-container producer/consumer wait and playback binding, and genre neutrality executed in Planning and temporal EditMode fixtures. Component jobs were observed by a dependent stage in a real Entities world. These fixtures do not demonstrate actual parallel overlap of disjoint jobs, an independently delayed structural playback while a job remains active, or a 10,000-step/1-2-4-worker replay. Those broader TEST-012/TEST-022 scenarios remain **NotRun**; the W2 integration gate with GC-007/008 real ownership and publisher is also **NotRun** on this branch, not a claimed pass.
+- Round 1 did not demonstrate actual overlap of disjoint jobs or independently delayed structural playback; Round 2 below adds execution evidence for independent job dependencies and a producer-bound playback. The 10,000-step/1-2-4-worker replay remains **NotRun**, as does the W2 integration gate with GC-007/008 real ownership and publisher on this branch.
 - No Unity safety exception was found in the final EditMode, PlayMode or player logs. A Unity LicensingClient notification logged `Access token is unavailable; failed to update`, but entitlement resolution, test runs and the IL2CPP player build succeeded. No tests remain failing or blocked in the suites above.
 - No changes were made to normative design expected values. The fixture edge was invalid according to 09/P-039, while the dependent-stage stage edge remained present.
+
+## Round 2
+
+Host/toolchain unchanged: Ubuntu 24.04 x64, .NET SDK 8.0.425, Unity 6000.0.75f1. Started with `git fetch origin && git checkout gc-009 && git reset --hard origin/gc-009` at `b0e2509`; corrections committed as `b424139`. .NET commands used `DOTNET_ROOT=$HOME/.dotnet PATH=$HOME/.dotnet:$PATH DOTNET_CLI_TELEMETRY_OPTOUT=1`. All commands below ran from the repository root.
+
+| Command / suite | Pass | Fail | NotRun | Blocked | Evidence |
+|---|---:|---:|---:|---:|---|
+| `$HOME/.dotnet/dotnet build dotnet/GameCore.sln -c Release` | Build succeeded | 0 | 0 | 0 | Build command output |
+| `$HOME/.dotnet/dotnet test dotnet/GameCore.sln -c Release --logger trx --results-directory artifacts/gc-009/trx-round2` | 287 | 0 | 0 | 0 | `trx-round2/*.trx` |
+| ProtocolFixtures.Production / Execution / Content.Compiler / Planning | 10 / 28 / 40 / 40 | 0 | 0 | 0 | TRX counters |
+| ProtocolFixtures / Contracts / ReferenceSeams / Composition | 10 / 45 / 21 / 93 | 0 | 0 | 0 | TRX counters |
+| `$HOME/Unity/Hub/Editor/6000.0.75f1/Editor/Unity -batchmode -nographics -projectPath "$PWD/unity/GameCore.Validation" -runTests -testPlatform EditMode -testResults "$PWD/artifacts/gc-009/editmode-round2-all.xml" -logFile "$PWD/artifacts/gc-009/editmode-round2-all.log"` | 194 | 0 | 0 | 0 | XML and log |
+| Composition / Planning / Unity.Runtime / W1Gate EditMode assemblies | 93 / 40 / 53 / 8 | 0 | 0 | 0 | XML assembly counters |
+| New `ScheduleExecutionTests` in Unity.Runtime | 5 | 0 | 0 | 0 | XML fixture counter; negative safety-control case **Passed**, not Ignored |
+| Same Unity invocation with `-testPlatform PlayMode` and `playmode-round2-all.xml` / `.log` | 6 | 0 | 0 | 0 | XML and log; Unity.Adapters assembly |
+| `python3 tools/check_game_core_csharp.py` | 68 source files checked | 0 | 0 | 0 | Command output |
+
+The first Unity run failed compilation: `SystemSpecOf` accepted one access declaration but playback provided both read and write declarations. Changed the helper to accept a `params AccessDeclaration[]` and construct an `AccessSet` from all accesses; no test expectation changed. A second invocation with `-quit` compiled successfully but emitted no result XML: Unity test runs require omitting `-quit` (09 handoff §4.2). The final full EditMode invocation above discovered and executed all 194 cases.
+
+The disjoint job fixture previously called `.Schedule(default(JobHandle))`, ignoring the incoming dependency it measured. Both jobs now schedule with their observed `SystemBase.Dependency`, so a wrongly forwarded producer would actually serialize the second job; the test still observes default for each, verifies the left handle was already in the dispatcher's fence slot when the right ran, and verifies the later ordered observer combines both handles. This proves absence of a dependency edge and safe independently scheduled work, **not measured simultaneous wall-clock execution**.
+
+Playback compiles a buffer producer→consumer edge, publishes its producer handle only into `NativeDependencyTable`, asserts the playback's incoming native handle equals that producer handle, completes the combined handle, and observes the written component and ECB structural change. The negative unsynchronized-container-read control passed by observing the expected guarded fault; no positive-path job-safety-system errors appeared in either final Unity log. The Unity logs contain a LicensingClient `Access token is unavailable; failed to update` notice but entitlement resolved and both test runs completed. No source changes outside the fixture, no expected-value changes, no player build in this round. The 10,000-step/1-2-4-worker replay and W2 integration gate remain NotRun, not Blocked.
