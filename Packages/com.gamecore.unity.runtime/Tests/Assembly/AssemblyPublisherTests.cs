@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Threading;
 using GameCore.Contracts;
 using GameCore.Planning;
+using CompositionProposal = GameCore.Planning.CompositionProposal;
 using GameCore.Unity.Fixtures;
 using GameCore.Unity.Runtime;
 using NUnit.Framework;
@@ -570,7 +571,10 @@ namespace GameCore.Unity.Runtime.Tests.Assembly
             Assert.That(fixture.World.CurrentStep, Is.EqualTo(LogicalStepId.First), "the old assembly keeps running");
 
             fixture.Publisher.Faults.FailDuringMigration = false;
-            InertAcquisitionSet retry = AdoptAndAcquire(fixture, 2UL, out _, out _);
+            InertAcquisitionSet retry = new InertAcquisitionSet(
+                fixture.Gate, AssemblyFixtureKeys.Operation(fixture.World.World, 2UL));
+            Assert.That(fixture.Publisher.HasAdoptedPublication, Is.True,
+                "a prewrite refusal did not consume the pending composition publication");
             PlannedPublication retryPlan = MountPlan(fixture, 2UL, liveSlots: liveSlots, acquisitions: retry);
             AssemblyPublicationReport retryReport = fixture.Publisher.Publish(retryPlan);
 

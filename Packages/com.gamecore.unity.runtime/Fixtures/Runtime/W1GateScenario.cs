@@ -913,8 +913,8 @@ namespace GameCore.Unity.Fixtures
                         worldA.PublishedCompositionRevision,
                         worldA.CurrentEpoch);
                     facts.CompositionMatchesWorldEpoch = countersAgree;
-                    facts.LaneAEpoch = laneA.Committed.Epoch.Value;
-                    facts.WorldAEpoch = worldA.CurrentEpoch.Value;
+                    ulong secondLaneEpoch = laneA.Committed.Epoch.Value;
+                    ulong secondWorldEpoch = worldA.CurrentEpoch.Value;
 
                     WorldPumpResult pump = worldA.PumpFrame(HostTicks * 2UL);
                     FixtureWorldState.TryReadTrail(worldA.EntityWorld.EntityManager, out FixtureTrail trail);
@@ -950,8 +950,8 @@ namespace GameCore.Unity.Fixtures
                         && admitted.PublicationOutcome == Outcome.Published
                         && admitted.CommandSubmitted
                         && countersAgree
-                        && facts.LaneAEpoch == 3UL
-                        && facts.WorldAEpoch == 3UL
+                        && secondLaneEpoch == 3UL
+                        && secondWorldEpoch == 3UL
                         && pumpReportedTheFault
                         && worldA.Driver.IsFaulted
                         && worldA.Driver.FaultCode == DiagnosticCode.ApplyFault
@@ -988,8 +988,8 @@ namespace GameCore.Unity.Fixtures
                         + "; quarantinedJobs=" + facts.QuarantinedJobs
                         + "; retainedHandles=" + facts.RetainedHandles
                         + "; outstandingJobs=" + facts.OutstandingJobsBeforeTeardown
-                        + "; laneEpoch=" + facts.LaneAEpoch
-                        + "; worldEpoch=" + facts.WorldAEpoch
+                        + "; laneEpoch=" + secondLaneEpoch
+                        + "; worldEpoch=" + secondWorldEpoch
                         + "; countersAgree=" + countersAgree
                         + "; pendingDemand=" + worldA.PendingDemand;
 

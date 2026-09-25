@@ -46,6 +46,8 @@ namespace GameCore.Unity.Runtime
     {
         public readonly DefinitionRef Recipe;
         public readonly ScopeId Scope;
+        public readonly TargetId Target;
+        public readonly OperationId Operation;
 
         /// <summary>
         /// Composition revision the caller's derived variant was computed against (P-024). It must be the revision
@@ -111,7 +113,7 @@ namespace GameCore.Unity.Runtime
 
         public AssemblyEpoch WorldEpochAfter { get; }
 
-        /// <summary>Lane publication this attempt came from; the world epoch is its mapped value (decision 2).</summary>
+        /// <summary>Lane publication that this attempt joins; equals the world epoch when published.</summary>
         public AssemblyEpoch LaneEpoch { get; }
 
         /// <summary>Live ECS rows written by the apply step; zero means no live write happened (05 s4 `Rejected`).</summary>
@@ -359,6 +361,7 @@ namespace GameCore.Unity.Runtime
 
             if (publication.IsRejected)
             {
+                if (publication.State.Code == DiagnosticCode.StalePlan) StalePlanCount++;
                 return Refuse(
                     publication.Plan.Operation,
                     epochBefore,
@@ -507,24 +510,14 @@ namespace GameCore.Unity.Runtime
 
             // 6. Apply. From here on a failure is a postwrite fault: no epoch, no image and no resumption (P-031).
             publication.State.TryBeginApplying(out _);
-            int writes;
+            int writes = 0;
             try
             {
-                writes = ApplyStructuralAndState(publication);
+                ApplyStructuralAndState(publication, ref writes);
             }
             catch (Exception exception)
             {
-                return FaultAfterLiveWrite(publication, epochBefore, laneEpoch, drained, exception);
-            }
-
-            try
-            {
-                // The injected postwrite fault fires exactly at the boundary P-031 describes: after live writes.
-                Faults.MaybeFailAfterFirstLiveWrite();
-            }
-            catch (Exception exception)
-            {
-                return FaultAfterLiveWrite(publication, epochBefore, laneEpoch, drained, exception);
+                return FaultAfterLiveWrite(publication, epochBefore, laneEpoch, drained, writes, exception);
             }
 
             // The stamp of every affected target names the epoch being published, and it is written inside the fence
@@ -982,10 +975,9 @@ namespace GameCore.Unity.Runtime
             return true;
         }
 
-        private int ApplyStructuralAndState(PlannedPublication publication)
+        private void ApplyStructuralAndState(PlannedPublication publication, ref int writes)
         {
             EntityManager entityManager = world.EntityWorld.EntityManager;
-            int writes = 0;
 
             for (int i = 0; i < publication.Installs.Count; i++)
             {
@@ -993,6 +985,7 @@ namespace GameCore.Unity.Runtime
                 if (registry.TryResolveTarget(row.Target, out _, out Entity entity))
                 {
                     writes += InstallBindingRow(entityManager, entity, row);
+                    if (writes == 1) Faults.MaybeFailAfterFirstLiveWrite();
                 }
             }
 
@@ -1002,6 +995,7 @@ namespace GameCore.Unity.Runtime
                 if (registry.TryResolveTarget(row.Target, out _, out Entity entity))
                 {
                     writes += RemoveBindingRow(entityManager, entity, row);
+                    if (writes == 1) Faults.MaybeFailAfterFirstLiveWrite();
                 }
             }
 
@@ -1032,14 +1026,15 @@ namespace GameCore.Unity.Runtime
                         disposition.Slot,
                         migrated,
                         SchemaVersionOf(disposition.Slot.Slot));
+                    if (writes == 1) Faults.MaybeFailAfterFirstLiveWrite();
                 }
                 else if (disposition.Kind == StateDispositionKind.Retract)
                 {
                     writes += ClearSlotState(entityManager, entity, disposition.Slot);
+                    if (writes == 1) Faults.MaybeFailAfterFirstLiveWrite();
                 }
             }
 
-            return writes;
         }
 
         private static bool HasEffectiveChange(PlannedPublication publication)
@@ -1293,6 +1288,7 @@ namespace GameCore.Unity.Runtime
             AssemblyEpoch epochBefore,
             AssemblyEpoch laneEpoch,
             int drained,
+            int writes,
             Exception exception)
         {
             string detail = "postwrite failure: " + Describe(exception);
@@ -1321,7 +1317,7 @@ namespace GameCore.Unity.Runtime
                 epochBefore,
                 world.CurrentEpoch,
                 laneEpoch,
-                0,
+                writes,
                 0,
                 drained,
                 null,
@@ -1598,6 +1594,8 @@ namespace GameCore.Unity.Runtime
                 Value = rule.Value,
                 Priority = rule.Priority,
                 Schema = rule.Schema,
+                Provider = rule.Provider,
+                ProviderGeneration = rule.ProviderGeneration,
                 Active = 1,
             };
         }

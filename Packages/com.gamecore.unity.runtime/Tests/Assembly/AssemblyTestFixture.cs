@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using GameCore.Contracts;
 using GameCore.Planning;
+using CompositionProposal = GameCore.Planning.CompositionProposal;
 using GameCore.Unity.Fixtures;
 using GameCore.Unity.Runtime;
 using Unity.Entities;
