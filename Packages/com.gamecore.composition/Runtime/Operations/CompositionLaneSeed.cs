@@ -18,6 +18,7 @@
 // pass them in the wrong order.
 #nullable enable
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using GameCore.Contracts;
 
@@ -42,9 +43,25 @@ namespace GameCore.Composition
             new CompositionLaneSeed(CompositionRevision.First, AssemblyEpoch.First);
 
         public CompositionLaneSeed(CompositionRevision revision, AssemblyEpoch epoch)
+            : this(revision, epoch, null)
+        {
+        }
+
+        /// <summary>
+        /// The same seed with the world definition's declared scope subtree (P-010). A world definition declares the
+        /// scopes its content lives in, so a lane joined to that world starts from the declared tree rather than from
+        /// a root alone: the tree is part of the initial composition, which is what keeps one publication series
+        /// (P-006) — building a tree through scope-edit publications after the join would advance the composition
+        /// counter without a matching assembly publication, and no assembly can be published for a scope-only edit.
+        /// </summary>
+        public CompositionLaneSeed(
+            CompositionRevision revision,
+            AssemblyEpoch epoch,
+            IReadOnlyList<ScopeRecord>? initialScopes)
         {
             Revision = revision;
             Epoch = epoch;
+            InitialScopes = initialScopes;
         }
 
         /// <summary>Committed composition revision the lane starts from.</summary>
@@ -58,6 +75,20 @@ namespace GameCore.Composition
 
         /// <summary>True when the lane is joined to a published assembly and must stay on that series (P-006).</summary>
         public bool IsJoined => !IsUnpublished;
+
+        /// <summary>
+        /// The world definition's declared scope subtree, or null/empty when the definition declares no scope beyond
+        /// the world root. The records are validated when the lane opens its composition: a duplicate identity, a
+        /// missing parent and a wrong depth are refused there (P-010).
+        /// </summary>
+        public IReadOnlyList<ScopeRecord>? InitialScopes { get; }
+
+        /// <summary>True when the seed declares at least one scope beyond the world root.</summary>
+        public bool DeclaresScopes => InitialScopes != null && InitialScopes.Count != 0;
+
+        /// <summary>This seed's publication with the world definition's declared scope tree attached.</summary>
+        public CompositionLaneSeed WithScopes(IReadOnlyList<ScopeRecord>? initialScopes) =>
+            new CompositionLaneSeed(Revision, Epoch, initialScopes);
 
         /// <summary>
         /// True when the two counters describe the same publication. P-006 increments revision and epoch together,
@@ -74,6 +105,7 @@ namespace GameCore.Composition
             + " revision=" + Revision.Value.ToString(CultureInfo.InvariantCulture)
             + ", epoch=" + Epoch.Value.ToString(CultureInfo.InvariantCulture)
             + (IsConsistent ? string.Empty : ", INCONSISTENT")
+            + ", declaredScopes=" + (InitialScopes != null ? InitialScopes.Count : 0).ToString(CultureInfo.InvariantCulture)
             + ")";
     }
 }

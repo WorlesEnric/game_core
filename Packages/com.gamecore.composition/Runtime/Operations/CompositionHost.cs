@@ -141,7 +141,12 @@ namespace GameCore.Composition
                 new IsolationSet(false, null),
                 null,
                 null);
-            committed = CompositionState.CreateEmpty(world, root, mode, seed.Revision, seed.Epoch);
+
+            // A world definition declares the scope tree its content lives in (P-010), so a lane joined to that world
+            // opens its composition with the declared subtree. The registry's own construction validates it: a
+            // duplicate identity, a missing parent and a depth that disagrees with its parentage all refuse here,
+            // before any world is exposed (O-01).
+            committed = CompositionState.CreateEmpty(world, root, mode, seed.Revision, seed.Epoch, seed.InitialScopes);
             staged = committed;
             ledger = new OperationLedger(Settings.Capacity, Settings.Expiry);
             Callbacks = new CallbackGate(world);
