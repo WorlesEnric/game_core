@@ -19,9 +19,13 @@ using GameCore.Contracts;
 
 namespace GameCore.Planning
 {
-    /// <summary>
     /// One effective binding of one target slot. Its identity is `(Target, Capability, OutputSlot)` (P-017); value,
     /// provider and priority may change without the identity changing.
+    ///
+    /// `Value` is the *composed* value of the slot's policy (P-019): for `Additive` it is what the declared reducer
+    /// folded over every supporter, not one candidate's raw value. `Supports` names those supporters (P-017), while
+    /// `Provider`/`ProviderGeneration`/`Priority` remain the highest-ranked supporter — so a reader that only wants
+    /// "who owns this row" still has one answer and the composed value never masquerades as a single contribution.
     /// </summary>
     public readonly struct TargetBindingRow
     {
@@ -35,6 +39,14 @@ namespace GameCore.Planning
         public readonly int Priority;
         public readonly SchemaRef Schema;
 
+        /// <summary>
+        /// Every contribution that supports this row, canonically ordered (P-017). One entry for `Replace`,
+        /// `Exclusive` and `Incompatible`; one or more for `Additive`, `Ordered` and set-union slots. A row whose
+        /// caller supplies no set still carries its own single supporter, so one-element support is the same code
+        /// path as any other set rather than a special case.
+        /// </summary>
+        public readonly IReadOnlyList<CapabilitySupport> Supports;
+
         public TargetBindingRow(
             TargetId target,
             CapabilityId capability,
@@ -44,7 +56,9 @@ namespace GameCore.Planning
             ProviderInstallationId provider,
             ulong providerGeneration,
             int priority,
-            SchemaRef schema)
+            SchemaRef schema,
+            IReadOnlyList<CapabilitySupport>? supports = null,
+            RuleId rule = default(RuleId))
         {
             Target = target;
             Capability = capability;
@@ -55,7 +69,28 @@ namespace GameCore.Planning
             ProviderGeneration = providerGeneration;
             Priority = priority;
             Schema = schema;
+            Supports = supports != null
+                ? CapabilitySupport.Freeze(supports)
+                : SingleSupport(provider, providerGeneration, rule, value, priority);
         }
+
+        /// <summary>Canonical support set of a row that has exactly one supporter (P-017).</summary>
+        public static IReadOnlyList<CapabilitySupport> SingleSupport(
+            ProviderInstallationId provider,
+            ulong providerGeneration,
+            RuleId rule,
+            int value,
+            int priority)
+            => CapabilitySupport.Freeze(new[]
+            {
+                new CapabilitySupport(provider, providerGeneration, rule, value, priority),
+            });
+
+        /// <summary>Number of contributions that support this row; one is the ordinary single-provider case.</summary>
+        public int SupporterCount => Supports.Count;
+
+        /// <summary>True when more than one contribution supports this row (P-017).</summary>
+        public bool IsMultiSupport => Supports.Count > 1;
 
         /// <summary>Contribution identity of this row (P-017); two rows with the same identity are one slot.</summary>
         public bool HasSameIdentity(TargetBindingRow other) =>
@@ -63,6 +98,11 @@ namespace GameCore.Planning
             && Capability.Equals(other.Capability)
             && OutputSlot == other.OutputSlot;
 
+        /// <summary>
+        /// True when the two rows publish the same effective binding. The support set participates: a slot whose
+        /// composed value is unchanged but whose supporters changed is a content change, because removing one of
+        /// two supporters must be observable (P-017, P-033).
+        /// </summary>
         public bool HasSameContent(TargetBindingRow other) =>
             HasSameIdentity(other)
             && CapabilityVersion == other.CapabilityVersion
@@ -70,19 +110,25 @@ namespace GameCore.Planning
             && Provider.Equals(other.Provider)
             && ProviderGeneration == other.ProviderGeneration
             && Priority == other.Priority
-            && Schema.Equals(other.Schema);
+            && Schema.Equals(other.Schema)
+            && CapabilitySupport.SetEquals(Supports, other.Supports);
 
         public override string ToString() =>
             Target.ToString() + "/" + Capability.ToString()
             + "#" + OutputSlot.ToString(CultureInfo.InvariantCulture)
             + "=" + Value.ToString(CultureInfo.InvariantCulture)
-            + "@" + Provider.ToString();
+            + "@" + Provider.ToString()
+            + "[support=" + SupporterCount.ToString(CultureInfo.InvariantCulture) + "]";
     }
 
     /// <summary>
     /// One active derivation rule of the published revision: which recipe in which scope receives which capability
-    /// from which provider. A future spawn derives its assembly from these rules, so it appears fully assembled at
-    /// its first visibility without per-instance imports (P-013, P-024).
+    /// from which provider(s). A future spawn derives its assembly from these rules, so it appears fully assembled
+    /// at its first visibility without per-instance imports (P-013, P-024).
+    ///
+    /// The rule carries the same composed value and support set as the `TargetBindingRow` it produced, so a target
+    /// spawned after the publication inherits the *composed* binding — including the number of supporters an
+    /// `Additive` slot was folded from (P-017, P-019) — rather than only the winning candidate's raw value.
     /// </summary>
     public readonly struct DerivedBindingRule
     {
@@ -98,6 +144,9 @@ namespace GameCore.Planning
         public readonly CompositionPolicy Policy;
         public readonly SchemaRef Schema;
 
+        /// <summary>Contributions this rule's effective value was composed from, canonically ordered (P-017).</summary>
+        public readonly IReadOnlyList<CapabilitySupport> Supports;
+
         public DerivedBindingRule(
             DefinitionRef recipe,
             ScopeId scope,
@@ -109,7 +158,9 @@ namespace GameCore.Planning
             ulong providerGeneration,
             int priority,
             CompositionPolicy policy,
-            SchemaRef schema)
+            SchemaRef schema,
+            IReadOnlyList<CapabilitySupport>? supports = null,
+            RuleId rule = default(RuleId))
         {
             Recipe = recipe;
             Scope = scope;
@@ -122,7 +173,19 @@ namespace GameCore.Planning
             Priority = priority;
             Policy = policy;
             Schema = schema;
+            Supports = supports != null
+                ? CapabilitySupport.Freeze(supports)
+                : CapabilitySupport.Freeze(new[]
+                {
+                    new CapabilitySupport(provider, providerGeneration, rule, value, priority),
+                });
         }
+
+        /// <summary>Number of contributions this rule's value was composed from (P-017).</summary>
+        public int SupporterCount => Supports.Count;
+
+        /// <summary>True when this rule composes more than one contribution (P-017, P-019).</summary>
+        public bool IsMultiSupport => Supports.Count > 1;
 
         /// <summary>True when this rule derives a binding for a target of the given recipe in the given scope.</summary>
         public bool AppliesTo(DefinitionRef recipe, ScopeId scope) =>
@@ -139,7 +202,8 @@ namespace GameCore.Planning
             + OutputSlot.ToString(CultureInfo.InvariantCulture);
 
         public override string ToString() =>
-            Recipe.ToString() + "->" + Capability.ToString() + "=" + Value.ToString(CultureInfo.InvariantCulture);
+            Recipe.ToString() + "->" + Capability.ToString() + "=" + Value.ToString(CultureInfo.InvariantCulture)
+            + "[support=" + SupporterCount.ToString(CultureInfo.InvariantCulture) + "]";
     }
 
     /// <summary>
