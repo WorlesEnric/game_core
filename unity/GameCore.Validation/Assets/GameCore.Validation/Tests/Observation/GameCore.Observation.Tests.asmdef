@@ -1,0 +1,38 @@
+{
+  "name": "GameCore.Observation.Tests",
+  "rootNamespace": "GameCore.Observation.Tests",
+  "references": [
+    "GameCore.Composition",
+    "GameCore.Contracts",
+    "GameCore.Derivation",
+    "GameCore.Derivation.Fixtures",
+    "GameCore.Gameplay.Cards",
+    "GameCore.Gameplay.Cards.Fixtures",
+    "GameCore.Gameplay.Narrative",
+    "GameCore.Gameplay.Narrative.Fixtures",
+    "GameCore.Planning",
+    "GameCore.Rules.Cards",
+    "GameCore.Rules.Narrative",
+    "GameCore.Unity.Fixtures",
+    "GameCore.Unity.Runtime",
+    "Unity.Collections",
+    "Unity.Entities",
+    "UnityEngine.TestRunner",
+    "UnityEditor.TestRunner"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": true,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

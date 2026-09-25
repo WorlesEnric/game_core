@@ -5,6 +5,7 @@ using System.Globalization;
 using GameCore.Contracts;
 using GameCore.Execution;
 using GameCore.Execution.Messages;
+using GameCore.Execution.Observation;
 using GameCore.Unity.Runtime.Messages;
 using Unity.Core;
 using Unity.Entities;
@@ -114,6 +115,7 @@ namespace GameCore.Unity.Runtime
         private readonly WorldResourceLedger ledger;
         private readonly ObservationHub observations = new ObservationHub();
         private readonly StepPublicationStore publications;
+        private readonly WorldObservation observation;
         private readonly ITemporalAccumulator temporal;
         private readonly UnityExecutionDriver driver;
         private readonly GameCoreIngressGroup ingressGroup;
@@ -190,6 +192,11 @@ namespace GameCore.Unity.Runtime
                 messages = new WorldMessagePlane(request.World, registration.Messages, registration.MessageReaders ?? new CommandPayloadReaders());
             }
 
+            // GC-016: one read surface over the committed image store and the committed-event store. It owns no
+            // storage, so it never becomes a second authority for either; the boundary facts a checkpoint reads are
+            // attached by whoever owns those modules (P-053).
+            observation = new WorldObservation(publications, messages != null ? messages.EventStore : null, null);
+
             ingressGroup.Bind(registration.IngressPlan, AssemblyEpoch.First, catalog, driver);
             stepGroup.Bind(registration.StepPlan, AssemblyEpoch.First, catalog, driver);
             outputGroup.Bind(registration.OutputPlan, AssemblyEpoch.First, catalog, driver);
@@ -237,6 +244,12 @@ namespace GameCore.Unity.Runtime
         /// <summary>This world's registered system catalog: key to concrete instance, never discovered reflectively.</summary>
         public ISystemDispatchCatalog Systems => catalog;
         public StepPublicationStore Publications => publications;
+
+        /// <summary>
+        /// This world's observation storage: immutable step images, bounded committed events and the committed
+        /// boundary a checkpoint leases (GC-016, P-045, P-053).
+        /// </summary>
+        public WorldObservation Observation => observation;
 
         public ObservationHub Observations => observations;
 

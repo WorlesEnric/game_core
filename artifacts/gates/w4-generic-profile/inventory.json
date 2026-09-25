@@ -186,10 +186,22 @@
       ],
       "evidence": [
         "artifacts/w3-gate/trx/",
-        "artifacts/w3-gate/unity/editmode-results.xml"
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/gc-016/final-trx/",
+        "artifacts/gc-016/unity/editmode-results.xml",
+        "artifacts/gc-016/BUILD_REPORT.md"
       ],
-      "gap": "Epoch-bound bindings, stale-callback fencing and observation backpressure are evidenced; no archived run shows bindings resolving once per assembly rather than per target per frame, nor retention backpressure under load (TEST-023).",
-      "nextOwner": "GC-026"
+      "gap": "Pinned images, concurrent leases and explicit snapshot backpressure passed in both pure suites and real-family EditMode worlds; binding resolution frequency under load remains unmeasured (TEST-023).",
+      "nextOwner": "GC-026",
+      "gc016": {
+        "delta": "GC-016 observation/diagnostics subset exercised in both families; status remains Partial.",
+        "executedEvidence": [
+          "artifacts/gc-016/final-trx/",
+          "artifacts/gc-016/unity/editmode-results.xml",
+          "artifacts/gc-016/BUILD_REPORT.md"
+        ],
+        "statusUnchangedBecause": "Pinned images, concurrent leases and explicit snapshot backpressure passed in both pure suites and real-family EditMode worlds; binding resolution frequency under load remains unmeasured (TEST-023)."
+      }
     },
     {
       "id": "P-008",
@@ -757,10 +769,22 @@
       "evidence": [
         "artifacts/w3-gate/trx/",
         "artifacts/w3-gate/toolchain/probe-narrative.json",
-        "artifacts/w3-gate/toolchain/probe-cards.json"
+        "artifacts/w3-gate/toolchain/probe-cards.json",
+        "artifacts/gc-016/final-trx/",
+        "artifacts/gc-016/unity/editmode-results.xml",
+        "artifacts/gc-016/BUILD_REPORT.md"
       ],
-      "gap": "Explain paging, losing-candidate provenance and per-target provenance digests are evidenced; the complete retained record (mode gate, stratum, state disposition, recipe hash) and CompositionPublished/Rejected diagnostic payloads are not archived.",
-      "nextOwner": "GC-016"
+      "gap": "Real narrative/card derivations reconstruct effective capability winners, losers, exclusions and page-independent digests; retained provenance bounds passed. Wider explanation coverage across every mode/stratum/state disposition remains open.",
+      "nextOwner": "GC-016",
+      "gc016": {
+        "delta": "GC-016 observation/diagnostics subset exercised in both families; status remains Partial.",
+        "executedEvidence": [
+          "artifacts/gc-016/final-trx/",
+          "artifacts/gc-016/unity/editmode-results.xml",
+          "artifacts/gc-016/BUILD_REPORT.md"
+        ],
+        "statusUnchangedBecause": "Real narrative/card derivations reconstruct effective capability winners, losers, exclusions and page-independent digests; retained provenance bounds passed. Wider explanation coverage across every mode/stratum/state disposition remains open."
+      }
     },
     {
       "id": "P-027",
@@ -1205,10 +1229,22 @@
       ],
       "evidence": [
         "artifacts/w3-gate/unity/editmode-results.xml",
-        "artifacts/w3-gate/trx/"
+        "artifacts/w3-gate/trx/",
+        "artifacts/gc-016/final-trx/",
+        "artifacts/gc-016/unity/editmode-results.xml",
+        "artifacts/gc-016/BUILD_REPORT.md"
       ],
-      "gap": "Committed-event publication, at-least-once page reads, subscriber-failure isolation and retention gaps are evidenced; a crash-durable outbox for irreversible output adapters is unrun.",
-      "nextOwner": "GC-021"
+      "gap": "Real-family published images, cursor expiry/resynchronization and delayed-consumer dedup passed in EditMode; crash-durable external outbox remains GC-021 work.",
+      "nextOwner": "GC-021",
+      "gc016": {
+        "delta": "GC-016 observation/diagnostics subset exercised in both families; status remains Partial.",
+        "executedEvidence": [
+          "artifacts/gc-016/final-trx/",
+          "artifacts/gc-016/unity/editmode-results.xml",
+          "artifacts/gc-016/BUILD_REPORT.md"
+        ],
+        "statusUnchangedBecause": "Real-family published images, cursor expiry/resynchronization and delayed-consumer dedup passed in EditMode; crash-durable external outbox remains GC-021 work."
+      }
     },
     {
       "id": "P-046",
@@ -1376,10 +1412,22 @@
       ],
       "evidence": [
         "artifacts/w3-gate/trx/",
-        "artifacts/protocol-fixtures/results.json"
+        "artifacts/protocol-fixtures/results.json",
+        "artifacts/gc-016/final-trx/",
+        "artifacts/gc-016/unity/editmode-results.xml",
+        "artifacts/gc-016/BUILD_REPORT.md"
       ],
-      "gap": "Cancellation identity binding, idempotency conflict, retransmission coalescing and expiry high-water are evidenced; the caller-reserved session reservation used by restore (GC-018) and bounded retries with new operation IDs are unproven.",
-      "nextOwner": "GC-014"
+      "gap": "Staged/expired operation status distinction passed in diagnostics tests; restore session reservation and bounded retry gaps remain.",
+      "nextOwner": "GC-014",
+      "gc016": {
+        "delta": "GC-016 observation/diagnostics subset exercised in both families; status remains Partial.",
+        "executedEvidence": [
+          "artifacts/gc-016/final-trx/",
+          "artifacts/gc-016/unity/editmode-results.xml",
+          "artifacts/gc-016/BUILD_REPORT.md"
+        ],
+        "statusUnchangedBecause": "Staged/expired operation status distinction passed in diagnostics tests; restore session reservation and bounded retry gaps remain."
+      }
     },
     {
       "id": "P-051",
@@ -1413,10 +1461,22 @@
       ],
       "evidence": [
         "artifacts/w3-gate/trx/",
-        "artifacts/w3-gate/unity/editmode-results.xml"
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/gc-016/final-trx/",
+        "artifacts/gc-016/unity/editmode-results.xml",
+        "artifacts/gc-016/BUILD_REPORT.md"
       ],
-      "gap": "Rejection codes are exercised individually, but full payloads (world/operation/plan identity, smallest conflicting set, retrieval keys, retry classification) are not established; GC-004's own review records P-052 conformance as not established.",
-      "nextOwner": "GC-016"
+      "gap": "Typed payload interning and formatting-independent precedence passed in diagnostics and real-family rejection tests; cross-module diagnostic assembly and full rejection matrix remain open.",
+      "nextOwner": "GC-016",
+      "gc016": {
+        "delta": "GC-016 observation/diagnostics subset exercised in both families; status remains Partial.",
+        "executedEvidence": [
+          "artifacts/gc-016/final-trx/",
+          "artifacts/gc-016/unity/editmode-results.xml",
+          "artifacts/gc-016/BUILD_REPORT.md"
+        ],
+        "statusUnchangedBecause": "Typed payload interning and formatting-independent precedence passed in diagnostics and real-family rejection tests; cross-module diagnostic assembly and full rejection matrix remain open."
+      }
     },
     {
       "id": "P-053",

@@ -52,6 +52,22 @@ Evidence: `artifacts/w4-gate/unity/editmode-results.xml`, `artifacts/w4-gate/uni
 `artifacts/w4-gate/toolchain/probe-w4-gate.json`, `artifacts/w4-gate/toolchain/probe-gc013.json`, and
 `artifacts/w4-gate/BUILD_REPORT.md`.
 
+## GC-016 executed observation/diagnostics evidence
+
+The Linux host passed 796/796 .NET tests, 845/845 Unity EditMode and 6/6 PlayMode tests,
+and built the stripped IL2CPP player; ten probe drivers passed five runs per mode
+(the qualification driver also has five expected-negative runs). See
+`artifacts/gc-016/BUILD_REPORT.md`, `artifacts/gc-016/final-trx/`,
+`artifacts/gc-016/unity/editmode-results.xml` and `artifacts/gc-016/toolchain/`.
+The 18 real-family observation cases passed for narrative and cards, including leased published images,
+cursor resynchronization, deduplication, provenance and staged-versus-published status.
+
+P-007, P-026, P-045, P-050 and P-052 gained cited evidence, mirrored in `inventory.json`,
+but remain **Partial**: binding-resolution load measurements, complete explanation coverage,
+durable external delivery, restore session reservation and unified diagnostics are still open.
+No inventory row is promoted by this task; counts remain 37 Implemented+Evidenced,
+45 Partial, 4 Not yet.
+
 ## Requirements `P-001`..`P-060`
 
 | Id | Title | Status | Owner tasks (registry) | Evidence (paths that exist) | Gap | Next owner |

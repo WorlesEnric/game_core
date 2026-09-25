@@ -1,10 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <!-- Engine-free execution core (GC-005). The same sources are compiled into the Unity assembly
-       GameCore.Unity.Runtime; here they build with a plain .NET SDK so the temporal accumulator, the guarded
-       dispatch plan, the world/job resource ledger and the step publication boundary can be tested without Unity.
-       No UnityEngine or Unity.* reference is allowed in these files. The W1 gate substituted the production
-       GameCore.Contracts project for the W0 test-only reference seam. -->
+  <!-- Engine-free execution core (GC-005) and its observation storage (GC-016). The same sources are compiled into
+       the Unity assembly GameCore.Unity.Runtime; here they build with a plain .NET SDK so the temporal accumulator,
+       the guarded dispatch plan, the world/job resource ledger, the step publication boundary and the bounded
+       observation storage can be tested without Unity. No UnityEngine or Unity.* reference is allowed in these
+       files. The W1 gate substituted the production GameCore.Contracts project for the W0 test-only reference seam.
+       GC-016 added the Observation folder to the glob: it is engine-free for exactly the same reason `Pure` is,
+       and its retention, lease, resynchronization and delivery behaviour must be provable without Unity. -->
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
@@ -16,6 +18,8 @@
   <ItemGroup>
     <Compile Include="../../../Packages/com.gamecore.unity.runtime/Runtime/Pure/**/*.cs"
              Exclude="../../../Packages/com.gamecore.unity.runtime/Runtime/Pure/**/bin/**/*.cs;../../../Packages/com.gamecore.unity.runtime/Runtime/Pure/**/obj/**/*.cs" />
+    <Compile Include="../../../Packages/com.gamecore.unity.runtime/Runtime/Observation/**/*.cs"
+             Exclude="../../../Packages/com.gamecore.unity.runtime/Runtime/Observation/**/bin/**/*.cs;../../../Packages/com.gamecore.unity.runtime/Runtime/Observation/**/obj/**/*.cs" />
   </ItemGroup>
 
   <ItemGroup>
