@@ -427,7 +427,7 @@ namespace GameCore.Derivation
 
         private static void AddScope(DerivationSnapshot snapshot, ScopeId scope, HashSet<Id128> dirtyScopes)
         {
-            if (snapshot.TryGetScope(scope, out DerivationScope? _))
+            if (snapshot.TryGetScope(scope, out _))
             {
                 dirtyScopes.Add(scope.Value);
             }

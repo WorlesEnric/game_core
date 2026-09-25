@@ -306,7 +306,7 @@ namespace GameCore.Derivation
                 }
                 else
                 {
-                    rules = nextIndexes.RulesReaching(target.Target, out DerivationTarget? _);
+                    rules = nextIndexes.RulesReaching(target.Target, out _);
                 }
 
                 for (int r = 0; r < rules.Count; r++)
@@ -671,7 +671,7 @@ namespace GameCore.Derivation
                 {
                     DerivationExplanation explanation = previous.Explanations[e];
                     if (!dirtyLookup.Contains(explanation.Target.Value)
-                        && snapshot.TryGetTarget(explanation.Target, out DerivationTarget? _))
+                        && snapshot.TryGetTarget(explanation.Target, out _))
                     {
                         explanations.Add(explanation.WithToken(token));
                     }
@@ -770,7 +770,7 @@ namespace GameCore.Derivation
             {
                 CandidateDecision decision = previous.Decisions[d];
                 if (dirtyLookup.Contains(decision.Target.Value)
-                    || !snapshot.TryGetTarget(decision.Target, out DerivationTarget? _))
+                    || !snapshot.TryGetTarget(decision.Target, out _))
                 {
                     continue;
                 }

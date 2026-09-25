@@ -302,7 +302,7 @@ namespace GameCore.Composition
             IReadOnlyList<ScopeRecord> beforeScopes = before.Scopes.Scopes;
             for (int i = 0; i < beforeScopes.Count; i++)
             {
-                if (!after.Scopes.TryGet(beforeScopes[i].Scope, out ScopeRecord? _))
+                if (!after.Scopes.TryGet(beforeScopes[i].Scope, out _))
                 {
                     scopeEdits.Add(new ScopeEdit(
                         CompositionEditKind.Remove, beforeScopes[i].Scope, beforeScopes[i].Parent, default(ScopeId)));
@@ -352,7 +352,7 @@ namespace GameCore.Composition
             for (int i = 0; i < before.Installs.Count; i++)
             {
                 InstallEntry entry = before.Installs[i];
-                if (!after.TryGetInstall(entry.Instance, out InstallEntry? _))
+                if (!after.TryGetInstall(entry.Instance, out _))
                 {
                     installEdits.Add(new InstallEdit(
                         CompositionEditKind.Remove, entry.Instance, entry.Scope, default(ScopeId), entry.State, InstallationState.Disposed));

@@ -299,7 +299,7 @@ namespace GameCore.Derivation
 
             for (int i = 0; i < oldScopes.Count; i++)
             {
-                if (!next.TryGetScope(oldScopes[i].Scope, out DerivationScope? _))
+                if (!next.TryGetScope(oldScopes[i].Scope, out _))
                 {
                     removed.Add(oldScopes[i].Scope);
                 }
@@ -335,7 +335,7 @@ namespace GameCore.Derivation
 
             for (int i = 0; i < oldTargets.Count; i++)
             {
-                if (!next.TryGetTarget(oldTargets[i].Target, out DerivationTarget? _))
+                if (!next.TryGetTarget(oldTargets[i].Target, out _))
                 {
                     retiredTargets.Add(oldTargets[i].Target);
                 }
@@ -362,7 +362,7 @@ namespace GameCore.Derivation
 
             for (int i = 0; i < oldInstalls.Count; i++)
             {
-                if (!next.TryGetInstall(oldInstalls[i].Instance, out DerivationInstall? _))
+                if (!next.TryGetInstall(oldInstalls[i].Instance, out _))
                 {
                     changedInstalls.Add(oldInstalls[i].Instance);
                 }
@@ -585,7 +585,7 @@ namespace GameCore.Derivation
 
             for (int i = 0; i < previous.RuleKeys.Count; i++)
             {
-                if (!next.TryGetRuleKeys(previous.RuleKeys[i].Rule, out DerivationRuleKeys? _))
+                if (!next.TryGetRuleKeys(previous.RuleKeys[i].Rule, out _))
                 {
                     changed.Add(previous.RuleKeys[i].Rule);
                 }
