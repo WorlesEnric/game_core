@@ -537,6 +537,66 @@ namespace GameCore.Unity.Runtime
             }
         }
 
+        /// <summary>
+        /// Creates a fully applied world that this registry does **not** publish, which is the restore target of
+        /// O-21: "C/unexposed new world→B; validate schema/catalog ... before Running". The caller owns the returned
+        /// host and must either hand it to <see cref="UnityWorldRegistry.TryExpose"/> or dispose it; until one of
+        /// those happens no caller can route to it, so a restore that refuses leaves no reachable partial world
+        /// (P-049, P-053). A repeated request for a session the registry already holds is refused rather than
+        /// producing a second world for one session id (P-004).
+        /// </summary>
+        public static WorldCreateResult TryCreateUnexposed(
+            WorldCreateRequest createRequest,
+            UnityWorldRegistration createdRegistration,
+            out UnityWorldHost? host)
+        {
+            if (createRequest == null)
+            {
+                throw new ArgumentNullException(nameof(createRequest));
+            }
+
+            if (createdRegistration == null)
+            {
+                throw new ArgumentNullException(nameof(createdRegistration));
+            }
+
+            GameCoreThreading.RequireMainThread("UnityWorldHost.TryCreateUnexposed");
+            host = null;
+
+            if (!createRequest.IsValid)
+            {
+                return new WorldCreateResult(
+                    false,
+                    createRequest.World,
+                    WorldLifecycleState.Created,
+                    DiagnosticCode.UnsupportedVersion,
+                    "The create request is invalid: a world session, a definition and, for FixedStep, a valid fixed-step configuration are required (O-01, P-036).");
+            }
+
+            if (UnityWorldRegistry.TryGet(createRequest.World, out UnityWorldHost? registered) && registered != null)
+            {
+                return new WorldCreateResult(
+                    false,
+                    createRequest.World,
+                    registered.Lifecycle,
+                    DiagnosticCode.OwnershipConflict,
+                    "A live host for this session already exists; an unexposed world is created only for a session the registry does not hold (P-004).");
+            }
+
+            if (!createdRegistration.TryValidate(out DiagnosticCode code, out string detail))
+            {
+                return new WorldCreateResult(false, createRequest.World, WorldLifecycleState.Created, code, detail);
+            }
+
+            host = CreateCore(createRequest, createdRegistration, out WorldCreateResult failure);
+            return host == null ? failure : new WorldCreateResult(
+                true,
+                createRequest.World,
+                host.Lifecycle,
+                DiagnosticCode.None,
+                "World created unexposed: its systems are registered and its initial assembly published, and no caller can route to it until it is exposed.");
+        }
+
         /// <summary>Idempotent creation: a repeated request returns the same live world (O-01).</summary>
         public WorldCreateResult Create(WorldCreateRequest createRequest)
         {
@@ -1175,6 +1235,31 @@ namespace GameCore.Unity.Runtime
             bySession.Add(request.World.Session, created);
             host = created;
             result = failure;
+            return true;
+        }
+
+        /// <summary>
+        /// Publishes a world that was built outside this registry, which is how O-21 restores a checkpoint into a new
+        /// session: the staging host exists and is fully applied, but it is not routable to any caller until this
+        /// call makes it the registry's world for its session (P-030, P-053). A session that is already registered is
+        /// refused rather than replaced, because one session id names one world.
+        /// </summary>
+        internal static bool TryExpose(UnityWorldHost staged)
+        {
+            if (staged == null)
+            {
+                throw new ArgumentNullException(nameof(staged));
+            }
+
+            GameCoreThreading.RequireMainThread("UnityWorldRegistry.TryExpose");
+
+            if (bySession.ContainsKey(staged.World.Session))
+            {
+                return false;
+            }
+
+            hosts.Add(staged);
+            bySession.Add(staged.World.Session, staged);
             return true;
         }
 

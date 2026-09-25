@@ -544,7 +544,14 @@ namespace GameCore.Content.Compiler
                 }
 
                 builder.Append(EscapeStringLiteral(field.Name + "=")).Append("\" + ");
-                if (CatalogWireTypes.Find(field.WireType)!.IsNullableReference)
+                if (field.WireType == "Bytes")
+                {
+                    // A byte[] has no string form: the diagnostic carries the byte count, and a null reads
+                    // as empty because an absent optional field and a null one both decode to null (05 s6).
+                    builder.Append('(').Append(EscapedIdentifier(field.Name))
+                        .Append(" ?? Array.Empty<byte>()).Length.ToString()");
+                }
+                else if (CatalogWireTypes.Find(field.WireType)!.IsNullableReference)
                 {
                     builder.Append('(').Append(EscapedIdentifier(field.Name)).Append(" ?? \"<null>\")");
                 }

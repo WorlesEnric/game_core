@@ -585,6 +585,10 @@ namespace GameCore.Contracts.Tests
                 "A superset cannot have fewer types than the frozen surface.");
 
             // Documented GC-003 catalog additions and GC-015 state-disposition additions are the only permitted drift.
+            // GC-018 adds the checkpoint surface on top: the envelope reader/writer stay frozen, but the record
+            // value types the checkpoint catalog serializes, their codec set, document, identity table, migration
+            // plan and the CanonicalId32 four-word collation are new exported types (P-053, P-054, 05 s6) in
+            // artifacts/gc-018/HANDOFF.md; additions outside this set remain refused.
             var addedTypes = new HashSet<string>(StringComparer.Ordinal)
             {
                 "type class GameCore.Contracts.BoundRegistration<TImplementation>",
@@ -599,6 +603,40 @@ namespace GameCore.Contracts.Tests
                 "type class GameCore.Contracts.StableNameKeyDerivation [static]",
                 "type interface GameCore.Contracts.ISchemaSerializer",
                 "type struct GameCore.Contracts.GeneratedFieldSlot",
+                "type class GameCore.Contracts.CanonicalId32 [static]",
+                "type class GameCore.Contracts.CheckpointCodecSet",
+                "type class GameCore.Contracts.CheckpointDocument",
+                "type class GameCore.Contracts.CheckpointErrors [static]",
+                "type class GameCore.Contracts.CheckpointFormat [static]",
+                "type class GameCore.Contracts.CheckpointIdentityTable",
+                "type class GameCore.Contracts.CheckpointMigrationRegistry",
+                "type class GameCore.Contracts.CheckpointSerializer",
+                "type class GameCore.Contracts.MigrationPlan",
+                "type enum GameCore.Contracts.CheckpointQueuePolicy : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable",
+                "type enum GameCore.Contracts.CheckpointRecordKind : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable",
+                "type enum GameCore.Contracts.ClockRowKind : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable",
+                "type enum GameCore.Contracts.ClockWakeState : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable",
+                "type enum GameCore.Contracts.CursorRowKind : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable",
+                "type enum GameCore.Contracts.GrantKind : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable",
+                "type enum GameCore.Contracts.IdentityCategory : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable",
+                "type enum GameCore.Contracts.MigrationPlanOutcome : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable",
+                "type enum GameCore.Contracts.ReferenceResolution : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable",
+                "type interface GameCore.Contracts.ICheckpointRecordCodec",
+                "type interface GameCore.Contracts.ICheckpointRecordCodec<TValue> : GameCore.Contracts.ICheckpointRecordCodec",
+                "type interface GameCore.Contracts.ISchemaMigrationStep",
+                "type struct GameCore.Contracts.CheckpointCounts",
+                "type struct GameCore.Contracts.ClockRecordValue",
+                "type struct GameCore.Contracts.CommandRecordValue",
+                "type struct GameCore.Contracts.CursorRecordValue",
+                "type struct GameCore.Contracts.GrantRecordValue",
+                "type struct GameCore.Contracts.HeaderRecordValue",
+                "type struct GameCore.Contracts.InstallRecordValue",
+                "type struct GameCore.Contracts.MessageRecordValue",
+                "type struct GameCore.Contracts.RngRecordValue",
+                "type struct GameCore.Contracts.ScopeRecordValue",
+                "type struct GameCore.Contracts.SelectionRecordValue",
+                "type struct GameCore.Contracts.SlotRecordValue",
+                "type struct GameCore.Contracts.TargetRecordValue",
             };
             foreach (string addition in comparison.AddedLines)
             {

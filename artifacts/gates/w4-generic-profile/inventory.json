@@ -6,12 +6,12 @@
     "Partial",
     "Not yet"
   ],
-  "statusAsOf": "W4-GATE Linux build-host run; see artifacts/w4-gate/BUILD_REPORT.md and toolchain/probe-w4-gate.json",
+  "statusAsOf": "GC-018 Linux build-host run; see artifacts/gc-018/BUILD_REPORT.md and artifacts/gc-018/toolchain/probe-gc018.json (supersedes the W4-GATE statusAsOf text)",
   "counts": {
     "total": 86,
-    "implementedEvidenced": 37,
-    "partial": 45,
-    "notYet": 4
+    "implementedEvidenced": 41,
+    "partial": 44,
+    "notYet": 1
   },
   "requirements": [
     {
@@ -1481,7 +1481,7 @@
     {
       "id": "P-053",
       "title": "Checkpoint (committed boundary, full contents, explicit command disposition)",
-      "status": "Not yet",
+      "status": "Implemented+Evidenced",
       "ownerTasks": [
         "GC-018",
         "GC-021",
@@ -1489,14 +1489,16 @@
         "GC-027",
         "GC-028"
       ],
-      "evidence": [],
-      "gap": "No checkpoint capture code exists anywhere in Packages/ and no TEST-017 artifact exists in artifacts/.",
-      "nextOwner": "GC-018"
+      "evidence": [
+        "artifacts/gc-018/toolchain/probe-gc018.json",
+        "artifacts/gc-018/unity/gc018-editmode.xml",
+        "artifacts/gc-018/BUILD_REPORT.md"
+      ]
     },
     {
       "id": "P-054",
       "title": "Serialization (schema IDs, field IDs, canonical bytes, directed migrations)",
-      "status": "Partial",
+      "status": "Implemented+Evidenced",
       "ownerTasks": [
         "GC-001",
         "GC-003",
@@ -1508,11 +1510,10 @@
         "GC-028"
       ],
       "evidence": [
-        "artifacts/w3-gate/trx/",
-        "artifacts/protocol-fixtures/results.json"
-      ],
-      "gap": "Generated serializers, canonical big-endian round trips, unknown-field rejection and registered slot migrations are evidenced; save/checkpoint data and directed cross-version migration paths are not.",
-      "nextOwner": "GC-018"
+        "artifacts/gc-018/trx/",
+        "artifacts/gc-018/toolchain/probe-gc018.json",
+        "tests/GameCore.CheckpointFixtures/"
+      ]
     },
     {
       "id": "P-055",
@@ -2350,7 +2351,7 @@
     {
       "id": "O-20",
       "title": "CaptureCheckpoint: snapshot boundary plus command option -> versioned blob/checksum",
-      "status": "Not yet",
+      "status": "Implemented+Evidenced",
       "ownerTasks": [
         "GC-003",
         "GC-015",
@@ -2363,14 +2364,15 @@
       "suites": [
         "TEST-017"
       ],
-      "evidence": [],
-      "gap": "No checkpoint capture code exists anywhere in Packages/ and no TEST-017 artifact exists in artifacts/.",
-      "nextOwner": "GC-018"
+      "evidence": [
+        "artifacts/gc-018/toolchain/probe-gc018.json",
+        "artifacts/gc-018/BUILD_REPORT.md"
+      ]
     },
     {
       "id": "O-21",
       "title": "RestoreCheckpoint: verified blob -> new WorldId and fully published world",
-      "status": "Not yet",
+      "status": "Implemented+Evidenced",
       "ownerTasks": [
         "GC-002",
         "GC-003",
@@ -2390,9 +2392,11 @@
         "TEST-002",
         "TEST-017"
       ],
-      "evidence": [],
-      "gap": "No restore path, catalog/migration validation or unexposed destination world exists in Packages/.",
-      "nextOwner": "GC-018"
+      "evidence": [
+        "artifacts/gc-018/toolchain/probe-gc018.json",
+        "artifacts/gc-018/unity/gc018-editmode.xml",
+        "artifacts/gc-018/BUILD_REPORT.md"
+      ]
     },
     {
       "id": "O-22",
@@ -2738,5 +2742,169 @@
       "artifacts/w4-gate/toolchain/probe-gc013.json",
       "artifacts/w4-gate/BUILD_REPORT.md"
     ]
+  },
+  "gc018Revisions": {
+    "task": "GC-018",
+    "branch": "gc-018",
+    "statusOfThisSection": "Applied on the Linux build host. The four proposed rows were promoted after the GC-018 EditMode suite and player probe passed; see artifacts/gc-018/BUILD_REPORT.md.",
+    "objective": "Recreate a complete compatible world using stable data and an unexposed restore target: committed-boundary capture, queued-command disposition, bounded generated serializers, stable reference tables, active and dormant state, clocks/RNG, catalog fingerprints, and unique directed migration paths with an unexposed restore validation.",
+    "normativeSections": [
+      "P-004",
+      "P-005",
+      "P-032",
+      "P-049",
+      "P-053",
+      "P-054",
+      "P-055"
+    ],
+    "requiredSuites": [
+      "TEST-002",
+      "TEST-010",
+      "TEST-017",
+      "TEST-022"
+    ],
+    "observationNames": [
+      "gc018-world-lane-and-live-state",
+      "gc018-committed-boundary-capture",
+      "gc018-queued-commands-are-dispositioned-not-omitted",
+      "gc018-capture-refuses-outside-a-boundary",
+      "gc018-corrupt-and-truncated-documents-reject",
+      "gc018-unknown-required-schema-rejects-restore",
+      "gc018-ambiguous-migration-rejects-restore",
+      "gc018-corrupt-reference-rejects-restore",
+      "gc018-restore-happens-into-a-new-unexposed-world",
+      "gc018-restore-recreates-state-at-different-native-indices",
+      "gc018-restore-preserves-dormant-slots",
+      "gc018-restore-preserves-mode-imports-and-exclusions",
+      "gc018-restore-continues-clocks-rng-and-cursors",
+      "gc018-old-callbacks-cannot-target-the-new-session",
+      "gc018-restored-world-publishes-and-advances",
+      "gc018-teardown-disposes-both-worlds"
+    ],
+    "digests": {
+      "algorithm": "SHA-256 over the LF-joined '<label>/<name>=pass' lines, no trailing newline (GameCore.Rules.Narrative.NarrativeDigest.OfLines)",
+      "narrative": "f881469b2a2ba43e4c1bf7972913dd2c93f945a623fef770e00319409ece7ac0",
+      "cards": "fe1aaae38982be120fe3c668742990504f984b54b053de3b2d7886ff899b5256"
+    },
+    "proposedRows": [
+      {
+        "id": "P-053",
+        "currentStatus": "Not yet",
+        "proposedStatus": "Implemented+Evidenced",
+        "whatChanged": "The checkpoint format, its generated serializers, the committed-boundary capture with explicit queued-command disposition, and the header's declared counts now exist; before this task no checkpoint code existed anywhere in Packages/.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-018/toolchain/probe-gc018.json",
+          "artifacts/gc-018/unity/gc018-editmode.xml",
+          "artifacts/gc-018/BUILD_REPORT.md"
+        ],
+        "observationEvidence": [
+          "gc018-committed-boundary-capture",
+          "gc018-queued-commands-are-dispositioned-not-omitted",
+          "gc018-capture-refuses-outside-a-boundary"
+        ]
+      },
+      {
+        "id": "P-054",
+        "currentStatus": "Partial",
+        "proposedStatus": "Implemented+Evidenced",
+        "whatChanged": "Directed per-schema migration registration now plans a unique path or refuses; ambiguity, unreachability, downgrade and cross-schema requests are distinct refusals. The previously named gap 'the generated migration ambiguity boundary of P-054 remains open' is closed by CheckpointMigrationRegistry plus the versioned fixture table.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-018/trx/",
+          "artifacts/gc-018/toolchain/probe-gc018.json"
+        ],
+        "observationEvidence": [
+          "gc018-ambiguous-migration-rejects-restore",
+          "gc018-unknown-required-schema-rejects-restore"
+        ]
+      },
+      {
+        "id": "O-20",
+        "currentStatus": "Not yet",
+        "proposedStatus": "Implemented+Evidenced",
+        "whatChanged": "O-20's handler exists: CheckpointCapture plus UnityCommittedBoundaryReader over real storage, with the queue option, the cutoff, the copy-then-serialize split and a checksum over the document bytes.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-018/toolchain/probe-gc018.json"
+        ],
+        "observationEvidence": [
+          "gc018-committed-boundary-capture",
+          "gc018-capture-refuses-outside-a-boundary"
+        ]
+      },
+      {
+        "id": "O-21",
+        "currentStatus": "Not yet",
+        "proposedStatus": "Implemented+Evidenced",
+        "whatChanged": "O-21's handler exists: reserve, verify, plan with unique migration paths, rebuild in an unexposed staging world, validate it, then expose it. The distinguishing probe (an old callback cannot target the restored session) is an observation, and a refusal leaves no reachable partial world.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-018/toolchain/probe-gc018.json"
+        ],
+        "observationEvidence": [
+          "gc018-restore-happens-into-a-new-unexposed-world",
+          "gc018-old-callbacks-cannot-target-the-new-session",
+          "gc018-restore-recreates-state-at-different-native-indices"
+        ]
+      },
+      {
+        "id": "O-22",
+        "currentStatus": "Not yet",
+        "proposedStatus": "Not yet",
+        "whatChanged": "Not closed here. The restore path O-22 delegates to now exists, but 'Faulted world to new session' and 'old storage never resumes' are GC-027's composition over this task's restore and GC-017's fault latch.",
+        "evidenceToBeProduced": [],
+        "observationEvidence": []
+      },
+      {
+        "id": "P-055",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "The checkpoint document declares one required feature id and rejects an unknown one before decoding, which strengthens the row, but evolution across a second protocol minor revision is still not exercised, so the status does not move.",
+        "evidenceToBeProduced": [],
+        "observationEvidence": []
+      }
+    ],
+    "contractChanges": [
+      "Additive: UnityWorldRegistry.TryExpose(UnityWorldHost) (internal) - publishes a world built outside the registry; refuses an already-registered session.",
+      "Additive: UnityWorldHost.TryCreateUnexposed(WorldCreateRequest, UnityWorldRegistration, out UnityWorldHost?) - O-21's 'unexposed new world'.",
+      "Additive: LiveTargetSeeder.TrySeedSlot(..., bool active, ...) overload - restores a dormant slot as dormant (P-032)."
+    ],
+    "carriedGaps": [
+      "O-22 RecoverWorld is not composed here (GC-027).",
+      "The observation lease of GC-016 is not consumed; the CommittedBoundary seam is frozen and independent.",
+      "Definition-revision resolution for ContentRevisionCount belongs to GC-025; the count is recorded evidence only here.",
+      "Re-admitting an included queued command into the restored plane is command ingress (GC-019's adapter boundary); the recorded set, cutoff and high-water are what this task proves."
+    ],
+    "verdict": "Run. 66/66 GC-018 observations x 2 families x 2 catalogs, 5/5 byte-identical IL2CPP player runs under High stripping; GC-018 EditMode 3/3 (full EditMode 784/784, PlayMode 6/6); dotnet 899/899. P-053, P-054, O-20 and O-21 promoted; O-22, P-004, P-005, P-032, P-055 unchanged.",
+    "appliedRows": {
+      "P-053": {
+        "status": "Implemented+Evidenced",
+        "evidence": [
+          "artifacts/gc-018/toolchain/probe-gc018.json",
+          "artifacts/gc-018/unity/gc018-editmode.xml",
+          "artifacts/gc-018/BUILD_REPORT.md"
+        ]
+      },
+      "P-054": {
+        "status": "Implemented+Evidenced",
+        "evidence": [
+          "artifacts/gc-018/trx/",
+          "artifacts/gc-018/toolchain/probe-gc018.json",
+          "tests/GameCore.CheckpointFixtures/"
+        ]
+      },
+      "O-20": {
+        "status": "Implemented+Evidenced",
+        "evidence": [
+          "artifacts/gc-018/toolchain/probe-gc018.json",
+          "artifacts/gc-018/BUILD_REPORT.md"
+        ]
+      },
+      "O-21": {
+        "status": "Implemented+Evidenced",
+        "evidence": [
+          "artifacts/gc-018/toolchain/probe-gc018.json",
+          "artifacts/gc-018/unity/gc018-editmode.xml",
+          "artifacts/gc-018/BUILD_REPORT.md"
+        ]
+      }
+    }
   }
 }
