@@ -33,6 +33,7 @@ using GameCore.Execution.Time;
 using GameCore.Planning;
 using GameCore.Planning.Ownership;
 using GameCore.Planning.Scheduling;
+using CompiledSchedule = GameCore.Planning.Scheduling.CompiledSchedule;
 using GameCore.Unity.Runtime;
 using GameCore.Unity.Runtime.Integration;
 using GameCore.Unity.Runtime.Messages;
@@ -108,7 +109,7 @@ namespace GameCore.Unity.Fixtures
 
         public int RegistryAfterCreate { get; set; }
 
-        public ulong WorldSession { get; set; }
+        public string WorldSession { get; set; } = string.Empty;
 
         public int LiveTargetCount { get; set; }
 
@@ -311,7 +312,7 @@ namespace GameCore.Unity.Fixtures
                 + "; trailWritersOrdered=" + TrailWritersOrderedByStage
                 + "; slotPolicies=" + ValidatedSlotPolicyCount.ToString(CultureInfo.InvariantCulture)
                 + "; descriptorRevision=" + DescriptorRevision
-                + "; session=" + WorldSession.ToString(CultureInfo.InvariantCulture)
+                + "; session=" + WorldSession
                 + "; liveTargets=" + LiveTargetCount.ToString(CultureInfo.InvariantCulture)
                 + "; mappedTargets=" + MappedTargetCount.ToString(CultureInfo.InvariantCulture)
                 + "; plane=" + MessagePlanePresent
@@ -595,17 +596,17 @@ namespace GameCore.Unity.Fixtures
                     var manifests = new CatalogManifestSource(catalog, declarations);
                     bool bothAccepted = manifests.AcceptedCount == 2 && manifests.Rejected.Count == 0;
 
-                    var stepName = name;
+                    bool unregisteredResolved = manifests.TryGetManifest(absentPluginType, out PluginManifest? resolved);
                     bool pass = fingerprintAsDeclared
                         && bindingFactory.Found
                         && bindingFactory.Factory != null
                         && bindingFactory.Factory.Kind == FactoryKind.PluginFactory
                         && missReported
                         && bothAccepted
-                        && !manifests.TryGetManifest(absentPluginType, out PluginManifest? resolved)
+                        && !unregisteredResolved
                         && resolved == null;
 
-                    steps.Add(new W2GateStep(stepName, pass,
+                    steps.Add(new W2GateStep(name, pass,
                         "fingerprint=" + catalog.Fingerprint.ToHex()
                         + "; fingerprintAsDeclared=" + fingerprintAsDeclared
                         + "; declaredFingerprint=" + declaredFingerprint.ToHex()
@@ -751,7 +752,7 @@ namespace GameCore.Unity.Fixtures
 
                     registryBeforeCreate = UnityWorldRegistry.Count;
                     WorldId world = NextSession();
-                    facts.WorldSession = world.Session.Value;
+                    facts.WorldSession = world.Session.ToString();
 
                     WorldCreateRequest request = W2GateRegistration.CommandDrivenRequest(
                         world,
@@ -941,7 +942,17 @@ namespace GameCore.Unity.Fixtures
                     facts.LaneEpochAfterMount = lane.Committed.Epoch.Value;
                     facts.WorldEpochAfterMount = host.CurrentEpoch.Value;
                     facts.CountersJoinedAfterMount = report.CountersJoined;
-                    facts.DerivedTargetCount = report.Derivation != null ? report.Derivation.Assemblies.Count : 0;
+                    facts.DerivedTargetCount = 0;
+                    if (report.Derivation != null)
+                    {
+                        for (int i = 0; i < report.Derivation.Assemblies.Count; i++)
+                        {
+                            if (!report.Derivation.Assemblies[i].IsBaseOnly)
+                            {
+                                facts.DerivedTargetCount++;
+                            }
+                        }
+                    }
                     facts.DerivedContributionCount = report.Derivation != null ? report.Derivation.Contributions.Count : 0;
                     facts.ProposalMountCount = report.Proposal != null ? report.Proposal.MountCount : 0;
                     facts.ProposalCapabilityCount = report.Proposal != null ? report.Proposal.CapabilityCount : 0;
@@ -1455,13 +1466,13 @@ namespace GameCore.Unity.Fixtures
                     facts.IdleFrames = IdleFrames;
                     facts.IdleStepsCommitted = (int)committed;
                     facts.IdlePublishedImages = host.Publications.PublishedCount;
-                    facts.IdleDispatchRuns = host.StepGroup.DispatchRunCount;
+                    facts.IdleDispatchRuns = host.StepGroup.DispatchRunCount - runsBefore;
                     facts.PendingDemandAfterIdle = host.PendingDemand;
 
                     bool pass = committed == 0UL
                         && host.CurrentStep.Value == stepBefore
                         && facts.IdlePublishedImages == imagesBefore
-                        && facts.IdleDispatchRuns == runsBefore
+                        && facts.IdleDispatchRuns == 0
                         && facts.PendingDemandAfterIdle == 0UL
                         && time.Clocks.PendingWakeCount == 0;
 
@@ -1473,7 +1484,7 @@ namespace GameCore.Unity.Fixtures
                         + "; images=" + imagesBefore.ToString(CultureInfo.InvariantCulture)
                         + "->" + facts.IdlePublishedImages.ToString(CultureInfo.InvariantCulture)
                         + "; dispatchRuns=" + runsBefore.ToString(CultureInfo.InvariantCulture)
-                        + "->" + facts.IdleDispatchRuns.ToString(CultureInfo.InvariantCulture)
+                        + "->" + host.StepGroup.DispatchRunCount.ToString(CultureInfo.InvariantCulture)
                         + "; demand=" + facts.PendingDemandAfterIdle.ToString(CultureInfo.InvariantCulture)
                         + "; pendingWakes=" + time.Clocks.PendingWakeCount.ToString(CultureInfo.InvariantCulture)));
                 }
@@ -1498,9 +1509,10 @@ namespace GameCore.Unity.Fixtures
 
                     facts.OutstandingJobsBeforeTeardown = host.Ledger.OutstandingJobCount;
 
-                    time?.Clear(out int discardedCommands, out int pendingWakes);
-                    _ = discardedCommands;
-                    _ = pendingWakes;
+                    if (time != null)
+                    {
+                        time.Clear(out int discardedCommands, out int pendingWakes);
+                    }
 
                     // The producer's container is released after its writer settled, so no job can write into freed
                     // memory (P-047, P-048).

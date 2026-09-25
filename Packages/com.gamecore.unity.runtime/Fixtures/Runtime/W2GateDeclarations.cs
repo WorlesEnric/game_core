@@ -22,6 +22,8 @@ using GameCore.Contracts;
 using GameCore.Derivation.Fixtures;
 using GameCore.Planning;
 using GameCore.Planning.Ownership;
+using GameCore.Unity.Runtime;
+using Unity.Entities;
 using GameCore.Unity.Runtime.Integration;
 
 namespace GameCore.Unity.Fixtures
@@ -89,7 +91,7 @@ namespace GameCore.Unity.Fixtures
         /// <summary>Targets whose base layout this applier installed.</summary>
         public int AppliedCount { get; private set; }
 
-        public void ApplyBaseLayout(Unity.Entities.EntityManager entityManager, Unity.Entities.Entity entity, SpawnRecipe recipe)
+        public void ApplyBaseLayout(EntityManager entityManager, Entity entity, SpawnRecipe recipe)
         {
             // The recipe's base layout is the target's own state storage plus its initial value: the quest slot the
             // plan migrates and the command owner writes. Derived rows are never installed here — the publisher
@@ -344,7 +346,7 @@ namespace GameCore.Unity.Fixtures
                 W2GateKeys.QuestOwner,
                 W2GateKeys.QuestDomain,
                 W2GateKeys.QuestLayout,
-                new List<FieldOwnership> { new FieldOwnership(W2GateKeys.QuestDomain, W2GateKeys.QuestProgressField) },
+                new List<FieldOwnership> { new FieldOwnership(W2GateKeys.QuestDomain, W2GateKeys.QuestProgressField.RegistrationKey) },
                 W2GateKeys.QuestInit,
                 W2GateKeys.QuestConfigChange,
                 W2GateKeys.QuestMigration,
@@ -359,8 +361,8 @@ namespace GameCore.Unity.Fixtures
                 W2GateKeys.TraitLayout,
                 new List<FieldOwnership>
                 {
-                    new FieldOwnership(W2GateKeys.TraitDomain, W2GateKeys.TraitLeftField),
-                    new FieldOwnership(W2GateKeys.TraitDomain, W2GateKeys.TraitRightField),
+                    new FieldOwnership(W2GateKeys.TraitDomain, W2GateKeys.TraitLeftField.RegistrationKey),
+                    new FieldOwnership(W2GateKeys.TraitDomain, W2GateKeys.TraitRightField.RegistrationKey),
                 },
                 W2GateKeys.TraitInit,
                 W2GateKeys.TraitConfigChange,
@@ -376,9 +378,9 @@ namespace GameCore.Unity.Fixtures
                 W2GateKeys.TrailLayout,
                 new List<FieldOwnership>
                 {
-                    new FieldOwnership(W2GateKeys.TrailDomain, W2GateKeys.TrailStepsField),
-                    new FieldOwnership(W2GateKeys.TrailDomain, W2GateKeys.TrailProjectedField),
-                    new FieldOwnership(W2GateKeys.TrailDomain, W2GateKeys.TrailWaitedField),
+                    new FieldOwnership(W2GateKeys.TrailDomain, W2GateKeys.TrailStepsField.RegistrationKey),
+                    new FieldOwnership(W2GateKeys.TrailDomain, W2GateKeys.TrailProjectedField.RegistrationKey),
+                    new FieldOwnership(W2GateKeys.TrailDomain, W2GateKeys.TrailWaitedField.RegistrationKey),
                 },
                 W2GateKeys.TrailInit,
                 W2GateKeys.TrailConfigChange,

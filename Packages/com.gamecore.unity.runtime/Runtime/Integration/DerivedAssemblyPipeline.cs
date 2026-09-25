@@ -23,6 +23,7 @@ using GameCore.Composition;
 using GameCore.Contracts;
 using GameCore.Derivation;
 using GameCore.Planning;
+using CompositionProposal = GameCore.Planning.CompositionProposal;
 
 namespace GameCore.Unity.Runtime.Integration
 {
@@ -361,6 +362,13 @@ namespace GameCore.Unity.Runtime.Integration
             }
 
             previousDerivation = derivation;
+            if (derivation.Delta != null && derivation.Delta.IsEmpty)
+            {
+                report.Outcome = DerivedAssemblyOutcome.NoTargetChange;
+                report.Code = DiagnosticCode.None;
+                report.Detail = "derivation changed no target assembly relative to the published composition";
+                return report;
+            }
 
             DerivationProposalReport proposal = DerivedCompositionProposal.Build(
                 derivation,

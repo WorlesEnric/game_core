@@ -17,6 +17,7 @@ using GameCore.Contracts;
 using GameCore.Execution;
 using GameCore.Execution.Messages;
 using GameCore.Planning;
+using CompiledSchedule = GameCore.Planning.Scheduling.CompiledSchedule;
 using GameCore.Derivation.Fixtures;
 using GameCore.Unity.Runtime;
 using GameCore.Unity.Runtime.Integration;
@@ -269,7 +270,7 @@ namespace GameCore.Unity.Fixtures
                 byte[] payload = plane.PayloadOf(message);
 
                 // A generated reader, never reflection and never a guessed default (04 section 8, P-042).
-                if (plane.Readers.TryRead<int>(message.Schema, payload, out int value, out string _)
+                if (plane.Readers.TryRead<int>(message.PayloadSchema, payload, out int value, out string _)
                     != PayloadDecodeOutcome.Decoded)
                 {
                     plane.Reject(message, DiagnosticCode.UnsupportedVersion, plane.ExecutingStep);

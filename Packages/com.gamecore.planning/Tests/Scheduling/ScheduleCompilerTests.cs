@@ -10,9 +10,10 @@ using System;
 using System.Collections.Generic;
 using GameCore.Contracts;
 using GameCore.Planning.Scheduling;
+using GameCore.Planning.Tests.Scheduling;
 using NUnit.Framework;
 
-namespace GameCore.Planning.Tests.Scheduling
+namespace GameCore.Planning.Scheduling.Tests
 {
     [TestFixture]
     public sealed class ScheduleCompilerTests

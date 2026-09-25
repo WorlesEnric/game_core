@@ -29,6 +29,7 @@ using GameCore.Contracts;
 using GameCore.Planning;
 using GameCore.Planning.Ownership;
 using GameCore.Planning.Scheduling;
+using CompiledSchedule = GameCore.Planning.Scheduling.CompiledSchedule;
 using GameCore.Unity.Runtime.Time;
 
 namespace GameCore.Unity.Runtime.Integration
@@ -402,8 +403,14 @@ namespace GameCore.Unity.Runtime.Integration
                 if (declaration.DeclaresAnyMigration())
                 {
                     FactoryKey migrationKey = FirstMigrationKey(spec);
+                    // Validate the declared transition from the preceding live schema, not a no-op from
+                    // the destination schema to itself. The planner separately checks the live slot version.
+                    var source = new SlotAuthorityDeclaration(
+                        spec.SlotId, spec.Owner, new SchemaRef(spec.Schema.Id, spec.Schema.Version - 1U),
+                        spec.PhysicalLayoutKey, spec.FieldOwnership, spec.LastSupport,
+                        spec.TransferPolicy, spec.MigrationKeys, declaration.Options);
                     SlotPolicyResult request = SlotPolicyValidator.Validate(
-                        declaration,
+                        source,
                         SlotPolicyRequest.VersionChange(spec.Schema, migrationKey),
                         migrations);
                     slotPolicies.Add(request);

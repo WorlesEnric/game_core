@@ -25,6 +25,7 @@ using GameCore.Composition;
 using GameCore.Contracts;
 using GameCore.Derivation;
 using GameCore.Planning;
+using CompositionProposal = GameCore.Planning.CompositionProposal;
 
 namespace GameCore.Unity.Runtime.Integration
 {
