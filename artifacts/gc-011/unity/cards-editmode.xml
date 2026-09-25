@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="15" result="Passed" total="15" passed="15" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-09-25 04:21:44Z" end-time="2026-09-25 04:21:45Z" duration="0.5266051">
+  <test-suite type="TestSuite" id="1000" name="GameCoreProbe" fullname="GameCoreProbe" runstate="Runnable" testcasecount="449" result="Passed" start-time="2026-09-25 04:21:44Z" end-time="2026-09-25 04:21:45Z" duration="0.526605" total="15" passed="15" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1017" name="GameCore.Cards.Tests.dll" fullname="/home/worlesenric/wkspace/gc-wt/gc-011/unity/GameCore.Validation/Library/ScriptAssemblies/GameCore.Cards.Tests.dll" runstate="Runnable" testcasecount="15" result="Passed" start-time="2026-09-25 04:21:44Z" end-time="2026-09-25 04:21:45Z" duration="0.518190" total="15" passed="15" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="3232582" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1018" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="15" result="Passed" start-time="2026-09-25 04:21:44Z" end-time="2026-09-25 04:21:45Z" duration="0.517921" total="15" passed="15" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1019" name="Cards" fullname="GameCore.Cards" runstate="Runnable" testcasecount="15" result="Passed" start-time="2026-09-25 04:21:44Z" end-time="2026-09-25 04:21:45Z" duration="0.513344" total="15" passed="15" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1020" name="Tests" fullname="GameCore.Cards.Tests" runstate="Runnable" testcasecount="15" result="Passed" start-time="2026-09-25 04:21:44Z" end-time="2026-09-25 04:21:45Z" duration="0.513032" total="15" passed="15" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1001" name="CardsIntegrationTests" fullname="GameCore.Cards.Tests.CardsIntegrationTests" classname="GameCore.Cards.Tests.CardsIntegrationTests" runstate="Runnable" testcasecount="15" result="Passed" start-time="2026-09-25 04:21:44Z" end-time="2026-09-25 04:21:45Z" duration="0.511968" total="15" passed="15" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1007" name="ADuplicateCommandTransfersOnce" fullname="GameCore.Cards.Tests.CardsIntegrationTests.ADuplicateCommandTransfersOnce" methodname="ADuplicateCommandTransfersOnce" classname="GameCore.Cards.Tests.CardsIntegrationTests" runstate="Runnable" seed="655792943" result="Passed" start-time="2026-09-25 04:21:45Z" end-time="2026-09-25 04:21:45Z" duration="0.016726" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1011" name="AFutureSeatInheritsTheModifierOnFirstVisibility" fullname="GameCore.Cards.Tests.CardsIntegrationTests.AFutureSeatInheritsTheModifierOnFirstVisibility" methodname="AFutureSeatInheritsTheModifierOnFirstVisibility" classname="GameCore.Cards.Tests.CardsIntegrationTests" runstate="Runnable" seed="129259571" result="Passed" start-time="2026-09-25 04:21:45Z" end-time="2026-09-25 04:21:45Z" duration="0.001431" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1012" name="AnIdleWorldPerformsZeroSteps" fullname="GameCore.Cards.Tests.CardsIntegrationTests.AnIdleWorldPerformsZeroSteps" methodname="AnIdleWorldPerformsZeroSteps" classname="GameCore.Cards.Tests.CardsIntegrationTests" runstate="Runnable" seed="21911848" result="Passed" start-time="2026-09-25 04:21:45Z" end-time="2026-09-25 04:21:45Z" duration="0.000951" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1008" name="ARejectedSettlementChangesNothing" fullname="GameCore.Cards.Tests.CardsIntegrationTests.ARejectedSettlementChangesNothing" methodname="ARejectedSettlementChangesNothing" classname="GameCore.Cards.Tests.CardsIntegrationTests" runstate="Runnable" seed="779106273" result="Passed" start-time="2026-09-25 04:21:45Z" end-time="2026-09-25 04:21:45Z" duration="0.001481" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1009" name="ATransferCommitsBothSides" fullname="GameCore.Cards.Tests.CardsIntegrationTests.ATransferCommitsBothSides" methodname="ATransferCommitsBothSides" classname="GameCore.Cards.Tests.CardsIntegrationTests" runstate="Runnable" seed="11256988" result="Passed" start-time="2026-09-25 04:21:45Z" end-time="2026-09-25 04:21:45Z" duration="0.001145" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1003" name="EveryObservationPassesOverTheFixtureCatalog" fullname="GameCore.Cards.Tests.CardsIntegrationTests.EveryObservationPassesOverTheFixtureCatalog" methodname="EveryObservationPassesOverTheFixtureCatalog" classname="GameCore.Cards.Tests.CardsIntegrationTests" runstate="Runnable" seed="1947024841" result="Passed" start-time="2026-09-25 04:21:45Z" end-time="2026-09-25 04:21:45Z" duration="0.002022" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1002" name="EveryObservationPassesOverTheGeneratedCatalog" fullname="GameCore.Cards.Tests.CardsIntegrationTests.EveryObservationPassesOverTheGeneratedCatalog" methodname="EveryObservationPassesOverTheGeneratedCatalog" classname="GameCore.Cards.Tests.CardsIntegrationTests" runstate="Runnable" seed="922644717" result="Passed" start-time="2026-09-25 04:21:45Z" end-time="2026-09-25 04:21:45Z" duration="0.000280" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1006" name="OneCommandCommitsBothSides" fullname="GameCore.Cards.Tests.CardsIntegrationTests.OneCommandCommitsBothSides" methodname="OneCommandCommitsBothSides" classname="GameCore.Cards.Tests.CardsIntegrationTests" runstate="Runnable" seed="1938163117" result="Passed" start-time="2026-09-25 04:21:45Z" end-time="2026-09-25 04:21:45Z" duration="0.002563" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1014" name="OwnershipHasOneOwnerPerDeclaredDomainAndEverySlotPolicyValidated" fullname="GameCore.Cards.Tests.CardsIntegrationTests.OwnershipHasOneOwnerPerDeclaredDomainAndEverySlotPolicyValidated" methodname="OwnershipHasOneOwnerPerDeclaredDomainAndEverySlotPolicyValidated" classname="GameCore.Cards.Tests.CardsIntegrationTests" runstate="Runnable" seed="1390871390" result="Passed" start-time="2026-09-25 04:21:45Z" end-time="2026-09-25 04:21:45Z" duration="0.000743" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1016" name="TeardownSettlesWorkAndDisposesTheWorld" fullname="GameCore.Cards.Tests.CardsIntegrationTests.TeardownSettlesWorkAndDisposesTheWorld" methodname="TeardownSettlesWorkAndDisposesTheWorld" classname="GameCore.Cards.Tests.CardsIntegrationTests" runstate="Runnable" seed="356942237" result="Passed" start-time="2026-09-25 04:21:45Z" end-time="2026-09-25 04:21:45Z" duration="0.000465" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1010" name="TheBatchEnvelopeResolvesExactlyOneWinner" fullname="GameCore.Cards.Tests.CardsIntegrationTests.TheBatchEnvelopeResolvesExactlyOneWinner" methodname="TheBatchEnvelopeResolvesExactlyOneWinner" classname="GameCore.Cards.Tests.CardsIntegrationTests" runstate="Runnable" seed="308790803" result="Passed" start-time="2026-09-25 04:21:45Z" end-time="2026-09-25 04:21:45Z" duration="0.001560" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1013" name="TheCompiledPlanIsFourStagesWithOnePlaybackPointAndTheDeclaredEdge" fullname="GameCore.Cards.Tests.CardsIntegrationTests.TheCompiledPlanIsFourStagesWithOnePlaybackPointAndTheDeclaredEdge" methodname="TheCompiledPlanIsFourStagesWithOnePlaybackPointAndTheDeclaredEdge" classname="GameCore.Cards.Tests.CardsIntegrationTests" runstate="Runnable" seed="866253406" result="Passed" start-time="2026-09-25 04:21:45Z" end-time="2026-09-25 04:21:45Z" duration="0.001358" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1015" name="TheGeneratedRunReportsTheCommittedCatalogFingerprint" fullname="GameCore.Cards.Tests.CardsIntegrationTests.TheGeneratedRunReportsTheCommittedCatalogFingerprint" methodname="TheGeneratedRunReportsTheCommittedCatalogFingerprint" classname="GameCore.Cards.Tests.CardsIntegrationTests" runstate="Runnable" seed="1930873457" result="Passed" start-time="2026-09-25 04:21:45Z" end-time="2026-09-25 04:21:45Z" duration="0.001849" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1005" name="TheMountsReachEveryEligibleExistingSeat" fullname="GameCore.Cards.Tests.CardsIntegrationTests.TheMountsReachEveryEligibleExistingSeat" methodname="TheMountsReachEveryEligibleExistingSeat" classname="GameCore.Cards.Tests.CardsIntegrationTests" runstate="Runnable" seed="160245227" result="Passed" start-time="2026-09-25 04:21:45Z" end-time="2026-09-25 04:21:45Z" duration="0.001707" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1004" name="TheScenarioRecordsEveryObservationTwiceAndNoDiagnostic" fullname="GameCore.Cards.Tests.CardsIntegrationTests.TheScenarioRecordsEveryObservationTwiceAndNoDiagnostic" methodname="TheScenarioRecordsEveryObservationTwiceAndNoDiagnostic" classname="GameCore.Cards.Tests.CardsIntegrationTests" runstate="Runnable" seed="554247609" result="Passed" start-time="2026-09-25 04:21:45Z" end-time="2026-09-25 04:21:45Z" duration="0.001315" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: /home/worlesenric/.config/unity3d/GameCore/GameCoreProbe/TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

@@ -28,10 +28,19 @@ Unity qualification project and the player gates.
 | `tests/GameCore.Derivation.Tests` | NUnit 3 | net8.0 | the derivation package's own `Tests/**` sources |
 | `src/GameCore.Planning` | library | netstandard2.1 | `Packages/com.gamecore.planning/Runtime/**/*.cs` |
 | `tests/GameCore.Planning.Tests` | NUnit 3 | net8.0 | the planning package's own `Tests/**` sources |
+| `src/GameCore.Rules.Narrative` | library | netstandard2.1 | `Packages/com.gamecore.rules.narrative/Runtime/**/*.cs` |
+| `tests/GameCore.Rules.Narrative.Tests` | NUnit 3 | net8.0 | the narrative rules package's own `Tests/**` sources |
+| `src/GameCore.Rules.Cards` | library | netstandard2.1 | `Packages/com.gamecore.rules.cards/Runtime/**/*.cs` |
+| `tests/GameCore.Rules.Cards.Tests` | NUnit 3 | net8.0 | the card-rules package's own `Tests/**` sources |
 
 The two fixture suites share one test source (`tests/GameCore.ProtocolFixtures.Tests/ProtocolFixtureTests.cs`).
 They write separate evidence documents, `artifacts/protocol-fixtures/results.json` and
 `artifacts/protocol-fixtures/results-production-contracts.json`, so neither run overwrites the other.
+
+`tests/GameCore.Rules.Narrative.Tests` compiles the derivation fixtures' narrative vocabulary
+(`Packages/com.gamecore.derivation/Fixtures/**/*.cs`) directly, exactly as `tests/GameCore.Derivation.Tests` does,
+so the identity-agreement test can compare the narrative package's stable names and derived identities against
+`GameCore.Derivation.Fixtures.NarrativeComposition` without a Unity assembly reference.
 
 The W1 gate substituted production `GameCore.Contracts` for the frozen W0 reference seam in every production
 consumer: `GameCore.Composition`, `GameCore.Execution` and their test projects reference
@@ -53,6 +62,14 @@ Run from the repository root:
 ```sh
 dotnet build dotnet/GameCore.sln -c Release
 dotnet test dotnet/GameCore.sln -c Release --logger trx
+```
+
+The narrative rules package (GC-010) and its test project are part of that solution, so the two commands above
+build and run them. While iterating on that package alone:
+
+```sh
+dotnet build dotnet/src/GameCore.Rules.Narrative/GameCore.Rules.Narrative.csproj -c Release
+dotnet test dotnet/tests/GameCore.Rules.Narrative.Tests/GameCore.Rules.Narrative.Tests.csproj -c Release --logger trx
 ```
 
 Everything a task's evidence needs is in the build and test output; no formatter, linter or Unity step is
@@ -82,6 +99,14 @@ EditMode assemblies, the IL2CPP build and every player probe repeated `PROBE_RUN
 
 ```sh
 UNITY=~/Unity/Hub/Editor/6000.0.75f1/Editor/Unity DOTNET=/usr/bin/dotnet tools/run_w2_gate.sh
+```
+
+The W3 wave gate (two genuinely different running compositions on one kernel) adds the GC-010 narrative slice, the
+GC-011 card slice and the W3 gate that runs both in one process; it runs this solution's build and tests, the whole
+EditMode and PlayMode suites, the IL2CPP build and every player probe repeated `PROBE_RUNS` times:
+
+```sh
+UNITY=~/Unity/Hub/Editor/6000.0.75f1/Editor/Unity DOTNET=/usr/bin/dotnet tools/run_w3_gate.sh
 ```
 
 ## Regenerating the committed probe catalog (GC-003)

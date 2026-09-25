@@ -126,6 +126,13 @@ namespace GameCore.Composition
         private readonly Dictionary<Id128, List<ScopeId>> children;
         private readonly List<ScopeRecord> canonicalScopes;
 
+        /// <summary>
+        /// The depth-0 world root this registry was opened with. It is remembered rather than derived from the
+        /// canonical order: canonical order is by stable identity (P-008), so a child whose id sorts below its root
+        /// would otherwise be reported as the world root.
+        /// </summary>
+        private readonly ScopeRecord worldRoot;
+
         public ScopeRegistry(ScopeRecord root, IReadOnlyList<ScopeRecord>? additional)
         {
             if (root == null)
@@ -143,8 +150,13 @@ namespace GameCore.Composition
             canonicalScopes = new List<ScopeRecord>();
 
             Add(root);
+            worldRoot = root;
             if (additional != null)
             {
+                // A caller may declare its scopes in any order, so the additional records are added shallowest first:
+                // a child can only be added once its parent is present, and the canonical enumeration order is
+                // computed below from the finished set rather than from the order they arrived in (P-008, P-010).
+                var ordered = new List<ScopeRecord>(additional.Count);
                 for (int i = 0; i < additional.Count; i++)
                 {
                     ScopeRecord record = additional[i];
@@ -153,7 +165,19 @@ namespace GameCore.Composition
                         throw new ArgumentException("A scope record must not be null.", nameof(additional));
                     }
 
-                    Add(record);
+                    ordered.Add(record);
+                }
+
+                // Depth first so a parent always precedes its child; equal depths in canonical identity order so the
+                // result does not depend on the declaration order or on an unstable sort (P-008).
+                ordered.Sort((left, right) =>
+                {
+                    int depth = left.Depth.CompareTo(right.Depth);
+                    return depth != 0 ? depth : CompareRecords(left, right);
+                });
+                for (int i = 0; i < ordered.Count; i++)
+                {
+                    Add(ordered[i]);
                 }
             }
 
@@ -169,7 +193,7 @@ namespace GameCore.Composition
 
         public int Count => canonicalScopes.Count;
 
-        public ScopeId Root => canonicalScopes[0].Scope;
+        public ScopeId Root => worldRoot.Scope;
 
         public bool TryGet(ScopeId scope, out ScopeRecord? record)
         {
@@ -425,9 +449,24 @@ namespace GameCore.Composition
                 throw new ArgumentException("A scope identity appears once in one world (P-004).", nameof(record));
             }
 
+            if (record.IsRoot && byScope.Count != 0)
+            {
+                // One rooted acyclic tree per world: a registry holds the world root and nothing else that claims to
+                // be one, exactly as TryAdd refuses a second root (P-010).
+                throw new ArgumentException("A world has exactly one root scope (P-010).", nameof(record));
+            }
+
             if (!record.IsRoot && !byScope.ContainsKey(record.Parent.Value))
             {
                 throw new ArgumentException("A scope's parent must already exist in the same world (P-010).", nameof(record));
+            }
+
+            if (!record.IsRoot && record.Depth != byScope[record.Parent.Value].Depth + 1)
+            {
+                // A child is exactly one deeper than its parent; a declared tree whose depths disagree with its
+                // parentage would make every depth-based scope query answer wrongly (P-010).
+                throw new ArgumentException(
+                    "A scope's depth must be exactly one greater than its parent's (P-010).", nameof(record));
             }
 
             byScope.Add(record.Scope.Value, record);

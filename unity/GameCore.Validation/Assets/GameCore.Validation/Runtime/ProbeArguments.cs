@@ -14,13 +14,27 @@ namespace GameCore.Validation.ProbeHost
         private const string WorldDispatchArgumentName = "-probeWorldDispatch";
         private const string W1GateArgumentName = "-probeW1Gate";
         private const string W2GateArgumentName = "-probeW2Gate";
+        private const string W3GateArgumentName = "-probeW3Gate";
+        private const string NarrativeArgumentName = "-probeNarrative";
+        private const string CardsArgumentName = "-probeCards";
 
-        private ProbeArguments(bool missingRegistration, bool worldDispatch, bool w1Gate, bool w2Gate, string? resultPath)
+        private ProbeArguments(
+            bool missingRegistration,
+            bool worldDispatch,
+            bool w1Gate,
+            bool w2Gate,
+            bool w3Gate,
+            bool narrative,
+            bool cards,
+            string? resultPath)
         {
             MissingRegistration = missingRegistration;
             WorldDispatch = worldDispatch;
             W1Gate = w1Gate;
             W2Gate = w2Gate;
+            W3Gate = w3Gate;
+            Narrative = narrative;
+            Cards = cards;
             ResultPath = resultPath;
         }
 
@@ -46,12 +60,37 @@ namespace GameCore.Validation.ProbeHost
         /// </summary>
         public bool W2Gate { get; }
 
+        /// <summary>
+        /// Runs the W3 integration gate: the narrative composition and the card composition, each in its own world in
+        /// one process on the same kernel assemblies, with zero idle command steps in both, automatic existing and
+        /// future targets in both, the narrative state change observed through the committed snapshot, the card
+        /// domain transfer committed atomically, and the kernel-separation audit.
+        /// </summary>
+        public bool W3Gate { get; }
+
+        /// <summary>
+        /// Runs the GC-010 narrative vertical slice: the chapter providers mounted over a real catalog, the derived
+        /// binding layout published into a real world, one choice command committed with its durable fact, the
+        /// chapter-two mount, the spawned target, an idle world that performs no step and the genre neutrality audit.
+        /// </summary>
+        public bool Narrative { get; }
+
+        /// <summary>
+        /// Runs the GC-011 card-game Automatic vertical slice: the market's scope tree and its provider mounts, the
+        /// inherited scoring modifier on every eligible existing seat, one bounded command that commits both sides,
+        /// a duplicate that transfers once, a rejected settlement that changes nothing, a transfer that commits both
+        /// sides, a future seat that inherits the modifier before its first step, an idle world that performs no
+        /// step and a teardown that settles and disposes.
+        /// </summary>
+        public bool Cards { get; }
+
         /// <summary>Destination path of the structured JSON result.</summary>
         public string? ResultPath { get; }
 
         /// <summary>True when the process was launched as a probe rather than as a normal player run.</summary>
         public bool IsProbeInvocation =>
-            MissingRegistration || WorldDispatch || W1Gate || W2Gate || !string.IsNullOrEmpty(ResultPath);
+            MissingRegistration || WorldDispatch || W1Gate || W2Gate || W3Gate || Narrative || Cards
+            || !string.IsNullOrEmpty(ResultPath);
 
         /// <summary>True when a result destination was supplied; without it the probe cannot record evidence.</summary>
         public bool HasResultPath => !string.IsNullOrEmpty(ResultPath);
@@ -62,6 +101,9 @@ namespace GameCore.Validation.ProbeHost
             bool worldDispatch = false;
             bool w1Gate = false;
             bool w2Gate = false;
+            bool w3Gate = false;
+            bool narrative = false;
+            bool cards = false;
             string? resultPath = null;
             for (int i = 0; i < arguments.Length; i++)
             {
@@ -82,13 +124,26 @@ namespace GameCore.Validation.ProbeHost
                 {
                     w2Gate = true;
                 }
+                else if (argument == W3GateArgumentName)
+                {
+                    w3Gate = true;
+                }
+                else if (argument == NarrativeArgumentName)
+                {
+                    narrative = true;
+                }
+                else if (argument == CardsArgumentName)
+                {
+                    cards = true;
+                }
                 else if (argument == ResultArgumentName && i + 1 < arguments.Length)
                 {
                     resultPath = arguments[i + 1];
                 }
             }
 
-            return new ProbeArguments(missingRegistration, worldDispatch, w1Gate, w2Gate, resultPath);
+            return new ProbeArguments(
+                missingRegistration, worldDispatch, w1Gate, w2Gate, w3Gate, narrative, cards, resultPath);
         }
     }
 }

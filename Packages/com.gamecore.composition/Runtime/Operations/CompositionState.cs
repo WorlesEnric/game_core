@@ -164,14 +164,15 @@ namespace GameCore.Composition
             ScopeRecord root,
             PropagationMode mode,
             CompositionRevision revision,
-            AssemblyEpoch epoch) =>
+            AssemblyEpoch epoch,
+            IReadOnlyList<ScopeRecord>? declaredScopes = null) =>
             new CompositionState(
                 world,
                 revision,
                 epoch,
                 LogicalStepId.Zero,
                 mode,
-                new ScopeRegistry(root, null),
+                new ScopeRegistry(root, declaredScopes),
                 null);
 
         public WorldId World { get; }

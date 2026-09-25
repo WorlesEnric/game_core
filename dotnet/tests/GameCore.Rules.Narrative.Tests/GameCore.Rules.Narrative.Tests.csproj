@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Pure narrative rules tests (GC-010); sources live in Packages/com.gamecore.rules.narrative/Tests/ and also
+       run as Unity EditMode tests. They never reference UnityEngine (04 s10). -->
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <AssemblyName>GameCore.Rules.Narrative.Tests</AssemblyName>
+    <RootNamespace>GameCore.Rules.Narrative.Tests</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="../../../Packages/com.gamecore.rules.narrative/Tests/**/*.cs"
+             Exclude="../../../Packages/com.gamecore.rules.narrative/Tests/**/bin/**/*.cs;../../../Packages/com.gamecore.rules.narrative/Tests/**/obj/**/*.cs" />
+    <!-- The narrative fixture vocabulary (its stable names, ids and payload helpers) lives in its own Unity
+         assembly (GameCore.Derivation.Fixtures); the plain-dotnet test project compiles those sources directly so
+         the identity-agreement test can compare both vocabularies without a Unity assembly reference, exactly as
+         tests/GameCore.Derivation.Tests does (09 GC-006: reusable descriptors for GC-010/011). -->
+    <Compile Include="../../../Packages/com.gamecore.derivation/Fixtures/**/*.cs"
+             Exclude="../../../Packages/com.gamecore.derivation/Fixtures/**/bin/**/*.cs;../../../Packages/com.gamecore.derivation/Fixtures/**/obj/**/*.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="NUnit" Version="3.14.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/GameCore.Rules.Narrative/GameCore.Rules.Narrative.csproj" />
+    <ProjectReference Include="../../src/GameCore.Derivation/GameCore.Derivation.csproj" />
+    <ProjectReference Include="../../src/GameCore.Contracts/GameCore.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>
