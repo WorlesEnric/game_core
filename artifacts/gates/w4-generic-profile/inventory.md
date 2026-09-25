@@ -23,11 +23,12 @@ GC-012 evidence remains archived separately at `artifacts/gc-012/BUILD_REPORT.md
 
 | Scope | Total | Implemented+Evidenced | Partial | Not yet |
 | --- | ---: | ---: | ---: | ---: |
-| Requirements `P-001`..`P-060` | 60 | 20 | 39 | 1 |
-| Operations `O-01`..`O-26` | 26 | 17 | 6 | 3 |
-| **All rows** | **86** | **37** | **45** | **4** |
+| Requirements `P-001`..`P-060` | 60 | 22 | 38 | 0 |
+| Operations `O-01`..`O-26` | 26 | 19 | 6 | 1 |
+| **All rows** | **86** | **41** | **44** | **1** |
 
-Ids marked `Not yet`: `P-053`, `O-20`, `O-21`, `O-22`.
+Ids marked `Not yet`: `O-22`. (`P-053`, `P-054`, `O-20` and `O-21` were promoted to `Implemented+Evidenced` by the
+GC-018 Linux build-host run; see the GC-018 revision notes at the end of this file.)
 
 ## W4-GATE revision notes (Wave 4 integration gate)
 
@@ -46,7 +47,9 @@ The other 21 annotated rows retain their prior status: full service/conflict mat
 1,000-cycle lifecycle churn, delayed callbacks, budget measurements and the remaining V1 capabilities are not
 proven by this gate. The 50×500 differential tests passed in the EditMode derivation assembly, but `P-023`
 remains Partial because untouched-sibling index counters and complete index coverage at scale are not evidenced.
-The full gap per row is retained in the table and `inventory.json`. `P-053` and `O-20`..`O-22` stay Not yet.
+The full gap per row is retained in the table and `inventory.json`. After this W4-GATE run only `P-053` and
+`O-20`..`O-22` remained `Not yet`; GC-018 later promoted `P-053`, `O-20` and `O-21` (see the GC-018 revision
+notes at the end of this file), leaving only `O-22`.
 
 Evidence: `artifacts/w4-gate/unity/editmode-results.xml`, `artifacts/w4-gate/unity/playmode-results.xml`,
 `artifacts/w4-gate/toolchain/probe-w4-gate.json`, `artifacts/w4-gate/toolchain/probe-gc013.json`, and
@@ -108,11 +111,11 @@ Evidence: `artifacts/w4-gate/unity/editmode-results.xml`, `artifacts/w4-gate/uni
 | `P-050` | Cancellation and idempotency (OperationId, input hash, ledger retransmission, expiry) | Partial | `GC-004`, `GC-008`, `GC-014`, `GC-016`, `GC-017`, `GC-021`, `GC-022`, `GC-027`, `GC-028` | `artifacts/w3-gate/trx/`, `artifacts/protocol-fixtures/results.json` | Cancellation identity binding, idempotency conflict, retransmission coalescing and expiry high-water are evidenced; the caller-reserved session reservation used by restore (GC-018) and bounded retries with new operation IDs are unproven. | `GC-014` |
 | `P-051` | Operation discipline (complete operation set, control lane, handles, pure queries) | Implemented+Evidenced | `GC-004`, `GC-008`, `GC-014`, `GC-016`, `GC-017`, `GC-028`, `GC-029` | `artifacts/w3-gate/trx/`, `artifacts/w3-gate/validator.log` | &mdash; | &mdash; |
 | `P-052` | Diagnostics (stable codes, identity, phase, involved IDs, counts, retry class) | Partial | `GC-004`, `GC-016`, `GC-017`, `GC-023`, `GC-026`, `GC-028` | `artifacts/w3-gate/trx/`, `artifacts/w3-gate/unity/editmode-results.xml` | Rejection codes are exercised individually, but full payloads (world/operation/plan identity, smallest conflicting set, retrieval keys, retry classification) are not established; GC-004's own review records P-052 conformance as not established. | `GC-016` |
-| `P-053` | Checkpoint (committed boundary, full contents, explicit command disposition) | Not yet | `GC-018`, `GC-021`, `GC-023`, `GC-027`, `GC-028` | _(none)_ | No checkpoint capture code exists anywhere in Packages/ and no TEST-017 artifact exists in artifacts/. | `GC-018` |
-| `P-054` | Serialization (schema IDs, field IDs, canonical bytes, directed migrations) | Partial | `GC-001`, `GC-003`, `GC-015`, `GC-018`, `GC-021`, `GC-025`, `GC-027`, `GC-028` | `artifacts/w3-gate/trx/`, `artifacts/protocol-fixtures/results.json` | Generated serializers, canonical big-endian round trips, unknown-field rejection and registered slot migrations are evidenced; save/checkpoint data and directed cross-version migration paths are not. | `GC-018` |
+| `P-053` | Checkpoint (committed boundary, full contents, explicit command disposition) | Implemented+Evidenced | `GC-018`, `GC-021`, `GC-023`, `GC-027`, `GC-028` | `artifacts/gc-018/toolchain/probe-gc018.json`, `artifacts/gc-018/unity/gc018-editmode.xml`, `artifacts/gc-018/BUILD_REPORT.md` | &mdash; | &mdash; |
+| `P-054` | Serialization (schema IDs, field IDs, canonical bytes, directed migrations) | Implemented+Evidenced | `GC-001`, `GC-003`, `GC-015`, `GC-018`, `GC-021`, `GC-025`, `GC-027`, `GC-028` | `artifacts/gc-018/trx/`, `artifacts/gc-018/toolchain/probe-gc018.json`, `tests/GameCore.CheckpointFixtures/` | &mdash; | &mdash; |
 | `P-055` | Protocol evolution (major/minor ranges, required features, no silent fallback) | Partial | `GC-002`, `GC-003`, `GC-012`, `GC-018`, `GC-025`, `GC-027`, `GC-028`, `GC-029`, `GC-030` | `artifacts/w3-gate/toolchain/probe-w3-gate.json`, `artifacts/w3-gate/trx/` | The committed catalog declares protocol 1.0 with one supported feature and rejects unknown keys or unsupported versions in the player; the manifest major/minor matrix and required-feature rejection across packages are not archived, and restore-time catalog validation does not exist. | `GC-012` |
 | `P-056` | Extension points (registered reducers, schemas, owners, clocks, stages, adapters) | Partial | `GC-010`, `GC-011`, `GC-012`, `GC-020`, `GC-024`, `GC-028`, `GC-029`, `GC-030` | `artifacts/w3-gate/trx/`, `artifacts/w3-gate/unity/editmode-results.xml` | Reducers, schemas, state owners, stage contracts, request ports and serializer migrations are evidenced as registered seams; asset/presentation/input adapters are not implemented (GC-019). | `GC-012` |
-| `P-057` | Conformance (all P-001..P-060, mandatory operations, both modes and temporal models) | Partial | `GC-002`, `GC-012`, `GC-024`, `GC-028`, `GC-029`, `GC-030` | `artifacts/w3-gate/BUILD_REPORT.md`, `artifacts/w3-gate/unity/editmode-results.xml`, `artifacts/w3-gate/trx/` | No single revision yet carries executable evidence for every requirement and operation: O-20..O-22 are unimplemented, the action and cross-family reference compositions have not run, and the 10,000-step replay and measured budgets are outstanding. | `GC-028` |
+| `P-057` | Conformance (all P-001..P-060, mandatory operations, both modes and temporal models) | Partial | `GC-002`, `GC-012`, `GC-024`, `GC-028`, `GC-029`, `GC-030` | `artifacts/w3-gate/BUILD_REPORT.md`, `artifacts/w3-gate/unity/editmode-results.xml`, `artifacts/w3-gate/trx/` | No single revision yet carries executable evidence for every requirement and operation: O-22 is unimplemented, the action and cross-family reference compositions have not run, and the 10,000-step replay and measured budgets are outstanding. | `GC-028` |
 | `P-058` | V1 implementation profile (C# + Unity Entities, IL2CPP, stripping, exact baseline) | Implemented+Evidenced | `GC-001`, `GC-003`, `GC-005`, `GC-012`, `GC-020`, `GC-022`, `GC-025`, `GC-028`, `GC-029`, `GC-030` | `artifacts/w3-gate/toolchain/environment.txt`, `artifacts/w3-gate/toolchain/probe-w3-gate.json`, `artifacts/gc-001/BUILD_REPORT.md`, `artifacts/gates/w4-generic-profile/unity/editmode-results.xml`, `artifacts/gates/w4-generic-profile/toolchain/probe-w4-profile.json`, `artifacts/gates/w4-generic-profile/toolchain/environment.txt` | &mdash; | &mdash; |
 | `P-059` | Genre validation before freeze (cards and narrative now; action and cross-family before V1) | Partial | `GC-010`, `GC-011`, `GC-012`, `GC-020`, `GC-024`, `GC-028`, `GC-029`, `GC-030` | `artifacts/w3-gate/toolchain/probe-narrative.json`, `artifacts/w3-gate/toolchain/probe-cards.json`, `artifacts/w3-gate/toolchain/probe-w3-gate.json` | Cards and narrative execute on one kernel image with distinct world sessions; the fixed-step action family and the cross-family card-to-narrative reward composition have not run. | `GC-020` |
 | `P-060` | Evidence and release status (recorded versions, commands, logs, measured budgets) | Partial | `GC-001`, `GC-002`, `GC-012`, `GC-022`, `GC-023`, `GC-025`, `GC-026`, `GC-028`, `GC-029`, `GC-030` | `artifacts/w3-gate/BUILD_REPORT.md`, `artifacts/w3-gate/toolchain/environment.txt`, `artifacts/w3-gate/trx/`, `artifacts/w4-gate/unity/editmode-results.xml`, `artifacts/w4-gate/toolchain/probe-w4-gate.json`, `artifacts/w4-gate/toolchain/probe-gc013.json`, `artifacts/w4-gate/BUILD_REPORT.md` | Actual tools, logs, results and hashes are archived; measured budgets, checkpoint recovery and full stress/fault evidence remain outstanding. | `GC-026` |
@@ -140,8 +143,8 @@ Evidence: `artifacts/w4-gate/unity/editmode-results.xml`, `artifacts/w4-gate/uni
 | `O-17` | Observe: snapshot/event cursor and limits -> immutable lease/page | Implemented+Evidenced | `TEST-014` | `GC-007`, `GC-016`, `GC-021`, `GC-023`, `GC-024`, `GC-027`, `GC-028` | `Packages/com.gamecore.unity.runtime/Runtime/Pure/Messages/CommittedEventStore.cs`, `artifacts/w3-gate/unity/editmode-results.xml`, `artifacts/w3-gate/trx/` | &mdash; | &mdash; |
 | `O-18` | CancelOperation: operation id -> Cancelled or TooLate plus status, never rollback | Implemented+Evidenced | `TEST-002`, `TEST-009`, `TEST-016` | `GC-002`, `GC-003`, `GC-004`, `GC-005`, `GC-006`, `GC-007`, `GC-008`, `GC-013`, `GC-014`, `GC-015`, `GC-016`, `GC-017`, `GC-018`, `GC-019`, `GC-021`, `GC-022`, `GC-027`, `GC-028` | `Packages/com.gamecore.composition/Runtime/Operations/CompositionHost.cs`, `artifacts/w3-gate/trx/` | &mdash; | &mdash; |
 | `O-19` | StopWorld: world plus reason -> Stopping then Disposed or blocked/quarantined | Implemented+Evidenced | `TEST-015`, `TEST-016`, `TEST-018` | `GC-004`, `GC-005`, `GC-008`, `GC-010`, `GC-014`, `GC-016`, `GC-017`, `GC-019`, `GC-020`, `GC-021`, `GC-022`, `GC-025`, `GC-027`, `GC-028` | `Packages/com.gamecore.unity.runtime/Runtime/WorldHost.cs`, `artifacts/w3-gate/unity/editmode-results.xml`, `artifacts/w3-gate/toolchain/probe-world-dispatch.json`, `artifacts/w4-gate/unity/editmode-results.xml`, `artifacts/w4-gate/toolchain/probe-w4-gate.json`, `artifacts/w4-gate/toolchain/probe-gc013.json`, `artifacts/w4-gate/BUILD_REPORT.md` | &mdash; | &mdash; |
-| `O-20` | CaptureCheckpoint: snapshot boundary plus command option -> versioned blob/checksum | Not yet | `TEST-017` | `GC-003`, `GC-015`, `GC-018`, `GC-021`, `GC-025`, `GC-027`, `GC-028` | _(none)_ | No checkpoint capture code exists anywhere in Packages/ and no TEST-017 artifact exists in artifacts/. | `GC-018` |
-| `O-21` | RestoreCheckpoint: verified blob -> new WorldId and fully published world | Not yet | `TEST-002`, `TEST-017` | `GC-002`, `GC-003`, `GC-004`, `GC-008`, `GC-014`, `GC-015`, `GC-016`, `GC-018`, `GC-019`, `GC-021`, `GC-025`, `GC-027`, `GC-028` | _(none)_ | No restore path, catalog/migration validation or unexposed destination world exists in Packages/. | `GC-018` |
+| `O-20` | CaptureCheckpoint: snapshot boundary plus command option -> versioned blob/checksum | Implemented+Evidenced | `TEST-017` | `GC-003`, `GC-015`, `GC-018`, `GC-021`, `GC-025`, `GC-027`, `GC-028` | `artifacts/gc-018/toolchain/probe-gc018.json`, `artifacts/gc-018/BUILD_REPORT.md` | &mdash; | &mdash; |
+| `O-21` | RestoreCheckpoint: verified blob -> new WorldId and fully published world | Implemented+Evidenced | `TEST-002`, `TEST-017` | `GC-002`, `GC-003`, `GC-004`, `GC-008`, `GC-014`, `GC-015`, `GC-016`, `GC-018`, `GC-019`, `GC-021`, `GC-025`, `GC-027`, `GC-028` | `artifacts/gc-018/toolchain/probe-gc018.json`, `artifacts/gc-018/unity/gc018-editmode.xml`, `artifacts/gc-018/BUILD_REPORT.md` | &mdash; | &mdash; |
 | `O-22` | RecoverWorld: Faulted world plus checkpoint or definition -> new session | Not yet | `TEST-016`, `TEST-017` | `GC-003`, `GC-004`, `GC-005`, `GC-008`, `GC-014`, `GC-015`, `GC-016`, `GC-017`, `GC-018`, `GC-021`, `GC-022`, `GC-025`, `GC-027`, `GC-028` | _(none)_ | WorldHost can enter Faulted, but no procedure selects a recovery source and publishes a new world session. | `GC-018` |
 | `O-23` | BindServiceOrAcquireLease: contract/provider/token -> epoch-bound binding or lease | Implemented+Evidenced | `TEST-003`, `TEST-015` | `GC-003`, `GC-004`, `GC-010`, `GC-014`, `GC-019`, `GC-021`, `GC-022`, `GC-028` | `Packages/com.gamecore.composition/Runtime/Services/ServiceResolver.cs`, `Packages/com.gamecore.composition/Runtime/Lifecycle/ManagedResources.cs`, `artifacts/w3-gate/trx/` | &mdash; | &mdash; |
 | `O-24` | CompleteAsyncWork: stamped completion/result/leases -> accepted staged result | Partial | `TEST-002`, `TEST-015` | `GC-002`, `GC-003`, `GC-004`, `GC-008`, `GC-010`, `GC-014`, `GC-016`, `GC-018`, `GC-019`, `GC-021`, `GC-022`, `GC-027`, `GC-028` | `Packages/com.gamecore.composition/Runtime/Lifecycle/CallbackGate.cs`, `artifacts/w3-gate/trx/`, `artifacts/w4-gate/unity/editmode-results.xml`, `artifacts/w4-gate/toolchain/probe-w4-gate.json`, `artifacts/w4-gate/toolchain/probe-gc013.json`, `artifacts/w4-gate/BUILD_REPORT.md` | Discarded stale completions pass; no accepted-completion host staging path or duplicate-completion lease behavior is evidenced. | `GC-014` |
@@ -176,12 +179,13 @@ How the rules were applied here:
    current executable evidence directly exercises the requirement's normative content with no named sub-clause
    left unexercised. If any sub-clause maps to a later wave's named mechanism (checkpointing, adapters, retention
    under limits, replay, measured budgets, the action family, cross-family composition), the row is `Partial` and the
-   `gap` names that sub-clause. Only `P-053` is `Not yet`, because no checkpoint code exists anywhere in the tree.
+   `gap` names that sub-clause. At the time of this assignment only `P-053` was `Not yet`, because no checkpoint
+   code existed anywhere in the tree; GC-018 later supplied it and the row is now `Implemented+Evidenced`.
 3. **Operations.** An `O` row is `Implemented+Evidenced` only when a handler exists in `Packages/` **and** the
    archived artifacts cover the operation's *distinguishing probe* from the `Operation-to-suite coverage` table —
-   not merely its happy path. `O-20`..`O-22` are `Not yet`: `grep` over `Packages/` finds no `Checkpoint`,
-   `RestoreCheckpoint` or `RecoverWorld` code path, and no `Checkpoint`/`Restore`/`Recover` test name exists in any
-   archived TRX or XML. `O-24` is `Partial` because a code path exists (the callback gate) but the host side of the
+   not merely its happy path. `O-20`..`O-22` were `Not yet` at the time of this assignment: `grep` over `Packages/` found no `Checkpoint`,
+   `RestoreCheckpoint` or `RecoverWorld` code path. GC-018 later added the capture and restore paths, so `O-20` and
+   `O-21` are now `Implemented+Evidenced` while `O-22` (which that task explicitly did not compose) stays `Not yet`. `O-24` is `Partial` because a code path exists (the callback gate) but the host side of the
    operation does not.
 4. **`ownerTasks`.** For requirements, the tasks in `traceability.json` whose `requirements[]` carry the id. For
    operations, the union of the tasks owning the required suites listed for that operation, mapped through
@@ -201,7 +205,7 @@ Things that looked markable as done, and why they are not:
    implementation — one control lane, immediate handles with terminal results, pure/cancellable status queries, a
    serialized cutoff race — evidenced by the wave-3 TRX/EditMode suites and the passing documentation validator
    (`artifacts/w3-gate/validator.log`). This is explicitly **not** a claim that §10's complete operation set is
-   implemented: `O-20`..`O-22` are `Not yet` in their own rows.
+   implemented: `O-22` is `Not yet` in its own row (`O-20` and `O-21` were promoted later by GC-018).
 2. **`P-060` evidence and release status.** The repository does record exact Unity/package/native-compiler
    versions, catalog hashes, commands, logs and fixture hashes, which tempts a "done" verdict. It stays `Partial`
    because the provisional budgets are unmeasured and failures/unload, checkpoint recovery and the
@@ -229,8 +233,10 @@ Things that looked markable as done, and why they are not:
    completion into staged state or turns an active gameplay completion into a typed command, and there is no
    duplicate-completion lease rule test. `Partial`.
 9. **`P-054` serialization.** Generated serializers, canonical big-endian round trips, unknown-field rejection and
-   registered slot migrations are all archived, but the requirement also covers save/checkpoint data and directed
-   cross-version migration paths, which cannot exist while `O-20`/`O-21` do not. `Partial`, not done.
+   registered slot migrations are archived, but at the time of this assignment the requirement also covered
+   save/checkpoint data and directed cross-version migration paths, which could not exist while `O-20`/`O-21` did
+   not. `Partial` then; GC-018 later supplied the checkpoint and directed-migration surface, so the row is now
+   `Implemented+Evidenced`.
 10. **No `NotRun` document was used as evidence.** Every `artifacts/gc-0NN/HANDOFF.md` and every
     `artifacts/w{1,2,3}-gate/HANDOFF.md` states `NotRun (pending orchestrator build host)` for its own change set.
     Those files are not cited anywhere in this inventory; the same directories' `BUILD_REPORT.md` and raw
@@ -257,15 +263,16 @@ GC-012 changed seven rows below. The statuses remain conservative: full requirem
 2. **No authoring-host handoff is treated as executable evidence.** The raw `trx-final/`, `unity/*.xml` and `toolchain/*.json` files are the actual run records.
 3. **`P-051` is evidenced only for its discipline clauses** (single control lane, immediate handles and terminal
    results, pure cancellable queries, serialized cutoff race). Its own row makes no claim that the complete §10
-   operation set is implemented — `O-20`..`O-22` are `Not yet` in their own rows.
+   operation set is implemented — `O-22` is `Not yet` in its own row (`O-20`/`O-21` were promoted later by GC-018).
 4. **`P-060` stays `Partial`**: the build/catalog/lock and stripping settings are now recorded by GC-012's gate
    runner, but the measurements it also requires (the P-022 budget numbers on a named machine) do not exist.
-5. **`P-054` and `P-023` remain Partial.** The 50×500 randomized differential tests now pass, but the untouched-sibling index counters and full P-023 index inventory remain unevidenced. The generated migration ambiguity boundary of P-054 remains open.
+5. **`P-054` and `P-023`.** The 50×500 randomized differential tests pass, but the untouched-sibling index counters and full P-023 index inventory remain unevidenced, so `P-023` stays `Partial`. The generated migration ambiguity boundary of `P-054` was later closed by GC-018 (row now `Implemented+Evidenced`).
 6. **`O-24` (`CompleteAsyncWork`) was not promoted** on the strength of the new domain-version guard: the guard
    refuses stale work at admission, which is not the same observation as "100 late completions yield zero stale
    writes or resurrection".
-7. **No `Not yet` row gained a partial credit.** `P-053`, `O-20`, `O-21`, `O-22` stay `Not yet`: no checkpoint,
-   restore or recovery code path exists anywhere in `Packages/`, and GC-012 added none.
+7. **No `Not yet` row gained a partial credit in this run.** `P-053`, `O-20`, `O-21`, `O-22` stayed `Not yet`: no
+   checkpoint, restore or recovery code path existed anywhere in `Packages/`, and GC-012 added none. GC-018 later
+   added the capture and restore paths and promoted `P-053`, `O-20` and `O-21`; `O-22` remains `Not yet`.
 
 ## How a status was assigned
 
@@ -279,25 +286,26 @@ GC-012 changed seven rows below. The statuses remain conservative: full requirem
 Never `Implemented+Evidenced` on the strength of a document that itself says `NotRun (pending orchestrator build
 host)`. Remaining V1 capabilities stay open tasks and never become optional.
 
-## GC-018 revision notes (Wave 5, proposal only)
+## GC-018 revision notes (Wave 5, applied)
 
-**No row was promoted by this section.** GC-018 (`gc-018`) adds the checkpoint surface the W4 revision notes above
-name as the reason `P-053` and `O-20`..`O-22` are `Not yet`. Until `tools/unity/run_gc018_probe.sh` and the
-`GameCore.Gc018.Tests` EditMode assembly actually pass on the Linux build host, every row below keeps its current
-status and this table is a proposal. Nothing here is evidence: `/artifacts/gc-018/HANDOFF.md` states
-`NotRun (pending orchestrator build host)` for the whole change set.
+**Applied on the Linux build host.** GC-018 (`gc-018`) adds the checkpoint surface the W4 revision notes above
+name as the reason `P-053` and `O-20`..`O-22` were `Not yet`. `tools/unity/run_gc018_probe.sh` and the
+`GameCore.Gc018.Tests` EditMode assembly have now run for real on the Linux build host, so the four proposed rows
+were promoted. Evidence: `artifacts/gc-018/toolchain/probe-gc018.json` (66/66 observations × 2 families × 2 catalogs,
+5/5 byte-identical IL2CPP runs under High stripping), `artifacts/gc-018/unity/gc018-editmode.xml` (3/3; full EditMode
+784/784, PlayMode 6/6), `artifacts/gc-018/trx/` (899/899), and `artifacts/gc-018/BUILD_REPORT.md`.
 
 What exists now: the versioned container format and its generated serializers, committed-boundary capture with an
 explicit queued-command disposition, stable reference-table validation, unique directed schema migration planning,
 an unexposed restore target with validation before exposure, deterministic RNG streams, a bounded restore
 reservation ledger, and committed versioned fixture data. 16 observations × 2 families × 2 catalogs.
 
-| Id | Current | Proposed | Observation that would carry it |
+| Id | Before | After | Observation that carried it |
 | --- | --- | --- | --- |
-| `P-053` | `Not yet` | `Implemented+Evidenced` | `gc018-committed-boundary-capture`, `gc018-queued-commands-are-dispositioned-not-omitted`, `gc018-capture-refuses-outside-a-boundary` |
-| `P-054` | `Partial` | `Implemented+Evidenced` | `gc018-ambiguous-migration-rejects-restore`, `gc018-unknown-required-schema-rejects-restore`, plus the migration-path fixture table |
-| `O-20` | `Not yet` | `Implemented+Evidenced` | `gc018-committed-boundary-capture`, `gc018-capture-refuses-outside-a-boundary` |
-| `O-21` | `Not yet` | `Implemented+Evidenced` | `gc018-restore-happens-into-a-new-unexposed-world`, `gc018-restore-recreates-state-at-different-native-indices`, `gc018-old-callbacks-cannot-target-the-new-session` |
+| `P-053` | `Not yet` | **`Implemented+Evidenced`** | `gc018-committed-boundary-capture`, `gc018-queued-commands-are-dispositioned-not-omitted`, `gc018-capture-refuses-outside-a-boundary` |
+| `P-054` | `Partial` | **`Implemented+Evidenced`** | `gc018-ambiguous-migration-rejects-restore`, `gc018-unknown-required-schema-rejects-restore`, plus the migration-path fixture table |
+| `O-20` | `Not yet` | **`Implemented+Evidenced`** | `gc018-committed-boundary-capture`, `gc018-capture-refuses-outside-a-boundary` |
+| `O-21` | `Not yet` | **`Implemented+Evidenced`** | `gc018-restore-happens-into-a-new-unexposed-world`, `gc018-restore-recreates-state-at-different-native-indices`, `gc018-old-callbacks-cannot-target-the-new-session` |
 | `P-004` | `Partial` | `Partial` (unchanged) | stable identities are now also persisted and re-resolved, but TEST-002's small-width counter-exhaustion fixture is still absent |
 | `P-005` | `Partial` | `Partial` (unchanged) | no handle is persisted, but restore/restart invalidation at counter boundaries is still absent |
 | `P-032` | `Partial` | `Partial` (unchanged) | dormant slots now round-trip; the row's other sub-clauses belong to GC-015 |
