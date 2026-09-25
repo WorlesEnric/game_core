@@ -1144,6 +1144,31 @@ namespace GameCore.Unity.Runtime
             return true;
         }
 
+        /// <summary>
+        /// Publishes a world that was built outside this registry, which is how O-21 restores a checkpoint into a new
+        /// session: the staging host exists and is fully applied, but it is not routable to any caller until this
+        /// call makes it the registry's world for its session (P-030, P-053). A session that is already registered is
+        /// refused rather than replaced, because one session id names one world.
+        /// </summary>
+        internal static bool TryExpose(UnityWorldHost staged)
+        {
+            if (staged == null)
+            {
+                throw new ArgumentNullException(nameof(staged));
+            }
+
+            GameCoreThreading.RequireMainThread("UnityWorldRegistry.TryExpose");
+
+            if (bySession.ContainsKey(staged.World.Session))
+            {
+                return false;
+            }
+
+            hosts.Add(staged);
+            bySession.Add(staged.World.Session, staged);
+            return true;
+        }
+
         /// <summary>Forgets one world; returns false when it was not registered.</summary>
         public static bool Remove(WorldId world)
         {
