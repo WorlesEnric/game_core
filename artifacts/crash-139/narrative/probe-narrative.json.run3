@@ -1,0 +1,152 @@
+{
+  "task": "GC-010",
+  "probe": "GameCore.Validation.ProbeHost.ProbeRunner",
+  "mode": "Narrative",
+  "result": "Pass",
+  "exitCode": 0,
+  "declaredUnityVersion": "6000.0.75f1",
+  "unityVersion": "6000.0.75f1",
+  "declaredTarget": "StandaloneLinux64",
+  "platform": "LinuxPlayer",
+  "architecture": "X64",
+  "processorType": "12th Gen Intel(R) Core(TM) i7-12700KF",
+  "scriptingBackend": "IL2CPP",
+  "isIl2Cpp": true,
+  "is64BitProcess": true,
+  "managedStrippingLevel": "High",
+  "managedStrippingLevelSource": "declared: GameCore.Validation.Editor.BuildProbe sets and re-reads PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, ManagedStrippingLevel.High); a player cannot query the stripping level at runtime",
+  "burstCompilerEnabled": true,
+  "fixturePluginPreservation": "declared: Assets/link.xml preserves the GameCore.Validation.Fixture assembly (preserve=\"all\"), and the generated catalog holds a direct FixturePluginFactory reference, so the plugin is linked into the player while nothing instantiates it at startup",
+  "catalogGenerator": "GameCore.Content.Compiler (GC-003)",
+  "catalogGeneratedFile": "ProbeCatalog.g.cs",
+  "catalogFileHash": "f35a69b3380b0f9470f5dcdd3147698ec2ca49304bf00dc6df11d95f938ace23",
+  "catalogFingerprint": "a4ea6f9190c40054b6733e6bcdfe060f478e77f0f3f8a0020c5a341381d353e7",
+  "catalogDescriptionFormat": "gamecore.catalog-description/1",
+  "catalogProtocolVersion": "1.0",
+  "catalogSupportedFeatureCount": 1,
+  "catalogFileHashAlgorithm": "SHA-256",
+  "catalogFileHashScope": "SHA-256 over the UTF-8 bytes, with LF line endings, of the file prefix that ends immediately before the eight-space-indented CatalogFileHash declaration; that prefix ends with the newline that terminates the previous line, and the declaration itself, its value and the rest of the file are excluded",
+  "failureReason": "",
+  "probes": [
+    {
+      "name": "narrative-catalog-and-declarations",
+      "status": "Pass",
+      "detail": "fingerprint=a4ea6f9190c40054b6733e6bcdfe060f478e77f0f3f8a0020c5a341381d353e7; fingerprintAsDeclared=True; declaredFingerprint=a4ea6f9190c40054b6733e6bcdfe060f478e77f0f3f8a0020c5a341381d353e7; acceptedDeclarations=3; rejectedDeclarations=0; factoryLookup=found; unknownKeyLookup=MissingDependency(key:FactoryKey(4771366f6c5f1ea9cdd9bc836d9c05ae, 1)); unregisteredResolved=False"
+    },
+    {
+      "name": "narrative-world-and-live-targets",
+      "status": "Pass",
+      "detail": "session=4e415252415453530000000000000001; registryBefore=1; registryAfter=2; liveTargets=7; ineligibleTargets=2; mappedTargets=7; plane=True; scopes=7; laneRevision=1; scopeTargetsSeeded=True; factSlotsSeeded=True; laneJoined=True; clockRegistered=True; lifecycle=Running"
+    },
+    {
+      "name": "narrative-chapter-one-mounted-and-published",
+      "status": "Pass",
+      "detail": "publish OperationId(WorldId(4e415252415453530000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 2): Published; lane=2/2; worldEpoch=1->2; joined=True; derivation input built: scopes=7, installs=1, targets=7, contracts=4, hash=1e59032ea4fdadb347ef7528aa3aa508ba3e23892a114f40ebee9cfee8bf055e; derivation=accepted(7 targets, <no delta>); proposal(mounts=1, capabilities=4, targets=7); publication=Published(writes=9, migrations=2); admission=Fresh; drained=1; lane=2/2; joined=True; migrations=2"
+    },
+    {
+      "name": "narrative-derived-layout-in-entities",
+      "status": "Pass",
+      "detail": "maraRows=2; maraDialogue=1; maraChoice=1; maraStampEpoch=2; gateRows=1; encounterRows=1; crowdRows=0; museumRows=0; sailorRowsBeforeChapterTwo=0; conversationNode=1; conversationVersion=2"
+    },
+    {
+      "name": "narrative-chapter-two-mounted-and-published",
+      "status": "Pass",
+      "detail": "publish OperationId(WorldId(4e415252415453530000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 3): Published; lane=3/3; worldEpoch=2->3; joined=True; derivation input built: scopes=7, installs=2, targets=7, contracts=4, hash=d6657dc1411dfb26684d40f3ac90bbc5391a671aac5d6648cc3c144fa2bfc18a; derivation=accepted(7 targets, Delta(+=2, -=0, ~=0, slots=2)); proposal(mounts=2, capabilities=6, targets=7); publication=Published(writes=3, migrations=0); sailorRows=2; sailorDialogue=2; publishedRows=6"
+    },
+    {
+      "name": "narrative-one-choice-command-committed",
+      "status": "Pass",
+      "detail": "admitted=True; admission=Accepted; steps=1; forwarded=1; refused=0; facts=1; gateBefore=0; gateAfter=1; gateEvaluatedFactVersion=2; questFact=1@v2; events=2; eventSchemas=ba1f284d15dd28bc2bd2e01281932572|4a396c0a9abe7f1de442889d30077ac0; ledger=1/0; encounter=1; trail=1/1; demand=0; faulted=False"
+    },
+    {
+      "name": "narrative-duplicate-request-commits-nothing-new",
+      "status": "Pass",
+      "detail": "retransmitted=True; admission=Committed; pumpSteps=0; steps=1; events=2; facts=1; gates=1"
+    },
+    {
+      "name": "narrative-forward-provider-and-spawned-target",
+      "status": "Pass",
+      "detail": "forward=NoTargetChange; noTargetChange=True; spawn=spawn OperationId(WorldId(4e415252415453530000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 6): Published; lane=4/4; worldEpoch=3->4; joined=True; derivation input built: scopes=7, installs=3, targets=7, contracts=5, hash=56dade93b6ed00a16c9f8d65bdccbed227a37cb649cf5e52abb3900bd674b1dd; derivation=accepted(7 targets, Delta(+=0, -=0, ~=0, slots=0)); publication=Published(writes=1, migrations=0); derivation changed no target assembly relative to the published composition; laneEpoch=4; worldEpoch=4; joined=True; spawnedRows=2; spawnedValue=1; publishedRows=8; recipeApplies=1; indexRegistered=True"
+    },
+    {
+      "name": "narrative-idle-world-performs-zero-steps",
+      "status": "Pass",
+      "detail": "frames=600; steps=0; stepBefore=1; stepAfter=1; images=5->5; dispatchRuns=1->1; demand=0; pendingWakes=0"
+    },
+    {
+      "name": "narrative-genre-neutrality",
+      "status": "Pass",
+      "detail": "content=checked=96/neutral=True/forbidden=0; inventory=checked=141/neutral=True/forbidden=0; components=checked=1/neutral=True/forbidden=0; registrations=96; gameplayNames=45; componentTypes=1; traceMatchesDeclaration=True; traceMismatches=<none>"
+    },
+    {
+      "name": "narrative-teardown-settles-and-disposes",
+      "status": "Pass",
+      "detail": "stop=Published(None); outstandingBefore=0; outstandingAfter=0; retainedResources=0; registryAfter=1; registryBefore=1"
+    },
+    {
+      "name": "fixture:narrative-catalog-and-declarations",
+      "status": "Pass",
+      "detail": "fingerprint=e30e5c5248fc6ed5393960bbaab9838502227e516a55d4cb9f532fe167cf3bb7; fingerprintAsDeclared=True; declaredFingerprint=e30e5c5248fc6ed5393960bbaab9838502227e516a55d4cb9f532fe167cf3bb7; acceptedDeclarations=3; rejectedDeclarations=0; factoryLookup=found; unknownKeyLookup=MissingDependency(key:FactoryKey(9dc69bed4ac5328ab28fb4dedf1649ce, 1)); unregisteredResolved=False"
+    },
+    {
+      "name": "fixture:narrative-world-and-live-targets",
+      "status": "Pass",
+      "detail": "session=4e415252415453530000000000000001; registryBefore=1; registryAfter=2; liveTargets=7; ineligibleTargets=2; mappedTargets=7; plane=True; scopes=7; laneRevision=1; scopeTargetsSeeded=True; factSlotsSeeded=True; laneJoined=True; clockRegistered=True; lifecycle=Running"
+    },
+    {
+      "name": "fixture:narrative-chapter-one-mounted-and-published",
+      "status": "Pass",
+      "detail": "publish OperationId(WorldId(4e415252415453530000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 2): Published; lane=2/2; worldEpoch=1->2; joined=True; derivation input built: scopes=7, installs=1, targets=7, contracts=4, hash=1e59032ea4fdadb347ef7528aa3aa508ba3e23892a114f40ebee9cfee8bf055e; derivation=accepted(7 targets, <no delta>); proposal(mounts=1, capabilities=4, targets=7); publication=Published(writes=9, migrations=2); admission=Fresh; drained=1; lane=2/2; joined=True; migrations=2"
+    },
+    {
+      "name": "fixture:narrative-derived-layout-in-entities",
+      "status": "Pass",
+      "detail": "maraRows=2; maraDialogue=1; maraChoice=1; maraStampEpoch=2; gateRows=1; encounterRows=1; crowdRows=0; museumRows=0; sailorRowsBeforeChapterTwo=0; conversationNode=1; conversationVersion=2"
+    },
+    {
+      "name": "fixture:narrative-chapter-two-mounted-and-published",
+      "status": "Pass",
+      "detail": "publish OperationId(WorldId(4e415252415453530000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 3): Published; lane=3/3; worldEpoch=2->3; joined=True; derivation input built: scopes=7, installs=2, targets=7, contracts=4, hash=d6657dc1411dfb26684d40f3ac90bbc5391a671aac5d6648cc3c144fa2bfc18a; derivation=accepted(7 targets, Delta(+=2, -=0, ~=0, slots=2)); proposal(mounts=2, capabilities=6, targets=7); publication=Published(writes=3, migrations=0); sailorRows=2; sailorDialogue=2; publishedRows=6"
+    },
+    {
+      "name": "fixture:narrative-one-choice-command-committed",
+      "status": "Pass",
+      "detail": "admitted=True; admission=Accepted; steps=1; forwarded=1; refused=0; facts=1; gateBefore=0; gateAfter=1; gateEvaluatedFactVersion=2; questFact=1@v2; events=2; eventSchemas=ba1f284d15dd28bc2bd2e01281932572|4a396c0a9abe7f1de442889d30077ac0; ledger=1/0; encounter=1; trail=1/1; demand=0; faulted=False"
+    },
+    {
+      "name": "fixture:narrative-duplicate-request-commits-nothing-new",
+      "status": "Pass",
+      "detail": "retransmitted=True; admission=Committed; pumpSteps=0; steps=1; events=2; facts=1; gates=1"
+    },
+    {
+      "name": "fixture:narrative-forward-provider-and-spawned-target",
+      "status": "Pass",
+      "detail": "forward=NoTargetChange; noTargetChange=True; spawn=spawn OperationId(WorldId(4e415252415453530000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 6): Published; lane=4/4; worldEpoch=3->4; joined=True; derivation input built: scopes=7, installs=3, targets=7, contracts=5, hash=56dade93b6ed00a16c9f8d65bdccbed227a37cb649cf5e52abb3900bd674b1dd; derivation=accepted(7 targets, Delta(+=0, -=0, ~=0, slots=0)); publication=Published(writes=1, migrations=0); derivation changed no target assembly relative to the published composition; laneEpoch=4; worldEpoch=4; joined=True; spawnedRows=2; spawnedValue=1; publishedRows=8; recipeApplies=1; indexRegistered=True"
+    },
+    {
+      "name": "fixture:narrative-idle-world-performs-zero-steps",
+      "status": "Pass",
+      "detail": "frames=600; steps=0; stepBefore=1; stepAfter=1; images=5->5; dispatchRuns=1->1; demand=0; pendingWakes=0"
+    },
+    {
+      "name": "fixture:narrative-genre-neutrality",
+      "status": "Pass",
+      "detail": "content=checked=96/neutral=True/forbidden=0; inventory=checked=141/neutral=True/forbidden=0; components=checked=1/neutral=True/forbidden=0; registrations=96; gameplayNames=45; componentTypes=1; traceMatchesDeclaration=True; traceMismatches=<none>"
+    },
+    {
+      "name": "fixture:narrative-teardown-settles-and-disposes",
+      "status": "Pass",
+      "detail": "stop=Published(None); outstandingBefore=0; outstandingAfter=0; retainedResources=0; registryAfter=1; registryBefore=1"
+    },
+    {
+      "name": "narrative-generated-catalog-facts",
+      "status": "Pass",
+      "detail": "catalogFingerprint=a4ea6f9190c40054b6733e6bcdfe060f478e77f0f3f8a0020c5a341381d353e7; session=4e415252415453530000000000000001; registryBefore=1; registryAfter=2; liveTargets=7; ineligibleTargets=2; mappedTargets=7; plane=True; stages=6; systems=6; laneJoinedAfterChapterOne=True; laneRevisionAfterChapterOne=2; laneEpochAfterChapterOne=2; worldEpochAfterChapterOne=2; derivedTargetsAfterChapterOne=3; derivedContributionsAfterChapterOne=4; chapterOneInstalledRows=4; chapterOneRetractedRows=0; migratedConversationSlots=2; migrationInvocations=2; publicationOutcomeAfterChapterOne=Published; maraRows=2; maraDialogueValue=1; maraChoiceValue=1; maraActive=True; maraStampEpoch=2; gateRows=1; gateValue=1; encounterRows=1; encounterValue=1; crowdRows=0; museumRows=0; sailorRowsBeforeChapterTwo=0; conversationNodeAfterMigration=1; conversationVersionAfterMigration=2; laneEpochAfterChapterTwo=3; worldEpochAfterChapterTwo=3; chapterTwoInstalledRows=2; sailorRows=2; sailorDialogueValue=2; publishedRowsAfterChapterTwo=6; commandAdmitted=True; commandAdmission=Accepted; admittedChoices=1; forwardedChoices=1; refusedChoices=0; committedFacts=1; duplicateMutations=0; gateDecisions=1; encounterHooks=1; gateDecisionBeforeCommand=0; gateDecisionAfterCommand=1; gateEvaluatedFactVersion=2; questFactValueAfterCommand=1; questFactVersionAfterCommand=2; eventsAfterCommand=2; eventSchemasAfterCommand=ba1f284d15dd28bc2bd2e01281932572|4a396c0a9abe7f1de442889d30077ac0; eventStepAfterCommand=1; eventEpochAfterCommand=3; ledgerCommitted=1; ledgerPending=0; encounterStatusAfterCommand=1; trailSteps=1; trailProjected=1; trailFacts=1; trailGateDecisions=1; trailEncounterHooks=1; dispatchRuns=1; dispatchedEntries=6; stepsAfterCommand=1; stepsAfterDuplicate=1; duplicatePumpSteps=0; eventsAfterDuplicate=2; forwardNoTargetChange=True; laneEpochAfterForward=4; worldEpochAfterSpawn=4; joinedAfterSpawn=True; spawnedRows=2; spawnedValue=1; spawnedStampEpoch=4; spawnedStampPublished=True; spawnedInView=True; publishedRowsAfterSpawn=8; chapterTwoRowsInView=2; recipeApplies=1; recipeInstalledSlots=2; idleFrames=600; idleSteps=0; idleImages=5; idleDispatchRuns=0; pendingDemandAfterIdle=0; genreChecked=96; genreNeutral=True; forbiddenNames=0; traceMatchesDeclaration=True; traceMismatchDetail=<none>; inventoryChecked=141; inventoryNeutral=True; inventoryForbiddenNames=0; componentChecked=1; componentNeutral=True; outstandingJobsBeforeTeardown=0; outstandingJobsAfterTeardown=0; retainedResourcesAfterTeardown=0; registryAfterTeardown=1"
+    },
+    {
+      "name": "narrative-fixture-catalog-facts",
+      "status": "Pass",
+      "detail": "catalogFingerprint=e30e5c5248fc6ed5393960bbaab9838502227e516a55d4cb9f532fe167cf3bb7; session=4e415252415453530000000000000001; registryBefore=1; registryAfter=2; liveTargets=7; ineligibleTargets=2; mappedTargets=7; plane=True; stages=6; systems=6; laneJoinedAfterChapterOne=True; laneRevisionAfterChapterOne=2; laneEpochAfterChapterOne=2; worldEpochAfterChapterOne=2; derivedTargetsAfterChapterOne=3; derivedContributionsAfterChapterOne=4; chapterOneInstalledRows=4; chapterOneRetractedRows=0; migratedConversationSlots=2; migrationInvocations=2; publicationOutcomeAfterChapterOne=Published; maraRows=2; maraDialogueValue=1; maraChoiceValue=1; maraActive=True; maraStampEpoch=2; gateRows=1; gateValue=1; encounterRows=1; encounterValue=1; crowdRows=0; museumRows=0; sailorRowsBeforeChapterTwo=0; conversationNodeAfterMigration=1; conversationVersionAfterMigration=2; laneEpochAfterChapterTwo=3; worldEpochAfterChapterTwo=3; chapterTwoInstalledRows=2; sailorRows=2; sailorDialogueValue=2; publishedRowsAfterChapterTwo=6; commandAdmitted=True; commandAdmission=Accepted; admittedChoices=1; forwardedChoices=1; refusedChoices=0; committedFacts=1; duplicateMutations=0; gateDecisions=1; encounterHooks=1; gateDecisionBeforeCommand=0; gateDecisionAfterCommand=1; gateEvaluatedFactVersion=2; questFactValueAfterCommand=1; questFactVersionAfterCommand=2; eventsAfterCommand=2; eventSchemasAfterCommand=ba1f284d15dd28bc2bd2e01281932572|4a396c0a9abe7f1de442889d30077ac0; eventStepAfterCommand=1; eventEpochAfterCommand=3; ledgerCommitted=1; ledgerPending=0; encounterStatusAfterCommand=1; trailSteps=1; trailProjected=1; trailFacts=1; trailGateDecisions=1; trailEncounterHooks=1; dispatchRuns=1; dispatchedEntries=6; stepsAfterCommand=1; stepsAfterDuplicate=1; duplicatePumpSteps=0; eventsAfterDuplicate=2; forwardNoTargetChange=True; laneEpochAfterForward=4; worldEpochAfterSpawn=4; joinedAfterSpawn=True; spawnedRows=2; spawnedValue=1; spawnedStampEpoch=4; spawnedStampPublished=True; spawnedInView=True; publishedRowsAfterSpawn=8; chapterTwoRowsInView=2; recipeApplies=1; recipeInstalledSlots=2; idleFrames=600; idleSteps=0; idleImages=5; idleDispatchRuns=0; pendingDemandAfterIdle=0; genreChecked=96; genreNeutral=True; forbiddenNames=0; traceMatchesDeclaration=True; traceMismatchDetail=<none>; inventoryChecked=141; inventoryNeutral=True; inventoryForbiddenNames=0; componentChecked=1; componentNeutral=True; outstandingJobsBeforeTeardown=0; outstandingJobsAfterTeardown=0; retainedResourcesAfterTeardown=0; registryAfterTeardown=1"
+    }
+  ]
+}
