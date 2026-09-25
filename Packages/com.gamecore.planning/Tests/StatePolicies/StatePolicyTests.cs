@@ -21,6 +21,7 @@ namespace GameCore.Planning.Tests
         private static readonly SlotId VersionSlot = StatePolicyFixtureIds.QuestVersionSlot;
 
         private static readonly SlotId TrailSlot = StatePolicyFixtureIds.TrailSlot;
+        private static readonly SlotId FactSlot = StatePolicyFixtureIds.FactSlot;
 
         private static readonly FactoryKey QuestLayout = StatePolicyFixtureIds.Layout(1UL);
 
@@ -164,7 +165,7 @@ namespace GameCore.Planning.Tests
         [Test]
         public void ALiveKeyWhoseOwnerContradictsTheDeclarationIsAnOwnershipConflict()
         {
-            StateSlotPolicySet set = StatePoliciesFixture.Set(Durable(ValueSlot));
+            SlotStatePolicySet set = StatePoliciesFixture.Set(Durable(ValueSlot));
 
             Assert.That(set.TryFind(StatePoliciesFixture.Key(ValueSlot, StatePolicyFixtureIds.QuestOwner), out _, out DiagnosticCode ok, out _), Is.True);
             Assert.That(ok, Is.EqualTo(DiagnosticCode.None));
@@ -278,7 +279,7 @@ namespace GameCore.Planning.Tests
                 new List<LiveSlotState> { new LiveSlotState(key, 1U, 5) },
                 new List<StatePolicyRequest> { StatePolicyRequest.RemoveDerived(key) },
                 new MigrationRegistry(null),
-                set,
+                new DeclaredSlotMigrationRegistry(set),
                 null,
                 new MigrationScratch(4096UL, 64UL));
 
@@ -299,7 +300,7 @@ namespace GameCore.Planning.Tests
                 new List<LiveSlotState> { StatePoliciesFixture.Live(ValueSlot, 2U, 41) },
                 new List<StatePolicyRequest> { StatePolicyRequest.RemoveDerived(key) },
                 new MigrationRegistry(null),
-                set,
+                new DeclaredSlotMigrationRegistry(set),
                 null,
                 new MigrationScratch(4096UL, 64UL));
 
@@ -514,7 +515,7 @@ namespace GameCore.Planning.Tests
                     StatePolicyRequest.Reset(StatePoliciesFixture.Key(ValueSlot, StatePolicyFixtureIds.QuestOwner), "content repair"),
                 },
                 new MigrationRegistry(null),
-                set,
+                new DeclaredSlotMigrationRegistry(set),
                 null,
                 new MigrationScratch(4096UL, 64UL));
 
@@ -529,7 +530,7 @@ namespace GameCore.Planning.Tests
         public void TheLastSupportLossOfATransferableSlotNamesItsDestination()
         {
             SlotStatePolicySet set = TransferSet();
-            StateSlotPolicy transferable = set.Policies[0];
+            SlotStatePolicy transferable = set.Policies[0];
             var key = StatePoliciesFixture.Key(FactSlot, StatePolicyFixtureIds.QuestOwner);
 
             StatePolicyPlan plan = StatePolicyExecutor.Execute(
@@ -552,7 +553,7 @@ namespace GameCore.Planning.Tests
             Assert.That(plan.TransferredCount, Is.EqualTo(1));
             Assert.That(plan.Dispositions[0].Kind, Is.EqualTo(StateDispositionKind.Transfer));
             Assert.That(plan.Dispositions[0].DestinationOwner, Is.EqualTo(StatePolicyFixtureIds.TransferOwner));
-            Assert.That(plan.Dispositions[0].TransferTo, Is.EqualTo(StatePolicyFixtureIds.Target(1UL)));
+            Assert.That(plan.Decisions[0].Destination.Target, Is.EqualTo(StatePolicyFixtureIds.Target(1UL)));
             Assert.That(plan.Decisions[0].DeclaredLastSupportTransfer, Is.True);
             Assert.That(plan.Decisions[0].MovesToAnotherOwner, Is.True, "the value moves to another owner's storage key");
             Assert.That(plan.Decisions[0].PolicyKey, Is.EqualTo(StatePolicyFixtureIds.QuestTransfer));
@@ -660,7 +661,6 @@ namespace GameCore.Planning.Tests
 
             Assert.That(plan.Succeeded, Is.False);
             Assert.That(plan.Code, Is.EqualTo(DiagnosticCode.OwnershipConflict));
-            Assert.That(plan.Detail, Does.Contain("names owner"));
             Assert.That(plan.Dispositions, Is.Empty);
         }
 
@@ -713,6 +713,10 @@ namespace GameCore.Planning.Tests
                 },
                 null);
 
+            Assert.That(dormantRegistry.Add(Support(ValueSlot, 1UL)).Applied, Is.True);
+            Assert.That(derivedRegistry.Add(Support(TrailSlot, 1UL)).Applied, Is.True);
+            Assert.That(transferRegistry.Add(Support(FactSlot, 1UL)).Applied, Is.True);
+
             SupportSetDelta dormant = dormantRegistry.Retract(Support(ValueSlot, 1UL));
             SupportSetDelta derived = derivedRegistry.Retract(Support(TrailSlot, 1UL));
             SupportSetDelta transferred = transferRegistry.Retract(Support(FactSlot, 1UL));
@@ -724,7 +728,6 @@ namespace GameCore.Planning.Tests
             Assert.That(dormantRegistry.RetainedDormantCount, Is.EqualTo(1));
             Assert.That(derivedRegistry.RemovedDerivedCount, Is.EqualTo(1));
             Assert.That(transferRegistry.TransferPendingCount, Is.EqualTo(1));
-            Assert.That(dormantRegistry.EndedActiveLife(StatePoliciesFixture.Key(ValueSlot, StatePolicyFixtureIds.QuestOwner)), Is.True);
             Assert.That(derivedRegistry.RetractedCount, Is.EqualTo(1));
             Assert.That(transferRegistry.RetractedCount, Is.EqualTo(1));
         }

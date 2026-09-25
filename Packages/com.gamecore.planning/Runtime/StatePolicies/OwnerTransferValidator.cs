@@ -215,6 +215,18 @@ namespace GameCore.Planning.StatePolicies
                     + " (P-032).");
             }
 
+            if (!IsAvailableOwner(set, destinationOwner))
+            {
+                return Refuse(
+                    source,
+                    destination,
+                    policy,
+                    declaredLastSupportTransfer,
+                    DiagnosticCode.MissingDependency,
+                    "destination owner " + destinationOwner.ToString()
+                    + " is not declared by this catalog revision (P-032). ");
+            }
+
             return new OwnerTransferResult(
                 source,
                 destination,

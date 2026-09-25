@@ -750,6 +750,8 @@ namespace GameCore.Planning.StatePolicies
                 }
 
                 staged.Add(live.Slot);
+                code = DiagnosticCode.None;
+                detail = string.Empty;
                 return Allow(policy, live, StatePolicyIntent.Migrate, StateDispositionKind.Migrate,
                     policy.Schema.Version, migrationKey, string.Empty, true);
             }
@@ -800,6 +802,8 @@ namespace GameCore.Planning.StatePolicies
                 }
 
                 staged.Add(live.Slot);
+                code = DiagnosticCode.None;
+                detail = string.Empty;
                 return Allow(policy, live, StatePolicyIntent.Reset, StateDispositionKind.Reset,
                     policy.Schema.Version, policy.InitializationPolicy, request.Reason, true);
             }
