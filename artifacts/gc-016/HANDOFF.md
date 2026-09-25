@@ -85,7 +85,9 @@ from the end-step boundary the W5 gate already has.
 | `shared:` compile the observation module under plain dotnet and check it engine-free | `dotnet/src/GameCore.Execution/GameCore.Execution.csproj` (globs `Runtime/Observation`), `tools/check_game_core_csharp.py` (`engine_free` entry). |
 | `GC-016:` extend step publication with pinned retention, concurrent leases and the committed boundary | `Runtime/Pure/Execution/PublicationBoundary.cs`, `Runtime/Pure/Messages/CommittedEventStore.cs`, `Runtime/WorldHost.cs`, the whole new `Runtime/Observation/` folder, and `Runtime/Integration/DerivationProvenancePublisher.cs`. |
 | `GC-016:` add the bounded diagnostics module (payloads, provenance, staged status) | The whole new `Runtime/Diagnostics/` folder. |
-| `GC-016:` prove retention, leasing, resynchronization, dedup and provenance without Unity | `Packages/com.gamecore.unity.runtime/Tests/Observation/`, `Packages/com.gamecore.composition/Tests/Diagnostics/`, and the `shared:`-style glob in `dotnet/tests/GameCore.Execution.Tests/GameCore.Execution.Tests.csproj`. |
+| `GC-016:` prove retention, leasing, resynchronization, dedup and provenance without Unity | `Packages/com.gamecore.unity.runtime/Tests/Observation/`, `Packages/com.gamecore.composition/Tests/Diagnostics/`, and the glob in `dotnet/tests/GameCore.Execution.Tests/GameCore.Execution.Tests.csproj`. |
+| `GC-016:` restore the delivery window's resync and remembered-identity counters | `DelayedConsumerDelivery.cs` (two property declarations an earlier edit in this branch had accidentally dropped; found by the Unity-test author). **This commit also carried the then-uncommitted `unity/GameCore.Validation/Assets/GameCore.Validation/Tests/Observation/` folder** because it was still untracked; the folder's content is described in §4 and was corrected by the next commit. |
+| `GC-016:` correct four real-API mistakes in the Unity-world observation tests | The four new test files under `Tests/Observation/`, after four independent inspections against the real definitions. |
 
 ## 3. Summary
 
@@ -174,6 +176,19 @@ without forking any store and without exposing writable world memory:
 | `.../ProvenanceExplanationReaderTests.cs` | The frozen page shape and totals, paging, expired/unknown/invalid counting, staged labelling, canonical record order. |
 | `.../StagedOperationStatusTests.cs` | Real lane: staged → published, refusal, unknown versus expired, handle-versus-identity reads. |
 
+### Unity-world tests (real worlds, both families — `unity/GameCore.Validation/Assets/GameCore.Validation/Tests/Observation/`)
+
+| File | Contents |
+|---|---|
+| `GameCore.Observation.Tests.asmdef` | Editor-only test assembly referencing the two family fixture assemblies, the rules assemblies, `GameCore.Composition`, `GameCore.Derivation(.Fixtures)`, `GameCore.Planning`, `GameCore.Unity.Fixtures`, `GameCore.Unity.Runtime`, `Unity.Entities`/`Unity.Collections` and the Unity test runners. |
+| `ObservationFamilyHarness.cs` | Builds one **real** narrative world and one **real** card world exactly as the family fixtures do (catalog → schedule/ownership pipeline → `NarrativeRegistration`/`CardTableRegistration` → `UnityWorldRegistry.TryCreate` → family module → `TargetRegistry`/`AssemblyPublisher`/`LiveTargetIndex`/`LiveTargetSeeder` → `CompositionHost` + `WorldCompositionBridge` → `DerivedAssemblyPipeline` → `WorldTimeDriver`), seeds the real targets/market and mounts the real providers; every refusal throws with the module's own code and detail. Exposes `Host`, `Lane`, `Publisher`, `Pipeline`, `Time`, `RootScope`, `LatestBoundary()`, `LeaseLatestBoundary(int)`, `CommitOneStep()`, `SubmitFamilyCommand()`, `PublishSetupEdit(...)`, `PublishStagedAndDerive(...)`, `CommittedEventOf(...)`, `StepCommitOf(...)`. |
+| `ObservationImmutabilityTests.cs` | 4 tests × 2 families: an immutable verifiable boundary lease (token/step/epoch versus the world's own counters, payload hash recomputed from the leased copy, mutated copy never reaching the store's image); no writable state escapes and the lease survives a world advance; a pinned image is never overwritten or evicted while leased; a saturated lease pool reports backpressure and keeps the leased image. |
+| `ObservationCursorAndProvenanceTests.cs` | 3 tests × 2 families: cursor expiry plus resynchronization from the newest boundary (including a foreign-world cursor); delayed-consumer delivery of each committed event once, recovery after expiry and duplicate suppression; `DerivationProvenancePublisher` over the **real** derivation of the mounted provider, reconstructing every effective capability of every target with winner/loser/exclusion evidence, paging and the page-independent digest, and the `ExplanationPage` agreeing with the reconstruction. |
+| `ObservationStagedStatusAndDiagnosticsTests.cs` | 2 tests × 2 families: `StagedStatusReader` distinguishing a staged plan from published state and from an expired result; the structured diagnostics of a **really refused** edit (the lane's own retained plan hash and diagnostics) interned, retrieved and ordered independently of the formatted text. |
+
+Every test carries `[Timeout(600000)]` and `[TearDown] UnityWorldRegistry.ResetAll()`; both families are supplied
+through `[TestCase(ObservationFamilyHarness.NarrativeFamily)]` / `[TestCase(ObservationFamilyHarness.CardsFamily)]`.
+
 ### `artifacts/gc-016/`
 
 | File | Contents |
@@ -229,7 +244,11 @@ Additions outside `GameCore.Contracts` (all additive, no existing signature chan
 | TEST-016 (fault boundaries keep the last good image) | A pinned/committed image is never overwritten and keeps verifying after later publications | `SnapshotRetentionTests.ALeasedImageIsPinnedAndNeverEvictedOrOverwritten`, `ConcurrentObservationTests.APinnedImageStaysReadableWhileTheWindowMovesUnderneathIt` |
 | TEST-023 (bounded memory, counters reported separately) | Bounded identity windows, retention bounds, per-structure counters | `DelayedConsumerDeliveryTests.TheRememberedIdentityWindowIsBounded`, `SnapshotRetentionTests.LeasePoolBackpressureIsAValueThatNeverOverwritesLeasedMemory`, `ProvenanceStoreTests.DeclaredBoundsRefuseInsteadOfTruncating` |
 
-Unity-world proof of published images in both families is the delegated test assembly (see §8, item 1).
+Unity-world proof of published images, cursor expiry/resynchronization, delayed-consumer dedup, reconstructable
+provenance and staged-versus-published status in both families is
+`GameCore.Observation.Tests` (`unity/GameCore.Validation/Assets/GameCore.Validation/Tests/Observation/`, §4): every
+one of its 9 family-parameterized tests builds a real narrative world or a real card world and asserts on real
+committed images.
 
 ## 8. Build and test commands for the Linux build host
 
@@ -300,12 +319,23 @@ python3 tools/validate_game_core_docs.py
 
 1. **Nothing here has been compiled or run.** Every command in §8 is `NotRun`. The authoring host has no toolchain;
    the risk this carries is compile-level (names, usings, nullability), which the source has been written to minimise
-   and the host-side checker partially covers. The delegated Unity-world test assembly is the least-reviewed part of
-   the change set for exactly this reason.
-2. **`GameCore.Observation.Tests` (Unity world) was written by a delegated worker.** Its harness reuses the real
-   narrative and card fixtures, but no compiler has seen it; if it does not build first time on the Linux host, the
-   fix is mechanical (a name or a construction-order detail), not a design change. Its assertions were specified
-   against the frozen API in §1/§4 and the real fixture entry points.
+   and the host-side checker partially covers. The Unity-world test assembly is the part of the change set with the
+   least compiler-adjacent review for exactly this reason.
+2. **How the Unity-world test assembly was reviewed instead of compiled.** Four independent inspections were run,
+   one per file, each resolving every member, constructor and enum reference against the real definition (a regex
+   sweep of every `.Member` access plus every capitalized identifier, checked against the declaring files). They
+   found and fixed seven real defects, all committed in "correct four real-API mistakes in the Unity-world
+   observation tests": `CommandAdmissionReceipt.Result.Reason` (not `Code`); an immutability check that compared a
+   byte with itself instead of proving a write to the caller's copy never reaches the store's image; a wrong counter
+   for a foreign-world cursor on a world that *has* an event plane; an explanation page total compared against the
+   page window instead of the whole retained pair; a nullable `EditAdmission.Plan` dereference; an assertion that a
+   staged plan advances `StagedState.Revision` (staging increments no revision at all, so the staged tail is now
+   asserted apart by definition fingerprint); and a refused admission's plan hash read from the admission (which is
+   deliberately null for a refusal) instead of from the lane's own retained ledger row. The same review round also
+   caught two declarations an earlier edit of mine had dropped from `DelayedConsumerDelivery`
+   (`ResyncCount`, `RememberedIdentities`), fixed in "restore the delivery window's resync and remembered-identity
+   counters". Residual risk: construction order and argument arity of the family fixtures are still unverified by a
+   compiler, so a first-build failure there (if any) is mechanical.
 3. **Doc ambiguity — retention versus a pinned image.** P-007 says retention "rejects new leases with
    `SnapshotBackpressure` rather than overwriting leased memory" and says nothing about what the *publication* side
    does when the window is full of pins. Reading chosen: publication always succeeds (a refused publication would
@@ -337,8 +367,18 @@ python3 tools/validate_game_core_docs.py
 10. **`ObservationHub` (lifecycle/step notification) is untouched.** GC-016's storage is the read side; the
     notification fan-out remains GC-005's, and no W5 task owns a second one.
 11. **The `shared:` commits.** Two commits touch files shared with other tasks: the build/tooling one listed in §2
-    and the test-source glob inside the pure-tests commit (`dotnet/tests/GameCore.Execution.Tests/*.csproj`). Both
+    (`dotnet/src/GameCore.Execution/GameCore.Execution.csproj`, `tools/check_game_core_csharp.py`) and the test-source
+    glob inside the pure-tests commit (`dotnet/tests/GameCore.Execution.Tests/GameCore.Execution.Tests.csproj`). Both
     are additive and are listed in §5.
+12. **Where the Unity-world tests appear in the suites.** `GameCore.Observation.Tests` is an `Assets` test assembly,
+    so Unity discovers it through its `.asmdef` and it is not listed in `Packages/manifest.json` `testables` (that
+    list is for package-hosted tests only). The other two new folds are package-hosted:
+    `Packages/com.gamecore.unity.runtime/Tests/Observation/` (assembly `GameCore.Unity.Observation.Tests`) and
+    `Packages/com.gamecore.composition/Tests/Diagnostics/` (inside the existing `GameCore.Composition.Tests`).
+13. **Warning-as-error exposure.** `dotnet/Directory.Build.props` sets `TreatWarningsAsErrors`, and the composition
+    and execution test projects glob package `Tests` folders, so the new pure test sources are compiled under that
+    setting. The host-side checker cannot see warnings; a warning-level issue in those files would surface only on the
+    Linux host.
 
 ## 10. Proposals for `artifacts/gates/w4-generic-profile/inventory.json` (proposals only)
 
@@ -352,7 +392,7 @@ them after running.
 | P-045 | Partial → **Partial** (unchanged), new evidence | Immutable images at publication, explicit cursor expiry, resynchronization, at-least-once delivery with `(world, sequence)` dedup and bounded subscriber memory are now named tests; the crash-durable outbox for irreversible output adapters (GC-021) is still unrun. |
 | P-052 | Partial → **Partial** (unchanged), gap reduced | Structured payloads (code, world/operation/plan identity, phase, involved ids/keys, counts/budgets, retry class) plus retrieval keys and a formatting-independent total order are implemented and tested; "fallback" remains the unified cross-module diagnostic assembly that GC-023/GC-026 own. |
 | P-050 | Partial (unchanged) | Staged-versus-expired result reporting is now tested; the restore session reservation and bounded retries the row names remain GC-018/GC-014 work. |
-| TEST-002/008/009/014/016/023 (suite rows, if the inventory tracks them) | new executed evidence | The seven pure fixtures named in §7 are the applicable subsets this task owns; the Unity-world half runs with §8.2. |
+| TEST-002/008/009/014/016/023 (suite rows, if the inventory tracks them) | new authored evidence | Ten pure fixtures (five observation, four diagnostics, five test methods inside them where they share a fixture) plus `GameCore.Observation.Tests`' 9 family-parameterized Unity-world tests are the applicable subsets this task owns; none of them has been executed on this host, so §8.2 is where they run. |
 
 No `Implemented+Evidenced` promotion is proposed for any row: every claim above depends on the Linux build host
 actually compiling and running the suites, and this host ran none of them.

@@ -28,11 +28,12 @@ namespace GameCore.Execution.Tests.Observation
             var store = new StepPublicationStore(ObservationFixture.World, 8, 4);
             var failures = new List<string>();
             var gate = new object();
+            var verifiedByReaders = new int[1];
 
             var readers = new Thread[ReaderThreads];
             for (int r = 0; r < readers.Length; r++)
             {
-                var reader = new Thread(() => ReadWhilePublishing(store, gate, failures));
+                var reader = new Thread(() => ReadWhilePublishing(store, gate, failures, verifiedByReaders));
                 reader.IsBackground = true;
                 readers[r] = reader;
                 reader.Start();
@@ -60,6 +61,8 @@ namespace GameCore.Execution.Tests.Observation
             Assert.That(store.ActiveLeaseCount, Is.Zero, "Every reader disposed its lease.");
             Assert.That(store.RetainedCount, Is.LessThanOrEqualTo(store.MaxRetainedImages));
             Assert.That(store.Last!.Token.LogicalStepId, Is.EqualTo(new LogicalStepId(PublishedSteps)));
+            Assert.That(verifiedByReaders[0], Is.GreaterThan(0),
+                "the readers must really have leased and verified published images, not only been refused");
         }
 
         [Test]
@@ -115,7 +118,7 @@ namespace GameCore.Execution.Tests.Observation
         /// complete image. Refusals are legal values here, because the window keeps moving while the reader runs.
         /// </summary>
         private static void ReadWhilePublishing(
-            StepPublicationStore store, object gate, List<string> failures)
+            StepPublicationStore store, object gate, List<string> failures, int[] verified)
         {
             for (int i = 0; i < 400; i++)
             {
@@ -153,6 +156,10 @@ namespace GameCore.Execution.Tests.Observation
                 else if (!payloadHash.Equals(ObservationFixture.ExpectedHash(token.LogicalStepId.Value)))
                 {
                     Record(gate, failures, "a lease carried the hash of another step");
+                }
+                else
+                {
+                    System.Threading.Interlocked.Increment(ref verified[0]);
                 }
 
                 lease.Dispose();
