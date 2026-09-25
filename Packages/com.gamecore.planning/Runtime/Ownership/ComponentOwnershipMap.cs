@@ -269,7 +269,7 @@ namespace GameCore.Planning.Ownership
                             continue;
                         }
 
-                        if (!layout.DeclaresField(field.FieldKey))
+                        if (!DeclaresField(layout, field.FieldKey))
                         {
                             collected.Add(Reject(
                                 DiagnosticCode.MissingDependency,
@@ -287,6 +287,19 @@ namespace GameCore.Planning.Ownership
             map = new ComponentOwnershipMap(built, fieldOwners);
             diagnostics = collected;
             return collected.Count == 0;
+        }
+
+        private static bool DeclaresField(ComponentLayoutDeclaration layout, Id128 fieldKey)
+        {
+            for (int i = 0; i < layout.Fields.Count; i++)
+            {
+                if (layout.Fields[i].FieldKey.Equals(fieldKey))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private static bool ContainsSlot(List<SlotId> slots, SlotId slot)

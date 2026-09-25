@@ -503,7 +503,7 @@ namespace GameCore.Execution.Messages
                 rows.Clear();
                 payloadWatermark = 0;
                 consumerHeld = false;
-                return new NextStepCarryReport(descriptor.Buffer, null, null, 0);
+                return new NextStepCarryReport(descriptor.Buffer, Array.Empty<StepMessage>(), Array.Empty<RequestOutcome>(), 0);
             }
 
             NextStepCarryReport report = BoundedBufferRules.CarryNextStep(

@@ -193,7 +193,7 @@ namespace GameCore.Execution.Tests
 
             var lossyDescriptor = Descriptor(capacity: 2, overflow: BufferOverflowPolicy.LossyWithCounters);
             var lossySchedule = new StepMessageSchedule();
-            lossySchedule.TryDeclare(lostyDescriptor, out _);
+            lossySchedule.TryDeclare(lossyDescriptor, out _);
             lossySchedule.TryGetBuffer(Buffer, out BoundedMessageBuffer? lossy);
             lossy!.TryAppend(Message(ProducerA, 1U, 1UL, 0), payload, out _);
             Assert.That(
@@ -690,9 +690,9 @@ namespace GameCore.Execution.Tests
         public void PendingRowsAreReportedInCanonicalAdmissionOrder()
         {
             RequestLedger ledger = Ledger(Routes(), maxPending: 4, maxRetained: 8);
-            ledger.Admit(Request(3UL), Route, Target, Schema, Input, RequestOrigin.External, World, LogicalStepId.Zero, AssemblyEpoch.First);
-            ledger.Admit(Request(1UL), Route, Target, Schema, Input, RequestOrigin.External, World, LogicalStepId.Zero, AssemblyEpoch.First);
-            ledger.Admit(Request(2UL), Route, Target, Schema, Input, RequestOrigin.External, World, LogicalStepId.Zero, AssemblyEpoch.First);
+            ledger.Admit(new OperationId(World, Issuer, 3UL), Route, Target, Schema, Input, RequestOrigin.External, World, LogicalStepId.Zero, AssemblyEpoch.First);
+            ledger.Admit(new OperationId(World, new Id128(Issuer.High, Issuer.Low + 1UL), 1UL), Route, Target, Schema, Input, RequestOrigin.External, World, LogicalStepId.Zero, AssemblyEpoch.First);
+            ledger.Admit(new OperationId(World, new Id128(Issuer.High, Issuer.Low + 2UL), 2UL), Route, Target, Schema, Input, RequestOrigin.External, World, LogicalStepId.Zero, AssemblyEpoch.First);
 
             IReadOnlyList<RequestRow> pending = ledger.PendingRows();
 

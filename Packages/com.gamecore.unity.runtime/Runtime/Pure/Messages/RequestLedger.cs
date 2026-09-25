@@ -286,6 +286,7 @@ namespace GameCore.Execution.Messages
             if (expired.Contains(request) || IsExpiredByHighWater(request, origin))
             {
                 // Expired is distinct from unknown, and an expired identity is never re-executed (P-050).
+                SequenceViolationCount++;
                 ExpireCount++;
                 return new RequestAdmission(
                     RequestAdmissionKind.SequenceViolation,

@@ -42,7 +42,7 @@ namespace GameCore.Planning.Tests.Ownership
         public void ACompleteDeclarationWithNoMigrationExecutorValidates()
         {
             SlotAuthorityDeclaration slot = Slot(
-                SlotAuthorityOptions.Durable(),
+                SlotAuthorityOptions.Dormant(),
                 LastSupportPolicy.PreserveDormant,
                 default(FactoryKey),
                 null);
@@ -66,7 +66,7 @@ namespace GameCore.Planning.Tests.Ownership
                 LastSupportPolicy.PreserveDormant,
                 default(FactoryKey),
                 null,
-                SlotAuthorityOptions.Durable());
+                SlotAuthorityOptions.Dormant());
 
             SlotPolicyResult result = SlotPolicyValidator.ValidateDeclaration(slot);
 
@@ -108,7 +108,7 @@ namespace GameCore.Planning.Tests.Ownership
         public void ReconfigurationPreservesRuntimeState()
         {
             SlotAuthorityDeclaration slot = Slot(
-                SlotAuthorityOptions.Durable(),
+                SlotAuthorityOptions.Dormant(),
                 LastSupportPolicy.PreserveDormant,
                 default(FactoryKey),
                 null);
@@ -126,7 +126,7 @@ namespace GameCore.Planning.Tests.Ownership
         {
             FactoryKey migration = OwnershipFixtureIds.Migration(1UL);
             SlotAuthorityDeclaration slot = Slot(
-                SlotAuthorityOptions.Durable(),
+                SlotAuthorityOptions.Dormant(),
                 LastSupportPolicy.PreserveDormant,
                 default(FactoryKey),
                 new[] { migration });
@@ -155,7 +155,7 @@ namespace GameCore.Planning.Tests.Ownership
         public void AVersionChangeWithAnUndeclaredMigrationKeyIsMigrationRequired()
         {
             SlotAuthorityDeclaration slot = Slot(
-                SlotAuthorityOptions.Durable(),
+                SlotAuthorityOptions.Dormant(),
                 LastSupportPolicy.PreserveDormant,
                 default(FactoryKey),
                 new[] { OwnershipFixtureIds.Migration(1UL) });
@@ -174,7 +174,7 @@ namespace GameCore.Planning.Tests.Ownership
         {
             FactoryKey migration = OwnershipFixtureIds.Migration(1UL);
             SlotAuthorityDeclaration slot = Slot(
-                SlotAuthorityOptions.Durable(),
+                SlotAuthorityOptions.Dormant(),
                 LastSupportPolicy.PreserveDormant,
                 default(FactoryKey),
                 new[] { migration });
@@ -195,7 +195,7 @@ namespace GameCore.Planning.Tests.Ownership
         public void AnUnpermittedResetRejectsAndAPermittedResetNeedsAReason()
         {
             SlotAuthorityDeclaration durable = Slot(
-                SlotAuthorityOptions.Durable(),
+                SlotAuthorityOptions.Dormant(),
                 LastSupportPolicy.PreserveDormant,
                 default(FactoryKey),
                 null);

@@ -183,6 +183,7 @@ namespace GameCore.Execution.Messages
         public IReadOnlyList<MessageBufferDescriptor> Descriptors => descriptors;
 
         public IReadOnlyList<BufferReadPort> ReadPorts => readPorts;
+        public int PendingStructuralCount => deferred.Count;
 
         /// <summary>Bounded capacity of deferred next-step queues, per buffer (P-043).</summary>
         public ushort NextStepCapacity
