@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Pure derivation tests; sources live in Packages/com.gamecore.derivation/Tests/ and also run as Unity
+       EditMode tests. They never reference UnityEngine (04 s10). -->
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <AssemblyName>GameCore.Derivation.Tests</AssemblyName>
+    <RootNamespace>GameCore.Derivation.Tests</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="../../../Packages/com.gamecore.derivation/Tests/**/*.cs"
+             Exclude="../../../Packages/com.gamecore.derivation/Tests/**/bin/**/*.cs;../../../Packages/com.gamecore.derivation/Tests/**/obj/**/*.cs" />
+    <!-- The reusable narrative/card descriptors and their builders live in their own Unity assembly
+         (GameCore.Derivation.Fixtures); the plain-dotnet test project compiles those sources directly so the
+         same fixtures back both test runs (09 GC-006: reusable descriptors for GC-010/011). -->
+    <Compile Include="../../../Packages/com.gamecore.derivation/Fixtures/**/*.cs"
+             Exclude="../../../Packages/com.gamecore.derivation/Fixtures/**/bin/**/*.cs;../../../Packages/com.gamecore.derivation/Fixtures/**/obj/**/*.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="NUnit" Version="3.14.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/GameCore.Derivation/GameCore.Derivation.csproj" />
+    <ProjectReference Include="../../src/GameCore.Contracts/GameCore.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>
