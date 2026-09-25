@@ -137,8 +137,8 @@ namespace GameCore.Execution.Persistence
                 true,
                 DiagnosticCode.None,
                 "checkpoint captured at epoch "
-                + boundary.Epoch.Value.ToString(CultureInfo.InvariantCulture) + " step "
-                + boundary.Step.Value.ToString(CultureInfo.InvariantCulture) + ".",
+                + boundary.AssemblyEpoch.Value.ToString(CultureInfo.InvariantCulture) + " step "
+                + boundary.LogicalStepId.Value.ToString(CultureInfo.InvariantCulture) + ".",
                 document,
                 ContentHash.Compute(document),
                 header,

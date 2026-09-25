@@ -619,7 +619,9 @@ def emit_value_type(out: list[str], schema: dict) -> None:
             text += ", "
         text += escape_string_literal(field["name"] + "=")
         text += '" + '
-        if WIRE_TYPES[field["wireType"]][1]:
+        if field["wireType"] == "Bytes":
+            text += '(%s ?? Array.Empty<byte>()).Length.ToString()' % field["name"]
+        elif WIRE_TYPES[field["wireType"]][1]:
             text += '(%s ?? "<null>")' % field["name"]
         else:
             text += field["name"]

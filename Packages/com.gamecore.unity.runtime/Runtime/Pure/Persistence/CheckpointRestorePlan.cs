@@ -183,7 +183,7 @@ namespace GameCore.Execution.Persistence
             RestoreRefusal refusal,
             DiagnosticCode code,
             string detail,
-            IReadOnlyList<Diagnostic> diagnostics)
+            IReadOnlyList<Diagnostic>? diagnostics)
         {
             Plan = plan;
             Refusal = refusal;

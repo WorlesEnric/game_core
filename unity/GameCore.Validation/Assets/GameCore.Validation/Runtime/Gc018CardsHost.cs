@@ -17,13 +17,16 @@
 // Nothing here models a checkpoint: the scenario owns the capture, the refusals, the restore and the observations,
 // and this file only declares the card genre's facts.
 #nullable enable
+using System;
 using System.Collections.Generic;
 using GameCore.Composition;
 using GameCore.Contracts;
 using GameCore.Gameplay.Cards;
 using GameCore.Gameplay.Cards.Fixtures;
 using GameCore.Rules.Cards;
+using GameCore.Unity.Runtime.Integration;
 using GameCore.Validation.GeneratedCards;
+using Unity.Entities;
 
 namespace GameCore.Validation.ProbeHost
 {
@@ -41,6 +44,8 @@ namespace GameCore.Validation.ProbeHost
 
         public sealed partial class CardFamily : IGc018Family
         {
+            private CardTableModule? attachedRuntime;
+
             /// <summary>
             /// One card command on the family's own declared route, left unexecuted so the capture has a real queued
             /// external command to disposition (P-037, P-053). Its payload is the production card codec's output, so
@@ -113,6 +118,78 @@ namespace GameCore.Validation.ProbeHost
             }
 
             public ScopeId EnrichedScope => CardIdentity.Scope(CardVocabulary.LeagueA);
+
+            /// <summary>
+            /// Attaches this genre's runtime module to a GC-018 world, exactly as the card market fixture
+            /// attaches its own: the module the four card systems resolve their world through, with the table
+            /// entity bound as the table and every live seat bound to its ordinal, so the re-admitted command is
+            /// drafted, settled and released by the table stages rather than stranded in the ingress lane
+            /// (P-042, P-043).
+            /// </summary>
+            public bool TryAttachRuntime(Gc018RuntimeWorld world, out string detail)
+            {
+                CardTableModule module = CardTableModule.Attach(world.Host);
+                IReadOnlyList<LiveTarget> live = world.Targets.Targets;
+                for (int i = 0; i < live.Count; i++)
+                {
+                    TargetId target = live[i].Target;
+                    if (!world.Seeder.TryGetEntity(target, out Entity entity))
+                    {
+                        detail = "live target " + target.ToString()
+                            + " has no native entity to map into the card module (P-005).";
+                        return false;
+                    }
+
+                    if (target.Equals(CardIdentity.Target(CardVocabulary.TableOne)))
+                    {
+                        module.BindTable(entity);
+                        continue;
+                    }
+
+                    if (TrySeatOrdinalOf(target, out uint ordinal))
+                    {
+                        module.BindSeat(ordinal, entity);
+                    }
+                }
+
+                if (module.TableEntity == Entity.Null)
+                {
+                    detail = "the restored market has no table entity, so the card stages cannot run (P-005).";
+                    return false;
+                }
+
+                attachedRuntime = module;
+                detail = string.Empty;
+                return true;
+            }
+
+            /// <summary>Releases the module the last attach created for this family's GC-018 world (P-048).</summary>
+            public void DetachRuntime(Gc018RuntimeWorld world)
+            {
+                attachedRuntime?.Dispose();
+                attachedRuntime = null;
+                _ = world;
+            }
+
+            /// <summary>
+            /// The declared seat ordinal of one live target, from the ordinals this family seeds; a non-seat
+            /// target reports false and is simply not bound (07 s2.2).
+            /// </summary>
+            private static bool TrySeatOrdinalOf(TargetId target, out uint ordinal)
+            {
+                uint[] declared = { CardTableKeys.SeatAOrdinal, CardTableKeys.SeatBOrdinal, CardTableKeys.SeatCOrdinal };
+                for (int i = 0; i < declared.Length; i++)
+                {
+                    if (target.Equals(CardTableFixture.SeatTarget(declared[i])))
+                    {
+                        ordinal = declared[i];
+                        return true;
+                    }
+                }
+
+                ordinal = 0U;
+                return false;
+            }
         }
 
         /// <summary>Runs the GC-018 sequence against the committed generated catalog (GC-011 compiler output).</summary>

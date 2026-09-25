@@ -165,7 +165,13 @@ namespace GameCore.Execution.Persistence
 
             if (bySession.TryGetValue(session.Session, out RestoreAttempt? reserved) && reserved != null)
             {
-                if (reserved.Operation.Equals(operation) && reserved.InputHash.Equals(inputHash))
+                bool sameRequest = reserved.Operation.Equals(operation) && reserved.InputHash.Equals(inputHash);
+
+                // A duplicate returns the recorded answer, so it never stages a second world: while the attempt is
+                // still pending it joins the reservation, and after publication it replays the restored session
+                // (O-21 "duplicate returns same restored session", P-050).
+                bool replayable = !reserved.IsTerminal || reserved.Outcome == RestoreAttemptOutcome.Published;
+                if (sameRequest && replayable)
                 {
                     // The same attempt, not a new one: copying the reservation is what makes restore idempotent.
                     reserved.RequestCount++;
@@ -174,10 +180,14 @@ namespace GameCore.Execution.Persistence
                     return RestoreReservationKind.Retransmission;
                 }
 
+                // Any other request naming this session is a reuse - including the identical request after the
+                // attempt settled Rejected/Cancelled/Faulted: the reservation is retained for the process lifetime,
+                // so the session id is never handed out again and the failed attempt is never forgotten (P-050).
                 ReuseRejectionCount++;
                 code = DiagnosticCode.StaleHandle;
                 detail = "session " + session.Session.ToString() + " is already reserved by operation "
-                    + reserved.Operation.ToString() + "; a session is never reused (P-004, P-050).";
+                    + reserved.Operation.ToString() + " (outcome " + reserved.Outcome.ToString()
+                    + "); a session is never reused, including after a failed attempt (P-004, P-050).";
                 return RestoreReservationKind.SessionInUse;
             }
 
@@ -219,9 +229,10 @@ namespace GameCore.Execution.Persistence
                 return false;
             }
 
-            if (attempt.IsTerminal && attempt.Outcome != RestoreAttemptOutcome.Pending)
+            if (attempt.IsTerminal)
             {
-                // A published attempt stays published: a later report cannot unpublish an exposed world (P-030).
+                // A terminal outcome is never rewritten: a published attempt stays published, a rejected one stays
+                // rejected, and a later report cannot change what the caller was already told (P-030, P-051).
                 return false;
             }
 

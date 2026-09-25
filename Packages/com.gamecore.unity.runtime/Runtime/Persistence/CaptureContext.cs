@@ -33,7 +33,7 @@ namespace GameCore.Unity.Runtime.Persistence
             WorldDefinitionId definition,
             ContentHash catalogFingerprint,
             Integration.LiveTargetIndex targets,
-            Assembly.TargetRegistry registry,
+            TargetRegistry registry,
             IReadOnlyList<PluginClockSpec>? clockSpecs,
             PluginClockRegistry? clocks,
             RngStreamTable rng,
@@ -85,7 +85,7 @@ namespace GameCore.Unity.Runtime.Persistence
         public Integration.LiveTargetIndex Targets { get; }
 
         /// <summary>Target registry, the only place a `TargetId` resolves to an `Entity` for the copy (P-005).</summary>
-        public Assembly.TargetRegistry Registry { get; }
+        public TargetRegistry Registry { get; }
 
         /// <summary>
         /// Declared plugin clocks of this world, including the transient ones (P-038). The declarations are supplied

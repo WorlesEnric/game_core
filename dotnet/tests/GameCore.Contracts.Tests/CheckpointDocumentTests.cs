@@ -432,7 +432,7 @@ namespace GameCore.Contracts.Tests
         }
 
         [Test]
-        public void ARepeatedOrDescendingFieldIdIsRefused()
+        public void ARepeatedHeaderOrDescendingKindIsRefused()
         {
             CheckpointCodecSet codecs = CheckpointTestRecords.SetOf(
                 CheckpointRecordKind.Target,
@@ -444,15 +444,15 @@ namespace GameCore.Contracts.Tests
             int slotField = CheckpointFormat.FieldIdOf(CheckpointRecordKind.Slot);
 
             byte[] repeated = Container(
-                new[] { CheckpointFormat.HeaderFieldId, targetField, targetField },
-                new[] { header, target, target });
+                new[] { CheckpointFormat.HeaderFieldId, CheckpointFormat.HeaderFieldId },
+                new[] { header, header });
             Assert.That(
                 CheckpointDocument.TryRead(
                     repeated, codecs, out CheckpointDocument? repeatedRead, out DiagnosticCode repeatedCode, out string repeatedDetail),
                 Is.False);
             Assert.That(repeatedCode, Is.EqualTo(DiagnosticCode.OwnershipConflict));
             Assert.That(repeatedRead, Is.Null);
-            Assert.That(repeatedDetail, Does.Contain("ascend"));
+            Assert.That(repeatedDetail, Does.Contain("header"));
 
             byte[] descending = Container(
                 new[] { CheckpointFormat.HeaderFieldId, slotField, targetField },

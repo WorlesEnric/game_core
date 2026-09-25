@@ -193,6 +193,7 @@ namespace GameCore.Validation.ProbeHost
         private DerivedAssemblyPipeline? pipeline;
         private WorldTimeDriver? time;
         private RngStreamTable? rng;
+        private Gc018RuntimeWorld? runtime;
 
         public Gc018FamilyRestoreBuilder(
             IGc018Family family,
@@ -232,6 +233,12 @@ namespace GameCore.Validation.ProbeHost
         /// <summary>Captured scope boundaries (isolation set or exclusion) replayed as real edits (P-016).</summary>
         public int ReplayedBoundaryCount { get; private set; }
 
+        /// <summary>Captured provider installations replayed as real mount edits before scope imports can name them (P-013).</summary>
+        public int ReplayedInstallCount { get; private set; }
+
+        /// <summary>Captured Conservative-mode scope imports replayed as real grant edits (P-013).</summary>
+        public int ReplayedImportCount { get; private set; }
+
         /// <summary>Captured mode edits replayed, zero when the declared mode is already the captured one (P-013).</summary>
         public int ReplayedModeCount { get; private set; }
 
@@ -249,6 +256,10 @@ namespace GameCore.Validation.ProbeHost
 
         public UnityWorldHost? Staging => staging;
 
+        /// <summary>Owner-state rows removed because the plan names no such slot: the restored world carries the
+        /// captured state and nothing else (P-032, P-053).</summary>
+        public int PrunedSlotCount { get; private set; }
+
         public TargetRegistry? Registry => registry;
 
         public LiveTargetIndex? Targets => targets;
@@ -262,6 +273,25 @@ namespace GameCore.Validation.ProbeHost
         public WorldTimeDriver? Time => time;
 
         public RngStreamTable? Rng => rng;
+
+        /// <summary>The restored world's family runtime, attached by the build and released by
+        /// <see cref="DetachRuntime"/> at teardown (P-042, P-048).</summary>
+        public Gc018RuntimeWorld? Runtime => runtime;
+
+        /// <summary>
+        /// Releases the family runtime module the build attached to the restored world. Called by the scenario's
+        /// teardown whether the world passed or faulted, because the module outlives no world (P-048).
+        /// </summary>
+        public void DetachRuntime()
+        {
+            if (runtime == null)
+            {
+                return;
+            }
+
+            family.DetachRuntime(runtime);
+            runtime = null;
+        }
 
         /// <summary>Registry size the restore started from; the unexposed world must not change it (P-049).</summary>
         public int RegistryBaseline => registryBaseline;
@@ -388,6 +418,19 @@ namespace GameCore.Validation.ProbeHost
                 ReadmittedCommandCount++;
             }
 
+            // The restored world is exposed as a running world, and its first pump executes the re-admitted
+            // command: the family's own runtime module — the one its generated step systems resolve their world
+            // through — must be attached with every live target mapped, or the input stage would no-op and leave
+            // the ingress lane unconsumed at commit (P-042, P-043).
+            var runtimeWorld = new Gc018RuntimeWorld(
+                staging, targets!, seeder!, descriptor.Compilation!.Schedule!);
+            if (!family.TryAttachRuntime(runtimeWorld, out detail))
+            {
+                code = DiagnosticCode.MissingDependency;
+                return false;
+            }
+
+            runtime = runtimeWorld;
             built = staging;
             return true;
         }
@@ -595,18 +638,78 @@ namespace GameCore.Validation.ProbeHost
                 }
             }
 
+            // A capture saves exactly the rows the source world held, so the restored world must carry exactly the
+            // planned rows: a recipe base layout that declares owner slots the capture never carried (the ledger's
+            // facts, a gate's decision) must not leave them behind as fabricated active state. The base layout
+            // above still installs every component and buffer the family's runtime needs; the prune removes only
+            // slot rows the plan does not name (P-032, P-053).
+            if (!PruneBeyondPlanSlots(plan, out code, out detail))
+            {
+                return false;
+            }
+
             BaseLayoutCount = baseLayouts;
 
             return true;
         }
 
         /// <summary>
+        /// Removes every owner-state slot row the plan does not name, so the restored world's authoritative state
+        /// is the captured state and nothing else. Rows are removed back-to-front from each target's buffer; a
+        /// target without slot storage carries nothing to prune (P-032, P-053).
+        /// </summary>
+        private bool PruneBeyondPlanSlots(RestorePlan plan, out DiagnosticCode code, out string detail)
+        {
+            code = DiagnosticCode.None;
+            detail = string.Empty;
+            if (staging == null || seeder == null)
+            {
+                code = DiagnosticCode.MissingDependency;
+                detail = "the restored world is not built, so its state cannot be pruned.";
+                return false;
+            }
+
+            var planned = new HashSet<(Id128 target, Id128 owner, Id128 slot)>();
+            for (int i = 0; i < plan.Slots.Count; i++)
+            {
+                StateSlotKey key = plan.Slots[i].Key;
+                planned.Add((key.Target.Value, key.Owner.Value, key.Slot.Value));
+            }
+
+            EntityManager entityManager = staging.EntityWorld.EntityManager;
+            for (int i = 0; i < plan.Targets.Count; i++)
+            {
+                TargetRecordValue row = plan.Targets[i];
+                if (!seeder.TryGetEntity(row.Target, out Entity entity)
+                    || !entityManager.HasBuffer<TargetSlotState>(entity))
+                {
+                    continue;
+                }
+
+                DynamicBuffer<TargetSlotState> slots = entityManager.GetBuffer<TargetSlotState>(entity);
+                for (int s = slots.Length - 1; s >= 0; s--)
+                {
+                    TargetSlotState slot = slots[s];
+                    if (planned.Contains((row.Target.Value, slot.Owner.Value, slot.Slot.Value)))
+                    {
+                        continue;
+                    }
+
+                    slots.RemoveAt(s);
+                    PrunedSlotCount++;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Reconstructs the captured composition through the real control lane: the scopes the declared tree does
-        /// not already carry are created, every captured isolation set and exclusion is replayed as an O-04 edit,
-        /// and a captured world mode that differs from the declared one is replayed as an O-08 edit (P-010, P-013,
-        /// P-016). Each accepted edit is answered with the world's assembly for that same publication, so the one
-        /// publication series P-006 requires holds throughout — and the last one is the rederivation 06 s7 asks
-        /// for, because it derives over the targets this builder just seeded.
+        /// not already carry are created, every captured isolation set, exclusion, installation and scope import is
+        /// replayed as a real edit, and a captured world mode that differs from the declared one is replayed as an
+        /// O-08 edit (P-010, P-013, P-016). Each accepted edit is answered with the world's assembly for that same
+        /// publication, so the one publication series P-006 requires holds throughout — and the last one is the
+        /// rederivation 06 s7 asks for, because it derives over the targets this builder just seeded.
         /// </summary>
         private bool ReplayComposition(RestorePlan plan, out DiagnosticCode code, out string detail)
         {
@@ -619,10 +722,13 @@ namespace GameCore.Validation.ProbeHost
                 return false;
             }
 
+            // The lane opens with the family's declared scope seed. Only captured scopes absent from that seed are
+            // pending replay; declared scopes already present are not unresolved work.
             int pending = 0;
             for (int i = 0; i < plan.Scopes.Count; i++)
             {
-                if (!plan.Scopes[i].IsRoot)
+                ScopeRecordValue row = plan.Scopes[i];
+                if (!row.IsRoot && !lane.Committed.Scopes.TryGet(row.Scope, out ScopeRecord? _))
                 {
                     pending++;
                 }
@@ -698,6 +804,38 @@ namespace GameCore.Validation.ProbeHost
                 ReplayedBoundaryCount++;
             }
 
+            if (!ReplayInstalls(plan, out code, out detail))
+            {
+                return false;
+            }
+
+            for (int i = 0; i < plan.Scopes.Count; i++)
+            {
+                ScopeRecordValue row = plan.Scopes[i];
+                if (!lane.Committed.Scopes.TryGet(row.Scope, out ScopeRecord? current) || current == null)
+                {
+                    code = DiagnosticCode.MissingDependency;
+                    detail = "scope " + row.Scope.ToString() + " is absent from the restored composition.";
+                    return false;
+                }
+
+                IReadOnlyList<CapabilityImport> imports = CapturedImports(plan.Grants, row.Scope);
+                IReadOnlyList<CapabilityImport> currentImports = current.Grants == null
+                    ? Array.Empty<CapabilityImport>()
+                    : current.Grants.Imports;
+                if (string.Equals(ImportsText(currentImports), ImportsText(imports), StringComparison.Ordinal))
+                {
+                    continue;
+                }
+
+                if (!ApplyEdit(Gc018Scenario.ScopeImports(row.Scope, imports), out code, out detail))
+                {
+                    return false;
+                }
+
+                ReplayedImportCount += imports.Count;
+            }
+
             if (plan.Header.Propagation != lane.Committed.Mode)
             {
                 if (!ApplyEdit(family.ModeSet(plan.Header.Propagation), out code, out detail))
@@ -709,6 +847,118 @@ namespace GameCore.Validation.ProbeHost
             }
 
             return true;
+        }
+
+        private bool ReplayInstalls(RestorePlan plan, out DiagnosticCode code, out string detail)
+        {
+            code = DiagnosticCode.None;
+            detail = string.Empty;
+            for (int i = 0; i < plan.Installs.Count; i++)
+            {
+                InstallRecordValue row = plan.Installs[i];
+                if (row.Lifecycle == InstallationState.Disposed)
+                {
+                    continue;
+                }
+
+                if (!TryMountPayload(row, plan.Selections, out CompositionEditPayload? payload, out code, out detail)
+                    || payload == null)
+                {
+                    return false;
+                }
+
+                if (!ApplyEdit(payload, out code, out detail))
+                {
+                    detail = "replaying captured install " + row.Instance.ToString()
+                        + " at scope " + row.Scope.ToString() + " was refused: " + detail;
+                    return false;
+                }
+
+                ReplayedInstallCount++;
+            }
+
+            return true;
+        }
+
+        private static bool TryMountPayload(
+            InstallRecordValue row,
+            IReadOnlyList<SelectionRecordValue> selections,
+            out CompositionEditPayload? payload,
+            out DiagnosticCode code,
+            out string detail)
+        {
+            payload = null;
+            code = DiagnosticCode.None;
+            detail = string.Empty;
+            if (!TryInstallConfig(row, out ConfigDocument? config, out detail) || config == null)
+            {
+                code = DiagnosticCode.UnsupportedVersion;
+                return false;
+            }
+
+            payload = new CompositionEditPayload(
+                CompositionEditSubject.InstallMount,
+                row.Scope,
+                default(ScopeId),
+                false,
+                null,
+                null,
+                null,
+                null,
+                row.PluginType,
+                row.Instance,
+                row.Revision,
+                row.ConfigHash,
+                config,
+                row.Priority,
+                CapturedSelections(selections, row.Instance),
+                PropagationMode.Automatic);
+            return true;
+        }
+
+        private static bool TryInstallConfig(
+            InstallRecordValue row,
+            out ConfigDocument? config,
+            out string detail)
+        {
+            config = ConfigDocument.Empty;
+            detail = string.Empty;
+            if (!row.HasConfigDocument)
+            {
+                return true;
+            }
+
+            byte[]? configBytes = row.ConfigBytes;
+            if (configBytes == null)
+            {
+                config = null;
+                detail = "install " + row.Instance.ToString() + " declared configuration bytes, but none were captured.";
+                return false;
+            }
+
+            if (!ConfigDocumentCodec.TryDecode(new FrozenPayload(configBytes), out config) || config == null)
+            {
+                detail = "install " + row.Instance.ToString() + " carried a configuration document that would not decode.";
+                return false;
+            }
+
+            return true;
+        }
+
+        private static IReadOnlyList<ServiceSelection> CapturedSelections(
+            IReadOnlyList<SelectionRecordValue> selections,
+            PluginInstanceId instance)
+        {
+            var selected = new List<ServiceSelection>();
+            for (int i = 0; i < selections.Count; i++)
+            {
+                if (selections[i].Instance.Equals(instance))
+                {
+                    selected.Add(selections[i].ToSelection());
+                }
+            }
+
+            return selected;
         }
 
         /// <summary>
@@ -791,6 +1041,23 @@ namespace GameCore.Validation.ProbeHost
             return new IsolationSet(allContracts, members);
         }
 
+        private static IReadOnlyList<CapabilityImport> CapturedImports(
+            IReadOnlyList<GrantRecordValue> grants,
+            ScopeId scope)
+        {
+            var imports = new List<CapabilityImport>();
+            for (int i = 0; i < grants.Count; i++)
+            {
+                GrantRecordValue row = grants[i];
+                if (row.Grant == GrantKind.ScopeImport && row.Scope.Equals(scope))
+                {
+                    imports.Add(row.ToImport());
+                }
+            }
+
+            return imports;
+        }
+
         private static IReadOnlyList<ExclusionRule> CapturedExclusions(
             IReadOnlyList<GrantRecordValue> grants,
             ScopeId scope)
@@ -841,7 +1108,20 @@ namespace GameCore.Validation.ProbeHost
             lines.Sort(StringComparer.Ordinal);
             return string.Join(",", lines.ToArray());
         }
+
+        private static string ImportsText(IReadOnlyList<CapabilityImport> imports)
+        {
+            var lines = new List<string>(imports.Count);
+            for (int i = 0; i < imports.Count; i++)
+            {
+                CapabilityImport import = imports[i];
+                lines.Add(import.CapabilityId.ToString() + "@" + import.ProviderInstallationId.ToString());
+            }
+
+            return Gc018Scenario.Canonical(lines);
+        }
     }
+
 
     /// <summary>Runs the GC-018 sequence over one family and one catalog.</summary>
     public static class Gc018Scenario
@@ -986,6 +1266,34 @@ namespace GameCore.Validation.ProbeHost
                 PropagationMode.Automatic);
         }
 
+        /// <summary>
+        /// P-013: one scope's explicit Conservative-mode imports, naming providers already registered in the lane.
+        /// A checkpoint restore replays these separately from isolation because <see cref="CompositionEditSubject.ScopeIsolation"/>
+        /// deliberately preserves whatever grants the scope already carried.
+        /// </summary>
+        internal static CompositionEditPayload ScopeImports(
+            ScopeId scope,
+            IReadOnlyList<CapabilityImport> imports)
+        {
+            return new CompositionEditPayload(
+                CompositionEditSubject.ScopeGrants,
+                scope,
+                default(ScopeId),
+                false,
+                null,
+                null,
+                null,
+                imports,
+                default(PluginTypeId),
+                default(PluginInstanceId),
+                DefinitionRevision.Zero,
+                ContentHash.Empty,
+                null,
+                0,
+                null,
+                PropagationMode.Automatic);
+        }
+
         /// <summary>Sorts and joins canonical lines, so two record sets compare independent of discovery order (P-008).</summary>
         internal static string Canonical(List<string> lines)
         {
@@ -1045,6 +1353,29 @@ namespace GameCore.Validation.ProbeHost
                     + ";capAll=" + row.CapabilityIsolationAll.ToString()
                     + ";serviceMembers=" + row.ServiceIsolationCount.ToString(CultureInfo.InvariantCulture)
                     + ";capMembers=" + row.CapabilityIsolationCount.ToString(CultureInfo.InvariantCulture));
+            }
+
+            return lines;
+        }
+
+
+        internal static List<string> InstallLines(IReadOnlyList<InstallRecordValue> installs)
+        {
+            var lines = new List<string>(installs.Count);
+            for (int i = 0; i < installs.Count; i++)
+            {
+                InstallRecordValue row = installs[i];
+                lines.Add("install=" + row.Instance.ToString()
+                    + ";type=" + row.PluginType.ToString()
+                    + ";scope=" + row.Scope.ToString()
+                    + ";revision=" + row.Revision.Value.ToString(CultureInfo.InvariantCulture)
+                    + ";config=" + row.ConfigHash.ToHex()
+                    + ";priority=" + row.Priority.ToString(CultureInfo.InvariantCulture)
+                    + ";generation=" + row.Generation.ToString(CultureInfo.InvariantCulture)
+                    + ";activation=" + row.ActivationEpoch.ToString(CultureInfo.InvariantCulture)
+                    + ";state=" + row.Lifecycle.ToString()
+                    + ";fields=" + row.ConfigFieldCount.ToString(CultureInfo.InvariantCulture)
+                    + ";hasConfig=" + row.HasConfigDocument.ToString());
             }
 
             return lines;
@@ -1422,6 +1753,19 @@ namespace GameCore.Validation.ProbeHost
                     bool spareScope = PublishEdit(family.SpareScopeEdits[0], "spare-scope");
                     bool enrichment = PublishEdit(family.BoundaryEnrichment(), "boundary-enrichment");
 
+                    CompositionEditPayload providerMount = family.MountProvider();
+                    bool conservativeMode = PublishEdit(
+                        family.ModeSet(PropagationMode.Conservative), "mode-set-conservative");
+                    bool providerMounted = PublishEdit(providerMount, "provider-mount");
+                    var scopeImports = new List<CapabilityImport>
+                    {
+                        new CapabilityImport(
+                            family.DerivedCapability,
+                            new ProviderInstallationId(providerMount.Instance.Value)),
+                    };
+                    bool importGranted = PublishEdit(
+                        Gc018Scenario.ScopeImports(family.EnrichedScope, scopeImports), "scope-import");
+
                     IReadOnlyList<LiveTarget> live = targets.Targets;
                     for (int i = 0; i < live.Count; i++)
                     {
@@ -1441,11 +1785,16 @@ namespace GameCore.Validation.ProbeHost
                     bool joined = MatchesPublishedAssembly();
                     int exclusions = SourceGrantCount(GrantKind.Exclusion);
                     int isolationMembers = SourceGrantCount(GrantKind.CapabilityIsolationMember);
+                    int imports = SourceGrantCount(GrantKind.ScopeImport);
                     bool spareScopePresent = lane.Committed.Scopes.TryGet(family.SpareScopeEdits[0].Scope, out ScopeRecord? _);
                     bool enrichedPresent = lane.Committed.Scopes.TryGet(family.EnrichedScope, out ScopeRecord? enriched)
                         && enriched != null
                         && enriched.CapabilityIsolation.Contracts.Count == 1
                         && enriched.Exclusions.Count == 1;
+                    bool providerPresent = lane.Committed.TryGetInstall(
+                            providerMount.Instance, out InstallEntry? providerEntry)
+                        && providerEntry != null
+                        && providerEntry.Scope.Equals(providerMount.Scope);
                     bool laneJoined = lane.Validator != null
                         && ReferenceEquals(lane.Validator, validator)
                         && bridge != null
@@ -1462,6 +1811,11 @@ namespace GameCore.Validation.ProbeHost
                         && dormantSeededPresent()
                         && spareScope
                         && enrichment
+                        && conservativeMode
+                        && providerMounted
+                        && providerPresent
+                        && importGranted
+                        && imports == 1
                         && exclusions == 1
                         && isolationMembers == 1
                         && spareScopePresent
@@ -1472,7 +1826,8 @@ namespace GameCore.Validation.ProbeHost
                         && idleSteps == 0UL
                         && joined
                         && laneJoined
-                        && lane.Committed.Mode == sourceRequest.Mode
+                        && sourceRequest.Mode == PropagationMode.Automatic
+                        && lane.Committed.Mode == PropagationMode.Conservative
                         && host.Lifecycle == WorldLifecycleState.Running;
 
                     Add(name, pass,
@@ -1491,6 +1846,11 @@ namespace GameCore.Validation.ProbeHost
                         + "; enrichedScope=" + family.EnrichedScope.ToString()
                         + " exclusions=" + exclusions.ToString(CultureInfo.InvariantCulture)
                         + " capIsolationMembers=" + isolationMembers.ToString(CultureInfo.InvariantCulture)
+                        + " imports=" + imports.ToString(CultureInfo.InvariantCulture)
+                        + "; importProvider=" + providerMount.Instance.ToString()
+                        + "@" + providerMount.Scope.ToString()
+                        + " capability=" + family.DerivedCapability.ToString()
+                        + " importScope=" + family.EnrichedScope.ToString()
                         + "; rngStreams=" + rng.Count.ToString(CultureInfo.InvariantCulture)
                         + " draws=" + string.Join(",", drawTotals.ToArray())
                         + "; clock=" + family.WakeClockId.ToString()
@@ -1499,7 +1859,7 @@ namespace GameCore.Validation.ProbeHost
                         + auxiliaryLastIndex.ToString(CultureInfo.InvariantCulture)
                         + "; idleFrames=" + IdlePumpFrames.ToString(CultureInfo.InvariantCulture)
                         + " idleSteps=" + idleSteps.ToString(CultureInfo.InvariantCulture)
-                        + "; mode=" + lane.Committed.Mode
+                        + "; mode=" + sourceRequest.Mode + "->" + lane.Committed.Mode
                         + "; joined=" + joined
                         + "; sourceHandles=" + Gc018Scenario.Clip(SourceHandleText(live), 360)
                         + "; laneJoined=" + laneJoined
@@ -1809,7 +2169,6 @@ namespace GameCore.Validation.ProbeHost
                         return;
                     }
 
-                    restoreImage = image;
                     QueueDisposition quiet = rejectedCapture.Queue;
                     QueueDisposition loud = includedCapture.Queue;
                     bool quietHeld = quiet.Policy == CheckpointQueuePolicy.RejectQueued
@@ -2077,8 +2436,8 @@ namespace GameCore.Validation.ProbeHost
             }
 
             /// <summary>
-            /// Two registered chains into one destination version are ambiguous, and P-054 refuses the pair rather
-            /// than silently picking a path: the planner rejects the restore, the executor refuses at its plan stage,
+            /// Two registered chains from the requested source into one destination are ambiguous; P-054 refuses
+            /// the pair rather than silently picking a path: the planner rejects the restore at its plan stage,
             /// and the reservation's session never becomes a world (O-21).
             /// </summary>
             private void ProveAmbiguousMigrationRejectsRestore()
@@ -2097,7 +2456,7 @@ namespace GameCore.Validation.ProbeHost
                     {
                         new Gc018MigrationStep(1UL, schema, 1U, 2U),
                         new Gc018MigrationStep(2UL, schema, 2U, 3U),
-                        new Gc018MigrationStep(3UL, schema, 1U, AmbiguousTargetVersion),
+                        new Gc018MigrationStep(3UL, schema, 2U, AmbiguousTargetVersion),
                     };
                     var ambiguous = new CheckpointMigrationRegistry(steps);
                     SchemaRef destination = new SchemaRef(schema, AmbiguousTargetVersion);
@@ -2289,6 +2648,8 @@ namespace GameCore.Validation.ProbeHost
                     IReadOnlyList<SlotRecordValue> capturedSlots = capturedImage == null
                         ? Array.Empty<SlotRecordValue>()
                         : capturedImage.Slots;
+                    int plannedInstalls = plan == null ? -1 : plan.Installs.Count;
+                    int plannedImports = plan == null ? -1 : CountGrants(plan.Grants, GrantKind.ScopeImport);
 
                     bool pass = outcome.Restored
                         && outcome.Stage == RestoreStage.Expose
@@ -2316,6 +2677,11 @@ namespace GameCore.Validation.ProbeHost
                         && builder.RebuiltDormantSlotCount == plan.DormantSlotCount
                         && builder.ReplayedScopeCount >= 1
                         && builder.ReplayedBoundaryCount >= 1
+                        && plannedInstalls >= 1
+                        && plannedImports >= 1
+                        && builder.ReplayedInstallCount == plannedInstalls
+                        && builder.ReplayedImportCount == plannedImports
+                        && builder.ReplayedModeCount == 1
                         && builder.ReadmittedCommandCount == plan.Commands.Count
                         && builder.RebuiltClockCount == 1
                         && builder.RebuiltWakeCount == 1
@@ -2344,6 +2710,10 @@ namespace GameCore.Validation.ProbeHost
                         + "; migrations=" + (plan == null ? -1 : plan.Migrations.Count)
                         + "; replayedScopes=" + builder.ReplayedScopeCount.ToString(CultureInfo.InvariantCulture)
                         + "; replayedBoundaries=" + builder.ReplayedBoundaryCount.ToString(CultureInfo.InvariantCulture)
+                        + "; replayedInstalls=" + builder.ReplayedInstallCount.ToString(CultureInfo.InvariantCulture)
+                        + "/" + plannedInstalls.ToString(CultureInfo.InvariantCulture)
+                        + "; replayedImports=" + builder.ReplayedImportCount.ToString(CultureInfo.InvariantCulture)
+                        + "/" + plannedImports.ToString(CultureInfo.InvariantCulture)
                         + "; replayedModes=" + builder.ReplayedModeCount.ToString(CultureInfo.InvariantCulture)
                         + "; readmittedCommands=" + builder.ReadmittedCommandCount.ToString(CultureInfo.InvariantCulture)
                         + "; clocks=" + builder.RebuiltClockCount.ToString(CultureInfo.InvariantCulture)
@@ -2536,9 +2906,10 @@ namespace GameCore.Validation.ProbeHost
 
             /// <summary>
             /// The composition half of the definition: the same world mode, the same scope tree with the same
-            /// per-scope isolation sets, and the same explicit exclusions. The source world carries at least one
-            /// real exclusion and one named capability-isolation member, so a restore that reopened a boundary or
-            /// dropped an exclusion cannot pass this (P-013, P-016).
+            /// per-scope isolation sets, the same Conservative-mode imports and the same explicit exclusions. The
+            /// source world carries at least one real provider-backed scope import, one exclusion and one named
+            /// capability-isolation member, so a restore that lost grants or reopened a boundary cannot pass this
+            /// (P-013, P-016).
             /// </summary>
             private void ProveModeImportsAndExclusionsSurvive()
             {
@@ -2571,7 +2942,14 @@ namespace GameCore.Validation.ProbeHost
                         Canonical(GrantLines(capturedImage.Grants)),
                         Canonical(GrantLines(restoredImage.Grants)),
                         StringComparison.Ordinal);
+                    bool installsEqual = string.Equals(
+                        Canonical(InstallLines(capturedImage.Installs)),
+                        Canonical(InstallLines(restoredImage.Installs)),
+                        StringComparison.Ordinal);
 
+
+                    int installs = capturedImage.Installs.Count;
+                    int restoredInstalls = restoredImage.Installs.Count;
                     int imports = CountGrants(capturedImage.Grants, GrantKind.ScopeImport);
                     int restoredImports = CountGrants(restoredImage.Grants, GrantKind.ScopeImport);
                     int exclusions = CountGrants(capturedImage.Grants, GrantKind.Exclusion);
@@ -2588,14 +2966,22 @@ namespace GameCore.Validation.ProbeHost
                         && restoredLaneMode == planned
                         && scopesEqual
                         && grantsEqual
+                        && captured == PropagationMode.Conservative
+                        && installsEqual
+                        && installs >= 1
+                        && installs == restoredInstalls
                         && ScopeCountsAgree(capturedImage, restoredImage)
                         && imports == restoredImports
+                        && imports >= 1
                         && exclusions == restoredExclusions
                         && exclusions >= 1
                         && capabilityMembers == restoredCapabilityMembers
                         && capabilityMembers >= 1
                         && serviceMembers == restoredServiceMembers
-                        && builder.ReplayedBoundaryCount >= 1,
+                        && builder.ReplayedBoundaryCount >= 1
+                        && builder.ReplayedInstallCount >= 1
+                        && builder.ReplayedImportCount >= 1
+                        && builder.ReplayedModeCount == 1,
                         "mode=" + sourceLaneMode
                         + "->" + restoredLaneMode
                         + " (captured=" + captured + " planned=" + planned + ")"
@@ -2605,6 +2991,9 @@ namespace GameCore.Validation.ProbeHost
                         + "; grants=" + capturedImage.Grants.Count.ToString(CultureInfo.InvariantCulture)
                         + "->" + restoredImage.Grants.Count.ToString(CultureInfo.InvariantCulture)
                         + " rowsEqual=" + grantsEqual
+                        + "; installs=" + installs.ToString(CultureInfo.InvariantCulture)
+                        + "->" + restoredInstalls.ToString(CultureInfo.InvariantCulture)
+                        + " rowsEqual=" + installsEqual
                         + "; imports=" + imports.ToString(CultureInfo.InvariantCulture)
                         + "->" + restoredImports.ToString(CultureInfo.InvariantCulture)
                         + "; exclusions=" + exclusions.ToString(CultureInfo.InvariantCulture)
@@ -2614,6 +3003,9 @@ namespace GameCore.Validation.ProbeHost
                         + "; serviceIsolationMembers=" + serviceMembers.ToString(CultureInfo.InvariantCulture)
                         + "->" + restoredServiceMembers.ToString(CultureInfo.InvariantCulture)
                         + "; replayedBoundaries=" + builder.ReplayedBoundaryCount.ToString(CultureInfo.InvariantCulture)
+                        + "; replayedInstalls=" + builder.ReplayedInstallCount.ToString(CultureInfo.InvariantCulture)
+                        + "; replayedImports=" + builder.ReplayedImportCount.ToString(CultureInfo.InvariantCulture)
+                        + "; replayedModes=" + builder.ReplayedModeCount.ToString(CultureInfo.InvariantCulture)
                         + DescribeFailure());
                 }
                 catch (Exception exception)
@@ -2660,12 +3052,16 @@ namespace GameCore.Validation.ProbeHost
                         Canonical(CursorLines(restoredImage.Cursors)),
                         StringComparison.Ordinal);
 
-                    bool issuerHeld = TryIssuerWatermark(capturedImage.Cursors, family.Issuer, out ulong sourceWatermark)
-                        && TryIssuerWatermark(restoredImage.Cursors, family.Issuer, out ulong restoredWatermark)
+                    ulong sourceWatermark = 0UL;
+                    ulong restoredWatermark = 0UL;
+                    bool issuerHeld = TryIssuerWatermark(capturedImage.Cursors, family.Issuer, out sourceWatermark)
+                        && TryIssuerWatermark(restoredImage.Cursors, family.Issuer, out restoredWatermark)
                         && sourceWatermark == restoredWatermark
                         && sourceWatermark == queuedOperation.IssuerSequence;
-                    bool eventCursorHeld = TryEventCursor(capturedImage.Cursors, out ulong sourceEvent)
-                        && TryEventCursor(restoredImage.Cursors, out ulong restoredEvent)
+                    ulong sourceEvent = 0UL;
+                    ulong restoredEvent = 0UL;
+                    bool eventCursorHeld = TryEventCursor(capturedImage.Cursors, out sourceEvent)
+                        && TryEventCursor(restoredImage.Cursors, out restoredEvent)
                         && sourceEvent == restoredEvent
                         && sourceEvent == restoredHost.Messages.LastEventSequence.Value;
 
@@ -2748,8 +3144,13 @@ namespace GameCore.Validation.ProbeHost
                         && newHandle.IsAllocated
                         && !newHandle.Equals(oldHandle);
                     bool oldRequestUnknown = !restoredHost.Messages.Requests.TryGet(queuedOperation, out RequestRow? _);
-                    bool newRequestKnown = restoredHost.Messages.Requests.TryGet(
-                            queuedOperation.RequestIdIn(restoredSession), out RequestRow? newRow)
+                    // The capture carried this command as a record, and the restore re-admitted it at the request
+                    // identity that record names inside the restored session: same issuer and sequence, fresh world
+                    // (P-004, P-050). `RequestIdIn` is the record's method, so the id is rebuilt from the same three
+                    // parts here rather than called on the operation itself.
+                    var readmittedRequest = new OperationId(
+                        restoredSession, queuedOperation.IssuerId, queuedOperation.IssuerSequence);
+                    bool newRequestKnown = restoredHost.Messages.Requests.TryGet(readmittedRequest, out RequestRow? newRow)
                         && newRow != null;
 
                     int rowsBefore = restoredHost.Messages.Requests.RowCount;
@@ -2896,6 +3297,9 @@ namespace GameCore.Validation.ProbeHost
                     bool restoredDisposed = false;
                     if (restoredHost != null)
                     {
+                        // The family's runtime module is released before its world, so no family counter can be
+                        // incremented after the storage it reads is gone (P-048).
+                        builder?.DetachRuntime();
                         OperationResult restoredStop = restoredHost.Stop(
                             NextOperation(restoredSession), "gc-018 restored world teardown");
                         restoredOutcome = restoredStop.Outcome;
@@ -2944,8 +3348,11 @@ namespace GameCore.Validation.ProbeHost
 
             /// <summary>
             /// Binds the twelve generated serializers of the committed checkpoint catalog to the engine-free codec
-            /// seam. A missing serializer is reported here, before any capture, because a capture without every
-            /// required serializer must be refused rather than write a partial document (P-053, P-054).
+            /// seam. The generated serializers speak their own nested value structs, while the capture, document and
+            /// restore pipeline speaks the contract record values, so each binding carries the two field-exact
+            /// conversions of its kind beside the generated `Serialize`/`TryDeserialize` method groups (05 s6,
+            /// P-053, P-054). A missing serializer is reported here, before any capture, because a capture without
+            /// every required serializer must be refused rather than write a partial document.
             /// </summary>
             private bool TryBuildCodecs(out string detail)
             {
@@ -2963,18 +3370,42 @@ namespace GameCore.Validation.ProbeHost
                 var cursor = new CheckpointCatalog.CursorRecordSerializer();
 
                 bindings = new CheckpointSerializerBindings(
-                    new CheckpointRecordSerializer<HeaderRecordValue>(header.Schema, header.Serialize, header.TryDeserialize),
-                    new CheckpointRecordSerializer<ScopeRecordValue>(scope.Schema, scope.Serialize, scope.TryDeserialize),
-                    new CheckpointRecordSerializer<InstallRecordValue>(install.Schema, install.Serialize, install.TryDeserialize),
-                    new CheckpointRecordSerializer<SelectionRecordValue>(selection.Schema, selection.Serialize, selection.TryDeserialize),
-                    new CheckpointRecordSerializer<TargetRecordValue>(target.Schema, target.Serialize, target.TryDeserialize),
-                    new CheckpointRecordSerializer<SlotRecordValue>(slot.Schema, slot.Serialize, slot.TryDeserialize),
-                    new CheckpointRecordSerializer<GrantRecordValue>(grant.Schema, grant.Serialize, grant.TryDeserialize),
-                    new CheckpointRecordSerializer<ClockRecordValue>(clock.Schema, clock.Serialize, clock.TryDeserialize),
-                    new CheckpointRecordSerializer<CommandRecordValue>(command.Schema, command.Serialize, command.TryDeserialize),
-                    new CheckpointRecordSerializer<MessageRecordValue>(message.Schema, message.Serialize, message.TryDeserialize),
-                    new CheckpointRecordSerializer<RngRecordValue>(rngSerializer.Schema, rngSerializer.Serialize, rngSerializer.TryDeserialize),
-                    new CheckpointRecordSerializer<CursorRecordValue>(cursor.Schema, cursor.Serialize, cursor.TryDeserialize));
+                    new CheckpointRecordSerializer<HeaderRecordValue, CheckpointCatalog.HeaderRecordValue>(
+                        header.Schema, header.Serialize, header.TryDeserialize,
+                        HeaderToGenerated, HeaderFromGenerated),
+                    new CheckpointRecordSerializer<ScopeRecordValue, CheckpointCatalog.ScopeRecordValue>(
+                        scope.Schema, scope.Serialize, scope.TryDeserialize,
+                        ScopeToGenerated, ScopeFromGenerated),
+                    new CheckpointRecordSerializer<InstallRecordValue, CheckpointCatalog.InstallRecordValue>(
+                        install.Schema, install.Serialize, install.TryDeserialize,
+                        InstallToGenerated, InstallFromGenerated),
+                    new CheckpointRecordSerializer<SelectionRecordValue, CheckpointCatalog.SelectionRecordValue>(
+                        selection.Schema, selection.Serialize, selection.TryDeserialize,
+                        SelectionToGenerated, SelectionFromGenerated),
+                    new CheckpointRecordSerializer<TargetRecordValue, CheckpointCatalog.TargetRecordValue>(
+                        target.Schema, target.Serialize, target.TryDeserialize,
+                        TargetToGenerated, TargetFromGenerated),
+                    new CheckpointRecordSerializer<SlotRecordValue, CheckpointCatalog.SlotRecordValue>(
+                        slot.Schema, slot.Serialize, slot.TryDeserialize,
+                        SlotToGenerated, SlotFromGenerated),
+                    new CheckpointRecordSerializer<GrantRecordValue, CheckpointCatalog.GrantRecordValue>(
+                        grant.Schema, grant.Serialize, grant.TryDeserialize,
+                        GrantToGenerated, GrantFromGenerated),
+                    new CheckpointRecordSerializer<ClockRecordValue, CheckpointCatalog.ClockRecordValue>(
+                        clock.Schema, clock.Serialize, clock.TryDeserialize,
+                        ClockToGenerated, ClockFromGenerated),
+                    new CheckpointRecordSerializer<CommandRecordValue, CheckpointCatalog.CommandRecordValue>(
+                        command.Schema, command.Serialize, command.TryDeserialize,
+                        CommandToGenerated, CommandFromGenerated),
+                    new CheckpointRecordSerializer<MessageRecordValue, CheckpointCatalog.MessageRecordValue>(
+                        message.Schema, message.Serialize, message.TryDeserialize,
+                        MessageToGenerated, MessageFromGenerated),
+                    new CheckpointRecordSerializer<RngRecordValue, CheckpointCatalog.RngRecordValue>(
+                        rngSerializer.Schema, rngSerializer.Serialize, rngSerializer.TryDeserialize,
+                        RngToGenerated, RngFromGenerated),
+                    new CheckpointRecordSerializer<CursorRecordValue, CheckpointCatalog.CursorRecordValue>(
+                        cursor.Schema, cursor.Serialize, cursor.TryDeserialize,
+                        CursorToGenerated, CursorFromGenerated));
 
                 codecs = bindings.ToCodecSet();
                 if (!codecs.IsComplete)
@@ -2988,6 +3419,192 @@ namespace GameCore.Validation.ProbeHost
                 detail = codecEvidence;
                 return true;
             }
+
+            // The twelve record kinds' contract value and generated value are field-for-field the same type with
+            // two names, so each kind converts by copying the whole field list through the constructor — never by
+            // re-encoding, defaulting or dropping a field. The two directions of one kind sit beside each other so
+            // a field added to one struct and not the other is a compile error in this block, not a silent truncate.
+
+            private static CheckpointCatalog.HeaderRecordValue HeaderToGenerated(HeaderRecordValue value)
+                => new CheckpointCatalog.HeaderRecordValue(
+                    value.WorldDefinitionHigh, value.WorldDefinitionLow, value.SourceSessionHigh, value.SourceSessionLow,
+                    value.ProtocolMajor, value.ProtocolMinor, value.TemporalModel, value.StepDurationTicks,
+                    value.TicksPerSecond, value.MaxStepsPerPump, value.UsesUnscaledHostClock, value.LogicalStep,
+                    value.TimeDebtTicks, value.DomainSeconds, value.PendingDemand, value.PropagationMode,
+                    value.CatalogFingerprintA, value.CatalogFingerprintB, value.CatalogFingerprintC, value.CatalogFingerprintD,
+                    value.QueuePolicy, value.AdmissionCutoff, value.RejectedQueuedCount, value.LastEventSequence,
+                    value.ScopeCount, value.InstallCount, value.SelectionCount, value.TargetCount,
+                    value.SlotCount, value.GrantCount, value.ClockCount, value.CommandCount,
+                    value.MessageCount, value.RngStreamCount, value.CursorCount, value.SourcePublishedRevision,
+                    value.SourcePublishedEpoch, value.SourceHostTicksPerSecond, value.ContentRevisionCount);
+
+            private static HeaderRecordValue HeaderFromGenerated(CheckpointCatalog.HeaderRecordValue value)
+                => new HeaderRecordValue(
+                    value.WorldDefinitionHigh, value.WorldDefinitionLow, value.SourceSessionHigh, value.SourceSessionLow,
+                    value.ProtocolMajor, value.ProtocolMinor, value.TemporalModel, value.StepDurationTicks,
+                    value.TicksPerSecond, value.MaxStepsPerPump, value.UsesUnscaledHostClock, value.LogicalStep,
+                    value.TimeDebtTicks, value.DomainSeconds, value.PendingDemand, value.PropagationMode,
+                    value.CatalogFingerprintA, value.CatalogFingerprintB, value.CatalogFingerprintC, value.CatalogFingerprintD,
+                    value.QueuePolicy, value.AdmissionCutoff, value.RejectedQueuedCount, value.LastEventSequence,
+                    value.ScopeCount, value.InstallCount, value.SelectionCount, value.TargetCount,
+                    value.SlotCount, value.GrantCount, value.ClockCount, value.CommandCount,
+                    value.MessageCount, value.RngStreamCount, value.CursorCount, value.SourcePublishedRevision,
+                    value.SourcePublishedEpoch, value.SourceHostTicksPerSecond, value.ContentRevisionCount);
+
+            private static CheckpointCatalog.ScopeRecordValue ScopeToGenerated(ScopeRecordValue value)
+                => new CheckpointCatalog.ScopeRecordValue(
+                    value.ScopeHigh, value.ScopeLow, value.ParentHigh, value.ParentLow,
+                    value.Depth, value.Mode, value.InstallCount, value.GrantCount,
+                    value.ServiceIsolationAll, value.CapabilityIsolationAll,
+                    value.ServiceIsolationCount, value.CapabilityIsolationCount);
+
+            private static ScopeRecordValue ScopeFromGenerated(CheckpointCatalog.ScopeRecordValue value)
+                => new ScopeRecordValue(
+                    value.ScopeHigh, value.ScopeLow, value.ParentHigh, value.ParentLow,
+                    value.Depth, value.Mode, value.InstallCount, value.GrantCount,
+                    value.ServiceIsolationAll, value.CapabilityIsolationAll,
+                    value.ServiceIsolationCount, value.CapabilityIsolationCount);
+
+            private static CheckpointCatalog.InstallRecordValue InstallToGenerated(InstallRecordValue value)
+                => new CheckpointCatalog.InstallRecordValue(
+                    value.InstanceHigh, value.InstanceLow, value.PluginTypeHigh, value.PluginTypeLow,
+                    value.ScopeHigh, value.ScopeLow, value.ConfigRevision, value.ConfigHashA,
+                    value.ConfigHashB, value.ConfigHashC, value.ConfigHashD, value.Priority,
+                    value.Generation, value.ActivationEpoch, value.State, value.ConfigFieldCount,
+                    value.ConfigBytes, value.SelectionCount, value.HasConfigDocument);
+
+            private static InstallRecordValue InstallFromGenerated(CheckpointCatalog.InstallRecordValue value)
+                => new InstallRecordValue(
+                    value.InstanceHigh, value.InstanceLow, value.PluginTypeHigh, value.PluginTypeLow,
+                    value.ScopeHigh, value.ScopeLow, value.ConfigRevision, value.ConfigHashA,
+                    value.ConfigHashB, value.ConfigHashC, value.ConfigHashD, value.Priority,
+                    value.Generation, value.ActivationEpoch, value.State, value.ConfigFieldCount,
+                    value.ConfigBytes, value.SelectionCount, value.HasConfigDocument);
+
+            private static CheckpointCatalog.SelectionRecordValue SelectionToGenerated(SelectionRecordValue value)
+                => new CheckpointCatalog.SelectionRecordValue(
+                    value.InstanceHigh, value.InstanceLow, value.ContractHigh, value.ContractLow,
+                    value.ContractVersion, value.ProviderHigh, value.ProviderLow, value.Order);
+
+            private static SelectionRecordValue SelectionFromGenerated(CheckpointCatalog.SelectionRecordValue value)
+                => new SelectionRecordValue(
+                    value.InstanceHigh, value.InstanceLow, value.ContractHigh, value.ContractLow,
+                    value.ContractVersion, value.ProviderHigh, value.ProviderLow, value.Order);
+
+            private static CheckpointCatalog.TargetRecordValue TargetToGenerated(TargetRecordValue value)
+                => new CheckpointCatalog.TargetRecordValue(
+                    value.TargetHigh, value.TargetLow, value.ScopeHigh, value.ScopeLow,
+                    value.DefinitionHigh, value.DefinitionLow, value.SchemaHigh, value.SchemaLow,
+                    value.SchemaVersion, value.ContentRevision, value.SourceSlot, value.SourceGeneration);
+
+            private static TargetRecordValue TargetFromGenerated(CheckpointCatalog.TargetRecordValue value)
+                => new TargetRecordValue(
+                    value.TargetHigh, value.TargetLow, value.ScopeHigh, value.ScopeLow,
+                    value.DefinitionHigh, value.DefinitionLow, value.SchemaHigh, value.SchemaLow,
+                    value.SchemaVersion, value.ContentRevision, value.SourceSlot, value.SourceGeneration);
+
+            private static CheckpointCatalog.SlotRecordValue SlotToGenerated(SlotRecordValue value)
+                => new CheckpointCatalog.SlotRecordValue(
+                    value.TargetHigh, value.TargetLow, value.OwnerHigh, value.OwnerLow,
+                    value.SlotHigh, value.SlotLow, value.SchemaVersion, value.Value, value.Active);
+
+            private static SlotRecordValue SlotFromGenerated(CheckpointCatalog.SlotRecordValue value)
+                => new SlotRecordValue(
+                    value.TargetHigh, value.TargetLow, value.OwnerHigh, value.OwnerLow,
+                    value.SlotHigh, value.SlotLow, value.SchemaVersion, value.Value, value.Active);
+
+            private static CheckpointCatalog.GrantRecordValue GrantToGenerated(GrantRecordValue value)
+                => new CheckpointCatalog.GrantRecordValue(
+                    value.Kind, value.ScopeHigh, value.ScopeLow, value.TargetHigh, value.TargetLow,
+                    value.CapabilityHigh, value.CapabilityLow, value.CapabilityVersion,
+                    value.ProviderHigh, value.ProviderLow, value.RuleHigh, value.RuleLow,
+                    value.ContractHigh, value.ContractLow, value.ContractVersion,
+                    value.SubjectHigh, value.SubjectLow, value.AppliesToSubtree, value.AllContracts,
+                    value.ExclusionKind, value.Order);
+
+            private static GrantRecordValue GrantFromGenerated(CheckpointCatalog.GrantRecordValue value)
+                => new GrantRecordValue(
+                    value.Kind, value.ScopeHigh, value.ScopeLow, value.TargetHigh, value.TargetLow,
+                    value.CapabilityHigh, value.CapabilityLow, value.CapabilityVersion,
+                    value.ProviderHigh, value.ProviderLow, value.RuleHigh, value.RuleLow,
+                    value.ContractHigh, value.ContractLow, value.ContractVersion,
+                    value.SubjectHigh, value.SubjectLow, value.AppliesToSubtree, value.AllContracts,
+                    value.ExclusionKind, value.Order);
+
+            private static CheckpointCatalog.ClockRecordValue ClockToGenerated(ClockRecordValue value)
+                => new CheckpointCatalog.ClockRecordValue(
+                    value.RowKind, value.ClockHigh, value.ClockLow, value.ClockKind,
+                    value.PausePolicy, value.Persists, value.WakeHigh, value.WakeLow,
+                    value.PayloadSchemaHigh, value.PayloadSchemaLow, value.PayloadSchemaVersion,
+                    value.ScheduledAtSequence, value.RemainingSteps, value.RemainingTicks,
+                    value.WakeState, value.Order);
+
+            private static ClockRecordValue ClockFromGenerated(CheckpointCatalog.ClockRecordValue value)
+                => new ClockRecordValue(
+                    value.RowKind, value.ClockHigh, value.ClockLow, value.ClockKind,
+                    value.PausePolicy, value.Persists, value.WakeHigh, value.WakeLow,
+                    value.PayloadSchemaHigh, value.PayloadSchemaLow, value.PayloadSchemaVersion,
+                    value.ScheduledAtSequence, value.RemainingSteps, value.RemainingTicks,
+                    value.WakeState, value.Order);
+
+            private static CheckpointCatalog.CommandRecordValue CommandToGenerated(CommandRecordValue value)
+                => new CheckpointCatalog.CommandRecordValue(
+                    value.IssuerHigh, value.IssuerLow, value.IssuerSequence, value.RouteHigh, value.RouteLow,
+                    value.TargetHigh, value.TargetLow, value.SchemaHigh, value.SchemaLow,
+                    value.SchemaVersion, value.AdmittedStep, value.AdmittedEpoch,
+                    value.AdmissionSequence, value.OrderOrdinal, value.OriginKind,
+                    value.InputHashA, value.InputHashB, value.InputHashC, value.InputHashD,
+                    value.Payload);
+
+            private static CommandRecordValue CommandFromGenerated(CheckpointCatalog.CommandRecordValue value)
+                => new CommandRecordValue(
+                    value.IssuerHigh, value.IssuerLow, value.IssuerSequence, value.RouteHigh, value.RouteLow,
+                    value.TargetHigh, value.TargetLow, value.SchemaHigh, value.SchemaLow,
+                    value.SchemaVersion, value.AdmittedStep, value.AdmittedEpoch,
+                    value.AdmissionSequence, value.OrderOrdinal, value.OriginKind,
+                    value.InputHashA, value.InputHashB, value.InputHashC, value.InputHashD,
+                    value.Payload);
+
+            private static CheckpointCatalog.MessageRecordValue MessageToGenerated(MessageRecordValue value)
+                => new CheckpointCatalog.MessageRecordValue(
+                    value.Step, value.Epoch, value.RequestIssuerHigh, value.RequestIssuerLow,
+                    value.RequestSequence, value.RouteHigh, value.RouteLow, value.OwnerHigh,
+                    value.OwnerLow, value.TargetHigh, value.TargetLow, value.PayloadSchemaHigh,
+                    value.PayloadSchemaLow, value.PayloadSchemaVersion, value.MessageKind,
+                    value.OrderAdmitted, value.OrderOrdinal, value.OriginKeyHigh, value.OriginKeyLow,
+                    value.ProducerKeyHigh, value.ProducerKeyLow, value.ProducerKeyVersion,
+                    value.BufferHigh, value.BufferLow, value.HasPayload, value.HasRequest,
+                    value.IsOutcome, value.Payload);
+
+            private static MessageRecordValue MessageFromGenerated(CheckpointCatalog.MessageRecordValue value)
+                => new MessageRecordValue(
+                    value.Step, value.Epoch, value.RequestIssuerHigh, value.RequestIssuerLow,
+                    value.RequestSequence, value.RouteHigh, value.RouteLow, value.OwnerHigh,
+                    value.OwnerLow, value.TargetHigh, value.TargetLow, value.PayloadSchemaHigh,
+                    value.PayloadSchemaLow, value.PayloadSchemaVersion, value.MessageKind,
+                    value.OrderAdmitted, value.OrderOrdinal, value.OriginKeyHigh, value.OriginKeyLow,
+                    value.ProducerKeyHigh, value.ProducerKeyLow, value.ProducerKeyVersion,
+                    value.BufferHigh, value.BufferLow, value.HasPayload, value.HasRequest,
+                    value.IsOutcome, value.Payload);
+
+            private static CheckpointCatalog.RngRecordValue RngToGenerated(RngRecordValue value)
+                => new CheckpointCatalog.RngRecordValue(
+                    value.StreamHigh, value.StreamLow, value.State, value.StreamKey, value.DrawCount);
+
+            private static RngRecordValue RngFromGenerated(CheckpointCatalog.RngRecordValue value)
+                => new RngRecordValue(
+                    value.StreamHigh, value.StreamLow, value.State, value.StreamKey, value.DrawCount);
+
+            private static CheckpointCatalog.CursorRecordValue CursorToGenerated(CursorRecordValue value)
+                => new CheckpointCatalog.CursorRecordValue(
+                    value.RowKind, value.IssuerHigh, value.IssuerLow, value.Sequence,
+                    value.SessionHigh, value.SessionLow);
+
+            private static CursorRecordValue CursorFromGenerated(CheckpointCatalog.CursorRecordValue value)
+                => new CursorRecordValue(
+                    value.RowKind, value.IssuerHigh, value.IssuerLow, value.Sequence,
+                    value.SessionHigh, value.SessionLow);
+
 
             private static string DescribeKinds(IReadOnlyList<CheckpointRecordKind> kinds)
             {
@@ -3064,10 +3681,11 @@ namespace GameCore.Validation.ProbeHost
 
             /// <summary>
             /// Writes a structurally valid document by hand — one root scope, one leaf scope, one target whose
-            /// recipe declares <paramref name="targetSchema"/>, and one owner state slot — with an optional slot
-            /// that names a target the document never declares. It is the controlled input the migration and
-            /// reference refusals need, and it is built with the production serializer, so every framing rule
-            /// (header first, ascending fields, trailing checksum, matching counts) is the real one (P-054).
+            /// recipe declares <paramref name="targetSchema"/>, and one owner state slot — with an optional second
+            /// slot that names a target the document never declares. The phantom row carries its own owner and slot
+            /// identities so the corrupt-reference observation has exactly one fault instead of duplicate identity
+            /// noise, and it is built with the production serializer, so every framing rule (header first,
+            /// ascending fields, trailing checksum, matching counts) is the real one (P-054).
             /// </summary>
             private bool TryWriteDocument(
                 SchemaRef targetSchema,
@@ -3089,6 +3707,8 @@ namespace GameCore.Validation.ProbeHost
                 TargetId phantom = new TargetId(StableNameKeyDerivation.Derive("gc018.handmade.phantom"));
                 OwnerId owner = new OwnerId(StableNameKeyDerivation.Derive("gc018.handmade.owner"));
                 SlotId slot = new SlotId(StableNameKeyDerivation.Derive("gc018.handmade.slot"));
+                OwnerId phantomOwner = new OwnerId(StableNameKeyDerivation.Derive("gc018.handmade.phantom-owner"));
+                SlotId phantomSlotId = new SlotId(StableNameKeyDerivation.Derive("gc018.handmade.phantom-slot"));
                 DefinitionId recipe = new DefinitionId(StableNameKeyDerivation.Derive("gc018.handmade.recipe"));
 
                 var serializer = new CheckpointSerializer(codecs);
@@ -3135,8 +3755,8 @@ namespace GameCore.Validation.ProbeHost
                         CheckpointRecordKind.Slot,
                         new SlotRecordValue(
                             phantom.Value.High, phantom.Value.Low,
-                            owner.Value.High, owner.Value.Low,
-                            slot.Value.High, slot.Value.Low,
+                            phantomOwner.Value.High, phantomOwner.Value.Low,
+                            phantomSlotId.Value.High, phantomSlotId.Value.Low,
                             1U, 7, true),
                         out code,
                         out detail))

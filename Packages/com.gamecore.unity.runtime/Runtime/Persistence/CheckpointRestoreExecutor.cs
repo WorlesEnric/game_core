@@ -20,6 +20,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using GameCore.Contracts;
 using GameCore.Execution.Persistence;
+using Unity.Collections;
+using Unity.Entities;
 
 namespace GameCore.Unity.Runtime.Persistence
 {
@@ -108,7 +110,7 @@ namespace GameCore.Unity.Runtime.Persistence
             WorldId source) =>
             new RestoreOutcome(false, session, stage, code, detail, source, null, null, 0, 0, 0);
 
-        internal static RestoreOutcome Replayed(WorldId session, DiagnosticCode code, string detail) =>
+        internal static RestoreOutcome Replay(WorldId session, DiagnosticCode code, string detail) =>
             new RestoreOutcome(
                 true,
                 session,
@@ -221,23 +223,22 @@ namespace GameCore.Unity.Runtime.Persistence
                 ? ContentHash.Empty
                 : ContentHash.Compute(documentBytes);
 
-            if (!reservations.TryReserve(
-                    targetSession,
-                    operation,
-                    inputHash,
-                    out RestoreAttempt? attempt,
-                    out DiagnosticCode reservationCode,
-                    out string reservationDetail)
-                || attempt == null)
+            RestoreReservationKind reservation = reservations.TryReserve(
+                targetSession,
+                operation,
+                inputHash,
+                out RestoreAttempt? attempt,
+                out DiagnosticCode reservationCode,
+                out string reservationDetail);
+            if (reservation == RestoreReservationKind.Retransmission && attempt != null)
             {
-                if (reservationCode == DiagnosticCode.None)
-                {
-                    // A retransmission of an earlier reservation: return the recorded outcome rather than a second
-                    // world, which is what makes a duplicate restore call idempotent (O-21, P-050).
-                    RetransmissionCount++;
-                    return Replay(targetSession, attempt);
-                }
+                // Return the recorded outcome without staging a second world (O-21, P-050).
+                RetransmissionCount++;
+                return Replay(targetSession, attempt);
+            }
 
+            if (reservation != RestoreReservationKind.Fresh || attempt == null)
+            {
                 RefusedCount++;
                 return RestoreOutcome.Refused(
                     targetSession,
@@ -320,8 +321,8 @@ namespace GameCore.Unity.Runtime.Persistence
 
         /// <summary>
         /// Validates the built world before it is exposed: the restored session is not the captured one, the world
-        /// carries every planned target and slot, and it can accept admission. A failure here is a refusal, never a
-        /// partial exposure (O-21, P-053).
+        /// carries exactly the plan's targets and authoritative state rows (active and dormant alike), and it can
+        /// accept admission. A failure here is a refusal, never a partial exposure (O-21, P-053).
         /// </summary>
         private static bool Validate(
             UnityWorldHost staging,
@@ -374,6 +375,161 @@ namespace GameCore.Unity.Runtime.Persistence
                 return false;
             }
 
+            // The built world must prove it carries exactly the plan's authoritative state before it can be
+            // exposed: the same targets, and the same owner-state rows active and dormant alike, with no row a
+            // rebuild path invented beyond the plan (06 s7 "restore owner slots", P-032, P-053).
+            if (!TryProvePlannedState(staging, plan, out string stateDetail))
+            {
+                code = DiagnosticCode.StalePlan;
+                detail = stateDetail;
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Reads the built world's own census of targets and owner-state rows and compares it to the plan in both
+        /// directions: every planned target and slot exists in the built world, and the built world holds no target
+        /// or slot row the plan does not name. A rebuild that invents authoritative rows the checkpoint never
+        /// carried, or drops one, is refused here, before the world is exposed (O-21, P-032, P-053).
+        /// </summary>
+        private static bool TryProvePlannedState(UnityWorldHost staging, RestorePlan plan, out string detail)
+        {
+            EntityManager entityManager = staging.EntityWorld.EntityManager;
+            var builtTargets = new HashSet<TargetId>();
+            var plannedSlots = new Dictionary<StateSlotKey, SlotRecordValue>(plan.Slots.Count);
+            for (int i = 0; i < plan.Slots.Count; i++)
+            {
+                // Last row wins on a duplicated key; the row-count parity below is what refuses such a plan,
+                // because a built buffer holds at most one row per (owner, slot).
+                plannedSlots[plan.Slots[i].Key] = plan.Slots[i];
+            }
+
+            var plannedTargets = new HashSet<TargetId>();
+            for (int i = 0; i < plan.Targets.Count; i++)
+            {
+                plannedTargets.Add(plan.Targets[i].Target);
+            }
+
+            SlotRecordValue? firstBeyondPlan = null;
+            var builtSlotKeys = new HashSet<StateSlotKey>();
+            NativeArray<Entity> entities = entityManager.GetAllEntities(Allocator.Temp);
+            try
+            {
+                for (int e = 0; e < entities.Length; e++)
+                {
+                    Entity entity = entities[e];
+                    if (!entityManager.HasComponent<TargetIdentity>(entity))
+                    {
+                        continue;
+                    }
+
+                    TargetId target = entityManager.GetComponentData<TargetIdentity>(entity).Target;
+                    if (!builtTargets.Add(target))
+                    {
+                        detail = "the built world carries target " + target.ToString() + " more than once (P-004).";
+                        return false;
+                    }
+
+                    if (!entityManager.HasBuffer<TargetSlotState>(entity))
+                    {
+                        continue;
+                    }
+
+                    DynamicBuffer<TargetSlotState> rows = entityManager.GetBuffer<TargetSlotState>(entity);
+                    for (int r = 0; r < rows.Length; r++)
+                    {
+                        TargetSlotState row = rows[r];
+                        StateSlotKey key = new StateSlotKey(target, row.Owner, row.Slot);
+                        if (!builtSlotKeys.Add(key))
+                        {
+                            detail = "the built world carries state slot " + key.ToString()
+                                + " more than once (P-032).";
+                            return false;
+                        }
+
+                        if (!plannedSlots.TryGetValue(key, out SlotRecordValue planned))
+                        {
+                            if (firstBeyondPlan == null)
+                            {
+                                firstBeyondPlan = new SlotRecordValue(
+                                    target.Value.High,
+                                    target.Value.Low,
+                                    row.Owner.Value.High,
+                                    row.Owner.Value.Low,
+                                    row.Slot.Value.High,
+                                    row.Slot.Value.Low,
+                                    row.SchemaVersion,
+                                    row.Value,
+                                    row.IsActive);
+                            }
+
+                            continue;
+                        }
+
+                        // A dormant row stays dormant: the disposition is state, not schema, so no migration may
+                        // reactivate it (P-032).
+                        if (planned.Active != row.IsActive)
+                        {
+                            detail = "the built world carries state slot " + key.ToString()
+                                + (row.IsActive ? " active" : " dormant")
+                                + " but the plan names it " + (planned.Active ? "active" : "dormant")
+                                + " (P-032, P-053).";
+                            return false;
+                        }
+
+                        // A direct plan restores the captured bytes verbatim, so version and value must match too.
+                        // A plan that runs migrations writes their output instead, so only the row's existence and
+                        // disposition are comparable here (P-029, P-054).
+                        if (plan.Migrations.Count == 0
+                            && (planned.SchemaVersion != row.SchemaVersion || planned.Value != row.Value))
+                        {
+                            detail = "the built world carries state slot " + key.ToString()
+                                + " as " + row.SchemaVersion.ToString(CultureInfo.InvariantCulture) + "/"
+                                + row.Value.ToString(CultureInfo.InvariantCulture)
+                                + " but the plan names "
+                                + planned.SchemaVersion.ToString(CultureInfo.InvariantCulture) + "/"
+                                + planned.Value.ToString(CultureInfo.InvariantCulture)
+                                + " (P-032, P-053).";
+                            return false;
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                entities.Dispose();
+            }
+
+            if (firstBeyondPlan != null)
+            {
+                detail = "the built world carries " + builtSlotKeys.Count.ToString(CultureInfo.InvariantCulture)
+                    + " authoritative state rows but the plan carries "
+                    + plan.Slots.Count.ToString(CultureInfo.InvariantCulture)
+                    + "; the first row beyond the plan is " + firstBeyondPlan.ToString() + " (P-032, P-053).";
+                return false;
+            }
+
+            // Equal counts close the proof: with no row beyond the plan, no duplicated row and every planned key
+            // distinct, equal row counts mean the built keys are exactly the planned keys.
+            if (builtSlotKeys.Count != plan.Slots.Count)
+            {
+                detail = "the built world carries " + builtSlotKeys.Count.ToString(CultureInfo.InvariantCulture)
+                    + " authoritative state rows but the plan carries "
+                    + plan.Slots.Count.ToString(CultureInfo.InvariantCulture) + " (P-032, P-053).";
+                return false;
+            }
+
+            if (!builtTargets.SetEquals(plannedTargets))
+            {
+                detail = "the built world carries " + builtTargets.Count.ToString(CultureInfo.InvariantCulture)
+                    + " targets but the plan carries "
+                    + plannedTargets.Count.ToString(CultureInfo.InvariantCulture) + " (P-004, P-053).";
+                return false;
+            }
+
+            detail = string.Empty;
             return true;
         }
 
@@ -399,7 +555,7 @@ namespace GameCore.Unity.Runtime.Persistence
             switch (attempt.Outcome)
             {
                 case RestoreAttemptOutcome.Published:
-                    return RestoreOutcome.Replayed(
+                    return RestoreOutcome.Replay(
                         session,
                         DiagnosticCode.None,
                         "session " + session.Session.ToString()

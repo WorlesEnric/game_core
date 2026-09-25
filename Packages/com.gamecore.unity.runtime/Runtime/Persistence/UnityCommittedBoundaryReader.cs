@@ -615,7 +615,7 @@ namespace GameCore.Unity.Runtime.Persistence
                         payload = raw.Length == 0 ? null : raw;
                     }
 
-                    messages.Add(new MessageRecordValue(
+                    messageRows.Add(new MessageRecordValue(
                         row.Step.Value,
                         row.Epoch.Value,
                         row.Request.IssuerId.High,

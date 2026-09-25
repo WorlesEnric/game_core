@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="6" result="Passed" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-09-25 20:29:14Z" end-time="2026-09-25 20:29:14Z" duration="0.0622882">
+  <test-suite type="TestSuite" id="1015" name="GameCoreProbe" fullname="GameCoreProbe" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-09-25 20:29:14Z" end-time="2026-09-25 20:29:14Z" duration="0.062288" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1008" name="GameCore.Unity.Adapters.Tests.dll" fullname="/home/worlesenric/wkspace/gc-wt/gc-018/unity/GameCore.Validation/Library/ScriptAssemblies/GameCore.Unity.Adapters.Tests.dll" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-09-25 20:29:14Z" end-time="2026-09-25 20:29:14Z" duration="0.056962" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="2505901" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1009" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-09-25 20:29:14Z" end-time="2026-09-25 20:29:14Z" duration="0.056716" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1010" name="Unity" fullname="GameCore.Unity" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-09-25 20:29:14Z" end-time="2026-09-25 20:29:14Z" duration="0.056620" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1011" name="Adapters" fullname="GameCore.Unity.Adapters" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-09-25 20:29:14Z" end-time="2026-09-25 20:29:14Z" duration="0.056535" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1012" name="Tests" fullname="GameCore.Unity.Adapters.Tests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-09-25 20:29:14Z" end-time="2026-09-25 20:29:14Z" duration="0.056443" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1001" name="PlayerLoopIntegrationTests" fullname="GameCore.Unity.Adapters.Tests.PlayerLoopIntegrationTests" classname="GameCore.Unity.Adapters.Tests.PlayerLoopIntegrationTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-09-25 20:29:14Z" end-time="2026-09-25 20:29:14Z" duration="0.055764" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1004" name="AStaleGenerationTrampolineRefusesToPump" fullname="GameCore.Unity.Adapters.Tests.PlayerLoopIntegrationTests.AStaleGenerationTrampolineRefusesToPump" methodname="AStaleGenerationTrampolineRefusesToPump" classname="GameCore.Unity.Adapters.Tests.PlayerLoopIntegrationTests" runstate="Runnable" seed="311249683" result="Passed" start-time="2026-09-25 20:29:14Z" end-time="2026-09-25 20:29:14Z" duration="0.010559" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1002" name="BootstrapInstalledExactlyOneApplicationWorldAndOneRoute" fullname="GameCore.Unity.Adapters.Tests.PlayerLoopIntegrationTests.BootstrapInstalledExactlyOneApplicationWorldAndOneRoute" methodname="BootstrapInstalledExactlyOneApplicationWorldAndOneRoute" classname="GameCore.Unity.Adapters.Tests.PlayerLoopIntegrationTests" runstate="Runnable" seed="933295147" result="Passed" start-time="2026-09-25 20:29:14Z" end-time="2026-09-25 20:29:14Z" duration="0.025619" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1007" name="CommandDrivenWorldAdvancesOncePerAdmittedCommand" fullname="GameCore.Unity.Adapters.Tests.PlayerLoopIntegrationTests.CommandDrivenWorldAdvancesOncePerAdmittedCommand" methodname="CommandDrivenWorldAdvancesOncePerAdmittedCommand" classname="GameCore.Unity.Adapters.Tests.PlayerLoopIntegrationTests" runstate="Runnable" seed="850133994" result="Passed" start-time="2026-09-25 20:29:14Z" end-time="2026-09-25 20:29:14Z" duration="0.004414" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1006" name="IdleCommandWorldAdvancesZeroStepsOverManyRealFrames" fullname="GameCore.Unity.Adapters.Tests.PlayerLoopIntegrationTests.IdleCommandWorldAdvancesZeroStepsOverManyRealFrames" methodname="IdleCommandWorldAdvancesZeroStepsOverManyRealFrames" classname="GameCore.Unity.Adapters.Tests.PlayerLoopIntegrationTests" runstate="Runnable" seed="1409587302" result="Passed" start-time="2026-09-25 20:29:14Z" end-time="2026-09-25 20:29:14Z" duration="0.004063" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1003" name="InstallingThePumpNodeIsIdempotent" fullname="GameCore.Unity.Adapters.Tests.PlayerLoopIntegrationTests.InstallingThePumpNodeIsIdempotent" methodname="InstallingThePumpNodeIsIdempotent" classname="GameCore.Unity.Adapters.Tests.PlayerLoopIntegrationTests" runstate="Runnable" seed="86420293" result="Passed" start-time="2026-09-25 20:29:14Z" end-time="2026-09-25 20:29:14Z" duration="0.000806" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1005" name="ResetForNewSessionRemovesRoutesAndDisposesSurvivingHosts" fullname="GameCore.Unity.Adapters.Tests.PlayerLoopIntegrationTests.ResetForNewSessionRemovesRoutesAndDisposesSurvivingHosts" methodname="ResetForNewSessionRemovesRoutesAndDisposesSurvivingHosts" classname="GameCore.Unity.Adapters.Tests.PlayerLoopIntegrationTests" runstate="Runnable" seed="675327206" result="Passed" start-time="2026-09-25 20:29:14Z" end-time="2026-09-25 20:29:14Z" duration="0.002478" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[Saving results to: /home/worlesenric/.config/unity3d/GameCore/GameCoreProbe/TestResults.xml
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

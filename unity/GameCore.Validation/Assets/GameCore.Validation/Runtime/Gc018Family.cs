@@ -29,12 +29,48 @@
 // Every member is data or a payload: the runner owns the ordering, the captures, the refusals and the
 // observations, so both genres are driven through exactly the same sequence (P-001).
 #nullable enable
+using System;
 using System.Collections.Generic;
 using GameCore.Composition;
 using GameCore.Contracts;
+using GameCore.Planning.Scheduling;
+using GameCore.Unity.Runtime;
+using GameCore.Unity.Runtime.Integration;
 
 namespace GameCore.Validation.ProbeHost
 {
+    /// <summary>
+    /// The world pieces a family's runtime attach works over: the host the scenario created for it, its target
+    /// index and the seeder that resolves a live target's native entity. The family supplies the module its own
+    /// generated systems resolve the world through; the scenario owns the world (P-002, P-004).
+    /// </summary>
+    public sealed class Gc018RuntimeWorld
+    {
+        public Gc018RuntimeWorld(
+            UnityWorldHost host,
+            LiveTargetIndex targets,
+            LiveTargetSeeder seeder,
+            CompiledSchedule schedule)
+        {
+            Host = host ?? throw new ArgumentNullException(nameof(host));
+            Targets = targets ?? throw new ArgumentNullException(nameof(targets));
+            Seeder = seeder ?? throw new ArgumentNullException(nameof(seeder));
+            Schedule = schedule ?? throw new ArgumentNullException(nameof(schedule));
+        }
+
+        public UnityWorldHost Host { get; }
+
+        public LiveTargetIndex Targets { get; }
+
+        public LiveTargetSeeder Seeder { get; }
+
+        /// <summary>
+        /// The compiled schedule this world's dispatch tables were installed from, so a family runtime binds to
+        /// the same compiled order its world executes (GC-009).
+        /// </summary>
+        public CompiledSchedule Schedule { get; }
+    }
+
     /// <summary>
     /// One genre's declared facts for the GC-018 checkpoint round trip: everything
     /// <see cref="IGc013Family"/> declares, plus the command, the dormant slot, the persistent clock and the
@@ -89,5 +125,21 @@ namespace GameCore.Validation.ProbeHost
         /// at least one live target (P-010, P-016).
         /// </summary>
         ScopeId EnrichedScope { get; }
+
+        /// <summary>
+        /// Attaches the genre's own runtime module to a world this scenario just created: the module its generated
+        /// step systems resolve their world through, with every live target mapped to its native entity and the
+        /// trail's root bound. A restored world is a running world, so when the restore re-admits the captured
+        /// command the family's input stage must consume its ingress lane like any other world of this genre
+        /// (P-037, P-042, P-043). Returns false with a detail when a target cannot be mapped, so a restore that
+        /// cannot run is refused rather than exposed.
+        /// </summary>
+        bool TryAttachRuntime(Gc018RuntimeWorld world, out string detail);
+
+        /// <summary>
+        /// Releases the module <see cref="TryAttachRuntime"/> added for a world this scenario created; the
+        /// scenario's own teardown path, called whether the world passed or faulted (P-048).
+        /// </summary>
+        void DetachRuntime(Gc018RuntimeWorld world);
     }
 }

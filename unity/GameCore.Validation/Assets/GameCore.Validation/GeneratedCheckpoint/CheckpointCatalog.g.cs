@@ -2458,7 +2458,7 @@ namespace GameCore.Validation.GeneratedCheckpoint
             /// <summary>Diagnostic form; never used as an identity (P-004).</summary>
             public override string ToString()
             {
-                return "InstallRecordValue(InstanceHigh=" + InstanceHigh + ", InstanceLow=" + InstanceLow + ", PluginTypeHigh=" + PluginTypeHigh + ", PluginTypeLow=" + PluginTypeLow + ", ScopeHigh=" + ScopeHigh + ", ScopeLow=" + ScopeLow + ", ConfigRevision=" + ConfigRevision + ", ConfigHashA=" + ConfigHashA + ", ConfigHashB=" + ConfigHashB + ", ConfigHashC=" + ConfigHashC + ", ConfigHashD=" + ConfigHashD + ", Priority=" + Priority + ", Generation=" + Generation + ", ActivationEpoch=" + ActivationEpoch + ", State=" + State + ", ConfigFieldCount=" + ConfigFieldCount + ", ConfigBytes=" + (ConfigBytes ?? "<null>") + ", SelectionCount=" + SelectionCount + ", HasConfigDocument=" + HasConfigDocument + ")";
+                return "InstallRecordValue(InstanceHigh=" + InstanceHigh + ", InstanceLow=" + InstanceLow + ", PluginTypeHigh=" + PluginTypeHigh + ", PluginTypeLow=" + PluginTypeLow + ", ScopeHigh=" + ScopeHigh + ", ScopeLow=" + ScopeLow + ", ConfigRevision=" + ConfigRevision + ", ConfigHashA=" + ConfigHashA + ", ConfigHashB=" + ConfigHashB + ", ConfigHashC=" + ConfigHashC + ", ConfigHashD=" + ConfigHashD + ", Priority=" + Priority + ", Generation=" + Generation + ", ActivationEpoch=" + ActivationEpoch + ", State=" + State + ", ConfigFieldCount=" + ConfigFieldCount + ", ConfigBytes=" + (ConfigBytes ?? Array.Empty<byte>()).Length.ToString() + ", SelectionCount=" + SelectionCount + ", HasConfigDocument=" + HasConfigDocument + ")";
             }
         }
 
@@ -3026,7 +3026,7 @@ namespace GameCore.Validation.GeneratedCheckpoint
             /// <summary>Diagnostic form; never used as an identity (P-004).</summary>
             public override string ToString()
             {
-                return "MessageRecordValue(Step=" + Step + ", Epoch=" + Epoch + ", RequestIssuerHigh=" + RequestIssuerHigh + ", RequestIssuerLow=" + RequestIssuerLow + ", RequestSequence=" + RequestSequence + ", RouteHigh=" + RouteHigh + ", RouteLow=" + RouteLow + ", OwnerHigh=" + OwnerHigh + ", OwnerLow=" + OwnerLow + ", TargetHigh=" + TargetHigh + ", TargetLow=" + TargetLow + ", PayloadSchemaHigh=" + PayloadSchemaHigh + ", PayloadSchemaLow=" + PayloadSchemaLow + ", PayloadSchemaVersion=" + PayloadSchemaVersion + ", MessageKind=" + MessageKind + ", OrderAdmitted=" + OrderAdmitted + ", OrderOrdinal=" + OrderOrdinal + ", OriginKeyHigh=" + OriginKeyHigh + ", OriginKeyLow=" + OriginKeyLow + ", ProducerKeyHigh=" + ProducerKeyHigh + ", ProducerKeyLow=" + ProducerKeyLow + ", ProducerKeyVersion=" + ProducerKeyVersion + ", BufferHigh=" + BufferHigh + ", BufferLow=" + BufferLow + ", HasPayload=" + HasPayload + ", HasRequest=" + HasRequest + ", IsOutcome=" + IsOutcome + ", Payload=" + (Payload ?? "<null>") + ")";
+                return "MessageRecordValue(Step=" + Step + ", Epoch=" + Epoch + ", RequestIssuerHigh=" + RequestIssuerHigh + ", RequestIssuerLow=" + RequestIssuerLow + ", RequestSequence=" + RequestSequence + ", RouteHigh=" + RouteHigh + ", RouteLow=" + RouteLow + ", OwnerHigh=" + OwnerHigh + ", OwnerLow=" + OwnerLow + ", TargetHigh=" + TargetHigh + ", TargetLow=" + TargetLow + ", PayloadSchemaHigh=" + PayloadSchemaHigh + ", PayloadSchemaLow=" + PayloadSchemaLow + ", PayloadSchemaVersion=" + PayloadSchemaVersion + ", MessageKind=" + MessageKind + ", OrderAdmitted=" + OrderAdmitted + ", OrderOrdinal=" + OrderOrdinal + ", OriginKeyHigh=" + OriginKeyHigh + ", OriginKeyLow=" + OriginKeyLow + ", ProducerKeyHigh=" + ProducerKeyHigh + ", ProducerKeyLow=" + ProducerKeyLow + ", ProducerKeyVersion=" + ProducerKeyVersion + ", BufferHigh=" + BufferHigh + ", BufferLow=" + BufferLow + ", HasPayload=" + HasPayload + ", HasRequest=" + HasRequest + ", IsOutcome=" + IsOutcome + ", Payload=" + (Payload ?? Array.Empty<byte>()).Length.ToString() + ")";
             }
         }
 
@@ -5359,7 +5359,7 @@ namespace GameCore.Validation.GeneratedCheckpoint
             /// <summary>Diagnostic form; never used as an identity (P-004).</summary>
             public override string ToString()
             {
-                return "CommandRecordValue(IssuerHigh=" + IssuerHigh + ", IssuerLow=" + IssuerLow + ", IssuerSequence=" + IssuerSequence + ", RouteHigh=" + RouteHigh + ", RouteLow=" + RouteLow + ", TargetHigh=" + TargetHigh + ", TargetLow=" + TargetLow + ", SchemaHigh=" + SchemaHigh + ", SchemaLow=" + SchemaLow + ", SchemaVersion=" + SchemaVersion + ", AdmittedStep=" + AdmittedStep + ", AdmittedEpoch=" + AdmittedEpoch + ", AdmissionSequence=" + AdmissionSequence + ", OrderOrdinal=" + OrderOrdinal + ", OriginKind=" + OriginKind + ", InputHashA=" + InputHashA + ", InputHashB=" + InputHashB + ", InputHashC=" + InputHashC + ", InputHashD=" + InputHashD + ", Payload=" + (Payload ?? "<null>") + ")";
+                return "CommandRecordValue(IssuerHigh=" + IssuerHigh + ", IssuerLow=" + IssuerLow + ", IssuerSequence=" + IssuerSequence + ", RouteHigh=" + RouteHigh + ", RouteLow=" + RouteLow + ", TargetHigh=" + TargetHigh + ", TargetLow=" + TargetLow + ", SchemaHigh=" + SchemaHigh + ", SchemaLow=" + SchemaLow + ", SchemaVersion=" + SchemaVersion + ", AdmittedStep=" + AdmittedStep + ", AdmittedEpoch=" + AdmittedEpoch + ", AdmissionSequence=" + AdmissionSequence + ", OrderOrdinal=" + OrderOrdinal + ", OriginKind=" + OriginKind + ", InputHashA=" + InputHashA + ", InputHashB=" + InputHashB + ", InputHashC=" + InputHashC + ", InputHashD=" + InputHashD + ", Payload=" + (Payload ?? Array.Empty<byte>()).Length.ToString() + ")";
             }
         }
 
@@ -5931,6 +5931,6 @@ namespace GameCore.Validation.GeneratedCheckpoint
         public const int SchemaCount = 12;
 
         /// <summary>Hash of the generated source that precedes this declaration.</summary>
-        public const string CatalogFileHash = "122b9df3bb0907f2cef9685b151e73f7c9854d0613e5468b689ea0623840ee1c";
+        public const string CatalogFileHash = "bc854323f2a5c892783a84f3d0b00beecf0b0da3ca48e24650b32e9797e1bdf6";
     }
 }

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="3" result="Passed" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-09-25 20:45:55Z" end-time="2026-09-25 20:45:56Z" duration="0.5228506">
+  <test-suite type="TestSuite" id="1000" name="GameCoreProbe" fullname="GameCoreProbe" runstate="Runnable" testcasecount="784" result="Passed" start-time="2026-09-25 20:45:55Z" end-time="2026-09-25 20:45:56Z" duration="0.522851" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1331" name="GameCore.Gc018.Tests.dll" fullname="/home/worlesenric/wkspace/gc-wt/gc-018/unity/GameCore.Validation/Library/ScriptAssemblies/GameCore.Gc018.Tests.dll" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-09-25 20:45:55Z" end-time="2026-09-25 20:45:56Z" duration="0.512869" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="2567253" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1332" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-09-25 20:45:55Z" end-time="2026-09-25 20:45:56Z" duration="0.512605" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1333" name="Gc018" fullname="GameCore.Gc018" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-09-25 20:45:55Z" end-time="2026-09-25 20:45:56Z" duration="0.512523" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1334" name="Tests" fullname="GameCore.Gc018.Tests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-09-25 20:45:55Z" end-time="2026-09-25 20:45:56Z" duration="0.512447" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1327" name="Gc018IntegrationTests" fullname="GameCore.Gc018.Tests.Gc018IntegrationTests" classname="GameCore.Gc018.Tests.Gc018IntegrationTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-09-25 20:45:55Z" end-time="2026-09-25 20:45:56Z" duration="0.511775" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties>
+                <property name="Timeout" value="600000" />
+              </properties>
+              <test-case id="1329" name="TheCardFamilyPassesEveryObservationOverBothCatalogs" fullname="GameCore.Gc018.Tests.Gc018IntegrationTests.TheCardFamilyPassesEveryObservationOverBothCatalogs" methodname="TheCardFamilyPassesEveryObservationOverBothCatalogs" classname="GameCore.Gc018.Tests.Gc018IntegrationTests" runstate="Runnable" seed="646219135" result="Passed" start-time="2026-09-25 20:45:55Z" end-time="2026-09-25 20:45:56Z" duration="0.460789" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1330" name="TheCheckpointObservationTableIsExactlyThePublishedSequence" fullname="GameCore.Gc018.Tests.Gc018IntegrationTests.TheCheckpointObservationTableIsExactlyThePublishedSequence" methodname="TheCheckpointObservationTableIsExactlyThePublishedSequence" classname="GameCore.Gc018.Tests.Gc018IntegrationTests" runstate="Runnable" seed="1072184191" result="Passed" start-time="2026-09-25 20:45:56Z" end-time="2026-09-25 20:45:56Z" duration="0.001440" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1328" name="TheNarrativeFamilyPassesEveryObservationOverBothCatalogs" fullname="GameCore.Gc018.Tests.Gc018IntegrationTests.TheNarrativeFamilyPassesEveryObservationOverBothCatalogs" methodname="TheNarrativeFamilyPassesEveryObservationOverBothCatalogs" classname="GameCore.Gc018.Tests.Gc018IntegrationTests" runstate="Runnable" seed="989656825" result="Passed" start-time="2026-09-25 20:45:56Z" end-time="2026-09-25 20:45:56Z" duration="0.039665" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: /home/worlesenric/.config/unity3d/GameCore/GameCoreProbe/TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

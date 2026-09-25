@@ -101,20 +101,35 @@ namespace GameCore.Execution.Tests
 
         internal EnvelopeError Error => reader.LastError;
 
-        internal bool UInt32(int index, out uint value) =>
-            Seek(index) && reader.TryReadUInt32(buffer.Field(index), out value);
+        internal bool UInt32(int index, out uint value)
+        {
+            value = 0;
+            return Seek(index) && reader.TryReadUInt32(buffer.Field(index), out value);
+        }
 
-        internal bool UInt64(int index, out ulong value) =>
-            Seek(index) && reader.TryReadUInt64(buffer.Field(index), out value);
+        internal bool UInt64(int index, out ulong value)
+        {
+            value = 0;
+            return Seek(index) && reader.TryReadUInt64(buffer.Field(index), out value);
+        }
 
-        internal bool Int32(int index, out int value) =>
-            Seek(index) && reader.TryReadInt32(buffer.Field(index), out value);
+        internal bool Int32(int index, out int value)
+        {
+            value = 0;
+            return Seek(index) && reader.TryReadInt32(buffer.Field(index), out value);
+        }
 
-        internal bool Bool(int index, out bool value) =>
-            Seek(index) && reader.TryReadBool(buffer.Field(index), out value);
+        internal bool Bool(int index, out bool value)
+        {
+            value = false;
+            return Seek(index) && reader.TryReadBool(buffer.Field(index), out value);
+        }
 
-        internal bool Bytes(int index, out byte[]? value) =>
-            Seek(index) && reader.TryReadBytes(buffer.Field(index), out value);
+        internal bool Bytes(int index, out byte[]? value)
+        {
+            value = null;
+            return Seek(index) && reader.TryReadBytes(buffer.Field(index), out value);
+        }
 
         internal bool Float64(int index, out double value)
         {
@@ -127,8 +142,17 @@ namespace GameCore.Execution.Tests
             return reader.TryReadFloat64(buffer.Field(index), out value, out ulong _);
         }
 
-        private bool Seek(int index) =>
-            index >= 0 && index < count && index < buffer.Count && reader.TrySeekTo(buffer.RecordOffset(index));
+        private bool Seek(int index)
+        {
+            if (index < 0 || index >= count || index >= buffer.Count
+                || !reader.TrySeekTo(buffer.RecordOffset(index))
+                || !reader.TryReadField(out EnvelopeField field))
+            {
+                return false;
+            }
+
+            return field.FieldId == buffer.Field(index).FieldId && field.Type == buffer.Field(index).Type;
+        }
     }
 
     /// <summary>

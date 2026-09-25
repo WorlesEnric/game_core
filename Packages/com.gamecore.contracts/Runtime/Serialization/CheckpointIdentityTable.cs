@@ -212,7 +212,8 @@ namespace GameCore.Contracts
                 for (int i = 0; i < selections.Count; i++)
                 {
                     SelectionRecordValue selection = selections[i];
-                    if (!HasInstall(selection.Instance) || !HasInstall(selection.Provider))
+                    if (!HasInstall(selection.Instance)
+                        || !HasInstall(new PluginInstanceId(selection.Provider.Value)))
                     {
                         valid &= Reject(
                             "selection",

@@ -5,42 +5,66 @@
 // construction; no CLR assembly name or engine handle serves as identity).
 //
 // The generated catalog (`GameCore.Validation.GeneratedCheckpoint.CheckpointCatalog`) exposes one serializer class
-// per record schema. This file is the only place that adapts those generated serializers to the engine-free
-// `ICheckpointRecordCodec<TValue>` seam: one small generic wrapper per record kind, constructed with the generated
-// serializer instance. Nothing is resolved by name, and the adapter is a direct reference, so IL2CPP stripping
-// cannot remove a serializer this assembly names (04 s8 item 3).
+// per record schema, and each generated serializer takes the catalog's own nested value struct. The engine-free
+// `ICheckpointRecordCodec<TValue>` seam is typed to the `GameCore.Contracts` record values, so this file is the
+// only place that adapts between the two: one bridge per record kind holds the generated serializer's own
+// `Serialize` and `TryDeserialize` methods as direct references plus two conversion delegates, and every encode
+// and decode calls the actual generated method. Nothing is resolved by name, by reflection or by runtime type
+// discovery, so IL2CPP stripping cannot remove a serializer this assembly names (04 s8 item 3).
 //
 // The Unity project's generated-checkpoint assembly cannot be referenced from this package (the dependency would run
 // the wrong way), so this adapter is deliberately parameterised: the caller passes the twelve generated serializers
-// and receives a complete `CheckpointCodecSet`. The Unity validation project's family hosts do that with the
-// committed generated catalog.
+// with their record-value conversions and receives a complete `CheckpointCodecSet`. The Unity validation project's
+// family hosts do that with the committed generated catalog.
 #nullable enable
 using System;
 using System.Collections.Generic;
 using GameCore.Contracts;
-using GameCore.Execution.Persistence;
 
 namespace GameCore.Unity.Runtime.Persistence
 {
     /// <summary>
-    /// The twelve generated serializers of one checkpoint catalog, as the adapter needs them: one instance per record
-    /// kind, each exposing the generated `Serialize`/`TryDeserialize` pair of its own record type.
+    /// One generated serializer as the codec seam sees it: the record value type the seam carries, with the
+    /// generated `Serialize`/`TryDeserialize` pair behind it. The runtime package cannot name a catalog's nested
+    /// value struct, so callers that hold both types bind
+    /// <see cref="CheckpointRecordSerializer{TValue, TGenerated}"/> and everything downstream sees only
+    /// <typeparamref name="TValue"/> (P-054).
+    /// </summary>
+    /// <typeparam name="TValue">The `GameCore.Contracts` record value this serializer serves at the seam.</typeparam>
+    public interface ICheckpointRecordSerializer<TValue> where TValue : struct
+    {
+        /// <summary>Exact schema and version the bound generated serializer accepts (P-054).</summary>
+        SchemaRef Schema { get; }
+
+        /// <summary>Encodes one value by calling the bound generated serializer's own `Serialize`.</summary>
+        byte[] Serialize(TValue value);
+
+        /// <summary>Decodes one document by calling the bound generated serializer's own `TryDeserialize`.</summary>
+        bool TryDeserialize(byte[] document, out TValue value, out EnvelopeError error);
+
+        /// <summary>Envelope-level validation only, for the non-generic half of the seam (05 s6).</summary>
+        bool TryValidate(byte[] document, out EnvelopeError error);
+    }
+
+    /// <summary>
+    /// The twelve generated serializers of one checkpoint catalog, as the adapter needs them: one instance per
+    /// record kind, each exposing the generated `Serialize`/`TryDeserialize` pair of its own record type.
     /// </summary>
     public sealed class CheckpointSerializerBindings
     {
         public CheckpointSerializerBindings(
-            CheckpointRecordSerializer<HeaderRecordValue> header,
-            CheckpointRecordSerializer<ScopeRecordValue> scope,
-            CheckpointRecordSerializer<InstallRecordValue> install,
-            CheckpointRecordSerializer<SelectionRecordValue> selection,
-            CheckpointRecordSerializer<TargetRecordValue> target,
-            CheckpointRecordSerializer<SlotRecordValue> slot,
-            CheckpointRecordSerializer<GrantRecordValue> grant,
-            CheckpointRecordSerializer<ClockRecordValue> clock,
-            CheckpointRecordSerializer<CommandRecordValue> command,
-            CheckpointRecordSerializer<MessageRecordValue> message,
-            CheckpointRecordSerializer<RngRecordValue> rng,
-            CheckpointRecordSerializer<CursorRecordValue> cursor)
+            ICheckpointRecordSerializer<HeaderRecordValue> header,
+            ICheckpointRecordSerializer<ScopeRecordValue> scope,
+            ICheckpointRecordSerializer<InstallRecordValue> install,
+            ICheckpointRecordSerializer<SelectionRecordValue> selection,
+            ICheckpointRecordSerializer<TargetRecordValue> target,
+            ICheckpointRecordSerializer<SlotRecordValue> slot,
+            ICheckpointRecordSerializer<GrantRecordValue> grant,
+            ICheckpointRecordSerializer<ClockRecordValue> clock,
+            ICheckpointRecordSerializer<CommandRecordValue> command,
+            ICheckpointRecordSerializer<MessageRecordValue> message,
+            ICheckpointRecordSerializer<RngRecordValue> rng,
+            ICheckpointRecordSerializer<CursorRecordValue> cursor)
         {
             Header = header ?? throw new ArgumentNullException(nameof(header));
             Scope = scope ?? throw new ArgumentNullException(nameof(scope));
@@ -56,29 +80,29 @@ namespace GameCore.Unity.Runtime.Persistence
             Cursor = cursor ?? throw new ArgumentNullException(nameof(cursor));
         }
 
-        public CheckpointRecordSerializer<HeaderRecordValue> Header { get; }
+        public ICheckpointRecordSerializer<HeaderRecordValue> Header { get; }
 
-        public CheckpointRecordSerializer<ScopeRecordValue> Scope { get; }
+        public ICheckpointRecordSerializer<ScopeRecordValue> Scope { get; }
 
-        public CheckpointRecordSerializer<InstallRecordValue> Install { get; }
+        public ICheckpointRecordSerializer<InstallRecordValue> Install { get; }
 
-        public CheckpointRecordSerializer<SelectionRecordValue> Selection { get; }
+        public ICheckpointRecordSerializer<SelectionRecordValue> Selection { get; }
 
-        public CheckpointRecordSerializer<TargetRecordValue> Target { get; }
+        public ICheckpointRecordSerializer<TargetRecordValue> Target { get; }
 
-        public CheckpointRecordSerializer<SlotRecordValue> Slot { get; }
+        public ICheckpointRecordSerializer<SlotRecordValue> Slot { get; }
 
-        public CheckpointRecordSerializer<GrantRecordValue> Grant { get; }
+        public ICheckpointRecordSerializer<GrantRecordValue> Grant { get; }
 
-        public CheckpointRecordSerializer<ClockRecordValue> Clock { get; }
+        public ICheckpointRecordSerializer<ClockRecordValue> Clock { get; }
 
-        public CheckpointRecordSerializer<CommandRecordValue> Command { get; }
+        public ICheckpointRecordSerializer<CommandRecordValue> Command { get; }
 
-        public CheckpointRecordSerializer<MessageRecordValue> Message { get; }
+        public ICheckpointRecordSerializer<MessageRecordValue> Message { get; }
 
-        public CheckpointRecordSerializer<RngRecordValue> Rng { get; }
+        public ICheckpointRecordSerializer<RngRecordValue> Rng { get; }
 
-        public CheckpointRecordSerializer<CursorRecordValue> Cursor { get; }
+        public ICheckpointRecordSerializer<CursorRecordValue> Cursor { get; }
 
         /// <summary>Every binding as a codec, in record-kind order, for <see cref="CheckpointCodecSet"/>.</summary>
         public IReadOnlyList<ICheckpointRecordCodec> Codecs() => new ICheckpointRecordCodec[]
@@ -112,46 +136,75 @@ namespace GameCore.Unity.Runtime.Persistence
         out EnvelopeError error) where TValue : struct;
 
     /// <summary>
-    /// One generated serializer bound to its record kind. It holds the generated instance's own `Serialize` and
+    /// One generated serializer bound to its record kind across two value types: <typeparamref name="TValue"/> is
+    /// the record value the codec seam carries, <typeparamref name="TGenerated"/> is the nested value struct the
+    /// generated serializer's own methods take. The bridge holds the generated instance's `Serialize` and
     /// `TryDeserialize` methods as direct references, so the codec set is a set of direct references and no
-    /// serializer is resolved by name at runtime (04 s8). Construction happens once per world, never per record.
+    /// serializer is resolved by name at runtime (04 s8). The two conversion delegates are field-for-field copies
+    /// the caller supplies once per world; construction happens once per world, never per record. Each encode and
+    /// each decode calls the actual generated method — the bridge only moves the value across the two types.
     /// </summary>
-    public sealed class CheckpointRecordSerializer<TValue> where TValue : struct
+    /// <typeparam name="TValue">The `GameCore.Contracts` record value this serializer serves at the seam.</typeparam>
+    /// <typeparam name="TGenerated">The generated catalog's nested value struct of the same record kind.</typeparam>
+    public sealed class CheckpointRecordSerializer<TValue, TGenerated> : ICheckpointRecordSerializer<TValue>
+        where TValue : struct
+        where TGenerated : struct
     {
-        private readonly Func<TValue, byte[]> serialize;
-        private readonly CheckpointDeserialize<TValue> deserialize;
+        private readonly Func<TGenerated, byte[]> serialize;
+        private readonly CheckpointDeserialize<TGenerated> deserialize;
+        private readonly Func<TValue, TGenerated> toGenerated;
+        private readonly Func<TGenerated, TValue> fromGenerated;
 
         public CheckpointRecordSerializer(
             SchemaRef schema,
-            Func<TValue, byte[]> serialize,
-            CheckpointDeserialize<TValue> deserialize)
+            Func<TGenerated, byte[]> serialize,
+            CheckpointDeserialize<TGenerated> deserialize,
+            Func<TValue, TGenerated> toGenerated,
+            Func<TGenerated, TValue> fromGenerated)
         {
             Schema = schema;
             this.serialize = serialize ?? throw new ArgumentNullException(nameof(serialize));
             this.deserialize = deserialize ?? throw new ArgumentNullException(nameof(deserialize));
+            this.toGenerated = toGenerated ?? throw new ArgumentNullException(nameof(toGenerated));
+            this.fromGenerated = fromGenerated ?? throw new ArgumentNullException(nameof(fromGenerated));
         }
 
         /// <summary>Exact schema and version the bound generated serializer accepts (P-054).</summary>
         public SchemaRef Schema { get; }
 
-        public byte[] Serialize(TValue value) => serialize(value);
+        /// <summary>Converts to the generated value struct, then calls the generated `Serialize` itself.</summary>
+        public byte[] Serialize(TValue value) => serialize(toGenerated(value));
 
+        /// <summary>
+        /// Calls the generated `TryDeserialize` itself; a successful decode is converted to the seam's record
+        /// value, and a failed one passes the exact envelope error through with a default value out.
+        /// </summary>
         public bool TryDeserialize(byte[] document, out TValue value, out EnvelopeError error)
-            => deserialize(document, out value, out error);
+        {
+            if (deserialize(document, out TGenerated generated, out error))
+            {
+                value = fromGenerated(generated);
+                return true;
+            }
+
+            value = default(TValue);
+            return false;
+        }
 
         /// <summary>Envelope-level validation only, for the non-generic half of the seam (05 s6).</summary>
         public bool TryValidate(byte[] document, out EnvelopeError error)
-            => deserialize(document, out TValue _, out error);
+            => deserialize(document, out TGenerated _, out error);
 
-        public override string ToString() => "serializer(" + typeof(TValue).Name + "@" + Schema.ToString() + ")";
+        public override string ToString()
+            => "serializer(" + typeof(TValue).Name + "->" + typeof(TGenerated).Name + "@" + Schema.ToString() + ")";
     }
 
     /// <summary>Adapts one generated record serializer to the engine-free codec seam (P-054).</summary>
     public sealed class CheckpointRecordCodec<TValue> : ICheckpointRecordCodec<TValue> where TValue : struct
     {
-        private readonly CheckpointRecordSerializer<TValue> serializer;
+        private readonly ICheckpointRecordSerializer<TValue> serializer;
 
-        public CheckpointRecordCodec(CheckpointRecordKind kind, CheckpointRecordSerializer<TValue> serializer)
+        public CheckpointRecordCodec(CheckpointRecordKind kind, ICheckpointRecordSerializer<TValue> serializer)
         {
             if (!CheckpointFormat.IsDeclared(kind))
             {

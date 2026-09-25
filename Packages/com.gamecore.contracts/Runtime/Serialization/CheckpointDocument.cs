@@ -98,9 +98,8 @@ namespace GameCore.Contracts
     }
 
     /// <summary>
-    /// Collects typed records and serializes one checkpoint document. Records are added in capture order and
-    /// serialized grouped by kind in the document's fixed kind order, so two captures of identical state produce
-    /// identical bytes regardless of the order in which a caller discovered the state (P-008, TEST-022).
+    /// Collects typed records and serializes one checkpoint document. Records are grouped by kind and ordered
+    /// lexicographically by their encoded bytes within each kind, independent of discovery order (P-008, TEST-022).
     /// </summary>
     public sealed class CheckpointSerializer
     {
@@ -269,6 +268,7 @@ namespace GameCore.Contracts
                 for (int k = 1; k < CheckpointFormat.RecordKindCount; k++)
                 {
                     List<byte[]> bucket = records[k];
+                    bucket.Sort(CompareRecordBytes);
                     int fieldId = CheckpointFormat.FirstRecordFieldId + k;
                     for (int i = 0; i < bucket.Count; i++)
                     {
@@ -288,6 +288,21 @@ namespace GameCore.Contracts
                     + exception.Message;
                 return false;
             }
+        }
+
+        private static int CompareRecordBytes(byte[] left, byte[] right)
+        {
+            int common = Math.Min(left.Length, right.Length);
+            for (int i = 0; i < common; i++)
+            {
+                int difference = left[i].CompareTo(right[i]);
+                if (difference != 0)
+                {
+                    return difference;
+                }
+            }
+
+            return left.Length.CompareTo(right.Length);
         }
 
         private static string Describe(HeaderRecordValue header) =>
@@ -323,7 +338,7 @@ namespace GameCore.Contracts
             }
         }
 
-        public HeaderRecordValue Header { get; }
+        public HeaderRecordValue Header { get; private set; }
         /// <summary>
         /// The envelope's own trailing FNV-1a checksum, recomputed and matched by <see cref="TryRead"/> (05 s6).
         /// It detects corruption, not tampering, and it is never a stable identity.
@@ -428,7 +443,8 @@ namespace GameCore.Contracts
                     if (!reader.TryVerifyChecksum(field, out declaredChecksum))
                     {
                         code = CheckpointErrors.CodeFor(reader.LastError);
-                        detail = "the checkpoint document checksum did not match its content (05 s6).";
+                        detail = "the checkpoint document checksum did not match its content: "
+                            + reader.LastError + " (05 s6).";
                         return false;
                     }
 
@@ -455,14 +471,13 @@ namespace GameCore.Contracts
                     return false;
                 }
 
-                if (field.FieldId <= lastFieldId)
+                if (field.FieldId < lastFieldId)
                 {
-                    // Canonical order is strictly ascending, so a repeated or out-of-order field is malformed and
-                    // never a precedence question (P-008).
+                    // Each kind may contain many records; only the transition between kinds must ascend.
                     code = DiagnosticCode.OwnershipConflict;
                     detail = "checkpoint field " + field.FieldId.ToString(CultureInfo.InvariantCulture)
                         + " follows field " + lastFieldId.ToString(CultureInfo.InvariantCulture)
-                        + "; fields must ascend and appear once (P-008).";
+                        + "; record kinds must ascend (P-008).";
                     return false;
                 }
 

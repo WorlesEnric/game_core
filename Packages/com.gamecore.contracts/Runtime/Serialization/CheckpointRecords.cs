@@ -237,10 +237,10 @@ namespace GameCore.Contracts
 
         public override string ToString() =>
             "header(def=" + WorldDefinition.ToString() + ",step=" + LogicalStep.ToString(CultureInfo.InvariantCulture)
-            + ",scope=" + (uint)ScopeCount.ToString(CultureInfo.InvariantCulture)
-            + ",install=" + (uint)InstallCount.ToString(CultureInfo.InvariantCulture)
-            + ",target=" + (uint)TargetCount.ToString(CultureInfo.InvariantCulture)
-            + ",slot=" + (uint)SlotCount.ToString(CultureInfo.InvariantCulture) + ")";
+            + ",scope=" + ScopeCount.ToString(CultureInfo.InvariantCulture)
+            + ",install=" + InstallCount.ToString(CultureInfo.InvariantCulture)
+            + ",target=" + TargetCount.ToString(CultureInfo.InvariantCulture)
+            + ",slot=" + SlotCount.ToString(CultureInfo.InvariantCulture) + ")";
     }
 
     /// <summary>One scope: stable identity, committed parent edge, depth and boundary-member counts (P-010, P-016).</summary>

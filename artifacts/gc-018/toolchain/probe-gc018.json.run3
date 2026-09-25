@@ -1,0 +1,362 @@
+{
+  "task": "GC-018",
+  "probe": "GameCore.Validation.ProbeHost.ProbeRunner",
+  "mode": "Gc018",
+  "result": "Pass",
+  "exitCode": 0,
+  "declaredUnityVersion": "6000.0.75f1",
+  "unityVersion": "6000.0.75f1",
+  "declaredTarget": "StandaloneLinux64",
+  "platform": "LinuxPlayer",
+  "architecture": "X64",
+  "processorType": "12th Gen Intel(R) Core(TM) i7-12700KF",
+  "scriptingBackend": "IL2CPP",
+  "isIl2Cpp": true,
+  "is64BitProcess": true,
+  "managedStrippingLevel": "High",
+  "managedStrippingLevelSource": "declared: GameCore.Validation.Editor.BuildProbe sets and re-reads PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, ManagedStrippingLevel.High); a player cannot query the stripping level at runtime",
+  "burstCompilerEnabled": true,
+  "fixturePluginPreservation": "declared: Assets/link.xml preserves the GameCore.Validation.Fixture assembly (preserve=\"all\"), and the generated catalog holds a direct FixturePluginFactory reference, so the plugin is linked into the player while nothing instantiates it at startup",
+  "catalogGenerator": "GameCore.Content.Compiler (GC-003)",
+  "catalogGeneratedFile": "ProbeCatalog.g.cs",
+  "catalogFileHash": "03bdcd23fd8ec0515d93d7c54d7f7c695f3860a850a7280b82316aaacd14c5c1",
+  "catalogFingerprint": "02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff",
+  "catalogDescriptionFormat": "gamecore.catalog-description/1",
+  "catalogProtocolVersion": "1.0",
+  "catalogSupportedFeatureCount": 1,
+  "catalogFileHashAlgorithm": "SHA-256",
+  "catalogFileHashScope": "SHA-256 over the UTF-8 bytes, with LF line endings, of the file prefix that ends immediately before the eight-space-indented CatalogFileHash declaration; that prefix ends with the newline that terminates the previous line, and the declaration itself, its value and the rest of the file are excluded",
+  "failureReason": "",
+  "probes": [
+    {
+      "name": "narrative/gc018-world-lane-and-live-state",
+      "status": "Pass",
+      "detail": "session=4e415247433031330000000000000001; catalogFingerprint=02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff; registryBefore=1; liveTargets=7; scopes=8; setupEdits=True; targetsSeeded=True; activeSlot=2/7; dormantSlot=2/3 active=False; spareScope=True; enrichedScope=ScopeId(05cfbe283381aab8902e93d508ff031c) exclusions=1 capIsolationMembers=1; rngStreams=2 draws=33ebfe9a4f6d54c80000000000000064=3,33ebfe9a4f6d54c80000000000000065=3; clock=33ebfe9a4f6d069b1aca623a6c073300 wakes=1; auxiliaryIndices=14..17; idleFrames=4 idleSteps=0; mode=Automatic; joined=True; sourceHandles=TargetId(040136f12eb3c37110927a2853650e1b)@idx24=slot6/1,TargetId(4c61e7ee6939de7bd16d3cab476ff6da)@idx22=slot4/1,TargetId(4ca6220f97ef579a48891902bcef4dfa)@idx19=slot1/1,TargetId(5c63f1314f90924ad5990c531fa9e5b7)@idx23=slot5/1,TargetId(967aebcd3dbf137cbdc41d194205b514)@idx21=slot3/1,TargetId(a300fa762c702f9e90dbcb691ea84e96)@idx18=slot0/1,TargetId(dce95d184...(+38 chars); laneJoined=True; lifecycle=Running"
+    },
+    {
+      "name": "narrative/gc018-committed-boundary-capture",
+      "status": "Pass",
+      "detail": "session=4e415247433031330000000000000001; atBoundary=True; bytes=6985; documentHash=db34bb109b63b58ebeafa58098a1c0aa49fa7a775743d9e61187ae122bd3e990; counts=counts(scope=8,install=0,target=7,slot=2,grant=2,command=0,message=0); header=header(def=WorldDefinitionId(ed00c0fd976caad86a2e518fb4389df6),step=0,scope=8,install=0,target=7,slot=2); definition=WorldDefinitionId(ed00c0fd976caad86a2e518fb4389df6); step=0; debtTicks=0; pendingDemand=1; protocol=1.0; mode=Automatic; fingerprint=02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff; published=3/3; admissionCutoff=1; activeSlots=1; dormantSlots=1; rngStreams=2"
+    },
+    {
+      "name": "narrative/gc018-queued-commands-are-dispositioned-not-omitted",
+      "status": "Pass",
+      "detail": "queued=OperationId(WorldId(4e415247433031330000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 8); route=RouteId(750f2574f941becaf655620cc55ce2fe); target=TargetId(a300fa762c702f9e90dbcb691ea84e96); schema=SchemaRef(SchemaId(4fbc5dc51eb55373de0c85621aae7d56), 1); payloadBytes=8; rejectQueued(queue(RejectQueued,offered=1,included=0,rejected=1) accounted=True headerCommands=0 headerRejected=1); includeQueued(queue(IncludeQueued,offered=1,included=1,rejected=0) accounted=True headerCommands=1 headerRejected=0); cutoff=1"
+    },
+    {
+      "name": "narrative/gc018-capture-refuses-outside-a-boundary",
+      "status": "Pass",
+      "detail": "laneRevision=3->4; laneEpoch=4; worldEpoch=3; laneAhead=True; atCommittedBoundary=False; readRefusal=NotAtBoundary/TooLate; captureRefusal=TooLate; documentBytes=0; healed=True; joined=True; refusalDetail=world GameCoreNarrativeWorld:4e415247433031330000000000000001 is not at a committed boundary (lifecycle Running, pumping False, faulted False); a checkpoint is ...(+49 chars)"
+    },
+    {
+      "name": "narrative/gc018-corrupt-and-truncated-documents-reject",
+      "status": "Pass",
+      "detail": "bytes=7385; tampered=UnsupportedVersion (envelope=UnsupportedVersion(the Target record at field 104 was refused: UnsupportedVersion (P-054).); restoreStage=Read/...(+18 chars)); truncated=UnsupportedVersion (envelope=UnsupportedVersion(the checkpoint document carries no trailing checksum (05 s6).); restoreStage=Read/Unsupporte...(+8 chars)); padded=ResourceUnavailable (envelope=ResourceUnavailable(the checkpoint document carries 1 byte(s) after its checksum (05 s6).); restoreStage=Read/R...(+18 chars)); registry=2->2; builderBuilds=0"
+    },
+    {
+      "name": "narrative/gc018-unknown-required-schema-rejects-restore",
+      "status": "Pass",
+      "detail": "declaredSchemaVersion=9; allocatedSchemaVersion=2; schema=SchemaId(16c046a5f21f63826550023b6cc1e663); plannerRefusal=MigrationRejected/MigrationRequired; executorStage=Plan/MigrationRequired; restored=False; builderBuilds=0; registry=2->2; plannerDetail=schema SchemaId(16c046a5f21f63826550023b6cc1e663): the document declares version 9 and the catalog declares 2; only forward migration steps are registered (P-05...(+3 chars)"
+    },
+    {
+      "name": "narrative/gc018-ambiguous-migration-rejects-restore",
+      "status": "Pass",
+      "detail": "steps=3; registryWellFormed=True; directPlan=Ambiguous(SchemaRef(SchemaId(16c046a5f21f63826550023b6cc1e663), 2)->SchemaRef(SchemaId(16c046a5f21f63826550023b6cc1e663), 3),steps=0,paths=2); plannerRefusal=MigrationRejected/OwnershipConflict; executorStage=Plan/OwnershipConflict; builderBuilds=0; registry=2->2; plannerDetail=schema SchemaId(16c046a5f21f63826550023b6cc1e663): the catalog registers 2 distinct chains into version 3 for schema SchemaId(16c046a5f21f63826550023b6cc1e663);...(+67 chars)"
+    },
+    {
+      "name": "narrative/gc018-corrupt-reference-rejects-restore",
+      "status": "Pass",
+      "detail": "plannerRefusal=CorruptReference/MissingDependency; diagnostics=1; firstDiagnostic=slot: slot StateSlotKey(TargetId(6646cc7c17bea4d463a055d5445d8c27), OwnerId(5eac636267de818faefdab398ea54e44), SlotId(8e250a85d30e46834cad57caae30a1ff)) names target TargetId(6646cc7c17bea4d463a055d5445d8c27) which the document does not declare (P-032).; executorStage=Plan/MissingDependency; builderBuilds=0; registry=2->2"
+    },
+    {
+      "name": "narrative/gc018-restore-happens-into-a-new-unexposed-world",
+      "status": "Pass",
+      "detail": "sourceSession=4e415247433031330000000000000001; restoredSession=4e41524743303133000000000000000b; registryBaseline=2; registryAfterStaging=2; registryAfterExpose=3; stage=Expose; code=None; restoredTargets=7; restoredSlots=2; dormantSlots=1; migrations=0; replayedScopes=1; replayedBoundaries=1; replayedModes=0; readmittedCommands=1; clocks=1 wakes=1; assembliesPublished=2; restoredEpoch=3; exposureDetail=restored into a new session from a checkpoint of 4e415247433031330000000000000001."
+    },
+    {
+      "name": "narrative/gc018-restore-recreates-state-at-different-native-indices",
+      "status": "Pass",
+      "detail": "targets=7; sourceAuxiliaryIndices=14..17; differ=7; identitySetEqual=True; indexBlocksDisjoint=True; pairs=TargetId(040136f12eb3c37110927a2853650e1b):24->31(slot6/1->slot0/1),TargetId(4c61e7ee6939de7bd16d3cab476ff6da):22->32(slot4/1->slot1/1),TargetId(4ca6220f97ef579a48891902bcef4dfa):19->33(slot1/1->slot2/1),TargetId(5c63f1314f90924ad5990c531fa9e5b7):23->34(slot5/1->slot3/1),TargetId(967aebcd3dbf137cbdc41d194205b514):21->35(slot3/1->slot4/1),TargetId(a300fa762c702f9e90dbcb691ea84e96):18->36(slot0/1->slot5/1),TargetId(dce95d184e414ba2dd0fa2dd29e00ccd):20->37(slot2/1->slot6/1)"
+    },
+    {
+      "name": "narrative/gc018-restore-preserves-dormant-slots",
+      "status": "Pass",
+      "detail": "slots=2->2; dormant=1->1; active=1->1; dormantRow=TargetId(a300fa762c702f9e90dbcb691ea84e96)/3@2 active=False; activeRow=TargetId(a300fa762c702f9e90dbcb691ea84e96)/7@2 active=True; rowsEqual=True; liveStorage=True"
+    },
+    {
+      "name": "narrative/gc018-restore-preserves-mode-imports-and-exclusions",
+      "status": "Pass",
+      "detail": "mode=Automatic->Automatic (captured=Automatic planned=Automatic); scopes=8->8 treeEqual=True; grants=2->2 rowsEqual=True; imports=0->0; exclusions=1->1; capabilityIsolationMembers=1->1; serviceIsolationMembers=0->0; replayedBoundaries=1"
+    },
+    {
+      "name": "narrative/gc018-restore-continues-clocks-rng-and-cursors",
+      "status": "Pass",
+      "detail": "rngStreams=2->2 positionsEqual=True draws=3,3; clocks=2->2 rowsEqual=True wakes=1; cursors=2->2 rowsEqual=True; lastEventSequence=0->0; issuerHighWater=8->8; pendingCommands=1; stampsRestamped=True"
+    },
+    {
+      "name": "narrative/gc018-old-callbacks-cannot-target-the-new-session",
+      "status": "Pass",
+      "detail": "sourceRequestKnown=True; oldHandleWasLive=True (slot0/1); oldHandleRefused=True (StaleHandle); restoredHandle=slot5/1; identityStillResolves=True; oldRequestKnownInRestored=False; newRequestKnown=True; resubmitAdmitted=False reason=StaleHandle; ledgerRows=1->1"
+    },
+    {
+      "name": "narrative/gc018-restored-world-publishes-and-advances",
+      "status": "Pass",
+      "detail": "branch=admitted-step; demandBefore=1; stepsCommitted=1; step=0->1; pump=None; pumped=True; restored=0; dueWakes=0; lifecycle=Running; faults=0; pendingCommands=0; joined=True"
+    },
+    {
+      "name": "narrative/gc018-teardown-disposes-both-worlds",
+      "status": "Pass",
+      "detail": "sourceStop=Published(None); restoredStop=Published; sourceOutstandingJobs=0; sourceRetainedResources=0; restoredOutstandingJobs=0; restoredRetainedResources=0; discardedCommands=0; pendingWakes=1; registryBefore=3; registryAfter=1; registryBaseline=1; sourceSessionRegistered=False; restoredSessionRegistered=False"
+    },
+    {
+      "name": "fixture:narrative/gc018-world-lane-and-live-state",
+      "status": "Pass",
+      "detail": "session=4e415247433031330000000000000001; catalogFingerprint=e30e5c5248fc6ed5393960bbaab9838502227e516a55d4cb9f532fe167cf3bb7; registryBefore=1; liveTargets=7; scopes=8; setupEdits=True; targetsSeeded=True; activeSlot=2/7; dormantSlot=2/3 active=False; spareScope=True; enrichedScope=ScopeId(05cfbe283381aab8902e93d508ff031c) exclusions=1 capIsolationMembers=1; rngStreams=2 draws=33ebfe9a4f6d54c80000000000000064=3,33ebfe9a4f6d54c80000000000000065=3; clock=33ebfe9a4f6d069b1aca623a6c073300 wakes=1; auxiliaryIndices=14..17; idleFrames=4 idleSteps=0; mode=Automatic; joined=True; sourceHandles=TargetId(040136f12eb3c37110927a2853650e1b)@idx24=slot6/1,TargetId(4c61e7ee6939de7bd16d3cab476ff6da)@idx22=slot4/1,TargetId(4ca6220f97ef579a48891902bcef4dfa)@idx19=slot1/1,TargetId(5c63f1314f90924ad5990c531fa9e5b7)@idx23=slot5/1,TargetId(967aebcd3dbf137cbdc41d194205b514)@idx21=slot3/1,TargetId(a300fa762c702f9e90dbcb691ea84e96)@idx18=slot0/1,TargetId(dce95d184...(+38 chars); laneJoined=True; lifecycle=Running"
+    },
+    {
+      "name": "fixture:narrative/gc018-committed-boundary-capture",
+      "status": "Pass",
+      "detail": "session=4e415247433031330000000000000001; atBoundary=True; bytes=6985; documentHash=0929e56bde903a9b86c1c7de06c69749c30248a60be0e2871424becaa5eeb89b; counts=counts(scope=8,install=0,target=7,slot=2,grant=2,command=0,message=0); header=header(def=WorldDefinitionId(ed00c0fd976caad86a2e518fb4389df6),step=0,scope=8,install=0,target=7,slot=2); definition=WorldDefinitionId(ed00c0fd976caad86a2e518fb4389df6); step=0; debtTicks=0; pendingDemand=1; protocol=1.0; mode=Automatic; fingerprint=e30e5c5248fc6ed5393960bbaab9838502227e516a55d4cb9f532fe167cf3bb7; published=3/3; admissionCutoff=1; activeSlots=1; dormantSlots=1; rngStreams=2"
+    },
+    {
+      "name": "fixture:narrative/gc018-queued-commands-are-dispositioned-not-omitted",
+      "status": "Pass",
+      "detail": "queued=OperationId(WorldId(4e415247433031330000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 8); route=RouteId(750f2574f941becaf655620cc55ce2fe); target=TargetId(a300fa762c702f9e90dbcb691ea84e96); schema=SchemaRef(SchemaId(4fbc5dc51eb55373de0c85621aae7d56), 1); payloadBytes=8; rejectQueued(queue(RejectQueued,offered=1,included=0,rejected=1) accounted=True headerCommands=0 headerRejected=1); includeQueued(queue(IncludeQueued,offered=1,included=1,rejected=0) accounted=True headerCommands=1 headerRejected=0); cutoff=1"
+    },
+    {
+      "name": "fixture:narrative/gc018-capture-refuses-outside-a-boundary",
+      "status": "Pass",
+      "detail": "laneRevision=3->4; laneEpoch=4; worldEpoch=3; laneAhead=True; atCommittedBoundary=False; readRefusal=NotAtBoundary/TooLate; captureRefusal=TooLate; documentBytes=0; healed=True; joined=True; refusalDetail=world GameCoreNarrativeWorld:4e415247433031330000000000000001 is not at a committed boundary (lifecycle Running, pumping False, faulted False); a checkpoint is ...(+49 chars)"
+    },
+    {
+      "name": "fixture:narrative/gc018-corrupt-and-truncated-documents-reject",
+      "status": "Pass",
+      "detail": "bytes=7385; tampered=UnsupportedVersion (envelope=UnsupportedVersion(the Target record at field 104 was refused: UnsupportedVersion (P-054).); restoreStage=Read/...(+18 chars)); truncated=UnsupportedVersion (envelope=UnsupportedVersion(the checkpoint document carries no trailing checksum (05 s6).); restoreStage=Read/Unsupporte...(+8 chars)); padded=ResourceUnavailable (envelope=ResourceUnavailable(the checkpoint document carries 1 byte(s) after its checksum (05 s6).); restoreStage=Read/R...(+18 chars)); registry=2->2; builderBuilds=0"
+    },
+    {
+      "name": "fixture:narrative/gc018-unknown-required-schema-rejects-restore",
+      "status": "Pass",
+      "detail": "declaredSchemaVersion=9; allocatedSchemaVersion=2; schema=SchemaId(16c046a5f21f63826550023b6cc1e663); plannerRefusal=MigrationRejected/MigrationRequired; executorStage=Plan/MigrationRequired; restored=False; builderBuilds=0; registry=2->2; plannerDetail=schema SchemaId(16c046a5f21f63826550023b6cc1e663): the document declares version 9 and the catalog declares 2; only forward migration steps are registered (P-05...(+3 chars)"
+    },
+    {
+      "name": "fixture:narrative/gc018-ambiguous-migration-rejects-restore",
+      "status": "Pass",
+      "detail": "steps=3; registryWellFormed=True; directPlan=Ambiguous(SchemaRef(SchemaId(16c046a5f21f63826550023b6cc1e663), 2)->SchemaRef(SchemaId(16c046a5f21f63826550023b6cc1e663), 3),steps=0,paths=2); plannerRefusal=MigrationRejected/OwnershipConflict; executorStage=Plan/OwnershipConflict; builderBuilds=0; registry=2->2; plannerDetail=schema SchemaId(16c046a5f21f63826550023b6cc1e663): the catalog registers 2 distinct chains into version 3 for schema SchemaId(16c046a5f21f63826550023b6cc1e663);...(+67 chars)"
+    },
+    {
+      "name": "fixture:narrative/gc018-corrupt-reference-rejects-restore",
+      "status": "Pass",
+      "detail": "plannerRefusal=CorruptReference/MissingDependency; diagnostics=1; firstDiagnostic=slot: slot StateSlotKey(TargetId(6646cc7c17bea4d463a055d5445d8c27), OwnerId(5eac636267de818faefdab398ea54e44), SlotId(8e250a85d30e46834cad57caae30a1ff)) names target TargetId(6646cc7c17bea4d463a055d5445d8c27) which the document does not declare (P-032).; executorStage=Plan/MissingDependency; builderBuilds=0; registry=2->2"
+    },
+    {
+      "name": "fixture:narrative/gc018-restore-happens-into-a-new-unexposed-world",
+      "status": "Pass",
+      "detail": "sourceSession=4e415247433031330000000000000001; restoredSession=4e41524743303133000000000000000b; registryBaseline=2; registryAfterStaging=2; registryAfterExpose=3; stage=Expose; code=None; restoredTargets=7; restoredSlots=2; dormantSlots=1; migrations=0; replayedScopes=1; replayedBoundaries=1; replayedModes=0; readmittedCommands=1; clocks=1 wakes=1; assembliesPublished=2; restoredEpoch=3; exposureDetail=restored into a new session from a checkpoint of 4e415247433031330000000000000001."
+    },
+    {
+      "name": "fixture:narrative/gc018-restore-recreates-state-at-different-native-indices",
+      "status": "Pass",
+      "detail": "targets=7; sourceAuxiliaryIndices=14..17; differ=7; identitySetEqual=True; indexBlocksDisjoint=True; pairs=TargetId(040136f12eb3c37110927a2853650e1b):24->31(slot6/1->slot0/1),TargetId(4c61e7ee6939de7bd16d3cab476ff6da):22->32(slot4/1->slot1/1),TargetId(4ca6220f97ef579a48891902bcef4dfa):19->33(slot1/1->slot2/1),TargetId(5c63f1314f90924ad5990c531fa9e5b7):23->34(slot5/1->slot3/1),TargetId(967aebcd3dbf137cbdc41d194205b514):21->35(slot3/1->slot4/1),TargetId(a300fa762c702f9e90dbcb691ea84e96):18->36(slot0/1->slot5/1),TargetId(dce95d184e414ba2dd0fa2dd29e00ccd):20->37(slot2/1->slot6/1)"
+    },
+    {
+      "name": "fixture:narrative/gc018-restore-preserves-dormant-slots",
+      "status": "Pass",
+      "detail": "slots=2->2; dormant=1->1; active=1->1; dormantRow=TargetId(a300fa762c702f9e90dbcb691ea84e96)/3@2 active=False; activeRow=TargetId(a300fa762c702f9e90dbcb691ea84e96)/7@2 active=True; rowsEqual=True; liveStorage=True"
+    },
+    {
+      "name": "fixture:narrative/gc018-restore-preserves-mode-imports-and-exclusions",
+      "status": "Pass",
+      "detail": "mode=Automatic->Automatic (captured=Automatic planned=Automatic); scopes=8->8 treeEqual=True; grants=2->2 rowsEqual=True; imports=0->0; exclusions=1->1; capabilityIsolationMembers=1->1; serviceIsolationMembers=0->0; replayedBoundaries=1"
+    },
+    {
+      "name": "fixture:narrative/gc018-restore-continues-clocks-rng-and-cursors",
+      "status": "Pass",
+      "detail": "rngStreams=2->2 positionsEqual=True draws=3,3; clocks=2->2 rowsEqual=True wakes=1; cursors=2->2 rowsEqual=True; lastEventSequence=0->0; issuerHighWater=8->8; pendingCommands=1; stampsRestamped=True"
+    },
+    {
+      "name": "fixture:narrative/gc018-old-callbacks-cannot-target-the-new-session",
+      "status": "Pass",
+      "detail": "sourceRequestKnown=True; oldHandleWasLive=True (slot0/1); oldHandleRefused=True (StaleHandle); restoredHandle=slot5/1; identityStillResolves=True; oldRequestKnownInRestored=False; newRequestKnown=True; resubmitAdmitted=False reason=StaleHandle; ledgerRows=1->1"
+    },
+    {
+      "name": "fixture:narrative/gc018-restored-world-publishes-and-advances",
+      "status": "Pass",
+      "detail": "branch=admitted-step; demandBefore=1; stepsCommitted=1; step=0->1; pump=None; pumped=True; restored=0; dueWakes=0; lifecycle=Running; faults=0; pendingCommands=0; joined=True"
+    },
+    {
+      "name": "fixture:narrative/gc018-teardown-disposes-both-worlds",
+      "status": "Pass",
+      "detail": "sourceStop=Published(None); restoredStop=Published; sourceOutstandingJobs=0; sourceRetainedResources=0; restoredOutstandingJobs=0; restoredRetainedResources=0; discardedCommands=0; pendingWakes=1; registryBefore=3; registryAfter=1; registryBaseline=1; sourceSessionRegistered=False; restoredSessionRegistered=False"
+    },
+    {
+      "name": "gc018-narrative-digest",
+      "status": "Pass",
+      "detail": "generatedDigest=f881469b2a2ba43e4c1bf7972913dd2c93f945a623fef770e00319409ece7ac0; fixtureDigest=f881469b2a2ba43e4c1bf7972913dd2c93f945a623fef770e00319409ece7ac0; expectedDigest=f881469b2a2ba43e4c1bf7972913dd2c93f945a623fef770e00319409ece7ac0; observations=16; digest=f881469b2a2ba43e4c1bf7972913dd2c93f945a623fef770e00319409ece7ac0; label=narrative; steps=16; failed=0; digest=f881469b2a2ba43e4c1bf7972913dd2c93f945a623fef770e00319409ece7ac0; label=narrative; steps=16; failed=0"
+    },
+    {
+      "name": "cards/gc018-world-lane-and-live-state",
+      "status": "Pass",
+      "detail": "session=43415247433031330000000000000001; catalogFingerprint=77838f4766f9086a0fa32b4fb30d8d5fceeb3a8072e61594fa2177946ad3315d; registryBefore=1; liveTargets=6; scopes=10; setupEdits=True; targetsSeeded=True; activeSlot=1/4242; dormantSlot=1/99 active=False; spareScope=True; enrichedScope=ScopeId(a1c83965a76625f59ef4110c6bfa0478) exclusions=1 capIsolationMembers=1; rngStreams=2 draws=1136f3c211173b350000000000000064=3,1136f3c211173b350000000000000065=3; clock=1136f3c2111769669eef02c58dc86caf wakes=1; auxiliaryIndices=12..15; idleFrames=4 idleSteps=0; mode=Automatic; joined=True; sourceHandles=TargetId(5767cc31ae9cbe923b031aa7db4a8512)@idx16=slot0/1,TargetId(709f4ce6dacd0abd01d516a7a46bf656)@idx19=slot3/1,TargetId(92c9bac8559ecae0a6a4b0c54831bf88)@idx21=slot5/1,TargetId(b6e34cb04119c878ee0a4dfe81d7d905)@idx20=slot4/1,TargetId(c203b09deb766da6f8e93773ca6dd65c)@idx17=slot1/1,TargetId(ff80dc9b9ed2790f4681afa020eb8e4c)@idx18=slot2/1; laneJoined=True; lifecycle=Running"
+    },
+    {
+      "name": "cards/gc018-committed-boundary-capture",
+      "status": "Pass",
+      "detail": "session=43415247433031330000000000000001; atBoundary=True; bytes=7193; documentHash=c0c9d901520de2e197a0bd3a74bd2a09dc70ee98df28725001f6f29e3c73cc90; counts=counts(scope=10,install=0,target=6,slot=2,grant=2,command=0,message=0); header=header(def=WorldDefinitionId(87d5e5770aff9e1b4d35c6e94f39e658),step=0,scope=10,install=0,target=6,slot=2); definition=WorldDefinitionId(87d5e5770aff9e1b4d35c6e94f39e658); step=0; debtTicks=0; pendingDemand=1; protocol=1.0; mode=Automatic; fingerprint=77838f4766f9086a0fa32b4fb30d8d5fceeb3a8072e61594fa2177946ad3315d; published=3/3; admissionCutoff=1; activeSlots=1; dormantSlots=1; rngStreams=2"
+    },
+    {
+      "name": "cards/gc018-queued-commands-are-dispositioned-not-omitted",
+      "status": "Pass",
+      "detail": "queued=OperationId(WorldId(43415247433031330000000000000001), c4d3f9becdf691d69ff6f056d4f2e274, 8); route=RouteId(b85a21dd9ba6a4cd99fafcea95c1036c); target=TargetId(5767cc31ae9cbe923b031aa7db4a8512); schema=SchemaRef(SchemaId(6f8b4189041961322b8f6f5f74f94838), 1); payloadBytes=40; rejectQueued(queue(RejectQueued,offered=1,included=0,rejected=1) accounted=True headerCommands=0 headerRejected=1); includeQueued(queue(IncludeQueued,offered=1,included=1,rejected=0) accounted=True headerCommands=1 headerRejected=0); cutoff=1"
+    },
+    {
+      "name": "cards/gc018-capture-refuses-outside-a-boundary",
+      "status": "Pass",
+      "detail": "laneRevision=3->4; laneEpoch=4; worldEpoch=3; laneAhead=True; atCommittedBoundary=False; readRefusal=NotAtBoundary/TooLate; captureRefusal=TooLate; documentBytes=0; healed=True; joined=True; refusalDetail=world GameCoreCardTableWorld:43415247433031330000000000000001 is not at a committed boundary (lifecycle Running, pumping False, faulted False); a checkpoint is ...(+49 chars)"
+    },
+    {
+      "name": "cards/gc018-corrupt-and-truncated-documents-reject",
+      "status": "Pass",
+      "detail": "bytes=7625; tampered=MissingDependency (envelope=MissingDependency(the Target record at field 104 was refused: Truncated (P-054).); restoreStage=Read/MissingDep...(+7 chars)); truncated=UnsupportedVersion (envelope=UnsupportedVersion(the checkpoint document carries no trailing checksum (05 s6).); restoreStage=Read/Unsupporte...(+8 chars)); padded=ResourceUnavailable (envelope=ResourceUnavailable(the checkpoint document carries 1 byte(s) after its checksum (05 s6).); restoreStage=Read/R...(+18 chars)); registry=2->2; builderBuilds=0"
+    },
+    {
+      "name": "cards/gc018-unknown-required-schema-rejects-restore",
+      "status": "Pass",
+      "detail": "declaredSchemaVersion=9; allocatedSchemaVersion=1; schema=SchemaId(c9a030b64976fc6e5c482785eb0e6f39); plannerRefusal=MigrationRejected/MigrationRequired; executorStage=Plan/MigrationRequired; restored=False; builderBuilds=0; registry=2->2; plannerDetail=schema SchemaId(c9a030b64976fc6e5c482785eb0e6f39): the document declares version 9 and the catalog declares 1; only forward migration steps are registered (P-05...(+3 chars)"
+    },
+    {
+      "name": "cards/gc018-ambiguous-migration-rejects-restore",
+      "status": "Pass",
+      "detail": "steps=3; registryWellFormed=True; directPlan=Ambiguous(SchemaRef(SchemaId(c9a030b64976fc6e5c482785eb0e6f39), 1)->SchemaRef(SchemaId(c9a030b64976fc6e5c482785eb0e6f39), 3),steps=0,paths=2); plannerRefusal=MigrationRejected/OwnershipConflict; executorStage=Plan/OwnershipConflict; builderBuilds=0; registry=2->2; plannerDetail=schema SchemaId(c9a030b64976fc6e5c482785eb0e6f39): the catalog registers 2 distinct chains into version 3 for schema SchemaId(c9a030b64976fc6e5c482785eb0e6f39);...(+67 chars)"
+    },
+    {
+      "name": "cards/gc018-corrupt-reference-rejects-restore",
+      "status": "Pass",
+      "detail": "plannerRefusal=CorruptReference/MissingDependency; diagnostics=1; firstDiagnostic=slot: slot StateSlotKey(TargetId(6646cc7c17bea4d463a055d5445d8c27), OwnerId(5eac636267de818faefdab398ea54e44), SlotId(8e250a85d30e46834cad57caae30a1ff)) names target TargetId(6646cc7c17bea4d463a055d5445d8c27) which the document does not declare (P-032).; executorStage=Plan/MissingDependency; builderBuilds=0; registry=2->2"
+    },
+    {
+      "name": "cards/gc018-restore-happens-into-a-new-unexposed-world",
+      "status": "Pass",
+      "detail": "sourceSession=43415247433031330000000000000001; restoredSession=4341524743303133000000000000000b; registryBaseline=2; registryAfterStaging=2; registryAfterExpose=3; stage=Expose; code=None; restoredTargets=6; restoredSlots=2; dormantSlots=1; migrations=0; replayedScopes=1; replayedBoundaries=1; replayedModes=0; readmittedCommands=1; clocks=1 wakes=1; assembliesPublished=2; restoredEpoch=3; exposureDetail=restored into a new session from a checkpoint of 43415247433031330000000000000001."
+    },
+    {
+      "name": "cards/gc018-restore-recreates-state-at-different-native-indices",
+      "status": "Pass",
+      "detail": "targets=6; sourceAuxiliaryIndices=12..15; differ=6; identitySetEqual=True; indexBlocksDisjoint=True; pairs=TargetId(5767cc31ae9cbe923b031aa7db4a8512):16->26(slot0/1->slot0/1),TargetId(709f4ce6dacd0abd01d516a7a46bf656):19->27(slot3/1->slot1/1),TargetId(92c9bac8559ecae0a6a4b0c54831bf88):21->28(slot5/1->slot2/1),TargetId(b6e34cb04119c878ee0a4dfe81d7d905):20->29(slot4/1->slot3/1),TargetId(c203b09deb766da6f8e93773ca6dd65c):17->30(slot1/1->slot4/1),TargetId(ff80dc9b9ed2790f4681afa020eb8e4c):18->31(slot2/1->slot5/1)"
+    },
+    {
+      "name": "cards/gc018-restore-preserves-dormant-slots",
+      "status": "Pass",
+      "detail": "slots=2->2; dormant=1->1; active=1->1; dormantRow=TargetId(c203b09deb766da6f8e93773ca6dd65c)/99@1 active=False; activeRow=TargetId(c203b09deb766da6f8e93773ca6dd65c)/4242@1 active=True; rowsEqual=True; liveStorage=True"
+    },
+    {
+      "name": "cards/gc018-restore-preserves-mode-imports-and-exclusions",
+      "status": "Pass",
+      "detail": "mode=Automatic->Automatic (captured=Automatic planned=Automatic); scopes=10->10 treeEqual=True; grants=2->2 rowsEqual=True; imports=0->0; exclusions=1->1; capabilityIsolationMembers=1->1; serviceIsolationMembers=0->0; replayedBoundaries=1"
+    },
+    {
+      "name": "cards/gc018-restore-continues-clocks-rng-and-cursors",
+      "status": "Pass",
+      "detail": "rngStreams=2->2 positionsEqual=True draws=3,3; clocks=2->2 rowsEqual=True wakes=1; cursors=2->2 rowsEqual=True; lastEventSequence=0->0; issuerHighWater=8->8; pendingCommands=1; stampsRestamped=True"
+    },
+    {
+      "name": "cards/gc018-old-callbacks-cannot-target-the-new-session",
+      "status": "Pass",
+      "detail": "sourceRequestKnown=True; oldHandleWasLive=True (slot1/1); oldHandleRefused=True (StaleHandle); restoredHandle=slot4/1; identityStillResolves=True; oldRequestKnownInRestored=False; newRequestKnown=True; resubmitAdmitted=False reason=StaleHandle; ledgerRows=1->1"
+    },
+    {
+      "name": "cards/gc018-restored-world-publishes-and-advances",
+      "status": "Pass",
+      "detail": "branch=admitted-step; demandBefore=1; stepsCommitted=1; step=0->1; pump=None; pumped=True; restored=0; dueWakes=0; lifecycle=Running; faults=0; pendingCommands=0; joined=True"
+    },
+    {
+      "name": "cards/gc018-teardown-disposes-both-worlds",
+      "status": "Pass",
+      "detail": "sourceStop=Published(None); restoredStop=Published; sourceOutstandingJobs=0; sourceRetainedResources=0; restoredOutstandingJobs=0; restoredRetainedResources=0; discardedCommands=0; pendingWakes=1; registryBefore=3; registryAfter=1; registryBaseline=1; sourceSessionRegistered=False; restoredSessionRegistered=False"
+    },
+    {
+      "name": "fixture:cards/gc018-world-lane-and-live-state",
+      "status": "Pass",
+      "detail": "session=43415247433031330000000000000001; catalogFingerprint=815b89a5ad754aeafabf7a6ad0dbd1bd277a17d63fc0b5845f58ae9d80b3c08a; registryBefore=1; liveTargets=6; scopes=10; setupEdits=True; targetsSeeded=True; activeSlot=1/4242; dormantSlot=1/99 active=False; spareScope=True; enrichedScope=ScopeId(a1c83965a76625f59ef4110c6bfa0478) exclusions=1 capIsolationMembers=1; rngStreams=2 draws=1136f3c211173b350000000000000064=3,1136f3c211173b350000000000000065=3; clock=1136f3c2111769669eef02c58dc86caf wakes=1; auxiliaryIndices=12..15; idleFrames=4 idleSteps=0; mode=Automatic; joined=True; sourceHandles=TargetId(5767cc31ae9cbe923b031aa7db4a8512)@idx16=slot0/1,TargetId(709f4ce6dacd0abd01d516a7a46bf656)@idx19=slot3/1,TargetId(92c9bac8559ecae0a6a4b0c54831bf88)@idx21=slot5/1,TargetId(b6e34cb04119c878ee0a4dfe81d7d905)@idx20=slot4/1,TargetId(c203b09deb766da6f8e93773ca6dd65c)@idx17=slot1/1,TargetId(ff80dc9b9ed2790f4681afa020eb8e4c)@idx18=slot2/1; laneJoined=True; lifecycle=Running"
+    },
+    {
+      "name": "fixture:cards/gc018-committed-boundary-capture",
+      "status": "Pass",
+      "detail": "session=43415247433031330000000000000001; atBoundary=True; bytes=7193; documentHash=70194fe222aed560bea7b62bcb41e89faeaf2cecc6c7bbe14d0dc6c2ffcf68a1; counts=counts(scope=10,install=0,target=6,slot=2,grant=2,command=0,message=0); header=header(def=WorldDefinitionId(87d5e5770aff9e1b4d35c6e94f39e658),step=0,scope=10,install=0,target=6,slot=2); definition=WorldDefinitionId(87d5e5770aff9e1b4d35c6e94f39e658); step=0; debtTicks=0; pendingDemand=1; protocol=1.0; mode=Automatic; fingerprint=815b89a5ad754aeafabf7a6ad0dbd1bd277a17d63fc0b5845f58ae9d80b3c08a; published=3/3; admissionCutoff=1; activeSlots=1; dormantSlots=1; rngStreams=2"
+    },
+    {
+      "name": "fixture:cards/gc018-queued-commands-are-dispositioned-not-omitted",
+      "status": "Pass",
+      "detail": "queued=OperationId(WorldId(43415247433031330000000000000001), c4d3f9becdf691d69ff6f056d4f2e274, 8); route=RouteId(b85a21dd9ba6a4cd99fafcea95c1036c); target=TargetId(5767cc31ae9cbe923b031aa7db4a8512); schema=SchemaRef(SchemaId(6f8b4189041961322b8f6f5f74f94838), 1); payloadBytes=40; rejectQueued(queue(RejectQueued,offered=1,included=0,rejected=1) accounted=True headerCommands=0 headerRejected=1); includeQueued(queue(IncludeQueued,offered=1,included=1,rejected=0) accounted=True headerCommands=1 headerRejected=0); cutoff=1"
+    },
+    {
+      "name": "fixture:cards/gc018-capture-refuses-outside-a-boundary",
+      "status": "Pass",
+      "detail": "laneRevision=3->4; laneEpoch=4; worldEpoch=3; laneAhead=True; atCommittedBoundary=False; readRefusal=NotAtBoundary/TooLate; captureRefusal=TooLate; documentBytes=0; healed=True; joined=True; refusalDetail=world GameCoreCardTableWorld:43415247433031330000000000000001 is not at a committed boundary (lifecycle Running, pumping False, faulted False); a checkpoint is ...(+49 chars)"
+    },
+    {
+      "name": "fixture:cards/gc018-corrupt-and-truncated-documents-reject",
+      "status": "Pass",
+      "detail": "bytes=7625; tampered=MissingDependency (envelope=MissingDependency(the Target record at field 104 was refused: Truncated (P-054).); restoreStage=Read/MissingDep...(+7 chars)); truncated=UnsupportedVersion (envelope=UnsupportedVersion(the checkpoint document carries no trailing checksum (05 s6).); restoreStage=Read/Unsupporte...(+8 chars)); padded=ResourceUnavailable (envelope=ResourceUnavailable(the checkpoint document carries 1 byte(s) after its checksum (05 s6).); restoreStage=Read/R...(+18 chars)); registry=2->2; builderBuilds=0"
+    },
+    {
+      "name": "fixture:cards/gc018-unknown-required-schema-rejects-restore",
+      "status": "Pass",
+      "detail": "declaredSchemaVersion=9; allocatedSchemaVersion=1; schema=SchemaId(c9a030b64976fc6e5c482785eb0e6f39); plannerRefusal=MigrationRejected/MigrationRequired; executorStage=Plan/MigrationRequired; restored=False; builderBuilds=0; registry=2->2; plannerDetail=schema SchemaId(c9a030b64976fc6e5c482785eb0e6f39): the document declares version 9 and the catalog declares 1; only forward migration steps are registered (P-05...(+3 chars)"
+    },
+    {
+      "name": "fixture:cards/gc018-ambiguous-migration-rejects-restore",
+      "status": "Pass",
+      "detail": "steps=3; registryWellFormed=True; directPlan=Ambiguous(SchemaRef(SchemaId(c9a030b64976fc6e5c482785eb0e6f39), 1)->SchemaRef(SchemaId(c9a030b64976fc6e5c482785eb0e6f39), 3),steps=0,paths=2); plannerRefusal=MigrationRejected/OwnershipConflict; executorStage=Plan/OwnershipConflict; builderBuilds=0; registry=2->2; plannerDetail=schema SchemaId(c9a030b64976fc6e5c482785eb0e6f39): the catalog registers 2 distinct chains into version 3 for schema SchemaId(c9a030b64976fc6e5c482785eb0e6f39);...(+67 chars)"
+    },
+    {
+      "name": "fixture:cards/gc018-corrupt-reference-rejects-restore",
+      "status": "Pass",
+      "detail": "plannerRefusal=CorruptReference/MissingDependency; diagnostics=1; firstDiagnostic=slot: slot StateSlotKey(TargetId(6646cc7c17bea4d463a055d5445d8c27), OwnerId(5eac636267de818faefdab398ea54e44), SlotId(8e250a85d30e46834cad57caae30a1ff)) names target TargetId(6646cc7c17bea4d463a055d5445d8c27) which the document does not declare (P-032).; executorStage=Plan/MissingDependency; builderBuilds=0; registry=2->2"
+    },
+    {
+      "name": "fixture:cards/gc018-restore-happens-into-a-new-unexposed-world",
+      "status": "Pass",
+      "detail": "sourceSession=43415247433031330000000000000001; restoredSession=4341524743303133000000000000000b; registryBaseline=2; registryAfterStaging=2; registryAfterExpose=3; stage=Expose; code=None; restoredTargets=6; restoredSlots=2; dormantSlots=1; migrations=0; replayedScopes=1; replayedBoundaries=1; replayedModes=0; readmittedCommands=1; clocks=1 wakes=1; assembliesPublished=2; restoredEpoch=3; exposureDetail=restored into a new session from a checkpoint of 43415247433031330000000000000001."
+    },
+    {
+      "name": "fixture:cards/gc018-restore-recreates-state-at-different-native-indices",
+      "status": "Pass",
+      "detail": "targets=6; sourceAuxiliaryIndices=12..15; differ=6; identitySetEqual=True; indexBlocksDisjoint=True; pairs=TargetId(5767cc31ae9cbe923b031aa7db4a8512):16->26(slot0/1->slot0/1),TargetId(709f4ce6dacd0abd01d516a7a46bf656):19->27(slot3/1->slot1/1),TargetId(92c9bac8559ecae0a6a4b0c54831bf88):21->28(slot5/1->slot2/1),TargetId(b6e34cb04119c878ee0a4dfe81d7d905):20->29(slot4/1->slot3/1),TargetId(c203b09deb766da6f8e93773ca6dd65c):17->30(slot1/1->slot4/1),TargetId(ff80dc9b9ed2790f4681afa020eb8e4c):18->31(slot2/1->slot5/1)"
+    },
+    {
+      "name": "fixture:cards/gc018-restore-preserves-dormant-slots",
+      "status": "Pass",
+      "detail": "slots=2->2; dormant=1->1; active=1->1; dormantRow=TargetId(c203b09deb766da6f8e93773ca6dd65c)/99@1 active=False; activeRow=TargetId(c203b09deb766da6f8e93773ca6dd65c)/4242@1 active=True; rowsEqual=True; liveStorage=True"
+    },
+    {
+      "name": "fixture:cards/gc018-restore-preserves-mode-imports-and-exclusions",
+      "status": "Pass",
+      "detail": "mode=Automatic->Automatic (captured=Automatic planned=Automatic); scopes=10->10 treeEqual=True; grants=2->2 rowsEqual=True; imports=0->0; exclusions=1->1; capabilityIsolationMembers=1->1; serviceIsolationMembers=0->0; replayedBoundaries=1"
+    },
+    {
+      "name": "fixture:cards/gc018-restore-continues-clocks-rng-and-cursors",
+      "status": "Pass",
+      "detail": "rngStreams=2->2 positionsEqual=True draws=3,3; clocks=2->2 rowsEqual=True wakes=1; cursors=2->2 rowsEqual=True; lastEventSequence=0->0; issuerHighWater=8->8; pendingCommands=1; stampsRestamped=True"
+    },
+    {
+      "name": "fixture:cards/gc018-old-callbacks-cannot-target-the-new-session",
+      "status": "Pass",
+      "detail": "sourceRequestKnown=True; oldHandleWasLive=True (slot1/1); oldHandleRefused=True (StaleHandle); restoredHandle=slot4/1; identityStillResolves=True; oldRequestKnownInRestored=False; newRequestKnown=True; resubmitAdmitted=False reason=StaleHandle; ledgerRows=1->1"
+    },
+    {
+      "name": "fixture:cards/gc018-restored-world-publishes-and-advances",
+      "status": "Pass",
+      "detail": "branch=admitted-step; demandBefore=1; stepsCommitted=1; step=0->1; pump=None; pumped=True; restored=0; dueWakes=0; lifecycle=Running; faults=0; pendingCommands=0; joined=True"
+    },
+    {
+      "name": "fixture:cards/gc018-teardown-disposes-both-worlds",
+      "status": "Pass",
+      "detail": "sourceStop=Published(None); restoredStop=Published; sourceOutstandingJobs=0; sourceRetainedResources=0; restoredOutstandingJobs=0; restoredRetainedResources=0; discardedCommands=0; pendingWakes=1; registryBefore=3; registryAfter=1; registryBaseline=1; sourceSessionRegistered=False; restoredSessionRegistered=False"
+    },
+    {
+      "name": "gc018-cards-digest",
+      "status": "Pass",
+      "detail": "generatedDigest=fe1aaae38982be120fe3c668742990504f984b54b053de3b2d7886ff899b5256; fixtureDigest=fe1aaae38982be120fe3c668742990504f984b54b053de3b2d7886ff899b5256; expectedDigest=fe1aaae38982be120fe3c668742990504f984b54b053de3b2d7886ff899b5256; observations=16; digest=fe1aaae38982be120fe3c668742990504f984b54b053de3b2d7886ff899b5256; label=cards; steps=16; failed=0; digest=fe1aaae38982be120fe3c668742990504f984b54b053de3b2d7886ff899b5256; label=cards; steps=16; failed=0"
+    }
+  ]
+}

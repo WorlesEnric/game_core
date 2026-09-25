@@ -434,9 +434,9 @@ namespace GameCore.Contracts.Tests
             {
                 string stepContext = context + " step " + steps.Count.ToString(CultureInfo.InvariantCulture);
                 steps.Add(new MigrationStep(
-                    RequireString(step, "keyStableName", stepContext),
                     RequireVersion(step, "fromVersion", stepContext),
-                    RequireVersion(step, "toVersion", stepContext)));
+                    RequireVersion(step, "toVersion", stepContext),
+                    RequireString(step, "keyStableName", stepContext)));
             }
 
             uint fromVersion = RequireVersion(element, "fromVersion", context);

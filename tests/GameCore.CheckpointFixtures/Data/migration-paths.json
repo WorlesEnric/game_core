@@ -119,6 +119,78 @@
       "expectedDetailContains": "distinct chains"
     },
     {
+      "id": "migration-ambiguous-fork-below-source",
+      "title": "a graph whose second chain into the destination starts below the requested source still plans that pair uniquely; only chains from the requested source count",
+      "requirementIds": [
+        "P-054"
+      ],
+      "testIds": [
+        "TEST-001",
+        "TEST-020"
+      ],
+      "steps": [
+        {
+          "fromVersion": 1,
+          "toVersion": 2,
+          "keyStableName": "gamecore.checkpoint.migration.document.v1-to-v2"
+        },
+        {
+          "fromVersion": 2,
+          "toVersion": 3,
+          "keyStableName": "gamecore.checkpoint.migration.document.v2-to-v3"
+        },
+        {
+          "fromVersion": 1,
+          "toVersion": 3,
+          "keyStableName": "gamecore.checkpoint.migration.document.v1-to-v3"
+        }
+      ],
+      "fromVersion": 2,
+      "toVersion": 3,
+      "expectedOutcome": "Unique",
+      "expectedCode": "None",
+      "expectedPathCount": 1,
+      "expectedStepFromVersions": [
+        2
+      ],
+      "expectedDetailContains": "exactly one registered chain reaches the destination"
+    },
+    {
+      "id": "migration-ambiguous-two-steps-same-pair",
+      "title": "two registered steps for the same v2->v3 pair are two chains from the requested source and are refused as ambiguous",
+      "requirementIds": [
+        "P-054"
+      ],
+      "testIds": [
+        "TEST-001",
+        "TEST-020"
+      ],
+      "steps": [
+        {
+          "fromVersion": 1,
+          "toVersion": 2,
+          "keyStableName": "gamecore.checkpoint.migration.document.v1-to-v2"
+        },
+        {
+          "fromVersion": 2,
+          "toVersion": 3,
+          "keyStableName": "gamecore.checkpoint.migration.document.v2-to-v3"
+        },
+        {
+          "fromVersion": 2,
+          "toVersion": 3,
+          "keyStableName": "gamecore.checkpoint.migration.document.v2-to-v3-alt"
+        }
+      ],
+      "fromVersion": 2,
+      "toVersion": 3,
+      "expectedOutcome": "Ambiguous",
+      "expectedCode": "OwnershipConflict",
+      "expectedPathCount": 2,
+      "expectedStepFromVersions": [],
+      "expectedDetailContains": "distinct chains"
+    },
+    {
       "id": "migration-unreachable-missing-edge",
       "title": "only v1->v2 is registered, so a request for v1->v3 has no chain and is refused as unreachable",
       "requirementIds": [

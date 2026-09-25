@@ -60,7 +60,7 @@ namespace GameCore.Contracts
     {
         private MigrationPlan(
             MigrationPlanOutcome outcome,
-            SchemaRef schema,
+            SchemaId schema,
             SchemaRef from,
             SchemaRef to,
             IReadOnlyList<ISchemaMigrationStep>? steps,
@@ -232,9 +232,9 @@ namespace GameCore.Contracts
         public bool IsWellFormed => rejections.Count == 0;
 
         /// <summary>
-        /// Plans the migration from one version of a schema to another. The answer is unique-or-refused: a schema
-        /// version pair with two distinct chains is <see cref="MigrationPlanOutcome.Ambiguous"/>, never a silent
-        /// pick (P-054).
+        /// Plans the migration from one version of a schema to another. The answer is unique-or-rejected: a
+        /// requested source/target pair with two distinct chains is <see cref="MigrationPlanOutcome.Ambiguous"/>,
+        /// never a silent pick (P-054).
         /// </summary>
         public MigrationPlan Plan(SchemaRef from, SchemaRef to)
         {

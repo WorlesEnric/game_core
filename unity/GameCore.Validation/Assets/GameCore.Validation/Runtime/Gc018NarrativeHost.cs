@@ -22,9 +22,12 @@ using GameCore.Composition;
 using GameCore.Contracts;
 using GameCore.Gameplay.Narrative;
 using GameCore.Gameplay.Narrative.Fixtures;
+using GameCore.Planning.Scheduling;
 using GameCore.Rules.Narrative;
 using GameCore.Unity.Fixtures;
+using GameCore.Unity.Runtime.Integration;
 using GameCore.Validation.Generated;
+using Unity.Entities;
 
 namespace GameCore.Validation.ProbeHost
 {
@@ -42,6 +45,8 @@ namespace GameCore.Validation.ProbeHost
 
         public sealed partial class NarrativeFamily : IGc018Family
         {
+            private NarrativeModule? attachedRuntime;
+
             /// <summary>
             /// One choice on the family's own declared route, left unexecuted so the capture has a real queued
             /// external command to disposition (P-037, P-053). Its payload is the production choice codec's output,
@@ -106,6 +111,46 @@ namespace GameCore.Validation.ProbeHost
             }
 
             public ScopeId EnrichedScope => NarrativeKeys.VillageScope;
+
+            /// <summary>
+            /// Attaches this genre's runtime module to a GC-018 world, exactly as the narrative fixture scenario
+            /// attaches its own: the module the six narrative systems resolve their world through, with every live
+            /// target mapped to its native entity and the world-level ledger bound as the trail's root, so the
+            /// re-admitted choice is answered by the dialogue owner rather than stranded in the ingress lane
+            public bool TryAttachRuntime(Gc018RuntimeWorld world, out string detail)
+            {
+                NarrativeModule module = NarrativeModule.Attach(world.Host, world.Schedule);
+                IReadOnlyList<LiveTarget> live = world.Targets.Targets;
+                for (int i = 0; i < live.Count; i++)
+                {
+                    TargetId target = live[i].Target;
+                    if (!world.Seeder.TryGetEntity(target, out Entity entity))
+                    {
+                        detail = "live target " + target.ToString()
+                            + " has no native entity to map into the narrative module (P-005).";
+                        return false;
+                    }
+
+                    module.MapTarget(target, entity);
+                }
+
+                if (world.Seeder.TryGetEntity(NarrativeKeys.QuestLedger, out Entity ledger))
+                {
+                    module.SetRootEntity(ledger);
+                }
+
+                attachedRuntime = module;
+                detail = string.Empty;
+                return true;
+            }
+
+            /// <summary>Releases the module the last attach created for this family's GC-018 world (P-048).</summary>
+            public void DetachRuntime(Gc018RuntimeWorld world)
+            {
+                attachedRuntime?.Dispose();
+                attachedRuntime = null;
+                _ = world;
+            }
         }
 
         /// <summary>Runs the GC-018 sequence against the committed generated catalog (GC-003 compiler output).</summary>

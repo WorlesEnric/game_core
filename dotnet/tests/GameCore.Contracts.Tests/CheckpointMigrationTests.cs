@@ -124,6 +124,72 @@ namespace GameCore.Contracts.Tests
         }
 
         [Test]
+        public void TwoDistinctStepsFromTheRequestedSourceAreAmbiguous()
+        {
+            // Two different v2->v3 steps give the requested v2->v3 pair two distinct chains, which is exactly the
+            // ambiguity P-054 rejects: "migration paths must be unique for a requested source/target pair". The
+            // catalog must resolve this at registration or refuse the pair; it must never pick a step.
+            CheckpointMigrationRegistry registry = Registry(Step(1, 2, 1), Step(2, 3, 2), Step(2, 3, 3));
+
+            Assert.That(registry.IsWellFormed, Is.True);
+            MigrationPlan plan = registry.Plan(Version(2), Version(3));
+
+            Assert.That(plan.Outcome, Is.EqualTo(MigrationPlanOutcome.Ambiguous));
+            Assert.That(plan.PathCount, Is.EqualTo(2));
+            Assert.That(plan.IsRunnable, Is.False, "the caller is never asked to pick a path");
+            Assert.That(plan.RequiresMigration, Is.False);
+            Assert.That(plan.Steps, Is.Empty);
+            Assert.That(plan.Code, Is.EqualTo(DiagnosticCode.OwnershipConflict));
+            Assert.That(plan.From, Is.EqualTo(Version(2)));
+            Assert.That(plan.To, Is.EqualTo(Version(3)));
+            Assert.That(plan.Detail, Does.Contain("distinct chains"));
+        }
+
+        [Test]
+        public void ARouteThatForksBelowTheRequestedSourceDoesNotMakeThePairAmbiguous()
+        {
+            // The triangle {1->2, 2->3, 1->3} carries two chains into version 3, but only one of them starts at
+            // v2. P-054 scopes uniqueness to the requested pair, so v2->v3 is planned as the single v2->v3 step
+            // and the unrequested v1->v3 route does not refuse it.
+            CheckpointMigrationRegistry registry = Registry(Step(1, 2, 1), Step(2, 3, 2), Step(1, 3, 3));
+
+            Assert.That(registry.IsWellFormed, Is.True);
+            MigrationPlan plan = registry.Plan(Version(2), Version(3));
+
+            Assert.That(plan.Outcome, Is.EqualTo(MigrationPlanOutcome.Unique));
+            Assert.That(plan.IsRunnable, Is.True);
+            Assert.That(plan.RequiresMigration, Is.True);
+            Assert.That(plan.PathCount, Is.EqualTo(1));
+            Assert.That(plan.Steps.Count, Is.EqualTo(1));
+            Assert.That(plan.Steps[0].From.Version, Is.EqualTo(2U));
+            Assert.That(plan.Steps[0].To.Version, Is.EqualTo(3U));
+            Assert.That(plan.From, Is.EqualTo(Version(2)));
+            Assert.That(plan.To, Is.EqualTo(Version(3)));
+
+            // The same graph requested from v1 does carry two chains from the requested source, so that pair
+            // stays ambiguous.
+            MigrationPlan fromTheRoot = registry.Plan(Version(1), Version(3));
+            Assert.That(fromTheRoot.Outcome, Is.EqualTo(MigrationPlanOutcome.Ambiguous));
+            Assert.That(fromTheRoot.PathCount, Is.EqualTo(2));
+        }
+
+        [Test]
+        public void ASourceTheUniqueChainSkipsIsUnreachable()
+        {
+            // One direct v1->v3 step: no chain starts at v2, so a document declaring v2 has no path even though
+            // the destination is reached from v1.
+            CheckpointMigrationRegistry registry = Registry(Step(1, 3, 1));
+
+            MigrationPlan plan = registry.Plan(Version(2), Version(3));
+            Assert.That(plan.Outcome, Is.EqualTo(MigrationPlanOutcome.Unreachable));
+            Assert.That(plan.Code, Is.EqualTo(DiagnosticCode.MigrationRequired));
+            Assert.That(plan.IsRunnable, Is.False);
+            Assert.That(plan.Steps, Is.Empty);
+            Assert.That(plan.PathCount, Is.EqualTo(0));
+            Assert.That(plan.Detail, Does.Contain("no registered chain"));
+        }
+
+        [Test]
         public void ADestinationNoRegisteredChainReachesIsUnreachable()
         {
             CheckpointMigrationRegistry registry = Registry(Step(1, 2, 1));
