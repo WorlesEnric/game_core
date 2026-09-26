@@ -35,6 +35,7 @@ using GameCore.Replay;
 using GameCore.Unity.Fixtures;
 using GameCore.Unity.Runtime;
 using GameCore.Unity.Runtime.Messages;
+using Unity.Jobs.LowLevel.Unsafe;
 
 namespace GameCore.Validation.ProbeHost
 {
@@ -470,19 +471,41 @@ namespace GameCore.Validation.ProbeHost
                     + "; catalog=" + trace.CatalogHash.ToHex()
                     + "; shape=" + trace.Shape.Describe()));
 
-                ReplayRun baseline = new ReplayRunner(
-                    new ReplayOptions(1, 0U, false, TelemetryRetention.Off, 1000000, 0)).Run(trace);
+                int originalWorkers = JobsUtility.JobWorkerCount;
+                ReplayRun baseline;
+                try
+                {
+                    JobsUtility.JobWorkerCount = 1;
+                    baseline = new ReplayRunner(
+                        new ReplayOptions(1, 0U, false, TelemetryRetention.Off, 1000000, 0)).Run(trace);
+                }
+                finally
+                {
+                    JobsUtility.JobWorkerCount = originalWorkers;
+                }
                 IReadOnlyList<int> counts = WorkerSchedule.SupportedWorkerCounts(trace.Shape.MaxWorkers);
                 bool workersPassed = true;
                 var workerDetail = new StringBuilder();
                 for (int i = 0; i < counts.Count; i++)
                 {
-                    ReplayRun run = new ReplayRunner(
-                        new ReplayOptions(counts[i], 0U, false, TelemetryRetention.Off, 1000000, 0)).Run(trace);
+                    ReplayRun run;
+                    int effectiveWorkers;
+                    try
+                    {
+                        JobsUtility.JobWorkerCount = counts[i];
+                        effectiveWorkers = JobsUtility.JobWorkerCount;
+                        run = new ReplayRunner(
+                            new ReplayOptions(counts[i], 0U, false, TelemetryRetention.Off, 1000000, 0)).Run(trace);
+                    }
+                    finally
+                    {
+                        JobsUtility.JobWorkerCount = originalWorkers;
+                    }
                     ReplayComparison comparison = ReplayComparison.Compare(baseline, run);
-                    bool equal = comparison.SameInput && comparison.Equal;
+                    bool equal = effectiveWorkers == counts[i] && comparison.SameInput && comparison.Equal;
                     workersPassed = workersPassed && equal;
-                    workerDetail.Append("workers").Append(counts[i]).Append(equal ? "=equal;" : "=DIFFERENT;");
+                    workerDetail.Append("workers").Append(counts[i]).Append(equal ? "=equal;" : "=DIFFERENT;")
+                        .Append("jobsUtility=").Append(effectiveWorkers).Append(';');
                     if (!equal)
                     {
                         workerDetail.Append(comparison.Describe()).Append(';');
@@ -493,8 +516,17 @@ namespace GameCore.Validation.ProbeHost
                     .Append("; carriedSteps=").Append(baseline.CarriedStepCount.ToString(CultureInfo.InvariantCulture));
                 steps.Add(new ReplayStep(ReplayNames[1], workersPassed, workerDetail.ToString()));
 
-                ReplayRun shuffled = new ReplayRunner(
-                    new ReplayOptions(4, 977U, true, TelemetryRetention.Off, 1000000, 0)).Run(trace);
+                ReplayRun shuffled;
+                try
+                {
+                    JobsUtility.JobWorkerCount = 4;
+                    shuffled = new ReplayRunner(
+                        new ReplayOptions(4, 977U, true, TelemetryRetention.Off, 1000000, 0)).Run(trace);
+                }
+                finally
+                {
+                    JobsUtility.JobWorkerCount = originalWorkers;
+                }
                 ReplayComparison shuffledComparison = ReplayComparison.Compare(baseline, shuffled);
                 steps.Add(new ReplayStep(
                     ReplayNames[2],
