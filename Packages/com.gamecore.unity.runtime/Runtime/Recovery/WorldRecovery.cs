@@ -45,9 +45,16 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using GameCore.Contracts;
+using GameCore.Execution;
 using GameCore.Execution.Delivery;
 using GameCore.Execution.Persistence;
 using GameCore.Execution.Recovery;
+using GameCore.Unity.Runtime.Persistence;
+#if GAMECORE_FAULT_INJECTION
+// GC-027's own latch reaches (capture copy, publication, reference repair). The whole latch lives inside the same
+// guard, so a shipping compilation has no such namespace to import and no reach call to make.
+using GameCore.Unity.Runtime.Faults;
+#endif
 
 namespace GameCore.Unity.Runtime.Recovery
 {

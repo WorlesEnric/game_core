@@ -124,6 +124,10 @@ def main() -> None:
         # GC-023's replay fixture package: its recorded trace, its real-Burst-jobs half and its probe are qualification
         # evidence.
         "com.gamecore.replay",
+        # GC-027's recovery fixture package: the permitted-outcome matrix, the store-version cases and their reader are
+        # qualification evidence too. Its production half is the engine-free recovery core, which lives in the packages
+        # that stay.
+        "com.gamecore.recovery",
         "com.unity.test-framework",
         "com.unity.test-framework.performance",
     ):

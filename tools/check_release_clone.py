@@ -200,7 +200,7 @@ for mode, low in KEPT_MODES:
 print()
 print('== 6. manifest and lock ==')
 manifest = json.load(open(os.path.join(root, 'Packages/manifest.json')))
-stale = [k for k in manifest['dependencies'] if 'qualification' in k or 'replay' in k]
+stale = [k for k in manifest['dependencies'] if 'qualification' in k or 'replay' in k or 'recovery' in k]
 print('   qualification/replay dependencies:', stale or 'none')
 print('   testables:', manifest['testables'])
 print('   lock present:', os.path.exists(os.path.join(root, 'Packages/packages-lock.json')))

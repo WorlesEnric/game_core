@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using GameCore.Composition;
 using GameCore.Contracts;
+using GameCore.Derivation;
 using GameCore.Execution;
 using GameCore.Execution.Delivery;
 using GameCore.Execution.Persistence;
@@ -37,6 +38,7 @@ using GameCore.Unity.Runtime.Delivery;
 using GameCore.Unity.Runtime.Faults;
 using GameCore.Unity.Runtime.Integration;
 using GameCore.Unity.Runtime.Persistence;
+using GameCore.Unity.Runtime.Recovery;
 using GameCore.Unity.Runtime.Time;
 using Unity.Entities;
 
@@ -521,7 +523,20 @@ namespace GameCore.Validation.ProbeHost
         private static T Require<T>(T? value, string what) where T : class =>
             value == null ? throw new InvalidOperationException(what + " is not built.") : value;
 
-        private IReadOnlyList<DerivationTarget> TargetView() => Targets.PlannerTargets();
+        /// <summary>
+        /// The world's targets as the derivation planner's view, exactly as GC-018's own builder reads them: the
+        /// index builds the view, so a target that cannot be described contributes nothing rather than a guess.
+        /// </summary>
+        private IReadOnlyList<DerivationTarget> TargetView()
+        {
+            if (targets == null)
+            {
+                return Array.Empty<DerivationTarget>();
+            }
+
+            DerivationInputTargets view = targets.BuildDerivationTargets();
+            return view.Succeeded ? view.Targets : Array.Empty<DerivationTarget>();
+        }
 
         private bool TryBuildDelivery(out string detail)
         {
@@ -715,8 +730,11 @@ namespace GameCore.Validation.ProbeHost
             CrashAt = crashAt ?? string.Empty;
         }
 
-        /// <summary>The boundary this hook raises at, or empty to only report (04 s6's "reporting seam").</summary>
-        public string CrashAt { get; }
+        /// <summary>
+        /// The boundary this hook raises at, or empty to only report (04 s6's "reporting seam"). It is settable so
+        /// an observation can disarm the hook after its crash and drive the redelivery half against the same hook.
+        /// </summary>
+        public string CrashAt { get; set; }
 
         /// <summary>Boundaries this hook was asked to report, in order.</summary>
         public IReadOnlyList<string> Reaches => reaches;

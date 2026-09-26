@@ -33,6 +33,7 @@ using GameCore.Execution.Recovery;
 using GameCore.Rules.Narrative;
 using GameCore.Unity.Runtime;
 using GameCore.Unity.Runtime.Faults;
+using GameCore.Unity.Runtime.Integration;
 using GameCore.Unity.Runtime.Persistence;
 using GameCore.Unity.Runtime.Recovery;
 
@@ -1425,7 +1426,9 @@ namespace GameCore.Validation.ProbeHost
             private WorldRecoveryRequest RestartRequest(ICheckpointStore activeStore, ContentHash fingerprint) =>
                 new WorldRecoveryRequest(
                     recovery?.Request.Source ?? default(WorldId),
-                    recovery?.Request.Definition ?? Descriptor().Descriptor!.WorldDefinition,
+                    // The definition comes from the run's own world request, not from the ownership descriptor:
+                    // the descriptor describes layouts and stages and carries no world definition at all.
+                    recovery?.Request.Definition ?? source!.Request.Definition,
                     TemporalModel.CommandDriven,
                     PropagationMode.Automatic,
                     fingerprint,

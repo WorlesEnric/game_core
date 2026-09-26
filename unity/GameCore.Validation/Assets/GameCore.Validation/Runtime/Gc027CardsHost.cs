@@ -26,6 +26,9 @@ using GameCore.Contracts;
 using GameCore.Execution.Delivery;
 using GameCore.Gameplay.Cards;
 using GameCore.Rules.Cards;
+using GameCore.Unity.Runtime;
+using GameCore.Unity.Runtime.Persistence;
+using GameCore.Validation.GeneratedCards;
 
 namespace GameCore.Validation.ProbeHost
 {
@@ -68,7 +71,16 @@ namespace GameCore.Validation.ProbeHost
                     CardTableKeys.SeatCard(CardTableKeys.SeatAOrdinal, ObligationCardOrdinal),
                     new CardId(0UL),
                     new CardId(0UL));
-                return CardPayloadCodec.WriteCommand(payload);
+                // The codec returns a frozen payload; the obligation carrier is a byte array, so the bytes are
+                // copied out once, here, rather than handed over as an aliased view (P-054).
+                FrozenPayload command = CardPayloadCodec.WriteCommand(payload);
+                var bytes = new byte[command.Length];
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    bytes[i] = command.Bytes[i];
+                }
+
+                return bytes;
             }
 
             /// <summary>Open obligations the run's outbox may hold; exhaustion is explicit, never a silent drop (P-043).</summary>

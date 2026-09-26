@@ -24,7 +24,12 @@ using GameCore.Composition;
 using GameCore.Contracts;
 using GameCore.Execution.Delivery;
 using GameCore.Execution.Persistence;
+using GameCore.Gameplay.Narrative;
 using GameCore.Rules.Narrative;
+using GameCore.Unity.Fixtures;
+using GameCore.Unity.Runtime;
+using GameCore.Unity.Runtime.Persistence;
+using GameCore.Validation.Generated;
 
 namespace GameCore.Validation.ProbeHost
 {
