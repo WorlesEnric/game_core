@@ -593,7 +593,7 @@ namespace GameCore.Execution.Tests
         public void APlanCarriesTheOutboxRowsTheDocumentDeclares()
         {
             CommittedBoundarySnapshot boundary = CheckpointTestFixture.Boundary(
-                scopes: CheckpointTestFixture.SingleRootScope(),
+                scopes: CheckpointTestFixture.Scopes(),
                 installs: CheckpointTestFixture.Installs(),
                 selections: CheckpointTestFixture.Selections(),
                 targets: CheckpointTestFixture.Targets(),
@@ -658,7 +658,7 @@ namespace GameCore.Execution.Tests
         public void ACursorThatDisagreesWithItsTerminalRowsRefusesThePlan()
         {
             CommittedBoundarySnapshot boundary = CheckpointTestFixture.Boundary(
-                scopes: CheckpointTestFixture.SingleRootScope(),
+                scopes: CheckpointTestFixture.Scopes(),
                 installs: CheckpointTestFixture.Installs(),
                 selections: CheckpointTestFixture.Selections(),
                 targets: CheckpointTestFixture.Targets(),
@@ -689,7 +689,7 @@ namespace GameCore.Execution.Tests
         public void TwoObligationRowsForOneIdentityRefuseThePlan()
         {
             CommittedBoundarySnapshot boundary = CheckpointTestFixture.Boundary(
-                scopes: CheckpointTestFixture.SingleRootScope(),
+                scopes: CheckpointTestFixture.Scopes(),
                 installs: CheckpointTestFixture.Installs(),
                 selections: CheckpointTestFixture.Selections(),
                 targets: CheckpointTestFixture.Targets(),

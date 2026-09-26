@@ -1224,15 +1224,27 @@ namespace GameCore.Execution.Delivery
                     return DeliveryOutcome.Delivered;
 
                 case DestinationOutcome.Compensated:
-                    return Outbox.TryCompensate(outboxId, portCode, out code, out detail);
+                    DeliveryOutcome compensated = Outbox.TryCompensate(outboxId, portCode, out code, out detail);
+                    if (compensated == DeliveryOutcome.Compensated)
+                    {
+                        code = portCode;
+                        detail = portDetail;
+                    }
+                    return compensated;
 
                 default:
-                    return Outbox.TryReject(
+                    DeliveryOutcome rejected = Outbox.TryReject(
                         outboxId,
                         portCode == DiagnosticCode.None ? DiagnosticCode.ResourceUnavailable : portCode,
                         out code,
                         out detail);
-            }
+                    if (rejected == DeliveryOutcome.Rejected)
+                    {
+                        code = portCode == DiagnosticCode.None ? DiagnosticCode.ResourceUnavailable : portCode;
+                        detail = portDetail;
+                    }
+                    return rejected;
+        }
         }
 
         /// <summary>

@@ -641,7 +641,7 @@ namespace GameCore.Contracts.Tests
                 6U,
                 7U,
                 (uint)OutboxDurability.Durable,
-                ordinal + 8UL,
+                8U,
                 cursor.High,
                 cursor.Low,
                 9U,

@@ -271,7 +271,10 @@ namespace GameCore.Execution.Delivery
         {
             byte[] labelBytes = Encoding.UTF8.GetBytes(label);
             var material = new byte[4 + labelBytes.Length + (words.Length * 8)];
-            WriteBigEndian((ulong)labelBytes.Length, material, 0);
+            material[0] = (byte)(labelBytes.Length >> 24);
+            material[1] = (byte)(labelBytes.Length >> 16);
+            material[2] = (byte)(labelBytes.Length >> 8);
+            material[3] = (byte)labelBytes.Length;
             Array.Copy(labelBytes, 0, material, 4, labelBytes.Length);
             int offset = 4 + labelBytes.Length;
             for (int i = 0; i < words.Length; i++)
@@ -282,9 +285,7 @@ namespace GameCore.Execution.Delivery
 
             ContentHash digest = ContentHash.Compute(material);
             byte[] bytes = digest.ToArray();
-            return new Id128(
-                Id128Codec.ReadUInt64BigEndian(bytes, 0),
-                Id128Codec.ReadUInt64BigEndian(bytes, 8));
+            return Id128Codec.ReadBigEndian(bytes, 0);
         }
 
         private static void WriteBigEndian(ulong value, byte[] destination, int offset)

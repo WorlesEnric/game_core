@@ -55,6 +55,8 @@ namespace GameCore.Execution.Delivery
             RetainedTerminals = retainedTerminals;
             TerminalTotal = terminalTotal;
         }
+        /// <summary>The stable destination whose acknowledgement cursor this is.</summary>
+        public readonly Id128 DestinationId;
 
         /// <summary>
         /// The newest acknowledged obligation for this destination, or the default value when none was acknowledged

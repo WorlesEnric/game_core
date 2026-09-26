@@ -366,7 +366,7 @@ namespace GameCore.Contracts.Tests
             Assert.That(obligation.Reason, Is.EqualTo((DiagnosticCode)6U));
             Assert.That(obligation.Attempts, Is.EqualTo(7U));
             Assert.That(obligation.DurabilityClass, Is.EqualTo(OutboxDurability.Durable));
-            Assert.That(obligation.Order, Is.EqualTo(13U));
+            Assert.That(obligation.Order, Is.EqualTo(8U));
             Assert.That(obligation.Payload, Is.EqualTo(new byte[] { 11, 12, 13 }));
             Assert.That(obligation.HasPayload, Is.True);
 

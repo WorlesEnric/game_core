@@ -109,9 +109,9 @@ namespace GameCore.Execution.Tests.Delivery
             Outcome = outcome;
         }
 
-        internal Id128 DestinationId { get; }
+        public Id128 DestinationId { get; }
 
-        internal SchemaRef CommandSchema => DeliveryTestIds.CommandSchema;
+        public SchemaRef CommandSchema => DeliveryTestIds.CommandSchema;
 
         /// <summary>What this port answers for a key it has not seen before.</summary>
         internal DestinationOutcome Outcome { get; set; }
@@ -1016,7 +1016,7 @@ namespace GameCore.Execution.Tests.Delivery
 
             Assert.That(
                 DurableOutbox.TryRestore(
-                    new[] { With(good, recordVersion: OutboxRecordValue.CurrentRecordVersion + 1U, rowKind: good.RowKind) },
+                    new[] { With(good, recordVersion: OutboxRecordValue.CurrentRecordVersion + 1U, rowKind: good.Row) },
                     DeliveryTestIds.Owner,
                     4,
                     4,
