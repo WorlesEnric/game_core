@@ -996,14 +996,21 @@ namespace GameCore.Execution.Delivery
                 null);
         }
 
+        /// <summary>
+        /// Rebuilds the open-obligation order from the reinstated obligations in canonical order, rather than
+        /// trusting the order the rows arrived in. A document is a set of rows; the order a dispatcher walks is this
+        /// outbox's own canonical order, so it cannot depend on how a writer happened to lay the section out
+        /// (P-008).
+        /// </summary>
         private void AdoptOpenOrder(List<DeliveryObligation> obligations)
         {
             obligations.Sort(CompareByOrder);
+            openOrder.Clear();
             for (int i = 0; i < obligations.Count; i++)
             {
-                if (!obligations[i].IsOpen)
+                if (obligations[i].IsOpen)
                 {
-                    openOrder.Remove(obligations[i].Key.OutboxId);
+                    openOrder.Add(obligations[i].Key.OutboxId);
                 }
             }
         }
