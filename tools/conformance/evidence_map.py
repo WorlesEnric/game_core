@@ -54,7 +54,7 @@ CHECKS = {
         "describes": "the short benchmark correctness diagnostic completed with zero failing correctness gates (TEST-023)",
     },
     "budget-decisions": {
-        "paths": ["../performance/BUDGET_DECISIONS.md"],
+        "paths": ["../../performance/BUDGET_DECISIONS.md"],
         "field": "exists",
         "expected": True,
         "describes": "the budget decision record exists and carries the owner deferral sentence (P-060)",

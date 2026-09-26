@@ -181,6 +181,7 @@ def main() -> None:
         "FaultScenarioHost",
         "FaultScenarioStep",
         "ProbeFaults",
+        "ProviderFailureScenario",
         # The Wave 5 integration gate: same reason, plus it is a qualification join rather than a shipping path.
         "W5GateScenario",
         "W5GateFamily",
