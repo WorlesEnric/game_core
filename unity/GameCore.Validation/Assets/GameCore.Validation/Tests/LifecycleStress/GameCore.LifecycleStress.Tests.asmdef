@@ -1,0 +1,41 @@
+{
+  "name": "GameCore.LifecycleStress.Tests",
+  "rootNamespace": "GameCore.LifecycleStress.Tests",
+  "references": [
+    "GameCore.Composition",
+    "GameCore.Contracts",
+    "GameCore.Derivation",
+    "GameCore.Gameplay.Cards",
+    "GameCore.Gameplay.Cards.Fixtures",
+    "GameCore.Gameplay.Narrative",
+    "GameCore.Gameplay.Narrative.Fixtures",
+    "GameCore.Planning",
+    "GameCore.Rules.Cards",
+    "GameCore.Rules.Narrative",
+    "GameCore.Unity.Adapters",
+    "GameCore.Unity.Adapters.Fixtures",
+    "GameCore.Unity.Runtime",
+    "GameCore.Validation.Generated",
+    "GameCore.Validation.GeneratedCards",
+    "GameCore.Validation.ProbeHost",
+    "Unity.Collections",
+    "Unity.Entities",
+    "UnityEngine.TestRunner",
+    "UnityEditor.TestRunner"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

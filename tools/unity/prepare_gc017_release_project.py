@@ -44,8 +44,9 @@ def main() -> None:
     manifest["testables"] = []
     manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     (DESTINATION / "Packages/packages-lock.json").unlink()
-    # The fault scenario and Wave 5 gate name latch types absent from a shipping build. The
-    # ordinary family modes, including the GC-020 traversal course, remain available.
+    # The fault scenario and the Wave 5 gate name latch types absent from a shipping build, and the GC-022 lifecycle
+    # stress is the 1,000-cycle qualification fixture a shipping player has no reason to carry. The ordinary family
+    # modes — narrative, cards, GC-018, GC-019 and the GC-020 traversal course — remain available.
     shutil.rmtree(DESTINATION / "Assets/GameCore.Validation/Tests")
     (DESTINATION / "Assets/GameCore.Validation/Tests.meta").unlink()
     for name in (
@@ -63,6 +64,7 @@ def main() -> None:
         "Gc021Scenario",
         "Gc021Family",
         "ProbeGc021",
+        "ProbeLifecycleStress",
     ):
         for suffix in (".cs", ".cs.meta"):
             (DESTINATION / RUNTIME / (name + suffix)).unlink()
@@ -114,6 +116,21 @@ def main() -> None:
         '                    report.CompletePositive();\n'
         '                }\n',
     )
+    replace_once(
+        runner,
+        '            if (arguments.LifecycleStress)\n'
+        '            {\n'
+        '                return Named("LifecycleStress", "GC-022");\n'
+        '            }\n\n',
+    )
+    replace_once(
+        runner,
+        '                else if (arguments.LifecycleStress)\n'
+        '                {\n'
+        '                    ProbeLifecycleStress.Run(report);\n'
+        '                    report.CompletePositive();\n'
+        '                }\n',
+    )
 
     arguments = DESTINATION / RUNTIME / "ProbeArguments.cs"
     for old in (
@@ -144,6 +161,21 @@ def main() -> None:
         '                {\n'
         '                    gc021 = true;\n'
         '                }\n',
+        '        private const string LifecycleStressArgumentName = "-probeLifecycleStress";\n',
+        '            bool lifecycleStress,\n',
+        '            LifecycleStress = lifecycleStress;\n',
+        '            bool lifecycleStress = false;\n',
+        '        /// <summary>\n'
+        '        /// Runs the GC-022 lifecycle stress: the counted mount/unmount cycles over each family\'s committed generated\n'
+        '        /// catalog and over its fixture identity set, with delayed completions, stalled jobs, a throwing disposer,\n'
+        '        /// required-provider churn and headless cleanup, under native leak detection with full stack traces\n'
+        '        /// (P-047, P-048, P-050).\n'
+        '        /// </summary>\n'
+        '        public bool LifecycleStress { get; }\n\n',
+        '                else if (argument == LifecycleStressArgumentName)\n'
+        '                {\n'
+        '                    lifecycleStress = true;\n'
+        '                }\n',
     ):
         replace_once(arguments, old)
     replace_once(
@@ -155,6 +187,14 @@ def main() -> None:
         arguments,
         '                w4Gate, faults, gc018, gc019, w5Gate, traversal, gc021, resultPath);',
         '                w4Gate, gc018, gc019, resultPath);',
+    )
+    replace_once(
+        arguments,
+        '            || LifecycleStress\n',
+    )
+    replace_once(
+        arguments,
+        '                lifecycleStress,\n',
     )
     print(f"Marker-free release project: {DESTINATION}")
     print("Build: UNITY_PROJECT=<above> ARTIFACTS=artifacts/faults/release tools/unity/build_probe.sh")

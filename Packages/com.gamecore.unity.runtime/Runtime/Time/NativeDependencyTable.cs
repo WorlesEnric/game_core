@@ -22,10 +22,14 @@ namespace GameCore.Unity.Runtime.Time
 {
     /// <summary>
     /// Host-owned fence table of non-component native resources, indexed by resource slot (P-041). Slot indices are
-    /// assigned when the schedule is adapted, so the table never resizes during a step.
+    /// assigned when the schedule is adapted, so the table never resizes during a step. The native backing appears
+    /// with the first stored producer fence, so an adapted schedule whose systems schedule no non-component job
+    /// holds no native memory at all.
     /// </summary>
     public sealed class NativeDependencyTable : IDisposable
     {
+        // The backing array appears with the first stored producer fence: a schedule whose systems never schedule
+        // a non-component job holds no native memory at all (P-041), and the slots never resize once allocated.
         private NativeArray<JobHandle> slots;
         private JobHandle stepFence;
         private bool disposed;
@@ -38,7 +42,6 @@ namespace GameCore.Unity.Runtime.Time
             }
 
             SlotCount = slotCount;
-            slots = new NativeArray<JobHandle>(slotCount, Allocator.Persistent);
         }
 
         /// <summary>Number of resource slots; zero for a schedule with no declared buffer.</summary>
@@ -65,13 +68,13 @@ namespace GameCore.Unity.Runtime.Time
         public bool HasProduced(int slot)
         {
             RequireSlot(slot);
-            return !slots[slot].Equals(default(JobHandle));
+            return slots.IsCreated && !slots[slot].Equals(default(JobHandle));
         }
 
         public JobHandle FenceOf(int slot)
         {
             RequireSlot(slot);
-            return slots[slot];
+            return slots.IsCreated ? slots[slot] : default(JobHandle);
         }
 
         /// <summary>
@@ -85,9 +88,12 @@ namespace GameCore.Unity.Runtime.Time
                 return;
             }
 
-            for (int i = 0; i < slots.Length; i++)
+            if (slots.IsCreated)
             {
-                slots[i] = default(JobHandle);
+                for (int i = 0; i < slots.Length; i++)
+                {
+                    slots[i] = default(JobHandle);
+                }
             }
 
             stepFence = default(JobHandle);
@@ -116,19 +122,20 @@ namespace GameCore.Unity.Runtime.Time
             if (resourceSlots.Count == 1)
             {
                 RequireSlot(resourceSlots[0]);
-                if (slots[resourceSlots[0]].Equals(default(JobHandle)))
+                JobHandle single = FenceInSlot(resourceSlots[0]);
+                if (single.Equals(default(JobHandle)))
                 {
                     UnproducedReadCount++;
                 }
 
-                return slots[resourceSlots[0]];
+                return single;
             }
 
             JobHandle combined = default(JobHandle);
             for (int i = 0; i < resourceSlots.Count; i++)
             {
                 RequireSlot(resourceSlots[i]);
-                JobHandle handle = slots[resourceSlots[i]];
+                JobHandle handle = FenceInSlot(resourceSlots[i]);
                 if (handle.Equals(default(JobHandle)))
                 {
                     UnproducedReadCount++;
@@ -163,6 +170,7 @@ namespace GameCore.Unity.Runtime.Time
             NativeFenceTable? stageFences)
         {
             RequireSlot(resourceSlot);
+            EnsureSlots();
 
             // P-043 permits duplicate producers for one buffer: the slot accumulates their fences instead of keeping
             // only the last stored handle, so a dependent reader waits for every producer of that resource.
@@ -218,6 +226,18 @@ namespace GameCore.Unity.Runtime.Time
                 slots.Dispose();
             }
         }
+
+        /// <summary>Allocates the fixed slot backing; called only when a producer actually stores a fence.</summary>
+        private void EnsureSlots()
+        {
+            if (!slots.IsCreated)
+            {
+                // Cleared, so a table that never saw a step-admission reset still combines no stale handle.
+                slots = new NativeArray<JobHandle>(SlotCount, Allocator.Persistent, NativeArrayOptions.ClearMemory);
+            }
+        }
+
+        private JobHandle FenceInSlot(int slot) => slots.IsCreated ? slots[slot] : default(JobHandle);
 
         private void RequireSlot(int slot)
         {

@@ -1,0 +1,9 @@
+Leak Detected : Persistent allocates 5 individual allocations.
+Found 2 leak(s) from callstack:
+Allocation of 128 bytes at 0x0000012abc0200
+0x0000012abc0200 (Mono JIT Code) GameCore.Unity.Runtime.UnityWorldHost:Dispose()
+0x0000012abc0201 (Mono JIT Code) GameCore.Composition.TeardownSequencer:Run()
+Found 3 leak(s) from callstack:
+Allocation of 4096 bytes at 0x0000012abc0300
+0x0000012abc0300 (Unity) Unity.Collections.NativeArray`1:.ctor(Int32,AllocatorHandle,Int32)
+0x0000012abc0301 (Unity) Unity.Jobs.JobHandle::Complete()

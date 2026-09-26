@@ -9,6 +9,7 @@
 // installation's resources are still fenced, and a fenced resource is quarantined instead of released. Completing
 // a job is a separate event, so the same reference can never be released twice: a completed job no longer fences
 // anything, and the registry only ever reports the outstanding set.
+// Once those resources settled, the record itself is released: the table tracks live fences, not history (GC-022).
 //
 // Nothing here reads a clock. "Elapsed time" cannot influence the answer, which is the point.
 #nullable enable
@@ -103,7 +104,14 @@ namespace GameCore.Composition
 
         public int RegisteredCount { get; private set; }
 
+        /// <summary>Fence records released through <see cref="Release"/> or by a settled pass (GC-022).</summary>
         public int ReleasedCount { get; private set; }
+
+        /// <summary>
+        /// Fence records production released itself once the resources settled (GC-022): a completed job's record
+        /// is history, not a live fence, so it leaves the table instead of accumulating one row per cycle.
+        /// </summary>
+        public int AutoReleasedCount { get; private set; }
 
         /// <summary>Completions for a job id this registry never tracked, or a repeat completion.</summary>
         public int RejectedCompletionCount { get; private set; }
@@ -308,10 +316,65 @@ namespace GameCore.Composition
             }
 
             resourceIds = job.ResourceIds;
-            jobs.Remove(jobId);
-            canonicalOrder.Remove(jobId);
-            ReleasedCount++;
+            ReleaseRecord(job);
             return true;
+        }
+
+        /// <summary>
+        /// The installation's jobs that completed and whose resources all settled: no unfinished work — theirs or
+        /// anyone's — can still reach what they held. Their fence records are history, not fences.
+        /// </summary>
+        public IReadOnlyList<TrackedJob> SettledJobsOf(PluginInstanceId instance)
+        {
+            List<TrackedJob> settled = new List<TrackedJob>();
+            for (int i = 0; i < canonicalOrder.Count; i++)
+            {
+                TrackedJob job = jobs[canonicalOrder[i]];
+                if (job.Instance.Equals(instance) && job.Completed && !FencesAnyResource(job))
+                {
+                    settled.Add(job);
+                }
+            }
+
+            return settled;
+        }
+
+        /// <summary>
+        /// Releases the fence records <see cref="SettledJobsOf"/> names: the completed jobs of a regular unload,
+        /// and the stalled jobs that completed before a quarantine was released (GC-022). An outstanding job, or
+        /// one whose resource another unfinished job still reaches, keeps its record, so a settled record is never
+        /// released while it still proves something is reachable.
+        /// </summary>
+        public int ReleaseFencesFor(PluginInstanceId instance)
+        {
+            IReadOnlyList<TrackedJob> settled = SettledJobsOf(instance);
+            for (int i = 0; i < settled.Count; i++)
+            {
+                ReleaseRecord(settled[i]);
+                AutoReleasedCount++;
+            }
+
+            return settled.Count;
+        }
+
+        private void ReleaseRecord(TrackedJob job)
+        {
+            jobs.Remove(job.JobId);
+            canonicalOrder.Remove(job.JobId);
+            ReleasedCount++;
+        }
+
+        private bool FencesAnyResource(TrackedJob job)
+        {
+            for (int r = 0; r < job.ResourceIds.Count; r++)
+            {
+                if (IsResourceFenced(job.ResourceIds[r]))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private static bool References(TrackedJob job, Id128 resourceId)

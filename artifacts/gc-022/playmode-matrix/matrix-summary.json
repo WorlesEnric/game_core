@@ -1,0 +1,62 @@
+{
+  "kind": "matrix-summary",
+  "source": "runner",
+  "result": "Pass",
+  "exitCode": 0,
+  "cyclesCompleted": 40,
+  "cyclesAttempted": 40,
+  "cyclesRequested": 40,
+  "combinationsCompleted": 4,
+  "combinationsRequested": 4,
+  "combinationsFailed": 0,
+  "combinationsTimedOut": 0,
+  "watchdogKills": 0,
+  "wallClockSecondsPerCombination": {
+    "reload-on-scene-on": 33.0,
+    "reload-on-scene-off": 33.0,
+    "reload-off-scene-on": 18.0,
+    "reload-off-scene-off": 18.0
+  },
+  "combinations": [
+    {
+      "combination": "reload-on-scene-on",
+      "result": "Pass",
+      "cyclesCompleted": 10,
+      "cyclesRequested": 10,
+      "attempts": 1,
+      "watchdogKills": 0,
+      "wallClockSeconds": 33.0,
+      "note": "-"
+    },
+    {
+      "combination": "reload-on-scene-off",
+      "result": "Pass",
+      "cyclesCompleted": 10,
+      "cyclesRequested": 10,
+      "attempts": 1,
+      "watchdogKills": 0,
+      "wallClockSeconds": 33.0,
+      "note": "-"
+    },
+    {
+      "combination": "reload-off-scene-on",
+      "result": "Pass",
+      "cyclesCompleted": 10,
+      "cyclesRequested": 10,
+      "attempts": 1,
+      "watchdogKills": 0,
+      "wallClockSeconds": 18.0,
+      "note": "-"
+    },
+    {
+      "combination": "reload-off-scene-off",
+      "result": "Pass",
+      "cyclesCompleted": 10,
+      "cyclesRequested": 10,
+      "attempts": 1,
+      "watchdogKills": 0,
+      "wallClockSeconds": 18.0,
+      "note": "-"
+    }
+  ]
+}

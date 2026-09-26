@@ -1,0 +1,5 @@
+Leak Detected : Persistent allocates 3 individual allocations.
+Found 3 leak(s) from callstack:
+0x0000012abc0000 (Unity) Unity.Collections.NativeArray`1:.ctor(Int32,AllocatorHandle,Int32)
+0x0000012abc0001 (Unity) UnityEngine.Object::Internal_CloneSingle
+0x0000012abc0002 (Unity) Unity.Jobs.JobHandle::Complete()

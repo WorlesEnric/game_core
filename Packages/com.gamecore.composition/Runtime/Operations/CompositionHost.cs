@@ -570,6 +570,41 @@ namespace GameCore.Composition
             return ledger.AdvanceRetention(step);
         }
 
+        /// <summary>
+        /// Completes the committed record of one published removal whose teardown could not settle at publication
+        /// time (a retained, fenced or failed release kept it `Retiring`, P-048). The caller drives the explicit
+        /// release that ends the retention - a job's completion plus <see cref="InstallationLifecycleCoordinator.
+        /// ReleaseQuarantineFor"/>, never elapsed time - and then settles the record here, exactly as the
+        /// publication-time settle of a removal did for its own settled teardowns. `Retiring -> Disposed` is the
+        /// one lawful edge, so this reports the refusal as a value instead of forcing it; an installation that
+        /// still retains or quarantines anything, or one that was never removed, is refused unchanged.
+        /// </summary>
+        public LifecycleTransition SettleRetiredInstall(PluginInstanceId instance)
+        {
+            if (!committed.TryGetInstall(instance, out InstallEntry? entry) || entry == null
+                || entry.State != InstallationState.Retiring)
+            {
+                return LifecycleTransition.Refuse(
+                    entry?.State ?? InstallationState.Registered,
+                    InstallationState.Disposed);
+            }
+
+            if (Resources.RetainedCountFor(instance) != 0 || Lifecycle.Quarantine.EntriesFor(instance).Count != 0)
+            {
+                return LifecycleTransition.Refuse(InstallationState.Retiring, InstallationState.Disposed);
+            }
+
+            LifecycleTransition settled = Lifecycle.Activations.Settle(instance, allResourcesSettled: true);
+            if (!settled.Allowed)
+            {
+                return settled;
+            }
+
+            committed = committed.WithInstall(entry.With(state: InstallationState.Disposed));
+            staged = staged.WithInstall(entry.With(state: InstallationState.Disposed));
+            return settled;
+        }
+
         private OperationStatusHandle RefuseUndecodable(OperationId operation, ContentHash inputHash, DiagnosticCode code)
         {
             AdmissionResult refused = ledger.Admit(operation, inputHash, null);
