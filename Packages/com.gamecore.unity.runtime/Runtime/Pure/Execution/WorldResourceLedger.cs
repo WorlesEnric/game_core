@@ -331,7 +331,7 @@ namespace GameCore.Execution
                 for (int i = 0; i < acquisitionOrder.Count; i++)
                 {
                     WorldResourceRecord record = resources[acquisitionOrder[i]];
-                    if (record.IsRetained)
+                    if (IsLeaseHeld(record))
                     {
                         bytes += record.Bytes;
                     }
@@ -340,6 +340,16 @@ namespace GameCore.Execution
                 return bytes;
             }
         }
+
+        /// <summary>
+        /// True while a record is held by a live lease. Quarantined records are excluded on purpose: TEST-023
+        /// requires leases and quarantine to be reported separately, so the lease total must not already contain the
+        /// quarantine total.
+        /// </summary>
+        private static bool IsLeaseHeld(WorldResourceRecord record) =>
+            record.State == ResourceRetirementState.Acquired
+            || record.State == ResourceRetirementState.Ready
+            || record.State == ResourceRetirementState.Retiring;
 
 
         public ulong QuarantinedBytes

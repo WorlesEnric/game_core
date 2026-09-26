@@ -204,6 +204,12 @@ namespace GameCore.Execution.Messages
 
         public int MaxPending => maxPending;
 
+        /// <summary>
+        /// Deepest the pending queue was actually observed to be (08 request high-water). Reporting the configured
+        /// `MaxPending` instead would be a constant that can never witness backpressure (GC-023).
+        /// </summary>
+        public int PendingHighWaterMark { get; private set; }
+
         public int MaxRetainedResults => maxRetainedResults;
 
         public int AdmittedCount { get; private set; }
@@ -245,7 +251,7 @@ namespace GameCore.Execution.Messages
                 throw new ArgumentNullException(nameof(into));
             }
 
-            into.ObserveMax(TelemetryCounter.RequestHighWater, MaxPending);
+            into.ObserveMax(TelemetryCounter.RequestHighWater, PendingHighWaterMark);
             into.Add(TelemetryCounter.RequestOverflow, CapacityRejectedCount);
             into.Add(TelemetryCounter.StaleResults, StaleCount + SequenceViolationCount + ExpireCount);
             into.ObserveMax(TelemetryCounter.LiveLeases, PendingCount);
@@ -349,6 +355,10 @@ namespace GameCore.Execution.Messages
             var row = new RequestRow(request, route, target, schema, inputHash, origin, order, step, epoch);
             rows.Add(request, row);
             pendingOrder.Add(request);
+            if (pendingOrder.Count > PendingHighWaterMark)
+            {
+                PendingHighWaterMark = pendingOrder.Count;
+            }
             if (origin == RequestOrigin.External)
             {
                 issuerHighWater[request.IssuerId] = request.IssuerSequence;

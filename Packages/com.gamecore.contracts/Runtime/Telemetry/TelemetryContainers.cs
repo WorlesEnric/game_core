@@ -316,9 +316,13 @@ namespace GameCore.Contracts
             TelemetryCanonical.AppendUInt64(destination, Epoch.Value);
             TelemetryCanonical.AppendUInt64(destination, Step.Value);
             TelemetryCanonical.AppendInt32(destination, Sections.Count);
-            for (int i = 0; i < Sections.Count; i++)
+            // Sections are written in owner-key order, so a frame's hash is a property of what was sampled rather
+            // than of the order a caller happened to hand the sections over in (GC-023's frame comparison).
+            var ordered = new List<TelemetrySection>(Sections);
+            ordered.Sort(static (left, right) => string.CompareOrdinal(left.Owner, right.Owner));
+            for (int i = 0; i < ordered.Count; i++)
             {
-                Sections[i].AppendCanonical(destination);
+                ordered[i].AppendCanonical(destination);
             }
         }
 
@@ -449,7 +453,7 @@ namespace GameCore.Contracts
             {
                 Entry entry = entries[index];
                 totalMicroseconds = entry.Total;
-                count = entry.Count;
+                count = (int)entry.Count;
                 maxMicroseconds = entry.Max;
                 return true;
             }

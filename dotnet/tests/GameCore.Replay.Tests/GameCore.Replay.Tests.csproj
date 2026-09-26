@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- GC-023's replay, telemetry and differential suites. The sources live in `tests/GameCore.Replay/Tests` so the
+       same files also run as Unity EditMode tests (the package is testable). The suite includes the 10,000-step
+       integer fixture across the supported worker counts, so its runtime is seconds rather than milliseconds. -->
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <AssemblyName>GameCore.Replay.Tests</AssemblyName>
+    <RootNamespace>GameCore.Replay.Tests</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <DefineConstants>$(DefineConstants);GAMECORE_TELEMETRY</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="../../../tests/GameCore.Replay/Tests/**/*.cs"
+             Exclude="../../../tests/GameCore.Replay/Tests/**/bin/**/*.cs;../../../tests/GameCore.Replay/Tests/**/obj/**/*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="NUnit" Version="3.14.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/GameCore.Replay/GameCore.Replay.csproj" />
+    <ProjectReference Include="../../src/GameCore.Contracts/GameCore.Contracts.csproj" />
+    <ProjectReference Include="../../src/GameCore.Derivation/GameCore.Derivation.csproj" />
+    <ProjectReference Include="../../src/GameCore.Derivation.Fixtures/GameCore.Derivation.Fixtures.csproj" />
+    <ProjectReference Include="../../src/GameCore.Composition/GameCore.Composition.csproj" />
+    <ProjectReference Include="../../src/GameCore.Planning/GameCore.Planning.csproj" />
+  </ItemGroup>
+
+</Project>

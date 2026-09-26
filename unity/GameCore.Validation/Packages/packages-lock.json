@@ -309,6 +309,23 @@
       "depth": 0,
       "source": "builtin",
       "dependencies": {}
+    },
+    "com.gamecore.replay": {
+      "version": "file:../../../tests/GameCore.Replay",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.gamecore.composition": "0.1.0",
+        "com.gamecore.contracts": "0.1.0",
+        "com.gamecore.derivation": "0.1.0",
+        "com.gamecore.planning": "0.1.0"
+      }
+    },
+    "com.gamecore.telemetry-qualification": {
+      "version": "file:../../../Packages/com.gamecore.telemetry-qualification",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {}
     }
   }
 }

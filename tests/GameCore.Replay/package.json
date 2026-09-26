@@ -1,0 +1,13 @@
+{
+  "name": "com.gamecore.replay",
+  "version": "0.1.0",
+  "displayName": "GameCore Replay and Telemetry Fixtures",
+  "description": "GC-023's canonical replay fixture: recorded input traces, state/event hashing with a documented exclusion list, the 10,000-step integer fixture, the worker-scheduling model, engine-observation replay separated from native-physics comparison, differential propagation with a deterministic reducer, the fixed compact telemetry collector and the raw benchmark trace format. Unity-free by design so the same fixtures run in plain dotnet, in Unity EditMode and in the qualification player.",
+  "unity": "6000.0",
+  "dependencies": {
+    "com.gamecore.contracts": "0.1.0",
+    "com.gamecore.derivation": "0.1.0",
+    "com.gamecore.composition": "0.1.0",
+    "com.gamecore.planning": "0.1.0"
+  }
+}

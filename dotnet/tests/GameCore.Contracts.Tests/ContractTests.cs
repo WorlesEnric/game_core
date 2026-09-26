@@ -637,6 +637,24 @@ namespace GameCore.Contracts.Tests
                 "type struct GameCore.Contracts.SelectionRecordValue",
                 "type struct GameCore.Contracts.SlotRecordValue",
                 "type struct GameCore.Contracts.TargetRecordValue",
+                // GC-023 adds the fixed compact telemetry schema on top: the counter id enum, its aggregation
+                // policy, the retention policy, the owner seam, the counting helpers, the byte accounting and the
+                // containers (counter set, section, frame, retained trace, keyed duration series). Additions are the
+                // only permitted drift, and every one of them is recorded in artifacts/gc-023/HANDOFF.md.
+                "type class GameCore.Contracts.TelemetryBytes [static]",
+                "type class GameCore.Contracts.TelemetryCounting [static]",
+                "type class GameCore.Contracts.TelemetryCounterSet",
+                "type class GameCore.Contracts.TelemetryDurations [static]",
+                "type class GameCore.Contracts.TelemetryFrame",
+                "type class GameCore.Contracts.TelemetrySchema [static]",
+                "type class GameCore.Contracts.TelemetrySection",
+                "type class GameCore.Contracts.TelemetrySeries",
+                "type class GameCore.Contracts.TelemetryTrace",
+                "type enum GameCore.Contracts.TelemetryAggregation : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable",
+                "type enum GameCore.Contracts.TelemetryCounter : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable",
+                "type interface GameCore.Contracts.ITelemetryOwner",
+                "type struct GameCore.Contracts.TelemetryRetention",
+                "type struct GameCore.Contracts.TelemetrySeriesEntry",
             };
             foreach (string addition in comparison.AddedLines)
             {

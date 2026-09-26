@@ -1,0 +1,26 @@
+{
+    "name": "GameCore.Replay",
+    "rootNamespace": "GameCore.Replay",
+    "references": [
+        "GameCore.Contracts",
+        "GameCore.Derivation",
+        "GameCore.Derivation.Fixtures",
+        "GameCore.Composition",
+        "GameCore.Planning"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.gamecore.telemetry-qualification",
+            "expression": "1.0.0",
+            "define": "GAMECORE_TELEMETRY"
+        }
+    ],
+    "noEngineReferences": true
+}

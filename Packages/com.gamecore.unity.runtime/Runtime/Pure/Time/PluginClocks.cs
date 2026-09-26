@@ -180,6 +180,9 @@ namespace GameCore.Execution.Time
 
         public int WakeCount => allWakes.Count;
 
+        /// <summary>Deepest the retained wake set was observed to be (08 request high-water).</summary>
+        public int WakeHighWaterMark { get; private set; }
+
         /// <summary>Wakes refused because the bounded queue was full; reported, never silently dropped (P-038).</summary>
         public int OverflowCount { get; private set; }
 
@@ -201,7 +204,9 @@ namespace GameCore.Execution.Time
                 throw new ArgumentNullException(nameof(into));
             }
 
-            into.ObserveMax(TelemetryCounter.RequestHighWater, WakeCount);
+            // The deepest the wake set was observed to be, not the cumulative number of wakes ever scheduled:
+            // a high-water mark that only ever grows with elapsed time cannot witness backpressure (GC-023).
+            into.ObserveMax(TelemetryCounter.RequestHighWater, WakeHighWaterMark);
             into.Add(TelemetryCounter.RequestOverflow, OverflowCount);
             into.Add(TelemetryCounter.StaleResults, DuplicateCount);
         }
@@ -375,6 +380,11 @@ namespace GameCore.Execution.Time
             }
 
             allWakes.Add(created);
+            if (allWakes.Count > WakeHighWaterMark)
+            {
+                WakeHighWaterMark = allWakes.Count;
+            }
+
             wakesByClock[clockId].Add(created);
             wake = created;
             code = DiagnosticCode.None;

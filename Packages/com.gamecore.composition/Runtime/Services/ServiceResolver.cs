@@ -207,6 +207,14 @@ namespace GameCore.Composition
         /// <summary><see cref="DiagnosticCode.None"/> when the whole graph resolved; otherwise the closure failure.</summary>
         public DiagnosticCode Code { get; }
 
+        public IReadOnlyList<ServiceNodeResolution> Nodes { get; }
+
+        /// <summary>Structured closure failures; the owning plan supplies the operation identity.</summary>
+        public IReadOnlyList<Diagnostic> Diagnostics { get; }
+
+        /// <summary>Providers before consumers for required edges (P-012), in canonical tie-broken order.</summary>
+        public IReadOnlyList<PluginInstanceId> ActivationOrder { get; }
+
         /// <summary>Service resolutions that hashed a name string (08 `ServiceStringLookups`, P-008).</summary>
         public long ServiceStringLookups => Telemetry.Get(TelemetryCounter.ServiceStringLookups);
 

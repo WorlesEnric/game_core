@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- GC-023's replay and telemetry fixtures. Sources live in `tests/GameCore.Replay/Runtime` and are also compiled
+       by the Unity package `com.gamecore.replay` (assembly GameCore.Replay), so the same fixtures run in plain
+       dotnet, in Unity EditMode and in the qualification player. Unity-free by design: no UnityEngine/Unity.* type
+       appears in these files.
+
+       The plain-dotnet shadow build is the *instrumented diagnostic* build: GAMECORE_TELEMETRY is defined here, which
+       is what makes the counting call sites in the kernel survive. The release-like shape is compiled by
+       dotnet/src/GameCore.Telemetry.ReleaseCheck (and by a marker-free Unity project), and
+       tools/check_release_telemetry_free.py compares the two. -->
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>GameCore.Replay</AssemblyName>
+    <RootNamespace>GameCore.Replay</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <DefineConstants>$(DefineConstants);GAMECORE_TELEMETRY</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="../../../tests/GameCore.Replay/Runtime/**/*.cs"
+             Exclude="../../../tests/GameCore.Replay/Runtime/**/bin/**/*.cs;../../../tests/GameCore.Replay/Runtime/**/obj/**/*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../GameCore.Contracts/GameCore.Contracts.csproj" />
+    <ProjectReference Include="../GameCore.Derivation/GameCore.Derivation.csproj" />
+    <ProjectReference Include="../GameCore.Derivation.Fixtures/GameCore.Derivation.Fixtures.csproj" />
+    <ProjectReference Include="../GameCore.Composition/GameCore.Composition.csproj" />
+    <ProjectReference Include="../GameCore.Planning/GameCore.Planning.csproj" />
+  </ItemGroup>
+
+</Project>

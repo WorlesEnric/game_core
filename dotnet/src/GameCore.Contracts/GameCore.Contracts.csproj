@@ -8,6 +8,11 @@
     <AssemblyName>GameCore.Contracts</AssemblyName>
     <RootNamespace>GameCore.Contracts</RootNamespace>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <!-- GC-023: the contracts compilation carries the telemetry switch too, because
+         `TelemetrySchema.IsCompiledIn` reports the build shape this assembly was compiled in. Every
+         instrumented assembly takes the symbol from the same qualification marker package, so the
+         answer is the same in all of them; a shipping project omits the marker from all of them. -->
+    <DefineConstants>$(DefineConstants);GAMECORE_TELEMETRY</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>

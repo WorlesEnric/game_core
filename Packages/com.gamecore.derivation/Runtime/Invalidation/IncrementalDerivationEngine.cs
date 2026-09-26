@@ -69,7 +69,15 @@ namespace GameCore.Derivation
                 throw new ArgumentNullException(nameof(into));
             }
 
-            Counters.WriteTelemetry(into);
+            // On the incremental path the outcome and its result share one counter object (`DeriveDirty` and
+            // `Carry` hand the same `InvalidationCounters` to both), so writing both would double every cumulative
+            // counter of this owner. The full-recompute fallback hands the outcome a different object, which is why
+            // the guard is a reference check rather than a constant.
+            if (!ReferenceEquals(Counters, Result.Counters))
+            {
+                Counters.WriteTelemetry(into);
+            }
+
             Result.WriteTelemetry(into);
         }
 
@@ -77,6 +85,8 @@ namespace GameCore.Derivation
         public string Describe() =>
             "incremental{fullRecompute=" + (UsedFullRecompute ? "1" : "0")
             + ";" + Invalidation.Describe() + ";" + Counters.Describe() + "}";
+
+        public override string ToString() => Describe();
     }
 
     /// <summary>The incremental derivation engine: the same result as a full recomputation, over the dirty set (P-023).</summary>

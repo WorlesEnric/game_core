@@ -194,6 +194,9 @@ namespace GameCore.Execution.Messages
         /// </summary>
         public long RecordedStructuralOperationCount { get; private set; }
 
+        /// <summary>Deepest the step's deferred structural buffer was observed to be (08 request high-water).</summary>
+        public int StructuralHighWaterMark { get; private set; }
+
         /// <summary>Writes the step-message counters through the fixed compact schema (GC-023).</summary>
         public void WriteTelemetry(TelemetryCounterSet into)
         {
@@ -203,7 +206,9 @@ namespace GameCore.Execution.Messages
             }
 
             into.Add(TelemetryCounter.StructuralOperations, RecordedStructuralOperationCount);
-            into.ObserveMax(TelemetryCounter.RequestHighWater, PendingStructuralCount);
+            // The deepest the deferred buffer was observed to be, not its current depth: a caller that samples after
+            // playback would otherwise always read zero and could never see a structural backlog (GC-023).
+            into.ObserveMax(TelemetryCounter.RequestHighWater, StructuralHighWaterMark);
         }
 
         /// <summary>Bounded capacity of deferred next-step queues, per buffer (P-043).</summary>
@@ -293,6 +298,10 @@ namespace GameCore.Execution.Messages
 
             deferred.Add(new DeferredStructuralOperation(buffer, producer, target, schema, add, order));
             RecordedStructuralOperationCount++;
+            if (deferred.Count > StructuralHighWaterMark)
+            {
+                StructuralHighWaterMark = deferred.Count;
+            }
             failure = string.Empty;
             return true;
         }
