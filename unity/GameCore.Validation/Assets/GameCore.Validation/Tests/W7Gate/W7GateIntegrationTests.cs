@@ -1,6 +1,6 @@
 // GameCore.W7Gate.Tests — the EditMode half of the Wave 7 integration gate.
 //
-// One `[Test]` per observation of the frozen table (`W7GateScenario.ObservationNames()`, thirteen names), plus the
+// One `[Test]` per observation of the frozen table (`W7GateScenario.ObservationNames()`, sixteen names), plus the
 // digest, table and registry tests that recompute their claims from that table rather than reading them off the run.
 // The whole gate runs ONCE, in `[OneTimeSetUp]`; every test is a pure assertion over the recorded steps, so the suite
 // is a statement about ONE revision's behaviour rather than about how many times the gate was executed.
@@ -130,6 +130,26 @@ namespace GameCore.W7Gate.Tests
         [Test]
         [Timeout(AssertTimeout)]
         public void TheTraversalRecoveryRestartWithoutInProcessState() => AssertObservation(12);
+
+        // ------------------------------------------------------------------ the GC-024 conformance group
+
+        // The conformance group is appended after the recovery group, in `W7GateScenario.ConformanceObservationNames`
+        // order, so its three observations are the table's last three names (positions 13, 14 and 15).
+
+        /// <summary>"All reference transition tables pass": every transcribed 07 table over its owning genre.</summary>
+        [Test]
+        [Timeout(AssertTimeout)]
+        public void TheConformanceTablesRepass() => AssertObservation(13);
+
+        /// <summary>"Cross-template flow": the combined narrative+cards world's own reward flow.</summary>
+        [Test]
+        [Timeout(AssertTimeout)]
+        public void TheConformanceCrossTemplateFlowRepasses() => AssertObservation(14);
+
+        /// <summary>The genre/assembly audit: no cross-family kernel edge, and the audit really walked something.</summary>
+        [Test]
+        [Timeout(AssertTimeout)]
+        public void TheConformanceGenreAuditIsClean() => AssertObservation(15);
 
         // ------------------------------------------------------------------ the table, the digest and the run
 

@@ -84,6 +84,9 @@ w7_steps=(
   '"name": "traversal/w7-recovery-sequence-repasses"'
   '"name": "traversal/w7-recovery-postwrite-apply-fault"'
   '"name": "traversal/w7-recovery-restart-without-in-process-state"'
+  '"name": "w7/w7-conformance-tables-repass"'
+  '"name": "w7/w7-conformance-cross-template-flow-repasses"'
+  '"name": "w7/w7-conformance-genre-audit-is-clean"'
   '"name": "w7/w7-gate-digest"'
   '"name": "w7-frozen-digest-agrees-with-the-table"'
 )
@@ -118,7 +121,7 @@ w7_assert_result() {
     "seeds=3" \
     "edits=install-mount,reparent,spawn-1000,retire-1000" \
     "scale=1000scopes/10000targets" \
-    "modes=24" \
+    "modes=25" \
     "missing=<none>" \
     "ambiguous=<none>" \
     "resultPathParsed=True" \
@@ -128,7 +131,13 @@ w7_assert_result() {
     "problems=<none>" \
     "faultPoints=postwrite-apply,restart" \
     "destinationAttempts=0" \
-    "expectedObservations=13"; do
+    "declaredTables=4" \
+    "ran=3/3" \
+    "complete=true" \
+    "crossTemplateFlow=pass" \
+    "cross-composition-audit: clean" \
+    "walkedEntries=" \
+    "expectedObservations=16"; do
     if ! grep -q -- "${clause}" "${run_result}"; then
       echo "run_w7_gate_probe.sh: ${run_label}: the result does not report ${clause}" >&2
       failures=$((failures + 1))
@@ -139,7 +148,7 @@ w7_assert_result() {
 # The frozen digest literal: recomputed from the observation table by the EditMode suite `GameCore.W7Gate.Tests` and
 # compared here against the committed constant. A renamed, reordered, added or dropped observation — or a gate whose
 # run recorded a failing step — cannot report this value.
-w7_digest="44742f36096f9005b18b8729f7b945583315a676902af32d7a2f8db14d197b62"
+w7_digest="f7853e42502c146fadb44e15e612a7ee67fd2605b6d2cff1951591567c719102"
 
 for (( run = 1; run <= PROBE_RUNS; run++ )); do
   run_result="${result_file}"

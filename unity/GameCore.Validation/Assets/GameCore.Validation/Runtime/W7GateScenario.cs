@@ -41,14 +41,14 @@
 //     (a dropped row silently shrinks what "the budgets are recorded" means). Both are checks about this revision,
 //     not about a task.
 //
-// GC-024'S GROUP. The reference-conformance tables and the combined narrative+cards world belong to GC-024, whose
-// branch is not part of this revision yet (`docs/game-core/09-implementation-guide.md` GC-024). This file is
-// structured so that merge adds ONE group: a new `ConformanceObservationNames` array appended in the emission order
-// below, one `AddConformanceSteps(steps)` call in `Run()`, and the recomputed digest literal. Nothing else in this
-// file, in `ProbeW7Gate`, or in `tools/run_w7_gate.sh` needs to change for it: the gate's dotnet and Unity test
-// invocations are unfiltered over every testable assembly, so GC-024's own suites participate automatically once its
-// package is in the solution and the manifest. `W7GateScenario.ObservationNames()` is the single frozen table, so a
-// merge that appends a group changes the digest literal loudly rather than silently widening or narrowing the claim.
+// GC-024'S GROUP, now merged. The reference-conformance tables and the combined narrative+cards world are GC-024's
+// own sequences, and this gate appends them as one further group in the emission order below: the three transcribed
+// 07 tables per owning genre, the combined cross-template reward flow, and the assembly/genre audit. Appending the
+// group changed this file's digest literal and the probe's quoted copy together, which is what the frozen table is
+// for — `tools/check_gate_sources.py` recomputes the literal from the table, so a group added or dropped without
+// updating the literal fails there rather than passing quietly. GC-024's own dotnet and Unity suites needed no wiring
+// here: the gate's invocations are unfiltered over every testable assembly, so they participate through the solution
+// and the manifest's `testables`.
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -56,6 +56,7 @@ using System.Globalization;
 using GameCore.Benchmarks;
 using GameCore.Contracts;
 using GameCore.Derivation;
+using GameCore.ReferenceConformance;
 using GameCore.Rules.Narrative;
 
 namespace GameCore.Validation.ProbeHost
@@ -136,7 +137,7 @@ namespace GameCore.Validation.ProbeHost
     }
 
     /// <summary>
-    /// The merged-revision integration gate: the ownership of the four groups is described in the file header, and
+    /// The merged-revision integration gate: the ownership of the five groups is described in the file header, and
     /// every one of them runs a scenario this repository already has rather than a second implementation of it.
     /// </summary>
     public static class W7GateScenario
@@ -175,6 +176,19 @@ namespace GameCore.Validation.ProbeHost
             "w7-recovery-restart-without-in-process-state",
         };
 
+        /// <summary>
+        /// The GC-024 conformance group's observation names, in execution order. GC-024 owns the reference tables and
+        /// the combined world, so this group is a re-run of GC-024's own sequences through GC-024's own runners: the
+        /// gate sentence's "all reference transition tables pass" and "cross-template flow" are its first two
+        /// observations, and its third is the assembly/genre audit GC-024's acceptance also names.
+        /// </summary>
+        public static readonly string[] ConformanceObservationNames =
+        {
+            "w7-conformance-tables-repass",
+            "w7-conformance-cross-template-flow-repasses",
+            "w7-conformance-genre-audit-is-clean",
+        };
+
         /// <summary>Every probe mode flag the merged probe host must still accept (the merge invariant).</summary>
         public static readonly string[] ModeFlags =
         {
@@ -202,6 +216,7 @@ namespace GameCore.Validation.ProbeHost
             "-probeBenchmark",
             "-probeW7Gate",
             "-probeRecoverySmoke",
+            "-probeConformance",
         };
 
         private static readonly List<string> FamilyLabels =
@@ -218,7 +233,8 @@ namespace GameCore.Validation.ProbeHost
         public static string[] ObservationNames()
         {
             var names = new List<string>(
-                ProcessObservationNames.Length + (FamilyLabels.Count * FamilyObservationNames.Length));
+                ProcessObservationNames.Length + (FamilyLabels.Count * FamilyObservationNames.Length)
+                + ConformanceObservationNames.Length);
             for (int i = 0; i < ProcessObservationNames.Length; i++)
             {
                 names.Add(ProcessLabel + "/" + ProcessObservationNames[i]);
@@ -230,6 +246,10 @@ namespace GameCore.Validation.ProbeHost
                 {
                     names.Add(FamilyLabels[f] + "/" + FamilyObservationNames[i]);
                 }
+            }
+            for (int i = 0; i < ConformanceObservationNames.Length; i++)
+            {
+                names.Add(ProcessLabel + "/" + ConformanceObservationNames[i]);
             }
 
             return names.ToArray();
@@ -249,8 +269,8 @@ namespace GameCore.Validation.ProbeHost
         }
 
         /// <summary>
-        /// Runs the whole gate: the four process observations, then the recovery group for each genre in
-        /// <see cref="Families"/> order, then the digest step over the table.
+        /// Runs the whole gate: the four process observations, the recovery group for each genre in
+        /// <see cref="Families"/> order, the GC-024 conformance group, then the digest step over the table.
         /// </summary>
         public static W7GateScenarioResult Run()
         {
@@ -260,6 +280,8 @@ namespace GameCore.Validation.ProbeHost
             {
                 AddFamilySteps(FamilyLabels[f], steps);
             }
+
+            AddConformanceSteps(steps);
 
             // The digest step is recorded last and is NOT part of the table it checks: a step inside its own input
             // could not be falsified. Its verdict is the whole frozen table — every name present, in order, all
@@ -535,7 +557,13 @@ namespace GameCore.Validation.ProbeHost
                 case 20: return parsed.CatalogCoverage;
                 case 21: return parsed.Benchmark;
                 case 22: return parsed.W7Gate;
-                default: return parsed.RecoverySmoke;
+                case 23: return parsed.RecoverySmoke;
+                case 24: return parsed.Conformance;
+
+                // No default arm that aliases a real mode: an index this switch does not know is a flag the table
+                // gained without a property to assert, and silently returning another mode's value would let it pass
+                // as "set" while the flag itself never parsed. False makes it a reported missing mode instead.
+                default: return false;
             }
         }
 
@@ -688,6 +716,125 @@ namespace GameCore.Validation.ProbeHost
 
             return null;
         }
+
+        // ------------------------------------------------------------------ the conformance group
+
+        /// <summary>
+        /// GC-024's own sequences, re-run here on the merged revision. The group is one observation per clause the
+        /// gate sentence and GC-024's acceptance name, and each runs GC-024's own entry point rather than a second
+        /// implementation: the three transcribed 07 tables through the genre hosts' `RunConformance*` entry points,
+        /// the combined narrative+cards world through `ConformanceCrossWorld.Run`, and the assembly/genre audit
+        /// through `ConformanceCrossWorld.AuditCombinedComposition` (P-001, P-013, P-014, P-016, P-025, P-045, P-059).
+        /// </summary>
+        private static void AddConformanceSteps(List<W7GateStep> steps)
+        {
+            Add(steps, ProcessLabel, ConformanceObservationNames[0], ConformanceTablesStep);
+            Add(steps, ProcessLabel, ConformanceObservationNames[1], CrossTemplateFlowStep);
+            Add(steps, ProcessLabel, ConformanceObservationNames[2], GenreAuditStep);
+        }
+
+        /// <summary>
+        /// "All reference transition tables pass": every transcribed 07 table runs over the genre that owns it, and
+        /// each must have been executed (its oracle checked at least one row, which is what makes an empty table a
+        /// failure rather than a pass), must have recorded no failing step and must have no unrecorded gap. The
+        /// declared table set is compared against the tables that really ran, so a merge that dropped a table is
+        /// visible rather than a smaller run reporting success.
+        /// </summary>
+        private static bool ConformanceTablesStep(out string detail)
+        {
+            string[] declared = ConformanceTableIds;
+            var results = new List<ConformanceTableResult>(declared.Length);
+            var notes = new List<string>(declared.Length);
+            bool pass = true;
+            for (int i = 0; i < declared.Length; i++)
+            {
+                ConformanceTableResult? result = null;
+                string failure = string.Empty;
+                try
+                {
+                    result = declared[i] == "cards"
+                        ? Gc013CardsHost.RunConformanceCards()
+                        : declared[i] == "narrative"
+                            ? Gc013NarrativeHost.RunConformanceNarrative()
+                            : Gc020TraversalHost.RunConformanceTraversal();
+                }
+                catch (Exception exception)
+                {
+                    failure = "unhandled " + exception.GetType().FullName + ": " + exception.Message;
+                }
+
+                if (result == null)
+                {
+                    pass = false;
+                    notes.Add(declared[i] + ": " + failure);
+                    continue;
+                }
+
+                results.Add(result);
+                bool held = result.AllPassed
+                    && result.Failures.Count == 0
+                    && result.RecordedGaps.Count == 0
+                    && result.Verdict.RowsChecked > 0
+                    && result.Trace.Count > 0;
+                pass &= held;
+                notes.Add(result.Describe());
+            }
+
+            // The table set the fixture declares is the set that must have run: a merge that dropped a table would
+            // otherwise report a clean run over a smaller corpus.
+            int declaredTables = ReferenceTables.All().Count;
+            bool complete = results.Count == declared.Length;
+            pass &= complete && declaredTables >= declared.Length + 1;
+
+            detail = "declaredTables=" + declaredTables.ToString(CultureInfo.InvariantCulture)
+                + "; ran=" + results.Count.ToString(CultureInfo.InvariantCulture)
+                + "/" + declared.Length.ToString(CultureInfo.InvariantCulture)
+                + "; complete=" + (complete ? "true" : "false")
+                + "; " + string.Join("; ", notes.ToArray());
+            return pass;
+        }
+
+        /// <summary>
+        /// "Cross-template flow": the combined narrative+cards world runs GC-024's own reward flow — a committed
+        /// narrative choice becoming one durable, idempotent card mutation — and its own oracle must accept the trace
+        /// it recorded, with no failing step and no recorded gap (P-001, P-043, P-045, TEST-014).
+        /// </summary>
+        private static bool CrossTemplateFlowStep(out string detail)
+        {
+            ConformanceTableResult result = ConformanceCrossWorld.Run();
+            bool held = result.AllPassed
+                && result.Failures.Count == 0
+                && result.RecordedGaps.Count == 0
+                && result.Verdict.RowsChecked > 0
+                && result.Trace.Count > 0;
+            // The leading fragment names the claim rather than reusing the trace's own label, so a harness clause for
+            // this observation cannot be satisfied by some other step's detail.
+            detail = "crossTemplateFlow=" + (held ? "pass" : "fail") + "; " + result.Describe()
+                + "; steps=" + result.Steps.Count.ToString(CultureInfo.InvariantCulture)
+                + "; facts=" + result.Trace.Count.ToString(CultureInfo.InvariantCulture)
+                + "; digest=" + result.Trace.Digest();
+            return held;
+        }
+
+        /// <summary>
+        /// GC-024's genre/assembly audit: the combined composition carries no traversal identity and no gameplay
+        /// assembly depends on another family's types, and the audit really walked something (a zero-entry audit is
+        /// a failure, not a clean result). The build-time half of the audit is asserted on the build host and in
+        /// EditMode; this observation is the loaded-assembly half a player can honestly compute (P-001, P-060).
+        /// </summary>
+        private static bool GenreAuditStep(out string detail)
+        {
+            CrossCompositionAudit audit = ConformanceCrossWorld.AuditCombinedComposition();
+            detail = audit.Describe()
+                + "; walkedEntries=" + audit.WalkedEntries.ToString(CultureInfo.InvariantCulture)
+                + "; findings=" + (audit.Findings.Count == 0
+                    ? "<none>"
+                    : string.Join(",", audit.Findings.ToArray()));
+            return audit.Clean;
+        }
+
+        /// <summary>The 07 table ids the conformance group runs, in the order their genres are declared.</summary>
+        private static readonly string[] ConformanceTableIds = { "cards", "narrative", "traversal" };
 
         /// <summary>
         /// Records one observation. The qualification is applied at this single point, so every step method passes

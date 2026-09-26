@@ -25,13 +25,13 @@ namespace GameCore.Validation.ProbeHost
     public static class ProbeW7Gate
     {
         /// <summary>
-        /// Digest the run must report over the thirteen frozen observations of `W7GateScenario.ObservationNames()`,
+        /// Digest the run must report over every frozen observation of `W7GateScenario.ObservationNames()`,
         /// all passing: `NarrativeDigest.OfLines` over `<name>=pass` lines in the frozen order. It is the literal the
         /// table implies, quoted here so a table edit is a loud mismatch in this mode rather than a value that
         /// quietly follows the code (P-008, TEST-022).
         /// </summary>
         public const string ExpectedDigest =
-            "44742f36096f9005b18b8729f7b945583315a676902af32d7a2f8db14d197b62";
+            "f7853e42502c146fadb44e15e612a7ee67fd2605b6d2cff1951591567c719102";
 
         /// <summary>
         /// The observation names this mode must report, in emission order, each as the probe result spells it. The

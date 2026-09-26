@@ -264,11 +264,15 @@ run_step fingerprint-tool-self-test "${PYTHON}" tools/compare_registration_finge
 # The document half of "benchmark data and budget decisions are recorded": the ten rows of the record, their
 # decisions, their evidence paths, and the project-owner deferral of the full-duration timing qualification.
 run_step budget-record "${PYTHON}" tools/check_budget_record.py --json "${ARTIFACTS}/host/budget-record.json"
-# `bash -n a b c` parses only its first operand, so the scripts are checked one per invocation.
+# The clone checker's own two directions, on a synthetic post-import clone: a generated-tree-only defect set must
+# pass and a real stale reference in the clone's own sources must fail. Proved here rather than asserted, because
+# this host has no Unity to produce the generated trees the check has to ignore.
+run_step release-clone-self-test "${PYTHON}" tools/check_release_clone.py --self-test
 for script in \
   tools/run_w7_gate.sh \
   tools/unity/run_w7_gate_probe.sh \
   tools/unity/run_recovery_smoke_probe.sh \
+  tools/unity/run_conformance_probe.sh \
   tools/unity/run_w6_gate_probe.sh \
   tools/unity/build_probe.sh; do
   run_step "shell-parse $(basename "${script}")" bash -n "${script}"
@@ -368,6 +372,7 @@ for harness in \
   run_w6_gate_probe.sh \
   run_catalog_coverage_probe.sh \
   run_recovery_probe.sh \
+  run_conformance_probe.sh \
   run_w7_gate_probe.sh; do
   probe_step "probe-${harness}" \
     env PROBE_PLAYER="${PROBE_PLAYER}" UNITY_PROJECT="${UNITY_PROJECT}" ARTIFACTS="${ARTIFACTS}/toolchain" \
@@ -526,9 +531,9 @@ echo "== Wave 7 integration gate PASSED =="
 echo "qualification player : ${PROBE_PLAYER}"
 echo "release player       : ${RELEASE_PLAYER:-<not built>}"
 echo "gate result          : ${ARTIFACTS}/toolchain/probe-w7-gate.json (this gate)"
+echo "                       ${ARTIFACTS}/toolchain/probe-conformance.json (GC-024) + toolchain/traces/"
 echo "                       ${ARTIFACTS}/toolchain/probe-catalog-coverage.json, probe-catalog-coverage-release.json (GC-025)"
 echo "                       ${ARTIFACTS}/release/probe-recovery-smoke.json (GC-027, release shape)"
-echo "                       ${ARTIFACTS}/toolchain/probe-gc027.json (GC-027, qualification shape)"
 echo "test results         : ${ARTIFACTS}/unity/editmode-results.xml, ${ARTIFACTS}/unity/playmode-results.xml, ${ARTIFACTS}/trx"
 echo "budget record        : ${ARTIFACTS}/host/budget-record.json, ${ARTIFACTS}/benchmark/summary.md"
 echo "note: PROBE_RUNS=${PROBE_RUNS}; every 'Pass' above is a reported process result, not this script's opinion."
