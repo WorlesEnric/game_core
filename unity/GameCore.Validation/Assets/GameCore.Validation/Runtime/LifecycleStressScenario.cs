@@ -40,6 +40,7 @@ using System.Globalization;
 using GameCore.Composition;
 using GameCore.Contracts;
 using GameCore.Execution;
+using GameCore.Execution.Time;
 using GameCore.Planning;
 using GameCore.Rules.Narrative;
 using GameCore.Unity.Adapters;
@@ -1851,7 +1852,7 @@ namespace GameCore.Validation.ProbeHost
             private Id128 AcquireWorldBuffer(PluginInstanceId instance)
             {
                 UnityWorldHost hostRef = Host;
-                var owner = new OwnerId(instance.Value.High, instance.Value.Low);
+                OwnerId owner = OwnerId.FromRaw(instance.Value.High, instance.Value.Low);
                 Id128 resourceId = hostRef.Ledger.Acquire(
                     WorldResourceKind.ManagedLease,
                     new ResourceKey(leaseSequence.Next()),

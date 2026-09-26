@@ -23,6 +23,7 @@ using System.Globalization;
 using GameCore.Composition;
 using GameCore.Contracts;
 using GameCore.Gameplay.Cards;
+using GameCore.Gameplay.Cards.Fixtures;
 using GameCore.Rules.Cards;
 using GameCore.Unity.Runtime.Integration;
 using GameCore.Validation.GeneratedCards;
@@ -240,7 +241,7 @@ namespace GameCore.Validation.ProbeHost
                 IReadOnlyList<ServiceDependency>? dependencies)
             {
                 SlotId slot = CardIdentity.Slot(capabilityStableName + ".slot-0");
-                CapabilityId capability = CardIdentity.CapabilityRef(capabilityStableName);
+                CapabilityRef capability = CardIdentity.CapabilityRef(capabilityStableName);
 
                 return new PluginManifest(
                     pluginType,

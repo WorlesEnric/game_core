@@ -23,7 +23,9 @@ using System.Collections.Generic;
 using GameCore.Composition;
 using GameCore.Contracts;
 using GameCore.Gameplay.Narrative;
+using GameCore.Gameplay.Narrative.Fixtures;
 using GameCore.Rules.Narrative;
+using GameCore.Unity.Fixtures;
 using GameCore.Unity.Runtime.Integration;
 using GameCore.Validation.Generated;
 
