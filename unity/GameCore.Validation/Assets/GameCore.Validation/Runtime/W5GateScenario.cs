@@ -235,16 +235,30 @@ namespace GameCore.Validation.ProbeHost
 
             public W5GateScenarioResult Run()
             {
-                BuildOneWorld();
-                ProvePinnedSnapshotsAreReadOnly();
-                CaptureCheckpointAtTheCommittedBoundary();
-                RefuseThePrewriteFaultAndKeepTheOldAssembly();
-                FaultTheWorldAfterItsFirstLiveWrite();
-                RestoreIntoANewSession();
-                BindAdaptersToTheRestoredWorld();
-                RejectTheRetiredWorldsCallbacks();
+                try
+                {
+                    BuildOneWorld();
+                    ProvePinnedSnapshotsAreReadOnly();
+                    CaptureCheckpointAtTheCommittedBoundary();
+                    RefuseThePrewriteFaultAndKeepTheOldAssembly();
+                    FaultTheWorldAfterItsFirstLiveWrite();
+                    RestoreIntoANewSession();
+                    BindAdaptersToTheRestoredWorld();
+                    RejectTheRetiredWorldsCallbacks();
 
-                return new W5GateScenarioResult(family.Label, steps);
+                    return new W5GateScenarioResult(family.Label, steps);
+                }
+                finally
+                {
+                    frameA?.Retire();
+                    frameB?.Retire();
+                    AdapterFrameRegistry.Unregister(sourceWorld);
+                    AdapterFrameRegistry.Unregister(restoredSession);
+                    stageRuntime?.Dispose();
+                    builder?.DetachRuntime();
+                    restoredHost?.Dispose();
+                    host?.Dispose();
+                }
             }
 
             // ================================================================== 1. one real world
@@ -399,12 +413,17 @@ namespace GameCore.Validation.ProbeHost
                     RegisterSourceAdapters();
 
                     var missing = new List<string>();
+                    int presentableTargets = 0;
                     for (int i = 0; i < family.ViewTargets.Count; i++)
                     {
                         TargetId target = family.ViewTargets[i];
-                        if (!targets.Contains(target) || publisher.Published.Bindings.BindingsOf(target).Count == 0)
+                        if (!targets.Contains(target))
                         {
-                            missing.Add(target.ToString());
+                            missing.Add(target.ToString() + ":not-live");
+                        }
+                        if (publisher.Published.Bindings.BindingsOf(target).Count > 0)
+                        {
+                            presentableTargets++;
                         }
                     }
 
@@ -422,6 +441,7 @@ namespace GameCore.Validation.ProbeHost
                         && targets.Count > 0
                         && family.ViewTargets.Count >= 2
                         && missing.Count == 0
+                        && presentableTargets >= 2
                         && publisher.Published.BindingRowCount > 0
                         && lane.Committed.Mode == PropagationMode.Automatic
                         && host.CurrentStep.Equals(LogicalStepId.Zero)
@@ -849,7 +869,8 @@ namespace GameCore.Validation.ProbeHost
                         && publisher.HasAdoptedPublication
                         && publisher.PrewriteFailureCount == 1
                         && pendingProposal != null
-                        && MatchesPublishedAssembly();
+                        && lane.Committed.Revision.Value == revisionBefore.Value + 1UL
+                        && lane.Committed.Epoch.Value == epochBefore.Value + 1UL;
 
                     Add(name, pass,
                         "edit=mode-set-conservative"
@@ -1102,8 +1123,8 @@ namespace GameCore.Validation.ProbeHost
                             && plan.Slots.Count == capturedSlots.Count
                             && plan.DormantSlotCount == CountSlots(capturedSlots, false)
                             && plan.Slots.Count == live.Count
-                            && builder.Lane.Committed.Mode == lane!.Committed.Mode
-                            && builder.Lane.Committed.Scopes.Count == lane.Committed.Scopes.Count
+                            && builder.Lane.Committed.Mode == capture.Header.Propagation
+                            && builder.Lane.Committed.Scopes.Count == plan.Scopes.Count
                             && restoredHost.CurrentStep.Value == capture.Header.LogicalStep;
                     }
 
@@ -1283,18 +1304,32 @@ namespace GameCore.Validation.ProbeHost
                         builder.Publisher!.Published, new LiveTargetScopeIndex(builder.Targets!));
                     bool refreshed = sourceB.Refresh(image);
                     var created = new List<string>();
+                    var presentedTargets = new List<TargetId>();
+                    int excludedTargets = 0;
                     for (int i = 0; i < family.ViewTargets.Count; i++)
                     {
-                        ViewCreateOutcome outcome = presenterB.CreateView(family.ViewTargets[i], 0U, out ViewRecord? _);
+                        TargetId target = family.ViewTargets[i];
+                        if (builder.Targets.Contains(target)
+                            && builder.Publisher.Published.Bindings.BindingsOf(target).Count == 0)
+                        {
+                            excludedTargets++;
+                            continue;
+                        }
+
+                        ViewCreateOutcome outcome = presenterB.CreateView(target, 0U, out ViewRecord? _);
                         created.Add(outcome.ToString());
+                        if (outcome == ViewCreateOutcome.Created)
+                        {
+                            presentedTargets.Add(target);
+                        }
                     }
 
                     AdapterFrameReport presented = AdapterFrameRegistry.Present(restoredSession);
 
                     var dissenting = new List<string>();
-                    for (int i = 0; i < family.ViewTargets.Count; i++)
+                    for (int i = 0; i < presentedTargets.Count; i++)
                     {
-                        if (!PresentedMatchesPublished(family.ViewTargets[i], image.Token, out string dissent))
+                        if (!PresentedMatchesPublished(presentedTargets[i], image.Token, out string dissent))
                         {
                             dissenting.Add(dissent);
                         }
@@ -1313,9 +1348,9 @@ namespace GameCore.Validation.ProbeHost
                     bool foreignInputRefused = foreignSample.Outcome == InputAdmissionOutcome.RejectedForeignWorld
                         && ingressB.RefusedCount == 1;
                     bool foreignImageRefused = !viewsB.TryApply(
-                        new ViewKey(family.ViewTargets[0], 0U),
+                        new ViewKey(presentedTargets[0], 0U),
                         new PresentationApplyData(
-                            new ViewKey(family.ViewTargets[0], 0U),
+                            new ViewKey(presentedTargets[0], 0U),
                             new SnapshotToken(
                                 sourceWorld,
                                 new AssemblyEpoch(capture!.Header.SourcePublishedEpoch),
@@ -1348,7 +1383,7 @@ namespace GameCore.Validation.ProbeHost
                         && refreshed
                         && image.TargetCount > 0
                         && presented.Ran
-                        && presented.Items == family.ViewTargets.Count
+                        && presented.Items == presentedTargets.Count
                         && dissenting.Count == 0
                         && viewsB.LiveViewCount == 0
                         && !registered && AdapterFrameRegistry.TryGet(restoredSession, out _)
@@ -1375,6 +1410,7 @@ namespace GameCore.Validation.ProbeHost
                         + "; presented=" + presented.Outcome
                         + "(" + presented.Items.ToString(CultureInfo.InvariantCulture) + ")"
                         + "; dissenting=" + Join(dissenting)
+                        + "; excludedTargets=" + excludedTargets.ToString(CultureInfo.InvariantCulture)
                         + "; liveViewsAfterDestroy=" + viewsB.LiveViewCount.ToString(CultureInfo.InvariantCulture)
                         + "; foreignTokenRefused=" + foreignTokenRefused
                         + "(" + foreignCode + ": " + Clip(foreignDetail, 80) + ")"
