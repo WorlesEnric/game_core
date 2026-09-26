@@ -1034,7 +1034,9 @@ namespace GameCore.Execution.Delivery
             code = DiagnosticCode.None;
             detail = string.Empty;
 
-            if (!Outbox.CanAccept(key, payloadSchema, requiresDurability, out OutboxAdmission refusal, out code, out detail))
+            // Ask the outbox first, so a frame the in-memory outbox would refuse is never persisted: the journal and
+            // the outbox cannot disagree about what was committed (P-045).
+            if (!Outbox.CanAccept(key, payloadSchema, requiresDurability, out _, out code, out detail))
             {
                 return Outbox.TryCommit(
                     key,
@@ -1124,17 +1126,12 @@ namespace GameCore.Execution.Delivery
                 return admission;
             }
 
-            if (obligation != null)
+            if (obligation != null && obligation.Order != pending.OrderOrdinal)
             {
-                // The persisted frame carried the order this outbox would assign; a mismatch means the projection
-                // and the outbox disagree about canonical order, which P-008 forbids, so the frame is rewritten.
-                if (obligation.Order != pending.OrderOrdinal)
-                {
-                    if (!TryPersist(RowOf(obligation), DeliveryBoundaries.None, DeliveryBoundaries.None, out code, out detail))
-                    {
-                        return OutboxAdmission.Accepted;
-                    }
-                }
+                // The frame was written with the order the outbox *would* assign; a mismatch means the projection and
+                // the outbox disagree about canonical order, which P-008 forbids, so the authoritative row is
+                // appended. The outbox's order is the one that wins, because it is the one a checkpoint projects.
+                TryPersist(RowOf(obligation), DeliveryBoundaries.None, DeliveryBoundaries.None, out code, out detail);
             }
 
             return OutboxAdmission.Accepted;

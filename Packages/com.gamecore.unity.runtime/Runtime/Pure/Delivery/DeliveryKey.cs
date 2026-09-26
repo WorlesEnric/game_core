@@ -368,11 +368,6 @@ namespace GameCore.Execution.Delivery
 
         public bool IsTerminal => !IsOpen;
 
-        /// <summary>True when the destination confirmed the mutation; the only state a cursor may advance past.</summary>
-        public bool IsAcknowledged => State == OutboxDeliveryState.Acknowledged;
-
-        public int PayloadLength => payload.Length;
-
         /// <summary>A copy of the destination command bytes; callers never receive the stored array (P-054).</summary>
         public byte[] PayloadBytes()
         {
@@ -380,9 +375,6 @@ namespace GameCore.Execution.Delivery
             Array.Copy(payload, copy, payload.Length);
             return copy;
         }
-
-        /// <summary>A read-only view of the command bytes for a destination port that must not mutate them.</summary>
-        public ArraySegment<byte> PayloadView => new ArraySegment<byte>(payload);
 
         public override string ToString() =>
             "obligation(" + Key.OutboxId.ToString() + "," + State.ToString() + ",attempts="

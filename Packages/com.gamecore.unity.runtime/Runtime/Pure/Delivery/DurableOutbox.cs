@@ -661,6 +661,11 @@ namespace GameCore.Execution.Delivery
                     restored.tracked.Add(row.OutboxId, existing);
                     restored.openOrder.Add(row.OutboxId);
                     order.Add(existing);
+
+                    // Adopting an obligation is a commit this outbox now holds, so the counter a caller reads reports
+                    // what the rebuild reinstated rather than zero (P-045). A cursor row never reaches this branch,
+                    // because a cursor is not an obligation and never enters `tracked`.
+                    restored.CommitCount++;
                     if (row.Order >= restored.nextOrder)
                     {
                         restored.nextOrder = row.Order + 1U;
@@ -685,6 +690,34 @@ namespace GameCore.Execution.Delivery
                         restored.AdoptTerminal(existing);
                         restored.TerminalAdoptionCount++;
                     }
+                }
+
+                // The attempt and outcome counters are derived from what the rows carry rather than left at zero, so a
+                // reinstated outbox answers "how many attempts, how many acknowledgements" with the same meaning a
+                // live one does (P-045). Nothing here is invented: every count below is read off a row's own recorded
+                // state and attempt count.
+                restored.DeliveryCount += (int)row.Attempts;
+                if (row.Attempts > 1U)
+                {
+                    restored.RedeliveryCount += (int)(row.Attempts - 1U);
+                }
+
+                switch (row.State)
+                {
+                    case OutboxDeliveryState.Acknowledged:
+                        restored.AcknowledgeCount++;
+                        break;
+
+                    case OutboxDeliveryState.Rejected:
+                        restored.RejectCount++;
+                        break;
+
+                    case OutboxDeliveryState.Compensated:
+                        restored.CompensateCount++;
+                        break;
+
+                    default:
+                        break;
                 }
             }
 
