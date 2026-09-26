@@ -1,0 +1,185 @@
+# W7-GATE host-side static checks (interpreter-level; NOT a build)
+# Revision: f318f0f6ecf12e227d063a70184886e027d9f087  (f318f0f Merge GC-024 into W7 gate)
+# Host: Darwin 25.3.0 arm64; no Unity, no .NET SDK, no Mono, no C# compiler.
+# STATUS OF EVERY BUILD/TEST/PLAYER COMMAND IN THIS DOCUMENT: NotRun (pending orchestrator build host).
+# What DID run is interpreter-level only: the checks below. None of them is a build or a test result.
+# This capture is the third and final one: the revision carries all four Wave 7 tasks (GC-024 merged), the
+# conformance group wired into the gate scenario, its harness and tools/run_w7_gate.sh, the release-clone
+# checker's new scope plus its --self-test, and the Parse call-site check.
+
+== 1. C# shape checker (banned syntax, source conventions) ==
+checked 623 C# file(s)
+ok
+
+== 2. gate-source invariants (balance, member resolution, using coverage, ambiguity, Parse call site, tables) ==
+   W6FamilyCardsHost.cs               balanced
+   W6FamilyTraversalHost.cs           balanced
+   ProbeW6Gate.cs                     balanced
+   W6GateIntegrationTests.cs          balanced
+   ProbeArguments.cs                  balanced
+   ProbeRunner.cs                     balanced
+   Gc020TraversalHost.cs              balanced
+   LifecyclePlayModeMatrix.cs         balanced
+
+== member resolution (Type.Member against the declaring sources) ==
+   unresolved: none
+== using coverage (a used type must be reachable through the file's own usings) ==
+   unreachable: none
+== ambiguity (a used name declared in two imported namespaces) ==
+   ambiguous: none
+== the Parse call site's own locals ==
+   declared locals: 26 | problems: none
+
+== frozen observation tables, digest literals and probe steps ==
+   cards fixture        9c3d3b5d2f8e959920aa9678e65f56658cbe4a513fcd2895cd458fbda4f9ea14  harness=True host=True probe=True suite=True
+   cards generated      894a975e4a5eb98d733ec213778ec275e4abe02cb4028271857bd4fa68d6fe80  harness=True host=True probe=True suite=True
+   narrative fixture    ab198371e8d276dcc2833e88e64e278abde57274ea3c68e2497fa2b75f97fa73  harness=True host=True probe=True suite=True
+   narrative generated  4235cea3c22cf93e38307000fcc863edd4ada3e2fc4a3b475ca719765dc17279  harness=True host=True probe=True suite=True
+   traversal            ca29b5f7099f9fbc4abeb7031c7b1e35ba39ec1ad39db70dd0f037fa8d45675e  harness=True host=True probe=True suite=True
+   observation counts: narrative 6, cards 7, traversal 9
+   harness steps: 41 | missing: none | extra: none
+   w7 table             f7853e42502c146fadb44e15e612a7ee67fd2605b6d2cff1951591567c719102  harness=True probe=True suite=True
+   w7 observation counts: process 4, per family 3, families ['narrative', 'cards', 'traversal'], conformance 3
+   w7 harness steps: 18 | missing: none | extra: none
+VERDICT: ok
+
+== 3. the W7 change set by itself ==
+== frozen observation tables, digest literals and probe steps ==
+   cards fixture        9c3d3b5d2f8e959920aa9678e65f56658cbe4a513fcd2895cd458fbda4f9ea14  harness=True host=True probe=True suite=True
+   cards generated      894a975e4a5eb98d733ec213778ec275e4abe02cb4028271857bd4fa68d6fe80  harness=True host=True probe=True suite=True
+   narrative fixture    ab198371e8d276dcc2833e88e64e278abde57274ea3c68e2497fa2b75f97fa73  harness=True host=True probe=True suite=True
+   narrative generated  4235cea3c22cf93e38307000fcc863edd4ada3e2fc4a3b475ca719765dc17279  harness=True host=True probe=True suite=True
+   traversal            ca29b5f7099f9fbc4abeb7031c7b1e35ba39ec1ad39db70dd0f037fa8d45675e  harness=True host=True probe=True suite=True
+   observation counts: narrative 6, cards 7, traversal 9
+   harness steps: 41 | missing: none | extra: none
+   w7 table             f7853e42502c146fadb44e15e612a7ee67fd2605b6d2cff1951591567c719102  harness=True probe=True suite=True
+   w7 observation counts: process 4, per family 3, families ['narrative', 'cards', 'traversal'], conformance 3
+   w7 harness steps: 18 | missing: none | extra: none
+VERDICT: ok
+
+== 4. the Parse call-site check catches the defect this gate shipped (demonstration) ==
+with the local removed -> exit 1
+   declared locals: 25 | problems: ['unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/ProbeArguments.cs: the constructor call passes `resultPath`, which `Parse` never declares as a local (CS0103)']
+restored -> exit 0
+
+== 5. the merged model solution: project entries, unique GUIDs, complete configuration rows ==
+projects: 36 | duplicate GUIDs: none
+projects with an incomplete configuration set: none
+configuration GUIDs without a project: none
+GameCore.Benchmarks present: True
+GameCore.ReferenceConformance present: True
+
+== 6. the frozen W7 table, its digest literal and the harness's required steps (independent recomputation) ==
+table names: 16 | families: ['narrative', 'cards', 'traversal']
+recomputed digest: f7853e42502c146fadb44e15e612a7ee67fd2605b6d2cff1951591567c719102
+probe quotes it  : True
+harness pins it  : True
+suite recomputes from the table: True
+probe modes the merge invariant asserts: 25
+
+== 7. the merged validation project: manifest, testables and the lock ==
+dependencies: 38 | testables: 15
+new in this merge: ['com.gamecore.benchmarks', 'com.gamecore.gameplay.rewards', 'com.gamecore.reference-conformance']
+testables present for them: ['com.gamecore.benchmarks', 'com.gamecore.gameplay.rewards', 'com.gamecore.reference-conformance']
+lock covers every manifest dependency: True
+
+== 8. contract-surface parity, committed catalogs and manifest/bake freshness ==
+  + enum StateDispositionKind adds RetainDormant = 4
+every snapshotted enum and enum value exists in the production sources with the same numeric value
+catalog reachability manifest reproduces from the committed descriptions: 4 catalog(s)
+every committed catalog and coverage file reproduces byte for byte from its committed description
+baked catalog-coverage artifact reproduces from unity/GameCore.Validation/Catalogs/CatalogCoverageAuthoring.json
+file hash and catalog fingerprint both recompute correctly from the generated tables
+file hash and catalog fingerprint both recompute correctly from the generated tables
+file hash and catalog fingerprint both recompute correctly from the generated tables
+file hash and catalog fingerprint both recompute correctly from the generated tables
+
+== 9. the budget decision record ==
+DEFERRAL: Status: **TEST-023 timing qualification Deferred by project-owner decision (2026-09-26); not measured at full duration**. Functional correctness gates passed in a final single short diagnostic: 1 s warmup, 2 s steady windows, five change repetitions, 11 workloads and 19/19 gates. A default full-catalogue attempt was stopped at update-size-1 repetition 629/1000 after 916.7 s because the remaining broad candidate fan-out still costs ~0.87 s/change. No full-duration p95/p99 claim follows from the diagnostic.
+VERDICT: pass
+
+== 10. link.xml preservation ==
+/Users/yangcao/wkspace/gc-wt/w7-gate/unity/GameCore.Validation/Assets/link.xml preserves only the permitted fixture and PlayerLoop roots (sha256 dc9cc7ef1ad5a4e2d342d0cb132f61143f2e9fcd14222312804522e04221e9ba)
+
+== 11. the release clone, in BOTH states, with its self-test and planted defects ==
+-- the clone checker's own two directions (synthetic post-import clone; no Unity needed):
+VERDICT: 1 PROBLEM(S)
+   ok   post-import noise is not a defect (problems=[] filesInspected=4)
+   ok   a planted stale reference in the clone source fails (problems=['Assets/GameCore.Validation/Runtime/ProbeRunner.cs'])
+   ok   a qualification-only lock entry fails (problems=['the lock declares com.gamecore.* dependencies the manifest does not: com.gamecore.replay', 'the lock still depends on com.gamecore.replay'])
+   ok   an undeclared com.gamecore.* lock entry fails (problems=['the lock declares com.gamecore.* dependencies the manifest does not: com.gamecore.reference-conformance', 'the lock still depends on com.gamecore.reference-conformance'])
+   ok   an unbalanced clone source fails (problems=["('Assets/GameCore.Validation/Runtime/Unbalanced.cs', {'{': 3, '(': 0, '[': 0})"])
+SELF-TEST: pass
+
+-- prepare the clone for real, then check it BEFORE any build:
+Build: UNITY_PROJECT=<above> ARTIFACTS=artifacts/faults/release tools/unity/build_probe.sh
+clone files inspected: 180 (the clone's own sources; Artifacts~, Builds, Library, Logs, Temp, UserSettings, bin, obj, obj~ pruned)
+
+== 1. no reference to a removed type or member ==
+   clean
+
+== 2. every asmdef reference resolves ==
+   kept    Traversal        wired: True
+   kept    CatalogCoverage  wired: True
+   kept    RecoverySmoke    wired: True
+   qualification-only dependencies: none
+   testables: []
+   lock present: False (the preparer deletes it; Unity regenerates it on import - both states are allowed)
+   Tests/ tree present: False
+   LifecyclePlayModeMatrix present: False
+
+VERDICT: clone is clean
+
+VERDICT: clone is clean
+
+-- a Unity import adds these trees and regenerates the lock; simulate one and re-check:
+simulated post-import tree: Library files 5 | regenerated lock entries 40
+post-import check exit: 0
+   lock entries: 40 | qualification-only: none | undeclared com.gamecore.*: none
+VERDICT: clone is clean
+VERDICT: clone is clean
+
+-- falsifiability on the REAL clone: each planted defect must fail, and the restored clone must pass:
+planted removed type in the clone source -> (1, ['FAIL Assets/GameCore.Validation/Runtime/ProbeRunner.cs'])
+planted qualification-only lock entry -> (1, ['FAIL the lock still depends on com.gamecore.replay'])
+planted undeclared gamecore lock entry -> (1, ['FAIL the lock still depends on com.gamecore.benchmarks'])
+planted dangling asmdef reference -> (1, ['FAIL GameCore.Validation.ProbeHost.asmdef'])
+restored -> (0, [])
+
+-- link.xml for the clone, and the checker's six negative directions on the qualification project:
+/Users/yangcao/wkspace/gc-wt/w7-gate/unity/GameCore.ReleaseCheck/Assets/link.xml preserves only the permitted fixture and PlayerLoop roots (sha256 dc9cc7ef1ad5a4e2d342d0cb132f61143f2e9fcd14222312804522e04221e9ba)
+  kernel assembly-level preserve -> exit 1 ['  - GameCore.Unity.Runtime is a kernel/rules/gameplay assembly and must not carry an assembly-level preserve; its reachability must come from the generated catalogs (04 section 8)']
+  un-permitted kernel type -> exit 1 ['  - GameCore.Unity.Runtime.SomethingElse is preserved but is not one of the GameCore.Unity.Runtime entry points this file permits: GameCore.Unity.Runtime.Recovery.WorldRecovery']
+  bare kernel root -> exit 1 ['  - GameCore.Unity.Runtime is a kernel/rules/gameplay assembly rooted with no preserve and no permitted type entry; its reachability must come from the generated catalogs (04 section 8)']
+  fixture preserve attribute dropped -> exit 1 ['  - the permitted assembly-level preserve for GameCore.Validation.Fixture is present but does not carry preserve="all" (it carries None)']
+  PlayerLoop type dropped -> exit 1 ['  - GameCore.Unity.Adapters does not preserve GameCore.Unity.Adapters.GameCorePumpLoop']
+  host-entry preserve dropped -> exit 1 ['  - the permitted GameCore.Unity.Runtime type-level preserves are missing']
+-- the disposable clone is removed again: absent
+
+== 12. shell parse and python compile of every script this gate owns ==
+bash -n ok: tools/run_w7_gate.sh
+bash -n ok: tools/unity/run_w7_gate_probe.sh
+bash -n ok: tools/unity/run_recovery_smoke_probe.sh
+bash -n ok: tools/unity/run_conformance_probe.sh
+bash -n ok: tools/unity/run_w6_gate_probe.sh
+bash -n ok: tools/unity/build_probe.sh
+py_compile ok: tools/check_budget_record.py
+py_compile ok: tools/check_release_clone.py
+py_compile ok: tools/check_release_gate_free.py
+py_compile ok: tools/check_gate_sources.py
+py_compile ok: tools/check_link_xml.py
+py_compile ok: tools/check_game_core_csharp.py
+py_compile ok: tools/unity/prepare_gc017_release_project.py
+py_compile ok: tools/gc024_genre_audit.py
+
+== 13. Unity .meta generation (idempotent) ==
+created 0 meta file(s)
+
+== 14. the documentation validator ==
+Documentation validator self-test passed: 9 isolated positive/negative fixtures.
+Game Core documentation validation passed: 14 Markdown documents; local links, anchors, IDs, traceability, task DAG and wave ordering checked.
+No Unity builds, gameplay tests, runtime benchmarks, or remote URL checks were executed.
+
+== 15. every build/test/player command in this gate ==
+NotRun (pending orchestrator build host): no Unity, no .NET SDK, no Mono and no C# compiler exist on this
+machine, so nothing in tools/run_w7_gate.sh was executed. The checks above are interpreter-level only.

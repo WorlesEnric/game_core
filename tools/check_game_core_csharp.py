@@ -76,6 +76,20 @@ TARGETS = [
     "dotnet/src/GameCore.Derivation.Fixtures",
     "dotnet/src/GameCore.Telemetry.ReleaseCheck",
     "dotnet/tools/GameCore.TelemetryProbe",
+    # GC-026: the benchmarks fixture package is engine-free like the replay package, so the same generator,
+    # statistics, sample records and writers compile in plain dotnet, in Unity EditMode and in the IL2CPP player.
+    "tests/GameCore.Benchmarks",
+    "dotnet/src/GameCore.Benchmarks",
+    # GC-024: the reference-conformance fixture package is engine-free by design, so the same sources are compiled by
+    # dotnet/src/GameCore.ReferenceConformance, by the Unity package com.gamecore.reference-conformance and by the
+    # qualification player; its test assembly and the two dotnet projects join the same checks.
+    "tests/GameCore.ReferenceConformance",
+    "dotnet/src/GameCore.ReferenceConformance",
+    "dotnet/tests/GameCore.ReferenceConformance.Tests",
+    # GC-024: the reward installation is production gameplay — it declares real Unity components' storage (the
+    # outbox slot row it writes through the world's EntityManager), the composition host and the state-policy
+    # pipeline — so the balance and forbidden-construct checks cover it while it stays out of `engine_free`.
+    "Packages/com.gamecore.gameplay.rewards",
 ]
 
 FORBIDDEN = {
@@ -275,7 +289,14 @@ def main() -> int:
         # GC-023: the replay/telemetry fixtures are Unity-free by design, so the same sources can be compiled by
         # dotnet/src/GameCore.Replay, by the Unity package com.gamecore.replay and by the IL2CPP probe host.
         ROOT / "tests/GameCore.Replay",
+        # GC-026: the benchmark fixture, statistics, sample records and writers are Unity-free by design, so the
+        # same sources are compiled by dotnet/src/GameCore.Benchmarks and by the player's probe host.
+        ROOT / "tests/GameCore.Benchmarks",
         ROOT / "dotnet/src",
+        # GC-024: the conformance fixtures (the 07 tables, the scripts, the trace normalizer, the oracle, the
+        # projections and the build-time genre audit) are Unity-free by design, which is what lets the same assertions
+        # run in plain dotnet, in EditMode and in the player (P-001, P-057).
+        ROOT / "tests/GameCore.ReferenceConformance",
     )
 
     for path in files:

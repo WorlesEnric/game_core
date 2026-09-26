@@ -113,6 +113,18 @@ namespace GameCore.Validation.ProbeHost
             TraversalVocabulary.RunnerRecipe);
 
         /// <summary>
+        /// The excluded runner's recipe (P-016): the same two selector contracts as the runner recipe under a
+        /// distinct definition identity, with the acceleration-capability exclusion carried by the descriptor
+        /// itself. The rules still select the target, so it is the exclusion — not ineligibility — that denies the
+        /// contribution, in both propagation modes. A scope-stored exclusion naming one target has no scope
+        /// semantics (`DerivationPolicy` applies a scope exclusion to a subtree), while a descriptor-stored
+        /// exclusion with no scope and no target addresses its own target: that is the form this recipe declares.
+        /// </summary>
+        public static readonly DefinitionRef ExcludedRunnerRecipe = TraversalIdentity.Recipe(
+            TraversalVocabulary.RunnerRecipe + ".gc024-excluded.definition",
+            TraversalVocabulary.RunnerRecipe);
+
+        /// <summary>
         /// The course entity's own recipe. The fixture declares the course TARGET but no recipe for it, and a target
         /// a seeder cannot resolve a recipe for cannot be seeded at all (P-015), so the gate declares the one recipe
         /// that installs the course entity's storage — the same `TraversalAccess.InstallCourseStorage` a package
@@ -277,30 +289,72 @@ namespace GameCore.Validation.ProbeHost
             private readonly IReadOnlyList<CompositionEditPayload> spareScopes;
             private readonly IReadOnlyList<TargetId> courseTargets;
             private readonly IReadOnlyList<ScopeRecord> declaredScopes;
-            private readonly TraversalRunnerApplier runnerApplier;
+            private readonly ITraversalRunnerApplier runnerApplier;
             private readonly TraversalVolumeApplier volumeApplier;
 
             private ulong physicsDeclaredSession;
 
+            /// <summary>The course over the runtime-declared recipe catalog, under the family's fixed session salt.</summary>
             public CourseFamily(
                 ImmutableCatalog catalog,
                 IReadOnlyList<CatalogPluginDeclaration> declarations,
                 string catalogFingerprint)
+                : this(catalog, declarations, catalogFingerprint, RuntimeCatalogCoverageRecipeSource.Instance,
+                    Gc020TraversalHost.SessionSalt)
             {
+            }
+
+            /// <summary>
+            /// The course over one recipe source (GC-025's bake/runtime parity comparison): the runtime-declared
+            /// recipes, or the same recipes materialized from the Editor-baked artifact. The course itself is
+            /// unchanged; only where its recipe data comes from differs.
+            /// </summary>
+            public CourseFamily(
+                ImmutableCatalog catalog,
+                IReadOnlyList<CatalogPluginDeclaration> declarations,
+                string catalogFingerprint,
+                ICatalogCoverageRecipeSource recipeSource)
+                : this(catalog, declarations, catalogFingerprint, recipeSource, Gc020TraversalHost.SessionSalt)
+            {
+            }
+
+            /// <summary>
+            /// The course under an explicit session salt (GC-025). `Gc020Host.SessionSalt` makes a gate run
+            /// reproducible; a caller that needs two provably different sessions calls this overload, because a
+            /// session identity is derived from the salt and is never reused (P-004).
+            /// </summary>
+            public CourseFamily(
+                ImmutableCatalog catalog,
+                IReadOnlyList<CatalogPluginDeclaration> declarations,
+                string catalogFingerprint,
+                ICatalogCoverageRecipeSource recipeSource,
+                ulong sessionSalt)
+            {
+                if (recipeSource == null)
+                {
+                    throw new ArgumentNullException(nameof(recipeSource));
+                }
+
                 this.catalog = catalog ?? throw new ArgumentNullException(nameof(catalog));
                 this.declarations = declarations ?? throw new ArgumentNullException(nameof(declarations));
                 CatalogFingerprint = catalogFingerprint ?? string.Empty;
+                RecipeSourceLabel = recipeSource.Label;
+                SessionSalt = sessionSalt;
 
-                runnerApplier = new TraversalRunnerApplier();
+                runnerApplier = recipeSource.CreateRunnerApplier();
                 volumeApplier = new TraversalVolumeApplier();
 
-                // The fixture's own closed catalog plus the two recipes no fixture declares: the course entity's
-                // storage recipe and the explicitly opted-in runner. Both are ordinary precompiled recipes of this
-                // gate's family, so a seeded or spawned target resolves one (P-015, P-024).
-                var allRecipes = new List<SpawnRecipe>(TraversalCourseRecipes.Catalog(runnerApplier, volumeApplier).Recipes)
+                // The recipe source's own closed catalog plus the three recipes no fixture declares: the course
+                // entity's storage recipe, the explicitly opted-in runner and the descriptor-excluded variant the
+                // P-016 row re-registers its runner under. All are ordinary precompiled recipes of this gate's
+                // family, so a seeded, spawned or re-registered target resolves one (P-015, P-016, P-024).
+                // The source is the one the caller materialized (GC-025: the runtime recipe source or the baked
+                // artifact), so the recipe set follows the materialization rather than a hardcoded table.
+                var allRecipes = new List<SpawnRecipe>(recipeSource.Catalog(runnerApplier, volumeApplier).Recipes)
                 {
                     CourseRecipeOf(new CourseApplier()),
                     OptedInRunner(runnerApplier),
+                    ExcludedRunner(runnerApplier),
                 };
                 recipes = new SpawnRecipeCatalog(allRecipes);
 
@@ -315,6 +369,7 @@ namespace GameCore.Validation.ProbeHost
 
                 // The runners the course owns, in canonical target order. `runner-c` does not exist until the spawn
                 // publication of observation 9, so a reader of this list checks liveness before reading a target.
+
                 courseTargets = new List<TargetId>
                 {
                     TraversalCourseTargets.RunnerA,
@@ -326,11 +381,14 @@ namespace GameCore.Validation.ProbeHost
                 declaredScopes = CourseScopeRecords();
             }
 
+            /// <summary>Diagnostic label of the recipe source this course materialized its recipes from (GC-025).</summary>
+            public string RecipeSourceLabel { get; }
+
             public string Label => Gc020TraversalHost.Label;
 
             public string CatalogFingerprint { get; }
 
-            public ulong SessionSalt => Gc020TraversalHost.SessionSalt;
+            public ulong SessionSalt { get; }
 
             public Id128 Issuer => TraversalKeys.Issuer;
 
@@ -595,7 +653,7 @@ namespace GameCore.Validation.ProbeHost
                     descriptor,
                     targets,
                     seeder,
-                    installPhysics: true);
+                    installPhysics: UnityEngine.Application.isPlaying);
 
             public void ConfigurePhysics(WorldId world) => physicsDeclaredSession = world.Session.Low;
 
@@ -729,6 +787,43 @@ namespace GameCore.Validation.ProbeHost
                     null);
 
                 return new SpawnRecipe(OptedInRunnerRecipe, descriptor, schemas, applier);
+            }
+
+            /// <summary>
+            /// The excluded runner's recipe: the runner recipe's own two selectors under a distinct definition
+            /// identity, with the acceleration-capability exclusion stored on the descriptor (P-016). A rule still
+            /// selects the target — the exclusion, not ineligibility, denies the contribution — and the exclusion
+            /// follows the target through any later reparent, mode switch or provider remount, which is what the
+            /// rows after the exclusion one (suspend, resume) read.
+            /// </summary>
+            private static SpawnRecipe ExcludedRunner(ISpawnApplier applier)
+            {
+                var schemas = new List<SchemaRef>
+                {
+                    TraversalVocabulary.SelectorSchema(TraversalVocabulary.RunnerRecipe),
+                    TraversalVocabulary.SelectorSchema(TraversalVocabulary.AccelerationTarget),
+                };
+
+                var descriptor = new TargetDescriptor(
+                    ExcludedRunnerRecipe,
+                    schemas,
+                    null,
+                    null,
+                    default(AssetAdapterDescriptor),
+                    null,
+                    null,
+                    null,
+                    new List<ExclusionRule>
+                    {
+                        new ExclusionRule(
+                            ExclusionTargetKind.Capability,
+                            TraversalVocabulary.AccelerationCapability.Value,
+                            default(ScopeId),
+                            default(TargetId),
+                            false),
+                    });
+
+                return new SpawnRecipe(ExcludedRunnerRecipe, descriptor, schemas, applier);
             }
 
             private void Seed(Gc013WorldContext context, TargetId target, ScopeId scope, DefinitionRef recipe)

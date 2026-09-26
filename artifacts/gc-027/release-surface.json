@@ -1,0 +1,114 @@
+{
+  "asmdefs": {
+    "Packages/com.gamecore.unity.runtime/Tests/Assembly/GameCore.Unity.Assembly.Tests.asmdef": {
+      "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+      ],
+      "kind": "package-test"
+    },
+    "Packages/com.gamecore.unity.runtime/Tests/Faults/GameCore.Unity.Faults.Tests.asmdef": {
+      "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+      ],
+      "kind": "package-test"
+    },
+    "Packages/com.gamecore.unity.runtime/Tests/Recovery/GameCore.Unity.Recovery.Tests.asmdef": {
+      "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+      ],
+      "kind": "package-test"
+    },
+    "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/GameCore.Validation.ProbeHost.asmdef": {
+      "defineConstraints": [],
+      "kind": "validation-project"
+    },
+    "unity/GameCore.Validation/Assets/GameCore.Validation/Tests/Faults/GameCore.Faults.Tests.asmdef": {
+      "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+      ],
+      "kind": "validation-project"
+    },
+    "unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W5Gate/GameCore.W5Gate.Tests.asmdef": {
+      "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+      ],
+      "kind": "validation-project"
+    }
+  },
+  "assemblies": {
+    "boundaryLiteralsChecked": [
+      "first-live-write",
+      "structural-playback",
+      "gate-installation",
+      "checkpoint-capture-copy",
+      "checkpoint-publication",
+      "restore-reference-repair",
+      "restore-apply",
+      "recovery-publication"
+    ],
+    "latchTypesChecked": [
+      "FaultBoundaryText",
+      "FaultBoundary",
+      "AssemblyFaultInjection",
+      "FaultTrace",
+      "FaultRecord",
+      "FaultReach",
+      "FaultCompilation",
+      "FaultInjectedException"
+    ],
+    "qualificationAssembly": "dotnet/src/GameCore.Faults.ReleaseCheck/bin/Qualification/netstandard2.1/GameCore.Faults.ReleaseCheck.dll",
+    "qualificationAssemblyBytes": 11776,
+    "releaseAssembly": "dotnet/src/GameCore.Faults.ReleaseCheck/bin/Release/netstandard2.1/GameCore.Faults.ReleaseCheck.dll",
+    "releaseAssemblyBytes": 4096,
+    "releaseTypeCount": 0
+  },
+  "check": "release-surface",
+  "conditionalSites": {
+    "callSites": 8,
+    "mask": "[System.Diagnostics.Conditional(\"GAMECORE_FAULT_INJECTION\")]",
+    "path": "Packages/com.gamecore.unity.runtime/Runtime/Assembly/AssemblyPublisher.cs"
+  },
+  "failures": [],
+  "source": {
+    "boundaryOwners": {
+      "Packages/com.gamecore.unity.runtime/Runtime/Assembly/AssemblyPublisher.cs": {
+        "qualificationLatchReferences": 17,
+        "releaseLatchReferences": 0
+      },
+      "Packages/com.gamecore.unity.runtime/Runtime/Execution/UnityExecutionDriver.cs": {
+        "qualificationLatchReferences": 3,
+        "releaseLatchReferences": 0
+      },
+      "Packages/com.gamecore.unity.runtime/Runtime/Integration/StagedResourceGate.cs": {
+        "qualificationLatchReferences": 6,
+        "releaseLatchReferences": 0
+      },
+      "Packages/com.gamecore.unity.runtime/Runtime/Persistence/CheckpointRestoreExecutor.cs": {
+        "qualificationLatchReferences": 6,
+        "releaseLatchReferences": 0
+      },
+      "Packages/com.gamecore.unity.runtime/Runtime/Recovery/WorldRecovery.cs": {
+        "qualificationLatchReferences": 9,
+        "releaseLatchReferences": 0
+      },
+      "Packages/com.gamecore.unity.runtime/Runtime/WorldHost.cs": {
+        "qualificationLatchReferences": 4,
+        "releaseLatchReferences": 0
+      }
+    },
+    "latchSources": 2,
+    "runtimeSources": 70
+  },
+  "status": "Pass",
+  "switch": {
+    "asmdef": "Packages/com.gamecore.unity.runtime/Runtime/GameCore.Unity.Runtime.asmdef",
+    "otherManifestsReferencingMarker": [],
+    "validationDependency": "file:../../../Packages/com.gamecore.fault-qualification",
+    "versionDefine": {
+      "define": "GAMECORE_FAULT_INJECTION",
+      "expression": "1.0.0",
+      "name": "com.gamecore.fault-qualification"
+    }
+  },
+  "task": "GC-017"
+}

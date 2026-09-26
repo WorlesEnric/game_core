@@ -1,0 +1,133 @@
+{
+  "format": "gamecore.checkpoint-fixtures/store-versions/1",
+  "cases": [
+    {
+      "id": "store-1-0-current",
+      "title": "An envelope that declares the current store format is read.",
+      "requirementIds": [
+        "P-054",
+        "P-055"
+      ],
+      "testIds": [
+        "TEST-017"
+      ],
+      "major": 1,
+      "minor": 0,
+      "expectedSupported": true,
+      "expectedCode": "None",
+      "expectedDetailContains": ""
+    },
+    {
+      "id": "store-1-1-future-minor-refused",
+      "title": "A future minor of the current major is refused rather than read as if it were this minor.",
+      "requirementIds": [
+        "P-054",
+        "P-055"
+      ],
+      "testIds": [
+        "TEST-017"
+      ],
+      "major": 1,
+      "minor": 1,
+      "expectedSupported": false,
+      "expectedCode": "UnsupportedVersion",
+      "expectedDetailContains": "store format 1.1"
+    },
+    {
+      "id": "store-1-255-highest-minor-refused",
+      "title": "The highest expressible minor of the current major is refused like any other future minor.",
+      "requirementIds": [
+        "P-054",
+        "P-055"
+      ],
+      "testIds": [
+        "TEST-017"
+      ],
+      "major": 1,
+      "minor": 255,
+      "expectedSupported": false,
+      "expectedCode": "UnsupportedVersion",
+      "expectedDetailContains": "store format 1.255"
+    },
+    {
+      "id": "store-2-0-future-major-refused",
+      "title": "A higher major is a different layout and is refused before anything is read.",
+      "requirementIds": [
+        "P-054",
+        "P-055"
+      ],
+      "testIds": [
+        "TEST-017"
+      ],
+      "major": 2,
+      "minor": 0,
+      "expectedSupported": false,
+      "expectedCode": "UnsupportedVersion",
+      "expectedDetailContains": "store format 2.0"
+    },
+    {
+      "id": "store-2-1-future-major-with-minor-refused",
+      "title": "A higher major is refused whatever minor it carries.",
+      "requirementIds": [
+        "P-054",
+        "P-055"
+      ],
+      "testIds": [
+        "TEST-017"
+      ],
+      "major": 2,
+      "minor": 1,
+      "expectedSupported": false,
+      "expectedCode": "UnsupportedVersion",
+      "expectedDetailContains": "store format 2.1"
+    },
+    {
+      "id": "store-255-0-highest-major-refused",
+      "title": "The highest expressible major is refused like any other unknown layout.",
+      "requirementIds": [
+        "P-054",
+        "P-055"
+      ],
+      "testIds": [
+        "TEST-017"
+      ],
+      "major": 255,
+      "minor": 0,
+      "expectedSupported": false,
+      "expectedCode": "UnsupportedVersion",
+      "expectedDetailContains": "store format 255.0"
+    },
+    {
+      "id": "store-0-0-major-zero-refused",
+      "title": "Major zero names no layout and is refused rather than treated as a default.",
+      "requirementIds": [
+        "P-054",
+        "P-055"
+      ],
+      "testIds": [
+        "TEST-017"
+      ],
+      "major": 0,
+      "minor": 0,
+      "expectedSupported": false,
+      "expectedCode": "UnsupportedVersion",
+      "expectedDetailContains": "store format 0.0"
+    },
+    {
+      "id": "store-0-1-major-zero-with-minor-refused",
+      "title": "Major zero is refused whatever minor it carries.",
+      "requirementIds": [
+        "P-054",
+        "P-055"
+      ],
+      "testIds": [
+        "TEST-017"
+      ],
+      "major": 0,
+      "minor": 1,
+      "expectedSupported": false,
+      "expectedCode": "UnsupportedVersion",
+      "expectedDetailContains": "store format 0.1"
+    }
+  ]
+}

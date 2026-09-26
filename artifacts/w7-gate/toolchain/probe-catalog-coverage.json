@@ -1,0 +1,102 @@
+{
+  "task": "GC-025",
+  "probe": "GameCore.Validation.ProbeHost.ProbeRunner",
+  "mode": "CatalogCoverage",
+  "result": "Pass",
+  "exitCode": 0,
+  "declaredUnityVersion": "6000.0.75f1",
+  "unityVersion": "6000.0.75f1",
+  "declaredTarget": "StandaloneLinux64",
+  "platform": "LinuxPlayer",
+  "architecture": "X64",
+  "processorType": "12th Gen Intel(R) Core(TM) i7-12700KF",
+  "scriptingBackend": "IL2CPP",
+  "isIl2Cpp": true,
+  "is64BitProcess": true,
+  "managedStrippingLevel": "High",
+  "managedStrippingLevelSource": "declared: GameCore.Validation.Editor.BuildProbe sets and re-reads PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, ManagedStrippingLevel.High); a player cannot query the stripping level at runtime",
+  "burstCompilerEnabled": true,
+  "fixturePluginPreservation": "declared: Assets/link.xml preserves the GameCore.Validation.Fixture assembly (preserve=\"all\"), and the generated catalog holds a direct FixturePluginFactory reference, so the plugin is linked into the player while nothing instantiates it at startup",
+  "catalogGenerator": "GameCore.Content.Compiler (GC-003)",
+  "catalogGeneratedFile": "ProbeCatalog.g.cs",
+  "catalogFileHash": "03bdcd23fd8ec0515d93d7c54d7f7c695f3860a850a7280b82316aaacd14c5c1",
+  "catalogFingerprint": "02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff",
+  "catalogDescriptionFormat": "gamecore.catalog-description/1",
+  "catalogProtocolVersion": "1.0",
+  "catalogSupportedFeatureCount": 1,
+  "catalogFileHashAlgorithm": "SHA-256",
+  "catalogFileHashScope": "SHA-256 over the UTF-8 bytes, with LF line endings, of the file prefix that ends immediately before the eight-space-indented CatalogFileHash declaration; that prefix ends with the newline that terminates the previous line, and the declaration itself, its value and the rest of the file are excluded",
+  "failureReason": "",
+  "probes": [
+    {
+      "name": "catalogCoverage/catalog-reachability-manifest",
+      "status": "Pass",
+      "detail": "format=gamecore.catalog-reachability/1; catalogs=4; registrations=19; serializers=16; roots=2; probe=match(groups=3, registrations=3, schemas=1, roots=2, fingerprint=02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff); cards=match(groups=5, registrations=8, schemas=1, roots=0, fingerprint=77838f4766f9086a0fa32b4fb30d8d5fceeb3a8072e61594fa2177946ad3315d); checkpoint=match(groups=0, registrations=0, schemas=13, roots=0, fingerprint=2d931c984b3bcf3f995a0f88bc82708b0d07e4395fcad44019ebc033126a0eb5); traversal=match(groups=4, registrations=8, schemas=1, roots=0, fingerprint=f66d97d489bc1d8b891b20bc1c16186e0843d2ca5760dcd010909feea6829459)"
+    },
+    {
+      "name": "catalogCoverage/catalog-coverage-probe-catalog",
+      "status": "Pass",
+      "detail": "registrations=3; expectedRegistrations=3; schemas=1; expectedSchemas=1; closedGenericRoots=2; fingerprint=02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff"
+    },
+    {
+      "name": "catalogCoverage/catalog-coverage-cards-catalog",
+      "status": "Pass",
+      "detail": "registrations=8; expectedRegistrations=8; schemas=1; expectedSchemas=1; fingerprint=77838f4766f9086a0fa32b4fb30d8d5fceeb3a8072e61594fa2177946ad3315d"
+    },
+    {
+      "name": "catalogCoverage/catalog-coverage-checkpoint-catalog",
+      "status": "Pass",
+      "detail": "registrations=0; expectedRegistrations=0; schemas=13; expectedSchemas=13; fingerprint=2d931c984b3bcf3f995a0f88bc82708b0d07e4395fcad44019ebc033126a0eb5"
+    },
+    {
+      "name": "catalogCoverage/catalog-coverage-traversal-catalog",
+      "status": "Pass",
+      "detail": "registrations=8; expectedRegistrations=8; schemas=1; expectedSchemas=1; fingerprint=f66d97d489bc1d8b891b20bc1c16186e0843d2ca5760dcd010909feea6829459"
+    },
+    {
+      "name": "catalogCoverage/catalog-coverage-registration-lookup",
+      "status": "Pass",
+      "detail": "resolved=35; expected=35"
+    },
+    {
+      "name": "catalogCoverage/catalog-coverage-closed-generic-roots",
+      "status": "Pass",
+      "detail": "rootStatements=2; probeRoots=2; probeHasClosedGenericRoots=true"
+    },
+    {
+      "name": "catalogCoverage/catalog-coverage-traversal-generated-catalog",
+      "status": "Pass",
+      "detail": "generatedFingerprint=f66d97d489bc1d8b891b20bc1c16186e0843d2ca5760dcd010909feea6829459; fixtureTableFingerprint=f66d97d489bc1d8b891b20bc1c16186e0843d2ca5760dcd010909feea6829459; equal=true; generatedFileHash=3332a5e54f1e5beea869200672f423b0089c6ec2fb4991334090ab797c0a1f8c; groups=4; unresolved=<none>"
+    },
+    {
+      "name": "catalogCoverage/catalog-coverage-late-mount-inactive-plugin",
+      "status": "Pass",
+      "detail": "linkedInactiveInstanceCountBeforeMount=0; sequenceAccountedMounts=1; instanceCountAfterMount=1; handled=15; expectedHandled=15; cardTablePluginFactory=resolved; traversalCoursePluginFactory=resolved"
+    },
+    {
+      "name": "catalogCoverage/catalog-coverage-bake-runtime-parity",
+      "status": "Pass",
+      "detail": "runtimeSource=runtime-recipe; bakedSource=editor-baked-recipe; definition=bda32f65007717240deb759b0cd5868b; baseLayoutSchemas=2; descriptorTags=1; applierKey=FactoryKey(6c89bfb039323dd9c444905b0e133ca4, 1); runtimeRecipeFingerprint=d72de8f6646ee1b382eb1179346179d0d7bb8d490a2334ea3c81edb23774c95e; bakedRecipeFingerprint=d72de8f6646ee1b382eb1179346179d0d7bb8d490a2334ea3c81edb23774c95e; runtimeDigest=6263602b82b25315ae33f8ebcc3fbd314586743b9080b0bbe0df34ecc3172ad8; bakedDigest=6263602b82b25315ae33f8ebcc3fbd314586743b9080b0bbe0df34ecc3172ad8; canonical=stepMillis=20|maxStepsPerPump=4|providerValue=2000|expectedVelocity=1040|poseAdvanceX=20|expectedVelocity=3000|maxStepsPerPump=4|expectedVelocity=1020; mismatches=<none>"
+    },
+    {
+      "name": "catalogCoverage/catalog-coverage-unknown-recipe-refused",
+      "status": "Pass",
+      "detail": "unknownRecipeCode=MissingDependency; staleRevisionCode=StalePlan; unknownRecipeCount=1; staleRevisionCount=1; declaredRecipes=6"
+    },
+    {
+      "name": "catalogCoverage/catalog-coverage-world-stop-restart",
+      "status": "Pass",
+      "detail": "firstSession=47303235524553540000000000000001; secondSession=47303235524553320000000000000001; sessionsDiffer=true; registryBeforeCreate=1; registryRestored=true; digest=6263602b82b25315ae33f8ebcc3fbd314586743b9080b0bbe0df34ecc3172ad8; restartedDigest=6263602b82b25315ae33f8ebcc3fbd314586743b9080b0bbe0df34ecc3172ad8; firstRun=digest=6263602b82b25315ae33f8ebcc3fbd314586743b9080b0bbe0df34ecc3172ad8; label=traversal; steps=14; failed=0; secondRun=digest=6263602b82b25315ae33f8ebcc3fbd314586743b9080b0bbe0df34ecc3172ad8; label=traversal; steps=14; failed=0"
+    },
+    {
+      "name": "catalogCoverage/catalog-coverage-headless-canonical",
+      "status": "Pass",
+      "detail": "digest=6263602b82b25315ae33f8ebcc3fbd314586743b9080b0bbe0df34ecc3172ad8; expectedDigest=6263602b82b25315ae33f8ebcc3fbd314586743b9080b0bbe0df34ecc3172ad8; observations=14; canonical=stepMillis=20|maxStepsPerPump=4|providerValue=2000|expectedVelocity=1040|poseAdvanceX=20|expectedVelocity=3000|maxStepsPerPump=4|expectedVelocity=1020; seededVelocity=1000; arithmetic=holds"
+    },
+    {
+      "name": "catalogCoverage-digest",
+      "status": "Pass",
+      "detail": "digest=77bc74196ec96b076bcc63b007cc0f57f5322121bad69f36c0e280d0576fbbb2; expectedDigest=77bc74196ec96b076bcc63b007cc0f57f5322121bad69f36c0e280d0576fbbb2; observations=13"
+    }
+  ]
+}

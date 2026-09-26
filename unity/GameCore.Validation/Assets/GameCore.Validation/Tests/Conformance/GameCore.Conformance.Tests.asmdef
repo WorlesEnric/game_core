@@ -1,0 +1,43 @@
+{
+  "name": "GameCore.Conformance.Tests",
+  "rootNamespace": "GameCore.Conformance.Tests",
+  "references": [
+    "GameCore.Composition",
+    "GameCore.Contracts",
+    "GameCore.Derivation",
+    "GameCore.Gameplay.Cards",
+    "GameCore.Gameplay.Cards.Fixtures",
+    "GameCore.Gameplay.Narrative",
+    "GameCore.Gameplay.Narrative.Fixtures",
+    "GameCore.Gameplay.Traversal",
+    "GameCore.Gameplay.Traversal.Fixtures",
+    "GameCore.Planning",
+    "GameCore.ReferenceConformance",
+    "GameCore.Rules.Cards",
+    "GameCore.Rules.Narrative",
+    "GameCore.Rules.Traversal",
+    "GameCore.Unity.Adapters",
+    "GameCore.Unity.Runtime",
+    "GameCore.Validation.GeneratedCards",
+    "GameCore.Validation.ProbeHost",
+    "Unity.Collections",
+    "Unity.Entities",
+    "UnityEngine.TestRunner",
+    "UnityEditor.TestRunner"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

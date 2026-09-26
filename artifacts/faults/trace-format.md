@@ -37,7 +37,7 @@ boundary=<name> op=<id> plan=<hex> fired=<0|1> detail=<text>
 
 | Field | Source | Shape |
 | --- | --- | --- |
-| `boundary=<name>` | `FaultBoundaryText.Of(Boundary)` | one of `validation`, `acquisition`, `fence`, `migration`, `first-live-write`, `structural-playback`, `gate-installation`, `cleanup` — `FaultBoundaryText.Names`, in `FaultBoundary` order |
+| `boundary=<name>` | `FaultBoundaryText.Of(Boundary)` | one of `validation`, `acquisition`, `fence`, `migration`, `first-live-write`, `structural-playback`, `gate-installation`, `cleanup`, `checkpoint-capture-copy`, `checkpoint-publication`, `restore-reference-repair`, `restore-apply`, `recovery-publication` — `FaultBoundaryText.Names`, in `FaultBoundary` order. The last five were appended by GC-027; the archived GC-017 probe results exercise only the original eight. |
 | `op=<id>` | `OperationId.ToString()` | `OperationId(WorldId(<32-hex session>), <32-hex issuer>, <issuer sequence>)` — the operation that reached the boundary |
 | `plan=<hex>` | `ContentHash.ToHex()` | exactly 64 lowercase hex characters (the 32-byte SHA-256 of the plan), **not** the `sha256:`-prefixed `ToString()` form |
 | `fired=<0\|1>` | `Injected` | `1` when the reach was an armed injection, `0` when the boundary was merely reached on the production path — a trace is a sequence of reaches, not only of faults |

@@ -26,9 +26,15 @@ namespace GameCore.Validation.ProbeHost
         private const string W5GateArgumentName = "-probeW5Gate";
         private const string TraversalArgumentName = "-probeTraversal";
         private const string Gc021ArgumentName = "-probeGc021";
+        private const string RecoveryArgumentName = "-probeRecovery";
         private const string LifecycleStressArgumentName = "-probeLifecycleStress";
         private const string ReplayArgumentName = "-probeReplay";
         private const string W6GateArgumentName = "-probeW6Gate";
+        private const string CatalogCoverageArgumentName = "-probeCatalogCoverage";
+        private const string BenchmarkArgumentName = "-probeBenchmark";
+        private const string W7GateArgumentName = "-probeW7Gate";
+        private const string RecoverySmokeArgumentName = "-probeRecoverySmoke";
+        private const string ConformanceArgumentName = "-probeConformance";
 
         private ProbeArguments(
             bool missingRegistration,
@@ -48,8 +54,14 @@ namespace GameCore.Validation.ProbeHost
             bool w5Gate,
             bool traversal,
             bool gc021,
+            bool recovery,
             bool replay,
             bool w6Gate,
+            bool catalogCoverage,
+            bool benchmark,
+            bool w7Gate,
+            bool recoverySmoke,
+            bool conformance,
             string? resultPath)
         {
             MissingRegistration = missingRegistration;
@@ -69,8 +81,14 @@ namespace GameCore.Validation.ProbeHost
             W5Gate = w5Gate;
             Traversal = traversal;
             Gc021 = gc021;
+            Recovery = recovery;
             Replay = replay;
             W6Gate = w6Gate;
+            CatalogCoverage = catalogCoverage;
+            Benchmark = benchmark;
+            W7Gate = w7Gate;
+            RecoverySmoke = recoverySmoke;
+            Conformance = conformance;
             ResultPath = resultPath;
         }
 
@@ -192,6 +210,16 @@ namespace GameCore.Validation.ProbeHost
         public bool Gc021 { get; }
 
         /// <summary>
+        /// Runs the GC-027 checkpoint-and-recovery mode: the captured checkpoint that is verified before it is used,
+        /// the fault refusals at the capture-copy, publication, reference-repair, postwrite-apply and
+        /// recovery-publication seams, a recovery into a new session at different native handles with the active and
+        /// dormant state intact, the outbox and its delivery cursor carried across, the outbox-append, delivery and
+        /// acknowledgement faults, a restart from the store alone, a transient failure retried under the host's own
+        /// bound, and a full teardown (P-030, P-045, P-049, P-052, P-053).
+        /// </summary>
+        public bool Recovery { get; }
+
+        /// <summary>
         /// Runs the GC-022 lifecycle stress: the counted mount/unmount cycles over each family's committed generated
         /// catalog and over its fixture identity set, with delayed completions, stalled jobs, a throwing disposer,
         /// required-provider churn and headless cleanup, under native leak detection with full stack traces
@@ -216,16 +244,69 @@ namespace GameCore.Validation.ProbeHost
         /// </summary>
         public bool W6Gate { get; }
 
+        /// <summary>
+        /// Runs the GC-025 catalog coverage mode: the committed reachability manifest against the live generated
+        /// catalogs, every generated registration/serializer/closed-generic root executed in the player, the
+        /// generated traversal catalog against its hand-written counterpart, the inactive plugin late mount, the
+        /// editor-baked and runtime-recipe materializations of the traversal course, the refused unknown/stale
+        /// recipes, a stopped-and-restarted world host and the headless reference execution against the pure-rule
+        /// canonical fixtures (P-009, P-054, P-058; TEST-001, TEST-020).
+        /// </summary>
+        public bool CatalogCoverage { get; }
+
+        /// <summary>
+        /// Runs the GC-026 performance benchmark: the generated 1,000-scope/10,000-target fixture through the real
+        /// derivation and incremental engines for the declared update sizes, the whole-world mode switch, the spawn,
+        /// the reparent and the lifecycle cycles; two real owned worlds for the idle window, the unchanged-composition
+        /// window, the fenced apply pause of a real plan, one live spawn publication and the authority mutation
+        /// fixture; and the correctness gates (zero stable control-tree scans, zero string service lookups, no
+        /// duplicated authoritative state) asserted rather than merely measured, with the raw per-sample documents
+        /// written beside the probe result (P-007, P-022, P-023, P-026, P-034, P-043, P-048, P-052, P-060,
+        /// TEST-008, TEST-013, TEST-023).
+        /// </summary>
+        public bool Benchmark { get; }
+
+        /// <summary>
+        /// Runs the Wave 7 integration-gate mode: the complete W7 exit gate on one merged revision — GC-025's catalog
+        /// coverage sequence re-run over the merged kernel, GC-027's recovery sequence re-run for all three genres
+        /// with the postwrite-apply and restart fault points named, GC-026's incremental-versus-full derivation
+        /// equivalence at the declared 10,000-target scale, GC-024's reference-conformance tables and combined world,
+        /// and the merged dispatch of every W7 mode (W7-GATE).
+        /// </summary>
+        public bool W7Gate { get; }
+
+        /// <summary>
+        /// Runs the GC-027 release recovery smoke: the PRODUCTION `WorldRecovery.Recover` path driven by a real
+        /// file checkpoint in the marker-free release player, with no fault latches — a captured checkpoint is
+        /// published to a real file, a new session is recovered from it at different native handles, and the
+        /// recovered world's own state is read back from the recovered world (P-032, P-045, P-049, P-053).
+        /// It is one of the modes a shipping build keeps, because it drives production seams only.
+        /// </summary>
+        public bool RecoverySmoke { get; }
+
+        /// <summary>
+        /// Runs the GC-024 reference-conformance mode: every before/after table of
+        /// `docs/game-core/07-reference-compositions.md` executed in a real Unity world of the genre that owns it,
+        /// the combined narrative+cards world with the durable reward path, and the genre/assembly audit
+        /// (P-001, P-013, P-014, P-016, P-025, P-045, P-059).
+        /// </summary>
+        public bool Conformance { get; }
+
         /// <summary>Destination path of the structured JSON result.</summary>
         public string? ResultPath { get; }
 
         /// <summary>True when the process was launched as a probe rather than as a normal player run.</summary>
         public bool IsProbeInvocation =>
             MissingRegistration || WorldDispatch || W1Gate || W2Gate || W3Gate || Narrative || Cards || W4Profile
-            || Gc013 || W4Gate || Faults || Gc018 || Gc019 || W5Gate || Traversal || Gc021
+            || Gc013 || W4Gate || Faults || Gc018 || Gc019 || W5Gate || Traversal || Gc021 || Recovery
             || LifecycleStress
             || Replay
             || W6Gate
+            || CatalogCoverage
+            || Benchmark
+            || W7Gate
+            || RecoverySmoke
+            || Conformance
             || !string.IsNullOrEmpty(ResultPath);
 
         /// <summary>True when a result destination was supplied; without it the probe cannot record evidence.</summary>
@@ -250,8 +331,14 @@ namespace GameCore.Validation.ProbeHost
             bool w5Gate = false;
             bool traversal = false;
             bool gc021 = false;
+            bool recovery = false;
             bool replay = false;
             bool w6Gate = false;
+            bool catalogCoverage = false;
+            bool benchmark = false;
+            bool w7Gate = false;
+            bool recoverySmoke = false;
+            bool conformance = false;
             string? resultPath = null;
             for (int i = 0; i < arguments.Length; i++)
             {
@@ -320,6 +407,10 @@ namespace GameCore.Validation.ProbeHost
                 {
                     gc021 = true;
                 }
+                else if (argument == RecoveryArgumentName)
+                {
+                    recovery = true;
+                }
                 else if (argument == LifecycleStressArgumentName)
                 {
                     lifecycleStress = true;
@@ -332,6 +423,26 @@ namespace GameCore.Validation.ProbeHost
                 {
                     w6Gate = true;
                 }
+                else if (argument == CatalogCoverageArgumentName)
+                {
+                    catalogCoverage = true;
+                }
+                else if (argument == BenchmarkArgumentName)
+                {
+                    benchmark = true;
+                }
+                else if (argument == W7GateArgumentName)
+                {
+                    w7Gate = true;
+                }
+                else if (argument == RecoverySmokeArgumentName)
+                {
+                    recoverySmoke = true;
+                }
+                else if (argument == ConformanceArgumentName)
+                {
+                    conformance = true;
+                }
                 else if (argument == ResultArgumentName && i + 1 < arguments.Length)
                 {
                     resultPath = arguments[i + 1];
@@ -341,7 +452,8 @@ namespace GameCore.Validation.ProbeHost
             return new ProbeArguments(
                 missingRegistration, worldDispatch, w1Gate, w2Gate, w3Gate, narrative, cards, w4Profile, gc013,
                 lifecycleStress,
-                w4Gate, faults, gc018, gc019, w5Gate, traversal, gc021, replay, w6Gate, resultPath);
+                w4Gate, faults, gc018, gc019, w5Gate, traversal, gc021, recovery, replay, w6Gate, catalogCoverage,
+                benchmark, w7Gate, recoverySmoke, conformance, resultPath);
         }
     }
 }

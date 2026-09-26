@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- GC-026's reproducible performance-method fixtures: the deterministic 1,000-scope/10,000-target composition
+       generator (TEST-023), the workload catalogue, the nearest-rank statistics, the raw per-sample record with its
+       JSON/CSV writers and the provisional budget rows of docs/game-core/08 section 3. Sources live in
+       `tests/GameCore.Benchmarks/Runtime` and are also compiled by the Unity package `com.gamecore.benchmarks`
+       (assembly GameCore.Benchmarks), so the same generator, statistics and writers run in plain dotnet, in Unity
+       EditMode and in the IL2CPP qualification player. Unity-free by design: no UnityEngine/Unity.* type appears in
+       these files (the assembly's own asmdef declares `noEngineReferences: true`).
+
+       The plain-dotnet shadow build is the *instrumented diagnostic* build: GAMECORE_TELEMETRY is defined here, which
+       is what makes the counting call sites in the derivation kernel survive, exactly as
+       dotnet/src/GameCore.Replay does for GC-023. 08 records the instrumented diagnostic build and the release-like
+       measurement build separately; the release-like shape is compiled by a marker-free Unity project. -->
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>GameCore.Benchmarks</AssemblyName>
+    <RootNamespace>GameCore.Benchmarks</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <DefineConstants>$(DefineConstants);GAMECORE_TELEMETRY</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="../../../tests/GameCore.Benchmarks/Runtime/**/*.cs"
+             Exclude="../../../tests/GameCore.Benchmarks/Runtime/**/bin/**/*.cs;../../../tests/GameCore.Benchmarks/Runtime/**/obj/**/*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../GameCore.Contracts/GameCore.Contracts.csproj" />
+    <ProjectReference Include="../GameCore.Derivation/GameCore.Derivation.csproj" />
+    <ProjectReference Include="../GameCore.Derivation.Fixtures/GameCore.Derivation.Fixtures.csproj" />
+  </ItemGroup>
+
+</Project>

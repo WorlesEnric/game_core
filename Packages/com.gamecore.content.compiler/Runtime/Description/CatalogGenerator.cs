@@ -59,6 +59,36 @@ namespace GameCore.Content.Compiler
         /// <summary>Newline policy of generated files: LF only, independent of the host platform.</summary>
         public const string Newline = "\n";
 
+        /// <summary>File-name suffix of a generated catalog, which the coverage companion's name is derived from.</summary>
+        public const string CatalogFileSuffix = ".g.cs";
+
+        /// <summary>
+        /// Coverage-companion path of one generated catalog path: <c>&lt;Class&gt;.g.cs</c> becomes
+        /// <c>&lt;Class&gt;Coverage.g.cs</c> in the same directory. The companion is emitted into the catalog's own
+        /// assembly, so a registration the linker dropped fails in the player rather than passing a compile-only
+        /// check (04 section 8).
+        /// </summary>
+        public static string CoveragePathFor(string outputPath)
+        {
+            if (string.IsNullOrEmpty(outputPath))
+            {
+                throw new ArgumentException("An output path is required.", nameof(outputPath));
+            }
+
+            string outputFull = Path.GetFullPath(outputPath);
+            string file = Path.GetFileName(outputFull);
+            if (!file.EndsWith(CatalogFileSuffix, StringComparison.Ordinal) || file.Length == CatalogFileSuffix.Length)
+            {
+                throw new ArgumentException(
+                    "A generated catalog path must end in '" + CatalogFileSuffix + "'; read '" + file + "'.",
+                    nameof(outputPath));
+            }
+
+            string directory = Path.GetDirectoryName(outputFull) ?? string.Empty;
+            string coverage = file.Substring(0, file.Length - CatalogFileSuffix.Length) + CatalogEmitter.CoverageFileSuffix;
+            return directory.Length == 0 ? coverage : Path.Combine(directory, coverage);
+        }
+
         /// <summary>Runs one generation from a description file path to an output file path.</summary>
         public static CatalogGenerationReport GenerateFromFiles(string descriptionPath, string outputPath)
         {
@@ -100,21 +130,24 @@ namespace GameCore.Content.Compiler
             string outputFull = Path.GetFullPath(outputPath);
 
             CatalogCompilationResult compilation;
+            CatalogDescription? description;
             try
             {
-                compilation = CatalogDescriptionReader.Read(json);
+                compilation = CatalogDescriptionReader.Read(json, out description);
             }
             catch (CatalogDescriptionException error)
             {
                 return Failure("the description could not be validated: " + error.Message);
             }
 
-            if (!compilation.Succeeded)
+            if (!compilation.Succeeded || description == null)
             {
                 return Failure("the catalog description was rejected:\n" + compilation.Describe());
             }
 
             string code = compilation.GeneratedCode!;
+            string coverageFull = CoveragePathFor(outputFull);
+            string coverage = CatalogEmitter.EmitCoverage(description);
             string? directory = Path.GetDirectoryName(outputFull);
             if (!string.IsNullOrEmpty(directory))
             {
@@ -129,6 +162,18 @@ namespace GameCore.Content.Compiler
                 File.WriteAllText(outputFull, code, new UTF8Encoding(false));
             }
 
+            // The coverage companion is written beside the catalog, into the same assembly, so the player resolves
+            // every generated registration, serializer and closed-generic root from code the linker had to keep
+            // (04 section 8, P-058). It is generated from the same validated description, so the two files cannot
+            // describe different catalogs.
+            bool coverageExisted = File.Exists(coverageFull);
+            bool coverageUnchanged = coverageExisted
+                && string.Equals(File.ReadAllText(coverageFull, new UTF8Encoding(false)), coverage, StringComparison.Ordinal);
+            if (!coverageUnchanged)
+            {
+                File.WriteAllText(coverageFull, coverage, new UTF8Encoding(false));
+            }
+
             CatalogGenerationReport verification = Verify(outputFull);
             if (!verification.Succeeded)
             {
@@ -137,13 +182,15 @@ namespace GameCore.Content.Compiler
 
             return new CatalogGenerationReport(
                 true,
-                Describe(unchanged ? "unchanged" : existed ? "regenerated" : "created", code, outputFull),
+                Describe(unchanged ? "unchanged" : existed ? "regenerated" : "created", code, outputFull)
+                    + "; coverage=" + (coverageExisted ? (coverageUnchanged ? "unchanged" : "regenerated") : "created"),
                 outputFull,
                 Encoding.UTF8.GetByteCount(code),
                 verification.CatalogFingerprint,
                 verification.CatalogFileHash,
                 !unchanged);
         }
+
 
         /// <summary>
         /// Re-reads a generated file and verifies its recorded file hash and fingerprint against the file's own
@@ -193,6 +240,73 @@ namespace GameCore.Content.Compiler
                 Encoding.UTF8.GetByteCount(text),
                 fingerprint,
                 fileHash,
+                false);
+        }
+
+        /// <summary>
+        /// Re-reads a description, re-emits its coverage companion and fails when the file beside the catalog is
+        /// stale. `Verify` cannot do this: the companion records no fingerprint of its own, so the only honest check
+        /// is to emit it again from the same validated description and compare the bytes (P-028, P-058).
+        /// </summary>
+        public static CatalogGenerationReport VerifyCoverageFromFiles(string descriptionPath, string outputPath)
+        {
+            if (string.IsNullOrEmpty(descriptionPath))
+            {
+                throw new ArgumentException("A description path is required.", nameof(descriptionPath));
+            }
+
+            if (string.IsNullOrEmpty(outputPath))
+            {
+                throw new ArgumentException("An output path is required.", nameof(outputPath));
+            }
+
+            string descriptionFull = Path.GetFullPath(descriptionPath);
+            if (!File.Exists(descriptionFull))
+            {
+                return Failure("no catalog description at " + descriptionFull);
+            }
+
+            string coverageFull = CoveragePathFor(outputPath);
+            if (!File.Exists(coverageFull))
+            {
+                return Failure(
+                    "the coverage companion is missing at " + coverageFull +
+                    "; regenerate the catalog so the player resolves every generated root from the catalog's own assembly");
+            }
+
+            string json = File.ReadAllText(descriptionFull, new UTF8Encoding(false));
+            CatalogCompilationResult compilation;
+            CatalogDescription? description;
+            try
+            {
+                compilation = CatalogDescriptionReader.Read(json, out description);
+            }
+            catch (CatalogDescriptionException error)
+            {
+                return Failure("the description could not be validated: " + error.Message);
+            }
+
+            if (!compilation.Succeeded || description == null)
+            {
+                return Failure("the catalog description was rejected:\n" + compilation.Describe());
+            }
+
+            string expected = CatalogEmitter.EmitCoverage(description);
+            string committed = File.ReadAllText(coverageFull, new UTF8Encoding(false));
+            if (!string.Equals(expected, committed, StringComparison.Ordinal))
+            {
+                return Failure(
+                    "the coverage companion at " + coverageFull +
+                    " does not match what the description emits; it is stale or was edited by hand");
+            }
+
+            return new CatalogGenerationReport(
+                true,
+                "verified coverage " + coverageFull,
+                coverageFull,
+                Encoding.UTF8.GetByteCount(committed),
+                ExtractStringConstant(compilation.GeneratedCode!, "CatalogFingerprint"),
+                ExtractStringConstant(compilation.GeneratedCode!, "CatalogFileHash"),
                 false);
         }
 

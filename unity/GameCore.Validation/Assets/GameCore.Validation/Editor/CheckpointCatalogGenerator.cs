@@ -75,6 +75,17 @@ namespace GameCore.Validation.Editor
                 throw new InvalidOperationException("generated catalog verification failed: " + report.Summary);
             }
 
+            // The coverage companion is checked here too: it records no fingerprint of its own, so the only honest
+            // check is to emit it again from the same description and compare bytes. A stale companion would leave
+            // this catalog's registration exercise describing a catalog the build no longer contains (P-028, P-058).
+            CatalogGenerationReport coverage = CatalogGenerator.VerifyCoverageFromFiles(
+                Path.Combine(projectRoot, RelativeDescriptionPath), outputPath);
+            if (!coverage.Succeeded)
+            {
+                throw new InvalidOperationException(
+                    "generated coverage companion verification failed: " + coverage.Summary);
+            }
+
             Debug.Log("[GC018] verified " + RelativeOutputPath + "; catalogFileHash=" + report.CatalogFileHash
                 + "; catalogFingerprint=" + report.CatalogFingerprint);
         }

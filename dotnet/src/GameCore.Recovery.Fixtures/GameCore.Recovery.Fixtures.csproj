@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- GC-027's recovery fixtures: the permitted-outcome matrix and the store-envelope version cases under
+       `tests/GameCore.Recovery/Data`, their model and their strict reader. The sources live in
+       `tests/GameCore.Recovery/Runtime` and are also compiled by the Unity package `com.gamecore.recovery`
+       (assembly `GameCore.Recovery.Fixtures`), so the same fixtures serve plain dotnet and Unity EditMode.
+
+       Unity-free by design, and production-free by design: this project references only `GameCore.Contracts`, because
+       the Unity build of this assembly has no references at all (`references: []` in the asmdef). The suite in
+       `dotnet/tests/GameCore.Recovery.Fixtures.Tests` is the half that references `GameCore.Execution` and drives the
+       production recovery types with these documents.
+
+       The fixture JSON is read with this package's own small, strict reader (`Runtime/RecoveryJson.cs`), not with
+       `System.Text.Json`: the Unity compilation of this assembly cannot see that package at all, because it is not
+       part of Unity's netstandard2.1 profile. The reader is strict about the canonical form the fixtures are
+       committed in and refuses a syntax error, a duplicate property name or a fractional scalar rather than
+       approximating one (P-054). -->
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>GameCore.Recovery.Fixtures</AssemblyName>
+    <RootNamespace>GameCore.Recovery.Fixtures</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="../../../tests/GameCore.Recovery/Runtime/**/*.cs"
+             Exclude="../../../tests/GameCore.Recovery/Runtime/**/bin/**/*.cs;../../../tests/GameCore.Recovery/Runtime/**/obj/**/*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../GameCore.Contracts/GameCore.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

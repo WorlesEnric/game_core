@@ -1,0 +1,132 @@
+{
+  "descriptionFormat": "gamecore.catalog-description/1",
+  "protocolVersion": "1.0",
+  "namespace": "GameCore.Validation.GeneratedTraversal",
+  "className": "TraversalCatalog",
+  "fileName": "TraversalCatalog.g.cs",
+  "supportedFeatureIds": [],
+  "schemas": [
+    {
+      "stableName": "traversal.schema.course-config",
+      "valueTypeName": "TraversalConfigValue",
+      "serializerTypeName": "TraversalConfigSerializer",
+      "serializerKeyName": "ConfigSerializerKey",
+      "schemaId": "a84cdef288cab0b5dc1283d7cd208e72",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "357c38d438b2887ded677f83251e30ee",
+      "required": true,
+      "fields": [
+        { "id": 1, "name": "SchemaVersion", "wireType": "UInt32", "required": true }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "tableName": "PluginRegistrations",
+      "keysName": "PluginKeys",
+      "lookupMethodName": "TryGetPluginFactory",
+      "interfaceType": "GameCore.Gameplay.Traversal.ITraversalCoursePluginFactory",
+      "kind": "PluginFactory",
+      "entries": [
+        {
+          "stableName": "traversal.factory.course-plugin",
+          "keyName": "PluginFactoryKey",
+          "keyVersion": 1,
+          "ownerPackageId": "357c38d438b2887ded677f83251e30ee",
+          "implementationId": "6ab4ee28c7914a6d1c321510aa2a39c2",
+          "implementationExpression": "new TraversalCoursePluginFactory(PluginFactoryKey)"
+        }
+      ]
+    },
+    {
+      "tableName": "SystemFactoryRegistrations",
+      "keysName": "SystemFactoryKeys",
+      "lookupMethodName": "TryGetSystemFactory",
+      "interfaceType": "GameCore.Gameplay.Traversal.ITraversalSystemFactory",
+      "kind": "SystemFactory",
+      "entries": [
+        {
+          "stableName": "traversal.system.input",
+          "keyName": "InputSystemKey",
+          "keyVersion": 1,
+          "ownerPackageId": "357c38d438b2887ded677f83251e30ee",
+          "implementationId": "b893dd85ca45aee477cf897c4154ee95",
+          "implementationExpression": "new TraversalSystemFactory(InputSystemKey)"
+        },
+        {
+          "stableName": "traversal.system.integrate",
+          "keyName": "IntegrateSystemKey",
+          "keyVersion": 1,
+          "ownerPackageId": "357c38d438b2887ded677f83251e30ee",
+          "implementationId": "0b710434fe439447697bf7843e390fdc",
+          "implementationExpression": "new TraversalSystemFactory(IntegrateSystemKey)"
+        },
+        {
+          "stableName": "traversal.system.sense",
+          "keyName": "SenseSystemKey",
+          "keyVersion": 1,
+          "ownerPackageId": "357c38d438b2887ded677f83251e30ee",
+          "implementationId": "4b816113044d99261e5061764cbc5c0b",
+          "implementationExpression": "new TraversalSystemFactory(SenseSystemKey)"
+        },
+        {
+          "stableName": "traversal.system.checkpoints",
+          "keyName": "CheckpointSystemKey",
+          "keyVersion": 1,
+          "ownerPackageId": "357c38d438b2887ded677f83251e30ee",
+          "implementationId": "a8d4ea54f8dafb7237c88d74316d2478",
+          "implementationExpression": "new TraversalSystemFactory(CheckpointSystemKey)"
+        },
+        {
+          "stableName": "traversal.system.output",
+          "keyName": "OutputSystemKey",
+          "keyVersion": 1,
+          "ownerPackageId": "357c38d438b2887ded677f83251e30ee",
+          "implementationId": "a7b1fb1a30a57005ab331f36b6f78ae9",
+          "implementationExpression": "new TraversalSystemFactory(OutputSystemKey)"
+        }
+      ]
+    },
+    {
+      "tableName": "ReducerRegistrations",
+      "keysName": "ReducerKeys",
+      "lookupMethodName": "TryGetReducer",
+      "interfaceType": "GameCore.Rules.Traversal.ITraversalAccelerationReducer",
+      "kind": "Reducer",
+      "entries": [
+        {
+          "stableName": "traversal.reducer.vec3i-sum",
+          "keyName": "ReducerKey",
+          "keyVersion": 1,
+          "ownerPackageId": "357c38d438b2887ded677f83251e30ee",
+          "implementationId": "ac39bbf7cc19582fff8fddc39d1db6d2",
+          "implementationExpression": "new TraversalAccelerationReducer(ReducerKey)"
+        }
+      ]
+    },
+    {
+      "tableName": "StaticPredicateRegistrations",
+      "keysName": "StaticPredicateKeys",
+      "lookupMethodName": "TryGetStaticPredicate",
+      "interfaceType": "GameCore.Rules.Traversal.ITraversalTargetPredicate",
+      "kind": "StaticPredicate",
+      "entries": [
+        {
+          "stableName": "traversal.predicate.always",
+          "keyName": "PredicateKey",
+          "keyVersion": 1,
+          "ownerPackageId": "357c38d438b2887ded677f83251e30ee",
+          "implementationId": "2fb8e2a0a8f97f28f73c805a090faff2",
+          "implementationExpression": "new TraversalAlwaysPredicate(PredicateKey)"
+        }
+      ]
+    }
+  ],
+  "code": {
+    "usingDirectives": [
+      "GameCore.Gameplay.Traversal",
+      "GameCore.Rules.Traversal"
+    ]
+  }
+}

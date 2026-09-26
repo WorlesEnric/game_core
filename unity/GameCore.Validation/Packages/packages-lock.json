@@ -1,5 +1,14 @@
 {
   "dependencies": {
+    "com.gamecore.benchmarks": {
+      "version": "file:../../../tests/GameCore.Benchmarks",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.gamecore.contracts": "0.1.0",
+        "com.gamecore.derivation": "0.1.0"
+      }
+    },
     "com.gamecore.composition": {
       "version": "file:../../../Packages/com.gamecore.composition",
       "depth": 0,
@@ -69,6 +78,20 @@
         "com.gamecore.rules.narrative": "0.1.0"
       }
     },
+    "com.gamecore.gameplay.rewards": {
+      "version": "file:../../../Packages/com.gamecore.gameplay.rewards",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.gamecore.composition": "0.1.0",
+        "com.gamecore.contracts": "0.1.0",
+        "com.gamecore.gameplay.cards": "0.1.0",
+        "com.gamecore.gameplay.integration": "0.1.0",
+        "com.gamecore.gameplay.narrative": "0.1.0",
+        "com.gamecore.planning": "0.1.0",
+        "com.gamecore.unity.runtime": "0.1.0"
+      }
+    },
     "com.gamecore.gameplay.traversal": {
       "version": "file:../../../Packages/com.gamecore.gameplay.traversal",
       "depth": 0,
@@ -89,6 +112,29 @@
       "source": "local",
       "dependencies": {
         "com.gamecore.contracts": "0.1.0"
+      }
+    },
+    "com.gamecore.reference-conformance": {
+      "version": "file:../../../tests/GameCore.ReferenceConformance",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.gamecore.contracts": "0.1.0",
+        "com.gamecore.planning": "0.1.0",
+        "com.gamecore.rules.cards": "0.1.0",
+        "com.gamecore.rules.narrative": "0.1.0",
+        "com.gamecore.rules.traversal": "0.1.0"
+      }
+    },
+    "com.gamecore.replay": {
+      "version": "file:../../../tests/GameCore.Replay",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.gamecore.contracts": "0.1.0",
+        "com.gamecore.derivation": "0.1.0",
+        "com.gamecore.composition": "0.1.0",
+        "com.gamecore.planning": "0.1.0"
       }
     },
     "com.gamecore.rules.cards": {
@@ -114,6 +160,12 @@
       "dependencies": {
         "com.gamecore.contracts": "0.1.0"
       }
+    },
+    "com.gamecore.telemetry-qualification": {
+      "version": "file:../../../Packages/com.gamecore.telemetry-qualification",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {}
     },
     "com.gamecore.unity.adapters": {
       "version": "file:../../../Packages/com.gamecore.unity.adapters",
@@ -345,22 +397,13 @@
       "source": "builtin",
       "dependencies": {}
     },
-    "com.gamecore.replay": {
-      "version": "file:../../../tests/GameCore.Replay",
+    "com.gamecore.recovery": {
+      "version": "file:../../../tests/GameCore.Recovery",
       "depth": 0,
       "source": "local",
       "dependencies": {
-        "com.gamecore.composition": "0.1.0",
-        "com.gamecore.contracts": "0.1.0",
-        "com.gamecore.derivation": "0.1.0",
-        "com.gamecore.planning": "0.1.0"
+        "com.gamecore.contracts": "0.1.0"
       }
-    },
-    "com.gamecore.telemetry-qualification": {
-      "version": "file:../../../Packages/com.gamecore.telemetry-qualification",
-      "depth": 0,
-      "source": "local",
-      "dependencies": {}
     }
   }
 }

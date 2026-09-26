@@ -60,7 +60,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameCore.Derivation.Fixture
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameCore.Replay", "src\GameCore.Replay\GameCore.Replay.csproj", "{1A2B3C4D-0031-4A01-9A01-000000000031}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameCore.Recovery.Fixtures", "src\GameCore.Recovery.Fixtures\GameCore.Recovery.Fixtures.csproj", "{1A2B3C4D-0033-4A01-9A01-000000000033}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameCore.Replay.Tests", "tests\GameCore.Replay.Tests\GameCore.Replay.Tests.csproj", "{1A2B3C4D-0032-4A01-9A01-000000000032}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameCore.Recovery.Fixtures.Tests", "tests\GameCore.Recovery.Fixtures.Tests\GameCore.Recovery.Fixtures.Tests.csproj", "{1A2B3C4D-0034-4A01-9A01-000000000034}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameCore.Benchmarks", "src\GameCore.Benchmarks\GameCore.Benchmarks.csproj", "{1A2B3C4D-0035-4A01-9A01-000000000035}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameCore.Benchmarks.Tests", "tests\GameCore.Benchmarks.Tests\GameCore.Benchmarks.Tests.csproj", "{1A2B3C4D-0036-4A01-9A01-000000000036}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameCore.ReferenceConformance", "src\GameCore.ReferenceConformance\GameCore.ReferenceConformance.csproj", "{1A2B3C4D-0037-4A01-9A01-000000000037}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameCore.ReferenceConformance.Tests", "tests\GameCore.ReferenceConformance.Tests\GameCore.ReferenceConformance.Tests.csproj", "{1A2B3C4D-0038-4A01-9A01-000000000038}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -188,6 +200,30 @@ Global
 		{1A2B3C4D-0032-4A01-9A01-000000000032}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A2B3C4D-0032-4A01-9A01-000000000032}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A2B3C4D-0032-4A01-9A01-000000000032}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A2B3C4D-0033-4A01-9A01-000000000033}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A2B3C4D-0033-4A01-9A01-000000000033}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A2B3C4D-0033-4A01-9A01-000000000033}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A2B3C4D-0033-4A01-9A01-000000000033}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A2B3C4D-0034-4A01-9A01-000000000034}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A2B3C4D-0034-4A01-9A01-000000000034}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A2B3C4D-0034-4A01-9A01-000000000034}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A2B3C4D-0034-4A01-9A01-000000000034}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A2B3C4D-0035-4A01-9A01-000000000035}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A2B3C4D-0035-4A01-9A01-000000000035}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A2B3C4D-0035-4A01-9A01-000000000035}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A2B3C4D-0035-4A01-9A01-000000000035}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A2B3C4D-0036-4A01-9A01-000000000036}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A2B3C4D-0036-4A01-9A01-000000000036}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A2B3C4D-0036-4A01-9A01-000000000036}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A2B3C4D-0036-4A01-9A01-000000000036}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A2B3C4D-0037-4A01-9A01-000000000037}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A2B3C4D-0037-4A01-9A01-000000000037}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A2B3C4D-0037-4A01-9A01-000000000037}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A2B3C4D-0037-4A01-9A01-000000000037}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A2B3C4D-0038-4A01-9A01-000000000038}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A2B3C4D-0038-4A01-9A01-000000000038}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A2B3C4D-0038-4A01-9A01-000000000038}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A2B3C4D-0038-4A01-9A01-000000000038}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

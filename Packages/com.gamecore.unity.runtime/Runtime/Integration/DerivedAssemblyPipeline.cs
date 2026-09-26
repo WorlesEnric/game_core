@@ -176,6 +176,7 @@ namespace GameCore.Unity.Runtime.Integration
         private readonly MigrationRegistry migrations;
         private readonly IPlanResourceGate gates;
         private readonly PlanBudget budget;
+        private readonly DerivationOptions derivationOptions;
 
         private DerivationResult? previousDerivation;
         private readonly DerivedRecipeCache? recipeCache;
@@ -192,7 +193,8 @@ namespace GameCore.Unity.Runtime.Integration
             MigrationRegistry migrations,
             IPlanResourceGate gates,
             PlanBudget budget,
-            DerivedRecipeCache? recipeCache = null)
+            DerivedRecipeCache? recipeCache = null,
+            DerivationOptions? derivationOptions = null)
         {
             this.world = world ?? throw new ArgumentNullException(nameof(world));
             this.lane = lane ?? throw new ArgumentNullException(nameof(lane));
@@ -205,6 +207,7 @@ namespace GameCore.Unity.Runtime.Integration
             this.migrations = migrations ?? throw new ArgumentNullException(nameof(migrations));
             this.gates = gates ?? throw new ArgumentNullException(nameof(gates));
             this.budget = budget ?? throw new ArgumentNullException(nameof(budget));
+            this.derivationOptions = derivationOptions ?? DerivationOptions.Default;
             this.recipeCache = recipeCache;
 
             if (!lane.World.Session.Equals(world.World.Session))
@@ -395,7 +398,7 @@ namespace GameCore.Unity.Runtime.Integration
             IncrementalDerivationOutcome incremental = IncrementalDerivationEngine.Derive(
                 input.Snapshot,
                 values,
-                DerivationOptions.Default,
+                derivationOptions,
                 previousDerivation,
                 null,
                 recipeCache);

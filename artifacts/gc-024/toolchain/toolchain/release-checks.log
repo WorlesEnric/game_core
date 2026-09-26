@@ -1,0 +1,62 @@
+{
+  "artifact": "gamecore.gc023.telemetry-release-surface/1",
+  "status": "Pass",
+  "problems": [],
+  "facts": {
+    "symbol": "GAMECORE_TELEMETRY",
+    "markerPackage": "com.gamecore.telemetry-qualification",
+    "builds": "skipped (--no-build)",
+    "validationManifestMarker": "file:../../../Packages/com.gamecore.telemetry-qualification",
+    "asmdefs": {
+      "Packages/com.gamecore.contracts/Runtime/GameCore.Contracts.asmdef": {
+        "defines": [
+          "GAMECORE_TELEMETRY"
+        ],
+        "markers": [
+          "com.gamecore.telemetry-qualification"
+        ]
+      },
+      "Packages/com.gamecore.derivation/Runtime/GameCore.Derivation.asmdef": {
+        "defines": [
+          "GAMECORE_TELEMETRY"
+        ],
+        "markers": [
+          "com.gamecore.telemetry-qualification"
+        ]
+      },
+      "Packages/com.gamecore.composition/Runtime/GameCore.Composition.asmdef": {
+        "defines": [
+          "GAMECORE_TELEMETRY"
+        ],
+        "markers": [
+          "com.gamecore.telemetry-qualification"
+        ]
+      },
+      "Packages/com.gamecore.planning/Runtime/GameCore.Planning.asmdef": {
+        "defines": [
+          "GAMECORE_TELEMETRY"
+        ],
+        "markers": [
+          "com.gamecore.telemetry-qualification"
+        ]
+      },
+      "Packages/com.gamecore.unity.runtime/Runtime/GameCore.Unity.Runtime.asmdef": {
+        "defines": [
+          "GAMECORE_FAULT_INJECTION",
+          "GAMECORE_TELEMETRY"
+        ],
+        "markers": [
+          "com.gamecore.fault-qualification",
+          "com.gamecore.telemetry-qualification"
+        ]
+      }
+    },
+    "directoryBuildPropsDefinesSymbol": false
+  }
+}
+
+GC-017 release surface: PASS
+  [not run] the compiled latch assembly in both configurations (--no-build)
+  no runtime source keeps a latch reference once the qualification symbol is undefined
+  the apply path's mask by [System.Diagnostics.Conditional("GAMECORE_FAULT_INJECTION")] is intact (8 call site(s))
+  the symbol is driven by com.gamecore.fault-qualification, referenced only by the validation manifest

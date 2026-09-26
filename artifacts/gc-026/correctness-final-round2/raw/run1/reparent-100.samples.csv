@@ -1,0 +1,14 @@
+# gamecore.benchmark.samples.csv/1 workload=reparent-100 run=1 seed=20260926 scopes=1000 targets=10000 warmupSeconds=1 durationSeconds=2 repetitions=5
+workload,phase,ordinal,microseconds,control-nodes-visited,candidates-matched,contributions-added,contributions-retracted,strata-evaluated,plan-prepared-bytes,apply-us,assembly-epoch,steps-advanced,service-string-lookups,stage-us,stage-samples,job-wait-us,job-wait-samples,structural-operations,request-high-water,request-overflow,stale-results,live-leases,outstanding-callbacks,retained-event-bytes,retained-event-count,quarantine-bytes,quarantine-entries,lease-bytes,cache-bytes,cache-entries,discarded-callbacks,apply-samples
+reparent-100,Warmup,0,154899,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+reparent-100,Warmup,1,133042,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+reparent-100,Warmup,2,161573,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+reparent-100,Warmup,3,148966,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+reparent-100,Warmup,4,133542,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+reparent-100,Warmup,5,155021,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+reparent-100,Warmup,6,146936,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+reparent-100,Prepare,0,80057,1120,210,0,90,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+reparent-100,Prepare,1,84859,1440,310,90,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+reparent-100,Prepare,2,95312,1120,210,0,90,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+reparent-100,Prepare,3,81309,1440,310,90,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+reparent-100,Prepare,4,80537,1120,210,0,90,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0

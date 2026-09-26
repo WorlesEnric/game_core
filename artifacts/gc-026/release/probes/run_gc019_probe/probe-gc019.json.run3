@@ -1,0 +1,262 @@
+{
+  "task": "GC-019",
+  "probe": "GameCore.Validation.ProbeHost.ProbeRunner",
+  "mode": "Gc019",
+  "result": "Pass",
+  "exitCode": 0,
+  "declaredUnityVersion": "6000.0.75f1",
+  "unityVersion": "6000.0.75f1",
+  "declaredTarget": "StandaloneLinux64",
+  "platform": "LinuxPlayer",
+  "architecture": "X64",
+  "processorType": "12th Gen Intel(R) Core(TM) i7-12700KF",
+  "scriptingBackend": "IL2CPP",
+  "isIl2Cpp": true,
+  "is64BitProcess": true,
+  "managedStrippingLevel": "High",
+  "managedStrippingLevelSource": "declared: GameCore.Validation.Editor.BuildProbe sets and re-reads PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, ManagedStrippingLevel.High); a player cannot query the stripping level at runtime",
+  "burstCompilerEnabled": true,
+  "fixturePluginPreservation": "declared: Assets/link.xml preserves the GameCore.Validation.Fixture assembly (preserve=\"all\"), and the generated catalog holds a direct FixturePluginFactory reference, so the plugin is linked into the player while nothing instantiates it at startup",
+  "catalogGenerator": "GameCore.Content.Compiler (GC-003)",
+  "catalogGeneratedFile": "ProbeCatalog.g.cs",
+  "catalogFileHash": "03bdcd23fd8ec0515d93d7c54d7f7c695f3860a850a7280b82316aaacd14c5c1",
+  "catalogFingerprint": "02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff",
+  "catalogDescriptionFormat": "gamecore.catalog-description/1",
+  "catalogProtocolVersion": "1.0",
+  "catalogSupportedFeatureCount": 1,
+  "catalogFileHashAlgorithm": "SHA-256",
+  "catalogFileHashScope": "SHA-256 over the UTF-8 bytes, with LF line endings, of the file prefix that ends immediately before the eight-space-indented CatalogFileHash declaration; that prefix ends with the newline that terminates the previous line, and the declaration itself, its value and the rest of the file are excluded",
+  "failureReason": "",
+  "probes": [
+    {
+      "name": "narrative/gc019-world-and-committed-targets",
+      "status": "Pass",
+      "detail": "session=4e415247433031330000000000000001; catalogFingerprint=02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff; registryBefore=1; liveTargets=7; viewTargets=3; targetsWithoutRows=<none>; providerInstance=PluginInstanceId(8d5ac0121d3d8b7c453e967325c9158b); bindingRows=8; revision=3; providerMounted=True; secondProviderMounted=True; epoch=3; scopes=7; mode=Automatic; bridge=True; lifecycle=Running; idleSteps=0; joined=True"
+    },
+    {
+      "name": "narrative/gc019-input-sample-becomes-a-committed-command",
+      "status": "Pass",
+      "detail": "admission=Admitted; admissionKind=Accepted; route=RouteId(750f2574f941becaf655620cc55ce2fe); target=TargetId(a300fa762c702f9e90dbcb691ea84e96); schema=SchemaRef(SchemaId(4fbc5dc51eb55373de0c85621aae7d56), 1); sample=input(RouteId(750f2574f941becaf655620cc55ce2fe)->TargetId(a300fa762c702f9e90dbcb691ea84e96), SchemaRef(SchemaId(4fbc5dc51eb55373de0c85621aae7d56), 1)); stepsCommitted=1; step=0->1; committedRequests=0->1; refusedRequestsDelta=0; retransmission=Retransmission; retransmittedSteps=0; admittedRequests=0->1; admitted=1; refused=0; sources=1; retainedAdmissions=1; rowsBefore=2|CapabilityId(3b7872beb719b68042e77a8351198bdf)#0:1|CapabilityId(a54b600e13612649cc9424903c07bc1c)#0:1; rowsAfter=2|CapabilityId(3b7872beb719b68042e77a8351198bdf)#0:1|CapabilityId(a54b600e13612649cc9424903c07bc1c)#0:1; familyState=TargetId(a300fa762c702f9e90dbcb691ea84e96):2@2 seeded=7"
+    },
+    {
+      "name": "narrative/gc019-input-completion-from-a-retired-activation-is-discarded",
+      "status": "Pass",
+      "detail": "liveAtIssue=True; registered=True; token=AsyncWorkToken(OperationId(WorldId(4e415247433031330000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 6), PluginInstanceId(8d5ac0121d3d8b7c453e967325c9158b), InstallationGeneration(1), ActivationEpoch(1), 1); suspended=True(Suspended); gateAfterRetirement=DiscardRetiredRoute; completion=Discarded; completionGate=DiscardRetiredRoute; plane=present; refusedBefore=0->0; admitted=1->1; discarded=1; releasedStaged=1"
+    },
+    {
+      "name": "narrative/gc019-asset-lease-completes-under-a-live-token",
+      "status": "Pass",
+      "detail": "resumed=True; liveAtIssue=True; token=AsyncWorkToken(OperationId(WorldId(4e415247433031330000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 11), PluginInstanceId(8d5ac0121d3d8b7c453e967325c9158b), InstallationGeneration(1), ActivationEpoch(2), 2); requested=True; lease=67636173736574310000000000000001; handle=1; pumped=1; state=Ready; payloadBytes=4; reservedBytes=128; backendOutstanding=1; ledgerResource=7265736f75726365000000000000000a; ledgerState=Ready"
+    },
+    {
+      "name": "narrative/gc019-late-asset-completion-cannot-write-a-retired-world",
+      "status": "Pass",
+      "detail": "suspended=True(Suspended); staleGate=DiscardRetiredRoute; requested=True; lateLease=67636173736574310000000000000002; late=DiscardedStale; lateGate=DiscardRetiredRoute; lateState=DiscardedStale; lateRetainedInLedger=False; quarantinedRequest=True; retired=True; report=released=2 retained=1 failed=0; quarantinedLease=67636173736574310000000000000003; postRetire=DiscardedStale; postRetireCompletions=0->1; backendOutstanding=0; retainedLeasesOfTheInstallation=0"
+    },
+    {
+      "name": "narrative/gc019-presentation-reads-the-committed-snapshot",
+      "status": "Pass",
+      "detail": "resumed=True; image=committedImage(SnapshotToken(WorldId(4e415247433031330000000000000001), AssemblyEpoch(7), LogicalStepId(1)), targets=5); imageToken=SnapshotToken(WorldId(4e415247433031330000000000000001), AssemblyEpoch(7), LogicalStepId(1)); refreshed=True; created=TargetId(a300fa762c702f9e90dbcb691ea84e96)=Created@1,TargetId(967aebcd3dbf137cbdc41d194205b514)=Created@2,TargetId(5c63f1314f90924ad5990c531fa9e5b7)=Created@3; presented=Presented; applied=3; stale=0; orphaned=0; dissenting=<none>; liveViews=3; binderViews=3; deviceBindings=1; frameRegistered=True; framesBeforeRegister=0"
+    },
+    {
+      "name": "narrative/gc019-idle-world-presents-without-stepping",
+      "status": "Pass",
+      "detail": "frames=4; stepsCommitted=0; step=1; presentCalls=1->5; staleRefusals=0->12; passes=0/Completed/Completed/0,0/Completed/Completed/0,0/Completed/Completed/0,0/Completed/Completed/0; deviceSamples=0; unbound=0; liveViews=3; framesRan=True"
+    },
+    {
+      "name": "narrative/gc019-view-destruction-leaves-gameplay-intact",
+      "status": "Pass",
+      "detail": "destroyed=3; liveViews=3->0; binderViews=0; rowsUnchanged=True; scopesUnchanged=True; gameplayUnchanged=True; revision=7; epoch=7; step=1; ledgerResources=12->12; nextCommand=Admitted; stepsCommitted=1"
+    },
+    {
+      "name": "narrative/gc019-visual-reparent-does-not-move-composition",
+      "status": "Pass",
+      "detail": "views=2; reparented=True; child=TargetId(a300fa762c702f9e90dbcb691ea84e96)@4; parent=TargetId(967aebcd3dbf137cbdc41d194205b514)@5; parentChanges=1; compositionParent=ScopeId(05cfbe283381aab8902e93d508ff031c)->ScopeId(05cfbe283381aab8902e93d508ff031c); visualParent=5; scopesUnchanged=True; revision=7; reparentsWithoutCompositionChange=1"
+    },
+    {
+      "name": "narrative/gc019-does-not-declare-external-authority",
+      "status": "Pass",
+      "detail": "recipe=DefinitionRef(DefinitionId(3e0e151a13163982a9f23b586b56478a), SchemaRef(SchemaId(2fe19eba42367b8156e322fb43d64ba2), 1), DefinitionRevision(1)); recipeKnown=True; authority=EcsOwnedKinematic; classify=RefusedEcsOwned; undeclared=True; externalDomains=0; declarations=0; physicsStages=<none>; physicsSystems=<none>; externallyAuthoredTargets=<none>; stages=6; systems=6; worlds=2"
+    },
+    {
+      "name": "narrative/gc019-adapter-teardown-participates-in-lifecycle",
+      "status": "Pass",
+      "detail": "idleSteps=0; stop=Published(None); lifecycle=Disposed; adapterTeardown=views=2; assets=released=3 retained=0 failed=0; unregistered=True; frames=0; backendOutstanding=0; assetsRetired=True; liveViews=0; binderViews=0; retainedLeasesOfTheInstallation=0; outstandingJobs=0; retainedResources=0; registryBeforeCreate=1; registryBeforeStop=2; registryAfter=1"
+    },
+    {
+      "name": "fixture:narrative/gc019-world-and-committed-targets",
+      "status": "Pass",
+      "detail": "session=4e415247433031330000000000000001; catalogFingerprint=e30e5c5248fc6ed5393960bbaab9838502227e516a55d4cb9f532fe167cf3bb7; registryBefore=1; liveTargets=7; viewTargets=3; targetsWithoutRows=<none>; providerInstance=PluginInstanceId(8d5ac0121d3d8b7c453e967325c9158b); bindingRows=8; revision=3; providerMounted=True; secondProviderMounted=True; epoch=3; scopes=7; mode=Automatic; bridge=True; lifecycle=Running; idleSteps=0; joined=True"
+    },
+    {
+      "name": "fixture:narrative/gc019-input-sample-becomes-a-committed-command",
+      "status": "Pass",
+      "detail": "admission=Admitted; admissionKind=Accepted; route=RouteId(750f2574f941becaf655620cc55ce2fe); target=TargetId(a300fa762c702f9e90dbcb691ea84e96); schema=SchemaRef(SchemaId(4fbc5dc51eb55373de0c85621aae7d56), 1); sample=input(RouteId(750f2574f941becaf655620cc55ce2fe)->TargetId(a300fa762c702f9e90dbcb691ea84e96), SchemaRef(SchemaId(4fbc5dc51eb55373de0c85621aae7d56), 1)); stepsCommitted=1; step=0->1; committedRequests=0->1; refusedRequestsDelta=0; retransmission=Retransmission; retransmittedSteps=0; admittedRequests=0->1; admitted=1; refused=0; sources=1; retainedAdmissions=1; rowsBefore=2|CapabilityId(3b7872beb719b68042e77a8351198bdf)#0:1|CapabilityId(a54b600e13612649cc9424903c07bc1c)#0:1; rowsAfter=2|CapabilityId(3b7872beb719b68042e77a8351198bdf)#0:1|CapabilityId(a54b600e13612649cc9424903c07bc1c)#0:1; familyState=TargetId(a300fa762c702f9e90dbcb691ea84e96):2@2 seeded=7"
+    },
+    {
+      "name": "fixture:narrative/gc019-input-completion-from-a-retired-activation-is-discarded",
+      "status": "Pass",
+      "detail": "liveAtIssue=True; registered=True; token=AsyncWorkToken(OperationId(WorldId(4e415247433031330000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 6), PluginInstanceId(8d5ac0121d3d8b7c453e967325c9158b), InstallationGeneration(1), ActivationEpoch(1), 1); suspended=True(Suspended); gateAfterRetirement=DiscardRetiredRoute; completion=Discarded; completionGate=DiscardRetiredRoute; plane=present; refusedBefore=0->0; admitted=1->1; discarded=1; releasedStaged=1"
+    },
+    {
+      "name": "fixture:narrative/gc019-asset-lease-completes-under-a-live-token",
+      "status": "Pass",
+      "detail": "resumed=True; liveAtIssue=True; token=AsyncWorkToken(OperationId(WorldId(4e415247433031330000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 11), PluginInstanceId(8d5ac0121d3d8b7c453e967325c9158b), InstallationGeneration(1), ActivationEpoch(2), 2); requested=True; lease=67636173736574310000000000000001; handle=1; pumped=1; state=Ready; payloadBytes=4; reservedBytes=128; backendOutstanding=1; ledgerResource=7265736f75726365000000000000000a; ledgerState=Ready"
+    },
+    {
+      "name": "fixture:narrative/gc019-late-asset-completion-cannot-write-a-retired-world",
+      "status": "Pass",
+      "detail": "suspended=True(Suspended); staleGate=DiscardRetiredRoute; requested=True; lateLease=67636173736574310000000000000002; late=DiscardedStale; lateGate=DiscardRetiredRoute; lateState=DiscardedStale; lateRetainedInLedger=False; quarantinedRequest=True; retired=True; report=released=2 retained=1 failed=0; quarantinedLease=67636173736574310000000000000003; postRetire=DiscardedStale; postRetireCompletions=0->1; backendOutstanding=0; retainedLeasesOfTheInstallation=0"
+    },
+    {
+      "name": "fixture:narrative/gc019-presentation-reads-the-committed-snapshot",
+      "status": "Pass",
+      "detail": "resumed=True; image=committedImage(SnapshotToken(WorldId(4e415247433031330000000000000001), AssemblyEpoch(7), LogicalStepId(1)), targets=5); imageToken=SnapshotToken(WorldId(4e415247433031330000000000000001), AssemblyEpoch(7), LogicalStepId(1)); refreshed=True; created=TargetId(a300fa762c702f9e90dbcb691ea84e96)=Created@1,TargetId(967aebcd3dbf137cbdc41d194205b514)=Created@2,TargetId(5c63f1314f90924ad5990c531fa9e5b7)=Created@3; presented=Presented; applied=3; stale=0; orphaned=0; dissenting=<none>; liveViews=3; binderViews=3; deviceBindings=1; frameRegistered=True; framesBeforeRegister=0"
+    },
+    {
+      "name": "fixture:narrative/gc019-idle-world-presents-without-stepping",
+      "status": "Pass",
+      "detail": "frames=4; stepsCommitted=0; step=1; presentCalls=1->5; staleRefusals=0->12; passes=0/Completed/Completed/0,0/Completed/Completed/0,0/Completed/Completed/0,0/Completed/Completed/0; deviceSamples=0; unbound=0; liveViews=3; framesRan=True"
+    },
+    {
+      "name": "fixture:narrative/gc019-view-destruction-leaves-gameplay-intact",
+      "status": "Pass",
+      "detail": "destroyed=3; liveViews=3->0; binderViews=0; rowsUnchanged=True; scopesUnchanged=True; gameplayUnchanged=True; revision=7; epoch=7; step=1; ledgerResources=12->12; nextCommand=Admitted; stepsCommitted=1"
+    },
+    {
+      "name": "fixture:narrative/gc019-visual-reparent-does-not-move-composition",
+      "status": "Pass",
+      "detail": "views=2; reparented=True; child=TargetId(a300fa762c702f9e90dbcb691ea84e96)@4; parent=TargetId(967aebcd3dbf137cbdc41d194205b514)@5; parentChanges=1; compositionParent=ScopeId(05cfbe283381aab8902e93d508ff031c)->ScopeId(05cfbe283381aab8902e93d508ff031c); visualParent=5; scopesUnchanged=True; revision=7; reparentsWithoutCompositionChange=1"
+    },
+    {
+      "name": "fixture:narrative/gc019-does-not-declare-external-authority",
+      "status": "Pass",
+      "detail": "recipe=DefinitionRef(DefinitionId(3e0e151a13163982a9f23b586b56478a), SchemaRef(SchemaId(2fe19eba42367b8156e322fb43d64ba2), 1), DefinitionRevision(1)); recipeKnown=True; authority=EcsOwnedKinematic; classify=RefusedEcsOwned; undeclared=True; externalDomains=0; declarations=0; physicsStages=<none>; physicsSystems=<none>; externallyAuthoredTargets=<none>; stages=6; systems=6; worlds=2"
+    },
+    {
+      "name": "fixture:narrative/gc019-adapter-teardown-participates-in-lifecycle",
+      "status": "Pass",
+      "detail": "idleSteps=0; stop=Published(None); lifecycle=Disposed; adapterTeardown=views=2; assets=released=3 retained=0 failed=0; unregistered=True; frames=0; backendOutstanding=0; assetsRetired=True; liveViews=0; binderViews=0; retainedLeasesOfTheInstallation=0; outstandingJobs=0; retainedResources=0; registryBeforeCreate=1; registryBeforeStop=2; registryAfter=1"
+    },
+    {
+      "name": "gc019-narrative-digest",
+      "status": "Pass",
+      "detail": "generatedDigest=c812ccdce22cee6098d3f8dba5c23cfb744c7644aa83a99ae24bb790fbdde837; fixtureDigest=c812ccdce22cee6098d3f8dba5c23cfb744c7644aa83a99ae24bb790fbdde837; expectedDigest=c812ccdce22cee6098d3f8dba5c23cfb744c7644aa83a99ae24bb790fbdde837; observations=11; digest=c812ccdce22cee6098d3f8dba5c23cfb744c7644aa83a99ae24bb790fbdde837; label=narrative; steps=11; failed=0; digest=c812ccdce22cee6098d3f8dba5c23cfb744c7644aa83a99ae24bb790fbdde837; label=narrative; steps=11; failed=0"
+    },
+    {
+      "name": "cards/gc019-world-and-committed-targets",
+      "status": "Pass",
+      "detail": "session=43415247433031330000000000000001; catalogFingerprint=77838f4766f9086a0fa32b4fb30d8d5fceeb3a8072e61594fa2177946ad3315d; registryBefore=1; liveTargets=6; viewTargets=3; targetsWithoutRows=<none>; providerInstance=PluginInstanceId(c5b1e152e048358db420aefd223b5e1a); bindingRows=3; revision=3; providerMounted=True; secondProviderMounted=True; epoch=3; scopes=9; mode=Automatic; bridge=True; lifecycle=Running; idleSteps=0; joined=True"
+    },
+    {
+      "name": "cards/gc019-input-sample-becomes-a-committed-command",
+      "status": "Pass",
+      "detail": "admission=Admitted; admissionKind=Accepted; route=RouteId(b85a21dd9ba6a4cd99fafcea95c1036c); target=TargetId(5767cc31ae9cbe923b031aa7db4a8512); schema=SchemaRef(SchemaId(6f8b4189041961322b8f6f5f74f94838), 1); sample=input(RouteId(b85a21dd9ba6a4cd99fafcea95c1036c)->TargetId(5767cc31ae9cbe923b031aa7db4a8512), SchemaRef(SchemaId(6f8b4189041961322b8f6f5f74f94838), 1)); stepsCommitted=1; step=0->1; committedRequests=0->1; refusedRequestsDelta=0; retransmission=Retransmission; retransmittedSteps=0; admittedRequests=0->1; admitted=1; refused=0; sources=1; retainedAdmissions=1; rowsBefore=0; rowsAfter=0; familyState=TargetId(5767cc31ae9cbe923b031aa7db4a8512):<missing>@0 seeded=4242"
+    },
+    {
+      "name": "cards/gc019-input-completion-from-a-retired-activation-is-discarded",
+      "status": "Pass",
+      "detail": "liveAtIssue=True; registered=True; token=AsyncWorkToken(OperationId(WorldId(43415247433031330000000000000001), c4d3f9becdf691d69ff6f056d4f2e274, 6), PluginInstanceId(c5b1e152e048358db420aefd223b5e1a), InstallationGeneration(1), ActivationEpoch(1), 1); suspended=True(Suspended); gateAfterRetirement=DiscardRetiredRoute; completion=Discarded; completionGate=DiscardRetiredRoute; plane=present; refusedBefore=0->0; admitted=1->1; discarded=1; releasedStaged=1"
+    },
+    {
+      "name": "cards/gc019-asset-lease-completes-under-a-live-token",
+      "status": "Pass",
+      "detail": "resumed=True; liveAtIssue=True; token=AsyncWorkToken(OperationId(WorldId(43415247433031330000000000000001), c4d3f9becdf691d69ff6f056d4f2e274, 11), PluginInstanceId(c5b1e152e048358db420aefd223b5e1a), InstallationGeneration(1), ActivationEpoch(2), 2); requested=True; lease=67636173736574310000000000000001; handle=1; pumped=1; state=Ready; payloadBytes=4; reservedBytes=128; backendOutstanding=1; ledgerResource=7265736f757263650000000000000008; ledgerState=Ready"
+    },
+    {
+      "name": "cards/gc019-late-asset-completion-cannot-write-a-retired-world",
+      "status": "Pass",
+      "detail": "suspended=True(Suspended); staleGate=DiscardRetiredRoute; requested=True; lateLease=67636173736574310000000000000002; late=DiscardedStale; lateGate=DiscardRetiredRoute; lateState=DiscardedStale; lateRetainedInLedger=False; quarantinedRequest=True; retired=True; report=released=2 retained=1 failed=0; quarantinedLease=67636173736574310000000000000003; postRetire=DiscardedStale; postRetireCompletions=0->1; backendOutstanding=0; retainedLeasesOfTheInstallation=0"
+    },
+    {
+      "name": "cards/gc019-presentation-reads-the-committed-snapshot",
+      "status": "Pass",
+      "detail": "resumed=True; image=committedImage(SnapshotToken(WorldId(43415247433031330000000000000001), AssemblyEpoch(7), LogicalStepId(1)), targets=3); imageToken=SnapshotToken(WorldId(43415247433031330000000000000001), AssemblyEpoch(7), LogicalStepId(1)); refreshed=True; created=TargetId(c203b09deb766da6f8e93773ca6dd65c)=Created@1,TargetId(ff80dc9b9ed2790f4681afa020eb8e4c)=Created@2,TargetId(709f4ce6dacd0abd01d516a7a46bf656)=Created@3; presented=Presented; applied=3; stale=0; orphaned=0; dissenting=<none>; liveViews=3; binderViews=3; deviceBindings=1; frameRegistered=True; framesBeforeRegister=0"
+    },
+    {
+      "name": "cards/gc019-idle-world-presents-without-stepping",
+      "status": "Pass",
+      "detail": "frames=4; stepsCommitted=0; step=1; presentCalls=1->5; staleRefusals=0->12; passes=0/Completed/Completed/0,0/Completed/Completed/0,0/Completed/Completed/0,0/Completed/Completed/0; deviceSamples=0; unbound=0; liveViews=3; framesRan=True"
+    },
+    {
+      "name": "cards/gc019-view-destruction-leaves-gameplay-intact",
+      "status": "Pass",
+      "detail": "destroyed=3; liveViews=3->0; binderViews=0; rowsUnchanged=True; scopesUnchanged=True; gameplayUnchanged=True; revision=7; epoch=7; step=1; ledgerResources=10->10; nextCommand=Admitted; stepsCommitted=1"
+    },
+    {
+      "name": "cards/gc019-visual-reparent-does-not-move-composition",
+      "status": "Pass",
+      "detail": "views=2; reparented=True; child=TargetId(c203b09deb766da6f8e93773ca6dd65c)@4; parent=TargetId(ff80dc9b9ed2790f4681afa020eb8e4c)@5; parentChanges=1; compositionParent=ScopeId(55aacc846396635d81c199adda1b3ba4)->ScopeId(55aacc846396635d81c199adda1b3ba4); visualParent=5; scopesUnchanged=True; revision=7; reparentsWithoutCompositionChange=1"
+    },
+    {
+      "name": "cards/gc019-does-not-declare-external-authority",
+      "status": "Pass",
+      "detail": "recipe=DefinitionRef(DefinitionId(2e3b45bf7d9f952fa03935394a37920d), SchemaRef(SchemaId(10ecaedb708b535cac0e0cafc7f36f94), 1), DefinitionRevision(1)); recipeKnown=True; authority=EcsOwnedKinematic; classify=RefusedEcsOwned; undeclared=True; externalDomains=0; declarations=0; physicsStages=<none>; physicsSystems=<none>; externallyAuthoredTargets=<none>; stages=4; systems=4; worlds=2"
+    },
+    {
+      "name": "cards/gc019-adapter-teardown-participates-in-lifecycle",
+      "status": "Pass",
+      "detail": "idleSteps=0; stop=Published(None); lifecycle=Disposed; adapterTeardown=views=2; assets=released=3 retained=0 failed=0; unregistered=True; frames=0; backendOutstanding=0; assetsRetired=True; liveViews=0; binderViews=0; retainedLeasesOfTheInstallation=0; outstandingJobs=0; retainedResources=0; registryBeforeCreate=1; registryBeforeStop=2; registryAfter=1"
+    },
+    {
+      "name": "fixture:cards/gc019-world-and-committed-targets",
+      "status": "Pass",
+      "detail": "session=43415247433031330000000000000001; catalogFingerprint=815b89a5ad754aeafabf7a6ad0dbd1bd277a17d63fc0b5845f58ae9d80b3c08a; registryBefore=1; liveTargets=6; viewTargets=3; targetsWithoutRows=<none>; providerInstance=PluginInstanceId(c5b1e152e048358db420aefd223b5e1a); bindingRows=3; revision=3; providerMounted=True; secondProviderMounted=True; epoch=3; scopes=9; mode=Automatic; bridge=True; lifecycle=Running; idleSteps=0; joined=True"
+    },
+    {
+      "name": "fixture:cards/gc019-input-sample-becomes-a-committed-command",
+      "status": "Pass",
+      "detail": "admission=Admitted; admissionKind=Accepted; route=RouteId(b85a21dd9ba6a4cd99fafcea95c1036c); target=TargetId(5767cc31ae9cbe923b031aa7db4a8512); schema=SchemaRef(SchemaId(6f8b4189041961322b8f6f5f74f94838), 1); sample=input(RouteId(b85a21dd9ba6a4cd99fafcea95c1036c)->TargetId(5767cc31ae9cbe923b031aa7db4a8512), SchemaRef(SchemaId(6f8b4189041961322b8f6f5f74f94838), 1)); stepsCommitted=1; step=0->1; committedRequests=0->1; refusedRequestsDelta=0; retransmission=Retransmission; retransmittedSteps=0; admittedRequests=0->1; admitted=1; refused=0; sources=1; retainedAdmissions=1; rowsBefore=0; rowsAfter=0; familyState=TargetId(5767cc31ae9cbe923b031aa7db4a8512):<missing>@0 seeded=4242"
+    },
+    {
+      "name": "fixture:cards/gc019-input-completion-from-a-retired-activation-is-discarded",
+      "status": "Pass",
+      "detail": "liveAtIssue=True; registered=True; token=AsyncWorkToken(OperationId(WorldId(43415247433031330000000000000001), c4d3f9becdf691d69ff6f056d4f2e274, 6), PluginInstanceId(c5b1e152e048358db420aefd223b5e1a), InstallationGeneration(1), ActivationEpoch(1), 1); suspended=True(Suspended); gateAfterRetirement=DiscardRetiredRoute; completion=Discarded; completionGate=DiscardRetiredRoute; plane=present; refusedBefore=0->0; admitted=1->1; discarded=1; releasedStaged=1"
+    },
+    {
+      "name": "fixture:cards/gc019-asset-lease-completes-under-a-live-token",
+      "status": "Pass",
+      "detail": "resumed=True; liveAtIssue=True; token=AsyncWorkToken(OperationId(WorldId(43415247433031330000000000000001), c4d3f9becdf691d69ff6f056d4f2e274, 11), PluginInstanceId(c5b1e152e048358db420aefd223b5e1a), InstallationGeneration(1), ActivationEpoch(2), 2); requested=True; lease=67636173736574310000000000000001; handle=1; pumped=1; state=Ready; payloadBytes=4; reservedBytes=128; backendOutstanding=1; ledgerResource=7265736f757263650000000000000008; ledgerState=Ready"
+    },
+    {
+      "name": "fixture:cards/gc019-late-asset-completion-cannot-write-a-retired-world",
+      "status": "Pass",
+      "detail": "suspended=True(Suspended); staleGate=DiscardRetiredRoute; requested=True; lateLease=67636173736574310000000000000002; late=DiscardedStale; lateGate=DiscardRetiredRoute; lateState=DiscardedStale; lateRetainedInLedger=False; quarantinedRequest=True; retired=True; report=released=2 retained=1 failed=0; quarantinedLease=67636173736574310000000000000003; postRetire=DiscardedStale; postRetireCompletions=0->1; backendOutstanding=0; retainedLeasesOfTheInstallation=0"
+    },
+    {
+      "name": "fixture:cards/gc019-presentation-reads-the-committed-snapshot",
+      "status": "Pass",
+      "detail": "resumed=True; image=committedImage(SnapshotToken(WorldId(43415247433031330000000000000001), AssemblyEpoch(7), LogicalStepId(1)), targets=3); imageToken=SnapshotToken(WorldId(43415247433031330000000000000001), AssemblyEpoch(7), LogicalStepId(1)); refreshed=True; created=TargetId(c203b09deb766da6f8e93773ca6dd65c)=Created@1,TargetId(ff80dc9b9ed2790f4681afa020eb8e4c)=Created@2,TargetId(709f4ce6dacd0abd01d516a7a46bf656)=Created@3; presented=Presented; applied=3; stale=0; orphaned=0; dissenting=<none>; liveViews=3; binderViews=3; deviceBindings=1; frameRegistered=True; framesBeforeRegister=0"
+    },
+    {
+      "name": "fixture:cards/gc019-idle-world-presents-without-stepping",
+      "status": "Pass",
+      "detail": "frames=4; stepsCommitted=0; step=1; presentCalls=1->5; staleRefusals=0->12; passes=0/Completed/Completed/0,0/Completed/Completed/0,0/Completed/Completed/0,0/Completed/Completed/0; deviceSamples=0; unbound=0; liveViews=3; framesRan=True"
+    },
+    {
+      "name": "fixture:cards/gc019-view-destruction-leaves-gameplay-intact",
+      "status": "Pass",
+      "detail": "destroyed=3; liveViews=3->0; binderViews=0; rowsUnchanged=True; scopesUnchanged=True; gameplayUnchanged=True; revision=7; epoch=7; step=1; ledgerResources=10->10; nextCommand=Admitted; stepsCommitted=1"
+    },
+    {
+      "name": "fixture:cards/gc019-visual-reparent-does-not-move-composition",
+      "status": "Pass",
+      "detail": "views=2; reparented=True; child=TargetId(c203b09deb766da6f8e93773ca6dd65c)@4; parent=TargetId(ff80dc9b9ed2790f4681afa020eb8e4c)@5; parentChanges=1; compositionParent=ScopeId(55aacc846396635d81c199adda1b3ba4)->ScopeId(55aacc846396635d81c199adda1b3ba4); visualParent=5; scopesUnchanged=True; revision=7; reparentsWithoutCompositionChange=1"
+    },
+    {
+      "name": "fixture:cards/gc019-does-not-declare-external-authority",
+      "status": "Pass",
+      "detail": "recipe=DefinitionRef(DefinitionId(2e3b45bf7d9f952fa03935394a37920d), SchemaRef(SchemaId(10ecaedb708b535cac0e0cafc7f36f94), 1), DefinitionRevision(1)); recipeKnown=True; authority=EcsOwnedKinematic; classify=RefusedEcsOwned; undeclared=True; externalDomains=0; declarations=0; physicsStages=<none>; physicsSystems=<none>; externallyAuthoredTargets=<none>; stages=4; systems=4; worlds=2"
+    },
+    {
+      "name": "fixture:cards/gc019-adapter-teardown-participates-in-lifecycle",
+      "status": "Pass",
+      "detail": "idleSteps=0; stop=Published(None); lifecycle=Disposed; adapterTeardown=views=2; assets=released=3 retained=0 failed=0; unregistered=True; frames=0; backendOutstanding=0; assetsRetired=True; liveViews=0; binderViews=0; retainedLeasesOfTheInstallation=0; outstandingJobs=0; retainedResources=0; registryBeforeCreate=1; registryBeforeStop=2; registryAfter=1"
+    },
+    {
+      "name": "gc019-cards-digest",
+      "status": "Pass",
+      "detail": "generatedDigest=deaff62c2a643221511524063dc0a23cb80b0fe071a3b00c8245fbd1fc6097ce; fixtureDigest=deaff62c2a643221511524063dc0a23cb80b0fe071a3b00c8245fbd1fc6097ce; expectedDigest=deaff62c2a643221511524063dc0a23cb80b0fe071a3b00c8245fbd1fc6097ce; observations=11; digest=deaff62c2a643221511524063dc0a23cb80b0fe071a3b00c8245fbd1fc6097ce; label=cards; steps=11; failed=0; digest=deaff62c2a643221511524063dc0a23cb80b0fe071a3b00c8245fbd1fc6097ce; label=cards; steps=11; failed=0"
+    }
+  ]
+}

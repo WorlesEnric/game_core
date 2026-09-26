@@ -6,7 +6,7 @@
   "matrixTitle": "TEST-016 - Fault injection and recovery boundaries",
   "matrixRowCount": 10,
   "status": "Pass (Linux qualification build)",
-  "statusNote": "All 29 mapped cases are present and Pass in the recorded Unity EditMode XML or the IL2CPP -probeFaults JSON; the player probe passed five independent runs. Row 10 exercises initial-definition repair failure, not checkpoint restore (GC-018/GC-027). Cards has no declared version migration: its migration observation reaches the prewrite latch but does not claim a migrated slot; narrative executes a registered 1->2 migration plan.",
+  "statusNote": "All 29 mapped GC-017 cases passed on the archived qualification build; those results are historical, not a GC-027 rerun. GC-027 appended five latch boundaries (8 -> 13) without changing the original eight or the 29 mapped cases. The current boundaryVocabulary reflects the real source table; GC-027 rerun evidence belongs in artifacts/gc-027/BUILD_REPORT.md. Row 10 exercises initial-definition repair failure, not checkpoint restore. Cards has no declared version migration: its migration observation reaches the prewrite latch but does not claim a migrated slot; narrative executes a registered 1->2 migration plan.",
   "statusVocabulary": [
     "Pass (Linux qualification build)"
   ],
@@ -18,7 +18,12 @@
     "first-live-write",
     "structural-playback",
     "gate-installation",
-    "cleanup"
+    "cleanup",
+    "checkpoint-capture-copy",
+    "checkpoint-publication",
+    "restore-reference-repair",
+    "restore-apply",
+    "recovery-publication"
   ],
   "boundarySource": "Packages/com.gamecore.unity.runtime/Runtime/Faults/FaultBoundaries.cs (FaultBoundary / FaultBoundaryText.Names)",
   "probeResult": "artifacts/faults/toolchain/probe-gc017-faults.json",

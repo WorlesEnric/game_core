@@ -262,11 +262,29 @@ namespace GameCore.Gameplay.Traversal.Fixtures
     }
 
     /// <summary>
+    /// A runner recipe's base-layout applier, whatever materialized it (GC-025). The runtime recipe declares its
+    /// own instance and GC-025's bake/runtime parity comparison materializes a second one from the Editor-baked
+    /// artifact, so a recipe factory takes this seam rather than one concrete implementation. Both agree on the
+    /// generated registration key, because the key identifies the registration and not the C# type (P-009).
+    /// </summary>
+    public interface ITraversalRunnerApplier : ISpawnApplier
+    {
+        /// <summary>Position a newly installed runner starts from, in millimetres.</summary>
+        TraversalVector3i InitialPosition { get; set; }
+
+        /// <summary>Velocity a newly installed runner starts with, in thousandths of a metre per second.</summary>
+        TraversalVector3i InitialVelocity { get; set; }
+
+        /// <summary>Runners whose base layout this applier installed.</summary>
+        int AppliedCount { get; }
+    }
+
+    /// <summary>
     /// The runner recipe's base-layout applier (04 s6, P-024). It installs the runner's own pose, velocity, jump
     /// state and captured input; the derived binding rows are added by the publisher inside the publication fence,
     /// so a spawned runner is never visible half-assembled.
     /// </summary>
-    public sealed class TraversalRunnerApplier : ISpawnApplier
+    public sealed class TraversalRunnerApplier : ITraversalRunnerApplier
     {
         /// <summary>Position a newly installed runner starts from, in millimetres.</summary>
         public TraversalVector3i InitialPosition { get; set; } = TraversalVector3i.Zero;
@@ -334,7 +352,7 @@ namespace GameCore.Gameplay.Traversal.Fixtures
         /// the acceleration-target selector as well as its own, which is what makes a modifier rule select a runner
         /// and nothing else.
         /// </summary>
-        public static SpawnRecipe Runner(TraversalRunnerApplier applier)
+        public static SpawnRecipe Runner(ITraversalRunnerApplier applier)
         {
             return Recipe(
                 TraversalKeys.RunnerRecipe,
@@ -352,7 +370,7 @@ namespace GameCore.Gameplay.Traversal.Fixtures
         /// it and the showcase scope's isolation boundary is what blocks the contribution, not ineligibility
         /// (P-015, P-016).
         /// </summary>
-        public static SpawnRecipe DisplayRunner(TraversalRunnerApplier applier)
+        public static SpawnRecipe DisplayRunner(ITraversalRunnerApplier applier)
         {
             return Recipe(
                 TraversalKeys.DisplayRunnerRecipe,
@@ -384,7 +402,7 @@ namespace GameCore.Gameplay.Traversal.Fixtures
 
         /// <summary>The course's closed recipe catalog over the given applier instances (P-015, P-024).</summary>
         public static SpawnRecipeCatalog Catalog(
-            TraversalRunnerApplier runnerApplier,
+            ITraversalRunnerApplier runnerApplier,
             TraversalVolumeApplier volumeApplier)
         {
             return new SpawnRecipeCatalog(new List<SpawnRecipe>

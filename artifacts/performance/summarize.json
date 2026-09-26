@@ -1,0 +1,292 @@
+{
+  "artifact": "gamecore.benchmark.summary/1",
+  "machine": "worlesenric",
+  "exitCode": 1,
+  "counts": {
+    "documents": 11,
+    "runs": 1,
+    "workloads": 11,
+    "gates": 19,
+    "gatesFailed": 0,
+    "budgets": 10,
+    "missedTarget": 1,
+    "notMeasured": 0
+  },
+  "gatesFailed": [],
+  "missedTarget": [
+    "budget.whole-world-preparation-p95"
+  ],
+  "budgets": [
+    {
+      "id": "budget.execution-p95",
+      "workload": "steady-execution-10000-targets",
+      "phase": "Step",
+      "metric": "p95",
+      "target": 4000.0,
+      "reportOnly": false,
+      "measured": 1514.0,
+      "verdict": "WithinTarget",
+      "detail": "pooled 1386 sample(s) over 1 run(s); p95 from the sample arrays",
+      "reference": "10,000 integer-rule targets, 1,000 active commands per fixed step: Core execution p95 at most 4 ms."
+    },
+    {
+      "id": "budget.execution-managed-bytes",
+      "workload": "steady-execution-10000-targets",
+      "phase": "Step",
+      "metric": "managed-bytes-per-step",
+      "target": 0.0,
+      "reportOnly": false,
+      "measured": 0.0,
+      "verdict": "WithinTarget",
+      "detail": "0 managed byte(s) over 1386 committed step(s); thread-complete=true",
+      "reference": "Stable execution after warmup: 0 managed bytes per logical step in the kernel hot path."
+    },
+    {
+      "id": "budget.unchanged-control-nodes",
+      "workload": "steady-unchanged-10000-steps",
+      "phase": "Step",
+      "metric": "control-nodes-visited",
+      "target": 0.0,
+      "reportOnly": false,
+      "measured": 0.0,
+      "verdict": "WithinTarget",
+      "detail": "counters['control-nodes-visited'] pooled delta over 1 run(s) (absent key means the writer recorded a zero)",
+      "reference": "No composition changes over 10,000 steps: 0 control-tree visits."
+    },
+    {
+      "id": "budget.unchanged-service-lookups",
+      "workload": "steady-unchanged-10000-steps",
+      "phase": "Step",
+      "metric": "service-string-lookups",
+      "target": 0.0,
+      "reportOnly": false,
+      "measured": 0.0,
+      "verdict": "WithinTarget",
+      "detail": "counters['service-string-lookups'] pooled delta over 1 run(s) (absent key means the writer recorded a zero)",
+      "reference": "No composition changes over 10,000 steps: 0 string service resolutions."
+    },
+    {
+      "id": "budget.apply-pause-p95",
+      "workload": "update-size-100",
+      "phase": "Apply",
+      "metric": "p95",
+      "target": 2000.0,
+      "reportOnly": false,
+      "measured": 624.0,
+      "verdict": "WithinTarget",
+      "detail": "pooled 1 sample(s) over 1 run(s); p95 from the sample arrays",
+      "reference": "Valid plan affecting 100 existing targets: Apply pause p95 at most 2 ms."
+    },
+    {
+      "id": "budget.whole-world-preparation-p95",
+      "workload": "update-size-10000",
+      "phase": "Prepare",
+      "metric": "p95",
+      "target": 100000.0,
+      "reportOnly": false,
+      "measured": 1123930.0,
+      "verdict": "MissedTarget",
+      "detail": "pooled 5 sample(s) over 1 run(s); p95 from the sample arrays",
+      "reference": "Whole-world derivation for 10,000 targets: Preparation p95 at most 100 ms."
+    },
+    {
+      "id": "budget.spawn-baseline",
+      "workload": "spawn-1000",
+      "phase": "Prepare",
+      "metric": "p95",
+      "target": null,
+      "reportOnly": true,
+      "measured": 181927.0,
+      "verdict": "ReportOnly",
+      "detail": "pooled 6 sample(s) over 1 run(s); p95 from the sample arrays",
+      "reference": "1,000-target spawn under active capabilities: report prepare/apply p95, native/managed bytes and recipe reuse; establish a baseline."
+    },
+    {
+      "id": "budget.lifecycle-plateau",
+      "workload": "lifecycle-cycles-1000",
+      "phase": "Change",
+      "metric": "p99",
+      "target": null,
+      "reportOnly": true,
+      "measured": 966923.0,
+      "verdict": "ReportOnly",
+      "detail": "pooled 10 sample(s) over 1 run(s); p99 from the sample arrays",
+      "reference": "1,000 lifecycle cycles with fixed retained data: active counts return to baseline; bounded cache/native/managed growth plateaus."
+    },
+    {
+      "id": "budget.idle-steps",
+      "workload": "idle-command-world",
+      "phase": "Step",
+      "metric": "steps-advanced",
+      "target": 0.0,
+      "reportOnly": false,
+      "measured": 0.0,
+      "verdict": "WithinTarget",
+      "detail": "counters['steps-advanced'] pooled delta over 1 run(s) (absent key means the writer recorded a zero)",
+      "reference": "Idle command-driven world: 0 simulation steps."
+    },
+    {
+      "id": "budget.idle-stage-updates",
+      "workload": "idle-command-world",
+      "phase": "Step",
+      "metric": "stage-samples",
+      "target": 0.0,
+      "reportOnly": false,
+      "measured": 0.0,
+      "verdict": "WithinTarget",
+      "detail": "counters['stage-samples'] pooled delta over 1 run(s) (absent key means the writer recorded a zero)",
+      "reference": "Idle command-driven world: 0 simulation-stage updates."
+    }
+  ],
+  "gates": [
+    {
+      "workload": "idle-command-world",
+      "gate": "idle-command-world-advances-zero-steps",
+      "runs": 1,
+      "verdict": "pass",
+      "detail": "frames=3432448; pumpsPerSample=8192; steps=0; stepsAdvanced=0; stageSamples=0; dispatchRuns=0; windowUs=2011390; budgetUs=2000000"
+    },
+    {
+      "workload": "idle-command-world",
+      "gate": "idle-command-world-does-zero-control-work",
+      "runs": 1,
+      "verdict": "pass",
+      "detail": "controlNodes=0; serviceStringLookups=0; candidatesMatched=0; strataEvaluated=0; planPreparedBytes=0"
+    },
+    {
+      "workload": "steady-unchanged-10000-steps",
+      "gate": "unchanged-composition-commits-the-declared-steps",
+      "runs": 1,
+      "verdict": "pass",
+      "detail": "declared=10000; committed=10000; pumps=10; step=142000; windowUs=84355"
+    },
+    {
+      "workload": "steady-unchanged-10000-steps",
+      "gate": "zero-stable-control-tree-scans",
+      "runs": 1,
+      "verdict": "pass",
+      "detail": "steps=10000; controlNodes=0; candidatesMatched=0; strataEvaluated=0; planPreparedBytes=0"
+    },
+    {
+      "workload": "steady-unchanged-10000-steps",
+      "gate": "zero-string-service-lookups",
+      "runs": 1,
+      "verdict": "pass",
+      "detail": "serviceStringLookups=0"
+    },
+    {
+      "workload": "steady-unchanged-10000-steps",
+      "gate": "unchanged-composition-publishes-nothing",
+      "runs": 1,
+      "verdict": "pass",
+      "detail": "publicationsBefore=1; after=1"
+    },
+    {
+      "workload": "steady-execution-10000-targets",
+      "gate": "core-execution-window",
+      "runs": 1,
+      "verdict": "pass",
+      "detail": "steps=1386; windowUs=2000952; budgetUs=2000000; windowEndedByCap=false; targets=10000; commands=1386000"
+    },
+    {
+      "workload": "steady-execution-10000-targets",
+      "gate": "steady-execution-allocation-is-thread-complete",
+      "runs": 1,
+      "verdict": "pass",
+      "detail": "managedBytes=0;declaredThreads=1;sampledThreads=1;threadComplete=true;coverage=AllThreadsSampled; managedBytesPerStep=0"
+    },
+    {
+      "workload": "update-size-1",
+      "gate": "update-affects-the-declared-target-count",
+      "runs": 1,
+      "verdict": "pass",
+      "detail": "size=1; affectedTargets=1; expected=1; repetitions=5; warmupCycles=2; accepted=True"
+    },
+    {
+      "workload": "update-size-100",
+      "gate": "update-affects-the-declared-target-count",
+      "runs": 1,
+      "verdict": "pass",
+      "detail": "size=100; affectedTargets=100; expected=100; repetitions=5; warmupCycles=2; accepted=True"
+    },
+    {
+      "workload": "update-size-100",
+      "gate": "apply-affects-the-declared-target-count",
+      "runs": 1,
+      "verdict": "pass",
+      "detail": "outcome=Published; code=None; detail=; eligibleTargets=100; declaredApplyTargets=100; installedRows=200; retractedRows=0; applyUs=624; applySamples=1; waitUs=0; endToEndUs=239768; prepareUs=239144; joined=True"
+    },
+    {
+      "workload": "update-size-100",
+      "gate": "apply-pause-is-measured-by-the-publisher",
+      "runs": 1,
+      "verdict": "pass",
+      "detail": "applySamples=1; applyUs=624; note=a zero apply sample count would make the apply-pause row unmeasurable rather than fast"
+    },
+    {
+      "workload": "update-size-10000",
+      "gate": "update-affects-the-declared-target-count",
+      "runs": 1,
+      "verdict": "pass",
+      "detail": "size=10000; affectedTargets=10000; expected=10000; repetitions=5; warmupCycles=1; accepted=True"
+    },
+    {
+      "workload": "whole-world-mode-switch",
+      "gate": "mode-switch-invalidates-the-whole-world",
+      "runs": 1,
+      "verdict": "pass",
+      "detail": "switches=5; reportedLocal=0; warmupSwitches=2; accepted=True"
+    },
+    {
+      "workload": "spawn-1000",
+      "gate": "spawn-first-visibility-is-fully-assembled",
+      "runs": 1,
+      "verdict": "pass",
+      "detail": "spawnedPerRepetition=1000; assembledOnFirstVisibility=1000; capability=CapabilityId(0774f192d6754a88c3215e38cceaf022); accepted=True"
+    },
+    {
+      "workload": "spawn-1000",
+      "gate": "live-spawn-publishes-one-complete-publication",
+      "runs": 1,
+      "verdict": "pass",
+      "detail": "spawned=1000; code=None; detail=; assembled=1000; outcome=Published; installedRows=2000; seedUs=6582; publishUs=1235837; applyUs=2221"
+    },
+    {
+      "workload": "reparent-100",
+      "gate": "reparent-moves-the-declared-subtree",
+      "runs": 1,
+      "verdict": "pass",
+      "detail": "subtreeTargets=100; accepted=True"
+    },
+    {
+      "workload": "inactive-target-comparison",
+      "gate": "inactive-targets-do-not-add-a-per-change-scan",
+      "runs": 1,
+      "verdict": "pass",
+      "detail": "smallTargets=1000; largeTargets=10000; smallUs=852782; largeUs=6246528; ratio=7.325"
+    },
+    {
+      "workload": "lifecycle-cycles-1000",
+      "gate": "lifecycle-counts-return-to-baseline",
+      "runs": 1,
+      "verdict": "pass",
+      "detail": "baselineAssemblies=10000; finalAssemblies=10000; baselineContributions=20959; finalContributions=20959; cycles=5; accepted=True"
+    }
+  ],
+  "evidence": [
+    "artifacts/gc-026/correctness-final-round2/environment.txt",
+    "artifacts/gc-026/correctness-final-round2/raw/run1/idle-command-world.samples.json",
+    "artifacts/gc-026/correctness-final-round2/raw/run1/inactive-target-comparison.samples.json",
+    "artifacts/gc-026/correctness-final-round2/raw/run1/lifecycle-cycles-1000.samples.json",
+    "artifacts/gc-026/correctness-final-round2/raw/run1/probe-benchmark.json",
+    "artifacts/gc-026/correctness-final-round2/raw/run1/reparent-100.samples.json",
+    "artifacts/gc-026/correctness-final-round2/raw/run1/spawn-1000.samples.json",
+    "artifacts/gc-026/correctness-final-round2/raw/run1/steady-execution-10000-targets.samples.json",
+    "artifacts/gc-026/correctness-final-round2/raw/run1/steady-unchanged-10000-steps.samples.json",
+    "artifacts/gc-026/correctness-final-round2/raw/run1/update-size-1.samples.json",
+    "artifacts/gc-026/correctness-final-round2/raw/run1/update-size-100.samples.json",
+    "artifacts/gc-026/correctness-final-round2/raw/run1/update-size-10000.samples.json",
+    "artifacts/gc-026/correctness-final-round2/raw/run1/whole-world-mode-switch.samples.json"
+  ],
+  "selfConsistency": []
+}

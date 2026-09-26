@@ -8,6 +8,7 @@
     "com.gamecore.gameplay.cards": "file:../../../Packages/com.gamecore.gameplay.cards",
     "com.gamecore.gameplay.integration": "file:../../../Packages/com.gamecore.gameplay.integration",
     "com.gamecore.gameplay.narrative": "file:../../../Packages/com.gamecore.gameplay.narrative",
+    "com.gamecore.gameplay.rewards": "file:../../../Packages/com.gamecore.gameplay.rewards",
     "com.gamecore.gameplay.traversal": "file:../../../Packages/com.gamecore.gameplay.traversal",
     "com.gamecore.planning": "file:../../../Packages/com.gamecore.planning",
     "com.gamecore.rules.cards": "file:../../../Packages/com.gamecore.rules.cards",
@@ -33,19 +34,26 @@
     "com.unity.test-framework.performance": "3.0.3",
     "com.unity.toolchain.linux-x86_64": "2.0.11",
     "com.gamecore.replay": "file:../../../tests/GameCore.Replay",
-    "com.gamecore.telemetry-qualification": "file:../../../Packages/com.gamecore.telemetry-qualification"
+    "com.gamecore.recovery": "file:../../../tests/GameCore.Recovery",
+    "com.gamecore.benchmarks": "file:../../../tests/GameCore.Benchmarks",
+    "com.gamecore.telemetry-qualification": "file:../../../Packages/com.gamecore.telemetry-qualification",
+    "com.gamecore.reference-conformance": "file:../../../tests/GameCore.ReferenceConformance"
   },
   "testables": [
     "com.gamecore.composition",
     "com.gamecore.derivation",
     "com.gamecore.gameplay.cards",
     "com.gamecore.gameplay.integration",
+    "com.gamecore.gameplay.rewards",
     "com.gamecore.planning",
     "com.gamecore.rules.cards",
     "com.gamecore.rules.traversal",
     "com.gamecore.rules.narrative",
     "com.gamecore.unity.adapters",
     "com.gamecore.unity.runtime",
-    "com.gamecore.replay"
+    "com.gamecore.replay",
+    "com.gamecore.recovery",
+    "com.gamecore.benchmarks",
+    "com.gamecore.reference-conformance"
   ]
 }

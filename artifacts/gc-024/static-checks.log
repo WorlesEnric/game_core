@@ -1,0 +1,154 @@
+# GC-024 static checks, run on the authoring host (macOS, no Unity, no .NET SDK).
+# Nothing here is a build, an import, a Unity test, a player run or a measurement. The commands below are
+# interpreter-level only; every one of them is shown with its verbatim result.
+
+$ git rev-parse HEAD
+20b4648bbe4abff801b17f7a2a316c480d4d32d5
+
+$ python3 tools/check_game_core_csharp.py
+checked 562 C# file(s)
+ok
+
+$ python3 tools/gc024_genre_audit.py
+gc024 genre audit: /Users/yangcao/wkspace/gc-wt/gc-024/artifacts/gc-024/genre-audit.json
+kernel=32; family=13; generated=0; qualification=57; asmdefs=69; projectFiles=33; kernelSources=317; referenceAssertions=218; violations=0; kernelGenreTokens=0; missingPackages=0; familiesOnKernel=13/13; clean=true
+
+$ python3 tools/validate_game_core_docs.py --self-test
+Documentation validator self-test passed: 9 isolated positive/negative fixtures.
+
+$ python3 tools/validate_game_core_docs.py
+Game Core documentation validation passed: 14 Markdown documents; local links, anchors, IDs, traceability, task DAG and wave ordering checked.
+No Unity builds, gameplay tests, runtime benchmarks, or remote URL checks were executed.
+
+$ python3 tools/verify_generated_catalog.py
+unity/GameCore.Validation/Assets/GameCore.Validation/Generated/ProbeCatalog.g.cs: 3 groups, 4 factories, 1 schemas, 1 features, 25321 bytes
+file hash and catalog fingerprint both recompute correctly from the generated tables
+
+$ python3 tools/check_contract_surface_parity.py
+tests/GameCore.ReferenceSeams/api/GameCore.Contracts.api.txt: 221 types (class 89, enum 41, interface 23, struct 68), 41 enums checked against Packages/com.gamecore.contracts/Runtime
+5 addition(s) beyond the frozen snapshot (allowed, must be listed in HANDOFF):
+  + enum EnvelopeError adds DuplicateField = 17
+  + enum EnvelopeError adds MissingRequiredField = 16
+  + enum FactoryKind adds Handler = 10
+  + enum StateDispositionKind adds Reset = 5
+  + enum StateDispositionKind adds RetainDormant = 4
+every snapshotted enum and enum value exists in the production sources with the same numeric value
+
+$ python3 tools/check_release_telemetry_free.py --no-build
+    },
+    "directoryBuildPropsDefinesSymbol": false
+  }
+}
+
+
+$ python3 tools/check_release_fault_free.py --no-build
+GC-017 release surface: PASS
+  [not run] the compiled latch assembly in both configurations (--no-build)
+  no runtime source keeps a latch reference once the qualification symbol is undefined
+  the apply path's mask by [System.Diagnostics.Conditional("GAMECORE_FAULT_INJECTION")] is intact (8 call site(s))
+  the symbol is driven by com.gamecore.fault-qualification, referenced only by the validation manifest
+
+$ bash -n tools/run_conformance.sh tools/unity/run_conformance_probe.sh tools/unity/prepare_gc017_release_project.py
+bash -n: both scripts parse
+
+$ python3 -m py_compile tools/gc024_genre_audit.py tools/unity/prepare_gc017_release_project.py tools/check_game_core_csharp.py
+py_compile: all three tools parse
+
+$ python3 tools/make_unity_metas.py unity/GameCore.Validation tests/GameCore.ReferenceConformance  # idempotent
+created 0 meta file(s)
+
+# Re-captured after the combined cross-family world, the recorded-gap handling and the type rename.
+$ git rev-parse HEAD
+e0ed439b05d552e27bccb093c82ec5f8e7fb0560
+
+$ python3 tools/check_game_core_csharp.py
+checked 564 C# file(s)
+ok
+
+$ python3 tools/gc024_genre_audit.py
+gc024 genre audit: /Users/yangcao/wkspace/gc-wt/gc-024/artifacts/gc-024/genre-audit.json
+kernel=32; family=13; generated=0; qualification=57; asmdefs=69; projectFiles=33; kernelSources=317; referenceAssertions=218; violations=0; kernelGenreTokens=0; missingPackages=0; familiesOnKernel=13/13; clean=true
+
+# Re-captured after the 07:276 rework (rewards installation + four real rows).
+$ git rev-parse HEAD
+f7ceb5a71490e25c1b957c36b3db127f85399311
+
+$ python3 tools/check_game_core_csharp.py
+checked 573 C# file(s)
+ok
+
+$ python3 tools/gc024_genre_audit.py
+gc024 genre audit: /Users/yangcao/wkspace/gc-wt/gc-024/artifacts/gc-024/genre-audit.json
+kernel=32; family=13; generated=0; qualification=58; asmdefs=70; projectFiles=33; kernelSources=317; referenceAssertions=218; violations=0; kernelGenreTokens=0; missingPackages=0; familiesOnKernel=13/13; clean=true
+
+$ python3 tools/validate_game_core_docs.py
+Game Core documentation validation passed: 14 Markdown documents; local links, anchors, IDs, traceability, task DAG and wave ordering checked.
+No Unity builds, gameplay tests, runtime benchmarks, or remote URL checks were executed.
+
+$ python3 tools/check_release_telemetry_free.py --no-build
+  }
+}
+
+
+$ python3 tools/check_release_fault_free.py --no-build
+  no runtime source keeps a latch reference once the qualification symbol is undefined
+  the apply path's mask by [System.Diagnostics.Conditional("GAMECORE_FAULT_INJECTION")] is intact (8 call site(s))
+  the symbol is driven by com.gamecore.fault-qualification, referenced only by the validation manifest
+
+$ bash -n tools/run_conformance.sh tools/unity/run_conformance_probe.sh
+both parse
+
+$ python3 tools/make_unity_metas.py Packages/com.gamecore.gameplay.rewards (idempotent)
+created 0 meta file(s)
+
+# Re-captured after the combined-graph validation checks (final revision).
+$ git rev-parse HEAD
+f773c2094dc466a8027ffa5ce85383df99315a2e
+
+$ python3 tools/check_game_core_csharp.py
+checked 574 C# file(s)
+ok
+
+$ python3 tools/gc024_genre_audit.py
+gc024 genre audit: /Users/yangcao/wkspace/gc-wt/gc-024/artifacts/gc-024/genre-audit.json
+kernel=32; family=13; generated=0; qualification=58; asmdefs=70; projectFiles=33; kernelSources=317; referenceAssertions=218; violations=0; kernelGenreTokens=0; missingPackages=0; familiesOnKernel=13/13; clean=true
+
+$ python3 tools/check_release_fault_free.py --no-build
+  the apply path's mask by [System.Diagnostics.Conditional("GAMECORE_FAULT_INJECTION")] is intact (8 call site(s))
+  the symbol is driven by com.gamecore.fault-qualification, referenced only by the validation manifest
+
+$ bash -n tools/unity/run_conformance_probe.sh tools/run_conformance.sh
+both parse
+
+$ python3 tools/make_unity_metas.py tests/GameCore.ReferenceConformance unity/GameCore.Validation (idempotent)
+created unity/GameCore.Validation/Assets.meta
+created unity/GameCore.Validation/Catalogs.meta
+created unity/GameCore.Validation/Packages.meta
+created unity/GameCore.Validation/ProjectSettings.meta
+created unity/GameCore.Validation/Catalogs/CardCatalog.catalog.json.meta
+created unity/GameCore.Validation/Catalogs/CheckpointCatalog.catalog.json.meta
+created unity/GameCore.Validation/Catalogs/ProbeCatalog.catalog.json.meta
+created unity/GameCore.Validation/Packages/manifest.json.meta
+created unity/GameCore.Validation/Packages/packages-lock.json.meta
+created unity/GameCore.Validation/ProjectSettings/AudioManager.asset.meta
+created unity/GameCore.Validation/ProjectSettings/ClusterInputManager.asset.meta
+created unity/GameCore.Validation/ProjectSettings/DynamicsManager.asset.meta
+created unity/GameCore.Validation/ProjectSettings/EditorBuildSettings.asset.meta
+created unity/GameCore.Validation/ProjectSettings/EditorSettings.asset.meta
+created unity/GameCore.Validation/ProjectSettings/EntitiesClientSettings.asset.meta
+created unity/GameCore.Validation/ProjectSettings/GraphicsSettings.asset.meta
+created unity/GameCore.Validation/ProjectSettings/InputManager.asset.meta
+created unity/GameCore.Validation/ProjectSettings/MemorySettings.asset.meta
+created unity/GameCore.Validation/ProjectSettings/MultiplayerManager.asset.meta
+created unity/GameCore.Validation/ProjectSettings/NavMeshAreas.asset.meta
+created unity/GameCore.Validation/ProjectSettings/Physics2DSettings.asset.meta
+created unity/GameCore.Validation/ProjectSettings/PresetManager.asset.meta
+created unity/GameCore.Validation/ProjectSettings/ProjectSettings.asset.meta
+created unity/GameCore.Validation/ProjectSettings/QualitySettings.asset.meta
+created unity/GameCore.Validation/ProjectSettings/SceneTemplateSettings.json.meta
+created unity/GameCore.Validation/ProjectSettings/TagManager.asset.meta
+created unity/GameCore.Validation/ProjectSettings/TimeManager.asset.meta
+created unity/GameCore.Validation/ProjectSettings/UnityConnectSettings.asset.meta
+created unity/GameCore.Validation/ProjectSettings/VFXManager.asset.meta
+created unity/GameCore.Validation/ProjectSettings/VersionControlSettings.asset.meta
+created 30 meta file(s)

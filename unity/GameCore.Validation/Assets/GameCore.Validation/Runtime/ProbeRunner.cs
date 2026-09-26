@@ -144,6 +144,11 @@ namespace GameCore.Validation.ProbeHost
                     ProbeGc021.Run(report);
                     report.CompletePositive();
                 }
+                else if (arguments.Recovery)
+                {
+                    ProbeRecovery.Run(report);
+                    report.CompletePositive();
+                }
                 else if (arguments.LifecycleStress)
                 {
                     ProbeLifecycleStress.Run(report);
@@ -157,6 +162,31 @@ namespace GameCore.Validation.ProbeHost
                 else if (arguments.W6Gate)
                 {
                     ProbeW6Gate.Run(report);
+                    report.CompletePositive();
+                }
+                else if (arguments.CatalogCoverage)
+                {
+                    CatalogCoverageProbe.Run(report);
+                    report.CompletePositive();
+                }
+                else if (arguments.Benchmark)
+                {
+                    ProbeBenchmark.Run(report);
+                    report.CompletePositive();
+                }
+                else if (arguments.W7Gate)
+                {
+                    ProbeW7Gate.Run(report);
+                    report.CompletePositive();
+                }
+                else if (arguments.RecoverySmoke)
+                {
+                    ProbeRecoverySmoke.Run(report, arguments.ResultPath);
+                    report.CompletePositive();
+                }
+                else if (arguments.Conformance)
+                {
+                    ProbeConformance.Run(report);
                     report.CompletePositive();
                 }
                 else
@@ -264,6 +294,11 @@ namespace GameCore.Validation.ProbeHost
                 return Named("Gc021", "GC-021");
             }
 
+            if (arguments.Recovery)
+            {
+                return Named("Recovery", "GC-027");
+            }
+
             if (arguments.LifecycleStress)
             {
                 return Named("LifecycleStress", "GC-022");
@@ -277,6 +312,31 @@ namespace GameCore.Validation.ProbeHost
             if (arguments.W6Gate)
             {
                 return Named("W6Gate", "W6-GATE");
+            }
+
+            if (arguments.CatalogCoverage)
+            {
+                return Named("CatalogCoverage", "GC-025");
+            }
+
+            if (arguments.Benchmark)
+            {
+                return Named("Benchmark", "GC-026");
+            }
+
+            if (arguments.W7Gate)
+            {
+                return Named("W7Gate", "W7-GATE");
+            }
+
+            if (arguments.RecoverySmoke)
+            {
+                return Named("RecoverySmoke", "GC-027");
+            }
+
+            if (arguments.Conformance)
+            {
+                return Named("Conformance", "GC-024");
             }
 
             return new ProbeReport(

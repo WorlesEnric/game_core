@@ -1,0 +1,54 @@
+{
+  "assemblies": [
+    {
+      "fullname": "GameCore.Validation.Fixture",
+      "preserve": "all",
+      "types": []
+    },
+    {
+      "fullname": "GameCore.Unity.Fixtures",
+      "preserve": "all",
+      "types": []
+    },
+    {
+      "fullname": "GameCore.Unity.Adapters",
+      "preserve": null,
+      "types": [
+        "GameCore.Unity.Adapters.GameCoreApplicationBootstrap",
+        "GameCore.Unity.Adapters.GameCorePlayerLoopInstaller",
+        "GameCore.Unity.Adapters.GameCoreApplicationPump",
+        "GameCore.Unity.Adapters.GameCoreApplicationReset",
+        "GameCore.Unity.Adapters.GameCoreApplicationComposition",
+        "GameCore.Unity.Adapters.GameCorePumpLoop"
+      ]
+    },
+    {
+      "fullname": "GameCore.Unity.Runtime",
+      "preserve": null,
+      "types": [
+        "GameCore.Unity.Runtime.Recovery.WorldRecovery"
+      ]
+    }
+  ],
+  "check": "link-xml-preservation",
+  "permittedAssemblyPreserves": [
+    "GameCore.Validation.Fixture",
+    "GameCore.Unity.Fixtures"
+  ],
+  "permittedTypePreserveCount": 7,
+  "permittedTypePreserves": {
+    "GameCore.Unity.Adapters": [
+      "GameCore.Unity.Adapters.GameCoreApplicationBootstrap",
+      "GameCore.Unity.Adapters.GameCorePlayerLoopInstaller",
+      "GameCore.Unity.Adapters.GameCoreApplicationPump",
+      "GameCore.Unity.Adapters.GameCoreApplicationReset",
+      "GameCore.Unity.Adapters.GameCoreApplicationComposition",
+      "GameCore.Unity.Adapters.GameCorePumpLoop"
+    ],
+    "GameCore.Unity.Runtime": [
+      "GameCore.Unity.Runtime.Recovery.WorldRecovery"
+    ]
+  },
+  "problems": [],
+  "sha256": "dc9cc7ef1ad5a4e2d342d0cb132f61143f2e9fcd14222312804522e04221e9ba"
+}

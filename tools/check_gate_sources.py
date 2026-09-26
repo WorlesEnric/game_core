@@ -14,13 +14,14 @@ For each file it checks:
     spell-checker, not a type checker, which is why the suite and the player probe still exist);
   * every type a file uses is reachable through that file's own `using` directives;
   * no name a file uses is declared in two namespaces that file imports at once;
-  * the frozen observation tables agree with the five digest literals and with every declaration site, and the probe
-    harness requires exactly the steps those tables imply.
+  * the frozen observation tables agree with every digest literal and with every declaration site, and the probe
+    harnesses require exactly the steps those tables imply (the Wave 6 gate's five literals and this gate's own W7
+    table, the latter only when the Wave 7 files are in the tree, so a subset invocation stays valid).
 
 Usage:
     python3 tools/check_gate_sources.py [--file PATH ...] [--json <path>]
 
-The default file list is the Wave 6 gate's own change set; `--file` replaces it.
+The default file list is the Wave 6 gate's own change set; `--file` replaces it (the Wave 7 gate passes its own list).
 
 Exit codes: 0 every invariant holds; 1 at least one fails; 2 a named file does not exist.
 """
@@ -185,6 +186,37 @@ print('   unreachable:', sorted({(f, t, tuple(n)) for f, t, n in unreachable}) i
 print('== ambiguity (a used name declared in two imported namespaces) ==')
 print('   ambiguous:', sorted({(f, t, tuple(n)) for f, t, n in ambiguous}) if ambiguous else 'none')
 
+# ----------------------------------------------------------------------------------------------------------------
+# The `ProbeArguments.Parse` call site's own locals. THIS IS THE ONE CHECK THAT WOULD HAVE CAUGHT A REAL DEFECT this
+# gate shipped and then found: an edit removed `string? resultPath = null;` from `Parse`'s local block while the
+# constructor call still passed `resultPath`, which is a C# compile error (CS0103) that a balance check cannot see, a
+# member-resolution check cannot see (the name IS declared - as a field of the type, not as a local) and the release
+# clone's constructor-arity check cannot see either (the arity still matched). So every identifier the call passes must
+# be a local the same method declares, and a missing one is reported here.
+# ----------------------------------------------------------------------------------------------------------------
+parse_problems = []
+PA = 'unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/ProbeArguments.cs'
+if os.path.isfile(PA) and PA in CS:
+    pa_text = open(PA).read()
+    declared = set(re.findall(r'^\s*(?:bool|string\?)\s+(\w+)\s*=\s*', pa_text, re.M))
+    call_match = re.search(r'return new ProbeArguments\((.*?)\);', pa_text, re.S)
+    if call_match is None:
+        parse_problems.append(PA + ': no `return new ProbeArguments(...)` call found')
+    else:
+        passed = [a.strip() for a in re.sub(r'\s+', ' ', call_match.group(1)).split(',') if a.strip()]
+        for name in passed:
+            if not re.match(r'^\w+$', name):
+                parse_problems.append(PA + ': the call passes a non-identifier argument: ' + repr(name))
+            elif name not in declared:
+                parse_problems.append(
+                    PA + ': the constructor call passes `' + name
+                    + '`, which `Parse` never declares as a local (CS0103)')
+    print('== the Parse call site\'s own locals ==')
+    print('   declared locals:', len(declared), '| problems:', parse_problems or 'none')
+else:
+    print('== the Parse call site\'s own locals ==')
+    print('   not checked: ' + PA + ' is not in this change set')
+
 print()
 print('== frozen observation tables, digest literals and probe steps ==')
 src = open('unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W6GateScenario.cs').read()
@@ -221,16 +253,77 @@ expected += ['"name": "w6-narrative-digest"', '"name": "w6-cards-digest"', '"nam
 missing_steps = [e for e in expected if e not in steps]; extra_steps = [s for s in steps if s not in expected]
 print(f'   harness steps: {len(steps)} | missing: {missing_steps or "none"} | extra: {extra_steps or "none"}')
 
-good = balanced and not unresolved and not unreachable and not ambiguous and agree and not missing_steps and not extra_steps
-print()
+# ----------------------------------------------------------------------------------------------------------------
+# The Wave 7 gate's own frozen table, checked the same way and only when its files exist, so this checker stays
+# usable on a subset of the tree (its `--file` list is a subset) while a Wave 7 invocation gets the same
+# falsifiability the Wave 6 block above provides: the observation table, the quoted literal, the probe's table and
+# the harness's required steps must all be the SAME table.
+# ----------------------------------------------------------------------------------------------------------------
+w7_good = True
+w7_checked = False
+W7 = 'unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W7GateScenario.cs'
+W7_HARNESS = 'tools/unity/run_w7_gate_probe.sh'
+if os.path.isfile(W7) and os.path.isfile(W7_HARNESS):
+    w7_checked = True
+
+    def w7_names(array_name, text):
+        m = re.search(array_name + r'\s*=\s*\{(.*?)\};', text, re.S)
+        return re.findall(r'"([^"]+)"', m.group(1)) if m else []
+
+    w7_src = open(W7).read()
+    proc = w7_names('ProcessObservationNames', w7_src)
+    fam = w7_names('FamilyObservationNames', w7_src)
+    con = w7_names('ConformanceObservationNames', w7_src)
+
+    # The three family labels are read from the hosts the scenario names, so a relabelled genre changes this table
+    # instead of being silently absent from it.
+    labels = []
+    for host, const_name in (('Gc013NarrativeHost', 'Label'), ('Gc013CardsHost', 'Label'), ('Gc020TraversalHost', 'Label')):
+        host_text = open(R + host + '.cs').read()
+        found = re.search(r'public const string ' + const_name + r'\s*=\s*"([^"]+)"', host_text)
+        if found:
+            labels.append(found.group(1))
+    # The emission order `W7GateScenario.ObservationNames()` fixes: the process group, then the recovery group per
+    # family, then GC-024's conformance group.
+    w7_table = ['w7/' + n for n in proc] + [lab + '/' + n for lab in labels for n in fam] + ['w7/' + n for n in con]
+    w7_literal = hashlib.sha256('\n'.join(n + '=pass' for n in w7_table).encode()).hexdigest()
+    w7_probe = open(R + 'ProbeW7Gate.cs').read()
+    w7_suite = open('unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W7Gate/W7GateIntegrationTests.cs').read()
+    w7_harness = open(W7_HARNESS).read()
+    # The suite does not COPY the literal (a copied literal can drift); it recomputes it from the table alone and
+    # compares it with the probe's constant, which is the same falsifiability one step stronger. So the suite's leg is
+    # that it really performs that recomputation against the probe's own value.
+    suite_recomputes = ('W7GateScenario.ExpectedDigest()' in w7_suite and 'ProbeW7Gate.ExpectedDigest' in w7_suite
+                        and 'W7GateScenario.ObservationNames()' in w7_suite)
+    w7_where = dict(probe=w7_literal in w7_probe, suite=suite_recomputes, harness=w7_literal in w7_harness)
+    w7_good &= all(w7_where.values())
+    print(f'   {"w7 table":20s} {w7_literal}  ' + ' '.join(f'{k}={v}' for k, v in sorted(w7_where.items())))
+    print(f'   w7 observation counts: process {len(proc)}, per family {len(fam)}, families {labels}, '
+          f'conformance {len(con)}')
+
+    w7_steps = re.findall(r'^\s*\x27("name": "[^"]+")\x27\s*$', w7_harness, re.M)
+    w7_expected = ['"name": "%s"' % n for n in w7_table]
+    w7_expected += ['"name": "w7/w7-gate-digest"', '"name": "w7-frozen-digest-agrees-with-the-table"']
+    w7_missing = [e for e in w7_expected if e not in w7_steps]
+    w7_extra = [s for s in w7_steps if s not in w7_expected]
+    w7_good &= not w7_missing and not w7_extra
+    print(f'   w7 harness steps: {len(w7_steps)} | missing: {w7_missing or "none"} | extra: {w7_extra or "none"}')
+else:
+    print('   w7 table: NOT CHECKED (the Wave 7 gate files are not in this tree)')
+
+good = (balanced and not unresolved and not unreachable and not ambiguous and agree and not missing_steps
+        and not extra_steps and w7_good and not parse_problems)
 print('VERDICT:', 'ok' if good else 'REVIEW NEEDED')
 report = {
-    'task': 'W6-GATE',
+    'task': 'W7-GATE',
     'check': 'gate-sources',
     'files': CS,
     'unresolvedMembers': [list(x) for x in unresolved],
     'unreachableTypes': sorted({(f, t, tuple(n)) for f, t, n in unreachable}),
+    'w7TableChecked': w7_checked,
+    'w7TableAgreement': w7_good if w7_checked else None,
     'ambiguousNames': sorted({(f, t, tuple(n)) for f, t, n in ambiguous}),
+    'parseCallSiteProblems': parse_problems,
     'unbalancedSources': [] if balanced else 'see console',
     'digestAgreement': agree,
     'harnessSteps': len(steps),

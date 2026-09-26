@@ -150,7 +150,8 @@ namespace GameCore.Validation.ProbeHost
                 new W6StageRuntime(
                     Label,
                     null,
-                    Gc020StageRuntime.Attach(Label, host, CourseTarget, descriptor, targets, seeder, installPhysics: true));
+                    Gc020StageRuntime.Attach(Label, host, CourseTarget, descriptor, targets, seeder,
+                        installPhysics: UnityEngine.Application.isPlaying));
 
             /// <summary>
             /// The four manifests one cycle may mount, in the course's own acceleration-modifier declaration shape

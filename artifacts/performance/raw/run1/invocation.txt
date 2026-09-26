@@ -1,0 +1,27 @@
+# exact invocation (plain)
+/home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation/Builds/Linux64/GameCoreProbe.x86_64 -batchmode -nographics -probeBenchmark -probeBenchmarkWorkload=all -probeBenchmarkScopes=1000 -probeBenchmarkTargets=10000 -probeBenchmarkLiveScopes=1000 -probeBenchmarkLiveTargets=10000 -probeBenchmarkWarmup=30 -probeBenchmarkDuration=120 -probeBenchmarkRepetitions=0 -probeBenchmarkSeed=20260926 -probeBenchmarkApplyTargets=100 -probeBenchmarkLiveSpawnTargets=1000 -probeBenchmarkIdleFrames=64 -probeBenchmarkUnchangedSteps=10000 -probeBenchmarkRunOrdinal=1 -logFile /home/worlesenric/wkspace/gc-wt/gc-026/artifacts/performance/raw/run1/player-benchmark.log -probeResult /home/worlesenric/wkspace/gc-wt/gc-026/artifacts/performance/raw/run1/probe-benchmark.json 
+
+# exact invocation (re-runnable, shell-quoted)
+/home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation/Builds/Linux64/GameCoreProbe.x86_64 -batchmode -nographics -probeBenchmark -probeBenchmarkWorkload=all -probeBenchmarkScopes=1000 -probeBenchmarkTargets=10000 -probeBenchmarkLiveScopes=1000 -probeBenchmarkLiveTargets=10000 -probeBenchmarkWarmup=30 -probeBenchmarkDuration=120 -probeBenchmarkRepetitions=0 -probeBenchmarkSeed=20260926 -probeBenchmarkApplyTargets=100 -probeBenchmarkLiveSpawnTargets=1000 -probeBenchmarkIdleFrames=64 -probeBenchmarkUnchangedSteps=10000 -probeBenchmarkRunOrdinal=1 -logFile /home/worlesenric/wkspace/gc-wt/gc-026/artifacts/performance/raw/run1/player-benchmark.log -probeResult /home/worlesenric/wkspace/gc-wt/gc-026/artifacts/performance/raw/run1/probe-benchmark.json 
+
+# resolved environment
+MACHINE=worlesenric
+UNITY_PROJECT=/home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation
+ARTIFACTS=/home/worlesenric/wkspace/gc-wt/gc-026/artifacts/performance
+BENCH_RUNS=5
+BENCH_RUN_ORDINAL=1
+BENCH_WORKLOADS=all (selected: idle-command-world steady-unchanged-10000-steps steady-execution-10000-targets update-size-1 update-size-100 update-size-10000 whole-world-mode-switch spawn-1000 reparent-100 inactive-target-comparison lifecycle-cycles-1000)
+BENCH_SCOPES=1000
+BENCH_TARGETS=10000
+BENCH_LIVE_SCOPES=1000
+BENCH_SEED=20260926
+BENCH_APPLY_TARGETS=100
+BENCH_LIVE_SPAWN_TARGETS=1000
+BENCH_IDLE_FRAMES=64
+BENCH_UNCHANGED_STEPS=10000
+BENCH_WARMUP=30
+BENCH_DURATION=120
+BENCH_REPETITIONS=0
+BENCH_SEED=20260926
+BENCH_TIMEOUT=10800
+PROBE_PLAYER=/home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation/Builds/Linux64/GameCoreProbe.x86_64

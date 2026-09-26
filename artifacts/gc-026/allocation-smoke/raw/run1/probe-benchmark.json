@@ -1,0 +1,72 @@
+{
+  "task": "GC-026",
+  "probe": "GameCore.Validation.ProbeHost.ProbeRunner",
+  "mode": "Benchmark",
+  "result": "Fail",
+  "exitCode": 1,
+  "declaredUnityVersion": "6000.0.75f1",
+  "unityVersion": "6000.0.75f1",
+  "declaredTarget": "StandaloneLinux64",
+  "platform": "LinuxPlayer",
+  "architecture": "X64",
+  "processorType": "12th Gen Intel(R) Core(TM) i7-12700KF",
+  "scriptingBackend": "IL2CPP",
+  "isIl2Cpp": true,
+  "is64BitProcess": true,
+  "managedStrippingLevel": "High",
+  "managedStrippingLevelSource": "declared: GameCore.Validation.Editor.BuildProbe sets and re-reads PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, ManagedStrippingLevel.High); a player cannot query the stripping level at runtime",
+  "burstCompilerEnabled": true,
+  "fixturePluginPreservation": "declared: Assets/link.xml preserves the GameCore.Validation.Fixture assembly (preserve=\"all\"), and the generated catalog holds a direct FixturePluginFactory reference, so the plugin is linked into the player while nothing instantiates it at startup",
+  "catalogGenerator": "GameCore.Content.Compiler (GC-003)",
+  "catalogGeneratedFile": "ProbeCatalog.g.cs",
+  "catalogFileHash": "03bdcd23fd8ec0515d93d7c54d7f7c695f3860a850a7280b82316aaacd14c5c1",
+  "catalogFingerprint": "02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff",
+  "catalogDescriptionFormat": "gamecore.catalog-description/1",
+  "catalogProtocolVersion": "1.0",
+  "catalogSupportedFeatureCount": 1,
+  "catalogFileHashAlgorithm": "SHA-256",
+  "catalogFileHashScope": "SHA-256 over the UTF-8 bytes, with LF line endings, of the file prefix that ends immediately before the eight-space-indented CatalogFileHash declaration; that prefix ends with the newline that terminates the previous line, and the declaration itself, its value and the rest of the file are excluded",
+  "failureReason": "at least one probe step did not pass",
+  "probes": [
+    {
+      "name": "benchmark-fixture",
+      "status": "Pass",
+      "detail": "accepted=True; rejection=None; fixture{scopes=1000;targets=10000;groups=10;leaves=989;schemaFamilies=3;sharedProviders=11;uniqueProviders=99;baseInstalls=110;reparentScopeTargets=100;seededTagTargets=481;seed=20260926}; candidates=21001;contributions=20959;targets=10000;bytes=8053632;rules=110;buckets=110;visitedTargets=21001;shadowed=0"
+    },
+    {
+      "name": "benchmark-config",
+      "status": "Pass",
+      "detail": "scopes=1000;targets=10000;liveScopes=1000;liveTargets=10000;applyTargets=100;liveSpawnTargets=1000;idleFrames=64;unchangedSteps=10000;warmupSeconds=1;durationSeconds=2;repetitions=1;runOrdinal=1;seed=20260926;workloads=steady-execution-10000-targets; referenceCandidates=1000000;referenceContributions=250000;referenceTargets=100000;configured=PropagationBudget(candidates<=3200000, contributions<=1100000, targets<=100000, bytes<=422400000, prepareMs<=2000, applyUs<=200000000); telemetrySymbol=GAMECORE_TELEMETRY; telemetryCompiledInProbeAssembly=true; instrumentedKernelCountersMoved=true"
+    },
+    {
+      "name": "benchmark-hardware",
+      "status": "Pass",
+      "detail": "machine=worlesenric; processors=20; os=Unix 7.0.0.31; architecture=X64; processorType=12th Gen Intel(R) Core(TM) i7-12700KF; unityVersion=6000.0.75f1; declaredUnityVersion=6000.0.75f1; platform=LinuxPlayer; scriptingBackend=IL2CPP; isIl2Cpp=True; is64BitProcess=True; managedStrippingLevel=High; managedStrippingLevelSource=declared: GameCore.Validation.Editor.BuildProbe sets and re-reads PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, ManagedStrippingLevel.High); a player cannot query the stripping level at runtime; burstCompilerEnabled=True; catalogGeneratedFile=ProbeCatalog.g.cs; catalogFileHash=03bdcd23fd8ec0515d93d7c54d7f7c695f3860a850a7280b82316aaacd14c5c1; catalogFingerprint=02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff"
+    },
+    {
+      "name": "benchmark-steady-execution-10000-targets",
+      "status": "Pass",
+      "detail": "kind=Steady; samples=1326; repetitionsRequested=0; repetitionsExecuted=0; steps=1326; windowUs=0; passed=true; step(n=1326,p50=1495,p95=1610,p99=1713,max=2023); counters=[steps-advanced=1326]; memory=[managedHeapStart=73916416;managedHeapEnd=73916416;managedHeapGrowth=0;managedAllocated=0;managedThreadComplete=true;nativeContainers=0;leases=0;events=0;events_n=0;cache=0;cache_n=0;quarantine=0;quarantine_n=0;liveLeases=0;outstandingCallbacks=0]; gate:core-execution-window=pass(steps=1326; windowUs=2000558; budgetUs=2000000; windowEndedByCap=false; targets=10000; commands=1326000); gate:steady-execution-allocation-is-thread-complete=pass(managedBytes=0;declaredThreads=1;sampledThreads=1;threadComplete=true;coverage=AllThreadsSampled; managedBytesPerStep=0)"
+    },
+    {
+      "name": "benchmark-correctness-gates",
+      "status": "Fail",
+      "detail": "positiveControlInstrumentedKernelCountersMoved=true; controlNodesInWarmupDerivation=21111; telemetrySymbol=GAMECORE_TELEMETRY; telemetryCompiledInProbeAssembly=true; controlNodesAcrossWorkloads=0; stringServiceLookupsAcrossWorkloads=0; workloadsFailed=0; documents=1; declaredWorkloads=1; authorityMirrorFixture=not-run"
+    },
+    {
+      "name": "benchmark-digest",
+      "status": "Pass",
+      "detail": "observations=6; documents=1; workloads=1; digest=9a37ebe0d87622bbefdb6161c609e1cd3a966c46ff7aa29f06eb637324f5f753"
+    },
+    {
+      "name": "benchmark-artifacts-json",
+      "status": "Pass",
+      "detail": "documents=1; samples=1326; format=gamecore.benchmark.samples/1; files=steady-execution-10000-targets.samples.json"
+    },
+    {
+      "name": "benchmark-artifacts-csv",
+      "status": "Pass",
+      "detail": "documents=1; rows=1327; format=gamecore.benchmark.samples.csv/1; columns=33; files=steady-execution-10000-targets.samples.csv"
+    }
+  ]
+}

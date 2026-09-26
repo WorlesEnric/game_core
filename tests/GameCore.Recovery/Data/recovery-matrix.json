@@ -1,0 +1,163 @@
+{
+  "format": "gamecore.checkpoint-fixtures/recovery-matrix/1",
+  "cases": [
+    {
+      "id": "capture-copy",
+      "title": "A fault while the committed boundary is being copied produces no checkpoint at all.",
+      "requirementIds": [
+        "P-049",
+        "P-053"
+      ],
+      "testIds": [
+        "TEST-016",
+        "TEST-017",
+        "TEST-002"
+      ],
+      "mechanism": "Latch",
+      "boundaryNames": [
+        "checkpoint-capture-copy"
+      ],
+      "permittedOutcome": "NoCheckpointProduced",
+      "dataLossClass": "None",
+      "statement": "The capture copy refuses before any committed state was copied, so no document exists, no artifact was published and the world that was being captured keeps running."
+    },
+    {
+      "id": "checkpoint-publication",
+      "title": "A fault while the captured document is being published leaves the previously stored document as the stored one.",
+      "requirementIds": [
+        "P-049",
+        "P-053"
+      ],
+      "testIds": [
+        "TEST-016",
+        "TEST-017"
+      ],
+      "mechanism": "Latch",
+      "boundaryNames": [
+        "checkpoint-publication"
+      ],
+      "permittedOutcome": "PreviousDocumentIntact",
+      "dataLossClass": "None",
+      "statement": "The publication is refused and its temporary artifact removed, so a reader still sees the previously verified document or nothing at all and never a partial one."
+    },
+    {
+      "id": "restore-reference-repair",
+      "title": "A fault while the destination composition, recipes and references are being rebuilt builds no destination.",
+      "requirementIds": [
+        "P-049"
+      ],
+      "testIds": [
+        "TEST-016",
+        "TEST-002"
+      ],
+      "mechanism": "Latch",
+      "boundaryNames": [
+        "restore-reference-repair"
+      ],
+      "permittedOutcome": "DestinationNeverBuilt",
+      "dataLossClass": "None",
+      "statement": "The destination's reference tables were never rebuilt, so nothing was staged, exposed or reserved beyond the attempt and the faulted source world is unchanged."
+    },
+    {
+      "id": "restore-postwrite-apply",
+      "title": "A fault at either reach of the postwrite boundary destroys the staged destination instead of exposing it.",
+      "requirementIds": [
+        "P-049",
+        "P-031"
+      ],
+      "testIds": [
+        "TEST-016",
+        "TEST-010",
+        "TEST-002"
+      ],
+      "mechanism": "Latch",
+      "boundaryNames": [
+        "restore-apply",
+        "recovery-publication"
+      ],
+      "permittedOutcome": "DestinationNeverExposed",
+      "dataLossClass": "UncommittedAttemptWork",
+      "statement": "Both reaches of the postwrite boundary are covered - after the staged world was written to and as the validated world is about to be published - and each leaves the same observable result: the staged world was destroyed rather than published, so no epoch, revision or session became reachable and the source world stays untouched."
+    },
+    {
+      "id": "outbox-append",
+      "title": "A fault either side of the outbox append keeps an obligation undeliverable until it is durable.",
+      "requirementIds": [
+        "P-049",
+        "P-045"
+      ],
+      "testIds": [
+        "TEST-016",
+        "TEST-014"
+      ],
+      "mechanism": "DeliveryHook",
+      "boundaryNames": [
+        "before-append",
+        "after-append"
+      ],
+      "permittedOutcome": "ObligationDurableBeforeDelivery",
+      "dataLossClass": "UnpersistedObligation",
+      "statement": "An obligation is handed to its destination only after its frame is durable, so a fault before the append refuses the commit rather than delivering an obligation no journal holds."
+    },
+    {
+      "id": "outbox-delivery",
+      "title": "A fault between handing an obligation over and recording the attempt is the acknowledgement-loss window.",
+      "requirementIds": [
+        "P-049",
+        "P-045"
+      ],
+      "testIds": [
+        "TEST-016",
+        "TEST-014"
+      ],
+      "mechanism": "DeliveryHook",
+      "boundaryNames": [
+        "before-delivery",
+        "after-delivery"
+      ],
+      "permittedOutcome": "RedeliveryReusesIdempotencyKey",
+      "dataLossClass": "UncommittedAttemptWork",
+      "statement": "The obligation stays open and a redelivery carries the same external idempotency key, so the destination applies at most one mutation."
+    },
+    {
+      "id": "outbox-acknowledge",
+      "title": "A fault either side of the acknowledgement leaves the obligation redeliverable or settled, never both.",
+      "requirementIds": [
+        "P-049",
+        "P-045"
+      ],
+      "testIds": [
+        "TEST-016",
+        "TEST-014"
+      ],
+      "mechanism": "DeliveryHook",
+      "boundaryNames": [
+        "before-acknowledge",
+        "after-acknowledge"
+      ],
+      "permittedOutcome": "AcknowledgementRecordedOrRedeliveredOnce",
+      "dataLossClass": "None",
+      "statement": "An acknowledgement is persisted before it is applied, so a fault before it leaves the obligation redeliverable and a fault after it leaves the obligation settled with the destination effect unchanged."
+    },
+    {
+      "id": "restart",
+      "title": "A restart recovers from the stored document alone or produces no world at all.",
+      "requirementIds": [
+        "P-049",
+        "P-053"
+      ],
+      "testIds": [
+        "TEST-016",
+        "TEST-017",
+        "TEST-010"
+      ],
+      "mechanism": "StoreRead",
+      "boundaryNames": [
+        "store-read"
+      ],
+      "permittedOutcome": "NewSessionFromStoreOrNoWorld",
+      "dataLossClass": "UncommittedSinceCheckpoint",
+      "statement": "A restart carries no in-process state, so the verified document either produces a new session or, when it is absent or corrupt, no world at all, and the faulted session is never resumed."
+    }
+  ]
+}

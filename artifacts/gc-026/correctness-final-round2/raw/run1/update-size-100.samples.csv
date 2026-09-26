@@ -1,0 +1,12 @@
+# gamecore.benchmark.samples.csv/1 workload=update-size-100 run=1 seed=20260926 scopes=1000 targets=10000 warmupSeconds=1 durationSeconds=2 repetitions=5
+workload,phase,ordinal,microseconds,control-nodes-visited,candidates-matched,contributions-added,contributions-retracted,strata-evaluated,plan-prepared-bytes,apply-us,assembly-epoch,steps-advanced,service-string-lookups,stage-us,stage-samples,job-wait-us,job-wait-samples,structural-operations,request-high-water,request-overflow,stale-results,live-leases,outstanding-callbacks,retained-event-bytes,retained-event-count,quarantine-bytes,quarantine-entries,lease-bytes,cache-bytes,cache-entries,discarded-callbacks,apply-samples
+update-size-100,Warmup,0,875047,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+update-size-100,Warmup,1,847322,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+update-size-100,Prepare,0,845194,129040,31001,100,100,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+update-size-100,Prepare,1,859105,129040,31001,100,100,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+update-size-100,Prepare,2,874406,129040,31001,100,100,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+update-size-100,Prepare,3,892850,129040,31001,100,100,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+update-size-100,Prepare,4,909935,129040,31001,100,100,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+update-size-100,EndToEnd,0,239768,0,0,0,0,0,0,624,2,0,0,0,0,0,0,500,0,0,0,9,0,0,0,0,0,4320,0,0,0,1
+update-size-100,Apply,0,624,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+update-size-100,Prepare,0,239144,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0

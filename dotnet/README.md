@@ -37,6 +37,8 @@ Unity qualification project and the player gates.
 | `tests/GameCore.Rules.Traversal.Tests` | NUnit 3 | net8.0 | the traversal-rules package's own `Tests/**` sources (GC-020) |
 | `src/GameCore.Adapters` | library | netstandard2.1 | `Packages/com.gamecore.unity.adapters/Runtime/Pure/**/*.cs` |
 | `tests/GameCore.Adapters.Tests` | NUnit 3 | net8.0 | the adapter-core tests plus the shared `Packages/com.gamecore.unity.adapters/Fixtures/**/*.cs` doubles |
+| `src/GameCore.Recovery.Fixtures` | library | netstandard2.1 | `tests/GameCore.Recovery/Runtime/**/*.cs` |
+| `tests/GameCore.Recovery.Fixtures.Tests` | NUnit 3 | net8.0 | the recovery fixtures' own `Tests/**` sources (GC-027) |
 
 
 `GameCore.Rules.Traversal` is GC-020's engine-free half of the real-time action reference: the identities and
@@ -79,6 +81,15 @@ external physical-authority descriptor and ledger. Only `Runtime/Pure/**` is inc
 `tests/GameCore.Adapters.Tests` compiles the shared adapter doubles under
 `Packages/com.gamecore.unity.adapters/Fixtures/Runtime` directly, so the plain-dotnet suite and the Unity EditMode
 suite exercise the same fixtures.
+
+`GameCore.Recovery.Fixtures` is GC-027's data half: the versioned permitted-outcome matrix and the store-envelope
+version cases under `tests/GameCore.Recovery/Data`, the model and the strict reader that refuses a document whose
+`format` id, case ids, enum-member names or boundary names do not check out (rather than reading it with a
+substituted default), and the repository-root lookup the fixture paths use. It references only `GameCore.Contracts`,
+because the Unity build of the same sources has no assembly references at all; the suite is the half that references
+`GameCore.Execution`, where `GameCore.Execution.Recovery` and `GameCore.Execution.Delivery` are compiled for plain
+dotnet and inside `GameCore.Unity.Runtime` for the engine build. The committed JSON is the source of truth and is
+read from the repository tree, not from a build output copy.
 
 ## Commands
 

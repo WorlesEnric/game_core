@@ -1,0 +1,44 @@
+{
+  "assemblies": [
+    {
+      "fullname": "GameCore.Validation.Fixture",
+      "preserve": "all",
+      "types": []
+    },
+    {
+      "fullname": "GameCore.Unity.Fixtures",
+      "preserve": "all",
+      "types": []
+    },
+    {
+      "fullname": "GameCore.Unity.Adapters",
+      "preserve": null,
+      "types": [
+        "GameCore.Unity.Adapters.GameCoreApplicationBootstrap",
+        "GameCore.Unity.Adapters.GameCorePlayerLoopInstaller",
+        "GameCore.Unity.Adapters.GameCoreApplicationPump",
+        "GameCore.Unity.Adapters.GameCoreApplicationReset",
+        "GameCore.Unity.Adapters.GameCoreApplicationComposition",
+        "GameCore.Unity.Adapters.GameCorePumpLoop"
+      ]
+    }
+  ],
+  "check": "link-xml-preservation",
+  "path": "/home/worlesenric/wkspace/gc-wt/gc-025/unity/GameCore.Validation/Assets/link.xml",
+  "permittedAssemblyPreserves": [
+    "GameCore.Validation.Fixture",
+    "GameCore.Unity.Fixtures"
+  ],
+  "permittedTypePreserves": [
+    "GameCore.Unity.Adapters.GameCoreApplicationBootstrap",
+    "GameCore.Unity.Adapters.GameCorePlayerLoopInstaller",
+    "GameCore.Unity.Adapters.GameCoreApplicationPump",
+    "GameCore.Unity.Adapters.GameCoreApplicationReset",
+    "GameCore.Unity.Adapters.GameCoreApplicationComposition",
+    "GameCore.Unity.Adapters.GameCorePumpLoop"
+  ],
+  "problems": [],
+  "sha256": "f7d33b72301efecd088067476094bcb26ab562dc9b46f1fae898bfbe5764beb5",
+  "status": "Pass",
+  "task": "GC-025"
+}
