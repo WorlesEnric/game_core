@@ -1,0 +1,391 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="def52e59-5b41-4770-8052-4f34b8ed753e" name="@worlesenric 2026-09-26 16:55:25" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-26T16:55:25.2212877+08:00" queuing="2026-09-26T16:55:25.2212878+08:00" start="2026-09-26T16:55:23.8592613+08:00" finish="2026-09-26T16:55:25.5837659+08:00" />
+  <TestSettings name="default" id="30f344ae-fe67-4499-b94e-f9f082433a63">
+    <Deployment runDeploymentRoot="_worlesenric_2026-09-26_16_55_25" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="3d4cf28c-44bf-4b96-bcbb-705f640aeb49" testId="b7bf2b76-f54b-c447-ae57-03c6eaef560d" testName="TheFixtureDocumentsLiveWhereThePackageSaysTheyDo" computerName="worlesenric" duration="00:00:00.0004640" startTime="2026-09-26T16:55:25.1181020+08:00" endTime="2026-09-26T16:55:25.1185657+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3d4cf28c-44bf-4b96-bcbb-705f640aeb49" />
+    <UnitTestResult executionId="46d91be1-7afb-4a9d-8982-1aa903baa3e5" testId="91d830c1-5edd-3bec-3798-78685684759e" testName="AnEmptyCheckpointAndAnEmptyOutboxAreConsistent" computerName="worlesenric" duration="00:00:00.0004410" startTime="2026-09-26T16:55:25.0913351+08:00" endTime="2026-09-26T16:55:25.0917757+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="46d91be1-7afb-4a9d-8982-1aa903baa3e5" />
+    <UnitTestResult executionId="006ce562-ac6e-4f3b-9b73-db3cf8ee6b57" testId="bac5dacf-28bb-f806-77dd-33b16cba768b" testName="AHostBoundOfThreeAllowsTwoRetriesForARetryableFailure" computerName="worlesenric" duration="00:00:00.0082520" startTime="2026-09-26T16:55:25.2515586+08:00" endTime="2026-09-26T16:55:25.2598105+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="006ce562-ac6e-4f3b-9b73-db3cf8ee6b57" />
+    <UnitTestResult executionId="80fbadee-b5bd-4011-9781-e417bfb22f8e" testId="5163e574-079f-83db-c8a8-e3a7f0c4bf77" testName="PublishingTwiceLeavesTheNewestDocumentStored" computerName="worlesenric" duration="00:00:00.0091600" startTime="2026-09-26T16:55:24.9618315+08:00" endTime="2026-09-26T16:55:24.9709919+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="80fbadee-b5bd-4011-9781-e417bfb22f8e" />
+    <UnitTestResult executionId="7c9c1152-13bd-4021-ba0e-ab508be9b1ca" testId="7545b82b-1a1a-e87e-935a-f50e98f7f4fa" testName="ATerminalStateFailureIsNotRetryable" computerName="worlesenric" duration="00:00:00.0003620" startTime="2026-09-26T16:55:25.2634739+08:00" endTime="2026-09-26T16:55:25.2638356+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7c9c1152-13bd-4021-ba0e-ab508be9b1ca" />
+    <UnitTestResult executionId="485d656c-650a-454d-bb69-de21d03d104c" testId="250844de-a5dd-bdee-83b3-c2a0152bc3b7" testName="ABudgetFailureIsNeverRetried" computerName="worlesenric" duration="00:00:00.0016240" startTime="2026-09-26T16:55:25.2479132+08:00" endTime="2026-09-26T16:55:25.2495371+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="485d656c-650a-454d-bb69-de21d03d104c" />
+    <UnitTestResult executionId="20fcc37a-fa66-410f-a3a9-4a0aa0dd2032" testId="6cfd2dbd-19e1-13b6-876e-befed070db7e" testName="DescribeIsTheLinesJoinedByLineFeeds" computerName="worlesenric" duration="00:00:00.0327450" startTime="2026-09-26T16:55:25.2733459+08:00" endTime="2026-09-26T16:55:25.3060908+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="20fcc37a-fa66-410f-a3a9-4a0aa0dd2032" />
+    <UnitTestResult executionId="34c9ee6c-dd41-487d-a228-d834cd09c7dc" testId="27cf2e95-da11-5c4e-e93c-3dd9cf92c264" testName="BothCommittedFixturesDeclareTheirDocumentedFormat" computerName="worlesenric" duration="00:00:00.0083389" startTime="2026-09-26T16:55:25.1097280+08:00" endTime="2026-09-26T16:55:25.1180668+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="34c9ee6c-dd41-487d-a228-d834cd09c7dc" />
+    <UnitTestResult executionId="7c246ada-0a97-4dba-8632-d8edc6332894" testId="a579f487-8f43-709c-4318-958a2b019fcb" testName="TheFixtureVocabularyEqualsTheProductionVocabulary" computerName="worlesenric" duration="00:00:00.0424910" startTime="2026-09-26T16:55:25.1797738+08:00" endTime="2026-09-26T16:55:25.2222649+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7c246ada-0a97-4dba-8632-d8edc6332894">
+      <Output>
+        <ErrorInfo>
+          <Message>  the fixture vocabulary carries each declared boundary name exactly once.
+  Expected: 18
+  But was:  20
+</Message>
+          <StackTrace>   at GameCore.Recovery.Fixtures.Tests.RecoveryMatrixFixtureTests.TheFixtureVocabularyEqualsTheProductionVocabulary() in /home/worlesenric/wkspace/gc-wt/gc-027/tests/GameCore.Recovery/Tests/RecoveryMatrixFixtureTests.cs:line 214
+
+1)    at GameCore.Recovery.Fixtures.Tests.RecoveryMatrixFixtureTests.TheFixtureVocabularyEqualsTheProductionVocabulary() in /home/worlesenric/wkspace/gc-wt/gc-027/tests/GameCore.Recovery/Tests/RecoveryMatrixFixtureTests.cs:line 214
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="e26509aa-7cda-4c74-ae8f-6c2912cd0ba4" testId="f3a5fd10-d3a2-e452-06b0-7675d9e8cfef" testName="AMemoryPublishThenReadReturnsTheSameDocument" computerName="worlesenric" duration="00:00:00.0006940" startTime="2026-09-26T16:55:24.9318620+08:00" endTime="2026-09-26T16:55:24.9325564+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e26509aa-7cda-4c74-ae8f-6c2912cd0ba4" />
+    <UnitTestResult executionId="a8b6bf33-5b0d-40e2-9629-b676119b1859" testId="4556ef72-4e53-d6fd-7c70-83c5e6fb58a9" testName="ACursorThatAcknowledgesAnUnrecordedIdentityIsInconsistent" computerName="worlesenric" duration="00:00:00.0107850" startTime="2026-09-26T16:55:25.0793795+08:00" endTime="2026-09-26T16:55:25.0901650+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a8b6bf33-5b0d-40e2-9629-b676119b1859" />
+    <UnitTestResult executionId="882feb47-51f4-4a36-89d0-4b30197962d4" testId="c8b2ceef-e1d6-b887-e692-cfcfcdef4c46" testName="NoHostSettingMeansExactlyOneAttempt" computerName="worlesenric" duration="00:00:00.0003260" startTime="2026-09-26T16:55:25.2638539+08:00" endTime="2026-09-26T16:55:25.2641797+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="882feb47-51f4-4a36-89d0-4b30197962d4" />
+    <UnitTestResult executionId="2e92d365-fd44-4d42-92c0-20518d6e2cc8" testId="3605699e-e02c-d0f9-ff65-0f992a918574" testName="ATerminalRowWithoutItsObligationRowIsInconsistent" computerName="worlesenric" duration="00:00:00.0002830" startTime="2026-09-26T16:55:25.0921111+08:00" endTime="2026-09-26T16:55:25.0923939+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2e92d365-fd44-4d42-92c0-20518d6e2cc8" />
+    <UnitTestResult executionId="6a8ac137-fab7-4fd9-b0bf-81e9f6e1a348" testId="49013081-ac0c-a78d-6433-e7c917123003" testName="ADeclaredVersionThisBuildDoesNotImplementIsRefusedWithUnsupportedVersion" computerName="worlesenric" duration="00:00:00.0632910" startTime="2026-09-26T16:55:24.8201378+08:00" endTime="2026-09-26T16:55:24.8833572+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6a8ac137-fab7-4fd9-b0bf-81e9f6e1a348">
+      <Output>
+        <ErrorInfo>
+          <Message>System.NullReferenceException : Object reference not set to an instance of an object.</Message>
+          <StackTrace>   at GameCore.Execution.Recovery.StoredCheckpoint.get_IsStored() in /home/worlesenric/wkspace/gc-wt/gc-027/Packages/com.gamecore.unity.runtime/Runtime/Pure/Recovery/CheckpointStore.cs:line 147
+   at GameCore.Recovery.Fixtures.Tests.CheckpointStoreTests.AssertVersionRefused(Byte[] envelope, Byte major, Byte minor) in /home/worlesenric/wkspace/gc-wt/gc-027/tests/GameCore.Recovery/Tests/CheckpointStoreTests.cs:line 359
+   at GameCore.Recovery.Fixtures.Tests.CheckpointStoreTests.ADeclaredVersionThisBuildDoesNotImplementIsRefusedWithUnsupportedVersion() in /home/worlesenric/wkspace/gc-wt/gc-027/tests/GameCore.Recovery/Tests/CheckpointStoreTests.cs:line 229
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="2bad90d7-e881-48c3-b576-b544138e2b91" testId="16c0fef5-b1d3-cfd8-6dcb-fdbaa713065c" testName="BothCommittedFixturesAreCanonicalUtf8Text" computerName="worlesenric" duration="00:00:00.0142440" startTime="2026-09-26T16:55:25.0954466+08:00" endTime="2026-09-26T16:55:25.1096897+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2bad90d7-e881-48c3-b576-b544138e2b91" />
+    <UnitTestResult executionId="c7afce8a-9796-409f-9019-5425d6b44a3a" testId="64bce897-3546-14e4-6abc-4b592b015e4a" testName="TheOrderedCaseIdsAreExactlyTheProductionFaultPointIds" computerName="worlesenric" duration="00:00:00.0006810" startTime="2026-09-26T16:55:25.2311510+08:00" endTime="2026-09-26T16:55:25.2318320+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c7afce8a-9796-409f-9019-5425d6b44a3a" />
+    <UnitTestResult executionId="8e94719d-fb8a-424b-a890-401b7f53b97e" testId="660ab62b-a06e-88a2-28e0-547818af0427" testName="ARestartPointReportsANewSessionOnlyWhenItDiffersFromTheOldOne" computerName="worlesenric" duration="00:00:00.0012970" startTime="2026-09-26T16:55:25.2716319+08:00" endTime="2026-09-26T16:55:25.2729287+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8e94719d-fb8a-424b-a890-401b7f53b97e" />
+    <UnitTestResult executionId="a5a37e2a-541b-4d56-9aca-8348a832921d" testId="77580e14-f53a-1871-84f5-10820352556b" testName="EveryCaseAgreesWithTheProductionFaultPointTable" computerName="worlesenric" duration="00:00:00.0063520" startTime="2026-09-26T16:55:25.1195424+08:00" endTime="2026-09-26T16:55:25.1258941+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a5a37e2a-541b-4d56-9aca-8348a832921d" />
+    <UnitTestResult executionId="5f32a455-fa83-460e-8048-d02e1be5a1ee" testId="661d3c67-6143-3e53-b869-5625a208004c" testName="OfAndRetryOfAgreeForEveryDiagnosticCode" computerName="worlesenric" duration="00:00:00.0008510" startTime="2026-09-26T16:55:25.2641962+08:00" endTime="2026-09-26T16:55:25.2650468+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5f32a455-fa83-460e-8048-d02e1be5a1ee" />
+    <UnitTestResult executionId="9c07a8a6-493a-4d24-8883-02be5f5ba444" testId="280e970b-3eeb-e442-a903-623a97beaead" testName="TheReaderRefusesAMalformedDocumentInsteadOfSubstitutingDefaults" computerName="worlesenric" duration="00:00:00.0068540" startTime="2026-09-26T16:55:25.2357827+08:00" endTime="2026-09-26T16:55:25.2426369+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9c07a8a6-493a-4d24-8883-02be5f5ba444" />
+    <UnitTestResult executionId="f0a0f492-f117-4d06-96cd-404b72348882" testId="46ca4ea7-ace3-0dbe-fd18-1ccae1612466" testName="ACheckpointThatMatchesItsRecoveredOutboxIsConsistent" computerName="worlesenric" duration="00:00:00.0529770" startTime="2026-09-26T16:55:25.0080399+08:00" endTime="2026-09-26T16:55:25.0610170+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f0a0f492-f117-4d06-96cd-404b72348882" />
+    <UnitTestResult executionId="871e15e8-5df0-4168-b0cb-36090d1ca89f" testId="f0cbb4f6-f91a-d222-6e28-a2e889c3aade" testName="TwoCursorRowsForOneDestinationAreInconsistent" computerName="worlesenric" duration="00:00:00.0003510" startTime="2026-09-26T16:55:25.0945017+08:00" endTime="2026-09-26T16:55:25.0948525+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="871e15e8-5df0-4168-b0cb-36090d1ca89f" />
+    <UnitTestResult executionId="168c9a9c-d736-4454-8894-433337e63a33" testId="e306b7b7-84ee-6cd7-4ff7-368101a40492" testName="IdenticalLinesProduceEqualDigestsAndDifferentLinesDoNot" computerName="worlesenric" duration="00:00:00.0084540" startTime="2026-09-26T16:55:25.3061239+08:00" endTime="2026-09-26T16:55:25.3145771+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="168c9a9c-d736-4454-8894-433337e63a33" />
+    <UnitTestResult executionId="87181497-fcb2-4b6f-b344-32ac091f6ccc" testId="c561f044-a4b7-b8ef-7720-6d44415bded3" testName="AFilePublishThenReadReturnsTheSameDocument" computerName="worlesenric" duration="00:00:00.0214880" startTime="2026-09-26T16:55:24.9068859+08:00" endTime="2026-09-26T16:55:24.9283738+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="87181497-fcb2-4b6f-b344-32ac091f6ccc" />
+    <UnitTestResult executionId="5cac9ac4-62df-4cdf-b5fe-b3b6e356027a" testId="266af2c0-ca90-96ce-d9bb-59c49800c63e" testName="AnOutboxThatOwesFewerObligationsThanTheCheckpointCarriedIsInconsistent" computerName="worlesenric" duration="00:00:00.0002520" startTime="2026-09-26T16:55:25.0918468+08:00" endTime="2026-09-26T16:55:25.0920992+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5cac9ac4-62df-4cdf-b5fe-b3b6e356027a" />
+    <UnitTestResult executionId="d7ae316b-2a4d-4225-b405-e41f5dca8720" testId="1fa22fa3-f967-c01f-e8c4-54c17345c703" testName="ACorrectnessFailureOfACorrectedCatalogIsStillNotRetriedInPlace" computerName="worlesenric" duration="00:00:00.0003500" startTime="2026-09-26T16:55:25.2511954+08:00" endTime="2026-09-26T16:55:25.2515458+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d7ae316b-2a4d-4225-b405-e41f5dca8720" />
+    <UnitTestResult executionId="ca55bc81-0a7b-41f7-a219-4d2178a6497f" testId="28f1eb6c-e549-304e-69a7-5bfa060d2fc3" testName="ASuccessfulPublishLeavesNoTemporaryArtifactBehind" computerName="worlesenric" duration="00:00:00.0072840" startTime="2026-09-26T16:55:24.9415554+08:00" endTime="2026-09-26T16:55:24.9488394+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ca55bc81-0a7b-41f7-a219-4d2178a6497f" />
+    <UnitTestResult executionId="9229829e-61af-4def-af98-86a7690eacb3" testId="1e41a80e-1f0f-ba01-1038-9e632e22382a" testName="TheEnvelopeLengthIsTheDocumentPlusTheDeclaredOverhead" computerName="worlesenric" duration="00:00:00.0154320" startTime="2026-09-26T16:55:24.9826470+08:00" endTime="2026-09-26T16:55:24.9980782+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9229829e-61af-4def-af98-86a7690eacb3" />
+    <UnitTestResult executionId="8ced85b0-85b3-4118-86e3-2aa1d7dcac1f" testId="d5ca1340-22d1-2c0b-414a-752927267f1c" testName="DataLossBoundaryIsTheMostSevereRecordedClass" computerName="worlesenric" duration="00:00:00.0003810" startTime="2026-09-26T16:55:25.2729491+08:00" endTime="2026-09-26T16:55:25.2733297+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8ced85b0-85b3-4118-86e3-2aa1d7dcac1f" />
+    <UnitTestResult executionId="90d057e8-2400-4504-9ff1-1460a2ed882f" testId="9f1a6050-9ecd-442f-caa2-4d5fa98bf1a9" testName="AddFaultRecordsThePhaseAndTheFaultPoint" computerName="worlesenric" duration="00:00:00.0031130" startTime="2026-09-26T16:55:25.2684933+08:00" endTime="2026-09-26T16:55:25.2716056+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="90d057e8-2400-4504-9ff1-1460a2ed882f" />
+    <UnitTestResult executionId="9ed6d705-3c6e-4cd9-b90e-e2f5a9c1ad52" testId="1245b043-fc27-f048-a0de-64fad8e3323b" testName="AnOversizedHostBoundIsClampedAndReported" computerName="worlesenric" duration="00:00:00.0036070" startTime="2026-09-26T16:55:25.2598406+08:00" endTime="2026-09-26T16:55:25.2634477+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9ed6d705-3c6e-4cd9-b90e-e2f5a9c1ad52" />
+    <UnitTestResult executionId="b8b1e93c-fdd8-41cf-a2b4-46ac3283b940" testId="aa0a934c-4c11-4508-a0ca-ceb7d1db838c" testName="OverflowIsCountedAndNeverGrowsTheLineCount" computerName="worlesenric" duration="00:00:00.0003850" startTime="2026-09-26T16:55:25.3177213+08:00" endTime="2026-09-26T16:55:25.3181056+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b8b1e93c-fdd8-41cf-a2b4-46ac3283b940" />
+    <UnitTestResult executionId="d97e3a01-d617-44cc-9070-07163f6676cf" testId="8a1ca774-6e3f-d55b-54fa-b190a447ed2c" testName="RecoveredRowSetRoundTripsThroughTheOutboxAndStaysConsistent" computerName="worlesenric" duration="00:00:00.0020760" startTime="2026-09-26T16:55:25.0924041+08:00" endTime="2026-09-26T16:55:25.0944799+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d97e3a01-d617-44cc-9070-07163f6676cf" />
+    <UnitTestResult executionId="f2c5478a-01a8-4c3d-80bd-5e10a2579dde" testId="5398af9e-6247-4daa-b3d0-a662d5a23c35" testName="EveryCorruptEnvelopeIsRefusedWithResourceUnavailableAndNamesTheField" computerName="worlesenric" duration="00:00:00.0025150" startTime="2026-09-26T16:55:24.9558319+08:00" endTime="2026-09-26T16:55:24.9583472+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f2c5478a-01a8-4c3d-80bd-5e10a2579dde">
+      <Output>
+        <ErrorInfo>
+          <Message>System.NullReferenceException : Object reference not set to an instance of an object.</Message>
+          <StackTrace>   at GameCore.Execution.Recovery.StoredCheckpoint.get_IsStored() in /home/worlesenric/wkspace/gc-wt/gc-027/Packages/com.gamecore.unity.runtime/Runtime/Pure/Recovery/CheckpointStore.cs:line 147
+   at GameCore.Recovery.Fixtures.Tests.CheckpointStoreTests.AssertRefused(Byte[] envelope, String expectedDetail) in /home/worlesenric/wkspace/gc-wt/gc-027/tests/GameCore.Recovery/Tests/CheckpointStoreTests.cs:line 338
+   at GameCore.Recovery.Fixtures.Tests.CheckpointStoreTests.EveryCorruptEnvelopeIsRefusedWithResourceUnavailableAndNamesTheField() in /home/worlesenric/wkspace/gc-wt/gc-027/tests/GameCore.Recovery/Tests/CheckpointStoreTests.cs:line 188
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="8db671d6-b825-466e-92f3-224ca26e095a" testId="8258ad55-6fcb-a902-15a2-c9f33d64fb18" testName="EveryStoreVersionCaseAgreesWithTheFormatAndWithARealEnvelope" computerName="worlesenric" duration="00:00:00.0239580" startTime="2026-09-26T16:55:25.1394641+08:00" endTime="2026-09-26T16:55:25.1634225+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8db671d6-b825-466e-92f3-224ca26e095a">
+      <Output>
+        <ErrorInfo>
+          <Message>System.NullReferenceException : Object reference not set to an instance of an object.</Message>
+          <StackTrace>   at GameCore.Execution.Recovery.StoredCheckpoint.get_IsStored() in /home/worlesenric/wkspace/gc-wt/gc-027/Packages/com.gamecore.unity.runtime/Runtime/Pure/Recovery/CheckpointStore.cs:line 147
+   at GameCore.Recovery.Fixtures.Tests.RecoveryMatrixFixtureTests.EveryStoreVersionCaseAgreesWithTheFormatAndWithARealEnvelope() in /home/worlesenric/wkspace/gc-wt/gc-027/tests/GameCore.Recovery/Tests/RecoveryMatrixFixtureTests.cs:line 315
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="cd6761b1-7eda-4eb0-a93c-60de8f096453" testId="8f162e74-3c47-3c76-822f-c1414dde0cc7" testName="ACorrectnessFailureNeverAllowsARetryWithAttemptsLeft" computerName="worlesenric" duration="00:00:00.0004520" startTime="2026-09-26T16:55:25.2507271+08:00" endTime="2026-09-26T16:55:25.2511791+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cd6761b1-7eda-4eb0-a93c-60de8f096453" />
+    <UnitTestResult executionId="8b692c6c-363d-4716-95d5-fc7f8c95166a" testId="a471e6e8-a594-38af-ebbe-e1156c854aa2" testName="LinesAreRecordedInOrderWithAssignedOrdinals" computerName="worlesenric" duration="00:00:00.0030770" startTime="2026-09-26T16:55:25.3146060+08:00" endTime="2026-09-26T16:55:25.3176824+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8b692c6c-363d-4716-95d5-fc7f8c95166a" />
+    <UnitTestResult executionId="114a8d73-688d-48d9-a2c1-bc3c9ede199e" testId="e8e34463-0d87-301e-8689-9585481801f3" testName="VerifyMutatesNothing" computerName="worlesenric" duration="00:00:00.0003959" startTime="2026-09-26T16:55:25.0948667+08:00" endTime="2026-09-26T16:55:25.0952631+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="114a8d73-688d-48d9-a2c1-bc3c9ede199e" />
+    <UnitTestResult executionId="c5b6e921-f037-4978-b14a-1303963bba09" testId="3c4bfd93-66f9-96a0-a376-7c5cd8308f2a" testName="TheFixturePathsResolveTheCommittedDocuments" computerName="worlesenric" duration="00:00:00.0091910" startTime="2026-09-26T16:55:25.1659800+08:00" endTime="2026-09-26T16:55:25.1751714+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c5b6e921-f037-4978-b14a-1303963bba09" />
+    <UnitTestResult executionId="7490dcc6-43f0-41d8-9998-5ff763bd21cf" testId="1737c5dc-0b38-e55b-11ac-dc1027c0cff7" testName="AnEmptyDocumentIsRefusedWithResourceUnavailable" computerName="worlesenric" duration="00:00:00.0008090" startTime="2026-09-26T16:55:24.9358283+08:00" endTime="2026-09-26T16:55:24.9366370+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7490dcc6-43f0-41d8-9998-5ff763bd21cf">
+      <Output>
+        <ErrorInfo>
+          <Message>System.NullReferenceException : Object reference not set to an instance of an object.</Message>
+          <StackTrace>   at GameCore.Execution.Recovery.StoredCheckpoint.get_IsStored() in /home/worlesenric/wkspace/gc-wt/gc-027/Packages/com.gamecore.unity.runtime/Runtime/Pure/Recovery/CheckpointStore.cs:line 147
+   at GameCore.Recovery.Fixtures.Tests.CheckpointStoreTests.AnEmptyDocumentIsRefusedWithResourceUnavailable() in /home/worlesenric/wkspace/gc-wt/gc-027/tests/GameCore.Recovery/Tests/CheckpointStoreTests.cs:line 136
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="1a2d53d7-52f9-4411-8692-95025a91ece3" testId="b56fb489-c5bd-5043-f826-fb7d7ff1152b" testName="TheAttemptLogRequiresDistinctSessionsAndOperations" computerName="worlesenric" duration="00:00:00.0002670" startTime="2026-09-26T16:55:25.2681088+08:00" endTime="2026-09-26T16:55:25.2683757+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1a2d53d7-52f9-4411-8692-95025a91ece3" />
+    <UnitTestResult executionId="d9a437d5-ac7c-4dbf-8e1a-ba12791a24be" testId="3e2cfaa4-7225-c88d-a94d-2a80a5d115df" testName="EveryCasesBoundaryNamesAreDeclaredByItsInjectionMechanism" computerName="worlesenric" duration="00:00:00.0041529" startTime="2026-09-26T16:55:25.1323077+08:00" endTime="2026-09-26T16:55:25.1364610+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d9a437d5-ac7c-4dbf-8e1a-ba12791a24be" />
+    <UnitTestResult executionId="9f074ec7-a6e3-422e-b8b2-821ac5efa9a0" testId="f77f7c9e-53b4-5a64-2ab5-7c58996706a3" testName="TheAttemptLogRecordsAttemptsInOrderAndCountsOverflow" computerName="worlesenric" duration="00:00:00.0030240" startTime="2026-09-26T16:55:25.2650642+08:00" endTime="2026-09-26T16:55:25.2680882+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9f074ec7-a6e3-422e-b8b2-821ac5efa9a0" />
+    <UnitTestResult executionId="4efec011-6b5d-4356-86b4-ef25830fb53a" testId="aa614b70-7c3b-599e-4c16-c2ce60ed6e7f" testName="ADocumentOneByteOverTheCeilingIsRefusedWithBudgetExceeded" computerName="worlesenric" duration="00:00:00.0026180" startTime="2026-09-26T16:55:24.8972618+08:00" endTime="2026-09-26T16:55:24.8998798+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4efec011-6b5d-4356-86b4-ef25830fb53a">
+      <Output>
+        <ErrorInfo>
+          <Message>System.NullReferenceException : Object reference not set to an instance of an object.</Message>
+          <StackTrace>   at GameCore.Execution.Recovery.StoredCheckpoint.get_IsStored() in /home/worlesenric/wkspace/gc-wt/gc-027/Packages/com.gamecore.unity.runtime/Runtime/Pure/Recovery/CheckpointStore.cs:line 147
+   at GameCore.Recovery.Fixtures.Tests.CheckpointStoreTests.ADocumentOneByteOverTheCeilingIsRefusedWithBudgetExceeded() in /home/worlesenric/wkspace/gc-wt/gc-027/tests/GameCore.Recovery/Tests/CheckpointStoreTests.cs:line 158
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d77955d3-7119-4a68-9558-cbddee9ed16d" testId="fefbba44-6c6f-4074-6e0e-180a350542fb" testName="ACursorThatDisagreesWithItsTerminalRowsIsInconsistent" computerName="worlesenric" duration="00:00:00.0011260" startTime="2026-09-26T16:55:25.0901914+08:00" endTime="2026-09-26T16:55:25.0913169+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d77955d3-7119-4a68-9558-cbddee9ed16d" />
+    <UnitTestResult executionId="8bb7985e-94ba-4871-9446-6776bac36f65" testId="bab312ea-0bf1-a7a0-455a-7f03e557830b" testName="ARemovedCheckpointIsGoneAndReportedAsAbsent" computerName="worlesenric" duration="00:00:00.0022169" startTime="2026-09-26T16:55:24.9389980+08:00" endTime="2026-09-26T16:55:24.9412152+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8bb7985e-94ba-4871-9446-6776bac36f65" />
+    <UnitTestResult executionId="e7c80130-283d-4925-a40f-d14c2241e0fc" testId="888cc371-edd4-e41b-1096-2f7fe0ab0621" testName="ReadingALocationWithNothingStoredIsRefusedWithResourceUnavailable" computerName="worlesenric" duration="00:00:00.0086350" startTime="2026-09-26T16:55:24.9739878+08:00" endTime="2026-09-26T16:55:24.9826232+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e7c80130-283d-4925-a40f-d14c2241e0fc">
+      <Output>
+        <ErrorInfo>
+          <Message>System.NullReferenceException : Object reference not set to an instance of an object.</Message>
+          <StackTrace>   at GameCore.Execution.Recovery.StoredCheckpoint.get_IsStored() in /home/worlesenric/wkspace/gc-wt/gc-027/Packages/com.gamecore.unity.runtime/Runtime/Pure/Recovery/CheckpointStore.cs:line 147
+   at GameCore.Recovery.Fixtures.Tests.CheckpointStoreTests.ReadingALocationWithNothingStoredIsRefusedWithResourceUnavailable() in /home/worlesenric/wkspace/gc-wt/gc-027/tests/GameCore.Recovery/Tests/CheckpointStoreTests.cs:line 175
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="VerifyMutatesNothing" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="e8e34463-0d87-301e-8689-9585481801f3">
+      <Execution id="114a8d73-688d-48d9-a2c1-bc3c9ede199e" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.OutboxConsistencyTests" name="VerifyMutatesNothing" />
+    </UnitTest>
+    <UnitTest name="AnEmptyCheckpointAndAnEmptyOutboxAreConsistent" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="91d830c1-5edd-3bec-3798-78685684759e">
+      <Execution id="46d91be1-7afb-4a9d-8982-1aa903baa3e5" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.OutboxConsistencyTests" name="AnEmptyCheckpointAndAnEmptyOutboxAreConsistent" />
+    </UnitTest>
+    <UnitTest name="TheAttemptLogRequiresDistinctSessionsAndOperations" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="b56fb489-c5bd-5043-f826-fb7d7ff1152b">
+      <Execution id="1a2d53d7-52f9-4411-8692-95025a91ece3" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.RecoveryPolicyTests" name="TheAttemptLogRequiresDistinctSessionsAndOperations" />
+    </UnitTest>
+    <UnitTest name="ADeclaredVersionThisBuildDoesNotImplementIsRefusedWithUnsupportedVersion" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="49013081-ac0c-a78d-6433-e7c917123003">
+      <Execution id="6a8ac137-fab7-4fd9-b0bf-81e9f6e1a348" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.CheckpointStoreTests" name="ADeclaredVersionThisBuildDoesNotImplementIsRefusedWithUnsupportedVersion" />
+    </UnitTest>
+    <UnitTest name="ReadingALocationWithNothingStoredIsRefusedWithResourceUnavailable" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="888cc371-edd4-e41b-1096-2f7fe0ab0621">
+      <Execution id="e7c80130-283d-4925-a40f-d14c2241e0fc" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.CheckpointStoreTests" name="ReadingALocationWithNothingStoredIsRefusedWithResourceUnavailable" />
+    </UnitTest>
+    <UnitTest name="BothCommittedFixturesAreCanonicalUtf8Text" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="16c0fef5-b1d3-cfd8-6dcb-fdbaa713065c">
+      <Execution id="2bad90d7-e881-48c3-b576-b544138e2b91" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.RecoveryFixtureDataTests" name="BothCommittedFixturesAreCanonicalUtf8Text" />
+    </UnitTest>
+    <UnitTest name="ASuccessfulPublishLeavesNoTemporaryArtifactBehind" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="28f1eb6c-e549-304e-69a7-5bfa060d2fc3">
+      <Execution id="ca55bc81-0a7b-41f7-a219-4d2178a6497f" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.CheckpointStoreTests" name="ASuccessfulPublishLeavesNoTemporaryArtifactBehind" />
+    </UnitTest>
+    <UnitTest name="IdenticalLinesProduceEqualDigestsAndDifferentLinesDoNot" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="e306b7b7-84ee-6cd7-4ff7-368101a40492">
+      <Execution id="168c9a9c-d736-4454-8894-433337e63a33" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.RecoveryTranscriptTests" name="IdenticalLinesProduceEqualDigestsAndDifferentLinesDoNot" />
+    </UnitTest>
+    <UnitTest name="EveryStoreVersionCaseAgreesWithTheFormatAndWithARealEnvelope" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="8258ad55-6fcb-a902-15a2-c9f33d64fb18">
+      <Execution id="8db671d6-b825-466e-92f3-224ca26e095a" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.RecoveryMatrixFixtureTests" name="EveryStoreVersionCaseAgreesWithTheFormatAndWithARealEnvelope" />
+    </UnitTest>
+    <UnitTest name="TheFixtureDocumentsLiveWhereThePackageSaysTheyDo" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="b7bf2b76-f54b-c447-ae57-03c6eaef560d">
+      <Execution id="3d4cf28c-44bf-4b96-bcbb-705f640aeb49" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.RecoveryFixtureDataTests" name="TheFixtureDocumentsLiveWhereThePackageSaysTheyDo" />
+    </UnitTest>
+    <UnitTest name="TwoCursorRowsForOneDestinationAreInconsistent" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="f0cbb4f6-f91a-d222-6e28-a2e889c3aade">
+      <Execution id="871e15e8-5df0-4168-b0cb-36090d1ca89f" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.OutboxConsistencyTests" name="TwoCursorRowsForOneDestinationAreInconsistent" />
+    </UnitTest>
+    <UnitTest name="EveryCaseAgreesWithTheProductionFaultPointTable" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="77580e14-f53a-1871-84f5-10820352556b">
+      <Execution id="a5a37e2a-541b-4d56-9aca-8348a832921d" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.RecoveryMatrixFixtureTests" name="EveryCaseAgreesWithTheProductionFaultPointTable" />
+    </UnitTest>
+    <UnitTest name="TheFixtureVocabularyEqualsTheProductionVocabulary" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="a579f487-8f43-709c-4318-958a2b019fcb">
+      <Execution id="7c246ada-0a97-4dba-8632-d8edc6332894" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.RecoveryMatrixFixtureTests" name="TheFixtureVocabularyEqualsTheProductionVocabulary" />
+    </UnitTest>
+    <UnitTest name="ARemovedCheckpointIsGoneAndReportedAsAbsent" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="bab312ea-0bf1-a7a0-455a-7f03e557830b">
+      <Execution id="8bb7985e-94ba-4871-9446-6776bac36f65" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.CheckpointStoreTests" name="ARemovedCheckpointIsGoneAndReportedAsAbsent" />
+    </UnitTest>
+    <UnitTest name="AnOutboxThatOwesFewerObligationsThanTheCheckpointCarriedIsInconsistent" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="266af2c0-ca90-96ce-d9bb-59c49800c63e">
+      <Execution id="5cac9ac4-62df-4cdf-b5fe-b3b6e356027a" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.OutboxConsistencyTests" name="AnOutboxThatOwesFewerObligationsThanTheCheckpointCarriedIsInconsistent" />
+    </UnitTest>
+    <UnitTest name="AMemoryPublishThenReadReturnsTheSameDocument" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="f3a5fd10-d3a2-e452-06b0-7675d9e8cfef">
+      <Execution id="e26509aa-7cda-4c74-ae8f-6c2912cd0ba4" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.CheckpointStoreTests" name="AMemoryPublishThenReadReturnsTheSameDocument" />
+    </UnitTest>
+    <UnitTest name="NoHostSettingMeansExactlyOneAttempt" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="c8b2ceef-e1d6-b887-e692-cfcfcdef4c46">
+      <Execution id="882feb47-51f4-4a36-89d0-4b30197962d4" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.RecoveryPolicyTests" name="NoHostSettingMeansExactlyOneAttempt" />
+    </UnitTest>
+    <UnitTest name="DescribeIsTheLinesJoinedByLineFeeds" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="6cfd2dbd-19e1-13b6-876e-befed070db7e">
+      <Execution id="20fcc37a-fa66-410f-a3a9-4a0aa0dd2032" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.RecoveryTranscriptTests" name="DescribeIsTheLinesJoinedByLineFeeds" />
+    </UnitTest>
+    <UnitTest name="TheAttemptLogRecordsAttemptsInOrderAndCountsOverflow" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="f77f7c9e-53b4-5a64-2ab5-7c58996706a3">
+      <Execution id="9f074ec7-a6e3-422e-b8b2-821ac5efa9a0" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.RecoveryPolicyTests" name="TheAttemptLogRecordsAttemptsInOrderAndCountsOverflow" />
+    </UnitTest>
+    <UnitTest name="TheReaderRefusesAMalformedDocumentInsteadOfSubstitutingDefaults" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="280e970b-3eeb-e442-a903-623a97beaead">
+      <Execution id="9c07a8a6-493a-4d24-8883-02be5f5ba444" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.RecoveryMatrixFixtureTests" name="TheReaderRefusesAMalformedDocumentInsteadOfSubstitutingDefaults" />
+    </UnitTest>
+    <UnitTest name="ADocumentOneByteOverTheCeilingIsRefusedWithBudgetExceeded" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="aa614b70-7c3b-599e-4c16-c2ce60ed6e7f">
+      <Execution id="4efec011-6b5d-4356-86b4-ef25830fb53a" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.CheckpointStoreTests" name="ADocumentOneByteOverTheCeilingIsRefusedWithBudgetExceeded" />
+    </UnitTest>
+    <UnitTest name="ACorrectnessFailureNeverAllowsARetryWithAttemptsLeft" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="8f162e74-3c47-3c76-822f-c1414dde0cc7">
+      <Execution id="cd6761b1-7eda-4eb0-a93c-60de8f096453" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.RecoveryPolicyTests" name="ACorrectnessFailureNeverAllowsARetryWithAttemptsLeft" />
+    </UnitTest>
+    <UnitTest name="PublishingTwiceLeavesTheNewestDocumentStored" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="5163e574-079f-83db-c8a8-e3a7f0c4bf77">
+      <Execution id="80fbadee-b5bd-4011-9781-e417bfb22f8e" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.CheckpointStoreTests" name="PublishingTwiceLeavesTheNewestDocumentStored" />
+    </UnitTest>
+    <UnitTest name="AddFaultRecordsThePhaseAndTheFaultPoint" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="9f1a6050-9ecd-442f-caa2-4d5fa98bf1a9">
+      <Execution id="90d057e8-2400-4504-9ff1-1460a2ed882f" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.RecoveryTranscriptTests" name="AddFaultRecordsThePhaseAndTheFaultPoint" />
+    </UnitTest>
+    <UnitTest name="OfAndRetryOfAgreeForEveryDiagnosticCode" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="661d3c67-6143-3e53-b869-5625a208004c">
+      <Execution id="5f32a455-fa83-460e-8048-d02e1be5a1ee" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.RecoveryPolicyTests" name="OfAndRetryOfAgreeForEveryDiagnosticCode" />
+    </UnitTest>
+    <UnitTest name="ACursorThatAcknowledgesAnUnrecordedIdentityIsInconsistent" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="4556ef72-4e53-d6fd-7c70-83c5e6fb58a9">
+      <Execution id="a8b6bf33-5b0d-40e2-9629-b676119b1859" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.OutboxConsistencyTests" name="ACursorThatAcknowledgesAnUnrecordedIdentityIsInconsistent" />
+    </UnitTest>
+    <UnitTest name="LinesAreRecordedInOrderWithAssignedOrdinals" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="a471e6e8-a594-38af-ebbe-e1156c854aa2">
+      <Execution id="8b692c6c-363d-4716-95d5-fc7f8c95166a" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.RecoveryTranscriptTests" name="LinesAreRecordedInOrderWithAssignedOrdinals" />
+    </UnitTest>
+    <UnitTest name="TheEnvelopeLengthIsTheDocumentPlusTheDeclaredOverhead" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="1e41a80e-1f0f-ba01-1038-9e632e22382a">
+      <Execution id="9229829e-61af-4def-af98-86a7690eacb3" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.CheckpointStoreTests" name="TheEnvelopeLengthIsTheDocumentPlusTheDeclaredOverhead" />
+    </UnitTest>
+    <UnitTest name="ACursorThatDisagreesWithItsTerminalRowsIsInconsistent" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="fefbba44-6c6f-4074-6e0e-180a350542fb">
+      <Execution id="d77955d3-7119-4a68-9558-cbddee9ed16d" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.OutboxConsistencyTests" name="ACursorThatDisagreesWithItsTerminalRowsIsInconsistent" />
+    </UnitTest>
+    <UnitTest name="AnOversizedHostBoundIsClampedAndReported" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="1245b043-fc27-f048-a0de-64fad8e3323b">
+      <Execution id="9ed6d705-3c6e-4cd9-b90e-e2f5a9c1ad52" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.RecoveryPolicyTests" name="AnOversizedHostBoundIsClampedAndReported" />
+    </UnitTest>
+    <UnitTest name="TheFixturePathsResolveTheCommittedDocuments" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="3c4bfd93-66f9-96a0-a376-7c5cd8308f2a">
+      <Execution id="c5b6e921-f037-4978-b14a-1303963bba09" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.RecoveryMatrixFixtureTests" name="TheFixturePathsResolveTheCommittedDocuments" />
+    </UnitTest>
+    <UnitTest name="ATerminalStateFailureIsNotRetryable" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="7545b82b-1a1a-e87e-935a-f50e98f7f4fa">
+      <Execution id="7c9c1152-13bd-4021-ba0e-ab508be9b1ca" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.RecoveryPolicyTests" name="ATerminalStateFailureIsNotRetryable" />
+    </UnitTest>
+    <UnitTest name="EveryCasesBoundaryNamesAreDeclaredByItsInjectionMechanism" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="3e2cfaa4-7225-c88d-a94d-2a80a5d115df">
+      <Execution id="d9a437d5-ac7c-4dbf-8e1a-ba12791a24be" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.RecoveryMatrixFixtureTests" name="EveryCasesBoundaryNamesAreDeclaredByItsInjectionMechanism" />
+    </UnitTest>
+    <UnitTest name="EveryCorruptEnvelopeIsRefusedWithResourceUnavailableAndNamesTheField" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="5398af9e-6247-4daa-b3d0-a662d5a23c35">
+      <Execution id="f2c5478a-01a8-4c3d-80bd-5e10a2579dde" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.CheckpointStoreTests" name="EveryCorruptEnvelopeIsRefusedWithResourceUnavailableAndNamesTheField" />
+    </UnitTest>
+    <UnitTest name="AFilePublishThenReadReturnsTheSameDocument" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="c561f044-a4b7-b8ef-7720-6d44415bded3">
+      <Execution id="87181497-fcb2-4b6f-b344-32ac091f6ccc" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.CheckpointStoreTests" name="AFilePublishThenReadReturnsTheSameDocument" />
+    </UnitTest>
+    <UnitTest name="BothCommittedFixturesDeclareTheirDocumentedFormat" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="27cf2e95-da11-5c4e-e93c-3dd9cf92c264">
+      <Execution id="34c9ee6c-dd41-487d-a228-d834cd09c7dc" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.RecoveryFixtureDataTests" name="BothCommittedFixturesDeclareTheirDocumentedFormat" />
+    </UnitTest>
+    <UnitTest name="ARestartPointReportsANewSessionOnlyWhenItDiffersFromTheOldOne" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="660ab62b-a06e-88a2-28e0-547818af0427">
+      <Execution id="8e94719d-fb8a-424b-a890-401b7f53b97e" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.RecoveryTranscriptTests" name="ARestartPointReportsANewSessionOnlyWhenItDiffersFromTheOldOne" />
+    </UnitTest>
+    <UnitTest name="RecoveredRowSetRoundTripsThroughTheOutboxAndStaysConsistent" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="8a1ca774-6e3f-d55b-54fa-b190a447ed2c">
+      <Execution id="d97e3a01-d617-44cc-9070-07163f6676cf" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.OutboxConsistencyTests" name="RecoveredRowSetRoundTripsThroughTheOutboxAndStaysConsistent" />
+    </UnitTest>
+    <UnitTest name="ACorrectnessFailureOfACorrectedCatalogIsStillNotRetriedInPlace" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="1fa22fa3-f967-c01f-e8c4-54c17345c703">
+      <Execution id="d7ae316b-2a4d-4225-b405-e41f5dca8720" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.RecoveryPolicyTests" name="ACorrectnessFailureOfACorrectedCatalogIsStillNotRetriedInPlace" />
+    </UnitTest>
+    <UnitTest name="TheOrderedCaseIdsAreExactlyTheProductionFaultPointIds" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="64bce897-3546-14e4-6abc-4b592b015e4a">
+      <Execution id="c7afce8a-9796-409f-9019-5425d6b44a3a" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.RecoveryMatrixFixtureTests" name="TheOrderedCaseIdsAreExactlyTheProductionFaultPointIds" />
+    </UnitTest>
+    <UnitTest name="OverflowIsCountedAndNeverGrowsTheLineCount" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="aa0a934c-4c11-4508-a0ca-ceb7d1db838c">
+      <Execution id="b8b1e93c-fdd8-41cf-a2b4-46ac3283b940" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.RecoveryTranscriptTests" name="OverflowIsCountedAndNeverGrowsTheLineCount" />
+    </UnitTest>
+    <UnitTest name="DataLossBoundaryIsTheMostSevereRecordedClass" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="d5ca1340-22d1-2c0b-414a-752927267f1c">
+      <Execution id="8ced85b0-85b3-4118-86e3-2aa1d7dcac1f" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.RecoveryTranscriptTests" name="DataLossBoundaryIsTheMostSevereRecordedClass" />
+    </UnitTest>
+    <UnitTest name="AnEmptyDocumentIsRefusedWithResourceUnavailable" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="1737c5dc-0b38-e55b-11ac-dc1027c0cff7">
+      <Execution id="7490dcc6-43f0-41d8-9998-5ff763bd21cf" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.CheckpointStoreTests" name="AnEmptyDocumentIsRefusedWithResourceUnavailable" />
+    </UnitTest>
+    <UnitTest name="ATerminalRowWithoutItsObligationRowIsInconsistent" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="3605699e-e02c-d0f9-ff65-0f992a918574">
+      <Execution id="2e92d365-fd44-4d42-92c0-20518d6e2cc8" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.OutboxConsistencyTests" name="ATerminalRowWithoutItsObligationRowIsInconsistent" />
+    </UnitTest>
+    <UnitTest name="ACheckpointThatMatchesItsRecoveredOutboxIsConsistent" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="46ca4ea7-ace3-0dbe-fd18-1ccae1612466">
+      <Execution id="f0a0f492-f117-4d06-96cd-404b72348882" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.OutboxConsistencyTests" name="ACheckpointThatMatchesItsRecoveredOutboxIsConsistent" />
+    </UnitTest>
+    <UnitTest name="AHostBoundOfThreeAllowsTwoRetriesForARetryableFailure" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="bac5dacf-28bb-f806-77dd-33b16cba768b">
+      <Execution id="006ce562-ac6e-4f3b-9b73-db3cf8ee6b57" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.RecoveryPolicyTests" name="AHostBoundOfThreeAllowsTwoRetriesForARetryableFailure" />
+    </UnitTest>
+    <UnitTest name="ABudgetFailureIsNeverRetried" storage="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/gamecore.recovery.fixtures.tests/bin/release/net8.0/gamecore.recovery.fixtures.tests.dll" id="250844de-a5dd-bdee-83b3-c2a0152bc3b7">
+      <Execution id="485d656c-650a-454d-bb69-de21d03d104c" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.Recovery.Fixtures.Tests.RecoveryPolicyTests" name="ABudgetFailureIsNeverRetried" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="b7bf2b76-f54b-c447-ae57-03c6eaef560d" executionId="3d4cf28c-44bf-4b96-bcbb-705f640aeb49" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="91d830c1-5edd-3bec-3798-78685684759e" executionId="46d91be1-7afb-4a9d-8982-1aa903baa3e5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="bac5dacf-28bb-f806-77dd-33b16cba768b" executionId="006ce562-ac6e-4f3b-9b73-db3cf8ee6b57" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5163e574-079f-83db-c8a8-e3a7f0c4bf77" executionId="80fbadee-b5bd-4011-9781-e417bfb22f8e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7545b82b-1a1a-e87e-935a-f50e98f7f4fa" executionId="7c9c1152-13bd-4021-ba0e-ab508be9b1ca" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="250844de-a5dd-bdee-83b3-c2a0152bc3b7" executionId="485d656c-650a-454d-bb69-de21d03d104c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6cfd2dbd-19e1-13b6-876e-befed070db7e" executionId="20fcc37a-fa66-410f-a3a9-4a0aa0dd2032" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="27cf2e95-da11-5c4e-e93c-3dd9cf92c264" executionId="34c9ee6c-dd41-487d-a228-d834cd09c7dc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a579f487-8f43-709c-4318-958a2b019fcb" executionId="7c246ada-0a97-4dba-8632-d8edc6332894" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f3a5fd10-d3a2-e452-06b0-7675d9e8cfef" executionId="e26509aa-7cda-4c74-ae8f-6c2912cd0ba4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4556ef72-4e53-d6fd-7c70-83c5e6fb58a9" executionId="a8b6bf33-5b0d-40e2-9629-b676119b1859" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c8b2ceef-e1d6-b887-e692-cfcfcdef4c46" executionId="882feb47-51f4-4a36-89d0-4b30197962d4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3605699e-e02c-d0f9-ff65-0f992a918574" executionId="2e92d365-fd44-4d42-92c0-20518d6e2cc8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="49013081-ac0c-a78d-6433-e7c917123003" executionId="6a8ac137-fab7-4fd9-b0bf-81e9f6e1a348" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="16c0fef5-b1d3-cfd8-6dcb-fdbaa713065c" executionId="2bad90d7-e881-48c3-b576-b544138e2b91" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="64bce897-3546-14e4-6abc-4b592b015e4a" executionId="c7afce8a-9796-409f-9019-5425d6b44a3a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="660ab62b-a06e-88a2-28e0-547818af0427" executionId="8e94719d-fb8a-424b-a890-401b7f53b97e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="77580e14-f53a-1871-84f5-10820352556b" executionId="a5a37e2a-541b-4d56-9aca-8348a832921d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="661d3c67-6143-3e53-b869-5625a208004c" executionId="5f32a455-fa83-460e-8048-d02e1be5a1ee" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="280e970b-3eeb-e442-a903-623a97beaead" executionId="9c07a8a6-493a-4d24-8883-02be5f5ba444" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="46ca4ea7-ace3-0dbe-fd18-1ccae1612466" executionId="f0a0f492-f117-4d06-96cd-404b72348882" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f0cbb4f6-f91a-d222-6e28-a2e889c3aade" executionId="871e15e8-5df0-4168-b0cb-36090d1ca89f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e306b7b7-84ee-6cd7-4ff7-368101a40492" executionId="168c9a9c-d736-4454-8894-433337e63a33" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c561f044-a4b7-b8ef-7720-6d44415bded3" executionId="87181497-fcb2-4b6f-b344-32ac091f6ccc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="266af2c0-ca90-96ce-d9bb-59c49800c63e" executionId="5cac9ac4-62df-4cdf-b5fe-b3b6e356027a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1fa22fa3-f967-c01f-e8c4-54c17345c703" executionId="d7ae316b-2a4d-4225-b405-e41f5dca8720" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="28f1eb6c-e549-304e-69a7-5bfa060d2fc3" executionId="ca55bc81-0a7b-41f7-a219-4d2178a6497f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1e41a80e-1f0f-ba01-1038-9e632e22382a" executionId="9229829e-61af-4def-af98-86a7690eacb3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d5ca1340-22d1-2c0b-414a-752927267f1c" executionId="8ced85b0-85b3-4118-86e3-2aa1d7dcac1f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9f1a6050-9ecd-442f-caa2-4d5fa98bf1a9" executionId="90d057e8-2400-4504-9ff1-1460a2ed882f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1245b043-fc27-f048-a0de-64fad8e3323b" executionId="9ed6d705-3c6e-4cd9-b90e-e2f5a9c1ad52" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="aa0a934c-4c11-4508-a0ca-ceb7d1db838c" executionId="b8b1e93c-fdd8-41cf-a2b4-46ac3283b940" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8a1ca774-6e3f-d55b-54fa-b190a447ed2c" executionId="d97e3a01-d617-44cc-9070-07163f6676cf" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5398af9e-6247-4daa-b3d0-a662d5a23c35" executionId="f2c5478a-01a8-4c3d-80bd-5e10a2579dde" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8258ad55-6fcb-a902-15a2-c9f33d64fb18" executionId="8db671d6-b825-466e-92f3-224ca26e095a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8f162e74-3c47-3c76-822f-c1414dde0cc7" executionId="cd6761b1-7eda-4eb0-a93c-60de8f096453" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a471e6e8-a594-38af-ebbe-e1156c854aa2" executionId="8b692c6c-363d-4716-95d5-fc7f8c95166a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e8e34463-0d87-301e-8689-9585481801f3" executionId="114a8d73-688d-48d9-a2c1-bc3c9ede199e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3c4bfd93-66f9-96a0-a376-7c5cd8308f2a" executionId="c5b6e921-f037-4978-b14a-1303963bba09" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1737c5dc-0b38-e55b-11ac-dc1027c0cff7" executionId="7490dcc6-43f0-41d8-9998-5ff763bd21cf" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b56fb489-c5bd-5043-f826-fb7d7ff1152b" executionId="1a2d53d7-52f9-4411-8692-95025a91ece3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3e2cfaa4-7225-c88d-a94d-2a80a5d115df" executionId="d9a437d5-ac7c-4dbf-8e1a-ba12791a24be" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f77f7c9e-53b4-5a64-2ab5-7c58996706a3" executionId="9f074ec7-a6e3-422e-b8b2-821ac5efa9a0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="aa614b70-7c3b-599e-4c16-c2ce60ed6e7f" executionId="4efec011-6b5d-4356-86b4-ef25830fb53a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fefbba44-6c6f-4074-6e0e-180a350542fb" executionId="d77955d3-7119-4a68-9558-cbddee9ed16d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="bab312ea-0bf1-a7a0-455a-7f03e557830b" executionId="8bb7985e-94ba-4871-9446-6776bac36f65" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="888cc371-edd4-e41b-1096-2f7fe0ab0621" executionId="e7c80130-283d-4925-a40f-d14c2241e0fc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="47" executed="47" passed="40" failed="7" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 4.5.0.0: Test execution started
+Running all tests in /home/worlesenric/wkspace/gc-wt/gc-027/dotnet/tests/GameCore.Recovery.Fixtures.Tests/bin/Release/net8.0/GameCore.Recovery.Fixtures.Tests.dll
+   NUnit3TestExecutor discovered 47 of 47 NUnit test cases using Current Discovery mode, Non-Explicit run
+NUnit Adapter 4.5.0.0: Test execution complete
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

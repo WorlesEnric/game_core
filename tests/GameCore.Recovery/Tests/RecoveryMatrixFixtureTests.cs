@@ -195,24 +195,15 @@ namespace GameCore.Recovery.Fixtures.Tests
             Assert.That(RecoveryFixtureVocabulary.DiagnosticCodes, Is.EqualTo(codes),
                 "the fixture diagnostic names must be the production code text, `None` included.");
 
-            var boundaries = new List<string>();
-            foreach (RecoveryFaultPoint point in RecoveryFaultPoints.All)
-            {
-                for (int i = 0; i < point.BoundaryNames.Count; i++)
-                {
-                    boundaries.Add(point.BoundaryNames[i]);
-                }
-            }
+            var boundaries = new List<string>(RecoveryFixtureVocabulary.LatchBoundaryNames);
+            boundaries.AddRange(DeliveryBoundaries.All);
+            boundaries.Add("store-read");
 
-            for (int i = 0; i < DeliveryBoundaries.All.Count; i++)
-            {
-                boundaries.Add(DeliveryBoundaries.All[i]);
-            }
 
             // The vocabulary answers membership questions, so the contract is the *set* of declared names. Equal
             // counts plus both directions of membership is exact set equality.
             Assert.That(RecoveryFixtureVocabulary.BoundaryNames.Count, Is.EqualTo(boundaries.Count),
-                "the fixture vocabulary carries each declared boundary name exactly once.");
+                "the fixture vocabulary carries every latch, delivery and store-read boundary exactly once.");
             foreach (string boundaryName in boundaries)
             {
                 Assert.That(Contains(RecoveryFixtureVocabulary.BoundaryNames, boundaryName), Is.True,

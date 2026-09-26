@@ -151,7 +151,7 @@ namespace GameCore.Execution.Recovery
         public string Statement { get; }
 
         public override string ToString() =>
-            Id + "(" + Mechanism.ToString() + ":" + string.Join("+", ToArray(BoundaryNames)) + ")";
+            Id + "(" + Mechanism.ToString() + ":" + string.Join("+", BoundaryNames) + ")";
     }
 
     /// <summary>
@@ -294,16 +294,6 @@ namespace GameCore.Execution.Recovery
             return names;
         }
 
-        private static string[] ToArray(IReadOnlyList<string> source)
-        {
-            var copy = new string[source.Count];
-            for (int i = 0; i < source.Count; i++)
-            {
-                copy[i] = source[i];
-            }
-
-            return copy;
-        }
     }
 
     /// <summary>

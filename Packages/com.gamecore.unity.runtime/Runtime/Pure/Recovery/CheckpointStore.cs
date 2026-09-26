@@ -144,7 +144,7 @@ namespace GameCore.Execution.Recovery
         public long EnvelopeBytes => (long)DocumentBytes + CheckpointStoreFormat.EnvelopeOverheadBytes;
 
         /// <summary>True when this value describes a stored document; a default value describes none.</summary>
-        public bool IsStored => Location.Length != 0 && DocumentBytes > 0;
+        public bool IsStored => !string.IsNullOrEmpty(Location) && DocumentBytes > 0;
 
         public override string ToString() =>
             "stored(" + DocumentBytes.ToString(CultureInfo.InvariantCulture) + "B,v"

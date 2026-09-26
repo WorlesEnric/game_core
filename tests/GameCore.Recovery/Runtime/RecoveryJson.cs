@@ -62,7 +62,7 @@ namespace GameCore.Recovery.Fixtures
             List<RecoveryJsonNode>? items)
         {
             Kind = kind;
-            Text = text;
+            Text = text ?? string.Empty;
             Number = number;
             this.members = members;
             this.items = items;
@@ -148,6 +148,9 @@ namespace GameCore.Recovery.Fixtures
 
         /// <summary>True when this value came from a parse rather than from `default`.</summary>
         public bool IsDefined => node != null;
+
+        /// <summary>The number of items in an array, or zero for another kind.</summary>
+        public int GetArrayLength() => node == null ? 0 : node.ItemCount;
 
         /// <summary>One property of an object; false when this value is not an object or the name is absent.</summary>
         public bool TryGetProperty(string name, out RecoveryJsonValue value)

@@ -281,7 +281,7 @@ namespace GameCore.Execution.Recovery
                         + " (P-045, P-053).");
                 }
 
-                if (row.HasAcknowledged)
+                if (!row.Cursor.IsDefault)
                 {
                     // A cursor that acknowledges an identity the checkpoint does not carry as a terminal row would
                     // claim an acknowledgement nothing recorded, which is exactly the "hidden state" P-049 excludes.
