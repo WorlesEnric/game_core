@@ -1,6 +1,6 @@
 // GameCore.ReferenceConformance.Tests — the pure halves of GC-024's conformance claim.
 //
-// Two things are proven here, and neither needs a Unity world:
+// Three things are proven here, and none needs a Unity world:
 //
 //   1. the FIXTURE is internally consistent and honest: every 07 row carries an anchor and at least one expectation,
 //      every expectation's field is declared in the vocabulary, every script step names a row the tables declare,
@@ -10,12 +10,16 @@
 //   2. the NUMBERS the tables assert agree with the gameplay rules packages that own them
 //      (`ReferenceProjections`), so a transcription error or a rules change that moves a documented number fails in
 //      a sub-second dotnet run instead of after a Unity build.
+//   3. the combined graph's three assembly-validation faults (07:278) are real kernel refusals, each with its own
+//      diagnostic code and each reported with the plugin that declares it (`CrossGraphValidation`), so a fault no
+//      kernel path attributes to a manifest is still attributed to one by the fixture that built the declarations.
 //
 // The real-world half — the same tables executed in actual Unity worlds — is the qualification project's own
 // conformance fixture; this file does not stand in for it (P-057).
 #nullable enable
 using System;
 using System.Collections.Generic;
+using GameCore.Contracts;
 using NUnit.Framework;
 
 namespace GameCore.ReferenceConformance.Tests
@@ -640,6 +644,70 @@ namespace GameCore.ReferenceConformance.Tests
             Assert.That(ConformanceDocGaps.ById("gc024.gap.reward-bridge-removal"), Is.Null);
             Assert.That(ConformanceDocGaps.Of("cross").Count, Is.EqualTo(0));
             Assert.That(ConformanceDocGaps.CanonicalLines().Count, Is.EqualTo(0));
+        }
+    }
+
+    [TestFixture]
+    public sealed class CrossGraphValidationTests
+    {
+        [Test]
+        public void EveryDeclaredGraphFaultIsRefusedByTheKernelWithItsDeclaringPluginNamed()
+        {
+            // 07:278's three faults are real kernel refusals, so this asserts the kernel's verdict and not a literal:
+            // each case builds its own broken declaration set, drives the production `GameCore.Planning` entry point
+            // and must come back refused with its own expected code. The three expected codes are required to be
+            // distinct, so one accidental refusal can never satisfy more than one case (P-028, P-034, P-040, P-043).
+            IReadOnlyList<CrossGraphCase> cases = CrossGraphValidation.Run();
+            Assert.That(cases.Count, Is.EqualTo(3), "07:278 declares exactly three combined-graph faults");
+
+            var expectedCodes = new HashSet<DiagnosticCode>();
+            for (int i = 0; i < cases.Count; i++)
+            {
+                CrossGraphCase graphCase = cases[i];
+                Assert.That(
+                    graphCase.Requirement,
+                    Does.Contain("07:278"),
+                    graphCase.CaseId + " must quote the 07 clause it makes checkable");
+                Assert.That(
+                    graphCase.Rejected,
+                    Is.True,
+                    graphCase.CaseId + ": the kernel did not refuse the broken assembly: " + graphCase.KernelDetail);
+                Assert.That(
+                    graphCase.Observed,
+                    Is.EqualTo(graphCase.Expected),
+                    graphCase.CaseId + ": expected " + graphCase.Expected + " but the kernel said "
+                    + graphCase.Observed + ": " + graphCase.KernelDetail);
+                Assert.That(
+                    graphCase.KernelDetail.Length,
+                    Is.GreaterThan(0),
+                    graphCase.CaseId + " recorded no kernel verdict");
+                Assert.That(
+                    graphCase.FixtureDetail,
+                    Does.Contain(graphCase.DeclaringPlugin),
+                    graphCase.CaseId + " must name the plugin that declares the fault");
+                Assert.That(
+                    graphCase.FixtureDetail,
+                    Does.Contain(graphCase.KernelDetail),
+                    graphCase.CaseId + " must carry the kernel's own witness text");
+                Assert.That(graphCase.Passed, Is.True, graphCase.CaseId + ": " + graphCase.FixtureDetail);
+                Assert.That(
+                    expectedCodes.Add(graphCase.Expected),
+                    Is.True,
+                    graphCase.CaseId + " reuses an expected code, so one refusal could satisfy two cases");
+            }
+
+            Assert.That(expectedCodes.Count, Is.EqualTo(3), "the three cases must expect three distinct codes");
+            Assert.That(CrossGraphValidation.ById("graph-missing-command-endpoint"), Is.Not.Null);
+            Assert.That(CrossGraphValidation.ById("graph-duplicate-state-owner"), Is.Not.Null);
+            Assert.That(CrossGraphValidation.ById("graph-same-step-cycle"), Is.Not.Null);
+            Assert.That(
+                CrossGraphValidation.ById("graph-not-a-case"),
+                Is.Null,
+                "an unknown case id must resolve to nothing rather than to a case");
+            Assert.That(
+                CrossGraphValidation.StepName("graph-same-step-cycle"),
+                Is.EqualTo("conformance/cross/graph-same-step-cycle"),
+                "the harness reports this exact step name");
         }
     }
 

@@ -144,8 +144,8 @@ namespace GameCore.Validation.ProbeHost
         /// Every observation name this run records, in execution order, without the prefix. `ObservationNames()`
         /// returns exactly these names qualified with <see cref="StepPrefix"/>, so a renamed or dropped observation
         /// fails the harness instead of shrinking the run silently (P-060). The order is `ReferenceScripts.Cross()`'s
-        /// own: the three setup operations, the seven rows of the `cross` table's script, the teardown, the
-        /// action-surface audit and the oracle's verdict.
+        /// own: the three setup operations, the seven rows of the `cross` table's script, the teardown, the three
+        /// combined-graph assembly-validation checks of 07:278, the action-surface audit and the oracle's verdict.
         /// </summary>
         private static readonly string[] RecordedSuffixes =
         {
@@ -161,9 +161,28 @@ namespace GameCore.Validation.ProbeHost
             "reward-redelivery",
             "reward-scoring-unmount-keeps-card",
             "reward-flow/teardown",
+            GraphMissingCommandEndpoint,
+            GraphDuplicateStateOwner,
+            GraphSameStepCycle,
             "no-action-surface-in-card-or-narrative",
             "verdict",
         };
+
+        /// <summary>The missing-command-endpoint check of 07:278: a buffer whose consumer stage is absent.</summary>
+        private const string GraphMissingCommandEndpoint = "graph-missing-command-endpoint";
+
+        /// <summary>The duplicate-state-owner check of 07:278: one domain claimed by two logical owners.</summary>
+        private const string GraphDuplicateStateOwner = "graph-duplicate-state-owner";
+
+        /// <summary>The same-step-cycle check of 07:278: two stages that each require the other before themselves.</summary>
+        private const string GraphSameStepCycle = "graph-same-step-cycle";
+
+        /// <summary>
+        /// Index of the first suffix `Run` itself records once the reward flow is over: the teardown, the three
+        /// combined-graph checks, the action-surface audit and the oracle's verdict. `ReportFrom` reports only what
+        /// comes before it, so even a red run records every name `ObservationNames()` declares (P-060).
+        /// </summary>
+        private const int FirstRunOwnedSuffix = 11;
 
         /// <summary>Every step name this run records, for the harness's "every name was observed" check.</summary>
         public static IReadOnlyList<string> ObservationNames()
@@ -213,7 +232,7 @@ namespace GameCore.Validation.ProbeHost
                 if (!world.Ready)
                 {
                     ReportFrom(steps, 0, "the combined world could not be built: " + world.Failure);
-                    reached = RecordedSuffixes.Length - 3;
+                    reached = FirstRunOwnedSuffix;
                 }
                 else
                 {
@@ -310,14 +329,14 @@ namespace GameCore.Validation.ProbeHost
                         out narrativeModule,
                         out cardModule,
                         out destinationInstallation);
-                    reached = RecordedSuffixes.Length - 3;
+                    reached = FirstRunOwnedSuffix;
                 }
             }
             catch (Exception exception)
             {
                 unhandled = "unhandled " + exception.GetType().FullName + ": " + exception.Message;
                 ReportFrom(steps, reached, unhandled);
-                reached = RecordedSuffixes.Length - 3;
+                reached = FirstRunOwnedSuffix;
             }
             finally
             {
@@ -352,7 +371,7 @@ namespace GameCore.Validation.ProbeHost
                 narrativeModule?.Dispose();
                 Outcome stop = world.StopAndDispose();
                 steps.Add(new ConformanceObservation(
-                    StepPrefix + RecordedSuffixes[11],
+                    StepPrefix + RecordedSuffixes[FirstRunOwnedSuffix],
                     unhandled.Length == 0 && (stop == Outcome.Published || stop == Outcome.NoChange),
                     "stop=" + stop
                     + "; registry=" + UnityWorldRegistry.Count.ToString(CultureInfo.InvariantCulture)
@@ -360,16 +379,26 @@ namespace GameCore.Validation.ProbeHost
                     + (unhandled.Length == 0 ? string.Empty : "; " + unhandled)));
             }
 
+            // The three combined-graph assembly-validation checks of 07:278 (GC-024). They are pure: each one builds
+            // its own deliberately broken declaration set from hand-written manifests and drives the real
+            // `GameCore.Planning` kernel through the entry point that owns the rule, so nothing here touches the
+            // world that was just torn down. The fixture composes the declaring plugin id, because the kernel's own
+            // witnesses name declaration identities and `OwnershipSchedulePipeline.Build` drops manifest provenance
+            // (P-028, P-034, P-040, P-043, REF-X03).
+            steps.Add(GraphCheckObservation(GraphMissingCommandEndpoint));
+            steps.Add(GraphCheckObservation(GraphDuplicateStateOwner));
+            steps.Add(GraphCheckObservation(GraphSameStepCycle));
+
             // The action-surface audit (TEST-021) is the run's own claim about the composition it just built.
             CrossCompositionAudit audit = AuditCombinedComposition();
             steps.Add(new ConformanceObservation(
-                StepPrefix + RecordedSuffixes[12],
+                StepPrefix + RecordedSuffixes[RecordedSuffixes.Length - 2],
                 audit.Clean,
                 audit.Describe()));
 
             ConformanceVerdict verdict = ConformanceOracle.CompareScript(script!, trace, outcomes);
             steps.Add(new ConformanceObservation(
-                StepPrefix + RecordedSuffixes[13],
+                StepPrefix + RecordedSuffixes[RecordedSuffixes.Length - 1],
                 verdict.Passed,
                 verdict.Describe()));
             return new ConformanceTableResult(Label, steps, trace, verdict, trace.ToDocument());
@@ -958,12 +987,39 @@ namespace GameCore.Validation.ProbeHost
                 + "; state={" + Render(vocabBefore, vocabAfter) + "}";
 
         /// <summary>
+        /// One 07:278 combined-graph assembly-validation observation. The check is pure (`CrossGraphValidation`
+        /// builds the broken declaration set and drives the real `GameCore.Planning` entry point), so it reports the
+        /// kernel's own verdict with the declaring plugin id beside it and never a state this run did not read. A
+        /// case the fixture does not declare is a failure rather than a silently missing step (P-060).
+        /// </summary>
+        private static ConformanceObservation GraphCheckObservation(string caseId)
+        {
+            CrossGraphCase? graphCase = CrossGraphValidation.ById(caseId);
+            if (graphCase == null)
+            {
+                return new ConformanceObservation(
+                    CrossGraphValidation.StepName(caseId),
+                    false,
+                    "the conformance fixture declares no combined-graph case '" + caseId + "' (07:278)");
+            }
+
+            return new ConformanceObservation(
+                CrossGraphValidation.StepName(caseId),
+                graphCase.Passed,
+                graphCase.FixtureDetail
+                + "; expected=" + DiagnosticCodeText.Of(graphCase.Expected)
+                + "; observed=" + DiagnosticCodeText.Of(graphCase.Observed)
+                + "; rejected=" + graphCase.Rejected);
+        }
+
+        /// <summary>
         /// Reports every observation of the reward flow this run did not reach, so a failed run is red on every name
-        /// it claims. The teardown, the audit and the verdict are added by `Run` itself and are never reported here.
+        /// it claims. The teardown, the three combined-graph checks, the audit and the verdict are added by `Run`
+        /// itself and are never reported here.
         /// </summary>
         private static void ReportFrom(List<ConformanceObservation> steps, int firstSuffix, string reason)
         {
-            for (int i = firstSuffix; i < RecordedSuffixes.Length - 3; i++)
+            for (int i = firstSuffix; i < FirstRunOwnedSuffix; i++)
             {
                 steps.Add(new ConformanceObservation(StepPrefix + RecordedSuffixes[i], false, reason));
             }

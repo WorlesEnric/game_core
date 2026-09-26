@@ -9,7 +9,8 @@
 
        Unity-free by design (P-001): no UnityEngine/Unity.* type appears in these files. The real-world half of the
        conformance claim is the qualification project's own ConformanceScenario over the same fixtures; this project
-       proves only the fixture's self-consistency and its agreement with the rules packages. -->
+       proves the fixture's self-consistency, its agreement with the rules packages, and the kernel's own assembly
+       validation of the deliberately broken declaration sets `CrossGraphValidation` builds (GC-024, 07:278). -->
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
@@ -25,6 +26,9 @@
 
   <ItemGroup>
     <ProjectReference Include="../GameCore.Contracts/GameCore.Contracts.csproj" />
+    <!-- GC-024: `CrossGraphValidation` drives the real `GameCore.Planning` validators and compiler, so the combined
+         graph's assembly-validation checks run in plain dotnet beside the tables they belong to. -->
+    <ProjectReference Include="../GameCore.Planning/GameCore.Planning.csproj" />
     <ProjectReference Include="../GameCore.Rules.Cards/GameCore.Rules.Cards.csproj" />
     <ProjectReference Include="../GameCore.Rules.Narrative/GameCore.Rules.Narrative.csproj" />
     <ProjectReference Include="../GameCore.Rules.Traversal/GameCore.Rules.Traversal.csproj" />
