@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="13" result="Passed" total="13" passed="13" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-09-26 01:58:51Z" end-time="2026-09-26 01:58:51Z" duration="0.614477">
+  <test-suite type="TestSuite" id="1000" name="GameCoreProbe" fullname="GameCoreProbe" runstate="Runnable" testcasecount="946" result="Passed" start-time="2026-09-26 01:58:51Z" end-time="2026-09-26 01:58:51Z" duration="0.614477" total="13" passed="13" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1404" name="GameCore.Gc021.Tests.dll" fullname="/home/worlesenric/wkspace/gc-wt/gc-021/unity/GameCore.Validation/Library/ScriptAssemblies/GameCore.Gc021.Tests.dll" runstate="Runnable" testcasecount="13" result="Passed" start-time="2026-09-26 01:58:51Z" end-time="2026-09-26 01:58:51Z" duration="0.589185" total="13" passed="13" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="3525365" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1405" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="13" result="Passed" start-time="2026-09-26 01:58:51Z" end-time="2026-09-26 01:58:51Z" duration="0.581539" total="13" passed="13" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1406" name="Gc021" fullname="GameCore.Gc021" runstate="Runnable" testcasecount="13" result="Passed" start-time="2026-09-26 01:58:51Z" end-time="2026-09-26 01:58:51Z" duration="0.581415" total="13" passed="13" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1407" name="Tests" fullname="GameCore.Gc021.Tests" runstate="Runnable" testcasecount="13" result="Passed" start-time="2026-09-26 01:58:51Z" end-time="2026-09-26 01:58:51Z" duration="0.581329" total="13" passed="13" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1390" name="Gc021IntegrationTests" fullname="GameCore.Gc021.Tests.Gc021IntegrationTests" classname="GameCore.Gc021.Tests.Gc021IntegrationTests" runstate="Runnable" testcasecount="13" result="Passed" start-time="2026-09-26 01:58:51Z" end-time="2026-09-26 01:58:51Z" duration="0.580518" total="13" passed="13" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties>
+                <property name="Timeout" value="600000" />
+              </properties>
+              <test-case id="1395" name="CapacityExhaustionIsNeverASilentDrop" fullname="GameCore.Gc021.Tests.Gc021IntegrationTests.CapacityExhaustionIsNeverASilentDrop" methodname="CapacityExhaustionIsNeverASilentDrop" classname="GameCore.Gc021.Tests.Gc021IntegrationTests" runstate="Runnable" seed="649767791" result="Passed" start-time="2026-09-26 01:58:51Z" end-time="2026-09-26 01:58:51Z" duration="0.565270" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1398" name="CheckpointCarriesTheOutboxAndTheCursor" fullname="GameCore.Gc021.Tests.Gc021IntegrationTests.CheckpointCarriesTheOutboxAndTheCursor" methodname="CheckpointCarriesTheOutboxAndTheCursor" classname="GameCore.Gc021.Tests.Gc021IntegrationTests" runstate="Runnable" seed="572851296" result="Passed" start-time="2026-09-26 01:58:51Z" end-time="2026-09-26 01:58:51Z" duration="0.000277" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1392" name="CommitPersistsBeforeApply" fullname="GameCore.Gc021.Tests.Gc021IntegrationTests.CommitPersistsBeforeApply" methodname="CommitPersistsBeforeApply" classname="GameCore.Gc021.Tests.Gc021IntegrationTests" runstate="Runnable" seed="838025108" result="Passed" start-time="2026-09-26 01:58:51Z" end-time="2026-09-26 01:58:51Z" duration="0.000213" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1393" name="CrashAfterDeliveryLosesTheAcknowledgement" fullname="GameCore.Gc021.Tests.Gc021IntegrationTests.CrashAfterDeliveryLosesTheAcknowledgement" methodname="CrashAfterDeliveryLosesTheAcknowledgement" classname="GameCore.Gc021.Tests.Gc021IntegrationTests" runstate="Runnable" seed="710835007" result="Passed" start-time="2026-09-26 01:58:51Z" end-time="2026-09-26 01:58:51Z" duration="0.000184" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1400" name="NarrativeChoiceIsObserved" fullname="GameCore.Gc021.Tests.Gc021IntegrationTests.NarrativeChoiceIsObserved" methodname="NarrativeChoiceIsObserved" classname="GameCore.Gc021.Tests.Gc021IntegrationTests" runstate="Runnable" seed="954582374" result="Passed" start-time="2026-09-26 01:58:51Z" end-time="2026-09-26 01:58:51Z" duration="0.000174" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1399" name="NoUniversalEffectApi" fullname="GameCore.Gc021.Tests.Gc021IntegrationTests.NoUniversalEffectApi" methodname="NoUniversalEffectApi" classname="GameCore.Gc021.Tests.Gc021IntegrationTests" runstate="Runnable" seed="1695262273" result="Passed" start-time="2026-09-26 01:58:51Z" end-time="2026-09-26 01:58:51Z" duration="0.000173" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1397" name="ObligationSurvivesTheSourceWorldUnload" fullname="GameCore.Gc021.Tests.Gc021IntegrationTests.ObligationSurvivesTheSourceWorldUnload" methodname="ObligationSurvivesTheSourceWorldUnload" classname="GameCore.Gc021.Tests.Gc021IntegrationTests" runstate="Runnable" seed="45002720" result="Passed" start-time="2026-09-26 01:58:51Z" end-time="2026-09-26 01:58:51Z" duration="0.000182" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1394" name="RedeliveryAppliesTheMutationOnce" fullname="GameCore.Gc021.Tests.Gc021IntegrationTests.RedeliveryAppliesTheMutationOnce" methodname="RedeliveryAppliesTheMutationOnce" classname="GameCore.Gc021.Tests.Gc021IntegrationTests" runstate="Runnable" seed="1611005331" result="Passed" start-time="2026-09-26 01:58:51Z" end-time="2026-09-26 01:58:51Z" duration="0.000168" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1401" name="RewardContentCoversTheObservedNode" fullname="GameCore.Gc021.Tests.Gc021IntegrationTests.RewardContentCoversTheObservedNode" methodname="RewardContentCoversTheObservedNode" classname="GameCore.Gc021.Tests.Gc021IntegrationTests" runstate="Runnable" seed="407895979" result="Passed" start-time="2026-09-26 01:58:51Z" end-time="2026-09-26 01:58:51Z" duration="0.000167" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1402" name="RewardObligationIsDurableAndIdempotent" fullname="GameCore.Gc021.Tests.Gc021IntegrationTests.RewardObligationIsDurableAndIdempotent" methodname="RewardObligationIsDurableAndIdempotent" classname="GameCore.Gc021.Tests.Gc021IntegrationTests" runstate="Runnable" seed="325025602" result="Passed" start-time="2026-09-26 01:58:51Z" end-time="2026-09-26 01:58:51Z" duration="0.000169" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1403" name="TheDeliveryObservationTableIsExactlyThePublishedSequence" fullname="GameCore.Gc021.Tests.Gc021IntegrationTests.TheDeliveryObservationTableIsExactlyThePublishedSequence" methodname="TheDeliveryObservationTableIsExactlyThePublishedSequence" classname="GameCore.Gc021.Tests.Gc021IntegrationTests" runstate="Runnable" seed="227452713" result="Passed" start-time="2026-09-26 01:58:51Z" end-time="2026-09-26 01:58:51Z" duration="0.001633" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1391" name="TheKeyIsDerivedFromCommittedData" fullname="GameCore.Gc021.Tests.Gc021IntegrationTests.TheKeyIsDerivedFromCommittedData" methodname="TheKeyIsDerivedFromCommittedData" classname="GameCore.Gc021.Tests.Gc021IntegrationTests" runstate="Runnable" seed="1981464539" result="Passed" start-time="2026-09-26 01:58:51Z" end-time="2026-09-26 01:58:51Z" duration="0.000202" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1396" name="VolatileDeliveryIsDistinguishableFromDurable" fullname="GameCore.Gc021.Tests.Gc021IntegrationTests.VolatileDeliveryIsDistinguishableFromDurable" methodname="VolatileDeliveryIsDistinguishableFromDurable" classname="GameCore.Gc021.Tests.Gc021IntegrationTests" runstate="Runnable" seed="1139555631" result="Passed" start-time="2026-09-26 01:58:51Z" end-time="2026-09-26 01:58:51Z" duration="0.000180" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: /home/worlesenric/.config/unity3d/GameCore/GameCoreProbe/TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

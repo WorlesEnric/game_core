@@ -1,0 +1,282 @@
+{
+  "task": "GC-021",
+  "probe": "GameCore.Validation.ProbeHost.ProbeRunner",
+  "mode": "Gc021",
+  "result": "Pass",
+  "exitCode": 0,
+  "declaredUnityVersion": "6000.0.75f1",
+  "unityVersion": "6000.0.75f1",
+  "declaredTarget": "StandaloneLinux64",
+  "platform": "LinuxPlayer",
+  "architecture": "X64",
+  "processorType": "12th Gen Intel(R) Core(TM) i7-12700KF",
+  "scriptingBackend": "IL2CPP",
+  "isIl2Cpp": true,
+  "is64BitProcess": true,
+  "managedStrippingLevel": "High",
+  "managedStrippingLevelSource": "declared: GameCore.Validation.Editor.BuildProbe sets and re-reads PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, ManagedStrippingLevel.High); a player cannot query the stripping level at runtime",
+  "burstCompilerEnabled": true,
+  "fixturePluginPreservation": "declared: Assets/link.xml preserves the GameCore.Validation.Fixture assembly (preserve=\"all\"), and the generated catalog holds a direct FixturePluginFactory reference, so the plugin is linked into the player while nothing instantiates it at startup",
+  "catalogGenerator": "GameCore.Content.Compiler (GC-003)",
+  "catalogGeneratedFile": "ProbeCatalog.g.cs",
+  "catalogFileHash": "03bdcd23fd8ec0515d93d7c54d7f7c695f3860a850a7280b82316aaacd14c5c1",
+  "catalogFingerprint": "02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff",
+  "catalogDescriptionFormat": "gamecore.catalog-description/1",
+  "catalogProtocolVersion": "1.0",
+  "catalogSupportedFeatureCount": 1,
+  "catalogFileHashAlgorithm": "SHA-256",
+  "catalogFileHashScope": "SHA-256 over the UTF-8 bytes, with LF line endings, of the file prefix that ends immediately before the eight-space-indented CatalogFileHash declaration; that prefix ends with the newline that terminates the previous line, and the declaration itself, its value and the rest of the file are excluded",
+  "failureReason": "",
+  "probes": [
+    {
+      "name": "narrative/gc021-key-is-derived-from-committed-data",
+      "status": "Pass",
+      "detail": "session=4e415247433031330000000000000001; stableDerivation=True; idempotencyKeyIsDistinct=True; sequenceMatters=True; destinationMatters=True; keyDistinct=True; obligation=73e0458f20193410fe75970504dbcde6; idempotencyKey=95e6231b0f2190c7b3f5a76b69301919; destination=676330323164656c0000000000000001; schema=SchemaRef(SchemaId(676330323164656c0000000000000002), 1)"
+    },
+    {
+      "name": "narrative/gc021-commit-persists-before-apply",
+      "status": "Pass",
+      "detail": "admission=Accepted; code=None; appendedBeforeApply=True; journalFrameCount=1; appendCount=1; openCount=1; rows=1; rowKind=Obligation; durabilityClass=Durable; outbox=outbox(676330323164656c0000000000000003,Durable,open=1/8,terminal=0); codecs=kinds=13 schemas=13; bindings=True; detail="
+    },
+    {
+      "name": "narrative/gc021-crash-after-delivery-loses-the-acknowledgement",
+      "status": "Pass",
+      "detail": "crashPoint=AfterDelivery; boundary=after-delivery; threw=True; hookBoundary=after-delivery; hookReaches=4; beforeDeliveryObserved=True; afterDeliveryObserved=True; destinationMutations=1; destinationAttempts=1; outcomeBeforeCrash=None; openAfterCrash=1; deliveries=1; acknowledgements=0; journalFrameCount=1; key=519494500869f3a9bb6bf4a00c68884a; detail=after asking the destination for obligation 519494500869f3a9bb6bf4a00c68884a"
+    },
+    {
+      "name": "narrative/gc021-redelivery-applies-the-mutation-once",
+      "status": "Pass",
+      "detail": "recoveredOpen=1; reinstatedKeyMatches=True; outcome=Acknowledged; code=None; recoveredCommitCount=1; recoveredDeliveryCount=1; settledOpen=0; acknowledgements=1; redeliveredMutations=1; mutationCount=1; alreadyApplied=1; adapterAlreadyApplied=1; destinationAttempts=2; recoveredFrames=1; detail=the destination already applied external key c17348249d0da40993986612032bd701, so attempt #1 mutated nothing (P-045)."
+    },
+    {
+      "name": "narrative/gc021-capacity-exhaustion-is-never-a-silent-drop",
+      "status": "Pass",
+      "detail": "atCapacity=True; capacityCode=BudgetExceeded; admitted=Accepted; firstCode=None; capacity=1; openCount=1; count=1; capacityRefusals=1; refusedTracked=False; refusedInOpenOrder=False; refusedObligationPresent=False; detail=the outbox holds 1 open obligation(s) at its declared capacity of 1; the obligation is refused rather than dropped silently (P-043)."
+    },
+    {
+      "name": "narrative/gc021-volatile-delivery-is-distinguishable-from-durable",
+      "status": "Pass",
+      "detail": "volatileRefused=True; volatileCode=ResourceUnavailable; volatileDurability=Volatile; volatileRecoverable=False; recoverCode=ResourceUnavailable; volatileCount=0; durabilityRefusals=1; durableAccepted=True; durableCode=None; durability=Volatile->Durable; durableCount=1; durableFrames=1; recoverDetail=a volatile adapter has no journal to recover from, and an in-memory obligation is not recoverable by...; volatileDetail=the obligation requires durability but this outbox declares Unspecified; an in-memory obligation is never presented as o...; durableDetail="
+    },
+    {
+      "name": "narrative/gc021-obligation-survives-the-source-world-unload",
+      "status": "Pass",
+      "detail": "sourceSession=4e415247433031330000000000000002; successorSession=4e415247433031330000000000000003; sessionsDiffer=True; sourceStopped=Published; sourceUnregistered=True; rowsReinstated=1; rebuiltOpen=0; rebuiltCommitCount=1; rebuiltDeliveryCount=1; payloadEqual=True; outcome=Acknowledged; code=None; destinationMutations=1; successorRunning=True; registryAfter=3; registryBaseline=1; detail="
+    },
+    {
+      "name": "narrative/gc021-checkpoint-carries-the-outbox-and-the-cursor",
+      "status": "Pass",
+      "detail": "session=4e415247433031330000000000000001; atBoundary=True; laneJoined=True; bytes=6899; headerOutboxCount=1; documentOutboxRows=1; openRows=1; ownerRows=1; rowsMatch=True; headerAgrees=True; plannedRows=1; planHolds=True; planSession=4e415247433031330000000000000004; planRefusal=none; planDetail=; executorRestore=not-run (GC-018's suite proves the executor path); counts=counts(scope=7,install=2,target=7,slot=5,grant=0,command=0,message=0)"
+    },
+    {
+      "name": "narrative/gc021-no-universal-effect-api",
+      "status": "Pass",
+      "detail": "portMembers=5; adapterMembers=31; bridgeMembers=20; reverseMembers=0; forbidden=Undo,Revert,Rollback,Effect; portVerbs=[CommandSchema,DestinationId,TryApply,get_CommandSchema,get_DestinationId]; adapterVerbs=[.ctor,AlreadyAppliedCount,AppendCount,AppendRefusalCount,Durability,IsDurable,Journal,Outbox,RecoveredFrameCount,RecoveryCount,TryAcknowledge,TryCommit,TryCompensate,TryDeliver,TryRecover,TryReject,UnavailableCount,get_AlreadyAppliedCount,get_AppendCount,get_AppendRefusalCount,get_Durability,get_IsDurable,get_Journal,get_Outbox,get_RecoveredFrameCount,get_RecoveryCount,get_UnavailableCount]; bridgeVerbs=[.ctor,Destination,Dispose,LastDescribeDetail,Owner,PassCount,RecognisedCount,Run,TryDescribe,UnrewardedChoiceCount,get_Destination,get_LastDescribeDetail,get_Owner,get_PassCount,get_RecognisedCount,get_UnrewardedChoiceCount]"
+    },
+    {
+      "name": "narrative/gc021-narrative-choice-is-observed",
+      "status": "Pass",
+      "detail": "family=narrative; genre=Narrative; observedEvents=2; committedEvent={schema=SchemaRef(SchemaId(4a396c0a9abe7f1de442889d30077ac0), 1); sequence=2; step=1; epoch=3; worldLastSequence=2}; unclaimedEvents=1; recognisedChoices=1; unrewardedChoices=0; enqueued=1; duplicateEvents=0; observedNode=2; rewardEvent=2; obligationIsTheDerivedOne=True; dispatched=1; destinationStatus=DestinationMissing; destinationMutations=0; mutationCount=0; submitted=0; alreadyPresent=0; missing=1; content={node=2; card=201; recipientSeat=0; holdingSeat=1; revision=1}; describeDetail="
+    },
+    {
+      "name": "narrative/gc021-reward-content-covers-the-observed-node",
+      "status": "Pass",
+      "detail": "observedNode=2; contentNode=2; covered=True; basis=observed-choice-node; content={node=2; card=201; recipientSeat=0; holdingSeat=1; revision=1}; destinationStatus=DestinationMissing; destinationApplied=False; settlement=Committed; recipientCards=0->0; detail=the card table module is not attached to world GameCoreNarrativeWorld:4e415247433031330000000000000001; the destination cannot be observed (..."
+    },
+    {
+      "name": "narrative/gc021-reward-obligation-is-durable-and-idempotent",
+      "status": "Pass",
+      "detail": "oneRewardPerEvent=True; enqueuedBefore=1; enqueuedAfter=1; rewardsEnqueuedInSecondPass=0; duplicateAdmission=Duplicate; duplicateCode=None; duplicateCount=1; outboxCount=1->1; commitCount=1; openAfter=1; transferCommitted=False; durable=True; durability=Durable; journalFrames=3; dispatchAttempts=2; acknowledged=0; secondPassDispatched=1; detail=obligation 2f201ea9f0df34498fdd91c65f0981ad is already tracked in state Delivered; one committed event is one obligation..."
+    },
+    {
+      "name": "fixture:narrative/gc021-key-is-derived-from-committed-data",
+      "status": "Pass",
+      "detail": "session=4e415247433031330000000000000001; stableDerivation=True; idempotencyKeyIsDistinct=True; sequenceMatters=True; destinationMatters=True; keyDistinct=True; obligation=73e0458f20193410fe75970504dbcde6; idempotencyKey=95e6231b0f2190c7b3f5a76b69301919; destination=676330323164656c0000000000000001; schema=SchemaRef(SchemaId(676330323164656c0000000000000002), 1)"
+    },
+    {
+      "name": "fixture:narrative/gc021-commit-persists-before-apply",
+      "status": "Pass",
+      "detail": "admission=Accepted; code=None; appendedBeforeApply=True; journalFrameCount=1; appendCount=1; openCount=1; rows=1; rowKind=Obligation; durabilityClass=Durable; outbox=outbox(676330323164656c0000000000000003,Durable,open=1/8,terminal=0); codecs=kinds=13 schemas=13; bindings=True; detail="
+    },
+    {
+      "name": "fixture:narrative/gc021-crash-after-delivery-loses-the-acknowledgement",
+      "status": "Pass",
+      "detail": "crashPoint=AfterDelivery; boundary=after-delivery; threw=True; hookBoundary=after-delivery; hookReaches=4; beforeDeliveryObserved=True; afterDeliveryObserved=True; destinationMutations=1; destinationAttempts=1; outcomeBeforeCrash=None; openAfterCrash=1; deliveries=1; acknowledgements=0; journalFrameCount=1; key=519494500869f3a9bb6bf4a00c68884a; detail=after asking the destination for obligation 519494500869f3a9bb6bf4a00c68884a"
+    },
+    {
+      "name": "fixture:narrative/gc021-redelivery-applies-the-mutation-once",
+      "status": "Pass",
+      "detail": "recoveredOpen=1; reinstatedKeyMatches=True; outcome=Acknowledged; code=None; recoveredCommitCount=1; recoveredDeliveryCount=1; settledOpen=0; acknowledgements=1; redeliveredMutations=1; mutationCount=1; alreadyApplied=1; adapterAlreadyApplied=1; destinationAttempts=2; recoveredFrames=1; detail=the destination already applied external key c17348249d0da40993986612032bd701, so attempt #1 mutated nothing (P-045)."
+    },
+    {
+      "name": "fixture:narrative/gc021-capacity-exhaustion-is-never-a-silent-drop",
+      "status": "Pass",
+      "detail": "atCapacity=True; capacityCode=BudgetExceeded; admitted=Accepted; firstCode=None; capacity=1; openCount=1; count=1; capacityRefusals=1; refusedTracked=False; refusedInOpenOrder=False; refusedObligationPresent=False; detail=the outbox holds 1 open obligation(s) at its declared capacity of 1; the obligation is refused rather than dropped silently (P-043)."
+    },
+    {
+      "name": "fixture:narrative/gc021-volatile-delivery-is-distinguishable-from-durable",
+      "status": "Pass",
+      "detail": "volatileRefused=True; volatileCode=ResourceUnavailable; volatileDurability=Volatile; volatileRecoverable=False; recoverCode=ResourceUnavailable; volatileCount=0; durabilityRefusals=1; durableAccepted=True; durableCode=None; durability=Volatile->Durable; durableCount=1; durableFrames=1; recoverDetail=a volatile adapter has no journal to recover from, and an in-memory obligation is not recoverable by...; volatileDetail=the obligation requires durability but this outbox declares Unspecified; an in-memory obligation is never presented as o...; durableDetail="
+    },
+    {
+      "name": "fixture:narrative/gc021-obligation-survives-the-source-world-unload",
+      "status": "Pass",
+      "detail": "sourceSession=4e415247433031330000000000000002; successorSession=4e415247433031330000000000000003; sessionsDiffer=True; sourceStopped=Published; sourceUnregistered=True; rowsReinstated=1; rebuiltOpen=0; rebuiltCommitCount=1; rebuiltDeliveryCount=1; payloadEqual=True; outcome=Acknowledged; code=None; destinationMutations=1; successorRunning=True; registryAfter=3; registryBaseline=1; detail="
+    },
+    {
+      "name": "fixture:narrative/gc021-checkpoint-carries-the-outbox-and-the-cursor",
+      "status": "Pass",
+      "detail": "session=4e415247433031330000000000000001; atBoundary=True; laneJoined=True; bytes=6899; headerOutboxCount=1; documentOutboxRows=1; openRows=1; ownerRows=1; rowsMatch=True; headerAgrees=True; plannedRows=1; planHolds=True; planSession=4e415247433031330000000000000004; planRefusal=none; planDetail=; executorRestore=not-run (GC-018's suite proves the executor path); counts=counts(scope=7,install=2,target=7,slot=5,grant=0,command=0,message=0)"
+    },
+    {
+      "name": "fixture:narrative/gc021-no-universal-effect-api",
+      "status": "Pass",
+      "detail": "portMembers=5; adapterMembers=31; bridgeMembers=20; reverseMembers=0; forbidden=Undo,Revert,Rollback,Effect; portVerbs=[CommandSchema,DestinationId,TryApply,get_CommandSchema,get_DestinationId]; adapterVerbs=[.ctor,AlreadyAppliedCount,AppendCount,AppendRefusalCount,Durability,IsDurable,Journal,Outbox,RecoveredFrameCount,RecoveryCount,TryAcknowledge,TryCommit,TryCompensate,TryDeliver,TryRecover,TryReject,UnavailableCount,get_AlreadyAppliedCount,get_AppendCount,get_AppendRefusalCount,get_Durability,get_IsDurable,get_Journal,get_Outbox,get_RecoveredFrameCount,get_RecoveryCount,get_UnavailableCount]; bridgeVerbs=[.ctor,Destination,Dispose,LastDescribeDetail,Owner,PassCount,RecognisedCount,Run,TryDescribe,UnrewardedChoiceCount,get_Destination,get_LastDescribeDetail,get_Owner,get_PassCount,get_RecognisedCount,get_UnrewardedChoiceCount]"
+    },
+    {
+      "name": "fixture:narrative/gc021-narrative-choice-is-observed",
+      "status": "Pass",
+      "detail": "family=narrative; genre=Narrative; observedEvents=2; committedEvent={schema=SchemaRef(SchemaId(4a396c0a9abe7f1de442889d30077ac0), 1); sequence=2; step=1; epoch=3; worldLastSequence=2}; unclaimedEvents=1; recognisedChoices=1; unrewardedChoices=0; enqueued=1; duplicateEvents=0; observedNode=2; rewardEvent=2; obligationIsTheDerivedOne=True; dispatched=1; destinationStatus=DestinationMissing; destinationMutations=0; mutationCount=0; submitted=0; alreadyPresent=0; missing=1; content={node=2; card=201; recipientSeat=0; holdingSeat=1; revision=1}; describeDetail="
+    },
+    {
+      "name": "fixture:narrative/gc021-reward-content-covers-the-observed-node",
+      "status": "Pass",
+      "detail": "observedNode=2; contentNode=2; covered=True; basis=observed-choice-node; content={node=2; card=201; recipientSeat=0; holdingSeat=1; revision=1}; destinationStatus=DestinationMissing; destinationApplied=False; settlement=Committed; recipientCards=0->0; detail=the card table module is not attached to world GameCoreNarrativeWorld:4e415247433031330000000000000001; the destination cannot be observed (..."
+    },
+    {
+      "name": "fixture:narrative/gc021-reward-obligation-is-durable-and-idempotent",
+      "status": "Pass",
+      "detail": "oneRewardPerEvent=True; enqueuedBefore=1; enqueuedAfter=1; rewardsEnqueuedInSecondPass=0; duplicateAdmission=Duplicate; duplicateCode=None; duplicateCount=1; outboxCount=1->1; commitCount=1; openAfter=1; transferCommitted=False; durable=True; durability=Durable; journalFrames=3; dispatchAttempts=2; acknowledged=0; secondPassDispatched=1; detail=obligation 2f201ea9f0df34498fdd91c65f0981ad is already tracked in state Delivered; one committed event is one obligation..."
+    },
+    {
+      "name": "gc021-narrative-digest",
+      "status": "Pass",
+      "detail": "generatedDigest=0082cdc8c8cb02e49efdc4a8da590de6936888fc6d84892ad92c57b305907007; fixtureDigest=0082cdc8c8cb02e49efdc4a8da590de6936888fc6d84892ad92c57b305907007; expectedDigest=0082cdc8c8cb02e49efdc4a8da590de6936888fc6d84892ad92c57b305907007; pending=False; bothCatalogsAgree=True; observations=12; digest=0082cdc8c8cb02e49efdc4a8da590de6936888fc6d84892ad92c57b305907007; label=narrative; steps=12; failed=0; digest=0082cdc8c8cb02e49efdc4a8da590de6936888fc6d84892ad92c57b305907007; label=narrative; steps=12; failed=0"
+    },
+    {
+      "name": "cards/gc021-key-is-derived-from-committed-data",
+      "status": "Pass",
+      "detail": "session=43415247433031330000000000000001; stableDerivation=True; idempotencyKeyIsDistinct=True; sequenceMatters=True; destinationMatters=True; keyDistinct=True; obligation=cff892ac3d1fa4dd108eb4f39e6e8108; idempotencyKey=3d9c511f7920fd2eefedf32717cbcf1a; destination=676330323164656c0000000000000001; schema=SchemaRef(SchemaId(676330323164656c0000000000000002), 1)"
+    },
+    {
+      "name": "cards/gc021-commit-persists-before-apply",
+      "status": "Pass",
+      "detail": "admission=Accepted; code=None; appendedBeforeApply=True; journalFrameCount=1; appendCount=1; openCount=1; rows=1; rowKind=Obligation; durabilityClass=Durable; outbox=outbox(676330323164656c0000000000000003,Durable,open=1/8,terminal=0); codecs=kinds=13 schemas=13; bindings=True; detail="
+    },
+    {
+      "name": "cards/gc021-crash-after-delivery-loses-the-acknowledgement",
+      "status": "Pass",
+      "detail": "crashPoint=AfterDelivery; boundary=after-delivery; threw=True; hookBoundary=after-delivery; hookReaches=4; beforeDeliveryObserved=True; afterDeliveryObserved=True; destinationMutations=1; destinationAttempts=1; outcomeBeforeCrash=None; openAfterCrash=1; deliveries=1; acknowledgements=0; journalFrameCount=1; key=5bd965b3357e20ceca76871765ba7754; detail=after asking the destination for obligation 5bd965b3357e20ceca76871765ba7754"
+    },
+    {
+      "name": "cards/gc021-redelivery-applies-the-mutation-once",
+      "status": "Pass",
+      "detail": "recoveredOpen=1; reinstatedKeyMatches=True; outcome=Acknowledged; code=None; recoveredCommitCount=1; recoveredDeliveryCount=1; settledOpen=0; acknowledgements=1; redeliveredMutations=1; mutationCount=1; alreadyApplied=1; adapterAlreadyApplied=1; destinationAttempts=2; recoveredFrames=1; detail=the destination already applied external key 3148a8cbe610e3f413e960d624a6fe39, so attempt #1 mutated nothing (P-045)."
+    },
+    {
+      "name": "cards/gc021-capacity-exhaustion-is-never-a-silent-drop",
+      "status": "Pass",
+      "detail": "atCapacity=True; capacityCode=BudgetExceeded; admitted=Accepted; firstCode=None; capacity=1; openCount=1; count=1; capacityRefusals=1; refusedTracked=False; refusedInOpenOrder=False; refusedObligationPresent=False; detail=the outbox holds 1 open obligation(s) at its declared capacity of 1; the obligation is refused rather than dropped silently (P-043)."
+    },
+    {
+      "name": "cards/gc021-volatile-delivery-is-distinguishable-from-durable",
+      "status": "Pass",
+      "detail": "volatileRefused=True; volatileCode=ResourceUnavailable; volatileDurability=Volatile; volatileRecoverable=False; recoverCode=ResourceUnavailable; volatileCount=0; durabilityRefusals=1; durableAccepted=True; durableCode=None; durability=Volatile->Durable; durableCount=1; durableFrames=1; recoverDetail=a volatile adapter has no journal to recover from, and an in-memory obligation is not recoverable by...; volatileDetail=the obligation requires durability but this outbox declares Unspecified; an in-memory obligation is never presented as o...; durableDetail="
+    },
+    {
+      "name": "cards/gc021-obligation-survives-the-source-world-unload",
+      "status": "Pass",
+      "detail": "sourceSession=43415247433031330000000000000002; successorSession=43415247433031330000000000000003; sessionsDiffer=True; sourceStopped=Published; sourceUnregistered=True; rowsReinstated=1; rebuiltOpen=0; rebuiltCommitCount=1; rebuiltDeliveryCount=1; payloadEqual=True; outcome=Acknowledged; code=None; destinationMutations=1; successorRunning=True; registryAfter=3; registryBaseline=1; detail="
+    },
+    {
+      "name": "cards/gc021-checkpoint-carries-the-outbox-and-the-cursor",
+      "status": "Pass",
+      "detail": "session=43415247433031330000000000000001; atBoundary=True; laneJoined=True; bytes=6267; headerOutboxCount=1; documentOutboxRows=1; openRows=1; ownerRows=1; rowsMatch=True; headerAgrees=True; plannedRows=1; planHolds=True; planSession=43415247433031330000000000000004; planRefusal=none; planDetail=; executorRestore=not-run (GC-018's suite proves the executor path); counts=counts(scope=9,install=2,target=6,slot=1,grant=0,command=0,message=0)"
+    },
+    {
+      "name": "cards/gc021-no-universal-effect-api",
+      "status": "Pass",
+      "detail": "portMembers=5; adapterMembers=31; bridgeMembers=20; reverseMembers=0; forbidden=Undo,Revert,Rollback,Effect; portVerbs=[CommandSchema,DestinationId,TryApply,get_CommandSchema,get_DestinationId]; adapterVerbs=[.ctor,AlreadyAppliedCount,AppendCount,AppendRefusalCount,Durability,IsDurable,Journal,Outbox,RecoveredFrameCount,RecoveryCount,TryAcknowledge,TryCommit,TryCompensate,TryDeliver,TryRecover,TryReject,UnavailableCount,get_AlreadyAppliedCount,get_AppendCount,get_AppendRefusalCount,get_Durability,get_IsDurable,get_Journal,get_Outbox,get_RecoveredFrameCount,get_RecoveryCount,get_UnavailableCount]; bridgeVerbs=[.ctor,Destination,Dispose,LastDescribeDetail,Owner,PassCount,RecognisedCount,Run,TryDescribe,UnrewardedChoiceCount,get_Destination,get_LastDescribeDetail,get_Owner,get_PassCount,get_RecognisedCount,get_UnrewardedChoiceCount]"
+    },
+    {
+      "name": "cards/gc021-narrative-choice-is-observed",
+      "status": "Pass",
+      "detail": "family=cards; genre=Cards; observedEvents=1; committedEvent={schema=SchemaRef(SchemaId(9b267dc50936300d3c2524d6dd761f66), 1); sequence=1; step=1; epoch=3; worldLastSequence=1}; unclaimedEvents=0; recognisedChoices=0; unrewardedChoices=0; enqueued=1; duplicateEvents=0; observedNode=-1; rewardEvent=1; obligationIsTheDerivedOne=True; dispatched=1; destinationStatus=Committed; destinationMutations=1; mutationCount=1; submitted=1; alreadyPresent=0; missing=0; content={node=1; card=201; recipientSeat=0; holdingSeat=1; revision=1}; describeDetail="
+    },
+    {
+      "name": "cards/gc021-reward-content-covers-the-observed-node",
+      "status": "Pass",
+      "detail": "observedNode=-1; contentNode=1; covered=True; basis=committed-reward-transfer; content={node=1; card=201; recipientSeat=0; holdingSeat=1; revision=1}; destinationStatus=Committed; destinationApplied=True; settlement=Committed; recipientCards=3->4; detail=the reward transfer committed in 1 step(s); seat 0's hand grew from 3 to 4 (P-042)."
+    },
+    {
+      "name": "cards/gc021-reward-obligation-is-durable-and-idempotent",
+      "status": "Pass",
+      "detail": "oneRewardPerEvent=True; enqueuedBefore=1; enqueuedAfter=1; rewardsEnqueuedInSecondPass=0; duplicateAdmission=Duplicate; duplicateCode=None; duplicateCount=1; outboxCount=1->1; commitCount=1; openAfter=0; transferCommitted=True; durable=True; durability=Durable; journalFrames=6; dispatchAttempts=2; acknowledged=1; secondPassDispatched=1; detail=obligation 9fda4da748228430aae0b97644b3caa0 is already tracked in state Acknowledged; one committed event is one obligat..."
+    },
+    {
+      "name": "fixture:cards/gc021-key-is-derived-from-committed-data",
+      "status": "Pass",
+      "detail": "session=43415247433031330000000000000001; stableDerivation=True; idempotencyKeyIsDistinct=True; sequenceMatters=True; destinationMatters=True; keyDistinct=True; obligation=cff892ac3d1fa4dd108eb4f39e6e8108; idempotencyKey=3d9c511f7920fd2eefedf32717cbcf1a; destination=676330323164656c0000000000000001; schema=SchemaRef(SchemaId(676330323164656c0000000000000002), 1)"
+    },
+    {
+      "name": "fixture:cards/gc021-commit-persists-before-apply",
+      "status": "Pass",
+      "detail": "admission=Accepted; code=None; appendedBeforeApply=True; journalFrameCount=1; appendCount=1; openCount=1; rows=1; rowKind=Obligation; durabilityClass=Durable; outbox=outbox(676330323164656c0000000000000003,Durable,open=1/8,terminal=0); codecs=kinds=13 schemas=13; bindings=True; detail="
+    },
+    {
+      "name": "fixture:cards/gc021-crash-after-delivery-loses-the-acknowledgement",
+      "status": "Pass",
+      "detail": "crashPoint=AfterDelivery; boundary=after-delivery; threw=True; hookBoundary=after-delivery; hookReaches=4; beforeDeliveryObserved=True; afterDeliveryObserved=True; destinationMutations=1; destinationAttempts=1; outcomeBeforeCrash=None; openAfterCrash=1; deliveries=1; acknowledgements=0; journalFrameCount=1; key=5bd965b3357e20ceca76871765ba7754; detail=after asking the destination for obligation 5bd965b3357e20ceca76871765ba7754"
+    },
+    {
+      "name": "fixture:cards/gc021-redelivery-applies-the-mutation-once",
+      "status": "Pass",
+      "detail": "recoveredOpen=1; reinstatedKeyMatches=True; outcome=Acknowledged; code=None; recoveredCommitCount=1; recoveredDeliveryCount=1; settledOpen=0; acknowledgements=1; redeliveredMutations=1; mutationCount=1; alreadyApplied=1; adapterAlreadyApplied=1; destinationAttempts=2; recoveredFrames=1; detail=the destination already applied external key 3148a8cbe610e3f413e960d624a6fe39, so attempt #1 mutated nothing (P-045)."
+    },
+    {
+      "name": "fixture:cards/gc021-capacity-exhaustion-is-never-a-silent-drop",
+      "status": "Pass",
+      "detail": "atCapacity=True; capacityCode=BudgetExceeded; admitted=Accepted; firstCode=None; capacity=1; openCount=1; count=1; capacityRefusals=1; refusedTracked=False; refusedInOpenOrder=False; refusedObligationPresent=False; detail=the outbox holds 1 open obligation(s) at its declared capacity of 1; the obligation is refused rather than dropped silently (P-043)."
+    },
+    {
+      "name": "fixture:cards/gc021-volatile-delivery-is-distinguishable-from-durable",
+      "status": "Pass",
+      "detail": "volatileRefused=True; volatileCode=ResourceUnavailable; volatileDurability=Volatile; volatileRecoverable=False; recoverCode=ResourceUnavailable; volatileCount=0; durabilityRefusals=1; durableAccepted=True; durableCode=None; durability=Volatile->Durable; durableCount=1; durableFrames=1; recoverDetail=a volatile adapter has no journal to recover from, and an in-memory obligation is not recoverable by...; volatileDetail=the obligation requires durability but this outbox declares Unspecified; an in-memory obligation is never presented as o...; durableDetail="
+    },
+    {
+      "name": "fixture:cards/gc021-obligation-survives-the-source-world-unload",
+      "status": "Pass",
+      "detail": "sourceSession=43415247433031330000000000000002; successorSession=43415247433031330000000000000003; sessionsDiffer=True; sourceStopped=Published; sourceUnregistered=True; rowsReinstated=1; rebuiltOpen=0; rebuiltCommitCount=1; rebuiltDeliveryCount=1; payloadEqual=True; outcome=Acknowledged; code=None; destinationMutations=1; successorRunning=True; registryAfter=3; registryBaseline=1; detail="
+    },
+    {
+      "name": "fixture:cards/gc021-checkpoint-carries-the-outbox-and-the-cursor",
+      "status": "Pass",
+      "detail": "session=43415247433031330000000000000001; atBoundary=True; laneJoined=True; bytes=6267; headerOutboxCount=1; documentOutboxRows=1; openRows=1; ownerRows=1; rowsMatch=True; headerAgrees=True; plannedRows=1; planHolds=True; planSession=43415247433031330000000000000004; planRefusal=none; planDetail=; executorRestore=not-run (GC-018's suite proves the executor path); counts=counts(scope=9,install=2,target=6,slot=1,grant=0,command=0,message=0)"
+    },
+    {
+      "name": "fixture:cards/gc021-no-universal-effect-api",
+      "status": "Pass",
+      "detail": "portMembers=5; adapterMembers=31; bridgeMembers=20; reverseMembers=0; forbidden=Undo,Revert,Rollback,Effect; portVerbs=[CommandSchema,DestinationId,TryApply,get_CommandSchema,get_DestinationId]; adapterVerbs=[.ctor,AlreadyAppliedCount,AppendCount,AppendRefusalCount,Durability,IsDurable,Journal,Outbox,RecoveredFrameCount,RecoveryCount,TryAcknowledge,TryCommit,TryCompensate,TryDeliver,TryRecover,TryReject,UnavailableCount,get_AlreadyAppliedCount,get_AppendCount,get_AppendRefusalCount,get_Durability,get_IsDurable,get_Journal,get_Outbox,get_RecoveredFrameCount,get_RecoveryCount,get_UnavailableCount]; bridgeVerbs=[.ctor,Destination,Dispose,LastDescribeDetail,Owner,PassCount,RecognisedCount,Run,TryDescribe,UnrewardedChoiceCount,get_Destination,get_LastDescribeDetail,get_Owner,get_PassCount,get_RecognisedCount,get_UnrewardedChoiceCount]"
+    },
+    {
+      "name": "fixture:cards/gc021-narrative-choice-is-observed",
+      "status": "Pass",
+      "detail": "family=cards; genre=Cards; observedEvents=1; committedEvent={schema=SchemaRef(SchemaId(9b267dc50936300d3c2524d6dd761f66), 1); sequence=1; step=1; epoch=3; worldLastSequence=1}; unclaimedEvents=0; recognisedChoices=0; unrewardedChoices=0; enqueued=1; duplicateEvents=0; observedNode=-1; rewardEvent=1; obligationIsTheDerivedOne=True; dispatched=1; destinationStatus=Committed; destinationMutations=1; mutationCount=1; submitted=1; alreadyPresent=0; missing=0; content={node=1; card=201; recipientSeat=0; holdingSeat=1; revision=1}; describeDetail="
+    },
+    {
+      "name": "fixture:cards/gc021-reward-content-covers-the-observed-node",
+      "status": "Pass",
+      "detail": "observedNode=-1; contentNode=1; covered=True; basis=committed-reward-transfer; content={node=1; card=201; recipientSeat=0; holdingSeat=1; revision=1}; destinationStatus=Committed; destinationApplied=True; settlement=Committed; recipientCards=3->4; detail=the reward transfer committed in 1 step(s); seat 0's hand grew from 3 to 4 (P-042)."
+    },
+    {
+      "name": "fixture:cards/gc021-reward-obligation-is-durable-and-idempotent",
+      "status": "Pass",
+      "detail": "oneRewardPerEvent=True; enqueuedBefore=1; enqueuedAfter=1; rewardsEnqueuedInSecondPass=0; duplicateAdmission=Duplicate; duplicateCode=None; duplicateCount=1; outboxCount=1->1; commitCount=1; openAfter=0; transferCommitted=True; durable=True; durability=Durable; journalFrames=6; dispatchAttempts=2; acknowledged=1; secondPassDispatched=1; detail=obligation 9fda4da748228430aae0b97644b3caa0 is already tracked in state Acknowledged; one committed event is one obligat..."
+    },
+    {
+      "name": "gc021-cards-digest",
+      "status": "Pass",
+      "detail": "generatedDigest=a2943ea4610c5d83e3bbcb92bf95b884d4ffb5390de9c269740091cc0440033e; fixtureDigest=a2943ea4610c5d83e3bbcb92bf95b884d4ffb5390de9c269740091cc0440033e; expectedDigest=a2943ea4610c5d83e3bbcb92bf95b884d4ffb5390de9c269740091cc0440033e; pending=False; bothCatalogsAgree=True; observations=12; digest=a2943ea4610c5d83e3bbcb92bf95b884d4ffb5390de9c269740091cc0440033e; label=cards; steps=12; failed=0; digest=a2943ea4610c5d83e3bbcb92bf95b884d4ffb5390de9c269740091cc0440033e; label=cards; steps=12; failed=0"
+    }
+  ]
+}
