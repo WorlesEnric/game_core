@@ -241,6 +241,46 @@ namespace GameCore.ReferenceConformance
             text.Append(pad).Append(']');
         }
 
+        private static string Escape(string value)
+        {
+            var builder = new StringBuilder(value.Length + 8);
+            for (int i = 0; i < value.Length; i++)
+            {
+                char character = value[i];
+                switch (character)
+                {
+                    case '"':
+                        builder.Append("\\\"");
+                        break;
+                    case '\\':
+                        builder.Append("\\\\");
+                        break;
+                    case '\n':
+                        builder.Append("\\n");
+                        break;
+                    case '\r':
+                        builder.Append("\\r");
+                        break;
+                    case '\t':
+                        builder.Append("\\t");
+                        break;
+                    default:
+                        if (character < ' ')
+                        {
+                            builder.Append("\\u").Append(((int)character).ToString("x4"));
+                        }
+                        else
+                        {
+                            builder.Append(character);
+                        }
+
+                        break;
+                }
+            }
+
+            return builder.ToString();
+        }
+
         private static string ClassToken(AssemblyClass classification)
         {
             switch (classification)

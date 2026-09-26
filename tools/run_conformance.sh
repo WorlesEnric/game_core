@@ -88,10 +88,24 @@ step "3. Unity: resolve the qualification project's packages"
 unity_run() {
   local log="$1"
   shift
+  local waited=0
+  while pgrep -f "gc-wt/gc-026/.*GameCoreProbe|gc-wt/gc-026/.*Unity " >/dev/null; do
+    echo "GC-024 host sharing: waiting 60s before Unity launch (${log})" | tee -a "${ARTIFACTS}/unity/host-sharing.log"
+    sleep 60
+    waited=$((waited + 60))
+  done
+  echo "GC-024 host sharing: waited ${waited}s before ${log}" | tee -a "${ARTIFACTS}/unity/host-sharing.log"
   local rc=0
   timeout --signal=TERM --kill-after=30 "${UNITY_TIMEOUT}" "$@" >"${log}" 2>&1 || rc=$?
   if (( rc == 124 )); then
     echo "run_conformance.sh: Unity timed out; retrying once (known intermittent pre-dispatch hang)" >&2
+    waited=0
+    while pgrep -f "gc-wt/gc-026/.*GameCoreProbe|gc-wt/gc-026/.*Unity " >/dev/null; do
+      echo "GC-024 host sharing: waiting 60s before Unity retry (${log})" | tee -a "${ARTIFACTS}/unity/host-sharing.log"
+      sleep 60
+      waited=$((waited + 60))
+    done
+    echo "GC-024 host sharing: waited ${waited}s before ${log}.retry" | tee -a "${ARTIFACTS}/unity/host-sharing.log"
     timeout --signal=TERM --kill-after=30 "${UNITY_TIMEOUT}" "$@" >"${log}.retry" 2>&1 || rc=$?
   fi
   return "${rc}"

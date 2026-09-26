@@ -236,8 +236,10 @@ namespace GameCore.ReferenceConformance
                 new ConformanceRow(
                     "resume-festival",
                     "Resume `FestivalScoring` (O-04)",
-                    "P-046 — resume rederives the suspended instance against the current ancestry, so its"
-                    + " contribution returns without a reconfiguration.",
+                    "P-046, 07:104 — resume rederives the suspended instance against the current ancestry (the"
+                    + " automatic inheritance 07:104's `Conservative` -> `Automatic` row names), so its contribution"
+                    + " returns without a reconfiguration: the eligible seat's bonus is +2 again and its next valid"
+                    + " set awards 12.",
                     ConformanceRowOutcome.Published,
                     new[]
                     {
@@ -401,8 +403,9 @@ namespace GameCore.ReferenceConformance
                 new ConformanceRow(
                     "resume-chapter",
                     "Resume `ChapterNarrative` (O-04)",
-                    "P-046 — resume rederives the instance against the current ancestry, so its bindings return."
-                    + " The exclusion this stage applied to `npc-mara` is still in force, and P-016's \"denial along"
+                    "P-046, 07:177 — resume rederives the instance against the current ancestry (the automatic"
+                    + " inheritance 07:177's `Conservative` -> `Automatic` row names), so its bindings return. The"
+                    + " exclusion this stage applied to `npc-mara` is still in force, and P-016's \"denial along"
                     + " the propagation path wins over imports, opt-ins and selection overrides in both modes\" is"
                     + " exactly why Mara stays unbound while the unexcluded gate target gets its binding back, so the"
                     + " row reads both and a resume that bypassed the exclusion would fail here.",
@@ -571,7 +574,8 @@ namespace GameCore.ReferenceConformance
                 new ConformanceRow(
                     "resume-tailwind",
                     "Resume `Tailwind` (O-04)",
-                    "P-046 — resume rederives the modifier against the current ancestry, so the contribution returns"
+                    "P-046, 07:245 — resume rederives the modifier against the current ancestry (the automatic"
+                    + " inheritance 07:245's `Conservative` -> `Automatic` row names), so the contribution returns"
                     + " without resetting motion state.",
                     ConformanceRowOutcome.Published,
                     new[]

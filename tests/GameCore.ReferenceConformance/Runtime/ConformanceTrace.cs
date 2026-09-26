@@ -41,7 +41,10 @@ namespace GameCore.ReferenceConformance
     /// </summary>
     public static class ConformanceValue
     {
-        /// <summary>The token of an absent contribution or an unbound target.</summary>
+        /// <summary>
+        /// The token of an absent contribution, an unbound target, or an observation nobody stated a value for: a
+        /// `Preserved` expectation's reading is spelled this way rather than invented (P-008).
+        /// </summary>
         public const string None = "none";
 
         /// <summary>The token meaning "this operation did not change it"; paired with the expected value.</summary>
@@ -104,13 +107,13 @@ namespace GameCore.ReferenceConformance
     /// <summary>One recorded fact of one run: which table row it belongs to, which phase, and what was read.</summary>
     public readonly struct ConformanceTraceEntry
     {
-        public ConformanceTraceEntry(string tableId, string rowId, ConformancePhase phase, string field, string value)
+        public ConformanceTraceEntry(string tableId, string rowId, ConformancePhase phase, string field, string? value)
         {
             TableId = tableId ?? throw new ArgumentNullException(nameof(tableId));
             RowId = rowId ?? throw new ArgumentNullException(nameof(rowId));
             Phase = phase;
             Field = field ?? throw new ArgumentNullException(nameof(field));
-            Value = value ?? string.Empty;
+            Value = value == null || value.Length == 0 ? ConformanceValue.None : value;
             if (!ConformanceValue.IsCanonical(Value))
             {
                 throw new ArgumentException(
@@ -131,7 +134,7 @@ namespace GameCore.ReferenceConformance
         /// <summary>The canonical field key, e.g. <c>cards.seat-a.set-bonus</c>.</summary>
         public string Field { get; }
 
-        /// <summary>The canonical observed value.</summary>
+        /// <summary>The canonical observed value; an absent observation is spelled <see cref="ConformanceValue.None"/>.</summary>
         public string Value { get; }
 
         /// <summary>The one canonical line this entry contributes to a trace document.</summary>
@@ -186,9 +189,11 @@ namespace GameCore.ReferenceConformance
         /// <summary>
         /// Records one fact. Recording the same `(table, row, phase, field)` twice throws: two observations of one
         /// fact are two different claims about one world, and a trace that silently kept the last one could not be
-        /// compared row by row (P-030's "no observer sees a mixture").
+        /// compared row by row (P-030's "no observer sees a mixture"). An absent observation — null or empty — is
+        /// recorded as the canonical absent token `none`, so a `Preserved` expectation, whose value 07 never states,
+        /// is a recorded reading rather than a refusal.
         /// </summary>
-        public void Record(string tableId, string rowId, ConformancePhase phase, string field, string value)
+        public void Record(string tableId, string rowId, ConformancePhase phase, string field, string? value)
         {
             var entry = new ConformanceTraceEntry(tableId, rowId, phase, field, value);
             if (!keys.Add(entry.ToLine().Substring(0, entry.ToLine().IndexOf('='))))
@@ -203,7 +208,7 @@ namespace GameCore.ReferenceConformance
         }
 
         /// <summary>Records one fact if its key is not present yet, and reports whether it was recorded.</summary>
-        public bool TryRecord(string tableId, string rowId, ConformancePhase phase, string field, string value)
+        public bool TryRecord(string tableId, string rowId, ConformancePhase phase, string field, string? value)
         {
             var entry = new ConformanceTraceEntry(tableId, rowId, phase, field, value);
             string key = entry.ToLine().Substring(0, entry.ToLine().IndexOf('='));
@@ -433,8 +438,10 @@ namespace GameCore.ReferenceConformance
                     seenTables.Add(entry.TableId);
                 }
 
+                // The row count must be per table: two tables may each carry a row with the same id, so the
+                // composite `table/row` is what a run counts, matching how the writer counted it.
                 if (seenRows.Count == 0
-                    || !string.Equals(seenRows[seenRows.Count - 1], entry.RowId, StringComparison.Ordinal))
+                    || !string.Equals(seenRows[seenRows.Count - 1], entry.TableId + "/" + entry.RowId, StringComparison.Ordinal))
                 {
                     seenRows.Add(entry.TableId + "/" + entry.RowId);
                 }

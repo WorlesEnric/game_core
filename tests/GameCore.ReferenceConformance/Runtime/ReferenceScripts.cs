@@ -17,7 +17,6 @@ namespace GameCore.ReferenceConformance
     /// <summary>The scripts that execute the four transcribed tables (07 s2.4, s3.3, s4.3, s5).</summary>
     public static class ReferenceScripts
     {
-        private const string Pre = "/pre";
 
         /// <summary>The card market's script: four stages, one fresh world each (07 s2.4, 07:51, 07:108, 07:110).</summary>
         public static ConformanceScript Cards()
@@ -33,8 +32,8 @@ namespace GameCore.ReferenceConformance
                     Array.Empty<string>(),
                     new List<ConformanceStep>
                     {
-                        Row("mount-festival", ConformanceOperations.MountProvider, 0, "mount the festival provider"),
-                        Row("spawn-seat-d", ConformanceOperations.SpawnFutureTarget, 0, "spawn seat D under LeagueA"),
+                        Row("cards", "mount-festival", ConformanceOperations.MountProvider, 0, "mount the festival provider"),
+                        Row("cards", "spawn-seat-d", ConformanceOperations.SpawnFutureTarget, 0, "spawn seat D under LeagueA"),
                         Pre("reconfigure-festival", 1, ConformanceOperations.CommitCommand, 1,
                             "commit one valid set as seat A under the +2 revision (07:100's before state)",
                             new[]
@@ -47,7 +46,7 @@ namespace GameCore.ReferenceConformance
                                 ConformanceExpectation.Require(ConformanceFields.TableTurn, "0", "1"),
                                 ConformanceExpectation.Require(ConformanceFields.TableVersion, "1", "2"),
                             }),
-                        Row("reconfigure-festival", ConformanceOperations.ReconfigureProvider, 4,
+                        Row("cards", "reconfigure-festival", ConformanceOperations.ReconfigureProvider, 4,
                             "reconfigure the festival contribution to +4"),
                     }),
 
@@ -74,7 +73,7 @@ namespace GameCore.ReferenceConformance
                                 ConformanceExpectation.Require(
                                     ConformanceFields.SeatNextAward(0U), "12", "15"),
                             }),
-                        Row("nested-retraction", ConformanceOperations.UnmountProvider, 0,
+                        Row("cards", "nested-retraction", ConformanceOperations.UnmountProvider, 0,
                             "retract the ancestor +2 entry and nothing else"),
                     }),
 
@@ -98,7 +97,7 @@ namespace GameCore.ReferenceConformance
                             {
                                 ConformanceExpectation.Require(ConformanceFields.SeatTotal(0U), "4", "16"),
                             }),
-                        Row("unmount-festival", ConformanceOperations.UnmountProvider, 0,
+                        Row("cards", "unmount-festival", ConformanceOperations.UnmountProvider, 0,
                             "unmount the festival provider while the committed total survives"),
                     }),
 
@@ -129,7 +128,7 @@ namespace GameCore.ReferenceConformance
                                 ConformanceExpectation.Require(ConformanceFields.SeatTotal(0U), "4", "16"),
                                 ConformanceExpectation.Unchanged(ConformanceFields.SeatBonus(0U), "2"),
                             }),
-                        Row("reparent-seat-a", ConformanceOperations.ReparentMovedScope, 0,
+                        Row("cards", "reparent-seat-a", ConformanceOperations.ReparentMovedScope, 0,
                             "reparent seat A's scope from LeagueA to LeagueB"),
                     }),
 
@@ -156,9 +155,9 @@ namespace GameCore.ReferenceConformance
                                 ConformanceExpectation.Require(
                                     ConformanceFields.SeatBonus(3U), ConformanceValue.None, "2"),
                             }),
-                        Row("mode-conservative", ConformanceOperations.ModeConservative, 0,
+                        Row("cards", "mode-conservative", ConformanceOperations.ModeConservative, 0,
                             "switch the world to Conservative"),
-                        Row("mode-automatic", ConformanceOperations.ModeAutomatic, 0,
+                        Row("cards", "mode-automatic", ConformanceOperations.ModeAutomatic, 0,
                             "switch the world back to Automatic"),
                     }),
 
@@ -196,7 +195,7 @@ namespace GameCore.ReferenceConformance
                             {
                                 ConformanceExpectation.Unchanged(ConformanceFields.SeatBonus(0U), "2"),
                             }),
-                        Row("exclusive-conflict-rejected", ConformanceOperations.ModeAutomatic, 0,
+                        Row("cards", "exclusive-conflict-rejected", ConformanceOperations.ModeAutomatic, 0,
                             "attempt the switch that would expose the conflict"),
                     }),
 
@@ -214,11 +213,11 @@ namespace GameCore.ReferenceConformance
                                 ConformanceExpectation.Require(
                                     ConformanceFields.SeatBonus(1U), ConformanceValue.None, "2"),
                             }),
-                        Row("exclude-seat-b", ConformanceOperations.ApplyExclusion, 0,
+                        Row("cards", "exclude-seat-b", ConformanceOperations.ApplyExclusion, 0,
                             "exclude the capability on seat B while the provider stays mounted"),
-                        Row("suspend-festival", ConformanceOperations.SuspendProvider, 0,
+                        Row("cards", "suspend-festival", ConformanceOperations.SuspendProvider, 0,
                             "suspend the provider explicitly"),
-                        Row("resume-festival", ConformanceOperations.ResumeProvider, 0,
+                        Row("cards", "resume-festival", ConformanceOperations.ResumeProvider, 0,
                             "resume it and let it rederive"),
                     }),
             };
@@ -237,9 +236,9 @@ namespace GameCore.ReferenceConformance
                     Array.Empty<string>(),
                     new List<ConformanceStep>
                     {
-                        Row("mount-chapter", ConformanceOperations.MountProvider, 0,
+                        Row("narrative", "mount-chapter", ConformanceOperations.MountProvider, 0,
                             "mount the Chapter One provider"),
-                        Row("spawn-villager", ConformanceOperations.SpawnFutureTarget, 0,
+                        Row("narrative", "spawn-villager", ConformanceOperations.SpawnFutureTarget, 0,
                             "spawn a villager under Village"),
                     }),
 
@@ -268,7 +267,7 @@ namespace GameCore.ReferenceConformance
                                 ConformanceExpectation.Require(
                                     ConformanceFields.MaraConversationStatus, "0", "2"),
                             }),
-                        Row("unmount-chapter", ConformanceOperations.UnmountProvider, 0,
+                        Row("narrative", "unmount-chapter", ConformanceOperations.UnmountProvider, 0,
                             "unmount the chapter and let the registered disposition close the session"),
                     }),
 
@@ -294,7 +293,7 @@ namespace GameCore.ReferenceConformance
                                 ConformanceExpectation.Unchanged(
                                     ConformanceFields.DialogueBinding("npc-sailor"), "2"),
                             }),
-                        Row("reparent-village", ConformanceOperations.ReparentMovedScope, 0,
+                        Row("narrative", "reparent-village", ConformanceOperations.ReparentMovedScope, 0,
                             "reparent Village under ChapterTwo"),
                     }),
 
@@ -312,9 +311,9 @@ namespace GameCore.ReferenceConformance
                                 ConformanceExpectation.Require(
                                     ConformanceFields.DialogueBinding("npc-mara"), ConformanceValue.None, "1"),
                             }),
-                        Row("mode-conservative", ConformanceOperations.ModeConservative, 0,
+                        Row("narrative", "mode-conservative", ConformanceOperations.ModeConservative, 0,
                             "switch the world to Conservative"),
-                        Row("mode-automatic", ConformanceOperations.ModeAutomatic, 0,
+                        Row("narrative", "mode-automatic", ConformanceOperations.ModeAutomatic, 0,
                             "switch the world back to Automatic"),
                     }),
 
@@ -341,11 +340,11 @@ namespace GameCore.ReferenceConformance
                                 ConformanceExpectation.Require(
                                     ConformanceFields.GateEastDecision, "0", "1"),
                             }),
-                        Row("exclude-mara", ConformanceOperations.ApplyExclusion, 0,
+                        Row("narrative", "exclude-mara", ConformanceOperations.ApplyExclusion, 0,
                             "exclude the conversation capability on Mara"),
-                        Row("suspend-chapter", ConformanceOperations.SuspendProvider, 0,
+                        Row("narrative", "suspend-chapter", ConformanceOperations.SuspendProvider, 0,
                             "suspend the chapter provider"),
-                        Row("resume-chapter", ConformanceOperations.ResumeProvider, 0,
+                        Row("narrative", "resume-chapter", ConformanceOperations.ResumeProvider, 0,
                             "resume it and let it rederive"),
                     }),
             };
@@ -364,9 +363,9 @@ namespace GameCore.ReferenceConformance
                     Array.Empty<string>(),
                     new List<ConformanceStep>
                     {
-                        Row("mount-tailwind", ConformanceOperations.MountProvider, 0,
+                        Row("traversal", "mount-tailwind", ConformanceOperations.MountProvider, 0,
                             "mount Tailwind in Valley"),
-                        Row("spawn-runner-c", ConformanceOperations.SpawnFutureTarget, 0,
+                        Row("traversal", "spawn-runner-c", ConformanceOperations.SpawnFutureTarget, 0,
                             "spawn the course's own future runner under Valley/Runners"),
                     }),
 
@@ -391,7 +390,7 @@ namespace GameCore.ReferenceConformance
                                 ConformanceExpectation.Require(
                                     ConformanceFields.RunnerVelocity("runner-a"), "(1000,0,0)", "(1040,0,0)"),
                             }),
-                        Row("unmount-tailwind", ConformanceOperations.UnmountProvider, 0,
+                        Row("traversal", "unmount-tailwind", ConformanceOperations.UnmountProvider, 0,
                             "unmount the modifier while pose, velocity and progress survive"),
                     }),
 
@@ -424,7 +423,7 @@ namespace GameCore.ReferenceConformance
                                 ConformanceExpectation.Unchanged(
                                     ConformanceFields.RunnerAccelerationX("runner-a"), "2000"),
                             }),
-                        Row("reparent-runner-subtree", ConformanceOperations.ReparentMovedScope, 0,
+                        Row("traversal", "reparent-runner-subtree", ConformanceOperations.ReparentMovedScope, 0,
                             "reparent the runner subtree into Ridge"),
                         Pre("reparent-runner-subtree", 4, ConformanceOperations.CommitCommand, 1,
                             "one more 20 ms step under -1 m/s²: 1.04 -> 1.02 m/s",
@@ -464,9 +463,9 @@ namespace GameCore.ReferenceConformance
                                 ConformanceExpectation.Require(
                                     ConformanceFields.RunnerAccelerationX("runner-c"), ConformanceValue.None, "2000"),
                             }),
-                        Row("mode-conservative", ConformanceOperations.ModeConservative, 0,
+                        Row("traversal", "mode-conservative", ConformanceOperations.ModeConservative, 0,
                             "switch the world to Conservative"),
-                        Row("mode-automatic", ConformanceOperations.ModeAutomatic, 0,
+                        Row("traversal", "mode-automatic", ConformanceOperations.ModeAutomatic, 0,
                             "switch the world back to Automatic"),
                     }),
 
@@ -490,11 +489,11 @@ namespace GameCore.ReferenceConformance
                                 ConformanceExpectation.Require(
                                     ConformanceFields.RunnerAccelerationX("runner-c"), ConformanceValue.None, "2000"),
                             }),
-                        Row("exclude-runner-a", ConformanceOperations.ApplyExclusion, 0,
+                        Row("traversal", "exclude-runner-a", ConformanceOperations.ApplyExclusion, 0,
                             "exclude the acceleration capability on runner A"),
-                        Row("suspend-tailwind", ConformanceOperations.SuspendProvider, 0,
+                        Row("traversal", "suspend-tailwind", ConformanceOperations.SuspendProvider, 0,
                             "suspend the modifier"),
-                        Row("resume-tailwind", ConformanceOperations.ResumeProvider, 0,
+                        Row("traversal", "resume-tailwind", ConformanceOperations.ResumeProvider, 0,
                             "resume it and let it rederive"),
                     }),
             };
@@ -523,13 +522,13 @@ namespace GameCore.ReferenceConformance
                         // submitting that one choice. Its expectations are the table's own — the fact, its version,
                         // the conversation, the recognised event and the open obligation, all in one publication —
                         // so nothing here restates what the transcription already demands.
-                        Row("reward-enqueue", ConformanceOperations.CommitCommand, 1,
+                        Row("cross", "reward-enqueue", ConformanceOperations.CommitCommand, 1,
                             "commit the permit choice: the fact, its event and the pending reward publish together"),
-                        Row("reward-unmount-pending", ConformanceOperations.UnmountRewardBridge, 0,
+                        Row("cross", "reward-unmount-pending", ConformanceOperations.UnmountRewardBridge, 0,
                             "attempt to unmount the installation while one reward is still pending"),
-                        Row("reward-settle", ConformanceOperations.SettleReward, 0,
+                        Row("cross", "reward-settle", ConformanceOperations.SettleReward, 0,
                             "dispatch the admitted reward and acknowledge it"),
-                        Row("reward-drain-then-unmount", ConformanceOperations.SettleReward, 1,
+                        Row("cross", "reward-drain-then-unmount", ConformanceOperations.SettleReward, 1,
                             "drain the pending work, then unmount: the completed outbox is preserved dormant"),
                         // The alternative 07:276 names for a pending unmount: an explicitly selected compatible owner
                         // takes the outbox. A fresh obligation is admitted first, so the transfer has work to carry.
@@ -546,13 +545,13 @@ namespace GameCore.ReferenceConformance
                             {
                                 ConformanceExpectation.Require(ConformanceFields.OutboxPendingWork, "0", "1"),
                             }),
-                        Row("reward-unmount-transfer", ConformanceOperations.TransferRewardOutbox, 0,
+                        Row("cross", "reward-unmount-transfer", ConformanceOperations.TransferRewardOutbox, 0,
                             "transfer the outbox to the explicitly selected compatible owner"),
                         // 07:272's claim is asserted at the owner that now holds the carried obligation, so the
                         // destination is asked for the same reward a second time under the same external key.
-                        Row("reward-redelivery", ConformanceOperations.RedeliverReward, 0,
+                        Row("cross", "reward-redelivery", ConformanceOperations.RedeliverReward, 0,
                             "hand the carried obligation to the card table again: it applies exactly once"),
-                        Row("reward-scoring-unmount-keeps-card", ConformanceOperations.UnmountScoringProvider, 0,
+                        Row("cross", "reward-scoring-unmount-keeps-card", ConformanceOperations.UnmountScoringProvider, 0,
                             "unmount the scoring provider: the issued card and the score survive"),
                     }),
             };
@@ -582,34 +581,43 @@ namespace GameCore.ReferenceConformance
         }
 
         /// <summary>
-        /// A step that executes one transcribed 07 row: its expectations and its outcome come from the table itself,
-        /// so a row can never be asserted twice with two different sets of values. A row id the tables do not
-        /// declare is a fixture defect and throws rather than producing a step nothing checks (P-026, P-060).
+        /// A step that executes one transcribed 07 row: its expectations and its outcome come from the row its own
+        /// table declares, so a row can never be asserted twice with two different sets of values. Row ids are
+        /// unique per table, not across tables (`mode-conservative` is a row of three of them), so the script
+        /// resolves the id inside the table it is executing and a name that exists in another table is a fixture
+        /// defect that throws rather than a silently wrong expectation set (P-026, P-060).
         /// </summary>
-        private static ConformanceStep Row(string rowId, string operation, int operand, string note)
+        private static ConformanceStep Row(
+            string tableId, string rowId, string operation, int operand, string note)
         {
-            IReadOnlyList<ConformanceTable> tables = ReferenceTables.All();
-            for (int t = 0; t < tables.Count; t++)
+            ConformanceTable table = ReferenceTables.ById(tableId)
+                ?? throw new InvalidOperationException(
+                    "no transcribed table carries the id '" + tableId + "'; the script and the tables disagree.");
+            ConformanceRow row = FindRow(table, rowId);
+            return new ConformanceStep(
+                row.RowId,
+                ConformanceStepKind.Row,
+                operation,
+                operand,
+                note,
+                row.Expectations,
+                row.Outcome);
+        }
+
+        /// <summary>The row of this table with this id, or a fixture defect that throws (P-026, P-060).</summary>
+        private static ConformanceRow FindRow(ConformanceTable table, string rowId)
+        {
+            for (int r = 0; r < table.Rows.Count; r++)
             {
-                for (int r = 0; r < tables[t].Rows.Count; r++)
+                if (string.Equals(table.Rows[r].RowId, rowId, StringComparison.Ordinal))
                 {
-                    ConformanceRow row = tables[t].Rows[r];
-                    if (string.Equals(row.RowId, rowId, StringComparison.Ordinal))
-                    {
-                        return new ConformanceStep(
-                            rowId,
-                            ConformanceStepKind.Row,
-                            operation,
-                            operand,
-                            note,
-                            row.Expectations,
-                            row.Outcome);
-                    }
+                    return table.Rows[r];
                 }
             }
 
             throw new InvalidOperationException(
-                "no transcribed 07 row carries the id '" + rowId + "'; the script and the tables disagree.");
+                "the table '" + table.TableId + "' carries no 07 row '" + rowId
+                + "'; the script and the tables disagree.");
         }
 
         private static ConformanceStep Pre(

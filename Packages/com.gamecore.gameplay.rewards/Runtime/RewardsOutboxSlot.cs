@@ -105,7 +105,7 @@ namespace GameCore.Gameplay.Rewards
         {
             var ownership = new List<FieldOwnership>
             {
-                new FieldOwnership(RewardsKeys.OutboxSchema.Id, RewardsKeys.OutboxField.RegistrationKey),
+                new FieldOwnership(RewardsKeys.OutboxSchema, RewardsKeys.OutboxField.RegistrationKey),
             };
 
             return new StateSlotSpec(

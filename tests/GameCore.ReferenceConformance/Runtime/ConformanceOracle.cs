@@ -228,7 +228,9 @@ namespace GameCore.ReferenceConformance
                     verdict, table.TableId, row.RowId, row.Expectations, trace);
             }
 
-            return new ConformanceVerdict(table.TableId, rowsChecked, fieldsChecked);
+            var final = new ConformanceVerdict(table.TableId, rowsChecked, fieldsChecked);
+            final.Adopt(verdict.Failures);
+            return final;
         }
 
         /// <summary>

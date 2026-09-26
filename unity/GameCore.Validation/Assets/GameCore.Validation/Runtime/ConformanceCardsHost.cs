@@ -37,6 +37,7 @@ using GameCore.Planning;
 using GameCore.ReferenceConformance;
 using GameCore.Rules.Cards;
 using GameCore.Unity.Runtime;
+using GameCore.Unity.Runtime.Integration;
 using Unity.Entities;
 
 namespace GameCore.Validation.ProbeHost

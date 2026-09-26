@@ -225,9 +225,11 @@ namespace GameCore.ReferenceConformance
             Project(projections, "narrative", "mode-conservative", ConformanceFields.GateBinding("gate-east"), one);
 
             // 07:165 — "No admitted command and no registered WakeRequest means no new logical step": the fact a
-            // world has never committed reads its declared initial value.
-            Pre(projections, "narrative", "unmount-chapter", 2, ConformanceFields.BridgePermit, NarrativeFacts.False);
-
+            // world has never committed reads its declared initial value. The pre2 step's *before* column is that
+            // initial value; its own commit is the `unmount-chapter` row's projection above.
+            Project(
+                projections, "narrative", "unmount-chapter/pre2", ConformanceFields.BridgePermit,
+                NarrativeFacts.False, phase: ConformancePhase.Before);
             // 07:164 — the accepted choice the ledger records moves the conversation the dialogue rules' own table
             // describes: Idle -> Requested -> Active.
             Pre(projections, "narrative", "unmount-chapter", 2, ConformanceFields.MaraConversationStatus,
@@ -271,10 +273,12 @@ namespace GameCore.ReferenceConformance
                 projections, "traversal", "reparent-runner-subtree/pre4",
                 ConformanceFields.RunnerVelocity("runner-a"), VelocityAfterHeadwind());
 
-            // 07:242 — the unmount stage integrates two steps under +2 before the modifier leaves.
+            // 07:242 — the unmount stage integrates ONE step under +2 before the modifier leaves: the script's own
+            // precondition declares `1.00 -> 1.04` (07:247's first reading), and 07:242's "acquired speed during
+            // prior steps" is that one committed step's speed, not two.
             ProjectToken(
                 projections, "traversal", "unmount-tailwind/pre2",
-                ConformanceFields.RunnerVelocity("runner-a"), VelocityAfterTwoTailwindSteps());
+                ConformanceFields.RunnerVelocity("runner-a"), VelocityAfterTailwind());
 
             // 07:244 — "the automatically eligible runners lose it; neither is teleported or has velocity reset":
             // an automatically eligible runner holds no contribution in Conservative, and the modifier owns no pose
@@ -589,27 +593,6 @@ namespace GameCore.ReferenceConformance
                 TraversalVocabulary.StepMilliseconds,
                 out TraversalVector3i second);
             return headwind ? Token(second) : "<refused>";
-        }
-
-        /// <summary>The velocity two 20 ms steps under tailwind leave, from the fixture's seeded speed.</summary>
-        private static string VelocityAfterTwoTailwindSteps()
-        {
-            bool first = TraversalMotionRules.TryVelocityAfterStep(
-                new TraversalVector3i(SeededVelocity(), 0, 0),
-                new TraversalVector3i(TraversalVocabulary.TailwindMilli, 0, 0),
-                TraversalVocabulary.StepMilliseconds,
-                out TraversalVector3i stepOne);
-            if (!first)
-            {
-                return "<refused>";
-            }
-
-            bool second = TraversalMotionRules.TryVelocityAfterStep(
-                stepOne,
-                new TraversalVector3i(TraversalVocabulary.TailwindMilli, 0, 0),
-                TraversalVocabulary.StepMilliseconds,
-                out TraversalVector3i stepTwo);
-            return second ? Token(stepTwo) : "<refused>";
         }
 
         private static string Integrate(int velocityMilli, int accelerationMilli)

@@ -166,6 +166,9 @@ namespace GameCore.ReferenceConformance.Tests
                 ConformanceOperations.UnmountRewardBridge,
                 ConformanceOperations.SettleReward,
                 ConformanceOperations.RedeliverReward,
+                ConformanceOperations.MountScoringProvider,
+                ConformanceOperations.TransferRewardOutbox,
+                ConformanceOperations.UnmountScoringProvider,
             };
 
             for (int s = 0; s < scripts.Count; s++)
@@ -367,7 +370,9 @@ namespace GameCore.ReferenceConformance.Tests
             for (int r = 0; r < table.Rows.Count; r++)
             {
                 ConformanceRow current = table.Rows[r];
-                outcomes.Add(new ConformanceOracle.RowOutcomeReport(current.RowId, true, string.Empty));
+                outcomes.Add(new ConformanceOracle.RowOutcomeReport(current.RowId,
+                    current.Outcome == ConformanceRowOutcome.Published,
+                    current.Outcome == ConformanceRowOutcome.Published ? string.Empty : "CapabilityConflict"));
                 for (int e = 0; e < current.Expectations.Count; e++)
                 {
                     ConformanceExpectation expectation = current.Expectations[e];

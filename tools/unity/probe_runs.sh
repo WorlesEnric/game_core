@@ -47,6 +47,13 @@ probe_run_once() {
   fi
 
   local rc=0
+  local waited=0
+  while pgrep -f "gc-wt/gc-026/.*GameCoreProbe|gc-wt/gc-026/.*Unity " >/dev/null; do
+    echo "GC-024 host sharing: waiting 60s before ${mode_label}" | tee -a "${ARTIFACTS}/host-sharing.log"
+    sleep 60
+    waited=$((waited + 60))
+  done
+  echo "GC-024 host sharing: waited ${waited}s before ${mode_label}" | tee -a "${ARTIFACTS}/host-sharing.log"
   rm -f "${result_file}"
 
   # -batchmode -nographics keep the player headless. -quit is deliberately NOT passed: the probe exits itself

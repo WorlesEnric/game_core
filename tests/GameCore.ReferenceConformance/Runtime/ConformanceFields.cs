@@ -285,7 +285,12 @@ namespace GameCore.ReferenceConformance
         /// <summary>The installation supporting the opted-in seat's row, so a provider change stays observable.</summary>
         public const string OptedInSeatBonusProvider = "cards.opted-in-seat.bonus-provider";
 
-        /// <summary>The opted-in seat's projection, so its retained contribution is observed as a real award.</summary>
+        /// <summary>
+        /// The score the opted-in seat's next valid set would award: the base score plus the contribution its
+        /// complete opt-in retains, which is 07:104's "only the opted-in seat participates" observed as a real
+        /// award rather than a surviving row (07 s2.3, P-013).
+        /// </summary>
+        public const string OptedInSeatNextAward = "cards.opted-in-seat.next-award";
 
         /// <summary>Every field the card market's table observes, in canonical order.</summary>
         public static IReadOnlyList<ConformanceField> Cards()
@@ -298,7 +303,9 @@ namespace GameCore.ReferenceConformance
                 Derived(SeatBonus(3U), Seat(3U), "bonus"),
                 Derived(PracticeSeatBonus, "practice-seat", "bonus"),
                 Derived(ScoreboardBonus, "scoreboard", "bonus"),
+                Provider(SeatBonusProvider(0U), Seat(0U), "bonus-provider"),
                 Provider(SeatBonusProvider(1U), Seat(1U), "bonus-provider"),
+                Provider(SeatBonusProvider(3U), Seat(3U), "bonus-provider"),
                 Derived(OptedInSeatBonus, "cards.opted-in-seat", "bonus"),
                 Provider(OptedInSeatBonusProvider, "cards.opted-in-seat", "bonus-provider"),
                 Owned(SeatTotal(0U), Seat(0U), "total"),
@@ -312,8 +319,11 @@ namespace GameCore.ReferenceConformance
                     "the base set score plus the seat's effective bonus (07 s2.3)"),
                 Projection(SeatNextAward(1U), Seat(1U), "next-award",
                     "the base set score plus the seat's effective bonus (07 s2.3)"),
+                Projection(SeatNextAward(3U), Seat(3U), "next-award",
+                    "the base set score plus the seat's effective bonus (07 s2.3)"),
                 Owned(TableActiveSeat, "table-1", "active-seat"),
                 Owned(TableTurn, "table-1", "turn"),
+                Owned(TableVersion, "table-1", "version"),
                 Projection(OptedInSeatNextAward, "cards.opted-in-seat", "next-award",
                     "the base set score plus the opted-in seat's effective bonus (07 s2.3, P-013)"),
                 World(WorldMode, "world", "mode"),
@@ -357,6 +367,10 @@ namespace GameCore.ReferenceConformance
                 fields.Add(Provider(RunnerAccelerationProvider(runners[i]), runners[i], "acceleration-provider"));
             }
 
+            // 07:240's ineligible checkpoint volume: a subject of the table's own, read as the observed absence it
+            // is rather than omitted from the vocabulary the run must answer for (P-015, P-026).
+            fields.Add(Derived(RunnerAccelerationX("checkpoint-1"), "checkpoint-1", "acceleration.x"));
+
             fields.Add(Owned(RunnerPose("runner-a"), "runner-a", "pose"));
             fields.Add(Owned(RunnerVelocity("runner-a"), "runner-a", "velocity"));
             fields.Add(Owned(RunnerJump("runner-a"), "runner-a", "jump"));
@@ -381,6 +395,7 @@ namespace GameCore.ReferenceConformance
                 Outbox(OutboxAcknowledged, "outbox", "acknowledged"),
                 Outbox(OutboxAlreadyApplied, "outbox", "already-applied"),
                 Outbox(OutboxMutations, "outbox", "mutations"),
+                Derived(SeatBonus(0U), "card-tent", "seat-a.bonus"),
                 Owned(RewardRecipientHand, "card-tent", "seat-a.hand"),
                 Owned(RewardHolderHand, "card-tent", "seat-b.hand"),
                 Owned(RewardRecipientHandSize, "card-tent", "seat-a.hand-size"),

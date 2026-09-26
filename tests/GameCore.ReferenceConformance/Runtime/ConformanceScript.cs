@@ -211,6 +211,11 @@ namespace GameCore.ReferenceConformance
         /// <summary>P-024: publish one spawn of the family's declared future target, fully assembled.</summary>
         public const string SpawnFutureTarget = "spawn-future-target";
 
+        /// <summary>
+        /// P-015: seed the family's declared complete-opt-in target before the stage's first step. Its opt-in is
+        /// a descriptor property — immutable assembly input — so it cannot be published as a later edit.
+        /// </summary>
+        public const string SeedOptedInTarget = "seed-opted-in-target";
 
         /// <summary>
         /// 07 s5: mount the combined world's reward bridge provider, so its outbox obligations are the durable
