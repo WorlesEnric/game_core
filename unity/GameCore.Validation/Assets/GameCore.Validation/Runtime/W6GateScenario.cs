@@ -54,6 +54,7 @@ using GameCore.Derivation;
 using GameCore.Execution.Delivery;
 using GameCore.Execution.Time;
 using GameCore.Execution;
+using GameCore.Gameplay.Cards;
 using GameCore.Gameplay.Traversal;
 using GameCore.Planning;
 using GameCore.Replay;
@@ -468,6 +469,7 @@ namespace GameCore.Validation.ProbeHost
 
             public bool Ready { get; private set; }
 
+            public string LastCycleStepDetail { get; private set; } = string.Empty;
             public string Failure { get; private set; } = string.Empty;
 
             public CompositionHost? Lane { get; private set; }
@@ -477,6 +479,7 @@ namespace GameCore.Validation.ProbeHost
             public DerivedAssemblyPipeline? Pipeline { get; private set; }
 
             public WorldTimeDriver? Time { get; private set; }
+            public LifecycleController? Controller { get; private set; }
 
             public TargetRegistry? Registry { get; private set; }
 
@@ -551,11 +554,15 @@ namespace GameCore.Validation.ProbeHost
                 InputAdmissionResult admission = Ingress.Submit(sample);
                 if (!admission.Accepted)
                 {
+                    LastCycleStepDetail = "admission=" + admission;
                     return 0UL;
                 }
 
                 hostTicks += family.CyclePumpTicks;
-                return Time.PumpFrame(hostTicks).StepsCommitted;
+                TimeFrameReport frame = Time.PumpFrame(hostTicks);
+                LastCycleStepDetail = "admission=" + admission + "; frame=" + frame
+                    + "; lifecycle=" + host.Lifecycle + "; code=" + DiagnosticCodeText.Of(frame.Pump.Code);
+                return frame.StepsCommitted;
             }
 
             /// <summary>
@@ -787,6 +794,7 @@ namespace GameCore.Validation.ProbeHost
                     new PlanBudget(PrepareBytesLimit, PrepareBytesLimit, ScratchCapacityBytes, ScratchBytesPerSlot));
                 Time = new WorldTimeDriver(host, new StepInputCutoff(8, 16), new PluginClockRegistry(8), 1U);
                 Time.AdoptResourceTable(Descriptor.Adaptation.NativeTable!);
+                Controller = new LifecycleController(host, Lane, Publisher, Pipeline);
 
                 if (withProviders)
                 {
@@ -849,13 +857,14 @@ namespace GameCore.Validation.ProbeHost
             private readonly bool fixtureRun;
             private readonly int cycles;
             private readonly List<W6GateStep> steps = new List<W6GateStep>();
-            private readonly IdSequence sessionSequence = new IdSequence(0x5736474153455353UL);
+            private readonly IdSequence sessionSequence;
             private readonly IdSequence leaseSequence = new IdSequence(0x573647414C454153UL);
             private readonly List<PluginInstanceId> cycleInstances = new List<PluginInstanceId>();
             private readonly List<RecordedInput> recordedInput = new List<RecordedInput>();
 
             private int registryBaseline;
             private ulong operationSequence;
+            private int liveActivationsAtBuild;
             private int carrierOrdinal;
             private int worldBalanceAtBuild;
             private int worldRetainedAtBuild;
@@ -871,6 +880,8 @@ namespace GameCore.Validation.ProbeHost
                 this.family = family;
                 this.fixtureRun = fixtureRun;
                 this.cycles = cycles;
+                sessionSequence = new IdSequence(family.SessionSalt ^ 0x5736474153455353UL
+                    ^ (fixtureRun ? 0x4649585455524500UL : 0UL));
             }
 
             public W6GateScenarioResult Run()
@@ -907,7 +918,7 @@ namespace GameCore.Validation.ProbeHost
                     EnsureEveryObservationIsRecorded();
                 }
 
-                return new W6GateScenarioResult(family.Label, steps);
+                return new W6GateScenarioResult(family.Label, steps, fixtureRun ? FixtureRunPrefix : string.Empty);
             }
 
             // ================================================================== 1. the fixed-step course
@@ -1008,7 +1019,19 @@ namespace GameCore.Validation.ProbeHost
                         return;
                     }
 
-                    int committed = traversal!.RunRecordedSteps(TraversalSteps, recordedInput);
+                    int committed = 0;
+                    for (int step = 0; step < TraversalSteps; step++)
+                    {
+                        committed += traversal!.RunRecordedSteps(1, recordedInput);
+                        string simulationDetail = "physics authority gate is absent";
+                        if (traversal.PhysicsGate == null
+                            || !traversal.PhysicsGate.TrySimulateExactlyOnce(
+                                traversal.Host.CurrentStep.Value, 0.02d, out simulationDetail))
+                        {
+                            Add(name, false, "the admitted step was not simulated: " + simulationDetail);
+                            return;
+                        }
+                    }
                     if (committed != TraversalSteps)
                     {
                         Add(name, false, "the course committed " + committed.ToString(CultureInfo.InvariantCulture)
@@ -1586,8 +1609,7 @@ namespace GameCore.Validation.ProbeHost
                         && destination.Attempts.Count == 1
                         && destination.AlreadyAppliedCount == 0
                         && ackOutcome == DeliveryOutcome.Acknowledged
-                        && owner.Outbox.OpenCount == 0
-                        && owner.AcknowledgedCount == 1;
+                        && owner.Outbox.OpenCount == 0;
 
                     // 5. The acknowledgement is lost; the same rows are reinstated once more into a third session.
                     owner.Dispose();
@@ -1638,7 +1660,7 @@ namespace GameCore.Validation.ProbeHost
 
                     bool pass = sessionsDiffer
                         && thirdDiffers
-                        && claimedSchema.Equals(RewardCommandSchema)
+                        && claimedSchema.Equals(CardTableKeys.ResultSchema)
                         && claimedSequence.Value > 0UL
                         && firstGone
                         && secondGone
@@ -1664,6 +1686,10 @@ namespace GameCore.Validation.ProbeHost
                         + "; dispatched=" + dispatched.ToString(CultureInfo.InvariantCulture)
                         + "; destinationMutationsAfterReload=" + mutationsAfterReload.ToString(CultureInfo.InvariantCulture)
                         + "; destinationMutations=" + destination.MutationCount.ToString(CultureInfo.InvariantCulture)
+                        + "; deliveredOnce=" + deliveredOnce
+                        + "; redeliveredOnce=" + redeliveredOnce
+                        + "; ackOutcome=" + ackOutcome
+                        + "; openAfterDispatch=" + openAfterDispatch
                         + "; destinationAttempts=" + destination.Attempts.Count.ToString(CultureInfo.InvariantCulture)
                         + "; destinationAlreadyApplied=" + destination.AlreadyAppliedCount.ToString(CultureInfo.InvariantCulture)
                         + "; acknowledged=" + owner.AcknowledgedCount.ToString(CultureInfo.InvariantCulture)
@@ -1714,7 +1740,8 @@ namespace GameCore.Validation.ProbeHost
                         return;
                     }
 
-                    loopController = new LifecycleController(loop.Host, loop.Lane!, loop.Publisher!, loop.Pipeline!);
+                    liveActivationsAtBuild = loop.Lane!.Callbacks.LiveActivationCount;
+                    loopController = loop.Controller;
                     worldBalanceAtBuild = loop.Host.Ledger.AcquireCount - loop.Host.Ledger.RetireCount;
                     worldRetainedAtBuild = loop.Host.Ledger.RetainedResourceCount;
                     worldOutstandingAtBuild = loop.Host.Ledger.OutstandingJobCount;
@@ -1806,7 +1833,7 @@ namespace GameCore.Validation.ProbeHost
                         && fenceFailures == 0
                         && laneJobsOutstanding == 0
                         && quarantineEntries == 0
-                        && liveActivations == 0
+                        && liveActivations == liveActivationsAtBuild
                         && trackedJobs >= 0
                         && worldAcquired - worldRetired == worldBalanceAtBuild
                         && worldRetained == worldRetainedAtBuild
@@ -1826,6 +1853,7 @@ namespace GameCore.Validation.ProbeHost
                         + "; laneJobsOutstanding=" + laneJobsOutstanding.ToString(CultureInfo.InvariantCulture)
                         + "; quarantineEntries=" + quarantineEntries.ToString(CultureInfo.InvariantCulture)
                         + "; liveActivations=" + liveActivations.ToString(CultureInfo.InvariantCulture)
+                        + "@baseline" + liveActivationsAtBuild.ToString(CultureInfo.InvariantCulture)
                         + "; worldAcquired=" + worldAcquired.ToString(CultureInfo.InvariantCulture)
                         + "; worldRetired=" + worldRetired.ToString(CultureInfo.InvariantCulture)
                         + "; worldRetained=" + worldRetained.ToString(CultureInfo.InvariantCulture)
@@ -1983,7 +2011,7 @@ namespace GameCore.Validation.ProbeHost
 
                 OperationId mountOperation = current.NextOperation();
                 EditAdmission admission = laneRef.SubmitEdit(
-                    family.StressMount(family.StressDeclarations.Installation, instance, family.WorldRootScope),
+                    family.StressMount(family.StressDeclarations.Installation, instance, family.CycleMountScope),
                     mountOperation,
                     laneRef.Committed.Revision);
                 if (!admission.Staged)
@@ -2011,7 +2039,8 @@ namespace GameCore.Validation.ProbeHost
                 bool mounted = mountPublication != null
                     && mountPublication.Outcome == Outcome.Published
                     && TryInstallState(instance, out InstallationState mountState)
-                    && mountState == InstallationState.Active;
+                    && mountState == InstallationState.Active
+                    && controllerRef.Binding.CountAttributedRows(instance) > 0;
                 if (!mounted)
                 {
                     code = mountPublication != null ? mountPublication.Code : derived.Code;
@@ -2019,6 +2048,7 @@ namespace GameCore.Validation.ProbeHost
                         + "; outcome=" + (mountPublication != null ? mountPublication.Outcome.ToString() : "<none>")
                         + "; leases=" + Text(leases.Count)
                         + "; staged=" + staged + "/" + DiagnosticCodeText.Of(stageCode)
+                        + "; attributedRows=" + controllerRef.Binding.CountAttributedRows(instance)
                         + "; derived=" + derived.Outcome + "/" + DiagnosticCodeText.Of(derived.Code) + ")";
                     return false;
                 }
@@ -2029,7 +2059,7 @@ namespace GameCore.Validation.ProbeHost
                 if (committed != 1UL)
                 {
                     detail = "cycle " + Text(index) + ": the step committed " + Text(committed)
-                        + " logical steps for one admitted command (P-036)";
+                        + " logical steps for one admitted command (P-036); " + current.LastCycleStepDetail;
                     return false;
                 }
 

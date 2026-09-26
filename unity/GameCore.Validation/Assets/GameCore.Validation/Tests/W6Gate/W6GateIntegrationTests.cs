@@ -58,10 +58,14 @@ namespace GameCore.W6Gate.Tests
 
         private W6GateScenarioResult traversal = null!;
 
+        private int registryBaseline;
+
         [OneTimeSetUp]
         [Timeout(RunTimeout)]
         public void RunEveryFamilyOverEveryCatalogItOwns()
         {
+            registryBaseline = UnityWorldRegistry.Count;
+
             narrativeCombined = Gc013NarrativeHost.RunBothW6Gate(out narrativeGenerated, out narrativeFixture);
             cardsCombined = Gc013CardsHost.RunBothW6Gate(out cardsGenerated, out cardsFixture);
             traversalSteps = Gc020TraversalHost.RunBothW6Gate(out traversal, out W6GateScenarioResult traversalFixture);
@@ -69,16 +73,21 @@ namespace GameCore.W6Gate.Tests
                 "this revision has no committed generated traversal catalog, so both out-parameters are the one run");
         }
 
+
         [TearDown]
         [Timeout(AssertTimeout)]
         public void TearDown()
         {
-            // The gate disposes every world it builds, so the process-wide registry is back at its baseline by the time
-            // a test runs. ResetAll afterwards keeps a failing run from poisoning the next fixture.
+            // Every gate-owned world is gone; the PlayMode bootstrap world remains owned by the application.
             int registered = UnityWorldRegistry.Count;
-            UnityWorldRegistry.ResetAll();
-            Assert.That(registered, Is.EqualTo(0),
-                "the Wave 6 gate left a world registered: its teardown is part of the 1,000-cycle claim (P-048)");
+            var remaining = new List<string>();
+            foreach (UnityWorldHost host in UnityWorldRegistry.Hosts)
+            {
+                remaining.Add(host.World + ":" + host.Lifecycle);
+            }
+            Assert.That(registered, Is.EqualTo(registryBaseline),
+                "the Wave 6 gate changed the registered worlds: " + string.Join(",", remaining)
+                + "; its teardown is part of the 1,000-cycle claim (P-048)");
         }
 
         // ------------------------------------------------------------------ the narrative slice
@@ -284,10 +293,12 @@ namespace GameCore.W6Gate.Tests
             int expected = string.Equals(label, Gc020TraversalHost.Label, StringComparison.Ordinal) ? 1 : 2;
 
             string qualified = label + "/" + bareName;
+            string fixtureQualified = FixturePrefix + qualified;
             var found = new List<W6GateStep>();
             for (int i = 0; i < steps.Count; i++)
             {
-                if (string.Equals(steps[i].Name, qualified, StringComparison.Ordinal))
+                if (string.Equals(steps[i].Name, qualified, StringComparison.Ordinal)
+                    || (expected == 2 && string.Equals(steps[i].Name, fixtureQualified, StringComparison.Ordinal)))
                 {
                     found.Add(steps[i]);
                 }

@@ -109,6 +109,7 @@ namespace GameCore.Validation.ProbeHost
             /// </summary>
             PluginInstanceId IW6Family.StressInstance(ulong ordinal) =>
                 TraversalKeys.Instance("w6gate.cycle-instance." + ordinal.ToString(System.Globalization.CultureInfo.InvariantCulture));
+            ScopeId IW6Family.CycleMountScope => ProviderScope;
 
             CompositionEditPayload IW6Family.StressMount(
                 PluginManifest manifest,

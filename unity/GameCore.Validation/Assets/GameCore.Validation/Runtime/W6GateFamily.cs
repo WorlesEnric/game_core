@@ -64,7 +64,7 @@ namespace GameCore.Validation.ProbeHost
     /// </summary>
     public sealed class W6GateScenarioResult
     {
-        public W6GateScenarioResult(string label, IReadOnlyList<W6GateStep> steps)
+        public W6GateScenarioResult(string label, IReadOnlyList<W6GateStep> steps, string digestPrefix = "")
         {
             Label = label;
             Steps = steps;
@@ -72,7 +72,7 @@ namespace GameCore.Validation.ProbeHost
             bool allPassed = steps.Count > 0;
             for (int i = 0; i < steps.Count; i++)
             {
-                lines.Add(steps[i].Name + "=" + (steps[i].Passed ? "pass" : "fail"));
+                lines.Add(digestPrefix + steps[i].Name + "=" + (steps[i].Passed ? "pass" : "fail"));
                 allPassed &= steps[i].Passed;
             }
 
@@ -170,6 +170,9 @@ namespace GameCore.Validation.ProbeHost
         /// cycle's identity (P-004, P-005).
         /// </summary>
         PluginInstanceId StressInstance(ulong ordinal);
+        /// <summary>The genre's scope for a cycle modifier that reaches its live command target.</summary>
+        ScopeId CycleMountScope { get; }
+
 
         /// <summary>The genre's own O-03 mount payload for one manifest at one scope (P-020).</summary>
         CompositionEditPayload StressMount(PluginManifest manifest, PluginInstanceId instance, ScopeId scope);

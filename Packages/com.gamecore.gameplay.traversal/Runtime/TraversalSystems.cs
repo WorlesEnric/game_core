@@ -974,6 +974,16 @@ namespace GameCore.Gameplay.Traversal
                     continue;
                 }
 
+                if (!plane.Commit(
+                        message,
+                        TraversalKeys.CommandSchema,
+                        new FrozenPayload(payload),
+                        plane.ExecutingStep,
+                        out string commitFailure))
+                {
+                    throw new InvalidOperationException("the captured movement request could not commit: " + commitFailure);
+                }
+
                 entityManager.SetComponentData(runner, new TraversalMovementInput
                 {
                     HorizontalMilli = decoded.HorizontalMilli,

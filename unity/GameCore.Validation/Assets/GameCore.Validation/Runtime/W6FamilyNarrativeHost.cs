@@ -130,6 +130,7 @@ namespace GameCore.Validation.ProbeHost
             LifecycleStressDeclarations IW6Family.StressDeclarations => StressDeclarations;
 
             PluginInstanceId IW6Family.StressInstance(ulong ordinal) => StressInstance(ordinal);
+            ScopeId IW6Family.CycleMountScope => WorldRootScope;
 
             CompositionEditPayload IW6Family.StressMount(
                 PluginManifest manifest,

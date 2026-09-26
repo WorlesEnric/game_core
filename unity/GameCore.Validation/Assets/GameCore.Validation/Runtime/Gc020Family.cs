@@ -161,6 +161,8 @@ namespace GameCore.Validation.ProbeHost
     /// </summary>
     public sealed class Gc020StageRuntime : IDisposable
     {
+        private static int nextPhysicsScene;
+
         private Gc020StageRuntime(
             string kind,
             TraversalModule module,
@@ -277,7 +279,9 @@ namespace GameCore.Validation.ProbeHost
             PhysicsAuthorityGate? gate = null;
             if (installPhysics)
             {
-                physics = new UnityPhysicsSceneBackend("GameCoreTraversalCourseScene", 16, true);
+                physics = new UnityPhysicsSceneBackend(
+                    "GameCoreTraversalCourseScene-" + System.Threading.Interlocked.Increment(ref nextPhysicsScene).ToString(
+                        System.Globalization.CultureInfo.InvariantCulture), 16, true);
                 gate = new PhysicsAuthorityGate(physics);
             }
 
