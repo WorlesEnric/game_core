@@ -64,6 +64,110 @@ namespace GameCore.Composition.Tests
             return candidate!;
         }
 
+        /// <summary>
+        /// P-012: an existing Active provider fails unexpectedly. The live activation loses authority and can never
+        /// be kept active, and the ledger records why. This is the ledger's half of the requirement; the world's
+        /// publication of the deactivation (or its fault) is what the host-level fixtures prove.
+        /// </summary>
+        [Test]
+        public void AnUnexpectedFailureOfALiveActivationIsPermittedAndRecordsItsReason()
+        {
+            Rig rig = new Rig(0x61637461UL);
+            PluginInstanceId provider = rig.ActivateNew();
+            ActivationEpoch before = Current(rig.Ledger, provider).ActivationEpoch;
+
+            LifecycleTransition transition = rig.Ledger.FailActive(
+                provider, DiagnosticCode.ProviderFailed, "the provider's live stage threw (P-012)", out ActivationAttempt? failed);
+
+            Assert.That(transition.Allowed, Is.True, transition.ToString());
+            Assert.That(transition.From, Is.EqualTo(InstallationState.Active), "an existing provider fails from Active");
+            Assert.That(transition.To, Is.EqualTo(InstallationState.Failed));
+            Assert.That(failed, Is.Not.Null);
+
+            ActivationAttempt current = Current(rig.Ledger, provider);
+            Assert.That(current.State, Is.EqualTo(InstallationState.Failed));
+            Assert.That(current.HoldsAuthority, Is.False, "a failed activation holds no execution authority (P-012, P-046)");
+            Assert.That(current.ActivationEpoch, Is.EqualTo(before),
+                "the failure does not fabricate a new activation epoch; it removes the one that existed");
+            Assert.That(current.Generation, Is.EqualTo(rig.Generation),
+                "the installation keeps its identity and generation, so an explicit retry stays possible (P-005)");
+            Assert.That(rig.Ledger.ActiveFailureCount, Is.EqualTo(1));
+            Assert.That(rig.Ledger.LastFailureCode, Is.EqualTo(DiagnosticCode.ProviderFailed));
+            Assert.That(rig.Ledger.LastFailureDetail, Does.Contain("live stage"));
+        }
+
+        /// <summary>
+        /// The failure is one fact: a second report of the same unexpected failure is a permitted no-op, not a
+        /// second edge and not a second count. A caller that hears the same failure twice must not inflate the
+        /// ledger's evidence (P-050's idempotency discipline applied to an internal transition).
+        /// </summary>
+        [Test]
+        public void ReportingTheSameLiveFailureTwiceIsIdempotent()
+        {
+            Rig rig = new Rig(0x61637462UL);
+            PluginInstanceId provider = rig.ActivateNew();
+
+            rig.Ledger.FailActive(provider, DiagnosticCode.ProviderFailed, "first report", out ActivationAttempt? first);
+            LifecycleTransition second = rig.Ledger.FailActive(provider, DiagnosticCode.ApplyFault, "second report", out ActivationAttempt? again);
+
+            Assert.That(first, Is.Not.Null);
+            Assert.That(second.Allowed, Is.True, "a repeated report is accepted as a no-op rather than refused");
+            Assert.That(again, Is.Not.Null);
+            Assert.That(again!.State, Is.EqualTo(InstallationState.Failed));
+            Assert.That(rig.Ledger.ActiveFailureCount, Is.EqualTo(1), "the count is one fact, not two");
+            Assert.That(rig.Ledger.LastFailureCode, Is.EqualTo(DiagnosticCode.ProviderFailed),
+                "the first recorded cause stays the cause");
+            Assert.That(rig.Ledger.LastFailureDetail, Is.EqualTo("first report"));
+        }
+
+        /// <summary>
+        /// The new edge is exactly one edge: an installation that is not Active cannot take it, so the deliberate
+        /// teardown paths are untouched and an unmounted or already-suspended installation is refused rather than
+        /// silently marked failed.
+        /// </summary>
+        [Test]
+        public void OnlyALiveActivationCanFailUnexpectedly()
+        {
+            Rig rig = new Rig(0x61637463UL);
+
+            // Never mounted: no live activation at all.
+            PluginInstanceId absent = rig.Ids.Instance();
+            LifecycleTransition none = rig.Ledger.FailActive(absent, DiagnosticCode.ProviderFailed, "no activation", out ActivationAttempt? noAttempt);
+            Assert.That(none.Allowed, Is.False);
+            Assert.That(noAttempt, Is.Null);
+            Assert.That(rig.Ledger.ActiveFailureCount, Is.EqualTo(0), "a refusal counts nothing as a failure");
+            Assert.That(rig.Ledger.RefusedTransitionCount, Is.EqualTo(1));
+
+            // A suspended activation has no live authority to lose.
+            PluginInstanceId provider = rig.ActivateNew();
+            Assert.That(rig.Ledger.Suspend(provider).Allowed, Is.True);
+            LifecycleTransition suspended = rig.Ledger.FailActive(provider, DiagnosticCode.ProviderFailed, "suspended", out ActivationAttempt? suspendedAttempt);
+            Assert.That(suspended.Allowed, Is.False);
+            Assert.That(suspendedAttempt, Is.Null);
+            Assert.That(Current(rig.Ledger, provider).State, Is.EqualTo(InstallationState.Suspended),
+                "a refused edge leaves the stored state alone (P-051)");
+        }
+
+        /// <summary>
+        /// The lawful exits from the new state are the diagram's: `Failed -> Preparing` (an explicit retry with a
+        /// new operation) and `Failed -> Retiring` (an unmount). Nothing reaches Active directly from Failed, so a
+        /// failed provider can never quietly return to authority (P-012, P-046).
+        /// </summary>
+        [Test]
+        public void AFailedActivationCanOnlyRetryOrRetire()
+        {
+            Rig rig = new Rig(0x61637464UL);
+            PluginInstanceId provider = rig.ActivateNew();
+            rig.Ledger.FailActive(provider, DiagnosticCode.ProviderFailed, "provider failure", out ActivationAttempt? _);
+
+            Assert.That(InstallationStateMachine.IsAllowed(InstallationState.Failed, InstallationState.Preparing), Is.True);
+            Assert.That(InstallationStateMachine.IsAllowed(InstallationState.Failed, InstallationState.Retiring), Is.True);
+            Assert.That(InstallationStateMachine.IsAllowed(InstallationState.Failed, InstallationState.Active), Is.False,
+                "there is no shortcut back to authority");
+            Assert.That(InstallationStateMachine.CanResolveActivation(InstallationState.Failed), Is.False,
+                "a failed installation exposes no bindings, which is what deactivates its dependents (P-012)");
+        }
+
         [Test]
         public void FirstActivationIsPermittedAndALiveDuplicateIdentityIsRefused()
         {

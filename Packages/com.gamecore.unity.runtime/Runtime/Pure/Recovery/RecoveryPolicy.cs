@@ -327,6 +327,9 @@ namespace GameCore.Execution.Recovery
                 case DiagnosticCode.ResultExpired:
                 case DiagnosticCode.ApplyFault:
                 case DiagnosticCode.TeardownBlocked:
+                // P-012: an unexpected provider failure ends the world incarnation, so no attempt of this operation
+                // can be repeated in place; recovery is a checkpoint restore into a new session (P-049).
+                case DiagnosticCode.ProviderFailed:
                     return RetryClassification.NotRetryable;
 
                 default:

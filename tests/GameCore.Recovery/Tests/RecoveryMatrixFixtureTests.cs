@@ -235,8 +235,8 @@ namespace GameCore.Recovery.Fixtures.Tests
             }
 
             Assert.That(latchNames.Count, Is.EqualTo(5), "the four latch points cover five reaches in total.");
-            Assert.That(RecoveryFixtureVocabulary.LatchBoundaryNames.Count, Is.EqualTo(13),
-                "`FaultBoundaryText.Names` declares thirteen boundaries, in `FaultBoundary`'s order.");
+            Assert.That(RecoveryFixtureVocabulary.LatchBoundaryNames.Count, Is.EqualTo(14),
+                "`FaultBoundaryText.Names` declares fourteen boundaries, in `FaultBoundary`'s order.");
             Assert.That(RecoveryFixtureVocabulary.DeliveryBoundaryNames, Is.EqualTo(DeliveryBoundaries.All),
                 "the fixture delivery names must be `DeliveryBoundaries.All` exactly, in its order.");
             Assert.That(RecoveryFixtureVocabulary.StoreReadBoundaryNames.Count, Is.EqualTo(1));
@@ -248,7 +248,7 @@ namespace GameCore.Recovery.Fixtures.Tests
             Assert.That(RecoveryFixtureVocabulary.NamesFor("StoreRead"),
                 Is.EqualTo(RecoveryFixtureVocabulary.StoreReadBoundaryNames));
             Assert.That(RecoveryFixtureVocabulary.Union(RecoveryFixtureVocabulary.LatchBoundaryNames, new[] { "a", "b" }).Count,
-                Is.EqualTo(15), "a union concatenates in argument order, so a repeated name would show up as a count.");
+                Is.EqualTo(16), "a union concatenates in argument order, so a repeated name would show up as a count.");
             Assert.Throws<ArgumentNullException>(() => RecoveryFixtureVocabulary.Union(null!));
         }
 

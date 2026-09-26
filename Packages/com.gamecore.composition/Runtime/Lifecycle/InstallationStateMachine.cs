@@ -51,11 +51,19 @@ namespace GameCore.Composition
     public static class InstallationStateMachine
     {
         /// <summary>
-        /// Legal edges, exactly the 17 transitions of the 06 s1 diagram. `Quiescing` is an internal transitional
-        /// state with the old committed assembly still visible, so a removal or suspension of an *active*
-        /// installation walks `Active -> Quiescing -> ...` rather than short-circuiting; `Retiring` follows an
-        /// already published removal, so its cleanup can no longer roll anything back. An active activation never
-        /// becomes `Failed` on its own: only a candidate activation that fails while preparing does (P-046).
+        /// Legal edges: the 17 transitions of the 06 s1 diagram plus the one P-012 adds. `Quiescing` is an internal
+        /// transitional state with the old committed assembly still visible, so a removal or suspension of an
+        /// *active* installation walks `Active -> Quiescing -> ...` rather than short-circuiting; `Retiring` follows
+        /// an already published removal, so its cleanup can no longer roll anything back.
+        ///
+        /// Two different failures reach `Failed`, and they are not interchangeable:
+        ///   * `Preparing -> Failed` — a candidate/replacement activation failed while preparing; the previously
+        ///     active activation is untouched (06 s1);
+        ///   * `Active -> Failed` — an *existing* provider failed unexpectedly, so it can no longer hold execution
+        ///     authority and can never be kept active. P-012 then requires the world to publish a safe
+        ///     dependency-closure deactivation without it, or to stop admission and fault if that publication
+        ///     cannot happen. `Failed` exposes no bindings (see <see cref="CanResolveActivation"/>), which is what
+        ///     makes the deactivation of its dependents the same publication's ordinary resolver outcome.
         /// </summary>
         public static bool IsAllowed(InstallationState from, InstallationState to)
         {
@@ -75,7 +83,9 @@ namespace GameCore.Composition
                 case InstallationState.Preparing:
                     return to == InstallationState.Active || to == InstallationState.Failed;
                 case InstallationState.Active:
-                    return to == InstallationState.Quiescing;
+                    // P-012: an unexpected failure of the live activation itself; a deliberate suspension or removal
+                    // still walks the Quiescing path so the old committed assembly stays visible until publication.
+                    return to == InstallationState.Quiescing || to == InstallationState.Failed;
                 case InstallationState.Quiescing:
                     // The prewrite abort reopens the old gates, which is the one path back to Active (06 s1).
                     return to == InstallationState.Active ||

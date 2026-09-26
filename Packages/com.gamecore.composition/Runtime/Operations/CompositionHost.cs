@@ -109,6 +109,68 @@ namespace GameCore.Composition
     }
 
     /// <summary>
+    /// What the kernel's P-012 provider-failure path did. It answers one question with two honest answers:
+    /// <see cref="Deactivated"/> means the safe dependency-closure deactivation published and the failed provider
+    /// no longer holds authority; anything else means it could not publish, and the world that owns the provider
+    /// must apply P-012's fail-stop half. <see cref="Code"/> names why when it did not.
+    /// </summary>
+    public sealed class ProviderFailureReport
+    {
+        public ProviderFailureReport(
+            PluginInstanceId instance,
+            OperationId operation,
+            bool deactivated,
+            SnapshotToken? token,
+            LifecycleCommitReport? lifecycle,
+            ServiceClosureDelta? closure,
+            DiagnosticCode code,
+            string detail)
+        {
+            Instance = instance;
+            Operation = operation;
+            Deactivated = deactivated;
+            Token = token;
+            Lifecycle = lifecycle;
+            Closure = closure;
+            Code = code;
+            Detail = detail ?? string.Empty;
+            WaitingConsumers = closure != null ? closure.WaitingConsumers : Array.Empty<PluginInstanceId>();
+        }
+
+        /// <summary>The installation whose unexpected failure started this path.</summary>
+        public PluginInstanceId Instance { get; }
+
+        public OperationId Operation { get; }
+
+        /// <summary>True only when the deactivation publication really happened (P-012, first half).</summary>
+        public bool Deactivated { get; }
+
+        /// <summary>Snapshot token of the deactivation publication; null when nothing published.</summary>
+        public SnapshotToken? Token { get; }
+
+        /// <summary>Lifecycle facts of the deactivation publication; null when nothing published.</summary>
+        public LifecycleCommitReport? Lifecycle { get; }
+
+        /// <summary>Service-closure delta: which consumers now wait because the provider left (P-012).</summary>
+        public ServiceClosureDelta? Closure { get; }
+
+        /// <summary>`None` when the deactivation published; otherwise the refusal that stopped it.</summary>
+        public DiagnosticCode Code { get; }
+
+        public string Detail { get; }
+
+        /// <summary>The failed provider's dependents that now wait for a valid provider (P-012).</summary>
+        public IReadOnlyList<PluginInstanceId> WaitingConsumers { get; }
+
+        public string Describe() =>
+            "providerFailure(" + Instance.ToString() + ", " + DiagnosticCodeText.Of(Code)
+            + ", deactivated=" + (Deactivated ? "True" : "False")
+            + ", waiting=" + WaitingConsumers.Count.ToString(CultureInfo.InvariantCulture) + ")";
+
+        public override string ToString() => Describe();
+    }
+
+    /// <summary>
     /// The composition host of one world. Implements the frozen `ICompositionHost` seam and adds the production
     /// surface the publication path and the tests need (typed submission, drain, cancellation, resources).
     /// </summary>
@@ -259,6 +321,119 @@ namespace GameCore.Composition
             FrozenPayload frozen = CompositionEditCodec.Encode(payload);
             return SubmitInternal(frozen, payload, operation, expectedRevision);
         }
+
+        /// <summary>
+        /// P-012, first half: an existing Active provider failed unexpectedly, so the kernel attempts the *safe
+        /// dependency-closure deactivation*. This submits one ordinary composition edit that marks the provider
+        /// <c>Failed</c> and, in the same publication, moves every consumer that required it to
+        /// <c>WaitingForDependencies</c> with its contribution retracted. The failed provider's authority is
+        /// therefore absent from the new revision and epoch, which is what "cannot be kept active" and "no invisible
+        /// partial success" mean here.
+        ///
+        /// The method reports what actually happened and never guesses: <see cref="ProviderFailureReport.Deactivated"/>
+        /// is true only when the lane admitted the edit, published it and the coordinator committed the edge. A
+        /// refusal (a failed validator, a conflict, a budget, an exhausted epoch, a stale revision) leaves the old
+        /// assembly visible and reports the refusal code, and it is the caller - the world that owns the provider -
+        /// that must then apply P-012's second half: stop admission and fault. There is no timeout, no retry and no
+        /// silent partial publication on this path.
+        ///
+        /// The elapsed-time-free shape is deliberate: the deactivation is an ordinary validated publication, so it
+        /// obeys the same P-027..P-031 rules as every other edit rather than a second mechanism.
+        /// </summary>
+        public ProviderFailureReport FailActiveProvider(
+            PluginInstanceId instance,
+            OperationId operation,
+            DiagnosticCode code,
+            string detail)
+        {
+            if (instance.IsDefault)
+            {
+                throw new ArgumentException("A provider failure names a real installation identity (P-004).", nameof(instance));
+            }
+
+            var payload = new CompositionEditPayload(
+                CompositionEditSubject.InstallProviderFailure,
+                default(ScopeId),
+                default(ScopeId),
+                false,
+                null,
+                null,
+                null,
+                null,
+                default(PluginTypeId),
+                instance,
+                default(DefinitionRevision),
+                ContentHash.Empty,
+                null,
+                0,
+                null,
+                PropagationMode.Automatic);
+
+            EditAdmission admission = SubmitEdit(payload, operation, committed.Revision);
+            if (admission.Kind != AdmissionKind.Fresh || admission.Code != DiagnosticCode.None || admission.Plan == null)
+            {
+                DiagnosticCode refusal = admission.Code != DiagnosticCode.None
+                    ? admission.Code
+                    : (admission.Kind == AdmissionKind.Retransmission
+                        ? DiagnosticCode.IdempotencyConflict
+                        : DiagnosticCode.UnsupportedVersion);
+                return new ProviderFailureReport(instance, operation, false, null, null, null, refusal,
+                    "the composition lane refused the deactivation publication (" + admission.Kind + "), so the "
+                    + "failed provider still holds its place in the committed assembly; the world must stop "
+                    + "admission and fault (P-012). Reported cause: " + DiagnosticCodeText.Of(code) + ": " + detail);
+            }
+
+            IReadOnlyList<PublishedOperation> published = Drain();
+            for (int i = 0; i < published.Count; i++)
+            {
+                if (!published[i].Operation.Equals(operation))
+                {
+                    continue;
+                }
+
+                LifecycleCommitReport? lifecycle = published[i].Lifecycle;
+                return new ProviderFailureReport(
+                    instance,
+                    operation,
+                    true,
+                    published[i].Token,
+                    lifecycle,
+                    BindingDeltaOf(lifecycle),
+                    DiagnosticCode.None,
+                    "the safe dependency-closure deactivation published: the failed provider and its required "
+                    + "dependents left the assembly in one epoch (P-012). Reported cause: "
+                    + DiagnosticCodeText.Of(code) + ": " + detail);
+            }
+
+            // A provider that is already Failed holds no live authority to lose, so the lane answers a repeated
+            // report as the ordinary no-op publication: NoChange increments neither the revision nor the epoch
+            // (P-006), and the report carries the token of the committed assembly the deactivation already stands
+            // in rather than a second publication's (P-050: the failure is one fact, not two epochs).
+            if (admission.Entry != null && admission.Entry.Outcome == Outcome.NoChange)
+            {
+                return new ProviderFailureReport(
+                    instance,
+                    operation,
+                    true,
+                    new SnapshotToken(World, committed.Epoch, committed.Step),
+                    null,
+                    null,
+                    DiagnosticCode.None,
+                    "the failure was already published as a deactivation, so this repeated report published "
+                    + "nothing: the provider stays Failed and its dependents stay WaitingForDependencies "
+                    + "(P-006, P-050). Reported cause: " + DiagnosticCodeText.Of(code) + ": " + detail);
+            }
+
+            // The lane admitted the edit but the publication boundary produced no row for it. That is exactly the
+            // "cannot publish" case: report it as a refusal rather than as a deactivation.
+            return new ProviderFailureReport(instance, operation, false, null, null, null,
+                admission.Plan.Code != DiagnosticCode.None ? admission.Plan.Code : DiagnosticCode.StalePlan,
+                "the publication boundary produced no result for the deactivation, so nothing changed; the world "
+                + "must stop admission and fault (P-012). Reported cause: " + DiagnosticCodeText.Of(code) + ": " + detail);
+        }
+
+        private static ServiceClosureDelta? BindingDeltaOf(LifecycleCommitReport? lifecycle) =>
+            lifecycle != null ? lifecycle.Closure : null;
 
         /// <summary>
         /// Frozen seam submission: decodes the payload, admits the operation and plans it. The handle is returned

@@ -56,7 +56,7 @@ args = parser.parse_args()
 
 
 REMOVED_TYPES = [
- 'FaultScenario', 'FaultScenarioHost', 'FaultScenarioStep', 'ProbeFaults',
+ 'FaultScenario', 'FaultScenarioHost', 'FaultScenarioStep', 'ProbeFaults', 'ProviderFailureScenario',
  'W5GateScenario', 'W5GateFamily', 'W5GateNarrativeHost', 'W5GateCardsHost', 'ProbeW5Gate',
  'Gc021Scenario', 'Gc021Family', 'ProbeGc021', 'Gc021RecordingDestination', 'Gc021CrashHook',
  'Gc021DeliveryCrashException', 'Gc021CommittedEventRewardSource',

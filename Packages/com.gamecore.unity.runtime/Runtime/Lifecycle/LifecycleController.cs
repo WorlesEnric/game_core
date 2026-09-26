@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using GameCore.Composition;
 using GameCore.Contracts;
+using GameCore.Unity.Runtime.Faults;
 using GameCore.Unity.Runtime.Integration;
 
 namespace GameCore.Unity.Runtime.Lifecycle
@@ -107,6 +108,65 @@ namespace GameCore.Unity.Runtime.Lifecycle
         public override string ToString() =>
             "lifecycleRequest(" + Operation.ToString() + ", " + DiagnosticCodeText.Of(Code)
             + ", published=" + Published.Count.ToString(CultureInfo.InvariantCulture) + ")";
+    }
+
+    /// <summary>
+    /// What one world did about an unexpected provider failure. Exactly one of <see cref="Deactivated"/> and
+    /// <see cref="WorldFaulted"/> is true, and the two are the two halves of P-012: the safe dependency-closure
+    /// deactivation published, or the world stopped admission and faulted because it could not.
+    /// </summary>
+    public sealed class ProviderFailureOutcome
+    {
+        public ProviderFailureOutcome(
+            PluginInstanceId instance,
+            OperationId operation,
+            bool deactivated,
+            bool worldFaulted,
+            ProviderFailureReport deactivation,
+            DerivedAssemblyReport? derived,
+            DiagnosticCode code,
+            string detail)
+        {
+            Instance = instance;
+            Operation = operation;
+            Deactivated = deactivated;
+            WorldFaulted = worldFaulted;
+            Deactivation = deactivation;
+            Derived = derived;
+            Code = code;
+            Detail = detail ?? string.Empty;
+        }
+
+        public PluginInstanceId Instance { get; }
+
+        public OperationId Operation { get; }
+
+        /// <summary>True when the failed provider and its dependents really left the assembly (P-012, first half).</summary>
+        public bool Deactivated { get; }
+
+        /// <summary>True when admission is closed and the world is Faulted (P-012, second half).</summary>
+        public bool WorldFaulted { get; }
+
+        /// <summary>The kernel's own report, including which consumers now wait and at which token.</summary>
+        public ProviderFailureReport Deactivation { get; }
+
+        /// <summary>The world's derived assembly publication, when one was requested and attempted.</summary>
+        public DerivedAssemblyReport? Derived { get; }
+
+        /// <summary>`None` when the deactivation published; otherwise the failure that faulted the world.</summary>
+        public DiagnosticCode Code { get; }
+
+        public string Detail { get; }
+
+        /// <summary>The failed provider's dependents that now wait for a valid provider (P-012).</summary>
+        public IReadOnlyList<PluginInstanceId> WaitingConsumers => Deactivation.WaitingConsumers;
+
+        public string Describe() =>
+            "providerFailure(" + Instance.ToString() + ", " + DiagnosticCodeText.Of(Code)
+            + ", deactivated=" + (Deactivated ? "True" : "False")
+            + ", worldFaulted=" + (WorldFaulted ? "True" : "False") + ")";
+
+        public override string ToString() => Describe();
     }
 
     /// <summary>
@@ -295,6 +355,131 @@ namespace GameCore.Unity.Runtime.Lifecycle
 
             return release;
         }
+
+        /// <summary>
+        /// P-012, in full, for one world: an existing Active provider failed unexpectedly.
+        ///
+        /// FIRST it attempts the safe dependency-closure deactivation through the kernel
+        /// (<see cref="CompositionHost.FailActiveProvider"/>): one validated publication marks the provider Failed
+        /// and moves every consumer that required it to <c>WaitingForDependencies</c> with its contribution
+        /// retracted, so the failed provider is absent from the new revision and epoch and unrelated targets,
+        /// stages and state keep running. When a derived pipeline is attached the world's assembly for that same
+        /// operation is published too, exactly as <see cref="Submit"/> does it.
+        ///
+        /// ONLY IF that deactivation cannot publish does the second half apply: the world stops admission and
+        /// enters the terminal fault state through the same fail-stop path a postwrite apply failure uses (P-031),
+        /// which refuses new commands, publishes no further epoch or snapshot and lets no simulation resume. The
+        /// old committed image stays inspectable and recovery is a checkpoint restore into a new session (P-049).
+        ///
+        /// There is no third outcome: either the deactivation published, or the world faulted. A timeout never
+        /// stands in for either (P-012's "no timeout-based unsafe release").
+        /// </summary>
+        public ProviderFailureOutcome FailProvider(
+            PluginInstanceId instance,
+            OperationId operation,
+            DiagnosticCode code,
+            string detail)
+        {
+            // The deactivation attempt itself is a named boundary: an armed latch stands for "this publication
+            // cannot happen", which is exactly P-012's second half. The reach and its classification exist only in
+            // a compilation that defines the fault symbol, so a shipping build runs the plain attempt below.
+            bool deactivationRefused = false;
+            string deactivationRefusalDetail = string.Empty;
+#if GAMECORE_FAULT_INJECTION
+            try
+            {
+                FaultReach.Reach(
+                    world.Faults,
+                    FaultBoundary.ProviderDeactivationPublication,
+                    operation,
+                    default(ContentHash),
+                    "the safe dependency-closure deactivation of " + instance.ToString() + " was injected to fail (P-012)");
+            }
+            catch (FaultInjectedException injected)
+            {
+                deactivationRefused = true;
+                deactivationRefusalDetail = injected.Message;
+            }
+#endif
+
+            ProviderFailureReport deactivation = deactivationRefused
+                ? ProviderFailureRefused(instance, operation, code, detail, deactivationRefusalDetail)
+                : lane.FailActiveProvider(instance, operation, code, detail);
+            ProviderFailureCount++;
+
+            if (deactivation.Deactivated)
+            {
+                // The world's half of the same publication, mirroring `Submit`: the retracted rows leave the
+                // published assembly at the operation identity the composition publication used (P-006, P-033).
+                DerivedAssemblyReport? derived = pipeline != null ? pipeline.PublishDerived(operation) : null;
+                bool derivedFailed = derived != null && !derived.Succeeded;
+                if (derivedFailed)
+                {
+                    // The composition revision published but the world could not carry the retraction into its own
+                    // assembly. That is a postwrite failure of this publication, so it takes the same fail-stop
+                    // path rather than leaving a half-published world (P-030, P-031).
+                    world.EnterFaulted(derived!.Code, "the deactivation published but its derived assembly did not: " + derived.Detail);
+                    FaultedProviderCount++;
+                    return new ProviderFailureOutcome(instance, operation, false, true, deactivation, derived,
+                        derived.Code,
+                        "the safe deactivation published in the composition revision, but the world's derived "
+                        + "assembly did not; admission is closed and the world is Faulted (P-012, P-031)");
+                }
+
+                RefreshIngressOwners();
+                return new ProviderFailureOutcome(instance, operation, true, false, deactivation, derived,
+                    DiagnosticCode.None,
+                    "the safe dependency-closure deactivation published: the failed provider and its required "
+                    + "dependents left the assembly in one epoch and the world keeps running (P-012)");
+            }
+
+            // The deactivation could not publish. P-012: the world stops admission and faults; the failed provider
+            // is never kept active and no partial publication stands in for the deactivation.
+            DiagnosticCode faultCode = deactivation.Code != DiagnosticCode.None
+                ? deactivation.Code
+                : DiagnosticCode.ProviderFailed;
+            // P-031/P-052: the world's own fault record says why it faulted, so an operator reading the host sees
+            // the refusal that made the deactivation impossible, not an empty string. The caller's detail is kept
+            // inside the deactivation report, where the caused-by provenance belongs.
+            world.EnterFaulted(
+                faultCode,
+                "the safe dependency-closure deactivation could not publish, so the failed provider is not kept "
+                + "active and the world faults (P-012). " + deactivation.Detail);
+            FaultedProviderCount++;
+            return new ProviderFailureOutcome(instance, operation, false, true, deactivation, null,
+                deactivation.Code != DiagnosticCode.None ? deactivation.Code : DiagnosticCode.ProviderFailed,
+                "the safe dependency-closure deactivation could not publish, so admission is closed and the world "
+                + "is Faulted; the failed provider is not kept active (P-012). " + deactivation.Detail);
+        }
+
+        /// <summary>Provider failures this controller was asked to handle, published or faulting.</summary>
+        public int ProviderFailureCount { get; private set; }
+
+        /// <summary>Provider failures whose deactivation could not publish, so the world faulted (P-012).</summary>
+        public int FaultedProviderCount { get; private set; }
+
+        /// <summary>
+        /// The refusal a deactivation gets when the publication attempt itself failed (P-012). It is built through
+        /// the kernel's own report shape so both halves of the requirement are reported identically, and it never
+        /// claims a token or a publication: nothing changed.
+        /// </summary>
+        private static ProviderFailureReport ProviderFailureRefused(
+            PluginInstanceId instance,
+            OperationId operation,
+            DiagnosticCode code,
+            string detail,
+            string refusalDetail) =>
+            new ProviderFailureReport(
+                instance,
+                operation,
+                false,
+                null,
+                null,
+                null,
+                DiagnosticCode.ProviderFailed,
+                "the safe dependency-closure deactivation could not publish, so the failed provider would still hold "
+                + "its place in the committed assembly; the world must stop admission and fault (P-012). Refusal: "
+                + refusalDetail + ". Reported cause: " + DiagnosticCodeText.Of(code) + ": " + detail);
 
         /// <summary>Wires the job fence to the world's step jobs so a step boundary is a real completion point.</summary>
         public void TrackStepJob(

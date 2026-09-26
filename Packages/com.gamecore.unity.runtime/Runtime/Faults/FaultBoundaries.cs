@@ -88,6 +88,13 @@ using GameCore.Contracts;
         /// A staged or recovered world is about to become the registry's published world (P-030, P-049; GC-027).
         /// </summary>
         RecoveryPublication = 12,
+
+        /// <summary>
+        /// The safe dependency-closure deactivation an unexpected provider failure asks for is being published
+        /// (P-012; GC-028). Reaching this boundary stands for "that deactivation cannot publish", which is the case
+        /// where the world must stop admission and fault instead of keeping the failed provider active.
+        /// </summary>
+        ProviderDeactivationPublication = 13,
     }
 
     /// <summary>Stable diagnostic names of the boundaries, so a trace and an assertion name the same thing.</summary>
@@ -109,6 +116,7 @@ using GameCore.Contracts;
             "restore-reference-repair",
             "restore-apply",
             "recovery-publication",
+            "provider-deactivation-publication",
         };
 
         /// <summary>Number of declared boundaries; a latch array is sized from this, not from a literal.</summary>

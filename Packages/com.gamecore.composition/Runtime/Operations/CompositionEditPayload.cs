@@ -46,6 +46,15 @@ namespace GameCore.Composition
 
         /// <summary>O-04: resume an installation that requested an explicit suspend.</summary>
         InstallResume = 10,
+
+        /// <summary>
+        /// P-012: an existing Active provider failed unexpectedly. The plan marks it Failed and publishes the safe
+        /// dependency-closure deactivation - the failed provider and the consumers that depended on it leave the
+        /// assembly in one epoch - so it can never be kept active. The diagnostic that caused the failure is not
+        /// part of this payload: the canonical document describes the composition fact, and the caller reports why
+        /// the fact happened.
+        /// </summary>
+        InstallProviderFailure = 11,
     }
 
     /// <summary>
@@ -237,7 +246,7 @@ namespace GameCore.Composition
             }
 
             if (!reader.TryReadField(out EnvelopeField field) || !DocumentCodec.Expect(field, SubjectField, WireType.UInt32) ||
-                !reader.TryReadUInt32(field, out uint rawSubject) || rawSubject > (uint)CompositionEditSubject.InstallResume)
+                !reader.TryReadUInt32(field, out uint rawSubject) || rawSubject > (uint)CompositionEditSubject.InstallProviderFailure)
             {
                 code = DiagnosticCode.UnsupportedVersion;
                 return false;

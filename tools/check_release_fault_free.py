@@ -123,6 +123,10 @@ BOUNDARY_NAMES = (
     "restore-reference-repair",
     "restore-apply",
     "recovery-publication",
+    # GC-028 appended the P-012 provider-deactivation boundary through the same mechanism: one latch per named
+    # boundary, the same symbol, the same guards. It is reached from the lifecycle controller's provider-failure
+    # entry point, which is where "the safe deactivation cannot publish" is decided.
+    "provider-deactivation-publication",
 )
 DISTINCTIVE_NAMES = tuple(n for n in BOUNDARY_NAMES if "-" in n)
 
@@ -137,6 +141,8 @@ BOUNDARY_OWNERS = (
     ("Packages/com.gamecore.unity.runtime/Runtime/Persistence/CheckpointRestoreExecutor.cs", "FaultReach"),
     # GC-027: the recovery composition owns the capture-copy, publication and reference-repair boundaries.
     ("Packages/com.gamecore.unity.runtime/Runtime/Recovery/WorldRecovery.cs", "FaultReach"),
+    # GC-028: the lifecycle controller owns the provider-deactivation boundary (P-012).
+    ("Packages/com.gamecore.unity.runtime/Runtime/Lifecycle/LifecycleController.cs", "FaultReach"),
 )
 
 

@@ -90,7 +90,8 @@ fi
 # cancellation before the cutoff differs from cancellation after it, prewrite migration preserves live state, a
 # postwrite fault faults the world and keeps the last image, structural playback stops the step commit, gate
 # installation and the fence settle where they say, cleanup retains what a refusal staged, recovery produces a new
-# world that rejects the old callback, and teardown settles.
+# world that rejects the old callback, an unexpected provider failure either deactivates its dependency closure or
+# faults the world, and teardown settles.
 PROBE_LABEL="gc017-faults"
 gc017_steps=()
 for family in narrative cards; do
@@ -109,6 +110,8 @@ for family in narrative cards; do
     gc017-cleanup-boundary-releases-what-a-refusal-staged \
     gc017-recovery-from-initial-definitions-into-a-new-world \
     gc017-old-callback-after-recovery-is-rejected \
+    gc017-provider-failure-publishes-a-safe-deactivation \
+    gc017-provider-failure-that-cannot-publish-faults-the-world \
     gc017-teardown-settles-and-disposes; do
     gc017_steps+=("\"name\": \"${family}/${base}\"")
     gc017_steps+=("\"name\": \"fixture:${family}/${base}\"")
@@ -120,8 +123,8 @@ probe_require_steps "${result_file}" "${gc017_steps[@]}"
 
 # Both digest literals must be exactly the expected ones: the digest is over the observation names and their pass
 # flags, so this is the whole claim that both catalogs ran the named sequence and every step of it passed.
-narrative_digest="701a3c286098501456390975bbdc7e4bdb7218d3094f23e39e61b3744fa52b61"
-cards_digest="5cd97d38a1023fe0c8b5239d611061e5696454be9ec7cc68d440506810201732"
+narrative_digest="3a3be6bbd26a5824bdd47a62226023da5da43e7c10fbf3ddae35b3ea3f1a5930"
+cards_digest="eea66452527f87a9ff145e492420a0075a7ba59aba760e92569e322e48bdc1ec"
 if ! grep -q "generatedDigest=${narrative_digest}; fixtureDigest=${narrative_digest}" "${result_file}"; then
   echo "run_gc017_faults_probe.sh: the narrative digest is not the expected value" >&2
   echo "  expected generatedDigest=${narrative_digest} and fixtureDigest=${narrative_digest}" >&2
@@ -153,6 +156,11 @@ for clause in \
   "fired=1" \
   "retainedStaged=1" \
   "recovered=True" \
+  "deactivated=True" \
+  "worldFaulted=True" \
+  "providerFailures=1" \
+  "faultedProviderFailures=1" \
+  "refusedAsForeignIncarnation=True" \
   "disposition=DiscardForeignWorld"; do
   if ! grep -q "${clause}" "${result_file}"; then
     echo "run_gc017_faults_probe.sh: the fault clause fragment '${clause}' is absent from the result" >&2

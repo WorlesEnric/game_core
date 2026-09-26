@@ -20,8 +20,10 @@ namespace GameCore.Composition.Tests
         private static readonly ScopeId Root = new ScopeId(new Id128(0x726F6F74UL, 7UL));
 
         /// <summary>
-        /// The 17 legal edges of the 06 s1 diagram, listed as (from, to) pairs. A removal or suspension of an
-        /// active installation therefore walks Active -> Quiescing -> ... rather than short-circuiting.
+        /// The legal edges: the 17 transitions of the 06 s1 diagram plus the one P-012 adds. A removal or suspension
+        /// of an active installation still walks Active -> Quiescing -> ... rather than short-circuiting, and
+        /// `Active->Failed` is the *unexpected* failure of the live activation itself — a different fact from a
+        /// candidate failing while preparing (`Preparing->Failed`).
         /// </summary>
         private static readonly HashSet<string> LegalEdges = new HashSet<string>(StringComparer.Ordinal)
         {
@@ -33,6 +35,7 @@ namespace GameCore.Composition.Tests
             "Preparing->Active",
             "Preparing->Failed",
             "Active->Quiescing",
+            "Active->Failed",
             "Quiescing->Active",
             "Quiescing->Suspended",
             "Quiescing->WaitingForDependencies",

@@ -19,6 +19,9 @@
 //   row 10 recovery from initial definitions                   gc017-recovery-from-initial-definitions-into-a-new-world
 //                                                              gc017-old-callback-after-recovery-is-rejected
 //
+//   P-012  unexpected provider failure                         gc017-provider-failure-publishes-a-safe-deactivation
+//                                                              gc017-provider-failure-that-cannot-publish-faults-the-world
+//
 // Normative anchors: P-002 (the host is the sole world authority; one world, one assembly publisher, one lane),
 // P-029 (a preparation or migration failure releases staged leases in reverse dependency order and leaves the old
 // assembly intact), P-030 (publication switches the assembly at one serialized commit), P-031 (a failure after the
@@ -29,7 +32,7 @@
 // callbacks and handles never become valid), P-051 (the serialized cutoff decides a cancellation/publication race),
 // P-052 (a failure names its phase and its operation).
 //
-// Four structural decisions, all forced by the committed kernel rather than chosen here:
+// Five structural decisions, all forced by the committed kernel rather than chosen here:
 //
 //   * **One real world per run, and a second, third and fourth only where the fault is terminal.** A postwrite
 //     fault (P-031) closes a world forever, so the three postwrite observations each stand up their own real world
@@ -49,6 +52,14 @@
 //   * **Nothing here re-implements a kernel module and nothing is discovered reflectively.** The chain of §5 is
 //     copied verbatim; F-*/P-* facts are asserted as values read from the modules (`AssemblyPublicationReport`,
 //     `RecoveryReport`, `FaultTrace`, the world's own ledgers), never as booleans this file invented.
+//
+//   * **The P-012 pair runs last, in worlds of its own, because its second half is terminal.** Every other
+//     observation either leaves its world running or faults a world stood up for it alone; the unexpected
+//     provider failure needs a world whose required-provider pair is Active and whose composition is otherwise
+//     quiescent, and branch (b) faults that world for good (P-031). Both observations therefore stand their own
+//     worlds up through the same chain of section 5 — with the `LifecycleController` P-012 reaches the world
+//     through as the one type added — and they are recorded after the recovery rows and before teardown, which is
+//     the position `FaultScenario.ObservationNames` gives them.
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -96,6 +107,8 @@ namespace GameCore.Validation.ProbeHost
             "gc017-cleanup-boundary-releases-what-a-refusal-staged",
             "gc017-recovery-from-initial-definitions-into-a-new-world",
             "gc017-old-callback-after-recovery-is-rejected",
+            "gc017-provider-failure-publishes-a-safe-deactivation",
+            "gc017-provider-failure-that-cannot-publish-faults-the-world",
             "gc017-teardown-settles-and-disposes",
         };
 
@@ -204,6 +217,7 @@ namespace GameCore.Validation.ProbeHost
                 ReleaseWhatARefusalStaged();
                 RecoverFromTheFaultedWorld();
                 DiscardTheOldCallbackAtTheRecoveredWorld();
+                ObserveProviderFailure();
                 TearDownEveryWorld();
 
                 return new FaultScenarioResult(family.Label, steps);
@@ -1576,7 +1590,23 @@ namespace GameCore.Validation.ProbeHost
                 }
             }
 
-            // ================================================================== 14. teardown
+            // ================================================================== 14. P-012: the unexpected provider failure
+            //
+            // The two observations of P-012 run after the recovery rows and before teardown, which is the order
+            // `FaultScenario.ObservationNames` freezes. They are recorded through the same `Add`, so the run's
+            // order, digest and the standalone probe's step list all see them like every other observation; the
+            // helper they come from closes every world it stood up, so teardown's registry count still returns to
+            // the baseline the first observation captured.
+            private void ObserveProviderFailure()
+            {
+                IReadOnlyList<FaultScenarioStep> recorded = ProviderFailureScenario.Run(family);
+                for (int i = 0; i < recorded.Count; i++)
+                {
+                    Add(recorded[i].Name, recorded[i].Passed, recorded[i].Detail);
+                }
+            }
+
+            // ================================================================== 15. teardown
 
             /// <summary>
             /// Every world this run created is stopped and disposed, including the ones a fault left terminal and the
