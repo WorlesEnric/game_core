@@ -31,7 +31,7 @@ against the frozen W0 snapshot `tests/GameCore.ReferenceSeams/api/GameCore.Contr
 | `ICatalog` | contract | `GameCore.Contracts.ImmutableCatalog` (this package) and test doubles. No other production implementation is expected |
 | `ICompositionHost`, `ICompositionCommands`, `ICommandIngress`, `IOperationReader`, `IOperationControl` | contract | `GameCore.Composition` (GC-004) |
 | `IWorldHost`, `IExecutionDriver`, `IWorldLifecycleObserver` | contract | `GameCore.Unity.Runtime` (GC-005 and successors) |
-| `IObservationReader`, `IExplanationReader`, `IStagedPlanDiagnostics`, `IEngineApplier`, `ISchemaMigrator` | contract | Unity runtime/adapters and the publisher (later waves) |
+| `IObservationReader`, `IExplanationReader`, `IStagedPlanDiagnostics`, `IRecipeApplyBridge`, `IStateMigrator`, `IAssemblyPublisher` | contract | Unity runtime/adapters and the publisher (later waves) |
 | `IManagedResourceLease`, `IResourceGate` | contract | control-plane resource factories (GC-004) |
 | `ISchemaSerializer`, `GeneratedSerializerBase` | contract | generated code emitted by `com.gamecore.content.compiler` |
 | `ImmutableCatalog`, `ManifestValidator`, `CatalogFingerprint`, `StableNameKeyDerivation` | implementation | this package |

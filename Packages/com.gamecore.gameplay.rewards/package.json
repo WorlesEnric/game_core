@@ -1,6 +1,6 @@
 {
   "name": "com.gamecore.gameplay.rewards",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "displayName": "GameCore Gameplay Rewards",
   "description": "The narrative-to-card reward installation of 07 s5 (`NarrativeCardRewards`): the mounted installation that owns GC-021's reward bridge and a declared outbox state slot with a PreserveDormant last-support policy and a scratch-migration precondition of 'no pending work', so unmounting with pending work rejects through the job-fenced outbox resource lease until it drains, and the completed outbox is preserved dormant or handed to a named owner. It adds no kernel concept and no universal effect API.",
   "unity": "6000.0",
@@ -12,12 +12,14 @@
     "state-policy"
   ],
   "dependencies": {
-    "com.gamecore.composition": "0.1.0",
-    "com.gamecore.contracts": "0.1.0",
-    "com.gamecore.gameplay.cards": "0.1.0",
-    "com.gamecore.gameplay.integration": "0.1.0",
-    "com.gamecore.gameplay.narrative": "0.1.0",
-    "com.gamecore.planning": "0.1.0",
-    "com.gamecore.unity.runtime": "0.1.0"
+    "com.gamecore.composition": "1.0.0",
+    "com.gamecore.contracts": "1.0.0",
+    "com.gamecore.gameplay.cards": "1.0.0",
+    "com.gamecore.gameplay.integration": "1.0.0",
+    "com.gamecore.gameplay.narrative": "1.0.0",
+    "com.gamecore.planning": "1.0.0",
+    "com.gamecore.unity.runtime": "1.0.0",
+    "com.unity.collections": "2.6.6",
+    "com.unity.entities": "1.4.6"
   }
 }

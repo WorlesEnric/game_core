@@ -1,14 +1,14 @@
 {
   "name": "com.gamecore.reference-conformance",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "displayName": "GameCore Reference Conformance Fixtures",
   "description": "GC-024's reference-conformance fixtures: every before/after assembly-operation table of docs/game-core/07-reference-compositions.md transcribed as data (cards section 2.4, narrative section 3.3, traversal section 4.3, cross-family section 5), the ordered script each table is executed through in a real world, the canonical normalised trace document a run records, the oracle that compares a trace against the transcribed table, and the pure-rule projections that prove each transcribed number agrees with the gameplay rules packages. Unity-free by design so the same fixtures run in plain dotnet, in Unity EditMode and in the qualification player.",
   "unity": "6000.0",
   "dependencies": {
-    "com.gamecore.contracts": "0.1.0",
-    "com.gamecore.planning": "0.1.0",
-    "com.gamecore.rules.cards": "0.1.0",
-    "com.gamecore.rules.narrative": "0.1.0",
-    "com.gamecore.rules.traversal": "0.1.0"
+    "com.gamecore.contracts": "1.0.0",
+    "com.gamecore.planning": "1.0.0",
+    "com.gamecore.rules.cards": "1.0.0",
+    "com.gamecore.rules.narrative": "1.0.0",
+    "com.gamecore.rules.traversal": "1.0.0"
   }
 }

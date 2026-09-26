@@ -278,7 +278,7 @@ namespace GameCore.Contracts
     }
 
     /// <summary>
-    /// Stable diagnostic codes required by 00 s9 plus the retention code required by P-007, where bounded
+    /// Stable diagnostic codes required by P-052 (00 s7) plus the retention code required by P-007, where
     /// snapshot retention rejects a new lease with SnapshotBackpressure instead of overwriting leased memory.
     /// Literal names match the normative text exactly; <see cref="DiagnosticCodeText"/> maps each value to
     /// that literal string.

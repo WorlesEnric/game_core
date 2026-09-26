@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace GameCore.Contracts
 {
-    /// <summary>One structured diagnostic. Codes are the literals required by 00 s9.</summary>
+    /// <summary>One structured diagnostic. Codes are the literals required by P-052 (00 s7).</summary>
     public sealed class Diagnostic
     {
         public Diagnostic(

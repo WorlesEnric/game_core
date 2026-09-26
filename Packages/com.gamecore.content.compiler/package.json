@@ -1,8 +1,8 @@
 {
   "name": "com.gamecore.content.compiler",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "displayName": "GameCore Content Compiler",
-  "description": "Unity-free Game Core V1 content compiler core: it validates catalog description documents (duplicate ids, unknown schemas, unsupported required features) and emits deterministic generated C# catalogs with stable keyed registrations, generated serializers, closed generic roots and a catalog fingerprint. Editor-only.",
+  "description": "Unity-free Game Core V1 content compiler core: it validates catalog description documents (duplicate ids, unknown schemas, unsupported required features) and emits deterministic generated C# catalogs with stable keyed registrations, generated serializers, closed generic roots and a catalog fingerprint. Editor-only (both asmdefs are Editor-platform). Its only local dependency is com.gamecore.contracts.",
   "unity": "6000.0",
   "author": {
     "name": "GameCore"
@@ -12,5 +12,8 @@
     "content",
     "compiler",
     "codegen"
-  ]
+  ],
+  "dependencies": {
+    "com.gamecore.contracts": "1.0.0"
+  }
 }

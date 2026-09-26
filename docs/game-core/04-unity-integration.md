@@ -57,7 +57,7 @@ This is the package-specific fragment, not a complete generated project manifest
 | `GameCore.Unity.Adapters` | Runtime, UnityEngine | Bootstrap/PlayerLoop, input, GameObject, audio, animation, assets, and optional physical-simulation adapters |
 | `GameCore.Content.Compiler` | Contracts, Planning, Unity Runtime, Unity Editor APIs; Editor-only | Authoring adapters, bakers, build-time recipe/registry generation and validation |
 | `GameCore.Gameplay.<Name>` | Corresponding Rules assembly, Unity Runtime and explicitly required adapters | Concrete unmanaged components, declarations and precompiled `ISystem`/job implementations |
-| `GameCore.Generated` | Known plugin and adapter assemblies | Closed registry, serializers, recipe factories, system factories, and AOT roots |
+| Generated per project, e.g. `GameCore.Validation.Generated` | Known plugin and adapter assemblies | Closed registry, serializers, recipe factories, system factories, and AOT roots. Generated assemblies are named and prefixed by the project that owns them rather than by one shared `GameCore.Generated` assembly, because a shipping project generates only its own catalog surface. |
 
 `.asmdef` references must remain acyclic. Generated registration is the application composition root; Contracts and Composition cannot reference it. Editor code cannot leak into runtime assemblies. The architecture supports extraction of pure rules, definitions, and protocol tests into another host later; Unity queries, jobs, baking, assets, native containers, and simulation adapters would require a new implementation.
 
