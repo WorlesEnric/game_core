@@ -25,8 +25,10 @@ namespace GameCore.Execution.Observation
     /// Read surface of one world's committed observation: immutable step images, bounded committed events, and the
     /// committed boundary a checkpoint leases. It owns no storage and mutates nothing.
     /// </summary>
-    public sealed class WorldObservation : IObservationReader, ICommittedEventReader, ICommittedBoundaryReader
+    public sealed class WorldObservation : IObservationReader, ICommittedEventReader, ICommittedBoundaryReader, ITelemetryOwner
     {
+        string ITelemetryOwner.TelemetryOwner => "gamecore.observation";
+
         /// <summary>Bound on the pages one boundary lease walks; a lease is bounded work, not a full history scan.</summary>
         private const int BoundaryPageSize = 64;
 
@@ -90,6 +92,24 @@ namespace GameCore.Execution.Observation
 
         /// <summary>Committed-event reads refused because the world declares no message plane at all.</summary>
         public int NoEventPlaneRefusalCount { get; private set; }
+
+        /// <summary>
+        /// Writes the observation surface through the fixed compact schema (GC-023). The world's observation is the
+        /// single reader-facing owner, so the two stores it wraps (images and events) are reported separately and
+        /// this section carries only the read-surface refusals and resynchronizations.
+        /// </summary>
+        public void WriteTelemetry(TelemetryCounterSet into)
+        {
+            if (into == null)
+            {
+                throw new ArgumentNullException(nameof(into));
+            }
+
+            into.Add(
+                TelemetryCounter.StaleResults,
+                NoPublicationCount + ResyncCount + ResyncUnavailableCount + NoEventPlaneRefusalCount);
+            into.Add(TelemetryCounter.DiscardedCallbacks, EventGapReportCount);
+        }
 
         /// <summary>Attaches the facts source the boundary lease reads; null restores the explicit unspecified source.</summary>
         public void AttachBoundaryFacts(ICommittedBoundaryFactsSource? source) =>

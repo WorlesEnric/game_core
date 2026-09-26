@@ -47,6 +47,19 @@
         "com.gamecore.unity.runtime": "0.1.0"
       }
     },
+    "com.gamecore.gameplay.integration": {
+      "version": "file:../../../Packages/com.gamecore.gameplay.integration",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.gamecore.contracts": "0.1.0",
+        "com.gamecore.gameplay.cards": "0.1.0",
+        "com.gamecore.gameplay.narrative": "0.1.0",
+        "com.gamecore.rules.cards": "0.1.0",
+        "com.gamecore.rules.narrative": "0.1.0",
+        "com.gamecore.unity.runtime": "0.1.0"
+      }
+    },
     "com.gamecore.gameplay.narrative": {
       "version": "file:../../../Packages/com.gamecore.gameplay.narrative",
       "depth": 0,
@@ -54,6 +67,20 @@
       "dependencies": {
         "com.gamecore.contracts": "0.1.0",
         "com.gamecore.rules.narrative": "0.1.0"
+      }
+    },
+    "com.gamecore.gameplay.traversal": {
+      "version": "file:../../../Packages/com.gamecore.gameplay.traversal",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.gamecore.contracts": "0.1.0",
+        "com.gamecore.rules.traversal": "0.1.0",
+        "com.gamecore.composition": "0.1.0",
+        "com.gamecore.derivation": "0.1.0",
+        "com.gamecore.planning": "0.1.0",
+        "com.gamecore.unity.runtime": "0.1.0",
+        "com.gamecore.unity.adapters": "0.1.0"
       }
     },
     "com.gamecore.planning": {
@@ -74,6 +101,14 @@
     },
     "com.gamecore.rules.narrative": {
       "version": "file:../../../Packages/com.gamecore.rules.narrative",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.gamecore.contracts": "0.1.0"
+      }
+    },
+    "com.gamecore.rules.traversal": {
+      "version": "file:../../../Packages/com.gamecore.rules.traversal",
       "depth": 0,
       "source": "local",
       "dependencies": {
@@ -308,6 +343,23 @@
       "version": "1.0.0",
       "depth": 0,
       "source": "builtin",
+      "dependencies": {}
+    },
+    "com.gamecore.replay": {
+      "version": "file:../../../tests/GameCore.Replay",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.gamecore.composition": "0.1.0",
+        "com.gamecore.contracts": "0.1.0",
+        "com.gamecore.derivation": "0.1.0",
+        "com.gamecore.planning": "0.1.0"
+      }
+    },
+    "com.gamecore.telemetry-qualification": {
+      "version": "file:../../../Packages/com.gamecore.telemetry-qualification",
+      "depth": 0,
+      "source": "local",
       "dependencies": {}
     }
   }

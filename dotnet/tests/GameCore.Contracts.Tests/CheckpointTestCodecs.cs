@@ -264,9 +264,9 @@ namespace GameCore.Contracts.Tests
                 1U);
 
         /// <summary>
-        /// A header with distinct, non-zero values in every field. The eleven counts are the arguments, in the
+        /// A header with distinct, non-zero values in every field. The twelve counts are the arguments, in the
         /// declaration order of <see cref="HeaderRecordValue"/>'s constructor: scope, install, selection, target,
-        /// slot, grant, clock, command, message, rng stream, cursor.
+        /// slot, grant, clock, command, message, rng stream, cursor, outbox.
         /// </summary>
         internal static HeaderRecordValue Header(
             int scopes,
@@ -279,7 +279,8 @@ namespace GameCore.Contracts.Tests
             int commands,
             int messages,
             int rngStreams,
-            int cursors)
+            int cursors,
+            int outbox)
         {
             return new HeaderRecordValue(
                 0x1111111111111111UL,
@@ -320,10 +321,11 @@ namespace GameCore.Contracts.Tests
                 6UL,
                 8UL,
                 60UL,
-                3U);
+                3U,
+                (uint)outbox);
         }
 
-        internal static HeaderRecordValue EmptyHeader() => Header(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        internal static HeaderRecordValue EmptyHeader() => Header(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
         internal static ScopeRecordValue SampleScope(ulong ordinal, ulong parentOrdinal, uint depth)
         {
@@ -605,6 +607,48 @@ namespace GameCore.Contracts.Tests
                 session.Low);
         }
 
+        /// <summary>
+        /// One outbox row with a distinct non-zero value in every field, so a swapped word or a wrong field id
+        /// fails a round-trip assertion instead of cancelling out (GC-021, P-053).
+        /// </summary>
+        internal static OutboxRecordValue SampleOutbox(uint rowKind, ulong ordinal)
+        {
+            Id128 outbox = Id(ordinal + 500UL);
+            Id128 destination = Id(ordinal + 501UL);
+            Id128 idempotency = Id(ordinal + 502UL);
+            Id128 causalIssuer = Id(ordinal + 503UL);
+            Id128 payloadSchema = Id(ordinal + 504UL);
+            Id128 cursor = Id(ordinal + 505UL);
+            return new OutboxRecordValue(
+                rowKind,
+                OutboxRecordValue.CurrentRecordVersion,
+                outbox.High,
+                outbox.Low,
+                destination.High,
+                destination.Low,
+                idempotency.High,
+                idempotency.Low,
+                ordinal + 1UL,
+                ordinal + 2UL,
+                ordinal + 3UL,
+                causalIssuer.High,
+                causalIssuer.Low,
+                ordinal + 4UL,
+                payloadSchema.High,
+                payloadSchema.Low,
+                5U,
+                (uint)OutboxDeliveryState.Rejected,
+                6U,
+                7U,
+                (uint)OutboxDurability.Durable,
+                8U,
+                cursor.High,
+                cursor.Low,
+                9U,
+                10U,
+                new byte[] { 11, 12, 13 });
+        }
+
         /// <summary>Every field of a header, so a container round-trip is a full equality, not a spot check.</summary>
         internal static void AssertHeaderEquals(HeaderRecordValue expected, HeaderRecordValue actual)
         {
@@ -644,6 +688,7 @@ namespace GameCore.Contracts.Tests
             Assert.That(actual.SourcePublishedEpoch, Is.EqualTo(expected.SourcePublishedEpoch));
             Assert.That(actual.SourceHostTicksPerSecond, Is.EqualTo(expected.SourceHostTicksPerSecond));
             Assert.That(actual.ContentRevisionCount, Is.EqualTo(expected.ContentRevisionCount));
+            Assert.That(actual.OutboxCount, Is.EqualTo(expected.OutboxCount));
             Assert.That(actual.WorldDefinition, Is.EqualTo(expected.WorldDefinition));
             Assert.That(actual.SourceSession, Is.EqualTo(expected.SourceSession));
             Assert.That(actual.Temporal, Is.EqualTo(expected.Temporal));
@@ -684,6 +729,7 @@ namespace GameCore.Contracts.Tests
                     Run(slots, 25, 11, WireType.UInt32);
                     Run(slots, 36, 3, WireType.UInt64);
                     Run(slots, 39, 1, WireType.UInt32);
+                    Run(slots, 40, 1, WireType.UInt32);
                     break;
                 case CheckpointRecordKind.Scope:
                     Run(slots, 1, 2, WireType.UInt64);
@@ -796,6 +842,14 @@ namespace GameCore.Contracts.Tests
                     Run(slots, 4, 1, WireType.UInt64);
                     Run(slots, 5, 2, WireType.UInt64);
                     break;
+                case CheckpointRecordKind.Outbox:
+                    Run(slots, 1, 2, WireType.UInt32);
+                    Run(slots, 3, 14, WireType.UInt64);
+                    Run(slots, 17, 6, WireType.UInt32);
+                    Run(slots, 23, 2, WireType.UInt64);
+                    Run(slots, 25, 2, WireType.UInt32);
+                    Run(slots, 27, 1, WireType.Bytes);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(
                         nameof(kind), kind, "No test codec declares that record kind.");
@@ -899,6 +953,14 @@ namespace GameCore.Contracts.Tests
                 CheckpointTestEncoding.EncodeCursor,
                 CheckpointTestEncoding.DecodeCursor);
 
+        internal static ICheckpointRecordCodec<OutboxRecordValue> OutboxCodec() =>
+            new TestCheckpointCodec<OutboxRecordValue>(
+                CheckpointRecordKind.Outbox,
+                SchemaOf(CheckpointRecordKind.Outbox),
+                SlotsOf(CheckpointRecordKind.Outbox),
+                CheckpointTestEncoding.EncodeOutbox,
+                CheckpointTestEncoding.DecodeOutbox);
+
         /// <summary>One codec, as the non-generic interface a codec set is built from.</summary>
         internal static ICheckpointRecordCodec Codec(CheckpointRecordKind kind)
         {
@@ -916,6 +978,7 @@ namespace GameCore.Contracts.Tests
                 case CheckpointRecordKind.Message: return MessageCodec();
                 case CheckpointRecordKind.Rng: return RngCodec();
                 case CheckpointRecordKind.Cursor: return CursorCodec();
+                case CheckpointRecordKind.Outbox: return OutboxCodec();
                 default:
                     throw new ArgumentOutOfRangeException(
                         nameof(kind), kind, "No test codec declares that record kind.");
@@ -1032,6 +1095,7 @@ namespace GameCore.Contracts.Tests
                 value.SourcePublishedEpoch,
                 value.SourceHostTicksPerSecond);
             writer.WriteUInt32Field(39, value.ContentRevisionCount);
+            writer.WriteUInt32Field(40, value.OutboxCount);
             writer.WriteChecksum();
             return writer.ToArray();
         }
@@ -1084,7 +1148,8 @@ namespace GameCore.Contracts.Tests
                 published[0],
                 published[1],
                 published[2],
-                fields.UInt32(39));
+                fields.UInt32(39),
+                fields.UInt32(40));
         }
 
         internal static byte[] EncodeScope(ScopeRecordValue value)
@@ -1516,6 +1581,80 @@ namespace GameCore.Contracts.Tests
                 fields.UInt64(4),
                 session[0],
                 session[1]);
+        }
+
+        internal static byte[] EncodeOutbox(OutboxRecordValue value)
+        {
+            EnvelopeWriter writer = NewWriter(CheckpointRecordKind.Outbox);
+            U32(writer, 1, value.RowKind, value.RecordVersion);
+            U64(
+                writer,
+                3,
+                value.OutboxHigh,
+                value.OutboxLow,
+                value.DestinationHigh,
+                value.DestinationLow,
+                value.IdempotencyHigh,
+                value.IdempotencyLow,
+                value.SourceEventSequence,
+                value.SourceStep,
+                value.SourceEpoch,
+                value.CausalIssuerHigh,
+                value.CausalIssuerLow,
+                value.CausalIssuerSequence,
+                value.PayloadSchemaHigh,
+                value.PayloadSchemaLow);
+            U32(
+                writer,
+                17,
+                value.PayloadSchemaVersion,
+                value.DeliveryState,
+                value.ReasonCode,
+                value.AttemptCount,
+                value.Durability,
+                value.OrderOrdinal);
+            U64(writer, 23, value.CursorHigh, value.CursorLow);
+            U32(writer, 25, value.CursorCount, value.PrunedCount);
+            writer.WriteBytesField(27, value.Payload);
+            writer.WriteChecksum();
+            return writer.ToArray();
+        }
+
+        internal static OutboxRecordValue DecodeOutbox(TestRecordReader fields)
+        {
+            uint[] row = fields.UInt32Range(1, 2);
+            ulong[] ids = fields.UInt64Range(3, 14);
+            uint[] state = fields.UInt32Range(17, 6);
+            ulong[] cursor = fields.UInt64Range(23, 2);
+            uint[] retention = fields.UInt32Range(25, 2);
+            return new OutboxRecordValue(
+                row[0],
+                row[1],
+                ids[0],
+                ids[1],
+                ids[2],
+                ids[3],
+                ids[4],
+                ids[5],
+                ids[6],
+                ids[7],
+                ids[8],
+                ids[9],
+                ids[10],
+                ids[11],
+                ids[12],
+                ids[13],
+                state[0],
+                state[1],
+                state[2],
+                state[3],
+                state[4],
+                state[5],
+                cursor[0],
+                cursor[1],
+                retention[0],
+                retention[1],
+                fields.Bytes(27));
         }
 
         private static void U64(EnvelopeWriter writer, int firstFieldId, params ulong[] values)

@@ -1,0 +1,6 @@
+Cleanup mono
+// GC-022 note: GameCore.Validation.ProbeHost ran 1000 cycles; every GameCore world was disposed before shutdown.
+Leak Detected : Persistent allocates 1 individual allocation. Recorded by GameCore.Validation.ProbeHost.
+Found 1 leak(s) from callstack:
+0x00007f8c2a1b3e00 (Unity) Unity.Collections.NativeList`1:.ctor(Int32,AllocatorHandle)
+debugger-agent: Unable to listen on 43

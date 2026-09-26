@@ -52,7 +52,8 @@ namespace GameCore.Unity.Runtime.Persistence
             RestorePlan? plan,
             int restoredTargets,
             int restoredSlots,
-            int dormantSlots)
+            int dormantSlots,
+            int restoredOutboxRows)
         {
             Restored = restored;
             Replayed = plan == null && restored;
@@ -66,6 +67,7 @@ namespace GameCore.Unity.Runtime.Persistence
             RestoredTargets = restoredTargets;
             RestoredSlots = restoredSlots;
             DormantSlots = dormantSlots;
+            RestoredOutboxRows = restoredOutboxRows;
         }
 
         public bool Restored { get; }
@@ -96,6 +98,12 @@ namespace GameCore.Unity.Runtime.Persistence
         public int DormantSlots { get; }
 
         /// <summary>
+        /// Delivery obligation rows reinstated into the restored world (GC-021, P-053). Zero is the honest answer of
+        /// a world with no outbox; it is not evidence that an obligation was dropped, which the outbox proof covers.
+        /// </summary>
+        public int RestoredOutboxRows { get; }
+
+        /// <summary>
         /// True when this outcome replays a completed reservation rather than a fresh restore. The session is
         /// restored either way; this distinguishes "I just restored it" from "it was already restored" for a caller
         /// that retransmitted a request (O-21, P-050).
@@ -108,7 +116,7 @@ namespace GameCore.Unity.Runtime.Persistence
             DiagnosticCode code,
             string detail,
             WorldId source) =>
-            new RestoreOutcome(false, session, stage, code, detail, source, null, null, 0, 0, 0);
+            new RestoreOutcome(false, session, stage, code, detail, source, null, null, 0, 0, 0, 0);
 
         internal static RestoreOutcome Replay(WorldId session, DiagnosticCode code, string detail) =>
             new RestoreOutcome(
@@ -122,6 +130,7 @@ namespace GameCore.Unity.Runtime.Persistence
                 null,
                 0,
                 0,
+                0,
                 0);
 
         internal static RestoreOutcome Success(
@@ -131,7 +140,8 @@ namespace GameCore.Unity.Runtime.Persistence
             RestorePlan plan,
             int targets,
             int slots,
-            int dormant) =>
+            int dormant,
+            int outboxRows) =>
             new RestoreOutcome(
                 true,
                 session,
@@ -143,7 +153,8 @@ namespace GameCore.Unity.Runtime.Persistence
                 plan,
                 targets,
                 slots,
-                dormant);
+                dormant,
+                outboxRows);
 
         public override string ToString() =>
             Restored
@@ -151,6 +162,34 @@ namespace GameCore.Unity.Runtime.Persistence
                     + RestoredTargets.ToString(CultureInfo.InvariantCulture) + ",dormant="
                     + DormantSlots.ToString(CultureInfo.InvariantCulture) + ")"
                 : "refused(" + Stage.ToString() + ":" + DiagnosticCodeText.Of(Code) + ")";
+    }
+
+    /// <summary>
+    /// Reinstates a checkpoint's outbox section into the staging world (GC-021, P-053). It is separate from
+    /// <see cref="IRestoreTargetBuilder"/> because an outbox is not ECS storage: it is a managed owner inside the
+    /// world, and a world that has no outbox simply does not implement this. A builder that does implement it must
+    /// reinstate *before* the world is exposed, so no caller can observe a restored world whose committed delivery
+    /// obligations were dropped (P-045, P-049).
+    /// </summary>
+    public interface IRestoreOutboxBuilder
+    {
+        /// <summary>Reinstates the plan's outbox rows, reporting how many rows were applied.</summary>
+        bool TryReinstateOutbox(
+            WorldId session,
+            RestorePlan plan,
+            out int reinstatedRows,
+            out DiagnosticCode code,
+            out string detail);
+
+        /// <summary>
+        /// Proves that the world it built carries exactly the plan's outbox rows. The executor calls this before
+        /// exposure, so a restore that lost or invented an obligation is refused rather than published (P-053).
+        /// </summary>
+        bool TryProveOutbox(
+            WorldId session,
+            IReadOnlyList<OutboxRecordValue> expected,
+            out DiagnosticCode code,
+            out string detail);
     }
 
     /// <summary>
@@ -286,6 +325,33 @@ namespace GameCore.Unity.Runtime.Persistence
                 return Refuse(targetSession, operation, RestoreStage.Build, buildCode, buildDetail);
             }
 
+            int reinstatedOutboxRows = 0;
+            if (builder is IRestoreOutboxBuilder outboxBuilder)
+            {
+                // The outbox is reinstated before validation and before exposure, so a restored world is never
+                // observable with a dropped delivery obligation (P-045, P-053).
+                if (!outboxBuilder.TryReinstateOutbox(
+                        targetSession,
+                        plan,
+                        out reinstatedOutboxRows,
+                        out DiagnosticCode outboxCode,
+                        out string outboxDetail))
+                {
+                    Discard(staging);
+                    return Refuse(targetSession, operation, RestoreStage.Build, outboxCode, outboxDetail);
+                }
+
+                if (!outboxBuilder.TryProveOutbox(
+                        targetSession,
+                        plan.Outbox,
+                        out DiagnosticCode proveCode,
+                        out string proveDetail))
+                {
+                    Discard(staging);
+                    return Refuse(targetSession, operation, RestoreStage.Validate, proveCode, proveDetail);
+                }
+            }
+
             if (!Validate(staging, plan, out DiagnosticCode validationCode, out string validationDetail))
             {
                 // The staging world is destroyed before anything can observe it: a restore that cannot prove its
@@ -316,7 +382,8 @@ namespace GameCore.Unity.Runtime.Persistence
                 plan,
                 plan.Targets.Count,
                 plan.Slots.Count,
-                plan.DormantSlotCount);
+                plan.DormantSlotCount,
+                reinstatedOutboxRows);
         }
 
         /// <summary>

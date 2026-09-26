@@ -121,6 +121,24 @@ namespace GameCore.Derivation
 
         public int RulesEvaluated { get; internal set; }
 
+        /// <summary>
+        /// Telemetry-only counters of this derivation (GC-023): the schema counters that are neither budget
+        /// accounting nor provenance, so they must not change a decision or a diagnostic. They live in one
+        /// <see cref="TelemetryCounterSet"/>, and every increment site is a
+        /// <see cref="TelemetryCounting.Count(TelemetryCounterSet?, TelemetryCounter)"/> call, which the compiler
+        /// removes — argument evaluation included — when `GAMECORE_TELEMETRY` is undefined (08 s3, TEST-023).
+        /// </summary>
+        public TelemetryCounterSet Telemetry { get; } = new TelemetryCounterSet();
+
+        /// <summary>08 `StrataEvaluated`: capability strata this derivation iterated.</summary>
+        public long StrataEvaluated => Telemetry.Get(TelemetryCounter.StrataEvaluated);
+
+        /// <summary>
+        /// 08 `ControlNodesVisited`: control-plane nodes this derivation examined. Zero in a build without
+        /// `GAMECORE_TELEMETRY`, because the counting call sites do not survive compilation.
+        /// </summary>
+        public long ControlNodesVisited => Telemetry.Get(TelemetryCounter.ControlNodesVisited);
+
         /// <summary>Index buckets visited; the P-023 evidence that a local edit does not rescan untouched scopes.</summary>
         public int IndexBucketsVisited { get; internal set; }
 
@@ -152,5 +170,21 @@ namespace GameCore.Derivation
             + ";shadowed=" + ShadowedCandidates;
 
         public IReadOnlyList<Id128> TopFanOutCauses { get; internal set; } = Array.Empty<Id128>();
+
+        /// <summary>
+        /// Writes this derivation's protocol counters and its telemetry-only counters into
+        /// <paramref name="into"/> through the fixed compact schema (GC-023). Contribution add/retract counts are
+        /// added by the result, which owns the delta.
+        /// </summary>
+        public virtual void WriteTelemetry(TelemetryCounterSet into)
+        {
+            if (into == null)
+            {
+                throw new ArgumentNullException(nameof(into));
+            }
+
+            into.Merge(Telemetry);
+            into.Add(TelemetryCounter.CandidatesMatched, ExaminedCandidates);
+        }
     }
 }

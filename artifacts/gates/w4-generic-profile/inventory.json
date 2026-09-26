@@ -3112,5 +3112,791 @@
       "Every operation row except O-20/O-21 is unchanged; those two were promoted by the GC-018 build-host run and stay promoted.",
       "O-22 RecoverWorld is not proposed: GC-027 composes it from the restore path this gate proves."
     ]
+  },
+  "gc020Revisions": {
+    "task": "GC-020",
+    "branch": "gc-020",
+    "verdict": "NotRun (pending orchestrator build host). No requirement row promoted. This authoring host has no .NET SDK, no compiler and no Unity, so the gate of this task has never executed; every row below is a proposal the build host acts on after running tools/run_gc020_gate.sh.",
+    "statusOfThisSection": "Proposals only; no row promoted and no status changed by this change set.",
+    "objective": "Implement the exact real-time action/traversal reference composition from 07 s4 and its owner/stage policies on the existing fixed-step driver, with kinematic ECS-owned pose (primary) and the optional local rigidbody mode whose dedicated PhysicsScene is stepped exactly once per admitted step, plus committed animation/audio output and stamped physics observations.",
+    "normativeSections": [
+      "P-001",
+      "P-002",
+      "P-034",
+      "P-035",
+      "P-036",
+      "P-038",
+      "P-039",
+      "P-040",
+      "P-041",
+      "P-044",
+      "P-045",
+      "P-056",
+      "P-058",
+      "P-059"
+    ],
+    "requiredSuites": [
+      "TEST-011",
+      "TEST-012",
+      "TEST-013",
+      "TEST-018",
+      "TEST-019",
+      "TEST-021"
+    ],
+    "observationNames": [
+      "traversal/gc020-fixed-step-world-and-runners",
+      "traversal/gc020-existing-runners-derive-the-modifier",
+      "traversal/gc020-one-admitted-step-integrates-once",
+      "traversal/gc020-replay-separates-pure-motion-from-engine-observation",
+      "traversal/gc020-presentation-rate-does-not-double-advance",
+      "traversal/gc020-reparent-changes-the-contribution-and-keeps-state",
+      "traversal/gc020-unmount-keeps-pose-progress-and-receipts",
+      "traversal/gc020-mode-switch-both-directions",
+      "traversal/gc020-future-descendant-derives-before-execution",
+      "traversal/gc020-one-simulation-per-admitted-step",
+      "traversal/gc020-externally-owned-pose-is-not-integrated",
+      "traversal/gc020-committed-animation-and-audio-output",
+      "traversal/gc020-cards-and-narrative-declare-no-action-phase",
+      "traversal/gc020-teardown-settles-and-disposes"
+    ],
+    "digests": {
+      "algorithm": "SHA-256 over the LF-joined '<label>/<name>=pass' lines, no trailing newline (GameCore.Rules.Narrative.NarrativeDigest.OfLines)",
+      "traversal": "6263602b82b25315ae33f8ebcc3fbd314586743b9080b0bbe0df34ecc3172ad8",
+      "recomputedOnAuthoringHost": true,
+      "note": "One catalog only: no committed generated traversal catalog exists on this revision (its emission is GC-025's catalog coverage), so Gc020TraversalHost.GeneratedCatalogPresent is false and RunBoth answers both out-parameters with the fixture catalog's single run. The EditMode suite asserts that fact rather than implying a second catalog."
+    },
+    "proposedRows": [
+      {
+        "id": "P-001",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "The traversal package is a third genre on the same kernel binaries and declares no kernel schema: its five stages, three owners and one Additive capability are all package-owned, and its own observation 13 walks the narrative and card declarations looking for any traversal stage id, system key, buffer id or the acceleration capability and reports offenders=<none>. The genre-independence claim therefore gains a third family and a cross-family leak check. The row stays Partial because the cross-family card-to-narrative reward composition (REF-X01..X04) and the action world's IL2CPP run are GC-024/GC-021's, and nothing here has run.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-020/toolchain/probe-traversal.json",
+          "artifacts/gc-020/unity/editmode-results.xml",
+          "artifacts/gc-020/unity/playmode-results.xml",
+          "artifacts/gc-020/trx/",
+          "artifacts/gc-020/BUILD_REPORT.md"
+        ],
+        "observationEvidence": [
+          "traversal/gc020-cards-and-narrative-declare-no-action-phase",
+          "traversal/gc020-existing-runners-derive-the-modifier",
+          "traversal/gc020-future-descendant-derives-before-execution"
+        ]
+      },
+      {
+        "id": "P-002",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "The action family supplies the participants the role table names: one world host per course, a real command port for movement, the compiled five-stage execution graph, and an engine adapter (the local PhysicsScene) that admits stamped observations and submits intents. The row stays Partial: the physics adapter's own observation path is exercised by a gate scenario rather than by a production application, and no player run exists yet.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-020/toolchain/probe-traversal.json",
+          "artifacts/gc-020/unity/editmode-results.xml",
+          "artifacts/gc-020/unity/playmode-results.xml",
+          "artifacts/gc-020/trx/",
+          "artifacts/gc-020/BUILD_REPORT.md"
+        ],
+        "observationEvidence": [
+          "traversal/gc020-fixed-step-world-and-runners",
+          "traversal/gc020-one-admitted-step-integrates-once",
+          "traversal/gc020-presentation-rate-does-not-double-advance",
+          "traversal/gc020-teardown-settles-and-disposes"
+        ]
+      },
+      {
+        "id": "P-034",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "The declared external physical domain now exists end to end: the course declares which authority owns one recipe's motion, the integrator refuses to write an externally owned pose (counted as externallyOwnedInStep) rather than integrating it twice, a conflicting selection is refused as OwnershipConflict, and the local PhysicsScene backend is the sole writer of the pose it owns. The row stays Partial because the rigidbody mode is exercised in the Editor qualification world, not in a built player, and REF-A05's overlap case is asserted as a refusal rather than as a rejected assembly of two installed owners.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-020/toolchain/probe-traversal.json",
+          "artifacts/gc-020/unity/editmode-results.xml",
+          "artifacts/gc-020/unity/playmode-results.xml",
+          "artifacts/gc-020/trx/",
+          "artifacts/gc-020/BUILD_REPORT.md"
+        ],
+        "observationEvidence": [
+          "traversal/gc020-one-simulation-per-admitted-step",
+          "traversal/gc020-externally-owned-pose-is-not-integrated"
+        ]
+      },
+      {
+        "id": "P-035",
+        "currentStatus": "Implemented+Evidenced",
+        "proposedStatus": "Implemented+Evidenced",
+        "whatChanged": "Unchanged status: the course runs Created -> Running and stops through the world's own lifecycle, and the gate's teardown observation checks the stopped lifecycle, zero outstanding jobs and zero retained resources.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-020/toolchain/probe-traversal.json",
+          "artifacts/gc-020/unity/editmode-results.xml",
+          "artifacts/gc-020/unity/playmode-results.xml",
+          "artifacts/gc-020/trx/",
+          "artifacts/gc-020/BUILD_REPORT.md"
+        ],
+        "observationEvidence": [
+          "traversal/gc020-fixed-step-world-and-runners",
+          "traversal/gc020-one-admitted-step-integrates-once",
+          "traversal/gc020-presentation-rate-does-not-double-advance",
+          "traversal/gc020-teardown-settles-and-disposes"
+        ]
+      },
+      {
+        "id": "P-036",
+        "currentStatus": "Implemented+Evidenced",
+        "proposedStatus": "Implemented+Evidenced",
+        "whatChanged": "Unchanged status: a second FixedStep world now runs on the same driver, at the reference's configured 20 ms with the declared four-step catch-up, and the presentation-rate observation shows 30/60/144 Hz host sampling commits the same logical step count.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-020/toolchain/probe-traversal.json",
+          "artifacts/gc-020/unity/editmode-results.xml",
+          "artifacts/gc-020/unity/playmode-results.xml",
+          "artifacts/gc-020/trx/",
+          "artifacts/gc-020/BUILD_REPORT.md"
+        ],
+        "observationEvidence": [
+          "traversal/gc020-fixed-step-world-and-runners",
+          "traversal/gc020-one-admitted-step-integrates-once",
+          "traversal/gc020-presentation-rate-does-not-double-advance",
+          "traversal/gc020-teardown-settles-and-disposes"
+        ]
+      },
+      {
+        "id": "P-038",
+        "currentStatus": "Implemented+Evidenced",
+        "proposedStatus": "Implemented+Evidenced",
+        "whatChanged": "Unchanged status: the course's integration reads the world's own step clock, and the trace records the logical step per integrated body rather than any host timestamp.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-020/toolchain/probe-traversal.json",
+          "artifacts/gc-020/unity/editmode-results.xml",
+          "artifacts/gc-020/unity/playmode-results.xml",
+          "artifacts/gc-020/trx/",
+          "artifacts/gc-020/BUILD_REPORT.md"
+        ],
+        "observationEvidence": [
+          "traversal/gc020-fixed-step-world-and-runners",
+          "traversal/gc020-one-admitted-step-integrates-once",
+          "traversal/gc020-presentation-rate-does-not-double-advance",
+          "traversal/gc020-teardown-settles-and-disposes"
+        ]
+      },
+      {
+        "id": "P-039",
+        "currentStatus": "Implemented+Evidenced",
+        "proposedStatus": "Implemented+Evidenced",
+        "whatChanged": "Unchanged status: the five-stage declaration, its system keys, its per-system access sets and its coalescing are compiled by the same production compiler, and the stage-edge shape (with the extra integrate -> output edge of 07 s4.2) is a declared edge rather than an inferred one.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-020/toolchain/probe-traversal.json",
+          "artifacts/gc-020/unity/editmode-results.xml",
+          "artifacts/gc-020/unity/playmode-results.xml",
+          "artifacts/gc-020/trx/",
+          "artifacts/gc-020/BUILD_REPORT.md"
+        ],
+        "observationEvidence": [
+          "traversal/gc020-fixed-step-world-and-runners",
+          "traversal/gc020-one-admitted-step-integrates-once",
+          "traversal/gc020-presentation-rate-does-not-double-advance",
+          "traversal/gc020-teardown-settles-and-disposes"
+        ]
+      },
+      {
+        "id": "P-040",
+        "currentStatus": "Implemented+Evidenced",
+        "proposedStatus": "Implemented+Evidenced",
+        "whatChanged": "Unchanged status: the extra integrate -> output edge is declared as requiredAfter, so the compiled DAG carries both edges of 07 s4.2 explicitly.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-020/toolchain/probe-traversal.json",
+          "artifacts/gc-020/unity/editmode-results.xml",
+          "artifacts/gc-020/unity/playmode-results.xml",
+          "artifacts/gc-020/trx/",
+          "artifacts/gc-020/BUILD_REPORT.md"
+        ],
+        "observationEvidence": [
+          "traversal/gc020-fixed-step-world-and-runners",
+          "traversal/gc020-one-admitted-step-integrates-once",
+          "traversal/gc020-presentation-rate-does-not-double-advance",
+          "traversal/gc020-teardown-settles-and-disposes"
+        ]
+      },
+      {
+        "id": "P-041",
+        "currentStatus": "Implemented+Evidenced",
+        "proposedStatus": "Implemented+Evidenced",
+        "whatChanged": "Unchanged status: the integrate stage writes its owned components directly and relies on the driver's own step fence, while the declared sense->checkpoints step buffer produces the producer-before-consumer edge and its drain check.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-020/toolchain/probe-traversal.json",
+          "artifacts/gc-020/unity/editmode-results.xml",
+          "artifacts/gc-020/unity/playmode-results.xml",
+          "artifacts/gc-020/trx/",
+          "artifacts/gc-020/BUILD_REPORT.md"
+        ],
+        "observationEvidence": [
+          "traversal/gc020-fixed-step-world-and-runners",
+          "traversal/gc020-one-admitted-step-integrates-once",
+          "traversal/gc020-presentation-rate-does-not-double-advance",
+          "traversal/gc020-teardown-settles-and-disposes"
+        ]
+      },
+      {
+        "id": "P-044",
+        "currentStatus": "Implemented+Evidenced",
+        "proposedStatus": "Implemented+Evidenced",
+        "whatChanged": "Unchanged status: the checkpoint owner applies a bounded write set (crossings up to the declared capacity, refused before mutation when full) and stages each committed crossing event for the step's commit, so a step failure publishes none of them.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-020/toolchain/probe-traversal.json",
+          "artifacts/gc-020/unity/editmode-results.xml",
+          "artifacts/gc-020/unity/playmode-results.xml",
+          "artifacts/gc-020/trx/",
+          "artifacts/gc-020/BUILD_REPORT.md"
+        ],
+        "observationEvidence": [
+          "traversal/gc020-fixed-step-world-and-runners",
+          "traversal/gc020-one-admitted-step-integrates-once",
+          "traversal/gc020-presentation-rate-does-not-double-advance",
+          "traversal/gc020-teardown-settles-and-disposes"
+        ]
+      },
+      {
+        "id": "P-045",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "The action family adds a committed-output consumer on the other side of the boundary: the audio stage reads the world's own committed event store, deduplicates by the event identity and records the disabled-device path, and the animation stage refuses a token that is not strictly newer than the one it presented. The row stays Partial for the same reason the W5 gate left it: the crash-durable outbox and the long-run cursor/dedup budget are GC-021/GC-026's, and this gate's audio path is the engine-free recording sink (the headless player has audio disabled, crash-139).",
+        "evidenceToBeProduced": [
+          "artifacts/gc-020/toolchain/probe-traversal.json",
+          "artifacts/gc-020/unity/editmode-results.xml",
+          "artifacts/gc-020/unity/playmode-results.xml",
+          "artifacts/gc-020/trx/",
+          "artifacts/gc-020/BUILD_REPORT.md"
+        ],
+        "observationEvidence": [
+          "traversal/gc020-committed-animation-and-audio-output",
+          "traversal/gc020-replay-separates-pure-motion-from-engine-observation"
+        ]
+      },
+      {
+        "id": "P-056",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "The registered-seam surface gains a fourth rules package's reducer and predicate pair, an external-authority physics descriptor and a committed-output audio/animation sink port. The row stays Partial: asset/presentation/input adapters are GC-019's and their registration table remains unchanged here, and nothing has run on the build host.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-020/toolchain/probe-traversal.json",
+          "artifacts/gc-020/unity/editmode-results.xml",
+          "artifacts/gc-020/unity/playmode-results.xml",
+          "artifacts/gc-020/trx/",
+          "artifacts/gc-020/BUILD_REPORT.md"
+        ],
+        "observationEvidence": [
+          "traversal/gc020-fixed-step-world-and-runners",
+          "traversal/gc020-one-admitted-step-integrates-once",
+          "traversal/gc020-presentation-rate-does-not-double-advance",
+          "traversal/gc020-teardown-settles-and-disposes"
+        ]
+      },
+      {
+        "id": "P-058",
+        "currentStatus": "Implemented+Evidenced",
+        "proposedStatus": "Implemented+Evidenced",
+        "whatChanged": "Unchanged status: the traversal packages are compiled by the pinned Editor with the pinned package set, and the qualification player build is `tools/unity/build_probe.sh`'s. This change set adds no package pin and no toolchain change.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-020/toolchain/probe-traversal.json",
+          "artifacts/gc-020/unity/editmode-results.xml",
+          "artifacts/gc-020/unity/playmode-results.xml",
+          "artifacts/gc-020/trx/",
+          "artifacts/gc-020/BUILD_REPORT.md"
+        ],
+        "observationEvidence": [
+          "traversal/gc020-fixed-step-world-and-runners",
+          "traversal/gc020-one-admitted-step-integrates-once",
+          "traversal/gc020-presentation-rate-does-not-double-advance",
+          "traversal/gc020-teardown-settles-and-disposes"
+        ]
+      },
+      {
+        "id": "P-059",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "This is the row GC-020 is named against. The fixed-step action family now exists as a real package with its own owner/stage policies, and its own observation 13 asserts that the card and narrative declarations contain no traversal stage, system, buffer or capability, so the third family no longer shares a kernel phase with the other two. The row stays Partial because nothing has executed: the action family's IL2CPP player run and the cross-family composition are GC-024's, and until the build host runs this gate the clause \"action ... execute[s] before V1 conformance freeze\" is not evidenced.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-020/toolchain/probe-traversal.json",
+          "artifacts/gc-020/unity/editmode-results.xml",
+          "artifacts/gc-020/unity/playmode-results.xml",
+          "artifacts/gc-020/trx/",
+          "artifacts/gc-020/BUILD_REPORT.md"
+        ],
+        "observationEvidence": [
+          "traversal/gc020-cards-and-narrative-declare-no-action-phase",
+          "traversal/gc020-fixed-step-world-and-runners",
+          "traversal/gc020-mode-switch-both-directions",
+          "traversal/gc020-future-descendant-derives-before-execution"
+        ]
+      }
+    ],
+    "contractChanges": "None. No file under Packages/com.gamecore.contracts/ and no plan DTO was modified by GC-020. The new public surface is additive and lives in Packages/com.gamecore.rules.traversal, Packages/com.gamecore.gameplay.traversal and three new Runtime/Pure folders of Packages/com.gamecore.unity.adapters.",
+    "carriedGaps": [
+      "Nothing in this change set has been compiled, imported or executed: every artifact path above must first be produced by the build host.",
+      "O-14's probe over 10,000 replayed steps is GC-023's; this gate exercises the fixed-step driver at one-second and three-presentation-rate scale.",
+      "The rigidbody mode's authority is proved in the Editor qualification world with a recording and a real local scene, not with a production rigidbody game.",
+      "The audio stage is qualified engine-free by design: the headless player has Unity audio disabled (crash-139), so the live-device path is documented rather than run.",
+      "The course has no committed generated catalog yet (GC-025), so this gate runs one catalog and says so."
+    ],
+    "notProposed": [
+      "Every requirement row not listed in proposedRows is unchanged and unproposed, including P-049 (O-22 RecoverWorld, GC-027) and P-007/P-045's long-run retention budgets (GC-021/GC-026)."
+    ]
+  },
+  "gc021Revisions": {
+    "task": "GC-021",
+    "branch": "gc-021",
+    "verdict": "NotRun (pending orchestrator build host): nothing in this change set has been compiled or executed. This section promotes NOTHING; every row below is a proposal naming the observation that would carry it and the artifacts the build host must first produce.",
+    "statusOfThisSection": "Proposals only. No requirement or operation row was promoted, and counts are unchanged.",
+    "objective": "Support cross-family/external committed delivery without pretending in-memory events are durable exactly once: a versioned bounded outbox created at commit, explicit destination command idempotency keys, acknowledgment/cursor retention, checkpoint integration, a file-backed durable adapter with deterministic crash points, and a narrative-to-card reward integration with explicit compensation or rejection for unsupported destination state.",
+    "normativeSections": [
+      "P-003",
+      "P-042",
+      "P-043",
+      "P-044",
+      "P-045",
+      "P-049",
+      "P-050",
+      "P-053",
+      "P-054"
+    ],
+    "requiredSuites": [
+      "TEST-013",
+      "TEST-014",
+      "TEST-015",
+      "TEST-016",
+      "TEST-017"
+    ],
+    "observationNames": [
+      "gc021-key-is-derived-from-committed-data",
+      "gc021-commit-persists-before-apply",
+      "gc021-crash-after-delivery-loses-the-acknowledgement",
+      "gc021-redelivery-applies-the-mutation-once",
+      "gc021-capacity-exhaustion-is-never-a-silent-drop",
+      "gc021-volatile-delivery-is-distinguishable-from-durable",
+      "gc021-obligation-survives-the-source-world-unload",
+      "gc021-checkpoint-carries-the-outbox-and-the-cursor",
+      "gc021-no-universal-effect-api",
+      "gc021-narrative-choice-is-observed",
+      "gc021-reward-obligation-is-durable-and-idempotent"
+    ],
+    "digests": {
+      "algorithm": "SHA-256 over the LF-joined '<label>/<name>=pass' lines, no trailing newline (GameCore.Rules.Narrative.NarrativeDigest.OfLines)",
+      "narrative": "PENDING - the literal is computed from the observation names and pass flags and cannot be known before the sequence first runs; the build host pins it after the first passing run",
+      "cards": "PENDING - as above",
+      "recomputedOnAuthoringHost": false,
+      "note": "ProbeGc021 ships both literals as PENDING and run_gc021_probe.sh asserts the falsifiable cross-catalog equality (generatedDigest == fixtureDigest) until they are pinned. No literal was invented."
+    },
+    "proposedRows": [
+      {
+        "id": "P-045",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "GC-021's own row. A durable outbox with explicit external idempotency keys, persist-then-apply ordering, acknowledgement cursors and a checkpoint section now exists, and redelivery after acknowledgement loss applies the destination mutation once because the key is derived from the committed event rather than minted per attempt. Delivery is implemented and documented as at-least-once with destination deduplication, never as exactly-once.",
+        "statusUnchangedBecause": "The full normative contract still includes retention/dedup behaviour under memory pressure (GC-023), recovery composition (GC-027) and the real-family world probe, none of which this authoring host could execute.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-021/trx/",
+          "artifacts/gc-021/toolchain/probe-gc021.json",
+          "artifacts/gc-021/unity/delivery-editmode.xml",
+          "artifacts/gc-021/BUILD_REPORT.md"
+        ],
+        "observation": "gc021-redelivery-applies-the-mutation-once (with destinationMutations=1 and redeliveredMutations=1 in the step detail)"
+      },
+      {
+        "id": "P-053",
+        "currentStatus": "Implemented+Evidenced",
+        "proposedStatus": "Implemented+Evidenced",
+        "whatChanged": "The 'external outbox/dedup cursors when used' clause now has a representation where it previously had none: CheckpointRecordKind.Outbox with Obligation/Terminal/Cursor rows, a capture path, three planner refusals for a self-contradicting section, and a restore reinstate-and-prove seam.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-021/toolchain/probe-gc021.json",
+          "artifacts/gc-021/trx/"
+        ],
+        "observation": "gc021-checkpoint-carries-the-outbox-and-the-cursor (with headerOutboxCount= in the detail)"
+      },
+      {
+        "id": "P-003",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "Acknowledging a delivery is idempotent, a terminal rejection or compensation is irreversible, and the task adds no universal gameplay Effect API: the delivery surface is asserted to expose no Undo/Revert/Rollback/Effect member.",
+        "statusUnchangedBecause": "The row's remaining gap is the unload-with-committed-gameplay survival path, which is a world-level observation GC-021's own probe and GC-022 own.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-021/toolchain/probe-gc021.json"
+        ],
+        "observation": "gc021-no-universal-effect-api (with reverseMembers=0 in the detail)"
+      },
+      {
+        "id": "P-043",
+        "currentStatus": "Implemented+Evidenced",
+        "proposedStatus": "Implemented+Evidenced",
+        "whatChanged": "Capacity and terminal retention are bounded and their refusals and prunes are counted (BudgetExceeded on capacity, PrunedTerminalCount on retention), which is the 'no silent drop' rule applied to an outbox rather than a buffer.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-021/toolchain/probe-gc021.json",
+          "artifacts/gc-021/trx/"
+        ],
+        "observation": "gc021-capacity-exhaustion-is-never-a-silent-drop (with atCapacity=True and capacityCode=BudgetExceeded)"
+      },
+      {
+        "id": "P-050",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "The external idempotency key and the obligation identity are both derived from committed data, so one attempt reuses one identity across a crash and a recovery; the adapter records the obligation's causal OperationId.",
+        "statusUnchangedBecause": "Bounded retry attempts and staged/expired operation status remain open elsewhere (GC-014, GC-027).",
+        "evidenceToBeProduced": [
+          "artifacts/gc-021/toolchain/probe-gc021.json",
+          "artifacts/gc-021/trx/"
+        ],
+        "observation": "gc021-redelivery-applies-the-mutation-once"
+      },
+      {
+        "id": "P-049",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "A committed delivery obligation is reinstated from a checkpoint into a new session and recovered explicitly, with no hidden automatic replay: the source world is unloaded and the new session still owes the destination.",
+        "statusUnchangedBecause": "O-22 RecoverWorld remains uncomposed (GC-027) and host-configured bounded retries are not implemented by this task.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-021/toolchain/probe-gc021.json"
+        ],
+        "observation": "gc021-obligation-survives-the-source-world-unload (with sessionsDiffer=True and rowsReinstated=)"
+      },
+      {
+        "id": "P-054",
+        "currentStatus": "Implemented+Evidenced",
+        "proposedStatus": "Implemented+Evidenced",
+        "whatChanged": "The outbox row is versioned (RecordVersion) and fram-checked (format header, field count, field widths, checksum), and a row from an unknown version or of an unknown kind is refused rather than decoded; the reward payload carries its own version byte.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-021/trx/"
+        ],
+        "observation": "ARowFrameWithATamperedByteOrAnotherVersionIsRefusedRatherThanDecoded, ARestoreRefusesARowFromAnUnknownRecordVersionOrOfAnUnknownKind (dotnet, no probe step)"
+      }
+    ],
+    "implementation": {
+      "format": "CheckpointRecordKind.Outbox = 12 (appended; RecordKindCount 13), OutboxRecordValue (27 fields), OutboxRowKind/OutboxDeliveryState/OutboxDurability, HeaderRecordValue.OutboxCount (field 40)",
+      "engineFreeCore": "Packages/com.gamecore.unity.runtime/Runtime/Pure/Delivery/{DeliveryKey,DurableOutbox,DurableDeliveryAdapter}.cs",
+      "worldOwner": "Packages/com.gamecore.unity.runtime/Runtime/Delivery/WorldDeliveryOwner.cs",
+      "integration": "Packages/com.gamecore.gameplay.integration/Runtime/RewardOutbox/{RewardRule,RewardPayloadCodec,CardRewardDestination,NarrativeCardRewardBridge}.cs",
+      "tests": "Packages/com.gamecore.unity.runtime/Tests/Delivery/{DeliveryOutboxTests,DeliveryCrashFixture}.cs",
+      "harness": "tools/unity/run_gc021_probe.sh"
+    },
+    "limits": [
+      "No Unity world ran and no player was built: the Unity-world half of the task's acceptance is the gc021 probe/EditMode pair and its evidence does not exist yet.",
+      "The two digest literals are PENDING by design; nothing was invented to fill them.",
+      "O-22 RecoverWorld is untouched; P-049's bounded retry clause is not implemented here.",
+      "The reward bridge's narrative node and the card transfer's outcome are content-dependent real observables; a refusal is reported as a refusal rather than asserted away."
+    ]
+  },
+  "gc023Revisions": {
+    "task": "GC-023",
+    "branch": "gc-023",
+    "verdict": "NotRun (pending orchestrator build host, round 2). No requirement row was promoted here: this section is proposals only, every proposal names the observation that would carry it and the artifacts the build host must first produce. Round 2 adds the real-Unity-jobs half that the round-1 review required (real Burst parallel producers writing the runtime's bounded lane, `JobsUtility.JobWorkerCount` 1/2/4/max, recorded per-thread evidence), so the observation table grew from 12 to 15 and the recorded observation digest in tests/GameCore.Replay/Data/replay-record.json was deliberately emptied for re-recording. GC-023's gate command is `UNITY=<editor> DOTNET=<sdk> PROBE_RUNS=5 tools/run_gc023_gate.sh`; see artifacts/gc-023/HANDOFF.md.",
+    "statusOfThisSection": "Proposals only. The orchestrator promotes after running the gate and recording artifacts/gc-023/toolchain/probe-replay.json, artifacts/gc-023/toolchain/telemetry-release-surface.json and artifacts/gc-023/unity/editmode-results.xml.",
+    "objective": "Expose ordering drift and accidental control-plane work in the simulation hot path: canonical replay hashing and traces with stable IDs, the 10,000-step integer fixture across worker counts, differential propagation with reproducible failing seeds, and every 08 counter instrumented through one fixed compact schema that is enabled and retained explicitly by build config.",
+    "normativeSections": [
+      "P-007",
+      "P-008",
+      "P-018",
+      "P-022",
+      "P-023",
+      "P-026",
+      "P-037",
+      "P-039",
+      "P-040",
+      "P-041",
+      "P-043",
+      "P-044",
+      "P-045",
+      "P-048",
+      "P-052",
+      "P-053",
+      "P-060"
+    ],
+    "requiredSuites": [
+      "TEST-007",
+      "TEST-008",
+      "TEST-012",
+      "TEST-014",
+      "TEST-022",
+      "TEST-023"
+    ],
+    "observationNames": [
+      "replay-world-created-and-owners-sampled",
+      "replay-world-idle-pump-does-zero-control-work",
+      "replay-world-memory-split-is-reported-separately",
+      "replay-world-wake-commits-one-step-and-samples-durations",
+      "replay-world-counters-move-on-a-committed-step",
+      "replay-trace-records-ten-thousand-steps",
+      "replay-hashes-identically-across-worker-counts",
+      "replay-hashes-identically-under-shuffled-producers",
+      "replay-different-admission-is-a-different-input",
+      "replay-observation-replay-is-separate-from-physics",
+      "replay-differential-sweep-is-clean-and-reducible",
+      "replay-raw-benchmark-trace-round-trips",
+      "replay-jobs-world-runs-real-parallel-producers",
+      "replay-jobs-hashes-identical-across-worker-counts",
+      "replay-jobs-producers-execute-on-multiple-threads",
+      "replay-digest",
+      "replay-observation-count",
+      "replay-benchmark-trace"
+    ],
+    "proposedRows": [
+      {
+        "id": "P-008",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "The gap this row names is exactly what GC-023 builds, in two halves. (1) The modeled half: a recorded 10,000-step integer fixture replayed with shuffled producer/completion order across worker counts 1, 2, 4 and 8, compared after every step on canonical state, decisions, committed event identities and capability provenance, plus the documented exclusion list a canonical hash may not read (timestamps, padding, diagnostic counters, native layout, worker scheduling, enumeration order) and the comparison-only world-ordinal mapping that leaves runtime deduplication and handle validation alone. (2) The real half, added after the first review found the modeled half insufficient: the fixture's producers are real Burst `IJobParallelFor` jobs (inner-loop batch size 1) writing the runtime's own bounded lane payload arena, published through the lane's publish path in a seeded permutation, merged by the runtime's canonical `MergeOwnerBatch` and reduced by the owner commit - run at `JobsUtility.JobWorkerCount` 1, 2, 4 and the target's own maximum, twice each with different publish permutations, with the per-thread execution histogram recorded so 'more than one worker really ran producer work' is evidence rather than an assumption, and with the merge shown to have reordered the append order. Proposal reason for leaving the status at Partial: the row's own scope is the protocol's determinism boundary, and cross-platform floating-point/physics lockstep is explicitly outside it, so no single task can move it to Implemented+Evidenced.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-023/toolchain/probe-replay.json",
+          "artifacts/gc-023/trx/",
+          "artifacts/gc-023/unity/editmode-results.xml"
+        ],
+        "observationEvidence": [
+          "replay-trace-records-ten-thousand-steps",
+          "replay-hashes-identically-across-worker-counts",
+          "replay-hashes-identically-under-shuffled-producers",
+          "replay-different-admission-is-a-different-input",
+          "replay-observation-replay-is-separate-from-physics",
+          "replay-jobs-world-runs-real-parallel-producers",
+          "replay-jobs-hashes-identical-across-worker-counts",
+          "replay-jobs-producers-execute-on-multiple-threads"
+        ]
+      },
+      {
+        "id": "P-018",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "The row's gap was 'explicit SelectProvider overrides, equal-priority ties and rank ordering under shuffled worker completion and replay are not archived at reference scale'. GC-023 archives the shuffled-completion half at reference scale twice: once with a modeled scheduling permutation, and once with REAL Unity job producers whose completion order is decided by the worker threads (the publishing stage appends the produced rows in a seeded permutation and the runtime's canonical merge still yields identical decisions and provenance at worker counts 1, 2, 4 and the maximum). Explicit SelectProvider overrides remain GC-006/GC-013 evidence.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-023/toolchain/probe-replay.json"
+        ],
+        "observationEvidence": [
+          "replay-hashes-identically-under-shuffled-producers",
+          "replay-hashes-identically-across-worker-counts"
+        ]
+      },
+      {
+        "id": "P-022",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "GC-023 surfaces the plan's prepare-byte estimate as 08's `PlanPreparedBytes` through the fixed compact schema and reports the derivation side of the budget (candidates examined, contributions emitted, temporary bytes) through the same schema. The row's remaining gap is a measured run on a named machine against the provisional default limits, which is GC-026's.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-023/toolchain/probe-replay.json",
+          "artifacts/gc-023/trx/"
+        ],
+        "observationEvidence": [
+          "replay-world-counters-move-on-a-committed-step"
+        ]
+      },
+      {
+        "id": "P-023",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "The row's gap was 'untouched-sibling index counters and the complete index inventory at scale remain unevidenced'. GC-023 adds the counter that evidences it per step and asserts it: `ControlNodesVisited` is incremented at every index and closure query site *before* a cached lookup can short-circuit (TEST-023 requires cached traversals to count), and a step whose composition did not change reports zero control nodes, zero strata and zero examined candidates because the incremental engine carries the previous result. The 10,000-step replay asserts exactly that over every carried step.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-023/toolchain/probe-replay.json",
+          "artifacts/gc-023/trx/"
+        ],
+        "observationEvidence": [
+          "replay-world-idle-pump-does-zero-control-work",
+          "replay-hashes-identically-across-worker-counts"
+        ]
+      },
+      {
+        "id": "P-026",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "The replay's canonical projection includes the explanation set and the losing/shadowed candidate identities per step, so a provenance regression is caught by the same hash chain as a state regression; the differential sweep compares state, decisions and provenance together and reduces a disagreement to a re-runnable counterexample. Wider explanation coverage across every mode and state disposition remains GC-016's.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-023/toolchain/probe-replay.json",
+          "artifacts/gc-023/trx/"
+        ],
+        "observationEvidence": [
+          "replay-differential-sweep-is-clean-and-reducible"
+        ]
+      },
+      {
+        "id": "P-052",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "The gate reports its own evidence through the same structured probe document and a raw benchmark trace written beside it, with a stable observation name per behaviour and a digest over the observation table that the harness recomputes from the names. The cross-module diagnostic matrix remains GC-016's.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-023/toolchain/probe-replay.json",
+          "artifacts/gc-023/toolchain/probe-replay.json.trace"
+        ],
+        "observationEvidence": [
+          "replay-digest",
+          "replay-benchmark-trace"
+        ]
+      },
+      {
+        "id": "P-060",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "The row asks for recorded versions, commands, logs, fixture hashes and measurements. GC-023 records the fixture shape and seed as data (tests/GameCore.Replay/Data/replay-record.json), writes the raw and JSON benchmark traces as artifacts, and adds the disabled-shape instrumentation proof (both build configurations of the counting helpers and of the real instrumented derivation sources, with the qualification switch) as a machine-readable document. Measured budgets on a named machine remain GC-026's.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-023/toolchain/telemetry-release-surface.json",
+          "artifacts/gc-023/toolchain/probe-replay.json",
+          "artifacts/gc-023/BUILD_REPORT.md"
+        ],
+        "observationEvidence": [
+          "replay-benchmark-trace",
+          "replay-observation-count"
+        ]
+      }
+    ],
+    "notProposed": [
+      "P-007, P-037, P-039, P-040, P-041, P-043, P-044, P-045, P-048 and P-053 keep their current status: GC-023 exercises their counters and traces through the same schemas but closes none of their remaining clauses.",
+      "No operation row is proposed. GC-023 adds no operation and changes no operation's outcome vocabulary.",
+      "TEST-023's budget table (the provisional numbers for 10,000 targets, plan apply pause and whole-world preparation) is not proposed as satisfied: GC-023 instruments what those budgets measure and asserts the zero-work rows, while the measured runs on the named machine belong to GC-026."
+    ],
+    "contractChanges": [
+      "`GameCore.Contracts` gains fourteen public types (the telemetry schema): `TelemetryCounter`, `TelemetryAggregation`, `TelemetrySchema`, `ITelemetryOwner`, `TelemetryCounting`, `TelemetryBytes`, `TelemetryRetention`, `TelemetryCounterSet`, `TelemetrySection`, `TelemetryFrame`, `TelemetryTrace`, `TelemetrySeries`, `TelemetrySeriesEntry` and `TelemetryDurations`. Additions only: no frozen line was removed or changed, and the fourteen type headers are recorded in `dotnet/tests/GameCore.Contracts.Tests/ContractTests.cs`'s additions allowlist exactly as GC-012 and GC-018 recorded theirs.",
+      "`ITelemetryOwner` is the fixed compact schema's owner seam: each runtime owner implements `TelemetryOwner` (a stable key) and `WriteTelemetry(TelemetryCounterSet)`. Twenty-two owners implement it (derivation result/closure/outcome/recipe cache, service resolution, the operation ledger, the resource ledger, the job fence, the callback gate, the quarantine registry, the planned publication, the execution driver, the guarded dispatch group, the publication store, the committed event store, the world resource ledger, the request ledger, the step message schedule, the input cutoff, the clock registry, the assembly publisher, the derived-assembly pipeline and the observation surface).",
+      "The switch is `GAMECORE_TELEMETRY`, taken from the new qualification marker package `com.gamecore.telemetry-qualification` by the contracts, derivation, composition, planning and Unity-runtime asmdefs, and defined unconditionally by the plain-dotnet shadow projects. Shipping projects omit the marker."
+    ]
+  },
+  "w6GateRevisions": {
+    "branch": "w6-gate",
+    "contractChanges": "None. No file under Packages/com.gamecore.contracts/ and no plan DTO was modified by this gate.",
+    "mergedTasks": [
+      "GC-020",
+      "GC-021",
+      "GC-022",
+      "GC-023"
+    ],
+    "notProposed": [
+      "O-22 RecoverWorld stays Not yet (GC-027); the measured budget table stays GC-026's; P-055's cross-version migration matrix stays GC-027's.",
+      "Every requirement row not listed above is unchanged and unproposed, including the rows the four merged tasks proposed for themselves."
+    ],
+    "objective": "Integrate the fixed-step action reference, durable reward delivery, unload stress and replay/cost counters on one revision; demonstrate that optional physics/animation are absent from cards and narrative while the traversal course carries them; complete the 1,000-cycle teardown and repeatability fixtures across all three genres.",
+    "observationTables": {
+      "cards": 7,
+      "digests": {
+        "cardsFixture": "9c3d3b5d2f8e959920aa9678e65f56658cbe4a513fcd2895cd458fbda4f9ea14",
+        "cardsGenerated": "894a975e4a5eb98d733ec213778ec275e4abe02cb4028271857bd4fa68d6fe80",
+        "narrativeFixture": "ab198371e8d276dcc2833e88e64e278abde57274ea3c68e2497fa2b75f97fa73",
+        "narrativeGenerated": "4235cea3c22cf93e38307000fcc863edd4ada3e2fc4a3b475ca719765dc17279",
+        "traversal": "ca29b5f7099f9fbc4abeb7031c7b1e35ba39ec1ad39db70dd0f037fa8d45675e"
+      },
+      "narrative": 6,
+      "playerProbeSteps": 41,
+      "traversal": 9
+    },
+    "proposedRows": [
+      {
+        "currentStatus": "Partial",
+        "evidenceToBeProduced": [
+          "artifacts/w6-gate/toolchain/probe-w6-gate.json",
+          "artifacts/w6-gate/unity/editmode-results.xml",
+          "artifacts/w6-gate/trx/"
+        ],
+        "id": "P-045",
+        "observation": "cards/w6-reward-delivery-is-exactly-once-across-a-reload",
+        "proposedStatus": "promotion is the build host's call",
+        "whatChanged": "One committed event becomes one durable obligation, which is reinstated into a world of a NEW session after its receiving world is stopped and disposed, dispatched, acknowledged, and then reinstated once more after the acknowledgement is lost, where the destination is asked twice under one external idempotency key and mutates exactly once."
+      },
+      {
+        "currentStatus": "Partial",
+        "evidenceToBeProduced": [
+          "artifacts/w6-gate/toolchain/probe-w6-gate.json"
+        ],
+        "id": "P-049",
+        "proposedStatus": "Partial",
+        "whatChanged": "The obligation outlives the unload of the world that committed it and is reinstated explicitly; O-22 RecoverWorld and host-configured bounded retries stay GC-027's."
+      },
+      {
+        "currentStatus": "Partial",
+        "evidenceToBeProduced": [
+          "artifacts/w6-gate/toolchain/probe-w6-gate.json",
+          "artifacts/w6-gate/toolchain/native-leak-attribution.json"
+        ],
+        "id": "P-007",
+        "proposedStatus": "Partial",
+        "whatChanged": "Lease and callback counts return to the world's own baselines after 1,000 cycles per genre, with retired-history and fence high-water marks reported; long-run retention under memory pressure stays GC-026's."
+      },
+      {
+        "currentStatus": "Partial",
+        "evidenceToBeProduced": [
+          "artifacts/w6-gate/toolchain/probe-w6-gate.json"
+        ],
+        "id": "P-001",
+        "proposedStatus": "Partial",
+        "whatChanged": "The audit is made from both directions in one run: cards and narrative carry no traversal stage, key, buffer, capability, rule, schema, factory, slot or adapter assembly, and the traversal course carries the five stages plus the physics, animation and audio stages. The cross-family reward composition stays GC-024's."
+      },
+      {
+        "currentStatus": "Partial",
+        "evidenceToBeProduced": [
+          "artifacts/w6-gate/toolchain/probe-w6-gate.json"
+        ],
+        "id": "P-034",
+        "proposedStatus": "Partial",
+        "whatChanged": "One local PhysicsScene simulation per admitted step, a refused and counted duplicate step, and the engine's own Simulate count equal to the admitted steps and to the physics gate's counter."
+      },
+      {
+        "currentStatus": "Implemented+Evidenced",
+        "evidenceToBeProduced": [
+          "artifacts/w6-gate/toolchain/probe-w6-gate.json"
+        ],
+        "id": "P-036",
+        "proposedStatus": "Implemented+Evidenced",
+        "whatChanged": "The traversal course commits no step while no host time elapses and one declared step per pump; the command-driven genres commit exactly one step per admitted command inside the same loop."
+      },
+      {
+        "currentStatus": "Partial",
+        "evidenceToBeProduced": [
+          "artifacts/w6-gate/toolchain/probe-w6-gate.json",
+          "artifacts/w6-gate/trx/"
+        ],
+        "id": "P-046",
+        "proposedStatus": "may promote after the gate",
+        "whatChanged": "1,000 real mount/unmount cycles with one admitted step inside each cycle, driven through ONE loop for all three genres."
+      },
+      {
+        "currentStatus": "Implemented+Evidenced",
+        "evidenceToBeProduced": [
+          "artifacts/w6-gate/toolchain/probe-w6-gate.json"
+        ],
+        "id": "P-048",
+        "proposedStatus": "Implemented+Evidenced",
+        "whatChanged": "Every cycle's installation reaches Disposed with its lease retired, and the registries are bounded afterwards; the registries' high-water marks are reported rather than assumed."
+      },
+      {
+        "currentStatus": "Partial",
+        "evidenceToBeProduced": [
+          "artifacts/w6-gate/toolchain/probe-w6-gate.json",
+          "artifacts/w6-gate/unity/editmode-results.xml"
+        ],
+        "id": "P-008",
+        "proposedStatus": "Partial",
+        "whatChanged": "A replay of the recorded input agrees at tolerance zero and reproduces the rule digest; five frozen digest literals are recomputed by the suite from the name table alone. Cross-platform and native-physics claims stay excluded."
+      },
+      {
+        "currentStatus": "Partial",
+        "evidenceToBeProduced": [
+          "artifacts/w6-gate/toolchain/probe-w6-gate.json"
+        ],
+        "id": "P-059",
+        "proposedStatus": "Partial",
+        "whatChanged": "The third genre runs in the same stripped player as the other two and the composition audit is made from the traversal side as well; the full transition tables stay GC-024's."
+      },
+      {
+        "currentStatus": "Partial",
+        "evidenceToBeProduced": [
+          "artifacts/w6-gate/release-gate-surface.json",
+          "artifacts/w6-gate/release-surface.json"
+        ],
+        "id": "P-060",
+        "proposedStatus": "Partial",
+        "whatChanged": "This gate's evidence set, including a release-surface inspection that proves the union of qualification-only markers is absent from a shipping-shaped player while the production seams remain."
+      }
+    ],
+    "reconciliations": [
+      "The probe host keeps EVERY mode from all four tasks; tools/unity/prepare_gc017_release_project.py strips only the qualification-only ones (faults, W5 gate, GC-021's seat, GC-022's lifecycle stress, GC-023's replay fixture, the Wave 6 gate) plus the editor-only reload matrix.",
+      "ProbeRunner.CreateReport's per-mode report identity is one independent `if` block per mode, and the dispatch is one `else if` block per mode; the merge had left three blocks (traversal, GC-021, lifecycle stress) without their CompletePositive call, which is fixed on this revision.",
+      "GC-023's round 2 merged second: the clone now also drops the replay fixture package, its three runtime files, its mode wiring and the probe host's GameCore.Replay asmdef reference, while -probeTraversal (which the clone keeps) stays wired through the const, parameter, assignment, local, parse branch, property, identity branch and dispatch branch.",
+      "The two replaced strings in ProbeArguments - the qualification-mode expression and the constructor argument list - are re-derived from the merged source, and tools/check_release_clone.py asserts on every run that the clone's constructor call still matches its own parameter list (the previous revision's did not).",
+      "No surviving release-clone file may reference a removed member: the editor-only reload matrix drove Gc020TraversalHost.RunReloadRoute, which lives in a Wave 6 gate file the clone removes, so the clone removes the matrix too (the qualified reload-matrix runs are unaffected).",
+      "tools/check_release_gate_free.py scans a built release player for the union of qualification-only markers (GC-017, GC-021, GC-022, GC-023's replay fixture, the Wave 5 and Wave 6 gates) and requires the qualification player to show one marker per group, with -probeTraversal present in both players as the kept-mode anchor.",
+      "tools/check_release_clone.py and tools/check_gate_sources.py are new and wired into tools/run_w6_gate.sh: the first asserts the disposable clone's own invariants, the second the source-level invariants of this gate's change set (member resolution, using coverage, ambiguity, balance, frozen tables vs digest literals vs the probe harness's steps).",
+      "LifecyclePlayModeMatrix drives Gc020TraversalHost.RunReloadRoute once per session, so the {domain, scene} reload matrix covers the traversal genre too."
+    ],
+    "statusOfThisSection": "Proposals only. Counts are unchanged.",
+    "task": "W6-GATE",
+    "verdict": "NotRun (pending orchestrator build host). No requirement or operation row promoted: this section is proposals only, and every proposal names the observation that would carry it and the artifacts the build host must first produce."
   }
 }

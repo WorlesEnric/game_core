@@ -66,6 +66,14 @@ namespace GameCore.Contracts
 
         /// <summary>One event cursor or per-issuer deduplication high-water mark (P-045, P-050, P-053).</summary>
         Cursor = 11,
+
+        /// <summary>
+        /// One external delivery obligation, one terminal delivery record or one per-destination delivery cursor
+        /// (GC-021, P-045, P-053). Appended after <see cref="Cursor"/> so every earlier record's field id is
+        /// unchanged; a reader that does not declare it refuses the document with `UnsupportedVersion` rather than
+        /// skipping bytes it cannot interpret (P-055).
+        /// </summary>
+        Outbox = 12,
     }
 
     /// <summary>What a capture does with external commands that are queued but not yet executed (P-053, 06 s7).</summary>
@@ -123,7 +131,7 @@ namespace GameCore.Contracts
         public const int FirstRecordFieldId = 100;
 
         /// <summary>Number of declared record kinds.</summary>
-        public const int RecordKindCount = 12;
+        public const int RecordKindCount = 13;
 
         /// <summary>Upper bound on the records of one document; a larger document is refused, never truncated.</summary>
         public const int MaxRecordCount = 1 << 20;
@@ -192,6 +200,7 @@ namespace GameCore.Contracts
                 case CheckpointRecordKind.Message: return "message";
                 case CheckpointRecordKind.Rng: return "rng";
                 case CheckpointRecordKind.Cursor: return "cursor";
+                case CheckpointRecordKind.Outbox: return "outbox";
                 default: return "unknown";
             }
         }

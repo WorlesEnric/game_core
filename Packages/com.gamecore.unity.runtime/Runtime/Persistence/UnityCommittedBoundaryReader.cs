@@ -298,6 +298,7 @@ namespace GameCore.Unity.Runtime.Persistence
                 commands,
                 messages,
                 context.Rng.ToRecords(),
+                context.OutboxRows,
                 cursors,
                 lease.Token,
                 lease.QueueDisposition,

@@ -34,8 +34,10 @@ namespace GameCore.Planning
     /// type is the engine-free projection of it that the Unity adapter consumes: which binding rows to install or
     /// retract, which state slots to migrate, which schedule to install and which derivation rules stay active.
     /// </summary>
-    public sealed class PlannedPublication
+    public sealed class PlannedPublication : ITelemetryOwner
     {
+        string ITelemetryOwner.TelemetryOwner => "gamecore.planning.plan";
+
         public PlannedPublication(
             ChangePlan plan,
             PlanStateMachine state,
@@ -108,6 +110,24 @@ namespace GameCore.Planning
 
         /// <summary>Targets whose effective binding set changes; used by the publisher's fence and diagnostics.</summary>
         public int ChangedTargetCount => AffectedTargets.Count;
+
+        /// <summary>
+        /// Writes this plan's counters through the fixed compact schema (GC-023): the P-022 prepare-byte estimate
+        /// (08 `PlanPreparedBytes`) and the affected contribution counts, which the plan already computes for its
+        /// own diagnostics. A rejected plan reports the estimate its refusal was decided against.
+        /// </summary>
+        public void WriteTelemetry(TelemetryCounterSet into)
+        {
+            if (into == null)
+            {
+                throw new ArgumentNullException(nameof(into));
+            }
+
+            into.Add(TelemetryCounter.PlanPreparedBytes, (long)Plan.Validity.Estimate.PrepareBytes);
+            AffectedCounts affected = Plan.Validity.Affected;
+            into.Add(TelemetryCounter.ContributionsAdded, affected.ContributionsAdded);
+            into.Add(TelemetryCounter.ContributionsRetracted, affected.ContributionsRetracted);
+        }
 
         public override string ToString() =>
             State.Describe() + "; installs=" + Installs.Count.ToString(CultureInfo.InvariantCulture)

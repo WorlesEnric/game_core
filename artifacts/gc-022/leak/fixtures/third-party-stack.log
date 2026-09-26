@@ -1,0 +1,4 @@
+Leak Detected : Persistent allocates 2 individual allocations.
+Found 2 leak(s) from callstack:
+0x0000012abc0100 (Mono JIT Code) System.Text.Json.JsonSerializer:Serialize(Object)
+0x0000012abc0101 (Mono JIT Code) Newtonsoft.Json.JsonWriter:WritePropertyName(String)

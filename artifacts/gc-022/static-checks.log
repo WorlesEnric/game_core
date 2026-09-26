@@ -1,0 +1,138 @@
+# GC-022 host-side static checks and cross-checks
+
+Host: this worktree's macOS arm64 workstation: **no .NET SDK, no Unity, no Mono**. Every line below is an
+interpreter-level check, a shell parse, or a mechanical cross-check between the files this task added.
+**No build, no test and no Unity invocation was executed here.** Every executable gate result is
+`NotRun (pending orchestrator build host)`.
+
+Base revision: `main` (`1cafced`)
+Tip of `gc-022`: `8b9157e`
+Commits: 8b9157e, 7036cc1, 8d3048f, 47799e6, 8a786e2
+
+## 1. Interpreter-level checks (verbatim)
+
+$ python3 tools/check_game_core_csharp.py
+(exit 0)
+checked 474 C# file(s)
+ok
+
+$ python3 tools/check_contract_surface_parity.py
+(exit 0)
+tests/GameCore.ReferenceSeams/api/GameCore.Contracts.api.txt: 221 types (class 89, enum 41, interface 23, struct 68), 41 enums checked against Packages/com.gamecore.contracts/Runtime
+5 addition(s) beyond the frozen snapshot (allowed, must be listed in HANDOFF):
+  + enum EnvelopeError adds DuplicateField = 17
+  + enum EnvelopeError adds MissingRequiredField = 16
+  + enum FactoryKind adds Handler = 10
+  + enum StateDispositionKind adds Reset = 5
+  + enum StateDispositionKind adds RetainDormant = 4
+every snapshotted enum and enum value exists in the production sources with the same numeric value
+
+$ python3 tools/validate_game_core_docs.py --self-test
+(exit 0)
+Documentation validator self-test passed: 9 isolated positive/negative fixtures.
+
+$ python3 tools/validate_game_core_docs.py
+(exit 0)
+Game Core documentation validation passed: 14 Markdown documents; local links, anchors, IDs, traceability, task DAG and wave ordering checked.
+No Unity builds, gameplay tests, runtime benchmarks, or remote URL checks were executed.
+
+$ python3 tools/attribute_native_leaks.py --self-test
+(exit 0)
+  PASS gamecore stack exits 1 and names a GameCore block
+  PASS a GameCore allocation stays exit 1 even when the policy covers its signature
+  PASS unity-only stack without a policy exits 2 as unbounded
+  PASS unity-only stack with a complete policy exits 0
+  PASS GameCore only in a comment/header does not classify as gamecore
+  PASS a truncated stack is unattributed with its allocation count
+  PASS an address-only stack is unattributed, not third-party
+  PASS a stack-trace-disabled report reports 57 unattributed allocations
+  PASS an empty log reports blocks=0 and unattributed=0 with exit 0
+  PASS a mixed report counts per class, states bytes and diffs a baseline
+  PASS a header/group count mismatch is noted and the groups are counted
+  PASS a signature the policy does not name exits 2
+  PASS a bound missing its released-by clause is a policy problem, not a bound
+  PASS an attribution JSON can be written and reused
+  PASS a JSON baseline diffs against the run's signatures
+  PASS a missing log file exits non-zero with a message
+self-test: 16/16 check(s) passed
+
+$ bash -n tools/run_gc022.sh
+(exit 0)
+(no output)
+
+$ bash -n tools/unity/run_lifecycle_stress_probe.sh
+(exit 0)
+(no output)
+
+$ bash -n tools/unity/run_lifecycle_playmode_matrix.sh
+(exit 0)
+(no output)
+
+## 2. Contract A: the scenario's public surface equals the pinned contract
+
+`LifecycleStressScenario.ObservationNames` (12 names) equals the frozen list in order: **True**
+
+* the player probe calls `LifecycleStressScenario.Families()`: True
+* the player probe calls `LifecycleStressScenario.RunGeneratedCatalog(family)`: True
+* the player probe calls `LifecycleStressScenario.RunFixtureCatalog(family)`: True
+* the player probe calls `LifecycleStressScenario.CycleCount`: True
+
+Declaration-order check of the emitted observation sequence (the digest preimage) in
+`LifecycleStressScenario.cs` lines 342-354:
+
+  1. WorldBaseline
+  2. CyclesComplete
+  3. CountersReturnToBaseline
+  4. AcquisitionsTracedToRetirement
+  5. DelayedCompletionsAreDiscarded
+  6. StalledJobRetainsBuffers
+  7. ThrowingDisposerKeepsCleanupGoing
+  8. RequiredProviderChurn
+  9. LoopNodesDoNotAccumulate
+  10. RegistryReturnsToBaseline
+  11. IncarnationsAreFresh
+  12. RepeatableDigest
+
+## 3. Independent recomputation of all four digest literals
+
+| family / run | recomputed here | host literal | probe literal | agree |
+|---|---|---|---|---|
+| cards / fixture | `f601e7378d5a800bf740441b626d323cd0dc6b3d4b3c53b43a0db3a20c7544b3` | `f601e7378d5a800bf740441b626d323cd0dc6b3d4b3c53b43a0db3a20c7544b3` | `f601e7378d5a800bf740441b626d323cd0dc6b3d4b3c53b43a0db3a20c7544b3` | True |
+| cards / generated | `bc9321062734d84582a7ff50ac3f0e18c24f77bfdd45103c2958a1991e849f23` | `bc9321062734d84582a7ff50ac3f0e18c24f77bfdd45103c2958a1991e849f23` | `bc9321062734d84582a7ff50ac3f0e18c24f77bfdd45103c2958a1991e849f23` | True |
+| narrative / fixture | `dfe2e14f66e912febed6c2e32d0697f4f981c1c09467f500242f06a838ee3652` | `dfe2e14f66e912febed6c2e32d0697f4f981c1c09467f500242f06a838ee3652` | `dfe2e14f66e912febed6c2e32d0697f4f981c1c09467f500242f06a838ee3652` | True |
+| narrative / generated | `c743b4503dff2cf719bda1055964ec225307100bfb828a94aaa26af39639c4af` | `c743b4503dff2cf719bda1055964ec225307100bfb828a94aaa26af39639c4af` | `c743b4503dff2cf719bda1055964ec225307100bfb828a94aaa26af39639c4af` | True |
+
+Preimage: `NarrativeDigest.OfLines` (SHA-256 over the LF-joined UTF-8 bytes, lowercase hex) over
+`<prefix><family>/<observation>=pass` in `ObservationNames` order, where `<prefix>` is `fixture:` for the
+fixture-catalog run and empty otherwise. Three independent derivations (the lead's recomputation, the
+family hosts, the probe) agree on all four.
+
+## 4. The marker-free release clone's expectations are intact
+
+* `ProbeArguments `IsProbeInvocation` line` occurs exactly once (required by `prepare_gc017_release_project.replace_once`): **True**
+* `ProbeArguments constructor-call line` occurs exactly once (required by `prepare_gc017_release_project.replace_once`): **True**
+* the new mode's edits are on their own new lines: `-probeLifecycleStress` declared 1x in ProbeArguments, `LifecycleStress` referenced 4x in ProbeRunner
+* `tools/unity/prepare_gc017_release_project.py` parses: ast.parse ok
+
+## 5. Unity asset bookkeeping
+
+* `.meta` files: 712, unique GUIDs: 712, duplicate GUIDs: 0
+* `.cs`/`.asmdef` under `Packages/` and `unity/` without a `.meta`: 0
+
+## 6. Mechanical member-resolution cross-checks
+
+Three read-only scans were run over every file this task added, against every `.cs` file in `Packages/`,
+`unity/` and `tests/`:
+
+1. every `Type.Member` call in the scenario, the family contract, both family hosts and the probe names a
+   declared member somewhere in the repository (82 distinct calls, 0 unresolved);
+2. every dotted token in the new files resolves to a declared member, an enum member or a BCL/Unity/NUnit
+   member (the only 'unresolved' tokens are namespace segments, comment text and BCL members);
+3. `JobFenceRegistry.Release` has no production call site: searching `Packages/` and `unity/` for `.Release(`
+   finds only `QuarantineRegistry.Release`, the planning gate's `Release`, `scratch.Release`, the asset
+   backend's `Release` and the image store's `Release`. This is the evidence behind the retained-job-record
+   finding in `resource-policy.md` section 2.2, not a guess.
+
+None of these is a compiler. They raise confidence and they are not a substitute for the build host's
+`dotnet build` and Unity import.
+

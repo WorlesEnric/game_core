@@ -47,6 +47,10 @@ TARGETS = [
     "Packages/com.gamecore.composition",
     "Packages/com.gamecore.rules.cards",
     "Packages/com.gamecore.gameplay.cards",
+    # GC-021: the narrative-to-card reward composition is a gameplay assembly (it depends on both gameplay packages
+    # and declares real Unity-facing ports), so the balance and forbidden-construct checks cover it while it stays
+    # out of `engine_free` below.
+    "Packages/com.gamecore.gameplay.integration",
     # GC-019: the adapter package holds the Unity-free adapter core (Runtime/Pure plus the shared Fixtures/Runtime
     # doubles) and the engine halves (Input/, Assets/, Views/), so the balance and forbidden-construct checks cover
     # the whole package while only Runtime/Pure and Fixtures/Runtime join `engine_free` below.
@@ -54,6 +58,24 @@ TARGETS = [
     "Packages/com.gamecore.unity.adapters/Fixtures",
     "dotnet/src/GameCore.Adapters",
     "dotnet/tests/GameCore.Adapters.Tests",
+    # GC-020: the traversal rules package is engine-free, like the two other rules packages; the traversal
+    # gameplay package declares real Unity components and systems, so it is covered by the balance and
+    # forbidden-construct checks only. The three engine stages GC-020 adds to the adapter package
+    # (Runtime/Pure/Physics, Animation and Audio) are covered by the existing adapter entry above.
+    "Packages/com.gamecore.rules.traversal",
+    "Packages/com.gamecore.gameplay.traversal",
+    "Packages/com.gamecore.gameplay.traversal/Fixtures",
+    "dotnet/src/GameCore.Rules.Traversal",
+    "dotnet/tests/GameCore.Rules.Traversal.Tests",
+    # GC-023: the replay/telemetry fixture package is engine-free like the derivation package, and the
+    # qualification tooling (the telemetry probe and the derivation release-check) holds real C# too, so all three
+    # join the balance/forbidden-construct checks. The player-probe scenario and its EditMode suite live inside the
+    # validation project, which is already covered above.
+    "tests/GameCore.Replay",
+    "dotnet/src/GameCore.Replay",
+    "dotnet/src/GameCore.Derivation.Fixtures",
+    "dotnet/src/GameCore.Telemetry.ReleaseCheck",
+    "dotnet/tools/GameCore.TelemetryProbe",
 ]
 
 FORBIDDEN = {
@@ -234,8 +256,11 @@ def main() -> int:
         ROOT / "Packages/com.gamecore.contracts",
         ROOT / "Packages/com.gamecore.content.compiler/Runtime",
         ROOT / "Packages/com.gamecore.derivation",
+        # GC-020: the traversal rules package is engine-free, like the narrative and card rules packages.
+        ROOT / "Packages/com.gamecore.rules.traversal",
         # GC-019: the adapter core and its shared doubles reference no Unity type (the Unity halves live beside
-        # them under Runtime/Input, Runtime/Assets and Runtime/Views and are deliberately excluded here).
+        # them under Runtime/Input, Runtime/Assets, Runtime/Views, Runtime/Physics, Runtime/Animation and
+        # Runtime/Audio and are deliberately excluded here).
         ROOT / "Packages/com.gamecore.unity.adapters/Runtime/Pure",
         ROOT / "Packages/com.gamecore.unity.adapters/Fixtures/Runtime",
         # GC-014: the composition package (lifecycle ledgers, teardown sequencer, quarantine registry, service
@@ -247,6 +272,9 @@ def main() -> int:
         # resynchronization, delayed-consumer delivery, the committed-boundary lease) is engine-free on purpose: it
         # is compiled by dotnet/src/GameCore.Execution and must stay free of every Unity type.
         ROOT / "Packages/com.gamecore.unity.runtime/Runtime/Observation",
+        # GC-023: the replay/telemetry fixtures are Unity-free by design, so the same sources can be compiled by
+        # dotnet/src/GameCore.Replay, by the Unity package com.gamecore.replay and by the IL2CPP probe host.
+        ROOT / "tests/GameCore.Replay",
         ROOT / "dotnet/src",
     )
 

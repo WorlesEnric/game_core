@@ -29,9 +29,12 @@ namespace GameCore.Derivation
         private readonly DerivationSnapshot snapshot;
         private readonly Dictionary<Id128, List<DerivationInstall>> installsByScope;
 
-        private DerivationIndexSet(DerivationSnapshot snapshot)
+        private DerivationIndexSet(DerivationSnapshot snapshot, InvalidationCounters? counters)
         {
             this.snapshot = snapshot;
+            // The reported counter object may be the caller's, so index work lands in the counters the caller
+            // reports instead of in a set nobody reads (GC-023). Without a caller-supplied set the indexes own it.
+            Counters = counters ?? new InvalidationCounters();
             Membership = ScopeMembershipIndex.Build(snapshot, Counters);
             Descriptors = DescriptorTargetIndex.Build(snapshot);
             Providers = ProviderContributionIndex.Build(snapshot, Membership);
@@ -54,15 +57,19 @@ namespace GameCore.Derivation
             InstallPathCache = new Dictionary<Id128, IReadOnlyList<DerivationInstall>>();
         }
 
-        /// <summary>Builds every index of one snapshot.</summary>
-        public static DerivationIndexSet Build(DerivationSnapshot snapshot)
+        /// <summary>
+        /// Builds every index of one snapshot. Passing <paramref name="counters"/> makes the indexes report their
+        /// work through that object, which is how a caller's `ControlNodesVisited` covers the control-plane nodes
+        /// the indexes walked (GC-023); without it the index set owns a fresh counter object.
+        /// </summary>
+        public static DerivationIndexSet Build(DerivationSnapshot snapshot, InvalidationCounters? counters = null)
         {
             if (snapshot == null)
             {
                 throw new ArgumentNullException(nameof(snapshot));
             }
 
-            return new DerivationIndexSet(snapshot);
+            return new DerivationIndexSet(snapshot, counters);
         }
 
         /// <summary>The snapshot these indexes describe.</summary>
@@ -80,8 +87,8 @@ namespace GameCore.Derivation
         /// <summary>Service-consumer adjacency (P-011, P-012, P-023).</summary>
         public ServiceConsumerIndex Consumers { get; }
 
-        /// <summary>Work counters of every index query answered through this set.</summary>
-        public InvalidationCounters Counters { get; } = new InvalidationCounters();
+        /// <summary>Work counters of every index query answered through this set (the caller's object when given).</summary>
+        public InvalidationCounters Counters { get; }
 
         /// <summary>Installs registered directly at one scope, in canonical identity order (any lifecycle state).</summary>
         public IReadOnlyList<DerivationInstall> InstallsAt(ScopeId scope) =>
@@ -95,6 +102,9 @@ namespace GameCore.Derivation
         /// </summary>
         public IReadOnlyList<DerivationInstall> InstallsOnPath(ScopeId scope)
         {
+            // The query is one control node, counted *before* the cache lookup, because TEST-023 requires the
+            // counters to count control work even when a traversal is cached or returns no matches (GC-023).
+            TelemetryCounting.Count(Counters.Telemetry, TelemetryCounter.ControlNodesVisited);
             if (InstallPathCache.TryGetValue(scope.Value, out IReadOnlyList<DerivationInstall>? cached))
             {
                 return cached;
@@ -105,9 +115,11 @@ namespace GameCore.Derivation
             for (int s = 0; s < chain.Count; s++)
             {
                 Counters.ScopesVisited++;
+                TelemetryCounting.Count(Counters.Telemetry, TelemetryCounter.ControlNodesVisited);
                 IReadOnlyList<DerivationInstall> atScope = InstallsAt(chain[s]);
                 for (int i = 0; i < atScope.Count; i++)
                 {
+                    TelemetryCounting.Count(Counters.Telemetry, TelemetryCounter.ControlNodesVisited);
                     found.Add(atScope[i]);
                 }
             }
@@ -141,9 +153,12 @@ namespace GameCore.Derivation
                     continue;
                 }
 
+                // Each install on the path, and each rule declared by an active install, is a control node.
+                TelemetryCounting.Count(Counters.Telemetry, TelemetryCounter.ControlNodesVisited);
                 IReadOnlyList<IndexedRule> ofInstall = Providers.RulesOf(install.Instance);
                 for (int r = 0; r < ofInstall.Count; r++)
                 {
+                    TelemetryCounting.Count(Counters.Telemetry, TelemetryCounter.ControlNodesVisited);
                     rules.Add(ofInstall[r]);
                 }
             }
@@ -166,9 +181,11 @@ namespace GameCore.Derivation
             IReadOnlyList<DerivationTarget> candidates)
         {
             List<DerivationTarget> population = new List<DerivationTarget>();
+            // Each candidate examined is a control node; counted whether or not it ends up in the population.
             for (int i = 0; i < candidates.Count; i++)
             {
                 DerivationTarget target = candidates[i];
+                TelemetryCounting.Count(Counters.Telemetry, TelemetryCounter.ControlNodesVisited);
                 if (!Membership.IsInReach(providerScope, reach, target.Scope))
                 {
                     continue;
@@ -215,6 +232,7 @@ namespace GameCore.Derivation
                 IReadOnlyList<IndexedRule> rules = Providers.RulesOf(install.Instance);
                 for (int r = 0; r < rules.Count; r++)
                 {
+                    TelemetryCounting.Count(Counters.Telemetry, TelemetryCounter.ControlNodesVisited);
                     IndexedRule rule = rules[r];
                     if (!Membership.IsInReach(rule.Install.Scope, rule.Rule.Reach, scope))
                     {

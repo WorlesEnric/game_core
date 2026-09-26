@@ -72,6 +72,7 @@ namespace GameCore.Execution.Tests
         internal static readonly SchemaRef Message = Schema("744d60d006798058b50b656c613a21f3");
         internal static readonly SchemaRef Rng = Schema("cd069d4291975928edb3f9e9af5e037d");
         internal static readonly SchemaRef Cursor = Schema("1ddc64b87daa5363e1c1951d44ad5f07");
+        internal static readonly SchemaRef Outbox = Schema("ac96339bd83d4a4ca453b3f4e46e4639");
 
         private static SchemaRef Schema(string canonicalHex)
         {
@@ -281,7 +282,8 @@ namespace GameCore.Execution.Tests
             new GeneratedFieldSlot(36, WireType.UInt64, true),
             new GeneratedFieldSlot(37, WireType.UInt64, true),
             new GeneratedFieldSlot(38, WireType.UInt64, true),
-            new GeneratedFieldSlot(39, WireType.UInt32, true)
+            new GeneratedFieldSlot(39, WireType.UInt32, true),
+            new GeneratedFieldSlot(40, WireType.UInt32, true)
         };
 
         internal HeaderRecordCodec()
@@ -330,6 +332,7 @@ namespace GameCore.Execution.Tests
             writer.WriteUInt64Field(37, value.SourcePublishedEpoch);
             writer.WriteUInt64Field(38, value.SourceHostTicksPerSecond);
             writer.WriteUInt32Field(39, value.ContentRevisionCount);
+            writer.WriteUInt32Field(40, value.OutboxCount);
         }
 
         protected override bool Read(RecordFields fields, out HeaderRecordValue value, out EnvelopeError error)
@@ -372,14 +375,15 @@ namespace GameCore.Execution.Tests
                 || !fields.UInt64(35, out ulong fSourcePublishedRevision)
                 || !fields.UInt64(36, out ulong fSourcePublishedEpoch)
                 || !fields.UInt64(37, out ulong fSourceHostTicksPerSecond)
-                || !fields.UInt32(38, out uint fContentRevisionCount))
+                || !fields.UInt32(38, out uint fContentRevisionCount)
+                || !fields.UInt32(39, out uint fOutboxCount))
             {
                 value = default(HeaderRecordValue);
                 error = fields.Error;
                 return false;
             }
 
-            value = new HeaderRecordValue(fWorldDefinitionHigh, fWorldDefinitionLow, fSourceSessionHigh, fSourceSessionLow, fProtocolMajor, fProtocolMinor, fTemporalModel, fStepDurationTicks, fTicksPerSecond, fMaxStepsPerPump, fUsesUnscaledHostClock, fLogicalStep, fTimeDebtTicks, fDomainSeconds, fPendingDemand, fPropagationMode, fCatalogFingerprintA, fCatalogFingerprintB, fCatalogFingerprintC, fCatalogFingerprintD, fQueuePolicy, fAdmissionCutoff, fRejectedQueuedCount, fLastEventSequence, fScopeCount, fInstallCount, fSelectionCount, fTargetCount, fSlotCount, fGrantCount, fClockCount, fCommandCount, fMessageCount, fRngStreamCount, fCursorCount, fSourcePublishedRevision, fSourcePublishedEpoch, fSourceHostTicksPerSecond, fContentRevisionCount);
+            value = new HeaderRecordValue(fWorldDefinitionHigh, fWorldDefinitionLow, fSourceSessionHigh, fSourceSessionLow, fProtocolMajor, fProtocolMinor, fTemporalModel, fStepDurationTicks, fTicksPerSecond, fMaxStepsPerPump, fUsesUnscaledHostClock, fLogicalStep, fTimeDebtTicks, fDomainSeconds, fPendingDemand, fPropagationMode, fCatalogFingerprintA, fCatalogFingerprintB, fCatalogFingerprintC, fCatalogFingerprintD, fQueuePolicy, fAdmissionCutoff, fRejectedQueuedCount, fLastEventSequence, fScopeCount, fInstallCount, fSelectionCount, fTargetCount, fSlotCount, fGrantCount, fClockCount, fCommandCount, fMessageCount, fRngStreamCount, fCursorCount, fSourcePublishedRevision, fSourcePublishedEpoch, fSourceHostTicksPerSecond, fContentRevisionCount, fOutboxCount);
             error = EnvelopeError.None;
             return true;
         }
@@ -1183,6 +1187,144 @@ namespace GameCore.Execution.Tests
         }
     }
 
+    /// <summary>Test-only codec for <see cref="OutboxRecordValue"/> (schema ac96339bd83d4a4ca453b3f4e46e4639).</summary>
+    internal sealed class OutboxRecordCodec : CheckpointTestRecordCodec<OutboxRecordValue>
+    {
+        private static readonly GeneratedFieldSlot[] Slots =
+        {
+            new GeneratedFieldSlot(1, WireType.UInt32, true),
+            new GeneratedFieldSlot(2, WireType.UInt32, true),
+            new GeneratedFieldSlot(3, WireType.UInt64, true),
+            new GeneratedFieldSlot(4, WireType.UInt64, true),
+            new GeneratedFieldSlot(5, WireType.UInt64, true),
+            new GeneratedFieldSlot(6, WireType.UInt64, true),
+            new GeneratedFieldSlot(7, WireType.UInt64, true),
+            new GeneratedFieldSlot(8, WireType.UInt64, true),
+            new GeneratedFieldSlot(9, WireType.UInt64, true),
+            new GeneratedFieldSlot(10, WireType.UInt64, true),
+            new GeneratedFieldSlot(11, WireType.UInt64, true),
+            new GeneratedFieldSlot(12, WireType.UInt64, true),
+            new GeneratedFieldSlot(13, WireType.UInt64, true),
+            new GeneratedFieldSlot(14, WireType.UInt64, true),
+            new GeneratedFieldSlot(15, WireType.UInt64, true),
+            new GeneratedFieldSlot(16, WireType.UInt64, true),
+            new GeneratedFieldSlot(17, WireType.UInt32, true),
+            new GeneratedFieldSlot(18, WireType.UInt32, true),
+            new GeneratedFieldSlot(19, WireType.UInt32, true),
+            new GeneratedFieldSlot(20, WireType.UInt32, true),
+            new GeneratedFieldSlot(21, WireType.UInt32, true),
+            new GeneratedFieldSlot(22, WireType.UInt32, true),
+            new GeneratedFieldSlot(23, WireType.UInt64, true),
+            new GeneratedFieldSlot(24, WireType.UInt64, true),
+            new GeneratedFieldSlot(25, WireType.UInt32, true),
+            new GeneratedFieldSlot(26, WireType.UInt32, true),
+            new GeneratedFieldSlot(27, WireType.Bytes, true)
+        };
+
+        internal OutboxRecordCodec()
+            : base(CheckpointRecordKind.Outbox, CheckpointTestSchemas.Outbox, Slots)
+        {
+        }
+
+        protected override void Write(EnvelopeWriter writer, OutboxRecordValue value)
+        {
+            writer.WriteUInt32Field(1, value.RowKind);
+            writer.WriteUInt32Field(2, value.RecordVersion);
+            writer.WriteUInt64Field(3, value.OutboxHigh);
+            writer.WriteUInt64Field(4, value.OutboxLow);
+            writer.WriteUInt64Field(5, value.DestinationHigh);
+            writer.WriteUInt64Field(6, value.DestinationLow);
+            writer.WriteUInt64Field(7, value.IdempotencyHigh);
+            writer.WriteUInt64Field(8, value.IdempotencyLow);
+            writer.WriteUInt64Field(9, value.SourceEventSequence);
+            writer.WriteUInt64Field(10, value.SourceStep);
+            writer.WriteUInt64Field(11, value.SourceEpoch);
+            writer.WriteUInt64Field(12, value.CausalIssuerHigh);
+            writer.WriteUInt64Field(13, value.CausalIssuerLow);
+            writer.WriteUInt64Field(14, value.CausalIssuerSequence);
+            writer.WriteUInt64Field(15, value.PayloadSchemaHigh);
+            writer.WriteUInt64Field(16, value.PayloadSchemaLow);
+            writer.WriteUInt32Field(17, value.PayloadSchemaVersion);
+            writer.WriteUInt32Field(18, value.DeliveryState);
+            writer.WriteUInt32Field(19, value.ReasonCode);
+            writer.WriteUInt32Field(20, value.AttemptCount);
+            writer.WriteUInt32Field(21, value.Durability);
+            writer.WriteUInt32Field(22, value.OrderOrdinal);
+            writer.WriteUInt64Field(23, value.CursorHigh);
+            writer.WriteUInt64Field(24, value.CursorLow);
+            writer.WriteUInt32Field(25, value.CursorCount);
+            writer.WriteUInt32Field(26, value.PrunedCount);
+            writer.WriteBytesField(27, value.Payload);
+        }
+
+        protected override bool Read(RecordFields fields, out OutboxRecordValue value, out EnvelopeError error)
+        {
+            if (!fields.UInt32(0, out uint fRowKind)
+                || !fields.UInt32(1, out uint fRecordVersion)
+                || !fields.UInt64(2, out ulong fOutboxHigh)
+                || !fields.UInt64(3, out ulong fOutboxLow)
+                || !fields.UInt64(4, out ulong fDestinationHigh)
+                || !fields.UInt64(5, out ulong fDestinationLow)
+                || !fields.UInt64(6, out ulong fIdempotencyHigh)
+                || !fields.UInt64(7, out ulong fIdempotencyLow)
+                || !fields.UInt64(8, out ulong fSourceEventSequence)
+                || !fields.UInt64(9, out ulong fSourceStep)
+                || !fields.UInt64(10, out ulong fSourceEpoch)
+                || !fields.UInt64(11, out ulong fCausalIssuerHigh)
+                || !fields.UInt64(12, out ulong fCausalIssuerLow)
+                || !fields.UInt64(13, out ulong fCausalIssuerSequence)
+                || !fields.UInt64(14, out ulong fPayloadSchemaHigh)
+                || !fields.UInt64(15, out ulong fPayloadSchemaLow)
+                || !fields.UInt32(16, out uint fPayloadSchemaVersion)
+                || !fields.UInt32(17, out uint fDeliveryState)
+                || !fields.UInt32(18, out uint fReasonCode)
+                || !fields.UInt32(19, out uint fAttemptCount)
+                || !fields.UInt32(20, out uint fDurability)
+                || !fields.UInt32(21, out uint fOrderOrdinal)
+                || !fields.UInt64(22, out ulong fCursorHigh)
+                || !fields.UInt64(23, out ulong fCursorLow)
+                || !fields.UInt32(24, out uint fCursorCount)
+                || !fields.UInt32(25, out uint fPrunedCount)
+                || !fields.Bytes(26, out byte[]? fPayload))
+            {
+                value = default(OutboxRecordValue);
+                error = fields.Error;
+                return false;
+            }
+
+            value = new OutboxRecordValue(
+                fRowKind,
+                fRecordVersion,
+                fOutboxHigh,
+                fOutboxLow,
+                fDestinationHigh,
+                fDestinationLow,
+                fIdempotencyHigh,
+                fIdempotencyLow,
+                fSourceEventSequence,
+                fSourceStep,
+                fSourceEpoch,
+                fCausalIssuerHigh,
+                fCausalIssuerLow,
+                fCausalIssuerSequence,
+                fPayloadSchemaHigh,
+                fPayloadSchemaLow,
+                fPayloadSchemaVersion,
+                fDeliveryState,
+                fReasonCode,
+                fAttemptCount,
+                fDurability,
+                fOrderOrdinal,
+                fCursorHigh,
+                fCursorLow,
+                fCursorCount,
+                fPrunedCount,
+                fPayload);
+            error = EnvelopeError.None;
+            return true;
+        }
+    }
+
     /// <summary>The test-only codec set: one hand-written codec per declared kind of record (P-054).</summary>
     internal static class CheckpointTestCodecs
     {
@@ -1218,6 +1360,7 @@ namespace GameCore.Execution.Tests
             new MessageRecordCodec(),
             new RngRecordCodec(),
             new CursorRecordCodec(),
+            new OutboxRecordCodec(),
         };
     }
 
@@ -1276,6 +1419,7 @@ namespace GameCore.Execution.Tests
             IReadOnlyList<MessageRecordValue>? messages = null,
             IReadOnlyList<RngRecordValue>? rngStreams = null,
             IReadOnlyList<CursorRecordValue>? cursors = null,
+            IReadOnlyList<OutboxRecordValue>? outbox = null,
             ContentHash? catalogFingerprint = null,
             BoundaryQueueDisposition declaredQueueDisposition = BoundaryQueueDisposition.Unspecified,
             int declaredQueuedCommands = 0,
@@ -1310,6 +1454,7 @@ namespace GameCore.Execution.Tests
                 commands,
                 messages,
                 rngStreams,
+                outbox,
                 cursors,
                 BoundaryToken,
                 declaredQueueDisposition,
@@ -1529,6 +1674,106 @@ namespace GameCore.Execution.Tests
                 IssuerHighWaterSequence,
                 CheckpointTestIds.WorldSession.High, CheckpointTestIds.WorldSession.Low),
         };
+
+        /// <summary>
+        /// One open reward obligation and the cursor that summarises its destination, so a capture carries a real
+        /// outbox section rather than an empty one (GC-021, P-053). The cursor's declared retained-terminal count is
+        /// zero and the document carries no terminal row for that destination, which is the state a live outbox is in
+        /// while an obligation is still owed.
+        /// </summary>
+        internal static OutboxRecordValue[] OutboxRows() => new[]
+        {
+            new OutboxRecordValue(
+                (uint)OutboxRowKind.Obligation,
+                OutboxRecordValue.CurrentRecordVersion,
+                OutboxHigh, OutboxLow,
+                CheckpointTestIds.CommandRoute.High, CheckpointTestIds.CommandRoute.Low,
+                OutboxKeyHigh, OutboxKeyLow,
+                17UL, 21UL, 1UL,
+                CheckpointTestIds.CommandIssuer.High, CheckpointTestIds.CommandIssuer.Low,
+                5UL,
+                CheckpointTestSchemas.Command.Id.Value.High, CheckpointTestSchemas.Command.Id.Value.Low,
+                1U,
+                (uint)OutboxDeliveryState.Pending,
+                (uint)DiagnosticCode.None,
+                0U,
+                (uint)OutboxDurability.Durable,
+                0U,
+                0UL, 0UL, 0U, 0U,
+                new byte[] { 0x47, 0x43, 0x30, 0x32, 0x31 }),
+            new OutboxRecordValue(
+                (uint)OutboxRowKind.Cursor,
+                OutboxRecordValue.CurrentRecordVersion,
+                CheckpointTestIds.CommandRoute.High, CheckpointTestIds.CommandRoute.Low,
+                CheckpointTestIds.CommandRoute.High, CheckpointTestIds.CommandRoute.Low,
+                CheckpointTestIds.CommandRoute.High, CheckpointTestIds.CommandRoute.Low,
+                0UL, 0UL, 0UL,
+                0UL, 0UL, 0UL,
+                0UL, 0UL,
+                0U,
+                (uint)OutboxDeliveryState.Acknowledged,
+                (uint)DiagnosticCode.None,
+                0U,
+                (uint)OutboxDurability.Durable,
+                0U,
+                OutboxHigh, OutboxLow, 0U, 0U,
+                null),
+        };
+
+        /// <summary>
+        /// GC-021: an outbox section whose delivery cursor claims a retained-terminal count the document does not
+        /// carry. The outbox section is otherwise well formed, so the *planner* is what has to refuse it.
+        /// </summary>
+        internal static OutboxRecordValue[] OutboxRowsWithOverstatedCursor()
+        {
+            OutboxRecordValue[] rows = OutboxRows();
+            rows[1] = WithCursorReach(rows[1], retainedTerminals: 4U);
+            return rows;
+        }
+
+        /// <summary>GC-021: two rows claiming one obligation identity, which P-008 forbids.</summary>
+        internal static OutboxRecordValue[] DuplicatedObligationRows() => new[] { OutboxRows()[0], OutboxRows()[0] };
+
+        /// <summary>The same cursor row with a different declared reach, so one rule can be isolated per case.</summary>
+        private static OutboxRecordValue WithCursorReach(OutboxRecordValue row, uint retainedTerminals) =>
+            new OutboxRecordValue(
+                row.RowKind,
+                row.RecordVersion,
+                row.OutboxHigh,
+                row.OutboxLow,
+                row.DestinationHigh,
+                row.DestinationLow,
+                row.IdempotencyHigh,
+                row.IdempotencyLow,
+                row.SourceEventSequence,
+                row.SourceStep,
+                row.SourceEpoch,
+                row.CausalIssuerHigh,
+                row.CausalIssuerLow,
+                row.CausalIssuerSequence,
+                row.PayloadSchemaHigh,
+                row.PayloadSchemaLow,
+                row.PayloadSchemaVersion,
+                row.DeliveryState,
+                row.ReasonCode,
+                row.AttemptCount,
+                row.Durability,
+                row.OrderOrdinal,
+                row.CursorHigh,
+                row.CursorLow,
+                retainedTerminals,
+                row.PrunedCount,
+                row.Payload);
+
+        /// <summary>The obligation identity of the fixture's outbox row.</summary>
+        internal const ulong OutboxHigh = 0x474332314F424C47UL;
+
+        internal const ulong OutboxLow = 1UL;
+
+        /// <summary>The fixture's external idempotency key; distinct from the obligation id by construction (P-045).</summary>
+        internal const ulong OutboxKeyHigh = 0x474332314B455931UL;
+
+        internal const ulong OutboxKeyLow = 1UL;
 
         internal static CheckpointCaptureRequest Request(
             CheckpointCodecSet? codecs = null,
@@ -1981,7 +2226,8 @@ namespace GameCore.Execution.Tests
                     document.Counts.Commands,
                     document.Counts.Messages,
                     document.Counts.RngStreams,
-                    document.Counts.Cursors),
+                    document.Counts.Cursors,
+                    document.Counts.Outbox),
                 Is.True);
 
             // Dormant state is authoritative state: it survives the round trip as Active == false (P-032, P-053).
@@ -2150,6 +2396,7 @@ namespace GameCore.Execution.Tests
             Assert.That(counts.Messages, Is.EqualTo(boundary.NextStepMessages.Count));
             Assert.That(counts.RngStreams, Is.EqualTo(boundary.RngStreams.Count));
             Assert.That(counts.Cursors, Is.EqualTo(boundary.Cursors.Count));
+            Assert.That(counts.Outbox, Is.EqualTo(boundary.Outbox.Count));
         }
 
         /// <summary>
@@ -2195,6 +2442,7 @@ namespace GameCore.Execution.Tests
             CheckpointTestFixture.PublishedRevision,
             CheckpointTestFixture.PublishedEpoch,
             CheckpointTestFixture.HostTicksPerSecond,
+            0U,
             0U);
     }
 }

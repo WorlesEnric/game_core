@@ -164,8 +164,10 @@ namespace GameCore.Execution.Messages
     /// Bounded request ledger of one world's command plane: admission, dedup, capacity backpressure, terminal
     /// results and bounded retention. It never mutates gameplay state.
     /// </summary>
-    public sealed class RequestLedger
+    public sealed class RequestLedger : ITelemetryOwner
     {
+        string ITelemetryOwner.TelemetryOwner => "gamecore.messages.requests";
+
         private readonly CommandRouteTable routes;
         private readonly int maxPending;
         private readonly int maxRetainedResults;
@@ -202,6 +204,12 @@ namespace GameCore.Execution.Messages
 
         public int MaxPending => maxPending;
 
+        /// <summary>
+        /// Deepest the pending queue was actually observed to be (08 request high-water). Reporting the configured
+        /// `MaxPending` instead would be a constant that can never witness backpressure (GC-023).
+        /// </summary>
+        public int PendingHighWaterMark { get; private set; }
+
         public int MaxRetainedResults => maxRetainedResults;
 
         public int AdmittedCount { get; private set; }
@@ -230,6 +238,24 @@ namespace GameCore.Execution.Messages
 
         /// <summary>Highest host-assigned admission sequence issued (P-037).</summary>
         public AdmissionSequence LastAdmissionSequence => new AdmissionSequence(nextAdmissionSequence);
+
+        /// <summary>
+        /// Writes the request-ledger counters through the fixed compact schema (GC-023): the deepest pending queue,
+        /// the capacity refusals that must never silently drop an authoritative request (P-043), and the stale
+        /// identities refused by the admission high-water mark (P-050).
+        /// </summary>
+        public void WriteTelemetry(TelemetryCounterSet into)
+        {
+            if (into == null)
+            {
+                throw new ArgumentNullException(nameof(into));
+            }
+
+            into.ObserveMax(TelemetryCounter.RequestHighWater, PendingHighWaterMark);
+            into.Add(TelemetryCounter.RequestOverflow, CapacityRejectedCount);
+            into.Add(TelemetryCounter.StaleResults, StaleCount + SequenceViolationCount + ExpireCount);
+            into.ObserveMax(TelemetryCounter.LiveLeases, PendingCount);
+        }
 
         /// <summary>
         /// Admits one command or typed request. The host validates the envelope, the route and the capacity first;
@@ -329,6 +355,10 @@ namespace GameCore.Execution.Messages
             var row = new RequestRow(request, route, target, schema, inputHash, origin, order, step, epoch);
             rows.Add(request, row);
             pendingOrder.Add(request);
+            if (pendingOrder.Count > PendingHighWaterMark)
+            {
+                PendingHighWaterMark = pendingOrder.Count;
+            }
             if (origin == RequestOrigin.External)
             {
                 issuerHighWater[request.IssuerId] = request.IssuerSequence;

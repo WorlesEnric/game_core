@@ -2,7 +2,8 @@
 //
 // P-048 fixes the order and this type executes exactly that order, one named step at a time, so a caller reads
 // which step produced which fact instead of trusting a summary:
-//
+//   6. admit quarantines        (06 s6: a bounded, observable registry, never a silent drop) — then the settled
+//      fence records of completed jobs leave the job table, bounded by live work, not history (GC-022)
 //   1. close ingress            (P-047: new callbacks/commands of the retiring activation stop)
 //   2. settle the current step  (P-030: reach the commit/fault boundary, never mid-step)
 //   3. fence readers and jobs   (P-047: unfinished work keeps its resources)
@@ -313,10 +314,15 @@ namespace GameCore.Composition
                 jobs.RetainByQuarantineFor(instance, fenced[i]);
             }
 
+            // With quarantine settled, completed jobs whose resources all retired are history: their fence records
+            // leave the table here, so a thousand unload cycles do not leave a thousand rows behind (GC-022).
+            int releasedFences = jobs.ReleaseFencesFor(instance);
+
             steps.Add(new TeardownStep(
                 "admit-quarantine",
                 !quarantineRefused && quarantined.Count == 0,
                 "registrySize=" + quarantine.Count.ToString(CultureInfo.InvariantCulture)
+                + ", releasedFences=" + releasedFences.ToString(CultureInfo.InvariantCulture)
                 + (quarantineRefused ? ", refused=exhausted" : string.Empty)));
 
             bool settleAll = stepSettled && !quarantineRefused && quarantined.Count == 0 && cleanup.Failed.Count == 0;
@@ -375,6 +381,13 @@ namespace GameCore.Composition
                     failed.Add(resourceId);
                     stillRetained.Add(resourceId);
                 }
+            }
+
+            // The quarantine settled: the stalled jobs that fenced these references completed and their resources
+            // retired, so their fence records leave the table too — the explicit retry settles both sides (GC-022).
+            if (retired.Count != 0 && stillRetained.Count == 0)
+            {
+                jobs.ReleaseFencesFor(instance);
             }
 
             return new CleanupReport(retired, failed, stillRetained);

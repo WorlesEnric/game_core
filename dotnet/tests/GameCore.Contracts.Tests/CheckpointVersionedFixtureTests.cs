@@ -276,10 +276,10 @@ namespace GameCore.Contracts.Tests
                 Assert.That(counts.Of(CheckpointRecordKind.Command), Is.EqualTo(queueCase.ExpectedHeaderCommandCount),
                     context + ": the document's Command count must equal the header's command count (P-053).");
                 Assert.That(header.CountsMatch(
-                        0, 0, 0, 0, 0, 0, 0, counts.Commands, 0, 0, 0), Is.True,
+                        0, 0, 0, 0, 0, 0, 0, counts.Commands, 0, 0, 0, 0), Is.True,
                     context + ": the header must match a document that carries exactly the included commands.");
                 Assert.That(header.CountsMatch(
-                        0, 0, 0, 0, 0, 0, 0, counts.Commands + 1, 0, 0, 0), Is.False,
+                        0, 0, 0, 0, 0, 0, 0, counts.Commands + 1, 0, 0, 0, 0), Is.False,
                     context + ": a header declaring a command the document does not carry must not match (P-053).");
 
                 // The included commands are framed as Command records, the kind the header counts (P-054).
@@ -375,11 +375,12 @@ namespace GameCore.Contracts.Tests
                 15UL,
                 16UL,
                 17UL,
+                0U,
                 0U);
 
         /// <summary>A document carrying exactly <paramref name="commands"/> Command records and nothing else.</summary>
         private static CheckpointCounts BuildCounts(int commands) =>
-            new CheckpointCounts(0, 0, 0, 0, 0, 0, 0, commands, 0, 0, 0);
+            new CheckpointCounts(0, 0, 0, 0, 0, 0, 0, commands, 0, 0, 0, 0);
 
         private static MigrationFixture ReadMigrationFixture()
         {

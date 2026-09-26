@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Engine-free fixture compositions (GC-006/GC-013). Unity provides the same sources as the assembly
+       `GameCore.Derivation.Fixtures`; this project gives the plain-dotnet build the same assembly name so a consumer
+       (GC-023's replay fixtures) can reference it instead of re-compiling the folder. -->
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>GameCore.Derivation.Fixtures</AssemblyName>
+    <RootNamespace>GameCore.Derivation.Fixtures</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="../../../Packages/com.gamecore.derivation/Fixtures/**/*.cs"
+             Exclude="../../../Packages/com.gamecore.derivation/Fixtures/**/bin/**/*.cs;../../../Packages/com.gamecore.derivation/Fixtures/**/obj/**/*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../GameCore.Derivation/GameCore.Derivation.csproj" />
+    <ProjectReference Include="../GameCore.Contracts/GameCore.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

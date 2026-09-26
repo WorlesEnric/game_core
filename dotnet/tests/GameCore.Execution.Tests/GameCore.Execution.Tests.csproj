@@ -5,7 +5,9 @@
        bounded step publication store, and bounded leases/retention/resynchronization/delivery. In-process,
        sub-second, no Unity. The W1 gate substituted the production GameCore.Contracts project for the W0 test-only
        reference seam. GC-016's tests live in the Unity package's Tests folder so the same files run as EditMode
-       tests too (docs/game-core/04 s10), which is why they are globbed here. -->
+       tests too (docs/game-core/04 s10), which is why they are globbed here. GC-021's durable-outbox and crash-point
+       tests live beside them for the same reason: the delivery core is engine-free, so the same assertions that run
+       here as pure dotnet tests also run in the Unity EditMode suite over the identical sources. -->
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -22,6 +24,8 @@
   <ItemGroup>
     <Compile Include="../../../Packages/com.gamecore.unity.runtime/Tests/Observation/**/*.cs"
              Exclude="../../../Packages/com.gamecore.unity.runtime/Tests/Observation/**/bin/**/*.cs;../../../Packages/com.gamecore.unity.runtime/Tests/Observation/**/obj/**/*.cs" />
+    <Compile Include="../../../Packages/com.gamecore.unity.runtime/Tests/Delivery/**/*.cs"
+             Exclude="../../../Packages/com.gamecore.unity.runtime/Tests/Delivery/**/bin/**/*.cs;../../../Packages/com.gamecore.unity.runtime/Tests/Delivery/**/obj/**/*.cs" />
   </ItemGroup>
 
   <ItemGroup>

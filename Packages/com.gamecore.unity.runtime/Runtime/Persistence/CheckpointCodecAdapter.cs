@@ -13,7 +13,7 @@
 // discovery, so IL2CPP stripping cannot remove a serializer this assembly names (04 s8 item 3).
 //
 // The Unity project's generated-checkpoint assembly cannot be referenced from this package (the dependency would run
-// the wrong way), so this adapter is deliberately parameterised: the caller passes the twelve generated serializers
+// the wrong way), so this adapter is deliberately parameterised: the caller passes the thirteen generated serializers
 // with their record-value conversions and receives a complete `CheckpointCodecSet`. The Unity validation project's
 // family hosts do that with the committed generated catalog.
 #nullable enable
@@ -47,7 +47,7 @@ namespace GameCore.Unity.Runtime.Persistence
     }
 
     /// <summary>
-    /// The twelve generated serializers of one checkpoint catalog, as the adapter needs them: one instance per
+    /// The thirteen generated serializers of one checkpoint catalog, as the adapter needs them: one instance per
     /// record kind, each exposing the generated `Serialize`/`TryDeserialize` pair of its own record type.
     /// </summary>
     public sealed class CheckpointSerializerBindings
@@ -64,7 +64,8 @@ namespace GameCore.Unity.Runtime.Persistence
             ICheckpointRecordSerializer<CommandRecordValue> command,
             ICheckpointRecordSerializer<MessageRecordValue> message,
             ICheckpointRecordSerializer<RngRecordValue> rng,
-            ICheckpointRecordSerializer<CursorRecordValue> cursor)
+            ICheckpointRecordSerializer<CursorRecordValue> cursor,
+            ICheckpointRecordSerializer<OutboxRecordValue> outbox)
         {
             Header = header ?? throw new ArgumentNullException(nameof(header));
             Scope = scope ?? throw new ArgumentNullException(nameof(scope));
@@ -78,6 +79,7 @@ namespace GameCore.Unity.Runtime.Persistence
             Message = message ?? throw new ArgumentNullException(nameof(message));
             Rng = rng ?? throw new ArgumentNullException(nameof(rng));
             Cursor = cursor ?? throw new ArgumentNullException(nameof(cursor));
+            Outbox = outbox ?? throw new ArgumentNullException(nameof(outbox));
         }
 
         public ICheckpointRecordSerializer<HeaderRecordValue> Header { get; }
@@ -104,6 +106,8 @@ namespace GameCore.Unity.Runtime.Persistence
 
         public ICheckpointRecordSerializer<CursorRecordValue> Cursor { get; }
 
+        public ICheckpointRecordSerializer<OutboxRecordValue> Outbox { get; }
+
         /// <summary>Every binding as a codec, in record-kind order, for <see cref="CheckpointCodecSet"/>.</summary>
         public IReadOnlyList<ICheckpointRecordCodec> Codecs() => new ICheckpointRecordCodec[]
         {
@@ -119,6 +123,7 @@ namespace GameCore.Unity.Runtime.Persistence
             new CheckpointRecordCodec<MessageRecordValue>(CheckpointRecordKind.Message, Message),
             new CheckpointRecordCodec<RngRecordValue>(CheckpointRecordKind.Rng, Rng),
             new CheckpointRecordCodec<CursorRecordValue>(CheckpointRecordKind.Cursor, Cursor),
+            new CheckpointRecordCodec<OutboxRecordValue>(CheckpointRecordKind.Outbox, Outbox),
         };
 
         /// <summary>A complete codec set, which a whole-world capture and restore require (P-053).</summary>

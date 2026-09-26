@@ -24,6 +24,11 @@ namespace GameCore.Validation.ProbeHost
         private const string Gc018ArgumentName = "-probeGc018";
         private const string Gc019ArgumentName = "-probeGc019";
         private const string W5GateArgumentName = "-probeW5Gate";
+        private const string TraversalArgumentName = "-probeTraversal";
+        private const string Gc021ArgumentName = "-probeGc021";
+        private const string LifecycleStressArgumentName = "-probeLifecycleStress";
+        private const string ReplayArgumentName = "-probeReplay";
+        private const string W6GateArgumentName = "-probeW6Gate";
 
         private ProbeArguments(
             bool missingRegistration,
@@ -35,11 +40,16 @@ namespace GameCore.Validation.ProbeHost
             bool cards,
             bool w4Profile,
             bool gc013,
+            bool lifecycleStress,
             bool w4Gate,
             bool faults,
             bool gc018,
             bool gc019,
             bool w5Gate,
+            bool traversal,
+            bool gc021,
+            bool replay,
+            bool w6Gate,
             string? resultPath)
         {
             MissingRegistration = missingRegistration;
@@ -51,11 +61,16 @@ namespace GameCore.Validation.ProbeHost
             Cards = cards;
             W4Profile = w4Profile;
             Gc013 = gc013;
+            LifecycleStress = lifecycleStress;
             W4Gate = w4Gate;
             Faults = faults;
             Gc018 = gc018;
             Gc019 = gc019;
             W5Gate = w5Gate;
+            Traversal = traversal;
+            Gc021 = gc021;
+            Replay = replay;
+            W6Gate = w6Gate;
             ResultPath = resultPath;
         }
 
@@ -157,13 +172,60 @@ namespace GameCore.Validation.ProbeHost
         /// </summary>
         public bool W5Gate { get; }
 
+        /// <summary>
+        /// Runs the GC-020 real-time action reference: the fixed-step traversal course with its owner/stage policies,
+        /// its inherited Additive acceleration modifier, its data-defined checkpoint volumes, the committed crossing
+        /// output, and the optional engine stages — one local `PhysicsScene` simulation per admitted step, committed
+        /// animation output and committed audio output whose sink is engine-free because the headless player has audio
+        /// disabled (P-034, P-036, P-039..P-041, P-044, P-045, P-059).
+        /// </summary>
+        public bool Traversal { get; }
+
+        /// <summary>
+        /// Runs the GC-021 durable-delivery mode: the delivery key derivation, a durable commit that is persisted
+        /// before it is applied, a deterministic crash at the seam's own after-delivery boundary, the redelivery that
+        /// applies the destination mutation exactly once, capacity exhaustion that is never a silent drop, the
+        /// volatile/durable distinction, a committed obligation that outlives the unload of its world, a checkpoint
+        /// that carries the outbox and its cursor, the absence of a universal effect API, and the reward bridge's one
+        /// committed choice becoming one durable, idempotent card mutation (P-003, P-043, P-045, P-050, P-053).
+        /// </summary>
+        public bool Gc021 { get; }
+
+        /// <summary>
+        /// Runs the GC-022 lifecycle stress: the counted mount/unmount cycles over each family's committed generated
+        /// catalog and over its fixture identity set, with delayed completions, stalled jobs, a throwing disposer,
+        /// required-provider churn and headless cleanup, under native leak detection with full stack traces
+        /// (P-047, P-048, P-050).
+        /// </summary>
+        public bool LifecycleStress { get; }
+
+        /// <summary>
+        /// Runs the GC-023 replay mode: the recorded 10,000-step integer fixture replayed across the supported
+        /// worker counts and under a shuffled producer/completion order, the differential propagation sweep with its
+        /// reducer, the observation replay separated from the native-physics comparison, and the instrumented
+        /// counters of one real owned world with the raw benchmark trace written beside the probe result
+        /// (P-008, P-023, TEST-022, TEST-023).
+        /// </summary>
+        public bool Replay { get; }
+
+        /// <summary>
+        /// Runs the Wave 6 integration-gate mode: the fixed-step traversal course with the cost counters and the
+        /// recorded-input replay, the durable reward delivery across an unload/reload of its receiving world, the
+        /// composition audit that keeps the optional physics/animation/audio surface out of cards and narrative, and
+        /// the create/mount/step/unmount/teardown loop over all three genres (W6-GATE).
+        /// </summary>
+        public bool W6Gate { get; }
+
         /// <summary>Destination path of the structured JSON result.</summary>
         public string? ResultPath { get; }
 
         /// <summary>True when the process was launched as a probe rather than as a normal player run.</summary>
         public bool IsProbeInvocation =>
             MissingRegistration || WorldDispatch || W1Gate || W2Gate || W3Gate || Narrative || Cards || W4Profile
-            || Gc013 || W4Gate || Faults || Gc018 || Gc019 || W5Gate
+            || Gc013 || W4Gate || Faults || Gc018 || Gc019 || W5Gate || Traversal || Gc021
+            || LifecycleStress
+            || Replay
+            || W6Gate
             || !string.IsNullOrEmpty(ResultPath);
 
         /// <summary>True when a result destination was supplied; without it the probe cannot record evidence.</summary>
@@ -180,11 +242,16 @@ namespace GameCore.Validation.ProbeHost
             bool cards = false;
             bool w4Profile = false;
             bool gc013 = false;
+            bool lifecycleStress = false;
             bool w4Gate = false;
             bool faults = false;
             bool gc018 = false;
             bool gc019 = false;
             bool w5Gate = false;
+            bool traversal = false;
+            bool gc021 = false;
+            bool replay = false;
+            bool w6Gate = false;
             string? resultPath = null;
             for (int i = 0; i < arguments.Length; i++)
             {
@@ -245,6 +312,26 @@ namespace GameCore.Validation.ProbeHost
                 {
                     w5Gate = true;
                 }
+                else if (argument == TraversalArgumentName)
+                {
+                    traversal = true;
+                }
+                else if (argument == Gc021ArgumentName)
+                {
+                    gc021 = true;
+                }
+                else if (argument == LifecycleStressArgumentName)
+                {
+                    lifecycleStress = true;
+                }
+                else if (argument == ReplayArgumentName)
+                {
+                    replay = true;
+                }
+                else if (argument == W6GateArgumentName)
+                {
+                    w6Gate = true;
+                }
                 else if (argument == ResultArgumentName && i + 1 < arguments.Length)
                 {
                     resultPath = arguments[i + 1];
@@ -253,7 +340,8 @@ namespace GameCore.Validation.ProbeHost
 
             return new ProbeArguments(
                 missingRegistration, worldDispatch, w1Gate, w2Gate, w3Gate, narrative, cards, w4Profile, gc013,
-                w4Gate, faults, gc018, gc019, w5Gate, resultPath);
+                lifecycleStress,
+                w4Gate, faults, gc018, gc019, w5Gate, traversal, gc021, replay, w6Gate, resultPath);
         }
     }
 }

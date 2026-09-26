@@ -272,10 +272,29 @@ namespace GameCore.Unity.Runtime.Lifecycle
         }
 
         /// <summary>
-        /// Settles retained references of one installation after its users ended, then retires them. This is the
-        /// explicit, evidence-driven release P-048 allows; it is never reached by elapsing time.
+        /// Settles retained references of one installation after its users ended, then retires them, and - when
+        /// the release ended the last retention - completes the installation's own committed record to `Disposed`,
+        /// the same edge a publication-time settle took for its settled teardowns. This is the explicit,
+        /// evidence-driven release P-048 allows; it is never reached by elapsing time. An installation with
+        /// nothing quarantined is left unchanged, and a record that still cannot settle is reported by the
+        /// returned report's retained side, never as a false disposal.
         /// </summary>
-        public CleanupReport ReleaseQuarantine(PluginInstanceId instance) => Lifecycle.ReleaseQuarantineFor(instance);
+        public CleanupReport ReleaseQuarantine(PluginInstanceId instance)
+        {
+            CleanupReport release = Lifecycle.ReleaseQuarantineFor(instance);
+            if (release.Failed.Count == 0
+                && release.Quarantined.Count == 0
+                && lane.Committed.TryGetInstall(instance, out InstallEntry? entry)
+                && entry != null
+                && entry.State == InstallationState.Retiring)
+            {
+                // The explicit release ended the last retention, so the removal's own record can settle now; the
+                // lane reports the refusal as a value instead of this method forcing it (P-048).
+                lane.SettleRetiredInstall(instance);
+            }
+
+            return release;
+        }
 
         /// <summary>Wires the job fence to the world's step jobs so a step boundary is a real completion point.</summary>
         public void TrackStepJob(

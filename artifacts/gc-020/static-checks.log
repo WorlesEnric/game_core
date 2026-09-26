@@ -1,0 +1,36 @@
+== GC-020 host-side static checks (this authoring host: no .NET SDK, no compiler, no Unity) ==
+date_utc: 2026-09-26T02:08:51Z
+uname: Darwin yangdeMac-mini.local 25.3.0 Darwin Kernel Version 25.3.0: Wed Jan 28 20:56:34 PST 2026; root:xnu-12377.91.3~2/RELEASE_ARM64_T8112 arm64 Darwin
+
+-- tools/check_game_core_csharp.py
+checked 494 C# file(s)
+ok
+
+-- tools/validate_game_core_docs.py --self-test
+Documentation validator self-test passed: 9 isolated positive/negative fixtures.
+
+-- tools/validate_game_core_docs.py
+Game Core documentation validation passed: 14 Markdown documents; local links, anchors, IDs, traceability, task DAG and wave ordering checked.
+No Unity builds, gameplay tests, runtime benchmarks, or remote URL checks were executed.
+
+-- tools/make_unity_metas.py (idempotence)
+created 0 meta file(s)
+
+-- bash -n tools/run_gc020_gate.sh tools/unity/run_traversal_probe.sh
+shell syntax ok
+
+-- JSON validation of the inventory
+inventory.json valid; sections: artifact, generatedFor, statusVocabulary, statusAsOf, counts, requirements, operations, gc012Revisions, w4GateRevisions, gc018Revisions, w5GateRevisions, gc020Revisions
+gc020Revisions proposedRows: 14 (no row promoted)
+
+-- digest literal recomputation (rule validated against the committed GC-019 narrative literal)
+gc019 narrative rule check: True
+gc020 traversal digest: 6263602b82b25315ae33f8ebcc3fbd314586743b9080b0bbe0df34ecc3172ad8 len 64
+  copy present in unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/ProbeTraversal.cs : True
+  copy present in unity/GameCore.Validation/Assets/GameCore.Validation/Tests/Gc020/Gc020IntegrationTests.cs : True
+  copy present in tools/unity/run_traversal_probe.sh : True
+
+-- every changed .cs carries #nullable enable and no forbidden construct (per tools/check_game_core_csharp.py above)
+-- .cs/.meta coverage and GUID uniqueness for the new files
+files without a .meta: none
+duplicate GUIDs: none | total metas scanned: 565

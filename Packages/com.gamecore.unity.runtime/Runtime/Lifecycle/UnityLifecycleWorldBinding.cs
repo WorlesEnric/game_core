@@ -295,8 +295,8 @@ namespace GameCore.Unity.Runtime.Lifecycle
         }
 
         /// <summary>
-        /// Derived binding rows of the published assembly whose provider is this installation (P-017). A row is
-        /// attributed by provider installation identity, so a shared component's other supporters are untouched.
+        /// Derived binding rows of the published assembly supported by this installation (P-017).
+        /// A composed row may have several supporters; checking only its ranked Provider misses the others.
         /// </summary>
         public int CountAttributedRows(PluginInstanceId instance)
         {
@@ -304,9 +304,14 @@ namespace GameCore.Unity.Runtime.Lifecycle
             int count = 0;
             for (int i = 0; i < bindings.Rows.Count; i++)
             {
-                if (bindings.Rows[i].Provider.Value.Equals(instance.Value))
+                IReadOnlyList<CapabilitySupport> supports = bindings.Rows[i].Supports;
+                for (int s = 0; s < supports.Count; s++)
                 {
-                    count++;
+                    if (supports[s].Provider.Value.Equals(instance.Value))
+                    {
+                        count++;
+                        break;
+                    }
                 }
             }
 

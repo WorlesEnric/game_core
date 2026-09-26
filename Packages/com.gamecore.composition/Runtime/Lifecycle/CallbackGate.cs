@@ -29,8 +29,10 @@ namespace GameCore.Composition
     /// publication is in flight; inside a closed fence nothing is delivered, and a retired activation can never
     /// come back to life through a late completion (P-047).
     /// </summary>
-    public sealed class CallbackGate : ICallbackGate
+    public sealed class CallbackGate : ICallbackGate, ITelemetryOwner
     {
+        string ITelemetryOwner.TelemetryOwner => "gamecore.composition.callbacks";
+
         private readonly Dictionary<Id128, ActivationStamp> live = new Dictionary<Id128, ActivationStamp>();
 
         public CallbackGate(WorldId world)
@@ -67,6 +69,22 @@ namespace GameCore.Composition
             live.TryGetValue(instance.Value, out stamp);
 
         public int LiveActivationCount => live.Count;
+
+        /// <summary>
+        /// Writes the callback counters through the fixed compact schema (GC-023): live activations are the
+        /// outstanding callbacks, and a discarded completion is a stale result (P-047, TEST-023).
+        /// </summary>
+        public void WriteTelemetry(TelemetryCounterSet into)
+        {
+            if (into == null)
+            {
+                throw new ArgumentNullException(nameof(into));
+            }
+
+            into.ObserveMax(TelemetryCounter.OutstandingCallbacks, LiveActivationCount);
+            into.Add(TelemetryCounter.DiscardedCallbacks, DiscardedCount);
+            into.Add(TelemetryCounter.StaleResults, DiscardedCount);
+        }
 
         /// <summary>
         /// Validation order is world, then fence, then liveness, then generation/epoch. The order is observable in

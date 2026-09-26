@@ -392,3 +392,220 @@ them but does not close their remaining clauses); `O-20`/`O-21` stay promoted fr
    as a split construct and failed a correct file (found here in `Observation/SnapshotResynchronization.cs`, added by
    GC-016 after GC-017 froze that check). A falsifiability self-test proves the fixed check still fails on a real
    split, including one hidden behind a brace inside a string.
+
+## GC-020 revision notes (Wave 6, proposals only — nothing has run)
+
+**Status: `NotRun (pending orchestrator build host)`. No additional row promoted.** This authoring host has no .NET
+SDK, no C# compiler and no Unity, so the gate of this task has never executed. Everything below is a **proposal**
+the build host acts on after running `tools/run_gc020_gate.sh`, and every evidence path named in it is an artifact
+the build host must first produce.
+
+GC-020 implements the real-time action/traversal reference composition of 07 §4 exactly: a five-stage declared graph
+(`traversal.input → integrate → sense → checkpoints → output`, plus the separate `integrate → output` edge), three
+logical owners over six declared domains (motion; captured input; sealed observations; progress; committed
+crossings; committed image), one inherited `Additive` `traversal.acceleration` slot, data-defined checkpoint
+volumes, deduplicated ordered run progress through the pure course rules, and committed crossing events. Its pose is
+ECS-owned kinematic by default; the optional rigidbody mode declares a single external authority per recipe and
+refuses a conflicting selection rather than letting two writable copies coexist.
+
+Fourteen observations per run, whose names and digest literal are frozen here and asserted by both the EditMode
+suite (`GameCore.Gc020.Tests`) and the player probe (`-probeTraversal`):
+
+`traversal/gc020-fixed-step-world-and-runners`, `…-existing-runners-derive-the-modifier`,
+`…-one-admitted-step-integrates-once`, `…-replay-separates-pure-motion-from-engine-observation`,
+`…-presentation-rate-does-not-double-advance`, `…-reparent-changes-the-contribution-and-keeps-state`,
+`…-unmount-keeps-pose-progress-and-receipts`, `…-mode-switch-both-directions`,
+`…-future-descendant-derives-before-execution`, `…-one-simulation-per-admitted-step`,
+`…-externally-owned-pose-is-not-integrated`, `…-committed-animation-and-audio-output`,
+`…-cards-and-narrative-declare-no-action-phase`, `…-teardown-settles-and-disposes`.
+
+Digest (SHA-256 over the LF-joined `traversal/<name>=pass` lines, no trailing newline):
+`6263602b82b25315ae33f8ebcc3fbd314586743b9080b0bbe0df34ecc3172ad8`.
+
+**One catalog only.** No committed generated traversal catalog exists on this revision — its emission is GC-025's
+catalog-coverage work — so `Gc020TraversalHost.GeneratedCatalogPresent` is `false` and `RunBoth` answers both
+out-parameters with the fixture catalog's single run. The EditMode suite asserts that fact instead of implying a
+second catalog ran.
+
+| Id | Before | After (proposed) | Passing observation this change set would provide, and the remaining limit |
+| --- | --- | --- | --- |
+| `P-001` | `Partial` | `Partial` (unchanged) | Third genre on one kernel binary with no kernel schema; `gc020-cards-and-narrative-declare-no-action-phase` walks the narrative and card declarations for any traversal stage id, system key, buffer id or capability and reports `offenders=<none>`. The cross-family reward composition and the action IL2CPP run stay GC-024/GC-021's |
+| `P-002` | `Partial` | `Partial` (unchanged) | The action family supplies a real command port, a compiled five-stage graph and an engine adapter that admits stamped observations and submits intents; the physics path is a gate scenario, not yet a built player |
+| `P-034` | `Partial` | `Partial` (unchanged) | `gc020-one-simulation-per-admitted-step`, `gc020-externally-owned-pose-is-not-integrated`: a declared external owner, a refusal to integrate that pose, an `OwnershipConflict` on a conflicting selection, and one local `PhysicsScene.Simulate` per admitted step with intents applied before it |
+| `P-035` | `Implemented+Evidenced` | `Implemented+Evidenced` | `gc020-teardown-settles-and-disposes`: a second fixed-step world runs and stops through the world's own lifecycle |
+| `P-036` | `Implemented+Evidenced` | `Implemented+Evidenced` | `gc020-fixed-step-world-and-runners`, `gc020-presentation-rate-does-not-double-advance`: the declared 20 ms step with the four-step catch-up, and identical logical step counts at 30/60/144 Hz host sampling |
+| `P-038` | `Implemented+Evidenced` | `Implemented+Evidenced` | `gc020-one-admitted-step-integrates-once`: the integration reads the world's own step clock and the trace stamps each body with the logical step |
+| `P-039` | `Implemented+Evidenced` | `Implemented+Evidenced` | `gc020-fixed-step-world-and-runners`: five declared stages, their system keys and their per-system access sets, compiled by the production compiler |
+| `P-040` | `Implemented+Evidenced` | `Implemented+Evidenced` | `gc020-fixed-step-world-and-runners`: both edges of 07 §4.2, including `integrate → output`, are declared `requiredAfter` edges rather than inferred ones |
+| `P-041` | `Implemented+Evidenced` | `Implemented+Evidenced` | `gc020-one-admitted-step-integrates-once`: direct owned component writes plus the declared `sense → checkpoints` step buffer and its drain check |
+| `P-044` | `Implemented+Evidenced` | `Implemented+Evidenced` | `gc020-reparent-changes-the-contribution-and-keeps-state`, `gc020-committed-animation-and-audio-output`: a bounded crossing write set and per-crossing committed events staged for the step's commit |
+| `P-045` | `Partial` | `Partial` (unchanged) | `gc020-committed-animation-and-audio-output`, `gc020-replay-separates-pure-motion-from-engine-observation`: a committed-output consumer that deduplicates by event identity, reports the disabled-device path, and refuses a stale presentation token. The crash-durable outbox and the long-run cursor budget stay GC-021/GC-026's |
+| `P-056` | `Partial` | `Partial` (unchanged) | A fourth rules package's registered reducer/predicate pair, an external-authority physics descriptor and a committed-output audio/animation sink port; asset/presentation/input registration is GC-019's and unchanged here |
+| `P-058` | `Implemented+Evidenced` | `Implemented+Evidenced` | Unchanged status: the packages compile under the pinned Editor and package set; this change set adds no pin and no toolchain change |
+| `P-059` | `Partial` | `Partial` (unchanged) | The row GC-020 is named against: the fixed-step action family now exists as a real package, and `gc020-cards-and-narrative-declare-no-action-phase` asserts the other two families carry no action phase. It stays `Partial` because nothing has executed and the cross-family composition is GC-024's |
+
+Not proposed: `P-049` (O-22 `RecoverWorld` is GC-027's), `P-007`'s long-run retention budget (GC-026), the
+card/narrative rows the earlier waves already carry, and every operation row other than `O-14`/`O-15`/`O-16`, which
+this gate exercises at one-second scale rather than over GC-023's 10,000 replayed steps.
+
+**Contract changes: none.** No file under `Packages/com.gamecore.contracts/` and no plan DTO was modified. The new
+public surface is additive: `Packages/com.gamecore.rules.traversal`, `Packages/com.gamecore.gameplay.traversal`, the
+`Runtime/Pure/Physics`, `Runtime/Pure/Audio`, `Runtime/Pure/Animation`, `Runtime/Physics` and
+`Runtime/Presentation` folders of `Packages/com.gamecore.unity.adapters`, and the qualification gate's own three
+files.
+
+**Carried gaps.** Nothing here has been compiled, imported or executed, so every evidence path above must first be
+produced by the build host. The rigidbody authority is proved in the Editor qualification world rather than with a
+production rigidbody game. The audio stage is qualified engine-free **by design**: the headless player runs with
+Unity audio disabled (an FMOD/PulseAudio crash at exit, crash-139), so the live-device path is documented and the
+committed-output logic is proved through the sink port with a recording implementation.
+
+## GC-021 revision notes (proposals only; nothing promoted)
+
+**Status of every command in this section: `NotRun (pending orchestrator build host)`.** Source: `artifacts/gc-021/HANDOFF.md`.
+
+GC-021 implements durable outbox and destination idempotency seams: the checkpoint format gains an outbox section
+(`CheckpointRecordKind.Outbox = 12`, appended so every existing field id is unchanged; `OutboxRecordValue` with
+Obligation/Terminal/Cursor rows and its own row-layout version; `HeaderRecordValue.OutboxCount` verified in both
+directions), the engine-free delivery core gains `DeliveryKey.Derive` (three stable identities minted from committed
+data under two length-prefixed domain labels, so a repeated observation of one committed event is one obligation), a
+bounded `DurableOutbox` with explicit capacity and retention refusals, and `DurableDeliveryAdapter` with one declared
+ordering per transition plus a named-boundary reporting seam; capture, the restore planner (with the new
+`RestoreRefusal.InvalidOutbox`) and the restore executor (through the optional `IRestoreOutboxBuilder`) carry the
+section; and `Packages/com.gamecore.gameplay.integration` adds the narrative→card reward composition with three
+distinguishable unsupported-destination-state outcomes (unavailable, terminal refusal, explicit compensation).
+
+**No requirement or operation row was promoted.** The tables below are proposals; the build host promotes after
+running, as the brief requires.
+
+| Id | Current | Proposed | What the change set adds | Evidence the build host must first produce |
+| --- | --- | --- | --- | --- |
+| `P-045` | Partial | Partial | The durable outbox, explicit external idempotency keys, acknowledgement cursors and the checkpoint section. Redelivery after acknowledgement loss applies the mutation once; delivery is documented as at-least-once with destination deduplication, never exactly-once. | `artifacts/gc-021/trx/`, `artifacts/gc-021/toolchain/probe-gc021.json` (×5), `artifacts/gc-021/unity/delivery-editmode.xml`, `artifacts/gc-021/BUILD_REPORT.md` |
+| `P-053` | Implemented+Evidenced | unchanged | The "external outbox/dedup cursors when used" clause gains a record kind, a capture path, three planner refusals and a reinstate-and-prove restore seam. | `probe-gc021.json`, `trx/` |
+| `P-003` | Partial | Partial | Acknowledging is idempotent, rejections and compensations are terminal, and no reversible `Effect` member is reachable from the delivery surface. | `probe-gc021.json` |
+| `P-043` | Implemented+Evidenced | unchanged | An outbox is bounded and its refusals and prunes are counted: capacity exhaustion reports `BudgetExceeded` and the refused obligation is not tracked. | `probe-gc021.json`, `trx/` |
+| `P-050` | Partial | Partial | The obligation identity and the external key are derived from committed data and survive a crash and recovery unchanged. | `probe-gc021.json`, `trx/` |
+| `P-049` | Partial | Partial | A committed obligation is reinstated into a new session; recovery is explicit and there is no hidden replay. `O-22` and bounded retries remain GC-027's. | `probe-gc021.json` |
+| `P-054` | Implemented+Evidenced | unchanged | The outbox row is versioned and frame-checked; unknown versions, field counts and kinds are refused. | `trx/` |
+
+The two probe digest literals are deliberately `PENDING`: a digest is computed over the observation names and their
+pass flags and cannot be known before the sequence first runs. `tools/unity/run_gc021_probe.sh` asserts the
+falsifiable cross-catalog equality until they are pinned, and an exact pin afterwards. No literal was invented.
+
+## GC-023 revision notes — replay, differential propagation and complete cost instrumentation
+
+**Proposals only: nothing below is promoted by this task.** (Round 2 adds the real-Unity-jobs half; the machine-readable section is `gc023Revisions` in `inventory.json`.) The orchestrator promotes after running
+`UNITY=<editor> DOTNET=<sdk> PROBE_RUNS=5 tools/run_gc023_gate.sh` and recording
+`artifacts/gc-023/toolchain/probe-replay.json`, `artifacts/gc-023/toolchain/telemetry-release-surface.json` and
+`artifacts/gc-023/unity/editmode-results.xml`. The machine-readable form of this section is `gc023Revisions` in
+`inventory.json`.
+
+**Round 2 (orchestrator review).** The round-1 claim "the 10,000-step integer fixture across supported worker counts"
+was proven over a deterministic *model* of producer scheduling, so setting `JobsUtility.JobWorkerCount` varied a
+managed permutation rather than how the fixture's work ran. GC-023 now also drives the fixture's producers as REAL
+Burst `IJobParallelFor` jobs (inner-loop batch size 1) that write the runtime's own bounded `NativeMessageLane`
+payload arena, published through the lane's own publish path in a seeded permutation and merged by the runtime's
+canonical `DrainOwnerBatch`, at `JobsUtility.JobWorkerCount` 1, 2, 4 and the target's maximum, twice per count with
+different publish permutations. Three observations carry it: the world really ran the parallel producers (every step
+committed, every batch produced, nothing refused, and the canonical merge reordered the append order at least once),
+every run agrees on every per-step state hash, the final state, the canonical event identities and the chain hash, and
+the recorded per-thread histogram shows more than one distinct worker thread executing producer batches whenever the
+worker count was above one. The modeled test is kept: it is the fixture's own reference scheduling, and the two halves
+answer different questions.
+
+What GC-023 adds, in one paragraph: a fixed compact telemetry schema in `GameCore.Contracts` (a stable counter id per
+08 name, the TEST-023 leases/events/cache/quarantine split, one flat counter set, sections, frames, a retained trace
+with a chain hash, a keyed duration series and `[Conditional]` counting helpers), twenty-two runtime owners that
+export their counters through it, a Unity-free replay fixture package (`tests/GameCore.Replay`, assembly
+`GameCore.Replay`) carrying the recorded 10,000-step integer fixture, canonical state/decision/provenance/event
+hashing with a documented exclusion list, the worker-scheduling model, engine-observation replay separated from a
+native-physics comparison, and a differential sweep with a deterministic reducer, plus the `-probeReplay` player mode
+and the disabled-shape proof that compiles the counting call sites away.
+
+| Requirement | Row status | Proposal | Evidence that must first exist |
+| --- | --- | --- | --- |
+| P-008 stable ordering and the determinism boundary | Partial | Partial | `probe-replay.json`, `trx/`, `editmode-results.xml` |
+| P-018 precedence under shuffled completion (modeled and real jobs) | Partial | Partial | `probe-replay.json` |
+| P-022 budgets and their measurement | Partial | Partial | `probe-replay.json`, `trx/` |
+| P-023 incrementality and untouched-sibling counters | Partial | Partial | `probe-replay.json`, `trx/` |
+| P-026 explanation and provenance completeness | Partial | Partial | `probe-replay.json`, `trx/` |
+| P-052 diagnostics and a stable evidence shape | Partial | Partial | `probe-replay.json`, `probe-replay.json.trace` |
+| P-060 recorded evidence and measurements | Partial | Partial | `telemetry-release-surface.json`, `probe-replay.json`, `BUILD_REPORT.md` |
+
+**Why no row is proposed as promoted.** Every row above keeps a clause outside GC-023's scope: P-008 excludes
+cross-platform floating-point and physics lockstep by its own text; P-022's and P-060's measured budgets and P-023's
+scale inventory on a named machine are GC-026's; P-026's and P-052's remaining coverage is GC-016's; P-018's explicit
+`SelectProvider` overrides are GC-006/GC-013 evidence. GC-023 closes the parts it owns and says so rather than
+claiming the whole row.
+
+**Contract changes.** Fourteen new public types in `GameCore.Contracts` (additions only; the fourteen type headers are
+in the GC-003 additions allowlist in `dotnet/tests/GameCore.Contracts.Tests/ContractTests.cs`, recorded in
+`artifacts/gc-023/HANDOFF.md` section 5). `ITelemetryOwner` is the owner seam; `GAMECORE_TELEMETRY` is the switch,
+taken from the new qualification marker package `com.gamecore.telemetry-qualification`, which
+`tools/unity/prepare_gc017_release_project.py` now also removes from the marker-free release clone.
+
+**Not proposed.** P-007, P-037, P-039, P-040, P-041, P-043, P-044, P-045, P-048 and P-053 keep their status; no
+operation row changes; TEST-023's measured budget table is not claimed.
+
+## W6-GATE revision notes (Wave 6 integration gate; proposals only — nothing has run)
+
+**Status of every command in this section: `NotRun (pending orchestrator build host)`.** This worktree is `main` plus
+GC-020 with `origin/gc-021`, `origin/gc-022` and `origin/gc-023` merged into it, reconciled by hand where the four
+tasks touched the same files (`artifacts/w6-gate/HANDOFF.md` §4 records every reconciliation). Its own gate has never
+executed here: this authoring host has no .NET SDK, no C# compiler and no Unity.
+
+**No row is promoted by this section.** Everything below is a proposal naming the observation that would carry it and
+the artifacts the build host must first produce; a row is promoted only from an archived passing run.
+
+The gate's own observation tables are three tables (one per genre) with five frozen digest literals, recomputed in
+`artifacts/w6-gate/static-checks.log`. The claims it joins are:
+
+* the fixed-step traversal course with GC-023's cost counters COMPILED IN, where the counters record the admitted steps
+  and the physics gate's simulated-step count and the engine's own `Simulate` count are the same number;
+* a replay of the **recorded** input into a second course world, agreeing at tolerance zero for the pure integer rules
+  and matching at the package's declared tolerance for a perturbed engine observation;
+* GC-021's durable obligation delivered exactly once across a GC-022 unload/reload cycle of the RECEIVING world — the
+  obligation is reinstated into a world of a new session, dispatched, acknowledged, and then reinstated again after the
+  acknowledgement is lost, where the destination is asked twice under one external idempotency key and mutates once;
+* the composition audit from both directions: no traversal stage, stage key, system key, buffer (port), capability,
+  rule, config schema, factory or descriptor slot in cards or narrative, no `GameCore.Unity.Adapters` reference in their
+  loaded assemblies, and the traversal course really carrying the physics, animation and audio stages;
+* the create/mount/step/unmount/teardown loop over all THREE genres with the ledger and fence registries bounded, their
+  high-water marks reported and the world's counters back at the world's own baselines;
+* one digest per genre per catalog over the whole observation table, which the EditMode suite recomputes from the frozen
+  name table alone.
+
+| Id | Current | Proposed | What this gate would evidence | Evidence the build host must first produce |
+| --- | --- | --- | --- | --- |
+| `P-045` | Partial | **promotion is the build host's call** | Durable delivery across a receiving world's unload/reload: one committed event → one durable obligation → reinstated into a new session → dispatched → redelivered under the same external key with no second mutation. | `artifacts/w6-gate/toolchain/probe-w6-gate.json` (×5), `artifacts/w6-gate/unity/editmode-results.xml`, `artifacts/w6-gate/trx/` |
+| `P-049` | Partial | `Partial` (unchanged) | The obligation survives the unload of the world that committed it and is reinstated explicitly; `O-22 RecoverWorld` and host-configured bounded retries remain GC-027's. | the same probe/EditMode artifacts |
+| `P-007` | Partial | `Partial` (unchanged) | Lease and callback counts return to the world's own baselines after 1,000 cycles per genre, with the retired-history and fence high-water marks reported. Long-run retention budgets under memory pressure stay GC-026's. | `probe-w6-gate.json` (`liveLeases=0`, `fenceOutstandingHighWater=0`, `evictedRetired=0`) |
+| `P-001` | Partial | `Partial` (unchanged) | The audit's negative half (cards and narrative carry no action/physics/audio surface or adapter assembly) AND its positive half (the traversal course carries the five stages and all three optional engine stages) in one run over the same revision. The cross-family reward composition is GC-024's. | `probe-w6-gate.json` (`offenders=<none>`, `traversalAdapters=True`) |
+| `P-034` | Partial | `Partial` (unchanged) | One local `PhysicsScene` simulation per admitted step, refused duplicates, and the engine's own `Simulate` count equal to the admitted steps and to the gate's counter. | `probe-w6-gate.json` (`gateSimulatedSteps=5`, `duplicateRefused=True`) |
+| `P-036` | Implemented+Evidenced | unchanged | The traversal course commits no step while no host time elapses, and one declared step per pump; the loop's command-driven genres commit exactly one step per admitted command. | `probe-w6-gate.json` |
+| `P-046` | Partial | **may promote after the gate** | 1,000 real mount/unmount cycles with one admitted step inside each cycle, for all three genres through one loop. | `probe-w6-gate.json` (`completed=1000`), `trx/` |
+| `P-048` | Implemented+Evidenced | unchanged | Each cycle's installation reaches `Disposed` with its lease retired, and the registries are bounded afterwards. | `probe-w6-gate.json`, leak attribution |
+| `P-008` | Partial | `Partial` (unchanged) | Recorded-input replay agreement, the five frozen digest literals, and a table that cannot silently shrink. Cross-platform and native-physics claims stay excluded. | `probe-w6-gate.json`, `unity/editmode-results.xml` |
+| `P-059` | Partial | `Partial` (unchanged) | The third genre runs in the same stripped player as the other two, and the composition audit is made from the traversal side as well. The full transition tables are GC-024's. | `probe-w6-gate.json` |
+| `P-060` | Partial | `Partial` (unchanged) | This gate's evidence set, including the release-surface inspection that proves the qualification markers are absent from a shipping-shaped player. The measured budget table is GC-026's. | `release-gate-surface.json`, `release-surface.json` |
+
+**Contract changes: none.** No file under `Packages/com.gamecore.contracts/` was modified by the gate, no plan DTO was
+touched, and no operation row changes. The reconciliation that DID change shared behaviour is
+`ProbeRunner.CreateReport`'s branch for three probe modes (§4 of the handoff): the merge had left the traversal, GC-021
+and lifecycle-stress branches without their `report.CompletePositive()` call, which would have left those three modes
+unfinalized (result `Fail`, exit 1) in the player. It is fixed in this gate's revision.
+
+**GC-023's round 2, merged after this section was first written.** The marker-free release clone now also removes
+GC-023's replay *qualification fixture* — `ReplayParallelJobs`, `ReplayScenario`, `ProbeReplay`, the `-probeReplay`
+dispatch and argument plumbing, the `com.gamecore.replay` dependency and the probe host's `GameCore.Replay` reference —
+so the release-surface evidence for that mechanism is the qualification player's `-probeReplay` run plus the
+both-configurations assembly scan, not a release-player run. Two consequences are recorded in
+`artifacts/w6-gate/HANDOFF.md` §4.7: the clone's own invariants are now asserted by a committed tool
+(`tools/check_release_clone.py`, wired into the gate) after a re-derivation of the constructor-argument and
+qualification-mode-expression replacements found the previous clone's `ProbeArguments` call passing 14 arguments to a
+15-parameter constructor, and the clone also removes the editor-only reload matrix because its traversal route lives in
+a Wave 6 gate file. The rows below are unaffected: nothing here has executed.
+
+**Not proposed.** `O-22 RecoverWorld` stays `Not yet` (GC-027), the measured budgets stay GC-026's, `P-055`'s
+cross-version migration matrix stays GC-027's, and the four rows the merged tasks proposed for themselves are left as
+those tasks' own proposals rather than restated here.

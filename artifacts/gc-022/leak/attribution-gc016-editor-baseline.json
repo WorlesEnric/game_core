@@ -1,0 +1,58 @@
+{
+  "tool": "tools/attribute_native_leaks.py",
+  "task": "GC-022",
+  "logs": [
+    "artifacts/gc-016/unity/editmode.log"
+  ],
+  "leakHeaders": 1,
+  "headerAllocations": 57,
+  "blocks": 1,
+  "unattributed": 1,
+  "totals": {
+    "allocations": 57,
+    "blocks": 1
+  },
+  "classes": {
+    "gamecore": {
+      "blocks": 0,
+      "allocations": 0,
+      "bytes": null,
+      "signatures": []
+    },
+    "unity-engine": {
+      "blocks": 0,
+      "allocations": 0,
+      "bytes": null,
+      "signatures": []
+    },
+    "third-party": {
+      "blocks": 0,
+      "allocations": 0,
+      "bytes": null,
+      "signatures": []
+    }
+  },
+  "unattributedDetail": {
+    "blocks": 1,
+    "allocations": 57,
+    "bytes": null,
+    "hints": [
+      "stack-trace-disabled"
+    ]
+  },
+  "policy": {
+    "path": null,
+    "bounds": [],
+    "problems": [],
+    "uncovered": [],
+    "matched": [],
+    "examples": []
+  },
+  "baseline": null,
+  "verdict": "unattributed",
+  "exitCode": 2,
+  "notes": [
+    "1 block(s) / 57 allocation(s) carry no parseable frame: they are reported as unattributed and never as zero",
+    "unattributed hint(s): stack-trace-disabled"
+  ]
+}

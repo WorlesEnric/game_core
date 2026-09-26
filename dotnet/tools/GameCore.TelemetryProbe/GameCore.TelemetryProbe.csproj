@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- GC-023's disabled-shape proof, part one (behavioural).
+       ==========================================================================================
+       The counting helpers are `[Conditional("GAMECORE_TELEMETRY")]`, which makes the compiler remove the call
+       site *and its argument evaluation* when the symbol is undefined. That rule is what the whole "disabled cost is
+       about zero" claim rests on, so this project proves it directly instead of asserting it in prose:
+
+         -c Release        -> GAMECORE_TELEMETRY undefined, i.e. what a shipping project sees
+         -c Qualification  -> GAMECORE_TELEMETRY defined,  i.e. what the validation project sees
+
+       The probe calls the helpers with a *side-effecting* argument (an expression that increments a counter), counts
+       the calls that executed, and prints one deterministic line. Release must print `sideEffects=0;counted=0`;
+       Qualification must print non-zero values. The script `tools/check_release_telemetry_free.py` runs both
+       configurations, asserts those two outputs, and additionally scans the two assemblies: the Release one may not
+       reference the counting helpers at all, and the Qualification one must (which is what stops the check from
+       passing by inspecting an empty assembly).
+
+       This project is deliberately NOT in `dotnet/GameCore.sln`: the solution build must stay the instrumented
+       diagnostic shape, and the qualification configuration needs a non-standard `-c Qualification`. -->
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>GameCore.TelemetryProbe</AssemblyName>
+    <RootNamespace>GameCore.TelemetryProbeTool</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <Configurations>Debug;Release;Qualification</Configurations>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Qualification'">
+    <DefineConstants>$(DefineConstants);GAMECORE_TELEMETRY</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/GameCore.Contracts/GameCore.Contracts.csproj" />
+    <Compile Include="Probe.cs" />
+  </ItemGroup>
+
+</Project>

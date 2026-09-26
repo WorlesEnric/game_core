@@ -160,8 +160,10 @@ namespace GameCore.Unity.Runtime
     /// descriptor that gives a compiled schedule its fence indices; the host owns lifecycle, the logical step and
     /// the one visible switch.
     /// </summary>
-    public sealed class AssemblyPublisher
+    public sealed class AssemblyPublisher : ITelemetryOwner
     {
+        string ITelemetryOwner.TelemetryOwner => "gamecore.assembly.publisher";
+
         private readonly UnityWorldHost world;
         private readonly TargetRegistry registry;
         private readonly SpawnRecipeCatalog recipes;
@@ -286,6 +288,54 @@ namespace GameCore.Unity.Runtime
 
         /// <summary>Binding rows currently installed in live storage, for diagnosis.</summary>
         public int AppliedBindingRowCount => appliedBindingRowCount;
+
+        /// <summary>Cumulative live ECS rows written by apply steps (08 structural operations, P-041).</summary>
+        public long StructuralWriteCount { get; private set; }
+
+        /// <summary>
+        /// Host-supplied monotonic microsecond clock for the fenced-apply sample (08 `ApplyDuration`, P-022). The
+        /// publisher never reads a clock itself (P-008), and a build without `GAMECORE_TELEMETRY` never reads this
+        /// property, so the disabled shape records no sample and allocates no series.
+        /// </summary>
+        public Func<long>? TelemetryClock { get; set; }
+
+        /// <summary>
+        /// Writes this publisher's counters through the fixed compact schema (GC-023): the fenced-apply duration and
+        /// its sample count, the live rows apply wrote, the published assembly epoch, and the stale refusals a
+        /// publisher must be able to report (P-028).
+        /// </summary>
+        public void WriteTelemetry(TelemetryCounterSet into)
+        {
+            if (into == null)
+            {
+                throw new ArgumentNullException(nameof(into));
+            }
+
+            into.Add(TelemetryCounter.StructuralOperations, StructuralWriteCount);
+            into.ObserveMax(TelemetryCounter.AssemblyEpoch, (long)PublishedEpoch.Value);
+            into.Add(
+                TelemetryCounter.StaleResults,
+                StalePlanCount + StaleHandleRejectionCount + SpawnRejectionCount);
+#if GAMECORE_TELEMETRY
+            applyDurations?.WriteInto(into);
+#endif
+        }
+
+#if GAMECORE_TELEMETRY
+        private TelemetrySeries? applyDurations;
+
+        /// <summary>Records one fenced-apply duration and its sample count (GC-023).</summary>
+        private void NoteApplyDuration(long microseconds)
+        {
+            if (applyDurations == null)
+            {
+                applyDurations = new TelemetrySeries(
+                    TelemetryCounter.ApplyDurationMicroseconds, TelemetryCounter.ApplySampleCount);
+            }
+
+            applyDurations.Record(new Id128(0UL, 1UL), microseconds);
+        }
+#endif
 
         /// <summary>
         /// True when the lane's published revision/epoch pair is exactly the world's published pair. This is the
@@ -522,6 +572,12 @@ namespace GameCore.Unity.Runtime
             }
 
             // 10. Apply. From here on a failure is a postwrite fault: no epoch, no image and no resumption (P-031).
+#if GAMECORE_TELEMETRY
+            // The apply window GC-023 measures: the fenced apply, the epoch stamp and the commit that switches the
+            // published view. A failure inside it reports no sample, because the apply did not finish.
+            Func<long>? applyClock = TelemetryClock;
+            long applyStarted = applyClock == null ? 0L : applyClock();
+#endif
             publication.State.TryBeginApplying(out _);
             int writes = 0;
             try
@@ -553,7 +609,16 @@ namespace GameCore.Unity.Runtime
             }
 
             // 11. Commit: construct the complete image and switch it once through the host (P-030).
-            return Commit(publication, epochBefore, laneEpoch, nextEpoch, nextRevision, drained, migratedSlots, writes);
+            AssemblyPublicationReport report =
+                Commit(publication, epochBefore, laneEpoch, nextEpoch, nextRevision, drained, migratedSlots, writes);
+            StructuralWriteCount += writes;
+#if GAMECORE_TELEMETRY
+            if (applyClock != null)
+            {
+                NoteApplyDuration(applyClock() - applyStarted);
+            }
+#endif
+            return report;
         }
 
         /// <summary>Publishes a composition revision whose validated derivation changed no target bindings.</summary>

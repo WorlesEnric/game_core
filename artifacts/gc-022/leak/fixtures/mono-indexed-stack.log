@@ -1,0 +1,12 @@
+Cleanup mono
+Leak Detected : Persistent allocates 3 individual allocations.
+Found 2 leak(s) from callstack:
+ #0  (Mono JIT Code) [OwnershipSchedulePipeline.cs:336] GameCore.Unity.Runtime.Integration.OwnershipSchedulePipeline:Build (System.Collections.Generic.IReadOnlyList`1<GameCore.Contracts.PluginManifest>,GameCore.Unity.Runtime.Time.IScheduleDispatchKindResolver,GameCore.Planning.Ownership.ISlotMigrationRegistry)
+ #1  (Mono JIT Code) [CardMarketScenario.cs:528] GameCore.Gameplay.Cards.Fixtures.CardMarketScenario/Executor:CompileOwnershipAndSchedule ()
+ #2 ???
+ #3  (Mono JIT Code) (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo:InternalInvoke (System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+ #4  (Mono JIT Code) [CompositeWorkItem.cs:77] UnityEngine.TestRunner.NUnitExtensions.Runner.CompositeWorkItem/<PerformWork>d__13:MoveNext ()
+ #5 UnsafeUtility::Malloc(long, int, NativeCollection::Allocator, ScriptingExceptionPtr*)
+Found 1 leak(s) from callstack:
+ #0  (Unity) Unity.Collections.NativeArray`1:.ctor(Int32,AllocatorHandle,Int32)
+ #1 (Unity)

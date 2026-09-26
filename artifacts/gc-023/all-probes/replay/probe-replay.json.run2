@@ -1,0 +1,107 @@
+{
+  "task": "GC-023",
+  "probe": "GameCore.Validation.ProbeHost.ProbeRunner",
+  "mode": "Replay",
+  "result": "Pass",
+  "exitCode": 0,
+  "declaredUnityVersion": "6000.0.75f1",
+  "unityVersion": "6000.0.75f1",
+  "declaredTarget": "StandaloneLinux64",
+  "platform": "LinuxPlayer",
+  "architecture": "X64",
+  "processorType": "12th Gen Intel(R) Core(TM) i7-12700KF",
+  "scriptingBackend": "IL2CPP",
+  "isIl2Cpp": true,
+  "is64BitProcess": true,
+  "managedStrippingLevel": "High",
+  "managedStrippingLevelSource": "declared: GameCore.Validation.Editor.BuildProbe sets and re-reads PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, ManagedStrippingLevel.High); a player cannot query the stripping level at runtime",
+  "burstCompilerEnabled": true,
+  "fixturePluginPreservation": "declared: Assets/link.xml preserves the GameCore.Validation.Fixture assembly (preserve=\"all\"), and the generated catalog holds a direct FixturePluginFactory reference, so the plugin is linked into the player while nothing instantiates it at startup",
+  "catalogGenerator": "GameCore.Content.Compiler (GC-003)",
+  "catalogGeneratedFile": "ProbeCatalog.g.cs",
+  "catalogFileHash": "03bdcd23fd8ec0515d93d7c54d7f7c695f3860a850a7280b82316aaacd14c5c1",
+  "catalogFingerprint": "02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff",
+  "catalogDescriptionFormat": "gamecore.catalog-description/1",
+  "catalogProtocolVersion": "1.0",
+  "catalogSupportedFeatureCount": 1,
+  "catalogFileHashAlgorithm": "SHA-256",
+  "catalogFileHashScope": "SHA-256 over the UTF-8 bytes, with LF line endings, of the file prefix that ends immediately before the eight-space-indented CatalogFileHash declaration; that prefix ends with the newline that terminates the previous line, and the declaration itself, its value and the rest of the file are excluded",
+  "failureReason": "",
+  "probes": [
+    {
+      "name": "replay-world-created-and-owners-sampled",
+      "status": "Pass",
+      "detail": "lifecycle=Running; epoch=1; step=0; owners=7; sections=5; frame=frame{world=0;epoch=1;step=0;sections=5;live-leases=9}"
+    },
+    {
+      "name": "replay-world-idle-pump-does-zero-control-work",
+      "status": "Pass",
+      "detail": "pumps=64; step=0; dispatchRuns=0; publishedImages=1; controlNodes=0; serviceStringLookups=0"
+    },
+    {
+      "name": "replay-world-memory-split-is-reported-separately",
+      "status": "Pass",
+      "detail": "leaseBytes=0; retainedEventBytes=0; retainedEventCount=0; cacheBytes=0; quarantineBytes=0; quarantineEntries=0; ledgerQuarantined=0; retainedResources=9; retainedResourcesAtCreation=9; outstandingJobs=0"
+    },
+    {
+      "name": "replay-world-wake-commits-one-step-and-samples-durations",
+      "status": "Pass",
+      "detail": "advance=Published; step=1; committed=1; stepsAdvanced=1; jobWaitSamples=1; jobWaitUs=0; stageSamples=133; publishedImages=2"
+    },
+    {
+      "name": "replay-world-counters-move-on-a-committed-step",
+      "status": "Pass",
+      "detail": "driverSteps=1; frameSteps=1; images=2; requestOverflow=0; discardedCallbacks=0; sections=5"
+    },
+    {
+      "name": "replay-trace-records-ten-thousand-steps",
+      "status": "Pass",
+      "detail": "steps=10000; compositionSteps=10; catalog=44732ff69f6b6eab01f9c9b62fc09437d2cf713169fc954303a92718514cb0ec; shape=shape{branches=4;targetsPerBranch=2;isolated=2;providersPerBranch=2;steps=10000;maxWorkers=8;catalogRevision=1}"
+    },
+    {
+      "name": "replay-hashes-identically-across-worker-counts",
+      "status": "Pass",
+      "detail": "workers1=equal;jobsUtility=1;workers2=equal;jobsUtility=2;workers4=equal;jobsUtility=4;workers8=equal;jobsUtility=8;baseline=hashes{state=eeaabf0b18bd39ed36f6af803b3465d69334141502f2fabdaace208d8334432c;decisions=8a64168f8ffa14a9080dd5a3ee87bd98f79bf69441b32849dbff27ae39672363;provenance=f8b64a8c04871bfda1da194ae2b4b4ecdb85b196f8d4397b2f2843349a076501;events=b12c11f8860a63d88309d6bf2bee4fb6f61c52e018b0f0fe8ec4d9f962f510e3;stateChain=31fbcc04fd70367bf6347a4544df5bf6a0610be2b7ba68f170a8681a6996d591;counterChain=52b79f0a5533b3b95b4e073a42e7228d38dfd0c98b0a7ca9f5cca1f127fb211d}; carriedSteps=9994"
+    },
+    {
+      "name": "replay-hashes-identically-under-shuffled-producers",
+      "status": "Pass",
+      "detail": "shuffles=10000; source=workers=4;producers=shuffled;seedOffset=977; comparison{equal=1;sameInput=1;firstDivergence=-1;first=workers=1;producers=start-order;seedOffset=0;second=workers=4;producers=shuffled;seedOffset=977;identical}"
+    },
+    {
+      "name": "replay-different-admission-is-a-different-input",
+      "status": "Pass",
+      "detail": "comparison{equal=0;sameInput=0;firstDivergence=-1;first=workers=1;producers=start-order;seedOffset=0;second=workers=1;producers=start-order;seedOffset=0;the two runs drove different recorded inputs, which TEST-022 treats as different traces rather than a replay failure: first=replay-trace{integer-10000;seed=20260923;steps=10000;compositionSteps=10;shape=shape{branches=4;targetsPerBranch=2;isolated=2;providersPerBranch=2;steps=10000;maxWorkers=8;catalogRevision=1};catalog=44732ff69f6b6eab01f9c9b62fc09437d2cf713169fc954303a92718514cb0ec}; second=replay-trace{integer-10000;seed=20260923;steps=10000;compositionSteps=10;shape=shape{branches=4;targetsPerBranch=2;isolated=2;providersPerBranch=2;steps=10000;maxWorkers=8;catalogRevision=1};catalog=44732ff69f6b6eab01f9c9b62fc09437d2cf713169fc954303a92718514cb0ec}}"
+    },
+    {
+      "name": "replay-observation-replay-is-separate-from-physics",
+      "status": "Pass",
+      "detail": "ruleHash=f4a73a8f8e328fb789c6600985eeb090d3c768afc7d2a047374ee72ddf97c18a; observationHash=2c8e9dcbb30075d0049caf04e426e327e09938562e71965fbe6c8190f35a2ca1; observations=10000; physicsIdentical=False; physicsMaxDelta=393; physicsFirstDivergence=0"
+    },
+    {
+      "name": "replay-differential-sweep-is-clean-and-reducible",
+      "status": "Pass",
+      "detail": "differential-sweep{seeds=12;stepsPerSeed=32;agreed=384;failures=0}; witness=failing-seed{seed=1;original=24;reduced=1;failure=step 0 (seed 1, op SwitchMode:-@0): the injected perturbation reported this step as divergent; incremental=869114c4d6be25a301a84d566aceea2137e51dbf22b9640d62697790151da617 oracle=869114c4d6be25a301a84d566aceea2137e51dbf22b9640d62697790151da617;incremental=869114c4d6be25a301a84d566aceea2137e51dbf22b9640d62697790151da617;oracle=869114c4d6be25a301a84d566aceea2137e51dbf22b9640d62697790151da617}; witnessScript=seed=1|op=SwitchMode:-@0|"
+    },
+    {
+      "name": "replay-raw-benchmark-trace-round-trips",
+      "status": "Pass",
+      "detail": "frames=10000; readBack=10000; chain=232270940091d65bacbd613d981b9c18ce5f16b21fcdba3f1417141fb3072ddc; jsonBytes=2750139"
+    },
+    {
+      "name": "replay-digest",
+      "status": "Pass",
+      "detail": "observations=12; digest=ea05047d14cd60526d06e2e36d0f63fbe490ef64f70e2f3da73b6ada3e9db526; replay-scenario{observations=12;passed=12;digest=ea05047d14cd60526d06e2e36d0f63fbe490ef64f70e2f3da73b6ada3e9db526}"
+    },
+    {
+      "name": "replay-observation-count",
+      "status": "Pass",
+      "detail": "named observations=12; expected=12; steps=10000"
+    },
+    {
+      "name": "replay-benchmark-trace",
+      "status": "Pass",
+      "detail": "frames=67; rawBytes=5883; jsonBytes=41326; chainRoundTrips=true"
+    }
+  ]
+}

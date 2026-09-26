@@ -28,7 +28,7 @@ namespace GameCore.Content.Compiler.Tests
             "unity/GameCore.Validation/Assets/GameCore.Validation/GeneratedCheckpoint/CheckpointCatalog.g.cs";
 
         /// <summary>Schema count the committed description declares; changing it is a deliberate re-baseline.</summary>
-        private const int DeclaredSchemaCount = 12;
+        private const int DeclaredSchemaCount = 13;
 
         [Test]
         public void CommittedCheckpointCatalogMatchesAFreshGeneration()
