@@ -34,6 +34,9 @@ namespace GameCore.Contracts
         public readonly int RngStreams;
         public readonly int Cursors;
 
+        /// <summary>Delivery obligations, terminal delivery records and delivery cursors (GC-021, P-053).</summary>
+        public readonly int Outbox;
+
         public CheckpointCounts(
             int scopes,
             int installs,
@@ -45,7 +48,8 @@ namespace GameCore.Contracts
             int commands,
             int messages,
             int rngStreams,
-            int cursors)
+            int cursors,
+            int outbox)
         {
             Scopes = scopes;
             Installs = installs;
@@ -58,12 +62,12 @@ namespace GameCore.Contracts
             Messages = messages;
             RngStreams = rngStreams;
             Cursors = cursors;
+            Outbox = outbox;
         }
 
-        /// <summary>Every record this document frames, the single header record included.</summary>
         public int Total =>
             1 + Scopes + Installs + Selections + Targets + Slots + Grants + Clocks + Commands + Messages
-            + RngStreams + Cursors;
+            + RngStreams + Cursors + Outbox;
 
         /// <summary>Count of one kind, so a caller can compare a header with the records it received.</summary>
         public int Of(CheckpointRecordKind kind)
@@ -82,6 +86,7 @@ namespace GameCore.Contracts
                 case CheckpointRecordKind.Message: return Messages;
                 case CheckpointRecordKind.Rng: return RngStreams;
                 case CheckpointRecordKind.Cursor: return Cursors;
+                case CheckpointRecordKind.Outbox: return Outbox;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(kind), kind, "Unknown checkpoint record kind.");
             }
@@ -135,7 +140,8 @@ namespace GameCore.Contracts
             records[(int)CheckpointRecordKind.Command].Count,
             records[(int)CheckpointRecordKind.Message].Count,
             records[(int)CheckpointRecordKind.Rng].Count,
-            records[(int)CheckpointRecordKind.Cursor].Count);
+            records[(int)CheckpointRecordKind.Cursor].Count,
+            records[(int)CheckpointRecordKind.Outbox].Count);
 
         /// <summary>
         /// Appends one record. A missing codec, a refused encode or a bound overrun refuses the whole capture
@@ -235,7 +241,8 @@ namespace GameCore.Contracts
                     counts.Commands,
                     counts.Messages,
                     counts.RngStreams,
-                    counts.Cursors))
+                    counts.Cursors,
+                    counts.Outbox))
             {
                 code = DiagnosticCode.OwnershipConflict;
                 detail = "the header declares " + Describe(header) + " but the capture holds " + counts
@@ -370,7 +377,8 @@ namespace GameCore.Contracts
             records[(int)CheckpointRecordKind.Command].Count,
             records[(int)CheckpointRecordKind.Message].Count,
             records[(int)CheckpointRecordKind.Rng].Count,
-            records[(int)CheckpointRecordKind.Cursor].Count);
+            records[(int)CheckpointRecordKind.Cursor].Count,
+            records[(int)CheckpointRecordKind.Outbox].Count);
 
         /// <summary>
         /// Reads and verifies one document. Every failure is a coded value, never an exception and never a partially
@@ -590,7 +598,8 @@ namespace GameCore.Contracts
                     counts.Commands,
                     counts.Messages,
                     counts.RngStreams,
-                    counts.Cursors))
+                    counts.Cursors,
+                    counts.Outbox))
             {
                 code = DiagnosticCode.MissingDependency;
                 detail = "the header declares " + pending.Header.ToString() + " but the document carries " + counts
