@@ -22,11 +22,16 @@ non-vacuous second half:
      only, so a shipping Unity project cannot define it. `GAMECORE_TELEMETRY` must never appear in a runtime asmdef's
      `defineConstraints` (which would make an assembly simply not compile) and never in `dotnet/Directory.Build.props`.
 
+With --release-player-project, inspect both built Unity IL2CPP generated-code trees and their replay result JSONs.
+The release project must omit the marker, emit zero counting references in the runtime assemblies, compile
+IsCompiledIn=false and report zero duration samples; the qualification player must establish the opposite.
+
 Evidence: `--json <path>` writes the machine-readable result. Exit 0 only when every check passes.
 
 Usage:
     python3 tools/check_release_telemetry_free.py [--json artifacts/gc-023/telemetry-release-surface.json]
-                                                  [--no-build] [--dotnet PATH]
+        [--no-build] [--dotnet PATH]
+        [--release-player-project unity/GameCore.ReleaseCheck --artifacts artifacts/gc-023]
 """
 
 from __future__ import annotations
@@ -72,6 +77,63 @@ QUALIFICATION_ASMDEFS = (
 )
 
 VALIDATION_MANIFEST = "unity/GameCore.Validation/Packages/manifest.json"
+
+RELEASE_RUNTIME_ASSEMBLIES = (
+    "GameCore.Derivation",
+    "GameCore.Composition",
+    "GameCore.Planning",
+    "GameCore.Unity.Runtime",
+)
+
+
+def check_player(release_project: Path, qualification_project: Path, artifacts: Path,
+                 problems: list[str], facts: dict) -> None:
+    """Inspect both IL2CPP builds and exercise the marker-free player's recorded replay result."""
+    for project, is_release in ((release_project, True), (qualification_project, False)):
+        manifest = json.loads((project / "Packages/manifest.json").read_text(encoding="utf-8"))
+        marker_present = MARKER_PACKAGE in manifest.get("dependencies", {})
+        if marker_present == is_release:
+            problems.append(f"{project}: telemetry marker does not match its expected build shape")
+        player = project / "Builds/Linux64/GameCoreProbe.x86_64"
+        generated = project / "Builds/Linux64/GameCoreProbe_BackUpThisFolder_ButDontShipItWithYourGame/il2cppOutput"
+        label = "releasePlayer" if is_release else "qualificationPlayer"
+        if not player.is_file() or not generated.is_dir():
+            problems.append(f"{project}: built IL2CPP player or generated C++ is missing")
+            continue
+        sites = 0
+        for assembly in RELEASE_RUNTIME_ASSEMBLIES:
+            sources = sorted(generated.glob(assembly + "*.cpp"))
+            if not sources:
+                problems.append(f"{project}: no generated C++ for {assembly}")
+            for source in sources:
+                sites += len(re.findall(r"TelemetryCounting_(?:Count|Add|Observe)_m", source.read_text(encoding="utf-8")))
+        facts[label] = {"project": str(project), "player": str(player), "countingMentions": sites,
+                        "markerPresent": marker_present}
+        if is_release and sites:
+            problems.append(f"{project}: {sites} counting mentions survived in runtime IL2CPP output")
+        if not is_release and not sites:
+            problems.append(f"{project}: qualification IL2CPP output has no counting mentions")
+
+        contracts = "\n".join(source.read_text(encoding="utf-8") for source in generated.glob("GameCore.Contracts*.cpp"))
+        compiled_in = re.search(r"TelemetrySchema_get_IsCompiledIn_m\w+\s*\([^)]*\)\s*\{\s*\{\s*return \(bool\)([01]);", contracts)
+        if compiled_in is None or (compiled_in.group(1) == "1") == is_release:
+            problems.append(f"{project}: generated telemetry switch is missing or has the wrong value")
+
+        result_path = artifacts / ("release" if is_release else "toolchain") / "probe-replay.json"
+        if not result_path.exists():
+            problems.append(f"{result_path}: real player replay result is missing")
+            continue
+        result = json.loads(result_path.read_text(encoding="utf-8"))
+        wake = next((step for step in result.get("probes", [])
+                     if step.get("name") == "replay-world-wake-commits-one-step-and-samples-durations"), None)
+        detail = wake.get("detail", "") if wake else ""
+        samples = re.search(r"jobWaitSamples=(\d+).*stageSamples=(\d+)", detail)
+        facts[label]["replayResult"] = result.get("result")
+        facts[label]["durationSamples"] = list(map(int, samples.groups())) if samples else None
+        if result.get("result") != "Pass" or not samples:
+            problems.append(f"{result_path}: player replay failed or duration counters are missing")
+        elif (int(samples.group(1)) == 0 or int(samples.group(2)) == 0) != is_release:
+            problems.append(f"{result_path}: duration samples do not match the telemetry build shape")
 
 
 def run(command: list[str], cwd: Path, env: dict[str, str] | None = None) -> tuple[int, str]:
@@ -223,6 +285,10 @@ def main() -> int:
     parser.add_argument("--json", dest="json_path", default="")
     parser.add_argument("--no-build", action="store_true")
     parser.add_argument("--dotnet", default=shutil.which("dotnet") or "dotnet")
+    parser.add_argument("--release-player-project", type=Path,
+                        help="marker-free built Unity project; requires a built qualification player and both replay results")
+    parser.add_argument("--artifacts", type=Path, default=REPO_ROOT / "artifacts/gc-023",
+                        help="directory containing release/ and toolchain/ replay results")
     arguments = parser.parse_args()
 
     problems: list[str] = []
@@ -235,6 +301,9 @@ def main() -> int:
         check_release_check(arguments.dotnet, problems, facts)
 
     check_switch(problems, facts)
+    if arguments.release_player_project is not None:
+        check_player(arguments.release_player_project.resolve(),
+                     REPO_ROOT / "unity/GameCore.Validation", Path(arguments.artifacts).resolve(), problems, facts)
 
     result = {
         "artifact": "gamecore.gc023.telemetry-release-surface/1",

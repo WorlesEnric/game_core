@@ -275,9 +275,9 @@ namespace GameCore.Replay
                     return "step " + i.ToString(CultureInfo.InvariantCulture)
                         + " (seed " + seed.ToString(CultureInfo.InvariantCulture)
                         + ", op " + script[i].Describe() + "): " + reason
-                        + "; incremental=" + incrementalHash.ToHex()
-                        + " oracle=" + oracleHash.ToHex()
-                        + (perturbed ? string.Empty : "; decisions=" + incremental.Result.Decisions.Count + "/" + oracle.Decisions.Count
+                        + (perturbed ? string.Empty : "; incremental=" + incrementalHash.ToHex()
+                            + "; oracle=" + oracleHash.ToHex()
+                            + "; decisions=" + incremental.Result.Decisions.Count + "/" + oracle.Decisions.Count
                             + "; explanations=" + incremental.Result.Explanations.Count + "/" + oracle.Explanations.Count
                             + "; first difference=" + FirstDifference(incrementalText, oracleText));
                 }

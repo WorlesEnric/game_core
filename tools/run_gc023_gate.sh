@@ -13,18 +13,16 @@
 #      `GameCore.Replay.IntegrationTests`, the Editor half of this task's scenario,
 #   7. the Unity PlayMode suite,
 #   8. the StandaloneLinux64 IL2CPP qualification player, and `-probeReplay` executed PROBE_RUNS times,
-#   9. a marker-free release project inspection: the cloned project has no telemetry marker, so the counting call
-#      sites are compiled away there; the same clone is what GC-017's fault-free check inspects.
+#   9. a marker-free release IL2CPP player build, replay run and generated-code inspection: the
+#      cloned project has no telemetry marker, so counting call sites must be compiled away.
 #
 # The task sentence is "expose ordering drift and accidental control-plane work in the simulation hot path": the
 # 10,000-step replay across worker counts and shuffled producer orders is what finds ordering drift, and the real
 # world's zero-work idle assertions are what find accidental control-plane work. Neither is claimed from the dotnet
 # half alone, and the player probe is where both run in the shape that ships.
 #
-# Timeouts. The Unity Editor has a known, unresolved intermittent hang before it dispatches a batchmode command, so
-# EVERY Unity invocation is wrapped in `timeout` and every Editor invocation this script launches directly is retried
-# exactly ONCE on a timeout. A step that times out twice fails the gate. Player probe runs are not retried:
-# tools/unity/run_replay_probe.sh already runs the probe PROBE_RUNS times and fails if any run is not clean.
+# Timeouts. Every Unity Editor invocation uses a watchdog; a timeout is a defect, not a retry.
+# Player probes use the per-run watchdog in tools/unity/probe_runs.sh.
 #
 # Required environment:
 #   UNITY   absolute path to the Unity Editor executable of the pinned 6000.0.75f1 baseline.
@@ -71,7 +69,7 @@ echo "dotnet       : ${DOTNET}"
 echo "project      : ${UNITY_PROJECT}"
 echo "artifacts    : ${ARTIFACTS}"
 echo "probe runs   : ${PROBE_RUNS}"
-echo "unity timeout: ${UNITY_TIMEOUT}s (one retry on a timeout)"
+echo "unity timeout: ${UNITY_TIMEOUT}s (no retry on a hang)"
 echo "release build: ${RELEASE_BUILD}"
 
 run_step() {
@@ -85,29 +83,12 @@ unity_step() {
   local label="$1"
   shift
 
-  local attempt rc=0
-  for attempt in 1 2; do
-    if (( attempt == 2 )); then
-      echo "-- ${label}: retrying once after a timeout" >&2
-    fi
-
-    rc=0
-    timeout --signal=TERM --kill-after=60 "${UNITY_TIMEOUT}" "$@" || rc=$?
-    if (( rc == 0 )); then
-      return 0
-    fi
-
-    if (( rc == 124 || rc == 137 )); then
-      echo "   FAIL ${label}: Unity Editor timed out after ${UNITY_TIMEOUT}s (exit ${rc}, attempt ${attempt}/2)" >&2
-      continue
-    fi
-
-    echo "   FAIL ${label}: Unity Editor exited ${rc}" >&2
-    return "${rc}"
-  done
-
-  echo "   FAIL ${label}: Unity Editor timed out twice; this is not the known intermittent pre-dispatch hang" >&2
-  return 1
+  local rc=0
+  timeout --signal=TERM --kill-after=60 "${UNITY_TIMEOUT}" "$@" || rc=$?
+  if (( rc != 0 )); then
+    echo "   FAIL ${label}: Unity Editor exited ${rc}; inspect its log and capture a hung process backtrace" >&2
+  fi
+  return "${rc}"
 }
 
 # 1. The whole plain-dotnet solution.
@@ -164,9 +145,8 @@ run_step replay-probe env \
   "ARTIFACTS=${ARTIFACTS}/toolchain" \
   "${SCRIPT_DIR}/unity/run_replay_probe.sh"
 
-# 9. The release-shape inspection: a clone without the telemetry marker compiles every counting call site away, and
-#    the same clone is what GC-017's fault-free check inspects. The telemetry switch itself is checked in step 3;
-#    this step adds the marker-free project shape so a shipping project cannot define the symbol by accident.
+# 9. Build and run a marker-free release player, then inspect its generated IL2CPP counting sites
+#    against the qualification player. A source-only switch check does not establish the shipping shape.
 if [[ "${RELEASE_BUILD}" == "1" ]]; then
   if [[ -e "${RELEASE_PROJECT}" ]]; then
     echo "   FAIL release-project: ${RELEASE_PROJECT} already exists; remove it first" >&2
@@ -176,6 +156,17 @@ if [[ "${RELEASE_BUILD}" == "1" ]]; then
   run_step release-clone "${PYTHON}" tools/unity/prepare_gc017_release_project.py
   run_step release-fault-free "${PYTHON}" tools/check_release_fault_free.py --no-build \
     --json "${ARTIFACTS}/release-surface.json"
+  run_step release-player-build env "UNITY_PROJECT=${RELEASE_PROJECT}" \
+    "ARTIFACTS=${ARTIFACTS}/release" "UNITY_TIMEOUT=${UNITY_TIMEOUT}" \
+    "UNITY=${UNITY}" "DOTNET=${DOTNET}" "${SCRIPT_DIR}/unity/build_probe.sh"
+  run_step release-replay env "PROBE_RUNS=1" "UNITY_PROJECT=${RELEASE_PROJECT}" \
+    "ARTIFACTS=${ARTIFACTS}/release" "${SCRIPT_DIR}/unity/run_replay_probe.sh"
+  run_step release-player-fault-surface "${PYTHON}" tools/check_player_fault_free.py \
+    --player "${RELEASE_PROJECT}/Builds/Linux64" \
+    --json "${ARTIFACTS}/release/player-fault-surface.json"
+  run_step release-player-telemetry-surface "${PYTHON}" tools/check_release_telemetry_free.py \
+    --dotnet "${DOTNET}" --release-player-project "${RELEASE_PROJECT}" --artifacts "${ARTIFACTS}" \
+    --json "${ARTIFACTS}/release/telemetry-release-surface.json"
 else
   echo "-- release-project: skipped (RELEASE_BUILD=0)"
 fi

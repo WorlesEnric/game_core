@@ -328,7 +328,11 @@ namespace GameCore.Validation.ProbeHost
                     && host.CurrentStep.Value == 1UL
                     && host.Driver.CommittedStepCount == 1
                     && wake.Get(TelemetryCounter.StepsAdvanced) == 1L
-                    && wake.Get(TelemetryCounter.JobWaitSampleCount) >= 1L
+                    && (TelemetrySchema.IsCompiledIn
+                        ? wake.Get(TelemetryCounter.JobWaitSampleCount) >= 1L
+                            && wake.Get(TelemetryCounter.StageSampleCount) >= 1L
+                        : wake.Get(TelemetryCounter.JobWaitSampleCount) == 0L
+                            && wake.Get(TelemetryCounter.StageSampleCount) == 0L)
                     && wake.Get(TelemetryCounter.JobWaitDurationMicroseconds) >= 0L;
                 steps.Add(new ReplayStep(
                     WorldNames[3],
