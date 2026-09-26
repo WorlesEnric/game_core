@@ -225,6 +225,19 @@ namespace GameCore.Validation.ProbeHost
             return false;
         }
 
+        private static bool ContainsBoundary(IReadOnlyList<string> boundaries, string expected)
+        {
+            for (int i = 0; i < boundaries.Count; i++)
+            {
+                if (string.Equals(boundaries[i], expected, StringComparison.Ordinal))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         /// <summary>Runs the whole recovery sequence for one family.</summary>
         public static Gc027ScenarioResult Run(IGc027Family family)
         {
@@ -385,6 +398,7 @@ namespace GameCore.Validation.ProbeHost
                     }
 
                     ulong idleSteps = world.PumpIdleFrames();
+                    world.RefreshCaptureContext();
                     bool atBoundary = new UnityCommittedBoundaryReader(world.Host, world.Context).IsAtCommittedBoundary;
                     CheckpointPublicationResult publication = world.CaptureAndPublish(store, transcript);
                     if (!publication.Succeeded || publication.Capture == null)
@@ -396,9 +410,8 @@ namespace GameCore.Validation.ProbeHost
                     checkpointBytes = publication.Capture.Document;
                     checkpointHash = publication.Capture.DocumentHash;
 
-                    // The header's outbox count is the checkpoint's own statement about what it carries: one row for
-                    // a genre with an obligation and none for a genre without one (P-045, P-053).
-                    uint expectedOutboxRows = obligationCommitted ? 1U : 0U;
+                    // A committed predecessor contributes an obligation, terminal and cursor; the owed one adds a row.
+                    uint expectedOutboxRows = obligationCommitted ? 4U : 0U;
                     bool carriedOutbox = publication.Capture.Header.OutboxCount == expectedOutboxRows;
                     bool deliveryState = obligationCommitted
                         ? world.Delivery != null && world.Delivery.Outbox.OpenCount == 1 && world.Delivery.Outbox.IsDurable
@@ -714,7 +727,7 @@ namespace GameCore.Validation.ProbeHost
                         && UnityWorldRegistry.Count == registryBefore;
 
                     Add(name, pass,
-                        "outcome=" + report.Outcome + "/" + report.Code
+                        "outcome=" + report.Outcome + "/" + report.Code + ": " + report.Detail
                         + "; stagingBuilt=" + (staging != null)
                         + "; stagingLifecycle=" + (staging == null ? "<none>" : staging.Lifecycle.ToString())
                         + "; registry=" + registryBefore.ToString(CultureInfo.InvariantCulture) + "->"
@@ -747,6 +760,9 @@ namespace GameCore.Validation.ProbeHost
                         activeStore, recoveryTranscript, null, HostBoundedAttempts, out Gc027RestoreBuilder? restored);
                     builder = restored;
 
+                    recoveredSession = recovery.Recovered && recovery.DestinationHost != null
+                        ? recovery.DestinationHost.World
+                        : default(WorldId);
                     // The delivery-owner half is asserted only where the genre declares an obligation; a genre with
                     // none must instead prove it built no owner and owes nothing (P-045).
                     bool deliveryHalf = family.HasDeliveryObligation
@@ -767,9 +783,6 @@ namespace GameCore.Validation.ProbeHost
                         && deliveryHalf
                         && recoveredSessionIsLive();
 
-                    recoveredSession = recovery.Recovered && recovery.DestinationHost != null
-                        ? recovery.DestinationHost.World
-                        : default(WorldId);
 
                     transcript.Add(
                         recovery.Recovered ? RecoveryPhase.PublishNewWorld : RecoveryPhase.Refused,
@@ -784,6 +797,7 @@ namespace GameCore.Validation.ProbeHost
                         + "; targets=" + (restored?.RebuiltTargetCount ?? 0).ToString(CultureInfo.InvariantCulture)
                         + "; slots=" + (restored?.RebuiltSlotCount ?? 0).ToString(CultureInfo.InvariantCulture)
                         + " (dormant=" + (restored?.RebuiltDormantSlotCount ?? 0).ToString(CultureInfo.InvariantCulture) + ")"
+                        + "; recovery=" + recovery.Outcome + "/" + recovery.Code + ": " + recovery.Detail
                         + "; deliveryOwner=" + (restored != null && restored.Delivery != null ? "built" : "none")
                         + "; attempts=" + recovery.Attempts.Count.ToString(CultureInfo.InvariantCulture)
                         + "; distinctIdentities=" + recovery.AttemptIdentitiesAreDistinct
@@ -905,7 +919,9 @@ namespace GameCore.Validation.ProbeHost
                         && builder.ReinstateAttemptCount == 1;
                     bool nothingDelivered = builder.Destination != null
                         && builder.Destination.AttemptCount == 0
-                        && consistency.LiveTerminalCount == 0;
+                        && consistency.LiveTerminalCount == consistency.CarriedTerminals
+                        && consistency.Cursors.Count == 1
+                        && consistency.Cursors[0].HasAcknowledged;
 
                     Add(name, carried && live && intact && proved && nothingDelivered && reinstatedRows > 0,
                         "carriedRows=" + consistency.CarriedRows.ToString(CultureInfo.InvariantCulture)
@@ -1079,7 +1095,8 @@ namespace GameCore.Validation.ProbeHost
                         && row.State == OutboxDeliveryState.Acknowledged;
 
                     Add(name, crashed && openAfterCrash && singleEffect && recognised && settled
-                        && hook.Reaches.Count == 2 && hook.CrashCount == 1,
+                        && hook.CrashCount == 1
+                        && ContainsBoundary(hook.Reaches, DeliveryBoundaries.AfterDelivery),
                         "boundary=" + DeliveryBoundaries.AfterDelivery
                         + "; crashed=" + crashed
                         + "; openAfterCrash=" + openAfterCrash
@@ -1143,6 +1160,7 @@ namespace GameCore.Validation.ProbeHost
                     try
                     {
                         adapter.TryDeliver(obligation.Key.OutboxId, destination, out DiagnosticCode _, out string _);
+                        adapter.TryAcknowledge(obligation.Key.OutboxId, out DiagnosticCode _, out string _);
                     }
                     catch (Gc027DeliveryCrashException crash)
                     {
@@ -1203,7 +1221,7 @@ namespace GameCore.Validation.ProbeHost
                         && destination.AppliedCount == 1
                         && destination.EffectIsSingle
                         && afterCrashed && afterSettled && afterEffectNone
-                        && hook.Reaches.Count == 2,
+                        && ContainsBoundary(hook.Reaches, DeliveryBoundaries.BeforeAcknowledge),
                         "beforeAcknowledge=" + DeliveryBoundaries.BeforeAcknowledge
                         + "; crashed=" + crashed
                         + "; stillRedeliverable=" + stillRedeliverable
@@ -1299,8 +1317,8 @@ namespace GameCore.Validation.ProbeHost
                         + UnityWorldRegistry.Count.ToString(CultureInfo.InvariantCulture)
                         + "; transcript=" + restartTranscript.Summary()
                         + "; restartPoint=" + (report.Restart?.ToLine() ?? "<none>")
-                        + "; permittedResult=a restart builds a new session from verified bytes only, contacts "
-                        + "nothing from the previous process and delivers nothing (P-049, P-053)"
+                        + "; permittedResult=a restart builds a new session from verified bytes only; the previous "
+                        + "session is not contacted and no obligation is delivered (P-049, P-053)"
                         + DescribeFailure());
                 }
                 catch (Exception exception)

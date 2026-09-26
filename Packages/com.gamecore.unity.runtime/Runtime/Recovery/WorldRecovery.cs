@@ -154,7 +154,7 @@ namespace GameCore.Unity.Runtime.Recovery
         /// it is published. A qualification fixture uses the second call to arm a latch on the recovered world
         /// (whose handle the caller does not hold while an attempt is in flight); production callers leave it null.
         /// </summary>
-        public delegate void HealthCheck(RecoveryHealthPhase phase, int attemptOrdinal, UnityWorldHost? world);
+        public delegate void RecoveryHealthCallback(RecoveryHealthPhase phase, int attemptOrdinal, UnityWorldHost? world);
 
         public WorldRecoveryContext(
             WorldRecoveryRequest request,
@@ -167,7 +167,7 @@ namespace GameCore.Unity.Runtime.Recovery
             RecoveryRetryPolicy? retryPolicy = null,
             RecoveryTranscript? transcript = null,
             Func<WorldId, DurableOutbox?>? outboxProbe = null,
-            HealthCheck? healthCheck = null)
+            RecoveryHealthCallback? healthCheck = null)
         {
             Request = request ?? throw new ArgumentNullException(nameof(request));
             Registration = registration ?? throw new ArgumentNullException(nameof(registration));
@@ -220,7 +220,7 @@ namespace GameCore.Unity.Runtime.Recovery
         /// </summary>
         public Func<WorldId, DurableOutbox?>? OutboxProbe { get; }
 
-        public HealthCheck? HealthCheck { get; }
+        public RecoveryHealthCallback? HealthCheck { get; }
     }
 
     /// <summary>
@@ -777,7 +777,7 @@ namespace GameCore.Unity.Runtime.Recovery
                 {
                     attemptOutcome = AttemptInitialDefinition(
                         context, destinationSession, operation, transcript, out attemptCode, out attemptDetail,
-                        out faultPoint, out attemptDestination, out attemptRestart);
+                        out faultPoint, out attemptDestination, out attemptRestore, out attemptRestart);
                 }
 
                 attempts.TryAdd(new RecoveryAttemptRecord(

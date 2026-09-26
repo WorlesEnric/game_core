@@ -320,6 +320,11 @@ namespace GameCore.Gc027.Tests
                             point.Id + " names a declared delivery boundary");
                     }
                 }
+                else if (point.Mechanism == RecoveryInjectionMechanism.StoreRead)
+                {
+                    Assert.That(point.BoundaryNames, Is.EqualTo(new[] { "store-read" }),
+                        "a restart is refused by the checkpoint store, not by a fault latch");
+                }
                 else
                 {
                     // Every latch point names at least one `FaultBoundaryText` name. The postwrite-apply point names
