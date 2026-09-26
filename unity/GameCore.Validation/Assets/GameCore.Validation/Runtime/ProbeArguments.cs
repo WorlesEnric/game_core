@@ -198,6 +198,7 @@ namespace GameCore.Validation.ProbeHost
             bool gc019 = false;
             bool w5Gate = false;
             bool traversal = false;
+            string? resultPath = null;
             for (int i = 0; i < arguments.Length; i++)
             {
                 string argument = arguments[i];

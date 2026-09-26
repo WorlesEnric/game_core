@@ -64,7 +64,7 @@ namespace GameCore.Validation.ProbeHost
         /// NotRun (pending orchestrator build host).
         /// </summary>
         public static string ExpectedDigest =>
-            "6263602b82b25315ae33f8ebccfbd314586743b9080b0bbe0df34ecc3172ad8";
+            "6263602b82b25315ae33f8ebcc3fbd314586743b9080b0bbe0df34ecc3172ad8";
 
         /// <summary>The traversal course's label every observation name of this run is qualified with.</summary>
         public static string Label => Gc020TraversalHost.Label;

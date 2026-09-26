@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using GameCore.Unity.Adapters;
 using GameCore.Unity.Runtime;
+using GameCore.Validation.ProbeHost;
 using NUnit.Framework;
 
 namespace GameCore.Gc020.Tests
@@ -32,7 +33,7 @@ namespace GameCore.Gc020.Tests
         /// run, so a renamed, reordered, added or dropped observation changes this literal. NotRun (pending
         /// orchestrator build host).
         /// </summary>
-        private const string CourseDigest = "6263602b82b25315ae33f8ebccfbd314586743b9080b0bbe0df34ecc3172ad8";
+        private const string CourseDigest = "6263602b82b25315ae33f8ebcc3fbd314586743b9080b0bbe0df34ecc3172ad8";
 
         private IReadOnlyList<Gc020Step> combined = new List<Gc020Step>();
         private Gc020ScenarioResult generated = null!;

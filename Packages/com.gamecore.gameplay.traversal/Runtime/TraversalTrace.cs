@@ -164,6 +164,17 @@ namespace GameCore.Gameplay.Traversal
 
         /// <summary>True when the two traces agree under the tolerance.</summary>
         public bool Matches => MismatchedBodies == 0 && MismatchedSteps == 0;
+
+        /// <summary>
+        /// One-line diagnostic form, so a step detail that records a comparison carries the numbers it compared rather
+        /// than a type name (P-052). The identity of a comparison is its two traces, never this text.
+        /// </summary>
+        public override string ToString() =>
+            "steps=" + ComparedSteps.ToString(CultureInfo.InvariantCulture)
+            + ";bodies=" + ComparedBodies.ToString(CultureInfo.InvariantCulture)
+            + ";mismatchedBodies=" + MismatchedBodies.ToString(CultureInfo.InvariantCulture)
+            + ";mismatchedSteps=" + MismatchedSteps.ToString(CultureInfo.InvariantCulture)
+            + ";matches=" + Matches;
     }
 
     /// <summary>
@@ -173,6 +184,7 @@ namespace GameCore.Gameplay.Traversal
     public sealed class TraversalTraceRecorder
     {
         private readonly List<TraversalStepTrace> steps = new List<TraversalStepTrace>();
+
         private readonly int capacity;
 
         private TraversalStepTrace? current;

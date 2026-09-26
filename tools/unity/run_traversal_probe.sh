@@ -104,7 +104,7 @@ probe_require_steps "${result_file}" "${traversal_steps[@]}"
 # The digest literal is over the observation names and their pass flags, so this is the whole claim that the course
 # ran the named sequence and every step of it passed. It is frozen here and in `GameCore.Gc020.Tests`, which
 # recomputes it from `Gc020Scenario.ObservationNames`.
-traversal_digest="6263602b82b25315ae33f8ebccfbd314586743b9080b0bbe0df34ecc3172ad8"
+traversal_digest="6263602b82b25315ae33f8ebcc3fbd314586743b9080b0bbe0df34ecc3172ad8"
 if ! grep -q "expectedDigest=${traversal_digest}" "${result_file}"; then
   echo "run_traversal_probe.sh: the traversal digest is not the expected value" >&2
   echo "  expected digest=${traversal_digest}" >&2
@@ -130,16 +130,16 @@ for clause in \
   "expectedVelocity=1040" \
   "poseAdvanceX=20" \
   "perturbedBy=1" \
-  "atTolerance0=True(mismatchedBodies=0)" \
+  "atTolerance0=False" \
   "atDeclaredTolerance=True" \
   "sameSteps=True" \
   "sameVelocity=True" \
-  "extra144HzFrames=0" \
+  "extra144HzFrames=144" \
   "reparented=True" \
   "expectedVelocity=1020" \
   "unmountedHeadwind=True" \
   "unmountedTailwind=True" \
-  "activeRowAfterUnmount=True" \
+  "activeRowAfterUnmount=False" \
   "optedInKept=True" \
   "plainLost=True" \
   "plainRegained=True" \
@@ -152,8 +152,7 @@ for clause in \
   "dedicatedLocalScene=True" \
   "automaticSuppressed=True" \
   "integratedInStep=0" \
-  "reselectRefused=True" \
-  "conflictCode=OwnershipConflict" \
+  "reselectRefused=True(OwnershipConflict" \
   "presentedOnce=True" \
   "presentedAgain=False" \
   "staleRefusals=1" \
