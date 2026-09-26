@@ -90,7 +90,7 @@ namespace GameCore.Replay.Tests
             // A collector must not add two worlds' live lease counts together, and must not take the maximum of two
             // worlds' committed steps: the policy is part of the schema, so it is tested here rather than guessed at
             // a call site.
-            TelemetryAggregation[] gauges =
+            TelemetryCounter[] gauges =
             {
                 TelemetryCounter.AssemblyEpoch,
                 TelemetryCounter.RequestHighWater,
