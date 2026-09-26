@@ -331,6 +331,16 @@ namespace GameCore.ReferenceConformance
                                 ConformanceExpectation.Require(
                                     ConformanceFields.DialogueBinding("npc-mara"), ConformanceValue.None, "1"),
                             }),
+                        Pre("exclude-mara", 2, ConformanceOperations.CommitCommand, 1,
+                            "commit the permit choice, so the durable fact and the open gate the suspension row"
+                            + " asserts are state this world really owns (07:181, 07:174)",
+                            new[]
+                            {
+                                ConformanceExpectation.Require(ConformanceFields.BridgePermit, "0", "1"),
+                                ConformanceExpectation.Require(ConformanceFields.BridgePermitVersion, "1", "2"),
+                                ConformanceExpectation.Require(
+                                    ConformanceFields.GateEastDecision, "0", "1"),
+                            }),
                         Row("exclude-mara", ConformanceOperations.ApplyExclusion, 0,
                             "exclude the conversation capability on Mara"),
                         Row("suspend-chapter", ConformanceOperations.SuspendProvider, 0,

@@ -211,8 +211,6 @@ namespace GameCore.ReferenceConformance
         /// <summary>P-024: publish one spawn of the family's declared future target, fully assembled.</summary>
         public const string SpawnFutureTarget = "spawn-future-target";
 
-        /// <summary>Submit the family's own declared command, expecting it to be refused with no live write.</summary>
-        public const string CommitCommandRejected = "commit-command-rejected";
 
         /// <summary>
         /// 07 s5: mount the combined world's reward bridge provider, so its outbox obligations are the durable

@@ -33,7 +33,8 @@
     "com.unity.test-framework.performance": "3.0.3",
     "com.unity.toolchain.linux-x86_64": "2.0.11",
     "com.gamecore.replay": "file:../../../tests/GameCore.Replay",
-    "com.gamecore.telemetry-qualification": "file:../../../Packages/com.gamecore.telemetry-qualification"
+    "com.gamecore.telemetry-qualification": "file:../../../Packages/com.gamecore.telemetry-qualification",
+    "com.gamecore.reference-conformance": "file:../../../tests/GameCore.ReferenceConformance"
   },
   "testables": [
     "com.gamecore.composition",
@@ -46,6 +47,7 @@
     "com.gamecore.rules.narrative",
     "com.gamecore.unity.adapters",
     "com.gamecore.unity.runtime",
-    "com.gamecore.replay"
+    "com.gamecore.replay",
+    "com.gamecore.reference-conformance"
   ]
 }

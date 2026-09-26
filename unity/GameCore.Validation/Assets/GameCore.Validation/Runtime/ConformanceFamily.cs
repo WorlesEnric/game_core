@@ -106,6 +106,18 @@ namespace GameCore.Validation.ProbeHost
         /// category is explicit"), so the ownership surface a world compiles is unchanged by them.
         /// </summary>
         IReadOnlyList<CatalogPluginDeclaration> ConformanceDeclarations { get; }
+
+        /// <summary>
+        /// Prepares the genre's own authoritative state in a just-built world, after its targets were seeded and its
+        /// stage runtime was attached and before any table step runs. The card market and the course need nothing;
+        /// the narrative slice seeds its world-level quest ledger and installs each declared recipe's base layout,
+        /// because a 07 s3.3 row reads that state as its before value and a missing slot is a missing observation
+        /// rather than a default (P-032, P-034).
+        ///
+        /// A genre that cannot do what it promises returns false with the reason, and the runner records that as a
+        /// failing observation rather than running a table against state the world does not own.
+        /// </summary>
+        bool PrepareConformanceWorld(ConformanceWorld world, out string detail);
     }
 
     /// <summary>
@@ -287,7 +299,7 @@ namespace GameCore.Validation.ProbeHost
                     + DiagnosticCodeText.Of(receipt.Result.Reason) + ")");
             }
 
-            hostTicks += CommandDrivenPumpTicks;
+            hostTicks += family.CyclePumpTicks;
             TimeFrameReport frame = Time.PumpFrame(hostTicks);
             if (frame.StepsCommitted == 0UL)
             {
@@ -437,6 +449,14 @@ namespace GameCore.Validation.ProbeHost
                 new PlanBudget(PrepareBytesLimit, PrepareBytesLimit, ScratchCapacityBytes, ScratchBytesPerSlot));
             Time = new WorldTimeDriver(Host, new StepInputCutoff(8, 16), new PluginClockRegistry(8), 1U);
             Time.AdoptResourceTable(Descriptor.Adaptation.NativeTable!);
+
+            // The genre's own authoritative state, seeded after its runtime is attached and before any step runs, so
+            // the first before-read of a table sees the state 07's "Before" column names (P-032).
+            if (!family.PrepareConformanceWorld(this, out string prepareDetail))
+            {
+                Failure = "preparing the genre's own state was refused: " + prepareDetail;
+                return;
+            }
 
             Ready = true;
         }

@@ -401,14 +401,17 @@ namespace GameCore.ReferenceConformance
                 new ConformanceRow(
                     "resume-chapter",
                     "Resume `ChapterNarrative` (O-04)",
-                    "P-046 — resume rederives the instance against the current ancestry, so its bindings return.",
+                    "P-046 — resume rederives the instance against the current ancestry, so its bindings return."
+                    + " The exclusion this stage applied to `npc-mara` is still in force, and P-016's \"denial along"
+                    + " the propagation path wins over imports, opt-ins and selection overrides in both modes\" is"
+                    + " exactly why Mara stays unbound while the unexcluded gate target gets its binding back, so the"
+                    + " row reads both and a resume that bypassed the exclusion would fail here.",
                     ConformanceRowOutcome.Published,
                     new[]
                     {
                         ConformanceExpectation.Require(
-                            ConformanceFields.DialogueBinding("npc-mara"), ConformanceValue.None, "1"),
-                        ConformanceExpectation.Require(
                             ConformanceFields.GateBinding("gate-east"), ConformanceValue.None, "1"),
+                        ConformanceExpectation.Absent(ConformanceFields.DialogueBinding("npc-mara")),
                         ConformanceExpectation.Unchanged(ConformanceFields.BridgePermit, "1"),
                     }),
             };

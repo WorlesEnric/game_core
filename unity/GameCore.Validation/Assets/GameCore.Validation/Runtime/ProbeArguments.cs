@@ -29,6 +29,7 @@ namespace GameCore.Validation.ProbeHost
         private const string LifecycleStressArgumentName = "-probeLifecycleStress";
         private const string ReplayArgumentName = "-probeReplay";
         private const string W6GateArgumentName = "-probeW6Gate";
+        private const string ConformanceArgumentName = "-probeConformance";
 
         private ProbeArguments(
             bool missingRegistration,
@@ -50,6 +51,7 @@ namespace GameCore.Validation.ProbeHost
             bool gc021,
             bool replay,
             bool w6Gate,
+            bool conformance,
             string? resultPath)
         {
             MissingRegistration = missingRegistration;
@@ -71,6 +73,7 @@ namespace GameCore.Validation.ProbeHost
             Gc021 = gc021;
             Replay = replay;
             W6Gate = w6Gate;
+            Conformance = conformance;
             ResultPath = resultPath;
         }
 
@@ -213,9 +216,15 @@ namespace GameCore.Validation.ProbeHost
         /// recorded-input replay, the durable reward delivery across an unload/reload of its receiving world, the
         /// composition audit that keeps the optional physics/animation/audio surface out of cards and narrative, and
         /// the create/mount/step/unmount/teardown loop over all three genres (W6-GATE).
-        /// </summary>
         public bool W6Gate { get; }
 
+        /// <summary>
+        /// Runs the GC-024 reference-conformance mode: every before/after table of
+        /// `docs/game-core/07-reference-compositions.md` executed in a real Unity world of the genre that owns it,
+        /// the combined narrative+cards world with the durable reward path, and the genre/assembly audit
+        /// (P-001, P-013, P-014, P-016, P-025, P-045, P-059).
+        /// </summary>
+        public bool Conformance { get; }
         /// <summary>Destination path of the structured JSON result.</summary>
         public string? ResultPath { get; }
 
@@ -226,6 +235,7 @@ namespace GameCore.Validation.ProbeHost
             || LifecycleStress
             || Replay
             || W6Gate
+            || Conformance
             || !string.IsNullOrEmpty(ResultPath);
 
         /// <summary>True when a result destination was supplied; without it the probe cannot record evidence.</summary>
@@ -250,8 +260,8 @@ namespace GameCore.Validation.ProbeHost
             bool w5Gate = false;
             bool traversal = false;
             bool gc021 = false;
-            bool replay = false;
             bool w6Gate = false;
+            bool conformance = false;
             string? resultPath = null;
             for (int i = 0; i < arguments.Length; i++)
             {
@@ -332,6 +342,10 @@ namespace GameCore.Validation.ProbeHost
                 {
                     w6Gate = true;
                 }
+                else if (argument == ConformanceArgumentName)
+                {
+                    conformance = true;
+                }
                 else if (argument == ResultArgumentName && i + 1 < arguments.Length)
                 {
                     resultPath = arguments[i + 1];
@@ -341,7 +355,7 @@ namespace GameCore.Validation.ProbeHost
             return new ProbeArguments(
                 missingRegistration, worldDispatch, w1Gate, w2Gate, w3Gate, narrative, cards, w4Profile, gc013,
                 lifecycleStress,
-                w4Gate, faults, gc018, gc019, w5Gate, traversal, gc021, replay, w6Gate, resultPath);
+                w4Gate, faults, gc018, gc019, w5Gate, traversal, gc021, replay, w6Gate, conformance, resultPath);
         }
     }
 }
