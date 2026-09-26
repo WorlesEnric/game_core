@@ -1,0 +1,110 @@
+{
+  "check": "release-gate-surface",
+  "markers": {
+    "gc017-fault-latch": [
+      "AssemblyFaultInjection",
+      "FaultBoundaryText",
+      "FaultInjectedException",
+      "GAMECORE_FAULT_INJECTION",
+      "first-live-write",
+      "structural-playback"
+    ],
+    "gc021-delivery-seat": [
+      "Gc021Scenario",
+      "Gc021CrashHook",
+      "gc021-redelivery-applies-the-mutation-once",
+      "-probeGc021"
+    ],
+    "gc022-lifecycle-stress": [
+      "LifecycleStressScenario",
+      "ProbeLifecycleStress",
+      "-probeLifecycleStress",
+      "GC_LIFECYCLE_STRESS_CYCLES"
+    ],
+    "gc023-replay-fixture": [
+      "ReplayParallelJobs",
+      "ReplayScenario",
+      "ProbeReplay",
+      "-probeReplay"
+    ],
+    "w5-gate": [
+      "W5GateScenario",
+      "ProbeW5Gate",
+      "-probeW5Gate"
+    ],
+    "w6-gate": [
+      "W6GateScenario",
+      "W6CompositionAudit",
+      "W6FamilyTraversalHost",
+      "ProbeW6Gate",
+      "-probeW6Gate",
+      "GC_W6_GATE_CYCLES"
+    ]
+  },
+  "problems": [],
+  "qualification": {
+    "expectedMarkers": {
+      "gc017-fault-latch": {
+        "count": 3,
+        "marker": "GAMECORE_FAULT_INJECTION"
+      },
+      "gc021-delivery-seat": {
+        "count": 2,
+        "marker": "-probeGc021"
+      },
+      "gc022-lifecycle-stress": {
+        "count": 2,
+        "marker": "-probeLifecycleStress"
+      },
+      "gc023-replay-fixture": {
+        "count": 2,
+        "marker": "-probeReplay"
+      },
+      "kept-mode": {
+        "count": 2,
+        "marker": "-probeTraversal"
+      },
+      "w5-gate": {
+        "count": 2,
+        "marker": "-probeW5Gate"
+      },
+      "w6-gate": {
+        "count": 2,
+        "marker": "-probeW6Gate"
+      }
+    },
+    "filesInspected": 465,
+    "root": "/home/worlesenric/wkspace/gc-wt/w6-gate/unity/GameCore.Validation/Builds/Linux64"
+  },
+  "release": {
+    "filesInspected": 452,
+    "findings": [],
+    "groups": {},
+    "keptMode": {
+      "count": 2,
+      "marker": "-probeTraversal"
+    },
+    "missingSeams": [
+      "durable-delivery-core (DeliveryKey)",
+      "durable-delivery-core (DurableOutbox)"
+    ],
+    "requiredSeams": {
+      "durable-delivery-core": {
+        "DeliveryKey": 0,
+        "DurableOutbox": 0
+      },
+      "optional-engine-stages": {
+        "CommittedAnimationStage": 181,
+        "CommittedAudioStage": 247,
+        "UnityPhysicsSceneBackend": 214
+      },
+      "traversal-course": {
+        "TraversalKeys": 667,
+        "TraversalRegistration": 34
+      }
+    },
+    "root": "/home/worlesenric/wkspace/gc-wt/w6-gate/unity/GameCore.ReleaseCheck/Builds/Linux64"
+  },
+  "status": "Pass",
+  "task": "W6-GATE"
+}

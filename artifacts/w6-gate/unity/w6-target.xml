@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="27" result="Passed" total="27" passed="10" failed="17" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-09-26 05:21:09Z" end-time="2026-09-26 05:22:26Z" duration="76.7862883">
+  <test-suite type="TestSuite" id="1000" name="GameCoreProbe" fullname="GameCoreProbe" runstate="Runnable" testcasecount="1101" result="Passed" start-time="2026-09-26 05:21:09Z" end-time="2026-09-26 05:22:26Z" duration="76.786288" total="27" passed="10" failed="17" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="2394" name="GameCore.W6Gate.Tests.dll" fullname="/home/worlesenric/wkspace/gc-wt/w6-gate/unity/GameCore.Validation/Library/ScriptAssemblies/GameCore.W6Gate.Tests.dll" runstate="Runnable" testcasecount="27" result="Passed" start-time="2026-09-26 05:21:09Z" end-time="2026-09-26 05:22:26Z" duration="76.774343" total="27" passed="10" failed="17" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="58618" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="2395" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="27" result="Passed" start-time="2026-09-26 05:21:09Z" end-time="2026-09-26 05:22:26Z" duration="76.774116" total="27" passed="10" failed="17" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="2396" name="W6Gate" fullname="GameCore.W6Gate" runstate="Runnable" testcasecount="27" result="Passed" start-time="2026-09-26 05:21:09Z" end-time="2026-09-26 05:22:26Z" duration="76.774043" total="27" passed="10" failed="17" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="2397" name="Tests" fullname="GameCore.W6Gate.Tests" runstate="Runnable" testcasecount="27" result="Passed" start-time="2026-09-26 05:21:09Z" end-time="2026-09-26 05:22:26Z" duration="76.773973" total="27" passed="10" failed="17" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="2366" name="W6GateIntegrationTests" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" testcasecount="27" result="Passed" start-time="2026-09-26 05:21:09Z" end-time="2026-09-26 05:22:26Z" duration="76.773229" total="27" passed="10" failed="17" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="2374" name="TheCardsAdapterAssemblyIsAbsent" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheCardsAdapterAssemblyIsAbsent" methodname="TheCardsAdapterAssemblyIsAbsent" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="1579745547" result="Passed" start-time="2026-09-26 05:22:26Z" end-time="2026-09-26 05:22:26Z" duration="0.008390" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="2378" name="TheCardsCountersReturnToBaseline" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheCardsCountersReturnToBaseline" methodname="TheCardsCountersReturnToBaseline" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="1135339601" result="Passed" start-time="2026-09-26 05:22:26Z" end-time="2026-09-26 05:22:26Z" duration="0.000148" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="2373" name="TheCardsDeclareNoActionPhysicsOrAudioSurface" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheCardsDeclareNoActionPhysicsOrAudioSurface" methodname="TheCardsDeclareNoActionPhysicsOrAudioSurface" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="1301817536" result="Passed" start-time="2026-09-26 05:22:26Z" end-time="2026-09-26 05:22:26Z" duration="0.000096" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="2390" name="TheCardsDigestHoldsOverBothCatalogs" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheCardsDigestHoldsOverBothCatalogs" methodname="TheCardsDigestHoldsOverBothCatalogs" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="832734119" result="Failed" start-time="2026-09-26 05:22:26Z" end-time="2026-09-26 05:22:26Z" duration="0.003819" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  digest=b4afb8947d5d23888330061ee617624265383505a30af69ddcfcd51faeeaa148; label=cards; steps=7; failed=3: cards/w6-reward-delivery-is-exactly-once-across-a-reload: Fail (sessions=57364741534553530000000000000001->57364741534553530000000000000002->57364741534553530000000000000003; sessionsDiffer=True; sourceStopped=Published; reloadStopped=Published; firstUnregistered=True; secondUnregistered=True; claimedSchema=SchemaRef(SchemaId(9b267dc50936300d3c2524d6dd761f66), 1); claimedSequence=1; rows=1; reinstated=True(None: ); dispatched=1; destinationMutationsAfterReload=1; destinationMutations=1; deliveredOnce=True; redeliveredOnce=True; ackOutcome=Acknowledged; openAfterDispatch=1; destinationAttempts=2; destinationAlreadyApplied=1; acknowledged=1; reinstatedAgain=True(None: ); dispatchedAgain=1; durable=True; journalFrames=9) | cards/w6-ledger-and-fence-high-water-marks-are-bounded: Fail (cycles=1000; highWaterRecords=1000; retired=1000; evictedRetired=0; liveLeases=0; quarantined=0; failedReleases=0; fenceOutstandingHighWater=0; fenceFailures=0; trackedJobsHighWater=0; laneJobsOutstanding=0; quarantineEntries=0; liveActivations=2; worldAcquired=7; worldRetired=0; worldRetained=7@baseline7; worldOutstanding=0@baseline0; quarantinedBytes=0) | cards/w6-repeatable-digest: Fail (digest=b4afb8947d5d23888330061ee617624265383505a30af69ddcfcd51faeeaa148; expectedDigest=894a975e4a5eb98d733ec213778ec275e4abe02cb4028271857bd4fa68d6fe80; observations=6; tableSize=7; cycleCount=1000; fixtureRun=False; failedObservations=cards/w6-reward-delivery-is-exactly-once-across-a-reload,cards/w6-ledger-and-fence-high-water-marks-are-bounded)
+  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at GameCore.W6Gate.Tests.W6GateIntegrationTests.AssertFamily (System.String label, System.Collections.Generic.IReadOnlyList`1[T] combined, GameCore.Validation.ProbeHost.W6GateScenarioResult generated, GameCore.Validation.ProbeHost.W6GateScenarioResult fixture, System.String expectedGenerated, System.String expectedFixture) [0x00055] in /home/worlesenric/wkspace/gc-wt/w6-gate/unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W6Gate/W6GateIntegrationTests.cs:329
+at GameCore.W6Gate.Tests.W6GateIntegrationTests.TheCardsDigestHoldsOverBothCatalogs () [0x00000] in /home/worlesenric/wkspace/gc-wt/w6-gate/unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W6Gate/W6GateIntegrationTests.cs:227
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="2377" name="TheCardsLedgerAndFenceHighWaterMarksAreBounded" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheCardsLedgerAndFenceHighWaterMarksAreBounded" methodname="TheCardsLedgerAndFenceHighWaterMarksAreBounded" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="403320899" result="Failed" start-time="2026-09-26 05:22:26Z" end-time="2026-09-26 05:22:26Z" duration="0.000285" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  cards/w6-ledger-and-fence-high-water-marks-are-bounded: Fail (cycles=1000; highWaterRecords=1000; retired=1000; evictedRetired=0; liveLeases=0; quarantined=0; failedReleases=0; fenceOutstandingHighWater=0; fenceFailures=0; trackedJobsHighWater=0; laneJobsOutstanding=0; quarantineEntries=0; liveActivations=2; worldAcquired=7; worldRetired=0; worldRetained=7@baseline7; worldOutstanding=0@baseline0; quarantinedBytes=0)
+  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at GameCore.W6Gate.Tests.W6GateIntegrationTests.AssertObservation (System.String label, System.Collections.Generic.IReadOnlyList`1[T] steps, System.String bareName) [0x000d4] in /home/worlesenric/wkspace/gc-wt/w6-gate/unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W6Gate/W6GateIntegrationTests.cs:313
+at GameCore.W6Gate.Tests.W6GateIntegrationTests.TheCardsLedgerAndFenceHighWaterMarksAreBounded () [0x00000] in /home/worlesenric/wkspace/gc-wt/w6-gate/unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W6Gate/W6GateIntegrationTests.cs:153
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="2379" name="TheCardsRepeatableDigest" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheCardsRepeatableDigest" methodname="TheCardsRepeatableDigest" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="515740594" result="Failed" start-time="2026-09-26 05:22:26Z" end-time="2026-09-26 05:22:26Z" duration="0.000196" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  cards/w6-repeatable-digest: Fail (digest=b4afb8947d5d23888330061ee617624265383505a30af69ddcfcd51faeeaa148; expectedDigest=894a975e4a5eb98d733ec213778ec275e4abe02cb4028271857bd4fa68d6fe80; observations=6; tableSize=7; cycleCount=1000; fixtureRun=False; failedObservations=cards/w6-reward-delivery-is-exactly-once-across-a-reload,cards/w6-ledger-and-fence-high-water-marks-are-bounded)
+  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at GameCore.W6Gate.Tests.W6GateIntegrationTests.AssertObservation (System.String label, System.Collections.Generic.IReadOnlyList`1[T] steps, System.String bareName) [0x000d4] in /home/worlesenric/wkspace/gc-wt/w6-gate/unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W6Gate/W6GateIntegrationTests.cs:313
+at GameCore.W6Gate.Tests.W6GateIntegrationTests.TheCardsRepeatableDigest () [0x00000] in /home/worlesenric/wkspace/gc-wt/w6-gate/unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W6Gate/W6GateIntegrationTests.cs:164
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="2375" name="TheCardsRewardDeliveryIsExactlyOnceAcrossAReload" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheCardsRewardDeliveryIsExactlyOnceAcrossAReload" methodname="TheCardsRewardDeliveryIsExactlyOnceAcrossAReload" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="1340186887" result="Failed" start-time="2026-09-26 05:22:26Z" end-time="2026-09-26 05:22:26Z" duration="0.000179" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  cards/w6-reward-delivery-is-exactly-once-across-a-reload: Fail (sessions=57364741534553530000000000000001->57364741534553530000000000000002->57364741534553530000000000000003; sessionsDiffer=True; sourceStopped=Published; reloadStopped=Published; firstUnregistered=True; secondUnregistered=True; claimedSchema=SchemaRef(SchemaId(9b267dc50936300d3c2524d6dd761f66), 1); claimedSequence=1; rows=1; reinstated=True(None: ); dispatched=1; destinationMutationsAfterReload=1; destinationMutations=1; deliveredOnce=True; redeliveredOnce=True; ackOutcome=Acknowledged; openAfterDispatch=1; destinationAttempts=2; destinationAlreadyApplied=1; acknowledged=1; reinstatedAgain=True(None: ); dispatchedAgain=1; durable=True; journalFrames=9)
+  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at GameCore.W6Gate.Tests.W6GateIntegrationTests.AssertObservation (System.String label, System.Collections.Generic.IReadOnlyList`1[T] steps, System.String bareName) [0x000d4] in /home/worlesenric/wkspace/gc-wt/w6-gate/unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W6Gate/W6GateIntegrationTests.cs:313
+at GameCore.W6Gate.Tests.W6GateIntegrationTests.TheCardsRewardDeliveryIsExactlyOnceAcrossAReload () [0x00000] in /home/worlesenric/wkspace/gc-wt/w6-gate/unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W6Gate/W6GateIntegrationTests.cs:142
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="2376" name="TheCardsThousandCycleTeardownIsBounded" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheCardsThousandCycleTeardownIsBounded" methodname="TheCardsThousandCycleTeardownIsBounded" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="2048099317" result="Passed" start-time="2026-09-26 05:22:26Z" end-time="2026-09-26 05:22:26Z" duration="0.000090" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="2393" name="TheCycleLoopFollowsTheDeclaredVariableAndNothingElseIsRead" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheCycleLoopFollowsTheDeclaredVariableAndNothingElseIsRead" methodname="TheCycleLoopFollowsTheDeclaredVariableAndNothingElseIsRead" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="2020902689" result="Passed" start-time="2026-09-26 05:22:26Z" end-time="2026-09-26 05:22:26Z" duration="0.001092" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="2368" name="TheNarrativeAdapterAssemblyIsAbsent" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheNarrativeAdapterAssemblyIsAbsent" methodname="TheNarrativeAdapterAssemblyIsAbsent" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="244154303" result="Passed" start-time="2026-09-26 05:22:26Z" end-time="2026-09-26 05:22:26Z" duration="0.000106" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="2371" name="TheNarrativeCountersReturnToBaseline" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheNarrativeCountersReturnToBaseline" methodname="TheNarrativeCountersReturnToBaseline" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="1563360250" result="Passed" start-time="2026-09-26 05:22:26Z" end-time="2026-09-26 05:22:26Z" duration="0.000084" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="2367" name="TheNarrativeDeclaresNoActionPhysicsOrAudioSurface" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheNarrativeDeclaresNoActionPhysicsOrAudioSurface" methodname="TheNarrativeDeclaresNoActionPhysicsOrAudioSurface" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="691701101" result="Passed" start-time="2026-09-26 05:22:26Z" end-time="2026-09-26 05:22:26Z" duration="0.000082" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="2389" name="TheNarrativeDigestHoldsOverBothCatalogs" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheNarrativeDigestHoldsOverBothCatalogs" methodname="TheNarrativeDigestHoldsOverBothCatalogs" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="679428467" result="Failed" start-time="2026-09-26 05:22:26Z" end-time="2026-09-26 05:22:26Z" duration="0.000198" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  digest=d17f9f3e7d6916e26677c4a69ab4a2e781e3d72c73d86dd68f15726eb5639e08; label=narrative; steps=6; failed=2: narrative/w6-ledger-and-fence-high-water-marks-are-bounded: Fail (cycles=1000; highWaterRecords=1000; retired=1000; evictedRetired=0; liveLeases=0; quarantined=0; failedReleases=0; fenceOutstandingHighWater=0; fenceFailures=0; trackedJobsHighWater=0; laneJobsOutstanding=0; quarantineEntries=0; liveActivations=2; worldAcquired=9; worldRetired=0; worldRetained=9@baseline9; worldOutstanding=0@baseline0; quarantinedBytes=0) | narrative/w6-repeatable-digest: Fail (digest=d17f9f3e7d6916e26677c4a69ab4a2e781e3d72c73d86dd68f15726eb5639e08; expectedDigest=4235cea3c22cf93e38307000fcc863edd4ada3e2fc4a3b475ca719765dc17279; observations=5; tableSize=6; cycleCount=1000; fixtureRun=False; failedObservations=narrative/w6-ledger-and-fence-high-water-marks-are-bounded)
+  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at GameCore.W6Gate.Tests.W6GateIntegrationTests.AssertFamily (System.String label, System.Collections.Generic.IReadOnlyList`1[T] combined, GameCore.Validation.ProbeHost.W6GateScenarioResult generated, GameCore.Validation.ProbeHost.W6GateScenarioResult fixture, System.String expectedGenerated, System.String expectedFixture) [0x00055] in /home/worlesenric/wkspace/gc-wt/w6-gate/unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W6Gate/W6GateIntegrationTests.cs:329
+at GameCore.W6Gate.Tests.W6GateIntegrationTests.TheNarrativeDigestHoldsOverBothCatalogs () [0x00000] in /home/worlesenric/wkspace/gc-wt/w6-gate/unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W6Gate/W6GateIntegrationTests.cs:221
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="2370" name="TheNarrativeLedgerAndFenceHighWaterMarksAreBounded" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheNarrativeLedgerAndFenceHighWaterMarksAreBounded" methodname="TheNarrativeLedgerAndFenceHighWaterMarksAreBounded" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="813077640" result="Failed" start-time="2026-09-26 05:22:26Z" end-time="2026-09-26 05:22:26Z" duration="0.000169" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  narrative/w6-ledger-and-fence-high-water-marks-are-bounded: Fail (cycles=1000; highWaterRecords=1000; retired=1000; evictedRetired=0; liveLeases=0; quarantined=0; failedReleases=0; fenceOutstandingHighWater=0; fenceFailures=0; trackedJobsHighWater=0; laneJobsOutstanding=0; quarantineEntries=0; liveActivations=2; worldAcquired=9; worldRetired=0; worldRetained=9@baseline9; worldOutstanding=0@baseline0; quarantinedBytes=0)
+  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at GameCore.W6Gate.Tests.W6GateIntegrationTests.AssertObservation (System.String label, System.Collections.Generic.IReadOnlyList`1[T] steps, System.String bareName) [0x000d4] in /home/worlesenric/wkspace/gc-wt/w6-gate/unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W6Gate/W6GateIntegrationTests.cs:313
+at GameCore.W6Gate.Tests.W6GateIntegrationTests.TheNarrativeLedgerAndFenceHighWaterMarksAreBounded () [0x00000] in /home/worlesenric/wkspace/gc-wt/w6-gate/unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W6Gate/W6GateIntegrationTests.cs:114
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="2372" name="TheNarrativeRepeatableDigest" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheNarrativeRepeatableDigest" methodname="TheNarrativeRepeatableDigest" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="1948708236" result="Failed" start-time="2026-09-26 05:22:26Z" end-time="2026-09-26 05:22:26Z" duration="0.000163" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  narrative/w6-repeatable-digest: Fail (digest=d17f9f3e7d6916e26677c4a69ab4a2e781e3d72c73d86dd68f15726eb5639e08; expectedDigest=4235cea3c22cf93e38307000fcc863edd4ada3e2fc4a3b475ca719765dc17279; observations=5; tableSize=6; cycleCount=1000; fixtureRun=False; failedObservations=narrative/w6-ledger-and-fence-high-water-marks-are-bounded)
+  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at GameCore.W6Gate.Tests.W6GateIntegrationTests.AssertObservation (System.String label, System.Collections.Generic.IReadOnlyList`1[T] steps, System.String bareName) [0x000d4] in /home/worlesenric/wkspace/gc-wt/w6-gate/unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W6Gate/W6GateIntegrationTests.cs:313
+at GameCore.W6Gate.Tests.W6GateIntegrationTests.TheNarrativeRepeatableDigest () [0x00000] in /home/worlesenric/wkspace/gc-wt/w6-gate/unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W6Gate/W6GateIntegrationTests.cs:125
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="2369" name="TheNarrativeThousandCycleTeardownIsBounded" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheNarrativeThousandCycleTeardownIsBounded" methodname="TheNarrativeThousandCycleTeardownIsBounded" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="623382437" result="Passed" start-time="2026-09-26 05:22:26Z" end-time="2026-09-26 05:22:26Z" duration="0.000086" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="2392" name="TheObservationTablesAndDigestsAgree" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheObservationTablesAndDigestsAgree" methodname="TheObservationTablesAndDigestsAgree" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="918391181" result="Passed" start-time="2026-09-26 05:22:26Z" end-time="2026-09-26 05:22:26Z" duration="0.000677" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="2384" name="TheTraversalCarriesTheOptionalEngineSurface" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheTraversalCarriesTheOptionalEngineSurface" methodname="TheTraversalCarriesTheOptionalEngineSurface" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="1525467296" result="Failed" start-time="2026-09-26 05:22:26Z" end-time="2026-09-26 05:22:26Z" duration="0.000190" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  traversal/w6-carries-the-optional-engine-surface: Fail (the course world is not ready: InvalidOperationException: This can only be used during play mode, please use EditorSceneManager.NewScene() instead.)
+  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at GameCore.W6Gate.Tests.W6GateIntegrationTests.AssertObservation (System.String label, System.Collections.Generic.IReadOnlyList`1[T] steps, System.String bareName) [0x000d4] in /home/worlesenric/wkspace/gc-wt/w6-gate/unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W6Gate/W6GateIntegrationTests.cs:313
+at GameCore.W6Gate.Tests.W6GateIntegrationTests.TheTraversalCarriesTheOptionalEngineSurface () [0x00000] in /home/worlesenric/wkspace/gc-wt/w6-gate/unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W6Gate/W6GateIntegrationTests.cs:193
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="2387" name="TheTraversalCountersReturnToBaseline" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheTraversalCountersReturnToBaseline" methodname="TheTraversalCountersReturnToBaseline" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="1474968483" result="Failed" start-time="2026-09-26 05:22:26Z" end-time="2026-09-26 05:22:26Z" duration="0.000171" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  traversal/w6-counters-return-to-baseline: Fail (the loop world is not ready: InvalidOperationException: This can only be used during play mode, please use EditorSceneManager.NewScene() instead.)
+  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at GameCore.W6Gate.Tests.W6GateIntegrationTests.AssertObservation (System.String label, System.Collections.Generic.IReadOnlyList`1[T] steps, System.String bareName) [0x000d4] in /home/worlesenric/wkspace/gc-wt/w6-gate/unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W6Gate/W6GateIntegrationTests.cs:313
+at GameCore.W6Gate.Tests.W6GateIntegrationTests.TheTraversalCountersReturnToBaseline () [0x00000] in /home/worlesenric/wkspace/gc-wt/w6-gate/unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W6Gate/W6GateIntegrationTests.cs:209
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="2391" name="TheTraversalDigestHoldsOverItsOneCatalog" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheTraversalDigestHoldsOverItsOneCatalog" methodname="TheTraversalDigestHoldsOverItsOneCatalog" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="1453194166" result="Failed" start-time="2026-09-26 05:22:26Z" end-time="2026-09-26 05:22:26Z" duration="0.000311" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  digest=60429f593253fc5767881db4da776fc96fad3b77e131c09f1e9eea7c5fde46cc; label=traversal; steps=9; failed=9: traversal/w6-fixed-step-course-runs: Fail (InvalidOperationException: This can only be used during play mode, please use EditorSceneManager.NewScene() instead.) | traversal/w6-telemetry-counters-record-admitted-steps: Fail (the course world is not ready: InvalidOperationException: This can only be used during play mode, please use EditorSceneManager.NewScene() instead.) | traversal/w6-one-physics-simulation-per-admitted-step: Fail (the physics world could not be built: InvalidOperationException: This can only be used during play mode, please use EditorSceneManager.NewScene() instead.) | traversal/w6-replay-reproduces-the-rule-digest: Fail (the course world is not ready: InvalidOperationException: This can only be used during play mode, please use EditorSceneManager.NewScene() instead.) | traversal/w6-carries-the-optional-engine-surface: Fail (the course world is not ready: InvalidOperationException: This can only be used during play mode, please use EditorSceneManager.NewScene() instead.) | traversal/w6-thousand-cycle-teardown-is-bounded: Fail (InvalidOperationException: This can only be used during play mode, please use EditorSceneManager.NewScene() instead.) | traversal/w6-ledger-and-fence-high-water-marks-are-bounded: Fail (the loop world is not ready: InvalidOperationException: This can only be used during play mode, please use EditorSceneManager.NewScene() instead.) | traversal/w6-counters-return-to-baseline: Fail (the loop world is not ready: InvalidOperationException: This can only be used during play mode, please use EditorSceneManager.NewScene() instead.) | traversal/w6-repeatable-digest: Fail (digest=60429f593253fc5767881db4da776fc96fad3b77e131c09f1e9eea7c5fde46cc; expectedDigest=ca29b5f7099f9fbc4abeb7031c7b1e35ba39ec1ad39db70dd0f037fa8d45675e; observations=8; tableSize=9; cycleCount=1000; fixtureRun=False; failedObservations=traversal/w6-fixed-step-course-runs,traversal/w6-telemetry-counters-record-admitted-steps,traversal/w6-one-physics-simulation-per-admitted-step,traversal/w6-replay-reproduces-the-rule-digest,traversal/w6-carries-the-optional-engine-surface,traversal/w6-thousand-cycle-teardown-is-bounded,traversal/w6-ledger-and-fence-high-water-marks-are-bounded,traversal/w6-counters-return-to-baseline)
+  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at GameCore.W6Gate.Tests.W6GateIntegrationTests.TheTraversalDigestHoldsOverItsOneCatalog () [0x00026] in /home/worlesenric/wkspace/gc-wt/w6-gate/unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W6Gate/W6GateIntegrationTests.cs:235
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="2380" name="TheTraversalFixedStepCourseRuns" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheTraversalFixedStepCourseRuns" methodname="TheTraversalFixedStepCourseRuns" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="1199608760" result="Failed" start-time="2026-09-26 05:22:26Z" end-time="2026-09-26 05:22:26Z" duration="0.000178" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  traversal/w6-fixed-step-course-runs: Fail (InvalidOperationException: This can only be used during play mode, please use EditorSceneManager.NewScene() instead.)
+  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at GameCore.W6Gate.Tests.W6GateIntegrationTests.AssertObservation (System.String label, System.Collections.Generic.IReadOnlyList`1[T] steps, System.String bareName) [0x000d4] in /home/worlesenric/wkspace/gc-wt/w6-gate/unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W6Gate/W6GateIntegrationTests.cs:313
+at GameCore.W6Gate.Tests.W6GateIntegrationTests.TheTraversalFixedStepCourseRuns () [0x00000] in /home/worlesenric/wkspace/gc-wt/w6-gate/unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W6Gate/W6GateIntegrationTests.cs:171
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="2386" name="TheTraversalLedgerAndFenceHighWaterMarksAreBounded" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheTraversalLedgerAndFenceHighWaterMarksAreBounded" methodname="TheTraversalLedgerAndFenceHighWaterMarksAreBounded" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="1031745268" result="Failed" start-time="2026-09-26 05:22:26Z" end-time="2026-09-26 05:22:26Z" duration="0.000160" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  traversal/w6-ledger-and-fence-high-water-marks-are-bounded: Fail (the loop world is not ready: InvalidOperationException: This can only be used during play mode, please use EditorSceneManager.NewScene() instead.)
+  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at GameCore.W6Gate.Tests.W6GateIntegrationTests.AssertObservation (System.String label, System.Collections.Generic.IReadOnlyList`1[T] steps, System.String bareName) [0x000d4] in /home/worlesenric/wkspace/gc-wt/w6-gate/unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W6Gate/W6GateIntegrationTests.cs:313
+at GameCore.W6Gate.Tests.W6GateIntegrationTests.TheTraversalLedgerAndFenceHighWaterMarksAreBounded () [0x00000] in /home/worlesenric/wkspace/gc-wt/w6-gate/unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W6Gate/W6GateIntegrationTests.cs:203
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="2382" name="TheTraversalOnePhysicsSimulationPerAdmittedStep" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheTraversalOnePhysicsSimulationPerAdmittedStep" methodname="TheTraversalOnePhysicsSimulationPerAdmittedStep" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="1418727756" result="Failed" start-time="2026-09-26 05:22:26Z" end-time="2026-09-26 05:22:26Z" duration="0.000164" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  traversal/w6-one-physics-simulation-per-admitted-step: Fail (the physics world could not be built: InvalidOperationException: This can only be used during play mode, please use EditorSceneManager.NewScene() instead.)
+  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at GameCore.W6Gate.Tests.W6GateIntegrationTests.AssertObservation (System.String label, System.Collections.Generic.IReadOnlyList`1[T] steps, System.String bareName) [0x000d4] in /home/worlesenric/wkspace/gc-wt/w6-gate/unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W6Gate/W6GateIntegrationTests.cs:313
+at GameCore.W6Gate.Tests.W6GateIntegrationTests.TheTraversalOnePhysicsSimulationPerAdmittedStep () [0x00000] in /home/worlesenric/wkspace/gc-wt/w6-gate/unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W6Gate/W6GateIntegrationTests.cs:182
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="2388" name="TheTraversalRepeatableDigest" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheTraversalRepeatableDigest" methodname="TheTraversalRepeatableDigest" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="905115845" result="Failed" start-time="2026-09-26 05:22:26Z" end-time="2026-09-26 05:22:26Z" duration="0.000179" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  traversal/w6-repeatable-digest: Fail (digest=60429f593253fc5767881db4da776fc96fad3b77e131c09f1e9eea7c5fde46cc; expectedDigest=ca29b5f7099f9fbc4abeb7031c7b1e35ba39ec1ad39db70dd0f037fa8d45675e; observations=8; tableSize=9; cycleCount=1000; fixtureRun=False; failedObservations=traversal/w6-fixed-step-course-runs,traversal/w6-telemetry-counters-record-admitted-steps,traversal/w6-one-physics-simulation-per-admitted-step,traversal/w6-replay-reproduces-the-rule-digest,traversal/w6-carries-the-optional-engine-surface,traversal/w6-thousand-cycle-teardown-is-bounded,traversal/w6-ledger-and-fence-high-water-marks-are-bounded,traversal/w6-counters-return-to-baseline)
+  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at GameCore.W6Gate.Tests.W6GateIntegrationTests.AssertObservation (System.String label, System.Collections.Generic.IReadOnlyList`1[T] steps, System.String bareName) [0x000d4] in /home/worlesenric/wkspace/gc-wt/w6-gate/unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W6Gate/W6GateIntegrationTests.cs:313
+at GameCore.W6Gate.Tests.W6GateIntegrationTests.TheTraversalRepeatableDigest () [0x00000] in /home/worlesenric/wkspace/gc-wt/w6-gate/unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W6Gate/W6GateIntegrationTests.cs:214
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="2383" name="TheTraversalReplayReproducesTheRuleDigest" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheTraversalReplayReproducesTheRuleDigest" methodname="TheTraversalReplayReproducesTheRuleDigest" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="1747761119" result="Failed" start-time="2026-09-26 05:22:26Z" end-time="2026-09-26 05:22:26Z" duration="0.000157" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  traversal/w6-replay-reproduces-the-rule-digest: Fail (the course world is not ready: InvalidOperationException: This can only be used during play mode, please use EditorSceneManager.NewScene() instead.)
+  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at GameCore.W6Gate.Tests.W6GateIntegrationTests.AssertObservation (System.String label, System.Collections.Generic.IReadOnlyList`1[T] steps, System.String bareName) [0x000d4] in /home/worlesenric/wkspace/gc-wt/w6-gate/unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W6Gate/W6GateIntegrationTests.cs:313
+at GameCore.W6Gate.Tests.W6GateIntegrationTests.TheTraversalReplayReproducesTheRuleDigest () [0x00000] in /home/worlesenric/wkspace/gc-wt/w6-gate/unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W6Gate/W6GateIntegrationTests.cs:188
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="2381" name="TheTraversalTelemetryCountersRecordAdmittedSteps" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheTraversalTelemetryCountersRecordAdmittedSteps" methodname="TheTraversalTelemetryCountersRecordAdmittedSteps" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="471120105" result="Failed" start-time="2026-09-26 05:22:26Z" end-time="2026-09-26 05:22:26Z" duration="0.000159" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  traversal/w6-telemetry-counters-record-admitted-steps: Fail (the course world is not ready: InvalidOperationException: This can only be used during play mode, please use EditorSceneManager.NewScene() instead.)
+  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at GameCore.W6Gate.Tests.W6GateIntegrationTests.AssertObservation (System.String label, System.Collections.Generic.IReadOnlyList`1[T] steps, System.String bareName) [0x000d4] in /home/worlesenric/wkspace/gc-wt/w6-gate/unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W6Gate/W6GateIntegrationTests.cs:313
+at GameCore.W6Gate.Tests.W6GateIntegrationTests.TheTraversalTelemetryCountersRecordAdmittedSteps () [0x00000] in /home/worlesenric/wkspace/gc-wt/w6-gate/unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W6Gate/W6GateIntegrationTests.cs:176
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="2385" name="TheTraversalThousandCycleTeardownIsBounded" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheTraversalThousandCycleTeardownIsBounded" methodname="TheTraversalThousandCycleTeardownIsBounded" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="1172083731" result="Failed" start-time="2026-09-26 05:22:26Z" end-time="2026-09-26 05:22:26Z" duration="0.000152" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  traversal/w6-thousand-cycle-teardown-is-bounded: Fail (InvalidOperationException: This can only be used during play mode, please use EditorSceneManager.NewScene() instead.)
+  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at GameCore.W6Gate.Tests.W6GateIntegrationTests.AssertObservation (System.String label, System.Collections.Generic.IReadOnlyList`1[T] steps, System.String bareName) [0x000d4] in /home/worlesenric/wkspace/gc-wt/w6-gate/unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W6Gate/W6GateIntegrationTests.cs:313
+at GameCore.W6Gate.Tests.W6GateIntegrationTests.TheTraversalThousandCycleTeardownIsBounded () [0x00000] in /home/worlesenric/wkspace/gc-wt/w6-gate/unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W6Gate/W6GateIntegrationTests.cs:198
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Saving results to: /home/worlesenric/.config/unity3d/GameCore/GameCoreProbe/TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
