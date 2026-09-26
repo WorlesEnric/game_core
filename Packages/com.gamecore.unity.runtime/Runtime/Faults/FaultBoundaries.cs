@@ -62,6 +62,32 @@ using GameCore.Contracts;
 
         /// <summary>Cleanup of a refused or faulted operation's staged work (TEST-016 row 8, P-048).</summary>
         Cleanup = 7,
+
+        /// <summary>
+        /// The committed boundary is being copied and serialized into a checkpoint document (O-20, P-053; GC-027).
+        /// </summary>
+        CheckpointCaptureCopy = 8,
+
+        /// <summary>
+        /// A captured document is being published to its store: the temporary write and the replacement (06 s7).
+        /// </summary>
+        CheckpointPublication = 9,
+
+        /// <summary>
+        /// A destination's composition, recipes and reference tables are being rebuilt from the recovery source
+        /// (P-049's "validates/rebuilds composition and recipes"; GC-027).
+        /// </summary>
+        RestoreReferenceRepair = 10,
+
+        /// <summary>
+        /// A staged restored world has been written to and is not yet published (TEST-016 row 5, P-031; GC-027).
+        /// </summary>
+        RestoreApply = 11,
+
+        /// <summary>
+        /// A staged or recovered world is about to become the registry's published world (P-030, P-049; GC-027).
+        /// </summary>
+        RecoveryPublication = 12,
     }
 
     /// <summary>Stable diagnostic names of the boundaries, so a trace and an assertion name the same thing.</summary>
@@ -78,6 +104,11 @@ using GameCore.Contracts;
             "structural-playback",
             "gate-installation",
             "cleanup",
+            "checkpoint-capture-copy",
+            "checkpoint-publication",
+            "restore-reference-repair",
+            "restore-apply",
+            "recovery-publication",
         };
 
         /// <summary>Number of declared boundaries; a latch array is sized from this, not from a literal.</summary>
