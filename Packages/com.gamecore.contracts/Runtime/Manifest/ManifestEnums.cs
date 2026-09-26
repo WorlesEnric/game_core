@@ -307,5 +307,12 @@ namespace GameCore.Contracts
         TeardownBlocked = 19,
         CursorExpired = 20,
         SnapshotBackpressure = 21,
+
+        /// <summary>
+        /// An existing <c>Active</c> provider failed unexpectedly and its safe dependency-closure deactivation
+        /// could not publish (P-012), so the world stops admission and faults. Added by GC-028: 00 requires that
+        /// failure to be reportable and the 00 s9 list predates the sentence that needs it.
+        /// </summary>
+        ProviderFailed = 22,
     }
 }

@@ -126,6 +126,7 @@ namespace GameCore.Recovery.Fixtures
             "TeardownBlocked",
             "CursorExpired",
             "SnapshotBackpressure",
+            "ProviderFailed",
         });
 
         /// <summary>
