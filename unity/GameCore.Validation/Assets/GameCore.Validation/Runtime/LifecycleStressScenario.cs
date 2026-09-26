@@ -153,6 +153,17 @@ namespace GameCore.Validation.ProbeHost
         /// <summary>Leases observation 7 stages for one installation; the last of them is scripted to fail once.</summary>
         private const int ThrowingDisposerLeaseCount = 3;
 
+        /// <summary>Queue capacity of this run's lane: the protocol default every production lane carries (P-050).</summary>
+        private const int LaneQueueCapacity = 256;
+
+        /// <summary>
+        /// Settled results this run's lane retains: a bound well under the queue capacity, so the lane's own
+        /// history keeps admission cycling under the counted churn instead of occupying it. A settled row counts
+        /// against admission until it leaves retention, so a lane that retained more results than it can queue
+        /// refuses its own next submission once the churn passes that count (P-050's bounded ledger).
+        /// </summary>
+        private const int LaneRetainedResults = 64;
+
         /// <summary>Staged-resource and plan budgets of this run's lane, as the family gates declare them.</summary>
         private const ulong StagedByteCeiling = 1024UL * 1024UL;
 
@@ -471,8 +482,21 @@ namespace GameCore.Validation.ProbeHost
                     manifests = manifestSource;
                     resources = new LifecycleStressResourceFactory();
 
-                    lane = CompositionHost.CreateDefault(
-                        world, family.WorldRootScope, manifestSource, resources, family.LaneSeed);
+                    // The counted cycles settle two rows each, and a settled row counts against admission until it
+                    // leaves retention (P-050), so this lane declares retention *below* its queue capacity: the
+                    // bound frees rows by itself as the run churns instead of the protocol defaults, whose retained
+                    // results (4096) outlast the queue (256) and refuse the run's own 2,001st submission. The
+                    // queue itself stays the protocol default this stress must live within, not above.
+                    lane = new CompositionHost(
+                        world,
+                        family.WorldRootScope,
+                        new CompositionHostSettings(
+                            new ControlLaneCapacitySettings(LaneQueueCapacity, LaneRetainedResults),
+                            OperationExpirySettings.Default),
+                        manifestSource,
+                        resources,
+                        PropagationMode.Automatic,
+                        family.LaneSeed);
                     bridge = new WorldCompositionBridge(host, lane, publisher);
 
                     if (!family.SeedTargets(new Gc013WorldContext(host, targets, seeder)))
@@ -1287,7 +1311,8 @@ namespace GameCore.Validation.ProbeHost
                     quarantined = laneRef.Lifecycle.Quarantine.EntriesFor(instance).Count;
 
                     // The explicit later release P-048 allows. The retained reference is retired exactly once here,
-                    // and nothing else is released by it.
+                    // nothing else is released by it, and the removal's own committed record settles to `Disposed`
+                    // with the last retention gone - the same edge a publication-time settle took.
                     int retiredAtRelease = laneRef.Resources.RetiredCount;
                     CleanupReport release = controllerRef.ReleaseQuarantine(instance);
                     releaseRetiredOnce = release.Retired.Count == 1
@@ -1298,6 +1323,8 @@ namespace GameCore.Validation.ProbeHost
                         && IsDisposed(factory, failingLease);
                     releaseKeptItSingle = factory.DisposalAttemptsOf(failingLease) == 2
                         && CountOccurrences(factory.DisposedOrder, failingLease) == 1;
+                    bool releaseSettledRecord = TryInstallState(instance, out InstallationState releaseState)
+                        && releaseState == InstallationState.Disposed;
 
                     // A later, clean installation proves the release path itself is unaffected by the failure.
                     bool cleanRound = RunCleanRound();
@@ -1312,6 +1339,7 @@ namespace GameCore.Validation.ProbeHost
                         && quarantineHoldsIt
                         && releaseRetiredOnce
                         && releaseKeptItSingle
+                        && releaseSettledRecord
                         && cleanRound
                         && laneRef.Resources.LiveLeaseCount == 0
                         && laneRef.Resources.QuarantinedCount == quarantinedBefore + 1
@@ -1330,6 +1358,7 @@ namespace GameCore.Validation.ProbeHost
                         + "; quarantineHoldsIt=" + quarantineHoldsIt
                         + "; releasedRetired=" + Text(release.Retired.Count)
                         + "; releaseRetiredOnce=" + releaseRetiredOnce
+                        + "; releaseSettledRecord=" + releaseSettledRecord
                         + "; releaseKeptItSingle=" + releaseKeptItSingle
                         + "; cleanRound=" + cleanRound
                         + "; retiredByPublication=" + Text(retired)
