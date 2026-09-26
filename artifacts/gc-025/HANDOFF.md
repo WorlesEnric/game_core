@@ -72,7 +72,7 @@ What this branch adds, in the order the gate proves it:
 | `Runtime/CatalogReachability.g.cs` (+ `.meta`) | The generated manifest as compiled data: per-catalog facts (class name, file hash, fingerprint, group/schema/registration/root counts) and one row per registration, serializer and closed-generic root with its catalogue label, kind, role, stable name and derived key. |
 | `Runtime/CatalogCoverageScenario.cs` (+ `.meta`) | The sequence: 13 named observations, one digest over them, and every helper (`TryLiveFacts`, `TryResolve`, `CanonicalFragments`, `Fragment`, `RegistryUnwound` replacement, `TryTraversalCatalog`). No reflection, no `System.Type`, no Editor-only API. |
 | `Runtime/CatalogCoverageRecipeSource.cs` (+ `.meta`) | `ICatalogCoverageRecipeSource` with two implementations: `RuntimeCatalogCoverageRecipeSource` (the fixture's own declared recipes) and `BakedCatalogCoverageRecipeSource` + `BakedRunnerApplier` (the same recipes materialized from the baked artifact, with a second `ISpawnApplier` implementation registered under the same generated key). |
-| `Runtime/ProbeCatalogCoverage.cs` (+ `.meta`) | The `-probeCatalogCoverage` mode: one probe step per observation plus the digest step, with the frozen literal. |
+| `Runtime/CatalogCoverageProbe.cs` (+ `.meta`) | The `-probeCatalogCoverage` mode: one probe step per observation plus the digest step, with the frozen literal. |
 
 ### Tests
 
@@ -276,7 +276,7 @@ python3 tools/check_link_xml.py --project unity/GameCore.ReleaseCheck --json art
    and `tools/check_release_gate_free.py` was left unchanged: its marker groups and its `-probeTraversal` kept-mode
    assertion are unaffected, and the release-shape coverage run is asserted by the probe harness itself
    (`"mode": "CatalogCoverage"`, `"task": "GC-025"`, `"result": "Pass"`). The new `Runtime/CatalogReachability.g.cs`,
-   `CatalogCoverageScenario.cs`, `CatalogCoverageRecipeSource.cs` and `ProbeCatalogCoverage.cs` therefore survive
+   `CatalogCoverageScenario.cs`, `CatalogCoverageRecipeSource.cs` and `CatalogCoverageProbe.cs` therefore survive
    into the clone; none references a removed type, which is what the clone check verifies.
 4. **`Gc020TraversalHost.CourseFamily` now has three constructors.** The 3-argument one is what every existing gate
    calls and its behaviour is unchanged (same session salt, same recipe source). The 4- and 5-argument ones are

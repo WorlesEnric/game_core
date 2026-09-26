@@ -1,5 +1,10 @@
 // GameCore.Validation.ProbeHost — the `-probeCatalogCoverage` player mode (GC-025).
 //
+// The class is named `CatalogCoverageProbe`, not `ProbeCatalogCoverage`: a type declared in this namespace always
+// wins over a type reached through a `using`, and `GameCore.Validation.Generated.ProbeCatalogCoverage` is the
+// generated coverage companion of the probe catalog that this mode calls. The flag is `-probeCatalogCoverage` and
+// stays that; only the class name avoids the collision.
+//
 // The mode runs `CatalogCoverageScenario` inside the built player and reports every observation plus the digest and
 // the frozen literal into the same structured JSON result the other probes write. The scenario is shared with the
 // Unity EditMode assembly `GameCore.CatalogCoverage.Tests`, so the same checks execute in the Editor and in a
@@ -12,7 +17,7 @@ using System.Globalization;
 namespace GameCore.Validation.ProbeHost
 {
     /// <summary>The `-probeCatalogCoverage` mode: the complete standalone IL2CPP and headless catalog profile.</summary>
-    public static class ProbeCatalogCoverage
+    public static class CatalogCoverageProbe
     {
         /// <summary>
         /// Digest of the coverage sequence's observation table, computed from its NAMES alone, so a renamed,

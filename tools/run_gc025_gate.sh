@@ -149,7 +149,7 @@ run_step contract-surface-parity "${PYTHON}" tools/check_contract_surface_parity
 run_step gate-sources "${PYTHON}" tools/check_gate_sources.py \
   --file unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/CatalogCoverageScenario.cs \
   --file unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/CatalogCoverageRecipeSource.cs \
-  --file unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/ProbeCatalogCoverage.cs \
+  --file unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/CatalogCoverageProbe.cs \
   --file unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/CatalogReachability.g.cs \
   --file unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/Gc020TraversalHost.cs \
   --file unity/GameCore.Validation/Assets/GameCore.Validation/Editor/BakeCatalogCoverageAuthoring.cs \

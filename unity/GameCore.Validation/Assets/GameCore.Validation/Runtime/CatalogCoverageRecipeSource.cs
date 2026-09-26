@@ -155,16 +155,21 @@ namespace GameCore.Validation.ProbeHost
         }
 
         /// <summary>
-        /// The baked runner definition: its immutable id, its schema and version and its revision all come from the
-        /// artifact's declared stable names, derived at this use site with the production rule (P-004).
+        /// The baked runner definition: the artifact records the target's *recipe* stable name, and this applies the
+        /// package's own recipe rule to it (`<recipe>.definition` at revision one), so the baked definition identity
+        /// is the runtime one by construction rather than a literal the artifact could carry out of date (P-004).
+        /// The schema and its version come from the artifact's declared schema stable name.
         /// </summary>
-        private static DefinitionRef BakedRunnerDefinition() =>
-            new DefinitionRef(
-                TraversalIdentity.Definition(CatalogCoverageBaked.RunnerRecipeDefinitionStableName),
+        private static DefinitionRef BakedRunnerDefinition()
+        {
+            DefinitionRef recipe = TraversalKeys.RecipeOfStableName(CatalogCoverageBaked.RunnerRecipeStableName);
+            return new DefinitionRef(
+                recipe.Id,
                 TraversalIdentity.SchemaRef(
                     CatalogCoverageBaked.RunnerRecipeSchemaStableName,
                     CatalogCoverageBaked.RunnerRecipeSchemaVersion),
                 new DefinitionRevision(CatalogCoverageBaked.RunnerRecipeRevision));
+        }
 
         /// <summary>
         /// Materializes one runner recipe from the baked artifact's base layout: the selector schemas and the

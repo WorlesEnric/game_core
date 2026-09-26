@@ -5,7 +5,6 @@ using System.Globalization;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using GameCore.Gameplay.Traversal;
 using GameCore.Rules.Traversal;
 using UnityEditor;
 using UnityEngine;
@@ -204,8 +203,9 @@ namespace GameCore.Validation.Editor
             outText.Append("        /// <summary>Stable role name of the one baked target.</summary>\n");
             outText.Append("        public const string RunnerRole = \"").Append(runner.Role).Append("\";\n");
             outText.Append('\n');
-            outText.Append("        /// <summary>Stable definition name of the baked runner recipe (P-004).</summary>\n");
-            outText.Append("        public const string RunnerRecipeDefinitionStableName = \"")
+            outText.Append("        /// <summary>Stable recipe name of the baked runner target (P-004); the player applies the\n");
+            outText.Append("        /// package's own recipe rule to it, so a definition identity cannot be baked as a literal.</summary>\n");
+            outText.Append("        public const string RunnerRecipeStableName = \"")
                 .Append(runner.RecipeDefinitionStableName).Append("\";\n");
             outText.Append('\n');
             outText.Append("        /// <summary>Stable schema name the baked runner recipe declares; its `SchemaRef` version is below.</summary>\n");
@@ -314,7 +314,7 @@ namespace GameCore.Validation.Editor
 
                 RequireMembers(target, "targets[" + i.ToString(CultureInfo.InvariantCulture) + "]", new[]
                 {
-                    "role", "recipeDefinitionStableName", "recipeSchemaStableName", "recipeSchemaVersion",
+                    "role", "recipeStableName", "recipeSchemaStableName", "recipeSchemaVersion",
                     "recipeRevision", "applierStableName", "applierKeyVersion", "baseLayoutSchemaStableNames",
                     "descriptorTagStableNames", "initialPositionMilli", "initialVelocityMilli",
                 });
@@ -332,7 +332,7 @@ namespace GameCore.Validation.Editor
 
                 runner = new AuthoredRunner(
                     role,
-                    String(target, "recipeDefinitionStableName"),
+                    String(target, "recipeStableName"),
                     String(target, "recipeSchemaStableName"),
                     UInt32(target, "recipeSchemaVersion"),
                     UInt32(target, "recipeRevision"),
@@ -475,7 +475,7 @@ namespace GameCore.Validation.Editor
         {
             internal AuthoredRunner(
                 string role,
-                string recipeDefinitionStableName,
+                string recipeStableName,
                 string recipeSchemaStableName,
                 uint recipeSchemaVersion,
                 uint recipeRevision,
@@ -487,7 +487,7 @@ namespace GameCore.Validation.Editor
                 int[] initialVelocityMilli)
             {
                 Role = role;
-                RecipeDefinitionStableName = recipeDefinitionStableName;
+                RecipeDefinitionStableName = recipeStableName;
                 RecipeSchemaStableName = recipeSchemaStableName;
                 RecipeSchemaVersion = recipeSchemaVersion;
                 RecipeRevision = recipeRevision;

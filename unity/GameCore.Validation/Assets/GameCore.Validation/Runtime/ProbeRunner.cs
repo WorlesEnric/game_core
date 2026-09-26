@@ -161,7 +161,7 @@ namespace GameCore.Validation.ProbeHost
                 }
                 else if (arguments.CatalogCoverage)
                 {
-                    ProbeCatalogCoverage.Run(report);
+                    CatalogCoverageProbe.Run(report);
                     report.CompletePositive();
                 }
                 else

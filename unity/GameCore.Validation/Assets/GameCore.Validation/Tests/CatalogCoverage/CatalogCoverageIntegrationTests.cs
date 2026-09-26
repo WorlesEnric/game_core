@@ -183,8 +183,8 @@ namespace GameCore.CatalogCoverage.Tests
         [Timeout(AssertTimeout)]
         public void TheProbeModeFreezesTheSameLiteral()
         {
-            Assert.That(ProbeCatalogCoverage.ExpectedDigest, Is.EqualTo(CoverageDigest));
-            Assert.That(ProbeCatalogCoverage.ExpectedObservations, Is.EqualTo(CatalogCoverageScenario.ObservationNames.Length));
+            Assert.That(CatalogCoverageProbe.ExpectedDigest, Is.EqualTo(CoverageDigest));
+            Assert.That(CatalogCoverageProbe.ExpectedObservations, Is.EqualTo(CatalogCoverageScenario.ObservationNames.Length));
         }
     }
 }

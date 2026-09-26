@@ -122,7 +122,7 @@ namespace GameCore.Validation.ProbeHost
 
         /// <summary>
         /// The frozen observation table. The digest is computed from these names alone, so this list and
-        /// `ProbeCatalogCoverage.ExpectedDigest` cannot drift apart silently (P-008).
+        /// `CatalogCoverageProbe.ExpectedDigest` cannot drift apart silently (P-008).
         /// </summary>
         public static readonly string[] ObservationNames =
         {

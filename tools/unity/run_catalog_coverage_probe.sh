@@ -107,7 +107,7 @@ coverage_steps=(
 probe_require_steps "${result_file}" "${coverage_steps[@]}"
 
 # The digest literal is over the observation names and their pass flags, so this is the whole claim that the sequence
-# ran the named observations and every one of them passed. It is frozen here, in `ProbeCatalogCoverage` and in
+# ran the named observations and every one of them passed. It is frozen here, in `CatalogCoverageProbe` and in
 # `GameCore.CatalogCoverage.Tests`, which recomputes it from `CatalogCoverageScenario.ObservationNames`.
 coverage_digest="77bc74196ec96b076bcc63b007cc0f57f5322121bad69f36c0e280d0576fbbb2"
 if ! grep -q "digest=${coverage_digest}" "${result_file}"; then
