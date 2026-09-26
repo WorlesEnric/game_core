@@ -129,7 +129,7 @@ python3 tools/emit_failure_codes.py --check
 python3 tools/validate_game_core_docs.py --self-test
 python3 tools/validate_game_core_docs.py
 
-# the qualification player and one family probe
+# the qualification player and one family probe (the build harness bounds each Editor invocation)
 UNITY=$HOME/Unity/Hub/Editor/6000.0.75f1/Editor/Unity \
   UNITY_PROJECT=unity/GameCore.Validation ARTIFACTS=artifacts/reproducibility/toolchain \
   tools/unity/build_probe.sh

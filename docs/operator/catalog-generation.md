@@ -43,30 +43,29 @@ assemblies are `GameCore.Validation.Generated`, `.GeneratedCards`, `.GeneratedCh
 ## 3. Regenerating (the exact commands)
 
 Each step is one Editor invocation: `-batchmode -nographics -quit -projectPath <project> -executeMethod <method>`.
-Run from the repository root, with `UNITY` set to the pinned Editor.
+Run from the repository root, with `UNITY` set to the pinned Editor; the 1800-second watchdog bounds each invocation.
 
 ```sh
 UNITY=$HOME/Unity/Hub/Editor/6000.0.75f1/Editor/Unity
 PROJECT=unity/GameCore.Validation
-GEN=unity/GameCore.Validation/Assets/GameCore.Validation
 
-"$UNITY" -batchmode -nographics -quit -projectPath "$PROJECT" \
+timeout 1800 "$UNITY" -batchmode -nographics -quit -projectPath "$PROJECT" \
   -executeMethod GameCore.Validation.Editor.ProbeCatalogGenerator.GenerateCatalog \
   -logFile artifacts/reproducibility/codegen-probe.log
 
-"$UNITY" -batchmode -nographics -quit -projectPath "$PROJECT" \
+timeout 1800 "$UNITY" -batchmode -nographics -quit -projectPath "$PROJECT" \
   -executeMethod GameCore.Validation.Editor.CardCatalogGenerator.GenerateCatalog \
   -logFile artifacts/reproducibility/codegen-cards.log
 
-"$UNITY" -batchmode -nographics -quit -projectPath "$PROJECT" \
+timeout 1800 "$UNITY" -batchmode -nographics -quit -projectPath "$PROJECT" \
   -executeMethod GameCore.Validation.Editor.CheckpointCatalogGenerator.GenerateCatalog \
   -logFile artifacts/reproducibility/codegen-checkpoint.log
 
-"$UNITY" -batchmode -nographics -quit -projectPath "$PROJECT" \
+timeout 1800 "$UNITY" -batchmode -nographics -quit -projectPath "$PROJECT" \
   -executeMethod GameCore.Validation.Editor.TraversalCatalogGenerator.GenerateCatalog \
   -logFile artifacts/reproducibility/codegen-traversal.log
 
-"$UNITY" -batchmode -nographics -quit -projectPath "$PROJECT" \
+timeout 1800 "$UNITY" -batchmode -nographics -quit -projectPath "$PROJECT" \
   -executeMethod GameCore.Validation.Editor.BakeCatalogCoverageAuthoring.Bake \
   -logFile artifacts/reproducibility/codegen-bake.log
 ```
