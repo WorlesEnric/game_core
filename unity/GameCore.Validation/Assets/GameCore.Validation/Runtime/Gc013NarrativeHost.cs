@@ -89,6 +89,18 @@ namespace GameCore.Validation.ProbeHost
             NarrativeCompositionNames.VillagerRecipe + ".gc013-opted-in.definition",
             NarrativeCompositionNames.VillagerRecipe);
 
+        /// <summary>
+        /// The quest-gate recipe's complete-opt-in variant: the same selector schema under a distinct definition
+        /// identity, with a complete explicit opt-in naming the chapter-one installation and the gate capability.
+        /// 07 s3.3's mode rows state the gate is the one target with a complete target opt-in for its binding, which
+        /// the bare `QuestGateRecipe` cannot deliver: P-013 denies an un-granted descendant in `Conservative`. It is
+        /// registered in the recipe catalog and used by no target until the GC-024 conformance run's gate east
+        /// registers with it, so every earlier gate's live-target set is unchanged (P-013, P-015).
+        /// </summary>
+        public static readonly DefinitionRef OptedInGateRecipe = NarrativeIds.Recipe(
+            NarrativeCompositionNames.QuestGateRecipe + ".gc024-opted-in.definition",
+            NarrativeCompositionNames.QuestGateRecipe);
+
         /// <summary>Installation of the first conflict provider.</summary>
         public static readonly PluginInstanceId ConflictProviderInstance = NarrativeKeys.Instance(5UL);
 
@@ -349,6 +361,7 @@ namespace GameCore.Validation.ProbeHost
                 var applier = new NarrativeRecipeApplier();
                 var catalogRecipes = new List<SpawnRecipe>(NarrativeRecipes.Catalog(applier).Recipes);
                 catalogRecipes.Add(OptedInVillager(applier));
+                catalogRecipes.Add(OptedInGate(applier));
                 recipes = new SpawnRecipeCatalog(catalogRecipes);
 
                 migrations = new MigrationRegistry(new List<ISlotMigration>
@@ -575,6 +588,39 @@ namespace GameCore.Validation.ProbeHost
                     null);
 
                 return new SpawnRecipe(OptedInVillagerRecipe, descriptor, schemas, applier);
+            }
+
+            /// <summary>
+            /// The quest-gate recipe's complete-opt-in variant (07 s3.3's mode rows, P-013): the same selector
+            /// schema under a distinct definition identity, with a complete explicit opt-in naming the chapter-one
+            /// installation and the gate capability, so `Conservative` grants the binding 07:176 says the gate
+            /// retains. The applier is the narrative package's own, so a target registered with this recipe carries
+            /// the same base layout a spawned gate installs (P-024, P-032).
+            /// </summary>
+            private static SpawnRecipe OptedInGate(ISpawnApplier applier)
+            {
+                var schemas = new List<SchemaRef>
+                {
+                    NarrativeIds.SchemaRef(NarrativeCompositionNames.QuestGateRecipe, 1U),
+                };
+
+                var descriptor = new TargetDescriptor(
+                    OptedInGateRecipe,
+                    schemas,
+                    null,
+                    null,
+                    default(AssetAdapterDescriptor),
+                    null,
+                    null,
+                    new List<TargetOptIn>
+                    {
+                        new TargetOptIn(
+                            new ProviderInstallationId(NarrativeKeys.ChapterOneInstall.Value),
+                            NarrativeKeys.GateBinding),
+                    },
+                    null);
+
+                return new SpawnRecipe(OptedInGateRecipe, descriptor, schemas, applier);
             }
 
             private static void Seed(Gc013WorldContext context, TargetId target, ScopeId scope, DefinitionRef recipe)

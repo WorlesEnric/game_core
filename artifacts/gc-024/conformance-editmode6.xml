@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="8" result="Passed" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-09-26 17:22:42Z" end-time="2026-09-26 17:22:43Z" duration="1.0235341">
+  <test-suite type="TestSuite" id="1000" name="GameCoreProbe" fullname="GameCoreProbe" runstate="Runnable" testcasecount="1109" result="Passed" start-time="2026-09-26 17:22:42Z" end-time="2026-09-26 17:22:43Z" duration="1.023534" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1242" name="GameCore.Conformance.Tests.dll" fullname="/home/worlesenric/wkspace/gc-wt/gc-024/unity/GameCore.Validation/Library/ScriptAssemblies/GameCore.Conformance.Tests.dll" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-09-26 17:22:42Z" end-time="2026-09-26 17:22:43Z" duration="1.010261" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="2513074" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1243" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-09-26 17:22:42Z" end-time="2026-09-26 17:22:43Z" duration="1.009986" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1244" name="Validation" fullname="GameCore.Validation" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-09-26 17:22:42Z" end-time="2026-09-26 17:22:43Z" duration="1.009885" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1245" name="ProbeHost" fullname="GameCore.Validation.ProbeHost" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-09-26 17:22:42Z" end-time="2026-09-26 17:22:43Z" duration="1.009785" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1246" name="Tests" fullname="GameCore.Validation.ProbeHost.Tests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-09-26 17:22:42Z" end-time="2026-09-26 17:22:43Z" duration="1.009668" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1233" name="ConformanceIntegrationTests" fullname="GameCore.Validation.ProbeHost.Tests.ConformanceIntegrationTests" classname="GameCore.Validation.ProbeHost.Tests.ConformanceIntegrationTests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-09-26 17:22:42Z" end-time="2026-09-26 17:22:43Z" duration="1.008978" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1241" name="EveryTranscribedTableIsExecutedByTheRunThatClaimsIt" fullname="GameCore.Validation.ProbeHost.Tests.ConformanceIntegrationTests.EveryTranscribedTableIsExecutedByTheRunThatClaimsIt" methodname="EveryTranscribedTableIsExecutedByTheRunThatClaimsIt" classname="GameCore.Validation.ProbeHost.Tests.ConformanceIntegrationTests" runstate="Runnable" seed="2036794755" result="Passed" start-time="2026-09-26 17:22:42Z" end-time="2026-09-26 17:22:42Z" duration="0.023207" asserts="0">
+                  <properties>
+                    <property name="Timeout" value="120000" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1234" name="TheCardMarketTableMatchesItsTranscription" fullname="GameCore.Validation.ProbeHost.Tests.ConformanceIntegrationTests.TheCardMarketTableMatchesItsTranscription" methodname="TheCardMarketTableMatchesItsTranscription" classname="GameCore.Validation.ProbeHost.Tests.ConformanceIntegrationTests" runstate="Runnable" seed="2114467796" result="Passed" start-time="2026-09-26 17:22:42Z" end-time="2026-09-26 17:22:42Z" duration="0.504016" asserts="0">
+                  <properties>
+                    <property name="Timeout" value="600000" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1235" name="TheChapterQuestTableMatchesItsTranscription" fullname="GameCore.Validation.ProbeHost.Tests.ConformanceIntegrationTests.TheChapterQuestTableMatchesItsTranscription" methodname="TheChapterQuestTableMatchesItsTranscription" classname="GameCore.Validation.ProbeHost.Tests.ConformanceIntegrationTests" runstate="Runnable" seed="1417306594" result="Passed" start-time="2026-09-26 17:22:42Z" end-time="2026-09-26 17:22:43Z" duration="0.101037" asserts="0">
+                  <properties>
+                    <property name="Timeout" value="600000" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1238" name="TheCombinedCompositionCarriesNoActionSurfaceInItsCardOrNarrativeStages" fullname="GameCore.Validation.ProbeHost.Tests.ConformanceIntegrationTests.TheCombinedCompositionCarriesNoActionSurfaceInItsCardOrNarrativeStages" methodname="TheCombinedCompositionCarriesNoActionSurfaceInItsCardOrNarrativeStages" classname="GameCore.Validation.ProbeHost.Tests.ConformanceIntegrationTests" runstate="Runnable" seed="1697894192" result="Passed" start-time="2026-09-26 17:22:43Z" end-time="2026-09-26 17:22:43Z" duration="0.009928" asserts="0">
+                  <properties>
+                    <property name="Timeout" value="300000" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1237" name="TheCombinedWorldMatchesTheCrossFamilyTranscription" fullname="GameCore.Validation.ProbeHost.Tests.ConformanceIntegrationTests.TheCombinedWorldMatchesTheCrossFamilyTranscription" methodname="TheCombinedWorldMatchesTheCrossFamilyTranscription" classname="GameCore.Validation.ProbeHost.Tests.ConformanceIntegrationTests" runstate="Runnable" seed="1839194748" result="Passed" start-time="2026-09-26 17:22:43Z" end-time="2026-09-26 17:22:43Z" duration="0.098076" asserts="0">
+                  <properties>
+                    <property name="Timeout" value="600000" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1239" name="TheGenreAuditIsCleanOverTheRepositoryTree" fullname="GameCore.Validation.ProbeHost.Tests.ConformanceIntegrationTests.TheGenreAuditIsCleanOverTheRepositoryTree" methodname="TheGenreAuditIsCleanOverTheRepositoryTree" classname="GameCore.Validation.ProbeHost.Tests.ConformanceIntegrationTests" runstate="Runnable" seed="2045670340" result="Passed" start-time="2026-09-26 17:22:43Z" end-time="2026-09-26 17:22:43Z" duration="0.185763" asserts="0">
+                  <properties>
+                    <property name="Timeout" value="120000" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1240" name="TheKernelAssembliesOfThisProcessReferenceNoGameplayAssembly" fullname="GameCore.Validation.ProbeHost.Tests.ConformanceIntegrationTests.TheKernelAssembliesOfThisProcessReferenceNoGameplayAssembly" methodname="TheKernelAssembliesOfThisProcessReferenceNoGameplayAssembly" classname="GameCore.Validation.ProbeHost.Tests.ConformanceIntegrationTests" runstate="Runnable" seed="1513201548" result="Passed" start-time="2026-09-26 17:22:43Z" end-time="2026-09-26 17:22:43Z" duration="0.001249" asserts="0">
+                  <properties>
+                    <property name="Timeout" value="120000" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1236" name="TheTraversalTableMatchesItsTranscription" fullname="GameCore.Validation.ProbeHost.Tests.ConformanceIntegrationTests.TheTraversalTableMatchesItsTranscription" methodname="TheTraversalTableMatchesItsTranscription" classname="GameCore.Validation.ProbeHost.Tests.ConformanceIntegrationTests" runstate="Runnable" seed="1329647419" result="Passed" start-time="2026-09-26 17:22:43Z" end-time="2026-09-26 17:22:43Z" duration="0.074431" asserts="0">
+                  <properties>
+                    <property name="Timeout" value="600000" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[Saving results to: /home/worlesenric/.config/unity3d/GameCore/GameCoreProbe/TestResults.xml
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

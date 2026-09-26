@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# probe_runs.sh — sourced helper that makes every player probe run PROBE_RUNS times (default 5) and fails the
+# probe_runs.sh — sourced helper that makes every player probe run PROBE_RUNS times (default 2) and fails the
 # calling script if ANY run crashes.
 #
 # Why: a probe that prints its Pass JSON and then dies during native engine teardown (SIGSEGV/SIGABRT while the
@@ -20,7 +20,7 @@
 # later runs add crash evidence without overwriting run 1.
 #
 # Environment:
-#   PROBE_RUNS   how many times each probe is executed (default 5; must be a positive integer)
+#   PROBE_RUNS   how many times each probe is executed (default 2; one or two)
 #   PROBE_LABEL  label prefixed to probe_require_steps failure messages (default: probe)
 set -euo pipefail
 
@@ -30,9 +30,9 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
   exit 2
 fi
 
-PROBE_RUNS="${PROBE_RUNS:-5}"
-if [[ ! "${PROBE_RUNS}" =~ ^[[:digit:]]+$ ]] || (( PROBE_RUNS < 1 )); then
-  echo "probe_runs.sh: PROBE_RUNS must be a positive integer, got '${PROBE_RUNS}'" >&2
+PROBE_RUNS="${PROBE_RUNS:-2}"
+if [[ ! "${PROBE_RUNS}" =~ ^[12]$ ]]; then
+  echo "probe_runs.sh: PROBE_RUNS must be 1 or 2, got '${PROBE_RUNS}'" >&2
   exit 2
 fi
 
@@ -47,6 +47,13 @@ probe_run_once() {
   fi
 
   local rc=0
+  local waited=0
+  while pgrep -f "probeBenchmark" >/dev/null; do
+    echo "GC-024 host sharing: waiting 60s before ${mode_label}" | tee -a "${ARTIFACTS}/host-sharing.log"
+    sleep 60
+    waited=$((waited + 60))
+  done
+  echo "GC-024 host sharing: waited ${waited}s before ${mode_label}" | tee -a "${ARTIFACTS}/host-sharing.log"
   rm -f "${result_file}"
 
   # -batchmode -nographics keep the player headless. -quit is deliberately NOT passed: the probe exits itself

@@ -113,14 +113,24 @@ ARG_NEEDLES = (
     "        /// <summary>\n        /// Runs the GC-026 performance benchmark: the generated 1,000-scope/10,000-target fixture through the real\n        /// derivation and incremental engines for the declared update sizes, the whole-world mode switch, the spawn,\n        /// the reparent and the lifecycle cycles; two real owned worlds for the idle window, the unchanged-composition\n        /// window, the fenced apply pause of a real plan, one live spawn publication and the authority mutation\n        /// fixture; and the correctness gates (zero stable control-tree scans, zero string service lookups, no\n        /// duplicated authoritative state) asserted rather than merely measured, with the raw per-sample documents\n        /// written beside the probe result (P-007, P-022, P-023, P-026, P-034, P-043, P-048, P-052, P-060,\n        /// TEST-008, TEST-013, TEST-023).\n        /// </summary>\n        public bool Benchmark { get; }\n",
     '                else if (argument == BenchmarkArgumentName)\n                {\n                    benchmark = true;\n                }\n',
     # The Wave 7 gate is a qualification join like the five above: its scenario re-runs GC-025's coverage, GC-026's
-    # equivalence and GC-027's recovery through those tasks' own runners, so every file it touches is qualification.
-    # The mode that must STAY - this gate's release recovery smoke - is deliberately absent from every needle here.
+    # equivalence, GC-024's conformance tables and GC-027's recovery through those tasks' own runners, so every file it
+    # touches is qualification. The mode that must STAY - this gate's release recovery smoke - is deliberately absent
+    # from every needle here.
     '        private const string W7GateArgumentName = "-probeW7Gate";\n',
     '            bool w7Gate,\n',
     '            W7Gate = w7Gate;\n',
     '            bool w7Gate = false;\n',
-    "        /// <summary>\n        /// Runs the Wave 7 integration-gate mode: the complete W7 exit gate on one merged revision — GC-025's catalog\n        /// coverage sequence re-run over the merged kernel, GC-027's recovery sequence re-run for all three genres\n        /// with the postwrite-apply and restart fault points named, GC-026's incremental-versus-full derivation\n        /// equivalence at the declared 10,000-target scale, and the merged dispatch of every W7 mode\n        /// (W7-GATE).\n        /// </summary>\n        public bool W7Gate { get; }\n",
+    "        /// <summary>\n        /// Runs the Wave 7 integration-gate mode: the complete W7 exit gate on one merged revision — GC-025's catalog\n        /// coverage sequence re-run over the merged kernel, GC-027's recovery sequence re-run for all three genres\n        /// with the postwrite-apply and restart fault points named, GC-026's incremental-versus-full derivation\n        /// equivalence at the declared 10,000-target scale, GC-024's reference-conformance tables and combined world,\n        /// and the merged dispatch of every W7 mode (W7-GATE).\n        /// </summary>\n        public bool W7Gate { get; }\n",
     '                else if (argument == W7GateArgumentName)\n                {\n                    w7Gate = true;\n                }\n',
+    # GC-024's reference-conformance mode and its fixture assembly are qualification evidence: the tables, their
+    # ordered scripts, the trace normalizer, the oracle and the audit all live outside the shipping player, whose
+    # reason to exist is the production seam those fixtures exercise.
+    '        private const string ConformanceArgumentName = "-probeConformance";\n',
+    '            bool conformance,\n',
+    '            Conformance = conformance;\n',
+    '            bool conformance = false;\n',
+    "        /// <summary>\n        /// Runs the GC-024 reference-conformance mode: every before/after table of\n        /// `docs/game-core/07-reference-compositions.md` executed in a real Unity world of the genre that owns it,\n        /// the combined narrative+cards world with the durable reward path, and the genre/assembly audit\n        /// (P-001, P-013, P-014, P-016, P-025, P-045, P-059).\n        /// </summary>\n        public bool Conformance { get; }\n",
+    '                else if (argument == ConformanceArgumentName)\n                {\n                    conformance = true;\n                }\n',
 )
 
 def main() -> None:
@@ -147,6 +157,9 @@ def main() -> None:
         # GC-026's benchmark fixture package: the generated 1,000-scope/10,000-target fixture and the raw sample
         # writers are qualification measurement, and every file that consumed them leaves with the probe mode below.
         "com.gamecore.benchmarks",
+        # GC-024's reference-conformance fixture package: the 07 tables, their scripts and the oracle are qualification
+        # evidence, and the shipping player's own assemblies reference neither the package nor its assembly.
+        "com.gamecore.reference-conformance",
         "com.unity.test-framework",
         "com.unity.test-framework.performance",
     ):
@@ -220,12 +233,26 @@ def main() -> None:
         "ProbeBenchmark",
         "BenchmarkScenario",
         "BenchmarkLiveWorld",
-        # The Wave 7 integration gate: the merged-revision join (GC-025's coverage, GC-026's equivalence, GC-027's
-        # recovery, plus its own two merge invariants) and the mode that drives it are qualification evidence. The one
-        # file this gate adds that a shipping build really carries - `ProbeRecoverySmoke`, the release recovery smoke
-        # over production seams with no fault latches - is deliberately NOT in this list and stays wired below.
+        # The Wave 7 integration gate: the merged-revision join (GC-025's coverage, GC-026's equivalence, GC-024's
+        # conformance tables, GC-027's recovery, plus its own two merge invariants) and the mode that drives it are
+        # qualification evidence. The one file this gate adds that a shipping build really carries - `ProbeRecoverySmoke`,
+        # the release recovery smoke over production seams with no fault latches - is deliberately NOT in this list and
+        # stays wired below.
         "W7GateScenario",
         "ProbeW7Gate",
+        # GC-024's conformance fixture: the runner, the three genre hosts' conformance halves, their entry points, the
+        # combined cross-family world, the world-preparation seam and the probe mode are one set - the runner calls
+        # the hosts, so keeping any of them without the others would not compile - and nothing shipping references
+        # them, nor the reference-conformance package they compile against.
+        "ConformanceScenario",
+        "ConformanceHosts",
+        "ConformanceFamily",
+        "ConformanceWorldPreparation",
+        "ConformanceCardsHost",
+        "ConformanceNarrativeHost",
+        "ConformanceTraversalHost",
+        "ConformanceCrossWorld",
+        "ProbeConformance",
     ):
         for suffix in (".cs", ".cs.meta"):
             (DESTINATION / RUNTIME / (name + suffix)).unlink()
@@ -234,7 +261,8 @@ def main() -> None:
     # The report identity is one independent `if` per mode, so removing a mode's branch is a whole block.
     for mode, task in (("Faults", "GC-017"), ("W5Gate", "W5-GATE"), ("Gc021", "GC-021"),
                        ("LifecycleStress", "GC-022"), ("Replay", "GC-023"), ("W6Gate", "W6-GATE"),
-                       ("Recovery", "GC-027"), ("Benchmark", "GC-026"), ("W7Gate", "W7-GATE")):
+                       ("Recovery", "GC-027"), ("Benchmark", "GC-026"), ("W7Gate", "W7-GATE"),
+                       ("Conformance", "GC-024")):
         replace_once(
             runner,
             '            if (arguments.' + mode + ')\n'
@@ -268,6 +296,7 @@ def main() -> None:
         '            || W6Gate\n',
         '            || Benchmark\n',
         '            || W7Gate\n',
+        '            || Conformance\n',
     ):
         replace_once(arguments, removed)
 
@@ -279,18 +308,22 @@ def main() -> None:
     replace_once(
         arguments,
         '                w4Gate, faults, gc018, gc019, w5Gate, traversal, gc021, recovery, replay, w6Gate, catalogCoverage,\n'
-        '                benchmark, w7Gate, recoverySmoke, resultPath);',
+        '                benchmark, w7Gate, recoverySmoke, conformance, resultPath);',
         '                w4Gate, gc018, gc019, traversal, catalogCoverage, recoverySmoke, resultPath);',
     )
     replace_once(arguments, '                lifecycleStress,\n')
 
-    # GC-023's replay assembly and GC-026's benchmark assembly leave the probe host's references: every file that
-    # consumed them is gone. The benchmark's live world reads the replay package's hash function, so both edges go.
+    # GC-023's replay assembly, GC-026's benchmark assembly and GC-024's conformance fixture assembly all leave the
+    # probe host's references: every file that consumed any of them is gone, and none of the three packages is a
+    # dependency of the clone. The benchmark's live world reads the replay package's hash function, so those two edges
+    # go together.
     probe_asmdef = DESTINATION / RUNTIME / "GameCore.Validation.ProbeHost.asmdef"
     asmdef = json.loads(probe_asmdef.read_text(encoding="utf-8"))
     asmdef["references"].remove("GameCore.Replay")
     asmdef["references"].remove("GameCore.Benchmarks")
+    asmdef["references"].remove("GameCore.ReferenceConformance")
     probe_asmdef.write_text(json.dumps(asmdef, indent=2) + "\n", encoding="utf-8")
+
 
     print(f"Marker-free release project: {DESTINATION}")
     print("Build: UNITY_PROJECT=<above> ARTIFACTS=artifacts/faults/release tools/unity/build_probe.sh")

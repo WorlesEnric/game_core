@@ -34,6 +34,7 @@ namespace GameCore.Validation.ProbeHost
         private const string BenchmarkArgumentName = "-probeBenchmark";
         private const string W7GateArgumentName = "-probeW7Gate";
         private const string RecoverySmokeArgumentName = "-probeRecoverySmoke";
+        private const string ConformanceArgumentName = "-probeConformance";
 
         private ProbeArguments(
             bool missingRegistration,
@@ -60,6 +61,7 @@ namespace GameCore.Validation.ProbeHost
             bool benchmark,
             bool w7Gate,
             bool recoverySmoke,
+            bool conformance,
             string? resultPath)
         {
             MissingRegistration = missingRegistration;
@@ -86,6 +88,7 @@ namespace GameCore.Validation.ProbeHost
             Benchmark = benchmark;
             W7Gate = w7Gate;
             RecoverySmoke = recoverySmoke;
+            Conformance = conformance;
             ResultPath = resultPath;
         }
 
@@ -267,8 +270,8 @@ namespace GameCore.Validation.ProbeHost
         /// Runs the Wave 7 integration-gate mode: the complete W7 exit gate on one merged revision — GC-025's catalog
         /// coverage sequence re-run over the merged kernel, GC-027's recovery sequence re-run for all three genres
         /// with the postwrite-apply and restart fault points named, GC-026's incremental-versus-full derivation
-        /// equivalence at the declared 10,000-target scale, and the merged dispatch of every W7 mode
-        /// (W7-GATE).
+        /// equivalence at the declared 10,000-target scale, GC-024's reference-conformance tables and combined world,
+        /// and the merged dispatch of every W7 mode (W7-GATE).
         /// </summary>
         public bool W7Gate { get; }
 
@@ -280,6 +283,14 @@ namespace GameCore.Validation.ProbeHost
         /// It is one of the modes a shipping build keeps, because it drives production seams only.
         /// </summary>
         public bool RecoverySmoke { get; }
+
+        /// <summary>
+        /// Runs the GC-024 reference-conformance mode: every before/after table of
+        /// `docs/game-core/07-reference-compositions.md` executed in a real Unity world of the genre that owns it,
+        /// the combined narrative+cards world with the durable reward path, and the genre/assembly audit
+        /// (P-001, P-013, P-014, P-016, P-025, P-045, P-059).
+        /// </summary>
+        public bool Conformance { get; }
 
         /// <summary>Destination path of the structured JSON result.</summary>
         public string? ResultPath { get; }
@@ -295,6 +306,7 @@ namespace GameCore.Validation.ProbeHost
             || Benchmark
             || W7Gate
             || RecoverySmoke
+            || Conformance
             || !string.IsNullOrEmpty(ResultPath);
 
         /// <summary>True when a result destination was supplied; without it the probe cannot record evidence.</summary>
@@ -326,6 +338,8 @@ namespace GameCore.Validation.ProbeHost
             bool benchmark = false;
             bool w7Gate = false;
             bool recoverySmoke = false;
+            bool conformance = false;
+            string? resultPath = null;
             for (int i = 0; i < arguments.Length; i++)
             {
                 string argument = arguments[i];
@@ -425,6 +439,10 @@ namespace GameCore.Validation.ProbeHost
                 {
                     recoverySmoke = true;
                 }
+                else if (argument == ConformanceArgumentName)
+                {
+                    conformance = true;
+                }
                 else if (argument == ResultArgumentName && i + 1 < arguments.Length)
                 {
                     resultPath = arguments[i + 1];
@@ -435,7 +453,7 @@ namespace GameCore.Validation.ProbeHost
                 missingRegistration, worldDispatch, w1Gate, w2Gate, w3Gate, narrative, cards, w4Profile, gc013,
                 lifecycleStress,
                 w4Gate, faults, gc018, gc019, w5Gate, traversal, gc021, recovery, replay, w6Gate, catalogCoverage,
-                benchmark, w7Gate, recoverySmoke, resultPath);
+                benchmark, w7Gate, recoverySmoke, conformance, resultPath);
         }
     }
 }

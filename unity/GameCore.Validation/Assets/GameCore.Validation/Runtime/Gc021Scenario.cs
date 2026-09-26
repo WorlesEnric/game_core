@@ -60,6 +60,7 @@ using GameCore.Execution.Time;
 using GameCore.Gameplay.Cards;
 using GameCore.Gameplay.Integration.RewardOutbox;
 using GameCore.Gameplay.Narrative;
+using GameCore.Gameplay.Rewards;
 using GameCore.Planning;
 using GameCore.Unity.Runtime;
 using GameCore.Unity.Runtime.Delivery;
@@ -460,6 +461,7 @@ namespace GameCore.Validation.ProbeHost
             private WorldId successorSession;
 
             // Part B: the reward bridge, the committed event it derives from, and the content it declares.
+            private RewardsInstallation? rewardInstallation;
             private NarrativeCardRewardBridge? rewardBridge;
             private WorldDeliveryOwner? rewardOwner;
             private Gc021CommittedEventRewardSource? rewardSource;
@@ -1383,17 +1385,21 @@ namespace GameCore.Validation.ProbeHost
                         sourceWorld, rewardEvent, CardTableConstants.DestinationId, CardTableConstants.CommandSchema);
 
                     var journal = new MemoryDeliveryJournal("memory://gc021-rewards");
-                    rewardBridge = new NarrativeCardRewardBridge(
+
+                    // The bridge is constructed THROUGH the reward installation of 07 s5 (GC-024): the installation
+                    // owns the bridge and supplies its own declared identity and issuer, so this scenario no longer
+                    // assembles the delivery owner itself. The bridge is exposed unchanged, so every observation
+                    // below keeps reading `Bridge.Owner.*` and `Bridge.Destination.*` exactly as before.
+                    rewardInstallation = RewardsInstallation.Mount(
                         host,
                         time,
-                        RewardOwnerId,
-                        RewardOwnerId,
                         declaredContent,
                         RewardCapacity,
                         RewardTerminalRetention,
                         OutboxDurability.Durable,
                         journal,
                         null);
+                    rewardBridge = rewardInstallation.Bridge;
                     rewardOwner = rewardBridge.Owner;
 
                     // The source is the bridge itself where the world commits a narrative choice, and a declared
@@ -1893,7 +1899,15 @@ namespace GameCore.Validation.ProbeHost
             {
                 try
                 {
-                    if (rewardBridge != null)
+                    if (rewardInstallation != null)
+                    {
+                        // The installation owns the bridge, so disposing it is what releases the delivery owner.
+                        rewardInstallation.Dispose();
+                        rewardInstallation = null;
+                        rewardBridge = null;
+                        rewardOwner = null;
+                    }
+                    else if (rewardBridge != null)
                     {
                         rewardBridge.Dispose();
                         rewardBridge = null;

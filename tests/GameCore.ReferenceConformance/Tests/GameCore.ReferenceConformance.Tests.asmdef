@@ -1,0 +1,27 @@
+{
+    "name": "GameCore.ReferenceConformance.Tests",
+    "rootNamespace": "GameCore.ReferenceConformance.Tests",
+    "references": [
+        "GameCore.ReferenceConformance",
+        "GameCore.Contracts",
+        "GameCore.Rules.Cards",
+        "GameCore.Rules.Narrative",
+        "GameCore.Rules.Traversal",
+        "nunit.framework"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": true
+}

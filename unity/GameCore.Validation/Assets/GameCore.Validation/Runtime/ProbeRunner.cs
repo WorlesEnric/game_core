@@ -184,6 +184,11 @@ namespace GameCore.Validation.ProbeHost
                     ProbeRecoverySmoke.Run(report, arguments.ResultPath);
                     report.CompletePositive();
                 }
+                else if (arguments.Conformance)
+                {
+                    ProbeConformance.Run(report);
+                    report.CompletePositive();
+                }
                 else
                 {
                     RunAotRootsProbe(report);
@@ -327,6 +332,11 @@ namespace GameCore.Validation.ProbeHost
             if (arguments.RecoverySmoke)
             {
                 return Named("RecoverySmoke", "GC-027");
+            }
+
+            if (arguments.Conformance)
+            {
+                return Named("Conformance", "GC-024");
             }
 
             return new ProbeReport(

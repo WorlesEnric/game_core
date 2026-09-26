@@ -58,6 +58,17 @@ echo "artifacts   : ${ARTIFACTS}"
 } >"${ARTIFACTS}/environment.txt"
 
 # Step 1: build-time code generation. Runs before the build so a stale or missing generated catalog cannot be
+wait_for_gc026() {
+  local waited=0
+  while pgrep -f "probeBenchmark" >/dev/null; do
+    echo "GC-024 host sharing: waiting 60s before ${1}" | tee -a "${ARTIFACTS}/host-sharing.log"
+    sleep 60
+    waited=$((waited + 60))
+  done
+  echo "GC-024 host sharing: waited ${waited}s before ${1}" | tee -a "${ARTIFACTS}/host-sharing.log"
+}
+
+wait_for_gc026 codegen
 # mistaken for a build failure, and so the catalog hash is logged in its own artifact.
 echo "-- step 1/2: generate closed registration catalog"
 while pgrep -f 'gc-wt/gc-026/.*[G]ameCoreProbe|gc-wt/gc-026/.*[U]nity ' >/dev/null; do sleep 60; done
@@ -70,6 +81,7 @@ timeout --signal=TERM --kill-after=60 "${UNITY_TIMEOUT:-1800}" "${UNITY}" \
   -logFile "${ARTIFACTS}/codegen.log"
 
 # Step 2: standalone IL2CPP player build for the selected baseline target.
+wait_for_gc026 player-build
 echo "-- step 2/2: build StandaloneLinux64 IL2CPP player (High stripping)"
 while pgrep -f 'gc-wt/gc-026/.*[G]ameCoreProbe|gc-wt/gc-026/.*[U]nity ' >/dev/null; do sleep 60; done
 timeout --signal=TERM --kill-after=60 "${UNITY_TIMEOUT:-1800}" "${UNITY}" \
