@@ -1,0 +1,202 @@
+{
+  "task": "W5-GATE",
+  "probe": "GameCore.Validation.ProbeHost.ProbeRunner",
+  "mode": "W5Gate",
+  "result": "Pass",
+  "exitCode": 0,
+  "declaredUnityVersion": "6000.0.75f1",
+  "unityVersion": "6000.0.75f1",
+  "declaredTarget": "StandaloneLinux64",
+  "platform": "LinuxPlayer",
+  "architecture": "X64",
+  "processorType": "12th Gen Intel(R) Core(TM) i7-12700KF",
+  "scriptingBackend": "IL2CPP",
+  "isIl2Cpp": true,
+  "is64BitProcess": true,
+  "managedStrippingLevel": "High",
+  "managedStrippingLevelSource": "declared: GameCore.Validation.Editor.BuildProbe sets and re-reads PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, ManagedStrippingLevel.High); a player cannot query the stripping level at runtime",
+  "burstCompilerEnabled": true,
+  "fixturePluginPreservation": "declared: Assets/link.xml preserves the GameCore.Validation.Fixture assembly (preserve=\"all\"), and the generated catalog holds a direct FixturePluginFactory reference, so the plugin is linked into the player while nothing instantiates it at startup",
+  "catalogGenerator": "GameCore.Content.Compiler (GC-003)",
+  "catalogGeneratedFile": "ProbeCatalog.g.cs",
+  "catalogFileHash": "03bdcd23fd8ec0515d93d7c54d7f7c695f3860a850a7280b82316aaacd14c5c1",
+  "catalogFingerprint": "02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff",
+  "catalogDescriptionFormat": "gamecore.catalog-description/1",
+  "catalogProtocolVersion": "1.0",
+  "catalogSupportedFeatureCount": 1,
+  "catalogFileHashAlgorithm": "SHA-256",
+  "catalogFileHashScope": "SHA-256 over the UTF-8 bytes, with LF line endings, of the file prefix that ends immediately before the eight-space-indented CatalogFileHash declaration; that prefix ends with the newline that terminates the previous line, and the declaration itself, its value and the rest of the file are excluded",
+  "failureReason": "",
+  "probes": [
+    {
+      "name": "narrative/w5gate-one-world-with-retained-observation",
+      "status": "Pass",
+      "detail": "session=4e415247433031330000000000000001; catalogFingerprint=02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff; codecKinds=13; liveTargets=7; viewTargets=3; targetsWithoutRows=<none>; bindingRows=6; revision=5; epoch=5; scopes=8; installs=2; mode=Automatic; dormant=SlotId(4a9012c132eff746783f8a68210a1df2)@2=3; clock=33ebfe9a4f6d069b1aca623a6c073300; wakes=1; rngStreams=2; setupEdits=True; spareScope=True; enrichment=True; providerMounted=True; secondProviderMounted=True; idleSteps=0; joined=True; registry=1->2; lifecycle=Running"
+    },
+    {
+      "name": "narrative/w5gate-pinned-snapshots-are-read-only",
+      "status": "Pass",
+      "detail": "token=SnapshotToken(WorldId(4e415247433031330000000000000001), AssemblyEpoch(5), LogicalStepId(0)); step=0; epoch=5; bytes=32; payloadHash=1db0e07cc7c62661f741247d2593f5ea12b96285930131d8cec97885b45bd0eb; ownImage=True; storeVerified=True; pinned=True; writableReferenceEscapes=0; reparented=True; publicationMovedTheWorld=True; pinnedImageSurvived=True; leasedBytesHeld=True; releasedOnce=True; boundaryLeases=1"
+    },
+    {
+      "name": "narrative/w5gate-checkpoint-from-the-committed-boundary",
+      "status": "Pass",
+      "detail": "session=4e415247433031330000000000000001; bytes=8126; documentHash=d8d442b9f80711831cfd1ffa36a049aa45dab76cce5ffb54f99cfdc1840e1f7e; counts=counts(scope=8,install=2,target=7,slot=2,grant=2,command=1,message=0); headerStep=0; headerEpoch=6; declaredQueued=1; offered=1; readThroughTheLease=True; boundaryLeases=1->2; queued=OperationId(WorldId(4e415247433031330000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 14); document=counts(scope=8,install=2,target=7,slot=2,grant=2,command=1,message=0); readOnly=True"
+    },
+    {
+      "name": "narrative/w5gate-prewrite-fault-keeps-the-old-assembly",
+      "status": "Pass",
+      "detail": "edit=mode-set-conservative; operation=OperationId(WorldId(4e415247433031330000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 15); derivationOperation=OperationId(WorldId(4e415247433031330000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 16); armed=True; outcome=Rejected/ResourceUnavailable; structuralWrites=0; crossedLiveWriteBoundary=False; planPhase=Rejected; planHeld=True; adoptedAndPending=True; prewriteFailures=1; epoch=6; revision=6; rows=6; images=6; worldState=Running; liveStateKept=True; boundaryReaches=1; injected=1; traceRecord=boundary=validation op=OperationId(WorldId(4e415247433031330000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 16) plan=979f334c45215b4c069c9c6eaab90b88d363c80d2fc1228de0b146802d072f3e fired=1 detail=injected validation fault: the prepared plan is refused before the fence; joined=False"
+    },
+    {
+      "name": "narrative/w5gate-postwrite-fault-fail-stops-the-world",
+      "status": "Pass",
+      "detail": "operation=OperationId(WorldId(4e415247433031330000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 17); plannedInstalls=0; plannedRemovals=6; armed=True; outcome=Faulted/ApplyFault; structuralWrites=16; crossedLiveWriteBoundary=True; epoch=6; step=0; images=6; rows=6; worldState=Faulted; faultCode=ApplyFault; faults=1; lastGoodImageHeld=True; pumpedAfterFault=False; admittedAfterFault=False; boundaryReaches=1; injected=2; traceRecord=boundary=first-live-write op=OperationId(WorldId(4e415247433031330000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 16) plan=979f334c45215b4c069c9c6eaab90b88d363c80d2fc1228de0b146802d072f3e fired=1 detail=injected postwrite fault: the world must fault without publishing or resuming"
+    },
+    {
+      "name": "narrative/w5gate-restore-into-a-new-session",
+      "status": "Pass",
+      "detail": "sourceSession=4e415247433031330000000000000001(Faulted); restoredSession=4e415247433031330000000000000002; stage=Expose; code=None; capturedStep=0; restoredStep=0; capturedSlots=2; restoredSlots=2(active=1,dormant=1); replayedScopes=1; replayedInstalls=2; readmittedCommands=1; clocks=1 wakes=1; publishedAssemblies=4; restoredEpoch=5; registry=2->3; stateMatches=True; stateDetail=; oldHandlesRefused=True; exposure=restored into a new session from a checkpoint of 4e415247433031330000000000000001."
+    },
+    {
+      "name": "narrative/w5gate-adapters-bind-to-the-restored-world",
+      "status": "Pass",
+      "detail": "restoredSession=4e415247433031330000000000000002; token=AsyncWorkToken(OperationId(WorldId(4e415247433031330000000000000002), 4e415247433031330000000000000002, 12), PluginInstanceId(8d5ac0121d3d8b7c453e967325c9158b), InstallationGeneration(1), ActivationEpoch(1), 11); tokenState=Active; leaseRequested=True; leaseCompleted=True; leaseUsable=True; stepsCommitted=1; step=0->1; admission=Admitted; image=committedImage(SnapshotToken(WorldId(4e415247433031330000000000000002), AssemblyEpoch(5), LogicalStepId(0)), targets=4); viewsCreated=Created,Created; presented=Completed(2); dissenting=<none>; excludedTargets=1; liveViewsAfterDestroy=0; foreignTokenRefused=True(StaleHandle: the async work token belongs to another world incarnation (P-004)); foreignInputRefused=True; foreignImageRefused=True; gameplayIntact=True"
+    },
+    {
+      "name": "narrative/w5gate-retired-world-callbacks-are-rejected",
+      "status": "Pass",
+      "detail": "oldToken=AsyncWorkToken(OperationId(WorldId(4e415247433031330000000000000001), 4e415247433031330000000000000001, 22), PluginInstanceId(8d5ac0121d3d8b7c453e967325c9158b), InstallationGeneration(1), ActivationEpoch(1), 21); oldTokenState=Active; leaseRequested=True; lateCompletion=AlreadyTerminal; lateGate=DiscardRetiredRoute; postRetireCompletions=0->1; tableRetired=True; outstandingLoads=0; reservedBytes=0; teardown=views=0; assets=released=1 retained=0 failed=0; lastGoodImageLeasable=True; sourceWorld=Faulted; restoredWorld=Running; restoredPresented=NoViews"
+    },
+    {
+      "name": "fixture:narrative/w5gate-one-world-with-retained-observation",
+      "status": "Pass",
+      "detail": "session=4e415247433031330000000000000001; catalogFingerprint=e30e5c5248fc6ed5393960bbaab9838502227e516a55d4cb9f532fe167cf3bb7; codecKinds=13; liveTargets=7; viewTargets=3; targetsWithoutRows=<none>; bindingRows=6; revision=5; epoch=5; scopes=8; installs=2; mode=Automatic; dormant=SlotId(4a9012c132eff746783f8a68210a1df2)@2=3; clock=33ebfe9a4f6d069b1aca623a6c073300; wakes=1; rngStreams=2; setupEdits=True; spareScope=True; enrichment=True; providerMounted=True; secondProviderMounted=True; idleSteps=0; joined=True; registry=1->2; lifecycle=Running"
+    },
+    {
+      "name": "fixture:narrative/w5gate-pinned-snapshots-are-read-only",
+      "status": "Pass",
+      "detail": "token=SnapshotToken(WorldId(4e415247433031330000000000000001), AssemblyEpoch(5), LogicalStepId(0)); step=0; epoch=5; bytes=32; payloadHash=1db0e07cc7c62661f741247d2593f5ea12b96285930131d8cec97885b45bd0eb; ownImage=True; storeVerified=True; pinned=True; writableReferenceEscapes=0; reparented=True; publicationMovedTheWorld=True; pinnedImageSurvived=True; leasedBytesHeld=True; releasedOnce=True; boundaryLeases=1"
+    },
+    {
+      "name": "fixture:narrative/w5gate-checkpoint-from-the-committed-boundary",
+      "status": "Pass",
+      "detail": "session=4e415247433031330000000000000001; bytes=8126; documentHash=fa9296744f546d9dd4903b8659bf997820e6dc342b33c675b39c340cd0580680; counts=counts(scope=8,install=2,target=7,slot=2,grant=2,command=1,message=0); headerStep=0; headerEpoch=6; declaredQueued=1; offered=1; readThroughTheLease=True; boundaryLeases=1->2; queued=OperationId(WorldId(4e415247433031330000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 14); document=counts(scope=8,install=2,target=7,slot=2,grant=2,command=1,message=0); readOnly=True"
+    },
+    {
+      "name": "fixture:narrative/w5gate-prewrite-fault-keeps-the-old-assembly",
+      "status": "Pass",
+      "detail": "edit=mode-set-conservative; operation=OperationId(WorldId(4e415247433031330000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 15); derivationOperation=OperationId(WorldId(4e415247433031330000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 16); armed=True; outcome=Rejected/ResourceUnavailable; structuralWrites=0; crossedLiveWriteBoundary=False; planPhase=Rejected; planHeld=True; adoptedAndPending=True; prewriteFailures=1; epoch=6; revision=6; rows=6; images=6; worldState=Running; liveStateKept=True; boundaryReaches=1; injected=1; traceRecord=boundary=validation op=OperationId(WorldId(4e415247433031330000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 16) plan=979f334c45215b4c069c9c6eaab90b88d363c80d2fc1228de0b146802d072f3e fired=1 detail=injected validation fault: the prepared plan is refused before the fence; joined=False"
+    },
+    {
+      "name": "fixture:narrative/w5gate-postwrite-fault-fail-stops-the-world",
+      "status": "Pass",
+      "detail": "operation=OperationId(WorldId(4e415247433031330000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 17); plannedInstalls=0; plannedRemovals=6; armed=True; outcome=Faulted/ApplyFault; structuralWrites=16; crossedLiveWriteBoundary=True; epoch=6; step=0; images=6; rows=6; worldState=Faulted; faultCode=ApplyFault; faults=1; lastGoodImageHeld=True; pumpedAfterFault=False; admittedAfterFault=False; boundaryReaches=1; injected=2; traceRecord=boundary=first-live-write op=OperationId(WorldId(4e415247433031330000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 16) plan=979f334c45215b4c069c9c6eaab90b88d363c80d2fc1228de0b146802d072f3e fired=1 detail=injected postwrite fault: the world must fault without publishing or resuming"
+    },
+    {
+      "name": "fixture:narrative/w5gate-restore-into-a-new-session",
+      "status": "Pass",
+      "detail": "sourceSession=4e415247433031330000000000000001(Faulted); restoredSession=4e415247433031330000000000000002; stage=Expose; code=None; capturedStep=0; restoredStep=0; capturedSlots=2; restoredSlots=2(active=1,dormant=1); replayedScopes=1; replayedInstalls=2; readmittedCommands=1; clocks=1 wakes=1; publishedAssemblies=4; restoredEpoch=5; registry=2->3; stateMatches=True; stateDetail=; oldHandlesRefused=True; exposure=restored into a new session from a checkpoint of 4e415247433031330000000000000001."
+    },
+    {
+      "name": "fixture:narrative/w5gate-adapters-bind-to-the-restored-world",
+      "status": "Pass",
+      "detail": "restoredSession=4e415247433031330000000000000002; token=AsyncWorkToken(OperationId(WorldId(4e415247433031330000000000000002), 4e415247433031330000000000000002, 12), PluginInstanceId(8d5ac0121d3d8b7c453e967325c9158b), InstallationGeneration(1), ActivationEpoch(1), 11); tokenState=Active; leaseRequested=True; leaseCompleted=True; leaseUsable=True; stepsCommitted=1; step=0->1; admission=Admitted; image=committedImage(SnapshotToken(WorldId(4e415247433031330000000000000002), AssemblyEpoch(5), LogicalStepId(0)), targets=4); viewsCreated=Created,Created; presented=Completed(2); dissenting=<none>; excludedTargets=1; liveViewsAfterDestroy=0; foreignTokenRefused=True(StaleHandle: the async work token belongs to another world incarnation (P-004)); foreignInputRefused=True; foreignImageRefused=True; gameplayIntact=True"
+    },
+    {
+      "name": "fixture:narrative/w5gate-retired-world-callbacks-are-rejected",
+      "status": "Pass",
+      "detail": "oldToken=AsyncWorkToken(OperationId(WorldId(4e415247433031330000000000000001), 4e415247433031330000000000000001, 22), PluginInstanceId(8d5ac0121d3d8b7c453e967325c9158b), InstallationGeneration(1), ActivationEpoch(1), 21); oldTokenState=Active; leaseRequested=True; lateCompletion=AlreadyTerminal; lateGate=DiscardRetiredRoute; postRetireCompletions=0->1; tableRetired=True; outstandingLoads=0; reservedBytes=0; teardown=views=0; assets=released=1 retained=0 failed=0; lastGoodImageLeasable=True; sourceWorld=Faulted; restoredWorld=Running; restoredPresented=NoViews"
+    },
+    {
+      "name": "w5gate-narrative-digest",
+      "status": "Pass",
+      "detail": "generatedDigest=768dc415bd79e76adacb2472f7af5383bff25b4da44635a94eb3fa64f4dc250c; fixtureDigest=768dc415bd79e76adacb2472f7af5383bff25b4da44635a94eb3fa64f4dc250c; expectedDigest=768dc415bd79e76adacb2472f7af5383bff25b4da44635a94eb3fa64f4dc250c; observations=8; digest=768dc415bd79e76adacb2472f7af5383bff25b4da44635a94eb3fa64f4dc250c; label=narrative; steps=8; failed=0; digest=768dc415bd79e76adacb2472f7af5383bff25b4da44635a94eb3fa64f4dc250c; label=narrative; steps=8; failed=0"
+    },
+    {
+      "name": "cards/w5gate-one-world-with-retained-observation",
+      "status": "Pass",
+      "detail": "session=43415247433031330000000000000001; catalogFingerprint=77838f4766f9086a0fa32b4fb30d8d5fceeb3a8072e61594fa2177946ad3315d; codecKinds=13; liveTargets=6; viewTargets=3; targetsWithoutRows=<none>; bindingRows=3; revision=5; epoch=5; scopes=10; installs=2; mode=Automatic; dormant=SlotId(e63d9e1433d10c7b271a83cc76cc6740)@1=99; clock=1136f3c2111769669eef02c58dc86caf; wakes=1; rngStreams=2; setupEdits=True; spareScope=True; enrichment=True; providerMounted=True; secondProviderMounted=True; idleSteps=0; joined=True; registry=1->2; lifecycle=Running"
+    },
+    {
+      "name": "cards/w5gate-pinned-snapshots-are-read-only",
+      "status": "Pass",
+      "detail": "token=SnapshotToken(WorldId(43415247433031330000000000000001), AssemblyEpoch(5), LogicalStepId(0)); step=0; epoch=5; bytes=32; payloadHash=35267f437ec457ca52e93b595e6f8bad479fe76003f178cbe05f95b365a4c456; ownImage=True; storeVerified=True; pinned=True; writableReferenceEscapes=0; reparented=True; publicationMovedTheWorld=True; pinnedImageSurvived=True; leasedBytesHeld=True; releasedOnce=True; boundaryLeases=1"
+    },
+    {
+      "name": "cards/w5gate-checkpoint-from-the-committed-boundary",
+      "status": "Pass",
+      "detail": "session=43415247433031330000000000000001; bytes=8366; documentHash=904718d351d7b34640c98fa1f459f3290565e7510e7ddbccd92405080a746eed; counts=counts(scope=10,install=2,target=6,slot=2,grant=2,command=1,message=0); headerStep=0; headerEpoch=6; declaredQueued=1; offered=1; readThroughTheLease=True; boundaryLeases=1->2; queued=OperationId(WorldId(43415247433031330000000000000001), c4d3f9becdf691d69ff6f056d4f2e274, 14); document=counts(scope=10,install=2,target=6,slot=2,grant=2,command=1,message=0); readOnly=True"
+    },
+    {
+      "name": "cards/w5gate-prewrite-fault-keeps-the-old-assembly",
+      "status": "Pass",
+      "detail": "edit=mode-set-conservative; operation=OperationId(WorldId(43415247433031330000000000000001), c4d3f9becdf691d69ff6f056d4f2e274, 15); derivationOperation=OperationId(WorldId(43415247433031330000000000000001), c4d3f9becdf691d69ff6f056d4f2e274, 16); armed=True; outcome=Rejected/ResourceUnavailable; structuralWrites=0; crossedLiveWriteBoundary=False; planPhase=Rejected; planHeld=True; adoptedAndPending=True; prewriteFailures=1; epoch=6; revision=6; rows=3; images=6; worldState=Running; liveStateKept=True; boundaryReaches=1; injected=1; traceRecord=boundary=validation op=OperationId(WorldId(43415247433031330000000000000001), c4d3f9becdf691d69ff6f056d4f2e274, 16) plan=3adaa52c3e5bd94020175064b9bb09ce55c0b5223a73afa1f2227df29785811c fired=1 detail=injected validation fault: the prepared plan is refused before the fence; joined=False"
+    },
+    {
+      "name": "cards/w5gate-postwrite-fault-fail-stops-the-world",
+      "status": "Pass",
+      "detail": "operation=OperationId(WorldId(43415247433031330000000000000001), c4d3f9becdf691d69ff6f056d4f2e274, 17); plannedInstalls=0; plannedRemovals=3; armed=True; outcome=Faulted/ApplyFault; structuralWrites=9; crossedLiveWriteBoundary=True; epoch=6; step=0; images=6; rows=3; worldState=Faulted; faultCode=ApplyFault; faults=1; lastGoodImageHeld=True; pumpedAfterFault=False; admittedAfterFault=False; boundaryReaches=1; injected=2; traceRecord=boundary=first-live-write op=OperationId(WorldId(43415247433031330000000000000001), c4d3f9becdf691d69ff6f056d4f2e274, 16) plan=3adaa52c3e5bd94020175064b9bb09ce55c0b5223a73afa1f2227df29785811c fired=1 detail=injected postwrite fault: the world must fault without publishing or resuming"
+    },
+    {
+      "name": "cards/w5gate-restore-into-a-new-session",
+      "status": "Pass",
+      "detail": "sourceSession=43415247433031330000000000000001(Faulted); restoredSession=43415247433031330000000000000002; stage=Expose; code=None; capturedStep=0; restoredStep=0; capturedSlots=2; restoredSlots=2(active=1,dormant=1); replayedScopes=1; replayedInstalls=2; readmittedCommands=1; clocks=1 wakes=1; publishedAssemblies=4; restoredEpoch=5; registry=2->3; stateMatches=True; stateDetail=; oldHandlesRefused=True; exposure=restored into a new session from a checkpoint of 43415247433031330000000000000001."
+    },
+    {
+      "name": "cards/w5gate-adapters-bind-to-the-restored-world",
+      "status": "Pass",
+      "detail": "restoredSession=43415247433031330000000000000002; token=AsyncWorkToken(OperationId(WorldId(43415247433031330000000000000002), 43415247433031330000000000000002, 12), PluginInstanceId(c5b1e152e048358db420aefd223b5e1a), InstallationGeneration(1), ActivationEpoch(1), 11); tokenState=Active; leaseRequested=True; leaseCompleted=True; leaseUsable=True; stepsCommitted=1; step=0->1; admission=Admitted; image=committedImage(SnapshotToken(WorldId(43415247433031330000000000000002), AssemblyEpoch(5), LogicalStepId(0)), targets=3); viewsCreated=Created,Created,Created; presented=Completed(3); dissenting=<none>; excludedTargets=0; liveViewsAfterDestroy=0; foreignTokenRefused=True(StaleHandle: the async work token belongs to another world incarnation (P-004)); foreignInputRefused=True; foreignImageRefused=True; gameplayIntact=True"
+    },
+    {
+      "name": "cards/w5gate-retired-world-callbacks-are-rejected",
+      "status": "Pass",
+      "detail": "oldToken=AsyncWorkToken(OperationId(WorldId(43415247433031330000000000000001), 43415247433031330000000000000001, 22), PluginInstanceId(c5b1e152e048358db420aefd223b5e1a), InstallationGeneration(1), ActivationEpoch(1), 21); oldTokenState=Active; leaseRequested=True; lateCompletion=AlreadyTerminal; lateGate=DiscardRetiredRoute; postRetireCompletions=0->1; tableRetired=True; outstandingLoads=0; reservedBytes=0; teardown=views=0; assets=released=1 retained=0 failed=0; lastGoodImageLeasable=True; sourceWorld=Faulted; restoredWorld=Running; restoredPresented=NoViews"
+    },
+    {
+      "name": "fixture:cards/w5gate-one-world-with-retained-observation",
+      "status": "Pass",
+      "detail": "session=43415247433031330000000000000001; catalogFingerprint=815b89a5ad754aeafabf7a6ad0dbd1bd277a17d63fc0b5845f58ae9d80b3c08a; codecKinds=13; liveTargets=6; viewTargets=3; targetsWithoutRows=<none>; bindingRows=3; revision=5; epoch=5; scopes=10; installs=2; mode=Automatic; dormant=SlotId(e63d9e1433d10c7b271a83cc76cc6740)@1=99; clock=1136f3c2111769669eef02c58dc86caf; wakes=1; rngStreams=2; setupEdits=True; spareScope=True; enrichment=True; providerMounted=True; secondProviderMounted=True; idleSteps=0; joined=True; registry=1->2; lifecycle=Running"
+    },
+    {
+      "name": "fixture:cards/w5gate-pinned-snapshots-are-read-only",
+      "status": "Pass",
+      "detail": "token=SnapshotToken(WorldId(43415247433031330000000000000001), AssemblyEpoch(5), LogicalStepId(0)); step=0; epoch=5; bytes=32; payloadHash=35267f437ec457ca52e93b595e6f8bad479fe76003f178cbe05f95b365a4c456; ownImage=True; storeVerified=True; pinned=True; writableReferenceEscapes=0; reparented=True; publicationMovedTheWorld=True; pinnedImageSurvived=True; leasedBytesHeld=True; releasedOnce=True; boundaryLeases=1"
+    },
+    {
+      "name": "fixture:cards/w5gate-checkpoint-from-the-committed-boundary",
+      "status": "Pass",
+      "detail": "session=43415247433031330000000000000001; bytes=8366; documentHash=3d4a5de6b3bf495f6ce323df01fd0fb4697da96e724d5111551bfe0a64decaf0; counts=counts(scope=10,install=2,target=6,slot=2,grant=2,command=1,message=0); headerStep=0; headerEpoch=6; declaredQueued=1; offered=1; readThroughTheLease=True; boundaryLeases=1->2; queued=OperationId(WorldId(43415247433031330000000000000001), c4d3f9becdf691d69ff6f056d4f2e274, 14); document=counts(scope=10,install=2,target=6,slot=2,grant=2,command=1,message=0); readOnly=True"
+    },
+    {
+      "name": "fixture:cards/w5gate-prewrite-fault-keeps-the-old-assembly",
+      "status": "Pass",
+      "detail": "edit=mode-set-conservative; operation=OperationId(WorldId(43415247433031330000000000000001), c4d3f9becdf691d69ff6f056d4f2e274, 15); derivationOperation=OperationId(WorldId(43415247433031330000000000000001), c4d3f9becdf691d69ff6f056d4f2e274, 16); armed=True; outcome=Rejected/ResourceUnavailable; structuralWrites=0; crossedLiveWriteBoundary=False; planPhase=Rejected; planHeld=True; adoptedAndPending=True; prewriteFailures=1; epoch=6; revision=6; rows=3; images=6; worldState=Running; liveStateKept=True; boundaryReaches=1; injected=1; traceRecord=boundary=validation op=OperationId(WorldId(43415247433031330000000000000001), c4d3f9becdf691d69ff6f056d4f2e274, 16) plan=3adaa52c3e5bd94020175064b9bb09ce55c0b5223a73afa1f2227df29785811c fired=1 detail=injected validation fault: the prepared plan is refused before the fence; joined=False"
+    },
+    {
+      "name": "fixture:cards/w5gate-postwrite-fault-fail-stops-the-world",
+      "status": "Pass",
+      "detail": "operation=OperationId(WorldId(43415247433031330000000000000001), c4d3f9becdf691d69ff6f056d4f2e274, 17); plannedInstalls=0; plannedRemovals=3; armed=True; outcome=Faulted/ApplyFault; structuralWrites=9; crossedLiveWriteBoundary=True; epoch=6; step=0; images=6; rows=3; worldState=Faulted; faultCode=ApplyFault; faults=1; lastGoodImageHeld=True; pumpedAfterFault=False; admittedAfterFault=False; boundaryReaches=1; injected=2; traceRecord=boundary=first-live-write op=OperationId(WorldId(43415247433031330000000000000001), c4d3f9becdf691d69ff6f056d4f2e274, 16) plan=3adaa52c3e5bd94020175064b9bb09ce55c0b5223a73afa1f2227df29785811c fired=1 detail=injected postwrite fault: the world must fault without publishing or resuming"
+    },
+    {
+      "name": "fixture:cards/w5gate-restore-into-a-new-session",
+      "status": "Pass",
+      "detail": "sourceSession=43415247433031330000000000000001(Faulted); restoredSession=43415247433031330000000000000002; stage=Expose; code=None; capturedStep=0; restoredStep=0; capturedSlots=2; restoredSlots=2(active=1,dormant=1); replayedScopes=1; replayedInstalls=2; readmittedCommands=1; clocks=1 wakes=1; publishedAssemblies=4; restoredEpoch=5; registry=2->3; stateMatches=True; stateDetail=; oldHandlesRefused=True; exposure=restored into a new session from a checkpoint of 43415247433031330000000000000001."
+    },
+    {
+      "name": "fixture:cards/w5gate-adapters-bind-to-the-restored-world",
+      "status": "Pass",
+      "detail": "restoredSession=43415247433031330000000000000002; token=AsyncWorkToken(OperationId(WorldId(43415247433031330000000000000002), 43415247433031330000000000000002, 12), PluginInstanceId(c5b1e152e048358db420aefd223b5e1a), InstallationGeneration(1), ActivationEpoch(1), 11); tokenState=Active; leaseRequested=True; leaseCompleted=True; leaseUsable=True; stepsCommitted=1; step=0->1; admission=Admitted; image=committedImage(SnapshotToken(WorldId(43415247433031330000000000000002), AssemblyEpoch(5), LogicalStepId(0)), targets=3); viewsCreated=Created,Created,Created; presented=Completed(3); dissenting=<none>; excludedTargets=0; liveViewsAfterDestroy=0; foreignTokenRefused=True(StaleHandle: the async work token belongs to another world incarnation (P-004)); foreignInputRefused=True; foreignImageRefused=True; gameplayIntact=True"
+    },
+    {
+      "name": "fixture:cards/w5gate-retired-world-callbacks-are-rejected",
+      "status": "Pass",
+      "detail": "oldToken=AsyncWorkToken(OperationId(WorldId(43415247433031330000000000000001), 43415247433031330000000000000001, 22), PluginInstanceId(c5b1e152e048358db420aefd223b5e1a), InstallationGeneration(1), ActivationEpoch(1), 21); oldTokenState=Active; leaseRequested=True; lateCompletion=AlreadyTerminal; lateGate=DiscardRetiredRoute; postRetireCompletions=0->1; tableRetired=True; outstandingLoads=0; reservedBytes=0; teardown=views=0; assets=released=1 retained=0 failed=0; lastGoodImageLeasable=True; sourceWorld=Faulted; restoredWorld=Running; restoredPresented=NoViews"
+    },
+    {
+      "name": "w5gate-cards-digest",
+      "status": "Pass",
+      "detail": "generatedDigest=5740b580c5b807796af5456396195baf761947ff6fc819e173074aeeeef297ff; fixtureDigest=5740b580c5b807796af5456396195baf761947ff6fc819e173074aeeeef297ff; expectedDigest=5740b580c5b807796af5456396195baf761947ff6fc819e173074aeeeef297ff; observations=8; digest=5740b580c5b807796af5456396195baf761947ff6fc819e173074aeeeef297ff; label=cards; steps=8; failed=0; digest=5740b580c5b807796af5456396195baf761947ff6fc819e173074aeeeef297ff; label=cards; steps=8; failed=0"
+    }
+  ]
+}

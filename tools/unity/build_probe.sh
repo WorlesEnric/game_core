@@ -60,7 +60,7 @@ echo "artifacts   : ${ARTIFACTS}"
 # Step 1: build-time code generation. Runs before the build so a stale or missing generated catalog cannot be
 wait_for_gc026() {
   local waited=0
-  while pgrep -f "gc-wt/gc-026/.*GameCoreProbe|gc-wt/gc-026/.*Unity " >/dev/null; do
+  while pgrep -f "probeBenchmark" >/dev/null; do
     echo "GC-024 host sharing: waiting 60s before ${1}" | tee -a "${ARTIFACTS}/host-sharing.log"
     sleep 60
     waited=$((waited + 60))

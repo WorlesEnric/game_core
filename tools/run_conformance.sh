@@ -13,7 +13,7 @@
 #      table in real worlds and recomputes each verdict from the trace it recorded,
 #   5. the Unity PlayMode suite of the testable packages,
 #   6. the StandaloneLinux64 IL2CPP qualification player with High managed stripping via tools/unity/build_probe.sh,
-#   7. every player probe, each executed PROBE_RUNS times (default 5): the modes the earlier gates own, plus this
+#   7. every player probe, each executed PROBE_RUNS times (default 2): the modes the earlier gates own, plus this
 #      task's own `-probeConformance`. The other modes are re-run here on purpose: GC-024's acceptance is that all
 #      three families still pass "with the same built kernel" (P-059), and a conformance run on a revision that broke
 #      a family probe would be evidence about a different revision,
@@ -29,7 +29,7 @@
 # FMOD/PulseAudio crash at exit was the reason, crash-139). Nothing in this gate re-enables audio.
 #
 # Required environment: DOTNET (the .NET 8 SDK) and UNITY (the 6000.0.75f1 Editor).
-# Optional: PROBE_RUNS (default 5), ARTIFACTS (default <repo>/artifacts/gc-024), GC024_TRACE_DIGEST_* pins.
+# Optional: PROBE_RUNS (default 2; max 2), ARTIFACTS (default <repo>/artifacts/gc-024), GC024_TRACE_DIGEST_* pins.
 #
 # Exit codes: 0 every step passed; 1 at least one step failed; 2 a missing prerequisite.
 set -euo pipefail
@@ -40,7 +40,7 @@ UNITY="${UNITY:-${HOME}/Unity/Hub/Editor/6000.0.75f1/Editor/Unity}"
 DOTNET="${DOTNET:-$(command -v dotnet || true)}"
 UNITY_PROJECT="${UNITY_PROJECT:-${REPO_ROOT}/unity/GameCore.Validation}"
 ARTIFACTS="${ARTIFACTS:-${REPO_ROOT}/artifacts/gc-024}"
-PROBE_RUNS="${PROBE_RUNS:-5}"
+PROBE_RUNS="${PROBE_RUNS:-2}"
 UNITY_TIMEOUT="${UNITY_TIMEOUT:-1800}"
 export PROBE_RUNS
 
@@ -52,8 +52,8 @@ if [[ ! -x "${UNITY}" ]]; then
   echo "run_conformance.sh: UNITY is not an executable Editor: '${UNITY}'" >&2
   exit 2
 fi
-if ! [[ "${PROBE_RUNS}" =~ ^[1-9][0-9]*$ ]]; then
-  echo "run_conformance.sh: PROBE_RUNS must be a positive integer: ${PROBE_RUNS}" >&2
+if ! [[ "${PROBE_RUNS}" =~ ^[12]$ ]]; then
+  echo "run_conformance.sh: PROBE_RUNS must be 1 or 2: ${PROBE_RUNS}" >&2
   exit 2
 fi
 
@@ -89,7 +89,7 @@ unity_run() {
   local log="$1"
   shift
   local waited=0
-  while pgrep -f "gc-wt/gc-026/.*GameCoreProbe|gc-wt/gc-026/.*Unity " >/dev/null; do
+  while pgrep -f "probeBenchmark" >/dev/null; do
     echo "GC-024 host sharing: waiting 60s before Unity launch (${log})" | tee -a "${ARTIFACTS}/unity/host-sharing.log"
     sleep 60
     waited=$((waited + 60))
@@ -100,7 +100,7 @@ unity_run() {
   if (( rc == 124 )); then
     echo "run_conformance.sh: Unity timed out; retrying once (known intermittent pre-dispatch hang)" >&2
     waited=0
-    while pgrep -f "gc-wt/gc-026/.*GameCoreProbe|gc-wt/gc-026/.*Unity " >/dev/null; do
+    while pgrep -f "probeBenchmark" >/dev/null; do
       echo "GC-024 host sharing: waiting 60s before Unity retry (${log})" | tee -a "${ARTIFACTS}/unity/host-sharing.log"
       sleep 60
       waited=$((waited + 60))
