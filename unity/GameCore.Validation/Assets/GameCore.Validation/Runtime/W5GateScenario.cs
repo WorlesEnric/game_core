@@ -1840,28 +1840,16 @@ namespace GameCore.Validation.ProbeHost
                     }
                 }
 
-                bool activeSeen = false;
-                bool dormantSeen = false;
-                for (int c = 0; c < captured.Count; c++)
+                // The restored world must carry the captured rows and no more: a restore that dropped a row is
+                // caught by the loop above, and one that invented a row is caught here. Dormant rows are
+                // authoritative state, so their count is asserted as its own fact by the caller (the restore plan's
+                // dormant count beside this comparison), and `LiveTargetSeeder.ReadLiveSlots` reports every row of a
+                // target's buffer, so presence is the claim (P-032, P-053).
+                if (live.Count != captured.Count)
                 {
-                    activeSeen |= captured[c].Active;
-                    dormantSeen |= !captured[c].Active;
-                }
-
-                bool activeLive = false;
-                bool dormantLive = false;
-                if (dormantSeen)
-                {
-                    // Dormant rows are authoritative state: the restored world must carry them as dormant rows, and
-                    // `LiveTargetSeeder.ReadLiveSlots` reports every row of a target's buffer, so presence is the
-                    // claim (their `Active` flag is proven by the restore plan's own dormant count).
-                    dormantLive = live.Count >= captured.Count;
-                }
-
-                activeLive = activeSeen && live.Count >= 1;
-                if (dormantSeen && (!dormantLive || !activeLive))
-                {
-                    detail = "the restored world does not carry both the active and the dormant rows";
+                    detail = "the restored world carries " + live.Count.ToString(CultureInfo.InvariantCulture)
+                        + " slot row(s) for " + captured.Count.ToString(CultureInfo.InvariantCulture)
+                        + " captured row(s)";
                     return false;
                 }
 
