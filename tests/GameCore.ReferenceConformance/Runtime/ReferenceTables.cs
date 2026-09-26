@@ -645,11 +645,14 @@ namespace GameCore.ReferenceConformance
                     ConformanceRowOutcome.Published,
                     new[]
                     {
+                        // Read from the same destination installation as the transfer row: it holds the carried
+                        // obligation, hands it to the card table again under the same external idempotency key, and
+                        // the destination reports AlreadyApplied while mutating nothing (P-045, REF-X01).
                         ConformanceExpectation.Require(
                             ConformanceFields.OutboxAlreadyApplied, "0", "1"),
-                        ConformanceExpectation.Unchanged(ConformanceFields.OutboxMutations, "1"),
-                        ConformanceExpectation.Unchanged(ConformanceFields.RewardRecipientHandSize, "5"),
-                        ConformanceExpectation.Unchanged(ConformanceFields.RewardHolderHandSize, "3"),
+                        ConformanceExpectation.Unchanged(ConformanceFields.OutboxMutations, "0"),
+                        ConformanceExpectation.Unchanged(ConformanceFields.OutboxOpen, "1"),
+                        ConformanceExpectation.Unchanged(ConformanceFields.OutboxRows, "2"),
                         ConformanceExpectation.Unchanged(ConformanceFields.BridgePermit, "1"),
                     }),
 
@@ -690,8 +693,10 @@ namespace GameCore.ReferenceConformance
                     ConformanceRowOutcome.Published,
                     new[]
                     {
-                        ConformanceExpectation.Require(ConformanceFields.OutboxOpen, "1", "0"),
-                        ConformanceExpectation.Require(ConformanceFields.OutboxAcknowledged, "0", "1"),
+                        // The settled counters are this row's before state: the drain rewrites only what it owns —
+                        // the slot's pending count and the work lease — and then unmounts the drained installation.
+                        ConformanceExpectation.Unchanged(ConformanceFields.OutboxOpen, "0"),
+                        ConformanceExpectation.Unchanged(ConformanceFields.OutboxAcknowledged, "1"),
                         ConformanceExpectation.Require(ConformanceFields.OutboxPendingWork, "1", "0"),
                         ConformanceExpectation.Require(ConformanceFields.OutboxSlotDormant, "false", "true"),
                         ConformanceExpectation.Require(ConformanceFields.OutboxRetainedLeases, "1", "0"),
@@ -711,8 +716,12 @@ namespace GameCore.ReferenceConformance
                     ConformanceRowOutcome.Published,
                     new[]
                     {
-                        ConformanceExpectation.Require(ConformanceFields.OutboxRows, "1", "1"),
-                        ConformanceExpectation.Unchanged(ConformanceFields.OutboxOpen, "1"),
+                        // Read from the DESTINATION installation: it starts empty and receives the rows, so "nothing
+                        // was lost" is the destination's own count rather than an inference from the source. The
+                        // source's release is asserted in the step's detail, and `outbox.mutations` stays 0 because a
+                        // transfer hands work over — it applies nothing at a destination.
+                        ConformanceExpectation.Require(ConformanceFields.OutboxRows, "0", "2"),
+                        ConformanceExpectation.Require(ConformanceFields.OutboxOpen, "0", "1"),
                         ConformanceExpectation.Unchanged(ConformanceFields.OutboxMutations, "0"),
                         ConformanceExpectation.Unchanged(ConformanceFields.BridgePermit, "1"),
                     }),
@@ -730,7 +739,7 @@ namespace GameCore.ReferenceConformance
                             ConformanceFields.SeatBonus(0U), "2", ConformanceValue.None),
                         ConformanceExpectation.Unchanged(ConformanceFields.RewardRecipientHandSize, "5"),
                         ConformanceExpectation.Unchanged(ConformanceFields.RewardHolderHandSize, "3"),
-                        ConformanceExpectation.Unchanged(ConformanceFields.OutboxMutations, "1"),
+                        ConformanceExpectation.Unchanged(ConformanceFields.RewardRecipientTotal, "4"),
                         ConformanceExpectation.Unchanged(ConformanceFields.OutboxAcknowledged, "1"),
                     }),
             };

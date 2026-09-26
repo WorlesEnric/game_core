@@ -540,8 +540,18 @@ namespace GameCore.ReferenceConformance
                                 ConformanceExpectation.Require(ConformanceFields.OutboxOpen, "0", "1"),
                                 ConformanceExpectation.Require(ConformanceFields.OutboxRows, "1", "2"),
                             }),
+                        Pre("reward-unmount-transfer", 2, ConformanceOperations.SettleReward, 0,
+                            "arm the new obligation's work lease, so the transfer carries armed work too",
+                            new[]
+                            {
+                                ConformanceExpectation.Require(ConformanceFields.OutboxPendingWork, "0", "1"),
+                            }),
                         Row("reward-unmount-transfer", ConformanceOperations.TransferRewardOutbox, 0,
                             "transfer the outbox to the explicitly selected compatible owner"),
+                        // 07:272's claim is asserted at the owner that now holds the carried obligation, so the
+                        // destination is asked for the same reward a second time under the same external key.
+                        Row("reward-redelivery", ConformanceOperations.RedeliverReward, 0,
+                            "hand the carried obligation to the card table again: it applies exactly once"),
                         Row("reward-scoring-unmount-keeps-card", ConformanceOperations.UnmountScoringProvider, 0,
                             "unmount the scoring provider: the issued card and the score survive"),
                     }),

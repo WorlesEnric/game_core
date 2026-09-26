@@ -120,7 +120,7 @@ conformance_steps=(
   '"name": "conformance/narrative/trace-write"'
   '"name": "conformance/traversal/trace-write"'
   '"name": "conformance/cross/trace-write"'
-  '"name": "cross/no-action-surface-in-card-or-narrative"'
+  '"name": "conformance/cross/no-action-surface-in-card-or-narrative"'
 )
 probe_require_steps "${result_file}" "${conformance_steps[@]}"
 
