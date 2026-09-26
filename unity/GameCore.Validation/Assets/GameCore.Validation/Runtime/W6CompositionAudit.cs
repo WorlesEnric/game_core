@@ -120,6 +120,19 @@ namespace GameCore.Validation.ProbeHost
 
         /// <summary>Simple name of the traversal gameplay assembly this audit reads.</summary>
         public const string TraversalAssemblyName = "GameCore.Gameplay.Traversal";
+        /// <summary>The reference course identities used to audit unrelated genre declarations.</summary>
+        public static TraversalCourseSurface CourseSurface() => new TraversalCourseSurface(
+            new List<StageId>
+            {
+                TraversalKeys.InputStage,
+                TraversalKeys.IntegrateStage,
+                TraversalKeys.SenseStage,
+                TraversalKeys.CheckpointStage,
+                TraversalKeys.OutputStage,
+            },
+            TraversalKeys.SystemKeys,
+            TraversalVocabulary.AccelerationCapability);
+
 
         /// <summary>
         /// Walks one genre's declarations and its compiled descriptor for any traversal identity. The compiled report is

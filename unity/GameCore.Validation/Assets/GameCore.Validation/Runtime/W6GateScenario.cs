@@ -735,7 +735,7 @@ namespace GameCore.Validation.ProbeHost
                     return;
                 }
 
-                Registry = new TargetRegistry(world, targetCapacity);
+                Registry = new TargetRegistry(world, checked((uint)targetCapacity));
                 Publisher = new AssemblyPublisher(
                     host, Registry, family.CreateRecipes(), family.CreateMigrations(), Descriptor.Descriptor);
                 Targets = new LiveTargetIndex(Publisher.Recipes);
@@ -933,14 +933,15 @@ namespace GameCore.Validation.ProbeHost
                         return;
                     }
 
+                    IGc020Family course = (IGc020Family)family;
                     FixedStepSettings? fixedStep = traversal.Host.Request.FixedStep;
                     bool declaredStep = traversal.Host.TemporalModel == TemporalModel.FixedStep
                         && fixedStep != null
                         && fixedStep.IsValid
-                        && fixedStep.StepDurationTicks == family.StepDurationTicks
-                        && fixedStep.MaxStepsPerPump == family.MaxStepsPerPump
+                        && fixedStep.StepDurationTicks == course.StepDurationTicks
+                        && fixedStep.MaxStepsPerPump == course.MaxStepsPerPump
                         && fixedStep.TicksPerSecond == TraversalRegistration.TicksPerSecond
-                        && family.StepMilliseconds > 0;
+                        && course.StepMilliseconds > 0;
 
                     ulong idleSteps = traversal.PumpIdleFrames(4);
 
@@ -967,9 +968,9 @@ namespace GameCore.Validation.ProbeHost
                         + "; catalogFingerprint=" + family.CatalogFingerprint
                         + "; generatedCatalog=" + (Gc020TraversalHost.GeneratedCatalogPresent ? "present" : "absent")
                         + "; temporalModel=" + traversal.Host.TemporalModel
-                        + "; stepMillis=" + family.StepMilliseconds.ToString(CultureInfo.InvariantCulture)
-                        + "; stepDurationTicks=" + family.StepDurationTicks.ToString(CultureInfo.InvariantCulture)
-                        + "; maxStepsPerPump=" + family.MaxStepsPerPump.ToString(CultureInfo.InvariantCulture)
+                        + "; stepMillis=" + course.StepMilliseconds.ToString(CultureInfo.InvariantCulture)
+                        + "; stepDurationTicks=" + course.StepDurationTicks.ToString(CultureInfo.InvariantCulture)
+                        + "; maxStepsPerPump=" + course.MaxStepsPerPump.ToString(CultureInfo.InvariantCulture)
                         + "; declaredStep=" + declaredStep
                         + "; idleSteps=" + idleSteps.ToString(CultureInfo.InvariantCulture)
                         + "; moduleRunners=" + (module != null
@@ -977,7 +978,7 @@ namespace GameCore.Validation.ProbeHost
                         + "; moduleVolumes=" + (module != null
                             ? module.VolumeCount.ToString(CultureInfo.InvariantCulture) : "<none>")
                         + "; declaredStages=" + (traversal.Descriptor != null
-                            ? traversal.Descriptor.Stages.Count.ToString(CultureInfo.InvariantCulture) : "<none>")
+                            ? traversal.Descriptor.Descriptor!.Stages.Count.ToString(CultureInfo.InvariantCulture) : "<none>")
                         + "; physicsSceneInstalled=" + (traversal.Physics != null));
                 }
                 catch (Exception exception)
@@ -1323,13 +1324,13 @@ namespace GameCore.Validation.ProbeHost
                         return;
                     }
 
-                    TraversalCourseSurface surface = family.ActionSurface();
+                    TraversalCourseSurface surface = ((IGc020Family)family).ActionSurface();
                     Gc020StageRuntime? attached = traversal!.TraversalRuntime;
 
                     bool stages = surface.Stages.Count == TraversalKeys.SystemKeys.Length
                         && surface.Systems.Count == TraversalKeys.SystemKeys.Length
                         && traversal.Descriptor != null
-                        && traversal.Descriptor.Stages.Count == surface.Stages.Count;
+                        && traversal.Descriptor.Descriptor!.Stages.Count == surface.Stages.Count;
 
                     bool physics = attached != null
                         && attached.Physics != null
@@ -1343,7 +1344,7 @@ namespace GameCore.Validation.ProbeHost
                         "stages=" + surface.Stages.Count.ToString(CultureInfo.InvariantCulture)
                         + "; systems=" + surface.Systems.Count.ToString(CultureInfo.InvariantCulture)
                         + "; declaredStages=" + (traversal.Descriptor != null
-                            ? traversal.Descriptor.Stages.Count.ToString(CultureInfo.InvariantCulture) : "<none>")
+                            ? traversal.Descriptor.Descriptor!.Stages.Count.ToString(CultureInfo.InvariantCulture) : "<none>")
                         + "; accelerationCapability=" + surface.AccelerationCapability
                         + "; physicsScene=" + (attached != null && attached.Physics != null
                             ? attached.Physics.SceneName : "<none>")
@@ -1378,7 +1379,7 @@ namespace GameCore.Validation.ProbeHost
                 {
                     PipelineDescriptorReport descriptor = family.CompilePipeline();
                     W6FamilyAudit audit = W6CompositionAudit.WalkFamily(
-                        family.Label, family.Declarations, descriptor, family.ActionSurface());
+                        family.Label, family.Declarations, descriptor, W6CompositionAudit.CourseSurface());
 
                     bool pass = audit.Clean
                         && audit.DeclaredStages > 0
