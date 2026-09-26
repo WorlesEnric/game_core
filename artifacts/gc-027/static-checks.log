@@ -69,3 +69,12 @@ gc018 narrative (algorithm check): f881469b2a2ba43e4c1bf7972913dd2c93f945a623fef
 gc027 narrative: 2644b55aee8bedbbae60e04627e4f6b16d114ac4f418bed4a1e5960e2bdf80f9
 gc027 cards    : 3c5923b2559b869767c49906e181c4e5efd0f351816926c4095e0aa36ff9074c
 ```
+
+## 8. re-run after the audit fixes
+```
+$ python3 tools/check_game_core_csharp.py   # checked 555 C# file(s) -> ok
+$ python3 tools/check_release_fault_free.py --no-build   # PASS
+$ python3 tools/check_contract_surface_parity.py   # every snapshotted enum/value exists with the same numeric value
+$ python3 tools/unity/prepare_gc017_release_project.py && python3 tools/check_release_clone.py   # VERDICT: clone is clean (then deleted)
+$ bash -n tools/unity/run_recovery_probe.sh   # exit 0
+```
