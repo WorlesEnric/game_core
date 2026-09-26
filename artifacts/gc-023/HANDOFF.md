@@ -299,15 +299,19 @@ A fourth pass re-verified every fix in the list above against the current tree; 
    compiled in its declaring assembly. Resolution: the schema reports the build shape of the assembly that declares
    it, and **every** instrumented asmdef/csproj takes the symbol from the same marker package, so the answer is the
    same everywhere. `tools/check_release_telemetry_free.py` asserts that all of them carry the entry.
-5. **Counting helpers versus `#if` at call sites.** A gated-*declaration* approach would have made counter members
+5. **What "live leases" counts.** The lease counters report exactly the resources a live lease still holds
+   (`Acquired`, `Ready`, `Retiring`); quarantined resources are reported only as quarantine. The ledger's own
+   `RetainedResourceCount`/`IsRetained` keep their established, quarantine-inclusive meaning, which other suites pin,
+   so the telemetry export computes the lease-held count in its own loop rather than changing a pinned predicate.
+6. **Counting helpers versus `#if` at call sites.** A gated-*declaration* approach would have made counter members
    disappear in a release build, so any owner export would need its own guard and the two shapes would diverge
    structurally. Resolution: declarations unconditional, call sites `[Conditional]`, so the release shape has no call,
    no branch and no argument evaluation while the export surface stays compilable and reviewable. The behavioural
    proof is `dotnet/tools/GameCore.TelemetryProbe` and the binary proof is the derivation release-check.
-6. **`ApplySampleCount`, `StageSampleCount` and `JobWaitSampleCount`.** 08 names durations but not their sample
+8. **`ApplySampleCount`, `StageSampleCount` and `JobWaitSampleCount`.** 08 names durations but not their sample
    counts; a zero duration is otherwise indistinguishable from "nothing was measured". Resolution: three extra ids
    exist so a build can report "no sample" honestly. They are additions to the schema, not to the 08 list.
-7. **The digest literal.** The other gates compare a digest against a committed literal. This one cannot:
+9. **The digest literal.** The other gates compare a digest against a committed literal. This one cannot:
    nothing here has been run, and inventing a literal would be fabrication. Resolution: the harness compares against
    `Data/replay-record.json`'s `observationDigest` only when it is non-empty, and the file documents how the build
    host records it from the first passing run.

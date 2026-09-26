@@ -93,8 +93,22 @@ namespace GameCore.Execution
                 throw new ArgumentNullException(nameof(into));
             }
 
-            into.ObserveMax(TelemetryCounter.LiveLeases, RetainedResourceCount);
-            into.ObserveMax(TelemetryCounter.LeaseBytes, (long)RetainedResourceBytes);
+            // The count and the bytes describe the same set - resources a live lease still holds - so quarantine is
+            // reported only as quarantine and the four-way split stays a partition (TEST-023).
+            int leaseHeld = 0;
+            ulong leaseBytes = 0UL;
+            for (int i = 0; i < acquisitionOrder.Count; i++)
+            {
+                WorldResourceRecord record = resources[acquisitionOrder[i]];
+                if (IsLeaseHeld(record))
+                {
+                    leaseHeld++;
+                    leaseBytes += record.Bytes;
+                }
+            }
+
+            into.ObserveMax(TelemetryCounter.LiveLeases, leaseHeld);
+            into.ObserveMax(TelemetryCounter.LeaseBytes, (long)leaseBytes);
             into.ObserveMax(TelemetryCounter.QuarantineEntries, QuarantineCount + QuarantinedJobCount);
             into.ObserveMax(TelemetryCounter.QuarantineBytes, (long)QuarantinedBytes);
             into.ObserveMax(TelemetryCounter.OutstandingCallbacks, OutstandingJobCount);
