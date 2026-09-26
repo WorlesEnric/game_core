@@ -3112,5 +3112,332 @@
       "Every operation row except O-20/O-21 is unchanged; those two were promoted by the GC-018 build-host run and stay promoted.",
       "O-22 RecoverWorld is not proposed: GC-027 composes it from the restore path this gate proves."
     ]
+  },
+  "gc020Revisions": {
+    "task": "GC-020",
+    "branch": "gc-020",
+    "verdict": "NotRun (pending orchestrator build host). No requirement row promoted. This authoring host has no .NET SDK, no compiler and no Unity, so the gate of this task has never executed; every row below is a proposal the build host acts on after running tools/run_gc020_gate.sh.",
+    "statusOfThisSection": "Proposals only; no row promoted and no status changed by this change set.",
+    "objective": "Implement the exact real-time action/traversal reference composition from 07 s4 and its owner/stage policies on the existing fixed-step driver, with kinematic ECS-owned pose (primary) and the optional local rigidbody mode whose dedicated PhysicsScene is stepped exactly once per admitted step, plus committed animation/audio output and stamped physics observations.",
+    "normativeSections": [
+      "P-001",
+      "P-002",
+      "P-034",
+      "P-035",
+      "P-036",
+      "P-038",
+      "P-039",
+      "P-040",
+      "P-041",
+      "P-044",
+      "P-045",
+      "P-056",
+      "P-058",
+      "P-059"
+    ],
+    "requiredSuites": [
+      "TEST-011",
+      "TEST-012",
+      "TEST-013",
+      "TEST-018",
+      "TEST-019",
+      "TEST-021"
+    ],
+    "observationNames": [
+      "traversal/gc020-fixed-step-world-and-runners",
+      "traversal/gc020-existing-runners-derive-the-modifier",
+      "traversal/gc020-one-admitted-step-integrates-once",
+      "traversal/gc020-replay-separates-pure-motion-from-engine-observation",
+      "traversal/gc020-presentation-rate-does-not-double-advance",
+      "traversal/gc020-reparent-changes-the-contribution-and-keeps-state",
+      "traversal/gc020-unmount-keeps-pose-progress-and-receipts",
+      "traversal/gc020-mode-switch-both-directions",
+      "traversal/gc020-future-descendant-derives-before-execution",
+      "traversal/gc020-one-simulation-per-admitted-step",
+      "traversal/gc020-externally-owned-pose-is-not-integrated",
+      "traversal/gc020-committed-animation-and-audio-output",
+      "traversal/gc020-cards-and-narrative-declare-no-action-phase",
+      "traversal/gc020-teardown-settles-and-disposes"
+    ],
+    "digests": {
+      "algorithm": "SHA-256 over the LF-joined '<label>/<name>=pass' lines, no trailing newline (GameCore.Rules.Narrative.NarrativeDigest.OfLines)",
+      "traversal": "6263602b82b25315ae33f8ebcc3fbd314586743b9080b0bbe0df34ecc3172ad8",
+      "recomputedOnAuthoringHost": true,
+      "note": "One catalog only: no committed generated traversal catalog exists on this revision (its emission is GC-025's catalog coverage), so Gc020TraversalHost.GeneratedCatalogPresent is false and RunBoth answers both out-parameters with the fixture catalog's single run. The EditMode suite asserts that fact rather than implying a second catalog."
+    },
+    "proposedRows": [
+      {
+        "id": "P-001",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "The traversal package is a third genre on the same kernel binaries and declares no kernel schema: its five stages, three owners and one Additive capability are all package-owned, and its own observation 13 walks the narrative and card declarations looking for any traversal stage id, system key, buffer id or the acceleration capability and reports offenders=<none>. The genre-independence claim therefore gains a third family and a cross-family leak check. The row stays Partial because the cross-family card-to-narrative reward composition (REF-X01..X04) and the action world's IL2CPP run are GC-024/GC-021's, and nothing here has run.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-020/toolchain/probe-traversal.json",
+          "artifacts/gc-020/unity/editmode-results.xml",
+          "artifacts/gc-020/unity/playmode-results.xml",
+          "artifacts/gc-020/trx/",
+          "artifacts/gc-020/BUILD_REPORT.md"
+        ],
+        "observationEvidence": [
+          "traversal/gc020-cards-and-narrative-declare-no-action-phase",
+          "traversal/gc020-existing-runners-derive-the-modifier",
+          "traversal/gc020-future-descendant-derives-before-execution"
+        ]
+      },
+      {
+        "id": "P-002",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "The action family supplies the participants the role table names: one world host per course, a real command port for movement, the compiled five-stage execution graph, and an engine adapter (the local PhysicsScene) that admits stamped observations and submits intents. The row stays Partial: the physics adapter's own observation path is exercised by a gate scenario rather than by a production application, and no player run exists yet.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-020/toolchain/probe-traversal.json",
+          "artifacts/gc-020/unity/editmode-results.xml",
+          "artifacts/gc-020/unity/playmode-results.xml",
+          "artifacts/gc-020/trx/",
+          "artifacts/gc-020/BUILD_REPORT.md"
+        ],
+        "observationEvidence": [
+          "traversal/gc020-fixed-step-world-and-runners",
+          "traversal/gc020-one-admitted-step-integrates-once",
+          "traversal/gc020-presentation-rate-does-not-double-advance",
+          "traversal/gc020-teardown-settles-and-disposes"
+        ]
+      },
+      {
+        "id": "P-034",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "The declared external physical domain now exists end to end: the course declares which authority owns one recipe's motion, the integrator refuses to write an externally owned pose (counted as externallyOwnedInStep) rather than integrating it twice, a conflicting selection is refused as OwnershipConflict, and the local PhysicsScene backend is the sole writer of the pose it owns. The row stays Partial because the rigidbody mode is exercised in the Editor qualification world, not in a built player, and REF-A05's overlap case is asserted as a refusal rather than as a rejected assembly of two installed owners.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-020/toolchain/probe-traversal.json",
+          "artifacts/gc-020/unity/editmode-results.xml",
+          "artifacts/gc-020/unity/playmode-results.xml",
+          "artifacts/gc-020/trx/",
+          "artifacts/gc-020/BUILD_REPORT.md"
+        ],
+        "observationEvidence": [
+          "traversal/gc020-one-simulation-per-admitted-step",
+          "traversal/gc020-externally-owned-pose-is-not-integrated"
+        ]
+      },
+      {
+        "id": "P-035",
+        "currentStatus": "Implemented+Evidenced",
+        "proposedStatus": "Implemented+Evidenced",
+        "whatChanged": "Unchanged status: the course runs Created -> Running and stops through the world's own lifecycle, and the gate's teardown observation checks the stopped lifecycle, zero outstanding jobs and zero retained resources.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-020/toolchain/probe-traversal.json",
+          "artifacts/gc-020/unity/editmode-results.xml",
+          "artifacts/gc-020/unity/playmode-results.xml",
+          "artifacts/gc-020/trx/",
+          "artifacts/gc-020/BUILD_REPORT.md"
+        ],
+        "observationEvidence": [
+          "traversal/gc020-fixed-step-world-and-runners",
+          "traversal/gc020-one-admitted-step-integrates-once",
+          "traversal/gc020-presentation-rate-does-not-double-advance",
+          "traversal/gc020-teardown-settles-and-disposes"
+        ]
+      },
+      {
+        "id": "P-036",
+        "currentStatus": "Implemented+Evidenced",
+        "proposedStatus": "Implemented+Evidenced",
+        "whatChanged": "Unchanged status: a second FixedStep world now runs on the same driver, at the reference's configured 20 ms with the declared four-step catch-up, and the presentation-rate observation shows 30/60/144 Hz host sampling commits the same logical step count.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-020/toolchain/probe-traversal.json",
+          "artifacts/gc-020/unity/editmode-results.xml",
+          "artifacts/gc-020/unity/playmode-results.xml",
+          "artifacts/gc-020/trx/",
+          "artifacts/gc-020/BUILD_REPORT.md"
+        ],
+        "observationEvidence": [
+          "traversal/gc020-fixed-step-world-and-runners",
+          "traversal/gc020-one-admitted-step-integrates-once",
+          "traversal/gc020-presentation-rate-does-not-double-advance",
+          "traversal/gc020-teardown-settles-and-disposes"
+        ]
+      },
+      {
+        "id": "P-038",
+        "currentStatus": "Implemented+Evidenced",
+        "proposedStatus": "Implemented+Evidenced",
+        "whatChanged": "Unchanged status: the course's integration reads the world's own step clock, and the trace records the logical step per integrated body rather than any host timestamp.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-020/toolchain/probe-traversal.json",
+          "artifacts/gc-020/unity/editmode-results.xml",
+          "artifacts/gc-020/unity/playmode-results.xml",
+          "artifacts/gc-020/trx/",
+          "artifacts/gc-020/BUILD_REPORT.md"
+        ],
+        "observationEvidence": [
+          "traversal/gc020-fixed-step-world-and-runners",
+          "traversal/gc020-one-admitted-step-integrates-once",
+          "traversal/gc020-presentation-rate-does-not-double-advance",
+          "traversal/gc020-teardown-settles-and-disposes"
+        ]
+      },
+      {
+        "id": "P-039",
+        "currentStatus": "Implemented+Evidenced",
+        "proposedStatus": "Implemented+Evidenced",
+        "whatChanged": "Unchanged status: the five-stage declaration, its system keys, its per-system access sets and its coalescing are compiled by the same production compiler, and the stage-edge shape (with the extra integrate -> output edge of 07 s4.2) is a declared edge rather than an inferred one.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-020/toolchain/probe-traversal.json",
+          "artifacts/gc-020/unity/editmode-results.xml",
+          "artifacts/gc-020/unity/playmode-results.xml",
+          "artifacts/gc-020/trx/",
+          "artifacts/gc-020/BUILD_REPORT.md"
+        ],
+        "observationEvidence": [
+          "traversal/gc020-fixed-step-world-and-runners",
+          "traversal/gc020-one-admitted-step-integrates-once",
+          "traversal/gc020-presentation-rate-does-not-double-advance",
+          "traversal/gc020-teardown-settles-and-disposes"
+        ]
+      },
+      {
+        "id": "P-040",
+        "currentStatus": "Implemented+Evidenced",
+        "proposedStatus": "Implemented+Evidenced",
+        "whatChanged": "Unchanged status: the extra integrate -> output edge is declared as requiredAfter, so the compiled DAG carries both edges of 07 s4.2 explicitly.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-020/toolchain/probe-traversal.json",
+          "artifacts/gc-020/unity/editmode-results.xml",
+          "artifacts/gc-020/unity/playmode-results.xml",
+          "artifacts/gc-020/trx/",
+          "artifacts/gc-020/BUILD_REPORT.md"
+        ],
+        "observationEvidence": [
+          "traversal/gc020-fixed-step-world-and-runners",
+          "traversal/gc020-one-admitted-step-integrates-once",
+          "traversal/gc020-presentation-rate-does-not-double-advance",
+          "traversal/gc020-teardown-settles-and-disposes"
+        ]
+      },
+      {
+        "id": "P-041",
+        "currentStatus": "Implemented+Evidenced",
+        "proposedStatus": "Implemented+Evidenced",
+        "whatChanged": "Unchanged status: the integrate stage writes its owned components directly and relies on the driver's own step fence, while the declared sense->checkpoints step buffer produces the producer-before-consumer edge and its drain check.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-020/toolchain/probe-traversal.json",
+          "artifacts/gc-020/unity/editmode-results.xml",
+          "artifacts/gc-020/unity/playmode-results.xml",
+          "artifacts/gc-020/trx/",
+          "artifacts/gc-020/BUILD_REPORT.md"
+        ],
+        "observationEvidence": [
+          "traversal/gc020-fixed-step-world-and-runners",
+          "traversal/gc020-one-admitted-step-integrates-once",
+          "traversal/gc020-presentation-rate-does-not-double-advance",
+          "traversal/gc020-teardown-settles-and-disposes"
+        ]
+      },
+      {
+        "id": "P-044",
+        "currentStatus": "Implemented+Evidenced",
+        "proposedStatus": "Implemented+Evidenced",
+        "whatChanged": "Unchanged status: the checkpoint owner applies a bounded write set (crossings up to the declared capacity, refused before mutation when full) and stages each committed crossing event for the step's commit, so a step failure publishes none of them.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-020/toolchain/probe-traversal.json",
+          "artifacts/gc-020/unity/editmode-results.xml",
+          "artifacts/gc-020/unity/playmode-results.xml",
+          "artifacts/gc-020/trx/",
+          "artifacts/gc-020/BUILD_REPORT.md"
+        ],
+        "observationEvidence": [
+          "traversal/gc020-fixed-step-world-and-runners",
+          "traversal/gc020-one-admitted-step-integrates-once",
+          "traversal/gc020-presentation-rate-does-not-double-advance",
+          "traversal/gc020-teardown-settles-and-disposes"
+        ]
+      },
+      {
+        "id": "P-045",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "The action family adds a committed-output consumer on the other side of the boundary: the audio stage reads the world's own committed event store, deduplicates by the event identity and records the disabled-device path, and the animation stage refuses a token that is not strictly newer than the one it presented. The row stays Partial for the same reason the W5 gate left it: the crash-durable outbox and the long-run cursor/dedup budget are GC-021/GC-026's, and this gate's audio path is the engine-free recording sink (the headless player has audio disabled, crash-139).",
+        "evidenceToBeProduced": [
+          "artifacts/gc-020/toolchain/probe-traversal.json",
+          "artifacts/gc-020/unity/editmode-results.xml",
+          "artifacts/gc-020/unity/playmode-results.xml",
+          "artifacts/gc-020/trx/",
+          "artifacts/gc-020/BUILD_REPORT.md"
+        ],
+        "observationEvidence": [
+          "traversal/gc020-committed-animation-and-audio-output",
+          "traversal/gc020-replay-separates-pure-motion-from-engine-observation"
+        ]
+      },
+      {
+        "id": "P-056",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "The registered-seam surface gains a fourth rules package's reducer and predicate pair, an external-authority physics descriptor and a committed-output audio/animation sink port. The row stays Partial: asset/presentation/input adapters are GC-019's and their registration table remains unchanged here, and nothing has run on the build host.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-020/toolchain/probe-traversal.json",
+          "artifacts/gc-020/unity/editmode-results.xml",
+          "artifacts/gc-020/unity/playmode-results.xml",
+          "artifacts/gc-020/trx/",
+          "artifacts/gc-020/BUILD_REPORT.md"
+        ],
+        "observationEvidence": [
+          "traversal/gc020-fixed-step-world-and-runners",
+          "traversal/gc020-one-admitted-step-integrates-once",
+          "traversal/gc020-presentation-rate-does-not-double-advance",
+          "traversal/gc020-teardown-settles-and-disposes"
+        ]
+      },
+      {
+        "id": "P-058",
+        "currentStatus": "Implemented+Evidenced",
+        "proposedStatus": "Implemented+Evidenced",
+        "whatChanged": "Unchanged status: the traversal packages are compiled by the pinned Editor with the pinned package set, and the qualification player build is `tools/unity/build_probe.sh`'s. This change set adds no package pin and no toolchain change.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-020/toolchain/probe-traversal.json",
+          "artifacts/gc-020/unity/editmode-results.xml",
+          "artifacts/gc-020/unity/playmode-results.xml",
+          "artifacts/gc-020/trx/",
+          "artifacts/gc-020/BUILD_REPORT.md"
+        ],
+        "observationEvidence": [
+          "traversal/gc020-fixed-step-world-and-runners",
+          "traversal/gc020-one-admitted-step-integrates-once",
+          "traversal/gc020-presentation-rate-does-not-double-advance",
+          "traversal/gc020-teardown-settles-and-disposes"
+        ]
+      },
+      {
+        "id": "P-059",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "This is the row GC-020 is named against. The fixed-step action family now exists as a real package with its own owner/stage policies, and its own observation 13 asserts that the card and narrative declarations contain no traversal stage, system, buffer or capability, so the third family no longer shares a kernel phase with the other two. The row stays Partial because nothing has executed: the action family's IL2CPP player run and the cross-family composition are GC-024's, and until the build host runs this gate the clause \"action ... execute[s] before V1 conformance freeze\" is not evidenced.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-020/toolchain/probe-traversal.json",
+          "artifacts/gc-020/unity/editmode-results.xml",
+          "artifacts/gc-020/unity/playmode-results.xml",
+          "artifacts/gc-020/trx/",
+          "artifacts/gc-020/BUILD_REPORT.md"
+        ],
+        "observationEvidence": [
+          "traversal/gc020-cards-and-narrative-declare-no-action-phase",
+          "traversal/gc020-fixed-step-world-and-runners",
+          "traversal/gc020-mode-switch-both-directions",
+          "traversal/gc020-future-descendant-derives-before-execution"
+        ]
+      }
+    ],
+    "contractChanges": "None. No file under Packages/com.gamecore.contracts/ and no plan DTO was modified by GC-020. The new public surface is additive and lives in Packages/com.gamecore.rules.traversal, Packages/com.gamecore.gameplay.traversal and three new Runtime/Pure folders of Packages/com.gamecore.unity.adapters.",
+    "carriedGaps": [
+      "Nothing in this change set has been compiled, imported or executed: every artifact path above must first be produced by the build host.",
+      "O-14's probe over 10,000 replayed steps is GC-023's; this gate exercises the fixed-step driver at one-second and three-presentation-rate scale.",
+      "The rigidbody mode's authority is proved in the Editor qualification world with a recording and a real local scene, not with a production rigidbody game.",
+      "The audio stage is qualified engine-free by design: the headless player has Unity audio disabled (crash-139), so the live-device path is documented rather than run.",
+      "The course has no committed generated catalog yet (GC-025), so this gate runs one catalog and says so."
+    ],
+    "notProposed": [
+      "Every requirement row not listed in proposedRows is unchanged and unproposed, including P-049 (O-22 RecoverWorld, GC-027) and P-007/P-045's long-run retention budgets (GC-021/GC-026)."
+    ]
   }
 }
