@@ -178,13 +178,13 @@ probe_require_steps "${result_file}" "${row_steps[@]}"
 conformance_clauses=(
   "task=GC-024"
   "tables=4"
-  "allPassed=True"
+  "allPassed=true"
   # the cross-family combination's whole point: one durable obligation, one mutation, one no-op redelivery
   "outbox.recognised=0->1"
   "outbox.mutations=0->1"
   "outbox.mutations=1->1"
   # the genre audit names the half it computed, and a player has no project tree
-  "loaded=kernel="
+  "loaded=kernelAssemblies="
 )
 for clause in "${conformance_clauses[@]}"; do
   if ! grep -q -- "${clause}" "${result_file}"; then
@@ -218,8 +218,9 @@ for table in cards narrative traversal cross; do
   variable="GC024_TRACE_DIGEST_$(echo "${table}" | tr '[:lower:]' '[:upper:]')"
   expected="${!variable}"
   digest_line="${ARTIFACTS}/trace-digest-${table}.txt"
-  grep -o "conformance/${table}/trace-digest[^\"]*digest=[0-9a-f]*" "${result_file}" \
-    | grep -o "digest=[0-9a-f]*" | head -n 1 | sed 's/^digest=//' > "${digest_line}" || true
+  jq -r --arg name "conformance/${table}/trace-digest" \
+    '.probes[] | select(.name == $name) | .detail | capture("digest=(?<digest>[0-9a-f]{64})").digest' \
+    "${result_file}" > "${digest_line}" || true
   if [[ ! -s "${digest_line}" ]]; then
     echo "   FAIL conformance: no trace digest was recorded for ${table}" >&2
     failures=$((failures + 1))
@@ -234,8 +235,9 @@ for table in cards narrative traversal cross; do
   for (( run = 2; run <= PROBE_RUNS; run++ )); do
     later="${result_file}.run${run}.${table}.digest"
     if [[ -f "${result_file}.run${run}" ]]; then
-      grep -o "conformance/${table}/trace-digest[^\"]*digest=[0-9a-f]*" "${result_file}.run${run}" \
-        | grep -o "digest=[0-9a-f]*" | head -n 1 | sed 's/^digest=//' > "${later}" || true
+      jq -r --arg name "conformance/${table}/trace-digest" \
+        '.probes[] | select(.name == $name) | .detail | capture("digest=(?<digest>[0-9a-f]{64})").digest' \
+        "${result_file}.run${run}" > "${later}" || true
       if [[ -s "${later}" ]] && [[ "$(cat "${later}")" != "$(cat "${digest_line}")" ]]; then
         echo "   FAIL conformance: ${table} digest differs between run 1 and run ${run}" >&2
         echo "     run1=$(cat "${digest_line}") run${run}=$(cat "${later}")" >&2
