@@ -157,6 +157,7 @@ Production gameplay, so it stays in the release clone (not in the strip list).
 | **P-044 / P-045** commit boundaries; observation and external output | the reward is persisted before it is applied, the destination mutates once per external key, and a redelivery after acknowledgement loss is a no-op with unrelated state preserved | `cross/reward-enqueue`, `cross/reward-settle`, `cross/reward-redelivery`, `cross/reward-bridge-removal` |
 | **P-046 / P-047 / P-048** installation lifecycle, in-flight lifetime and teardown | suspend/resume rows per family; every stage's world is stopped and disposed inside a `finally`, and the harness/registry asserts the count returns to baseline | `cards/suspend-festival`, `cards/resume-festival`, `narrative/suspend-chapter`, `narrative/resume-chapter`, `traversal/suspend-tailwind`, `traversal/resume-tailwind`, `<table>/<stage>/teardown` |
 | **P-054** serialization discipline | the trace document is versioned, canonically ordered and digest-checked; a tampered body is refused | `ConformanceTrace.TryParse`; the pure suite's tamper test |
+| **P-028 / P-043** assembly validation, buffer producer/consumer contracts | the three combined-graph checks: a buffer with active producers and an absent consumer stage, two owners of one domain, and a stage cycle each fail assembly with the declaring plugin named | `conformance/cross/graph-missing-command-endpoint`, `.../graph-duplicate-state-owner`, `.../graph-same-step-cycle`; `CrossGraphValidation.Run()`; the pure suite's `CrossGraphValidationTests` |
 | **P-057** conformance needs real execution | the fixture proves the tables' numbers against the rules in pure dotnet; the Unity half executes the same tables in real worlds; neither substitutes for the other | `ReferenceProjections`, the EditMode suite, `-probeConformance` |
 | **P-059** genre validation before freeze | all three families plus the cross-family combination on the same built kernel, in the same player | `conformance/coverage` (`tables=4`, `allPassed=True`), the per-table verdicts |
 | **TEST-006** isolation, exclusions, mode switching | both mode directions with isolation and exclusions held in every table | the mode rows and the exclusion rows above |
@@ -286,6 +287,29 @@ One consequence worth stating plainly: `StateMigrationPipeline` has exactly two 
 publication runs a policy pass automatically (`DerivedAssemblyPipeline` never constructs one). The installation
 therefore drives **its own** policy pass, which is what makes this gameplay code: the kernel is unchanged by this
 change set.
+
+### 5.6b 07 s5's three combined-graph assembly checks (also review round 1)
+
+07 s5's closing paragraph is: *"Missing command endpoints, duplicate state owners, or a same-step cycle fail assembly
+validation with their declaring plugin IDs."* All three are already rejected by the kernel, but every kernel witness
+names stage/buffer/slot/owner ids and **never a plugin id** (`OwnershipSchedulePipeline.Build` flattens manifests and
+drops manifest→declaration provenance), so the fixture composes the plugin-id mapping itself and the check is
+therefore pure:
+
+| Case | Rule the kernel applies | Diagnostic | Entry point the fixture drives |
+|---|---|---|---|
+| `graph-missing-command-endpoint` | `ScheduleWitnessKind.BufferConsumerMissing` (`ScheduleCompiler.cs:548-552`) | `MissingDependency` | `ScheduleCompiler.Compile` over one plugin's stage + receipt buffer whose declared consumer stage belongs to a plugin that is not mounted |
+| `graph-duplicate-state-owner` | `OwnerAuthorityValidator.CollectDomains` (`:375-379`) | `OwnershipConflict` | `OwnerAuthorityValidator.Validate` with two writers whose owners come from their own manifests' `StateSlotSpec.Owner` |
+| `graph-same-step-cycle` | `ScheduleWitnessKind.StageCycle` (`ScheduleCompiler.cs:1630-1638`) | `Cycle` | `ScheduleCompiler.Compile` over two stages whose `RequiredBefore` edges close a cycle |
+
+Each case reports the kernel's verbatim witness **plus** the declaring plugin in `FixtureDetail`, and the three
+observations are recorded in the combined world as `conformance/cross/graph-*` on the same run. `GameCore.Planning`
+is a pure assembly, so the whole check runs in the pure suite as well as the player — strictly better evidence than a
+Unity-only step, and it is why the fixture package now references `GameCore.Planning` (asmdef, both dotnet projects
+and `package.json`).
+
+**No kernel change was made for this, deliberately**: adding a plugin-id field to `ScheduleWitness`, `OwnershipReport`
+or a kernel diagnostic would reopen every earlier gate for a reporting improvement the fixture can supply itself.
 
 The four rows that assert the claims are `reward-unmount-pending` (refused, with `TeardownBlocked` and the
 installation id, slot id and pending count named), `reward-drain-then-unmount` (drained → dormant slot → settled

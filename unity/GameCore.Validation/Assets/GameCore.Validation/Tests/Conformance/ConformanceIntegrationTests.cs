@@ -70,36 +70,20 @@ namespace GameCore.Validation.ProbeHost.Tests
             ConformanceTableResult result = ConformanceCrossWorld.Run();
             try
             {
-                // A recorded gap is not a pass, so this run is red by design: 07:276's pending-work unmount refusal
-                // cannot be performed while the reward bridge is an ordinary caller-owned object rather than a
-                // mounted installation. The suite asserts the exact shape of that gap instead of asserting a pass it
-                // would be lying about, and asserts that everything else is green (P-032, P-060).
-                Assert.That(
-                    result.AllPassed,
-                    Is.False,
-                    "a run that records an unmet 07 clause cannot report AllPassed (07:276, P-032)");
-                Assert.That(result.Failures.Count, Is.EqualTo(0), result.Describe());
+                // Every one of 07:276's claims is a real row now, so the whole run must be green: the oracle
+                // accepted the trace, no step failed, and no gap is recorded. This is the assertion the round-1
+                // review turned on — it used to require `AllPassed == false` while the pending-work unmount was a
+                // documented absence, and it would now be a lie in the other direction.
                 Assert.That(result.Verdict.Passed, Is.True, result.Describe());
-
-                ConformanceTable table = ReferenceTables.ById("cross")!;
-                IReadOnlyList<ConformanceDocGap> declared = ConformanceDocGaps.Of("cross");
+                Assert.That(result.Failures.Count, Is.EqualTo(0), result.Describe());
+                Assert.That(result.AllPassed, Is.True, result.Describe());
                 Assert.That(
                     result.RecordedGaps.Count,
-                    Is.EqualTo(declared.Count),
-                    "the cross run reports " + result.RecordedGaps.Count.ToString(CultureInfo.InvariantCulture)
-                    + " recorded gap(s) while the fixture declares "
-                    + declared.Count.ToString(CultureInfo.InvariantCulture) + ": " + result.Describe());
-                for (int i = 0; i < declared.Count; i++)
-                {
-                    Assert.That(
-                        result.RecordedGaps[i].Detail,
-                        Does.Contain(declared[i].GapId),
-                        "a recorded gap must name the fixture's own gap identifier");
-                    Assert.That(
-                        declared[i].Clause,
-                        Does.Contain("07:"),
-                        "a recorded gap must name the 07 clause it offends");
-                }
+                    Is.EqualTo(ConformanceDocGaps.All.Count),
+                    "the cross run's recorded gaps must match the fixture's own registry: " + result.Describe());
+                Assert.That(result.RecordedGaps.Count, Is.EqualTo(0), result.Describe());
+
+                ConformanceTable table = ReferenceTables.ById("cross")!;
 
                 // The trace must round-trip: what the run recorded is a document the fixture can read back, which is
                 // what makes a committed trace file comparable with a later run (P-054).
