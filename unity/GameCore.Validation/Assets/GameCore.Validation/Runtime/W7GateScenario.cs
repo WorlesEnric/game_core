@@ -569,10 +569,14 @@ namespace GameCore.Validation.ProbeHost
 
         /// <summary>
         /// "Benchmark data and budget decisions are recorded", as a code-side claim: the ten provisional rows of 08
-        /// are still the ten this build carries, each with its own workload/phase/metric key and its own target. The
-        /// document side of the same sentence — the budget decision record and the diagnostic it names — is checked
-        /// by `tools/check_budget_record.py`, which reads the committed files; a player cannot, so the two halves are
-        /// deliberately split rather than one of them being faked (P-022, TEST-023).
+        /// are still the ten this build carries, each declared once, recorded once, with its own workload/phase/metric
+        /// key, and classified the way 08's table classifies it — a comparable row carries the number 08 gives it
+        /// (including a zero: "0 managed bytes" and "0 simulation steps" are targets, not absences), while a
+        /// report-only row carries none, because 08 asks those two rows for a baseline or a plateau and there is no
+        /// number to compare against. The document side of the same sentence — the budget decision record and the
+        /// diagnostic it names — is checked by `tools/check_budget_record.py`, which reads the committed files; a
+        /// player cannot, so the two halves are deliberately split rather than one of them being faked (P-022,
+        /// TEST-023).
         /// </summary>
         private static bool BudgetRowsStep(out string detail)
         {
@@ -591,6 +595,37 @@ namespace GameCore.Validation.ProbeHost
             };
 
             var problems = new List<string>();
+
+            // The declared side of the join: an id named twice is a row that silently displaced another.
+            var declaredIds = new HashSet<string>(StringComparer.Ordinal);
+            for (int i = 0; i < declared.Length; i++)
+            {
+                if (!declaredIds.Add(declared[i]))
+                {
+                    problems.Add("declared id " + declared[i] + " appears more than once");
+                }
+            }
+
+            // The recorded side of the join: every recorded row is declared, and recorded once, so the table cannot
+            // grow a row (or shrink one and duplicate another) without a named problem.
+            var recordedIds = new HashSet<string>(StringComparer.Ordinal);
+            for (int i = 0; i < PerformanceBudgets.All.Count; i++)
+            {
+                if (!recordedIds.Add(PerformanceBudgets.All[i].Id))
+                {
+                    problems.Add("row " + PerformanceBudgets.All[i].Id + " is recorded more than once");
+                }
+
+                if (!declaredIds.Contains(PerformanceBudgets.All[i].Id))
+                {
+                    problems.Add("row " + PerformanceBudgets.All[i].Id + " is recorded but not declared");
+                }
+            }
+
+            // Per-row consistency. Comparability is what the row itself declares (ReportOnly), not the size of its
+            // number: 08 states zero as the target for the managed-bytes, unchanged-visit and idle rows, so only a
+            // microsecond ceiling of at most zero is a comparable row with no target at all, and only a report-only
+            // row carrying a number is a baseline row that smuggled in a target 08 never gave it.
             int reportOnly = 0;
             for (int i = 0; i < declared.Length; i++)
             {
@@ -608,8 +643,12 @@ namespace GameCore.Validation.ProbeHost
                 if (row.ReportOnly)
                 {
                     reportOnly++;
+                    if (row.Target != 0.0)
+                    {
+                        problems.Add("report-only row " + declared[i] + " carries a target 08 does not give it");
+                    }
                 }
-                else if (row.Target <= 0.0)
+                else if (row.Unit == BenchmarkBudgetUnit.Microseconds && row.Target <= 0.0)
                 {
                     problems.Add("row " + declared[i] + " is comparable but declares no target");
                 }
@@ -620,7 +659,7 @@ namespace GameCore.Validation.ProbeHost
                 + "; reportOnly=" + reportOnly.ToString(CultureInfo.InvariantCulture)
                 + "; ids=" + PerformanceBudgets.JoinIds()
                 + "; problems=" + (problems.Count == 0 ? "<none>" : string.Join(",", problems.ToArray()));
-            return problems.Count == 0 && PerformanceBudgets.All.Count == declared.Length;
+            return problems.Count == 0;
         }
 
         // ------------------------------------------------------------------ the recovery group

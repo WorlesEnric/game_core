@@ -152,6 +152,18 @@ namespace GameCore.Validation.ProbeHost
 
         private const ulong SecondRestartSalt = 0x4730323552455332UL;
 
+        /// <summary>
+        /// Instances of the linked fixture plugin this sequence itself has mounted, as of its latest late-mount
+        /// observation. The generated catalog embeds ONE process-wide factory, so its
+        /// <see cref="IProbePluginFactory.CreatedInstanceCount"/> carries every earlier mount in the process —
+        /// including this sequence's own earlier runs, when the same player domain also executes the
+        /// catalog-coverage suite before the wave-7 gate re-runs this sequence over the merged kernel. The
+        /// observation therefore requires the count before each mount to equal what this sequence accounted for
+        /// (zero on a fresh player), so an activation nothing in this sequence mounted still fails every run,
+        /// while the sequence's own consecutive runs stay independently assertable (GC-001, GC-025, P-009).
+        /// </summary>
+        private static int accountedFixtureMounts;
+
         /// <summary>Every observation name qualified with this sequence's label, in the table's order.</summary>
         public static IReadOnlyList<string> QualifiedNames()
         {
@@ -847,16 +859,27 @@ namespace GameCore.Validation.ProbeHost
                 return false;
             }
 
+            // The factory the generated catalog embeds is ONE process-wide instance, so its count carries every
+            // mount earlier in the process — this sequence's own earlier runs included, when one player domain
+            // also executes the catalog-coverage suite before the wave-7 gate re-runs this sequence. What the
+            // observation therefore requires is that every instance that already exists was mounted by THIS
+            // sequence (`accountedFixtureMounts`, zero on a fresh player), so a plugin the startup scene
+            // activated still fails this observation in every run, and only the sequence's own mounts carry over.
             int createdBeforeMount = fixtureFactory.CreatedInstanceCount;
-            if (createdBeforeMount != 0)
+            if (createdBeforeMount != accountedFixtureMounts)
             {
                 detail = "the fixture plugin was already instantiated "
-                    + createdBeforeMount.ToString(CultureInfo.InvariantCulture)
-                    + " time(s) before the late mount, so it is not linked-but-inactive";
+                    + (createdBeforeMount - accountedFixtureMounts).ToString(CultureInfo.InvariantCulture)
+                    + " time(s) before the late mount that this sequence did not mount by key, so it is not "
+                    + "linked-but-inactive (observed " + createdBeforeMount.ToString(CultureInfo.InvariantCulture)
+                    + ", this sequence accounted for " + accountedFixtureMounts.ToString(CultureInfo.InvariantCulture)
+                    + ")";
                 return false;
             }
 
             IProbePlugin plugin = fixtureFactory.Create();
+            accountedFixtureMounts++;
+
             if (!ProbeCatalog.TryGetHandler(ProbeKeys.ClosedGenericHandlerKey, out IProbeHandler<ProbeAmount, int>? handler)
                 || handler == null)
             {
@@ -877,11 +900,13 @@ namespace GameCore.Validation.ProbeHost
                 TraversalKeys.PluginFactoryKey, out ITraversalCoursePluginFactory? courseFactory)
                 && courseFactory != null;
 
+            // Exactly the one mount this observation just performed: no more, no fewer.
             bool passed = handled == amount.Scalar
-                && fixtureFactory.CreatedInstanceCount == 1
+                && fixtureFactory.CreatedInstanceCount == accountedFixtureMounts
                 && cardFactoryResolved
                 && courseFactoryResolved;
             detail = "linkedInactiveInstanceCountBeforeMount=" + createdBeforeMount.ToString(CultureInfo.InvariantCulture)
+                + "; sequenceAccountedMounts=" + accountedFixtureMounts.ToString(CultureInfo.InvariantCulture)
                 + "; instanceCountAfterMount=" + fixtureFactory.CreatedInstanceCount.ToString(CultureInfo.InvariantCulture)
                 + "; handled=" + handled.ToString(CultureInfo.InvariantCulture)
                 + "; expectedHandled=" + amount.Scalar.ToString(CultureInfo.InvariantCulture)
