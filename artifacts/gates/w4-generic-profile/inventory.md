@@ -336,3 +336,58 @@ adapter boundary (GC-019) — what is proven here is the recorded set, the cutof
 Contract changes (additive only, each in its own `shared:` commit, listed in `/artifacts/gc-018/HANDOFF.md` §5):
 `UnityWorldRegistry.TryExpose`, `UnityWorldHost.TryCreateUnexposed`, and a `LiveTargetSeeder.TrySeedSlot` overload
 carrying the active/dormant flag.
+
+## W5-GATE revision notes (Wave 5, proposals only)
+
+**NotRun (pending orchestrator build host). No row below is promoted.** The Wave 5 gate joins GC-016's retained
+observation, GC-017's deterministic faults, GC-018's checkpoint restore and GC-019's common adapters in one actual
+world per family; nothing in it has been compiled or executed here, so every entry is a proposal for the build host
+to promote after `tools/run_w5_gate.sh` archives its results
+(`artifacts/w5-gate/toolchain/probe-w5-gate.json`, `artifacts/w5-gate/unity/*.xml`, `artifacts/w5-gate/trx/`,
+`artifacts/w5-gate/release-surface.json`). A row is promoted only from the probe's own reported observations, never
+from a document that says `NotRun`.
+
+The gate's own sentence: "Join retained observation, deterministic faults, checkpoint restore and common adapters in
+one actual world. Show prewrite rejection, postwrite fail-stop, new-session restore, read-only snapshots and stale
+asset callback rejection." Eight observations per family per catalog, whose names and digest literals are frozen
+here and asserted by both the EditMode suite (`GameCore.W5Gate.Tests`) and the player probe (`-probeW5Gate`):
+
+`w5gate-one-world-with-retained-observation`, `w5gate-pinned-snapshots-are-read-only`,
+`w5gate-checkpoint-from-the-committed-boundary`, `w5gate-prewrite-fault-keeps-the-old-assembly`,
+`w5gate-postwrite-fault-fail-stops-the-world`, `w5gate-restore-into-a-new-session`,
+`w5gate-adapters-bind-to-the-restored-world`, `w5gate-retired-world-callbacks-are-rejected`.
+
+| Id | Before | Proposed after | Observation that would carry it |
+| --- | --- | --- | --- |
+| `P-049` | `Partial` | **`Implemented+Evidenced`** | `w5gate-postwrite-fault-fail-stops-the-world`, `w5gate-prewrite-fault-keeps-the-old-assembly`, `w5gate-restore-into-a-new-session`, plus `gc017-recovery-from-initial-definitions-into-a-new-world` — the two halves of "pre/post-mutation behaviour, recreate from checkpoint or catalog" now exist in one world |
+| `P-007` | `Partial` | `Partial` (unchanged) | `w5gate-pinned-snapshots-are-read-only`: a leased boundary held across a publication, byte-identical afterwards, with no writable reference reachable; TEST-023's long-run budget belongs to GC-026 |
+| `P-045` | `Partial` | `Partial` (unchanged) | `w5gate-pinned-snapshots-are-read-only`, `w5gate-checkpoint-from-the-committed-boundary`, `w5gate-restore-into-a-new-session`: observation across a session boundary, old handles refused |
+| `P-032` | `Partial` | `Partial` (unchanged) | `w5gate-restore-into-a-new-session`: active *and* dormant rows compared row by row against the captured set |
+| `P-028` | `Partial` | `Partial` (unchanged) | `w5gate-prewrite-fault-keeps-the-old-assembly`: the validation boundary reached by a real edit in a live world, asserted against the old assembly's rows/revision/epoch/image count |
+| `P-002` | `Partial` | `Partial` (unchanged) | `w5gate-adapters-bind-to-the-restored-world`, `w5gate-retired-world-callbacks-are-rejected`: the adapter boundary in a world that really faulted and was restored |
+| `P-034` | `Partial` | `Partial` (unchanged) | `w5gate-adapters-bind-to-the-restored-world`: presentation reads only the restored world's committed image; the real physics stage stays GC-020's |
+| `P-053` | `Implemented+Evidenced` | `Implemented+Evidenced` | `w5gate-checkpoint-from-the-committed-boundary`: the capture now reads its boundary through GC-016's frozen lease interface, and a world-declared queue that contradicts the copied records refuses the capture |
+
+Not proposed: `P-005`, `P-024`, `P-047`, `P-048`, `P-051` and `P-055` keep their current status (the gate exercises
+them but does not close their remaining clauses); `O-20`/`O-21` stay promoted from the GC-018 build-host run; and
+`O-22` stays `Not yet` because composing `RecoverWorld` is GC-027's, over the restore path this gate proves.
+
+### Reconciliations this gate performed (recorded because four tasks wrote the halves)
+
+1. **GC-018's committed-boundary read now goes through GC-016's frozen lease interface.** GC-018 wrote its reader
+   against live storage with the note that the lease would be taken "when that interface is present";
+   `UnityCommittedBoundaryReader` now leases the boundary for the whole copy, reports the pinned token and the
+   world's declared queue facts on the snapshot, and refuses if the world moved under it. `CheckpointCapture`
+   refuses a capture whose copied queue contradicts the world's own declaration. GC-016's seam was not changed; the
+   four new `CommittedBoundarySnapshot` members are additive and every construction site was updated.
+2. **GC-018's checkpoint codec binding table was extracted** from `Gc018Scenario` into `Gc018CheckpointCodecs`, so
+   the gate captures and restores the *same* format rather than a second copy that could drift (P-054).
+3. **Every probe mode survives** the merge (the probe host keeps one flag, one identity branch and one dispatch arm
+   per mode), and `tools/unity/prepare_gc017_release_project.py` now also removes the Wave 5 gate's scenario and
+   probe from the marker-free release clone, because they name the latch types a release compilation does not
+   contain.
+4. **`tools/check_release_fault_free.py`'s balance check now runs over a literal-blind view** of the compiled text.
+   The previous version counted parentheses inside string literals, so a `ToString()` that emits `")"` was reported
+   as a split construct and failed a correct file (found here in `Observation/SnapshotResynchronization.cs`, added by
+   GC-016 after GC-017 froze that check). A falsifiability self-test proves the fixed check still fails on a real
+   split, including one hidden behind a brace inside a string.
