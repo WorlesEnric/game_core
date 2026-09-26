@@ -3898,5 +3898,210 @@
     "statusOfThisSection": "Proposals only. Counts are unchanged.",
     "task": "W6-GATE",
     "verdict": "NotRun (pending orchestrator build host). No requirement or operation row promoted: this section is proposals only, and every proposal names the observation that would carry it and the artifacts the build host must first produce."
-  }
+  },
+"gc024Revisions": {
+  "task": "GC-024",
+  "branch": "gc-024 (NOT part of the W7-GATE revision; the orchestrator merges it later)",
+  "objective": "Demonstrate every required composition transition and combination with shared kernel binaries: all 07 before/after tables for cards, narrative and action, and the narrative-to-card reward combination through the durable/idempotent seam.",
+  "statusOfThisSection": "Proposals only. Counts are unchanged. GC-024's branch is not merged into W7-GATE, so nothing here is claimed as executed.",
+  "contractChanges": "None. No file under Packages/com.gamecore.contracts/ and no plan DTO is modified.",
+  "referenceConformanceGroup": "A merge of GC-024 must append exactly one observation group to W7GateScenario (ConformanceObservationNames + one AddConformanceSteps(steps) call + the recomputed digest literal). W7GateScenario.ObservationNames() is the single frozen table, so the digest literal changes loudly and tools/check_gate_sources.py recomputes it from the table; the gate's dotnet and Unity test invocations are unfiltered over every testable assembly, so GC-024's suites participate automatically once its package is in the solution and the manifest. Nothing else in the gate changes.",
+  "proposedRows": [
+    {
+      "id": "P-001",
+      "currentStatus": "Partial",
+      "proposedStatus": "Implemented+Evidenced",
+      "observation": "The cross-family reward composition (a narrative choice becoming one durable, idempotent card mutation) inside ONE built kernel, plus the negative half of the dependency-inversion audit.",
+      "whatChanged": "The last consumer of the durable seam that no task has driven across families.",
+      "evidenceToBeProduced": "artifacts/gc-024/trx/, the conformance fixtures' EditMode results, and the W7 gate's re-run"
+    },
+    {
+      "id": "P-014",
+      "currentStatus": "Partial",
+      "proposedStatus": "Partial",
+      "observation": "Every documented before/after table, including the exclusion and isolation combinations, on the merged kernel.",
+      "whatChanged": "The complete transition inventory is GC-024's, not a per-task subset.",
+      "evidenceToBeProduced": "artifacts/gc-024/trx/"
+    },
+    {
+      "id": "P-025",
+      "currentStatus": "Partial",
+      "proposedStatus": "Partial",
+      "observation": "Every table's Move row with the moved subtree's state preserved.",
+      "whatChanged": "The same.",
+      "evidenceToBeProduced": "artifacts/gc-024/trx/"
+    },
+    {
+      "id": "P-043",
+      "currentStatus": "Partial",
+      "proposedStatus": "Partial",
+      "observation": "The cross-template delivery commits exactly once and preserves unrelated state.",
+      "whatChanged": "The same.",
+      "evidenceToBeProduced": "artifacts/gc-024/trx/"
+    },
+    {
+      "id": "P-045",
+      "currentStatus": "Partial",
+      "proposedStatus": "Implemented+Evidenced",
+      "observation": "The narrative-to-card reward path through the durable/idempotent seam.",
+      "whatChanged": "The cross-template consumer of the delivery seam.",
+      "evidenceToBeProduced": "artifacts/gc-024/trx/"
+    },
+    {
+      "id": "P-059",
+      "currentStatus": "Partial",
+      "proposedStatus": "Partial",
+      "observation": "All three families passing with the same built kernel.",
+      "whatChanged": "The sentence's \"cross-template flow\".",
+      "evidenceToBeProduced": "artifacts/gc-024/trx/"
+    }
+  ],
+  "notProposed": [
+    "No row is promoted: this section is a proposal, and the branch is not on this revision.",
+    "The conformance tables are not restated here; they are GC-024's own artifact under tests/GameCore.ReferenceConformance/."
+  ]
+},
+"w7GateRevisions": {
+  "task": "W7-GATE",
+  "branch": "w7-gate",
+  "mergedTasks": [
+    "GC-025",
+    "GC-027",
+    "GC-026",
+    "GC-024 (pending: the orchestrator merges origin/gc-024 later; the gate is designed to slot it in)"
+  ],
+  "objective": "One merged revision carrying GC-025/GC-026/GC-027 (and GC-024 when it arrives), on which the affected acceptance sequences are re-run: complete IL2CPP/headless catalog coverage, the GC-026-affected incremental-versus-clean derivation equivalence, faulted checkpoint/outbox recovery for all three genres, the recorded budget decisions, and a release-kept recovery smoke over production seams.",
+  "observationTables": {
+    "process": 4,
+    "perFamily": 3,
+    "families": 3,
+    "playerProbeSteps": 15,
+    "digests": {
+      "w7Gate": "44742f36096f9005b18b8729f7b945583315a676902af32d7a2f8db14d197b62",
+      "recoverySmoke": "48d66bd6909091d190f6a04882b93cf326562a25137602f274647f2a365a87bb"
+    }
+  },
+  "probeModesAfterMerge": 24,
+  "probeRuns": "2 (project-owner cap on repeated runs)",
+  "timingQualification": "Deferred by project-owner decision: the full-duration TEST-023 p95/p99 catalogue is NOT run; one short benchmark correctness diagnostic is run once, and artifacts/performance/BUDGET_DECISIONS.md records the deferral.",
+  "proposedRows": [
+    {
+      "id": "P-002",
+      "currentStatus": "Implemented+Evidenced",
+      "proposedStatus": "unchanged",
+      "observation": "The recovery smoke drives the production composition with a real file checkpoint and no fault latches, in the marker-free release player.",
+      "whatChanged": "The first exercise of O-22 by a shipping-shaped build.",
+      "evidenceToBeProduced": "artifacts/w7-gate/release/probe-recovery-smoke.json"
+    },
+    {
+      "id": "P-009",
+      "currentStatus": "Partial",
+      "proposedStatus": "Partial",
+      "observation": "GC-025's coverage sequence re-runs on the merged kernel in both the qualification and the release shape, including the generated traversal catalog.",
+      "whatChanged": "Coverage evidence taken on the merged revision rather than on the W6 revision.",
+      "evidenceToBeProduced": "probe-catalog-coverage.json, probe-catalog-coverage-release.json"
+    },
+    {
+      "id": "P-022",
+      "currentStatus": "Partial",
+      "proposedStatus": "Partial",
+      "observation": "The incremental-versus-clean derivation equivalence is re-established at the declared 10,000-target scale over the recorded seed series.",
+      "whatChanged": "GC-026's kernel index change is answerable to the equivalence guarantee on this revision.",
+      "evidenceToBeProduced": "probe-w7-gate.json (seeds=3, scale=1000scopes/10000targets), artifacts/w7-gate/trx/"
+    },
+    {
+      "id": "P-023",
+      "currentStatus": "Partial",
+      "proposedStatus": "Partial",
+      "observation": "The same equivalence group, plus the budget table being RECORDED (ten rows, decisions, evidence, deferral).",
+      "whatChanged": "TEST-008's property and TEST-023's \"recorded\" half, without a full-duration qualification.",
+      "evidenceToBeProduced": "probe-w7-gate.json, artifacts/w7-gate/host/budget-record.json"
+    },
+    {
+      "id": "P-030",
+      "currentStatus": "Partial",
+      "proposedStatus": "promotion is the build host's call",
+      "observation": "The postwrite-apply fault point still exposes no destination on the merged kernel, for all three genres.",
+      "whatChanged": "A GC-027 fault point re-proven after GC-026 changed the derivation indexes.",
+      "evidenceToBeProduced": "probe-w7-gate.json, probe-gc027.json, artifacts/w7-gate/unity/editmode-results.xml"
+    },
+    {
+      "id": "P-031",
+      "currentStatus": "Partial",
+      "proposedStatus": "promotion is the build host's call",
+      "observation": "The fail-stop boundary and the faulted source never resuming, re-run for narrative, cards and traversal.",
+      "whatChanged": "The same.",
+      "evidenceToBeProduced": "the same"
+    },
+    {
+      "id": "P-032",
+      "currentStatus": "Partial",
+      "proposedStatus": "may promote after the gate",
+      "observation": "A checkpoint published to a REAL file is read back by a second store with the identical envelope identity, and the recovered world's own live rows equal the source's.",
+      "whatChanged": "The first real-file checkpoint in this repository's Unity path.",
+      "evidenceToBeProduced": "release/probe-recovery-smoke.json, the two real .checkpoint files"
+    },
+    {
+      "id": "P-045",
+      "currentStatus": "Partial",
+      "proposedStatus": "Partial",
+      "observation": "A live source is refused TooLate and a retired one StaleHandle, each with no destination and an unchanged registry; a restart rebuilds from the store alone with nothing owed.",
+      "whatChanged": "The production recovery path is exercised in a shipping-shaped build, not only by a qualification fixture.",
+      "evidenceToBeProduced": "release/probe-recovery-smoke.json"
+    },
+    {
+      "id": "P-049",
+      "currentStatus": "Partial",
+      "proposedStatus": "Partial",
+      "observation": "The same refusals and the restart-from-store claim, on the merged revision.",
+      "whatChanged": "The same.",
+      "evidenceToBeProduced": "release/probe-recovery-smoke.json"
+    },
+    {
+      "id": "P-053",
+      "currentStatus": "Partial",
+      "proposedStatus": "Partial",
+      "observation": "The published envelope reloads from disk with no leftover .partial artifact, and the restore reports the target/slot/dormant counts it really rebuilt.",
+      "whatChanged": "The same.",
+      "evidenceToBeProduced": "release/probe-recovery-smoke.json"
+    },
+    {
+      "id": "P-034",
+      "currentStatus": "Partial",
+      "proposedStatus": "Partial",
+      "observation": "The traversal genre's recovery (with its engine-physics observations) re-runs on the merged kernel.",
+      "whatChanged": "A fixed-step genre recovering as a fixed-step genre after the merge.",
+      "evidenceToBeProduced": "probe-w7-gate.json"
+    },
+    {
+      "id": "P-059",
+      "currentStatus": "Partial",
+      "proposedStatus": "Partial",
+      "observation": "Three genres re-run through GC-027's own runner on one merged revision.",
+      "whatChanged": "A fifth-wave re-run rather than a first run.",
+      "evidenceToBeProduced": "probe-w7-gate.json, artifacts/w7-gate/release/probe-recovery-smoke.json"
+    },
+    {
+      "id": "P-060",
+      "currentStatus": "Partial",
+      "proposedStatus": "Partial",
+      "observation": "This gate's evidence set, including the release-surface inspection that now requires all three kept modes present in BOTH players.",
+      "whatChanged": "The gate's own revision record.",
+      "evidenceToBeProduced": "release-gate-surface.json, release/clone-surface.json, release/link-xml.json, host/budget-record.json"
+    }
+  ],
+  "reconciliations": [
+    "The probe host keeps EVERY mode: one const, constructor parameter, assignment, local, property, IsProbeInvocation term, parse branch, dispatch arm, report-identity branch and constructor argument per mode, across all twenty-four modes; this gate adds -probeW7Gate and -probeRecoverySmoke.",
+    "A malformed doc comment the GC-026 conflict resolution introduced was found here: the /// <summary> opener above the Benchmark property had been dropped, leaving a doc comment ending in </summary> that never began. It is fixed on this revision.",
+    "tools/unity/prepare_gc017_release_project.py gains the W7 gate's files and mode wiring and KEEPS both -probeCatalogCoverage (GC-025's release coverage run) and -probeRecoverySmoke (this gate's release recovery smoke).",
+    "tools/check_release_clone.py gains the W7 types and the RecoverySmoke kept-mode entry; its removed-mode test is now boundary-aware (recovery/-probeRecovery are prefixes of the KEPT recoverySmoke/-probeRecoverySmoke) and its \"kept mode wired\" test now requires the constructor assignment as well as the flag, parameter and property.",
+    "tools/check_release_gate_free.py gains a w7-gate marker group and replaces its single kept-mode anchor with a tuple of three, each asserted present in BOTH players.",
+    "tools/check_link_xml.py now permits exactly one kernel-assembly type-level preserve (GC-027's GameCore.Unity.Runtime.Recovery.WorldRecovery). GC-027 added the link.xml entry but not the checker rule, so the merged revision could not pass GC-025's gate; the exception is one assembly and one exact type list, an assembly-level preserve=\"all\" and a bare kernel root still fail, and the checker now also requires the permitted fixture preserves to carry the attribute.",
+    "The W6 gate probe wrapper's relative native-leak-log path (found by GC-026) is fixed: ARTIFACTS is absolutized before the log path is derived, because Unity resolves a relative -logFile against the player's directory while tools/attribute_native_leaks.py re-opens the same name against the caller's.",
+    "tools/check_gate_sources.py now recomputes and cross-checks the Wave 7 frozen table as well as the Wave 6 literals, so a W7 table edit fails loudly."
+  ],
+  "statusOfThisSection": "Proposals only. Counts are unchanged.",
+  "verdict": "NotRun (pending orchestrator build host). No requirement or operation row promoted: this section is proposals only, and every proposal names the observation that would carry it and the artifacts the build host must first produce.",
+  "evidenceHostSideOnly": "artifacts/w7-gate/static-checks.log \u2014 the interpreter-level checks that DID run on this host, and the explicit statement that every build/test/player command is NotRun."
+}
 }

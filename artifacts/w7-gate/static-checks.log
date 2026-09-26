@@ -1,0 +1,154 @@
+# W7-GATE host-side static checks (interpreter-level; NOT a build)
+# Revision: 5019010f658ae8096fea5514e2c6faedd9861125  (5019010 Merge GC-026 into W7 gate)
+# Host: Darwin 25.3.0 arm64; no Unity, no .NET SDK, no Mono, no C# compiler.
+# STATUS OF EVERY BUILD/TEST/PLAYER COMMAND IN THIS DOCUMENT: NotRun (pending orchestrator build host).
+# What DID run is interpreter-level only: the checks below. None of them is a build or a test result.
+
+== 1. C# shape checker (banned syntax, source conventions) ==
+checked 591 C# file(s)
+ok
+
+== 2. gate-source invariants (balance, member resolution, using coverage, ambiguity, frozen tables) ==
+   LifecyclePlayModeMatrix.cs         balanced
+
+== member resolution (Type.Member against the declaring sources) ==
+   unresolved: none
+== using coverage (a used type must be reachable through the file's own usings) ==
+   unreachable: none
+== ambiguity (a used name declared in two imported namespaces) ==
+   ambiguous: none
+
+== frozen observation tables, digest literals and probe steps ==
+   cards fixture        9c3d3b5d2f8e959920aa9678e65f56658cbe4a513fcd2895cd458fbda4f9ea14  harness=True host=True probe=True suite=True
+   cards generated      894a975e4a5eb98d733ec213778ec275e4abe02cb4028271857bd4fa68d6fe80  harness=True host=True probe=True suite=True
+   narrative fixture    ab198371e8d276dcc2833e88e64e278abde57274ea3c68e2497fa2b75f97fa73  harness=True host=True probe=True suite=True
+   narrative generated  4235cea3c22cf93e38307000fcc863edd4ada3e2fc4a3b475ca719765dc17279  harness=True host=True probe=True suite=True
+   traversal            ca29b5f7099f9fbc4abeb7031c7b1e35ba39ec1ad39db70dd0f037fa8d45675e  harness=True host=True probe=True suite=True
+   observation counts: narrative 6, cards 7, traversal 9
+   harness steps: 41 | missing: none | extra: none
+   w7 table             44742f36096f9005b18b8729f7b945583315a676902af32d7a2f8db14d197b62  harness=True probe=True suite=True
+   w7 observation counts: process 4, per family 3, families ['narrative', 'cards', 'traversal']
+   w7 harness steps: 15 | missing: none | extra: none
+
+VERDICT: ok
+
+== 3. the W7 change set by itself ==
+   traversal            ca29b5f7099f9fbc4abeb7031c7b1e35ba39ec1ad39db70dd0f037fa8d45675e  harness=True host=True probe=True suite=True
+   observation counts: narrative 6, cards 7, traversal 9
+   harness steps: 41 | missing: none | extra: none
+   w7 table             44742f36096f9005b18b8729f7b945583315a676902af32d7a2f8db14d197b62  harness=True probe=True suite=True
+   w7 observation counts: process 4, per family 3, families ['narrative', 'cards', 'traversal']
+   w7 harness steps: 15 | missing: none | extra: none
+
+VERDICT: ok
+
+== 4. contract-surface parity, committed catalogs and manifest/bake freshness ==
+  + enum StateDispositionKind adds RetainDormant = 4
+every snapshotted enum and enum value exists in the production sources with the same numeric value
+catalog reachability manifest reproduces from the committed descriptions: 4 catalog(s)
+every committed catalog and coverage file reproduces byte for byte from its committed description
+baked catalog-coverage artifact reproduces from unity/GameCore.Validation/Catalogs/CatalogCoverageAuthoring.json
+file hash and catalog fingerprint both recompute correctly from the generated tables
+file hash and catalog fingerprint both recompute correctly from the generated tables
+file hash and catalog fingerprint both recompute correctly from the generated tables
+file hash and catalog fingerprint both recompute correctly from the generated tables
+
+== 5. the budget decision record (the document half of 'benchmark data and budget decisions are recorded') ==
+PASS  row-ids: parsed 10 row id(s) from tests/GameCore.Benchmarks/Runtime/PerformanceBudgets.cs: budget.execution-p95, budget.execution-managed-bytes, budget.unchanged-control-nodes, budget.unchanged-service-lookups, budget.apply-pause-p95, budget.whole-world-preparation-p95, budget.spawn-baseline, budget.lifecycle-plateau, budget.idle-steps, budget.idle-stage-updates
+PASS  record-sections: 10 '## budget.*' section(s) in artifacts/performance/BUDGET_DECISIONS.md; every declared row id has one
+PASS  section-fields: 10 section(s): each has '- Decision:' and '- Evidence:'
+PASS  evidence-paths: 20 Evidence path(s) checked under /Users/yangcao/wkspace/gc-wt/w7-gate; all exist
+PASS  deferral: artifacts/performance/BUDGET_DECISIONS.md:3: Status: **TEST-023 timing qualification Deferred by project-owner decision (2026-09-26); not measured at full duration**. Functional correctness gates passed in a final single short diagnostic: 1 s warmup, 2 s steady windows, five change repetitions, 11 workloads and 19/19 gates. A default full-catalogue attempt was stopped at update-size-1 repetition 629/1000 after 916.7 s because the remaining broad candidate fan-out still costs ~0.87 s/change. No full-duration p95/p99 claim follows from the diagnostic.
+PASS  summary: Verdict: **FAIL** — 1 budget row(s) MissedTarget.; workload id(s) idle-command-world, steady-unchanged-10000-steps, steady-execution-10000-targets, update-size-1, update-size-100, update-size-10000, whole-world-mode-switch, spawn-1000, reparent-100, inactive-target-comparison, lifecycle-cycles-1000; verdict token(s) NotMeasured, MissedTarget, WithinTarget; diagnostic: Status: **TEST-023 timing qualification Deferred by project-owner decision (2026-09-26); not measured at full duration.** This one-run 1 s warmup/2 s steady-window/five-repetition diagnostic asserts 19/19 correctness gates but does not establish full-duration p95/p99 or the 1,000-cycle plateau. Its one provisional whole-world preparation miss remains open; no target was revised. Before the kernel fixes, size-1 prepare took ~12 s; after them, 898936 us p95 in this diagnostic. See `artifacts/gc-026/profile/round2-phases.txt` for measured candidate, explanation, sorting and delta costs. The full catalogue was intentionally stopped at repetition 629/1000 on owner direction; it is not a passing run.
+PASS  deferred-consistency: the record is deferred, so no budget section claims 'Measured (full' or '- Decision: accept'
+
+ROWS: 10 declared in tests/GameCore.Benchmarks/Runtime/PerformanceBudgets.cs, 10 checked in artifacts/performance/BUDGET_DECISIONS.md
+DEFERRAL: Status: **TEST-023 timing qualification Deferred by project-owner decision (2026-09-26); not measured at full duration**. Functional correctness gates passed in a final single short diagnostic: 1 s warmup, 2 s steady windows, five change repetitions, 11 workloads and 19/19 gates. A default full-catalogue attempt was stopped at update-size-1 repetition 629/1000 after 916.7 s because the remaining broad candidate fan-out still costs ~0.87 s/change. No full-duration p95/p99 claim follows from the diagnostic.
+VERDICT: pass
+
+== 6. link.xml preservation (the GC-027 host-entry exception this gate reconciled) ==
+GameCore.Validation.Fixture: preserve=all types=0
+GameCore.Unity.Fixtures: preserve=all types=0
+GameCore.Unity.Adapters: preserve=None types=6
+GameCore.Unity.Runtime: preserve=None types=1
+/Users/yangcao/wkspace/gc-wt/w7-gate/unity/GameCore.Validation/Assets/link.xml preserves only the permitted fixture and PlayerLoop roots (sha256 dc9cc7ef1ad5a4e2d342d0cb132f61143f2e9fcd14222312804522e04221e9ba)
+
+== 7. the release clone: prepare it for real, check its own invariants, then delete it ==
+-- python3 tools/unity/prepare_gc017_release_project.py
+Marker-free release project: /Users/yangcao/wkspace/gc-wt/w7-gate/unity/GameCore.ReleaseCheck
+Build: UNITY_PROJECT=<above> ARTIFACTS=artifacts/faults/release tools/unity/build_probe.sh
+-- python3 tools/check_release_clone.py --clone unity/GameCore.ReleaseCheck
+
+== 3. ProbeArguments constructor call matches its parameter list ==
+   parameters: 16 | arguments: 16 | agreement: True
+
+== 4. every .cs balances ==
+   71 C# files | unbalanced: none
+
+== 5. kept modes wired, removed modes gone ==
+   removed Faults           absent everywhere: True
+   removed W5Gate           absent everywhere: True
+   removed Gc021            absent everywhere: True
+   removed LifecycleStress  absent everywhere: True
+   removed Replay           absent everywhere: True
+   removed W6Gate           absent everywhere: True
+   removed Recovery         absent everywhere: True
+   removed Benchmark        absent everywhere: True
+   removed W7Gate           absent everywhere: True
+   kept    MissingRegistration wired: True
+   kept    WorldDispatch    wired: True
+   kept    W1Gate           wired: True
+   kept    W2Gate           wired: True
+   kept    W3Gate           wired: True
+   kept    Narrative        wired: True
+   kept    Cards            wired: True
+   kept    W4Profile        wired: True
+   kept    Gc013            wired: True
+   kept    W4Gate           wired: True
+   kept    Gc018            wired: True
+   kept    Gc019            wired: True
+   kept    Traversal        wired: True
+   kept    CatalogCoverage  wired: True
+   kept    RecoverySmoke    wired: True
+   qualification/replay dependencies: none
+   testables: []
+   lock present: False
+   lock qualification/replay dependencies: none
+   Tests/ tree present: False
+   LifecyclePlayModeMatrix present: False
+
+VERDICT: clone is clean
+-- python3 tools/check_link_xml.py --project unity/GameCore.ReleaseCheck
+GameCore.Unity.Runtime: preserve=None types=1
+/Users/yangcao/wkspace/gc-wt/w7-gate/unity/GameCore.ReleaseCheck/Assets/link.xml preserves only the permitted fixture and PlayerLoop roots (sha256 dc9cc7ef1ad5a4e2d342d0cb132f61143f2e9fcd14222312804522e04221e9ba)
+-- negative direction: a planted removed-type reference must fail the clone check
+exit 1 ["Assets/GameCore.Validation/Runtime/ProbeRunner.cs -> ['Gc027Scenario']"]
+-- negative direction: an unwired kept mode must fail the clone check
+exit 1 ['kept    RecoverySmoke    wired: False']
+restored -> exit 0 ['VERDICT: clone is clean']
+-- the disposable clone is removed again: absent
+
+== 8. shell parse and python compile of every script this gate owns ==
+bash -n ok: tools/run_w7_gate.sh
+bash -n ok: tools/unity/run_w7_gate_probe.sh
+bash -n ok: tools/unity/run_recovery_smoke_probe.sh
+bash -n ok: tools/unity/run_w6_gate_probe.sh
+bash -n ok: tools/unity/build_probe.sh
+py_compile ok: tools/check_budget_record.py
+py_compile ok: tools/check_release_clone.py
+py_compile ok: tools/check_release_gate_free.py
+py_compile ok: tools/check_gate_sources.py
+py_compile ok: tools/check_link_xml.py
+py_compile ok: tools/unity/prepare_gc017_release_project.py
+
+== 9. Unity .meta generation (idempotent; fresh GUIDs for the new files only) ==
+created 0 meta file(s)
+
+== 10. the documentation validator ==
+Documentation validator self-test passed: 9 isolated positive/negative fixtures.
+Game Core documentation validation passed: 14 Markdown documents; local links, anchors, IDs, traceability, task DAG and wave ordering checked.
+No Unity builds, gameplay tests, runtime benchmarks, or remote URL checks were executed.
+
+== 11. every build/test/player command in this gate ==
+NotRun (pending orchestrator build host): no Unity, no .NET SDK, no Mono and no C# compiler exist on this
+machine, so nothing in tools/run_w7_gate.sh was executed. The checks above are interpreter-level only.
