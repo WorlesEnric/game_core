@@ -252,6 +252,32 @@ report a clean audit it never looked at, the audit step names both halves: the l
 and `tree=no project tree on this host` when there is none (or the computed tree verdict when the host has the tree,
 as the Editor does). The harness accepts either, so a run cannot claim the half it did not do.
 
+### 5.8 The combined world carries narrative + cards, and cannot carry traversal
+
+The task text says "ONE combined world mounting narrative + cards (+ traversal for TEST-021)", and 07 s5's own words
+are narrower and normative: *"One `CommandDriven` world contains the chapter quest packages, card table packages, and
+a small `NarrativeCardRewards` bridge plugin."* The traversal course cannot be a third tenant of that world, and the
+reason is a protocol constraint rather than an unimplemented feature:
+
+* **P-036**: *"A world chooses `FixedStep` or `CommandDriven` at creation; changing it requires checkpoint/recreation
+  in V1"* — one temporal model per world, so a world cannot be both. The traversal package ships
+  `TraversalRegistration.FixedStepRequest` (20 ms step, four-step catch-up, retained-debt policy, 07 s4.2), while the
+  card and narrative packages ship `CommandDrivenRequest`.
+* **P-037** is the other half: `CommandDriven` "admits one pending command or one wake per logical step". Putting the
+  card and narrative stages in a `FixedStep` world would make their steps time-driven, which is exactly the universal
+  tick the protocol refuses to impose (P-036's "No kernel rate, turn, or physics phase is prescribed").
+
+So the combined world is `CommandDriven` with the two families 07 s5 names, and the action family is exercised as its
+own table over its own fixed-step world on the same kernel binaries — which is what TEST-021 actually requires: *"Run
+all three reference compositions … Run the cross-template combination using the same kernel binaries and composition
+runtime."* Its acceptance is satisfied by four tables in five worlds on one kernel together with the
+`cross/no-action-surface-in-card-or-narrative` audit, not by a single world holding two temporal models.
+
+**Recorded as a decision, not a gap**: nothing is missing from the implementation, and 07 does not ask for the third
+tenant. If the orchestrator wants a fixed-step world carrying a *cross-family* pair as an extra stress case, that is a
+new row for a later task (a traversal + card world, whose card steps would advance on the course's own step policy)
+and it would need its own transcribed table to be meaningful.
+
 ## 6. Exact commands for the Linux build host
 
 Everything runs from the repository root. **Nothing below has been run.**
@@ -360,6 +386,14 @@ task wrote) were fixed here. The traversal worker's three table mismatches were 
    (twenty harnesses, each `PROBE_RUNS` times) plus this task's own, which is the strongest available reading of
    P-059's "with the same built kernel". The consequence is deliberate: a GC-024 gate run also fails if an earlier
    family probe regresses, which is exactly the intended reading of "the same revision".
+9. **The combined world holds two families, not three, and that is the normative reading** (see §5.8). 07 s5 says
+   "One `CommandDriven` world contains the chapter quest packages, card table packages, and a small
+   `NarrativeCardRewards` bridge plugin"; adding traversal's fixed-step stages would break P-036's one-temporal-model
+   rule for the world. TEST-021 is satisfied by all three compositions plus the cross-template combination running on
+   one kernel — which is what it asks for — and by `cross/no-action-surface-in-card-or-narrative`. If a reviewer reads
+   the task's "(+ traversal for TEST-021)" as requiring a third tenant in that one world, the answer is a protocol
+   conflict (P-036) rather than a missing implementation, and the follow-up would be a *new* row over a fixed-step
+   world carrying a cross-family pair.
 
 ## 9. Inventory proposals (PROPOSALS ONLY — the build host promotes after running)
 
