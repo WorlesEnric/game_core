@@ -134,6 +134,11 @@ namespace GameCore.Validation.ProbeHost
                     ProbeW5Gate.Run(report);
                     report.CompletePositive();
                 }
+                else if (arguments.Gc021)
+                {
+                    ProbeGc021.Run(report);
+                    report.CompletePositive();
+                }
                 else
                 {
                     RunAotRootsProbe(report);
@@ -227,6 +232,11 @@ namespace GameCore.Validation.ProbeHost
             if (arguments.W5Gate)
             {
                 return Named("W5Gate", "W5-GATE");
+            }
+
+            if (arguments.Gc021)
+            {
+                return Named("Gc021", "GC-021");
             }
 
             return new ProbeReport(

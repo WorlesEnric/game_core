@@ -108,6 +108,7 @@ for family in narrative cards; do
     gc021-checkpoint-carries-the-outbox-and-the-cursor \
     gc021-no-universal-effect-api \
     gc021-narrative-choice-is-observed \
+    gc021-reward-content-covers-the-observed-node \
     gc021-reward-obligation-is-durable-and-idempotent; do
     gc021_steps+=("\"name\": \"${family}/${base}\"")
     gc021_steps+=("\"name\": \"fixture:${family}/${base}\"")
