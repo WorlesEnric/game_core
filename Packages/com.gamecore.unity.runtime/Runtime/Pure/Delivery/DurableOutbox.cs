@@ -617,6 +617,7 @@ namespace GameCore.Execution.Delivery
 
             var order = new List<DeliveryObligation>(rows.Count);
             var cursorRows = new List<OutboxRecordValue>();
+            var declaredObligations = new HashSet<Id128>();
 
             for (int i = 0; i < rows.Count; i++)
             {
@@ -645,9 +646,35 @@ namespace GameCore.Execution.Delivery
                     return false;
                 }
 
+                if (row.OutboxId.IsDefault || row.DestinationId.IsDefault || row.IdempotencyKey.IsDefault)
+                {
+                    // Refused here rather than left to DeliveryKey's constructor, because this method's contract is to
+                    // refuse with a reason, not to throw: a row with an all-zero identity is a malformed document, and
+                    // validation belongs to the caller that can act on it (P-004, P-052).
+                    detail = "outbox row " + i.ToString(CultureInfo.InvariantCulture)
+                        + " has a default obligation, destination or external idempotency key; an all-zero identity "
+                        + "is never an identity (P-004).";
+                    return false;
+                }
+
+                if (row.Row == OutboxRowKind.Terminal && !declaredObligations.Contains(row.OutboxId))
+                {
+                    // A terminal record closes an obligation the document must therefore also carry; without the
+                    // obligation row a restore cannot tell what was closed, which the planner refuses for the same
+                    // reason (P-053).
+                    detail = "terminal row " + row.OutboxId.ToString()
+                        + " closes an obligation this section does not carry (P-053).";
+                    return false;
+                }
+
                 DeliveryObligation? existing;
                 if (!restored.tracked.TryGetValue(row.OutboxId, out existing) || existing == null)
                 {
+                    if (row.Row == OutboxRowKind.Obligation)
+                    {
+                        declaredObligations.Add(row.OutboxId);
+                    }
+
                     existing = new DeliveryObligation(
                         new DeliveryKey(row.OutboxId, row.DestinationId, row.IdempotencyKey),
                         row.PayloadSchema,
@@ -696,28 +723,36 @@ namespace GameCore.Execution.Delivery
                 // reinstated outbox answers "how many attempts, how many acknowledgements" with the same meaning a
                 // live one does (P-045). Nothing here is invented: every count below is read off a row's own recorded
                 // state and attempt count.
-                restored.DeliveryCount += (int)row.Attempts;
-                if (row.Attempts > 1U)
+                //
+                // Only the Obligation row contributes, because ToRecords emits an Obligation row *and* a Terminal row
+                // for one terminal obligation, both carrying the same state and attempt count; counting both would
+                // double every total (the journal path collapses them by identity in Fold, which is why this only
+                // matters on the checkpoint path).
+                if (row.Row == OutboxRowKind.Obligation)
                 {
-                    restored.RedeliveryCount += (int)(row.Attempts - 1U);
-                }
+                    restored.DeliveryCount += (int)row.Attempts;
+                    if (row.Attempts > 1U)
+                    {
+                        restored.RedeliveryCount += (int)(row.Attempts - 1U);
+                    }
 
-                switch (row.State)
-                {
-                    case OutboxDeliveryState.Acknowledged:
-                        restored.AcknowledgeCount++;
-                        break;
+                    switch (row.State)
+                    {
+                        case OutboxDeliveryState.Acknowledged:
+                            restored.AcknowledgeCount++;
+                            break;
 
-                    case OutboxDeliveryState.Rejected:
-                        restored.RejectCount++;
-                        break;
+                        case OutboxDeliveryState.Rejected:
+                            restored.RejectCount++;
+                            break;
 
-                    case OutboxDeliveryState.Compensated:
-                        restored.CompensateCount++;
-                        break;
+                        case OutboxDeliveryState.Compensated:
+                            restored.CompensateCount++;
+                            break;
 
-                    default:
-                        break;
+                        default:
+                            break;
+                    }
                 }
             }
 
@@ -729,12 +764,11 @@ namespace GameCore.Execution.Delivery
                     row.Cursor,
                     row.RetainedTerminalCount,
                     row.TerminalTotal);
-                if (row.PrunedTerminals > 0U && restored.PrunedTerminalCount == 0)
-                {
-                    // The source outbox's own pruning is reported through the cursor row, so a restored outbox
-                    // accounts for the records retention already dropped (P-043: no silent drop).
-                    restored.PrunedTerminalCount = (int)row.PrunedTerminals;
-                }
+                // The source outbox's own pruning is reported through its cursor rows, so a restored outbox accounts
+                // for every record retention already dropped (P-043: no silent drop). The counts are summed rather
+                // than taken from the first row, because they are per destination while this counter is the whole
+                // outbox's total; ValidateOutbox's one-cursor-per-destination rule is what prevents double counting.
+                restored.PrunedTerminalCount += (int)row.PrunedTerminals;
             }
 
             restored.AdoptOpenOrder(order);
@@ -787,20 +821,27 @@ namespace GameCore.Execution.Delivery
             code = DiagnosticCode.None;
             detail = string.Empty;
 
+            // Every terminal outcome advances the destination's cursor, because the cursor's total counts the
+            // destination's terminal records — not just its acknowledgements — and its retained count is what the
+            // pruning arithmetic is measured against. Only an acknowledgement moves the *reach*, so a destination
+            // that has refused an obligation and acknowledged another still reports an honest total instead of
+            // underflowing `PrunedTerminals` (P-045, P-043).
             if (state == OutboxDeliveryState.Acknowledged)
             {
                 AcknowledgeCount++;
-                AdvanceCursor(obligation);
+                AdvanceCursor(obligation, acknowledged: true);
                 return DeliveryOutcome.Acknowledged;
             }
 
             if (state == OutboxDeliveryState.Rejected)
             {
                 RejectCount++;
+                AdvanceCursor(obligation, acknowledged: false);
                 return DeliveryOutcome.Rejected;
             }
 
             CompensateCount++;
+            AdvanceCursor(obligation, acknowledged: false);
             return DeliveryOutcome.Compensated;
         }
 
@@ -840,30 +881,39 @@ namespace GameCore.Execution.Delivery
             }
         }
 
-        private void AdvanceCursor(DeliveryObligation obligation)
+        /// <summary>
+        /// Records one destination's terminal outcome in its cursor. The retained count is the destination's current
+        /// terminal list length, the total counts every terminal record it ever produced, and the reach advances only
+        /// on an acknowledgement — a refusal or a compensation closes an obligation without acknowledging a mutation
+        /// (P-045).
+        /// </summary>
+        private void AdvanceCursor(DeliveryObligation obligation, bool acknowledged)
         {
             Id128 destination = obligation.Key.DestinationId;
             uint retained = 0U;
-            uint total = 0U;
             if (terminalOrder.TryGetValue(destination, out List<Id128>? ids))
             {
                 retained = (uint)ids.Count;
             }
 
+            Id128 reach = obligation.Key.OutboxId;
+            uint total = 1U;
             if (cursors.TryGetValue(destination, out DeliveryCursor previous))
             {
                 total = previous.TerminalTotal + 1U;
+                if (!acknowledged)
+                {
+                    reach = previous.NewestAcknowledged;
+                }
             }
-            else
+            else if (!acknowledged)
             {
-                total = 1U;
+                // No acknowledgement has happened yet, so the reach is honestly unset rather than pointing at an
+                // obligation nobody confirmed.
+                reach = default(Id128);
             }
 
-            cursors[destination] = new DeliveryCursor(
-                destination,
-                obligation.Key.OutboxId,
-                retained,
-                total);
+            cursors[destination] = new DeliveryCursor(destination, reach, retained, total);
         }
 
         private static int CompareByOrder(DeliveryObligation left, DeliveryObligation right)

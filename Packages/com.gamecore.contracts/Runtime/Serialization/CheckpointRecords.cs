@@ -1353,8 +1353,15 @@ namespace GameCore.Contracts
             return copy;
         }
 
-        /// <summary>True when this row is still an unacknowledged obligation the world must deliver (P-045).</summary>
-        public bool IsOpen => Row == OutboxRowKind.Obligation && State == OutboxDeliveryState.Pending;
+        /// <summary>
+        /// True when this row names an obligation that is still owed: `Pending` (not handed over yet) or `Delivered`
+        /// (handed over, the destination's outcome unknown). A `Delivered` row is deliberately open, because a
+        /// checkpoint taken in the acknowledgement-loss window must reinstate an obligation a redelivery can settle
+        /// (P-045).
+        /// </summary>
+        public bool IsOpen =>
+            Row == OutboxRowKind.Obligation
+            && (State == OutboxDeliveryState.Pending || State == OutboxDeliveryState.Delivered);
 
         public override string ToString() =>
             "outbox(" + Row.ToString() + ",v" + RecordVersion.ToString(CultureInfo.InvariantCulture) + ","

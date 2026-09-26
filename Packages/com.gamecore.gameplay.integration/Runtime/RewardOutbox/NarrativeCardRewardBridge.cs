@@ -192,16 +192,20 @@ namespace GameCore.Gameplay.Integration.RewardOutbox
             int missingBefore = Destination.MissingCount;
             int rejectedBefore = Owner.RejectedCount;
             int compensatedBefore = Owner.CompensatedCount;
+            int observedBefore = Owner.ObservedEventCount;
+            int recognisedBefore = RecognisedCount;
 
             int read = Owner.PollCommittedEvents(this, causal, maxEvents);
             EnqueuedCount = Owner.EnqueuedCount;
 
             int dispatched = Owner.DispatchOpenObligations(maxDispatches);
 
+            // Every field of the report is this pass's delta, including the two that read from the owner and this
+            // bridge. A later pass that reads nothing must report zero, not the earlier pass's totals (P-052).
             var report = new RewardBridgePassReport(
-                Owner.ObservedEventCount,
+                Owner.ObservedEventCount - observedBefore,
                 Owner.EnqueuedCount - before,
-                RecognisedCount,
+                RecognisedCount - recognisedBefore,
                 dispatched,
                 Owner.AcknowledgedCount - ackedBefore,
                 Destination.AlreadyPresentCount - appliedBefore,

@@ -363,8 +363,14 @@ namespace GameCore.Execution.Delivery
         /// <summary>The diagnostic reason recorded with a terminal refusal or compensation (P-052).</summary>
         public DiagnosticCode Reason { get; internal set; }
 
-        /// <summary>True when this obligation still owes the destination a mutation (P-045).</summary>
-        public bool IsOpen => State == OutboxDeliveryState.Pending;
+        /// <summary>
+        /// True when this obligation still owes the destination something: it has not been handed over yet
+        /// (`Pending`) or it was handed over and the destination's outcome is not known (`Delivered`). Only
+        /// `Acknowledged`, `Rejected` and `Compensated` are terminal, so a delivery whose acknowledgement was lost
+        /// stays redeliverable — which is what P-045's at-least-once contract requires.
+        /// </summary>
+        public bool IsOpen =>
+            State == OutboxDeliveryState.Pending || State == OutboxDeliveryState.Delivered;
 
         public bool IsTerminal => !IsOpen;
 
