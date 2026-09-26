@@ -253,6 +253,50 @@ namespace GameCore.Contracts.Tests
             AssertRejected(report, DiagnosticCode.CapabilityConflict, "without a composition policy");
         }
 
+        /// <summary>
+        /// P-019: "Every output slot MUST choose exactly one policy below. Mixed policies for the same
+        /// contract/slot are catalog errors." The missing-policy half is covered above; this is the mixed half —
+        /// two policies naming the same slot — and it must reject before activation rather than let one policy win
+        /// by declaration order.
+        /// </summary>
+        [Test]
+        public void TwoCompositionPoliciesForOneOutputSlotRejectAsCapabilityConflict()
+        {
+            PluginManifest manifest = ValidManifest();
+            var capability = new CapabilityContract(
+                new CapabilityRef(new CapabilityId(CapabilityB), 1U),
+                1,
+                new[] { new OutputSlotSchema(new SlotId(SlotOne), ComponentSchema) },
+                new[]
+                {
+                    new SlotCompositionPolicy(new SlotId(SlotOne), CompositionPolicy.Replace, new FactoryKey(ReducerKeyId, 1U)),
+                    new SlotCompositionPolicy(new SlotId(SlotOne), CompositionPolicy.Additive, new FactoryKey(ReducerKeyId, 1U)),
+                },
+                null);
+
+            ManifestValidationReport report = Validate(WithCapabilities(manifest, new[] { capability }));
+            AssertRejected(report, DiagnosticCode.CapabilityConflict, "two composition policies for slot");
+        }
+
+        /// <summary>
+        /// The same rule read the other way round: a policy naming a slot the contract does not declare is also a
+        /// catalog error, so a policy can neither be ambiguous nor homeless (P-019, P-009).
+        /// </summary>
+        [Test]
+        public void ACompositionPolicyForAnUndeclaredOutputSlotRejects()
+        {
+            PluginManifest manifest = ValidManifest();
+            var capability = new CapabilityContract(
+                new CapabilityRef(new CapabilityId(CapabilityB), 1U),
+                1,
+                new[] { new OutputSlotSchema(new SlotId(SlotOne), ComponentSchema) },
+                new[] { new SlotCompositionPolicy(new SlotId(new Id128(0x8000000000000002UL, 0x0000000000000002UL)), CompositionPolicy.Replace, new FactoryKey(ReducerKeyId, 1U)) },
+                null);
+
+            ManifestValidationReport report = Validate(WithCapabilities(manifest, new[] { capability }));
+            AssertRejected(report, DiagnosticCode.CapabilityConflict, "undeclared output slot");
+        }
+
         [Test]
         public void CapabilityStratumOutsideTheDeclaredRangeRejects()
         {
