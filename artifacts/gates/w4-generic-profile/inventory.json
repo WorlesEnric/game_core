@@ -3439,5 +3439,146 @@
     "notProposed": [
       "Every requirement row not listed in proposedRows is unchanged and unproposed, including P-049 (O-22 RecoverWorld, GC-027) and P-007/P-045's long-run retention budgets (GC-021/GC-026)."
     ]
+  },
+  "gc021Revisions": {
+    "task": "GC-021",
+    "branch": "gc-021",
+    "verdict": "NotRun (pending orchestrator build host): nothing in this change set has been compiled or executed. This section promotes NOTHING; every row below is a proposal naming the observation that would carry it and the artifacts the build host must first produce.",
+    "statusOfThisSection": "Proposals only. No requirement or operation row was promoted, and counts are unchanged.",
+    "objective": "Support cross-family/external committed delivery without pretending in-memory events are durable exactly once: a versioned bounded outbox created at commit, explicit destination command idempotency keys, acknowledgment/cursor retention, checkpoint integration, a file-backed durable adapter with deterministic crash points, and a narrative-to-card reward integration with explicit compensation or rejection for unsupported destination state.",
+    "normativeSections": [
+      "P-003",
+      "P-042",
+      "P-043",
+      "P-044",
+      "P-045",
+      "P-049",
+      "P-050",
+      "P-053",
+      "P-054"
+    ],
+    "requiredSuites": [
+      "TEST-013",
+      "TEST-014",
+      "TEST-015",
+      "TEST-016",
+      "TEST-017"
+    ],
+    "observationNames": [
+      "gc021-key-is-derived-from-committed-data",
+      "gc021-commit-persists-before-apply",
+      "gc021-crash-after-delivery-loses-the-acknowledgement",
+      "gc021-redelivery-applies-the-mutation-once",
+      "gc021-capacity-exhaustion-is-never-a-silent-drop",
+      "gc021-volatile-delivery-is-distinguishable-from-durable",
+      "gc021-obligation-survives-the-source-world-unload",
+      "gc021-checkpoint-carries-the-outbox-and-the-cursor",
+      "gc021-no-universal-effect-api",
+      "gc021-narrative-choice-is-observed",
+      "gc021-reward-obligation-is-durable-and-idempotent"
+    ],
+    "digests": {
+      "algorithm": "SHA-256 over the LF-joined '<label>/<name>=pass' lines, no trailing newline (GameCore.Rules.Narrative.NarrativeDigest.OfLines)",
+      "narrative": "PENDING - the literal is computed from the observation names and pass flags and cannot be known before the sequence first runs; the build host pins it after the first passing run",
+      "cards": "PENDING - as above",
+      "recomputedOnAuthoringHost": false,
+      "note": "ProbeGc021 ships both literals as PENDING and run_gc021_probe.sh asserts the falsifiable cross-catalog equality (generatedDigest == fixtureDigest) until they are pinned. No literal was invented."
+    },
+    "proposedRows": [
+      {
+        "id": "P-045",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "GC-021's own row. A durable outbox with explicit external idempotency keys, persist-then-apply ordering, acknowledgement cursors and a checkpoint section now exists, and redelivery after acknowledgement loss applies the destination mutation once because the key is derived from the committed event rather than minted per attempt. Delivery is implemented and documented as at-least-once with destination deduplication, never as exactly-once.",
+        "statusUnchangedBecause": "The full normative contract still includes retention/dedup behaviour under memory pressure (GC-023), recovery composition (GC-027) and the real-family world probe, none of which this authoring host could execute.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-021/trx/",
+          "artifacts/gc-021/toolchain/probe-gc021.json",
+          "artifacts/gc-021/unity/delivery-editmode.xml",
+          "artifacts/gc-021/BUILD_REPORT.md"
+        ],
+        "observation": "gc021-redelivery-applies-the-mutation-once (with destinationMutations=1 and redeliveredMutations=1 in the step detail)"
+      },
+      {
+        "id": "P-053",
+        "currentStatus": "Implemented+Evidenced",
+        "proposedStatus": "Implemented+Evidenced",
+        "whatChanged": "The 'external outbox/dedup cursors when used' clause now has a representation where it previously had none: CheckpointRecordKind.Outbox with Obligation/Terminal/Cursor rows, a capture path, three planner refusals for a self-contradicting section, and a restore reinstate-and-prove seam.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-021/toolchain/probe-gc021.json",
+          "artifacts/gc-021/trx/"
+        ],
+        "observation": "gc021-checkpoint-carries-the-outbox-and-the-cursor (with headerOutboxCount= in the detail)"
+      },
+      {
+        "id": "P-003",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "Acknowledging a delivery is idempotent, a terminal rejection or compensation is irreversible, and the task adds no universal gameplay Effect API: the delivery surface is asserted to expose no Undo/Revert/Rollback/Effect member.",
+        "statusUnchangedBecause": "The row's remaining gap is the unload-with-committed-gameplay survival path, which is a world-level observation GC-021's own probe and GC-022 own.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-021/toolchain/probe-gc021.json"
+        ],
+        "observation": "gc021-no-universal-effect-api (with reverseMembers=0 in the detail)"
+      },
+      {
+        "id": "P-043",
+        "currentStatus": "Implemented+Evidenced",
+        "proposedStatus": "Implemented+Evidenced",
+        "whatChanged": "Capacity and terminal retention are bounded and their refusals and prunes are counted (BudgetExceeded on capacity, PrunedTerminalCount on retention), which is the 'no silent drop' rule applied to an outbox rather than a buffer.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-021/toolchain/probe-gc021.json",
+          "artifacts/gc-021/trx/"
+        ],
+        "observation": "gc021-capacity-exhaustion-is-never-a-silent-drop (with atCapacity=True and capacityCode=BudgetExceeded)"
+      },
+      {
+        "id": "P-050",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "The external idempotency key and the obligation identity are both derived from committed data, so one attempt reuses one identity across a crash and a recovery; the adapter records the obligation's causal OperationId.",
+        "statusUnchangedBecause": "Bounded retry attempts and staged/expired operation status remain open elsewhere (GC-014, GC-027).",
+        "evidenceToBeProduced": [
+          "artifacts/gc-021/toolchain/probe-gc021.json",
+          "artifacts/gc-021/trx/"
+        ],
+        "observation": "gc021-redelivery-applies-the-mutation-once"
+      },
+      {
+        "id": "P-049",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "A committed delivery obligation is reinstated from a checkpoint into a new session and recovered explicitly, with no hidden automatic replay: the source world is unloaded and the new session still owes the destination.",
+        "statusUnchangedBecause": "O-22 RecoverWorld remains uncomposed (GC-027) and host-configured bounded retries are not implemented by this task.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-021/toolchain/probe-gc021.json"
+        ],
+        "observation": "gc021-obligation-survives-the-source-world-unload (with sessionsDiffer=True and rowsReinstated=)"
+      },
+      {
+        "id": "P-054",
+        "currentStatus": "Implemented+Evidenced",
+        "proposedStatus": "Implemented+Evidenced",
+        "whatChanged": "The outbox row is versioned (RecordVersion) and fram-checked (format header, field count, field widths, checksum), and a row from an unknown version or of an unknown kind is refused rather than decoded; the reward payload carries its own version byte.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-021/trx/"
+        ],
+        "observation": "ARowFrameWithATamperedByteOrAnotherVersionIsRefusedRatherThanDecoded, ARestoreRefusesARowFromAnUnknownRecordVersionOrOfAnUnknownKind (dotnet, no probe step)"
+      }
+    ],
+    "implementation": {
+      "format": "CheckpointRecordKind.Outbox = 12 (appended; RecordKindCount 13), OutboxRecordValue (27 fields), OutboxRowKind/OutboxDeliveryState/OutboxDurability, HeaderRecordValue.OutboxCount (field 40)",
+      "engineFreeCore": "Packages/com.gamecore.unity.runtime/Runtime/Pure/Delivery/{DeliveryKey,DurableOutbox,DurableDeliveryAdapter}.cs",
+      "worldOwner": "Packages/com.gamecore.unity.runtime/Runtime/Delivery/WorldDeliveryOwner.cs",
+      "integration": "Packages/com.gamecore.gameplay.integration/Runtime/RewardOutbox/{RewardRule,RewardPayloadCodec,CardRewardDestination,NarrativeCardRewardBridge}.cs",
+      "tests": "Packages/com.gamecore.unity.runtime/Tests/Delivery/{DeliveryOutboxTests,DeliveryCrashFixture}.cs",
+      "harness": "tools/unity/run_gc021_probe.sh"
+    },
+    "limits": [
+      "No Unity world ran and no player was built: the Unity-world half of the task's acceptance is the gc021 probe/EditMode pair and its evidence does not exist yet.",
+      "The two digest literals are PENDING by design; nothing was invented to fill them.",
+      "O-22 RecoverWorld is untouched; P-049's bounded retry clause is not implemented here.",
+      "The reward bridge's narrative node and the card transfer's outcome are content-dependent real observables; a refusal is reported as a refusal rather than asserted away."
+    ]
   }
 }

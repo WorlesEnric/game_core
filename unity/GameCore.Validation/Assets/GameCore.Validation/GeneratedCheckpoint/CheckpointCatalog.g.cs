@@ -40,7 +40,7 @@ namespace GameCore.Validation.GeneratedCheckpoint
         public const string CatalogFingerprintScope = "SHA-256 over, in this fixed order: (1) every registered factory key in canonical ascending order as 16-byte big-endian id, 4-byte big-endian key version, 4-byte big-endian factory kind, 16-byte big-endian owner package id, 16-byte big-endian implementation id, 4-byte big-endian contract version; (2) every accepted schema in ascending schema-id order as 16-byte big-endian id, 4-byte big-endian schema version, one byte 1 when required and 0 when optional, 16-byte big-endian serializer key id, 4-byte big-endian serializer key version, 16-byte big-endian owner package id; (3) every supported feature id in ascending order as 16 bytes. Declaration order, registration timing, machine paths and timestamps are excluded (P-008, P-028, P-053).";
 
         /// <summary>Canonical fingerprint of the registrations below (P-028, P-053).</summary>
-        public const string CatalogFingerprint = "9e8ea3d1d727b900e0078a270df9427ed341b0e9a74cbf28140198307f65226a";
+        public const string CatalogFingerprint = "2d931c984b3bcf3f995a0f88bc82708b0d07e4395fcad44019ebc033126a0eb5";
 
         /// <summary>Supported protocol feature ids, in canonical identity order (P-055).</summary>
         public static readonly Id128[] SupportedFeatureIds =
@@ -71,6 +71,9 @@ namespace GameCore.Validation.GeneratedCheckpoint
 
         /// <summary>Generated serializer key of schema 744d60d006798058b50b656c613a21f3 ('gamecore.checkpoint.schema.message').</summary>
         public static readonly FactoryKey MessageRecordSerializerKey = new FactoryKey(new Id128(0x744D60D006798058UL, 0xB50B656C613A21F3UL), 1U);
+
+        /// <summary>Generated serializer key of schema ac96339bd83d4a4ca453b3f4e46e4639 ('gamecore.checkpoint.schema.outbox').</summary>
+        public static readonly FactoryKey OutboxRecordSerializerKey = new FactoryKey(new Id128(0xAC96339BD83D4A4CUL, 0xA453B3F4E46E4639UL), 1U);
 
         /// <summary>Generated serializer key of schema b780328c6fa158f7bd88603db3ebae2f ('gamecore.checkpoint.schema.target').</summary>
         public static readonly FactoryKey TargetRecordSerializerKey = new FactoryKey(new Id128(0xB780328C6FA158F7UL, 0xBD88603DB3EBAE2FUL), 1U);
@@ -126,6 +129,11 @@ namespace GameCore.Validation.GeneratedCheckpoint
                 new SchemaRef(new SchemaId(new Id128(0x744D60D006798058UL, 0xB50B656C613A21F3UL)), 1U),
                 new Id128(0x0000000000000000UL, 0x0000000000000000UL),
                 MessageRecordSerializerKey,
+                true),
+            new SchemaRegistration(
+                new SchemaRef(new SchemaId(new Id128(0xAC96339BD83D4A4CUL, 0xA453B3F4E46E4639UL)), 1U),
+                new Id128(0x0000000000000000UL, 0x0000000000000000UL),
+                OutboxRecordSerializerKey,
                 true),
             new SchemaRegistration(
                 new SchemaRef(new SchemaId(new Id128(0xB780328C6FA158F7UL, 0xBD88603DB3EBAE2FUL)), 1U),
@@ -3686,6 +3694,739 @@ namespace GameCore.Validation.GeneratedCheckpoint
         }
 
         /// <summary>
+        /// Generated value of schema ac96339bd83d4a4ca453b3f4e46e4639 ('gamecore.checkpoint.schema.outbox').
+        /// Fields are declared in ascending field-id order, which is also the wire order (05 s6).
+        /// </summary>
+        public readonly struct OutboxRecordValue
+        {
+            /// <summary>Field id 1, wire type UInt32, required.</summary>
+            public readonly uint RowKind;
+            /// <summary>Field id 2, wire type UInt32, required.</summary>
+            public readonly uint RecordVersion;
+            /// <summary>Field id 3, wire type UInt64, required.</summary>
+            public readonly ulong OutboxHigh;
+            /// <summary>Field id 4, wire type UInt64, required.</summary>
+            public readonly ulong OutboxLow;
+            /// <summary>Field id 5, wire type UInt64, required.</summary>
+            public readonly ulong DestinationHigh;
+            /// <summary>Field id 6, wire type UInt64, required.</summary>
+            public readonly ulong DestinationLow;
+            /// <summary>Field id 7, wire type UInt64, required.</summary>
+            public readonly ulong IdempotencyHigh;
+            /// <summary>Field id 8, wire type UInt64, required.</summary>
+            public readonly ulong IdempotencyLow;
+            /// <summary>Field id 9, wire type UInt64, required.</summary>
+            public readonly ulong SourceEventSequence;
+            /// <summary>Field id 10, wire type UInt64, required.</summary>
+            public readonly ulong SourceStep;
+            /// <summary>Field id 11, wire type UInt64, required.</summary>
+            public readonly ulong SourceEpoch;
+            /// <summary>Field id 12, wire type UInt64, required.</summary>
+            public readonly ulong CausalIssuerHigh;
+            /// <summary>Field id 13, wire type UInt64, required.</summary>
+            public readonly ulong CausalIssuerLow;
+            /// <summary>Field id 14, wire type UInt64, required.</summary>
+            public readonly ulong CausalIssuerSequence;
+            /// <summary>Field id 15, wire type UInt64, required.</summary>
+            public readonly ulong PayloadSchemaHigh;
+            /// <summary>Field id 16, wire type UInt64, required.</summary>
+            public readonly ulong PayloadSchemaLow;
+            /// <summary>Field id 17, wire type UInt32, required.</summary>
+            public readonly uint PayloadSchemaVersion;
+            /// <summary>Field id 18, wire type UInt32, required.</summary>
+            public readonly uint DeliveryState;
+            /// <summary>Field id 19, wire type UInt32, required.</summary>
+            public readonly uint ReasonCode;
+            /// <summary>Field id 20, wire type UInt32, required.</summary>
+            public readonly uint AttemptCount;
+            /// <summary>Field id 21, wire type UInt32, required.</summary>
+            public readonly uint Durability;
+            /// <summary>Field id 22, wire type UInt32, required.</summary>
+            public readonly uint OrderOrdinal;
+            /// <summary>Field id 23, wire type UInt64, required.</summary>
+            public readonly ulong CursorHigh;
+            /// <summary>Field id 24, wire type UInt64, required.</summary>
+            public readonly ulong CursorLow;
+            /// <summary>Field id 25, wire type UInt32, required.</summary>
+            public readonly uint CursorCount;
+            /// <summary>Field id 26, wire type UInt32, required.</summary>
+            public readonly uint PrunedCount;
+            /// <summary>Field id 27, wire type Bytes, required.</summary>
+            public readonly byte[]? Payload;
+
+            public OutboxRecordValue(uint rowKind, uint recordVersion, ulong outboxHigh, ulong outboxLow, ulong destinationHigh, ulong destinationLow, ulong idempotencyHigh, ulong idempotencyLow, ulong sourceEventSequence, ulong sourceStep, ulong sourceEpoch, ulong causalIssuerHigh, ulong causalIssuerLow, ulong causalIssuerSequence, ulong payloadSchemaHigh, ulong payloadSchemaLow, uint payloadSchemaVersion, uint deliveryState, uint reasonCode, uint attemptCount, uint durability, uint orderOrdinal, ulong cursorHigh, ulong cursorLow, uint cursorCount, uint prunedCount, byte[]? payload)
+            {
+                RowKind = rowKind;
+                RecordVersion = recordVersion;
+                OutboxHigh = outboxHigh;
+                OutboxLow = outboxLow;
+                DestinationHigh = destinationHigh;
+                DestinationLow = destinationLow;
+                IdempotencyHigh = idempotencyHigh;
+                IdempotencyLow = idempotencyLow;
+                SourceEventSequence = sourceEventSequence;
+                SourceStep = sourceStep;
+                SourceEpoch = sourceEpoch;
+                CausalIssuerHigh = causalIssuerHigh;
+                CausalIssuerLow = causalIssuerLow;
+                CausalIssuerSequence = causalIssuerSequence;
+                PayloadSchemaHigh = payloadSchemaHigh;
+                PayloadSchemaLow = payloadSchemaLow;
+                PayloadSchemaVersion = payloadSchemaVersion;
+                DeliveryState = deliveryState;
+                ReasonCode = reasonCode;
+                AttemptCount = attemptCount;
+                Durability = durability;
+                OrderOrdinal = orderOrdinal;
+                CursorHigh = cursorHigh;
+                CursorLow = cursorLow;
+                CursorCount = cursorCount;
+                PrunedCount = prunedCount;
+                Payload = payload;
+            }
+
+            /// <summary>Diagnostic form; never used as an identity (P-004).</summary>
+            public override string ToString()
+            {
+                return "OutboxRecordValue(RowKind=" + RowKind + ", RecordVersion=" + RecordVersion + ", OutboxHigh=" + OutboxHigh + ", OutboxLow=" + OutboxLow + ", DestinationHigh=" + DestinationHigh + ", DestinationLow=" + DestinationLow + ", IdempotencyHigh=" + IdempotencyHigh + ", IdempotencyLow=" + IdempotencyLow + ", SourceEventSequence=" + SourceEventSequence + ", SourceStep=" + SourceStep + ", SourceEpoch=" + SourceEpoch + ", CausalIssuerHigh=" + CausalIssuerHigh + ", CausalIssuerLow=" + CausalIssuerLow + ", CausalIssuerSequence=" + CausalIssuerSequence + ", PayloadSchemaHigh=" + PayloadSchemaHigh + ", PayloadSchemaLow=" + PayloadSchemaLow + ", PayloadSchemaVersion=" + PayloadSchemaVersion + ", DeliveryState=" + DeliveryState + ", ReasonCode=" + ReasonCode + ", AttemptCount=" + AttemptCount + ", Durability=" + Durability + ", OrderOrdinal=" + OrderOrdinal + ", CursorHigh=" + CursorHigh + ", CursorLow=" + CursorLow + ", CursorCount=" + CursorCount + ", PrunedCount=" + PrunedCount + ", Payload=" + (Payload ?? Array.Empty<byte>()).Length.ToString() + ")";
+            }
+        }
+
+        /// <summary>
+        /// Generated serializer of schema ac96339bd83d4a4ca453b3f4e46e4639 version 1. Canonical envelope format only: no reflection,
+        /// no dynamic type construction (05 s6, P-054).
+        /// </summary>
+        public sealed class OutboxRecordSerializer : GeneratedSerializerBase
+        {
+            private static readonly GeneratedFieldSlot[] DeclaredFieldSlots =
+            {
+                new GeneratedFieldSlot(1, WireType.UInt32, true),
+                new GeneratedFieldSlot(2, WireType.UInt32, true),
+                new GeneratedFieldSlot(3, WireType.UInt64, true),
+                new GeneratedFieldSlot(4, WireType.UInt64, true),
+                new GeneratedFieldSlot(5, WireType.UInt64, true),
+                new GeneratedFieldSlot(6, WireType.UInt64, true),
+                new GeneratedFieldSlot(7, WireType.UInt64, true),
+                new GeneratedFieldSlot(8, WireType.UInt64, true),
+                new GeneratedFieldSlot(9, WireType.UInt64, true),
+                new GeneratedFieldSlot(10, WireType.UInt64, true),
+                new GeneratedFieldSlot(11, WireType.UInt64, true),
+                new GeneratedFieldSlot(12, WireType.UInt64, true),
+                new GeneratedFieldSlot(13, WireType.UInt64, true),
+                new GeneratedFieldSlot(14, WireType.UInt64, true),
+                new GeneratedFieldSlot(15, WireType.UInt64, true),
+                new GeneratedFieldSlot(16, WireType.UInt64, true),
+                new GeneratedFieldSlot(17, WireType.UInt32, true),
+                new GeneratedFieldSlot(18, WireType.UInt32, true),
+                new GeneratedFieldSlot(19, WireType.UInt32, true),
+                new GeneratedFieldSlot(20, WireType.UInt32, true),
+                new GeneratedFieldSlot(21, WireType.UInt32, true),
+                new GeneratedFieldSlot(22, WireType.UInt32, true),
+                new GeneratedFieldSlot(23, WireType.UInt64, true),
+                new GeneratedFieldSlot(24, WireType.UInt64, true),
+                new GeneratedFieldSlot(25, WireType.UInt32, true),
+                new GeneratedFieldSlot(26, WireType.UInt32, true),
+                new GeneratedFieldSlot(27, WireType.Bytes, true),
+            };
+
+            public OutboxRecordSerializer()
+                : base(
+                    OutboxRecordSerializerKey,
+                    new SchemaRef(new SchemaId(new Id128(0xAC96339BD83D4A4CUL, 0xA453B3F4E46E4639UL)), 1U),
+                    SupportedFeatureIds)
+            {
+            }
+
+            /// <summary>Declared fields in ascending field-id order.</summary>
+            protected override IReadOnlyList<GeneratedFieldSlot> DeclaredFields => DeclaredFieldSlots;
+
+            /// <summary>Writes one value as a canonical envelope document with a trailing checksum.</summary>
+            public byte[] Serialize(OutboxRecordValue value)
+            {
+                EnvelopeWriter writer = CreateWriter();
+                writer.WriteUInt32Field(1, value.RowKind);
+                writer.WriteUInt32Field(2, value.RecordVersion);
+                writer.WriteUInt64Field(3, value.OutboxHigh);
+                writer.WriteUInt64Field(4, value.OutboxLow);
+                writer.WriteUInt64Field(5, value.DestinationHigh);
+                writer.WriteUInt64Field(6, value.DestinationLow);
+                writer.WriteUInt64Field(7, value.IdempotencyHigh);
+                writer.WriteUInt64Field(8, value.IdempotencyLow);
+                writer.WriteUInt64Field(9, value.SourceEventSequence);
+                writer.WriteUInt64Field(10, value.SourceStep);
+                writer.WriteUInt64Field(11, value.SourceEpoch);
+                writer.WriteUInt64Field(12, value.CausalIssuerHigh);
+                writer.WriteUInt64Field(13, value.CausalIssuerLow);
+                writer.WriteUInt64Field(14, value.CausalIssuerSequence);
+                writer.WriteUInt64Field(15, value.PayloadSchemaHigh);
+                writer.WriteUInt64Field(16, value.PayloadSchemaLow);
+                writer.WriteUInt32Field(17, value.PayloadSchemaVersion);
+                writer.WriteUInt32Field(18, value.DeliveryState);
+                writer.WriteUInt32Field(19, value.ReasonCode);
+                writer.WriteUInt32Field(20, value.AttemptCount);
+                writer.WriteUInt32Field(21, value.Durability);
+                writer.WriteUInt32Field(22, value.OrderOrdinal);
+                writer.WriteUInt64Field(23, value.CursorHigh);
+                writer.WriteUInt64Field(24, value.CursorLow);
+                writer.WriteUInt32Field(25, value.CursorCount);
+                writer.WriteUInt32Field(26, value.PrunedCount);
+                writer.WriteBytesField(27, value.Payload);
+                writer.WriteChecksum();
+                return writer.ToArray();
+            }
+
+            /// <summary>
+            /// Validates one document against this schema and decodes its declared fields. A false result
+            /// reports the exact envelope error and leaves the value at its default.
+            /// </summary>
+            public bool TryDeserialize(byte[] document, out OutboxRecordValue value, out EnvelopeError error)
+            {
+                value = default(OutboxRecordValue);
+                GeneratedFieldBuffer buffer = new GeneratedFieldBuffer();
+                if (!TryReadDeclaredFields(document, buffer, out error))
+                {
+                    return false;
+                }
+
+                EnvelopeReader reader = new EnvelopeReader(document);
+                uint value0 = default(uint);
+                uint value1 = default(uint);
+                ulong value2 = default(ulong);
+                ulong value3 = default(ulong);
+                ulong value4 = default(ulong);
+                ulong value5 = default(ulong);
+                ulong value6 = default(ulong);
+                ulong value7 = default(ulong);
+                ulong value8 = default(ulong);
+                ulong value9 = default(ulong);
+                ulong value10 = default(ulong);
+                ulong value11 = default(ulong);
+                ulong value12 = default(ulong);
+                ulong value13 = default(ulong);
+                ulong value14 = default(ulong);
+                ulong value15 = default(ulong);
+                uint value16 = default(uint);
+                uint value17 = default(uint);
+                uint value18 = default(uint);
+                uint value19 = default(uint);
+                uint value20 = default(uint);
+                uint value21 = default(uint);
+                ulong value22 = default(ulong);
+                ulong value23 = default(ulong);
+                uint value24 = default(uint);
+                uint value25 = default(uint);
+                byte[]? value26 = default(byte[]?);
+                for (int i = 0; i < buffer.Count; i++)
+                {
+                    EnvelopeField recorded = buffer.Field(i);
+                    if (!reader.TrySeekTo(buffer.RecordOffset(i)))
+                    {
+                        error = reader.LastError;
+                        return false;
+                    }
+
+                    switch (recorded.FieldId)
+                    {
+                        case 1:
+                        {
+                            if (!reader.TryReadField(out EnvelopeField field0))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            uint field0Value;
+                            if (!reader.TryReadUInt32(field0, out field0Value))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            value0 = field0Value;
+                            break;
+                        }
+                        case 2:
+                        {
+                            if (!reader.TryReadField(out EnvelopeField field1))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            uint field1Value;
+                            if (!reader.TryReadUInt32(field1, out field1Value))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            value1 = field1Value;
+                            break;
+                        }
+                        case 3:
+                        {
+                            if (!reader.TryReadField(out EnvelopeField field2))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            ulong field2Value;
+                            if (!reader.TryReadUInt64(field2, out field2Value))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            value2 = field2Value;
+                            break;
+                        }
+                        case 4:
+                        {
+                            if (!reader.TryReadField(out EnvelopeField field3))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            ulong field3Value;
+                            if (!reader.TryReadUInt64(field3, out field3Value))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            value3 = field3Value;
+                            break;
+                        }
+                        case 5:
+                        {
+                            if (!reader.TryReadField(out EnvelopeField field4))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            ulong field4Value;
+                            if (!reader.TryReadUInt64(field4, out field4Value))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            value4 = field4Value;
+                            break;
+                        }
+                        case 6:
+                        {
+                            if (!reader.TryReadField(out EnvelopeField field5))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            ulong field5Value;
+                            if (!reader.TryReadUInt64(field5, out field5Value))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            value5 = field5Value;
+                            break;
+                        }
+                        case 7:
+                        {
+                            if (!reader.TryReadField(out EnvelopeField field6))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            ulong field6Value;
+                            if (!reader.TryReadUInt64(field6, out field6Value))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            value6 = field6Value;
+                            break;
+                        }
+                        case 8:
+                        {
+                            if (!reader.TryReadField(out EnvelopeField field7))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            ulong field7Value;
+                            if (!reader.TryReadUInt64(field7, out field7Value))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            value7 = field7Value;
+                            break;
+                        }
+                        case 9:
+                        {
+                            if (!reader.TryReadField(out EnvelopeField field8))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            ulong field8Value;
+                            if (!reader.TryReadUInt64(field8, out field8Value))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            value8 = field8Value;
+                            break;
+                        }
+                        case 10:
+                        {
+                            if (!reader.TryReadField(out EnvelopeField field9))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            ulong field9Value;
+                            if (!reader.TryReadUInt64(field9, out field9Value))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            value9 = field9Value;
+                            break;
+                        }
+                        case 11:
+                        {
+                            if (!reader.TryReadField(out EnvelopeField field10))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            ulong field10Value;
+                            if (!reader.TryReadUInt64(field10, out field10Value))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            value10 = field10Value;
+                            break;
+                        }
+                        case 12:
+                        {
+                            if (!reader.TryReadField(out EnvelopeField field11))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            ulong field11Value;
+                            if (!reader.TryReadUInt64(field11, out field11Value))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            value11 = field11Value;
+                            break;
+                        }
+                        case 13:
+                        {
+                            if (!reader.TryReadField(out EnvelopeField field12))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            ulong field12Value;
+                            if (!reader.TryReadUInt64(field12, out field12Value))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            value12 = field12Value;
+                            break;
+                        }
+                        case 14:
+                        {
+                            if (!reader.TryReadField(out EnvelopeField field13))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            ulong field13Value;
+                            if (!reader.TryReadUInt64(field13, out field13Value))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            value13 = field13Value;
+                            break;
+                        }
+                        case 15:
+                        {
+                            if (!reader.TryReadField(out EnvelopeField field14))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            ulong field14Value;
+                            if (!reader.TryReadUInt64(field14, out field14Value))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            value14 = field14Value;
+                            break;
+                        }
+                        case 16:
+                        {
+                            if (!reader.TryReadField(out EnvelopeField field15))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            ulong field15Value;
+                            if (!reader.TryReadUInt64(field15, out field15Value))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            value15 = field15Value;
+                            break;
+                        }
+                        case 17:
+                        {
+                            if (!reader.TryReadField(out EnvelopeField field16))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            uint field16Value;
+                            if (!reader.TryReadUInt32(field16, out field16Value))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            value16 = field16Value;
+                            break;
+                        }
+                        case 18:
+                        {
+                            if (!reader.TryReadField(out EnvelopeField field17))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            uint field17Value;
+                            if (!reader.TryReadUInt32(field17, out field17Value))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            value17 = field17Value;
+                            break;
+                        }
+                        case 19:
+                        {
+                            if (!reader.TryReadField(out EnvelopeField field18))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            uint field18Value;
+                            if (!reader.TryReadUInt32(field18, out field18Value))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            value18 = field18Value;
+                            break;
+                        }
+                        case 20:
+                        {
+                            if (!reader.TryReadField(out EnvelopeField field19))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            uint field19Value;
+                            if (!reader.TryReadUInt32(field19, out field19Value))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            value19 = field19Value;
+                            break;
+                        }
+                        case 21:
+                        {
+                            if (!reader.TryReadField(out EnvelopeField field20))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            uint field20Value;
+                            if (!reader.TryReadUInt32(field20, out field20Value))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            value20 = field20Value;
+                            break;
+                        }
+                        case 22:
+                        {
+                            if (!reader.TryReadField(out EnvelopeField field21))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            uint field21Value;
+                            if (!reader.TryReadUInt32(field21, out field21Value))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            value21 = field21Value;
+                            break;
+                        }
+                        case 23:
+                        {
+                            if (!reader.TryReadField(out EnvelopeField field22))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            ulong field22Value;
+                            if (!reader.TryReadUInt64(field22, out field22Value))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            value22 = field22Value;
+                            break;
+                        }
+                        case 24:
+                        {
+                            if (!reader.TryReadField(out EnvelopeField field23))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            ulong field23Value;
+                            if (!reader.TryReadUInt64(field23, out field23Value))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            value23 = field23Value;
+                            break;
+                        }
+                        case 25:
+                        {
+                            if (!reader.TryReadField(out EnvelopeField field24))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            uint field24Value;
+                            if (!reader.TryReadUInt32(field24, out field24Value))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            value24 = field24Value;
+                            break;
+                        }
+                        case 26:
+                        {
+                            if (!reader.TryReadField(out EnvelopeField field25))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            uint field25Value;
+                            if (!reader.TryReadUInt32(field25, out field25Value))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            value25 = field25Value;
+                            break;
+                        }
+                        case 27:
+                        {
+                            if (!reader.TryReadField(out EnvelopeField field26))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            byte[]? field26Value;
+                            if (!reader.TryReadBytes(field26, out field26Value))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            value26 = field26Value;
+                            break;
+                        }
+                        default:
+                            break;
+                    }
+                }
+
+                // A declared field the document omitted keeps its default, and every declared field
+                // is assigned exactly once, so the generated value type stays immutable (05 s6, P-054).
+                value = new OutboxRecordValue(value0, value1, value2, value3, value4, value5, value6, value7, value8, value9, value10, value11, value12, value13, value14, value15, value16, value17, value18, value19, value20, value21, value22, value23, value24, value25, value26);
+                error = EnvelopeError.None;
+                return true;
+            }
+        }
+
+        /// <summary>
         /// Generated value of schema b780328c6fa158f7bd88603db3ebae2f ('gamecore.checkpoint.schema.target').
         /// Fields are declared in ascending field-id order, which is also the wire order (05 s6).
         /// </summary>
@@ -4347,8 +5088,10 @@ namespace GameCore.Validation.GeneratedCheckpoint
             public readonly ulong SourceHostTicksPerSecond;
             /// <summary>Field id 39, wire type UInt32, required.</summary>
             public readonly uint ContentRevisionCount;
+            /// <summary>Field id 40, wire type UInt32, required.</summary>
+            public readonly uint OutboxCount;
 
-            public HeaderRecordValue(ulong worldDefinitionHigh, ulong worldDefinitionLow, ulong sourceSessionHigh, ulong sourceSessionLow, uint protocolMajor, uint protocolMinor, uint temporalModel, ulong stepDurationTicks, ulong ticksPerSecond, uint maxStepsPerPump, bool usesUnscaledHostClock, ulong logicalStep, ulong timeDebtTicks, double domainSeconds, ulong pendingDemand, uint propagationMode, ulong catalogFingerprintA, ulong catalogFingerprintB, ulong catalogFingerprintC, ulong catalogFingerprintD, uint queuePolicy, ulong admissionCutoff, uint rejectedQueuedCount, ulong lastEventSequence, uint scopeCount, uint installCount, uint selectionCount, uint targetCount, uint slotCount, uint grantCount, uint clockCount, uint commandCount, uint messageCount, uint rngStreamCount, uint cursorCount, ulong sourcePublishedRevision, ulong sourcePublishedEpoch, ulong sourceHostTicksPerSecond, uint contentRevisionCount)
+            public HeaderRecordValue(ulong worldDefinitionHigh, ulong worldDefinitionLow, ulong sourceSessionHigh, ulong sourceSessionLow, uint protocolMajor, uint protocolMinor, uint temporalModel, ulong stepDurationTicks, ulong ticksPerSecond, uint maxStepsPerPump, bool usesUnscaledHostClock, ulong logicalStep, ulong timeDebtTicks, double domainSeconds, ulong pendingDemand, uint propagationMode, ulong catalogFingerprintA, ulong catalogFingerprintB, ulong catalogFingerprintC, ulong catalogFingerprintD, uint queuePolicy, ulong admissionCutoff, uint rejectedQueuedCount, ulong lastEventSequence, uint scopeCount, uint installCount, uint selectionCount, uint targetCount, uint slotCount, uint grantCount, uint clockCount, uint commandCount, uint messageCount, uint rngStreamCount, uint cursorCount, ulong sourcePublishedRevision, ulong sourcePublishedEpoch, ulong sourceHostTicksPerSecond, uint contentRevisionCount, uint outboxCount)
             {
                 WorldDefinitionHigh = worldDefinitionHigh;
                 WorldDefinitionLow = worldDefinitionLow;
@@ -4389,12 +5132,13 @@ namespace GameCore.Validation.GeneratedCheckpoint
                 SourcePublishedEpoch = sourcePublishedEpoch;
                 SourceHostTicksPerSecond = sourceHostTicksPerSecond;
                 ContentRevisionCount = contentRevisionCount;
+                OutboxCount = outboxCount;
             }
 
             /// <summary>Diagnostic form; never used as an identity (P-004).</summary>
             public override string ToString()
             {
-                return "HeaderRecordValue(WorldDefinitionHigh=" + WorldDefinitionHigh + ", WorldDefinitionLow=" + WorldDefinitionLow + ", SourceSessionHigh=" + SourceSessionHigh + ", SourceSessionLow=" + SourceSessionLow + ", ProtocolMajor=" + ProtocolMajor + ", ProtocolMinor=" + ProtocolMinor + ", TemporalModel=" + TemporalModel + ", StepDurationTicks=" + StepDurationTicks + ", TicksPerSecond=" + TicksPerSecond + ", MaxStepsPerPump=" + MaxStepsPerPump + ", UsesUnscaledHostClock=" + UsesUnscaledHostClock + ", LogicalStep=" + LogicalStep + ", TimeDebtTicks=" + TimeDebtTicks + ", DomainSeconds=" + DomainSeconds + ", PendingDemand=" + PendingDemand + ", PropagationMode=" + PropagationMode + ", CatalogFingerprintA=" + CatalogFingerprintA + ", CatalogFingerprintB=" + CatalogFingerprintB + ", CatalogFingerprintC=" + CatalogFingerprintC + ", CatalogFingerprintD=" + CatalogFingerprintD + ", QueuePolicy=" + QueuePolicy + ", AdmissionCutoff=" + AdmissionCutoff + ", RejectedQueuedCount=" + RejectedQueuedCount + ", LastEventSequence=" + LastEventSequence + ", ScopeCount=" + ScopeCount + ", InstallCount=" + InstallCount + ", SelectionCount=" + SelectionCount + ", TargetCount=" + TargetCount + ", SlotCount=" + SlotCount + ", GrantCount=" + GrantCount + ", ClockCount=" + ClockCount + ", CommandCount=" + CommandCount + ", MessageCount=" + MessageCount + ", RngStreamCount=" + RngStreamCount + ", CursorCount=" + CursorCount + ", SourcePublishedRevision=" + SourcePublishedRevision + ", SourcePublishedEpoch=" + SourcePublishedEpoch + ", SourceHostTicksPerSecond=" + SourceHostTicksPerSecond + ", ContentRevisionCount=" + ContentRevisionCount + ")";
+                return "HeaderRecordValue(WorldDefinitionHigh=" + WorldDefinitionHigh + ", WorldDefinitionLow=" + WorldDefinitionLow + ", SourceSessionHigh=" + SourceSessionHigh + ", SourceSessionLow=" + SourceSessionLow + ", ProtocolMajor=" + ProtocolMajor + ", ProtocolMinor=" + ProtocolMinor + ", TemporalModel=" + TemporalModel + ", StepDurationTicks=" + StepDurationTicks + ", TicksPerSecond=" + TicksPerSecond + ", MaxStepsPerPump=" + MaxStepsPerPump + ", UsesUnscaledHostClock=" + UsesUnscaledHostClock + ", LogicalStep=" + LogicalStep + ", TimeDebtTicks=" + TimeDebtTicks + ", DomainSeconds=" + DomainSeconds + ", PendingDemand=" + PendingDemand + ", PropagationMode=" + PropagationMode + ", CatalogFingerprintA=" + CatalogFingerprintA + ", CatalogFingerprintB=" + CatalogFingerprintB + ", CatalogFingerprintC=" + CatalogFingerprintC + ", CatalogFingerprintD=" + CatalogFingerprintD + ", QueuePolicy=" + QueuePolicy + ", AdmissionCutoff=" + AdmissionCutoff + ", RejectedQueuedCount=" + RejectedQueuedCount + ", LastEventSequence=" + LastEventSequence + ", ScopeCount=" + ScopeCount + ", InstallCount=" + InstallCount + ", SelectionCount=" + SelectionCount + ", TargetCount=" + TargetCount + ", SlotCount=" + SlotCount + ", GrantCount=" + GrantCount + ", ClockCount=" + ClockCount + ", CommandCount=" + CommandCount + ", MessageCount=" + MessageCount + ", RngStreamCount=" + RngStreamCount + ", CursorCount=" + CursorCount + ", SourcePublishedRevision=" + SourcePublishedRevision + ", SourcePublishedEpoch=" + SourcePublishedEpoch + ", SourceHostTicksPerSecond=" + SourceHostTicksPerSecond + ", ContentRevisionCount=" + ContentRevisionCount + ", OutboxCount=" + OutboxCount + ")";
             }
         }
 
@@ -4445,6 +5189,7 @@ namespace GameCore.Validation.GeneratedCheckpoint
                 new GeneratedFieldSlot(37, WireType.UInt64, true),
                 new GeneratedFieldSlot(38, WireType.UInt64, true),
                 new GeneratedFieldSlot(39, WireType.UInt32, true),
+                new GeneratedFieldSlot(40, WireType.UInt32, true),
             };
 
             public HeaderRecordSerializer()
@@ -4501,6 +5246,7 @@ namespace GameCore.Validation.GeneratedCheckpoint
                 writer.WriteUInt64Field(37, value.SourcePublishedEpoch);
                 writer.WriteUInt64Field(38, value.SourceHostTicksPerSecond);
                 writer.WriteUInt32Field(39, value.ContentRevisionCount);
+                writer.WriteUInt32Field(40, value.OutboxCount);
                 writer.WriteChecksum();
                 return writer.ToArray();
             }
@@ -4558,6 +5304,7 @@ namespace GameCore.Validation.GeneratedCheckpoint
                 ulong value36 = default(ulong);
                 ulong value37 = default(ulong);
                 uint value38 = default(uint);
+                uint value39 = default(uint);
                 for (int i = 0; i < buffer.Count; i++)
                 {
                     EnvelopeField recorded = buffer.Field(i);
@@ -5272,6 +6019,24 @@ namespace GameCore.Validation.GeneratedCheckpoint
                             value38 = field38Value;
                             break;
                         }
+                        case 40:
+                        {
+                            if (!reader.TryReadField(out EnvelopeField field39))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            uint field39Value;
+                            if (!reader.TryReadUInt32(field39, out field39Value))
+                            {
+                                error = reader.LastError;
+                                return false;
+                            }
+
+                            value39 = field39Value;
+                            break;
+                        }
                         default:
                             break;
                     }
@@ -5279,7 +6044,7 @@ namespace GameCore.Validation.GeneratedCheckpoint
 
                 // A declared field the document omitted keeps its default, and every declared field
                 // is assigned exactly once, so the generated value type stays immutable (05 s6, P-054).
-                value = new HeaderRecordValue(value0, value1, value2, value3, value4, value5, value6, value7, value8, value9, value10, value11, value12, value13, value14, value15, value16, value17, value18, value19, value20, value21, value22, value23, value24, value25, value26, value27, value28, value29, value30, value31, value32, value33, value34, value35, value36, value37, value38);
+                value = new HeaderRecordValue(value0, value1, value2, value3, value4, value5, value6, value7, value8, value9, value10, value11, value12, value13, value14, value15, value16, value17, value18, value19, value20, value21, value22, value23, value24, value25, value26, value27, value28, value29, value30, value31, value32, value33, value34, value35, value36, value37, value38, value39);
                 error = EnvelopeError.None;
                 return true;
             }
@@ -5864,6 +6629,7 @@ namespace GameCore.Validation.GeneratedCheckpoint
             new GrantRecordSerializer(),
             new InstallRecordSerializer(),
             new MessageRecordSerializer(),
+            new OutboxRecordSerializer(),
             new TargetRecordSerializer(),
             new RngRecordSerializer(),
             new HeaderRecordSerializer(),
@@ -5928,9 +6694,9 @@ namespace GameCore.Validation.GeneratedCheckpoint
         public const int RegistrationGroupCount = 0;
 
         /// <summary>Number of declared schemas.</summary>
-        public const int SchemaCount = 12;
+        public const int SchemaCount = 13;
 
         /// <summary>Hash of the generated source that precedes this declaration.</summary>
-        public const string CatalogFileHash = "bc854323f2a5c892783a84f3d0b00beecf0b0da3ca48e24650b32e9797e1bdf6";
+        public const string CatalogFileHash = "08d43a031cd41a968daf1ea86633fc826956ae64a8a717e6d999d77e5cd5d2d9";
     }
 }

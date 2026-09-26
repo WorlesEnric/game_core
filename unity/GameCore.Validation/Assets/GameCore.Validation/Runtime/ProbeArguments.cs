@@ -25,6 +25,7 @@ namespace GameCore.Validation.ProbeHost
         private const string Gc019ArgumentName = "-probeGc019";
         private const string W5GateArgumentName = "-probeW5Gate";
         private const string TraversalArgumentName = "-probeTraversal";
+        private const string Gc021ArgumentName = "-probeGc021";
 
         private ProbeArguments(
             bool missingRegistration,
@@ -42,6 +43,7 @@ namespace GameCore.Validation.ProbeHost
             bool gc019,
             bool w5Gate,
             bool traversal,
+            bool gc021,
             string? resultPath)
         {
             MissingRegistration = missingRegistration;
@@ -59,6 +61,7 @@ namespace GameCore.Validation.ProbeHost
             Gc019 = gc019;
             W5Gate = w5Gate;
             Traversal = traversal;
+            Gc021 = gc021;
             ResultPath = resultPath;
         }
 
@@ -169,13 +172,23 @@ namespace GameCore.Validation.ProbeHost
         /// </summary>
         public bool Traversal { get; }
 
+        /// <summary>
+        /// Runs the GC-021 durable-delivery mode: the delivery key derivation, a durable commit that is persisted
+        /// before it is applied, a deterministic crash at the seam's own after-delivery boundary, the redelivery that
+        /// applies the destination mutation exactly once, capacity exhaustion that is never a silent drop, the
+        /// volatile/durable distinction, a committed obligation that outlives the unload of its world, a checkpoint
+        /// that carries the outbox and its cursor, the absence of a universal effect API, and the reward bridge's one
+        /// committed choice becoming one durable, idempotent card mutation (P-003, P-043, P-045, P-050, P-053).
+        /// </summary>
+        public bool Gc021 { get; }
+
         /// <summary>Destination path of the structured JSON result.</summary>
         public string? ResultPath { get; }
 
         /// <summary>True when the process was launched as a probe rather than as a normal player run.</summary>
         public bool IsProbeInvocation =>
             MissingRegistration || WorldDispatch || W1Gate || W2Gate || W3Gate || Narrative || Cards || W4Profile
-            || Gc013 || W4Gate || Faults || Gc018 || Gc019 || W5Gate || Traversal
+            || Gc013 || W4Gate || Faults || Gc018 || Gc019 || W5Gate || Traversal || Gc021
             || !string.IsNullOrEmpty(ResultPath);
 
         /// <summary>True when a result destination was supplied; without it the probe cannot record evidence.</summary>
@@ -198,6 +211,7 @@ namespace GameCore.Validation.ProbeHost
             bool gc019 = false;
             bool w5Gate = false;
             bool traversal = false;
+            bool gc021 = false;
             string? resultPath = null;
             for (int i = 0; i < arguments.Length; i++)
             {
@@ -262,6 +276,10 @@ namespace GameCore.Validation.ProbeHost
                 {
                     traversal = true;
                 }
+                else if (argument == Gc021ArgumentName)
+                {
+                    gc021 = true;
+                }
                 else if (argument == ResultArgumentName && i + 1 < arguments.Length)
                 {
                     resultPath = arguments[i + 1];
@@ -270,7 +288,7 @@ namespace GameCore.Validation.ProbeHost
 
             return new ProbeArguments(
                 missingRegistration, worldDispatch, w1Gate, w2Gate, w3Gate, narrative, cards, w4Profile, gc013,
-                w4Gate, faults, gc018, gc019, w5Gate, traversal, resultPath);
+                w4Gate, faults, gc018, gc019, w5Gate, traversal, gc021, resultPath);
         }
     }
 }

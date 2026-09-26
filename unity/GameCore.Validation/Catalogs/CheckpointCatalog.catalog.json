@@ -252,6 +252,12 @@
           "name": "ContentRevisionCount",
           "wireType": "UInt32",
           "required": true
+        },
+        {
+          "id": 40,
+          "name": "OutboxCount",
+          "wireType": "UInt32",
+          "required": true
         }
       ]
     },
@@ -1330,6 +1336,181 @@
           "id": 6,
           "name": "SessionLow",
           "wireType": "UInt64",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gamecore.checkpoint.schema.outbox",
+      "valueTypeName": "OutboxRecordValue",
+      "serializerTypeName": "OutboxRecordSerializer",
+      "serializerKeyName": "OutboxRecordSerializerKey",
+      "schemaId": "ac96339bd83d4a4ca453b3f4e46e4639",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "00000000000000000000000000000000",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "RowKind",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 2,
+          "name": "RecordVersion",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 3,
+          "name": "OutboxHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 4,
+          "name": "OutboxLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 5,
+          "name": "DestinationHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 6,
+          "name": "DestinationLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 7,
+          "name": "IdempotencyHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 8,
+          "name": "IdempotencyLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 9,
+          "name": "SourceEventSequence",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 10,
+          "name": "SourceStep",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 11,
+          "name": "SourceEpoch",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 12,
+          "name": "CausalIssuerHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 13,
+          "name": "CausalIssuerLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 14,
+          "name": "CausalIssuerSequence",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 15,
+          "name": "PayloadSchemaHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 16,
+          "name": "PayloadSchemaLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 17,
+          "name": "PayloadSchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 18,
+          "name": "DeliveryState",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 19,
+          "name": "ReasonCode",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 20,
+          "name": "AttemptCount",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 21,
+          "name": "Durability",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 22,
+          "name": "OrderOrdinal",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 23,
+          "name": "CursorHigh",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 24,
+          "name": "CursorLow",
+          "wireType": "UInt64",
+          "required": true
+        },
+        {
+          "id": 25,
+          "name": "CursorCount",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 26,
+          "name": "PrunedCount",
+          "wireType": "UInt32",
+          "required": true
+        },
+        {
+          "id": 27,
+          "name": "Payload",
+          "wireType": "Bytes",
           "required": true
         }
       ]

@@ -1,0 +1,21 @@
+{
+  "name": "com.gamecore.gameplay.integration",
+  "version": "0.1.0",
+  "displayName": "GameCore Gameplay Integration",
+  "description": "The narrative-to-card reward composition (GC-021): the reward content table, the canonical reward payload, the card table as a delivery destination and the bridge that turns an accepted narrative choice into a durable, idempotent card mutation. It adds no kernel concept and no universal effect API; it depends on the two gameplay packages and the kernel's own delivery seam.",
+  "unity": "6000.0",
+  "keywords": [
+    "gamecore",
+    "integration",
+    "delivery",
+    "outbox"
+  ],
+  "dependencies": {
+    "com.gamecore.contracts": "0.1.0",
+    "com.gamecore.gameplay.cards": "0.1.0",
+    "com.gamecore.gameplay.narrative": "0.1.0",
+    "com.gamecore.rules.cards": "0.1.0",
+    "com.gamecore.rules.narrative": "0.1.0",
+    "com.gamecore.unity.runtime": "0.1.0"
+  }
+}

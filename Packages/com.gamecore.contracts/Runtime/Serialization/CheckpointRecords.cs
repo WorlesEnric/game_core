@@ -101,6 +101,13 @@ namespace GameCore.Contracts
         /// </summary>
         public readonly uint ContentRevisionCount;
 
+        /// <summary>
+        /// Outbox rows the document carries: delivery obligations, terminal delivery records and per-destination
+        /// delivery cursors (GC-021, P-045, P-053). Counted like every other kind so a document that claims an
+        /// obligation it does not carry is refused (P-053).
+        /// </summary>
+        public readonly uint OutboxCount;
+
         public HeaderRecordValue(
             ulong worldDefinitionHigh,
             ulong worldDefinitionLow,
@@ -140,7 +147,8 @@ namespace GameCore.Contracts
             ulong sourcePublishedRevision,
             ulong sourcePublishedEpoch,
             ulong sourceHostTicksPerSecond,
-            uint contentRevisionCount)
+            uint contentRevisionCount,
+            uint outboxCount)
         {
             WorldDefinitionHigh = worldDefinitionHigh;
             WorldDefinitionLow = worldDefinitionLow;
@@ -181,6 +189,7 @@ namespace GameCore.Contracts
             SourcePublishedEpoch = sourcePublishedEpoch;
             SourceHostTicksPerSecond = sourceHostTicksPerSecond;
             ContentRevisionCount = contentRevisionCount;
+            OutboxCount = outboxCount;
         }
 
         public WorldDefinitionId WorldDefinition => WorldDefinitionId.FromRaw(WorldDefinitionHigh, WorldDefinitionLow);
@@ -207,10 +216,6 @@ namespace GameCore.Contracts
         public bool IsSupportedProtocol =>
             ProtocolMajor == CheckpointFormat.ProtocolMajor && ProtocolMinor == CheckpointFormat.ProtocolMinor;
 
-        /// <summary>
-        /// True when every declared count is satisfied by the record counts the document actually delivered. A
-        /// document that disagrees is refused rather than partially restored (P-053).
-        /// </summary>
         public bool CountsMatch(
             int scopes,
             int installs,
@@ -222,7 +227,8 @@ namespace GameCore.Contracts
             int commands,
             int messages,
             int rngStreams,
-            int cursors) =>
+            int cursors,
+            int outbox) =>
             (long)ScopeCount == scopes
             && (long)InstallCount == installs
             && (long)SelectionCount == selections
@@ -233,7 +239,8 @@ namespace GameCore.Contracts
             && (long)CommandCount == commands
             && (long)MessageCount == messages
             && (long)RngStreamCount == rngStreams
-            && (long)CursorCount == cursors;
+            && (long)CursorCount == cursors
+            && (long)OutboxCount == outbox;
 
         public override string ToString() =>
             "header(def=" + WorldDefinition.ToString() + ",step=" + LogicalStep.ToString(CultureInfo.InvariantCulture)
@@ -1093,6 +1100,272 @@ namespace GameCore.Contracts
         public AdmissionSequence Admission => new AdmissionSequence(Sequence);
 
         public override string ToString() => "cursor(" + Row.ToString() + "," + Sequence.ToString(CultureInfo.InvariantCulture) + ")";
+    }
+
+    /// <summary>Which of the three outbox facts one row carries (GC-021, P-045, P-053).</summary>
+    public enum OutboxRowKind
+    {
+        /// <summary>
+        /// One committed delivery obligation that has not reached a terminal state. It is the durable record of work
+        /// the source world has already committed to and must therefore never lose (P-045).
+        /// </summary>
+        Obligation = 0,
+
+        /// <summary>
+        /// One terminal delivery record: the obligation reached a final state and is retained so a redelivery of the
+        /// same identity can be answered from the record rather than re-executed at the destination (P-045).
+        /// </summary>
+        Terminal = 1,
+
+        /// <summary>
+        /// One per-destination delivery cursor: the newest acknowledged obligation and how many terminal records the
+        /// destination still retains. It is the acknowledgment/cursor half of P-053's "outbox/dedup cursors".
+        /// </summary>
+        Cursor = 2,
+    }
+
+    /// <summary>
+    /// How far one delivery obligation has progressed (GC-021). `Pending` is the only state that still owes the
+    /// destination a mutation; every other value is terminal and is retained rather than deleted (P-045).
+    /// </summary>
+    public enum OutboxDeliveryState
+    {
+        /// <summary>Committed and not yet handed to the destination.</summary>
+        Pending = 0,
+
+        /// <summary>Handed to the destination at least once; the destination's outcome is not yet known.</summary>
+        Delivered = 1,
+
+        /// <summary>The destination confirmed the mutation. A later redelivery must not apply it again (P-045).</summary>
+        Acknowledged = 2,
+
+        /// <summary>
+        /// The destination refused the obligation terminally (an unsupported destination state no compensation can
+        /// express, for example). It stays recorded so the refusal is observable and is never re-attempted silently
+        /// (P-052, and GC-021's "capacity exhaustion is explicit, never silent drop" applied to refusals).
+        /// </summary>
+        Rejected = 3,
+
+        /// <summary>
+        /// The destination could not complete the mutation and an explicit compensating action was recorded instead.
+        /// This is the one declared compensation outcome: the kernel defines no universal compensation rule set, so
+        /// the recipient names what its compensation means (GC-021's non-goal, P-003).
+        /// </summary>
+        Compensated = 4,
+    }
+
+    /// <summary>
+    /// Whether an outbox row was configured to survive a crash or is explicitly volatile (GC-021). A world must be
+    /// able to say which of the two it is: an in-memory obligation that dies with its session is not the same claim
+    /// as one persisted outside the world, and P-045 forbids presenting the first as the second.
+    /// </summary>
+    public enum OutboxDurability
+    {
+        /// <summary>No durability was declared; a reader reports this rather than assuming durable.</summary>
+        Unspecified = 0,
+
+        /// <summary>
+        /// The obligation lives in memory only and is lost with its world. It is never presented as durable, and an
+        /// obligation that requires durability is refused by an outbox carrying this value.
+        /// </summary>
+        Volatile = 1,
+
+        /// <summary>The obligation was persisted outside the world before it was handed over (P-045).</summary>
+        Durable = 2,
+    }
+
+    /// <summary>
+    /// One outbox row: a committed delivery obligation, its terminal record, or the per-destination cursor that says
+    /// how far acknowledgements reach (GC-021, P-045, P-053).
+    ///
+    /// The section is one record type with a row kind, the shape <see cref="ClockRecordValue"/> already uses, because
+    /// the three facts belong to one owner and one section: a reader can therefore decide whether a row is an
+    /// obligation it must redeliver, a terminal record that makes redelivery a no-op, or a cursor, without a second
+    /// section and without guessing. Nothing here is a runtime handle: the obligation identity, the destination
+    /// identity and the external idempotency key are stable 128-bit values, and the causal request is recorded as
+    /// stable halves (P-005, P-054).
+    ///
+    /// `RecordVersion` is the version of *this row's own layout*, independent of the payload schema version, so a
+    /// later revision can migrate a decoded row without changing the envelope (P-054).
+    /// </summary>
+    public readonly struct OutboxRecordValue
+    {
+        /// <summary>The outbox row layout this build writes; a row from another revision is refused (P-054).</summary>
+        public const uint CurrentRecordVersion = 1U;
+
+        public readonly uint RowKind;
+        public readonly uint RecordVersion;
+        public readonly ulong OutboxHigh;
+        public readonly ulong OutboxLow;
+        public readonly ulong DestinationHigh;
+        public readonly ulong DestinationLow;
+        public readonly ulong IdempotencyHigh;
+        public readonly ulong IdempotencyLow;
+        public readonly ulong SourceEventSequence;
+        public readonly ulong SourceStep;
+        public readonly ulong SourceEpoch;
+        public readonly ulong CausalIssuerHigh;
+        public readonly ulong CausalIssuerLow;
+        public readonly ulong CausalIssuerSequence;
+        public readonly ulong PayloadSchemaHigh;
+        public readonly ulong PayloadSchemaLow;
+        public readonly uint PayloadSchemaVersion;
+        public readonly uint DeliveryState;
+        public readonly uint ReasonCode;
+        public readonly uint AttemptCount;
+        public readonly uint Durability;
+        public readonly uint OrderOrdinal;
+        public readonly ulong CursorHigh;
+        public readonly ulong CursorLow;
+        public readonly uint CursorCount;
+        public readonly uint PrunedCount;
+
+        /// <summary>
+        /// The destination command bytes recorded at commit. Null means "no payload was recorded", which a reader
+        /// reports rather than reading as an empty payload (P-054's null semantics).
+        /// </summary>
+        public readonly byte[]? Payload;
+
+        public OutboxRecordValue(
+            uint rowKind,
+            uint recordVersion,
+            ulong outboxHigh,
+            ulong outboxLow,
+            ulong destinationHigh,
+            ulong destinationLow,
+            ulong idempotencyHigh,
+            ulong idempotencyLow,
+            ulong sourceEventSequence,
+            ulong sourceStep,
+            ulong sourceEpoch,
+            ulong causalIssuerHigh,
+            ulong causalIssuerLow,
+            ulong causalIssuerSequence,
+            ulong payloadSchemaHigh,
+            ulong payloadSchemaLow,
+            uint payloadSchemaVersion,
+            uint deliveryState,
+            uint reasonCode,
+            uint attemptCount,
+            uint durability,
+            uint orderOrdinal,
+            ulong cursorHigh,
+            ulong cursorLow,
+            uint cursorCount,
+            uint prunedCount,
+            byte[]? payload)
+        {
+            RowKind = rowKind;
+            RecordVersion = recordVersion;
+            OutboxHigh = outboxHigh;
+            OutboxLow = outboxLow;
+            DestinationHigh = destinationHigh;
+            DestinationLow = destinationLow;
+            IdempotencyHigh = idempotencyHigh;
+            IdempotencyLow = idempotencyLow;
+            SourceEventSequence = sourceEventSequence;
+            SourceStep = sourceStep;
+            SourceEpoch = sourceEpoch;
+            CausalIssuerHigh = causalIssuerHigh;
+            CausalIssuerLow = causalIssuerLow;
+            CausalIssuerSequence = causalIssuerSequence;
+            PayloadSchemaHigh = payloadSchemaHigh;
+            PayloadSchemaLow = payloadSchemaLow;
+            PayloadSchemaVersion = payloadSchemaVersion;
+            DeliveryState = deliveryState;
+            ReasonCode = reasonCode;
+            AttemptCount = attemptCount;
+            Durability = durability;
+            OrderOrdinal = orderOrdinal;
+            CursorHigh = cursorHigh;
+            CursorLow = cursorLow;
+            CursorCount = cursorCount;
+            PrunedCount = prunedCount;
+            Payload = payload;
+        }
+
+        public OutboxRowKind Row => (OutboxRowKind)RowKind;
+
+        /// <summary>Stable identity of the obligation; the identity a redelivery reuses (P-004).</summary>
+        public Id128 OutboxId => new Id128(OutboxHigh, OutboxLow);
+
+        /// <summary>Stable identity of the destination the obligation belongs to (P-004).</summary>
+        public Id128 DestinationId => new Id128(DestinationHigh, DestinationLow);
+
+        /// <summary>The explicit external idempotency key P-045 requires of an irreversible output adapter.</summary>
+        public Id128 IdempotencyKey => new Id128(IdempotencyHigh, IdempotencyLow);
+
+        /// <summary>The committed event the obligation came from: a sequence in the source session (P-045).</summary>
+        public EventSequence SourceEvent => new EventSequence(SourceEventSequence);
+
+        public LogicalStepId Step => new LogicalStepId(SourceStep);
+
+        public AssemblyEpoch Epoch => new AssemblyEpoch(SourceEpoch);
+
+        /// <summary>The step's causal request, so a redelivery reuses the operation identity P-050 requires.</summary>
+        public Id128 CausalIssuerId => new Id128(CausalIssuerHigh, CausalIssuerLow);
+
+        /// <summary>The causal request's issuer sequence; zero means the obligation records no causal request.</summary>
+        public ulong CausalIssuerOrdinal => CausalIssuerSequence;
+
+        public SchemaRef PayloadSchema =>
+            new SchemaRef(new SchemaId(new Id128(PayloadSchemaHigh, PayloadSchemaLow)), PayloadSchemaVersion);
+
+        public OutboxDeliveryState State => (OutboxDeliveryState)DeliveryState;
+
+        /// <summary>The diagnostic reason recorded with a terminal refusal or compensation (P-052).</summary>
+        public DiagnosticCode Reason => (DiagnosticCode)ReasonCode;
+
+        public OutboxDurability DurabilityClass => (OutboxDurability)Durability;
+
+        public uint Attempts => AttemptCount;
+
+        /// <summary>Canonical position of this row inside its row kind (P-008).</summary>
+        public uint Order => OrderOrdinal;
+
+        /// <summary>For a <see cref="OutboxRowKind.Cursor"/> row: the newest acknowledged obligation identity.</summary>
+        public Id128 Cursor => new Id128(CursorHigh, CursorLow);
+
+        /// <summary>For a cursor row: how many terminal records this destination still retains (P-045).</summary>
+        public uint RetainedTerminalCount => CursorCount;
+
+        /// <summary>
+        /// For a cursor row: how many terminal records retention has already pruned for this destination. Recorded
+        /// rather than derived, because a pruned record that is not counted is a silent drop (P-043).
+        /// </summary>
+        public uint PrunedTerminals => PrunedCount;
+
+        /// <summary>For a cursor row: every terminal outcome this destination ever produced (P-045).</summary>
+        public uint TerminalTotal => CursorCount + PrunedCount;
+
+        public bool HasPayload => Payload != null && Payload.Length != 0;
+
+        /// <summary>A copy of the recorded command bytes; a caller never receives the recorded array (P-054).</summary>
+        public byte[] PayloadBytes()
+        {
+            if (Payload == null)
+            {
+                return Array.Empty<byte>();
+            }
+
+            var copy = new byte[Payload.Length];
+            Array.Copy(Payload, copy, Payload.Length);
+            return copy;
+        }
+
+        /// <summary>
+        /// True when this row names an obligation that is still owed: `Pending` (not handed over yet) or `Delivered`
+        /// (handed over, the destination's outcome unknown). A `Delivered` row is deliberately open, because a
+        /// checkpoint taken in the acknowledgement-loss window must reinstate an obligation a redelivery can settle
+        /// (P-045).
+        /// </summary>
+        public bool IsOpen =>
+            Row == OutboxRowKind.Obligation
+            && (State == OutboxDeliveryState.Pending || State == OutboxDeliveryState.Delivered);
+
+        public override string ToString() =>
+            "outbox(" + Row.ToString() + ",v" + RecordVersion.ToString(CultureInfo.InvariantCulture) + ","
+            + OutboxId.ToString() + "," + State.ToString() + ")";
     }
 
     /// <summary>

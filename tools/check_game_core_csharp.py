@@ -47,6 +47,10 @@ TARGETS = [
     "Packages/com.gamecore.composition",
     "Packages/com.gamecore.rules.cards",
     "Packages/com.gamecore.gameplay.cards",
+    # GC-021: the narrative-to-card reward composition is a gameplay assembly (it depends on both gameplay packages
+    # and declares real Unity-facing ports), so the balance and forbidden-construct checks cover it while it stays
+    # out of `engine_free` below.
+    "Packages/com.gamecore.gameplay.integration",
     # GC-019: the adapter package holds the Unity-free adapter core (Runtime/Pure plus the shared Fixtures/Runtime
     # doubles) and the engine halves (Input/, Assets/, Views/), so the balance and forbidden-construct checks cover
     # the whole package while only Runtime/Pure and Fixtures/Runtime join `engine_free` below.

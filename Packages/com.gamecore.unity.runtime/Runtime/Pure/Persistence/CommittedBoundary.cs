@@ -91,6 +91,7 @@ namespace GameCore.Execution.Persistence
             IReadOnlyList<CommandRecordValue>? queuedCommands,
             IReadOnlyList<MessageRecordValue>? nextStepMessages,
             IReadOnlyList<RngRecordValue>? rngStreams,
+            IReadOnlyList<OutboxRecordValue>? outbox,
             IReadOnlyList<CursorRecordValue>? cursors,
             SnapshotToken boundaryToken,
             BoundaryQueueDisposition declaredQueueDisposition,
@@ -125,6 +126,7 @@ namespace GameCore.Execution.Persistence
             QueuedCommands = ContractCollections.Freeze(queuedCommands);
             NextStepMessages = ContractCollections.Freeze(nextStepMessages);
             RngStreams = ContractCollections.Freeze(rngStreams);
+            Outbox = ContractCollections.Freeze(outbox);
             Cursors = ContractCollections.Freeze(cursors);
             BoundaryToken = boundaryToken;
             DeclaredQueueDisposition = declaredQueueDisposition;
@@ -197,6 +199,13 @@ namespace GameCore.Execution.Persistence
         public IReadOnlyList<CursorRecordValue> Cursors { get; }
 
         /// <summary>
+        /// Committed delivery obligations, their terminal records and the per-destination delivery cursors
+        /// (GC-021, P-053). A world with no durable outbox reports an empty list, and its obligations are then
+        /// explicitly volatile rather than silently assumed durable (P-045).
+        /// </summary>
+        public IReadOnlyList<OutboxRecordValue> Outbox { get; }
+
+        /// <summary>
         /// The committed observation image this snapshot was read under (GC-016). A reader that leases the boundary
         /// through <c>WorldObservation</c> records the exact token it pinned, so the document's step/epoch and the
         /// image the world had published cannot be two different things; <c>default</c> means the reader did not
@@ -229,7 +238,8 @@ namespace GameCore.Execution.Persistence
             QueuedCommands.Count,
             NextStepMessages.Count,
             RngStreams.Count,
-            Cursors.Count);
+            Cursors.Count,
+            Outbox.Count);
 
         public override string ToString() =>
             "boundary(" + SourceWorld.Session.ToString() + ",step="

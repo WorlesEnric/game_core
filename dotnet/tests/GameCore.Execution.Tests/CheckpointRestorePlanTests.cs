@@ -583,6 +583,132 @@ namespace GameCore.Execution.Tests
             }
         }
 
+        /// <summary>
+        /// GC-021: the outbox section a checkpoint carries is reinstated by a restore, so the plan must carry it. A
+        /// capture of a world whose outbox holds one open obligation and one delivery cursor produces a plan whose
+        /// `Outbox` list holds exactly those rows, with the obligation still open — that is what "source unload does
+        /// not erase committed delivery obligation" means at the plan level (P-045, P-053).
+        /// </summary>
+        [Test]
+        public void APlanCarriesTheOutboxRowsTheDocumentDeclares()
+        {
+            CommittedBoundarySnapshot boundary = CheckpointTestFixture.Boundary(
+                scopes: CheckpointTestFixture.Scopes(),
+                installs: CheckpointTestFixture.Installs(),
+                selections: CheckpointTestFixture.Selections(),
+                targets: CheckpointTestFixture.Targets(),
+                slots: CheckpointTestFixture.Slots(),
+                messages: CheckpointTestFixture.Messages(),
+                rngStreams: CheckpointTestFixture.RngStreams(),
+                cursors: CheckpointTestFixture.Cursors(),
+                outbox: CheckpointTestFixture.OutboxRows());
+            CheckpointCodecSet codecs = CheckpointTestCodecs.Complete();
+            CheckpointDocument document = Capture(boundary, codecs);
+
+            Assert.That(
+                document.Header.OutboxCount,
+                Is.EqualTo(2U),
+                "the header declares the outbox rows the document carries (P-053)");
+            Assert.That(document.Counts.Outbox, Is.EqualTo(2));
+            Assert.That(
+                document.TryReadRecords(
+                    CheckpointRecordKind.Outbox,
+                    out IReadOnlyList<OutboxRecordValue> rows,
+                    out DiagnosticCode readCode,
+                    out string readDetail),
+                Is.True,
+                readDetail);
+            Assert.That(readCode, Is.EqualTo(DiagnosticCode.None));
+            Assert.That(rows.Count, Is.EqualTo(2));
+
+            RestorePlanResult result = CheckpointRestorePlanner.Plan(
+                Request(document, codecs, CheckpointTestFixture.RestoredWorld));
+
+            Assert.That(result.Succeeded, Is.True, result.Detail);
+            Assert.That(result.Plan, Is.Not.Null);
+            RestorePlan plan = result.Plan!;
+            Assert.That(plan.Outbox.Count, Is.EqualTo(2), "the plan reinstates the outbox the document carries");
+            Assert.That(plan.Counts.Outbox, Is.EqualTo(2));
+
+            int open = 0;
+            int cursors = 0;
+            for (int i = 0; i < plan.Outbox.Count; i++)
+            {
+                if (plan.Outbox[i].IsOpen)
+                {
+                    open++;
+                }
+
+                if (plan.Outbox[i].Row == OutboxRowKind.Cursor)
+                {
+                    cursors++;
+                }
+            }
+
+            Assert.That(open, Is.EqualTo(1), "the open obligation survives the capture/plan round trip (P-045)");
+            Assert.That(cursors, Is.EqualTo(1), "the per-destination delivery cursor travels with it (P-053)");
+        }
+
+        /// <summary>
+        /// GC-021: a cursor that disagrees with the terminal rows its own document carries is refused. A restore that
+        /// accepted it would believe it still retained a terminal record the document dropped, which is exactly the
+        /// silent loss P-043 and P-045 forbid (P-008: one record, one answer).
+        /// </summary>
+        [Test]
+        public void ACursorThatDisagreesWithItsTerminalRowsRefusesThePlan()
+        {
+            CommittedBoundarySnapshot boundary = CheckpointTestFixture.Boundary(
+                scopes: CheckpointTestFixture.Scopes(),
+                installs: CheckpointTestFixture.Installs(),
+                selections: CheckpointTestFixture.Selections(),
+                targets: CheckpointTestFixture.Targets(),
+                slots: CheckpointTestFixture.Slots(),
+                messages: CheckpointTestFixture.Messages(),
+                rngStreams: CheckpointTestFixture.RngStreams(),
+                cursors: CheckpointTestFixture.Cursors(),
+                outbox: CheckpointTestFixture.OutboxRowsWithOverstatedCursor());
+            CheckpointCodecSet codecs = CheckpointTestCodecs.Complete();
+            CheckpointDocument document = Capture(boundary, codecs);
+
+            RestorePlanResult result = CheckpointRestorePlanner.Plan(
+                Request(document, codecs, CheckpointTestFixture.RestoredWorld));
+
+            Assert.That(result.Succeeded, Is.False, "an outbox section that contradicts itself is never planned");
+            Assert.That(result.Plan, Is.Null);
+            Assert.That(result.Refusal, Is.EqualTo(RestoreRefusal.InvalidOutbox));
+            Assert.That(result.Code, Is.EqualTo(DiagnosticCode.OwnershipConflict));
+            Assert.That(result.Detail, Does.Contain("retained terminal"));
+        }
+
+        /// <summary>
+        /// GC-021: two rows claiming one obligation identity are refused. One obligation has one record, and a
+        /// document that carries two cannot be restored into a world that must be able to answer "is this already
+        /// delivered?" (P-008, P-045).
+        /// </summary>
+        [Test]
+        public void TwoObligationRowsForOneIdentityRefuseThePlan()
+        {
+            CommittedBoundarySnapshot boundary = CheckpointTestFixture.Boundary(
+                scopes: CheckpointTestFixture.Scopes(),
+                installs: CheckpointTestFixture.Installs(),
+                selections: CheckpointTestFixture.Selections(),
+                targets: CheckpointTestFixture.Targets(),
+                slots: CheckpointTestFixture.Slots(),
+                messages: CheckpointTestFixture.Messages(),
+                rngStreams: CheckpointTestFixture.RngStreams(),
+                cursors: CheckpointTestFixture.Cursors(),
+                outbox: CheckpointTestFixture.DuplicatedObligationRows());
+            CheckpointCodecSet codecs = CheckpointTestCodecs.Complete();
+            CheckpointDocument document = Capture(boundary, codecs);
+
+            RestorePlanResult result = CheckpointRestorePlanner.Plan(
+                Request(document, codecs, CheckpointTestFixture.RestoredWorld));
+
+            Assert.That(result.Succeeded, Is.False);
+            Assert.That(result.Refusal, Is.EqualTo(RestoreRefusal.InvalidOutbox));
+            Assert.That(result.Detail, Does.Contain("appears twice"));
+        }
+
         private static CheckpointDocument Capture(CommittedBoundarySnapshot boundary, CheckpointCodecSet codecs)
         {
             CheckpointCaptureResult captured = CheckpointCapture.Capture(
@@ -756,6 +882,7 @@ namespace GameCore.Execution.Tests
             CheckpointTestFixture.PublishedRevision,
             CheckpointTestFixture.PublishedEpoch,
             CheckpointTestFixture.HostTicksPerSecond,
+            0U,
             0U);
 
         /// <summary>

@@ -137,6 +137,10 @@ namespace GameCore.Validation.ProbeHost
                 else if (arguments.Traversal)
                 {
                     ProbeTraversal.Run(report);
+                }
+                else if (arguments.Gc021)
+                {
+                    ProbeGc021.Run(report);
                     report.CompletePositive();
                 }
                 else
@@ -237,6 +241,11 @@ namespace GameCore.Validation.ProbeHost
             if (arguments.Traversal)
             {
                 return Named("Traversal", "GC-020");
+            }
+
+            if (arguments.Gc021)
+            {
+                return Named("Gc021", "GC-021");
             }
 
             return new ProbeReport(

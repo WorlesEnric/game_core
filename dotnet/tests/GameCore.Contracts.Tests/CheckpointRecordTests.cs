@@ -34,7 +34,7 @@ namespace GameCore.Contracts.Tests
         [Test]
         public void HeaderRecordRoundTripsEveryField()
         {
-            HeaderRecordValue header = CheckpointTestRecords.Header(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
+            HeaderRecordValue header = CheckpointTestRecords.Header(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
             HeaderRecordValue decoded = RoundTrip(CheckpointRecordKind.Header, header);
 
             CheckpointTestRecords.AssertHeaderEquals(header, decoded);
@@ -50,6 +50,7 @@ namespace GameCore.Contracts.Tests
                 Is.EqualTo(new WorldId(new Id128(0x3333333333333333UL, 0x4444444444444444UL))));
             Assert.That(decoded.ScopeCount, Is.EqualTo(1U));
             Assert.That(decoded.CursorCount, Is.EqualTo(11U));
+            Assert.That(decoded.OutboxCount, Is.EqualTo(12U));
             Assert.That(decoded.DomainSeconds, Is.EqualTo(12.5d));
         }
 
@@ -337,6 +338,64 @@ namespace GameCore.Contracts.Tests
             Assert.That(highWater.Row, Is.EqualTo(CursorRowKind.IssuerHighWater));
             Assert.That(highWater.Event.Value, Is.EqualTo(14UL));
         }
+
+        [Test]
+        public void OutboxRecordRoundTripsItsObligationTerminalAndCursorFields()
+        {
+            OutboxRecordValue obligation = RoundTrip(
+                CheckpointRecordKind.Outbox,
+                CheckpointTestRecords.SampleOutbox((uint)OutboxRowKind.Obligation, 5));
+            OutboxRecordValue cursor = RoundTrip(
+                CheckpointRecordKind.Outbox,
+                CheckpointTestRecords.SampleOutbox((uint)OutboxRowKind.Cursor, 5));
+
+            Assert.That(obligation.Row, Is.EqualTo(OutboxRowKind.Obligation));
+            Assert.That(obligation.RecordVersion, Is.EqualTo(OutboxRecordValue.CurrentRecordVersion));
+            Assert.That(obligation.OutboxId, Is.EqualTo(CheckpointTestRecords.Id(505)));
+            Assert.That(obligation.DestinationId, Is.EqualTo(CheckpointTestRecords.Id(506)));
+            Assert.That(obligation.IdempotencyKey, Is.EqualTo(CheckpointTestRecords.Id(507)));
+            Assert.That(obligation.SourceEvent, Is.EqualTo(new EventSequence(6UL)));
+            Assert.That(obligation.Step, Is.EqualTo(new LogicalStepId(7UL)));
+            Assert.That(obligation.Epoch, Is.EqualTo(new AssemblyEpoch(8UL)));
+            Assert.That(obligation.CausalIssuerId, Is.EqualTo(CheckpointTestRecords.Id(508)));
+            Assert.That(obligation.CausalIssuerOrdinal, Is.EqualTo(9UL));
+            Assert.That(
+                obligation.PayloadSchema,
+                Is.EqualTo(new SchemaRef(CheckpointTestRecords.SchemaIdOf(509), 5U)));
+            Assert.That(obligation.State, Is.EqualTo(OutboxDeliveryState.Rejected));
+            Assert.That(obligation.Reason, Is.EqualTo((DiagnosticCode)6U));
+            Assert.That(obligation.Attempts, Is.EqualTo(7U));
+            Assert.That(obligation.DurabilityClass, Is.EqualTo(OutboxDurability.Durable));
+            Assert.That(obligation.Order, Is.EqualTo(8U));
+            Assert.That(obligation.Payload, Is.EqualTo(new byte[] { 11, 12, 13 }));
+            Assert.That(obligation.HasPayload, Is.True);
+
+            Assert.That(cursor.Row, Is.EqualTo(OutboxRowKind.Cursor));
+            Assert.That(cursor.Cursor, Is.EqualTo(CheckpointTestRecords.Id(510)));
+            Assert.That(cursor.RetainedTerminalCount, Is.EqualTo(9U));
+            Assert.That(cursor.PrunedTerminals, Is.EqualTo(10U));
+            Assert.That(cursor.TerminalTotal, Is.EqualTo(19U));
+        }
+
+        [Test]
+        public void OutboxRecordVersionAndItsEnumerationsAreTheDeclaredOrdinals()
+        {
+            Assert.That(OutboxRecordValue.CurrentRecordVersion, Is.EqualTo(1U));
+
+            Assert.That((uint)OutboxRowKind.Obligation, Is.EqualTo(0U));
+            Assert.That((uint)OutboxRowKind.Terminal, Is.EqualTo(1U));
+            Assert.That((uint)OutboxRowKind.Cursor, Is.EqualTo(2U));
+
+            Assert.That((uint)OutboxDeliveryState.Pending, Is.EqualTo(0U));
+            Assert.That((uint)OutboxDeliveryState.Delivered, Is.EqualTo(1U));
+            Assert.That((uint)OutboxDeliveryState.Acknowledged, Is.EqualTo(2U));
+            Assert.That((uint)OutboxDeliveryState.Rejected, Is.EqualTo(3U));
+            Assert.That((uint)OutboxDeliveryState.Compensated, Is.EqualTo(4U));
+
+            Assert.That((uint)OutboxDurability.Unspecified, Is.EqualTo(0U));
+            Assert.That((uint)OutboxDurability.Volatile, Is.EqualTo(1U));
+            Assert.That((uint)OutboxDurability.Durable, Is.EqualTo(2U));
+        }
     }
 
     /// <summary>
@@ -353,7 +412,7 @@ namespace GameCore.Contracts.Tests
             Assert.That(CheckpointFormat.FormatName, Is.EqualTo("gamecore.checkpoint/1"));
             Assert.That(CheckpointFormat.ProtocolMajor, Is.EqualTo(1));
             Assert.That(CheckpointFormat.ProtocolMinor, Is.EqualTo(0));
-            Assert.That(CheckpointFormat.RecordKindCount, Is.EqualTo(12));
+            Assert.That(CheckpointFormat.RecordKindCount, Is.EqualTo(13));
             Assert.That(CheckpointFormat.HeaderFieldId, Is.EqualTo(1));
             Assert.That(CheckpointFormat.FirstRecordFieldId, Is.EqualTo(100));
             Assert.That(CheckpointFormat.MaxDocumentBytes, Is.EqualTo(64 * 1024 * 1024));
@@ -364,7 +423,7 @@ namespace GameCore.Contracts.Tests
             Assert.That(CheckpointFormat.Limits.MaxListCount, Is.EqualTo(CheckpointFormat.MaxRecordCount));
             Assert.That(CheckpointFormat.Limits.MaxListBytes, Is.EqualTo(16 * 1024 * 1024));
             Assert.That(CheckpointFormat.Limits.MaxStringBytes, Is.EqualTo(4096));
-            Assert.That(CheckpointFormat.Describe(), Does.Contain("records=12"));
+            Assert.That(CheckpointFormat.Describe(), Does.Contain("records=13"));
         }
 
         [Test]
@@ -388,7 +447,7 @@ namespace GameCore.Contracts.Tests
         }
 
         [Test]
-        public void TryKindOfFieldAcceptsExactlyTheTwelveRecordFieldIds()
+        public void TryKindOfFieldAcceptsExactlyTheThirteenRecordFieldIds()
         {
             for (int ordinal = 0; ordinal < CheckpointFormat.RecordKindCount; ordinal++)
             {
@@ -431,6 +490,7 @@ namespace GameCore.Contracts.Tests
         [TestCase(CheckpointRecordKind.Message, "gamecore.checkpoint.schema.message")]
         [TestCase(CheckpointRecordKind.Rng, "gamecore.checkpoint.schema.rng")]
         [TestCase(CheckpointRecordKind.Cursor, "gamecore.checkpoint.schema.cursor")]
+        [TestCase(CheckpointRecordKind.Outbox, "gamecore.checkpoint.schema.outbox")]
         public void SchemaStableNameOfNamesEachKind(CheckpointRecordKind kind, string expected)
         {
             Assert.That(CheckpointFormat.SchemaStableNameOf(kind), Is.EqualTo(expected));
@@ -455,9 +515,9 @@ namespace GameCore.Contracts.Tests
         [Test]
         public void CountsOfNamesEachKindAndRejectsAnUndeclaredOne()
         {
-            var counts = new CheckpointCounts(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
+            var counts = new CheckpointCounts(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
 
-            Assert.That(counts.Total, Is.EqualTo(1 + 66));
+            Assert.That(counts.Total, Is.EqualTo(1 + 78));
             Assert.That(counts.Of(CheckpointRecordKind.Header), Is.EqualTo(1));
             Assert.That(counts.Of(CheckpointRecordKind.Scope), Is.EqualTo(1));
             Assert.That(counts.Of(CheckpointRecordKind.Install), Is.EqualTo(2));
@@ -470,6 +530,7 @@ namespace GameCore.Contracts.Tests
             Assert.That(counts.Of(CheckpointRecordKind.Message), Is.EqualTo(9));
             Assert.That(counts.Of(CheckpointRecordKind.Rng), Is.EqualTo(10));
             Assert.That(counts.Of(CheckpointRecordKind.Cursor), Is.EqualTo(11));
+            Assert.That(counts.Of(CheckpointRecordKind.Outbox), Is.EqualTo(12));
             Assert.Throws<ArgumentOutOfRangeException>(
                 () => counts.Of((CheckpointRecordKind)CheckpointFormat.RecordKindCount));
             Assert.That(counts.ToString(), Does.Contain("target=4"));
@@ -478,7 +539,7 @@ namespace GameCore.Contracts.Tests
         [Test]
         public void CanonicalId32CollationIsBigEndianAndOrderSensitive()
         {
-            var header = CheckpointTestRecords.Header(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+            var header = CheckpointTestRecords.Header(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
             byte[] fingerprint = header.CatalogFingerprint.ToArray();
 
             Assert.That(fingerprint.Length, Is.EqualTo(ContentHash.SizeInBytes));

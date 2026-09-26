@@ -5,12 +5,12 @@
 //
 // The generated catalog (`GameCore.Validation.GeneratedCheckpoint.CheckpointCatalog`) speaks its own nested value
 // structs, while the capture/document/restore pipeline speaks the `GameCore.Contracts` record values, so this file
-// is the one place that binds the twelve generated serializers to the seam. It was extracted from
+// is the one place that binds the thirteen generated serializers to the seam. It was extracted from
 // `Gc018Scenario` - where it was private to that scenario's executor - by the Wave 5 integration gate, because the
 // gate has to capture and restore the *same* format the GC-018 round trip proves: two copies of this binding table
 // could drift into two formats, which is exactly what P-054 forbids.
 //
-// W5-GATE reconciliation, recorded: the move is mechanical (the binding table and the twenty-four field-for-field
+// W5-GATE reconciliation, recorded: the move is mechanical (the binding table and the twenty-six field-for-field
 // conversions are the original text), and the only change is that `TryBuild` returns the bindings and the codec set
 // instead of assigning two fields of one scenario's executor.
 #nullable enable
@@ -25,14 +25,14 @@ using GameCore.Validation.GeneratedCheckpoint;
 namespace GameCore.Validation.ProbeHost
 {
     /// <summary>
-    /// The committed checkpoint catalog's twelve generated serializers, bound to the record values the checkpoint
+    /// The committed checkpoint catalog's thirteen generated serializers, bound to the record values the checkpoint
     /// pipeline carries (P-054). One instance per world is enough: the table is a set of direct references and the
     /// conversions are pure field copies.
     /// </summary>
     public static class Gc018CheckpointCodecs
     {
         /// <summary>
-        /// Binds the twelve generated serializers of the committed checkpoint catalog to the engine-free codec
+        /// Binds the thirteen generated serializers of the committed checkpoint catalog to the engine-free codec
         /// seam. The generated serializers speak their own nested value structs, while the capture, document and
         /// restore pipeline speaks the contract record values, so each binding carries the two field-exact
         /// conversions of its kind beside the generated `Serialize`/`TryDeserialize` method groups (05 s6,
@@ -58,6 +58,7 @@ namespace GameCore.Validation.ProbeHost
             var message = new CheckpointCatalog.MessageRecordSerializer();
             var rngSerializer = new CheckpointCatalog.RngRecordSerializer();
             var cursor = new CheckpointCatalog.CursorRecordSerializer();
+            var outbox = new CheckpointCatalog.OutboxRecordSerializer();
 
             bindings = new CheckpointSerializerBindings(
                 new CheckpointRecordSerializer<HeaderRecordValue, CheckpointCatalog.HeaderRecordValue>(
@@ -95,7 +96,10 @@ namespace GameCore.Validation.ProbeHost
                     RngToGenerated, RngFromGenerated),
                 new CheckpointRecordSerializer<CursorRecordValue, CheckpointCatalog.CursorRecordValue>(
                     cursor.Schema, cursor.Serialize, cursor.TryDeserialize,
-                    CursorToGenerated, CursorFromGenerated));
+                    CursorToGenerated, CursorFromGenerated),
+                new CheckpointRecordSerializer<OutboxRecordValue, CheckpointCatalog.OutboxRecordValue>(
+                    outbox.Schema, outbox.Serialize, outbox.TryDeserialize,
+                    OutboxToGenerated, OutboxFromGenerated));
 
             codecs = bindings.ToCodecSet();
             if (!codecs.IsComplete)
@@ -109,7 +113,7 @@ namespace GameCore.Validation.ProbeHost
             return true;
         }
 
-        // The twelve record kinds' contract value and generated value are field-for-field the same type with
+        // The thirteen record kinds' contract value and generated value are field-for-field the same type with
         // two names, so each kind converts by copying the whole field list through the constructor — never by
         // re-encoding, defaulting or dropping a field. The two directions of one kind sit beside each other so
         // a field added to one struct and not the other is a compile error in this block, not a silent truncate.
@@ -125,7 +129,8 @@ namespace GameCore.Validation.ProbeHost
                 value.ScopeCount, value.InstallCount, value.SelectionCount, value.TargetCount,
                 value.SlotCount, value.GrantCount, value.ClockCount, value.CommandCount,
                 value.MessageCount, value.RngStreamCount, value.CursorCount, value.SourcePublishedRevision,
-                value.SourcePublishedEpoch, value.SourceHostTicksPerSecond, value.ContentRevisionCount);
+                value.SourcePublishedEpoch, value.SourceHostTicksPerSecond, value.ContentRevisionCount,
+                value.OutboxCount);
 
         private static HeaderRecordValue HeaderFromGenerated(CheckpointCatalog.HeaderRecordValue value)
             => new HeaderRecordValue(
@@ -138,7 +143,8 @@ namespace GameCore.Validation.ProbeHost
                 value.ScopeCount, value.InstallCount, value.SelectionCount, value.TargetCount,
                 value.SlotCount, value.GrantCount, value.ClockCount, value.CommandCount,
                 value.MessageCount, value.RngStreamCount, value.CursorCount, value.SourcePublishedRevision,
-                value.SourcePublishedEpoch, value.SourceHostTicksPerSecond, value.ContentRevisionCount);
+                value.SourcePublishedEpoch, value.SourceHostTicksPerSecond, value.ContentRevisionCount,
+                value.OutboxCount);
 
         private static CheckpointCatalog.ScopeRecordValue ScopeToGenerated(ScopeRecordValue value)
             => new CheckpointCatalog.ScopeRecordValue(
@@ -293,6 +299,28 @@ namespace GameCore.Validation.ProbeHost
             => new CursorRecordValue(
                 value.RowKind, value.IssuerHigh, value.IssuerLow, value.Sequence,
                 value.SessionHigh, value.SessionLow);
+
+        private static CheckpointCatalog.OutboxRecordValue OutboxToGenerated(OutboxRecordValue value)
+            => new CheckpointCatalog.OutboxRecordValue(
+                value.RowKind, value.RecordVersion, value.OutboxHigh, value.OutboxLow,
+                value.DestinationHigh, value.DestinationLow, value.IdempotencyHigh, value.IdempotencyLow,
+                value.SourceEventSequence, value.SourceStep, value.SourceEpoch,
+                value.CausalIssuerHigh, value.CausalIssuerLow, value.CausalIssuerSequence,
+                value.PayloadSchemaHigh, value.PayloadSchemaLow, value.PayloadSchemaVersion,
+                value.DeliveryState, value.ReasonCode, value.AttemptCount, value.Durability,
+                value.OrderOrdinal, value.CursorHigh, value.CursorLow, value.CursorCount,
+                value.PrunedCount, value.Payload);
+
+        private static OutboxRecordValue OutboxFromGenerated(CheckpointCatalog.OutboxRecordValue value)
+            => new OutboxRecordValue(
+                value.RowKind, value.RecordVersion, value.OutboxHigh, value.OutboxLow,
+                value.DestinationHigh, value.DestinationLow, value.IdempotencyHigh, value.IdempotencyLow,
+                value.SourceEventSequence, value.SourceStep, value.SourceEpoch,
+                value.CausalIssuerHigh, value.CausalIssuerLow, value.CausalIssuerSequence,
+                value.PayloadSchemaHigh, value.PayloadSchemaLow, value.PayloadSchemaVersion,
+                value.DeliveryState, value.ReasonCode, value.AttemptCount, value.Durability,
+                value.OrderOrdinal, value.CursorHigh, value.CursorLow, value.CursorCount,
+                value.PrunedCount, value.Payload);
 
 
         private static string DescribeKinds(IReadOnlyList<CheckpointRecordKind> kinds)
