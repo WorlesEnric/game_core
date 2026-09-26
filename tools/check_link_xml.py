@@ -12,10 +12,16 @@ That rule is only a comment until something checks it, which is what this tool d
 
   * assembly-level `preserve="all"` only for the two fixture assemblies whose whole purpose is to be linked but not
     referenced (`GameCore.Validation.Fixture`, `GameCore.Unity.Fixtures`);
-  * type-level `preserve="all"` only under `GameCore.Unity.Adapters`, and only for the six PlayerLoop entry points
-    that native code invokes through an `updateDelegate`/`RuntimeInitializeOnLoadMethod`;
-  * no `preserve` of any kind for a kernel, rules, gameplay, compiler or runtime assembly — the assemblies generated
-    registration is supposed to keep alive.
+  * type-level `preserve="all"` only for named entry points: the six PlayerLoop types native code invokes through an
+    `updateDelegate`/`RuntimeInitializeOnLoadMethod`, and the ONE host-invoked production entry added by GC-027 —
+    `GameCore.Unity.Runtime.Recovery.WorldRecovery`. 04 section 8 item 4 permits preservation for "entry points
+    reached by Unity callbacks or native code"; O-22's composition is reached by the HOST application, and in the
+    marker-free release clone no managed call site reaches it at all, so High managed stripping really dropped it
+    (GC-027's build report records the before/after). The exception is one assembly and one exact type list, so a
+    blanket preserve of a kernel assembly still fails: an element whose only content is permitted type-level
+    preserves is a container, while `preserve="all"` on the assembly itself remains forbidden everywhere below;
+  * no other `preserve` of any kind for a kernel, rules, gameplay, compiler or runtime assembly — the assemblies
+    generated registration is supposed to keep alive.
 
 A bare `<assembly fullname="X" />` root without `preserve` is legal but is still reported, because a root for a
 kernel or gameplay assembly is a symptom worth seeing even though it does not itself preserve members.
@@ -43,9 +49,9 @@ PERMITTED_ASSEMBLY_PRESERVES = (
     "GameCore.Unity.Fixtures",
 )
 
-# The one assembly permitted to carry type-level preserves, with the exact type set it may preserve.
+# The assembly that carries the PlayerLoop entry points, and the exact type set it may preserve.
 PLAYER_LOOP_ASSEMBLY = "GameCore.Unity.Adapters"
-PERMITTED_TYPE_PRESERVES = (
+PLAYER_LOOP_TYPE_PRESERVES = (
     "GameCore.Unity.Adapters.GameCoreApplicationBootstrap",
     "GameCore.Unity.Adapters.GameCorePlayerLoopInstaller",
     "GameCore.Unity.Adapters.GameCoreApplicationPump",
@@ -53,6 +59,26 @@ PERMITTED_TYPE_PRESERVES = (
     "GameCore.Unity.Adapters.GameCoreApplicationComposition",
     "GameCore.Unity.Adapters.GameCorePumpLoop",
 )
+
+# The ONE kernel-assembly type-level preserve this repository permits, added by GC-027. 04 section 8 item 4 allows
+# preservation for "entry points reached by Unity callbacks or native code"; O-22's composition is invoked by the HOST
+# application, and in the marker-free release clone no managed call site reaches `WorldRecovery` at all, so High
+# managed stripping dropped the production recovery API (GC-027's build report records the before/after). The
+# exception is one assembly and one exact type list: `preserve="all"` on the assembly itself stays a failure below, so
+# this is not a way to widen a kernel assembly's reachability.
+HOST_ENTRY_ASSEMBLY = "GameCore.Unity.Runtime"
+HOST_ENTRY_TYPE_PRESERVES = (
+    "GameCore.Unity.Runtime.Recovery.WorldRecovery",
+)
+
+# The two assemblies permitted to carry type-level preserves, mapped to the exact types each may preserve.
+PERMITTED_TYPE_PRESERVES = {
+    PLAYER_LOOP_ASSEMBLY: PLAYER_LOOP_TYPE_PRESERVES,
+    HOST_ENTRY_ASSEMBLY: HOST_ENTRY_TYPE_PRESERVES,
+}
+
+# Every type name any assembly may preserve, for reporting.
+ALL_PERMITTED_TYPE_PRESERVES = PLAYER_LOOP_TYPE_PRESERVES + HOST_ENTRY_TYPE_PRESERVES
 
 # Assemblies that must never be preserved: the kernel, the rules and gameplay families, the compiler and the runtime.
 # A prefix match, so `GameCore.Rules.Narrative` and `GameCore.Gameplay.Cards.Fixtures` are covered too.
@@ -100,9 +126,9 @@ def check(path):
         types = [element.get("fullname") or element.get("name") for element in assembly.findall("type")]
         facts["assemblies"].append({"fullname": name, "preserve": preserve, "types": [t for t in types if t]})
 
-        if is_forbidden(name):
+        if is_forbidden(name) and preserve is not None:
             problems.append(
-                name + " is a kernel/rules/gameplay assembly and must not be preserved or rooted by link.xml; "
+                name + " is a kernel/rules/gameplay assembly and must not carry an assembly-level preserve; "
                 "its reachability must come from the generated catalogs (04 section 8)")
 
         if preserve is not None:
@@ -112,11 +138,13 @@ def check(path):
                 problems.append(
                     name + ' carries an assembly-level preserve="' + preserve + '", which is not one of the '
                     "permitted assembly-level preserves " + ", ".join(PERMITTED_ASSEMBLY_PRESERVES))
-        elif name not in PERMITTED_ASSEMBLY_PRESERVES and name != PLAYER_LOOP_ASSEMBLY:
+        elif name not in PERMITTED_ASSEMBLY_PRESERVES and name not in PERMITTED_TYPE_PRESERVES:
             problems.append(
-                name + " is rooted without a preserve attribute; a root is only expected for the fixture and "
-                "PlayerLoop assemblies")
+                name + " is rooted without a preserve attribute; a root is only expected for the fixture "
+                "assemblies and for the two assemblies that carry permitted type-level preserves ("
+                + ", ".join(sorted(PERMITTED_TYPE_PRESERVES)) + ")")
 
+        permitted_types = PERMITTED_TYPE_PRESERVES.get(name)
         for element in assembly.findall("type"):
             type_name = element.get("fullname") or element.get("name")
             if not type_name:
@@ -126,30 +154,44 @@ def check(path):
             type_preserve = element.get("preserve")
             if type_preserve != "all":
                 problems.append(type_name + ' carries preserve="' + str(type_preserve) + '"; only preserve="all" is used here')
-            if name != PLAYER_LOOP_ASSEMBLY:
+            if permitted_types is None:
                 problems.append(
-                    "type " + type_name + " is preserved under " + name + ", which is not the one assembly "
-                    "permitted to carry type-level preserves (" + PLAYER_LOOP_ASSEMBLY + ")")
-            elif type_name not in PERMITTED_TYPE_PRESERVES:
+                    "type " + type_name + " is preserved under " + name + ", which is not one of the assemblies "
+                    "permitted to carry type-level preserves (" + ", ".join(sorted(PERMITTED_TYPE_PRESERVES)) + ")")
+            elif type_name not in permitted_types:
                 problems.append(
-                    type_name + " is preserved but is not one of the PlayerLoop entry points native code invokes: "
-                    + ", ".join(PERMITTED_TYPE_PRESERVES))
+                    type_name + " is preserved but is not one of the " + name + " entry points this file permits: "
+                    + ", ".join(permitted_types))
+
+        # A kernel assembly that is forbidden for assembly-level preserve must still not be a bare root: an element
+        # whose only content is permitted type-level preserves is a container, and anything else is reported.
+        if is_forbidden(name) and preserve is None and not assembly.findall("type"):
+            problems.append(
+                name + " is a kernel/rules/gameplay assembly rooted with no preserve and no permitted type entry; "
+                "its reachability must come from the generated catalogs (04 section 8)")
 
     # The permitted set must also be present: a file that dropped the PlayerLoop preserves would strip the application
-    # pump in a player, which is the failure this allow-list exists to prevent.
+    # pump in a player, and a file that dropped GC-027's host-entry preserve would strip the production recovery API
+    # out of a marker-free release clone. Both are the failures this allow-list exists to prevent.
     present = {entry["fullname"] for entry in facts["assemblies"]}
+    preserved = {entry["fullname"]: entry["preserve"] for entry in facts["assemblies"]}
     for permitted in PERMITTED_ASSEMBLY_PRESERVES:
         if permitted not in present:
             problems.append("the permitted assembly-level preserve for " + permitted + " is missing")
-    if PLAYER_LOOP_ASSEMBLY not in present:
-        problems.append("the permitted " + PLAYER_LOOP_ASSEMBLY + " roots are missing")
-    else:
+        elif preserved.get(permitted) != "all":
+            problems.append(
+                "the permitted assembly-level preserve for " + permitted
+                + ' is present but does not carry preserve="all" (it carries ' + str(preserved.get(permitted)) + ")")
+    for assembly_name in sorted(PERMITTED_TYPE_PRESERVES):
+        required = PERMITTED_TYPE_PRESERVES[assembly_name]
+        if assembly_name not in present:
+            problems.append("the permitted " + assembly_name + " type-level preserves are missing")
+            continue
         for entry in facts["assemblies"]:
-            if entry["fullname"] == PLAYER_LOOP_ASSEMBLY:
-                missing = [t for t in PERMITTED_TYPE_PRESERVES if t not in entry["types"]]
+            if entry["fullname"] == assembly_name:
+                missing = [t for t in required if t not in entry["types"]]
                 if missing:
-                    problems.append(
-                        PLAYER_LOOP_ASSEMBLY + " does not preserve " + ", ".join(missing))
+                    problems.append(assembly_name + " does not preserve " + ", ".join(missing))
 
     return problems, facts
 
@@ -186,13 +228,11 @@ def main():
             json.dumps(
                 {
                     "check": "link-xml-preservation",
-                    "task": "GC-025",
-                    "status": "Fail" if problems else "Pass",
-                    "path": str(path),
+                    "permittedAssemblyPreserves": list(PERMITTED_ASSEMBLY_PRESERVES),
+                    "permittedTypePreserves": dict(PERMITTED_TYPE_PRESERVES),
+                    "permittedTypePreserveCount": len(ALL_PERMITTED_TYPE_PRESERVES),
                     "sha256": facts.get("sha256"),
                     "assemblies": facts.get("assemblies", []),
-                    "permittedAssemblyPreserves": list(PERMITTED_ASSEMBLY_PRESERVES),
-                    "permittedTypePreserves": list(PERMITTED_TYPE_PRESERVES),
                     "problems": problems,
                 },
                 indent=2,

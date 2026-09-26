@@ -71,6 +71,13 @@ fi
 
 mkdir -p "${ARTIFACTS}"
 failures=0
+
+# Unity's -logFile resolves a relative path against the PLAYER executable's directory while the attribution below
+# re-opens the same name against this script's working directory, so a relative ARTIFACTS makes the two disagree: runs
+# 2..N are silently skipped by the `[[ -f ... ]]` test and run 1 fails inside tools/attribute_native_leaks.py with
+# "log not found". One absolute root keeps the log the player wrote and the log the attributor reads the same file.
+# GC-026 found this on the W6 wrapper; tools/run_benchmarks.sh:74 uses the same idiom for the same reason.
+ARTIFACTS="$(realpath -m "${ARTIFACTS}")"
 result_file="${ARTIFACTS}/probe-w6-gate.json"
 log_file="${ARTIFACTS}/player-w6-gate.log"
 

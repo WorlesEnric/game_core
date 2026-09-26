@@ -112,6 +112,15 @@ ARG_NEEDLES = (
     '            bool benchmark = false;\n',
     "        /// <summary>\n        /// Runs the GC-026 performance benchmark: the generated 1,000-scope/10,000-target fixture through the real\n        /// derivation and incremental engines for the declared update sizes, the whole-world mode switch, the spawn,\n        /// the reparent and the lifecycle cycles; two real owned worlds for the idle window, the unchanged-composition\n        /// window, the fenced apply pause of a real plan, one live spawn publication and the authority mutation\n        /// fixture; and the correctness gates (zero stable control-tree scans, zero string service lookups, no\n        /// duplicated authoritative state) asserted rather than merely measured, with the raw per-sample documents\n        /// written beside the probe result (P-007, P-022, P-023, P-026, P-034, P-043, P-048, P-052, P-060,\n        /// TEST-008, TEST-013, TEST-023).\n        /// </summary>\n        public bool Benchmark { get; }\n",
     '                else if (argument == BenchmarkArgumentName)\n                {\n                    benchmark = true;\n                }\n',
+    # The Wave 7 gate is a qualification join like the five above: its scenario re-runs GC-025's coverage, GC-026's
+    # equivalence and GC-027's recovery through those tasks' own runners, so every file it touches is qualification.
+    # The mode that must STAY - this gate's release recovery smoke - is deliberately absent from every needle here.
+    '        private const string W7GateArgumentName = "-probeW7Gate";\n',
+    '            bool w7Gate,\n',
+    '            W7Gate = w7Gate;\n',
+    '            bool w7Gate = false;\n',
+    "        /// <summary>\n        /// Runs the Wave 7 integration-gate mode: the complete W7 exit gate on one merged revision — GC-025's catalog\n        /// coverage sequence re-run over the merged kernel, GC-027's recovery sequence re-run for all three genres\n        /// with the postwrite-apply and restart fault points named, GC-026's incremental-versus-full derivation\n        /// equivalence at the declared 10,000-target scale, and the merged dispatch of every W7 mode\n        /// (W7-GATE).\n        /// </summary>\n        public bool W7Gate { get; }\n",
+    '                else if (argument == W7GateArgumentName)\n                {\n                    w7Gate = true;\n                }\n',
 )
 
 def main() -> None:
@@ -211,6 +220,12 @@ def main() -> None:
         "ProbeBenchmark",
         "BenchmarkScenario",
         "BenchmarkLiveWorld",
+        # The Wave 7 integration gate: the merged-revision join (GC-025's coverage, GC-026's equivalence, GC-027's
+        # recovery, plus its own two merge invariants) and the mode that drives it are qualification evidence. The one
+        # file this gate adds that a shipping build really carries - `ProbeRecoverySmoke`, the release recovery smoke
+        # over production seams with no fault latches - is deliberately NOT in this list and stays wired below.
+        "W7GateScenario",
+        "ProbeW7Gate",
     ):
         for suffix in (".cs", ".cs.meta"):
             (DESTINATION / RUNTIME / (name + suffix)).unlink()
@@ -219,7 +234,7 @@ def main() -> None:
     # The report identity is one independent `if` per mode, so removing a mode's branch is a whole block.
     for mode, task in (("Faults", "GC-017"), ("W5Gate", "W5-GATE"), ("Gc021", "GC-021"),
                        ("LifecycleStress", "GC-022"), ("Replay", "GC-023"), ("W6Gate", "W6-GATE"),
-                       ("Recovery", "GC-027"), ("Benchmark", "GC-026")):
+                       ("Recovery", "GC-027"), ("Benchmark", "GC-026"), ("W7Gate", "W7-GATE")):
         replace_once(
             runner,
             '            if (arguments.' + mode + ')\n'
@@ -240,7 +255,8 @@ def main() -> None:
     for old in ARG_NEEDLES:
         replace_once(arguments, old)
 
-    # The qualification-mode expression keeps every surviving mode, so -probeTraversal still counts as a probe.
+    # The qualification-mode expression keeps every surviving mode, so -probeTraversal, -probeCatalogCoverage and
+    # -probeRecoverySmoke still count as probes; only the removed modes lose their term.
     replace_once(
         arguments,
         '            || Gc013 || W4Gate || Faults || Gc018 || Gc019 || W5Gate || Traversal || Gc021 || Recovery\n',
@@ -251,18 +267,20 @@ def main() -> None:
         '            || Replay\n',
         '            || W6Gate\n',
         '            || Benchmark\n',
+        '            || W7Gate\n',
     ):
         replace_once(arguments, removed)
 
     # The constructor call keeps the same members in the same order as the remaining parameters, so the clone's
-    # argument list and its constructor signature agree exactly. GC-025 added `catalogCoverage` to the signature and
-    # keeps it here: the release shape runs the catalog coverage probe too (`tools/build_baseline_player.sh`), which
-    # is the point of the marker-free build — every generated root has to survive the shipping stripping settings.
+    # argument list and its constructor signature agree exactly. Two modes are deliberately KEPT and stay in both the
+    # signature and the call: `-probeCatalogCoverage` (GC-025's release-shape coverage run, which is the point of the
+    # marker-free build: every generated root has to survive the shipping stripping settings) and `-probeRecoverySmoke`
+    # (the Wave 7 gate's release recovery smoke, which drives production seams only).
     replace_once(
         arguments,
         '                w4Gate, faults, gc018, gc019, w5Gate, traversal, gc021, recovery, replay, w6Gate, catalogCoverage,\n'
-        '                benchmark, resultPath);',
-        '                w4Gate, gc018, gc019, traversal, catalogCoverage, resultPath);',
+        '                benchmark, w7Gate, recoverySmoke, resultPath);',
+        '                w4Gate, gc018, gc019, traversal, catalogCoverage, recoverySmoke, resultPath);',
     )
     replace_once(arguments, '                lifecycleStress,\n')
 

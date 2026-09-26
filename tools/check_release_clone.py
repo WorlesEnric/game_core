@@ -63,6 +63,7 @@ REMOVED_TYPES = [
  'Gc027CardsHost', 'Gc027TraversalHost', 'ProbeRecovery',
  'ProbeBenchmark', 'BenchmarkScenario', 'BenchmarkLiveWorld', 'LiveWorldFailure', 'BenchmarkOptions',
  'BenchmarkStep', 'BenchmarkScenarioResult', 'BenchmarkLiveFamily',
+ 'W7GateScenario', 'W7GateScenarioResult', 'W7GateStep', 'ProbeW7Gate',
 ]
 REMOVED_MEMBERS = [
  'RunReloadRoute', 'RunBothW6Gate', 'RunW6Gate', 'W6GateDigest', 'W6GateGeneratedDigest', 'W6GateFixtureDigest',
@@ -72,12 +73,12 @@ REMOVED_MEMBERS = [
 ]
 REMOVED_MODES = [('Faults', 'faults'), ('W5Gate', 'w5Gate'), ('Gc021', 'gc021'),
                  ('LifecycleStress', 'lifecycleStress'), ('Replay', 'replay'), ('W6Gate', 'w6Gate'),
-                 ('Recovery', 'recovery'), ('Benchmark', 'benchmark')]
+                 ('Recovery', 'recovery'), ('Benchmark', 'benchmark'), ('W7Gate', 'w7Gate')]
 KEPT_MODES = [('MissingRegistration', 'missingRegistration'), ('WorldDispatch', 'worldDispatch'),
               ('W1Gate', 'w1Gate'), ('W2Gate', 'w2Gate'), ('W3Gate', 'w3Gate'), ('Narrative', 'narrative'),
               ('Cards', 'cards'), ('W4Profile', 'w4Profile'), ('Gc013', 'gc013'), ('W4Gate', 'w4Gate'),
               ('Gc018', 'gc018'), ('Gc019', 'gc019'), ('Traversal', 'traversal'),
-              ('CatalogCoverage', 'catalogCoverage')]
+              ('CatalogCoverage', 'catalogCoverage'), ('RecoverySmoke', 'recoverySmoke')]
 
 problems = []
 files = []
@@ -193,17 +194,34 @@ print()
 print('== 5. kept modes wired, removed modes gone ==')
 pr = open(os.path.join(runtime, 'ProbeRunner.cs')).read()
 for mode, low in REMOVED_MODES:
-    gone = (mode not in pa) and (low not in pa) and ('arguments.' + mode) not in pr
+    # The mode is gone when its FLAG LITERAL, its PROPERTY declaration, its CONSTRUCTOR parameter and its dispatch
+    # branch are all absent. Substring tests are wrong here twice over: `recovery` is a prefix of the KEPT
+    # `recoverySmoke` (and `-probeRecovery` of `-probeRecoverySmoke`), and a surviving doc comment may legitimately
+    # contain the English word. So each part is matched as the code shape the merge would have had to keep.
+    flag_gone = ('"' + '-probe' + mode + '"') not in pa
+    property_gone = ('public bool ' + mode + ' { get; }') not in pa
+    parameter_gone = ('bool ' + low + ',') not in pa
+    dispatch_gone = (re.search(r'arguments\.' + mode + r'(?![\w])', pr) is None
+                     and ('Named("' + mode + '"') not in pr)
+    gone = flag_gone and property_gone and parameter_gone and dispatch_gone
     print(f'   removed {mode:16s} absent everywhere: {gone}')
     if not gone:
         problems.append('removed mode still referenced: ' + mode)
 for mode, low in KEPT_MODES:
-    wired = (low in pa) and ('arguments.' + mode in pr) and ('bool ' + low in pa)
+    # "Wired" is four things, not three: the flag literal, the constructor parameter, the property declaration and
+    # the ASSIGNMENT that connects the parameter to the property. The assignment was the missing fourth leg — a clone
+    # that kept the flag and the parameter but dropped the assignment leaves a property that is always false, which
+    # is exactly how a kept mode silently stops being reachable.
+    wired = (('"' + '-probe' + mode + '"') in pa
+             and ('bool ' + low + ',') in pa
+             and ('public bool ' + mode + ' { get; }') in pa
+             and re.search(r'^\s*' + mode + r' = ' + low + r';', pa, re.M) is not None
+             and re.search(r'arguments\.' + mode + r'(?![\w])', pr) is not None)
     print(f'   kept    {mode:16s} wired: {wired}')
     if not wired:
         problems.append('kept mode lost its wiring: ' + mode)
-
 manifest = json.load(open(os.path.join(root, 'Packages/manifest.json')))
+
 stale = [k for k in manifest['dependencies']
          if 'qualification' in k or 'replay' in k or 'recovery' in k or 'benchmarks' in k]
 print('   qualification/replay dependencies:', stale or 'none')

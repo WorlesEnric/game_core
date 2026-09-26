@@ -2,9 +2,9 @@
 """Does a marker-free release player carry only the shipping surface, and does the qualification player prove the
 inspection can see those markers at all?
 
-The Wave 6 exit gate says an integrated revision must pass "a marker-free release build + release-surface inspection
-(no fault latches, no telemetry, no W6Gate-only hooks)". Three existing tools settle most of that, each from a
-different operand:
+The Wave 7 exit gate says an integrated revision must pass "complete IL2CPP/headless catalog coverage runs" and
+"faulted checkpoint/outbox recovery" on a marker-free release build. Three existing tools settle most of that, each
+from a different operand:
 
   * `tools/check_release_fault_free.py` — the latch sources compiled in both configurations, plus (with the compiled
     half) that the release assembly contains no latch type;
@@ -13,14 +13,14 @@ different operand:
   * `tools/check_player_fault_free.py` — the built release player's managed assemblies and generated C++, for the
     GC-017 latch markers.
 
-This tool settles the union the Wave 6 gate needs and none of them covers alone: the *qualification-only markers of
-all five waves* (GC-017's latches, GC-021's delivery seat, GC-022's lifecycle stress, GC-023's replay fixture, the
-Wave 5 and Wave 6 gate fixtures) must be ABSENT from a release player, and the SAME inspection pointed at the
+This tool settles the union the Wave 7 gate needs and none of them covers alone: the *qualification-only markers of
+all six waves* (GC-017's latches, GC-021's delivery seat, GC-022's lifecycle stress, GC-023's replay fixture, and the
+Wave 5, Wave 6 and Wave 7 gate fixtures) must be ABSENT from a release player, and the SAME inspection pointed at the
 qualification player must FIND a named, expected subset. The second half is what keeps the first half falsifiable: a
 scan that finds nothing because it is looking in the wrong place, or because the marker strings changed, fails here
-instead of reporting a clean release. A third check closes the same loop from the other side: the one mode the release
-clone deliberately keeps (the GC-020 traversal course) must be present in BOTH players, which proves this inspection
-really reads mode flags out of a built player rather than finding nothing everywhere.
+instead of reporting a clean release. A third check closes the same loop from the other side: every mode the release
+clone deliberately keeps must be present in BOTH players, which proves this inspection really reads mode flags out of
+a built player rather than finding nothing everywhere.
 
 The tool inspects bytes rather than symbols on purpose. A managed metadata heap and the IL2CPP generated C++ are both
 UTF-8, so a byte search finds a surviving type name, mode flag or step prefix exactly as a reader would, and it needs
@@ -90,6 +90,12 @@ MARKERS = {
         "-probeW6Gate",
         "GC_W6_GATE_CYCLES",
     ),
+    "w7-gate": (
+        "W7GateScenario",
+        "W7GateScenarioResult",
+        "ProbeW7Gate",
+        "-probeW7Gate",
+    ),
 }
 
 # The markers the qualification player must show: one per group above, so every group's scan is proved to work.
@@ -100,13 +106,17 @@ QUALIFICATION_EXPECTED = {
     "gc023-replay-fixture": "-probeReplay",
     "w5-gate": "-probeW5Gate",
     "w6-gate": "-probeW6Gate",
+    "w7-gate": "-probeW7Gate",
 }
 
-# One mode the release clone deliberately KEEPS: the GC-020 traversal course, whose local physics scene and committed
-# animation/audio output are the optional engine surface the Wave 6 gate is about. It is asserted present in BOTH
-# players, which is the second half of the falsifiability argument: this inspection really reads mode flags out of a
-# built player, so its silence about the markers above means something.
-KEPT_MODE = "-probeTraversal"
+# The modes the release clone deliberately KEEPS, each asserted present in BOTH players. This is the second half of the
+# falsifiability argument: this inspection really reads mode flags out of a built player, so its silence about the
+# markers above means something. `-probeTraversal` is the GC-020 course (whose local physics scene and committed
+# animation/audio output are the optional engine surface the Wave 6 gate is about); `-probeCatalogCoverage` is
+# GC-025's release-shape coverage run (every generated root has to survive the shipping stripping settings); and
+# `-probeRecoverySmoke` is the Wave 7 gate's release recovery smoke, which drives the production `WorldRecovery`
+# composition from a real file checkpoint with no fault latches and is therefore shipping-shaped by construction.
+KEPT_MODES = ("-probeTraversal", "-probeCatalogCoverage", "-probeRecoverySmoke")
 
 # The production seams the release player should still carry: the gate removes qualification fixtures, never the
 # shipping code paths they exercise. Reported, not asserted, because a stripped player may legitimately drop a type no
@@ -229,20 +239,25 @@ def main() -> int:
                 problems.append(
                     "the qualification player does not show %s (%s), so this scan cannot prove the release "
                     "player is free of %s" % (marker, group, group))
-        kept_in_qualification = joined.count(KEPT_MODE.encode("utf-8"))
-        qualification_checks["kept-mode"] = {"marker": KEPT_MODE, "count": kept_in_qualification}
-        if kept_in_qualification == 0:
-            problems.append(
-                "the qualification player does not carry %s, so this inspection cannot read mode flags at all"
-                % KEPT_MODE)
+        for marker in KEPT_MODES:
+            count = joined.count(marker.encode("utf-8"))
+            qualification_checks["kept:" + marker] = {"marker": marker, "count": count}
+            if count == 0:
+                problems.append(
+                    "the qualification player does not carry %s, so this inspection cannot read mode flags at all"
+                    % marker)
 
-    kept_release_count = b"\n".join(read_blobs(args.player)).count(KEPT_MODE.encode("utf-8"))
-    if kept_release_count == 0:
-        problems.append(
-            "the release player does not carry %s, the one mode the clone deliberately keeps" % KEPT_MODE)
+    release_blobs = b"\n".join(read_blobs(args.player))
+    release_kept = {}
+    for marker in KEPT_MODES:
+        count = release_blobs.count(marker.encode("utf-8"))
+        release_kept[marker] = count
+        if count == 0:
+            problems.append(
+                "the release player does not carry %s, a mode the clone deliberately keeps" % marker)
 
     report = {
-        "task": "W6-GATE",
+        "task": "W7-GATE",
         "check": "release-gate-surface",
         "release": {
             "root": os.path.abspath(args.player),
@@ -251,7 +266,7 @@ def main() -> int:
             "findings": release["findings"],
             "requiredSeams": release_seams,
             "missingSeams": missing_seams,
-            "keptMode": {"marker": KEPT_MODE, "count": kept_release_count},
+            "keptModes": release_kept,
         },
         "qualification": None
         if qualification is None
@@ -261,6 +276,7 @@ def main() -> int:
             "expectedMarkers": qualification_checks,
         },
         "markers": {group: list(markers) for group, markers in sorted(MARKERS.items())},
+        "keptModes": list(KEPT_MODES),
         "problems": problems,
         "status": "Pass" if not problems else "Fail",
     }
