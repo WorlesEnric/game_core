@@ -392,3 +392,35 @@ them but does not close their remaining clauses); `O-20`/`O-21` stay promoted fr
    as a split construct and failed a correct file (found here in `Observation/SnapshotResynchronization.cs`, added by
    GC-016 after GC-017 froze that check). A falsifiability self-test proves the fixed check still fails on a real
    split, including one hidden behind a brace inside a string.
+
+## GC-021 revision notes (proposals only; nothing promoted)
+
+**Status of every command in this section: `NotRun (pending orchestrator build host)`.** Source: `artifacts/gc-021/HANDOFF.md`.
+
+GC-021 implements durable outbox and destination idempotency seams: the checkpoint format gains an outbox section
+(`CheckpointRecordKind.Outbox = 12`, appended so every existing field id is unchanged; `OutboxRecordValue` with
+Obligation/Terminal/Cursor rows and its own row-layout version; `HeaderRecordValue.OutboxCount` verified in both
+directions), the engine-free delivery core gains `DeliveryKey.Derive` (three stable identities minted from committed
+data under two length-prefixed domain labels, so a repeated observation of one committed event is one obligation), a
+bounded `DurableOutbox` with explicit capacity and retention refusals, and `DurableDeliveryAdapter` with one declared
+ordering per transition plus a named-boundary reporting seam; capture, the restore planner (with the new
+`RestoreRefusal.InvalidOutbox`) and the restore executor (through the optional `IRestoreOutboxBuilder`) carry the
+section; and `Packages/com.gamecore.gameplay.integration` adds the narrative→card reward composition with three
+distinguishable unsupported-destination-state outcomes (unavailable, terminal refusal, explicit compensation).
+
+**No requirement or operation row was promoted.** The tables below are proposals; the build host promotes after
+running, as the brief requires.
+
+| Id | Current | Proposed | What the change set adds | Evidence the build host must first produce |
+| --- | --- | --- | --- | --- |
+| `P-045` | Partial | Partial | The durable outbox, explicit external idempotency keys, acknowledgement cursors and the checkpoint section. Redelivery after acknowledgement loss applies the mutation once; delivery is documented as at-least-once with destination deduplication, never exactly-once. | `artifacts/gc-021/trx/`, `artifacts/gc-021/toolchain/probe-gc021.json` (×5), `artifacts/gc-021/unity/delivery-editmode.xml`, `artifacts/gc-021/BUILD_REPORT.md` |
+| `P-053` | Implemented+Evidenced | unchanged | The "external outbox/dedup cursors when used" clause gains a record kind, a capture path, three planner refusals and a reinstate-and-prove restore seam. | `probe-gc021.json`, `trx/` |
+| `P-003` | Partial | Partial | Acknowledging is idempotent, rejections and compensations are terminal, and no reversible `Effect` member is reachable from the delivery surface. | `probe-gc021.json` |
+| `P-043` | Implemented+Evidenced | unchanged | An outbox is bounded and its refusals and prunes are counted: capacity exhaustion reports `BudgetExceeded` and the refused obligation is not tracked. | `probe-gc021.json`, `trx/` |
+| `P-050` | Partial | Partial | The obligation identity and the external key are derived from committed data and survive a crash and recovery unchanged. | `probe-gc021.json`, `trx/` |
+| `P-049` | Partial | Partial | A committed obligation is reinstated into a new session; recovery is explicit and there is no hidden replay. `O-22` and bounded retries remain GC-027's. | `probe-gc021.json` |
+| `P-054` | Implemented+Evidenced | unchanged | The outbox row is versioned and frame-checked; unknown versions, field counts and kinds are refused. | `trx/` |
+
+The two probe digest literals are deliberately `PENDING`: a digest is computed over the observation names and their
+pass flags and cannot be known before the sequence first runs. `tools/unity/run_gc021_probe.sh` asserts the
+falsifiable cross-catalog equality until they are pinned, and an exact pin afterwards. No literal was invented.
