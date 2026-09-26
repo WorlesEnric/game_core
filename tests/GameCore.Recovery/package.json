@@ -1,0 +1,10 @@
+{
+  "name": "com.gamecore.recovery",
+  "version": "0.1.0",
+  "displayName": "GameCore Recovery Qualification Fixtures",
+  "description": "GC-027's recovery fixtures: the versioned local checkpoint store (temporary file, checksum, atomic replacement) that 06 s7 requires and GC-018 left to the caller, the host-configured bounded retry policy and failure classification of P-049, the bounded recovery attempt transcript, and the outbox consistency report a crash/restart recovery is judged by. Unity-free by design so the same sources run in plain dotnet, in Unity EditMode and in the qualification player.",
+  "unity": "6000.0",
+  "dependencies": {
+    "com.gamecore.contracts": "0.1.0"
+  }
+}

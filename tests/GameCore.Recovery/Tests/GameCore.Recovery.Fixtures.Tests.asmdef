@@ -1,0 +1,32 @@
+{
+    "name": "GameCore.Recovery.Fixtures.Tests",
+    "rootNamespace": "GameCore.Recovery.Fixtures.Tests",
+    "references": [
+        "GameCore.Recovery.Fixtures",
+        "GameCore.Contracts",
+        "GameCore.Unity.Runtime",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [
+        {
+            "name": "com.gamecore.fault-qualification",
+            "expression": "1.0.0",
+            "define": "GAMECORE_FAULT_INJECTION"
+        }
+    ],
+    "noEngineReferences": false
+}
