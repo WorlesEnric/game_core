@@ -21,11 +21,15 @@ What this branch adds, in the order the gate proves it:
    `TraversalCatalog.g.cs` through the *production* emitter from a new committed description, and proves in the
    player that the generated catalog fingerprints identically to the hand-written table
    (`f66d97d489bc1d8b891b20bc1c16186e0843d2ca5760dcd010909feea6829459` for both).
-2. **Generated coverage companions.** For every committed catalog, the emitter now also writes a
-   `<Class>Coverage.g.cs` compiled into the *same assembly as the catalog*: it resolves every registration through
-   the table's own generated lookup method, writes/validates/re-reads **every** declared schema through its generated
-   serializer (13 checkpoint schemas included) and executes every closed-generic root statement. A registration or
-   serializer UnityLinker dropped with High stripping therefore fails in the player, not only in the Editor.
+2. **Generated coverage companions, from a production emitter.** For every committed catalog the content compiler
+   now also emits a `<Class>Coverage.g.cs`, compiled into the *same assembly as the catalog*: it resolves every
+   registration through the table's own generated lookup method, writes/validates/re-reads **every** declared schema
+   through its generated serializer (13 checkpoint schemas included) and executes every closed-generic root
+   statement. A registration or serializer UnityLinker dropped with High stripping therefore fails in the player,
+   not only in the Editor. `CatalogEmitter.EmitCoverage` is the production emitter, `CatalogGenerator.GenerateFromText`
+   writes the companion and `CatalogGenerator.VerifyCoverageFromFiles` re-emits it from the description and fails on
+   a stale or hand-edited file; the four Editor bridges call that verification in `VerifyCatalog` (a shared `shared:`
+   commit — see §4).
 3. **A catalog reachability manifest** generated from all four descriptions, committed twice: as compile-time C#
    data (`Runtime/CatalogReachability.g.cs`) the player compares its live tables against, and as
    `artifacts/baseline/catalog-reachability.json` for the build host.
@@ -85,7 +89,7 @@ What this branch adds, in the order the gate proves it:
 
 | Path | Contents |
 | --- | --- |
-| `tools/emit_generated_catalog.py` | Generic mirror of `CatalogEmitter` (validation, canonical ordering, the exact template, the hash/fingerprint scopes) **plus** the coverage-companion emitter. `--self-check` reproduces all four committed catalogs *and* their coverage companions byte for byte. |
+| `tools/emit_generated_catalog.py` | No-SDK mirror of `CatalogEmitter` (validation, canonical ordering, the exact `Emit` template, the hash/fingerprint scopes, and `EmitCoverage`). `--self-check` reproduces all four committed catalogs *and* their coverage companions byte for byte, so it is the independent check of the production emitter's output on a host with no compiler. |
 | `tools/emit_catalog_reachability.py` | Emits the manifest as C# and as JSON from the four descriptions; `--check` fails on a stale artifact. |
 | `tools/emit_baked_catalog_coverage.py` | No-SDK mirror of the Editor baker's template and validation, so the committed baked artifact can be produced and re-checked here; `--check` fails on drift. |
 | `tools/compare_registration_fingerprints.py` | Compares two builds (Unity project directory or `catalog-ledger.json`), plus the committed manifest as a third participant. `--ledger`/`--ledger-out` write a build's ledger; `--self-test` proves the comparison is falsifiable (identical pair passes, a one-byte change is reported *and named*). |
@@ -117,6 +121,9 @@ What this branch adds, in the order the gate proves it:
 | `tools/unity/prepare_gc017_release_project.py` | **`shared:`** the `ProbeArguments` constructor-call needle and its replacement now match the two-line call the new mode produces. | The clone's argument list must keep agreeing with the constructor signature; the script's exact-once needle design caught this immediately (§9). |
 | `tools/check_release_clone.py` | **`shared:`** `KEPT_MODES` gained `('CatalogCoverage', 'catalogCoverage')`. | The clone deliberately keeps this mode (see §4), so the clone check must verify its wiring survives. |
 | `tools/emit_catalog_reachability.py`, `artifacts/baseline/*` | Regenerated/refreshed by their own tools. | — |
+| `Packages/com.gamecore.content.compiler/Runtime/Description/CatalogEmitter.cs` | **`shared:`** additive: the `CoverageFileSuffix` const, `EmitCoverage(CatalogDescription)` and its private helpers. No existing member changed. | The coverage companion needed a production emitter; without one the committed companions had no producer the build host could run, and their "generated" claim rested on a mirror alone. |
+| `Packages/com.gamecore.content.compiler/Runtime/Description/CatalogGenerator.cs` | **`shared:`** additive except that `GenerateFromText` now writes one more file: `CatalogFileSuffix`, `CoveragePathFor`, companion writing, and `VerifyCoverageFromFiles`. `Verify` is unchanged (catalog only). | The Editor codegen step must write and verify the companion, or "the committed file is the Editor's own output" would be false for it. |
+| `unity/…/Editor/{Probe,Card,Checkpoint,Traversal}CatalogGenerator.cs` | **`shared:`** each `VerifyCatalog` now also verifies the coverage companion. | A stale companion fails the Editor step rather than reaching a player. |
 
 ## 4. Contract changes and shared-file changes
 
@@ -137,6 +144,13 @@ plan DTO changed, and `tools/check_contract_surface_parity.py` still passes agai
 3. `tools/unity/prepare_gc017_release_project.py` and `tools/check_release_clone.py` — the release-shape tooling.
    GC-025 adds no new qualification marker package and no new stripped fixture; these two edits keep their
    exact-once needle and kept-mode invariants true for the new mode.
+4. `Packages/com.gamecore.content.compiler/{CatalogEmitter,CatalogGenerator}.cs` and the four Editor bridges —
+   **generic**, genre-free (no genre type or name reaches the compiler) and additive except that a generation now
+   also writes the companion file. This is the build-time content compiler, not the runtime kernel: no
+   `GameCore.Contracts`, `Composition`, `Derivation`, `Planning` or `Unity.Runtime` file changed, and no emitted
+   *catalog* byte changed, so no earlier gate's frozen digest, file hash or fingerprint moves. GC-003's and GC-018's
+   codegen steps now also write and verify one more file each, which is strictly more checking rather than different
+   output; §9 records the byte-level proof that the four catalogs are untouched.
 
 **No kernel semantic change.** Nothing in `GameCore.Contracts`, `Composition`, `Derivation`, `Planning` or
 `Unity.Runtime` (the kernel pipeline and hosts) changed, so no earlier wave gate needs rerunning on this account.
@@ -356,14 +370,34 @@ python3 tools/run_gc025_gate.sh  (UNITY=<stub>, DOCS=0)
 # .meta GUID uniqueness over the whole worktree: 835 metas, 835 unique, 0 duplicates
 ```
 
-Two defects were found and fixed by these checks rather than by a compiler:
+The production `EmitCoverage` transcription was verified as follows: `git diff --stat` shows a pure addition to
+`CatalogEmitter.cs` (323 insertions, 0 deletions; two additive hunks at lines 27 and 57 and one at 891), the ten
+review findings the gate-source checker reports for that file are **identical in count and content to `HEAD`'s own
+24** (all of them pre-existing false positives for its nested `GeneratedEntry.Entry`/`GeneratedSchema.SchemaId`
+members, in code this change does not touch), and every generated catalog is byte-unchanged: `tools/verify_generated_catalog.py`
+recomputes all four file hashes and fingerprints, `tools/emit_generated_catalog.py --self-check` still reports
+"reproduces byte for byte", and `git status` shows no generated catalog as modified after the compiler commit.
+
+Four defects were found and fixed by these checks and by the independent reviews rather than by a compiler:
 
 1. `BakedCatalogCoverageRecipeSource` first declared its recipes in the order runner, display runner, volume, while
    `TraversalCourseRecipes.Catalog` declares runner, volume, display runner. A `SpawnRecipeCatalog` fingerprints its
    recipes in insertion order, so the two catalogs' fingerprints would have differed and
    `catalog-coverage-bake-runtime-parity` would have failed. Fixed in commit
    "GC-025: materialize the baked recipe catalog in the runtime catalog's own declaration order".
-2. The release-clone strip script's constructor-call needle no longer matched after the new mode was added, and the
+2. The four coverage companions named the catalog's nested value and serializer types unqualified while the
+   companion is a sibling top-level class, which is CS0246 in all four assemblies (and, for the checkpoint catalog, a
+   CS1503 once only the serializer were qualified, because its value-type names also exist as top-level contract
+   records). Fixed in the emitter and regenerated.
+3. The player-mode class `ProbeCatalogCoverage` shadowed the generated companion of the same name in the same
+   compilation, because a namespace member always wins over a using-imported type: ten members would have failed
+   with CS0117. The mode class was renamed `CatalogCoverageProbe`, which also left the generated companion reachable
+   by its own name.
+4. `BakeCatalogCoverageAuthoring` named `TraversalVocabulary` while the Editor assembly did not reference
+   `GameCore.Rules.Traversal` (Unity assembly references are not transitive), and the baked runner definition was
+   derived with `Definition(stableName)` while the runtime recipe derives `Definition(stableName + ".definition")`,
+   so the parity observation could never have passed. Both fixed.
+5. The release-clone strip script's constructor-call needle no longer matched after the new mode was added, and the
    script raised rather than silently half-editing; the first draft of the restart observation referenced
    `W6GateScenario`, which the clone removes, and the clone checker caught it. Both fixed in §4's shared edits.
 
