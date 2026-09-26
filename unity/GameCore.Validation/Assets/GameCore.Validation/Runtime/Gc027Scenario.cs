@@ -1423,11 +1423,14 @@ namespace GameCore.Validation.ProbeHost
                 return WorldRecovery.Recover(context);
             }
 
+            /// <summary>
+            /// The restart request names the source and definition the run already knows: the definition comes from
+            /// the world create request, not from the ownership descriptor, which describes layouts and stages and
+            /// carries no world definition at all.
+            /// </summary>
             private WorldRecoveryRequest RestartRequest(ICheckpointStore activeStore, ContentHash fingerprint) =>
                 new WorldRecoveryRequest(
                     recovery?.Request.Source ?? default(WorldId),
-                    // The definition comes from the run's own world request, not from the ownership descriptor:
-                    // the descriptor describes layouts and stages and carries no world definition at all.
                     recovery?.Request.Definition ?? source!.Request.Definition,
                     TemporalModel.CommandDriven,
                     PropagationMode.Automatic,

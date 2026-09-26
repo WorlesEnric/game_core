@@ -14,6 +14,7 @@ using System.IO;
 using GameCore.Contracts;
 using GameCore.Execution.Delivery;
 using GameCore.Execution.Recovery;
+using GameCore.Recovery.Fixtures;
 using NUnit.Framework;
 
 namespace GameCore.Recovery.Fixtures.Tests

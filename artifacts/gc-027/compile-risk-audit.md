@@ -3,8 +3,20 @@
 **What this is.** A read-only declaration audit of the new GC-027 C# files, run on the authoring host (no Unity, no
 .NET SDK, so no compiler). Every `X.Y` access, call, constructor and `using` in the new files was cross-checked
 against the declaration it must match, and every finding was reported with the disagreeing declaration's own
-`file:line`. Twelve findings, **all fixed and each re-verified against the declaration**; the fixes are in the commit
-`GC-027: fix the compile errors an independent declaration audit found`.
+`file:line`. Twelve findings came back from that audit and a thirteenth from a second, mechanical pass over the
+fixture suites' `using` sets; **all thirteen are fixed and each re-verified against the declaration**. Item 13 was
+legal-but-inconsistent rather than an error, and is labelled that way rather than counted as a compile failure. The
+fixes are in the commit `GC-027: fix the compile errors an independent declaration audit found`.
+
+**One correction to that audit's own verdict, recorded because it was wrong in the safe direction**: it stated the
+change set "does not compile" outright. Reading each finding's own symptom: **ten** are unconditional errors in every
+configuration that compiles the file (`CS0103` for the two missing `WorldRecovery` imports, `CS0246` for the
+`Gc027Scenario`/`Gc027SourceWorld`/`Gc027NarrativeHost`/`Gc027CardsHost` imports, `CS0200` for the get-only
+assignment, `CS1061` for the member that does not exist, and the `FrozenPayload`/`byte[]` mismatch); **one** (the
+`Faults` import in `WorldRecovery.cs`) is an error only where `GAMECORE_FAULT_INJECTION` is defined, which is the
+Unity validation project and not the shipping build; and **one** (the manifest registration) is an omission rather
+than a compile error — the package simply would never have run. The distinction does not change the work, because all
+twelve were fixed, but an evidence file should not overstate the failure it found.
 
 **What this is not.** It is not a compile. It cannot see a delegate conversion, an overload resolution, a generic
 inference or an ambiguity the way a compiler can; §3 lists what remains only a compiler's to confirm.
@@ -25,6 +37,7 @@ inference or an ambiguity the way a compiler can; §3 lists what remains only a 
 | 10 | `.../Runtime/Gc027CardsHost.cs` | `DeliveryPayload` returned the codec's `FrozenPayload` where the obligation carrier is `byte[]`; `FrozenPayload` has no conversion | the bytes are copied out once into an array (`FrozenPayload.Length` / `.Bytes`), so nothing is aliased |
 | 11 | same | `CheckpointSerializerBindings`, `SpawnRecipeCatalog`, `CardCatalog` unresolved | added the three usings |
 | 12 | `tests/GameCore.Recovery/package.json` + `unity/GameCore.Validation/Packages/{manifest,packages-lock}.json` | the new package was absent from the only Unity project manifest, so its EditMode half would never have resolved or run, and the `GAMECORE_FAULT_INJECTION` versionDefine the latch-name assertion needs would never have been defined | registered in the manifest's `dependencies` (beside `com.gamecore.replay`) and `testables`, and in the lock; the release-clone tools now strip it like the other fixture packages |
+| 13 | `tests/GameCore.Recovery/Tests/RecoveryMatrixFixtureTests.cs` | found by a **second, mechanical pass** over the fixture suites (type name → declaring namespace → the file's `using` set): the suite named ten types from `GameCore.Recovery.Fixtures` without importing it. C#'s lexical namespace lookup makes this *legal* — the file's namespace is `GameCore.Recovery.Fixtures.Tests`, a child of the types' namespace — so it was not an error, but the sibling suite states the import explicitly and this one now does too | added `using GameCore.Recovery.Fixtures;` for consistency with `RecoveryFixtureDataTests.cs` |
 
 ## 2. Independently re-verified after the fixes
 
