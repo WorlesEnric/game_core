@@ -465,3 +465,52 @@ the 10,000-step trace); it is now explicitly labelled in the probe detail as mod
 4. **Native physics is still not claimed.** The producer's arithmetic is integral, so "the same state at 1/2/4/max
    workers" is a statement about ordering, not about floating-point or solver lockstep (TEST-022 excludes that
    explicitly).
+
+## 12. Round-2 read-only audits and the defects they found
+
+Two independent read-only passes audited the round-2 change set the same way the round-1 passes did (every external
+call against its real declaration in this repository or against the pinned Editor's documented surface, C# 9 legality,
+the `#if`/build shapes, warning-as-error risks, and whether the asserted behaviour can hold at all). Their findings,
+all fixed before the round-2 commits:
+
+**Could not compile (4).**
+
+1. `job.ScheduleParallel(...)` on a `ReplayProducerJob : IJobParallelFor`. An `IJobParallelFor` is scheduled through
+   `IJobParallelForExtensions.Schedule(jobData, arrayLength, innerloopBatchCount, dependsOn)`; `ScheduleParallel` is
+   an `Entities.ForEach`/`IJobEntity` name and does not exist for this interface. Now `job.Schedule(...)`.
+2. `JobsUtility.ScheduleBatchedJobs()`. The flush is `Unity.Jobs.JobHandle.ScheduleBatchedJobs()`; `JobsUtility` has
+   no such member. Now `JobHandle.ScheduleBatchedJobs()`.
+3. `WorldMessagePlane.MergeOwnerBatch(...)`. The plane's owner-facing merge is `DrainOwnerBatch(OwnerId)` (which is
+   `NativeMessageLanes.MergeOwnerBatch` plus a copy); no `MergeOwnerBatch` exists on the plane. Now
+   `plane.DrainOwnerBatch(...)`, and the header comment, the HANDOFF, the record file and the inventory name it too.
+4. `[NativeSetThreadIndex]` without `using Unity.Collections.LowLevel.Unsafe;` — the attribute lives in that namespace,
+   not in `Unity.Collections`. The using was added.
+
+**Would have failed at runtime or as a test (3).**
+
+5. **A parallel-for's writable containers are index-restricted per execution.** With `ENABLE_UNITY_COLLECTIONS_CHECKS`
+   on (the Editor and development players, i.e. where the EditMode suite asserts these observations) writing
+   `Payload[offset]` and `ThreadExecutions[ThreadIndex]` outside the current batch's own index range throws
+   `IndexOutOfRangeException`. Both fields now carry `[NativeDisableParallelForRestriction]`; the writes are disjoint
+   by construction — one arena range reserved per batch on the main thread, one histogram slot per thread, and one
+   thread runs one batch at a time — so disabling the check is safe here.
+6. **The thread histogram could silently truncate evidence** on a host with more worker threads than the guessed 64
+   slots. The array is now sized from the target's own documented bound — `JobsUtility.ThreadIndexCount` (which
+   `[NativeSetThreadIndex]` never exceeds) and `JobsUtility.JobWorkerMaximumCount`, with room for the completing
+   thread and the 64-slot floor — so worker indices 1..max are always inside it.
+7. **The multi-thread gate was not guaranteed by the reference shape.** The audit's own numbers: 64 batches x 1,024
+   trivial iterations is tens of microseconds of work, which a single thread can drain before any other worker wakes,
+   so `DistinctThreads >= 2` could fail with no defect present. Two changes were made rather than weakening the claim:
+   the per-batch work was raised to 8,192 integral iterations (hundreds of microseconds per job, far past the size at
+   which Unity's per-batch work stealing spreads ranges) and the gate was tightened to the exact claim the review
+   asked for — at least two *worker* threads (indices above 0) when the effective worker count is above one, with
+   `maxWorkerThreads`, `maxDistinctThreads`, `multiThreadedRuns=<n>/<parallel runs>` and the full histogram printed so
+   a failure is diagnosable.
+
+**One falsifiability defect in the harness.** Two of the new grep clauses could not fail: `two distinct threads`
+matched the observation's own prose and `recordedThreadHistograms=` matched a prefix, so both would pass on a fully
+serialized run. The observation now prints a computed `multiThreaded=true|false` verdict, and the harness greps that.
+
+**One documentation defect.** The new public `ReplayStateHash.Chain` doc claimed `link[0] = H(step[0])` while the
+implementation (shared with the round-1 private chain, unchanged) seeds the accumulator with 32 zero bytes. The doc
+now states the real rule.

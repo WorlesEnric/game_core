@@ -102,16 +102,23 @@ namespace GameCore.Validation.ProbeHost
         public const int PayloadBytes = 4;
 
         /// <summary>
-        /// Lower bound of thread-index slots recorded. The module sizes its histogram from
-        /// `JobsUtility.JobWorkerMaximumCount` instead of trusting this constant, because a host with more worker
-        /// threads than this would otherwise silently drop evidence.
+        /// Floor of thread-index slots recorded. The module sizes its histogram from the target's own reported
+        /// bounds instead of trusting this constant, because a host with more worker threads than this would
+        /// otherwise silently drop evidence.
         /// </summary>
         public const int ThreadSlots = 64;
 
-        /// <summary>Thread-index slots a histogram needs on this target: every worker thread plus the main thread.</summary>
+        /// <summary>
+        /// Thread-index slots a histogram needs on this target. `JobsUtility.ThreadIndex` (and therefore
+        /// `[NativeSetThreadIndex]`) never exceeds `JobsUtility.ThreadIndexCount`, and a work-stealing temporary
+        /// worker can report an index above `JobWorkerMaximumCount`, so the array is sized from the documented bound
+        /// with room for the completing thread rather than from the configured worker count alone.
+        /// </summary>
         public static int ThreadSlotsFor(int jobWorkerMaximumCount)
         {
-            int needed = jobWorkerMaximumCount < 0 ? 0 : jobWorkerMaximumCount + 1;
+            int documented = JobsUtility.ThreadIndexCount + 1;
+            int configured = jobWorkerMaximumCount < 0 ? 1 : jobWorkerMaximumCount + 1;
+            int needed = documented > configured ? documented : configured;
             return needed > ThreadSlots ? needed : ThreadSlots;
         }
     }
