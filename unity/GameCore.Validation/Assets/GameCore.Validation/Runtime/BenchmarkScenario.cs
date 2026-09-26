@@ -30,6 +30,7 @@ using GameCore.Contracts;
 using GameCore.Derivation;
 using GameCore.Gameplay.Narrative;
 using GameCore.Replay;
+using UnityEngine;
 using GameCore.Unity.Runtime;
 using GameCore.Unity.Runtime.Integration;
 
@@ -207,6 +208,217 @@ namespace GameCore.Validation.ProbeHost
         }
     }
 
+    /// <summary>
+    /// Monotonic per-workload progress of one benchmark run, written to the player log (and stdout, which the harness
+    /// relays) at a bounded rate, so an operator watching a run can see it advance even when one repetition of a change
+    /// workload is slower than the reporting interval. It is deliberately NOT a probe step and NOT a sample: it adds no
+    /// observation, no document field and no timing boundary, so a run's evidence and its digest are exactly what they
+    /// were without it.
+    ///
+    /// Two mechanisms share one interval gate:
+    ///   * <see cref="Tick"/> is called between iterations of every long loop and reports the loop's own counts
+    ///     (`warmup 12/128`, `repetitions 40/200`) whenever the gate is open.
+    ///   * A heartbeat timer wakes every <see cref="HeartbeatSeconds"/> and, if the gate has been closed for
+    ///     <see cref="IntervalSeconds"/> — meaning the main thread is INSIDE one long iteration and cannot tick —
+    ///     repeats the in-flight label ("still repetitions 41/200"). That is what makes a ten-minute whole-world
+    /// recompute distinguishable from a hang: a frozen label means no iteration boundary was crossed, which is
+    /// "truly stuck", while a label whose counts advance is slow-but-progressing.
+    ///
+    /// It reads the host's monotonic clock only and never touches a workload's own phase clock, its samples or its
+    /// documents; everything it does sits outside every timed region.
+    /// </summary>
+    internal sealed class ProgressReporter : IDisposable
+    {
+        /// <summary>Seconds of silence after which a progress line is due; bounds the log to two lines a minute.</summary>
+        internal const double IntervalSeconds = 30.0;
+
+        /// <summary>Heartbeat period; shorter than the interval so a due line is never more than a minute late.</summary>
+        internal const double HeartbeatSeconds = 10.0;
+
+        private static readonly double IntervalTicks = IntervalSeconds * Stopwatch.Frequency;
+
+        private readonly object gate = new object();
+        private readonly int runOrdinal;
+        private readonly long started = Stopwatch.GetTimestamp();
+        private System.Threading.Timer? heartbeat;
+        private long lastLogged;
+        private string workloadId = string.Empty;
+        private int workloadOrdinal;
+        private int workloadTotal;
+        private string phase = "startup";
+        private int phaseDone;
+        private int phaseTotal;
+
+        internal ProgressReporter(int runOrdinal)
+        {
+            this.runOrdinal = runOrdinal;
+            lastLogged = started;
+        }
+
+        /// <summary>Starts the heartbeat; called once, before the first workload.</summary>
+        internal void Start()
+        {
+            if (heartbeat != null)
+            {
+                return;
+            }
+
+            heartbeat = new System.Threading.Timer(
+                Heartbeat, null,
+                (int)(HeartbeatSeconds * 1000.0),
+                (int)(HeartbeatSeconds * 1000.0));
+        }
+
+        internal void RunBegin(int totalWorkloads)
+        {
+            lock (gate)
+            {
+                workloadId = string.Empty;
+                phase = "begin";
+                phaseDone = 0;
+                phaseTotal = 0;
+                lastLogged = Stopwatch.GetTimestamp();
+                Debug.Log(
+                    "[GC026-bench] run " + Number(runOrdinal)
+                    + " begin; workloads=" + Number(totalWorkloads)
+                    + "; intervalSeconds=" + IntervalSeconds.ToString("0.#", CultureInfo.InvariantCulture));
+            }
+        }
+
+        internal void BeginWorkload(string id, int ordinal, int total)
+        {
+            lock (gate)
+            {
+                workloadId = id ?? string.Empty;
+                workloadOrdinal = ordinal;
+                workloadTotal = total;
+                phase = "begin";
+                phaseDone = 0;
+                phaseTotal = 0;
+                lastLogged = Stopwatch.GetTimestamp();
+                Debug.Log(Line(lastLogged));
+            }
+        }
+
+        /// <summary>
+        /// Reports one loop iteration boundary. Publishes the iteration now in flight and emits a line when the
+        /// interval gate is open; a loop faster than the interval therefore logs nothing, and a loop whose single
+        /// iteration outlasts the interval is covered by the heartbeat instead.
+        /// </summary>
+        internal void Tick(string phase, int phaseDone, int phaseTotal)
+        {
+            lock (gate)
+            {
+                this.phase = phase;
+                this.phaseDone = phaseDone;
+                this.phaseTotal = phaseTotal;
+                long now = Stopwatch.GetTimestamp();
+                if (now - lastLogged < IntervalTicks)
+                {
+                    return;
+                }
+
+                lastLogged = now;
+                Debug.Log(Line(now));
+            }
+        }
+
+        /// <summary>
+        /// One unconditional run-scoped stage line, for the one-shot stages whose duration the interval gate alone
+        /// cannot cover (fixture generation, the baseline derivation, the closing gates). Also refreshes the gate, so
+        /// each slow one-shot stage is bracketed by the line before it and the next line after it.
+        /// </summary>
+        internal void Note(string stage)
+        {
+            lock (gate)
+            {
+                phase = stage;
+                phaseDone = 0;
+                phaseTotal = 0;
+                lastLogged = Stopwatch.GetTimestamp();
+                Debug.Log("[GC026-bench] run " + Number(runOrdinal) + " " + stage);
+            }
+        }
+
+        internal void EndWorkload(int stepCount, int documentCount)
+        {
+            lock (gate)
+            {
+                phase = "done";
+                phaseDone = 0;
+                phaseTotal = 0;
+                lastLogged = Stopwatch.GetTimestamp();
+                Debug.Log(
+                    "[GC026-bench] run " + Number(runOrdinal)
+                    + " workload " + Number(workloadOrdinal) + "/" + Number(workloadTotal)
+                    + " " + workloadId + " done; observations=" + Number(stepCount)
+                    + "; documents=" + Number(documentCount));
+            }
+        }
+
+        internal void RunEnd(int stepCount, int documentCount)
+        {
+            lock (gate)
+            {
+                phase = "end";
+                lastLogged = Stopwatch.GetTimestamp();
+                Debug.Log(
+                    "[GC026-bench] run " + Number(runOrdinal)
+                    + " end; observations=" + Number(stepCount)
+                    + "; documents=" + Number(documentCount));
+            }
+        }
+
+        /// <summary>
+        /// The heartbeat: if the interval gate has been closed this long, the main thread is inside one long iteration,
+        /// so repeat its label. Runs on a thread-pool thread; Unity's Debug.Log is thread-safe, and everything the
+        /// callback reads is guarded by the same lock the main thread uses.
+        /// </summary>
+        private void Heartbeat(object? state)
+        {
+            lock (gate)
+            {
+                if (heartbeat == null)
+                {
+                    return;
+                }
+
+                long now = Stopwatch.GetTimestamp();
+                if (now - lastLogged < IntervalTicks)
+                {
+                    return;
+                }
+
+                lastLogged = now;
+                Debug.Log(Line("still-", now));
+            }
+        }
+
+        public void Dispose()
+        {
+            lock (gate)
+            {
+                heartbeat?.Dispose();
+                heartbeat = null;
+            }
+        }
+
+        private string Line(long now) => Line(string.Empty, now);
+
+        private string Line(string prefix, long now) =>
+            "[GC026-bench] run " + Number(runOrdinal)
+            + " workload " + Number(workloadOrdinal) + "/" + Number(workloadTotal)
+            + (workloadId.Length == 0 ? string.Empty : " " + workloadId)
+            + " " + prefix + phase
+            + (phaseTotal > 0
+                ? " " + Number(phaseDone) + "/" + Number(phaseTotal)
+                : string.Empty)
+            + " elapsed=" + ((now - started) / (double)Stopwatch.Frequency).ToString("0.0", CultureInfo.InvariantCulture)
+            + "s";
+
+        private static string Number(long value) => value.ToString(CultureInfo.InvariantCulture);
+    }
+
     /// <summary>The GC-026 benchmark: the fixture, the workloads, the correctness gates and the raw documents.</summary>
     public static class BenchmarkScenario
     {
@@ -287,6 +499,7 @@ namespace GameCore.Validation.ProbeHost
             /// is wrong for this workload, the declaration is what changes.
             /// </summary>
             private readonly BenchmarkOptions options;
+            private readonly ProgressReporter progress;
             private readonly List<BenchmarkStep> steps = new List<BenchmarkStep>();
             private readonly List<BenchmarkRunDocument> documents = new List<BenchmarkRunDocument>();
 
@@ -310,10 +523,21 @@ namespace GameCore.Validation.ProbeHost
             public Executor(BenchmarkOptions options)
             {
                 this.options = options;
+                progress = new ProgressReporter(options.RunOrdinal);
             }
 
             public BenchmarkScenarioResult Run()
             {
+                using (progress)
+                {
+                    return RunWithProgress();
+                }
+            }
+
+            private BenchmarkScenarioResult RunWithProgress()
+            {
+                progress.Start();
+                progress.RunBegin(options.Workloads.Count);
                 PrepareFixture();
                 AddConfigStep();
                 AddHardwareStep();
@@ -321,6 +545,7 @@ namespace GameCore.Validation.ProbeHost
                 for (int i = 0; i < options.Workloads.Count; i++)
                 {
                     BenchmarkWorkload workload = options.Workloads[i];
+                    progress.BeginWorkload(workload.Id, i + 1, options.Workloads.Count);
                     try
                     {
                         RunWorkload(workload);
@@ -332,11 +557,17 @@ namespace GameCore.Validation.ProbeHost
                             false,
                             "unhandled " + exception.GetType().FullName + ": " + exception.Message));
                     }
+                    finally
+                    {
+                        progress.EndWorkload(steps.Count, documents.Count);
+                    }
                 }
 
+                progress.Note("workloads complete; gates and teardown");
                 AddGateStep();
                 TearDownLiveWorlds();
                 AddDigestStep();
+                progress.RunEnd(steps.Count, documents.Count);
                 return new BenchmarkScenarioResult(steps, documents, BenchmarkScenario.DigestOf(steps));
             }
 
@@ -361,6 +592,9 @@ namespace GameCore.Validation.ProbeHost
             /// </summary>
             private void PrepareFixture()
             {
+                progress.Note("generating fixture (scopes="
+                    + options.Scale.Scopes.ToString(CultureInfo.InvariantCulture)
+                    + "; targets=" + options.Scale.Targets.ToString(CultureInfo.InvariantCulture) + ")");
                 fixture = BenchmarkFixtureGenerator.Generate(options.Scale);
 
                 // The budget the fixture's own shape calls for (see BenchmarkFixture.SuggestedBudget): one definition
@@ -376,6 +610,7 @@ namespace GameCore.Validation.ProbeHost
                     + PropagationBudget.DefaultMaxAffectedTargets.ToString(CultureInfo.InvariantCulture)
                     + ";configured=" + derivationOptions.Budget;
 
+                progress.Note("deriving fixture baseline (the first derivation)");
                 DerivationResult result = DerivationEngine.Derive(
                     BaseSnapshot(), fixture.Values, derivationOptions, null);
                 warmupDerivation = result;
@@ -652,6 +887,7 @@ namespace GameCore.Validation.ProbeHost
 
             for (int repetition = 0; repetition < repetitions; repetition++)
             {
+                progress.Tick("repetitions", repetition + 1, repetitions);
                 if (mounted.HasValue)
                 {
                     builder.RemoveInstall(mounted.Value);
@@ -720,6 +956,7 @@ namespace GameCore.Validation.ProbeHost
                 {
                     spent += cycle();
                     cycles++;
+                    progress.Tick("warmup", cycles, 0);
                 }
 
                 return spent;
@@ -753,6 +990,7 @@ namespace GameCore.Validation.ProbeHost
                     spent += elapsed;
                     document.Add(new BenchmarkSample(cycles, BenchmarkPhase.Warmup, elapsed, null));
                     cycles++;
+                    progress.Tick("warmup", cycles, cap);
                 }
 
                 warmupComplete = spent >= budgetMicroseconds;
@@ -794,6 +1032,7 @@ namespace GameCore.Validation.ProbeHost
 
                 for (int repetition = 0; repetition < repetitions; repetition++)
                 {
+                    progress.Tick("switches", repetition + 1, repetitions);
                     mode = mode == PropagationMode.Automatic ? PropagationMode.Conservative : PropagationMode.Automatic;
                     pureRevision++;
                     builder.WithMode(mode)
@@ -881,6 +1120,7 @@ namespace GameCore.Validation.ProbeHost
 
                 for (int repetition = 0; repetition < repetitions; repetition++)
                 {
+                    progress.Tick("spawn-repetitions", repetition + 1, repetitions);
                     if (repetition > 0)
                     {
                         builder.RemoveTargets(BenchmarkFixtureVariants.SpawnedTargetIds(
@@ -971,6 +1211,7 @@ namespace GameCore.Validation.ProbeHost
 
                 for (int repetition = 0; repetition < repetitions; repetition++)
                 {
+                    progress.Tick("moves", repetition + 1, repetitions);
                     pureRevision++;
                     builder.WithVersion(new CompositionRevision(pureRevision), new AssemblyEpoch(pureRevision));
                     builder.ReparentScope(
@@ -1100,6 +1341,7 @@ namespace GameCore.Validation.ProbeHost
                 long total = 0L;
                 for (int repetition = 0; repetition < repetitions; repetition++)
                 {
+                    progress.Tick("repetitions", repetition + 1, repetitions);
                     pureRevision++;
                     builder.WithVersion(new CompositionRevision(pureRevision), new AssemblyEpoch(pureRevision));
                     builder.AddInstall(BenchmarkFixtureVariants.UpdateInstall(
@@ -1160,6 +1402,7 @@ namespace GameCore.Validation.ProbeHost
 
                 for (int cycle = 0; cycle < cycles; cycle++)
                 {
+                    progress.Tick("cycles", cycle + 1, cycles);
                     DerivationInstall install = BenchmarkFixtureVariants.UpdateInstall(
                         fixture, 1, warmupCycles + cycle);
 
@@ -1265,6 +1508,7 @@ namespace GameCore.Validation.ProbeHost
                 // Measure the entire requested wall-clock window; never stop early because the sample matrix grows.
                 while (window < budgetMicroseconds)
                 {
+                    progress.Tick("window", step, 0);
                     long allocatedBefore = GC.GetAllocatedBytesForCurrentThread();
                     long started = Microseconds();
                     for (int t = 0; t < targets; t++)
@@ -1371,6 +1615,7 @@ namespace GameCore.Validation.ProbeHost
                 const int pumpsPerSample = 8192;
                 while (window < budgetMicroseconds)
                 {
+                    progress.Tick("window", frames, 0);
                     long started = Microseconds();
                     steps += world.PumpIdle(pumpsPerSample);
                     long elapsed = Microseconds() - started;
@@ -1472,6 +1717,7 @@ namespace GameCore.Validation.ProbeHost
 
                 while (committed < (ulong)target && pumps < 100000)
                 {
+                    progress.Tick("steps", (int)Math.Min(committed, (ulong)int.MaxValue), target);
                     long started = Microseconds();
                     ulong tick = world.Host.HostTimeOrigin + ((ulong)(warmupPumps + pumps + 1) * ticksPerPump);
                     ulong advanced = world.Pump(tick).StepsCommitted;

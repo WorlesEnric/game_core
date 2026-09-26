@@ -17,6 +17,14 @@
 # result (0 all-pass, 1 any Fail, 3 the negative mode). A run whose exit code is >= 128 is a crash (SIGSEGV 139,
 # SIGABRT 134, ...) and always fails the harness.
 #
+# PROGRESS AND UPTIME. While a run executes, this harness relays the player's own "[GC026-bench]" progress lines
+# from its log to this script's stdout, and prints one host heartbeat per minute whenever the player itself has been
+# quiet, so a long run is never silent for ten minutes and an operator can distinguish a slow repetition (labels
+# advancing) from a stuck one (labels frozen while the heartbeat continues). Each run's evidence also records the
+# host's `uptime` before and after the player ran (`raw/run<N>/uptime.txt`), because the load the machine carried
+# during the measurement is part of what a summary must be read against. Neither mechanism touches the player, its
+# arguments, its measured workloads or its artifacts.
+#
 # Required environment:
 #   python3                 strict JSON validation and tools/summarize_benchmarks.py
 #
@@ -39,6 +47,7 @@
 #   BENCH_LIVE_SPAWN_TARGETS  live targets one spawn publication installs (default 1000: 08's spawn row)
 #   BENCH_IDLE_FRAMES       frames the idle command-driven world is pumped (default 64)
 #   BENCH_UNCHANGED_STEPS   steps the unchanged-composition window commits (default 10000)
+#   BENCH_TIMEOUT           per-run watchdog seconds (default 1800)
 #
 # Wall-clock cost of the declared defaults. The catalogue is 11 workloads: three steady and eight change.
 #   * Steady window: 3 workloads x 5 runs x (30 s warmup + 120 s duration) = 2250 s = 37.5 min.
@@ -301,6 +310,52 @@ for (( run = 1; run <= BENCH_RUNS; run++ )); do
 
   echo "-- running benchmark probe (run ${run}/${BENCH_RUNS}) -> ${run_dir}"
   rc=0
+
+  # Host uptime opens each run's evidence and closes it after the player exits: the load its
+  # machine carried while it measured is part of the record a summary must be read against.
+  uptime_file="${run_dir}/uptime.txt"
+  {
+    echo "begin_utc: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+    uptime 2>/dev/null || echo "uptime: unavailable"
+  } >"${uptime_file}"
+
+  # Relay the player's own progress lines ([GC026-bench]...) to this harness's stdout while it
+  # runs, plus one host heartbeat a minute whenever the player itself has been quiet, so an
+  # operator can tell a slow repetition (labels advancing) from a stuck one (labels frozen).
+  # This only reads the log the player already writes; it touches neither the player, its
+  # arguments, nor its artifacts.
+  : >"${log_file}"
+  relay_done="${run_dir}/.relay-done"
+  rm -f "${relay_done}"
+  (
+    offset=0
+    last_beat=$(date +%s)
+    while [[ ! -e "${relay_done}" ]]; do
+      size=$(stat -c '%s' "${log_file}" 2>/dev/null || echo 0)
+      if (( size > offset )); then
+        chunk=$(tail -c +"$((offset + 1))" "${log_file}" 2>/dev/null || true)
+        if [[ "${chunk}" == *$'\n'* ]]; then
+          # Relay only whole lines: a poll can land while the player is mid-append, and a partial
+          # trailing line must be relayed neither half nor twice. Advance byte-wise (wc -c), so
+          # multibyte log content cannot skew the offset.
+          complete=${chunk%$'\n'*}
+          new=$(printf '%s\n' "${complete}" | grep -F '[GC026-bench]' || true)
+          if [[ -n "${new}" ]]; then
+            printf '   [run %s] %s\n' "${run}" "${new}"
+          fi
+          offset=$((offset + $(printf '%s' "${complete}" | wc -c) + 1))
+        fi
+      fi
+      now=$(date +%s)
+      if (( now - last_beat >= 60 )); then
+        last_beat=${now}
+        echo "   [run ${run}] waiting on player; host uptime: $(uptime 2>/dev/null || echo n/a); log=${offset}B"
+      fi
+      sleep 5
+    done
+  ) &
+  relay_pid=$!
+
   if (( WATCHDOG )); then
     timeout --signal=TERM --kill-after=30 "${BENCH_TIMEOUT}" "${PROBE_PLAYER}" \
       "${run_args[@]}" \
@@ -312,6 +367,16 @@ for (( run = 1; run <= BENCH_RUNS; run++ )); do
       -logFile "${log_file}" \
       -probeResult "${result_file}" || rc=$?
   fi
+
+  : >"${relay_done}"
+  kill "${relay_pid}" 2>/dev/null || true
+  wait "${relay_pid}" 2>/dev/null || true
+  rm -f "${relay_done}"
+  {
+    echo "end_utc: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+    echo "exit_code: ${rc}"
+    uptime 2>/dev/null || echo "uptime: unavailable"
+  } >>"${uptime_file}"
 
   run_failed=0
 
