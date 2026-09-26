@@ -63,6 +63,7 @@ using GameCore.Gameplay.Narrative;
 using GameCore.Planning;
 using GameCore.Unity.Runtime;
 using GameCore.Unity.Runtime.Delivery;
+using GameCore.Unity.Runtime.Messages;
 using GameCore.Unity.Runtime.Integration;
 using GameCore.Unity.Runtime.Persistence;
 using GameCore.Unity.Runtime.Time;

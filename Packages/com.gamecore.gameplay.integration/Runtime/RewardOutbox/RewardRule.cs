@@ -217,6 +217,5 @@ namespace GameCore.Gameplay.Integration.RewardOutbox
         /// <summary>The schema the destination publishes its outcome under; used to read its own verdict (P-042).</summary>
         public static SchemaRef ResultSchema => CardTableKeys.ResultSchema;
 
-        public override string ToString() => "cardTableConstants(destination=" + DestinationId.ToString() + ")";
     }
 }
