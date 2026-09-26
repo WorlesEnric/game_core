@@ -114,9 +114,7 @@ namespace GameCore.Validation.ProbeHost
 
             for (int i = 0; i < fixture.Steps.Count; i++)
             {
-                LifecycleStressStep step = fixture.Steps[i];
-                combined.Add(new LifecycleStressStep(
-                    LifecycleStressScenario.FixtureRunPrefix + step.Name, step.Passed, step.Detail));
+                combined.Add(fixture.Steps[i]);
             }
 
             return combined;

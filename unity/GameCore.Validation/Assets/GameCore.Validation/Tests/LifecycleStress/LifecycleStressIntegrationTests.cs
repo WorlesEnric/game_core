@@ -252,9 +252,9 @@ namespace GameCore.LifecycleStress.Tests
             Assert.That(combined.Count, Is.EqualTo(expected.Length * 2),
                 family + ": both catalogs must record every observation: " + combined.Count + " of "
                 + (expected.Length * 2) + context);
-            Assert.That(Names(combined, string.Empty), Is.EqualTo(expected),
+            Assert.That(Names(combined, string.Empty).ToArray(), Is.EqualTo(expected),
                 family + ": generated-catalog observation order" + context);
-            Assert.That(Names(combined, FixturePrefix), Is.EqualTo(expected),
+            Assert.That(Names(combined, FixturePrefix).ToArray(), Is.EqualTo(expected),
                 family + ": fixture-catalog observation order" + context);
         }
 
