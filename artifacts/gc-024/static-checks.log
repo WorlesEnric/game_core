@@ -56,3 +56,15 @@ py_compile: all three tools parse
 
 $ python3 tools/make_unity_metas.py unity/GameCore.Validation tests/GameCore.ReferenceConformance  # idempotent
 created 0 meta file(s)
+
+# Re-captured after the combined cross-family world, the recorded-gap handling and the type rename.
+$ git rev-parse HEAD
+e0ed439b05d552e27bccb093c82ec5f8e7fb0560
+
+$ python3 tools/check_game_core_csharp.py
+checked 564 C# file(s)
+ok
+
+$ python3 tools/gc024_genre_audit.py
+gc024 genre audit: /Users/yangcao/wkspace/gc-wt/gc-024/artifacts/gc-024/genre-audit.json
+kernel=32; family=13; generated=0; qualification=57; asmdefs=69; projectFiles=33; kernelSources=317; referenceAssertions=218; violations=0; kernelGenreTokens=0; missingPackages=0; familiesOnKernel=13/13; clean=true

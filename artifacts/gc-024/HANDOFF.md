@@ -77,6 +77,7 @@ The change set has four layers, and each is a different kind of evidence:
 | `Runtime/ReferenceProjections.cs` | Every 07 number recomputed from `CardSetRules`, `TraversalMotionRules`, `NarrativeFacts`/`NarrativeGateRules`/`NarrativeDialogueRules`/`NarrativeChapters`/`NarrativeDerivationPlan`. |
 | `Runtime/AssemblyReferenceAudit.cs` | `AssemblyClass`, `ReferenceKind`, `AssemblyRecord`, `AssemblyViolation`, `GenreTokenFinding`, `GenreAuditReport`, `AssemblyReferenceAudit.Audit`. |
 | `Runtime/GenreAuditDocument.cs` | The deterministic writer/reader of `artifacts/gc-024/genre-audit.json`. |
+| `Runtime/ConformanceDocGaps.cs` | The declared documentation gaps (`ConformanceDocGap`, `ConformanceDocGaps`): the clause a row offends, the mechanism the revision lacks, the evidence and a proposed resolution. |
 | `Tests/GameCore.ReferenceConformance.Tests.asmdef`, `Tests/ReferenceConformanceTests.cs` | The pure suite: fixture self-consistency, trace round-trip and tamper refusal, oracle falsifiability, projection agreement, audit classification. |
 
 ### The Unity half (`unity/GameCore.Validation/Assets/GameCore.Validation/`)
@@ -224,18 +225,39 @@ fixed in **both** implementations (the tool and `AssemblyReferenceAudit`):
 The second finding was in a file this task does not own (`CheckpointCodecAdapter.cs`), which is exactly the kind of
 false positive the rule's refinement removes.
 
-### 5.6 `-probeConformance` reports which half of the audit it computed
+### 5.6 One 07 row cannot be performed in this revision, and is recorded as a gap
+
+`07:276` says that `NarrativeCardRewards` "declares `PreserveDormant` for its completed outbox, with a
+scratch-migration precondition that no pending work remains ... Unmounting with pending work therefore rejects until
+it drains or transfers". The combined world performs the row as far as this revision allows — it reads the pending
+obligation from the live world, so the state the refusal would protect is visible — but the *refusal itself* has
+nowhere to happen: the bridge is an ordinary caller-owned object rather than a mounted installation, so there is no
+installation identity, no manifest and no slot policy for the lane to enforce. GC-021 shipped that shape and recorded
+the same absence (`artifacts/gc-021/HANDOFF.md` §7 item 5).
+
+Rather than let a red step hide inside a green verdict, or let a fabricated pass stand in for a real one, the gap is
+a value: `GameCore.ReferenceConformance.ConformanceDocGaps` declares it with the 07 clause it offends, the mechanism
+this revision lacks, the recorded evidence and a proposed resolution; the run reports that step with
+`ConformanceStepStatus.RecordedGap`; `ConformanceTableResult.AllPassed` is **false while any gap is open**, because a
+gap is not a pass; the probe reports the step as its own `ExpectedNegative` status and names the gap identifier; and
+the harness and the EditMode suite both require that name, so the gap cannot vanish silently and a new one cannot
+appear unnoticed. **The orchestrator should decide whether that is acceptable for the W7 gate** (the W7 sentence
+requires the cross-template flow to pass; it does pass, with one row honestly reported as unperformable), or whether
+the bridge should be mounted as an installation in a follow-up task.
+
+### 5.7 `-probeConformance` reports which half of the audit it computed
 
 A player has no project tree, so the build-time half of the genre audit cannot run there. Rather than let a player
-report a clean audit it never looked at, the audit step names both halves: the loaded-assembly half it did compute, and
-`tree=no project tree on this host` when there is none (or the computed tree verdict when the host has the tree, as the
-Editor does). The harness accepts either, so a run cannot claim the half it did not do.
+report a clean audit it never looked at, the audit step names both halves: the loaded-assembly half it did compute,
+and `tree=no project tree on this host` when there is none (or the computed tree verdict when the host has the tree,
+as the Editor does). The harness accepts either, so a run cannot claim the half it did not do.
 
 ## 6. Exact commands for the Linux build host
 
 Everything runs from the repository root. **Nothing below has been run.**
 
 ### 6.1 The whole gate (one command)
+
 
 ```sh
 UNITY=~/Unity/Hub/Editor/6000.0.75f1/Editor/Unity DOTNET=$HOME/.dotnet/dotnet \
@@ -321,12 +343,13 @@ task wrote) were fixed here. The traversal worker's three table mismatches were 
    no-op switch that published would fail. Whether the lane refuses it with `CapabilityConflict` at *plan* time (as the
    GC-013 sequence observes) or at publication is not asserted beyond "not published", because 07 says only that the
    old mode and assembly remain.
-5. **The combined world's `07:276` behaviour** is implemented as far as this revision allows: `NarrativeCardRewards` is
-   not a mounted installation in this revision (GC-021's HANDOFF §7 item 5 records the same gap), so a true
-   `PreserveDormant` unmount refusal has nowhere to live. If the delegated cross-world worker could not implement it,
-   the step reports `Unsupported` with that reason and makes the run red rather than passing silently — see the file's
-   own notes and the run's step detail. **The orchestrator should decide whether that row is accepted as a reported gap
-   or needs the bridge mounted as an installation in a later task.**
+5. **`07:276` is an OPEN RECORDED GAP, not a passing row.** `ConformanceDocGaps` declares it (clause, missing
+   mechanism, evidence, proposed resolution), the run reports the step as a `RecordedGap`, `AllPassed` is false while
+   it is open, and both the probe harness and the EditMode suite require it by name — so the gate will report the
+   cross-family table as *not fully passed* until the bridge is a mounted installation with a declared policy. That is
+   the honest state, and §5.6 explains why no other outcome was acceptable. **The orchestrator must decide whether to
+   accept it for the W7 gate or to open a follow-up task** for the bridge's manifest and mount (the alternative,
+   weakening the row, would be exactly the silent special case 09's non-goals forbid).
 6. **`Preserved` is a weaker claim than a value.** Where 07 states no number, the row demands "unchanged" and the oracle
    compares the run's two readings. That is honest but strictly weaker than a literal; the rows where 07 does state a
    number all carry one.
