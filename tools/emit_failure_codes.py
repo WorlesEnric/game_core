@@ -73,6 +73,12 @@ OPERATION_ACTIONS = {
         "The installation is published WaitingForDependencies rather than failed. Mount or activate "
         "the provider; the dependency watcher then retries automatically (O-04). There is nothing to "
         "retry by hand."),
+    "ProviderFailed": (
+        "An already Active provider failed unexpectedly. The host attempts to publish its failure and "
+        "retract the required-consumer dependency closure in one assembly revision (P-012).",
+        "Inspect the failed installation and dependent WaitingForDependencies instances. Restore or replace "
+        "the provider with a new operation; if safe deactivation could not publish, admission closes and "
+        "the world faults. Recover that world from a checkpoint into a new session (O-22)."),
     "ServiceConflict": (
         "Two providers claim the same single-binding service contract in one scope, or a selection "
         "rule matched more than one candidate where exactly one is required.",
@@ -331,8 +337,9 @@ def build_table(root: Path):
     lines.append("")
     lines.append(f"Declared codes: {len(codes)} ({len(codes) - 1} failures plus the `None` success sentinel).")
     lines.append("`DiagnosticCodeText.Values` lists")
-    lines.append(f"{len(ordered)} non-`None` codes in 00 s9 order; P-052's required set of {len(P052_REQUIRED)}")
-    lines.append("is fully present, and `SnapshotBackpressure` follows it because P-007 requires it.\n")
+    lines.append(f"{len(ordered)} non-`None` codes in source order; P-052's required set of {len(P052_REQUIRED)}")
+    lines.append("is fully present; `SnapshotBackpressure` and `ProviderFailed` are additional codes required by")
+    lines.append("P-007 and P-012 respectively.\n")
     lines.append("## 2. Build-time catalog codes (`CatalogDiagnosticCode`)\n")
     lines.append("These are raised by the content compiler while compiling a catalog description document, so they")
     lines.append("fail a build rather than a world operation. Each diagnostic carries the code, the document path and")

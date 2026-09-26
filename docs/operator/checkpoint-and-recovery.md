@@ -119,7 +119,10 @@ latches**, in the marker-free release player — which is why that mode is kept 
 
 **Recovery after a fault:**
 1. Confirm the fault is post-write: the result carries `Faulted(ApplyFault)` (see
-   [failure-codes.md](failure-codes.md)).
+   [failure-codes.md](failure-codes.md)). A fault whose route in was `ProviderFailed` — an already-Active
+   provider failed unexpectedly and its safe dependency-closure deactivation could not publish — is the same
+   fail-stop; the two outcomes of that path and how to tell them apart are in
+   [build-and-run.md §9](build-and-run.md#9-a-live-provider-failed-unexpectedly-p-012-safe-deactivation-vs-fault-on-refusal).
 2. Do **not** attempt to resume, retry the mutated step, or patch storage in place.
 3. Pick the source: the most recent checkpoint you trust, or the initial definition.
 4. Run recovery and capture the new session id.

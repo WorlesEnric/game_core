@@ -48,12 +48,14 @@ authoritative; read it from the diagnostic you received rather than inferring it
 | `TeardownBlocked` | 19 | `RetrySameInput` | Cleanup cannot proceed because a job fence has not completed, a runtime user is still pinned, or a disposer threw so its resource was quarantined. | Wait safely: a timeout is not proof that a job stopped and never frees a buffer. New acquisition is rejected or the world is stopped per host policy; retained resources stay observable in the resource ledger (O-19, P-048). |
 | `CursorExpired` | 20 | `RetrySameInput` | A snapshot or committed-event cursor is older than the bounded retention window, so the reader cannot continue incrementally. | Resynchronize: acquire a fresh snapshot token and resume from it (O-17). Repeated reads with the same valid token remain identical. |
 | `SnapshotBackpressure` | 21 | `RetrySameInput` | A new snapshot lease was refused because the bounded retention pool is fully leased by live readers; leased memory is never overwritten to make room (P-007). | Release snapshot leases the reader no longer needs, then retry the acquisition. This is backpressure, not corruption: existing tokens keep their immutable data. |
+| `ProviderFailed` | 22 | `Undocumented` | An already Active provider failed unexpectedly. The host attempts to publish its failure and retract the required-consumer dependency closure in one assembly revision (P-012). | Inspect the failed installation and dependent WaitingForDependencies instances. Restore or replace the provider with a new operation; if safe deactivation could not publish, admission closes and the world faults. Recover that world from a checkpoint into a new session (O-22). |
 | `None` | 0 | `NotRetryable` | No failure. This value is the success sentinel of a result record, not an error to act on. | Nothing to do; the absence of a code means the operation reported its normal outcome. |
 
-Declared codes: 22 (21 failures plus the `None` success sentinel).
+Declared codes: 23 (22 failures plus the `None` success sentinel).
 `DiagnosticCodeText.Values` lists
-21 non-`None` codes in 00 s9 order; P-052's required set of 20
-is fully present, and `SnapshotBackpressure` follows it because P-007 requires it.
+22 non-`None` codes in source order; P-052's required set of 20
+is fully present; `SnapshotBackpressure` and `ProviderFailed` are additional codes required by
+P-007 and P-012 respectively.
 
 ## 2. Build-time catalog codes (`CatalogDiagnosticCode`)
 

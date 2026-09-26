@@ -57,6 +57,10 @@
 #   RELEASE          build and probe the marker-free release player (default 1; 0 skips it and says so)
 #   RELEASE_PROJECT  the disposable cloned project path (default: <repo>/unity/GameCore.ReleaseCheck)
 #   DOCS             run the documentation validator (default 1; 0 skips it and says so)
+#   GAMECORE_OFFLINE 1 = pass -p:NuGetAudit=false to THIS SCRIPT'S dotnet restore/build/test only, for a
+#                    host whose NuGet advisory feed is genuinely unreachable (NU1900). Default 0: the
+#                    audit runs. No other value is accepted, the choice is echoed and written to
+#                    environment.txt, and NOTHING here weakens compiler warnings-as-errors or skips a test.
 #
 # Exit codes: 0 every step passed; 2 a missing prerequisite; otherwise the first failing step's exit code.
 set -euo pipefail
@@ -75,7 +79,8 @@ PLAYER_TIMEOUT="${PLAYER_TIMEOUT:-600}"
 RELEASE="${RELEASE:-1}"
 RELEASE_PROJECT="${RELEASE_PROJECT:-${REPO_ROOT}/unity/GameCore.ReleaseCheck}"
 DOCS="${DOCS:-1}"
-
+GAMECORE_OFFLINE="${GAMECORE_OFFLINE:-0}"
+DOTNET_AUDIT_ARGS=()
 fail() {
   echo "reproduce.sh: $*" >&2
   exit 2
@@ -103,8 +108,17 @@ fi
 if ! command -v "${PYTHON}" >/dev/null 2>&1 && [[ ! -x "${PYTHON}" ]]; then
   fail "PYTHON is not executable and not on PATH: '${PYTHON}'"
 fi
-if ! [[ "${PROBE_RUNS}" =~ ^[12]$ ]]; then
-  fail "PROBE_RUNS must be 1 or 2 (the project-owner caps repeated runs at two): '${PROBE_RUNS}'"
+if ! [[ "${GAMECORE_OFFLINE}" =~ ^[01]$ ]]; then
+  fail "GAMECORE_OFFLINE must be 0 or 1 (1 = opt this run's dotnet restore/build/test out of the NuGet advisory
+  audit, for a host whose advisory feed is unreachable): '${GAMECORE_OFFLINE}'"
+fi
+if [[ "${GAMECORE_OFFLINE}" == "1" ]]; then
+  # The operator has established the NuGet advisory feed is unreachable on this host, so the audit cannot run
+  # and NU1900 would otherwise fail the build as an error. Turn it off for THIS script's restore/build/test
+  # only, loudly: the property appears in the transcript's `-- command:` lines, in steps.tsv, in
+  # environment.txt and in the banner above. It is not exported, it is not written into any project or NuGet
+  # config, and it changes no compiler warning and no test.
+  DOTNET_AUDIT_ARGS=(-p:NuGetAudit=false)
 fi
 if ! command -v timeout >/dev/null 2>&1; then
   fail "the 'timeout' utility is not available. Every step in this script is bounded by a watchdog, and the
@@ -242,7 +256,7 @@ echo "repo          : ${REPO_ROOT}"
 echo "unity         : ${UNITY}"
 echo "dotnet        : ${DOTNET}"
 echo "python        : ${PYTHON}"
-echo "project       : ${UNITY_PROJECT}"
+echo "nuget audit   : $([[ "${GAMECORE_OFFLINE}" == "1" ]] && echo "OFF for this run's restore/build/test (GAMECORE_OFFLINE=1; advisory feed unreachable)" || echo "on (GAMECORE_OFFLINE=0; default)")"
 echo "artifacts     : ${ARTIFACTS}"
 echo "probe runs    : ${PROBE_RUNS} (project-owner cap: two)"
 echo "release player: ${RELEASE}"
@@ -271,7 +285,11 @@ echo "== step ${STEP_INDEX}: toolchain versions =="
   echo "dotnet_path=$(command -v "${DOTNET}" 2>/dev/null || echo "${DOTNET}")"
   echo "dotnet=$("${DOTNET}" --version 2>/dev/null | tail -1 || echo unknown)"
   echo "python=$("${PYTHON}" --version 2>/dev/null | tail -1 || echo unknown)"
-  echo "host=$(uname -srm)"
+  if [[ "${GAMECORE_OFFLINE}" == "1" ]]; then
+    echo "nuget_audit=off-for-this-run (GAMECORE_OFFLINE=1; -p:NuGetAudit=false on restore/build/test only; advisory feed unreachable)"
+  else
+    echo "nuget_audit=on (GAMECORE_OFFLINE=0; default)"
+  fi
   echo "nproc=$(nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo unknown)"
   echo "timeout_utility=$(command -v timeout 2>/dev/null || echo missing)"
   echo "probe_runs=${PROBE_RUNS}"
@@ -298,13 +316,17 @@ run_step operator-docs-self-test "${PYTHON}" tools/check_operator_docs.py --self
 run_step operator-docs "${PYTHON}" tools/check_operator_docs.py \
   --json "${ARTIFACTS}/host/operator-docs.json"
 
-# 4. Restore the dotnet solution's package graph.
-run_step dotnet-restore "${DOTNET}" restore dotnet/GameCore.sln --nologo -v:q
+# 4. Restore the dotnet solution's package graph. The audit args array is empty unless GAMECORE_OFFLINE=1, so
+#    the default restore keeps the NuGet audit and the offline property (when present) shows in `-- command:`.
+run_step dotnet-restore "${DOTNET}" restore dotnet/GameCore.sln --nologo -v:q \
+  ${DOTNET_AUDIT_ARGS+"${DOTNET_AUDIT_ARGS[@]}"}
 
-# 5. Build and test the whole Unity-free solution.
-run_step dotnet-build "${DOTNET}" build dotnet/GameCore.sln -c Release --no-restore --nologo -v:q
+# 5. Build and test the whole Unity-free solution, with the same audit disposition as the restore.
+run_step dotnet-build "${DOTNET}" build dotnet/GameCore.sln -c Release --no-restore --nologo -v:q \
+  ${DOTNET_AUDIT_ARGS+"${DOTNET_AUDIT_ARGS[@]}"}
 run_step dotnet-test "${DOTNET}" test dotnet/GameCore.sln -c Release --no-build --nologo -v:q \
-  --logger "trx;LogFilePrefix=reproduce" --results-directory "${ARTIFACTS}/host/trx"
+  --logger "trx;LogFilePrefix=reproduce" --results-directory "${ARTIFACTS}/host/trx" \
+  ${DOTNET_AUDIT_ARGS+"${DOTNET_AUDIT_ARGS[@]}"}
 
 echo
 echo "== step 6: host-side checks (no Editor, no player) =="
@@ -533,6 +555,7 @@ echo "environment          : ${ARTIFACTS}/environment.txt"
 echo "test results         : ${ARTIFACTS}/unity/editmode-results.xml, ${ARTIFACTS}/unity/playmode-results.xml, ${ARTIFACTS}/host/trx"
 echo "family probes        : ${ARTIFACTS}/probe/, ${ARTIFACTS}/release/"
 echo "elapsed              : ${TOTAL}s"
+echo "note: GAMECORE_OFFLINE=${GAMECORE_OFFLINE}. $([[ "${GAMECORE_OFFLINE}" == "1" ]] && echo "The NuGet advisory audit was OFF for this run's restore/build/test (-p:NuGetAudit=false), because the operator established the advisory feed unreachable; audit results are NotRun, and no other command was affected." || echo "The NuGet advisory audit ran (default).")"
 echo "note: PROBE_RUNS=${PROBE_RUNS}; every 'Pass' above is a reported process result, not this script's opinion."
 echo "note: this run reproduces the declared profile (StandaloneLinux64 x86_64, IL2CPP, High stripping,"
 echo "      headless). It qualifies no other platform."

@@ -27,6 +27,12 @@ and GNU `timeout`. `UNITY` is required; everything else has a default. Every ste
 fails with a named message. The whole run is transcribed to `artifacts/reproducibility/transcript.log`, with a
 machine-readable step ledger in `steps.tsv`.
 
+The **NuGet vulnerability audit is on by default**. On a host whose advisory feed is genuinely unreachable
+(`NU1900`), opt out for that run's `dotnet restore/build/test` only — never as a standing configuration —
+with `GAMECORE_OFFLINE=1`; the flag appears in the transcript's command lines and in `environment.txt`, and
+the audit result for such a run is `NotRun`, not Pass. Full conditions and the exact command:
+[`docs/operator/build-and-run.md §2.1`](docs/operator/build-and-run.md#21-gamecore_offline1-the-one-documented-way-to-run-without-the-nuget-audit).
+
 Full procedure, environment variables and troubleshooting:
 [`docs/operator/build-and-run.md`](docs/operator/build-and-run.md).
 
@@ -49,7 +55,7 @@ Start at [`docs/operator/README.md`](docs/operator/README.md). The pages that ma
 
 | Page | Why |
 | --- | --- |
-| [`profile.md`](docs/operator/profile.md) | The exact qualified profile, and every explicitly unqualified target. Read before making any portability claim. |
+| [`build-and-run.md`](docs/operator/build-and-run.md) | `tools/reproduce.sh` step by step, the `GAMECORE_OFFLINE` audit opt-out, the P-012 unexpected provider-failure procedure, and the direct conformance matrix / evidence index / compatibility commands. |
 | [`failure-codes.md`](docs/operator/failure-codes.md) | **Generated from source**, so it cannot drift: every protocol operation code with its meaning and operator action. |
 | [`headless.md`](docs/operator/headless.md) | Production entry points, headless startup/shutdown, and the complete player command-line surface. |
 | [`checkpoint-and-recovery.md`](docs/operator/checkpoint-and-recovery.md) | Capture, restore, and how to recover a **faulted** world (which is never resumed). |

@@ -12,7 +12,7 @@ deferred, this guide says so plainly rather than implying broader support.
 | Page | What it answers |
 | --- | --- |
 | [profile.md](profile.md) | What the single qualified target is, and the complete list of unqualified ones. Read before making any portability claim. |
-| [build-and-run.md](build-and-run.md) | Clean-checkout reproduction: `tools/reproduce.sh`, the toolchain prerequisites, and every step's command. |
+| [build-and-run.md](build-and-run.md) | Clean-checkout reproduction: `tools/reproduce.sh`, the toolchain prerequisites, every step's command, the `GAMECORE_OFFLINE` NuGet-audit opt-out, the P-012 unexpected provider-failure procedure, and the direct conformance matrix / evidence index / compatibility commands. |
 | [packages.md](packages.md) | The local package/assembly contract: names, versions, dependencies, and the engine-free kernel rule. |
 | [headless.md](headless.md) | Headless startup and shutdown, the production entry points, and the complete player command-line surface. |
 | [catalog-generation.md](catalog-generation.md) | How the committed catalogs are generated and how byte-identity is proven. |
