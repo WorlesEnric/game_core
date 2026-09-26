@@ -45,4 +45,11 @@
     <type fullname="GameCore.Unity.Adapters.GameCoreApplicationComposition" preserve="all" />
     <type fullname="GameCore.Unity.Adapters.GameCorePumpLoop" preserve="all" />
   </assembly>
+  <!-- O-22 is a host-invoked production entry point, not reached by a probe in the marker-free
+       clone. Keep its executable composition under High stripping while removing only the
+       qualification recovery fixtures and fault latches. -->
+  <assembly fullname="GameCore.Unity.Runtime">
+    <type fullname="GameCore.Unity.Runtime.Recovery.WorldRecovery" preserve="all" />
+  </assembly>
+
 </linker>

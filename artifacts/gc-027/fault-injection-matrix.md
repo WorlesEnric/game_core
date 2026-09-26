@@ -1,6 +1,6 @@
 # GC-027 fault-injection matrix — where each boundary is reached, and where it is asserted
 
-**Code: written. Observations: `NotRun (pending orchestrator build host)`.**
+**Executed:** qualification EditMode 1,144/1,144, PlayMode 53/53; IL2CPP `-probeRecovery` five clean runs with all 3 family digests and all 17 applicable observations per family Pass. Run 1: `artifacts/gc-027/toolchain/probe-gc027.json`; runs 2–5 are retained. Traversal has no delivery endpoint, so points 6–8 are not applicable there.
 
 Every boundary below is reached through **the mechanism that already exists** — GC-017's latch for production-owned
 boundaries, GC-021's delivery hook for the delivery boundaries — so this task adds no second injection mechanism
@@ -80,3 +80,19 @@ The observation `detail` strings in `artifacts/gc-027/toolchain/probe-gc027.json
 | source state | `source=<before>-><after>` |
 | permitted result | the trailing `permitted result=…` clause |
 | data-loss class | `loss=` from the transcript clause |
+
+## Executed boundary census (qualification run 1; identical verdicts in runs 2–5)
+
+| Point | narrative | cards | traversal | Result/data-loss boundary |
+|---|---|---|---|---|
+| Capture copy | Pass, `ApplyFault`, no document, source `Running` | Pass | Pass | `None` |
+| File publication | Pass, previous document hash/read intact | Pass | Pass | `None` |
+| Reference repair | Pass, `ApplyFault`, builder attempts 0, source `Faulted->Faulted` | Pass | Pass | `None` |
+| Restore apply | Pass, staged world `Disposed`, registry unchanged | Pass | Pass | `UncommittedAttemptWork` |
+| Recovery publication | Pass, validated staging world `Disposed`, registry unchanged | Pass | Pass | same postwrite point/class |
+| Outbox append | Pass, journal frames 0, effects 0 | Pass | N/A | `UnpersistedObligation` |
+| Outbox delivery | Pass, effects 1 before/after redelivery, `alreadyApplied=1` | Pass | N/A | `UncommittedAttemptWork` |
+| Acknowledgement | Pass, before crash redeliverable; after crash settled | Pass | N/A | `None` |
+| Restart | Pass, new session from verified bytes; absent/incompatible exposes nothing | Pass | Pass | `UncommittedSinceCheckpoint` |
+
+The concrete per-family operation/session and `registry=before->after` values are in the probe JSON. A refused recovery never turns the faulted source into a running world; a capture fault is pre-mutation and correctly leaves its live source running. No recovery dispatches an outbox obligation automatically: recovered destination attempts are zero, then the explicit redelivery observation measures one applied effect.

@@ -3,11 +3,7 @@
 Normative basis: `docs/game-core/00-core-protocols.md` O-20, O-21, O-22, P-030, P-031, P-045, P-048, P-049, P-053,
 P-054, and `docs/game-core/06-lifecycle-and-recovery.md` §7.
 
-**Status of every behavioral row below: `NotRun (pending orchestrator build host)`.** This host has no Unity, no .NET
-SDK and no C# compiler, so nothing in this change set has been compiled, imported, executed or built here. §1 and §2
-are the *design* the code implements and the observations that assert it; the "observed evidence" column names the
-artifact the build host will produce, and it is filled in by running the commands in §6. Nothing in this document
-claims a run has happened.
+**Executed on the Linux qualification player:** five `-probeRecovery` runs passed with zero failing observations and clean process exits; the full Unity EditMode suite passed 1,144/1,144 and PlayMode passed 53/53. The observed columns below are from `artifacts/gc-027/toolchain/probe-gc027.json` (run 1); `.run2`–`.run5` are retained independently. The local store's crash/restart checks use the in-memory fixture adapter; `CheckpointStoreTests` covers the file adapter in the plain-dotnet suite.
 
 ## 1. The recovery procedure this change set implements
 
@@ -45,16 +41,16 @@ The sequence runs over **three** families: the narrative slice, the card market 
 traversal course is the one that exercises a *fixed-step* world with an engine physical domain, so it is also where
 the physical-observation limitation is executed rather than asserted (§3.1).
 
-| # | Injection point | Mechanism | Boundary names | Permitted observable result | Data-loss class | Observed evidence (`NotRun`) |
+| # | Injection point | Mechanism | Boundary names | Permitted observable result | Data-loss class | Executed evidence (narrative/cards/traversal as applicable) |
 |---|---|---|---|---|---|---|
-| 1 | capture copy | Latch | `checkpoint-capture-copy` | no checkpoint produced; the world being captured keeps running | none | `gc027-capture-copy-fault-produces-no-checkpoint` |
-| 2 | file publication | Latch | `checkpoint-publication` | the previously verified document is still the stored one; no partial artifact | none | `gc027-publication-fault-keeps-the-previous-document` |
-| 3 | restore reference repair | Latch | `restore-reference-repair` | the destination was never built, so no incomplete world can become the running one; source unchanged | none | `gc027-reference-repair-fault-never-builds-a-destination` |
-| 4 | postwrite apply | Latch | `restore-apply`, `recovery-publication` | the staged world is destroyed, never exposed; no epoch/revision/session becomes reachable | uncommitted attempt work | `gc027-postwrite-apply-fault-never-exposes-a-destination`, `gc027-recovery-publication-fault-keeps-the-registry-unchanged` |
-| 5 | outbox append | DeliveryHook | `before-append`, `after-append` | an obligation is durable before it is handed over; a fault before the append refuses the commit | unpersisted obligation | `gc027-outbox-append-fault-refuses-before-delivery` |
-| 6 | delivery | DeliveryHook | `before-delivery`, `after-delivery` | the obligation stays open and a redelivery reuses the **same** idempotency key, so the destination applies exactly one mutation | uncommitted attempt work | `gc027-outbox-delivery-fault-redelivers-with-one-destination-effect` |
-| 7 | acknowledgement | DeliveryHook | `before-acknowledge`, `after-acknowledge` | a fault before it leaves the obligation redeliverable; after it, settled — with one destination effect either way | none | `gc027-outbox-acknowledgement-fault-records-or-redelivers-once` |
-| 8 | restart | StoreRead | `store-read` | a new session from verified bytes, or **no world at all**; the previous session is never contacted | state committed after the last verified checkpoint | `gc027-restart-from-the-store-recovers-without-in-process-state`, `gc027-restart-without-a-document-or-incompatible-content-exposes-nothing` |
+| 1 | capture copy | Latch | `checkpoint-capture-copy` | no checkpoint produced; captured world keeps running | None | Pass x5 per family; `faultPoint=capture-copy; code=ApplyFault; captured=False; published=False; sourceLifecycle=Running; sourceFaultCount=0` |
+| 2 | file publication | Latch | `checkpoint-publication` | previous verified document remains readable; no partial artifact | None | Pass x5 per family; `capturedButNotPublished=True; previousDocumentIntact=True; previousDocumentReadable=True` |
+| 3 | restore reference repair | Latch | `restore-reference-repair` | no destination built; faulted source unchanged | None | Pass x5 per family; `Rejected/ApplyFault; builderAttempts=0; destination=never built; source=Faulted->Faulted; registry=2->2` in narrative run 1 |
+| 4 | postwrite apply | Latch | `restore-apply`, `recovery-publication` | staged and validated worlds destroyed before exposure | UncommittedAttemptWork | Both reaches Pass x5 per family; `Rejected/ApplyFault; stagingBuilt=True; stagingLifecycle=Disposed; registry=2->2` in narrative run 1 |
+| 5 | outbox append | DeliveryHook | `before-append`, `after-append` | nothing handed to destination before durable append | UnpersistedObligation | Narrative/cards Pass x5; `boundary=before-append; crashed=True; journalFrames=0; trackedObligations=0; destinationAttempts=0`; traversal N/A (no destination) |
+| 6 | delivery | DeliveryHook | `before-delivery`, `after-delivery` | redelivery reuses idempotency key; one destination effect | UncommittedAttemptWork | Narrative/cards Pass x5; `boundary=after-delivery; crashed=True; effectsAfterCrash=1; effectsAfterRedelivery=1; alreadyApplied=1; settledState=Acknowledged`; traversal N/A |
+| 7 | acknowledgement | DeliveryHook | `before-acknowledge`, `after-acknowledge` | before fault remains redeliverable, after fault settled | None | Narrative/cards Pass x5; `crashed=True; stillRedeliverable=True; afterCrashed=True; afterSettled=True; destinationEffects=1`; traversal N/A |
+| 8 | restart | StoreRead | `store-read` | verified bytes produce new session; absent/incompatible bytes expose none | UncommittedSinceCheckpoint | Pass x5 per family; narrative `previousSession=…01; restartedSession=…06; owedObligations=1; destinationAttempts=0`; absent=`ResourceUnavailable`, incompatible=`UnsupportedVersion`, both unexposed |
 
 Point 4 names two latch boundaries because the restore sequence reaches the postwrite-apply condition twice: after the
 staging world was written to (`restore-apply`, in `CheckpointRestoreExecutor` immediately after `IRestoreTargetBuilder`
@@ -104,13 +100,12 @@ declared authoritative pose/velocity or observation policy and records any resta
 course is the genre where that becomes observable, through four observations that run only for a family declaring an
 engine physical domain:
 
-| Observation | What it proves | Requirement |
+| Observation | Executed result (qualification player, 5/5) | Requirement |
 |---|---|---|
-| `gc027-recovered-engine-physics-is-reseeded-not-continued` | the recovered scene is its own **dedicated local** `PhysicsScene`; every runner body's **engine** pose equals the world's **authoritative ECS** pose the checkpoint carried; the recovered scene's own `SimulateCount` is **zero** before the recovered world steps it, while the source's counter is reported for contrast | P-054, 04 s7 |
-| `gc027-source-authoritative-state-survives-the-recovery` | the course's authoritative text — every runner's ECS pose and velocity plus its accepted-checkpoint progress — is **identical** in both worlds | P-053, 07 §4.3 |
-| `gc027-recovered-world-refuses-an-old-session-observation` | an image stamped with the **old** session is refused `ForeignWorld`/`StaleHandle` with no lease, and the recovered world's own image is stamped with the **new** session, epoch and step | P-004, P-005, P-049 |
-| `gc027-recovered-world-steps-its-engine-once-per-admitted-step` | the recovered world commits its own steps, its engine simulates exactly once per committed step, and a repeated admission for the same step is refused | REF-A06, P-036 |
-
+| `gc027-recovered-engine-physics-is-reseeded-not-continued` | source simulation count 1, recovered count 0 before stepping; dedicated local scene `True`; three bodies declared, three engine poses equal restored ECS poses (`20`, `200020`, `20020` mm X) | P-054, 04 s7 |
+| `gc027-source-authoritative-state-survives-the-recovery` | three runners' pose/velocity and accepted progress text identical across sessions; runner A `p20,0,0v1040,0,0;progress=1` | P-053, 07 §4.3 |
+| `gc027-recovered-world-refuses-an-old-session-observation` | old token refused `ForeignWorld/StaleHandle`, no lease; recovered image stamped by new session (`…05` vs source `…01`) | P-004, P-005, P-049 |
+| `gc027-recovered-world-steps-its-engine-once-per-admitted-step` | committed step `0->1`; recovered engine simulations `0->1`; duplicate admission `DuplicateStepRefused` | REF-A06, P-036 |
 **The limitation, stated plainly:** the engine's solver state is *not* carried across a recovery and is *not* claimed
 to be. What is carried is the declared authoritative pose and velocity; what the recovered world does is re-seed its
 bodies from that state and then simulate its own steps. A recovery therefore does not continue an in-flight
@@ -137,9 +132,7 @@ An incompatible document leaves the new world **unexposed**, and this is enforce
 | unresolved required reference / duplicate identity | `CheckpointIdentityTable` through the planner | `MissingDependency` |
 | document from another session | `CheckpointRestoreExecutor.Validate` before exposure | `IdempotencyConflict` |
 
-In every one of those rows the destination world does not exist (the planner refuses before a builder is called) or
-was destroyed by the executor's own `Discard(staging)`; the probe asserts `DestinationHost == null` and that the
-registry count is unchanged.
+The executed restart observation injected an absent store and a mismatched catalog fingerprint: both refused before a builder ran (`builderAttempts=0`), with `ResourceUnavailable` and `UnsupportedVersion` respectively, and registry count unchanged. The remaining incompatibility rows are contract behavior covered by earlier suites, not separate GC-027 player cases; they are not claimed as GC-027 fault-injection runs.
 
 ## 5. P-049's host-configured bounded retries
 

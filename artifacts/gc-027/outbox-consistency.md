@@ -1,6 +1,6 @@
 # GC-027 outbox consistency reports
 
-**Status: `NotRun (pending orchestrator build host)`.** Every row is a template; nothing here is a run result.
+**Executed:** qualification IL2CPP `-probeRecovery` Pass 5/5; run 1 in `artifacts/gc-027/toolchain/probe-gc027.json`. Narrative and cards have durable outboxes; traversal has no destination or obligation, so delivery rows there are N/A.
 
 **Which families this covers.** The narrative slice and the card market, which declare a delivery obligation. The
 traversal course declares none (`HasDeliveryObligation` is false: it has no outbox and no external effect), so it
@@ -28,19 +28,18 @@ cursor(<destination>,ack=<obligation|none>,retained=<r>,total=<tt>)
 problem=<what disagreed>
 ```
 
-## Fill-in table (build host)
+## Executed outbox census
 
-`label` is `recovered:<session>` for the recovery observation, `restarted:<session>` for the restart, and
-`staging:<session>` for the builder's pre-exposure proof. Copy from `probe-gc027.json`.
+The recovered report's label is `recovered:<session>`; narrative run 1 uses `recovered:09716070107562600000000000000005`, cards uses its own new session. The restart observation emits obligation/effect counters, not a separate `restarted:` census string. The builder's internal `staging:` census is asserted via `ProvedRowCount` but not emitted in the player JSON.
 
-| # | Observation / seam | Label | carried (open, terminal, cursor) | live (tracked, open, terminal, pruned, adopted) | consistent | Obligations owed | Destination attempts | Fill from probe |
-|---|---|---|---|---|---|---|---|---|
-| 1 | `gc027-outbox-rows-and-delivery-cursor-survive-the-recovery` | `recovered:<session>` | | | | | | |
-| 2 | `CheckpointRestoreExecutor` pre-exposure proof of that same recovery | `staging:<session>` | | | | n/a | n/a | not separately emitted; `RestoredOutboxRows` + builder `ProvedRowCount` |
-| 3 | `gc027-restart-from-the-store-recovers-without-in-process-state` | `restarted:<session>` | | | | | | |
-| 4 | `gc027-outbox-append-fault-refuses-before-delivery` | n/a (a bare outbox, no checkpoint) | | | n/a | 0 | 0 | journal frames, tracked obligations |
-| 5 | `gc027-outbox-delivery-fault-redelivers-with-one-destination-effect` | n/a | | | n/a | | | effects after crash / after redelivery / already-applied |
-| 6 | `gc027-outbox-acknowledgement-fault-records-or-redelivers-once` | n/a | | | n/a | | | redeliverable-after-crash, settled state, effects |
+| Observation / seam | Narrative run 1 | Cards run 1 | Result |
+|---|---|---|---|
+| recovered outbox / cursor | `carried=4(open=1,terminal=1,cursor=1); live=(2/1/1/pruned=0/adopted=2); consistent=1; provedRows=4; destinationAttempts=0` | same counts and verdict, distinct session/destination IDs | Pass x5; one owed obligation, acknowledged predecessor cursor unchanged, no hidden delivery |
+| builder's pre-exposure proof | `RestoredOutboxRows=4; ProvedRowCount=4` | same | Pass x5; `TryProveOutbox` completed before exposure; the probe does not separately emit the builder's `staging:` report string |
+| restart from verified store | `owedObligations=1; destinationAttempts=0; outcome=Published` | same | Pass x5; no in-process replay |
+| append fault | `journalFrames=0; trackedObligations=0; destinationAttempts=0` | same | Pass x5; no unpersisted effect |
+| delivery crash and redelivery | `effectsAfterCrash=1; effectsAfterRedelivery=1; alreadyApplied=1; settledState=Acknowledged` | same | Pass x5; same idempotency key, one effect |
+| acknowledgement on either side | `stillRedeliverable=True` before; `afterCrashed=True; afterSettled=True; destinationEffects=1` | same | Pass x5; retained cursor and one effect |
 
 ## The invariants each row must show, and why
 

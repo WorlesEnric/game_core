@@ -451,3 +451,16 @@ python3 tools/validate_game_core_docs.py
 | `artifacts/gc-027/compile-risk-audit.md` | the declaration audit's findings, their fixes, and what only a compiler can confirm |
 | the filled-in columns of `recovery-behavior-and-data-loss.md` §2 and §3.1 and `fault-injection-matrix.md` | copied from the probe artifact, per those files' instructions; §3.1's four rows come from the `traversal/…` observations |
 | the filled-in tables of `crash-restart-transcripts.md` and `outbox-consistency.md` | same |
+
+## 15. Linux build-host execution addendum
+
+The handoff above is the authoring-host snapshot and its `NotRun` claims describe that earlier host, not the Linux build. The executed outcomes and toolchain are in [`BUILD_REPORT.md`](BUILD_REPORT.md). GC-017's archived boundary list and trace-format list now contain all 13 names; its original 29 case rows remain historical. The GC-027 qualification player passed five clean runs on the final binary; Unity EditMode passed 1,144/1,144 and PlayMode passed 53/53. The traversal course's authoritative pose, velocity and accepted progress now travel through declared owner-slot checkpoint rows; before this repair a real player demonstrated the loss (restored runners absent). The recovery mode remains qualification-only, but the production `WorldRecovery` type is explicitly preserved in the marker-free release player under High stripping.
+
+| Data-loss boundary | Executed injection point | Observed result (five GC-027 player runs) |
+|---|---|---|
+| `None` | capture copy, file publication, reference repair, acknowledgement | no new checkpoint or incomplete destination; prior verified document intact; source faulted only for recovery, not for pre-mutation capture; acknowledgement effect remains one |
+| `UncommittedAttemptWork` | restore apply, recovery publication, delivery | staging world disposed without exposure; delivery redelivered with the same idempotency key and one destination effect |
+| `UnpersistedObligation` | outbox append | journal frames 0, tracked obligations 0, destination attempts 0; commit not accepted |
+| `UncommittedSinceCheckpoint` | restart / bounded transient retry | new session from verified checkpoint, or no exposed world on absent/incompatible input; one retry under host bound 3 uses distinct attempt identities; bound 1 exhausts without another attempt |
+
+Narrative and cards exercised every point. Traversal exercised the five latch reaches and restart; outbox append/delivery/ack are not applicable because it declares no destination. Traversal's restored ECS pose and progress matched source, native handles differed, its engine simulation counter restarted at zero, and an old-session observation was refused `ForeignWorld/StaleHandle`.

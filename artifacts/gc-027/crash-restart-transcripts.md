@@ -1,7 +1,6 @@
 # GC-027 crash/restart transcripts
 
-**Status: `NotRun (pending orchestrator build host)`.** Every row below is a *template*. Nothing in this file is a run
-result: this host has no Unity and no .NET SDK.
+**Executed:** the qualification IL2CPP `-probeRecovery` passed five clean runs; the canonical run 1 is `artifacts/gc-027/toolchain/probe-gc027.json`. The detail strings below are copied from run 1. The scenario does not emit a transcript clause for every observation: a blank would be fabricated evidence, so those rows explicitly say `not emitted` and retain their observed outcome. The per-family digests differ because they include session and document identities.
 
 ## Where the transcripts come from
 
@@ -15,28 +14,20 @@ The transcript has no timestamp, no host measure and no thread identity by const
 recovery produce the same text and the same digest. That is what makes the digest a value a reviewer can compare
 instead of a log to be read.
 
-## Fill-in procedure (build host)
+For each family's passing detail, copy a `transcript(...)` clause only when the observation actually emits one. Capture and publication record their fault into the run's shared transcript; their own step detail does not embed its summary. Postwrite and publication refusal steps assert their staging/registry result directly but do not embed a transcript summary. Restart refusal asserts the two refusal codes without embedding a summary. All three families ran: narrative, cards, traversal; traversal omits delivery observations because it has no destination.
 
-For each `detail` in `probe-gc027.json` whose observation name is listed below, copy the `transcript(...)` clause and
-the `loss=` class into the matching row. The step names are qualified `narrative/…` and `cards/…`; both families run
-the same sequence, so both rows must agree.
-
-All three families are recorded: the narrative slice, the card market and the traversal course. The traversal rows
-are the same observations with the `traversal/` prefix, plus its four engine-physics observations; it records no
-delivery observation because the course declares no delivery obligation.
-
-| # | Observation | Injection point | Transcript clause (fill from the probe artifact) | Data-loss class (fill) |
+| Observation | Narrative | Cards | Traversal | Observed class / note |
 |---|---|---|---|---|
-| 1 | `gc027-capture-copy-fault-produces-no-checkpoint` | capture copy | | |
-| 2 | `gc027-publication-fault-keeps-the-previous-document` | file publication | | |
-| 3 | `gc027-reference-repair-fault-never-builds-a-destination` | restore reference repair | | |
-| 4 | `gc027-postwrite-apply-fault-never-exposes-a-destination` | postwrite apply | | |
-| 5 | `gc027-recovery-publication-fault-keeps-the-registry-unchanged` | postwrite apply (publication reach) | | |
-| 6 | `gc027-recovery-publishes-a-new-session-with-the-captured-state` | — (clean recovery) | | |
-| 7 | `gc027-restart-from-the-store-recovers-without-in-process-state` | restart | | |
-| 8 | `gc027-restart-without-a-document-or-incompatible-content-exposes-nothing` | restart (refusal) | | |
-| 9 | `gc027-transient-failure-is-retried-under-the-host-bound` | — (bounded retry) | | |
-| 10 | `gc027-teardown-disposes-every-world` | — (teardown) | | |
+| capture-copy fault | not emitted | not emitted | not emitted | `None`; no capture, source `Running` |
+| file-publication fault | not emitted | not emitted | not emitted | `None`; prior envelope remains readable |
+| reference-repair fault | `lines=2/32,faults=1,loss=None,digest=fbb3056e…` | `lines=2/32,faults=1,loss=None,digest=1d6a05c1…` | `lines=2/32,faults=1,loss=None,digest=abfc9d75…` | `None`; builder attempts 0 |
+| postwrite apply fault | not emitted | not emitted | not emitted | `UncommittedAttemptWork`; staging disposed |
+| recovery-publication fault | not emitted | not emitted | not emitted | same postwrite class; staging disposed |
+| clean recovery | `lines=6/64,faults=0,loss=None,digest=64c10477…` | `lines=6/64,faults=0,loss=None,digest=9556ebde…` | `lines=6/64,faults=0,loss=None,digest=513267ee…` | `None`; source disposed, destination running |
+| restart from store | `lines=5/64,faults=0,loss=UncommittedSinceCheckpoint,digest=560e98e4…` | `lines=5/64,faults=0,loss=UncommittedSinceCheckpoint,digest=790d44df…` | `lines=5/64,faults=0,loss=UncommittedSinceCheckpoint,digest=1939a85a…` | `UncommittedSinceCheckpoint`; prior session not contacted |
+| restart absent/incompatible | not emitted | not emitted | not emitted | no world exposed; `ResourceUnavailable` / `UnsupportedVersion` |
+| bounded retry | `lines=6/64,faults=1,loss=UncommittedSinceCheckpoint,digest=9c301f19…` | `lines=6/64,faults=1,loss=UncommittedSinceCheckpoint,digest=893a4976…` | `lines=6/64,faults=1,loss=UncommittedSinceCheckpoint,digest=46330917…` | host bound 3, two attempts, one retry, distinct identities |
+| teardown | `lines=7/256,faults=2,loss=None,digest=9a905265…` | `lines=7/256,faults=2,loss=None,digest=9d0b350b…` | `lines=7/256,faults=2,loss=None,digest=d386df15…` | registry returns to 0 |
 
 ## The restart record
 
@@ -60,8 +51,8 @@ in-process state" checkable:
 
 | Observation | attempts | retries | distinct identities | sessions (old → new) |
 |---|---|---|---|---|
-| `gc027-transient-failure-is-retried-under-the-host-bound` | | | | |
-| `gc027-teardown-disposes-every-world` | | | | |
+| `gc027-transient-failure-is-retried-under-the-host-bound` | 2 | 1 | `True` | initial refused session `…09` in every family; retry uses a distinct reserved session and operation ID (asserted by the probe's `distinctIdentities=True`, though its detail only prints the first attempt's identity) |
+| `gc027-teardown-disposes-every-world` | n/a | n/a | n/a | all three registries end at 0; not a retry observation |
 
 `distinct=1` means every attempt named a different session **and** a different operation id; `distinct=0` would be a
 contract violation, not a formatting difference.
