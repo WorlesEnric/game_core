@@ -97,6 +97,15 @@ ARG_NEEDLES = (
     '            bool w6Gate = false;\n',
     '        /// <summary>\n        /// Runs the Wave 6 integration-gate mode: the fixed-step traversal course with the cost counters and the\n        /// recorded-input replay, the durable reward delivery across an unload/reload of its receiving world, the\n        /// composition audit that keeps the optional physics/animation/audio surface out of cards and narrative, and\n        /// the create/mount/step/unmount/teardown loop over all three genres (W6-GATE).\n        /// </summary>\n        public bool W6Gate { get; }\n',
     '                else if (argument == W6GateArgumentName)\n                {\n                    w6Gate = true;\n                }\n',
+    # GC-024's reference-conformance mode and its fixture assembly are qualification evidence: the tables, their
+    # ordered scripts, the trace normalizer, the oracle and the audit all live outside the shipping player, whose
+    # reason to exist is the production seam those fixtures exercise.
+    '        private const string ConformanceArgumentName = "-probeConformance";\n',
+    '            bool conformance,\n',
+    '            Conformance = conformance;\n',
+    '            bool conformance = false;\n',
+    "        /// <summary>\n        /// Runs the GC-024 reference-conformance mode: every before/after table of\n        /// `docs/game-core/07-reference-compositions.md` executed in a real Unity world of the genre that owns it,\n        /// the combined narrative+cards world with the durable reward path, and the genre/assembly audit\n        /// (P-001, P-013, P-014, P-016, P-025, P-045, P-059).\n        /// </summary>\n        public bool Conformance { get; }\n",
+    '                else if (argument == ConformanceArgumentName)\n                {\n                    conformance = true;\n                }\n',
 )
 
 def main() -> None:
@@ -116,6 +125,9 @@ def main() -> None:
         # GC-023's replay fixture package: its recorded trace, its real-Burst-jobs half and its probe are qualification
         # evidence.
         "com.gamecore.replay",
+        # GC-024's reference-conformance fixture package: the 07 tables, their scripts and the oracle are qualification
+        # evidence, and the shipping player's own assemblies reference neither the package nor its assembly.
+        "com.gamecore.reference-conformance",
         "com.unity.test-framework",
         "com.unity.test-framework.performance",
     ):
@@ -171,6 +183,19 @@ def main() -> None:
         "W6FamilyCardsHost",
         "W6FamilyTraversalHost",
         "ProbeW6Gate",
+        # GC-024's conformance fixture: the runner, the three genre hosts' conformance halves, their entry points, the
+        # combined cross-family world, the world-preparation seam and the probe mode are one set - the runner calls
+        # the hosts, so keeping any of them without the others would not compile - and nothing shipping references
+        # them, nor the reference-conformance package they compile against.
+        "ConformanceScenario",
+        "ConformanceHosts",
+        "ConformanceFamily",
+        "ConformanceWorldPreparation",
+        "ConformanceCardsHost",
+        "ConformanceNarrativeHost",
+        "ConformanceTraversalHost",
+        "ConformanceCrossWorld",
+        "ProbeConformance",
     ):
         for suffix in (".cs", ".cs.meta"):
             (DESTINATION / RUNTIME / (name + suffix)).unlink()
@@ -178,7 +203,8 @@ def main() -> None:
     runner = DESTINATION / RUNTIME / "ProbeRunner.cs"
     # The report identity is one independent `if` per mode, so removing a mode's branch is a whole block.
     for mode, task in (("Faults", "GC-017"), ("W5Gate", "W5-GATE"), ("Gc021", "GC-021"),
-                       ("LifecycleStress", "GC-022"), ("Replay", "GC-023"), ("W6Gate", "W6-GATE")):
+                       ("LifecycleStress", "GC-022"), ("Replay", "GC-023"), ("W6Gate", "W6-GATE"),
+                       ("Conformance", "GC-024")):
         replace_once(
             runner,
             '            if (arguments.' + mode + ')\n'
@@ -209,6 +235,7 @@ def main() -> None:
         '            || LifecycleStress\n',
         '            || Replay\n',
         '            || W6Gate\n',
+        '            || Conformance\n',
     ):
         replace_once(arguments, removed)
 
@@ -216,16 +243,19 @@ def main() -> None:
     # argument list and its constructor signature agree exactly.
     replace_once(
         arguments,
-        '                w4Gate, faults, gc018, gc019, w5Gate, traversal, gc021, replay, w6Gate, resultPath);',
+        '                w4Gate, faults, gc018, gc019, w5Gate, traversal, gc021, replay, w6Gate, conformance, resultPath);',
         '                w4Gate, gc018, gc019, traversal, resultPath);',
     )
     replace_once(arguments, '                lifecycleStress,\n')
 
-    # GC-023's replay assembly leaves the probe host's references: every file that consumed it is gone.
+    # GC-023's replay assembly and GC-024's conformance fixture assembly leave the probe host's references: every
+    # file that consumed either one is gone, and neither package is a dependency of the clone.
     probe_asmdef = DESTINATION / RUNTIME / "GameCore.Validation.ProbeHost.asmdef"
     asmdef = json.loads(probe_asmdef.read_text(encoding="utf-8"))
     asmdef["references"].remove("GameCore.Replay")
+    asmdef["references"].remove("GameCore.ReferenceConformance")
     probe_asmdef.write_text(json.dumps(asmdef, indent=2) + "\n", encoding="utf-8")
+
 
     print(f"Marker-free release project: {DESTINATION}")
     print("Build: UNITY_PROJECT=<above> ARTIFACTS=artifacts/faults/release tools/unity/build_probe.sh")

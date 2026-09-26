@@ -550,18 +550,26 @@ namespace GameCore.ReferenceConformance
             }
 
             // 4. The plain-dotnet half: an SDK-style project is the other declaration of the same boundary, and the
-            // reference to a family assembly is a `ProjectReference` path rather than an assembly name.
+            // reference to a family assembly is a `ProjectReference` path rather than an assembly name. A `dotnet/src`
+            // project is a KERNEL project only when its own assembly name is a kernel one: the same directory holds
+            // the plain-dotnet shells of the fixture suites (replay, protocol, reference-seam, conformance), and those
+            // legitimately reference the rules packages they exercise (P-057: neither half substitutes for the other).
             string[] projects = SortedFiles(Path.Combine(repositoryRoot, "dotnet", "src"), "*.csproj");
             for (int p = 0; p < projects.Length; p++)
             {
-                AssemblyRecord record = ReadProject(repositoryRoot, projects[p], AssemblyClass.Kernel);
+                bool kernel = IsKernelAssemblyName(Path.GetFileNameWithoutExtension(projects[p]));
+                AssemblyRecord record = ReadProject(
+                    repositoryRoot, projects[p], kernel ? AssemblyClass.Kernel : AssemblyClass.Qualification);
                 report.AddAssembly(record);
                 report.ProjectFileCount++;
-                AssertProjectReferences(report, record);
+                if (kernel)
+                {
+                    AssertProjectReferences(report, record);
+                }
             }
 
-            // A dotnet project that compiles a family's sources is a family project: the audit reads it so the
-            // "families reach the kernel" direction is checked on both halves of the tree.
+            // A dotnet test project is qualification tooling: the audit reads it so the tree is complete, and its own
+            // references are the fixture's business rather than the kernel boundary's.
             string[] testProjects = SortedFiles(Path.Combine(repositoryRoot, "dotnet", "tests"), "*.csproj");
             for (int p = 0; p < testProjects.Length; p++)
             {
@@ -756,9 +764,15 @@ namespace GameCore.ReferenceConformance
             }
         }
 
+        /// <summary>
+        /// Scans one kernel source for the genre tokens a kernel may not name. The scan is comment- and
+        /// literal-aware: the rule is about a *reference* the kernel makes, and several kernel sources legitimately
+        /// describe a generated qualification assembly by name in their documentation, so a mention in prose or in a
+        /// literal is not a finding. Line structure is preserved, so a finding names the real source line.
+        /// </summary>
         private static void ScanKernelSource(GenreAuditReport report, string repositoryRoot, string path)
         {
-            string[] lines = File.ReadAllLines(path);
+            string[] lines = StripCommentsAndLiterals(File.ReadAllText(path));
             for (int i = 0; i < lines.Length; i++)
             {
                 string line = lines[i];
@@ -771,6 +785,131 @@ namespace GameCore.ReferenceConformance
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// One source file with every comment's and literal's *contents* removed, split into lines. Newlines are
+        /// preserved so a finding's line number still points at the real line, and identifiers outside comments and
+        /// literals survive verbatim, which is what the token scan reads.
+        /// </summary>
+        private static string[] StripCommentsAndLiterals(string text)
+        {
+            var kept = new List<char>(text.Length);
+            int i = 0;
+            while (i < text.Length)
+            {
+                char c = text[i];
+                if (c == '/' && i + 1 < text.Length && text[i + 1] == '/')
+                {
+                    while (i < text.Length && text[i] != '\n')
+                    {
+                        i++;
+                    }
+
+                    continue;
+                }
+
+                if (c == '/' && i + 1 < text.Length && text[i + 1] == '*')
+                {
+                    i += 2;
+                    while (i + 1 < text.Length && !(text[i] == '*' && text[i + 1] == '/'))
+                    {
+                        if (text[i] == '\n')
+                        {
+                            kept.Add('\n');
+                        }
+
+                        i++;
+                    }
+
+                    i += 2;
+                    continue;
+                }
+
+                if (c == '@' && i + 1 < text.Length && text[i + 1] == '"')
+                {
+                    i += 2;
+                    while (i < text.Length)
+                    {
+                        if (text[i] == '"')
+                        {
+                            if (i + 1 < text.Length && text[i + 1] == '"')
+                            {
+                                i += 2;
+                                continue;
+                            }
+
+                            i++;
+                            break;
+                        }
+
+                        if (text[i] == '\n')
+                        {
+                            kept.Add('\n');
+                        }
+
+                        i++;
+                    }
+
+                    continue;
+                }
+
+                if (c == '"')
+                {
+                    i++;
+                    while (i < text.Length)
+                    {
+                        if (text[i] == '\\')
+                        {
+                            i += 2;
+                            continue;
+                        }
+
+                        if (text[i] == '"')
+                        {
+                            i++;
+                            break;
+                        }
+
+                        if (text[i] == '\n')
+                        {
+                            kept.Add('\n');
+                        }
+
+                        i++;
+                    }
+
+                    continue;
+                }
+
+                if (c == '\'')
+                {
+                    i++;
+                    while (i < text.Length)
+                    {
+                        if (text[i] == '\\')
+                        {
+                            i += 2;
+                            continue;
+                        }
+
+                        if (text[i] == '\'')
+                        {
+                            i++;
+                            break;
+                        }
+
+                        i++;
+                    }
+
+                    continue;
+                }
+
+                kept.Add(c);
+                i++;
+            }
+
+            return new string(kept.ToArray()).Split('\n');
         }
 
         // ------------------------------------------------------------------ helpers
