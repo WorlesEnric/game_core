@@ -1,0 +1,476 @@
+{
+  "format": "gamecore.catalog-reachability/1",
+  "task": "GC-025",
+  "catalogs": [
+    {
+      "label": "probe",
+      "namespace": "GameCore.Validation.Generated",
+      "className": "ProbeCatalog",
+      "coverageClassName": "ProbeCatalogCoverage",
+      "description": "unity/GameCore.Validation/Catalogs/ProbeCatalog.catalog.json",
+      "catalog": "unity/GameCore.Validation/Assets/GameCore.Validation/Generated/ProbeCatalog.g.cs",
+      "catalogFileHash": "03bdcd23fd8ec0515d93d7c54d7f7c695f3860a850a7280b82316aaacd14c5c1",
+      "catalogFingerprint": "02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff",
+      "registrationGroupCount": 3,
+      "registrationCount": 3,
+      "schemaCount": 1,
+      "closedGenericRootCount": 2,
+      "groups": [
+        {
+          "tableName": "FamilyEntryRegistrations",
+          "kind": "PluginFactory",
+          "lookupMethodName": "TryGetFamilyEntry",
+          "interfaceType": "GameCore.Validation.Slices.IFamilyPluginEntry",
+          "entries": [
+            {
+              "stableName": "gamecore.validation.entry.narrative",
+              "keyName": "NarrativeFamilyEntryKey",
+              "key": "81C6EE94C5A5EA51E32CE40F411F56CD",
+              "keyVersion": 1,
+              "ownerPackageId": "00000000000000000000000000000000",
+              "implementationId": "81c6ee94c5a5ea51e32ce40f411f56cd"
+            }
+          ]
+        },
+        {
+          "tableName": "HandlerRegistrations",
+          "kind": "Handler",
+          "lookupMethodName": "TryGetHandler",
+          "interfaceType": "GameCore.Validation.Probe.IProbeHandler<GameCore.Validation.Probe.ProbeAmount, int>",
+          "entries": [
+            {
+              "stableName": "gamecore.validation.handler.magnitude",
+              "keyName": "ClosedGenericHandlerKey",
+              "key": "1C9A1F368FDAD8DD4E0CC4C0E9F7DA67",
+              "keyVersion": 1,
+              "ownerPackageId": "00000000000000000000000000000000",
+              "implementationId": "d13ebf56c8e9e58437c098b6b4543056"
+            }
+          ]
+        },
+        {
+          "tableName": "PluginRegistrations",
+          "kind": "PluginFactory",
+          "lookupMethodName": "TryGetPluginFactory",
+          "interfaceType": "GameCore.Validation.Probe.IProbePluginFactory",
+          "entries": [
+            {
+              "stableName": "gamecore.validation.plugin.fixture",
+              "keyName": "FixturePluginKey",
+              "key": "0284B6EC6D41B5AAD17744CF859C74B6",
+              "keyVersion": 1,
+              "ownerPackageId": "00000000000000000000000000000000",
+              "implementationId": "c522e8071cf2c14ecb0f3978e0e109bb"
+            }
+          ]
+        }
+      ],
+      "serializers": [
+        {
+          "stableName": "gamecore.validation.schema.probe-record",
+          "schemaId": "4bf5b435956d00ad605292d344334459",
+          "schemaVersion": 1,
+          "serializerKeyName": "ProbeRecordSerializerKey",
+          "key": "B917D6C4A639ECC8B217BB961E7592D3",
+          "keyVersion": 1,
+          "required": true
+        }
+      ],
+      "closedGenericRoots": [
+        "ProbeAotRoots.TrackJob(default(ProbeAggregateJob<ProbeVector3Value>))",
+        "ProbeAotRoots.TrackHandler(HandlerRegistrations[0].Implementation)"
+      ]
+    },
+    {
+      "label": "cards",
+      "namespace": "GameCore.Validation.GeneratedCards",
+      "className": "CardCatalog",
+      "coverageClassName": "CardCatalogCoverage",
+      "description": "unity/GameCore.Validation/Catalogs/CardCatalog.catalog.json",
+      "catalog": "unity/GameCore.Validation/Assets/GameCore.Validation/GeneratedCards/CardCatalog.g.cs",
+      "catalogFileHash": "75a60968c3c59ac69e0c2b6b806c792f48e5b243a526b1ae29c7615e8c1a2e9e",
+      "catalogFingerprint": "77838f4766f9086a0fa32b4fb30d8d5fceeb3a8072e61594fa2177946ad3315d",
+      "registrationGroupCount": 5,
+      "registrationCount": 8,
+      "schemaCount": 1,
+      "closedGenericRootCount": 0,
+      "groups": [
+        {
+          "tableName": "FamilyEntryRegistrations",
+          "kind": "PluginFactory",
+          "lookupMethodName": "TryGetFamilyEntry",
+          "interfaceType": "GameCore.Validation.Slices.IFamilyPluginEntry",
+          "entries": [
+            {
+              "stableName": "gamecore.validation.entry.cards",
+              "keyName": "CardFamilyEntryKey",
+              "key": "6924A730DAE9ADD6DE4FC185BD76C778",
+              "keyVersion": 1,
+              "ownerPackageId": "00000000000000000000000000000000",
+              "implementationId": "6924a730dae9add6de4fc185bd76c778"
+            }
+          ]
+        },
+        {
+          "tableName": "PluginRegistrations",
+          "kind": "PluginFactory",
+          "lookupMethodName": "TryGetPluginFactory",
+          "interfaceType": "GameCore.Gameplay.Cards.ICardTablePluginFactory",
+          "entries": [
+            {
+              "stableName": "cards.factory.card-table-plugin",
+              "keyName": "CardTablePluginKey",
+              "key": "BB026AC0599E678383F12FFCA82E5B2B",
+              "keyVersion": 1,
+              "ownerPackageId": "00000000000000000000000000000000",
+              "implementationId": "bb026ac0599e678383f12ffca82e5b2b"
+            }
+          ]
+        },
+        {
+          "tableName": "ReducerRegistrations",
+          "kind": "Reducer",
+          "lookupMethodName": "TryGetReducer",
+          "interfaceType": "GameCore.Rules.Cards.ICardBonusReducer",
+          "entries": [
+            {
+              "stableName": "cards.reducer.int32-sum",
+              "keyName": "CardSetBonusReducerKey",
+              "key": "F85B12F56C1232B270108056ACB54B19",
+              "keyVersion": 1,
+              "ownerPackageId": "00000000000000000000000000000000",
+              "implementationId": "f85b12f56c1232b270108056acb54b19"
+            }
+          ]
+        },
+        {
+          "tableName": "StaticPredicateRegistrations",
+          "kind": "StaticPredicate",
+          "lookupMethodName": "TryGetStaticPredicate",
+          "interfaceType": "GameCore.Rules.Cards.ICardTargetPredicate",
+          "entries": [
+            {
+              "stableName": "cards.predicate.always",
+              "keyName": "CardAlwaysPredicateKey",
+              "key": "D8CABB8F16C64380102DE6820045DF34",
+              "keyVersion": 1,
+              "ownerPackageId": "00000000000000000000000000000000",
+              "implementationId": "d8cabb8f16c64380102de6820045df34"
+            }
+          ]
+        },
+        {
+          "tableName": "SystemFactoryRegistrations",
+          "kind": "SystemFactory",
+          "lookupMethodName": "TryGetSystemFactory",
+          "interfaceType": "GameCore.Gameplay.Cards.ICardTableSystemFactory",
+          "entries": [
+            {
+              "stableName": "cards.system.output",
+              "keyName": "CardOutputSystemKey",
+              "key": "2CB9BBFC9BB6CC9495666C211E20EE0F",
+              "keyVersion": 1,
+              "ownerPackageId": "00000000000000000000000000000000",
+              "implementationId": "2cb9bbfc9bb6cc9495666c211e20ee0f"
+            },
+            {
+              "stableName": "cards.system.input",
+              "keyName": "CardInputSystemKey",
+              "key": "4522EE4E182F61DCE6E7466B929DEE07",
+              "keyVersion": 1,
+              "ownerPackageId": "00000000000000000000000000000000",
+              "implementationId": "4522ee4e182f61dce6e7466b929dee07"
+            },
+            {
+              "stableName": "cards.system.commit",
+              "keyName": "CardCommitSystemKey",
+              "key": "A61B22DF091D9AC4C299AE0D0AE30F30",
+              "keyVersion": 1,
+              "ownerPackageId": "00000000000000000000000000000000",
+              "implementationId": "a61b22df091d9ac4c299ae0d0ae30f30"
+            },
+            {
+              "stableName": "cards.system.validate",
+              "keyName": "CardValidateSystemKey",
+              "key": "E113F54073E28D830803E540BE4EEDFB",
+              "keyVersion": 1,
+              "ownerPackageId": "00000000000000000000000000000000",
+              "implementationId": "e113f54073e28d830803e540be4eedfb"
+            }
+          ]
+        }
+      ],
+      "serializers": [
+        {
+          "stableName": "cards.schema.card-config",
+          "schemaId": "02bb49501222979cfea308ce5f5f2ca1",
+          "schemaVersion": 1,
+          "serializerKeyName": "CardConfigSerializerKey",
+          "key": "02BB49501222979CFEA308CE5F5F2CA1",
+          "keyVersion": 1,
+          "required": true
+        }
+      ],
+      "closedGenericRoots": []
+    },
+    {
+      "label": "checkpoint",
+      "namespace": "GameCore.Validation.GeneratedCheckpoint",
+      "className": "CheckpointCatalog",
+      "coverageClassName": "CheckpointCatalogCoverage",
+      "description": "unity/GameCore.Validation/Catalogs/CheckpointCatalog.catalog.json",
+      "catalog": "unity/GameCore.Validation/Assets/GameCore.Validation/GeneratedCheckpoint/CheckpointCatalog.g.cs",
+      "catalogFileHash": "08d43a031cd41a968daf1ea86633fc826956ae64a8a717e6d999d77e5cd5d2d9",
+      "catalogFingerprint": "2d931c984b3bcf3f995a0f88bc82708b0d07e4395fcad44019ebc033126a0eb5",
+      "registrationGroupCount": 0,
+      "registrationCount": 0,
+      "schemaCount": 13,
+      "closedGenericRootCount": 0,
+      "groups": [],
+      "serializers": [
+        {
+          "stableName": "gamecore.checkpoint.schema.scope",
+          "schemaId": "1bb5c533dab84e7604c8b98f1b97066a",
+          "schemaVersion": 1,
+          "serializerKeyName": "ScopeRecordSerializerKey",
+          "key": "1BB5C533DAB84E7604C8B98F1B97066A",
+          "keyVersion": 1,
+          "required": true
+        },
+        {
+          "stableName": "gamecore.checkpoint.schema.cursor",
+          "schemaId": "1ddc64b87daa5363e1c1951d44ad5f07",
+          "schemaVersion": 1,
+          "serializerKeyName": "CursorRecordSerializerKey",
+          "key": "1DDC64B87DAA5363E1C1951D44AD5F07",
+          "keyVersion": 1,
+          "required": true
+        },
+        {
+          "stableName": "gamecore.checkpoint.schema.slot",
+          "schemaId": "325ebfc76f751ee2c2b4985df3d088a0",
+          "schemaVersion": 1,
+          "serializerKeyName": "SlotRecordSerializerKey",
+          "key": "325EBFC76F751EE2C2B4985DF3D088A0",
+          "keyVersion": 1,
+          "required": true
+        },
+        {
+          "stableName": "gamecore.checkpoint.schema.selection",
+          "schemaId": "4736afccc12b5b625adb5bcdbb714e3f",
+          "schemaVersion": 1,
+          "serializerKeyName": "SelectionRecordSerializerKey",
+          "key": "4736AFCCC12B5B625ADB5BCDBB714E3F",
+          "keyVersion": 1,
+          "required": true
+        },
+        {
+          "stableName": "gamecore.checkpoint.schema.clock",
+          "schemaId": "49f4779fa88d83ea0440e2bab679d545",
+          "schemaVersion": 1,
+          "serializerKeyName": "ClockRecordSerializerKey",
+          "key": "49F4779FA88D83EA0440E2BAB679D545",
+          "keyVersion": 1,
+          "required": true
+        },
+        {
+          "stableName": "gamecore.checkpoint.schema.grant",
+          "schemaId": "54d0f9cccec243b78414ec19245173c6",
+          "schemaVersion": 1,
+          "serializerKeyName": "GrantRecordSerializerKey",
+          "key": "54D0F9CCCEC243B78414EC19245173C6",
+          "keyVersion": 1,
+          "required": true
+        },
+        {
+          "stableName": "gamecore.checkpoint.schema.install",
+          "schemaId": "5666c5db5d34ad37d470140f8c18808f",
+          "schemaVersion": 1,
+          "serializerKeyName": "InstallRecordSerializerKey",
+          "key": "5666C5DB5D34AD37D470140F8C18808F",
+          "keyVersion": 1,
+          "required": true
+        },
+        {
+          "stableName": "gamecore.checkpoint.schema.message",
+          "schemaId": "744d60d006798058b50b656c613a21f3",
+          "schemaVersion": 1,
+          "serializerKeyName": "MessageRecordSerializerKey",
+          "key": "744D60D006798058B50B656C613A21F3",
+          "keyVersion": 1,
+          "required": true
+        },
+        {
+          "stableName": "gamecore.checkpoint.schema.outbox",
+          "schemaId": "ac96339bd83d4a4ca453b3f4e46e4639",
+          "schemaVersion": 1,
+          "serializerKeyName": "OutboxRecordSerializerKey",
+          "key": "AC96339BD83D4A4CA453B3F4E46E4639",
+          "keyVersion": 1,
+          "required": true
+        },
+        {
+          "stableName": "gamecore.checkpoint.schema.target",
+          "schemaId": "b780328c6fa158f7bd88603db3ebae2f",
+          "schemaVersion": 1,
+          "serializerKeyName": "TargetRecordSerializerKey",
+          "key": "B780328C6FA158F7BD88603DB3EBAE2F",
+          "keyVersion": 1,
+          "required": true
+        },
+        {
+          "stableName": "gamecore.checkpoint.schema.rng",
+          "schemaId": "cd069d4291975928edb3f9e9af5e037d",
+          "schemaVersion": 1,
+          "serializerKeyName": "RngRecordSerializerKey",
+          "key": "CD069D4291975928EDB3F9E9AF5E037D",
+          "keyVersion": 1,
+          "required": true
+        },
+        {
+          "stableName": "gamecore.checkpoint.schema.header",
+          "schemaId": "d578e5fe72e484be8d8c015a17d8b66b",
+          "schemaVersion": 1,
+          "serializerKeyName": "HeaderRecordSerializerKey",
+          "key": "D578E5FE72E484BE8D8C015A17D8B66B",
+          "keyVersion": 1,
+          "required": true
+        },
+        {
+          "stableName": "gamecore.checkpoint.schema.command",
+          "schemaId": "efe5ab3007e3f7b821d96f9264ab31ef",
+          "schemaVersion": 1,
+          "serializerKeyName": "CommandRecordSerializerKey",
+          "key": "EFE5AB3007E3F7B821D96F9264AB31EF",
+          "keyVersion": 1,
+          "required": true
+        }
+      ],
+      "closedGenericRoots": []
+    },
+    {
+      "label": "traversal",
+      "namespace": "GameCore.Validation.GeneratedTraversal",
+      "className": "TraversalCatalog",
+      "coverageClassName": "TraversalCatalogCoverage",
+      "description": "unity/GameCore.Validation/Catalogs/TraversalCatalog.catalog.json",
+      "catalog": "unity/GameCore.Validation/Assets/GameCore.Validation/GeneratedTraversal/TraversalCatalog.g.cs",
+      "catalogFileHash": "3332a5e54f1e5beea869200672f423b0089c6ec2fb4991334090ab797c0a1f8c",
+      "catalogFingerprint": "f66d97d489bc1d8b891b20bc1c16186e0843d2ca5760dcd010909feea6829459",
+      "registrationGroupCount": 4,
+      "registrationCount": 8,
+      "schemaCount": 1,
+      "closedGenericRootCount": 0,
+      "groups": [
+        {
+          "tableName": "PluginRegistrations",
+          "kind": "PluginFactory",
+          "lookupMethodName": "TryGetPluginFactory",
+          "interfaceType": "GameCore.Gameplay.Traversal.ITraversalCoursePluginFactory",
+          "entries": [
+            {
+              "stableName": "traversal.factory.course-plugin",
+              "keyName": "PluginFactoryKey",
+              "key": "6AB4EE28C7914A6D1C321510AA2A39C2",
+              "keyVersion": 1,
+              "ownerPackageId": "357c38d438b2887ded677f83251e30ee",
+              "implementationId": "6ab4ee28c7914a6d1c321510aa2a39c2"
+            }
+          ]
+        },
+        {
+          "tableName": "ReducerRegistrations",
+          "kind": "Reducer",
+          "lookupMethodName": "TryGetReducer",
+          "interfaceType": "GameCore.Rules.Traversal.ITraversalAccelerationReducer",
+          "entries": [
+            {
+              "stableName": "traversal.reducer.vec3i-sum",
+              "keyName": "ReducerKey",
+              "key": "AC39BBF7CC19582FFF8FDDC39D1DB6D2",
+              "keyVersion": 1,
+              "ownerPackageId": "357c38d438b2887ded677f83251e30ee",
+              "implementationId": "ac39bbf7cc19582fff8fddc39d1db6d2"
+            }
+          ]
+        },
+        {
+          "tableName": "StaticPredicateRegistrations",
+          "kind": "StaticPredicate",
+          "lookupMethodName": "TryGetStaticPredicate",
+          "interfaceType": "GameCore.Rules.Traversal.ITraversalTargetPredicate",
+          "entries": [
+            {
+              "stableName": "traversal.predicate.always",
+              "keyName": "PredicateKey",
+              "key": "2FB8E2A0A8F97F28F73C805A090FAFF2",
+              "keyVersion": 1,
+              "ownerPackageId": "357c38d438b2887ded677f83251e30ee",
+              "implementationId": "2fb8e2a0a8f97f28f73c805a090faff2"
+            }
+          ]
+        },
+        {
+          "tableName": "SystemFactoryRegistrations",
+          "kind": "SystemFactory",
+          "lookupMethodName": "TryGetSystemFactory",
+          "interfaceType": "GameCore.Gameplay.Traversal.ITraversalSystemFactory",
+          "entries": [
+            {
+              "stableName": "traversal.system.integrate",
+              "keyName": "IntegrateSystemKey",
+              "key": "0B710434FE439447697BF7843E390FDC",
+              "keyVersion": 1,
+              "ownerPackageId": "357c38d438b2887ded677f83251e30ee",
+              "implementationId": "0b710434fe439447697bf7843e390fdc"
+            },
+            {
+              "stableName": "traversal.system.sense",
+              "keyName": "SenseSystemKey",
+              "key": "4B816113044D99261E5061764CBC5C0B",
+              "keyVersion": 1,
+              "ownerPackageId": "357c38d438b2887ded677f83251e30ee",
+              "implementationId": "4b816113044d99261e5061764cbc5c0b"
+            },
+            {
+              "stableName": "traversal.system.output",
+              "keyName": "OutputSystemKey",
+              "key": "A7B1FB1A30A57005AB331F36B6F78AE9",
+              "keyVersion": 1,
+              "ownerPackageId": "357c38d438b2887ded677f83251e30ee",
+              "implementationId": "a7b1fb1a30a57005ab331f36b6f78ae9"
+            },
+            {
+              "stableName": "traversal.system.checkpoints",
+              "keyName": "CheckpointSystemKey",
+              "key": "A8D4EA54F8DAFB7237C88D74316D2478",
+              "keyVersion": 1,
+              "ownerPackageId": "357c38d438b2887ded677f83251e30ee",
+              "implementationId": "a8d4ea54f8dafb7237c88d74316d2478"
+            },
+            {
+              "stableName": "traversal.system.input",
+              "keyName": "InputSystemKey",
+              "key": "B893DD85CA45AEE477CF897C4154EE95",
+              "keyVersion": 1,
+              "ownerPackageId": "357c38d438b2887ded677f83251e30ee",
+              "implementationId": "b893dd85ca45aee477cf897c4154ee95"
+            }
+          ]
+        }
+      ],
+      "serializers": [
+        {
+          "stableName": "traversal.schema.course-config",
+          "schemaId": "a84cdef288cab0b5dc1283d7cd208e72",
+          "schemaVersion": 1,
+          "serializerKeyName": "ConfigSerializerKey",
+          "key": "A84CDEF288CAB0B5DC1283D7CD208E72",
+          "keyVersion": 1,
+          "required": true
+        }
+      ],
+      "closedGenericRoots": []
+    }
+  ]
+}
