@@ -159,6 +159,11 @@ namespace GameCore.Validation.ProbeHost
                     ProbeW6Gate.Run(report);
                     report.CompletePositive();
                 }
+                else if (arguments.Benchmark)
+                {
+                    ProbeBenchmark.Run(report);
+                    report.CompletePositive();
+                }
                 else
                 {
                     RunAotRootsProbe(report);
@@ -277,6 +282,11 @@ namespace GameCore.Validation.ProbeHost
             if (arguments.W6Gate)
             {
                 return Named("W6Gate", "W6-GATE");
+            }
+
+            if (arguments.Benchmark)
+            {
+                return Named("Benchmark", "GC-026");
             }
 
             return new ProbeReport(

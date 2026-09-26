@@ -29,6 +29,7 @@ namespace GameCore.Validation.ProbeHost
         private const string LifecycleStressArgumentName = "-probeLifecycleStress";
         private const string ReplayArgumentName = "-probeReplay";
         private const string W6GateArgumentName = "-probeW6Gate";
+        private const string BenchmarkArgumentName = "-probeBenchmark";
 
         private ProbeArguments(
             bool missingRegistration,
@@ -50,6 +51,7 @@ namespace GameCore.Validation.ProbeHost
             bool gc021,
             bool replay,
             bool w6Gate,
+            bool benchmark,
             string? resultPath)
         {
             MissingRegistration = missingRegistration;
@@ -71,6 +73,7 @@ namespace GameCore.Validation.ProbeHost
             Gc021 = gc021;
             Replay = replay;
             W6Gate = w6Gate;
+            Benchmark = benchmark;
             ResultPath = resultPath;
         }
 
@@ -216,6 +219,18 @@ namespace GameCore.Validation.ProbeHost
         /// </summary>
         public bool W6Gate { get; }
 
+        /// <summary>
+        /// Runs the GC-026 performance benchmark: the generated 1,000-scope/10,000-target fixture through the real
+        /// derivation and incremental engines for the declared update sizes, the whole-world mode switch, the spawn,
+        /// the reparent and the lifecycle cycles; two real owned worlds for the idle window, the unchanged-composition
+        /// window, the fenced apply pause of a real plan, one live spawn publication and the authority mutation
+        /// fixture; and the correctness gates (zero stable control-tree scans, zero string service lookups, no
+        /// duplicated authoritative state) asserted rather than merely measured, with the raw per-sample documents
+        /// written beside the probe result (P-007, P-022, P-023, P-026, P-034, P-043, P-048, P-052, P-060,
+        /// TEST-008, TEST-013, TEST-023).
+        /// </summary>
+        public bool Benchmark { get; }
+
         /// <summary>Destination path of the structured JSON result.</summary>
         public string? ResultPath { get; }
 
@@ -226,6 +241,7 @@ namespace GameCore.Validation.ProbeHost
             || LifecycleStress
             || Replay
             || W6Gate
+            || Benchmark
             || !string.IsNullOrEmpty(ResultPath);
 
         /// <summary>True when a result destination was supplied; without it the probe cannot record evidence.</summary>
@@ -241,17 +257,16 @@ namespace GameCore.Validation.ProbeHost
             bool narrative = false;
             bool cards = false;
             bool w4Profile = false;
-            bool gc013 = false;
-            bool lifecycleStress = false;
-            bool w4Gate = false;
+            bool replay = false;
+            bool w6Gate = false;
+            bool benchmark = false;
             bool faults = false;
             bool gc018 = false;
             bool gc019 = false;
             bool w5Gate = false;
             bool traversal = false;
             bool gc021 = false;
-            bool replay = false;
-            bool w6Gate = false;
+            bool lifecycleStress = false;
             string? resultPath = null;
             for (int i = 0; i < arguments.Length; i++)
             {
@@ -332,6 +347,10 @@ namespace GameCore.Validation.ProbeHost
                 {
                     w6Gate = true;
                 }
+                else if (argument == BenchmarkArgumentName)
+                {
+                    benchmark = true;
+                }
                 else if (argument == ResultArgumentName && i + 1 < arguments.Length)
                 {
                     resultPath = arguments[i + 1];
@@ -341,7 +360,7 @@ namespace GameCore.Validation.ProbeHost
             return new ProbeArguments(
                 missingRegistration, worldDispatch, w1Gate, w2Gate, w3Gate, narrative, cards, w4Profile, gc013,
                 lifecycleStress,
-                w4Gate, faults, gc018, gc019, w5Gate, traversal, gc021, replay, w6Gate, resultPath);
+                w4Gate, faults, gc018, gc019, w5Gate, traversal, gc021, replay, w6Gate, benchmark, resultPath);
         }
     }
 }

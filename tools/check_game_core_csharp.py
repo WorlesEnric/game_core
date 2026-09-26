@@ -76,6 +76,10 @@ TARGETS = [
     "dotnet/src/GameCore.Derivation.Fixtures",
     "dotnet/src/GameCore.Telemetry.ReleaseCheck",
     "dotnet/tools/GameCore.TelemetryProbe",
+    # GC-026: the benchmarks fixture package is engine-free like the replay package, so the same generator,
+    # statistics, sample records and writers compile in plain dotnet, in Unity EditMode and in the IL2CPP player.
+    "tests/GameCore.Benchmarks",
+    "dotnet/src/GameCore.Benchmarks",
 ]
 
 FORBIDDEN = {
@@ -275,6 +279,9 @@ def main() -> int:
         # GC-023: the replay/telemetry fixtures are Unity-free by design, so the same sources can be compiled by
         # dotnet/src/GameCore.Replay, by the Unity package com.gamecore.replay and by the IL2CPP probe host.
         ROOT / "tests/GameCore.Replay",
+        # GC-026: the benchmark fixture, statistics, sample records and writers are Unity-free by design, so the
+        # same sources are compiled by dotnet/src/GameCore.Benchmarks and by the player's probe host.
+        ROOT / "tests/GameCore.Benchmarks",
         ROOT / "dotnet/src",
     )
 

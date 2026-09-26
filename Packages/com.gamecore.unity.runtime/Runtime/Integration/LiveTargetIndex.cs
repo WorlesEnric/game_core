@@ -98,8 +98,14 @@ namespace GameCore.Unity.Runtime.Integration
 
             var live = new LiveTarget(target, scope, resolved.Recipe);
             byTarget.Add(target.Value, live);
-            ordered.Add(live);
-            ordered.Sort(CompareTargets);
+
+            // Insert in identity order instead of appending and re-sorting. The sort was quadratic over registrations
+            // (one full sort per target), which is invisible at the fixture scale the earlier gates used and dominant
+            // at the 10,000-target scale GC-026 measures; the resulting order is exactly what the sort produced,
+            // because `ordered` is sorted before the insert and the insert index is the first element that is not
+            // strictly smaller. P-008 requires the order to be a property of the identities, not of registration
+            // timing, and both forms satisfy that.
+            ordered.Insert(InsertionIndexOf(ordered, target), live);
             code = DiagnosticCode.None;
             detail = string.Empty;
             return true;
@@ -116,16 +122,39 @@ namespace GameCore.Unity.Runtime.Integration
                 return false;
             }
 
-            for (int i = 0; i < ordered.Count; i++)
+            int index = InsertionIndexOf(ordered, target);
+            if (index >= ordered.Count || !ordered[index].Target.Equals(target))
             {
-                if (ordered[i].Target.Equals(target))
+                return false;
+            }
+
+            ordered.RemoveAt(index);
+            return true;
+        }
+
+        /// <summary>
+        /// The index at which <paramref name="target"/> belongs in the identity-ordered list: a binary search for the
+        /// first element that is not strictly smaller, so equal identities are never reordered and a missing identity
+        /// yields the position it would occupy.
+        /// </summary>
+        private static int InsertionIndexOf(List<LiveTarget> ordered, TargetId target)
+        {
+            int low = 0;
+            int high = ordered.Count;
+            while (low < high)
+            {
+                int middle = low + ((high - low) >> 1);
+                if (ordered[middle].Target.Value.CompareTo(target.Value) < 0)
                 {
-                    ordered.RemoveAt(i);
-                    break;
+                    low = middle + 1;
+                }
+                else
+                {
+                    high = middle;
                 }
             }
 
-            return true;
+            return low;
         }
 
         public bool Contains(TargetId target) => byTarget.ContainsKey(target.Value);
@@ -190,9 +219,6 @@ namespace GameCore.Unity.Runtime.Integration
 
             return definitions;
         }
-
-        private static int CompareTargets(LiveTarget left, LiveTarget right)
-            => left.Target.Value.CompareTo(right.Target.Value);
 
         public override string ToString() => "liveTargets=" + ordered.Count.ToString(CultureInfo.InvariantCulture);
     }

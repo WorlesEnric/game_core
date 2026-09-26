@@ -59,6 +59,8 @@ REMOVED_TYPES = [
  'W6GateScenario', 'W6GateFamily', 'W6CompositionAudit', 'W6FamilyNarrativeHost', 'W6FamilyCardsHost',
  'W6FamilyTraversalHost', 'ProbeW6Gate', 'W6StageRuntime', 'IW6Family', 'W6RewardDestination',
  'W6FirstCommittedEventSource', 'LifecyclePlayModeMatrix',
+ 'ProbeBenchmark', 'BenchmarkScenario', 'BenchmarkLiveWorld', 'LiveWorldFailure', 'BenchmarkOptions',
+ 'BenchmarkStep', 'BenchmarkScenarioResult', 'BenchmarkLiveFamily',
 ]
 REMOVED_MEMBERS = [
  'RunReloadRoute', 'RunBothW6Gate', 'RunW6Gate', 'W6GateDigest', 'W6GateGeneratedDigest', 'W6GateFixtureDigest',
@@ -67,7 +69,8 @@ REMOVED_MEMBERS = [
  'StressDeclarations', 'StressInstance', 'StressMount', 'StressUnmount',
 ]
 REMOVED_MODES = [('Faults', 'faults'), ('W5Gate', 'w5Gate'), ('Gc021', 'gc021'),
-                 ('LifecycleStress', 'lifecycleStress'), ('Replay', 'replay'), ('W6Gate', 'w6Gate')]
+                 ('LifecycleStress', 'lifecycleStress'), ('Replay', 'replay'), ('W6Gate', 'w6Gate'),
+                 ('Benchmark', 'benchmark')]
 KEPT_MODES = [('MissingRegistration', 'missingRegistration'), ('WorldDispatch', 'worldDispatch'),
               ('W1Gate', 'w1Gate'), ('W2Gate', 'w2Gate'), ('W3Gate', 'w3Gate'), ('Narrative', 'narrative'),
               ('Cards', 'cards'), ('W4Profile', 'w4Profile'), ('Gc013', 'gc013'), ('W4Gate', 'w4Gate'),
@@ -121,10 +124,12 @@ for name, p in list(clone_asmdefs.items()) + list(package_asmdefs.items()):
             continue
         dangling.setdefault(os.path.basename(p), []).append(r)
 print('   assemblies available:', len(available), '| dangling references:', dangling or 'none')
-print('   GameCore.Replay reachable:', 'GameCore.Replay' in available)
+print('   GameCore.Replay reachable:', 'GameCore.Replay' in available,
+      '| GameCore.Benchmarks reachable:', 'GameCore.Benchmarks' in available)
 problems += list(dangling)
-if 'GameCore.Replay' in available:
-    problems.append('GameCore.Replay still reachable')
+for stripped in ('GameCore.Replay', 'GameCore.Benchmarks'):
+    if stripped in available:
+        problems.append(stripped + ' still reachable')
 
 print()
 print('== 3. ProbeArguments constructor call matches its parameter list ==')
@@ -194,10 +199,9 @@ for mode, low in KEPT_MODES:
     if not wired:
         problems.append('kept mode lost its wiring: ' + mode)
 
-print()
-print('== 6. manifest and lock ==')
 manifest = json.load(open(os.path.join(root, 'Packages/manifest.json')))
-stale = [k for k in manifest['dependencies'] if 'qualification' in k or 'replay' in k]
+stale = [k for k in manifest['dependencies']
+         if 'qualification' in k or 'replay' in k or 'benchmarks' in k]
 print('   qualification/replay dependencies:', stale or 'none')
 print('   testables:', manifest['testables'])
 print('   lock present:', os.path.exists(os.path.join(root, 'Packages/packages-lock.json')))
