@@ -36,6 +36,9 @@ destination that honours it. Nothing in this change set says otherwise.
 | `shared: propagate the outbox kind through the checkpoint codecs, fixtures and the hand-made document` | `Gc018CheckpointCodecs`, `Gc018Scenario`, the contract test codecs and fixtures. See §5.2 for why `Gc018Scenario.cs` is in this commit. |
 | `GC-021: the probe harness and the release-clone preparation for the new mode` | `tools/unity/run_gc021_probe.sh`, `tools/unity/prepare_gc017_release_project.py`. |
 | `GC-021: a rebuilt outbox reports what it reinstated` | `DurableOutbox.TryRestore` counters. See §5.1. |
+| `GC-021: fix the defects an adversarial review found (two of them release-blocking)` | Nine defects across `CheckpointRestorePlan`, `DeliveryKey`, `CheckpointRecords`, `DurableOutbox` and the reward bridge. See §5.4. |
+| `GC-021: order a reinstated outbox's open obligations canonically` | `DurableOutbox.AdoptOpenOrder` (P-008). |
+| `GC-021: the actual-world scenario, its EditMode suite and the probe mode` | `Gc021Scenario.cs`, `Gc021Family.cs`, `ProbeGc021.cs`, `Tests/Gc021/**`, `ProbeArguments.cs`, `ProbeRunner.cs`, the probe-host asmdef. See §5.5. |
 
 ## 3. Files created
 
@@ -105,11 +108,11 @@ glob, so the same assertions run as pure dotnet tests and as Unity EditMode test
 | **P-054** versions, field ids, canonical bytes, explicit nulls | `OutboxRecordValue.RecordVersion`, `CanonicalOutboxRowCodec`'s format header/field-count/width checks, `RewardPayloadCodec`'s version byte. | `ACanonicalRowFrameRoundTripsEveryField`, `ARowFrameWithATamperedByteOrAnotherVersionIsRefusedRatherThanDecoded`, `ARestoreRefusesARowFromAnUnknownRecordVersionOrOfAnUnknownKind`. |
 | **TEST-013** authority, requests, buffers | Delivery crosses the ordinary command port (`host.Submit`), never a second authority. | `WorldDeliveryOwner`'s header note and its use of `UnityWorldHost.Submit`; `CardRewardDestination.ApplyReward`. |
 | **TEST-014** committed events only, read-only inspection | `PollCommittedEvents` reads `WorldMessagePlane.ReadEvents`, so only committed events are consumed. | `AnUnavailableDestinationLeavesTheObligationOpenAndAnUnsupportedStateIsExplicit` (the destination's own committed result is what settles the obligation). |
-| **TEST-015** lifecycle and managed teardown | `WorldDeliveryOwner.Dispose` clears ports, the port index and the correlation map; the bridge disposes its owner. | not directly observed here — GC-022 owns lifecycle stress; recorded in §7. |
+| **TEST-015** lifecycle and managed teardown | `WorldDeliveryOwner.Dispose` clears ports, the port index and the correlation map; the bridge disposes its owner. | `gc021-obligation-survives-the-source-world-unload` disposes the source world and still delivers from the rebuilt outbox; lifecycle stress proper is GC-022's. |
 | **TEST-016** fault boundaries | The persistence boundaries are exactly the fault boundaries this task adds, and each is scripted. | all six `DeliveryCrashPoint` cases. |
 | **TEST-017** checkpoints and schema evolution | The outbox section is a versioned record kind with its own row version, captured, planned and reinstated. | `APlanCarriesTheOutboxRowsTheDocumentDeclares`; `ARestoredOutboxProjectsRowsThatSurviveAJournalRoundTrip`. |
 | **O-20** CaptureCheckpoint | The capture carries the world's outbox rows. | the plan/capture cases above. |
-| **O-21** RestoreCheckpoint | `IRestoreOutboxBuilder` reinstates and proves the section before exposure. | §7 item 5 records that the executor-level replay of this seam is GC-021's own scenario's job. |
+| **O-21** RestoreCheckpoint | `IRestoreOutboxBuilder` reinstates and proves the section before exposure. | `gc021-obligation-survives-the-source-world-unload` exercises the reinstate path end to end in a fresh session; the executor's own sequence is GC-018's and the W5 gate's. |
 
 ## 5. Defects found and fixed during this task
 
@@ -153,6 +156,50 @@ release-surface story is precisely "the injected fault is compiled out"
 
 `tools/check_release_fault_free.py --no-build` passes on this revision (§9). The `--no-build` mode does not inspect a
 compiled assembly, so the build host must run the full check.
+
+### 5.4 Nine defects found by an adversarial review of the whole change set
+
+An independent read-only review of the complete diff found nine defects. All nine were real and all nine are fixed
+(`GC-021: fix the defects an adversarial review found`). The two at the top would have stopped the branch from
+compiling or from satisfying its own headline acceptance, which is worth recording plainly:
+
+1. **`CheckpointRestorePlan.Plan` passed `rngStreams` twice** to `RestorePlan`'s 17-parameter constructor — a leftover
+   from this branch's own edit. That is CS1501 under `TreatWarningsAsErrors`, so the assembly could not compile and no
+   test, EditMode suite or probe could run at all. My own eye missed it; a compiler would not have.
+2. **`DeliveryObligation.IsOpen` was `State == Pending`**, which made a `Delivered` obligation — handed to the
+   destination, outcome unknown — *terminal*. That is precisely the state the at-least-once contract exists for. As
+   written, `TryBeginDelivery` answered `AlreadyTerminal` before its redelivery branch could run, the adapter's
+   `TryDeliver`/`TryAcknowledge` refused to settle it, `OpenObligations()` dropped it and a recovered outbox reported
+   `OpenCount == 0`, so `DeliveryOutcome.Acknowledged` was unreachable through the adapter. The scenario's headline
+   observation would have read red. Both `DeliveryObligation.IsOpen` and `OutboxRecordValue.IsOpen` now treat
+   `Pending` and `Delivered` as open and only `Acknowledged`/`Rejected`/`Compensated` as terminal.
+3. The restore counters (added in the immediately preceding commit) double counted on the *checkpoint* path, because
+   `ToRecords` emits an Obligation row *and* a Terminal row for one terminal obligation. Only Obligation rows count.
+4. `DeliveryCursor.TerminalTotal` counted acknowledgements while `RetainedTerminals` counted every retained terminal
+   record, so a destination that had both refused and acknowledged something underflowed `PrunedTerminals` (unsigned
+   subtraction), and the underflow was written into a cursor row and copied into `PrunedTerminalCount` on restore.
+5. `TryRestore` threw `ArgumentException` instead of returning false on a row with a default identity, because the
+   only `try`/`catch` wrapped the outbox construction — contradicting its own refusal contract.
+6. `TryRestore` accepted a Terminal row whose Obligation row the section did not carry, a shape
+   `CheckpointRestorePlanner.ValidateOutbox` refuses, so two implementations of one rule disagreed.
+7. `PrunedTerminalCount` was restored from only the first cursor row with a nonzero count, though it is the whole
+   outbox's total while the counts are per destination.
+8. `RewardBridgePassReport.EventsRead`/`RewardsRecognised` were documented as per-pass values but passed cumulative
+   totals, unlike their six siblings.
+9. (Recorded for completeness; fixed in the review commit) `CardId.None` does not exist — see §6 item 8.
+
+The reviewer also confirmed, and I re-checked independently: the key derivation, the persist-then-apply ordering at
+every transition, durability honesty, P-008 enumeration discipline, the row codec and file journal, the planner's
+outbox rules, every card and narrative API the reward package names, and that no test is a tautology. Two of the
+nine findings arrived independently from other workers before the review (the `CommitCount` gap, §5.1) — the same
+defect being found twice from different directions is the reason §9's delegated audits are listed as evidence.
+
+### 5.5 And `AdoptOpenOrder` rebuilt the order from the document
+
+Found while fixing §5.4 item 3: `AdoptOpenOrder` rebuilt the open-obligation list by *removing* terminal entries from
+the order the rows happened to arrive in. A document is a set of rows, so the order a dispatcher walks must be this
+outbox's own canonical order rather than whatever order a writer laid the section out in (P-008). It now rebuilds
+from the reinstated obligations sorted by canonical order.
 
 ## 6. Design decisions and doc ambiguities
 
@@ -204,10 +251,13 @@ Recorded because `09` invites the simplest reading consistent with `00`, and `00
    only a run proves; (b) the integration package's member references were checked line by line against the card and
    narrative APIs (§9) but a compiler settles it; (c) `WorldDeliveryOwner`'s poll depends on the world's committed-event
    reader reporting `CursorOutcome.Ok` at the boundary it is called at.
-2. **No Unity world ran.** `GC-021`'s acceptance says "deterministic crash-point tests (dotnet + Unity world)". The
-   dotnet half is this change set; the Unity-world half is the `gc021-*` probe/EditMode pair being authored in parallel
-   (§8), which reuses the same engine-free core through the same `Tests/Delivery` sources. **The Unity-world evidence
-   does not exist yet**, and no row is proposed as promoted on the strength of it.
+2. **No Unity world ran.** `GC-021`'s acceptance says "deterministic crash-point tests (dotnet + Unity world)". Both
+   halves now exist in source — the dotnet suite in `Tests/Delivery` and the world sequence in `Gc021Scenario` with
+   its EditMode suite and probe mode — but neither has been executed, so **no Unity-world evidence exists yet** and
+   no row is proposed as promoted on the strength of it. What was verified without a toolchain is structural: the
+   probe harness's observation-name list is byte-equal to `Gc021Scenario.ObservationNames`, every clause fragment the
+   harness greps for exists in a step detail, every referenced assembly resolves, and the release clone strips the
+   mode cleanly with no dangling reference.
 3. **`O-22 RecoverWorld` is still not composed** — GC-027 owns it over the restore path GC-018 and the W5 gate proved.
    `P-049`'s host-configured bounded retry attempts remain unproven too; this task adds no retry policy (a rejection
    is terminal and a compensation is explicit, precisely so nothing here becomes an implicit retry loop).
@@ -276,7 +326,18 @@ Also run, as scripts rather than by eye:
   (zero hits after the four comment-level hits it found were reworded);
 * an independent read-only reference-closure audit of all seven new delivery/integration files against the exact
   members of the card, narrative and kernel APIs they name, which found the one blocking defect in §5 (fixed) and no
-  warning-level finding.
+  warning-level finding;
+* an adversarial read-only review of the whole change set, which found the nine defects in §5.4;
+* a brace-aware arity audit of every `new HeaderRecordValue` (10 sites, all 40), `new CheckpointCounts` (8, all 12),
+  `CountsMatch` (8, all 12), `new CheckpointSerializerBindings` (1, 26), `new OutboxRecordValue` (17, all 27),
+  `new CommittedBoundarySnapshot` (2, all 34) and `new DeliveryKey` (5, all 3) call site in the repository — no
+  mismatch. A first brace-blind version of that audit reported two false 29/31-argument sites; they were commas
+  inside `new byte[] { … }` initialisers, and the brace-aware recount shows 27/27, which is why the audit script
+  tracks `{` as well as `(`;
+* running `tools/unity/prepare_gc017_release_project.py` for real (it is pure local file work), then asserting the
+  clone contains zero `Gc021` references, that both `replace_once`-edited files still have balanced braces, that the
+  qualification marker and the `Tests/` tree are gone, and that the integration package is still present because it
+  is production; the disposable clone was then deleted.
 
 None of that is a build, an import, a test or a player run.
 
