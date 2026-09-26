@@ -9,10 +9,10 @@
     "kernelAssemblies": 32,
     "familyAssemblies": 13,
     "generatedAssemblies": 0,
-    "qualificationAssemblies": 66,
+    "qualificationAssemblies": 70,
     "asmdefs": 78,
-    "projectFiles": 33,
-    "kernelSourcesScanned": 317,
+    "projectFiles": 37,
+    "kernelSourcesScanned": 324,
     "referenceAssertions": 218,
     "violations": 0,
     "kernelGenreTokens": 0,
@@ -106,6 +106,62 @@
       ]
     },
     {
+      "name": "GameCore.Benchmarks",
+      "path": "dotnet/src/GameCore.Benchmarks/GameCore.Benchmarks.csproj",
+      "kind": "csproj",
+      "classification": "qualification",
+      "packageRoot": "dotnet/src/GameCore.Benchmarks",
+      "noEngineReferences": false,
+      "references": [
+        "../GameCore.Contracts/GameCore.Contracts.csproj",
+        "../GameCore.Derivation/GameCore.Derivation.csproj",
+        "../GameCore.Derivation.Fixtures/GameCore.Derivation.Fixtures.csproj"
+      ]
+    },
+    {
+      "name": "GameCore.Benchmarks",
+      "path": "tests/GameCore.Benchmarks/Runtime/GameCore.Benchmarks.asmdef",
+      "kind": "asmdef",
+      "classification": "qualification",
+      "packageRoot": "tests/GameCore.Benchmarks",
+      "noEngineReferences": true,
+      "references": [
+        "GameCore.Contracts",
+        "GameCore.Derivation",
+        "GameCore.Derivation.Fixtures"
+      ]
+    },
+    {
+      "name": "GameCore.Benchmarks.Tests",
+      "path": "dotnet/tests/GameCore.Benchmarks.Tests/GameCore.Benchmarks.Tests.csproj",
+      "kind": "csproj",
+      "classification": "qualification",
+      "packageRoot": "dotnet/tests/GameCore.Benchmarks.Tests",
+      "noEngineReferences": false,
+      "references": [
+        "../../src/GameCore.Benchmarks/GameCore.Benchmarks.csproj",
+        "../../src/GameCore.Contracts/GameCore.Contracts.csproj",
+        "../../src/GameCore.Derivation/GameCore.Derivation.csproj",
+        "../../src/GameCore.Derivation.Fixtures/GameCore.Derivation.Fixtures.csproj"
+      ]
+    },
+    {
+      "name": "GameCore.Benchmarks.Tests",
+      "path": "tests/GameCore.Benchmarks/Tests/GameCore.Benchmarks.Tests.asmdef",
+      "kind": "asmdef",
+      "classification": "qualification",
+      "packageRoot": "tests/GameCore.Benchmarks",
+      "noEngineReferences": false,
+      "references": [
+        "GameCore.Benchmarks",
+        "GameCore.Contracts",
+        "GameCore.Derivation",
+        "GameCore.Derivation.Fixtures",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+      ]
+    },
+    {
       "name": "GameCore.Cards.Tests",
       "path": "unity/GameCore.Validation/Assets/GameCore.Validation/Tests/Cards/GameCore.Cards.Tests.asmdef",
       "kind": "asmdef",
@@ -125,6 +181,39 @@
         "GameCore.Unity.Runtime",
         "GameCore.Validation.Generated",
         "GameCore.Validation.GeneratedCards",
+        "GameCore.Validation.ProbeHost",
+        "Unity.Collections",
+        "Unity.Entities",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+      ]
+    },
+    {
+      "name": "GameCore.CatalogCoverage.Tests",
+      "path": "unity/GameCore.Validation/Assets/GameCore.Validation/Tests/CatalogCoverage/GameCore.CatalogCoverage.Tests.asmdef",
+      "kind": "asmdef",
+      "classification": "qualification",
+      "packageRoot": "unity/GameCore.Validation",
+      "noEngineReferences": false,
+      "references": [
+        "GameCore.Composition",
+        "GameCore.Contracts",
+        "GameCore.Derivation",
+        "GameCore.Gameplay.Cards",
+        "GameCore.Gameplay.Narrative",
+        "GameCore.Gameplay.Traversal",
+        "GameCore.Gameplay.Traversal.Fixtures",
+        "GameCore.Planning",
+        "GameCore.Rules.Cards",
+        "GameCore.Rules.Narrative",
+        "GameCore.Rules.Traversal",
+        "GameCore.Unity.Adapters",
+        "GameCore.Unity.Runtime",
+        "GameCore.Validation.Generated",
+        "GameCore.Validation.GeneratedCards",
+        "GameCore.Validation.GeneratedCheckpoint",
+        "GameCore.Validation.GeneratedTraversal",
+        "GameCore.Validation.Probe",
         "GameCore.Validation.ProbeHost",
         "Unity.Collections",
         "Unity.Entities",
@@ -758,6 +847,42 @@
       ]
     },
     {
+      "name": "GameCore.Gc027.Tests",
+      "path": "unity/GameCore.Validation/Assets/GameCore.Validation/Tests/Gc027/GameCore.Gc027.Tests.asmdef",
+      "kind": "asmdef",
+      "classification": "qualification",
+      "packageRoot": "unity/GameCore.Validation",
+      "noEngineReferences": false,
+      "references": [
+        "GameCore.Composition",
+        "GameCore.Contracts",
+        "GameCore.Derivation",
+        "GameCore.Derivation.Fixtures",
+        "GameCore.Execution",
+        "GameCore.Gameplay.Cards",
+        "GameCore.Gameplay.Cards.Fixtures",
+        "GameCore.Gameplay.Integration",
+        "GameCore.Gameplay.Narrative",
+        "GameCore.Gameplay.Narrative.Fixtures",
+        "GameCore.Planning",
+        "GameCore.Rules.Cards",
+        "GameCore.Rules.Narrative",
+        "GameCore.Unity.Adapters",
+        "GameCore.Unity.Fixtures",
+        "GameCore.Unity.Runtime",
+        "GameCore.Validation.FamilyEntries",
+        "GameCore.Validation.Generated",
+        "GameCore.Validation.GeneratedCards",
+        "GameCore.Validation.GeneratedCheckpoint",
+        "GameCore.Validation.Probe",
+        "GameCore.Validation.ProbeHost",
+        "Unity.Collections",
+        "Unity.Entities",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+      ]
+    },
+    {
       "name": "GameCore.Lifecycle.Tests",
       "path": "unity/GameCore.Validation/Assets/GameCore.Validation/Tests/Lifecycle/GameCore.Lifecycle.Tests.asmdef",
       "kind": "asmdef",
@@ -960,6 +1085,54 @@
       "references": [
         "../../src/GameCore.ProtocolFixtures/GameCore.ProtocolFixtures.csproj",
         "../../src/GameCore.ReferenceSeams/GameCore.ReferenceSeams.csproj"
+      ]
+    },
+    {
+      "name": "GameCore.Recovery.Fixtures",
+      "path": "dotnet/src/GameCore.Recovery.Fixtures/GameCore.Recovery.Fixtures.csproj",
+      "kind": "csproj",
+      "classification": "qualification",
+      "packageRoot": "dotnet/src/GameCore.Recovery.Fixtures",
+      "noEngineReferences": false,
+      "references": [
+        "../GameCore.Contracts/GameCore.Contracts.csproj"
+      ]
+    },
+    {
+      "name": "GameCore.Recovery.Fixtures",
+      "path": "tests/GameCore.Recovery/Runtime/GameCore.Recovery.Fixtures.asmdef",
+      "kind": "asmdef",
+      "classification": "qualification",
+      "packageRoot": "tests/GameCore.Recovery",
+      "noEngineReferences": true,
+      "references": []
+    },
+    {
+      "name": "GameCore.Recovery.Fixtures.Tests",
+      "path": "dotnet/tests/GameCore.Recovery.Fixtures.Tests/GameCore.Recovery.Fixtures.Tests.csproj",
+      "kind": "csproj",
+      "classification": "qualification",
+      "packageRoot": "dotnet/tests/GameCore.Recovery.Fixtures.Tests",
+      "noEngineReferences": false,
+      "references": [
+        "../../src/GameCore.Recovery.Fixtures/GameCore.Recovery.Fixtures.csproj",
+        "../../src/GameCore.Contracts/GameCore.Contracts.csproj",
+        "../../src/GameCore.Execution/GameCore.Execution.csproj"
+      ]
+    },
+    {
+      "name": "GameCore.Recovery.Fixtures.Tests",
+      "path": "tests/GameCore.Recovery/Tests/GameCore.Recovery.Fixtures.Tests.asmdef",
+      "kind": "asmdef",
+      "classification": "qualification",
+      "packageRoot": "tests/GameCore.Recovery",
+      "noEngineReferences": false,
+      "references": [
+        "GameCore.Recovery.Fixtures",
+        "GameCore.Contracts",
+        "GameCore.Unity.Runtime",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
       ]
     },
     {
@@ -1523,26 +1696,6 @@
     },
     {
       "name": "GameCore.Validation.Editor",
-      "path": "unity/GameCore.ReleaseCheck/Assets/GameCore.Validation/Editor/GameCore.Validation.Editor.asmdef",
-      "kind": "asmdef",
-      "classification": "qualification",
-      "packageRoot": "unity/GameCore.ReleaseCheck",
-      "noEngineReferences": false,
-      "references": [
-        "GameCore.Validation.Probe",
-        "GameCore.Validation.ProbeHost",
-        "Unity.Burst",
-        "GameCore.Contracts",
-        "GameCore.Content.Compiler",
-        "GameCore.Unity.Runtime",
-        "GameCore.Unity.Fixtures",
-        "GameCore.Unity.Adapters",
-        "Unity.Collections",
-        "Unity.Entities"
-      ]
-    },
-    {
-      "name": "GameCore.Validation.Editor",
       "path": "unity/GameCore.Validation/Assets/GameCore.Validation/Editor/GameCore.Validation.Editor.asmdef",
       "kind": "asmdef",
       "classification": "qualification",
@@ -1558,23 +1711,8 @@
         "GameCore.Unity.Fixtures",
         "GameCore.Unity.Adapters",
         "Unity.Collections",
-        "Unity.Entities"
-      ]
-    },
-    {
-      "name": "GameCore.Validation.FamilyEntries",
-      "path": "unity/GameCore.ReleaseCheck/Assets/GameCore.Validation/FamilyEntries/GameCore.Validation.FamilyEntries.asmdef",
-      "kind": "asmdef",
-      "classification": "qualification",
-      "packageRoot": "unity/GameCore.ReleaseCheck",
-      "noEngineReferences": false,
-      "references": [
-        "GameCore.Contracts",
-        "GameCore.Gameplay.Cards",
-        "GameCore.Gameplay.Narrative.Fixtures",
-        "GameCore.Rules.Cards",
-        "GameCore.Rules.Narrative",
-        "GameCore.Unity.Runtime"
+        "Unity.Entities",
+        "GameCore.Rules.Traversal"
       ]
     },
     {
@@ -1595,18 +1733,6 @@
     },
     {
       "name": "GameCore.Validation.Fixture",
-      "path": "unity/GameCore.ReleaseCheck/Assets/GameCore.Validation/Plugin/GameCore.Validation.Fixture.asmdef",
-      "kind": "asmdef",
-      "classification": "qualification",
-      "packageRoot": "unity/GameCore.ReleaseCheck",
-      "noEngineReferences": false,
-      "references": [
-        "GameCore.Validation.Probe",
-        "GameCore.Contracts"
-      ]
-    },
-    {
-      "name": "GameCore.Validation.Fixture",
       "path": "unity/GameCore.Validation/Assets/GameCore.Validation/Plugin/GameCore.Validation.Fixture.asmdef",
       "kind": "asmdef",
       "classification": "qualification",
@@ -1614,21 +1740,6 @@
       "noEngineReferences": false,
       "references": [
         "GameCore.Validation.Probe",
-        "GameCore.Contracts"
-      ]
-    },
-    {
-      "name": "GameCore.Validation.Generated",
-      "path": "unity/GameCore.ReleaseCheck/Assets/GameCore.Validation/Generated/GameCore.Validation.Generated.asmdef",
-      "kind": "asmdef",
-      "classification": "qualification",
-      "packageRoot": "unity/GameCore.ReleaseCheck",
-      "noEngineReferences": false,
-      "references": [
-        "GameCore.Validation.Probe",
-        "GameCore.Validation.Fixture",
-        "GameCore.Validation.FamilyEntries",
-        "Unity.Collections",
         "GameCore.Contracts"
       ]
     },
@@ -1649,20 +1760,6 @@
     },
     {
       "name": "GameCore.Validation.GeneratedCards",
-      "path": "unity/GameCore.ReleaseCheck/Assets/GameCore.Validation/GeneratedCards/GameCore.Validation.GeneratedCards.asmdef",
-      "kind": "asmdef",
-      "classification": "qualification",
-      "packageRoot": "unity/GameCore.ReleaseCheck",
-      "noEngineReferences": false,
-      "references": [
-        "GameCore.Contracts",
-        "GameCore.Rules.Cards",
-        "GameCore.Gameplay.Cards",
-        "GameCore.Validation.FamilyEntries"
-      ]
-    },
-    {
-      "name": "GameCore.Validation.GeneratedCards",
       "path": "unity/GameCore.Validation/Assets/GameCore.Validation/GeneratedCards/GameCore.Validation.GeneratedCards.asmdef",
       "kind": "asmdef",
       "classification": "qualification",
@@ -1677,17 +1774,6 @@
     },
     {
       "name": "GameCore.Validation.GeneratedCheckpoint",
-      "path": "unity/GameCore.ReleaseCheck/Assets/GameCore.Validation/GeneratedCheckpoint/GameCore.Validation.GeneratedCheckpoint.asmdef",
-      "kind": "asmdef",
-      "classification": "qualification",
-      "packageRoot": "unity/GameCore.ReleaseCheck",
-      "noEngineReferences": false,
-      "references": [
-        "GameCore.Contracts"
-      ]
-    },
-    {
-      "name": "GameCore.Validation.GeneratedCheckpoint",
       "path": "unity/GameCore.Validation/Assets/GameCore.Validation/GeneratedCheckpoint/GameCore.Validation.GeneratedCheckpoint.asmdef",
       "kind": "asmdef",
       "classification": "qualification",
@@ -1698,17 +1784,16 @@
       ]
     },
     {
-      "name": "GameCore.Validation.Probe",
-      "path": "unity/GameCore.ReleaseCheck/Assets/GameCore.Validation/Abstractions/GameCore.Validation.Probe.asmdef",
+      "name": "GameCore.Validation.GeneratedTraversal",
+      "path": "unity/GameCore.Validation/Assets/GameCore.Validation/GeneratedTraversal/GameCore.Validation.GeneratedTraversal.asmdef",
       "kind": "asmdef",
       "classification": "qualification",
-      "packageRoot": "unity/GameCore.ReleaseCheck",
+      "packageRoot": "unity/GameCore.Validation",
       "noEngineReferences": false,
       "references": [
-        "Unity.Burst",
-        "Unity.Collections",
-        "Unity.Entities",
-        "GameCore.Contracts"
+        "GameCore.Contracts",
+        "GameCore.Rules.Traversal",
+        "GameCore.Gameplay.Traversal"
       ]
     },
     {
@@ -1723,44 +1808,6 @@
         "Unity.Collections",
         "Unity.Entities",
         "GameCore.Contracts"
-      ]
-    },
-    {
-      "name": "GameCore.Validation.ProbeHost",
-      "path": "unity/GameCore.ReleaseCheck/Assets/GameCore.Validation/Runtime/GameCore.Validation.ProbeHost.asmdef",
-      "kind": "asmdef",
-      "classification": "qualification",
-      "packageRoot": "unity/GameCore.ReleaseCheck",
-      "noEngineReferences": false,
-      "references": [
-        "GameCore.Composition",
-        "GameCore.Contracts",
-        "GameCore.Derivation",
-        "GameCore.Derivation.Fixtures",
-        "GameCore.Gameplay.Cards",
-        "GameCore.Gameplay.Cards.Fixtures",
-        "GameCore.Gameplay.Integration",
-        "GameCore.Gameplay.Narrative",
-        "GameCore.Gameplay.Narrative.Fixtures",
-        "GameCore.Gameplay.Rewards",
-        "GameCore.Gameplay.Traversal",
-        "GameCore.Gameplay.Traversal.Fixtures",
-        "GameCore.Planning",
-        "GameCore.Rules.Cards",
-        "GameCore.Rules.Narrative",
-        "GameCore.Rules.Traversal",
-        "GameCore.Unity.Adapters",
-        "GameCore.Unity.Adapters.Fixtures",
-        "GameCore.Unity.Fixtures",
-        "GameCore.Unity.Runtime",
-        "GameCore.Validation.FamilyEntries",
-        "GameCore.Validation.Generated",
-        "GameCore.Validation.GeneratedCards",
-        "GameCore.Validation.GeneratedCheckpoint",
-        "GameCore.Validation.Probe",
-        "Unity.Burst",
-        "Unity.Collections",
-        "Unity.Entities"
       ]
     },
     {
@@ -1786,6 +1833,7 @@
         "GameCore.Planning",
         "GameCore.ReferenceConformance",
         "GameCore.Replay",
+        "GameCore.Benchmarks",
         "GameCore.Rules.Cards",
         "GameCore.Rules.Narrative",
         "GameCore.Rules.Traversal",
@@ -1797,6 +1845,7 @@
         "GameCore.Validation.Generated",
         "GameCore.Validation.GeneratedCards",
         "GameCore.Validation.GeneratedCheckpoint",
+        "GameCore.Validation.GeneratedTraversal",
         "GameCore.Validation.Probe",
         "Unity.Burst",
         "Unity.Collections",
@@ -2004,6 +2053,40 @@
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner"
       ]
+    },
+    {
+      "name": "GameCore.W7Gate.Tests",
+      "path": "unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W7Gate/GameCore.W7Gate.Tests.asmdef",
+      "kind": "asmdef",
+      "classification": "qualification",
+      "packageRoot": "unity/GameCore.Validation",
+      "noEngineReferences": false,
+      "references": [
+        "GameCore.Composition",
+        "GameCore.Contracts",
+        "GameCore.Derivation",
+        "GameCore.Gameplay.Cards",
+        "GameCore.Gameplay.Cards.Fixtures",
+        "GameCore.Gameplay.Narrative",
+        "GameCore.Gameplay.Narrative.Fixtures",
+        "GameCore.Gameplay.Traversal",
+        "GameCore.Gameplay.Traversal.Fixtures",
+        "GameCore.Planning",
+        "GameCore.Replay",
+        "GameCore.Rules.Cards",
+        "GameCore.Rules.Narrative",
+        "GameCore.Rules.Traversal",
+        "GameCore.Unity.Adapters",
+        "GameCore.Unity.Adapters.Fixtures",
+        "GameCore.Unity.Runtime",
+        "GameCore.Validation.Generated",
+        "GameCore.Validation.GeneratedCards",
+        "GameCore.Validation.ProbeHost",
+        "Unity.Collections",
+        "Unity.Entities",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+      ]
     }
   ],
   "violations": [],
@@ -2037,5 +2120,5 @@
     "RunnerRecipe",
     "CheckpointVolume"
   ],
-  "verdict": "kernel=32; family=13; generated=0; qualification=66; asmdefs=78; projectFiles=33; kernelSources=317; referenceAssertions=218; violations=0; kernelGenreTokens=0; missingPackages=0; familiesOnKernel=13/13; clean=true"
+  "verdict": "kernel=32; family=13; generated=0; qualification=70; asmdefs=78; projectFiles=37; kernelSources=324; referenceAssertions=218; violations=0; kernelGenreTokens=0; missingPackages=0; familiesOnKernel=13/13; clean=true"
 }

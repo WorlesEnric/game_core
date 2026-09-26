@@ -1,0 +1,122 @@
+{
+  "task": "W7-GATE",
+  "probe": "GameCore.Validation.ProbeHost.ProbeRunner",
+  "mode": "W7Gate",
+  "result": "Pass",
+  "exitCode": 0,
+  "declaredUnityVersion": "6000.0.75f1",
+  "unityVersion": "6000.0.75f1",
+  "declaredTarget": "StandaloneLinux64",
+  "platform": "LinuxPlayer",
+  "architecture": "X64",
+  "processorType": "12th Gen Intel(R) Core(TM) i7-12700KF",
+  "scriptingBackend": "IL2CPP",
+  "isIl2Cpp": true,
+  "is64BitProcess": true,
+  "managedStrippingLevel": "High",
+  "managedStrippingLevelSource": "declared: GameCore.Validation.Editor.BuildProbe sets and re-reads PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, ManagedStrippingLevel.High); a player cannot query the stripping level at runtime",
+  "burstCompilerEnabled": true,
+  "fixturePluginPreservation": "declared: Assets/link.xml preserves the GameCore.Validation.Fixture assembly (preserve=\"all\"), and the generated catalog holds a direct FixturePluginFactory reference, so the plugin is linked into the player while nothing instantiates it at startup",
+  "catalogGenerator": "GameCore.Content.Compiler (GC-003)",
+  "catalogGeneratedFile": "ProbeCatalog.g.cs",
+  "catalogFileHash": "03bdcd23fd8ec0515d93d7c54d7f7c695f3860a850a7280b82316aaacd14c5c1",
+  "catalogFingerprint": "02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff",
+  "catalogDescriptionFormat": "gamecore.catalog-description/1",
+  "catalogProtocolVersion": "1.0",
+  "catalogSupportedFeatureCount": 1,
+  "catalogFileHashAlgorithm": "SHA-256",
+  "catalogFileHashScope": "SHA-256 over the UTF-8 bytes, with LF line endings, of the file prefix that ends immediately before the eight-space-indented CatalogFileHash declaration; that prefix ends with the newline that terminates the previous line, and the declaration itself, its value and the rest of the file are excluded",
+  "failureReason": "",
+  "probes": [
+    {
+      "name": "w7/w7-catalog-coverage-repasses-on-the-merged-kernel",
+      "status": "Pass",
+      "detail": "coverage=digest=77bc74196ec96b076bcc63b007cc0f57f5322121bad69f36c0e280d0576fbbb2; observations=13; failed=0; label=catalogCoverage; observations=13; failed=0"
+    },
+    {
+      "name": "w7/w7-incremental-derivation-matches-a-clean-derivation",
+      "status": "Pass",
+      "detail": "scale=1000scopes/10000targets; seeds=3; edits=install-mount,reparent,spawn-1000,retire-1000; seed=20260926 edit=install-mount resultHash=b54c2e27911f13cf98fa70019cc56b81b3564d185bfaf75b1d3fe90b219e06c4 targets=10000; seed=20260926 edit=reparent resultHash=cc42d6a493e22b56b31880155f78cd3a8b1df4baee23495ec86eedab46818141 targets=10000; seed=20260926 edit=spawn-1000 resultHash=623c99f339f83883b2fc2be7bd3a2f947fc3c9c972f503e21f06e8b04cb6c8e4 targets=10000; seed=20260926 edit=retire-1000 resultHash=ceadec29d0f725c7224d41479dbc531fe9fa280eeafbd7a3164e0deeb2793885 targets=10000; seed=20260927 edit=install-mount resultHash=34d484e577dc174412a897e792945d11e9da9eb88c5246a89574bdcdd91b5087 targets=10000; seed=20260927 edit=reparent resultHash=8038a580e863acf24d70e225ed0541d77ccb8922015358e91b6cda67dc92b687 targets=10000; seed=20260927 edit=spawn-1000 resultHash=834f3c6037169be1c5b7b37f85c156254d3a14494873f33f9816c1a7a25f88a2 targets=10000; seed=20260927 edit=retire-1000 resultHash=ee1ed0fee6fc1cedae347409c2cd24d307a73d288e0712aff2f6423928148cbe targets=10000; seed=20260957 edit=install-mount resultHash=a135f643b69d9b2d3cced8662df6e3af6784d62a84ef9809b54c5d7d573a35d8 targets=10000; seed=20260957 edit=reparent resultHash=23fabcdcc32178d0b7a28ae358ba63b44105635f7bb7e24357c05964417fffd9 targets=10000; seed=20260957 edit=spawn-1000 resultHash=37ea69f307ed24d8ba36e77c045656c9371db6a36e47d4eed3e10504e7a0be71 targets=10000; seed=20260957 edit=retire-1000 resultHash=64fdf848e9f560accba222bc1abd72d03b775b2a4a94bd0fa365eee632191464 targets=10000"
+    },
+    {
+      "name": "w7/w7-probe-mode-dispatch-keeps-every-mode",
+      "status": "Pass",
+      "detail": "modes=25; missing=<none>; ambiguous=<none>; resultPathParsed=True"
+    },
+    {
+      "name": "w7/w7-declared-budget-rows-are-the-recorded-ten",
+      "status": "Pass",
+      "detail": "rows=10; declared=10; reportOnly=2; ids=budget.execution-p95, budget.execution-managed-bytes, budget.unchanged-control-nodes, budget.unchanged-service-lookups, budget.apply-pause-p95, budget.whole-world-preparation-p95, budget.spawn-baseline, budget.lifecycle-plateau, budget.idle-steps, budget.idle-stage-updates; problems=<none>"
+    },
+    {
+      "name": "narrative/w7-recovery-sequence-repasses",
+      "status": "Pass",
+      "detail": "gc027=digest=2644b55aee8bedbbae60e04627e4f6b16d114ac4f418bed4a1e5960e2bdf80f9; label=narrative; steps=17; failed=0; expected=17; recorded=17; faultPoints=postwrite-apply,restart; recoveryDigest=2644b55aee8bedbbae60e04627e4f6b16d114ac4f418bed4a1e5960e2bdf80f9"
+    },
+    {
+      "name": "narrative/w7-recovery-postwrite-apply-fault",
+      "status": "Pass",
+      "detail": "outcome=Rejected/ApplyFault; stagingBuilt=True; stagingLifecycle=Disposed; stagingDisposed=True; armedOnStaging=True; registry=2->2; source=Faulted; permittedResult=the staged world was destroyed and never exposed, and the source is untouched (P-031, P-049)"
+    },
+    {
+      "name": "narrative/w7-recovery-restart-without-in-process-state",
+      "status": "Pass",
+      "detail": "previousSession=09716070107562600000000000000001; restartedSession=09716070107562600000000000000006; outcome=Published/None; document=a83165963bbcd113e04a9ce34e91f9dff864c47583756404e78d9ed4fbd014a1; owedObligations=1; destinationAttempts=0; registry=2->3; transcript=transcript(lines=5/64,faults=0,loss=UncommittedSinceCheckpoint,digest=560e98e4dfe665dcf05213fd9b5ba8d5d2c6f273019e8c7d8bb93fc42b811860); restartPoint=restart store=memory://gc027/narrative/restart present=1 document=a83165963bbcd113e04a9ce34e91f9dff864c47583756404e78d9ed4fbd014a1 was=09716070107562600000000000000001 now=09716070107562600000000000000006 code=None; permittedResult=a restart builds a new session from verified bytes only; the previous session is not contacted and no obligation is delivered (P-049, P-053)"
+    },
+    {
+      "name": "cards/w7-recovery-sequence-repasses",
+      "status": "Pass",
+      "detail": "gc027=digest=3c5923b2559b869767c49906e181c4e5efd0f351816926c4095e0aa36ff9074c; label=cards; steps=17; failed=0; expected=17; recorded=17; faultPoints=postwrite-apply,restart; recoveryDigest=3c5923b2559b869767c49906e181c4e5efd0f351816926c4095e0aa36ff9074c"
+    },
+    {
+      "name": "cards/w7-recovery-postwrite-apply-fault",
+      "status": "Pass",
+      "detail": "outcome=Rejected/ApplyFault; stagingBuilt=True; stagingLifecycle=Disposed; stagingDisposed=True; armedOnStaging=True; registry=1->1; source=Faulted; permittedResult=the staged world was destroyed and never exposed, and the source is untouched (P-031, P-049)"
+    },
+    {
+      "name": "cards/w7-recovery-restart-without-in-process-state",
+      "status": "Pass",
+      "detail": "previousSession=04716070107562600000000000000001; restartedSession=04716070107562600000000000000006; outcome=Published/None; document=4b5c8c941a8fac028a0fbcbff80bba2f637c430664d61f18210db937e977c869; owedObligations=1; destinationAttempts=0; registry=1->2; transcript=transcript(lines=5/64,faults=0,loss=UncommittedSinceCheckpoint,digest=790d44dfb8e7ecb31040eaaaf9dda8e46e0e6ed806d9439b5d2ec3752a2b08ac); restartPoint=restart store=memory://gc027/cards/restart present=1 document=4b5c8c941a8fac028a0fbcbff80bba2f637c430664d61f18210db937e977c869 was=04716070107562600000000000000001 now=04716070107562600000000000000006 code=None; permittedResult=a restart builds a new session from verified bytes only; the previous session is not contacted and no obligation is delivered (P-049, P-053)"
+    },
+    {
+      "name": "traversal/w7-recovery-sequence-repasses",
+      "status": "Pass",
+      "detail": "gc027=digest=30ff0f929889137733dea7bc047692f35488bde6c4d5af093b50af726784cefe; label=traversal; steps=17; failed=0; expected=17; recorded=17; faultPoints=postwrite-apply,restart; recoveryDigest=30ff0f929889137733dea7bc047692f35488bde6c4d5af093b50af726784cefe"
+    },
+    {
+      "name": "traversal/w7-recovery-postwrite-apply-fault",
+      "status": "Pass",
+      "detail": "outcome=Rejected/ApplyFault; stagingBuilt=True; stagingLifecycle=Disposed; stagingDisposed=True; armedOnStaging=True; registry=1->1; source=Faulted; permittedResult=the staged world was destroyed and never exposed, and the source is untouched (P-031, P-049)"
+    },
+    {
+      "name": "traversal/w7-recovery-restart-without-in-process-state",
+      "status": "Pass",
+      "detail": "previousSession=13627361161700120000000000000001; restartedSession=13627361161700120000000000000006; outcome=Published/None; document=5adec9d556cf809c27c6791e096a2460223343270c01ce2e5e7fe0b4bed03de5; owedObligations=0; destinationAttempts=-1; registry=1->2; transcript=transcript(lines=5/64,faults=0,loss=UncommittedSinceCheckpoint,digest=1939a85ae76dc67274c03dd5fbaaa12d2858affa98734297342e6a40ae6b936b); restartPoint=restart store=memory://gc027/traversal/restart present=1 document=5adec9d556cf809c27c6791e096a2460223343270c01ce2e5e7fe0b4bed03de5 was=13627361161700120000000000000001 now=13627361161700120000000000000006 code=None; permittedResult=a restart builds a new session from verified bytes only; the previous session is not contacted and no obligation is delivered (P-049, P-053)"
+    },
+    {
+      "name": "w7/w7-conformance-tables-repass",
+      "status": "Pass",
+      "detail": "declaredTables=4; ran=3/3; complete=true; cards: digest=a952a132fae2a163218ecf7cf55670ae6ee6fc956b391055e51e70899a7ddb0f; facts=798; steps=43; failed=0; recordedGaps=0; cards: passed 27 row(s) over 174 observation(s); digest=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855; narrative: digest=eac21cf949dbb4b90c175e119c309dad68ca9c9119ee25a31d02e13d80a5f8eb; facts=366; steps=28; failed=0; recordedGaps=0; narrative: passed 16 row(s) over 114 observation(s); digest=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855; traversal: digest=28171e16b9b61284bc76e1e2ae2e96525be6ce6d7cfa198ce2829ef7f0c53987; facts=452; steps=34; failed=0; recordedGaps=0; traversal: passed 20 row(s) over 110 observation(s); digest=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "w7/w7-conformance-cross-template-flow-repasses",
+      "status": "Pass",
+      "detail": "crossTemplateFlow=pass; cross: digest=df9023f2d89d65ce737961d8e8038ded29da40f6531da8434b4dcd1386180126; facts=410; steps=17; failed=0; recordedGaps=0; cross: passed 9 row(s) over 102 observation(s); digest=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855; steps=17; facts=410; digest=df9023f2d89d65ce737961d8e8038ded29da40f6531da8434b4dcd1386180126"
+    },
+    {
+      "name": "w7/w7-conformance-genre-audit-is-clean",
+      "status": "Pass",
+      "detail": "cross-composition-audit: clean; findings=<none>; owner=cross; declarations=13; walked=117; declaredStages=10; descriptor=Built; descriptorStages=10; descriptorSlots=26; assemblies=3; narrativeAdapters=False; cardsAdapters=False; kernelAssemblies=8; kernelReferences=46; forbiddenReferences=0; walkedEntries=184; walkedEntries=184; findings=<none>"
+    },
+    {
+      "name": "w7/w7-gate-digest",
+      "status": "Pass",
+      "detail": "observations=16; digest=f7853e42502c146fadb44e15e612a7ee67fd2605b6d2cff1951591567c719102; expected=f7853e42502c146fadb44e15e612a7ee67fd2605b6d2cff1951591567c719102; problems=<none>"
+    },
+    {
+      "name": "w7-frozen-digest-agrees-with-the-table",
+      "status": "Pass",
+      "detail": "digest=f7853e42502c146fadb44e15e612a7ee67fd2605b6d2cff1951591567c719102; expectedDigest=f7853e42502c146fadb44e15e612a7ee67fd2605b6d2cff1951591567c719102; observations=16; expectedObservations=16; digest=fe48ca5e14baa74fd20e430212ac791d055971480831e987c1cc165182b2d209; label=w7; steps=17; failed=0"
+    }
+  ]
+}

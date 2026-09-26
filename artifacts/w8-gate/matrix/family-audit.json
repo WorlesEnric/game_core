@@ -1,0 +1,72 @@
+{
+  "artifact": "gamecore.conformance.family-audit/1",
+  "protocolVersion": "1.0",
+  "generator": "tools/conformance/build_compatibility.py",
+  "assemblyAudit": {
+    "document": "artifacts/gc-024/genre-audit.json",
+    "present": true,
+    "clean": true
+  },
+  "families": [
+    {
+      "family": "narrative",
+      "assemblyAuditClean": true,
+      "familyAssemblies": [
+        "GameCore.Gameplay.Narrative",
+        "GameCore.Gameplay.Narrative.Fixtures",
+        "GameCore.Rules.Narrative",
+        "GameCore.Rules.Narrative.Tests"
+      ],
+      "recordedTeardownVerdicts": [
+        "Pass",
+        "Pass",
+        "Pass",
+        "Pass",
+        "Pass",
+        "Pass",
+        "Pass",
+        "Pass",
+        "Pass"
+      ],
+      "verdict": "Pass"
+    },
+    {
+      "family": "cards",
+      "assemblyAuditClean": true,
+      "familyAssemblies": [
+        "GameCore.Gameplay.Cards",
+        "GameCore.Gameplay.Cards.Fixtures",
+        "GameCore.Rules.Cards",
+        "GameCore.Rules.Cards.Tests"
+      ],
+      "recordedTeardownVerdicts": [
+        "Pass",
+        "Pass",
+        "Pass",
+        "Pass",
+        "Pass",
+        "Pass",
+        "Pass",
+        "Pass",
+        "Pass"
+      ],
+      "verdict": "Pass"
+    },
+    {
+      "family": "traversal",
+      "assemblyAuditClean": true,
+      "familyAssemblies": [
+        "GameCore.Gameplay.Traversal",
+        "GameCore.Gameplay.Traversal.Fixtures",
+        "GameCore.Rules.Traversal",
+        "GameCore.Rules.Traversal.Tests"
+      ],
+      "recordedTeardownVerdicts": [
+        "Pass",
+        "Pass",
+        "Pass"
+      ],
+      "verdict": "Pass"
+    }
+  ]
+}

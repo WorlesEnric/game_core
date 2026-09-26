@@ -1,8 +1,8 @@
 {
   "name": "com.gamecore.planning",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "displayName": "GameCore Planning",
-  "description": "Validated ChangePlan, ownership/partition validation and semantic stage DAG compilation (GC-007, GC-008, GC-009).",
+  "description": "Validated ChangePlan, ownership/partition validation and semantic stage DAG compilation (GC-007, GC-008, GC-009). Engine-free; its own dependency is com.gamecore.contracts only.",
   "unity": "6000.0",
   "keywords": [
     "gamecore",
@@ -11,6 +11,6 @@
     "scheduling"
   ],
   "dependencies": {
-    "com.gamecore.contracts": "0.1.0"
+    "com.gamecore.contracts": "1.0.0"
   }
 }

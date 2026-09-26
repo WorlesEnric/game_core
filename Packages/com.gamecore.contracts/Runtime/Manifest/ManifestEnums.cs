@@ -278,7 +278,7 @@ namespace GameCore.Contracts
     }
 
     /// <summary>
-    /// Stable diagnostic codes required by 00 s9 plus the retention code required by P-007, where bounded
+    /// Stable diagnostic codes required by P-052 (00 s7) plus the retention code required by P-007, where
     /// snapshot retention rejects a new lease with SnapshotBackpressure instead of overwriting leased memory.
     /// Literal names match the normative text exactly; <see cref="DiagnosticCodeText"/> maps each value to
     /// that literal string.
@@ -307,5 +307,12 @@ namespace GameCore.Contracts
         TeardownBlocked = 19,
         CursorExpired = 20,
         SnapshotBackpressure = 21,
+
+        /// <summary>
+        /// An existing <c>Active</c> provider failed unexpectedly and its safe dependency-closure deactivation
+        /// could not publish (P-012), so the world stops admission and faults. Added by GC-028: 00 requires that
+        /// failure to be reportable and the 00 s9 list predates the sentence that needs it.
+        /// </summary>
+        ProviderFailed = 22,
     }
 }

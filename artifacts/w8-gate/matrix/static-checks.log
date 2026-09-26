@@ -1,0 +1,362 @@
+
+== csharp-shape ==
+checked 627 C# file(s)
+ok
+
+== contract-surface-parity ==
+tests/GameCore.ReferenceSeams/api/GameCore.Contracts.api.txt: 221 types (class 89, enum 41, interface 23, struct 68), 41 enums checked against Packages/com.gamecore.contracts/Runtime
+5 addition(s) beyond the frozen snapshot (allowed, must be listed in HANDOFF):
+  + enum EnvelopeError adds DuplicateField = 17
+  + enum EnvelopeError adds MissingRequiredField = 16
+  + enum FactoryKind adds Handler = 10
+  + enum StateDispositionKind adds Reset = 5
+  + enum StateDispositionKind adds RetainDormant = 4
+every snapshotted enum and enum value exists in the production sources with the same numeric value
+
+== catalog-emitter-mirror ==
+ok: unity/GameCore.Validation/Catalogs/ProbeCatalog.catalog.json -> ProbeCatalog.g.cs + ProbeCatalogCoverage.g.cs (25321 bytes, 3 groups, 1 schemas, 3 coverage entries, CatalogFileHash 03bdcd23fd8ec0515d93d7c54d7f7c695f3860a850a7280b82316aaacd14c5c1)
+ok: unity/GameCore.Validation/Catalogs/CardCatalog.catalog.json -> CardCatalog.g.cs + CardCatalogCoverage.g.cs (27893 bytes, 5 groups, 1 schemas, 8 coverage entries, CatalogFileHash 75a60968c3c59ac69e0c2b6b806c792f48e5b243a526b1ae29c7615e8c1a2e9e)
+ok: unity/GameCore.Validation/Catalogs/CheckpointCatalog.catalog.json -> CheckpointCatalog.g.cs + CheckpointCatalogCoverage.g.cs (308815 bytes, 0 groups, 13 schemas, 0 coverage entries, CatalogFileHash 08d43a031cd41a968daf1ea86633fc826956ae64a8a717e6d999d77e5cd5d2d9)
+ok: unity/GameCore.Validation/Catalogs/TraversalCatalog.catalog.json -> TraversalCatalog.g.cs + TraversalCatalogCoverage.g.cs (26084 bytes, 4 groups, 1 schemas, 8 coverage entries, CatalogFileHash 3332a5e54f1e5beea869200672f423b0089c6ec2fb4991334090ab797c0a1f8c)
+every committed catalog and coverage file reproduces byte for byte from its committed description
+
+== catalog-byte-identity ==
+unity/GameCore.Validation/Assets/GameCore.Validation/Generated/ProbeCatalog.g.cs: 3 groups, 4 factories, 1 schemas, 1 features, 25321 bytes
+file hash and catalog fingerprint both recompute correctly from the generated tables
+
+== reachability-manifest ==
+catalog reachability manifest reproduces from the committed descriptions: 4 catalog(s)
+
+== baked-coverage-artifact ==
+baked catalog-coverage artifact reproduces from unity/GameCore.Validation/Catalogs/CatalogCoverageAuthoring.json
+
+== link-xml ==
+GameCore.Validation.Fixture: preserve=all types=0
+GameCore.Unity.Fixtures: preserve=all types=0
+GameCore.Unity.Adapters: preserve=None types=6
+GameCore.Unity.Runtime: preserve=None types=1
+/home/worlesenric/wkspace/gc-wt/w8-gate/unity/GameCore.Validation/Assets/link.xml preserves only the permitted fixture and PlayerLoop roots (sha256 dc9cc7ef1ad5a4e2d342d0cb132f61143f2e9fcd14222312804522e04221e9ba)
+
+== budget-record ==
+PASS  row-ids: parsed 10 row id(s) from tests/GameCore.Benchmarks/Runtime/PerformanceBudgets.cs: budget.execution-p95, budget.execution-managed-bytes, budget.unchanged-control-nodes, budget.unchanged-service-lookups, budget.apply-pause-p95, budget.whole-world-preparation-p95, budget.spawn-baseline, budget.lifecycle-plateau, budget.idle-steps, budget.idle-stage-updates
+PASS  record-sections: 10 '## budget.*' section(s) in artifacts/performance/BUDGET_DECISIONS.md; every declared row id has one
+PASS  section-fields: 10 section(s): each has '- Decision:' and '- Evidence:'
+PASS  evidence-paths: 20 Evidence path(s) checked under /home/worlesenric/wkspace/gc-wt/w8-gate; all exist
+PASS  deferral: artifacts/performance/BUDGET_DECISIONS.md:3: Status: **TEST-023 timing qualification Deferred by project-owner decision (2026-09-26); not measured at full duration**. Functional correctness gates passed in a final single short diagnostic: 1 s warmup, 2 s steady windows, five change repetitions, 11 workloads and 19/19 gates. A default full-catalogue attempt was stopped at update-size-1 repetition 629/1000 after 916.7 s because the remaining broad candidate fan-out still costs ~0.87 s/change. No full-duration p95/p99 claim follows from the diagnostic.
+PASS  summary: Verdict: **FAIL** — 1 budget row(s) MissedTarget.; workload id(s) idle-command-world, steady-unchanged-10000-steps, steady-execution-10000-targets, update-size-1, update-size-100, update-size-10000, whole-world-mode-switch, spawn-1000, reparent-100, inactive-target-comparison, lifecycle-cycles-1000; verdict token(s) NotMeasured, MissedTarget, WithinTarget; diagnostic: Status: **TEST-023 timing qualification Deferred by project-owner decision (2026-09-26); not measured at full duration.** This one-run 1 s warmup/2 s steady-window/five-repetition diagnostic asserts 19/19 correctness gates but does not establish full-duration p95/p99 or the 1,000-cycle plateau. Its one provisional whole-world preparation miss remains open; no target was revised. Before the kernel fixes, size-1 prepare took ~12 s; after them, 898936 us p95 in this diagnostic. See `artifacts/gc-026/profile/round2-phases.txt` for measured candidate, explanation, sorting and delta costs. The full catalogue was intentionally stopped at repetition 629/1000 on owner direction; it is not a passing run.
+PASS  deferred-consistency: the record is deferred, so no budget section claims 'Measured (full' or '- Decision: accept'
+
+ROWS: 10 declared in tests/GameCore.Benchmarks/Runtime/PerformanceBudgets.cs, 10 checked in artifacts/performance/BUDGET_DECISIONS.md
+DEFERRAL: Status: **TEST-023 timing qualification Deferred by project-owner decision (2026-09-26); not measured at full duration**. Functional correctness gates passed in a final single short diagnostic: 1 s warmup, 2 s steady windows, five change repetitions, 11 workloads and 19/19 gates. A default full-catalogue attempt was stopped at update-size-1 repetition 629/1000 after 916.7 s because the remaining broad candidate fan-out still costs ~0.87 s/change. No full-duration p95/p99 claim follows from the diagnostic.
+VERDICT: pass
+
+== gate-sources ==
+== balance (.cs; comments and literals removed) ==
+   W6GateScenario.cs                  balanced
+   W6GateFamily.cs                    balanced
+   W6CompositionAudit.cs              balanced
+   W6FamilyNarrativeHost.cs           balanced
+   W6FamilyCardsHost.cs               balanced
+   W6FamilyTraversalHost.cs           balanced
+   ProbeW6Gate.cs                     balanced
+   W6GateIntegrationTests.cs          balanced
+   ProbeArguments.cs                  balanced
+   ProbeRunner.cs                     balanced
+   Gc020TraversalHost.cs              balanced
+   LifecyclePlayModeMatrix.cs         balanced
+
+== member resolution (Type.Member against the declaring sources) ==
+   unresolved: none
+== using coverage (a used type must be reachable through the file's own usings) ==
+   unreachable: none
+== ambiguity (a used name declared in two imported namespaces) ==
+   ambiguous: none
+== the Parse call site's own locals ==
+   declared locals: 26 | problems: none
+
+== frozen observation tables, digest literals and probe steps ==
+   cards fixture        9c3d3b5d2f8e959920aa9678e65f56658cbe4a513fcd2895cd458fbda4f9ea14  harness=True host=True probe=True suite=True
+   cards generated      894a975e4a5eb98d733ec213778ec275e4abe02cb4028271857bd4fa68d6fe80  harness=True host=True probe=True suite=True
+   narrative fixture    ab198371e8d276dcc2833e88e64e278abde57274ea3c68e2497fa2b75f97fa73  harness=True host=True probe=True suite=True
+   narrative generated  4235cea3c22cf93e38307000fcc863edd4ada3e2fc4a3b475ca719765dc17279  harness=True host=True probe=True suite=True
+   traversal            ca29b5f7099f9fbc4abeb7031c7b1e35ba39ec1ad39db70dd0f037fa8d45675e  harness=True host=True probe=True suite=True
+   observation counts: narrative 6, cards 7, traversal 9
+   harness steps: 41 | missing: none | extra: none
+   w7 table             f7853e42502c146fadb44e15e612a7ee67fd2605b6d2cff1951591567c719102  harness=True probe=True suite=True
+   w7 observation counts: process 4, per family 3, families ['narrative', 'cards', 'traversal'], conformance 3
+   w7 harness steps: 18 | missing: none | extra: none
+VERDICT: ok
+
+== release-clone-self-test ==
+clone files inspected: 4 (the clone's own sources; Artifacts~, Builds, Library, Logs, Temp, UserSettings, bin, obj, obj~ pruned)
+
+== 1. no reference to a removed type or member ==
+   clean
+
+== 2. every asmdef reference resolves ==
+   assemblies available: 38 | dangling references: none
+   stripped assemblies reachable: {'GameCore.Replay': False, 'GameCore.Benchmarks': False, 'GameCore.ReferenceConformance': False}
+
+== 3. ProbeArguments constructor call matches its parameter list ==
+   parameters: 16 | arguments: 16 | agreement: True
+
+== 4. every .cs balances ==
+   2 C# files | unbalanced: none
+
+== 5. kept modes wired, removed modes gone ==
+   removed Faults           absent everywhere: True
+   removed W5Gate           absent everywhere: True
+   removed Gc021            absent everywhere: True
+   removed LifecycleStress  absent everywhere: True
+   removed Replay           absent everywhere: True
+   removed W6Gate           absent everywhere: True
+   removed Recovery         absent everywhere: True
+   removed Benchmark        absent everywhere: True
+   removed W7Gate           absent everywhere: True
+   removed Conformance      absent everywhere: True
+   kept    MissingRegistration wired: True
+   kept    WorldDispatch    wired: True
+   kept    W1Gate           wired: True
+   kept    W2Gate           wired: True
+   kept    W3Gate           wired: True
+   kept    Narrative        wired: True
+   kept    Cards            wired: True
+   kept    W4Profile        wired: True
+   kept    Gc013            wired: True
+   kept    W4Gate           wired: True
+   kept    Gc018            wired: True
+   kept    Gc019            wired: True
+   kept    Traversal        wired: True
+   kept    CatalogCoverage  wired: True
+   kept    RecoverySmoke    wired: True
+   qualification-only dependencies: none
+   testables: []
+   lock present: True (the preparer deletes it; Unity regenerates it on import - both states are allowed)
+   lock entries: 3 | qualification-only: none | undeclared com.gamecore.*: none
+   Tests/ tree present: False
+   LifecyclePlayModeMatrix present: False
+
+VERDICT: clone is clean
+clone files inspected: 4 (the clone's own sources; Artifacts~, Builds, Library, Logs, Temp, UserSettings, bin, obj, obj~ pruned)
+
+== 1. no reference to a removed type or member ==
+    Assets/GameCore.Validation/Runtime/ProbeRunner.cs -> ['Gc027Scenario']
+   REFERENCES FOUND
+
+== 2. every asmdef reference resolves ==
+   assemblies available: 38 | dangling references: none
+   stripped assemblies reachable: {'GameCore.Replay': False, 'GameCore.Benchmarks': False, 'GameCore.ReferenceConformance': False}
+
+== 3. ProbeArguments constructor call matches its parameter list ==
+   parameters: 16 | arguments: 16 | agreement: True
+
+== 4. every .cs balances ==
+   2 C# files | unbalanced: none
+
+== 5. kept modes wired, removed modes gone ==
+   removed Faults           absent everywhere: True
+   removed W5Gate           absent everywhere: True
+   removed Gc021            absent everywhere: True
+   removed LifecycleStress  absent everywhere: True
+   removed Replay           absent everywhere: True
+   removed W6Gate           absent everywhere: True
+   removed Recovery         absent everywhere: True
+   removed Benchmark        absent everywhere: True
+   removed W7Gate           absent everywhere: True
+   removed Conformance      absent everywhere: True
+   kept    MissingRegistration wired: True
+   kept    WorldDispatch    wired: True
+   kept    W1Gate           wired: True
+   kept    W2Gate           wired: True
+   kept    W3Gate           wired: True
+   kept    Narrative        wired: True
+   kept    Cards            wired: True
+   kept    W4Profile        wired: True
+   kept    Gc013            wired: True
+   kept    W4Gate           wired: True
+   kept    Gc018            wired: True
+   kept    Gc019            wired: True
+   kept    Traversal        wired: True
+   kept    CatalogCoverage  wired: True
+   kept    RecoverySmoke    wired: True
+   qualification-only dependencies: none
+   testables: []
+   lock present: True (the preparer deletes it; Unity regenerates it on import - both states are allowed)
+   lock entries: 3 | qualification-only: none | undeclared com.gamecore.*: none
+   Tests/ tree present: False
+   LifecyclePlayModeMatrix present: False
+
+VERDICT: 1 PROBLEM(S)
+clone files inspected: 4 (the clone's own sources; Artifacts~, Builds, Library, Logs, Temp, UserSettings, bin, obj, obj~ pruned)
+
+== 1. no reference to a removed type or member ==
+   clean
+
+== 2. every asmdef reference resolves ==
+   assemblies available: 38 | dangling references: none
+   stripped assemblies reachable: {'GameCore.Replay': False, 'GameCore.Benchmarks': False, 'GameCore.ReferenceConformance': False}
+
+== 3. ProbeArguments constructor call matches its parameter list ==
+   parameters: 16 | arguments: 16 | agreement: True
+
+== 4. every .cs balances ==
+   2 C# files | unbalanced: none
+
+== 5. kept modes wired, removed modes gone ==
+   removed Faults           absent everywhere: True
+   removed W5Gate           absent everywhere: True
+   removed Gc021            absent everywhere: True
+   removed LifecycleStress  absent everywhere: True
+   removed Replay           absent everywhere: True
+   removed W6Gate           absent everywhere: True
+   removed Recovery         absent everywhere: True
+   removed Benchmark        absent everywhere: True
+   removed W7Gate           absent everywhere: True
+   removed Conformance      absent everywhere: True
+   kept    MissingRegistration wired: True
+   kept    WorldDispatch    wired: True
+   kept    W1Gate           wired: True
+   kept    W2Gate           wired: True
+   kept    W3Gate           wired: True
+   kept    Narrative        wired: True
+   kept    Cards            wired: True
+   kept    W4Profile        wired: True
+   kept    Gc013            wired: True
+   kept    W4Gate           wired: True
+   kept    Gc018            wired: True
+   kept    Gc019            wired: True
+   kept    Traversal        wired: True
+   kept    CatalogCoverage  wired: True
+   kept    RecoverySmoke    wired: True
+   qualification-only dependencies: none
+   testables: []
+   lock present: True (the preparer deletes it; Unity regenerates it on import - both states are allowed)
+   lock entries: 4 | qualification-only: ['com.gamecore.replay'] | undeclared com.gamecore.*: ['com.gamecore.replay']
+   Tests/ tree present: False
+   LifecyclePlayModeMatrix present: False
+
+VERDICT: 2 PROBLEM(S)
+clone files inspected: 4 (the clone's own sources; Artifacts~, Builds, Library, Logs, Temp, UserSettings, bin, obj, obj~ pruned)
+
+== 1. no reference to a removed type or member ==
+   clean
+
+== 2. every asmdef reference resolves ==
+   assemblies available: 38 | dangling references: none
+   stripped assemblies reachable: {'GameCore.Replay': False, 'GameCore.Benchmarks': False, 'GameCore.ReferenceConformance': False}
+
+== 3. ProbeArguments constructor call matches its parameter list ==
+   parameters: 16 | arguments: 16 | agreement: True
+
+== 4. every .cs balances ==
+   2 C# files | unbalanced: none
+
+== 5. kept modes wired, removed modes gone ==
+   removed Faults           absent everywhere: True
+   removed W5Gate           absent everywhere: True
+   removed Gc021            absent everywhere: True
+   removed LifecycleStress  absent everywhere: True
+   removed Replay           absent everywhere: True
+   removed W6Gate           absent everywhere: True
+   removed Recovery         absent everywhere: True
+   removed Benchmark        absent everywhere: True
+   removed W7Gate           absent everywhere: True
+   removed Conformance      absent everywhere: True
+   kept    MissingRegistration wired: True
+   kept    WorldDispatch    wired: True
+   kept    W1Gate           wired: True
+   kept    W2Gate           wired: True
+   kept    W3Gate           wired: True
+   kept    Narrative        wired: True
+   kept    Cards            wired: True
+   kept    W4Profile        wired: True
+   kept    Gc013            wired: True
+   kept    W4Gate           wired: True
+   kept    Gc018            wired: True
+   kept    Gc019            wired: True
+   kept    Traversal        wired: True
+   kept    CatalogCoverage  wired: True
+   kept    RecoverySmoke    wired: True
+   qualification-only dependencies: none
+   testables: []
+   lock present: True (the preparer deletes it; Unity regenerates it on import - both states are allowed)
+   lock entries: 4 | qualification-only: ['com.gamecore.reference-conformance'] | undeclared com.gamecore.*: ['com.gamecore.reference-conformance']
+   Tests/ tree present: False
+   LifecyclePlayModeMatrix present: False
+
+VERDICT: 2 PROBLEM(S)
+clone files inspected: 5 (the clone's own sources; Artifacts~, Builds, Library, Logs, Temp, UserSettings, bin, obj, obj~ pruned)
+
+== 1. no reference to a removed type or member ==
+   clean
+
+== 2. every asmdef reference resolves ==
+   assemblies available: 38 | dangling references: none
+   stripped assemblies reachable: {'GameCore.Replay': False, 'GameCore.Benchmarks': False, 'GameCore.ReferenceConformance': False}
+
+== 3. ProbeArguments constructor call matches its parameter list ==
+   parameters: 16 | arguments: 16 | agreement: True
+
+== 4. every .cs balances ==
+   3 C# files | unbalanced: [('Assets/GameCore.Validation/Runtime/Unbalanced.cs', {'{': 3, '(': 0, '[': 0})]
+
+== 5. kept modes wired, removed modes gone ==
+   removed Faults           absent everywhere: True
+   removed W5Gate           absent everywhere: True
+   removed Gc021            absent everywhere: True
+   removed LifecycleStress  absent everywhere: True
+   removed Replay           absent everywhere: True
+   removed W6Gate           absent everywhere: True
+   removed Recovery         absent everywhere: True
+   removed Benchmark        absent everywhere: True
+   removed W7Gate           absent everywhere: True
+   removed Conformance      absent everywhere: True
+   kept    MissingRegistration wired: True
+   kept    WorldDispatch    wired: True
+   kept    W1Gate           wired: True
+   kept    W2Gate           wired: True
+   kept    W3Gate           wired: True
+   kept    Narrative        wired: True
+   kept    Cards            wired: True
+   kept    W4Profile        wired: True
+   kept    Gc013            wired: True
+   kept    W4Gate           wired: True
+   kept    Gc018            wired: True
+   kept    Gc019            wired: True
+   kept    Traversal        wired: True
+   kept    CatalogCoverage  wired: True
+   kept    RecoverySmoke    wired: True
+   qualification-only dependencies: none
+   testables: []
+   lock present: True (the preparer deletes it; Unity regenerates it on import - both states are allowed)
+   lock entries: 3 | qualification-only: none | undeclared com.gamecore.*: none
+   Tests/ tree present: False
+   LifecyclePlayModeMatrix present: False
+
+VERDICT: 1 PROBLEM(S)
+   ok   post-import noise is not a defect (problems=[] filesInspected=4)
+   ok   a planted stale reference in the clone source fails (problems=['Assets/GameCore.Validation/Runtime/ProbeRunner.cs'])
+   ok   a qualification-only lock entry fails (problems=['the lock declares com.gamecore.* dependencies the manifest does not: com.gamecore.replay', 'the lock still depends on com.gamecore.replay'])
+   ok   an undeclared com.gamecore.* lock entry fails (problems=['the lock declares com.gamecore.* dependencies the manifest does not: com.gamecore.reference-conformance', 'the lock still depends on com.gamecore.reference-conformance'])
+   ok   an unbalanced clone source fails (problems=["('Assets/GameCore.Validation/Runtime/Unbalanced.cs', {'{': 3, '(': 0, '[': 0})"])
+SELF-TEST: pass
+
+== genre-audit ==
+gc024 genre audit: /home/worlesenric/wkspace/gc-wt/w8-gate/artifacts/gc-024/genre-audit.json
+kernel=32; family=13; generated=0; qualification=79; asmdefs=87; projectFiles=37; kernelSources=324; referenceAssertions=218; violations=0; kernelGenreTokens=0; missingPackages=0; familiesOnKernel=13/13; clean=true
+
+== native-leak-attribution ==
+native leak attribution: logs=2 headers=0 blocks=0 allocations=0
+  gamecore    : 0 block(s), 0 allocation(s), bytes=unstated, 0 signature(s)
+  unity-engine: 0 block(s), 0 allocation(s), bytes=unstated, 0 signature(s)
+  third-party : 0 block(s), 0 allocation(s), bytes=unstated, 0 signature(s)
+  unattributed: 0 block(s), 0 allocation(s), bytes=unstated
+policy: <none>
+verdict: clean (exit 0)
+attribution: /home/worlesenric/wkspace/gc-wt/w8-gate/artifacts/w8-gate/matrix/toolchain/native-leak-attribution.json
+
+== shell-parse run_test_matrix.sh ==
+
+== py-compile build_evidence_index.py ==
+
+== py-compile build_compatibility.py ==

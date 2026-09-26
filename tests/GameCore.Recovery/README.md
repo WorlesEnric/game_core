@@ -41,7 +41,7 @@ No property is ever filled with a default, and a refused read leaves no partiall
 
 `RecoveryFixtureVocabulary` carries the member names as **text** because this assembly is compiled by Unity with
 `"references": []` and therefore cannot see the production enums at all. It holds three boundary-name lists - the
-thirteen `FaultBoundaryText.Names` values a latch may name, the one `store-read` name a `StoreRead` point names, and
+fourteen `FaultBoundaryText.Names` values a latch may name, the one `store-read` name a `StoreRead` point names, and
 the six `DeliveryBoundaries.All` values a hook may name - plus their union, which is the set the reader validates
 `boundaryNames` against. The latch list is a copy rather than a reference on purpose: `FaultBoundaryText` lives in
 `GameCore.Unity.Runtime.Faults`, which is compiled only when the fault-injection marker package is present

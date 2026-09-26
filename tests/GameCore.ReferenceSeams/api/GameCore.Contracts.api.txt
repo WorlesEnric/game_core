@@ -498,6 +498,7 @@ type enum GameCore.Contracts.DiagnosticCode : System.IComparable, System.IConver
   enumvalue public MissingDependency = 3
   enumvalue public None = 0
   enumvalue public OwnershipConflict = 10
+  enumvalue public ProviderFailed = 22
   enumvalue public ResourceUnavailable = 13
   enumvalue public ResultExpired = 17
   enumvalue public ServiceConflict = 4
@@ -1816,4 +1817,4 @@ type struct GameCore.Contracts.WorldResourceRecord
   property public System.Boolean HasDependency { get; }
   property public System.Boolean IsRetained { get; }
   method public System.String ToString()
-# member count: 1591
+# member count: 1592

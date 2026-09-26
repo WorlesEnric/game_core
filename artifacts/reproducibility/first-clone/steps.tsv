@@ -1,0 +1,55 @@
+step	name	rc	seconds	command
+1	toolchain-versions	0	0	record toolchain versions
+2	package-metadata-self-test	0	0	python3 tools/check_package_metadata.py --self-test
+3	package-metadata-audit	0	0	python3 tools/check_package_metadata.py --json /home/worlesenric/wkspace/repro-gc029/artifacts/reproducibility/host/package-metadata.json
+4	failure-codes-check	0	1	python3 tools/emit_failure_codes.py --check --json /home/worlesenric/wkspace/repro-gc029/artifacts/reproducibility/host/failure-codes.json
+5	operator-docs-self-test	0	0	python3 tools/check_operator_docs.py --self-test
+6	operator-docs	0	0	python3 tools/check_operator_docs.py --json /home/worlesenric/wkspace/repro-gc029/artifacts/reproducibility/host/operator-docs.json
+7	dotnet-restore	0	1	/home/worlesenric/.dotnet/dotnet restore dotnet/GameCore.sln --nologo -v:q
+8	dotnet-build	0	4	/home/worlesenric/.dotnet/dotnet build dotnet/GameCore.sln -c Release --no-restore --nologo -v:q
+9	dotnet-test	0	28	/home/worlesenric/.dotnet/dotnet test dotnet/GameCore.sln -c Release --no-build --nologo -v:q --logger trx;LogFilePrefix=reproduce --results-directory /home/worlesenric/wkspace/repro-gc029/artifacts/reproducibility/host/trx
+10	csharp-check	0	10	python3 tools/check_game_core_csharp.py
+11	contract-surface-parity	0	0	python3 tools/check_contract_surface_parity.py
+12	generated-catalog-probe	0	0	python3 tools/verify_generated_catalog.py unity/GameCore.Validation/Assets/GameCore.Validation/Generated/ProbeCatalog.g.cs
+13	generated-catalog-cards	0	0	python3 tools/verify_generated_catalog.py unity/GameCore.Validation/Assets/GameCore.Validation/GeneratedCards/CardCatalog.g.cs
+14	generated-catalog-checkpoint	0	0	python3 tools/verify_generated_catalog.py unity/GameCore.Validation/Assets/GameCore.Validation/GeneratedCheckpoint/CheckpointCatalog.g.cs
+15	generated-catalog-traversal	0	0	python3 tools/verify_generated_catalog.py unity/GameCore.Validation/Assets/GameCore.Validation/GeneratedTraversal/TraversalCatalog.g.cs
+16	catalog-emitter-mirror	0	0	python3 tools/emit_generated_catalog.py --self-check
+17	reachability-manifest	0	0	python3 tools/emit_catalog_reachability.py --check
+18	baked-coverage-artifact	0	0	python3 tools/emit_baked_catalog_coverage.py --check
+19	fingerprint-tool-self-test	0	0	python3 tools/compare_registration_fingerprints.py --self-test
+20	budget-record	0	0	python3 tools/check_budget_record.py --json /home/worlesenric/wkspace/repro-gc029/artifacts/reproducibility/host/budget-record.json
+21	release-clone-self-test	0	0	python3 tools/check_release_clone.py --self-test
+22	link-xml-qualification	0	0	python3 tools/check_link_xml.py --project /home/worlesenric/wkspace/repro-gc029/unity/GameCore.Validation --json /home/worlesenric/wkspace/repro-gc029/artifacts/reproducibility/host/link-xml-qualification.json
+23	shell-parse reproduce.sh	0	0	bash -n tools/reproduce.sh
+24	shell-parse build_probe.sh	0	0	bash -n tools/unity/build_probe.sh
+25	shell-parse probe_runs.sh	0	0	bash -n tools/unity/probe_runs.sh
+26	shell-parse run_narrative_probe.sh	0	0	bash -n tools/unity/run_narrative_probe.sh
+27	shell-parse run_cards_probe.sh	0	0	bash -n tools/unity/run_cards_probe.sh
+28	shell-parse run_traversal_probe.sh	0	0	bash -n tools/unity/run_traversal_probe.sh
+29	unity-resolve	0	76	/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Unity -batchmode -nographics -quit -projectPath /home/worlesenric/wkspace/repro-gc029/unity/GameCore.Validation -logFile /home/worlesenric/wkspace/repro-gc029/artifacts/reproducibility/unity/resolve.log
+30	package-lock-audit	0	0	python3 tools/check_package_metadata.py --json /home/worlesenric/wkspace/repro-gc029/artifacts/reproducibility/host/package-metadata-after-resolve.json
+31	unity-editmode	0	371	/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Unity -batchmode -nographics -projectPath /home/worlesenric/wkspace/repro-gc029/unity/GameCore.Validation -runTests -testPlatform EditMode -testResults /home/worlesenric/wkspace/repro-gc029/artifacts/reproducibility/unity/editmode-results.xml -logFile /home/worlesenric/wkspace/repro-gc029/artifacts/reproducibility/unity/editmode.log
+32	unity-playmode	0	166	/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Unity -batchmode -nographics -projectPath /home/worlesenric/wkspace/repro-gc029/unity/GameCore.Validation -runTests -testPlatform PlayMode -testResults /home/worlesenric/wkspace/repro-gc029/artifacts/reproducibility/unity/playmode-results.xml -logFile /home/worlesenric/wkspace/repro-gc029/artifacts/reproducibility/unity/playmode.log
+33	codegen-probe	0	15	/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Unity -batchmode -nographics -quit -projectPath /home/worlesenric/wkspace/repro-gc029/unity/GameCore.Validation -executeMethod GameCore.Validation.Editor.ProbeCatalogGenerator.GenerateCatalog -logFile /home/worlesenric/wkspace/repro-gc029/artifacts/reproducibility/unity/codegen-probe.log
+34	codegen-cards	0	17	/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Unity -batchmode -nographics -quit -projectPath /home/worlesenric/wkspace/repro-gc029/unity/GameCore.Validation -executeMethod GameCore.Validation.Editor.CardCatalogGenerator.GenerateCatalog -logFile /home/worlesenric/wkspace/repro-gc029/artifacts/reproducibility/unity/codegen-cards.log
+35	codegen-checkpoint	0	15	/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Unity -batchmode -nographics -quit -projectPath /home/worlesenric/wkspace/repro-gc029/unity/GameCore.Validation -executeMethod GameCore.Validation.Editor.CheckpointCatalogGenerator.GenerateCatalog -logFile /home/worlesenric/wkspace/repro-gc029/artifacts/reproducibility/unity/codegen-checkpoint.log
+36	codegen-traversal	0	16	/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Unity -batchmode -nographics -quit -projectPath /home/worlesenric/wkspace/repro-gc029/unity/GameCore.Validation -executeMethod GameCore.Validation.Editor.TraversalCatalogGenerator.GenerateCatalog -logFile /home/worlesenric/wkspace/repro-gc029/artifacts/reproducibility/unity/codegen-traversal.log
+37	codegen-bake	0	15	/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Unity -batchmode -nographics -quit -projectPath /home/worlesenric/wkspace/repro-gc029/unity/GameCore.Validation -executeMethod GameCore.Validation.Editor.BakeCatalogCoverageAuthoring.Bake -logFile /home/worlesenric/wkspace/repro-gc029/artifacts/reproducibility/unity/codegen-bake.log
+38	catalog-byte-identity	0	0	git diff --exit-code -- <four generated trees>
+39	qualification-player	0	237	tools/unity/build_probe.sh
+40	probe-run_narrative_probe.sh	0	2	env PROBE_PLAYER=/home/worlesenric/wkspace/repro-gc029/unity/GameCore.Validation/Builds/Linux64/GameCoreProbe.x86_64 UNITY_PROJECT=/home/worlesenric/wkspace/repro-gc029/unity/GameCore.Validation ARTIFACTS=/home/worlesenric/wkspace/repro-gc029/artifacts/reproducibility/probe PROBE_RUNS=2 tools/unity/run_narrative_probe.sh
+41	probe-run_cards_probe.sh	0	2	env PROBE_PLAYER=/home/worlesenric/wkspace/repro-gc029/unity/GameCore.Validation/Builds/Linux64/GameCoreProbe.x86_64 UNITY_PROJECT=/home/worlesenric/wkspace/repro-gc029/unity/GameCore.Validation ARTIFACTS=/home/worlesenric/wkspace/repro-gc029/artifacts/reproducibility/probe PROBE_RUNS=2 tools/unity/run_cards_probe.sh
+42	probe-run_traversal_probe.sh	0	1	env PROBE_PLAYER=/home/worlesenric/wkspace/repro-gc029/unity/GameCore.Validation/Builds/Linux64/GameCoreProbe.x86_64 UNITY_PROJECT=/home/worlesenric/wkspace/repro-gc029/unity/GameCore.Validation ARTIFACTS=/home/worlesenric/wkspace/repro-gc029/artifacts/reproducibility/probe PROBE_RUNS=2 tools/unity/run_traversal_probe.sh
+44	release-project-prepare	0	0	python3 tools/unity/prepare_gc017_release_project.py
+45	link-xml-release	0	0	python3 tools/check_link_xml.py --project /home/worlesenric/wkspace/repro-gc029/unity/GameCore.ReleaseCheck --json /home/worlesenric/wkspace/repro-gc029/artifacts/reproducibility/release/link-xml.json
+46	release-clone-check	0	4	python3 tools/check_release_clone.py --clone /home/worlesenric/wkspace/repro-gc029/unity/GameCore.ReleaseCheck --json /home/worlesenric/wkspace/repro-gc029/artifacts/reproducibility/release/clone-surface.json
+47	release-fault-surface	0	3	python3 tools/check_release_fault_free.py --dotnet /home/worlesenric/.dotnet/dotnet --json /home/worlesenric/wkspace/repro-gc029/artifacts/reproducibility/release/fault-surface.json
+48	release-telemetry-surface	0	7	python3 tools/check_release_telemetry_free.py --dotnet /home/worlesenric/.dotnet/dotnet --artifacts /home/worlesenric/wkspace/repro-gc029/artifacts/reproducibility --json /home/worlesenric/wkspace/repro-gc029/artifacts/reproducibility/release/telemetry-source.json
+48	release-player	0	284	tools/unity/build_probe.sh (release clone)
+49	release-player-latches	0	8	python3 tools/check_player_fault_free.py --player /home/worlesenric/wkspace/repro-gc029/unity/GameCore.ReleaseCheck/Builds/Linux64 --json /home/worlesenric/wkspace/repro-gc029/artifacts/reproducibility/release/player-surface.json
+50	release-gate-surface	0	31	python3 tools/check_release_gate_free.py --player /home/worlesenric/wkspace/repro-gc029/unity/GameCore.ReleaseCheck/Builds/Linux64 --qualification /home/worlesenric/wkspace/repro-gc029/unity/GameCore.Validation/Builds/Linux64 --json /home/worlesenric/wkspace/repro-gc029/artifacts/reproducibility/release/gate-surface.json
+51	release-probe-run_narrative_probe.sh	0	2	env PROBE_PLAYER=/home/worlesenric/wkspace/repro-gc029/unity/GameCore.ReleaseCheck/Builds/Linux64/GameCoreProbe.x86_64 UNITY_PROJECT=/home/worlesenric/wkspace/repro-gc029/unity/GameCore.ReleaseCheck ARTIFACTS=/home/worlesenric/wkspace/repro-gc029/artifacts/reproducibility/release PROBE_RUNS=2 tools/unity/run_narrative_probe.sh
+52	release-probe-run_cards_probe.sh	0	1	env PROBE_PLAYER=/home/worlesenric/wkspace/repro-gc029/unity/GameCore.ReleaseCheck/Builds/Linux64/GameCoreProbe.x86_64 UNITY_PROJECT=/home/worlesenric/wkspace/repro-gc029/unity/GameCore.ReleaseCheck ARTIFACTS=/home/worlesenric/wkspace/repro-gc029/artifacts/reproducibility/release PROBE_RUNS=2 tools/unity/run_cards_probe.sh
+53	release-probe-run_traversal_probe.sh	0	0	env PROBE_PLAYER=/home/worlesenric/wkspace/repro-gc029/unity/GameCore.ReleaseCheck/Builds/Linux64/GameCoreProbe.x86_64 UNITY_PROJECT=/home/worlesenric/wkspace/repro-gc029/unity/GameCore.ReleaseCheck ARTIFACTS=/home/worlesenric/wkspace/repro-gc029/artifacts/reproducibility/release PROBE_RUNS=2 tools/unity/run_traversal_probe.sh
+54	documentation-validator	0	0	tools/validate_game_core_docs.py

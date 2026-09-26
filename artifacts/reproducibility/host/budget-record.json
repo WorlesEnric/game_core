@@ -1,0 +1,59 @@
+{
+  "tool": "tools/check_budget_record.py",
+  "task": "W7-GATE",
+  "root": "/Users/yangcao/wkspace/gc-wt/gc-029",
+  "checks": [
+    {
+      "name": "row-ids",
+      "status": "pass",
+      "detail": "parsed 10 row id(s) from tests/GameCore.Benchmarks/Runtime/PerformanceBudgets.cs: budget.execution-p95, budget.execution-managed-bytes, budget.unchanged-control-nodes, budget.unchanged-service-lookups, budget.apply-pause-p95, budget.whole-world-preparation-p95, budget.spawn-baseline, budget.lifecycle-plateau, budget.idle-steps, budget.idle-stage-updates"
+    },
+    {
+      "name": "record-sections",
+      "status": "pass",
+      "detail": "10 '## budget.*' section(s) in artifacts/performance/BUDGET_DECISIONS.md; every declared row id has one"
+    },
+    {
+      "name": "section-fields",
+      "status": "pass",
+      "detail": "10 section(s): each has '- Decision:' and '- Evidence:'"
+    },
+    {
+      "name": "evidence-paths",
+      "status": "pass",
+      "detail": "20 Evidence path(s) checked under /Users/yangcao/wkspace/gc-wt/gc-029; all exist"
+    },
+    {
+      "name": "deferral",
+      "status": "pass",
+      "detail": "artifacts/performance/BUDGET_DECISIONS.md:3: Status: **TEST-023 timing qualification Deferred by project-owner decision (2026-09-26); not measured at full duration**. Functional correctness gates passed in a final single short diagnostic: 1 s warmup, 2 s steady windows, five change repetitions, 11 workloads and 19/19 gates. A default full-catalogue attempt was stopped at update-size-1 repetition 629/1000 after 916.7 s because the remaining broad candidate fan-out still costs ~0.87 s/change. No full-duration p95/p99 claim follows from the diagnostic."
+    },
+    {
+      "name": "summary",
+      "status": "pass",
+      "detail": "Verdict: **FAIL** \u2014 1 budget row(s) MissedTarget.; workload id(s) idle-command-world, steady-unchanged-10000-steps, steady-execution-10000-targets, update-size-1, update-size-100, update-size-10000, whole-world-mode-switch, spawn-1000, reparent-100, inactive-target-comparison, lifecycle-cycles-1000; verdict token(s) NotMeasured, MissedTarget, WithinTarget; diagnostic: Status: **TEST-023 timing qualification Deferred by project-owner decision (2026-09-26); not measured at full duration.** This one-run 1 s warmup/2 s steady-window/five-repetition diagnostic asserts 19/19 correctness gates but does not establish full-duration p95/p99 or the 1,000-cycle plateau. Its one provisional whole-world preparation miss remains open; no target was revised. Before the kernel fixes, size-1 prepare took ~12 s; after them, 898936 us p95 in this diagnostic. See `artifacts/gc-026/profile/round2-phases.txt` for measured candidate, explanation, sorting and delta costs. The full catalogue was intentionally stopped at repetition 629/1000 on owner direction; it is not a passing run."
+    },
+    {
+      "name": "deferred-consistency",
+      "status": "pass",
+      "detail": "the record is deferred, so no budget section claims 'Measured (full' or '- Decision: accept'"
+    }
+  ],
+  "problems": [],
+  "row_ids": [
+    "budget.execution-p95",
+    "budget.execution-managed-bytes",
+    "budget.unchanged-control-nodes",
+    "budget.unchanged-service-lookups",
+    "budget.apply-pause-p95",
+    "budget.whole-world-preparation-p95",
+    "budget.spawn-baseline",
+    "budget.lifecycle-plateau",
+    "budget.idle-steps",
+    "budget.idle-stage-updates"
+  ],
+  "rows_declared": 10,
+  "rows_checked": 10,
+  "deferral_sentence": "Status: **TEST-023 timing qualification Deferred by project-owner decision (2026-09-26); not measured at full duration**. Functional correctness gates passed in a final single short diagnostic: 1 s warmup, 2 s steady windows, five change repetitions, 11 workloads and 19/19 gates. A default full-catalogue attempt was stopped at update-size-1 repetition 629/1000 after 916.7 s because the remaining broad candidate fan-out still costs ~0.87 s/change. No full-duration p95/p99 claim follows from the diagnostic.",
+  "verdict": "pass"
+}

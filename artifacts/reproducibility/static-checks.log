@@ -1,0 +1,207 @@
+GC-029 host-side static checks (interpreter-level; NOT a build and NOT a test)
+host: Darwin 25.3.0 arm64; python3 3.9.6
+revision: cfe228c46db8d9632d39bb3b62bf64f6a77d92a1
+date: 2026-09-26T20:21:05Z
+NOTE: this host has no Unity, no .NET SDK and no mono. Nothing below compiles, imports or executes
+      the runtime. Every build/test/player statement in this task's artifacts is NotRun.
+
+SCOPE OF THE REVISION ABOVE. The checks below ran on that revision; the commit that carries this log adds
+only the log, the reports under artifacts/reproducibility/host/ and HANDOFF.md. Verify with:
+  git diff --stat cfe228c HEAD -- . ':(exclude)artifacts'
+which is empty, so every result below was produced against the same source tree as HEAD.
+
+=================== tools/check_package_metadata.py --self-test ===================
+   ok   every package directory is discovered
+   ok   an asmdef defines its own package's assembly
+   ok   a referenced assembly with no declared dependency is reported
+   ok   a declared dependency nothing references is reported
+   ok   a stale dependency version is reported
+   ok   an exactly correct package produces no problem
+   ok   a kernel package depending on a gameplay package is reported
+   ok   a reference to the embedding project's own assembly is reported
+   ok   an engine reference resolves to its pinned package
+   ok   a correct engine dependency produces no problem
+   ok   a project-provided test runner is not a package dependency
+   ok   a package version other than the release version is reported
+check_package_metadata.py --self-test passed (12 cases).
+exit=0
+
+=================== tools/emit_failure_codes.py --self-test ===================
+   ok   the real sources produce a table with no disagreement
+   ok   the table contains every declared operation code
+   ok   the table contains every declared catalog code
+   ok   the table contains every narrative refusal
+   ok   an undocumented new code is reported
+   ok   a literal that is not the member name is reported
+   ok   a code missing from Values is reported
+   ok   a P-052 required code that is no longer declared is reported
+   ok   a second undocumented code is reported
+emit_failure_codes.py --self-test passed (8 cases).
+exit=0
+
+=================== tools/check_operator_docs.py --self-test ===================
+   ok   a consistent tree has no problem
+   ok   an undocumented mode is reported
+   ok   a documented-but-unparsed flag is reported
+   ok   an unlinked page is reported
+   ok   a broken link is reported
+   ok   a missing anchor is reported
+   ok   a real anchor is accepted
+   ok   a de-generated failure table is reported
+check_operator_docs.py --self-test passed (8 cases).
+exit=0
+
+=================== tools/check_package_metadata.py (audit) ===================
+packages inspected: 21; assemblies defined by packages: 46; engine pins: 4
+release version expected: 1.0.0; kernel packages: 8
+package metadata and asmdef-derived dependencies agree.
+No Unity resolve, no compilation and no player build was executed by this check.
+exit=0
+
+=================== tools/check_package_metadata.py --sync-lock (must be a no-op) ===================
+packages inspected: 21; assemblies defined by packages: 46; engine pins: 4
+release version expected: 1.0.0; kernel packages: 8
+package metadata and asmdef-derived dependencies agree.
+No Unity resolve, no compilation and no player build was executed by this check.
+exit=0
+git diff on the lock after --sync-lock (must be empty):
+
+=================== tools/emit_failure_codes.py --check ===================
+failure-code table up to date: /Users/yangcao/wkspace/gc-wt/gc-029/docs/operator/failure-codes.md (22 operation codes, 17 catalog codes, 11 narrative refusals)
+No Unity, no .NET and no player run was required by this check.
+exit=0
+
+=================== tools/check_operator_docs.py ===================
+operator documentation agrees with the repository: 11 page(s), 49 local link(s) resolved, 26 probe mode(s) documented and declared.
+No Unity, no .NET and no player run was required by this check.
+exit=0
+=================== repository checkers ===================
+--- tools/check_game_core_csharp.py
+checked 623 C# file(s)
+ok
+exit=0
+--- tools/check_contract_surface_parity.py
+every snapshotted enum and enum value exists in the production sources with the same numeric value
+exit=0
+--- tools/check_budget_record.py
+DEFERRAL: Status: **TEST-023 timing qualification Deferred by project-owner decision (2026-09-26); not measured at full duration**. Functional correctness gates passed in a final single short diagnostic: 1 s warmup, 2 s steady windows, five change repetitions, 11 workloads and 19/19 gates. A default full-catalogue attempt was stopped at update-size-1 repetition 629/1000 after 916.7 s because the remaining broad candidate fan-out still costs ~0.87 s/change. No full-duration p95/p99 claim follows from the diagnostic.
+VERDICT: pass
+exit=0
+--- tools/check_link_xml.py --project unity/GameCore.Validation
+/Users/yangcao/wkspace/gc-wt/gc-029/unity/GameCore.Validation/Assets/link.xml preserves only the permitted fixture and PlayerLoop roots (sha256 dc9cc7ef1ad5a4e2d342d0cb132f61143f2e9fcd14222312804522e04221e9ba)
+exit=0
+--- tools/check_release_clone.py --self-test
+SELF-TEST: pass
+exit=0
+--- tools/check_release_fault_free.py --no-build
+  the apply path's mask by [System.Diagnostics.Conditional("GAMECORE_FAULT_INJECTION")] is intact (8 call site(s))
+  the symbol is driven by com.gamecore.fault-qualification, referenced only by the validation manifest
+exit=0
+--- tools/check_release_telemetry_free.py --no-build
+exit=0
+
+=================== catalog emitters and the four committed catalogs ===================
+--- tools/emit_generated_catalog.py --self-check
+every committed catalog and coverage file reproduces byte for byte from its committed description
+exit=0
+--- tools/emit_catalog_reachability.py --check
+catalog reachability manifest reproduces from the committed descriptions: 4 catalog(s)
+exit=0
+--- tools/emit_baked_catalog_coverage.py --check
+baked catalog-coverage artifact reproduces from unity/GameCore.Validation/Catalogs/CatalogCoverageAuthoring.json
+exit=0
+--- tools/compare_registration_fingerprints.py --self-test
+  - the combined build fingerprint differs between first and third
+exit=0
+--- tools/verify_generated_catalog.py Generated/ProbeCatalog.g.cs
+file hash and catalog fingerprint both recompute correctly from the generated tables
+exit=0
+--- tools/verify_generated_catalog.py GeneratedCards/CardCatalog.g.cs
+file hash and catalog fingerprint both recompute correctly from the generated tables
+exit=0
+--- tools/verify_generated_catalog.py GeneratedCheckpoint/CheckpointCatalog.g.cs
+file hash and catalog fingerprint both recompute correctly from the generated tables
+exit=0
+--- tools/verify_generated_catalog.py GeneratedTraversal/TraversalCatalog.g.cs
+file hash and catalog fingerprint both recompute correctly from the generated tables
+exit=0
+
+=================== documentation ===================
+--- tools/validate_game_core_docs.py --self-test
+Documentation validator self-test passed: 9 isolated positive/negative fixtures.
+exit=0
+--- tools/validate_game_core_docs.py
+Game Core documentation validation passed: 14 Markdown documents; local links, anchors, IDs, traceability, task DAG and wave ordering checked.
+No Unity builds, gameplay tests, runtime benchmarks, or remote URL checks were executed.
+exit=0
+
+=================== syntax of scripts and tools this task owns ===================
+ok   bash -n tools/reproduce.sh
+ok   bash -n tools/unity/build_probe.sh
+ok   bash -n tools/unity/probe_runs.sh
+ok   bash -n tools/unity/run_narrative_probe.sh
+ok   bash -n tools/unity/run_cards_probe.sh
+ok   bash -n tools/unity/run_traversal_probe.sh
+ok   py_compile tools/check_package_metadata.py
+ok   py_compile tools/emit_failure_codes.py
+ok   py_compile tools/check_operator_docs.py
+
+=================== tools/reproduce.sh - SMOKE RUN of its own control flow ===================
+This host has no dotnet and no Unity, so the run MUST stop at the first step that needs a build
+toolchain. What this proves is the script's own prerequisite checks, step numbering, per-step
+timeout wrapping, named failure message and step ledger - not a build. UNITY points at a stand-in
+executable whose path contains the pinned revision string so the prerequisite check passes; GNU
+timeout is absent on this host, so a two-line shim supplies it.
+
+== step 5: operator-docs-self-test ==
+-- command: python3 tools/check_operator_docs.py --self-test
+   ok   a consistent tree has no problem
+   ok   an undocumented mode is reported
+   ok   a documented-but-unparsed flag is reported
+   ok   an unlinked page is reported
+   ok   a broken link is reported
+   ok   a missing anchor is reported
+   ok   a real anchor is accepted
+   ok   a de-generated failure table is reported
+check_operator_docs.py --self-test passed (8 cases).
+   ok operator-docs-self-test (0s)
+
+== step 6: operator-docs ==
+-- command: python3 tools/check_operator_docs.py --json /tmp/gc-repro-evidence/host/operator-docs.json
+operator documentation agrees with the repository: 11 page(s), 49 local link(s) resolved, 26 probe mode(s) documented and declared.
+No Unity, no .NET and no player run was required by this check.
+   ok operator-docs (0s)
+
+== step 7: dotnet-restore ==
+-- command: dotnet restore dotnet/GameCore.sln --nologo -v:q
+/tmp/gc-bin/timeout: line 10: exec: dotnet: not found
+   FAIL dotnet-restore: exited 127 after 0s
+   cause: a command in this step was not found (exit 127). Check DOTNET / PYTHON / PATH.
+   transcript: /tmp/gc-repro-evidence/transcript.log
+   step ledger: /tmp/gc-repro-evidence/steps.tsv
+(the exit above is the first step whose toolchain is missing; 127 at dotnet-restore is expected here)
+
+--- the step ledger the smoke run wrote:
+step	name	rc	seconds	command
+1	toolchain-versions	0	0	record toolchain versions
+2	package-metadata-self-test	0	0	python3 tools/check_package_metadata.py --self-test
+3	package-metadata-audit	0	0	python3 tools/check_package_metadata.py --json /tmp/gc-repro-evidence/host/package-metadata.json
+4	failure-codes-check	0	0	python3 tools/emit_failure_codes.py --check --json /tmp/gc-repro-evidence/host/failure-codes.json
+5	operator-docs-self-test	0	0	python3 tools/check_operator_docs.py --self-test
+6	operator-docs	0	0	python3 tools/check_operator_docs.py --json /tmp/gc-repro-evidence/host/operator-docs.json
+7	dotnet-restore	127	0	dotnet restore dotnet/GameCore.sln --nologo -v:q
+
+--- the environment.txt the smoke run wrote:
+date_utc=2026-09-26T20:21:43Z
+repo=/Users/yangcao/wkspace/gc-wt/gc-029
+revision=cfe228c46db8d9632d39bb3b62bf64f6a77d92a1
+revision_dirty=1
+unity=/tmp/gc-fake-editor/6000.0.75f1/Editor/Unity
+editor_version=6000.0.75f1 (asserted from the UNITY path)
+dotnet_path=dotnet
+dotnet=unknown
+python=Python 3.9.6
+host=Darwin 25.3.0 arm64
+nproc=8
+timeout_utility=/tmp/gc-bin/timeout
+probe_runs=2

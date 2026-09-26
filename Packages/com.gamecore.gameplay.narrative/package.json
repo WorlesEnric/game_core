@@ -1,6 +1,6 @@
 {
   "name": "com.gamecore.gameplay.narrative",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "displayName": "GameCore Gameplay Narrative",
   "description": "The chapter-quest reference composition: narrative recipe markers, the chapter provider's declarations and derived bindings, the fact owner and typed narrative commands, the command stages of the reference graph and the committed-output projection (GC-010).",
   "unity": "6000.0",
@@ -12,7 +12,14 @@
     "quest"
   ],
   "dependencies": {
-    "com.gamecore.contracts": "0.1.0",
-    "com.gamecore.rules.narrative": "0.1.0"
+    "com.gamecore.composition": "1.0.0",
+    "com.gamecore.contracts": "1.0.0",
+    "com.gamecore.derivation": "1.0.0",
+    "com.gamecore.planning": "1.0.0",
+    "com.gamecore.rules.narrative": "1.0.0",
+    "com.gamecore.unity.runtime": "1.0.0",
+    "com.unity.burst": "1.8.28",
+    "com.unity.collections": "2.6.6",
+    "com.unity.entities": "1.4.6"
   }
 }

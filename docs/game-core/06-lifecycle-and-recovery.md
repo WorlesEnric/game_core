@@ -13,6 +13,7 @@ stateDiagram-v2
     Preparing --> Active: publish
     Preparing --> Failed: new activation fails
     Active --> Quiescing: suspend / reconfigure / replace / remove
+    Active --> Failed: unexpected provider failure (P-012)
     Quiescing --> Active: prewrite abort reopens old gates
     Quiescing --> Suspended: suspend published
     Quiescing --> WaitingForDependencies: provider loss published
@@ -27,6 +28,8 @@ stateDiagram-v2
 ```
 
 Reconfiguration prepares a candidate activation alongside the old Active activation. The old activation stays active until the boundary, then retires while the new one becomes Active. `ActivationEpoch` changes at that authority boundary; the installation generation remains unchanged until unmount/remount. A failed candidate has its own attempt record; it does not mark the old usable Active activation Failed. An installation with missing services can be published Waiting without gameplay contributions. Dependency availability retries it automatically, while explicit suspension stays suspended until resume.
+
+Two different failures reach `Failed`. `Preparing -> Failed` is a candidate or replacement activation that failed while preparing; the previously active activation is untouched, as the paragraph above says. `Active -> Failed` is the *unexpected* failure of an existing provider: it can no longer hold execution authority, so it is never kept active. P-012 then requires the world to publish a safe dependency-closure deactivation that leaves the failed provider and everything depending on it out of the new assembly — a failed installation exposes no bindings, so the ordinary resolver moves its consumers to `WaitingForDependencies` and retracts their contributions in that same publication. If that deactivation cannot publish, the world stops admission and faults (P-031) and recovery is a checkpoint restore into a new session (P-049). The failed installation keeps its identity, generation and configuration, so an explicit retry (`Failed -> Preparing`) or an unmount (`Failed -> Retiring`) remains available; nothing returns it to `Active` directly.
 
 `Quiescing` is an internal transitional state with the old committed assembly still visible. `Retiring` follows an already published removal/replacement; subsequent cleanup errors cannot roll back the new epoch. Diagnostic operation state therefore records both publication outcome and cleanup outcome.
 

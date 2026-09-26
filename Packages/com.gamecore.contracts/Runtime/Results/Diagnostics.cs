@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace GameCore.Contracts
 {
-    /// <summary>One structured diagnostic. Codes are the literals required by 00 s9.</summary>
+    /// <summary>One structured diagnostic. Codes are the literals required by P-052 (00 s7).</summary>
     public sealed class Diagnostic
     {
         public Diagnostic(
@@ -97,6 +97,7 @@ namespace GameCore.Contracts
                 case DiagnosticCode.SnapshotBackpressure: return "SnapshotBackpressure";
                 case DiagnosticCode.TeardownBlocked: return "TeardownBlocked";
                 case DiagnosticCode.CursorExpired: return "CursorExpired";
+                case DiagnosticCode.ProviderFailed: return "ProviderFailed";
                 default: throw new ArgumentOutOfRangeException(nameof(code), code, "Unknown diagnostic code.");
             }
         }
@@ -122,8 +123,9 @@ namespace GameCore.Contracts
         }
 
         /// <summary>
-        /// Every code required by the protocol, in 00 s9 order, excluding <see cref="DiagnosticCode.None"/>.
-        /// <see cref="DiagnosticCode.SnapshotBackpressure"/> follows the s9 list because P-007 requires it.
+        /// Every code the protocol requires, starting with the 00 s9 list in its order. Two codes follow it because
+        /// a separate requirement needs them: <see cref="DiagnosticCode.SnapshotBackpressure"/> (P-007's bounded
+        /// retention) and <see cref="DiagnosticCode.ProviderFailed"/> (P-012's deactivation that cannot publish).
         /// </summary>
         public static IReadOnlyList<DiagnosticCode> Values { get; } = Array.AsReadOnly(new[]
         {
@@ -148,6 +150,7 @@ namespace GameCore.Contracts
             DiagnosticCode.TeardownBlocked,
             DiagnosticCode.CursorExpired,
             DiagnosticCode.SnapshotBackpressure,
+            DiagnosticCode.ProviderFailed,
         });
     }
 }
