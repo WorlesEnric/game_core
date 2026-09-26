@@ -564,21 +564,20 @@ namespace GameCore.Replay
                 Chain(stepCounterHashes));
         }
 
-        /// <summary>A hash chain over per-step hashes: any divergence changes every later link (TEST-022).</summary>
+        /// <summary>
+        /// The chain over per-step hashes. It is `ReplayStateHash.Chain` - one definition shared with the
+        /// real-Unity-jobs runner - so both comparers mean the same thing by "the same replay" (TEST-022).
+        /// </summary>
         private static ContentHash Chain(List<byte[]> perStep)
         {
-            byte[] accumulator = new byte[ContentHash.SizeInBytes];
+            var hashes = new ContentHash[perStep.Count];
             for (int i = 0; i < perStep.Count; i++)
             {
-                byte[] link = new byte[accumulator.Length + perStep[i].Length];
-                Array.Copy(accumulator, 0, link, 0, accumulator.Length);
-                Array.Copy(perStep[i], 0, link, accumulator.Length, perStep[i].Length);
-                accumulator = ContentHash.Compute(link).ToArray();
+                hashes[i] = new ContentHash(perStep[i]);
             }
 
-            return new ContentHash(accumulator);
+            return ReplayStateHash.Chain(hashes);
         }
-
 
         private static bool HasInstall(FixtureBuilder builder, string provider)
         {

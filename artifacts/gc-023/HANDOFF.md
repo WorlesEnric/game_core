@@ -1,12 +1,16 @@
 # GC-023 HANDOFF — replay, differential propagation and complete cost instrumentation (Wave 6)
 
-Branch `gc-023` (worktree `/Users/yangcao/wkspace/gc-wt/gc-023`), based on `main` (`1cafced`, the Wave 5 gate).
+Branch `gc-023` (worktree `/Users/yangcao/wkspace/gc-wt/gc-023`), based on `main` (`1cafced`, the Wave 5 gate), plus
+the build host's seven fix/evidence commits from round 1 (`180f16f..f74ea7b`, fast-forwarded here) and the round-2
+change set described in section 11.
 
-**Status of every build/test command in this document: `NotRun (pending orchestrator build host)`.** This host has no
-.NET SDK, no C# compiler and no Unity, so nothing in this change set has been compiled, imported, executed or built
-here. What did run is interpreter-level only: the host-side C# checker
-(`tools/check_game_core_csharp.py`, 481 files, clean), the contract-surface parity check, the generated-catalog
-verifier, the documentation validator (self-test and full), the generic-profile audit, the telemetry release-shape
+**Status of every build/test command in this document: `NotRun (pending orchestrator build host)`.** Round 1 was run
+on the Linux build host and is reported in `artifacts/gc-023/BUILD_REPORT.md` (1,035 .NET tests, 969 EditMode, 10
+PlayMode, 16 player modes x 5 runs, release player inspection). This host has no .NET SDK, no C# compiler and no
+Unity, so nothing in the *round-2* change set has been compiled, imported, executed or built here. What did run is
+interpreter-level only: the host-side C# checker (`tools/check_game_core_csharp.py`, 482 files, clean), the
+contract-surface parity check, the generated-catalog verifier, the documentation validator (self-test and full), the
+generic-profile audit, the telemetry release-shape
 switch check in `--no-build` mode, `bash -n` over the two new shell scripts, a JSON validation of the inventory and of
 the replay record, a whole-worktree `.cs`↔`.meta` coverage and GUID-uniqueness scan, and three independent read-only
 audits of the new code whose findings are all addressed (section 8). None of those is a build or a test result.
@@ -360,3 +364,94 @@ A fourth pass re-verified every fix in the list above against the current tree; 
    no publish happens, so `ApplyDurationMicroseconds` and `ApplySampleCount` are zero there — the pure half asserts the
    *shape* of the report (the ids exist and stay zero), and the Unity half asserts the samples. Recorded because a
    reader comparing the two halves could otherwise read the zeros as a defect.
+
+## 11. Round 2 — the real-Unity-jobs replay variant (orchestrator review)
+
+### 11.1 The gap and why the first answer was not enough
+
+The round-1 acceptance claim was "the 10,000-step integer fixture across supported worker counts". The build host
+already set and read back `JobsUtility.JobWorkerCount` around those runs, but the fixture's producers were a
+*deterministic managed model*: the worker count selected a permutation of producer order, and no producer work ever
+executed on a Unity worker thread. `artifacts/gc-023/BUILD_REPORT.md` says so itself in "Limits and outstanding
+acceptance". Setting a job-worker count and then running managed loops proves nothing about replay being independent
+of real worker scheduling, because the scheduler being varied is the fixture's own.
+
+### 11.2 What was added
+
+| File | Contents |
+|---|---|
+| `unity/.../Runtime/ReplayParallelJobs.cs` (new) | `ReplayJobsKeys` (stable identities from documented names), `ReplayProducerBatch`, `ReplayProducerJob` (a `[BurstCompile] IJobParallelFor`), `ReplayJobsShape`, `ReplayJobsRun`, `ReplayJobsModule` (per-world state: the declared batches, the native outputs, the bounded lane, the owner's integer state and the recorded hashes), `ReplayProducerSystem` + `ReplayCommitSystem`, `ReplayJobsRegistration` (two stages, one system each, the committing stage depending on the producing stage, and a message plane declaring one bounded lane) and `ReplayJobsRunner`. |
+| `unity/.../Runtime/ReplayScenario.cs` | `JobsNames` (three observations), `JobsWorkerCounts`, `PublishSeeds`, `Join`/`Histogram` helpers and `RunJobs`; `RunAll` now runs the jobs half after the pure replay. |
+| `unity/.../Runtime/ProbeReplay.cs` | `ExpectedObservations` 12 → 15. |
+| `unity/.../Tests/Replay/ReplayIntegrationTests.cs` | The structural counts (5 world + 7 replay + 3 jobs = 15) and a new test that the jobs observations exist and are driven at 1, 2, 4 and the target maximum under more than one publish permutation. |
+| `tools/unity/run_replay_probe.sh` | The three new required observations and eight new clauses (`observations=15`, `realBurstProducerJob=`, `innerLoopBatchCount=1`, `canonicalMergeReorderedRows=true`, `effectiveWorkerCountsReadBack=true`, `reordered=`, `recordedThreadHistograms=`, and the thread-evidence sentence). |
+| `tests/GameCore.Replay/Data/replay-record.json` | A `jobsShape` object recording the batches, steps, work per batch, inner-loop batch size, worker counts, publish seeds and the exact lane/merge types; `observationDigest` emptied and the previous value kept as `supersededObservationDigest`. |
+| `tests/GameCore.Replay/Runtime/ReplayHashing.cs`, `Runtime/ReplayRunner.cs` | `ReplayStateHash.Chain(IReadOnlyList<ContentHash>)` is now public and the single definition of the per-step chain; `ReplayRunner`'s private method delegates to it, so the modeled runner and the real-jobs runner cannot disagree about what "the same replay" means. |
+
+How one step of the real-jobs replay runs, in order, inside one owned world:
+
+1. **The producing stage** (`ReplayProducerSystem`) reserves one bounded arena range per declared batch through the
+   lane's own `TryReservePayload` (the runtime's documented native producer path), then schedules
+   `ReplayProducerJob` with `ScheduleParallel(batchCount, innerloopBatchCount: 1, Dependency)` and calls
+   `JobsUtility.ScheduleBatchedJobs()` so the worker threads can pick ranges up before the step's fence completes.
+   The handle goes into `Dependency` and is tracked by the lane as its payload writer.
+2. **The Burst job** writes its contribution into the lane's bounded `Payload` arena (big-endian int32), records the
+   value, and increments `ThreadExecutions[JobsUtility.ThreadIndex]` through `[NativeSetThreadIndex]`. Its arithmetic
+   is integral and thread-independent by construction, so the value cannot depend on the worker that produced it.
+   The `StepMessage` row is *not* built inside the job: its constructor validates and throws, which Burst cannot
+   compile, and the runtime's own producers build rows on the main thread for the same reason.
+3. **The committing stage** (`ReplayCommitSystem`, dispatch index 1 with the producing stage index as its declared
+   predecessor) calls `Dependency.Complete()` — the producer's handle reached it through that stage edge — then
+   publishes the produced rows through the lane's own `TryPublishRow` in a *seeded permutation*, reads each
+   contribution back out of the arena and checks it against the job's recorded value, takes the owner batch from the
+   plane's canonical merge (`MergeOwnerBatch`, ordered only by `MessageOrderComparer`), reduces it into the owner's
+   authoritative integer state, records the step's canonical state hash and event identities, and releases the lanes
+   with `ReleaseConsumed` so the next step starts empty.
+
+### 11.3 What is asserted, and why each assertion is falsifiable
+
+* `replay-jobs-world-runs-real-parallel-producers` — every run committed every step (`CompletedSteps == 64`), the
+  producer job was scheduled once per step, every batch produced exactly one accepted row, the lane refused nothing,
+  the requested `JobsUtility.JobWorkerCount` was read back (equals for 1/2/4, at least 4 for the maximum), **and** the
+  canonical merge reordered the publish order at least once. That last clause is what keeps the merge claim from being
+  vacuous: if the seeded permutation happened to be the identity, "the merge decides the order" would be untested.
+* `replay-jobs-hashes-identical-across-worker-counts` — eight runs (worker counts 1, 2, 4, max × publish seeds 977 and
+  104729) must agree with the first on every per-step state hash, the final state, the canonical event identities and
+  the chain hash. Comparison is between runs, never against a remembered literal.
+* `replay-jobs-producers-execute-on-multiple-threads` — for every run whose effective worker count exceeded one, the
+  recorded per-thread histogram must show at least two distinct `JobsUtility.ThreadIndex` values. Without this, a run
+  in which Unity serialized everything would pass the hash comparison for the wrong reason. The full histogram and the
+  highest observed index are printed in the detail, so a failure is diagnosable from the artifact alone.
+
+The modeled half is kept unchanged, because it answers a different question (the fixture's own reference scheduling and
+the 10,000-step trace); it is now explicitly labelled in the probe detail as modeled rather than real.
+
+### 11.4 Build host actions required by this change set
+
+1. **Re-record the observation digest.** The observation table grew from 12 to 15, so
+   `tests/GameCore.Replay/Data/replay-record.json`'s `observationDigest` was deliberately emptied (the old value is
+   kept as `supersededObservationDigest`). The harness prints the observed digest and continues while it is empty; copy
+   the `digest=` value from the `replay-digest` step of `artifacts/gc-023/toolchain/probe-replay.json` into
+   `observationDigest` and re-run the probe so the comparison is enforced again.
+2. **Watch the thread-evidence observation on the first run.** It is the only new assertion that depends on how the
+   target's job system behaves rather than on the library: it requires two distinct worker threads when more than one
+   worker is configured. The reference shape uses 64 batches of 1,024 integral iterations each, which is far past the
+   size at which Unity's work-stealing distributes ranges, but the recorded histogram in the observation detail is the
+   evidence, and the honest failure mode is a clearly printed histogram rather than a silent pass.
+3. The gate command is unchanged (`tools/run_gc023_gate.sh`), so no new step is needed: the new observations ride in
+   the existing `-probeReplay` mode and the existing EditMode suite.
+
+### 11.5 Round-2 assumptions and limits
+
+1. **Nothing in this change set has been compiled or executed.** The new file is ~1,150 lines of hand-written Unity
+   code (jobs, two systems, a world registration and a runner); it was audited read-only against every declaration it
+   calls (section 12), but only a compiler settles it.
+2. **The real-jobs fixture is a separate, smaller world, not the 10,000-step trace.** The 10,000-step trace stays
+   pure/managed (it is the derivation-replay fixture); the real-jobs world runs 64 wake-driven steps with 64 real
+   parallel batches per step, which is what makes the scheduler observable at a cost the Editor can afford. Both are
+   recorded in `Data/replay-record.json`.
+3. **`JobWorkerMaximumCount` may exceed what the host really gives a job.** The runner asserts equality for the three
+   explicit counts and only "at least 4" for the maximum, because a target may clamp its own ceiling.
+4. **Native physics is still not claimed.** The producer's arithmetic is integral, so "the same state at 1/2/4/max
+   workers" is a statement about ordering, not about floating-point or solver lockstep (TEST-022 excludes that
+   explicitly).

@@ -297,6 +297,28 @@ namespace GameCore.Replay
         }
 
         /// <summary>
+        /// A hash chain over per-step hashes: the accumulator starts as 32 zero bytes and
+        /// <c>link[i] = H(link[i-1] || step[i])</c>. Any divergence at any step changes every later link, which is
+        /// what makes one chain value serve as the whole ordered comparison (TEST-022). One definition is shared by
+        /// every runner - the modeled fixture replay and the real-Unity-jobs variant - so two runners cannot
+        /// disagree about what "the same replay" means.
+        /// </summary>
+        public static ContentHash Chain(IReadOnlyList<ContentHash>? perStep)
+        {
+            byte[] accumulator = new byte[ContentHash.SizeInBytes];
+            for (int i = 0; i < (perStep?.Count ?? 0); i++)
+            {
+                byte[] step = perStep![i].ToArray();
+                byte[] link = new byte[accumulator.Length + step.Length];
+                Array.Copy(accumulator, 0, link, 0, accumulator.Length);
+                Array.Copy(step, 0, link, accumulator.Length, step.Length);
+                accumulator = ContentHash.Compute(link).ToArray();
+            }
+
+            return new ContentHash(accumulator);
+        }
+
+        /// <summary>
         /// The full canonical projection of one derivation a differential comparison uses: the effective state, then
         /// every decision and provenance line sorted ordinally. Sorting is what makes the projection a statement
         /// about *what* was decided rather than about the order the two traversals happened to walk in (TEST-008

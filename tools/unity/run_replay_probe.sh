@@ -92,13 +92,17 @@ replay_steps=(
   '"name": "replay-observation-replay-is-separate-from-physics"'
   '"name": "replay-differential-sweep-is-clean-and-reducible"'
   '"name": "replay-raw-benchmark-trace-round-trips"'
+  '"name": "replay-jobs-world-runs-real-parallel-producers"'
+  '"name": "replay-jobs-hashes-identical-across-worker-counts"'
+  '"name": "replay-jobs-producers-execute-on-multiple-threads"'
   '"name": "replay-digest"'
   '"name": "replay-observation-count"'
   '"name": "replay-benchmark-trace"'
 )
 probe_require_steps "${result_file}" "${replay_steps[@]}"
 
-# The clauses that make the pass flags mean something: the worker sweep really covered every supported count, the
+# The clauses that make the pass flags mean something: the modeled worker sweep really covered every supported count,
+# the real-Unity-jobs half really ran Burst parallel producers at every count with the merge reordering rows, the
 # idle world really did zero control work, and the memory split really reported four separate numbers.
 for clause in \
   "workers1=equal" \
@@ -113,7 +117,14 @@ for clause in \
   "quarantineBytes=" \
   "jobWaitSamples=" \
   "steps=10000" \
-  "observations=12"; do
+  "observations=15" \
+  "realBurstProducerJob=" \
+  "innerLoopBatchCount=1" \
+  "canonicalMergeReorderedRows=true" \
+  "effectiveWorkerCountsReadBack=true" \
+  "reordered=" \
+  "recordedThreadHistograms=" \
+  "multiThreaded=true" ; do
   if ! grep -q "${clause}" "${result_file}"; then
     echo "   FAIL replay: required clause '${clause}' is absent from ${result_file}" >&2
     failures=$((failures + 1))

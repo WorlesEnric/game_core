@@ -75,8 +75,24 @@ namespace GameCore.Validation.Replay
             // would report fewer sections, so the digest would change even if every other observation passed.
             Assert.That(ReplayScenario.WorldNames.Count, Is.EqualTo(5));
             Assert.That(ReplayScenario.ReplayNames.Count, Is.EqualTo(7));
-            Assert.That(ReplayScenario.AllNames.Count, Is.EqualTo(12));
+            Assert.That(ReplayScenario.JobsNames.Count, Is.EqualTo(3));
+            Assert.That(ReplayScenario.AllNames.Count, Is.EqualTo(15));
             Assert.That(ReplayScenario.IdleFrames, Is.GreaterThan(0));
+        }
+
+        [Test]
+        public void TheRealJobsObservationsCoverEverySupportedWorkerCount()
+        {
+            // The gap this file closes: the modeled worker counts vary a managed scheduler, so the real-Unity-jobs
+            // observations must exist and must be driven at the three TEST-022 counts plus the target's own maximum.
+            Assert.That(ReplayScenario.JobsNames.Count, Is.EqualTo(3));
+            IReadOnlyList<int> counts = ReplayScenario.JobsWorkerCounts(out int maximum);
+            Assert.That(counts, Does.Contain(1));
+            Assert.That(counts, Does.Contain(2));
+            Assert.That(counts, Does.Contain(4));
+            Assert.That(maximum, Is.GreaterThanOrEqualTo(1), "the player must report a job-worker ceiling");
+            Assert.That(ReplayScenario.PublishSeeds.Length, Is.GreaterThan(1),
+                "more than one publish permutation is what makes the canonical-merge claim non-vacuous");
         }
 
         [Test]

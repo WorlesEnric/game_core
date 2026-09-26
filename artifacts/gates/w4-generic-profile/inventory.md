@@ -395,11 +395,24 @@ them but does not close their remaining clauses); `O-20`/`O-21` stay promoted fr
 
 ## GC-023 revision notes — replay, differential propagation and complete cost instrumentation
 
-**Proposals only: nothing below is promoted by this task.** The orchestrator promotes after running
+**Proposals only: nothing below is promoted by this task.** (Round 2 adds the real-Unity-jobs half; the machine-readable section is `gc023Revisions` in `inventory.json`.) The orchestrator promotes after running
 `UNITY=<editor> DOTNET=<sdk> PROBE_RUNS=5 tools/run_gc023_gate.sh` and recording
 `artifacts/gc-023/toolchain/probe-replay.json`, `artifacts/gc-023/toolchain/telemetry-release-surface.json` and
 `artifacts/gc-023/unity/editmode-results.xml`. The machine-readable form of this section is `gc023Revisions` in
 `inventory.json`.
+
+**Round 2 (orchestrator review).** The round-1 claim "the 10,000-step integer fixture across supported worker counts"
+was proven over a deterministic *model* of producer scheduling, so setting `JobsUtility.JobWorkerCount` varied a
+managed permutation rather than how the fixture's work ran. GC-023 now also drives the fixture's producers as REAL
+Burst `IJobParallelFor` jobs (inner-loop batch size 1) that write the runtime's own bounded `NativeMessageLane`
+payload arena, published through the lane's own publish path in a seeded permutation and merged by the runtime's
+canonical `MergeOwnerBatch`, at `JobsUtility.JobWorkerCount` 1, 2, 4 and the target's maximum, twice per count with
+different publish permutations. Three observations carry it: the world really ran the parallel producers (every step
+committed, every batch produced, nothing refused, and the canonical merge reordered the append order at least once),
+every run agrees on every per-step state hash, the final state, the canonical event identities and the chain hash, and
+the recorded per-thread histogram shows more than one distinct worker thread executing producer batches whenever the
+worker count was above one. The modeled test is kept: it is the fixture's own reference scheduling, and the two halves
+answer different questions.
 
 What GC-023 adds, in one paragraph: a fixed compact telemetry schema in `GameCore.Contracts` (a stable counter id per
 08 name, the TEST-023 leases/events/cache/quarantine split, one flat counter set, sections, frames, a retained trace
@@ -413,7 +426,7 @@ and the disabled-shape proof that compiles the counting call sites away.
 | Requirement | Row status | Proposal | Evidence that must first exist |
 | --- | --- | --- | --- |
 | P-008 stable ordering and the determinism boundary | Partial | Partial | `probe-replay.json`, `trx/`, `editmode-results.xml` |
-| P-018 precedence under shuffled completion | Partial | Partial | `probe-replay.json` |
+| P-018 precedence under shuffled completion (modeled and real jobs) | Partial | Partial | `probe-replay.json` |
 | P-022 budgets and their measurement | Partial | Partial | `probe-replay.json`, `trx/` |
 | P-023 incrementality and untouched-sibling counters | Partial | Partial | `probe-replay.json`, `trx/` |
 | P-026 explanation and provenance completeness | Partial | Partial | `probe-replay.json`, `trx/` |

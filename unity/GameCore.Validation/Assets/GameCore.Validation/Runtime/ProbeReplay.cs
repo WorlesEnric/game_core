@@ -25,7 +25,7 @@ namespace GameCore.Validation.ProbeHost
     public static class ProbeReplay
     {
         /// <summary>Expected number of named observations; a dropped observation changes the report shape.</summary>
-        public const int ExpectedObservations = 12;
+        public const int ExpectedObservations = 15;
 
         /// <summary>Expected logical steps of the recorded fixture (TEST-022).</summary>
         public const int ExpectedRecordedSteps = 10000;

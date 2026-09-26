@@ -142,8 +142,22 @@ namespace GameCore.Validation.ProbeHost
             "replay-raw-benchmark-trace-round-trips",
         });
 
+        /// <summary>
+        /// Named observations of the real-Unity-jobs half: the same recorded fixture driven through REAL Burst
+        /// parallel producers writing the runtime's own bounded lane, merged and committed by the runtime, at
+        /// `JobsUtility.JobWorkerCount` 1, 2, 4 and the maximum. These are the observations that close GC-023's
+        /// acceptance gap: the modeled worker counts above vary a managed scheduler, while these vary the number of
+        /// worker threads that actually executed producer work (`ReplayParallelJobs.cs`).
+        /// </summary>
+        public static readonly IReadOnlyList<string> JobsNames = Array.AsReadOnly(new[]
+        {
+            "replay-jobs-world-runs-real-parallel-producers",
+            "replay-jobs-hashes-identical-across-worker-counts",
+            "replay-jobs-producers-execute-on-multiple-threads",
+        });
+
         /// <summary>Every observation name of this scenario, in the order the runs report them.</summary>
-        public static IReadOnlyList<string> AllNames { get; } = Combine(WorldNames, ReplayNames);
+        public static IReadOnlyList<string> AllNames { get; } = Combine(Combine(WorldNames, ReplayNames), JobsNames);
 
         /// <summary>The recorded fixture seed and label the player probe and the suite both use.</summary>
         public const uint FixtureSeed = 20260923U;
@@ -170,6 +184,14 @@ namespace GameCore.Validation.ProbeHost
             for (int i = 0; i < replay.Steps.Count; i++)
             {
                 steps.Add(replay.Steps[i]);
+            }
+
+            // The real-Unity-jobs half runs last: it creates its own owned world, so the world observation above is
+            // already complete and cannot be affected by it.
+            ReplayScenarioResult jobs = RunJobs();
+            for (int i = 0; i < jobs.Steps.Count; i++)
+            {
+                steps.Add(jobs.Steps[i]);
             }
 
             return new ReplayScenarioResult(steps, world.RawTrace, world.JsonTrace, DigestOf(steps));
@@ -406,6 +428,248 @@ namespace GameCore.Validation.ProbeHost
             }
 
             return new ReplayScenarioResult(steps, rawTrace, jsonTrace, DigestOf(steps));
+        }
+
+        /// <summary>
+        /// The real-Unity-jobs half: the fixture's producers as REAL Burst `IJobParallelFor` work writing the
+        /// runtime's bounded lane, merged and committed by the runtime, at every supported
+        /// `JobsUtility.JobWorkerCount`.
+        ///
+        /// The three observations are deliberately separate, because each defends a different clause and one of them
+        /// is the falsifiability check on the others:
+        ///
+        ///   * *runs* — every step committed, every batch produced a row, the lane refused nothing, and the publish
+        ///     order really differed from the canonical merge order at least once (so "the merge decides the order"
+        ///     is not a vacuous statement about an already-sorted append).
+        ///   * *hashes* — every run agrees on every per-step state hash, the final state, the canonical event
+        ///     identities and the chain hash, across worker counts 1/2/4/max and across two publish permutations.
+        ///   * *threads* — the recorded per-thread histogram shows more than one distinct worker thread executed
+        ///     producer batches whenever the worker count was above one. Without this, a run in which Unity happened
+        ///     to serialize everything would pass the hash comparison for the wrong reason.
+        /// </summary>
+        public static ReplayScenarioResult RunJobs()
+        {
+            var steps = new List<ReplayStep>();
+            try
+            {
+                IReadOnlyList<int> counts = JobsWorkerCounts(out int maximum);
+                var runs = new List<ReplayJobsRun>();
+                var detail = new StringBuilder();
+                for (int c = 0; c < counts.Count; c++)
+                {
+                    int requested = counts[c];
+                    for (int p = 0; p < PublishSeeds.Length; p++)
+                    {
+                        ReplayJobsRun run = ReplayJobsRunner.Run(
+                            requested, PublishSeeds[p], ReplayJobsShape.Reference, runs.Count);
+                        runs.Add(run);
+                        detail.Append("w").Append(requested)
+                            .Append("/seed").Append(PublishSeeds[p])
+                            .Append("/effective").Append(run.EffectiveWorkers)
+                            .Append("/steps").Append(run.CompletedSteps)
+                            .Append("/schedules").Append(run.JobSchedules)
+                            .Append("/rows").Append(run.ProducedRows)
+                            .Append("/rejected").Append(run.RejectedRows)
+                            .Append("/threads").Append(run.DistinctThreads)
+                            .Append("/workers").Append(run.WorkerThreadCount())
+                            .Append("/reordered").Append(run.ReorderedStepCount)
+                            .Append(';');
+                    }
+                }
+
+                ReplayJobsShape shape = ReplayJobsShape.Reference;
+                bool runsPassed = true;
+                bool threadsPassed = true;
+                bool workerReadBack = true;
+                var threadDetail = new StringBuilder();
+                for (int i = 0; i < runs.Count; i++)
+                {
+                    ReplayJobsRun run = runs[i];
+                    bool complete = run.CompletedSteps == shape.Steps
+                        && run.JobSchedules == shape.Steps
+                        && run.ProducedRows == shape.Steps * shape.BatchCount
+                        && run.RejectedRows == 0
+                        && run.StepHashes.Count == shape.Steps;
+                    if (!complete)
+                    {
+                        runsPassed = false;
+                        detail.Append("incomplete[").Append(i).Append("]=").Append(run.Describe()).Append(';');
+                    }
+
+                    // The requested count must be the count the player really runs with; the maximum is allowed to
+                    // read back as at least the last explicit count, because a target may clamp its own ceiling.
+                    if (run.Workers <= 4)
+                    {
+                        workerReadBack = workerReadBack && run.EffectiveWorkers == run.Workers;
+                    }
+                    else
+                    {
+                        workerReadBack = workerReadBack && run.EffectiveWorkers >= 4;
+                    }
+
+                    threadDetail.Append("w").Append(run.Workers)
+                        .Append("/effective").Append(run.EffectiveWorkers)
+                        .Append("/distinct").Append(run.DistinctThreads)
+                        .Append("/workerThreads").Append(run.WorkerThreadCount())
+                        .Append("/highest").Append(run.HighestThreadIndex)
+                        .Append("/histogram=").Append(Histogram(run))
+                        .Append(';');
+
+                    if (run.EffectiveWorkers > 1 && run.DistinctThreads < 2)
+                    {
+                        // More than one worker was available and the job still ran on a single thread: the hash
+                        // comparison below would then be silent about real scheduling, which is the defect this
+                        // observation exists to catch.
+                        threadsPassed = false;
+                    }
+                }
+
+                // The canonical merge must have had something to do: at least one run reordered at least one step.
+                bool mergeMultiplied = false;
+                for (int i = 0; i < runs.Count; i++)
+                {
+                    if (runs[i].MergeReorderObservations > 0)
+                    {
+                        mergeMultiplied = true;
+                    }
+                }
+
+                steps.Add(new ReplayStep(
+                    JobsNames[0],
+                    runsPassed && workerReadBack && mergeMultiplied,
+                    "shape=" + shape.Describe()
+                    + "; workerCounts=" + Join(counts)
+                    + "; jobWorkerMaximum=" + maximum.ToString(CultureInfo.InvariantCulture)
+                    + "; publishSeeds=" + Join(PublishSeeds)
+                    + "; effectiveWorkerCountsReadBack=" + (workerReadBack ? "true" : "false")
+                    + "; canonicalMergeReorderedRows=" + (mergeMultiplied ? "true" : "false")
+                    + "; realBurstProducerJob=" + ReplayJobsKeys.ProducerSystem
+                    + "; innerLoopBatchCount=" + ReplayJobsKeys.InnerLoopBatchCount.ToString(CultureInfo.InvariantCulture)
+                    + "; " + detail));
+
+                // Every run must agree with the first: same per-step hashes, same final state, same events, same
+                // chain. The first run is the baseline, and each other run is compared to it rather than to a
+                // remembered hash, because what TEST-022 asks is agreement between replays of one recorded input.
+                bool hashesPassed = runs.Count > 0;
+                var hashDetail = new StringBuilder();
+                for (int i = 1; i < runs.Count; i++)
+                {
+                    bool same = runs[0].SameHashes(runs[i]);
+                    hashesPassed = hashesPassed && same;
+                    hashDetail.Append("run").Append(i)
+                        .Append("(w").Append(runs[i].Workers).Append("/seed").Append(runs[i].PublishSeed)
+                        .Append(runs[i].Workers == runs[0].Workers && runs[i].PublishSeed == runs[0].PublishSeed
+                            ? "")
+                        .Append(")=")
+                        .Append(same ? "equal" : "DIFFERENT")
+                        .Append(';');
+                }
+
+                steps.Add(new ReplayStep(
+                    JobsNames[1],
+                    hashesPassed,
+                    "runs=" + runs.Count.ToString(CultureInfo.InvariantCulture)
+                    + "; baseline=" + runs[0].Describe()
+                    + "; " + hashDetail));
+
+                steps.Add(new ReplayStep(
+                    JobsNames[2],
+                    threadsPassed,
+                    // The verdict is printed as a greppable fact rather than left to the step's prose, so the harness
+                    // clause fails when the evidence is absent instead of matching the assertion's own wording.
+                    "multiThreaded=" + (threadsPassed ? "true" : "false")
+                    + "; assertion=every run whose effective worker count was above one executed producer batches on "
+                    + "at least two distinct threads (JobsUtility.ThreadIndex via [NativeSetThreadIndex])"
+                    + "; recordedThreadHistograms=" + threadDetail));
+            }
+            catch (Exception exception)
+            {
+                steps.Add(new ReplayStep(
+                    JobsNames[0],
+                    false,
+                    "unhandled " + exception.GetType().FullName + ": " + exception.Message));
+            }
+
+            return new ReplayScenarioResult(steps, string.Empty, string.Empty, DigestOf(steps));
+        }
+
+        /// <summary>Publish permutations every worker count is replayed under (P-008's order independence).</summary>
+        public static readonly uint[] PublishSeeds = { 977U, 104729U };
+
+        /// <summary>
+        /// Worker counts the real-jobs replay runs at: the three TEST-022 names, plus the target's own maximum.
+        /// `JobsUtility.JobWorkerMaximumCount` is the ceiling the player reports, so "max" is what this build can
+        /// really use rather than a number the fixture invents.
+        /// </summary>
+        public static IReadOnlyList<int> JobsWorkerCounts(out int maximum)
+        {
+            maximum = JobsUtility.JobWorkerMaximumCount;
+            var counts = new List<int> { 1, 2, 4 };
+            if (maximum > 4)
+            {
+                counts.Add(maximum);
+            }
+
+            return counts.AsReadOnly();
+        }
+
+        private static string Join(IReadOnlyList<int> values)
+        {
+            var builder = new StringBuilder();
+            for (int i = 0; i < values.Count; i++)
+            {
+                if (i != 0)
+                {
+                    builder.Append('/');
+                }
+
+                builder.Append(values[i].ToString(CultureInfo.InvariantCulture));
+            }
+
+            return builder.ToString();
+        }
+
+        private static string Join(uint[] values)
+        {
+            var builder = new StringBuilder();
+            for (int i = 0; i < values.Length; i++)
+            {
+                if (i != 0)
+                {
+                    builder.Append('/');
+                }
+
+                builder.Append(values[i].ToString(CultureInfo.InvariantCulture));
+            }
+
+            return builder.ToString();
+        }
+
+        /// <summary>
+        /// The recorded per-thread execution histogram as <c>index:count</c> pairs, so the evidence that more than
+        /// one worker ran producer work is readable straight out of the probe artifact.
+        /// </summary>
+        private static string Histogram(ReplayJobsRun run)
+        {
+            var builder = new StringBuilder();
+            for (int i = 0; i < run.ThreadHistogram.Count; i++)
+            {
+                if (run.ThreadHistogram[i] == 0)
+                {
+                    continue;
+                }
+
+                if (builder.Length != 0)
+                {
+                    builder.Append(',');
+                }
+
+                builder.Append(i.ToString(CultureInfo.InvariantCulture))
+                    .Append(':')
+                    .Append(run.ThreadHistogram[i].ToString(CultureInfo.InvariantCulture));
+            }
+
+            return builder.Length == 0 ? "none" : builder.ToString();
         }
 
         /// <summary>
