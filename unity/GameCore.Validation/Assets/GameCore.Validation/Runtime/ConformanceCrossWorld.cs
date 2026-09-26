@@ -48,6 +48,7 @@ using GameCore.Gameplay.Cards.Fixtures;
 using GameCore.Gameplay.Integration.RewardOutbox;
 using GameCore.Gameplay.Narrative;
 using GameCore.Gameplay.Narrative.Fixtures;
+using GameCore.Gameplay.Rewards;
 using GameCore.Planning;
 using GameCore.ReferenceConformance;
 using GameCore.Rules.Cards;
@@ -177,6 +178,7 @@ namespace GameCore.Validation.ProbeHost
 
             var world = new CrossWorld(sessions, TargetCapacity);
             NarrativeCardRewardBridge? bridge = null;
+            RewardsInstallation? rewardInstallation = null;
             CrossDeliveryHook? hook = null;
             NarrativeModule? narrativeModule = null;
             CardTableModule? cardModule = null;
@@ -229,17 +231,20 @@ namespace GameCore.Validation.ProbeHost
                     RewardCatalog catalog = content.ToCatalog(requiresDurability: true, out string contentDetail);
                     hook = new CrossDeliveryHook();
                     var journal = new MemoryDeliveryJournal("memory://gc024-cross-rewards");
-                    bridge = new NarrativeCardRewardBridge(
+                    // The bridge of 07 s5 is constructed THROUGH the reward installation (GC-024), which owns it
+                    // and supplies its own declared identity and issuer; the bridge itself is unchanged, so every
+                    // member this run reads (`RecognisedCount`, `Owner.Outbox.*`, `Owner.ToRecords()`,
+                    // `Destination.*`, `Owner.Reinstate`) is the same one.
+                    rewardInstallation = RewardsInstallation.Mount(
                         world.Host!,
                         world.Time!,
-                        RewardOwnerId,
-                        RewardOwnerId,
                         catalog,
                         RewardCapacity,
                         RewardTerminalRetention,
                         OutboxDurability.Durable,
                         journal,
                         hook);
+                    bridge = rewardInstallation.Bridge;
                     hook.Attach(bridge);
                     steps.Add(new ConformanceObservation(
                         StepPrefix + RecordedSuffixes[2],
@@ -262,7 +267,13 @@ namespace GameCore.Validation.ProbeHost
             }
             finally
             {
-                if (bridge != null)
+                if (rewardInstallation != null)
+                {
+                    // The installation owns the bridge, so disposing it releases the delivery owner.
+                    rewardInstallation.Dispose();
+                    rewardInstallation = null;
+                }
+                else if (bridge != null)
                 {
                     bridge.Dispose();
                 }

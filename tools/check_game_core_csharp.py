@@ -82,6 +82,10 @@ TARGETS = [
     "tests/GameCore.ReferenceConformance",
     "dotnet/src/GameCore.ReferenceConformance",
     "dotnet/tests/GameCore.ReferenceConformance.Tests",
+    # GC-024: the reward installation is production gameplay — it declares real Unity components' storage (the
+    # outbox slot row it writes through the world's EntityManager), the composition host and the state-policy
+    # pipeline — so the balance and forbidden-construct checks cover it while it stays out of `engine_free`.
+    "Packages/com.gamecore.gameplay.rewards",
 ]
 
 FORBIDDEN = {
