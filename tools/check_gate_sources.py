@@ -186,6 +186,37 @@ print('   unreachable:', sorted({(f, t, tuple(n)) for f, t, n in unreachable}) i
 print('== ambiguity (a used name declared in two imported namespaces) ==')
 print('   ambiguous:', sorted({(f, t, tuple(n)) for f, t, n in ambiguous}) if ambiguous else 'none')
 
+# ----------------------------------------------------------------------------------------------------------------
+# The `ProbeArguments.Parse` call site's own locals. THIS IS THE ONE CHECK THAT WOULD HAVE CAUGHT A REAL DEFECT this
+# gate shipped and then found: an edit removed `string? resultPath = null;` from `Parse`'s local block while the
+# constructor call still passed `resultPath`, which is a C# compile error (CS0103) that a balance check cannot see, a
+# member-resolution check cannot see (the name IS declared - as a field of the type, not as a local) and the release
+# clone's constructor-arity check cannot see either (the arity still matched). So every identifier the call passes must
+# be a local the same method declares, and a missing one is reported here.
+# ----------------------------------------------------------------------------------------------------------------
+parse_problems = []
+PA = 'unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/ProbeArguments.cs'
+if os.path.isfile(PA) and PA in CS:
+    pa_text = open(PA).read()
+    declared = set(re.findall(r'^\s*(?:bool|string\?)\s+(\w+)\s*=\s*', pa_text, re.M))
+    call_match = re.search(r'return new ProbeArguments\((.*?)\);', pa_text, re.S)
+    if call_match is None:
+        parse_problems.append(PA + ': no `return new ProbeArguments(...)` call found')
+    else:
+        passed = [a.strip() for a in re.sub(r'\s+', ' ', call_match.group(1)).split(',') if a.strip()]
+        for name in passed:
+            if not re.match(r'^\w+$', name):
+                parse_problems.append(PA + ': the call passes a non-identifier argument: ' + repr(name))
+            elif name not in declared:
+                parse_problems.append(
+                    PA + ': the constructor call passes `' + name
+                    + '`, which `Parse` never declares as a local (CS0103)')
+    print('== the Parse call site\'s own locals ==')
+    print('   declared locals:', len(declared), '| problems:', parse_problems or 'none')
+else:
+    print('== the Parse call site\'s own locals ==')
+    print('   not checked: ' + PA + ' is not in this change set')
+
 print()
 print('== frozen observation tables, digest literals and probe steps ==')
 src = open('unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/W6GateScenario.cs').read()
@@ -242,6 +273,7 @@ if os.path.isfile(W7) and os.path.isfile(W7_HARNESS):
     w7_src = open(W7).read()
     proc = w7_names('ProcessObservationNames', w7_src)
     fam = w7_names('FamilyObservationNames', w7_src)
+    con = w7_names('ConformanceObservationNames', w7_src)
 
     # The three family labels are read from the hosts the scenario names, so a relabelled genre changes this table
     # instead of being silently absent from it.
@@ -251,7 +283,9 @@ if os.path.isfile(W7) and os.path.isfile(W7_HARNESS):
         found = re.search(r'public const string ' + const_name + r'\s*=\s*"([^"]+)"', host_text)
         if found:
             labels.append(found.group(1))
-    w7_table = ['w7/' + n for n in proc] + [lab + '/' + n for lab in labels for n in fam]
+    # The emission order `W7GateScenario.ObservationNames()` fixes: the process group, then the recovery group per
+    # family, then GC-024's conformance group.
+    w7_table = ['w7/' + n for n in proc] + [lab + '/' + n for lab in labels for n in fam] + ['w7/' + n for n in con]
     w7_literal = hashlib.sha256('\n'.join(n + '=pass' for n in w7_table).encode()).hexdigest()
     w7_probe = open(R + 'ProbeW7Gate.cs').read()
     w7_suite = open('unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W7Gate/W7GateIntegrationTests.cs').read()
@@ -264,7 +298,8 @@ if os.path.isfile(W7) and os.path.isfile(W7_HARNESS):
     w7_where = dict(probe=w7_literal in w7_probe, suite=suite_recomputes, harness=w7_literal in w7_harness)
     w7_good &= all(w7_where.values())
     print(f'   {"w7 table":20s} {w7_literal}  ' + ' '.join(f'{k}={v}' for k, v in sorted(w7_where.items())))
-    print(f'   w7 observation counts: process {len(proc)}, per family {len(fam)}, families {labels}')
+    print(f'   w7 observation counts: process {len(proc)}, per family {len(fam)}, families {labels}, '
+          f'conformance {len(con)}')
 
     w7_steps = re.findall(r'^\s*\x27("name": "[^"]+")\x27\s*$', w7_harness, re.M)
     w7_expected = ['"name": "%s"' % n for n in w7_table]
@@ -277,8 +312,7 @@ else:
     print('   w7 table: NOT CHECKED (the Wave 7 gate files are not in this tree)')
 
 good = (balanced and not unresolved and not unreachable and not ambiguous and agree and not missing_steps
-        and not extra_steps and w7_good)
-print()
+        and not extra_steps and w7_good and not parse_problems)
 print('VERDICT:', 'ok' if good else 'REVIEW NEEDED')
 report = {
     'task': 'W7-GATE',
@@ -289,6 +323,7 @@ report = {
     'w7TableChecked': w7_checked,
     'w7TableAgreement': w7_good if w7_checked else None,
     'ambiguousNames': sorted({(f, t, tuple(n)) for f, t, n in ambiguous}),
+    'parseCallSiteProblems': parse_problems,
     'unbalancedSources': [] if balanced else 'see console',
     'digestAgreement': agree,
     'harnessSteps': len(steps),
