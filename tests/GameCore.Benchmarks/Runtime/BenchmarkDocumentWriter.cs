@@ -67,6 +67,7 @@ namespace GameCore.Benchmarks
             AppendInt(json, 1, "repetitionsExecuted", document.RepetitionsExecuted, true);
             AppendInt(json, 1, "stepsAdvanced", document.StepsAdvanced, true);
             AppendInt(json, 1, "windowMicroseconds", document.WindowMicroseconds, true);
+            AppendInt(json, 1, "warmupMicroseconds", document.WarmupMicroseconds, true);
             AppendBool(json, 1, "passed", document.Passed, true);
 
             var gates = new List<string>(document.Gates.Count);

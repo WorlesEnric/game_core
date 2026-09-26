@@ -456,6 +456,13 @@ namespace GameCore.Benchmarks
         /// <summary>Wall-clock measurement window this workload actually ran for, in microseconds.</summary>
         public long WindowMicroseconds { get; set; }
 
+        /// <summary>
+        /// Wall-clock microseconds this workload spent warming up before its measured window (08: 30 seconds, or until
+        /// initialization work is complete, whichever is later). Recorded so the measured window is known not to be the
+        /// window the runtime was still warming in, and so a warmup that its own cap cut short is visible.
+        /// </summary>
+        public long WarmupMicroseconds { get; set; }
+
         public IReadOnlyList<BenchmarkSample> Samples => samples;
 
         public IReadOnlyList<BenchmarkGateResult> Gates => gates;

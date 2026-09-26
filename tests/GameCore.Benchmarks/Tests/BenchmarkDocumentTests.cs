@@ -37,6 +37,13 @@ namespace GameCore.Benchmarks.Tests
             Assert.That(json.Contains("\"seed\": 20260926", StringComparison.Ordinal), Is.True);
             Assert.That(json.Contains("\"targets\": 10000", StringComparison.Ordinal), Is.True);
             Assert.That(json.Contains("\"repetitionsExecuted\": 1000", StringComparison.Ordinal), Is.True);
+            Assert.That(json.Contains("\"warmupSeconds\": 30", StringComparison.Ordinal), Is.True, "the declared warmup window is recorded");
+            Assert.That(
+                json.Contains("\"warmupMicroseconds\": 30000000", StringComparison.Ordinal),
+                Is.True,
+                "the warmup the run actually spent is recorded beside its declared bound, so a shortened warmup is visible");
+            Assert.That(json.Contains("\"windowMicroseconds\": 1000000", StringComparison.Ordinal), Is.True, "the measured window is recorded");
+            Assert.That(json.Contains("\"stepsAdvanced\": 10000", StringComparison.Ordinal), Is.True, "the committed steps are recorded");
             Assert.That(json.Contains("\"passed\": false", StringComparison.Ordinal), Is.True, "one gate failed, so the workload did not pass");
 
             for (int i = 0; i < document.Gates.Count; i++)
@@ -128,12 +135,46 @@ namespace GameCore.Benchmarks.Tests
             BenchmarkRunDocument document = BuildDocument();
             string json = BenchmarkDocumentWriter.WriteJson(document);
 
+            // `counters` is a map from a counter's wire name to its value, so it must be a JSON *object*. An array
+            // of `"name": value` members would not be JSON at all (the validator above rejects it), and a reader
+            // that looks a counter up by name would find nothing.
+            Assert.That(CountOccurrences(json, "\"counters\": {"), Is.EqualTo(1), "the workload totals are one JSON object");
+            Assert.That(CountOccurrences(json, "\"counters\": ["), Is.EqualTo(0), "never an array of members");
             Assert.That(CountOccurrences(json, "\"control-nodes-visited\": "), Is.EqualTo(1), "a non-zero total counter is written once");
             Assert.That(json.Contains("\"control-nodes-visited\": 17", StringComparison.Ordinal), Is.True);
             Assert.That(json.Contains("\"contributions-added\": 11", StringComparison.Ordinal), Is.True);
             Assert.That(CountOccurrences(json, "\"service-string-lookups\": "), Is.EqualTo(0), "a zero counter is omitted from the counters object");
             Assert.That(CountOccurrences(json, "\"stale-results\": "), Is.EqualTo(0));
             Assert.That(CountOccurrences(json, "\"quarantine-entries\": "), Is.EqualTo(0), "the counters object is the workload total, not the memory split");
+
+            // The object's members follow the schema's own id order, so a renamed counter moves a header and never
+            // a position (the same rule the CSV header follows).
+            IReadOnlyList<string> columns = BenchmarkDocumentWriter.CounterColumns();
+            int previous = -1;
+            var totals = new TelemetryCounterSet();
+            totals.Set(TelemetryCounter.ControlNodesVisited, 17L);
+            totals.Set(TelemetryCounter.ContributionsAdded, 11L);
+            for (int i = 0; i < columns.Count; i++)
+            {
+                if (totals.Get((TelemetryCounter)i) == 0L)
+                {
+                    continue;
+                }
+
+                int at = json.IndexOf("\"" + columns[i] + "\": ", StringComparison.Ordinal);
+                Assert.That(at, Is.GreaterThan(-1), "counter " + columns[i] + " is written by its schema name");
+                Assert.That(at, Is.GreaterThan(previous), "counter " + columns[i] + " follows the schema's id order");
+                previous = at;
+            }
+
+            Assert.That(previous, Is.GreaterThan(-1), "the document really wrote the totals this check walks");
+
+            // A document that observed nothing writes an empty object rather than a malformed one.
+            BenchmarkRunDocument empty = BuildDocument();
+            empty.SetTotals(new TelemetryCounterSet());
+            string emptyJson = BenchmarkDocumentWriter.WriteJson(empty);
+            AssertValidJson(emptyJson);
+            Assert.That(CountOccurrences(emptyJson, "\"counters\": {}"), Is.EqualTo(1), "an all-zero total is an empty object, not a dangling comma");
 
             Assert.That(
                 json.Contains("\"counters\": \"control-nodes-visited=3;candidates-matched=7\"", StringComparison.Ordinal),
@@ -296,6 +337,7 @@ namespace GameCore.Benchmarks.Tests
             document.RepetitionsExecuted = 1000;
             document.StepsAdvanced = 10000L;
             document.WindowMicroseconds = 1000000L;
+            document.WarmupMicroseconds = 30000000L;
             document.Note("updateSize=1;repetition=0");
             document.Note("escaped \"note\" with a \\ backslash");
             document.Add(new BenchmarkGateResult("gate.affected-targets", true, "affected=1;candidates=10000"));
@@ -443,7 +485,12 @@ namespace GameCore.Benchmarks.Tests
 
             Assert.That(inString, Is.False, "every string is terminated");
             Assert.That(open.Count, Is.EqualTo(0), "every brace and bracket is closed");
-            Assert.That(json.EndsWith("}", StringComparison.Ordinal), Is.True, "the document is one object");
+            // The writer terminates the document with a newline (it renders every field with a trailing line feed),
+            // so the object itself is checked after that trailing whitespace rather than against it.
+            Assert.That(
+                json.TrimEnd('\n', '\r', ' ', '\t').EndsWith("}", StringComparison.Ordinal),
+                Is.True,
+                "the document is one object");
         }
 
         private static int NextSignificant(string text, int from)

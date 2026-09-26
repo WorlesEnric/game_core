@@ -35,8 +35,10 @@
 #   BENCH_LIVE_SCOPES  live-world scopes (default: BENCH_SCOPES)
 #   BENCH_LIVE_TARGETS live-world targets (default: BENCH_TARGETS)
 #   BENCH_SEED     recorded fixture seed (default 20260926)
-#   BENCH_TIMEOUT  per-run watchdog in seconds (default 3600; a timeout is a defect, not a retry)
-#   MACHINE        recorded baseline machine name (default: $(hostname))
+#   BENCH_APPLY_TARGETS     live targets the chapter provider's rule selects (default 100: 08's plan row)
+#   BENCH_LIVE_SPAWN_TARGETS  live targets one spawn publication installs (default 1000: 08's spawn row)
+#   BENCH_IDLE_FRAMES       frames the idle command-driven world is pumped (default 64)
+#   BENCH_UNCHANGED_STEPS   steps the unchanged-composition window commits (default 10000)
 #
 # Wall-clock cost of the declared defaults. The catalogue is 11 workloads: three steady and eight change.
 #   * Steady window: 3 workloads x 5 runs x (30 s warmup + 120 s duration) = 2250 s = 37.5 min.
@@ -69,7 +71,15 @@ BENCH_TARGETS="${BENCH_TARGETS:-10000}"
 BENCH_LIVE_SCOPES="${BENCH_LIVE_SCOPES:-${BENCH_SCOPES}}"
 BENCH_LIVE_TARGETS="${BENCH_LIVE_TARGETS:-${BENCH_TARGETS}}"
 BENCH_SEED="${BENCH_SEED:-20260926}"
-BENCH_TIMEOUT="${BENCH_TIMEOUT:-3600}"
+PROBE_PLAYER="${PROBE_PLAYER:-${UNITY_PROJECT}/Builds/Linux64/GameCoreProbe.x86_64}"
+
+# The live half's declared shapes. These default to the probe's own defaults, which are the ones the budget rows name
+# (08's hundred-target plan, a 10,000-step unchanged window, 1,000 spawned targets, a 64-frame idle window); the harness
+# passes them explicitly so a run's evidence records the values it actually used rather than relying on a default.
+BENCH_APPLY_TARGETS="${BENCH_APPLY_TARGETS:-100}"
+BENCH_LIVE_SPAWN_TARGETS="${BENCH_LIVE_SPAWN_TARGETS:-1000}"
+BENCH_IDLE_FRAMES="${BENCH_IDLE_FRAMES:-64}"
+BENCH_UNCHANGED_STEPS="${BENCH_UNCHANGED_STEPS:-10000}"
 MACHINE="${MACHINE:-$(hostname)}"
 
 # The catalogue in report order, mirroring BenchmarkWorkloads.All. Every consumer iterates it, so a workload cannot be
@@ -116,6 +126,10 @@ require_positive BENCH_TARGETS "${BENCH_TARGETS}"
 require_positive BENCH_LIVE_SCOPES "${BENCH_LIVE_SCOPES}"
 require_positive BENCH_LIVE_TARGETS "${BENCH_LIVE_TARGETS}"
 require_uint BENCH_SEED "${BENCH_SEED}"
+require_positive BENCH_APPLY_TARGETS "${BENCH_APPLY_TARGETS}"
+require_positive BENCH_LIVE_SPAWN_TARGETS "${BENCH_LIVE_SPAWN_TARGETS}"
+require_positive BENCH_IDLE_FRAMES "${BENCH_IDLE_FRAMES}"
+require_positive BENCH_UNCHANGED_STEPS "${BENCH_UNCHANGED_STEPS}"
 require_positive BENCH_TIMEOUT "${BENCH_TIMEOUT}"
 if (( BENCH_RUNS < 1 )); then
   die "BENCH_RUNS must be a positive integer, got '${BENCH_RUNS}'"
@@ -236,6 +250,10 @@ bench_args=(
   "-probeBenchmarkDuration=${BENCH_DURATION}"
   "-probeBenchmarkRepetitions=${BENCH_REPETITIONS}"
   "-probeBenchmarkSeed=${BENCH_SEED}"
+  "-probeBenchmarkApplyTargets=${BENCH_APPLY_TARGETS}"
+  "-probeBenchmarkLiveSpawnTargets=${BENCH_LIVE_SPAWN_TARGETS}"
+  "-probeBenchmarkIdleFrames=${BENCH_IDLE_FRAMES}"
+  "-probeBenchmarkUnchangedSteps=${BENCH_UNCHANGED_STEPS}"
 )
 
 for (( run = 1; run <= BENCH_RUNS; run++ )); do
@@ -267,7 +285,11 @@ for (( run = 1; run <= BENCH_RUNS; run++ )); do
     echo "BENCH_SCOPES=${BENCH_SCOPES}"
     echo "BENCH_TARGETS=${BENCH_TARGETS}"
     echo "BENCH_LIVE_SCOPES=${BENCH_LIVE_SCOPES}"
-    echo "BENCH_LIVE_TARGETS=${BENCH_LIVE_TARGETS}"
+    echo "BENCH_SEED=${BENCH_SEED}"
+    echo "BENCH_APPLY_TARGETS=${BENCH_APPLY_TARGETS}"
+    echo "BENCH_LIVE_SPAWN_TARGETS=${BENCH_LIVE_SPAWN_TARGETS}"
+    echo "BENCH_IDLE_FRAMES=${BENCH_IDLE_FRAMES}"
+    echo "BENCH_UNCHANGED_STEPS=${BENCH_UNCHANGED_STEPS}"
     echo "BENCH_WARMUP=${BENCH_WARMUP}"
     echo "BENCH_DURATION=${BENCH_DURATION}"
     echo "BENCH_REPETITIONS=${BENCH_REPETITIONS}"

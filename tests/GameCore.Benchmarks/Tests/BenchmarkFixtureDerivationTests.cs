@@ -12,12 +12,15 @@
 //   * the invalidation counters and the derivation counters agree.
 //
 // WHY THE CONFIGURED BUDGET. `PropagationBudget.Reference` carries P-022's provisional apply-cost guardrail of
-// 8,000 us. The declared fixture's own estimate is far above that (10,000 targets at 2 us each plus 3 us per
-// written slot, plus 5 us per migrated target on a change), so the stock budget refuses the fixture with
-// `BudgetExceeded`/`ApplyCostEstimate` — which is asserted first, below, so the refusal is visible in the test
-// result rather than implied by a comment. P-022 permits a caller to configure a larger limit, and 08's fixture is a
-// declared diagnostic load rather than a product plan, so every derivation here uses an explicit larger budget and
-// the apply estimate the engine reported is recorded in the assertion messages.
+// 8,000 us, and the engine checks it after assembly: the base fixture estimates 2 us per assembled target plus 3 us
+// per written slot, so the declared 10,000-target world cannot pass it and the stock budget refuses the fixture with
+// `BudgetExceeded`/`ApplyCostEstimate`. That refusal is asserted first, below, so it is visible in the test result
+// rather than implied by a comment. P-022 permits a caller to configure a larger limit — and 08's fixture is a
+// declared diagnostic load rather than a product plan — so every derivation here uses
+// `BenchmarkFixture.SuggestedBudget`, the fixture's own shape-derived budget, which the player's benchmark scenario
+// uses too: one definition, so the scenario and this suite cannot disagree about what "the fixture was accepted"
+// means. The reference guardrails stay visible through `ReferenceApplyCostMicroseconds`, and the configured budget
+// is asserted to be at least as permissive as them in every dimension.
 //
 // WHY THE SIZE-1 DIRTY SET IS NOT ONE TARGET. The frozen fixture header says it plainly: a tag-selected rule
 // narrows the *affected* set, never its *candidate domain* — `DerivationSnapshot.TargetsInReach` selects by declared
@@ -110,10 +113,17 @@ namespace GameCore.Benchmarks.Tests
                 Is.GreaterThan(ReferenceApplyCostMicroseconds),
                 "P-022 permits a caller to configure a larger limit than the reference guardrail, and the declared"
                 + " 10,000-target load needs one for the apply-cost estimate alone");
+            PropagationBudget shape = Fixture().SuggestedBudget;
             Assert.That(
-                configured,
-                Is.EqualTo(Fixture().SuggestedBudget).Using<PropagationBudget>(BudgetsAgree),
+                configured.MaxExaminedCandidates,
+                Is.EqualTo(shape.MaxExaminedCandidates),
                 "the cached budget is the fixture's own shape-derived budget, not a hand-picked multiplier");
+            Assert.That(configured.MaxEmittedContributions, Is.EqualTo(shape.MaxEmittedContributions));
+            Assert.That(configured.MaxAffectedTargets, Is.EqualTo(shape.MaxAffectedTargets));
+            Assert.That(configured.MaxTemporaryBytes, Is.EqualTo(shape.MaxTemporaryBytes));
+            Assert.That(configured.PreparationDeadlineMilliseconds, Is.EqualTo(shape.PreparationDeadlineMilliseconds));
+            Assert.That(configured.MaxApplyCostEstimateMicroseconds, Is.EqualTo(shape.MaxApplyCostEstimateMicroseconds));
+            Assert.That(shape, Is.Not.SameAs(configured), "and it is recomputed from the fixture rather than cached by the fixture");
             DerivationOptions options = Options();
             Assert.That(options.Budget, Is.SameAs(configured), "the derivation uses the budget the caller configured");
 
@@ -660,15 +670,23 @@ namespace GameCore.Benchmarks.Tests
             return result;
         }
 
-        /// <summary>P-022's other guardrails, raised so the declared diagnostic load is measurable rather than refused.</summary>
-        private static PropagationBudget ConfiguredBudget() =>
-            new PropagationBudget(
-                maxExaminedCandidates: 4000000L,
-                maxEmittedContributions: 1000000L,
-                maxAffectedTargets: 100000L,
-                maxTemporaryBytes: 512L * 1024L * 1024L,
-                preparationDeadlineMilliseconds: 60000L,
-                maxApplyCostEstimateMicroseconds: ConfiguredApplyCostMicroseconds);
+        /// <summary>
+        /// The budget these tests configure for the declared load: the fixture's own shape-derived
+        /// <see cref="BenchmarkFixture.SuggestedBudget"/>, cached so the options and the assertions observe one
+        /// instance. One definition, used by the player's benchmark scenario and by this suite, so the two cannot
+        /// disagree about what "the fixture was accepted" means.
+        /// </summary>
+        private static PropagationBudget ConfiguredBudget()
+        {
+            PropagationBudget? budget = sharedBudget;
+            if (budget == null)
+            {
+                budget = Fixture().SuggestedBudget;
+                sharedBudget = budget;
+            }
+
+            return budget;
+        }
 
         private static CompositionRevision NextRevision() => new CompositionRevision(2UL);
 

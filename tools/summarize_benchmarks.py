@@ -567,8 +567,8 @@ class WorkloadData:
     managed_thread_complete: bool = True
     memory_runs: list[dict] = field(default_factory=list)
     windows: list[tuple[str, int]] = field(default_factory=list)
+    warmups: list[tuple[str, int]] = field(default_factory=list)
     gates: list[tuple[str, str, bool, str]] = field(default_factory=list)
-    passed: bool = True
     self_consistency: list[str] = field(default_factory=list)
     kind: str = "Unknown"
     dimension: str = ""
@@ -638,6 +638,11 @@ def build_workload_data(workload: Workload | None, workload_id: str, documents: 
 
         window = coerce_int(raw.get("windowMicroseconds"))
         data.windows.append((document.run, window if window is not None else 0))
+
+        # 08 asks a warmup to be reported as the interval before the measured window, so the summarizer carries it
+        # rather than dropping it: a workload whose warmup was cut short by its own cap must be visible in the summary.
+        warmup = coerce_int(raw.get("warmupMicroseconds"))
+        data.warmups.append((document.run, warmup if warmup is not None else 0))
 
         if raw.get("passed") is not True:
             all_passed = False
@@ -1098,11 +1103,24 @@ def render_summary(
                 str(requested) if requested is not None else "-",
                 ", ".join(executed),
                 ", ".join(f"{run}={window} us" for run, window in sorted(data.windows, key=lambda item: sort_key_run(item[0]))),
+                ", ".join(
+                    f"{run}={warmup} us"
+                    for run, warmup in sorted(data.warmups, key=lambda item: sort_key_run(item[0]))
+                ),
             ]
         )
     lines.extend(
         markdown_table(
-            ["workload", "kind", "warmup s", "duration s", "repetitionsRequested", "repetitionsExecuted", "window per run"],
+            [
+                "workload",
+                "kind",
+                "warmup s",
+                "duration s",
+                "repetitionsRequested",
+                "repetitionsExecuted",
+                "measured window per run",
+                "warmup actually spent per run",
+            ],
             window_rows,
         )
     )

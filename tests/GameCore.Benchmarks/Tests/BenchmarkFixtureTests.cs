@@ -612,7 +612,18 @@ namespace GameCore.Benchmarks.Tests
             Assert.That(smallest.Targets.Count, Is.EqualTo(BenchmarkFixtureGenerator.MinimumScopes));
             Assert.That(smallest.GroupScopes.Count, Is.EqualTo(BenchmarkFixture.GroupCount));
             Assert.That(smallest.LeafScopes.Count, Is.EqualTo(BenchmarkFixture.ReparentLeafCount));
-            Assert.That(smallest.ReparentScopeTargets, Is.EqualTo(BenchmarkFixture.ReparentLeafCount * BenchmarkFixture.ReparentTargetsPerLeaf));
+            // The reparent branch is capped by the declared target count, not by the branch's own capacity
+            // (minimum of the declared targets and leaves x targets-per-leaf), so at this scale the whole world is
+            // the branch. The declared 100 only holds where the scale supplies 100 targets.
+            Assert.That(
+                smallest.ReparentScopeTargets,
+                Is.EqualTo(Math.Min(smallest.Targets.Count, BenchmarkFixture.ReparentLeafCount * BenchmarkFixture.ReparentTargetsPerLeaf)),
+                "the branch holds its declared capacity or the declared targets, whichever is smaller");
+            Assert.That(smallest.ReparentScopeTargets, Is.EqualTo(smallest.Targets.Count));
+            Assert.That(
+                smallest.ReparentScopeTargets,
+                Is.LessThan(BenchmarkFixture.ReparentLeafCount * BenchmarkFixture.ReparentTargetsPerLeaf),
+                "at the minimum scale the branch cannot reach its declared hundred");
         }
 
         [Test]

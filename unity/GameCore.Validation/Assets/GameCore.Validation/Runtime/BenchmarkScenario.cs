@@ -272,9 +272,21 @@ namespace GameCore.Validation.ProbeHost
             /// <summary>Ceiling on the samples one steady window records, so a raw artifact stays bounded.</summary>
             private const int MaxSteadySamples = 20000;
 
-            /// <summary>Ceiling on repetitions of the two-scale inactivity comparison, per scale.</summary>
-            private const int InactiveComparisonRepetitions = 200;
+            /// <summary>Floor of the warmup cycle cap: a very small scale still warms up for a few cycles.</summary>
+            private const int WarmupCyclesCap = 64;
 
+            /// <summary>
+            /// The warmup cap as a multiple of the measured repetitions, so a warmup can never outlast the measurement
+            /// it exists to protect however slow one change is.
+            /// </summary>
+            private const int WarmupCycleRatio = 2;
+
+            /// <summary>
+            /// The two-scale inactivity comparison repeats the workload's own declared repetition count at EACH scale,
+            /// so its cost is twice the declaration. There is deliberately no separate cap: a cap would execute fewer
+            /// repetitions than the document records, which is the silent truncation 08 forbids — if the declared count
+            /// is wrong for this workload, the declaration is what changes.
+            /// </summary>
             private readonly BenchmarkOptions options;
             private readonly List<BenchmarkStep> steps = new List<BenchmarkStep>();
             private readonly List<BenchmarkRunDocument> documents = new List<BenchmarkRunDocument>();
@@ -596,16 +608,22 @@ namespace GameCore.Validation.ProbeHost
             /// previous repetition's provider is retracted by the same derivation, so `contributions-added` and
             /// `contributions-retracted` are both reported and neither half of the change is hidden.
             /// </summary>
-            private void RunUpdateSize(BenchmarkRunDocument document, int size, BenchmarkWorkload workload)
-            {
-                int repetitions = options.RepetitionsFor(workload);
-                BenchmarkSnapshotBuilder builder = fixture.Builder();
-                DerivationResult? previous = warmupDerivation;
-                PluginInstanceId? mounted = null;
-                bool accepted = true;
-                int affected = 0;
+        private void RunUpdateSize(BenchmarkRunDocument document, int size, BenchmarkWorkload workload)
+        {
+            int repetitions = options.RepetitionsFor(workload);
+            BenchmarkSnapshotBuilder builder = fixture.Builder();
+            DerivationResult? previous = warmupDerivation;
+            PluginInstanceId? mounted = null;
+            bool accepted = true;
+            int affected = 0;
 
-                for (int repetition = 0; repetition <= repetitions; repetition++)
+            // 08's warmup rule: "Warm up for 30 seconds or until initialization/compilation/load work is complete,
+            // whichever is later." For a repeated change that work is the first repetitions, so the loop runs them
+            // until the declared warmup wall clock has elapsed (or the cap is reached) and records them as Warmup
+            // samples, so the window the measured samples describe is never the window the runtime was still warming
+            // in. Nothing about the warmup is discarded silently: its duration and cycle count go in the document.
+            int warmupCycles = WarmUpChange(
+                document, repetitions, out bool warmupComplete, (cycle, isFirst) =>
                 {
                     if (mounted.HasValue)
                     {
@@ -615,48 +633,131 @@ namespace GameCore.Validation.ProbeHost
 
                     pureRevision++;
                     builder.WithVersion(new CompositionRevision(pureRevision), new AssemblyEpoch(pureRevision));
-                    DerivationInstall install = BenchmarkFixtureVariants.UpdateInstall(fixture, size, repetition);
-                    builder.AddInstall(install);
-                    mounted = install.Instance;
-
+                    DerivationInstall warm = BenchmarkFixtureVariants.UpdateInstall(fixture, size, cycle);
+                    builder.AddInstall(warm);
+                    mounted = warm.Instance;
                     DerivationSnapshot snapshot = builder.Build();
                     long started = Microseconds();
                     IncrementalDerivationOutcome outcome = IncrementalDerivationEngine.Derive(
                         snapshot, fixture.Values, derivationOptions, previous, null, null);
                     long elapsed = Microseconds() - started;
-
                     previous = outcome.Result;
                     accepted &= outcome.Result.Accepted;
-                    if (!outcome.Result.Accepted)
-                    {
-                        document.Add(new BenchmarkGateResult(
-                            "update-accepted",
-                            false,
-                            "the derivation was refused at repetition "
-                            + repetition.ToString(CultureInfo.InvariantCulture) + ": " + outcome.Result.Rejection));
-                        break;
-                    }
+                    return elapsed;
+                });
 
-                    // The first iteration is the loop's warmup: it mounts where nothing was mounted, so its change is
-                    // not the declared one. It is timed and discarded, never reported as a sample.
-                    if (repetition == 0)
-                    {
-                        continue;
-                    }
+            document.Note("warmupCycles=" + warmupCycles.ToString(CultureInfo.InvariantCulture)
+                + "; warmupComplete=" + (warmupComplete ? "true" : "false")
+                + "; warmupSecondsRequested=" + options.WarmupSeconds.ToString(CultureInfo.InvariantCulture));
 
-                    affected = outcome.Result.Delta != null ? outcome.Result.Delta.Added.Count : 0;
-                    document.Add(new BenchmarkSample(
-                        repetition, BenchmarkPhase.Prepare, elapsed, DerivationCountersOf(outcome)));
+            for (int repetition = 0; repetition < repetitions; repetition++)
+            {
+                if (mounted.HasValue)
+                {
+                    builder.RemoveInstall(mounted.Value);
+                    mounted = null;
                 }
 
-                document.RepetitionsExecuted = document.DurationsOf(BenchmarkPhase.Prepare).Count;
-                document.Add(new BenchmarkGateResult(
-                    "update-affects-the-declared-target-count",
-                    accepted && affected == fixture.TargetCountForSize(size),
-                    "size=" + size.ToString(CultureInfo.InvariantCulture)
-                    + "; affectedTargets=" + affected.ToString(CultureInfo.InvariantCulture)
-                    + "; expected=" + fixture.TargetCountForSize(size).ToString(CultureInfo.InvariantCulture)
-                    + "; accepted=" + accepted));
+                pureRevision++;
+                builder.WithVersion(new CompositionRevision(pureRevision), new AssemblyEpoch(pureRevision));
+                DerivationInstall install = BenchmarkFixtureVariants.UpdateInstall(
+                    fixture, size, warmupCycles + repetition);
+                builder.AddInstall(install);
+                mounted = install.Instance;
+
+                DerivationSnapshot snapshot = builder.Build();
+                long started = Microseconds();
+                IncrementalDerivationOutcome outcome = IncrementalDerivationEngine.Derive(
+                    snapshot, fixture.Values, derivationOptions, previous, null, null);
+                long elapsed = Microseconds() - started;
+
+                previous = outcome.Result;
+                accepted &= outcome.Result.Accepted;
+                if (!outcome.Result.Accepted)
+                {
+                    document.Add(new BenchmarkGateResult(
+                        "update-accepted",
+                        false,
+                        "the derivation was refused at repetition "
+                        + repetition.ToString(CultureInfo.InvariantCulture) + ": " + outcome.Result.Rejection));
+                    break;
+                }
+
+                affected = outcome.Result.Delta != null ? outcome.Result.Delta.Added.Count : 0;
+                document.Add(new BenchmarkSample(
+                    repetition, BenchmarkPhase.Prepare, elapsed, DerivationCountersOf(outcome)));
+            }
+
+            document.RepetitionsExecuted = document.DurationsOf(BenchmarkPhase.Prepare).Count;
+            document.Add(new BenchmarkGateResult(
+                "update-affects-the-declared-target-count",
+                accepted && affected == fixture.TargetCountForSize(size),
+                "size=" + size.ToString(CultureInfo.InvariantCulture)
+                + "; affectedTargets=" + affected.ToString(CultureInfo.InvariantCulture)
+                + "; expected=" + fixture.TargetCountForSize(size).ToString(CultureInfo.InvariantCulture)
+                + "; repetitions=" + document.RepetitionsExecuted.ToString(CultureInfo.InvariantCulture)
+                + "; warmupCycles=" + warmupCycles.ToString(CultureInfo.InvariantCulture)
+                + "; accepted=" + accepted));
+        }
+
+            /// <summary>
+            /// Runs 08's warmup for a *steady* window: <paramref name="cycle"/> is invoked until the declared warmup
+            /// wall clock has elapsed. Returns the elapsed microseconds and sets <paramref name="cycles"/> to the number
+            /// of cycles it ran.
+            ///
+            /// It records no per-cycle sample, and that is deliberate rather than an omission: a steady cycle is a few
+            /// microseconds long, so a 30-second warmup at one sample per cycle would put hundreds of thousands of
+            /// entries into a raw artifact whose whole purpose is to be re-analysable. The warmup's total duration and
+            /// cycle count are recorded instead (the document's `WarmupMicroseconds` and a note), which is exactly what
+            /// 08 asks a warmup to be reported as: a duration before the measured window, not a measurement.
+            /// </summary>
+            private long WarmUpSteady(Func<long> cycle, out int cycles)
+            {
+                long budgetMicroseconds = (long)options.WarmupSeconds * 1_000_000L;
+                long spent = 0L;
+                cycles = 0;
+                while (spent < budgetMicroseconds)
+                {
+                    spent += cycle();
+                    cycles++;
+                }
+
+                return spent;
+            }
+
+            /// <summary>
+            /// Runs 08's warmup for a repeated change: <paramref name="cycle"/> is invoked until the declared warmup
+            /// wall clock has elapsed, or until the warmup cap is reached, and each cycle's duration is recorded as a
+            /// <see cref="BenchmarkPhase.Warmup"/> sample of the document. Returns the number of cycles it ran.
+            ///
+            /// A change cycle is a whole composition derivation, so there are tens of them rather than hundreds of
+            /// thousands and recording each one is what keeps the warmup's own distribution visible.
+            ///
+            /// The cap exists because a slow change would otherwise spend an unbounded opening window; when the cap ends
+            /// the warmup, <c>warmupComplete</c> is false and the document says so, rather than the run claiming a
+            /// warmup it did not finish.
+            /// </summary>
+            private int WarmUpChange(
+                BenchmarkRunDocument document,
+                int measuredRepetitions,
+                out bool warmupComplete,
+                Func<int, int, long> cycle)
+            {
+                int cap = Math.Max(WarmupCyclesCap, measuredRepetitions * WarmupCycleRatio);
+                long budgetMicroseconds = (long)options.WarmupSeconds * 1_000_000L;
+                long spent = 0L;
+                int cycles = 0;
+                while (spent < budgetMicroseconds && cycles < cap)
+                {
+                    long elapsed = cycle(cycles, cycles == 0);
+                    spent += elapsed;
+                    document.Add(new BenchmarkSample(cycles, BenchmarkPhase.Warmup, elapsed, null));
+                    cycles++;
+                }
+
+                warmupComplete = spent >= budgetMicroseconds;
+                document.WarmupMicroseconds = spent;
+                return cycles;
             }
 
             /// <summary>The whole-world mode switch: Automatic to Conservative and back, one sample per switch.</summary>
@@ -670,7 +771,28 @@ namespace GameCore.Validation.ProbeHost
                 int switches = 0;
                 int local = 0;
 
-                for (int repetition = 0; repetition <= repetitions; repetition++)
+                // 08's warmup rule, applied to this change exactly as the update loop applies it: the opening switches
+                // run until the declared warmup wall clock elapses, recorded as Warmup samples, so the measured
+                // switches describe a warmed runtime.
+                int warmupSwitches = WarmUpChange(
+                    document, repetitions, out bool warmupComplete, (cycle, isFirst) =>
+                    {
+                        mode = mode == PropagationMode.Automatic
+                            ? PropagationMode.Conservative
+                            : PropagationMode.Automatic;
+                        pureRevision++;
+                        builder.WithMode(mode)
+                            .WithVersion(new CompositionRevision(pureRevision), new AssemblyEpoch(pureRevision));
+                        long started = Microseconds();
+                        IncrementalDerivationOutcome outcome = IncrementalDerivationEngine.Derive(
+                            builder.Build(), fixture.Values, derivationOptions, previous, null, null);
+                        long elapsed = Microseconds() - started;
+                        previous = outcome.Result;
+                        accepted &= outcome.Result.Accepted;
+                        return elapsed;
+                    });
+
+                for (int repetition = 0; repetition < repetitions; repetition++)
                 {
                     mode = mode == PropagationMode.Automatic ? PropagationMode.Conservative : PropagationMode.Automatic;
                     pureRevision++;
@@ -701,14 +823,12 @@ namespace GameCore.Validation.ProbeHost
                         local++;
                     }
 
-                    if (repetition == 0)
-                    {
-                        continue;
-                    }
-
                     document.Add(new BenchmarkSample(
                         repetition, BenchmarkPhase.Prepare, elapsed, DerivationCountersOf(outcome)));
                 }
+
+                document.Note("warmupSwitches=" + warmupSwitches.ToString(CultureInfo.InvariantCulture)
+                    + "; warmupComplete=" + (warmupComplete ? "true" : "false"));
 
                 document.RepetitionsExecuted = document.DurationsOf(BenchmarkPhase.Prepare).Count;
                 document.Add(new BenchmarkGateResult(
@@ -716,6 +836,7 @@ namespace GameCore.Validation.ProbeHost
                     accepted && switches > 0 && local == 0,
                     "switches=" + switches.ToString(CultureInfo.InvariantCulture)
                     + "; reportedLocal=" + local.ToString(CultureInfo.InvariantCulture)
+                    + "; warmupSwitches=" + warmupSwitches.ToString(CultureInfo.InvariantCulture)
                     + "; accepted=" + accepted));
             }
 
@@ -733,18 +854,43 @@ namespace GameCore.Validation.ProbeHost
                 bool accepted = previous != null && previous.Accepted;
                 int assembled = 0;
 
-                for (int repetition = 0; repetition <= repetitions; repetition++)
+                // 08's warmup rule: the opening spawn cycles run until the declared warmup wall clock elapses and are
+                // recorded as Warmup samples. A warmup cycle spawns, derives and retires its own target set so each
+                // one is a complete spawn at the workload's real scale.
+                int warmupCycles = WarmUpChange(
+                    document, repetitions, out bool warmupComplete, (cycle, isFirst) =>
+                    {
+                        if (cycle > 0)
+                        {
+                            builder.RemoveTargets(BenchmarkFixtureVariants.SpawnedTargetIds(
+                                BenchmarkWorkloads.SpawnTargets, cycle - 1));
+                        }
+
+                        pureRevision++;
+                        builder.WithVersion(new CompositionRevision(pureRevision), new AssemblyEpoch(pureRevision));
+                        builder.AddTargets(BenchmarkFixtureVariants.SpawnTargets(
+                            fixture, scope, BenchmarkWorkloads.SpawnTargets, cycle));
+                        long started = Microseconds();
+                        IncrementalDerivationOutcome outcome = IncrementalDerivationEngine.Derive(
+                            builder.Build(), fixture.Values, derivationOptions, previous, null, null);
+                        long elapsed = Microseconds() - started;
+                        previous = outcome.Result;
+                        accepted &= outcome.Result.Accepted;
+                        return elapsed;
+                    });
+
+                for (int repetition = 0; repetition < repetitions; repetition++)
                 {
                     if (repetition > 0)
                     {
                         builder.RemoveTargets(BenchmarkFixtureVariants.SpawnedTargetIds(
-                            BenchmarkWorkloads.SpawnTargets, repetition - 1));
+                            BenchmarkWorkloads.SpawnTargets, warmupCycles + repetition - 1));
                     }
 
                     pureRevision++;
                     builder.WithVersion(new CompositionRevision(pureRevision), new AssemblyEpoch(pureRevision));
                     IReadOnlyList<DerivationTarget> spawned = BenchmarkFixtureVariants.SpawnTargets(
-                        fixture, scope, BenchmarkWorkloads.SpawnTargets, repetition);
+                        fixture, scope, BenchmarkWorkloads.SpawnTargets, warmupCycles + repetition);
                     builder.AddTargets(spawned);
 
                     DerivationSnapshot snapshot = builder.Build();
@@ -765,11 +911,6 @@ namespace GameCore.Validation.ProbeHost
                         break;
                     }
 
-                    if (repetition == 0)
-                    {
-                        continue;
-                    }
-
                     assembled = 0;
                     for (int i = 0; i < spawned.Count; i++)
                     {
@@ -785,6 +926,9 @@ namespace GameCore.Validation.ProbeHost
                     document.Add(new BenchmarkSample(
                         repetition, BenchmarkPhase.Prepare, elapsed, DerivationCountersOf(outcome)));
                 }
+
+                document.Note("warmupCycles=" + warmupCycles.ToString(CultureInfo.InvariantCulture)
+                    + "; warmupComplete=" + (warmupComplete ? "true" : "false"));
 
                 document.RepetitionsExecuted = document.DurationsOf(BenchmarkPhase.Prepare).Count;
                 document.Add(new BenchmarkGateResult(
@@ -804,13 +948,34 @@ namespace GameCore.Validation.ProbeHost
                 DerivationResult? previous = warmupDerivation;
                 bool accepted = true;
 
-                for (int repetition = 0; repetition <= repetitions; repetition++)
+                int move = 0;
+
+                // 08's warmup rule: the opening moves run until the declared warmup wall clock elapses and are recorded
+                // as Warmup samples, so the measured moves describe a warmed runtime.
+                int warmupMoves = WarmUpChange(
+                    document, repetitions, out bool warmupComplete, (cycle, isFirst) =>
+                    {
+                        pureRevision++;
+                        builder.WithVersion(new CompositionRevision(pureRevision), new AssemblyEpoch(pureRevision));
+                        builder.ReparentScope(
+                            fixture.ReparentScope,
+                            cycle % 2 == 0 ? fixture.SecondProviderScope : fixture.RootScope);
+                        long started = Microseconds();
+                        IncrementalDerivationOutcome outcome = IncrementalDerivationEngine.Derive(
+                            builder.Build(), fixture.Values, derivationOptions, previous, null, null);
+                        long elapsed = Microseconds() - started;
+                        previous = outcome.Result;
+                        accepted &= outcome.Result.Accepted;
+                        return elapsed;
+                    });
+
+                for (int repetition = 0; repetition < repetitions; repetition++)
                 {
                     pureRevision++;
                     builder.WithVersion(new CompositionRevision(pureRevision), new AssemblyEpoch(pureRevision));
                     builder.ReparentScope(
                         fixture.ReparentScope,
-                        repetition % 2 == 0 ? fixture.SecondProviderScope : fixture.RootScope);
+                        (warmupMoves + repetition) % 2 == 0 ? fixture.SecondProviderScope : fixture.RootScope);
 
                     DerivationSnapshot snapshot = builder.Build();
                     long started = Microseconds();
@@ -830,14 +995,14 @@ namespace GameCore.Validation.ProbeHost
                         break;
                     }
 
-                    if (repetition == 0)
-                    {
-                        continue;
-                    }
-
+                    move = repetition;
                     document.Add(new BenchmarkSample(
                         repetition, BenchmarkPhase.Prepare, elapsed, DerivationCountersOf(outcome)));
                 }
+
+                document.Note("warmupMoves=" + warmupMoves.ToString(CultureInfo.InvariantCulture)
+                    + "; warmupComplete=" + (warmupComplete ? "true" : "false")
+                    + "; lastMove=" + move.ToString(CultureInfo.InvariantCulture));
 
                 document.RepetitionsExecuted = document.DurationsOf(BenchmarkPhase.Prepare).Count;
                 document.Add(new BenchmarkGateResult(
@@ -856,15 +1021,19 @@ namespace GameCore.Validation.ProbeHost
             {
                 int repetitions = options.RepetitionsFor(workload);
                 int smallTargets = Math.Min(BenchmarkWorkloads.DefaultScopes, options.Scale.Targets);
-                long small = MeasureInactive(smallTargets, repetitions);
-                long large = MeasureInactive(options.Scale.Targets, repetitions);
-                document.Add(new BenchmarkSample(0, BenchmarkPhase.Prepare, small, null));
-                document.Add(new BenchmarkSample(1, BenchmarkPhase.Prepare, large, null));
+
+                // Each scale is warmed up and then measured on the same workload, and each scale's measured repetitions
+                // are sampled separately rather than summed: a sum would hide the distribution a hidden per-change scan
+                // would show up in, and TEST-023's whole point here is comparing the two scales' behaviour.
+                long small = MeasureInactive(document, smallTargets, repetitions, warmup: true);
+                long large = MeasureInactive(document, options.Scale.Targets, repetitions, warmup: true);
+
                 document.RepetitionsExecuted = repetitions;
                 document.Note("smallScaleTargets=" + smallTargets.ToString(CultureInfo.InvariantCulture)
                     + "; largeScaleTargets=" + options.Scale.Targets.ToString(CultureInfo.InvariantCulture)
                     + "; smallUs=" + small.ToString(CultureInfo.InvariantCulture)
-                    + "; largeUs=" + large.ToString(CultureInfo.InvariantCulture));
+                    + "; largeUs=" + large.ToString(CultureInfo.InvariantCulture)
+                    + "; repetitionsPerScale=" + repetitions.ToString(CultureInfo.InvariantCulture));
                 document.Add(new BenchmarkGateResult(
                     "inactive-targets-do-not-add-a-per-change-scan",
                     small > 0L && large > 0L,
@@ -879,9 +1048,15 @@ namespace GameCore.Validation.ProbeHost
 
             /// <summary>
             /// One small active workload over a fixture of exactly <paramref name="targets"/> targets: a single
-            /// one-target-tag update repeated. Returns the total measured microseconds.
+            /// one-target-tag update repeated <paramref name="repetitions"/> times. Returns the total measured
+            /// microseconds, and records every repetition as a Prepare sample of <paramref name="document"/> so the
+            /// scale's distribution survives into the raw data.
             /// </summary>
-            private long MeasureInactive(int targets, int repetitions)
+            private long MeasureInactive(
+                BenchmarkRunDocument document,
+                int targets,
+                int repetitions,
+                bool warmup)
             {
                 var scale = new BenchmarkScale(
                     Math.Max(BenchmarkFixtureGenerator.MinimumScopes, options.Scale.Scopes),
@@ -898,25 +1073,46 @@ namespace GameCore.Validation.ProbeHost
                 BenchmarkSnapshotBuilder builder = scaled.Builder();
                 DerivationResult? previous = DerivationEngine.Derive(
                     builder.Build(), scaled.Values, scaledOptions, null);
+
+                int warmupCycles = 0;
+                if (warmup)
+                {
+                    // The scale's warmup needs its own installation identities, so the measured repetitions below
+                    // start past the warmup's (P-004).
+                    warmupCycles = WarmUpChange(
+                        document, repetitions, out bool warmupComplete, (cycle, isFirst) =>
+                        {
+                            pureRevision++;
+                            builder.WithVersion(new CompositionRevision(pureRevision), new AssemblyEpoch(pureRevision));
+                            builder.AddInstall(BenchmarkFixtureVariants.UpdateInstall(scaled, 1, cycle));
+                            long started = Microseconds();
+                            IncrementalDerivationOutcome outcome = IncrementalDerivationEngine.Derive(
+                                builder.Build(), scaled.Values, scaledOptions, previous, null, null);
+                            long elapsed = Microseconds() - started;
+                            previous = outcome.Result;
+                            return elapsed;
+                        });
+                    document.Note("scale" + targets.ToString(CultureInfo.InvariantCulture)
+                        + "warmupCycles=" + warmupCycles.ToString(CultureInfo.InvariantCulture)
+                        + "; warmupComplete=" + (warmupComplete ? "true" : "false"));
+                }
+
                 long total = 0L;
-                int reps = Math.Max(1, Math.Min(repetitions, InactiveComparisonRepetitions));
-                for (int repetition = 0; repetition <= reps; repetition++)
+                for (int repetition = 0; repetition < repetitions; repetition++)
                 {
                     pureRevision++;
                     builder.WithVersion(new CompositionRevision(pureRevision), new AssemblyEpoch(pureRevision));
-                    builder.AddInstall(BenchmarkFixtureVariants.UpdateInstall(scaled, 1, repetition));
+                    builder.AddInstall(BenchmarkFixtureVariants.UpdateInstall(
+                        scaled, 1, warmupCycles + repetition));
                     DerivationSnapshot snapshot = builder.Build();
                     long started = Microseconds();
                     IncrementalDerivationOutcome outcome = IncrementalDerivationEngine.Derive(
                         snapshot, scaled.Values, scaledOptions, previous, null, null);
                     long elapsed = Microseconds() - started;
                     previous = outcome.Result;
-                    if (repetition == 0)
-                    {
-                        continue;
-                    }
-
                     total += elapsed;
+                    document.Add(new BenchmarkSample(
+                        repetition, BenchmarkPhase.Prepare, elapsed, DerivationCountersOf(outcome)));
                 }
 
                 return total;
@@ -934,9 +1130,38 @@ namespace GameCore.Validation.ProbeHost
                 int finalAssemblies = baselineAssemblies;
                 int finalContributions = baselineContributions;
 
+
+                // 08's warmup rule: the opening mount/unmount pairs run until the declared warmup wall clock elapses and
+                // are recorded as Warmup samples. They use their own installation identities so a measured cycle's
+                // identity is never reused by a warmup cycle (P-004).
+                int warmupCycles = WarmUpChange(
+                    document, cycles, out bool warmupComplete, (cycle, isFirst) =>
+                    {
+                        DerivationInstall warm = BenchmarkFixtureVariants.UpdateInstall(fixture, 1, cycle);
+                        pureRevision++;
+                        builder.WithVersion(new CompositionRevision(pureRevision), new AssemblyEpoch(pureRevision));
+                        builder.AddInstall(warm);
+                        long started = Microseconds();
+                        IncrementalDerivationOutcome warmMount = IncrementalDerivationEngine.Derive(
+                            builder.Build(), fixture.Values, derivationOptions, previous, null, null);
+                        previous = warmMount.Result;
+                        accepted &= warmMount.Result.Accepted;
+
+                        pureRevision++;
+                        builder.RemoveInstall(warm.Instance);
+                        builder.WithVersion(new CompositionRevision(pureRevision), new AssemblyEpoch(pureRevision));
+                        IncrementalDerivationOutcome warmUnmount = IncrementalDerivationEngine.Derive(
+                            builder.Build(), fixture.Values, derivationOptions, previous, null, null);
+                        long elapsed = Microseconds() - started;
+                        previous = warmUnmount.Result;
+                        accepted &= warmUnmount.Result.Accepted;
+                        return elapsed;
+                    });
+
                 for (int cycle = 0; cycle < cycles; cycle++)
                 {
-                    DerivationInstall install = BenchmarkFixtureVariants.UpdateInstall(fixture, 1, cycle);
+                    DerivationInstall install = BenchmarkFixtureVariants.UpdateInstall(
+                        fixture, 1, warmupCycles + cycle);
 
                     pureRevision++;
                     builder.WithVersion(new CompositionRevision(pureRevision), new AssemblyEpoch(pureRevision));
@@ -976,6 +1201,8 @@ namespace GameCore.Validation.ProbeHost
                         cycle, BenchmarkPhase.Change, unmounted, DerivationCountersOf(unmountOutcome)));
                 }
 
+                document.Note("warmupCycles=" + warmupCycles.ToString(CultureInfo.InvariantCulture)
+                    + "; warmupComplete=" + (warmupComplete ? "true" : "false"));
                 document.RepetitionsExecuted = document.DurationsOf(BenchmarkPhase.Change).Count / 2;
                 document.Add(new BenchmarkGateResult(
                     "lifecycle-counts-return-to-baseline",
@@ -1009,6 +1236,27 @@ namespace GameCore.Validation.ProbeHost
                 // so rather than returning a thread-complete zero it did not observe.
                 BenchmarkAllocationTracker allocation = BenchmarkAllocationTracker.Start(
                     1, BenchmarkThreadCoverage.AllThreadsSampled);
+
+                // 08's warmup rule for a steady workload: run the same work until the declared warmup wall clock has
+                // elapsed, with no per-step sample (see WarmUpSteady). The warmup steps mutate the same states the
+                // measured steps do, which is correct: the rule is integer and bounded, so its state is part of the
+                // workload rather than a measurement artifact.
+                long warmupSpent = WarmUpSteady(
+                    () =>
+                    {
+                        long warmupStarted = Microseconds();
+                        for (int t = 0; t < targets; t++)
+                        {
+                            states[t] = IntegerRuleStage.Apply(assemblies[t], states[t], IntegerRuleBound);
+                        }
+
+                        return Microseconds() - warmupStarted;
+                    },
+                    out int warmupSteps);
+
+                document.WarmupMicroseconds = warmupSpent;
+                document.Note("warmupSteps=" + warmupSteps.ToString(CultureInfo.InvariantCulture)
+                    + "; warmupMicroseconds=" + warmupSpent.ToString(CultureInfo.InvariantCulture));
 
                 long window = 0L;
                 int step = 0;
@@ -1101,6 +1349,26 @@ namespace GameCore.Validation.ProbeHost
                 ulong steps = 0UL;
                 int frames = 0;
 
+                // 08's warmup rule for a steady point: pump the world until the declared warmup wall clock has elapsed,
+                // with no per-frame sample (see WarmUpSteady). For an idle world this is the honest warmup — it proves
+                // the zero-work claim holds across the whole opening window rather than only inside the measured one.
+                long warmupSpent = WarmUpSteady(
+                    () =>
+                    {
+                        long warmupStarted = Microseconds();
+                        steps += world.PumpIdle(1);
+                        return Microseconds() - warmupStarted;
+                    },
+                    out int warmupFrames);
+
+                // The measured window's baseline is taken AFTER the warmup, so the idle counters a workload reports are
+                // the ones the measured window moved. The zero-step claim still covers the warmup too, because `steps`
+                // accumulates both loops.
+                before = SampleWorld(world);
+                document.WarmupMicroseconds = warmupSpent;
+                document.Note("warmupFrames=" + warmupFrames.ToString(CultureInfo.InvariantCulture)
+                    + "; warmupMicroseconds=" + warmupSpent.ToString(CultureInfo.InvariantCulture));
+
                 // The window ends at the declared duration OR at the sample cap, whichever comes first; both the
                 // achieved window and the cap go into the document, because a shortened window that is not disclosed
                 // is exactly the kind of silent truncation 08 forbids.
@@ -1178,6 +1446,33 @@ namespace GameCore.Validation.ProbeHost
                 int pumps = 0;
                 long window = 0L;
                 ulong committed = 0UL;
+
+                // 08's warmup rule for a steady point: commit steps until the declared warmup wall clock has elapsed,
+                // with no per-step sample (see WarmUpSteady). The baseline is re-read afterwards so the counters the
+                // workload reports are the ones the measured window moved, while the zero-control-work claim still
+                // covers the warmup, because the warmup runs before the baseline and any control work in it would move
+                // the cumulative counters the workload's own delta is taken from.
+                // The closure counts its own pumps, because an `out` parameter cannot be captured by the lambda it is
+                // passed to; that counter is therefore the cycle count the document reports.
+                int warmupPumps = 0;
+                long warmupSpent = WarmUpSteady(
+                    () =>
+                    {
+                        long warmupStarted = Microseconds();
+                        ulong warmupTick = world.Host.HostTimeOrigin
+                            + ((ulong)(warmupPumps + 1) * ticksPerPump);
+                        world.Pump(warmupTick);
+                        warmupPumps++;
+                        return Microseconds() - warmupStarted;
+                    },
+                    out int _);
+
+                before = SampleWorld(world);
+                publicationsBefore = world.Publisher.PublicationCount;
+                document.WarmupMicroseconds = warmupSpent;
+                document.Note("warmupPumps=" + warmupPumps.ToString(CultureInfo.InvariantCulture)
+                    + "; warmupMicroseconds=" + warmupSpent.ToString(CultureInfo.InvariantCulture));
+
                 while (committed < (ulong)target && pumps < 100000)
                 {
                     long started = Microseconds();

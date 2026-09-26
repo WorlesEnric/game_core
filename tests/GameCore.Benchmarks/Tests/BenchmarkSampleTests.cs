@@ -245,7 +245,13 @@ namespace GameCore.Benchmarks.Tests
             Assert.That(document.Passed, Is.False, "a document with no gates is not a pass");
 
             document.Add(new BenchmarkGateResult("budget.apply-pause-p95", true, "p95=100us"));
-            Assert.That(document.Passed, Is.True);
+            Assert.That(
+                document.Passed,
+                Is.False,
+                "every gate passed but the run executed 0 of the 5 repetitions it declared, so it is not a pass");
+
+            document.RepetitionsExecuted = 5;
+            Assert.That(document.Passed, Is.True, "every gate passed and the run executed what it declared");
 
             document.Add(new BenchmarkGateResult("gate.affected-targets", false, "affected=2; expected=1"));
             Assert.That(document.Passed, Is.False, "one failed gate fails the workload");
