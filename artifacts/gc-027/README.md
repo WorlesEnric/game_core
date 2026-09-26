@@ -12,6 +12,7 @@ here, labelled as such.
 | C# brace/paren balance and forbidden-construct scan | `python3 tools/check_game_core_csharp.py` | `checked 555 C# file(s)` → `ok` |
 | GC-017 release surface, source half (`--no-build`) | `python3 tools/check_release_fault_free.py --no-build` | `PASS` — no runtime source keeps a latch reference once the qualification symbol is undefined; the `[Conditional]` mask is intact at 8 call sites |
 | release-clone preparation, run for real | `python3 tools/unity/prepare_gc017_release_project.py` | prepared `unity/GameCore.ReleaseCheck` (since deleted) |
+| declaration audit of every new C# file | a separate read-only reviewer, cross-checking each `X.Y` against its declaration | 12 findings, **all fixed** (`compile-risk-audit.md`) |
 | release-clone invariants, run for real | `python3 tools/check_release_clone.py` | `VERDICT: clone is clean` — 149 files, no removed-type reference, no dangling asmdef reference, constructor 14 params = 14 args, 58 C# files balanced, all six removed modes absent and all thirteen kept modes wired, manifest clean |
 | probe harness shell syntax | `bash -n tools/unity/run_recovery_probe.sh` | exit 0 |
 | Python tool syntax | `python3 -c "import ast; ast.parse(...)"` over both edited tools | exit 0 |
@@ -30,6 +31,7 @@ None of that is a build, an import, a test or a player run.
 | `fault-injection-matrix.md` | the eight-point matrix with where each is asserted and what the build host copies out | authored from the source; observations `NotRun` |
 | `inventory-proposals.md` | the inventory rows this change set proposes the build host promote **after running** | proposals only |
 | `static-checks.log` | verbatim output of the host-side checks listed above | ran here |
+| `compile-risk-audit.md` | the read-only declaration audit of every new C# file: twelve findings, their fixes, and the list of things only a compiler can confirm | ran here (a reading result, not a compile) |
 
 ## Commands the build host runs
 

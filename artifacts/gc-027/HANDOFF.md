@@ -106,6 +106,7 @@ new world unexposed."* — is delivered as five pieces:
 | `tools/unity/prepare_gc017_release_project.py` | GC-027's seven runtime files join the removal tuple, `("Recovery","GC-027")` joins the mode tuple, six `ARG_NEEDLES` added, the `IsProbeInvocation` expression and the constructor call re-derived, the module docstring updated. | A qualification-only mode must leave the marker-free clone as one consistent set. §5.3. |
 | `tools/check_release_clone.py` | Seven GC-027 type names in `REMOVED_TYPES`, `('Recovery','recovery')` in `REMOVED_MODES`. | The clone's invariants are asserted on the clone, not trusted to the script that made it. |
 | `dotnet/GameCore.sln`, `dotnet/README.md` | The two new projects and their rows/paragraph. | New dotnet projects must be in the solution the gate builds. |
+| `unity/GameCore.Validation/Packages/manifest.json`, `packages-lock.json` | `com.gamecore.recovery` added to `dependencies` (beside `com.gamecore.replay`) and to `testables`, plus its lock entry. | Without it the new package's EditMode half never resolves or runs, and the `GAMECORE_FAULT_INJECTION` versionDefine its latch-name assertion needs is never defined. §5.4. |
 
 No gameplay package was edited, no `Gc013*`/`W4Gate*`/`Gc018*`/`Gc021*`/`W5Gate*`/`W6Gate*` sequence body was
 touched, and no frozen W0 seam changed.
@@ -150,6 +151,14 @@ trace now contains two additional reaches per restore. Consequences:
 **A semantic kernel change? No, but it is a change to a file three earlier tasks own**, so §9 lists the exact
 rerun set. `docs/game-core/` is unchanged: no normative document needed an edit, because O-22, P-049 and the
 TEST-016 rows this composition implements were already written.
+
+### 5.4 The Unity manifest and lock — additive
+
+One dependency and one `testables` entry, plus the matching lock entry (verified: the lock diff is exactly the one
+added node, and `com.gamecore.replay`'s entry is untouched). **Not a semantic change to any other task's code**; the
+consequence is that the Unity project now compiles one more engine-free fixture assembly and runs one more EditMode
+suite, and that the release-clone strip list had to learn the package (it did: `check_release_clone.py` reports the
+clone clean with no `qualification`/`replay`/`recovery` dependency).
 
 ### 5.3 The release strip — one consistency set
 
@@ -261,12 +270,13 @@ claimed by this change set; §9 proposes them).
 
 ## 10. Known gaps and assumptions
 
-1. **Nothing has been compiled or executed.** The most likely first-build failures, in order: (a) a member or
-   signature mismatch between the new Unity scenario/builder and the frozen runtime types — the compile-risk audit
-   of §11 is the mitigation and its findings are folded in; (b) the `Gc027RestoreBuilder` adaptation of GC-018's
-   private helpers (a name that moved, an overload that differs); (c) a partial-class member collision between
-   `Gc027NarrativeHost.cs`/`Gc027CardsHost.cs` and the halves they extend; (d) `IGc027Family`'s inherited surface
-   being incompletely implemented by one family.
+1. **Nothing has been compiled or executed.** A declaration audit (`compile-risk-audit.md`) found and fixed twelve
+   real errors — missing usings, two type mismatches, a member that does not exist, a get-only assignment, an
+   unregistered package — so the class of failure it covers is now closed by reading. What remains is what only a
+   compiler settles: the delegate/method-group conversions, the generic inferences, the nullability diagnostics the
+   plain-dotnet build promotes to errors, and any name ambiguity between the two namespaces `Gc027Scenario.cs`
+   imports. Those are listed in `compile-risk-audit.md` §3 and are the expected first-build failures; none of them is
+   a semantic defect in the recovery design.
 2. **Traversal is not covered by this change set.** The task says "cards, narrative and traversal-compatible
    checkpoint data". Cards and narrative each run the full sequence. Traversal is *compatible* — nothing in the
    composition is genre-specific (P-001): the recovery reads a definition, a store and a registration, all of which
@@ -315,6 +325,14 @@ python3 -c "import ast; ast.parse(...)"  # the three edited Python tools -> ok
 # both digest literals recomputed from the frozen name table; the same algorithm reproduces
 # GC-018's two published literals, so the method is validated rather than assumed
 ```
+
+A read-only **declaration audit** of every new C# file was also run (a separate reviewer agent, no compiler): it
+cross-checked every `X.Y` access, call, constructor and `using` against the declaration it must match and reported
+twelve findings — missing usings, two expression-level type mismatches, one member that does not exist, one get-only
+property assignment and one unregistered package. **All twelve are fixed**, each verified against the declaration,
+and the audit, the fixes and the compiler-only residual risks are recorded in `artifacts/gc-027/compile-risk-audit.md`.
+The audit is deliberately reported as a *reading* result: it is not a compile, and §3 of that file states exactly
+what only a compiler can settle.
 
 Also run: the canonical-form check over both committed fixture documents (UTF-8, LF, one trailing newline, 2-space
 indentation, no trailing whitespace); a grep over `Packages`, `unity` and `tools` confirming no gate asserts
@@ -404,5 +422,6 @@ python3 tools/validate_game_core_docs.py
 | `artifacts/gc-027/unity/editmode.xml` | the Unity half, including `GameCore.Gc027.Tests` |
 | `artifacts/gc-027/toolchain/probe-gc027.json` (+ `.run2..5`) | the player half; the observation details inside it are the source for `crash-restart-transcripts.md` and `outbox-consistency.md` |
 | `artifacts/gc-027/release-surface.json`, `release-clone.json` | the two extended release checks, with the full `dotnet` present |
+| `artifacts/gc-027/compile-risk-audit.md` | the declaration audit's findings, their fixes, and what only a compiler can confirm |
 | the filled-in columns of `recovery-behavior-and-data-loss.md` §2 and `fault-injection-matrix.md` | copied from the probe artifact, per those files' instructions |
 | the filled-in tables of `crash-restart-transcripts.md` and `outbox-consistency.md` | same |
