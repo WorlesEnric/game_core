@@ -40,6 +40,8 @@ def main() -> None:
         "com.unity.test-framework.performance",
     ):
         del manifest["dependencies"][dependency]
+    manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    (DESTINATION / "Packages/packages-lock.json").unlink()
     # The fault scenario and the Wave 5 integration gate are qualification fixtures, not shipping entry points:
     # both name the latch types that a configuration without the marker does not compile at all. The ordinary
     # narrative/cards/GC-018/GC-019 probe modes remain identical to validation.

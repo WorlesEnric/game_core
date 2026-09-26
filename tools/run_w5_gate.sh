@@ -275,11 +275,11 @@ if [[ -n "${RELEASE_PLAYER}" ]]; then
 
   if [[ -n "${RELEASE_IL2CPP}" ]]; then
     run_step release-player "${PYTHON}" tools/check_player_fault_free.py \
-      --player "${RELEASE_PLAYER}" --il2cpp "${RELEASE_IL2CPP}" \
+      --player "$(dirname "${RELEASE_PLAYER}")" --il2cpp "${RELEASE_IL2CPP}" \
       --json "${ARTIFACTS}/release-player-surface.json"
   else
     run_step release-player "${PYTHON}" tools/check_player_fault_free.py \
-      --player "${RELEASE_PLAYER}" --json "${ARTIFACTS}/release-player-surface.json"
+      --player "$(dirname "${RELEASE_PLAYER}")" --json "${ARTIFACTS}/release-player-surface.json"
   fi
 
   # The family probes the release player can still run. It cannot run `-probeFaults` or `-probeW5Gate` (both name
