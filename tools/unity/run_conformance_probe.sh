@@ -30,7 +30,7 @@
 # Optional environment:
 #   PROBE_PLAYER              path to the built probe executable
 #                             (default: <UNITY_PROJECT>/Builds/Linux64/GameCoreProbe.x86_64)
-#   PROBE_RUNS                how many times the probe runs (default 5; must be a positive integer)
+#   PROBE_RUNS                how many times the probe runs (default 2; max 2)
 #   UNITY_PROJECT             Unity project path (default: <repo>/unity/GameCore.Validation)
 #   ARTIFACTS                 artifact directory (default: <repo>/artifacts/gc-024/toolchain)
 #   TRACE_ARTIFACTS           directory holding the committed traces to diff against
