@@ -201,7 +201,7 @@ namespace GameCore.Validation.ProbeHost
                 return false;
             }
 
-            var created = new BenchmarkLiveWorld { RegistryCountBeforeCreate = UnityWorldRegistry.Count };
+            var created = new BenchmarkLiveWorld();
             WorldId session = new WorldId(new Id128(0x42454E43484C4956UL, 0x0000000000000001UL + seed));
 
             try
@@ -239,7 +239,7 @@ namespace GameCore.Validation.ProbeHost
                 }
 
                 created.Host = host;
-                var registry = new TargetRegistry(session, targetCount + 4096);
+                var registry = new TargetRegistry(session, checked((uint)(targetCount + 4096)));
                 created.Publisher = new AssemblyPublisher(
                     host,
                     registry,
@@ -309,7 +309,7 @@ namespace GameCore.Validation.ProbeHost
         }
 
         /// <summary>Pumps one frame of the world's own temporal driver at the supplied host tick.</summary>
-        public WorldPumpResult Pump(ulong hostTicksNow) => Time.PumpFrame(hostTicksNow);
+        public TimeFrameReport Pump(ulong hostTicksNow) => Time.PumpFrame(hostTicksNow);
 
         /// <summary>Pumps <paramref name="frames"/> idle frames and returns the steps they committed.</summary>
         public ulong PumpIdle(int frames)

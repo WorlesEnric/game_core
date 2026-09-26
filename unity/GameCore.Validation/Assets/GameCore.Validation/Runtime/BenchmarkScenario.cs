@@ -381,7 +381,7 @@ namespace GameCore.Validation.ProbeHost
                 DerivationResult result = DerivationEngine.Derive(
                     BaseSnapshot(), fixture.Values, derivationOptions, null);
                 warmupDerivation = result;
-                if (result.Counters.ControlNodesVisited > 0L || result.Counters.CandidatesMatched > 0)
+                if (result.Counters.ControlNodesVisited > 0L)
                 {
                     sawControlWork = true;
                 }
@@ -742,7 +742,7 @@ namespace GameCore.Validation.ProbeHost
                 BenchmarkRunDocument document,
                 int measuredRepetitions,
                 out bool warmupComplete,
-                Func<int, int, long> cycle)
+                Func<int, bool, long> cycle)
             {
                 int cap = Math.Max(WarmupCyclesCap, measuredRepetitions * WarmupCycleRatio);
                 long budgetMicroseconds = (long)options.WarmupSeconds * 1_000_000L;

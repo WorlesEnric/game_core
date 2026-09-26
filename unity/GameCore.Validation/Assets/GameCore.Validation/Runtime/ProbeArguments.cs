@@ -257,8 +257,9 @@ namespace GameCore.Validation.ProbeHost
             bool narrative = false;
             bool cards = false;
             bool w4Profile = false;
+            bool gc013 = false;
+            bool w4Gate = false;
             bool replay = false;
-            bool w6Gate = false;
             bool benchmark = false;
             bool faults = false;
             bool gc018 = false;

@@ -41,7 +41,6 @@ using NUnit.Framework;
 namespace GameCore.Benchmarks.Tests
 {
     [TestFixture]
-    [NonParallelizable]
     public sealed class BenchmarkFixtureDerivationTests
     {
         /// <summary>P-022's provisional apply-cost guardrail, quoted so the refusals below can be diagnosed in one run.</summary>
@@ -237,7 +236,7 @@ namespace GameCore.Benchmarks.Tests
             BenchmarkFixture fixture = Fixture();
             DerivationResult baseResult = Base();
             int expected = fixture.TargetCountForSize(size);
-            TargetId witness = FirstTargetOutside(fixture, fixture.LeafScopes[0], fixture.LeafScopes[BenchmarkFixture.ReparentLeafCount]);
+            TargetId witness = BenchmarkIds.Target(expected < fixture.Targets.Count ? expected : 0);
 
             IncrementalDerivationOutcome outcome = MountUpdate(fixture, baseResult, size);
             AssertAccepted(outcome, "update of size " + size.ToString());
