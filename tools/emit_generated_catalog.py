@@ -123,7 +123,7 @@ MAX_CODE_FRAGMENT = 512
 IDENTIFIER = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
 DOTTED_IDENTIFIER = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*(\.[A-Za-z_][A-Za-z0-9_]*)*$")
 TYPE_EXPRESSION = re.compile(r"^[A-Za-z_][A-Za-z0-9_.<>,?\[\] ]*$")
-STABLE_NAME = re.compile(r"^[a-z0-9]+([.\-][a-z0-9]+)*$")
+STABLE_NAME = re.compile(r"^[a-z0-9_\-]+(?:\.[a-z0-9_\-]+)*$")
 IDENTITY_HEX = re.compile(r"^[0-9a-f]{32}$")
 
 # EnvelopeFormat.ChecksumFieldId: declared field ids are positive and start above the checksum field.
@@ -219,11 +219,21 @@ def has_balanced_delimiters(text: str) -> bool:
     return angles == 0 and parentheses == 0
 
 
+def is_ascii_identifier_start(c: str) -> bool:
+    return ("a" <= c <= "z") or ("A" <= c <= "Z") or c == "_"
+
+
+def is_ascii_digit(c: str) -> bool:
+    return "0" <= c <= "9"
+
+
 def has_invocation_or_member(text: str) -> bool:
-    if not text or not (text[0].isalpha() or text[0] == "_"):
+    """`CatalogCodeFragments.HasInvocationOrMember`: ASCII identifier characters only, plus the member/invocation
+    punctuation. A non-ASCII letter is an operator-class character to the C# rule, so it rejects there."""
+    if not text or not is_ascii_identifier_start(text[0]):
         return False
     for c in text[1:]:
-        if not (c.isalpha() or c.isdigit() or c in ".<>(), ?[]"):
+        if not (is_ascii_identifier_start(c) or is_ascii_digit(c) or c in ".<>(), ?[]"):
             return False
     return True
 
@@ -272,9 +282,13 @@ def _require_identifier(mapping: dict, key: str, where: str, allow_dotted: bool 
 
 
 def _require_uint32(mapping: dict, key: str, where: str) -> int:
+    """`RequiredUInt32`: an unsigned 32-bit decimal integer, and a positive version (0 is not accepted)."""
     value = _require(mapping, key, where, int)
     if isinstance(value, bool) or value < 0 or value > 0xFFFFFFFF:
         raise DescriptionMismatch("%s must be an unsigned 32-bit integer" % where)
+    if value == 0:
+        raise DescriptionMismatch(
+            "%s must be a positive version; version 0 is not an accepted declaration" % where)
     return value
 
 
@@ -290,10 +304,20 @@ def _require_bool(mapping: dict, key: str, where: str) -> bool:
 
 
 def _require_stable_name(mapping: dict, where: str) -> str:
+    """`StableNameKeyDerivation.IsCanonicalStableName`: 1..200 characters of `a-z 0-9 _ - .`, no leading or
+    trailing '.', no empty segment."""
     text = _require(mapping, "stableName", where + ".stableName", str)
-    if not STABLE_NAME.match(text):
-        raise DescriptionMismatch("%s.stableName: '%s' is not a dotted lower-case stable name" % (where, text))
+    if not is_canonical_stable_name(text):
+        raise DescriptionMismatch(
+            "%s.stableName: '%s' is not a canonical stable name; only a-z 0-9 _ - . are accepted and the name "
+            "cannot start or end with '.'" % (where, text))
     return text
+
+
+def is_canonical_stable_name(text: str) -> bool:
+    if not text or len(text) > 200 or not STABLE_NAME.match(text):
+        return False
+    return text[0] != "." and text[-1] != "." and ".." not in text
 
 
 def _report_unknown(mapping: dict, where: str, known: tuple) -> None:
@@ -320,8 +344,11 @@ def validate(description: dict) -> dict:
     generated_namespace = _require_identifier(description, "namespace", "namespace", allow_dotted=True)
     class_name = _require_identifier(description, "className", "className")
     file_name = _require(description, "fileName", "fileName", str)
-    if not file_name.endswith(".g.cs"):
-        raise DescriptionMismatch("fileName must end in .g.cs")
+    # `ValidateFileName`: a generated file name is a plain '.cs' name, not a path (an empty name is accepted there).
+    if file_name and (not file_name.endswith(".cs")
+                      or "/" in file_name or "\\" in file_name or ":" in file_name
+                      or any(ord(c) < 0x20 for c in file_name)):
+        raise DescriptionMismatch("fileName must be a plain '.cs' file name without a path separator")
 
     features: list[tuple[int, int]] = []
     raw_features = description.get("supportedFeatureIds")
@@ -330,6 +357,10 @@ def validate(description: dict) -> dict:
             raise DescriptionMismatch("supportedFeatureIds must be an array")
         for i, feature in enumerate(raw_features):
             features.append(identity_hex(feature, "supportedFeatureIds[%d]" % i))
+
+    # Canonical identity order (P-008): the reader sorts the declared feature ids before the emitter sees them, so
+    # the emitted array and the catalog fingerprint depend on the declared set and not on the document's order.
+    features.sort()
 
     schemas: list[dict] = []
     raw_schemas = description.get("schemas")
@@ -354,6 +385,14 @@ def validate(description: dict) -> dict:
     code = validate_code(description)
 
     # Cross-checks that a repeated declaration would otherwise reach the emitted file as a duplicate member.
+    schema_ids: dict[str, int] = {}
+    for i, schema in enumerate(schemas):
+        if schema["schemaIdHex"] in schema_ids:
+            raise DescriptionMismatch(
+                "schemas[%d].schemaId: schema identity %s is declared by more than one schema"
+                % (i, schema["schemaIdHex"]))
+        schema_ids[schema["schemaIdHex"]] = i
+
     owners: dict[str, str] = {}
     for i, schema in enumerate(schemas):
         if schema["stableName"] in owners:

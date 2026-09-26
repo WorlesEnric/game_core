@@ -378,6 +378,25 @@ members, in code this change does not touch), and every generated catalog is byt
 recomputes all four file hashes and fingerprints, `tools/emit_generated_catalog.py --self-check` still reports
 "reproduces byte for byte", and `git status` shows no generated catalog as modified after the compiler commit.
 
+Five further findings from the second (tooling) review were fixed, none of them compile-blocking:
+
+* `tools/build_baseline_player.sh` no longer writes the fingerprint comparison as
+  `run_step … || echo NOT RUN`, which turned a genuine mismatch (exit 1) into a passing step. Absence of one shape's
+  ledger is now the only NOT RUN case, and a comparison that runs and disagrees fails the step. Proved with a
+  synthetic mismatching pair: exit 1 and `"status": "Fail"`.
+* `tools/run_gc025_gate.sh` now runs `bash -n` once per script, because `bash -n a b c` parses only its first
+  operand, so two new scripts had escaped the gate's only syntax check.
+* `tools/emit_generated_catalog.py`'s validation rules were aligned with the production reader where they had
+  drifted: canonical stable names now allow `_` and enforce the 200-character cap (matching
+  `StableNameKeyDerivation.IsCanonicalStableName`), version `0` is rejected on every version field (matching
+  `RequiredUInt32`), code fragments accept ASCII identifier characters only (the C# rule is ASCII-only), `fileName`
+  follows `ValidateFileName`, duplicate `schemaId`s are rejected, and declared feature ids are emitted in canonical
+  identity order (the reader sorts them before the emitter sees them). Each rule was proved falsifiable against the
+  traversal description; none of them changes a committed byte (`--self-check` still passes for all four catalogs and
+  all four companions).
+* The two documentation-only items (a `RELEASE_PLAYER=1` mention in this file's own history and the
+  `environment.{txt,json}` wording) were corrected while updating §3.
+
 Four defects were found and fixed by these checks and by the independent reviews rather than by a compiler:
 
 1. `BakedCatalogCoverageRecipeSource` first declared its recipes in the order runner, display runner, volume, while

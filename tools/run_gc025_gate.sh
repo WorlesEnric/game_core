@@ -156,8 +156,10 @@ run_step gate-sources "${PYTHON}" tools/check_gate_sources.py \
   --file unity/GameCore.Validation/Assets/GameCore.Validation/Editor/TraversalCatalogGenerator.cs \
   --file unity/GameCore.Validation/Assets/GameCore.Validation/Tests/CatalogCoverage/CatalogCoverageIntegrationTests.cs \
   --json "${ARTIFACTS}/host/gate-sources.json"
-run_step shell-parse bash -n tools/run_gc025_gate.sh tools/build_baseline_player.sh \
-  tools/unity/run_catalog_coverage_probe.sh
+# `bash -n a b c` parses only its first operand, so the scripts are checked one per invocation.
+for script in tools/run_gc025_gate.sh tools/build_baseline_player.sh tools/unity/run_catalog_coverage_probe.sh; do
+  run_step "shell-parse $(basename "${script}")" bash -n "${script}"
+done
 
 # --------------------------------------------------------------------------------------------------------------
 # 2. The pure half of the repository.

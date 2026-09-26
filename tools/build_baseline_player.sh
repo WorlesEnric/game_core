@@ -227,11 +227,17 @@ if [[ ",${SHAPES}," == *",release,"* ]]; then
   run_step fingerprint-ledger-release "${PYTHON}" tools/compare_registration_fingerprints.py \
     --ledger "${RELEASE_PROJECT}" --ledger-out "${ARTIFACTS}/release"
 
-  run_step fingerprint-compare "${PYTHON}" tools/compare_registration_fingerprints.py \
-    --a "${ARTIFACTS}/qualification" --label-a qualification \
-    --b "${ARTIFACTS}/release" --label-b release \
-    --json "${ARTIFACTS}/fingerprint-comparison.json" \
-    || echo "-- fingerprint-compare: NOT RUN for both shapes (build the qualification shape first)"
+  # The comparison needs both shapes' ledgers. Their absence is the one case reported as NOT RUN; a comparison that
+  # RAN and found a difference must fail this step, because "compare generated registration fingerprints across
+  # builds" is the claim, and an `|| echo` here would turn a mismatch into a pass.
+  if [[ -f "${ARTIFACTS}/qualification/catalog-ledger.json" && -f "${ARTIFACTS}/release/catalog-ledger.json" ]]; then
+    run_step fingerprint-compare "${PYTHON}" tools/compare_registration_fingerprints.py \
+      --a "${ARTIFACTS}/qualification" --label-a qualification \
+      --b "${ARTIFACTS}/release" --label-b release \
+      --json "${ARTIFACTS}/fingerprint-comparison.json"
+  else
+    echo "-- fingerprint-compare: NOT RUN (one of the two shape ledgers is absent; build both shapes)"
+  fi
 
   run_step probe-catalog-coverage-release env \
     PROBE_PLAYER="${RELEASE_PLAYER}" \
