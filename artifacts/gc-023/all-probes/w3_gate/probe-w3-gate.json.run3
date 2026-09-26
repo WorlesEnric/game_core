@@ -1,0 +1,87 @@
+{
+  "task": "W3-GATE",
+  "probe": "GameCore.Validation.ProbeHost.ProbeRunner",
+  "mode": "W3Gate",
+  "result": "Pass",
+  "exitCode": 0,
+  "declaredUnityVersion": "6000.0.75f1",
+  "unityVersion": "6000.0.75f1",
+  "declaredTarget": "StandaloneLinux64",
+  "platform": "LinuxPlayer",
+  "architecture": "X64",
+  "processorType": "12th Gen Intel(R) Core(TM) i7-12700KF",
+  "scriptingBackend": "IL2CPP",
+  "isIl2Cpp": true,
+  "is64BitProcess": true,
+  "managedStrippingLevel": "High",
+  "managedStrippingLevelSource": "declared: GameCore.Validation.Editor.BuildProbe sets and re-reads PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, ManagedStrippingLevel.High); a player cannot query the stripping level at runtime",
+  "burstCompilerEnabled": true,
+  "fixturePluginPreservation": "declared: Assets/link.xml preserves the GameCore.Validation.Fixture assembly (preserve=\"all\"), and the generated catalog holds a direct FixturePluginFactory reference, so the plugin is linked into the player while nothing instantiates it at startup",
+  "catalogGenerator": "GameCore.Content.Compiler (GC-003)",
+  "catalogGeneratedFile": "ProbeCatalog.g.cs",
+  "catalogFileHash": "03bdcd23fd8ec0515d93d7c54d7f7c695f3860a850a7280b82316aaacd14c5c1",
+  "catalogFingerprint": "02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff",
+  "catalogDescriptionFormat": "gamecore.catalog-description/1",
+  "catalogProtocolVersion": "1.0",
+  "catalogSupportedFeatureCount": 1,
+  "catalogFileHashAlgorithm": "SHA-256",
+  "catalogFileHashScope": "SHA-256 over the UTF-8 bytes, with LF line endings, of the file prefix that ends immediately before the eight-space-indented CatalogFileHash declaration; that prefix ends with the newline that terminates the previous line, and the declaration itself, its value and the rest of the file are excluded",
+  "failureReason": "",
+  "probes": [
+    {
+      "name": "w3-kernel-assemblies-reference-no-gameplay",
+      "status": "Pass",
+      "detail": "kernelAssemblies=GameCore.Composition,GameCore.Contracts,GameCore.Derivation,GameCore.Derivation.Fixtures,GameCore.Planning,GameCore.Unity.Adapters,GameCore.Unity.Fixtures,GameCore.Unity.Runtime; duplicateKernelAssemblies=<none>; kernelReferenceCount=44; forbiddenReferences=<none>; inspectionFailures=<none>; gameplayFamilyAssemblies=GameCore.Gameplay.Cards,GameCore.Gameplay.Cards.Fixtures,GameCore.Gameplay.Narrative,GameCore.Gameplay.Narrative.Fixtures,GameCore.Rules.Cards,GameCore.Rules.Narrative; gameplayFamilyOnKernel=GameCore.Gameplay.Cards,GameCore.Gameplay.Cards.Fixtures,GameCore.Gameplay.Narrative,GameCore.Gameplay.Narrative.Fixtures,GameCore.Rules.Cards,GameCore.Rules.Narrative"
+    },
+    {
+      "name": "w3-narrative-composition-passes-on-this-kernel",
+      "status": "Pass",
+      "detail": "11 narrative checks passed"
+    },
+    {
+      "name": "w3-card-composition-passes-on-this-kernel",
+      "status": "Pass",
+      "detail": "13 card checks passed"
+    },
+    {
+      "name": "w3-two-worlds-on-one-kernel-image",
+      "status": "Pass",
+      "detail": "registryBeforeNarrative=1; registryAfterNarrative=1; registryBeforeCards=1; registryAfterCards=1; narrativeSession=4e415252415453530000000000000001; cardsSession=43415244534553310000000000000001; distinctSessions=True; kernelImage=GameCore.Composition=GameCore.Composition, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null GameCore.Contracts=GameCore.Contracts, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null GameCore.Derivation=GameCore.Derivation, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null GameCore.Derivation.Fixtures=GameCore.Derivation.Fixtures, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null GameCore.Planning=GameCore.Planning, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null GameCore.Unity.Adapters=GameCore.Unity.Adapters, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null GameCore.Unity.Fixtures=GameCore.Unity.Fixtures, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null GameCore.Unity.Runtime=GameCore.Unity.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "name": "w3-zero-idle-command-steps-in-both",
+      "status": "Pass",
+      "detail": "narrative frames=600; steps=0; dispatchRuns=0; demand=0; cards frames=8; steps=0; dispatchRuns=0; demand=0"
+    },
+    {
+      "name": "w3-automatic-existing-and-future-targets-in-both",
+      "status": "Pass",
+      "detail": "derivedTargets=3; maraRows=2; gateRows=1; encounterRows=1; crowdRows=0; museumRows=0; sailorRowsBeforeChapterTwo=0; sailorRows=2; spawnedRows=2; spawnedValue=1; spawnedPublished=True; seatARows=1; seatAValue=2; seatBValue=2; seatCValue=1; scoreboardRows=0; practiceRows=0; spawnedBonus=2; spawnedPublished=True"
+    },
+    {
+      "name": "w3-narrative-state-change-through-committed-snapshot",
+      "status": "Pass",
+      "detail": "admitted=True; steps=1; gate=0->1; fact=1@v2; evaluatedVersion=2; committedEvents=2; committedEventStep=1; ledger=1 committed/0 pending; dispatchRuns=1; dispatchedEntries=6"
+    },
+    {
+      "name": "w3-card-domain-transfer-committed-atomically",
+      "status": "Pass",
+      "detail": "giver=4->3; receiver=3->4; gained=1; stillHeld=0; tableVersion=4; steps=4"
+    },
+    {
+      "name": "w3-narrative-facts",
+      "status": "Pass",
+      "detail": "catalogFingerprint=02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff; session=4e415252415453530000000000000001; registryBefore=1; registryAfter=2; liveTargets=7; ineligibleTargets=2; mappedTargets=7; plane=True; stages=6; systems=6; laneJoinedAfterChapterOne=True; laneRevisionAfterChapterOne=2; laneEpochAfterChapterOne=2; worldEpochAfterChapterOne=2; derivedTargetsAfterChapterOne=3; derivedContributionsAfterChapterOne=4; chapterOneInstalledRows=4; chapterOneRetractedRows=0; migratedConversationSlots=2; migrationInvocations=2; publicationOutcomeAfterChapterOne=Published; maraRows=2; maraDialogueValue=1; maraChoiceValue=1; maraActive=True; maraStampEpoch=2; gateRows=1; gateValue=1; encounterRows=1; encounterValue=1; crowdRows=0; museumRows=0; sailorRowsBeforeChapterTwo=0; conversationNodeAfterMigration=1; conversationVersionAfterMigration=2; laneEpochAfterChapterTwo=3; worldEpochAfterChapterTwo=3; chapterTwoInstalledRows=2; sailorRows=2; sailorDialogueValue=2; publishedRowsAfterChapterTwo=6; commandAdmitted=True; commandAdmission=Accepted; admittedChoices=1; forwardedChoices=1; refusedChoices=0; committedFacts=1; duplicateMutations=0; gateDecisions=1; encounterHooks=1; gateDecisionBeforeCommand=0; gateDecisionAfterCommand=1; gateEvaluatedFactVersion=2; questFactValueAfterCommand=1; questFactVersionAfterCommand=2; eventsAfterCommand=2; eventSchemasAfterCommand=ba1f284d15dd28bc2bd2e01281932572|4a396c0a9abe7f1de442889d30077ac0; eventStepAfterCommand=1; eventEpochAfterCommand=3; ledgerCommitted=1; ledgerPending=0; encounterStatusAfterCommand=1; trailSteps=1; trailProjected=1; trailFacts=1; trailGateDecisions=1; trailEncounterHooks=1; dispatchRuns=1; dispatchedEntries=6; stepsAfterCommand=1; stepsAfterDuplicate=1; duplicatePumpSteps=0; eventsAfterDuplicate=2; forwardNoTargetChange=True; laneEpochAfterForward=4; worldEpochAfterSpawn=4; joinedAfterSpawn=True; spawnedRows=2; spawnedValue=1; spawnedStampEpoch=4; spawnedStampPublished=True; spawnedInView=True; publishedRowsAfterSpawn=8; chapterTwoRowsInView=2; recipeApplies=1; recipeInstalledSlots=2; idleFrames=600; idleSteps=0; idleImages=5; idleDispatchRuns=0; pendingDemandAfterIdle=0; genreChecked=96; genreNeutral=True; forbiddenNames=0; traceMatchesDeclaration=True; traceMismatchDetail=<none>; inventoryChecked=141; inventoryNeutral=True; inventoryForbiddenNames=0; componentChecked=1; componentNeutral=True; outstandingJobsBeforeTeardown=0; outstandingJobsAfterTeardown=0; retainedResourcesAfterTeardown=0; registryAfterTeardown=1"
+    },
+    {
+      "name": "w3-card-facts",
+      "status": "Pass",
+      "detail": "catalogFingerprint=77838f4766f9086a0fa32b4fb30d8d5fceeb3a8072e61594fa2177946ad3315d; stages=4; systems=4; scheduleHash=fbe02d98dbfd0434ff9d55e1f52627fc9aa858c0d800a57b12436bd3103d5f5e; edges=3; playback=1; inputStage=0; commitStage=2; bufferEdge=True; domains=5; slotPolicies=5; writers=4; singleOwnerPerDomain=True; session=43415244534553310000000000000001; liveTargets=6; seats=4; laneEpochAfterSetup=13; worldEpochAfterSetup=13; joinedAfterSetup=True; seatARows=1; seatAValue=2; seatAActive=True; seatBValue=2; seatCValue=1; scoreboardRows=0; practiceRows=0; installedRows=3; reducers=3; predicateEvals=3; commandAdmitted=True; commandAdmission=Accepted; steps=1; handBefore=4; handAfter=1; scoreBefore=4; scoreAfter=16; tableVersion=2; turnNumber=1; events=1; eventDelta=12; eventScoreAfter=16; eventCards=3; eventStep=1; eventMatchesLive=True; writes=5; duplicateAdmitted=True; duplicateAdmission=Accepted; stepsAfterDuplicate=2; seatBHand=3; seatBScore=4; demandAfterDuplicate=0; duplicateRejections=1; rejectedAdmitted=True; rejectedKind=Accepted; stepsAfterRejection=3; seatAHandAfterRejection=2; seatBHandAfterRejection=3; seatAScoreAfterRejection=16; tableVersionAfterRejection=3; rejectedDecisions=1; staleCommitRejections=0; giverBefore=4; giverAfter=3; receiverBefore=3; receiverAfter=4; tableVersionAfterTransfer=4; stepsAfterTransfer=4; transferLost=0; transferGained=1; batchAdmitted=True; batchCandidates=2; contestWinner=1; contestSequence=3; contestHolderHand=2->1; contestWinnerHand=4->5; contestLoserHand=3->3; contestVersion=5; contestSteps=5; spawnedBonus=2; spawnedStampEpoch=14; spawnedPublished=True; spawnedInView=True; laneEpochAfterSpawn=14; worldEpochAfterSpawn=14; joinedAfterSpawn=True; forwardNoTargetChange=True; idleFrames=8; idleSteps=0; idleImages=19; idleDispatchRuns=0; pendingDemandAfterIdle=0; outstandingAfterTeardown=0; retainedResourcesAfterTeardown=0; registryAfterTeardown=1"
+    },
+    {
+      "name": "w3-gate-facts",
+      "status": "Pass",
+      "detail": "kernelAssemblies=8; kernelReferences=44; kernelForbiddenReferences=0; duplicateKernelAssemblies=0; kernelInspectionFailures=0; gameplayFamilyAssemblies=6; gameplayFamilyOnKernel=6; narrativeSteps=11/0 failed; cardSteps=13/0 failed; registry=1->1|1->1; narrativeSession=4e415252415453530000000000000001; cardsSession=43415244534553310000000000000001; distinctSessions=True; narrativeIdle=600 frames/0 steps; cardIdle=8 frames/0 steps; narrativeExistingTargets=3; narrativeFutureRows=2; cardExistingSeats=3; cardFutureBonus=2; narrativeCommittedEvents=2; narrativeCommittedFactVersion=2; cardTransferGiver=1; cardTransferReceiver=1; kernelImage=GameCore.Composition=GameCore.Composition, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null GameCore.Contracts=GameCore.Contracts, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null GameCore.Derivation=GameCore.Derivation, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null GameCore.Derivation.Fixtures=GameCore.Derivation.Fixtures, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null GameCore.Planning=GameCore.Planning, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null GameCore.Unity.Adapters=GameCore.Unity.Adapters, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null GameCore.Unity.Fixtures=GameCore.Unity.Fixtures, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null GameCore.Unity.Runtime=GameCore.Unity.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null; kernelSet=GameCore.Composition,GameCore.Contracts,GameCore.Derivation,GameCore.Derivation.Fixtures,GameCore.Planning,GameCore.Unity.Adapters,GameCore.Unity.Fixtures,GameCore.Unity.Runtime"
+    }
+  ]
+}

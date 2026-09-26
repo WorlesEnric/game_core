@@ -1,0 +1,946 @@
+{
+  "format": "gamecore.benchmark.trace/1",
+  "label": "gc023-world-observations",
+  "frameCount": 67,
+  "chainHash": "5f08a7e972dcd01007cf4d1498b73ba0768cd513685e2ef4c2fb749d89b8cab6",
+  "frames": [
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "7dd327890e40284713cb93a80809f9f904ae167d0e740de5a01471c586c21f25",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "0"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "613808920a6be3ffebdd23715ea600850586868bbb23f694ee8c7861a85332d3",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=76;stage-samples=2"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=76;stage-samples=2;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "18f519582835b7a3d22cba5b6d50c3ee82eef4d2acb976d534b860ce54f2c045",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=78;stage-samples=4"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=78;stage-samples=4;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "90556b17218ea45831d196430d8b391cec874b340a804e18a49b2b807a93ebb4",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=79;stage-samples=6"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=79;stage-samples=6;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "042c8a657113fe7b78593bfa2cc4465ce4e967d23aaccb2d08e5df983dca6a83",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=80;stage-samples=8"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=80;stage-samples=8;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "d661e6dabf9224493adb83df98a548bcfa279d4731a56c87badcb06199357946",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=80;stage-samples=10"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=80;stage-samples=10;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "986d17706272e4c81ca7ea11a954018eed9865b2d7e952da8b95c5eee7c35a0f",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=80;stage-samples=12"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=80;stage-samples=12;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "74f7ed84ea2ac56ecd6fd836bf750ea0f38ef1e23df1a453831c6fcf5a1ede34",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=80;stage-samples=14"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=80;stage-samples=14;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "b585722811d48e894407ed20fd0273dfd69f79f19ba203fdc651e1da785a6abb",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=80;stage-samples=16"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=80;stage-samples=16;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "da3057cba1d3ecc30b3a1f3532f7a972e583cefa7c21b0e67b3bee7ee1ae09ab",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=81;stage-samples=18"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=81;stage-samples=18;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "df16946cbf15924975cf3fa456e308bfc38957d26d38aea6c8014639364365bc",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=81;stage-samples=20"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=81;stage-samples=20;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "91ca0db194d06043cfd14893dda113c28790416660e46ddf28fc39e693e33981",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=82;stage-samples=22"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=82;stage-samples=22;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "77c4caa5767393c2e0692587363ea61d95556c99926d1cbef0eaaf02f8a9c2f6",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=83;stage-samples=24"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=83;stage-samples=24;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "fd0170cb3c8c681172ff9c4f57be52fd19b4db509795290452515677ff8acecf",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=83;stage-samples=26"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=83;stage-samples=26;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "cc0da4be71073013ef6f5ae0343f390b3871fde876c0872319524a0e5daac8ea",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=84;stage-samples=28"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=84;stage-samples=28;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "0f8216f22636e1227877c7b6b66e9966610ed11c4dcc0841730d2f0382a3381c",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=85;stage-samples=30"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=85;stage-samples=30;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "7b648764a5fb7d25179db5c86baaafd3c2f03ab59b462cde149df45443dd8674",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=85;stage-samples=32"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=85;stage-samples=32;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "d752534418611681ba08a6afffc61317644c36d867a4a917a62e97c1babf15b5",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=85;stage-samples=34"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=85;stage-samples=34;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "154417ab7a0c6bd6f65d5fbb2fa611b25657f69d1ca97a1ae0c0aa3430403046",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=86;stage-samples=36"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=86;stage-samples=36;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "8c0fd54bea34cb51b4f4106b5d292924735e531a372f5884a93cc2d101df5353",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=87;stage-samples=38"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=87;stage-samples=38;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "1f102445cd565e7efd3f0d9f37e1d2a528a8f9e16a713c377b9bfc6df5127beb",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=87;stage-samples=40"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=87;stage-samples=40;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "edf34ecec28bd0a05d043775f3d4d8c996a705fb983250554d196c0b37837e7a",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=88;stage-samples=42"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=88;stage-samples=42;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "9e109690f55aa4b72285d839229fa89ecd85990fff63af16d05b26c667ac9a00",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=89;stage-samples=44"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=89;stage-samples=44;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "0e9f49eeee262fad17a2e22b5f275982206fc8897048e1406230f76142bd2f81",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=90;stage-samples=46"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=90;stage-samples=46;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "7c2dbdff80a4e1c9573a4b20a4096931d04a8d01678d0a16e45f21e4916433c5",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=90;stage-samples=48"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=90;stage-samples=48;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "93c8cb7e238c84fa8f895b4ab6c5716483a320c5824ebc819e647d63c2c2b3ea",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=91;stage-samples=50"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=91;stage-samples=50;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "bb81d6cf2b4c4bd69cb89086a40a97f295a488cea232fdf56bd76a7c47051450",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=92;stage-samples=52"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=92;stage-samples=52;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "b39fa1310a94f73b85c916f7157f31bcc8eb3f01fadec0a8d317840410855892",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=92;stage-samples=54"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=92;stage-samples=54;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "3cc5c303aff3ba2a799e829eadcb25e42ddbce01fb795c316f86256ab4af8a81",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=92;stage-samples=56"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=92;stage-samples=56;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "1b819a987062ba4d94ccc8f59f3d36029d358415194d70fece0b5a07731ee819",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=92;stage-samples=58"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=92;stage-samples=58;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "9ff6fc83d19a41a0772dd0b2fc4ff575da06bb21a75c35cc310122165d24f0b7",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=92;stage-samples=60"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=92;stage-samples=60;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "97b571e98e5fdb0f965d7a75890e9da1cb80f5b57fff9ae0b2e23a3ca0eb487a",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=93;stage-samples=62"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=93;stage-samples=62;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "7f71629ef15d3d3df7f47aaddc2ac04bd3c943d269d7ecfcaa26290d122a09ef",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=94;stage-samples=64"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=94;stage-samples=64;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "cec8f9a7f13c74f51b8bfbdc00da79bd099984037767dd70e8debf57980c3c93",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=94;stage-samples=66"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=94;stage-samples=66;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "a7f0be4961a3c41a449be2c05f253260db23c7ca762144806b3beb2d277d18d0",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=96;stage-samples=68"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=96;stage-samples=68;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "16c7e9188ec4c858e42aaa56ecb3ec90e40b09b118b4cdb529d7273e3e18fbd9",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=97;stage-samples=70"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=97;stage-samples=70;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "d2861a347b09bbdf713da9cdbc915eef07f65cfcf353346e006401368e6a0798",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=97;stage-samples=72"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=97;stage-samples=72;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "82e749aa4d9bdca57c26265712b7b6eef2d59f85ae90863d18fd51c84f6b3bce",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=97;stage-samples=74"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=97;stage-samples=74;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "1b3616308f04ae396a913ab078857a5f72cf8f4cc9a6562e9a8acb6d2f51fe7a",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=98;stage-samples=76"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=98;stage-samples=76;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "7df6d8d053e8b7286ad55000ee4b8ea4dc55a57282de7aa5f5e25e34d10271bb",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=98;stage-samples=78"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=98;stage-samples=78;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "380b699141b4536c5bd59fc356e6cd59b33c117b87968ff9c3deb0c46f94fe37",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=99;stage-samples=80"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=99;stage-samples=80;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "c8d17bcf45ef26aa36a8d38880bebdc0509a11844b210ed0d962cd19a1caa1b9",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=100;stage-samples=82"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=100;stage-samples=82;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "223d20855fdf3ccb3f35e0fd02ca4aee28960c9f8b28cf01c71eae3148556098",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=100;stage-samples=84"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=100;stage-samples=84;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "73382e1ed94616a66ab3fd4b71fed3806a49f03a8e9870e405535b71fdb8f61a",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=100;stage-samples=86"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=100;stage-samples=86;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "e90fff87c0cd0131c3db1561328f5a044300facf3c40d59a5ddae914c2868bf7",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=101;stage-samples=88"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=101;stage-samples=88;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "6a2cbf97f71b4cd11a6d046b47e4b4712971c3bc9b55be563fe18076d15ec4c4",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=101;stage-samples=90"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=101;stage-samples=90;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "ad76d4c8300936ea4b34afb03fe3ee697bf6e1f6b08ca366245bcd53a93f3b82",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=101;stage-samples=92"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=101;stage-samples=92;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "6acca529cc6b2e476d55f3b500211806d12be571463256f0a4b839257c1a2d0f",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=101;stage-samples=94"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=101;stage-samples=94;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "149ea4d6efb842dd14e2b09f54fbddbc6279d31b01e52934d8a291c5d0c63f4c",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=101;stage-samples=96"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=101;stage-samples=96;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "e8dc439a882d5c64f580b60e43b66dac60f3d652c61c7983d9de04788261cd12",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=101;stage-samples=98"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=101;stage-samples=98;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "8b5d66bb30284659204544270bcc9842a56273a1eaf09e86118272d5bbf11866",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=101;stage-samples=100"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=101;stage-samples=100;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "2b46f7b879fe504e1d88280378910b30ac36ffd20581f92a30669ac02ef98b43",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=101;stage-samples=102"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=101;stage-samples=102;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "558b668b676c18e2a8768480091584cac276869ccfdb985256ba28c447d340fb",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=102;stage-samples=104"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=102;stage-samples=104;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "165230b8d01104c58794876a0ed68a450f6ba1d5b9a79e6fc6777e9d6838d723",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=102;stage-samples=106"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=102;stage-samples=106;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "a3ab075f1f3a946eb6264de71e7f740b1c63900f8e01801d99200b436a96cacf",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=102;stage-samples=108"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=102;stage-samples=108;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "94d4e79dc6d23a4b80eec0e6110ed97439cdd45c42f3cf35b85cfef8b299adbf",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=103;stage-samples=110"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=103;stage-samples=110;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "3cca1cd20b96ba3eb5521f700f968d5d65ce1f2fe71997aada12ea7108d3b597",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=104;stage-samples=112"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=104;stage-samples=112;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "2c2bae6fb0440949d1b0a3c95a0eba7b956915124185caafec0ba656cc687cb1",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=104;stage-samples=114"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=104;stage-samples=114;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "643b42b998a13be6b2d03fcfdb63d7eb11af9f7e395922fa8ae2bf91319179e0",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=105;stage-samples=116"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=105;stage-samples=116;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "43adfe7de1aa06474c24428eccc64dc1e6e7d2d596100ba870303990432eebce",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=106;stage-samples=118"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=106;stage-samples=118;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "8208b773546aeb45e8ddb03a1eaf63abd254a2bc14cc37aa17493d52fc29bf77",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=106;stage-samples=120"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=106;stage-samples=120;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "34fe054e51e2448efb51ab3966420a63c36b37a1df4e52f03da7b80909a4bd59",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=106;stage-samples=122"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=106;stage-samples=122;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "4f007ab72bdee740c54c14aa649b5b9ee8aa42810a081843d59fa26b8fba041d",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=106;stage-samples=124"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=106;stage-samples=124;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "836edc52c36da14f2b13c4da65ad174b74f4e6bf4ee217df95279a569f8a95b6",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=106;stage-samples=126"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=106;stage-samples=126;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "635edacd847be3206f844122083c9c5a1b07452dd9ffa88df8053a64f7514804",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=107;stage-samples=128"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=107;stage-samples=128;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 0,
+      "frameHash": "635edacd847be3206f844122083c9c5a1b07452dd9ffa88df8053a64f7514804",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=107;stage-samples=128"},
+        {"owner": "gamecore.execution.driver", "counters": "0"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "stage-us=107;stage-samples=128;live-leases=9"
+    },
+    {
+      "ordinal": 0,
+      "epoch": 1,
+      "step": 1,
+      "frameHash": "6a8c837c305899f5c3bda0c79e653b2807e3d91274a514a78242a8914044350e",
+      "sections": [
+        {"owner": "gamecore.execution.dispatch", "counters": "stage-us=181;stage-samples=133;job-wait-samples=1"},
+        {"owner": "gamecore.execution.driver", "counters": "steps-advanced=1"},
+        {"owner": "gamecore.execution.resources", "counters": "live-leases=9"},
+        {"owner": "gamecore.observation", "counters": "0"},
+        {"owner": "gamecore.observation.images", "counters": "0"}
+      ],
+      "aggregate": "steps-advanced=1;stage-us=181;stage-samples=133;job-wait-samples=1;live-leases=9"
+    }
+  ]
+}
