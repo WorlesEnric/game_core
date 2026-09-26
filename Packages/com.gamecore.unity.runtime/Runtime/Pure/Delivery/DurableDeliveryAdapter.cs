@@ -1224,7 +1224,7 @@ namespace GameCore.Execution.Delivery
                     return DeliveryOutcome.Delivered;
 
                 case DestinationOutcome.Compensated:
-                    DeliveryOutcome compensated = Outbox.TryCompensate(outboxId, portCode, out code, out detail);
+                    DeliveryOutcome compensated = TryCompensate(outboxId, portCode, out code, out detail);
                     if (compensated == DeliveryOutcome.Compensated)
                     {
                         code = portCode;
@@ -1233,7 +1233,7 @@ namespace GameCore.Execution.Delivery
                     return compensated;
 
                 default:
-                    DeliveryOutcome rejected = Outbox.TryReject(
+                    DeliveryOutcome rejected = TryReject(
                         outboxId,
                         portCode == DiagnosticCode.None ? DiagnosticCode.ResourceUnavailable : portCode,
                         out code,
