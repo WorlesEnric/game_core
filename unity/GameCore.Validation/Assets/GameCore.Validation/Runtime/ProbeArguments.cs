@@ -268,6 +268,7 @@ namespace GameCore.Validation.ProbeHost
             bool traversal = false;
             bool gc021 = false;
             bool lifecycleStress = false;
+            bool w6Gate = false;
             string? resultPath = null;
             for (int i = 0; i < arguments.Length; i++)
             {
