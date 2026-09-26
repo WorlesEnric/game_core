@@ -1,0 +1,147 @@
+{
+  "task": "W1-GATE",
+  "probe": "GameCore.Validation.ProbeHost.ProbeRunner",
+  "mode": "W1Gate",
+  "result": "Pass",
+  "exitCode": 0,
+  "declaredUnityVersion": "6000.0.75f1",
+  "unityVersion": "6000.0.75f1",
+  "declaredTarget": "StandaloneLinux64",
+  "platform": "LinuxPlayer",
+  "architecture": "X64",
+  "processorType": "12th Gen Intel(R) Core(TM) i7-12700KF",
+  "scriptingBackend": "IL2CPP",
+  "isIl2Cpp": true,
+  "is64BitProcess": true,
+  "managedStrippingLevel": "High",
+  "managedStrippingLevelSource": "declared: GameCore.Validation.Editor.BuildProbe sets and re-reads PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, ManagedStrippingLevel.High); a player cannot query the stripping level at runtime",
+  "burstCompilerEnabled": true,
+  "fixturePluginPreservation": "declared: Assets/link.xml preserves the GameCore.Validation.Fixture assembly (preserve=\"all\"), and the generated catalog holds a direct FixturePluginFactory reference, so the plugin is linked into the player while nothing instantiates it at startup",
+  "catalogGenerator": "GameCore.Content.Compiler (GC-003)",
+  "catalogGeneratedFile": "ProbeCatalog.g.cs",
+  "catalogFileHash": "03bdcd23fd8ec0515d93d7c54d7f7c695f3860a850a7280b82316aaacd14c5c1",
+  "catalogFingerprint": "02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff",
+  "catalogDescriptionFormat": "gamecore.catalog-description/1",
+  "catalogProtocolVersion": "1.0",
+  "catalogSupportedFeatureCount": 1,
+  "catalogFileHashAlgorithm": "SHA-256",
+  "catalogFileHashScope": "SHA-256 over the UTF-8 bytes, with LF line endings, of the file prefix that ends immediately before the eight-space-indented CatalogFileHash declaration; that prefix ends with the newline that terminates the previous line, and the declaration itself, its value and the rest of the file are excluded",
+  "failureReason": "",
+  "probes": [
+    {
+      "name": "gate-catalog-and-manifest-source",
+      "status": "Pass",
+      "detail": "fingerprint=02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff; factoryKeys=4; pluginLookup=found; fingerprintAsDeclared=True; declaredFingerprint=02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff; serializerBound=True; acceptedDeclarations=1; rejectedDeclarations=1; unregisteredMiss=1; unregisteredResolved=False; unknownKeyLookup=MissingDependency(key:FactoryKey(4771366f6c5f1ea9cdd9bc836d9c05ae, 1))"
+    },
+    {
+      "name": "gate-two-owned-worlds",
+      "status": "Pass",
+      "detail": "failureA=''; failureB=''; registryBefore=1; registryAfter=3; sessionA=57314741544553450000000000000001; sessionB=57314741544553450000000000000002; lifecycleA=Running@step0/epoch1; lifecycleB=Running@step0/epoch1"
+    },
+    {
+      "name": "gate-control-lanes-linked",
+      "status": "Pass",
+      "detail": "laneARevision=1; laneAEpoch=1; worldARevision=1; worldAEpoch=1; laneMatchesWorld=True; laneAMode=Automatic; laneBRevision=1; laneARootMatchesWorld=True"
+    },
+    {
+      "name": "gate-one-operation-admitted",
+      "status": "Pass",
+      "detail": "bridgeOutcome=Executed; admission=Fresh; staged=True; publication=Published; publicationCode=None; token=SnapshotToken(WorldId(57314741544553450000000000000001), AssemblyEpoch(2), LogicalStepId(0)); resultReadable=True; commandSubmitted=True; demand=1; revision=2; epoch=2; worldRevision=2; worldEpoch=2; countersAgree=True; publications=1; installationPublished=True"
+    },
+    {
+      "name": "gate-guarded-stage-commits",
+      "status": "Pass",
+      "detail": "outcome=Published; step=1; committedSteps=1; publishedImages=2; stepOneImagePublished=True; lastPublishedStep=1; accept=1; settle=1; fault=1; project=1; counter=111; worldEpoch=2; worldRevision=2; laneEpoch=2; pendingDemand=0; laneSyncedStep=1; retentionExpiredRows=0"
+    },
+    {
+      "name": "gate-second-world-stays-idle",
+      "status": "Pass",
+      "detail": "frames=8; steps=0; committedSteps=0; stepGroupDispatchRuns=0; publishedImages=1; ingress=8; output=8; accept=0; project=0; laneRevision=1; lanePublications=0"
+    },
+    {
+      "name": "gate-thrown-postwrite-exception-fails-stop",
+      "status": "Pass",
+      "detail": "admission=Executed/Published; commandSubmitted=True; advanceOutcome=Faulted; faultCode=ApplyFault; lifecycle=Faulted; step=1; publishedImages=2; faultedStepImagePublished=False; accept=2; settle=2; faultStage=2; projectAfterFault=1; counter=222; quarantinedJobs=2; retainedHandles=2; outstandingJobs=2; laneEpoch=3; worldEpoch=3; countersAgree=True; pendingDemand=0"
+    },
+    {
+      "name": "gate-operation-status-reports-fault-honestly",
+      "status": "Pass",
+      "detail": "status=Found; hasResult=True; operationOutcome=Published; operationCode=None; operationToken=SnapshotToken(WorldId(57314741544553450000000000000001), AssemblyEpoch(3), LogicalStepId(1)); worldFaulted=True; worldFaultCode=ApplyFault; worldFaultCount=1; lifecycle=Faulted; lastCommittedStep=1; publishedImages=2; lanePublishedRevision=3; faultDetail='FactoryKey(47434649585455520000000000000005, 235409088): GameCore.Unity.Fixtures.FixtureInjectedFaultException: fixture fault stage wrote authoritative state and then threw (deterministic fail-stop fixture)'"
+    },
+    {
+      "name": "gate-faulted-world-refuses-admission",
+      "status": "Pass",
+      "detail": "bridgeOutcome=WorldRefused; refusalCode=ApplyFault; refusalDetail='world 57314741544553450000000000000001 is Faulted (ApplyFault); it accepts no further work (P-031). FactoryKey(47434649585455520000000000000005, 235409088): GameCore.Unity.Fixtures.FixtureInjectedFaultException: fixture fault stage wrote authoritative state and then threw (deterministic fail-stop fixture)'; laneRowsBefore=2; laneRowsAfter=2; worldRefusals=1; step=1; pendingDemand=0"
+    },
+    {
+      "name": "gate-teardown-settles-and-disposes",
+      "status": "Pass",
+      "detail": "stopA=Published; settledJobs=2; retainedHandlesBeforeStop=2; outstandingJobs=0; retainedResources=0; lifecycleA=Disposed; entityWorldA=False; stopB=Published; lifecycleB=Disposed; idleStepsB=0; laneSyncedStep=1; registryBefore=1; registryAfterTeardown=1"
+    },
+    {
+      "name": "fixture:gate-key-derivation",
+      "status": "Pass",
+      "detail": "literals of 'gamecore.w1gate.plugin.fixture' and 'gamecore.w1gate.schema.record' match StableNameKeyDerivation"
+    },
+    {
+      "name": "fixture:gate-catalog-and-manifest-source",
+      "status": "Pass",
+      "detail": "fingerprint=c104d3c9cc5b2741ad7fc07884b55a7a8afc9a6bad0df6905a5b05aff7523d7e; factoryKeys=2; pluginLookup=found; fingerprintAsDeclared=True; declaredFingerprint=c104d3c9cc5b2741ad7fc07884b55a7a8afc9a6bad0df6905a5b05aff7523d7e; serializerBound=True; acceptedDeclarations=1; rejectedDeclarations=1; unregisteredMiss=1; unregisteredResolved=False; unknownKeyLookup=MissingDependency(key:FactoryKey(473147415445573100000000000000a1, 1))"
+    },
+    {
+      "name": "fixture:gate-two-owned-worlds",
+      "status": "Pass",
+      "detail": "failureA=''; failureB=''; registryBefore=1; registryAfter=3; sessionA=57314741544553450000000000000001; sessionB=57314741544553450000000000000002; lifecycleA=Running@step0/epoch1; lifecycleB=Running@step0/epoch1"
+    },
+    {
+      "name": "fixture:gate-control-lanes-linked",
+      "status": "Pass",
+      "detail": "laneARevision=1; laneAEpoch=1; worldARevision=1; worldAEpoch=1; laneMatchesWorld=True; laneAMode=Automatic; laneBRevision=1; laneARootMatchesWorld=True"
+    },
+    {
+      "name": "fixture:gate-one-operation-admitted",
+      "status": "Pass",
+      "detail": "bridgeOutcome=Executed; admission=Fresh; staged=True; publication=Published; publicationCode=None; token=SnapshotToken(WorldId(57314741544553450000000000000001), AssemblyEpoch(2), LogicalStepId(0)); resultReadable=True; commandSubmitted=True; demand=1; revision=2; epoch=2; worldRevision=2; worldEpoch=2; countersAgree=True; publications=1; installationPublished=True"
+    },
+    {
+      "name": "fixture:gate-guarded-stage-commits",
+      "status": "Pass",
+      "detail": "outcome=Published; step=1; committedSteps=1; publishedImages=2; stepOneImagePublished=True; lastPublishedStep=1; accept=1; settle=1; fault=1; project=1; counter=111; worldEpoch=2; worldRevision=2; laneEpoch=2; pendingDemand=0; laneSyncedStep=1; retentionExpiredRows=0"
+    },
+    {
+      "name": "fixture:gate-second-world-stays-idle",
+      "status": "Pass",
+      "detail": "frames=8; steps=0; committedSteps=0; stepGroupDispatchRuns=0; publishedImages=1; ingress=8; output=8; accept=0; project=0; laneRevision=1; lanePublications=0"
+    },
+    {
+      "name": "fixture:gate-thrown-postwrite-exception-fails-stop",
+      "status": "Pass",
+      "detail": "admission=Executed/Published; commandSubmitted=True; advanceOutcome=Faulted; faultCode=ApplyFault; lifecycle=Faulted; step=1; publishedImages=2; faultedStepImagePublished=False; accept=2; settle=2; faultStage=2; projectAfterFault=1; counter=222; quarantinedJobs=2; retainedHandles=2; outstandingJobs=2; laneEpoch=3; worldEpoch=3; countersAgree=True; pendingDemand=0"
+    },
+    {
+      "name": "fixture:gate-operation-status-reports-fault-honestly",
+      "status": "Pass",
+      "detail": "status=Found; hasResult=True; operationOutcome=Published; operationCode=None; operationToken=SnapshotToken(WorldId(57314741544553450000000000000001), AssemblyEpoch(3), LogicalStepId(1)); worldFaulted=True; worldFaultCode=ApplyFault; worldFaultCount=1; lifecycle=Faulted; lastCommittedStep=1; publishedImages=2; lanePublishedRevision=3; faultDetail='FactoryKey(47434649585455520000000000000005, 235409088): GameCore.Unity.Fixtures.FixtureInjectedFaultException: fixture fault stage wrote authoritative state and then threw (deterministic fail-stop fixture)'"
+    },
+    {
+      "name": "fixture:gate-faulted-world-refuses-admission",
+      "status": "Pass",
+      "detail": "bridgeOutcome=WorldRefused; refusalCode=ApplyFault; refusalDetail='world 57314741544553450000000000000001 is Faulted (ApplyFault); it accepts no further work (P-031). FactoryKey(47434649585455520000000000000005, 235409088): GameCore.Unity.Fixtures.FixtureInjectedFaultException: fixture fault stage wrote authoritative state and then threw (deterministic fail-stop fixture)'; laneRowsBefore=2; laneRowsAfter=2; worldRefusals=1; step=1; pendingDemand=0"
+    },
+    {
+      "name": "fixture:gate-teardown-settles-and-disposes",
+      "status": "Pass",
+      "detail": "stopA=Published; settledJobs=2; retainedHandlesBeforeStop=2; outstandingJobs=0; retainedResources=0; lifecycleA=Disposed; entityWorldA=False; stopB=Published; lifecycleB=Disposed; idleStepsB=0; laneSyncedStep=1; registryBefore=1; registryAfterTeardown=1"
+    },
+    {
+      "name": "gate-generated-catalog-facts",
+      "status": "Pass",
+      "detail": "catalogFingerprint=02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff; catalogFactoryKeys=4; declaredPlugins=1; rejectedDeclarations=1; manifestMisses=1; sessionA=57314741544553450000000000000001; sessionB=57314741544553450000000000000002; registryAfterCreate=3; registryBefore=1; laneARevision=2; laneAEpoch=2; laneBRevision=1; worldAEpoch=2; compositionMatchesWorldEpoch=True; stepsA=1; stepsB=0; imagesA=2; imagesB=1; stepGroupRunsB=0; ingressB=8; outputB=8; pumpsB=8; accept=2; settle=2; faultStage=2; project=1; counter=222; stepOneImagePublished=True; faultedStepImagePublished=False; lastPublishedStep=1; operationOne=Published; operationTwo=Published; operationTwoResultRetained=True; worldFaultCode=ApplyFault; worldFaultCount=1; worldLifecycleAfterFault=Faulted; lanePublishedRevisionAfterFault=3; quarantinedJobs=2; retainedHandles=2; outstandingJobsBeforeTeardown=2; outstandingJobsAfterFirstStep=0; settledJobs=2; outstandingJobsAfterTeardown=0; retainedResourcesAfterTeardown=0; worldRefusals=1; worldRefusalCode=ApplyFault; laneRowsAfterRefusal=2; laneSyncedStep=1; registryAfterTeardown=1"
+    },
+    {
+      "name": "gate-fixture-catalog-facts",
+      "status": "Pass",
+      "detail": "catalogFingerprint=c104d3c9cc5b2741ad7fc07884b55a7a8afc9a6bad0df6905a5b05aff7523d7e; catalogFactoryKeys=2; declaredPlugins=1; rejectedDeclarations=1; manifestMisses=1; sessionA=57314741544553450000000000000001; sessionB=57314741544553450000000000000002; registryAfterCreate=3; registryBefore=1; laneARevision=2; laneAEpoch=2; laneBRevision=1; worldAEpoch=2; compositionMatchesWorldEpoch=True; stepsA=1; stepsB=0; imagesA=2; imagesB=1; stepGroupRunsB=0; ingressB=8; outputB=8; pumpsB=8; accept=2; settle=2; faultStage=2; project=1; counter=222; stepOneImagePublished=True; faultedStepImagePublished=False; lastPublishedStep=1; operationOne=Published; operationTwo=Published; operationTwoResultRetained=True; worldFaultCode=ApplyFault; worldFaultCount=1; worldLifecycleAfterFault=Faulted; lanePublishedRevisionAfterFault=3; quarantinedJobs=2; retainedHandles=2; outstandingJobsBeforeTeardown=2; outstandingJobsAfterFirstStep=0; settledJobs=2; outstandingJobsAfterTeardown=0; retainedResourcesAfterTeardown=0; worldRefusals=1; worldRefusalCode=ApplyFault; laneRowsAfterRefusal=2; laneSyncedStep=1; registryAfterTeardown=1"
+    }
+  ]
+}

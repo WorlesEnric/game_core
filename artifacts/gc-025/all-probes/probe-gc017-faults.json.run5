@@ -1,0 +1,342 @@
+{
+  "task": "GC-017",
+  "probe": "GameCore.Validation.ProbeHost.ProbeRunner",
+  "mode": "Faults",
+  "result": "Pass",
+  "exitCode": 0,
+  "declaredUnityVersion": "6000.0.75f1",
+  "unityVersion": "6000.0.75f1",
+  "declaredTarget": "StandaloneLinux64",
+  "platform": "LinuxPlayer",
+  "architecture": "X64",
+  "processorType": "12th Gen Intel(R) Core(TM) i7-12700KF",
+  "scriptingBackend": "IL2CPP",
+  "isIl2Cpp": true,
+  "is64BitProcess": true,
+  "managedStrippingLevel": "High",
+  "managedStrippingLevelSource": "declared: GameCore.Validation.Editor.BuildProbe sets and re-reads PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, ManagedStrippingLevel.High); a player cannot query the stripping level at runtime",
+  "burstCompilerEnabled": true,
+  "fixturePluginPreservation": "declared: Assets/link.xml preserves the GameCore.Validation.Fixture assembly (preserve=\"all\"), and the generated catalog holds a direct FixturePluginFactory reference, so the plugin is linked into the player while nothing instantiates it at startup",
+  "catalogGenerator": "GameCore.Content.Compiler (GC-003)",
+  "catalogGeneratedFile": "ProbeCatalog.g.cs",
+  "catalogFileHash": "03bdcd23fd8ec0515d93d7c54d7f7c695f3860a850a7280b82316aaacd14c5c1",
+  "catalogFingerprint": "02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff",
+  "catalogDescriptionFormat": "gamecore.catalog-description/1",
+  "catalogProtocolVersion": "1.0",
+  "catalogSupportedFeatureCount": 1,
+  "catalogFileHashAlgorithm": "SHA-256",
+  "catalogFileHashScope": "SHA-256 over the UTF-8 bytes, with LF line endings, of the file prefix that ends immediately before the eight-space-indented CatalogFileHash declaration; that prefix ends with the newline that terminates the previous line, and the declaration itself, its value and the rest of the file are excluded",
+  "failureReason": "",
+  "probes": [
+    {
+      "name": "narrative/gc017-initial-world-lane-and-observer",
+      "status": "Pass",
+      "detail": "session=4e415247433031330000000000000001; catalogFingerprint=02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff; registryBefore=1; liveTargets=8; scopes=7; idleFrames=4; idleSteps=0; worldState=Running; epoch=1; step=0; laneEpoch=1; joined=True; observerPending=True; observerConsistent=True; observerEpoch=1; hostEpoch=1; observerRevision=1; publisherRevision=1; observerRows=0; publishedRows=0; observerOwnsWorld=True; compiledIn=True"
+    },
+    {
+      "name": "narrative/gc017-validation-fault-rejects-and-keeps-the-old-assembly",
+      "status": "Pass",
+      "detail": "edit=mount-provider; armed=True; armedAtReach=True; disarmed=True; derived=Refused(ResourceUnavailable); outcome=Rejected(ResourceUnavailable)/writes=0; structuralWrites=0; crossedLiveWriteBoundary=False; publishedToken=<null>; epoch=1; epochBefore=1; revision=1; rows=0; rowsBefore=0; worldState=Running; boundaryReaches=1; injected=1; traceRecord=boundary=validation op=OperationId(WorldId(4e415247433031330000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 3) plan=0ba735ce74c83f2cb4ce077fe3119785c739de9fe837b1633acb7366b47886a6 fired=1 detail=injected validation fault: the prepared plan is refused before the fence; observerEpoch=1; hostEpoch=1; observerRevision=1; publisherRevision=1; observerRows=0; publishedRows=0; observerOwnsWorld=True; observerIsPublished=True"
+    },
+    {
+      "name": "narrative/gc017-acquisition-fault-releases-staged-leases",
+      "status": "Pass",
+      "detail": "edit=mount-provider@pending-pair; armed=True; armedAtReach=True; disarmed=True; disarmedChecked=True; adoptedBefore=True; stagedLeases=2; stagedLeasesReleased=True; refused=Rejected(ResourceUnavailable)/writes=0; structuralWrites=0; crossedLiveWriteBoundary=False; epochAfterRefusal=1; rowsBefore=0; committed=Published(None)/writes=16; epoch=2; laneEpoch=2; rowsAfter=6; worldState=Running; boundaryReaches=6; injected=2; traceRecord=boundary=acquisition op=OperationId(WorldId(4e415247433031330000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 3) plan=0ba735ce74c83f2cb4ce077fe3119785c739de9fe837b1633acb7366b47886a6 fired=1 detail=injected acquisition fault: the plan's staged leases are released and the old assembly stays active"
+    },
+    {
+      "name": "narrative/gc017-cancellation-before-the-cutoff-releases-staged-work",
+      "status": "Pass",
+      "detail": "edit=spare-scope; stagedPlanPresent=True; cancelOutcome=Cancelled; stagedPlanCleared=True; drainEmpty=True; ledgerOutcome=Cancelled; ledgerCode=Cancelled; epoch=2; laneRevision=2; rows=6; cancelDecisions=0->1"
+    },
+    {
+      "name": "narrative/gc017-cancellation-after-the-cutoff-is-too-late-and-keeps-the-publication",
+      "status": "Pass",
+      "detail": "cancelOutcome=TooLate; drained=1; targetOutcome=Published; targetStaysPublished=True; cancelCode=TooLate; liveLeases=1->1; unknownCancelOutcome=Unknown; repeatedCancelOutcome=Cancelled; cancelDecisions=1->1; worldStillBehind=True; epochBefore=2; epoch=3; laneEpoch=3; worldAdvanced=True; worldState=Running"
+    },
+    {
+      "name": "narrative/gc017-prewrite-migration-fault-preserves-live-state",
+      "status": "Pass",
+      "detail": "edit=mount-second-provider; slot=StateSlotKey(TargetId(a300fa762c702f9e90dbcb691ea84e96), OwnerId(116e8efb79e7b0e08d836386b11e9083), SlotId(5cee79a54875ead97322862d986f641b)); declaredVersion=2; handlerFromVersion=1; migrationsPlanned=1; armed=True; outcome=Rejected(ResourceUnavailable)/writes=0; structuralWrites=0; crossedLiveWriteBoundary=False; migratedSlots=0; liveSlotVersion=1; liveSlotValue=7; liveStateKept=True; epoch=3; worldState=Running; pumpedSteps=1; stillPumping=True; boundaryReaches=1; injected=3; traceRecord=boundary=migration op=OperationId(WorldId(4e415247433031330000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 15) plan=3250d55d7d2437785fbc1cdce947530a667f1765caedede812683e337c40ae83 fired=1 detail=injected migration fault: the old assembly keeps its state and keeps running"
+    },
+    {
+      "name": "narrative/gc017-postwrite-fault-faults-the-world-and-keeps-the-last-image",
+      "status": "Pass",
+      "detail": "world=fresh; armed=True; outcome=Faulted(ApplyFault)/writes=16; crossedLiveWriteBoundary=True; structuralWrites=16; publishedToken=<null>; worldState=Faulted; hostFaultCode=ApplyFault; hostFaultDetail=postwrite failure: GameCore.Unity.Runtime.Faults.FaultInjectedException: injected first-live-write fault: injected postwrite fault: the world must fault without publishing or resuming; faultCount=1 (was 0); epoch=1; epochBefore=1; images=1 (was 1); lastViewReadable=True; pumpRefused=True; injected=1; traceRecord=boundary=first-live-write op=OperationId(WorldId(4e415247433031330000000000000002), b81f09fec8d46a3297ef2d5c62e91d01, 18) plan=eda6f7a508e1ccbb0ef3c5e36eb2767b28fb0d1b3ba6d0d0344b0a22632a0fa6 fired=1 detail=injected postwrite fault: the world must fault without publishing or resuming"
+    },
+    {
+      "name": "narrative/gc017-structural-playback-fault-stops-the-step-commit",
+      "status": "Pass",
+      "detail": "world=fresh; armed=True; stepsCommitted=0; accepted=False; advanceOutcome=Faulted; publishedSnapshot=<null>; driverFaulted=True; driverCode=ApplyFault; worldState=Faulted; step=0; stepBefore=0; epoch=1; images=1 (was 1); dispatched=0->6; ledgerJobs=0; outstandingJobs=0; quarantinedJobs=0; retainedResources=9 (was 9); boundaryReaches=1; injected=1; traceRecord=boundary=structural-playback op=OperationId(WorldId(4e415247433031330000000000000003), 4e415247433031330000000000000003, 0) plan=0000000000000000000000000000000000000000000000000000000000000000 fired=1 detail=injected structural-playback fault: advancement and committed output stop here"
+    },
+    {
+      "name": "narrative/gc017-gate-installation-fault-stops-after-live-writes",
+      "status": "Pass",
+      "detail": "world=fresh; armed=True; boundaryReaches=1; outcome=Faulted(ApplyFault)/writes=16; crossedLiveWriteBoundary=True; structuralWrites=16; publishedToken=<null>; worldState=Faulted; hostFaultCode=ApplyFault; faultCount=1; epoch=1; images=1; pumpRefused=True; injected=1; traceRecord=boundary=gate-installation op=OperationId(WorldId(4e415247433031330000000000000004), b81f09fec8d46a3297ef2d5c62e91d01, 22) plan=24fe5e1eaf555dfeb51c1982b5080638d0ad49e09dd00a01507e3cbed3596ff2 fired=1 detail=injected gate-installation fault: the world must fault without publishing or resuming"
+    },
+    {
+      "name": "narrative/gc017-fence-fault-settles-handles-and-keeps-the-old-assembly",
+      "status": "Pass",
+      "detail": "fence=prewrite-refusal; outcome=Rejected(ResourceUnavailable)/writes=0; drainedHandles=3; planPhase=Rejected; fenceReachesDelta=1; structuralWrites=0; crossedLiveWriteBoundary=False; epoch=3; rows=9; worldState=Running; pendingRefusalHeld=True; adoptedPair=4/4; worldEpoch=3; boundaryReaches=4; injected=4; traceRecord=boundary=fence op=OperationId(WorldId(4e415247433031330000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 15) plan=3250d55d7d2437785fbc1cdce947530a667f1765caedede812683e337c40ae83 fired=1 detail=injected fence fault: every tracked handle was settled and the old assembly stays active"
+    },
+    {
+      "name": "narrative/gc017-cleanup-fault-retains-staged-ownership",
+      "status": "Pass",
+      "detail": "cleanupArmed=True; migrationRefused=True; outcome=Rejected(ResourceUnavailable)/writes=0; stagedLeases=1; retainedStaged=1; retainedInSet=1; gateLiveLeases=1; gateReleased=0; crossedLiveWriteBoundary=False; epoch=3; rows=9; worldState=Running; boundaryReaches=7; injected=5; traceRecord=boundary=cleanup op=OperationId(WorldId(4e415247433031330000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 15) plan=3250d55d7d2437785fbc1cdce947530a667f1765caedede812683e337c40ae83 fired=1 detail=injected cleanup fault: staged work is retained rather than released"
+    },
+    {
+      "name": "narrative/gc017-cleanup-boundary-releases-what-a-refusal-staged",
+      "status": "Pass",
+      "detail": "cleanupArmed=False; migrationRefused=True; outcome=Rejected(ResourceUnavailable)/writes=0; stagedLeases=1; stagedLeasesReleased=True; retainedStaged=0; gateReleased=1; gateLiveLeases=0; cleanupFailures=0; quarantines=0; epoch=3; rows=9; worldState=Running"
+    },
+    {
+      "name": "narrative/gc017-recovery-from-initial-definitions-into-a-new-world",
+      "status": "Pass",
+      "detail": "recovered=True; outcome=Published; registry=5->6; destination=4e415247433031330000000000000005; destinationEpoch=1; destinationStep=0; destinationState=Running; freshIncarnation=True; sourceState=Faulted; sourceUnchanged=True; sourcePumpRefused=True; sourceHandleMinted=True; handleResolved=False; repairs=0; outcome=Published; source=4e415247433031330000000000000002/Faulted->Faulted; fault=ApplyFault(1->1); destination=4e415247433031330000000000000005; repairs=0; registry=5->6; recovered from initial definitions into session 4e415247433031330000000000000005 at revision 1/epoch 1; the source stays Faulted and is never resumed (P-049).; recovery(4e415247433031330000000000000002 -> 4e415247433031330000000000000005)"
+    },
+    {
+      "name": "narrative/gc017-old-callback-after-recovery-is-rejected",
+      "status": "Pass",
+      "detail": "disposition=DiscardForeignWorld; tokenWorld=4e415247433031330000000000000002; destinationWorld=4e415247433031330000000000000005; disposed=1; disposeCount=1; isDisposed=True; destinationEpoch=1; destinationStep=0; destinationState=Running"
+    },
+    {
+      "name": "narrative/gc017-teardown-settles-and-disposes",
+      "status": "Pass",
+      "detail": "worlds=5; stopped=primary=Published,postwrite=Published,playback=Published,gate-install=Published,recovered=Published; outstandingJobs=0; retainedResources=0; registryBefore=1; registryAfter=1"
+    },
+    {
+      "name": "fixture:narrative/gc017-initial-world-lane-and-observer",
+      "status": "Pass",
+      "detail": "session=4e415247433031330000000000000001; catalogFingerprint=e30e5c5248fc6ed5393960bbaab9838502227e516a55d4cb9f532fe167cf3bb7; registryBefore=1; liveTargets=8; scopes=7; idleFrames=4; idleSteps=0; worldState=Running; epoch=1; step=0; laneEpoch=1; joined=True; observerPending=True; observerConsistent=True; observerEpoch=1; hostEpoch=1; observerRevision=1; publisherRevision=1; observerRows=0; publishedRows=0; observerOwnsWorld=True; compiledIn=True"
+    },
+    {
+      "name": "fixture:narrative/gc017-validation-fault-rejects-and-keeps-the-old-assembly",
+      "status": "Pass",
+      "detail": "edit=mount-provider; armed=True; armedAtReach=True; disarmed=True; derived=Refused(ResourceUnavailable); outcome=Rejected(ResourceUnavailable)/writes=0; structuralWrites=0; crossedLiveWriteBoundary=False; publishedToken=<null>; epoch=1; epochBefore=1; revision=1; rows=0; rowsBefore=0; worldState=Running; boundaryReaches=1; injected=1; traceRecord=boundary=validation op=OperationId(WorldId(4e415247433031330000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 3) plan=0ba735ce74c83f2cb4ce077fe3119785c739de9fe837b1633acb7366b47886a6 fired=1 detail=injected validation fault: the prepared plan is refused before the fence; observerEpoch=1; hostEpoch=1; observerRevision=1; publisherRevision=1; observerRows=0; publishedRows=0; observerOwnsWorld=True; observerIsPublished=True"
+    },
+    {
+      "name": "fixture:narrative/gc017-acquisition-fault-releases-staged-leases",
+      "status": "Pass",
+      "detail": "edit=mount-provider@pending-pair; armed=True; armedAtReach=True; disarmed=True; disarmedChecked=True; adoptedBefore=True; stagedLeases=2; stagedLeasesReleased=True; refused=Rejected(ResourceUnavailable)/writes=0; structuralWrites=0; crossedLiveWriteBoundary=False; epochAfterRefusal=1; rowsBefore=0; committed=Published(None)/writes=16; epoch=2; laneEpoch=2; rowsAfter=6; worldState=Running; boundaryReaches=6; injected=2; traceRecord=boundary=acquisition op=OperationId(WorldId(4e415247433031330000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 3) plan=0ba735ce74c83f2cb4ce077fe3119785c739de9fe837b1633acb7366b47886a6 fired=1 detail=injected acquisition fault: the plan's staged leases are released and the old assembly stays active"
+    },
+    {
+      "name": "fixture:narrative/gc017-cancellation-before-the-cutoff-releases-staged-work",
+      "status": "Pass",
+      "detail": "edit=spare-scope; stagedPlanPresent=True; cancelOutcome=Cancelled; stagedPlanCleared=True; drainEmpty=True; ledgerOutcome=Cancelled; ledgerCode=Cancelled; epoch=2; laneRevision=2; rows=6; cancelDecisions=0->1"
+    },
+    {
+      "name": "fixture:narrative/gc017-cancellation-after-the-cutoff-is-too-late-and-keeps-the-publication",
+      "status": "Pass",
+      "detail": "cancelOutcome=TooLate; drained=1; targetOutcome=Published; targetStaysPublished=True; cancelCode=TooLate; liveLeases=1->1; unknownCancelOutcome=Unknown; repeatedCancelOutcome=Cancelled; cancelDecisions=1->1; worldStillBehind=True; epochBefore=2; epoch=3; laneEpoch=3; worldAdvanced=True; worldState=Running"
+    },
+    {
+      "name": "fixture:narrative/gc017-prewrite-migration-fault-preserves-live-state",
+      "status": "Pass",
+      "detail": "edit=mount-second-provider; slot=StateSlotKey(TargetId(a300fa762c702f9e90dbcb691ea84e96), OwnerId(116e8efb79e7b0e08d836386b11e9083), SlotId(5cee79a54875ead97322862d986f641b)); declaredVersion=2; handlerFromVersion=1; migrationsPlanned=1; armed=True; outcome=Rejected(ResourceUnavailable)/writes=0; structuralWrites=0; crossedLiveWriteBoundary=False; migratedSlots=0; liveSlotVersion=1; liveSlotValue=7; liveStateKept=True; epoch=3; worldState=Running; pumpedSteps=1; stillPumping=True; boundaryReaches=1; injected=3; traceRecord=boundary=migration op=OperationId(WorldId(4e415247433031330000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 15) plan=3250d55d7d2437785fbc1cdce947530a667f1765caedede812683e337c40ae83 fired=1 detail=injected migration fault: the old assembly keeps its state and keeps running"
+    },
+    {
+      "name": "fixture:narrative/gc017-postwrite-fault-faults-the-world-and-keeps-the-last-image",
+      "status": "Pass",
+      "detail": "world=fresh; armed=True; outcome=Faulted(ApplyFault)/writes=16; crossedLiveWriteBoundary=True; structuralWrites=16; publishedToken=<null>; worldState=Faulted; hostFaultCode=ApplyFault; hostFaultDetail=postwrite failure: GameCore.Unity.Runtime.Faults.FaultInjectedException: injected first-live-write fault: injected postwrite fault: the world must fault without publishing or resuming; faultCount=1 (was 0); epoch=1; epochBefore=1; images=1 (was 1); lastViewReadable=True; pumpRefused=True; injected=1; traceRecord=boundary=first-live-write op=OperationId(WorldId(4e415247433031330000000000000002), b81f09fec8d46a3297ef2d5c62e91d01, 18) plan=eda6f7a508e1ccbb0ef3c5e36eb2767b28fb0d1b3ba6d0d0344b0a22632a0fa6 fired=1 detail=injected postwrite fault: the world must fault without publishing or resuming"
+    },
+    {
+      "name": "fixture:narrative/gc017-structural-playback-fault-stops-the-step-commit",
+      "status": "Pass",
+      "detail": "world=fresh; armed=True; stepsCommitted=0; accepted=False; advanceOutcome=Faulted; publishedSnapshot=<null>; driverFaulted=True; driverCode=ApplyFault; worldState=Faulted; step=0; stepBefore=0; epoch=1; images=1 (was 1); dispatched=0->6; ledgerJobs=0; outstandingJobs=0; quarantinedJobs=0; retainedResources=9 (was 9); boundaryReaches=1; injected=1; traceRecord=boundary=structural-playback op=OperationId(WorldId(4e415247433031330000000000000003), 4e415247433031330000000000000003, 0) plan=0000000000000000000000000000000000000000000000000000000000000000 fired=1 detail=injected structural-playback fault: advancement and committed output stop here"
+    },
+    {
+      "name": "fixture:narrative/gc017-gate-installation-fault-stops-after-live-writes",
+      "status": "Pass",
+      "detail": "world=fresh; armed=True; boundaryReaches=1; outcome=Faulted(ApplyFault)/writes=16; crossedLiveWriteBoundary=True; structuralWrites=16; publishedToken=<null>; worldState=Faulted; hostFaultCode=ApplyFault; faultCount=1; epoch=1; images=1; pumpRefused=True; injected=1; traceRecord=boundary=gate-installation op=OperationId(WorldId(4e415247433031330000000000000004), b81f09fec8d46a3297ef2d5c62e91d01, 22) plan=24fe5e1eaf555dfeb51c1982b5080638d0ad49e09dd00a01507e3cbed3596ff2 fired=1 detail=injected gate-installation fault: the world must fault without publishing or resuming"
+    },
+    {
+      "name": "fixture:narrative/gc017-fence-fault-settles-handles-and-keeps-the-old-assembly",
+      "status": "Pass",
+      "detail": "fence=prewrite-refusal; outcome=Rejected(ResourceUnavailable)/writes=0; drainedHandles=3; planPhase=Rejected; fenceReachesDelta=1; structuralWrites=0; crossedLiveWriteBoundary=False; epoch=3; rows=9; worldState=Running; pendingRefusalHeld=True; adoptedPair=4/4; worldEpoch=3; boundaryReaches=4; injected=4; traceRecord=boundary=fence op=OperationId(WorldId(4e415247433031330000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 15) plan=3250d55d7d2437785fbc1cdce947530a667f1765caedede812683e337c40ae83 fired=1 detail=injected fence fault: every tracked handle was settled and the old assembly stays active"
+    },
+    {
+      "name": "fixture:narrative/gc017-cleanup-fault-retains-staged-ownership",
+      "status": "Pass",
+      "detail": "cleanupArmed=True; migrationRefused=True; outcome=Rejected(ResourceUnavailable)/writes=0; stagedLeases=1; retainedStaged=1; retainedInSet=1; gateLiveLeases=1; gateReleased=0; crossedLiveWriteBoundary=False; epoch=3; rows=9; worldState=Running; boundaryReaches=7; injected=5; traceRecord=boundary=cleanup op=OperationId(WorldId(4e415247433031330000000000000001), b81f09fec8d46a3297ef2d5c62e91d01, 15) plan=3250d55d7d2437785fbc1cdce947530a667f1765caedede812683e337c40ae83 fired=1 detail=injected cleanup fault: staged work is retained rather than released"
+    },
+    {
+      "name": "fixture:narrative/gc017-cleanup-boundary-releases-what-a-refusal-staged",
+      "status": "Pass",
+      "detail": "cleanupArmed=False; migrationRefused=True; outcome=Rejected(ResourceUnavailable)/writes=0; stagedLeases=1; stagedLeasesReleased=True; retainedStaged=0; gateReleased=1; gateLiveLeases=0; cleanupFailures=0; quarantines=0; epoch=3; rows=9; worldState=Running"
+    },
+    {
+      "name": "fixture:narrative/gc017-recovery-from-initial-definitions-into-a-new-world",
+      "status": "Pass",
+      "detail": "recovered=True; outcome=Published; registry=5->6; destination=4e415247433031330000000000000005; destinationEpoch=1; destinationStep=0; destinationState=Running; freshIncarnation=True; sourceState=Faulted; sourceUnchanged=True; sourcePumpRefused=True; sourceHandleMinted=True; handleResolved=False; repairs=0; outcome=Published; source=4e415247433031330000000000000002/Faulted->Faulted; fault=ApplyFault(1->1); destination=4e415247433031330000000000000005; repairs=0; registry=5->6; recovered from initial definitions into session 4e415247433031330000000000000005 at revision 1/epoch 1; the source stays Faulted and is never resumed (P-049).; recovery(4e415247433031330000000000000002 -> 4e415247433031330000000000000005)"
+    },
+    {
+      "name": "fixture:narrative/gc017-old-callback-after-recovery-is-rejected",
+      "status": "Pass",
+      "detail": "disposition=DiscardForeignWorld; tokenWorld=4e415247433031330000000000000002; destinationWorld=4e415247433031330000000000000005; disposed=1; disposeCount=1; isDisposed=True; destinationEpoch=1; destinationStep=0; destinationState=Running"
+    },
+    {
+      "name": "fixture:narrative/gc017-teardown-settles-and-disposes",
+      "status": "Pass",
+      "detail": "worlds=5; stopped=primary=Published,postwrite=Published,playback=Published,gate-install=Published,recovered=Published; outstandingJobs=0; retainedResources=0; registryBefore=1; registryAfter=1"
+    },
+    {
+      "name": "gc017-narrative-digest",
+      "status": "Pass",
+      "detail": "generatedDigest=701a3c286098501456390975bbdc7e4bdb7218d3094f23e39e61b3744fa52b61; fixtureDigest=701a3c286098501456390975bbdc7e4bdb7218d3094f23e39e61b3744fa52b61; expectedDigest=701a3c286098501456390975bbdc7e4bdb7218d3094f23e39e61b3744fa52b61; observations=15; digest=701a3c286098501456390975bbdc7e4bdb7218d3094f23e39e61b3744fa52b61; label=narrative; steps=15; failed=0; digest=701a3c286098501456390975bbdc7e4bdb7218d3094f23e39e61b3744fa52b61; label=narrative; steps=15; failed=0"
+    },
+    {
+      "name": "cards/gc017-initial-world-lane-and-observer",
+      "status": "Pass",
+      "detail": "session=43415247433031330000000000000001; catalogFingerprint=77838f4766f9086a0fa32b4fb30d8d5fceeb3a8072e61594fa2177946ad3315d; registryBefore=1; liveTargets=6; scopes=9; idleFrames=4; idleSteps=0; worldState=Running; epoch=1; step=0; laneEpoch=1; joined=True; observerPending=True; observerConsistent=True; observerEpoch=1; hostEpoch=1; observerRevision=1; publisherRevision=1; observerRows=0; publishedRows=0; observerOwnsWorld=True; compiledIn=True"
+    },
+    {
+      "name": "cards/gc017-validation-fault-rejects-and-keeps-the-old-assembly",
+      "status": "Pass",
+      "detail": "edit=mount-provider; armed=True; armedAtReach=True; disarmed=True; derived=Refused(ResourceUnavailable); outcome=Rejected(ResourceUnavailable)/writes=0; structuralWrites=0; crossedLiveWriteBoundary=False; publishedToken=<null>; epoch=1; epochBefore=1; revision=1; rows=0; rowsBefore=0; worldState=Running; boundaryReaches=1; injected=1; traceRecord=boundary=validation op=OperationId(WorldId(43415247433031330000000000000001), c4d3f9becdf691d69ff6f056d4f2e274, 3) plan=b156a82cebf15e68bdb1c2ffc1bf47bedac3ab63420bbefc9d1a51a2e9e0ade9 fired=1 detail=injected validation fault: the prepared plan is refused before the fence; observerEpoch=1; hostEpoch=1; observerRevision=1; publisherRevision=1; observerRows=0; publishedRows=0; observerOwnsWorld=True; observerIsPublished=True"
+    },
+    {
+      "name": "cards/gc017-acquisition-fault-releases-staged-leases",
+      "status": "Pass",
+      "detail": "edit=mount-provider@pending-pair; armed=True; armedAtReach=True; disarmed=True; disarmedChecked=True; adoptedBefore=True; stagedLeases=2; stagedLeasesReleased=True; refused=Rejected(ResourceUnavailable)/writes=0; structuralWrites=0; crossedLiveWriteBoundary=False; epochAfterRefusal=1; rowsBefore=0; committed=Published(None)/writes=6; epoch=2; laneEpoch=2; rowsAfter=2; worldState=Running; boundaryReaches=6; injected=2; traceRecord=boundary=acquisition op=OperationId(WorldId(43415247433031330000000000000001), c4d3f9becdf691d69ff6f056d4f2e274, 3) plan=b156a82cebf15e68bdb1c2ffc1bf47bedac3ab63420bbefc9d1a51a2e9e0ade9 fired=1 detail=injected acquisition fault: the plan's staged leases are released and the old assembly stays active"
+    },
+    {
+      "name": "cards/gc017-cancellation-before-the-cutoff-releases-staged-work",
+      "status": "Pass",
+      "detail": "edit=spare-scope; stagedPlanPresent=True; cancelOutcome=Cancelled; stagedPlanCleared=True; drainEmpty=True; ledgerOutcome=Cancelled; ledgerCode=Cancelled; epoch=2; laneRevision=2; rows=2; cancelDecisions=0->1"
+    },
+    {
+      "name": "cards/gc017-cancellation-after-the-cutoff-is-too-late-and-keeps-the-publication",
+      "status": "Pass",
+      "detail": "cancelOutcome=TooLate; drained=1; targetOutcome=Published; targetStaysPublished=True; cancelCode=TooLate; liveLeases=1->1; unknownCancelOutcome=Unknown; repeatedCancelOutcome=Cancelled; cancelDecisions=1->1; worldStillBehind=True; epochBefore=2; epoch=3; laneEpoch=3; worldAdvanced=True; worldState=Running"
+    },
+    {
+      "name": "cards/gc017-prewrite-migration-fault-preserves-live-state",
+      "status": "Pass",
+      "detail": "edit=mount-second-provider; slot=<none-declared>; declaredVersion=0; handlerFromVersion=0; migrationsPlanned=0; armed=True; outcome=Rejected(ResourceUnavailable)/writes=0; structuralWrites=0; crossedLiveWriteBoundary=False; migratedSlots=0; liveSlotVersion=0; liveSlotValue=0; liveStateKept=True; epoch=3; worldState=Running; pumpedSteps=1; stillPumping=True; boundaryReaches=1; injected=3; traceRecord=boundary=migration op=OperationId(WorldId(43415247433031330000000000000001), c4d3f9becdf691d69ff6f056d4f2e274, 15) plan=c73ada1fff45b68006912305b74370ca2291572c23b58d0db5d10d50b0b7f00a fired=1 detail=injected migration fault: the old assembly keeps its state and keeps running"
+    },
+    {
+      "name": "cards/gc017-postwrite-fault-faults-the-world-and-keeps-the-last-image",
+      "status": "Pass",
+      "detail": "world=fresh; armed=True; outcome=Faulted(ApplyFault)/writes=6; crossedLiveWriteBoundary=True; structuralWrites=6; publishedToken=<null>; worldState=Faulted; hostFaultCode=ApplyFault; hostFaultDetail=postwrite failure: GameCore.Unity.Runtime.Faults.FaultInjectedException: injected first-live-write fault: injected postwrite fault: the world must fault without publishing or resuming; faultCount=1 (was 0); epoch=1; epochBefore=1; images=1 (was 1); lastViewReadable=True; pumpRefused=True; injected=1; traceRecord=boundary=first-live-write op=OperationId(WorldId(43415247433031330000000000000002), c4d3f9becdf691d69ff6f056d4f2e274, 18) plan=4ce1028335d03808c7cfd9de9fc95f65edb50716801778ff9c7ef9773633da5f fired=1 detail=injected postwrite fault: the world must fault without publishing or resuming"
+    },
+    {
+      "name": "cards/gc017-structural-playback-fault-stops-the-step-commit",
+      "status": "Pass",
+      "detail": "world=fresh; armed=True; stepsCommitted=0; accepted=False; advanceOutcome=Faulted; publishedSnapshot=<null>; driverFaulted=True; driverCode=ApplyFault; worldState=Faulted; step=0; stepBefore=0; epoch=1; images=1 (was 1); dispatched=0->4; ledgerJobs=0; outstandingJobs=0; quarantinedJobs=0; retainedResources=7 (was 7); boundaryReaches=1; injected=1; traceRecord=boundary=structural-playback op=OperationId(WorldId(43415247433031330000000000000003), 43415247433031330000000000000003, 0) plan=0000000000000000000000000000000000000000000000000000000000000000 fired=1 detail=injected structural-playback fault: advancement and committed output stop here"
+    },
+    {
+      "name": "cards/gc017-gate-installation-fault-stops-after-live-writes",
+      "status": "Pass",
+      "detail": "world=fresh; armed=True; boundaryReaches=1; outcome=Faulted(ApplyFault)/writes=6; crossedLiveWriteBoundary=True; structuralWrites=6; publishedToken=<null>; worldState=Faulted; hostFaultCode=ApplyFault; faultCount=1; epoch=1; images=1; pumpRefused=True; injected=1; traceRecord=boundary=gate-installation op=OperationId(WorldId(43415247433031330000000000000004), c4d3f9becdf691d69ff6f056d4f2e274, 22) plan=f773897151ae31c74b6871702a33f14fb022420f21e9d760bafb4277dbd9ee77 fired=1 detail=injected gate-installation fault: the world must fault without publishing or resuming"
+    },
+    {
+      "name": "cards/gc017-fence-fault-settles-handles-and-keeps-the-old-assembly",
+      "status": "Pass",
+      "detail": "fence=prewrite-refusal; outcome=Rejected(ResourceUnavailable)/writes=0; drainedHandles=3; planPhase=Rejected; fenceReachesDelta=1; structuralWrites=0; crossedLiveWriteBoundary=False; epoch=3; rows=5; worldState=Running; pendingRefusalHeld=True; adoptedPair=4/4; worldEpoch=3; boundaryReaches=4; injected=4; traceRecord=boundary=fence op=OperationId(WorldId(43415247433031330000000000000001), c4d3f9becdf691d69ff6f056d4f2e274, 15) plan=c73ada1fff45b68006912305b74370ca2291572c23b58d0db5d10d50b0b7f00a fired=1 detail=injected fence fault: every tracked handle was settled and the old assembly stays active"
+    },
+    {
+      "name": "cards/gc017-cleanup-fault-retains-staged-ownership",
+      "status": "Pass",
+      "detail": "cleanupArmed=True; migrationRefused=True; outcome=Rejected(ResourceUnavailable)/writes=0; stagedLeases=1; retainedStaged=1; retainedInSet=1; gateLiveLeases=1; gateReleased=0; crossedLiveWriteBoundary=False; epoch=3; rows=5; worldState=Running; boundaryReaches=7; injected=5; traceRecord=boundary=cleanup op=OperationId(WorldId(43415247433031330000000000000001), c4d3f9becdf691d69ff6f056d4f2e274, 15) plan=c73ada1fff45b68006912305b74370ca2291572c23b58d0db5d10d50b0b7f00a fired=1 detail=injected cleanup fault: staged work is retained rather than released"
+    },
+    {
+      "name": "cards/gc017-cleanup-boundary-releases-what-a-refusal-staged",
+      "status": "Pass",
+      "detail": "cleanupArmed=False; migrationRefused=True; outcome=Rejected(ResourceUnavailable)/writes=0; stagedLeases=1; stagedLeasesReleased=True; retainedStaged=0; gateReleased=1; gateLiveLeases=0; cleanupFailures=0; quarantines=0; epoch=3; rows=5; worldState=Running"
+    },
+    {
+      "name": "cards/gc017-recovery-from-initial-definitions-into-a-new-world",
+      "status": "Pass",
+      "detail": "recovered=True; outcome=Published; registry=5->6; destination=43415247433031330000000000000005; destinationEpoch=1; destinationStep=0; destinationState=Running; freshIncarnation=True; sourceState=Faulted; sourceUnchanged=True; sourcePumpRefused=True; sourceHandleMinted=True; handleResolved=False; repairs=0; outcome=Published; source=43415247433031330000000000000002/Faulted->Faulted; fault=ApplyFault(1->1); destination=43415247433031330000000000000005; repairs=0; registry=5->6; recovered from initial definitions into session 43415247433031330000000000000005 at revision 1/epoch 1; the source stays Faulted and is never resumed (P-049).; recovery(43415247433031330000000000000002 -> 43415247433031330000000000000005)"
+    },
+    {
+      "name": "cards/gc017-old-callback-after-recovery-is-rejected",
+      "status": "Pass",
+      "detail": "disposition=DiscardForeignWorld; tokenWorld=43415247433031330000000000000002; destinationWorld=43415247433031330000000000000005; disposed=1; disposeCount=1; isDisposed=True; destinationEpoch=1; destinationStep=0; destinationState=Running"
+    },
+    {
+      "name": "cards/gc017-teardown-settles-and-disposes",
+      "status": "Pass",
+      "detail": "worlds=5; stopped=primary=Published,postwrite=Published,playback=Published,gate-install=Published,recovered=Published; outstandingJobs=0; retainedResources=0; registryBefore=1; registryAfter=1"
+    },
+    {
+      "name": "fixture:cards/gc017-initial-world-lane-and-observer",
+      "status": "Pass",
+      "detail": "session=43415247433031330000000000000001; catalogFingerprint=815b89a5ad754aeafabf7a6ad0dbd1bd277a17d63fc0b5845f58ae9d80b3c08a; registryBefore=1; liveTargets=6; scopes=9; idleFrames=4; idleSteps=0; worldState=Running; epoch=1; step=0; laneEpoch=1; joined=True; observerPending=True; observerConsistent=True; observerEpoch=1; hostEpoch=1; observerRevision=1; publisherRevision=1; observerRows=0; publishedRows=0; observerOwnsWorld=True; compiledIn=True"
+    },
+    {
+      "name": "fixture:cards/gc017-validation-fault-rejects-and-keeps-the-old-assembly",
+      "status": "Pass",
+      "detail": "edit=mount-provider; armed=True; armedAtReach=True; disarmed=True; derived=Refused(ResourceUnavailable); outcome=Rejected(ResourceUnavailable)/writes=0; structuralWrites=0; crossedLiveWriteBoundary=False; publishedToken=<null>; epoch=1; epochBefore=1; revision=1; rows=0; rowsBefore=0; worldState=Running; boundaryReaches=1; injected=1; traceRecord=boundary=validation op=OperationId(WorldId(43415247433031330000000000000001), c4d3f9becdf691d69ff6f056d4f2e274, 3) plan=b156a82cebf15e68bdb1c2ffc1bf47bedac3ab63420bbefc9d1a51a2e9e0ade9 fired=1 detail=injected validation fault: the prepared plan is refused before the fence; observerEpoch=1; hostEpoch=1; observerRevision=1; publisherRevision=1; observerRows=0; publishedRows=0; observerOwnsWorld=True; observerIsPublished=True"
+    },
+    {
+      "name": "fixture:cards/gc017-acquisition-fault-releases-staged-leases",
+      "status": "Pass",
+      "detail": "edit=mount-provider@pending-pair; armed=True; armedAtReach=True; disarmed=True; disarmedChecked=True; adoptedBefore=True; stagedLeases=2; stagedLeasesReleased=True; refused=Rejected(ResourceUnavailable)/writes=0; structuralWrites=0; crossedLiveWriteBoundary=False; epochAfterRefusal=1; rowsBefore=0; committed=Published(None)/writes=6; epoch=2; laneEpoch=2; rowsAfter=2; worldState=Running; boundaryReaches=6; injected=2; traceRecord=boundary=acquisition op=OperationId(WorldId(43415247433031330000000000000001), c4d3f9becdf691d69ff6f056d4f2e274, 3) plan=b156a82cebf15e68bdb1c2ffc1bf47bedac3ab63420bbefc9d1a51a2e9e0ade9 fired=1 detail=injected acquisition fault: the plan's staged leases are released and the old assembly stays active"
+    },
+    {
+      "name": "fixture:cards/gc017-cancellation-before-the-cutoff-releases-staged-work",
+      "status": "Pass",
+      "detail": "edit=spare-scope; stagedPlanPresent=True; cancelOutcome=Cancelled; stagedPlanCleared=True; drainEmpty=True; ledgerOutcome=Cancelled; ledgerCode=Cancelled; epoch=2; laneRevision=2; rows=2; cancelDecisions=0->1"
+    },
+    {
+      "name": "fixture:cards/gc017-cancellation-after-the-cutoff-is-too-late-and-keeps-the-publication",
+      "status": "Pass",
+      "detail": "cancelOutcome=TooLate; drained=1; targetOutcome=Published; targetStaysPublished=True; cancelCode=TooLate; liveLeases=1->1; unknownCancelOutcome=Unknown; repeatedCancelOutcome=Cancelled; cancelDecisions=1->1; worldStillBehind=True; epochBefore=2; epoch=3; laneEpoch=3; worldAdvanced=True; worldState=Running"
+    },
+    {
+      "name": "fixture:cards/gc017-prewrite-migration-fault-preserves-live-state",
+      "status": "Pass",
+      "detail": "edit=mount-second-provider; slot=<none-declared>; declaredVersion=0; handlerFromVersion=0; migrationsPlanned=0; armed=True; outcome=Rejected(ResourceUnavailable)/writes=0; structuralWrites=0; crossedLiveWriteBoundary=False; migratedSlots=0; liveSlotVersion=0; liveSlotValue=0; liveStateKept=True; epoch=3; worldState=Running; pumpedSteps=1; stillPumping=True; boundaryReaches=1; injected=3; traceRecord=boundary=migration op=OperationId(WorldId(43415247433031330000000000000001), c4d3f9becdf691d69ff6f056d4f2e274, 15) plan=c73ada1fff45b68006912305b74370ca2291572c23b58d0db5d10d50b0b7f00a fired=1 detail=injected migration fault: the old assembly keeps its state and keeps running"
+    },
+    {
+      "name": "fixture:cards/gc017-postwrite-fault-faults-the-world-and-keeps-the-last-image",
+      "status": "Pass",
+      "detail": "world=fresh; armed=True; outcome=Faulted(ApplyFault)/writes=6; crossedLiveWriteBoundary=True; structuralWrites=6; publishedToken=<null>; worldState=Faulted; hostFaultCode=ApplyFault; hostFaultDetail=postwrite failure: GameCore.Unity.Runtime.Faults.FaultInjectedException: injected first-live-write fault: injected postwrite fault: the world must fault without publishing or resuming; faultCount=1 (was 0); epoch=1; epochBefore=1; images=1 (was 1); lastViewReadable=True; pumpRefused=True; injected=1; traceRecord=boundary=first-live-write op=OperationId(WorldId(43415247433031330000000000000002), c4d3f9becdf691d69ff6f056d4f2e274, 18) plan=4ce1028335d03808c7cfd9de9fc95f65edb50716801778ff9c7ef9773633da5f fired=1 detail=injected postwrite fault: the world must fault without publishing or resuming"
+    },
+    {
+      "name": "fixture:cards/gc017-structural-playback-fault-stops-the-step-commit",
+      "status": "Pass",
+      "detail": "world=fresh; armed=True; stepsCommitted=0; accepted=False; advanceOutcome=Faulted; publishedSnapshot=<null>; driverFaulted=True; driverCode=ApplyFault; worldState=Faulted; step=0; stepBefore=0; epoch=1; images=1 (was 1); dispatched=0->4; ledgerJobs=0; outstandingJobs=0; quarantinedJobs=0; retainedResources=7 (was 7); boundaryReaches=1; injected=1; traceRecord=boundary=structural-playback op=OperationId(WorldId(43415247433031330000000000000003), 43415247433031330000000000000003, 0) plan=0000000000000000000000000000000000000000000000000000000000000000 fired=1 detail=injected structural-playback fault: advancement and committed output stop here"
+    },
+    {
+      "name": "fixture:cards/gc017-gate-installation-fault-stops-after-live-writes",
+      "status": "Pass",
+      "detail": "world=fresh; armed=True; boundaryReaches=1; outcome=Faulted(ApplyFault)/writes=6; crossedLiveWriteBoundary=True; structuralWrites=6; publishedToken=<null>; worldState=Faulted; hostFaultCode=ApplyFault; faultCount=1; epoch=1; images=1; pumpRefused=True; injected=1; traceRecord=boundary=gate-installation op=OperationId(WorldId(43415247433031330000000000000004), c4d3f9becdf691d69ff6f056d4f2e274, 22) plan=f773897151ae31c74b6871702a33f14fb022420f21e9d760bafb4277dbd9ee77 fired=1 detail=injected gate-installation fault: the world must fault without publishing or resuming"
+    },
+    {
+      "name": "fixture:cards/gc017-fence-fault-settles-handles-and-keeps-the-old-assembly",
+      "status": "Pass",
+      "detail": "fence=prewrite-refusal; outcome=Rejected(ResourceUnavailable)/writes=0; drainedHandles=3; planPhase=Rejected; fenceReachesDelta=1; structuralWrites=0; crossedLiveWriteBoundary=False; epoch=3; rows=5; worldState=Running; pendingRefusalHeld=True; adoptedPair=4/4; worldEpoch=3; boundaryReaches=4; injected=4; traceRecord=boundary=fence op=OperationId(WorldId(43415247433031330000000000000001), c4d3f9becdf691d69ff6f056d4f2e274, 15) plan=c73ada1fff45b68006912305b74370ca2291572c23b58d0db5d10d50b0b7f00a fired=1 detail=injected fence fault: every tracked handle was settled and the old assembly stays active"
+    },
+    {
+      "name": "fixture:cards/gc017-cleanup-fault-retains-staged-ownership",
+      "status": "Pass",
+      "detail": "cleanupArmed=True; migrationRefused=True; outcome=Rejected(ResourceUnavailable)/writes=0; stagedLeases=1; retainedStaged=1; retainedInSet=1; gateLiveLeases=1; gateReleased=0; crossedLiveWriteBoundary=False; epoch=3; rows=5; worldState=Running; boundaryReaches=7; injected=5; traceRecord=boundary=cleanup op=OperationId(WorldId(43415247433031330000000000000001), c4d3f9becdf691d69ff6f056d4f2e274, 15) plan=c73ada1fff45b68006912305b74370ca2291572c23b58d0db5d10d50b0b7f00a fired=1 detail=injected cleanup fault: staged work is retained rather than released"
+    },
+    {
+      "name": "fixture:cards/gc017-cleanup-boundary-releases-what-a-refusal-staged",
+      "status": "Pass",
+      "detail": "cleanupArmed=False; migrationRefused=True; outcome=Rejected(ResourceUnavailable)/writes=0; stagedLeases=1; stagedLeasesReleased=True; retainedStaged=0; gateReleased=1; gateLiveLeases=0; cleanupFailures=0; quarantines=0; epoch=3; rows=5; worldState=Running"
+    },
+    {
+      "name": "fixture:cards/gc017-recovery-from-initial-definitions-into-a-new-world",
+      "status": "Pass",
+      "detail": "recovered=True; outcome=Published; registry=5->6; destination=43415247433031330000000000000005; destinationEpoch=1; destinationStep=0; destinationState=Running; freshIncarnation=True; sourceState=Faulted; sourceUnchanged=True; sourcePumpRefused=True; sourceHandleMinted=True; handleResolved=False; repairs=0; outcome=Published; source=43415247433031330000000000000002/Faulted->Faulted; fault=ApplyFault(1->1); destination=43415247433031330000000000000005; repairs=0; registry=5->6; recovered from initial definitions into session 43415247433031330000000000000005 at revision 1/epoch 1; the source stays Faulted and is never resumed (P-049).; recovery(43415247433031330000000000000002 -> 43415247433031330000000000000005)"
+    },
+    {
+      "name": "fixture:cards/gc017-old-callback-after-recovery-is-rejected",
+      "status": "Pass",
+      "detail": "disposition=DiscardForeignWorld; tokenWorld=43415247433031330000000000000002; destinationWorld=43415247433031330000000000000005; disposed=1; disposeCount=1; isDisposed=True; destinationEpoch=1; destinationStep=0; destinationState=Running"
+    },
+    {
+      "name": "fixture:cards/gc017-teardown-settles-and-disposes",
+      "status": "Pass",
+      "detail": "worlds=5; stopped=primary=Published,postwrite=Published,playback=Published,gate-install=Published,recovered=Published; outstandingJobs=0; retainedResources=0; registryBefore=1; registryAfter=1"
+    },
+    {
+      "name": "gc017-cards-digest",
+      "status": "Pass",
+      "detail": "generatedDigest=5cd97d38a1023fe0c8b5239d611061e5696454be9ec7cc68d440506810201732; fixtureDigest=5cd97d38a1023fe0c8b5239d611061e5696454be9ec7cc68d440506810201732; expectedDigest=5cd97d38a1023fe0c8b5239d611061e5696454be9ec7cc68d440506810201732; observations=15; digest=5cd97d38a1023fe0c8b5239d611061e5696454be9ec7cc68d440506810201732; label=cards; steps=15; failed=0; digest=5cd97d38a1023fe0c8b5239d611061e5696454be9ec7cc68d440506810201732; label=cards; steps=15; failed=0"
+    }
+  ]
+}
