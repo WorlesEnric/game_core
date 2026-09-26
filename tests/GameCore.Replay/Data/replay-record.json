@@ -20,14 +20,14 @@
     "producersPerTarget": 8,
     "batchesPerStep": 64,
     "steps": 64,
-    "workIterationsPerBatch": 1024,
+    "workIterationsPerBatch": 8192,
     "stateBound": 1000000,
     "innerLoopBatchCount": 1,
     "workerCounts": [1, 2, 4, "JobsUtility.JobWorkerMaximumCount"],
     "publishSeeds": [977, 104729],
-    "producerJob": "GameCore.Validation.ProbeHost.ReplayProducerJob (BurstCompile, IJobParallelFor)",
+    "producerJob": "GameCore.Validation.ProbeHost.ReplayProducerJob (BurstCompile, IJobParallelFor; IJobParallelForExtensions.Schedule with innerloopBatchCount 1)",
     "lane": "GameCore.Unity.Runtime.Messages.NativeMessageLane payload arena + managed TryPublishRow",
-    "merge": "GameCore.Unity.Runtime.Messages.WorldMessagePlane.MergeOwnerBatch (MessageOrderComparer)"
+    "merge": "GameCore.Unity.Runtime.Messages.WorldMessagePlane.DrainOwnerBatch -> NativeMessageLanes.MergeOwnerBatch (MessageOrderComparer)"
   },
   "observationDigest": "",
   "supersededObservationDigest": "ea05047d14cd60526d06e2e36d0f63fbe490ef64f70e2f3da73b6ada3e9db526",

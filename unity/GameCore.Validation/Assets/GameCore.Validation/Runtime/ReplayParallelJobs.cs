@@ -18,7 +18,7 @@
 //   * **The runtime performs the canonical merge and the owner commit.** The committing stage copies the produced
 //     values out, publishes rows through the lane's own managed publish path (`TryPublishRow`, which validates
 //     declared producer, owner, capacity and reserved payload range), asks the plane for the owner batch
-//     (`MergeOwnerBatch`, whose order comes only from the canonical message key) and reduces the merged rows into
+//     (`DrainOwnerBatch`, whose order comes only from the canonical message key) and reduces the merged rows into
 //     the owner's authoritative integer state. Publisher order is a *seeded permutation*, so the merge is the thing
 //     that has to neutralize scheduling order: `MessageOrderComparer` keys on the host-assigned sequence, the
 //     declared ordinal and the stable origin identity - never lane, append or worker index (P-008).
@@ -43,6 +43,7 @@ using GameCore.Unity.Runtime;
 using GameCore.Unity.Runtime.Messages;
 using Unity.Burst;
 using Unity.Collections;
+using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 using Unity.Jobs;
 using Unity.Jobs.LowLevel.Unsafe;
@@ -100,8 +101,19 @@ namespace GameCore.Validation.ProbeHost
         /// <summary>Payload bytes one produced row carries: one big-endian int32 contribution.</summary>
         public const int PayloadBytes = 4;
 
-        /// <summary>Thread-index slots recorded. `JobsUtility.ThreadIndex` is below this on every supported target.</summary>
+        /// <summary>
+        /// Lower bound of thread-index slots recorded. The module sizes its histogram from
+        /// `JobsUtility.JobWorkerMaximumCount` instead of trusting this constant, because a host with more worker
+        /// threads than this would otherwise silently drop evidence.
+        /// </summary>
         public const int ThreadSlots = 64;
+
+        /// <summary>Thread-index slots a histogram needs on this target: every worker thread plus the main thread.</summary>
+        public static int ThreadSlotsFor(int jobWorkerMaximumCount)
+        {
+            int needed = jobWorkerMaximumCount < 0 ? 0 : jobWorkerMaximumCount + 1;
+            return needed > ThreadSlots ? needed : ThreadSlots;
+        }
     }
 
     /// <summary>
@@ -152,13 +164,25 @@ namespace GameCore.Validation.ProbeHost
 
         [ReadOnly] public NativeArray<int> BaseValues;
 
-        /// <summary>The runtime lane's bounded payload arena; this is the bounded parallel writer of P-041.</summary>
+        /// <summary>
+        /// The runtime lane's bounded payload arena; this is the bounded parallel writer of P-041. The parallel-for
+        /// safety check restricts a writable container to the current batch's index range, and a producer writes at
+        /// the offset its own batch reserved, so the restriction is disabled here: the ranges are disjoint by
+        /// construction (one reservation per batch, made on the main thread before the job was scheduled).
+        /// </summary>
+        [NativeDisableParallelForRestriction]
         public NativeArray<byte> Payload;
 
         /// <summary>Per-batch contribution the committing stage reduces in canonical order.</summary>
         [WriteOnly] public NativeArray<int> BatchValues;
 
-        /// <summary>Per-thread execution histogram: index is `JobsUtility.ThreadIndex` (P-060 evidence).</summary>
+        /// <summary>
+        /// Per-thread execution histogram: index is `JobsUtility.ThreadIndex` (P-060 evidence). Each execution
+        /// increments its *own* thread's slot, which is outside its batch's index range, so the parallel-for
+        /// restriction is disabled for the same reason; one thread executes one batch at a time, so no two
+        /// executions ever write the same slot concurrently.
+        /// </summary>
+        [NativeDisableParallelForRestriction]
         public NativeArray<int> ThreadExecutions;
 
         /// <summary>Integral work per batch, so a batch is not so trivial that the scheduler runs it inline.</summary>
@@ -216,10 +240,12 @@ namespace GameCore.Validation.ProbeHost
         /// The reference shape: 8 targets x 8 producers = 64 batches per step, 64 wake-driven steps, and enough
         /// integral work per batch that the job system really spreads the ranges across the worker threads it has
         /// (a trivial batch can be executed inline by the thread that completes the job, which would make the
-        /// multi-thread observation meaningless).
+        /// multi-thread observation meaningless: 8 x 8 batches of 8,192 integral iterations each is hundreds of
+        /// microseconds of work per job, far past the size at which Unity's per-batch work stealing spreads the
+        /// ranges across every idle worker).
         /// </summary>
         public static ReplayJobsShape Reference =>
-            new ReplayJobsShape(targets: 8, producersPerTarget: 8, steps: 64, workIterations: 1024, stateBound: 1000000);
+            new ReplayJobsShape(targets: 8, producersPerTarget: 8, steps: 64, workIterations: 8192, stateBound: 1000000);
 
         public int Targets { get; }
 
@@ -488,7 +514,8 @@ namespace GameCore.Validation.ProbeHost
             seeds = new NativeArray<int>(shape.BatchCount, Allocator.Persistent);
             baseValues = new NativeArray<int>(shape.BatchCount, Allocator.Persistent);
             batchValues = new NativeArray<int>(shape.BatchCount, Allocator.Persistent);
-            threadExecutions = new NativeArray<int>(ReplayJobsKeys.ThreadSlots, Allocator.Persistent);
+            threadExecutions = new NativeArray<int>(
+                ReplayJobsKeys.ThreadSlotsFor(JobsUtility.JobWorkerMaximumCount), Allocator.Persistent);
             originKeys = new Id128[Batches.Count];
             for (int i = 0; i < Batches.Count; i++)
             {
@@ -621,11 +648,15 @@ namespace GameCore.Validation.ProbeHost
 
             // innerloopBatchCount = 1: the ranges may spread across every worker the world actually has, which is
             // what makes this fixture sensitive to `JobsUtility.JobWorkerCount` instead of to a model of it.
-            output = job.ScheduleParallel(Batches.Count, ReplayJobsKeys.InnerLoopBatchCount, inputDependency);
+            // `IJobParallelFor` is scheduled through `IJobParallelForExtensions.Schedule(jobData, arrayLength,
+            // innerloopBatchCount, dependsOn)`; `ScheduleParallel` is an `Entities.ForEach`/`IJobEntity` name and does
+            // not exist for this interface.
+            output = job.Schedule(Batches.Count, ReplayJobsKeys.InnerLoopBatchCount, inputDependency);
             lane.TrackPayloadWriter(output);
 
-            // Flush the batch now so the worker threads can pick ranges up before this step's fence completes.
-            JobsUtility.ScheduleBatchedJobs();
+            // Flush the batch now so the worker threads can pick ranges up before this step's fence completes. The
+            // flush is `JobHandle.ScheduleBatchedJobs`; `JobsUtility` has no such member.
+            JobHandle.ScheduleBatchedJobs();
             JobSchedules++;
             failure = string.Empty;
             return true;
@@ -717,8 +748,9 @@ namespace GameCore.Validation.ProbeHost
             // The lane is the authority on its own refusals (P-043: a reliable overflow is reported, never dropped).
             RejectedRows = lane.RejectedCount;
 
-            // The runtime's canonical merge: the owner's step batch in the order the canonical message key defines.
-            IReadOnlyList<StepMessage> merged = plane.MergeOwnerBatch(ReplayJobsKeys.Owner);
+            // The runtime's canonical merge: the owner's step batch in the order the canonical message key defines
+            // (`WorldMessagePlane.DrainOwnerBatch`, which is `NativeMessageLanes.MergeOwnerBatch` plus a copy).
+            IReadOnlyList<StepMessage> merged = plane.DrainOwnerBatch(ReplayJobsKeys.Owner);
             mergedScratch.Clear();
             for (int i = 0; i < merged.Count; i++)
             {
@@ -872,6 +904,7 @@ namespace GameCore.Validation.ProbeHost
     /// It schedules and hands the handle to the step fence; it reads no result, because reading one before the
     /// committing stage's fence would be exactly the access-after-release P-041 forbids.
     /// </summary>
+    [DisableAutoCreation]
     public partial class ReplayProducerSystem : SystemBase
     {
         protected override void OnUpdate()
@@ -904,6 +937,7 @@ namespace GameCore.Validation.ProbeHost
     /// lane's own publish path, takes the canonical owner batch from the plane and reduces it into the owner's
     /// integer state.
     /// </summary>
+    [DisableAutoCreation]
     public partial class ReplayCommitSystem : SystemBase
     {
         /// <summary>
@@ -1079,7 +1113,7 @@ namespace GameCore.Validation.ProbeHost
                     return new ReplayJobsRun(
                         workers, effectiveWorkers, publishSeed, effectiveShape,
                         Array.Empty<ContentHash>(), ContentHash.Empty, ContentHash.Empty, ContentHash.Empty,
-                        new int[ReplayJobsKeys.ThreadSlots], 0, 0, 0, 0, 0, 0,
+                        new int[ReplayJobsKeys.ThreadSlotsFor(JobsUtility.JobWorkerMaximumCount)], 0, 0, 0, 0, 0, 0,
                         "the world was not created: " + createResult.Code + " " + createResult.Detail);
                 }
 
@@ -1130,7 +1164,7 @@ namespace GameCore.Validation.ProbeHost
                 return new ReplayJobsRun(
                     workers, effectiveWorkers, publishSeed, effectiveShape,
                     Array.Empty<ContentHash>(), ContentHash.Empty, ContentHash.Empty, ContentHash.Empty,
-                    new int[ReplayJobsKeys.ThreadSlots], 0, 0, 0, 0, 0, 0,
+                    new int[ReplayJobsKeys.ThreadSlotsFor(JobsUtility.JobWorkerMaximumCount)], 0, 0, 0, 0, 0, 0,
                     detail.ToString());
             }
             finally

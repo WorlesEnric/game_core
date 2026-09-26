@@ -399,12 +399,15 @@ How one step of the real-jobs replay runs, in order, inside one owned world:
    value, and increments `ThreadExecutions[JobsUtility.ThreadIndex]` through `[NativeSetThreadIndex]`. Its arithmetic
    is integral and thread-independent by construction, so the value cannot depend on the worker that produced it.
    The `StepMessage` row is *not* built inside the job: its constructor validates and throws, which Burst cannot
-   compile, and the runtime's own producers build rows on the main thread for the same reason.
+   compile, and the runtime's own producers build rows on the main thread for the same reason. Both writable
+   containers (`Payload` and `ThreadExecutions`) carry `[NativeDisableParallelForRestriction]`: a parallel-for write
+   outside its own index range is a checked error, and these writes are disjoint by construction (one reserved arena
+   range per batch, one histogram slot per thread), so disabling the check is safe here.
 3. **The committing stage** (`ReplayCommitSystem`, dispatch index 1 with the producing stage index as its declared
    predecessor) calls `Dependency.Complete()` — the producer's handle reached it through that stage edge — then
    publishes the produced rows through the lane's own `TryPublishRow` in a *seeded permutation*, reads each
    contribution back out of the arena and checks it against the job's recorded value, takes the owner batch from the
-   plane's canonical merge (`MergeOwnerBatch`, ordered only by `MessageOrderComparer`), reduces it into the owner's
+   plane's canonical merge (`DrainOwnerBatch`, ordered only by `MessageOrderComparer`), reduces it into the owner's
    authoritative integer state, records the step's canonical state hash and event identities, and releases the lanes
    with `ReleaseConsumed` so the next step starts empty.
 
@@ -419,9 +422,14 @@ How one step of the real-jobs replay runs, in order, inside one owned world:
   104729) must agree with the first on every per-step state hash, the final state, the canonical event identities and
   the chain hash. Comparison is between runs, never against a remembered literal.
 * `replay-jobs-producers-execute-on-multiple-threads` — for every run whose effective worker count exceeded one, the
-  recorded per-thread histogram must show at least two distinct `JobsUtility.ThreadIndex` values. Without this, a run
-  in which Unity serialized everything would pass the hash comparison for the wrong reason. The full histogram and the
-  highest observed index are printed in the detail, so a failure is diagnosable from the artifact alone.
+  recorded per-thread histogram must show at least two **worker** threads (indices above 0 of
+  `JobsUtility.ThreadIndex`), not merely two distinct threads: the main thread completing the job does not count as a
+  worker executing producer work. Without this, a run in which Unity serialized everything would pass the hash
+  comparison for the wrong reason. The full histogram, the highest observed index, `maxWorkerThreads`,
+  `maxDistinctThreads` and `multiThreadedRuns=<n>/<parallel runs>` are printed in the detail, so a failure is
+  diagnosable from the artifact alone. The job is sized so this claim is well founded: 8 x 8 one-index batches of
+  8,192 integral iterations each is hundreds of microseconds of work per job, and the batch is flushed with
+  `JobHandle.ScheduleBatchedJobs()` so idle workers can steal ranges before the step fence completes.
 
 The modeled half is kept unchanged, because it answers a different question (the fixture's own reference scheduling and
 the 10,000-step trace); it is now explicitly labelled in the probe detail as modeled rather than real.
@@ -431,13 +439,15 @@ the 10,000-step trace); it is now explicitly labelled in the probe detail as mod
 1. **Re-record the observation digest.** The observation table grew from 12 to 15, so
    `tests/GameCore.Replay/Data/replay-record.json`'s `observationDigest` was deliberately emptied (the old value is
    kept as `supersededObservationDigest`). The harness prints the observed digest and continues while it is empty; copy
-   the `digest=` value from the `replay-digest` step of `artifacts/gc-023/toolchain/probe-replay.json` into
-   `observationDigest` and re-run the probe so the comparison is enforced again.
+   the value the harness prints in its `-- replay digest <hex> is not recorded yet` note on the first run of the new
+   table (the same value appears in that run's `replay-digest` step detail), then re-run the probe so the comparison is
+   enforced again. The round-1 artifact holds the superseded 12-observation digest and must not be copied.
 2. **Watch the thread-evidence observation on the first run.** It is the only new assertion that depends on how the
-   target's job system behaves rather than on the library: it requires two distinct worker threads when more than one
-   worker is configured. The reference shape uses 64 batches of 1,024 integral iterations each, which is far past the
-   size at which Unity's work-stealing distributes ranges, but the recorded histogram in the observation detail is the
-   evidence, and the honest failure mode is a clearly printed histogram rather than a silent pass.
+   target's job system behaves rather than on the library: it requires two *worker* threads when more than one worker
+   is configured. The reference shape uses 64 one-index batches of 8,192 integral iterations each (hundreds of
+   microseconds per job) and flushes the batch explicitly, which is far past the size at which Unity's per-batch work
+   stealing spreads ranges; the recorded histogram in the observation detail is the evidence, and the honest failure
+   mode is a printed `INSUFFICIENT_PARALLELISM` histogram rather than a silent pass.
 3. The gate command is unchanged (`tools/run_gc023_gate.sh`), so no new step is needed: the new observations ride in
    the existing `-probeReplay` mode and the existing EditMode suite.
 

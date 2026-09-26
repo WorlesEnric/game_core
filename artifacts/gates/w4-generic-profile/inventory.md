@@ -406,7 +406,7 @@ was proven over a deterministic *model* of producer scheduling, so setting `Jobs
 managed permutation rather than how the fixture's work ran. GC-023 now also drives the fixture's producers as REAL
 Burst `IJobParallelFor` jobs (inner-loop batch size 1) that write the runtime's own bounded `NativeMessageLane`
 payload arena, published through the lane's own publish path in a seeded permutation and merged by the runtime's
-canonical `MergeOwnerBatch`, at `JobsUtility.JobWorkerCount` 1, 2, 4 and the target's maximum, twice per count with
+canonical `DrainOwnerBatch`, at `JobsUtility.JobWorkerCount` 1, 2, 4 and the target's maximum, twice per count with
 different publish permutations. Three observations carry it: the world really ran the parallel producers (every step
 committed, every batch produced, nothing refused, and the canonical merge reordered the append order at least once),
 every run agrees on every per-step state hash, the final state, the canonical event identities and the chain hash, and

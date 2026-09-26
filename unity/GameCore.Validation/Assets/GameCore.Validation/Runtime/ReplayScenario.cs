@@ -482,6 +482,10 @@ namespace GameCore.Validation.ProbeHost
                 bool threadsPassed = true;
                 bool workerReadBack = true;
                 var threadDetail = new StringBuilder();
+                int multiThreadedRuns = 0;
+                int parallelRuns = 0;
+                int maximumDistinct = 0;
+                int maximumWorkersObserved = 0;
                 for (int i = 0; i < runs.Count; i++)
                 {
                     ReplayJobsRun run = runs[i];
@@ -515,12 +519,33 @@ namespace GameCore.Validation.ProbeHost
                         .Append("/histogram=").Append(Histogram(run))
                         .Append(';');
 
-                    if (run.EffectiveWorkers > 1 && run.DistinctThreads < 2)
+                    // The claim the review asked for, in its exact form: more than one *worker thread* executed
+                    // producer work. `WorkerThreadCount()` excludes `JobsUtility.ThreadIndex` 0 (the thread that
+                    // completes), so this is two real worker threads and not "the main thread plus one worker".
+                    if (run.EffectiveWorkers > 1 && run.WorkerThreadCount() < 2)
                     {
-                        // More than one worker was available and the job still ran on a single thread: the hash
-                        // comparison below would then be silent about real scheduling, which is the defect this
-                        // observation exists to catch.
                         threadsPassed = false;
+                        threadDetail.Append("INSUFFICIENT_PARALLELISM;");
+                    }
+
+                    if (run.DistinctThreads > maximumDistinct)
+                    {
+                        maximumDistinct = run.DistinctThreads;
+                    }
+
+                    if (run.WorkerThreadCount() > maximumWorkersObserved)
+                    {
+                        maximumWorkersObserved = run.WorkerThreadCount();
+                    }
+
+                    if (run.EffectiveWorkers > 1 && run.WorkerThreadCount() >= 2)
+                    {
+                        multiThreadedRuns++;
+                    }
+
+                    if (run.EffectiveWorkers > 1)
+                    {
+                        parallelRuns++;
                     }
                 }
 
@@ -578,8 +603,13 @@ namespace GameCore.Validation.ProbeHost
                     // The verdict is printed as a greppable fact rather than left to the step's prose, so the harness
                     // clause fails when the evidence is absent instead of matching the assertion's own wording.
                     "multiThreaded=" + (threadsPassed ? "true" : "false")
-                    + "; assertion=every run whose effective worker count was above one executed producer batches on "
-                    + "at least two distinct threads (JobsUtility.ThreadIndex via [NativeSetThreadIndex])"
+                    + "; multiThreadedRuns=" + multiThreadedRuns.ToString(CultureInfo.InvariantCulture)
+                    + "/" + parallelRuns.ToString(CultureInfo.InvariantCulture)
+                    + "; maxDistinctThreads=" + maximumDistinct.ToString(CultureInfo.InvariantCulture)
+                    + "; maxWorkerThreads=" + maximumWorkersObserved.ToString(CultureInfo.InvariantCulture)
+                    + "; assertion=every run whose effective JobsUtility.JobWorkerCount was above one executed producer "
+                    + "batches on at least two worker threads (indices above 0 of JobsUtility.ThreadIndex, injected "
+                    + "through [NativeSetThreadIndex])"
                     + "; recordedThreadHistograms=" + threadDetail));
             }
             catch (Exception exception)
