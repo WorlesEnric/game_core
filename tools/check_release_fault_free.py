@@ -62,6 +62,11 @@ ASMDEFS = [
     "Packages/com.gamecore.unity.runtime/Tests/Recovery/GameCore.Unity.Recovery.Tests.asmdef",
     "unity/GameCore.Validation/Assets/GameCore.Validation/Runtime/GameCore.Validation.ProbeHost.asmdef",
     "unity/GameCore.Validation/Assets/GameCore.Validation/Tests/Faults/GameCore.Faults.Tests.asmdef",
+    # W5-GATE: the integration gate's EditMode assembly runs the scenario that arms the latches, so it is a
+    # qualification artefact exactly like the fault suite. It sits inside the validation project, which is the
+    # project that references the marker package, and `tools/unity/prepare_gc017_release_project.py` removes the
+    # whole Tests folder from the clone, so no shipping compilation sees it.
+    "unity/GameCore.Validation/Assets/GameCore.Validation/Tests/W5Gate/GameCore.W5Gate.Tests.asmdef",
 ]
 
 # Every type the latch declares. A release build must contain none of these names anywhere.
@@ -260,12 +265,63 @@ def runtime_sources() -> list[str]:
     return sorted(found)
 
 
+def literal_blind(text: str) -> str:
+    """The text with the *contents* of every string and char literal blanked out, delimiters kept.
+
+    Balance is a property of code structure, and a literal's contents can never unbalance a C# construct: a
+    `ToString()` that emits a closing parenthesis writes it inside `")"`, which keeps the source balanced while
+    putting a bare parenthesis character in the text. The literal-aware view is still what the *marker* scans use
+    (a boundary name literal that survived outside a guard must be found), so this is a second, narrower view rather
+    than a replacement. Found by the Wave 5 gate: `Observation/SnapshotResynchronization.cs` emits `")"` from a
+    balanced expression, which the previous version of this function reported as a split construct.
+    """
+    out = []
+    i = 0
+    n = len(text)
+    while i < n:
+        ch = text[i]
+        if ch == "@" and text.startswith('@"', i):
+            out.append('""')
+            i += 2
+            while i < n:
+                if text.startswith('""', i):
+                    i += 2
+                    continue
+                if text[i] == '"':
+                    i += 1
+                    break
+                i += 1
+            continue
+        if ch in ('"', "'"):
+            quote = ch
+            out.append(quote)
+            out.append(quote)
+            i += 1
+            while i < n:
+                if text[i] == "\\":
+                    i += 2
+                    continue
+                done = text[i] == quote
+                i += 1
+                if done:
+                    break
+            continue
+        out.append(ch)
+        i += 1
+    return "".join(out)
+
+
 def assert_balanced(text: str, where: str) -> None:
     """A guard that splits a construct would leave one configuration unbalanced, which the compiler would
-    report as an error somewhere else entirely. Checking it here names the real cause."""
+    report as an error somewhere else entirely. Checking it here names the real cause.
+
+    The check runs over the literal-blind view (`literal_blind`): a brace, parenthesis or bracket inside a string or
+    character literal is data, and counting it would fail a correct file.
+    """
+    view = literal_blind(text)
     for opener, closer, label in (("{", "}", "braces"), ("(", ")", "parentheses"), ("[", "]", "brackets")):
         depth = 0
-        for ch in text:
+        for ch in view:
             if ch == opener:
                 depth += 1
             elif ch == closer:

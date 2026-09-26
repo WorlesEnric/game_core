@@ -40,29 +40,40 @@ def main() -> None:
         "com.unity.test-framework.performance",
     ):
         del manifest["dependencies"][dependency]
-    manifest.pop("testables")
-    manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
-    (DESTINATION / "Packages/packages-lock.json").unlink()
-
-    # The fault scenario is a qualification fixture, not a shipping entry point.
-    # The ordinary narrative/cards probe modes remain identical to validation.
+    # The fault scenario and the Wave 5 integration gate are qualification fixtures, not shipping entry points:
+    # both name the latch types that a configuration without the marker does not compile at all. The ordinary
+    # narrative/cards/GC-018/GC-019 probe modes remain identical to validation.
     shutil.rmtree(DESTINATION / "Assets/GameCore.Validation/Tests")
     (DESTINATION / "Assets/GameCore.Validation/Tests.meta").unlink()
-    for name in ("FaultScenario", "FaultScenarioHost", "FaultScenarioStep", "ProbeFaults"):
+    for name in (
+        "FaultScenario",
+        "FaultScenarioHost",
+        "FaultScenarioStep",
+        "ProbeFaults",
+        "W5GateScenario",
+        "W5GateFamily",
+        "W5GateNarrativeHost",
+        "W5GateCardsHost",
+        "ProbeW5Gate",
+    ):
         for suffix in (".cs", ".cs.meta"):
             (DESTINATION / RUNTIME / (name + suffix)).unlink()
 
     runner = DESTINATION / RUNTIME / "ProbeRunner.cs"
+    # The report identity is one independent `if` per mode, so removing a mode's branch is a whole block.
     replace_once(
         runner,
-        '                                                : arguments.Faults\n'
-        '                                                    ? new ProbeReport(\n'
-        '                                                        "Faults",\n'
-        '                                                        ProbeEnvironment.DeclaredUnityVersion,\n'
-        '                                                        ProbeEnvironment.DeclaredTarget,\n'
-        '                                                        "GC-017")\n'
-        '                                                : new ProbeReport(',
-        '                                                : new ProbeReport(',
+        '            if (arguments.Faults)\n'
+        '            {\n'
+        '                return Named("Faults", "GC-017");\n'
+        '            }\n\n',
+    )
+    replace_once(
+        runner,
+        '            if (arguments.W5Gate)\n'
+        '            {\n'
+        '                return Named("W5Gate", "W5-GATE");\n'
+        '            }\n\n',
     )
     replace_once(
         runner,
@@ -72,23 +83,47 @@ def main() -> None:
         '                    report.CompletePositive();\n'
         '                }\n',
     )
+    replace_once(
+        runner,
+        '                else if (arguments.W5Gate)\n'
+        '                {\n'
+        '                    ProbeW5Gate.Run(report);\n'
+        '                    report.CompletePositive();\n'
+        '                }\n',
+    )
+
     arguments = DESTINATION / RUNTIME / "ProbeArguments.cs"
     for old in (
         '        private const string FaultsArgumentName = "-probeFaults";\n',
+        '        private const string W5GateArgumentName = "-probeW5Gate";\n',
         '            bool faults,\n',
+        '            bool w5Gate,\n',
         '            Faults = faults;\n',
+        '            W5Gate = w5Gate;\n',
         '            bool faults = false;\n',
+        '            bool w5Gate = false;\n',
         '        public bool Faults { get; }\n',
+        '        public bool W5Gate { get; }\n',
         '                else if (argument == FaultsArgumentName)\n'
         '                {\n'
         '                    faults = true;\n'
         '                }\n',
+        '                else if (argument == W5GateArgumentName)\n'
+        '                {\n'
+        '                    w5Gate = true;\n'
+        '                }\n',
     ):
         replace_once(arguments, old)
-    replace_once(arguments, '            || Gc013 || W4Gate || Faults\n',
-                 '            || Gc013 || W4Gate\n')
-    replace_once(arguments, '                w4Gate, faults, resultPath);',
-                 '                w4Gate, resultPath);')
+    replace_once(
+        arguments,
+        '            || Gc013 || W4Gate || Faults || Gc018 || Gc019 || W5Gate\n',
+        '            || Gc013 || W4Gate || Gc018 || Gc019\n',
+    )
+    replace_once(
+        arguments,
+        '                w4Gate, faults, gc018, gc019, w5Gate, resultPath);',
+        '                w4Gate, gc018, gc019, resultPath);',
+    )
     print(f"Marker-free release project: {DESTINATION}")
     print("Build: UNITY_PROJECT=<above> ARTIFACTS=artifacts/faults/release tools/unity/build_probe.sh")
 
