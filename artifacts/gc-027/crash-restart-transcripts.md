@@ -21,6 +21,10 @@ For each `detail` in `probe-gc027.json` whose observation name is listed below, 
 the `loss=` class into the matching row. The step names are qualified `narrative/…` and `cards/…`; both families run
 the same sequence, so both rows must agree.
 
+All three families are recorded: the narrative slice, the card market and the traversal course. The traversal rows
+are the same observations with the `traversal/` prefix, plus its four engine-physics observations; it records no
+delivery observation because the course declares no delivery obligation.
+
 | # | Observation | Injection point | Transcript clause (fill from the probe artifact) | Data-loss class (fill) |
 |---|---|---|---|---|
 | 1 | `gc027-capture-copy-fault-produces-no-checkpoint` | capture copy | | |

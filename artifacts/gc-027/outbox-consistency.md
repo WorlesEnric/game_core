@@ -2,6 +2,11 @@
 
 **Status: `NotRun (pending orchestrator build host)`.** Every row is a template; nothing here is a run result.
 
+**Which families this covers.** The narrative slice and the card market, which declare a delivery obligation. The
+traversal course declares none (`HasDeliveryObligation` is false: it has no outbox and no external effect), so it
+records no row here and no delivery observation; its recovery evidence is the engine-physics and authoritative-state
+observations in `recovery-behavior-and-data-loss.md` §3.1.
+
 ## What is reported, and by what
 
 `GameCore.Execution.Recovery.OutboxConsistency.Verify(rows, liveOutbox, label)` is the census a recovery is judged

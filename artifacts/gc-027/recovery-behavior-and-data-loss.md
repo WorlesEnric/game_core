@@ -41,6 +41,10 @@ the fault is injected: `Latch` = GC-017's `AssemblyFaultInjection` (compiled out
 `GAMECORE_FAULT_INJECTION`); `DeliveryHook` = GC-021's existing `IDeliveryStepHook` (a reporting seam, test-only
 caller); `StoreRead` = the store returning a real refusal value.
 
+The sequence runs over **three** families: the narrative slice, the card market and the traversal course. The
+traversal course is the one that exercises a *fixed-step* world with an engine physical domain, so it is also where
+the physical-observation limitation is executed rather than asserted (§3.1).
+
 | # | Injection point | Mechanism | Boundary names | Permitted observable result | Data-loss class | Observed evidence (`NotRun`) |
 |---|---|---|---|---|---|---|
 | 1 | capture copy | Latch | `checkpoint-capture-copy` | no checkpoint produced; the world being captured keeps running | none | `gc027-capture-copy-fault-produces-no-checkpoint` |
@@ -92,6 +96,32 @@ Concretely, the boundary a caller must design around is:
   made by the recovered world when it dispatches (P-045).
 * **not lost**: the source's committed gameplay effects as observed at the checkpoint, the source's identity, and the
   obligation set. The source is never written to, and its storage is only released by `Stop`/`Dispose`.
+
+## 3.1 Physical observation: what is and is not continued
+
+`P-054` excludes engine-internal solver state from a portable checkpoint, and 06 §7 says an adapter "restores
+declared authoritative pose/velocity or observation policy and records any restabilization limits". The traversal
+course is the genre where that becomes observable, through four observations that run only for a family declaring an
+engine physical domain:
+
+| Observation | What it proves | Requirement |
+|---|---|---|
+| `gc027-recovered-engine-physics-is-reseeded-not-continued` | the recovered scene is its own **dedicated local** `PhysicsScene`; every runner body's **engine** pose equals the world's **authoritative ECS** pose the checkpoint carried; the recovered scene's own `SimulateCount` is **zero** before the recovered world steps it, while the source's counter is reported for contrast | P-054, 04 s7 |
+| `gc027-source-authoritative-state-survives-the-recovery` | the course's authoritative text — every runner's ECS pose and velocity plus its accepted-checkpoint progress — is **identical** in both worlds | P-053, 07 §4.3 |
+| `gc027-recovered-world-refuses-an-old-session-observation` | an image stamped with the **old** session is refused `ForeignWorld`/`StaleHandle` with no lease, and the recovered world's own image is stamped with the **new** session, epoch and step | P-004, P-005, P-049 |
+| `gc027-recovered-world-steps-its-engine-once-per-admitted-step` | the recovered world commits its own steps, its engine simulates exactly once per committed step, and a repeated admission for the same step is refused | REF-A06, P-036 |
+
+**The limitation, stated plainly:** the engine's solver state is *not* carried across a recovery and is *not* claimed
+to be. What is carried is the declared authoritative pose and velocity; what the recovered world does is re-seed its
+bodies from that state and then simulate its own steps. A recovery therefore does not continue an in-flight
+simulation, does not preserve sub-step solver accumulators, and makes no bit-identical continuation claim. Two
+consequences a caller must design around: (a) a body's engine pose immediately after a recovery equals its
+authoritative pose, so any engine-only state (penetration depth, contact manifolds, sleep timers) is reset; (b) the
+engine's simulation counter is a per-session count, so a monitoring system must not compare a counter across a
+recovery.
+
+The same limitation applies to a card or narrative world trivially — those genres declare no engine physical domain
+at all, so nothing engine-owned exists to continue.
 
 ## 4. Content incompatibility
 
@@ -158,5 +188,7 @@ The build host fills in the evidence columns of §2 by copying, from `artifacts/
 * one line per observation name with its `status` and `detail` (the transcript and outbox-consistency evidence the
   task asks for is *inside* those details: every recovery step's detail carries the transcript summary and the
   outbox census);
-* the two digest literals reported by the digest steps, which must equal the frozen literals in
-  `ProbeRecovery.NarrativeDigest` / `CardsDigest`.
+* the three digest literals reported by the digest steps, which must equal the frozen literals in
+  `ProbeRecovery.NarrativeDigest` / `CardsDigest` / `TraversalDigest`. The narrative and card tables are unchanged
+  by the traversal work; the traversal table is the shared one minus the four delivery observations (the course
+  declares no delivery obligation) plus its four engine-physics ones, and its literal is `30ff0f92…`.

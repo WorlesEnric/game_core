@@ -32,8 +32,13 @@ new world unexposed."* — is delivered as five pieces:
    `IDeliveryStepHook`, and the restart point through the store's own refusal values.
 4. **The checkpoint file adapter 06 §7 requires now exists** (`CheckpointStore`), because GC-018 deliberately left
    publication to the caller and an O-22 recovery had no verified blob to recover from.
-5. **The proof runs in Unity and in the player** — seventeen observations per family, a `-probeRecovery` mode and a
-   harness, plus the EditMode suite that recomputes the two digest literals from the frozen name table.
+5. **The proof runs in Unity and in the player** — a capability-filtered observation table, a `-probeRecovery` mode
+   and a harness, plus the EditMode suite that recomputes each family's digest literal from the frozen name table.
+6. **Three families, not two** (round 2). The narrative slice, the card market and the **traversal course** all run
+   the same sequence. The course is the fixed-step genre with a real local `PhysicsScene`, so it is also where the
+   physical-observation limitation is *executed*: the recovered world re-seeds its engine bodies from the
+   authoritative ECS pose the checkpoint carried, its scene's own simulation counter starts at zero, an observation
+   stamped with the old session is refused, and the recovered world simulates once per step it commits.
 
 ## 2. Commits on this branch
 
@@ -44,6 +49,9 @@ new world unexposed."* — is delivered as five pieces:
 | `GC-027: versioned recovery fixtures and their plain-dotnet projects` | `tests/GameCore.Recovery/**`, the two `dotnet/` projects, `dotnet/GameCore.sln`, `dotnet/README.md` |
 | `GC-027: the Unity recovery proof, its probe mode and its release strip` | `Gc027{Family,SourceWorld,RestoreBuilder,Scenario,NarrativeHost,CardsHost}.cs`, `ProbeRecovery.cs`, `Tests/Gc027/**`, `ProbeArguments.cs`, `ProbeRunner.cs`, `tools/unity/run_recovery_probe.sh`, the two release-strip tools |
 | `GC-027: the evidence set and this handoff` | `artifacts/gc-027/**` |
+| `GC-027: fix the compile errors an independent declaration audit found`, `…record the compile-risk audit…`, `…a second mechanical pass…`, `…mark the two non-run evidence files as NotRun…` | the twelve audit findings and their fixes, plus the audit's own evidence file |
+| `GC-027: the harness checks the three acceptance clauses, not just the names` | the per-run source-lifecycle, single-effect and registry-zero assertions |
+| `GC-027: the traversal course recovery family (third genre, fixed-step)` | `Gc027TraversalHost.cs`, `Gc027PhysicsDomain.cs`, the capability-filtered table and the four engine-physics observations, the optional-delivery changes, the third digest literal, the strip-list additions |
 
 ## 3. Files created
 
@@ -82,7 +90,9 @@ new world unexposed."* — is delivered as five pieces:
 | `Runtime/Gc027RestoreBuilder.cs` | The O-21 rebuilder adapted to a recovery; also an `IRestoreOutboxBuilder` (the first implementer in the repository, which makes the executor's outbox step live rather than dead code). |
 | `Runtime/Gc027Scenario.cs` | The seventeen observations, their detail strings and the per-family result digest. |
 | `Runtime/Gc027NarrativeHost.cs`, `Runtime/Gc027CardsHost.cs` | The two family adapters and their `RecoveryFamily()` entry points. |
-| `Runtime/ProbeRecovery.cs` | The `-probeRecovery` mode and the two pinned digest literals. |
+| `Runtime/Gc027PhysicsDomain.cs` | `Gc027PhysicsPose`, `Gc027PhysicsDomain`, `PhysicsStepOutcome`: the genre-free engine-physics surface (target ids, integers and a step number only), so the runner drives a physics scene without naming a traversal or adapter type (P-001). |
+| `Runtime/Gc027TraversalHost.cs` | The third partial part of `Gc020TraversalHost.CourseFamily`: its `IGc018Family` half (pending movement command, dormant progress row, persistent clock, boundaries, runtime attach) and its `IGc027Family` half (fixed-step temporal facts, fingerprint, codecs, migrations, schemas, fault edit, per-step movement sample, authoritative state text, engine-physics domain). |
+| `Runtime/ProbeRecovery.cs` | The `-probeRecovery` mode and the three pinned digest literals. |
 | `Tests/Gc027/{GameCore.Gc027.Tests.asmdef,Gc027IntegrationTests.cs}` | The EditMode suite. |
 | `tools/unity/run_recovery_probe.sh` | The player harness. |
 
@@ -202,6 +212,10 @@ claimed by this change set; §9 proposes them).
 | **TEST-002** identities, epochs, stale references | the fresh-incarnation and native-handle observations | `gc027-restored-world-uses-different-native-handles`, `gc027-recovery-publishes-a-new-session-…` |
 | **TEST-010** state preservation and migration | the restore's state disposition | `gc027-active-and-dormant-state-survive-the-recovery`, `CheckpointRestorePlanTests` (existing) |
 | **TEST-014** committed events and consistent observation | the delivery core's own semantics, exercised at three boundaries | the three delivery observations |
+| **P-034 / P-054** one engine authority; no engine state in a checkpoint | `Gc027PhysicsDomain` over the course's real `UnityPhysicsSceneBackend` and `PhysicsAuthorityGate` | `gc027-recovered-engine-physics-is-reseeded-not-continued`, `gc027-recovered-world-steps-its-engine-once-per-admitted-step` |
+| **P-036** temporal models | the course recovers as a fixed-step world with its own declared step and catch-up bound | `gc027-recovered-world-steps-its-engine-once-per-admitted-step`, the traversal run's own temporal facts in its checkpoint header |
+| **P-059** genre validation before freeze | the third genre runs the whole sequence, and its table is its own | every `traversal/…` observation, the three digest literals |
+| **TEST-018 / TEST-019** Unity worlds, adapters, single state authority | a real local `PhysicsScene` in a real world, with the engine's own counters | the four engine-physics observations (traversal only) |
 
 ## 8. Design decisions and doc ambiguities
 
@@ -277,20 +291,23 @@ claimed by this change set; §9 proposes them).
    plain-dotnet build promotes to errors, and any name ambiguity between the two namespaces `Gc027Scenario.cs`
    imports. Those are listed in `compile-risk-audit.md` §3 and are the expected first-build failures; none of them is
    a semantic defect in the recovery design.
-2. **Traversal is not covered by this change set.** The task says "cards, narrative and traversal-compatible
-   checkpoint data". Cards and narrative each run the full sequence. Traversal is *compatible* — nothing in the
-   composition is genre-specific (P-001): the recovery reads a definition, a store and a registration, all of which
-   a traversal world has — but this change set does not add a third `IGc027Family` adapter for it, because
-   GC-020/GC-024 own the traversal course and its own scenarios, and a half-built third adapter would be worse
-   evidence than none. **Declared limitation**: the traversal-compatible claim is structural (no genre type appears
-   in `WorldRecovery`, `CheckpointStore`, `RecoveryPolicy` or the transcript), not executed. If the orchestrator
-   wants an executed traversal recovery, the shape is one more `IGc027Family` implementation over
-   `Gc020Family.IGc020Family`'s declarations.
-3. **Physical-observation limitations for traversal.** Per the task's "declare physical-observation limitations":
-   `00` P-054 and 06 §7 both exclude engine-internal state, so even for a traversal world this recovery carries the
-   declared authoritative pose/velocity and the RNG streams, never a physics solver state, and makes no
-   bit-identical continuation claim. That limitation is stated in
-   `artifacts/gc-027/recovery-behavior-and-data-loss.md` §3 rather than implied.
+2. **Traversal is now executed, not structural (round 2).** The course runs the whole sequence through the same
+   runner: it is captured at a committed boundary after admitting its declared steps (so its motion state really
+   moved and its pending movement sample is genuinely pending), it is faulted after a real apply, and it is recovered
+   into a new session at different native handles. The two fault points the review named explicitly —
+   postwrite-apply and restart — are the shared observations, so the course proves them too, and the EditMode suite
+   asserts them by name for the traversal label. `Gc027TraversalHost` is a third *partial part* of the course family
+   the GC-020 and Wave 6 gates already drive, so all three qualification paths run one family implementation.
+   **Residual scope note**: the course's `AttachStageRuntime` is answered directly rather than by reusing
+   `IGc018Family.TryAttachRuntime`'s generic path, because the two have different return types — a `Gc020StageRuntime`
+   versus nothing — and the family's own attach is the one that installs the local physics scene this task needs.
+3. **Physical-observation limitations, executed and declared.** `P-054` and 06 §7 exclude engine-internal state, so
+   this recovery carries the declared authoritative pose/velocity and the RNG streams, never a physics solver state,
+   and makes no bit-identical continuation claim. For the traversal course that is now four observations rather than
+   a sentence: the recovered scene is re-seeded from the authoritative ECS pose, its own simulation counter starts
+   at zero, an old-session observation is refused, and the recovered world simulates once per step it commits.
+   `artifacts/gc-027/recovery-behavior-and-data-loss.md` §3.1 states the boundary and its two consequences for a
+   caller (engine-only state is reset; the counter is per-session and must not be compared across a recovery).
 4. **The checkpoint store is a local-file adapter, deliberately.** It is the "local checkpoint adapter" of 06 §7.
    The same paragraph's object-storage adapter ("its own durable publication protocol") is out of scope and not
    claimed.
@@ -393,8 +410,9 @@ PROBE_RUNS=5 ARTIFACTS=artifacts/gc-027/toolchain tools/unity/run_recovery_probe
 ```
 
 The harness asserts `"task": "GC-027"`, `"mode": "Recovery"`, `"result": "Pass"`, the absence of
-`"status": "Fail"`, all 34 qualified observation names, both digest steps and their pinned literals, and twelve
-clause fragments — on **every** one of the `PROBE_RUNS` runs, not only the first.
+`"status": "Fail"`, the full 21-name table as qualified names for all three families (63 fragments), the four
+traversal-only engine-physics observation names, the three digest steps and their pinned literals, and fifteen clause
+fragments — on **every** one of the `PROBE_RUNS` runs, not only the first.
 
 ### 13.4 Release-surface and clone checks this change set extends
 
@@ -423,5 +441,5 @@ python3 tools/validate_game_core_docs.py
 | `artifacts/gc-027/toolchain/probe-gc027.json` (+ `.run2..5`) | the player half; the observation details inside it are the source for `crash-restart-transcripts.md` and `outbox-consistency.md` |
 | `artifacts/gc-027/release-surface.json`, `release-clone.json` | the two extended release checks, with the full `dotnet` present |
 | `artifacts/gc-027/compile-risk-audit.md` | the declaration audit's findings, their fixes, and what only a compiler can confirm |
-| the filled-in columns of `recovery-behavior-and-data-loss.md` §2 and `fault-injection-matrix.md` | copied from the probe artifact, per those files' instructions |
+| the filled-in columns of `recovery-behavior-and-data-loss.md` §2 and §3.1 and `fault-injection-matrix.md` | copied from the probe artifact, per those files' instructions; §3.1's four rows come from the `traversal/…` observations |
 | the filled-in tables of `crash-restart-transcripts.md` and `outbox-consistency.md` | same |

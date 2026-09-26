@@ -48,6 +48,24 @@ Each row can fail in a way that is visible rather than silent:
   attempt count, both asserted;
 * a store that refuses for the wrong reason changes the diagnostic code, asserted per row.
 
+## Three families
+
+The matrix runs on all three families. The narrative slice and the card market declare a delivery obligation and no
+engine domain; the **traversal course** declares an engine domain and no delivery obligation, so it covers points 1–5
+and 9 with its own observations plus four engine-physics ones, and records no delivery observation because it has no
+delivery obligation to inject against (P-003, P-045). The two points the review named for the course —
+postwrite-apply (points 4 and 5) and restart (point 9) — are the shared observations, asserted by name for the
+`traversal/` label in `Gc027IntegrationTests.TheTraversalCourseCoversThePostwriteAndRestartFaultPoints`.
+
+| Observation | narrative | cards | traversal |
+|---|---|---|---|
+| points 1–3, 9 (capture copy, publication, reference repair, restart) | yes | yes | yes |
+| points 4–5 (postwrite apply, publication of the recovered world) | yes | yes | yes |
+| points 6–8 (outbox append, delivery, acknowledgement) | yes | yes | **not applicable** — no delivery obligation |
+| engine-physics observation (`…is-reseeded-not-continued`, `…steps-its-engine-once-per-admitted-step`) | no | no | yes |
+| authoritative-state observation (`…authoritative-state-survives-the-recovery`) | no | no | yes |
+| old-session observation (`…refuses-an-old-session-observation`) | no | no | yes |
+
 ## Build-host fill-in
 
 The observation `detail` strings in `artifacts/gc-027/toolchain/probe-gc027.json` are the evidence. Copy, per family

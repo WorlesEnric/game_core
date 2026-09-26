@@ -12,7 +12,8 @@ here, labelled as such.
 | C# brace/paren balance and forbidden-construct scan | `python3 tools/check_game_core_csharp.py` | `checked 555 C# file(s)` → `ok` |
 | GC-017 release surface, source half (`--no-build`) | `python3 tools/check_release_fault_free.py --no-build` | `PASS` — no runtime source keeps a latch reference once the qualification symbol is undefined; the `[Conditional]` mask is intact at 8 call sites |
 | release-clone preparation, run for real | `python3 tools/unity/prepare_gc017_release_project.py` | prepared `unity/GameCore.ReleaseCheck` (since deleted) |
-| declaration audit of every new C# file | a separate read-only reviewer, cross-checking each `X.Y` against its declaration | 12 findings, **all fixed** (`compile-risk-audit.md`) |
+| declaration audit of every new C# file | a separate read-only reviewer, cross-checking each `X.Y` against its declaration | 13 findings, **all fixed** (`compile-risk-audit.md`) |
+| the observation table vs its methods (round 2) | a mechanical pass comparing `ObservationNames`, every `const string name`, and the calls in `Run()` | 21 names, 21 methods, execution order identical to the table; `ExpectedNames` filters exactly the four delivery names and the four physics names by capability |
 | release-clone invariants, run for real | `python3 tools/check_release_clone.py` | `VERDICT: clone is clean` — 149 files, no removed-type reference, no dangling asmdef reference, constructor 14 params = 14 args, 58 C# files balanced, all six removed modes absent and all thirteen kept modes wired, manifest clean |
 | probe harness shell syntax | `bash -n tools/unity/run_recovery_probe.sh` | exit 0 |
 | Python tool syntax | `python3 -c "import ast; ast.parse(...)"` over both edited tools | exit 0 |
