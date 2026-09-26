@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using GameCore.Contracts;
-using GameCore.Derivation;
 using NUnit.Framework;
 
 namespace GameCore.Rules.Traversal.Tests
@@ -404,44 +403,7 @@ namespace GameCore.Rules.Traversal.Tests
             Assert.That(failure, Is.Not.Empty);
         }
 
-        /// <summary>An unregistered reducer key stays a miss; there is no implicit identity fold (P-028).</summary>
-        [Test]
-        public void AnUnregisteredReducerKeyIsAMissAndAnotherKeyIsRejected()
-        {
-            TraversalDerivationValueSource source = TraversalDerivationValueSource.Default();
-            Assert.That(source.IsReductionRegistered(TraversalVocabulary.AccelerationReducerKey), Is.True);
-            Assert.That(source.IsPredicateRegistered(TraversalVocabulary.AlwaysPredicateKey), Is.True);
 
-            var unknown = new FactoryKey(TraversalIdentity.Id("traversal.reducer.not-registered"), 1U);
-            Assert.That(source.IsReductionRegistered(unknown), Is.False);
-
-            var inputs = new List<FrozenPayload>
-            {
-                TraversalPayloadCodec.WriteAcceleration(TraversalVocabulary.TailwindMilli),
-                TraversalPayloadCodec.WriteAcceleration(TraversalVocabulary.TailwindMilli),
-            };
-            Assert.That(source.TryReduce(unknown, inputs, out FrozenPayload? _), Is.False);
-
-            Assert.That(
-                source.TryReduce(TraversalVocabulary.AccelerationReducerKey, inputs, out FrozenPayload? sum),
-                Is.True);
-            Assert.That(sum, Is.Not.Null);
-            Assert.That(
-                TraversalPayloadCodec.TryReadAcceleration(sum!.Bytes, out int effective),
-                Is.True);
-            Assert.That(effective, Is.EqualTo(TraversalVocabulary.TailwindMilli * 2));
-            Assert.That(source.ReductionCount, Is.EqualTo(1));
-        }
-
-        /// <summary>A contribution that is not one canonical scalar rejects the whole fold (P-019).</summary>
-        [Test]
-        public void AMalformedContributionRejectsTheWholeFold()
-        {
-            TraversalDerivationValueSource source = TraversalDerivationValueSource.Default();
-            var inputs = new List<FrozenPayload> { new FrozenPayload(new byte[12]) };
-            Assert.Throws<ReducerFailureException>(
-                delegate { source.TryReduce(TraversalVocabulary.AccelerationReducerKey, inputs, out FrozenPayload? _); });
-        }
 
         /// <summary>The registered predicate is always accepting, so no runner is skipped by accident (P-015).</summary>
         [Test]

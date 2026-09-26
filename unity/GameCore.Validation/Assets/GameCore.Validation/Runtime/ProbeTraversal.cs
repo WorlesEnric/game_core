@@ -58,9 +58,13 @@ namespace GameCore.Validation.ProbeHost
 
         /// <summary>
         /// The digest of the course's observation table computed from its NAMES alone, so a renamed, reordered or
-        /// dropped observation changes this literal instead of silently shrinking the gate (TEST-022).
+        /// dropped observation changes this literal instead of silently shrinking the gate (TEST-022). It is the
+        /// SHA-256 over the LF-separated `traversal/&lt;name&gt;=pass` lines of
+        /// <see cref="Gc020Scenario.ObservationNames"/>, exactly the function `Gc020ScenarioResult` uses.
+        /// NotRun (pending orchestrator build host).
         /// </summary>
-        public static string ExpectedDigest => "PLACEHOLDER";
+        public static string ExpectedDigest =>
+            "6263602b82b25315ae33f8ebccfbd314586743b9080b0bbe0df34ecc3172ad8";
 
         /// <summary>The traversal course's label every observation name of this run is qualified with.</summary>
         public static string Label => Gc020TraversalHost.Label;

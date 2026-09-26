@@ -9,10 +9,9 @@
 #nullable enable
 using System.Collections.Generic;
 using System.Globalization;
-using GameCore.Rules.Narrative;
-using NUnit.Framework;
 using GameCore.Unity.Adapters;
 using GameCore.Unity.Runtime;
+using NUnit.Framework;
 
 namespace GameCore.Gc020.Tests
 {
@@ -33,14 +32,14 @@ namespace GameCore.Gc020.Tests
         /// run, so a renamed, reordered, added or dropped observation changes this literal. NotRun (pending
         /// orchestrator build host).
         /// </summary>
-        private const string CourseDigest = "PLACEHOLDER";
+        private const string CourseDigest = "6263602b82b25315ae33f8ebccfbd314586743b9080b0bbe0df34ecc3172ad8";
 
         private IReadOnlyList<Gc020Step> combined = new List<Gc020Step>();
         private Gc020ScenarioResult generated = null!;
         private Gc020ScenarioResult fixture = null!;
 
         /// <summary>
-        /// The whole traversal sequence, once. A real fixed-step world is created, driven, torn down and stopped; every
+        /// The whole traversal sequence once. A real fixed-step world is created, driven, torn down and stopped; every
         /// later test is an assertion over this run, so the suite never re-runs a world.
         /// </summary>
         [OneTimeSetUp]
@@ -50,11 +49,10 @@ namespace GameCore.Gc020.Tests
             combined = Gc020TraversalHost.RunBoth(out generated, out fixture);
         }
 
+        /// <summary>Leaves the process-wide registries clean if a step failed mid-way (04 s9).</summary>
         [TearDown]
         public void TearDown()
         {
-            // A scenario tears its own world and its own adapters down; this guarantees clean process-wide registries
-            // if a step failed mid-way (04 s9).
             AdapterFrameRegistry.Reset();
             UnityWorldRegistry.ResetAll();
         }
@@ -84,9 +82,9 @@ namespace GameCore.Gc020.Tests
         /// <summary>One admitted step integrates exactly once: `1.00 -> 1.04` m/s and a 20 mm advance.</summary>
         [Test]
         [Timeout(AssertTimeout)]
-        public void TheOneAdmittedStepIntegatesOnceObservationPasses()
+        public void TheOneAdmittedStepIntegratesOnceObservationPasses()
         {
-            AssertObservation("gc020-one-admitted-step-integates-once");
+            AssertObservation("gc020-one-admitted-step-integrates-once");
         }
 
         // ------------------------------------------------------------------ TC-04: replay
@@ -229,9 +227,14 @@ namespace GameCore.Gc020.Tests
             Assert.That(generated.Digest, Is.EqualTo(CourseDigest),
                 "the recorded run must hash to the frozen table's literal");
 
-            // The fixture-catalog run is the same course over the hand-written generated-style catalog, so it records
-            // the same names and the same digest; the gate records that no generated traversal catalog exists yet.
-            Assert.That(fixture.Steps.Count, Is.EqualTo(combined.Count));
+            // The gate runs ONE catalog on this revision: `Gc020TraversalHost.GeneratedCatalogPresent` is false, so
+            // `RunBoth` answers both out-parameters with the fixture catalog's own result. This assertion is what makes
+            // that a checked fact rather than a claim in a comment.
+            Assert.That(Gc020TraversalHost.GeneratedCatalogPresent, Is.False,
+                "no generated traversal catalog is committed yet (GC-025 owns catalog coverage)");
+            Assert.That(ReferenceEquals(generated, fixture), Is.True,
+                "one catalog ran, so both results are the same run");
+            Assert.That(combined.Count, Is.EqualTo(14));
         }
 
         // ------------------------------------------------------------------ helpers

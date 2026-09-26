@@ -28,7 +28,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using GameCore.Contracts;
-using GameCore.Derivation;
 
 namespace GameCore.Rules.Traversal
 {
@@ -168,97 +167,5 @@ namespace GameCore.Rules.Traversal
 
         /// <summary>True for every target; a null tag list is accepted too, so no runner is skipped by accident.</summary>
         public bool IsMatch(IReadOnlyList<string>? targetTags) => true;
-    }
-
-    /// <summary>
-    /// The traversal catalog's registered reducer and static predicate: the acceleration int32 fold and the
-    /// always-accepting target predicate (07 s4.1, P-019, P-028).
-    /// </summary>
-    public sealed class TraversalDerivationValueSource : IDerivationValueSource
-    {
-        private readonly TraversalAccelerationReducer reducer;
-        private readonly TraversalAlwaysPredicate predicate;
-
-        /// <summary>Builds the source over the two generated traversal registrations.</summary>
-        public TraversalDerivationValueSource(TraversalAccelerationReducer reducer, TraversalAlwaysPredicate predicate)
-        {
-            this.reducer = reducer ?? throw new ArgumentNullException(nameof(reducer));
-            this.predicate = predicate ?? throw new ArgumentNullException(nameof(predicate));
-        }
-
-        /// <summary>The source over the traversal catalog's own keys.</summary>
-        public static TraversalDerivationValueSource Default() =>
-            new TraversalDerivationValueSource(
-                new TraversalAccelerationReducer(TraversalVocabulary.AccelerationReducerKey),
-                new TraversalAlwaysPredicate(TraversalVocabulary.AlwaysPredicateKey));
-
-        /// <summary>Reductions this source resolved, so a scenario can assert the registered path ran.</summary>
-        public int ReductionCount { get; private set; }
-
-        /// <summary>Predicate evaluations this source resolved.</summary>
-        public int PredicateCount { get; private set; }
-
-        /// <inheritdoc />
-        public bool IsReductionRegistered(FactoryKey reducerKey) => reducerKey.Equals(reducer.Key);
-
-        /// <inheritdoc />
-        public bool IsPredicateRegistered(FactoryKey predicateKey) => predicateKey.Equals(predicate.Key);
-
-        /// <inheritdoc />
-        public bool TryReduce(FactoryKey reducerKey, IReadOnlyList<FrozenPayload> inputs, out FrozenPayload? result)
-        {
-            result = null;
-            if (!reducerKey.Equals(reducer.Key))
-            {
-                return false;
-            }
-
-            // The Additive fold runs over the canonical contribution order the engine supplies, which is the
-            // precedence order of P-018; this method never re-sorts what it was given.
-            var values = new List<int>(inputs.Count);
-            for (int i = 0; i < inputs.Count; i++)
-            {
-                if (!TraversalPayloadCodec.TryReadInt32(inputs[i].Bytes, out int value))
-                {
-                    throw new ReducerFailureException(
-                        reducerKey,
-                        "contribution " + i.ToString(CultureInfo.InvariantCulture)
-                        + " is not one canonical int32 scalar (05 s6)");
-                }
-
-                values.Add(value);
-            }
-
-            if (!reducer.TryReduce(values, out int effective, out string failure))
-            {
-                throw new ReducerFailureException(reducerKey, failure);
-            }
-
-            ReductionCount++;
-            result = TraversalPayloadCodec.WriteAcceleration(effective);
-            return true;
-        }
-
-        /// <inheritdoc />
-        public bool TryEvaluate(FactoryKey predicateKey, DerivationPredicateContext context, out bool result)
-        {
-            result = false;
-            if (!predicateKey.Equals(predicate.Key))
-            {
-                return false;
-            }
-
-            // Eligibility reads declared descriptors only: a target's tags are immutable assembly data, never live
-            // mutable ECS state or wall time (P-015).
-            var tags = new List<string>(context.Tags.Count);
-            for (int i = 0; i < context.Tags.Count; i++)
-            {
-                tags.Add(context.Tags[i].ToString());
-            }
-
-            PredicateCount++;
-            result = predicate.IsMatch(tags);
-            return true;
-        }
     }
 }
