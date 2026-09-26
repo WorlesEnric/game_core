@@ -45,7 +45,8 @@ namespace GameCore.Unity.Runtime.Persistence
             CompositionHost? lane = null,
             AssemblyPublisher? publisher = null,
             IReadOnlyList<BufferId>? nextStepBuffers = null,
-            IReadOnlyDictionary<OperationId, FrozenPayload>? commandPayloads = null)
+            IReadOnlyDictionary<OperationId, FrozenPayload>? commandPayloads = null,
+            IReadOnlyList<OutboxRecordValue>? outboxRows = null)
         {
             World = world;
             Definition = definition;
@@ -64,6 +65,7 @@ namespace GameCore.Unity.Runtime.Persistence
             Publisher = publisher;
             NextStepBuffers = ContractCollections.Freeze(nextStepBuffers);
             CommandPayloads = commandPayloads ?? EmptyPayloads;
+            OutboxRows = ContractCollections.Freeze(outboxRows);
 
             if (!registry.World.Session.Equals(world.Session))
             {
@@ -132,6 +134,19 @@ namespace GameCore.Unity.Runtime.Persistence
         /// them here; a command whose payload is absent is still recorded, with no payload.
         /// </summary>
         public IReadOnlyDictionary<OperationId, FrozenPayload> CommandPayloads { get; }
+
+        /// <summary>
+        /// The committed delivery obligations of this world at the boundary it is captured at (GC-021, P-053).
+        ///
+        /// A capture records these rows verbatim, and a restore reinstates them, which is how a committed delivery
+        /// obligation outlives the unload of the world that committed it (P-045). An empty list is the honest answer
+        /// of a world with no outbox; it is not the same claim as a world whose outbox was configured volatile, and
+        /// each row's own `Durability` field records which of the two the world actually had.
+        ///
+        /// The caller supplies the rows rather than the reader discovering them, for the same reason it supplies the
+        /// clock declarations and the buffer set: an outbox is a declared surface, not a storage shape (P-015).
+        /// </summary>
+        public IReadOnlyList<OutboxRecordValue> OutboxRows { get; }
 
         /// <summary>Only the committed revision of the lane is read, so the reader needs no extra accessor.</summary>
         public CompositionRevision LaneRevision => Lane == null ? CompositionRevision.Zero : Lane.Committed.Revision;

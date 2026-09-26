@@ -51,6 +51,14 @@ namespace GameCore.Execution.Persistence
 
         /// <summary>The reserved session is already live or already reserved (P-050).</summary>
         ReservationRejected = 7,
+
+        /// <summary>
+        /// The document's outbox section contradicts itself: two rows claim one obligation identity or one
+        /// destination cursor, or a cursor disagrees with the terminal records it summarises. An ambiguous outbox is
+        /// refused rather than restored, because a restore that guessed which obligation was live could deliver a
+        /// mutation twice (GC-021, P-045, P-053).
+        /// </summary>
+        InvalidOutbox = 8,
     }
 
     /// <summary>
@@ -73,6 +81,7 @@ namespace GameCore.Execution.Persistence
             IReadOnlyList<CommandRecordValue> commands,
             IReadOnlyList<MessageRecordValue> messages,
             IReadOnlyList<RngRecordValue> rngStreams,
+            IReadOnlyList<OutboxRecordValue> outbox,
             IReadOnlyList<CursorRecordValue> cursors,
             IReadOnlyList<MigrationPlan> migrations,
             ContentHash documentHash)
@@ -90,6 +99,7 @@ namespace GameCore.Execution.Persistence
             Commands = commands;
             Messages = messages;
             RngStreams = rngStreams;
+            Outbox = outbox;
             Cursors = cursors;
             Migrations = migrations;
             DocumentHash = documentHash;
@@ -128,6 +138,13 @@ namespace GameCore.Execution.Persistence
 
         public IReadOnlyList<CursorRecordValue> Cursors { get; }
 
+        /// <summary>
+        /// Outbox rows to reinstate before the restored world is exposed: open obligations, their terminal records
+        /// and the per-destination delivery cursors (GC-021, P-053). Reinstating them is what makes a committed
+        /// delivery obligation survive the source world's unload (P-045).
+        /// </summary>
+        public IReadOnlyList<OutboxRecordValue> Outbox { get; }
+
         /// <summary>Non-empty migrations, each with a unique path, to run before the state is written (P-054).</summary>
         public IReadOnlyList<MigrationPlan> Migrations { get; }
 
@@ -146,7 +163,8 @@ namespace GameCore.Execution.Persistence
             Commands.Count,
             Messages.Count,
             RngStreams.Count,
-            Cursors.Count);
+            Cursors.Count,
+            Outbox.Count);
 
         /// <summary>Dormant slots of this plan, which a restore must retain rather than skip (P-032).</summary>
         public int DormantSlotCount
@@ -354,6 +372,8 @@ namespace GameCore.Execution.Persistence
                 || !document.TryReadRecords(CheckpointRecordKind.Rng, out IReadOnlyList<RngRecordValue> rngStreams,
                     out code, out detail)
                 || !document.TryReadRecords(CheckpointRecordKind.Cursor, out IReadOnlyList<CursorRecordValue> cursors,
+                    out code, out detail)
+                || !document.TryReadRecords(CheckpointRecordKind.Outbox, out IReadOnlyList<OutboxRecordValue> outbox,
                     out code, out detail))
             {
                 return RestorePlanResult.Refused(RestoreRefusal.CorruptReference, code, detail);
@@ -456,6 +476,14 @@ namespace GameCore.Execution.Persistence
                     stateDetail);
             }
 
+            if (!ValidateOutbox(outbox, out string outboxDetail))
+            {
+                return RestorePlanResult.Refused(
+                    RestoreRefusal.InvalidOutbox,
+                    DiagnosticCode.OwnershipConflict,
+                    outboxDetail);
+            }
+
             var plan = new RestorePlan(
                 request.TargetSession,
                 header,
@@ -470,6 +498,8 @@ namespace GameCore.Execution.Persistence
                 commands,
                 messages,
                 rngStreams,
+                rngStreams,
+                outbox,
                 cursors,
                 migrations,
                 document.DocumentHash);
@@ -594,5 +624,141 @@ namespace GameCore.Execution.Persistence
 
             return true;
         }
+
+        /// <summary>
+        /// Validates the outbox section before a restore reinstates it (GC-021). Three rules, each of which the
+        /// protocol states somewhere else and each of which makes a restored outbox unambiguous:
+        ///
+        /// 1. Every row names a non-default obligation, destination and external idempotency key (P-004: an all-zero
+        ///    identity is not a catalog or delivery identity).
+        /// 2. One row kind appears at most once per obligation identity, and at most one cursor row exists per
+        ///    destination (P-008: no two records claim one answer).
+        /// 3. A cursor's recorded retained-terminal count equals the terminal rows this document carries for that
+        ///    destination, so a restore cannot believe it retains a terminal record the document dropped (P-045's
+        ///    retention bound would otherwise silently become a silent delete).
+        ///
+        /// The record version is checked too: a row written by a revision this build does not implement is refused
+        /// rather than decoded as if it were current (P-054, P-055).
+        /// </summary>
+        private static bool ValidateOutbox(IReadOnlyList<OutboxRecordValue> outbox, out string detail)
+        {
+            detail = string.Empty;
+
+            if (outbox.Count == 0)
+            {
+                return true;
+            }
+
+            var obligations = new HashSet<Id128>();
+            var terminals = new HashSet<Id128>();
+            var cursors = new HashSet<Id128>();
+            var terminalCounts = new Dictionary<Id128, int>();
+
+            for (int i = 0; i < outbox.Count; i++)
+            {
+                OutboxRecordValue row = outbox[i];
+                if (row.RecordVersion != OutboxRecordValue.CurrentRecordVersion)
+                {
+                    detail = "an outbox row is written in record version "
+                        + row.RecordVersion.ToString(CultureInfo.InvariantCulture) + " and this build implements "
+                        + OutboxRecordValue.CurrentRecordVersion.ToString(CultureInfo.InvariantCulture)
+                        + "; a row this build cannot decode is refused (P-054).";
+                    return false;
+                }
+
+                if (!IsDeclaredOutboxRow(row.Row))
+                {
+                    detail = "an outbox row declares row kind "
+                        + row.RowKind.ToString(CultureInfo.InvariantCulture)
+                        + ", which names no outbox fact this build implements (P-054).";
+                    return false;
+                }
+
+                if (row.Row == OutboxRowKind.Cursor)
+                {
+                    if (row.DestinationId.IsDefault)
+                    {
+                        detail = "outbox row " + i.ToString(CultureInfo.InvariantCulture)
+                            + " is a delivery cursor with a default destination identity; an all-zero identity is "
+                            + "never an identity (P-004).";
+                        return false;
+                    }
+
+                    if (!cursors.Add(row.DestinationId))
+                    {
+                        detail = "destination " + row.DestinationId.ToString()
+                            + " carries two delivery cursors; one destination has one cursor (P-008).";
+                        return false;
+                    }
+                }
+                else if (row.OutboxId.IsDefault || row.DestinationId.IsDefault || row.IdempotencyKey.IsDefault)
+                {
+                    detail = "outbox row " + i.ToString(CultureInfo.InvariantCulture)
+                        + " has a default obligation, destination or external idempotency key; an all-zero identity "
+                        + "is never an identity (P-004).";
+                    return false;
+                }
+                else if (row.Row == OutboxRowKind.Obligation)
+                {
+                    if (!obligations.Add(row.OutboxId))
+                    {
+                        detail = "obligation " + row.OutboxId.ToString()
+                            + " appears twice in the outbox section; one obligation has one record (P-008).";
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (!terminals.Add(row.OutboxId))
+                    {
+                        detail = "obligation " + row.OutboxId.ToString()
+                            + " carries two terminal records; a delivery has one outcome (P-008).";
+                        return false;
+                    }
+
+                    terminalCounts.TryGetValue(row.DestinationId, out int seen);
+                    terminalCounts[row.DestinationId] = seen + 1;
+                }
+            }
+
+            for (int i = 0; i < outbox.Count; i++)
+            {
+                OutboxRecordValue row = outbox[i];
+                if (row.Row != OutboxRowKind.Cursor)
+                {
+                    continue;
+                }
+
+                terminalCounts.TryGetValue(row.DestinationId, out int actual);
+                if (row.RetainedTerminalCount != (uint)actual)
+                {
+                    detail = "the delivery cursor for destination " + row.DestinationId.ToString() + " records "
+                        + row.RetainedTerminalCount.ToString(CultureInfo.InvariantCulture)
+                        + " retained terminal record(s) but the document carries "
+                        + actual.ToString(CultureInfo.InvariantCulture)
+                        + "; a cursor that disagrees with the records it summarises is refused rather than restored "
+                        + "(P-045, P-053).";
+                    return false;
+                }
+            }
+
+            // A terminal record without an obligation is a record of work this document never claimed; it is refused
+            // because a restore cannot tell which world's obligation it closes (P-053).
+            foreach (Id128 terminal in terminals)
+            {
+                if (!obligations.Contains(terminal))
+                {
+                    detail = "terminal record " + terminal.ToString()
+                        + " closes an obligation the checkpoint does not carry; a terminal record never outlives its "
+                        + "obligation inside one document (P-053).";
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private static bool IsDeclaredOutboxRow(OutboxRowKind row) =>
+            row == OutboxRowKind.Obligation || row == OutboxRowKind.Terminal || row == OutboxRowKind.Cursor;
     }
 }

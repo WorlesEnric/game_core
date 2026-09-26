@@ -307,7 +307,8 @@ namespace GameCore.Execution.Persistence
                 snapshot.PublishedRevision.Value,
                 snapshot.PublishedEpoch.Value,
                 snapshot.HostTicksPerSecond,
-                (uint)request.ContentRevisionCount);
+                (uint)request.ContentRevisionCount,
+                (uint)snapshot.Outbox.Count);
 
             var serializer = new CheckpointSerializer(codecs, request.Limits);
             if (!AddAll(serializer, CheckpointRecordKind.Scope, snapshot.Scopes, out DiagnosticCode code, out string detail)
@@ -320,7 +321,8 @@ namespace GameCore.Execution.Persistence
                 || !AddAll(serializer, CheckpointRecordKind.Command, included, out code, out detail)
                 || !AddAll(serializer, CheckpointRecordKind.Message, snapshot.NextStepMessages, out code, out detail)
                 || !AddAll(serializer, CheckpointRecordKind.Rng, snapshot.RngStreams, out code, out detail)
-                || !AddAll(serializer, CheckpointRecordKind.Cursor, snapshot.Cursors, out code, out detail))
+                || !AddAll(serializer, CheckpointRecordKind.Cursor, snapshot.Cursors, out code, out detail)
+                || !AddAll(serializer, CheckpointRecordKind.Outbox, snapshot.Outbox, out code, out detail))
             {
                 return CheckpointCaptureResult.Refused(code, detail, request.World);
             }
