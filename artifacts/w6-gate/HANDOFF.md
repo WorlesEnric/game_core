@@ -342,3 +342,33 @@ produce, and records `contractChanges: none`, the five reconciliations and the e
    observation table is the frozen one.
 5. `artifacts/w6-gate/release-gate-surface.json`: if the qualification player does not show a group's marker, the scan
    is the problem, not the release player — that is what the second operand is for.
+
+## 12. Defects found and fixed while preparing this gate
+
+All of these were found by mechanical audits and a read-through, not by running anything, and each was fixed before
+the last commit on this branch.
+
+1. **Three probe modes never finalized their report (§4.1).** The merges left `-probeTraversal`, `-probeGc021` and
+   `-probeLifecycleStress` without their `report.CompletePositive()` call, so those three modes would have reported
+   `Fail` with exit code 1 in the player and their harnesses would have failed. Fixed: each arm calls it itself.
+2. **Missing `using` directives in six of the eight new C# files.** A script that resolves every type name in a new file
+   against its declaring namespace and the file's own `using` list found: `GameCore.Composition` missing from the three
+   genre adapters and the family contract (the cycle payload type), `GameCore.Gameplay.Cards` missing from the card
+   adapter (`CardTableKeys`), `GameCore.Planning` and `GameCore.Unity.Runtime.Integration` missing from the composition
+   audit (`OwnershipStageDescriptor`/`DescriptorStage` and `CatalogPluginDeclaration`/`PipelineDescriptorReport`), and
+   `GameCore.Unity.Adapters.Authority` and `GameCore.Unity.Fixtures` missing from the scenario and the narrative
+   adapter. Every one of them is a `CS0246` the build host would have hit first.
+3. **The physics observation never asked the engine to step.** The first rewrite of `w6-one-physics-simulation-per-
+   admitted-step` admitted five steps and asserted five simulations without ever calling
+   `PhysicsAuthorityGate.TrySimulateExactlyOnce`, so the assertion could only have failed. Fixed: the observation now
+   drives one admitted step and one simulation at a time, which is the shape GC-020's own physics observation has.
+4. **The reload route asserted a simulation it did not drive.** `RunReloadRoute` asserted `engineSimulations == 1` while
+   never stepping the physics gate. Fixed the same way, and the assertion now distinguishes a genre that owns an engine
+   authority from one that does not.
+5. **The delivery observation over-specified the world's event count.** It required the receiving world to have
+   committed exactly one event; a world that committed more would have failed even though the *obligation* count — the
+   claim this gate makes — was still one. Fixed: the source claims exactly one event and refuses the rest, the
+   assertion is about the obligation, and the observed/unclaimed counts are reported beside it.
+6. **The harness pinned a hard-coded 1,000.** Its `cycles=`/`completed=` clauses now derive from
+   `GC_W6_GATE_CYCLES`, so a deliberately reduced run reports and is checked against the count it really used instead of
+   failing a clause nobody can satisfy honestly.

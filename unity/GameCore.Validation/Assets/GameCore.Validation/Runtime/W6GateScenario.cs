@@ -1138,7 +1138,22 @@ namespace GameCore.Validation.ProbeHost
                     bool poseReflectsIntent = gate.TryReadPose(bodyKey, out PhysicsPose pose)
                         && pose.Position == teleport;
 
-                    int simulated = physicsWorld.RunRecordedSteps(TraversalSteps, null);
+                    // One admitted step, then exactly one simulation for it, repeated: the caller obligation 04 s7
+                    // states (a plugin that owns an engine authority steps it once per admitted step) is discharged
+                    // here, so the counters below compare the world's own answers rather than a formula.
+                    int simulated = 0;
+                    for (int step = 0; step < TraversalSteps; step++)
+                    {
+                        if (physicsWorld.RunRecordedSteps(1, null) != 1)
+                        {
+                            break;
+                        }
+
+                        if (gate.TrySimulateExactlyOnce(physicsWorld.Host.CurrentStep.Value, 0.02d, out string _))
+                        {
+                            simulated++;
+                        }
+                    }
 
                     int duplicateBefore = gate.DuplicateStepRefusalCount;
                     bool duplicateRefused = !gate.TrySimulateExactlyOnce(
@@ -1491,7 +1506,10 @@ namespace GameCore.Validation.ProbeHost
 
                     int observed = owner.PollCommittedEvents(source, first.NextOperation(), 8);
                     IReadOnlyList<OutboxRecordValue> rows = owner.ToRecords();
-                    bool obligated = observed == 1
+                    // The claim is about the OBLIGATION, not about how many committed events the world also carried:
+                    // the source claims exactly one and refuses the rest, so a world that committed more than one
+                    // event still becomes exactly one obligation, and the extra ones are counted as unclaimed.
+                    bool obligated = observed >= 1
                         && source.ClaimedCount == 1
                         && owner.Outbox.OpenCount == 1
                         && owner.EnqueuedCount == 1
