@@ -209,13 +209,14 @@ namespace GameCore.Composition.Tests
         private void OnDisposed(ResourceKey key, Id128 leaseId)
         {
             _ = leaseId;
-            DisposedOrder.Add(key.Value);
+            // Count only successful releases; failed attempts have their own ordered ledger.
             if (FailingDisposals.Contains(key.Value))
             {
                 FailedDisposalOrder.Add(key.Value);
                 FailedDisposalCount++;
                 throw new InvalidOperationException("Scripted disposal failure for resource " + key.ToString() + " (06 s5 one-disposer-throws).");
             }
+            DisposedOrder.Add(key.Value);
 
             DisposeCount++;
         }
@@ -358,6 +359,7 @@ namespace GameCore.Composition.Tests
                     + " for " + instance.ToString() + ": one lease id identifies one acquisition.");
             }
 
+            ((ManagedResourceGate)lease.Gate).OpenOnPublication();
             if (!Resources.MarkReady(lease.LeaseId))
             {
                 throw new InvalidOperationException(

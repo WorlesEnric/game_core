@@ -660,6 +660,11 @@ namespace GameCore.Validation.Editor
             return "\"" + name + "\": " + value.ToString(CultureInfo.InvariantCulture);
         }
 
+        private static string NumberField(string name, long value)
+        {
+            return "\"" + name + "\": " + value.ToString(CultureInfo.InvariantCulture);
+        }
+
         private static string SecondsField(string name, double value)
         {
             return "\"" + name + "\": " + value.ToString("0.000", CultureInfo.InvariantCulture);
