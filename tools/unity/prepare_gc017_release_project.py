@@ -40,6 +40,8 @@ def main() -> None:
         "com.unity.test-framework.performance",
     ):
         del manifest["dependencies"][dependency]
+    # A shipping player has no testable packages; the qualification project runs their suites separately.
+    manifest["testables"] = []
     manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     (DESTINATION / "Packages/packages-lock.json").unlink()
     # The fault scenario and the Wave 5 integration gate are qualification fixtures, not shipping entry points:
