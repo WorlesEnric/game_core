@@ -145,7 +145,10 @@ namespace GameCore.Validation.Editor
                     + TraversalVocabulary.RunnerRecipe + "'");
             }
 
-            if (runner.InitialVelocityMilli != new int[] { TraversalVocabulary.SeededVelocityMilli, 0, 0 })
+            if (runner.InitialVelocityMilli.Length != 3
+                || runner.InitialVelocityMilli[0] != TraversalVocabulary.SeededVelocityMilli
+                || runner.InitialVelocityMilli[1] != 0
+                || runner.InitialVelocityMilli[2] != 0)
             {
                 throw new InvalidOperationException(
                     "the authored runner velocity is not the reference's seeded "
