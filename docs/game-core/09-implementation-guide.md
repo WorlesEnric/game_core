@@ -402,7 +402,7 @@ Wave: 0; Depends: none
 
 **Concrete work:** Create the validation Unity project from 04; resolve and commit exact manifest/lock; generate one registration and closed generic handler; query an entity, execute a Burst job, round-trip a small record, and late-mount a linked inactive fixture plugin in an IL2CPP player with High stripping.
 
-**Expected files / assemblies / artifacts:** `unity/GameCore.Validation/`, `Packages/manifest.json`, `packages-lock.json`, generated AOT probe, `artifacts/toolchain/` build and execution logs.
+**Expected files / assemblies / artifacts:** `unity/GameCore.Validation/`, `unity/GameCore.Validation/Packages/manifest.json`, `unity/GameCore.Validation/Packages/packages-lock.json`, generated AOT probe, `artifacts/toolchain/` build and execution logs. (The qualification project's manifest and lock live under the project, not at the repository root; there is exactly one Unity project and it owns them.)
 
 **Public interfaces / integration points:** Build-time catalog factory keys; generated closed generic roots; the qualification executable only.
 

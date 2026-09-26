@@ -84,7 +84,10 @@ An immutable `ChangePlan` does not contain captured writable EntityManager acces
 
 ## 5. API boundary contracts
 
-These API names are representative mappings of [O-01–O-26](00-core-protocols.md#10-operation-catalogue).
+These API names are representative mappings of [O-01–O-26](00-core-protocols.md#10-operation-catalogue). The
+names below are the implementation's actual contract types, so a reader can find each seam: the operation
+catalogue's "stable specification anchors … not required public method names" caveat applies, and an operation
+reaches its entry point through the type named here.
 
 | API | Input / output and ownership | Preconditions / postconditions / errors |
 |---|---|---|
@@ -95,8 +98,22 @@ These API names are representative mappings of [O-01–O-26](00-core-protocols.m
 | `IObservationReader.Acquire` | SnapshotToken → disposable immutable lease | Retained token and pool capacity; reject expired token/backpressure, never expose writable ECS data. |
 | `IExplanationReader.Explain` | Target/capability/token → immutable explanation pages | Matches published epoch; staged plan diagnostics use distinct API/label. |
 | `IManagedResourceFactory.Prepare` | Frozen config + async token → gated lease | Control-plane only, registered factory, disposer recorded immediately; no irreversible gameplay output. |
-| Generated `ApplyRecipe_*` | Validated layout/target + fenced world state → complete ECS assembly | Unity bridge only, current base epoch and completed jobs; exception after first live write faults. |
-| Generated `Migrate_*` | Bounded copied old state + config → scratch new state/result | Pure, versioned, no I/O/ECS writes; failure leaves old live state. |
+| `IRecipeApplyBridge.ApplyRecipe` | Validated layout/target + fenced world state → complete ECS assembly | Unity bridge only, current base epoch and completed jobs; exception after first live write faults. Generated recipe appliers implement this seam. |
+| `IStateMigrator.Migrate` | Bounded copied old state + config → scratch new state/result | Pure, versioned, no I/O/ECS writes; failure leaves old live state. Generated `Migrate_<schema>` migrations implement this seam. |
+| `IWorldHost.Create` / `SetRunState` / `Stop` / `ReadResourceLedger` | World definition + mode + temporal config → new `WorldId` and created world; `Running`↔`Paused`; stop reason → disposed or blocked/quarantined; → resource/job ledger snapshot | O-01, O-19 and O-26. The host owns native allocations, protocol identity, the composition snapshot, the schedule, job fences and output snapshots. |
+| `IExecutionDriver.Advance` / `Dispatch` | Elapsed host sample or queued command → zero or more step attempts; sealed step/bindings/buffers → tracked jobs | O-14 and O-15. `Paused`/no-demand returns `NoWork`; once executing, cancellation is `TooLate`. |
+| `IAssemblyPublisher.Publish` | Prepared plan → new assembly epoch and result | O-11. Seals admission, completes users, rechecks the base revision, migrates scratch, then applies and exposes all tables and the snapshot together. |
+| `ICommittedEventReader.Read` | Event cursor + limit → immutable event page | O-16/O-17. An expired cursor returns `CursorExpired` so the reader resynchronizes from a snapshot. |
+
+Other operator-visible seams the implementation declares, which this table does not enumerate one row each:
+`IStagedPlanDiagnostics` (staged, non-authoritative plan inspection), `IManagedResourceLease` and
+`IResourceGate` (control-plane resource lifetimes), `IWorldLifecycleObserver` and `ICompositionObserver`
+(lifecycle/publication observation), `ISnapshotLease` (a reader's retained immutable view),
+`ICommittedBoundaryReader` (the committed-boundary read a checkpoint captures through), and the
+engine-free recovery seams `CheckpointCapture`, `CheckpointPublication`, `CheckpointRestoreExecutor`,
+`WorldRecovery` and `InitialDefinitionRecovery`. The API-ownership table in
+[the contracts package README](../../Packages/com.gamecore.contracts/README.md) lists which assembly
+implements each seam.
 
 Public status completion may be exposed as an awaitable managed API, but no job awaits managed tasks. Data passed to jobs is copied/generated into unmanaged memory with an explicit fence/lifetime. The skeleton intentionally omits task scheduling implementation, full manifest constructors, and Unity apply APIs.
 
