@@ -318,6 +318,7 @@ namespace GameCore.Validation.ProbeHost
                         lane,
                         publisher,
                         targets,
+                        seeder,
                         valueSource,
                         null,
                         null,
@@ -1161,7 +1162,7 @@ namespace GameCore.Validation.ProbeHost
                         + "; stage=" + outcome.Stage
                         + "; code=" + outcome.Code
                         + "; capturedStep=" + capture.Header.LogicalStep.ToString(CultureInfo.InvariantCulture)
-                        + "; restoredStep=" + (restoredHost == null ? -1UL : restoredHost.CurrentStep.Value)
+                        + "; restoredStep=" + (restoredHost == null ? "<missing>" : restoredHost.CurrentStep.Value.ToString(CultureInfo.InvariantCulture))
                         + "; capturedSlots=" + capturedSlots.Count.ToString(CultureInfo.InvariantCulture)
                         + "; restoredSlots=" + outcome.RestoredSlots.ToString(CultureInfo.InvariantCulture)
                         + "(active=" + restoredActive.ToString(CultureInfo.InvariantCulture)
@@ -1774,6 +1775,61 @@ namespace GameCore.Validation.ProbeHost
                 return false;
             }
 
+            private bool PresentedMatchesPublished(TargetId target, SnapshotToken token, out string dissent)
+            {
+                dissent = string.Empty;
+                if (builder?.Publisher == null || builder.Targets == null || binderB == null)
+                {
+                    dissent = target.ToString() + ":no-adapter";
+                    return false;
+                }
+
+                IReadOnlyList<TargetBindingRow> rows = builder.Publisher.Published.Bindings.BindingsOf(target);
+                PresentationApplyData? applied = null;
+                for (int i = binderB.Applies.Count - 1; i >= 0; i--)
+                {
+                    PresentationApplyData candidate = binderB.Applies[i];
+                    if (candidate.Key.Target.Equals(target) && candidate.Key.Slot == 0U)
+                    {
+                        applied = candidate;
+                        break;
+                    }
+                }
+
+                bool known = builder.Targets.TryGet(target, out LiveTarget live);
+                if (rows.Count == 0 || applied == null || !applied.Token.Equals(token)
+                    || !known || !applied.CompositionParent.Equals(live.Scope)
+                    || applied.Fields.Count != rows.Count)
+                {
+                    dissent = target.ToString() + ":published/presented image or parent differs";
+                    return false;
+                }
+
+                for (int r = 0; r < rows.Count; r++)
+                {
+                    TargetBindingRow row = rows[r];
+                    bool found = false;
+                    for (int f = 0; f < applied.Fields.Count; f++)
+                    {
+                        PresentationField field = applied.Fields[f];
+                        if (field.Capability.Equals(row.Capability) && field.OutputSlot == row.OutputSlot
+                            && field.Value == row.Value)
+                        {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (!found)
+                    {
+                        dissent = target.ToString() + ":missing " + row.ToString();
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
             /// <summary>The published rows of every committed target, as one comparable text (P-017).</summary>
             private string PublishedRowsFingerprint()
             {
@@ -1936,7 +1992,7 @@ namespace GameCore.Validation.ProbeHost
                 if (type == typeof(EntityManager)
                     || type == typeof(Entity)
                     || type == typeof(EntityQuery)
-                    || type == typeof(Unity.Entities.World)
+                    || type == typeof(global::Unity.Entities.World)
                     || type == typeof(UnityEngine.GameObject)
                     || type == typeof(UnityEngine.Transform))
                 {
