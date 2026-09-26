@@ -583,8 +583,6 @@ namespace GameCore.Validation.ProbeHost
                     hashesPassed = hashesPassed && same;
                     hashDetail.Append("run").Append(i)
                         .Append("(w").Append(runs[i].Workers).Append("/seed").Append(runs[i].PublishSeed)
-                        .Append(runs[i].Workers == runs[0].Workers && runs[i].PublishSeed == runs[0].PublishSeed
-                            ? "")
                         .Append(")=")
                         .Append(same ? "equal" : "DIFFERENT")
                         .Append(';');

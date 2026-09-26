@@ -307,16 +307,18 @@ if [[ -n "${RELEASE_PLAYER}" ]]; then
     --json "${ARTIFACTS}/release/telemetry-release-surface.json"
 
   # The probes the release player can still run: the ones whose mode the clone keeps. It cannot run `-probeFaults`,
-  # `-probeW5Gate`, `-probeGc021`, `-probeLifecycleStress` or `-probeW6Gate` (each names a qualification fixture that
-  # is removed from the clone), which is exactly the point: the release surface is qualified by the modes a shipping
-  # build really carries, and the qualification player above runs the rest.
+  # `-probeW5Gate`, `-probeGc021`, `-probeLifecycleStress`, `-probeReplay` or `-probeW6Gate` (each names a
+  # qualification fixture the clone removes — GC-023's replay fixture included, since its recorded trace, its
+  # real-Burst-jobs half and its probe are qualification evidence rather than shipping behaviour). That list is
+  # exactly the modes the pre-W6 gates drove in a release player, so this gate adds no new release-player run that
+  # has never executed anywhere; the contrast is drawn by the release-surface scan, which requires every removed
+  # mode's flag to be absent from this player and present in the qualification player.
   for harness in \
     run_world_probe.sh \
     run_narrative_probe.sh \
     run_cards_probe.sh \
     run_gc018_probe.sh \
-    run_gc019_probe.sh \
-    run_replay_probe.sh; do
+    run_gc019_probe.sh; do
     probe_step "release-probe-${harness}" \
       env PROBE_PLAYER="${RELEASE_PLAYER}" UNITY_PROJECT="${RELEASE_PROJECT}" ARTIFACTS="${ARTIFACTS}/release" \
       PROBE_RUNS="${PROBE_RUNS}" "tools/unity/${harness}"

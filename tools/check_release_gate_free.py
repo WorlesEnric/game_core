@@ -14,11 +14,13 @@ different operand:
     GC-017 latch markers.
 
 This tool settles the union the Wave 6 gate needs and none of them covers alone: the *qualification-only markers of
-all five waves* (GC-017's latches, GC-021's scenario, GC-022's lifecycle stress, GC-023's telemetry switch, the Wave 5
-and Wave 6 gate fixtures) must be ABSENT from a release player, and the SAME inspection pointed at the qualification
-player must FIND a named, expected subset. The second half is what keeps the first half falsifiable: a scan that finds
-nothing because it is looking in the wrong place, or because the marker strings changed, fails here instead of
-reporting a clean release.
+all five waves* (GC-017's latches, GC-021's delivery seat, GC-022's lifecycle stress, GC-023's replay fixture, the
+Wave 5 and Wave 6 gate fixtures) must be ABSENT from a release player, and the SAME inspection pointed at the
+qualification player must FIND a named, expected subset. The second half is what keeps the first half falsifiable: a
+scan that finds nothing because it is looking in the wrong place, or because the marker strings changed, fails here
+instead of reporting a clean release. A third check closes the same loop from the other side: the one mode the release
+clone deliberately keeps (the GC-020 traversal course) must be present in BOTH players, which proves this inspection
+really reads mode flags out of a built player rather than finding nothing everywhere.
 
 The tool inspects bytes rather than symbols on purpose. A managed metadata heap and the IL2CPP generated C++ are both
 UTF-8, so a byte search finds a surviving type name, mode flag or step prefix exactly as a reader would, and it needs
@@ -41,8 +43,13 @@ import os
 import sys
 
 # The union of the qualification-only markers, grouped by the task that owns them. Each entry is a distinctive string:
-# a type name, a package name, a compile symbol, a mode flag or a step prefix. Ordinary English words are deliberately
-# absent, because a false positive would be worse than a weaker check.
+# a type name, a package name, a mode flag or a step prefix. Ordinary English words are deliberately absent, because a
+# false positive would be worse than a weaker check.
+#
+# THE TELEMETRY SWITCH IS NOT A GROUP HERE, deliberately: `GAMECORE_TELEMETRY` is a compile-time symbol whose
+# [Conditional] call sites leave no distinctive string behind, so the telemetry release shape is settled where it is
+# observable - `tools/check_release_telemetry_free.py` compiles the real sources both ways and scans both assemblies -
+# rather than by a player-surface scan that could only look convincing.
 MARKERS = {
     "gc017-fault-latch": (
         "AssemblyFaultInjection",
@@ -64,6 +71,12 @@ MARKERS = {
         "-probeLifecycleStress",
         "GC_LIFECYCLE_STRESS_CYCLES",
     ),
+    "gc023-replay-fixture": (
+        "ReplayParallelJobs",
+        "ReplayScenario",
+        "ProbeReplay",
+        "-probeReplay",
+    ),
     "w5-gate": (
         "W5GateScenario",
         "ProbeW5Gate",
@@ -79,23 +92,21 @@ MARKERS = {
     ),
 }
 
-# The markers the qualification player must show: one per group above, so every group's scan is proved to work. The
-# telemetry switch is NOT in this list, and that is deliberate: `GAMECORE_TELEMETRY` is a compile-time symbol whose
-# [Conditional] call sites leave no distinctive string behind, so the telemetry claim is settled where it is
-# observable - `tools/check_release_telemetry_free.py` compiles the real sources both ways and scans both assemblies -
-# rather than by a player-surface scan that could only look convincing.
+# The markers the qualification player must show: one per group above, so every group's scan is proved to work.
 QUALIFICATION_EXPECTED = {
     "gc017-fault-latch": "GAMECORE_FAULT_INJECTION",
     "gc021-delivery-seat": "-probeGc021",
     "gc022-lifecycle-stress": "-probeLifecycleStress",
+    "gc023-replay-fixture": "-probeReplay",
     "w5-gate": "-probeW5Gate",
     "w6-gate": "-probeW6Gate",
 }
 
-# One mode the release clone deliberately KEEPS, because GC-023's release-shape evidence is produced through it. It is
-# asserted present in BOTH players, which is the second half of the falsifiability argument: this inspection really
-# reads mode flags out of a built player, so its silence about the markers above means something.
-KEPT_MODE = "-probeReplay"
+# One mode the release clone deliberately KEEPS: the GC-020 traversal course, whose local physics scene and committed
+# animation/audio output are the optional engine surface the Wave 6 gate is about. It is asserted present in BOTH
+# players, which is the second half of the falsifiability argument: this inspection really reads mode flags out of a
+# built player, so its silence about the markers above means something.
+KEPT_MODE = "-probeTraversal"
 
 # The production seams the release player should still carry: the gate removes qualification fixtures, never the
 # shipping code paths they exercise. Reported, not asserted, because a stripped player may legitimately drop a type no

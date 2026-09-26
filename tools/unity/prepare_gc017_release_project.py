@@ -8,21 +8,35 @@ check_player_fault_free.py. The generated project is disposable and gitignored.
 
 What the clone removes, and why the list is one flat, auditable set:
 
-  * the two qualification marker packages (the fault switch and GC-023's telemetry switch) and the two Unity test
-    packages, plus every `testables` entry, so the clone really is a shipping-shaped configuration;
+  * the two qualification marker packages (the fault switch and GC-023's telemetry switch), the replay fixture package
+    and the two Unity test packages, plus every `testables` entry, so the clone really is a shipping-shaped
+    configuration;
   * the `Tests/` tree, which no shipping player compiles;
-  * every qualification-only probe/scenario runtime file. Each named file is either a fault-injection fixture whose
-    types do not exist without the marker package (`FaultScenario*`, `ProbeFaults`, `W5Gate*`, `ProbeW5Gate`), a
-    qualification stress/gate fixture a shipping player has no reason to carry (`ProbeLifecycleStress`, the Wave 6
-    gate's seven files), or a world scenario that only the qualification project drives (`Gc021Scenario`,
-    `Gc021Family`, `ProbeGc021`). Their production seams — the delivery core, the traversal package, the optional
-    engine stages, the four family hosts and the replay package — all stay;
-  * the matching mode wiring in `ProbeRunner.cs` and `ProbeArguments.cs`, one whole block per mode, so the clone
-    compiles without the removed types and no shipping entry point can reach them.
+  * every qualification-only runtime file. Each named file is either a fault-injection fixture whose types do not exist
+    without the marker package (`FaultScenario*`, `ProbeFaults`, `W5Gate*`, `ProbeW5Gate`), a replay fixture
+    (`ReplayParallelJobs`, `ReplayScenario`, `ProbeReplay` — GC-023's recorded-input replay and its real-Burst-jobs
+    half are qualification evidence, not shipping behaviour), a qualification stress/gate fixture a shipping player has
+    no reason to carry (`ProbeLifecycleStress` and GC-022's four stress runtime files, the Wave 6 gate's seven files),
+    or a world scenario that only the qualification project drives (`Gc021Scenario`, `Gc021Family`, `ProbeGc021`).
+    Their production seams — the delivery core, the traversal package, the optional engine stages and the four family
+    hosts — all stay;
+  * `Editor/LifecyclePlayModeMatrix.cs`, an editor-only qualification harness: it drives the application world and the
+    traversal genre's reload route through the four {domain, scene} combinations, and the release player build compiles
+    the Editor assembly, so it is removed for the same reason the `Tests/` tree above is. The reload-matrix runs happen
+    in the qualification project, which keeps it;
+  * the matching mode wiring in `ProbeRunner.cs` and `ProbeArguments.cs` — one whole block per mode and one exact
+    needle per member — so the clone compiles without the removed types and no shipping entry point can reach them,
+    rather than leaving unreachable probe hooks in IL2CPP;
+  * one asmdef reference: `GameCore.Replay` leaves `GameCore.Validation.ProbeHost.asmdef`, because every file that
+    consumed it is gone.
 
 The modes the clone keeps are the ones a shipping build really carries and the release-surface checks really drive:
-the GC-001 positive and expected-negative modes, world dispatch, the narrative/cards/GC-018/GC-019 family probes, the
-GC-020 traversal course and GC-023's replay shape proof.
+the GC-001 positive and expected-negative modes, world dispatch, the narrative/cards/GC-018/GC-019 family probes and
+the GC-020 traversal course (including its local physics scene and its committed animation/audio output).
+
+`ARG_NEEDLES` is generated from the merged `ProbeArguments.cs`: one needle for each const name, constructor parameter,
+assignment, local, property (with its doc comment) and parse branch of a removed mode. Every needle must match exactly
+once or `replace_once` raises, so a drifted source is a loud failure rather than a silently half-edited file.
 """
 
 import json
@@ -34,6 +48,7 @@ ROOT = Path(__file__).resolve().parents[2]
 SOURCE = ROOT / "unity/GameCore.Validation"
 DESTINATION = ROOT / "unity/GameCore.ReleaseCheck"
 RUNTIME = Path("Assets/GameCore.Validation/Runtime")
+EDITOR = Path("Assets/GameCore.Validation/Editor")
 
 
 def replace_once(path: Path, old: str, new: str = "") -> None:
@@ -42,6 +57,47 @@ def replace_once(path: Path, old: str, new: str = "") -> None:
         raise RuntimeError(f"expected exactly one matching release-only edit in {path}: {old!r}")
     path.write_text(content.replace(old, new), encoding="utf-8")
 
+
+# Every member of every probe mode this clone removes, exactly as the merged ProbeArguments.cs spells it. The modes
+# that stay (-probeTraversal included) are untouched by every needle below.
+ARG_NEEDLES = (
+    '        private const string FaultsArgumentName = "-probeFaults";\n',
+    '            bool faults,\n',
+    '            Faults = faults;\n',
+    '            bool faults = false;\n',
+    "        /// <summary>\n        /// Runs the GC-017 fault-boundary mode: every named observation of TEST-016's apply/cancellation matrix over\n        /// both families, each family over its committed generated catalog and over its hand-written\n        /// generated-style catalog, inside the stripped player.\n        /// </summary>\n        public bool Faults { get; }\n",
+    '                else if (argument == FaultsArgumentName)\n                {\n                    faults = true;\n                }\n',
+    '        private const string W5GateArgumentName = "-probeW5Gate";\n',
+    '            bool w5Gate,\n',
+    '            W5Gate = w5Gate;\n',
+    '            bool w5Gate = false;\n',
+    '        /// <summary>\n        /// Runs the Wave 5 integration gate: retained observation, deterministic faults, checkpoint restore and the\n        /// common adapters joined in one actual world per family — prewrite rejection with the old assembly intact,\n        /// a postwrite fail-stop with no further step or image, a checkpoint captured at the committed boundary and\n        /// restored into a new session, read-only pinned snapshots that leak no writable reference, and a late asset\n        /// callback from the retired world rejected (P-007, P-027..P-031, P-045, P-047..P-055).\n        /// </summary>\n        public bool W5Gate { get; }\n',
+    '                else if (argument == W5GateArgumentName)\n                {\n                    w5Gate = true;\n                }\n',
+    '        private const string Gc021ArgumentName = "-probeGc021";\n',
+    '            bool gc021,\n',
+    '            Gc021 = gc021;\n',
+    '            bool gc021 = false;\n',
+    "        /// <summary>\n        /// Runs the GC-021 durable-delivery mode: the delivery key derivation, a durable commit that is persisted\n        /// before it is applied, a deterministic crash at the seam's own after-delivery boundary, the redelivery that\n        /// applies the destination mutation exactly once, capacity exhaustion that is never a silent drop, the\n        /// volatile/durable distinction, a committed obligation that outlives the unload of its world, a checkpoint\n        /// that carries the outbox and its cursor, the absence of a universal effect API, and the reward bridge's one\n        /// committed choice becoming one durable, idempotent card mutation (P-003, P-043, P-045, P-050, P-053).\n        /// </summary>\n        public bool Gc021 { get; }\n",
+    '                else if (argument == Gc021ArgumentName)\n                {\n                    gc021 = true;\n                }\n',
+    '        private const string LifecycleStressArgumentName = "-probeLifecycleStress";\n',
+    '            bool lifecycleStress,\n',
+    '            LifecycleStress = lifecycleStress;\n',
+    '            bool lifecycleStress = false;\n',
+    "        /// <summary>\n        /// Runs the GC-022 lifecycle stress: the counted mount/unmount cycles over each family's committed generated\n        /// catalog and over its fixture identity set, with delayed completions, stalled jobs, a throwing disposer,\n        /// required-provider churn and headless cleanup, under native leak detection with full stack traces\n        /// (P-047, P-048, P-050).\n        /// </summary>\n        public bool LifecycleStress { get; }\n",
+    '                else if (argument == LifecycleStressArgumentName)\n                {\n                    lifecycleStress = true;\n                }\n',
+    '        private const string ReplayArgumentName = "-probeReplay";\n',
+    '            bool replay,\n',
+    '            Replay = replay;\n',
+    '            bool replay = false;\n',
+    '        /// <summary>\n        /// Runs the GC-023 replay mode: the recorded 10,000-step integer fixture replayed across the supported\n        /// worker counts and under a shuffled producer/completion order, the differential propagation sweep with its\n        /// reducer, the observation replay separated from the native-physics comparison, and the instrumented\n        /// counters of one real owned world with the raw benchmark trace written beside the probe result\n        /// (P-008, P-023, TEST-022, TEST-023).\n        /// </summary>\n        public bool Replay { get; }\n',
+    '                else if (argument == ReplayArgumentName)\n                {\n                    replay = true;\n                }\n',
+    '        private const string W6GateArgumentName = "-probeW6Gate";\n',
+    '            bool w6Gate,\n',
+    '            W6Gate = w6Gate;\n',
+    '            bool w6Gate = false;\n',
+    '        /// <summary>\n        /// Runs the Wave 6 integration-gate mode: the fixed-step traversal course with the cost counters and the\n        /// recorded-input replay, the durable reward delivery across an unload/reload of its receiving world, the\n        /// composition audit that keeps the optional physics/animation/audio surface out of cards and narrative, and\n        /// the create/mount/step/unmount/teardown loop over all three genres (W6-GATE).\n        /// </summary>\n        public bool W6Gate { get; }\n',
+    '                else if (argument == W6GateArgumentName)\n                {\n                    w6Gate = true;\n                }\n',
+)
 
 def main() -> None:
     if DESTINATION.exists():
@@ -54,10 +110,12 @@ def main() -> None:
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     for dependency in (
         "com.gamecore.fault-qualification",
-        # GC-023 adds a second qualification marker: the telemetry switch. Removing it here is what makes the
-        # marker-free clone a build in which every counting call site is compiled away, which is the shape
-        # tools/check_release_telemetry_free.py and the player inspection both depend on.
+        # Both qualification-only switches go: the fault latch and GC-023's telemetry counters are compiled out of a
+        # shipping build, which is the shape check_release_telemetry_free.py and the player inspection both depend on.
         "com.gamecore.telemetry-qualification",
+        # GC-023's replay fixture package: its recorded trace, its real-Burst-jobs half and its probe are qualification
+        # evidence.
+        "com.gamecore.replay",
         "com.unity.test-framework",
         "com.unity.test-framework.performance",
     ):
@@ -67,8 +125,11 @@ def main() -> None:
     manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     (DESTINATION / "Packages/packages-lock.json").unlink()
 
+    # Qualification-only compilation units: no shipping player and no shipping Editor assembly compiles them.
     shutil.rmtree(DESTINATION / "Assets/GameCore.Validation/Tests")
     (DESTINATION / "Assets/GameCore.Validation/Tests.meta").unlink()
+    for suffix in (".cs", ".cs.meta"):
+        (DESTINATION / EDITOR / ("LifecyclePlayModeMatrix" + suffix)).unlink()
 
     for name in (
         # GC-017: the fault scenario and its probe name latch types a marker-free compilation does not contain.
@@ -88,16 +149,21 @@ def main() -> None:
         "Gc021Family",
         "ProbeGc021",
         # GC-022's 1,000-cycle stress fixture: the shipping player has no reason to carry it. The scenario, both
-        # family adapters, the family contract and the probe are one set — the scenario calls the adapters, so keeping
-        # any of them without the others would not compile — and none of them is referenced by a surviving file.
+        # family adapters, the family contract and the probe are one set - the scenario calls the adapters, so keeping
+        # any of them without the others would not compile - and no surviving file references them.
         "ProbeLifecycleStress",
         "LifecycleStressScenario",
         "LifecycleStressFamily",
         "LifecycleStressNarrativeHost",
         "LifecycleStressCardsHost",
+        # GC-023's replay fixtures: the recorded-input replay, the real-Burst-jobs variant and the mode that drives
+        # them are qualification evidence; the instrumented counters they exercise are a build switch, not a shipping
+        # code path.
+        "ReplayParallelJobs",
+        "ReplayScenario",
+        "ProbeReplay",
         # The Wave 6 integration gate is a qualification fixture like the four above: it builds course worlds with the
         # local physics scene, samples the cost counters a release build compiles out, and drives the 1,000-cycle loop.
-        # Its production seams — the delivery core, the traversal package and the optional engine stages — all stay.
         "W6GateScenario",
         "W6GateFamily",
         "W6CompositionAudit",
@@ -111,161 +177,55 @@ def main() -> None:
 
     runner = DESTINATION / RUNTIME / "ProbeRunner.cs"
     # The report identity is one independent `if` per mode, so removing a mode's branch is a whole block.
-    replace_once(
-        runner,
-        '            if (arguments.Faults)\n'
-        '            {\n'
-        '                return Named("Faults", "GC-017");\n'
-        '            }\n\n',
-    )
-    replace_once(
-        runner,
-        '            if (arguments.W5Gate)\n'
-        '            {\n'
-        '                return Named("W5Gate", "W5-GATE");\n'
-        '            }\n\n',
-    )
-    replace_once(
-        runner,
-        '            if (arguments.Gc021)\n'
-        '            {\n'
-        '                return Named("Gc021", "GC-021");\n'
-        '            }\n\n',
-    )
-    replace_once(
-        runner,
-        '            if (arguments.LifecycleStress)\n'
-        '            {\n'
-        '                return Named("LifecycleStress", "GC-022");\n'
-        '            }\n\n',
-    )
-    replace_once(
-        runner,
-        '            if (arguments.W6Gate)\n'
-        '            {\n'
-        '                return Named("W6Gate", "W6-GATE");\n'
-        '            }\n\n',
-    )
-    replace_once(
-        runner,
-        '                else if (arguments.Faults)\n'
-        '                {\n'
-        '                    ProbeFaults.Run(report);\n'
-        '                    report.CompletePositive();\n'
-        '                }\n',
-    )
-    replace_once(
-        runner,
-        '                else if (arguments.W5Gate)\n'
-        '                {\n'
-        '                    ProbeW5Gate.Run(report);\n'
-        '                    report.CompletePositive();\n'
-        '                }\n',
-    )
-    replace_once(
-        runner,
-        '                else if (arguments.Gc021)\n'
-        '                {\n'
-        '                    ProbeGc021.Run(report);\n'
-        '                    report.CompletePositive();\n'
-        '                }\n',
-    )
-    replace_once(
-        runner,
-        '                else if (arguments.LifecycleStress)\n'
-        '                {\n'
-        '                    ProbeLifecycleStress.Run(report);\n'
-        '                    report.CompletePositive();\n'
-        '                }\n',
-    )
-    replace_once(
-        runner,
-        '                else if (arguments.W6Gate)\n'
-        '                {\n'
-        '                    ProbeW6Gate.Run(report);\n'
-        '                    report.CompletePositive();\n'
-        '                }\n',
-    )
+    for mode, task in (("Faults", "GC-017"), ("W5Gate", "W5-GATE"), ("Gc021", "GC-021"),
+                       ("LifecycleStress", "GC-022"), ("Replay", "GC-023"), ("W6Gate", "W6-GATE")):
+        replace_once(
+            runner,
+            '            if (arguments.' + mode + ')\n'
+            '            {\n'
+            '                return Named("' + mode + '", "' + task + '");\n'
+            '            }\n\n',
+        )
+        replace_once(
+            runner,
+            '                else if (arguments.' + mode + ')\n'
+            '                {\n'
+            '                    Probe' + mode + '.Run(report);\n'
+            '                    report.CompletePositive();\n'
+            '                }\n',
+        )
 
     arguments = DESTINATION / RUNTIME / "ProbeArguments.cs"
-    for old in (
-        # ---------------------------------------------------------------- the boot/negative and family modes stay
-        '        private const string FaultsArgumentName = "-probeFaults";\n',
-        '        private const string W5GateArgumentName = "-probeW5Gate";\n',
-        '        private const string Gc021ArgumentName = "-probeGc021";\n',
-        '            bool faults,\n',
-        '            bool w5Gate,\n',
-        '            bool gc021,\n',
-        '            Faults = faults;\n',
-        '            W5Gate = w5Gate;\n',
-        '            Gc021 = gc021;\n',
-        '            bool faults = false;\n',
-        '            bool w5Gate = false;\n',
-        '            bool gc021 = false;\n',
-        '        public bool Faults { get; }\n',
-        '        public bool W5Gate { get; }\n',
-        '        public bool Gc021 { get; }\n',
-        '                else if (argument == FaultsArgumentName)\n'
-        '                {\n'
-        '                    faults = true;\n'
-        '                }\n',
-        '                else if (argument == W5GateArgumentName)\n'
-        '                {\n'
-        '                    w5Gate = true;\n'
-        '                }\n',
-        '                else if (argument == Gc021ArgumentName)\n'
-        '                {\n'
-        '                    gc021 = true;\n'
-        '                }\n',
-        '        private const string LifecycleStressArgumentName = "-probeLifecycleStress";\n',
-        '            bool lifecycleStress,\n',
-        '            LifecycleStress = lifecycleStress;\n',
-        '            bool lifecycleStress = false;\n',
-        '        /// <summary>\n'
-        '        /// Runs the GC-022 lifecycle stress: the counted mount/unmount cycles over each family\'s committed generated\n'
-        '        /// catalog and over its fixture identity set, with delayed completions, stalled jobs, a throwing disposer,\n'
-        '        /// required-provider churn and headless cleanup, under native leak detection with full stack traces\n'
-        '        /// (P-047, P-048, P-050).\n'
-        '        /// </summary>\n'
-        '        public bool LifecycleStress { get; }\n\n',
-        '                else if (argument == LifecycleStressArgumentName)\n'
-        '                {\n'
-        '                    lifecycleStress = true;\n'
-        '                }\n',
-        '        private const string W6GateArgumentName = "-probeW6Gate";\n',
-        '            bool w6Gate,\n',
-        '            W6Gate = w6Gate;\n',
-        '            bool w6Gate = false;\n',
-        '        /// <summary>\n'
-        '        /// Runs the Wave 6 integration-gate mode: the fixed-step traversal course with the cost counters and the\n'
-        '        /// recorded-input replay, the durable reward delivery across an unload/reload of its receiving world, the\n'
-        '        /// composition audit that keeps the optional physics/animation/audio surface out of cards and narrative, and\n'
-        '        /// the create/mount/step/unmount/teardown loop over all three genres (W6-GATE).\n'
-        '        /// </summary>\n'
-        '        public bool W6Gate { get; }\n\n',
-        '                else if (argument == W6GateArgumentName)\n'
-        '                {\n'
-        '                    w6Gate = true;\n'
-        '                }\n',
-    ):
+    for old in ARG_NEEDLES:
         replace_once(arguments, old)
 
+    # The qualification-mode expression keeps every surviving mode, so -probeTraversal still counts as a probe.
     replace_once(
         arguments,
         '            || Gc013 || W4Gate || Faults || Gc018 || Gc019 || W5Gate || Traversal || Gc021\n',
-        '            || Gc013 || W4Gate || Gc018 || Gc019\n',
-    )
-    replace_once(
-        arguments,
-        '                w4Gate, faults, gc018, gc019, w5Gate, traversal, gc021, replay, w6Gate, resultPath);',
-        '                w4Gate, gc018, gc019, replay, resultPath);',
+        '            || Gc013 || W4Gate || Gc018 || Gc019 || Traversal\n',
     )
     for removed in (
         '            || LifecycleStress\n',
+        '            || Replay\n',
         '            || W6Gate\n',
-        '                lifecycleStress,\n',
     ):
         replace_once(arguments, removed)
+
+    # The constructor call keeps the same members in the same order as the remaining parameters, so the clone's
+    # argument list and its constructor signature agree exactly.
+    replace_once(
+        arguments,
+        '                w4Gate, faults, gc018, gc019, w5Gate, traversal, gc021, replay, w6Gate, resultPath);',
+        '                w4Gate, gc018, gc019, traversal, resultPath);',
+    )
+    replace_once(arguments, '                lifecycleStress,\n')
+
+    # GC-023's replay assembly leaves the probe host's references: every file that consumed it is gone.
+    probe_asmdef = DESTINATION / RUNTIME / "GameCore.Validation.ProbeHost.asmdef"
+    asmdef = json.loads(probe_asmdef.read_text(encoding="utf-8"))
+    asmdef["references"].remove("GameCore.Replay")
+    probe_asmdef.write_text(json.dumps(asmdef, indent=2) + "\n", encoding="utf-8")
 
     print(f"Marker-free release project: {DESTINATION}")
     print("Build: UNITY_PROJECT=<above> ARTIFACTS=artifacts/faults/release tools/unity/build_probe.sh")
