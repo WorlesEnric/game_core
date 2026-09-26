@@ -1,6 +1,6 @@
 {
   "name": "com.gamecore.gameplay.traversal",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "displayName": "GameCore Gameplay Traversal",
   "description": "The real-time action gameplay package of the GC-020 traversal reference: runner-owned kinematic pose/velocity in five ordered stages, an inherited Additive acceleration modifier, data-defined checkpoint volumes, deduplicated ordered run progress and the committed crossing output of one fixed 20 ms step.",
   "unity": "6000.0",
@@ -11,12 +11,14 @@
     "fixed-step"
   ],
   "dependencies": {
-    "com.gamecore.contracts": "0.1.0",
-    "com.gamecore.rules.traversal": "0.1.0",
-    "com.gamecore.composition": "0.1.0",
-    "com.gamecore.derivation": "0.1.0",
-    "com.gamecore.planning": "0.1.0",
-    "com.gamecore.unity.runtime": "0.1.0",
-    "com.gamecore.unity.adapters": "0.1.0"
+    "com.gamecore.composition": "1.0.0",
+    "com.gamecore.contracts": "1.0.0",
+    "com.gamecore.derivation": "1.0.0",
+    "com.gamecore.planning": "1.0.0",
+    "com.gamecore.rules.traversal": "1.0.0",
+    "com.gamecore.unity.adapters": "1.0.0",
+    "com.gamecore.unity.runtime": "1.0.0",
+    "com.unity.collections": "2.6.6",
+    "com.unity.entities": "1.4.6"
   }
 }

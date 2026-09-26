@@ -5,6 +5,10 @@
   "description": "Unity Entities execution host for GameCore V1: per-world ownership, guarded ordered dispatch that bypasses the stock group update loop, tracked job fences, world/job resource ledger and step publication. The Runtime/Pure subtree is engine-free (namespace GameCore.Execution) and is also compiled by dotnet/src/GameCore.Execution for plain-dotnet tests.",
   "unity": "6000.0",
   "dependencies": {
+    "com.gamecore.composition": "1.0.0",
+    "com.gamecore.contracts": "1.0.0",
+    "com.gamecore.derivation": "1.0.0",
+    "com.gamecore.planning": "1.0.0",
     "com.unity.burst": "1.8.28",
     "com.unity.collections": "2.6.6",
     "com.unity.entities": "1.4.6"

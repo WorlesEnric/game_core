@@ -2,6 +2,6 @@
   "name": "com.gamecore.telemetry-qualification",
   "version": "1.0.0",
   "displayName": "GameCore Telemetry Qualification Switch",
-  "description": "Present only in the validation project to compile GC-023's telemetry counting call sites into its runtime and player. A shipping project that omits this package compiles no counting call at all.",
+  "description": "Present only in the validation project to compile GC-023's telemetry counting call sites into its runtime and player. A shipping project that omits this package compiles no counting call at all. Marker package: it declares no assembly and therefore no dependency; asmdefs select it through versionDefines as 1.0.0 / GAMECORE_TELEMETRY.",
   "unity": "6000.0"
 }

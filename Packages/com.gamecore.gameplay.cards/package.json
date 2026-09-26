@@ -1,6 +1,6 @@
 {
   "name": "com.gamecore.gameplay.cards",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "displayName": "GameCore Gameplay Cards",
   "description": "The card-market gameplay package of the GC-011 Automatic vertical slice: table-owned state on one logical owner, card descriptors, an inherited scoring-modifier contribution, a bounded command batch, an ordered four-stage settlement and a bounded transfer write set computed under the table owner.",
   "unity": "6000.0",
@@ -11,11 +11,13 @@
     "settlement"
   ],
   "dependencies": {
-    "com.gamecore.contracts": "0.1.0",
-    "com.gamecore.rules.cards": "0.1.0",
-    "com.gamecore.composition": "0.1.0",
-    "com.gamecore.derivation": "0.1.0",
-    "com.gamecore.planning": "0.1.0",
-    "com.gamecore.unity.runtime": "0.1.0"
+    "com.gamecore.composition": "1.0.0",
+    "com.gamecore.contracts": "1.0.0",
+    "com.gamecore.derivation": "1.0.0",
+    "com.gamecore.planning": "1.0.0",
+    "com.gamecore.rules.cards": "1.0.0",
+    "com.gamecore.unity.runtime": "1.0.0",
+    "com.unity.collections": "2.6.6",
+    "com.unity.entities": "1.4.6"
   }
 }

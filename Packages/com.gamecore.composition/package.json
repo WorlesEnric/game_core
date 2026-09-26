@@ -1,8 +1,8 @@
 {
   "name": "com.gamecore.composition",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "displayName": "GameCore Composition",
-  "description": "Managed scopes, services, configuration, lifecycle/resource ledger and immutable composition snapshots (GC-004).",
+  "description": "Managed scopes, services, configuration, lifecycle/resource ledger and immutable composition snapshots (GC-004). References only com.gamecore.contracts; engine-free (noEngineReferences).",
   "unity": "6000.0",
   "keywords": [
     "gamecore",
@@ -11,6 +11,6 @@
     "services"
   ],
   "dependencies": {
-    "com.gamecore.contracts": "0.1.0"
+    "com.gamecore.contracts": "1.0.0"
   }
 }

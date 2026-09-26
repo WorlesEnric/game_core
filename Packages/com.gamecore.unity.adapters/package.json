@@ -2,9 +2,14 @@
   "name": "com.gamecore.unity.adapters",
   "version": "1.0.0",
   "displayName": "GameCore Unity Adapters",
-  "description": "Application bootstrap and PlayerLoop integration for the GameCore V1 execution host: the single application ICustomBootstrap, one idempotent application-owned PlayerLoop node that pumps registered worlds, paused/idle pumping, and the RuntimeInitializeOnLoadMethod reset path for domain-reload-disabled Play Mode.",
+  "description": "Application bootstrap and PlayerLoop integration for the GameCore V1 execution host: the single application ICustomBootstrap, one idempotent application-owned PlayerLoop node that pumps registered worlds, paused/idle pumping, and the RuntimeInitializeOnLoadMethod reset path for domain-reload-disabled Play Mode. Runtime/Pure is engine-free and is also compiled by dotnet/src/GameCore.Execution.Adapters for plain-dotnet tests.",
   "unity": "6000.0",
   "dependencies": {
+    "com.gamecore.composition": "1.0.0",
+    "com.gamecore.contracts": "1.0.0",
+    "com.gamecore.planning": "1.0.0",
+    "com.gamecore.unity.runtime": "1.0.0",
+    "com.unity.collections": "2.6.6",
     "com.unity.entities": "1.4.6"
   }
 }

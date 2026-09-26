@@ -2,6 +2,6 @@
   "name": "com.gamecore.fault-qualification",
   "version": "1.0.0",
   "displayName": "GameCore Fault Qualification Switch",
-  "description": "Present only in the validation project to compile deterministic fault latches into its runtime and player.",
+  "description": "Present only in the validation project to compile deterministic fault latches into its runtime and player. Marker package: it declares no assembly and therefore no dependency; asmdefs select it through versionDefines as 1.0.0 / GAMECORE_FAULT_INJECTION.",
   "unity": "6000.0"
 }
