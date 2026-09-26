@@ -28,6 +28,7 @@ using Unity.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using GameCore.Contracts;
+using GameCore.Unity.Adapters.Authority;
 
 namespace GameCore.Unity.Adapters.Physics
 {

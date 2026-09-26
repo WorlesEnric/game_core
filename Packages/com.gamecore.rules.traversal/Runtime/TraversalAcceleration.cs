@@ -1,5 +1,8 @@
-// GameCore.Rules.Traversal — the acceleration slot's payload, its registered reducer and the derivation value source
-// of the traversal catalog (GC-020).
+// GameCore.Rules.Traversal — the acceleration slot's payload, its registered reducer and its predicate (GC-020).
+//
+// The derivation value source that binds these two seams to the derivation engine lives in the GAMEPLAY package
+// (`GameCore.Gameplay.Traversal.TraversalDerivationValueSource`), because the rules layer of 04 s2 may reference only
+// GameCore.Contracts. That is the same split the card package makes.
 //
 // Normative sources: 07 s4.1 ("`Tailwind` contributes `(+2, 0, 0)` m/s² and `Headwind` contributes `(-1, 0, 0)` m/s²
 // to the `Additive` `traversal.Acceleration` slot. Two applicable modifiers add in canonical contribution order

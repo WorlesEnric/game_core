@@ -266,7 +266,7 @@ namespace GameCore.Gameplay.Traversal
         }
 
         /// <summary>
-        /// The six owned domains, under three owners (P-034). Motion belongs to the runtime, the captured input to
+        /// The six owned domains, one owner each (P-034). Motion belongs to the runtime, the captured input to
         /// the input adapter, the sealed observations to the sensor adapter and progress, crossings and the committed
         /// image to the checkpoint runtime. No two owners write one domain, and each last-support disposition is
         /// declared: motion, progress and the committed image are durable gameplay state and stay dormant; the

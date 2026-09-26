@@ -9,6 +9,10 @@
 #nullable enable
 using System.Collections.Generic;
 using System.Globalization;
+using GameCore.Contracts;
+using GameCore.Derivation;
+using GameCore.Gameplay.Traversal;
+using GameCore.Rules.Traversal;
 using GameCore.Unity.Adapters;
 using GameCore.Unity.Runtime;
 using GameCore.Validation.ProbeHost;
@@ -238,7 +242,52 @@ namespace GameCore.Gc020.Tests
             Assert.That(combined.Count, Is.EqualTo(14));
         }
 
-        // ------------------------------------------------------------------ helpers
+        /// <summary>
+        /// The traversal catalog's registered derivation seam behaves as a registered seam must (P-009, P-019,
+        /// P-028): the acceleration key and the always-accepting predicate resolve, an unregistered reducer key is a
+        /// MISS rather than a silent identity, the registered fold produces the canonical int32 payload, and a
+        /// contribution that is not one canonical scalar rejects the WHOLE fold with `ReducerFailureException`
+        /// instead of returning a truncated value. These live here rather than in the plain-dotnet rules suite
+        /// because `IDerivationValueSource` is a derivation-package seam and the rules layer may not reference it
+        /// (04 s2), so the adapter that binds the two is this package's to defend.
+        /// </summary>
+        [Test]
+        [Timeout(AssertTimeout)]
+        public void TheRegisteredDerivationSeamResolvesReducesAndRejects()
+        {
+            TraversalDerivationValueSource source = TraversalDerivationValueSource.Default();
+
+            Assert.That(source.IsReductionRegistered(TraversalVocabulary.AccelerationReducerKey), Is.True);
+            Assert.That(source.IsPredicateRegistered(TraversalVocabulary.AlwaysPredicateKey), Is.True);
+
+            var unknown = new FactoryKey(TraversalIdentity.Id("traversal.reducer.not-registered"), 1U);
+            Assert.That(source.IsReductionRegistered(unknown), Is.False);
+
+            var inputs = new List<FrozenPayload>
+            {
+                TraversalPayloadCodec.WriteAcceleration(TraversalVocabulary.TailwindMilli),
+                TraversalPayloadCodec.WriteAcceleration(TraversalVocabulary.TailwindMilli),
+            };
+            Assert.That(
+                source.TryReduce(unknown, inputs, out FrozenPayload? _),
+                Is.False,
+                "an unregistered key is a miss, never an implicit identity");
+            Assert.That(
+                source.TryReduce(TraversalVocabulary.AccelerationReducerKey, inputs, out FrozenPayload? sum),
+                Is.True);
+            Assert.That(sum, Is.Not.Null);
+            Assert.That(TraversalPayloadCodec.TryReadAcceleration(sum!.Bytes, out int effective), Is.True);
+            Assert.That(effective, Is.EqualTo(TraversalVocabulary.TailwindMilli * 2));
+            Assert.That(source.ReductionCount, Is.EqualTo(1));
+
+            var malformed = new List<FrozenPayload> { new FrozenPayload(new byte[12]) };
+            Assert.Throws<ReducerFailureException>(
+                delegate
+                {
+                    source.TryReduce(TraversalVocabulary.AccelerationReducerKey, malformed, out FrozenPayload? _);
+                },
+                "a contribution that is not one canonical scalar must reject the whole fold (P-019)");
+        }
 
         private static IReadOnlyList<Gc020Step> PassingSteps(string label)
         {

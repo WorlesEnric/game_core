@@ -37,8 +37,9 @@
 #   ARTIFACTS       artifact directory (default: <repo>/artifacts/gc-020)
 #   PROBE_RUNS      repetitions of every player probe (default 5; any crashing run fails the gate)
 #   UNITY_TIMEOUT   seconds a full Unity Editor invocation may take (default 1800)
-#   DIGEST          the course digest literal the traversal probe must observe (default: read from the gate's own
-#                   committed literal file, artifacts/gc-020/toolchain/gc020-digest.txt)
+#
+# The traversal probe's digest literal is frozen in tools/unity/run_traversal_probe.sh and in the EditMode suite;
+# this script passes neither, so there is nothing for it to override.
 #
 # Exit codes: 0 every step passed; nonzero on the first failing step (2 for a missing prerequisite).
 set -euo pipefail

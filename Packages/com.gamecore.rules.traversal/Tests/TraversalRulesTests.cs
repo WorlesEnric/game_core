@@ -126,6 +126,11 @@ namespace GameCore.Rules.Traversal.Tests
                 first);
             Assert.That(jumped.Jumped, Is.EqualTo((byte)1));
             Assert.That(jumped.Velocity.Y, Is.EqualTo(TraversalMotionRules.JumpImpulseMilli));
+            Assert.That(
+                jumped.Grounded,
+                Is.EqualTo((byte)0),
+                "the step that accepted the jump leaves the ground: clamping it here would erase the impulse");
+            Assert.That(jumped.Pose.Y, Is.EqualTo(0), "the jump's own step still starts from the plane");
 
             var airborne = new TraversalBodyStepRequest(
                 jumped.Pose,

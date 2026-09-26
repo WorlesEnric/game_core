@@ -13,11 +13,11 @@
 //   traversal.input -> traversal.integrate -> traversal.sense -> traversal.checkpoints -> traversal.output
 //   traversal.integrate ---------------------------------------------------------> traversal.output
 //
-// THREE OWNS. 07 s4.2 names three authorities with distinct state, and this file declares exactly three owners:
-// `traversal.TraversalRuntime` owns pose/velocity/jump state, `traversal.CheckpointRuntime` owns run progress and the
-// committed crossing output, and the two adapters own the input they captured and the observations they sealed. No
-// two of them write the same domain, which is what lets the compiled schedule order them without a coordinator
-// (P-034, P-040).
+// FOUR OWNERS, ONE PER WRITTEN DOMAIN. 07 s4.2 names the authorities with distinct state, and this file declares one
+// owner for each domain a stage writes: `traversal.TraversalRuntime` owns pose/velocity/jump state, the input adapter
+// owns the input it captured, the sensor adapter owns the observations it sealed, and `traversal.CheckpointRuntime`
+// owns run progress, the committed crossings and the committed image. No two owners write the same domain, which is
+// what lets the compiled schedule order them without a coordinator (P-034, P-040).
 #nullable enable
 using GameCore.Contracts;
 using GameCore.Rules.Traversal;
