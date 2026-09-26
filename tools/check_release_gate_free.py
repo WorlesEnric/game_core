@@ -136,13 +136,13 @@ def scan_file(path: str) -> dict:
 
 
 def collect(root: str) -> list:
-    """Every managed assembly and every generated C++ source under one player directory."""
+    """Managed assemblies, generated C++ and IL2CPP string metadata under one player directory."""
     found = []
     for dirpath, _dirnames, filenames in os.walk(root):
         for name in filenames:
             if name.endswith(".dll") and os.sep + "Managed" + os.sep in dirpath + os.sep:
                 found.append(os.path.join(dirpath, name))
-            elif name.endswith(".cpp") or name.endswith(".h"):
+            elif name.endswith(".cpp") or name.endswith(".h") or name == "global-metadata.dat":
                 found.append(os.path.join(dirpath, name))
     return sorted(found)
 
