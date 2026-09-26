@@ -392,3 +392,70 @@ them but does not close their remaining clauses); `O-20`/`O-21` stay promoted fr
    as a split construct and failed a correct file (found here in `Observation/SnapshotResynchronization.cs`, added by
    GC-016 after GC-017 froze that check). A falsifiability self-test proves the fixed check still fails on a real
    split, including one hidden behind a brace inside a string.
+
+## GC-020 revision notes (Wave 6, proposals only — nothing has run)
+
+**Status: `NotRun (pending orchestrator build host)`. No additional row promoted.** This authoring host has no .NET
+SDK, no C# compiler and no Unity, so the gate of this task has never executed. Everything below is a **proposal**
+the build host acts on after running `tools/run_gc020_gate.sh`, and every evidence path named in it is an artifact
+the build host must first produce.
+
+GC-020 implements the real-time action/traversal reference composition of 07 §4 exactly: a five-stage declared graph
+(`traversal.input → integrate → sense → checkpoints → output`, plus the separate `integrate → output` edge), three
+logical owners over six declared domains (motion; captured input; sealed observations; progress; committed
+crossings; committed image), one inherited `Additive` `traversal.acceleration` slot, data-defined checkpoint
+volumes, deduplicated ordered run progress through the pure course rules, and committed crossing events. Its pose is
+ECS-owned kinematic by default; the optional rigidbody mode declares a single external authority per recipe and
+refuses a conflicting selection rather than letting two writable copies coexist.
+
+Fourteen observations per run, whose names and digest literal are frozen here and asserted by both the EditMode
+suite (`GameCore.Gc020.Tests`) and the player probe (`-probeTraversal`):
+
+`traversal/gc020-fixed-step-world-and-runners`, `…-existing-runners-derive-the-modifier`,
+`…-one-admitted-step-integrates-once`, `…-replay-separates-pure-motion-from-engine-observation`,
+`…-presentation-rate-does-not-double-advance`, `…-reparent-changes-the-contribution-and-keeps-state`,
+`…-unmount-keeps-pose-progress-and-receipts`, `…-mode-switch-both-directions`,
+`…-future-descendant-derives-before-execution`, `…-one-simulation-per-admitted-step`,
+`…-externally-owned-pose-is-not-integrated`, `…-committed-animation-and-audio-output`,
+`…-cards-and-narrative-declare-no-action-phase`, `…-teardown-settles-and-disposes`.
+
+Digest (SHA-256 over the LF-joined `traversal/<name>=pass` lines, no trailing newline):
+`6263602b82b25315ae33f8ebcc3fbd314586743b9080b0bbe0df34ecc3172ad8`.
+
+**One catalog only.** No committed generated traversal catalog exists on this revision — its emission is GC-025's
+catalog-coverage work — so `Gc020TraversalHost.GeneratedCatalogPresent` is `false` and `RunBoth` answers both
+out-parameters with the fixture catalog's single run. The EditMode suite asserts that fact instead of implying a
+second catalog ran.
+
+| Id | Before | After (proposed) | Passing observation this change set would provide, and the remaining limit |
+| --- | --- | --- | --- |
+| `P-001` | `Partial` | `Partial` (unchanged) | Third genre on one kernel binary with no kernel schema; `gc020-cards-and-narrative-declare-no-action-phase` walks the narrative and card declarations for any traversal stage id, system key, buffer id or capability and reports `offenders=<none>`. The cross-family reward composition and the action IL2CPP run stay GC-024/GC-021's |
+| `P-002` | `Partial` | `Partial` (unchanged) | The action family supplies a real command port, a compiled five-stage graph and an engine adapter that admits stamped observations and submits intents; the physics path is a gate scenario, not yet a built player |
+| `P-034` | `Partial` | `Partial` (unchanged) | `gc020-one-simulation-per-admitted-step`, `gc020-externally-owned-pose-is-not-integrated`: a declared external owner, a refusal to integrate that pose, an `OwnershipConflict` on a conflicting selection, and one local `PhysicsScene.Simulate` per admitted step with intents applied before it |
+| `P-035` | `Implemented+Evidenced` | `Implemented+Evidenced` | `gc020-teardown-settles-and-disposes`: a second fixed-step world runs and stops through the world's own lifecycle |
+| `P-036` | `Implemented+Evidenced` | `Implemented+Evidenced` | `gc020-fixed-step-world-and-runners`, `gc020-presentation-rate-does-not-double-advance`: the declared 20 ms step with the four-step catch-up, and identical logical step counts at 30/60/144 Hz host sampling |
+| `P-038` | `Implemented+Evidenced` | `Implemented+Evidenced` | `gc020-one-admitted-step-integrates-once`: the integration reads the world's own step clock and the trace stamps each body with the logical step |
+| `P-039` | `Implemented+Evidenced` | `Implemented+Evidenced` | `gc020-fixed-step-world-and-runners`: five declared stages, their system keys and their per-system access sets, compiled by the production compiler |
+| `P-040` | `Implemented+Evidenced` | `Implemented+Evidenced` | `gc020-fixed-step-world-and-runners`: both edges of 07 §4.2, including `integrate → output`, are declared `requiredAfter` edges rather than inferred ones |
+| `P-041` | `Implemented+Evidenced` | `Implemented+Evidenced` | `gc020-one-admitted-step-integrates-once`: direct owned component writes plus the declared `sense → checkpoints` step buffer and its drain check |
+| `P-044` | `Implemented+Evidenced` | `Implemented+Evidenced` | `gc020-reparent-changes-the-contribution-and-keeps-state`, `gc020-committed-animation-and-audio-output`: a bounded crossing write set and per-crossing committed events staged for the step's commit |
+| `P-045` | `Partial` | `Partial` (unchanged) | `gc020-committed-animation-and-audio-output`, `gc020-replay-separates-pure-motion-from-engine-observation`: a committed-output consumer that deduplicates by event identity, reports the disabled-device path, and refuses a stale presentation token. The crash-durable outbox and the long-run cursor budget stay GC-021/GC-026's |
+| `P-056` | `Partial` | `Partial` (unchanged) | A fourth rules package's registered reducer/predicate pair, an external-authority physics descriptor and a committed-output audio/animation sink port; asset/presentation/input registration is GC-019's and unchanged here |
+| `P-058` | `Implemented+Evidenced` | `Implemented+Evidenced` | Unchanged status: the packages compile under the pinned Editor and package set; this change set adds no pin and no toolchain change |
+| `P-059` | `Partial` | `Partial` (unchanged) | The row GC-020 is named against: the fixed-step action family now exists as a real package, and `gc020-cards-and-narrative-declare-no-action-phase` asserts the other two families carry no action phase. It stays `Partial` because nothing has executed and the cross-family composition is GC-024's |
+
+Not proposed: `P-049` (O-22 `RecoverWorld` is GC-027's), `P-007`'s long-run retention budget (GC-026), the
+card/narrative rows the earlier waves already carry, and every operation row other than `O-14`/`O-15`/`O-16`, which
+this gate exercises at one-second scale rather than over GC-023's 10,000 replayed steps.
+
+**Contract changes: none.** No file under `Packages/com.gamecore.contracts/` and no plan DTO was modified. The new
+public surface is additive: `Packages/com.gamecore.rules.traversal`, `Packages/com.gamecore.gameplay.traversal`, the
+`Runtime/Pure/Physics`, `Runtime/Pure/Audio`, `Runtime/Pure/Animation`, `Runtime/Physics` and
+`Runtime/Presentation` folders of `Packages/com.gamecore.unity.adapters`, and the qualification gate's own three
+files.
+
+**Carried gaps.** Nothing here has been compiled, imported or executed, so every evidence path above must first be
+produced by the build host. The rigidbody authority is proved in the Editor qualification world rather than with a
+production rigidbody game. The audio stage is qualified engine-free **by design**: the headless player runs with
+Unity audio disabled (an FMOD/PulseAudio crash at exit, crash-139), so the live-device path is documented and the
+committed-output logic is proved through the sink port with a recording implementation.

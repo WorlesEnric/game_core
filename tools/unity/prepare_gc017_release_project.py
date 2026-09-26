@@ -44,9 +44,8 @@ def main() -> None:
     manifest["testables"] = []
     manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     (DESTINATION / "Packages/packages-lock.json").unlink()
-    # The fault scenario and the Wave 5 integration gate are qualification fixtures, not shipping entry points:
-    # both name the latch types that a configuration without the marker does not compile at all. The ordinary
-    # narrative/cards/GC-018/GC-019 probe modes remain identical to validation.
+    # The fault scenario and Wave 5 gate name latch types absent from a shipping build. The
+    # ordinary family modes, including the GC-020 traversal course, remain available.
     shutil.rmtree(DESTINATION / "Assets/GameCore.Validation/Tests")
     (DESTINATION / "Assets/GameCore.Validation/Tests.meta").unlink()
     for name in (
@@ -120,13 +119,13 @@ def main() -> None:
         replace_once(arguments, old)
     replace_once(
         arguments,
-        '            || Gc013 || W4Gate || Faults || Gc018 || Gc019 || W5Gate\n',
-        '            || Gc013 || W4Gate || Gc018 || Gc019\n',
+        '            || Gc013 || W4Gate || Faults || Gc018 || Gc019 || W5Gate || Traversal\n',
+        '            || Gc013 || W4Gate || Gc018 || Gc019 || Traversal\n',
     )
     replace_once(
         arguments,
-        '                w4Gate, faults, gc018, gc019, w5Gate, resultPath);',
-        '                w4Gate, gc018, gc019, resultPath);',
+        '                w4Gate, faults, gc018, gc019, w5Gate, traversal, resultPath);',
+        '                w4Gate, gc018, gc019, traversal, resultPath);',
     )
     print(f"Marker-free release project: {DESTINATION}")
     print("Build: UNITY_PROJECT=<above> ARTIFACTS=artifacts/faults/release tools/unity/build_probe.sh")

@@ -33,8 +33,20 @@ Unity qualification project and the player gates.
 | `tests/GameCore.Rules.Narrative.Tests` | NUnit 3 | net8.0 | the narrative rules package's own `Tests/**` sources |
 | `src/GameCore.Rules.Cards` | library | netstandard2.1 | `Packages/com.gamecore.rules.cards/Runtime/**/*.cs` |
 | `tests/GameCore.Rules.Cards.Tests` | NUnit 3 | net8.0 | the card-rules package's own `Tests/**` sources |
+| `src/GameCore.Rules.Traversal` | library | netstandard2.1 | `Packages/com.gamecore.rules.traversal/Runtime/**/*.cs` |
+| `tests/GameCore.Rules.Traversal.Tests` | NUnit 3 | net8.0 | the traversal-rules package's own `Tests/**` sources (GC-020) |
 | `src/GameCore.Adapters` | library | netstandard2.1 | `Packages/com.gamecore.unity.adapters/Runtime/Pure/**/*.cs` |
 | `tests/GameCore.Adapters.Tests` | NUnit 3 | net8.0 | the adapter-core tests plus the shared `Packages/com.gamecore.unity.adapters/Fixtures/**/*.cs` doubles |
+
+
+`GameCore.Rules.Traversal` is GC-020's engine-free half of the real-time action reference: the identities and
+vocabulary of the traversal course, the exact integer fixed-step kinematics whose declared representation makes
+07 s4.3's numeric assertion (`1.00 -> 1.04 -> 1.02` m/s) exact, the checkpoint course's deduplication and ordering
+rules, the canonical int32 payload codec of 05 s6 and the registered `Additive` reducer of P-019. Its test project
+compiles that package's `Tests/**` sources directly, exactly as the narrative and card rules test projects do, and it
+uses the same NUnit 3.14 surface. The traversal gameplay package
+(`Packages/com.gamecore.gameplay.traversal`) holds real Unity components and systems, so it is built only by Unity
+and by the qualification project, never by this solution.
 
 The two fixture suites share one test source (`tests/GameCore.ProtocolFixtures.Tests/ProtocolFixtureTests.cs`).
 They write separate evidence documents, `artifacts/protocol-fixtures/results.json` and

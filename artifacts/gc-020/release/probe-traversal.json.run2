@@ -1,0 +1,107 @@
+{
+  "task": "GC-020",
+  "probe": "GameCore.Validation.ProbeHost.ProbeRunner",
+  "mode": "Traversal",
+  "result": "Pass",
+  "exitCode": 0,
+  "declaredUnityVersion": "6000.0.75f1",
+  "unityVersion": "6000.0.75f1",
+  "declaredTarget": "StandaloneLinux64",
+  "platform": "LinuxPlayer",
+  "architecture": "X64",
+  "processorType": "12th Gen Intel(R) Core(TM) i7-12700KF",
+  "scriptingBackend": "IL2CPP",
+  "isIl2Cpp": true,
+  "is64BitProcess": true,
+  "managedStrippingLevel": "High",
+  "managedStrippingLevelSource": "declared: GameCore.Validation.Editor.BuildProbe sets and re-reads PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, ManagedStrippingLevel.High); a player cannot query the stripping level at runtime",
+  "burstCompilerEnabled": true,
+  "fixturePluginPreservation": "declared: Assets/link.xml preserves the GameCore.Validation.Fixture assembly (preserve=\"all\"), and the generated catalog holds a direct FixturePluginFactory reference, so the plugin is linked into the player while nothing instantiates it at startup",
+  "catalogGenerator": "GameCore.Content.Compiler (GC-003)",
+  "catalogGeneratedFile": "ProbeCatalog.g.cs",
+  "catalogFileHash": "03bdcd23fd8ec0515d93d7c54d7f7c695f3860a850a7280b82316aaacd14c5c1",
+  "catalogFingerprint": "02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff",
+  "catalogDescriptionFormat": "gamecore.catalog-description/1",
+  "catalogProtocolVersion": "1.0",
+  "catalogSupportedFeatureCount": 1,
+  "catalogFileHashAlgorithm": "SHA-256",
+  "catalogFileHashScope": "SHA-256 over the UTF-8 bytes, with LF line endings, of the file prefix that ends immediately before the eight-space-indented CatalogFileHash declaration; that prefix ends with the newline that terminates the previous line, and the declaration itself, its value and the rest of the file are excluded",
+  "failureReason": "",
+  "probes": [
+    {
+      "name": "traversal/gc020-fixed-step-world-and-runners",
+      "status": "Pass",
+      "detail": "session=54524156455253410000000000000001; catalogFingerprint=f66d97d489bc1d8b891b20bc1c16186e0843d2ca5760dcd010909feea6829459; generatedCatalog=absent(Assets/GameCore.Validation/GeneratedTraversal); registryBefore=1; liveTargets=6; courseTargets=4; moduleRunners=3(live=3); moduleVolumes=2; targetsWithoutStorage=<none>; targetsUnbound=<none>; temporalModel=FixedStep; stepMillis=20; stepDurationTicks=200000; maxStepsPerPump=4; declaredStep=True; identitiesAgree=True; descriptorStages=5; registeredStages=5; registeredSystems=5; physicsScene=GameCoreTraversalCourseScene; scopes=6; mode=Automatic; bridge=True; modeValidator=True; lifecycle=Running; idleSteps=0; joined=True"
+    },
+    {
+      "name": "traversal/gc020-existing-runners-derive-the-modifier",
+      "status": "Pass",
+      "detail": "mounted=True; providerValue=2000; reached=TargetId(51cf5b27370ded93a091b2e9eb6e180c)=2000; notReached=TargetId(e57ba9f33193786c847033b85d6702fd)=<none>; isolated=TargetId(cc228e0bdbafd21f8069d19cb4aeb83f)=<none>; checkpointRows=<none>; velocity=(1000,0,0)->(1000,0,0); pose=(0,0,0)->(0,0,0); steppedSteps=0; bindingRows=1"
+    },
+    {
+      "name": "traversal/gc020-one-admitted-step-integrates-once",
+      "status": "Pass",
+      "detail": "committedSteps=1; step=0->1; admission=Admitted; velocity=(1000,0,0)->(1040,0,0); expectedVelocity=1040; poseAdvanceX=20; pose=(0,0,0)->(20,0,0); integratedDelta=3; lastIntegrated=3; ownedRunners=3; outputRows=1; decodedInputs=1; refusedInputs=0; recordedStep=0; recordedAppliedAccelerationX=2000; recordedVelocity=(1040,0,0)"
+    },
+    {
+      "name": "traversal/gc020-replay-separates-pure-motion-from-engine-observation",
+      "status": "Pass",
+      "detail": "steps=5; replayA_steps=5; replayBodies=15; identical=steps=5;bodies=15;mismatchedBodies=0;mismatchedSteps=0;matches=True; perturbedBy=1; atTolerance0=False(mismatchedBodies=5); atDeclaredTolerance=True(tolerance=5, mismatchedBodies=0); comparisonDetail=body mismatch at step 0: left[TargetId(51cf5b27370ded93a091b2e9eb6e180c) p(20,0,0) v(1040,0,0)] right[TargetId(51cf5b27370ded93a091b2e9eb6e180c) p(20,0,0) v(1041,0,0)]"
+    },
+    {
+      "name": "traversal/gc020-presentation-rate-does-not-double-advance",
+      "status": "Pass",
+      "detail": "runs=30:50/3000,60:50/3000,144:50/3000; expectedStepsPerSecond=50; expectedVelocity=3000; sameSteps=True; sameVelocity=True; extra144HzFrames=144; maxStepsPerPump=4"
+    },
+    {
+      "name": "traversal/gc020-reparent-changes-the-contribution-and-keeps-state",
+      "status": "Pass",
+      "detail": "headwindMounted=True; reparented=True; target=TargetId(51cf5b27370ded93a091b2e9eb6e180c); scope=ScopeId(d1ada51d1a64e4f44cdbd9cead9cde71); destination=ScopeId(355f7d0bfae628967a167e677714f3da); velocity=(1040,0,0)->(1020,0,0); expectedVelocity=1020; publishedPose=(20,0,0); publicationMovedNothing=True; ridgeRow=True; progress=1->1; progressStarted=1->1; stateKept=True; lastCheckpoint=TargetId(a024398b9672844d656025705196d8b8); liveMotionSlot=1000->1000; committedSteps=1"
+    },
+    {
+      "name": "traversal/gc020-unmount-keeps-pose-progress-and-receipts",
+      "status": "Pass",
+      "detail": "unmountedHeadwind=True; unmountedTailwind=True; activeRowAfterUnmount=False; velocity=(1020,0,0)->(1020,0,0); poseAdvancedX=20; progress=1->1; lastCheckpoint=TargetId(a024398b9672844d656025705196d8b8); crossingsBeforeUnmount=1; readableCrossingEvents=1/1; committedSteps=1"
+    },
+    {
+      "name": "traversal/gc020-mode-switch-both-directions",
+      "status": "Pass",
+      "detail": "automatic=[plain=2000,optedIn=2000,isolated=<none>]; conservative=[plain=<none>,optedIn=2000,isolated=<none>]; automaticAgain=plain:2000; optedInKept=True; plainLost=True; plainRegained=True; isolatedNeverHad=True; velocity=(1020,0,0)->(1020,0,0); mode=Automatic; optInRows=TargetOptIn(ProviderInstallationId(4cf1e47571acfc4dc2e15fe5923fb44e), CapabilityId(90ac4c459000ca74c3f8e2285d770cf3))"
+    },
+    {
+      "name": "traversal/gc020-future-descendant-derives-before-execution",
+      "status": "Pass",
+      "detail": "spawned=True; outcome=Published; target=TargetId(cffb6c109831587f7b2c1793b8cc82e3); scope=ScopeId(d1ada51d1a64e4f44cdbd9cead9cde71); registered=True; spawnCountersJoined=True; descriptor=imports=0;optIns=0;patches=0; bound=True; ownedRunners=4; currentStep=3->3"
+    },
+    {
+      "name": "traversal/gc020-one-simulation-per-admitted-step",
+      "status": "Pass",
+      "detail": "bodies=TargetId(51cf5b27370ded93a091b2e9eb6e180c)=Applied,TargetId(cc228e0bdbafd21f8069d19cb4aeb83f)=Applied,TargetId(cffb6c109831587f7b2c1793b8cc82e3)=Applied,TargetId(e57ba9f33193786c847033b85d6702fd)=Applied; intent=Applied(); poseReflectsIntent=True; steps=3->8; simulations=0->3->5; simulatedExactlyOnce=3; onePerAdmittedStep=True; duplicateRefused=True(step 6 was already simulated once; a presentation rate never advances authority twice (04 s7)); duplicateRefusals=1; frameSequenceFrames=3; frameSequenceSteps=2; frameSequenceSimulations=2; dedicatedLocalScene=True; automaticSuppressed=True; steppedSteps=5"
+    },
+    {
+      "name": "traversal/gc020-externally-owned-pose-is-not-integrated",
+      "status": "Pass",
+      "detail": "selected=True(None); displaySelected=True(None); decision=ExternallyOwned; authority=ExternalRigidbody; integratedInStep=0; externallyOwnedInStep=4; ownedRunners=4; integratedDelta=0; reselectRefused=True(OwnershipConflict: recipe DefinitionId(bda32f65007717240deb759b0cd5868b) already has ExternalRigidbody motion authority; enabling both owners for overlapping targets is the double simulation that P-034 and REF-A05 forbid, not a write-order problem to work around); pose=(106,0,0)->(106,0,0); stampedObservation=True; sampledStep=8; committedSteps=1"
+    },
+    {
+      "name": "traversal/gc020-committed-animation-and-audio-output",
+      "status": "Pass",
+      "detail": "poses=1; presentedOnce=True(); presentedAgain=False(the committed token is not newer than the presented one, so nothing is presented (P-045)); staleRefusals=1; presentedTokens=1; proposalsQueued=1; proposalsTaken=1; crossings=2; played=2; audible=2; sinkPlays=2; secondPassPlayed=0; suppressed=0; disabledRefused=2; disabledPlays=0; disabledRead=0; audioRead=2"
+    },
+    {
+      "name": "traversal/gc020-cards-and-narrative-declare-no-action-phase",
+      "status": "Pass",
+      "detail": "narrativeDeclarations=5; cardDeclarations=7; declaredStages=10; walkedEntries=103; narrativePipeline=Built; cardPipeline=Built; traversalStageIds=5; traversalSystemKeys=5; traversalCapability=CapabilityId(90ac4c459000ca74c3f8e2285d770cf3); offenders=<none>"
+    },
+    {
+      "name": "traversal/gc020-teardown-settles-and-disposes",
+      "status": "Pass",
+      "detail": "idleSteps=0; stop=Published(None); lifecycle=Disposed; traceDetached=True; physicsDisposed=True; globalMode=FixedUpdate->FixedUpdate; physicsSceneValid=True; globalModeRestored=True; audioPlaysKept=2; outstandingJobs=0; retainedResources=0; registryBeforeCreate=1; registryBeforeStop=2; registryAfter=1; publications=13; counterMismatches=0"
+    },
+    {
+      "name": "gc020-traversal-digest",
+      "status": "Pass",
+      "detail": "digest=6263602b82b25315ae33f8ebcc3fbd314586743b9080b0bbe0df34ecc3172ad8; expectedDigest=6263602b82b25315ae33f8ebcc3fbd314586743b9080b0bbe0df34ecc3172ad8; observations=14"
+    }
+  ]
+}
