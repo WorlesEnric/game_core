@@ -68,3 +68,35 @@ ok
 $ python3 tools/gc024_genre_audit.py
 gc024 genre audit: /Users/yangcao/wkspace/gc-wt/gc-024/artifacts/gc-024/genre-audit.json
 kernel=32; family=13; generated=0; qualification=57; asmdefs=69; projectFiles=33; kernelSources=317; referenceAssertions=218; violations=0; kernelGenreTokens=0; missingPackages=0; familiesOnKernel=13/13; clean=true
+
+# Re-captured after the 07:276 rework (rewards installation + four real rows).
+$ git rev-parse HEAD
+f7ceb5a71490e25c1b957c36b3db127f85399311
+
+$ python3 tools/check_game_core_csharp.py
+checked 573 C# file(s)
+ok
+
+$ python3 tools/gc024_genre_audit.py
+gc024 genre audit: /Users/yangcao/wkspace/gc-wt/gc-024/artifacts/gc-024/genre-audit.json
+kernel=32; family=13; generated=0; qualification=58; asmdefs=70; projectFiles=33; kernelSources=317; referenceAssertions=218; violations=0; kernelGenreTokens=0; missingPackages=0; familiesOnKernel=13/13; clean=true
+
+$ python3 tools/validate_game_core_docs.py
+Game Core documentation validation passed: 14 Markdown documents; local links, anchors, IDs, traceability, task DAG and wave ordering checked.
+No Unity builds, gameplay tests, runtime benchmarks, or remote URL checks were executed.
+
+$ python3 tools/check_release_telemetry_free.py --no-build
+  }
+}
+
+
+$ python3 tools/check_release_fault_free.py --no-build
+  no runtime source keeps a latch reference once the qualification symbol is undefined
+  the apply path's mask by [System.Diagnostics.Conditional("GAMECORE_FAULT_INJECTION")] is intact (8 call site(s))
+  the symbol is driven by com.gamecore.fault-qualification, referenced only by the validation manifest
+
+$ bash -n tools/run_conformance.sh tools/unity/run_conformance_probe.sh
+both parse
+
+$ python3 tools/make_unity_metas.py Packages/com.gamecore.gameplay.rewards (idempotent)
+created 0 meta file(s)

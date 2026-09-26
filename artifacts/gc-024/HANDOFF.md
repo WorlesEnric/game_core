@@ -57,6 +57,11 @@ The change set has four layers, and each is a different kind of evidence:
 | `GC-024: the Unity conformance family contract, real world and runner` | `ConformanceFamily.cs` (`IConformanceFamily`, `ConformanceWorld`), `ConformanceScenario.cs`. |
 | `GC-024: the conformance hosts, probe mode, EditMode suite and world preparation` | The narrative/traversal hosts, `ConformanceWorldPreparation.cs`, `ProbeConformance.cs`, `ConformanceHosts.cs`, the probe plumbing, the manifest, `Tests/Conformance/**`. |
 | `GC-024: the genre audit (host tool + artifact), the probe harness and the release strip` | `tools/gc024_genre_audit.py`, `artifacts/gc-024/genre-audit.json`, `tools/unity/run_conformance_probe.sh`, the release strip entries. |
+| `GC-024: record why the combined world carries two families rather than three` | the §5.8 decision note. |
+| `GC-024: mount the narrative-to-card reward bridge through a real rewards installation` | `Packages/com.gamecore.gameplay.rewards/**` (the installation, its manifest, slot, migration, catalog, mounts, lifecycle result), the two callers adapted to construct through it, and the registration chores. |
+| `GC-024: 07:276 becomes four real rows and the recorded gap is withdrawn` | the four rows, the emptied `ConformanceDocGaps`, the suite assertion, the harness requirement and §5.6's clause→mechanism table. |
+| `GC-024: make the four 07:276 rows a coherent sequence` | the transfer/redelivery/rows-semantics realignment. |
+| `GC-024: ConformanceCrossWorld performs 07:276's four rows against the rewards installation` | the Unity side: the four rows, the five lifecycle field readers and the scoring-provider setup. |
 | `shared: the conformance probe mode and the audit fixes the C# checker does not cover` (if present) | The two rules the sample audit needed: dotnet project classification by name, and a comment-aware kernel token scan. |
 
 ## 3. Files created
@@ -77,7 +82,21 @@ The change set has four layers, and each is a different kind of evidence:
 | `Runtime/ReferenceProjections.cs` | Every 07 number recomputed from `CardSetRules`, `TraversalMotionRules`, `NarrativeFacts`/`NarrativeGateRules`/`NarrativeDialogueRules`/`NarrativeChapters`/`NarrativeDerivationPlan`. |
 | `Runtime/AssemblyReferenceAudit.cs` | `AssemblyClass`, `ReferenceKind`, `AssemblyRecord`, `AssemblyViolation`, `GenreTokenFinding`, `GenreAuditReport`, `AssemblyReferenceAudit.Audit`. |
 | `Runtime/GenreAuditDocument.cs` | The deterministic writer/reader of `artifacts/gc-024/genre-audit.json`. |
-| `Runtime/ConformanceDocGaps.cs` | The declared documentation gaps (`ConformanceDocGap`, `ConformanceDocGaps`): the clause a row offends, the mechanism the revision lacks, the evidence and a proposed resolution. |
+| `Runtime/ConformanceDocGaps.cs` | The declared documentation gaps (`ConformanceDocGap`, `ConformanceDocGaps`). **Empty in this revision**: 07:276's four claims are carried by four real rows, and the suite asserts the empty list in both directions. |
+
+### The rewards installation (`Packages/com.gamecore.gameplay.rewards/`, assembly `GameCore.Gameplay.Rewards`)
+
+Production gameplay, so it stays in the release clone (not in the strip list).
+
+| File | Contents |
+|---|---|
+| `Runtime/RewardsKeys.cs` | Every stable identity: the plugin type/factory, the installation, the outbox owner/slot/schema/layout/field, the three policy keys, the migration key, the two stages, the receipt buffer and this package's own command endpoint. |
+| `Runtime/RewardsDeclaration.cs` | The `PluginManifest` of 07 s5's `NarrativeCardRewards`: the outbox slot at schema version 2 (seeded at 1), `rewards.enqueue` and `rewards.ack` with their declared edges, the receipt buffer and the config schema. |
+| `Runtime/RewardsOutboxSlot.cs` | `RewardsOutboxPreconditionMigration : ISlotMigration` — the v1→v2 body that refuses a copied pending-work count of non-zero, with `Invocations`/`Refusals` counters (07:276's scratch-migration precondition, P-029). |
+| `Runtime/RewardsSlotStorage.cs`, `Runtime/RewardsConfigSchema.cs` | The live slot row read/write and the config schema's serializer. |
+| `Runtime/RewardsInstallation.cs` | The mounted installation: owns the bridge, and exposes `ArmPendingWork`/`CompletePendingWork` (the job-fenced world+lane outbox resource lease), `TryDrain` (the state-policy pass), `TryUnmount`, `TransferOutboxTo`, `ToDormantRows`/`TryAdoptDormantRows`, `WriteOutboxSlot`/`TryReadOutboxSlot`, `PendingWorkCount`. |
+| `Runtime/RewardsLifecycle.cs` | `RewardsLifecycleOutcome`, `RewardsLifecycleResult` — every outcome names the installation, the slot and the pending count in its detail. |
+| `Runtime/RewardsCatalog.cs`, `Runtime/RewardsMounts.cs` | The catalog registration and the O-03 mount/unmount payload builders. |
 | `Tests/GameCore.ReferenceConformance.Tests.asmdef`, `Tests/ReferenceConformanceTests.cs` | The pure suite: fixture self-consistency, trace round-trip and tamper refusal, oracle falsifiability, projection agreement, audit classification. |
 
 ### The Unity half (`unity/GameCore.Validation/Assets/GameCore.Validation/`)
@@ -92,6 +111,7 @@ The change set has four layers, and each is a different kind of evidence:
 | `Runtime/ConformanceWorldPreparation.cs` | The three `PrepareConformanceWorld` halves: the narrative slice's recipe base layouts, its world-level quest ledger and the ledger bound as the module's root entity; the card and traversal halves are the negative assertions that their own seeding is complete. |
 | `Runtime/ConformanceHosts.cs` | The three entry points (`RunConformanceCards`, `RunConformanceNarrative`, `RunConformanceTraversal`) over the fixture catalogs. |
 | `Runtime/ConformanceCrossWorld.cs` | The combined cross-family world and `CrossCompositionAudit` (delegated worker, §7). |
+| `Runtime/ConformanceCrossWorld.cs` (edited) | the four `07:276` rows, the five new lifecycle field readers and the `mount-scoring-provider` setup, all against the rewards installation. |
 | `Runtime/ProbeConformance.cs` | The `-probeConformance` player mode: every table, the combined world, the genre audit, and the trace/audit artifacts. |
 | `Tests/Conformance/GameCore.Conformance.Tests.asmdef`, `Tests/Conformance/ConformanceIntegrationTests.cs` | The EditMode suite; `[Timeout]` on every world-building test (the unresolved pre-dispatch hang). |
 | `Runtime/GameCore.Validation.ProbeHost.asmdef` | One added reference: `GameCore.ReferenceConformance`. |
@@ -135,7 +155,7 @@ The change set has four layers, and each is a different kind of evidence:
 | **P-036** temporal models | the command-driven tables commit exactly one step per admitted command; the fixed-step table integrates exactly its declared step per pump | `ConformanceWorld.SubmitAndPump` / `PumpDeclaredStep`; `traversal/reparent-runner-subtree` (`1000 -> 1040 -> 1020`) |
 | **P-042 / P-043** typed requests and bounded work | an operation key is a declared edit or a typed command, never an ad-hoc write; every pass is bounded | every `Apply` implementation; `cross/reward-settle`'s pass counts |
 | **P-044 / P-045** commit boundaries; observation and external output | the reward is persisted before it is applied, the destination mutates once per external key, and a redelivery after acknowledgement loss is a no-op with unrelated state preserved | `cross/reward-enqueue`, `cross/reward-settle`, `cross/reward-redelivery`, `cross/reward-bridge-removal` |
-| **P-046 / P-048** installation lifecycle and teardown | suspend/resume rows per family; every stage's world is stopped and disposed inside a `finally`, and the harness/registry asserts the count returns to baseline | `cards/suspend-festival`, `cards/resume-festival`, `narrative/suspend-chapter`, `narrative/resume-chapter`, `traversal/suspend-tailwind`, `traversal/resume-tailwind`, `<table>/<stage>/teardown` |
+| **P-046 / P-047 / P-048** installation lifecycle, in-flight lifetime and teardown | suspend/resume rows per family; every stage's world is stopped and disposed inside a `finally`, and the harness/registry asserts the count returns to baseline | `cards/suspend-festival`, `cards/resume-festival`, `narrative/suspend-chapter`, `narrative/resume-chapter`, `traversal/suspend-tailwind`, `traversal/resume-tailwind`, `<table>/<stage>/teardown` |
 | **P-054** serialization discipline | the trace document is versioned, canonically ordered and digest-checked; a tampered body is refused | `ConformanceTrace.TryParse`; the pure suite's tamper test |
 | **P-057** conformance needs real execution | the fixture proves the tables' numbers against the rules in pure dotnet; the Unity half executes the same tables in real worlds; neither substitutes for the other | `ReferenceProjections`, the EditMode suite, `-probeConformance` |
 | **P-059** genre validation before freeze | all three families plus the cross-family combination on the same built kernel, in the same player | `conformance/coverage` (`tables=4`, `allPassed=True`), the per-table verdicts |
@@ -366,7 +386,7 @@ python3 tools/check_release_clone.py                    # asserts the clone's ow
 
 Four read-only reconnaissance passes mapped the packages, the qualification project, the dotnet conventions and the
 kernel/outbox/composition APIs before any code was written; their findings are the file/line references this change set
-is built on. Three write tasks were delegated with a frozen interface contract
+is built on. Five write tasks were delegated with a frozen interface contract
 (`local://gc024-conformance-hosts-contract.md`, `local://gc024-cross-world-contract.md`): the narrative host, the
 traversal host and the combined cross-family world. Every delegated file was read here before being committed, its
 brace/paren balance re-checked with a comment- and literal-aware checker, and the two blockers the narrative worker
@@ -396,13 +416,15 @@ task wrote) were fixed here. The traversal worker's three table mismatches were 
    no-op switch that published would fail. Whether the lane refuses it with `CapabilityConflict` at *plan* time (as the
    GC-013 sequence observes) or at publication is not asserted beyond "not published", because 07 says only that the
    old mode and assembly remain.
-5. **`07:276` is an OPEN RECORDED GAP, not a passing row.** `ConformanceDocGaps` declares it (clause, missing
-   mechanism, evidence, proposed resolution), the run reports the step as a `RecordedGap`, `AllPassed` is false while
-   it is open, and both the probe harness and the EditMode suite require it by name — so the gate will report the
-   cross-family table as *not fully passed* until the bridge is a mounted installation with a declared policy. That is
-   the honest state, and §5.6 explains why no other outcome was acceptable. **The orchestrator must decide whether to
-   accept it for the W7 gate or to open a follow-up task** for the bridge's manifest and mount (the alternative,
-   weakening the row, would be exactly the silent special case 09's non-goals forbid).
+5. **`07:276` is resolved, and `ConformanceDocGaps.All` is empty.** Review round 1 rejected the recorded gap, so
+   the bridge is now a mounted installation in `Packages/com.gamecore.gameplay.rewards` and the four claims are four
+   real rows (`reward-unmount-pending`, `reward-drain-then-unmount`, `reward-unmount-transfer`,
+   `reward-scoring-unmount-keeps-card`). §5.6 carries the verified clause→mechanism table with file:line evidence,
+   including the three APIs the review named that do not exist in this revision (`StateSlotSpec` has no precondition
+   field; `ValidityAndCost.Preconditions` is dead; `DispositionsFor` maps `PreserveDormant` to a no-op `Retain` and
+   its `TransferTo` degrades to a delete). The suite asserts the empty gap registry, and the harness fails a run that
+   reports a recorded gap. **Nothing here is a waiver**: if any of the four rows fails on the build host, that is a
+   failed gate rather than a documented absence.
 6. **`Preserved` is a weaker claim than a value.** Where 07 states no number, the row demands "unchanged" and the oracle
    compares the run's two readings. That is honest but strictly weaker than a literal; the rows where 07 does state a
    number all carry one.
@@ -434,5 +456,6 @@ host, the candidate promotions are:
 | `P-025` | Partial | `Implemented+Evidenced` | the three move rows assert identity, scope and preserved gameplay state |
 | `P-041`/`P-042`-adjacent delivery rows | — | unchanged | delivery stays as GC-021 left it; this task adds the cross-family destination effect and its idempotency observation |
 | `P-045` | Partial | `Implemented+Evidenced` (only if the cross-world rows pass) | the reward crosses the durable seam in one world with acknowledgement loss and redelivery |
+| `P-046`, `P-047`, `P-048` | Partial | `Implemented+Evidenced` (only if the gate passes) | the rewards installation's pending-work unmount is refused with `TeardownBlocked` and the drained unmount settles with its completed outbox retained dormant |
 | `P-057`, `P-059` | Partial | `Implemented+Evidenced` (only if the gate passes) | the pure half and the Unity half both execute the same tables, and the audit is a real both-directions check |
 | `TEST-006`, `TEST-008`, `TEST-010`, `TEST-013`, `TEST-014`, `TEST-021` | Partial | unchanged until the gate runs | the suites now execute these cases; the evidence is the gate's |
