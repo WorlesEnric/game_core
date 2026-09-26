@@ -27,11 +27,24 @@
 // obligation is handed over again in a new session built from the rows the acknowledgement window left behind, so
 // the destination reports `AlreadyApplied` and no second card moves.
 //
-// WHAT IS NOT FAKED. 07:276's pending-work unmount refusal is reported, not performed: `NarrativeCardRewards` is an
-// ordinary caller-owned object in this revision and not a mounted installation, so its `PreserveDormant`
-// declaration has nowhere to live (exactly what `artifacts/gc-021/HANDOFF.md` s7 item 5 records). The step is
-// `Unsupported` with that reason, it is never reported as published, and the pending obligation it is about is
-// still recorded so a reviewer can see the state.
+// THE 07:276 ROWS ARE PERFORMED, NOT REPORTED. The bridge is mounted as a real installation
+// (`Packages/com.gamecore.gameplay.rewards`, assembly `GameCore.Gameplay.Rewards`), so all four of 07:276's claims
+// have somewhere to happen: the installation registers a job-fenced resource lease for its pending work, so the O-07
+// unmount cannot settle and the lane answers `TeardownBlocked`; the outbox slot is declared with `PreserveDormant`
+// and a registered v1 -> v2 migration whose body refuses a copied pending count that is not zero, so the prewrite
+// migration refuses while work is pending and the drained slot is retained dormant by the policy pass's own
+// disposition; a fresh obligation is carried to an explicitly selected compatible owner; and the card tent's scoring
+// provider leaves without reversing the issued card or the committed score (P-029, P-032, P-045, P-047, P-048).
+//
+// WHERE THE INSTALLATION LIVES. The installation is mounted through the package's own payload at the card tent's
+// scope (`CardMarketComposition.TableScope`), and its declared outbox row lives on the card table's target
+// (`OutboxSlotTarget`). That declaration reaches this world's lane manifest source and its state-policy catalog, so
+// the slot's `PreserveDormant` last-support policy and its registered migration are declared exactly where P-032
+// reads them. The compiled ownership schedule the world registers (`FamilyDeclarations()`) stays the two families'
+// own set, because a declaration whose plugin ships no host-side system cannot be in a world's dispatch table:
+// `CompiledScheduleAdapter.Registrations` requires one registration per compiled entry
+// (ScheduleDispatchAdapter.cs:372-400), and 07 s5 defines this plugin's runtime as the mounted installation, which
+// this run drives at idle boundaries rather than from inside a step (P-030, P-037).
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -50,6 +63,8 @@ using GameCore.Gameplay.Narrative;
 using GameCore.Gameplay.Narrative.Fixtures;
 using GameCore.Gameplay.Rewards;
 using GameCore.Planning;
+using GameCore.Planning.StatePolicies;
+using GameCore.Unity.Runtime.StateMigration;
 using GameCore.ReferenceConformance;
 using GameCore.Rules.Cards;
 using GameCore.Rules.Narrative;
@@ -58,6 +73,7 @@ using GameCore.Unity.Runtime.Integration;
 using GameCore.Unity.Runtime.Messages;
 using GameCore.Unity.Runtime.Time;
 using Unity.Entities;
+using PlanningCompositionProposal = GameCore.Planning.CompositionProposal;
 
 namespace GameCore.Validation.ProbeHost
 {
@@ -127,17 +143,23 @@ namespace GameCore.Validation.ProbeHost
         /// <summary>
         /// Every observation name this run records, in execution order, without the prefix. `ObservationNames()`
         /// returns exactly these names qualified with <see cref="StepPrefix"/>, so a renamed or dropped observation
-        /// fails the harness instead of shrinking the run silently (P-060).
+        /// fails the harness instead of shrinking the run silently (P-060). The order is `ReferenceScripts.Cross()`'s
+        /// own: the three setup operations, the seven rows of the `cross` table's script, the teardown, the
+        /// action-surface audit and the oracle's verdict.
         /// </summary>
         private static readonly string[] RecordedSuffixes =
         {
             "reward-flow/world",
             "reward-flow/setup-0",
             "reward-flow/setup-1",
+            "reward-flow/setup-2",
             "reward-enqueue",
-            "reward-bridge-removal",
+            "reward-unmount-pending",
             "reward-settle",
+            "reward-drain-then-unmount",
+            "reward-unmount-transfer",
             "reward-redelivery",
+            "reward-scoring-unmount-keeps-card",
             "reward-flow/teardown",
             "no-action-surface-in-card-or-narrative",
             "verdict",
@@ -177,11 +199,12 @@ namespace GameCore.Validation.ProbeHost
             string unhandled = string.Empty;
 
             var world = new CrossWorld(sessions, TargetCapacity);
-            NarrativeCardRewardBridge? bridge = null;
-            RewardsInstallation? rewardInstallation = null;
             CrossDeliveryHook? hook = null;
+            RewardsInstallation? rewardInstallation = null;
+            RewardsInstallation? destinationInstallation = null;
             NarrativeModule? narrativeModule = null;
             CardTableModule? cardModule = null;
+            string outstanding = "outstandingWork=none";
             // Every name this run does not reach in its own order is reported here, so a red run still observes
             // exactly the names `ObservationNames()` declares (P-060).
             int reached = 3;
@@ -224,17 +247,16 @@ namespace GameCore.Validation.ProbeHost
                         provider.Published,
                         "mount-provider: " + provider.Detail));
 
-                    // 2. The reward bridge of 07 s5. The content declares the node the chapter-one permit choice
-                    //    lands on; the definition's card is the one the card fixture really stocks at the holding
-                    //    seat, so nothing here is a card concept this file invented (P-001, P-034, P-054).
+                    // 2. The reward installation of 07 s5 (GC-024). The content declares the node the chapter-one
+                    //    permit choice lands on; the definition's card is the one the card fixture really stocks at
+                    //    the holding seat, so nothing here is a card concept this file invented (P-001, P-034,
+                    //    P-054). The installation is the mounted thing: the package's own O-03 payload puts it in
+                    //    the card tent's scope, and the bridge is constructed through it, so the run cannot
+                    //    assemble the two inconsistently (P-020).
                     var content = Gc021RewardContent.ForNode(NarrativeDialogueRules.PermitResultNode);
                     RewardCatalog catalog = content.ToCatalog(requiresDurability: true, out string contentDetail);
                     hook = new CrossDeliveryHook();
                     var journal = new MemoryDeliveryJournal("memory://gc024-cross-rewards");
-                    // The bridge of 07 s5 is constructed THROUGH the reward installation (GC-024), which owns it
-                    // and supplies its own declared identity and issuer; the bridge itself is unchanged, so every
-                    // member this run reads (`RecognisedCount`, `Owner.Outbox.*`, `Owner.ToRecords()`,
-                    // `Destination.*`, `Owner.Reinstate`) is the same one.
                     rewardInstallation = RewardsInstallation.Mount(
                         world.Host!,
                         world.Time!,
@@ -244,18 +266,50 @@ namespace GameCore.Validation.ProbeHost
                         OutboxDurability.Durable,
                         journal,
                         hook);
-                    bridge = rewardInstallation.Bridge;
-                    hook.Attach(bridge);
+                    hook.Attach(rewardInstallation.Bridge);
+                    ConformanceOperationResult mountedInstallation = world.PublishEdit(
+                        RewardsMounts.Mount(RewardsKeys.Installation, CardMarketComposition.TableScope),
+                        "mount-rewards-installation");
                     steps.Add(new ConformanceObservation(
                         StepPrefix + RecordedSuffixes[2],
-                        catalog.Count == 1 && catalog.RequiresDurability && contentDetail.Length == 0,
+                        mountedInstallation.Published
+                            && catalog.Count == 1 && catalog.RequiresDurability && contentDetail.Length == 0,
                         "mount-reward-bridge: content={" + content.Describe() + "}"
                         + "; definitions=" + catalog.Count.ToString(CultureInfo.InvariantCulture)
-                        + "; durability=" + bridge.Owner.Outbox.Durability
+                        + "; durability=" + rewardInstallation.Bridge.Owner.Outbox.Durability
+                        + "; installation=" + RewardsKeys.Installation.ToString()
+                        + "; scope=" + CardMarketComposition.TableScope.ToString()
+                        + "; laneState=" + world.LaneInstallState()
+                        + "; mount={" + mountedInstallation.Outcome + ": "
+                        + Clip(mountedInstallation.Detail, 160) + "}"
                         + "; detail=" + (contentDetail.Length == 0 ? "declared" : contentDetail)));
 
-                    RunRewardFlow(world, script, bridge, hook, trace, outcomes, steps, out narrativeModule,
-                        out cardModule);
+                    // 3. The card tent's own scoring provider (suffix 3), mounted exactly as the card market's own
+                    //    conformance host mounts it in its world, so the last row's unmount has a provider to
+                    //    retract and the contribution it retracts is a real one (07:276, P-017).
+                    ConformanceOperationResult scoringProvider = world.PublishEdit(
+                        CardTablePayloads.Mount(
+                            Gc013CardsHost.Declarations()[1].Manifest,
+                            CardTableFixture.FestivalScoringInstance,
+                            CardIdentity.Scope(CardVocabulary.LeagueA)),
+                        "mount-festival-scoring");
+                    steps.Add(new ConformanceObservation(
+                        StepPrefix + RecordedSuffixes[3],
+                        scoringProvider.Published,
+                        "mount-scoring-provider: " + scoringProvider.Detail));
+
+                    reached = 4;
+                    RunRewardFlow(
+                        world,
+                        script,
+                        rewardInstallation,
+                        hook,
+                        trace,
+                        outcomes,
+                        steps,
+                        out narrativeModule,
+                        out cardModule,
+                        out destinationInstallation);
                     reached = RecordedSuffixes.Length - 3;
                 }
             }
@@ -267,59 +321,105 @@ namespace GameCore.Validation.ProbeHost
             }
             finally
             {
+                // A work lease this run armed and never completed is completed here, so the world's own stop sees
+                // no unfinished job still holding a resource and the teardown row reports what really happened
+                // (P-047, P-048). A completed lease is not retired by `Dispose` on its own, which is why this is
+                // the run's job rather than the installation's.
+                if (rewardInstallation != null && world.Host != null && rewardInstallation.HasOutstandingWorkLease)
+                {
+                    RewardsLifecycleResult completion =
+                        rewardInstallation.CompletePendingWork(world.Host, TransferWorkOrdinal);
+                    outstanding = "outstandingWork=" + completion.Outcome + "/" + completion.Code + "("
+                        + Clip(completion.Detail, 160) + ")";
+                }
+
+                if (destinationInstallation != null)
+                {
+                    // The destination installation this run mounted for the transfer owns a second delivery owner
+                    // over the same world, so it is disposed before the world stops.
+                    destinationInstallation.Dispose();
+                    destinationInstallation = null;
+                }
+
                 if (rewardInstallation != null)
                 {
                     // The installation owns the bridge, so disposing it releases the delivery owner.
                     rewardInstallation.Dispose();
                     rewardInstallation = null;
                 }
-                else if (bridge != null)
-                {
-                    bridge.Dispose();
-                }
 
                 cardModule?.Dispose();
                 narrativeModule?.Dispose();
                 Outcome stop = world.StopAndDispose();
                 steps.Add(new ConformanceObservation(
-                    StepPrefix + RecordedSuffixes[7],
+                    StepPrefix + RecordedSuffixes[11],
                     unhandled.Length == 0 && (stop == Outcome.Published || stop == Outcome.NoChange),
                     "stop=" + stop
                     + "; registry=" + UnityWorldRegistry.Count.ToString(CultureInfo.InvariantCulture)
+                    + "; " + outstanding
                     + (unhandled.Length == 0 ? string.Empty : "; " + unhandled)));
             }
 
             // The action-surface audit (TEST-021) is the run's own claim about the composition it just built.
             CrossCompositionAudit audit = AuditCombinedComposition();
             steps.Add(new ConformanceObservation(
-                StepPrefix + RecordedSuffixes[8],
+                StepPrefix + RecordedSuffixes[12],
                 audit.Clean,
                 audit.Describe()));
 
             ConformanceVerdict verdict = ConformanceOracle.CompareScript(script!, trace, outcomes);
             steps.Add(new ConformanceObservation(
-                StepPrefix + RecordedSuffixes[9],
+                StepPrefix + RecordedSuffixes[13],
                 verdict.Passed,
                 verdict.Describe()));
             return new ConformanceTableResult(Label, steps, trace, verdict, trace.ToDocument());
         }
 
         /// <summary>
-        /// The reward flow of 07:267-278: the choice commits the fact, its event and the pending reward together;
-        /// the admitted reward is dispatched and acknowledged; and the same obligation is delivered again from the
-        /// rows the acknowledgement window left behind.
+        /// The target the installation's declared outbox row lives on: the card table's own target, inside the scope
+        /// the installation is mounted at (`CardMarketComposition.TableScope`). The row's value is the pending-work
+        /// count the drain row reads and the migration precondition copies (P-032, P-045).
+        /// </summary>
+        private static TargetId OutboxSlotTarget => CardIdentity.Target(CardVocabulary.TableOne);
+
+        /// <summary>Work ordinal of the obligation the enqueue row arms, and of the one the transfer row carries.</summary>
+        private const ulong EnqueueWorkOrdinal = 1UL;
+
+        private const ulong TransferWorkOrdinal = 2UL;
+
+        /// <summary>
+        /// The rows of `ReferenceScripts.Cross()`, in the script's own order: 07:267's one committed choice becomes
+        /// one durable obligation; 07:276's unmount is refused while that work is pending; 07:269-270 dispatch and
+        /// acknowledge it; the drained outbox is preserved dormant and the unmount then settles; a fresh obligation
+        /// is carried to an explicitly selected compatible owner; 07:272's redelivery after an acknowledgement loss
+        /// mutates nothing; and the card tent's scoring provider leaves without reversing the issued card or the
+        /// committed score (07:267-276, P-003, P-029, P-032, P-045, P-047, P-048).
+        ///
+        /// The script's two precondition steps of the transfer row (`reward-unmount-transfer/pre1` and `/pre2`) are
+        /// executed here too, in their script order, because their expectations are the before state that row's
+        /// assertions are made against — they are recorded under their own row ids and reported to the oracle.
         /// </summary>
         private static void RunRewardFlow(
             CrossWorld world,
             ConformanceScript script,
-            NarrativeCardRewardBridge bridge,
+            RewardsInstallation installation,
             CrossDeliveryHook hook,
             ConformanceTrace trace,
             List<ConformanceOracle.RowOutcomeReport> outcomes,
             List<ConformanceObservation> steps,
             out NarrativeModule? narrativeModule,
-            out CardTableModule? cardModule)
+            out CardTableModule? cardModule,
+            out RewardsInstallation? destination)
         {
+            destination = null;
+            NarrativeCardRewardBridge source = installation.Bridge;
+            UnityWorldHost host = world.Host!;
+
+            // ---------------------------------------------------------------- 07:267 — reward-enqueue
+            IReadOnlyList<string> enqueueFields = FieldsOf(script, "reward-enqueue");
+            List<string> enqueueVocabBefore = ReadVocabulary(world, source, installation);
+            List<string> enqueueBefore = ReadAll(world, source, installation, enqueueFields);
+
             // 07:267 — one choice on the narrative family's own route, at the node its live conversation sits on and
             // with the declared permit choice, so `NarrativeDialogueRules.Validate` accepts it (P-042, 07 s3.2).
             ConformanceOperationResult committed = world.SubmitAndPump(
@@ -334,77 +434,174 @@ namespace GameCore.Validation.ProbeHost
                             NarrativeDialogueRules.PermitChoice)))),
                 "commit-permit-choice");
 
-            // One bridge pass that observes the committed events and commits the obligation without handing
-            // anything over (`maxDispatches` = 0), which is P-045's persist-then-apply order: the obligation exists
-            // before the destination is touched (07 s5 steps 1-2).
-            RewardBridgePassReport enqueue = bridge.Run(world.NextOperation(), RewardEventWindow, 0);
+            // One persist-only pass: the obligation exists before anything is handed over (`maxDispatches` = 0 is
+            // P-045's persist-then-apply order, 07 s5 steps 1-2).
+            RewardBridgePassReport enqueue = installation.RunBridgePass(world.NextOperation(), RewardEventWindow, 0);
 
-            string enqueueRow = "reward-enqueue";
-            IReadOnlyList<string> enqueueFields = FieldsOf(script, enqueueRow);
-            List<string> enqueueBefore = ReadAll(world, bridge, enqueueFields);
-            StepRecord(trace, enqueueRow, enqueueFields, enqueueBefore, enqueueBefore);
-            Snapshot(trace, world, bridge, enqueueRow, fieldsBefore: true);
-            Snapshot(trace, world, bridge, enqueueRow, fieldsBefore: false);
+            // The pending work is armed and the outbox slot seeded with its own count, so the next row's unmount
+            // finds work to refuse and the registered migration has a copied pending count to read (P-045, P-047).
+            RewardsLifecycleResult armed = installation.ArmPendingWork(host, EnqueueWorkOrdinal);
+            bool seeded = installation.SeedOutboxSlot(
+                host, OutboxSlotTarget, installation.PendingWorkCount, out string seedDetail);
 
-            bool enqueueOpen = bridge.Owner.Outbox.OpenCount == 1;
-            bool enqueueUnmutated = bridge.Destination.CommittedCount == 0 && bridge.Destination.SubmittedCount == 0;
+            List<string> enqueueAfter = ReadAll(world, source, installation, enqueueFields);
+            List<string> enqueueVocabAfter = ReadVocabulary(world, source, installation);
+            StepRecord(trace, "reward-enqueue", enqueueFields, enqueueBefore, enqueueAfter);
+            RecordSnapshot(trace, "reward-enqueue", ConformancePhase.Before, enqueueVocabBefore);
+            RecordSnapshot(trace, "reward-enqueue", ConformancePhase.After, enqueueVocabAfter);
+
+            var enqueueReadings = new RowReadings(enqueueFields, enqueueBefore, enqueueAfter);
             bool enqueuePassed = committed.Published
-                && enqueueOpen
-                && bridge.RecognisedCount >= 1
-                && enqueueUnmutated
-                && bridge.Owner.IsDurable;
-            outcomes.Add(new ConformanceOracle.RowOutcomeReport(enqueueRow, enqueuePassed, enqueuePassed
+                && armed.Settled
+                && seeded
+                && enqueueReadings.Require(ConformanceFields.OutboxRecognised, "0", "1")
+                && enqueueReadings.Require(ConformanceFields.OutboxOpen, "0", "1")
+                && enqueueReadings.Hold(ConformanceFields.OutboxAcknowledged, "0")
+                && enqueueReadings.Hold(ConformanceFields.OutboxMutations, "0")
+                && enqueueReadings.Preserved(ConformanceFields.RewardRecipientHandSize)
+                && enqueueReadings.Preserved(ConformanceFields.RewardHolderHandSize)
+                && source.Owner.IsDurable;
+            outcomes.Add(new ConformanceOracle.RowOutcomeReport("reward-enqueue", enqueuePassed, enqueuePassed
                 ? string.Empty
-                : "the committed choice did not become one open, unapplied obligation"));
+                : "the committed choice did not become one open, unapplied obligation with its work armed"));
             steps.Add(new ConformanceObservation(
-                StepPrefix + RecordedSuffixes[3],
+                StepPrefix + RecordedSuffixes[4],
                 enqueuePassed,
-                ConformanceScenario.StepPrefix + Label + "/" + enqueueRow
-                + "; outcome=" + (committed.Published ? "Published" : "Refused")
-                + "; " + committed.Detail
+                RowDetail("reward-enqueue", "Published", enqueueReadings, enqueueVocabBefore, enqueueVocabAfter)
+                + "; committed={" + committed.Outcome + ": " + committed.Detail + "}"
                 + "; pass={" + enqueue + "}"
-                + "; recognised=" + bridge.RecognisedCount.ToString(CultureInfo.InvariantCulture)
-                + "; open=" + bridge.Owner.Outbox.OpenCount.ToString(CultureInfo.InvariantCulture)
-                + "; durable=" + bridge.Owner.IsDurable
-                + "; destinationMutations="
-                + bridge.Destination.CommittedCount.ToString(CultureInfo.InvariantCulture)
-                + "; destinationSubmits="
-                + bridge.Destination.SubmittedCount.ToString(CultureInfo.InvariantCulture)
-                + "; describe=" + Clip(bridge.LastDescribeDetail, 120)));
+                + "; arm={" + armed.Outcome + "/" + armed.Code + ": " + Clip(armed.Detail, 160) + "}"
+                + "; slot={" + (seeded ? "seeded" : "REFUSED") + ": " + Clip(seedDetail, 120) + "}"
+                + "; recognised=" + source.RecognisedCount.ToString(CultureInfo.InvariantCulture)
+                + "; durable=" + source.Owner.IsDurable
+                + "; destinationMutations=" + source.Destination.CommittedCount.ToString(CultureInfo.InvariantCulture)
+                + "; describe=" + Clip(source.LastDescribeDetail, 120)));
 
-            // 07:276 — unmounting with pending work. Reported, never faked: see ProvePendingUnmountIsRefused.
-            ProvePendingUnmountIsRefused(world, bridge, script, trace, outcomes, steps);
+            // ---------------------------------------------------------------- 07:276 — reward-unmount-pending
+            IReadOnlyList<string> pendingFields = FieldsOf(script, "reward-unmount-pending");
+            List<string> pendingVocabBefore = ReadVocabulary(world, source, installation);
+            List<string> pendingBefore = ReadAll(world, source, installation, pendingFields);
+            int pendingCount = installation.PendingWorkCount;
 
-            // 07:269-270 — dispatch the admitted reward and acknowledge it. The destination is asked between the
-            // two delivery boundaries, so the hook's `AfterDelivery` reach is the acknowledgement window itself.
-            List<string> settleBefore = ReadAll(world, bridge, FieldsOf(script, "reward-settle"));
+            // The O-07 unmount while an obligation is still open: the installation's job-fenced outbox lease makes
+            // the teardown unable to settle, so the lane answers `TeardownBlocked` and the installation stays mounted
+            // (07:276, P-047, P-048). `RefusedPendingWork` with that code is the row's own claim.
+            RewardsLifecycleResult refusal = installation.TryUnmount(host, world.Lane!);
+
+            // 07:276's other half on the same row: the registered v1 -> v2 migration refuses the copied pending
+            // count, so this pass refuses before any live write and no assembly may be published for the lane's own
+            // O-07 publication yet (P-029). The same pass succeeds once the work has drained, which is the next row.
+            RewardsLifecycleResult precondition = installation.TryMigrateOutboxSlot(world.Policies!, world.TargetIds());
+
+            List<string> pendingAfter = ReadAll(world, source, installation, pendingFields);
+            List<string> pendingVocabAfter = ReadVocabulary(world, source, installation);
+            StepRecord(trace, "reward-unmount-pending", pendingFields, pendingBefore, pendingAfter);
+            RecordSnapshot(trace, "reward-unmount-pending", ConformancePhase.Before, pendingVocabBefore);
+            RecordSnapshot(trace, "reward-unmount-pending", ConformancePhase.After, pendingVocabAfter);
+
+            var pendingReadings = new RowReadings(pendingFields, pendingBefore, pendingAfter);
+            bool unmountRefused = refusal.Outcome == RewardsLifecycleOutcome.RefusedPendingWork
+                && refusal.Code == DiagnosticCode.TeardownBlocked
+                && refusal.Detail.Contains(RewardsKeys.Installation.ToString())
+                && refusal.Detail.Contains(RewardsKeys.OutboxSlot.ToString())
+                && refusal.Detail.Contains(pendingCount.ToString(CultureInfo.InvariantCulture));
+            bool preconditionRefused = precondition.Outcome == RewardsLifecycleOutcome.RefusedPrecondition
+                && precondition.Code == DiagnosticCode.MigrationRequired
+                && installation.OutboxMigration.Invocations == 1
+                && installation.OutboxMigration.Refusals == 1;
+            bool pendingPassed = unmountRefused
+                && preconditionRefused
+                && pendingReadings.Hold(ConformanceFields.RewardsInstallationState, "mounted")
+                && pendingReadings.Hold(ConformanceFields.OutboxOpen, "1")
+                && pendingReadings.Hold(ConformanceFields.OutboxPendingWork, "1")
+                && pendingReadings.Hold(ConformanceFields.OutboxMutations, "0")
+                && pendingReadings.Hold(ConformanceFields.OutboxRows, "1")
+                && pendingReadings.Hold(ConformanceFields.BridgePermit, "1")
+                && pendingReadings.Preserved(ConformanceFields.RewardRecipientHandSize)
+                && pendingReadings.Preserved(ConformanceFields.RewardHolderHandSize);
+            // The row is `RefusedKeepsAssembly`: the operation must be reported as it really answered, and the
+            // oracle fails the row if the unmount settled (the old assembly would not then be standing) — P-047.
+            outcomes.Add(new ConformanceOracle.RowOutcomeReport(
+                "reward-unmount-pending", refusal.Settled, refusal.Detail));
+            steps.Add(new ConformanceObservation(
+                StepPrefix + RecordedSuffixes[5],
+                pendingPassed,
+                RowDetail("reward-unmount-pending", "Refused", pendingReadings, pendingVocabBefore, pendingVocabAfter)
+                + "; unmount={" + refusal.Outcome + "/" + refusal.Code + ": " + Clip(refusal.Detail, 200) + "}"
+                + "; migrationPrecondition={" + precondition.Outcome + "/" + precondition.Code + ": "
+                + Clip(precondition.Detail, 200) + "}"
+                + "; migrationInvocations="
+                + installation.OutboxMigration.Invocations.ToString(CultureInfo.InvariantCulture)
+                + "; migrationRefusals="
+                + installation.OutboxMigration.Refusals.ToString(CultureInfo.InvariantCulture)
+                + "; laneAssembly=withheld (P-029: the pass runs first, the assembly follows once the work drains)"));
+
+            // ---------------------------------------------------------------- 07:269-270 — reward-settle
+            IReadOnlyList<string> settleFields = FieldsOf(script, "reward-settle");
+            List<string> settleVocabBefore = ReadVocabulary(world, source, installation);
+            List<string> settleBefore = ReadAll(world, source, installation, settleFields);
             int handABefore = HandSize(world, CardTableKeys.SeatAOrdinal);
             int handBBefore = HandSize(world, CardTableKeys.SeatBOrdinal);
-            RewardBridgePassReport settle = bridge.Run(default(OperationId), RewardEventWindow, RewardDispatchWindow);
-            IReadOnlyList<string> settleFields = FieldsOf(script, "reward-settle");
-            List<string> settleAfter = ReadAll(world, bridge, settleFields);
+            IReadOnlyList<DeliveryObligation> openBefore = source.Owner.Outbox.OpenObligations();
+
+            // The dispatch half: the bridge hands the open obligation to the card destination, which submits the
+            // card family's own transfer command through the ordinary command port and applies it (07 s5 step 3).
+            RewardBridgePassReport settle = installation.RunBridgePass(
+                default(OperationId), RewardEventWindow, RewardDispatchWindow);
+
+            // The acknowledgement half, which 07 s5 calls the ordered `rewards.ack` stage: the destination's answer is
+            // recorded through the delivery owner's own adapter, so the obligation becomes terminal and the
+            // destination's cursor advances. Acknowledging before the destination answered would be a state it never
+            // reported, so the ids acknowledged here are the ones the pass was handed (P-045).
+            int acknowledged = 0;
+            var acknowledgements = new List<string>(openBefore.Count);
+            for (int i = 0; i < openBefore.Count; i++)
+            {
+                DeliveryOutcome outcome = source.Owner.Adapter.TryAcknowledge(
+                    openBefore[i].Key.OutboxId, out DiagnosticCode acknowledgeCode, out string acknowledgeDetail);
+                if (outcome == DeliveryOutcome.Acknowledged)
+                {
+                    acknowledged++;
+                }
+
+                acknowledgements.Add(outcome + "/" + acknowledgeCode + "(" + Clip(acknowledgeDetail, 80) + ")");
+            }
+
+            List<string> settleAfter = ReadAll(world, source, installation, settleFields);
+            List<string> settleVocabAfter = ReadVocabulary(world, source, installation);
             StepRecord(trace, "reward-settle", settleFields, settleBefore, settleAfter);
-            Snapshot(trace, world, bridge, "reward-settle", fieldsBefore: true);
-            Snapshot(trace, world, bridge, "reward-settle", fieldsBefore: false);
+            RecordSnapshot(trace, "reward-settle", ConformancePhase.Before, settleVocabBefore);
+            RecordSnapshot(trace, "reward-settle", ConformancePhase.After, settleVocabAfter);
 
             int handAAfter = HandSize(world, CardTableKeys.SeatAOrdinal);
             int handBAfter = HandSize(world, CardTableKeys.SeatBOrdinal);
+            var settleReadings = new RowReadings(settleFields, settleBefore, settleAfter);
             bool settlePassed = settle.Dispatched == 1
-                && bridge.Owner.Outbox.OpenCount == 0
-                && bridge.Owner.AcknowledgedCount == 1
-                && bridge.Destination.CommittedCount == 1
+                && acknowledged == 1
+                && source.Owner.AcknowledgedCount == 1
+                && settleReadings.Require(ConformanceFields.OutboxOpen, "1", "0")
+                && settleReadings.Require(ConformanceFields.OutboxAcknowledged, "0", "1")
+                && settleReadings.Require(ConformanceFields.OutboxMutations, "0", "1")
+                && settleReadings.Require(ConformanceFields.RewardRecipientHandSize, "4", "5")
+                && settleReadings.Require(ConformanceFields.RewardHolderHandSize, "4", "3")
+                && settleReadings.Hold(ConformanceFields.BridgePermit, "1")
+                && settleReadings.Hold(ConformanceFields.RewardRecipientTotal, "4")
+                && settleReadings.Hold(ConformanceFields.RewardHolderTotal, "4")
+                && settleReadings.Hold(ConformanceFields.BridgePermitVersion, "2")
                 && handAAfter == handABefore + 1
                 && handBAfter == handBBefore - 1;
             outcomes.Add(new ConformanceOracle.RowOutcomeReport("reward-settle", settlePassed, settlePassed
                 ? string.Empty
                 : "the admitted reward did not commit exactly one transfer and acknowledge it"));
             steps.Add(new ConformanceObservation(
-                StepPrefix + RecordedSuffixes[5],
+                StepPrefix + RecordedSuffixes[6],
                 settlePassed,
-                ConformanceScenario.StepPrefix + Label + "/reward-settle; outcome=Published; pass={" + settle + "}"
-                + "; acknowledged=" + bridge.Owner.AcknowledgedCount.ToString(CultureInfo.InvariantCulture)
-                + "; open=" + bridge.Owner.Outbox.OpenCount.ToString(CultureInfo.InvariantCulture)
-                + "; mutations=" + bridge.Destination.CommittedCount.ToString(CultureInfo.InvariantCulture)
+                RowDetail("reward-settle", "Published", settleReadings, settleVocabBefore, settleVocabAfter)
+                + "; pass={" + settle + "}"
+                + "; acknowledged=" + source.Owner.AcknowledgedCount.ToString(CultureInfo.InvariantCulture)
+                + "; ack={" + string.Join(",", acknowledgements.ToArray()) + "}"
+                + "; open=" + source.Owner.Outbox.OpenCount.ToString(CultureInfo.InvariantCulture)
+                + "; mutations=" + source.Destination.CommittedCount.ToString(CultureInfo.InvariantCulture)
                 + "; hand-a=" + handABefore.ToString(CultureInfo.InvariantCulture) + "->"
                 + handAAfter.ToString(CultureInfo.InvariantCulture)
                 + "; hand-b=" + handBBefore.ToString(CultureInfo.InvariantCulture) + "->"
@@ -412,118 +609,353 @@ namespace GameCore.Validation.ProbeHost
                 + "; attemptWindow=" + hook.DeliveredRowCount.ToString(CultureInfo.InvariantCulture)
                 + " row(s) at " + DeliveryBoundaries.AfterDelivery));
 
-            // 07:272 — the same obligation again, after the acknowledgement was lost. The rows the acknowledgement
-            // window left behind are reinstated into the durable owner (a restored session sees exactly those rows),
-            // the same obligation is handed over again, the destination answers `AlreadyApplied`, and the crash hook
-            // fires at `AfterDelivery` so the acknowledgement is genuinely lost a second time (P-045, P-149's seam).
+            // ---------------------------------------------------------------- 07:276 — reward-drain-then-unmount
+            IReadOnlyList<string> drainFields = FieldsOf(script, "reward-drain-then-unmount");
+            List<string> drainVocabBefore = ReadVocabulary(world, source, installation);
+            List<string> drainBefore = ReadAll(world, source, installation, drainFields);
+
+            // (a) The scratch-migration precondition on the drained value: the registered migration now accepts its
+            //     copied count of 0, where the unmount row observed the same pass refuse it (P-029).
+            RewardsLifecycleResult migrated = installation.TryMigrateOutboxSlot(world.Policies!, world.TargetIds());
+
+            // (b) The declaration's own decision: with nothing pending, the slot takes its declared
+            //     `PreserveDormant` decision, which the policy plan carries as a `RetainDormant` disposition (P-032).
+            RewardsLifecycleResult drained = installation.TryDrain(world.Policies!, world.TargetIds());
+
+            // (c) The world's assembly for the lane's own O-07 publication, published with that plan: the plan's
+            //     dispositions are the publication's, so the apply stage marks the retained row dormant
+            //     (`AssemblyPublisher.MarkSlotDormant`). The lane published the unmount on the previous row and P-029
+            //     puts the pass before the first live write, so this is where that assembly belongs.
+            bool published = world.TryPublishPolicyPlan(installation.LastPolicyPlan, out string publicationDetail);
+
+            // (d) The work itself completes: the registered job finishes, the quarantine the refused unmount admitted
+            //     is released, the removal settles and the world-side lease retires (P-047, P-048).
+            RewardsLifecycleResult completedWork = installation.CompletePendingWork(host, EnqueueWorkOrdinal);
+
+            // (e) And the unmount that was refused now settles, because nothing is retained any more (07:276).
+            RewardsLifecycleResult settled = installation.TryUnmount(host, world.Lane!);
+
+            List<string> drainAfter = ReadAll(world, source, installation, drainFields);
+            List<string> drainVocabAfter = ReadVocabulary(world, source, installation);
+            StepRecord(trace, "reward-drain-then-unmount", drainFields, drainBefore, drainAfter);
+            RecordSnapshot(trace, "reward-drain-then-unmount", ConformancePhase.Before, drainVocabBefore);
+            RecordSnapshot(trace, "reward-drain-then-unmount", ConformancePhase.After, drainVocabAfter);
+
+            var drainReadings = new RowReadings(drainFields, drainBefore, drainAfter);
+            bool drainPassed = migrated.Settled
+                && drained.Settled
+                && published
+                && completedWork.Settled
+                && settled.Settled
+                && installation.OutboxMigration.Invocations == 2
+                && installation.OutboxMigration.Refusals == 1
+                && drainReadings.Hold(ConformanceFields.OutboxOpen, "0")
+                && drainReadings.Hold(ConformanceFields.OutboxAcknowledged, "1")
+                && drainReadings.Require(ConformanceFields.OutboxPendingWork, "1", "0")
+                && drainReadings.Require(ConformanceFields.OutboxSlotDormant, "false", "true")
+                && drainReadings.Require(ConformanceFields.OutboxRetainedLeases, "1", "0")
+                && drainReadings.Require(ConformanceFields.RewardsInstallationState, "mounted", "dormant")
+                && drainReadings.Hold(ConformanceFields.OutboxRows, "1")
+                && drainReadings.Hold(ConformanceFields.BridgePermit, "1");
+            outcomes.Add(new ConformanceOracle.RowOutcomeReport("reward-drain-then-unmount", drainPassed, drainPassed
+                ? string.Empty
+                : "the drained outbox was not preserved dormant, or the unmount did not settle"));
+            steps.Add(new ConformanceObservation(
+                StepPrefix + RecordedSuffixes[7],
+                drainPassed,
+                RowDetail("reward-drain-then-unmount", "Published", drainReadings, drainVocabBefore, drainVocabAfter)
+                + "; migrate={" + migrated.Outcome + "/" + migrated.Code + ": " + Clip(migrated.Detail, 160) + "}"
+                + "; drain={" + drained.Outcome + "/" + drained.Code + ": " + Clip(drained.Detail, 160) + "}"
+                + "; publication=" + Clip(publicationDetail, 200)
+                + "; completedWork={" + completedWork.Outcome + "/" + completedWork.Code + ": "
+                + Clip(completedWork.Detail, 160) + "}"
+                + "; unmount={" + settled.Outcome + "/" + settled.Code + ": " + Clip(settled.Detail, 160) + "}"
+                + "; migrationInvocations="
+                + installation.OutboxMigration.Invocations.ToString(CultureInfo.InvariantCulture)
+                + "; migrationRefusals="
+                + installation.OutboxMigration.Refusals.ToString(CultureInfo.InvariantCulture)));
+
+            // ---------------------------------------------------------------- 07:276 — reward-unmount-transfer
+            // The script's two precondition steps: one more committed choice admits a second obligation, and its work
+            // is armed, so the transfer has real pending work to carry. Both are executed in script order and recorded
+            // under their own row ids, because their expectations are the transfer row's before state.
+            const string preCommitRow = "reward-unmount-transfer/pre1";
+            const string preArmRow = "reward-unmount-transfer/pre2";
+            IReadOnlyList<string> preCommitFields = ScriptFieldsOf(script, preCommitRow);
+            IReadOnlyList<string> preArmFields = ScriptFieldsOf(script, preArmRow);
+
+            List<string> preCommitBefore = ReadAll(world, source, installation, preCommitFields);
+            // The second choice names the node the conversation really sits on: the first commit moved it to the
+            // permit result node, and a choice naming a stale node is refused by `NarrativeDialogueRules.Validate`.
+            // The node is read from the package's own storage, never remembered by this file (P-042).
+            bool nodeRead = world.TryEntity(NarrativeKeys.Mara, out Entity mara)
+                && NarrativeState.TryRead(
+                    host.EntityWorld.EntityManager,
+                    mara,
+                    NarrativeKeys.DialogueOwner,
+                    NarrativeKeys.ConversationNodeSlot,
+                    out int liveNode,
+                    out uint _);
+            ConformanceOperationResult secondCommit = nodeRead
+                ? world.SubmitAndPump(
+                    new CommandEnvelope(
+                        world.NextOperation(),
+                        NarrativeKeys.ChoiceRoute,
+                        NarrativeKeys.Mara,
+                        NarrativeKeys.ChoiceCommandSchema,
+                        null,
+                        new FrozenPayload(NarrativePayloadCodec.EncodeChoice(
+                            new NarrativeChoice(liveNode, NarrativeDialogueRules.PermitChoice)))),
+                    "commit-second-permit-choice")
+                : new ConformanceOperationResult(
+                    ConformanceOperationOutcome.Unsupported,
+                    "the live conversation node could not be read, so no second choice was submitted");
+            RewardBridgePassReport secondEnqueue = installation.RunBridgePass(
+                world.NextOperation(), RewardEventWindow, 0);
+            List<string> preCommitAfter = ReadAll(world, source, installation, preCommitFields);
+            var preCommitReadings = new RowReadings(preCommitFields, preCommitBefore, preCommitAfter);
+            bool preCommitPassed = secondCommit.Published
+                && secondEnqueue.RewardsEnqueued == 1
+                && preCommitReadings.Require(ConformanceFields.OutboxOpen, "0", "1")
+                && preCommitReadings.Require(ConformanceFields.OutboxRows, "1", "2");
+            StepRecord(trace, preCommitRow, preCommitFields, preCommitBefore, preCommitAfter);
+            outcomes.Add(new ConformanceOracle.RowOutcomeReport(preCommitRow, preCommitPassed, preCommitPassed
+                ? string.Empty
+                : "the second choice did not admit one more obligation"));
+
+            List<string> preArmBefore = ReadAll(world, source, installation, preArmFields);
+            RewardsLifecycleResult secondArm = installation.ArmPendingWork(host, TransferWorkOrdinal);
+            bool secondSlot = installation.WriteOutboxSlot(
+                host, OutboxSlotTarget, installation.PendingWorkCount, out string secondSlotDetail);
+            List<string> preArmAfter = ReadAll(world, source, installation, preArmFields);
+            var preArmReadings = new RowReadings(preArmFields, preArmBefore, preArmAfter);
+            bool preArmPassed = secondArm.Settled
+                && secondSlot
+                && preArmReadings.Require(ConformanceFields.OutboxPendingWork, "0", "1");
+            StepRecord(trace, preArmRow, preArmFields, preArmBefore, preArmAfter);
+            outcomes.Add(new ConformanceOracle.RowOutcomeReport(preArmRow, preArmPassed, preArmPassed
+                ? string.Empty
+                : "the new obligation's work was not armed with its slot value written"));
+
+            // The destination installation: a second installation of the same declared identity over the same world,
+            // which is the "restored session" the row's own prose names. It holds the carried rows, so the row's four
+            // readings are its own counts rather than an inference from the source (P-045, REF-X01).
+            IReadOnlyList<string> transferFields = FieldsOf(script, "reward-unmount-transfer");
+            var restoredJournal = new MemoryDeliveryJournal("memory://gc024-cross-rewards-restored");
+            destination = RewardsInstallation.Mount(
+                host,
+                world.Time!,
+                source.Catalog,
+                RewardCapacity,
+                RewardTerminalRetention,
+                OutboxDurability.Durable,
+                restoredJournal,
+                hook);
+            List<string> transferVocabBefore = ReadVocabulary(world, destination, installation);
+            List<string> transferBefore = ReadAll(world, destination, installation, transferFields);
+            RewardsLifecycleResult transferred = installation.TransferOutboxTo(
+                destination, world.Policies!, world.TargetIds());
+            List<string> transferAfter = ReadAll(world, destination, installation, transferFields);
+            List<string> transferVocabAfter = ReadVocabulary(world, destination, installation);
+            StepRecord(trace, "reward-unmount-transfer", transferFields, transferBefore, transferAfter);
+            RecordSnapshot(trace, "reward-unmount-transfer", ConformancePhase.Before, transferVocabBefore);
+            RecordSnapshot(trace, "reward-unmount-transfer", ConformancePhase.After, transferVocabAfter);
+
+            var transferReadings = new RowReadings(transferFields, transferBefore, transferAfter);
+            bool transferPassed = preCommitPassed
+                && preArmPassed
+                && transferred.Outcome == RewardsLifecycleOutcome.Transferred
+                && transferReadings.Require(ConformanceFields.OutboxRows, "0", "2")
+                && transferReadings.Require(ConformanceFields.OutboxOpen, "0", "1")
+                && transferReadings.Hold(ConformanceFields.OutboxMutations, "0")
+                && transferReadings.Hold(ConformanceFields.BridgePermit, "1");
+            outcomes.Add(new ConformanceOracle.RowOutcomeReport("reward-unmount-transfer", transferPassed, transferPassed
+                ? string.Empty
+                : "the selected compatible owner did not take the outbox rows intact"));
+            steps.Add(new ConformanceObservation(
+                StepPrefix + RecordedSuffixes[8],
+                transferPassed,
+                RowDetail("reward-unmount-transfer", "Published", transferReadings, transferVocabBefore,
+                    transferVocabAfter)
+                + "; preCommit={" + preCommitReadings.Render() + "} ("
+                + preCommitReadings.Require(ConformanceFields.OutboxRows, "1", "2") + "/"
+                + secondEnqueue.RewardsEnqueued.ToString(CultureInfo.InvariantCulture) + " enqueued)"
+                + "; preArm={" + preArmReadings.Render() + "}"
+                + "; arm={" + secondArm.Outcome + "/" + secondArm.Code + ": " + Clip(secondArm.Detail, 140) + "}"
+                + "; slot={" + (secondSlot ? "written" : "REFUSED") + ": " + Clip(secondSlotDetail, 120) + "}"
+                + "; transfer={" + transferred.Outcome + "/" + transferred.Code + ": "
+                + Clip(transferred.Detail, 260) + "}"
+                + "; sourceRows=" + source.Owner.Outbox.Count.ToString(CultureInfo.InvariantCulture)
+                + "; sourceOpen=" + source.Owner.Outbox.OpenCount.ToString(CultureInfo.InvariantCulture)
+                + "; destinationRows=" + destination.Owner.Outbox.Count.ToString(CultureInfo.InvariantCulture)
+                + "; destinationOpen=" + destination.Owner.Outbox.OpenCount.ToString(CultureInfo.InvariantCulture)));
+
+            // ---------------------------------------------------------------- 07:272 — reward-redelivery
             IReadOnlyList<string> redeliveryFields = FieldsOf(script, "reward-redelivery");
-            Dictionary<string, string> redeliveryUnrelated = ReadVocabulary(world, bridge);
-            List<string> redeliveryBefore = ReadAll(world, bridge, redeliveryFields);
-            string reinstate = "not attempted";
+            List<string> redeliveryVocabBefore = ReadVocabulary(world, destination, installation);
+            List<string> redeliveryBefore = ReadAll(world, destination, installation, redeliveryFields);
+
+            // The same obligation again, after its acknowledgement was lost: the hook fires at `AfterDelivery`, which
+            // is the exact window in which the destination has applied the effect and the obligation is not yet
+            // settled, so the acknowledgement is genuinely lost and the outbox still owes it (P-045, P-149's seam).
+            hook.Attach(destination.Bridge);
+            hook.Arm();
             bool redelivered = false;
             string crashBoundary = DeliveryBoundaries.None;
-            DiagnosticCode reinstateCode = DiagnosticCode.None;
-            string reinstateDetail = string.Empty;
-            IReadOnlyList<OutboxRecordValue>? deliveredRows = hook.DeliveredRows;
-            if (deliveredRows != null
-                && bridge.Owner.TryReinstate(deliveredRows, out reinstateCode, out reinstateDetail))
+            try
             {
-                reinstate = "rows=" + hook.DeliveredRowCount.ToString(CultureInfo.InvariantCulture)
-                    + "; open=" + bridge.Owner.Outbox.OpenCount.ToString(CultureInfo.InvariantCulture)
-                    + "; detail=" + Clip(reinstateDetail, 80);
-                hook.Arm();
-                try
-                {
-                    bridge.Run(default(OperationId), RewardEventWindow, RewardDispatchWindow);
-                }
-                catch (CrossDeliveryCrashException crash)
-                {
-                    crashBoundary = crash.Boundary;
-                    redelivered = true;
-                }
+                destination.RunBridgePass(default(OperationId), RewardEventWindow, RewardDispatchWindow);
             }
-            else
+            catch (CrossDeliveryCrashException crash)
             {
-                reinstate = "refused (code=" + reinstateCode + "): " + reinstateDetail;
+                redelivered = true;
+                crashBoundary = crash.Boundary;
             }
 
-            List<string> redeliveryAfter = ReadAll(world, bridge, redeliveryFields);
+            List<string> redeliveryAfter = ReadAll(world, destination, installation, redeliveryFields);
+            List<string> redeliveryVocabAfter = ReadVocabulary(world, destination, installation);
             StepRecord(trace, "reward-redelivery", redeliveryFields, redeliveryBefore, redeliveryAfter);
-            Snapshot(trace, world, bridge, "reward-redelivery", fieldsBefore: true);
-            Snapshot(trace, world, bridge, "reward-redelivery", fieldsBefore: false);
+            RecordSnapshot(trace, "reward-redelivery", ConformancePhase.Before, redeliveryVocabBefore);
+            RecordSnapshot(trace, "reward-redelivery", ConformancePhase.After, redeliveryVocabAfter);
 
+            var redeliveryReadings = new RowReadings(redeliveryFields, redeliveryBefore, redeliveryAfter);
             bool redeliveryPassed = redelivered
                 && string.Equals(crashBoundary, DeliveryBoundaries.AfterDelivery, StringComparison.Ordinal)
-                && bridge.Destination.AlreadyPresentCount == 1
-                && bridge.Destination.CommittedCount == 1
-                && Preserved(redeliveryUnrelated, ReadVocabulary(world, bridge), ConformanceFields.RewardRecipientHandSize)
-                && Preserved(redeliveryUnrelated, ReadVocabulary(world, bridge), ConformanceFields.RewardHolderHandSize)
-                && Preserved(redeliveryUnrelated, ReadVocabulary(world, bridge), ConformanceFields.RewardRecipientHand)
-                && Preserved(redeliveryUnrelated, ReadVocabulary(world, bridge), ConformanceFields.RewardHolderHand)
-                && Preserved(redeliveryUnrelated, ReadVocabulary(world, bridge), ConformanceFields.RewardRecipientTotal)
-                && Preserved(redeliveryUnrelated, ReadVocabulary(world, bridge), ConformanceFields.RewardHolderTotal)
-                && Preserved(redeliveryUnrelated, ReadVocabulary(world, bridge), ConformanceFields.RewardTableVersion);
+                && redeliveryReadings.Require(ConformanceFields.OutboxAlreadyApplied, "0", "1")
+                && redeliveryReadings.Hold(ConformanceFields.OutboxMutations, "0")
+                && redeliveryReadings.Hold(ConformanceFields.OutboxOpen, "1")
+                && redeliveryReadings.Hold(ConformanceFields.OutboxRows, "2")
+                && redeliveryReadings.Hold(ConformanceFields.BridgePermit, "1");
             outcomes.Add(new ConformanceOracle.RowOutcomeReport("reward-redelivery", redeliveryPassed, redeliveryPassed
                 ? string.Empty
-                : "the redelivery did not report AlreadyApplied with unrelated state preserved"));
+                : "the redelivery did not report AlreadyApplied while leaving the outbox open and unmutated"));
             steps.Add(new ConformanceObservation(
-                StepPrefix + RecordedSuffixes[6],
+                StepPrefix + RecordedSuffixes[9],
                 redeliveryPassed,
-                ConformanceScenario.StepPrefix + Label + "/reward-redelivery; outcome=Published"
-                + "; alreadyApplied=" + bridge.Destination.AlreadyPresentCount.ToString(CultureInfo.InvariantCulture)
-                + "; mutations=" + bridge.Destination.CommittedCount.ToString(CultureInfo.InvariantCulture)
-                + "; submits=" + bridge.Destination.SubmittedCount.ToString(CultureInfo.InvariantCulture)
-                + "; reinstate={" + reinstate + "}"
+                RowDetail("reward-redelivery", "Published", redeliveryReadings, redeliveryVocabBefore,
+                    redeliveryVocabAfter)
+                + "; alreadyApplied="
+                + destination.Destination.AlreadyPresentCount.ToString(CultureInfo.InvariantCulture)
+                + "; mutations=" + destination.Destination.CommittedCount.ToString(CultureInfo.InvariantCulture)
+                + "; submits=" + destination.Destination.SubmittedCount.ToString(CultureInfo.InvariantCulture)
                 + "; crashBoundary=" + crashBoundary
+                + "; windowRows=" + hook.DeliveredRowCount.ToString(CultureInfo.InvariantCulture)
                 + "; hookSpent=" + hook.Spent));
+
+            // ---------------------------------------------------------------- 07:276 — reward-scoring-unmount-keeps-card
+            IReadOnlyList<string> scoringFields = FieldsOf(script, "reward-scoring-unmount-keeps-card");
+            List<string> scoringVocabBefore = ReadVocabulary(world, source, installation);
+            List<string> scoringBefore = ReadAll(world, source, installation, scoringFields);
+
+            // Retracting the scoring provider is a capability change, not a gameplay effect: the issued card and the
+            // committed score stay exactly as they are (P-003, P-032).
+            ConformanceOperationResult scoringUnmounted = world.PublishEdit(
+                CardTablePayloads.Unmount(CardTableFixture.FestivalScoringInstance), "unmount-festival-scoring");
+
+            List<string> scoringAfter = ReadAll(world, source, installation, scoringFields);
+            List<string> scoringVocabAfter = ReadVocabulary(world, source, installation);
+            StepRecord(trace, "reward-scoring-unmount-keeps-card", scoringFields, scoringBefore, scoringAfter);
+            RecordSnapshot(trace, "reward-scoring-unmount-keeps-card", ConformancePhase.Before, scoringVocabBefore);
+            RecordSnapshot(trace, "reward-scoring-unmount-keeps-card", ConformancePhase.After, scoringVocabAfter);
+
+            var scoringReadings = new RowReadings(scoringFields, scoringBefore, scoringAfter);
+            bool scoringPassed = scoringUnmounted.Published
+                && scoringReadings.Require(ConformanceFields.SeatBonus(0U), "2", ConformanceValue.None)
+                && scoringReadings.Hold(ConformanceFields.RewardRecipientHandSize, "5")
+                && scoringReadings.Hold(ConformanceFields.RewardHolderHandSize, "3")
+                && scoringReadings.Hold(ConformanceFields.RewardRecipientTotal, "4")
+                && scoringReadings.Hold(ConformanceFields.OutboxAcknowledged, "1");
+            outcomes.Add(new ConformanceOracle.RowOutcomeReport(
+                "reward-scoring-unmount-keeps-card", scoringPassed, scoringPassed
+                    ? string.Empty
+                    : "the scoring provider's removal disturbed the issued card or the committed score"));
+            steps.Add(new ConformanceObservation(
+                StepPrefix + RecordedSuffixes[10],
+                scoringPassed,
+                RowDetail("reward-scoring-unmount-keeps-card", "Published", scoringReadings, scoringVocabBefore,
+                    scoringVocabAfter)
+                + "; unmount={" + scoringUnmounted.Outcome + ": " + Clip(scoringUnmounted.Detail, 200) + "}"
+                + "; acknowledged=" + source.Owner.AcknowledgedCount.ToString(CultureInfo.InvariantCulture)));
 
             narrativeModule = world.Narrative;
             cardModule = world.CardTable;
         }
 
         /// <summary>
-        /// 07:276 — "unmounting with pending work rejects until it drains or transfers". The bridge is an ordinary
-        /// caller-owned object in this revision, not a mounted installation, so its `PreserveDormant` declaration
-        /// has nowhere to live and there is no package API that can perform the refusal. The step is reported
-        /// `Unsupported` with that exact reason and is never reported as published; the fields the row demands are
-        /// read from the live world (so the pending obligation is visible to a reviewer) and the operation is
-        /// recorded as not published, which is the `RefusedKeepsAssembly` half of the row.
+        /// One row's own two readings, keyed by the field keys its table row declares, so a step's pass flag restates
+        /// the row it executes and a field the run never read can never pass: a missing key compares as absent.
         /// </summary>
-        private static void ProvePendingUnmountIsRefused(
-            CrossWorld world,
-            NarrativeCardRewardBridge bridge,
-            ConformanceScript script,
-            ConformanceTrace trace,
-            List<ConformanceOracle.RowOutcomeReport> outcomes,
-            List<ConformanceObservation> steps)
+        private sealed class RowReadings
         {
-            IReadOnlyList<string> fields = FieldsOf(script, "reward-bridge-removal");
-            List<string> readings = ReadAll(world, bridge, fields);
-            StepRecord(trace, "reward-bridge-removal", fields, readings, readings);
-            Snapshot(trace, world, bridge, "reward-bridge-removal", fieldsBefore: true);
-            Snapshot(trace, world, bridge, "reward-bridge-removal", fieldsBefore: false);
+            private readonly Dictionary<string, string> before;
+            private readonly Dictionary<string, string> after;
+            private readonly List<string> order = new List<string>();
 
-            // A RECORDED GAP, not a pass and not a failure: the row is executed as far as this revision allows (the
-            // pending obligation is read from the live world, so a reviewer sees the state the refusal would protect),
-            // the operation is reported as not published with its reason — which is the row's `RefusedKeepsAssembly`
-            // half, satisfied honestly because nothing was done — and the step's status is `RecordedGap`, so
-            // `ConformanceTableResult.AllPassed` stays false and `ConformanceDocGaps` names the clause this revision
-            // cannot satisfy (07:276's PreserveDormant declaration, which has nowhere to live while the bridge is an
-            // ordinary caller-owned object rather than a mounted installation).
-            ConformanceDocGap gap = ConformanceDocGaps.ById(ConformanceDocGaps.RewardBridgeRemovalId)
-                ?? throw new InvalidOperationException(
-                    "the reward bridge removal row is a recorded gap, but the fixture declares no gap with that id");
-            outcomes.Add(new ConformanceOracle.RowOutcomeReport("reward-bridge-removal", false, gap.Missing));
-            steps.Add(new ConformanceObservation(
-                StepPrefix + RecordedSuffixes[4],
-                ConformanceStepStatus.RecordedGap,
-                ConformanceScenario.StepPrefix + Label + "/reward-bridge-removal; outcome=Unsupported; gap="
-                + gap.GapId + "; clause=" + gap.Clause + "; missing=" + gap.Missing
-                + "; pendingWork=open=" + bridge.Owner.Outbox.OpenCount.ToString(CultureInfo.InvariantCulture)
-                + "; mutations=" + bridge.Destination.CommittedCount.ToString(CultureInfo.InvariantCulture)
-                + "; acknowledged=" + bridge.Owner.AcknowledgedCount.ToString(CultureInfo.InvariantCulture)
-                + "; unmountAttempts=0; evidence=" + gap.Evidence));
+            public RowReadings(IReadOnlyList<string> fields, List<string> beforeValues, List<string> afterValues)
+            {
+                before = new Dictionary<string, string>(fields.Count, StringComparer.Ordinal);
+                after = new Dictionary<string, string>(fields.Count, StringComparer.Ordinal);
+                for (int i = 0; i < fields.Count; i++)
+                {
+                    if (!before.ContainsKey(fields[i]))
+                    {
+                        order.Add(fields[i]);
+                    }
+
+                    before[fields[i]] = beforeValues[i];
+                    after[fields[i]] = afterValues[i];
+                }
+            }
+
+            /// <summary>True when the field really moved between two exact tokens (07's `Require`).</summary>
+            public bool Require(string field, string was, string now)
+                => string.Equals(Value(before, field), was, StringComparison.Ordinal)
+                    && string.Equals(Value(after, field), now, StringComparison.Ordinal);
+
+            /// <summary>True when the field reads one exact token on both sides (07's `Unchanged`).</summary>
+            public bool Hold(string field, string value)
+                => string.Equals(Value(before, field), value, StringComparison.Ordinal)
+                    && string.Equals(Value(after, field), value, StringComparison.Ordinal);
+
+            /// <summary>True when the row's two readings of the field are identical (07's `Preserved`).</summary>
+            public bool Preserved(string field)
+            {
+                string? first = Value(before, field);
+                string? second = Value(after, field);
+                return first != null && second != null && string.Equals(first, second, StringComparison.Ordinal);
+            }
+
+            /// <summary>The row's two readings as `field=before->after`, the canonical spelling a detail carries.</summary>
+            public string Render()
+            {
+                var parts = new List<string>(order.Count);
+                for (int i = 0; i < order.Count; i++)
+                {
+                    parts.Add(order[i] + "=" + Value(before, order[i]) + "->" + Value(after, order[i]));
+                }
+
+                return string.Join("; ", parts.ToArray());
+            }
+
+            private static string Value(Dictionary<string, string> readings, string field)
+                => readings.TryGetValue(field, out string? found) ? found : ConformanceValue.None;
         }
+
+        /// <summary>
+        /// One row's step detail: its own outcome, the row's two readings and the whole `ConformanceFields.Cross()`
+        /// vocabulary on both sides of the operation, so a reviewer sees the state the assertions were made against
+        /// (P-026) and the harness's own field clauses are checkable in the result JSON.
+        /// </summary>
+        private static string RowDetail(
+            string rowId,
+            string outcome,
+            RowReadings readings,
+            List<string> vocabBefore,
+            List<string> vocabAfter)
+            => ConformanceScenario.StepPrefix + Label + "/" + rowId
+                + "; outcome=" + outcome
+                + "; " + readings.Render()
+                + "; state={" + Render(vocabBefore, vocabAfter) + "}";
 
         /// <summary>
         /// Reports every observation of the reward flow this run did not reach, so a failed run is red on every name
@@ -540,9 +972,8 @@ namespace GameCore.Validation.ProbeHost
         // ------------------------------------------------------------------ trace recording
 
         /// <summary>
-        /// The 07 row's own declared fields, in the order the fixture table declares them. The script and the table
-        /// carry the same fields for one row id; the table is the document's own column set, so it is read from
-        /// there and the script's precondition expectations (a subset) are satisfied by the same two readings.
+        /// The 07 row's own declared fields, in the order the fixture table declares them: the table is the document's
+        /// own column set, so a row's fields are read from there (P-026).
         /// </summary>
         private static IReadOnlyList<string> FieldsOf(ConformanceScript script, string rowId)
         {
@@ -573,13 +1004,48 @@ namespace GameCore.Validation.ProbeHost
             return fields;
         }
 
+        /// <summary>
+        /// One script step's own declared fields: a precondition (`&lt;row&gt;/pre&lt;n&gt;`) carries its expectations in
+        /// the script rather than in a table row, so it is read from the script that declares it (P-026).
+        /// </summary>
+        private static IReadOnlyList<string> ScriptFieldsOf(ConformanceScript script, string rowId)
+        {
+            IReadOnlyList<ConformanceStep> declared = script.Steps();
+            for (int s = 0; s < declared.Count; s++)
+            {
+                if (!string.Equals(declared[s].RowId, rowId, StringComparison.Ordinal))
+                {
+                    continue;
+                }
+
+                var fields = new List<string>(declared[s].Expectations.Count);
+                for (int e = 0; e < declared[s].Expectations.Count; e++)
+                {
+                    fields.Add(declared[s].Expectations[e].Field);
+                }
+
+                return fields;
+            }
+
+            return new List<string>();
+        }
+
+        /// <summary>
+        /// One row's declared fields on one side of its operation. `current` is the installation whose outbox and
+        /// destination counters the `outbox.*` fields read — the source for the reward's own life, the destination
+        /// for the rows that assert at the owner which now holds the carried obligation — and `slotOwner` is the
+        /// installation the declared outbox slot and the world's resource ledger belong to (P-034, P-045).
+        /// </summary>
         private static List<string> ReadAll(
-            CrossWorld world, NarrativeCardRewardBridge bridge, IReadOnlyList<string> fields)
+            CrossWorld world,
+            RewardsInstallation current,
+            RewardsInstallation slotOwner,
+            IReadOnlyList<string> fields)
         {
             var values = new List<string>(fields.Count);
             for (int i = 0; i < fields.Count; i++)
             {
-                values.Add(ReadField(world, bridge, fields[i]));
+                values.Add(ReadField(world, current, slotOwner, fields[i]));
             }
 
             return values;
@@ -600,55 +1066,47 @@ namespace GameCore.Validation.ProbeHost
         }
 
         /// <summary>
-        /// The whole `ConformanceFields.Cross()` vocabulary on one side of one step, recorded under the row's own
-        /// `/state` id so it never competes with the row's assertions: the trace carries the state the assertions
-        /// were made against, not only the assertions (P-026).
+        /// The whole `ConformanceFields.Cross()` vocabulary read once, in the vocabulary's own canonical order, so a
+        /// row's `/state` snapshot and the row's detail render the same reading (P-026).
         /// </summary>
-        private static void Snapshot(
-            ConformanceTrace trace, CrossWorld world, NarrativeCardRewardBridge bridge, string rowId, bool fieldsBefore)
-        {
-            ConformancePhase phase = fieldsBefore ? ConformancePhase.Before : ConformancePhase.After;
-            IReadOnlyList<ConformanceField> declared = ConformanceFields.Cross();
-            for (int f = 0; f < declared.Count; f++)
-            {
-                trace.TryRecord(
-                    Label,
-                    rowId + "/state",
-                    phase,
-                    declared[f].Key,
-                    ReadField(world, bridge, declared[f].Key));
-            }
-        }
-
-        /// <summary>
-        /// The whole `ConformanceFields.Cross()` vocabulary read once, keyed by the field key: the unrelated state a
-        /// reward must not disturb, and the state a row's assertions are made against (P-026, P-034).
-        /// </summary>
-        private static Dictionary<string, string> ReadVocabulary(CrossWorld world, NarrativeCardRewardBridge bridge)
+        private static List<string> ReadVocabulary(
+            CrossWorld world, RewardsInstallation current, RewardsInstallation slotOwner)
         {
             IReadOnlyList<ConformanceField> declared = ConformanceFields.Cross();
-            var values = new Dictionary<string, string>(declared.Count, StringComparer.Ordinal);
+            var values = new List<string>(declared.Count);
             for (int f = 0; f < declared.Count; f++)
             {
-                values[declared[f].Key] = ReadField(world, bridge, declared[f].Key);
+                values.Add(ReadField(world, current, slotOwner, declared[f].Key));
             }
 
             return values;
         }
 
         /// <summary>
-        /// True when one field read identically on both sides of the step. A field the snapshot does not carry is
-        /// reported as not preserved, so a key nobody read cannot pass as unchanged.
+        /// Records one vocabulary reading under the row's own `/state` id, so it never competes with the row's own
+        /// assertions: the trace carries the state the assertions were made against, not only the assertions (P-026).
         /// </summary>
-        private static bool Preserved(
-            Dictionary<string, string> before, Dictionary<string, string> after, string field)
+        private static void RecordSnapshot(
+            ConformanceTrace trace, string rowId, ConformancePhase phase, List<string> values)
         {
-            if (!before.TryGetValue(field, out string? first) || !after.TryGetValue(field, out string? second))
+            IReadOnlyList<ConformanceField> declared = ConformanceFields.Cross();
+            for (int f = 0; f < declared.Count && f < values.Count; f++)
             {
-                return false;
+                trace.TryRecord(Label, rowId + "/state", phase, declared[f].Key, values[f]);
+            }
+        }
+
+        /// <summary>One vocabulary reading's two sides as `key=before->after`, in the vocabulary's canonical order.</summary>
+        private static string Render(List<string> before, List<string> after)
+        {
+            IReadOnlyList<ConformanceField> declared = ConformanceFields.Cross();
+            var parts = new List<string>(declared.Count);
+            for (int f = 0; f < declared.Count && f < before.Count && f < after.Count; f++)
+            {
+                parts.Add(declared[f].Key + "=" + before[f] + "->" + after[f]);
             }
 
-            return string.Equals(first, second, StringComparison.Ordinal);
+            return string.Join("; ", parts.ToArray());
         }
 
         // ------------------------------------------------------------------ reading the real world
@@ -656,10 +1114,16 @@ namespace GameCore.Validation.ProbeHost
         /// <summary>
         /// One canonical field of `ConformanceFields.Cross()`, read from the live world: the durable fact and the
         /// conversation through the narrative package's own state accessor (P-034), the outbox counts from the
-        /// delivery owner and its destination port (P-045), and the card table's hands, scores and version through
-        /// the card package's own accessors (P-032).
+        /// installation that owns them and its destination port (P-045), the installation's declared slot through the
+        /// reward package's own slot API (`TryReadOutboxSlot`, P-032), the retained leases from the world's resource
+        /// ledger (P-048), and the card table's hands, scores and derived bonus rows through the card package's own
+        /// accessors (P-017, P-032). A field this world cannot read is `none` with no guessed value.
         /// </summary>
-        private static string ReadField(CrossWorld world, NarrativeCardRewardBridge bridge, string field)
+        private static string ReadField(
+            CrossWorld world,
+            RewardsInstallation current,
+            RewardsInstallation slotOwner,
+            string field)
         {
             switch (field)
             {
@@ -673,15 +1137,29 @@ namespace GameCore.Validation.ProbeHost
                     return Owned(world, NarrativeKeys.Mara, NarrativeKeys.DialogueOwner,
                         NarrativeKeys.ConversationStatusSlot);
                 case ConformanceFields.OutboxRecognised:
-                    return Int(bridge.RecognisedCount);
+                    return Int(current.Bridge.RecognisedCount);
                 case ConformanceFields.OutboxOpen:
-                    return Int(bridge.Owner.Outbox.OpenCount);
+                    return Int(current.Owner.Outbox.OpenCount);
                 case ConformanceFields.OutboxAcknowledged:
-                    return Int(bridge.Owner.AcknowledgedCount);
+                    return Int(current.Owner.AcknowledgedCount);
                 case ConformanceFields.OutboxAlreadyApplied:
-                    return Int(bridge.Destination.AlreadyPresentCount);
+                    return Int(current.Bridge.Destination.AlreadyPresentCount);
                 case ConformanceFields.OutboxMutations:
-                    return Int(bridge.Destination.CommittedCount);
+                    return Int(current.Bridge.Destination.CommittedCount);
+                case ConformanceFields.OutboxRows:
+                    return Int(current.Owner.Outbox.Count);
+                case ConformanceFields.OutboxPendingWork:
+                    return TryReadSlot(world, slotOwner, out int pendingWork, out bool _, out string _)
+                        ? Int(pendingWork)
+                        : ConformanceValue.None;
+                case ConformanceFields.OutboxSlotDormant:
+                    return TryReadSlot(world, slotOwner, out int _, out bool dormant, out string _)
+                        ? ConformanceValue.Bool(dormant)
+                        : ConformanceValue.None;
+                case ConformanceFields.RewardsInstallationState:
+                    return InstallationState(world, slotOwner);
+                case ConformanceFields.OutboxRetainedLeases:
+                    return Int(RetainedLeases(world, slotOwner));
                 case ConformanceFields.RewardRecipientHand:
                     return Hand(world, CardTableKeys.SeatAOrdinal);
                 case ConformanceFields.RewardHolderHand:
@@ -699,10 +1177,122 @@ namespace GameCore.Validation.ProbeHost
                 case ConformanceFields.WorldStep:
                     return ConformanceValue.UInt(world.Host!.CurrentStep.Value);
                 default:
+                    // The scoring row's own field: the seat's effective `cards.set-bonus` value, read from the
+                    // published binding rows the card package derives it from, exactly as the card market's own
+                    // conformance host reads it (07 s2, P-019).
+                    if (string.Equals(field, ConformanceFields.SeatBonus(0U), StringComparison.Ordinal))
+                    {
+                        return Bonus(world, CardTableKeys.SeatAOrdinal);
+                    }
+
                     // A key this world owns no reading for is a recorded absence with no guessed value: an
                     // unobserved expectation then fails instead of passing for the wrong reason (P-026).
                     return ConformanceValue.None;
             }
+        }
+
+        /// <summary>
+        /// The installation's own state as the row's `outbox.installation` token: `dormant` when its declared outbox
+        /// row is retained with no active writer, `mounted` while the lane still records it un-disposed, and `none`
+        /// once the lane has disposed it with nothing retained (P-032, P-046).
+        /// </summary>
+        private static string InstallationState(CrossWorld world, RewardsInstallation installation)
+        {
+            if (TryReadSlot(world, installation, out int _, out bool dormant, out string _) && dormant)
+            {
+                return "dormant";
+            }
+
+            if (world.Lane != null
+                && world.Lane.Committed.TryGetInstall(installation.Instance, out InstallEntry? entry)
+                && entry != null
+                && entry.State != InstallationState.Disposed)
+            {
+                return "mounted";
+            }
+
+            return ConformanceValue.None;
+        }
+
+        /// <summary>
+        /// One live outbox row through the reward package's own reader. `TryGetSlotTarget` is the installation's own
+        /// answer for where its declared row lives, and a target without a row is a reported miss rather than a zero
+        /// that was never stored (P-032, P-045).
+        /// </summary>
+        private static bool TryReadSlot(
+            CrossWorld world,
+            RewardsInstallation installation,
+            out int pendingWork,
+            out bool dormant,
+            out string detail)
+        {
+            pendingWork = 0;
+            dormant = false;
+            if (world.Host == null)
+            {
+                detail = "the world has no host";
+                return false;
+            }
+
+            if (!installation.TryGetSlotTarget(out TargetId target, out detail))
+            {
+                return false;
+            }
+
+            return installation.TryReadOutboxSlot(world.Host, target, out pendingWork, out dormant, out detail);
+        }
+
+        /// <summary>
+        /// How many of this installation's resource leases the world's own ledger still retains: the number that
+        /// makes an unmount refusal `TeardownBlocked` rather than a false `Disposed`, and `0` after a settled
+        /// teardown (P-047, P-048). `WorldResourceLedger` reports retained records with their owning instance and
+        /// state, so the count is a count of the ledger's own rows and not a remembered number.
+        /// </summary>
+        private static int RetainedLeases(CrossWorld world, RewardsInstallation installation)
+        {
+            if (world.Host == null)
+            {
+                return 0;
+            }
+
+            WorldResourceLedgerSnapshot snapshot = world.Host.ReadResourceLedger();
+            int retained = 0;
+            for (int i = 0; i < snapshot.Resources.Count; i++)
+            {
+                WorldResourceRecord record = snapshot.Resources[i];
+                if (record.Instance.Equals(installation.Instance) && record.IsRetained)
+                {
+                    retained++;
+                }
+            }
+
+            return retained;
+        }
+
+        /// <summary>
+        /// One seat's effective set-bonus value: the active `cards.set-bonus` binding row the published assembly
+        /// carries for the seat's target, or `none` when no provider supports it any more (07 s2, P-017, P-019).
+        /// </summary>
+        private static string Bonus(CrossWorld world, uint ordinal)
+        {
+            if (world.Publisher == null)
+            {
+                return ConformanceValue.None;
+            }
+
+            TargetId target = CardTableFixture.SeatTarget(ordinal);
+            IReadOnlyList<CapabilityBinding> rows = world.Publisher.ReadBindingRows(target);
+            for (int i = 0; i < rows.Count; i++)
+            {
+                if (rows[i].IsActive
+                    && rows[i].OutputSlot == 0U
+                    && rows[i].Capability.Equals(CardVocabulary.SetBonusCapability))
+                {
+                    return Int(rows[i].Value);
+                }
+            }
+
+            return ConformanceValue.None;
         }
 
         private static string Owned(CrossWorld world, TargetId target, OwnerId owner, SlotId slot)
@@ -770,12 +1360,13 @@ namespace GameCore.Validation.ProbeHost
         // ------------------------------------------------------------------ the merged world's parts
 
         /// <summary>
-        /// The merged manifest declarations of the combined world: the narrative fixture's generated-style set plus
-        /// the card family's declared set. `Gc013CardsHost.Declarations()` already carries
+        /// The two families' own manifest declarations, which is the set this world compiles and registers. It is the
+        /// ownership and schedule surface the world really runs: see <see cref="LaneDeclarations"/> for why the reward
+        /// installation's declaration is not part of it. `Gc013CardsHost.Declarations()` already carries
         /// `CardTableFixture.Declarations()` as its first four entries, so adding that set a second time would be a
         /// duplicate declaration rather than a union (P-009).
         /// </summary>
-        private static List<CatalogPluginDeclaration> MergedDeclarations()
+        private static List<CatalogPluginDeclaration> FamilyDeclarations()
         {
             var merged = new List<CatalogPluginDeclaration>(
                 Gc013NarrativeHost.Declarations(
@@ -785,25 +1376,45 @@ namespace GameCore.Validation.ProbeHost
         }
 
         /// <summary>
-        /// The union catalog both families' declarations resolve through. The two fixture catalogs are separate
-        /// tables with disjoint keys, so the combined world carries the union of their registrations: a declaration
-        /// whose factory key or configuration schema resolved in its own world must resolve here too (P-009, P-028).
+        /// The declarations the LANE resolves manifests from: the two families' own set plus 07 s5's
+        /// `NarrativeCardRewards` declaration. The installation is a real install of this world's composition — its
+        /// mount and unmount are lane publications, its slot's last-support policy and its registered migration are
+        /// read from this manifest — while the compiled ownership schedule the world registers stays the families' own
+        /// set, because a compiled system entry needs exactly one host registration
+        /// (`CompiledScheduleAdapter.Registrations`) and this plugin's runtime is the mounted installation rather
+        /// than a host system (07 s5, P-009, P-032).
+        /// </summary>
+        private static List<CatalogPluginDeclaration> LaneDeclarations()
+        {
+            List<CatalogPluginDeclaration> merged = FamilyDeclarations();
+            merged.Add(RewardsDeclaration.Declaration());
+            return merged;
+        }
+
+        /// <summary>
+        /// The union catalog every declaration of this world resolves through. The three tables have disjoint keys, so
+        /// the combined world carries the union of their registrations: a declaration whose factory key or
+        /// configuration schema resolved in its own package's world must resolve here too (P-009, P-028).
         /// </summary>
         private static ImmutableCatalog BuildCombinedCatalog(out string detail)
         {
             var factories = new List<FactoryRegistration>(NarrativeScenarioCatalog.Factories());
             factories.AddRange(CardCatalogTable.Factories());
+            factories.AddRange(RewardsCatalog.Factories());
             var schemas = new List<SchemaRegistration>(NarrativeScenarioCatalog.Schemas());
             schemas.AddRange(CardCatalogTable.Schemas());
+            schemas.AddRange(RewardsCatalog.Schemas());
             var serializers = new List<ISchemaSerializer>(NarrativeScenarioCatalog.Serializers);
             serializers.AddRange(CardCatalogTable.Serializers());
+            serializers.AddRange(RewardsCatalog.Serializers());
             var features = new List<Id128>(NarrativeScenarioCatalog.SupportedFeatureIds);
             features.AddRange(CardCatalogTable.SupportedFeatureIds);
+            features.AddRange(RewardsCatalog.SupportedFeatureIds);
 
             CatalogBuildResult built = ImmutableCatalog.Build(factories, schemas, features, serializers);
             if (built.Catalog == null)
             {
-                detail = "the union of the two fixture catalogs was rejected: " + built.Describe();
+                detail = "the union of the three catalogs was rejected: " + built.Describe();
                 throw new InvalidOperationException(detail);
             }
 
@@ -822,19 +1433,25 @@ namespace GameCore.Validation.ProbeHost
         {
             private readonly ScheduleDispatchKindTable narrative;
             private readonly ScheduleDispatchKindTable cards;
+            private readonly ScheduleDispatchKindTable rewards;
 
-            public MergedDispatchKinds(ScheduleDispatchKindTable narrative, ScheduleDispatchKindTable cards)
+            public MergedDispatchKinds(
+                ScheduleDispatchKindTable narrative,
+                ScheduleDispatchKindTable cards,
+                ScheduleDispatchKindTable rewards)
             {
                 this.narrative = narrative;
                 this.cards = cards;
+                this.rewards = rewards;
             }
 
             public bool TryResolveKind(FactoryKey systemKey, out SystemDispatchKind kind)
-                => narrative.TryResolveKind(systemKey, out kind) || cards.TryResolveKind(systemKey, out kind);
+                => narrative.TryResolveKind(systemKey, out kind)
+                    || cards.TryResolveKind(systemKey, out kind)
+                    || rewards.TryResolveKind(systemKey, out kind);
 
-            public int Count => narrative.Count + cards.Count;
+            public int Count => narrative.Count + cards.Count + rewards.Count;
         }
-
         /// <summary>The narrative slice's own dispatch-kind table, as its family's `CompilePipeline` declares it.</summary>
         private static ScheduleDispatchKindTable NarrativeDispatchKinds() =>
             new ScheduleDispatchKindTable()
@@ -844,6 +1461,16 @@ namespace GameCore.Validation.ProbeHost
                 .Add(NarrativeKeys.GateSystem, SystemDispatchKind.ManagedSystem)
                 .Add(NarrativeKeys.EncounterSystem, SystemDispatchKind.ManagedSystem)
                 .Add(NarrativeKeys.OutputSystem, SystemDispatchKind.ManagedSystem);
+
+        /// <summary>
+        /// The reward installation's own two declared systems (`rewards.enqueue`, `rewards.ack`). They resolve so the
+        /// merged schedule compiles with the plugin's declaration present, and they are managed systems because
+        /// 07 s5 defines the plugin's runtime as the mounted installation rather than as an unmanaged ECS entry.
+        /// </summary>
+        private static ScheduleDispatchKindTable RewardsDispatchKinds() =>
+            new ScheduleDispatchKindTable()
+                .Add(RewardsKeys.EnqueueSystem, SystemDispatchKind.ManagedSystem)
+                .Add(RewardsKeys.AckSystem, SystemDispatchKind.ManagedSystem);
 
         /// <summary>
         /// The combined world's compiled ownership and schedule descriptor: the merged manifest set through the real
@@ -860,7 +1487,8 @@ namespace GameCore.Validation.ProbeHost
 
             return OwnershipSchedulePipeline.Build(
                 manifests,
-                new MergedDispatchKinds(NarrativeDispatchKinds(), CardTableRegistration.DispatchKinds()),
+                new MergedDispatchKinds(
+                    NarrativeDispatchKinds(), CardTableRegistration.DispatchKinds(), RewardsDispatchKinds()),
                 new SlotMigrationRegistry());
         }
 
@@ -969,11 +1597,17 @@ namespace GameCore.Validation.ProbeHost
             return new SpawnRecipeCatalog(recipes);
         }
 
+        /// <summary>
+        /// Both families' slot migrations plus the reward installation's registered v1 -> v2 outbox migration, so the
+        /// registry the planner and the assembly publisher resolve through carries the handler the declaration names
+        /// (a missing handler is a `MigrationRequired` refusal, P-032).
+        /// </summary>
         private static MigrationRegistry MergedMigrations() =>
             new MigrationRegistry(new List<ISlotMigration>
             {
                 new NarrativeConversationNodeMigration(),
                 new NarrativeConversationStatusMigration(),
+                new RewardsOutboxPreconditionMigration(),
             });
 
         /// <summary>
@@ -1041,7 +1675,10 @@ namespace GameCore.Validation.ProbeHost
 
             public ImmutableCatalog? CombinedCatalog { get; private set; }
 
-            /// <summary>The merged declaration set the lane resolves manifests from and the schedule compiled.</summary>
+            /// <summary>
+            /// The declarations the lane resolves manifests from (the two families' set plus 07 s5's reward
+            /// installation), which is also the manifest set the world's state-policy catalog is built from.
+            /// </summary>
             public IReadOnlyList<CatalogPluginDeclaration> Declarations { get; private set; } =
                 Array.Empty<CatalogPluginDeclaration>();
 
@@ -1177,6 +1814,131 @@ namespace GameCore.Validation.ProbeHost
                 return AssemblyPublisher.MatchesPublishedAssembly(
                     Lane.Committed.Revision, Lane.Committed.Epoch, Publisher.PublishedRevision, Host.CurrentEpoch);
             }
+            /// <summary>The world's declared state-policy surface, and the pipeline one policy pass runs over it.</summary>
+            public StatePolicyCatalog? PolicyCatalog { get; private set; }
+
+            public StateMigrationPipeline? Policies { get; private set; }
+
+            /// <summary>Every live target of this world, in the order the seeder registered them.</summary>
+            public IReadOnlyList<TargetId> TargetIds()
+            {
+                IReadOnlyList<LiveTarget> live = Targets == null ? Array.Empty<LiveTarget>() : Targets.Targets;
+                var ids = new List<TargetId>(live.Count);
+                for (int i = 0; i < live.Count; i++)
+                {
+                    ids.Add(live[i].Target);
+                }
+
+                return ids;
+            }
+
+            /// <summary>One line naming the lane's record of the reward installation, for a step's detail (P-046).</summary>
+            public string LaneInstallState()
+            {
+                if (Lane == null)
+                {
+                    return "no lane";
+                }
+
+                return Lane.Committed.TryGetInstall(RewardsKeys.Installation, out InstallEntry? entry) && entry != null
+                    ? entry.State + "/retained="
+                        + Lane.Resources.RetainedCountFor(RewardsKeys.Installation)
+                            .ToString(CultureInfo.InvariantCulture)
+                    : "not installed";
+            }
+
+            /// <summary>
+            /// Publishes the world's assembly for the composition publication the lane already committed, with the
+            /// executed state-policy plan as its own: the plan's dispositions are the publication's, so a
+            /// `RetainDormant` decision marks the retained outbox row dormant in the same fence (P-029, P-032). A
+            /// refused pass is reported with its code and publishes nothing.
+            /// </summary>
+            public bool TryPublishPolicyPlan(StatePolicyPlan? plan, out string detail)
+            {
+                detail = string.Empty;
+                if (Host == null || Lane == null || Publisher == null || Targets == null || Seeder == null)
+                {
+                    detail = "the world is missing a part, so no policy publication can be made";
+                    return false;
+                }
+
+                if (plan == null)
+                {
+                    detail = "no state-policy pass was executed, so there is no plan to publish";
+                    return false;
+                }
+
+                if (!plan.Succeeded)
+                {
+                    detail = "the state-policy pass was refused (" + DiagnosticCodeText.Of(plan.Code) + "): "
+                        + plan.Detail;
+                    return false;
+                }
+
+                if (!Publisher.TryAdoptLanePublication(
+                        Lane.Committed.Revision,
+                        Lane.Committed.Epoch,
+                        out AssemblyEpoch _,
+                        out DiagnosticCode adoptCode))
+                {
+                    detail = "the publisher refused to adopt the lane's committed publication "
+                        + Lane.Committed.Revision.Value.ToString(CultureInfo.InvariantCulture) + "/"
+                        + Lane.Committed.Epoch.Value.ToString(CultureInfo.InvariantCulture)
+                        + " (" + DiagnosticCodeText.Of(adoptCode) + ")";
+                    return false;
+                }
+
+                OperationId operation = NextOperation();
+                var proposal = new PlanningCompositionProposal(
+                    operation,
+                    ContentHash.Empty,
+                    Publisher.PublishedRevision,
+                    Host.CurrentEpoch,
+                    ContentHash.Empty,
+                    Lane.Committed.Mode,
+                    null,
+                    null);
+                PlannedPublication planned = AssemblyPlanner.Build(
+                    proposal,
+                    Publisher.Descriptor,
+                    Publisher.PublishedRevision,
+                    Host.CurrentEpoch,
+                    Publisher.Published.Bindings,
+                    Publisher.Published.Rules,
+                    Targets.PlannerTargets(),
+                    Seeder.ReadLiveSlots(TargetIds()),
+                    Publisher.Migrations,
+                    new MigrationScratch(ScratchCapacityBytes, ScratchBytesPerSlot),
+                    new InertAcquisitionSet(
+                        new StagedResourceGate(StagedByteCeiling, NarrativeKeys.Issuer), operation),
+                    new PlanBudget(PrepareBytesLimit, PrepareBytesLimit, ScratchCapacityBytes, ScratchBytesPerSlot),
+                    plan);
+                if (!planned.IsPrepared)
+                {
+                    detail = "the plan for the policy publication is " + planned.State.Phase + ": "
+                        + planned.State.Code + ": " + planned.State.Detail;
+                    return false;
+                }
+
+                AssemblyPublicationReport publication = Publisher.Publish(planned);
+                detail = "policyPublication=" + publication.Outcome + "/" + publication.Code
+                    + ", dispositions=" + planned.Dispositions.Count.ToString(CultureInfo.InvariantCulture)
+                    + ", migrations=" + planned.Migrations.Count.ToString(CultureInfo.InvariantCulture)
+                    + ", detail=" + Clip(publication.Detail, 160);
+                return publication.Published;
+            }
+
+            /// <summary>The manifests of the declarations this world's lane resolves (P-009, P-032).</summary>
+            private IReadOnlyList<PluginManifest> LaneManifests()
+            {
+                var manifests = new List<PluginManifest>(Declarations.Count);
+                for (int i = 0; i < Declarations.Count; i++)
+                {
+                    manifests.Add(Declarations[i].Manifest);
+                }
+
+                return manifests;
+            }
 
             public OperationId NextOperation()
             {
@@ -1241,9 +2003,9 @@ namespace GameCore.Validation.ProbeHost
                 string catalogDetail;
                 CombinedCatalog = BuildCombinedCatalog(out catalogDetail);
                 CatalogDetail = catalogDetail;
-                Declarations = MergedDeclarations();
+                Declarations = LaneDeclarations();
 
-                Descriptor = BuildMergedDescriptor(Declarations);
+                Descriptor = BuildMergedDescriptor(FamilyDeclarations());
                 if (!Descriptor.Succeeded
                     || Descriptor.Descriptor == null
                     || Descriptor.Adaptation == null
@@ -1319,6 +2081,16 @@ namespace GameCore.Validation.ProbeHost
                     new PlanBudget(PrepareBytesLimit, PrepareBytesLimit, ScratchCapacityBytes, ScratchBytesPerSlot));
                 Time = new WorldTimeDriver(Host, new StepInputCutoff(8, 16), new PluginClockRegistry(8), 1U);
                 Time.AdoptResourceTable(Descriptor.Adaptation.NativeTable!);
+
+                // The world's own state-policy surface, built from the very manifests the lane resolves, so a slot
+                // policy a row asserts on is the declaration's own field and not an override (P-032). The reward
+                // installation's registered migration is registered here under its declared key.
+                PolicyCatalog = StatePolicyCatalog.Build(
+                    LaneManifests(),
+                    MergedMigrations().Migrations,
+                    null);
+                Policies = new StateMigrationPipeline(Host, Publisher, Seeder, PolicyCatalog,
+                    new PlanBudget(PrepareBytesLimit, PrepareBytesLimit, ScratchCapacityBytes, ScratchBytesPerSlot));
 
                 Ready = true;
             }
@@ -1528,7 +2300,7 @@ namespace GameCore.Validation.ProbeHost
         /// </summary>
         public static CrossCompositionAudit AuditCombinedComposition()
         {
-            IReadOnlyList<CatalogPluginDeclaration> declarations = MergedDeclarations();
+            IReadOnlyList<CatalogPluginDeclaration> declarations = FamilyDeclarations();
             PipelineDescriptorReport descriptor = BuildMergedDescriptor(declarations);
             W6FamilyAudit family = W6CompositionAudit.WalkFamily(
                 Label, declarations, descriptor, W6CompositionAudit.CourseSurface());
