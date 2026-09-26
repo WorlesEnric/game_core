@@ -61,7 +61,8 @@ branches, and shared and unique contribution sets — "diagnostic loads, not ass
 
 ## Commands
 
-`NotRun (pending orchestrator build host)` — both commands below run on the build host, not here.
+The commands below run on the Linux build host. The required five-run full catalogue remains blocked by a no-log-progress
+defect; `summary.md` reports a shorter diagnostic catalogue and does not qualify the full target.
 
 ```sh
 # 1. Build the qualification player. The benchmark mode is compiled into the same IL2CPP binary as every other probe
@@ -81,7 +82,7 @@ PROBE_PLAYER="$PWD/unity/GameCore.Validation/Builds/Linux64/GameCoreProbe.x86_64
 Re-summarising the same raw data without re-running the player (identical inputs give a byte-identical `summary.md`):
 
 ```sh
-# NotRun (pending orchestrator build host)
+# Diagnostic measurements only until the complete five-run catalogue finishes.
 python3 tools/summarize_benchmarks.py \
   --raw artifacts/performance/raw \
   --out artifacts/performance/summary.md \
@@ -94,7 +95,7 @@ A single workload, for triage (the selector is resolved against the catalogue, d
 is catalogue order whatever the request order):
 
 ```sh
-# NotRun (pending orchestrator build host)
+# Diagnostic workload selection; not the full acceptance method.
 BENCH_WORKLOADS=steady-execution-10000-targets BENCH_RUNS=1 tools/run_benchmarks.sh
 ```
 
@@ -123,7 +124,7 @@ harness before the summarizer runs.
 Harness environment knobs and their defaults: `PROBE_PLAYER`, `UNITY_PROJECT`, `ARTIFACTS` (`artifacts/performance`),
 `BENCH_RUNS` (5), `BENCH_WARMUP` (30), `BENCH_DURATION` (120), `BENCH_REPETITIONS` (0 = each workload's declared
 default), `BENCH_WORKLOADS` (`all`), `BENCH_SCOPES` (1000), `BENCH_TARGETS` (10000), `BENCH_LIVE_SCOPES` /
-`BENCH_LIVE_TARGETS` (default to the two above), `BENCH_SEED` (20260926), `BENCH_TIMEOUT` (3600 s per run), `MACHINE`
+`BENCH_LIVE_TARGETS` (default to the two above), `BENCH_SEED` (20260926), `BENCH_TIMEOUT` (1800 s per run), `MACHINE`
 (`$(hostname)`).
 
 ## Wall-clock cost of the declared defaults

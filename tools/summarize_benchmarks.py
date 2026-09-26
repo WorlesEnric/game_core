@@ -1046,9 +1046,9 @@ def render_summary(
     lines.append(f"Verdict: **{verdict}** — " + "; ".join(reasons) + ".")
     lines.append("")
     lines.append(
-        "Status: NotRun (pending orchestrator build host) unless the raw sample documents listed under Evidence exist "
-        "and this summary was regenerated on that host. This file is a summary, not a raw artifact: every number below "
-        "is recomputed from the per-sample documents named in Evidence."
+        "Status: measured diagnostic evidence from the raw sample documents listed under Evidence. "
+        "Check Resolved configuration and Wall-clock window per run before comparing against 08's full method; "
+        "a short or partial run does not qualify the five-run gate."
     )
     lines.append("")
     hardware = dict(hardware_rows(machine, context))

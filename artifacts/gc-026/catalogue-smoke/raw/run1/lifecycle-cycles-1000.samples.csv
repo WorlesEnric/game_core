@@ -1,0 +1,13 @@
+# gamecore.benchmark.samples.csv/1 workload=lifecycle-cycles-1000 run=1 seed=20260926 scopes=1000 targets=10000 warmupSeconds=1 durationSeconds=2 repetitions=5
+workload,phase,ordinal,microseconds,control-nodes-visited,candidates-matched,contributions-added,contributions-retracted,strata-evaluated,plan-prepared-bytes,apply-us,assembly-epoch,steps-advanced,service-string-lookups,stage-us,stage-samples,job-wait-us,job-wait-samples,structural-operations,request-high-water,request-overflow,stale-results,live-leases,outstanding-callbacks,retained-event-bytes,retained-event-count,quarantine-bytes,quarantine-entries,lease-bytes,cache-bytes,cache-entries,discarded-callbacks,apply-samples
+lifecycle-cycles-1000,Warmup,0,18363337,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+lifecycle-cycles-1000,Change,0,12327035,119038,31001,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+lifecycle-cycles-1000,Change,0,6184902,88049,21001,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+lifecycle-cycles-1000,Change,1,12290335,119038,31001,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+lifecycle-cycles-1000,Change,1,6216672,88049,21001,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+lifecycle-cycles-1000,Change,2,12337752,119038,31001,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+lifecycle-cycles-1000,Change,2,6187456,88049,21001,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+lifecycle-cycles-1000,Change,3,12275412,119038,31001,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+lifecycle-cycles-1000,Change,3,6227304,88049,21001,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+lifecycle-cycles-1000,Change,4,12334923,119038,31001,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+lifecycle-cycles-1000,Change,4,6195306,88049,21001,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0

@@ -87,6 +87,7 @@ namespace GameCore.Validation.ProbeHost
         private readonly List<ScopeId> scopes = new List<ScopeId>();
 
         private ulong operationSequence;
+        private ulong idlePumps;
         private BenchmarkLiveWorld()
         {
         }
@@ -246,6 +247,9 @@ namespace GameCore.Validation.ProbeHost
                     family.CreateRecipes(),
                     family.CreateMigrations(),
                     descriptor.Descriptor);
+                created.Publisher.TelemetryClock = () =>
+                    TelemetryDurations.TicksToMicroseconds(System.Diagnostics.Stopwatch.GetTimestamp(),
+                        System.Diagnostics.Stopwatch.Frequency);
                 created.Targets = new LiveTargetIndex(created.Publisher.Recipes);
                 created.Seeder = new LiveTargetSeeder(host, registry, created.Targets);
 
@@ -260,6 +264,8 @@ namespace GameCore.Validation.ProbeHost
                     CompositionLaneSeed.InitialAssembly.WithScopes(family.DeclareScopes(created.scopes)),
                     created.Validator);
 
+                BenchmarkFixture budgetFixture = BenchmarkFixtureGenerator.Generate(
+                    new BenchmarkScale(scopeCount, targetCount, scopeCount, targetCount, seed));
                 created.Pipeline = new DerivedAssemblyPipeline(
                     host,
                     created.Lane,
@@ -272,7 +278,8 @@ namespace GameCore.Validation.ProbeHost
                     created.Publisher.Migrations,
                     new StagedResourceGate(StagedByteCeiling, family.Issuer),
                     new PlanBudget(
-                        StagedByteCeiling, StagedByteCeiling, ScratchCapacityBytes, ScratchBytesPerSlot));
+                        StagedByteCeiling, StagedByteCeiling, ScratchCapacityBytes, ScratchBytesPerSlot),
+                    derivationOptions: new DerivationOptions(null, null, budgetFixture.SuggestedBudget, null, true));
 
                 created.Time = new WorldTimeDriver(host, new StepInputCutoff(64, 256), new PluginClockRegistry(64), 1U);
                 created.Time.AdoptResourceTable(descriptor.Adaptation.NativeTable!);
@@ -309,7 +316,7 @@ namespace GameCore.Validation.ProbeHost
             ulong committed = 0UL;
             for (int i = 0; i < frames; i++)
             {
-                committed += Time.PumpFrame(IdlePumpTicks * (ulong)(i + 2)).StepsCommitted;
+                committed += Time.PumpFrame(IdlePumpTicks * (idlePumps++ + 2UL)).StepsCommitted;
             }
 
             return committed;
@@ -359,9 +366,10 @@ namespace GameCore.Validation.ProbeHost
         public bool TrySeedTargets(int count, out string detail)
         {
             detail = string.Empty;
+            int firstIndex = TargetCount;
             for (int i = 0; i < count; i++)
             {
-                TargetId target = BenchmarkFixtureVariants.LiveStateTarget(villagers.Count + i);
+                TargetId target = BenchmarkFixtureVariants.LiveStateTarget(firstIndex + i);
                 ScopeId scope = scopes.Count == 0 ? RootScope : scopes[i % scopes.Count];
                 if (!Seeder.TrySeed(
                         target,
@@ -384,11 +392,32 @@ namespace GameCore.Validation.ProbeHost
             return true;
         }
 
-        /// <summary>
-        /// Publishes the world's assembly for the lane's committed composition: the real derived-assembly publication.
-        /// Seeding storage or mounting a provider is followed by exactly this call, and the publisher's own fenced
-        /// apply window is what the apply measurement reads (P-029, P-030).
-        /// </summary>
+        /// <summary>Publishes a target-neutral scope edit so the spawn owns the next publication (P-006).</summary>
+        public bool PrepareSpawnPublication(out string detail)
+        {
+            ScopeId spare = BenchmarkIds.GeneratedScope(0x100000 + (int)Lane.Committed.Revision.Value);
+            EditAdmission admission = Lane.SubmitEdit(
+                Gc013NarrativeHost.ScopeCreate(spare, RootScope),
+                NextOperation(Host.World), Lane.Committed.Revision);
+            if (!admission.Staged)
+            {
+                detail = "neutral spawn edit refused: " + admission.Kind + "/" + admission.Code;
+                return false;
+            }
+
+            IReadOnlyList<PublishedOperation> published = Lane.Drain();
+            if (published.Count == 0 || published[0].Outcome == Outcome.Rejected)
+            {
+                detail = "neutral spawn publication refused: "
+                    + (published.Count == 0 ? "none" : published[0].Outcome + "/" + published[0].Code);
+                return false;
+            }
+
+            detail = string.Empty;
+            return true;
+        }
+
+        /// <summary>Publishes the derived assembly for the lane's committed composition (P-029, P-030).</summary>
         public DerivedAssemblyReport PublishDerivedNow(string label)
         {
             DerivedAssemblyReport report = Pipeline.PublishDerived(NextOperation(Host.World));

@@ -270,8 +270,6 @@ namespace GameCore.Validation.ProbeHost
             /// <summary>Bound the integer rule saturates at, so a long run cannot wrap.</summary>
             private const int IntegerRuleBound = 1_000_000;
 
-            /// <summary>Ceiling on the samples one steady window records, so a raw artifact stays bounded.</summary>
-            private const int MaxSteadySamples = 20000;
 
             /// <summary>Floor of the warmup cycle cap: a very small scale still warms up for a few cycles.</summary>
             private const int WarmupCyclesCap = 64;
@@ -1233,11 +1231,6 @@ namespace GameCore.Validation.ProbeHost
                 var states = new int[targets];
                 long budgetMicroseconds = (long)options.DurationFor(workload) * 1_000_000L;
 
-                // This workload's work runs entirely on the calling thread, so a tracker that declares one thread and
-                // samples it has complete coverage; a worker-thread allocation would be invisible and the tracker says
-                // so rather than returning a thread-complete zero it did not observe.
-                BenchmarkAllocationTracker allocation = BenchmarkAllocationTracker.Start(
-                    1, BenchmarkThreadCoverage.AllThreadsSampled);
 
                 // 08's warmup rule for a steady workload: run the same work until the declared warmup wall clock has
                 // elapsed, with no per-step sample (see WarmUpSteady). The warmup steps mutate the same states the
@@ -1255,6 +1248,9 @@ namespace GameCore.Validation.ProbeHost
                         return Microseconds() - warmupStarted;
                     },
                     out int warmupSteps);
+                // The diagnostic warmup is outside the measured allocation window.
+                BenchmarkAllocationTracker allocation = BenchmarkAllocationTracker.Start(
+                    1, BenchmarkThreadCoverage.AllThreadsSampled);
 
                 document.WarmupMicroseconds = warmupSpent;
                 document.Note("warmupSteps=" + warmupSteps.ToString(CultureInfo.InvariantCulture)
@@ -1262,13 +1258,14 @@ namespace GameCore.Validation.ProbeHost
 
                 long window = 0L;
                 int step = 0;
+                long kernelAllocatedBytes = 0L;
                 long commands = 0L;
                 var totals = new TelemetryCounterSet();
 
-                // The window ends at the declared duration OR at the sample cap, so one raw artifact stays bounded;
-                // both the achieved window and the cap are recorded (08 forbids an undisclosed short window).
-                while (window < budgetMicroseconds && step < MaxSteadySamples)
+                // Measure the entire requested wall-clock window; never stop early because the sample matrix grows.
+                while (window < budgetMicroseconds)
                 {
+                    long allocatedBefore = GC.GetAllocatedBytesForCurrentThread();
                     long started = Microseconds();
                     for (int t = 0; t < targets; t++)
                     {
@@ -1283,6 +1280,7 @@ namespace GameCore.Validation.ProbeHost
                         states[target] = states[target] == IntegerRuleBound ? IntegerRuleBound : states[target] + 1;
                     }
 
+                    kernelAllocatedBytes += GC.GetAllocatedBytesForCurrentThread() - allocatedBefore;
                     long elapsed = Microseconds() - started;
                     window += elapsed;
                     step++;
@@ -1293,8 +1291,8 @@ namespace GameCore.Validation.ProbeHost
                     document.Add(new BenchmarkSample(step, BenchmarkPhase.Step, elapsed, sample));
                     totals.Add(TelemetryCounter.StepsAdvanced, 1L);
                 }
+                allocation.SampleReportedThread("main", kernelAllocatedBytes);
 
-                allocation.SampleCallingThread("main");
                 document.StepsAdvanced = step;
                 document.WindowMicroseconds = window;
                 document.SetTotals(totals);
@@ -1309,8 +1307,7 @@ namespace GameCore.Validation.ProbeHost
                     + "; commandsPerStep=" + CommandsPerStep.ToString(CultureInfo.InvariantCulture)
                     + "; committedCommands=" + commands.ToString(CultureInfo.InvariantCulture)
                     + "; bound=" + IntegerRuleBound.ToString(CultureInfo.InvariantCulture)
-                    + "; sampleCap=" + MaxSteadySamples.ToString(CultureInfo.InvariantCulture)
-                    + "; windowEndedByCap=" + (window < budgetMicroseconds ? "true" : "false")
+                    + "; windowEndedByCap=false"
                     + "; allocation=" + allocation.Describe());
                 document.Add(new BenchmarkGateResult(
                     "core-execution-window",
@@ -1318,8 +1315,7 @@ namespace GameCore.Validation.ProbeHost
                     "steps=" + step.ToString(CultureInfo.InvariantCulture)
                     + "; windowUs=" + window.ToString(CultureInfo.InvariantCulture)
                     + "; budgetUs=" + budgetMicroseconds.ToString(CultureInfo.InvariantCulture)
-                    + "; sampleCap=" + MaxSteadySamples.ToString(CultureInfo.InvariantCulture)
-                    + "; windowEndedByCap=" + (window < budgetMicroseconds ? "true" : "false")
+                    + "; windowEndedByCap=false"
                     + "; targets=" + targets.ToString(CultureInfo.InvariantCulture)
                     + "; commands=" + commands.ToString(CultureInfo.InvariantCulture)));
                 document.Add(new BenchmarkGateResult(
@@ -1370,18 +1366,17 @@ namespace GameCore.Validation.ProbeHost
                 document.WarmupMicroseconds = warmupSpent;
                 document.Note("warmupFrames=" + warmupFrames.ToString(CultureInfo.InvariantCulture)
                     + "; warmupMicroseconds=" + warmupSpent.ToString(CultureInfo.InvariantCulture));
-
-                // The window ends at the declared duration OR at the sample cap, whichever comes first; both the
-                // achieved window and the cap go into the document, because a shortened window that is not disclosed
-                // is exactly the kind of silent truncation 08 forbids.
-                while (window < budgetMicroseconds && frames < MaxSteadySamples)
+                // Sample a fixed batch of idle pumps. This preserves the entire requested wall-clock window
+                // without allocating millions of one-microsecond sample objects in an idle world.
+                const int pumpsPerSample = 8192;
+                while (window < budgetMicroseconds)
                 {
                     long started = Microseconds();
-                    steps += world.PumpIdle(1);
+                    steps += world.PumpIdle(pumpsPerSample);
                     long elapsed = Microseconds() - started;
                     window += elapsed;
                     document.Add(new BenchmarkSample(frames, BenchmarkPhase.Step, elapsed, null));
-                    frames++;
+                    frames += pumpsPerSample;
                 }
 
                 TelemetryCounterSet after = SampleWorld(world);
@@ -1397,7 +1392,7 @@ namespace GameCore.Validation.ProbeHost
                     && delta.Get(TelemetryCounter.StepsAdvanced) == 0L
                     && delta.Get(TelemetryCounter.StageSampleCount) == 0L,
                     "frames=" + frames.ToString(CultureInfo.InvariantCulture)
-                    + "; sampleCap=" + MaxSteadySamples.ToString(CultureInfo.InvariantCulture)
+                    + "; pumpsPerSample=" + pumpsPerSample.ToString(CultureInfo.InvariantCulture)
                     + "; steps=" + steps.ToString(CultureInfo.InvariantCulture)
                     + "; stepsAdvanced=" + delta.Get(TelemetryCounter.StepsAdvanced).ToString(CultureInfo.InvariantCulture)
                     + "; stageSamples=" + delta.Get(TelemetryCounter.StageSampleCount).ToString(CultureInfo.InvariantCulture)
@@ -1478,12 +1473,12 @@ namespace GameCore.Validation.ProbeHost
                 while (committed < (ulong)target && pumps < 100000)
                 {
                     long started = Microseconds();
-                    ulong tick = world.Host.HostTimeOrigin + ((ulong)(pumps + 1) * ticksPerPump);
+                    ulong tick = world.Host.HostTimeOrigin + ((ulong)(warmupPumps + pumps + 1) * ticksPerPump);
                     ulong advanced = world.Pump(tick).StepsCommitted;
                     long elapsed = Microseconds() - started;
                     window += elapsed;
-                    pumps++;
                     committed += advanced;
+                    pumps++;
                     document.Add(new BenchmarkSample(pumps, BenchmarkPhase.Step, elapsed, null));
                     if (advanced == 0UL && pumps > 4)
                     {
@@ -1594,6 +1589,7 @@ namespace GameCore.Validation.ProbeHost
                     && eligible == options.ApplyTargets
                     && world.MatchesPublishedAssembly(),
                     "outcome=" + report.Outcome
+                    + "; code=" + report.Code + "; detail=" + report.Detail
                     + "; eligibleTargets=" + eligible.ToString(CultureInfo.InvariantCulture)
                     + "; declaredApplyTargets=" + options.ApplyTargets.ToString(CultureInfo.InvariantCulture)
                     + "; installedRows=" + report.InstalledRows.ToString(CultureInfo.InvariantCulture)
@@ -1642,6 +1638,12 @@ namespace GameCore.Validation.ProbeHost
                     document.Add(new BenchmarkGateResult("live-spawn-seeded", false, seedDetail));
                     return;
                 }
+                if (!world.PrepareSpawnPublication(out string publicationDetail))
+                {
+                    document.Add(new BenchmarkGateResult("live-spawn-publication", false, publicationDetail));
+                    return;
+                }
+
 
                 started = Microseconds();
                 DerivedAssemblyReport report = world.PublishDerivedNow("live-spawn-publication");
@@ -1675,6 +1677,7 @@ namespace GameCore.Validation.ProbeHost
                     "live-spawn-publishes-one-complete-publication",
                     report.Outcome == DerivedAssemblyOutcome.Published && assembled == count,
                     "spawned=" + count.ToString(CultureInfo.InvariantCulture)
+                    + "; code=" + report.Code + "; detail=" + report.Detail
                     + "; assembled=" + assembled.ToString(CultureInfo.InvariantCulture)
                     + "; outcome=" + report.Outcome
                     + "; installedRows=" + report.InstalledRows.ToString(CultureInfo.InvariantCulture)
@@ -1759,6 +1762,7 @@ namespace GameCore.Validation.ProbeHost
 
                 EnsureCollector();
                 ReplayScenario.RegisterOwners(worldCollector!, world.Host);
+                worldCollector!.Add(world.Publisher);
 
                 // The authority fixture runs on the first world built: an authoritative slot is written through the
                 // world's own owner path and read back through the world's own reader, while the derived binding rows
@@ -1781,7 +1785,7 @@ namespace GameCore.Validation.ProbeHost
                     return false;
                 }
 
-                var slot = new SlotId(BenchmarkIds.CapabilityValue("gc026.authority.slot"));
+                SlotId slot = NarrativeKeys.ConversationNodeSlot;
                 OwnerId owner = NarrativeKeys.DialogueOwner;
                 uint version = NarrativeKeys.ConversationDomain.Version;
 
@@ -1844,12 +1848,10 @@ namespace GameCore.Validation.ProbeHost
                     return true;
                 }
 
-                int scopes = Math.Min(options.Scale.LiveScopes, 64);
-                int targets = Math.Min(options.Scale.LiveTargets, Math.Max(1, options.ApplyTargets));
                 bool created = BenchmarkLiveWorld.TryCreate(
-                    scopes,
-                    targets,
-                    targets,
+                    options.Scale.LiveScopes,
+                    options.Scale.LiveTargets,
+                    Math.Min(options.ApplyTargets, options.Scale.LiveTargets),
                     options.Scale.Seed + 1U,
                     true,
                     out BenchmarkLiveWorld? world,
@@ -1863,6 +1865,7 @@ namespace GameCore.Validation.ProbeHost
 
                 EnsureCollector();
                 ReplayScenario.RegisterOwners(worldCollector!, world.Host);
+                worldCollector!.Add(world.Publisher);
                 return true;
             }
 
