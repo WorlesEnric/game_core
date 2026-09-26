@@ -672,6 +672,32 @@ namespace GameCore.Composition
                     break;
                 }
 
+                case InstallationState.Failed:
+                {
+                    // P-012: an existing provider failed unexpectedly. Its live activation loses authority and can
+                    // never be kept active, so this is a real lifecycle edge (`Active -> Failed`) rather than the
+                    // silent permit the default arm used to give a Failed after-state. The ingress closes and the
+                    // active contribution retracts in this same publication, exactly like a lost provider; the
+                    // dependents of the failed activation are the ones the resolver moved to
+                    // WaitingForDependencies, and the installation itself keeps its identity and configuration so
+                    // an explicit retry or an unmount stays possible (P-046).
+                    //
+                    // The reason is read out of the plan's own subject rather than out of this coordinator's last
+                    // refusal fields, which belong to whatever edge ran before this one.
+                    bool unexpected = plan.Subject == CompositionEditSubject.InstallProviderFailure;
+                    transition = Activations.FailActive(
+                        entry.Instance,
+                        unexpected ? DiagnosticCode.ProviderFailed : DiagnosticCode.None,
+                        unexpected
+                            ? "the Active provider " + entry.Instance.ToString()
+                              + " failed unexpectedly; its safe dependency-closure deactivation publishes in this revision (P-012)"
+                            : "the installation " + entry.Instance.ToString() + " entered Failed (P-046)",
+                        out ActivationAttempt? failed);
+                    _ = failed;
+                    retractions.Add(Retract(entry.Instance, entry, plan.Operation));
+                    break;
+                }
+
                 case InstallationState.Retiring:
                 case InstallationState.Disposed:
                 {

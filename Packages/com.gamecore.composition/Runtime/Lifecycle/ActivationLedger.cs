@@ -147,6 +147,9 @@ namespace GameCore.Composition
 
         public int AbortedCandidateCount { get; private set; }
 
+        /// <summary>Live activations that failed unexpectedly (P-012); a candidate abort is not one of these.</summary>
+        public int ActiveFailureCount { get; private set; }
+
         public int SuspendedCount { get; private set; }
 
         public int ResumedCount { get; private set; }
@@ -420,6 +423,58 @@ namespace GameCore.Composition
             AbortedCandidateCount++;
             return LifecycleTransition.Permit(InstallationState.Preparing, InstallationState.Failed);
         }
+
+        /// <summary>
+        /// `Active -> Failed`: an existing provider failed unexpectedly, so its live activation can no longer hold
+        /// authority and can never be kept active (P-012). This is the *decision* half of that requirement: it marks
+        /// the activation Failed and records why. It does not tear resources down and does not publish anything -
+        /// the world's deactivation publication is what either succeeds (the failed provider and its dependents
+        /// leave the assembly) or, when it cannot publish, makes the world fault.
+        ///
+        /// A second call for an already-failed activation is a permitted no-op rather than an error or a second
+        /// count: the failure is one fact, and a repeated report of it must not inflate the ledger's counters
+        /// (P-050's idempotency discipline applied to an internal transition).
+        /// </summary>
+        public LifecycleTransition FailActive(
+            PluginInstanceId instance,
+            DiagnosticCode code,
+            string detail,
+            out ActivationAttempt? failed)
+        {
+            failed = null;
+            Entry entry = EntryOf(instance);
+            if (entry.Current == null)
+            {
+                return Refuse(InstallationState.Registered, InstallationState.Failed, "no live activation exists to fail");
+            }
+
+            if (entry.Current.State == InstallationState.Failed)
+            {
+                // Already failed: one fact, reported once. The recorded reason stays the first one.
+                failed = entry.Current;
+                return LifecycleTransition.Permit(InstallationState.Failed, InstallationState.Failed);
+            }
+
+            LifecycleTransition edge = InstallationStateMachine.Request(entry.Current.State, InstallationState.Failed);
+            if (!edge.Allowed || entry.Current.State != InstallationState.Active)
+            {
+                return Refuse(entry.Current.State, InstallationState.Failed,
+                    "only an active activation fails unexpectedly; a deliberate teardown walks the Quiescing path");
+            }
+
+            failed = entry.Current.With(InstallationState.Failed);
+            entry.Current = failed;
+            ActiveFailureCount++;
+            LastFailureCode = code;
+            LastFailureDetail = detail ?? string.Empty;
+            return edge;
+        }
+
+        /// <summary>Diagnostic code of the most recent unexpected provider failure (P-012).</summary>
+        public DiagnosticCode LastFailureCode { get; private set; } = DiagnosticCode.None;
+
+        /// <summary>Why the most recent unexpected provider failure happened (P-012, P-052).</summary>
+        public string LastFailureDetail { get; private set; } = string.Empty;
 
         /// <summary>Walks `Active -> Quiescing`; the old committed assembly is still visible in this state (06 s1).</summary>
         public LifecycleTransition Quiesce(PluginInstanceId instance)

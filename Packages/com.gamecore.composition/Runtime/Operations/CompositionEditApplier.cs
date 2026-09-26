@@ -222,6 +222,8 @@ namespace GameCore.Composition
                     return PlanLifecycle(current, payload, operation, inputHash, InstallationState.Preparing, diagnostics);
                 case CompositionEditSubject.ModeSet:
                     return PlanModeSet(current, payload, operation, inputHash, diagnostics);
+                case CompositionEditSubject.InstallProviderFailure:
+                    return PlanProviderFailure(current, payload, operation, inputHash, diagnostics);
                 default:
                     // A subject the payload codec accepted but the applier does not implement cannot be applied.
                     diagnostics.Add(Diag(DiagnosticCode.UnsupportedVersion, payload.Subject, operation, "Unsupported edit subject."));
@@ -248,6 +250,76 @@ namespace GameCore.Composition
 
             CompositionState after = current.With(mode: payload.Mode);
             return Finish(current, after, payload, operation, inputHash, null, null, diagnostics);
+        }
+
+
+        /// <summary>
+        /// P-012: an existing Active provider failed unexpectedly, so it can never be kept active. This plans the
+        /// *safe dependency-closure deactivation*: the failed installation is marked <c>Failed</c>, and because
+        /// <see cref="InstallationStateMachine.CanResolveActivation"/> gives a failed activation no bindings at all,
+        /// the ordinary resolver in <see cref="Finish"/> moves every consumer that required it to
+        /// <c>WaitingForDependencies</c> and retracts their contributions <em>in this same publication</em>. The new
+        /// composition revision and assembly epoch therefore never contain the failed provider's authority, which is
+        /// what "no invisible partial success" means here.
+        ///
+        /// The planning is pure, so a deactivation that cannot be planned is a plain <c>Rejected</c> plan that
+        /// publishes nothing and leaves the old assembly visible. The caller (the world) decides what an
+        /// unpublishable deactivation means: P-012 says the world stops admission and faults.
+        ///
+        /// This is not a removal. The installation keeps its identity, generation and configuration, so an explicit
+        /// retry can prepare it again (<c>Failed -> Preparing</c>) and an unmount can still retire it
+        /// (<c>Failed -> Retiring</c>); nothing here destroys state or committed gameplay.
+        /// </summary>
+        private static CompositionEditPlan PlanProviderFailure(
+            CompositionState current,
+            CompositionEditPayload payload,
+            OperationId operation,
+            ContentHash inputHash,
+            List<Diagnostic> diagnostics)
+        {
+            if (!current.TryGetInstall(payload.Instance, out InstallEntry? entry) || entry == null)
+            {
+                diagnostics.Add(Diag(DiagnosticCode.MissingDependency, payload.Subject, operation, "No such installation is registered in this world."));
+                return Rejected(current, payload, operation, inputHash, DiagnosticCode.MissingDependency, diagnostics);
+            }
+
+            if (entry.State == InstallationState.Failed)
+            {
+                // The failure is one fact: a repeated report publishes the same deactivation state as NoChange
+                // rather than a second epoch (P-006, P-050).
+                return Finish(current, current, payload, operation, inputHash, null, null, diagnostics);
+            }
+
+            if (entry.State != InstallationState.Active)
+            {
+                diagnostics.Add(Diag(DiagnosticCode.OwnershipConflict, payload.Subject, operation,
+                    "Only an Active installation can fail unexpectedly; an installation in " + entry.State
+                    + " has no live authority to lose (P-012)."));
+                return Rejected(current, payload, operation, inputHash, DiagnosticCode.OwnershipConflict, diagnostics);
+            }
+
+            LifecycleTransition edge = InstallationStateMachine.Request(entry.State, InstallationState.Failed);
+            if (!edge.Allowed)
+            {
+                diagnostics.Add(Diag(edge.Code, payload.Subject, operation, "The installation cannot fail from its current state (P-012, P-046)."));
+                return Rejected(current, payload, operation, inputHash, edge.Code, diagnostics);
+            }
+
+            // A failed provider holds no bindings, so the resolver reports no consumers bound to it; the consumers
+            // that required it resolve as WaitingForDependencies in the same pass (P-012).
+            InstallEntry failed = entry.With(
+                state: InstallationState.Failed,
+                bindings: Array.Empty<ServiceBinding>(),
+                diagnostics: null);
+            CompositionState after = current.WithInstall(failed);
+
+            List<StateDisposition> dispositions = DispositionsFor(entry, payload.Subject, operation, diagnostics);
+            if (diagnostics.Count != 0)
+            {
+                return Rejected(current, payload, operation, inputHash, diagnostics[0].Code, diagnostics);
+            }
+
+            return Finish(current, after, payload, operation, inputHash, dispositions, null, diagnostics);
         }
 
         private static CompositionEditPlan PlanScopeCreate(
