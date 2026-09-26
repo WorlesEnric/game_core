@@ -162,12 +162,10 @@ namespace GameCore.Validation.ProbeHost
                             "reparent-seat-a");
 
                     case ConformanceOperations.ModeAutomatic:
-                        return world.PublishEdit(
-                            CardTablePayloads.ModeSet(PropagationMode.Automatic), "mode-automatic");
+                        return SwitchMode(world, PropagationMode.Automatic, "mode-automatic");
 
                     case ConformanceOperations.ModeConservative:
-                        return world.PublishEdit(
-                            CardTablePayloads.ModeSet(PropagationMode.Conservative), "mode-conservative");
+                        return SwitchMode(world, PropagationMode.Conservative, "mode-conservative");
 
                     case ConformanceOperations.SuspendProvider:
                         return world.PublishEdit(
@@ -258,6 +256,24 @@ namespace GameCore.Validation.ProbeHost
                     return TryReadNextAward(world, awardSeat, out value, out detail);
                 }
 
+                // The complete-opt-in seat (P-013): its own subject, never one of the automatic ordinals, because
+                // 07:103/07:104 name it precisely as the target that keeps the contribution in Conservative while
+                // every automatically eligible seat loses it.
+                if (string.Equals(field, ConformanceFields.OptedInSeatBonus, StringComparison.Ordinal))
+                {
+                    return TryReadBonusOf(world, OptedInTarget, out value, out detail);
+                }
+
+                if (string.Equals(field, ConformanceFields.OptedInSeatBonusProvider, StringComparison.Ordinal))
+                {
+                    return TryReadBonusProviderOf(world, OptedInTarget, out value, out detail);
+                }
+
+                if (string.Equals(field, ConformanceFields.OptedInSeatNextAward, StringComparison.Ordinal))
+                {
+                    return TryReadNextAwardOf(world, OptedInTarget, out value, out detail);
+                }
+
                 if (string.Equals(field, ConformanceFields.TableActiveSeat, StringComparison.Ordinal))
                 {
                     return TryReadTable(
@@ -324,6 +340,53 @@ namespace GameCore.Validation.ProbeHost
             }
 
             /// <summary>
+            /// 07:103/07:104/07:108's mode edits, published through the card package's own `ModeSet` payload. The
+            /// lane this world owns carries no published-consequence validator of its own, so the kernel's
+            /// `DerivationModeSwitchValidator` is consulted here on the proposed composition first: a switch whose
+            /// closure the kernel refuses (07:108's unresolved `Exclusive` pair) is refused before anything is
+            /// staged, which keeps the old mode and the old assembly exactly as P-014 demands.
+            /// </summary>
+            private ConformanceOperationResult SwitchMode(
+                ConformanceWorld world, PropagationMode mode, string label)
+            {
+                if (world.Lane == null || world.Targets == null)
+                {
+                    return Unsupported(label + ": the world or its composition lane is missing");
+                }
+
+                CompositionState before = world.Lane.Committed;
+                CompositionState after = before.With(mode: mode);
+                var validator = new DerivationModeSwitchValidator(values, () => TargetView(world));
+                EditValidationResult check = validator.Validate(
+                    before, after, CompositionChangeSet.Of(before, after));
+                if (!check.Accepted)
+                {
+                    return new ConformanceOperationResult(
+                        ConformanceOperationOutcome.Refused,
+                        label + ": the mode switch was refused (" + DiagnosticCodeText.Of(check.Code)
+                        + ": " + check.Detail + ")");
+                }
+
+                return world.PublishEdit(CardTablePayloads.ModeSet(mode), label);
+            }
+
+            /// <summary>
+            /// The live target view the mode-switch validator derives the proposed composition over: the same
+            /// `LiveTargetIndex` the pipeline itself derives with, read lazily so a target spawned since the lane
+            /// opened is part of the check (P-024).
+            /// </summary>
+            private static IReadOnlyList<DerivationTarget> TargetView(ConformanceWorld world)
+            {
+                if (world.Targets == null)
+                {
+                    return Array.Empty<DerivationTarget>();
+                }
+
+                DerivationInputTargets view = world.Targets.BuildDerivationTargets();
+                return view.Succeeded ? view.Targets : Array.Empty<DerivationTarget>();
+            }
+
+            /// <summary>
             /// P-024's spawn: a neutral publication first (a scope no live target lives in), then the spawn itself, so
             /// the new seat becomes visible fully assembled before its first step, with the same derived `+2` the
             /// existing seats have (07:99). The seat's ordinal is the one its target identity names, so the two agree.
@@ -343,11 +406,16 @@ namespace GameCore.Validation.ProbeHost
                 }
 
                 TargetId target = FutureTarget;
-                ScopeId scope = CardIdentity.Scope(CardVocabulary.LeagueA);
-                DefinitionRef recipe = CardTableKeys.SeatRecipe;
-                PrepareSpawn();
+                ScopeId scope = FutureScope;
+                DefinitionRef recipe = FutureRecipe;
+                // FutureScope is the SeatB branch below LeagueA, so 07's spawned D inherits in Automatic and
+                // loses the descendant reach in Conservative just like the existing non-opted-in seats.
+                // GC-013's default future ordinal is not 07's seat D; publish the spawn with the ordinal its
+                // target name denotes, instead of reinstalling already-published ECS storage after the fence.
+                seatApplier.NextOrdinal = ConformanceSpawnedSeatOrdinal;
+                seatApplier.InitialScore = CardTableKeys.SeededSeatScore;
 
-                ConformanceOperationResult neutral = world.PublishEdit(
+                ConformanceOperationResult neutral = world.StageNeutralPublication(
                     SpareScopeEdits[0], "spawn-neutral-publication");
                 if (!neutral.Published)
                 {
@@ -370,22 +438,11 @@ namespace GameCore.Validation.ProbeHost
                         "the spawned target could not be registered: " + code + ": " + detail);
                 }
 
-                if (!world.Seeder!.TryGetEntity(target, out Entity entity))
+                if (!world.Seeder!.TryGetEntity(target, out Entity _))
                 {
                     return new ConformanceOperationResult(
                         ConformanceOperationOutcome.Refused,
                         "the spawned target has no live entity (P-005)");
-                }
-
-                if (!CardTableAccess.InstallSeatStorage(
-                        world.Host!.EntityWorld.EntityManager,
-                        entity,
-                        ConformanceSpawnedSeatOrdinal,
-                        CardTableKeys.SeededSeatScore))
-                {
-                    return new ConformanceOperationResult(
-                        ConformanceOperationOutcome.Unsupported,
-                        "the spawned seat's storage could not be installed");
                 }
 
                 return new ConformanceOperationResult(
@@ -409,13 +466,18 @@ namespace GameCore.Validation.ProbeHost
                     return Unsupported("seeding the opted-in seat was refused");
                 }
 
-                return world.PublishEdit(SpareScopeEdits[0], "seed-opted-in-publication");
+                // The same mode-direction world also spawns seat D, and SpawnFuture consumes SpareScopeEdits[0] as
+                // its neutral NoTargetChange publication. The opted-in setup therefore publishes the other spare.
+                return world.PublishEdit(SpareScopeEdits[1], "seed-opted-in-publication");
             }
 
             /// <summary>
-            /// P-016's exclusion on one target: an isolation edit on the seat's own scope naming the capability and
-            /// that one target, with the scope's existing isolation sets read back from the committed composition so
-            /// the edit changes only what it says it changes.
+            /// P-016's exclusion on one target: a scope-isolation edit on the seat's own scope declaring one
+            /// capability exclusion of that scope. A scope-stored exclusion with no target selector applies to the
+            /// scope it is stored on (never to its subtree), and `SeatB`'s scope holds exactly the one seat the row
+            /// names, so the rule excludes `cards.set-bonus` for seat B alone. The scope's existing isolation sets
+            /// and exclusion rules are read back from the committed composition, so the edit changes only what it
+            /// says it changes.
             /// </summary>
             private ConformanceOperationResult ExcludeSeat(ConformanceWorld world)
             {
@@ -425,11 +487,20 @@ namespace GameCore.Validation.ProbeHost
                 }
 
                 ScopeId scope = CardIdentity.Scope(CardVocabulary.SeatBScope);
-                TargetId target = CardTableFixture.SeatTarget(CardTableKeys.SeatBOrdinal);
                 if (!world.Lane.Committed.Scopes.TryGet(scope, out ScopeRecord? record) || record == null)
                 {
                     return Unsupported("the seat's scope is not part of the committed composition");
                 }
+
+                var exclusions = new List<ExclusionRule>(record.Exclusions)
+                {
+                    new ExclusionRule(
+                        ExclusionTargetKind.Capability,
+                        CardVocabulary.SetBonusCapability.Value,
+                        scope,
+                        default(TargetId),
+                        false),
+                };
 
                 var payload = new CompositionEditPayload(
                     CompositionEditSubject.ScopeIsolation,
@@ -438,15 +509,7 @@ namespace GameCore.Validation.ProbeHost
                     false,
                     record.ServiceIsolation,
                     record.CapabilityIsolation,
-                    new List<ExclusionRule>
-                    {
-                        new ExclusionRule(
-                            ExclusionTargetKind.Capability,
-                            CardVocabulary.SetBonusCapability.Value,
-                            scope,
-                            target,
-                            false),
-                    },
+                    exclusions,
                     null,
                     default(PluginTypeId),
                     default(PluginInstanceId),
@@ -509,9 +572,9 @@ namespace GameCore.Validation.ProbeHost
                 }
 
                 uint activeSeat = state.ActiveSeat;
-                uint heldFirst = CardTableKeys.SeatCard(activeSeat, ordinal * CardSetRules.SetCardCount);
-                uint heldSecond = CardTableKeys.SeatCard(activeSeat, (ordinal * CardSetRules.SetCardCount) + 1);
-                uint heldThird = CardTableKeys.SeatCard(activeSeat, (ordinal * CardSetRules.SetCardCount) + 2);
+                CardId heldFirst = CardTableKeys.SeatCard(activeSeat, ordinal * CardSetRules.SetCardCount);
+                CardId heldSecond = CardTableKeys.SeatCard(activeSeat, (ordinal * CardSetRules.SetCardCount) + 1);
+                CardId heldThird = CardTableKeys.SeatCard(activeSeat, (ordinal * CardSetRules.SetCardCount) + 2);
                 if (!HoldsCard(world, activeSeat, heldFirst)
                     || !HoldsCard(world, activeSeat, heldSecond)
                     || !HoldsCard(world, activeSeat, heldThird))
@@ -528,9 +591,9 @@ namespace GameCore.Validation.ProbeHost
                     activeSeat,
                     activeSeat,
                     state.TableVersion,
-                    new CardId(heldFirst),
-                    new CardId(heldSecond),
-                    new CardId(heldThird));
+                    heldFirst,
+                    heldSecond,
+                    heldThird);
                 var envelope = new CommandEnvelope(
                     world.NextOperation(),
                     CardTableKeys.CommandRoute,
@@ -585,6 +648,13 @@ namespace GameCore.Validation.ProbeHost
             /// binding row the slot composes into, or `none` when nothing supports it (P-030, P-019).
             /// </summary>
             private bool TryReadBonus(ConformanceWorld world, uint ordinal, out string value, out string detail)
+                => TryReadBonusOf(world, SeatTargetOf(ordinal), out value, out detail);
+
+            /// <summary>
+            /// The same effective `cards.set-bonus` reading for an arbitrary live target, which is what the
+            /// complete-opt-in seat needs: its identity is its own (P-013), not one of the automatic seat ordinals.
+            /// </summary>
+            private bool TryReadBonusOf(ConformanceWorld world, TargetId target, out string value, out string detail)
             {
                 value = ConformanceValue.None;
                 detail = string.Empty;
@@ -594,7 +664,6 @@ namespace GameCore.Validation.ProbeHost
                     return false;
                 }
 
-                TargetId target = CardTableFixture.SeatTarget(ordinal);
                 IReadOnlyList<CapabilityBinding> rows = world.Publisher.ReadBindingRows(target);
                 for (int i = 0; i < rows.Count; i++)
                 {
@@ -614,6 +683,14 @@ namespace GameCore.Validation.ProbeHost
             /// <summary>The stable name of the installation supporting one seat's scoring row (P-017).</summary>
             private bool TryReadBonusProvider(
                 ConformanceWorld world, uint ordinal, out string value, out string detail)
+                => TryReadBonusProviderOf(world, SeatTargetOf(ordinal), out value, out detail);
+
+            /// <summary>
+            /// The same supporting-installation reading for an arbitrary live target (P-013, P-017): the
+            /// complete-opt-in seat's row is read by its own identity, never through a seat ordinal.
+            /// </summary>
+            private bool TryReadBonusProviderOf(
+                ConformanceWorld world, TargetId target, out string value, out string detail)
             {
                 value = ConformanceValue.None;
                 detail = string.Empty;
@@ -623,7 +700,6 @@ namespace GameCore.Validation.ProbeHost
                     return false;
                 }
 
-                TargetId target = CardTableFixture.SeatTarget(ordinal);
                 IReadOnlyList<CapabilityBinding> rows = world.Publisher.ReadBindingRows(target);
                 for (int i = 0; i < rows.Count; i++)
                 {
@@ -741,13 +817,17 @@ namespace GameCore.Validation.ProbeHost
             /// through the rules package's own delta rather than restated here (P-019).
             /// </summary>
             private bool TryReadNextAward(ConformanceWorld world, uint ordinal, out string value, out string detail)
+                => TryReadNextAwardOf(world, SeatTargetOf(ordinal), out value, out detail);
+
+            /// <summary>The same award projection for an arbitrary live target (07 s2.3, P-013, P-019).</summary>
+            private bool TryReadNextAwardOf(ConformanceWorld world, TargetId target, out string value, out string detail)
             {
                 value = ConformanceValue.None;
                 detail = string.Empty;
-                if (!TryReadBonus(world, ordinal, out string bonusToken, out detail))
+                if (!TryReadBonusOf(world, target, out string bonusToken, out detail))
                 {
                     value = CardSetRules.BaseSetScore.ToString(CultureInfo.InvariantCulture);
-                    detail = "no contribution supports this seat, so the next set awards the base score";
+                    detail = "no contribution supports this target, so the next set awards the base score";
                     return true;
                 }
 
@@ -798,7 +878,7 @@ namespace GameCore.Validation.ProbeHost
                     return false;
                 }
 
-                TargetId target = CardTableFixture.SeatTarget(ordinal);
+                TargetId target = SeatTargetOf(ordinal);
                 if (!world.Seeder.TryGetEntity(target, out seat) || seat == Entity.Null)
                 {
                     detail = target.ToString() + " is not a live target of this world (P-005)";
@@ -814,7 +894,7 @@ namespace GameCore.Validation.ProbeHost
                 return true;
             }
 
-            private bool HoldsCard(ConformanceWorld world, uint ordinal, uint card)
+            private bool HoldsCard(ConformanceWorld world, uint ordinal, CardId card)
             {
                 if (!TrySeatEntity(world, ordinal, out Entity seat, out string _))
                 {
@@ -822,10 +902,8 @@ namespace GameCore.Validation.ProbeHost
                 }
 
                 CardHand hand = CardTableAccess.ReadHand(world.Host!.EntityWorld.EntityManager, seat, ordinal);
-                return hand.Holds(new CardId(card));
+                return hand.Holds(card);
             }
-
-
 
             private static ConformanceOperationResult Unsupported(string detail)
                 => new ConformanceOperationResult(ConformanceOperationOutcome.Unsupported, detail);
@@ -863,6 +941,17 @@ namespace GameCore.Validation.ProbeHost
 
                 return false;
             }
+
+            /// <summary>
+            /// The target identity one seat ordinal reads: the market's automatic seats and the spawned seat D
+            /// through the fixture's own mapping, and the practice seat through its own stable identity, because the
+            /// fixture maps every ordinal past C to seat D and the practice seat's ordinal is deliberately not seat
+            /// D's (P-008, 07 s2.1).
+            /// </summary>
+            private static TargetId SeatTargetOf(uint ordinal) =>
+                ordinal == CardTableKeys.PracticeOrdinal
+                    ? CardIdentity.Target(CardVocabulary.PracticeSeat)
+                    : CardTableFixture.SeatTarget(ordinal);
         }
     }
 }

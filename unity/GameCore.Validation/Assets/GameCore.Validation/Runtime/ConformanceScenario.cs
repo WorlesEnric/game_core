@@ -266,7 +266,7 @@ namespace GameCore.Validation.ProbeHost
                     }
                 }
 
-                IReadOnlyList<ConformanceObservation> tableSteps = stage.Steps;
+                IReadOnlyList<ConformanceStep> tableSteps = stage.Steps;
                 for (int i = 0; i < tableSteps.Count; i++)
                 {
                     RunStep(family, table, label, tableSteps[i], world, trace, outcomes, steps);
@@ -294,7 +294,7 @@ namespace GameCore.Validation.ProbeHost
             IConformanceFamily family,
             ConformanceTable table,
             string stageId,
-            ConformanceObservation step,
+            ConformanceStep step,
             ConformanceWorld world,
             ConformanceTrace trace,
             List<ConformanceOracle.RowOutcomeReport> outcomes,

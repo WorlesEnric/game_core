@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using GameCore.ReferenceConformance;
+using GameCore.Unity.Runtime;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -169,7 +170,7 @@ namespace GameCore.Validation.ProbeHost.Tests
                 ConformanceTable? table = ReferenceTables.ById(script.TableId);
                 Assert.That(table, Is.Not.Null, script.TableId + " has no transcribed table");
 
-                IReadOnlyList<ConformanceObservation> steps = script.Steps();
+                IReadOnlyList<ConformanceStep> steps = script.Steps();
                 var executed = new HashSet<string>(StringComparer.Ordinal);
                 for (int i = 0; i < steps.Count; i++)
                 {

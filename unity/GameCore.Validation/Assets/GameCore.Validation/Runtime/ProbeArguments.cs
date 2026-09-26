@@ -216,6 +216,7 @@ namespace GameCore.Validation.ProbeHost
         /// recorded-input replay, the durable reward delivery across an unload/reload of its receiving world, the
         /// composition audit that keeps the optional physics/animation/audio surface out of cards and narrative, and
         /// the create/mount/step/unmount/teardown loop over all three genres (W6-GATE).
+        /// </summary>
         public bool W6Gate { get; }
 
         /// <summary>
@@ -225,6 +226,7 @@ namespace GameCore.Validation.ProbeHost
         /// (P-001, P-013, P-014, P-016, P-025, P-045, P-059).
         /// </summary>
         public bool Conformance { get; }
+
         /// <summary>Destination path of the structured JSON result.</summary>
         public string? ResultPath { get; }
 
@@ -260,6 +262,7 @@ namespace GameCore.Validation.ProbeHost
             bool w5Gate = false;
             bool traversal = false;
             bool gc021 = false;
+            bool replay = false;
             bool w6Gate = false;
             bool conformance = false;
             string? resultPath = null;

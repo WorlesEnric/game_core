@@ -180,20 +180,21 @@ namespace GameCore.ReferenceConformance
                             "enter Conservative, where a descendant rule without export/import is denied",
                             new[]
                             {
-                                ConformanceExpectation.Unchanged(ConformanceFields.WorldMode, "conservative"),
+                                ConformanceExpectation.Require(
+                                    ConformanceFields.WorldMode, "automatic", "conservative"),
                             }),
                         Pre("exclusive-conflict-rejected", 3, ConformanceOperations.MountConflictProvider, 0,
                             "mount the first exclusive draw-policy provider",
                             new[]
                             {
-                                ConformanceExpectation.Unchanged(ConformanceFields.SeatBonus(0U), "2"),
+                                ConformanceExpectation.Absent(ConformanceFields.SeatBonus(0U)),
                             }),
                         Pre("exclusive-conflict-rejected", 4,
                             ConformanceOperations.MountConflictSecondProvider, 0,
                             "mount the second provider of the same exclusive capability",
                             new[]
                             {
-                                ConformanceExpectation.Unchanged(ConformanceFields.SeatBonus(0U), "2"),
+                                ConformanceExpectation.Absent(ConformanceFields.SeatBonus(0U)),
                             }),
                         Row("cards", "exclusive-conflict-rejected", ConformanceOperations.ModeAutomatic, 0,
                             "attempt the switch that would expose the conflict"),
@@ -290,8 +291,8 @@ namespace GameCore.ReferenceConformance
                             {
                                 ConformanceExpectation.Unchanged(
                                     ConformanceFields.DialogueBinding("npc-mara"), "1"),
-                                ConformanceExpectation.Unchanged(
-                                    ConformanceFields.DialogueBinding("npc-sailor"), "2"),
+                                ConformanceExpectation.Require(
+                                    ConformanceFields.DialogueBinding("npc-sailor"), ConformanceValue.None, "2"),
                             }),
                         Row("narrative", "reparent-village", ConformanceOperations.ReparentMovedScope, 0,
                             "reparent Village under ChapterTwo"),
@@ -470,8 +471,8 @@ namespace GameCore.ReferenceConformance
                     }),
 
                 new ConformanceStage(
-                    "exclusion-and-suspension",
-                    "07:203, P-016, P-046 — exclusion, suspension and resume of one modifier",
+                    "exclusion",
+                    "07:203, P-016 — target exclusion leaves a spawned sibling's contribution intact",
                     Array.Empty<string>(),
                     new List<ConformanceStep>
                     {
@@ -491,8 +492,23 @@ namespace GameCore.ReferenceConformance
                             }),
                         Row("traversal", "exclude-runner-a", ConformanceOperations.ApplyExclusion, 0,
                             "exclude the acceleration capability on runner A"),
+                    }),
+                new ConformanceStage(
+                    "suspension",
+                    "07:205, P-046 — suspend and resume the mounted modifier with prior state preserved",
+                    Array.Empty<string>(),
+                    new List<ConformanceStep>
+                    {
+                        Pre("suspend-tailwind", 1, ConformanceOperations.MountProvider, 0,
+                            "mount Tailwind before suspending it",
+                            new[]
+                            {
+                                ConformanceExpectation.Require(
+                                    ConformanceFields.RunnerAccelerationX("runner-a"),
+                                    ConformanceValue.None, "2000"),
+                            }),
                         Row("traversal", "suspend-tailwind", ConformanceOperations.SuspendProvider, 0,
-                            "suspend the modifier"),
+                            "suspend the modifier without changing already committed motion"),
                         Row("traversal", "resume-tailwind", ConformanceOperations.ResumeProvider, 0,
                             "resume it and let it rederive"),
                     }),

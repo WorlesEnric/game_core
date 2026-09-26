@@ -63,7 +63,7 @@ namespace GameCore.Validation.ProbeHost
 
             var family = new NarrativeFamily(
                 build.Catalog,
-                Declarations(),
+                Declarations(NarrativeScenarioCatalog.PluginFactoryKey, NarrativeScenarioCatalog.RecordSchema),
                 NarrativeScenarioCatalog.Fingerprint().ToHex());
             return ConformanceScenario.Run(family, "narrative");
         }

@@ -26,6 +26,7 @@ using GameCore.Composition;
 using GameCore.Contracts;
 using GameCore.Derivation;
 using GameCore.Execution;
+using GameCore.Execution.Time;
 using GameCore.Planning;
 using GameCore.ReferenceConformance;
 using GameCore.Unity.Runtime;
@@ -275,6 +276,56 @@ namespace GameCore.Validation.ProbeHost
                     label + ": the lane and the world's assembly counters disagree (P-006)");
             }
 
+            return new ConformanceOperationResult(ConformanceOperationOutcome.Published, label);
+        }
+
+        /// Applies one composition edit whose world half is deliberately left unanswered so a spawn can consume that
+        /// publication pair as the world's assembly for it. P-006 has one publication series and the one legal
+        /// consumer of a publication a `NoTargetChange` derivation did not answer is the spawn itself (P-024):
+        /// answering it here with the unchanged assembly — as <see cref="PublishEdit"/> correctly does for every
+        /// other edit — would consume the publication number the spawn needs and leave it refused as `StalePlan`,
+        /// which is exactly the split `Gc013Scenario` keeps between its `PublishEdit` and `ApplyEdit` halves.
+        /// </summary>
+        public ConformanceOperationResult StageNeutralPublication(CompositionEditPayload payload, string label)
+        {
+            if (Host == null || Lane == null || Pipeline == null)
+            {
+                return new ConformanceOperationResult(
+                    ConformanceOperationOutcome.Unsupported, label + ": the world or its pipeline is missing");
+            }
+
+            OperationId operation = NextOperation();
+            EditAdmission admission = Lane.SubmitEdit(payload, operation, Lane.Committed.Revision);
+            if (!admission.Staged)
+            {
+                return new ConformanceOperationResult(
+                    ConformanceOperationOutcome.Refused,
+                    label + ": the lane refused the edit (" + admission.Kind + "/"
+                    + DiagnosticCodeText.Of(admission.Code) + ")");
+            }
+
+            IReadOnlyList<PublishedOperation> published = Lane.Drain();
+            if (published.Count == 0 || published[0].Outcome == Outcome.Rejected)
+            {
+                return new ConformanceOperationResult(
+                    ConformanceOperationOutcome.Refused,
+                    label + ": the publication was refused ("
+                    + (published.Count > 0
+                        ? published[0].Outcome + "/" + DiagnosticCodeText.Of(published[0].Code)
+                        : "none")
+                    + ")");
+            }
+
+            DerivedAssemblyReport report = Pipeline.PublishDerived(operation);
+            if (report.Outcome == DerivedAssemblyOutcome.Refused)
+            {
+                return new ConformanceOperationResult(
+                    ConformanceOperationOutcome.Refused,
+                    label + ": the world refused the assembly: " + report.Describe());
+            }
+
+            // The NoTargetChange publication pair stays unanswered: the spawn consumes it as the world's assembly
+            // for this composition revision, which keeps both counters on the one series (P-006, P-024).
             return new ConformanceOperationResult(ConformanceOperationOutcome.Published, label);
         }
 

@@ -85,6 +85,33 @@ namespace GameCore.Gameplay.Rewards
         public static CatalogPluginDeclaration Declaration() =>
             new CatalogPluginDeclaration(Manifest(), ConfigDocument.Empty);
 
+        /// <summary>
+        /// The same declaration reduced to its ownership surface: the outbox state slot with its policies, and no
+        /// stages and no buffers. A world whose compiled descriptor must declare this slot (the live outbox row sits
+        /// on one of its targets, and P-032 makes every live slot need a declared compatible policy in any plan that
+        /// walks it) but whose plugin runtime is the mounted installation rather than host-side systems uses this
+        /// variant, so compiling it in adds the slot to the descriptor without adding dispatch entries a world
+        /// registration would have to answer with system instances (04 s8; P-032, P-039).
+        /// </summary>
+        public static PluginManifest OwnershipSurfaceManifest() =>
+            new PluginManifest(
+                RewardsKeys.PluginType,
+                RewardsKeys.PackageVersion,
+                ContentHash.Empty,
+                new SupportedProtocolRange(1, 0, 0),
+                null,
+                RewardsKeys.ConfigSchema,
+                RewardsKeys.PluginFactory,
+                null,
+                null,
+                null,
+                null,
+                null,
+                RewardsOutboxSlot.Specs(),
+                null,
+                null,
+                null);
+
         /// <summary>The declarations of this package, in canonical order (exactly one plugin type, P-009).</summary>
         public static IReadOnlyList<PluginManifest> Manifests() => new List<PluginManifest> { Manifest() };
 

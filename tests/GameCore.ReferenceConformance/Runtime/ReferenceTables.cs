@@ -101,7 +101,7 @@ namespace GameCore.ReferenceConformance
                     new[]
                     {
                         ConformanceExpectation.Require(ConformanceFields.SeatBonus(0U), "5", "3"),
-                        ConformanceExpectation.Unchanged(ConformanceFields.SeatNextAward(0U), "13"),
+                        ConformanceExpectation.Require(ConformanceFields.SeatNextAward(0U), "15", "13"),
                     }),
 
                 new ConformanceRow(
@@ -115,7 +115,8 @@ namespace GameCore.ReferenceConformance
                         ConformanceExpectation.Require(ConformanceFields.SeatBonus(0U), "2", ConformanceValue.None),
                         ConformanceExpectation.Unchanged(ConformanceFields.SeatTotal(0U), "16"),
                         ConformanceExpectation.Require(ConformanceFields.SeatNextAward(0U), "12", "10"),
-                        ConformanceExpectation.Absent(ConformanceFields.SeatBonusProvider(0U)),
+                        ConformanceExpectation.Require(ConformanceFields.SeatBonusProvider(0U),
+                            "cards.festival-scoring", ConformanceValue.None),
                         ConformanceExpectation.Absent(ConformanceFields.PracticeSeatBonus),
                     }),
 
@@ -392,8 +393,8 @@ namespace GameCore.ReferenceConformance
                     ConformanceRowOutcome.Published,
                     new[]
                     {
-                        ConformanceExpectation.Require(
-                            ConformanceFields.DialogueBinding("npc-mara"), "1", ConformanceValue.None),
+                        ConformanceExpectation.Absent(
+                            ConformanceFields.DialogueBinding("npc-mara")),
                         ConformanceExpectation.Require(
                             ConformanceFields.GateBinding("gate-east"), "1", ConformanceValue.None),
                         ConformanceExpectation.Unchanged(ConformanceFields.BridgePermit, "1"),
@@ -474,7 +475,9 @@ namespace GameCore.ReferenceConformance
                     {
                         ConformanceExpectation.Require(
                             ConformanceFields.RunnerAccelerationX("runner-a"), "2000", ConformanceValue.None),
-                        ConformanceExpectation.Absent(ConformanceFields.RunnerAccelerationProvider("runner-a")),
+                        ConformanceExpectation.Require(
+                            ConformanceFields.RunnerAccelerationProvider("runner-a"),
+                            "traversal.tailwind", ConformanceValue.None),
                         ConformanceExpectation.Preserved(ConformanceFields.RunnerVelocity("runner-a")),
                         ConformanceExpectation.Preserved(ConformanceFields.RunnerPose("runner-a")),
                         ConformanceExpectation.Preserved(ConformanceFields.RunnerProgress("runner-a")),

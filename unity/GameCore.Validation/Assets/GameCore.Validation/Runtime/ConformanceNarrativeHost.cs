@@ -104,8 +104,7 @@ namespace GameCore.Validation.ProbeHost
                         return world.PublishEdit(MountConflictSecondProvider(), "mount-conflict-two");
 
                     case ConformanceOperations.UnmountProvider:
-                        return world.PublishEdit(
-                            NarrativeLifecyclePayloads.Unmount(NarrativeKeys.ChapterOneInstall), "unmount-chapter-one");
+                        return UnmountChapter(world);
 
                     case ConformanceOperations.UnmountSecondProvider:
                         return world.PublishEdit(
@@ -465,6 +464,63 @@ namespace GameCore.Validation.ProbeHost
 
             // ------------------------------------------------------------------ operations
 
+            /// 07:174's unmount: the chapter leaves while a conversation is in progress, and the package's registered
+            /// `CloseConversation` disposition closes the session at publication — `narrative.dialogue`'s own
+            /// declared transition over the dialogue owner's slot, never a managed callback writing
+            /// `ConversationState` (07 s3.3's closing paragraph). The kernel's last-support half of the same
+            /// publication retains the conversation slot under its `PreserveDormant` declaration and retracts the
+            /// derived bindings (P-032, P-046); this half applies the pure transition the disposition names, so the
+            /// row observes a closed session while the permit fact stays true.
+            ///
+            /// A conversation that is not in progress is already in the state the disposition leaves it in, so the
+            /// close is the idempotent no-op the rules declare and the unmount still publishes.
+            /// </summary>
+            private ConformanceOperationResult UnmountChapter(ConformanceWorld world)
+            {
+                ConformanceOperationResult unmounted = world.PublishEdit(
+                    NarrativeLifecyclePayloads.Unmount(NarrativeKeys.ChapterOneInstall), "unmount-chapter-one");
+                if (!unmounted.Published)
+                {
+                    return unmounted;
+                }
+
+                if (world.Host == null)
+                {
+                    return new ConformanceOperationResult(
+                        ConformanceOperationOutcome.Unsupported, "the world has no host");
+                }
+
+                NarrativeModule? module = world.Runtime?.Adapters?.Narrative;
+                if (module == null
+                    || !module.TryEntity(NarrativeKeys.Mara, out Entity mara)
+                    || !world.Host.EntityWorld.EntityManager.Exists(mara))
+                {
+                    return new ConformanceOperationResult(
+                        ConformanceOperationOutcome.Unsupported,
+                        "the conversation the unmount closes has no live owner (P-005, P-043)");
+                }
+
+                EntityManager entityManager = world.Host.EntityWorld.EntityManager;
+                int status = NarrativeState.ReadOrDefault(
+                    entityManager,
+                    mara,
+                    NarrativeKeys.DialogueOwner,
+                    NarrativeKeys.ConversationStatusSlot,
+                    NarrativeConversationStatus.Idle);
+                if (NarrativeDialogueRules.TryClose(status, out int closed))
+                {
+                    NarrativeState.Write(
+                        entityManager,
+                        mara,
+                        NarrativeKeys.DialogueOwner,
+                        NarrativeKeys.ConversationStatusSlot,
+                        NarrativeKeys.ConversationDomain.Version,
+                        closed);
+                }
+
+                return unmounted;
+            }
+
             /// <summary>
             /// O-05: reconfigures this family's first installation — the chapter-one provider. The declared
             /// configuration hash is the canonical hash of exactly the layers the applier recomposes (schema defaults
@@ -548,7 +604,8 @@ namespace GameCore.Validation.ProbeHost
                 }
 
                 PrepareSpawn();
-                ConformanceOperationResult neutral = world.PublishEdit(SpareScopeEdits[1], "spawn-neutral-publication");
+                ConformanceOperationResult neutral = world.StageNeutralPublication(
+                    SpareScopeEdits[1], "spawn-neutral-publication");
                 if (!neutral.Published)
                 {
                     return neutral;
@@ -608,9 +665,13 @@ namespace GameCore.Validation.ProbeHost
 
             /// <summary>
             /// P-016's exclusion on the conversation capability of the moved villager: a scope-isolation edit on the
-            /// village scope naming the capability and that one target, with the scope's existing isolation sets read
-            /// back from the committed composition so the edit changes only what it says it changes. Other targets'
-            /// bindings — gate east's condition — stay available, and the isolated museum target stays isolated.
+            /// village scope declaring one capability exclusion of that scope. A scope-stored exclusion carries no
+            /// target selector — the derivation's scope path applies a stored rule to the scope it is stored on, and
+            /// a rule that names one target belongs on that target's own descriptor — and the village scope's
+            /// directly-held dialogue-eligible target is exactly Mara, so the denial lands on her alone: gate east's
+            /// condition is a different capability and stays available, and the isolated museum target stays
+            /// isolated. The scope's existing isolation sets and exclusion rules are read back from the committed
+            /// composition, so the edit changes only what it says it changes.
             /// </summary>
             private static ConformanceOperationResult ExcludeConversation(ConformanceWorld world)
             {
@@ -625,6 +686,16 @@ namespace GameCore.Validation.ProbeHost
                     return Unsupported("the village scope is not part of this committed composition");
                 }
 
+                var exclusions = new List<ExclusionRule>(record.Exclusions)
+                {
+                    new ExclusionRule(
+                        ExclusionTargetKind.Capability,
+                        NarrativeKeys.DialogueBinding.Value,
+                        scope,
+                        default(TargetId),
+                        false),
+                };
+
                 var payload = new CompositionEditPayload(
                     CompositionEditSubject.ScopeIsolation,
                     scope,
@@ -632,15 +703,7 @@ namespace GameCore.Validation.ProbeHost
                     false,
                     record.ServiceIsolation,
                     record.CapabilityIsolation,
-                    new List<ExclusionRule>
-                    {
-                        new ExclusionRule(
-                            ExclusionTargetKind.Capability,
-                            NarrativeKeys.DialogueBinding.Value,
-                            scope,
-                            NarrativeKeys.Mara,
-                            false),
-                    },
+                    exclusions,
                     null,
                     default(PluginTypeId),
                     default(PluginInstanceId),

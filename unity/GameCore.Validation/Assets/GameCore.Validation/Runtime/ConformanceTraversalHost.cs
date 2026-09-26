@@ -306,7 +306,7 @@ namespace GameCore.Validation.ProbeHost
                 ScopeId scope = FutureScope;
                 PrepareSpawn();
 
-                ConformanceOperationResult neutral = world.PublishEdit(
+                ConformanceOperationResult neutral = world.StageNeutralPublication(
                     SpareScopeEdits[1], "spawn-neutral-publication");
                 if (!neutral.Published)
                 {
@@ -391,17 +391,20 @@ namespace GameCore.Validation.ProbeHost
             }
 
             /// <summary>
-            /// P-016's exclusion on one target, selected by <paramref name="operand"/>: an isolation edit on the
-            /// runner's own scope naming the acceleration capability and that one target, with the scope's existing
-            /// isolation sets read back from the committed composition so the edit changes only what it says it
-            /// changes. Operand 0 is the automatically eligible valley runner (the case the reference row names) and
-            /// operand 1 is the ridge runner, the sibling-branch control.
+            /// P-016's exclusion on one target, selected by <paramref name="operand"/>: the runner is re-registered
+            /// under the family's excluded-runner recipe, whose descriptor carries the acceleration-capability
+            /// exclusion, and the scope's isolation edit records the same exclusion in the committed composition
+            /// with the scope's existing isolation sets read back so the edit changes only what it says it changes.
+            /// The scope-stored form addresses a subtree by design, so the per-target denial is the descriptor's:
+            /// a descriptor exclusion with no scope and no target addresses its own target, which is why the
+            /// re-registration and the edit are one operation. Operand 0 is the automatically eligible valley runner
+            /// (the case the reference row names) and operand 1 is the ridge runner, the sibling-branch control.
             /// </summary>
             private ConformanceOperationResult ExcludeTarget(ConformanceWorld world, int operand)
             {
-                if (world.Lane == null)
+                if (world.Lane == null || world.Targets == null)
                 {
-                    return Unsupported("the world has no composition lane");
+                    return Unsupported("the world has no composition lane or target index");
                 }
 
                 ScopeId scope;
@@ -434,6 +437,50 @@ namespace GameCore.Validation.ProbeHost
                     return Unsupported("the excluded runner's scope is not part of the committed composition");
                 }
 
+                // The per-target denial lives on the target's own descriptor: the runner is retired from the live
+                // index and re-registered under the excluded-runner recipe in the same scope, exactly the way the
+                // narrative host re-registers gate east under its opted-in variant (P-015, P-024). The recipe keeps
+                // both selector contracts, so a rule still selects the target and it is the exclusion that denies
+                // the contribution — and the descriptor, not a scope record, is what follows one target.
+                if (!world.Targets.TryRetire(target))
+                {
+                    return new ConformanceOperationResult(
+                        ConformanceOperationOutcome.Refused,
+                        label + ": " + target + " is not a live target of this world (P-005)");
+                }
+
+                if (!world.Targets.TryRegister(
+                        target,
+                        scope,
+                        Gc020TraversalHost.ExcludedRunnerRecipe,
+                        out DiagnosticCode registerCode,
+                        out string registerDetail))
+                {
+                    // The index no longer holds the target, so the composition's view of it must be restored
+                    // before the refusal is reported: a half-registered world would make the next row derive
+                    // against a target set this run never declared.
+                    DiagnosticCode restoreCode = DiagnosticCode.None;
+                    string restoreDetail = string.Empty;
+                    if (!world.Targets.TryRegister(
+                            target,
+                            scope,
+                            TraversalKeys.RunnerRecipe,
+                            out restoreCode,
+                            out restoreDetail))
+                    {
+                        return Unsupported(
+                            label + ": re-registering " + target + " under its excluded recipe was refused ("
+                            + registerCode + ": " + registerDetail + ") and restoring its original recipe was"
+                            + " refused too (" + restoreCode + ": " + restoreDetail + "); the live target index no"
+                            + " longer matches the committed composition");
+                    }
+
+                    return new ConformanceOperationResult(
+                        ConformanceOperationOutcome.Refused,
+                        label + ": re-registering " + target + " under its excluded recipe was refused ("
+                        + registerCode + ": " + registerDetail + ")");
+                }
+
                 var payload = new CompositionEditPayload(
                     CompositionEditSubject.ScopeIsolation,
                     scope,
@@ -460,7 +507,34 @@ namespace GameCore.Validation.ProbeHost
                     null,
                     PropagationMode.Automatic);
 
-                return world.PublishEdit(payload, label);
+                ConformanceOperationResult published = world.PublishEdit(payload, label);
+                if (!published.Published)
+                {
+                    // The re-registration is only half of the operation; the edit that records the exclusion in the
+                    // composition was refused, so the world is rolled back to the recipe the composition still
+                    // describes. A live index whose descriptor disagrees with the published assembly would make the
+                    // next row read a state no composition produced.
+                    DiagnosticCode rollbackCode = DiagnosticCode.None;
+                    string rollbackDetail = string.Empty;
+                    if (!world.Targets.TryRetire(target)
+                        || !world.Targets.TryRegister(
+                            target,
+                            scope,
+                            TraversalKeys.RunnerRecipe,
+                            out rollbackCode,
+                            out rollbackDetail))
+                    {
+                        return Unsupported(
+                            label + ": the exclusion edit was refused (" + published.Detail
+                            + ") and restoring " + target + "'s original recipe was refused too ("
+                            + rollbackCode + ": " + rollbackDetail + "); the live target index no longer matches"
+                            + " the committed composition");
+                    }
+
+                    return published;
+                }
+
+                return published;
             }
 
             /// <summary>
@@ -468,9 +542,21 @@ namespace GameCore.Validation.ProbeHost
             /// course's own declared step exactly once (P-036). The modifiers contribute their derived acceleration
             /// through the integrator's read of the published binding row, which is why this is the row's operation
             /// and not a command envelope.
+            ///
+            /// A fixed-step world's simulation clock starts at its first routable pump (P-036): that pump captures
+            /// the host-time origin and commits no step, so a fresh world's first integration primes the clock
+            /// first. Without the prime, the first `CommitCommand` of every stage would consume its pump on the
+            /// origin capture and report the step refused, leaving the runner at its seeded velocity.
             /// </summary>
             private ConformanceOperationResult IntegrateSteps(ConformanceWorld world, int operand)
             {
+                if (world.Host == null || world.Time == null)
+                {
+                    return Unsupported("the world or its clock is missing");
+                }
+
+                PrimeClockOrigin(world);
+
                 int steps = operand <= 0 ? 1 : operand;
                 ConformanceOperationResult last = Unsupported("no step was pumped");
                 for (int i = 0; i < steps; i++)
@@ -483,6 +569,19 @@ namespace GameCore.Validation.ProbeHost
                 }
 
                 return last;
+            }
+
+            /// <summary>
+            /// P-036's origin capture, performed once per world before the first integration pump: one frame at the
+            /// world's current host ticks that commits no step by design, so the next pump's elapsed time is a
+            /// whole declared step and the step the row names is the step that actually commits.
+            /// </summary>
+            private static void PrimeClockOrigin(ConformanceWorld world)
+            {
+                if (world.Host != null && world.Time != null && world.Host.PumpCount == 0)
+                {
+                    world.Time.PumpFrame(world.HostTicks);
+                }
             }
 
             /// <summary>
@@ -532,12 +631,11 @@ namespace GameCore.Validation.ProbeHost
                         "traversal.input rejected the movement envelope for " + TraversalVocabulary.CheckpointOne
                         + ", which this course does not own as a runner, and no runner captured input");
                 }
+
                 return Unsupported(
                     "the movement envelope for a non-runner target was admitted without the input stage's refusal"
                     + " being observed, so no refusal can be reported");
             }
-
-            // ------------------------------------------------------------------ readings
 
             /// <summary>
             /// The effective `traversal.acceleration` value of one target, read from the published assembly: the
@@ -579,7 +677,10 @@ namespace GameCore.Validation.ProbeHost
             /// <summary>
             /// The stable name of the installation supporting one target's acceleration row, so a provider change is
             /// observable as a name rather than as a hex identity (P-004, P-017). A target with no active row has no
-            /// provider to name, so that read is a miss with its reason.
+            /// provider to name, so that read is a miss with its reason. The supporter is read from the published
+            /// support buffer of P-017 — one `CapabilitySupportRow` per contribution, canonically ordered — because
+            /// that buffer is the row's whole support set; the binding row's own `Provider` field is a cached
+            /// top-ranked member that a re-derivation can leave one publication behind.
             /// </summary>
             private bool TryReadAccelerationProvider(
                 ConformanceWorld world, string subject, out string value, out string detail)
@@ -592,32 +693,48 @@ namespace GameCore.Validation.ProbeHost
                     return false;
                 }
 
-                if (!TryReadAccelerationRow(world, target, out CapabilityBinding row, out detail))
+                if (!TryReadAccelerationRow(world, target, out CapabilityBinding _, out detail))
                 {
+                    return false;
+                }
+
+                if (world.Publisher == null)
+                {
+                    detail = "the world publishes no assembly";
+                    return false;
+                }
+
+                // The support buffer is canonically ordered (descending priority), so its first row of this slot is
+                // the top-ranked supporter (P-008, P-017).
+                IReadOnlyList<CapabilitySupportRow> supports = world.Publisher.ReadSupportRows(
+                    target, TraversalVocabulary.AccelerationCapability, 0U);
+                if (supports.Count == 0)
+                {
+                    detail = "no traversal.acceleration support is published for " + target.ToString();
                     return false;
                 }
 
                 // The provider identity is compared against this course's own installation identities, so the label
                 // is the catalog's stable name and never a hex id (P-004).
-                if (row.Provider.Value.Equals(TraversalKeys.Instance(TraversalVocabulary.Tailwind).Value))
+                if (supports[0].Provider.Value.Equals(TraversalKeys.Instance(TraversalVocabulary.Tailwind).Value))
                 {
                     value = TraversalVocabulary.Tailwind;
                     return true;
                 }
 
-                if (row.Provider.Value.Equals(TraversalKeys.Instance(TraversalVocabulary.Headwind).Value))
+                if (supports[0].Provider.Value.Equals(TraversalKeys.Instance(TraversalVocabulary.Headwind).Value))
                 {
                     value = TraversalVocabulary.Headwind;
                     return true;
                 }
 
-                if (row.Provider.Value.Equals(TraversalKeys.Instance(ConformanceNestedModifier).Value))
+                if (supports[0].Provider.Value.Equals(TraversalKeys.Instance(ConformanceNestedModifier).Value))
                 {
                     value = ConformanceNestedModifier;
                     return true;
                 }
 
-                detail = "the traversal.acceleration row for " + target.ToString()
+                detail = "the traversal.acceleration support for " + target.ToString()
                     + " names an installation this run does not declare";
                 return false;
             }

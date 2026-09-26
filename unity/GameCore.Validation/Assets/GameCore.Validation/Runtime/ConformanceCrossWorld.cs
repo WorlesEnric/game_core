@@ -56,6 +56,7 @@ using GameCore.Derivation.Fixtures;
 using GameCore.Execution;
 using GameCore.Execution.Delivery;
 using GameCore.Execution.Messages;
+using GameCore.Execution.Time;
 using GameCore.Gameplay.Cards;
 using GameCore.Gameplay.Cards.Fixtures;
 using GameCore.Gameplay.Integration.RewardOutbox;
@@ -63,6 +64,7 @@ using GameCore.Gameplay.Narrative;
 using GameCore.Gameplay.Narrative.Fixtures;
 using GameCore.Gameplay.Rewards;
 using GameCore.Planning;
+using GameCore.Planning.Ownership;
 using GameCore.Planning.StatePolicies;
 using GameCore.Unity.Runtime.StateMigration;
 using GameCore.ReferenceConformance;
@@ -285,7 +287,11 @@ namespace GameCore.Validation.ProbeHost
                         OutboxDurability.Durable,
                         journal,
                         hook);
-                    hook.Attach(rewardInstallation.Bridge);
+                    // The world's state-policy surface is rebuilt with the mounted installation's OWN migration
+                    // instance, so the rows that count `installation.OutboxMigration.Invocations` count the handler
+                    // the pass really runs (the key resolves either way; the counters do not, P-032).
+                    world.BuildPolicySurface(rewardInstallation);
+
                     ConformanceOperationResult mountedInstallation = world.PublishEdit(
                         RewardsMounts.Mount(RewardsKeys.Installation, CardMarketComposition.TableScope),
                         "mount-rewards-installation");
@@ -446,8 +452,8 @@ namespace GameCore.Validation.ProbeHost
 
             // ---------------------------------------------------------------- 07:267 — reward-enqueue
             IReadOnlyList<string> enqueueFields = FieldsOf(script, "reward-enqueue");
-            List<string> enqueueVocabBefore = ReadVocabulary(world, source, installation);
-            List<string> enqueueBefore = ReadAll(world, source, installation, enqueueFields);
+            List<string> enqueueVocabBefore = ReadVocabulary(world, installation, installation);
+            List<string> enqueueBefore = ReadAll(world, installation, installation, enqueueFields);
 
             // 07:267 — one choice on the narrative family's own route, at the node its live conversation sits on and
             // with the declared permit choice, so `NarrativeDialogueRules.Validate` accepts it (P-042, 07 s3.2).
@@ -473,8 +479,8 @@ namespace GameCore.Validation.ProbeHost
             bool seeded = installation.SeedOutboxSlot(
                 host, OutboxSlotTarget, installation.PendingWorkCount, out string seedDetail);
 
-            List<string> enqueueAfter = ReadAll(world, source, installation, enqueueFields);
-            List<string> enqueueVocabAfter = ReadVocabulary(world, source, installation);
+            List<string> enqueueAfter = ReadAll(world, installation, installation, enqueueFields);
+            List<string> enqueueVocabAfter = ReadVocabulary(world, installation, installation);
             StepRecord(trace, "reward-enqueue", enqueueFields, enqueueBefore, enqueueAfter);
             RecordSnapshot(trace, "reward-enqueue", ConformancePhase.Before, enqueueVocabBefore);
             RecordSnapshot(trace, "reward-enqueue", ConformancePhase.After, enqueueVocabAfter);
@@ -508,8 +514,8 @@ namespace GameCore.Validation.ProbeHost
 
             // ---------------------------------------------------------------- 07:276 — reward-unmount-pending
             IReadOnlyList<string> pendingFields = FieldsOf(script, "reward-unmount-pending");
-            List<string> pendingVocabBefore = ReadVocabulary(world, source, installation);
-            List<string> pendingBefore = ReadAll(world, source, installation, pendingFields);
+            List<string> pendingVocabBefore = ReadVocabulary(world, installation, installation);
+            List<string> pendingBefore = ReadAll(world, installation, installation, pendingFields);
             int pendingCount = installation.PendingWorkCount;
 
             // The O-07 unmount while an obligation is still open: the installation's job-fenced outbox lease makes
@@ -522,8 +528,8 @@ namespace GameCore.Validation.ProbeHost
             // O-07 publication yet (P-029). The same pass succeeds once the work has drained, which is the next row.
             RewardsLifecycleResult precondition = installation.TryMigrateOutboxSlot(world.Policies!, world.TargetIds());
 
-            List<string> pendingAfter = ReadAll(world, source, installation, pendingFields);
-            List<string> pendingVocabAfter = ReadVocabulary(world, source, installation);
+            List<string> pendingAfter = ReadAll(world, installation, installation, pendingFields);
+            List<string> pendingVocabAfter = ReadVocabulary(world, installation, installation);
             StepRecord(trace, "reward-unmount-pending", pendingFields, pendingBefore, pendingAfter);
             RecordSnapshot(trace, "reward-unmount-pending", ConformancePhase.Before, pendingVocabBefore);
             RecordSnapshot(trace, "reward-unmount-pending", ConformancePhase.After, pendingVocabAfter);
@@ -567,8 +573,8 @@ namespace GameCore.Validation.ProbeHost
 
             // ---------------------------------------------------------------- 07:269-270 — reward-settle
             IReadOnlyList<string> settleFields = FieldsOf(script, "reward-settle");
-            List<string> settleVocabBefore = ReadVocabulary(world, source, installation);
-            List<string> settleBefore = ReadAll(world, source, installation, settleFields);
+            List<string> settleVocabBefore = ReadVocabulary(world, installation, installation);
+            List<string> settleBefore = ReadAll(world, installation, installation, settleFields);
             int handABefore = HandSize(world, CardTableKeys.SeatAOrdinal);
             int handBBefore = HandSize(world, CardTableKeys.SeatBOrdinal);
             IReadOnlyList<DeliveryObligation> openBefore = source.Owner.Outbox.OpenObligations();
@@ -596,8 +602,8 @@ namespace GameCore.Validation.ProbeHost
                 acknowledgements.Add(outcome + "/" + acknowledgeCode + "(" + Clip(acknowledgeDetail, 80) + ")");
             }
 
-            List<string> settleAfter = ReadAll(world, source, installation, settleFields);
-            List<string> settleVocabAfter = ReadVocabulary(world, source, installation);
+            List<string> settleAfter = ReadAll(world, installation, installation, settleFields);
+            List<string> settleVocabAfter = ReadVocabulary(world, installation, installation);
             StepRecord(trace, "reward-settle", settleFields, settleBefore, settleAfter);
             RecordSnapshot(trace, "reward-settle", ConformancePhase.Before, settleVocabBefore);
             RecordSnapshot(trace, "reward-settle", ConformancePhase.After, settleVocabAfter);
@@ -607,7 +613,7 @@ namespace GameCore.Validation.ProbeHost
             var settleReadings = new RowReadings(settleFields, settleBefore, settleAfter);
             bool settlePassed = settle.Dispatched == 1
                 && acknowledged == 1
-                && source.Owner.AcknowledgedCount == 1
+                && source.Owner.Outbox.AcknowledgeCount == 1
                 && settleReadings.Require(ConformanceFields.OutboxOpen, "1", "0")
                 && settleReadings.Require(ConformanceFields.OutboxAcknowledged, "0", "1")
                 && settleReadings.Require(ConformanceFields.OutboxMutations, "0", "1")
@@ -627,7 +633,7 @@ namespace GameCore.Validation.ProbeHost
                 settlePassed,
                 RowDetail("reward-settle", "Published", settleReadings, settleVocabBefore, settleVocabAfter)
                 + "; pass={" + settle + "}"
-                + "; acknowledged=" + source.Owner.AcknowledgedCount.ToString(CultureInfo.InvariantCulture)
+                + "; acknowledged=" + source.Owner.Outbox.AcknowledgeCount.ToString(CultureInfo.InvariantCulture)
                 + "; ack={" + string.Join(",", acknowledgements.ToArray()) + "}"
                 + "; open=" + source.Owner.Outbox.OpenCount.ToString(CultureInfo.InvariantCulture)
                 + "; mutations=" + source.Destination.CommittedCount.ToString(CultureInfo.InvariantCulture)
@@ -640,8 +646,8 @@ namespace GameCore.Validation.ProbeHost
 
             // ---------------------------------------------------------------- 07:276 — reward-drain-then-unmount
             IReadOnlyList<string> drainFields = FieldsOf(script, "reward-drain-then-unmount");
-            List<string> drainVocabBefore = ReadVocabulary(world, source, installation);
-            List<string> drainBefore = ReadAll(world, source, installation, drainFields);
+            List<string> drainVocabBefore = ReadVocabulary(world, installation, installation);
+            List<string> drainBefore = ReadAll(world, installation, installation, drainFields);
 
             // (a) The scratch-migration precondition on the drained value: the registered migration now accepts its
             //     copied count of 0, where the unmount row observed the same pass refuse it (P-029).
@@ -664,8 +670,8 @@ namespace GameCore.Validation.ProbeHost
             // (e) And the unmount that was refused now settles, because nothing is retained any more (07:276).
             RewardsLifecycleResult settled = installation.TryUnmount(host, world.Lane!);
 
-            List<string> drainAfter = ReadAll(world, source, installation, drainFields);
-            List<string> drainVocabAfter = ReadVocabulary(world, source, installation);
+            List<string> drainAfter = ReadAll(world, installation, installation, drainFields);
+            List<string> drainVocabAfter = ReadVocabulary(world, installation, installation);
             StepRecord(trace, "reward-drain-then-unmount", drainFields, drainBefore, drainAfter);
             RecordSnapshot(trace, "reward-drain-then-unmount", ConformancePhase.Before, drainVocabBefore);
             RecordSnapshot(trace, "reward-drain-then-unmount", ConformancePhase.After, drainVocabAfter);
@@ -713,20 +719,21 @@ namespace GameCore.Validation.ProbeHost
             IReadOnlyList<string> preCommitFields = ScriptFieldsOf(script, preCommitRow);
             IReadOnlyList<string> preArmFields = ScriptFieldsOf(script, preArmRow);
 
-            List<string> preCommitBefore = ReadAll(world, source, installation, preCommitFields);
+            List<string> preCommitBefore = ReadAll(world, installation, installation, preCommitFields);
             // The second choice names the node the conversation really sits on: the first commit moved it to the
             // permit result node, and a choice naming a stale node is refused by `NarrativeDialogueRules.Validate`.
             // The node is read from the package's own storage, never remembered by this file (P-042).
-            bool nodeRead = world.TryEntity(NarrativeKeys.Mara, out Entity mara)
+            ConformanceOperationResult secondCommit;
+            if (world.TryEntity(NarrativeKeys.Mara, out Entity mara)
                 && NarrativeState.TryRead(
                     host.EntityWorld.EntityManager,
                     mara,
                     NarrativeKeys.DialogueOwner,
                     NarrativeKeys.ConversationNodeSlot,
                     out int liveNode,
-                    out uint _);
-            ConformanceOperationResult secondCommit = nodeRead
-                ? world.SubmitAndPump(
+                    out uint _))
+            {
+                secondCommit = world.SubmitAndPump(
                     new CommandEnvelope(
                         world.NextOperation(),
                         NarrativeKeys.ChoiceRoute,
@@ -735,13 +742,17 @@ namespace GameCore.Validation.ProbeHost
                         null,
                         new FrozenPayload(NarrativePayloadCodec.EncodeChoice(
                             new NarrativeChoice(liveNode, NarrativeDialogueRules.PermitChoice)))),
-                    "commit-second-permit-choice")
-                : new ConformanceOperationResult(
+                    "commit-second-permit-choice");
+            }
+            else
+            {
+                secondCommit = new ConformanceOperationResult(
                     ConformanceOperationOutcome.Unsupported,
                     "the live conversation node could not be read, so no second choice was submitted");
+            }
             RewardBridgePassReport secondEnqueue = installation.RunBridgePass(
                 world.NextOperation(), RewardEventWindow, 0);
-            List<string> preCommitAfter = ReadAll(world, source, installation, preCommitFields);
+            List<string> preCommitAfter = ReadAll(world, installation, installation, preCommitFields);
             var preCommitReadings = new RowReadings(preCommitFields, preCommitBefore, preCommitAfter);
             bool preCommitPassed = secondCommit.Published
                 && secondEnqueue.RewardsEnqueued == 1
@@ -752,11 +763,11 @@ namespace GameCore.Validation.ProbeHost
                 ? string.Empty
                 : "the second choice did not admit one more obligation"));
 
-            List<string> preArmBefore = ReadAll(world, source, installation, preArmFields);
+            List<string> preArmBefore = ReadAll(world, installation, installation, preArmFields);
             RewardsLifecycleResult secondArm = installation.ArmPendingWork(host, TransferWorkOrdinal);
             bool secondSlot = installation.WriteOutboxSlot(
                 host, OutboxSlotTarget, installation.PendingWorkCount, out string secondSlotDetail);
-            List<string> preArmAfter = ReadAll(world, source, installation, preArmFields);
+            List<string> preArmAfter = ReadAll(world, installation, installation, preArmFields);
             var preArmReadings = new RowReadings(preArmFields, preArmBefore, preArmAfter);
             bool preArmPassed = secondArm.Settled
                 && secondSlot
@@ -816,8 +827,8 @@ namespace GameCore.Validation.ProbeHost
                 + Clip(transferred.Detail, 260) + "}"
                 + "; sourceRows=" + source.Owner.Outbox.Count.ToString(CultureInfo.InvariantCulture)
                 + "; sourceOpen=" + source.Owner.Outbox.OpenCount.ToString(CultureInfo.InvariantCulture)
-                + "; destinationRows=" + destination.Owner.Outbox.Count.ToString(CultureInfo.InvariantCulture)
-                + "; destinationOpen=" + destination.Owner.Outbox.OpenCount.ToString(CultureInfo.InvariantCulture)));
+                + "; destinationRows=" + destination.Bridge.Owner.Outbox.Count.ToString(CultureInfo.InvariantCulture)
+                + "; destinationOpen=" + destination.Bridge.Owner.Outbox.OpenCount.ToString(CultureInfo.InvariantCulture)));
 
             // ---------------------------------------------------------------- 07:272 — reward-redelivery
             IReadOnlyList<string> redeliveryFields = FieldsOf(script, "reward-redelivery");
@@ -864,25 +875,25 @@ namespace GameCore.Validation.ProbeHost
                 RowDetail("reward-redelivery", "Published", redeliveryReadings, redeliveryVocabBefore,
                     redeliveryVocabAfter)
                 + "; alreadyApplied="
-                + destination.Destination.AlreadyPresentCount.ToString(CultureInfo.InvariantCulture)
-                + "; mutations=" + destination.Destination.CommittedCount.ToString(CultureInfo.InvariantCulture)
-                + "; submits=" + destination.Destination.SubmittedCount.ToString(CultureInfo.InvariantCulture)
+                + destination.Bridge.Destination.AlreadyPresentCount.ToString(CultureInfo.InvariantCulture)
+                + "; mutations=" + destination.Bridge.Destination.CommittedCount.ToString(CultureInfo.InvariantCulture)
+                + "; submits=" + destination.Bridge.Destination.SubmittedCount.ToString(CultureInfo.InvariantCulture)
                 + "; crashBoundary=" + crashBoundary
                 + "; windowRows=" + hook.DeliveredRowCount.ToString(CultureInfo.InvariantCulture)
                 + "; hookSpent=" + hook.Spent));
 
             // ---------------------------------------------------------------- 07:276 — reward-scoring-unmount-keeps-card
             IReadOnlyList<string> scoringFields = FieldsOf(script, "reward-scoring-unmount-keeps-card");
-            List<string> scoringVocabBefore = ReadVocabulary(world, source, installation);
-            List<string> scoringBefore = ReadAll(world, source, installation, scoringFields);
+            List<string> scoringVocabBefore = ReadVocabulary(world, installation, installation);
+            List<string> scoringBefore = ReadAll(world, installation, installation, scoringFields);
 
             // Retracting the scoring provider is a capability change, not a gameplay effect: the issued card and the
             // committed score stay exactly as they are (P-003, P-032).
             ConformanceOperationResult scoringUnmounted = world.PublishEdit(
                 CardTablePayloads.Unmount(CardTableFixture.FestivalScoringInstance), "unmount-festival-scoring");
 
-            List<string> scoringAfter = ReadAll(world, source, installation, scoringFields);
-            List<string> scoringVocabAfter = ReadVocabulary(world, source, installation);
+            List<string> scoringAfter = ReadAll(world, installation, installation, scoringFields);
+            List<string> scoringVocabAfter = ReadVocabulary(world, installation, installation);
             StepRecord(trace, "reward-scoring-unmount-keeps-card", scoringFields, scoringBefore, scoringAfter);
             RecordSnapshot(trace, "reward-scoring-unmount-keeps-card", ConformancePhase.Before, scoringVocabBefore);
             RecordSnapshot(trace, "reward-scoring-unmount-keeps-card", ConformancePhase.After, scoringVocabAfter);
@@ -904,7 +915,7 @@ namespace GameCore.Validation.ProbeHost
                 RowDetail("reward-scoring-unmount-keeps-card", "Published", scoringReadings, scoringVocabBefore,
                     scoringVocabAfter)
                 + "; unmount={" + scoringUnmounted.Outcome + ": " + Clip(scoringUnmounted.Detail, 200) + "}"
-                + "; acknowledged=" + source.Owner.AcknowledgedCount.ToString(CultureInfo.InvariantCulture)));
+                + "; acknowledged=" + source.Owner.Outbox.AcknowledgeCount.ToString(CultureInfo.InvariantCulture)));
 
             narrativeModule = world.Narrative;
             cardModule = world.CardTable;
@@ -1195,15 +1206,20 @@ namespace GameCore.Validation.ProbeHost
                 case ConformanceFields.OutboxRecognised:
                     return Int(current.Bridge.RecognisedCount);
                 case ConformanceFields.OutboxOpen:
-                    return Int(current.Owner.Outbox.OpenCount);
+                    return Int(current.Bridge.Owner.Outbox.OpenCount);
                 case ConformanceFields.OutboxAcknowledged:
-                    return Int(current.Owner.AcknowledgedCount);
+                    // The outbox's own terminal counter, not the delivery owner's dispatch telemetry: this run's
+                    // acknowledgement half settles the obligation through the owner's adapter (`rewards.ack`, 07 s5
+                    // step 3), and `WorldDeliveryOwner.AcknowledgedCount` only counts acknowledgements that happened
+                    // inside a dispatch pass — reading it here would report 0 for an obligation the outbox itself
+                    // records as acknowledged (P-045).
+                    return Int(current.Bridge.Owner.Outbox.AcknowledgeCount);
                 case ConformanceFields.OutboxAlreadyApplied:
                     return Int(current.Bridge.Destination.AlreadyPresentCount);
                 case ConformanceFields.OutboxMutations:
                     return Int(current.Bridge.Destination.CommittedCount);
                 case ConformanceFields.OutboxRows:
-                    return Int(current.Owner.Outbox.Count);
+                    return Int(current.Bridge.Owner.Outbox.Count);
                 case ConformanceFields.OutboxPendingWork:
                     return TryReadSlot(world, slotOwner, out int pendingWork, out bool _, out string _)
                         ? Int(pendingWork)
@@ -1262,7 +1278,7 @@ namespace GameCore.Validation.ProbeHost
             if (world.Lane != null
                 && world.Lane.Committed.TryGetInstall(installation.Instance, out InstallEntry? entry)
                 && entry != null
-                && entry.State != InstallationState.Disposed)
+                && entry.State != GameCore.Contracts.InstallationState.Disposed)
             {
                 return "mounted";
             }
@@ -1416,9 +1432,15 @@ namespace GameCore.Validation.ProbeHost
         // ------------------------------------------------------------------ the merged world's parts
 
         /// <summary>
-        /// The two families' own manifest declarations, which is the set this world compiles and registers. It is the
-        /// ownership and schedule surface the world really runs: see <see cref="LaneDeclarations"/> for why the reward
-        /// installation's declaration is not part of it. `Gc013CardsHost.Declarations()` already carries
+        /// The declarations this world's compiled descriptor is built from: the two families' own set plus the
+        /// reward installation's <em>ownership surface</em> — its declared outbox state slot, without its two stages.
+        /// The slot must be part of the compiled descriptor because its live row sits on the card table's target and
+        /// P-032 requires every live slot a plan walks to be declared with a compatible policy
+        /// (`AssemblyPlanner.TryPlanSlotDispositions`); without it, any publication over that target — including the
+        /// card tent's own scoring-provider unmount — is refused with `MigrationRequired`. The stages stay out,
+        /// because a compiled stage entry needs exactly one host registration (`UnityWorldRegistration`'s plan
+        /// validation) and 07 s5 defines this plugin's runtime as the mounted installation, which this run drives at
+        /// idle boundaries rather than from inside a step. `Gc013CardsHost.Declarations()` already carries
         /// `CardTableFixture.Declarations()` as its first four entries, so adding that set a second time would be a
         /// duplicate declaration rather than a union (P-009).
         /// </summary>
@@ -1428,24 +1450,27 @@ namespace GameCore.Validation.ProbeHost
                 Gc013NarrativeHost.Declarations(
                     NarrativeScenarioCatalog.PluginFactoryKey, NarrativeScenarioCatalog.RecordSchema));
             merged.AddRange(Gc013CardsHost.Declarations());
+            merged.Add(new CatalogPluginDeclaration(RewardsDeclaration.OwnershipSurfaceManifest(), ConfigDocument.Empty));
             return merged;
         }
 
         /// <summary>
-        /// The declarations the LANE resolves manifests from: the two families' own set plus 07 s5's
-        /// `NarrativeCardRewards` declaration. The installation is a real install of this world's composition — its
-        /// mount and unmount are lane publications, its slot's last-support policy and its registered migration are
-        /// read from this manifest — while the compiled ownership schedule the world registers stays the families' own
-        /// set, because a compiled system entry needs exactly one host registration
-        /// (`CompiledScheduleAdapter.Registrations`) and this plugin's runtime is the mounted installation rather
-        /// than a host system (07 s5, P-009, P-032).
+        /// The declarations the LANE resolves manifests from: the two families' own set plus 07 s5's full
+        /// `NarrativeCardRewards` declaration, stages and receipt buffer included. The installation is a real install
+        /// of this world's composition — its mount and unmount are lane publications, its slot's last-support policy
+        /// and its registered migration are read from this manifest — and the lane's source admits exactly one
+        /// declaration per plugin type, which is this one (`CatalogManifestSource.Admit`).
         /// </summary>
         private static List<CatalogPluginDeclaration> LaneDeclarations()
         {
-            List<CatalogPluginDeclaration> merged = FamilyDeclarations();
+            List<CatalogPluginDeclaration> merged = new List<CatalogPluginDeclaration>(
+                Gc013NarrativeHost.Declarations(
+                    NarrativeScenarioCatalog.PluginFactoryKey, NarrativeScenarioCatalog.RecordSchema));
+            merged.AddRange(Gc013CardsHost.Declarations());
             merged.Add(RewardsDeclaration.Declaration());
             return merged;
         }
+
 
         /// <summary>
         /// The union catalog every declaration of this world resolves through. The three tables have disjoint keys, so
@@ -1508,6 +1533,37 @@ namespace GameCore.Validation.ProbeHost
 
             public int Count => narrative.Count + cards.Count + rewards.Count;
         }
+        /// <summary>
+        /// The merged slot-migration registry the ownership validator resolves declared migration keys through. A
+        /// combined world carries the narrative family's conversation slots and the reward installation's outbox slot,
+        /// each declared at schema version 2 with its own v1 -&gt; v2 migration key, and the pipeline's slot-policy
+        /// validation asks the registry for that key and pair before it accepts the descriptor
+        /// (OwnershipSchedulePipeline.cs:403-425, P-032): a registry that does not answer makes the whole merged
+        /// build fail with `SlotPolicyRejected` before a single stage is compiled. The narrative half is the family's
+        /// own `NarrativeSlotMigrations` — exactly what `Gc013NarrativeHost` passes to its own pipeline build — and
+        /// the rewards half registers the pair the outbox slot's own declaration names
+        /// (`RewardsKeys.OutboxSeededSchemaVersion` -&gt; `OutboxDeclaredSchemaVersion`). The card family declares no
+        /// slot migration, which is why its own build passes an empty registry.
+        /// </summary>
+        private sealed class MergedSlotMigrations : ISlotMigrationRegistry
+        {
+            private readonly NarrativeSlotMigrations narrative = new NarrativeSlotMigrations();
+            private readonly SlotMigrationRegistry rewards = new SlotMigrationRegistry();
+
+            public MergedSlotMigrations()
+            {
+                rewards.Register(
+                    RewardsKeys.OutboxMigration,
+                    new SchemaRef(RewardsKeys.OutboxSchema.Id, RewardsKeys.OutboxSeededSchemaVersion),
+                    RewardsKeys.OutboxSchema);
+            }
+
+            public bool IsRegistered(FactoryKey migrationKey, SchemaRef from, SchemaRef to)
+                => narrative.IsRegistered(migrationKey, from, to) || rewards.IsRegistered(migrationKey, from, to);
+        }
+
+        private static ISlotMigrationRegistry SlotMigrationsForValidation() => new MergedSlotMigrations();
+
         /// <summary>The narrative slice's own dispatch-kind table, as its family's `CompilePipeline` declares it.</summary>
         private static ScheduleDispatchKindTable NarrativeDispatchKinds() =>
             new ScheduleDispatchKindTable()
@@ -1545,7 +1601,7 @@ namespace GameCore.Validation.ProbeHost
                 manifests,
                 new MergedDispatchKinds(
                     NarrativeDispatchKinds(), CardTableRegistration.DispatchKinds(), RewardsDispatchKinds()),
-                new SlotMigrationRegistry());
+                SlotMigrationsForValidation());
         }
 
         /// <summary>Both families' scope trees, remapped onto the combined root (P-010).</summary>
@@ -1654,16 +1710,18 @@ namespace GameCore.Validation.ProbeHost
         }
 
         /// <summary>
-        /// Both families' slot migrations plus the reward installation's registered v1 -> v2 outbox migration, so the
-        /// registry the planner and the assembly publisher resolve through carries the handler the declaration names
-        /// (a missing handler is a `MigrationRequired` refusal, P-032).
+        /// Both families' slot migrations plus the reward installation's registered v1 ->&gt; v2 outbox migration, so
+        /// the registry the planner and the assembly publisher resolve through carries the handler the declaration
+        /// names (a missing handler is a `MigrationRequired` refusal, P-032). The installation's own instance is
+        /// preferred when it exists, for the same reason <see cref="CrossWorld.BuildPolicySurface"/> prefers it: a
+        /// row that counts the handler's invocations must count the handler the pass really runs.
         /// </summary>
-        private static MigrationRegistry MergedMigrations() =>
+        private static MigrationRegistry MergedMigrations(RewardsInstallation? installation = null) =>
             new MigrationRegistry(new List<ISlotMigration>
             {
                 new NarrativeConversationNodeMigration(),
                 new NarrativeConversationStatusMigration(),
-                new RewardsOutboxPreconditionMigration(),
+                installation?.OutboxMigration ?? new RewardsOutboxPreconditionMigration(),
             });
 
         /// <summary>
@@ -2026,7 +2084,7 @@ namespace GameCore.Validation.ProbeHost
                     return ConformanceValue.None;
                 }
 
-                return ConformanceValue.Int(
+                return ConformanceValue.UInt(
                     CardTableAccess.ReadTable(Host.EntityWorld.EntityManager, CardTable.TableEntity).TableVersion);
             }
 
@@ -2138,17 +2196,29 @@ namespace GameCore.Validation.ProbeHost
                 Time = new WorldTimeDriver(Host, new StepInputCutoff(8, 16), new PluginClockRegistry(8), 1U);
                 Time.AdoptResourceTable(Descriptor.Adaptation.NativeTable!);
 
-                // The world's own state-policy surface, built from the very manifests the lane resolves, so a slot
-                // policy a row asserts on is the declaration's own field and not an override (P-032). The reward
-                // installation's registered migration is registered here under its declared key.
-                PolicyCatalog = StatePolicyCatalog.Build(
-                    LaneManifests(),
-                    MergedMigrations().Migrations,
-                    null);
-                Policies = new StateMigrationPipeline(Host, Publisher, Seeder, PolicyCatalog,
-                    new PlanBudget(PrepareBytesLimit, PrepareBytesLimit, ScratchCapacityBytes, ScratchBytesPerSlot));
+                BuildPolicySurface(null);
 
                 Ready = true;
+            }
+
+            /// <summary>
+            /// (Re)builds the world's state-policy surface. Before the installation is mounted the pass registry
+            /// carries a fresh handler under the declared key; once the installation exists, its OWN migration
+            /// instance is registered instead, because a row that counts
+            /// <c>installation.OutboxMigration.Invocations</c> must count the handler the pass really ran — the key
+            /// resolves either way, and the installation's own doc comment states this is the caller's job (P-032).
+            /// </summary>
+            public void BuildPolicySurface(RewardsInstallation? installation)
+            {
+                var handlers = new List<ISlotMigration>
+                {
+                    new NarrativeConversationNodeMigration(),
+                    new NarrativeConversationStatusMigration(),
+                    installation?.OutboxMigration ?? new RewardsOutboxPreconditionMigration(),
+                };
+                PolicyCatalog = StatePolicyCatalog.Build(LaneManifests(), handlers, null);
+                Policies = new StateMigrationPipeline(Host, Publisher, Seeder, PolicyCatalog,
+                    new PlanBudget(PrepareBytesLimit, PrepareBytesLimit, ScratchCapacityBytes, ScratchBytesPerSlot));
             }
 
             /// <summary>
