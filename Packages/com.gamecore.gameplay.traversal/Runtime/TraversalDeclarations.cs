@@ -326,7 +326,7 @@ namespace GameCore.Gameplay.Traversal
                 // than preserving a stale claim about the current step.
                 Slot(
                     TraversalKeys.SnapshotSlot,
-                    TraversalKeys.MotionOwner,
+                    TraversalKeys.CheckpointOwner,
                     TraversalKeys.SnapshotDomain,
                     TraversalKeys.SnapshotLayout,
                     new[] { TraversalKeys.SnapshotField },

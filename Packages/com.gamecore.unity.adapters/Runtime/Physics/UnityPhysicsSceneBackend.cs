@@ -47,7 +47,7 @@ namespace GameCore.Unity.Adapters.Physics
         private readonly bool[] occupied;
         private readonly bool ownsScene;
 
-        private SimulationMode previousGlobalMode;
+        private global::UnityEngine.SimulationMode previousGlobalMode;
         private bool globalModeCaptured;
         private bool disposed;
 
@@ -77,9 +77,9 @@ namespace GameCore.Unity.Adapters.Physics
 
             if (suppressGlobalAutomaticSimulation)
             {
-                previousGlobalMode = Physics.simulationMode;
+                previousGlobalMode = global::UnityEngine.Physics.simulationMode;
                 globalModeCaptured = true;
-                Physics.simulationMode = SimulationMode.Script;
+                global::UnityEngine.Physics.simulationMode = global::UnityEngine.SimulationMode.Script;
             }
         }
 
@@ -114,7 +114,7 @@ namespace GameCore.Unity.Adapters.Physics
         /// True when this adapter stops Unity's own automatic simulation: its bodies are in a local scene Unity never
         /// auto-simulates, and the global mode is scripted for as long as this adapter is alive (04 s7).
         /// </summary>
-        public bool AutomaticSimulationSuppressed => ownsScene && (!globalModeCaptured || Physics.simulationMode == SimulationMode.Script);
+        public bool AutomaticSimulationSuppressed => ownsScene && (!globalModeCaptured || global::UnityEngine.Physics.simulationMode == global::UnityEngine.SimulationMode.Script);
 
         /// <summary>The default scene's physics scene, so a caller can prove the adapter's bodies are not in it.</summary>
         public PhysicsScene DefaultPhysicsScene => SceneManager.GetActiveScene().GetPhysicsScene();
@@ -322,7 +322,7 @@ namespace GameCore.Unity.Adapters.Physics
             disposed = true;
             if (globalModeCaptured)
             {
-                Physics.simulationMode = previousGlobalMode;
+                global::UnityEngine.Physics.simulationMode = previousGlobalMode;
                 globalModeCaptured = false;
             }
 
@@ -359,14 +359,6 @@ namespace GameCore.Unity.Adapters.Physics
         private bool Fail(DiagnosticCode failureCode, string failureDetail, out DiagnosticCode code, out string detail)
         {
             code = failureCode;
-            detail = failureDetail;
-            LastCode = failureCode;
-            LastDetail = failureDetail;
-            return false;
-        }
-
-        private bool Fail(DiagnosticCode failureCode, string failureDetail, out string detail)
-        {
             detail = failureDetail;
             LastCode = failureCode;
             LastDetail = failureDetail;

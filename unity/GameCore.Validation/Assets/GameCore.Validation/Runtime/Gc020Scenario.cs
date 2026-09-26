@@ -1742,7 +1742,7 @@ namespace GameCore.Validation.ProbeHost
                     runtime.Dispose();
                     stageRuntime = null;
 
-                    bool traceDetached = module == null || TraversalStepTrace.Of(module) == null;
+                    bool traceDetached = module == null || TraversalStepTraceRegistry.Of(module) == null;
                     bool physicsDisposed = physics == null
                         || (!physics.IsAvailable && !physics.TrySimulate(0.02d, out string _));
                     bool globalModeRestored = physics == null || Physics.simulationMode == globalModeBeforeAttach;

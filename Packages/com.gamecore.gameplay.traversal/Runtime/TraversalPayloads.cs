@@ -13,6 +13,7 @@
 using System;
 using GameCore.Composition;
 using GameCore.Contracts;
+using GameCore.Rules.Traversal;
 
 namespace GameCore.Gameplay.Traversal
 {

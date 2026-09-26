@@ -940,6 +940,12 @@ namespace GameCore.Gameplay.Traversal
 
                 module.RecordInput(false);
             }
+
+            // The lane's rows are released only now, after every payload has been decoded into ECS: the input stage is
+            // the lane's single declared consumer, so a payload is never read after release (P-043). Without this
+            // release the lane still holds rows at the commit boundary, `ValidateCommit` reports them unconsumed and
+            // the step faults instead of committing (P-031, P-043).
+            plane.ReleaseConsumed(TraversalKeys.InputOwner);
         }
     }
 
@@ -966,7 +972,7 @@ namespace GameCore.Gameplay.Traversal
                 return;
             }
 
-            TraversalTraceRecorder? trace = TraversalStepTrace.Of(module);
+            TraversalTraceRecorder? trace = TraversalStepTraceRegistry.Of(module);
             trace?.BeginStep(module.Host.CurrentStep.Value, module.Host.CurrentEpoch.Value, module.LastExternallyOwnedCount);
 
             int integrated = 0;
@@ -1184,7 +1190,7 @@ namespace GameCore.Gameplay.Traversal
             LogicalStepId step = module.Host.CurrentStep;
             AssemblyEpoch epoch = module.Host.CurrentEpoch;
             WorldMessagePlane? plane = module.Host.Messages;
-            TraversalTraceRecorder? trace = TraversalStepTrace.Of(module);
+            TraversalTraceRecorder? trace = TraversalStepTraceRegistry.Of(module);
 
             for (int i = 0; i < observations.Length; i++)
             {
@@ -1211,7 +1217,7 @@ namespace GameCore.Gameplay.Traversal
                     observation.CrossingSequence,
                     observation.SampledStep);
 
-                progress.Progress.TryAdvance(
+                new RunProgress(progress.Count, progress.Started, progress.LastCrossingSequence, progress.LastCheckpoint).TryAdvance(
                     course, in candidate, out RunProgress next, out CheckpointVerdict verdict);
                 module.RecordVerdict(verdict);
 
@@ -1327,7 +1333,7 @@ namespace GameCore.Gameplay.Traversal
             entityManager.SetComponentData(module.CourseEntity, snapshot);
             module.RecordOutput();
 
-            TraversalTraceRecorder? trace = TraversalStepTrace.Of(module);
+            TraversalTraceRecorder? trace = TraversalStepTraceRegistry.Of(module);
             trace?.CompleteStep();
         }
     }

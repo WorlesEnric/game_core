@@ -359,7 +359,7 @@ namespace GameCore.Gameplay.Traversal
     /// The process-side registry of one course world's trace recorder, so a gameplay stage resolves the recorder of
     /// its own world without the adapter owning it (P-002). An unattached world records nothing.
     /// </summary>
-    public static class TraversalStepTrace
+    public static class TraversalStepTraceRegistry
     {
         private static readonly Dictionary<ulong, TraversalTraceRecorder> Recorders =
             new Dictionary<ulong, TraversalTraceRecorder>();

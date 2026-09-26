@@ -31,8 +31,8 @@ namespace GameCore.Unity.Adapters.Presentation
     public sealed class UnityAnimationPresentationSink : IAnimationPresentationSink, IDisposable
     {
         private readonly Transform root;
-        private readonly Dictionary<ulong, Transform> views = new Dictionary<ulong, Transform>();
-        private readonly List<ulong> order = new List<ulong>();
+        private readonly Dictionary<Id128, Transform> views = new Dictionary<Id128, Transform>();
+        private readonly List<Id128> order = new List<Id128>();
         private readonly bool ownsRoot;
 
         private bool disposed;
@@ -83,13 +83,13 @@ namespace GameCore.Unity.Adapters.Presentation
             for (int i = 0; i < poses.Count; i++)
             {
                 CommittedPose pose = poses[i];
-                if (!views.TryGetValue(pose.Target.Value.Low, out Transform view) || view == null)
+                if (!views.TryGetValue(pose.Target.Value, out Transform view) || view == null)
                 {
                     var created = new GameObject("TargetView");
                     created.transform.SetParent(root, false);
                     view = created.transform;
-                    views[pose.Target.Value.Low] = view;
-                    order.Add(pose.Target.Value.Low);
+                    views[pose.Target.Value] = view;
+                    order.Add(pose.Target.Value);
                 }
 
                 view.localPosition = new Vector3(
@@ -175,12 +175,6 @@ namespace GameCore.Unity.Adapters.Presentation
 
         /// <inheritdoc />
         public string SinkName => "unity-audio-output";
-
-        /// <inheritdoc />
-        public bool IsAvailable =>
-            !disposed
-            && root != null
-            && (!requiresAudioDevice || AudioSettings.speakerMode != AudioSpeakerMode.Mode7point1 || true);
 
         /// <summary>Clips this sink can play, by cue identity.</summary>
         public int ClipCount => clips.Count;

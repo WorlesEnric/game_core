@@ -238,6 +238,12 @@ namespace GameCore.Gameplay.Traversal
         /// <summary>The route one captured movement input is admitted through (`traversal.route.movement`).</summary>
         public static readonly RouteId CommandRoute = TraversalIdentity.Route("traversal.route.movement");
 
+        /// <summary>
+        /// Producer key the host's ingress rows carry, so a lane's origin is declared rather than inferred (P-043):
+        /// every admitted movement envelope entered through the world's own host ingress.
+        /// </summary>
+        public static readonly FactoryKey HostIngressProducer = TraversalIdentity.Key("traversal.producer.host");
+
         /// <summary>Ingress buffer of the movement route.</summary>
         public static readonly BufferId CommandLane = TraversalIdentity.Buffer("traversal.buffer.movement-lane");
 

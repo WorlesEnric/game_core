@@ -346,9 +346,12 @@ namespace GameCore.Rules.Traversal
                 return false;
             }
 
-            // 5. The declared ground plane: a body at or below it rests on it.
+            // 5. The declared ground plane: a body at or below it rests on it. The clamp is SKIPPED on the step that
+            //    accepted a jump, because this step's pose is integrated from the velocity the step began with, so a
+            //    grounded body's pose is still exactly on the plane and clamping here would erase the impulse the
+            //    jump just set — leaving the body unable to ever leave the ground (07 s4.2's `JumpState`).
             byte grounded = 0;
-            if (pose.Y <= 0)
+            if (jumped == 0 && pose.Y <= 0)
             {
                 if (pose.Y < 0)
                 {

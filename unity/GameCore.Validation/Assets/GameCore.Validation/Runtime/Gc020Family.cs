@@ -252,7 +252,7 @@ namespace GameCore.Validation.ProbeHost
             }
 
             TraversalModule module = TraversalModule.Attach(host, courseTarget);
-            TraversalTraceRecorder trace = TraversalStepTrace.Attach(host.World);
+            TraversalTraceRecorder trace = TraversalStepTraceRegistry.Attach(host.World);
             BindEveryTarget(module, courseTarget, targets, seeder);
 
             WorldMessagePlane? plane = host.Messages;
@@ -299,7 +299,7 @@ namespace GameCore.Validation.ProbeHost
             Physics?.Dispose();
             if (Module != null)
             {
-                TraversalStepTrace.Detach(Module.Host.World);
+                TraversalStepTraceRegistry.Detach(Module.Host.World);
                 Module.Dispose();
             }
         }
