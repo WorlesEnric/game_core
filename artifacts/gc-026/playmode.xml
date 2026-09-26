@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="53" result="Passed" total="53" passed="53" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-09-26 08:42:52Z" end-time="2026-09-26 08:44:46Z" duration="113.898407">
+  <test-suite type="TestSuite" id="1079" name="GameCoreProbe" fullname="GameCoreProbe" runstate="Runnable" testcasecount="53" result="Passed" start-time="2026-09-26 08:42:52Z" end-time="2026-09-26 08:44:46Z" duration="113.898407" total="53" passed="53" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1018" name="GameCore.Gc020.Tests.dll" fullname="/home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation/Library/ScriptAssemblies/GameCore.Gc020.Tests.dll" runstate="Runnable" testcasecount="16" result="Passed" start-time="2026-09-26 08:42:52Z" end-time="2026-09-26 08:42:53Z" duration="0.414399" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="683594" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1019" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="16" result="Passed" start-time="2026-09-26 08:42:52Z" end-time="2026-09-26 08:42:53Z" duration="0.414149" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1020" name="Gc020" fullname="GameCore.Gc020" runstate="Runnable" testcasecount="16" result="Passed" start-time="2026-09-26 08:42:52Z" end-time="2026-09-26 08:42:53Z" duration="0.414041" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1021" name="Tests" fullname="GameCore.Gc020.Tests" runstate="Runnable" testcasecount="16" result="Passed" start-time="2026-09-26 08:42:52Z" end-time="2026-09-26 08:42:53Z" duration="0.413930" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1001" name="Gc020IntegrationTests" fullname="GameCore.Gc020.Tests.Gc020IntegrationTests" classname="GameCore.Gc020.Tests.Gc020IntegrationTests" runstate="Runnable" testcasecount="16" result="Passed" start-time="2026-09-26 08:42:52Z" end-time="2026-09-26 08:42:53Z" duration="0.413208" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1014" name="TheCardsAndNarrativeDeclareNoActionPhaseObservationPasses" fullname="GameCore.Gc020.Tests.Gc020IntegrationTests.TheCardsAndNarrativeDeclareNoActionPhaseObservationPasses" methodname="TheCardsAndNarrativeDeclareNoActionPhaseObservationPasses" classname="GameCore.Gc020.Tests.Gc020IntegrationTests" runstate="Runnable" seed="549294083" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.011472" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1013" name="TheCommittedAnimationAndAudioOutputObservationPasses" fullname="GameCore.Gc020.Tests.Gc020IntegrationTests.TheCommittedAnimationAndAudioOutputObservationPasses" methodname="TheCommittedAnimationAndAudioOutputObservationPasses" classname="GameCore.Gc020.Tests.Gc020IntegrationTests" runstate="Runnable" seed="530744185" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.000164" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1003" name="TheExistingRunnersDeriveTheModifierObservationPasses" fullname="GameCore.Gc020.Tests.Gc020IntegrationTests.TheExistingRunnersDeriveTheModifierObservationPasses" methodname="TheExistingRunnersDeriveTheModifierObservationPasses" classname="GameCore.Gc020.Tests.Gc020IntegrationTests" runstate="Runnable" seed="207973226" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.000097" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1012" name="TheExternallyOwnedPoseIsNotIntegratedObservationPasses" fullname="GameCore.Gc020.Tests.Gc020IntegrationTests.TheExternallyOwnedPoseIsNotIntegratedObservationPasses" methodname="TheExternallyOwnedPoseIsNotIntegratedObservationPasses" classname="GameCore.Gc020.Tests.Gc020IntegrationTests" runstate="Runnable" seed="1742157545" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.000098" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1002" name="TheFixedStepWorldAndRunnersObservationPasses" fullname="GameCore.Gc020.Tests.Gc020IntegrationTests.TheFixedStepWorldAndRunnersObservationPasses" methodname="TheFixedStepWorldAndRunnersObservationPasses" classname="GameCore.Gc020.Tests.Gc020IntegrationTests" runstate="Runnable" seed="2044313381" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.000081" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1010" name="TheFutureDescendantDerivesBeforeExecutionObservationPasses" fullname="GameCore.Gc020.Tests.Gc020IntegrationTests.TheFutureDescendantDerivesBeforeExecutionObservationPasses" methodname="TheFutureDescendantDerivesBeforeExecutionObservationPasses" classname="GameCore.Gc020.Tests.Gc020IntegrationTests" runstate="Runnable" seed="1701830326" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.000078" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1009" name="TheModeSwitchBothDirectionsObservationPasses" fullname="GameCore.Gc020.Tests.Gc020IntegrationTests.TheModeSwitchBothDirectionsObservationPasses" methodname="TheModeSwitchBothDirectionsObservationPasses" classname="GameCore.Gc020.Tests.Gc020IntegrationTests" runstate="Runnable" seed="2016790088" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.000077" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1016" name="TheObservationTableIsExactlyThePublishedSequence" fullname="GameCore.Gc020.Tests.Gc020IntegrationTests.TheObservationTableIsExactlyThePublishedSequence" methodname="TheObservationTableIsExactlyThePublishedSequence" classname="GameCore.Gc020.Tests.Gc020IntegrationTests" runstate="Runnable" seed="1051651774" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.000798" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1004" name="TheOneAdmittedStepIntegratesOnceObservationPasses" fullname="GameCore.Gc020.Tests.Gc020IntegrationTests.TheOneAdmittedStepIntegratesOnceObservationPasses" methodname="TheOneAdmittedStepIntegratesOnceObservationPasses" classname="GameCore.Gc020.Tests.Gc020IntegrationTests" runstate="Runnable" seed="603565240" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.000106" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1011" name="TheOneSimulationPerAdmittedStepObservationPasses" fullname="GameCore.Gc020.Tests.Gc020IntegrationTests.TheOneSimulationPerAdmittedStepObservationPasses" methodname="TheOneSimulationPerAdmittedStepObservationPasses" classname="GameCore.Gc020.Tests.Gc020IntegrationTests" runstate="Runnable" seed="1372763588" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.000081" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1006" name="ThePresentationRateDoesNotDoubleAdvanceObservationPasses" fullname="GameCore.Gc020.Tests.Gc020IntegrationTests.ThePresentationRateDoesNotDoubleAdvanceObservationPasses" methodname="ThePresentationRateDoesNotDoubleAdvanceObservationPasses" classname="GameCore.Gc020.Tests.Gc020IntegrationTests" runstate="Runnable" seed="725311480" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.000074" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1017" name="TheRegisteredDerivationSeamResolvesReducesAndRejects" fullname="GameCore.Gc020.Tests.Gc020IntegrationTests.TheRegisteredDerivationSeamResolvesReducesAndRejects" methodname="TheRegisteredDerivationSeamResolvesReducesAndRejects" classname="GameCore.Gc020.Tests.Gc020IntegrationTests" runstate="Runnable" seed="2001253480" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.003104" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1007" name="TheReparentChangesTheContributionAndKeepsStateObservationPasses" fullname="GameCore.Gc020.Tests.Gc020IntegrationTests.TheReparentChangesTheContributionAndKeepsStateObservationPasses" methodname="TheReparentChangesTheContributionAndKeepsStateObservationPasses" classname="GameCore.Gc020.Tests.Gc020IntegrationTests" runstate="Runnable" seed="1997728236" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.000112" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1005" name="TheReplaySeparatesPureMotionFromEngineObservationObservationPasses" fullname="GameCore.Gc020.Tests.Gc020IntegrationTests.TheReplaySeparatesPureMotionFromEngineObservationObservationPasses" methodname="TheReplaySeparatesPureMotionFromEngineObservationObservationPasses" classname="GameCore.Gc020.Tests.Gc020IntegrationTests" runstate="Runnable" seed="303730323" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.000089" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1015" name="TheTeardownSettlesAndDisposesObservationPasses" fullname="GameCore.Gc020.Tests.Gc020IntegrationTests.TheTeardownSettlesAndDisposesObservationPasses" methodname="TheTeardownSettlesAndDisposesObservationPasses" classname="GameCore.Gc020.Tests.Gc020IntegrationTests" runstate="Runnable" seed="1796829652" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.000076" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1008" name="TheUnmountKeepsPoseProgressAndReceiptsObservationPasses" fullname="GameCore.Gc020.Tests.Gc020IntegrationTests.TheUnmountKeepsPoseProgressAndReceiptsObservationPasses" methodname="TheUnmountKeepsPoseProgressAndReceiptsObservationPasses" classname="GameCore.Gc020.Tests.Gc020IntegrationTests" runstate="Runnable" seed="229167761" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.000072" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1027" name="GameCore.Unity.Adapters.PlayMode.Tests.dll" fullname="/home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation/Library/ScriptAssemblies/GameCore.Unity.Adapters.PlayMode.Tests.dll" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.034272" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="683594" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1028" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.033789" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1029" name="Unity" fullname="GameCore.Unity" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.033636" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1030" name="Adapters" fullname="GameCore.Unity.Adapters" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.033550" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1031" name="Tests" fullname="GameCore.Unity.Adapters.Tests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.033477" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestSuite" id="1032" name="PlayMode" fullname="GameCore.Unity.Adapters.Tests.PlayMode" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.033396" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-suite type="TestFixture" id="1022" name="AdapterPlayModeTests" fullname="GameCore.Unity.Adapters.Tests.PlayMode.AdapterPlayModeTests" classname="GameCore.Unity.Adapters.Tests.PlayMode.AdapterPlayModeTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.033279" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+                  <properties>
+                    <property name="Timeout" value="120000" />
+                  </properties>
+                  <test-case id="1025" name="AGameObjectViewIsAppliedFromACommittedImageAndDestroyedAtTeardown" fullname="GameCore.Unity.Adapters.Tests.PlayMode.AdapterPlayModeTests.AGameObjectViewIsAppliedFromACommittedImageAndDestroyedAtTeardown" methodname="AGameObjectViewIsAppliedFromACommittedImageAndDestroyedAtTeardown" classname="GameCore.Unity.Adapters.Tests.PlayMode.AdapterPlayModeTests" runstate="Runnable" seed="874486327" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.021968" asserts="0">
+                    <properties>
+                      <property name="_JOINTYPE" value="UnityCombinatorial" />
+                      <property name="Timeout" value="120000" />
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1023" name="AnIdleCommandWorldPresentsOnEveryHostFrameWithoutAdvancingAStep" fullname="GameCore.Unity.Adapters.Tests.PlayMode.AdapterPlayModeTests.AnIdleCommandWorldPresentsOnEveryHostFrameWithoutAdvancingAStep" methodname="AnIdleCommandWorldPresentsOnEveryHostFrameWithoutAdvancingAStep" classname="GameCore.Unity.Adapters.Tests.PlayMode.AdapterPlayModeTests" runstate="Runnable" seed="991400846" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.004849" asserts="0">
+                    <properties>
+                      <property name="_JOINTYPE" value="UnityCombinatorial" />
+                      <property name="Timeout" value="120000" />
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1024" name="DestroyingTheViewsLeavesGameplayCountersExactlyWhereTheyWere" fullname="GameCore.Unity.Adapters.Tests.PlayMode.AdapterPlayModeTests.DestroyingTheViewsLeavesGameplayCountersExactlyWhereTheyWere" methodname="DestroyingTheViewsLeavesGameplayCountersExactlyWhereTheyWere" classname="GameCore.Unity.Adapters.Tests.PlayMode.AdapterPlayModeTests" runstate="Runnable" seed="324692316" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.003656" asserts="0">
+                    <properties>
+                      <property name="_JOINTYPE" value="UnityCombinatorial" />
+                      <property name="Timeout" value="120000" />
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1026" name="TheSessionResetPathLeavesNoAdapterFrameBehind" fullname="GameCore.Unity.Adapters.Tests.PlayMode.AdapterPlayModeTests.TheSessionResetPathLeavesNoAdapterFrameBehind" methodname="TheSessionResetPathLeavesNoAdapterFrameBehind" classname="GameCore.Unity.Adapters.Tests.PlayMode.AdapterPlayModeTests" runstate="Runnable" seed="470769406" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.001687" asserts="0">
+                    <properties>
+                      <property name="Timeout" value="60000" />
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                </test-suite>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1040" name="GameCore.Unity.Adapters.Tests.dll" fullname="/home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation/Library/ScriptAssemblies/GameCore.Unity.Adapters.Tests.dll" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.015362" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="683594" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1041" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.015213" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1042" name="Unity" fullname="GameCore.Unity" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.015123" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1043" name="Adapters" fullname="GameCore.Unity.Adapters" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.015042" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1044" name="Tests" fullname="GameCore.Unity.Adapters.Tests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.014962" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1033" name="PlayerLoopIntegrationTests" fullname="GameCore.Unity.Adapters.Tests.PlayerLoopIntegrationTests" classname="GameCore.Unity.Adapters.Tests.PlayerLoopIntegrationTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.014843" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1036" name="AStaleGenerationTrampolineRefusesToPump" fullname="GameCore.Unity.Adapters.Tests.PlayerLoopIntegrationTests.AStaleGenerationTrampolineRefusesToPump" methodname="AStaleGenerationTrampolineRefusesToPump" classname="GameCore.Unity.Adapters.Tests.PlayerLoopIntegrationTests" runstate="Runnable" seed="1982920587" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.000534" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1034" name="BootstrapInstalledExactlyOneApplicationWorldAndOneRoute" fullname="GameCore.Unity.Adapters.Tests.PlayerLoopIntegrationTests.BootstrapInstalledExactlyOneApplicationWorldAndOneRoute" methodname="BootstrapInstalledExactlyOneApplicationWorldAndOneRoute" classname="GameCore.Unity.Adapters.Tests.PlayerLoopIntegrationTests" runstate="Runnable" seed="360588296" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.006266" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1039" name="CommandDrivenWorldAdvancesOncePerAdmittedCommand" fullname="GameCore.Unity.Adapters.Tests.PlayerLoopIntegrationTests.CommandDrivenWorldAdvancesOncePerAdmittedCommand" methodname="CommandDrivenWorldAdvancesOncePerAdmittedCommand" classname="GameCore.Unity.Adapters.Tests.PlayerLoopIntegrationTests" runstate="Runnable" seed="1683825720" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.001914" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1038" name="IdleCommandWorldAdvancesZeroStepsOverManyRealFrames" fullname="GameCore.Unity.Adapters.Tests.PlayerLoopIntegrationTests.IdleCommandWorldAdvancesZeroStepsOverManyRealFrames" methodname="IdleCommandWorldAdvancesZeroStepsOverManyRealFrames" classname="GameCore.Unity.Adapters.Tests.PlayerLoopIntegrationTests" runstate="Runnable" seed="1612971301" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.002576" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1035" name="InstallingThePumpNodeIsIdempotent" fullname="GameCore.Unity.Adapters.Tests.PlayerLoopIntegrationTests.InstallingThePumpNodeIsIdempotent" methodname="InstallingThePumpNodeIsIdempotent" classname="GameCore.Unity.Adapters.Tests.PlayerLoopIntegrationTests" runstate="Runnable" seed="1568040161" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.000746" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1037" name="ResetForNewSessionRemovesRoutesAndDisposesSurvivingHosts" fullname="GameCore.Unity.Adapters.Tests.PlayerLoopIntegrationTests.ResetForNewSessionRemovesRoutesAndDisposesSurvivingHosts" methodname="ResetForNewSessionRemovesRoutesAndDisposesSurvivingHosts" classname="GameCore.Unity.Adapters.Tests.PlayerLoopIntegrationTests" runstate="Runnable" seed="438201089" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:42:53Z" duration="0.001895" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1073" name="GameCore.W6Gate.Tests.dll" fullname="/home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation/Library/ScriptAssemblies/GameCore.W6Gate.Tests.dll" runstate="Runnable" testcasecount="27" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:44:46Z" duration="113.428944" total="27" passed="27" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="683594" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1074" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="27" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:44:46Z" duration="113.428791" total="27" passed="27" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1075" name="W6Gate" fullname="GameCore.W6Gate" runstate="Runnable" testcasecount="27" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:44:46Z" duration="113.428700" total="27" passed="27" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1076" name="Tests" fullname="GameCore.W6Gate.Tests" runstate="Runnable" testcasecount="27" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:44:46Z" duration="113.428615" total="27" passed="27" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1045" name="W6GateIntegrationTests" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" testcasecount="27" result="Passed" start-time="2026-09-26 08:42:53Z" end-time="2026-09-26 08:44:46Z" duration="113.428402" total="27" passed="27" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1053" name="TheCardsAdapterAssemblyIsAbsent" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheCardsAdapterAssemblyIsAbsent" methodname="TheCardsAdapterAssemblyIsAbsent" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="735291571" result="Passed" start-time="2026-09-26 08:44:46Z" end-time="2026-09-26 08:44:46Z" duration="0.001027" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1057" name="TheCardsCountersReturnToBaseline" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheCardsCountersReturnToBaseline" methodname="TheCardsCountersReturnToBaseline" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="354527193" result="Passed" start-time="2026-09-26 08:44:46Z" end-time="2026-09-26 08:44:46Z" duration="0.000139" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1052" name="TheCardsDeclareNoActionPhysicsOrAudioSurface" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheCardsDeclareNoActionPhysicsOrAudioSurface" methodname="TheCardsDeclareNoActionPhysicsOrAudioSurface" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="1338260614" result="Passed" start-time="2026-09-26 08:44:46Z" end-time="2026-09-26 08:44:46Z" duration="0.000101" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1069" name="TheCardsDigestHoldsOverBothCatalogs" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheCardsDigestHoldsOverBothCatalogs" methodname="TheCardsDigestHoldsOverBothCatalogs" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="383316560" result="Passed" start-time="2026-09-26 08:44:46Z" end-time="2026-09-26 08:44:46Z" duration="0.000789" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1056" name="TheCardsLedgerAndFenceHighWaterMarksAreBounded" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheCardsLedgerAndFenceHighWaterMarksAreBounded" methodname="TheCardsLedgerAndFenceHighWaterMarksAreBounded" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="1151553511" result="Passed" start-time="2026-09-26 08:44:46Z" end-time="2026-09-26 08:44:46Z" duration="0.000103" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1058" name="TheCardsRepeatableDigest" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheCardsRepeatableDigest" methodname="TheCardsRepeatableDigest" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="671987564" result="Passed" start-time="2026-09-26 08:44:46Z" end-time="2026-09-26 08:44:46Z" duration="0.000093" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1054" name="TheCardsRewardDeliveryIsExactlyOnceAcrossAReload" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheCardsRewardDeliveryIsExactlyOnceAcrossAReload" methodname="TheCardsRewardDeliveryIsExactlyOnceAcrossAReload" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="1014088690" result="Passed" start-time="2026-09-26 08:44:46Z" end-time="2026-09-26 08:44:46Z" duration="0.000090" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1055" name="TheCardsThousandCycleTeardownIsBounded" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheCardsThousandCycleTeardownIsBounded" methodname="TheCardsThousandCycleTeardownIsBounded" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="1209681552" result="Passed" start-time="2026-09-26 08:44:46Z" end-time="2026-09-26 08:44:46Z" duration="0.000079" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1072" name="TheCycleLoopFollowsTheDeclaredVariableAndNothingElseIsRead" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheCycleLoopFollowsTheDeclaredVariableAndNothingElseIsRead" methodname="TheCycleLoopFollowsTheDeclaredVariableAndNothingElseIsRead" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="853024693" result="Passed" start-time="2026-09-26 08:44:46Z" end-time="2026-09-26 08:44:46Z" duration="0.000175" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1047" name="TheNarrativeAdapterAssemblyIsAbsent" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheNarrativeAdapterAssemblyIsAbsent" methodname="TheNarrativeAdapterAssemblyIsAbsent" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="1523639192" result="Passed" start-time="2026-09-26 08:44:46Z" end-time="2026-09-26 08:44:46Z" duration="0.000089" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1050" name="TheNarrativeCountersReturnToBaseline" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheNarrativeCountersReturnToBaseline" methodname="TheNarrativeCountersReturnToBaseline" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="383407562" result="Passed" start-time="2026-09-26 08:44:46Z" end-time="2026-09-26 08:44:46Z" duration="0.000080" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1046" name="TheNarrativeDeclaresNoActionPhysicsOrAudioSurface" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheNarrativeDeclaresNoActionPhysicsOrAudioSurface" methodname="TheNarrativeDeclaresNoActionPhysicsOrAudioSurface" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="1654630431" result="Passed" start-time="2026-09-26 08:44:46Z" end-time="2026-09-26 08:44:46Z" duration="0.000075" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1068" name="TheNarrativeDigestHoldsOverBothCatalogs" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheNarrativeDigestHoldsOverBothCatalogs" methodname="TheNarrativeDigestHoldsOverBothCatalogs" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="1686365632" result="Passed" start-time="2026-09-26 08:44:46Z" end-time="2026-09-26 08:44:46Z" duration="0.000111" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1049" name="TheNarrativeLedgerAndFenceHighWaterMarksAreBounded" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheNarrativeLedgerAndFenceHighWaterMarksAreBounded" methodname="TheNarrativeLedgerAndFenceHighWaterMarksAreBounded" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="2069571439" result="Passed" start-time="2026-09-26 08:44:46Z" end-time="2026-09-26 08:44:46Z" duration="0.000080" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1051" name="TheNarrativeRepeatableDigest" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheNarrativeRepeatableDigest" methodname="TheNarrativeRepeatableDigest" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="1336764888" result="Passed" start-time="2026-09-26 08:44:46Z" end-time="2026-09-26 08:44:46Z" duration="0.000081" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1048" name="TheNarrativeThousandCycleTeardownIsBounded" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheNarrativeThousandCycleTeardownIsBounded" methodname="TheNarrativeThousandCycleTeardownIsBounded" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="1463881837" result="Passed" start-time="2026-09-26 08:44:46Z" end-time="2026-09-26 08:44:46Z" duration="0.000090" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1071" name="TheObservationTablesAndDigestsAgree" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheObservationTablesAndDigestsAgree" methodname="TheObservationTablesAndDigestsAgree" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="1536478940" result="Passed" start-time="2026-09-26 08:44:46Z" end-time="2026-09-26 08:44:46Z" duration="0.000494" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1063" name="TheTraversalCarriesTheOptionalEngineSurface" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheTraversalCarriesTheOptionalEngineSurface" methodname="TheTraversalCarriesTheOptionalEngineSurface" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="444660908" result="Passed" start-time="2026-09-26 08:44:46Z" end-time="2026-09-26 08:44:46Z" duration="0.000091" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1066" name="TheTraversalCountersReturnToBaseline" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheTraversalCountersReturnToBaseline" methodname="TheTraversalCountersReturnToBaseline" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="291294565" result="Passed" start-time="2026-09-26 08:44:46Z" end-time="2026-09-26 08:44:46Z" duration="0.000080" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1070" name="TheTraversalDigestHoldsOverItsOneCatalog" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheTraversalDigestHoldsOverItsOneCatalog" methodname="TheTraversalDigestHoldsOverItsOneCatalog" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="1879657843" result="Passed" start-time="2026-09-26 08:44:46Z" end-time="2026-09-26 08:44:46Z" duration="0.000250" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1059" name="TheTraversalFixedStepCourseRuns" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheTraversalFixedStepCourseRuns" methodname="TheTraversalFixedStepCourseRuns" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="168427297" result="Passed" start-time="2026-09-26 08:44:46Z" end-time="2026-09-26 08:44:46Z" duration="0.000087" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1065" name="TheTraversalLedgerAndFenceHighWaterMarksAreBounded" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheTraversalLedgerAndFenceHighWaterMarksAreBounded" methodname="TheTraversalLedgerAndFenceHighWaterMarksAreBounded" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="1918145851" result="Passed" start-time="2026-09-26 08:44:46Z" end-time="2026-09-26 08:44:46Z" duration="0.000077" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1061" name="TheTraversalOnePhysicsSimulationPerAdmittedStep" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheTraversalOnePhysicsSimulationPerAdmittedStep" methodname="TheTraversalOnePhysicsSimulationPerAdmittedStep" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="1105616963" result="Passed" start-time="2026-09-26 08:44:46Z" end-time="2026-09-26 08:44:46Z" duration="0.000078" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1067" name="TheTraversalRepeatableDigest" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheTraversalRepeatableDigest" methodname="TheTraversalRepeatableDigest" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="210110121" result="Passed" start-time="2026-09-26 08:44:46Z" end-time="2026-09-26 08:44:46Z" duration="0.000074" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1062" name="TheTraversalReplayReproducesTheRuleDigest" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheTraversalReplayReproducesTheRuleDigest" methodname="TheTraversalReplayReproducesTheRuleDigest" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="1551085242" result="Passed" start-time="2026-09-26 08:44:46Z" end-time="2026-09-26 08:44:46Z" duration="0.000072" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1060" name="TheTraversalTelemetryCountersRecordAdmittedSteps" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheTraversalTelemetryCountersRecordAdmittedSteps" methodname="TheTraversalTelemetryCountersRecordAdmittedSteps" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="1580576134" result="Passed" start-time="2026-09-26 08:44:46Z" end-time="2026-09-26 08:44:46Z" duration="0.000074" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1064" name="TheTraversalThousandCycleTeardownIsBounded" fullname="GameCore.W6Gate.Tests.W6GateIntegrationTests.TheTraversalThousandCycleTeardownIsBounded" methodname="TheTraversalThousandCycleTeardownIsBounded" classname="GameCore.W6Gate.Tests.W6GateIntegrationTests" runstate="Runnable" seed="546507037" result="Passed" start-time="2026-09-26 08:44:46Z" end-time="2026-09-26 08:44:46Z" duration="0.000071" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: /home/worlesenric/.config/unity3d/GameCore/GameCoreProbe/TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
