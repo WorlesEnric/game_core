@@ -359,7 +359,7 @@ namespace GameCore.Derivation
                     // Two installations may declare the same rule identity; the map is keyed by rule id, so the
                     // target must be recorded once per rule id, not once per declaring install, or the stratum
                     // loop would evaluate it once per RuleSource and duplicate the decision (P-026).
-                    if (!ContainsTarget(list, target.Target))
+                    if (list.Count == 0 || !list[list.Count - 1].Target.Equals(target.Target))
                     {
                         list.Add(target);
                     }
@@ -777,18 +777,6 @@ namespace GameCore.Derivation
             return target.DeclaresCapabilityId(rule.OutputCapability.Capability);
         }
 
-        private static bool ContainsTarget(List<DerivationTarget> targets, TargetId target)
-        {
-            for (int i = 0; i < targets.Count; i++)
-            {
-                if (targets[i].Target.Equals(target))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
 
         private static void SeedLedgerFromPrevious(
             DerivationSnapshot snapshot,

@@ -164,13 +164,28 @@ namespace GameCore.Derivation
         /// <summary>Target assembly of one target, or null when it has none in an accepted result.</summary>
         public TargetAssembly? AssemblyOf(TargetId target)
         {
-            for (int i = 0; i < Assemblies.Count; i++)
+            int low = 0;
+            int high = Assemblies.Count - 1;
+            while (low <= high)
             {
-                if (Assemblies[i].Target.Equals(target))
+                int mid = low + ((high - low) >> 1);
+                TargetAssembly candidate = Assemblies[mid];
+                int order = candidate.Target.Value.CompareTo(target.Value);
+                if (order == 0)
                 {
-                    return Assemblies[i];
+                    return candidate;
+                }
+
+                if (order < 0)
+                {
+                    low = mid + 1;
+                }
+                else
+                {
+                    high = mid - 1;
                 }
             }
+
             return null;
         }
 
@@ -892,6 +907,44 @@ namespace GameCore.Derivation
             Dictionary<SlotGroupKey, EffectiveSlot> accepted,
             Dictionary<Id128, List<EffectiveSlot>> slotsByTarget)
         {
+            Dictionary<Id128, Dictionary<Id128, List<CandidateDecision>>> decisionsByTarget =
+                new Dictionary<Id128, Dictionary<Id128, List<CandidateDecision>>>();
+            for (int d = 0; d < decisions.Count; d++)
+            {
+                CandidateDecision decision = decisions[d];
+                if (!decisionsByTarget.TryGetValue(decision.Target.Value, out Dictionary<Id128, List<CandidateDecision>>? capabilities))
+                {
+                    capabilities = new Dictionary<Id128, List<CandidateDecision>>();
+                    decisionsByTarget.Add(decision.Target.Value, capabilities);
+                }
+
+                if (!capabilities.TryGetValue(decision.Capability.Value, out List<CandidateDecision>? bucket))
+                {
+                    bucket = new List<CandidateDecision>();
+                    capabilities.Add(decision.Capability.Value, bucket);
+                }
+
+                bucket.Add(decision);
+            }
+
+            Dictionary<Id128, Dictionary<Id128, List<EffectiveSlot>>> slotsByCapability =
+                new Dictionary<Id128, Dictionary<Id128, List<EffectiveSlot>>>();
+            foreach (KeyValuePair<SlotGroupKey, EffectiveSlot> pair in accepted)
+            {
+                if (!slotsByCapability.TryGetValue(pair.Key.Target.Value, out Dictionary<Id128, List<EffectiveSlot>>? capabilities))
+                {
+                    capabilities = new Dictionary<Id128, List<EffectiveSlot>>();
+                    slotsByCapability.Add(pair.Key.Target.Value, capabilities);
+                }
+
+                if (!capabilities.TryGetValue(pair.Key.Capability.Value, out List<EffectiveSlot>? bucket))
+                {
+                    bucket = new List<EffectiveSlot>();
+                    capabilities.Add(pair.Key.Capability.Value, bucket);
+                }
+
+                bucket.Add(pair.Value);
+            }
             List<DerivationExplanation> explanations = new List<DerivationExplanation>();
             for (int a = 0; a < assemblies.Count; a++)
             {
@@ -903,11 +956,13 @@ namespace GameCore.Derivation
 
                 List<CapabilityId> pairs = new List<CapabilityId>();
                 HashSet<Id128> seen = new HashSet<Id128>();
-                for (int d = 0; d < decisions.Count; d++)
+                decisionsByTarget.TryGetValue(assembly.Target.Value, out Dictionary<Id128, List<CandidateDecision>>? targetDecisions);
+                if (targetDecisions != null)
                 {
-                    if (decisions[d].Target.Equals(assembly.Target) && seen.Add(decisions[d].Capability.Value))
+                    foreach (KeyValuePair<Id128, List<CandidateDecision>> pair in targetDecisions)
                     {
-                        pairs.Add(decisions[d].Capability);
+                        seen.Add(pair.Key);
+                        pairs.Add(pair.Value[0].Capability);
                     }
                 }
 
@@ -927,30 +982,26 @@ namespace GameCore.Derivation
                 for (int p = 0; p < pairs.Count; p++)
                 {
                     CapabilityId capability = pairs[p];
-                    List<CandidateDecision> pairDecisions = new List<CandidateDecision>();
-                    for (int d = 0; d < decisions.Count; d++)
-                    {
-                        if (decisions[d].Target.Equals(assembly.Target) && decisions[d].Capability.Equals(capability))
-                        {
-                            pairDecisions.Add(decisions[d]);
-                        }
-                    }
+                    List<CandidateDecision> pairDecisions = targetDecisions != null
+                        && targetDecisions.TryGetValue(capability.Value, out List<CandidateDecision>? foundDecisions)
+                        ? new List<CandidateDecision>(foundDecisions)
+                        : new List<CandidateDecision>();
 
                     pairDecisions.Sort(CompareDecisions);
 
                     List<CapabilityContribution> winners = new List<CapabilityContribution>();
                     List<CapabilityContribution> shadowed = new List<CapabilityContribution>();
                     List<EffectiveSlot> slots = new List<EffectiveSlot>();
-                    foreach (KeyValuePair<SlotGroupKey, EffectiveSlot> pair in accepted)
+                    if (slotsByCapability.TryGetValue(assembly.Target.Value, out Dictionary<Id128, List<EffectiveSlot>>? targetCapabilities)
+                        && targetCapabilities.TryGetValue(capability.Value, out List<EffectiveSlot>? foundSlots))
                     {
-                        if (!pair.Key.Target.Equals(assembly.Target) || !pair.Key.Capability.Equals(capability))
+                        for (int s = 0; s < foundSlots.Count; s++)
                         {
-                            continue;
+                            EffectiveSlot slot = foundSlots[s];
+                            slots.Add(slot);
+                            winners.AddRange(slot.Support);
+                            shadowed.AddRange(slot.Shadowed);
                         }
-
-                        slots.Add(pair.Value);
-                        winners.AddRange(pair.Value.Support);
-                        shadowed.AddRange(pair.Value.Shadowed);
                     }
 
                     slots.Sort(CompareSlots);
