@@ -24,6 +24,7 @@ namespace GameCore.Validation.ProbeHost
         private const string Gc018ArgumentName = "-probeGc018";
         private const string Gc019ArgumentName = "-probeGc019";
         private const string W5GateArgumentName = "-probeW5Gate";
+        private const string LifecycleStressArgumentName = "-probeLifecycleStress";
 
         private ProbeArguments(
             bool missingRegistration,
@@ -35,6 +36,7 @@ namespace GameCore.Validation.ProbeHost
             bool cards,
             bool w4Profile,
             bool gc013,
+            bool lifecycleStress,
             bool w4Gate,
             bool faults,
             bool gc018,
@@ -51,6 +53,7 @@ namespace GameCore.Validation.ProbeHost
             Cards = cards;
             W4Profile = w4Profile;
             Gc013 = gc013;
+            LifecycleStress = lifecycleStress;
             W4Gate = w4Gate;
             Faults = faults;
             Gc018 = gc018;
@@ -157,6 +160,14 @@ namespace GameCore.Validation.ProbeHost
         /// </summary>
         public bool W5Gate { get; }
 
+        /// <summary>
+        /// Runs the GC-022 lifecycle stress: the counted mount/unmount cycles over each family's committed generated
+        /// catalog and over its fixture identity set, with delayed completions, stalled jobs, a throwing disposer,
+        /// required-provider churn and headless cleanup, under native leak detection with full stack traces
+        /// (P-047, P-048, P-050).
+        /// </summary>
+        public bool LifecycleStress { get; }
+
         /// <summary>Destination path of the structured JSON result.</summary>
         public string? ResultPath { get; }
 
@@ -164,6 +175,7 @@ namespace GameCore.Validation.ProbeHost
         public bool IsProbeInvocation =>
             MissingRegistration || WorldDispatch || W1Gate || W2Gate || W3Gate || Narrative || Cards || W4Profile
             || Gc013 || W4Gate || Faults || Gc018 || Gc019 || W5Gate
+            || LifecycleStress
             || !string.IsNullOrEmpty(ResultPath);
 
         /// <summary>True when a result destination was supplied; without it the probe cannot record evidence.</summary>
@@ -180,6 +192,7 @@ namespace GameCore.Validation.ProbeHost
             bool cards = false;
             bool w4Profile = false;
             bool gc013 = false;
+            bool lifecycleStress = false;
             bool w4Gate = false;
             bool faults = false;
             bool gc018 = false;
@@ -245,6 +258,10 @@ namespace GameCore.Validation.ProbeHost
                 {
                     w5Gate = true;
                 }
+                else if (argument == LifecycleStressArgumentName)
+                {
+                    lifecycleStress = true;
+                }
                 else if (argument == ResultArgumentName && i + 1 < arguments.Length)
                 {
                     resultPath = arguments[i + 1];
@@ -253,6 +270,7 @@ namespace GameCore.Validation.ProbeHost
 
             return new ProbeArguments(
                 missingRegistration, worldDispatch, w1Gate, w2Gate, w3Gate, narrative, cards, w4Profile, gc013,
+                lifecycleStress,
                 w4Gate, faults, gc018, gc019, w5Gate, resultPath);
         }
     }

@@ -1,0 +1,8 @@
+Cleanup mono
+Leak Detected : Persistent allocates 1 individual allocation.
+Found 1 leak(s) from callstack:
+0x00007f8c2a1b3c40 (Unity) UnityEngine.Object::Internal_CloneSingle
+0x00007f8c2a1b3c41 (Mono JIT Code) GameCore.Unity.Runtime.UnityWorldHost:Dispose()
+0x00007f8c2a1b3c42 (Mono JIT Code) GameCore.Composition.ResourceLedger:Release(LeaseHandle)
+debugger-agent: Unable to listen on 43
+Checking for leaked weakptr:

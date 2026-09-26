@@ -134,6 +134,11 @@ namespace GameCore.Validation.ProbeHost
                     ProbeW5Gate.Run(report);
                     report.CompletePositive();
                 }
+                else if (arguments.LifecycleStress)
+                {
+                    ProbeLifecycleStress.Run(report);
+                    report.CompletePositive();
+                }
                 else
                 {
                     RunAotRootsProbe(report);
@@ -227,6 +232,11 @@ namespace GameCore.Validation.ProbeHost
             if (arguments.W5Gate)
             {
                 return Named("W5Gate", "W5-GATE");
+            }
+
+            if (arguments.LifecycleStress)
+            {
+                return Named("LifecycleStress", "GC-022");
             }
 
             return new ProbeReport(
