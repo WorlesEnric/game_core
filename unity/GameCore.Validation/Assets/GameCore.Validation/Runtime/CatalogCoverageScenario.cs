@@ -827,7 +827,7 @@ namespace GameCore.Validation.ProbeHost
                 + "; fixtureTableFingerprint=" + fixtureFingerprint
                 + "; equal=" + (passed ? "true" : "false")
                 + "; generatedFileHash=" + TraversalCatalog.CatalogFileHash
-                + "; groups=" + generated.Catalog!.RegistrationGroupCount.ToString(CultureInfo.InvariantCulture)
+                + "; groups=" + TraversalCatalog.RegistrationGroupCount.ToString(CultureInfo.InvariantCulture)
                 + "; unresolved=" + (unresolved.Count == 0 ? "<none>" : string.Join(",", unresolved));
             return passed;
         }
