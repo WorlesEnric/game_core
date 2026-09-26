@@ -33,8 +33,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="../../../Packages/com.gamecore.contracts/Runtime/Telemetry/**/*.cs"
-             Exclude="../../../Packages/com.gamecore.contracts/Runtime/Telemetry/**/bin/**/*.cs;../../../Packages/com.gamecore.contracts/Runtime/Telemetry/**/obj/**/*.cs" />
+    <ProjectReference Include="../../src/GameCore.Contracts/GameCore.Contracts.csproj" />
     <Compile Include="Probe.cs" />
   </ItemGroup>
 

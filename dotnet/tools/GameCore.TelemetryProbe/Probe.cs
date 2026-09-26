@@ -50,7 +50,13 @@ namespace GameCore.TelemetryProbeTool
                 + counters.Get(TelemetryCounter.CandidatesMatched)
                 + counters.Get(TelemetryCounter.RequestHighWater);
 
-            bool compiledIn = TelemetrySchema.IsCompiledIn;
+            // The contracts assembly in the dotnet solution is instrumented in both probe configurations;
+            // this check describes this probe's call-site compilation, not its referenced assembly.
+#if GAMECORE_TELEMETRY
+            bool compiledIn = true;
+#else
+            bool compiledIn = false;
+#endif
             Console.WriteLine(
                 "compiledIn=" + (compiledIn ? "1" : "0")
                 + ";sideEffects=" + sideEffects.ToString(CultureInfo.InvariantCulture)
