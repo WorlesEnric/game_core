@@ -18,6 +18,9 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using GameCore.Contracts;
+// GC-016's queue-disposition value, imported by alias: this file also names its own `QueueDisposition`, and the
+// observation namespace declares `ICommittedBoundaryReader`, which would collide with this file's parameter type.
+using BoundaryQueueDisposition = GameCore.Execution.Observation.BoundaryQueueDisposition;
 
 namespace GameCore.Execution.Persistence
 {
@@ -242,6 +245,23 @@ namespace GameCore.Execution.Persistence
                     DiagnosticCode.ApplyFault,
                     "the queue disposition " + queue.ToString()
                     + " does not account for every queued command (P-053).",
+                    request.World);
+            }
+
+            // W5-GATE reconciliation (see the seam header in CommittedBoundary.cs): when the world leases its
+            // boundary through GC-016's observation and declares its own facts, those facts must agree with what
+            // this capture copied. A world that says "three commands are queued here" while the reader could copy
+            // two has an ambiguity P-053 forbids, so the capture refuses instead of recording the smaller number.
+            // `Unspecified` is the honest answer of a world with no facts source and is never treated as empty.
+            if (snapshot.DeclaredQueueDisposition != BoundaryQueueDisposition.Unspecified
+                && snapshot.DeclaredQueuedCommandCount != queue.Offered)
+            {
+                return CheckpointCaptureResult.Refused(
+                    DiagnosticCode.ApplyFault,
+                    "the world declares " + snapshot.DeclaredQueuedCommandCount.ToString(CultureInfo.InvariantCulture)
+                    + " queued command(s) at this boundary (" + snapshot.DeclaredQueueDisposition.ToString()
+                    + ") but the boundary reader copied " + queue.Offered.ToString(CultureInfo.InvariantCulture)
+                    + "; a capture never records an ambiguous queue (P-053).",
                     request.World);
             }
 

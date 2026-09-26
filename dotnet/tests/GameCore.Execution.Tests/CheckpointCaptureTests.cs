@@ -11,6 +11,9 @@ using System;
 using System.Collections.Generic;
 using GameCore.Contracts;
 using GameCore.Execution.Persistence;
+// W5-GATE reconciliation: the world's declared queue facts are GC-016's observation vocabulary. Imported by alias
+// because this file implements its own `ICommittedBoundaryReader`, which the observation namespace also declares.
+using BoundaryQueueDisposition = GameCore.Execution.Observation.BoundaryQueueDisposition;
 using NUnit.Framework;
 
 namespace GameCore.Execution.Tests
@@ -1253,6 +1256,13 @@ namespace GameCore.Execution.Tests
         internal const ulong IssuerHighWaterSequence = 9UL;
         internal const ulong MessageStep = 21UL;
 
+        /// <summary>
+        /// The observation image a leased boundary names (GC-016). It is the world's own logical step and epoch, which
+        /// is what a reader that leases its boundary reports on the snapshot's `BoundaryToken`.
+        /// </summary>
+        internal static readonly SnapshotToken BoundaryToken =
+            new SnapshotToken(World, new AssemblyEpoch(PublishedEpoch), new LogicalStepId(LogicalStep));
+
         /// <summary>Builds one boundary snapshot; every argument list defaults to an empty category.</summary>
         internal static CommittedBoundarySnapshot Boundary(
             IReadOnlyList<ScopeRecordValue>? scopes = null,
@@ -1266,7 +1276,10 @@ namespace GameCore.Execution.Tests
             IReadOnlyList<MessageRecordValue>? messages = null,
             IReadOnlyList<RngRecordValue>? rngStreams = null,
             IReadOnlyList<CursorRecordValue>? cursors = null,
-            ContentHash? catalogFingerprint = null)
+            ContentHash? catalogFingerprint = null,
+            BoundaryQueueDisposition declaredQueueDisposition = BoundaryQueueDisposition.Unspecified,
+            int declaredQueuedCommands = 0,
+            int declaredStagedOperations = 0)
         {
             return new CommittedBoundarySnapshot(
                 World,
@@ -1297,7 +1310,11 @@ namespace GameCore.Execution.Tests
                 commands,
                 messages,
                 rngStreams,
-                cursors);
+                cursors,
+                BoundaryToken,
+                declaredQueueDisposition,
+                declaredQueuedCommands,
+                declaredStagedOperations);
         }
 
         /// <summary>
@@ -1805,6 +1822,85 @@ namespace GameCore.Execution.Tests
                 Assert.That(expected.Payload, Is.Not.Null);
                 Assert.That(commands[i].Payload, Is.EqualTo(expected.Payload));
             }
+        }
+
+        /// <summary>
+        /// W5-GATE reconciliation: a world that leases its boundary through GC-016's observation states its own
+        /// queued-command facts, and a capture whose copied queue contradicts that statement is refused instead of
+        /// recording the smaller number (P-053's "never ambiguously omitted").
+        /// </summary>
+        [Test]
+        public void DeclaredQueueFactsThatContradictTheCopiedQueueRefuseTheCapture()
+        {
+            CommittedBoundarySnapshot boundary = CheckpointTestFixture.Boundary(
+                scopes: CheckpointTestFixture.Scopes(),
+                targets: CheckpointTestFixture.Targets(),
+                commands: CheckpointTestFixture.Commands(2),
+                declaredQueueDisposition: BoundaryQueueDisposition.Included,
+                declaredQueuedCommands: 3,
+                declaredStagedOperations: 1);
+            CheckpointTestCodecs codecs = CheckpointTestCodecs.Complete();
+            CheckpointTestBoundaryReader reader = CheckpointTestFixture.Reader(boundary);
+
+            CheckpointCaptureResult result = CheckpointCapture.Capture(
+                reader,
+                CheckpointTestFixture.Request(codecs, CheckpointQueuePolicy.IncludeQueued));
+
+            Assert.That(result.Captured, Is.False, "a queue the world declares and the reader cannot copy is refused");
+            Assert.That(result.Code, Is.EqualTo(DiagnosticCode.ApplyFault));
+            Assert.That(result.Document, Is.Empty, "a refused capture writes no bytes (O-20)");
+            Assert.That(result.Detail, Does.Contain("ambiguously omitted"));
+            Assert.That(boundary.DeclaredQueuedCommandCount, Is.EqualTo(3));
+            Assert.That(boundary.QueuedCommands.Count, Is.EqualTo(2));
+        }
+
+        /// <summary>
+        /// The same world with a consistent declaration captures, and the snapshot carries the declared facts as
+        /// evidence beside the copied records: the disposition is the world's, not the capture's invention (P-053).
+        /// </summary>
+        [Test]
+        public void AConsistentDeclarationCapturesAndCarriesTheWorldsOwnQueueFacts()
+        {
+            CommittedBoundarySnapshot boundary = CheckpointTestFixture.Boundary(
+                scopes: CheckpointTestFixture.Scopes(),
+                targets: CheckpointTestFixture.Targets(),
+                commands: CheckpointTestFixture.Commands(2),
+                declaredQueueDisposition: BoundaryQueueDisposition.Included,
+                declaredQueuedCommands: 2,
+                declaredStagedOperations: 1);
+
+            CheckpointCaptureResult result = CheckpointCapture.Capture(
+                CheckpointTestFixture.Reader(boundary),
+                CheckpointTestFixture.Request(CheckpointTestCodecs.Complete(), CheckpointQueuePolicy.IncludeQueued));
+
+            Assert.That(result.Captured, Is.True, result.Detail);
+            Assert.That(result.Queue.Offered, Is.EqualTo(2));
+            Assert.That(result.Queue.Included, Is.EqualTo(2));
+            Assert.That(result.Queue.IsAccountedFor, Is.True);
+            Assert.That(boundary.BoundaryToken.World.Session, Is.EqualTo(CheckpointTestIds.WorldSession));
+            Assert.That(boundary.DeclaredQueueDisposition, Is.EqualTo(BoundaryQueueDisposition.Included));
+            Assert.That(boundary.DeclaredStagedOperationCount, Is.EqualTo(1));
+        }
+
+        /// <summary>
+        /// A world with no facts source says so: `Unspecified` is "not declared", never "the queue was empty", so a
+        /// capture of a reader that declares nothing is still allowed to record the commands it really copied.
+        /// </summary>
+        [Test]
+        public void AWorldThatDeclaresNoFactsSourceIsNotReadAsAnEmptyQueue()
+        {
+            CommittedBoundarySnapshot boundary = CheckpointTestFixture.WithQueuedCommands(3);
+            Assert.That(boundary.DeclaredQueueDisposition, Is.EqualTo(BoundaryQueueDisposition.Unspecified));
+            Assert.That(boundary.DeclaredQueuedCommandCount, Is.Zero);
+            Assert.That(boundary.QueuedCommands.Count, Is.EqualTo(3), "the reader still copied three commands");
+
+            CheckpointCaptureResult result = CheckpointCapture.Capture(
+                CheckpointTestFixture.Reader(boundary),
+                CheckpointTestFixture.Request(CheckpointTestCodecs.Complete(), CheckpointQueuePolicy.IncludeQueued));
+
+            Assert.That(result.Captured, Is.True, result.Detail);
+            Assert.That(result.Queue.Offered, Is.EqualTo(3));
+            Assert.That(result.Counts.Commands, Is.EqualTo(3));
         }
 
         [Test]

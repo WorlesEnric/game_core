@@ -12,10 +12,16 @@
 //
 // This interface is the only thing capture knows about a running world. It is engine-free on purpose: the capture
 // and restore orchestration below can then be exercised by the pure test suites with no Unity world, while the
-// Unity implementation reads real ECS storage. The sibling observation task (GC-016) owns bounded snapshot leases;
-// when its lease interface is present, an implementation of this seam is expected to *use* that lease rather than
-// reaching into live storage, and the shape below stays the frozen contract between them (see
-// artifacts/gc-018/HANDOFF.md).
+// Unity implementation reads real ECS storage.
+//
+// **W5-GATE reconciliation (recorded, because two tasks wrote this seam's two halves).** GC-016 froze the bounded
+// observation lease (`GameCore.Execution.Observation.ICommittedBoundaryLease`) and GC-018 wrote this reader
+// against live storage with the note that a lease would be taken "when that interface is present". Both are
+// present now, so `UnityCommittedBoundaryReader` leases the boundary through the frozen interface for the whole
+// read and reports what it pinned in `CommittedBoundarySnapshot.BoundaryToken`, together with the world's own
+// queued-command/staged-operation facts, and `CheckpointCapture` refuses a capture whose copied queue contradicts
+// the world's declaration. Nothing here is a second read path: the reader still copies from real storage, and the
+// lease is what makes the copy provably one retained image (P-007, P-053).
 //
 // `TryRead` MUST copy, not alias: every list it returns is a value snapshot taken under the boundary condition, so
 // nothing that happens to the world afterwards can change what the capture serializes (P-029's copy-then-migrate
@@ -24,6 +30,10 @@
 using System;
 using System.Collections.Generic;
 using GameCore.Contracts;
+// The queue disposition and the boundary token are GC-016's observation vocabulary. This file declares its own
+// `ICommittedBoundaryReader`, so the observation namespace is imported by alias rather than wholesale: a plain
+// `using GameCore.Execution.Observation;` would make that name ambiguous here (CS0104).
+using BoundaryQueueDisposition = GameCore.Execution.Observation.BoundaryQueueDisposition;
 
 namespace GameCore.Execution.Persistence
 {
@@ -81,7 +91,11 @@ namespace GameCore.Execution.Persistence
             IReadOnlyList<CommandRecordValue>? queuedCommands,
             IReadOnlyList<MessageRecordValue>? nextStepMessages,
             IReadOnlyList<RngRecordValue>? rngStreams,
-            IReadOnlyList<CursorRecordValue>? cursors)
+            IReadOnlyList<CursorRecordValue>? cursors,
+            SnapshotToken boundaryToken,
+            BoundaryQueueDisposition declaredQueueDisposition,
+            int declaredQueuedCommandCount,
+            int declaredStagedOperationCount)
         {
             SourceWorld = sourceWorld;
             Definition = definition;
@@ -112,6 +126,10 @@ namespace GameCore.Execution.Persistence
             NextStepMessages = ContractCollections.Freeze(nextStepMessages);
             RngStreams = ContractCollections.Freeze(rngStreams);
             Cursors = ContractCollections.Freeze(cursors);
+            BoundaryToken = boundaryToken;
+            DeclaredQueueDisposition = declaredQueueDisposition;
+            DeclaredQueuedCommandCount = declaredQueuedCommandCount;
+            DeclaredStagedOperationCount = declaredStagedOperationCount;
         }
 
         /// <summary>Session the boundary was read from; recorded for evidence, never reused by a restore (P-004).</summary>
@@ -177,6 +195,27 @@ namespace GameCore.Execution.Persistence
 
         /// <summary>Event cursors and per-issuer high-water marks, including outbox/dedup cursors when used (P-053).</summary>
         public IReadOnlyList<CursorRecordValue> Cursors { get; }
+
+        /// <summary>
+        /// The committed observation image this snapshot was read under (GC-016). A reader that leases the boundary
+        /// through <c>WorldObservation</c> records the exact token it pinned, so the document's step/epoch and the
+        /// image the world had published cannot be two different things; <c>default</c> means the reader did not
+        /// lease an image (a non-ECS or fixture reader), which is reported rather than guessed.
+        /// </summary>
+        public SnapshotToken BoundaryToken { get; }
+
+        /// <summary>
+        /// How the world itself says it treats commands queued at this boundary (GC-016's
+        /// <c>ICommittedBoundaryFactsSource</c>). <c>Unspecified</c> means the world declared no facts source, which
+        /// is never read as "the queue was empty" (P-053).
+        /// </summary>
+        public BoundaryQueueDisposition DeclaredQueueDisposition { get; }
+
+        /// <summary>Commands the world's own facts source reports as admitted but not executed here (P-037, P-053).</summary>
+        public int DeclaredQueuedCommandCount { get; }
+
+        /// <summary>Control-lane operations the world's own facts source reports as staged and unpublished (P-051).</summary>
+        public int DeclaredStagedOperationCount { get; }
 
         /// <summary>Counts of this snapshot, in the header's declaration order.</summary>
         public CheckpointCounts Counts => new CheckpointCounts(

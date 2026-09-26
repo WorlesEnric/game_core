@@ -16,13 +16,18 @@
 //   * **It copies, never aliases.** Every list it builds is a new managed list of immutable record values. No
 //     `Entity`, `DynamicBuffer`, `NativeArray` or `SystemHandle` escapes this file, and no `Entity.Index`/
 //     `Entity.Version` is written into a record (P-005).
-//
-// The observation lease (GC-016) is the sibling mechanism for *retained* images: when that task's bounded lease
-// interface is present, this reader is the place that would hold one for the duration of a read. The frozen shape
-// here does not depend on it, so both tasks integrate without either owning the other's storage.
+//   * **It reads under a retained observation lease (W5-GATE reconciliation).** GC-016 froze
+//     `GameCore.Execution.Observation.ICommittedBoundaryLease` and this reader was written before it landed, with
+//     the note that the lease would be taken here "when that interface is present". It is present, so a read now
+//     leases the boundary through the world's own `WorldObservation` first and holds that lease for the whole copy:
+//     the image the header names is pinned and cannot be evicted or overwritten while the checkpoint copies it
+//     (P-007), the queued-command/staged-operation facts are the world's own declaration rather than this file's
+//     guess (P-053), and the world is re-checked after the copy so a boundary that moved under the reader is a
+//     refusal, never a document describing two different steps.
 #nullable enable
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using GameCore.Composition;
 using GameCore.Contracts;
 using GameCore.Execution.Messages;
@@ -31,6 +36,11 @@ using GameCore.Execution.Time;
 using GameCore.Unity.Runtime.Integration;
 using GameCore.Unity.Runtime.Messages;
 using Unity.Entities;
+// GC-016's observation vocabulary, imported by alias: this file also names `ICommittedBoundaryReader`, which the
+// observation namespace declares too, so a namespace-wide import would make the class's own interface ambiguous.
+using BoundaryLease = GameCore.Execution.Observation.ICommittedBoundaryLease;
+using BoundaryLeaseOutcome = GameCore.Execution.Observation.CommittedBoundaryOutcome;
+using BoundaryLeaseRequest = GameCore.Execution.Observation.CommittedBoundaryRequest;
 
 namespace GameCore.Unity.Runtime.Persistence
 {
@@ -130,9 +140,14 @@ namespace GameCore.Unity.Runtime.Persistence
                 return false;
             }
 
+            // W5-GATE reconciliation: the read happens under the world's own retained observation lease. The lease is
+            // taken before anything is copied and released only after the last record is built, so the image the
+            // header names cannot be evicted or overwritten while the copy runs (P-007), and every refusal below is
+            // the lease's own value rather than an inference.
+            BoundaryLeaseOutcome leaseOutcome;
             try
             {
-                snapshot = Read();
+                snapshot = Read(out leaseOutcome);
                 refusal = BoundaryRefusal.None;
                 return true;
             }
@@ -147,7 +162,37 @@ namespace GameCore.Unity.Runtime.Persistence
             }
         }
 
-        private CommittedBoundarySnapshot Read()
+        /// <summary>
+        /// Copies one committed boundary under the world's own retained observation lease. The lease is what makes
+        /// the copy provably one image: it is taken first, held for the whole read, and released only once the last
+        /// record is built, so the state the header names cannot be evicted or overwritten mid-copy (P-007). Its
+        /// queued-command/staged-operation facts are the world's own declaration (P-053), and the world is re-checked
+        /// after the copy, so a world that moved under the reader refuses rather than producing a document about two
+        /// different steps.
+        /// </summary>
+        private CommittedBoundarySnapshot Read(out BoundaryLeaseOutcome leaseOutcome)
+        {
+            // No event window: a checkpoint copies its commands and next-step messages from the message plane, and
+            // the boundary lease spans those in `EventCount`; asking for zero events keeps this read to the image.
+            var leased = world.Observation.LeaseCommittedBoundary(BoundaryLeaseRequest.Latest(0));
+            leaseOutcome = leased.Outcome;
+            BoundaryLease? granted = leased.Lease;
+            if (granted == null)
+            {
+                throw new InvalidOperationException(
+                    "the committed boundary of world " + world.DiagnosticName + " could not be leased through the"
+                    + " world's observation: " + leased.Outcome + " (" + leased.CodeText + "); a checkpoint is copied"
+                    + " under a retained image (P-007, P-053).");
+            }
+
+            using (granted)
+            {
+                return Copy(granted);
+            }
+        }
+
+        /// <summary>The copy itself, made while <paramref name="lease"/> pins the image it describes.</summary>
+        private CommittedBoundarySnapshot Copy(BoundaryLease lease)
         {
             EntityManager entityManager = world.EntityWorld.EntityManager;
 
@@ -220,7 +265,11 @@ namespace GameCore.Unity.Runtime.Persistence
                 out IReadOnlyList<MessageRecordValue> messages,
                 out IReadOnlyList<CursorRecordValue> cursors);
 
-            return new CommittedBoundarySnapshot(
+            // The boundary is the leased image's own: its step and epoch come from the lease rather than from the
+            // world's live counters, so the document's `LogicalStep` cannot disagree with the image it names. The
+            // queue facts are the world's declaration (P-053); a world with no facts source reports `Unspecified`
+            // and zero, which `CheckpointCapture` reads as "not declared" rather than "no queued commands".
+            var snapshot = new CommittedBoundarySnapshot(
                 world.World,
                 context.Definition,
                 world.TemporalModel,
@@ -229,13 +278,13 @@ namespace GameCore.Unity.Runtime.Persistence
                 context.MaxStepsPerPump,
                 context.UsesUnscaledHostClock,
                 world.HostTicksPerSecond,
-                world.CurrentStep,
+                lease.Step,
                 world.RetainedDebt,
                 world.DomainSeconds,
                 world.PendingDemand,
                 context.Mode,
                 world.PublishedCompositionRevision,
-                world.CurrentEpoch,
+                lease.Epoch,
                 context.CatalogFingerprint,
                 world.Messages == null ? EventSequence.Zero : world.Messages.LastEventSequence,
                 world.Messages == null ? AdmissionSequence.Zero : world.Messages.Requests.LastAdmissionSequence,
@@ -249,7 +298,27 @@ namespace GameCore.Unity.Runtime.Persistence
                 commands,
                 messages,
                 context.Rng.ToRecords(),
-                cursors);
+                cursors,
+                lease.Token,
+                lease.QueueDisposition,
+                lease.QueuedCommandCount,
+                lease.StagedOperationCount);
+
+            // The image is pinned, but the *boundary* is what a checkpoint claims: if the world advanced while this
+            // copy ran, the document would describe the leased step with another step's live storage. That is not a
+            // checkpoint, so it is refused rather than returned (P-030, P-053).
+            if (!world.CurrentStep.Equals(lease.Step) || !world.CurrentEpoch.Equals(lease.Epoch))
+            {
+                throw new InvalidOperationException(
+                    "world " + world.DiagnosticName + " moved past the boundary it leased: leased step "
+                    + lease.Step.Value.ToString(CultureInfo.InvariantCulture) + "/epoch "
+                    + lease.Epoch.Value.ToString(CultureInfo.InvariantCulture) + ", world now step "
+                    + world.CurrentStep.Value.ToString(CultureInfo.InvariantCulture) + "/epoch "
+                    + world.CurrentEpoch.Value.ToString(CultureInfo.InvariantCulture)
+                    + "; a checkpoint is copied at one boundary (P-053).");
+            }
+
+            return snapshot;
         }
 
         /// <summary>
