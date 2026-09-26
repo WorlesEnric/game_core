@@ -1,0 +1,655 @@
+{
+  "artifact": "gamecore.conformance.suite-matrix/1",
+  "generator": "tools/conformance/summarize_suite_matrix.py",
+  "probeRuns": "2",
+  "corpus": {
+    "trxFiles": 17,
+    "unityFiles": 2,
+    "probeModes": [
+      "benchmark",
+      "cards",
+      "catalogcoverage",
+      "conformance",
+      "faults",
+      "gc013",
+      "gc018",
+      "gc019",
+      "gc021",
+      "lifecyclestress",
+      "missingregistration",
+      "narrative",
+      "positive",
+      "recovery",
+      "recoverysmoke",
+      "replay",
+      "traversal",
+      "w1gate",
+      "w2gate",
+      "w3gate",
+      "w4gate",
+      "w4profile",
+      "w5gate",
+      "w6gate",
+      "w7gate",
+      "worlddispatch"
+    ]
+  },
+  "suites": [
+    {
+      "suite": "TEST-001",
+      "status": "Pass",
+      "dotnet": {
+        "status": "Pass",
+        "project": "dotnet/tests/GameCore.Content.Compiler.Tests",
+        "filter": "*",
+        "detail": "49 matching test(s)"
+      },
+      "unity": {
+        "status": "NotRun",
+        "assembly": "",
+        "detail": "the suite table declares no Unity assembly"
+      },
+      "probes": {
+        "status": "Pass",
+        "harnesses": [
+          "run_probe.sh:Positive:both",
+          "run_probe.sh:MissingRegistration:both",
+          "run_catalog_coverage_probe.sh:CatalogCoverage"
+        ],
+        "detail": [
+          "run_probe.sh (Positive): 1 document(s) pass",
+          "run_probe.sh (MissingRegistration): 1 document(s) pass",
+          "run_catalog_coverage_probe.sh (CatalogCoverage): 2 document(s) pass"
+        ]
+      }
+    },
+    {
+      "suite": "TEST-002",
+      "status": "Pass",
+      "dotnet": {
+        "status": "Pass",
+        "project": "dotnet/tests/GameCore.Contracts.Tests",
+        "filter": "FullyQualifiedName~Checkpoint",
+        "detail": "157 matching test(s)"
+      },
+      "unity": {
+        "status": "Pass",
+        "assembly": "GameCore.Unity.Runtime.Tests",
+        "detail": "53 passed, 0 failed"
+      },
+      "probes": {
+        "status": "Pass",
+        "harnesses": [
+          "run_gc018_probe.sh",
+          "run_w5_gate_probe.sh"
+        ],
+        "detail": [
+          "run_gc018_probe.sh (Gc018): 1 document(s) pass",
+          "run_w5_gate_probe.sh (W5Gate): 1 document(s) pass"
+        ]
+      }
+    },
+    {
+      "suite": "TEST-003",
+      "status": "Pass",
+      "dotnet": {
+        "status": "Pass",
+        "project": "dotnet/tests/GameCore.Composition.Tests",
+        "filter": "FullyQualifiedName~ServiceResolution",
+        "detail": "19 matching test(s)"
+      },
+      "unity": {
+        "status": "Pass",
+        "assembly": "GameCore.Composition.Tests",
+        "detail": "189 passed, 0 failed"
+      },
+      "probes": {
+        "status": "Pass",
+        "harnesses": [
+          "run_w1_gate_probe.sh"
+        ],
+        "detail": [
+          "run_w1_gate_probe.sh (W1Gate): 1 document(s) pass"
+        ]
+      }
+    },
+    {
+      "suite": "TEST-004",
+      "status": "Pass",
+      "dotnet": {
+        "status": "Pass",
+        "project": "dotnet/tests/GameCore.Derivation.Tests",
+        "filter": "FullyQualifiedName~ReferenceComposition",
+        "detail": "14 matching test(s)"
+      },
+      "unity": {
+        "status": "Pass",
+        "assembly": "GameCore.Derivation.Tests",
+        "detail": "114 passed, 0 failed"
+      },
+      "probes": {
+        "status": "Pass",
+        "harnesses": [
+          "run_narrative_probe.sh",
+          "run_w4_gate_probe.sh"
+        ],
+        "detail": [
+          "run_narrative_probe.sh (Narrative): 1 document(s) pass",
+          "run_w4_gate_probe.sh (W4Gate): 1 document(s) pass"
+        ]
+      }
+    },
+    {
+      "suite": "TEST-005",
+      "status": "Pass",
+      "dotnet": {
+        "status": "Pass",
+        "project": "dotnet/tests/GameCore.Planning.Tests",
+        "filter": "FullyQualifiedName~Precedence",
+        "detail": "20 matching test(s)"
+      },
+      "unity": {
+        "status": "Pass",
+        "assembly": "GameCore.Planning.Tests",
+        "detail": "163 passed, 0 failed"
+      },
+      "probes": {
+        "status": "Pass",
+        "harnesses": [
+          "run_w4_gate_probe.sh"
+        ],
+        "detail": [
+          "run_w4_gate_probe.sh (W4Gate): 1 document(s) pass"
+        ]
+      }
+    },
+    {
+      "suite": "TEST-006",
+      "status": "Pass",
+      "dotnet": {
+        "status": "Pass",
+        "project": "dotnet/tests/GameCore.Derivation.Tests",
+        "filter": "FullyQualifiedName~Isolation",
+        "detail": "15 matching test(s)"
+      },
+      "unity": {
+        "status": "Pass",
+        "assembly": "GameCore.Derivation.Tests",
+        "detail": "114 passed, 0 failed"
+      },
+      "probes": {
+        "status": "Pass",
+        "harnesses": [
+          "run_gc013_probe.sh",
+          "run_conformance_probe.sh"
+        ],
+        "detail": [
+          "run_gc013_probe.sh (Gc013): 1 document(s) pass",
+          "run_conformance_probe.sh (Conformance): 1 document(s) pass"
+        ]
+      }
+    },
+    {
+      "suite": "TEST-007",
+      "status": "Pass",
+      "dotnet": {
+        "status": "Pass",
+        "project": "dotnet/tests/GameCore.Derivation.Tests",
+        "filter": "FullyQualifiedName~TerminationAndBudget",
+        "detail": "15 matching test(s)"
+      },
+      "unity": {
+        "status": "Pass",
+        "assembly": "GameCore.Derivation.Tests",
+        "detail": "114 passed, 0 failed"
+      },
+      "probes": {
+        "status": "NotRun",
+        "harnesses": [],
+        "detail": [
+          "the suite table declares no player probe for this suite"
+        ]
+      }
+    },
+    {
+      "suite": "TEST-008",
+      "status": "Pass",
+      "dotnet": {
+        "status": "Pass",
+        "project": "dotnet/tests/GameCore.Derivation.Tests",
+        "filter": "FullyQualifiedName~Agreement",
+        "detail": "15 matching test(s)"
+      },
+      "unity": {
+        "status": "Pass",
+        "assembly": "GameCore.Derivation.Tests",
+        "detail": "114 passed, 0 failed"
+      },
+      "probes": {
+        "status": "Pass",
+        "harnesses": [
+          "run_w7_gate_probe.sh"
+        ],
+        "detail": [
+          "run_w7_gate_probe.sh (W7Gate): 1 document(s) pass"
+        ]
+      }
+    },
+    {
+      "suite": "TEST-009",
+      "status": "Pass",
+      "dotnet": {
+        "status": "Pass",
+        "project": "dotnet/tests/GameCore.Planning.Tests",
+        "filter": "FullyQualifiedName~PlanStateMachine",
+        "detail": "8 matching test(s)"
+      },
+      "unity": {
+        "status": "Pass",
+        "assembly": "GameCore.Unity.Assembly.Tests",
+        "detail": "11 passed, 0 failed"
+      },
+      "probes": {
+        "status": "Pass",
+        "harnesses": [
+          "run_w2_gate_probe.sh",
+          "run_gc017_faults_probe.sh",
+          "run_w6_gate_probe.sh"
+        ],
+        "detail": [
+          "run_w2_gate_probe.sh (W2Gate): 1 document(s) pass",
+          "run_gc017_faults_probe.sh (Faults): 1 document(s) pass",
+          "run_w6_gate_probe.sh (W6Gate): 1 document(s) pass"
+        ]
+      }
+    },
+    {
+      "suite": "TEST-010",
+      "status": "Pass",
+      "dotnet": {
+        "status": "Pass",
+        "project": "dotnet/tests/GameCore.Planning.Tests",
+        "filter": "FullyQualifiedName~SlotPolicyValidator",
+        "detail": "13 matching test(s)"
+      },
+      "unity": {
+        "status": "Pass",
+        "assembly": "GameCore.Planning.Tests",
+        "detail": "163 passed, 0 failed"
+      },
+      "probes": {
+        "status": "Pass",
+        "harnesses": [
+          "run_w4_gate_probe.sh"
+        ],
+        "detail": [
+          "run_w4_gate_probe.sh (W4Gate): 1 document(s) pass"
+        ]
+      }
+    },
+    {
+      "suite": "TEST-011",
+      "status": "Pass",
+      "dotnet": {
+        "status": "Pass",
+        "project": "dotnet/tests/GameCore.Execution.Tests",
+        "filter": "FullyQualifiedName~TemporalAccumulator",
+        "detail": "7 matching test(s)"
+      },
+      "unity": {
+        "status": "Pass",
+        "assembly": "GameCore.Unity.Runtime.Tests",
+        "detail": "53 passed, 0 failed"
+      },
+      "probes": {
+        "status": "Pass",
+        "harnesses": [
+          "run_world_probe.sh",
+          "run_w3_gate_probe.sh"
+        ],
+        "detail": [
+          "run_world_probe.sh (WorldDispatch): 1 document(s) pass",
+          "run_w3_gate_probe.sh (W3Gate): 1 document(s) pass"
+        ]
+      }
+    },
+    {
+      "suite": "TEST-012",
+      "status": "Pass",
+      "dotnet": {
+        "status": "Pass",
+        "project": "dotnet/tests/GameCore.Planning.Tests",
+        "filter": "FullyQualifiedName~ScheduleCompiler",
+        "detail": "40 matching test(s)"
+      },
+      "unity": {
+        "status": "Pass",
+        "assembly": "GameCore.Planning.Tests",
+        "detail": "163 passed, 0 failed"
+      },
+      "probes": {
+        "status": "Pass",
+        "harnesses": [
+          "run_w2_gate_probe.sh"
+        ],
+        "detail": [
+          "run_w2_gate_probe.sh (W2Gate): 1 document(s) pass"
+        ]
+      }
+    },
+    {
+      "suite": "TEST-013",
+      "status": "Pass",
+      "dotnet": {
+        "status": "Pass",
+        "project": "dotnet/tests/GameCore.Execution.Tests",
+        "filter": "FullyQualifiedName~RequestLedger",
+        "detail": "12 matching test(s)"
+      },
+      "unity": {
+        "status": "Pass",
+        "assembly": "GameCore.Unity.Messages.Tests",
+        "detail": "11 passed, 0 failed"
+      },
+      "probes": {
+        "status": "Pass",
+        "harnesses": [
+          "run_cards_probe.sh",
+          "run_w3_gate_probe.sh",
+          "run_gc021_probe.sh"
+        ],
+        "detail": [
+          "run_cards_probe.sh (Cards): 1 document(s) pass",
+          "run_w3_gate_probe.sh (W3Gate): 1 document(s) pass",
+          "run_gc021_probe.sh (Gc021): 1 document(s) pass"
+        ]
+      }
+    },
+    {
+      "suite": "TEST-014",
+      "status": "Pass",
+      "dotnet": {
+        "status": "Pass",
+        "project": "dotnet/tests/GameCore.Execution.Tests",
+        "filter": "FullyQualifiedName~Observation",
+        "detail": "30 matching test(s)"
+      },
+      "unity": {
+        "status": "Pass",
+        "assembly": "GameCore.Unity.Observation.Tests",
+        "detail": "21 passed, 0 failed"
+      },
+      "probes": {
+        "status": "Pass",
+        "harnesses": [
+          "run_w5_gate_probe.sh"
+        ],
+        "detail": [
+          "run_w5_gate_probe.sh (W5Gate): 1 document(s) pass"
+        ]
+      }
+    },
+    {
+      "suite": "TEST-015",
+      "status": "Pass",
+      "dotnet": {
+        "status": "Pass",
+        "project": "dotnet/tests/GameCore.Composition.Tests",
+        "filter": "FullyQualifiedName~Lifecycle",
+        "detail": "19 matching test(s)"
+      },
+      "unity": {
+        "status": "Pass",
+        "assembly": "GameCore.Composition.Tests",
+        "detail": "189 passed, 0 failed"
+      },
+      "probes": {
+        "status": "Pass",
+        "harnesses": [
+          "run_lifecycle_stress_probe.sh",
+          "run_w4_gate_probe.sh",
+          "run_w4_profile_probe.sh"
+        ],
+        "detail": [
+          "run_lifecycle_stress_probe.sh (LifecycleStress): 1 document(s) pass",
+          "run_w4_gate_probe.sh (W4Gate): 1 document(s) pass",
+          "run_w4_profile_probe.sh (W4Profile): 1 document(s) pass"
+        ]
+      }
+    },
+    {
+      "suite": "TEST-016",
+      "status": "Pass",
+      "dotnet": {
+        "status": "Pass",
+        "project": "dotnet/tests/GameCore.Recovery.Fixtures.Tests",
+        "filter": "FullyQualifiedName~RecoveryPolicy",
+        "detail": "10 matching test(s)"
+      },
+      "unity": {
+        "status": "Pass",
+        "assembly": "GameCore.Unity.Faults.Tests",
+        "detail": "14 passed, 0 failed"
+      },
+      "probes": {
+        "status": "Pass",
+        "harnesses": [
+          "run_gc017_faults_probe.sh",
+          "run_recovery_probe.sh",
+          "run_recovery_smoke_probe.sh"
+        ],
+        "detail": [
+          "run_gc017_faults_probe.sh (Faults): 1 document(s) pass",
+          "run_recovery_probe.sh (Recovery): 1 document(s) pass",
+          "run_recovery_smoke_probe.sh (RecoverySmoke): 2 document(s) pass"
+        ]
+      }
+    },
+    {
+      "suite": "TEST-017",
+      "status": "Pass",
+      "dotnet": {
+        "status": "Pass",
+        "project": "dotnet/tests/GameCore.Contracts.Tests",
+        "filter": "FullyQualifiedName~Checkpoint",
+        "detail": "157 matching test(s)"
+      },
+      "unity": {
+        "status": "Pass",
+        "assembly": "GameCore.Unity.Recovery.Tests",
+        "detail": "9 passed, 0 failed"
+      },
+      "probes": {
+        "status": "Pass",
+        "harnesses": [
+          "run_gc018_probe.sh",
+          "run_recovery_probe.sh"
+        ],
+        "detail": [
+          "run_gc018_probe.sh (Gc018): 1 document(s) pass",
+          "run_recovery_probe.sh (Recovery): 1 document(s) pass"
+        ]
+      }
+    },
+    {
+      "suite": "TEST-018",
+      "status": "Pass",
+      "dotnet": {
+        "status": "Pass",
+        "project": "dotnet/tests/GameCore.Execution.Tests",
+        "filter": "FullyQualifiedName~WorldResourceLedger",
+        "detail": "7 matching test(s)"
+      },
+      "unity": {
+        "status": "Pass",
+        "assembly": "GameCore.Unity.Runtime.Tests",
+        "detail": "53 passed, 0 failed"
+      },
+      "probes": {
+        "status": "Pass",
+        "harnesses": [
+          "run_world_probe.sh",
+          "run_w1_gate_probe.sh"
+        ],
+        "detail": [
+          "run_world_probe.sh (WorldDispatch): 1 document(s) pass",
+          "run_w1_gate_probe.sh (W1Gate): 1 document(s) pass"
+        ]
+      }
+    },
+    {
+      "suite": "TEST-019",
+      "status": "Pass",
+      "dotnet": {
+        "status": "Pass",
+        "project": "dotnet/tests/GameCore.Adapters.Tests",
+        "filter": "*",
+        "detail": "30 matching test(s)"
+      },
+      "unity": {
+        "status": "Pass",
+        "assembly": "GameCore.Unity.Adapters.Tests",
+        "detail": "6 passed, 0 failed"
+      },
+      "probes": {
+        "status": "Pass",
+        "harnesses": [
+          "run_gc019_probe.sh",
+          "run_traversal_probe.sh"
+        ],
+        "detail": [
+          "run_gc019_probe.sh (Gc019): 1 document(s) pass",
+          "run_traversal_probe.sh (Traversal): 1 document(s) pass"
+        ]
+      }
+    },
+    {
+      "suite": "TEST-020",
+      "status": "Pass",
+      "dotnet": {
+        "status": "Pass",
+        "project": "dotnet/tests/GameCore.Content.Compiler.Tests",
+        "filter": "FullyQualifiedName~Catalog",
+        "detail": "72 matching test(s)"
+      },
+      "unity": {
+        "status": "Pass",
+        "assembly": "GameCore.CatalogCoverage.Tests",
+        "detail": "12 passed, 0 failed"
+      },
+      "probes": {
+        "status": "Pass",
+        "harnesses": [
+          "run_catalog_coverage_probe.sh:CatalogCoverage"
+        ],
+        "detail": [
+          "run_catalog_coverage_probe.sh (CatalogCoverage): 2 document(s) pass"
+        ]
+      }
+    },
+    {
+      "suite": "TEST-021",
+      "status": "Pass",
+      "dotnet": {
+        "status": "Pass",
+        "project": "dotnet/tests/GameCore.ReferenceConformance.Tests",
+        "filter": "FullyQualifiedName~Reference",
+        "detail": "76 matching test(s)"
+      },
+      "unity": {
+        "status": "Pass",
+        "assembly": "GameCore.Conformance.Tests",
+        "detail": "8 passed, 0 failed"
+      },
+      "probes": {
+        "status": "Pass",
+        "harnesses": [
+          "run_conformance_probe.sh",
+          "run_narrative_probe.sh",
+          "run_cards_probe.sh",
+          "run_traversal_probe.sh"
+        ],
+        "detail": [
+          "run_conformance_probe.sh (Conformance): 1 document(s) pass",
+          "run_narrative_probe.sh (Narrative): 1 document(s) pass",
+          "run_cards_probe.sh (Cards): 1 document(s) pass",
+          "run_traversal_probe.sh (Traversal): 1 document(s) pass"
+        ]
+      }
+    },
+    {
+      "suite": "TEST-022",
+      "status": "Pass",
+      "dotnet": {
+        "status": "Pass",
+        "project": "dotnet/tests/GameCore.Replay.Tests",
+        "filter": "FullyQualifiedName~Replay",
+        "detail": "60 matching test(s)"
+      },
+      "unity": {
+        "status": "Pass",
+        "assembly": "GameCore.Replay.IntegrationTests",
+        "detail": "8 passed, 0 failed"
+      },
+      "probes": {
+        "status": "Pass",
+        "harnesses": [
+          "run_replay_probe.sh"
+        ],
+        "detail": [
+          "run_replay_probe.sh (Replay): 1 document(s) pass"
+        ]
+      }
+    },
+    {
+      "suite": "TEST-023",
+      "status": "Pass",
+      "dotnet": {
+        "status": "Pass",
+        "project": "dotnet/tests/GameCore.Benchmarks.Tests",
+        "filter": "FullyQualifiedName~PerformanceBudget",
+        "detail": "9 matching test(s)"
+      },
+      "unity": {
+        "status": "Pass",
+        "assembly": "GameCore.Benchmarks.Tests",
+        "detail": "90 passed, 0 failed"
+      },
+      "probes": {
+        "status": "NotRun",
+        "harnesses": [],
+        "detail": [
+          "the suite table declares no player probe for this suite"
+        ]
+      }
+    },
+    {
+      "suite": "TEST-024",
+      "status": "Pass",
+      "dotnet": {
+        "status": "Pass",
+        "project": "dotnet/tests/GameCore.ReferenceConformance.Tests",
+        "filter": "FullyQualifiedName~ConformanceDocGap",
+        "detail": "2 matching test(s)"
+      },
+      "unity": {
+        "status": "Pass",
+        "assembly": "GameCore.Conformance.Tests",
+        "detail": "8 passed, 0 failed"
+      },
+      "probes": {
+        "status": "NotRun",
+        "harnesses": [],
+        "detail": [
+          "the suite table declares no player probe for this suite"
+        ]
+      }
+    }
+  ],
+  "counts": {
+    "Pass": 24,
+    "NotRun": 0,
+    "Fail": 0
+  },
+  "failing": []
+}

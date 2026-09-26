@@ -6,7 +6,7 @@ committed or recorded file; nothing here is hand-typed.
 | Item | Value |
 | --- | --- |
 | Protocol version | `1.0` |
-| Source revision | `09928bd0bc3e591ad7c9b2f43c174446b856e67f` |
+| Source revision | `36365b0f0ac830153f193234c7bc181eb3909592` |
 | Manifest | `unity/GameCore.Validation/Packages/manifest.json` |
 | Package lock | `unity/GameCore.Validation/Packages/packages-lock.json` |
 | Local gamecore packages | 21 |
@@ -53,16 +53,15 @@ committed or recorded file; nothing here is hand-typed.
 
 ## Declared qualification profile
 
-Record: `artifacts/w7-gate/toolchain/environment.txt`
+Record: `artifacts/conformance/results/toolchain/environment.txt`
 
 - `host`: Linux worlesenric 7.0.0-31-generic #31~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Mon Aug 10 09:38:02 UTC 2 x86_64 x86_64 x86_64 GNU/Linux
-- `player_sha256`: aeaf13e291886fbd5a99b7dbd7c113b8ee13ed462a419a4d31a8ecbc3241ac70
 
 ## Three-family audit
 
 | Family | Assembly audit clean | Recorded teardown verdicts | Verdict |
 | --- | --- | --- | --- |
-| narrative | True | 10 | Pass |
-| cards | True | 10 | Pass |
-| traversal | True | 4 | Pass |
+| narrative | True | 9 | Pass |
+| cards | True | 9 | Pass |
+| traversal | True | 3 | Pass |
 
