@@ -32,6 +32,7 @@ using System.Globalization;
 using GameCore.Contracts;
 using GameCore.Execution.Messages;
 using GameCore.Rules.Traversal;
+using GameCore.Unity.Adapters.Physics;
 using GameCore.Unity.Runtime;
 using GameCore.Unity.Runtime.Messages;
 using Unity.Entities;
@@ -82,6 +83,7 @@ namespace GameCore.Gameplay.Traversal
             new Dictionary<Id128, TraversalMotionMode>();
 
         private readonly TargetId courseTarget;
+        private PhysicsAuthorityGate? physicsGate;
 
         private bool disposed;
 
@@ -401,6 +403,48 @@ namespace GameCore.Gameplay.Traversal
                 ? TraversalMotionDecision.IntegrateInEcs
                 : TraversalMotionDecision.ExternallyOwned;
 
+        /// <summary>Installs the optional physical solver for externally owned runners only.</summary>
+        public void BindPhysics(PhysicsAuthorityGate gate) => physicsGate = gate ?? throw new ArgumentNullException(nameof(gate));
+
+        /// <summary>Simulates once and publishes sampled physical observations before the sensing stage.</summary>
+        public void SimulateExternalMotion(EntityManager entities)
+        {
+            if (physicsGate == null || LastExternallyOwnedCount == 0)
+            {
+                return;
+            }
+
+            ulong step = Host.CurrentStep.Value;
+            if (!physicsGate.TrySimulateExactlyOnce(step + 1UL, TraversalKeys.StepMilliseconds / 1000d, out string detail))
+            {
+                throw new InvalidOperationException("the physical authority refused step " + step + ": " + detail);
+            }
+
+            for (int i = 0; i < runners.Count; i++)
+            {
+                Runner runner = runners[i];
+                if (MotionDecisionOf(runner.Recipe) != TraversalMotionDecision.ExternallyOwned)
+                {
+                    continue;
+                }
+
+                var key = new PhysicsBodyKey(runner.Target, TraversalKeys.MotionDomain.Id.Value);
+                if (!physicsGate.TryReadPose(key, out PhysicsPose pose)
+                    || !entities.Exists(runner.Entity)
+                    || !entities.HasComponent<TraversalPhysicsObservation>(runner.Entity))
+                {
+                    throw new InvalidOperationException("missing physical observation for " + runner.Target);
+                }
+
+                entities.SetComponentData(runner.Entity, new TraversalPhysicsObservation
+                {
+                    SampledStep = step,
+                    SampledEpoch = Host.CurrentEpoch.Value,
+                    X = pose.Position.X, Y = pose.Position.Y, Z = pose.Position.Z,
+                    VelocityX = pose.Velocity.X, VelocityY = pose.Velocity.Y, VelocityZ = pose.Velocity.Z,
+                });
+            }
+        }
         // ------------------------------------------------------------------ the external observation feed
 
         /// <summary>
@@ -707,6 +751,7 @@ namespace GameCore.Gameplay.Traversal
             entityManager.AddComponentData(runner, TraversalVelocity.Of(velocity));
             entityManager.AddComponentData(runner, default(TraversalJumpState));
             entityManager.AddComponentData(runner, default(TraversalMovementInput));
+            entityManager.AddComponentData(runner, default(TraversalPhysicsObservation));
         }
 
         /// <summary>Installs a checkpoint volume's base storage from its declared definition (07 s4.2).</summary>
@@ -1038,6 +1083,7 @@ namespace GameCore.Gameplay.Traversal
             }
 
             module.RecordIntegration(integrated, externallyOwned, missingStorage, newStep: true);
+            module.SimulateExternalMotion(entityManager);
         }
     }
 
@@ -1084,8 +1130,26 @@ namespace GameCore.Gameplay.Traversal
                     continue;
                 }
 
-                TraversalVector3i position =
-                    entityManager.GetComponentData<TraversalPose>(runners[r].Entity).Vector;
+                TraversalVector3i position;
+                if (module.MotionDecisionOf(runners[r].Recipe) == TraversalMotionDecision.ExternallyOwned)
+                {
+                    if (!entityManager.HasComponent<TraversalPhysicsObservation>(runners[r].Entity))
+                    {
+                        throw new InvalidOperationException("an external runner has no physical observation");
+                    }
+
+                    TraversalPhysicsObservation sampled = entityManager.GetComponentData<TraversalPhysicsObservation>(runners[r].Entity);
+                    if (sampled.SampledStep != step.Value || sampled.SampledEpoch != epoch.Value)
+                    {
+                        throw new InvalidOperationException("an external runner has no observation for this step");
+                    }
+
+                    position = sampled.Position;
+                }
+                else
+                {
+                    position = entityManager.GetComponentData<TraversalPose>(runners[r].Entity).Vector;
+                }
                 for (int v = 0; v < volumes.Count; v++)
                 {
                     if (!entityManager.Exists(volumes[v].Entity)

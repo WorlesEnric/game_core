@@ -85,6 +85,20 @@ namespace GameCore.Gameplay.Traversal
         }
     }
 
+    /// <summary>The read-only physical solver result sampled before traversal sensing in one fixed step.</summary>
+    public struct TraversalPhysicsObservation : IComponentData
+    {
+        public ulong SampledStep;
+        public ulong SampledEpoch;
+        public int X;
+        public int Y;
+        public int Z;
+        public int VelocityX;
+        public int VelocityY;
+        public int VelocityZ;
+
+        public TraversalVector3i Position => new TraversalVector3i(X, Y, Z);
+    }
     /// <summary>`JumpState` (07 s4.2): the runner's jump bookkeeping, separate from pose and velocity.</summary>
     public struct TraversalJumpState : IComponentData
     {

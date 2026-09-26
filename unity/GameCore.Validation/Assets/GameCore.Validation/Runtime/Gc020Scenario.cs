@@ -1459,6 +1459,13 @@ namespace GameCore.Validation.ProbeHost
                         TraversalMotionMode.ExternalRigidbody,
                         out DiagnosticCode displayCode,
                         out string displayDetail);
+                    if (stageRuntime.PhysicsGate == null)
+                    {
+                        Add(name, false, "the external mode has no physical authority gate");
+                        return;
+                    }
+
+                    module.BindPhysics(stageRuntime.PhysicsGate);
                     bool decision = module.MotionDecisionOf(family.FutureRecipe) == TraversalMotionDecision.ExternallyOwned
                         && module.MotionDecisionOf(TraversalKeys.DisplayRunnerRecipe)
                             == TraversalMotionDecision.ExternallyOwned;
@@ -1471,6 +1478,16 @@ namespace GameCore.Validation.ProbeHost
 
                     int integratedDelta = module.IntegratedRunnerStepCount - integratedBefore;
                     TraversalVector3i poseAfter = PoseOf(family.FutureTarget);
+                    Entity observedEntity = EntityOf(family.FutureTarget);
+                    TraversalPhysicsObservation observed = host.EntityWorld.EntityManager
+                        .GetComponentData<TraversalPhysicsObservation>(observedEntity);
+                    var observedKey = new PhysicsBodyKey(family.FutureTarget, TraversalKeys.MotionDomain.Id.Value);
+                    bool stampedObservation = stageRuntime.PhysicsGate.TryReadPose(observedKey, out PhysicsPose physical)
+                        && observed.SampledStep == host.CurrentStep.Value - 1UL
+                        && observed.SampledEpoch == host.CurrentEpoch.Value
+                        && observed.Position.Equals(new TraversalVector3i(
+                            physical.Position.X, physical.Position.Y, physical.Position.Z))
+                        && observed.VelocityX == physical.Velocity.X;
 
                     bool refused = !module.TrySelectMotionAuthority(
                         family.FutureRecipe,
@@ -1491,6 +1508,7 @@ namespace GameCore.Validation.ProbeHost
                         && stillSelected == TraversalMotionMode.ExternalRigidbody
                         && !stillSelected.Equals(TraversalMotionMode.Kinematic)
                         && poseAfter.Equals(poseBefore)
+                        && stampedObservation
                         && module.RefusedIntegrationCount == refusedBefore
                         && MatchesPublishedAssembly();
 
@@ -1506,6 +1524,8 @@ namespace GameCore.Validation.ProbeHost
                         + "; integratedDelta=" + integratedDelta.ToString(CultureInfo.InvariantCulture)
                         + "; reselectRefused=" + refused + "(" + conflictCode + ": " + conflictDetail + ")"
                         + "; pose=" + poseBefore.ToString() + "->" + poseAfter.ToString()
+                        + "; stampedObservation=" + stampedObservation
+                        + "; sampledStep=" + observed.SampledStep
                         + "; committedSteps=" + committed.ToString(CultureInfo.InvariantCulture)
                         + DescribeFailure());
                 }
