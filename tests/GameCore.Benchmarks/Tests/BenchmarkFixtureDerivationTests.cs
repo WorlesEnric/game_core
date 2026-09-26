@@ -33,9 +33,11 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using GameCore.Contracts;
 using GameCore.Derivation;
+using GameCore.Derivation.Fixtures;
 using NUnit.Framework;
 
 namespace GameCore.Benchmarks.Tests
@@ -629,6 +631,598 @@ namespace GameCore.Benchmarks.Tests
             Assert.That(
                 CountWithCapability(incremental.Result, fixture.UpdateCapability),
                 Is.EqualTo(CountWithCapability(full, fixture.UpdateCapability)));
+        }
+
+        /// <summary>
+        /// The seed series of the equivalence property below: the recorded seed plus two neighbours, so one
+        /// property covers the recorded load and observable seed changes rather than one lucky fixture.
+        /// </summary>
+        private static readonly uint[] PropertySeeds =
+        {
+            BenchmarkWorkloads.DefaultSeed,
+            BenchmarkWorkloads.DefaultSeed + 1U,
+            BenchmarkWorkloads.DefaultSeed + 31U,
+        };
+
+        private enum LocalEditKind
+        {
+            LeafMount = 0,
+            Reparent = 1,
+            Spawn = 2,
+            Retire = 3,
+        }
+
+        /// <summary>
+        /// THE 10,000-TARGET EQUIVALENCE PROPERTY (P-023, TEST-008). For every seed of the recorded series, every
+        /// local edit kind is published as a variant of the declared fixture, derived incrementally from an accepted
+        /// base publication and derived clean from the same snapshot, and the two must agree on canonical outputs and
+        /// provenance — not merely on a count. A disagreement is diagnosed by seed and edit kind.
+        ///
+        /// The edits are deliberately leaf-local/reparent edits, not the root-mounted update-size workloads: a
+        /// root provider's candidate domain is all 10,000 targets even when its predicate affects only one. The
+        /// locality assertions here therefore bind only the engine-owned locality counters (`DirtyTargets`,
+        /// `CarriedTargets`, `CandidateEvaluations`) and content-level unchanged targets. They do not bind
+        /// `TargetsVisited`/`ScopesVisited`/`ControlNodesVisited`, because the incremental path still rebuilds its
+        /// index sets over the whole snapshot today; once that kernel work is localized, those control-node bounds
+        /// belong in this property too.
+        /// </summary>
+        [Test]
+        public void EveryLocalEditOfTheDeclaredWorldIsIncrementallyEquivalentToACleanDerivation()
+        {
+            for (int seedIndex = 0; seedIndex < PropertySeeds.Length; seedIndex++)
+            {
+                uint seed = PropertySeeds[seedIndex];
+                BenchmarkFixture fixture = FixtureForSeed(seed);
+                Assert.That(
+                    fixture.Targets.Count,
+                    Is.EqualTo(BenchmarkWorkloads.DefaultTargets),
+                    "the property runs at the declared 10,000-target scale for seed "
+                    + seed.ToString(CultureInfo.InvariantCulture));
+                DerivationOptions options = OptionsForFixture(fixture);
+                DerivationResult baseResult = BaseForFixture(fixture, options);
+                DerivationResult? spawnedPrevious = null;
+
+                for (int edit = 0; edit < LocalEditCount; edit++)
+                {
+                    LocalEditKind kind = (LocalEditKind)edit;
+                    string label = "seed " + seed.ToString(CultureInfo.InvariantCulture)
+                        + " edit " + kind.ToString();
+                    DerivationResult previous = PreviousForEdit(
+                        fixture, options, baseResult, kind, ref spawnedPrevious);
+                    DerivationSnapshot after = ComposeLocalEdit(fixture, kind);
+
+                    IncrementalDerivationOutcome outcome =
+                        IncrementalDerivationEngine.Derive(after, fixture.Values, options, previous, null);
+                    DerivationResult clean = DerivationEngine.Derive(after, fixture.Values, options, null);
+                    if (kind == LocalEditKind.Spawn)
+                    {
+                        spawnedPrevious = clean;
+                    }
+
+                    AssertAccepted(outcome, "incremental derivation of " + label);
+                    AssertAccepted(clean, "clean derivation of " + label);
+                    Assert.That(
+                        outcome.UsedFullRecompute,
+                        Is.False,
+                        label + " is an ordinary local edit, so the incremental path ran; " + outcome.Describe());
+                    Assert.That(outcome.Invalidation.WholeWorld, Is.False, label + "; " + outcome.Describe());
+                    Assert.That(outcome.Counters.WholeWorld, Is.False, label + "; " + outcome.Describe());
+
+                    AssertCanonicalResultEqual(outcome.Result, clean, label, outcome.Describe());
+                    AssertLocalEditBounded(outcome, clean, fixture, kind, label);
+                    AssertUnchangedOutsideEdit(fixture, baseResult, outcome.Result, kind, label);
+                }
+            }
+        }
+
+        private static readonly int LocalEditCount = Enum.GetValues(typeof(LocalEditKind)).Length;
+
+        private static DerivationResult PreviousForEdit(
+            BenchmarkFixture fixture,
+            DerivationOptions options,
+            DerivationResult baseResult,
+            LocalEditKind kind,
+            ref DerivationResult? spawnedPrevious)
+        {
+            if (kind != LocalEditKind.Retire)
+            {
+                return baseResult;
+            }
+
+            if (spawnedPrevious == null)
+            {
+                DerivationSnapshot spawned = ComposeLocalEdit(fixture, LocalEditKind.Spawn);
+                spawnedPrevious = DerivationEngine.Derive(spawned, fixture.Values, options, null);
+                AssertAccepted(spawnedPrevious!, "clean spawn publication used as the retire base");
+            }
+
+            return spawnedPrevious;
+        }
+
+        private static DerivationSnapshot ComposeLocalEdit(BenchmarkFixture fixture, LocalEditKind kind)
+        {
+            BenchmarkSnapshotBuilder builder = fixture.Builder()
+                .WithVersion(new CompositionRevision(2UL + (ulong)kind), new AssemblyEpoch(2UL + (ulong)kind));
+            switch (kind)
+            {
+                case LocalEditKind.LeafMount:
+                    return builder.AddInstall(LeafLocalInstall(fixture)).Build();
+                case LocalEditKind.Reparent:
+                    return builder.ReparentScope(fixture.ReparentScope, fixture.SecondProviderScope).Build();
+                case LocalEditKind.Spawn:
+                    return builder.AddTargets(
+                            BenchmarkFixtureVariants.SpawnTargets(
+                                fixture, fixture.GroupScopes[2], BenchmarkWorkloads.SpawnTargets, 0))
+                        .Build();
+                case LocalEditKind.Retire:
+                    return builder.RemoveTargets(
+                            BenchmarkFixtureVariants.SpawnedTargetIds(BenchmarkWorkloads.SpawnTargets, 0))
+                        .Build();
+                default:
+                    throw new InvalidOperationException("unknown local edit kind " + kind.ToString() + ".");
+            }
+        }
+
+        private static DerivationInstall LeafLocalInstall(BenchmarkFixture fixture)
+        {
+            int installIndex = 400000 + (int)(fixture.Scale.Seed % 100000U);
+            ScopeId leaf = fixture.LeafScopes[LeafIndexForSeed(fixture)];
+            PluginInstanceId instance = BenchmarkIds.Instance(installIndex);
+            PluginTypeId pluginType = BenchmarkIds.PluginType(installIndex);
+            FactoryKey factoryKey = BenchmarkIds.Key(
+                "bench.factory.leaf-local-property-" + installIndex.ToString(CultureInfo.InvariantCulture));
+            var rule = new DerivationRule(
+                BenchmarkIds.Rule(17, installIndex),
+                BenchmarkIds.CapabilityRef(BenchmarkNames.SharedCapability),
+                0,
+                1U,
+                FamilySelectors(),
+                BenchmarkIds.Key(BenchmarkNames.AlwaysPredicate),
+                null,
+                PropagationReach.LocalOnly,
+                false,
+                installIndex,
+                CompositionPolicy.Additive,
+                FixturePayload.Int32(1000 + (installIndex % 997)));
+            var manifest = new PluginManifest(
+                pluginType,
+                "1.0.0",
+                ContentHash.Empty,
+                new SupportedProtocolRange(1, 0, 0),
+                null,
+                BenchmarkIds.SchemaRef(BenchmarkNames.SharedSchema),
+                factoryKey,
+                null,
+                null,
+                new List<CapabilityContract>(),
+                new List<DerivationRule> { rule },
+                null,
+                null,
+                null,
+                null,
+                null);
+            var record = new InstallRecord(
+                instance,
+                pluginType,
+                leaf,
+                DefinitionRevision.First,
+                ContentHash.Empty,
+                installIndex,
+                InstallationGeneration.First,
+                ActivationEpoch.First);
+            return new DerivationInstall(record, InstallationState.Active, manifest);
+        }
+
+        private static List<SchemaRef> FamilySelectors()
+        {
+            var selectors = new List<SchemaRef>(BenchmarkFixture.SchemaFamilies);
+            for (int family = 0; family < BenchmarkFixture.SchemaFamilies; family++)
+            {
+                selectors.Add(BenchmarkIds.SchemaRef(BenchmarkNames.FamilySchema(family)));
+            }
+
+            return selectors;
+        }
+
+        private static int LeafIndexForSeed(BenchmarkFixture fixture)
+        {
+            int available = fixture.LeafScopes.Count - 2;
+            int leaf = (int)(fixture.Scale.Seed % (uint)available) + 1;
+            if (leaf >= BenchmarkFixture.ReparentLeafCount)
+            {
+                leaf++;
+            }
+
+            return leaf;
+        }
+
+        private static void AssertCanonicalResultEqual(
+            DerivationResult incremental,
+            DerivationResult clean,
+            string label,
+            string outcome)
+        {
+            Assert.That(
+                incremental.ResultHash.Equals(clean.ResultHash),
+                Is.True,
+                label + ": P-023's parity claim is the canonical result hash; incremental="
+                + incremental.ResultHash.ToHex() + "; clean=" + clean.ResultHash.ToHex() + "; " + outcome);
+            Assert.That(incremental.Assemblies.Count, Is.EqualTo(clean.Assemblies.Count), label);
+            for (int i = 0; i < incremental.Assemblies.Count; i++)
+            {
+                TargetAssembly left = incremental.Assemblies[i];
+                TargetAssembly right = clean.Assemblies[i];
+                Assert.That(left.Target.Equals(right.Target), Is.True, label + ": assembly order differs at " + i.ToString(CultureInfo.InvariantCulture));
+                string leftText = AssemblyText(left);
+                string rightText = AssemblyText(right);
+                Assert.That(
+                    leftText,
+                    Is.EqualTo(rightText),
+                    label + ": target " + left.Target.ToString()
+                    + " differs between incremental and clean assembly text; " + FirstDifference(leftText, rightText));
+            }
+
+            string incrementalProvenance = ProvenanceText(incremental);
+            string cleanProvenance = ProvenanceText(clean);
+            Assert.That(
+                incrementalProvenance,
+                Is.EqualTo(cleanProvenance),
+                label + ": contribution provenance differs; " + FirstDifference(incrementalProvenance, cleanProvenance));
+        }
+
+        private static string AssemblyText(TargetAssembly assembly)
+        {
+            var text = new StringBuilder();
+            text.Append("target=").Append(assembly.Target.ToString()).Append('\n');
+            text.Append("scope=").Append(assembly.Scope.ToString()).Append('\n');
+            text.Append("recipe=").Append(assembly.BaseRecipe.ToString()).Append('\n');
+            text.Append("recipeHash=").Append(assembly.RecipeHash.ToHex()).Append('\n');
+            for (int s = 0; s < assembly.Slots.Count; s++)
+            {
+                EffectiveSlot slot = assembly.Slots[s];
+                text.Append("slot=").Append(slot.Capability.ToString())
+                    .Append('/').Append(slot.Version.ToString(CultureInfo.InvariantCulture))
+                    .Append('/').Append(slot.Stratum.ToString(CultureInfo.InvariantCulture))
+                    .Append('/').Append(slot.Slot.ToString(CultureInfo.InvariantCulture))
+                    .Append('/').Append(slot.Schema.ToString())
+                    .Append('/').Append(slot.Policy.ToString())
+                    .Append('/').Append(slot.Hash.ToHex())
+                    .Append('\n');
+                AppendContributionLines(text, "support=", slot.Support);
+                AppendContributionLines(text, "shadowed=", slot.Shadowed);
+            }
+
+            return text.ToString();
+        }
+
+        private static string ProvenanceText(DerivationResult result)
+        {
+            var lines = new List<string>(result.Contributions.Count);
+            for (int i = 0; i < result.Contributions.Count; i++)
+            {
+                lines.Add(ContributionText(result.Contributions[i]));
+            }
+
+            lines.Sort(StringComparer.Ordinal);
+            var text = new StringBuilder();
+            for (int i = 0; i < lines.Count; i++)
+            {
+                text.Append("contribution=").Append(lines[i]).Append('\n');
+            }
+
+            return text.ToString();
+        }
+
+        private static void AppendContributionLines(
+            StringBuilder text,
+            string prefix,
+            IReadOnlyList<CapabilityContribution> contributions)
+        {
+            for (int i = 0; i < contributions.Count; i++)
+            {
+                text.Append(prefix).Append(ContributionText(contributions[i])).Append('\n');
+            }
+        }
+
+        private static string ContributionText(CapabilityContribution contribution) =>
+            contribution.Provider.ToString() + '/' + contribution.Rule.ToString() + '/' + contribution.Target.ToString()
+            + '/' + contribution.Capability.ToString()
+            + '/' + contribution.OutputSlot.ToString(CultureInfo.InvariantCulture)
+            + '/' + contribution.Schema.ToString()
+            + '/' + contribution.Policy.ToString()
+            + '/' + contribution.PayloadHash.ToHex()
+            + '/' + contribution.Disposition.ToString();
+
+        private static void AssertLocalEditBounded(
+            IncrementalDerivationOutcome outcome,
+            DerivationResult clean,
+            BenchmarkFixture fixture,
+            LocalEditKind kind,
+            string label)
+        {
+            int expectedDirty = ExpectedDirtyTargets(fixture, kind);
+            int candidateBound = CandidateEvaluationBound(fixture, kind);
+            if (kind == LocalEditKind.Reparent)
+            {
+                Assert.That(outcome.Counters.DirtyTargets, Is.GreaterThan(0), label + "; " + outcome.Describe());
+                Assert.That(outcome.Counters.DirtyTargets, Is.LessThanOrEqualTo(expectedDirty), label + "; " + outcome.Describe());
+            }
+            else
+            {
+                Assert.That(outcome.Counters.DirtyTargets, Is.EqualTo(expectedDirty), label + "; " + outcome.Describe());
+            }
+
+            Assert.That(
+                outcome.Counters.DirtyTargets,
+                Is.LessThan(fixture.Targets.Count),
+                label + ": a local edit never dirties the world; " + outcome.Describe());
+            Assert.That(
+                outcome.Counters.CarriedTargets,
+                Is.EqualTo(outcome.Result.Assemblies.Count - outcome.Counters.DirtyTargets),
+                label + ": every target is either re-derived or carried, never double-counted; " + outcome.Describe());
+            Assert.That(
+                clean.Counters.ExaminedCandidates,
+                Is.GreaterThan(candidateBound),
+                label + ": the clean derivation is the full candidate enumeration baseline; clean="
+                + clean.Counters.ExaminedCandidates.ToString(CultureInfo.InvariantCulture)
+                + "; localBound=" + candidateBound.ToString(CultureInfo.InvariantCulture));
+            Assert.That(
+                outcome.Counters.CandidateEvaluations,
+                Is.LessThanOrEqualTo(candidateBound),
+                label + ": dirty-path candidate evaluations are bounded by the local edit, so a full candidate"
+                + " enumeration would fail this assertion; " + outcome.Describe()
+                + "; bound=" + candidateBound.ToString(CultureInfo.InvariantCulture));
+        }
+
+        private static int ExpectedDirtyTargets(BenchmarkFixture fixture, LocalEditKind kind)
+        {
+            switch (kind)
+            {
+                case LocalEditKind.LeafMount:
+                    return TargetsInScope(fixture, fixture.LeafScopes[LeafIndexForSeed(fixture)]);
+                case LocalEditKind.Reparent:
+                    return fixture.ReparentScopeTargets;
+                case LocalEditKind.Spawn:
+                    return BenchmarkWorkloads.SpawnTargets;
+                case LocalEditKind.Retire:
+                    return 0;
+                default:
+                    throw new InvalidOperationException("unknown local edit kind " + kind.ToString() + ".");
+            }
+        }
+
+        private static int CandidateEvaluationBound(BenchmarkFixture fixture, LocalEditKind kind)
+        {
+            switch (kind)
+            {
+                case LocalEditKind.LeafMount:
+                    int leaf = LeafIndexForSeed(fixture);
+                    return TargetsInScope(fixture, fixture.LeafScopes[leaf]) * RulesReachingLeaf(fixture, leaf, true);
+                case LocalEditKind.Reparent:
+                    return fixture.ReparentScopeTargets * (2 + 2 + UniqueProvidersInReparentBranch(fixture));
+                case LocalEditKind.Spawn:
+                    return BenchmarkWorkloads.SpawnTargets * 3;
+                case LocalEditKind.Retire:
+                    return 0;
+                default:
+                    throw new InvalidOperationException("unknown local edit kind " + kind.ToString() + ".");
+            }
+        }
+
+        private static int RulesReachingLeaf(BenchmarkFixture fixture, int leaf, bool includesMountedLeafProvider)
+        {
+            // Root provider + owning group provider; a stride leaf may also host the fixture's unique local provider.
+            int rules = 2 + (leaf % BenchmarkFixture.UniqueProviderStride == 0 ? 1 : 0);
+            return includesMountedLeafProvider ? rules + 1 : rules;
+        }
+
+        private static int UniqueProvidersInReparentBranch(BenchmarkFixture fixture)
+        {
+            int count = 0;
+            for (int leaf = 0; leaf < BenchmarkFixture.ReparentLeafCount && leaf < fixture.LeafScopes.Count; leaf++)
+            {
+                if (leaf % BenchmarkFixture.UniqueProviderStride == 0)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        private static void AssertUnchangedOutsideEdit(
+            BenchmarkFixture fixture,
+            DerivationResult baseResult,
+            DerivationResult after,
+            LocalEditKind kind,
+            string label)
+        {
+            HashSet<Id128> localTargets = LocalEditTargets(fixture, kind);
+            var afterByTarget = new Dictionary<Id128, TargetAssembly>(after.Assemblies.Count);
+            for (int i = 0; i < after.Assemblies.Count; i++)
+            {
+                afterByTarget[after.Assemblies[i].Target.Value] = after.Assemblies[i];
+            }
+
+            int checkedTargets = 0;
+            for (int i = 0; i < baseResult.Assemblies.Count; i++)
+            {
+                TargetAssembly before = baseResult.Assemblies[i];
+                if (localTargets.Contains(before.Target.Value))
+                {
+                    continue;
+                }
+
+                Assert.That(
+                    afterByTarget.TryGetValue(before.Target.Value, out TargetAssembly? carried),
+                    Is.True,
+                    label + ": non-local target " + before.Target.ToString() + " disappeared.");
+                Assert.That(
+                    carried!.RecipeHash.Equals(before.RecipeHash),
+                    Is.True,
+                    label + ": non-local target " + before.Target.ToString() + " changed from "
+                    + before.RecipeHash.ToHex() + " to " + carried.RecipeHash.ToHex());
+                checkedTargets++;
+            }
+
+            Assert.That(checkedTargets, Is.GreaterThan(0), label + ": the edit had carried witnesses outside its reach.");
+        }
+
+        private static HashSet<Id128> LocalEditTargets(BenchmarkFixture fixture, LocalEditKind kind)
+        {
+            var targets = new HashSet<Id128>();
+            switch (kind)
+            {
+                case LocalEditKind.LeafMount:
+                    CollectScopeTargets(fixture, fixture.LeafScopes[LeafIndexForSeed(fixture)], targets);
+                    break;
+                case LocalEditKind.Reparent:
+                    CollectSubtreeTargets(fixture, fixture.ReparentScope, targets);
+                    break;
+                case LocalEditKind.Spawn:
+                case LocalEditKind.Retire:
+                    IReadOnlyList<TargetId> spawned = BenchmarkFixtureVariants.SpawnedTargetIds(
+                        BenchmarkWorkloads.SpawnTargets, 0);
+                    for (int i = 0; i < spawned.Count; i++)
+                    {
+                        targets.Add(spawned[i].Value);
+                    }
+
+                    break;
+                default:
+                    throw new InvalidOperationException("unknown local edit kind " + kind.ToString() + ".");
+            }
+
+            return targets;
+        }
+
+        private static void CollectScopeTargets(BenchmarkFixture fixture, ScopeId scope, HashSet<Id128> into)
+        {
+            for (int t = 0; t < fixture.Targets.Count; t++)
+            {
+                if (fixture.Targets[t].Scope.Equals(scope))
+                {
+                    into.Add(fixture.Targets[t].Target.Value);
+                }
+            }
+        }
+
+        private static void CollectSubtreeTargets(BenchmarkFixture fixture, ScopeId root, HashSet<Id128> into)
+        {
+            var subtree = new HashSet<Id128> { root.Value };
+            for (int leaf = 0; leaf < fixture.LeafScopes.Count; leaf++)
+            {
+                if (DeclaredScope(fixture, fixture.LeafScopes[leaf]).Parent.Equals(root))
+                {
+                    subtree.Add(fixture.LeafScopes[leaf].Value);
+                }
+            }
+
+            for (int t = 0; t < fixture.Targets.Count; t++)
+            {
+                if (subtree.Contains(fixture.Targets[t].Scope.Value))
+                {
+                    into.Add(fixture.Targets[t].Target.Value);
+                }
+            }
+        }
+
+        private static int TargetsInScope(BenchmarkFixture fixture, ScopeId scope)
+        {
+            int count = 0;
+            for (int t = 0; t < fixture.Targets.Count; t++)
+            {
+                if (fixture.Targets[t].Scope.Equals(scope))
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        private static BenchmarkFixture FixtureForSeed(uint seed)
+        {
+            if (seed == BenchmarkWorkloads.DefaultSeed)
+            {
+                return Fixture();
+            }
+
+            return BenchmarkFixtureGenerator.Generate(new BenchmarkScale(
+                BenchmarkScale.Default.Scopes,
+                BenchmarkScale.Default.Targets,
+                BenchmarkScale.Default.LiveScopes,
+                BenchmarkScale.Default.LiveTargets,
+                seed));
+        }
+
+        private static DerivationOptions OptionsForFixture(BenchmarkFixture fixture) =>
+            new DerivationOptions(null, null, fixture.SuggestedBudget, null, true);
+
+        private static DerivationResult BaseForFixture(BenchmarkFixture fixture, DerivationOptions options)
+        {
+            if (fixture.Scale.Seed == BenchmarkWorkloads.DefaultSeed)
+            {
+                return Base();
+            }
+
+            DerivationResult result = DerivationEngine.Derive(fixture.Builder().Build(), fixture.Values, options, null);
+            AssertAccepted(
+                result,
+                "base derivation of seed " + fixture.Scale.Seed.ToString(CultureInfo.InvariantCulture) + " fixture");
+            return result;
+        }
+
+        private static string FirstDifference(string left, string right)
+        {
+            int limit = left.Length < right.Length ? left.Length : right.Length;
+            int line = 1;
+            int lineStart = 0;
+            for (int i = 0; i < limit; i++)
+            {
+                if (left[i] != right[i])
+                {
+                    return DifferenceAt(left, right, line, lineStart, i);
+                }
+
+                if (left[i] == '\n')
+                {
+                    line++;
+                    lineStart = i + 1;
+                }
+            }
+
+            if (left.Length == right.Length)
+            {
+                return "no textual difference";
+            }
+
+            return DifferenceAt(left, right, line, lineStart, limit);
+        }
+
+        private static string DifferenceAt(string left, string right, int line, int lineStart, int offset)
+        {
+            string leftLine = LineAt(left, lineStart);
+            string rightLine = LineAt(right, lineStart);
+            return "line " + line.ToString(CultureInfo.InvariantCulture)
+                + ", offset " + offset.ToString(CultureInfo.InvariantCulture)
+                + "; incremental='" + leftLine + "'; clean='" + rightLine + "'";
+        }
+
+        private static string LineAt(string text, int start)
+        {
+            if (start >= text.Length)
+            {
+                return "<end>";
+            }
+
+            int end = start;
+            while (end < text.Length && text[end] != '\n')
+            {
+                end++;
+            }
+
+            return text.Substring(start, end - start);
         }
 
         private static BenchmarkFixture Fixture()

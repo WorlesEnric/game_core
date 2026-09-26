@@ -66,6 +66,23 @@ namespace GameCore.Derivation
             }
         }
 
+        private ScopeMembershipIndex(
+            DerivationSnapshot snapshot,
+            InvalidationCounters counters,
+            Dictionary<Id128, ScopeId> parentOf,
+            Dictionary<Id128, int> depthOf,
+            Dictionary<Id128, List<ScopeId>> childrenOf,
+            Dictionary<Id128, List<DerivationTarget>> targetsInScope)
+        {
+            this.snapshot = snapshot;
+            Counters = counters;
+            this.parentOf = parentOf;
+            this.depthOf = depthOf;
+            this.childrenOf = childrenOf;
+            this.targetsInScope = targetsInScope;
+        }
+
+
         /// <summary>Builds the membership index of one snapshot. Building it is a property of the snapshot, not an edit.</summary>
         public static ScopeMembershipIndex Build(DerivationSnapshot snapshot, InvalidationCounters? counters = null)
         {
@@ -75,6 +92,34 @@ namespace GameCore.Derivation
             }
 
             return new ScopeMembershipIndex(snapshot, counters ?? new InvalidationCounters());
+        }
+
+        /// <summary>
+        /// Reuses immutable membership tables when the change set proves scope ancestry and target ownership are
+        /// unchanged, while rebinding query counters and the snapshot identity to the current derivation.
+        /// </summary>
+        internal static ScopeMembershipIndex ReuseUnchangedDomain(
+            ScopeMembershipIndex previous,
+            DerivationSnapshot snapshot,
+            InvalidationCounters? counters = null)
+        {
+            if (previous == null)
+            {
+                throw new ArgumentNullException(nameof(previous));
+            }
+
+            if (snapshot == null)
+            {
+                throw new ArgumentNullException(nameof(snapshot));
+            }
+
+            return new ScopeMembershipIndex(
+                snapshot,
+                counters ?? new InvalidationCounters(),
+                previous.parentOf,
+                previous.depthOf,
+                previous.childrenOf,
+                previous.targetsInScope);
         }
 
         /// <summary>Work counters of every query answered by this index (P-023 evidence).</summary>

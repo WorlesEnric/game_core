@@ -158,7 +158,8 @@ namespace GameCore.Derivation
             // Both index sets report through this derivation's counter object, so the control-plane work the
             // incremental path does is visible in the counters the caller reports (GC-023, TEST-023).
             DerivationIndexSet previousIndexes = DerivationIndexSet.Build(previous.Snapshot, counters);
-            DerivationIndexSet nextIndexes = DerivationIndexSet.Build(snapshot, counters);
+            DerivationIndexSet nextIndexes = DerivationIndexSet.BuildIncremental(
+                previousIndexes, snapshot, declared, counters);
             InvalidationClosureResult closure = InvalidationClosure.Compute(
                 previous.Snapshot, snapshot, declared, previousIndexes, nextIndexes, counters);
 

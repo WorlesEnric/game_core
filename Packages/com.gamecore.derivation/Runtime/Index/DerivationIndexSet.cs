@@ -39,23 +39,31 @@ namespace GameCore.Derivation
             Descriptors = DescriptorTargetIndex.Build(snapshot);
             Providers = ProviderContributionIndex.Build(snapshot, Membership);
             Consumers = ServiceConsumerIndex.Build(snapshot, Membership);
-            installsByScope = new Dictionary<Id128, List<DerivationInstall>>();
+            installsByScope = BuildInstallsByScope(snapshot);
 
-            IReadOnlyList<DerivationInstall> installs = snapshot.Installs;
-            for (int i = 0; i < installs.Count; i++)
-            {
-                DerivationInstall install = installs[i];
-                if (!installsByScope.TryGetValue(install.Scope.Value, out List<DerivationInstall>? list))
-                {
-                    list = new List<DerivationInstall>();
-                    installsByScope.Add(install.Scope.Value, list);
-                }
-
-                list.Add(install);
-            }
 
             InstallPathCache = new Dictionary<Id128, IReadOnlyList<DerivationInstall>>();
         }
+
+        private DerivationIndexSet(
+            DerivationSnapshot snapshot,
+            InvalidationCounters counters,
+            ScopeMembershipIndex membership,
+            DescriptorTargetIndex descriptors,
+            ProviderContributionIndex providers,
+            ServiceConsumerIndex consumers,
+            Dictionary<Id128, List<DerivationInstall>> installsByScope)
+        {
+            this.snapshot = snapshot;
+            Counters = counters;
+            Membership = membership;
+            Descriptors = descriptors;
+            Providers = providers;
+            Consumers = consumers;
+            this.installsByScope = installsByScope;
+            InstallPathCache = new Dictionary<Id128, IReadOnlyList<DerivationInstall>>();
+        }
+
 
         /// <summary>
         /// Builds every index of one snapshot. Passing <paramref name="counters"/> makes the indexes report their
@@ -71,6 +79,53 @@ namespace GameCore.Derivation
 
             return new DerivationIndexSet(snapshot, counters);
         }
+
+        /// <summary>
+        /// Builds the next snapshot's indexes from an already-built previous set when the change set proves the
+        /// snapshot-derived membership and descriptor domains are unchanged. Install-only edits reuse those domains
+        /// with the caller's current counters and rebuild the install-derived indexes from <paramref name="next"/>;
+        /// structural, descriptor, mode, catalog, override or rule-key edits conservatively fall back to a full build.
+        /// </summary>
+        public static DerivationIndexSet BuildIncremental(
+            DerivationIndexSet previous,
+            DerivationSnapshot next,
+            DerivationChangeSet changeSet,
+            InvalidationCounters? counters = null)
+        {
+            if (previous == null)
+            {
+                throw new ArgumentNullException(nameof(previous));
+            }
+
+            if (next == null)
+            {
+                throw new ArgumentNullException(nameof(next));
+            }
+
+            if (changeSet == null)
+            {
+                throw new ArgumentNullException(nameof(changeSet));
+            }
+
+            InvalidationCounters counts = counters ?? new InvalidationCounters();
+            if (!CanReuseInstallOnlyDomains(previous, next, changeSet))
+            {
+                return Build(next, counts);
+            }
+
+            ScopeMembershipIndex membership = ScopeMembershipIndex.ReuseUnchangedDomain(
+                previous.Membership, next, counts);
+            DescriptorTargetIndex descriptors = DescriptorTargetIndex.ReuseUnchangedTargets(previous.Descriptors, next);
+            return new DerivationIndexSet(
+                next,
+                counts,
+                membership,
+                descriptors,
+                ProviderContributionIndex.Build(next, membership),
+                ServiceConsumerIndex.Build(next, membership),
+                BuildInstallsByScope(next));
+        }
+
 
         /// <summary>The snapshot these indexes describe.</summary>
         public DerivationSnapshot Snapshot => snapshot;
@@ -253,6 +308,47 @@ namespace GameCore.Derivation
         }
 
         private Dictionary<Id128, IReadOnlyList<DerivationInstall>> InstallPathCache { get; }
+
+        private static Dictionary<Id128, List<DerivationInstall>> BuildInstallsByScope(DerivationSnapshot snapshot)
+        {
+            Dictionary<Id128, List<DerivationInstall>> index = new Dictionary<Id128, List<DerivationInstall>>();
+            IReadOnlyList<DerivationInstall> installs = snapshot.Installs;
+            for (int i = 0; i < installs.Count; i++)
+            {
+                DerivationInstall install = installs[i];
+                if (!index.TryGetValue(install.Scope.Value, out List<DerivationInstall>? list))
+                {
+                    list = new List<DerivationInstall>();
+                    index.Add(install.Scope.Value, list);
+                }
+
+                list.Add(install);
+            }
+
+            return index;
+        }
+
+        private static bool CanReuseInstallOnlyDomains(
+            DerivationIndexSet previous,
+            DerivationSnapshot next,
+            DerivationChangeSet changeSet)
+        {
+            return !changeSet.WorldChanged
+                && !changeSet.ModeChanged
+                && !changeSet.ContractsChanged
+                && !changeSet.OverridesChanged
+                && previous.Snapshot.Scopes.Count == next.Scopes.Count
+                && previous.Snapshot.Targets.Count == next.Targets.Count
+                && changeSet.CreatedScopes.Count == 0
+                && changeSet.RemovedScopes.Count == 0
+                && changeSet.ChangedScopeFacts.Count == 0
+                && changeSet.ScopeMoves.Count == 0
+                && changeSet.CreatedTargets.Count == 0
+                && changeSet.RetiredTargets.Count == 0
+                && changeSet.TargetMoves.Count == 0
+                && changeSet.DescriptorChangedTargets.Count == 0
+                && changeSet.ChangedRuleKeys.Count == 0;
+        }
 
         internal static int CompareRules(IndexedRule left, IndexedRule right)
         {
