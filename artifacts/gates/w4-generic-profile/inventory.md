@@ -595,6 +595,17 @@ touched, and no operation row changes. The reconciliation that DID change shared
 and lifecycle-stress branches without their `report.CompletePositive()` call, which would have left those three modes
 unfinalized (result `Fail`, exit 1) in the player. It is fixed in this gate's revision.
 
+**GC-023's round 2, merged after this section was first written.** The marker-free release clone now also removes
+GC-023's replay *qualification fixture* — `ReplayParallelJobs`, `ReplayScenario`, `ProbeReplay`, the `-probeReplay`
+dispatch and argument plumbing, the `com.gamecore.replay` dependency and the probe host's `GameCore.Replay` reference —
+so the release-surface evidence for that mechanism is the qualification player's `-probeReplay` run plus the
+both-configurations assembly scan, not a release-player run. Two consequences are recorded in
+`artifacts/w6-gate/HANDOFF.md` §4.7: the clone's own invariants are now asserted by a committed tool
+(`tools/check_release_clone.py`, wired into the gate) after a re-derivation of the constructor-argument and
+qualification-mode-expression replacements found the previous clone's `ProbeArguments` call passing 14 arguments to a
+15-parameter constructor, and the clone also removes the editor-only reload matrix because its traversal route lives in
+a Wave 6 gate file. The rows below are unaffected: nothing here has executed.
+
 **Not proposed.** `O-22 RecoverWorld` stays `Not yet` (GC-027), the measured budgets stay GC-026's, `P-055`'s
 cross-version migration matrix stays GC-027's, and the four rows the merged tasks proposed for themselves are left as
 those tasks' own proposals rather than restated here.

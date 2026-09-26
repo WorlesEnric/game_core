@@ -3,6 +3,11 @@
 # This host has no Unity, no .NET SDK, no Mono and no C# compiler, so nothing in this change set has been
 # compiled, imported, executed or built here. Everything below ran interpreter-level, from the repository root,
 # and each block is that command's own output (or its exit status when it prints nothing).
+#
+# The revision below is the merge of GC-023 round 2 into this gate's revision. Two of the checks are committed
+# tools this reconciliation added or extended, and both are wired into tools/run_w6_gate.sh:
+#   * tools/check_gate_sources.py - the source-level invariants of this gate's change set;
+#   * tools/check_release_clone.py - the invariants of the disposable marker-free clone, run on the clone itself.
 
 $ python3 tools/check_game_core_csharp.py
 checked 542 C# file(s)
@@ -39,11 +44,40 @@ GC-017 release surface: PASS
 $ python3 tools/make_unity_metas.py
 created 0 meta file(s)
 
+$ python3 tools/check_gate_sources.py   (member resolution, using coverage, ambiguity, balance, frozen tables)
+== balance (.cs; comments and literals removed) ==
+   W6GateScenario.cs                  balanced
+   W6GateFamily.cs                    balanced
+   W6CompositionAudit.cs              balanced
+   W6FamilyNarrativeHost.cs           balanced
+   W6FamilyCardsHost.cs               balanced
+   W6FamilyTraversalHost.cs           balanced
+   ProbeW6Gate.cs                     balanced
+   W6GateIntegrationTests.cs          balanced
+   ProbeArguments.cs                  balanced
+   ProbeRunner.cs                     balanced
+   Gc020TraversalHost.cs              balanced
+   LifecyclePlayModeMatrix.cs         balanced
+
+== member resolution (Type.Member against the declaring sources) ==
+   unresolved: none
+== using coverage (a used type must be reachable through the file's own usings) ==
+   unreachable: none
+== ambiguity (a used name declared in two imported namespaces) ==
+   ambiguous: none
+
+== frozen observation tables, digest literals and probe steps ==
+   cards fixture        9c3d3b5d2f8e959920aa9678e65f56658cbe4a513fcd2895cd458fbda4f9ea14  harness=True host=True probe=True suite=True
+   cards generated      894a975e4a5eb98d733ec213778ec275e4abe02cb4028271857bd4fa68d6fe80  harness=True host=True probe=True suite=True
+   narrative fixture    ab198371e8d276dcc2833e88e64e278abde57274ea3c68e2497fa2b75f97fa73  harness=True host=True probe=True suite=True
+   narrative generated  4235cea3c22cf93e38307000fcc863edd4ada3e2fc4a3b475ca719765dc17279  harness=True host=True probe=True suite=True
+   traversal            ca29b5f7099f9fbc4abeb7031c7b1e35ba39ec1ad39db70dd0f037fa8d45675e  harness=True host=True probe=True suite=True
+   observation counts: narrative 6, cards 7, traversal 9
+   harness steps: 41 | missing: none | extra: none
+
+VERDICT: ok
+
 $ python3 tools/check_release_telemetry_free.py --no-build   (tail)
-          "GAMECORE_TELEMETRY"
-        ],
-        "markers": [
-          "com.gamecore.fault-qualification",
           "com.gamecore.telemetry-qualification"
         ]
       }
@@ -53,20 +87,72 @@ $ python3 tools/check_release_telemetry_free.py --no-build   (tail)
 }
 
 
-$ bash -n tools/run_w6_gate.sh tools/unity/run_w6_gate_probe.sh
-bash -n: both scripts parse
+$ bash -n tools/run_w6_gate.sh tools/unity/run_w6_gate_probe.sh tools/unity/run_w5_gate_probe.sh
+bash -n: every script parses
+$ python3 -m py_compile tools/check_gate_sources.py tools/check_release_clone.py tools/check_release_gate_free.py tools/unity/prepare_gc017_release_project.py
+py_compile: every Python tool parses
 
 $ python3 tools/check_release_gate_free.py --player <synthetic> --qualification <synthetic>
-clean release player: exit 0 (Pass)
-release player carrying ProbeW6Gate: exit 1 (expected 1)
-qualification player blind to the markers: exit 1 (expected 1)
+   clean release player: exit 0 (Pass)
+   release player carrying GC-023's replay fixture: exit 1 (expected 1)
+   clean again: exit 0 (Pass)
+   qualification player blind to the markers: exit 1 (expected 1)
+   qualification player missing the kept-mode anchor: exit 1 (expected 1)
 
-$ python3 tools/unity/prepare_gc017_release_project.py   (run for real, clone inspected, then removed)
+$ python3 tools/unity/prepare_gc017_release_project.py   (run for real, then verified on the clone itself)
 Marker-free release project: /Users/yangcao/wkspace/gc-wt/w6-gate/unity/GameCore.ReleaseCheck
 Build: UNITY_PROJECT=<above> ARTIFACTS=artifacts/faults/release tools/unity/build_probe.sh
-   W6Gate references in the clone      : 0
-   removed-fixture references          : 0
-   runtime .cs files kept              : 45
+
+$ python3 tools/check_release_clone.py --clone unity/GameCore.ReleaseCheck --json artifacts/w6-gate/clone-surface.json
+clone files inspected: 149
+
+== 1. no reference to a removed type or member ==
+   clean
+
+== 2. every asmdef reference resolves ==
+   assemblies available: 45 | dangling references: none
+   GameCore.Replay reachable: False
+
+== 3. ProbeArguments constructor call matches its parameter list ==
+   parameters: 14 | arguments: 14 | agreement: True
+
+== 4. every .cs balances ==
+   58 C# files | unbalanced: none
+
+== 5. kept modes wired, removed modes gone ==
+   removed Faults           absent everywhere: True
+   removed W5Gate           absent everywhere: True
+   removed Gc021            absent everywhere: True
+   removed LifecycleStress  absent everywhere: True
+   removed Replay           absent everywhere: True
+   removed W6Gate           absent everywhere: True
+   kept    MissingRegistration wired: True
+   kept    WorldDispatch    wired: True
+   kept    W1Gate           wired: True
+   kept    W2Gate           wired: True
+   kept    W3Gate           wired: True
+   kept    Narrative        wired: True
+   kept    Cards            wired: True
+   kept    W4Profile        wired: True
+   kept    Gc013            wired: True
+   kept    W4Gate           wired: True
+   kept    Gc018            wired: True
+   kept    Gc019            wired: True
+   kept    Traversal        wired: True
+
+== 6. manifest and lock ==
+   qualification/replay dependencies: none
+   testables: []
+   lock present: False
+   Tests/ tree present: False
+   LifecyclePlayModeMatrix present: False
+
+VERDICT: clone is clean
+
+$ falsifiability: a stale reference planted in the clone must fail the check
+   clone with a planted stale reference: exit 1 (expected 1)
+      FAIL Assets/GameCore.Validation/Runtime/ProbeTraversal.cs
+   restored clone: exit 0 (clean)
    (clone removed: it is disposable and gitignored)
 
 ## Digest literals (recomputed here from the frozen observation tables, then cross-checked against the sources)
@@ -87,3 +173,18 @@ difference.
 Observation counts: narrative 6, cards 7, traversal 9 — 22 bare names, 41 required player-probe steps
 (3 process steps + 6x2 + 7x2 + 9 + 3 digest steps).
 
+
+== re-run after the handoff and inventory updates ==
+$ python3 tools/validate_game_core_docs.py
+Game Core documentation validation passed: 14 Markdown documents; local links, anchors, IDs, traceability, task DAG and wave ordering checked.
+No Unity builds, gameplay tests, runtime benchmarks, or remote URL checks were executed.
+
+$ python3 tools/check_gate_sources.py
+   observation counts: narrative 6, cards 7, traversal 9
+   harness steps: 41 | missing: none | extra: none
+
+VERDICT: ok
+$ python3 tools/check_release_clone.py (after preparing the clone again)
+
+VERDICT: clone is clean
+   (clone removed)

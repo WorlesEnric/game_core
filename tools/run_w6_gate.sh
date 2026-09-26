@@ -168,9 +168,13 @@ run_step dotnet-build "${DOTNET}" build dotnet/GameCore.sln -c Release
 run_step dotnet-test "${DOTNET}" test dotnet/GameCore.sln -c Release \
   --logger trx --results-directory "${ARTIFACTS}/trx"
 
-# 2. Host-side static checks of this revision: the C# shape checker, the frozen contract surface, the committed
+# 2. Host-side static checks of this revision: the C# shape checker, the source-level invariants of this gate's own
+#    change set (member resolution, using coverage, ambiguity, balance, and that the frozen observation tables agree
+#    with the five digest literals and the probe harness's required steps), the frozen contract surface, the committed
 #    generated catalogs and every shell script this gate owns.
 run_step csharp-check "${PYTHON}" tools/check_game_core_csharp.py
+run_step gate-sources "${PYTHON}" tools/check_gate_sources.py \
+  --json "${ARTIFACTS}/host/gate-sources.json"
 run_step contract-surface-parity "${PYTHON}" tools/check_contract_surface_parity.py
 run_step catalog-verify "${PYTHON}" tools/verify_generated_catalog.py
 run_step shell-syntax bash -n \
@@ -275,6 +279,11 @@ elif [[ "${RELEASE_BUILD}" == "1" ]]; then
   fi
 
   run_step release-project-prepare "${PYTHON}" tools/unity/prepare_gc017_release_project.py
+  # The clone's own invariants, before a player is built from it: no reference to a removed type or member (including
+  # qualified accesses), every asmdef reference still resolvable, and the stripped ProbeArguments still passing exactly
+  # its own parameter list. The preparation is textual, so a clone that is merely *prepared* is not evidence.
+  run_step release-clone-check "${PYTHON}" tools/check_release_clone.py \
+    --clone "${RELEASE_PROJECT}" --json "${ARTIFACTS}/release/clone-surface.json"
   UNITY="${UNITY}" UNITY_PROJECT="${RELEASE_PROJECT}" ARTIFACTS="${ARTIFACTS}/release" \
     UNITY_TIMEOUT="${UNITY_TIMEOUT}" "tools/unity/build_probe.sh"
   RELEASE_PLAYER="${RELEASE_PROJECT}/Builds/Linux64/GameCoreProbe.x86_64"

@@ -3886,10 +3886,13 @@
       }
     ],
     "reconciliations": [
-      "The probe host keeps EVERY mode from all four tasks, and tools/unity/prepare_gc017_release_project.py strips only the qualification-only ones (faults, W5 gate, GC-021 seat, lifecycle stress, W6 gate).",
+      "The probe host keeps EVERY mode from all four tasks; tools/unity/prepare_gc017_release_project.py strips only the qualification-only ones (faults, W5 gate, GC-021's seat, GC-022's lifecycle stress, GC-023's replay fixture, the Wave 6 gate) plus the editor-only reload matrix.",
       "ProbeRunner.CreateReport's per-mode report identity is one independent `if` block per mode, and the dispatch is one `else if` block per mode; the merge had left three blocks (traversal, GC-021, lifecycle stress) without their CompletePositive call, which is fixed on this revision.",
-      "The release clone also removes GC-022's four lifecycle-stress runtime files, which the merge had left behind while stripping the mode, so the clone is one consistent set.",
-      "tools/check_release_gate_free.py is new: it scans a built release player for the union of qualification-only markers and requires the qualification player to show one marker per group, so the scan cannot pass by looking in the wrong place.",
+      "GC-023's round 2 merged second: the clone now also drops the replay fixture package, its three runtime files, its mode wiring and the probe host's GameCore.Replay asmdef reference, while -probeTraversal (which the clone keeps) stays wired through the const, parameter, assignment, local, parse branch, property, identity branch and dispatch branch.",
+      "The two replaced strings in ProbeArguments - the qualification-mode expression and the constructor argument list - are re-derived from the merged source, and tools/check_release_clone.py asserts on every run that the clone's constructor call still matches its own parameter list (the previous revision's did not).",
+      "No surviving release-clone file may reference a removed member: the editor-only reload matrix drove Gc020TraversalHost.RunReloadRoute, which lives in a Wave 6 gate file the clone removes, so the clone removes the matrix too (the qualified reload-matrix runs are unaffected).",
+      "tools/check_release_gate_free.py scans a built release player for the union of qualification-only markers (GC-017, GC-021, GC-022, GC-023's replay fixture, the Wave 5 and Wave 6 gates) and requires the qualification player to show one marker per group, with -probeTraversal present in both players as the kept-mode anchor.",
+      "tools/check_release_clone.py and tools/check_gate_sources.py are new and wired into tools/run_w6_gate.sh: the first asserts the disposable clone's own invariants, the second the source-level invariants of this gate's change set (member resolution, using coverage, ambiguity, balance, frozen tables vs digest literals vs the probe harness's steps).",
       "LifecyclePlayModeMatrix drives Gc020TraversalHost.RunReloadRoute once per session, so the {domain, scene} reload matrix covers the traversal genre too."
     ],
     "statusOfThisSection": "Proposals only. Counts are unchanged.",

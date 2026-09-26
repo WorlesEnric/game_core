@@ -1,17 +1,21 @@
 # W6-GATE HANDOFF — Wave 6 integration gate (fixed-step action, durable delivery, unload stress, replay/cost counters)
 
 Branch `w6-gate` (worktree `/Users/yangcao/wkspace/gc-wt/w6-gate`) = `main` + GC-020, with `origin/gc-021`,
-`origin/gc-022` and `origin/gc-023` merged into it here and reconciled by hand.
+`origin/gc-022` and `origin/gc-023` merged into it here and reconciled by hand — including GC-023's **round 2**, whose
+release-clone change arrives as a second merge of the same branch (§4.7).
 
 **Status of every build/test command in this document: `NotRun (pending orchestrator build host)`.** This host has no
 Unity, no .NET SDK, no Mono and no C# compiler, so nothing in this change set has been compiled, imported, executed or
 built here. What did run is interpreter-level only and is recorded verbatim in `artifacts/w6-gate/static-checks.log`:
-the host-side C# checker (542 files), the frozen contract-surface parity check, the committed-catalog verifier, the
-documentation validator (self-test + full), the release-fault and release-telemetry checks in `--no-build` mode, the
-release-clone preparation **run for real** with its clone inspected and then deleted, `bash -n` over the two new shell
-scripts, the Unity `.meta` generator (idempotent: 0 creations), and an independent recomputation of all five digest
-literals from the frozen name tables (cross-checked against every declaration site). None of those is a build or a
-test result.
+the host-side C# checker (542 files), the two checks this reconciliation added and wired into the gate
+(`tools/check_gate_sources.py`: member resolution, using coverage, ambiguity, balance and the frozen-table/digest/probe
+agreement; `tools/check_release_clone.py`: the clone's own invariants, run on the clone), the frozen contract-surface
+parity check, the committed-catalog verifier, the documentation validator (self-test + full), the release-fault and
+release-telemetry checks in `--no-build` mode, the release-clone preparation **run for real** followed by the clone
+verification and then deletion, the release-surface check against synthetic players in five directions, `bash -n` over
+every shell script, `py_compile` over every Python tool, the Unity `.meta` generator (idempotent: 0 creations), and an
+independent recomputation of all five digest literals from the frozen name tables (cross-checked against every
+declaration site). None of those is a build or a test result.
 
 ## 1. Summary
 
@@ -76,6 +80,8 @@ are:
 | `W6-GATE: the gate scenario, its family contract and the composition audit` | `W6GateFamily.cs`, `W6GateScenario.cs`, `W6CompositionAudit.cs`, the three family adapters, `ProbeW6Gate.cs`. |
 | `W6-GATE: the EditMode suite, the player harness and the gate script` | `Tests/W6Gate/**`, `tools/unity/run_w6_gate_probe.sh`, `tools/run_w6_gate.sh`, `tools/check_release_gate_free.py`. |
 | `W6-GATE: extend the reload matrix to the traversal genre` | `LifecyclePlayModeMatrix` drives `Gc020TraversalHost.RunReloadRoute` once per session, the Editor assembly references the probe host, and the cycle JSONL records the route. |
+| `Merge GC-023 round 2 into W6 gate` | GC-023's round-2 fix set (the replay qualification fixture leaves the marker-free clone: sources, mode wiring, manifest dependency and the probe host's `GameCore.Replay` reference) merged into this revision, with the one conflicted file resolved as a union and two clone-breaking defects fixed (§4.7). |
+| `W6-GATE: verify the release clone and this gate's own sources` | `tools/check_release_clone.py`, `tools/check_gate_sources.py`, both wired into `tools/run_w6_gate.sh`; the release-probe list and the release-surface checker follow round 2; the static checks re-captured. |
 | `W6-GATE: the handoff, the static checks and the inventory proposals` | `artifacts/w6-gate/**`, `artifacts/gates/w4-generic-profile/inventory.{md,json}`. |
 
 ## 3. Files created
@@ -94,6 +100,8 @@ are:
 | `unity/.../Tests/W6Gate/GameCore.W6Gate.Tests.asmdef` | Editor-only EditMode assembly (`UNITY_INCLUDE_TESTS`). |
 | `unity/.../Tests/W6Gate/W6GateIntegrationTests.cs` | One `[Test]` per named observation per genre, the digest/table agreement test (every literal recomputed from `QualifiedNames(label)`), and a `[TearDown]` that asserts the world registry is back at zero. |
 | `tools/unity/run_w6_gate_probe.sh` | The player harness: `PROBE_RUNS` runs, strict JSON, all 41 required steps by name, the claim clauses, the five digest literals, the resolved cycle count, and native leak attribution over every retained run log. |
+| `tools/check_release_clone.py` | The disposable clone's own invariants, asserted on the clone rather than trusted to the script that made it: no reference to any qualification-only type or to a member declared only in a removed file (qualified accesses included), every asmdef reference resolvable, the stripped `ProbeArguments` constructor call agreeing with its own parameter list, every C# file balanced, the kept modes still wired and the removed ones gone, and the manifest/lock/`Tests/` residue. Wired into the gate right after the clone is prepared. |
+| `tools/check_gate_sources.py` | The source-level invariants of this gate's change set, in under a second and with no toolchain: brace/parenthesis balance with comments and literals removed, every `Type.Member` access resolved against the declaring sources, every used type reachable through the file's own `using` directives (with a documented rule for a simple name that binds to a member rather than a type), no name declared in two imported namespaces at once, and the frozen observation tables agreeing with all five digest literals and with the probe harness's 41 required steps. Wired into the gate's static-check step. |
 | `tools/run_w6_gate.sh` | The gate script (§6). |
 | `tools/check_release_gate_free.py` | The union-of-markers release-surface inspection (§5). |
 | `artifacts/w6-gate/static-checks.log`, `artifacts/w6-gate/HANDOFF.md` | The verbatim host-side checks and this document. |
@@ -148,24 +156,76 @@ are:
 
 6. **Release-clone preparation.** The stripped-marker union is now: the two qualification marker packages and the two
    Unity test packages (with `testables` emptied), the `Tests/` tree, and — as one consistent set — the fault scenario
-   and probe, the Wave 5 gate's five files, GC-021's three files, GC-022's five files and the Wave 6 gate's seven
-   files. GC-022's four `LifecycleStress*` runtime files were missing from the merged list while the *mode* was already
-   stripped; they are removed now, which is what makes the clone one consistent set rather than dead code that happens
-   to compile.
+   and probe, the Wave 5 gate's five files, GC-021's three files, GC-022's five files, GC-023's three replay fixture
+   files and the Wave 6 gate's seven files, plus `Editor/LifecyclePlayModeMatrix.cs` (§4.7.1). GC-022's four
+   `LifecycleStress*` runtime files were missing from the merged list while the *mode* was already stripped; they are
+   removed now, which is what makes the clone one consistent set rather than dead code that happens to compile.
+7. **GC-023's round 2 (the merge the orchestrator started).** Round 2 removes GC-023's replay *qualification fixture*
+   from the marker-free clone: `ReplayParallelJobs`, `ReplayScenario` and `ProbeReplay`, the `-probeReplay` dispatch and
+   argument plumbing, the `com.gamecore.replay` manifest dependency, and the `GameCore.Replay` reference in
+   `GameCore.Validation.ProbeHost.asmdef`. The one conflicted file (`tools/unity/prepare_gc017_release_project.py`, eight
+   hunks) was resolved as a **union**: every removal this gate already had, plus round 2's replay removal and its asmdef
+   edit. Two of the hunks are the constructor-argument and qualification-mode-expression replacements, and both were
+   **re-derived from the merged sources** rather than taken from either side, because either side's text no longer
+   matches:
+
+   * the qualification-mode expression becomes `|| Gc013 || W4Gate || Gc018 || Gc019 || Traversal`, so the mode the
+     clone keeps (`-probeTraversal`) still counts as a probe (round 2's version has no `Traversal` term and my previous
+     one had dropped it);
+   * the constructor call becomes `w4Gate, gc018, gc019, traversal, resultPath`, which is exactly the parameter list
+     that survives.
+
+   The per-member needled list for `ProbeArguments.cs` (36 needles: const, parameter, assignment, local, property with
+   its doc comment, and parse branch for each of the six removed modes) is **generated from the merged file**, and every
+   needle must match exactly once or the script raises.
+
+   **4.7.1 Two defects the union exposed, both fatal to the clone.**
+
+   * **The previous clone's `ProbeArguments` call passed 14 arguments to a 15-parameter constructor.** My earlier
+     revision kept `bool traversal,` in the signature while dropping `traversal` from the call, and the arity check that
+     would have caught it did not exist yet. This is the defect the orchestrator's warning about the constructor
+     replacement pointed at, and it is exactly the class of failure a copy-and-delete script cannot see.
+   * **A surviving clone file called a removed member.** `Editor/LifecyclePlayModeMatrix.cs` (added by this gate) calls
+     `Gc020TraversalHost.RunReloadRoute`, which round 2 does not remove — but the method lives in
+     `W6FamilyTraversalHost.cs`, one of the Wave 6 gate files the clone *does* remove, so the clone's Editor assembly
+     would not compile. The matrix is editor-only qualification tooling, so the clone now removes it for the same
+     reason it removes the `Tests/` tree. The reload-matrix runs themselves are unaffected: they happen in the
+     qualification project, which still has both files.
+
+   **4.7.2 What follows for this gate's own scripts.**
+
+   * `tools/run_w6_gate.sh`'s release-probe list drops `run_replay_probe.sh`, because the mode no longer exists in the
+     clone. **Nothing was added in its place**: the five remaining harnesses are exactly the modes the pre-Wave-6 gates
+     drove against a release player, so this gate still introduces no release-player run that has never executed
+     anywhere. The clone does keep `-probeTraversal`; driving it in a release player would be new evidence never run on
+     any host, which is a decision for the orchestrator rather than a merge reconciliation, and the release-surface
+     scan already anchors on that flag (§5).
+   * `tools/check_release_gate_free.py` follows round 2: its marker groups now include a `gc023-replay-fixture` group
+     (type names plus `-probeReplay`) whose qualification-side marker must be present, the telemetry group is gone from
+     the marker scan (a `[Conditional]` switch leaves no string to find; `check_release_telemetry_free.py` settles it),
+     and the kept-mode anchor moves from `-probeReplay` to `-probeTraversal`.
+   * The clone's Editor assembly still references `GameCore.Validation.ProbeHost` although, with the matrix gone, no
+     surviving editor file uses it. That reference is left alone deliberately: it *resolves* (the assembly is in the
+     clone), so it cannot break the build, whereas removing it would break the clone's Editor assembly if any other
+     editor file ever needs the probe host. The dangling-reference failure mode is the one round 2 had to fix in the
+     asmdef, and `tools/check_release_clone.py` now checks for it on every gate run.
 
 ## 5. The release surface, and why there is one new script
 
 `tools/check_release_gate_free.py` is new because none of the three existing surface tools covers the union this gate's
 sentence names. It takes a built release player **and** the qualification player, scans the managed assemblies and the
 IL2CPP generated C++ of both for the union of qualification-only markers (GC-017's latches, GC-021's seat, GC-022's
-stress, the Wave 5 gate, the Wave 6 gate), and requires:
+stress, GC-023's replay fixture, the Wave 5 gate, the Wave 6 gate), and requires:
 
-* the release player to carry **none** of them;
+* the release player to carry **none** of them (GC-023's replay fixture included: round 2 removes it, so the release
+  player must not show `ReplayParallelJobs`, `ReplayScenario`, `ProbeReplay` or `-probeReplay`);
 * the qualification player to show one marker per group, so the scan is proved to be able to see them at all — a scan
   that finds nothing because it is looking in the wrong place is a FAILED check, not a clean release;
-* the one mode the clone deliberately keeps (`-probeReplay`, which GC-023's release-shape evidence uses) to be present
-  in BOTH players, which is the second half of the falsifiability argument: this inspection really does read mode flags
-  out of a built player;
+* the one mode the clone deliberately keeps (`-probeTraversal`: the GC-020 course, whose local physics scene and
+  committed animation/audio output are the optional engine surface this gate is about) to be present in BOTH players,
+  which is the second half of the falsifiability argument: this inspection really does read mode flags out of a built
+  player. That anchor moved from `-probeReplay` to `-probeTraversal` when round 2 removed the replay mode from the
+  clone;
 * the production seams the gate must not have removed (`DurableOutbox`/`DeliveryKey`, `TraversalKeys`/
   `TraversalRegistration`, the three optional engine-stage types) to be **reported**, not asserted, because a stripped
   player may legitimately drop a type no surviving reference needs, and this tool's verdict is about the markers.
@@ -175,9 +235,19 @@ leave no distinctive string behind, so the telemetry claim is settled where it i
 `check_release_telemetry_free.py` compiles the real sources both ways and scans both assemblies — rather than by a
 player-surface scan that could only look convincing. Both tools run in the gate script.
 
-The tool was exercised here against synthetic players in both directions: a clean release player passes, a release
-player containing `ProbeW6Gate` fails (exit 1), and a qualification player that does not show the expected markers
-fails (exit 1).
+`tools/check_release_clone.py` closes the other half of the release claim, and it exists because the defect §4.7.1
+describes was invisible until it was checked: **preparing** a clone is textual, so the clone's own invariants are
+asserted on the clone. It fails on a surviving reference to any removed type or member (qualified accesses included), on
+any asmdef reference whose assembly is no longer available, on a stripped `ProbeArguments` whose constructor call does
+not match its own parameter list, on an unbalanced C# file, on a kept mode that lost its wiring, and on manifest/lock/
+`Tests/` residue. It runs in the gate between the clone preparation and the release player build, so a clone that cannot
+compile fails in seconds instead of after an IL2CPP build.
+
+Both tools were exercised here in every direction they claim to detect, against synthetic operands and against the real
+clone: a clean release player passes; a release player containing `ProbeW6Gate` or GC-023's replay fixture fails; a
+qualification player that does not show a group's marker fails; a qualification player that does not show the kept-mode
+anchor fails; and a clone with a planted stale reference fails while the restored clone passes. All five, plus the
+clone's full report, are in `artifacts/w6-gate/static-checks.log`.
 
 ## 6. Requirement → implementation → observation mapping
 
@@ -223,11 +293,14 @@ UNITY=~/Unity/Hub/Editor/6000.0.75f1/Editor/Unity DOTNET=$HOME/.dotnet/dotnet \
 ```
 
 In order: `dotnet build` + `dotnet test dotnet/GameCore.sln -c Release` (trx into `artifacts/w6-gate/trx`); the
-host-side static checks; the Unity resolve; EditMode (every testable package plus `GameCore.W6Gate.Tests`); PlayMode;
+host-side static checks (`check_game_core_csharp.py`, `check_gate_sources.py`, the contract-surface parity check, the
+committed-catalog verifier and `bash -n`); the Unity resolve; EditMode (every testable package plus `GameCore.W6Gate.Tests`); PlayMode;
 the card- and checkpoint-catalog generation and `tools/unity/build_probe.sh` (which regenerates the probe catalog and
 builds the StandaloneLinux64 IL2CPP qualification player with High stripping); the byte-identity check of all three
-committed catalogs; every player probe `PROBE_RUNS` times; the release-surface halves; a real marker-free release player
-(clone, build, latch inspection, union-of-markers inspection, telemetry-player inspection, family probes); and the
+committed catalogs; every player probe `PROBE_RUNS` times (including `-probeW6Gate`, `-probeReplay` and `-probeLifecycleStress`
+on the qualification player); the release-surface halves; a real marker-free release player (clone, **clone verification**,
+build, latch inspection, union-of-markers inspection, telemetry-player inspection, and the five family probes the clone
+still carries — `run_replay_probe.sh` is no longer among them, because round 2 removed that mode from the clone); and the
 documentation validator. Every Unity invocation is wrapped in `timeout` with one logged retry on a timeout.
 
 ### 7.2 This task's suites alone
@@ -324,10 +397,19 @@ produce, and records `contractChanges: none`, the five reconciliations and the e
    use. `IW6Family.CyclePumpTicks` is the one declared difference between the two temporal models.
 9. **`P-007`'s long-run retention budget (TEST-023) and `P-045`'s cursor/dedup scale claims remain open**: this gate
    exercises them at one-world/one-loop scale, not under memory pressure; GC-026 owns those rows.
-10. **The build host's first run will re-record nothing**: every literal this gate compares is a digest over the
+10. **The release player no longer carries the replay mode.** Round 2 removed GC-023's replay fixture from the clone, so
+    the release-surface evidence for GC-023's mechanism is now the *qualification* player's (`-probeReplay` in the
+    gate's probe loop) plus `check_release_telemetry_free.py`'s both-configurations assembly scan. The release player
+    still carries the traversal course, whose flag is the release-surface scan's kept-mode anchor.
+11. **Driving `-probeTraversal` in a release player is a deliberate non-change.** The clone keeps the mode, and its
+    harness exists, but no host has ever run that mode against a release-shaped player; adding it to the release probe
+    list would make the wave gate depend on a run nobody has done and which is not part of the exit sentence ("optional
+    physics/animation are absent from cards/narrative"). Recorded as an available strengthening, not taken here.
+12. **The build host's first run will re-record nothing.** Every literal this gate compares is a digest over the
     observation table (not over a recorded run), so there is no "first run must write a literal back" step. GC-023's
-    replay record is the one that still needs its `observationDigest` re-recorded, and that is GC-023's note, not this
-    gate's.
+    recorded replay digest is round 2's, already pinned in `tests/GameCore.Replay/Data/replay-record.json` and
+    asserted by that task's own harness; this gate only consumes the package's `TelemetryCollector`, which needs no
+    re-recording.
 
 ## 11. What the build host should look at first
 
@@ -341,7 +423,9 @@ produce, and records `contractChanges: none`, the five reconciliations and the e
    `w6-*-digest` steps: the first two say whether the run measured what it claims, the last three say whether the
    observation table is the frozen one.
 5. `artifacts/w6-gate/release-gate-surface.json`: if the qualification player does not show a group's marker, the scan
-   is the problem, not the release player — that is what the second operand is for.
+   is the problem, not the release player — that is what the second operand is for. `artifacts/w6-gate/clone-surface.json`
+   is the same idea for the clone: it is produced before the release player is built, so a clone that cannot compile
+   fails there rather than after an IL2CPP build.
 
 ## 12. Defects found and fixed while preparing this gate
 
@@ -369,6 +453,19 @@ the last commit on this branch.
    committed exactly one event; a world that committed more would have failed even though the *obligation* count — the
    claim this gate makes — was still one. Fixed: the source claims exactly one event and refuses the rest, the
    assertion is about the obligation, and the observed/unclaimed counts are reported beside it.
-6. **The harness pinned a hard-coded 1,000.** Its `cycles=`/`completed=` clauses now derive from
+7. **The release clone's `ProbeArguments` call did not match its constructor (§4.7.1).** The previous revision left
+   `bool traversal,` in the signature while dropping `traversal` from the call, so the clone passed 14 arguments to a
+   15-parameter constructor. Found by re-deriving both replaced strings from the merged sources during the round-2
+   reconciliation; `tools/check_release_clone.py` now checks the agreement on every gate run.
+8. **A surviving clone file called a member the clone removes (§4.7.1).** The reload matrix's traversal route lives in
+   a Wave 6 gate file, so the clone's Editor assembly could not compile. The clone now removes the matrix; the
+   qualified reload-matrix runs are unaffected.
+9. **The source audit had a false negative of its own.** Its first version built the comment-stripped body by handing
+   a joined multi-line string to a helper written for one line, which truncated everything after the first `//` and
+   made the using-coverage and ambiguity passes check almost nothing while still printing `none`. Caught by planting a
+   broken copy of a real file and requiring the check to fail on it - which is why `tools/check_gate_sources.py` ships
+   with that falsifiability experiment written down in the static-checks log, and why the member-shadowing rule for a
+   simple name like `CommandRoute` is stated where a reviewer can overrule it.
+10. **The harness pinned a hard-coded 1,000.** Its `cycles=`/`completed=` clauses now derive from
    `GC_W6_GATE_CYCLES`, so a deliberately reduced run reports and is checked against the count it really used instead of
    failing a clause nobody can satisfy honestly.
