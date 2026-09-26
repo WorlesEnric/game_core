@@ -829,7 +829,7 @@ namespace GameCore.Validation.ProbeHost
                 + "; walkedEntries=" + audit.WalkedEntries.ToString(CultureInfo.InvariantCulture)
                 + "; findings=" + (audit.Findings.Count == 0
                     ? "<none>"
-                    : string.Join(",", audit.Findings.ToArray()));
+                    : string.Join(",", audit.Findings));
             return audit.Clean;
         }
 
