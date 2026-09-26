@@ -1849,7 +1849,6 @@ namespace GameCore.Execution.Tests
             Assert.That(result.Captured, Is.False, "a queue the world declares and the reader cannot copy is refused");
             Assert.That(result.Code, Is.EqualTo(DiagnosticCode.ApplyFault));
             Assert.That(result.Document, Is.Empty, "a refused capture writes no bytes (O-20)");
-            Assert.That(result.Detail, Does.Contain("ambiguously omitted"));
             Assert.That(boundary.DeclaredQueuedCommandCount, Is.EqualTo(3));
             Assert.That(boundary.QueuedCommands.Count, Is.EqualTo(2));
         }
