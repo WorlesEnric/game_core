@@ -47,15 +47,15 @@ namespace GameCore.Validation.GeneratedCheckpoint
 
             // gamecore.checkpoint.schema.scope (schema 1bb5c533dab84e7604c8b98f1b97066a version 1)
             {
-                ScopeRecordSerializer serializer = new ScopeRecordSerializer();
-                byte[] written = serializer.Serialize(new ScopeRecordValue(10UL, 10UL, 10UL, 10UL, 9U, 9U, 9U, 9U, true, true, 9U, 9U));
+                CheckpointCatalog.ScopeRecordSerializer serializer = new CheckpointCatalog.ScopeRecordSerializer();
+                byte[] written = serializer.Serialize(new CheckpointCatalog.ScopeRecordValue(10UL, 10UL, 10UL, 10UL, 9U, 9U, 9U, 9U, true, true, 9U, 9U));
                 if (!serializer.TryValidate(written, out EnvelopeError validateError))
                 {
                     failure = "gamecore.checkpoint.schema.scope: the generated document failed validation with " + validateError.ToString();
                     return exercised;
                 }
 
-                if (!serializer.TryDeserialize(written, out ScopeRecordValue read, out EnvelopeError readError))
+                if (!serializer.TryDeserialize(written, out CheckpointCatalog.ScopeRecordValue read, out EnvelopeError readError))
                 {
                     failure = "gamecore.checkpoint.schema.scope: the generated serializer failed to re-read its own document with " + readError.ToString();
                     return exercised;
@@ -72,15 +72,15 @@ namespace GameCore.Validation.GeneratedCheckpoint
 
             // gamecore.checkpoint.schema.cursor (schema 1ddc64b87daa5363e1c1951d44ad5f07 version 1)
             {
-                CursorRecordSerializer serializer = new CursorRecordSerializer();
-                byte[] written = serializer.Serialize(new CursorRecordValue(9U, 10UL, 10UL, 10UL, 10UL, 10UL));
+                CheckpointCatalog.CursorRecordSerializer serializer = new CheckpointCatalog.CursorRecordSerializer();
+                byte[] written = serializer.Serialize(new CheckpointCatalog.CursorRecordValue(9U, 10UL, 10UL, 10UL, 10UL, 10UL));
                 if (!serializer.TryValidate(written, out EnvelopeError validateError))
                 {
                     failure = "gamecore.checkpoint.schema.cursor: the generated document failed validation with " + validateError.ToString();
                     return exercised;
                 }
 
-                if (!serializer.TryDeserialize(written, out CursorRecordValue read, out EnvelopeError readError))
+                if (!serializer.TryDeserialize(written, out CheckpointCatalog.CursorRecordValue read, out EnvelopeError readError))
                 {
                     failure = "gamecore.checkpoint.schema.cursor: the generated serializer failed to re-read its own document with " + readError.ToString();
                     return exercised;
@@ -97,15 +97,15 @@ namespace GameCore.Validation.GeneratedCheckpoint
 
             // gamecore.checkpoint.schema.slot (schema 325ebfc76f751ee2c2b4985df3d088a0 version 1)
             {
-                SlotRecordSerializer serializer = new SlotRecordSerializer();
-                byte[] written = serializer.Serialize(new SlotRecordValue(10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 9U, 7, true));
+                CheckpointCatalog.SlotRecordSerializer serializer = new CheckpointCatalog.SlotRecordSerializer();
+                byte[] written = serializer.Serialize(new CheckpointCatalog.SlotRecordValue(10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 9U, 7, true));
                 if (!serializer.TryValidate(written, out EnvelopeError validateError))
                 {
                     failure = "gamecore.checkpoint.schema.slot: the generated document failed validation with " + validateError.ToString();
                     return exercised;
                 }
 
-                if (!serializer.TryDeserialize(written, out SlotRecordValue read, out EnvelopeError readError))
+                if (!serializer.TryDeserialize(written, out CheckpointCatalog.SlotRecordValue read, out EnvelopeError readError))
                 {
                     failure = "gamecore.checkpoint.schema.slot: the generated serializer failed to re-read its own document with " + readError.ToString();
                     return exercised;
@@ -122,15 +122,15 @@ namespace GameCore.Validation.GeneratedCheckpoint
 
             // gamecore.checkpoint.schema.selection (schema 4736afccc12b5b625adb5bcdbb714e3f version 1)
             {
-                SelectionRecordSerializer serializer = new SelectionRecordSerializer();
-                byte[] written = serializer.Serialize(new SelectionRecordValue(10UL, 10UL, 10UL, 10UL, 9U, 10UL, 10UL, 9U));
+                CheckpointCatalog.SelectionRecordSerializer serializer = new CheckpointCatalog.SelectionRecordSerializer();
+                byte[] written = serializer.Serialize(new CheckpointCatalog.SelectionRecordValue(10UL, 10UL, 10UL, 10UL, 9U, 10UL, 10UL, 9U));
                 if (!serializer.TryValidate(written, out EnvelopeError validateError))
                 {
                     failure = "gamecore.checkpoint.schema.selection: the generated document failed validation with " + validateError.ToString();
                     return exercised;
                 }
 
-                if (!serializer.TryDeserialize(written, out SelectionRecordValue read, out EnvelopeError readError))
+                if (!serializer.TryDeserialize(written, out CheckpointCatalog.SelectionRecordValue read, out EnvelopeError readError))
                 {
                     failure = "gamecore.checkpoint.schema.selection: the generated serializer failed to re-read its own document with " + readError.ToString();
                     return exercised;
@@ -147,15 +147,15 @@ namespace GameCore.Validation.GeneratedCheckpoint
 
             // gamecore.checkpoint.schema.clock (schema 49f4779fa88d83ea0440e2bab679d545 version 1)
             {
-                ClockRecordSerializer serializer = new ClockRecordSerializer();
-                byte[] written = serializer.Serialize(new ClockRecordValue(9U, 10UL, 10UL, 9U, 9U, true, 10UL, 10UL, 10UL, 10UL, 9U, 10UL, 10UL, 10UL, 9U, 9U));
+                CheckpointCatalog.ClockRecordSerializer serializer = new CheckpointCatalog.ClockRecordSerializer();
+                byte[] written = serializer.Serialize(new CheckpointCatalog.ClockRecordValue(9U, 10UL, 10UL, 9U, 9U, true, 10UL, 10UL, 10UL, 10UL, 9U, 10UL, 10UL, 10UL, 9U, 9U));
                 if (!serializer.TryValidate(written, out EnvelopeError validateError))
                 {
                     failure = "gamecore.checkpoint.schema.clock: the generated document failed validation with " + validateError.ToString();
                     return exercised;
                 }
 
-                if (!serializer.TryDeserialize(written, out ClockRecordValue read, out EnvelopeError readError))
+                if (!serializer.TryDeserialize(written, out CheckpointCatalog.ClockRecordValue read, out EnvelopeError readError))
                 {
                     failure = "gamecore.checkpoint.schema.clock: the generated serializer failed to re-read its own document with " + readError.ToString();
                     return exercised;
@@ -172,15 +172,15 @@ namespace GameCore.Validation.GeneratedCheckpoint
 
             // gamecore.checkpoint.schema.grant (schema 54d0f9cccec243b78414ec19245173c6 version 1)
             {
-                GrantRecordSerializer serializer = new GrantRecordSerializer();
-                byte[] written = serializer.Serialize(new GrantRecordValue(9U, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 9U, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 9U, 10UL, 10UL, true, true, 9U, 9U));
+                CheckpointCatalog.GrantRecordSerializer serializer = new CheckpointCatalog.GrantRecordSerializer();
+                byte[] written = serializer.Serialize(new CheckpointCatalog.GrantRecordValue(9U, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 9U, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 9U, 10UL, 10UL, true, true, 9U, 9U));
                 if (!serializer.TryValidate(written, out EnvelopeError validateError))
                 {
                     failure = "gamecore.checkpoint.schema.grant: the generated document failed validation with " + validateError.ToString();
                     return exercised;
                 }
 
-                if (!serializer.TryDeserialize(written, out GrantRecordValue read, out EnvelopeError readError))
+                if (!serializer.TryDeserialize(written, out CheckpointCatalog.GrantRecordValue read, out EnvelopeError readError))
                 {
                     failure = "gamecore.checkpoint.schema.grant: the generated serializer failed to re-read its own document with " + readError.ToString();
                     return exercised;
@@ -197,15 +197,15 @@ namespace GameCore.Validation.GeneratedCheckpoint
 
             // gamecore.checkpoint.schema.install (schema 5666c5db5d34ad37d470140f8c18808f version 1)
             {
-                InstallRecordSerializer serializer = new InstallRecordSerializer();
-                byte[] written = serializer.Serialize(new InstallRecordValue(10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 7, 10UL, 10UL, 9U, 9U, new byte[] { 1, 2, 3 }, 9U, true));
+                CheckpointCatalog.InstallRecordSerializer serializer = new CheckpointCatalog.InstallRecordSerializer();
+                byte[] written = serializer.Serialize(new CheckpointCatalog.InstallRecordValue(10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 7, 10UL, 10UL, 9U, 9U, new byte[] { 1, 2, 3 }, 9U, true));
                 if (!serializer.TryValidate(written, out EnvelopeError validateError))
                 {
                     failure = "gamecore.checkpoint.schema.install: the generated document failed validation with " + validateError.ToString();
                     return exercised;
                 }
 
-                if (!serializer.TryDeserialize(written, out InstallRecordValue read, out EnvelopeError readError))
+                if (!serializer.TryDeserialize(written, out CheckpointCatalog.InstallRecordValue read, out EnvelopeError readError))
                 {
                     failure = "gamecore.checkpoint.schema.install: the generated serializer failed to re-read its own document with " + readError.ToString();
                     return exercised;
@@ -222,15 +222,15 @@ namespace GameCore.Validation.GeneratedCheckpoint
 
             // gamecore.checkpoint.schema.message (schema 744d60d006798058b50b656c613a21f3 version 1)
             {
-                MessageRecordSerializer serializer = new MessageRecordSerializer();
-                byte[] written = serializer.Serialize(new MessageRecordValue(10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 9U, 9U, 10UL, 9U, 10UL, 10UL, 10UL, 10UL, 9U, 10UL, 10UL, true, true, true, new byte[] { 1, 2, 3 }));
+                CheckpointCatalog.MessageRecordSerializer serializer = new CheckpointCatalog.MessageRecordSerializer();
+                byte[] written = serializer.Serialize(new CheckpointCatalog.MessageRecordValue(10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 9U, 9U, 10UL, 9U, 10UL, 10UL, 10UL, 10UL, 9U, 10UL, 10UL, true, true, true, new byte[] { 1, 2, 3 }));
                 if (!serializer.TryValidate(written, out EnvelopeError validateError))
                 {
                     failure = "gamecore.checkpoint.schema.message: the generated document failed validation with " + validateError.ToString();
                     return exercised;
                 }
 
-                if (!serializer.TryDeserialize(written, out MessageRecordValue read, out EnvelopeError readError))
+                if (!serializer.TryDeserialize(written, out CheckpointCatalog.MessageRecordValue read, out EnvelopeError readError))
                 {
                     failure = "gamecore.checkpoint.schema.message: the generated serializer failed to re-read its own document with " + readError.ToString();
                     return exercised;
@@ -247,15 +247,15 @@ namespace GameCore.Validation.GeneratedCheckpoint
 
             // gamecore.checkpoint.schema.outbox (schema ac96339bd83d4a4ca453b3f4e46e4639 version 1)
             {
-                OutboxRecordSerializer serializer = new OutboxRecordSerializer();
-                byte[] written = serializer.Serialize(new OutboxRecordValue(9U, 9U, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 9U, 9U, 9U, 9U, 9U, 9U, 10UL, 10UL, 9U, 9U, new byte[] { 1, 2, 3 }));
+                CheckpointCatalog.OutboxRecordSerializer serializer = new CheckpointCatalog.OutboxRecordSerializer();
+                byte[] written = serializer.Serialize(new CheckpointCatalog.OutboxRecordValue(9U, 9U, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 9U, 9U, 9U, 9U, 9U, 9U, 10UL, 10UL, 9U, 9U, new byte[] { 1, 2, 3 }));
                 if (!serializer.TryValidate(written, out EnvelopeError validateError))
                 {
                     failure = "gamecore.checkpoint.schema.outbox: the generated document failed validation with " + validateError.ToString();
                     return exercised;
                 }
 
-                if (!serializer.TryDeserialize(written, out OutboxRecordValue read, out EnvelopeError readError))
+                if (!serializer.TryDeserialize(written, out CheckpointCatalog.OutboxRecordValue read, out EnvelopeError readError))
                 {
                     failure = "gamecore.checkpoint.schema.outbox: the generated serializer failed to re-read its own document with " + readError.ToString();
                     return exercised;
@@ -272,15 +272,15 @@ namespace GameCore.Validation.GeneratedCheckpoint
 
             // gamecore.checkpoint.schema.target (schema b780328c6fa158f7bd88603db3ebae2f version 1)
             {
-                TargetRecordSerializer serializer = new TargetRecordSerializer();
-                byte[] written = serializer.Serialize(new TargetRecordValue(10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 9U, 10UL, 9U, 10UL));
+                CheckpointCatalog.TargetRecordSerializer serializer = new CheckpointCatalog.TargetRecordSerializer();
+                byte[] written = serializer.Serialize(new CheckpointCatalog.TargetRecordValue(10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 9U, 10UL, 9U, 10UL));
                 if (!serializer.TryValidate(written, out EnvelopeError validateError))
                 {
                     failure = "gamecore.checkpoint.schema.target: the generated document failed validation with " + validateError.ToString();
                     return exercised;
                 }
 
-                if (!serializer.TryDeserialize(written, out TargetRecordValue read, out EnvelopeError readError))
+                if (!serializer.TryDeserialize(written, out CheckpointCatalog.TargetRecordValue read, out EnvelopeError readError))
                 {
                     failure = "gamecore.checkpoint.schema.target: the generated serializer failed to re-read its own document with " + readError.ToString();
                     return exercised;
@@ -297,15 +297,15 @@ namespace GameCore.Validation.GeneratedCheckpoint
 
             // gamecore.checkpoint.schema.rng (schema cd069d4291975928edb3f9e9af5e037d version 1)
             {
-                RngRecordSerializer serializer = new RngRecordSerializer();
-                byte[] written = serializer.Serialize(new RngRecordValue(10UL, 10UL, 10UL, 10UL, 10UL));
+                CheckpointCatalog.RngRecordSerializer serializer = new CheckpointCatalog.RngRecordSerializer();
+                byte[] written = serializer.Serialize(new CheckpointCatalog.RngRecordValue(10UL, 10UL, 10UL, 10UL, 10UL));
                 if (!serializer.TryValidate(written, out EnvelopeError validateError))
                 {
                     failure = "gamecore.checkpoint.schema.rng: the generated document failed validation with " + validateError.ToString();
                     return exercised;
                 }
 
-                if (!serializer.TryDeserialize(written, out RngRecordValue read, out EnvelopeError readError))
+                if (!serializer.TryDeserialize(written, out CheckpointCatalog.RngRecordValue read, out EnvelopeError readError))
                 {
                     failure = "gamecore.checkpoint.schema.rng: the generated serializer failed to re-read its own document with " + readError.ToString();
                     return exercised;
@@ -322,15 +322,15 @@ namespace GameCore.Validation.GeneratedCheckpoint
 
             // gamecore.checkpoint.schema.header (schema d578e5fe72e484be8d8c015a17d8b66b version 1)
             {
-                HeaderRecordSerializer serializer = new HeaderRecordSerializer();
-                byte[] written = serializer.Serialize(new HeaderRecordValue(10UL, 10UL, 10UL, 10UL, 9U, 9U, 9U, 10UL, 10UL, 9U, true, 10UL, 10UL, 1.5, 10UL, 9U, 10UL, 10UL, 10UL, 10UL, 9U, 10UL, 9U, 10UL, 9U, 9U, 9U, 9U, 9U, 9U, 9U, 9U, 9U, 9U, 9U, 10UL, 10UL, 10UL, 9U, 9U));
+                CheckpointCatalog.HeaderRecordSerializer serializer = new CheckpointCatalog.HeaderRecordSerializer();
+                byte[] written = serializer.Serialize(new CheckpointCatalog.HeaderRecordValue(10UL, 10UL, 10UL, 10UL, 9U, 9U, 9U, 10UL, 10UL, 9U, true, 10UL, 10UL, 1.5, 10UL, 9U, 10UL, 10UL, 10UL, 10UL, 9U, 10UL, 9U, 10UL, 9U, 9U, 9U, 9U, 9U, 9U, 9U, 9U, 9U, 9U, 9U, 10UL, 10UL, 10UL, 9U, 9U));
                 if (!serializer.TryValidate(written, out EnvelopeError validateError))
                 {
                     failure = "gamecore.checkpoint.schema.header: the generated document failed validation with " + validateError.ToString();
                     return exercised;
                 }
 
-                if (!serializer.TryDeserialize(written, out HeaderRecordValue read, out EnvelopeError readError))
+                if (!serializer.TryDeserialize(written, out CheckpointCatalog.HeaderRecordValue read, out EnvelopeError readError))
                 {
                     failure = "gamecore.checkpoint.schema.header: the generated serializer failed to re-read its own document with " + readError.ToString();
                     return exercised;
@@ -347,15 +347,15 @@ namespace GameCore.Validation.GeneratedCheckpoint
 
             // gamecore.checkpoint.schema.command (schema efe5ab3007e3f7b821d96f9264ab31ef version 1)
             {
-                CommandRecordSerializer serializer = new CommandRecordSerializer();
-                byte[] written = serializer.Serialize(new CommandRecordValue(10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 9U, 10UL, 10UL, 10UL, 9U, 9U, 10UL, 10UL, 10UL, 10UL, new byte[] { 1, 2, 3 }));
+                CheckpointCatalog.CommandRecordSerializer serializer = new CheckpointCatalog.CommandRecordSerializer();
+                byte[] written = serializer.Serialize(new CheckpointCatalog.CommandRecordValue(10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 10UL, 9U, 10UL, 10UL, 10UL, 9U, 9U, 10UL, 10UL, 10UL, 10UL, new byte[] { 1, 2, 3 }));
                 if (!serializer.TryValidate(written, out EnvelopeError validateError))
                 {
                     failure = "gamecore.checkpoint.schema.command: the generated document failed validation with " + validateError.ToString();
                     return exercised;
                 }
 
-                if (!serializer.TryDeserialize(written, out CommandRecordValue read, out EnvelopeError readError))
+                if (!serializer.TryDeserialize(written, out CheckpointCatalog.CommandRecordValue read, out EnvelopeError readError))
                 {
                     failure = "gamecore.checkpoint.schema.command: the generated serializer failed to re-read its own document with " + readError.ToString();
                     return exercised;

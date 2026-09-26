@@ -112,15 +112,15 @@ namespace GameCore.Validation.GeneratedCards
 
             // cards.schema.card-config (schema 02bb49501222979cfea308ce5f5f2ca1 version 1)
             {
-                CardConfigSerializer serializer = new CardConfigSerializer();
-                byte[] written = serializer.Serialize(new CardConfigValue(9U));
+                CardCatalog.CardConfigSerializer serializer = new CardCatalog.CardConfigSerializer();
+                byte[] written = serializer.Serialize(new CardCatalog.CardConfigValue(9U));
                 if (!serializer.TryValidate(written, out EnvelopeError validateError))
                 {
                     failure = "cards.schema.card-config: the generated document failed validation with " + validateError.ToString();
                     return exercised;
                 }
 
-                if (!serializer.TryDeserialize(written, out CardConfigValue read, out EnvelopeError readError))
+                if (!serializer.TryDeserialize(written, out CardCatalog.CardConfigValue read, out EnvelopeError readError))
                 {
                     failure = "cards.schema.card-config: the generated serializer failed to re-read its own document with " + readError.ToString();
                     return exercised;

@@ -1218,10 +1218,14 @@ def emit_coverage_body(model: dict) -> str:
         out.append("            // " + schema["stableName"] + " (schema " + schema["schemaIdHex"] + " version "
                    + str(schema["schemaVersion"]) + ")\n")
         out.append("            {\n")
-        out.append("                " + schema["serializerTypeName"] + " serializer = new "
-                   + schema["serializerTypeName"] + "();\n")
-        out.append("                byte[] written = serializer.Serialize(new " + schema["valueTypeName"] + "("
-                   + literal_arguments + "));\n")
+        # The generated value type and serializer are NESTED inside the catalog class (the emitter writes them at
+        # its own eight-space indentation), while this companion is a sibling top-level class: a simple name cannot
+        # reach them (CS0246), so every reference is qualified with the catalog class, exactly as the repository's
+        # hand-written consumers do (`new ProbeCatalog.ProbeRecordSerializer()`).
+        out.append("                " + class_name + "." + schema["serializerTypeName"] + " serializer = new "
+                   + class_name + "." + schema["serializerTypeName"] + "();\n")
+        out.append("                byte[] written = serializer.Serialize(new " + class_name + "."
+                   + schema["valueTypeName"] + "(" + literal_arguments + "));\n")
         out.append("                if (!serializer.TryValidate(written, out EnvelopeError validateError))\n")
         out.append("                {\n")
         out.append("                    failure = \"" + schema["stableName"]
@@ -1229,8 +1233,8 @@ def emit_coverage_body(model: dict) -> str:
         out.append("                    return exercised;\n")
         out.append("                }\n")
         out.append("\n")
-        out.append("                if (!serializer.TryDeserialize(written, out " + schema["valueTypeName"]
-                   + " read, out EnvelopeError readError))\n")
+        out.append("                if (!serializer.TryDeserialize(written, out " + class_name + "."
+                   + schema["valueTypeName"] + " read, out EnvelopeError readError))\n")
         out.append("                {\n")
         out.append("                    failure = \"" + schema["stableName"]
                    + ": the generated serializer failed to re-read its own document with \" + readError.ToString();\n")

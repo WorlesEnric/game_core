@@ -86,15 +86,15 @@ namespace GameCore.Validation.Generated
 
             // gamecore.validation.schema.probe-record (schema 4bf5b435956d00ad605292d344334459 version 1)
             {
-                ProbeRecordSerializer serializer = new ProbeRecordSerializer();
-                byte[] written = serializer.Serialize(new ProbeRecordValue(10UL, 10UL, 9U, 7, 9U));
+                ProbeCatalog.ProbeRecordSerializer serializer = new ProbeCatalog.ProbeRecordSerializer();
+                byte[] written = serializer.Serialize(new ProbeCatalog.ProbeRecordValue(10UL, 10UL, 9U, 7, 9U));
                 if (!serializer.TryValidate(written, out EnvelopeError validateError))
                 {
                     failure = "gamecore.validation.schema.probe-record: the generated document failed validation with " + validateError.ToString();
                     return exercised;
                 }
 
-                if (!serializer.TryDeserialize(written, out ProbeRecordValue read, out EnvelopeError readError))
+                if (!serializer.TryDeserialize(written, out ProbeCatalog.ProbeRecordValue read, out EnvelopeError readError))
                 {
                     failure = "gamecore.validation.schema.probe-record: the generated serializer failed to re-read its own document with " + readError.ToString();
                     return exercised;

@@ -99,15 +99,15 @@ namespace GameCore.Validation.GeneratedTraversal
 
             // traversal.schema.course-config (schema a84cdef288cab0b5dc1283d7cd208e72 version 1)
             {
-                TraversalConfigSerializer serializer = new TraversalConfigSerializer();
-                byte[] written = serializer.Serialize(new TraversalConfigValue(9U));
+                TraversalCatalog.TraversalConfigSerializer serializer = new TraversalCatalog.TraversalConfigSerializer();
+                byte[] written = serializer.Serialize(new TraversalCatalog.TraversalConfigValue(9U));
                 if (!serializer.TryValidate(written, out EnvelopeError validateError))
                 {
                     failure = "traversal.schema.course-config: the generated document failed validation with " + validateError.ToString();
                     return exercised;
                 }
 
-                if (!serializer.TryDeserialize(written, out TraversalConfigValue read, out EnvelopeError readError))
+                if (!serializer.TryDeserialize(written, out TraversalCatalog.TraversalConfigValue read, out EnvelopeError readError))
                 {
                     failure = "traversal.schema.course-config: the generated serializer failed to re-read its own document with " + readError.ToString();
                     return exercised;
