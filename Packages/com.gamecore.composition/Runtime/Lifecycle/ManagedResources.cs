@@ -8,6 +8,8 @@
 //    cleanup continues after one disposer throws (P-048).
 //  * Resources still reachable by unfinished work are quarantined and retained; elapsed time never authorizes
 //    freeing them (P-048). The ledger records that state instead of guessing.
+//  * Retired history is bounded: the longest-retired rows leave first, a retained or quarantined record is
+//    never evicted, and a completed retirement releases its lease and disposer delegate immediately (GC-022).
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -200,18 +202,33 @@ namespace GameCore.Composition
     /// </summary>
     public sealed class ResourceLedger
     {
+        /// <summary>
+        /// Retired rows the ledger keeps after their leases are gone. The oldest retirement leaves first; a
+        /// retained or quarantined row is never evicted (GC-022).
+        /// </summary>
+        private const int RetiredHistoryCapacity = 1024;
+
         private readonly Dictionary<Id128, LeaseEntry> leases = new Dictionary<Id128, LeaseEntry>();
-        private readonly List<Id128> acquisitionOrder = new List<Id128>();
         private readonly Dictionary<Id128, WorldResourceRecord> records = new Dictionary<Id128, WorldResourceRecord>();
+
+        /// <summary>Acquisition order of the rows still held: every retained row plus the bounded retired tail.</summary>
+        private readonly LinkedList<Id128> acquisitionOrder = new LinkedList<Id128>();
+
+        /// <summary>Node of each held row in <see cref="acquisitionOrder"/>, so an eviction removes in O(1).</summary>
+        private readonly Dictionary<Id128, LinkedListNode<Id128>> orderNodes =
+            new Dictionary<Id128, LinkedListNode<Id128>>();
+
+        /// <summary>Completed retirements in completion order; the front is the first row the bound evicts.</summary>
+        private readonly Queue<Id128> retiredHistory = new Queue<Id128>();
 
         public int LiveLeaseCount
         {
             get
             {
                 int live = 0;
-                for (int i = 0; i < acquisitionOrder.Count; i++)
+                for (LinkedListNode<Id128>? node = acquisitionOrder.First; node != null; node = node.Next)
                 {
-                    if (records[acquisitionOrder[i]].IsRetained)
+                    if (records[node.Value].IsRetained)
                     {
                         live++;
                     }
@@ -221,7 +238,14 @@ namespace GameCore.Composition
             }
         }
 
+        /// <summary>
+        /// Retirements completed over the ledger's life. A row may later leave the bounded history; this
+        /// counter never decreases (GC-022).
+        /// </summary>
         public int RetiredCount { get; private set; }
+
+        /// <summary>Retired rows evicted by the history bound; eviction is observable, never a silent drop.</summary>
+        public int EvictedRetiredCount { get; private set; }
 
         public int QuarantinedCount { get; private set; }
 
@@ -231,11 +255,11 @@ namespace GameCore.Composition
         public IReadOnlyList<Id128> RetainedResourceIds()
         {
             List<Id128> retained = new List<Id128>();
-            for (int i = 0; i < acquisitionOrder.Count; i++)
+            for (LinkedListNode<Id128>? node = acquisitionOrder.First; node != null; node = node.Next)
             {
-                if (records[acquisitionOrder[i]].IsRetained)
+                if (records[node.Value].IsRetained)
                 {
-                    retained.Add(acquisitionOrder[i]);
+                    retained.Add(node.Value);
                 }
             }
 
@@ -245,9 +269,9 @@ namespace GameCore.Composition
         public IReadOnlyList<WorldResourceRecord> Records()
         {
             List<WorldResourceRecord> all = new List<WorldResourceRecord>(acquisitionOrder.Count);
-            for (int i = 0; i < acquisitionOrder.Count; i++)
+            for (LinkedListNode<Id128>? node = acquisitionOrder.First; node != null; node = node.Next)
             {
-                all.Add(records[acquisitionOrder[i]]);
+                all.Add(records[node.Value]);
             }
 
             return all;
@@ -291,7 +315,7 @@ namespace GameCore.Composition
                 acquisitionOrdinal,
                 0UL);
             records.Add(lease.LeaseId, record);
-            acquisitionOrder.Add(lease.LeaseId);
+            orderNodes.Add(lease.LeaseId, acquisitionOrder.AddLast(lease.LeaseId));
             leases.Add(lease.LeaseId, new LeaseEntry(lease, instance));
             return true;
         }
@@ -317,6 +341,8 @@ namespace GameCore.Composition
         /// <summary>
         /// One retirement attempt. A quarantine cannot be retired by this path: P-048 keeps a resource that
         /// unfinished work may still reach. Dispose runs at most once per lease even when cleanup repeats.
+        /// A completed retirement frees the lease and its disposer delegate immediately; only the record row
+        /// stays behind, for the bounded history (GC-022).
         /// </summary>
         public bool Retire(Id128 leaseId)
         {
@@ -333,16 +359,14 @@ namespace GameCore.Composition
             records[leaseId] = WithState(record, ResourceRetirementState.Retiring);
             if (!leases.TryGetValue(leaseId, out LeaseEntry entry))
             {
-                records[leaseId] = WithState(record, ResourceRetirementState.Retired);
-                RetiredCount++;
+                RetireCompleted(leaseId, record);
                 return true;
             }
 
             try
             {
                 entry.Lease.Dispose();
-                records[leaseId] = WithState(records[leaseId], ResourceRetirementState.Retired);
-                RetiredCount++;
+                RetireCompleted(leaseId, records[leaseId]);
                 return true;
             }
             catch (Exception)
@@ -359,6 +383,30 @@ namespace GameCore.Composition
                 FailedReleaseCount++;
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Closes one completed retirement: the record row becomes Retired — a frozen state no path moves back
+        /// into a retained state — the lease and its disposer delegate are dropped immediately, and the row
+        /// enters the bounded retired history, evicting the longest-retired row when that history is full
+        /// (GC-022). A retained or quarantined row can never be the evicted one.
+        /// </summary>
+        private void RetireCompleted(Id128 leaseId, WorldResourceRecord record)
+        {
+            records[leaseId] = WithState(record, ResourceRetirementState.Retired);
+            RetiredCount++;
+            leases.Remove(leaseId);
+            retiredHistory.Enqueue(leaseId);
+            if (retiredHistory.Count <= RetiredHistoryCapacity)
+            {
+                return;
+            }
+
+            Id128 oldest = retiredHistory.Dequeue();
+            acquisitionOrder.Remove(orderNodes[oldest]);
+            orderNodes.Remove(oldest);
+            records.Remove(oldest);
+            EvictedRetiredCount++;
         }
 
         /// <summary>Retains a resource whose users have not ended; it is never freed on a timeout (P-048).</summary>
@@ -394,15 +442,24 @@ namespace GameCore.Composition
         public CleanupReport RetireInstance(PluginInstanceId instance, IReadOnlyList<Id128>? outstandingJobResourceIds, ActivationStamp activation)
         {
             List<Id128> mine = new List<Id128>();
-            for (int i = 0; i < acquisitionOrder.Count; i++)
+            for (LinkedListNode<Id128>? node = acquisitionOrder.First; node != null; node = node.Next)
             {
-                Id128 id = acquisitionOrder[i];
-                AsyncWorkToken token = leases[id].Lease.Token;
-                if (records[id].Instance.Equals(instance) && records[id].IsRetained &&
-                    token.InstallationGeneration.Equals(activation.Generation) && token.ActivationEpoch.Equals(activation.ActivationEpoch))
+                Id128 id = node.Value;
+                if (!records[id].IsRetained)
                 {
-                    mine.Add(acquisitionOrder[i]);
+                    // A retired row never re-enters a retained state, so only these rows can match the instance.
+                    continue;
                 }
+
+                if (!leases.TryGetValue(id, out LeaseEntry entry) ||
+                    !records[id].Instance.Equals(instance) ||
+                    !entry.Lease.Token.InstallationGeneration.Equals(activation.Generation) ||
+                    !entry.Lease.Token.ActivationEpoch.Equals(activation.ActivationEpoch))
+                {
+                    continue;
+                }
+
+                mine.Add(id);
             }
 
             mine.Sort((left, right) => records[right].AcquisitionOrdinal.CompareTo(records[left].AcquisitionOrdinal));
@@ -441,9 +498,9 @@ namespace GameCore.Composition
         public int RetainedCountFor(PluginInstanceId instance)
         {
             int count = 0;
-            for (int i = 0; i < acquisitionOrder.Count; i++)
+            for (LinkedListNode<Id128>? node = acquisitionOrder.First; node != null; node = node.Next)
             {
-                WorldResourceRecord record = records[acquisitionOrder[i]];
+                WorldResourceRecord record = records[node.Value];
                 if (record.Instance.Equals(instance) && record.IsRetained)
                 {
                     count++;

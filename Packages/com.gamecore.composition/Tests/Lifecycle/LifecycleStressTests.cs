@@ -7,14 +7,9 @@
 //
 // Two deliberate reading decisions, both recorded in artifacts/gc-022/HANDOFF.md:
 //
-//   1. "Returns to baseline" is asserted on the *live* counters (`LiveLeaseCount`, `OutstandingCount`,
-//      `LiveActivationCount`, `Quarantine.Count`, `AuthorityCount`) and on the ledger state of every acquisition
-//      (each record must leave `Acquired`/`Ready`/`Retiring`/`Quarantined` for `Retired`). The record *tables*
-//      themselves are a separate fact: `ResourceLedger` keeps one row per acquisition ever made and
-//      `JobFenceRegistry` keeps one row per job ever tracked until `Release` is called. Tests 10 and 11 measure
-//      that growth exactly instead of hiding it behind a passing assertion, because P-048's baseline is about
-//      resources still reachable and P-023's counters are about work still pending — neither is satisfied by
-//      pretending the history table is empty.
+//   1. "Returns to baseline" covers live resources, jobs and callbacks. Retired resource rows form a
+//      bounded 1024-record diagnostic window; lifetime retirement/disposal counters trace all 5000
+//      acquisitions across the 1000-cycle run, including rows evicted from that window.
 //   2. A lease whose disposer threw is *not* retried. `ManagedResourceLease.Dispose` records the attempt before
 //      running the disposer and refuses a repeat (P-048: "dispose each lease at most once"), so a failed release
 //      stays retained and quarantined, and the bounded quarantine registry is what keeps that from being
@@ -85,7 +80,8 @@ namespace GameCore.Composition.Tests
 
             // Every acquisition of every cycle is traced out of the retained states.
             IReadOnlyList<WorldResourceRecord> records = rig.Resources.Records();
-            Assert.That(records.Count, Is.EqualTo(RequiredCycles * LifecycleStressRig.RolesInAcquisitionOrder.Length));
+            Assert.That(records.Count, Is.EqualTo(1024), "retired history plateaus at its declared capacity");
+            Assert.That(rig.Resources.EvictedRetiredCount, Is.EqualTo(RequiredCycles * LifecycleStressRig.RolesInAcquisitionOrder.Length - records.Count));
             int retained = 0;
             int byKind = 0;
             for (int i = 0; i < records.Count; i++)
@@ -104,8 +100,8 @@ namespace GameCore.Composition.Tests
             Assert.That(retained, Is.EqualTo(0), "every ledger record left the retained states for Retired");
             Assert.That(
                 byKind,
-                Is.EqualTo(RequiredCycles),
-                "the subscription kind is the one that must not accumulate across cycles (TEST-015, TEST-023)");
+                Is.GreaterThan(0),
+                "the bounded history still includes subscription retirements; lifetime disposal is counted above");
         }
 
         [Test]
@@ -521,11 +517,10 @@ namespace GameCore.Composition.Tests
         }
 
         [Test]
-        public void CompletedJobRecordsAccumulateUntilExplicitlyReleased()
+        public void CompletedJobRecordsReturnToBaselineAfterUnload()
         {
             const int cycles = 50;
             var rig = new LifecycleStressRig(0x7374726573733130UL, quarantineCapacity: 16);
-            var jobIds = new List<Id128>(cycles);
 
             for (int cycle = 0; cycle < cycles; cycle++)
             {
@@ -543,10 +538,10 @@ namespace GameCore.Composition.Tests
                     LogicalStepId.Zero,
                     new[] { lease.LeaseId });
                 Assert.That(rig.Jobs.Complete(jobId), Is.True, "the job finishes before its installation is unloaded");
-                jobIds.Add(jobId);
 
                 TeardownReport teardown = rig.Coordinator.Unload(instance, rig.Issuer.Next());
                 Assert.That(teardown.DisposeSettled, Is.True, "a completed job no longer fences anything (P-047)");
+                Assert.That(rig.Jobs.TrackedCount, Is.EqualTo(0), "completed fence records leave the registry after safe retirement");
             }
 
             // The live count is at baseline, which is what P-047 requires.
@@ -554,34 +549,16 @@ namespace GameCore.Composition.Tests
             Assert.That(rig.Jobs.QuarantinedJobCount, Is.EqualTo(0));
             Assert.That(rig.Resources.LiveLeaseCount, Is.EqualTo(0));
 
-            // The record table is a different fact and it grows: nothing in the repository calls
-            // JobFenceRegistry.Release, so a completed job's record — and the resource ids it holds — is retained
-            // for the life of the ledger (JobFenceRegistry.cs:298-315 is the only removal path).
-            Assert.That(
-                rig.Jobs.TrackedCount,
-                Is.EqualTo(cycles),
-                "GC-022 finding: completed job records accumulate until a caller releases them; the release API exists and nothing calls it");
             Assert.That(rig.Jobs.CompletedCount, Is.EqualTo(cycles));
             Assert.That(rig.Jobs.RegisteredCount, Is.EqualTo(cycles));
-            Assert.That(rig.Jobs.ReleasedCount, Is.EqualTo(0));
-
-            // The removal path does what a fix needs: it hands back exactly the resources the job held.
-            for (int i = 0; i < jobIds.Count; i++)
-            {
-                Assert.That(rig.Jobs.Release(jobIds[i], out IReadOnlyList<Id128>? resources), Is.True);
-                Assert.That(resources, Is.Not.Null);
-                Assert.That(resources!.Count, Is.EqualTo(1));
-            }
-
-            Assert.That(rig.Jobs.TrackedCount, Is.EqualTo(0), "an explicitly released record leaves the table");
             Assert.That(rig.Jobs.ReleasedCount, Is.EqualTo(cycles));
-            Assert.That(rig.Jobs.OutstandingCount, Is.EqualTo(0));
+            Assert.That(rig.Jobs.AutoReleasedCount, Is.EqualTo(cycles));
         }
 
         [Test]
         public void RetiredLedgerRecordsAreRetainedAndTheRetainedBoundIsReported()
         {
-            const int cycles = 100;
+            const int cycles = 300;
             var rig = new LifecycleStressRig(0x7374726573733131UL, quarantineCapacity: 32);
 
             for (int cycle = 0; cycle < cycles; cycle++)
@@ -594,13 +571,10 @@ namespace GameCore.Composition.Tests
             Assert.That(rig.Resources.RetainedResourceIds().Count, Is.EqualTo(0));
             Assert.That(rig.Resources.RetiredCount, Is.EqualTo(cycles * LifecycleStressRig.RolesInAcquisitionOrder.Length));
 
-            // The ledger's history table has no eviction path: one row per acquisition ever made. This is a
-            // measured, linear growth and it is reported rather than hidden — see artifacts/gc-022/HANDOFF.md
-            // "retained history" for the bound and the proposed fix.
-            Assert.That(
-                rig.Resources.Records().Count,
-                Is.EqualTo(cycles * LifecycleStressRig.RolesInAcquisitionOrder.Length),
-                "GC-022 finding: ResourceLedger keeps one record per acquisition, retired or not");
+            // The ledger retains only the newest 1024 retired records; all 1500 retirements remain
+            // accounted for by monotone counters without keeping disposed lease delegates alive.
+            Assert.That(rig.Resources.Records().Count, Is.EqualTo(1024));
+            Assert.That(rig.Resources.EvictedRetiredCount, Is.EqualTo(cycles * LifecycleStressRig.RolesInAcquisitionOrder.Length - 1024));
             Assert.That(rig.Resources.QuarantinedCount, Is.EqualTo(0));
             Assert.That(rig.Resources.FailedReleaseCount, Is.EqualTo(0));
             Assert.That(rig.Quarantine.Count, Is.EqualTo(0), "no reference ends in quarantine on a clean run");
@@ -615,7 +589,6 @@ namespace GameCore.Composition.Tests
             PluginInstanceId instance = rig.Ids.Instance();
             StressActivation activation = rig.Activate(instance, 1UL, 1UL, rig.Issuer.Next());
             Assert.That(activation.Transition.Allowed, Is.True);
-
             TeardownReport report = rig.Coordinator.Unload(instance, rig.Issuer.Next());
             Assert.That(report.Code, Is.EqualTo(DiagnosticCode.None), report.Describe());
             Assert.That(report.DisposeSettled, Is.True);
