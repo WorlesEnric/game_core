@@ -1,0 +1,1024 @@
+Unity Editor version:    6000.0.75f1 (26349cd2a5c8)
+Branch:                  6000.0/staging
+Build type:              Release
+Batch mode:              YES
+System name:             Linux
+Distro version:          #31~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Mon Aug 10 09:38:02 UTC 2
+Kernel version:          7.0.0-31-generic
+Architecture:            x86_64
+Available memory:        31897 MB
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Initialize udev device monitor.
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-worlesenric" at "2026-09-26T12:18:54.96155Z"
+[SignatureVerifier] Application signature verification not supported on this platform.
+
+COMMAND LINE ARGUMENTS:
+/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Unity
+-batchmode
+-nographics
+-quit
+-projectPath
+/home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation
+-executeMethod
+GameCore.Validation.Editor.ProbeCatalogGenerator.GenerateCatalog
+-logFile
+/home/worlesenric/wkspace/gc-wt/gc-026/artifacts/gc-026/qualification/codegen.log
+Successfully changed project path to: /home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation
+
+(process:1521652): Gtk-CRITICAL **: 20:18:54.962: gtk_label_set_text: assertion 'GTK_IS_LABEL (label)' failed
+
+(process:1521652): Gtk-CRITICAL **: 20:18:54.963: gtk_label_set_text: assertion 'GTK_IS_LABEL (label)' failed
+/home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gfx=262144"
+Player connection [133559877158208]  Target information:
+
+Player connection [133559877158208]  * "[IP] 192.168.0.21 [Port] 55505 [Flags] 2 [Guid] 991203250 [EditorId] 991203250 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+
+Player connection [133559877158208]  * "[IP] 100.66.195.58 [Port] 55505 [Flags] 2 [Guid] 991203250 [EditorId] 991203250 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+
+Player connection [133559877158208]  * "[IP] 172.18.0.1 [Port] 55505 [Flags] 2 [Guid] 991203250 [EditorId] 991203250 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+
+Player connection [133559877158208]  * "[IP] 172.17.0.1 [Port] 55505 [Flags] 2 [Guid] 991203250 [EditorId] 991203250 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+
+Player connection [133559877158208]  * "[IP] 10.42.0.0 [Port] 55505 [Flags] 2 [Guid] 991203250 [EditorId] 991203250 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+
+Player connection [133559877158208]  * "[IP] 10.42.0.1 [Port] 55505 [Flags] 2 [Guid] 991203250 [EditorId] 991203250 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+
+Player connection [133559877158208] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [133559877158208] Host joined alternative multi-casting on [225.0.0.222:34997]...
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.18.3+d7ffd15
+  Session Id:              76b061aaf216464b96d57a425439aeba
+  Correlation Id:          a4aac8f8da2bbfc2169791db8bc4c264
+  External correlation Id: 2256235166547374828
+  Machine Id:              jd93gYTNlAg1qIhTY9iII/nAhSo=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-worlesenric" (connect: 0.00s, validation: 0.01s, handshake: 0.00s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-worlesenric-notifications" at "2026-09-26T12:18:54.967538Z"
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: 1375999166540-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.00
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Licensing Background thread has ended after 0.01s
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+[Package Manager] Connected to IPC stream "Upm-1521652" after 0.1 seconds.
+Library Redirect Path: Library/
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Refreshing native plugins compatible for Editor in 0.06 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 6000.0.75f1 (26349cd2a5c8)
+[Subsystems] Discovering subsystems at path /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path /home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation/Assets
+Forcing GfxDevice: Null
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+NullGfxDevice:
+    Version:  NULL 1.0 [1.0]
+    Renderer: Null Device
+    Vendor:   Unity Technologies
+Initialize mono
+Mono path[0] = '/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Managed'
+Mono path[1] = '/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-linux'
+Mono config path = '/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56652
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll
+Register platform support module: /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll
+Registered in 0.000931 seconds.
+- Loaded All Assemblies, in  0.217 seconds
+Native extension for LinuxStandalone target not found
+Package Manager log level set to [2]
+[Licensing::Client] Successfully resolved entitlement details
+Native extension for OSXStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  7.995 seconds
+Domain Reload Profiling: 8212ms
+	BeginReloadAssembly (53ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (0ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (0ms)
+	RebuildCommonClasses (24ms)
+	RebuildNativeTypeToScriptingClass (5ms)
+	initialDomainReloadingComplete (36ms)
+	LoadAllAssembliesAndSetupDomain (99ms)
+		LoadAssemblies (52ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (97ms)
+			TypeCache.Refresh (96ms)
+				TypeCache.ScanAssembly (87ms)
+			BuildScriptInfoCaches (0ms)
+			ResolveRequiredComponents (0ms)
+	FinalizeReload (7996ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (7971ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (7795ms)
+			SetLoadedEditorAssemblies (4ms)
+			BeforeProcessingInitializeOnLoad (42ms)
+			ProcessInitializeOnLoadAttributes (93ms)
+			ProcessInitializeOnLoadMethodAttributes (38ms)
+			AfterProcessingInitializeOnLoad (0ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (0ms)
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+[Package Manager] Restoring resolved packages state from cache
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 43 packages:
+  Packages from [https://packages.unity.com]:
+    com.unity.burst@1.8.28 (location: /home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation/Library/PackageCache/com.unity.burst@07790c2d06d9)
+    com.unity.collections@2.6.6 (location: /home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation/Library/PackageCache/com.unity.collections@9796e5ee0d9e)
+    com.unity.entities@1.4.6 (location: /home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation/Library/PackageCache/com.unity.entities@e90944159b94)
+    com.unity.mathematics@1.3.2 (location: /home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation/Library/PackageCache/com.unity.mathematics@8017b507cc74)
+    com.unity.test-framework.performance@3.0.3 (location: /home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation/Library/PackageCache/com.unity.test-framework.performance@fb0dc592af8b)
+    com.unity.toolchain.linux-x86_64@2.0.11 (location: /home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation/Library/PackageCache/com.unity.toolchain.linux-x86_64@53b88ff74b51)
+    com.unity.sysroot@2.0.10 (location: /home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation/Library/PackageCache/com.unity.sysroot@7bbbb9339c14)
+    com.unity.sysroot.linux-x86_64@2.0.9 (location: /home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation/Library/PackageCache/com.unity.sysroot.linux-x86_64@1998d1c7730e)
+    com.unity.serialization@3.1.5 (location: /home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation/Library/PackageCache/com.unity.serialization@c463b52e88d7)
+    com.unity.profiling.core@1.0.3 (location: /home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation/Library/PackageCache/com.unity.profiling.core@8a49f7027d06)
+    com.unity.nuget.mono-cecil@1.11.6 (location: /home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation/Library/PackageCache/com.unity.nuget.mono-cecil@ecb9724e46ff)
+    com.unity.scriptablebuildpipeline@2.6.1 (location: /home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation/Library/PackageCache/com.unity.scriptablebuildpipeline@36e3b5898ee2)
+  Built-in packages:
+    com.unity.modules.assetbundle@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.assetbundle)
+    com.unity.modules.audio@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.audio)
+    com.unity.modules.imageconversion@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.imageconversion)
+    com.unity.modules.imgui@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.imgui)
+    com.unity.modules.jsonserialize@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.jsonserialize)
+    com.unity.modules.physics@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.physics)
+    com.unity.modules.ui@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.ui)
+    com.unity.modules.uielements@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.uielements)
+    com.unity.modules.unityanalytics@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.unityanalytics)
+    com.unity.modules.unitywebrequest@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.unitywebrequest)
+    com.unity.test-framework@1.6.0 (location: /home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation/Library/PackageCache/com.unity.test-framework@bd52b1c23814)
+    com.unity.ext.nunit@2.0.5 (location: /home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation/Library/PackageCache/com.unity.ext.nunit@b16e6d09cd93)
+    com.unity.modules.hierarchycore@1.0.0 (location: /home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation/Library/PackageCache/com.unity.modules.hierarchycore)
+  Local packages:
+    com.gamecore.composition@file:/home/worlesenric/wkspace/gc-wt/gc-026/Packages/com.gamecore.composition (location: /home/worlesenric/wkspace/gc-wt/gc-026/Packages/com.gamecore.composition)
+    com.gamecore.contracts@file:/home/worlesenric/wkspace/gc-wt/gc-026/Packages/com.gamecore.contracts (location: /home/worlesenric/wkspace/gc-wt/gc-026/Packages/com.gamecore.contracts)
+    com.gamecore.content.compiler@file:/home/worlesenric/wkspace/gc-wt/gc-026/Packages/com.gamecore.content.compiler (location: /home/worlesenric/wkspace/gc-wt/gc-026/Packages/com.gamecore.content.compiler)
+    com.gamecore.derivation@file:/home/worlesenric/wkspace/gc-wt/gc-026/Packages/com.gamecore.derivation (location: /home/worlesenric/wkspace/gc-wt/gc-026/Packages/com.gamecore.derivation)
+    com.gamecore.fault-qualification@file:/home/worlesenric/wkspace/gc-wt/gc-026/Packages/com.gamecore.fault-qualification (location: /home/worlesenric/wkspace/gc-wt/gc-026/Packages/com.gamecore.fault-qualification)
+    com.gamecore.gameplay.cards@file:/home/worlesenric/wkspace/gc-wt/gc-026/Packages/com.gamecore.gameplay.cards (location: /home/worlesenric/wkspace/gc-wt/gc-026/Packages/com.gamecore.gameplay.cards)
+    com.gamecore.gameplay.integration@file:/home/worlesenric/wkspace/gc-wt/gc-026/Packages/com.gamecore.gameplay.integration (location: /home/worlesenric/wkspace/gc-wt/gc-026/Packages/com.gamecore.gameplay.integration)
+    com.gamecore.gameplay.narrative@file:/home/worlesenric/wkspace/gc-wt/gc-026/Packages/com.gamecore.gameplay.narrative (location: /home/worlesenric/wkspace/gc-wt/gc-026/Packages/com.gamecore.gameplay.narrative)
+    com.gamecore.gameplay.traversal@file:/home/worlesenric/wkspace/gc-wt/gc-026/Packages/com.gamecore.gameplay.traversal (location: /home/worlesenric/wkspace/gc-wt/gc-026/Packages/com.gamecore.gameplay.traversal)
+    com.gamecore.planning@file:/home/worlesenric/wkspace/gc-wt/gc-026/Packages/com.gamecore.planning (location: /home/worlesenric/wkspace/gc-wt/gc-026/Packages/com.gamecore.planning)
+    com.gamecore.rules.cards@file:/home/worlesenric/wkspace/gc-wt/gc-026/Packages/com.gamecore.rules.cards (location: /home/worlesenric/wkspace/gc-wt/gc-026/Packages/com.gamecore.rules.cards)
+    com.gamecore.rules.narrative@file:/home/worlesenric/wkspace/gc-wt/gc-026/Packages/com.gamecore.rules.narrative (location: /home/worlesenric/wkspace/gc-wt/gc-026/Packages/com.gamecore.rules.narrative)
+    com.gamecore.rules.traversal@file:/home/worlesenric/wkspace/gc-wt/gc-026/Packages/com.gamecore.rules.traversal (location: /home/worlesenric/wkspace/gc-wt/gc-026/Packages/com.gamecore.rules.traversal)
+    com.gamecore.unity.adapters@file:/home/worlesenric/wkspace/gc-wt/gc-026/Packages/com.gamecore.unity.adapters (location: /home/worlesenric/wkspace/gc-wt/gc-026/Packages/com.gamecore.unity.adapters)
+    com.gamecore.unity.runtime@file:/home/worlesenric/wkspace/gc-wt/gc-026/Packages/com.gamecore.unity.runtime (location: /home/worlesenric/wkspace/gc-wt/gc-026/Packages/com.gamecore.unity.runtime)
+    com.gamecore.replay@file:/home/worlesenric/wkspace/gc-wt/gc-026/tests/GameCore.Replay (location: /home/worlesenric/wkspace/gc-wt/gc-026/tests/GameCore.Replay)
+    com.gamecore.benchmarks@file:/home/worlesenric/wkspace/gc-wt/gc-026/tests/GameCore.Benchmarks (location: /home/worlesenric/wkspace/gc-wt/gc-026/tests/GameCore.Benchmarks)
+    com.gamecore.telemetry-qualification@file:/home/worlesenric/wkspace/gc-wt/gc-026/Packages/com.gamecore.telemetry-qualification (location: /home/worlesenric/wkspace/gc-wt/gc-026/Packages/com.gamecore.telemetry-qualification)
+[Subsystems] No new subsystems found in resolved package list.
+[Package Manager] Done registering packages in 0.00 seconds
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+[ScriptCompilation] Requested script compilation because: Assetdatabase observed changes in script compilation related files
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://unix:/tmp/ilpp.sock-ea14d887923813f0d812318272782557
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Production
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Content root path: /home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation/
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 28.3273ms
+Starting: /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/2400b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: /home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+[40m[1m[33mwarn[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Assembly system.runtime.interopservices.windowsruntime has duplicate hint path. Ignoring "/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Runtime.InteropServices.WindowsRuntime.dll" in favor of "/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/NetStandard/Extensions/2.0.0/System.Runtime.InteropServices.WindowsRuntime.dll"
+[40m[1m[33mwarn[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Assembly system.componentmodel.composition has duplicate hint path. Ignoring "/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.ComponentModel.Composition.dll" in favor of "/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/NetStandard/compat/2.1.0/shims/netfx/System.ComponentModel.Composition.dll"
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Burst.Cecil, Version=0.11.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library/PackageCache/com.unity.burst@07790c2d06d9/Unity.Burst.CodeGen/Unity.Burst.Cecil.dll
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Mono.Cecil, Version=0.11.5.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library/PackageCache/com.unity.nuget.mono-cecil@ecb9724e46ff/Mono.Cecil.dll
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Entities, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null with Library/Bee/artifacts/2400b0aE.dag/Unity.Entities.dll
+DisplayProgressbar: Compiling Scripts
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc - - 200 - application/grpc 41.2995ms
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.W5Gate.Tests.dll, with 122 defines and 272 references
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.Lifecycle.Tests.dll, with 122 defines and 269 references
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.Validation.ProbeHost.dll, with 124 defines and 256 references
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.Gc021.Tests.dll, with 122 defines and 277 references
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.Gc018.Tests.dll, with 122 defines and 276 references
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.Gc013.Tests.dll, with 122 defines and 273 references
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.LifecycleStress.Tests.dll, with 122 defines and 272 references
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.Faults.Tests.dll, with 122 defines and 275 references
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.W4Gate.Tests.dll, with 122 defines and 275 references
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.W4Profile.Tests.dll, with 122 defines and 273 references
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.W2Gate.Tests.dll, with 122 defines and 265 references
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.Gc020.Tests.dll, with 124 defines and 243 references
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.Narrative.Tests.dll, with 122 defines and 269 references
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.Replay.IntegrationTests.dll, with 122 defines and 258 references
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.W3Gate.Tests.dll, with 122 defines and 272 references
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.Validation.Editor.dll, with 122 defines and 270 references
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.Gc019.Tests.dll, with 122 defines and 272 references
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Entities.CodeGen.EntitiesILPostProcessors
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Entities.CodeGen.EntitiesILPostProcessors
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Entities.CodeGen.EntitiesILPostProcessors
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Entities.CodeGen.EntitiesILPostProcessors
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Entities.CodeGen.EntitiesILPostProcessors
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Entities.CodeGen.EntitiesILPostProcessors
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Entities.CodeGen.EntitiesILPostProcessors
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Entities.CodeGen.EntitiesILPostProcessors
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Entities.CodeGen.EntitiesILPostProcessors
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Entities.CodeGen.EntitiesILPostProcessors
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Entities.CodeGen.EntitiesILPostProcessors
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Entities.CodeGen.EntitiesILPostProcessors
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Entities.CodeGen.EntitiesILPostProcessors
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Entities.CodeGen.EntitiesILPostProcessors
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Entities.CodeGen.EntitiesILPostProcessors
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Entities.CodeGen.EntitiesILPostProcessors
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.Cards.Tests.dll, with 122 defines and 269 references
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Entities.CodeGen.EntitiesILPostProcessors
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Entities.CodeGen.EntitiesILPostProcessors
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Mono.Cecil.Rocks, Version=0.11.5.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library/PackageCache/com.unity.nuget.mono-cecil@ecb9724e46ff/Mono.Cecil.Rocks.dll
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 15.1795ms
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.W1Gate.Tests.dll, with 122 defines and 263 references
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Entities.CodeGen.EntitiesILPostProcessors
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null with /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Managed/UnityEngine/UnityEngine.CoreModule.dll
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Collections, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null with Library/Bee/artifacts/2400b0aE.dag/Unity.Collections.dll
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Burst, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null with Library/Bee/artifacts/2400b0aE.dag/Unity.Burst.dll
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Cecil.Awesome, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null with Library/PackageCache/com.unity.entities@e90944159b94/Unity.Entities.CodeGen/Unity.Cecil.Awesome.dll
+  - EILPP : GameCore.W4Profile.Tests : : 238ms (~215ms)
+  - EILPP : GameCore.W5Gate.Tests : : 238ms (~215ms)
+  - EILPP : GameCore.W3Gate.Tests : : 238ms (~215ms)
+    - EILPP : GameCore.W5Gate.Tests : GetAllComponentTypes: 1ms 
+  - EILPP : GameCore.Gc018.Tests : : 238ms (~215ms)
+    - EILPP : GameCore.W5Gate.Tests : Cloner: 2ms 
+    - EILPP : GameCore.W3Gate.Tests : GetAllComponentTypes: 1ms 
+    - EILPP : GameCore.Gc018.Tests : GetAllComponentTypes: 1ms 
+    - EILPP : GameCore.W3Gate.Tests : Cloner: 2ms 
+    - EILPP : GameCore.Gc018.Tests : Cloner: 2ms 
+    - EILPP : GameCore.W5Gate.Tests : ComponentDataPP: 14ms 
+  - EILPP : GameCore.W2Gate.Tests : : 238ms (~215ms)
+    - EILPP : GameCore.W3Gate.Tests : ComponentDataPP: 14ms 
+    - EILPP : GameCore.W5Gate.Tests : StaticTypeRegistryPostProcessor: 6ms 
+    - EILPP : GameCore.W3Gate.Tests : StaticTypeRegistryPostProcessor: 6ms 
+    - EILPP : GameCore.W2Gate.Tests : GetAllComponentTypes: 1ms 
+    - EILPP : GameCore.W2Gate.Tests : Cloner: 2ms 
+    - EILPP : GameCore.W2Gate.Tests : ComponentDataPP: 14ms 
+    - EILPP : GameCore.W2Gate.Tests : StaticTypeRegistryPostProcessor: 6ms 
+  - EILPP : GameCore.Cards.Tests : : 238ms (~214ms)
+    - EILPP : GameCore.Cards.Tests : GetAllComponentTypes: 1ms 
+  - EILPP : GameCore.Narrative.Tests : : 238ms (~215ms)
+  - EILPP : GameCore.Lifecycle.Tests : : 238ms (~215ms)
+    - EILPP : GameCore.Narrative.Tests : GetAllComponentTypes: 1ms 
+    - EILPP : GameCore.Lifecycle.Tests : GetAllComponentTypes: 1ms 
+    - EILPP : GameCore.Narrative.Tests : Cloner: 2ms 
+    - EILPP : GameCore.Lifecycle.Tests : Cloner: 2ms 
+    - EILPP : GameCore.Narrative.Tests : ComponentDataPP: 14ms 
+    - EILPP : GameCore.Lifecycle.Tests : ComponentDataPP: 14ms 
+    - EILPP : GameCore.Narrative.Tests : StaticTypeRegistryPostProcessor: 6ms 
+    - EILPP : GameCore.Lifecycle.Tests : StaticTypeRegistryPostProcessor: 6ms 
+  - EILPP : GameCore.W4Gate.Tests : : 238ms (~215ms)
+    - EILPP : GameCore.W4Gate.Tests : GetAllComponentTypes: 1ms 
+  - EILPP : GameCore.LifecycleStress.Tests : : 238ms (~215ms)
+  - EILPP : GameCore.Gc013.Tests : : 238ms (~215ms)
+    - EILPP : GameCore.Gc013.Tests : GetAllComponentTypes: 1ms 
+    - EILPP : GameCore.Gc013.Tests : Cloner: 2ms 
+    - EILPP : GameCore.Gc013.Tests : ComponentDataPP: 14ms 
+    - EILPP : GameCore.Gc013.Tests : StaticTypeRegistryPostProcessor: 6ms 
+  - EILPP : GameCore.Faults.Tests : : 238ms (~215ms)
+    - EILPP : GameCore.Faults.Tests : GetAllComponentTypes: 1ms 
+  - EILPP : GameCore.Gc019.Tests : : 238ms (~215ms)
+    - EILPP : GameCore.Faults.Tests : Cloner: 2ms 
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+    - EILPP : GameCore.Faults.Tests : ComponentDataPP: 14ms 
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+    - EILPP : GameCore.Faults.Tests : StaticTypeRegistryPostProcessor: 6ms 
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+  - EILPP : GameCore.W1Gate.Tests : : 238ms (~215ms)
+    - EILPP : GameCore.W1Gate.Tests : GetAllComponentTypes: 1ms 
+    - EILPP : GameCore.W1Gate.Tests : Cloner: 2ms 
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+    - EILPP : GameCore.W4Profile.Tests : GetAllComponentTypes: 1ms 
+    - EILPP : GameCore.W1Gate.Tests : ComponentDataPP: 14ms 
+    - EILPP : GameCore.W4Profile.Tests : Cloner: 2ms 
+    - EILPP : GameCore.W4Profile.Tests : ComponentDataPP: 14ms 
+    - EILPP : GameCore.W1Gate.Tests : StaticTypeRegistryPostProcessor: 6ms 
+    - EILPP : GameCore.W4Profile.Tests : StaticTypeRegistryPostProcessor: 6ms 
+  - EILPP : GameCore.Gc020.Tests : : 238ms (~215ms)
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+    - EILPP : GameCore.Gc020.Tests : GetAllComponentTypes: 1ms 
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+    - EILPP : GameCore.Gc020.Tests : Cloner: 2ms 
+  - EILPP : GameCore.Validation.Editor : : 238ms (~215ms)
+  - EILPP : GameCore.Gc021.Tests : : 238ms (~215ms)
+    - EILPP : GameCore.Validation.Editor : GetAllComponentTypes: 1ms 
+    - EILPP : GameCore.Gc021.Tests : GetAllComponentTypes: 1ms 
+    - EILPP : GameCore.Validation.Editor : Cloner: 2ms 
+    - EILPP : GameCore.Gc021.Tests : Cloner: 2ms 
+    - EILPP : GameCore.Validation.Editor : ComponentDataPP: 14ms 
+    - EILPP : GameCore.Gc021.Tests : ComponentDataPP: 14ms 
+    - EILPP : GameCore.Validation.Editor : StaticTypeRegistryPostProcessor: 6ms 
+    - EILPP : GameCore.Gc021.Tests : StaticTypeRegistryPostProcessor: 6ms 
+    - EILPP : GameCore.Gc018.Tests : ComponentDataPP: 14ms 
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+    - EILPP : GameCore.Gc018.Tests : StaticTypeRegistryPostProcessor: 6ms 
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+    - EILPP : GameCore.Cards.Tests : Cloner: 2ms 
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+    - EILPP : GameCore.Cards.Tests : ComponentDataPP: 15ms 
+    - EILPP : GameCore.Cards.Tests : StaticTypeRegistryPostProcessor: 6ms 
+    - EILPP : GameCore.W4Gate.Tests : Cloner: 2ms 
+    - EILPP : GameCore.W4Gate.Tests : ComponentDataPP: 14ms 
+    - EILPP : GameCore.W4Gate.Tests : StaticTypeRegistryPostProcessor: 6ms 
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+    - EILPP : GameCore.LifecycleStress.Tests : GetAllComponentTypes: 1ms 
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+    - EILPP : GameCore.LifecycleStress.Tests : Cloner: 2ms 
+    - EILPP : GameCore.LifecycleStress.Tests : ComponentDataPP: 14ms 
+    - EILPP : GameCore.Gc019.Tests : GetAllComponentTypes: 1ms 
+    - EILPP : GameCore.LifecycleStress.Tests : StaticTypeRegistryPostProcessor: 6ms 
+    - EILPP : GameCore.Gc019.Tests : Cloner: 2ms 
+    - EILPP : GameCore.Gc019.Tests : ComponentDataPP: 14ms 
+    - EILPP : GameCore.Gc019.Tests : StaticTypeRegistryPostProcessor: 6ms 
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+    - EILPP : GameCore.Gc020.Tests : ComponentDataPP: 14ms 
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+    - EILPP : GameCore.Gc020.Tests : StaticTypeRegistryPostProcessor: 6ms 
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved UnityEditor.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null with /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Managed/UnityEngine/UnityEditor.CoreModule.dll
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 298.9302ms
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 298.1651ms
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 297.0128ms
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 298.1024ms
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 286.0057ms
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 281.6697ms
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.W6Gate.Tests.dll, with 124 defines and 243 references
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Entities.CodeGen.EntitiesILPostProcessors
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 297.6063ms
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 297.7419ms
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 298.8561ms
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 298.7076ms
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 299.4271ms
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+  - EILPP : GameCore.W6Gate.Tests : : 9ms (~9ms)
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 304.9277ms
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 308.2743ms
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 308.0941ms
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 308.5806ms
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 310.5852ms
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 16.0280ms
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Burst.Cecil.Rocks, Version=0.11.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library/PackageCache/com.unity.burst@07790c2d06d9/Unity.Burst.CodeGen/Unity.Burst.Cecil.Rocks.dll
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 408.1253ms
+  - EILPP : GameCore.Validation.ProbeHost : : 514ms (~217ms)
+    - EILPP : GameCore.Validation.ProbeHost : GetAllComponentTypes: 1ms 
+    - EILPP : GameCore.Validation.ProbeHost : Cloner: 2ms 
+    - EILPP : GameCore.Validation.ProbeHost : ComponentDataPP: 14ms 
+    - EILPP : GameCore.Validation.ProbeHost : StaticTypeRegistryPostProcessor: 55ms 
+    - EILPP : GameCore.Validation.ProbeHost : WriteAssembly: 225ms 
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 598.7868ms
+ExitCode: 0 Duration: 2s800ms
+[ 793/1120  0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+[1040/1120  2s] Csc Library/Bee/artifacts/2400b0aE.dag/GameCore.Validation.ProbeHost.dll (+2 others)
+Assets/GameCore.Validation/Runtime/Gc020Family.cs(293,53): warning CS8604: Possible null reference argument for parameter 'audio' in 'Gc020StageRuntime.Gc020StageRuntime(string kind, TraversalModule module, TraversalTraceRecorder trace, UnityPhysicsSceneBackend? physics, PhysicsAuthorityGate? physicsGate, CommittedAudioStage audio, RecordingAudioSink audioSink, CommittedAnimationStage animation, RecordingAnimationSink animationSink, RecordingPoseSource poseSource, int descriptorStageCount)'.
+Assets/GameCore.Validation/Runtime/Gc018Scenario.cs(1560,20): warning CS8618: Non-nullable field 'sourceRequest' must contain a non-null value when exiting constructor. Consider declaring the field as nullable.
+Assets/GameCore.Validation/Runtime/Gc021Scenario.cs(481,20): warning CS8618: Non-nullable field 'sourceRequest' must contain a non-null value when exiting constructor. Consider declaring the field as nullable.
+Assets/GameCore.Validation/Runtime/Gc021Scenario.cs(754,28): warning CS8602: Dereference of a possibly null reference.
+Assets/GameCore.Validation/Runtime/W6GateScenario.cs(1044,62): warning CS8602: Dereference of a possibly null reference.
+Assets/GameCore.Validation/Runtime/ProbeWorldDispatch.cs(201,30): warning CS8604: Possible null reference argument for parameter 'host' in 'void ProbeWorldDispatch.ReleaseWorld(UnityWorldHost host, ulong operationSequence)'.
+Assets/GameCore.Validation/Runtime/ProbeWorldDispatch.cs(202,30): warning CS8604: Possible null reference argument for parameter 'host' in 'void ProbeWorldDispatch.ReleaseWorld(UnityWorldHost host, ulong operationSequence)'.
+Assets/GameCore.Validation/Runtime/ProbeWorldDispatch.cs(252,30): warning CS8604: Possible null reference argument for parameter 'host' in 'void ProbeWorldDispatch.ReleaseWorld(UnityWorldHost host, ulong operationSequence)'.
+Assets/GameCore.Validation/Runtime/ProbeWorldDispatch.cs(310,30): warning CS8604: Possible null reference argument for parameter 'host' in 'void ProbeWorldDispatch.ReleaseWorld(UnityWorldHost host, ulong operationSequence)'.
+Assets/GameCore.Validation/Runtime/ProbeWorldDispatch.cs(355,30): warning CS8604: Possible null reference argument for parameter 'host' in 'void ProbeWorldDispatch.ReleaseWorld(UnityWorldHost host, ulong operationSequence)'.
+Assets/GameCore.Validation/Runtime/ProbeWorldDispatch.cs(451,30): warning CS8604: Possible null reference argument for parameter 'host' in 'void ProbeWorldDispatch.ReleaseWorld(UnityWorldHost host, ulong operationSequence)'.
+Assets/GameCore.Validation/Runtime/W6GateScenario.cs(1921,47): warning CS8602: Dereference of a possibly null reference.
+Assets/GameCore.Validation/Runtime/W5GateScenario.cs(230,20): warning CS8618: Non-nullable field 'sourceRequest' must contain a non-null value when exiting constructor. Consider declaring the field as nullable.
+[1060/1120  0s] ILPostProcess Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Replay.IntegrationTests.dll (+pdb)
+Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.Replay.IntegrationTests.dll, with 122 defines and 258 references
+processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+running Unity.Entities.CodeGen.EntitiesILPostProcessors
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[1061/1120  0s] ILPostProcess Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.W5Gate.Tests.dll (+pdb)
+Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.W5Gate.Tests.dll, with 122 defines and 272 references
+processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+running Unity.Entities.CodeGen.EntitiesILPostProcessors
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[1062/1120  0s] ILPostProcess Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Faults.Tests.dll (+pdb)
+Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.Faults.Tests.dll, with 122 defines and 275 references
+processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+running Unity.Entities.CodeGen.EntitiesILPostProcessors
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[1063/1120  0s] ILPostProcess Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Lifecycle.Tests.dll (+pdb)
+Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.Lifecycle.Tests.dll, with 122 defines and 269 references
+processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+running Unity.Entities.CodeGen.EntitiesILPostProcessors
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[1064/1120  0s] ILPostProcess Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gc018.Tests.dll (+pdb)
+Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.Gc018.Tests.dll, with 122 defines and 276 references
+processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+running Unity.Entities.CodeGen.EntitiesILPostProcessors
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[1065/1120  0s] ILPostProcess Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.LifecycleStress.Tests.dll (+pdb)
+Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.LifecycleStress.Tests.dll, with 122 defines and 272 references
+processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+running Unity.Entities.CodeGen.EntitiesILPostProcessors
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[1066/1120  0s] ILPostProcess Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gc019.Tests.dll (+pdb)
+Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.Gc019.Tests.dll, with 122 defines and 272 references
+processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+running Unity.Entities.CodeGen.EntitiesILPostProcessors
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[1067/1120  0s] ILPostProcess Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gc013.Tests.dll (+pdb)
+Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.Gc013.Tests.dll, with 122 defines and 273 references
+processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+running Unity.Entities.CodeGen.EntitiesILPostProcessors
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[1073/1120  0s] ILPostProcess Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.W4Profile.Tests.dll (+pdb)
+Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.W4Profile.Tests.dll, with 122 defines and 273 references
+processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+running Unity.Entities.CodeGen.EntitiesILPostProcessors
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[1075/1120  0s] ILPostProcess Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gc021.Tests.dll (+pdb)
+Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.Gc021.Tests.dll, with 122 defines and 277 references
+processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+running Unity.Entities.CodeGen.EntitiesILPostProcessors
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[1083/1120  0s] ILPostProcess Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.W3Gate.Tests.dll (+pdb)
+Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.W3Gate.Tests.dll, with 122 defines and 272 references
+processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+running Unity.Entities.CodeGen.EntitiesILPostProcessors
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[1085/1120  0s] ILPostProcess Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.W4Gate.Tests.dll (+pdb)
+Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.W4Gate.Tests.dll, with 122 defines and 275 references
+processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+running Unity.Entities.CodeGen.EntitiesILPostProcessors
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[1086/1120  0s] ILPostProcess Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Gc020.Tests.dll (+pdb)
+Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.Gc020.Tests.dll, with 124 defines and 243 references
+processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+running Unity.Entities.CodeGen.EntitiesILPostProcessors
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[1087/1120  0s] ILPostProcess Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.W1Gate.Tests.dll (+pdb)
+Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.W1Gate.Tests.dll, with 122 defines and 263 references
+processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+running Unity.Entities.CodeGen.EntitiesILPostProcessors
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[1090/1120  0s] ILPostProcess Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.W2Gate.Tests.dll (+pdb)
+Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.W2Gate.Tests.dll, with 122 defines and 265 references
+processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+running Unity.Entities.CodeGen.EntitiesILPostProcessors
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[1091/1120  0s] ILPostProcess Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Cards.Tests.dll (+pdb)
+Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.Cards.Tests.dll, with 122 defines and 269 references
+processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+running Unity.Entities.CodeGen.EntitiesILPostProcessors
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[1092/1120  0s] ILPostProcess Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.W6Gate.Tests.dll (+pdb)
+Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.W6Gate.Tests.dll, with 124 defines and 243 references
+processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+running Unity.Entities.CodeGen.EntitiesILPostProcessors
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[1111/1120  0s] ILPostProcess Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Narrative.Tests.dll (+pdb)
+Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.Narrative.Tests.dll, with 122 defines and 269 references
+processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+running Unity.Entities.CodeGen.EntitiesILPostProcessors
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[1112/1120  0s] ILPostProcess Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Validation.Editor.dll (+pdb)
+Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.Validation.Editor.dll, with 122 defines and 270 references
+processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+running Unity.Entities.CodeGen.EntitiesILPostProcessors
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[1117/1120  0s] ILPostProcess Library/Bee/artifacts/2400b0aE.dag/post-processed/GameCore.Validation.ProbeHost.dll (+pdb)
+Processing assembly Library/Bee/artifacts/2400b0aE.dag/GameCore.Validation.ProbeHost.dll, with 124 defines and 256 references
+processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+running Unity.Entities.CodeGen.EntitiesILPostProcessors
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[1118/1120  0s] CopyFiles Library/ScriptAssemblies/GameCore.Validation.ProbeHost.pdb
+[1119/1120  0s] CopyFiles Library/ScriptAssemblies/GameCore.Validation.ProbeHost.dll
+*** Tundra build success (2.79 seconds), 24 items updated, 1120 evaluated
+Assets/GameCore.Validation/Runtime/Gc020Family.cs(293,53): warning CS8604: Possible null reference argument for parameter 'audio' in 'Gc020StageRuntime.Gc020StageRuntime(string kind, TraversalModule module, TraversalTraceRecorder trace, UnityPhysicsSceneBackend? physics, PhysicsAuthorityGate? physicsGate, CommittedAudioStage audio, RecordingAudioSink audioSink, CommittedAnimationStage animation, RecordingAnimationSink animationSink, RecordingPoseSource poseSource, int descriptorStageCount)'.
+Assets/GameCore.Validation/Runtime/Gc018Scenario.cs(1560,20): warning CS8618: Non-nullable field 'sourceRequest' must contain a non-null value when exiting constructor. Consider declaring the field as nullable.
+Assets/GameCore.Validation/Runtime/Gc021Scenario.cs(481,20): warning CS8618: Non-nullable field 'sourceRequest' must contain a non-null value when exiting constructor. Consider declaring the field as nullable.
+Assets/GameCore.Validation/Runtime/Gc021Scenario.cs(754,28): warning CS8602: Dereference of a possibly null reference.
+Assets/GameCore.Validation/Runtime/W6GateScenario.cs(1044,62): warning CS8602: Dereference of a possibly null reference.
+Assets/GameCore.Validation/Runtime/ProbeWorldDispatch.cs(201,30): warning CS8604: Possible null reference argument for parameter 'host' in 'void ProbeWorldDispatch.ReleaseWorld(UnityWorldHost host, ulong operationSequence)'.
+Assets/GameCore.Validation/Runtime/ProbeWorldDispatch.cs(202,30): warning CS8604: Possible null reference argument for parameter 'host' in 'void ProbeWorldDispatch.ReleaseWorld(UnityWorldHost host, ulong operationSequence)'.
+Assets/GameCore.Validation/Runtime/ProbeWorldDispatch.cs(252,30): warning CS8604: Possible null reference argument for parameter 'host' in 'void ProbeWorldDispatch.ReleaseWorld(UnityWorldHost host, ulong operationSequence)'.
+Assets/GameCore.Validation/Runtime/ProbeWorldDispatch.cs(310,30): warning CS8604: Possible null reference argument for parameter 'host' in 'void ProbeWorldDispatch.ReleaseWorld(UnityWorldHost host, ulong operationSequence)'.
+Assets/GameCore.Validation/Runtime/ProbeWorldDispatch.cs(355,30): warning CS8604: Possible null reference argument for parameter 'host' in 'void ProbeWorldDispatch.ReleaseWorld(UnityWorldHost host, ulong operationSequence)'.
+Assets/GameCore.Validation/Runtime/ProbeWorldDispatch.cs(451,30): warning CS8604: Possible null reference argument for parameter 'host' in 'void ProbeWorldDispatch.ReleaseWorld(UnityWorldHost host, ulong operationSequence)'.
+Assets/GameCore.Validation/Runtime/W6GateScenario.cs(1921,47): warning CS8602: Dereference of a possibly null reference.
+Assets/GameCore.Validation/Runtime/W5GateScenario.cs(230,20): warning CS8618: Non-nullable field 'sourceRequest' must contain a non-null value when exiting constructor. Consider declaring the field as nullable.
+Assets/GameCore.Validation/Runtime/Gc018Scenario.cs(1560,20): warning CS8618: Non-nullable field 'sourceRequest' must contain a non-null value when exiting constructor. Consider declaring the field as nullable.
+Assets/GameCore.Validation/Runtime/Gc021Scenario.cs(481,20): warning CS8618: Non-nullable field 'sourceRequest' must contain a non-null value when exiting constructor. Consider declaring the field as nullable.
+Assets/GameCore.Validation/Runtime/Gc021Scenario.cs(754,28): warning CS8602: Dereference of a possibly null reference.
+Assets/GameCore.Validation/Runtime/W6GateScenario.cs(1044,62): warning CS8602: Dereference of a possibly null reference.
+Assets/GameCore.Validation/Runtime/ProbeWorldDispatch.cs(201,30): warning CS8604: Possible null reference argument for parameter 'host' in 'void ProbeWorldDispatch.ReleaseWorld(UnityWorldHost host, ulong operationSequence)'.
+Assets/GameCore.Validation/Runtime/ProbeWorldDispatch.cs(202,30): warning CS8604: Possible null reference argument for parameter 'host' in 'void ProbeWorldDispatch.ReleaseWorld(UnityWorldHost host, ulong operationSequence)'.
+Assets/GameCore.Validation/Runtime/ProbeWorldDispatch.cs(252,30): warning CS8604: Possible null reference argument for parameter 'host' in 'void ProbeWorldDispatch.ReleaseWorld(UnityWorldHost host, ulong operationSequence)'.
+Assets/GameCore.Validation/Runtime/ProbeWorldDispatch.cs(310,30): warning CS8604: Possible null reference argument for parameter 'host' in 'void ProbeWorldDispatch.ReleaseWorld(UnityWorldHost host, ulong operationSequence)'.
+Assets/GameCore.Validation/Runtime/ProbeWorldDispatch.cs(355,30): warning CS8604: Possible null reference argument for parameter 'host' in 'void ProbeWorldDispatch.ReleaseWorld(UnityWorldHost host, ulong operationSequence)'.
+Assets/GameCore.Validation/Runtime/ProbeWorldDispatch.cs(451,30): warning CS8604: Possible null reference argument for parameter 'host' in 'void ProbeWorldDispatch.ReleaseWorld(UnityWorldHost host, ulong operationSequence)'.
+Assets/GameCore.Validation/Runtime/W6GateScenario.cs(1921,47): warning CS8602: Dereference of a possibly null reference.
+Assets/GameCore.Validation/Runtime/W5GateScenario.cs(230,20): warning CS8618: Non-nullable field 'sourceRequest' must contain a non-null value when exiting constructor. Consider declaring the field as nullable.
+AssetDatabase: script compilation time: 3.140911s
+Begin MonoManager ReloadAssembly
+Total cache size 268301315
+Total cache size after purge 268301315, took 00:00:00.1142113
+- Loaded All Assemblies, in  0.393 seconds
+Refreshing native plugins compatible for Editor in 0.13 ms, found 1 plugins.
+Native extension for LinuxStandalone target not found
+Native extension for OSXStandalone target not found
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+TypeManager.Initialize took: 97ms
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  2.055 seconds
+Domain Reload Profiling: 2447ms
+	BeginReloadAssembly (129ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (31ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (27ms)
+	RebuildCommonClasses (25ms)
+	RebuildNativeTypeToScriptingClass (5ms)
+	initialDomainReloadingComplete (20ms)
+	LoadAllAssembliesAndSetupDomain (212ms)
+		LoadAssemblies (164ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (91ms)
+			TypeCache.Refresh (65ms)
+				TypeCache.ScanAssembly (58ms)
+			BuildScriptInfoCaches (24ms)
+			ResolveRequiredComponents (0ms)
+	FinalizeReload (2056ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (1830ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (35ms)
+			SetLoadedEditorAssemblies (3ms)
+			BeforeProcessingInitializeOnLoad (104ms)
+			ProcessInitializeOnLoadAttributes (1618ms)
+			ProcessInitializeOnLoadMethodAttributes (68ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (4ms)
+Refreshing native plugins compatible for Editor in 0.16 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=d16f256658c4b44a5a4a06a27b5f7503): Total: 6.093 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=2447 ms
+		Asset DB Callback time: managed=81 ms, native=5 ms
+		Scripting: domain reloads=1, domain reload time=393 ms, compile time=3142 ms, other=22 ms
+		Project Asset Count: scripts=893, non-scripts=712
+		Asset File Changes: new=0, changed=1, moved=0, deleted=0
+		Scan Filter Count: 1
+	InvokeCustomDependenciesCallbacks: 0.003ms
+	InvokePackagesCallback: 4.124ms
+	ApplyChangesToAssetFolders: 0.216ms
+	Scan: 283.446ms
+	OnSourceAssetsModified: 0.597ms
+	CategorizeAssetsWithTransientArtifact: 12.618ms
+	ProcessAssetsWithTransientArtifactChanges: 17.821ms
+	CategorizeAssets: 10.733ms
+	ImportOutOfDateAssets: 2058.167ms (-1084.794ms without children)
+		CompileScripts: 3142.236ms
+		ReloadNativeAssets: 0.000ms
+		UnloadImportedAssets: 0.177ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.227ms
+		InitializingProgressBar: 0.000ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.320ms
+	PostProcessAllAssets: 82.295ms
+	Hotreload: 0.833ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.000ms
+	UnloadStreamsBegin: 0.190ms
+	PersistCurrentRevisions: 0.045ms
+	UnloadStreamsEnd: 0.001ms
+	GenerateScriptTypeHashes: 1.140ms
+	Untracked: 3622.118ms
+
+Application.AssetDatabase Initial Refresh End
+Scanning for USB devices : 1.167ms
+Initializing Unity extensions:
+UpdateMenuTitleForLanguage: 10
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-GameCoreProbe
+Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 3025 unused Assets / (2.7 MB). Loaded Objects now: 3497.
+Memory consumption went from 115.1 MB to 112.3 MB.
+Total: 8.294861 ms (FindLiveObjects: 0.180764 ms CreateObjectMapping: 0.156053 ms MarkObjects: 6.295841 ms  DeleteObjects: 1.661378 ms)
+
+[GC003] unchanged /home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation/Assets/GameCore.Validation/Generated/ProbeCatalog.g.cs; bytes=25321; catalogFingerprint=02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff; bytes=25321; catalogFileHash=03bdcd23fd8ec0515d93d7c54d7f7c695f3860a850a7280b82316aaacd14c5c1; catalogFingerprint=02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Validation.Editor.ProbeCatalogGenerator:GenerateCatalog () (at Assets/GameCore.Validation/Editor/ProbeCatalogGenerator.cs:66)
+
+(Filename: Assets/GameCore.Validation/Editor/ProbeCatalogGenerator.cs Line: 66)
+
+Asset Pipeline Refresh (id=15ca037be1074718eac697c52d5110b0): Total: 0.100 seconds - Initiated by RefreshV2(NoUpdateAssetOptions)
+Batchmode quit successfully invoked - shutting down!
+Curl error 42: Callback aborted
+Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 3 unused Assets / (301.1 KB). Loaded Objects now: 3503.
+Memory consumption went from 105.8 MB to 105.5 MB.
+Total: 5.049004 ms (FindLiveObjects: 0.137776 ms CreateObjectMapping: 0.091644 ms MarkObjects: 4.648192 ms  DeleteObjects: 0.170555 ms)
+
+[Physics::Module] Cleanup current backned.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input System polling thread exited.
+Input System module state changed to: Shutdown.
+[Licensing::IpcConnector] LicenseClient-worlesenric-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-worlesenric channel disconnected successfully.
+AcceleratorClientConnectionCallback - disconnected - :0
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Application is shutting down...
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      ALC ILPP context 1 is unloading
+Cleanup mono
+debugger-agent: Unable to listen on 43
+Exiting batchmode successfully now!
