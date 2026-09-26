@@ -8,8 +8,9 @@ produce and re-check committed catalogs here. It is subordinate to the compiler,
 regenerates every committed catalog from its committed description and fails on a single byte of drift, and the
 build host's codegen step regenerates the same files with the production emitter.
 
-Mirrored from `CatalogEmitter.cs` (emission), `CatalogDescriptionReader.cs` (validation) and
-`GameCore.Contracts.CatalogFingerprint` (fingerprint scope), all read from this repository:
+Mirrored from `CatalogEmitter.cs` (`Emit` for the catalog, `EmitCoverage` for its coverage companion),
+`CatalogDescriptionReader.cs` (validation) and `GameCore.Contracts.CatalogFingerprint` (fingerprint scope), all read
+from this repository:
 
   * section order, indentation, doc comments and literal formats of the emitted file;
   * canonical ordering (groups by ordinal table name, schemas by ascending schema id, fields by ascending id,
