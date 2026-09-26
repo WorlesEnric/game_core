@@ -80,10 +80,12 @@ unity_step() {
   local label="$1"
   shift
   echo "-- ${label}: $*"
+  while pgrep -f 'gc-wt/gc-026/.*[G]ameCoreProbe|gc-wt/gc-026/.*[U]nity ' >/dev/null; do sleep 60; done
   local rc=0
   timeout --signal=TERM --kill-after=60 "${UNITY_TIMEOUT}" "$@" || rc=$?
   if [[ "${rc}" -eq 124 || "${rc}" -eq 137 ]]; then
     echo "-- ${label}: timed out after ${UNITY_TIMEOUT}s; retrying once (the Editor has an intermittent hang)"
+    while pgrep -f 'gc-wt/gc-026/.*[G]ameCoreProbe|gc-wt/gc-026/.*[U]nity ' >/dev/null; do sleep 60; done
     timeout --signal=TERM --kill-after=60 "${UNITY_TIMEOUT}" "$@" || rc=$?
   fi
   if [[ "${rc}" -ne 0 ]]; then
@@ -184,6 +186,7 @@ run_step catalog-reproducibility git diff --exit-code -- \
 # --------------------------------------------------------------------------------------------------------------
 
 if [[ ",${SHAPES}," == *",qualification,"* ]]; then
+  while pgrep -f 'gc-wt/gc-026/.*[G]ameCoreProbe|gc-wt/gc-026/.*[U]nity ' >/dev/null; do sleep 60; done
   UNITY="${UNITY}" UNITY_PROJECT="${UNITY_PROJECT}" ARTIFACTS="${ARTIFACTS}/qualification" \
     UNITY_TIMEOUT="${UNITY_TIMEOUT}" DOTNET="${DOTNET:-}" tools/unity/build_probe.sh
 
@@ -191,6 +194,7 @@ if [[ ",${SHAPES}," == *",qualification,"* ]]; then
   run_step fingerprint-ledger-qualification "${PYTHON}" tools/compare_registration_fingerprints.py \
     --ledger "${UNITY_PROJECT}" --ledger-out "${ARTIFACTS}/qualification"
 
+  while pgrep -f 'gc-wt/gc-026/.*[G]ameCoreProbe|gc-wt/gc-026/.*[U]nity ' >/dev/null; do sleep 60; done
   run_step probe-catalog-coverage-qualification env \
     PROBE_PLAYER="${QUALIFICATION_PLAYER}" \
     UNITY_PROJECT="${UNITY_PROJECT}" \
@@ -220,6 +224,7 @@ if [[ ",${SHAPES}," == *",release,"* ]]; then
   run_step link-xml-release "${PYTHON}" tools/check_link_xml.py \
     --project "${RELEASE_PROJECT}" --json "${ARTIFACTS}/release/link-xml.json"
 
+  while pgrep -f 'gc-wt/gc-026/.*[G]ameCoreProbe|gc-wt/gc-026/.*[U]nity ' >/dev/null; do sleep 60; done
   UNITY="${UNITY}" UNITY_PROJECT="${RELEASE_PROJECT}" ARTIFACTS="${ARTIFACTS}/release" \
     UNITY_TIMEOUT="${UNITY_TIMEOUT}" DOTNET="${DOTNET:-}" tools/unity/build_probe.sh
 
@@ -239,6 +244,7 @@ if [[ ",${SHAPES}," == *",release,"* ]]; then
     echo "-- fingerprint-compare: NOT RUN (one of the two shape ledgers is absent; build both shapes)"
   fi
 
+  while pgrep -f 'gc-wt/gc-026/.*[G]ameCoreProbe|gc-wt/gc-026/.*[U]nity ' >/dev/null; do sleep 60; done
   run_step probe-catalog-coverage-release env \
     PROBE_PLAYER="${RELEASE_PLAYER}" \
     UNITY_PROJECT="${RELEASE_PROJECT}" \
