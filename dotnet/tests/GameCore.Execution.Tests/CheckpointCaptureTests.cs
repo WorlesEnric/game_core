@@ -1839,7 +1839,7 @@ namespace GameCore.Execution.Tests
                 declaredQueueDisposition: BoundaryQueueDisposition.Included,
                 declaredQueuedCommands: 3,
                 declaredStagedOperations: 1);
-            CheckpointTestCodecs codecs = CheckpointTestCodecs.Complete();
+            CheckpointCodecSet codecs = CheckpointTestCodecs.Complete();
             CheckpointTestBoundaryReader reader = CheckpointTestFixture.Reader(boundary);
 
             CheckpointCaptureResult result = CheckpointCapture.Capture(
