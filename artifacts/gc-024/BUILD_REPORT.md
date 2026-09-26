@@ -45,7 +45,7 @@ The release-clone check passed **before** building the disposable clone (149 sou
 | Whole .NET solution, 15 test projects | 1,143 | 0 | 0 | `artifacts/gc-024/trx/gc024-final_*.trx` |
 | Unity EditMode, every testable | 1,109 | 0 | 0 | `toolchain/unity/editmode-results.xml` |
 | Unity PlayMode, every testable | 53 | 0 | 0 | `toolchain/unity/playmode-results.xml` |
-| GC-024 focused EditMode | 8 | 0 | 0 | `conformance-editmode6.xml` (also covered by full suite) |
+| GC-024 focused EditMode | 8 | 0 | 0 | also covered by final full suite `toolchain/unity/editmode-results.xml` |
 | Qualification player probes, 21 JSON modes | 42 launches | 0 | 0 | `toolchain/toolchain/probe-*.json` and `.run2` |
 | Final-revision release-clone narrative/cards/traversal | 6 launches (2 each) | 0 | 0 | `release-final/probe-{narrative,cards,traversal}.json` and `.run2`; earlier release clone also passed 15/15 before the cap |
 | Host genre audit | clean | 0 violations | 0 | `genre-audit.json` |
