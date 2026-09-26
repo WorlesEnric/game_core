@@ -32,8 +32,10 @@ using GameCore.Contracts;
 namespace GameCore.Derivation
 {
     /// <summary>The result of one invalidation: the targets to re-derive and the scopes they live in (P-023).</summary>
-    public sealed class InvalidationClosureResult
+    public sealed class InvalidationClosureResult : ITelemetryOwner
     {
+        string ITelemetryOwner.TelemetryOwner => "gamecore.derivation.invalidation";
+
         public InvalidationClosureResult(
             IReadOnlyList<TargetId>? dirtyTargets,
             IReadOnlyList<ScopeId>? dirtyScopes,
@@ -64,6 +66,21 @@ namespace GameCore.Derivation
 
         public InvalidationCounters Counters { get; }
 
+
+        /// <summary>
+        /// Writes this closure's counters into <paramref name="into"/> through the fixed compact schema (GC-023).
+        /// The inherited <see cref="CostCounters.WriteTelemetry"/> already reports `ControlNodesVisited`, which
+        /// the closure, the index set and the engine all increment on the same counter object.
+        /// </summary>
+        public void WriteTelemetry(TelemetryCounterSet into)
+        {
+            if (into == null)
+            {
+                throw new ArgumentNullException(nameof(into));
+            }
+
+            Counters.WriteTelemetry(into);
+        }
         /// <summary>True when nothing needs re-deriving: the caller carries the whole previous result.</summary>
         public bool IsEmpty => !WholeWorld && DirtyTargets.Count == 0;
 
@@ -125,7 +142,6 @@ namespace GameCore.Derivation
                 {
                     allTargets.Add(next.Targets[i].Target);
                 }
-
                 List<ScopeId> allScopes = new List<ScopeId>(next.Scopes.Count);
                 for (int i = 0; i < next.Scopes.Count; i++)
                 {
@@ -136,13 +152,13 @@ namespace GameCore.Derivation
                 counts.DirtyTargets = allTargets.Count;
                 counts.DirtyScopes = allScopes.Count;
                 return new InvalidationClosureResult(allTargets, allScopes, true, changeSet, counts);
+
             }
-
             // The indexes are built only for the local case: a whole-world invalidation never consults them, and
-            // building two index sets to answer it would be work with no answer (P-023).
-            DerivationIndexSet oldIndexes = previousIndexes ?? DerivationIndexSet.Build(previous);
-            DerivationIndexSet newIndexes = nextIndexes ?? DerivationIndexSet.Build(next);
-
+            // building two index sets to answer it would be work with no answer (P-023). When the closure builds
+            // them it hands its own counter object over, so the index work is reported rather than discarded.
+            DerivationIndexSet oldIndexes = previousIndexes ?? DerivationIndexSet.Build(previous, counts);
+            DerivationIndexSet newIndexes = nextIndexes ?? DerivationIndexSet.Build(next, counts);
             HashSet<Id128> dirtyTargets = new HashSet<Id128>();
             HashSet<Id128> dirtyScopes = new HashSet<Id128>();
             HashSet<Id128> changedInstalls = new HashSet<Id128>();
@@ -311,7 +327,9 @@ namespace GameCore.Derivation
             HashSet<Id128> dirtyScopes,
             InvalidationCounters counts)
         {
+            // Every scope and target this subtree walk touches is a control node (GC-023).
             IReadOnlyList<ScopeId> subtree = indexes.Membership.Subtree(scope);
+            TelemetryCounting.Add(counts.Telemetry, TelemetryCounter.ControlNodesVisited, subtree.Count);
             for (int i = 0; i < subtree.Count; i++)
             {
                 AddScope(indexes, subtree[i], dirtyScopes);
@@ -319,6 +337,7 @@ namespace GameCore.Derivation
 
             IReadOnlyList<DerivationTarget> targets = indexes.Membership.TargetsInSubtree(scope);
             counts.TargetsVisited += targets.Count;
+            TelemetryCounting.Add(counts.Telemetry, TelemetryCounter.ControlNodesVisited, targets.Count);
             for (int i = 0; i < targets.Count; i++)
             {
                 dirtyTargets.Add(targets[i].Target.Value);
@@ -359,6 +378,8 @@ namespace GameCore.Derivation
             IReadOnlyList<DerivationTarget> population = snapshot.TargetsInReach(
                 providerScope, rule.Reach, rule.SelectorContracts, rule.OutputCapability.Capability);
             counts.IndexBucketsVisited++;
+            // The population bucket, its targets and the rule whose reach produced them are control nodes.
+            TelemetryCounting.Add(counts.Telemetry, TelemetryCounter.ControlNodesVisited, population.Count + 2L);
             counts.IndexTargetsVisited += population.Count;
             counts.TargetsVisited += population.Count;
             counts.RulesVisited++;
@@ -389,6 +410,7 @@ namespace GameCore.Derivation
                 ServiceExport export = exports[e];
                 IReadOnlyList<ServiceConsumerEdge> consumers = indexes.Consumers.ConsumersOfProvider(
                     provider, export.Contract, export.Visibility);
+                TelemetryCounting.Add(counts.Telemetry, TelemetryCounter.ControlNodesVisited, consumers.Count);
                 for (int c = 0; c < consumers.Count; c++)
                 {
                     counts.ServiceConsumersAffected++;

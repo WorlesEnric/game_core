@@ -206,8 +206,10 @@ namespace GameCore.Execution.Messages
     /// cannot grow this set without limit (TEST-023), and per-consumer dedup belongs to the consumer's own window
     /// (`DelayedConsumerDelivery`), which is where `(world, sequence)` dedup is offered to a subscriber.
     /// </summary>
-    public sealed class CommittedEventStore : ICommittedEventReader
+    public sealed class CommittedEventStore : ICommittedEventReader, ITelemetryOwner
     {
+        string ITelemetryOwner.TelemetryOwner => "gamecore.observation.events";
+
         private readonly List<CommittedEvent> retained = new List<CommittedEvent>();
         private readonly HashSet<ulong> deliveredSequences = new HashSet<ulong>();
         private readonly Queue<ulong> deliveredOrder = new Queue<ulong>();
@@ -247,6 +249,42 @@ namespace GameCore.Execution.Messages
 
         /// <summary>Pages that a subscriber re-read with the same identity; delivery is at-least-once (P-045).</summary>
         public int RedeliveryCount { get; private set; }
+
+        /// <summary>
+        /// Bytes this store retains for the events still inside its retention window: the "events" half of
+        /// TEST-023's memory split, counted with the schema's own per-event accounting so a producer and a report
+        /// cannot disagree (GC-023).
+        /// </summary>
+        public long RetainedBytes
+        {
+            get
+            {
+                long bytes = 0L;
+                for (int i = 0; i < retained.Count; i++)
+                {
+                    bytes += TelemetryBytes.RetainedEvent(retained[i].Payload.Length);
+                }
+
+                return bytes;
+            }
+        }
+
+        /// <summary>
+        /// Writes the event-store counters through the fixed compact schema (GC-023): retained event bytes and
+        /// count, dropped/cursor-expired events, and re-read pages (an at-least-once delivery fact, not a defect).
+        /// </summary>
+        public void WriteTelemetry(TelemetryCounterSet into)
+        {
+            if (into == null)
+            {
+                throw new ArgumentNullException(nameof(into));
+            }
+
+            into.ObserveMax(TelemetryCounter.RetainedEventBytes, RetainedBytes);
+            into.ObserveMax(TelemetryCounter.RetainedEventCount, Count);
+            into.Add(TelemetryCounter.StaleResults, CursorExpiredCount);
+            into.Add(TelemetryCounter.DiscardedCallbacks, DroppedCount);
+        }
 
         /// <summary>
         /// Publishes one step's committed events. Called only at the step's publication boundary, so an event and the

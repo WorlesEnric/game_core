@@ -71,8 +71,10 @@ namespace GameCore.Composition
     /// Tracked jobs of one composition host. A job fences the resources the work may still reach, so a teardown
     /// that begins while the job runs reports the fence instead of releasing memory the job is reading (P-047).
     /// </summary>
-    public sealed class JobFenceRegistry
+    public sealed class JobFenceRegistry : ITelemetryOwner
     {
+        string ITelemetryOwner.TelemetryOwner => "gamecore.composition.jobs";
+
         private readonly Dictionary<Id128, TrackedJob> jobs = new Dictionary<Id128, TrackedJob>();
         private readonly List<Id128> canonicalOrder = new List<Id128>();
 
@@ -97,6 +99,23 @@ namespace GameCore.Composition
         }
 
         public int CompletedCount { get; private set; }
+
+        /// <summary>
+        /// Writes this registry's counters through the fixed compact schema (GC-023): a tracked unfinished job is an
+        /// outstanding callback that still fences its resources, and a rejected completion is stale work (P-047).
+        /// </summary>
+        public void WriteTelemetry(TelemetryCounterSet into)
+        {
+            if (into == null)
+            {
+                throw new ArgumentNullException(nameof(into));
+            }
+
+            into.ObserveMax(TelemetryCounter.OutstandingCallbacks, OutstandingCount);
+            into.ObserveMax(TelemetryCounter.QuarantineEntries, QuarantinedJobCount);
+            into.Add(TelemetryCounter.StaleResults, RejectedCompletionCount);
+            into.Add(TelemetryCounter.DiscardedCallbacks, RejectedCompletionCount);
+        }
 
         /// <summary>Jobs a teardown found unfinished and therefore retained behind quarantine (P-048).</summary>
         public int QuarantinedJobCount { get; private set; }

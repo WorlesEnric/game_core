@@ -188,8 +188,10 @@ namespace GameCore.Composition
     }
 
     /// <summary>Whole-world resolution output plus the activation order of the required dependency closure.</summary>
-    public sealed class ServiceResolution
+    public sealed class ServiceResolution : ITelemetryOwner
     {
+        string ITelemetryOwner.TelemetryOwner => "gamecore.composition.services";
+
         public ServiceResolution(
             DiagnosticCode code,
             IReadOnlyList<ServiceNodeResolution>? nodes,
@@ -205,13 +207,26 @@ namespace GameCore.Composition
         /// <summary><see cref="DiagnosticCode.None"/> when the whole graph resolved; otherwise the closure failure.</summary>
         public DiagnosticCode Code { get; }
 
-        public IReadOnlyList<ServiceNodeResolution> Nodes { get; }
+        /// <summary>Service resolutions that hashed a name string (08 `ServiceStringLookups`, P-008).</summary>
+        public long ServiceStringLookups => Telemetry.Get(TelemetryCounter.ServiceStringLookups);
 
-        /// <summary>Structured closure failures; the owning plan supplies the operation identity.</summary>
-        public IReadOnlyList<Diagnostic> Diagnostics { get; }
+        /// <summary>
+        /// Telemetry-only counters of one resolution (GC-023). Every increment site is a
+        /// <see cref="TelemetryCounting"/> call, which the compiler removes when `GAMECORE_TELEMETRY` is undefined,
+        /// so a disabled build performs no counting work here at all.
+        /// </summary>
+        public TelemetryCounterSet Telemetry { get; } = new TelemetryCounterSet();
 
-        /// <summary>Providers before consumers for required edges (P-012), in canonical tie-broken order.</summary>
-        public IReadOnlyList<PluginInstanceId> ActivationOrder { get; }
+        /// <summary>Writes this resolution's counters through the fixed compact schema (GC-023).</summary>
+        public void WriteTelemetry(TelemetryCounterSet into)
+        {
+            if (into == null)
+            {
+                throw new ArgumentNullException(nameof(into));
+            }
+
+            into.Merge(Telemetry);
+        }
 
         public bool Succeeded => Code == DiagnosticCode.None;
 
@@ -285,12 +300,15 @@ namespace GameCore.Composition
                 indices.Add(ordered[i].Instance, i);
             }
 
+            // One set per resolution, attached to the returned result at the end: the counter belongs to the
+            // resolution's own output, so a caller reads it from the value it was given (GC-023).
+            TelemetryCounterSet telemetry = new TelemetryCounterSet();
             List<ServiceNodeResolution> resolutions = new List<ServiceNodeResolution>(ordered.Count);
             for (int i = 0; i < activationOrder!.Count; i++)
             {
                 int index = indices[activationOrder[i]];
                 ServiceNode node = ordered[index];
-                ServiceNodeResolution resolved = ResolveNode(tree, ordered, node);
+                ServiceNodeResolution resolved = ResolveNode(tree, ordered, node, telemetry);
                 resolutions.Add(resolved);
                 ordered[index] = new ServiceNode(node.Instance, node.PluginType, node.Scope, resolved.State,
                     node.ActivationEpoch, node.Exports, node.Dependencies, node.Selections);
@@ -298,7 +316,9 @@ namespace GameCore.Composition
 
             resolutions.Sort((left, right) => CompareNodes(left.Node, right.Node));
 
-            return new ServiceResolution(DiagnosticCode.None, resolutions, activationOrder, null);
+            ServiceResolution resolution = new ServiceResolution(DiagnosticCode.None, resolutions, activationOrder, null);
+            resolution.Telemetry.Merge(telemetry);
+            return resolution;
         }
 
         /// <summary>
@@ -349,7 +369,8 @@ namespace GameCore.Composition
                 "Service " + dependency.Contract.ContractId.ToString() + " cannot resolve under domain " + dependency.Domain + ".");
         }
 
-        private static ServiceNodeResolution ResolveNode(ScopeRegistry scopes, List<ServiceNode> all, ServiceNode consumer)
+        private static ServiceNodeResolution ResolveNode(
+            ScopeRegistry scopes, List<ServiceNode> all, ServiceNode consumer, TelemetryCounterSet telemetry)
         {
             if (!InstallationStateMachine.CanResolveActivation(consumer.DeclaredState))
             {
@@ -407,11 +428,17 @@ namespace GameCore.Composition
                 List<ServiceBinding> bindings = new List<ServiceBinding>(chosen.Count);
                 for (int c = 0; c < chosen.Count; c++)
                 {
+                    // A binding lease id is derived from a *name string* (`CompositionSchemas.NameId`), and this is
+                    // the only string-keyed resolution left in production service resolution. P-008 forbids a name
+                    // deciding precedence, and TEST-023 requires zero string service resolutions during stable
+                    // execution, so the count is the negative proof that no per-step path reaches here (GC-023).
+                    Id128 leaseId = chosen[c].LeaseId();
+                    TelemetryCounting.Count(telemetry, TelemetryCounter.ServiceStringLookups);
                     bindings.Add(new ServiceBinding(
                         chosen[c].Export.Contract,
                         new ProviderInstallationId(chosen[c].Node.Instance.Value),
                         chosen[c].Node.ActivationEpoch,
-                        chosen[c].LeaseId(),
+                        leaseId,
                         chosen[c].Export.BindingKind,
                         false));
                 }

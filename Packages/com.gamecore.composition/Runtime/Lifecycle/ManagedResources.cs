@@ -198,8 +198,10 @@ namespace GameCore.Composition
     /// identity (05 s4); every record keeps the owner, the acquisition ordinal and the dependency edge so
     /// retirement order is a property of the data (P-048).
     /// </summary>
-    public sealed class ResourceLedger
+    public sealed class ResourceLedger : ITelemetryOwner
     {
+        string ITelemetryOwner.TelemetryOwner => "gamecore.composition.resources";
+
         private readonly Dictionary<Id128, LeaseEntry> leases = new Dictionary<Id128, LeaseEntry>();
         private readonly List<Id128> acquisitionOrder = new List<Id128>();
         private readonly Dictionary<Id128, WorldResourceRecord> records = new Dictionary<Id128, WorldResourceRecord>();
@@ -226,6 +228,62 @@ namespace GameCore.Composition
         public int QuarantinedCount { get; private set; }
 
         public int FailedReleaseCount { get; private set; }
+
+        /// <summary>
+        /// Bytes held by leases that are still retained. TEST-023 requires resource counts, retained event bytes,
+        /// native allocations and quarantine to be reported *separately*, so the lease half is a distinct number
+        /// from the quarantine half and from the event store's retained bytes (GC-023).
+        /// </summary>
+        public ulong RetainedBytes
+        {
+            get
+            {
+                ulong bytes = 0UL;
+                for (int i = 0; i < acquisitionOrder.Count; i++)
+                {
+                    WorldResourceRecord record = records[acquisitionOrder[i]];
+                    if (record.IsRetained)
+                    {
+                        bytes += record.Bytes;
+                    }
+                }
+
+                return bytes;
+            }
+        }
+
+        /// <summary>Bytes held by quarantined references: retained because unfinished work may still reach them.</summary>
+        public ulong QuarantinedBytes
+        {
+            get
+            {
+                ulong bytes = 0UL;
+                for (int i = 0; i < acquisitionOrder.Count; i++)
+                {
+                    WorldResourceRecord record = records[acquisitionOrder[i]];
+                    if (record.State == ResourceRetirementState.Quarantined)
+                    {
+                        bytes += record.Bytes;
+                    }
+                }
+
+                return bytes;
+            }
+        }
+
+        /// <summary>Writes this ledger's counters through the fixed compact schema (GC-023, TEST-023).</summary>
+        public void WriteTelemetry(TelemetryCounterSet into)
+        {
+            if (into == null)
+            {
+                throw new ArgumentNullException(nameof(into));
+            }
+
+            into.ObserveMax(TelemetryCounter.LiveLeases, LiveLeaseCount);
+            into.ObserveMax(TelemetryCounter.LeaseBytes, (long)RetainedBytes);
+            into.ObserveMax(TelemetryCounter.QuarantineEntries, QuarantinedCount);
+            into.ObserveMax(TelemetryCounter.QuarantineBytes, (long)QuarantinedBytes);
+        }
 
         /// <summary>Retained resource ids in acquisition order; the inspectable ownership record (GC-004 DoD).</summary>
         public IReadOnlyList<Id128> RetainedResourceIds()

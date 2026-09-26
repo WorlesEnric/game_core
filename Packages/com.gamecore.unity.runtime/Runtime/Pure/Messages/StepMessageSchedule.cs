@@ -83,8 +83,10 @@ namespace GameCore.Execution.Messages
     /// them. It owns no authority: an owner commits through its own buffer, and this type only proves that the
     /// declared edges were respected (P-043).
     /// </summary>
-    public sealed class StepMessageSchedule
+    public sealed class StepMessageSchedule : ITelemetryOwner
     {
+        string ITelemetryOwner.TelemetryOwner => "gamecore.messages.schedule";
+
         private readonly List<MessageBufferDescriptor> descriptors = new List<MessageBufferDescriptor>();
         private readonly Dictionary<Id128, BoundedMessageBuffer> buffers = new Dictionary<Id128, BoundedMessageBuffer>();
         private readonly List<BufferReadPort> readPorts = new List<BufferReadPort>();
@@ -185,6 +187,25 @@ namespace GameCore.Execution.Messages
         public IReadOnlyList<BufferReadPort> ReadPorts => readPorts;
         public int PendingStructuralCount => deferred.Count;
 
+        /// <summary>
+        /// Cumulative structural operations recorded into a deferred buffer (08 `structural operations`, P-041).
+        /// Unlike <see cref="PendingStructuralCount"/> this is a running total, so a per-step structural regression
+        /// is visible after playback has emptied the buffers.
+        /// </summary>
+        public long RecordedStructuralOperationCount { get; private set; }
+
+        /// <summary>Writes the step-message counters through the fixed compact schema (GC-023).</summary>
+        public void WriteTelemetry(TelemetryCounterSet into)
+        {
+            if (into == null)
+            {
+                throw new ArgumentNullException(nameof(into));
+            }
+
+            into.Add(TelemetryCounter.StructuralOperations, RecordedStructuralOperationCount);
+            into.ObserveMax(TelemetryCounter.RequestHighWater, PendingStructuralCount);
+        }
+
         /// <summary>Bounded capacity of deferred next-step queues, per buffer (P-043).</summary>
         public ushort NextStepCapacity
         {
@@ -271,6 +292,7 @@ namespace GameCore.Execution.Messages
             }
 
             deferred.Add(new DeferredStructuralOperation(buffer, producer, target, schema, add, order));
+            RecordedStructuralOperationCount++;
             failure = string.Empty;
             return true;
         }

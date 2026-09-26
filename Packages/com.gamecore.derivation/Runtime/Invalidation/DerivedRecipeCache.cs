@@ -274,8 +274,10 @@ namespace GameCore.Derivation
     /// Cache of resolved inheritance variants, keyed by recipe revision plus inheritance fingerprint (P-024).
     /// A lookup whose fingerprint changed is a stale recomputation, not a hit.
     /// </summary>
-    public sealed class DerivedRecipeCache
+    public sealed class DerivedRecipeCache : ITelemetryOwner
     {
+        string ITelemetryOwner.TelemetryOwner => "gamecore.derivation.cache";
+
         private readonly Dictionary<Id128, List<Entry>> byRecipe = new Dictionary<Id128, List<Entry>>();
 
         public DerivedRecipeCache(ContentHash catalogHash, int capacity = 256)
@@ -309,6 +311,49 @@ namespace GameCore.Derivation
 
         /// <summary>Entries discarded because the cache reached its capacity.</summary>
         public int Evictions { get; private set; }
+
+        /// <summary>
+        /// Bytes this cache accounts for: one documented per-entry estimate plus the resolved rule references each
+        /// entry holds. The "cache" half of TEST-023's memory split, reported separately from leases, retained
+        /// events and quarantine (GC-023).
+        /// </summary>
+        public long RetainedBytes
+        {
+            get
+            {
+                long bytes = 0L;
+                foreach (KeyValuePair<Id128, List<Entry>> pair in byRecipe)
+                {
+                    for (int i = 0; i < pair.Value.Count; i++)
+                    {
+                        Entry entry = pair.Value[i];
+                        bytes += CacheEntryBytes
+                            + (entry.Variant.ReachingRules.Count * CacheRuleBytes);
+                    }
+                }
+
+                return bytes;
+            }
+        }
+
+        /// <summary>Documented per-entry cache bookkeeping: key, fingerprint, recipe and list header.</summary>
+        public const int CacheEntryBytes = 128;
+
+        /// <summary>Documented per-cached-rule reference: the rule identity and its install reference.</summary>
+        public const int CacheRuleBytes = 32;
+
+        /// <summary>Writes this cache's counters through the fixed compact schema (GC-023, TEST-023).</summary>
+        public void WriteTelemetry(TelemetryCounterSet into)
+        {
+            if (into == null)
+            {
+                throw new ArgumentNullException(nameof(into));
+            }
+
+            into.ObserveMax(TelemetryCounter.CacheEntries, Count);
+            into.ObserveMax(TelemetryCounter.CacheBytes, RetainedBytes);
+            into.Add(TelemetryCounter.StaleResults, StaleRecomputations);
+        }
 
         /// <summary>
         /// Resolves the inheritance of one target: the rules that can reach it, in canonical order. The

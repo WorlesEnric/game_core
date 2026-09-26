@@ -161,8 +161,10 @@ namespace GameCore.Unity.Runtime.Integration
     /// Drives the whole W2 chain for one owned world: the mounted provider is derived for, the derived assembly is
     /// validated and compiled, and the result is published at the composition publication's own epoch.
     /// </summary>
-    public sealed class DerivedAssemblyPipeline
+    public sealed class DerivedAssemblyPipeline : ITelemetryOwner
     {
+        string ITelemetryOwner.TelemetryOwner => "gamecore.assembly.pipeline";
+
         private readonly UnityWorldHost world;
         private readonly CompositionHost lane;
         private readonly AssemblyPublisher publisher;
@@ -237,6 +239,22 @@ namespace GameCore.Unity.Runtime.Integration
         /// <summary>Chain runs a module refused.</summary>
         public int RefusedCount { get; private set; }
 
+        /// <summary>
+        /// Writes the chain's own counters through the fixed compact schema (GC-023): a refused chain run is a stale
+        /// result, and the most recent invalidation's counters are forwarded because this owner is what holds them.
+        /// The derivation, the plan and the publication of one chain run keep their own sections, so a collector
+        /// samples them from the report rather than from here.
+        /// </summary>
+        public void WriteTelemetry(TelemetryCounterSet into)
+        {
+            if (into == null)
+            {
+                throw new ArgumentNullException(nameof(into));
+            }
+
+            into.Add(TelemetryCounter.StaleResults, RefusedCount);
+            PreviousInvalidation?.WriteTelemetry(into);
+        }
         /// <summary>
         /// Derives the committed composition and publishes the resulting assembly at the lane's own publication
         /// epoch. The composition edit that produced the committed state has already been admitted and published by

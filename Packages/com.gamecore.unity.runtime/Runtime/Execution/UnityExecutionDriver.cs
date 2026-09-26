@@ -15,8 +15,10 @@ namespace GameCore.Unity.Runtime
     /// dispatch of the bound table, the drain check, the step fence, the fault latch and the commit that advances
     /// <c>LogicalStepId</c> and exposes the step image together.
     /// </summary>
-    public sealed class UnityExecutionDriver : IExecutionDriver, IGuardedDispatchSink
+    public sealed class UnityExecutionDriver : IExecutionDriver, IGuardedDispatchSink, ITelemetryOwner
     {
+        string ITelemetryOwner.TelemetryOwner => "gamecore.execution.driver";
+
         private readonly IWorldExecutionContext context;
         private readonly ITemporalAccumulator temporal;
         private readonly GuardedDispatchPlan stepPlan;
@@ -71,6 +73,29 @@ namespace GameCore.Unity.Runtime
 
         /// <summary>Handles retained by a failed step; teardown settles them before storage is released (P-047, P-048).</summary>
         public RetainedJobHandles RetainedJobs { get; }
+
+        /// <summary>
+        /// Host-supplied monotonic microsecond clock, used only for GC-023's job-wait sample around the step fence.
+        /// The kernel itself never reads a clock (P-008), and a build without `GAMECORE_TELEMETRY` never reads this,
+        /// so the disabled shape performs no measurement at all.
+        /// </summary>
+        public Func<long>? TelemetryClock { get; set; }
+
+        /// <summary>
+        /// Writes this driver's counters through the fixed compact schema (GC-023). The driver is the single
+        /// authority for committed steps, so `StepsAdvanced` is reported here and nowhere else.
+        /// </summary>
+        public void WriteTelemetry(TelemetryCounterSet into)
+        {
+            if (into == null)
+            {
+                throw new ArgumentNullException(nameof(into));
+            }
+
+            into.Add(TelemetryCounter.StepsAdvanced, CommittedStepCount);
+            into.ObserveMax(TelemetryCounter.OutstandingCallbacks, RetainedJobs.Count);
+            into.Add(TelemetryCounter.StaleResults, RefusedStepCount + RejectedSampleCount);
+        }
 
         bool IGuardedDispatchSink.FaultLatched => IsFaulted;
 
@@ -181,11 +206,24 @@ namespace GameCore.Unity.Runtime
                     }
                 }
 
+
+#if GAMECORE_TELEMETRY
+                // The job-wait sample: how long the step's fence actually blocked. A build without the marker never
+                // reaches this code (GC-023).
+                Func<long>? waitClock = TelemetryClock;
+                long waitStarted = waitClock == null ? 0L : waitClock();
+#endif
                 if (!context.StepGroup.Fences!.CompleteAndReset())
                 {
                     LatchFault(DiagnosticCode.ApplyFault, "Completing the step fence failed.");
                     return FaultResult(request, DiagnosticCode.ApplyFault);
                 }
+#if GAMECORE_TELEMETRY
+                if (waitClock != null)
+                {
+                    context.StepGroup.NoteJobWaitDuration(-1, waitClock() - waitStarted);
+                }
+#endif
 
                 // Every recorded handle of this step is covered by the fence that just completed (P-041).
                 CompleteStepJobs();

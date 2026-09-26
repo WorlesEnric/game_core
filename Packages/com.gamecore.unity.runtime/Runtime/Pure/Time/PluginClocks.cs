@@ -157,8 +157,10 @@ namespace GameCore.Execution.Time
     /// capacity is refused explicitly instead of overflowing silently, and wake demand is collected in canonical
     /// order (due, then scheduling sequence, then wake id) rather than in completion order.
     /// </summary>
-    public sealed class PluginClockRegistry
+    public sealed class PluginClockRegistry : ITelemetryOwner
     {
+        string ITelemetryOwner.TelemetryOwner => "gamecore.time.clocks";
+
         private readonly Dictionary<Id128, PluginClockSpec> clocks = new Dictionary<Id128, PluginClockSpec>();
         private readonly Dictionary<Id128, List<WakeRecord>> wakesByClock = new Dictionary<Id128, List<WakeRecord>>();
         private readonly List<WakeRecord> allWakes = new List<WakeRecord>();
@@ -187,6 +189,22 @@ namespace GameCore.Execution.Time
         public int CancelledCount { get; private set; }
 
         public int ConsumedCount { get; private set; }
+
+        /// <summary>
+        /// Writes the clock-registry counters through the fixed compact schema (GC-023): the pending wake set is the
+        /// bounded request queue here, and a refused schedule because it was full is request overflow (P-038).
+        /// </summary>
+        public void WriteTelemetry(TelemetryCounterSet into)
+        {
+            if (into == null)
+            {
+                throw new ArgumentNullException(nameof(into));
+            }
+
+            into.ObserveMax(TelemetryCounter.RequestHighWater, WakeCount);
+            into.Add(TelemetryCounter.RequestOverflow, OverflowCount);
+            into.Add(TelemetryCounter.StaleResults, DuplicateCount);
+        }
 
         public int PendingWakeCount
         {

@@ -86,8 +86,10 @@ namespace GameCore.Composition
     /// Bounded, observable registry of resources whose users have not ended. A duplicate admission for one
     /// reference is refused, so the retained set is a set and never a count of attempts.
     /// </summary>
-    public sealed class QuarantineRegistry
+    public sealed class QuarantineRegistry : ITelemetryOwner
     {
+        string ITelemetryOwner.TelemetryOwner => "gamecore.composition.quarantine";
+
         private readonly Dictionary<Id128, QuarantinedResource> entries = new Dictionary<Id128, QuarantinedResource>();
         private readonly List<Id128> canonicalOrder = new List<Id128>();
 
@@ -119,6 +121,19 @@ namespace GameCore.Composition
         public int ReleasedCount { get; private set; }
 
         public int AdmittedCount { get; private set; }
+
+        /// <summary>Writes this registry's counters through the fixed compact schema (GC-023, TEST-023).</summary>
+        public void WriteTelemetry(TelemetryCounterSet into)
+        {
+            if (into == null)
+            {
+                throw new ArgumentNullException(nameof(into));
+            }
+
+            into.ObserveMax(TelemetryCounter.QuarantineEntries, Count);
+            into.ObserveMax(TelemetryCounter.QuarantineBytes, (long)Bytes);
+            into.Add(TelemetryCounter.RequestOverflow, ExhaustionCount);
+        }
 
         /// <summary>True when the registry cannot accept another retained reference.</summary>
         public bool IsExhausted => Count >= MaxEntries || (MaxBytes != 0UL && Bytes >= MaxBytes);
