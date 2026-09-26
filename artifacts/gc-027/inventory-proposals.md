@@ -1,6 +1,6 @@
 # GC-027 inventory proposals (for the build host to promote only after running)
 
-**Nothing here moves a row.** `artifacts/gates/w4-generic-profile/inventory.{md,json}` is not edited by this change
+**Status: `NotRun (pending orchestrator build host)`.** **Nothing here moves a row.** `artifacts/gates/w4-generic-profile/inventory.{md,json}` is not edited by this change
 set at all: a status may only be promoted from an archived passing run, and on this host nothing has run. What
 follows is the proposal list the orchestrator promotes after the commands in `artifacts/gc-027/README.md` pass.
 

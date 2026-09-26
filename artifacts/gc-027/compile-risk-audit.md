@@ -18,6 +18,8 @@ Unity validation project and not the shipping build; and **one** (the manifest r
 than a compile error — the package simply would never have run. The distinction does not change the work, because all
 twelve were fixed, but an evidence file should not overstate the failure it found.
 
+**Status: the audit itself ran on this host (it is a reading, not a build); every check it recommends is `NotRun (pending orchestrator build host)`.**
+
 **What this is not.** It is not a compile. It cannot see a delegate conversion, an overload resolution, a generic
 inference or an ambiguity the way a compiler can; §3 lists what remains only a compiler's to confirm.
 
