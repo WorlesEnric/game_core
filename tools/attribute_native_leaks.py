@@ -81,6 +81,13 @@ GROUP = re.compile(r"Found\s+(?P<count>\d+)\s+leak(?:s|\(s\))?\s+from callstack\
 ALLOCATION = re.compile(
     r"Allocation of\s+(?P<bytes>\d+)\s+bytes?\s+at\s+(?P<address>0x[0-9a-fA-F]+)(?P<symbol>.*)$"
 )
+# A frame line as Unity prints it with stack traces armed: its index, then the body — ` #0  (Mono JIT Code)
+# [File.cs:12] GameCore.Type:Method (args)`, ` #4 UnsafeUtility::Malloc(...)`, ` #5 ???`. The index introduces the
+# frame; the body is taken verbatim and classified by the owning-module and symbol rules below.
+FRAME_INDEX = re.compile(r"^\s*#(?P<index>\d+)[\).:]?\s+(?P<body>.+?)\s*$")
+# The body of such a frame: the owning module in parentheses, then the source location Unity resolved (brackets)
+# and/or the symbol; either half may be absent, and `(wrapper ...)`, generics and `T&` refs are symbol characters.
+MODULE_SYMBOL = re.compile(r"^\((?P<module>[^)]*)\)\s*(?P<symbol>.*?)\s*$")
 # A frame introduced by an address, optionally carrying the module that owns the code and the resolved symbol.
 FRAME_ADDRESS = re.compile(
     r"^\s*(?:#?\d+[\).:]?\s*)?(?P<address>0x[0-9a-fA-F]+)\s*(?:\((?P<module>[^)]*)\))?\s*(?P<symbol>.*?)\s*$"
@@ -132,7 +139,7 @@ def normalise_frame(symbol: str, module: str) -> str:
     text = ADDRESS.sub("0xADDR", text)
     text = re.sub(r"\s+", " ", text).strip()
     if module:
-        return f"{text} [{module}]" if text else ""
+        return f"{text} [{module}]" if text else f"[{module}]"
     return text
 
 
@@ -142,8 +149,10 @@ def parse_text(text: str) -> tuple[list[Entry], dict]:
     A header with groups is scored once per group, because a group *is* one leaked callstack and its own count. A
     header with no group is scored once, with the header's own count and no frames, so it lands in `unattributed`
     instead of vanishing. `Allocation of N bytes at 0x...` lines attach to the group they sit in (or to the header
-    when they precede every group), and a frame that carries an address but no symbol is counted as unresolved
-    rather than as an attributed frame.
+    when they precede every group), and a frame that carries neither a symbol nor a module — an address alone, a
+    `???` index frame — is counted as unresolved rather than as an attributed frame. Indexed frames
+    (`#0  (Mono JIT Code) [File.cs:12] Symbol`) keep their module and their resolved symbol; a module with no
+    symbol still names the owning code and attributes the frame.
     """
     headers: list[dict] = []
     leak_headers = 0
@@ -208,6 +217,23 @@ def parse_text(text: str) -> tuple[list[Entry], dict]:
             continue
 
         if in_stack:
+            match = FRAME_INDEX.match(line)
+            if match:
+                body = match.group("body")
+                if body == "???":
+                    current_entry.unresolved += 1
+                else:
+                    module_match = MODULE_SYMBOL.search(body)
+                    if module_match:
+                        symbol = normalise_frame(module_match.group("symbol"), module_match.group("module"))
+                    else:
+                        symbol = normalise_frame(body, "")
+                    if symbol:
+                        current_entry.frames.append(symbol)
+                    else:
+                        current_entry.unresolved += 1
+                continue
+
             match = FRAME_ADDRESS.match(line)
             if match:
                 module = match.group("module") or ""
@@ -651,6 +677,33 @@ def run_self_test() -> int:
         rc == 2 and data is not None and data["unattributed"] == 1
         and data["classes"]["third-party"]["allocations"] == 0,
         output,
+    )
+
+    # 4b. The real Editor format: indexed `#N (Module) [File.cs:line] Symbol` frames, `???` holes and a bare
+    # `UnsafeUtility::Malloc(...)` — every frame attributes, a GameCore frame wins over a later Unity frame, and a
+    # module-only frame still names its owner. This is the shape that used to parse as 49 unattributed blocks.
+    rc, data, output = run(["--log", str(fixture("mono-indexed-stack.log"))])
+    check(
+        "indexed mono frames attribute instead of falling unattributed",
+        rc == 1 and data is not None
+        and data["classes"]["gamecore"]["allocations"] == 2
+        and data["classes"]["gamecore"]["blocks"] == 1
+        and data["classes"]["unity-engine"]["allocations"] == 1
+        and data["unattributed"] == 0
+        and data["totals"]["allocations"] == 3,
+        output,
+    )
+    gamecore_signature = data["classes"]["gamecore"]["signatures"][0]["signature"]
+    frames = gamecore_signature.split(" <- ")
+    check(
+        "an indexed frame keeps its resolved location, symbol and module",
+        frames[0] == "[OwnershipSchedulePipeline.cs:336] GameCore.Unity.Runtime.Integration."
+        "OwnershipSchedulePipeline:Build (System.Collections.Generic.IReadOnlyList`1<GameCore.Contracts.PluginManifest>,"
+        "GameCore.Unity.Runtime.Time.IScheduleDispatchKindResolver,GameCore.Planning.Ownership.ISlotMigrationRegistry) "
+        "[Mono JIT Code]"
+        and "???" not in gamecore_signature
+        and frames[-1] == "UnsafeUtility::Malloc(long, int, NativeCollection::Allocator, ScriptingExceptionPtr*)",
+        gamecore_signature,
     )
 
     # 5. The 57-allocation shape: a bare count with the enable hint is unattributed, never zero.
