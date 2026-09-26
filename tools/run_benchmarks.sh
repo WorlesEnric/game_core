@@ -69,6 +69,9 @@ PROBE_PLAYER="${PROBE_PLAYER:-}"
 UNITY_PROJECT="${UNITY_PROJECT:-${REPO_ROOT}/unity/GameCore.Validation}"
 ARTIFACTS="${ARTIFACTS:-${REPO_ROOT}/artifacts/performance}"
 PROBE_PLAYER="${PROBE_PLAYER:-${UNITY_PROJECT}/Builds/Linux64/GameCoreProbe.x86_64}"
+# Unity's -logFile resolves relative to the player executable directory, while probe results
+# resolve relative to the caller. One absolute artifact root keeps both in the same run directory.
+ARTIFACTS="$(realpath -m "${ARTIFACTS}")"
 
 BENCH_RUNS="${BENCH_RUNS:-5}"
 BENCH_WARMUP="${BENCH_WARMUP:-30}"
