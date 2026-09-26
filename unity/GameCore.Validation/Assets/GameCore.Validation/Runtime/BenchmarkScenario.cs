@@ -31,6 +31,7 @@ using GameCore.Derivation;
 using GameCore.Gameplay.Narrative;
 using GameCore.Replay;
 using GameCore.Unity.Runtime;
+using GameCore.Unity.Runtime.Integration;
 
 namespace GameCore.Validation.ProbeHost
 {

@@ -122,6 +122,9 @@ def main() -> None:
         # GC-023's replay fixture package: its recorded trace, its real-Burst-jobs half and its probe are qualification
         # evidence.
         "com.gamecore.replay",
+        # GC-026's benchmark fixture package: the generated 1,000-scope/10,000-target fixture and the raw sample
+        # writers are qualification measurement, and every file that consumed them leaves with the probe mode below.
+        "com.gamecore.benchmarks",
         "com.unity.test-framework",
         "com.unity.test-framework.performance",
     ):
@@ -234,14 +237,6 @@ def main() -> None:
         '                w4Gate, gc018, gc019, traversal, resultPath);',
     )
     replace_once(arguments, '                lifecycleStress,\n')
-
-    # The benchmark fixture package leaves the manifest for the same reason the replay package does: its generated
-    # fixture and its raw sample documents are qualification evidence. It is not a `Packages/` local package, so it
-    # is dropped by name from the dependencies rather than by directory.
-    replace_once(
-        str(DESTINATION / "Packages/manifest.json"),
-        '    "com.gamecore.benchmarks": "file:../../../tests/GameCore.Benchmarks",\n',
-    )
 
     # GC-023's replay assembly and GC-026's benchmark assembly leave the probe host's references: every file that
     # consumed them is gone. The benchmark's live world reads the replay package's hash function, so both edges go.

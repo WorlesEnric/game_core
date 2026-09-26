@@ -30,6 +30,7 @@ using GameCore.Composition;
 using GameCore.Contracts;
 using GameCore.Derivation;
 using GameCore.Derivation.Fixtures;
+using GameCore.Execution.Time;
 using GameCore.Gameplay.Narrative;
 using GameCore.Gameplay.Narrative.Fixtures;
 using GameCore.Planning;
@@ -660,7 +661,7 @@ namespace GameCore.Validation.ProbeHost
 
             for (int i = 0; i < generated; i++)
             {
-                ScopeId scope = BenchmarkIds.Scope(BenchmarkIds.Role.Scope, 0x1000 + i);
+                ScopeId scope = BenchmarkIds.GeneratedScope(0x1000 + i);
                 ScopeId parent;
                 int depth;
                 if (i == 0)

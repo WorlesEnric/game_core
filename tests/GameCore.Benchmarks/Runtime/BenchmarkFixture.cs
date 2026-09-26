@@ -138,6 +138,13 @@ namespace GameCore.Benchmarks
         /// </summary>
         public static uint Seeded(uint seed, int index) => (unchecked((uint)index) * 2654435761U) ^ seed;
 
+        /// <summary>One generated scope identity, without naming the identity role at the call site.</summary>
+        public static ScopeId GeneratedScope(int index) => new ScopeId(Id(Role.Scope, index));
+
+        /// <summary>One generated target identity under a role other than the live-target role.</summary>
+        public static TargetId GeneratedTarget(int index) => new TargetId(Id(Role.Target, index));
+
+        /// <summary>One generated identity of an explicit role; the general form the helpers above specialize.</summary>
         public static ScopeId Scope(Role role, int index) => new ScopeId(Id(role, index));
 
         public static TargetId Target(int index) => new TargetId(Id(Role.Target, index));
@@ -399,7 +406,7 @@ namespace GameCore.Benchmarks
 
             // Scope 0 is the world root: the only scope whose parent is the default identity (P-010).
             scopes.Add(new DerivationScope(
-                BenchmarkIds.Scope(BenchmarkIds.Role.Scope, 0),
+                BenchmarkIds.GeneratedScope(0),
                 default(ScopeId),
                 new IsolationSet(false, null),
                 null,
@@ -408,11 +415,11 @@ namespace GameCore.Benchmarks
             var groupScopes = new List<ScopeId>(BenchmarkFixture.GroupCount);
             for (int g = 0; g < BenchmarkFixture.GroupCount; g++)
             {
-                ScopeId group = BenchmarkIds.Scope(BenchmarkIds.Role.Scope, 1 + g);
+                ScopeId group = BenchmarkIds.GeneratedScope(1 + g);
                 groupScopes.Add(group);
                 scopes.Add(new DerivationScope(
                     group,
-                    BenchmarkIds.Scope(BenchmarkIds.Role.Scope, 0),
+                    BenchmarkIds.GeneratedScope(0),
                     new IsolationSet(false, null),
                     null,
                     null));
@@ -422,7 +429,7 @@ namespace GameCore.Benchmarks
             var leafScopes = new List<ScopeId>(leafCount);
             for (int leaf = 0; leaf < leafCount; leaf++)
             {
-                ScopeId scope = BenchmarkIds.Scope(BenchmarkIds.Role.Scope, 1 + BenchmarkFixture.GroupCount + leaf);
+                ScopeId scope = BenchmarkIds.GeneratedScope(1 + BenchmarkFixture.GroupCount + leaf);
                 leafScopes.Add(scope);
 
                 // The reparent branch is group 1's leaves; every other leaf is spread over groups 2..GroupCount.
@@ -685,7 +692,7 @@ namespace GameCore.Benchmarks
             // revision; every other shared provider only contributes to it (the shape the reference compositions use).
             installs.Add(Install(
                 index: 0,
-                scope: BenchmarkIds.Scope(BenchmarkIds.Role.Scope, 0),
+                scope: BenchmarkIds.GeneratedScope(0),
                 declaresContract: true,
                 capability: BenchmarkNames.SharedCapability,
                 slot: BenchmarkNames.SharedSlot,
