@@ -87,7 +87,7 @@ artifacts/reproducibility/
     package-metadata.json   the package/asmdef audit report
     package-metadata-after-resolve.json
     failure-codes.json      the parsed code sets
-    budget-record.json      the ten budget rows and the owner deferral
+    reproduce-budget-record.json  the ten budget rows and the owner deferral
     link-xml-qualification.json
     trx/                    the .NET test results
   unity/

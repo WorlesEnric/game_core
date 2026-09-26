@@ -55,7 +55,9 @@
         "com.gamecore.derivation": "1.0.0",
         "com.gamecore.planning": "1.0.0",
         "com.gamecore.rules.cards": "1.0.0",
-        "com.gamecore.unity.runtime": "1.0.0"
+        "com.gamecore.unity.runtime": "1.0.0",
+        "com.unity.collections": "2.6.6",
+        "com.unity.entities": "1.4.6"
       }
     },
     "com.gamecore.gameplay.integration": {
@@ -68,7 +70,9 @@
         "com.gamecore.gameplay.narrative": "1.0.0",
         "com.gamecore.rules.cards": "1.0.0",
         "com.gamecore.rules.narrative": "1.0.0",
-        "com.gamecore.unity.runtime": "1.0.0"
+        "com.gamecore.unity.runtime": "1.0.0",
+        "com.unity.collections": "2.6.6",
+        "com.unity.entities": "1.4.6"
       }
     },
     "com.gamecore.gameplay.narrative": {
@@ -81,7 +85,10 @@
         "com.gamecore.derivation": "1.0.0",
         "com.gamecore.planning": "1.0.0",
         "com.gamecore.rules.narrative": "1.0.0",
-        "com.gamecore.unity.runtime": "1.0.0"
+        "com.gamecore.unity.runtime": "1.0.0",
+        "com.unity.burst": "1.8.28",
+        "com.unity.collections": "2.6.6",
+        "com.unity.entities": "1.4.6"
       }
     },
     "com.gamecore.gameplay.rewards": {
@@ -95,7 +102,9 @@
         "com.gamecore.gameplay.integration": "1.0.0",
         "com.gamecore.gameplay.narrative": "1.0.0",
         "com.gamecore.planning": "1.0.0",
-        "com.gamecore.unity.runtime": "1.0.0"
+        "com.gamecore.unity.runtime": "1.0.0",
+        "com.unity.collections": "2.6.6",
+        "com.unity.entities": "1.4.6"
       }
     },
     "com.gamecore.gameplay.traversal": {
@@ -109,7 +118,9 @@
         "com.gamecore.planning": "1.0.0",
         "com.gamecore.rules.traversal": "1.0.0",
         "com.gamecore.unity.adapters": "1.0.0",
-        "com.gamecore.unity.runtime": "1.0.0"
+        "com.gamecore.unity.runtime": "1.0.0",
+        "com.unity.collections": "2.6.6",
+        "com.unity.entities": "1.4.6"
       }
     },
     "com.gamecore.planning": {
@@ -118,6 +129,15 @@
       "source": "local",
       "dependencies": {
         "com.gamecore.contracts": "1.0.0"
+      }
+    },
+    "com.gamecore.recovery": {
+      "version": "file:../../../tests/GameCore.Recovery",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.unity.runtime": "1.0.0"
       }
     },
     "com.gamecore.reference-conformance": {
@@ -182,7 +202,9 @@
         "com.gamecore.composition": "1.0.0",
         "com.gamecore.contracts": "1.0.0",
         "com.gamecore.planning": "1.0.0",
-        "com.gamecore.unity.runtime": "1.0.0"
+        "com.gamecore.unity.runtime": "1.0.0",
+        "com.unity.collections": "2.6.6",
+        "com.unity.entities": "1.4.6"
       }
     },
     "com.gamecore.unity.runtime": {
@@ -193,7 +215,10 @@
         "com.gamecore.composition": "1.0.0",
         "com.gamecore.contracts": "1.0.0",
         "com.gamecore.derivation": "1.0.0",
-        "com.gamecore.planning": "1.0.0"
+        "com.gamecore.planning": "1.0.0",
+        "com.unity.burst": "1.8.28",
+        "com.unity.collections": "2.6.6",
+        "com.unity.entities": "1.4.6"
       }
     },
     "com.unity.burst": {
@@ -407,15 +432,6 @@
       "depth": 0,
       "source": "builtin",
       "dependencies": {}
-    },
-    "com.gamecore.recovery": {
-      "version": "file:../../../tests/GameCore.Recovery",
-      "depth": 0,
-      "source": "local",
-      "dependencies": {
-        "com.gamecore.contracts": "1.0.0",
-        "com.gamecore.unity.runtime": "1.0.0"
-      }
     }
   }
 }

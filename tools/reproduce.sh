@@ -323,7 +323,7 @@ run_step reachability-manifest "${PYTHON}" tools/emit_catalog_reachability.py --
 run_step baked-coverage-artifact "${PYTHON}" tools/emit_baked_catalog_coverage.py --check
 run_step fingerprint-tool-self-test "${PYTHON}" tools/compare_registration_fingerprints.py --self-test
 run_step budget-record "${PYTHON}" tools/check_budget_record.py \
-  --json "${ARTIFACTS}/host/budget-record.json"
+  --json "${ARTIFACTS}/host/reproduce-budget-record.json"
 run_step release-clone-self-test "${PYTHON}" tools/check_release_clone.py --self-test
 run_step link-xml-qualification "${PYTHON}" tools/check_link_xml.py \
   --project "${UNITY_PROJECT}" --json "${ARTIFACTS}/host/link-xml-qualification.json"
