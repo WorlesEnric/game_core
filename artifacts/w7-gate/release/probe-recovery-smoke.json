@@ -1,0 +1,117 @@
+{
+  "task": "GC-027",
+  "probe": "GameCore.Validation.ProbeHost.ProbeRunner",
+  "mode": "RecoverySmoke",
+  "result": "Pass",
+  "exitCode": 0,
+  "declaredUnityVersion": "6000.0.75f1",
+  "unityVersion": "6000.0.75f1",
+  "declaredTarget": "StandaloneLinux64",
+  "platform": "LinuxPlayer",
+  "architecture": "X64",
+  "processorType": "12th Gen Intel(R) Core(TM) i7-12700KF",
+  "scriptingBackend": "IL2CPP",
+  "isIl2Cpp": true,
+  "is64BitProcess": true,
+  "managedStrippingLevel": "High",
+  "managedStrippingLevelSource": "declared: GameCore.Validation.Editor.BuildProbe sets and re-reads PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, ManagedStrippingLevel.High); a player cannot query the stripping level at runtime",
+  "burstCompilerEnabled": true,
+  "fixturePluginPreservation": "declared: Assets/link.xml preserves the GameCore.Validation.Fixture assembly (preserve=\"all\"), and the generated catalog holds a direct FixturePluginFactory reference, so the plugin is linked into the player while nothing instantiates it at startup",
+  "catalogGenerator": "GameCore.Content.Compiler (GC-003)",
+  "catalogGeneratedFile": "ProbeCatalog.g.cs",
+  "catalogFileHash": "03bdcd23fd8ec0515d93d7c54d7f7c695f3860a850a7280b82316aaacd14c5c1",
+  "catalogFingerprint": "02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff",
+  "catalogDescriptionFormat": "gamecore.catalog-description/1",
+  "catalogProtocolVersion": "1.0",
+  "catalogSupportedFeatureCount": 1,
+  "catalogFileHashAlgorithm": "SHA-256",
+  "catalogFileHashScope": "SHA-256 over the UTF-8 bytes, with LF line endings, of the file prefix that ends immediately before the eight-space-indented CatalogFileHash declaration; that prefix ends with the newline that terminates the previous line, and the declaration itself, its value and the rest of the file are excluded",
+  "failureReason": "",
+  "probes": [
+    {
+      "name": "narrative/recovery-smoke-source-world-captures-to-a-real-file",
+      "status": "Pass",
+      "detail": "session=4e415247433031330000000000000001; atBoundary=true; path=/home/worlesenric/wkspace/gc-wt/w7-gate/artifacts/w7-gate/release/recovery-smoke-narrative.checkpoint; bytes=7757; documentHash=27288e2dd469567b376d39a95202e3a930cc270a4e4d889f7500343e65b8d0a2; publishCount=1; replaceCount=1; admitted=true; publication=publication(captured=1,published=1,None)"
+    },
+    {
+      "name": "narrative/recovery-smoke-published-envelope-reloads-from-disk",
+      "status": "Pass",
+      "detail": "reloaded=true; documentBytes=7757; documentHash=27288e2dd469567b376d39a95202e3a930cc270a4e4d889f7500343e65b8d0a2; envelopeChecksum=0c10b1a5c97950e3; temporaryArtifactRemoved=true; read=None()"
+    },
+    {
+      "name": "narrative/recovery-smoke-refuses-a-live-source",
+      "status": "Pass",
+      "detail": "outcome=Rejected; code=TooLate; destination=<none>; registryUnchanged=true; registry=2->2; detail=source world GameCoreNarrativeWorld:4e415247433031330000000000000001 is Running; recovery reads a faulted/stopping/disposed world, so a live one is refused (O-22, P-049)."
+    },
+    {
+      "name": "narrative/recovery-smoke-refuses-a-stopped-source",
+      "status": "Pass",
+      "detail": "outcome=Rejected; code=StaleHandle; sourceLifecycle=Disposed; registered=false; stop=Published; registry=1->1"
+    },
+    {
+      "name": "narrative/recovery-smoke-recover-publishes-a-new-session",
+      "status": "Pass",
+      "detail": "outcome=Published; source=4e415247433031330000000000000002; destination=4e415247433031330000000000000003; restoredTargets=7; restoredSlots=2; dormantSlots=1; documentPresent=true; sourceLifecycle=Faulted->Disposed; sourceNote=the second source is retired faulted before the recovery, because TryCreate publishes the initial assembly and a created world is already Running; detail=recovered Checkpoint into session 4e415247433031330000000000000003 (O-22)."
+    },
+    {
+      "name": "narrative/recovery-smoke-restart-publishes-a-new-session",
+      "status": "Pass",
+      "detail": "outcome=Published; previous=4e415247433031330000000000000001; destination=4e415247433031330000000000000004; documentPresent=true; sessionsDiffer=true; owed=0; restoredTargets=7; restoredSlots=2; dormantSlots=1; detail=restarted into session 4e415247433031330000000000000004 from a verified document of 4e415247433031330000000000000001 (P-049, P-053)."
+    },
+    {
+      "name": "narrative/recovery-smoke-recovered-world-is-authoritative",
+      "status": "Pass",
+      "detail": "sourceRows=4; recoveredRows=4; rowsEqual=true; rebuiltTargets=7; rebuiltSlots=2; oldSessionRefused=true; stagingLifecycle=Running"
+    },
+    {
+      "name": "narrative/recovery-smoke-teardown-is-clean",
+      "status": "Pass",
+      "detail": "registry=1->1; outstanding=0; retained=0; disposed=true; worlds=4"
+    },
+    {
+      "name": "cards/recovery-smoke-source-world-captures-to-a-real-file",
+      "status": "Pass",
+      "detail": "session=43415247433031330000000000000001; atBoundary=true; path=/home/worlesenric/wkspace/gc-wt/w7-gate/artifacts/w7-gate/release/recovery-smoke-cards.checkpoint; bytes=7965; documentHash=93f41803a5f3dbe6e806a4711a8ed73d9623f14eec60b46a8ce894ef67989f62; publishCount=1; replaceCount=1; admitted=true; publication=publication(captured=1,published=1,None)"
+    },
+    {
+      "name": "cards/recovery-smoke-published-envelope-reloads-from-disk",
+      "status": "Pass",
+      "detail": "reloaded=true; documentBytes=7965; documentHash=93f41803a5f3dbe6e806a4711a8ed73d9623f14eec60b46a8ce894ef67989f62; envelopeChecksum=bedd43dd6d06a632; temporaryArtifactRemoved=true; read=None()"
+    },
+    {
+      "name": "cards/recovery-smoke-refuses-a-live-source",
+      "status": "Pass",
+      "detail": "outcome=Rejected; code=TooLate; destination=<none>; registryUnchanged=true; registry=2->2; detail=source world GameCoreCardTableWorld:43415247433031330000000000000001 is Running; recovery reads a faulted/stopping/disposed world, so a live one is refused (O-22, P-049)."
+    },
+    {
+      "name": "cards/recovery-smoke-refuses-a-stopped-source",
+      "status": "Pass",
+      "detail": "outcome=Rejected; code=StaleHandle; sourceLifecycle=Disposed; registered=false; stop=Published; registry=1->1"
+    },
+    {
+      "name": "cards/recovery-smoke-recover-publishes-a-new-session",
+      "status": "Pass",
+      "detail": "outcome=Published; source=43415247433031330000000000000002; destination=43415247433031330000000000000003; restoredTargets=6; restoredSlots=2; dormantSlots=1; documentPresent=true; sourceLifecycle=Faulted->Disposed; sourceNote=the second source is retired faulted before the recovery, because TryCreate publishes the initial assembly and a created world is already Running; detail=recovered Checkpoint into session 43415247433031330000000000000003 (O-22)."
+    },
+    {
+      "name": "cards/recovery-smoke-restart-publishes-a-new-session",
+      "status": "Pass",
+      "detail": "outcome=Published; previous=43415247433031330000000000000001; destination=43415247433031330000000000000004; documentPresent=true; sessionsDiffer=true; owed=0; restoredTargets=6; restoredSlots=2; dormantSlots=1; detail=restarted into session 43415247433031330000000000000004 from a verified document of 43415247433031330000000000000001 (P-049, P-053)."
+    },
+    {
+      "name": "cards/recovery-smoke-recovered-world-is-authoritative",
+      "status": "Pass",
+      "detail": "sourceRows=4; recoveredRows=4; rowsEqual=true; rebuiltTargets=6; rebuiltSlots=2; oldSessionRefused=true; stagingLifecycle=Running"
+    },
+    {
+      "name": "cards/recovery-smoke-teardown-is-clean",
+      "status": "Pass",
+      "detail": "registry=1->1; outstanding=0; retained=0; disposed=true; worlds=4"
+    },
+    {
+      "name": "recovery-smoke-digest",
+      "status": "Pass",
+      "detail": "digest=48d66bd6909091d190f6a04882b93cf326562a25137602f274647f2a365a87bb; observations=16; expectedObservations=16; failed=0"
+    }
+  ]
+}

@@ -1,0 +1,697 @@
+{
+  "task": "GC-024",
+  "probe": "GameCore.Validation.ProbeHost.ProbeRunner",
+  "mode": "Conformance",
+  "result": "Pass",
+  "exitCode": 0,
+  "declaredUnityVersion": "6000.0.75f1",
+  "unityVersion": "6000.0.75f1",
+  "declaredTarget": "StandaloneLinux64",
+  "platform": "LinuxPlayer",
+  "architecture": "X64",
+  "processorType": "12th Gen Intel(R) Core(TM) i7-12700KF",
+  "scriptingBackend": "IL2CPP",
+  "isIl2Cpp": true,
+  "is64BitProcess": true,
+  "managedStrippingLevel": "High",
+  "managedStrippingLevelSource": "declared: GameCore.Validation.Editor.BuildProbe sets and re-reads PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, ManagedStrippingLevel.High); a player cannot query the stripping level at runtime",
+  "burstCompilerEnabled": true,
+  "fixturePluginPreservation": "declared: Assets/link.xml preserves the GameCore.Validation.Fixture assembly (preserve=\"all\"), and the generated catalog holds a direct FixturePluginFactory reference, so the plugin is linked into the player while nothing instantiates it at startup",
+  "catalogGenerator": "GameCore.Content.Compiler (GC-003)",
+  "catalogGeneratedFile": "ProbeCatalog.g.cs",
+  "catalogFileHash": "03bdcd23fd8ec0515d93d7c54d7f7c695f3860a850a7280b82316aaacd14c5c1",
+  "catalogFingerprint": "02bb94ab81353a2063fb1cb92d77ce3b9889885b02a95de515193e45178f37ff",
+  "catalogDescriptionFormat": "gamecore.catalog-description/1",
+  "catalogProtocolVersion": "1.0",
+  "catalogSupportedFeatureCount": 1,
+  "catalogFileHashAlgorithm": "SHA-256",
+  "catalogFileHashScope": "SHA-256 over the UTF-8 bytes, with LF line endings, of the file prefix that ends immediately before the eight-space-indented CatalogFileHash declaration; that prefix ends with the newline that terminates the previous line, and the declaration itself, its value and the rest of the file are excluded",
+  "failureReason": "",
+  "probes": [
+    {
+      "name": "conformance/revision",
+      "status": "Pass",
+      "detail": "task=GC-024; tables=4; artifactDirectory=/home/worlesenric/wkspace/gc-wt/w7-gate/artifacts/w7-gate/toolchain"
+    },
+    {
+      "name": "conformance/cards/scoring-lifecycle/world",
+      "status": "Pass",
+      "detail": "session=00434f4e464f524d0000000000000001; mode=Automatic; targets=6; joined=True"
+    },
+    {
+      "name": "conformance/cards/mount-festival",
+      "status": "Pass",
+      "detail": "scoring-lifecycle; outcome=Published; mount the festival provider; seat-a.bonus=none->2; seat-b.bonus=none->2; seat-a.total=4->4; seat-b.total=4->4; seat-a.next-award=10->12; seat-b.next-award=10->12; practice-seat.bonus=none->none; scoreboard.bonus=none->none"
+    },
+    {
+      "name": "conformance/cards/spawn-seat-d",
+      "status": "Pass",
+      "detail": "scoring-lifecycle; outcome=Published; spawn seat D under LeagueA; seat-d.bonus=none->2; seat-d.next-award=10->12; practice-seat.bonus=none->none; scoreboard.bonus=none->none"
+    },
+    {
+      "name": "conformance/cards/reconfigure-festival/pre1",
+      "status": "Pass",
+      "detail": "scoring-lifecycle; outcome=Published; commit one valid set as seat A under the +2 revision (07:100's before state); seat-a.total=4->16; seat-a.bonus=2->2; seat-a.hand-size=4->1; table-1.turn=0->1; table-1.version=1->2"
+    },
+    {
+      "name": "conformance/cards/reconfigure-festival",
+      "status": "Pass",
+      "detail": "scoring-lifecycle; outcome=Published; reconfigure the festival contribution to +4; seat-a.bonus=2->4; seat-b.bonus=2->4; seat-a.total=16->16; seat-a.next-award=12->14; seat-a.bonus-provider=cards.festival-scoring->cards.festival-scoring"
+    },
+    {
+      "name": "conformance/cards/scoring-lifecycle/teardown",
+      "status": "Pass",
+      "detail": "stop=Published; registry=1"
+    },
+    {
+      "name": "conformance/cards/nested-retraction/world",
+      "status": "Pass",
+      "detail": "session=00434f4e464f524d0000000000000002; mode=Automatic; targets=6; joined=True"
+    },
+    {
+      "name": "conformance/cards/nested-retraction/pre1",
+      "status": "Pass",
+      "detail": "nested-retraction; outcome=Published; mount the ancestor festival at LeagueA (+2); seat-a.bonus=none->2"
+    },
+    {
+      "name": "conformance/cards/nested-retraction/pre2",
+      "status": "Pass",
+      "detail": "nested-retraction; outcome=Published; mount the nested festival under seat A's scope (+3), so both match; seat-a.bonus=2->5; seat-a.next-award=12->15"
+    },
+    {
+      "name": "conformance/cards/nested-retraction",
+      "status": "Pass",
+      "detail": "nested-retraction; outcome=Published; retract the ancestor +2 entry and nothing else; seat-a.bonus=5->3; seat-a.next-award=15->13"
+    },
+    {
+      "name": "conformance/cards/nested-retraction/teardown",
+      "status": "Pass",
+      "detail": "stop=Published; registry=1"
+    },
+    {
+      "name": "conformance/cards/provider-loss/world",
+      "status": "Pass",
+      "detail": "session=00434f4e464f524d0000000000000003; mode=Automatic; targets=6; joined=True"
+    },
+    {
+      "name": "conformance/cards/unmount-festival/pre1",
+      "status": "Pass",
+      "detail": "provider-loss; outcome=Published; mount the festival provider; seat-a.bonus=none->2"
+    },
+    {
+      "name": "conformance/cards/unmount-festival/pre2",
+      "status": "Pass",
+      "detail": "provider-loss; outcome=Published; commit one valid set so the seat holds total 16; seat-a.total=4->16"
+    },
+    {
+      "name": "conformance/cards/unmount-festival",
+      "status": "Pass",
+      "detail": "provider-loss; outcome=Published; unmount the festival provider while the committed total survives; seat-a.bonus=2->none; seat-a.total=16->16; seat-a.next-award=12->10; seat-a.bonus-provider=cards.festival-scoring->none; practice-seat.bonus=none->none"
+    },
+    {
+      "name": "conformance/cards/provider-loss/teardown",
+      "status": "Pass",
+      "detail": "stop=Published; registry=1"
+    },
+    {
+      "name": "conformance/cards/subtree-move/world",
+      "status": "Pass",
+      "detail": "session=00434f4e464f524d0000000000000004; mode=Automatic; targets=6; joined=True"
+    },
+    {
+      "name": "conformance/cards/reparent-seat-a/pre1",
+      "status": "Pass",
+      "detail": "subtree-move; outcome=Published; mount the festival provider at LeagueA; seat-a.bonus=none->2"
+    },
+    {
+      "name": "conformance/cards/reparent-seat-a/pre2",
+      "status": "Pass",
+      "detail": "subtree-move; outcome=Published; mount the quiet provider at LeagueB (+1); seat-a.bonus=2->2"
+    },
+    {
+      "name": "conformance/cards/reparent-seat-a/pre3",
+      "status": "Pass",
+      "detail": "subtree-move; outcome=Published; commit one valid set so the moved seat's score is 16 and its hand is seeded real state; seat-a.total=4->16; seat-a.bonus=2->2"
+    },
+    {
+      "name": "conformance/cards/reparent-seat-a",
+      "status": "Pass",
+      "detail": "subtree-move; outcome=Published; reparent seat A's scope from LeagueA to LeagueB; seat-a.bonus=2->1; seat-a.total=16->16; seat-a.hand={c104}->{c104}; seat-a.hand-size=1->1; seat-b.hand={c201,c202,c203,c204}->{c201,c202,c203,c204}; seat-b.hand-size=4->4; seat-a.seated=true->true; table-1.active-seat=0->0; table-1.version=2->2; seat-a.bonus-provider=cards.festival-scoring->cards.quiet-scoring; practice-seat.bonus=none->none; scoreboard.bonus=none->none"
+    },
+    {
+      "name": "conformance/cards/subtree-move/teardown",
+      "status": "Pass",
+      "detail": "stop=Published; registry=1"
+    },
+    {
+      "name": "conformance/cards/mode-directions/world",
+      "status": "Pass",
+      "detail": "session=00434f4e464f524d0000000000000005; mode=Automatic; targets=6; joined=True"
+    },
+    {
+      "name": "conformance/cards/mode-directions/setup-0",
+      "status": "Pass",
+      "detail": "seed-opted-in-target: seed-opted-in-publication"
+    },
+    {
+      "name": "conformance/cards/mode-conservative/pre1",
+      "status": "Pass",
+      "detail": "mode-directions; outcome=Published; mount the festival provider in Automatic; seat-a.bonus=none->2"
+    },
+    {
+      "name": "conformance/cards/mode-conservative/pre2",
+      "status": "Pass",
+      "detail": "mode-directions; outcome=Published; spawn seat D in Automatic so the conservative switch has a future descendant to lose; seat-d.bonus=none->2"
+    },
+    {
+      "name": "conformance/cards/mode-conservative",
+      "status": "Pass",
+      "detail": "mode-directions; outcome=Published; switch the world to Conservative; world.mode=automatic->conservative; cards.opted-in-seat.bonus=2->2; seat-a.bonus=2->none; seat-b.bonus=2->none; seat-d.bonus=2->none; seat-a.total=4->4; seat-b.total=4->4; seat-a.hand={c101,c102,c103,c104}->{c101,c102,c103,c104}; seat-b.hand={c201,c202,c203,c204}->{c201,c202,c203,c204}; practice-seat.bonus=none->none; scoreboard.bonus=none->none"
+    },
+    {
+      "name": "conformance/cards/mode-automatic",
+      "status": "Pass",
+      "detail": "mode-directions; outcome=Published; switch the world back to Automatic; world.mode=conservative->automatic; cards.opted-in-seat.bonus=2->2; seat-a.bonus=none->2; seat-b.bonus=none->2; seat-d.bonus=none->2; cards.opted-in-seat.next-award=12->12; practice-seat.bonus=none->none; scoreboard.bonus=none->none"
+    },
+    {
+      "name": "conformance/cards/mode-directions/teardown",
+      "status": "Pass",
+      "detail": "stop=Published; registry=1"
+    },
+    {
+      "name": "conformance/cards/exclusive-conflict/world",
+      "status": "Pass",
+      "detail": "session=00434f4e464f524d0000000000000006; mode=Automatic; targets=6; joined=True"
+    },
+    {
+      "name": "conformance/cards/exclusive-conflict-rejected/pre1",
+      "status": "Pass",
+      "detail": "exclusive-conflict; outcome=Published; mount the festival provider so the old assembly has state worth preserving; seat-a.bonus=none->2"
+    },
+    {
+      "name": "conformance/cards/exclusive-conflict-rejected/pre2",
+      "status": "Pass",
+      "detail": "exclusive-conflict; outcome=Published; enter Conservative, where a descendant rule without export/import is denied; world.mode=automatic->conservative"
+    },
+    {
+      "name": "conformance/cards/exclusive-conflict-rejected/pre3",
+      "status": "Pass",
+      "detail": "exclusive-conflict; outcome=Published; mount the first exclusive draw-policy provider; seat-a.bonus=none->none"
+    },
+    {
+      "name": "conformance/cards/exclusive-conflict-rejected/pre4",
+      "status": "Pass",
+      "detail": "exclusive-conflict; outcome=Published; mount the second provider of the same exclusive capability; seat-a.bonus=none->none"
+    },
+    {
+      "name": "conformance/cards/exclusive-conflict-rejected",
+      "status": "Pass",
+      "detail": "exclusive-conflict; outcome=Refused; attempt the switch that would expose the conflict; world.mode=conservative->conservative; seat-a.bonus=none->none; seat-b.bonus=none->none"
+    },
+    {
+      "name": "conformance/cards/exclusive-conflict/teardown",
+      "status": "Pass",
+      "detail": "stop=Published; registry=1"
+    },
+    {
+      "name": "conformance/cards/exclusion-and-suspension/world",
+      "status": "Pass",
+      "detail": "session=00434f4e464f524d0000000000000007; mode=Automatic; targets=6; joined=True"
+    },
+    {
+      "name": "conformance/cards/exclude-seat-b/pre1",
+      "status": "Pass",
+      "detail": "exclusion-and-suspension; outcome=Published; mount the festival provider; seat-b.bonus=none->2"
+    },
+    {
+      "name": "conformance/cards/exclude-seat-b",
+      "status": "Pass",
+      "detail": "exclusion-and-suspension; outcome=Published; exclude the capability on seat B while the provider stays mounted; seat-b.bonus=2->none; seat-a.bonus=2->2; seat-b.total=4->4"
+    },
+    {
+      "name": "conformance/cards/suspend-festival",
+      "status": "Pass",
+      "detail": "exclusion-and-suspension; outcome=Published; suspend the provider explicitly; seat-a.bonus=2->none; seat-a.total=4->4"
+    },
+    {
+      "name": "conformance/cards/resume-festival",
+      "status": "Pass",
+      "detail": "exclusion-and-suspension; outcome=Published; resume it and let it rederive; seat-a.bonus=none->2; seat-a.total=4->4; seat-a.next-award=10->12"
+    },
+    {
+      "name": "conformance/cards/exclusion-and-suspension/teardown",
+      "status": "Pass",
+      "detail": "stop=Published; registry=1"
+    },
+    {
+      "name": "conformance/cards/verdict",
+      "status": "Pass",
+      "detail": "cards: passed 27 row(s) over 174 observation(s); digest=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "conformance/cards/trace-digest",
+      "status": "Pass",
+      "detail": "digest=a952a132fae2a163218ecf7cf55670ae6ee6fc956b391055e51e70899a7ddb0f; facts=798; verdict=cards: passed 27 row(s) over 174 observation(s); digest=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "conformance/cards/trace-write",
+      "status": "Pass",
+      "detail": "wrote /home/worlesenric/wkspace/gc-wt/w7-gate/artifacts/w7-gate/toolchain/traces/cards.txt (46384 characters)"
+    },
+    {
+      "name": "conformance/narrative/chapter-mount-and-future-descendant/world",
+      "status": "Pass",
+      "detail": "session=00434f4e464f524d0000000000000001; mode=Automatic; targets=8; joined=True"
+    },
+    {
+      "name": "conformance/narrative/mount-chapter",
+      "status": "Pass",
+      "detail": "chapter-mount-and-future-descendant; outcome=Published; mount the Chapter One provider; npc-mara.dialogue-binding=none->1; gate-east.gate-binding=none->1; encounter-oak.encounter-binding=none->1; crowd-prop.dialogue-binding=none->none; npc-display.dialogue-binding=none->none; npc-sailor.dialogue-binding=none->none"
+    },
+    {
+      "name": "conformance/narrative/spawn-villager",
+      "status": "Pass",
+      "detail": "chapter-mount-and-future-descendant; outcome=Published; spawn a villager under Village; npc-newcomer.dialogue-binding=none->1; crowd-prop.dialogue-binding=none->none; npc-display.dialogue-binding=none->none"
+    },
+    {
+      "name": "conformance/narrative/chapter-mount-and-future-descendant/teardown",
+      "status": "Pass",
+      "detail": "stop=Published; registry=1"
+    },
+    {
+      "name": "conformance/narrative/unmount-with-live-session/world",
+      "status": "Pass",
+      "detail": "session=00434f4e464f524d0000000000000002; mode=Automatic; targets=8; joined=True"
+    },
+    {
+      "name": "conformance/narrative/unmount-chapter/pre1",
+      "status": "Pass",
+      "detail": "unmount-with-live-session; outcome=Published; mount the Chapter One provider; npc-mara.dialogue-binding=none->1"
+    },
+    {
+      "name": "conformance/narrative/unmount-chapter/pre2",
+      "status": "Pass",
+      "detail": "unmount-with-live-session; outcome=Published; commit the permit choice so the fact is true and the conversation is active; quest-ledger.bridge-permit=0->1; quest-ledger.bridge-permit-version=1->2; gate-east.gate-decision=0->1; npc-mara.conversation-status=0->2"
+    },
+    {
+      "name": "conformance/narrative/unmount-chapter",
+      "status": "Pass",
+      "detail": "unmount-with-live-session; outcome=Published; unmount the chapter and let the registered disposition close the session; npc-mara.dialogue-binding=1->none; gate-east.gate-binding=1->none; encounter-oak.encounter-binding=1->none; quest-ledger.bridge-permit=1->1; quest-ledger.bridge-permit-version=2->2; npc-mara.conversation-status=2->3"
+    },
+    {
+      "name": "conformance/narrative/unmount-with-live-session/teardown",
+      "status": "Pass",
+      "detail": "stop=Published; registry=1"
+    },
+    {
+      "name": "conformance/narrative/reparent-village/world",
+      "status": "Pass",
+      "detail": "session=00434f4e464f524d0000000000000003; mode=Automatic; targets=8; joined=True"
+    },
+    {
+      "name": "conformance/narrative/reparent-village/pre1",
+      "status": "Pass",
+      "detail": "reparent-village; outcome=Published; mount Chapter One at ChapterOne; npc-mara.dialogue-binding=none->1"
+    },
+    {
+      "name": "conformance/narrative/reparent-village/pre2",
+      "status": "Pass",
+      "detail": "reparent-village; outcome=Published; mount Chapter Two at ChapterTwo, the move's destination; npc-mara.dialogue-binding=1->1; npc-sailor.dialogue-binding=none->2"
+    },
+    {
+      "name": "conformance/narrative/reparent-village",
+      "status": "Pass",
+      "detail": "reparent-village; outcome=Published; reparent Village under ChapterTwo; npc-mara.dialogue-binding=1->2; gate-east.gate-binding=1->2; npc-sailor.dialogue-binding=2->2; quest-ledger.bridge-permit=0->0; quest-ledger.bridge-permit-version=1->1; npc-mara.conversation-status=0->0; npc-mara.conversation-node=7->7; npc-display.dialogue-binding=none->none"
+    },
+    {
+      "name": "conformance/narrative/reparent-village/teardown",
+      "status": "Pass",
+      "detail": "stop=Published; registry=1"
+    },
+    {
+      "name": "conformance/narrative/mode-directions/world",
+      "status": "Pass",
+      "detail": "session=00434f4e464f524d0000000000000004; mode=Automatic; targets=8; joined=True"
+    },
+    {
+      "name": "conformance/narrative/mode-directions/setup-0",
+      "status": "Pass",
+      "detail": "seed-opted-in-target: seed-opted-in-publication"
+    },
+    {
+      "name": "conformance/narrative/mode-conservative/pre1",
+      "status": "Pass",
+      "detail": "mode-directions; outcome=Published; mount the Chapter One provider in Automatic; npc-mara.dialogue-binding=none->1"
+    },
+    {
+      "name": "conformance/narrative/mode-conservative",
+      "status": "Pass",
+      "detail": "mode-directions; outcome=Published; switch the world to Conservative; world.mode=automatic->conservative; gate-east.gate-binding=1->1; npc-mara.dialogue-binding=1->none; encounter-oak.encounter-binding=1->none; npc-display.dialogue-binding=none->none; quest-ledger.bridge-permit=0->0"
+    },
+    {
+      "name": "conformance/narrative/mode-automatic",
+      "status": "Pass",
+      "detail": "mode-directions; outcome=Published; switch the world back to Automatic; world.mode=conservative->automatic; npc-mara.dialogue-binding=none->1; encounter-oak.encounter-binding=none->1; gate-east.gate-binding=1->1; npc-display.dialogue-binding=none->none"
+    },
+    {
+      "name": "conformance/narrative/mode-directions/teardown",
+      "status": "Pass",
+      "detail": "stop=Published; registry=1"
+    },
+    {
+      "name": "conformance/narrative/exclusion-and-suspension/world",
+      "status": "Pass",
+      "detail": "session=00434f4e464f524d0000000000000005; mode=Automatic; targets=8; joined=True"
+    },
+    {
+      "name": "conformance/narrative/exclude-mara/pre1",
+      "status": "Pass",
+      "detail": "exclusion-and-suspension; outcome=Published; mount the Chapter One provider; npc-mara.dialogue-binding=none->1"
+    },
+    {
+      "name": "conformance/narrative/exclude-mara/pre2",
+      "status": "Pass",
+      "detail": "exclusion-and-suspension; outcome=Published; commit the permit choice, so the durable fact and the open gate the suspension row asserts are state this world really owns (07:181, 07:174); quest-ledger.bridge-permit=0->1; quest-ledger.bridge-permit-version=1->2; gate-east.gate-decision=0->1"
+    },
+    {
+      "name": "conformance/narrative/exclude-mara",
+      "status": "Pass",
+      "detail": "exclusion-and-suspension; outcome=Published; exclude the conversation capability on Mara; npc-mara.dialogue-binding=1->none; gate-east.gate-binding=1->1; npc-display.dialogue-binding=none->none"
+    },
+    {
+      "name": "conformance/narrative/suspend-chapter",
+      "status": "Pass",
+      "detail": "exclusion-and-suspension; outcome=Published; suspend the chapter provider; npc-mara.dialogue-binding=none->none; gate-east.gate-binding=1->none; quest-ledger.bridge-permit=1->1; gate-east.gate-decision=1->1"
+    },
+    {
+      "name": "conformance/narrative/resume-chapter",
+      "status": "Pass",
+      "detail": "exclusion-and-suspension; outcome=Published; resume it and let it rederive; gate-east.gate-binding=none->1; npc-mara.dialogue-binding=none->none; quest-ledger.bridge-permit=1->1"
+    },
+    {
+      "name": "conformance/narrative/exclusion-and-suspension/teardown",
+      "status": "Pass",
+      "detail": "stop=Published; registry=1"
+    },
+    {
+      "name": "conformance/narrative/verdict",
+      "status": "Pass",
+      "detail": "narrative: passed 16 row(s) over 114 observation(s); digest=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "conformance/narrative/trace-digest",
+      "status": "Pass",
+      "detail": "digest=eac21cf949dbb4b90c175e119c309dad68ca9c9119ee25a31d02e13d80a5f8eb; facts=366; verdict=narrative: passed 16 row(s) over 114 observation(s); digest=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "conformance/narrative/trace-write",
+      "status": "Pass",
+      "detail": "wrote /home/worlesenric/wkspace/gc-wt/w7-gate/artifacts/w7-gate/toolchain/traces/narrative.txt (24728 characters)"
+    },
+    {
+      "name": "conformance/traversal/modifier-lifecycle/world",
+      "status": "Pass",
+      "detail": "session=00434f4e464f524d0000000000000001; mode=Automatic; targets=6; joined=True"
+    },
+    {
+      "name": "conformance/traversal/mount-tailwind",
+      "status": "Pass",
+      "detail": "modifier-lifecycle; outcome=Published; mount Tailwind in Valley; runner-a.acceleration.x=none->2000; runner-a.pose=(0,0,0)->(0,0,0); runner-a.velocity=(1000,0,0)->(1000,0,0); runner-b.acceleration.x=none->none; checkpoint-1.acceleration.x=none->none; gc020.traversal.opted-in-runner.acceleration.x=none->none"
+    },
+    {
+      "name": "conformance/traversal/spawn-runner-c",
+      "status": "Pass",
+      "detail": "modifier-lifecycle; outcome=Published; spawn the course's own future runner under Valley/Runners; runner-c.acceleration.x=none->2000; checkpoint-1.acceleration.x=none->none; runner-b.acceleration.x=none->none"
+    },
+    {
+      "name": "conformance/traversal/modifier-lifecycle/teardown",
+      "status": "Pass",
+      "detail": "stop=Published; registry=1"
+    },
+    {
+      "name": "conformance/traversal/unmount-after-progress/world",
+      "status": "Pass",
+      "detail": "session=00434f4e464f524d0000000000000002; mode=Automatic; targets=6; joined=True"
+    },
+    {
+      "name": "conformance/traversal/unmount-tailwind/pre1",
+      "status": "Pass",
+      "detail": "unmount-after-progress; outcome=Published; mount Tailwind in Valley; runner-a.acceleration.x=none->2000"
+    },
+    {
+      "name": "conformance/traversal/unmount-tailwind/pre2",
+      "status": "Pass",
+      "detail": "unmount-after-progress; outcome=Published; integrate one 20 ms step so the runner holds real motion: 1.00 -> 1.04 m/s, and the crossing of the course's first volume is committed; runner-a.velocity=(1000,0,0)->(1040,0,0)"
+    },
+    {
+      "name": "conformance/traversal/unmount-tailwind",
+      "status": "Pass",
+      "detail": "unmount-after-progress; outcome=Published; unmount the modifier while pose, velocity and progress survive; runner-a.acceleration.x=2000->none; runner-a.acceleration-provider=traversal.tailwind->none; runner-a.velocity=(1040,0,0)->(1040,0,0); runner-a.pose=(20,0,0)->(20,0,0); runner-a.progress=1->1"
+    },
+    {
+      "name": "conformance/traversal/unmount-after-progress/teardown",
+      "status": "Pass",
+      "detail": "stop=Published; registry=1"
+    },
+    {
+      "name": "conformance/traversal/numeric-acceleration-sequence/world",
+      "status": "Pass",
+      "detail": "session=00434f4e464f524d0000000000000003; mode=Automatic; targets=6; joined=True"
+    },
+    {
+      "name": "conformance/traversal/reparent-runner-subtree/pre1",
+      "status": "Pass",
+      "detail": "numeric-acceleration-sequence; outcome=Published; mount Tailwind in Valley; runner-a.acceleration.x=none->2000"
+    },
+    {
+      "name": "conformance/traversal/reparent-runner-subtree/pre2",
+      "status": "Pass",
+      "detail": "numeric-acceleration-sequence; outcome=Published; one 20 ms step with zero horizontal input: 1.00 -> 1.04 m/s; runner-a.velocity=(1000,0,0)->(1040,0,0); runner-a.acceleration.x=2000->2000"
+    },
+    {
+      "name": "conformance/traversal/reparent-runner-subtree/pre3",
+      "status": "Pass",
+      "detail": "numeric-acceleration-sequence; outcome=Published; mount Headwind in Ridge; the sibling branch leaves runner A's contribution alone; runner-a.acceleration.x=2000->2000"
+    },
+    {
+      "name": "conformance/traversal/reparent-runner-subtree",
+      "status": "Pass",
+      "detail": "numeric-acceleration-sequence; outcome=Published; reparent the runner subtree into Ridge; runner-a.acceleration.x=2000->-1000; runner-a.velocity=(1040,0,0)->(1040,0,0); runner-a.pose=(20,0,0)->(20,0,0); runner-a.jump=0->0; runner-a.progress=1->1; runner-a.acceleration-provider=traversal.tailwind->traversal.headwind"
+    },
+    {
+      "name": "conformance/traversal/reparent-runner-subtree/pre4",
+      "status": "Pass",
+      "detail": "numeric-acceleration-sequence; outcome=Published; one more 20 ms step under -1 m/s²: 1.04 -> 1.02 m/s; runner-a.velocity=(1040,0,0)->(1020,0,0); runner-a.acceleration.x=-1000->-1000"
+    },
+    {
+      "name": "conformance/traversal/numeric-acceleration-sequence/teardown",
+      "status": "Pass",
+      "detail": "stop=Published; registry=1"
+    },
+    {
+      "name": "conformance/traversal/mode-directions/world",
+      "status": "Pass",
+      "detail": "session=00434f4e464f524d0000000000000004; mode=Automatic; targets=6; joined=True"
+    },
+    {
+      "name": "conformance/traversal/mode-directions/setup-0",
+      "status": "Pass",
+      "detail": "seed-opted-in-target: seed-opted-in-publication"
+    },
+    {
+      "name": "conformance/traversal/mode-conservative/pre1",
+      "status": "Pass",
+      "detail": "mode-directions; outcome=Published; mount Tailwind in Valley; runner-a.acceleration.x=none->2000; gc020.traversal.opted-in-runner.acceleration.x=none->2000"
+    },
+    {
+      "name": "conformance/traversal/mode-conservative/pre2",
+      "status": "Pass",
+      "detail": "mode-directions; outcome=Published; spawn the course's future runner so the conservative switch has a descendant to lose; runner-c.acceleration.x=none->2000"
+    },
+    {
+      "name": "conformance/traversal/mode-conservative",
+      "status": "Pass",
+      "detail": "mode-directions; outcome=Published; switch the world to Conservative; world.mode=automatic->conservative; gc020.traversal.opted-in-runner.acceleration.x=2000->2000; runner-a.acceleration.x=2000->none; runner-c.acceleration.x=2000->none; runner-a.pose=(0,0,0)->(0,0,0); runner-a.velocity=(1000,0,0)->(1000,0,0); runner-display.acceleration.x=none->none"
+    },
+    {
+      "name": "conformance/traversal/mode-automatic",
+      "status": "Pass",
+      "detail": "mode-directions; outcome=Published; switch the world back to Automatic; world.mode=conservative->automatic; runner-a.acceleration.x=none->2000; runner-c.acceleration.x=none->2000; gc020.traversal.opted-in-runner.acceleration.x=2000->2000; runner-display.acceleration.x=none->none"
+    },
+    {
+      "name": "conformance/traversal/mode-directions/teardown",
+      "status": "Pass",
+      "detail": "stop=Published; registry=1"
+    },
+    {
+      "name": "conformance/traversal/exclusion/world",
+      "status": "Pass",
+      "detail": "session=00434f4e464f524d0000000000000005; mode=Automatic; targets=6; joined=True"
+    },
+    {
+      "name": "conformance/traversal/exclude-runner-a/pre1",
+      "status": "Pass",
+      "detail": "exclusion; outcome=Published; mount Tailwind in Valley; runner-a.acceleration.x=none->2000"
+    },
+    {
+      "name": "conformance/traversal/exclude-runner-a/pre2",
+      "status": "Pass",
+      "detail": "exclusion; outcome=Published; spawn the future runner so the exclusion's own sibling is observable; runner-c.acceleration.x=none->2000"
+    },
+    {
+      "name": "conformance/traversal/exclude-runner-a",
+      "status": "Pass",
+      "detail": "exclusion; outcome=Published; exclude the acceleration capability on runner A; runner-a.acceleration.x=2000->none; runner-c.acceleration.x=2000->2000; runner-display.acceleration.x=none->none; checkpoint-1.acceleration.x=none->none"
+    },
+    {
+      "name": "conformance/traversal/exclusion/teardown",
+      "status": "Pass",
+      "detail": "stop=Published; registry=1"
+    },
+    {
+      "name": "conformance/traversal/suspension/world",
+      "status": "Pass",
+      "detail": "session=00434f4e464f524d0000000000000006; mode=Automatic; targets=6; joined=True"
+    },
+    {
+      "name": "conformance/traversal/suspend-tailwind/pre1",
+      "status": "Pass",
+      "detail": "suspension; outcome=Published; mount Tailwind before suspending it; runner-a.acceleration.x=none->2000"
+    },
+    {
+      "name": "conformance/traversal/suspend-tailwind",
+      "status": "Pass",
+      "detail": "suspension; outcome=Published; suspend the modifier without changing already committed motion; runner-a.acceleration.x=2000->none; runner-a.pose=(0,0,0)->(0,0,0); runner-a.velocity=(1000,0,0)->(1000,0,0)"
+    },
+    {
+      "name": "conformance/traversal/resume-tailwind",
+      "status": "Pass",
+      "detail": "suspension; outcome=Published; resume it and let it rederive; runner-a.acceleration.x=none->2000; runner-a.velocity=(1000,0,0)->(1000,0,0)"
+    },
+    {
+      "name": "conformance/traversal/suspension/teardown",
+      "status": "Pass",
+      "detail": "stop=Published; registry=1"
+    },
+    {
+      "name": "conformance/traversal/verdict",
+      "status": "Pass",
+      "detail": "traversal: passed 20 row(s) over 110 observation(s); digest=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "conformance/traversal/trace-digest",
+      "status": "Pass",
+      "detail": "digest=28171e16b9b61284bc76e1e2ae2e96525be6ce6d7cfa198ce2829ef7f0c53987; facts=452; verdict=traversal: passed 20 row(s) over 110 observation(s); digest=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "conformance/traversal/trace-write",
+      "status": "Pass",
+      "detail": "wrote /home/worlesenric/wkspace/gc-wt/w7-gate/artifacts/w7-gate/toolchain/traces/traversal.txt (32116 characters)"
+    },
+    {
+      "name": "conformance/cross/reward-flow/world",
+      "status": "Pass",
+      "detail": "session=434f4e4643524f530000000000000001; mode=Automatic; targets=14; scopes=15; stages=10; systems=10; routes=3; retainedEvents=32; joined=True; root=ScopeId(0d006f86df607b00bc67f1220106b7a4)"
+    },
+    {
+      "name": "conformance/cross/reward-flow/setup-0",
+      "status": "Pass",
+      "detail": "mount-provider: mount-chapter-one"
+    },
+    {
+      "name": "conformance/cross/reward-flow/setup-1",
+      "status": "Pass",
+      "detail": "mount-reward-bridge: content={node=2; card=201; recipientSeat=0; holdingSeat=1; revision=1}; definitions=1; durability=Durable; installation=PluginInstanceId(adeefc28f0020debf772c3ac0544790b); scope=ScopeId(b0691d258e6a423aa0ad15f8f9fd9dbc); laneState=Active/retained=0; mount={Published: mount-rewards-installation}; detail=declared"
+    },
+    {
+      "name": "conformance/cross/reward-flow/setup-2",
+      "status": "Pass",
+      "detail": "mount-scoring-provider: mount-festival-scoring"
+    },
+    {
+      "name": "conformance/cross/reward-enqueue",
+      "status": "Pass",
+      "detail": "conformance/cross/reward-enqueue; outcome=Published; quest-ledger.bridge-permit=0->1; quest-ledger.bridge-permit-version=1->2; npc-mara.conversation-status=0->2; outbox.recognised=0->1; outbox.open=0->1; outbox.acknowledged=0->0; outbox.mutations=0->0; card-tent.seat-a.hand-size=4->4; card-tent.seat-b.hand-size=4->4; state={quest-ledger.bridge-permit=0->1; quest-ledger.bridge-permit-version=1->2; npc-mara.conversation-status=0->2; outbox.recognised=0->1; outbox.open=0->1; outbox.acknowledged=0->0; outbox.already-applied=0->0; outbox.mutations=0->0; seat-a.bonus=2->2; card-tent.seat-a.hand={c101,c102,c103,c104}->{c101,c102,c103,c104}; card-tent.seat-b.hand={c201,c202,c203,c204}->{c201,c202,c203,c204}; card-tent.seat-a.hand-size=4->4; card-tent.seat-b.hand-size=4->4; card-tent.seat-a.total=4->4; card-tent.seat-b.total=4->4; card-tent.table-1.version=1->1; outbox.installation=mounted->mounted; outbox.pending-work=none->1; outbox.slot-dormant=none->false; outbox.retained-leases=0->1; outbox.rows=0->1; world.step=0->1}; committed={Published: commit-permit-choice: committed 1 step(s)}; pass={rewardBridgePass(events=2,enqueued=1,dispatched=0,acked=0,already=0,unavailable=0,rejected=0,compensated=0)}; arm={Settled/None: instance=PluginInstanceId(adeefc28f0020debf772c3ac0544790b); slot=SlotId(e8babf3764a6fab4a81acee584dbd41a); owner=OwnerId(1e41dad0704589bf9652101decf72e24); pen}; slot={seeded: outboxRow(target=TargetId(5767cc31ae9cbe923b031aa7db4a8512), slot=SlotId(e8babf3764a6fab4a81acee584dbd41a), owner=OwnerI}; recognised=1; durable=True; destinationMutations=0; describe="
+    },
+    {
+      "name": "conformance/cross/reward-unmount-pending",
+      "status": "Pass",
+      "detail": "conformance/cross/reward-unmount-pending; outcome=Refused; outbox.installation=mounted->mounted; outbox.open=1->1; outbox.pending-work=1->1; outbox.mutations=0->0; outbox.rows=1->1; quest-ledger.bridge-permit=1->1; card-tent.seat-a.hand-size=4->4; card-tent.seat-b.hand-size=4->4; state={quest-ledger.bridge-permit=1->1; quest-ledger.bridge-permit-version=2->2; npc-mara.conversation-status=2->2; outbox.recognised=1->1; outbox.open=1->1; outbox.acknowledged=0->0; outbox.already-applied=0->0; outbox.mutations=0->0; seat-a.bonus=2->2; card-tent.seat-a.hand={c101,c102,c103,c104}->{c101,c102,c103,c104}; card-tent.seat-b.hand={c201,c202,c203,c204}->{c201,c202,c203,c204}; card-tent.seat-a.hand-size=4->4; card-tent.seat-b.hand-size=4->4; card-tent.seat-a.total=4->4; card-tent.seat-b.total=4->4; card-tent.table-1.version=1->1; outbox.installation=mounted->mounted; outbox.pending-work=1->1; outbox.slot-dormant=false->false; outbox.retained-leases=1->1; outbox.rows=1->1; world.step=1->1}; unmount={RefusedPendingWork/TeardownBlocked: instance=PluginInstanceId(adeefc28f0020debf772c3ac0544790b); slot=SlotId(e8babf3764a6fab4a81acee584dbd41a); owner=OwnerId(1e41dad0704589bf9652101decf72e24); pending=1; the O-07 unmount of PluginInstan}; migrationPrecondition={RefusedPrecondition/MigrationRequired: instance=PluginInstanceId(adeefc28f0020debf772c3ac0544790b); slot=SlotId(e8babf3764a6fab4a81acee584dbd41a); owner=OwnerId(1e41dad0704589bf9652101decf72e24); pending=1; the registered migration is 07 s}; migrationInvocations=1; migrationRefusals=1; laneAssembly=withheld (P-029: the pass runs first, the assembly follows once the work drains)"
+    },
+    {
+      "name": "conformance/cross/reward-settle",
+      "status": "Pass",
+      "detail": "conformance/cross/reward-settle; outcome=Published; outbox.open=1->0; outbox.acknowledged=0->1; outbox.mutations=0->1; card-tent.seat-a.hand-size=4->5; card-tent.seat-b.hand-size=4->3; quest-ledger.bridge-permit=1->1; card-tent.seat-a.total=4->4; card-tent.seat-b.total=4->4; quest-ledger.bridge-permit-version=2->2; state={quest-ledger.bridge-permit=1->1; quest-ledger.bridge-permit-version=2->2; npc-mara.conversation-status=2->2; outbox.recognised=1->1; outbox.open=1->0; outbox.acknowledged=0->1; outbox.already-applied=0->0; outbox.mutations=0->1; seat-a.bonus=2->2; card-tent.seat-a.hand={c101,c102,c103,c104}->{c101,c102,c103,c104,c201}; card-tent.seat-b.hand={c201,c202,c203,c204}->{c202,c203,c204}; card-tent.seat-a.hand-size=4->5; card-tent.seat-b.hand-size=4->3; card-tent.seat-a.total=4->4; card-tent.seat-b.total=4->4; card-tent.table-1.version=1->2; outbox.installation=mounted->mounted; outbox.pending-work=1->1; outbox.slot-dormant=false->false; outbox.retained-leases=1->1; outbox.rows=1->1; world.step=1->2}; pass={rewardBridgePass(events=0,enqueued=0,dispatched=1,acked=0,already=0,unavailable=0,rejected=0,compensated=0)}; acknowledged=1; ack={Acknowledged/None()}; open=0; mutations=1; hand-a=4->5; hand-b=4->3; attemptWindow=0 row(s) at after-delivery"
+    },
+    {
+      "name": "conformance/cross/reward-drain-then-unmount",
+      "status": "Pass",
+      "detail": "conformance/cross/reward-drain-then-unmount; outcome=Published; outbox.open=0->0; outbox.acknowledged=1->1; outbox.pending-work=1->0; outbox.slot-dormant=false->true; outbox.retained-leases=1->0; outbox.installation=mounted->dormant; outbox.rows=1->1; quest-ledger.bridge-permit=1->1; state={quest-ledger.bridge-permit=1->1; quest-ledger.bridge-permit-version=2->2; npc-mara.conversation-status=2->2; outbox.recognised=1->1; outbox.open=0->0; outbox.acknowledged=1->1; outbox.already-applied=0->0; outbox.mutations=1->1; seat-a.bonus=2->2; card-tent.seat-a.hand={c101,c102,c103,c104,c201}->{c101,c102,c103,c104,c201}; card-tent.seat-b.hand={c202,c203,c204}->{c202,c203,c204}; card-tent.seat-a.hand-size=5->5; card-tent.seat-b.hand-size=3->3; card-tent.seat-a.total=4->4; card-tent.seat-b.total=4->4; card-tent.table-1.version=2->2; outbox.installation=mounted->dormant; outbox.pending-work=1->0; outbox.slot-dormant=false->true; outbox.retained-leases=1->0; outbox.rows=1->1; world.step=2->2}; migrate={Settled/None: instance=PluginInstanceId(adeefc28f0020debf772c3ac0544790b); slot=SlotId(e8babf3764a6fab4a81acee584dbd41a); owner=OwnerId(1e41dad0704589bf9652101decf72e24); pen}; drain={Settled/None: instance=PluginInstanceId(adeefc28f0020debf772c3ac0544790b); slot=SlotId(e8babf3764a6fab4a81acee584dbd41a); owner=OwnerId(1e41dad0704589bf9652101decf72e24); pen}; publication=policyPublication=Published/None, dispositions=22, migrations=0, detail=published 0 binding rows and retracted 0 for 0 target(s) from lane epoch 5; 0 staged gates opened; completedWork={Settled/None: instance=PluginInstanceId(adeefc28f0020debf772c3ac0544790b); slot=SlotId(e8babf3764a6fab4a81acee584dbd41a); owner=OwnerId(1e41dad0704589bf9652101decf72e24); pen}; unmount={Settled/None: instance=PluginInstanceId(adeefc28f0020debf772c3ac0544790b); slot=SlotId(e8babf3764a6fab4a81acee584dbd41a); owner=OwnerId(1e41dad0704589bf9652101decf72e24); pen}; migrationInvocations=2; migrationRefusals=1"
+    },
+    {
+      "name": "conformance/cross/reward-unmount-transfer",
+      "status": "Pass",
+      "detail": "conformance/cross/reward-unmount-transfer; outcome=Published; outbox.rows=0->2; outbox.open=0->1; outbox.mutations=0->0; quest-ledger.bridge-permit=1->1; state={quest-ledger.bridge-permit=1->1; quest-ledger.bridge-permit-version=2->2; npc-mara.conversation-status=2->2; outbox.recognised=0->0; outbox.open=0->1; outbox.acknowledged=0->1; outbox.already-applied=0->0; outbox.mutations=0->0; seat-a.bonus=2->2; card-tent.seat-a.hand={c101,c102,c103,c104,c201}->{c101,c102,c103,c104,c201}; card-tent.seat-b.hand={c202,c203,c204}->{c202,c203,c204}; card-tent.seat-a.hand-size=5->5; card-tent.seat-b.hand-size=3->3; card-tent.seat-a.total=4->4; card-tent.seat-b.total=4->4; card-tent.table-1.version=2->2; outbox.installation=none->dormant; outbox.pending-work=1->0; outbox.slot-dormant=false->true; outbox.retained-leases=1->1; outbox.rows=0->2; world.step=3->3}; preCommit={outbox.open=0->1; outbox.rows=1->2} (True/1 enqueued); preArm={outbox.pending-work=0->1}; arm={Settled/None: instance=PluginInstanceId(adeefc28f0020debf772c3ac0544790b); slot=SlotId(e8babf3764a6fab4a81acee584dbd41a); owner=OwnerId(1e41dad0704589bf96}; slot={written: outboxRow(target=TargetId(5767cc31ae9cbe923b031aa7db4a8512), slot=SlotId(e8babf3764a6fab4a81acee584dbd41a), owner=OwnerI}; transfer={Transferred/OwnershipConflict: instance=PluginInstanceId(adeefc28f0020debf772c3ac0544790b); slot=SlotId(e8babf3764a6fab4a81acee584dbd41a); owner=OwnerId(1e41dad0704589bf9652101decf72e24); pending=1; the durable outbox moved: rows=4, destinationOpenObligations=1, destination=PluginInstanceId}; sourceRows=2; sourceOpen=1; destinationRows=2; destinationOpen=1"
+    },
+    {
+      "name": "conformance/cross/reward-redelivery",
+      "status": "Pass",
+      "detail": "conformance/cross/reward-redelivery; outcome=Published; outbox.already-applied=0->1; outbox.mutations=0->0; outbox.open=1->1; outbox.rows=2->2; quest-ledger.bridge-permit=1->1; state={quest-ledger.bridge-permit=1->1; quest-ledger.bridge-permit-version=2->2; npc-mara.conversation-status=2->2; outbox.recognised=0->2; outbox.open=1->1; outbox.acknowledged=1->1; outbox.already-applied=0->1; outbox.mutations=0->0; seat-a.bonus=2->2; card-tent.seat-a.hand={c101,c102,c103,c104,c201}->{c101,c102,c103,c104,c201}; card-tent.seat-b.hand={c202,c203,c204}->{c202,c203,c204}; card-tent.seat-a.hand-size=5->5; card-tent.seat-b.hand-size=3->3; card-tent.seat-a.total=4->4; card-tent.seat-b.total=4->4; card-tent.table-1.version=2->2; outbox.installation=dormant->dormant; outbox.pending-work=0->0; outbox.slot-dormant=true->true; outbox.retained-leases=1->1; outbox.rows=2->2; world.step=3->3}; alreadyApplied=1; mutations=0; submits=0; crashBoundary=after-delivery; windowRows=4; hookSpent=True"
+    },
+    {
+      "name": "conformance/cross/reward-scoring-unmount-keeps-card",
+      "status": "Pass",
+      "detail": "conformance/cross/reward-scoring-unmount-keeps-card; outcome=Published; seat-a.bonus=2->none; card-tent.seat-a.hand-size=5->5; card-tent.seat-b.hand-size=3->3; card-tent.seat-a.total=4->4; outbox.acknowledged=1->1; state={quest-ledger.bridge-permit=1->1; quest-ledger.bridge-permit-version=2->2; npc-mara.conversation-status=2->2; outbox.recognised=2->2; outbox.open=1->1; outbox.acknowledged=1->1; outbox.already-applied=0->0; outbox.mutations=1->1; seat-a.bonus=2->none; card-tent.seat-a.hand={c101,c102,c103,c104,c201}->{c101,c102,c103,c104,c201}; card-tent.seat-b.hand={c202,c203,c204}->{c202,c203,c204}; card-tent.seat-a.hand-size=5->5; card-tent.seat-b.hand-size=3->3; card-tent.seat-a.total=4->4; card-tent.seat-b.total=4->4; card-tent.table-1.version=2->2; outbox.installation=dormant->dormant; outbox.pending-work=0->0; outbox.slot-dormant=true->true; outbox.retained-leases=1->1; outbox.rows=2->2; world.step=3->3}; unmount={Published: unmount-festival-scoring}; acknowledged=1"
+    },
+    {
+      "name": "conformance/cross/reward-flow/teardown",
+      "status": "Pass",
+      "detail": "stop=Published; registry=1; outstandingWork=Settled/None(instance=PluginInstanceId(adeefc28f0020debf772c3ac0544790b); slot=SlotId(e8babf3764a6fab4a81acee584dbd41a); owner=OwnerId(1e41dad0704589bf9652101decf72e24); pen)"
+    },
+    {
+      "name": "conformance/cross/graph-missing-command-endpoint",
+      "status": "Pass",
+      "detail": "plugin gc024.graph.plugin-alpha declares stage StageId(71cdeab76f93b0d98897d21a6e158788) and buffer BufferId(5fabf8260d1bad92763b91e5efe13fd1), whose declared consuming endpoint StageId(51912f725343d5b1ebc6af85cf9f8f7d) belongs to plugin gc024.graph.plugin-beta and is absent from this assembly: rejected(MissingDependency): A declared buffer contract does not match the active stage/system declarations. | BufferConsumerMissing(MissingDependency): A buffer with active producer systems declares a consuming stage that is not in the active declaration set; reliable produced data must have a consumer (P-043). relatedStage=StageId(51912f725343d5b1ebc6af85cf9f8f7d) buffer=BufferId(5fabf8260d1bad92763b91e5efe13fd1); expected=MissingDependency; observed=MissingDependency; rejected=True"
+    },
+    {
+      "name": "conformance/cross/graph-duplicate-state-owner",
+      "status": "Pass",
+      "detail": "plugin gc024.graph.plugin-beta declares state slot SlotId(533ec491f686fd9d40aa509b0ea4a0a1) owned by OwnerId(737934fb10948aacef3b76e7ad36fff9) on domain SchemaRef(SchemaId(0588524c3a5350d664695f04001ed997), 1), which plugin gc024.graph.plugin-alpha already owns as OwnerId(db38007a0813a623b74584e286eb2c99) (slot SlotId(188fe9d9ce65c5626c4ff30b64b5a2bc)); one authoritative domain has one owner: OwnershipConflict(domain SchemaRef(SchemaId(0588524c3a5350d664695f04001ed997), 1) is claimed by OwnerId(737934fb10948aacef3b76e7ad36fff9) (FactoryKey(818180b9889f77070d2c545fc688f279, 1)) and by OwnerId(db38007a0813a623b74584e286eb2c99) (FactoryKey(8d4a875bdb28d091c3de8a135cfb136c, 1)); one authoritative domain has exactly one owner unless ownership is explicitly transferred (P-034)); expected=OwnershipConflict; observed=OwnershipConflict; rejected=True"
+    },
+    {
+      "name": "conformance/cross/graph-same-step-cycle",
+      "status": "Pass",
+      "detail": "plugin gc024.graph.plugin-beta declares stage StageId(1cbdb33ed299ac20b2ad484581c2896b), which requires plugin gc024.graph.plugin-alpha's stage StageId(6aba59c5b67ed7cf364278f0dac3b122) before itself, while plugin gc024.graph.plugin-alpha's stage requires plugin gc024.graph.plugin-beta's stage before itself: the declared same-step feedback closes a cycle, so no execution order exists: rejected(Cycle): The stage dependency graph contains a cycle. | StageCycle(Cycle): The stage dependency graph contains a cycle; the path names the declarations that close it (P-040). stage=StageId(1cbdb33ed299ac20b2ad484581c2896b) path=StageId(1cbdb33ed299ac20b2ad484581c2896b) -> StageId(6aba59c5b67ed7cf364278f0dac3b122) -> StageId(1cbdb33ed299ac20b2ad484581c2896b); expected=Cycle; observed=Cycle; rejected=True"
+    },
+    {
+      "name": "conformance/cross/no-action-surface-in-card-or-narrative",
+      "status": "Pass",
+      "detail": "cross-composition-audit: clean; findings=<none>; owner=cross; declarations=13; walked=117; declaredStages=10; descriptor=Built; descriptorStages=10; descriptorSlots=26; assemblies=3; narrativeAdapters=False; cardsAdapters=False; kernelAssemblies=8; kernelReferences=46; forbiddenReferences=0; walkedEntries=184"
+    },
+    {
+      "name": "conformance/cross/verdict",
+      "status": "Pass",
+      "detail": "cross: passed 9 row(s) over 102 observation(s); digest=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "conformance/cross/trace-digest",
+      "status": "Pass",
+      "detail": "digest=df9023f2d89d65ce737961d8e8038ded29da40f6531da8434b4dcd1386180126; facts=410; verdict=cross: passed 9 row(s) over 102 observation(s); digest=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "conformance/cross/trace-write",
+      "status": "Pass",
+      "detail": "wrote /home/worlesenric/wkspace/gc-wt/w7-gate/artifacts/w7-gate/toolchain/traces/cross.txt (26331 characters)"
+    },
+    {
+      "name": "conformance/coverage",
+      "status": "Pass",
+      "detail": "tables=4; rowsCompared=72; facts=2026; allPassed=true"
+    },
+    {
+      "name": "conformance/genre-audit",
+      "status": "Pass",
+      "detail": "loaded=kernelAssemblies=GameCore.Composition,GameCore.Contracts,GameCore.Derivation,GameCore.Derivation.Fixtures,GameCore.Planning,GameCore.Unity.Adapters,GameCore.Unity.Fixtures,GameCore.Unity.Runtime; duplicateKernelAssemblies=<none>; kernelReferenceCount=46; forbiddenReferences=<none>; inspectionFailures=<none>; gameplayFamilyAssemblies=GameCore.Gameplay.Cards,GameCore.Gameplay.Cards.Fixtures,GameCore.Gameplay.Integration,GameCore.Gameplay.Narrative,GameCore.Gameplay.Narrative.Fixtures,GameCore.Gameplay.Rewards,GameCore.Gameplay.Traversal,GameCore.Gameplay.Traversal.Fixtures,GameCore.Rules.Cards,GameCore.Rules.Narrative,GameCore.Rules.Traversal; gameplayFamilyOnKernel=GameCore.Gameplay.Cards,GameCore.Gameplay.Cards.Fixtures,GameCore.Gameplay.Integration,GameCore.Gameplay.Narrative,GameCore.Gameplay.Narrative.Fixtures,GameCore.Gameplay.Rewards,GameCore.Gameplay.Traversal,GameCore.Gameplay.Traversal.Fixtures,GameCore.Rules.Cards,GameCore.Rules.Narrative,GameCore.Rules.Traversal; tree=kernel=32; family=13; generated=0; qualification=204; asmdefs=212; projectFiles=37; kernelSources=322; referenceAssertions=218; violations=0; kernelGenreTokens=0; missingPackages=0; familiesOnKernel=13/13; clean=true"
+    }
+  ]
+}
