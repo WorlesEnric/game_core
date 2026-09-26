@@ -1,0 +1,42 @@
+{
+    "name": "GameCore.CatalogCoverage.Tests",
+    "rootNamespace": "GameCore.CatalogCoverage.Tests",
+    "references": [
+        "GameCore.Composition",
+        "GameCore.Contracts",
+        "GameCore.Derivation",
+        "GameCore.Gameplay.Cards",
+        "GameCore.Gameplay.Narrative",
+        "GameCore.Gameplay.Traversal",
+        "GameCore.Gameplay.Traversal.Fixtures",
+        "GameCore.Planning",
+        "GameCore.Rules.Cards",
+        "GameCore.Rules.Narrative",
+        "GameCore.Rules.Traversal",
+        "GameCore.Unity.Adapters",
+        "GameCore.Unity.Runtime",
+        "GameCore.Validation.Generated",
+        "GameCore.Validation.GeneratedCards",
+        "GameCore.Validation.GeneratedCheckpoint",
+        "GameCore.Validation.GeneratedTraversal",
+        "GameCore.Validation.Probe",
+        "GameCore.Validation.ProbeHost",
+        "Unity.Collections",
+        "Unity.Entities",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

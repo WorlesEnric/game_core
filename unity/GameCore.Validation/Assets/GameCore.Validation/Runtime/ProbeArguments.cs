@@ -29,6 +29,7 @@ namespace GameCore.Validation.ProbeHost
         private const string LifecycleStressArgumentName = "-probeLifecycleStress";
         private const string ReplayArgumentName = "-probeReplay";
         private const string W6GateArgumentName = "-probeW6Gate";
+        private const string CatalogCoverageArgumentName = "-probeCatalogCoverage";
 
         private ProbeArguments(
             bool missingRegistration,
@@ -50,6 +51,7 @@ namespace GameCore.Validation.ProbeHost
             bool gc021,
             bool replay,
             bool w6Gate,
+            bool catalogCoverage,
             string? resultPath)
         {
             MissingRegistration = missingRegistration;
@@ -71,6 +73,7 @@ namespace GameCore.Validation.ProbeHost
             Gc021 = gc021;
             Replay = replay;
             W6Gate = w6Gate;
+            CatalogCoverage = catalogCoverage;
             ResultPath = resultPath;
         }
 
@@ -216,6 +219,16 @@ namespace GameCore.Validation.ProbeHost
         /// </summary>
         public bool W6Gate { get; }
 
+        /// <summary>
+        /// Runs the GC-025 catalog coverage mode: the committed reachability manifest against the live generated
+        /// catalogs, every generated registration/serializer/closed-generic root executed in the player, the
+        /// generated traversal catalog against its hand-written counterpart, the inactive plugin late mount, the
+        /// editor-baked and runtime-recipe materializations of the traversal course, the refused unknown/stale
+        /// recipes, a stopped-and-restarted world host and the headless reference execution against the pure-rule
+        /// canonical fixtures (P-009, P-054, P-058; TEST-001, TEST-020).
+        /// </summary>
+        public bool CatalogCoverage { get; }
+
         /// <summary>Destination path of the structured JSON result.</summary>
         public string? ResultPath { get; }
 
@@ -226,6 +239,7 @@ namespace GameCore.Validation.ProbeHost
             || LifecycleStress
             || Replay
             || W6Gate
+            || CatalogCoverage
             || !string.IsNullOrEmpty(ResultPath);
 
         /// <summary>True when a result destination was supplied; without it the probe cannot record evidence.</summary>
@@ -252,6 +266,7 @@ namespace GameCore.Validation.ProbeHost
             bool gc021 = false;
             bool replay = false;
             bool w6Gate = false;
+            bool catalogCoverage = false;
             string? resultPath = null;
             for (int i = 0; i < arguments.Length; i++)
             {
@@ -332,6 +347,10 @@ namespace GameCore.Validation.ProbeHost
                 {
                     w6Gate = true;
                 }
+                else if (argument == CatalogCoverageArgumentName)
+                {
+                    catalogCoverage = true;
+                }
                 else if (argument == ResultArgumentName && i + 1 < arguments.Length)
                 {
                     resultPath = arguments[i + 1];
@@ -341,7 +360,8 @@ namespace GameCore.Validation.ProbeHost
             return new ProbeArguments(
                 missingRegistration, worldDispatch, w1Gate, w2Gate, w3Gate, narrative, cards, w4Profile, gc013,
                 lifecycleStress,
-                w4Gate, faults, gc018, gc019, w5Gate, traversal, gc021, replay, w6Gate, resultPath);
+                w4Gate, faults, gc018, gc019, w5Gate, traversal, gc021, replay, w6Gate, catalogCoverage,
+                resultPath);
         }
     }
 }

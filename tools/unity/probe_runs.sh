@@ -51,6 +51,7 @@ probe_run_once() {
 
   # -batchmode -nographics keep the player headless. -quit is deliberately NOT passed: the probe exits itself
   # through Application.Quit with a code that encodes its result.
+  while pgrep -f 'gc-wt/gc-026/.*[G]ameCoreProbe|gc-wt/gc-026/.*[U]nity ' >/dev/null; do sleep 60; done
   timeout --signal=TERM --kill-after=10 600 "${PROBE_PLAYER}" \
     -batchmode \
     -nographics \

@@ -60,6 +60,7 @@ echo "artifacts   : ${ARTIFACTS}"
 # Step 1: build-time code generation. Runs before the build so a stale or missing generated catalog cannot be
 # mistaken for a build failure, and so the catalog hash is logged in its own artifact.
 echo "-- step 1/2: generate closed registration catalog"
+while pgrep -f 'gc-wt/gc-026/.*[G]ameCoreProbe|gc-wt/gc-026/.*[U]nity ' >/dev/null; do sleep 60; done
 timeout --signal=TERM --kill-after=60 "${UNITY_TIMEOUT:-1800}" "${UNITY}" \
   -batchmode \
   -nographics \
@@ -70,6 +71,7 @@ timeout --signal=TERM --kill-after=60 "${UNITY_TIMEOUT:-1800}" "${UNITY}" \
 
 # Step 2: standalone IL2CPP player build for the selected baseline target.
 echo "-- step 2/2: build StandaloneLinux64 IL2CPP player (High stripping)"
+while pgrep -f 'gc-wt/gc-026/.*[G]ameCoreProbe|gc-wt/gc-026/.*[U]nity ' >/dev/null; do sleep 60; done
 timeout --signal=TERM --kill-after=60 "${UNITY_TIMEOUT:-1800}" "${UNITY}" \
   -batchmode \
   -nographics \

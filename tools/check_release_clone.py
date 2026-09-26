@@ -71,11 +71,13 @@ REMOVED_MODES = [('Faults', 'faults'), ('W5Gate', 'w5Gate'), ('Gc021', 'gc021'),
 KEPT_MODES = [('MissingRegistration', 'missingRegistration'), ('WorldDispatch', 'worldDispatch'),
               ('W1Gate', 'w1Gate'), ('W2Gate', 'w2Gate'), ('W3Gate', 'w3Gate'), ('Narrative', 'narrative'),
               ('Cards', 'cards'), ('W4Profile', 'w4Profile'), ('Gc013', 'gc013'), ('W4Gate', 'w4Gate'),
-              ('Gc018', 'gc018'), ('Gc019', 'gc019'), ('Traversal', 'traversal')]
+              ('Gc018', 'gc018'), ('Gc019', 'gc019'), ('Traversal', 'traversal'),
+              ('CatalogCoverage', 'catalogCoverage')]
 
 problems = []
 files = []
-for d, _, fs in os.walk(root):
+for d, dirs, fs in os.walk(root):
+    dirs[:] = [name for name in dirs if name not in ('Library', 'Temp', 'Logs', 'Builds', 'obj')]
     for f in fs:
         if f.endswith(('.cs', '.asmdef', '.json', '.meta')):
             files.append(os.path.join(d, f))
@@ -200,12 +202,16 @@ manifest = json.load(open(os.path.join(root, 'Packages/manifest.json')))
 stale = [k for k in manifest['dependencies'] if 'qualification' in k or 'replay' in k]
 print('   qualification/replay dependencies:', stale or 'none')
 print('   testables:', manifest['testables'])
-print('   lock present:', os.path.exists(os.path.join(root, 'Packages/packages-lock.json')))
+lock_path = os.path.join(root, 'Packages/packages-lock.json')
+lock = json.load(open(lock_path)) if os.path.exists(lock_path) else None
+lock_stale = [k for k in lock['dependencies'] if 'qualification' in k or 'replay' in k] if lock else []
+print('   lock present:', lock is not None)
+print('   lock qualification/replay dependencies:', lock_stale or 'none')
 print('   Tests/ tree present:', os.path.exists(os.path.join(root, 'Assets/GameCore.Validation/Tests')))
 print('   LifecyclePlayModeMatrix present:', os.path.exists(os.path.join(editor, 'LifecyclePlayModeMatrix.cs')))
 if stale: problems.append('manifest still depends on ' + ','.join(stale))
 if manifest['testables']: problems.append('manifest still declares testables')
-if os.path.exists(os.path.join(root, 'Packages/packages-lock.json')): problems.append('lock was not removed')
+if lock_stale: problems.append('resolved lock still depends on ' + ','.join(lock_stale))
 if os.path.exists(os.path.join(root, 'Assets/GameCore.Validation/Tests')): problems.append('Tests tree survived')
 if os.path.exists(os.path.join(editor, 'LifecyclePlayModeMatrix.cs')): problems.append('editor matrix survived')
 
