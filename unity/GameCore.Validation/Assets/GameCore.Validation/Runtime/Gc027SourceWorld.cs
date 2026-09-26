@@ -338,30 +338,6 @@ namespace GameCore.Validation.ProbeHost
                 // it to its stage runtime; the other two ignore it), so the runner notes it once here (GC-009).
                 family.NotePipelineForAttach(descriptor);
 
-                context = new CaptureContext(
-                    world,
-                    request.Definition,
-                    catalogFingerprint,
-                    targets,
-                    registry,
-                    time.Clocks.Clocks,
-                    time.Clocks,
-                    rng,
-                    lane.Committed.Mode,
-                    // The temporal facts are the world's own declaration: a command-driven world declares no step
-                    // duration, and a fixed-step course declares its 20 ms step and its catch-up bound. A capture that
-                    // recorded anything else would describe a world the header does not name (P-036, P-053).
-                    request.FixedStep?.StepDurationTicks ?? 0UL,
-                    request.FixedStep?.TicksPerSecond ?? 0UL,
-                    request.FixedStep?.MaxStepsPerPump ?? 1U,
-                    false,
-                    lane,
-                    publisher,
-                    Array.Empty<BufferId>(),
-                    null,
-                    // A genre with no delivery obligation captures no outbox rows, which is the honest answer of a
-                    // world that has no outbox rather than a claim that its outbox was empty (P-045, P-053).
-                    delivery?.ToRecords());
 
                 // The genre's own runtime module, so the world's ingress stage consumes its lane like any other
                 // world of this genre; a recovered world attaches the same module (P-037, P-042).
@@ -384,7 +360,7 @@ namespace GameCore.Validation.ProbeHost
                 // that fact rather than dereferencing an owner the family never declared (P-045).
                 detail = "source session " + world.Session.ToString() + " with "
                     + targets.Count.ToString(CultureInfo.InvariantCulture) + " live target(s), "
-                    + admittedSteps.ToString(CultureInfo.InvariantCulture) + " admitted step(s) and "
+                    + host.CurrentStep.Value.ToString(CultureInfo.InvariantCulture) + " committed step(s) and "
                     + (delivery == null
                         ? "no delivery obligation"
                         : delivery.Outbox.Count.ToString(CultureInfo.InvariantCulture) + " outbox row(s)")
@@ -417,17 +393,37 @@ namespace GameCore.Validation.ProbeHost
 
             WorldDeliveryOwner owner = Delivery;
             WorldId session = world;
+            // A settled predecessor gives the checkpoint a non-default delivery cursor as well as an open
+            // obligation. Recovery must preserve both without replaying either destination effect.
+            DeliveryKey settledKey = DeliveryKey.Derive(
+                session, new EventSequence(1UL), family.DeliveryDestinationId, family.DeliveryCommandSchema);
+            if (owner.Adapter.TryCommit(
+                    settledKey, family.DeliveryPayloadSchema, family.DeliveryPayload(), new EventSequence(1UL),
+                    host!.CurrentStep, host.CurrentEpoch, new OperationId(session, family.Issuer, 2UL), true,
+                    out DeliveryObligation? settled, out DiagnosticCode settledCode, out string settledDetail)
+                != OutboxAdmission.Accepted || settled == null)
+            {
+                detail = "committing the cursor predecessor was refused: " + settledCode + ": " + settledDetail;
+                return false;
+            }
+
+            if (owner.Adapter.TryAcknowledge(settled.Key.OutboxId, out settledCode, out settledDetail)
+                != DeliveryOutcome.Acknowledged)
+            {
+                detail = "persisting the cursor predecessor was refused: " + settledCode + ": " + settledDetail;
+                return false;
+            }
 
             DeliveryKey key = DeliveryKey.Derive(
                 session,
-                new EventSequence(1UL),
+                new EventSequence(2UL),
                 family.DeliveryDestinationId,
                 family.DeliveryCommandSchema);
             OutboxAdmission admission = owner.Adapter.TryCommit(
                 key,
                 family.DeliveryPayloadSchema,
                 family.DeliveryPayload(),
-                new EventSequence(1UL),
+                new EventSequence(2UL),
                 host!.CurrentStep,
                 host.CurrentEpoch,
                 new OperationId(session, family.Issuer, 1UL),
@@ -448,9 +444,39 @@ namespace GameCore.Validation.ProbeHost
             return owner.Outbox.OpenCount == 1;
         }
 
+        /// <summary>Refreshes the declared capture surface after the outbox has committed its obligation.</summary>
+        public void RefreshCaptureContext()
+        {
+            context = new CaptureContext(
+                    world,
+                    request.Definition,
+                    catalogFingerprint,
+                    targets,
+                    registry,
+                    time.Clocks.Clocks,
+                    time.Clocks,
+                    rng,
+                    lane.Committed.Mode,
+                    // The temporal facts are the world's own declaration: a command-driven world declares no step
+                    // duration, and a fixed-step course declares its 20 ms step and its catch-up bound. A capture that
+                    // recorded anything else would describe a world the header does not name (P-036, P-053).
+                    request.FixedStep?.StepDurationTicks ?? 0UL,
+                    request.FixedStep?.TicksPerSecond ?? 0UL,
+                    request.FixedStep?.MaxStepsPerPump ?? 1U,
+                    false,
+                    lane,
+                    publisher,
+                    Array.Empty<BufferId>(),
+                    null,
+                    // A genre with no delivery obligation captures no outbox rows, which is the honest answer of a
+                    // world that has no outbox rather than a claim that its outbox was empty (P-045, P-053).
+                    delivery?.ToRecords());
+        }
+
         /// <summary>Captures this world's committed boundary and publishes it to the store (O-20, 06 s7).</summary>
         public CheckpointPublicationResult CaptureAndPublish(ICheckpointStore store, RecoveryTranscript transcript)
         {
+            RefreshCaptureContext();
             var reader = new UnityCommittedBoundaryReader(Host, Context);
             return CheckpointPublication.CaptureAndPublish(
                 new CheckpointPublicationRequest(
@@ -528,8 +554,10 @@ namespace GameCore.Validation.ProbeHost
                 detail = "the world or its time driver is not built.";
                 return false;
             }
-
+            DiagnosticCode stateCode = DiagnosticCode.None;
+            string stateDetail = string.Empty;
             uint declared = family.AdmittedStepsBeforeFault;
+
             for (uint i = 0U; i < declared; i++)
             {
                 CommandEnvelope? input = family.StepInput(world, NextOperation(world));
@@ -569,9 +597,20 @@ namespace GameCore.Validation.ProbeHost
                 engineSteps++;
             }
 
+            // The genre's authoritative ECS state is persisted BEFORE the capture's boundary read, while the world
+            // holds exactly the values its admitted steps produced: the checkpoint's slot rows then carry the moved
+            // pose, the advanced velocity and the accepted-checkpoint progress rather than the seed's values
+            // (P-053, 07 s4.3).
+            if (!family.TryCaptureAuthoritativeState(host, seeder!, out stateCode, out stateDetail))
+            {
+                detail = "persisting the genre's authoritative state before the capture was refused: "
+                    + stateCode + ": " + stateDetail;
+                return false;
+            }
+
             detail = "committed=" + committed.ToString(CultureInfo.InvariantCulture) + "; engineSteps="
                 + engineSteps.ToString(CultureInfo.InvariantCulture) + "; declared="
-                + declared.ToString(CultureInfo.InvariantCulture);
+                + declared.ToString(CultureInfo.InvariantCulture) + "; authoritativeState=persisted";
             return true;
         }
 

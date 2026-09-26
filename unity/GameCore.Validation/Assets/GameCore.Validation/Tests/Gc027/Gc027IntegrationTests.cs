@@ -1,5 +1,6 @@
 #nullable enable
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using GameCore.Contracts;
 using GameCore.Execution.Delivery;
@@ -8,6 +9,7 @@ using GameCore.Unity.Runtime.Faults;
 using GameCore.Unity.Runtime;
 using GameCore.Validation.ProbeHost;
 using NUnit.Framework;
+using UnityEngine.TestTools;
 
 namespace GameCore.Gc027.Tests
 {
@@ -275,17 +277,29 @@ namespace GameCore.Gc027.Tests
         /// review named explicitly: the postwrite-apply fault on a fixed-step world, and the restart from the store
         /// alone. Its engine-physics observations are the physical-observation limitation stated as an observation.
         /// </summary>
-        [Test]
-        public void TheTraversalCourseCoversThePostwriteAndRestartFaultPoints()
+        [UnityTest]
+        public IEnumerator TheTraversalCourseCoversThePostwriteAndRestartFaultPoints()
         {
-            AssertFamilyObservation(Gc020TraversalHost.Label, "gc027-postwrite-apply-fault-never-exposes-a-destination");
-            AssertFamilyObservation(Gc020TraversalHost.Label, "gc027-recovery-publication-fault-keeps-the-registry-unchanged");
-            AssertFamilyObservation(Gc020TraversalHost.Label, "gc027-restart-from-the-store-recovers-without-in-process-state");
-            AssertFamilyObservation(Gc020TraversalHost.Label, "gc027-restart-without-a-document-or-incompatible-content-exposes-nothing");
-            AssertFamilyObservation(Gc020TraversalHost.Label, "gc027-recovered-engine-physics-is-reseeded-not-continued");
-            AssertFamilyObservation(Gc020TraversalHost.Label, "gc027-source-authoritative-state-survives-the-recovery");
-            AssertFamilyObservation(Gc020TraversalHost.Label, "gc027-recovered-world-refuses-an-old-session-observation");
-            AssertFamilyObservation(Gc020TraversalHost.Label, "gc027-recovered-world-steps-its-engine-once-per-admitted-step");
+            // Unity's local PhysicsScene creation is a runtime API; the Editor refuses it in Edit Mode.
+            // Enter Play Mode for the real engine-physics observations, then return to Edit Mode.
+            yield return new EnterPlayMode();
+            try
+            {
+                AssertFamilyObservation(Gc020TraversalHost.Label, "gc027-postwrite-apply-fault-never-exposes-a-destination");
+                AssertFamilyObservation(Gc020TraversalHost.Label, "gc027-recovery-publication-fault-keeps-the-registry-unchanged");
+                AssertFamilyObservation(Gc020TraversalHost.Label, "gc027-restart-from-the-store-recovers-without-in-process-state");
+                AssertFamilyObservation(Gc020TraversalHost.Label, "gc027-restart-without-a-document-or-incompatible-content-exposes-nothing");
+                AssertFamilyObservation(Gc020TraversalHost.Label, "gc027-recovered-engine-physics-is-reseeded-not-continued");
+                AssertFamilyObservation(Gc020TraversalHost.Label, "gc027-source-authoritative-state-survives-the-recovery");
+                AssertFamilyObservation(Gc020TraversalHost.Label, "gc027-recovered-world-refuses-an-old-session-observation");
+                AssertFamilyObservation(Gc020TraversalHost.Label, "gc027-recovered-world-steps-its-engine-once-per-admitted-step");
+            }
+            finally
+            {
+                UnityWorldRegistry.ResetAll();
+            }
+
+            yield return new ExitPlayMode();
         }
 
         /// <summary>

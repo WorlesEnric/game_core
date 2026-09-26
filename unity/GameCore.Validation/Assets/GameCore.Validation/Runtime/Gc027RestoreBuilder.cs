@@ -159,10 +159,10 @@ namespace GameCore.Validation.ProbeHost
         public bool ArmedBoundaryWasSetOnStaging { get; private set; }
 
         /// <summary>The recovered session's delivery owner: the outbox, its journal, its cursor and its ports (GC-021).</summary>
-        public WorldDeliveryOwner? Delivery { get; private set; }
+        public WorldDeliveryOwner? Delivery => delivery;
 
         /// <summary>The recording destination port the recovered session delivers to; the "test destination effect".</summary>
-        public Gc027RecordingDestination? Destination { get; private set; }
+        public Gc027RecordingDestination? Destination => destination;
 
         /// <summary>The recovered session's live outbox, or null when no delivery owner was built.</summary>
         public DurableOutbox? Outbox => Delivery == null ? null : Delivery.Outbox;
@@ -399,6 +399,19 @@ namespace GameCore.Validation.ProbeHost
             }
 
             runtime = runtimeWorld;
+
+            // The genre's authoritative ECS state is rebuilt AFTER the runtime is attached — the traversal module's
+            // runner map must exist for the restore to address its own entities — and from the plan's serialized
+            // slot rows only, so no runtime state of the faulted source world can reach this one. A missing row set
+            // is a coded refusal and the staging world is never exposed (P-032, P-053).
+            if (!family.TryApplyAuthoritativeState(
+                    host, seeder!, plan.Slots, out DiagnosticCode stateCode, out string stateDetail))
+            {
+                code = stateCode;
+                detail = "rebuilding the genre's authoritative state from the plan's slot rows was refused: "
+                    + stateCode + ": " + stateDetail;
+                return false;
+            }
 
             // The state is applied and the world still unexposed, so this is the moment the plan's latch is armed:
             // the executor's reach then fires on this staging world (TEST-016 row 5, P-031).

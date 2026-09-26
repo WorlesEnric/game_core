@@ -28,6 +28,7 @@ using GameCore.Execution.Messages;
 using GameCore.Gameplay.Cards;
 using GameCore.Rules.Cards;
 using GameCore.Unity.Runtime;
+using GameCore.Unity.Runtime.Integration;
 using GameCore.Unity.Runtime.Persistence;
 using GameCore.Validation.GeneratedCards;
 
@@ -213,11 +214,49 @@ namespace GameCore.Validation.ProbeHost
             /// </summary>
             public string? AuthoritativeStateText(UnityWorldHost world) => null;
 
+            public void ReleaseRecoveryResources() { }
+
             /// <summary>
             /// Null: an admitted step of this genre needs no input beyond the commands its own run submits, so the
             /// runner pumps without staging one (P-036).
             /// </summary>
             public CommandEnvelope? StepInput(WorldId world, OperationId operation) => null;
+
+            /// <summary>
+            /// True with no write: this genre's whole committed state is its owner slot rows, which the checkpoint
+            /// copies on its own, so there is no ECS state left for a family hook to persist (P-032, P-053).
+            /// </summary>
+            public bool TryCaptureAuthoritativeState(
+                UnityWorldHost world,
+                LiveTargetSeeder seeder,
+                out DiagnosticCode code,
+                out string detail)
+            {
+                code = DiagnosticCode.None;
+                detail = string.Empty;
+                _ = world;
+                _ = seeder;
+                return true;
+            }
+
+            /// <summary>
+            /// True with no write: the plan's slot rows are the whole of this genre's committed state and the
+            /// builder seeds them directly, so a second application would be a fabricated copy (P-053).
+            /// </summary>
+            public bool TryApplyAuthoritativeState(
+                UnityWorldHost world,
+                LiveTargetSeeder seeder,
+                IReadOnlyList<SlotRecordValue> slots,
+                out DiagnosticCode code,
+                out string detail)
+            {
+                code = DiagnosticCode.None;
+                detail = string.Empty;
+                _ = world;
+                _ = seeder;
+                _ = slots;
+                return true;
+            }
 
             /// <summary>Zero: this genre's state is complete at creation, so no steps precede the capture.</summary>
             public uint AdmittedStepsBeforeFault => 0U;

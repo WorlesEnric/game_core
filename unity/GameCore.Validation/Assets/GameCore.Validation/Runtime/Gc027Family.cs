@@ -28,6 +28,7 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
+using GameCore.Composition;
 using GameCore.Contracts;
 using GameCore.Execution.Delivery;
 using GameCore.Execution.Messages;
@@ -178,6 +179,39 @@ namespace GameCore.Validation.ProbeHost
         /// It is null until the genre's runtime is attached, and never null afterwards.
         /// </summary>
         Gc027PhysicsDomain? PhysicsDomain { get; }
+
+        /// <summary>Releases genre-owned runtime resources left by discarded or restarted sessions.</summary>
+        void ReleaseRecoveryResources();
+
+        /// <summary>
+        /// Persists this genre's authoritative ECS state the checkpoint contract has no record row for, as owner-slot
+        /// rows under stable keys. The runner calls it after the source world's admitted steps and before the
+        /// capture's boundary read, so the document carries the world's own advanced values rather than seed values;
+        /// the traversal course answers its runners' pose/velocity and its accepted-checkpoint progress, while an
+        /// ECS-owned genre whose whole committed state is already slot rows implements it as a no-op. The seeder is
+        /// the world's own, so the rows are written through the same ownership path a seeded target's state uses. A
+        /// refusal is coded and stops the capture, because a checkpoint that would ship a seed-equivalent for real
+        /// moved state is a fabricated document, not a degraded one (P-053, 07 s4.3).
+        /// </summary>
+        bool TryCaptureAuthoritativeState(
+            UnityWorldHost world,
+            LiveTargetSeeder seeder,
+            out DiagnosticCode code,
+            out string detail);
+
+        /// <summary>
+        /// Rebuilds that state in a just-attached recovered world from the plan's serialized slot rows only: the
+        /// values it writes are the captured ones behind their stable owner-slot keys, and the hook receives no
+        /// source-world reference, so a runtime handle, an entity index or a live component of the faulted world can
+        /// never leak across the recovery. The seeder is the recovered world's own. A missing or incomplete row set
+        /// is refused before the world is exposed (P-032, P-053).
+        /// </summary>
+        bool TryApplyAuthoritativeState(
+            UnityWorldHost world,
+            LiveTargetSeeder seeder,
+            IReadOnlyList<SlotRecordValue> slots,
+            out DiagnosticCode code,
+            out string detail);
     }
 
     /// <summary>

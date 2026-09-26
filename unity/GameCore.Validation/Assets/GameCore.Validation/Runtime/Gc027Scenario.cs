@@ -417,7 +417,7 @@ namespace GameCore.Validation.ProbeHost
                         ? world.Delivery != null && world.Delivery.Outbox.OpenCount == 1 && world.Delivery.Outbox.IsDurable
                         : world.Delivery == null;
                     bool pass = atBoundary
-                        && idleSteps == 0UL
+                        && (family.TemporalModel != TemporalModel.CommandDriven || idleSteps == 0UL)
                         && publication.Stored.DocumentBytes == checkpointBytes.Length
                         && publication.Stored.DocumentHash.Equals(checkpointHash)
                         && carriedOutbox
@@ -1782,6 +1782,11 @@ namespace GameCore.Validation.ProbeHost
                 {
                     int before = UnityWorldRegistry.Count;
                     source?.TearDown();
+                    // The recovery and restart can attach several local physics scenes through the same family.
+                    // Detach the last attached scene before disposing its ECS world, so native bodies never
+                    // outlive the scene/world pair that owns them (P-047, P-048).
+                    builder?.DetachRuntime();
+                    family.ReleaseRecoveryResources();
 
                     // Every world this run owns is stopped and disposed here, including the sessions the clean
                     // recovery, the restart and the retry published: the registry returning to its baseline is what

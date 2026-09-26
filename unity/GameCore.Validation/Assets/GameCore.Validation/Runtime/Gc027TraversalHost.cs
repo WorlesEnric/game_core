@@ -74,6 +74,7 @@ namespace GameCore.Validation.ProbeHost
             private Gc027PhysicsDomain? physicsDomain;
             private TraversalRunnerRef? physicsSubject;
             private Gc020StageRuntime? attachedRuntime;
+            private readonly List<Gc020StageRuntime> recoveryRuntimes = new List<Gc020StageRuntime>();
             private PipelineDescriptorReport? descriptorForAttach;
 
             // ---------------------------------------------------------------- the checkpoint half (IGc018Family)
@@ -163,6 +164,7 @@ namespace GameCore.Validation.ProbeHost
 
                 Gc020StageRuntime attached = AttachStageRuntime(
                     world.Host, descriptorForAttach, world.Targets, world.Seeder);
+                recoveryRuntimes.Add(attached);
                 attachedRuntime = attached;
                 physicsDomain = BuildPhysicsDomain(attached);
                 detail = string.Empty;
@@ -172,11 +174,37 @@ namespace GameCore.Validation.ProbeHost
             /// <summary>Releases the runtime the last attach created and its local scene (P-047, P-048).</summary>
             public void DetachRuntime(Gc018RuntimeWorld world)
             {
-                attachedRuntime?.Dispose();
+                if (TraversalModule.TryGet(world.Host.EntityWorld, out TraversalModule? module) && module != null)
+                {
+                    for (int i = recoveryRuntimes.Count - 1; i >= 0; i--)
+                    {
+                        if (recoveryRuntimes[i].Module == module)
+                        {
+                            recoveryRuntimes[i].Dispose();
+                            recoveryRuntimes.RemoveAt(i);
+                        }
+                    }
+                }
+
+                if (attachedRuntime != null && attachedRuntime.Module == module)
+                {
+                    attachedRuntime = null;
+                    physicsDomain = null;
+                    physicsSubject = null;
+                }
+            }
+
+            public void ReleaseRecoveryResources()
+            {
+                for (int i = recoveryRuntimes.Count - 1; i >= 0; i--)
+                {
+                    recoveryRuntimes[i].Dispose();
+                }
+
+                recoveryRuntimes.Clear();
                 attachedRuntime = null;
                 physicsDomain = null;
                 physicsSubject = null;
-                _ = world;
             }
 
             // ---------------------------------------------------------------- the recovery half (IGc027Family)
@@ -477,11 +505,10 @@ namespace GameCore.Validation.ProbeHost
                     throw new ArgumentNullException(nameof(world));
                 }
 
-                TraversalModule? module = attachedRuntime?.Module;
-                if (module == null)
+                if (!TraversalModule.TryGet(world.EntityWorld, out TraversalModule? module) || module == null)
                 {
-                    // A world with no attached runtime has no motion state to read, which is a refusal the caller
-                    // reports rather than an empty string it could mistake for agreement (P-052).
+                    // A world with no attached runtime has no motion state to read; never use another
+                    // session's most recently attached module to claim that state survived.
                     return null;
                 }
 
@@ -525,6 +552,347 @@ namespace GameCore.Validation.ProbeHost
                 }
 
                 return text.ToString();
+            }
+
+            // ------------------------------------------------- the checkpoint-backed authoritative state
+
+            /// <summary>
+            /// The stable slot identities one runner's authoritative ECS state is checkpointed under: every axis of
+            /// its pose and velocity, its grounded flag and the five fields of its accepted-checkpoint progress. A
+            /// slot row carries one int32, so the 64-bit and 128-bit progress fields travel as explicit 32-bit
+            /// chunks — nothing is truncated, rounded or re-derived to fit the record, and every key is a stable
+            /// name-derived identity rather than a native entity (P-005, P-053).
+            /// </summary>
+            private static class MotionSlots
+            {
+                public static readonly SlotId PositionX = TraversalIdentity.Slot("traversal.slot.motion.position-x");
+                public static readonly SlotId PositionY = TraversalIdentity.Slot("traversal.slot.motion.position-y");
+                public static readonly SlotId PositionZ = TraversalIdentity.Slot("traversal.slot.motion.position-z");
+                public static readonly SlotId VelocityX = TraversalIdentity.Slot("traversal.slot.motion.velocity-x");
+                public static readonly SlotId VelocityY = TraversalIdentity.Slot("traversal.slot.motion.velocity-y");
+                public static readonly SlotId VelocityZ = TraversalIdentity.Slot("traversal.slot.motion.velocity-z");
+                public static readonly SlotId Grounded = TraversalIdentity.Slot("traversal.slot.motion.grounded");
+                public static readonly SlotId ProgressPresent = TraversalIdentity.Slot("traversal.slot.progress.present");
+
+                public static readonly SlotId ProgressCount = TraversalIdentity.Slot("traversal.slot.progress.count");
+                public static readonly SlotId ProgressStarted = TraversalIdentity.Slot("traversal.slot.progress.started");
+                public static readonly SlotId ProgressCheckpointLow0 = TraversalIdentity.Slot("traversal.slot.progress.checkpoint-low-0");
+                public static readonly SlotId ProgressCheckpointLow1 = TraversalIdentity.Slot("traversal.slot.progress.checkpoint-low-1");
+                public static readonly SlotId ProgressCheckpointHigh0 = TraversalIdentity.Slot("traversal.slot.progress.checkpoint-high-0");
+                public static readonly SlotId ProgressCheckpointHigh1 = TraversalIdentity.Slot("traversal.slot.progress.checkpoint-high-1");
+                public static readonly SlotId ProgressCrossingSequence = TraversalIdentity.Slot("traversal.slot.progress.crossing-sequence");
+                public static readonly SlotId ProgressCrossingStep0 = TraversalIdentity.Slot("traversal.slot.progress.crossing-step-0");
+                public static readonly SlotId ProgressCrossingStep1 = TraversalIdentity.Slot("traversal.slot.progress.crossing-step-1");
+            }
+
+            /// <summary>Low 32 bits of a 64-bit progress field, as the int32 a slot row carries.</summary>
+            private static int LowBits(ulong value) => (int)(uint)(value & 0xFFFFFFFFUL);
+
+            /// <summary>High 32 bits of a 64-bit progress field, as the int32 a slot row carries.</summary>
+            private static int HighBits(ulong value) => (int)(uint)(value >> 32);
+
+            /// <summary>Reassembles a 64-bit progress field from its two carried 32-bit halves.</summary>
+            private static ulong FromBits(int low, int high) => (uint)low | ((ulong)(uint)high << 32);
+
+            /// <summary>
+            /// Persists every runner's authoritative ECS pose and velocity — the components the integrate stage
+            /// writes — plus the course's accepted-checkpoint progress, as dormant owner-slot rows on the runner
+            /// targets: the same <c>TargetSlotState</c> storage the checkpoint's slot section copies, under the
+            /// motion owner's stable per-fact keys. The run calls it after the declared admitted steps and before
+            /// the capture's boundary read, so the document ships the world's own advanced values rather than the
+            /// seed values. A runner the course cannot resolve is a coded refusal: a checkpoint that shipped a
+            /// seed-equivalent for a runner that really moved would be a fabricated document, not a degraded one
+            /// (P-032, P-053, 07 s4.3).
+            /// </summary>
+            public bool TryCaptureAuthoritativeState(
+                UnityWorldHost world,
+                LiveTargetSeeder seeder,
+                out DiagnosticCode code,
+                out string detail)
+            {
+                code = DiagnosticCode.None;
+                detail = string.Empty;
+                if (world == null)
+                {
+                    throw new ArgumentNullException(nameof(world));
+                }
+
+                if (seeder == null)
+                {
+                    throw new ArgumentNullException(nameof(seeder));
+                }
+
+                if (!TraversalModule.TryGet(world.EntityWorld, out TraversalModule? module) || module == null)
+                {
+                    code = DiagnosticCode.MissingDependency;
+                    detail = "the traversal course runtime is not attached, so its motion state cannot be captured.";
+                    return false;
+                }
+
+                EntityManager entityManager = world.EntityWorld.EntityManager;
+                IReadOnlyList<TraversalRunnerRef> runners = module.Runners();
+                for (int i = 0; i < runners.Count; i++)
+                {
+                    TraversalRunnerRef runner = runners[i];
+                    if (!module.TryRunner(runner.Target, out Entity entity)
+                        || entity == Entity.Null
+                        || !entityManager.Exists(entity))
+                    {
+                        code = DiagnosticCode.StaleHandle;
+                        detail = "runner " + runner.Target.ToString()
+                            + " is live in the course but resolves to no entity, so its motion cannot be captured"
+                            + " (P-005).";
+                        return false;
+                    }
+
+                    if (!entityManager.HasComponent<TraversalPose>(entity)
+                        || !entityManager.HasComponent<TraversalVelocity>(entity))
+                    {
+                        code = DiagnosticCode.MissingDependency;
+                        detail = "runner " + runner.Target.ToString()
+                            + " lacks authoritative pose or velocity, so it cannot be checkpointed (P-053).";
+                        return false;
+                    }
+
+                    TraversalPose pose = entityManager.GetComponentData<TraversalPose>(entity);
+                    TraversalVelocity velocity = entityManager.GetComponentData<TraversalVelocity>(entity);
+
+                    // A runner whose course entity holds no progress row has simply not been advanced by any
+                    // accepted crossing yet. That absence is itself a fact the checkpoint must carry — the
+                    // presence flag records it, so the restore reproduces the course's own row set exactly rather
+                    // than inventing zero-progress rows for runners that never had one (07 s4.2, P-053).
+                    bool progressPresent = TraversalAccess.TryReadProgress(
+                            entityManager, module.CourseEntity, runner.Target, out TraversalProgressRow progress);
+                    if (!progressPresent)
+                    {
+                        progress = default(TraversalProgressRow);
+                        progress.Runner = runner.Target;
+                    }
+
+                    if (!SeedMotionRow(seeder, runner.Target, MotionSlots.PositionX, pose.X, out code, out detail)
+                        || !SeedMotionRow(seeder, runner.Target, MotionSlots.PositionY, pose.Y, out code, out detail)
+                        || !SeedMotionRow(seeder, runner.Target, MotionSlots.PositionZ, pose.Z, out code, out detail)
+                        || !SeedMotionRow(seeder, runner.Target, MotionSlots.VelocityX, velocity.X, out code, out detail)
+                        || !SeedMotionRow(seeder, runner.Target, MotionSlots.VelocityY, velocity.Y, out code, out detail)
+                        || !SeedMotionRow(seeder, runner.Target, MotionSlots.VelocityZ, velocity.Z, out code, out detail)
+                        || !SeedMotionRow(seeder, runner.Target, MotionSlots.Grounded, pose.Grounded, out code, out detail)
+                        || !SeedMotionRow(seeder, runner.Target, MotionSlots.ProgressPresent, progressPresent ? 1 : 0, out code, out detail)
+                        || !SeedMotionRow(seeder, runner.Target, MotionSlots.ProgressCount, unchecked((int)progress.Count), out code, out detail)
+                        || !SeedMotionRow(seeder, runner.Target, MotionSlots.ProgressStarted, progress.Started, out code, out detail)
+                        || !SeedMotionRow(seeder, runner.Target, MotionSlots.ProgressCheckpointLow0, LowBits(progress.LastCheckpoint.Value.Low), out code, out detail)
+                        || !SeedMotionRow(seeder, runner.Target, MotionSlots.ProgressCheckpointLow1, HighBits(progress.LastCheckpoint.Value.Low), out code, out detail)
+                        || !SeedMotionRow(seeder, runner.Target, MotionSlots.ProgressCheckpointHigh0, LowBits(progress.LastCheckpoint.Value.High), out code, out detail)
+                        || !SeedMotionRow(seeder, runner.Target, MotionSlots.ProgressCheckpointHigh1, HighBits(progress.LastCheckpoint.Value.High), out code, out detail)
+                        || !SeedMotionRow(seeder, runner.Target, MotionSlots.ProgressCrossingSequence, unchecked((int)progress.LastCrossingSequence), out code, out detail)
+                        || !SeedMotionRow(seeder, runner.Target, MotionSlots.ProgressCrossingStep0, LowBits(progress.LastCrossingStep), out code, out detail)
+                        || !SeedMotionRow(seeder, runner.Target, MotionSlots.ProgressCrossingStep1, HighBits(progress.LastCrossingStep), out code, out detail))
+                    {
+                        return false;
+                    }
+                }
+
+                detail = runners.Count.ToString(System.Globalization.CultureInfo.InvariantCulture)
+                    + " runner motion/progress row set(s) captured under the motion owner's stable slot keys.";
+                return true;
+            }
+
+            /// <summary>
+            /// Rebuilds the course's authoritative ECS state in a just-attached recovered world from the plan's slot
+            /// rows alone: each runner's <see cref="TraversalPose"/> and <see cref="TraversalVelocity"/> components
+            /// and its accepted-checkpoint progress row are written back from the captured values behind their
+            /// stable keys, over the base layout the recipe applier already installed. Nothing here holds or reads
+            /// the source world: the faulted world's entities, handles and module are gone, and the only inputs are
+            /// the recovered world's own ECS, the seeder of its own registry and the serialized rows the checkpoint
+            /// carried. A runner whose captured row set is missing is refused, so the world is never exposed with a
+            /// zero-equivalent invented for state the checkpoint did not carry (P-032, P-053).
+            /// </summary>
+            public bool TryApplyAuthoritativeState(
+                UnityWorldHost world,
+                LiveTargetSeeder seeder,
+                IReadOnlyList<SlotRecordValue> slots,
+                out DiagnosticCode code,
+                out string detail)
+            {
+                code = DiagnosticCode.None;
+                detail = string.Empty;
+                if (world == null)
+                {
+                    throw new ArgumentNullException(nameof(world));
+                }
+
+                if (seeder == null)
+                {
+                    throw new ArgumentNullException(nameof(seeder));
+                }
+
+                if (slots == null)
+                {
+                    code = DiagnosticCode.MissingDependency;
+                    detail = "the plan's slot rows are required to restore the traversal motion state (P-053).";
+                    return false;
+                }
+
+                if (!TraversalModule.TryGet(world.EntityWorld, out TraversalModule? module) || module == null)
+                {
+                    code = DiagnosticCode.MissingDependency;
+                    detail = "the traversal course runtime is not attached to the recovered world, so its motion"
+                        + " state cannot be restored.";
+                    return false;
+                }
+
+                var byKey = new Dictionary<StateSlotKey, SlotRecordValue>(slots.Count);
+                for (int i = 0; i < slots.Count; i++)
+                {
+                    byKey[slots[i].Key] = slots[i];
+                }
+
+                EntityManager entityManager = world.EntityWorld.EntityManager;
+                IReadOnlyList<TraversalRunnerRef> runners = module.Runners();
+                for (int i = 0; i < runners.Count; i++)
+                {
+                    TraversalRunnerRef runner = runners[i];
+                    if (!module.TryRunner(runner.Target, out Entity entity)
+                        || entity == Entity.Null
+                        || !entityManager.Exists(entity))
+                    {
+                        code = DiagnosticCode.StaleHandle;
+                        detail = "runner " + runner.Target.ToString()
+                            + " is live in the recovered course but resolves to no entity (P-005).";
+                        return false;
+                    }
+
+                    if (!TryReadMotionRow(byKey, runner.Target, MotionSlots.PositionX, out int positionX, out code, out detail)
+                        || !TryReadMotionRow(byKey, runner.Target, MotionSlots.PositionY, out int positionY, out code, out detail)
+                        || !TryReadMotionRow(byKey, runner.Target, MotionSlots.PositionZ, out int positionZ, out code, out detail)
+                        || !TryReadMotionRow(byKey, runner.Target, MotionSlots.VelocityX, out int velocityX, out code, out detail)
+                        || !TryReadMotionRow(byKey, runner.Target, MotionSlots.VelocityY, out int velocityY, out code, out detail)
+                        || !TryReadMotionRow(byKey, runner.Target, MotionSlots.VelocityZ, out int velocityZ, out code, out detail)
+                        || !TryReadMotionRow(byKey, runner.Target, MotionSlots.Grounded, out int grounded, out code, out detail)
+                        || !TryReadMotionRow(byKey, runner.Target, MotionSlots.ProgressPresent, out int presentValue, out code, out detail)
+                        || !TryReadMotionRow(byKey, runner.Target, MotionSlots.ProgressCount, out int countValue, out code, out detail)
+                        || !TryReadMotionRow(byKey, runner.Target, MotionSlots.ProgressStarted, out int startedValue, out code, out detail)
+                        || !TryReadMotionRow(byKey, runner.Target, MotionSlots.ProgressCheckpointLow0, out int checkpointLow0, out code, out detail)
+                        || !TryReadMotionRow(byKey, runner.Target, MotionSlots.ProgressCheckpointLow1, out int checkpointLow1, out code, out detail)
+                        || !TryReadMotionRow(byKey, runner.Target, MotionSlots.ProgressCheckpointHigh0, out int checkpointHigh0, out code, out detail)
+                        || !TryReadMotionRow(byKey, runner.Target, MotionSlots.ProgressCheckpointHigh1, out int checkpointHigh1, out code, out detail)
+                        || !TryReadMotionRow(byKey, runner.Target, MotionSlots.ProgressCrossingSequence, out int sequenceValue, out code, out detail)
+                        || !TryReadMotionRow(byKey, runner.Target, MotionSlots.ProgressCrossingStep0, out int crossingStep0, out code, out detail)
+                        || !TryReadMotionRow(byKey, runner.Target, MotionSlots.ProgressCrossingStep1, out int crossingStep1, out code, out detail))
+                    {
+                        return false;
+                    }
+
+                    if (presentValue < 0 || presentValue > 1 || countValue < 0 || startedValue < 0
+                        || startedValue > 1 || grounded < 0 || grounded > 1)
+                    {
+                        code = DiagnosticCode.UnsupportedVersion;
+                        detail = "the captured progress rows of runner " + runner.Target.ToString()
+                            + " carry a value no traversal course produces (present=" + presentValue.ToString(System.Globalization.CultureInfo.InvariantCulture)
+                            + ", count=" + countValue.ToString(System.Globalization.CultureInfo.InvariantCulture)
+                            + ", started=" + startedValue.ToString(System.Globalization.CultureInfo.InvariantCulture)
+                            + ", grounded=" + grounded.ToString(System.Globalization.CultureInfo.InvariantCulture)
+                            + "), so the checkpoint is not a captured traversal state (07 s4.2).";
+                        return false;
+                    }
+
+                    entityManager.SetComponentData(
+                        entity,
+                        TraversalPose.Of(
+                            new TraversalVector3i(positionX, positionY, positionZ),
+                            grounded == 0 ? (byte)0 : (byte)1));
+                    entityManager.SetComponentData(
+                        entity,
+                        TraversalVelocity.Of(new TraversalVector3i(velocityX, velocityY, velocityZ)));
+
+                    // The presence flag reproduces the captured course's own progress-row set: a runner the
+                    // checkpoint owner had never advanced keeps having no row, exactly as the source world's own
+                    // authoritative state text reports it (07 s4.2, P-053).
+                    if (presentValue == 0)
+                    {
+                        continue;
+                    }
+
+                    TraversalAccess.EnsureProgressRow(entityManager, module.CourseEntity, runner.Target);
+                    var restored = new TraversalProgressRow
+                    {
+                        Runner = runner.Target,
+                        Count = (uint)countValue,
+                        Started = (byte)startedValue,
+                        LastCrossingSequence = (uint)sequenceValue,
+                        LastCheckpoint = new TargetId(new Id128(
+                            FromBits(checkpointHigh0, checkpointHigh1),
+                            FromBits(checkpointLow0, checkpointLow1))),
+                        LastCrossingStep = FromBits(crossingStep0, crossingStep1),
+                    };
+
+                    if (!TraversalAccess.TryWriteProgress(entityManager, module.CourseEntity, in restored))
+                    {
+                        code = DiagnosticCode.MissingDependency;
+                        detail = "writing the restored progress row of runner " + runner.Target.ToString()
+                            + " was refused by the recovered course (P-005).";
+                        return false;
+                    }
+                }
+
+                detail = runners.Count.ToString(System.Globalization.CultureInfo.InvariantCulture)
+                    + " runner motion/progress row set(s) restored from the checkpoint's slot rows.";
+                return true;
+            }
+
+            /// <summary>
+            /// Seeds one captured fact as a dormant motion-owner row. Dormant, because at a capture boundary this is
+            /// retained durable state rather than a value an active owner is mid-write on — exactly the kind of row
+            /// P-032 says a checkpoint must save and a restore must retain rather than drop.
+            /// </summary>
+            private static bool SeedMotionRow(
+                LiveTargetSeeder seeder,
+                TargetId runner,
+                SlotId slot,
+                int value,
+                out DiagnosticCode code,
+                out string detail)
+            {
+                if (!seeder.TrySeedSlot(
+                        runner,
+                        TraversalKeys.MotionOwner,
+                        slot,
+                        TraversalKeys.MotionDomain.Version,
+                        value,
+                        false,
+                        out code,
+                        out detail))
+                {
+                    detail = "seeding the captured motion row " + slot.ToString() + " of runner " + runner.ToString()
+                        + " was refused: " + code + ": " + detail;
+                    return false;
+                }
+
+                return true;
+            }
+
+            /// <summary>Reads one captured fact from the plan's rows; a missing row is a coded refusal (P-053).</summary>
+            private static bool TryReadMotionRow(
+                Dictionary<StateSlotKey, SlotRecordValue> byKey,
+                TargetId runner,
+                SlotId slot,
+                out int value,
+                out DiagnosticCode code,
+                out string detail)
+            {
+                if (!byKey.TryGetValue(new StateSlotKey(runner, TraversalKeys.MotionOwner, slot), out SlotRecordValue row))
+                {
+                    value = 0;
+                    code = DiagnosticCode.MissingDependency;
+                    detail = "the checkpoint carried no " + slot.ToString() + " row for runner " + runner.ToString()
+                        + ", so its authoritative motion state cannot be restored rather than defaulted"
+                        + " (P-032, P-053).";
+                    return false;
+                }
+
+                value = row.Value;
+                code = DiagnosticCode.None;
+                detail = string.Empty;
+                return true;
             }
 
             /// <summary>True when the recovery-facing physics domain has been built for this world.</summary>
