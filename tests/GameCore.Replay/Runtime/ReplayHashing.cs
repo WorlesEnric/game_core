@@ -194,6 +194,14 @@ namespace GameCore.Replay
                     .Append('\n');
             }
 
+            return text.ToString();
+        }
+
+        /// <summary>Runtime explanations are hashed in replays but omitted from oracle comparison: the oracle
+        /// does not produce explanation records. Decisions, effective supports and provenance remain compared.</summary>
+        public static string ExplanationText(DerivationResult result)
+        {
+            StringBuilder text = new StringBuilder();
             for (int i = 0; i < result.Explanations.Count; i++)
             {
                 DerivationExplanation explanation = result.Explanations[i];

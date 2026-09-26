@@ -494,7 +494,8 @@ namespace GameCore.Replay
                 // 5. Commit: the step id advances by exactly one per committed step (P-006).
                 LogicalStepId committed = new LogicalStepId((ulong)s + 1UL);
                 ContentHash stateHash = ReplayStateHash.IntegerStateHash(states);
-                ContentHash decisionHash = ReplayStateHash.HashOf(ReplayStateHash.DecisionText(outcome.Result));
+                ContentHash decisionHash = ReplayStateHash.HashOf(
+                    ReplayStateHash.DecisionText(outcome.Result) + ReplayStateHash.ExplanationText(outcome.Result));
                 ContentHash provenanceHash = ReplayStateHash.HashOf(ReplayStateHash.ProvenanceText(outcome.Result));
                 stateHashes.Add(stateHash.ToArray());
 

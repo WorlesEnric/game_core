@@ -276,13 +276,33 @@ namespace GameCore.Replay
                         + " (seed " + seed.ToString(CultureInfo.InvariantCulture)
                         + ", op " + script[i].Describe() + "): " + reason
                         + "; incremental=" + incrementalHash.ToHex()
-                        + " oracle=" + oracleHash.ToHex();
+                        + " oracle=" + oracleHash.ToHex()
+                        + (perturbed ? string.Empty : "; decisions=" + incremental.Result.Decisions.Count + "/" + oracle.Decisions.Count
+                            + "; explanations=" + incremental.Result.Explanations.Count + "/" + oracle.Explanations.Count
+                            + "; first difference=" + FirstDifference(incrementalText, oracleText));
                 }
 
                 previous = incremental.Result;
             }
 
             return null;
+        }
+
+        private static string FirstDifference(string incremental, string oracle)
+        {
+            string[] left = incremental.Split('\n');
+            string[] right = oracle.Split('\n');
+            for (int i = 0; i < Math.Max(left.Length, right.Length); i++)
+            {
+                string a = i < left.Length ? left[i] : "<missing>";
+                string b = i < right.Length ? right[i] : "<missing>";
+                if (!string.Equals(a, b, StringComparison.Ordinal))
+                {
+                    return "incremental[" + i.ToString(CultureInfo.InvariantCulture) + "]=" + a + ", oracle=" + b;
+                }
+            }
+
+            return "<none>";
         }
 
         /// <summary>
