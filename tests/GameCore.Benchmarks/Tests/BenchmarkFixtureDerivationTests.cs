@@ -260,7 +260,7 @@ namespace GameCore.Benchmarks.Tests
                 Is.EqualTo(expected > 1),
                 "the update reaches exactly the targets its declared tag selects, and no more");
 
-            DerivationDelta? delta = outcome.Result.Delta;
+            GameCore.Derivation.DerivationDelta? delta = outcome.Result.Delta;
             Assert.That(delta, Is.Not.Null, "an incremental derivation against a previous result carries a delta");
             Assert.That(
                 delta!.AffectedTargets.Count,

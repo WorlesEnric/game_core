@@ -245,6 +245,8 @@ namespace GameCore.Benchmarks
         public const string UnchangedServiceLookups = "budget.unchanged-service-lookups";
 
         public const string ApplyPauseP95 = "budget.apply-pause-p95";
+        public const string WholeWorldPreparationP95 = "budget.whole-world-preparation-p95";
+
 
         public const string SpawnBaseline = "budget.spawn-baseline";
 

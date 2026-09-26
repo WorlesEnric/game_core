@@ -295,7 +295,7 @@ namespace GameCore.Benchmarks
                 }
 
                 BenchmarkDistribution distribution = BenchmarkDistribution.Of(samples);
-                for (int m = 0; m < SummaryMetrics.Length; m++)
+                for (int m = 0; m < SummaryMetrics.Count; m++)
                 {
                     string metric = SummaryMetrics[m];
                     metrics[phase.ToString() + "/" + metric] = distribution.Metric(metric);
