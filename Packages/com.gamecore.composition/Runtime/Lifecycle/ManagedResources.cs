@@ -263,9 +263,9 @@ namespace GameCore.Composition
             get
             {
                 ulong bytes = 0UL;
-                for (int i = 0; i < acquisitionOrder.Count; i++)
+                for (LinkedListNode<Id128>? node = acquisitionOrder.First; node != null; node = node.Next)
                 {
-                    WorldResourceRecord record = records[acquisitionOrder[i]];
+                    WorldResourceRecord record = records[node.Value];
                     if (IsLeaseHeld(record))
                     {
                         bytes += record.Bytes;
@@ -292,9 +292,9 @@ namespace GameCore.Composition
             get
             {
                 ulong bytes = 0UL;
-                for (int i = 0; i < acquisitionOrder.Count; i++)
+                for (LinkedListNode<Id128>? node = acquisitionOrder.First; node != null; node = node.Next)
                 {
-                    WorldResourceRecord record = records[acquisitionOrder[i]];
+                    WorldResourceRecord record = records[node.Value];
                     if (record.State == ResourceRetirementState.Quarantined)
                     {
                         bytes += record.Bytes;
@@ -317,9 +317,9 @@ namespace GameCore.Composition
             // reported only as quarantine and the four-way split stays a partition (TEST-023).
             int leaseHeld = 0;
             ulong leaseBytes = 0UL;
-            for (int i = 0; i < acquisitionOrder.Count; i++)
+            for (LinkedListNode<Id128>? node = acquisitionOrder.First; node != null; node = node.Next)
             {
-                WorldResourceRecord record = records[acquisitionOrder[i]];
+                WorldResourceRecord record = records[node.Value];
                 if (IsLeaseHeld(record))
                 {
                     leaseHeld++;
