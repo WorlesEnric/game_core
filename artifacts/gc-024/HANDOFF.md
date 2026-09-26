@@ -225,25 +225,52 @@ fixed in **both** implementations (the tool and `AssemblyReferenceAudit`):
 The second finding was in a file this task does not own (`CheckpointCodecAdapter.cs`), which is exactly the kind of
 false positive the rule's refinement removes.
 
-### 5.6 One 07 row cannot be performed in this revision, and is recorded as a gap
+### 5.6 `07:276`'s four claims are carried by shipped mechanisms, not by a documented gap
 
-`07:276` says that `NarrativeCardRewards` "declares `PreserveDormant` for its completed outbox, with a
-scratch-migration precondition that no pending work remains ... Unmounting with pending work therefore rejects until
-it drains or transfers". The combined world performs the row as far as this revision allows — it reads the pending
-obligation from the live world, so the state the refusal would protect is visible — but the *refusal itself* has
-nowhere to happen: the bridge is an ordinary caller-owned object rather than a mounted installation, so there is no
-installation identity, no manifest and no slot policy for the lane to enforce. GC-021 shipped that shape and recorded
-the same absence (`artifacts/gc-021/HANDOFF.md` §7 item 5).
+**Revision note (orchestrator review round 1).** The first revision recorded `07:276` as an open documentation gap on
+the grounds that `NarrativeCardRewards` was an ordinary caller-owned object with no installation to unmount. Review
+round 1 rejected that: the claims must be resolved in gameplay code. They now are, in
+`Packages/com.gamecore.gameplay.rewards` (assembly `GameCore.Gameplay.Rewards`), which mounts the bridge as a real
+installation. `ConformanceDocGaps.All` is **empty**: no gap is recorded, and the suite asserts the empty list in both
+directions (a run cannot report a gap the fixture does not declare, and a declared gap cannot vanish from a run).
 
-Rather than let a red step hide inside a green verdict, or let a fabricated pass stand in for a real one, the gap is
-a value: `GameCore.ReferenceConformance.ConformanceDocGaps` declares it with the 07 clause it offends, the mechanism
-this revision lacks, the recorded evidence and a proposed resolution; the run reports that step with
-`ConformanceStepStatus.RecordedGap`; `ConformanceTableResult.AllPassed` is **false while any gap is open**, because a
-gap is not a pass; the probe reports the step as its own `ExpectedNegative` status and names the gap identifier; and
-the harness and the EditMode suite both require that name, so the gap cannot vanish silently and a new one cannot
-appear unnoticed. **The orchestrator should decide whether that is acceptable for the W7 gate** (the W7 sentence
-requires the cross-template flow to pass; it does pass, with one row honestly reported as unperformable), or whether
-the bridge should be mounted as an installation in a follow-up task.
+The mechanism that carries each clause was verified in source before implementation, and each is a shipped generic
+mechanism rather than a new kernel rule. **Three of the four APIs the review named do not exist in this revision**;
+the table below is the honest mapping, and the HANDOFF records it because a reader who expects a "preconditions"
+field will otherwise look for one:
+
+| `07:276` clause (verbatim) | Mechanism that carries it | Evidence |
+|---|---|---|
+| *"Unmounting with pending work therefore rejects until it drains or transfers"* | the installation registers a `JobFenceRegistry` job holding its declared outbox **resource lease** while work is pending; on unmount `TeardownSequencer.Unload`'s fence+retire steps quarantine every resource in `jobs.OutstandingResourcesFor(instance)`, so `settleAll` is false and the report carries `DiagnosticCode.TeardownBlocked`; `InstallationLifecycleCoordinator.Commit` then leaves the installation `Retiring` — never a false `Disposed` — with `Resources.RetainedCountFor(instance) != 0` | `Packages/com.gamecore.composition/Runtime/Lifecycle/TeardownSequencer.cs:261-336`; `InstallationLifecycleCoordinator.cs:448-459`; `ManagedResources.cs:524,580`; `JobFenceRegistry.cs:200` — P-047 ("already executing jobs MUST finish before storage or code-owned resources are released"), P-048 ("elapsed timeout only reports `TeardownBlocked`, never authorizes free") |
+| *"declares `PreserveDormant` for its completed outbox"* | a state slot declared `LastSupportPolicy.PreserveDormant`, driven through a **state-policy pass**: `StateMigrationPipeline.Execute` → `StatePolicyExecutor` with a `PreserveDormant` request → `StateDispositionKind.RetainDormant` → `AssemblyPublisher.MarkSlotDormant` flips the slot row's `Active` to 0 while its value and schema version are retained and still serialized | `SlotStatePolicyDeclarations.cs:227,304`; `StatePolicyExecutor.cs:550-559`; `AssemblyPublisher.cs:1279`; `StateMigrationPipeline.cs:73-118` — P-032 |
+| *"a scratch-migration precondition that no pending work remains"* | a registered `ISlotMigration` whose body refuses when the copied pending-work count is non-zero, reached through the slot's declared `VersionChangePolicy`: the slot's schema is declared one version above the version the installation seeds, so a policy pass requests a `Migrate` and `AssemblyPublisher.TryMigrateOnScratch` **refuses prewrite** with `MigrationRequired`, leaving the old assembly published | `Packages/com.gamecore.planning/Runtime/Plans/MigrationScratch.cs:27-38,218-273`; `AssemblyPublisher.cs:1100-1180`; `AssemblyPlanner.cs:686-742` — P-029 ("run pure fallible migrations there before the first live write") |
+| *"alternatively an explicitly selected compatible `TransferTo` owner may take the outbox"* | `StatePolicyRequest.LastSupportTransfer(slot, destinationOwner, destinationTarget)` → `StatePolicyExecutor.DecideTransfer` → `OwnerTransferValidator.Validate`, whose availability lever is `IsAvailableOwner(set, destinationOwner)` over the revision's declared owners | `SlotStatePolicyDeclarations.cs:105,110`; `StatePolicyExecutor.cs:700`; `OwnerTransferValidator.cs:80-88,218` — P-025, P-032 |
+
+**The three APIs the review named that do not exist** (verified, and recorded so no later reader claims them):
+
+1. `StateSlotSpec` has **no precondition field** — its members are exactly SlotId, Owner, Schema, PhysicalLayoutKey,
+   FieldOwnership, InitPolicy, ConfigChangePolicy, VersionChangePolicy, LastSupport, TransferPolicy, MigrationKeys,
+   ResetSupported, ResetReason (`Packages/com.gamecore.contracts/Runtime/Manifest/Declarations.cs:213-322`).
+2. `ValidityAndCost.Preconditions` — documented as *"Declared precondition keys that application rechecks (P-027)"* at
+   `Packages/com.gamecore.contracts/Runtime/Plans/PlanDeltas.cs:671` — is **dead**: both construction sites pass
+   `null` (`AssemblyPlanner.cs:790`, `:1134`) and nothing under `Packages/` reads it. No implementation can honestly
+   cite it as the mechanism.
+3. `CompositionEditApplier.DispositionsFor` (`CompositionEditApplier.cs:1121-1161`) maps `PreserveDormant` to
+   `StateDispositionKind.Retain`, which `AssemblyPublisher` ignores (`:1324-1331`) — **not** `RetainDormant`. So an
+   unmount payload alone can never produce dormant retention; and its `TransferTo` disposition carries
+   `default(TargetId)`/`default(OwnerId)` (`:1153-1155`), so the publisher self-transfers and then clears, i.e. it
+   degrades to a delete. Both claims are reachable only through the state-policy path used above.
+
+One consequence worth stating plainly: `StateMigrationPipeline` has exactly two callers in the tree before this change
+(both qualification scenarios — `W4GateScenario.cs:579` and `Tests/Cards/CardStatePolicyScenario.cs:268`), and no
+publication runs a policy pass automatically (`DerivedAssemblyPipeline` never constructs one). The installation
+therefore drives **its own** policy pass, which is what makes this gameplay code: the kernel is unchanged by this
+change set.
+
+The four rows that assert the claims are `reward-unmount-pending` (refused, with `TeardownBlocked` and the
+installation id, slot id and pending count named), `reward-drain-then-unmount` (drained → dormant slot → settled
+unmount), `reward-unmount-transfer` (the selected compatible owner takes the rows) and
+`reward-scoring-unmount-keeps-card` (removing the scoring provider never reverses the issued card or the score).
 
 ### 5.7 `-probeConformance` reports which half of the audit it computed
 

@@ -230,6 +230,21 @@ namespace GameCore.ReferenceConformance
         /// <summary>P-016: apply the family's declared exclusion to its declared excluded target and republish.</summary>
         public const string ApplyExclusion = "apply-exclusion";
 
+        /// <summary>07 s5: mount the scoring provider the card tent carries, so its removal is observable.</summary>
+        public const string MountScoringProvider = "mount-scoring-provider";
+
+        /// <summary>
+        /// 07:276's alternative: hand the installation's durable outbox rows to an explicitly selected compatible
+        /// owner, so an unmount with work still pending loses nothing (P-025, P-032, REF-X02).
+        /// </summary>
+        public const string TransferRewardOutbox = "transfer-reward-outbox";
+
+        /// <summary>
+        /// 07:276's last claim: unmount the scoring provider after a reward was granted, and observe that the issued
+        /// card and the committed score survive (P-003).
+        /// </summary>
+        public const string UnmountScoringProvider = "unmount-scoring-provider";
+
         /// <summary>Submit this step's `operand` copies of the family's own declared command.</summary>
         public const string CommitCommand = "commit-command";
 

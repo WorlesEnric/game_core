@@ -164,7 +164,10 @@ row_steps=(
   '"name": "conformance/cross/reward-enqueue"'
   '"name": "conformance/cross/reward-settle"'
   '"name": "conformance/cross/reward-redelivery"'
-  '"name": "conformance/cross/reward-bridge-removal"'
+  '"name": "conformance/cross/reward-unmount-pending"'
+  '"name": "conformance/cross/reward-drain-then-unmount"'
+  '"name": "conformance/cross/reward-unmount-transfer"'
+  '"name": "conformance/cross/reward-scoring-unmount-keeps-card"'
 )
 probe_require_steps "${result_file}" "${row_steps[@]}"
 
@@ -187,15 +190,14 @@ for clause in "${conformance_clauses[@]}"; do
   fi
 done
 
-# The recorded gaps are required by name: a run that could not perform a 07 row must say so. The probe reports such a
-# step with the status `ExpectedNegative` (its vocabulary for a declared, known absence), and the coverage step keeps
-# the run red because `AllPassed` excludes a gap — so a gap can never be read as a satisfied requirement.
-if ! grep -q '"name": "conformance/cross/recorded-gaps"' "${result_file}"; then
-  echo "   FAIL conformance: the combined world reported no recorded-gap step" >&2
+# 07:276's claims are carried by four real rows now, so a recorded gap would be a false statement about this
+# revision: the run must report none, and the four rows above must all have passed.
+if grep -q '"name": "conformance/cross/recorded-gaps"' "${result_file}"; then
+  echo "   FAIL conformance: the run reports a recorded gap although 07:276's claims are carried by real rows" >&2
   failures=$((failures + 1))
 fi
-if ! grep -q "gc024.gap.reward-bridge-removal" "${result_file}"; then
-  echo "   FAIL conformance: the run does not name the recorded gap this revision declares (07:276)" >&2
+if grep -q "recordedGaps=[1-9]" "${result_file}"; then
+  echo "   FAIL conformance: a table result reports one or more recorded gaps" >&2
   failures=$((failures + 1))
 fi
 

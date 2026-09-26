@@ -9,8 +9,8 @@
     "kernelAssemblies": 32,
     "familyAssemblies": 13,
     "generatedAssemblies": 0,
-    "qualificationAssemblies": 57,
-    "asmdefs": 69,
+    "qualificationAssemblies": 58,
+    "asmdefs": 70,
     "projectFiles": 33,
     "kernelSourcesScanned": 317,
     "referenceAssertions": 218,
@@ -531,6 +531,25 @@
         "GameCore.Rules.Narrative",
         "GameCore.Unity.Runtime",
         "Unity.Burst",
+        "Unity.Collections",
+        "Unity.Entities"
+      ]
+    },
+    {
+      "name": "GameCore.Gameplay.Rewards",
+      "path": "Packages/com.gamecore.gameplay.rewards/Runtime/GameCore.Gameplay.Rewards.asmdef",
+      "kind": "asmdef",
+      "classification": "qualification",
+      "packageRoot": "Packages/com.gamecore.gameplay.rewards",
+      "noEngineReferences": false,
+      "references": [
+        "GameCore.Composition",
+        "GameCore.Contracts",
+        "GameCore.Gameplay.Cards",
+        "GameCore.Gameplay.Integration",
+        "GameCore.Gameplay.Narrative",
+        "GameCore.Planning",
+        "GameCore.Unity.Runtime",
         "Unity.Collections",
         "Unity.Entities"
       ]
@@ -1618,6 +1637,7 @@
         "GameCore.Gameplay.Integration",
         "GameCore.Gameplay.Narrative",
         "GameCore.Gameplay.Narrative.Fixtures",
+        "GameCore.Gameplay.Rewards",
         "GameCore.Gameplay.Traversal",
         "GameCore.Gameplay.Traversal.Fixtures",
         "GameCore.Planning",
@@ -1874,5 +1894,5 @@
     "RunnerRecipe",
     "CheckpointVolume"
   ],
-  "verdict": "kernel=32; family=13; generated=0; qualification=57; asmdefs=69; projectFiles=33; kernelSources=317; referenceAssertions=218; violations=0; kernelGenreTokens=0; missingPackages=0; familiesOnKernel=13/13; clean=true"
+  "verdict": "kernel=32; family=13; generated=0; qualification=58; asmdefs=70; projectFiles=33; kernelSources=317; referenceAssertions=218; violations=0; kernelGenreTokens=0; missingPackages=0; familiesOnKernel=13/13; clean=true"
 }

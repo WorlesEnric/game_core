@@ -240,6 +240,41 @@ namespace GameCore.ReferenceConformance
         public const string RewardTableVersion = "card-tent.table-1.version";
 
         /// <summary>
+        /// Whether the rewards installation is still mounted and active: `mounted` before its unmount settles,
+        /// `dormant` once the completed outbox is retained with no active writer (P-032), `none` once it is disposed.
+        /// 07:276's rows read it, so "the unmount was refused" and "the outbox is dormant" are two observations
+        /// rather than one inference.
+        /// </summary>
+        public const string RewardsInstallationState = "outbox.installation";
+
+        /// <summary>
+        /// Pending-work count the installation's own outbox slot carries. The slot's declared schema version is one
+        /// above the version the installation seeds, so a state-policy pass over it runs the declared migration on
+        /// the copied value — 07:276's "scratch-migration precondition that no pending work remains" (P-029). The
+        /// token is the decimal count, or `none` when the slot row is absent.
+        /// </summary>
+        public const string OutboxPendingWork = "outbox.pending-work";
+
+        /// <summary>
+        /// Whether the installation's outbox slot row is dormant (`true`), active (`false`) or absent (`none`):
+        /// `PreserveDormant`'s observable, read from the slot's own `Active` flag (P-032).
+        /// </summary>
+        public const string OutboxSlotDormant = "outbox.slot-dormant";
+
+        /// <summary>
+        /// How many resource leases of the installation are still retained. `0` after a settled unmount and non-zero
+        /// while work is pending, which is what makes the refusal `TeardownBlocked` rather than a false `Disposed`
+        /// (P-047, P-048).
+        /// </summary>
+        public const string OutboxRetainedLeases = "outbox.retained-leases";
+
+        /// <summary>
+        /// The durable outbox rows the installation holds, as a canonical count. A transfer to a compatible owner
+        /// moves them, so the count is the observable both sides of that row read.
+        /// </summary>
+        public const string OutboxRows = "outbox.rows";
+
+        /// <summary>
         /// The one target whose compatibility descriptor declares the complete explicit opt-in (P-013). 07:103's
         /// mode row names it as the target that retains the derived contribution in `Conservative` while every
         /// automatically eligible descendant loses it, so it needs a field of its own: it is not one of the
@@ -353,6 +388,11 @@ namespace GameCore.ReferenceConformance
                 Owned(RewardRecipientTotal, "card-tent", "seat-a.total"),
                 Owned(RewardHolderTotal, "card-tent", "seat-b.total"),
                 Owned(RewardTableVersion, "card-tent", "table-1.version"),
+                Outbox(RewardsInstallationState, "outbox", "installation"),
+                Outbox(OutboxPendingWork, "outbox", "pending-work"),
+                Outbox(OutboxSlotDormant, "outbox", "slot-dormant"),
+                Outbox(OutboxRetainedLeases, "outbox", "retained-leases"),
+                Outbox(OutboxRows, "outbox", "rows"),
                 World(WorldStep, "world", "step"),
             };
         }

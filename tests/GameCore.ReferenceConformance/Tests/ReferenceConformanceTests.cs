@@ -571,12 +571,11 @@ namespace GameCore.ReferenceConformance.Tests
     public sealed class ConformanceDocGapTests
     {
         [Test]
-        public void EveryRecordedGapNamesItsRowItsClauseItsEvidenceAndItsResolution()
+        public void AnyGapThatIsEverDeclaredMustNameItsRowItsClauseItsEvidenceAndItsResolution()
         {
+            // Vacuous today (the registry is empty because 07:276's claims are all carried), and deliberately kept:
+            // when a later revision declares a gap, this is the shape it must have, so a thin entry cannot slip in.
             IReadOnlyList<ConformanceDocGap> gaps = ConformanceDocGaps.All;
-            Assert.That(gaps.Count, Is.GreaterThan(0),
-                "this revision records at least one gap (07:276's pending-work unmount refusal)");
-
             var seen = new HashSet<string>(StringComparer.Ordinal);
             for (int i = 0; i < gaps.Count; i++)
             {
@@ -603,19 +602,44 @@ namespace GameCore.ReferenceConformance.Tests
                 }
 
                 Assert.That(rowExists, Is.True,
-                    gap.GapId + " names a row the table does not carry: " + gap.RowId
-                    + " (a gap whose row was removed is a stale declaration)");
+                    gap.GapId + " names a row the table does not carry: " + gap.RowId);
             }
         }
 
         [Test]
-        public void TheGapRegistryIsALookupAndNotASecondStatusVocabulary()
+        public void ThisRevisionRecordsNoGapBecause070276sClaimsAreAllCarried()
         {
-            Assert.That(ConformanceDocGaps.ById("gc024.gap.does-not-exist"), Is.Null);
-            Assert.That(ConformanceDocGaps.ById(ConformanceDocGaps.RewardBridgeRemovalId), Is.Not.Null);
-            Assert.That(ConformanceDocGaps.Of("cross").Count, Is.EqualTo(1));
-            Assert.That(ConformanceDocGaps.Of("cards").Count, Is.EqualTo(0));
-            Assert.That(ConformanceDocGaps.CanonicalLines().Count, Is.EqualTo(ConformanceDocGaps.All.Count));
+            // The registry is empty on purpose: 07:276's four claims are asserted by four real rows of the cross
+            // table through shipped mechanisms (a fenced resource lease that blocks the teardown, the declared
+            // PreserveDormant last-support policy, the version-change migration as the pending-work precondition,
+            // and the declared owner-transfer policy). An entry here would claim otherwise, so the suite asserts
+            // the empty list and that every cross row it would have covered exists.
+            Assert.That(ConformanceDocGaps.All.Count, Is.EqualTo(0), "no gap may be declared while every claim is carried");
+            ConformanceTable cross = ReferenceTables.ById("cross")!;
+            string[] rows =
+            {
+                "reward-unmount-pending",
+                "reward-drain-then-unmount",
+                "reward-unmount-transfer",
+                "reward-scoring-unmount-keeps-card",
+            };
+            for (int i = 0; i < rows.Length; i++)
+            {
+                bool found = false;
+                for (int r = 0; r < cross.Rows.Count; r++)
+                {
+                    if (string.Equals(cross.Rows[r].RowId, rows[i], StringComparison.Ordinal))
+                    {
+                        found = true;
+                    }
+                }
+
+                Assert.That(found, Is.True, "the cross table must carry 07:276's row '" + rows[i] + "'");
+            }
+
+            Assert.That(ConformanceDocGaps.ById("gc024.gap.reward-bridge-removal"), Is.Null);
+            Assert.That(ConformanceDocGaps.Of("cross").Count, Is.EqualTo(0));
+            Assert.That(ConformanceDocGaps.CanonicalLines().Count, Is.EqualTo(0));
         }
     }
 

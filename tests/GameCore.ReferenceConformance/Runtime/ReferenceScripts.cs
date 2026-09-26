@@ -509,23 +509,41 @@ namespace GameCore.ReferenceConformance
             {
                 new ConformanceStage(
                     "reward-flow",
-                    "07:267-07:276 — one committed choice becomes one durable, idempotent card grant, and the bridge"
-                    + " with pending work is not removable",
-                    new[] { ConformanceOperations.MountProvider, ConformanceOperations.MountRewardBridge },
+                    "07:267-07:276 — one committed choice becomes one durable, idempotent card grant, and the"
+                    + " installation's unmount is gated by its pending work and preserves the completed outbox",
+                    new[]
+                    {
+                        ConformanceOperations.MountProvider,
+                        ConformanceOperations.MountRewardBridge,
+                        ConformanceOperations.MountScoringProvider,
+                    },
                     new List<ConformanceStep>
                     {
-                        // The row itself: 07:267's step 12 is the commit whose receipt the reward keys on, so the row
-                        // is executed by submitting that one choice. Its expectations are the table's own — the fact,
-                        // its version, the conversation, the recognised event and the open obligation, all in one
-                        // publication — so nothing here restates what the transcription already demands.
+                        // 07:267's step 12 is the commit whose receipt the reward keys on, so the row is executed by
+                        // submitting that one choice. Its expectations are the table's own — the fact, its version,
+                        // the conversation, the recognised event and the open obligation, all in one publication —
+                        // so nothing here restates what the transcription already demands.
                         Row("reward-enqueue", ConformanceOperations.CommitCommand, 1,
                             "commit the permit choice: the fact, its event and the pending reward publish together"),
-                        Row("reward-bridge-removal", ConformanceOperations.UnmountRewardBridge, 0,
-                            "attempt to unmount the bridge while one reward is still pending"),
+                        Row("reward-unmount-pending", ConformanceOperations.UnmountRewardBridge, 0,
+                            "attempt to unmount the installation while one reward is still pending"),
                         Row("reward-settle", ConformanceOperations.SettleReward, 0,
                             "dispatch the admitted reward and acknowledge it"),
-                        Row("reward-redelivery", ConformanceOperations.RedeliverReward, 0,
-                            "hand the same obligation to the destination again"),
+                        Row("reward-drain-then-unmount", ConformanceOperations.SettleReward, 1,
+                            "drain the pending work, then unmount: the completed outbox is preserved dormant"),
+                        // The alternative 07:276 names for a pending unmount: an explicitly selected compatible owner
+                        // takes the outbox. A fresh obligation is admitted first, so the transfer has work to carry.
+                        Pre("reward-unmount-transfer", 1, ConformanceOperations.CommitCommand, 1,
+                            "admit one more reward obligation, so the transfer has pending work to carry",
+                            new[]
+                            {
+                                ConformanceExpectation.Require(ConformanceFields.OutboxOpen, "0", "1"),
+                                ConformanceExpectation.Require(ConformanceFields.OutboxRows, "1", "2"),
+                            }),
+                        Row("reward-unmount-transfer", ConformanceOperations.TransferRewardOutbox, 0,
+                            "transfer the outbox to the explicitly selected compatible owner"),
+                        Row("reward-scoring-unmount-keeps-card", ConformanceOperations.UnmountScoringProvider, 0,
+                            "unmount the scoring provider: the issued card and the score survive"),
                     }),
             };
 

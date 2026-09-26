@@ -653,20 +653,85 @@ namespace GameCore.ReferenceConformance
                         ConformanceExpectation.Unchanged(ConformanceFields.BridgePermit, "1"),
                     }),
 
+                // 07:276's four claims. Each is a row of its own because each has a different observable and a
+                // different generic mechanism carrying it (see the HANDOFF's clause-to-mechanism table):
+                //   * the pending unmount is carried by a fenced resource lease the installation still holds, so the
+                //     teardown cannot settle and the lane reports `TeardownBlocked` while the assembly stands;
+                //   * the drain-then-unmount row reads the dormant outbox slot `PreserveDormant` leaves behind;
+                //   * the transfer row moves the durable rows to an explicitly selected compatible owner;
+                //   * the scoring unmount row is the "removal never reverses gameplay" claim (P-003, P-032).
                 new ConformanceRow(
-                    "reward-bridge-removal",
-                    "Unmount the reward bridge while a reward is still pending",
-                    "07:276 — `NarrativeCardRewards` declares `PreserveDormant` with a precondition that no pending"
-                    + " work remains, so unmounting with pending work rejects until it drains or transfers and no"
-                    + " pending reward is lost (REF-X02).",
+                    "reward-unmount-pending",
+                    "Unmount `NarrativeCardRewards` while a reward is still pending",
+                    "07:276 — \"Unmounting with pending work therefore rejects until it drains or transfers.\" The"
+                    + " installation holds a fenced resource lease for its pending work, so the teardown cannot settle:"
+                    + " the unmount is refused with `TeardownBlocked`, the installation stays mounted, and the pending"
+                    + " obligation and every unrelated field are exactly as they were (P-047, P-048, REF-X02).",
                     ConformanceRowOutcome.RefusedKeepsAssembly,
                     new[]
                     {
+                        ConformanceExpectation.Unchanged(ConformanceFields.RewardsInstallationState, "mounted"),
+                        ConformanceExpectation.Unchanged(ConformanceFields.OutboxOpen, "1"),
+                        ConformanceExpectation.Unchanged(ConformanceFields.OutboxPendingWork, "1"),
+                        ConformanceExpectation.Unchanged(ConformanceFields.OutboxMutations, "0"),
+                        ConformanceExpectation.Unchanged(ConformanceFields.OutboxRows, "1"),
+                        ConformanceExpectation.Unchanged(ConformanceFields.BridgePermit, "1"),
+                        ConformanceExpectation.Preserved(ConformanceFields.RewardRecipientHandSize),
+                        ConformanceExpectation.Preserved(ConformanceFields.RewardHolderHandSize),
+                    }),
+
+                new ConformanceRow(
+                    "reward-drain-then-unmount",
+                    "Drain the reward (grant and acknowledge), then unmount: the completed outbox is preserved dormant",
+                    "07:276 — \"declares `PreserveDormant` for its completed outbox, with a scratch-migration"
+                    + " precondition that no pending work remains.\" With the work drained the state-policy pass's"
+                    + " migration accepts its copied value, the slot's last-support loss retains the completed rows"
+                    + " with no active writer, and the unmount settles (P-029, P-032).",
+                    ConformanceRowOutcome.Published,
+                    new[]
+                    {
+                        ConformanceExpectation.Require(ConformanceFields.OutboxOpen, "1", "0"),
+                        ConformanceExpectation.Require(ConformanceFields.OutboxAcknowledged, "0", "1"),
+                        ConformanceExpectation.Require(ConformanceFields.OutboxPendingWork, "1", "0"),
+                        ConformanceExpectation.Require(ConformanceFields.OutboxSlotDormant, "false", "true"),
+                        ConformanceExpectation.Require(ConformanceFields.OutboxRetainedLeases, "1", "0"),
+                        ConformanceExpectation.Require(
+                            ConformanceFields.RewardsInstallationState, "mounted", "dormant"),
+                        ConformanceExpectation.Unchanged(ConformanceFields.OutboxRows, "1"),
+                        ConformanceExpectation.Unchanged(ConformanceFields.BridgePermit, "1"),
+                    }),
+
+                new ConformanceRow(
+                    "reward-unmount-transfer",
+                    "Unmount with pending work by transferring the outbox to an explicitly selected compatible owner",
+                    "07:276 — \"alternatively an explicitly selected compatible `TransferTo` owner may take the"
+                    + " outbox.\" The transfer resolves through the declared owner-transfer policy against the"
+                    + " revision's own owner set, the rows move to the named destination, and nothing is lost"
+                    + " (P-025, P-032, REF-X02).",
+                    ConformanceRowOutcome.Published,
+                    new[]
+                    {
+                        ConformanceExpectation.Require(ConformanceFields.OutboxRows, "1", "1"),
                         ConformanceExpectation.Unchanged(ConformanceFields.OutboxOpen, "1"),
                         ConformanceExpectation.Unchanged(ConformanceFields.OutboxMutations, "0"),
                         ConformanceExpectation.Unchanged(ConformanceFields.BridgePermit, "1"),
-                        ConformanceExpectation.Unchanged(ConformanceFields.RewardRecipientHandSize, "4"),
-                        ConformanceExpectation.Unchanged(ConformanceFields.RewardHolderHandSize, "4"),
+                    }),
+
+                new ConformanceRow(
+                    "reward-scoring-unmount-keeps-card",
+                    "Unmount the scoring provider after a reward was granted: the card and the score survive",
+                    "07:276 — \"Unmounting `FestivalScoring` does not undo an issued card or a score.\" Retracting a"
+                    + " capability contribution is not a gameplay effect and cannot reverse committed state"
+                    + " (P-003, P-032).",
+                    ConformanceRowOutcome.Published,
+                    new[]
+                    {
+                        ConformanceExpectation.Require(
+                            ConformanceFields.SeatBonus(0U), "2", ConformanceValue.None),
+                        ConformanceExpectation.Unchanged(ConformanceFields.RewardRecipientHandSize, "5"),
+                        ConformanceExpectation.Unchanged(ConformanceFields.RewardHolderHandSize, "3"),
+                        ConformanceExpectation.Unchanged(ConformanceFields.OutboxMutations, "1"),
+                        ConformanceExpectation.Unchanged(ConformanceFields.OutboxAcknowledged, "1"),
                     }),
             };
             return new ConformanceTable(

@@ -68,41 +68,13 @@ namespace GameCore.ReferenceConformance
     public static class ConformanceDocGaps
     {
         /// <summary>
-        /// `07:276`: *"`NarrativeCardRewards` declares `PreserveDormant` for its completed outbox, with a
-        /// scratch-migration precondition that no pending work remains; alternatively an explicitly selected
-        /// compatible `TransferTo` owner may take the outbox. Unmounting with pending work therefore rejects until it
-        /// drains or transfers."*
-        ///
-        /// The row is in the transcribed table and in the script, so the *attempt* is part of the run; what this
-        /// revision cannot do is perform it, because the bridge is an ordinary caller-owned object rather than a
-        /// mounted installation: there is no installation to unmount and therefore no place for the declared
-        /// `PreserveDormant` policy to live. `artifacts/gc-021/HANDOFF.md` §7 item 5 recorded exactly this absence
-        /// when GC-021 shipped the bridge.
+        /// No gap is recorded for this revision. `07:276`'s four claims are now carried by shipped generic
+        /// mechanisms and asserted by four real rows of the `cross` table (`reward-unmount-pending`,
+        /// `reward-drain-then-unmount`, `reward-unmount-transfer`, `reward-scoring-unmount-keeps-card`), so the
+        /// registry is deliberately empty: a declared gap would be a false statement about the revision, and this
+        /// type's `All` list is what a suite asserts the run's own gaps against, in both directions.
         /// </summary>
-        public const string RewardBridgeRemovalId = "gc024.gap.reward-bridge-removal";
-
-        /// <summary>Every gap this revision records.</summary>
-        public static IReadOnlyList<ConformanceDocGap> All { get; } = new[]
-        {
-            new ConformanceDocGap(
-                RewardBridgeRemovalId,
-                "cross",
-                "reward-bridge-removal",
-                "07:276 (\"Unmounting with pending work therefore rejects until it drains or transfers\") and 00 P-032's"
-                + " last-support-loss policy set (\"Last-support loss MUST declare one of: RemoveDerived,"
-                + " PreserveDormant, or TransferTo a named available owner\")",
-                "a mounted installation for the reward bridge: `NarrativeCardRewards` is constructed as an ordinary"
-                + " caller-owned object (the bridge owns its outbox and its destination port directly), so this"
-                + " revision has no installation identity, no plugin manifest and therefore no slot policy to declare"
-                + " or to enforce on removal",
-                "artifacts/gc-021/HANDOFF.md §7 item 5 (\"PRESERVE for the completed outbox is not declared ... the"
-                + " declaration has nowhere to live until a task mounts the bridge as a plugin\")",
-                "mount the bridge as a declared plugin instance in the combination's own package (a manifest with the"
-                + " bridge's state slots, an O-03 mount payload and the PreserveDormant policy on its last-support"
-                + " loss), which makes the unmount attempt a lane operation this row can then observe; the row's"
-                + " expectations need no change, since 07 states them in terms of the installation's policy rather"
-                + " than of any API"),
-        };
+        public static IReadOnlyList<ConformanceDocGap> All { get; } = Array.Empty<ConformanceDocGap>();
 
         /// <summary>The gap with this identifier, or null.</summary>
         public static ConformanceDocGap? ById(string gapId)
