@@ -152,17 +152,48 @@ GC028_ADDED = (
     "GameCore.Contracts.Tests.ServiceBindingLeaseTests",
     "GameCore.Execution.Tests.ReadPortConformanceTests",
     "GameCore.Planning.Scheduling.Tests.BufferProducerConformanceTests",
+    "GameCore.Composition.Tests.ProviderFailureTests",
+    "GameCore.Composition.Tests.ActivationLedgerTests.AnUnexpectedFailureOfALiveActivation",
+    "GameCore.Composition.Tests.ActivationLedgerTests.OnlyALiveActivationCanFailUnexpectedly",
+    "GameCore.Composition.Tests.ActivationLedgerTests.AFailedActivationCanOnlyRetryOrRetire",
+    "GameCore.Composition.Tests.ActivationLedgerTests.ReportingTheSameLiveFailureTwiceIsIdempotent",
+)
+
+
+# Exact references this task adds for other schemes (a Unity test name, a probe observation). They cannot exist in a
+# tree recorded before this task, so they are reported as pending rather than as a wrong name; they resolve as soon
+# as `tools/conformance/run_test_matrix.sh` has recorded a run of the fresh revision.
+GC028_ADDED_REFERENCES = (
+    "probe:Faults/narrative/gc017-provider-failure-that-cannot-publish-faults-the-world",
+    "probe:Faults/cards/gc017-provider-failure-that-cannot-publish-faults-the-world",
+    "probe:Faults/narrative/gc017-provider-failure-publishes-a-safe-deactivation",
+    "probe:Faults/cards/gc017-provider-failure-publishes-a-safe-deactivation",
+    "probe:Faults/fixture:narrative/gc017-provider-failure-that-cannot-publish-faults-the-world",
+    "probe:Faults/fixture:cards/gc017-provider-failure-that-cannot-publish-faults-the-world",
+    "unity:GameCore.Faults.Tests.FaultScenarioIntegrationTests.TheNarrativeFamilyPinsTheProviderFailureDeactivation",
+    "unity:GameCore.Faults.Tests.FaultScenarioIntegrationTests.TheCardsFamilyPinsTheProviderFailureDeactivation",
+    "unity:GameCore.Faults.Tests.FaultScenarioIntegrationTests.TheNarrativeFamilyPinsTheProviderFailureThatFaultsTheWorld",
+    "unity:GameCore.Faults.Tests.FaultScenarioIntegrationTests.TheCardsFamilyPinsTheProviderFailureThatFaultsTheWorld",
 )
 
 
 def is_added_by_gc028(reference):
     """True when a reference names a test this task added rather than a mistake in the map."""
     text = str(reference)
+    if text in GC028_ADDED_REFERENCES:
+        return True
     dotnet_added = text.startswith("dotnet:") and (
         "GameCore.Contracts.Tests.RequiredDiagnosticCodeTests" in text
         or "GameCore.Contracts.Tests.ServiceBindingLeaseTests" in text
         or "GameCore.Execution.Tests.ReadPortConformanceTests" in text
-        or "GameCore.Planning.Scheduling.Tests.BufferProducerConformanceTests" in text)
+        or "GameCore.Planning.Scheduling.Tests.BufferProducerConformanceTests" in text
+        or "GameCore.Composition.Tests.ProviderFailureTests" in text
+        or "GameCore.Composition.Tests.ActivationLedgerTests.AnUnexpectedFailureOfALiveActivation" in text
+        or "GameCore.Composition.Tests.ActivationLedgerTests.OnlyALiveActivationCanFailUnexpectedly" in text
+        or "GameCore.Composition.Tests.ActivationLedgerTests.AFailedActivationCanOnlyRetryOrRetire" in text
+        or "GameCore.Composition.Tests.ActivationLedgerTests.ReportingTheSameLiveFailureTwiceIsIdempotent" in text
+        or "GameCore.Composition.Tests.InstallationLifecycleTests.EveryStatePairMatchesTheLifecycleDiagramExactly"
+           in text)
     if dotnet_added:
         return True
     return False
@@ -507,20 +538,39 @@ REQUIREMENTS = {
           "dotnet:GameCore.Composition.Tests.IncrementalInvalidationTests.AValidatorRefusalRejectsTheSwitchAndKeepsTheOldModeAndRevision",
           "dotnet:GameCore.Planning.Tests.MigrationAndAcquisitionTests.AFailingMigrationRejectsItsInputWithoutWritingScratch",
           "dotnet:GameCore.Composition.Tests.ServiceClosureDeltaTests.ARejectedPlanHasAnEmptyClosureDelta"),
-        C("an existing provider that fails unexpectedly cannot be kept active: the world stops admission and "
-          "faults if a safe dependency-closure deactivation cannot publish; there is no invisible partial success "
-          "or timeout-based unsafe release",
-          "dotnet:GameCore.Composition.Tests.TeardownAndQuarantineTests.ABlockedJobPreventsTheBufferReleaseUntilTheJobCompletes",
-          blocked="V1 has no path that fails an already-Active provider. The installation state machine's only "
-                  "Failed edge is Preparing -> Failed (`Packages/com.gamecore.composition/Runtime/Lifecycle/"
-                  "InstallationStateMachine.cs`), `ActivationLedger`'s only failing transition is AbortCandidate on "
-                  "a candidate, and no composition-side caller signals the Unity world's fault latch "
-                  "(`UnityWorldHost.EnterFaulted` / `UnityExecutionDriver.Fault`) when a dependency-closure "
-                  "deactivation cannot publish. The reachable half — a blocked deactivation retaining its resources "
-                  "and never reporting Disposed — is asserted by the evidence below and by "
-                  "`ResourceGateTests.UnmountPublishesCleanupErrorsWithRetainedReferences`; the fault half needs an "
-                  "Active -> Failed edge plus a composition-to-world fault signal, which is a mechanism change and "
-                  "not a Wave 8 conformance fix. Recorded here rather than marked Pass."),
+        C("an existing provider that fails unexpectedly cannot be kept active: the kernel prompts a safe "
+          "dependency-closure deactivation — the failed provider and everything depending on it leave the new "
+          "assembly in one publication, with no invisible partial success",
+          "dotnet:GameCore.Composition.Tests.ActivationLedgerTests.AnUnexpectedFailureOfALiveActivationIsPermittedAndRecordsItsReason",
+          "dotnet:GameCore.Composition.Tests.ActivationLedgerTests.OnlyALiveActivationCanFailUnexpectedly",
+          "dotnet:GameCore.Composition.Tests.ActivationLedgerTests.AFailedActivationCanOnlyRetryOrRetire",
+          "dotnet:GameCore.Composition.Tests.ActivationLedgerTests.ReportingTheSameLiveFailureTwiceIsIdempotent",
+          "dotnet:GameCore.Composition.Tests.InstallationLifecycleTests.EveryStatePairMatchesTheLifecycleDiagramExactly",
+          "dotnet:GameCore.Composition.Tests.ProviderFailureTests.AnUnexpectedProviderFailurePublishesASafeDeactivationOfTheProviderAndItsDependents",
+          "dotnet:GameCore.Composition.Tests.ProviderFailureTests.AProviderFailureReportIsHonestAboutTheRecordedCauseAndNeverClaimsAPartialPublication",
+          "dotnet:GameCore.Composition.Tests.ProviderFailureTests.AProviderThatIsNotActiveCannotReportAnUnexpectedFailure",
+          "unity:GameCore.Faults.Tests.FaultScenarioIntegrationTests.TheNarrativeFamilyPinsTheProviderFailureDeactivation",
+          "unity:GameCore.Faults.Tests.FaultScenarioIntegrationTests.TheCardsFamilyPinsTheProviderFailureDeactivation",
+          "probe:Faults/narrative/gc017-provider-failure-publishes-a-safe-deactivation",
+          "probe:Faults/cards/gc017-provider-failure-publishes-a-safe-deactivation",
+          note="implemented by GC-028: `InstallationStateMachine` gained the `Active -> Failed` edge (06 s1's "
+               "diagram and prose record it), `ActivationLedger.FailActive` records the failure with a diagnostic, "
+               "and `CompositionHost.FailActiveProvider` publishes the deactivation through the ordinary validated "
+               "lane. A failed installation exposes no bindings, so its consumers move to WaitingForDependencies "
+               "in that same publication."),
+        C("the world stops admission and faults if that safe deactivation cannot publish; there is no invisible "
+          "partial success and no timeout-based unsafe release",
+          "dotnet:GameCore.Composition.Tests.ProviderFailureTests.ADeactivationThatCannotPublishLeavesTheOldAssemblyAndReportsTheRefusal",
+          "unity:GameCore.Faults.Tests.FaultScenarioIntegrationTests.TheNarrativeFamilyPinsTheProviderFailureThatFaultsTheWorld",
+          "unity:GameCore.Faults.Tests.FaultScenarioIntegrationTests.TheCardsFamilyPinsTheProviderFailureThatFaultsTheWorld",
+          "unity:GameCore.Faults.Tests.FaultScenarioIntegrationTests.TheFrozenObservationTableMatchesBothDigestLiterals",
+          "probe:Faults/narrative/gc017-provider-failure-that-cannot-publish-faults-the-world",
+          "probe:Faults/cards/gc017-provider-failure-that-cannot-publish-faults-the-world",
+          "note: the Unity observation asserts admission closed, no epoch or image published after the fault, the "
+               "world Faulted with DiagnosticCode.ProviderFailed, PumpFrame refusing to pump, and a checkpoint "
+               "restore into a new session through InitialDefinitionRecovery.Recover; the EditMode suite pins both "
+               "new observation names per family so a rename or reorder fails rather than shrinking the table "
+               "(P-008)."),
     ]),
     "P-013": R("Mode semantics", [
         C("PropagationMode is one world-level setting: Automatic (default) or Conservative",

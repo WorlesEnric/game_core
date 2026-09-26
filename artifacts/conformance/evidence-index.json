@@ -19,20 +19,12 @@
     "requirements": 60,
     "operations": 26,
     "byStatus": {
-      "Pass": 82,
-      "Blocked": 1,
+      "Pass": 83,
       "NotRun": 2,
       "Deferred": 1
     },
     "unresolvedReferenceCount": 0,
     "nonPass": [
-      {
-        "id": "P-012",
-        "status": "Blocked",
-        "failed_clauses": [
-          "an existing provider that fails unexpectedly cannot be kept active: the world stops admission and faults if a safe dependency-closure deactivation cannot publish; there is no invisible partial success or timeout-based unsafe release"
-        ]
-      },
       {
         "id": "P-043",
         "status": "NotRun",
@@ -55,13 +47,77 @@
         ]
       }
     ],
-    "gc028AddedNotYetRecorded": 14
+    "gc028AddedNotYetRecorded": 30
   },
   "unresolvedReferences": [],
   "gc028AddedNotYetRecorded": [
     {
       "clause": "service bindings resolve once per assembly, not per target per frame",
       "reference": "dotnet:GameCore.Contracts.Tests.ServiceBindingLeaseTests.TwoResolutionsOfOneProviderAreTheSameBindingValueAndKeepTheirLease"
+    },
+    {
+      "clause": "an existing provider that fails unexpectedly cannot be kept active: the kernel prompts a safe dependency-closure deactivation \u2014 the failed provider and everything depending on it leave the new assembly in one publication, with no invisible partial success",
+      "reference": "dotnet:GameCore.Composition.Tests.ActivationLedgerTests.AnUnexpectedFailureOfALiveActivationIsPermittedAndRecordsItsReason"
+    },
+    {
+      "clause": "an existing provider that fails unexpectedly cannot be kept active: the kernel prompts a safe dependency-closure deactivation \u2014 the failed provider and everything depending on it leave the new assembly in one publication, with no invisible partial success",
+      "reference": "dotnet:GameCore.Composition.Tests.ActivationLedgerTests.OnlyALiveActivationCanFailUnexpectedly"
+    },
+    {
+      "clause": "an existing provider that fails unexpectedly cannot be kept active: the kernel prompts a safe dependency-closure deactivation \u2014 the failed provider and everything depending on it leave the new assembly in one publication, with no invisible partial success",
+      "reference": "dotnet:GameCore.Composition.Tests.ActivationLedgerTests.AFailedActivationCanOnlyRetryOrRetire"
+    },
+    {
+      "clause": "an existing provider that fails unexpectedly cannot be kept active: the kernel prompts a safe dependency-closure deactivation \u2014 the failed provider and everything depending on it leave the new assembly in one publication, with no invisible partial success",
+      "reference": "dotnet:GameCore.Composition.Tests.ActivationLedgerTests.ReportingTheSameLiveFailureTwiceIsIdempotent"
+    },
+    {
+      "clause": "an existing provider that fails unexpectedly cannot be kept active: the kernel prompts a safe dependency-closure deactivation \u2014 the failed provider and everything depending on it leave the new assembly in one publication, with no invisible partial success",
+      "reference": "dotnet:GameCore.Composition.Tests.ProviderFailureTests.AnUnexpectedProviderFailurePublishesASafeDeactivationOfTheProviderAndItsDependents"
+    },
+    {
+      "clause": "an existing provider that fails unexpectedly cannot be kept active: the kernel prompts a safe dependency-closure deactivation \u2014 the failed provider and everything depending on it leave the new assembly in one publication, with no invisible partial success",
+      "reference": "dotnet:GameCore.Composition.Tests.ProviderFailureTests.AProviderFailureReportIsHonestAboutTheRecordedCauseAndNeverClaimsAPartialPublication"
+    },
+    {
+      "clause": "an existing provider that fails unexpectedly cannot be kept active: the kernel prompts a safe dependency-closure deactivation \u2014 the failed provider and everything depending on it leave the new assembly in one publication, with no invisible partial success",
+      "reference": "dotnet:GameCore.Composition.Tests.ProviderFailureTests.AProviderThatIsNotActiveCannotReportAnUnexpectedFailure"
+    },
+    {
+      "clause": "an existing provider that fails unexpectedly cannot be kept active: the kernel prompts a safe dependency-closure deactivation \u2014 the failed provider and everything depending on it leave the new assembly in one publication, with no invisible partial success",
+      "reference": "unity:GameCore.Faults.Tests.FaultScenarioIntegrationTests.TheNarrativeFamilyPinsTheProviderFailureDeactivation"
+    },
+    {
+      "clause": "an existing provider that fails unexpectedly cannot be kept active: the kernel prompts a safe dependency-closure deactivation \u2014 the failed provider and everything depending on it leave the new assembly in one publication, with no invisible partial success",
+      "reference": "unity:GameCore.Faults.Tests.FaultScenarioIntegrationTests.TheCardsFamilyPinsTheProviderFailureDeactivation"
+    },
+    {
+      "clause": "an existing provider that fails unexpectedly cannot be kept active: the kernel prompts a safe dependency-closure deactivation \u2014 the failed provider and everything depending on it leave the new assembly in one publication, with no invisible partial success",
+      "reference": "probe:Faults/narrative/gc017-provider-failure-publishes-a-safe-deactivation"
+    },
+    {
+      "clause": "an existing provider that fails unexpectedly cannot be kept active: the kernel prompts a safe dependency-closure deactivation \u2014 the failed provider and everything depending on it leave the new assembly in one publication, with no invisible partial success",
+      "reference": "probe:Faults/cards/gc017-provider-failure-publishes-a-safe-deactivation"
+    },
+    {
+      "clause": "the world stops admission and faults if that safe deactivation cannot publish; there is no invisible partial success and no timeout-based unsafe release",
+      "reference": "dotnet:GameCore.Composition.Tests.ProviderFailureTests.ADeactivationThatCannotPublishLeavesTheOldAssemblyAndReportsTheRefusal"
+    },
+    {
+      "clause": "the world stops admission and faults if that safe deactivation cannot publish; there is no invisible partial success and no timeout-based unsafe release",
+      "reference": "unity:GameCore.Faults.Tests.FaultScenarioIntegrationTests.TheNarrativeFamilyPinsTheProviderFailureThatFaultsTheWorld"
+    },
+    {
+      "clause": "the world stops admission and faults if that safe deactivation cannot publish; there is no invisible partial success and no timeout-based unsafe release",
+      "reference": "unity:GameCore.Faults.Tests.FaultScenarioIntegrationTests.TheCardsFamilyPinsTheProviderFailureThatFaultsTheWorld"
+    },
+    {
+      "clause": "the world stops admission and faults if that safe deactivation cannot publish; there is no invisible partial success and no timeout-based unsafe release",
+      "reference": "probe:Faults/narrative/gc017-provider-failure-that-cannot-publish-faults-the-world"
+    },
+    {
+      "clause": "the world stops admission and faults if that safe deactivation cannot publish; there is no invisible partial success and no timeout-based unsafe release",
+      "reference": "probe:Faults/cards/gc017-provider-failure-that-cannot-publish-faults-the-world"
     },
     {
       "clause": "duplicate producers are legal when registered; fan-out uses explicit immutable read ports",
@@ -1621,7 +1677,7 @@
     {
       "id": "P-012",
       "title": "Dependency closure",
-      "status": "Blocked",
+      "status": "Pass",
       "clauses": [
         {
           "clause": "required service providers prepare before consumers and retire after consumers",
@@ -1720,17 +1776,142 @@
           ]
         },
         {
-          "clause": "an existing provider that fails unexpectedly cannot be kept active: the world stops admission and faults if a safe dependency-closure deactivation cannot publish; there is no invisible partial success or timeout-based unsafe release",
-          "status": "Blocked",
+          "clause": "an existing provider that fails unexpectedly cannot be kept active: the kernel prompts a safe dependency-closure deactivation \u2014 the failed provider and everything depending on it leave the new assembly in one publication, with no invisible partial success",
+          "status": "Pass",
           "evidence": [
             {
-              "reference": "dotnet:GameCore.Composition.Tests.TeardownAndQuarantineTests.ABlockedJobPreventsTheBufferReleaseUntilTheJobCompletes",
+              "reference": "dotnet:GameCore.Composition.Tests.ActivationLedgerTests.AnUnexpectedFailureOfALiveActivationIsPermittedAndRecordsItsReason",
+              "status": "NotRun",
+              "source": null,
+              "detail": "added by GC-028; record it with tools/conformance/run_test_matrix.sh",
+              "pending": true
+            },
+            {
+              "reference": "dotnet:GameCore.Composition.Tests.ActivationLedgerTests.OnlyALiveActivationCanFailUnexpectedly",
+              "status": "NotRun",
+              "source": null,
+              "detail": "added by GC-028; record it with tools/conformance/run_test_matrix.sh",
+              "pending": true
+            },
+            {
+              "reference": "dotnet:GameCore.Composition.Tests.ActivationLedgerTests.AFailedActivationCanOnlyRetryOrRetire",
+              "status": "NotRun",
+              "source": null,
+              "detail": "added by GC-028; record it with tools/conformance/run_test_matrix.sh",
+              "pending": true
+            },
+            {
+              "reference": "dotnet:GameCore.Composition.Tests.ActivationLedgerTests.ReportingTheSameLiveFailureTwiceIsIdempotent",
+              "status": "NotRun",
+              "source": null,
+              "detail": "added by GC-028; record it with tools/conformance/run_test_matrix.sh",
+              "pending": true
+            },
+            {
+              "reference": "dotnet:GameCore.Composition.Tests.InstallationLifecycleTests.EveryStatePairMatchesTheLifecycleDiagramExactly",
               "status": "Pass",
               "source": "artifacts/w7-gate/trx/w7_net8.0_20260927023410.trx",
               "detail": "trx"
+            },
+            {
+              "reference": "dotnet:GameCore.Composition.Tests.ProviderFailureTests.AnUnexpectedProviderFailurePublishesASafeDeactivationOfTheProviderAndItsDependents",
+              "status": "NotRun",
+              "source": null,
+              "detail": "added by GC-028; record it with tools/conformance/run_test_matrix.sh",
+              "pending": true
+            },
+            {
+              "reference": "dotnet:GameCore.Composition.Tests.ProviderFailureTests.AProviderFailureReportIsHonestAboutTheRecordedCauseAndNeverClaimsAPartialPublication",
+              "status": "NotRun",
+              "source": null,
+              "detail": "added by GC-028; record it with tools/conformance/run_test_matrix.sh",
+              "pending": true
+            },
+            {
+              "reference": "dotnet:GameCore.Composition.Tests.ProviderFailureTests.AProviderThatIsNotActiveCannotReportAnUnexpectedFailure",
+              "status": "NotRun",
+              "source": null,
+              "detail": "added by GC-028; record it with tools/conformance/run_test_matrix.sh",
+              "pending": true
+            },
+            {
+              "reference": "unity:GameCore.Faults.Tests.FaultScenarioIntegrationTests.TheNarrativeFamilyPinsTheProviderFailureDeactivation",
+              "status": "NotRun",
+              "source": null,
+              "detail": "added by GC-028; record it with tools/conformance/run_test_matrix.sh",
+              "pending": true
+            },
+            {
+              "reference": "unity:GameCore.Faults.Tests.FaultScenarioIntegrationTests.TheCardsFamilyPinsTheProviderFailureDeactivation",
+              "status": "NotRun",
+              "source": null,
+              "detail": "added by GC-028; record it with tools/conformance/run_test_matrix.sh",
+              "pending": true
+            },
+            {
+              "reference": "probe:Faults/narrative/gc017-provider-failure-publishes-a-safe-deactivation",
+              "status": "NotRun",
+              "source": null,
+              "detail": "added by GC-028; record it with tools/conformance/run_test_matrix.sh",
+              "pending": true
+            },
+            {
+              "reference": "probe:Faults/cards/gc017-provider-failure-publishes-a-safe-deactivation",
+              "status": "NotRun",
+              "source": null,
+              "detail": "added by GC-028; record it with tools/conformance/run_test_matrix.sh",
+              "pending": true
             }
           ],
-          "blocked": "V1 has no path that fails an already-Active provider. The installation state machine's only Failed edge is Preparing -> Failed (`Packages/com.gamecore.composition/Runtime/Lifecycle/InstallationStateMachine.cs`), `ActivationLedger`'s only failing transition is AbortCandidate on a candidate, and no composition-side caller signals the Unity world's fault latch (`UnityWorldHost.EnterFaulted` / `UnityExecutionDriver.Fault`) when a dependency-closure deactivation cannot publish. The reachable half \u2014 a blocked deactivation retaining its resources and never reporting Disposed \u2014 is asserted by the evidence below and by `ResourceGateTests.UnmountPublishesCleanupErrorsWithRetainedReferences`; the fault half needs an Active -> Failed edge plus a composition-to-world fault signal, which is a mechanism change and not a Wave 8 conformance fix. Recorded here rather than marked Pass."
+          "note": "implemented by GC-028: `InstallationStateMachine` gained the `Active -> Failed` edge (06 s1's diagram and prose record it), `ActivationLedger.FailActive` records the failure with a diagnostic, and `CompositionHost.FailActiveProvider` publishes the deactivation through the ordinary validated lane. A failed installation exposes no bindings, so its consumers move to WaitingForDependencies in that same publication."
+        },
+        {
+          "clause": "the world stops admission and faults if that safe deactivation cannot publish; there is no invisible partial success and no timeout-based unsafe release",
+          "status": "Pass",
+          "evidence": [
+            {
+              "reference": "dotnet:GameCore.Composition.Tests.ProviderFailureTests.ADeactivationThatCannotPublishLeavesTheOldAssemblyAndReportsTheRefusal",
+              "status": "NotRun",
+              "source": null,
+              "detail": "added by GC-028; record it with tools/conformance/run_test_matrix.sh",
+              "pending": true
+            },
+            {
+              "reference": "unity:GameCore.Faults.Tests.FaultScenarioIntegrationTests.TheNarrativeFamilyPinsTheProviderFailureThatFaultsTheWorld",
+              "status": "NotRun",
+              "source": null,
+              "detail": "added by GC-028; record it with tools/conformance/run_test_matrix.sh",
+              "pending": true
+            },
+            {
+              "reference": "unity:GameCore.Faults.Tests.FaultScenarioIntegrationTests.TheCardsFamilyPinsTheProviderFailureThatFaultsTheWorld",
+              "status": "NotRun",
+              "source": null,
+              "detail": "added by GC-028; record it with tools/conformance/run_test_matrix.sh",
+              "pending": true
+            },
+            {
+              "reference": "unity:GameCore.Faults.Tests.FaultScenarioIntegrationTests.TheFrozenObservationTableMatchesBothDigestLiterals",
+              "status": "Pass",
+              "source": "artifacts/w7-gate/unity/editmode-results.xml",
+              "detail": "unity xml"
+            },
+            {
+              "reference": "probe:Faults/narrative/gc017-provider-failure-that-cannot-publish-faults-the-world",
+              "status": "NotRun",
+              "source": null,
+              "detail": "added by GC-028; record it with tools/conformance/run_test_matrix.sh",
+              "pending": true
+            },
+            {
+              "reference": "probe:Faults/cards/gc017-provider-failure-that-cannot-publish-faults-the-world",
+              "status": "NotRun",
+              "source": null,
+              "detail": "added by GC-028; record it with tools/conformance/run_test_matrix.sh",
+              "pending": true
+            }
+          ],
+          "note": "the Unity observation asserts admission closed, no epoch or image published after the fault, the world Faulted with DiagnosticCode.ProviderFailed, PumpFrame refusing to pump, and a checkpoint restore into a new session through InitialDefinitionRecovery.Recover; the EditMode suite pins both new observation names per family so a rename or reorder fails rather than shrinking the table (P-008)."
         }
       ]
     },

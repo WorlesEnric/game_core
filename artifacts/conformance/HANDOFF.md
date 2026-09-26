@@ -28,9 +28,15 @@ What this task produced:
 
    | Scope | Total | Pass | Deferred | NotRun | Blocked | Fail |
    | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-   | Requirements `P-001`..`P-060` | 60 | 56 | 1 | 2 | 1 | 0 |
+   | Requirements `P-001`..`P-060` | 60 | 57 | 1 | 2 | 0 | 0 |
    | Operations `O-01`..`O-26` | 26 | 26 | 0 | 0 | 0 | 0 |
-   | **All rows** | **86** | **82** | **1** | **2** | **1** | **0** |
+   | **All rows** | **86** | **83** | **1** | **2** | **0** | **0** |
+
+   **Round-1 correction:** `P-012` was recorded `Blocked` in the first round and is now **Pass**. The
+   orchestrator was right that 09's Wave 8 gate admits no blocked required case, and that P-012 is required
+   V1 behaviour: §2.1 below records the mechanism that closed it — follow P-012's own wording, the kernel
+   *first* attempts the safe dependency-closure deactivation and faults only when that publication cannot
+   happen.
 
    Unresolved evidence references: **0**. The four non-Pass rows are named in §4; the two `NotRun` requirement
    rows are the two clauses whose only executable evidence is the test this task wrote, which no recorded tree can
@@ -51,30 +57,67 @@ What this task produced:
 
 ## 2. The three findings that matter
 
-### 2.1 One genuinely unreachable required clause: P-012's unexpected-provider failure → **Blocked**
+### 2.1 P-012's unexpected-provider failure: implemented, both branches
 
 P-012 says: *"An existing provider that fails unexpectedly cannot be kept active: the world stops admission and
 faults if a safe dependency-closure deactivation cannot publish."*
 
-The audit found that V1 has **no path that fails an already-Active provider**:
+The round-1 audit found V1 had no path that fails an already-Active provider at all — the only `Failed` edge was
+`Preparing -> Failed`, reachable solely by a staged candidate — so the clause was unreachable, not merely
+unevidenced. It is now implemented, in P-012's own order (`kernel:` commits `299d032`, `10f2251`, `2b65fd3`,
+`09928bd`):
 
-* `Packages/com.gamecore.composition/Runtime/Lifecycle/InstallationStateMachine.cs` — the only `Failed` edge is
-  `Preparing → Failed`. There is no `Active → Failed`.
-* `Packages/com.gamecore.composition/Runtime/Lifecycle/ActivationLedger.cs` — the only failing transition is
-  `AbortCandidate` ("a candidate can only fail from Preparing"). No method fails a live activation.
-* No composition-side caller signals the world's fault latch. `UnityWorldHost.EnterFaulted` /
-  `UnityExecutionDriver.Fault` exist and `WorldCompositionBridge.SubmitAndExecute` does refuse a non-`Running`
-  world, but nothing connects "a dependency-closure deactivation cannot publish" to that latch.
+1. **`Active -> Failed`** is a legal edge in `InstallationStateMachine`, decided in the same single place as every
+   other edge, and distinct from `Preparing -> Failed` (a candidate failing while preparing leaves the running
+   activation untouched). `06` s1's diagram and prose record both, and the exhaustive edge-table test carries the
+   new pair.
+2. **`ActivationLedger.FailActive(instance, code, detail, out failed)`** records the failure the way
+   `AbortCandidate` records a candidate abort: it counts it once, stores the diagnostic code and detail, and is a
+   permitted no-op when the activation is already `Failed` (the failure is one fact). A non-Active installation is
+   refused, not silently marked failed.
+3. **The safe dependency-closure deactivation** is `CompositionEditSubject.InstallProviderFailure` planned by
+   `CompositionEditApplier.PlanProviderFailure`. Because `Failed` exposes no bindings
+   (`InstallationStateMachine.CanResolveActivation`), the *existing* resolver moves every consumer that required
+   the failed provider to `WaitingForDependencies` and retracts its contribution **in that same publication**. The
+   new revision and epoch never contain the failed provider's authority, so no partial success is representable.
+   No second composition language was introduced.
+4. **`CompositionHost.FailActiveProvider(...)`** is the kernel entry point: one ordinary validated lane
+   publication, reporting either the token of the published deactivation or the refusal that stopped it — never
+   both, never neither.
+5. **`LifecycleController.FailProvider(...)`** is the world policy. It attempts the deactivation and publishes the
+   world's derived assembly for the same operation; only if that cannot publish does it call
+   `UnityWorldHost.EnterFaulted`, which is the GC-017/W5-proven fail-stop: admission closes, no further epoch or
+   snapshot publishes, no simulation resumes, the last committed image stays the only safe observation. Recovery
+   is a checkpoint restore into a new session (GC-027).
+6. **A new fault boundary** `FaultBoundary.ProviderDeactivationPublication` (name
+   `provider-deactivation-publication`) makes the "cannot publish" branch deterministic for the tests, inside the
+   same `GAMECORE_FAULT_INJECTION` guard as every other boundary, and registered in
+   `tools/check_release_fault_free.py`'s name table and owner list so it is compiled out of a release shape like
+   the rest.
 
-So the row is **`Blocked`**, with the missing mechanism named in the index itself. It is *not* marked Pass, and the
-reachable half — a blocked deactivation retaining its resources and never reporting `Disposed` — is evidenced
-separately (`TeardownAndQuarantineTests.ABlockedJobPreventsTheBufferReleaseUntilTheJobCompletes`,
-`ResourceGateTests.UnmountPublishesCleanupErrorsWithRetainedReferences`, `LifecycleFaultTests.AJobHeldInFlight...`).
+**Evidence.** Dotnet: four ledger tests (legal from Active, illegal elsewhere, idempotent, lawful exits only) and
+four host tests (`AnUnexpectedProviderFailurePublishesASafeDeactivationOfTheProviderAndItsDependents`,
+`AProviderFailureReportIsHonestAboutTheRecordedCauseAndNeverClaimsAPartialPublication`,
+`AProviderThatIsNotActiveCannotReportAnUnexpectedFailure`,
+`ADeactivationThatCannotPublishLeavesTheOldAssemblyAndReportsTheRefusal`). Unity/player: two new observations in
+`FaultScenario`'s frozen table (indices 14 and 15) for **both** families —
+`gc017-provider-failure-publishes-a-safe-deactivation` and
+`gc017-provider-failure-that-cannot-publish-faults-the-world` — executed in real worlds by a dedicated host and
+pinned by four new EditMode tests plus the recomputed digest literals, so they run in the IL2CPP qualification
+player through `-probeFaults`.
 
-**This is a mechanism change, not a Wave 8 fix.** Adding an `Active → Failed` edge plus a composition-to-world
-fault signal during the conformance freeze would invalidate the W1..W7 gates and contradict Wave 8's role. The
-honest outcome is a `Blocked` row that stops GC-030 from recording V1-complete, exactly as the Wave 8 gate's
-"No NotRun or Blocked required case is waived" requires. §6 proposes it as the one open required-V1 item.
+**Two limits, recorded rather than papered over** (reported by the implementing review): branch (b)'s submission
+carries a default route, so what is asserted is the lifecycle admission gate (which the host decides before
+resolving a route) pinned by the code plus an unchanged ledger row count, not a route-resolved command; and
+GC-017's own archived `artifacts/faults/boundaries.json` still describes the 15-observation table, because the
+convention is that a later task records its own artifact instead of editing an earlier task's record.
+
+**Earlier-gate suites this change invalidates** — they must be rerun on the new revision, and Wave 7's own rule
+("production fixes require affected gates rerun") is why this is listed rather than assumed:
+`GameCore.Composition.Tests` (lifecycle/ledger/applier), `GameCore.Faults.Tests` (the frozen fault table and its
+digests), `GameCore.Unity.Runtime.Tests` (fault boundaries, guarded dispatch), `GameCore.Recovery.*` (the recovery
+vocabulary now has one more code), `GameCore.Contracts.Tests` (diagnostic codes and the API snapshot), plus the
+W4/W5/W7 gate probes that re-run those suites and the `-probeFaults` player runs.
 
 ### 2.2 One contradiction inside 00, resolved in 00
 
@@ -135,6 +178,26 @@ changed. The documentation validator passes after the edit.
 | `artifacts/conformance/suite-status-w7-gate.json` | The 24-suite matrix derived from the W7 gate corpus: 24 Pass, 0 Fail. Labelled as derived from that corpus, not from a GC-028 run. |
 | `artifacts/conformance/HANDOFF.md` | This document. |
 
+### Created and modified for P-012 (round-1 correction)
+
+| File | Change |
+| --- | --- |
+| `Packages/com.gamecore.contracts/Runtime/Manifest/ManifestEnums.cs`, `.../Results/Diagnostics.cs` | Additive `DiagnosticCode.ProviderFailed = 22`, its text mapping, and its place in the exposed list (P-012 needs a code the s9 list predates). |
+| `Packages/com.gamecore.composition/Runtime/Lifecycle/InstallationStateMachine.cs` | The `Active -> Failed` edge plus the doc comment distinguishing the two ways to reach `Failed`. |
+| `Packages/com.gamecore.composition/Runtime/Lifecycle/ActivationLedger.cs` | `FailActive`, `ActiveFailureCount`, `LastFailureCode`, `LastFailureDetail`. |
+| `Packages/com.gamecore.composition/Runtime/Operations/CompositionEditPayload.cs`, `.../CompositionEditApplier.cs` | The `InstallProviderFailure` subject, the widened decode bound, and `PlanProviderFailure`. |
+| `Packages/com.gamecore.composition/Runtime/Operations/CompositionHost.cs` | `FailActiveProvider` and the `ProviderFailureReport` type. |
+| `Packages/com.gamecore.composition/Runtime/Lifecycle/InstallationLifecycleCoordinator.cs` | The `Failed` case in `ApplyTransition` (a `Failed` after-state used to fall through the default arm). |
+| `Packages/com.gamecore.unity.runtime/Runtime/Lifecycle/LifecycleController.cs` | `FailProvider` and `ProviderFailureOutcome`; the fault branch now puts the refusal reason in the world's fault detail. |
+| `Packages/com.gamecore.unity.runtime/Runtime/Faults/FaultBoundaries.cs` | `ProviderDeactivationPublication = 13` and its name. |
+| `Packages/com.gamecore.unity.runtime/Runtime/Pure/Recovery/RecoveryPolicy.cs`, `tests/GameCore.Recovery/Runtime/RecoveryMatrixFixture.cs` | The new code's retry classification (`NotRetryable`) and the recovery vocabulary entry whose test asserts list equality. |
+| `Packages/com.gamecore.composition/Tests/InstallationLifecycleTests.cs`, `Tests/Lifecycle/ActivationLedgerTests.cs` | The edge table and four ledger tests for the new edge. |
+| `Packages/com.gamecore.composition/Tests/Lifecycle/ProviderFailureTests.cs` | New: both P-012 branches through the real control lane. |
+| `unity/.../Runtime/ProviderFailureScenario.cs` (+ `.meta`) | New: the real-world host both branches run in. |
+| `unity/.../Runtime/FaultScenario.cs`, `ProbeFaults.cs`, `Tests/Faults/FaultScenarioIntegrationTests.cs`, `tools/unity/run_gc017_faults_probe.sh`, `tools/run_gc017_gate.sh` | The two new observations, the recomputed digest literals, the four new EditMode pins and the harness steps/clauses. |
+| `tools/check_release_fault_free.py` | The new boundary in `BOUNDARY_NAMES` and `BOUNDARY_OWNERS`, so a release shape must compile it out. |
+| `docs/game-core/06-lifecycle-and-recovery.md` | The `Active -> Failed` edge in the s1 diagram and the prose distinguishing the two failures. |
+
 ### Modified
 
 | File | Change |
@@ -149,8 +212,7 @@ patched.
 
 | Row | Status | Clause | Reason |
 | --- | --- | --- | --- |
-| `P-012` | **Blocked** | "an existing provider that fails unexpectedly cannot be kept active: the world stops admission and faults if a safe dependency-closure deactivation cannot publish" | No `Active → Failed` edge exists in `InstallationStateMachine`, no failing transition on a live activation in `ActivationLedger`, and no composition→world fault signal. Reachable half evidenced; fault half needs a mechanism. §2.1. |
-| `P-043` | **NotRun** | "duplicate producers are legal when registered; fan-out uses explicit immutable read ports" | The clause's only executable evidence is `ReadPortConformanceTests` and `BufferProducerConformanceTests`, added by this task. `NotRun` until the matrix runner records them. |
+| `P-043` | **NotRun** | "duplicate producers are legal when registered; fan-out uses explicit immutable read ports" | The clause's only executable evidence is `ReadPortConformanceTests`, `BufferProducerConformanceTests` and the ledger's read-port tests, added by this task. `NotRun` until the matrix runner records them. |
 | `P-052` | **NotRun** | "the required codes include StaleHandle, … CursorExpired" | Same: `RequiredDiagnosticCodeTests`, added by this task. |
 | `P-060` | **Deferred (owner)** | "budget numbers are provisional until measured on a named machine" | TEST-023 full-duration p95/p99 timing is deferred by project-owner decision (2026-09-26). The correctness gates passed in the short diagnostic; `check:budget-record`, `check:budget-decisions` and `check:benchmark-diagnostic` all pass. Reported `Deferred`, never `Pass`, for GC-030 to surface. |
 
@@ -184,9 +246,10 @@ required-suite list for each operation is recorded in the index's operation rows
 
 ## 6. Known gaps, assumptions, and doc ambiguities
 
-1. **P-012's fault half (Blocked, §2.1)** — the one open required-V1 item this audit found. Proposal for GC-030:
-   either implement the `Active → Failed` edge plus the composition→world fault signal (a new mechanism, with the
-   W1..W7 gates rerun), or record it as an explicit V1 limitation. Do not record V1-complete while it is open.
+1. **P-012 is implemented (§2.1) and no longer a gap.** The affected earlier-gate suites are listed at the end of
+   §2.1 and must be rerun on this revision before GC-030 accepts it. The two limits recorded there (a
+   default-route submission in branch (b), and GC-017's archived boundary document still describing the
+   pre-GC-028 table) are stated, not hidden.
 2. **P-007 has no binding-resolution counter.** The clause is Pass on the string-lookup counter; a direct
    resolution-count assertion is not expressible against the current production surface.
 3. **O-26's pause-while-a-job-runs probe** is a Unity-host boundary; the archive still has no run that pauses a
@@ -218,7 +281,7 @@ The following promotions are proposed for the orchestrator, each on the evidence
 | --- | --- | --- | --- |
 | `P-043` | Partial | Implemented+Evidenced — *after* `run_test_matrix.sh` records the new tests | producer/read-port/cycle coverage now exists; the binding half was already evidenced |
 | `P-052` | Partial | Implemented+Evidenced — *after* the same run | the required-code list is now asserted against 00's own ordering |
-| `P-012` | Partial | **stays Partial, with a named blocker** | the unexpected-provider-failure clause is `Blocked`; the gap column should name the missing `Active → Failed` edge |
+| `P-012` | Partial | Implemented+Evidenced — *after* `run_test_matrix.sh` records the new tests | the unexpected-provider-failure clause is now implemented and evidenced in both branches (§2.1); the earlier-gate suites listed there must be rerun on this revision first |
 | `P-007` | Partial | stays Partial | no binding-resolution counter; the frequency claim is argued from the lookup counter |
 | `O-26` | Partial | stays Partial | no archived run pauses while a tracked job is executing |
 | `P-001`, `P-016`, `P-025`, `P-045`, `P-049`, `P-054`, `P-059`, `P-060` | Partial | candidates for promotion to Implemented+Evidenced | the index resolves every clause of each against recorded evidence; the reviewer should confirm the inventory's own `gap` text for each is now covered and, for `P-060`, that the owner deferral is recorded as Deferred |
@@ -248,6 +311,13 @@ python3 tools/conformance/build_compatibility.py
 python3 tools/conformance/summarize_suite_matrix.py <24 rows>   # against artifacts/w7-gate: 24 Pass / 0 Fail
 python3 -c "... "                                         # the suite table's Unity assemblies and harnesses were
                                                           # each checked to exist (0 missing)
+# round-1 correction (P-012)
+python3 tools/check_release_fault_free.py --no-build      # the new boundary's name table and owner file
+bash -n tools/unity/run_gc017_faults_probe.sh             # the extended harness
+bash -n tools/run_gc017_gate.sh
+python3 tools/check_game_core_csharp.py                  # 627 files after the new ones
+python3 -c "..."                                         # both digests recomputed from the final observation
+                                                          # table and compared with all three pin sites
 ```
 
 Not run here, and therefore not claimed: any `dotnet build`/`dotnet test`, any Unity import, EditMode, PlayMode,
@@ -299,7 +369,32 @@ python3 tools/conformance/build_evidence_index.py --self-test
 python3 tools/conformance/build_compatibility.py --self-test
 ```
 
-### 9.3 What a passing run proves, and what it does not
+### 9.3 Rerunning the suites P-012 invalidates (before GC-030 accepts this revision)
+
+```sh
+# the dotnet suites the kernel change touches
+$HOME/.dotnet/dotnet test dotnet/tests/GameCore.Composition.Tests -c Release
+$HOME/.dotnet/dotnet test dotnet/tests/GameCore.Contracts.Tests -c Release
+$HOME/.dotnet/dotnet test dotnet/tests/GameCore.Recovery.Fixtures.Tests -c Release
+$HOME/.dotnet/dotnet test dotnet/tests/GameCore.Execution.Tests -c Release
+
+# the Unity suites, by assembly, plus the player probe that now carries both observations
+UNITY="$UNITY" UNITY_PROJECT=unity/GameCore.Validation \
+  "$UNITY" -batchmode -nographics -projectPath unity/GameCore.Validation \
+  -runTests -testPlatform EditMode -testFilter GameCore.Faults.Tests \
+  -testResults artifacts/conformance/results/unity/faults-p012-results.xml -logFile -
+UNITY="$UNITY" UNITY_PROJECT=unity/GameCore.Validation ARTIFACTS=artifacts/conformance/results/toolchain \
+  PROBE_RUNS=2 tools/unity/run_gc017_faults_probe.sh
+
+# then the whole conformance run and the index
+UNITY="$UNITY" DOTNET="$DOTNET" PROBE_RUNS=2 tools/conformance/run_test_matrix.sh
+```
+
+`run_test_matrix.sh` ends by rebuilding `evidence-index.json` from the fresh tree, so the rows this task added
+resolve there: the two `NotRun` requirement rows (`P-043`, `P-052`, whose only evidence is a test added in this
+task) become `Pass`, and the 30 `pending` references in the shipped index disappear as they are recorded.
+
+### 9.4 What a passing run proves, and what it does not
 
 * A `Pass` in `suite-status.json`, `evidence-index.json` or `compatibility.json` means the referenced result file
   reported it. Nothing in this task's tooling asserts a status on its own.

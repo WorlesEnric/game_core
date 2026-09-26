@@ -13,7 +13,7 @@ carry a hand-written verdict.
 
 | Scope | Total | Pass | Deferred | NotRun | Blocked | Fail |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Requirements P-001..P-060 | 60 | 56 | 1 | 2 | 1 | 0 |
+| Requirements P-001..P-060 | 60 | 57 | 1 | 2 | 0 | 0 |
 | Operations O-01..O-26 | 26 | 26 | 0 | 0 | 0 | 0 |
 
 Unresolved evidence references: **0**.
@@ -22,7 +22,6 @@ Unresolved evidence references: **0**.
 
 | Id | Status | Clauses not passing |
 | --- | --- | --- |
-| `P-012` | Blocked | an existing provider that fails unexpectedly cannot be kept active: the world stops admission and faults if a safe dependency-closure deactivation cannot publish; there is no invisible partial success or timeout-based unsafe release |
 | `P-043` | NotRun | duplicate producers are legal when registered; fan-out uses explicit immutable read ports |
 | `P-052` | NotRun | the required codes include StaleHandle, StalePlan, MissingDependency, ServiceConflict, CapabilityConflict, AmbiguousOrder, Cycle, Ineligible, UnsupportedVersion, OwnershipConflict, BudgetExceeded, MigrationRequired, ResourceUnavailable, Cancelled, TooLate, IdempotencyConflict, ResultExpired, ApplyFault, TeardownBloc... |
 | `P-060` | Deferred | budget numbers are provisional until measured on a named machine |
@@ -300,7 +299,7 @@ Unresolved evidence references: **0**.
   - `Pass` `dotnet:GameCore.Composition.Tests.ServiceResolutionTests.OptionalAbsenceIsExplicitAndRebindsToItsDeclaredFallback` — artifacts/w7-gate/trx/w7_net8.0_20260927023410.trx
   - `Pass` `dotnet:GameCore.Composition.Tests.ServiceResolutionTests.RequiredDependencyCycleRejectsTheWholeProposal` — artifacts/w7-gate/trx/w7_net8.0_20260927023410.trx
 
-### `P-012` — Dependency closure — **Blocked**
+### `P-012` — Dependency closure — **Pass**
 
 - **Pass** — required service providers prepare before consumers and retire after consumers
   - `Pass` `dotnet:GameCore.Composition.Tests.ResourceGateTests.RetirementRunsConsumersBeforeTheirProviders` — artifacts/w7-gate/trx/w7_net8.0_20260927023410.trx
@@ -318,9 +317,28 @@ Unresolved evidence references: **0**.
   - `Pass` `dotnet:GameCore.Composition.Tests.IncrementalInvalidationTests.AValidatorRefusalRejectsTheSwitchAndKeepsTheOldModeAndRevision` — artifacts/w7-gate/trx/w7_net8.0_20260927023410.trx
   - `Pass` `dotnet:GameCore.Planning.Tests.MigrationAndAcquisitionTests.AFailingMigrationRejectsItsInputWithoutWritingScratch` — artifacts/w7-gate/trx/w7_net8.0_20260927023405.trx
   - `Pass` `dotnet:GameCore.Composition.Tests.ServiceClosureDeltaTests.ARejectedPlanHasAnEmptyClosureDelta` — artifacts/w7-gate/trx/w7_net8.0_20260927023410.trx
-- **Blocked** — an existing provider that fails unexpectedly cannot be kept active: the world stops admission and faults if a safe dependency-closure deactivation cannot publish; there is no invisible partial success or timeout-based unsafe release
-  - blocked: V1 has no path that fails an already-Active provider. The installation state machine's only Failed edge is Preparing -> Failed (`Packages/com.gamecore.composition/Runtime/Lifecycle/InstallationStateMachine.cs`), `ActivationLedger`'s only failing transition is AbortCandidate on a candidate, and no composition-side caller signals the Unity world's fault latch (`UnityWorldHost.EnterFaulted` / `UnityExecutionDriver.Fault`) when a dependency-closure deactivation cannot publish. The reachable half — a blocked deactivation retaining its resources and never reporting Disposed — is asserted by the evidence below and by `ResourceGateTests.UnmountPublishesCleanupErrorsWithRetainedReferences`; the fault half needs an Active -> Failed edge plus a composition-to-world fault signal, which is a mechanism change and not a Wave 8 conformance fix. Recorded here rather than marked Pass.
-  - `Pass` `dotnet:GameCore.Composition.Tests.TeardownAndQuarantineTests.ABlockedJobPreventsTheBufferReleaseUntilTheJobCompletes` — artifacts/w7-gate/trx/w7_net8.0_20260927023410.trx
+- **Pass** — an existing provider that fails unexpectedly cannot be kept active: the kernel prompts a safe dependency-closure deactivation — the failed provider and everything depending on it leave the new assembly in one publication, with no invisible partial success
+  - note: implemented by GC-028: `InstallationStateMachine` gained the `Active -> Failed` edge (06 s1's diagram and prose record it), `ActivationLedger.FailActive` records the failure with a diagnostic, and `CompositionHost.FailActiveProvider` publishes the deactivation through the ordinary validated lane. A failed installation exposes no bindings, so its consumers move to WaitingForDependencies in that same publication.
+  - `NotRun` `dotnet:GameCore.Composition.Tests.ActivationLedgerTests.AnUnexpectedFailureOfALiveActivationIsPermittedAndRecordsItsReason` — added by GC-028; record it with tools/conformance/run_test_matrix.sh
+  - `NotRun` `dotnet:GameCore.Composition.Tests.ActivationLedgerTests.OnlyALiveActivationCanFailUnexpectedly` — added by GC-028; record it with tools/conformance/run_test_matrix.sh
+  - `NotRun` `dotnet:GameCore.Composition.Tests.ActivationLedgerTests.AFailedActivationCanOnlyRetryOrRetire` — added by GC-028; record it with tools/conformance/run_test_matrix.sh
+  - `NotRun` `dotnet:GameCore.Composition.Tests.ActivationLedgerTests.ReportingTheSameLiveFailureTwiceIsIdempotent` — added by GC-028; record it with tools/conformance/run_test_matrix.sh
+  - `Pass` `dotnet:GameCore.Composition.Tests.InstallationLifecycleTests.EveryStatePairMatchesTheLifecycleDiagramExactly` — artifacts/w7-gate/trx/w7_net8.0_20260927023410.trx
+  - `NotRun` `dotnet:GameCore.Composition.Tests.ProviderFailureTests.AnUnexpectedProviderFailurePublishesASafeDeactivationOfTheProviderAndItsDependents` — added by GC-028; record it with tools/conformance/run_test_matrix.sh
+  - `NotRun` `dotnet:GameCore.Composition.Tests.ProviderFailureTests.AProviderFailureReportIsHonestAboutTheRecordedCauseAndNeverClaimsAPartialPublication` — added by GC-028; record it with tools/conformance/run_test_matrix.sh
+  - `NotRun` `dotnet:GameCore.Composition.Tests.ProviderFailureTests.AProviderThatIsNotActiveCannotReportAnUnexpectedFailure` — added by GC-028; record it with tools/conformance/run_test_matrix.sh
+  - `NotRun` `unity:GameCore.Faults.Tests.FaultScenarioIntegrationTests.TheNarrativeFamilyPinsTheProviderFailureDeactivation` — added by GC-028; record it with tools/conformance/run_test_matrix.sh
+  - `NotRun` `unity:GameCore.Faults.Tests.FaultScenarioIntegrationTests.TheCardsFamilyPinsTheProviderFailureDeactivation` — added by GC-028; record it with tools/conformance/run_test_matrix.sh
+  - `NotRun` `probe:Faults/narrative/gc017-provider-failure-publishes-a-safe-deactivation` — added by GC-028; record it with tools/conformance/run_test_matrix.sh
+  - `NotRun` `probe:Faults/cards/gc017-provider-failure-publishes-a-safe-deactivation` — added by GC-028; record it with tools/conformance/run_test_matrix.sh
+- **Pass** — the world stops admission and faults if that safe deactivation cannot publish; there is no invisible partial success and no timeout-based unsafe release
+  - note: the Unity observation asserts admission closed, no epoch or image published after the fault, the world Faulted with DiagnosticCode.ProviderFailed, PumpFrame refusing to pump, and a checkpoint restore into a new session through InitialDefinitionRecovery.Recover; the EditMode suite pins both new observation names per family so a rename or reorder fails rather than shrinking the table (P-008).
+  - `NotRun` `dotnet:GameCore.Composition.Tests.ProviderFailureTests.ADeactivationThatCannotPublishLeavesTheOldAssemblyAndReportsTheRefusal` — added by GC-028; record it with tools/conformance/run_test_matrix.sh
+  - `NotRun` `unity:GameCore.Faults.Tests.FaultScenarioIntegrationTests.TheNarrativeFamilyPinsTheProviderFailureThatFaultsTheWorld` — added by GC-028; record it with tools/conformance/run_test_matrix.sh
+  - `NotRun` `unity:GameCore.Faults.Tests.FaultScenarioIntegrationTests.TheCardsFamilyPinsTheProviderFailureThatFaultsTheWorld` — added by GC-028; record it with tools/conformance/run_test_matrix.sh
+  - `Pass` `unity:GameCore.Faults.Tests.FaultScenarioIntegrationTests.TheFrozenObservationTableMatchesBothDigestLiterals` — artifacts/w7-gate/unity/editmode-results.xml
+  - `NotRun` `probe:Faults/narrative/gc017-provider-failure-that-cannot-publish-faults-the-world` — added by GC-028; record it with tools/conformance/run_test_matrix.sh
+  - `NotRun` `probe:Faults/cards/gc017-provider-failure-that-cannot-publish-faults-the-world` — added by GC-028; record it with tools/conformance/run_test_matrix.sh
 
 ### `P-013` — Mode semantics — **Pass**
 

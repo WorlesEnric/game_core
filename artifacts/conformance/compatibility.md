@@ -6,7 +6,7 @@ committed or recorded file; nothing here is hand-typed.
 | Item | Value |
 | --- | --- |
 | Protocol version | `1.0` |
-| Source revision | `68dc8f7daee592135a959a55f2dc596f6a54cd25` |
+| Source revision | `09928bd0bc3e591ad7c9b2f43c174446b856e67f` |
 | Manifest | `unity/GameCore.Validation/Packages/manifest.json` |
 | Package lock | `unity/GameCore.Validation/Packages/packages-lock.json` |
 | Local gamecore packages | 21 |
