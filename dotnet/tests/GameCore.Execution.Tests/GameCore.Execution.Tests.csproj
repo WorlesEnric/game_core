@@ -1,9 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <!-- Pure execution tests (GC-005): temporal debt and pause semantics, guarded dispatch plan validity and drain
-       validation, world/job resource ledger retirement and quarantine, and the bounded step publication store.
-       In-process, sub-second, no Unity. The W1 gate substituted the production GameCore.Contracts project for
-       the W0 test-only reference seam. -->
+  <!-- Pure execution tests (GC-005) and the observation-storage tests (GC-016): temporal debt and pause semantics,
+       guarded dispatch plan validity and drain validation, world/job resource ledger retirement and quarantine, the
+       bounded step publication store, and bounded leases/retention/resynchronization/delivery. In-process,
+       sub-second, no Unity. The W1 gate substituted the production GameCore.Contracts project for the W0 test-only
+       reference seam. GC-016's tests live in the Unity package's Tests folder so the same files run as EditMode
+       tests too (docs/game-core/04 s10), which is why they are globbed here. -->
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -15,6 +17,11 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
     <PackageReference Include="NUnit" Version="3.14.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="../../../Packages/com.gamecore.unity.runtime/Tests/Observation/**/*.cs"
+             Exclude="../../../Packages/com.gamecore.unity.runtime/Tests/Observation/**/bin/**/*.cs;../../../Packages/com.gamecore.unity.runtime/Tests/Observation/**/obj/**/*.cs" />
   </ItemGroup>
 
   <ItemGroup>

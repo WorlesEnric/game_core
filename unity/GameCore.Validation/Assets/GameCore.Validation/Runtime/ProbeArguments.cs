@@ -20,6 +20,10 @@ namespace GameCore.Validation.ProbeHost
         private const string W4ProfileArgumentName = "-probeW4Profile";
         private const string Gc013ArgumentName = "-probeGc013";
         private const string W4GateArgumentName = "-probeW4Gate";
+        private const string FaultsArgumentName = "-probeFaults";
+        private const string Gc018ArgumentName = "-probeGc018";
+        private const string Gc019ArgumentName = "-probeGc019";
+        private const string W5GateArgumentName = "-probeW5Gate";
 
         private ProbeArguments(
             bool missingRegistration,
@@ -32,6 +36,10 @@ namespace GameCore.Validation.ProbeHost
             bool w4Profile,
             bool gc013,
             bool w4Gate,
+            bool faults,
+            bool gc018,
+            bool gc019,
+            bool w5Gate,
             string? resultPath)
         {
             MissingRegistration = missingRegistration;
@@ -44,6 +52,10 @@ namespace GameCore.Validation.ProbeHost
             W4Profile = w4Profile;
             Gc013 = gc013;
             W4Gate = w4Gate;
+            Faults = faults;
+            Gc018 = gc018;
+            Gc019 = gc019;
+            W5Gate = w5Gate;
             ResultPath = resultPath;
         }
 
@@ -88,8 +100,8 @@ namespace GameCore.Validation.ProbeHost
         /// Runs the GC-011 card-game Automatic vertical slice: the market's scope tree and its provider mounts, the
         /// inherited scoring modifier on every eligible existing seat, one bounded command that commits both sides,
         /// a duplicate that transfers once, a rejected settlement that changes nothing, a transfer that commits both
-        /// sides, a future seat that inherits the modifier before its first step, an idle world that performs no
-        /// step and a teardown that settles and disposes.
+        /// sides, a future seat that inherits the modifier before its first step, an idle world that performs no step
+        /// and a teardown that settles and disposes.
         /// </summary>
         public bool Cards { get; }
 
@@ -114,13 +126,44 @@ namespace GameCore.Validation.ProbeHost
         /// <summary>Runs the integrated Wave 4 gate over both families and both catalogs.</summary>
         public bool W4Gate { get; }
 
+        /// <summary>
+        /// Runs the GC-017 fault-boundary mode: every named observation of TEST-016's apply/cancellation matrix over
+        /// both families, each family over its committed generated catalog and over its hand-written
+        /// generated-style catalog, inside the stripped player.
+        /// </summary>
+        public bool Faults { get; }
+
+        /// <summary>
+        /// Runs the GC-018 checkpoint round-trip mode: a committed-boundary capture with an explicit queued-command
+        /// disposition, the tampered/truncated/unknown-schema/ambiguous-migration/corrupt-reference refusals, and a
+        /// restore into a fresh unexposed world that keeps active and dormant state, the mode, the boundaries, the
+        /// clocks and the cursors while refusing every old handle (P-032, P-049, P-053, P-054).
+        /// </summary>
+        public bool Gc018 { get; }
+
+        /// <summary>
+        /// Runs the GC-019 adapter mode: stamped input submitted through the world's own command port, a bounded
+        /// asynchronous asset lease, committed-image presentation with stable views, the visual-reparent/composition
+        /// separation and adapter teardown in the lifecycle, over both families.
+        /// </summary>
+        public bool Gc019 { get; }
+
+        /// <summary>
+        /// Runs the Wave 5 integration gate: retained observation, deterministic faults, checkpoint restore and the
+        /// common adapters joined in one actual world per family — prewrite rejection with the old assembly intact,
+        /// a postwrite fail-stop with no further step or image, a checkpoint captured at the committed boundary and
+        /// restored into a new session, read-only pinned snapshots that leak no writable reference, and a late asset
+        /// callback from the retired world rejected (P-007, P-027..P-031, P-045, P-047..P-055).
+        /// </summary>
+        public bool W5Gate { get; }
+
         /// <summary>Destination path of the structured JSON result.</summary>
         public string? ResultPath { get; }
 
         /// <summary>True when the process was launched as a probe rather than as a normal player run.</summary>
         public bool IsProbeInvocation =>
             MissingRegistration || WorldDispatch || W1Gate || W2Gate || W3Gate || Narrative || Cards || W4Profile
-            || Gc013 || W4Gate
+            || Gc013 || W4Gate || Faults || Gc018 || Gc019 || W5Gate
             || !string.IsNullOrEmpty(ResultPath);
 
         /// <summary>True when a result destination was supplied; without it the probe cannot record evidence.</summary>
@@ -138,6 +181,10 @@ namespace GameCore.Validation.ProbeHost
             bool w4Profile = false;
             bool gc013 = false;
             bool w4Gate = false;
+            bool faults = false;
+            bool gc018 = false;
+            bool gc019 = false;
+            bool w5Gate = false;
             string? resultPath = null;
             for (int i = 0; i < arguments.Length; i++)
             {
@@ -182,6 +229,22 @@ namespace GameCore.Validation.ProbeHost
                 {
                     w4Gate = true;
                 }
+                else if (argument == FaultsArgumentName)
+                {
+                    faults = true;
+                }
+                else if (argument == Gc018ArgumentName)
+                {
+                    gc018 = true;
+                }
+                else if (argument == Gc019ArgumentName)
+                {
+                    gc019 = true;
+                }
+                else if (argument == W5GateArgumentName)
+                {
+                    w5Gate = true;
+                }
                 else if (argument == ResultArgumentName && i + 1 < arguments.Length)
                 {
                     resultPath = arguments[i + 1];
@@ -190,7 +253,7 @@ namespace GameCore.Validation.ProbeHost
 
             return new ProbeArguments(
                 missingRegistration, worldDispatch, w1Gate, w2Gate, w3Gate, narrative, cards, w4Profile, gc013,
-                w4Gate, resultPath);
+                w4Gate, faults, gc018, gc019, w5Gate, resultPath);
         }
     }
 }

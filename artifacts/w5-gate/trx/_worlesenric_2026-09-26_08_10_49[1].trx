@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="b664fa98-9f55-46af-92e0-bcc91aa2c0df" name="@worlesenric 2026-09-26 08:10:49" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-26T08:10:49.6234576+08:00" queuing="2026-09-26T08:10:49.6234577+08:00" start="2026-09-26T08:10:47.8806692+08:00" finish="2026-09-26T08:10:49.6869942+08:00" />
+  <TestSettings name="default" id="750a4196-f69a-493d-aa79-dc7356001d97">
+    <Deployment runDeploymentRoot="_worlesenric_2026-09-26_08_10_49" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="3bcfb216-f03d-4ac6-899f-bc1c5cbfadc7" testId="e6f20a6a-1c8d-30cf-0140-a1e5cbc574ae" testName="ObservationReaderReturnsExpiryAndBackpressureInsteadOfThrowing" computerName="worlesenric" duration="00:00:00.0031820" startTime="2026-09-26T08:10:49.5307741+08:00" endTime="2026-09-26T08:10:49.5339555+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3bcfb216-f03d-4ac6-899f-bc1c5cbfadc7" />
+    <UnitTestResult executionId="48ed8672-3dbe-4c71-a059-e28ee0cc0827" testId="e1774b76-c692-a92a-7eda-36d1b4645b68" testName="SeamApiSnapshotMatchesCommittedFile" computerName="worlesenric" duration="00:00:00.0295540" startTime="2026-09-26T08:10:49.3418724+08:00" endTime="2026-09-26T08:10:49.3714261+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="48ed8672-3dbe-4c71-a059-e28ee0cc0827" />
+    <UnitTestResult executionId="905559ca-fd17-47c2-928c-9a2313784d01" testId="96b1dc78-9c8b-bcb9-c630-ddd1b913a11b" testName="HostLedgerKeepsTheOriginalResultOnConflictingReuse" computerName="worlesenric" duration="00:00:00.0063680" startTime="2026-09-26T08:10:49.5227607+08:00" endTime="2026-09-26T08:10:49.5291290+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="905559ca-fd17-47c2-928c-9a2313784d01" />
+    <UnitTestResult executionId="ea0da173-9963-45b8-91ca-7149f0736744" testId="48127a2a-7669-c50a-1c9d-bf2118d95106" testName="StalledJobBlocksStopInsteadOfBeingFreedOnTimeout" computerName="worlesenric" duration="00:00:00.0003610" startTime="2026-09-26T08:10:49.5372489+08:00" endTime="2026-09-26T08:10:49.5376102+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ea0da173-9963-45b8-91ca-7149f0736744" />
+    <UnitTestResult executionId="114e6da4-d433-493a-a0d2-10f14be3a6eb" testId="a7ae154e-b77a-da3d-3166-de717fb5e8b6" testName="GeneratedListingIsDeterministicAndExcludesAssemblyName" computerName="worlesenric" duration="00:00:00.0968070" startTime="2026-09-26T08:10:49.2410884+08:00" endTime="2026-09-26T08:10:49.3378034+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="114e6da4-d433-493a-a0d2-10f14be3a6eb" />
+    <UnitTestResult executionId="68d39b19-74c1-423d-b949-4f84b3cea86e" testId="b714dd36-75bf-5c46-4888-5636ef315d8e" testName="CallbackGateRejectsForeignWorldAndStaleActivation" computerName="worlesenric" duration="00:00:00.0086550" startTime="2026-09-26T08:10:49.3786358+08:00" endTime="2026-09-26T08:10:49.3872908+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="68d39b19-74c1-423d-b949-4f84b3cea86e" />
+    <UnitTestResult executionId="676435c3-0ac3-43d8-8a4b-35a075f175b1" testId="22d76bcf-6054-f7f8-c474-aec21dc14102" testName="TimeDebtRefusesToBecomeNegativeOrWrap" computerName="worlesenric" duration="00:00:00.0003330" startTime="2026-09-26T08:10:49.5376263+08:00" endTime="2026-09-26T08:10:49.5379588+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="676435c3-0ac3-43d8-8a4b-35a075f175b1" />
+    <UnitTestResult executionId="c11cc66c-d737-4455-ab75-3d64fd4f441d" testId="5c062fe0-a391-cb63-c8e0-d2b0cbe44288" testName="ExecutionDriverRetainsTimeDebtAndStopsDispatchAtTheFailingEntry" computerName="worlesenric" duration="00:00:00.0341660" startTime="2026-09-26T08:10:49.4313004+08:00" endTime="2026-09-26T08:10:49.4654662+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c11cc66c-d737-4455-ab75-3d64fd4f441d" />
+    <UnitTestResult executionId="bcc19159-03c9-4574-af85-0224c58e77a7" testId="1d810114-6320-763b-9364-04cab31fb10e" testName="CompositionHostDoubleAdmitsStaleRejectsRetainsAndExpires" computerName="worlesenric" duration="00:00:00.0157300" startTime="2026-09-26T08:10:49.4124929+08:00" endTime="2026-09-26T08:10:49.4282220+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bcc19159-03c9-4574-af85-0224c58e77a7" />
+    <UnitTestResult executionId="4584b87f-b625-4cd0-bb3e-b0b20b761a43" testId="c091883c-49a9-9694-25d0-6310db701b2b" testName="VersionDomainsUseTypedCounters" computerName="worlesenric" duration="00:00:00.0004740" startTime="2026-09-26T08:10:49.5379721+08:00" endTime="2026-09-26T08:10:49.5384463+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4584b87f-b625-4cd0-bb3e-b0b20b761a43" />
+    <UnitTestResult executionId="917c044c-86e8-4849-82c8-e98aa2159aed" testId="3530962c-8b08-0273-b193-cfdd4fe2eab5" testName="ApiSnapshotAndFixtureRootsResolveFromTheRepository" computerName="worlesenric" duration="00:00:00.0002590" startTime="2026-09-26T08:10:49.3780399+08:00" endTime="2026-09-26T08:10:49.3782985+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="917c044c-86e8-4849-82c8-e98aa2159aed" />
+    <UnitTestResult executionId="9e81a2e2-fcd5-413b-aa30-98b9992e7b9a" testId="716c4b7d-18fb-65f7-bece-aae7ee956104" testName="CanonicalMapOrderIsIndependentOfInsertionOrderAndReportsDuplicates" computerName="worlesenric" duration="00:00:00.0094550" startTime="2026-09-26T08:10:49.3876182+08:00" endTime="2026-09-26T08:10:49.3970731+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9e81a2e2-fcd5-413b-aa30-98b9992e7b9a" />
+    <UnitTestResult executionId="a57524d8-8379-4736-b561-2eaa06fd300e" testId="44393411-8886-43e4-471b-63daf54783fa" testName="HandleGenerationZeroIsNeverAllocatedAndSlotsAreUnsigned" computerName="worlesenric" duration="00:00:00.0130969" startTime="2026-09-26T08:10:49.4897418+08:00" endTime="2026-09-26T08:10:49.5028391+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a57524d8-8379-4736-b561-2eaa06fd300e" />
+    <UnitTestResult executionId="f3287c2c-6659-406e-9e68-97662fee92d9" testId="3e986657-0ff6-94b8-3149-cd09c334ddac" testName="PendingHeaderIsTreatedAsFailureWithClearMessage" computerName="worlesenric" duration="00:00:00.0022130" startTime="2026-09-26T08:10:49.3396250+08:00" endTime="2026-09-26T08:10:49.3418374+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f3287c2c-6659-406e-9e68-97662fee92d9" />
+    <UnitTestResult executionId="d55cf57c-0496-4676-9640-c96e85e291a0" testId="50091f9a-c536-8dea-1383-3a9caf51e4d6" testName="HostLedgerDistinguishesUnknownFromExpired" computerName="worlesenric" duration="00:00:00.0072710" startTime="2026-09-26T08:10:49.5028642+08:00" endTime="2026-09-26T08:10:49.5101353+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d55cf57c-0496-4676-9640-c96e85e291a0" />
+    <UnitTestResult executionId="a61e05e8-0313-4b6d-b487-3025d19e69ee" testId="4221d7bc-224e-b4d0-e885-94afe3f9bddc" testName="LifecycleObserverRecordsChangesAndCommittedSteps" computerName="worlesenric" duration="00:00:00.0012930" startTime="2026-09-26T08:10:49.5294600+08:00" endTime="2026-09-26T08:10:49.5307526+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a61e05e8-0313-4b6d-b487-3025d19e69ee" />
+    <UnitTestResult executionId="097460a7-d862-4c17-9335-713ed50d6301" testId="ac328f24-fc5f-c95f-7002-cd4e4da1e13a" testName="ResourceLedgerRetiresInReverseOrderAndQuarantinesTheFailedRelease" computerName="worlesenric" duration="00:00:00.0032440" startTime="2026-09-26T08:10:49.5339790+08:00" endTime="2026-09-26T08:10:49.5372223+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="097460a7-d862-4c17-9335-713ed50d6301" />
+    <UnitTestResult executionId="dc32c1d9-123a-4dbc-96bd-112f056f2ac2" testId="e8745615-eb5c-4a83-b2fe-aebbc6d82be6" testName="ExplanationPagingIsBoundedAndStagedPlanReadsAreLabelled" computerName="worlesenric" duration="00:00:00.0143110" startTime="2026-09-26T08:10:49.4708392+08:00" endTime="2026-09-26T08:10:49.4851500+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="dc32c1d9-123a-4dbc-96bd-112f056f2ac2" />
+    <UnitTestResult executionId="f8de3cea-7065-43ec-a473-a5ee83cd73a6" testId="430ac3ec-6eeb-7e0d-543f-353b70893c16" testName="Id128ParsingAcceptsOnlyTheCanonicalLowercaseForm" computerName="worlesenric" duration="00:00:00.0002870" startTime="2026-09-26T08:10:49.5291554+08:00" endTime="2026-09-26T08:10:49.5294424+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f8de3cea-7065-43ec-a473-a5ee83cd73a6" />
+    <UnitTestResult executionId="3722bf90-b350-4932-8d64-52731b08b767" testId="649197f0-cec6-3424-2ff5-fedb9577b6bb" testName="CatalogLookupReportsMissingKeysAndUnsupportedVersions" computerName="worlesenric" duration="00:00:00.0145730" startTime="2026-09-26T08:10:49.3974859+08:00" endTime="2026-09-26T08:10:49.4120587+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3722bf90-b350-4932-8d64-52731b08b767" />
+    <UnitTestResult executionId="2eb1a87c-b87f-4a09-9ad4-0d5ab0ccc735" testId="c8a2bc68-db93-13f7-24b1-112255f7bc32" testName="ContentHashParsingAcceptsOnlyTheCanonicalLowercaseForm" computerName="worlesenric" duration="00:00:00.0016090" startTime="2026-09-26T08:10:49.4286707+08:00" endTime="2026-09-26T08:10:49.4302797+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2eb1a87c-b87f-4a09-9ad4-0d5ab0ccc735" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="ApiSnapshotAndFixtureRootsResolveFromTheRepository" storage="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/gamecore.referenceseams.tests/bin/release/net8.0/gamecore.referenceseams.tests.dll" id="3530962c-8b08-0273-b193-cfdd4fe2eab5">
+      <Execution id="917c044c-86e8-4849-82c8-e98aa2159aed" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/GameCore.ReferenceSeams.Tests/bin/Release/net8.0/GameCore.ReferenceSeams.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.ReferenceSeams.Tests.SeamContractTests" name="ApiSnapshotAndFixtureRootsResolveFromTheRepository" />
+    </UnitTest>
+    <UnitTest name="VersionDomainsUseTypedCounters" storage="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/gamecore.referenceseams.tests/bin/release/net8.0/gamecore.referenceseams.tests.dll" id="c091883c-49a9-9694-25d0-6310db701b2b">
+      <Execution id="4584b87f-b625-4cd0-bb3e-b0b20b761a43" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/GameCore.ReferenceSeams.Tests/bin/Release/net8.0/GameCore.ReferenceSeams.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.ReferenceSeams.Tests.SeamContractTests" name="VersionDomainsUseTypedCounters" />
+    </UnitTest>
+    <UnitTest name="GeneratedListingIsDeterministicAndExcludesAssemblyName" storage="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/gamecore.referenceseams.tests/bin/release/net8.0/gamecore.referenceseams.tests.dll" id="a7ae154e-b77a-da3d-3166-de717fb5e8b6">
+      <Execution id="114e6da4-d433-493a-a0d2-10f14be3a6eb" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/GameCore.ReferenceSeams.Tests/bin/Release/net8.0/GameCore.ReferenceSeams.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.ReferenceSeams.Tests.ApiSnapshotTests" name="GeneratedListingIsDeterministicAndExcludesAssemblyName" />
+    </UnitTest>
+    <UnitTest name="HostLedgerKeepsTheOriginalResultOnConflictingReuse" storage="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/gamecore.referenceseams.tests/bin/release/net8.0/gamecore.referenceseams.tests.dll" id="96b1dc78-9c8b-bcb9-c630-ddd1b913a11b">
+      <Execution id="905559ca-fd17-47c2-928c-9a2313784d01" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/GameCore.ReferenceSeams.Tests/bin/Release/net8.0/GameCore.ReferenceSeams.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.ReferenceSeams.Tests.SeamContractTests" name="HostLedgerKeepsTheOriginalResultOnConflictingReuse" />
+    </UnitTest>
+    <UnitTest name="CallbackGateRejectsForeignWorldAndStaleActivation" storage="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/gamecore.referenceseams.tests/bin/release/net8.0/gamecore.referenceseams.tests.dll" id="b714dd36-75bf-5c46-4888-5636ef315d8e">
+      <Execution id="68d39b19-74c1-423d-b949-4f84b3cea86e" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/GameCore.ReferenceSeams.Tests/bin/Release/net8.0/GameCore.ReferenceSeams.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.ReferenceSeams.Tests.SeamContractTests" name="CallbackGateRejectsForeignWorldAndStaleActivation" />
+    </UnitTest>
+    <UnitTest name="ResourceLedgerRetiresInReverseOrderAndQuarantinesTheFailedRelease" storage="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/gamecore.referenceseams.tests/bin/release/net8.0/gamecore.referenceseams.tests.dll" id="ac328f24-fc5f-c95f-7002-cd4e4da1e13a">
+      <Execution id="097460a7-d862-4c17-9335-713ed50d6301" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/GameCore.ReferenceSeams.Tests/bin/Release/net8.0/GameCore.ReferenceSeams.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.ReferenceSeams.Tests.SeamContractTests" name="ResourceLedgerRetiresInReverseOrderAndQuarantinesTheFailedRelease" />
+    </UnitTest>
+    <UnitTest name="TimeDebtRefusesToBecomeNegativeOrWrap" storage="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/gamecore.referenceseams.tests/bin/release/net8.0/gamecore.referenceseams.tests.dll" id="22d76bcf-6054-f7f8-c474-aec21dc14102">
+      <Execution id="676435c3-0ac3-43d8-8a4b-35a075f175b1" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/GameCore.ReferenceSeams.Tests/bin/Release/net8.0/GameCore.ReferenceSeams.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.ReferenceSeams.Tests.SeamContractTests" name="TimeDebtRefusesToBecomeNegativeOrWrap" />
+    </UnitTest>
+    <UnitTest name="CanonicalMapOrderIsIndependentOfInsertionOrderAndReportsDuplicates" storage="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/gamecore.referenceseams.tests/bin/release/net8.0/gamecore.referenceseams.tests.dll" id="716c4b7d-18fb-65f7-bece-aae7ee956104">
+      <Execution id="9e81a2e2-fcd5-413b-aa30-98b9992e7b9a" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/GameCore.ReferenceSeams.Tests/bin/Release/net8.0/GameCore.ReferenceSeams.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.ReferenceSeams.Tests.SeamContractTests" name="CanonicalMapOrderIsIndependentOfInsertionOrderAndReportsDuplicates" />
+    </UnitTest>
+    <UnitTest name="SeamApiSnapshotMatchesCommittedFile" storage="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/gamecore.referenceseams.tests/bin/release/net8.0/gamecore.referenceseams.tests.dll" id="e1774b76-c692-a92a-7eda-36d1b4645b68">
+      <Execution id="48ed8672-3dbe-4c71-a059-e28ee0cc0827" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/GameCore.ReferenceSeams.Tests/bin/Release/net8.0/GameCore.ReferenceSeams.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.ReferenceSeams.Tests.ApiSnapshotTests" name="SeamApiSnapshotMatchesCommittedFile" />
+    </UnitTest>
+    <UnitTest name="CompositionHostDoubleAdmitsStaleRejectsRetainsAndExpires" storage="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/gamecore.referenceseams.tests/bin/release/net8.0/gamecore.referenceseams.tests.dll" id="1d810114-6320-763b-9364-04cab31fb10e">
+      <Execution id="bcc19159-03c9-4574-af85-0224c58e77a7" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/GameCore.ReferenceSeams.Tests/bin/Release/net8.0/GameCore.ReferenceSeams.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.ReferenceSeams.Tests.SeamContractTests" name="CompositionHostDoubleAdmitsStaleRejectsRetainsAndExpires" />
+    </UnitTest>
+    <UnitTest name="PendingHeaderIsTreatedAsFailureWithClearMessage" storage="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/gamecore.referenceseams.tests/bin/release/net8.0/gamecore.referenceseams.tests.dll" id="3e986657-0ff6-94b8-3149-cd09c334ddac">
+      <Execution id="f3287c2c-6659-406e-9e68-97662fee92d9" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/GameCore.ReferenceSeams.Tests/bin/Release/net8.0/GameCore.ReferenceSeams.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.ReferenceSeams.Tests.ApiSnapshotTests" name="PendingHeaderIsTreatedAsFailureWithClearMessage" />
+    </UnitTest>
+    <UnitTest name="HandleGenerationZeroIsNeverAllocatedAndSlotsAreUnsigned" storage="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/gamecore.referenceseams.tests/bin/release/net8.0/gamecore.referenceseams.tests.dll" id="44393411-8886-43e4-471b-63daf54783fa">
+      <Execution id="a57524d8-8379-4736-b561-2eaa06fd300e" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/GameCore.ReferenceSeams.Tests/bin/Release/net8.0/GameCore.ReferenceSeams.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.ReferenceSeams.Tests.SeamContractTests" name="HandleGenerationZeroIsNeverAllocatedAndSlotsAreUnsigned" />
+    </UnitTest>
+    <UnitTest name="ExecutionDriverRetainsTimeDebtAndStopsDispatchAtTheFailingEntry" storage="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/gamecore.referenceseams.tests/bin/release/net8.0/gamecore.referenceseams.tests.dll" id="5c062fe0-a391-cb63-c8e0-d2b0cbe44288">
+      <Execution id="c11cc66c-d737-4455-ab75-3d64fd4f441d" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/GameCore.ReferenceSeams.Tests/bin/Release/net8.0/GameCore.ReferenceSeams.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.ReferenceSeams.Tests.SeamContractTests" name="ExecutionDriverRetainsTimeDebtAndStopsDispatchAtTheFailingEntry" />
+    </UnitTest>
+    <UnitTest name="LifecycleObserverRecordsChangesAndCommittedSteps" storage="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/gamecore.referenceseams.tests/bin/release/net8.0/gamecore.referenceseams.tests.dll" id="4221d7bc-224e-b4d0-e885-94afe3f9bddc">
+      <Execution id="a61e05e8-0313-4b6d-b487-3025d19e69ee" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/GameCore.ReferenceSeams.Tests/bin/Release/net8.0/GameCore.ReferenceSeams.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.ReferenceSeams.Tests.SeamContractTests" name="LifecycleObserverRecordsChangesAndCommittedSteps" />
+    </UnitTest>
+    <UnitTest name="CatalogLookupReportsMissingKeysAndUnsupportedVersions" storage="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/gamecore.referenceseams.tests/bin/release/net8.0/gamecore.referenceseams.tests.dll" id="649197f0-cec6-3424-2ff5-fedb9577b6bb">
+      <Execution id="3722bf90-b350-4932-8d64-52731b08b767" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/GameCore.ReferenceSeams.Tests/bin/Release/net8.0/GameCore.ReferenceSeams.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.ReferenceSeams.Tests.SeamContractTests" name="CatalogLookupReportsMissingKeysAndUnsupportedVersions" />
+    </UnitTest>
+    <UnitTest name="ContentHashParsingAcceptsOnlyTheCanonicalLowercaseForm" storage="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/gamecore.referenceseams.tests/bin/release/net8.0/gamecore.referenceseams.tests.dll" id="c8a2bc68-db93-13f7-24b1-112255f7bc32">
+      <Execution id="2eb1a87c-b87f-4a09-9ad4-0d5ab0ccc735" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/GameCore.ReferenceSeams.Tests/bin/Release/net8.0/GameCore.ReferenceSeams.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.ReferenceSeams.Tests.SeamContractTests" name="ContentHashParsingAcceptsOnlyTheCanonicalLowercaseForm" />
+    </UnitTest>
+    <UnitTest name="Id128ParsingAcceptsOnlyTheCanonicalLowercaseForm" storage="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/gamecore.referenceseams.tests/bin/release/net8.0/gamecore.referenceseams.tests.dll" id="430ac3ec-6eeb-7e0d-543f-353b70893c16">
+      <Execution id="f8de3cea-7065-43ec-a473-a5ee83cd73a6" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/GameCore.ReferenceSeams.Tests/bin/Release/net8.0/GameCore.ReferenceSeams.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.ReferenceSeams.Tests.SeamContractTests" name="Id128ParsingAcceptsOnlyTheCanonicalLowercaseForm" />
+    </UnitTest>
+    <UnitTest name="ObservationReaderReturnsExpiryAndBackpressureInsteadOfThrowing" storage="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/gamecore.referenceseams.tests/bin/release/net8.0/gamecore.referenceseams.tests.dll" id="e6f20a6a-1c8d-30cf-0140-a1e5cbc574ae">
+      <Execution id="3bcfb216-f03d-4ac6-899f-bc1c5cbfadc7" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/GameCore.ReferenceSeams.Tests/bin/Release/net8.0/GameCore.ReferenceSeams.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.ReferenceSeams.Tests.SeamContractTests" name="ObservationReaderReturnsExpiryAndBackpressureInsteadOfThrowing" />
+    </UnitTest>
+    <UnitTest name="HostLedgerDistinguishesUnknownFromExpired" storage="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/gamecore.referenceseams.tests/bin/release/net8.0/gamecore.referenceseams.tests.dll" id="50091f9a-c536-8dea-1383-3a9caf51e4d6">
+      <Execution id="d55cf57c-0496-4676-9640-c96e85e291a0" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/GameCore.ReferenceSeams.Tests/bin/Release/net8.0/GameCore.ReferenceSeams.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.ReferenceSeams.Tests.SeamContractTests" name="HostLedgerDistinguishesUnknownFromExpired" />
+    </UnitTest>
+    <UnitTest name="ExplanationPagingIsBoundedAndStagedPlanReadsAreLabelled" storage="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/gamecore.referenceseams.tests/bin/release/net8.0/gamecore.referenceseams.tests.dll" id="e8745615-eb5c-4a83-b2fe-aebbc6d82be6">
+      <Execution id="dc32c1d9-123a-4dbc-96bd-112f056f2ac2" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/GameCore.ReferenceSeams.Tests/bin/Release/net8.0/GameCore.ReferenceSeams.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.ReferenceSeams.Tests.SeamContractTests" name="ExplanationPagingIsBoundedAndStagedPlanReadsAreLabelled" />
+    </UnitTest>
+    <UnitTest name="StalledJobBlocksStopInsteadOfBeingFreedOnTimeout" storage="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/gamecore.referenceseams.tests/bin/release/net8.0/gamecore.referenceseams.tests.dll" id="48127a2a-7669-c50a-1c9d-bf2118d95106">
+      <Execution id="ea0da173-9963-45b8-91ca-7149f0736744" />
+      <TestMethod codeBase="/home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/GameCore.ReferenceSeams.Tests/bin/Release/net8.0/GameCore.ReferenceSeams.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="GameCore.ReferenceSeams.Tests.SeamContractTests" name="StalledJobBlocksStopInsteadOfBeingFreedOnTimeout" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="e6f20a6a-1c8d-30cf-0140-a1e5cbc574ae" executionId="3bcfb216-f03d-4ac6-899f-bc1c5cbfadc7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e1774b76-c692-a92a-7eda-36d1b4645b68" executionId="48ed8672-3dbe-4c71-a059-e28ee0cc0827" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="96b1dc78-9c8b-bcb9-c630-ddd1b913a11b" executionId="905559ca-fd17-47c2-928c-9a2313784d01" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="48127a2a-7669-c50a-1c9d-bf2118d95106" executionId="ea0da173-9963-45b8-91ca-7149f0736744" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a7ae154e-b77a-da3d-3166-de717fb5e8b6" executionId="114e6da4-d433-493a-a0d2-10f14be3a6eb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b714dd36-75bf-5c46-4888-5636ef315d8e" executionId="68d39b19-74c1-423d-b949-4f84b3cea86e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="22d76bcf-6054-f7f8-c474-aec21dc14102" executionId="676435c3-0ac3-43d8-8a4b-35a075f175b1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5c062fe0-a391-cb63-c8e0-d2b0cbe44288" executionId="c11cc66c-d737-4455-ab75-3d64fd4f441d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1d810114-6320-763b-9364-04cab31fb10e" executionId="bcc19159-03c9-4574-af85-0224c58e77a7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c091883c-49a9-9694-25d0-6310db701b2b" executionId="4584b87f-b625-4cd0-bb3e-b0b20b761a43" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3530962c-8b08-0273-b193-cfdd4fe2eab5" executionId="917c044c-86e8-4849-82c8-e98aa2159aed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="716c4b7d-18fb-65f7-bece-aae7ee956104" executionId="9e81a2e2-fcd5-413b-aa30-98b9992e7b9a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="44393411-8886-43e4-471b-63daf54783fa" executionId="a57524d8-8379-4736-b561-2eaa06fd300e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3e986657-0ff6-94b8-3149-cd09c334ddac" executionId="f3287c2c-6659-406e-9e68-97662fee92d9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="50091f9a-c536-8dea-1383-3a9caf51e4d6" executionId="d55cf57c-0496-4676-9640-c96e85e291a0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4221d7bc-224e-b4d0-e885-94afe3f9bddc" executionId="a61e05e8-0313-4b6d-b487-3025d19e69ee" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ac328f24-fc5f-c95f-7002-cd4e4da1e13a" executionId="097460a7-d862-4c17-9335-713ed50d6301" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e8745615-eb5c-4a83-b2fe-aebbc6d82be6" executionId="dc32c1d9-123a-4dbc-96bd-112f056f2ac2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="430ac3ec-6eeb-7e0d-543f-353b70893c16" executionId="f8de3cea-7065-43ec-a473-a5ee83cd73a6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="649197f0-cec6-3424-2ff5-fedb9577b6bb" executionId="3722bf90-b350-4932-8d64-52731b08b767" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c8a2bc68-db93-13f7-24b1-112255f7bc32" executionId="2eb1a87c-b87f-4a09-9ad4-0d5ab0ccc735" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="21" executed="21" passed="21" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 4.5.0.0: Test execution started
+Running all tests in /home/worlesenric/wkspace/gc-wt/w5-gate/dotnet/tests/GameCore.ReferenceSeams.Tests/bin/Release/net8.0/GameCore.ReferenceSeams.Tests.dll
+   NUnit3TestExecutor discovered 21 of 21 NUnit test cases using Current Discovery mode, Non-Explicit run
+NUnit Adapter 4.5.0.0: Test execution complete
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

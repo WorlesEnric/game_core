@@ -103,6 +103,64 @@ namespace GameCore.Unity.Runtime.Integration
         }
 
         /// <summary>
+        /// Seeds or replaces one live state slot with an explicit active/dormant flag. A dormant slot
+        /// (`active == false`) is authoritative state that currently has no active writer, so a restore installs it
+        /// as dormant rather than dropping it or reactivating it: the flag is what distinguishes retained state from
+        /// a live binding query result (P-032). The overload below seeds an active slot.
+        /// </summary>
+        public bool TrySeedSlot(
+            TargetId target,
+            OwnerId owner,
+            SlotId slot,
+            uint schemaVersion,
+            int value,
+            bool active,
+            out DiagnosticCode code,
+            out string detail)
+        {
+            if (!registry.TryResolveTarget(target, out _, out Entity entity))
+            {
+                code = DiagnosticCode.StaleHandle;
+                detail = "target " + target.ToString() + " is not registered in this world (P-005).";
+                return false;
+            }
+
+            EntityManager entityManager = world.EntityWorld.EntityManager;
+            DynamicBuffer<TargetSlotState> slots = entityManager.HasBuffer<TargetSlotState>(entity)
+                ? entityManager.GetBuffer<TargetSlotState>(entity)
+                : entityManager.AddBuffer<TargetSlotState>(entity);
+
+            byte flag = active ? (byte)1 : (byte)0;
+            for (int i = 0; i < slots.Length; i++)
+            {
+                if (slots[i].Slot.Equals(slot) && slots[i].Owner.Equals(owner))
+                {
+                    TargetSlotState replaced = slots[i];
+                    replaced.SchemaVersion = schemaVersion;
+                    replaced.Value = value;
+                    replaced.Active = flag;
+                    slots[i] = replaced;
+                    code = DiagnosticCode.None;
+                    detail = string.Empty;
+                    return true;
+                }
+            }
+
+            slots.Add(new TargetSlotState
+            {
+                Slot = slot,
+                Owner = owner,
+                SchemaVersion = schemaVersion,
+                Value = value,
+                Active = flag,
+            });
+
+            code = DiagnosticCode.None;
+            detail = string.Empty;
+            return true;
+        }
+
+        /// <summary>
         /// Seeds or replaces one live state slot of one target with an explicit schema version and value. This is
         /// real gameplay state, not derived data, so it lives in its own buffer with its own version (P-032).
         /// </summary>

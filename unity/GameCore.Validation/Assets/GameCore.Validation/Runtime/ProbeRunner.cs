@@ -49,66 +49,7 @@ namespace GameCore.Validation.ProbeHost
         internal static void Run(ProbeArguments arguments)
         {
             // Every mode runs in the same player and result shape, but under its own task identity.
-            ProbeReport report = arguments.WorldDispatch
-                ? new ProbeReport(
-                    "WorldDispatch",
-                    ProbeEnvironment.DeclaredUnityVersion,
-                    ProbeEnvironment.DeclaredTarget,
-                    "GC-005")
-                : arguments.W1Gate
-                    ? new ProbeReport(
-                        "W1Gate",
-                        ProbeEnvironment.DeclaredUnityVersion,
-                        ProbeEnvironment.DeclaredTarget,
-                        "W1-GATE")
-                    : arguments.W2Gate
-                        ? new ProbeReport(
-                            "W2Gate",
-                            ProbeEnvironment.DeclaredUnityVersion,
-                            ProbeEnvironment.DeclaredTarget,
-                            "W2-GATE")
-                        : arguments.Narrative
-                            ? new ProbeReport(
-                                "Narrative",
-                                ProbeEnvironment.DeclaredUnityVersion,
-                                ProbeEnvironment.DeclaredTarget,
-                                "GC-010")
-                            : arguments.Gc013
-                                ? new ProbeReport(
-                                    "Gc013",
-                                    ProbeEnvironment.DeclaredUnityVersion,
-                                    ProbeEnvironment.DeclaredTarget,
-                                    "GC-013")
-                                : arguments.Cards
-                                    ? new ProbeReport(
-                                        "Cards",
-                                        ProbeEnvironment.DeclaredUnityVersion,
-                                        ProbeEnvironment.DeclaredTarget,
-                                        "GC-011")
-                                    : arguments.W3Gate
-                                        ? new ProbeReport(
-                                            "W3Gate",
-                                            ProbeEnvironment.DeclaredUnityVersion,
-                                            ProbeEnvironment.DeclaredTarget,
-                                            "W3-GATE")
-                                        : arguments.W4Profile
-                                            ? new ProbeReport(
-                                                "W4Profile",
-                                                ProbeEnvironment.DeclaredUnityVersion,
-                                                ProbeEnvironment.DeclaredTarget,
-                                                "GC-012")
-                                            : arguments.W4Gate
-                                                ? new ProbeReport(
-                                                    "W4Gate",
-                                                    ProbeEnvironment.DeclaredUnityVersion,
-                                                    ProbeEnvironment.DeclaredTarget,
-                                                    "W4-GATE")
-                                                : new ProbeReport(
-                                                    arguments.MissingRegistration
-                                                        ? "MissingRegistration"
-                                                        : "Positive",
-                                                    ProbeEnvironment.DeclaredUnityVersion,
-                                                    ProbeEnvironment.DeclaredTarget);
+            ProbeReport report = CreateReport(arguments);
 
             if (!arguments.HasResultPath)
             {
@@ -173,6 +114,26 @@ namespace GameCore.Validation.ProbeHost
                     ProbeW4Gate.Run(report);
                     report.CompletePositive();
                 }
+                else if (arguments.Faults)
+                {
+                    ProbeFaults.Run(report);
+                    report.CompletePositive();
+                }
+                else if (arguments.Gc018)
+                {
+                    ProbeGc018.Run(report);
+                    report.CompletePositive();
+                }
+                else if (arguments.Gc019)
+                {
+                    ProbeGc019.Run(report);
+                    report.CompletePositive();
+                }
+                else if (arguments.W5Gate)
+                {
+                    ProbeW5Gate.Run(report);
+                    report.CompletePositive();
+                }
                 else
                 {
                     RunAotRootsProbe(report);
@@ -195,6 +156,91 @@ namespace GameCore.Validation.ProbeHost
             WriteReport(report);
             Application.Quit(report.ExitCode);
         }
+
+        /// <summary>
+        /// The report identity of one mode. The order of the tests is the order the modes were added and is never
+        /// the observable that decides anything: exactly one mode flag is ever set by one player invocation, and a
+        /// plain run sets none so it keeps the default positive identity.
+        /// </summary>
+        private static ProbeReport CreateReport(ProbeArguments arguments)
+        {
+            if (arguments.WorldDispatch)
+            {
+                return Named("WorldDispatch", "GC-005");
+            }
+
+            if (arguments.W1Gate)
+            {
+                return Named("W1Gate", "W1-GATE");
+            }
+
+            if (arguments.W2Gate)
+            {
+                return Named("W2Gate", "W2-GATE");
+            }
+
+            if (arguments.Narrative)
+            {
+                return Named("Narrative", "GC-010");
+            }
+
+            if (arguments.Gc013)
+            {
+                return Named("Gc013", "GC-013");
+            }
+
+            if (arguments.Cards)
+            {
+                return Named("Cards", "GC-011");
+            }
+
+            if (arguments.W3Gate)
+            {
+                return Named("W3Gate", "W3-GATE");
+            }
+
+            if (arguments.W4Profile)
+            {
+                return Named("W4Profile", "GC-012");
+            }
+
+            if (arguments.W4Gate)
+            {
+                return Named("W4Gate", "W4-GATE");
+            }
+
+            if (arguments.Faults)
+            {
+                return Named("Faults", "GC-017");
+            }
+
+            if (arguments.Gc018)
+            {
+                return Named("Gc018", "GC-018");
+            }
+
+            if (arguments.Gc019)
+            {
+                return Named("Gc019", "GC-019");
+            }
+
+            if (arguments.W5Gate)
+            {
+                return Named("W5Gate", "W5-GATE");
+            }
+
+            return new ProbeReport(
+                arguments.MissingRegistration ? "MissingRegistration" : "Positive",
+                ProbeEnvironment.DeclaredUnityVersion,
+                ProbeEnvironment.DeclaredTarget);
+        }
+
+        private static ProbeReport Named(string mode, string task)
+            => new ProbeReport(
+                mode,
+                ProbeEnvironment.DeclaredUnityVersion,
+                ProbeEnvironment.DeclaredTarget,
+                task);
 
         private static void RunAotRootsProbe(ProbeReport report)
         {

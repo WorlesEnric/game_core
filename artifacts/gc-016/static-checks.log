@@ -1,0 +1,58 @@
+GC-016 authoring-host static checks
+host: Darwin yangdeMac-mini.local 25.3.0 Darwin Kernel Version 25.3.0: Wed Jan 28 20:56:34 PST 2026; root:xnu-12377.91.3~2/RELEASE_ARM64_T8112 arm64 Darwin
+date_utc: 2026-09-25T17:21:10Z
+note: this host has no .NET SDK, no C# compiler, no Mono and no Unity, so nothing below is a build, a test result or a Unity run.
+
+$ python3 tools/check_game_core_csharp.py
+checked 384 C# file(s)
+ok
+
+$ python3 tools/check_contract_surface_parity.py
+tests/GameCore.ReferenceSeams/api/GameCore.Contracts.api.txt: 221 types (class 89, enum 41, interface 23, struct 68), 41 enums checked against Packages/com.gamecore.contracts/Runtime
+5 addition(s) beyond the frozen snapshot (allowed, must be listed in HANDOFF):
+  + enum EnvelopeError adds DuplicateField = 17
+  + enum EnvelopeError adds MissingRequiredField = 16
+  + enum FactoryKind adds Handler = 10
+  + enum StateDispositionKind adds Reset = 5
+  + enum StateDispositionKind adds RetainDormant = 4
+every snapshotted enum and enum value exists in the production sources with the same numeric value
+
+$ python3 tools/validate_game_core_docs.py --self-test
+Documentation validator self-test passed: 9 isolated positive/negative fixtures.
+
+$ python3 tools/validate_game_core_docs.py
+Game Core documentation validation passed: 14 Markdown documents; local links, anchors, IDs, traceability, task DAG and wave ordering checked.
+No Unity builds, gameplay tests, runtime benchmarks, or remote URL checks were executed.
+
+$ repository-wide .meta GUID uniqueness and coverage scan
+metas: 600, unique guids: 600, duplicates: [], metas without a 32-hex guid: []
+every .cs and .asmdef under Packages/ and unity/Assets has a .meta: True []
+observation runtime: 5 file(s)
+  Packages/com.gamecore.unity.runtime/Runtime/Observation/CommittedBoundary.cs
+  Packages/com.gamecore.unity.runtime/Runtime/Observation/DelayedConsumerDelivery.cs
+  Packages/com.gamecore.unity.runtime/Runtime/Observation/ObservationRetention.cs
+  Packages/com.gamecore.unity.runtime/Runtime/Observation/SnapshotResynchronization.cs
+  Packages/com.gamecore.unity.runtime/Runtime/Observation/WorldObservation.cs
+observation tests: 5 file(s)
+  Packages/com.gamecore.unity.runtime/Tests/Observation/ConcurrentObservationTests.cs
+  Packages/com.gamecore.unity.runtime/Tests/Observation/DelayedConsumerDeliveryTests.cs
+  Packages/com.gamecore.unity.runtime/Tests/Observation/ObservationFixture.cs
+  Packages/com.gamecore.unity.runtime/Tests/Observation/SnapshotRetentionTests.cs
+  Packages/com.gamecore.unity.runtime/Tests/Observation/WorldObservationTests.cs
+diagnostics runtime: 6 file(s)
+  Packages/com.gamecore.composition/Runtime/Diagnostics/DiagnosticEnvelope.cs
+  Packages/com.gamecore.composition/Runtime/Diagnostics/DiagnosticRegistry.cs
+  Packages/com.gamecore.composition/Runtime/Diagnostics/ProvenanceExplanationReader.cs
+  Packages/com.gamecore.composition/Runtime/Diagnostics/ProvenanceRecords.cs
+  Packages/com.gamecore.composition/Runtime/Diagnostics/ProvenanceStore.cs
+  Packages/com.gamecore.composition/Runtime/Diagnostics/StagedOperationStatus.cs
+diagnostics tests: 4 file(s)
+  Packages/com.gamecore.composition/Tests/Diagnostics/DiagnosticPrecedenceTests.cs
+  Packages/com.gamecore.composition/Tests/Diagnostics/ProvenanceExplanationReaderTests.cs
+  Packages/com.gamecore.composition/Tests/Diagnostics/ProvenanceStoreTests.cs
+  Packages/com.gamecore.composition/Tests/Diagnostics/StagedOperationStatusTests.cs
+unity world tests: 4 file(s)
+  unity/GameCore.Validation/Assets/GameCore.Validation/Tests/Observation/ObservationCursorAndProvenanceTests.cs
+  unity/GameCore.Validation/Assets/GameCore.Validation/Tests/Observation/ObservationFamilyHarness.cs
+  unity/GameCore.Validation/Assets/GameCore.Validation/Tests/Observation/ObservationImmutabilityTests.cs
+  unity/GameCore.Validation/Assets/GameCore.Validation/Tests/Observation/ObservationStagedStatusAndDiagnosticsTests.cs

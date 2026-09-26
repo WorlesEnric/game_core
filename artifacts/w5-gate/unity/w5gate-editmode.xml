@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="11" result="Passed" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-09-26 00:22:44Z" end-time="2026-09-26 00:22:45Z" duration="0.6403076">
+  <test-suite type="TestSuite" id="1000" name="GameCoreProbe" fullname="GameCoreProbe" runstate="Runnable" testcasecount="905" result="Passed" start-time="2026-09-26 00:22:44Z" end-time="2026-09-26 00:22:45Z" duration="0.640308" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="2134" name="GameCore.W5Gate.Tests.dll" fullname="/home/worlesenric/wkspace/gc-wt/w5-gate/unity/GameCore.Validation/Library/ScriptAssemblies/GameCore.W5Gate.Tests.dll" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-09-26 00:22:44Z" end-time="2026-09-26 00:22:45Z" duration="0.630147" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="3201344" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="2135" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-09-26 00:22:44Z" end-time="2026-09-26 00:22:45Z" duration="0.629935" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="2136" name="W5Gate" fullname="GameCore.W5Gate" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-09-26 00:22:44Z" end-time="2026-09-26 00:22:45Z" duration="0.629862" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="2137" name="Tests" fullname="GameCore.W5Gate.Tests" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-09-26 00:22:44Z" end-time="2026-09-26 00:22:45Z" duration="0.629792" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="2122" name="W5GateIntegrationTests" fullname="GameCore.W5Gate.Tests.W5GateIntegrationTests" classname="GameCore.W5Gate.Tests.W5GateIntegrationTests" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-09-26 00:22:44Z" end-time="2026-09-26 00:22:45Z" duration="0.629139" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="2132" name="TheCardsDigestHoldsOverBothCatalogs" fullname="GameCore.W5Gate.Tests.W5GateIntegrationTests.TheCardsDigestHoldsOverBothCatalogs" methodname="TheCardsDigestHoldsOverBothCatalogs" classname="GameCore.W5Gate.Tests.W5GateIntegrationTests" runstate="Runnable" seed="1473512848" result="Passed" start-time="2026-09-26 00:22:45Z" end-time="2026-09-26 00:22:45Z" duration="0.012660" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="2125" name="TheCommittedBoundaryCaptureObservationPasses" fullname="GameCore.W5Gate.Tests.W5GateIntegrationTests.TheCommittedBoundaryCaptureObservationPasses" methodname="TheCommittedBoundaryCaptureObservationPasses" classname="GameCore.W5Gate.Tests.W5GateIntegrationTests" runstate="Runnable" seed="1224340325" result="Passed" start-time="2026-09-26 00:22:45Z" end-time="2026-09-26 00:22:45Z" duration="0.000717" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="2131" name="TheNarrativeDigestHoldsOverBothCatalogs" fullname="GameCore.W5Gate.Tests.W5GateIntegrationTests.TheNarrativeDigestHoldsOverBothCatalogs" methodname="TheNarrativeDigestHoldsOverBothCatalogs" classname="GameCore.W5Gate.Tests.W5GateIntegrationTests" runstate="Runnable" seed="1886418571" result="Passed" start-time="2026-09-26 00:22:45Z" end-time="2026-09-26 00:22:45Z" duration="0.000171" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="2128" name="TheNewSessionRestoreObservationPasses" fullname="GameCore.W5Gate.Tests.W5GateIntegrationTests.TheNewSessionRestoreObservationPasses" methodname="TheNewSessionRestoreObservationPasses" classname="GameCore.W5Gate.Tests.W5GateIntegrationTests" runstate="Runnable" seed="1721061331" result="Passed" start-time="2026-09-26 00:22:45Z" end-time="2026-09-26 00:22:45Z" duration="0.000092" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="2133" name="TheObservationTablesAndDigestsAgree" fullname="GameCore.W5Gate.Tests.W5GateIntegrationTests.TheObservationTablesAndDigestsAgree" methodname="TheObservationTablesAndDigestsAgree" classname="GameCore.W5Gate.Tests.W5GateIntegrationTests" runstate="Runnable" seed="257966588" result="Passed" start-time="2026-09-26 00:22:45Z" end-time="2026-09-26 00:22:45Z" duration="0.000372" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="2123" name="TheOneWorldObservationPasses" fullname="GameCore.W5Gate.Tests.W5GateIntegrationTests.TheOneWorldObservationPasses" methodname="TheOneWorldObservationPasses" classname="GameCore.W5Gate.Tests.W5GateIntegrationTests" runstate="Runnable" seed="139706333" result="Passed" start-time="2026-09-26 00:22:45Z" end-time="2026-09-26 00:22:45Z" duration="0.000094" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="2124" name="ThePinnedSnapshotObservationPasses" fullname="GameCore.W5Gate.Tests.W5GateIntegrationTests.ThePinnedSnapshotObservationPasses" methodname="ThePinnedSnapshotObservationPasses" classname="GameCore.W5Gate.Tests.W5GateIntegrationTests" runstate="Runnable" seed="1623824296" result="Passed" start-time="2026-09-26 00:22:45Z" end-time="2026-09-26 00:22:45Z" duration="0.000083" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="2127" name="ThePostwriteFailStopObservationPasses" fullname="GameCore.W5Gate.Tests.W5GateIntegrationTests.ThePostwriteFailStopObservationPasses" methodname="ThePostwriteFailStopObservationPasses" classname="GameCore.W5Gate.Tests.W5GateIntegrationTests" runstate="Runnable" seed="619919106" result="Passed" start-time="2026-09-26 00:22:45Z" end-time="2026-09-26 00:22:45Z" duration="0.000074" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="2126" name="ThePrewriteRefusalObservationPasses" fullname="GameCore.W5Gate.Tests.W5GateIntegrationTests.ThePrewriteRefusalObservationPasses" methodname="ThePrewriteRefusalObservationPasses" classname="GameCore.W5Gate.Tests.W5GateIntegrationTests" runstate="Runnable" seed="943547454" result="Passed" start-time="2026-09-26 00:22:45Z" end-time="2026-09-26 00:22:45Z" duration="0.000071" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="2129" name="TheRestoredWorldAdaptersObservationPasses" fullname="GameCore.W5Gate.Tests.W5GateIntegrationTests.TheRestoredWorldAdaptersObservationPasses" methodname="TheRestoredWorldAdaptersObservationPasses" classname="GameCore.W5Gate.Tests.W5GateIntegrationTests" runstate="Runnable" seed="1254167794" result="Passed" start-time="2026-09-26 00:22:45Z" end-time="2026-09-26 00:22:45Z" duration="0.000072" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="2130" name="TheRetiredWorldCallbackObservationPasses" fullname="GameCore.W5Gate.Tests.W5GateIntegrationTests.TheRetiredWorldCallbackObservationPasses" methodname="TheRetiredWorldCallbackObservationPasses" classname="GameCore.W5Gate.Tests.W5GateIntegrationTests" runstate="Runnable" seed="244570911" result="Passed" start-time="2026-09-26 00:22:45Z" end-time="2026-09-26 00:22:45Z" duration="0.000075" asserts="0">
+                <properties>
+                  <property name="Timeout" value="60000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: /home/worlesenric/.config/unity3d/GameCore/GameCoreProbe/TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

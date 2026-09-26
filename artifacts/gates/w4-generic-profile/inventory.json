@@ -6,12 +6,12 @@
     "Partial",
     "Not yet"
   ],
-  "statusAsOf": "W4-GATE Linux build-host run; see artifacts/w4-gate/BUILD_REPORT.md and toolchain/probe-w4-gate.json",
+  "statusAsOf": "W5-GATE Linux build-host run; see artifacts/w5-gate/BUILD_REPORT.md and artifacts/w5-gate/toolchain/probe-w5-gate.json. Counts unchanged: P-049 remains Partial pending O-22 and bounded retry evidence.",
   "counts": {
     "total": 86,
-    "implementedEvidenced": 37,
-    "partial": 45,
-    "notYet": 4
+    "implementedEvidenced": 41,
+    "partial": 44,
+    "notYet": 1
   },
   "requirements": [
     {
@@ -68,8 +68,17 @@
         "artifacts/w3-gate/toolchain/probe-w1-gate.json",
         "artifacts/w3-gate/toolchain/probe-w3-gate.json"
       ],
-      "gap": "WorldHost, CompositionHost, AssemblyPlanner/Publisher, ExecutionDriver and Observer roles are integrated and exercised, but the EngineAdapter observation boundary (TEST-019) has no archived run.",
-      "nextOwner": "GC-019"
+      "gap": "The adapter boundary is exercised in GC-019 EditMode, PlayMode and headless IL2CPP; the full P-002 participant role table and optional engine integrations remain incomplete.",
+      "nextOwner": "GC-019",
+      "gc019": {
+        "delta": "The existing PlayerLoop pump calls adapter input before host dispatch and presentation after it. Typed input reaches the world command port, while the view registry projects only committed snapshots; five IL2CPP GC-019 probe runs cover both narrative and cards over generated and fixture catalogs.",
+        "statusUnchangedBecause": "The complete participant role table is not yet evidenced for every optional adapter.",
+        "evidenceAdded": [
+          "artifacts/gc-019/editmode-results.xml",
+          "artifacts/gc-019/playmode-results.xml",
+          "artifacts/gc-019/toolchain/probe-gc019.json"
+        ]
+      }
     },
     {
       "id": "P-003",
@@ -186,10 +195,22 @@
       ],
       "evidence": [
         "artifacts/w3-gate/trx/",
-        "artifacts/w3-gate/unity/editmode-results.xml"
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/gc-016/final-trx/",
+        "artifacts/gc-016/unity/editmode-results.xml",
+        "artifacts/gc-016/BUILD_REPORT.md"
       ],
-      "gap": "Epoch-bound bindings, stale-callback fencing and observation backpressure are evidenced; no archived run shows bindings resolving once per assembly rather than per target per frame, nor retention backpressure under load (TEST-023).",
-      "nextOwner": "GC-026"
+      "gap": "Pinned images, concurrent leases and explicit snapshot backpressure passed in both pure suites and real-family EditMode worlds; binding resolution frequency under load remains unmeasured (TEST-023).",
+      "nextOwner": "GC-026",
+      "gc016": {
+        "delta": "GC-016 observation/diagnostics subset exercised in both families; status remains Partial.",
+        "executedEvidence": [
+          "artifacts/gc-016/final-trx/",
+          "artifacts/gc-016/unity/editmode-results.xml",
+          "artifacts/gc-016/BUILD_REPORT.md"
+        ],
+        "statusUnchangedBecause": "Pinned images, concurrent leases and explicit snapshot backpressure passed in both pure suites and real-family EditMode worlds; binding resolution frequency under load remains unmeasured (TEST-023)."
+      }
     },
     {
       "id": "P-008",
@@ -757,10 +778,22 @@
       "evidence": [
         "artifacts/w3-gate/trx/",
         "artifacts/w3-gate/toolchain/probe-narrative.json",
-        "artifacts/w3-gate/toolchain/probe-cards.json"
+        "artifacts/w3-gate/toolchain/probe-cards.json",
+        "artifacts/gc-016/final-trx/",
+        "artifacts/gc-016/unity/editmode-results.xml",
+        "artifacts/gc-016/BUILD_REPORT.md"
       ],
-      "gap": "Explain paging, losing-candidate provenance and per-target provenance digests are evidenced; the complete retained record (mode gate, stratum, state disposition, recipe hash) and CompositionPublished/Rejected diagnostic payloads are not archived.",
-      "nextOwner": "GC-016"
+      "gap": "Real narrative/card derivations reconstruct effective capability winners, losers, exclusions and page-independent digests; retained provenance bounds passed. Wider explanation coverage across every mode/stratum/state disposition remains open.",
+      "nextOwner": "GC-016",
+      "gc016": {
+        "delta": "GC-016 observation/diagnostics subset exercised in both families; status remains Partial.",
+        "executedEvidence": [
+          "artifacts/gc-016/final-trx/",
+          "artifacts/gc-016/unity/editmode-results.xml",
+          "artifacts/gc-016/BUILD_REPORT.md"
+        ],
+        "statusUnchangedBecause": "Real narrative/card derivations reconstruct effective capability winners, losers, exclusions and page-independent digests; retained provenance bounds passed. Wider explanation coverage across every mode/stratum/state disposition remains open."
+      }
     },
     {
       "id": "P-027",
@@ -965,8 +998,17 @@
         "artifacts/w3-gate/trx/",
         "artifacts/w3-gate/unity/editmode-results.xml"
       ],
-      "gap": "Undeclared-writer rejection, validated partitions and direct owner writes are evidenced; the declared external-authority domain (engine-owned state stamped as observation, intent submitted through the adapter) is unrun.",
-      "nextOwner": "GC-019"
+      "gap": "The descriptor, stamped external observation, intent route and ownership refusals are exercised in the GC-019 adapter tests; card and narrative IL2CPP worlds declare no external physical domain. No rigidbody or physics stage integration is evidenced (GC-020).",
+      "nextOwner": "GC-019",
+      "gc019": {
+        "delta": "The authority ledger rejects writes to externally owned domains and foreign or stale observations. GC-019 player observations show ECS-owned kinematic card/narrative recipes with zero external domains and no physics stage or system.",
+        "statusUnchangedBecause": "A real physics solver adapter and synchronization stage remain GC-020 scope.",
+        "evidenceAdded": [
+          "artifacts/gc-019/trx-final/",
+          "artifacts/gc-019/editmode-results.xml",
+          "artifacts/gc-019/toolchain/probe-gc019.json"
+        ]
+      }
     },
     {
       "id": "P-035",
@@ -1205,10 +1247,22 @@
       ],
       "evidence": [
         "artifacts/w3-gate/unity/editmode-results.xml",
-        "artifacts/w3-gate/trx/"
+        "artifacts/w3-gate/trx/",
+        "artifacts/gc-016/final-trx/",
+        "artifacts/gc-016/unity/editmode-results.xml",
+        "artifacts/gc-016/BUILD_REPORT.md"
       ],
-      "gap": "Committed-event publication, at-least-once page reads, subscriber-failure isolation and retention gaps are evidenced; a crash-durable outbox for irreversible output adapters is unrun.",
-      "nextOwner": "GC-021"
+      "gap": "Real-family published images, cursor expiry/resynchronization and delayed-consumer dedup passed in EditMode; crash-durable external outbox remains GC-021 work.",
+      "nextOwner": "GC-021",
+      "gc016": {
+        "delta": "GC-016 observation/diagnostics subset exercised in both families; status remains Partial.",
+        "executedEvidence": [
+          "artifacts/gc-016/final-trx/",
+          "artifacts/gc-016/unity/editmode-results.xml",
+          "artifacts/gc-016/BUILD_REPORT.md"
+        ],
+        "statusUnchangedBecause": "Real-family published images, cursor expiry/resynchronization and delayed-consumer dedup passed in EditMode; crash-durable external outbox remains GC-021 work."
+      }
     },
     {
       "id": "P-046",
@@ -1354,10 +1408,13 @@
       ],
       "evidence": [
         "artifacts/w3-gate/unity/editmode-results.xml",
-        "artifacts/w3-gate/trx/"
+        "artifacts/w3-gate/trx/",
+        "artifacts/w5-gate/toolchain/probe-w5-gate.json",
+        "artifacts/w5-gate/toolchain/probe-gc017-faults.json",
+        "artifacts/w5-gate/unity/editmode-results.xml"
       ],
-      "gap": "Pre-mutation rejection, post-mutation fail-stop and retained-job quarantine are evidenced; recreation of a new WorldId from a verified checkpoint or the initial catalog does not exist.",
-      "nextOwner": "GC-018"
+      "gap": "Integrated prewrite rejection, postwrite fail-stop and verified checkpoint restore into a new session pass in both families. O-22 RecoverWorld remains uncomposed and P-049's host-configured bounded retry attempts are not evidenced; this row remains Partial.",
+      "nextOwner": "GC-027"
     },
     {
       "id": "P-050",
@@ -1376,10 +1433,22 @@
       ],
       "evidence": [
         "artifacts/w3-gate/trx/",
-        "artifacts/protocol-fixtures/results.json"
+        "artifacts/protocol-fixtures/results.json",
+        "artifacts/gc-016/final-trx/",
+        "artifacts/gc-016/unity/editmode-results.xml",
+        "artifacts/gc-016/BUILD_REPORT.md"
       ],
-      "gap": "Cancellation identity binding, idempotency conflict, retransmission coalescing and expiry high-water are evidenced; the caller-reserved session reservation used by restore (GC-018) and bounded retries with new operation IDs are unproven.",
-      "nextOwner": "GC-014"
+      "gap": "Staged/expired operation status distinction passed in diagnostics tests; restore session reservation and bounded retry gaps remain.",
+      "nextOwner": "GC-014",
+      "gc016": {
+        "delta": "GC-016 observation/diagnostics subset exercised in both families; status remains Partial.",
+        "executedEvidence": [
+          "artifacts/gc-016/final-trx/",
+          "artifacts/gc-016/unity/editmode-results.xml",
+          "artifacts/gc-016/BUILD_REPORT.md"
+        ],
+        "statusUnchangedBecause": "Staged/expired operation status distinction passed in diagnostics tests; restore session reservation and bounded retry gaps remain."
+      }
     },
     {
       "id": "P-051",
@@ -1413,15 +1482,27 @@
       ],
       "evidence": [
         "artifacts/w3-gate/trx/",
-        "artifacts/w3-gate/unity/editmode-results.xml"
+        "artifacts/w3-gate/unity/editmode-results.xml",
+        "artifacts/gc-016/final-trx/",
+        "artifacts/gc-016/unity/editmode-results.xml",
+        "artifacts/gc-016/BUILD_REPORT.md"
       ],
-      "gap": "Rejection codes are exercised individually, but full payloads (world/operation/plan identity, smallest conflicting set, retrieval keys, retry classification) are not established; GC-004's own review records P-052 conformance as not established.",
-      "nextOwner": "GC-016"
+      "gap": "Typed payload interning and formatting-independent precedence passed in diagnostics and real-family rejection tests; cross-module diagnostic assembly and full rejection matrix remain open.",
+      "nextOwner": "GC-016",
+      "gc016": {
+        "delta": "GC-016 observation/diagnostics subset exercised in both families; status remains Partial.",
+        "executedEvidence": [
+          "artifacts/gc-016/final-trx/",
+          "artifacts/gc-016/unity/editmode-results.xml",
+          "artifacts/gc-016/BUILD_REPORT.md"
+        ],
+        "statusUnchangedBecause": "Typed payload interning and formatting-independent precedence passed in diagnostics and real-family rejection tests; cross-module diagnostic assembly and full rejection matrix remain open."
+      }
     },
     {
       "id": "P-053",
       "title": "Checkpoint (committed boundary, full contents, explicit command disposition)",
-      "status": "Not yet",
+      "status": "Implemented+Evidenced",
       "ownerTasks": [
         "GC-018",
         "GC-021",
@@ -1429,14 +1510,16 @@
         "GC-027",
         "GC-028"
       ],
-      "evidence": [],
-      "gap": "No checkpoint capture code exists anywhere in Packages/ and no TEST-017 artifact exists in artifacts/.",
-      "nextOwner": "GC-018"
+      "evidence": [
+        "artifacts/gc-018/toolchain/probe-gc018.json",
+        "artifacts/gc-018/unity/gc018-editmode.xml",
+        "artifacts/gc-018/BUILD_REPORT.md"
+      ]
     },
     {
       "id": "P-054",
       "title": "Serialization (schema IDs, field IDs, canonical bytes, directed migrations)",
-      "status": "Partial",
+      "status": "Implemented+Evidenced",
       "ownerTasks": [
         "GC-001",
         "GC-003",
@@ -1448,11 +1531,10 @@
         "GC-028"
       ],
       "evidence": [
-        "artifacts/w3-gate/trx/",
-        "artifacts/protocol-fixtures/results.json"
-      ],
-      "gap": "Generated serializers, canonical big-endian round trips, unknown-field rejection and registered slot migrations are evidenced; save/checkpoint data and directed cross-version migration paths are not.",
-      "nextOwner": "GC-018"
+        "artifacts/gc-018/trx/",
+        "artifacts/gc-018/toolchain/probe-gc018.json",
+        "tests/GameCore.CheckpointFixtures/"
+      ]
     },
     {
       "id": "P-055",
@@ -2290,7 +2372,7 @@
     {
       "id": "O-20",
       "title": "CaptureCheckpoint: snapshot boundary plus command option -> versioned blob/checksum",
-      "status": "Not yet",
+      "status": "Implemented+Evidenced",
       "ownerTasks": [
         "GC-003",
         "GC-015",
@@ -2303,14 +2385,15 @@
       "suites": [
         "TEST-017"
       ],
-      "evidence": [],
-      "gap": "No checkpoint capture code exists anywhere in Packages/ and no TEST-017 artifact exists in artifacts/.",
-      "nextOwner": "GC-018"
+      "evidence": [
+        "artifacts/gc-018/toolchain/probe-gc018.json",
+        "artifacts/gc-018/BUILD_REPORT.md"
+      ]
     },
     {
       "id": "O-21",
       "title": "RestoreCheckpoint: verified blob -> new WorldId and fully published world",
-      "status": "Not yet",
+      "status": "Implemented+Evidenced",
       "ownerTasks": [
         "GC-002",
         "GC-003",
@@ -2330,9 +2413,11 @@
         "TEST-002",
         "TEST-017"
       ],
-      "evidence": [],
-      "gap": "No restore path, catalog/migration validation or unexposed destination world exists in Packages/.",
-      "nextOwner": "GC-018"
+      "evidence": [
+        "artifacts/gc-018/toolchain/probe-gc018.json",
+        "artifacts/gc-018/unity/gc018-editmode.xml",
+        "artifacts/gc-018/BUILD_REPORT.md"
+      ]
     },
     {
       "id": "O-22",
@@ -2677,6 +2762,355 @@
       "artifacts/w4-gate/toolchain/probe-w4-gate.json",
       "artifacts/w4-gate/toolchain/probe-gc013.json",
       "artifacts/w4-gate/BUILD_REPORT.md"
+    ]
+  },
+  "gc018Revisions": {
+    "task": "GC-018",
+    "branch": "gc-018",
+    "statusOfThisSection": "Applied on the Linux build host. The four proposed rows were promoted after the GC-018 EditMode suite and player probe passed; see artifacts/gc-018/BUILD_REPORT.md.",
+    "objective": "Recreate a complete compatible world using stable data and an unexposed restore target: committed-boundary capture, queued-command disposition, bounded generated serializers, stable reference tables, active and dormant state, clocks/RNG, catalog fingerprints, and unique directed migration paths with an unexposed restore validation.",
+    "normativeSections": [
+      "P-004",
+      "P-005",
+      "P-032",
+      "P-049",
+      "P-053",
+      "P-054",
+      "P-055"
+    ],
+    "requiredSuites": [
+      "TEST-002",
+      "TEST-010",
+      "TEST-017",
+      "TEST-022"
+    ],
+    "observationNames": [
+      "gc018-world-lane-and-live-state",
+      "gc018-committed-boundary-capture",
+      "gc018-queued-commands-are-dispositioned-not-omitted",
+      "gc018-capture-refuses-outside-a-boundary",
+      "gc018-corrupt-and-truncated-documents-reject",
+      "gc018-unknown-required-schema-rejects-restore",
+      "gc018-ambiguous-migration-rejects-restore",
+      "gc018-corrupt-reference-rejects-restore",
+      "gc018-restore-happens-into-a-new-unexposed-world",
+      "gc018-restore-recreates-state-at-different-native-indices",
+      "gc018-restore-preserves-dormant-slots",
+      "gc018-restore-preserves-mode-imports-and-exclusions",
+      "gc018-restore-continues-clocks-rng-and-cursors",
+      "gc018-old-callbacks-cannot-target-the-new-session",
+      "gc018-restored-world-publishes-and-advances",
+      "gc018-teardown-disposes-both-worlds"
+    ],
+    "digests": {
+      "algorithm": "SHA-256 over the LF-joined '<label>/<name>=pass' lines, no trailing newline (GameCore.Rules.Narrative.NarrativeDigest.OfLines)",
+      "narrative": "f881469b2a2ba43e4c1bf7972913dd2c93f945a623fef770e00319409ece7ac0",
+      "cards": "fe1aaae38982be120fe3c668742990504f984b54b053de3b2d7886ff899b5256"
+    },
+    "proposedRows": [
+      {
+        "id": "P-053",
+        "currentStatus": "Not yet",
+        "proposedStatus": "Implemented+Evidenced",
+        "whatChanged": "The checkpoint format, its generated serializers, the committed-boundary capture with explicit queued-command disposition, and the header's declared counts now exist; before this task no checkpoint code existed anywhere in Packages/.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-018/toolchain/probe-gc018.json",
+          "artifacts/gc-018/unity/gc018-editmode.xml",
+          "artifacts/gc-018/BUILD_REPORT.md"
+        ],
+        "observationEvidence": [
+          "gc018-committed-boundary-capture",
+          "gc018-queued-commands-are-dispositioned-not-omitted",
+          "gc018-capture-refuses-outside-a-boundary"
+        ]
+      },
+      {
+        "id": "P-054",
+        "currentStatus": "Partial",
+        "proposedStatus": "Implemented+Evidenced",
+        "whatChanged": "Directed per-schema migration registration now plans a unique path or refuses; ambiguity, unreachability, downgrade and cross-schema requests are distinct refusals. The previously named gap 'the generated migration ambiguity boundary of P-054 remains open' is closed by CheckpointMigrationRegistry plus the versioned fixture table.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-018/trx/",
+          "artifacts/gc-018/toolchain/probe-gc018.json"
+        ],
+        "observationEvidence": [
+          "gc018-ambiguous-migration-rejects-restore",
+          "gc018-unknown-required-schema-rejects-restore"
+        ]
+      },
+      {
+        "id": "O-20",
+        "currentStatus": "Not yet",
+        "proposedStatus": "Implemented+Evidenced",
+        "whatChanged": "O-20's handler exists: CheckpointCapture plus UnityCommittedBoundaryReader over real storage, with the queue option, the cutoff, the copy-then-serialize split and a checksum over the document bytes.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-018/toolchain/probe-gc018.json"
+        ],
+        "observationEvidence": [
+          "gc018-committed-boundary-capture",
+          "gc018-capture-refuses-outside-a-boundary"
+        ]
+      },
+      {
+        "id": "O-21",
+        "currentStatus": "Not yet",
+        "proposedStatus": "Implemented+Evidenced",
+        "whatChanged": "O-21's handler exists: reserve, verify, plan with unique migration paths, rebuild in an unexposed staging world, validate it, then expose it. The distinguishing probe (an old callback cannot target the restored session) is an observation, and a refusal leaves no reachable partial world.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-018/toolchain/probe-gc018.json"
+        ],
+        "observationEvidence": [
+          "gc018-restore-happens-into-a-new-unexposed-world",
+          "gc018-old-callbacks-cannot-target-the-new-session",
+          "gc018-restore-recreates-state-at-different-native-indices"
+        ]
+      },
+      {
+        "id": "O-22",
+        "currentStatus": "Not yet",
+        "proposedStatus": "Not yet",
+        "whatChanged": "Not closed here. The restore path O-22 delegates to now exists, but 'Faulted world to new session' and 'old storage never resumes' are GC-027's composition over this task's restore and GC-017's fault latch.",
+        "evidenceToBeProduced": [],
+        "observationEvidence": []
+      },
+      {
+        "id": "P-055",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "The checkpoint document declares one required feature id and rejects an unknown one before decoding, which strengthens the row, but evolution across a second protocol minor revision is still not exercised, so the status does not move.",
+        "evidenceToBeProduced": [],
+        "observationEvidence": []
+      }
+    ],
+    "contractChanges": [
+      "Additive: UnityWorldRegistry.TryExpose(UnityWorldHost) (internal) - publishes a world built outside the registry; refuses an already-registered session.",
+      "Additive: UnityWorldHost.TryCreateUnexposed(WorldCreateRequest, UnityWorldRegistration, out UnityWorldHost?) - O-21's 'unexposed new world'.",
+      "Additive: LiveTargetSeeder.TrySeedSlot(..., bool active, ...) overload - restores a dormant slot as dormant (P-032)."
+    ],
+    "carriedGaps": [
+      "O-22 RecoverWorld is not composed here (GC-027).",
+      "The observation lease of GC-016 is not consumed; the CommittedBoundary seam is frozen and independent.",
+      "Definition-revision resolution for ContentRevisionCount belongs to GC-025; the count is recorded evidence only here.",
+      "Re-admitting an included queued command into the restored plane is command ingress (GC-019's adapter boundary); the recorded set, cutoff and high-water are what this task proves."
+    ],
+    "verdict": "Run. 66/66 GC-018 observations x 2 families x 2 catalogs, 5/5 byte-identical IL2CPP player runs under High stripping; GC-018 EditMode 3/3 (full EditMode 784/784, PlayMode 6/6); dotnet 899/899. P-053, P-054, O-20 and O-21 promoted; O-22, P-004, P-005, P-032, P-055 unchanged.",
+    "appliedRows": {
+      "P-053": {
+        "status": "Implemented+Evidenced",
+        "evidence": [
+          "artifacts/gc-018/toolchain/probe-gc018.json",
+          "artifacts/gc-018/unity/gc018-editmode.xml",
+          "artifacts/gc-018/BUILD_REPORT.md"
+        ]
+      },
+      "P-054": {
+        "status": "Implemented+Evidenced",
+        "evidence": [
+          "artifacts/gc-018/trx/",
+          "artifacts/gc-018/toolchain/probe-gc018.json",
+          "tests/GameCore.CheckpointFixtures/"
+        ]
+      },
+      "O-20": {
+        "status": "Implemented+Evidenced",
+        "evidence": [
+          "artifacts/gc-018/toolchain/probe-gc018.json",
+          "artifacts/gc-018/BUILD_REPORT.md"
+        ]
+      },
+      "O-21": {
+        "status": "Implemented+Evidenced",
+        "evidence": [
+          "artifacts/gc-018/toolchain/probe-gc018.json",
+          "artifacts/gc-018/unity/gc018-editmode.xml",
+          "artifacts/gc-018/BUILD_REPORT.md"
+        ]
+      }
+    }
+  },
+  "w5GateRevisions": {
+    "task": "W5-GATE",
+    "branch": "w5-gate",
+    "verdict": "Run: dotnet 978/978, EditMode 905/905, PlayMode 10/10, W5-GATE 34/34 observations in each of five IL2CPP runs, release player inspection Pass. No requirement row promoted: P-049 remains Partial because O-22 RecoverWorld and bounded retry behavior remain open. See artifacts/w5-gate/BUILD_REPORT.md.",
+    "statusOfThisSection": "Passing integrated evidence added; statuses unchanged where normative clauses remain unproven.",
+    "objective": "Join retained observation, deterministic faults, checkpoint restore and the common adapters in one actual world, and show prewrite rejection, postwrite fail-stop, new-session restore, read-only snapshots and stale asset callback rejection.",
+    "normativeSections": [
+      "P-002",
+      "P-004",
+      "P-005",
+      "P-007",
+      "P-024",
+      "P-028",
+      "P-029",
+      "P-030",
+      "P-031",
+      "P-032",
+      "P-034",
+      "P-045",
+      "P-047",
+      "P-048",
+      "P-049",
+      "P-051",
+      "P-053"
+    ],
+    "requiredSuites": [
+      "TEST-002",
+      "TEST-009",
+      "TEST-010",
+      "TEST-014",
+      "TEST-015",
+      "TEST-016",
+      "TEST-017",
+      "TEST-018",
+      "TEST-019",
+      "TEST-022"
+    ],
+    "observationNames": [
+      "w5gate-one-world-with-retained-observation",
+      "w5gate-pinned-snapshots-are-read-only",
+      "w5gate-checkpoint-from-the-committed-boundary",
+      "w5gate-prewrite-fault-keeps-the-old-assembly",
+      "w5gate-postwrite-fault-fail-stops-the-world",
+      "w5gate-restore-into-a-new-session",
+      "w5gate-adapters-bind-to-the-restored-world",
+      "w5gate-retired-world-callbacks-are-rejected"
+    ],
+    "digests": {
+      "algorithm": "SHA-256 over the LF-joined '<label>/<name>=pass' lines, no trailing newline (GameCore.Rules.Narrative.NarrativeDigest.OfLines)",
+      "narrative": "768dc415bd79e76adacb2472f7af5383bff25b4da44635a94eb3fa64f4dc250c",
+      "cards": "5740b580c5b807796af5456396195baf761947ff6fc819e173074aeeeef297ff",
+      "recomputedOnAuthoringHost": true
+    },
+    "proposedRows": [
+      {
+        "id": "P-049",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "The integrated faulted-world checkpoint restore path passes in both families; this is not O-22 RecoverWorld, and host-configured bounded retry attempts remain unproven, so the full P-049 normative contract remains Partial.",
+        "evidenceToBeProduced": [
+          "artifacts/w5-gate/toolchain/probe-w5-gate.json",
+          "artifacts/w5-gate/toolchain/probe-gc017-faults.json",
+          "artifacts/w5-gate/unity/editmode-results.xml",
+          "artifacts/w5-gate/trx/"
+        ],
+        "observationEvidence": [
+          "w5gate-postwrite-fault-fail-stops-the-world",
+          "w5gate-prewrite-fault-keeps-the-old-assembly",
+          "w5gate-restore-into-a-new-session",
+          "gc017-recovery-from-initial-definitions-into-a-new-world"
+        ]
+      },
+      {
+        "id": "P-007",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "The gate adds a real-world lease observation: one committed boundary leased through GC-016's bounded observation, held across a publication that moves the world's revision and epoch, byte-identical afterwards, with no writable reference reachable through the lease interface. The row's remaining gap (the TEST-023 memory-pressure budget over a long retention run) is GC-026's.",
+        "evidenceToBeProduced": [
+          "artifacts/w5-gate/toolchain/probe-w5-gate.json"
+        ],
+        "observationEvidence": [
+          "w5gate-pinned-snapshots-are-read-only",
+          "w5gate-retired-world-callbacks-are-rejected"
+        ]
+      },
+      {
+        "id": "P-045",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "Observation, cursor and dedup behaviour is now exercised across a session boundary: the boundary the checkpoint reads is leased, the restored world is a new incarnation whose handles refuse every old one, and the last committed image of the faulted world stays readable. The stale-cursor/resynchronization scale claims remain GC-021's.",
+        "evidenceToBeProduced": [
+          "artifacts/w5-gate/toolchain/probe-w5-gate.json"
+        ],
+        "observationEvidence": [
+          "w5gate-pinned-snapshots-are-read-only",
+          "w5gate-checkpoint-from-the-committed-boundary",
+          "w5gate-restore-into-a-new-session"
+        ]
+      },
+      {
+        "id": "P-032",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "Active and dormant authoritative rows now round-trip through a checkpoint taken in a real world that is then faulted, and the restored world is compared row by row against the captured set. The transfer/reset boundaries the row also covers remain GC-015's.",
+        "evidenceToBeProduced": [
+          "artifacts/w5-gate/toolchain/probe-w5-gate.json"
+        ],
+        "observationEvidence": [
+          "w5gate-checkpoint-from-the-committed-boundary",
+          "w5gate-restore-into-a-new-session"
+        ]
+      },
+      {
+        "id": "P-002",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "The adapter boundary is now exercised in a world that really faulted and was restored: input, asset and presentation adapters are bound to the new incarnation, the old incarnation's token, stamp and image are refused, and the world's own latch, observation and command port are the only authorities involved. The full participant role table remains open.",
+        "evidenceToBeProduced": [
+          "artifacts/w5-gate/toolchain/probe-w5-gate.json"
+        ],
+        "observationEvidence": [
+          "w5gate-adapters-bind-to-the-restored-world",
+          "w5gate-retired-world-callbacks-are-rejected"
+        ]
+      },
+      {
+        "id": "P-034",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "Presentation in the integrated world reads only the restored world's committed image, and a view bound to a target whose composition is the restored scope reports the committed composition parent. The real physics stage remains GC-020's.",
+        "evidenceToBeProduced": [
+          "artifacts/w5-gate/toolchain/probe-w5-gate.json"
+        ],
+        "observationEvidence": [
+          "w5gate-adapters-bind-to-the-restored-world"
+        ]
+      },
+      {
+        "id": "P-028",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "The validation boundary is now reached by a real composition edit in a live world rather than only by the package fixture, and its refusal is asserted against the old assembly's rows, revision, epoch and image count.",
+        "evidenceToBeProduced": [
+          "artifacts/w5-gate/toolchain/probe-w5-gate.json",
+          "artifacts/w5-gate/toolchain/probe-gc017-faults.json"
+        ],
+        "observationEvidence": [
+          "w5gate-prewrite-fault-keeps-the-old-assembly"
+        ]
+      },
+      {
+        "id": "P-053",
+        "currentStatus": "Implemented+Evidenced",
+        "proposedStatus": "Implemented+Evidenced",
+        "whatChanged": "Unchanged status: the capture now reads its boundary through GC-016's frozen lease interface (the reconciliation this gate performed), and the gate asserts the observation's own lease counter moved and that a world-declared queue that contradicts the copied records refuses the capture.",
+        "evidenceToBeProduced": [
+          "artifacts/w5-gate/toolchain/probe-w5-gate.json"
+        ],
+        "observationEvidence": [
+          "w5gate-checkpoint-from-the-committed-boundary"
+        ]
+      }
+    ],
+    "reconciliations": [
+      "GC-018's committed-boundary reader now takes GC-016's bounded lease for the whole read (`GameCore.Execution.Persistence` + `GameCore.Unity.Runtime.Persistence`): the snapshot carries the leased token and the world's declared queue facts, and `CheckpointCapture` refuses a capture whose copied queue contradicts them.",
+      "GC-018's checkpoint codec binding table moved out of `Gc018Scenario` into `Gc018CheckpointCodecs`, so the gate captures and restores the same format rather than a second copy of it.",
+      "The probe host keeps every mode after merging GC-016..GC-019, and `tools/unity/prepare_gc017_release_project.py` removes the Wave 5 gate's scenario and probe from the marker-free release clone because they name the latch types.",
+      "`tools/check_release_fault_free.py`'s balance check now runs over a literal-blind view of the compiled text: a `ToString()` that emits a closing parenthesis writes it inside a string literal, which the previous check counted as a split construct and failed a correct file."
+    ],
+    "contractChanges": [
+      "`CommittedBoundarySnapshot` gained four constructor parameters and four properties (`BoundaryToken`, `DeclaredQueueDisposition`, `DeclaredQueuedCommandCount`, `DeclaredStagedOperationCount`); every construction site was updated.",
+      "`CheckpointCapture.Capture` gained one refusal path: a world whose declared queue facts contradict the copied records.",
+      "`UnityCommittedBoundaryReader`, `CaptureContext`, `Gc018FamilyRestoreBuilder` and the two family contracts are unchanged."
+    ],
+    "carriedGaps": [
+      "The integration gate passed on the Linux build host, but O-22 RecoverWorld and P-049's bounded retries remain unevidenced; no requirement row was promoted.",
+      "`O-22 RecoverWorld` is still not composed; GC-027 owns it. The gate's restore proves the path it will reuse.",
+      "Physics/animation stages remain GC-020's; no external-authority adapter is declared by a card or narrative world."
+    ],
+    "notProposed": [
+      "P-005, P-024, P-047, P-048, P-051 and P-055 keep their current status: the gate exercises them in one world but does not close their remaining clauses.",
+      "Every operation row except O-20/O-21 is unchanged; those two were promoted by the GC-018 build-host run and stay promoted.",
+      "O-22 RecoverWorld is not proposed: GC-027 composes it from the restore path this gate proves."
     ]
   }
 }

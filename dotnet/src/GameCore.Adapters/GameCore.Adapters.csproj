@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Engine-free adapter core (GC-019). The same sources are compiled into the Unity assembly
+       GameCore.Unity.Adapters; here they build with a plain .NET SDK so the adapter frame registry, the stamped
+       typed input ingress, the bounded asynchronous asset lease table, the view registry / committed-output
+       presenter and the external-authority ledger can be tested without Unity.
+       Only Runtime/Pure/** is included: the Input/, Assets/, Views/ and PlayerLoop/ folders are the engine halves and
+       reference UnityEngine deliberately. No UnityEngine or Unity.* reference is allowed in the included files. -->
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>GameCore.Adapters</AssemblyName>
+    <RootNamespace>GameCore.Unity.Adapters</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="../../../Packages/com.gamecore.unity.adapters/Runtime/Pure/**/*.cs"
+             Exclude="../../../Packages/com.gamecore.unity.adapters/Runtime/Pure/**/bin/**/*.cs;../../../Packages/com.gamecore.unity.adapters/Runtime/Pure/**/obj/**/*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../GameCore.Composition/GameCore.Composition.csproj" />
+    <ProjectReference Include="../GameCore.Contracts/GameCore.Contracts.csproj" />
+    <ProjectReference Include="../GameCore.Execution/GameCore.Execution.csproj" />
+  </ItemGroup>
+
+</Project>

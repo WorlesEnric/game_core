@@ -1,0 +1,101 @@
+{
+  "format": "gamecore.checkpoint-fixtures/queue-policy/1",
+  "cases": [
+    {
+      "id": "queue-reject-queued-none",
+      "title": "RejectQueued with no queued command records a zero cutoff count and no Command record",
+      "requirementIds": [
+        "P-053"
+      ],
+      "testIds": [
+        "TEST-017",
+        "TEST-022"
+      ],
+      "offeredCommands": 0,
+      "policy": "RejectQueued",
+      "expectedIncluded": 0,
+      "expectedRejected": 0,
+      "expectedHeaderCommandCount": 0
+    },
+    {
+      "id": "queue-reject-queued-one",
+      "title": "RejectQueued cancels the one queued command and records it as explicitly rejected",
+      "requirementIds": [
+        "P-053"
+      ],
+      "testIds": [
+        "TEST-017",
+        "TEST-022"
+      ],
+      "offeredCommands": 1,
+      "policy": "RejectQueued",
+      "expectedIncluded": 0,
+      "expectedRejected": 1,
+      "expectedHeaderCommandCount": 0
+    },
+    {
+      "id": "queue-reject-queued-three",
+      "title": "RejectQueued cancels all three queued commands and the header records all three as rejected",
+      "requirementIds": [
+        "P-053"
+      ],
+      "testIds": [
+        "TEST-017",
+        "TEST-022"
+      ],
+      "offeredCommands": 3,
+      "policy": "RejectQueued",
+      "expectedIncluded": 0,
+      "expectedRejected": 3,
+      "expectedHeaderCommandCount": 0
+    },
+    {
+      "id": "queue-include-queued-none",
+      "title": "IncludeQueued with no queued command writes no Command record and rejects none",
+      "requirementIds": [
+        "P-053"
+      ],
+      "testIds": [
+        "TEST-017",
+        "TEST-022"
+      ],
+      "offeredCommands": 0,
+      "policy": "IncludeQueued",
+      "expectedIncluded": 0,
+      "expectedRejected": 0,
+      "expectedHeaderCommandCount": 0
+    },
+    {
+      "id": "queue-include-queued-one",
+      "title": "IncludeQueued records the one queued command so the restored world re-admits it",
+      "requirementIds": [
+        "P-053"
+      ],
+      "testIds": [
+        "TEST-017",
+        "TEST-022"
+      ],
+      "offeredCommands": 1,
+      "policy": "IncludeQueued",
+      "expectedIncluded": 1,
+      "expectedRejected": 0,
+      "expectedHeaderCommandCount": 1
+    },
+    {
+      "id": "queue-include-queued-three",
+      "title": "IncludeQueued records all three queued commands in one batch and rejects none",
+      "requirementIds": [
+        "P-053"
+      ],
+      "testIds": [
+        "TEST-017",
+        "TEST-022"
+      ],
+      "offeredCommands": 3,
+      "policy": "IncludeQueued",
+      "expectedIncluded": 3,
+      "expectedRejected": 0,
+      "expectedHeaderCommandCount": 3
+    }
+  ]
+}

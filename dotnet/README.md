@@ -24,6 +24,7 @@ Unity qualification project and the player gates.
 | `tests/GameCore.Composition.Tests` | NUnit 3 | net8.0 | the composition package's own `Tests/**` sources |
 | `src/GameCore.Execution` | library | netstandard2.1 | `Packages/com.gamecore.unity.runtime/Runtime/Pure/**/*.cs` |
 | `tests/GameCore.Execution.Tests` | NUnit 3 | net8.0 | engine-free execution core tests |
+| `src/GameCore.Faults.ReleaseCheck` | library (not in the solution) | netstandard2.1 | `Packages/com.gamecore.unity.runtime/Runtime/Faults/**/*.cs`, compiled twice by `tools/check_release_fault_free.py`: `-c Release` must contain no type and no boundary literal, `-c Qualification` must contain all of them (GC-017) |
 | `src/GameCore.Derivation` | library | netstandard2.1 | `Packages/com.gamecore.derivation/Runtime/**/*.cs` |
 | `tests/GameCore.Derivation.Tests` | NUnit 3 | net8.0 | the derivation package's own `Tests/**` sources |
 | `src/GameCore.Planning` | library | netstandard2.1 | `Packages/com.gamecore.planning/Runtime/**/*.cs` |
@@ -32,6 +33,8 @@ Unity qualification project and the player gates.
 | `tests/GameCore.Rules.Narrative.Tests` | NUnit 3 | net8.0 | the narrative rules package's own `Tests/**` sources |
 | `src/GameCore.Rules.Cards` | library | netstandard2.1 | `Packages/com.gamecore.rules.cards/Runtime/**/*.cs` |
 | `tests/GameCore.Rules.Cards.Tests` | NUnit 3 | net8.0 | the card-rules package's own `Tests/**` sources |
+| `src/GameCore.Adapters` | library | netstandard2.1 | `Packages/com.gamecore.unity.adapters/Runtime/Pure/**/*.cs` |
+| `tests/GameCore.Adapters.Tests` | NUnit 3 | net8.0 | the adapter-core tests plus the shared `Packages/com.gamecore.unity.adapters/Fixtures/**/*.cs` doubles |
 
 The two fixture suites share one test source (`tests/GameCore.ProtocolFixtures.Tests/ProtocolFixtureTests.cs`).
 They write separate evidence documents, `artifacts/protocol-fixtures/results.json` and
@@ -54,6 +57,16 @@ copies of the same types. No assembly in this solution references both contract 
 `GameCore.Unity.Runtime` (namespace `GameCore.Execution`): the temporal accumulator, the guarded dispatch plan,
 the world/job resource ledger, the step publication boundary and the deterministic id sequence. It references
 no `UnityEngine` or `Unity.*` type, which is why the same sources build under the plain SDK.
+
+`GameCore.Adapters` compiles the engine-free adapter core that also lives inside the Unity assembly
+`GameCore.Unity.Adapters` (namespace `GameCore.Unity.Adapters` and its `.Input`, `.Assets`, `.Views`, `.Authority`
+sub-namespaces): the adapter frame port and registry the application pump consults, the stamped typed input ingress,
+the bounded asynchronous asset lease table, the target/view registry with committed-output presentation, and the
+external physical-authority descriptor and ledger. Only `Runtime/Pure/**` is included; the Unity halves under
+`Runtime/Input`, `Runtime/Assets` and `Runtime/Views` reference `UnityEngine` and `Unity.Entities` on purpose.
+`tests/GameCore.Adapters.Tests` compiles the shared adapter doubles under
+`Packages/com.gamecore.unity.adapters/Fixtures/Runtime` directly, so the plain-dotnet suite and the Unity EditMode
+suite exercise the same fixtures.
 
 ## Commands
 

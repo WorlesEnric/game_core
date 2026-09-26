@@ -13,16 +13,26 @@
 // and 04 s5 (staging is unobservable; the commit is a nonthrowing single-reference switch).
 //
 // The step order below is the protocol's order, and every step that can fail happens *before* the first live write
-// except the apply itself:
+// except the apply, the gate installation and the commit, whose failures fault the world:
 //
 //   1. refuse a world that cannot publish (faulted, stopping, disposed, created) or a step already in progress;
-//   2. refuse a plan that is not validated and prepared, and recheck its expected revision/base epoch -> StalePlan;
-//   3. fence: complete every tracked fence and handle of the old assembly, and close admission while it swaps;
-//   4. migrate on scratch: read the planned live slot values, run the registered pure migrations on the copies; a
+//   2. validation boundary (GC-017 / TEST-016 row 1): refuse a plan that is not validated and prepared;
+//   3. recheck the plan's expected revision/base epoch -> StalePlan (P-028);
+//   4. a plan with no effective change is a `NoChange` and consumes no publication number (P-006);
+//   5. the composition publication this assembly belongs to must be exactly the next one (P-006);
+//   6. acquisition boundary (row 2): the plan's staged leases are still inert and unpublished;
+//   7. fence: complete every tracked fence and handle of the old assembly and close admission while it swaps;
+//      the fence boundary (row 4) is reached once that fence has settled;
+//   8. migrate on scratch: read the planned live slot values, run the registered pure migrations on the copies; a
 //      failure here releases the staged acquisitions and leaves the old assembly and its state untouched (P-029);
-//   5. apply: binding rows and state dispositions are written to live storage; this is the postwrite cutoff;
-//   6. commit: rebuild the execution order, construct the complete view (bindings + rules + schedule + gates +
+//   9. apply: binding rows and state dispositions are written to live storage; this is the postwrite cutoff, and the
+//      first-live-write boundary (row 5) is reached after the last authoritative write of the fence;
+//  10. gate installation (row 5): the new execution graph and its closed ingress gates are installed;
+//  11. commit: rebuild the execution order, construct the complete view (bindings + rules + schedule + gates +
 //      snapshot token) and switch it once through the host (P-030).
+//
+// The GC-017 boundaries are named by `FaultBoundary` and reached through `FaultReach`, which is a no-op in a
+// compilation that does not define `GAMECORE_FAULT_INJECTION`.
 //
 // There is ONE publication series here (P-006): the counters a composition operation reports are the counters the
 // world publishes. A lane joined to a world is seeded from that world's published assembly at construction
@@ -37,6 +47,7 @@ using System.Globalization;
 using GameCore.Contracts;
 using GameCore.Execution;
 using GameCore.Planning;
+using GameCore.Unity.Runtime.Faults;
 using Unity.Entities;
 
 namespace GameCore.Unity.Runtime
@@ -144,47 +155,6 @@ namespace GameCore.Unity.Runtime
             + (Detail.Length == 0 ? string.Empty : ": " + Detail);
     }
 
-    /// <summary>Injected faults for the fault-boundary tests; a production pipeline never arms these (TEST-016).</summary>
-    public sealed class AssemblyFaultInjection
-    {
-        /// <summary>Throws inside the prewrite migration stage, i.e. before any live write (P-029).</summary>
-        public bool FailDuringMigration { get; set; }
-
-        /// <summary>Throws after the apply stage has already written at least one live row (P-031).</summary>
-        public bool FailAfterFirstLiveWrite { get; set; }
-
-        /// <summary>Times the prewrite injection fired; a value, so a test can assert it fired exactly once.</summary>
-        public int MigrationInjections { get; private set; }
-
-        public int PostWriteInjections { get; private set; }
-
-        /// <summary>Raises the prewrite injection if armed; called by the publisher inside the migration stage.</summary>
-        public void MaybeFailDuringMigration()
-        {
-            if (!FailDuringMigration)
-            {
-                return;
-            }
-
-            MigrationInjections++;
-            throw new InvalidOperationException(
-                "injected prewrite failure: the old assembly must stay intact and keep running (P-029)");
-        }
-
-        /// <summary>Raises the postwrite injection if armed; called after the first live write (P-031).</summary>
-        public void MaybeFailAfterFirstLiveWrite()
-        {
-            if (!FailAfterFirstLiveWrite)
-            {
-                return;
-            }
-
-            PostWriteInjections++;
-            throw new InvalidOperationException(
-                "injected postwrite failure: the world must fault without publishing or resuming (P-031)");
-        }
-    }
-
     /// <summary>
     /// The publisher of one owned world. It owns the target registry, the published assembly reference and the
     /// descriptor that gives a compiled schedule its fence indices; the host owns lifecycle, the logical step and
@@ -232,6 +202,13 @@ namespace GameCore.Unity.Runtime
                     nameof(descriptor));
             }
 
+#if GAMECORE_FAULT_INJECTION
+            // The fault latch belongs to the world, not to this publisher: the execution driver, the staged-resource
+            // gate and the publisher of one world share one latch, so a boundary armed by a test is the boundary the
+            // real apply path reaches (GC-017). `Faults` below reads that one instance.
+            Faults = world.Faults;
+#endif
+
             PublishedRevision = CompositionRevision.First;
             AdoptedLaneRevision = CompositionRevision.Zero;
             AdoptedLaneEpoch = AssemblyEpoch.Zero;
@@ -262,8 +239,14 @@ namespace GameCore.Unity.Runtime
 
         public OwnershipStageDescriptor Descriptor => descriptor;
 
-        /// <summary>Injected-fault switches; unset in production (TEST-016).</summary>
-        public AssemblyFaultInjection Faults { get; } = new AssemblyFaultInjection();
+#if GAMECORE_FAULT_INJECTION
+        /// <summary>
+        /// The fault latch of this world; unarmed in production (TEST-016). It is the instance the world's driver
+        /// and staged-resource gate reach as well, so one arm covers the whole apply boundary. Absent, with the rest
+        /// of the latch, from a compilation that does not define <c>GAMECORE_FAULT_INJECTION</c>.
+        /// </summary>
+        public AssemblyFaultInjection Faults { get; }
+#endif
 
         /// <summary>The one published assembly reference; every reader captures one reference from here (P-030).</summary>
         public PublishedWorldView Published => assembly.Read();
@@ -335,6 +318,8 @@ namespace GameCore.Unity.Runtime
 
             AssemblyEpoch epochBefore = world.CurrentEpoch;
             AssemblyEpoch laneEpoch = AdoptedLaneEpoch;
+            AssemblyEpoch nextEpoch = laneEpoch;
+            CompositionRevision nextRevision = AdoptedLaneRevision;
 
             // 1. A world that cannot publish refuses before anything else happens; a faulted world never resumes.
             if (world.Lifecycle != WorldLifecycleState.Running && world.Lifecycle != WorldLifecycleState.Paused)
@@ -380,7 +365,23 @@ namespace GameCore.Unity.Runtime
                     "the plan is not prepared; publication requires a validated, prepared plan (P-027).");
             }
 
-            // 2. Recheck the expected revision and base epoch before touching anything (P-028, P-030).
+#if GAMECORE_FAULT_INJECTION
+            // 2. Validation boundary (GC-017, TEST-016 row 1). An injected validation fault is a prewrite refusal:
+            //    the prior published epoch, its live state and its registrations all remain active (P-028, P-029).
+            AssemblyPublicationReport? validationFault = ReachPrewriteFault(
+                publication,
+                epochBefore,
+                laneEpoch,
+                0,
+                FaultBoundary.Validation,
+                "injected validation fault: the prepared plan is refused before the fence");
+            if (validationFault != null)
+            {
+                return validationFault;
+            }
+#endif
+
+            // 3. Recheck the expected revision and base epoch before touching anything (P-028, P-030).
             if (!publication.State.RecheckBase(PublishedRevision, epochBefore, out DiagnosticCode recheckCode))
             {
                 StalePlanCount++;
@@ -398,7 +399,7 @@ namespace GameCore.Unity.Runtime
                     + "; it is discarded without mutation and regenerated under a new operation id (P-028).");
             }
 
-            // A plan whose assembly is effectively identical is a no-op: nothing increments and no image publishes
+            // 4. A plan whose assembly is effectively identical is a no-op: nothing increments and no image publishes
             // (P-006). A state migration or retraction alone *is* an effective change, so it still publishes.
             if (!HasEffectiveChange(publication))
             {
@@ -435,7 +436,7 @@ namespace GameCore.Unity.Runtime
                     "no assembly change");
             }
 
-            // 3. P-006 has one publication series: the composition publication this assembly belongs to must be
+            // 5. P-006 has one publication series: the composition publication this assembly belongs to must be
             //    exactly the next value of the published one, on both counters. Anything else is stale and is
             //    refused before a single live write (P-006, P-028).
             if (!HasAdoptedPublication)
@@ -473,66 +474,85 @@ namespace GameCore.Unity.Runtime
                     + "; the composition series and the published series must be the same one (P-006).");
             }
 
-            // P-006 increments the revision and the epoch at the same publication, so both are taken from the
-            // adopted composition publication rather than recomputed: the numbers are the lane's, not an offset.
-            AssemblyEpoch nextEpoch = AdoptedLaneEpoch;
-            CompositionRevision nextRevision = AdoptedLaneRevision;
+#if GAMECORE_FAULT_INJECTION
+            // 6. Acquisition boundary (GC-017, TEST-016 row 2): the staged leases of this plan are still inert and
+            //    unpublished here, so a fault rejects and releases exactly what the plan staged.
+            AssemblyPublicationReport? acquisitionFault = ReachPrewriteFault(
+                publication,
+                epochBefore,
+                laneEpoch,
+                0,
+                FaultBoundary.Acquisition,
+                "injected acquisition fault: the plan's staged leases are released and the old assembly stays active");
+            if (acquisitionFault != null)
+            {
+                return acquisitionFault;
+            }
+#endif
 
-            // 4. The fence: admission closes and every tracked handle of the old assembly completes before its
+            // 7. The fence: admission closes and every tracked handle of the old assembly completes before its
             //    storage is touched (P-030, P-041, P-047).
             int drained = FenceOldAssembly();
 
-            // 5. Migration on scratch. Everything here works on copied values, so failure leaves live state alone.
+#if GAMECORE_FAULT_INJECTION
+            // 8. Fence boundary (GC-017, TEST-016 row 4): the fence itself completed, so the tracked handle count
+            //     is reported with the refusal while the old assembly remains the published one.
+            AssemblyPublicationReport? fenceFault = ReachPrewriteFault(
+                publication,
+                epochBefore,
+                laneEpoch,
+                drained,
+                FaultBoundary.Fence,
+                "injected fence fault: every tracked handle was settled and the old assembly stays active");
+            if (fenceFault != null)
+            {
+                return fenceFault;
+            }
+#endif
+
+            // 9. Migration on scratch. Everything here works on copied values, so failure leaves live state alone.
             if (!TryMigrateOnScratch(
                 publication,
                 out int migratedSlots,
                 out DiagnosticCode migrationCode,
                 out string migrationDetail))
             {
-                PrewriteFailureCount++;
-                AcquisitionCleanup cleanup = publication.Acquisitions.ReleaseAll();
-                publication.Scratch.ReleaseAll();
-                publication.State.TryReject(migrationCode, migrationDetail);
-                return new AssemblyPublicationReport(
-                    new PublicationRecord(
-                        publication.Plan.Operation,
-                        Outcome.Rejected,
-                        migrationCode,
-                        migrationDetail,
-                        null,
-                        PublishedRevision,
-                        PublishedRevision,
-                        epochBefore,
-                        epochBefore,
-                        cleanup.Failed.Count != 0 ? cleanup.Failed : null,
-                        cleanup.Quarantined.Count != 0 ? cleanup.Quarantined : null),
-                    epochBefore,
-                    epochBefore,
-                    laneEpoch,
-                    0,
-                    0,
-                    drained,
-                    null,
-                    migrationDetail);
+                return PrewriteRefusal(
+                    publication, epochBefore, laneEpoch, drained, migrationCode, migrationDetail);
             }
 
-            // 6. Apply. From here on a failure is a postwrite fault: no epoch, no image and no resumption (P-031).
+            // 10. Apply. From here on a failure is a postwrite fault: no epoch, no image and no resumption (P-031).
             publication.State.TryBeginApplying(out _);
             int writes = 0;
             try
             {
                 ApplyStructuralAndState(publication, ref writes);
+
+                // The stamp of every affected target names the epoch being published, and it is written inside the
+                // fence with the rest of the apply stage rather than after the commit (P-030, 04 s5). It is inside
+                // this guard because a failure after the first live write is postwrite, whether it happens in the
+                // apply stage or in the stamp that belongs to the same fence (P-031).
+                writes += StampTargets(publication.AffectedTargets, nextEpoch, nextRevision);
+
+#if GAMECORE_FAULT_INJECTION
+                // 10b. First-live-write boundary (GC-017, TEST-016 row 5): reached after the last authoritative write
+                //     of this fence, so an injected fault is exactly the "failure after the first authoritative
+                //     mutation" the matrix names: the world faults, no epoch or image publishes and the last
+                //     committed image stays the only safe observation (P-031).
+                FaultReach.Reach(
+                    Faults,
+                    FaultBoundary.FirstLiveWrite,
+                    publication.Plan.Operation,
+                    publication.Plan.PlanHash,
+                    "injected postwrite fault: the world must fault without publishing or resuming");
+#endif
             }
             catch (Exception exception)
             {
                 return FaultAfterLiveWrite(publication, epochBefore, laneEpoch, drained, writes, exception);
             }
 
-            // The stamp of every affected target names the epoch being published, and it is written inside the fence
-            // with the rest of the apply stage rather than after the commit (P-030, 04 s5).
-            writes += StampTargets(publication.AffectedTargets, nextEpoch, nextRevision);
-
-            // 7. Commit: construct the complete image and switch it once through the host (P-030).
+            // 11. Commit: construct the complete image and switch it once through the host (P-030).
             return Commit(publication, epochBefore, laneEpoch, nextEpoch, nextRevision, drained, migratedSlots, writes);
         }
 
@@ -1022,9 +1042,20 @@ namespace GameCore.Unity.Runtime
             code = DiagnosticCode.None;
             detail = string.Empty;
 
+#if GAMECORE_FAULT_INJECTION
             try
             {
                 Faults.MaybeFailDuringMigration();
+
+                // Migration boundary (GC-017, TEST-016 row 5): this runs on copied values only, so a fault here
+                // releases the staged leases in reverse dependency order and leaves the old assembly, its state and
+                // its registrations untouched and running (P-029).
+                FaultReach.Reach(
+                    Faults,
+                    FaultBoundary.Migration,
+                    publication.Plan.Operation,
+                    publication.Plan.PlanHash,
+                    "injected migration fault: the old assembly keeps its state and keeps running");
             }
             catch (Exception exception)
             {
@@ -1032,6 +1063,7 @@ namespace GameCore.Unity.Runtime
                 detail = "prewrite migration failure: " + Describe(exception);
                 return false;
             }
+#endif
 
             // The source version and value come from the live slot copy; the target version comes from the
             // descriptor's declared slot schema (P-029, P-032).
@@ -1090,7 +1122,7 @@ namespace GameCore.Unity.Runtime
                 {
                     int before = writes;
                     writes += InstallBindingRow(entityManager, entity, row);
-                    if (before == 0 && writes > 0) Faults.MaybeFailAfterFirstLiveWrite();
+                    NoteFirstLiveWrite(publication, before, writes);
                 }
             }
 
@@ -1101,7 +1133,7 @@ namespace GameCore.Unity.Runtime
                 {
                     int before = writes;
                     writes += RemoveBindingRow(entityManager, entity, row);
-                    if (before == 0 && writes > 0) Faults.MaybeFailAfterFirstLiveWrite();
+                    NoteFirstLiveWrite(publication, before, writes);
                 }
             }
 
@@ -1139,10 +1171,12 @@ namespace GameCore.Unity.Runtime
                         destinationTarget,
                         disposition.DestinationOwner.Value.IsDefault ? disposition.Slot.Owner : disposition.DestinationOwner,
                         disposition.Slot.Slot);
+                    int beforeTransfer = writes;
                     writes += WriteSlotState(entityManager, destinationEntity, destination, transferred, transferredVersion);
-                    if (writes == 1) Faults.MaybeFailAfterFirstLiveWrite();
+                    NoteFirstLiveWrite(publication, beforeTransfer, writes);
+                    int beforeClear = writes;
                     writes += ClearSlotState(entityManager, sourceEntity, disposition.Slot);
-                    if (writes == 1) Faults.MaybeFailAfterFirstLiveWrite();
+                    NoteFirstLiveWrite(publication, beforeClear, writes);
                     continue;
                 }
 
@@ -1169,23 +1203,49 @@ namespace GameCore.Unity.Runtime
                         disposition.Slot,
                         staged,
                         disposition.ToVersion == 0U ? SchemaVersionOf(disposition.Slot.Slot) : disposition.ToVersion);
-                    if (before == 0 && writes > 0) Faults.MaybeFailAfterFirstLiveWrite();
+                    NoteFirstLiveWrite(publication, before, writes);
                 }
                 else if (disposition.Kind == StateDispositionKind.Retract)
                 {
                     int before = writes;
                     writes += ClearSlotState(entityManager, entity, disposition.Slot);
-                    if (before == 0 && writes > 0) Faults.MaybeFailAfterFirstLiveWrite();
+                    NoteFirstLiveWrite(publication, before, writes);
                 }
                 else if (disposition.Kind == StateDispositionKind.RetainDormant)
                 {
                     // The value stays exactly as it is and its row is marked dormant: no active writer, excluded from
                     // active queries, still serialized (P-032 `PreserveDormant`).
+                    int before = writes;
                     writes += MarkSlotDormant(entityManager, entity, disposition.Slot);
-                    if (writes == 1) Faults.MaybeFailAfterFirstLiveWrite();
+                    NoteFirstLiveWrite(publication, before, writes);
                 }
             }
+        }
 
+        /// <summary>
+        /// The one place the apply stage tells the latch that an authoritative live write just happened (P-031).
+        ///
+        /// It is marked <see cref="System.Diagnostics.ConditionalAttribute"/> on the qualification symbol, so a
+        /// compilation that does not define it removes every one of this method's call sites outright — argument
+        /// evaluation included — and the method itself becomes an unreferenced empty stub the linker drops. That is
+        /// what makes "the apply path costs a release build nothing" a property of the source rather than a claim
+        /// about the JIT, and it is also why <c>Faults</c> may be referenced only inside the guard below.
+        /// </summary>
+        // The attribute names the symbol as a literal because the symbol's own type is inside the guard: a
+        // `[Conditional]` argument must be a compile-time constant, and in a shipping compilation neither the type
+        // nor the method body exists.
+        [System.Diagnostics.Conditional("GAMECORE_FAULT_INJECTION")]
+        private void NoteFirstLiveWrite(PlannedPublication publication, int before, int after)
+        {
+            _ = publication;
+#if GAMECORE_FAULT_INJECTION
+            // The legacy GC-008 switch and the enumerated boundary are two ways to fault the same moment; the
+            // legacy one throws first, exactly as it did before the enumerated latch existed.
+            if (before == 0 && after > 0)
+            {
+                Faults.MaybeFailAfterFirstLiveWrite();
+            }
+#endif
         }
 
         private static bool HasEffectiveChange(PlannedPublication publication)
@@ -1293,6 +1353,28 @@ namespace GameCore.Unity.Runtime
                 schedule,
                 gates,
                 ordinal);
+
+#if GAMECORE_FAULT_INJECTION
+            // Gate-installation boundary (GC-017, TEST-016 row 5): installing the new execution graph and its
+            // closed ingress gates happens after the apply stage wrote live storage, so an injected fault here is a
+            // postwrite fault — no epoch or image publishes and the world never resumes (P-030, P-031).
+            if (publication != null)
+            {
+                try
+                {
+                    FaultReach.Reach(
+                        Faults,
+                        FaultBoundary.GateInstallation,
+                        operation,
+                        publication.Plan.PlanHash,
+                        "injected gate-installation fault: the world must fault without publishing or resuming");
+                }
+                catch (FaultInjectedException gateFault)
+                {
+                    return FaultAfterLiveWrite(publication, epochBefore, laneEpoch, drained, writes, gateFault);
+                }
+            }
+#endif
 
             // The execution graph of the new assembly is installed at the fence with gates validated closed; nothing
             // dispatches in this window because the world is not pumping (P-030, 04 s4).
@@ -1475,6 +1557,103 @@ namespace GameCore.Unity.Runtime
                 null,
                 detail);
         }
+
+        /// <summary>
+        /// One prewrite refusal (P-029): the plan's staged leases are released in reverse acquisition order, its
+        /// bounded scratch is dropped, the plan is terminal `Rejected` and the old assembly stays the published one.
+        /// Every prewrite boundary of GC-017 reports through here, and the cleanup boundary (test row 8) is reached
+        /// first: an injected cleanup fault keeps every staged lease retained and reported instead of pretending the
+        /// release succeeded, which is P-048's rule for ownership that cannot be proven safe.
+        /// </summary>
+        private AssemblyPublicationReport PrewriteRefusal(
+            PlannedPublication publication,
+            AssemblyEpoch epochBefore,
+            AssemblyEpoch laneEpoch,
+            int drained,
+            DiagnosticCode code,
+            string detail)
+        {
+            OperationId operation = publication.Plan.Operation;
+            string reason = detail ?? string.Empty;
+            PrewriteFailureCount++;
+
+            bool cleanupInjected = false;
+#if GAMECORE_FAULT_INJECTION
+            try
+            {
+                FaultReach.Reach(
+                    Faults,
+                    FaultBoundary.Cleanup,
+                    operation,
+                    publication.Plan.PlanHash,
+                    "injected cleanup fault: staged work is retained rather than released");
+            }
+            catch (FaultInjectedException cleanupFault)
+            {
+                cleanupInjected = true;
+                code = DiagnosticCode.ResourceUnavailable;
+                reason = reason + "; " + cleanupFault.Message;
+            }
+#endif
+
+            AcquisitionCleanup cleanup = cleanupInjected
+                ? new AcquisitionCleanup(null, null, publication.Acquisitions.RetainedLeaseIds(), 0)
+                : publication.Acquisitions.ReleaseAll();
+            if (!cleanupInjected)
+            {
+                publication.Scratch.ReleaseAll();
+            }
+
+            publication.State.TryReject(code, reason);
+            return new AssemblyPublicationReport(
+                new PublicationRecord(
+                    operation,
+                    Outcome.Rejected,
+                    code,
+                    reason,
+                    null,
+                    PublishedRevision,
+                    PublishedRevision,
+                    epochBefore,
+                    epochBefore,
+                    cleanup.Failed.Count != 0 ? cleanup.Failed : null,
+                    cleanup.Quarantined.Count != 0 ? cleanup.Quarantined : null),
+                epochBefore,
+                epochBefore,
+                laneEpoch,
+                0,
+                0,
+                drained,
+                null,
+                reason);
+        }
+
+#if GAMECORE_FAULT_INJECTION
+        /// <summary>
+        /// Reaches one prewrite boundary of GC-017: null when nothing was injected (the production path), or the
+        /// refusal report the boundary produced. It exists only where the latch does: its whole body is the
+        /// injected-exception classification, and every caller is guarded the same way.
+        /// </summary>
+        private AssemblyPublicationReport? ReachPrewriteFault(
+            PlannedPublication publication,
+            AssemblyEpoch epochBefore,
+            AssemblyEpoch laneEpoch,
+            int drained,
+            FaultBoundary boundary,
+            string detail)
+        {
+            try
+            {
+                FaultReach.Reach(Faults, boundary, publication.Plan.Operation, publication.Plan.PlanHash, detail);
+                return null;
+            }
+            catch (FaultInjectedException fault)
+            {
+                return PrewriteRefusal(
+                    publication, epochBefore, laneEpoch, drained, DiagnosticCode.ResourceUnavailable, fault.Message);
+            }
+        }
+#endif
 
         private AssemblyPublicationReport Refuse(
             OperationId operation,

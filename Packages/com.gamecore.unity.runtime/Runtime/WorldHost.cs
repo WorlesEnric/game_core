@@ -5,6 +5,7 @@ using System.Globalization;
 using GameCore.Contracts;
 using GameCore.Execution;
 using GameCore.Execution.Messages;
+using GameCore.Execution.Observation;
 using GameCore.Unity.Runtime.Messages;
 using Unity.Core;
 using Unity.Entities;
@@ -33,6 +34,16 @@ namespace GameCore.Unity.Runtime
         WorldMessagePlane? Messages { get; }
 
         WorldResourceLedger Ledger { get; }
+
+#if GAMECORE_FAULT_INJECTION
+        /// <summary>
+        /// The world's deterministic fault latch (GC-017). The publisher, the execution driver and the staged
+        /// resource gate of one world share this one instance, so a TEST-016 boundary armed by a fault test is the
+        /// boundary the real apply path reaches. Neither this member nor the type it names exists in a shipping
+        /// compilation.
+        /// </summary>
+        AssemblyFaultInjection Faults { get; }
+#endif
 
         GameCoreStepGroup StepGroup { get; }
 
@@ -114,6 +125,7 @@ namespace GameCore.Unity.Runtime
         private readonly WorldResourceLedger ledger;
         private readonly ObservationHub observations = new ObservationHub();
         private readonly StepPublicationStore publications;
+        private readonly WorldObservation observation;
         private readonly ITemporalAccumulator temporal;
         private readonly UnityExecutionDriver driver;
         private readonly GameCoreIngressGroup ingressGroup;
@@ -190,6 +202,11 @@ namespace GameCore.Unity.Runtime
                 messages = new WorldMessagePlane(request.World, registration.Messages, registration.MessageReaders ?? new CommandPayloadReaders());
             }
 
+            // GC-016: one read surface over the committed image store and the committed-event store. It owns no
+            // storage, so it never becomes a second authority for either; the boundary facts a checkpoint reads are
+            // attached by whoever owns those modules (P-053).
+            observation = new WorldObservation(publications, messages != null ? messages.EventStore : null, null);
+
             ingressGroup.Bind(registration.IngressPlan, AssemblyEpoch.First, catalog, driver);
             stepGroup.Bind(registration.StepPlan, AssemblyEpoch.First, catalog, driver);
             outputGroup.Bind(registration.OutputPlan, AssemblyEpoch.First, catalog, driver);
@@ -234,9 +251,26 @@ namespace GameCore.Unity.Runtime
 
         public WorldResourceLedger Ledger => ledger;
 
+#if GAMECORE_FAULT_INJECTION
+        /// <summary>
+        /// This world's fault latch (GC-017). It reaches the fault boundaries the publisher, the driver and the
+        /// staged-resource gate of this world own, so one arm covers the whole apply boundary. The whole member —
+        /// including this allocation — is inside the qualification guard, so a shipping world allocates no latch.
+        /// </summary>
+        public AssemblyFaultInjection Faults { get; } = new AssemblyFaultInjection();
+
+        AssemblyFaultInjection IWorldExecutionContext.Faults => Faults;
+#endif
+
         /// <summary>This world's registered system catalog: key to concrete instance, never discovered reflectively.</summary>
         public ISystemDispatchCatalog Systems => catalog;
         public StepPublicationStore Publications => publications;
+
+        /// <summary>
+        /// This world's observation storage: immutable step images, bounded committed events and the committed
+        /// boundary a checkpoint leases (GC-016, P-045, P-053).
+        /// </summary>
+        public WorldObservation Observation => observation;
 
         public ObservationHub Observations => observations;
 
@@ -501,6 +535,66 @@ namespace GameCore.Unity.Runtime
                     + exception.Message);
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Creates a fully applied world that this registry does **not** publish, which is the restore target of
+        /// O-21: "C/unexposed new world→B; validate schema/catalog ... before Running". The caller owns the returned
+        /// host and must either hand it to <see cref="UnityWorldRegistry.TryExpose"/> or dispose it; until one of
+        /// those happens no caller can route to it, so a restore that refuses leaves no reachable partial world
+        /// (P-049, P-053). A repeated request for a session the registry already holds is refused rather than
+        /// producing a second world for one session id (P-004).
+        /// </summary>
+        public static WorldCreateResult TryCreateUnexposed(
+            WorldCreateRequest createRequest,
+            UnityWorldRegistration createdRegistration,
+            out UnityWorldHost? host)
+        {
+            if (createRequest == null)
+            {
+                throw new ArgumentNullException(nameof(createRequest));
+            }
+
+            if (createdRegistration == null)
+            {
+                throw new ArgumentNullException(nameof(createdRegistration));
+            }
+
+            GameCoreThreading.RequireMainThread("UnityWorldHost.TryCreateUnexposed");
+            host = null;
+
+            if (!createRequest.IsValid)
+            {
+                return new WorldCreateResult(
+                    false,
+                    createRequest.World,
+                    WorldLifecycleState.Created,
+                    DiagnosticCode.UnsupportedVersion,
+                    "The create request is invalid: a world session, a definition and, for FixedStep, a valid fixed-step configuration are required (O-01, P-036).");
+            }
+
+            if (UnityWorldRegistry.TryGet(createRequest.World, out UnityWorldHost? registered) && registered != null)
+            {
+                return new WorldCreateResult(
+                    false,
+                    createRequest.World,
+                    registered.Lifecycle,
+                    DiagnosticCode.OwnershipConflict,
+                    "A live host for this session already exists; an unexposed world is created only for a session the registry does not hold (P-004).");
+            }
+
+            if (!createdRegistration.TryValidate(out DiagnosticCode code, out string detail))
+            {
+                return new WorldCreateResult(false, createRequest.World, WorldLifecycleState.Created, code, detail);
+            }
+
+            host = CreateCore(createRequest, createdRegistration, out WorldCreateResult failure);
+            return host == null ? failure : new WorldCreateResult(
+                true,
+                createRequest.World,
+                host.Lifecycle,
+                DiagnosticCode.None,
+                "World created unexposed: its systems are registered and its initial assembly published, and no caller can route to it until it is exposed.");
         }
 
         /// <summary>Idempotent creation: a repeated request returns the same live world (O-01).</summary>
@@ -1141,6 +1235,31 @@ namespace GameCore.Unity.Runtime
             bySession.Add(request.World.Session, created);
             host = created;
             result = failure;
+            return true;
+        }
+
+        /// <summary>
+        /// Publishes a world that was built outside this registry, which is how O-21 restores a checkpoint into a new
+        /// session: the staging host exists and is fully applied, but it is not routable to any caller until this
+        /// call makes it the registry's world for its session (P-030, P-053). A session that is already registered is
+        /// refused rather than replaced, because one session id names one world.
+        /// </summary>
+        internal static bool TryExpose(UnityWorldHost staged)
+        {
+            if (staged == null)
+            {
+                throw new ArgumentNullException(nameof(staged));
+            }
+
+            GameCoreThreading.RequireMainThread("UnityWorldRegistry.TryExpose");
+
+            if (bySession.ContainsKey(staged.World.Session))
+            {
+                return false;
+            }
+
+            hosts.Add(staged);
+            bySession.Add(staged.World.Session, staged);
             return true;
         }
 
