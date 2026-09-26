@@ -17,28 +17,19 @@ namespace GameCore.Validation.ProbeHost
     /// from the observed steps: a renamed observation, a different step count or a single failing step cannot report
     /// them.
     ///
-    /// WHY THE TWO LITERALS ARE `PENDING`
-    ///
-    /// A digest is computed over the observation names and their pass flags, so its value cannot be known before the
-    /// sequence has first run on the build host — the same instruction `ProbeW5Gate` was completed under. Until the
-    /// literals are pinned, this probe asserts the two weaker facts it can genuinely prove: both catalogs produced the
-    /// identical named sequence, and every observation of both runs passed. A step whose `expectedDigest` is
-    /// `PENDING` therefore passes on that evidence and reports `pending=True`; a step whose literal has been pinned
-    /// passes only on exact agreement, so a pinned literal that disagrees fails loudly rather than being ignored.
+    /// Both digest literals below were measured from a passing IL2CPP run on the Linux build host. The probe
+    /// recomputes them from each catalog's observed steps and fails on any mismatch.
     /// </summary>
     public static class ProbeGc021
     {
-        /// <summary>
-        /// The literal both digest constants carry until the build host pins them after the first passing run. It is a
-        /// value no digest can take, so "not yet pinned" is never confusable with a real digest.
-        /// </summary>
+        /// <summary>Unpinned digest sentinel, retained for the probe's diagnostic path.</summary>
         public const string PendingDigest = "PENDING";
 
         /// <summary>Digest the narrative run must report over its named observations, all passing (P-008).</summary>
-        public const string NarrativeDigest = PendingDigest;
+        public const string NarrativeDigest = "0082cdc8c8cb02e49efdc4a8da590de6936888fc6d84892ad92c57b305907007";
 
         /// <summary>Digest the card run must report over its named observations, all passing (P-008).</summary>
-        public const string CardsDigest = PendingDigest;
+        public const string CardsDigest = "a2943ea4610c5d83e3bbcb92bf95b884d4ffb5390de9c269740091cc0440033e";
 
         public static void Run(ProbeReport report)
         {

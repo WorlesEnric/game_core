@@ -136,7 +136,7 @@ import json, sys
 path, pinned_narrative, pinned_cards = sys.argv[1], sys.argv[2], sys.argv[3]
 with open(path, "r", encoding="utf-8") as handle:
     report = json.load(handle)
-steps = {step.get("name"): step for step in report.get("steps", [])}
+steps = {step.get("name"): step for step in report.get("probes", [])}
 problems = []
 for label, pinned in (("narrative", pinned_narrative), ("cards", pinned_cards)):
     step = steps.get("gc021-%s-digest" % label)
