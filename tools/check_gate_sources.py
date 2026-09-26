@@ -110,8 +110,8 @@ for f in CS:
 decl = re.compile(r'^\s*(?:\[[^\]]*\]\s*)?(?:public |internal |private |protected )?(?:sealed |static |abstract |readonly |partial |unsafe )*(class|struct|interface|enum) (\w+)', re.M)
 typefiles = collections.defaultdict(set); typens = collections.defaultdict(set); typekind = {}
 for root in ('Packages', 'tests', 'unity'):
-    for d, _, fs in os.walk(root):
-        if '/bin' in d or '/obj' in d: continue
+    for d, subdirs, fs in os.walk(root):
+        subdirs[:] = [name for name in subdirs if name not in {'bin', 'obj', 'Library', 'GameCore.ReleaseCheck'}]
         for f in fs:
             if not f.endswith('.cs'): continue
             p = os.path.join(d, f)
