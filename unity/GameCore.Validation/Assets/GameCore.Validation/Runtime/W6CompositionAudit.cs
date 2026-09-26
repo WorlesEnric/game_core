@@ -24,6 +24,8 @@ using System.Globalization;
 using System.Reflection;
 using GameCore.Contracts;
 using GameCore.Gameplay.Traversal;
+using GameCore.Planning;
+using GameCore.Unity.Runtime.Integration;
 using GameCore.Rules.Traversal;
 
 namespace GameCore.Validation.ProbeHost

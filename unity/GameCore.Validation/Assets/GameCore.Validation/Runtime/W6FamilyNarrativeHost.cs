@@ -20,10 +20,12 @@
 using System;
 using System.Collections.Generic;
 using GameCore.Contracts;
+using GameCore.Composition;
 using GameCore.Gameplay.Narrative.Fixtures;
 using GameCore.Rules.Narrative;
 using GameCore.Unity.Runtime;
 using GameCore.Unity.Runtime.Integration;
+using GameCore.Unity.Fixtures;
 using GameCore.Validation.Generated;
 
 namespace GameCore.Validation.ProbeHost

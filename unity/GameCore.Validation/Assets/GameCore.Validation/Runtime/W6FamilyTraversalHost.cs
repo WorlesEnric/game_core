@@ -16,6 +16,7 @@
 using System;
 using System.Collections.Generic;
 using GameCore.Contracts;
+using GameCore.Composition;
 using GameCore.Gameplay.Traversal;
 using GameCore.Gameplay.Traversal.Fixtures;
 using GameCore.Rules.Traversal;

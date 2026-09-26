@@ -9,6 +9,8 @@
 using System;
 using System.Collections.Generic;
 using GameCore.Contracts;
+using GameCore.Composition;
+using GameCore.Gameplay.Cards;
 using GameCore.Gameplay.Cards.Fixtures;
 using GameCore.Rules.Cards;
 using GameCore.Unity.Runtime;

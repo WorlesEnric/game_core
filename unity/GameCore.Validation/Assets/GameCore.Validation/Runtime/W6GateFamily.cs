@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using GameCore.Contracts;
+using GameCore.Composition;
 using GameCore.Rules.Narrative;
 using GameCore.Unity.Runtime;
 using GameCore.Unity.Runtime.Integration;

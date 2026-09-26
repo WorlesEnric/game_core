@@ -63,6 +63,7 @@ using GameCore.Unity.Adapters.Animation;
 using GameCore.Unity.Adapters.Audio;
 using GameCore.Unity.Adapters.Input;
 using GameCore.Unity.Adapters.Physics;
+using GameCore.Unity.Adapters.Authority;
 using GameCore.Unity.Runtime;
 using GameCore.Unity.Runtime.Delivery;
 using GameCore.Unity.Runtime.Integration;
@@ -238,7 +239,18 @@ namespace GameCore.Validation.ProbeHost
                 string session = fixture.Host.World.Session.ToString();
                 int registryBefore = UnityWorldRegistry.Count;
                 int committed = fixture.RunRecordedSteps(1, null);
-                int simulations = fixture.Physics != null ? fixture.Physics.SimulateCount : -1;
+
+                // The course's declared physics authority simulates exactly once per admitted step: the route
+                // discharges that caller obligation itself (04 s7), so a reload setting that broke the engine stage
+                // shows up here and not only in the gate's own observations.
+                if (fixture.PhysicsGate != null)
+                {
+                    fixture.PhysicsGate.TrySimulateExactlyOnce(
+                        fixture.Host.CurrentStep.Value, 0.02d, out string _);
+                }
+
+                UnityPhysicsSceneBackend? physics = fixture.Physics;
+                int simulations = physics != null ? physics.SimulateCount : -1;
                 int steppedSteps = fixture.Module != null ? fixture.Module.SteppedStepCount : -1;
                 int published = fixture.Lane != null ? fixture.Lane.PublicationCount : -1;
                 bool consistent = fixture.MatchesPublishedAssembly();
@@ -247,8 +259,9 @@ namespace GameCore.Validation.ProbeHost
                 fixture = null;
                 int registryAfter = UnityWorldRegistry.Count;
                 bool stopped = stop == Outcome.Published || stop == Outcome.NoChange;
+                bool physicsHeld = physics == null ? simulations == -1 : simulations == 1;
                 bool pass = committed == 1
-                    && simulations == 1
+                    && physicsHeld
                     && steppedSteps == 1
                     && consistent
                     && stopped
