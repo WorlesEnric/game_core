@@ -6,6 +6,7 @@ using System.IO;
 using GameCore.Contracts;
 using GameCore.Unity.Adapters;
 using GameCore.Unity.Runtime;
+using GameCore.Validation.ProbeHost;
 using UnityEditor;
 using UnityEngine;
 
