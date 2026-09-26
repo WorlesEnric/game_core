@@ -6,7 +6,7 @@
     "Partial",
     "Not yet"
   ],
-  "statusAsOf": "GC-018 Linux build-host run; see artifacts/gc-018/BUILD_REPORT.md and artifacts/gc-018/toolchain/probe-gc018.json (supersedes the W4-GATE statusAsOf text)",
+  "statusAsOf": "W5-GATE Linux build-host run; see artifacts/w5-gate/BUILD_REPORT.md and artifacts/w5-gate/toolchain/probe-w5-gate.json. Counts unchanged: P-049 remains Partial pending O-22 and bounded retry evidence.",
   "counts": {
     "total": 86,
     "implementedEvidenced": 41,
@@ -1408,10 +1408,13 @@
       ],
       "evidence": [
         "artifacts/w3-gate/unity/editmode-results.xml",
-        "artifacts/w3-gate/trx/"
+        "artifacts/w3-gate/trx/",
+        "artifacts/w5-gate/toolchain/probe-w5-gate.json",
+        "artifacts/w5-gate/toolchain/probe-gc017-faults.json",
+        "artifacts/w5-gate/unity/editmode-results.xml"
       ],
-      "gap": "Pre-mutation rejection, post-mutation fail-stop and retained-job quarantine are evidenced; recreation of a new WorldId from a verified checkpoint or the initial catalog does not exist.",
-      "nextOwner": "GC-018"
+      "gap": "Integrated prewrite rejection, postwrite fail-stop and verified checkpoint restore into a new session pass in both families. O-22 RecoverWorld remains uncomposed and P-049's host-configured bounded retry attempts are not evidenced; this row remains Partial.",
+      "nextOwner": "GC-027"
     },
     {
       "id": "P-050",
@@ -2928,8 +2931,8 @@
   "w5GateRevisions": {
     "task": "W5-GATE",
     "branch": "w5-gate",
-    "verdict": "NotRun (pending orchestrator build host). Nothing in this section is promoted: every row below is a proposal that requires the archived results of tools/run_w5_gate.sh on this revision (artifacts/w5-gate/toolchain/probe-w5-gate.json, artifacts/w5-gate/unity/*.xml, artifacts/w5-gate/trx/, artifacts/w5-gate/release-surface.json).",
-    "statusOfThisSection": "Proposals only. The Wave 5 gate joins GC-016, GC-017, GC-018 and GC-019 in one actual world per family; the build host runs tools/run_w5_gate.sh and promotes the rows its probe and suites evidence.",
+    "verdict": "Run: dotnet 978/978, EditMode 905/905, PlayMode 10/10, W5-GATE 34/34 observations in each of five IL2CPP runs, release player inspection Pass. No requirement row promoted: P-049 remains Partial because O-22 RecoverWorld and bounded retry behavior remain open. See artifacts/w5-gate/BUILD_REPORT.md.",
+    "statusOfThisSection": "Passing integrated evidence added; statuses unchanged where normative clauses remain unproven.",
     "objective": "Join retained observation, deterministic faults, checkpoint restore and the common adapters in one actual world, and show prewrite rejection, postwrite fail-stop, new-session restore, read-only snapshots and stale asset callback rejection.",
     "normativeSections": [
       "P-002",
@@ -2982,8 +2985,8 @@
       {
         "id": "P-049",
         "currentStatus": "Partial",
-        "proposedStatus": "Implemented+Evidenced",
-        "whatChanged": "Recovery limits are now evidenced in the integrated world: a faulted world fail-stops with no epoch, image or step, a checkpoint captured before the fault restores into a new session with the captured state, and the faulted session is never resumed. GC-018 deliberately deferred exactly this ('joining the expanded observation/fault modules is the separate W5 integration gate'), and GC-017 supplied the initial-definition half.",
+        "proposedStatus": "Partial",
+        "whatChanged": "The integrated faulted-world checkpoint restore path passes in both families; this is not O-22 RecoverWorld, and host-configured bounded retry attempts remain unproven, so the full P-049 normative contract remains Partial.",
         "evidenceToBeProduced": [
           "artifacts/w5-gate/toolchain/probe-w5-gate.json",
           "artifacts/w5-gate/toolchain/probe-gc017-faults.json",
@@ -3100,7 +3103,7 @@
       "`UnityCommittedBoundaryReader`, `CaptureContext`, `Gc018FamilyRestoreBuilder` and the two family contracts are unchanged."
     ],
     "carriedGaps": [
-      "The gate has not been executed on this host: no .NET SDK, no Unity, no Mono. Every row above is a proposal.",
+      "The integration gate passed on the Linux build host, but O-22 RecoverWorld and P-049's bounded retries remain unevidenced; no requirement row was promoted.",
       "`O-22 RecoverWorld` is still not composed; GC-027 owns it. The gate's restore proves the path it will reuse.",
       "Physics/animation stages remain GC-020's; no external-authority adapter is declared by a card or narrative world."
     ],

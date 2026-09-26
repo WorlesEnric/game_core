@@ -337,15 +337,16 @@ Contract changes (additive only, each in its own `shared:` commit, listed in `/a
 `UnityWorldRegistry.TryExpose`, `UnityWorldHost.TryCreateUnexposed`, and a `LiveTargetSeeder.TrySeedSlot` overload
 carrying the active/dormant flag.
 
-## W5-GATE revision notes (Wave 5, proposals only)
+## W5-GATE revision notes (Wave 5, executed)
 
-**NotRun (pending orchestrator build host). No row below is promoted.** The Wave 5 gate joins GC-016's retained
-observation, GC-017's deterministic faults, GC-018's checkpoint restore and GC-019's common adapters in one actual
-world per family; nothing in it has been compiled or executed here, so every entry is a proposal for the build host
-to promote after `tools/run_w5_gate.sh` archives its results
-(`artifacts/w5-gate/toolchain/probe-w5-gate.json`, `artifacts/w5-gate/unity/*.xml`, `artifacts/w5-gate/trx/`,
-`artifacts/w5-gate/release-surface.json`). A row is promoted only from the probe's own reported observations, never
-from a document that says `NotRun`.
+**Run on the Linux build host; no additional row promoted.** The Wave 5 gate joined GC-016 observation,
+GC-017 deterministic faults, GC-018 checkpoint restore and GC-019 adapters in one actual world per family.
+The complete gate passed: `artifacts/w5-gate/toolchain/probe-w5-gate.json` (34/34 observations, five passing
+IL2CPP runs), `artifacts/w5-gate/unity/editmode-results.xml` (905/905),
+`artifacts/w5-gate/unity/playmode-results.xml` (10/10), `artifacts/w5-gate/trx/` (978/978),
+`artifacts/w5-gate/release-player-surface.json` (Pass) and `artifacts/w5-gate/BUILD_REPORT.md`.
+`P-049` remains `Partial`: O-22 RecoverWorld is not composed, and the host-configured bounded retry clause
+of P-049 is not evidenced. An integrated recovery scenario is not proof of those remaining clauses.
 
 The gate's own sentence: "Join retained observation, deterministic faults, checkpoint restore and common adapters in
 one actual world. Show prewrite rejection, postwrite fail-stop, new-session restore, read-only snapshots and stale
@@ -357,9 +358,9 @@ here and asserted by both the EditMode suite (`GameCore.W5Gate.Tests`) and the p
 `w5gate-postwrite-fault-fail-stops-the-world`, `w5gate-restore-into-a-new-session`,
 `w5gate-adapters-bind-to-the-restored-world`, `w5gate-retired-world-callbacks-are-rejected`.
 
-| Id | Before | Proposed after | Observation that would carry it |
+| Id | Before | After | Passing observation and remaining limit |
 | --- | --- | --- | --- |
-| `P-049` | `Partial` | **`Implemented+Evidenced`** | `w5gate-postwrite-fault-fail-stops-the-world`, `w5gate-prewrite-fault-keeps-the-old-assembly`, `w5gate-restore-into-a-new-session`, plus `gc017-recovery-from-initial-definitions-into-a-new-world` — the two halves of "pre/post-mutation behaviour, recreate from checkpoint or catalog" now exist in one world |
+| `P-049` | `Partial` | `Partial` (unchanged) | `w5gate-prewrite-fault-keeps-the-old-assembly`, `w5gate-postwrite-fault-fail-stops-the-world`, `w5gate-restore-into-a-new-session`; O-22 and bounded retries remain open |
 | `P-007` | `Partial` | `Partial` (unchanged) | `w5gate-pinned-snapshots-are-read-only`: a leased boundary held across a publication, byte-identical afterwards, with no writable reference reachable; TEST-023's long-run budget belongs to GC-026 |
 | `P-045` | `Partial` | `Partial` (unchanged) | `w5gate-pinned-snapshots-are-read-only`, `w5gate-checkpoint-from-the-committed-boundary`, `w5gate-restore-into-a-new-session`: observation across a session boundary, old handles refused |
 | `P-032` | `Partial` | `Partial` (unchanged) | `w5gate-restore-into-a-new-session`: active *and* dormant rows compared row by row against the captured set |
