@@ -101,7 +101,7 @@
     {
       "name": "replay-jobs-producers-execute-on-multiple-threads",
       "status": "Pass",
-      "detail": "multiThreaded=true; multiThreadedRuns=6/6; maxDistinctThreads=20; maxWorkerThreads=19; assertion=every run whose effective JobsUtility.JobWorkerCount was above one executed producer batches on at least two worker threads (indices above 0 of JobsUtility.ThreadIndex, injected through [NativeSetThreadIndex]); recordedThreadHistograms=w1/effective1/distinct2/workerThreads1/highest1/histogram=0:2391,1:1705;w1/effective1/distinct2/workerThreads1/highest1/histogram=0:2110,1:1986;w2/effective2/distinct3/workerThreads2/highest2/histogram=0:1408,1:1321,2:1367;w2/effective2/distinct3/workerThreads2/highest2/histogram=0:1401,1:1345,2:1350;w4/effective4/distinct5/workerThreads4/highest4/histogram=0:903,1:669,2:908,3:744,4:872;w4/effective4/distinct5/workerThreads4/highest4/histogram=0:879,1:669,2:880,3:817,4:851;w19/effective19/distinct20/workerThreads19/highest19/histogram=0:240,1:147,2:238,3:231,4:222,5:238,6:227,7:240,8:235,9:198,10:228,11:226,12:182,13:207,14:181,15:224,16:175,17:179,18:149,19:129;w19/effective19/distinct20/workerThreads19/highest19/histogram=0:240,1:67,2:236,3:245,4:217,5:242,6:229,7:190,8:218,9:205,10:210,11:212,12:218,13:210,14:192,15:256,16:184,17:203,18:183,19:139;"
+      "detail": "multiThreaded=true; multiThreadedRuns=6/6; maxDistinctThreads=20; maxWorkerThreads=19; assertion=every run whose effective JobsUtility.JobWorkerCount was above one executed producer batches on at least two worker threads (indices above 0 of JobsUtility.ThreadIndex, injected through [NativeSetThreadIndex]); recordedThreadHistograms=w1/effective1/distinct2/workerThreads1/highest1/histogram=0:2075,1:2021;w1/effective1/distinct2/workerThreads1/highest1/histogram=0:2044,1:2052;w2/effective2/distinct3/workerThreads2/highest2/histogram=0:1411,1:1359,2:1326;w2/effective2/distinct3/workerThreads2/highest2/histogram=0:1403,1:1350,2:1343;w4/effective4/distinct5/workerThreads4/highest4/histogram=0:900,1:844,2:889,3:586,4:877;w4/effective4/distinct5/workerThreads4/highest4/histogram=0:960,1:901,2:953,3:640,4:642;w19/effective19/distinct20/workerThreads19/highest19/histogram=0:294,1:141,2:272,3:245,4:243,5:227,6:239,7:262,8:256,9:201,10:215,11:189,12:190,13:179,14:187,15:175,16:151,17:151,18:133,19:146;w19/effective19/distinct20/workerThreads19/highest19/histogram=0:247,1:155,2:246,3:231,4:197,5:226,6:205,7:241,8:232,9:191,10:197,11:207,12:204,13:208,14:196,15:190,16:196,17:193,18:174,19:160;"
     },
     {
       "name": "replay-digest",
@@ -116,7 +116,7 @@
     {
       "name": "replay-benchmark-trace",
       "status": "Pass",
-      "detail": "frames=67; rawBytes=5906; jsonBytes=41372; chainRoundTrips=true"
+      "detail": "frames=67; rawBytes=5944; jsonBytes=41448; chainRoundTrips=true"
     }
   ]
 }
