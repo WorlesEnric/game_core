@@ -425,4 +425,72 @@ namespace GameCore.Unity.Adapters.Physics
             return byTarget != 0 ? byTarget : left.Domain.CompareTo(right.Domain);
         }
     }
+
+    /// <summary>
+    /// Canonical codec of the two declared physical intents (04 s7: "Teleports/impulses are commands to the physics
+    /// adapter"). Both payloads are three fixed-width big-endian int32 components in this adapter's declared
+    /// representation — millimetres for a position, thousandths of a metre per second for a velocity change — so an
+    /// intent's payload and an observation's values are written and read by one rule (05 s6).
+    /// </summary>
+    public static class PhysicsIntentCodec
+    {
+        /// <summary>Bytes of one intent payload: three canonical int32 scalars.</summary>
+        public const int IntentBytes = 12;
+
+        /// <summary>Encodes one teleport intent: the absolute position the body is placed at.</summary>
+        public static FrozenPayload WriteTeleport(PhysicsVector3i position) =>
+            WriteComponents(position.X, position.Y, position.Z);
+
+        /// <summary>Encodes one impulse intent: the velocity change the body receives.</summary>
+        public static FrozenPayload WriteImpulse(PhysicsVector3i delta) =>
+            WriteComponents(delta.X, delta.Y, delta.Z);
+
+        /// <summary>Decodes one intent payload; false for any other length (P-054's explicit shape).</summary>
+        public static bool TryRead(IReadOnlyList<byte>? payload, out PhysicsVector3i value)
+        {
+            value = PhysicsVector3i.Zero;
+            if (payload == null || payload.Count != IntentBytes)
+            {
+                return false;
+            }
+
+            if (!TryReadComponent(payload, 0, out int x)
+                || !TryReadComponent(payload, 4, out int y)
+                || !TryReadComponent(payload, 8, out int z))
+            {
+                return false;
+            }
+
+            value = new PhysicsVector3i(x, y, z);
+            return true;
+        }
+
+        private static FrozenPayload WriteComponents(int x, int y, int z)
+        {
+            var bytes = new byte[IntentBytes];
+            WriteComponent(bytes, 0, x);
+            WriteComponent(bytes, 4, y);
+            WriteComponent(bytes, 8, z);
+            return new FrozenPayload(bytes);
+        }
+
+        private static void WriteComponent(byte[] target, int offset, int value)
+        {
+            uint raw = unchecked((uint)value);
+            target[offset] = (byte)(raw >> 24);
+            target[offset + 1] = (byte)(raw >> 16);
+            target[offset + 2] = (byte)(raw >> 8);
+            target[offset + 3] = (byte)raw;
+        }
+
+        private static bool TryReadComponent(IReadOnlyList<byte> source, int offset, out int value)
+        {
+            uint raw = ((uint)source[offset] << 24)
+                | ((uint)source[offset + 1] << 16)
+                | ((uint)source[offset + 2] << 8)
+                | source[offset + 3];
+            value = unchecked((int)raw);
+            return true;
+        }
+    }
 }

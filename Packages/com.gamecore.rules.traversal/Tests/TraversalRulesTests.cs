@@ -2,12 +2,13 @@
 //
 // These are the engine-independent half of the traversal acceptance work: the fixed-step arithmetic of 07 s4.3's
 // numeric assertion, the checkpoint course's deduplication and ordering rules of 07 s4.2/REF-A04, the canonical
-// payload codec of 05 s6, and the registered componentwise reducer of P-019. They run in the plain dotnet suite and
-// in Unity's EditMode suite; neither needs a World, a GameObject or a PlayerLoop.
+// payload codec of 05 s6 and the registered `Additive` reducer of P-019. They run in the plain dotnet suite and in
+// Unity's EditMode suite; neither needs a World, a GameObject or a PlayerLoop.
 #nullable enable
 using System;
 using System.Collections.Generic;
 using GameCore.Contracts;
+using GameCore.Derivation;
 using NUnit.Framework;
 
 namespace GameCore.Rules.Traversal.Tests
@@ -62,9 +63,9 @@ namespace GameCore.Rules.Traversal.Tests
                 "with no applicable modifier the velocity is unchanged, not reset");
         }
 
-        /// <summary>Two admitted steps of the same acceleration are two steps, never one doubled step.</summary>
+        /// <summary>Two admitted steps of one acceleration are two steps, never one doubled step.</summary>
         [Test]
-        public void TwoStepsDoubleTheAppliedAccelerationButNotTheStep()
+        public void TwoStepsApplyTheAccelerationTwiceAndTheStepOnce()
         {
             var tailwind = new TraversalVector3i(TraversalVocabulary.TailwindMilli, 0, 0);
             var seeded = new TraversalVector3i(TraversalVocabulary.SeededVelocityMilli, 0, 0);
@@ -81,12 +82,12 @@ namespace GameCore.Rules.Traversal.Tests
             Assert.That(twice.X - once.X, Is.EqualTo(40));
         }
 
-        /// <summary>A step request integrates pose and velocity and reports the acceleration it applied.</summary>
+        /// <summary>A step integrates pose from the velocity the step began with, and reports what it applied.</summary>
         [Test]
         public void OneStepAdvancesPoseByThePreStepVelocity()
         {
             var request = new TraversalBodyStepRequest(
-                new TraversalVector3i(0, 0, 0),
+                TraversalVector3i.Zero,
                 new TraversalVector3i(TraversalVocabulary.SeededVelocityMilli, 0, 0),
                 new TraversalVector3i(TraversalVocabulary.TailwindMilli, 0, 0),
                 0,
@@ -335,32 +336,46 @@ namespace GameCore.Rules.Traversal.Tests
             Assert.That(one.TryAdvance(course, in again, out RunProgress _, out CheckpointVerdict verdict), Is.False);
             Assert.That(verdict, Is.EqualTo(CheckpointVerdict.OutOfOrder));
         }
+
+        /// <summary>The course reports the ordinal of a volume and refuses one it does not contain (07 s4.2).</summary>
+        [Test]
+        public void TheCourseResolvesOrdinalsBothWays()
+        {
+            CheckpointCourse course = Course();
+            Assert.That(course.Count, Is.EqualTo(2));
+            Assert.That(course.TryCheckpoint(1U, out TargetId second), Is.True);
+            Assert.That(second, Is.EqualTo(TraversalIdentity.Target(TraversalVocabulary.CheckpointTwo)));
+            Assert.That(course.TryCheckpoint(2U, out TargetId _), Is.False);
+            Assert.That(course.TryOrdinal(second, out uint ordinal), Is.True);
+            Assert.That(ordinal, Is.EqualTo(1U));
+        }
     }
 
-    /// <summary>The canonical payloads and the registered componentwise reducer (05 s6, P-019).</summary>
+    /// <summary>The canonical payload and the registered `Additive` reducer (05 s6, P-019).</summary>
     [TestFixture]
     public sealed class TraversalAccelerationTests
     {
-        /// <summary>An int32 triple round-trips byte for byte through the canonical big-endian codec.</summary>
+        /// <summary>An acceleration slot value is one canonical big-endian int32 (05 s6).</summary>
         [Test]
-        public void TheAccelerationPayloadRoundTrips()
+        public void TheAccelerationPayloadIsOneCanonicalInt32()
         {
-            var value = new TraversalVector3i(2, -1, 0);
-            FrozenPayload payload = TraversalPayloadCodec.WriteAcceleration(value);
+            FrozenPayload payload = TraversalPayloadCodec.WriteAcceleration(TraversalVocabulary.TailwindMilli);
             Assert.That(payload.Length, Is.EqualTo(TraversalPayloadCodec.AccelerationBytes));
             Assert.That(payload.Bytes[0], Is.EqualTo((byte)0));
-            Assert.That(payload.Bytes[3], Is.EqualTo((byte)2));
+            Assert.That(payload.Bytes[1], Is.EqualTo((byte)0));
+            Assert.That(payload.Bytes[2], Is.EqualTo((byte)7));
+            Assert.That(payload.Bytes[3], Is.EqualTo((byte)208));
 
-            Assert.That(TraversalPayloadCodec.TryReadAcceleration(payload.Bytes, out TraversalVector3i decoded), Is.True);
-            Assert.That(decoded, Is.EqualTo(value));
+            Assert.That(TraversalPayloadCodec.TryReadAcceleration(payload.Bytes, out int read), Is.True);
+            Assert.That(read, Is.EqualTo(TraversalVocabulary.TailwindMilli));
         }
 
         /// <summary>A payload of the wrong length is refused rather than reinterpreted (P-054).</summary>
         [Test]
         public void APayloadOfTheWrongLengthIsRefused()
         {
-            Assert.That(TraversalPayloadCodec.TryReadAcceleration(new byte[4], out TraversalVector3i _), Is.False);
-            Assert.That(TraversalPayloadCodec.TryReadAcceleration(null, out TraversalVector3i _), Is.False);
+            Assert.That(TraversalPayloadCodec.TryReadAcceleration(new byte[12], out int _), Is.False);
+            Assert.That(TraversalPayloadCodec.TryReadAcceleration(null, out int _), Is.False);
         }
 
         /// <summary>The registered fold adds in the order it was given, never re-sorted (P-018, P-019).</summary>
@@ -368,14 +383,14 @@ namespace GameCore.Rules.Traversal.Tests
         public void TheRegisteredFoldAddsInContributionOrder()
         {
             var reducer = new TraversalAccelerationReducer(TraversalVocabulary.AccelerationReducerKey);
-            var contributions = new List<TraversalVector3i>
+            var contributions = new List<int>
             {
-                new TraversalVector3i(2, 0, 0),
-                new TraversalVector3i(-1, 0, 0),
+                TraversalVocabulary.TailwindMilli,
+                TraversalVocabulary.HeadwindMilli,
             };
 
-            Assert.That(reducer.TryReduce(contributions, out TraversalVector3i effective, out string failure), Is.True, failure);
-            Assert.That(effective, Is.EqualTo(new TraversalVector3i(1, 0, 0)));
+            Assert.That(reducer.TryReduce(contributions, out int effective, out string failure), Is.True, failure);
+            Assert.That(effective, Is.EqualTo(TraversalVocabulary.TailwindMilli + TraversalVocabulary.HeadwindMilli));
             Assert.That(reducer.Key, Is.EqualTo(TraversalVocabulary.AccelerationReducerKey));
         }
 
@@ -384,13 +399,8 @@ namespace GameCore.Rules.Traversal.Tests
         public void AnOverflowingFoldIsRefusedWithAReason()
         {
             var reducer = new TraversalAccelerationReducer(TraversalVocabulary.AccelerationReducerKey);
-            var contributions = new List<TraversalVector3i>
-            {
-                new TraversalVector3i(int.MaxValue, 0, 0),
-                new TraversalVector3i(1, 0, 0),
-            };
-
-            Assert.That(reducer.TryReduce(contributions, out TraversalVector3i _, out string failure), Is.False);
+            var contributions = new List<int> { int.MaxValue, 1 };
+            Assert.That(reducer.TryReduce(contributions, out int _, out string failure), Is.False);
             Assert.That(failure, Is.Not.Empty);
         }
 
@@ -407,8 +417,8 @@ namespace GameCore.Rules.Traversal.Tests
 
             var inputs = new List<FrozenPayload>
             {
-                TraversalPayloadCodec.WriteAcceleration(new TraversalVector3i(2, 0, 0)),
-                TraversalPayloadCodec.WriteAcceleration(new TraversalVector3i(3, 0, 0)),
+                TraversalPayloadCodec.WriteAcceleration(TraversalVocabulary.TailwindMilli),
+                TraversalPayloadCodec.WriteAcceleration(TraversalVocabulary.TailwindMilli),
             };
             Assert.That(source.TryReduce(unknown, inputs, out FrozenPayload? _), Is.False);
 
@@ -417,23 +427,23 @@ namespace GameCore.Rules.Traversal.Tests
                 Is.True);
             Assert.That(sum, Is.Not.Null);
             Assert.That(
-                TraversalPayloadCodec.TryReadAcceleration(sum!.Bytes, out TraversalVector3i effective),
+                TraversalPayloadCodec.TryReadAcceleration(sum!.Bytes, out int effective),
                 Is.True);
-            Assert.That(effective, Is.EqualTo(new TraversalVector3i(5, 0, 0)));
+            Assert.That(effective, Is.EqualTo(TraversalVocabulary.TailwindMilli * 2));
             Assert.That(source.ReductionCount, Is.EqualTo(1));
         }
 
-        /// <summary>A contribution that is not one canonical triple rejects the whole fold (P-019).</summary>
+        /// <summary>A contribution that is not one canonical scalar rejects the whole fold (P-019).</summary>
         [Test]
         public void AMalformedContributionRejectsTheWholeFold()
         {
             TraversalDerivationValueSource source = TraversalDerivationValueSource.Default();
-            var inputs = new List<FrozenPayload> { new FrozenPayload(new byte[4]) };
+            var inputs = new List<FrozenPayload> { new FrozenPayload(new byte[12]) };
             Assert.Throws<ReducerFailureException>(
                 delegate { source.TryReduce(TraversalVocabulary.AccelerationReducerKey, inputs, out FrozenPayload? _); });
         }
 
-        /// <summary>The registered predicate is always accepting, so no runner is skipped by an accident (P-015).</summary>
+        /// <summary>The registered predicate is always accepting, so no runner is skipped by accident (P-015).</summary>
         [Test]
         public void TheRegisteredPredicateIsAlwaysAccepting()
         {
@@ -454,34 +464,14 @@ namespace GameCore.Rules.Traversal.Tests
             Assert.That(TraversalVocabulary.VelocityAfterHeadwindMilli, Is.EqualTo(1020));
         }
 
-        /// <summary>The captured movement input round-trips through the same canonical scalar codec.</summary>
+        /// <summary>One declared slot carries one int32, which is why the fixture's modifiers vary only X (07 s4.1).</summary>
         [Test]
-        public void TheMovementInputPayloadRoundTrips()
+        public void TheSlotPayloadIsTheStatedNumericRepresentation()
         {
-            var input = new TraversalMovementInput(-250, 0, 1);
-            FrozenPayload payload = TraversalPayloadCodec.WriteMovementInput(input);
-            Assert.That(payload.Length, Is.EqualTo(TraversalPayloadCodec.MovementInputBytes));
-            Assert.That(TraversalPayloadCodec.TryReadMovementInput(payload.Bytes, out TraversalMovementInput decoded), Is.True);
-            Assert.That(decoded.HorizontalMilli, Is.EqualTo(-250));
-            Assert.That(decoded.JumpPressed, Is.EqualTo((byte)1));
-            Assert.That(TraversalPayloadCodec.TryReadMovementInput(new byte[8], out TraversalMovementInput _), Is.False);
-        }
-
-        /// <summary>The committed crossing record round-trips including its 64-bit crossing sequence.</summary>
-        [Test]
-        public void TheCheckpointPassedPayloadRoundTrips()
-        {
-            FrozenPayload payload = TraversalPayloadCodec.WriteCheckpointPassed(1U, 2U, 0x00000001_00000002UL);
-            Assert.That(payload.Length, Is.EqualTo(TraversalPayloadCodec.CheckpointPassedBytes));
-            Assert.That(
-                TraversalPayloadCodec.TryReadCheckpointPassed(payload.Bytes, out uint ordinal, out uint count, out ulong sequence),
-                Is.True);
-            Assert.That(ordinal, Is.EqualTo(1U));
-            Assert.That(count, Is.EqualTo(2U));
-            Assert.That(sequence, Is.EqualTo(0x00000001_00000002UL));
-            Assert.That(
-                TraversalPayloadCodec.TryReadCheckpointPassed(new byte[4], out uint _, out uint _, out ulong _),
-                Is.False);
+            Assert.That(TraversalPayloadCodec.AccelerationBytes, Is.EqualTo(4));
+            Assert.That(TraversalVocabulary.AccelerationSlot,
+                Is.EqualTo(TraversalIdentity.Slot(TraversalVocabulary.Acceleration + ".slot-0")));
+            Assert.That(TraversalVocabulary.AccelerationStratum, Is.EqualTo(0));
         }
     }
 }

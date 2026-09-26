@@ -24,6 +24,7 @@ namespace GameCore.Validation.ProbeHost
         private const string Gc018ArgumentName = "-probeGc018";
         private const string Gc019ArgumentName = "-probeGc019";
         private const string W5GateArgumentName = "-probeW5Gate";
+        private const string TraversalArgumentName = "-probeTraversal";
 
         private ProbeArguments(
             bool missingRegistration,
@@ -40,6 +41,7 @@ namespace GameCore.Validation.ProbeHost
             bool gc018,
             bool gc019,
             bool w5Gate,
+            bool traversal,
             string? resultPath)
         {
             MissingRegistration = missingRegistration;
@@ -56,6 +58,7 @@ namespace GameCore.Validation.ProbeHost
             Gc018 = gc018;
             Gc019 = gc019;
             W5Gate = w5Gate;
+            Traversal = traversal;
             ResultPath = resultPath;
         }
 
@@ -157,13 +160,22 @@ namespace GameCore.Validation.ProbeHost
         /// </summary>
         public bool W5Gate { get; }
 
+        /// <summary>
+        /// Runs the GC-020 real-time action reference: the fixed-step traversal course with its owner/stage policies,
+        /// its inherited Additive acceleration modifier, its data-defined checkpoint volumes, the committed crossing
+        /// output, and the optional engine stages — one local `PhysicsScene` simulation per admitted step, committed
+        /// animation output and committed audio output whose sink is engine-free because the headless player has audio
+        /// disabled (P-034, P-036, P-039..P-041, P-044, P-045, P-059).
+        /// </summary>
+        public bool Traversal { get; }
+
         /// <summary>Destination path of the structured JSON result.</summary>
         public string? ResultPath { get; }
 
         /// <summary>True when the process was launched as a probe rather than as a normal player run.</summary>
         public bool IsProbeInvocation =>
             MissingRegistration || WorldDispatch || W1Gate || W2Gate || W3Gate || Narrative || Cards || W4Profile
-            || Gc013 || W4Gate || Faults || Gc018 || Gc019 || W5Gate
+            || Gc013 || W4Gate || Faults || Gc018 || Gc019 || W5Gate || Traversal
             || !string.IsNullOrEmpty(ResultPath);
 
         /// <summary>True when a result destination was supplied; without it the probe cannot record evidence.</summary>
@@ -185,7 +197,7 @@ namespace GameCore.Validation.ProbeHost
             bool gc018 = false;
             bool gc019 = false;
             bool w5Gate = false;
-            string? resultPath = null;
+            bool traversal = false;
             for (int i = 0; i < arguments.Length; i++)
             {
                 string argument = arguments[i];
@@ -245,6 +257,10 @@ namespace GameCore.Validation.ProbeHost
                 {
                     w5Gate = true;
                 }
+                else if (argument == TraversalArgumentName)
+                {
+                    traversal = true;
+                }
                 else if (argument == ResultArgumentName && i + 1 < arguments.Length)
                 {
                     resultPath = arguments[i + 1];
@@ -253,7 +269,7 @@ namespace GameCore.Validation.ProbeHost
 
             return new ProbeArguments(
                 missingRegistration, worldDispatch, w1Gate, w2Gate, w3Gate, narrative, cards, w4Profile, gc013,
-                w4Gate, faults, gc018, gc019, w5Gate, resultPath);
+                w4Gate, faults, gc018, gc019, w5Gate, traversal, resultPath);
         }
     }
 }
