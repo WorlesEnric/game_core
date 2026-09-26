@@ -21,7 +21,8 @@
     "ApplyFault": 18,
     "TeardownBlocked": 19,
     "CursorExpired": 20,
-    "SnapshotBackpressure": 21
+    "SnapshotBackpressure": 21,
+    "ProviderFailed": 22
   },
   "diagnostic_literals": {
     "None": "None",
@@ -45,7 +46,8 @@
     "ApplyFault": "ApplyFault",
     "SnapshotBackpressure": "SnapshotBackpressure",
     "TeardownBlocked": "TeardownBlocked",
-    "CursorExpired": "CursorExpired"
+    "CursorExpired": "CursorExpired",
+    "ProviderFailed": "ProviderFailed"
   },
   "values_order": [
     "StaleHandle",
@@ -68,7 +70,8 @@
     "ApplyFault",
     "TeardownBlocked",
     "CursorExpired",
-    "SnapshotBackpressure"
+    "SnapshotBackpressure",
+    "ProviderFailed"
   ],
   "catalog_codes": {
     "InvalidDocument": 0,
