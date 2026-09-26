@@ -528,7 +528,7 @@ namespace GameCore.Validation.ProbeHost
 
             public DefinitionRef FutureRecipe => TraversalKeys.RunnerRecipe;
 
-            public ScopeId FutureScope => TraversalCourseComposition.ValleyScope;
+            public ScopeId FutureScope => TraversalCourseComposition.ValleyRunnersScope;
 
             public OwnerId MutableOwner => TraversalKeys.MotionOwner;
 
@@ -731,7 +731,7 @@ namespace GameCore.Validation.ProbeHost
                 return new SpawnRecipe(OptedInRunnerRecipe, descriptor, schemas, applier);
             }
 
-            private static void Seed(Gc013WorldContext context, TargetId target, ScopeId scope, DefinitionRef recipe)
+            private void Seed(Gc013WorldContext context, TargetId target, ScopeId scope, DefinitionRef recipe)
             {
                 if (!context.Seeder.TrySeed(
                         target, scope, recipe, out TargetHandle _, out DiagnosticCode code, out string detail))
@@ -740,11 +740,25 @@ namespace GameCore.Validation.ProbeHost
                         "target " + target.ToString() + " was refused: " + code + ": " + detail);
                 }
 
-                if (!context.Seeder.TryGetEntity(target, out Entity _))
+                if (!context.Seeder.TryGetEntity(target, out Entity entity))
                 {
                     throw new InvalidOperationException(
                         "target " + target.ToString() + " was created but the registry cannot resolve it (P-005).");
                 }
+
+                if (!context.Host.EntityWorld.IsCreated)
+                {
+                    throw new InvalidOperationException("the traversal world was disposed while seeding " + target.ToString());
+                }
+
+                // TrySeed installs generic target rows; the selected precompiled recipe installs gameplay storage.
+                if (!recipes.TryResolve(recipe, out SpawnRecipe? selected, out DiagnosticCode recipeCode)
+                    || selected == null)
+                {
+                    throw new InvalidOperationException("missing traversal recipe " + recipe + ": " + recipeCode);
+                }
+
+                selected.Applier.ApplyBaseLayout(context.Host.EntityWorld.EntityManager, entity, selected);
             }
 
             /// <summary>The course entity's base-layout applier: the storage the whole course's state lives in.</summary>

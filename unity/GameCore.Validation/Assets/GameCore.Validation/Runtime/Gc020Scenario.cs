@@ -356,7 +356,7 @@ namespace GameCore.Validation.ProbeHost
                                 live |= boundRunners[r].Target.Equals(runner);
                             }
 
-                            if (!live)
+                            if (targets.Contains(runner) && !live)
                             {
                                 unbound.Add(runner.ToString());
                             }
@@ -899,7 +899,8 @@ namespace GameCore.Validation.ProbeHost
                         && velocityAfterPublication.Equals(velocityBeforeMove);
 
                     bool moved = targets.TryGet(family.VelocityAssertedTarget, out LiveTarget live)
-                        && live.Scope.Equals(family.MoveDestination);
+                        && live.Scope.Equals(family.MovedScope)
+                        && IsUnderScope(family.VelocityAssertedTarget, family.MoveDestination);
 
                     ulong committed = StepOnce();
 
@@ -926,6 +927,7 @@ namespace GameCore.Validation.ProbeHost
                         && velocityBeforeMove.X == family.ExpectedAcceleratedVelocityMilli
                         && velocityAfter.X == family.ExpectedReparentedVelocityMilli
                         && ridgeRow
+                        && stateKept
                         && MatchesPublishedAssembly();
 
                     Add(name, pass,
@@ -941,6 +943,8 @@ namespace GameCore.Validation.ProbeHost
                         + "; ridgeRow=" + ridgeRow
                         + "; progress=" + progressBefore.Count.ToString(CultureInfo.InvariantCulture)
                         + "->" + progressAfter.Count.ToString(CultureInfo.InvariantCulture)
+                        + "; progressStarted=" + progressBefore.Started + "->" + progressAfter.Started
+                        + "; stateKept=" + stateKept
                         + "; lastCheckpoint=" + progressAfter.LastCheckpoint.ToString()
                         + "; liveMotionSlot=" + liveStateBefore.ToString(CultureInfo.InvariantCulture)
                         + "->" + liveStateAfter.ToString(CultureInfo.InvariantCulture)
@@ -1066,6 +1070,11 @@ namespace GameCore.Validation.ProbeHost
                             return;
                         }
                     }
+                    // Restore the moved runner scope under the valley before testing both propagation modes;
+                    // otherwise its automatic contribution is the ridge's headwind, not tailwind.
+                    bool restoredValley = PublishEdit(
+                        TraversalCourseComposition.ScopeReparent(family.MovedScope, family.ProviderScope),
+                        "restore-valley-runners");
 
                     // The providers are remounted here because observation 7 removed them: the mode switch has to be
                     // observed with the contributions present, or "the plain runner loses it" would be vacuous.
@@ -1100,7 +1109,7 @@ namespace GameCore.Validation.ProbeHost
 
                     TraversalVector3i velocityAfter = VelocityOf(family.VelocityAssertedTarget);
 
-                    bool pass = tailwindMounted
+                    bool pass = restoredValley && tailwindMounted
                         && headwindMounted
                         && automaticAsserted
                         && TryActiveBindingValue(family.OptedInTarget, out int _)
@@ -1576,7 +1585,7 @@ namespace GameCore.Validation.ProbeHost
                         && audioSink.Plays.Count == crossings
                         && playedFirst == crossings
                         && playedSecond == 0
-                        && audio.SuppressedCount == crossings;
+                        && audio.SuppressedCount == 0;
                     bool disabledRecordsNothing = disabled != null
                         && disabled.PlayedCount == 0
                         && disabled.RefusedCount == crossings
