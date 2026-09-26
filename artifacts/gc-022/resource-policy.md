@@ -1,9 +1,6 @@
 # GC-022 resource policy
 
-**Status of every result in this document: `NotRun (pending orchestrator build host)`.** Nothing here was
-measured on this host; the numbers named as bounds are read from the production declarations, and the growth
-findings are read from the production code paths (each is cited by file and line) with the fixture that measures
-them named. `artifacts/gc-022/HANDOFF.md` records which of them the build host must confirm or refute.
+**Status: measured on the Linux build host.** The full gate passed at 1,000 cycles; the pure 1,000-cycle test observed 5,000 disposals, zero live leases, 1,024 retained retired records and 3,976 evictions. The completed-fence regression observed zero tracked jobs after each of 50 unloads. See `BUILD_REPORT.md` and the committed TRX/XML evidence.
 
 GC-022's definition of done is: *"Unload/failure suite passes in Editor worlds and the standalone target; resource
 policy explains any bounded caches/quarantine explicitly."* This document is that explanation. It exists because a
@@ -15,7 +12,7 @@ structure this task observed is named in one of them.
 
 | State | Meaning | Counted as | Released by |
 |---|---|---|---|
-| **Retired** | The lease was disposed exactly once and left every retained state (`ResourceRetirementState.Retired`). | `ResourceLedger.RetiredCount`, `ResourceLedger.DisposeCount` on the factory | nothing further; it is terminal |
+| **Retired** | The lease was disposed exactly once and left every retained state (`ResourceRetirementState.Retired`). | `ResourceLedger.RetiredCount`, factory `DisposeCount`, `EvictedRetiredCount` | no further disposal; diagnostic record evicts at its declared history bound |
 | **Quarantined** | Unfinished work (a tracked job/reader), a failed release, or an exhausted registry kept the reference. It stays on the books and is reported. | `QuarantineRegistry.Count` / `.Bytes` / `.AdmittedCount`, `ResourceLedger.QuarantinedCount`, `WorldResourceLedger.QuarantinedBytes` | an explicit release after the user ended: `TeardownSequencer.ReleaseQuarantineFor` / `LifecycleController.ReleaseQuarantine`; never elapsed time (P-048) |
 | **Bounded cache** | A structure that deliberately retains derived data across operations. | its own capacity counter | its declared bound, and its declared eviction rule |
 
@@ -37,43 +34,14 @@ than by discipline.
 | PlayerLoop routes | exactly **one** pump node plus one `Application.quitting` hook, identified by the `GameCorePumpLoop` marker type | `GameCorePlayerLoopInstaller.Remove()`; `EnsureInstalled()` removes a node a previous session left | `GameCorePlayerLoopInstaller.cs:57-140`. Not a cache; a route count. GC-022's Play Mode matrix and probe assert it does not accumulate |
 | Event/redelivery ledger (messages) | bounded by `CommittedEventStore` retention | an evicted identity is released with its event | GC-016 `PublicationBoundary.cs`, `CommittedEventStore.cs` |
 
-### 2.2 Retained by design but **not** bounded — reported growth
+### 2.2 Bounded retired history and completed job fences
 
-These are the two structures GC-022's 1,000-cycle run makes visible. Both are *live-count clean*: nothing is still
-reachable and nothing is still pending, so P-048 and P-047 are satisfied. What grows is the retained **history**,
-and neither has an eviction path in the current revision.
-
-| Structure | Growth observed | Why it is not a bound | Fixture that measures it |
+| Structure | Bound | Release/eviction rule | Evidence |
 |---|---|---|---|
-| `ResourceLedger` record tables (`records`, `acquisitionOrder`, `leases`) | one row per acquisition ever made, forever: `Records().Count == 5 × cycles` and the `leases` dictionary also holds the `ManagedResourceLease` and its disposer delegate | `ResourceLedger` has no method that removes a record; `Retire` only changes `State`. A long-lived world with mount/unmount churn grows linearly | `RetiredLedgerRecordsAreRetainedAndTheRetainedBoundIsReported`, and the 1,000-cycle test's `Records().Count` assertion |
-| `JobFenceRegistry` job table (`jobs`, `canonicalOrder`) | one row per job ever tracked, retained after completion until `Release(jobId, out resourceIds)` is called — and **`Release` has no production call site** (verified by searching `Packages/` and `unity/` for `.Release(`; the only matches are `QuarantineRegistry.Release`, `InertAcquisitions`/gate release, `scratch.Release`, the asset backend and the image store) | nothing removes the record automatically; `Complete` only flips `Completed`, and `IsResourceFenced`/`OutstandingResourceIds` then scan every retained row | `CompletedJobRecordsAccumulateUntilExplicitlyReleased` |
+| `ResourceLedger` retired history | 1,024 retired records, plus all currently retained/quarantined resources | On successful retirement, drop the lease and disposer delegate immediately; retain a diagnostic record until the next oldest-retired-first eviction. Only retired records evict. `RetiredCount` remains cumulative; `EvictedRetiredCount` measures dropped history. | The 1,000-cycle test observed 5,000 retirements, 1,024 retained records, 3,976 evictions and zero live leases; `RetiredLedgerRecordsAreRetainedAndTheRetainedBoundIsReported` crosses the bound with 1,500 acquisitions. |
+| `JobFenceRegistry` completed jobs | No completed job records remain after its installation's safe retirement or explicit release | `TeardownSequencer.Unload` and `ReleaseQuarantineFor` call `ReleaseFencesFor` after resources settle; unfinished jobs and records still fenced by another unfinished job remain. `ReleasedCount` and `AutoReleasedCount` measure releases. | `CompletedJobRecordsReturnToBaselineAfterUnload` asserts zero records after each unload, and cumulative 50 automatic releases; the stalled-job test proves reachable buffers remain held until completion and explicit release. |
 
-Consequences worth stating plainly, because they are the reason this is a finding rather than a footnote:
-
-* the per-pass cost of `JobFenceRegistry.OutstandingResourcesFor`, `IsResourceFenced` and
-  `JobFenceRegistry.OutstandingCount` is a scan over every job the ledger ever saw, not over the outstanding set,
-  so a world that schedules jobs for hours pays an increasingly long teardown scan;
-* `ResourceLedger.LiveLeaseCount` and `RetainedResourceIds()` likewise scan the whole acquisition history on every
-  call, so those counters stop being cheap observables;
-* a job's record also holds its `IReadOnlyList<Id128>` resource ids, so the retained memory is per job times its
-  resource list.
-
-**Proposed minimal fixes** (not applied here — see HANDOFF §Contract changes: no production file was changed by
-GC-022 because nothing could be reproduced on this host):
-
-1. `JobFenceRegistry`: give `Complete` the same treatment `Release` already has — remove the record when the job
-   completed *and* none of its resources is still retained — or add `ReleaseCompleted()` and call it from
-   `TeardownSequencer.Unload` immediately after step 5, where the ledger already knows the job's resources are
-   settled. `Release` already returns exactly the resource ids a caller needs, so no new contract is required.
-2. `ResourceLedger`: add `int ReleaseRetired(PluginInstanceId instance)` that drops the `records`,
-   `acquisitionOrder` and `leases` entries of one installation whose every record is `Retired`, and call it from
-   the same place; or bound the history with a declared capacity and drop oldest-retired-first, reporting the
-   eviction count. The second shape is preferable because it also bounds a world that mounts one identity forever,
-   but both need a decision from the owner of GC-004/GC-014 before they are applied.
-
-Until one of those lands, the honest statement is: **the live counts return to baseline; the history tables grow
-with the number of acquisitions, and this is an unbounded retained structure**, which is exactly what TEST-023's
-"bounded memory" acceptance criterion is meant to catch.
+These repairs replace the prior unbounded histories. A still-live/quarantined reference cannot be evicted to satisfy a numerical bound: quarantine admission remains subject to §2.1's 4,096-entry ceiling and refusal policy. The pure 1,000-cycle run's factory retains references for its own per-lease assertions; production `ResourceLedger` no longer retains disposed delegates.
 
 ### 2.3 Quarantine that is declared and bounded, but permanent
 
@@ -125,8 +93,8 @@ GC-022 does not add, and must not be read as authorizing:
 | A failed release is never retried; the registry bound is the containment | `AFailedReleaseIsNeverRetriedAndItsQuarantineStaysBounded` |
 | Required-provider churn: wait and resume on every cycle, consumer never removed | `RequiredProviderChurnWaitsAndResumesTheConsumerOnEveryCycle` |
 | Exhaustion refuses admission instead of dropping references | `QuarantineExhaustionRefusesAdmissionInsteadOfDroppingReferences` |
-| Job history grows until an explicit release | `CompletedJobRecordsAccumulateUntilExplicitlyReleased` |
-| Ledger history grows; retained bound reported | `RetiredLedgerRecordsAreRetainedAndTheRetainedBoundIsReported` |
+| Completed job records return to baseline after safe unload | `CompletedJobRecordsReturnToBaselineAfterUnload` |
+| Retired ledger history plateaus at 1,024 records | `RetiredLedgerRecordsAreRetainedAndTheRetainedBoundIsReported` |
 | A zero-acquisition cycle is a settled empty pass; a repeat releases nothing | `AnUnloadOfACycleThatNeverRanRetainsNothing` |
 
 The Unity-world and player halves of the same claims are `GameCore.LifecycleStress.Tests` (both families) and the

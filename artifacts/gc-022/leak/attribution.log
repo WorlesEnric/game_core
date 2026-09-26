@@ -1,0 +1,8 @@
+native leak attribution: logs=3 headers=0 blocks=0 allocations=0
+  gamecore    : 0 block(s), 0 allocation(s), bytes=unstated, 0 signature(s)
+  unity-engine: 0 block(s), 0 allocation(s), bytes=unstated, 0 signature(s)
+  third-party : 0 block(s), 0 allocation(s), bytes=unstated, 0 signature(s)
+  unattributed: 0 block(s), 0 allocation(s), bytes=unstated
+policy: /home/worlesenric/wkspace/gc-wt/gc-022/artifacts/gc-022/leak/policy.md (0 bound(s), 1 format example(s), 0 uncovered signature(s), 0 problem(s))
+verdict: clean (exit 0)
+attribution: /home/worlesenric/wkspace/gc-wt/gc-022/artifacts/gc-022/leak/attribution.json

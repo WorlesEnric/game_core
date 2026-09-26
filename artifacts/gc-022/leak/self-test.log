@@ -1,0 +1,20 @@
+-- static-leak-tool: python3 tools/attribute_native_leaks.py --self-test
+  PASS gamecore stack exits 1 and names a GameCore block
+  PASS a GameCore allocation stays exit 1 even when the policy covers its signature
+  PASS unity-only stack without a policy exits 2 as unbounded
+  PASS unity-only stack with a complete policy exits 0
+  PASS GameCore only in a comment/header does not classify as gamecore
+  PASS a truncated stack is unattributed with its allocation count
+  PASS an address-only stack is unattributed, not third-party
+  PASS indexed mono frames attribute instead of falling unattributed
+  PASS an indexed frame keeps its resolved location, symbol and module
+  PASS a stack-trace-disabled report reports 57 unattributed allocations
+  PASS an empty log reports blocks=0 and unattributed=0 with exit 0
+  PASS a mixed report counts per class, states bytes and diffs a baseline
+  PASS a header/group count mismatch is noted and the groups are counted
+  PASS a signature the policy does not name exits 2
+  PASS a bound missing its released-by clause is a policy problem, not a bound
+  PASS an attribution JSON can be written and reused
+  PASS a JSON baseline diffs against the run's signatures
+  PASS a missing log file exits non-zero with a message
+self-test: 18/18 check(s) passed

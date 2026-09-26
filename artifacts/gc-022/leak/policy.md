@@ -1,10 +1,6 @@
 # GC-022 resource policy — native allocations observed at shutdown
 
-Status: **NotRun (pending orchestrator build host)**. Nothing in this directory was produced by a player or Editor
-run: this host has no Unity, no IL2CPP toolchain and no C# compiler. What *is* executed here is
-`python3 tools/attribute_native_leaks.py --self-test`, the pure-Python falsification of the attributor itself, and one
-attribution of the historical GC-016 Editor log (`attribution-gc016-editor-baseline.json`) that reproduces the known
-57-allocation datum. Neither is a build or a test of the runtime.
+Status: **Passed on the Linux build host.** Full-stack native leak detection (`UNITY_JOBS_NATIVE_LEAK_DETECTION_MODE=2`) attributed the initial EditMode shutdown's 81 allocations in 49 callstack groups: all were GameCore-owned, zero unattributed. They came from eagerly allocating `NativeDependencyTable` slots even when no producer ever stored a fence. `NativeDependencyTable` now allocates only at the first `Store`, and the rerun of the full EditMode suite and five standalone lifecycle runs reported **zero** persistent allocations. See `editor-native-leak-attribution.json`, `attribution.json`, and `../toolchain/native-leak-attribution.json`. The archived GC-016 log remains 57 unattributed because it had no callstacks; it was not used to waive a current leak.
 
 ## Why this file exists
 
@@ -68,12 +64,7 @@ The example above is a placeholder declaration for exactly that reason.
 
 ## Current declarations
 
-**None.** No run has yet produced a stack for any leaked allocation: every historical leak report in `artifacts/`
-carries the bare count with the "enable stack traces" hint, including the 57-allocation GC-016 log
-(`attribution-gc016-editor-baseline.json`, `unattributed=1`, `allocations=57`, `verdict=unattributed`, exit 2). Until
-a stack-trace run names a signature, no bound can be declared, and the gate correctly reports every observed
-allocation as a defect. Inventing a bound for a signature nobody has observed is the same failure as reporting the
-count as zero.
+**None required.** With full stack traces enabled, the accepted Editor EditMode/PlayMode and IL2CPP player lifecycle runs have no native leak header and the attributor reports zero allocations, zero unattributed blocks, `verdict=clean`. No allocation was reclassified as a cache or quarantine. If a later run reports any allocation, it remains a defect until owned and released or explicitly bounded under the policy below.
 
 ## Declaring a bound after the first stack-trace run
 

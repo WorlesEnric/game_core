@@ -7,9 +7,9 @@ Distro version:          #31~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Mon Aug 10 09:38
 Kernel version:          7.0.0-31-generic
 Architecture:            x86_64
 Available memory:        31897 MB
-[Licensing::Module] Trying to connect to existing licensing client channel...
 Initialize udev device monitor.
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-worlesenric" at "2026-09-26T01:59:17.91408Z"
+[Licensing::Module] Trying to connect to existing licensing client channel...
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-worlesenric" at "2026-09-26T03:20:18.709621Z"
 [SignatureVerifier] Application signature verification not supported on this platform.
 
 COMMAND LINE ARGUMENTS:
@@ -24,32 +24,34 @@ GameCore.Validation.Editor.LifecyclePlayModeMatrix.Run
 reload-off-scene-on
 -gc022Cycles
 10
-[Licensing::Client] Handshaking with LicensingClient:
-  Version:                 1.18.3+d7ffd15
-  Session Id:              d6805e0db9da4595a7739b783424e9fc
-  Correlation Id:          a4aac8f8da2bbfc2169791db8bc4c264
-  External correlation Id: 6955199846332834556
-  Machine Id:              jd93gYTNlAg1qIhTY9iII/nAhSo=
 -gc022OutputDirectory
 /home/worlesenric/wkspace/gc-wt/gc-022/artifacts/gc-022/playmode-matrix
 -logFile
 /home/worlesenric/wkspace/gc-wt/gc-022/artifacts/gc-022/playmode-matrix/reload-off-scene-on.log
-[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-worlesenric" (connect: 0.00s, validation: 0.00s, handshake: 0.00s)
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.18.3+d7ffd15
+  Session Id:              4378ef38f9134b75b2ee648a46bdda2f
+  Correlation Id:          a4aac8f8da2bbfc2169791db8bc4c264
+  External correlation Id: 3835179013309601073
+  Machine Id:              jd93gYTNlAg1qIhTY9iII/nAhSo=
 Successfully changed project path to: /home/worlesenric/wkspace/gc-wt/gc-022/unity/GameCore.Validation
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-worlesenric-notifications" at "2026-09-26T01:59:17.915399Z"
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-worlesenric" (connect: 0.00s, validation: 0.00s, handshake: 0.00s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-worlesenric-notifications" at "2026-09-26T03:20:18.710735Z"
 [Licensing::Module] Error: Access token is unavailable; failed to update
 
-(process:3528234): Gtk-CRITICAL **: 09:59:17.915: gtk_label_set_text: assertion 'GTK_IS_LABEL (label)' failed
+(process:3887568): Gtk-CRITICAL **: 11:20:18.711: gtk_label_set_text: assertion 'GTK_IS_LABEL (label)' failed
 [Licensing::Client] Successfully resolved entitlement details
-
-(process:3528234): Gtk-CRITICAL **: 09:59:17.915: gtk_label_set_text: assertion 'GTK_IS_LABEL (label)' failed
 [Licensing::Module] License group:
   Id: 1375999166540-UnityPersXXXX
   Product: Unity Personal
   Type: Assigned
   Expiration: Unlimited
-/home/worlesenric/wkspace/gc-wt/gc-022/unity/GameCore.Validation
 [Licensing::Client] Successfully updated license, isAsync: True, time: 0.00
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Licensing Background thread has ended after 0.00s
+
+(process:3887568): Gtk-CRITICAL **: 11:20:18.711: gtk_label_set_text: assertion 'GTK_IS_LABEL (label)' failed
+/home/worlesenric/wkspace/gc-wt/gc-022/unity/GameCore.Validation
 [UnityMemory] Configuration Parameters - Can be set up in boot.config
     "memorysetup-bucket-allocator-granularity=16"
     "memorysetup-bucket-allocator-bucket-count=8"
@@ -85,28 +87,26 @@ Successfully changed project path to: /home/worlesenric/wkspace/gc-wt/gc-022/uni
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gfx=262144"
-[Licensing::Client] Successfully resolved entitlement details
-[Licensing::Module] Licensing Background thread has ended after 0.00s
-Player connection [127074374903104]  Target information:
+Player connection [134869067220288]  Target information:
 
-Player connection [127074374903104]  * "[IP] 192.168.0.21 [Port] 55504 [Flags] 2 [Guid] 3992002794 [EditorId] 3992002794 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+Player connection [134869067220288]  * "[IP] 192.168.0.21 [Port] 55504 [Flags] 2 [Guid] 2902317701 [EditorId] 2902317701 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
 
-Player connection [127074374903104]  * "[IP] 100.66.195.58 [Port] 55504 [Flags] 2 [Guid] 3992002794 [EditorId] 3992002794 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+Player connection [134869067220288]  * "[IP] 100.66.195.58 [Port] 55504 [Flags] 2 [Guid] 2902317701 [EditorId] 2902317701 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
 
-Player connection [127074374903104]  * "[IP] 172.18.0.1 [Port] 55504 [Flags] 2 [Guid] 3992002794 [EditorId] 3992002794 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+Player connection [134869067220288]  * "[IP] 172.18.0.1 [Port] 55504 [Flags] 2 [Guid] 2902317701 [EditorId] 2902317701 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
 
-Player connection [127074374903104]  * "[IP] 172.17.0.1 [Port] 55504 [Flags] 2 [Guid] 3992002794 [EditorId] 3992002794 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+Player connection [134869067220288]  * "[IP] 172.17.0.1 [Port] 55504 [Flags] 2 [Guid] 2902317701 [EditorId] 2902317701 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
 
-Player connection [127074374903104]  * "[IP] 10.42.0.0 [Port] 55504 [Flags] 2 [Guid] 3992002794 [EditorId] 3992002794 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+Player connection [134869067220288]  * "[IP] 10.42.0.0 [Port] 55504 [Flags] 2 [Guid] 2902317701 [EditorId] 2902317701 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
 
-Player connection [127074374903104]  * "[IP] 10.42.0.1 [Port] 55504 [Flags] 2 [Guid] 3992002794 [EditorId] 3992002794 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+Player connection [134869067220288]  * "[IP] 10.42.0.1 [Port] 55504 [Flags] 2 [Guid] 2902317701 [EditorId] 2902317701 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
 
-Player connection [127074374903104] Host joined multi-casting on [225.0.0.222:54997]...
-Player connection [127074374903104] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Player connection [134869067220288] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [134869067220288] Host joined alternative multi-casting on [225.0.0.222:34997]...
 Input System module state changed to: Initialized.
 [Physics::Module] Initialized fallback backend.
 [Physics::Module] Id: 0xdecafbad
-[Package Manager] Connected to IPC stream "Upm-3528234" after 0.1 seconds.
+[Package Manager] Connected to IPC stream "Upm-3887568" after 0.1 seconds.
 Library Redirect Path: Library/
 [Physics::Module] Selected backend.
 [Physics::Module] Name: PhysX
@@ -114,7 +114,7 @@ Library Redirect Path: Library/
 [Physics::Module] SDK Version: 4.1.2
 [Physics::Module] Integration Version: 1.0.0
 [Physics::Module] Threading Mode: Multi-Threaded
-Refreshing native plugins compatible for Editor in 0.07 ms, found 0 plugins.
+Refreshing native plugins compatible for Editor in 0.06 ms, found 0 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 6000.0.75f1 (26349cd2a5c8)
 [Subsystems] Discovering subsystems at path /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Resources/UnitySubsystems
@@ -129,7 +129,7 @@ Initialize mono
 Mono path[0] = '/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Managed'
 Mono path[1] = '/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-linux'
 Mono config path = '/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56234
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56568
 Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
 Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
 ImportWorker Server TCP listen port: 0
@@ -138,42 +138,42 @@ Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll
 Register platform support module: /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll
-Registered in 0.000940 seconds.
-- Loaded All Assemblies, in  0.222 seconds
+Registered in 0.000990 seconds.
+- Loaded All Assemblies, in  0.218 seconds
 Native extension for LinuxStandalone target not found
 Package Manager log level set to [2]
 [Licensing::Client] Successfully resolved entitlement details
 Native extension for OSXStandalone target not found
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  7.157 seconds
-Domain Reload Profiling: 7379ms
-	BeginReloadAssembly (53ms)
+- Finished resetting the current domain, in  6.810 seconds
+Domain Reload Profiling: 7029ms
+	BeginReloadAssembly (52ms)
 		ExecutionOrderSort (0ms)
 		DisableScriptedObjects (0ms)
 		BackupInstance (0ms)
 		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (0ms)
-	RebuildCommonClasses (25ms)
+		CreateAndSetChildDomain (1ms)
+	RebuildCommonClasses (27ms)
 	RebuildNativeTypeToScriptingClass (5ms)
 	initialDomainReloadingComplete (35ms)
-	LoadAllAssembliesAndSetupDomain (104ms)
+	LoadAllAssembliesAndSetupDomain (99ms)
 		LoadAssemblies (52ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (102ms)
-			TypeCache.Refresh (101ms)
-				TypeCache.ScanAssembly (91ms)
+		AnalyzeDomain (97ms)
+			TypeCache.Refresh (96ms)
+				TypeCache.ScanAssembly (87ms)
 			BuildScriptInfoCaches (0ms)
 			ResolveRequiredComponents (0ms)
-	FinalizeReload (7157ms)
+	FinalizeReload (6810ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (7125ms)
+		SetupLoadedEditorAssemblies (6783ms)
 			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (6772ms)
-			SetLoadedEditorAssemblies (6ms)
-			BeforeProcessingInitializeOnLoad (69ms)
-			ProcessInitializeOnLoadAttributes (216ms)
-			ProcessInitializeOnLoadMethodAttributes (61ms)
+			InitializePlatformSupportModulesInManaged (6602ms)
+			SetLoadedEditorAssemblies (5ms)
+			BeforeProcessingInitializeOnLoad (41ms)
+			ProcessInitializeOnLoadAttributes (95ms)
+			ProcessInitializeOnLoadMethodAttributes (40ms)
 			AfterProcessingInitializeOnLoad (0ms)
 			EditorAssembliesLoaded (0ms)
 		ExecutionOrderSort2 (0ms)
@@ -242,7 +242,7 @@ Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Pro
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
       Executed endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
-      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 41.5862ms
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 27.7763ms
 Starting: /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/2400b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
 WorkingDir: /home/worlesenric/wkspace/gc-wt/gc-022/unity/GameCore.Validation
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
@@ -262,21 +262,19 @@ WorkingDir: /home/worlesenric/wkspace/gc-wt/gc-022/unity/GameCore.Validation
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
       Executed endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
-      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc - - 200 - application/grpc 27.6880ms
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc - - 200 - application/grpc 36.6484ms
 DisplayProgressbar: Compiling Scripts
-ExitCode: 0 Duration: 0s155ms
+ExitCode: 0 Duration: 0s128ms
 [729/994    0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
-*** Tundra build success (0.13 seconds), 1 items updated, 994 evaluated
-AssetDatabase: script compilation time: 0.645039s
+*** Tundra build success (0.11 seconds), 1 items updated, 994 evaluated
+AssetDatabase: script compilation time: 0.440575s
 Begin MonoManager ReloadAssembly
-Total cache size 247616579
-Total cache size after purge 247616579, took 00:00:00.1492914
-- Loaded All Assemblies, in  0.560 seconds
-Refreshing native plugins compatible for Editor in 0.26 ms, found 1 plugins.
+- Loaded All Assemblies, in  0.464 seconds
+Refreshing native plugins compatible for Editor in 0.13 ms, found 1 plugins.
 Native extension for LinuxStandalone target not found
 Native extension for OSXStandalone target not found
 Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
-TypeManager.Initialize took: 163ms
+TypeManager.Initialize took: 88ms
 Native leak detection mode: EnabledWithStackTrace
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
@@ -292,83 +290,83 @@ UnityEditor.EditorAssemblies:ProcessInitializeOnLoadMethodAttributes () (at /hom
 (Filename: ./Library/PackageCache/com.unity.collections@9796e5ee0d9e/Unity.Collections.Editor/CLILeakDetectionSwitcher.cs Line: 29)
 
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  2.440 seconds
-Domain Reload Profiling: 2999ms
-	BeginReloadAssembly (166ms)
+- Finished resetting the current domain, in  2.003 seconds
+Domain Reload Profiling: 2466ms
+	BeginReloadAssembly (219ms)
 		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (37ms)
+		DisableScriptedObjects (6ms)
 		BackupInstance (0ms)
 		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (42ms)
-	RebuildCommonClasses (30ms)
-	RebuildNativeTypeToScriptingClass (7ms)
-	initialDomainReloadingComplete (23ms)
-	LoadAllAssembliesAndSetupDomain (333ms)
-		LoadAssemblies (243ms)
+		CreateAndSetChildDomain (149ms)
+	RebuildCommonClasses (24ms)
+	RebuildNativeTypeToScriptingClass (5ms)
+	initialDomainReloadingComplete (19ms)
+	LoadAllAssembliesAndSetupDomain (194ms)
+		LoadAssemblies (150ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (146ms)
-			TypeCache.Refresh (102ms)
-				TypeCache.ScanAssembly (92ms)
-			BuildScriptInfoCaches (41ms)
+		AnalyzeDomain (84ms)
+			TypeCache.Refresh (62ms)
+				TypeCache.ScanAssembly (55ms)
+			BuildScriptInfoCaches (21ms)
 			ResolveRequiredComponents (0ms)
-	FinalizeReload (2441ms)
+	FinalizeReload (2004ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (2341ms)
+		SetupLoadedEditorAssemblies (1926ms)
 			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (41ms)
+			InitializePlatformSupportModulesInManaged (34ms)
 			SetLoadedEditorAssemblies (3ms)
-			BeforeProcessingInitializeOnLoad (121ms)
-			ProcessInitializeOnLoadAttributes (2097ms)
-			ProcessInitializeOnLoadMethodAttributes (76ms)
+			BeforeProcessingInitializeOnLoad (81ms)
+			ProcessInitializeOnLoadAttributes (1695ms)
+			ProcessInitializeOnLoadMethodAttributes (112ms)
 			AfterProcessingInitializeOnLoad (2ms)
 			EditorAssembliesLoaded (0ms)
 		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (5ms)
-Asset Pipeline Refresh (id=11c6da9a7d5171c24931fe6cc9815cee): Total: 4.521 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+		AwakeInstancesAfterBackupRestoration (4ms)
+Asset Pipeline Refresh (id=eb23d2a57c32b6f098815eae03b1e85d): Total: 3.262 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
 	Summary:
 		Imports: total=0 (actual=0, local cache=0, cache server=0)
-		Asset DB Process Time: managed=0 ms, native=3272 ms
-		Asset DB Callback time: managed=12 ms, native=7 ms
-		Scripting: domain reloads=1, domain reload time=560 ms, compile time=647 ms, other=21 ms
+		Asset DB Process Time: managed=0 ms, native=2321 ms
+		Asset DB Callback time: managed=9 ms, native=3 ms
+		Scripting: domain reloads=1, domain reload time=464 ms, compile time=442 ms, other=21 ms
 		Project Asset Count: scripts=848, non-scripts=703
 		Asset File Changes: new=0, changed=0, moved=0, deleted=0
 		Scan Filter Count: 1
 	InvokeCustomDependenciesCallbacks: 0.003ms
-	InvokePackagesCallback: 8.140ms
-	ApplyChangesToAssetFolders: 0.260ms
-	Scan: 615.644ms
-	OnSourceAssetsModified: 0.004ms
-	CategorizeAssetsWithTransientArtifact: 15.512ms
-	ProcessAssetsWithTransientArtifactChanges: 27.491ms
-	CategorizeAssets: 23.143ms
-	ImportOutOfDateAssets: 2444.179ms (1795.921ms without children)
-		CompileScripts: 647.120ms
-		ReloadNativeAssets: 0.001ms
-		UnloadImportedAssets: 0.277ms
-		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.325ms
+	InvokePackagesCallback: 3.873ms
+	ApplyChangesToAssetFolders: 0.196ms
+	Scan: 213.964ms
+	OnSourceAssetsModified: 0.003ms
+	CategorizeAssetsWithTransientArtifact: 12.084ms
+	ProcessAssetsWithTransientArtifactChanges: 16.708ms
+	CategorizeAssets: 10.161ms
+	ImportOutOfDateAssets: 2006.462ms (1563.970ms without children)
+		CompileScripts: 441.853ms
+		ReloadNativeAssets: 0.000ms
+		UnloadImportedAssets: 0.169ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.212ms
 		InitializingProgressBar: 0.000ms
 		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
-		OnDemandSchedulerStart: 0.534ms
-	PostProcessAllAssets: 12.208ms
+		OnDemandSchedulerStart: 0.257ms
+	PostProcessAllAssets: 9.747ms
 	GatherAllCurrentPrimaryArtifactRevisions: 0.000ms
-	UnloadStreamsBegin: 0.255ms
-	PersistCurrentRevisions: 0.064ms
-	UnloadStreamsEnd: 0.001ms
-	GenerateScriptTypeHashes: 2.456ms
-	Untracked: 1373.879ms
+	UnloadStreamsBegin: 0.185ms
+	PersistCurrentRevisions: 0.043ms
+	UnloadStreamsEnd: 0.000ms
+	GenerateScriptTypeHashes: 1.091ms
+	Untracked: 988.741ms
 
 Application.AssetDatabase Initial Refresh End
-Scanning for USB devices : 0.895ms
+Scanning for USB devices : 0.757ms
 Initializing Unity extensions:
 UpdateMenuTitleForLanguage: 10
 [MODES] ModeService[none].Initialize
 [MODES] ModeService[none].LoadModes
 [MODES] Loading mode Default (0) for mode-current-id-GameCoreProbe
 Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 2944 unused Assets / (2.2 MB). Loaded Objects now: 3416.
-Memory consumption went from 112.3 MB to 110.1 MB.
-Total: 7.705841 ms (FindLiveObjects: 0.221362 ms CreateObjectMapping: 0.187192 ms MarkObjects: 5.715886 ms  DeleteObjects: 1.580353 ms)
+Unloading 2944 unused Assets / (2.6 MB). Loaded Objects now: 3416.
+Memory consumption went from 112.2 MB to 109.6 MB.
+Total: 7.997415 ms (FindLiveObjects: 0.192134 ms CreateObjectMapping: 0.192792 ms MarkObjects: 6.035286 ms  DeleteObjects: 1.576022 ms)
 
 [GC022] matrix started; combination=reload-off-scene-on; cycles=10; domainReload=False; sceneReload=True; optionsEnabled=True; options=DisableDomainReload; output=/home/worlesenric/wkspace/gc-wt/gc-022/artifacts/gc-022/playmode-matrix; jsonl=/home/worlesenric/wkspace/gc-wt/gc-022/artifacts/gc-022/playmode-matrix/reload-off-scene-on.jsonl; batchMode=True
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
@@ -394,34 +392,34 @@ GameCore.Validation.Editor.LifecyclePlayModeMatrix:Run () (at Assets/GameCore.Va
 (Filename: Assets/GameCore.Validation/Editor/LifecyclePlayModeMatrix.cs Line: 215)
 
 
-(process:3528234): GLib-GObject-CRITICAL **: 09:59:30.430: g_object_unref: assertion 'G_IS_OBJECT (object)' failed
+(process:3887568): GLib-GObject-CRITICAL **: 11:20:29.495: g_object_unref: assertion 'G_IS_OBJECT (object)' failed
 
-(process:3528234): GLib-GObject-CRITICAL **: 09:59:30.430: g_object_unref: assertion 'G_IS_OBJECT (object)' failed
+(process:3887568): GLib-GObject-CRITICAL **: 11:20:29.495: g_object_unref: assertion 'G_IS_OBJECT (object)' failed
 
-(process:3528234): GLib-GObject-CRITICAL **: 09:59:30.430: g_object_unref: assertion 'G_IS_OBJECT (object)' failed
+(process:3887568): GLib-GObject-CRITICAL **: 11:20:29.495: g_object_unref: assertion 'G_IS_OBJECT (object)' failed
 
-(process:3528234): Gtk-CRITICAL **: 09:59:30.430: gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
-[Project] Loading completed in 12.522 seconds
-	Project init time: 				12.213 seconds
+(process:3887568): Gtk-CRITICAL **: 11:20:29.495: gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+[Project] Loading completed in 10.789 seconds
+	Project init time: 				10.583 seconds
 		Template init time: 		0.000 seconds
 		Package Manager init time: 		0.130 seconds
-		Asset Database init time: 		0.022 seconds
+		Asset Database init time: 		0.010 seconds
 		Global illumination init time: 	0.002 seconds
-		Assemblies load time: 			7.390 seconds
-		Unity extensions init time: 	0.013 seconds
-		Asset Database refresh time: 	4.521 seconds
-	Scene opening time: 			0.304 seconds
-##utp:{"type":"ProjectInfo","version":2,"phase":"Immediate","time":1790387970431,"processId":3528234,"projectLoad":12.522268175999999,"projectInit":12.213252541,"templateInit":0.0,"packageManagerInit":0.13027658,"assetDatabaseInit":0.022228661,"globalIlluminationInit":0.002191079,"assembliesLoad":7.390193882,"unityExtensionsInit":0.012604637,"assetDatabaseRefresh":4.520860772,"sceneOpening":0.303729816}
-##utp:{"type":"EditorInfo","version":2,"phase":"Immediate","time":1790387970431,"processId":3528234,"editorVersion":"6000.0.75f1 (26349cd2a5c8)","branch":"6000.0/staging","buildType":"Release","platform":"Linux"}
+		Assemblies load time: 			7.038 seconds
+		Unity extensions init time: 	0.011 seconds
+		Asset Database refresh time: 	3.262 seconds
+	Scene opening time: 			0.202 seconds
+##utp:{"type":"ProjectInfo","version":2,"phase":"Immediate","time":1790392829495,"processId":3887568,"projectLoad":10.789344438999999,"projectInit":10.583221437,"templateInit":0.0,"packageManagerInit":0.130170945,"assetDatabaseInit":0.010499888,"globalIlluminationInit":0.002141302,"assembliesLoad":7.038179483,"unityExtensionsInit":0.010879681,"assetDatabaseRefresh":3.262221142,"sceneOpening":0.202161028}
+##utp:{"type":"EditorInfo","version":2,"phase":"Immediate","time":1790392829495,"processId":3887568,"editorVersion":"6000.0.75f1 (26349cd2a5c8)","branch":"6000.0/staging","buildType":"Release","platform":"Linux"}
 Entering Playmode with Reload Domain disabled.
 If you experience any issues, please disable "Enter Play Mode Options" in Editor Settings
 Loaded scene 'Temp/__Backupscenes/0.backup'
-	Deserialize:            0.225 ms
-	Integration:            285.590 ms
+	Deserialize:            0.319 ms
+	Integration:            302.125 ms
 	Integration of assets:  0.001 ms
-	Thread Wait Time:       0.010 ms
-	Total Operation Time:   285.826 ms
-[GC022] reload-off-scene-on cycle 1 entered Play Mode; session=c8f24dc645ec60063276d5c520aafcaf; reloadedOnEntry=False; runCount=1
+	Thread Wait Time:       0.005 ms
+	Total Operation Time:   302.449 ms
+[GC022] reload-off-scene-on cycle 1 entered Play Mode; session=ccfcc4f2eb607283fffa7385d6706b9b; reloadedOnEntry=False; runCount=1
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -434,18 +432,18 @@ UnityEditor.EditorApplication:Internal_PlayModeStateChanged (UnityEditor.PlayMod
 
 (Filename: Assets/GameCore.Validation/Editor/LifecyclePlayModeMatrix.cs Line: 375)
 
-Asset Pipeline Refresh (id=b81e07c969b28339486f1fefb1b43b0f): Total: 0.188 seconds - Initiated by RefreshV2(NoUpdateAssetOptions)
-Created GICache directory at /home/worlesenric/.cache/unity3d/GiCache. Took: 0.001s, timestamps: [13.258 - 13.259]
+Asset Pipeline Refresh (id=f9858e757c59638fbb237a4c40868077): Total: 0.067 seconds - Initiated by RefreshV2(NoUpdateAssetOptions)
+Created GICache directory at /home/worlesenric/.cache/unity3d/GiCache. Took: 0.001s, timestamps: [11.410 - 11.411]
 Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
 Loaded scene 'Temp/__Backupscenes/0.backup'
-	Deserialize:            0.185 ms
-	Integration:            109.756 ms
+	Deserialize:            0.178 ms
+	Integration:            103.082 ms
 	Integration of assets:  0.001 ms
-	Thread Wait Time:       0.007 ms
-	Total Operation Time:   109.949 ms
+	Thread Wait Time:       0.012 ms
+	Total Operation Time:   103.273 ms
 Unloading 1 unused Assets / (0.8 KB). Loaded Objects now: 3450.
 Memory consumption went from 125.3 MB to 125.3 MB.
-Total: 5.681076 ms (FindLiveObjects: 0.112586 ms CreateObjectMapping: 0.091407 ms MarkObjects: 5.459564 ms  DeleteObjects: 0.016792 ms)
+Total: 5.061944 ms (FindLiveObjects: 0.127782 ms CreateObjectMapping: 0.053941 ms MarkObjects: 4.866743 ms  DeleteObjects: 0.012772 ms)
 
 [GC022] reload-off-scene-on cycle 1/10 left Play Mode clean; routedFrames=20
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
@@ -461,7 +459,7 @@ UnityEditor.EditorApplication:Internal_PlayModeStateChanged (UnityEditor.PlayMod
 (Filename: Assets/GameCore.Validation/Editor/LifecyclePlayModeMatrix.cs Line: 502)
 
 [UnityConnectServicesConfig] config is NOT valid, switching to default
-Asset Pipeline Refresh (id=15580593540c47350a6d645af3ad3cbb): Total: 0.043 seconds - Initiated by RefreshV2(ForceSynchronousImport)
+Asset Pipeline Refresh (id=f6dd3fba59bf43c22884a2faaf01fdaa): Total: 0.022 seconds - Initiated by RefreshV2(ForceSynchronousImport)
 [GC022] reload-off-scene-on cycle 2/10 entering Play Mode
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
@@ -477,12 +475,12 @@ UnityEditor.EditorApplication:Internal_CallDelayFunctions () (at /home/bokken/bu
 Entering Playmode with Reload Domain disabled.
 If you experience any issues, please disable "Enter Play Mode Options" in Editor Settings
 Loaded scene 'Temp/__Backupscenes/0.backup'
-	Deserialize:            0.110 ms
-	Integration:            115.034 ms
+	Deserialize:            0.098 ms
+	Integration:            105.273 ms
 	Integration of assets:  0.001 ms
 	Thread Wait Time:       0.004 ms
-	Total Operation Time:   115.148 ms
-[GC022] reload-off-scene-on cycle 2 entered Play Mode; session=c8517246cd63e60c3bfe20de465c69be; reloadedOnEntry=False; runCount=2
+	Total Operation Time:   105.376 ms
+[GC022] reload-off-scene-on cycle 2 entered Play Mode; session=c6fb2ff90f0ae10302830041d275b690; reloadedOnEntry=False; runCount=2
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -497,14 +495,14 @@ UnityEditor.EditorApplication:Internal_PlayModeStateChanged (UnityEditor.PlayMod
 
 Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
 Loaded scene 'Temp/__Backupscenes/0.backup'
-	Deserialize:            0.069 ms
-	Integration:            108.928 ms
+	Deserialize:            0.092 ms
+	Integration:            103.991 ms
 	Integration of assets:  0.001 ms
-	Thread Wait Time:       0.002 ms
-	Total Operation Time:   109.000 ms
+	Thread Wait Time:       0.004 ms
+	Total Operation Time:   104.088 ms
 Unloading 1 unused Assets / (0.8 KB). Loaded Objects now: 3451.
-Memory consumption went from 125.4 MB to 125.4 MB.
-Total: 5.237093 ms (FindLiveObjects: 0.107592 ms CreateObjectMapping: 0.055890 ms MarkObjects: 5.055904 ms  DeleteObjects: 0.017071 ms)
+Memory consumption went from 125.3 MB to 125.3 MB.
+Total: 4.912279 ms (FindLiveObjects: 0.102706 ms CreateObjectMapping: 0.050578 ms MarkObjects: 4.744582 ms  DeleteObjects: 0.014012 ms)
 
 [GC022] reload-off-scene-on cycle 2/10 left Play Mode clean; routedFrames=20
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
@@ -534,12 +532,12 @@ UnityEditor.EditorApplication:Internal_CallDelayFunctions () (at /home/bokken/bu
 Entering Playmode with Reload Domain disabled.
 If you experience any issues, please disable "Enter Play Mode Options" in Editor Settings
 Loaded scene 'Temp/__Backupscenes/0.backup'
-	Deserialize:            0.126 ms
-	Integration:            107.443 ms
+	Deserialize:            0.098 ms
+	Integration:            104.807 ms
 	Integration of assets:  0.001 ms
-	Thread Wait Time:       0.005 ms
-	Total Operation Time:   107.574 ms
-[GC022] reload-off-scene-on cycle 3 entered Play Mode; session=cc631527e2331f021928c9d7d2de0c98; reloadedOnEntry=False; runCount=3
+	Thread Wait Time:       0.004 ms
+	Total Operation Time:   104.910 ms
+[GC022] reload-off-scene-on cycle 3 entered Play Mode; session=ca69c4b782b1d3275ba1c64c85f0dd80; reloadedOnEntry=False; runCount=3
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -554,14 +552,14 @@ UnityEditor.EditorApplication:Internal_PlayModeStateChanged (UnityEditor.PlayMod
 
 Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
 Loaded scene 'Temp/__Backupscenes/0.backup'
-	Deserialize:            0.063 ms
-	Integration:            114.107 ms
+	Deserialize:            0.064 ms
+	Integration:            104.375 ms
 	Integration of assets:  0.001 ms
-	Thread Wait Time:       0.047 ms
-	Total Operation Time:   114.218 ms
+	Thread Wait Time:       0.007 ms
+	Total Operation Time:   104.446 ms
 Unloading 0 unused Assets / (0 B). Loaded Objects now: 3451.
-Memory consumption went from 125.4 MB to 125.4 MB.
-Total: 7.678404 ms (FindLiveObjects: 0.106713 ms CreateObjectMapping: 0.057808 ms MarkObjects: 7.505880 ms  DeleteObjects: 0.007271 ms)
+Memory consumption went from 125.3 MB to 125.3 MB.
+Total: 4.939395 ms (FindLiveObjects: 0.103959 ms CreateObjectMapping: 0.052014 ms MarkObjects: 4.778479 ms  DeleteObjects: 0.004194 ms)
 
 [GC022] reload-off-scene-on cycle 3/10 left Play Mode clean; routedFrames=20
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
@@ -591,12 +589,12 @@ UnityEditor.EditorApplication:Internal_CallDelayFunctions () (at /home/bokken/bu
 Entering Playmode with Reload Domain disabled.
 If you experience any issues, please disable "Enter Play Mode Options" in Editor Settings
 Loaded scene 'Temp/__Backupscenes/0.backup'
-	Deserialize:            0.118 ms
-	Integration:            110.846 ms
+	Deserialize:            0.071 ms
+	Integration:            107.065 ms
 	Integration of assets:  0.001 ms
-	Thread Wait Time:       0.004 ms
-	Total Operation Time:   110.969 ms
-[GC022] reload-off-scene-on cycle 4 entered Play Mode; session=ce0132a0c90fcc832509dd297346729e; reloadedOnEntry=False; runCount=4
+	Thread Wait Time:       0.008 ms
+	Total Operation Time:   107.146 ms
+[GC022] reload-off-scene-on cycle 4 entered Play Mode; session=ccf6f807235c898e5a62ef13eead0ba5; reloadedOnEntry=False; runCount=4
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -611,14 +609,14 @@ UnityEditor.EditorApplication:Internal_PlayModeStateChanged (UnityEditor.PlayMod
 
 Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
 Loaded scene 'Temp/__Backupscenes/0.backup'
-	Deserialize:            0.079 ms
-	Integration:            112.880 ms
+	Deserialize:            0.097 ms
+	Integration:            109.053 ms
 	Integration of assets:  0.001 ms
-	Thread Wait Time:       0.012 ms
-	Total Operation Time:   112.973 ms
+	Thread Wait Time:       0.004 ms
+	Total Operation Time:   109.155 ms
 Unloading 0 unused Assets / (0 B). Loaded Objects now: 3451.
-Memory consumption went from 125.4 MB to 125.4 MB.
-Total: 5.308990 ms (FindLiveObjects: 0.111093 ms CreateObjectMapping: 0.061953 ms MarkObjects: 5.129171 ms  DeleteObjects: 0.006123 ms)
+Memory consumption went from 125.3 MB to 125.3 MB.
+Total: 4.956714 ms (FindLiveObjects: 0.106391 ms CreateObjectMapping: 0.051359 ms MarkObjects: 4.794054 ms  DeleteObjects: 0.004259 ms)
 
 [GC022] reload-off-scene-on cycle 4/10 left Play Mode clean; routedFrames=20
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
@@ -648,12 +646,12 @@ UnityEditor.EditorApplication:Internal_CallDelayFunctions () (at /home/bokken/bu
 Entering Playmode with Reload Domain disabled.
 If you experience any issues, please disable "Enter Play Mode Options" in Editor Settings
 Loaded scene 'Temp/__Backupscenes/0.backup'
-	Deserialize:            0.130 ms
-	Integration:            107.679 ms
+	Deserialize:            0.069 ms
+	Integration:            105.369 ms
 	Integration of assets:  0.001 ms
-	Thread Wait Time:       0.007 ms
-	Total Operation Time:   107.817 ms
-[GC022] reload-off-scene-on cycle 5 entered Play Mode; session=cbd7e6188e864c84a1856329b640969f; reloadedOnEntry=False; runCount=5
+	Thread Wait Time:       0.002 ms
+	Total Operation Time:   105.442 ms
+[GC022] reload-off-scene-on cycle 5 entered Play Mode; session=c2f3d1b673244405a0604f3a9e44beb3; reloadedOnEntry=False; runCount=5
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -668,14 +666,14 @@ UnityEditor.EditorApplication:Internal_PlayModeStateChanged (UnityEditor.PlayMod
 
 Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
 Loaded scene 'Temp/__Backupscenes/0.backup'
-	Deserialize:            0.111 ms
-	Integration:            105.083 ms
+	Deserialize:            0.098 ms
+	Integration:            102.306 ms
 	Integration of assets:  0.001 ms
-	Thread Wait Time:       0.003 ms
-	Total Operation Time:   105.198 ms
+	Thread Wait Time:       0.046 ms
+	Total Operation Time:   102.452 ms
 Unloading 0 unused Assets / (0 B). Loaded Objects now: 3451.
-Memory consumption went from 125.4 MB to 125.4 MB.
-Total: 5.047836 ms (FindLiveObjects: 0.108019 ms CreateObjectMapping: 0.056840 ms MarkObjects: 4.876235 ms  DeleteObjects: 0.005862 ms)
+Memory consumption went from 125.3 MB to 125.3 MB.
+Total: 4.930786 ms (FindLiveObjects: 0.104044 ms CreateObjectMapping: 0.052180 ms MarkObjects: 4.769691 ms  DeleteObjects: 0.004478 ms)
 
 [GC022] reload-off-scene-on cycle 5/10 left Play Mode clean; routedFrames=20
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
@@ -705,12 +703,12 @@ UnityEditor.EditorApplication:Internal_CallDelayFunctions () (at /home/bokken/bu
 Entering Playmode with Reload Domain disabled.
 If you experience any issues, please disable "Enter Play Mode Options" in Editor Settings
 Loaded scene 'Temp/__Backupscenes/0.backup'
-	Deserialize:            0.074 ms
-	Integration:            110.509 ms
+	Deserialize:            0.098 ms
+	Integration:            104.120 ms
 	Integration of assets:  0.001 ms
-	Thread Wait Time:       0.010 ms
-	Total Operation Time:   110.594 ms
-[GC022] reload-off-scene-on cycle 6 entered Play Mode; session=c660fbb0a4d55afb9ce8fa6587149886; reloadedOnEntry=False; runCount=6
+	Thread Wait Time:       0.004 ms
+	Total Operation Time:   104.223 ms
+[GC022] reload-off-scene-on cycle 6 entered Play Mode; session=cff12228c939882fc0e1722d17bd27a0; reloadedOnEntry=False; runCount=6
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -725,14 +723,14 @@ UnityEditor.EditorApplication:Internal_PlayModeStateChanged (UnityEditor.PlayMod
 
 Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
 Loaded scene 'Temp/__Backupscenes/0.backup'
-	Deserialize:            0.098 ms
-	Integration:            105.177 ms
+	Deserialize:            0.101 ms
+	Integration:            104.966 ms
 	Integration of assets:  0.001 ms
 	Thread Wait Time:       0.004 ms
-	Total Operation Time:   105.279 ms
+	Total Operation Time:   105.071 ms
 Unloading 0 unused Assets / (0 B). Loaded Objects now: 3451.
-Memory consumption went from 125.4 MB to 125.4 MB.
-Total: 5.320710 ms (FindLiveObjects: 0.107054 ms CreateObjectMapping: 0.056174 ms MarkObjects: 5.150649 ms  DeleteObjects: 0.006127 ms)
+Memory consumption went from 125.3 MB to 125.3 MB.
+Total: 4.927852 ms (FindLiveObjects: 0.102255 ms CreateObjectMapping: 0.050406 ms MarkObjects: 4.770232 ms  DeleteObjects: 0.004529 ms)
 
 [GC022] reload-off-scene-on cycle 6/10 left Play Mode clean; routedFrames=20
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
@@ -762,12 +760,12 @@ UnityEditor.EditorApplication:Internal_CallDelayFunctions () (at /home/bokken/bu
 Entering Playmode with Reload Domain disabled.
 If you experience any issues, please disable "Enter Play Mode Options" in Editor Settings
 Loaded scene 'Temp/__Backupscenes/0.backup'
-	Deserialize:            0.109 ms
-	Integration:            115.449 ms
+	Deserialize:            0.113 ms
+	Integration:            104.495 ms
 	Integration of assets:  0.001 ms
-	Thread Wait Time:       0.004 ms
-	Total Operation Time:   115.563 ms
-[GC022] reload-off-scene-on cycle 7 entered Play Mode; session=cac1f78c1d388c9aa8f0876d7378ed9f; reloadedOnEntry=False; runCount=7
+	Thread Wait Time:       0.045 ms
+	Total Operation Time:   104.653 ms
+[GC022] reload-off-scene-on cycle 7 entered Play Mode; session=c1348b8f5b2f7065b796a1d573ae8882; reloadedOnEntry=False; runCount=7
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -782,14 +780,14 @@ UnityEditor.EditorApplication:Internal_PlayModeStateChanged (UnityEditor.PlayMod
 
 Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
 Loaded scene 'Temp/__Backupscenes/0.backup'
-	Deserialize:            0.099 ms
-	Integration:            105.517 ms
+	Deserialize:            0.107 ms
+	Integration:            101.761 ms
 	Integration of assets:  0.001 ms
-	Thread Wait Time:       0.003 ms
-	Total Operation Time:   105.620 ms
+	Thread Wait Time:       0.048 ms
+	Total Operation Time:   101.917 ms
 Unloading 0 unused Assets / (0 B). Loaded Objects now: 3451.
-Memory consumption went from 125.4 MB to 125.4 MB.
-Total: 5.429284 ms (FindLiveObjects: 0.116319 ms CreateObjectMapping: 0.057846 ms MarkObjects: 5.248220 ms  DeleteObjects: 0.006220 ms)
+Memory consumption went from 125.3 MB to 125.3 MB.
+Total: 4.852055 ms (FindLiveObjects: 0.105346 ms CreateObjectMapping: 0.053100 ms MarkObjects: 4.688919 ms  DeleteObjects: 0.004147 ms)
 
 [GC022] reload-off-scene-on cycle 7/10 left Play Mode clean; routedFrames=20
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
@@ -819,12 +817,12 @@ UnityEditor.EditorApplication:Internal_CallDelayFunctions () (at /home/bokken/bu
 Entering Playmode with Reload Domain disabled.
 If you experience any issues, please disable "Enter Play Mode Options" in Editor Settings
 Loaded scene 'Temp/__Backupscenes/0.backup'
-	Deserialize:            0.106 ms
-	Integration:            109.894 ms
+	Deserialize:            0.126 ms
+	Integration:            105.401 ms
 	Integration of assets:  0.001 ms
-	Thread Wait Time:       0.004 ms
-	Total Operation Time:   110.004 ms
-[GC022] reload-off-scene-on cycle 8 entered Play Mode; session=c1e030446749ab1fbd5ba7605c6e14b1; reloadedOnEntry=False; runCount=8
+	Thread Wait Time:       0.058 ms
+	Total Operation Time:   105.586 ms
+[GC022] reload-off-scene-on cycle 8 entered Play Mode; session=c882fca57a1c13b5a9d9178f0e85feb9; reloadedOnEntry=False; runCount=8
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -839,14 +837,14 @@ UnityEditor.EditorApplication:Internal_PlayModeStateChanged (UnityEditor.PlayMod
 
 Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
 Loaded scene 'Temp/__Backupscenes/0.backup'
-	Deserialize:            0.109 ms
-	Integration:            107.543 ms
+	Deserialize:            0.098 ms
+	Integration:            102.893 ms
 	Integration of assets:  0.001 ms
 	Thread Wait Time:       0.004 ms
-	Total Operation Time:   107.657 ms
+	Total Operation Time:   102.996 ms
 Unloading 0 unused Assets / (0 B). Loaded Objects now: 3451.
-Memory consumption went from 125.4 MB to 125.4 MB.
-Total: 5.820675 ms (FindLiveObjects: 0.115915 ms CreateObjectMapping: 0.096985 ms MarkObjects: 5.596651 ms  DeleteObjects: 0.010215 ms)
+Memory consumption went from 125.3 MB to 125.3 MB.
+Total: 4.960258 ms (FindLiveObjects: 0.106065 ms CreateObjectMapping: 0.062146 ms MarkObjects: 4.786765 ms  DeleteObjects: 0.004883 ms)
 
 [GC022] reload-off-scene-on cycle 8/10 left Play Mode clean; routedFrames=20
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
@@ -876,12 +874,12 @@ UnityEditor.EditorApplication:Internal_CallDelayFunctions () (at /home/bokken/bu
 Entering Playmode with Reload Domain disabled.
 If you experience any issues, please disable "Enter Play Mode Options" in Editor Settings
 Loaded scene 'Temp/__Backupscenes/0.backup'
-	Deserialize:            0.118 ms
-	Integration:            116.571 ms
+	Deserialize:            0.104 ms
+	Integration:            105.763 ms
 	Integration of assets:  0.001 ms
 	Thread Wait Time:       0.004 ms
-	Total Operation Time:   116.694 ms
-[GC022] reload-off-scene-on cycle 9 entered Play Mode; session=c5d719c8597dd9ce0dc5aec925a14980; reloadedOnEntry=False; runCount=9
+	Total Operation Time:   105.872 ms
+[GC022] reload-off-scene-on cycle 9 entered Play Mode; session=c5deb2b63d254947cc62ea37228e56ad; reloadedOnEntry=False; runCount=9
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -896,14 +894,14 @@ UnityEditor.EditorApplication:Internal_PlayModeStateChanged (UnityEditor.PlayMod
 
 Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
 Loaded scene 'Temp/__Backupscenes/0.backup'
-	Deserialize:            0.106 ms
-	Integration:            109.430 ms
+	Deserialize:            0.107 ms
+	Integration:            101.690 ms
 	Integration of assets:  0.001 ms
 	Thread Wait Time:       0.004 ms
-	Total Operation Time:   109.541 ms
+	Total Operation Time:   101.801 ms
 Unloading 0 unused Assets / (0 B). Loaded Objects now: 3451.
-Memory consumption went from 125.4 MB to 125.4 MB.
-Total: 5.360905 ms (FindLiveObjects: 0.113678 ms CreateObjectMapping: 0.062908 ms MarkObjects: 5.175945 ms  DeleteObjects: 0.007540 ms)
+Memory consumption went from 125.3 MB to 125.3 MB.
+Total: 4.932498 ms (FindLiveObjects: 0.104555 ms CreateObjectMapping: 0.052972 ms MarkObjects: 4.769541 ms  DeleteObjects: 0.004798 ms)
 
 [GC022] reload-off-scene-on cycle 9/10 left Play Mode clean; routedFrames=20
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
@@ -933,12 +931,12 @@ UnityEditor.EditorApplication:Internal_CallDelayFunctions () (at /home/bokken/bu
 Entering Playmode with Reload Domain disabled.
 If you experience any issues, please disable "Enter Play Mode Options" in Editor Settings
 Loaded scene 'Temp/__Backupscenes/0.backup'
-	Deserialize:            0.112 ms
-	Integration:            112.771 ms
+	Deserialize:            0.125 ms
+	Integration:            111.473 ms
 	Integration of assets:  0.001 ms
 	Thread Wait Time:       0.004 ms
-	Total Operation Time:   112.888 ms
-[GC022] reload-off-scene-on cycle 10 entered Play Mode; session=c08396342e0af12b7589a23332cf4fb8; reloadedOnEntry=False; runCount=10
+	Total Operation Time:   111.603 ms
+[GC022] reload-off-scene-on cycle 10 entered Play Mode; session=cf00a2c020f8ee97e4163193b59f0e94; reloadedOnEntry=False; runCount=10
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -953,14 +951,14 @@ UnityEditor.EditorApplication:Internal_PlayModeStateChanged (UnityEditor.PlayMod
 
 Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
 Loaded scene 'Temp/__Backupscenes/0.backup'
-	Deserialize:            0.084 ms
-	Integration:            115.239 ms
+	Deserialize:            0.102 ms
+	Integration:            103.395 ms
 	Integration of assets:  0.001 ms
 	Thread Wait Time:       0.003 ms
-	Total Operation Time:   115.327 ms
+	Total Operation Time:   103.501 ms
 Unloading 0 unused Assets / (0 B). Loaded Objects now: 3451.
-Memory consumption went from 125.4 MB to 125.4 MB.
-Total: 5.294817 ms (FindLiveObjects: 0.116615 ms CreateObjectMapping: 0.062925 ms MarkObjects: 5.107452 ms  DeleteObjects: 0.007149 ms)
+Memory consumption went from 125.3 MB to 125.3 MB.
+Total: 7.974815 ms (FindLiveObjects: 0.107887 ms CreateObjectMapping: 0.053373 ms MarkObjects: 7.808389 ms  DeleteObjects: 0.004507 ms)
 
 [GC022] reload-off-scene-on cycle 10/10 left Play Mode clean; routedFrames=20
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
@@ -1018,13 +1016,13 @@ UnityEditor.EditorApplication:Internal_PlayModeStateChanged (UnityEditor.PlayMod
 (Filename: Assets/GameCore.Validation/Editor/LifecyclePlayModeMatrix.cs Line: 600)
 
 Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
-Start importing ProjectSettings/EditorSettings.asset using Guid(0000000000000000c000000000000000) (LibraryAssetImporter) -> (artifact id: '88a81b0cd41f2e6791b296dbea0c2761') in 0.003884584 seconds
-Refreshing native plugins compatible for Editor in 0.16 ms, found 1 plugins.
+Start importing ProjectSettings/EditorSettings.asset using Guid(0000000000000000c000000000000000) (LibraryAssetImporter) -> (artifact id: '88a81b0cd41f2e6791b296dbea0c2761') in 0.003717606 seconds
+Refreshing native plugins compatible for Editor in 0.15 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-Asset Pipeline Refresh (id=ea757e585bc1a0b7ab01e80b90006b35): Total: 0.045 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=29309927befeb65f481740b17c24eb1d): Total: 0.040 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
 Unloading 4 unused Assets / (0.8 KB). Loaded Objects now: 3451.
 Memory consumption went from 122.0 MB to 122.0 MB.
-Total: 5.417086 ms (FindLiveObjects: 0.105600 ms CreateObjectMapping: 0.057813 ms MarkObjects: 5.235622 ms  DeleteObjects: 0.017332 ms)
+Total: 5.127225 ms (FindLiveObjects: 0.102600 ms CreateObjectMapping: 0.051496 ms MarkObjects: 4.959563 ms  DeleteObjects: 0.012877 ms)
 
 [Physics::Module] Cleanup current backned.
 [Physics::Module] Id: 0xf2b8ea05
@@ -1039,8 +1037,8 @@ AcceleratorClientConnectionCallback - disconnected - :0
 [40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
       ALC ILPP context 1 is unloading
 Cleanup mono
-debugger-agent: Unable to listen on 46
+debugger-agent: Unable to listen on 42
 [Package Manager] Server process was shutdown
 Checking for leaked weakptr:
   Found no leaked weakptrs.
-##utp:{"type":"MemoryLeaks","version":2,"phase":"Immediate","time":1790387981381,"processId":3528234,"allocatedMemory":12019394,"memoryLabels":[{"Default":23549},{"Permanent":16147},{"Thread":1084616},{"Manager":3074078},{"VertexData":8},{"Geometry":408},{"VFX":-104},{"Texture":296},{"Shader":79299},{"Material":24},{"GfxDevice":35976},{"Animation":456},{"Audio":4032},{"FontEngine":320},{"Physics":2081},{"Serialization":472},{"Input":26752},{"JobScheduler":33024},{"TextLib":160},{"Mono":32},{"ScriptingNativeRuntime":155096},{"BaseObject":1622832},{"Resource":1032},{"Renderer":2928},{"Transform":4678},{"File":828},{"WebCam":80},{"Culling":32},{"Terrain":11298},{"Wind":24},{"String":22892},{"DynamicArray":92480},{"HashMap":84157},{"Utility":2665105},{"PoolAlloc":3824},{"AI":72},{"TypeTree":5005},{"ScriptManager":512},{"RuntimeInitializeOnLoadManager":64},{"SpriteAtlas":112},{"GI":7448},{"Director":8208},{"CloudService":10928},{"WebRequest":808},{"VR":45689},{"SceneManager":528},{"Video":64},{"LazyScriptCache":32},{"Camera":17},{"Secure":8401},{"SerializationCache":1576},{"APIUpdating":10320},{"Subsystems":336},{"VirtualTexturing":57552},{"StaticSafetyDebugInfo":278528},{"Analytics":384},{"Hierarchy":832},{"CoreStats":12456},{"Identifiers":12384},{"Gui":112},{"EditorUtility":23467},{"VersionControl":4},{"Undo":979},{"AssetDatabase":2442526},{"EditorGi":328},{"UnityConnect":24816},{"Upm":1852},{"DrivenProperties":72},{"LocalIPC":210},{"ProfilerEditor":9778},{"CoreBusinessMetrics":2386},{"Licensing":1632},{"AssetReference":32},{"IPCStream":32}]}
+##utp:{"type":"MemoryLeaks","version":2,"phase":"Immediate","time":1790392836429,"processId":3887568,"allocatedMemory":12022672,"memoryLabels":[{"Default":23549},{"Permanent":16147},{"Thread":1084616},{"Manager":3079110},{"VertexData":8},{"Geometry":408},{"VFX":-104},{"Texture":296},{"Shader":79299},{"Material":24},{"GfxDevice":35976},{"Animation":456},{"Audio":4032},{"FontEngine":320},{"Physics":2081},{"Serialization":472},{"Input":26752},{"JobScheduler":33024},{"TextLib":160},{"Mono":32},{"ScriptingNativeRuntime":155096},{"BaseObject":1622832},{"Resource":1032},{"Renderer":2928},{"Transform":4678},{"File":828},{"WebCam":80},{"Culling":32},{"Terrain":11298},{"Wind":24},{"String":22690},{"DynamicArray":91847},{"HashMap":84230},{"Utility":2665105},{"PoolAlloc":3776},{"AI":72},{"TypeTree":5005},{"ScriptManager":512},{"RuntimeInitializeOnLoadManager":64},{"SpriteAtlas":112},{"GI":7448},{"Director":8208},{"CloudService":10928},{"WebRequest":808},{"VR":45689},{"SceneManager":528},{"Video":64},{"LazyScriptCache":32},{"Camera":17},{"Secure":8401},{"SerializationCache":1576},{"APIUpdating":10320},{"Subsystems":336},{"VirtualTexturing":57552},{"StaticSafetyDebugInfo":278528},{"Analytics":384},{"Hierarchy":832},{"CoreStats":12456},{"Identifiers":12384},{"Gui":112},{"EditorUtility":23467},{"VersionControl":4},{"Undo":979},{"AssetDatabase":2442526},{"EditorGi":328},{"UnityConnect":24816},{"Upm":1852},{"DrivenProperties":72},{"LocalIPC":210},{"ProfilerEditor":9778},{"CoreBusinessMetrics":2386},{"Licensing":688},{"AssetReference":32},{"IPCStream":32}]}
