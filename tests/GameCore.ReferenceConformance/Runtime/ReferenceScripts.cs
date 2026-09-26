@@ -350,14 +350,14 @@ namespace GameCore.ReferenceConformance
             {
                 new ConformanceStage(
                     "modifier-lifecycle",
-                    "07:240-07:241 — the modifier mounts, then a descendant spawns",
+                    "07:240-07:241 — the modifier mounts, then a descendant spawns under it",
                     Array.Empty<string>(),
                     new List<ConformanceStep>
                     {
                         Row("mount-tailwind", ConformanceOperations.MountProvider, 0,
                             "mount Tailwind in Valley"),
-                        Row("spawn-runner-b", ConformanceOperations.SpawnFutureTarget, 0,
-                            "spawn runner B in Valley/Runners"),
+                        Row("spawn-runner-c", ConformanceOperations.SpawnFutureTarget, 0,
+                            "spawn the course's own future runner under Valley/Runners"),
                     }),
 
                 new ConformanceStage(
@@ -373,12 +373,13 @@ namespace GameCore.ReferenceConformance
                                 ConformanceExpectation.Require(
                                     ConformanceFields.RunnerAccelerationX("runner-a"), ConformanceValue.None, "2000"),
                             }),
-                        Pre("unmount-tailwind", 2, ConformanceOperations.CommitCommand, 2,
-                            "integrate two fixed steps so the runner holds real motion and crossing state",
+                        Pre("unmount-tailwind", 2, ConformanceOperations.CommitCommand, 1,
+                            "integrate one 20 ms step so the runner holds real motion: 1.00 -> 1.04 m/s, and the"
+                            + " crossing of the course's first volume is committed",
                             new[]
                             {
                                 ConformanceExpectation.Require(
-                                    ConformanceFields.RunnerVelocity("runner-a"), "(1000,0,0)", "(1080,0,0)"),
+                                    ConformanceFields.RunnerVelocity("runner-a"), "(1000,0,0)", "(1040,0,0)"),
                             }),
                         Row("unmount-tailwind", ConformanceOperations.UnmountProvider, 0,
                             "unmount the modifier while pose, velocity and progress survive"),
@@ -426,10 +427,12 @@ namespace GameCore.ReferenceConformance
                             }),
                     }),
 
+                // The complete explicit opt-in is a descriptor property (P-015), so the stage declares it at seeding
+                // time; the automatically eligible runners are the course's own valley runner and the runner spawned
+                // under the provider in this stage.
                 new ConformanceStage(
                     "mode-directions",
-                    "07:244-07:245 — both mode directions over existing and future runners. The complete opt-in is a"
-                    + " descriptor property of runner A (P-015), so this stage declares it at seeding time.",
+                    "07:244-07:245 — both mode directions over existing and future runners",
                     new[] { ConformanceOperations.SeedOptedInTarget },
                     new List<ConformanceStep>
                     {
@@ -439,25 +442,22 @@ namespace GameCore.ReferenceConformance
                             {
                                 ConformanceExpectation.Require(
                                     ConformanceFields.RunnerAccelerationX("runner-a"), ConformanceValue.None, "2000"),
+                                ConformanceExpectation.Require(
+                                    ConformanceFields.RunnerAccelerationX(ConformanceFields.OptedInRunner),
+                                    ConformanceValue.None,
+                                    "2000"),
                             }),
                         Pre("mode-conservative", 2, ConformanceOperations.SpawnFutureTarget, 0,
-                            "spawn runner B so the conservative switch has a descendant to lose",
-                            new[]
-                            {
-                                ConformanceExpectation.Require(
-                                    ConformanceFields.RunnerAccelerationX("runner-b"), ConformanceValue.None, "2000"),
-                            }),
-                        Row("mode-conservative", ConformanceOperations.ModeConservative, 0,
-                            "switch the world to Conservative"),
-                        Row("mode-automatic", ConformanceOperations.ModeAutomatic, 0,
-                            "switch the world back to Automatic"),
-                        Pre("mode-automatic", 4, ConformanceOperations.SpawnFutureTarget, 1,
-                            "spawn runner C after the switch: a future runner inherits in Automatic",
+                            "spawn the course's future runner so the conservative switch has a descendant to lose",
                             new[]
                             {
                                 ConformanceExpectation.Require(
                                     ConformanceFields.RunnerAccelerationX("runner-c"), ConformanceValue.None, "2000"),
                             }),
+                        Row("mode-conservative", ConformanceOperations.ModeConservative, 0,
+                            "switch the world to Conservative"),
+                        Row("mode-automatic", ConformanceOperations.ModeAutomatic, 0,
+                            "switch the world back to Automatic"),
                     }),
 
                 new ConformanceStage(
@@ -466,15 +466,22 @@ namespace GameCore.ReferenceConformance
                     Array.Empty<string>(),
                     new List<ConformanceStep>
                     {
-                        Pre("exclude-runner-b", 1, ConformanceOperations.MountProvider, 0,
+                        Pre("exclude-runner-a", 1, ConformanceOperations.MountProvider, 0,
                             "mount Tailwind in Valley",
                             new[]
                             {
                                 ConformanceExpectation.Require(
-                                    ConformanceFields.RunnerAccelerationX("runner-b"), ConformanceValue.None, "2000"),
+                                    ConformanceFields.RunnerAccelerationX("runner-a"), ConformanceValue.None, "2000"),
                             }),
-                        Row("exclude-runner-b", ConformanceOperations.ApplyExclusion, 0,
-                            "exclude the acceleration capability on runner B"),
+                        Pre("exclude-runner-a", 2, ConformanceOperations.SpawnFutureTarget, 0,
+                            "spawn the future runner so the exclusion's own sibling is observable",
+                            new[]
+                            {
+                                ConformanceExpectation.Require(
+                                    ConformanceFields.RunnerAccelerationX("runner-c"), ConformanceValue.None, "2000"),
+                            }),
+                        Row("exclude-runner-a", ConformanceOperations.ApplyExclusion, 0,
+                            "exclude the acceleration capability on runner A"),
                         Row("suspend-tailwind", ConformanceOperations.SuspendProvider, 0,
                             "suspend the modifier"),
                         Row("resume-tailwind", ConformanceOperations.ResumeProvider, 0,

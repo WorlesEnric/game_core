@@ -143,18 +143,27 @@ namespace GameCore.ReferenceConformance
                         ConformanceExpectation.Absent(ConformanceFields.ScoreboardBonus),
                     }),
 
+                // 07:103-07:104's two mode rows. The target that keeps the contribution is the one whose descriptor
+                // declares the complete explicit opt-in (P-013's "A has a complete target opt-in"), which the card
+                // slice declares as its own opted-in seat; the seats the festival provider reaches by reach alone —
+                // seat A and seat B — lose it in Conservative, and the seat spawned in Automatic loses it too.
                 new ConformanceRow(
                     "mode-conservative",
                     "`Automatic` -> `Conservative`",
-                    "07:103 — before: A/B derive +2 and only A has an explicit opt-in naming the festival provider"
-                    + " and capability; after: A retains +2, B loses it, and both retain hands and score.",
+                    "07:103 — before: the eligible seats derive the provider's contribution and only the opted-in"
+                    + " seat has an explicit opt-in naming the festival provider and capability; after: it retains it,"
+                    + " the automatically eligible seats lose it, and all of them retain hands and score.",
                     ConformanceRowOutcome.Published,
                     new[]
                     {
-                        ConformanceExpectation.Unchanged(ConformanceFields.WorldMode, "conservative"),
-                        ConformanceExpectation.Unchanged(ConformanceFields.SeatBonus(0U), "2"),
-                        ConformanceExpectation.Require(ConformanceFields.SeatBonus(1U), "2", ConformanceValue.None),
-                        ConformanceExpectation.Require(ConformanceFields.SeatBonus(3U), "2", ConformanceValue.None),
+                        ConformanceExpectation.Require(ConformanceFields.WorldMode, "automatic", "conservative"),
+                        ConformanceExpectation.Unchanged(ConformanceFields.OptedInSeatBonus, "2"),
+                        ConformanceExpectation.Require(
+                            ConformanceFields.SeatBonus(0U), "2", ConformanceValue.None),
+                        ConformanceExpectation.Require(
+                            ConformanceFields.SeatBonus(1U), "2", ConformanceValue.None),
+                        ConformanceExpectation.Require(
+                            ConformanceFields.SeatBonus(3U), "2", ConformanceValue.None),
                         ConformanceExpectation.Unchanged(ConformanceFields.SeatTotal(0U), "4"),
                         ConformanceExpectation.Unchanged(ConformanceFields.SeatTotal(1U), "4"),
                         ConformanceExpectation.Preserved(ConformanceFields.SeatHand(0U)),
@@ -166,15 +175,22 @@ namespace GameCore.ReferenceConformance
                 new ConformanceRow(
                     "mode-automatic",
                     "`Conservative` -> `Automatic`",
-                    "07:104 — before: only A opted in; after: all eligible non-isolated descendants, including B and"
-                    + " future D, derive +2, and the isolated practice seat and ineligible scoreboard do not.",
+                    "07:104 — before: only the opted-in seat participates; after: every eligible non-isolated"
+                    + " descendant, the spawned seat D included, derives the contribution again, and the isolated"
+                    + " practice seat and the ineligible scoreboard do not.",
                     ConformanceRowOutcome.Published,
                     new[]
                     {
-                        ConformanceExpectation.Unchanged(ConformanceFields.WorldMode, "automatic"),
-                        ConformanceExpectation.Require(ConformanceFields.SeatBonus(1U), ConformanceValue.None, "2"),
-                        ConformanceExpectation.Require(ConformanceFields.SeatBonus(3U), ConformanceValue.None, "2"),
-                        ConformanceExpectation.Unchanged(ConformanceFields.SeatBonus(0U), "2"),
+                        ConformanceExpectation.Require(ConformanceFields.WorldMode, "conservative", "automatic"),
+                        ConformanceExpectation.Unchanged(ConformanceFields.OptedInSeatBonus, "2"),
+                        ConformanceExpectation.Require(
+                            ConformanceFields.SeatBonus(0U), ConformanceValue.None, "2"),
+                        ConformanceExpectation.Require(
+                            ConformanceFields.SeatBonus(1U), ConformanceValue.None, "2"),
+                        ConformanceExpectation.Require(
+                            ConformanceFields.SeatBonus(3U), ConformanceValue.None, "2"),
+                        ConformanceExpectation.Require(
+                            ConformanceFields.OptedInSeatNextAward, "12", "12"),
                         ConformanceExpectation.Absent(ConformanceFields.PracticeSeatBonus),
                         ConformanceExpectation.Absent(ConformanceFields.ScoreboardBonus),
                     }),
@@ -188,7 +204,7 @@ namespace GameCore.ReferenceConformance
                     new[]
                     {
                         ConformanceExpectation.Unchanged(ConformanceFields.WorldMode, "conservative"),
-                        ConformanceExpectation.Unchanged(ConformanceFields.SeatBonus(0U), "2"),
+                        ConformanceExpectation.Unchanged(ConformanceFields.SeatBonus(0U), ConformanceValue.None),
                         ConformanceExpectation.Unchanged(ConformanceFields.SeatBonus(1U), ConformanceValue.None),
                     }),
 
@@ -325,7 +341,7 @@ namespace GameCore.ReferenceConformance
                     ConformanceRowOutcome.Published,
                     new[]
                     {
-                        ConformanceExpectation.Unchanged(ConformanceFields.WorldMode, "conservative"),
+                        ConformanceExpectation.Require(ConformanceFields.WorldMode, "automatic", "conservative"),
                         ConformanceExpectation.Unchanged(ConformanceFields.GateBinding("gate-east"), "1"),
                         ConformanceExpectation.Require(
                             ConformanceFields.DialogueBinding("npc-mara"), "1", ConformanceValue.None),
@@ -343,7 +359,7 @@ namespace GameCore.ReferenceConformance
                     ConformanceRowOutcome.Published,
                     new[]
                     {
-                        ConformanceExpectation.Unchanged(ConformanceFields.WorldMode, "automatic"),
+                        ConformanceExpectation.Require(ConformanceFields.WorldMode, "conservative", "automatic"),
                         ConformanceExpectation.Require(
                             ConformanceFields.DialogueBinding("npc-mara"), ConformanceValue.None, "1"),
                         ConformanceExpectation.Require(
@@ -412,7 +428,8 @@ namespace GameCore.ReferenceConformance
                     "Mount `Tailwind` in `Valley`",
                     "07:240 — before: the runner's additional x acceleration is 0 and its pose and velocity are"
                     + " `(p, v)`; after: the additional x acceleration is +2 and `(p, v)` stays unchanged until the"
-                    + " next step. The checkpoint declares only the sensor contract, so no modifier selects it.",
+                    + " next step. The checkpoint volume declares only the sensor contract, so no modifier selects it,"
+                    + " and the sibling branch under `Ridge` inherits nothing from `Valley` (07:203, 07:200).",
                     ConformanceRowOutcome.Published,
                     new[]
                     {
@@ -420,20 +437,24 @@ namespace GameCore.ReferenceConformance
                             ConformanceFields.RunnerAccelerationX("runner-a"), ConformanceValue.None, "2000"),
                         ConformanceExpectation.Preserved(ConformanceFields.RunnerPose("runner-a")),
                         ConformanceExpectation.Preserved(ConformanceFields.RunnerVelocity("runner-a")),
+                        ConformanceExpectation.Absent(ConformanceFields.RunnerAccelerationX("runner-b")),
                         ConformanceExpectation.Absent(ConformanceFields.RunnerAccelerationX("checkpoint-1")),
+                        ConformanceExpectation.Absent(ConformanceFields.RunnerAccelerationX(ConformanceFields.OptedInRunner)),
                     }),
 
                 new ConformanceRow(
-                    "spawn-runner-b",
-                    "Spawn runner B in `Valley/Runners`",
-                    "07:241 — before: the modifier is already active; after: B begins with the same additional +2 and"
-                    + " the checkpoint remains ineligible.",
+                    "spawn-runner-c",
+                    "Spawn a runner under `Valley/Runners` (07's future descendant)",
+                    "07:241 — before: the modifier is already active; after: the new runner begins with the same"
+                    + " additional +2 before its first executable step, and the checkpoint stays ineligible. The"
+                    + " course's own future runner is the target this row spawns.",
                     ConformanceRowOutcome.Published,
                     new[]
                     {
                         ConformanceExpectation.Require(
-                            ConformanceFields.RunnerAccelerationX("runner-b"), ConformanceValue.None, "2000"),
+                            ConformanceFields.RunnerAccelerationX("runner-c"), ConformanceValue.None, "2000"),
                         ConformanceExpectation.Absent(ConformanceFields.RunnerAccelerationX("checkpoint-1")),
+                        ConformanceExpectation.Absent(ConformanceFields.RunnerAccelerationX("runner-b")),
                     }),
 
                 new ConformanceRow(
@@ -464,8 +485,8 @@ namespace GameCore.ReferenceConformance
                     {
                         ConformanceExpectation.Require(
                             ConformanceFields.RunnerAccelerationX("runner-a"), "2000", "-1000"),
-                        ConformanceExpectation.Require(
-                            ConformanceFields.RunnerVelocity("runner-a"), "(1000,0,0)", "(1040,0,0)"),
+                        ConformanceExpectation.Unchanged(
+                            ConformanceFields.RunnerVelocity("runner-a"), "(1040,0,0)"),
                         ConformanceExpectation.Preserved(ConformanceFields.RunnerPose("runner-a")),
                         ConformanceExpectation.Preserved(ConformanceFields.RunnerJump("runner-a")),
                         ConformanceExpectation.Preserved(ConformanceFields.RunnerProgress("runner-a")),
@@ -478,51 +499,54 @@ namespace GameCore.ReferenceConformance
                 new ConformanceRow(
                     "mode-conservative",
                     "`Automatic` -> `Conservative`",
-                    "07:244 — before: all eligible runners inherit and only runner A has a complete target opt-in;"
-                    + " after: A retains the modifier, B loses it, and neither is teleported or has velocity reset.",
+                    "07:244 — before: every eligible runner inherits and only the complete-opt-in runner is opted in;"
+                    + " after: that runner retains the modifier, the automatically eligible runners lose it, and none"
+                    + " is teleported or has its velocity reset.",
                     ConformanceRowOutcome.Published,
                     new[]
                     {
-                        ConformanceExpectation.Unchanged(ConformanceFields.WorldMode, "conservative"),
+                        ConformanceExpectation.Require(ConformanceFields.WorldMode, "automatic", "conservative"),
                         ConformanceExpectation.Unchanged(
-                            ConformanceFields.RunnerAccelerationX("runner-a"), "2000"),
+                            ConformanceFields.RunnerAccelerationX(ConformanceFields.OptedInRunner), "2000"),
                         ConformanceExpectation.Require(
-                            ConformanceFields.RunnerAccelerationX("runner-b"), "2000", ConformanceValue.None),
+                            ConformanceFields.RunnerAccelerationX("runner-a"), "2000", ConformanceValue.None),
+                        ConformanceExpectation.Require(
+                            ConformanceFields.RunnerAccelerationX("runner-c"), "2000", ConformanceValue.None),
                         ConformanceExpectation.Preserved(ConformanceFields.RunnerPose("runner-a")),
                         ConformanceExpectation.Preserved(ConformanceFields.RunnerVelocity("runner-a")),
-                        ConformanceExpectation.Preserved(ConformanceFields.RunnerPose("runner-b")),
-                        ConformanceExpectation.Preserved(ConformanceFields.RunnerVelocity("runner-b")),
                         ConformanceExpectation.Absent(ConformanceFields.RunnerAccelerationX("runner-display")),
                     }),
 
                 new ConformanceRow(
                     "mode-automatic",
                     "`Conservative` -> `Automatic`",
-                    "07:245 — before: only A participates; after: B receives the applicable modifier and future"
-                    + " runners inherit, while the isolated showcase stays isolated.",
+                    "07:245 — before: only the opted-in runner participates; after: the automatically eligible"
+                    + " runners receive the applicable modifier again, while the isolated showcase stays isolated.",
                     ConformanceRowOutcome.Published,
                     new[]
                     {
-                        ConformanceExpectation.Unchanged(ConformanceFields.WorldMode, "automatic"),
+                        ConformanceExpectation.Require(ConformanceFields.WorldMode, "conservative", "automatic"),
                         ConformanceExpectation.Require(
-                            ConformanceFields.RunnerAccelerationX("runner-b"), ConformanceValue.None, "2000"),
+                            ConformanceFields.RunnerAccelerationX("runner-a"), ConformanceValue.None, "2000"),
+                        ConformanceExpectation.Require(
+                            ConformanceFields.RunnerAccelerationX("runner-c"), ConformanceValue.None, "2000"),
                         ConformanceExpectation.Unchanged(
-                            ConformanceFields.RunnerAccelerationX("runner-a"), "2000"),
+                            ConformanceFields.RunnerAccelerationX(ConformanceFields.OptedInRunner), "2000"),
                         ConformanceExpectation.Absent(ConformanceFields.RunnerAccelerationX("runner-display")),
                     }),
 
                 new ConformanceRow(
-                    "exclude-runner-b",
-                    "Exclude `traversal.Acceleration` on `runner-b` while `Tailwind` stays mounted",
-                    "07:203, P-016 — a target exclusion blocks one runner's contribution in both modes while the"
-                    + " showcase's own boundary and the ineligible checkpoint stay unaffected.",
+                    "exclude-runner-a",
+                    "Exclude `traversal.Acceleration` on `runner-a` while `Tailwind` stays mounted",
+                    "07:203, P-016 — an exclusion on one target blocks that runner's contribution while its sibling"
+                    + " keeps the provider's reach, and the isolated showcase and ineligible checkpoint stay clear.",
                     ConformanceRowOutcome.Published,
                     new[]
                     {
                         ConformanceExpectation.Require(
-                            ConformanceFields.RunnerAccelerationX("runner-b"), "2000", ConformanceValue.None),
+                            ConformanceFields.RunnerAccelerationX("runner-a"), "2000", ConformanceValue.None),
                         ConformanceExpectation.Unchanged(
-                            ConformanceFields.RunnerAccelerationX("runner-a"), "2000"),
+                            ConformanceFields.RunnerAccelerationX("runner-c"), "2000"),
                         ConformanceExpectation.Absent(ConformanceFields.RunnerAccelerationX("runner-display")),
                         ConformanceExpectation.Absent(ConformanceFields.RunnerAccelerationX("checkpoint-1")),
                     }),
@@ -530,7 +554,7 @@ namespace GameCore.ReferenceConformance
                 new ConformanceRow(
                     "suspend-tailwind",
                     "Suspend `Tailwind` (O-06)",
-                    "P-046, 07:203 — the modifiers do not own pose or velocity, so suspension retracts only the"
+                    "P-046, 07:205 — the modifiers do not own pose or velocity, so suspension retracts only the"
                     + " configuration contribution and leaves displacement and speed already produced.",
                     ConformanceRowOutcome.Published,
                     new[]

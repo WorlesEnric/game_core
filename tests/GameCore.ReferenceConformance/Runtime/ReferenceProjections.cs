@@ -243,7 +243,11 @@ namespace GameCore.ReferenceConformance
                 projections, "traversal", "mount-tailwind", ConformanceFields.RunnerAccelerationX("runner-a"),
                 TraversalVocabulary.TailwindMilli);
             Project(
-                projections, "traversal", "spawn-runner-b", ConformanceFields.RunnerAccelerationX("runner-b"),
+                projections, "traversal", "spawn-runner-c", ConformanceFields.RunnerAccelerationX("runner-c"),
+                TraversalVocabulary.TailwindMilli);
+            Project(
+                projections, "traversal", "mode-conservative",
+                ConformanceFields.RunnerAccelerationX(ConformanceFields.OptedInRunner),
                 TraversalVocabulary.TailwindMilli);
 
             // 07:203 — "CheckpointRecipe declares only its sensor contract, so it cannot receive runner
@@ -272,10 +276,11 @@ namespace GameCore.ReferenceConformance
                 projections, "traversal", "unmount-tailwind/pre2",
                 ConformanceFields.RunnerVelocity("runner-a"), VelocityAfterTwoTailwindSteps());
 
-            // 07:244 — "B loses it; neither is teleported or has velocity reset": an ineligible descendant holds no
-            // contribution, and the modifier owns no pose or velocity at all (07:205).
+            // 07:244 — "the automatically eligible runners lose it; neither is teleported or has velocity reset":
+            // an automatically eligible runner holds no contribution in Conservative, and the modifier owns no pose
+            // or velocity at all (07:205).
             ProjectToken(projections, "traversal", "mode-conservative",
-                ConformanceFields.RunnerAccelerationX("runner-b"), AbsentContribution());
+                ConformanceFields.RunnerAccelerationX("runner-a"), AbsentContribution());
             ProjectToken(
                 projections, "traversal", "suspend-tailwind",
                 ConformanceFields.RunnerAccelerationX("runner-a"), AbsentContribution());

@@ -97,6 +97,15 @@ namespace GameCore.Validation.ProbeHost
         /// not live, is a miss with its reason.
         /// </summary>
         bool TryReadField(string field, ConformanceWorld world, out string value, out string detail);
+
+        /// <summary>
+        /// Extra lane-only declarations this genre needs for the conformance tables, beyond its own declared set: a
+        /// second provider of the same capability for a retraction row, or a compatible replacement carrying a new
+        /// value for a reconfiguration row. They reach the lane's manifest source and never the compiled schedule,
+        /// because a rule-bearing provider declares no stage, buffer or state slot of its own (P-009's "an empty
+        /// category is explicit"), so the ownership surface a world compiles is unchanged by them.
+        /// </summary>
+        IReadOnlyList<CatalogPluginDeclaration> ConformanceDeclarations { get; }
     }
 
     /// <summary>
@@ -105,9 +114,6 @@ namespace GameCore.Validation.ProbeHost
     /// </summary>
     public sealed class ConformanceWorld : IDisposable
     {
-        /// <summary>Host-clock ticks one command-driven step needs, so one admitted command commits one step.</summary>
-        public const ulong CommandDrivenPumpTicks = 1000000UL;
-
         private const int LaneQueueCapacity = 256;
 
         private const int LaneRetainedResults = 64;
@@ -400,11 +406,10 @@ namespace GameCore.Validation.ProbeHost
             Targets = new LiveTargetIndex(Publisher.Recipes);
             Seeder = new LiveTargetSeeder(Host, registry, Targets);
 
-            IDerivationValueSource valueSource = family.CreateValues();
             Lane = CompositionHost.CreateDefault(
                 world,
                 family.WorldRootScope,
-                new CatalogManifestSource(family.Catalog, family.Declarations),
+                new CatalogManifestSource(family.Catalog, LaneDeclarations()),
                 null,
                 family.LaneSeed);
             _ = new WorldCompositionBridge(Host, Lane, Publisher);
@@ -417,6 +422,7 @@ namespace GameCore.Validation.ProbeHost
 
             Runtime = family.AttachGateRuntime(Host, Descriptor, Targets, Seeder);
 
+            IDerivationValueSource valueSource = family.CreateValues();
             Pipeline = new DerivedAssemblyPipeline(
                 Host,
                 Lane,
@@ -433,6 +439,34 @@ namespace GameCore.Validation.ProbeHost
             Time.AdoptResourceTable(Descriptor.Adaptation.NativeTable!);
 
             Ready = true;
+        }
+
+        /// <summary>
+        /// The declarations the lane resolves manifests from: the genre's own set plus this run's extra ones. The
+        /// extra declarations are lane-only by construction — they declare a capability rule and no stage, buffer or
+        /// state slot — so the compiled ownership surface is what the genre's own `CompilePipeline` produced (P-009).
+        /// </summary>
+        private IReadOnlyList<CatalogPluginDeclaration> LaneDeclarations()
+        {
+            IReadOnlyList<CatalogPluginDeclaration> declared = family.Declarations;
+            IReadOnlyList<CatalogPluginDeclaration> extra = family.ConformanceDeclarations;
+            if (extra == null || extra.Count == 0)
+            {
+                return declared;
+            }
+
+            var merged = new List<CatalogPluginDeclaration>(declared.Count + extra.Count);
+            for (int i = 0; i < declared.Count; i++)
+            {
+                merged.Add(declared[i]);
+            }
+
+            for (int i = 0; i < extra.Count; i++)
+            {
+                merged.Add(extra[i]);
+            }
+
+            return merged;
         }
 
         private OperationId NextOperationForCreation(WorldId world)

@@ -194,6 +194,13 @@ namespace GameCore.ReferenceConformance
         /// <summary>`RunProgress.Count`: deduplicated ordered checkpoint progress (07 s4.2).</summary>
         public static string RunnerProgress(string runner) => runner + ".progress";
 
+        /// <summary>
+        /// The traversal course's complete-opt-in runner target (P-013): 07:244's row names it as the runner that
+        /// keeps the modifier in `Conservative` while every automatically eligible runner loses it, so it is a
+        /// subject of its own rather than one of the automatically eligible runners.
+        /// </summary>
+        public const string OptedInRunner = "gc020.traversal.opted-in-runner";
+
         // ------------------------------------------------------------------ cross-family (07 s5)
 
         /// <summary>Open obligations in the durable outbox: a reward admitted and not yet settled (P-045).</summary>
@@ -232,6 +239,19 @@ namespace GameCore.ReferenceConformance
         /// <summary>The combined world's card table version: unrelated authoritative state (P-025).</summary>
         public const string RewardTableVersion = "card-tent.table-1.version";
 
+        /// <summary>
+        /// The one target whose compatibility descriptor declares the complete explicit opt-in (P-013). 07:103's
+        /// mode row names it as the target that retains the derived contribution in `Conservative` while every
+        /// automatically eligible descendant loses it, so it needs a field of its own: it is not one of the
+        /// automatically eligible targets and must not be confused with one.
+        /// </summary>
+        public const string OptedInSeatBonus = "cards.opted-in-seat.bonus";
+
+        /// <summary>The installation supporting the opted-in seat's row, so a provider change stays observable.</summary>
+        public const string OptedInSeatBonusProvider = "cards.opted-in-seat.bonus-provider";
+
+        /// <summary>The opted-in seat's projection, so its retained contribution is observed as a real award.</summary>
+
         /// <summary>Every field the card market's table observes, in canonical order.</summary>
         public static IReadOnlyList<ConformanceField> Cards()
         {
@@ -243,8 +263,9 @@ namespace GameCore.ReferenceConformance
                 Derived(SeatBonus(3U), Seat(3U), "bonus"),
                 Derived(PracticeSeatBonus, "practice-seat", "bonus"),
                 Derived(ScoreboardBonus, "scoreboard", "bonus"),
-                Provider(SeatBonusProvider(0U), Seat(0U), "bonus-provider"),
                 Provider(SeatBonusProvider(1U), Seat(1U), "bonus-provider"),
+                Derived(OptedInSeatBonus, "cards.opted-in-seat", "bonus"),
+                Provider(OptedInSeatBonusProvider, "cards.opted-in-seat", "bonus-provider"),
                 Owned(SeatTotal(0U), Seat(0U), "total"),
                 Owned(SeatTotal(1U), Seat(1U), "total"),
                 Owned(SeatHand(0U), Seat(0U), "hand"),
@@ -258,7 +279,8 @@ namespace GameCore.ReferenceConformance
                     "the base set score plus the seat's effective bonus (07 s2.3)"),
                 Owned(TableActiveSeat, "table-1", "active-seat"),
                 Owned(TableTurn, "table-1", "turn"),
-                Owned(TableVersion, "table-1", "version"),
+                Projection(OptedInSeatNextAward, "cards.opted-in-seat", "next-award",
+                    "the base set score plus the opted-in seat's effective bonus (07 s2.3, P-013)"),
                 World(WorldMode, "world", "mode"),
             };
         }
@@ -289,7 +311,7 @@ namespace GameCore.ReferenceConformance
         public static IReadOnlyList<ConformanceField> Traversal()
         {
             var fields = new List<ConformanceField>();
-            string[] runners = { "runner-a", "runner-b", "runner-c", "runner-display" };
+            string[] runners = { "runner-a", "runner-b", "runner-c", "runner-display", OptedInRunner };
             for (int i = 0; i < runners.Length; i++)
             {
                 fields.Add(Derived(RunnerAccelerationX(runners[i]), runners[i], "acceleration.x"));
@@ -300,10 +322,8 @@ namespace GameCore.ReferenceConformance
                 fields.Add(Provider(RunnerAccelerationProvider(runners[i]), runners[i], "acceleration-provider"));
             }
 
-            // A checkpoint volume declares only the sensor contract, so no modifier selects it (07 s4.1).
-            fields.Add(Derived(RunnerAccelerationX("checkpoint-1"), "checkpoint-1", "acceleration.x"));
-
             fields.Add(Owned(RunnerPose("runner-a"), "runner-a", "pose"));
+            fields.Add(Owned(RunnerVelocity("runner-a"), "runner-a", "velocity"));
             fields.Add(Owned(RunnerJump("runner-a"), "runner-a", "jump"));
             fields.Add(Owned(RunnerProgress("runner-a"), "runner-a", "progress"));
             fields.Add(Owned(RunnerPose("runner-b"), "runner-b", "pose"));
