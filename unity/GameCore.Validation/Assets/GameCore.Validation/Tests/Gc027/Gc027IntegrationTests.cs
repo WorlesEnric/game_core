@@ -238,7 +238,7 @@ namespace GameCore.Gc027.Tests
 
             IGc027Family narrative = Gc013NarrativeHost.RecoveryFamily();
             IGc027Family cards = Gc013CardsHost.RecoveryFamily();
-            IGc027Family traversal = Gc027TraversalHost.RecoveryFamily();
+            IGc027Family traversal = Gc020TraversalHost.RecoveryFamily();
 
             string[] narrativeNames = Gc027Scenario.ExpectedNames(narrative);
             string[] cardNames = Gc027Scenario.ExpectedNames(cards);
@@ -484,7 +484,7 @@ namespace GameCore.Gc027.Tests
                 return cached;
             }
 
-            IGc027Family built = Gc027TraversalHost.RecoveryFamily();
+            IGc027Family built = Gc020TraversalHost.RecoveryFamily();
             Families[Gc020TraversalHost.Label] = built;
             return built;
         }

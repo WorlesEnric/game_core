@@ -31,6 +31,7 @@ using GameCore.Contracts;
 using GameCore.Execution.Delivery;
 using GameCore.Execution.Persistence;
 using GameCore.Gameplay.Traversal;
+using GameCore.Gameplay.Traversal.Fixtures;
 using GameCore.Planning.Scheduling;
 using GameCore.Rules.Traversal;
 using GameCore.Unity.Adapters.Physics;
@@ -46,7 +47,7 @@ namespace GameCore.Validation.ProbeHost
     /// The GC-027 recovery facts of one traversal course: its pending movement command, its dormant motion row, its
     /// persistent clock, its boundaries and its engine-physics domain.
     /// </summary>
-    public static partial class Gc027TraversalHost
+    public static partial class Gc020TraversalHost
     {
         /// <summary>Horizontal acceleration the pending movement sample carries; zero is a legal captured input (P-042).</summary>
         private const int PendingInputHorizontalMilli = 0;
@@ -58,7 +59,7 @@ namespace GameCore.Validation.ProbeHost
         private const int DormantProgressValue = 7;
 
         /// <summary>Admitted steps the source world runs before its capture, so its motion state has really moved.</summary>
-        private const uint AdmittedSteps = 2U;
+        private const uint RecoveryAdmittedSteps = 2U;
 
         /// <summary>
         /// The recovery family: the course's own declarations plus the checkpoint and recovery halves. It is the
@@ -185,6 +186,35 @@ namespace GameCore.Validation.ProbeHost
             /// run skips the delivery observations instead of inventing an endpoint (P-003, P-045).
             /// </summary>
             public bool HasDeliveryObligation => false;
+
+            // The seven delivery members below exist because the interface requires them, and each answers the only
+            // honest value a genre with no delivery destination has: an unset identity, an empty payload and a
+            // zero-capacity outbox. Nothing in the protocol reads them while `HasDeliveryObligation` is false, and a
+            // run that did would be refused rather than silently addressed to an invented endpoint (P-003, P-004).
+
+            /// <summary>Unset: the course addresses no delivery destination (P-003, P-004).</summary>
+            public Id128 DeliveryDestinationId => default(Id128);
+
+            /// <summary>Unset: the course accepts no destination command schema (P-054).</summary>
+            public SchemaRef DeliveryCommandSchema => default(SchemaRef);
+
+            /// <summary>Empty: the course carries no destination command bytes (P-045).</summary>
+            public byte[] DeliveryPayload() => Array.Empty<byte>();
+
+            /// <summary>Unset: the course records no obligation payload schema (P-053).</summary>
+            public SchemaRef DeliveryPayloadSchema => default(SchemaRef);
+
+            /// <summary>Zero: the course holds no open obligation, so its capacity is none (P-043).</summary>
+            public int OutboxCapacity => 0;
+
+            /// <summary>Zero: the course retains no terminal delivery record (P-045).</summary>
+            public int OutboxTerminalRetention => 0;
+
+            /// <summary>
+            /// `Unspecified`, not `Durable`: a genre with no outbox makes no durability claim at all, and claiming one
+            /// would be the false promise P-045 forbids (P-045).
+            /// </summary>
+            public OutboxDurability OutboxDurabilityClass => OutboxDurability.Unspecified;
 
             /// <summary>
             /// False: the course tree is already the world definition's declared tree in <see cref="LaneSeed"/>, so
@@ -432,7 +462,7 @@ namespace GameCore.Validation.ProbeHost
             /// The declared steps the source world admits before the capture: enough for the seeded velocity to
             /// advance the valley runner, so its recovered pose and velocity are not the seed values (07 s4.3).
             /// </summary>
-            public uint AdmittedStepsBeforeFault => AdmittedSteps;
+            public uint AdmittedStepsBeforeFault => RecoveryAdmittedSteps;
 
             /// <summary>
             /// The course's authoritative state as canonical text: every runner's ECS pose and velocity — the

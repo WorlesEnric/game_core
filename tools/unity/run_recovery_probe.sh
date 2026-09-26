@@ -67,54 +67,73 @@ fi
 # its delivery cursor carried across, the acknowledgement fault, restart from the store alone, the bounded retry and
 # a full teardown.
 PROBE_LABEL="gc027"
+
+# Each family's own table, which is a function of what that family declares (Gc027Scenario.ExpectedNames):
+# * the narrative slice and the card market commit a delivery obligation and declare no engine domain, so each
+#   records the thirteen shared observations, the four delivery ones, and no physics one;
+# * the traversal course declares an engine domain and no delivery obligation, so it records the same thirteen
+#   shared observations, its four engine-physics ones, and no delivery one.
+# The observations every family records, split where the capability-specific ones are spliced in, in the exact
+# order the runner records them: the state block, then (delivery only), then the restart/retry block, then (physics
+# only), then teardown. A digest is over the recorded ORDER, so each list below splices at the same place the runner
+# does.
+gc027_state=(
+  gc027-source-world-captures-and-publishes-a-verified-checkpoint
+  gc027-capture-copy-fault-produces-no-checkpoint
+  gc027-publication-fault-keeps-the-previous-document
+  gc027-reference-repair-fault-never-builds-a-destination
+  gc027-postwrite-apply-fault-never-exposes-a-destination
+  gc027-recovery-publication-fault-keeps-the-registry-unchanged
+  gc027-recovery-publishes-a-new-session-with-the-captured-state
+  gc027-restored-world-uses-different-native-handles
+  gc027-active-and-dormant-state-survive-the-recovery
+)
+gc027_tail=(
+  gc027-restart-from-the-store-recovers-without-in-process-state
+  gc027-restart-without-a-document-or-incompatible-content-exposes-nothing
+  gc027-transient-failure-is-retried-under-the-host-bound
+)
+gc027_delivery=(
+  gc027-outbox-rows-and-delivery-cursor-survive-the-recovery
+  gc027-outbox-append-fault-refuses-before-delivery
+  gc027-outbox-delivery-fault-redelivers-with-one-destination-effect
+  gc027-outbox-acknowledgement-fault-records-or-redelivers-once
+)
+gc027_physics=(
+  gc027-recovered-engine-physics-is-reseeded-not-continued
+  gc027-source-authoritative-state-survives-the-recovery
+  gc027-recovered-world-refuses-an-old-session-observation
+  gc027-recovered-world-steps-its-engine-once-per-admitted-step
+)
+
+# The runner records the four delivery observations where they sit in the table (after the state observations) and
+# the four engine-physics ones after the retry and before teardown, so each list below is spliced at the same place
+# the runner records it: a digest is over the recorded ORDER, and an out-of-order list would assert a sequence the
+# runner never produced.
 gc027_steps=()
-# The full table: the runner can record it for a genre declaring every capability.
-for family in narrative cards traversal; do
-  for base in \
-    gc027-source-world-captures-and-publishes-a-verified-checkpoint \
-    gc027-capture-copy-fault-produces-no-checkpoint \
-    gc027-publication-fault-keeps-the-previous-document \
-    gc027-reference-repair-fault-never-builds-a-destination \
-    gc027-postwrite-apply-fault-never-exposes-a-destination \
-    gc027-recovery-publication-fault-keeps-the-registry-unchanged \
-    gc027-recovery-publishes-a-new-session-with-the-captured-state \
-    gc027-restored-world-uses-different-native-handles \
-    gc027-active-and-dormant-state-survive-the-recovery \
-    gc027-outbox-rows-and-delivery-cursor-survive-the-recovery \
-    gc027-outbox-append-fault-refuses-before-delivery \
-    gc027-outbox-delivery-fault-redelivers-with-one-destination-effect \
-    gc027-outbox-acknowledgement-fault-records-or-redelivers-once \
-    gc027-restart-from-the-store-recovers-without-in-process-state \
-    gc027-restart-without-a-document-or-incompatible-content-exposes-nothing \
-    gc027-transient-failure-is-retried-under-the-host-bound \
-    gc027-teardown-disposes-every-world; do
-    gc027_steps+=("\"name\": \"${family}/${base}\"")
-  done
+for base in "${gc027_state[@]}" "${gc027_delivery[@]}" "${gc027_tail[@]}" gc027-teardown-disposes-every-world; do
+  gc027_steps+=("\"name\": \"narrative/${base}\"")
+  gc027_steps+=("\"name\": \"cards/${base}\"")
+done
+for base in "${gc027_state[@]}" "${gc027_tail[@]}" "${gc027_physics[@]}" gc027-teardown-disposes-every-world; do
+  gc027_steps+=("\"name\": \"traversal/${base}\"")
 done
 gc027_steps+=("\"name\": \"gc027-narrative-digest\"")
 gc027_steps+=("\"name\": \"gc027-cards-digest\"")
 gc027_steps+=("\"name\": \"gc027-traversal-digest\"")
 
-# The traversal course declares no delivery obligation and a real engine physical domain, so its seventeen
-# observations are the shared table minus the four delivery ones and plus its four engine-physics ones (P-045,
-# P-054). These are asserted in addition to the superset above, because a superset check alone would pass a run
-# that recorded no traversal physics observation at all.
-gc027_traversal_steps=(
-  "\"name\": \"traversal/gc027-recovered-engine-physics-is-reseeded-not-continued\""
-  "\"name\": \"traversal/gc027-source-authoritative-state-survives-the-recovery\""
-  "\"name\": \"traversal/gc027-recovered-world-refuses-an-old-session-observation\""
-  "\"name\": \"traversal/gc027-recovered-world-steps-its-engine-once-per-admitted-step\""
-)
 
-# The two pinned digest literals: SHA-256 over the 17 qualified names with "=pass" appended, LF separated without a
-# trailing newline. A run that recorded a different set of observations, or a failing one, cannot report them.
+# The three pinned digest literals: SHA-256 over each family's own qualified names with "=pass" appended, LF
+# separated without a trailing newline. A run that recorded a different set of observations, or a failing one, cannot
+# report them. The narrative and card literals are unchanged by the traversal work (their tables did not change);
+# the traversal literal covers the table above.
 narrative_digest="2644b55aee8bedbbae60e04627e4f6b16d114ac4f418bed4a1e5960e2bdf80f9"
 cards_digest="3c5923b2559b869767c49906e181c4e5efd0f351816926c4095e0aa36ff9074c"
 traversal_digest="30ff0f929889137733dea7bc047692f35488bde6c4d5af093b50af726784cefe"
 
 # A run is only evidence when its own JSON carries the whole claim, so every run's result file is asserted and not
-# just run 1's: the task, the mode, the verdict, the absence of a failing step, all 34 named observations, both
-# pinned digests and the clauses.
+# just run 1's: the task, the mode, the verdict, the absence of a failing step, every family's own named
+# observations, all three pinned digests and the clauses.
 gc027_assert_result() {
   local run_result="$1" run_label="$2"
 
@@ -145,7 +164,6 @@ gc027_assert_result() {
   fi
 
   probe_require_steps "${run_result}" "${gc027_steps[@]}"
-  probe_require_steps "${run_result}" "${gc027_traversal_steps[@]}"
 
   if ! grep -q 'gc027-narrative-digest' "${run_result}"; then
     echo "run_recovery_probe.sh: ${run_label}: the narrative digest step is absent" >&2

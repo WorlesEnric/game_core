@@ -62,7 +62,7 @@ namespace GameCore.Validation.ProbeHost
                     ? Gc013NarrativeHost.RecoveryFamily()
                     : family == Family.Cards
                         ? Gc013CardsHost.RecoveryFamily()
-                        : Gc027TraversalHost.RecoveryFamily();
+                        : Gc020TraversalHost.RecoveryFamily();
                 Gc027ScenarioResult result = Gc027Scenario.Run(adapter);
                 int expectedObservations = Gc027Scenario.ExpectedNames(adapter).Length;
 

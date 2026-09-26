@@ -380,9 +380,15 @@ namespace GameCore.Validation.ProbeHost
                     return false;
                 }
 
+                // The delivery state is optional: a genre with no obligation has no outbox, so the detail reports
+                // that fact rather than dereferencing an owner the family never declared (P-045).
                 detail = "source session " + world.Session.ToString() + " with "
-                    + targets.Count.ToString(CultureInfo.InvariantCulture) + " live target(s) and "
-                    + delivery.Outbox.Count.ToString(CultureInfo.InvariantCulture) + " outbox row(s).";
+                    + targets.Count.ToString(CultureInfo.InvariantCulture) + " live target(s), "
+                    + admittedSteps.ToString(CultureInfo.InvariantCulture) + " admitted step(s) and "
+                    + (delivery == null
+                        ? "no delivery obligation"
+                        : delivery.Outbox.Count.ToString(CultureInfo.InvariantCulture) + " outbox row(s)")
+                    + ".";
                 return true;
             }
             catch (Exception exception)

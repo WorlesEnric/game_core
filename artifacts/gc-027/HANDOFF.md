@@ -52,6 +52,7 @@ new world unexposed."* — is delivered as five pieces:
 | `GC-027: fix the compile errors an independent declaration audit found`, `…record the compile-risk audit…`, `…a second mechanical pass…`, `…mark the two non-run evidence files as NotRun…` | the twelve audit findings and their fixes, plus the audit's own evidence file |
 | `GC-027: the harness checks the three acceptance clauses, not just the names` | the per-run source-lifecycle, single-effect and registry-zero assertions |
 | `GC-027: the traversal course recovery family (third genre, fixed-step)` | `Gc027TraversalHost.cs`, `Gc027PhysicsDomain.cs`, the capability-filtered table and the four engine-physics observations, the optional-delivery changes, the third digest literal, the strip-list additions |
+| `GC-027: fix the six defects the traversal declaration audit found` | the outer-class defect (the traversal half must be a partial part of `Gc020TraversalHost`), the seven delivery members, the fixtures import, the null delivery dereference, the capability-aware clean-recovery assertion, and the harness's per-family step lists |
 
 ## 3. Files created
 

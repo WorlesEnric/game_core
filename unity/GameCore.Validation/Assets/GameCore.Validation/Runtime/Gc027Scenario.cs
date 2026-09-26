@@ -747,6 +747,12 @@ namespace GameCore.Validation.ProbeHost
                         activeStore, recoveryTranscript, null, HostBoundedAttempts, out Gc027RestoreBuilder? restored);
                     builder = restored;
 
+                    // The delivery-owner half is asserted only where the genre declares an obligation; a genre with
+                    // none must instead prove it built no owner and owes nothing (P-045).
+                    bool deliveryHalf = family.HasDeliveryObligation
+                        ? restored != null && restored.Delivery != null
+                        : restored != null && restored.Delivery == null;
+
                     bool pass = recovery.Recovered
                         && recovery.Outcome == Outcome.Published
                         && recovery.DestinationIsFreshIncarnation
@@ -758,7 +764,7 @@ namespace GameCore.Validation.ProbeHost
                         && restored != null
                         && restored.RebuiltTargetCount > 0
                         && restored.RebuiltSlotCount > 0
-                        && restored.Delivery != null
+                        && deliveryHalf
                         && recoveredSessionIsLive();
 
                     recoveredSession = recovery.Recovered && recovery.DestinationHost != null
@@ -778,6 +784,7 @@ namespace GameCore.Validation.ProbeHost
                         + "; targets=" + (restored?.RebuiltTargetCount ?? 0).ToString(CultureInfo.InvariantCulture)
                         + "; slots=" + (restored?.RebuiltSlotCount ?? 0).ToString(CultureInfo.InvariantCulture)
                         + " (dormant=" + (restored?.RebuiltDormantSlotCount ?? 0).ToString(CultureInfo.InvariantCulture) + ")"
+                        + "; deliveryOwner=" + (restored != null && restored.Delivery != null ? "built" : "none")
                         + "; attempts=" + recovery.Attempts.Count.ToString(CultureInfo.InvariantCulture)
                         + "; distinctIdentities=" + recovery.AttemptIdentitiesAreDistinct
                         + "; transcript=" + recoveryTranscript.Summary()

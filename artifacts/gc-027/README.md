@@ -14,6 +14,8 @@ here, labelled as such.
 | release-clone preparation, run for real | `python3 tools/unity/prepare_gc017_release_project.py` | prepared `unity/GameCore.ReleaseCheck` (since deleted) |
 | declaration audit of every new C# file | a separate read-only reviewer, cross-checking each `X.Y` against its declaration | 13 findings, **all fixed** (`compile-risk-audit.md`) |
 | the observation table vs its methods (round 2) | a mechanical pass comparing `ObservationNames`, every `const string name`, and the calls in `Run()` | 21 names, 21 methods, execution order identical to the table; `ExpectedNames` filters exactly the four delivery names and the four physics names by capability |
+| interface completeness (round 2) | every `IGc027Family`, `IGc018Family` and `IGc013Family` member resolved against each adapter's full set of partial files | all three adapters answer every member; none missing, none declared twice |
+| the harness's step lists vs the C# table (round 2) | the three blocks parsed out of the script compared, in order, against `ObservationNames` and its two capability predicates | each family's list equals its `ExpectedNames` sequence exactly, and the blocks together cover the whole table |
 | release-clone invariants, run for real | `python3 tools/check_release_clone.py` | `VERDICT: clone is clean` — 149 files, no removed-type reference, no dangling asmdef reference, constructor 14 params = 14 args, 58 C# files balanced, all six removed modes absent and all thirteen kept modes wired, manifest clean |
 | probe harness shell syntax | `bash -n tools/unity/run_recovery_probe.sh` | exit 0 |
 | Python tool syntax | `python3 -c "import ast; ast.parse(...)"` over both edited tools | exit 0 |

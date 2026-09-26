@@ -1,10 +1,10 @@
 # GC-027 compile-risk audit — findings and fixes
 
-**What this is.** A read-only declaration audit of the new GC-027 C# files, run on the authoring host (no Unity, no
+**What this is.** Read-only declaration audits of the new GC-027 C# files, run on the authoring host (no Unity, no
 .NET SDK, so no compiler). Every `X.Y` access, call, constructor and `using` in the new files was cross-checked
 against the declaration it must match, and every finding was reported with the disagreeing declaration's own
-`file:line`. Twelve findings came back from that audit and a thirteenth from a second, mechanical pass over the
-fixture suites' `using` sets; **all thirteen are fixed and each re-verified against the declaration**. Item 13 was
+`file:line`. Three passes ran: the first two covered the core work (**13 findings**, §1), and a third covered the
+traversal round (**6 findings**, §1.1). **All nineteen are fixed and each re-verified against the declaration.** Item 13 was
 legal-but-inconsistent rather than an error, and is labelled that way rather than counted as a compile failure. The
 fixes are in the commit `GC-027: fix the compile errors an independent declaration audit found`.
 
@@ -40,6 +40,25 @@ inference or an ambiguity the way a compiler can; §3 lists what remains only a 
 | 11 | same | `CheckpointSerializerBindings`, `SpawnRecipeCatalog`, `CardCatalog` unresolved | added the three usings |
 | 12 | `tests/GameCore.Recovery/package.json` + `unity/GameCore.Validation/Packages/{manifest,packages-lock}.json` | the new package was absent from the only Unity project manifest, so its EditMode half would never have resolved or run, and the `GAMECORE_FAULT_INJECTION` versionDefine the latch-name assertion needs would never have been defined | registered in the manifest's `dependencies` (beside `com.gamecore.replay`) and `testables`, and in the lock; the release-clone tools now strip it like the other fixture packages |
 | 13 | `tests/GameCore.Recovery/Tests/RecoveryMatrixFixtureTests.cs` | found by a **second, mechanical pass** over the fixture suites (type name → declaring namespace → the file's `using` set): the suite named ten types from `GameCore.Recovery.Fixtures` without importing it. C#'s lexical namespace lookup makes this *legal* — the file's namespace is `GameCore.Recovery.Fixtures.Tests`, a child of the types' namespace — so it was not an error, but the sibling suite states the import explicitly and this one now does too | added `using GameCore.Recovery.Fixtures;` for consistency with `RecoveryFixtureDataTests.cs` |
+
+## 1.1 The traversal round (round 2)
+
+A second declaration audit covered the traversal work and found six defects — **all fixed and re-verified**. Three
+were compile errors and three were runtime or evidence defects:
+
+| # | File | Symptom | Fix |
+|---|---|---|---|
+| 14 | `Gc027TraversalHost.cs` | the file declared `public static partial class Gc027TraversalHost` while its nested `CourseFamily` was written as the third part of **`Gc020TraversalHost.CourseFamily`**. Partial classes only merge inside the same containing type, so this was a new type whose only base was the interface: `CS0535` on all 48 `IGc013Family` members, `CS0103` on every member borrowed from the other two halves, and `CS1729` on the three-argument constructor | the outer class is now `Gc020TraversalHost`, the class the other two partial halves belong to, and the call sites use `Gc020TraversalHost.RecoveryFamily()` |
+| 15 | same | the seven `IGc027Family` delivery members were never declared (`CS0535` ×7): the course has no delivery obligation and the interface has no defaults | declared with the only honest answers a destination-less genre has — an unset identity, an unset schema, an empty payload, a zero-capacity outbox and `OutboxDurability.Unspecified`, **not** `Durable`, which would be a durability claim the genre cannot keep |
+| 16 | same | `TraversalCatalogTable` and `TraversalCourseComposition` unresolved: both live in `GameCore.Gameplay.Traversal.Fixtures`, which the file did not import (`CS0103` ×4) | added the using |
+| 17 | `Gc027SourceWorld.cs` | the delivery owner became optional, but `TryBuild`'s closing detail still dereferenced it, so the traversal build would have thrown `NullReferenceException` and reported a failed capture | the detail reports `no delivery obligation` rather than dereferencing a field the family never built |
+| 18 | `Gc027Scenario.cs` | `CleanRecovery` still asserted `restored.Delivery != null` — an observation `ExpectedNames` does **not** filter — so a successful traversal recovery would have reported a failure and the pinned traversal digest could not have been produced | the delivery half of the predicate is capability-aware, exactly as the restart observation's already was |
+| 19 | `tools/unity/run_recovery_probe.sh` | the required-step list looped the superset over all three families, demanding four `traversal/…` delivery observations the traversal run never records | the list is built from three blocks — the shared state block, the delivery block and the engine-physics block — spliced at exactly the positions the runner records them, verified against the C# table and its capability predicates |
+
+Items 17–19 are the ones worth a reviewer's attention: 17 and 18 are runtime failures a compiler would **not** have
+caught (a null dereference and an over-strict assertion), and 19 is an evidence-integrity defect — a harness that
+demands observations a family never makes fails every traversal run for the wrong reason, and the tempting "fix"
+would have been to weaken the assertion instead of making the check capability-aware.
 
 ## 2. Independently re-verified after the fixes
 
