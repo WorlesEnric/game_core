@@ -1,11 +1,8 @@
-# GC-027 evidence — index and placeholders
+# GC-027 evidence index
 
-**Nothing in this directory is a run result.** This host has no Unity, no .NET SDK, no Mono and no C# compiler, so
-this change set has not been compiled, imported, executed or built. Every file here is either (a) a *template* the
-orchestrator's build host fills in by running the commands below, or (b) a host-side static check that really did run
-here, labelled as such.
+The Linux build and execution results are in `BUILD_REPORT.md`. This document's original authoring-host static checks are historical; the current run artifacts live in `trx-final/`, `unity/`, `toolchain/`, and `release/`. Qualification `-probeRecovery` passed five clean runs with all three families and 54 passing probe steps per run. The marker-free release clone was scanned and built with the production `WorldRecovery` type retained by `Assets/link.xml`, while the fault latch and recovery fixtures are absent.
 
-## What actually ran on this host
+## Historical authoring-host static checks
 
 | Check | Command | Result |
 |---|---|---|
@@ -22,16 +19,16 @@ here, labelled as such.
 | every `replace_once` strip needle matches exactly once | interpreter check over `ARG_NEEDLES` against the current `ProbeArguments.cs` | `needles 42, bad 0` |
 | frozen digest literals recomputed from the frozen name table | SHA-256 over `label/<name>=pass` lines, LF-joined | the two literals in `ProbeRecovery` reproduce exactly; the same algorithm reproduces GC-018's two published literals, so the method is validated |
 
-None of that is a build, an import, a test or a player run.
+The table above records authoring-host checks only. For executed compiler, Unity, player and release results, see `BUILD_REPORT.md`; no authoring-host `NotRun` status is promoted by that historical table.
 
 ## Files
 
 | File | Kind | Status |
 |---|---|---|
-| `recovery-behavior-and-data-loss.md` | the design + the data-loss boundary table the task requires, with the evidence column to be filled | authored; §6 names the filling commands |
-| `crash-restart-transcripts.md` | the crash/restart transcript template and its fill-in instructions | `NotRun (pending orchestrator build host)` |
-| `outbox-consistency.md` | the outbox consistency report template and its fill-in instructions | `NotRun (pending orchestrator build host)` |
-| `fault-injection-matrix.md` | the eight-point matrix with where each is asserted and what the build host copies out | authored from the source; observations `NotRun` |
+| `recovery-behavior-and-data-loss.md` | executed eight-point/data-loss table, including traversal physical limitation | Pass 5/5 player runs |
+| `crash-restart-transcripts.md` | emitted transcript clauses and explicit non-emitted observation rows | Pass 5/5 player runs |
+| `outbox-consistency.md` | recovered obligation/cursor and single-effect counters | Pass 5/5 player runs |
+| `fault-injection-matrix.md` | every applicable boundary and permitted observable result | Pass 5/5 player runs |
 | `inventory-proposals.md` | the inventory rows this change set proposes the build host promote **after running** | proposals only |
 | `static-checks.log` | verbatim output of the host-side checks listed above | ran here |
 | `compile-risk-audit.md` | the read-only declaration audit of every new C# file: twelve findings, their fixes, and the list of things only a compiler can confirm | ran here (a reading result, not a compile) |
