@@ -145,12 +145,23 @@ step "7. player probes (${PROBE_RUNS} run(s) each)"
 probe_scripts=(
   run_probe.sh
   run_world_probe.sh
+  run_w1_gate_probe.sh
+  run_w2_gate_probe.sh
+  run_w3_gate_probe.sh
+  run_w4_profile_probe.sh
   run_narrative_probe.sh
   run_cards_probe.sh
   run_gc013_probe.sh
+  run_w4_gate_probe.sh
+  run_gc017_faults_probe.sh
+  run_gc018_probe.sh
+  run_gc019_probe.sh
   run_traversal_probe.sh
+  run_w5_gate_probe.sh
   run_gc021_probe.sh
+  run_lifecycle_stress_probe.sh
   run_replay_probe.sh
+  run_w6_gate_probe.sh
   run_conformance_probe.sh
 )
 for probe in "${probe_scripts[@]}"; do
