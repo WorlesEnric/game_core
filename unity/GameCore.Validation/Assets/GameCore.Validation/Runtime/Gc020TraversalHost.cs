@@ -48,7 +48,7 @@ namespace GameCore.Validation.ProbeHost
     /// GC-020 traversal host of the qualification project: it supplies the catalog, the declaration set and the
     /// family the fixed-step scenario is run against, and hands the resulting observations to the caller.
     /// </summary>
-    public static class Gc020TraversalHost
+    public static partial class Gc020TraversalHost
     {
         /// <summary>Family label every observation name of this family carries.</summary>
         public const string Label = "traversal";
