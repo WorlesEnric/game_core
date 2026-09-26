@@ -145,8 +145,8 @@ run_step replay-probe env \
   "ARTIFACTS=${ARTIFACTS}/toolchain" \
   "${SCRIPT_DIR}/unity/run_replay_probe.sh"
 
-# 9. Build and run a marker-free release player, then inspect its generated IL2CPP counting sites
-#    against the qualification player. A source-only switch check does not establish the shipping shape.
+# 9. Build a marker-free release player, then inspect generated IL2CPP output:
+#    both telemetry counting and the qualification replay-jobs hooks must be absent.
 if [[ "${RELEASE_BUILD}" == "1" ]]; then
   if [[ -e "${RELEASE_PROJECT}" ]]; then
     echo "   FAIL release-project: ${RELEASE_PROJECT} already exists; remove it first" >&2
@@ -159,8 +159,6 @@ if [[ "${RELEASE_BUILD}" == "1" ]]; then
   run_step release-player-build env "UNITY_PROJECT=${RELEASE_PROJECT}" \
     "ARTIFACTS=${ARTIFACTS}/release" "UNITY_TIMEOUT=${UNITY_TIMEOUT}" \
     "UNITY=${UNITY}" "DOTNET=${DOTNET}" "${SCRIPT_DIR}/unity/build_probe.sh"
-  run_step release-replay env "PROBE_RUNS=1" "UNITY_PROJECT=${RELEASE_PROJECT}" \
-    "ARTIFACTS=${ARTIFACTS}/release" "${SCRIPT_DIR}/unity/run_replay_probe.sh"
   run_step release-player-fault-surface "${PYTHON}" tools/check_player_fault_free.py \
     --player "${RELEASE_PROJECT}/Builds/Linux64" \
     --json "${ARTIFACTS}/release/player-fault-surface.json"

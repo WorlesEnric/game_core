@@ -36,10 +36,9 @@ def main() -> None:
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     for dependency in (
         "com.gamecore.fault-qualification",
-        # GC-023 adds a second qualification marker: the telemetry switch. Removing it here is what makes the
-        # marker-free clone a build in which every counting call site is compiled away, which is the shape
-        # tools/check_release_telemetry_free.py and the player inspection both depend on.
+        # Both qualification-only replay jobs and telemetry disappear from the shipping clone.
         "com.gamecore.telemetry-qualification",
+        "com.gamecore.replay",
         "com.unity.test-framework",
         "com.unity.test-framework.performance",
     ):
@@ -48,9 +47,8 @@ def main() -> None:
     manifest["testables"] = []
     manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     (DESTINATION / "Packages/packages-lock.json").unlink()
-    # The fault scenario and the Wave 5 integration gate are qualification fixtures, not shipping entry points:
-    # both name the latch types that a configuration without the marker does not compile at all. The ordinary
-    # narrative/cards/GC-018/GC-019 probe modes remain identical to validation.
+    # Faults, Wave 5 and GC-023 replay are qualification fixtures, not shipping entry points.
+    # Remove their sources and CLI dispatch rather than merely leaving unreachable probe hooks in IL2CPP.
     shutil.rmtree(DESTINATION / "Assets/GameCore.Validation/Tests")
     (DESTINATION / "Assets/GameCore.Validation/Tests.meta").unlink()
     for name in (
@@ -63,6 +61,9 @@ def main() -> None:
         "W5GateNarrativeHost",
         "W5GateCardsHost",
         "ProbeW5Gate",
+        "ReplayParallelJobs",
+        "ReplayScenario",
+        "ProbeReplay",
     ):
         for suffix in (".cs", ".cs.meta"):
             (DESTINATION / RUNTIME / (name + suffix)).unlink()
@@ -85,6 +86,13 @@ def main() -> None:
     )
     replace_once(
         runner,
+        '            if (arguments.Replay)\n'
+        '            {\n'
+        '                return Named("Replay", "GC-023");\n'
+        '            }\n\n',
+    )
+    replace_once(
+        runner,
         '                else if (arguments.Faults)\n'
         '                {\n'
         '                    ProbeFaults.Run(report);\n'
@@ -99,19 +107,32 @@ def main() -> None:
         '                    report.CompletePositive();\n'
         '                }\n',
     )
+    replace_once(
+        runner,
+        '                else if (arguments.Replay)\n'
+        '                {\n'
+        '                    ProbeReplay.Run(report);\n'
+        '                    report.CompletePositive();\n'
+        '                }\n',
+    )
 
     arguments = DESTINATION / RUNTIME / "ProbeArguments.cs"
     for old in (
         '        private const string FaultsArgumentName = "-probeFaults";\n',
         '        private const string W5GateArgumentName = "-probeW5Gate";\n',
+        '        private const string ReplayArgumentName = "-probeReplay";\n',
         '            bool faults,\n',
         '            bool w5Gate,\n',
+        '            bool replay,\n',
         '            Faults = faults;\n',
         '            W5Gate = w5Gate;\n',
+        '            Replay = replay;\n',
         '            bool faults = false;\n',
         '            bool w5Gate = false;\n',
+        '            bool replay = false;\n',
         '        public bool Faults { get; }\n',
         '        public bool W5Gate { get; }\n',
+        '        public bool Replay { get; }\n',
         '                else if (argument == FaultsArgumentName)\n'
         '                {\n'
         '                    faults = true;\n'
@@ -120,18 +141,27 @@ def main() -> None:
         '                {\n'
         '                    w5Gate = true;\n'
         '                }\n',
+        '                else if (argument == ReplayArgumentName)\n'
+        '                {\n'
+        '                    replay = true;\n'
+        '                }\n',
     ):
         replace_once(arguments, old)
     replace_once(
         arguments,
         '            || Gc013 || W4Gate || Faults || Gc018 || Gc019 || W5Gate || Replay\n',
-        '            || Gc013 || W4Gate || Gc018 || Gc019 || Replay\n',
+        '            || Gc013 || W4Gate || Gc018 || Gc019\n',
     )
     replace_once(
         arguments,
         '                w4Gate, faults, gc018, gc019, w5Gate, replay, resultPath);',
-        '                w4Gate, gc018, gc019, replay, resultPath);',
+        '                w4Gate, gc018, gc019, resultPath);',
     )
+
+    probe_asmdef = DESTINATION / RUNTIME / "GameCore.Validation.ProbeHost.asmdef"
+    asmdef = json.loads(probe_asmdef.read_text(encoding="utf-8"))
+    asmdef["references"].remove("GameCore.Replay")
+    probe_asmdef.write_text(json.dumps(asmdef, indent=2) + "\n", encoding="utf-8")
     print(f"Marker-free release project: {DESTINATION}")
     print("Build: UNITY_PROJECT=<above> ARTIFACTS=artifacts/faults/release tools/unity/build_probe.sh")
 

@@ -1,0 +1,106 @@
+{
+  "artifact": "gamecore.gc023.telemetry-release-surface/1",
+  "status": "Pass",
+  "problems": [],
+  "facts": {
+    "symbol": "GAMECORE_TELEMETRY",
+    "markerPackage": "com.gamecore.telemetry-qualification",
+    "probeReleaseBuild": "Pass",
+    "probeReleaseReferencesCounting": false,
+    "probeReleaseOutput": "compiledIn=0;sideEffects=0;observed=0;schemaCounters=29;symbol=GAMECORE_TELEMETRY;expectation=disabled",
+    "probeReleaseExitCode": 0,
+    "probeQualificationBuild": "Pass",
+    "probeQualificationReferencesCounting": true,
+    "probeQualificationOutput": "compiledIn=1;sideEffects=4;observed=3;schemaCounters=29;symbol=GAMECORE_TELEMETRY;expectation=enabled",
+    "probeQualificationExitCode": 0,
+    "derivationReleaseBuild": "Pass",
+    "derivationReleaseCounting": {
+      "TelemetryCounting": false,
+      "IsCompiledIn": false
+    },
+    "derivationQualificationBuild": "Pass",
+    "derivationQualificationCounting": {
+      "TelemetryCounting": true,
+      "IsCompiledIn": false
+    },
+    "validationManifestMarker": "file:../../../Packages/com.gamecore.telemetry-qualification",
+    "asmdefs": {
+      "Packages/com.gamecore.contracts/Runtime/GameCore.Contracts.asmdef": {
+        "defines": [
+          "GAMECORE_TELEMETRY"
+        ],
+        "markers": [
+          "com.gamecore.telemetry-qualification"
+        ]
+      },
+      "Packages/com.gamecore.derivation/Runtime/GameCore.Derivation.asmdef": {
+        "defines": [
+          "GAMECORE_TELEMETRY"
+        ],
+        "markers": [
+          "com.gamecore.telemetry-qualification"
+        ]
+      },
+      "Packages/com.gamecore.composition/Runtime/GameCore.Composition.asmdef": {
+        "defines": [
+          "GAMECORE_TELEMETRY"
+        ],
+        "markers": [
+          "com.gamecore.telemetry-qualification"
+        ]
+      },
+      "Packages/com.gamecore.planning/Runtime/GameCore.Planning.asmdef": {
+        "defines": [
+          "GAMECORE_TELEMETRY"
+        ],
+        "markers": [
+          "com.gamecore.telemetry-qualification"
+        ]
+      },
+      "Packages/com.gamecore.unity.runtime/Runtime/GameCore.Unity.Runtime.asmdef": {
+        "defines": [
+          "GAMECORE_FAULT_INJECTION",
+          "GAMECORE_TELEMETRY"
+        ],
+        "markers": [
+          "com.gamecore.fault-qualification",
+          "com.gamecore.telemetry-qualification"
+        ]
+      }
+    },
+    "directoryBuildPropsDefinesSymbol": false,
+    "releasePlayer": {
+      "project": "/home/worlesenric/wkspace/gc-wt/gc-023/unity/GameCore.ReleaseCheck",
+      "player": "/home/worlesenric/wkspace/gc-wt/gc-023/unity/GameCore.ReleaseCheck/Builds/Linux64/GameCoreProbe.x86_64",
+      "countingMentions": 0,
+      "markerPresent": false,
+      "replayHookMentions": {
+        "ReplayProducerJob": 0,
+        "ReplayJobsRunner": 0,
+        "ReplayScenario": 0,
+        "ProbeReplay": 0
+      },
+      "replayPackagePresent": false,
+      "compiledInGetter": null
+    },
+    "qualificationPlayer": {
+      "project": "/home/worlesenric/wkspace/gc-wt/gc-023/unity/GameCore.Validation",
+      "player": "/home/worlesenric/wkspace/gc-wt/gc-023/unity/GameCore.Validation/Builds/Linux64/GameCoreProbe.x86_64",
+      "countingMentions": 21,
+      "markerPresent": true,
+      "replayHookMentions": {
+        "ReplayProducerJob": 31,
+        "ReplayJobsRunner": 4,
+        "ReplayScenario": 298,
+        "ProbeReplay": 9
+      },
+      "replayPackagePresent": true,
+      "compiledInGetter": true,
+      "replayResult": "Pass",
+      "durationSamples": [
+        1,
+        133
+      ]
+    }
+  }
+}
