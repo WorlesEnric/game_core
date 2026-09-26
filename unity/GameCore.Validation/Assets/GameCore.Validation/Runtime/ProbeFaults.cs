@@ -12,7 +12,7 @@ namespace GameCore.Validation.ProbeHost
     /// GC-005, W1/W2/W3 gate, GC-010, GC-011, GC-012, GC-013 and W4-gate probes.
     ///
     /// The runner (`FaultScenario` over `FaultScenarioHost`) is shared with the Unity EditMode assembly
-    /// `GameCore.Faults.Tests`, so the same 15 named observations execute in the Editor and in a stripped player.
+    /// `GameCore.Faults.Tests`, so the same 17 named observations execute in the Editor and in a stripped player.
     /// That matters here more than anywhere else: the fault latches of GC-017 are compiled in by
     /// `GameCore.Unity.Runtime.asmdef`'s `GAMECORE_FAULT_INJECTION` version define, so a player that lost the
     /// symbol would report a bounded sequence of unpassed steps instead of silently succeeding. Both digest
@@ -24,11 +24,11 @@ namespace GameCore.Validation.ProbeHost
     /// </summary>
     public static class ProbeFaults
     {
-        /// <summary>Digest the narrative run must report over its 15 named observations, all passing (TEST-016).</summary>
-        public const string NarrativeDigest = "701a3c286098501456390975bbdc7e4bdb7218d3094f23e39e61b3744fa52b61";
+        /// <summary>Digest the narrative run must report over its 17 named observations, all passing (TEST-016).</summary>
+        public const string NarrativeDigest = "3a3be6bbd26a5824bdd47a62226023da5da43e7c10fbf3ddae35b3ea3f1a5930";
 
-        /// <summary>Digest the card run must report over its 15 named observations, all passing (TEST-016).</summary>
-        public const string CardsDigest = "5cd97d38a1023fe0c8b5239d611061e5696454be9ec7cc68d440506810201732";
+        /// <summary>Digest the card run must report over its 17 named observations, all passing (TEST-016).</summary>
+        public const string CardsDigest = "eea66452527f87a9ff145e492420a0075a7ba59aba760e92569e322e48bdc1ec";
 
         public static void Run(ProbeReport report)
         {

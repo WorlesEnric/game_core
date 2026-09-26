@@ -17,9 +17,10 @@
 # GC-017's own sentence is "inject failure at every apply and cancellation boundary": deterministic latches around
 # validation, acquisition, fencing, migration, first live write, structural playback, gate installation and
 # cleanup; cancellation raced against the serialized cutoff; and recovery from initial definitions into a new world
-# (checkpoint-based recovery is GC-018/GC-027). The `-probeFaults` mode is the one that runs all 15 named
-# observations of TEST-016's matrix in a single stripped player process over two catalogs per family, so the gate is
-# never claimed from the dotnet half alone and never substitutes a seam fixture for a real module.
+# (checkpoint-based recovery is GC-018/GC-027). The `-probeFaults` mode is the one that runs all 17 named
+# observations — TEST-016's matrix plus P-012's unexpected-provider-failure pair — in a single stripped player
+# process over two catalogs per family, so the gate is never claimed from the dotnet half alone and never
+# substitutes a seam fixture for a real module.
 #
 # Timeouts. The Unity Editor has a known, unresolved intermittent hang before it dispatches a batchmode command, so
 # EVERY Unity invocation is wrapped in `timeout`. A timed-out invocation fails loudly (exit 124 is never a pass), and
