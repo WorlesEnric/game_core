@@ -67,6 +67,15 @@ TARGETS = [
     "Packages/com.gamecore.gameplay.traversal/Fixtures",
     "dotnet/src/GameCore.Rules.Traversal",
     "dotnet/tests/GameCore.Rules.Traversal.Tests",
+    # GC-023: the replay/telemetry fixture package is engine-free like the derivation package, and the
+    # qualification tooling (the telemetry probe and the derivation release-check) holds real C# too, so all three
+    # join the balance/forbidden-construct checks. The player-probe scenario and its EditMode suite live inside the
+    # validation project, which is already covered above.
+    "tests/GameCore.Replay",
+    "dotnet/src/GameCore.Replay",
+    "dotnet/src/GameCore.Derivation.Fixtures",
+    "dotnet/src/GameCore.Telemetry.ReleaseCheck",
+    "dotnet/tools/GameCore.TelemetryProbe",
 ]
 
 FORBIDDEN = {
@@ -263,6 +272,9 @@ def main() -> int:
         # resynchronization, delayed-consumer delivery, the committed-boundary lease) is engine-free on purpose: it
         # is compiled by dotnet/src/GameCore.Execution and must stay free of every Unity type.
         ROOT / "Packages/com.gamecore.unity.runtime/Runtime/Observation",
+        # GC-023: the replay/telemetry fixtures are Unity-free by design, so the same sources can be compiled by
+        # dotnet/src/GameCore.Replay, by the Unity package com.gamecore.replay and by the IL2CPP probe host.
+        ROOT / "tests/GameCore.Replay",
         ROOT / "dotnet/src",
     )
 

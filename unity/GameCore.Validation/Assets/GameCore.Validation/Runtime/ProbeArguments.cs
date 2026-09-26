@@ -27,6 +27,7 @@ namespace GameCore.Validation.ProbeHost
         private const string TraversalArgumentName = "-probeTraversal";
         private const string Gc021ArgumentName = "-probeGc021";
         private const string LifecycleStressArgumentName = "-probeLifecycleStress";
+        private const string ReplayArgumentName = "-probeReplay";
 
         private ProbeArguments(
             bool missingRegistration,
@@ -46,6 +47,7 @@ namespace GameCore.Validation.ProbeHost
             bool w5Gate,
             bool traversal,
             bool gc021,
+            bool replay,
             string? resultPath)
         {
             MissingRegistration = missingRegistration;
@@ -65,6 +67,7 @@ namespace GameCore.Validation.ProbeHost
             W5Gate = w5Gate;
             Traversal = traversal;
             Gc021 = gc021;
+            Replay = replay;
             ResultPath = resultPath;
         }
 
@@ -193,6 +196,15 @@ namespace GameCore.Validation.ProbeHost
         /// </summary>
         public bool LifecycleStress { get; }
 
+        /// <summary>
+        /// Runs the GC-023 replay mode: the recorded 10,000-step integer fixture replayed across the supported
+        /// worker counts and under a shuffled producer/completion order, the differential propagation sweep with its
+        /// reducer, the observation replay separated from the native-physics comparison, and the instrumented
+        /// counters of one real owned world with the raw benchmark trace written beside the probe result
+        /// (P-008, P-023, TEST-022, TEST-023).
+        /// </summary>
+        public bool Replay { get; }
+
         /// <summary>Destination path of the structured JSON result.</summary>
         public string? ResultPath { get; }
 
@@ -201,6 +213,7 @@ namespace GameCore.Validation.ProbeHost
             MissingRegistration || WorldDispatch || W1Gate || W2Gate || W3Gate || Narrative || Cards || W4Profile
             || Gc013 || W4Gate || Faults || Gc018 || Gc019 || W5Gate || Traversal || Gc021
             || LifecycleStress
+            || Replay
             || !string.IsNullOrEmpty(ResultPath);
 
         /// <summary>True when a result destination was supplied; without it the probe cannot record evidence.</summary>
@@ -225,6 +238,7 @@ namespace GameCore.Validation.ProbeHost
             bool w5Gate = false;
             bool traversal = false;
             bool gc021 = false;
+            bool replay = false;
             string? resultPath = null;
             for (int i = 0; i < arguments.Length; i++)
             {
@@ -297,6 +311,10 @@ namespace GameCore.Validation.ProbeHost
                 {
                     lifecycleStress = true;
                 }
+                else if (argument == ReplayArgumentName)
+                {
+                    replay = true;
+                }
                 else if (argument == ResultArgumentName && i + 1 < arguments.Length)
                 {
                     resultPath = arguments[i + 1];
@@ -306,7 +324,7 @@ namespace GameCore.Validation.ProbeHost
             return new ProbeArguments(
                 missingRegistration, worldDispatch, w1Gate, w2Gate, w3Gate, narrative, cards, w4Profile, gc013,
                 lifecycleStress,
-                w4Gate, faults, gc018, gc019, w5Gate, traversal, gc021, resultPath);
+                w4Gate, faults, gc018, gc019, w5Gate, traversal, gc021, replay, resultPath);
         }
     }
 }

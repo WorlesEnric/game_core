@@ -134,8 +134,10 @@ namespace GameCore.Composition
     /// Bounded ledger of one control lane: admission, idempotency, retention, expiry and cancellation cutoffs.
     /// It stores no live world state and calls nothing; the host owns publication.
     /// </summary>
-    public sealed class OperationLedger
+    public sealed class OperationLedger : ITelemetryOwner
     {
+        string ITelemetryOwner.TelemetryOwner => "gamecore.composition.lane";
+
         private readonly ControlLaneCapacitySettings capacity;
         private readonly OperationExpirySettings expiry;
         private readonly Dictionary<OperationId, LedgerRow> rows = new Dictionary<OperationId, LedgerRow>();
@@ -169,6 +171,28 @@ namespace GameCore.Composition
         public int SequenceViolationCount { get; private set; }
 
         public int CapacityRejectedCount { get; private set; }
+
+        /// <summary>
+        /// Highest row count this ledger reached: the pending-queue high-water mark the control lane actually
+        /// observed (08 request high-water). A gauge, so a collector takes the maximum across owners.
+        /// </summary>
+        public int RowHighWaterMark { get; private set; }
+
+        /// <summary>
+        /// Writes the control-lane counters through the fixed compact schema (GC-023): the queue high-water mark and
+        /// its refusals, plus the stale-identity expiries an idempotency ledger must be able to report (P-050).
+        /// </summary>
+        public void WriteTelemetry(TelemetryCounterSet into)
+        {
+            if (into == null)
+            {
+                throw new ArgumentNullException(nameof(into));
+            }
+
+            into.ObserveMax(TelemetryCounter.RequestHighWater, RowHighWaterMark);
+            into.Add(TelemetryCounter.RequestOverflow, CapacityRejectedCount);
+            into.Add(TelemetryCounter.StaleResults, ExpireCount);
+        }
 
         public int ExpireCount { get; private set; }
 
@@ -327,6 +351,11 @@ namespace GameCore.Composition
             rows.Add(operation, row);
             issuerHighWater[operation.IssuerId] = operation.IssuerSequence;
             AdmittedCount++;
+            if (rows.Count > RowHighWaterMark)
+            {
+                // 08's request high-water mark: the deepest this lane was actually observed to be (GC-023).
+                RowHighWaterMark = rows.Count;
+            }
             return new AdmissionResult(AdmissionKind.Fresh, DiagnosticCode.None, row.Handle, row.ToEntry());
         }
 

@@ -63,6 +63,14 @@ namespace GameCore.Derivation
 
             for (int stratum = 0; stratum < DerivationSnapshot.StratumCount; stratum++)
             {
+                TelemetryCounting.Count(counters.Telemetry, TelemetryCounter.StrataEvaluated);
+                // Every (target, install) pair the brute force examines is a control node; the oracle's count is
+                // deliberately larger than the indexed engine's for the same input, which is what makes the two
+                // traversals distinguishable in a cost trace (GC-023).
+                TelemetryCounting.Add(
+                    counters.Telemetry,
+                    TelemetryCounter.ControlNodesVisited,
+                    (long)canonicalTargets.Count * snapshot.ActiveInstalls.Count);
                 Dictionary<SlotGroupKey, List<RankedCandidate>> groups =
                     new Dictionary<SlotGroupKey, List<RankedCandidate>>();
 

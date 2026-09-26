@@ -36,8 +36,10 @@ namespace GameCore.Execution
     /// which dependency, and whether it was retired or retained behind quarantine. Lease identifiers are
     /// process-local and never serialized as world identity (05 s4).
     /// </summary>
-    public sealed class WorldResourceLedger
+    public sealed class WorldResourceLedger : ITelemetryOwner
     {
+        string ITelemetryOwner.TelemetryOwner => "gamecore.execution.resources";
+
         /// <summary>Category salt of resource identifiers; distinct from the job-id category.</summary>
         public const ulong ResourceIdSalt = 0x7265736F75726365UL;
 
@@ -78,6 +80,39 @@ namespace GameCore.Execution
         public int ResourceCount => resources.Count;
 
         public int JobCount => jobs.Count;
+
+        /// <summary>
+        /// Writes the world resource ledger through the fixed compact schema (GC-023, TEST-023): live leases, the
+        /// bytes those leases hold, quarantine entries/bytes, and the tracked jobs still outstanding. The ledger is
+        /// the one owner that sees every native resource, so it is where the memory split is decided.
+        /// </summary>
+        public void WriteTelemetry(TelemetryCounterSet into)
+        {
+            if (into == null)
+            {
+                throw new ArgumentNullException(nameof(into));
+            }
+
+            // The count and the bytes describe the same set - resources a live lease still holds - so quarantine is
+            // reported only as quarantine and the four-way split stays a partition (TEST-023).
+            int leaseHeld = 0;
+            ulong leaseBytes = 0UL;
+            for (int i = 0; i < acquisitionOrder.Count; i++)
+            {
+                WorldResourceRecord record = resources[acquisitionOrder[i]];
+                if (IsLeaseHeld(record))
+                {
+                    leaseHeld++;
+                    leaseBytes += record.Bytes;
+                }
+            }
+
+            into.ObserveMax(TelemetryCounter.LiveLeases, leaseHeld);
+            into.ObserveMax(TelemetryCounter.LeaseBytes, (long)leaseBytes);
+            into.ObserveMax(TelemetryCounter.QuarantineEntries, QuarantineCount + QuarantinedJobCount);
+            into.ObserveMax(TelemetryCounter.QuarantineBytes, (long)QuarantinedBytes);
+            into.ObserveMax(TelemetryCounter.OutstandingCallbacks, OutstandingJobCount);
+        }
 
         /// <summary>Acquires one resource and returns its ledger identity (P-048).</summary>
         public Id128 Acquire(
@@ -296,6 +331,40 @@ namespace GameCore.Execution
                 return count;
             }
         }
+
+        /// <summary>
+        /// Bytes held by resources that are still retained (acquired or ready). TEST-023 requires leases, retained
+        /// events and quarantine to be reported separately, so this is neither the quarantine total nor the event
+        /// store's retained bytes (GC-023).
+        /// </summary>
+        public ulong RetainedResourceBytes
+        {
+            get
+            {
+                ulong bytes = 0UL;
+                for (int i = 0; i < acquisitionOrder.Count; i++)
+                {
+                    WorldResourceRecord record = resources[acquisitionOrder[i]];
+                    if (IsLeaseHeld(record))
+                    {
+                        bytes += record.Bytes;
+                    }
+                }
+
+                return bytes;
+            }
+        }
+
+        /// <summary>
+        /// True while a record is held by a live lease. Quarantined records are excluded on purpose: TEST-023
+        /// requires leases and quarantine to be reported separately, so the lease total must not already contain the
+        /// quarantine total.
+        /// </summary>
+        private static bool IsLeaseHeld(WorldResourceRecord record) =>
+            record.State == ResourceRetirementState.Acquired
+            || record.State == ResourceRetirementState.Ready
+            || record.State == ResourceRetirementState.Retiring;
+
 
         public ulong QuarantinedBytes
         {

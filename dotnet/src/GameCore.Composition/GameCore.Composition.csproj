@@ -11,6 +11,11 @@
     <AssemblyName>GameCore.Composition</AssemblyName>
     <RootNamespace>GameCore.Composition</RootNamespace>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <!-- GC-023: the plain-dotnet shadow build is the *instrumented diagnostic* build (08 s3 records the
+         instrumented build and the release-like measurement build separately). The same symbol reaches
+         Unity only through the qualification marker package com.gamecore.telemetry-qualification, so a
+         shipping project compiles every counting call site away. -->
+    <DefineConstants>$(DefineConstants);GAMECORE_TELEMETRY</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>

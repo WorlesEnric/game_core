@@ -115,8 +115,10 @@ namespace GameCore.Execution.Time
     /// Host-side input cutoff of one world (P-037). The host admits commands and wakes here, seals a batch per
     /// logical step, and retains whatever the step's capacity did not consume.
     /// </summary>
-    public sealed class StepInputCutoff
+    public sealed class StepInputCutoff : ITelemetryOwner
     {
+        string ITelemetryOwner.TelemetryOwner => "gamecore.time.cutoff";
+
         private readonly List<DemandRecord> pending = new List<DemandRecord>();
         private readonly Dictionary<Id128, AdmissionSequence> admittedKeys = new Dictionary<Id128, AdmissionSequence>();
 
@@ -166,6 +168,23 @@ namespace GameCore.Execution.Time
 
         /// <summary>Request keys currently remembered for duplicate detection.</summary>
         public int RememberedKeyCount => admittedKeys.Count;
+
+        /// <summary>
+        /// Writes the input-cutoff counters through the fixed compact schema (GC-023): a stable backlog is visible
+        /// as the high-water mark, and a refused admission because the bounded queue was full is request overflow
+        /// (P-037, P-043).
+        /// </summary>
+        public void WriteTelemetry(TelemetryCounterSet into)
+        {
+            if (into == null)
+            {
+                throw new ArgumentNullException(nameof(into));
+            }
+
+            into.ObserveMax(TelemetryCounter.RequestHighWater, MaxQueueDepth);
+            into.Add(TelemetryCounter.RequestOverflow, OverflowCount);
+            into.Add(TelemetryCounter.StaleResults, DuplicateCount);
+        }
 
         /// <summary>
         /// Admits one unit of demand under a host-assigned monotonic sequence. A duplicate request key is refused

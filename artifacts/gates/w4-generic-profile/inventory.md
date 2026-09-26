@@ -491,3 +491,58 @@ running, as the brief requires.
 The two probe digest literals are deliberately `PENDING`: a digest is computed over the observation names and their
 pass flags and cannot be known before the sequence first runs. `tools/unity/run_gc021_probe.sh` asserts the
 falsifiable cross-catalog equality until they are pinned, and an exact pin afterwards. No literal was invented.
+
+## GC-023 revision notes — replay, differential propagation and complete cost instrumentation
+
+**Proposals only: nothing below is promoted by this task.** (Round 2 adds the real-Unity-jobs half; the machine-readable section is `gc023Revisions` in `inventory.json`.) The orchestrator promotes after running
+`UNITY=<editor> DOTNET=<sdk> PROBE_RUNS=5 tools/run_gc023_gate.sh` and recording
+`artifacts/gc-023/toolchain/probe-replay.json`, `artifacts/gc-023/toolchain/telemetry-release-surface.json` and
+`artifacts/gc-023/unity/editmode-results.xml`. The machine-readable form of this section is `gc023Revisions` in
+`inventory.json`.
+
+**Round 2 (orchestrator review).** The round-1 claim "the 10,000-step integer fixture across supported worker counts"
+was proven over a deterministic *model* of producer scheduling, so setting `JobsUtility.JobWorkerCount` varied a
+managed permutation rather than how the fixture's work ran. GC-023 now also drives the fixture's producers as REAL
+Burst `IJobParallelFor` jobs (inner-loop batch size 1) that write the runtime's own bounded `NativeMessageLane`
+payload arena, published through the lane's own publish path in a seeded permutation and merged by the runtime's
+canonical `DrainOwnerBatch`, at `JobsUtility.JobWorkerCount` 1, 2, 4 and the target's maximum, twice per count with
+different publish permutations. Three observations carry it: the world really ran the parallel producers (every step
+committed, every batch produced, nothing refused, and the canonical merge reordered the append order at least once),
+every run agrees on every per-step state hash, the final state, the canonical event identities and the chain hash, and
+the recorded per-thread histogram shows more than one distinct worker thread executing producer batches whenever the
+worker count was above one. The modeled test is kept: it is the fixture's own reference scheduling, and the two halves
+answer different questions.
+
+What GC-023 adds, in one paragraph: a fixed compact telemetry schema in `GameCore.Contracts` (a stable counter id per
+08 name, the TEST-023 leases/events/cache/quarantine split, one flat counter set, sections, frames, a retained trace
+with a chain hash, a keyed duration series and `[Conditional]` counting helpers), twenty-two runtime owners that
+export their counters through it, a Unity-free replay fixture package (`tests/GameCore.Replay`, assembly
+`GameCore.Replay`) carrying the recorded 10,000-step integer fixture, canonical state/decision/provenance/event
+hashing with a documented exclusion list, the worker-scheduling model, engine-observation replay separated from a
+native-physics comparison, and a differential sweep with a deterministic reducer, plus the `-probeReplay` player mode
+and the disabled-shape proof that compiles the counting call sites away.
+
+| Requirement | Row status | Proposal | Evidence that must first exist |
+| --- | --- | --- | --- |
+| P-008 stable ordering and the determinism boundary | Partial | Partial | `probe-replay.json`, `trx/`, `editmode-results.xml` |
+| P-018 precedence under shuffled completion (modeled and real jobs) | Partial | Partial | `probe-replay.json` |
+| P-022 budgets and their measurement | Partial | Partial | `probe-replay.json`, `trx/` |
+| P-023 incrementality and untouched-sibling counters | Partial | Partial | `probe-replay.json`, `trx/` |
+| P-026 explanation and provenance completeness | Partial | Partial | `probe-replay.json`, `trx/` |
+| P-052 diagnostics and a stable evidence shape | Partial | Partial | `probe-replay.json`, `probe-replay.json.trace` |
+| P-060 recorded evidence and measurements | Partial | Partial | `telemetry-release-surface.json`, `probe-replay.json`, `BUILD_REPORT.md` |
+
+**Why no row is proposed as promoted.** Every row above keeps a clause outside GC-023's scope: P-008 excludes
+cross-platform floating-point and physics lockstep by its own text; P-022's and P-060's measured budgets and P-023's
+scale inventory on a named machine are GC-026's; P-026's and P-052's remaining coverage is GC-016's; P-018's explicit
+`SelectProvider` overrides are GC-006/GC-013 evidence. GC-023 closes the parts it owns and says so rather than
+claiming the whole row.
+
+**Contract changes.** Fourteen new public types in `GameCore.Contracts` (additions only; the fourteen type headers are
+in the GC-003 additions allowlist in `dotnet/tests/GameCore.Contracts.Tests/ContractTests.cs`, recorded in
+`artifacts/gc-023/HANDOFF.md` section 5). `ITelemetryOwner` is the owner seam; `GAMECORE_TELEMETRY` is the switch,
+taken from the new qualification marker package `com.gamecore.telemetry-qualification`, which
+`tools/unity/prepare_gc017_release_project.py` now also removes from the marker-free release clone.
+
+**Not proposed.** P-007, P-037, P-039, P-040, P-041, P-043, P-044, P-045, P-048 and P-053 keep their status; no
+operation row changes; TEST-023's measured budget table is not claimed.

@@ -29,8 +29,10 @@ using GameCore.Contracts;
 namespace GameCore.Derivation
 {
     /// <summary>Which path one incremental derivation took, and what it cost (P-023, 02 s9).</summary>
-    public sealed class IncrementalDerivationOutcome
+    public sealed class IncrementalDerivationOutcome : ITelemetryOwner
     {
+        string ITelemetryOwner.TelemetryOwner => "gamecore.derivation.incremental";
+
         public IncrementalDerivationOutcome(
             DerivationResult result,
             InvalidationClosureResult invalidation,
@@ -54,6 +56,30 @@ namespace GameCore.Derivation
 
         /// <summary>Work counters of the incremental path, including the carried-target count.</summary>
         public InvalidationCounters Counters { get; }
+
+        /// <summary>
+        /// Writes this outcome's counters into <paramref name="into"/> through the fixed compact schema (GC-023).
+        /// The index sets, the closure and the engine all incremented the same counter object, so this is the whole
+        /// work of the derivation rather than one part of it.
+        /// </summary>
+        public void WriteTelemetry(TelemetryCounterSet into)
+        {
+            if (into == null)
+            {
+                throw new ArgumentNullException(nameof(into));
+            }
+
+            // On the incremental path the outcome and its result share one counter object (`DeriveDirty` and
+            // `Carry` hand the same `InvalidationCounters` to both), so writing both would double every cumulative
+            // counter of this owner. The full-recompute fallback hands the outcome a different object, which is why
+            // the guard is a reference check rather than a constant.
+            if (!ReferenceEquals(Counters, Result.Counters))
+            {
+                Counters.WriteTelemetry(into);
+            }
+
+            Result.WriteTelemetry(into);
+        }
 
         /// <summary>One-line audit text of this derivation (P-052).</summary>
         public string Describe() =>
@@ -129,8 +155,10 @@ namespace GameCore.Derivation
                 return new IncrementalDerivationOutcome(full, whole, true, counters);
             }
 
-            DerivationIndexSet previousIndexes = DerivationIndexSet.Build(previous.Snapshot);
-            DerivationIndexSet nextIndexes = DerivationIndexSet.Build(snapshot);
+            // Both index sets report through this derivation's counter object, so the control-plane work the
+            // incremental path does is visible in the counters the caller reports (GC-023, TEST-023).
+            DerivationIndexSet previousIndexes = DerivationIndexSet.Build(previous.Snapshot, counters);
+            DerivationIndexSet nextIndexes = DerivationIndexSet.Build(snapshot, counters);
             InvalidationClosureResult closure = InvalidationClosure.Compute(
                 previous.Snapshot, snapshot, declared, previousIndexes, nextIndexes, counters);
 
@@ -348,6 +376,9 @@ namespace GameCore.Derivation
                 {
                     continue;
                 }
+
+                // One stratum was iterated (08 `StrataEvaluated`); an empty stratum executes no rule.
+                TelemetryCounting.Count(counters.Telemetry, TelemetryCounter.StrataEvaluated);
 
                 Dictionary<SlotGroupKey, List<RankedCandidate>> groups =
                     new Dictionary<SlotGroupKey, List<RankedCandidate>>();

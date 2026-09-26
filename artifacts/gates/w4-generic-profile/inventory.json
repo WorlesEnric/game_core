@@ -3580,5 +3580,174 @@
       "O-22 RecoverWorld is untouched; P-049's bounded retry clause is not implemented here.",
       "The reward bridge's narrative node and the card transfer's outcome are content-dependent real observables; a refusal is reported as a refusal rather than asserted away."
     ]
+  },
+  "gc023Revisions": {
+    "task": "GC-023",
+    "branch": "gc-023",
+    "verdict": "NotRun (pending orchestrator build host, round 2). No requirement row was promoted here: this section is proposals only, every proposal names the observation that would carry it and the artifacts the build host must first produce. Round 2 adds the real-Unity-jobs half that the round-1 review required (real Burst parallel producers writing the runtime's bounded lane, `JobsUtility.JobWorkerCount` 1/2/4/max, recorded per-thread evidence), so the observation table grew from 12 to 15 and the recorded observation digest in tests/GameCore.Replay/Data/replay-record.json was deliberately emptied for re-recording. GC-023's gate command is `UNITY=<editor> DOTNET=<sdk> PROBE_RUNS=5 tools/run_gc023_gate.sh`; see artifacts/gc-023/HANDOFF.md.",
+    "statusOfThisSection": "Proposals only. The orchestrator promotes after running the gate and recording artifacts/gc-023/toolchain/probe-replay.json, artifacts/gc-023/toolchain/telemetry-release-surface.json and artifacts/gc-023/unity/editmode-results.xml.",
+    "objective": "Expose ordering drift and accidental control-plane work in the simulation hot path: canonical replay hashing and traces with stable IDs, the 10,000-step integer fixture across worker counts, differential propagation with reproducible failing seeds, and every 08 counter instrumented through one fixed compact schema that is enabled and retained explicitly by build config.",
+    "normativeSections": [
+      "P-007",
+      "P-008",
+      "P-018",
+      "P-022",
+      "P-023",
+      "P-026",
+      "P-037",
+      "P-039",
+      "P-040",
+      "P-041",
+      "P-043",
+      "P-044",
+      "P-045",
+      "P-048",
+      "P-052",
+      "P-053",
+      "P-060"
+    ],
+    "requiredSuites": [
+      "TEST-007",
+      "TEST-008",
+      "TEST-012",
+      "TEST-014",
+      "TEST-022",
+      "TEST-023"
+    ],
+    "observationNames": [
+      "replay-world-created-and-owners-sampled",
+      "replay-world-idle-pump-does-zero-control-work",
+      "replay-world-memory-split-is-reported-separately",
+      "replay-world-wake-commits-one-step-and-samples-durations",
+      "replay-world-counters-move-on-a-committed-step",
+      "replay-trace-records-ten-thousand-steps",
+      "replay-hashes-identically-across-worker-counts",
+      "replay-hashes-identically-under-shuffled-producers",
+      "replay-different-admission-is-a-different-input",
+      "replay-observation-replay-is-separate-from-physics",
+      "replay-differential-sweep-is-clean-and-reducible",
+      "replay-raw-benchmark-trace-round-trips",
+      "replay-jobs-world-runs-real-parallel-producers",
+      "replay-jobs-hashes-identical-across-worker-counts",
+      "replay-jobs-producers-execute-on-multiple-threads",
+      "replay-digest",
+      "replay-observation-count",
+      "replay-benchmark-trace"
+    ],
+    "proposedRows": [
+      {
+        "id": "P-008",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "The gap this row names is exactly what GC-023 builds, in two halves. (1) The modeled half: a recorded 10,000-step integer fixture replayed with shuffled producer/completion order across worker counts 1, 2, 4 and 8, compared after every step on canonical state, decisions, committed event identities and capability provenance, plus the documented exclusion list a canonical hash may not read (timestamps, padding, diagnostic counters, native layout, worker scheduling, enumeration order) and the comparison-only world-ordinal mapping that leaves runtime deduplication and handle validation alone. (2) The real half, added after the first review found the modeled half insufficient: the fixture's producers are real Burst `IJobParallelFor` jobs (inner-loop batch size 1) writing the runtime's own bounded lane payload arena, published through the lane's publish path in a seeded permutation, merged by the runtime's canonical `MergeOwnerBatch` and reduced by the owner commit - run at `JobsUtility.JobWorkerCount` 1, 2, 4 and the target's own maximum, twice each with different publish permutations, with the per-thread execution histogram recorded so 'more than one worker really ran producer work' is evidence rather than an assumption, and with the merge shown to have reordered the append order. Proposal reason for leaving the status at Partial: the row's own scope is the protocol's determinism boundary, and cross-platform floating-point/physics lockstep is explicitly outside it, so no single task can move it to Implemented+Evidenced.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-023/toolchain/probe-replay.json",
+          "artifacts/gc-023/trx/",
+          "artifacts/gc-023/unity/editmode-results.xml"
+        ],
+        "observationEvidence": [
+          "replay-trace-records-ten-thousand-steps",
+          "replay-hashes-identically-across-worker-counts",
+          "replay-hashes-identically-under-shuffled-producers",
+          "replay-different-admission-is-a-different-input",
+          "replay-observation-replay-is-separate-from-physics",
+          "replay-jobs-world-runs-real-parallel-producers",
+          "replay-jobs-hashes-identical-across-worker-counts",
+          "replay-jobs-producers-execute-on-multiple-threads"
+        ]
+      },
+      {
+        "id": "P-018",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "The row's gap was 'explicit SelectProvider overrides, equal-priority ties and rank ordering under shuffled worker completion and replay are not archived at reference scale'. GC-023 archives the shuffled-completion half at reference scale twice: once with a modeled scheduling permutation, and once with REAL Unity job producers whose completion order is decided by the worker threads (the publishing stage appends the produced rows in a seeded permutation and the runtime's canonical merge still yields identical decisions and provenance at worker counts 1, 2, 4 and the maximum). Explicit SelectProvider overrides remain GC-006/GC-013 evidence.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-023/toolchain/probe-replay.json"
+        ],
+        "observationEvidence": [
+          "replay-hashes-identically-under-shuffled-producers",
+          "replay-hashes-identically-across-worker-counts"
+        ]
+      },
+      {
+        "id": "P-022",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "GC-023 surfaces the plan's prepare-byte estimate as 08's `PlanPreparedBytes` through the fixed compact schema and reports the derivation side of the budget (candidates examined, contributions emitted, temporary bytes) through the same schema. The row's remaining gap is a measured run on a named machine against the provisional default limits, which is GC-026's.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-023/toolchain/probe-replay.json",
+          "artifacts/gc-023/trx/"
+        ],
+        "observationEvidence": [
+          "replay-world-counters-move-on-a-committed-step"
+        ]
+      },
+      {
+        "id": "P-023",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "The row's gap was 'untouched-sibling index counters and the complete index inventory at scale remain unevidenced'. GC-023 adds the counter that evidences it per step and asserts it: `ControlNodesVisited` is incremented at every index and closure query site *before* a cached lookup can short-circuit (TEST-023 requires cached traversals to count), and a step whose composition did not change reports zero control nodes, zero strata and zero examined candidates because the incremental engine carries the previous result. The 10,000-step replay asserts exactly that over every carried step.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-023/toolchain/probe-replay.json",
+          "artifacts/gc-023/trx/"
+        ],
+        "observationEvidence": [
+          "replay-world-idle-pump-does-zero-control-work",
+          "replay-hashes-identically-across-worker-counts"
+        ]
+      },
+      {
+        "id": "P-026",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "The replay's canonical projection includes the explanation set and the losing/shadowed candidate identities per step, so a provenance regression is caught by the same hash chain as a state regression; the differential sweep compares state, decisions and provenance together and reduces a disagreement to a re-runnable counterexample. Wider explanation coverage across every mode and state disposition remains GC-016's.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-023/toolchain/probe-replay.json",
+          "artifacts/gc-023/trx/"
+        ],
+        "observationEvidence": [
+          "replay-differential-sweep-is-clean-and-reducible"
+        ]
+      },
+      {
+        "id": "P-052",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "The gate reports its own evidence through the same structured probe document and a raw benchmark trace written beside it, with a stable observation name per behaviour and a digest over the observation table that the harness recomputes from the names. The cross-module diagnostic matrix remains GC-016's.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-023/toolchain/probe-replay.json",
+          "artifacts/gc-023/toolchain/probe-replay.json.trace"
+        ],
+        "observationEvidence": [
+          "replay-digest",
+          "replay-benchmark-trace"
+        ]
+      },
+      {
+        "id": "P-060",
+        "currentStatus": "Partial",
+        "proposedStatus": "Partial",
+        "whatChanged": "The row asks for recorded versions, commands, logs, fixture hashes and measurements. GC-023 records the fixture shape and seed as data (tests/GameCore.Replay/Data/replay-record.json), writes the raw and JSON benchmark traces as artifacts, and adds the disabled-shape instrumentation proof (both build configurations of the counting helpers and of the real instrumented derivation sources, with the qualification switch) as a machine-readable document. Measured budgets on a named machine remain GC-026's.",
+        "evidenceToBeProduced": [
+          "artifacts/gc-023/toolchain/telemetry-release-surface.json",
+          "artifacts/gc-023/toolchain/probe-replay.json",
+          "artifacts/gc-023/BUILD_REPORT.md"
+        ],
+        "observationEvidence": [
+          "replay-benchmark-trace",
+          "replay-observation-count"
+        ]
+      }
+    ],
+    "notProposed": [
+      "P-007, P-037, P-039, P-040, P-041, P-043, P-044, P-045, P-048 and P-053 keep their current status: GC-023 exercises their counters and traces through the same schemas but closes none of their remaining clauses.",
+      "No operation row is proposed. GC-023 adds no operation and changes no operation's outcome vocabulary.",
+      "TEST-023's budget table (the provisional numbers for 10,000 targets, plan apply pause and whole-world preparation) is not proposed as satisfied: GC-023 instruments what those budgets measure and asserts the zero-work rows, while the measured runs on the named machine belong to GC-026."
+    ],
+    "contractChanges": [
+      "`GameCore.Contracts` gains fourteen public types (the telemetry schema): `TelemetryCounter`, `TelemetryAggregation`, `TelemetrySchema`, `ITelemetryOwner`, `TelemetryCounting`, `TelemetryBytes`, `TelemetryRetention`, `TelemetryCounterSet`, `TelemetrySection`, `TelemetryFrame`, `TelemetryTrace`, `TelemetrySeries`, `TelemetrySeriesEntry` and `TelemetryDurations`. Additions only: no frozen line was removed or changed, and the fourteen type headers are recorded in `dotnet/tests/GameCore.Contracts.Tests/ContractTests.cs`'s additions allowlist exactly as GC-012 and GC-018 recorded theirs.",
+      "`ITelemetryOwner` is the fixed compact schema's owner seam: each runtime owner implements `TelemetryOwner` (a stable key) and `WriteTelemetry(TelemetryCounterSet)`. Twenty-two owners implement it (derivation result/closure/outcome/recipe cache, service resolution, the operation ledger, the resource ledger, the job fence, the callback gate, the quarantine registry, the planned publication, the execution driver, the guarded dispatch group, the publication store, the committed event store, the world resource ledger, the request ledger, the step message schedule, the input cutoff, the clock registry, the assembly publisher, the derived-assembly pipeline and the observation surface).",
+      "The switch is `GAMECORE_TELEMETRY`, taken from the new qualification marker package `com.gamecore.telemetry-qualification` by the contracts, derivation, composition, planning and Unity-runtime asmdefs, and defined unconditionally by the plain-dotnet shadow projects. Shipping projects omit the marker."
+    ]
   }
 }

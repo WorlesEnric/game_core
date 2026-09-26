@@ -36,6 +36,10 @@ def main() -> None:
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     for dependency in (
         "com.gamecore.fault-qualification",
+        # GC-023 adds a second qualification marker: the telemetry switch. Removing it here is what makes the
+        # marker-free clone a build in which every counting call site is compiled away, which is the shape
+        # tools/check_release_telemetry_free.py and the player inspection both depend on.
+        "com.gamecore.telemetry-qualification",
         "com.unity.test-framework",
         "com.unity.test-framework.performance",
     ):
@@ -185,8 +189,8 @@ def main() -> None:
     )
     replace_once(
         arguments,
-        '                w4Gate, faults, gc018, gc019, w5Gate, traversal, gc021, resultPath);',
-        '                w4Gate, gc018, gc019, resultPath);',
+        '                w4Gate, faults, gc018, gc019, w5Gate, traversal, gc021, replay, resultPath);',
+        '                w4Gate, gc018, gc019, replay, resultPath);',
     )
     replace_once(
         arguments,

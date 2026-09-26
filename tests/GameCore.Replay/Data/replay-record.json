@@ -1,0 +1,37 @@
+{
+  "artifact": "gamecore.gc023.replay-record/1",
+  "label": "integer-10000",
+  "fixtureSeed": 20260923,
+  "shape": {
+    "branches": 4,
+    "targetsPerBranch": 2,
+    "isolatedTargets": 2,
+    "providersPerBranch": 2,
+    "steps": 10000,
+    "maxWorkers": 8,
+    "catalogRevision": 1
+  },
+  "workerCounts": [1, 2, 4, 8],
+  "shuffledProducerSeedOffset": 977,
+  "stateBound": 1000000,
+  "fixtureWorldOrdinal": 0,
+  "jobsShape": {
+    "targets": 8,
+    "producersPerTarget": 8,
+    "batchesPerStep": 64,
+    "steps": 64,
+    "workIterationsPerBatch": 8192,
+    "stateBound": 1000000,
+    "innerLoopBatchCount": 1,
+    "workerCounts": [1, 2, 4, "JobsUtility.JobWorkerMaximumCount"],
+    "publishSeeds": [977, 104729],
+    "producerJob": "GameCore.Validation.ProbeHost.ReplayProducerJob (BurstCompile, IJobParallelFor; IJobParallelForExtensions.Schedule with innerloopBatchCount 1)",
+    "lane": "GameCore.Unity.Runtime.Messages.NativeMessageLane payload arena + managed TryPublishRow",
+    "merge": "GameCore.Unity.Runtime.Messages.WorldMessagePlane.DrainOwnerBatch -> NativeMessageLanes.MergeOwnerBatch (MessageOrderComparer)"
+  },
+  "observationDigest": "",
+  "supersededObservationDigest": "ea05047d14cd60526d06e2e36d0f63fbe490ef64f70e2f3da73b6ada3e9db526",
+  "_comment": "The recorded input trace of GC-023's 10,000-step integer fixture: the shape, the seed and the schedules the player probe and the EditMode suite both drive, plus the real-Unity-jobs shape. Nothing here is derived at load time; the generator turns it into the step script deterministically (IntegerFixtureGenerator.Generate) and the jobs shape is declared field by field. `observationDigest` was captured from a passing Linux IL2CPP -probeReplay run; tools/unity/run_replay_probe.sh rejects a changed value. It is EMPTY here on purpose: the observation table grew from 12 to 15 named observations (the real-Unity-jobs half), so the previous value in `supersededObservationDigest` no longer describes the table and must be re-recorded from the first passing run of the new table. Until then the harness prints the observed digest and continues, so an unrecorded digest can never pass as a recorded one. Re-record by copying the value the harness prints in its `-- replay digest <hex> is not recorded yet` note on the first run of the new table (the same value appears in that run's `replay-digest` step detail), then re-running the probe so the comparison is enforced. Note that artifacts/gc-023/toolchain/probe-replay.json from the round-1 build-host run still holds the superseded 12-observation digest and must not be copied."
+  ,
+  "_hashes": "Canonical state, decision, provenance, event and chain hashes are deliberately NOT literals here. The acceptance criterion TEST-022 states is that replays of the same recorded input agree with each other across worker counts, shuffled producer orders and publish permutations; a remembered hash would only assert that the code did not change, which is a weaker claim and a worse one to maintain. The probe and the suites compare two runs of this record, and the runs' hashes are recorded in the probe artifact (artifacts/gc-023/toolchain/probe-replay.json) as the build host's measurement."
+}

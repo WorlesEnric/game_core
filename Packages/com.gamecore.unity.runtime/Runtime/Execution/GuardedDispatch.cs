@@ -315,8 +315,10 @@ namespace GameCore.Unity.Runtime
     /// managed or unmanaged system exception stops the remaining systems instead of being logged and skipped by the
     /// stock group loop (04 s3, 04 s4, P-031).
     /// </summary>
-    public abstract partial class GuardedSystemGroup : ComponentSystemGroup, IStepDispatchFacts
+    public abstract partial class GuardedSystemGroup : ComponentSystemGroup, IStepDispatchFacts, ITelemetryOwner
     {
+        string ITelemetryOwner.TelemetryOwner => "gamecore.execution.dispatch";
+
         private GuardedDispatchPlan plan = GuardedDispatchPlan.Empty;
         private OrderedDispatchTable boundTable = GuardedDispatchPlan.Empty.ToOrderedTable(AssemblyEpoch.Zero);
         private ISystemDispatchCatalog? catalog;
@@ -341,6 +343,61 @@ namespace GameCore.Unity.Runtime
 
         /// <summary>Refused dispatches: the group was unbound or the sink already latched a fault.</summary>
         public int RefusedDispatchCount { get; private set; }
+
+        /// <summary>
+        /// Host-supplied monotonic microsecond clock. The kernel itself never reads a clock (P-008's determinism
+        /// boundary, and the P-022 deadline is host-supplied too), so durations are an explicit input: a host that
+        /// wants per-stage and job-wait durations assigns this, and a build without `GAMECORE_TELEMETRY` never
+        /// reads it, so no sample and no series is created (GC-023).
+        /// </summary>
+        public Func<long>? TelemetryClock { get; set; }
+
+#if GAMECORE_TELEMETRY
+        private TelemetrySeries? stageDurations;
+        private TelemetrySeries? jobWaitDurations;
+#endif
+
+        /// <summary>Writes this group's dispatch counters through the fixed compact schema (GC-023).</summary>
+        public void WriteTelemetry(TelemetryCounterSet into)
+        {
+            if (into == null)
+            {
+                throw new ArgumentNullException(nameof(into));
+            }
+
+            // A refused dispatch is a stale result: the group was unbound, or the sink had already latched a fault.
+            into.Add(TelemetryCounter.StaleResults, RefusedDispatchCount);
+#if GAMECORE_TELEMETRY
+            stageDurations?.WriteInto(into);
+            jobWaitDurations?.WriteInto(into);
+#endif
+        }
+
+#if GAMECORE_TELEMETRY
+        /// <summary>Records one stage's dispatch duration against its stable stage id (GC-023).</summary>
+        public void NoteStageDuration(Id128 stage, long microseconds)
+        {
+            if (stageDurations == null)
+            {
+                stageDurations = new TelemetrySeries(
+                    TelemetryCounter.StageDurationMicroseconds, TelemetryCounter.StageSampleCount);
+            }
+
+            stageDurations.Record(stage, microseconds);
+        }
+
+        /// <summary>Records one step's job-fence wait duration against the step's stage index (GC-023).</summary>
+        public void NoteJobWaitDuration(int stageIndex, long microseconds)
+        {
+            if (jobWaitDurations == null)
+            {
+                jobWaitDurations = new TelemetrySeries(
+                    TelemetryCounter.JobWaitDurationMicroseconds, TelemetryCounter.JobWaitSampleCount);
+            }
+
+            jobWaitDurations.Record(new Id128(0UL, unchecked((ulong)stageIndex + 1UL)), microseconds);
+        }
+#endif
 
         public GuardedDispatchPlan InstalledPlan => plan;
 
@@ -513,6 +570,13 @@ namespace GameCore.Unity.Runtime
             {
                 GuardedDispatchEntry entry = entries[i];
 
+#if GAMECORE_TELEMETRY
+                // Per-stage duration is sampled only when the host supplied a clock. A build without the marker
+                // never reaches this code at all, which is what makes the disabled shape cost nothing (GC-023).
+                Func<long>? stageClock = TelemetryClock;
+                long stageStarted = stageClock == null ? 0L : stageClock();
+#endif
+
                 if (!currentCatalog.TryResolve(entry.SystemKey, out SystemDispatchTarget target) || !target.IsResolved)
                 {
                     // A missing registration is an assembly defect, and earlier entries of this step may already
@@ -591,6 +655,15 @@ namespace GameCore.Unity.Runtime
                 }
 
                 currentFences.Store(entry.StageIndex, output);
+
+#if GAMECORE_TELEMETRY
+                if (stageClock != null)
+                {
+                    // One sample per dispatched entry, against its stable stage id, so a per-stage cost regression
+                    // is attributable to a stage rather than to "dispatch" (GC-023).
+                    NoteStageDuration(entry.Stage.Value, stageClock() - stageStarted);
+                }
+#endif
 
                 if (failed)
                 {

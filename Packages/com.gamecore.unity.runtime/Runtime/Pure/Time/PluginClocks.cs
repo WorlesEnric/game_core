@@ -157,8 +157,10 @@ namespace GameCore.Execution.Time
     /// capacity is refused explicitly instead of overflowing silently, and wake demand is collected in canonical
     /// order (due, then scheduling sequence, then wake id) rather than in completion order.
     /// </summary>
-    public sealed class PluginClockRegistry
+    public sealed class PluginClockRegistry : ITelemetryOwner
     {
+        string ITelemetryOwner.TelemetryOwner => "gamecore.time.clocks";
+
         private readonly Dictionary<Id128, PluginClockSpec> clocks = new Dictionary<Id128, PluginClockSpec>();
         private readonly Dictionary<Id128, List<WakeRecord>> wakesByClock = new Dictionary<Id128, List<WakeRecord>>();
         private readonly List<WakeRecord> allWakes = new List<WakeRecord>();
@@ -178,6 +180,9 @@ namespace GameCore.Execution.Time
 
         public int WakeCount => allWakes.Count;
 
+        /// <summary>Deepest the retained wake set was observed to be (08 request high-water).</summary>
+        public int WakeHighWaterMark { get; private set; }
+
         /// <summary>Wakes refused because the bounded queue was full; reported, never silently dropped (P-038).</summary>
         public int OverflowCount { get; private set; }
 
@@ -187,6 +192,24 @@ namespace GameCore.Execution.Time
         public int CancelledCount { get; private set; }
 
         public int ConsumedCount { get; private set; }
+
+        /// <summary>
+        /// Writes the clock-registry counters through the fixed compact schema (GC-023): the pending wake set is the
+        /// bounded request queue here, and a refused schedule because it was full is request overflow (P-038).
+        /// </summary>
+        public void WriteTelemetry(TelemetryCounterSet into)
+        {
+            if (into == null)
+            {
+                throw new ArgumentNullException(nameof(into));
+            }
+
+            // The deepest the wake set was observed to be, not the cumulative number of wakes ever scheduled:
+            // a high-water mark that only ever grows with elapsed time cannot witness backpressure (GC-023).
+            into.ObserveMax(TelemetryCounter.RequestHighWater, WakeHighWaterMark);
+            into.Add(TelemetryCounter.RequestOverflow, OverflowCount);
+            into.Add(TelemetryCounter.StaleResults, DuplicateCount);
+        }
 
         public int PendingWakeCount
         {
@@ -357,6 +380,11 @@ namespace GameCore.Execution.Time
             }
 
             allWakes.Add(created);
+            if (allWakes.Count > WakeHighWaterMark)
+            {
+                WakeHighWaterMark = allWakes.Count;
+            }
+
             wakesByClock[clockId].Add(created);
             wake = created;
             code = DiagnosticCode.None;

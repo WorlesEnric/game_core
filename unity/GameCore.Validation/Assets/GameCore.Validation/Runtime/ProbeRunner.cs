@@ -145,6 +145,10 @@ namespace GameCore.Validation.ProbeHost
                 else if (arguments.LifecycleStress)
                 {
                     ProbeLifecycleStress.Run(report);
+                }
+                else if (arguments.Replay)
+                {
+                    ProbeReplay.Run(report);
                     report.CompletePositive();
                 }
                 else
@@ -255,6 +259,11 @@ namespace GameCore.Validation.ProbeHost
             if (arguments.LifecycleStress)
             {
                 return Named("LifecycleStress", "GC-022");
+            }
+
+            if (arguments.Replay)
+            {
+                return Named("Replay", "GC-023");
             }
 
             return new ProbeReport(

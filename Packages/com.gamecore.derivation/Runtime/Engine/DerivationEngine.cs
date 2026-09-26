@@ -74,8 +74,10 @@ namespace GameCore.Derivation
     /// Immutable derivation output: the resulting assemblies, complete provenance, bounded counters and the delta
     /// against the previous result. A rejected result carries diagnostics and no assembly at all.
     /// </summary>
-    public sealed class DerivationResult
+    public sealed class DerivationResult : ITelemetryOwner
     {
+        string ITelemetryOwner.TelemetryOwner => "gamecore.derivation.engine";
+
         private DerivationResult(
             bool accepted,
             DerivationRejectionKind rejection,
@@ -169,8 +171,27 @@ namespace GameCore.Derivation
                     return Assemblies[i];
                 }
             }
-
             return null;
+        }
+
+        /// <summary>
+        /// Writes this result's counters into <paramref name="into"/> through the fixed compact schema (GC-023):
+        /// the derivation cost and index-visit evidence, plus the delta's contribution add/retract counts when a
+        /// delta was computed. A rejected result has no delta, so those two counters stay at zero.
+        /// </summary>
+        public void WriteTelemetry(TelemetryCounterSet into)
+        {
+            if (into == null)
+            {
+                throw new ArgumentNullException(nameof(into));
+            }
+
+            Counters.WriteTelemetry(into);
+            if (Delta != null)
+            {
+                into.Add(TelemetryCounter.ContributionsAdded, Delta.Added.Count);
+                into.Add(TelemetryCounter.ContributionsRetracted, Delta.Removed.Count);
+            }
         }
 
         /// <summary>Explanation of one (target, capability) pair, or null when the pair has none.</summary>
@@ -320,6 +341,9 @@ namespace GameCore.Derivation
                 {
                     continue;
                 }
+                // One stratum was iterated (08 `StrataEvaluated`); only non-empty strata are counted, because an
+                // empty stratum executes no rule and costs one dictionary lookup.
+                TelemetryCounting.Count(counters.Telemetry, TelemetryCounter.StrataEvaluated);
 
                 Dictionary<SlotGroupKey, List<RankedCandidate>> groups =
                     new Dictionary<SlotGroupKey, List<RankedCandidate>>();
@@ -335,6 +359,9 @@ namespace GameCore.Derivation
                         source.Install.Scope, rule.Reach, rule.SelectorContracts, rule.OutputCapability.Capability);
                     counters.IndexBucketsVisited++;
                     counters.IndexTargetsVisited += candidates.Count;
+                    // The rule's population bucket and every candidate in it are control nodes (GC-023).
+                    TelemetryCounting.Add(
+                        counters.Telemetry, TelemetryCounter.ControlNodesVisited, candidates.Count + 1L);
 
                     for (int c = 0; c < candidates.Count; c++)
                     {

@@ -103,8 +103,10 @@ namespace GameCore.Execution
     ///  * **explicit counters** for expiry, backpressure, foreign worlds, eviction and pinned stalls, so retention
     ///    behaviour is evidence rather than inference (TEST-023).
     /// </summary>
-    public sealed class StepPublicationStore : IObservationReader
+    public sealed class StepPublicationStore : IObservationReader, ITelemetryOwner
     {
+        string ITelemetryOwner.TelemetryOwner => "gamecore.observation.images";
+
         private readonly object gate = new object();
         private readonly List<PublishedStepImage> retained = new List<PublishedStepImage>();
         private readonly List<SnapshotLease> activeLeases = new List<SnapshotLease>();
@@ -181,6 +183,27 @@ namespace GameCore.Execution
 
         /// <summary>Leases disposed, at most once each.</summary>
         public int ReleasedLeaseCount { get; private set; }
+
+        /// <summary>
+        /// Writes the publication-store counters through the fixed compact schema (GC-023): a live snapshot lease is
+        /// the reader-side lease count, and every refusal (expired token, foreign world, retention backpressure) is
+        /// a stale result rather than a silent success.
+        /// </summary>
+        public void WriteTelemetry(TelemetryCounterSet into)
+        {
+            if (into == null)
+            {
+                throw new ArgumentNullException(nameof(into));
+            }
+
+            into.ObserveMax(TelemetryCounter.LiveLeases, ActiveLeaseCount);
+            into.Add(
+                TelemetryCounter.StaleResults,
+                ForeignWorldCount + BackpressureCount + ExpiryCount + RefusedPublicationCount);
+
+            // `StepsAdvanced` is *not* reported here: the execution driver is the authority on committed steps, and
+            // two owners reporting the same counter would double it in a frame (GC-023).
+        }
 
         public PublishedStepImage? Last { get; private set; }
 
