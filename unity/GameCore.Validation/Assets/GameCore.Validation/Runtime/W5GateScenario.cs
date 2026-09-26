@@ -963,6 +963,7 @@ namespace GameCore.Validation.ProbeHost
                     LogicalStepId stepBefore = host.CurrentStep;
                     int imagesBefore = host.Observation.Snapshots.PublishedCount;
                     int rowsBefore = publisher.Published.BindingRowCount;
+                    CompositionRevision revisionBefore = publisher.PublishedRevision;
                     int reachesBefore = host.Faults.ReachCountOf(FaultBoundary.FirstLiveWrite);
 
                     host.Faults.Arm(FaultBoundary.FirstLiveWrite);
@@ -980,7 +981,7 @@ namespace GameCore.Validation.ProbeHost
                     // No epoch and no image published: the failed publication wrote live state and stopped there
                     // (P-031). The world is terminal, and the last good image is still the only safe observation.
                     bool nothingPublished = host.CurrentEpoch.Equals(epochBefore)
-                        && publisher.PublishedRevision.Value.Equals(epochBefore.Value)
+                        && publisher.PublishedRevision.Equals(revisionBefore)
                         && host.CurrentStep.Equals(stepBefore)
                         && host.Observation.Snapshots.PublishedCount == imagesBefore
                         && publisher.Published.Epoch.Equals(epochBefore)

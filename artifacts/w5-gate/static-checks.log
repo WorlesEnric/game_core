@@ -1,0 +1,65 @@
+# W5-GATE static checks (authoring host: macOS, no .NET SDK, no Unity, no Mono)
+# Nothing below is a build, an import, a test or a player run.
+
+$ python3 tools/check_game_core_csharp.py
+checked 465 C# file(s)
+ok
+
+$ python3 tools/check_contract_surface_parity.py
+tests/GameCore.ReferenceSeams/api/GameCore.Contracts.api.txt: 221 types (class 89, enum 41, interface 23, struct 68), 41 enums checked against Packages/com.gamecore.contracts/Runtime
+5 addition(s) beyond the frozen snapshot (allowed, must be listed in HANDOFF):
+  + enum EnvelopeError adds DuplicateField = 17
+  + enum EnvelopeError adds MissingRequiredField = 16
+  + enum FactoryKind adds Handler = 10
+  + enum StateDispositionKind adds Reset = 5
+  + enum StateDispositionKind adds RetainDormant = 4
+every snapshotted enum and enum value exists in the production sources with the same numeric value
+
+$ python3 tools/validate_game_core_docs.py --self-test
+Documentation validator self-test passed: 9 isolated positive/negative fixtures.
+
+$ python3 tools/validate_game_core_docs.py
+Game Core documentation validation passed: 14 Markdown documents; local links, anchors, IDs, traceability, task DAG and wave ordering checked.
+No Unity builds, gameplay tests, runtime benchmarks, or remote URL checks were executed.
+
+$ python3 tools/check_release_fault_free.py --no-build
+GC-017 release surface: PASS
+  [not run] the compiled latch assembly in both configurations (--no-build)
+  no runtime source keeps a latch reference once the qualification symbol is undefined
+  the apply path's mask by [System.Diagnostics.Conditional("GAMECORE_FAULT_INJECTION")] is intact (8 call site(s))
+  the symbol is driven by com.gamecore.fault-qualification, referenced only by the validation manifest
+
+$ bash -n tools/run_w5_gate.sh tools/unity/run_w5_gate_probe.sh
+clean
+
+$ python3 -m json.tool artifacts/gates/w4-generic-profile/inventory.json
+clean
+# .meta GUID uniqueness over the whole worktree
+701 metas, 701 unique guids, 0 duplicate guid(s), 0 without a guid
+
+# every .cs under Packages/ and unity/GameCore.Validation/Assets has a .meta
+0 C# files without a .meta
+
+# digest literals recomputed independently from the frozen observation table
+  narrative 768dc415bd79e76adacb2472f7af5383bff25b4da44635a94eb3fa64f4dc250c
+  cards     5740b580c5b807796af5456396195baf761947ff6fc819e173074aeeeef297ff
+
+# observation table: scenario vs probe harness vs EditMode suite
+scenario  : ['w5gate-one-world-with-retained-observation', 'w5gate-pinned-snapshots-are-read-only', 'w5gate-checkpoint-from-the-committed-boundary', 'w5gate-prewrite-fault-keeps-the-old-assembly', 'w5gate-postwrite-fault-fail-stops-the-world', 'w5gate-restore-into-a-new-session', 'w5gate-adapters-bind-to-the-restored-world', 'w5gate-retired-world-callbacks-are-rejected']
+harness   : ['w5gate-one-world-with-retained-observation', 'w5gate-pinned-snapshots-are-read-only', 'w5gate-checkpoint-from-the-committed-boundary', 'w5gate-prewrite-fault-keeps-the-old-assembly', 'w5gate-postwrite-fault-fail-stops-the-world', 'w5gate-restore-into-a-new-session', 'w5gate-adapters-bind-to-the-restored-world']
+identical : False
+suite     : ['w5gate-one-world-with-retained-observation', 'w5gate-pinned-snapshots-are-read-only', 'w5gate-checkpoint-from-the-committed-boundary', 'w5gate-prewrite-fault-keeps-the-old-assembly', 'w5gate-postwrite-fault-fail-stops-the-world', 'w5gate-restore-into-a-new-session', 'w5gate-adapters-bind-to-the-restored-world', 'w5gate-retired-world-callbacks-are-rejected']
+suite covers every observation: True
+digest literals in probe/suite: True
+# note: the first table check above matched the harness with a regex that missed the last entry (which ends in '; do'); re-checked directly: the harness lists all eight names.
+
+$ python3 tools/make_unity_metas.py   # idempotent
+created 0 meta file(s)
+
+$ python3 tools/verify_generated_catalog.py <each committed catalog>
+unity/GameCore.Validation/Assets/GameCore.Validation/Generated/ProbeCatalog.g.cs: 3 groups, 4 factories, 1 schemas, 1 features, 25321 bytes
+file hash and catalog fingerprint both recompute correctly from the generated tables
+unity/GameCore.Validation/Assets/GameCore.Validation/GeneratedCards/CardCatalog.g.cs: 5 groups, 9 factories, 1 schemas, 0 features, 27893 bytes
+file hash and catalog fingerprint both recompute correctly from the generated tables
+unity/GameCore.Validation/Assets/GameCore.Validation/GeneratedCheckpoint/CheckpointCatalog.g.cs: 0 groups, 12 factories, 12 schemas, 1 features, 273244 bytes
+file hash and catalog fingerprint both recompute correctly from the generated tables
