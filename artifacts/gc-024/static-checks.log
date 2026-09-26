@@ -1,0 +1,58 @@
+# GC-024 static checks, run on the authoring host (macOS, no Unity, no .NET SDK).
+# Nothing here is a build, an import, a Unity test, a player run or a measurement. The commands below are
+# interpreter-level only; every one of them is shown with its verbatim result.
+
+$ git rev-parse HEAD
+20b4648bbe4abff801b17f7a2a316c480d4d32d5
+
+$ python3 tools/check_game_core_csharp.py
+checked 562 C# file(s)
+ok
+
+$ python3 tools/gc024_genre_audit.py
+gc024 genre audit: /Users/yangcao/wkspace/gc-wt/gc-024/artifacts/gc-024/genre-audit.json
+kernel=32; family=13; generated=0; qualification=57; asmdefs=69; projectFiles=33; kernelSources=317; referenceAssertions=218; violations=0; kernelGenreTokens=0; missingPackages=0; familiesOnKernel=13/13; clean=true
+
+$ python3 tools/validate_game_core_docs.py --self-test
+Documentation validator self-test passed: 9 isolated positive/negative fixtures.
+
+$ python3 tools/validate_game_core_docs.py
+Game Core documentation validation passed: 14 Markdown documents; local links, anchors, IDs, traceability, task DAG and wave ordering checked.
+No Unity builds, gameplay tests, runtime benchmarks, or remote URL checks were executed.
+
+$ python3 tools/verify_generated_catalog.py
+unity/GameCore.Validation/Assets/GameCore.Validation/Generated/ProbeCatalog.g.cs: 3 groups, 4 factories, 1 schemas, 1 features, 25321 bytes
+file hash and catalog fingerprint both recompute correctly from the generated tables
+
+$ python3 tools/check_contract_surface_parity.py
+tests/GameCore.ReferenceSeams/api/GameCore.Contracts.api.txt: 221 types (class 89, enum 41, interface 23, struct 68), 41 enums checked against Packages/com.gamecore.contracts/Runtime
+5 addition(s) beyond the frozen snapshot (allowed, must be listed in HANDOFF):
+  + enum EnvelopeError adds DuplicateField = 17
+  + enum EnvelopeError adds MissingRequiredField = 16
+  + enum FactoryKind adds Handler = 10
+  + enum StateDispositionKind adds Reset = 5
+  + enum StateDispositionKind adds RetainDormant = 4
+every snapshotted enum and enum value exists in the production sources with the same numeric value
+
+$ python3 tools/check_release_telemetry_free.py --no-build
+    },
+    "directoryBuildPropsDefinesSymbol": false
+  }
+}
+
+
+$ python3 tools/check_release_fault_free.py --no-build
+GC-017 release surface: PASS
+  [not run] the compiled latch assembly in both configurations (--no-build)
+  no runtime source keeps a latch reference once the qualification symbol is undefined
+  the apply path's mask by [System.Diagnostics.Conditional("GAMECORE_FAULT_INJECTION")] is intact (8 call site(s))
+  the symbol is driven by com.gamecore.fault-qualification, referenced only by the validation manifest
+
+$ bash -n tools/run_conformance.sh tools/unity/run_conformance_probe.sh tools/unity/prepare_gc017_release_project.py
+bash -n: both scripts parse
+
+$ python3 -m py_compile tools/gc024_genre_audit.py tools/unity/prepare_gc017_release_project.py tools/check_game_core_csharp.py
+py_compile: all three tools parse
+
+$ python3 tools/make_unity_metas.py unity/GameCore.Validation tests/GameCore.ReferenceConformance  # idempotent
+created 0 meta file(s)

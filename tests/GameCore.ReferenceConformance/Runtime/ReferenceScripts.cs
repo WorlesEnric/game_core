@@ -514,18 +514,12 @@ namespace GameCore.ReferenceConformance
                     new[] { ConformanceOperations.MountProvider, ConformanceOperations.MountRewardBridge },
                     new List<ConformanceStep>
                     {
-                        Pre("reward-enqueue", 1, ConformanceOperations.CommitCommand, 1,
-                            "commit the permit choice: the fact, its event and the pending reward publish together",
-                            new[]
-                            {
-                                ConformanceExpectation.Require(ConformanceFields.BridgePermit, "0", "1"),
-                                ConformanceExpectation.Require(ConformanceFields.BridgePermitVersion, "1", "2"),
-                                ConformanceExpectation.Require(
-                                    ConformanceFields.MaraConversationStatus, "0", "2"),
-                                ConformanceExpectation.Require(
-                                    ConformanceFields.OutboxRecognised, "0", "1"),
-                                ConformanceExpectation.Require(ConformanceFields.OutboxOpen, "0", "1"),
-                            }),
+                        // The row itself: 07:267's step 12 is the commit whose receipt the reward keys on, so the row
+                        // is executed by submitting that one choice. Its expectations are the table's own — the fact,
+                        // its version, the conversation, the recognised event and the open obligation, all in one
+                        // publication — so nothing here restates what the transcription already demands.
+                        Row("reward-enqueue", ConformanceOperations.CommitCommand, 1,
+                            "commit the permit choice: the fact, its event and the pending reward publish together"),
                         Row("reward-bridge-removal", ConformanceOperations.UnmountRewardBridge, 0,
                             "attempt to unmount the bridge while one reward is still pending"),
                         Row("reward-settle", ConformanceOperations.SettleReward, 0,
