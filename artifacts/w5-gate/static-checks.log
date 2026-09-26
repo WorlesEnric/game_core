@@ -63,3 +63,20 @@ unity/GameCore.Validation/Assets/GameCore.Validation/GeneratedCards/CardCatalog.
 file hash and catalog fingerprint both recompute correctly from the generated tables
 unity/GameCore.Validation/Assets/GameCore.Validation/GeneratedCheckpoint/CheckpointCatalog.g.cs: 0 groups, 12 factories, 12 schemas, 1 features, 273244 bytes
 file hash and catalog fingerprint both recompute correctly from the generated tables
+$ python3 - <<'PY'  # falsifiability self-test of the balance rule (tools/check_release_fault_free.py)
+import importlib.util
+spec = importlib.util.spec_from_file_location("crff", "tools/check_release_fault_free.py")
+crff = importlib.util.module_from_spec(spec); spec.loader.exec_module(crff)
+for name, text in CASES: ...   # assert_balanced(text, name)
+PY
+  no finding   (correct, the input is balanced): balanced, paren inside a string
+  no finding   (correct, the input is balanced): balanced, paren inside a char literal
+  no finding   (correct, the input is balanced): balanced, escaped quote then paren
+  no finding   (correct, the input is balanced): balanced, verbatim string with a paren
+  finding      (correct, the input is a split): REAL split: extra opener -> REAL split: extra opener: the compiled text of this configur
+  finding      (correct, the input is a split): REAL split: extra closer -> REAL split: extra closer: the compiled text of this configur
+  finding      (correct, the input is a split): REAL split: bracket -> REAL split: bracket: the compiled text of this configuration
+  finding      (correct, the input is a split): REAL split hidden behind a brace in a string -> REAL split hidden behind a brace in a string: the compiled t
+
+# the same view is applied to every runtime source by check_source_configurations(); the full
+# release-surface check on this revision: see `python3 tools/check_release_fault_free.py --no-build` above.
