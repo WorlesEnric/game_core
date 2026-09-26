@@ -32,6 +32,8 @@ namespace GameCore.Validation.ProbeHost
         private const string W6GateArgumentName = "-probeW6Gate";
         private const string CatalogCoverageArgumentName = "-probeCatalogCoverage";
         private const string BenchmarkArgumentName = "-probeBenchmark";
+        private const string W7GateArgumentName = "-probeW7Gate";
+        private const string RecoverySmokeArgumentName = "-probeRecoverySmoke";
 
         private ProbeArguments(
             bool missingRegistration,
@@ -56,6 +58,8 @@ namespace GameCore.Validation.ProbeHost
             bool w6Gate,
             bool catalogCoverage,
             bool benchmark,
+            bool w7Gate,
+            bool recoverySmoke,
             string? resultPath)
         {
             MissingRegistration = missingRegistration;
@@ -80,6 +84,8 @@ namespace GameCore.Validation.ProbeHost
             W6Gate = w6Gate;
             CatalogCoverage = catalogCoverage;
             Benchmark = benchmark;
+            W7Gate = w7Gate;
+            RecoverySmoke = recoverySmoke;
             ResultPath = resultPath;
         }
 
@@ -245,6 +251,7 @@ namespace GameCore.Validation.ProbeHost
         /// </summary>
         public bool CatalogCoverage { get; }
 
+        /// <summary>
         /// Runs the GC-026 performance benchmark: the generated 1,000-scope/10,000-target fixture through the real
         /// derivation and incremental engines for the declared update sizes, the whole-world mode switch, the spawn,
         /// the reparent and the lifecycle cycles; two real owned worlds for the idle window, the unchanged-composition
@@ -255,6 +262,24 @@ namespace GameCore.Validation.ProbeHost
         /// TEST-008, TEST-013, TEST-023).
         /// </summary>
         public bool Benchmark { get; }
+
+        /// <summary>
+        /// Runs the Wave 7 integration-gate mode: the complete W7 exit gate on one merged revision — GC-025's catalog
+        /// coverage sequence re-run over the merged kernel, GC-027's recovery sequence re-run for all three genres
+        /// with the postwrite-apply and restart fault points named, GC-026's incremental-versus-full derivation
+        /// equivalence at the declared 10,000-target scale, and the merged dispatch of every W7 mode
+        /// (W7-GATE).
+        /// </summary>
+        public bool W7Gate { get; }
+
+        /// <summary>
+        /// Runs the GC-027 release recovery smoke: the PRODUCTION `WorldRecovery.Recover` path driven by a real
+        /// file checkpoint in the marker-free release player, with no fault latches — a captured checkpoint is
+        /// published to a real file, a new session is recovered from it at different native handles, and the
+        /// recovered world's own state is read back from the recovered world (P-032, P-045, P-049, P-053).
+        /// It is one of the modes a shipping build keeps, because it drives production seams only.
+        /// </summary>
+        public bool RecoverySmoke { get; }
 
         /// <summary>Destination path of the structured JSON result.</summary>
         public string? ResultPath { get; }
@@ -268,6 +293,8 @@ namespace GameCore.Validation.ProbeHost
             || W6Gate
             || CatalogCoverage
             || Benchmark
+            || W7Gate
+            || RecoverySmoke
             || !string.IsNullOrEmpty(ResultPath);
 
         /// <summary>True when a result destination was supplied; without it the probe cannot record evidence.</summary>
@@ -297,7 +324,8 @@ namespace GameCore.Validation.ProbeHost
             bool w6Gate = false;
             bool catalogCoverage = false;
             bool benchmark = false;
-            string? resultPath = null;
+            bool w7Gate = false;
+            bool recoverySmoke = false;
             for (int i = 0; i < arguments.Length; i++)
             {
                 string argument = arguments[i];
@@ -389,6 +417,14 @@ namespace GameCore.Validation.ProbeHost
                 {
                     benchmark = true;
                 }
+                else if (argument == W7GateArgumentName)
+                {
+                    w7Gate = true;
+                }
+                else if (argument == RecoverySmokeArgumentName)
+                {
+                    recoverySmoke = true;
+                }
                 else if (argument == ResultArgumentName && i + 1 < arguments.Length)
                 {
                     resultPath = arguments[i + 1];
@@ -399,7 +435,7 @@ namespace GameCore.Validation.ProbeHost
                 missingRegistration, worldDispatch, w1Gate, w2Gate, w3Gate, narrative, cards, w4Profile, gc013,
                 lifecycleStress,
                 w4Gate, faults, gc018, gc019, w5Gate, traversal, gc021, recovery, replay, w6Gate, catalogCoverage,
-                benchmark, resultPath);
+                benchmark, w7Gate, recoverySmoke, resultPath);
         }
     }
 }

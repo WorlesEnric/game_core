@@ -174,6 +174,16 @@ namespace GameCore.Validation.ProbeHost
                     ProbeBenchmark.Run(report);
                     report.CompletePositive();
                 }
+                else if (arguments.W7Gate)
+                {
+                    ProbeW7Gate.Run(report);
+                    report.CompletePositive();
+                }
+                else if (arguments.RecoverySmoke)
+                {
+                    ProbeRecoverySmoke.Run(report, arguments.ResultPath);
+                    report.CompletePositive();
+                }
                 else
                 {
                     RunAotRootsProbe(report);
@@ -307,6 +317,16 @@ namespace GameCore.Validation.ProbeHost
             if (arguments.Benchmark)
             {
                 return Named("Benchmark", "GC-026");
+            }
+
+            if (arguments.W7Gate)
+            {
+                return Named("W7Gate", "W7-GATE");
+            }
+
+            if (arguments.RecoverySmoke)
+            {
+                return Named("RecoverySmoke", "GC-027");
             }
 
             return new ProbeReport(

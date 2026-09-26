@@ -113,17 +113,31 @@ namespace GameCore.Validation.ProbeHost
     public static class Gc027Scenario
     {
         /// <summary>
+        /// The two observation names this task's own definition names as fault points, quoted once so the Wave 7
+        /// integration gate can address them without repeating a literal: the postwrite-apply refusal and the restart
+        /// from the store alone. `ObservationNames` is built from them, so a rename moves both together.
+        /// </summary>
+        public const string PostwriteApplyObservation = "gc027-postwrite-apply-fault-never-exposes-a-destination";
+
+        /// <inheritdoc cref="PostwriteApplyObservation"/>
+        public const string RestartObservation = "gc027-restart-from-the-store-recovers-without-in-process-state";
+
+        /// <summary>The first observation of the table, named so the table reads as its own sequence.</summary>
+        public const string SourceWorldObservation =
+            "gc027-source-world-captures-and-publishes-a-verified-checkpoint";
+
+        /// <summary>
         /// The observation names one family's run records, in execution order. Both families record exactly these
         /// names, so a renamed or dropped observation fails the EditMode suite and the player probe instead of
         /// shrinking them silently.
         /// </summary>
         public static readonly string[] ObservationNames =
         {
-            "gc027-source-world-captures-and-publishes-a-verified-checkpoint",
+            SourceWorldObservation,
             "gc027-capture-copy-fault-produces-no-checkpoint",
             "gc027-publication-fault-keeps-the-previous-document",
             "gc027-reference-repair-fault-never-builds-a-destination",
-            "gc027-postwrite-apply-fault-never-exposes-a-destination",
+            PostwriteApplyObservation,
             "gc027-recovery-publication-fault-keeps-the-registry-unchanged",
             "gc027-recovery-publishes-a-new-session-with-the-captured-state",
             "gc027-restored-world-uses-different-native-handles",
@@ -132,7 +146,7 @@ namespace GameCore.Validation.ProbeHost
             "gc027-outbox-append-fault-refuses-before-delivery",
             "gc027-outbox-delivery-fault-redelivers-with-one-destination-effect",
             "gc027-outbox-acknowledgement-fault-records-or-redelivers-once",
-            "gc027-restart-from-the-store-recovers-without-in-process-state",
+            RestartObservation,
             "gc027-restart-without-a-document-or-incompatible-content-exposes-nothing",
             "gc027-transient-failure-is-retried-under-the-host-bound",
             "gc027-recovered-engine-physics-is-reseeded-not-continued",
