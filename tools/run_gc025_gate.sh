@@ -170,7 +170,7 @@ echo "== 2. plain dotnet =="
 
 run_step dotnet-build "${DOTNET}" build dotnet/GameCore.sln -c Release
 run_step dotnet-test "${DOTNET}" test dotnet/GameCore.sln -c Release --no-build \
-  --logger "trx;LogFileName=gc025.trx" --results-directory "${ARTIFACTS}/trx"
+  --logger "trx;LogFilePrefix=gc025" --results-directory "${ARTIFACTS}/trx"
 
 # --------------------------------------------------------------------------------------------------------------
 # 3-5. Unity resolve, EditMode and PlayMode.
