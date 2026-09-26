@@ -286,10 +286,12 @@ namespace GameCore.Execution.Recovery
 
                 if (File.Exists(path))
                 {
-                    File.Delete(path);
+                    File.Replace(temporary, path, null);
                 }
-
-                File.Move(temporary, path);
+                else
+                {
+                    File.Move(temporary, path);
+                }
             }
             catch (Exception exception)
             {
