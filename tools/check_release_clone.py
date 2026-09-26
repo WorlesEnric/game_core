@@ -59,6 +59,8 @@ REMOVED_TYPES = [
  'W6GateScenario', 'W6GateFamily', 'W6CompositionAudit', 'W6FamilyNarrativeHost', 'W6FamilyCardsHost',
  'W6FamilyTraversalHost', 'ProbeW6Gate', 'W6StageRuntime', 'IW6Family', 'W6RewardDestination',
  'W6FirstCommittedEventSource', 'LifecyclePlayModeMatrix',
+ 'Gc027Scenario', 'Gc027Family', 'Gc027SourceWorld', 'Gc027RestoreBuilder', 'Gc027NarrativeHost', 'Gc027CardsHost',
+ 'ProbeRecovery',
 ]
 REMOVED_MEMBERS = [
  'RunReloadRoute', 'RunBothW6Gate', 'RunW6Gate', 'W6GateDigest', 'W6GateGeneratedDigest', 'W6GateFixtureDigest',
@@ -67,7 +69,8 @@ REMOVED_MEMBERS = [
  'StressDeclarations', 'StressInstance', 'StressMount', 'StressUnmount',
 ]
 REMOVED_MODES = [('Faults', 'faults'), ('W5Gate', 'w5Gate'), ('Gc021', 'gc021'),
-                 ('LifecycleStress', 'lifecycleStress'), ('Replay', 'replay'), ('W6Gate', 'w6Gate')]
+                 ('LifecycleStress', 'lifecycleStress'), ('Replay', 'replay'), ('W6Gate', 'w6Gate'),
+                 ('Recovery', 'recovery')]
 KEPT_MODES = [('MissingRegistration', 'missingRegistration'), ('WorldDispatch', 'worldDispatch'),
               ('W1Gate', 'w1Gate'), ('W2Gate', 'w2Gate'), ('W3Gate', 'w3Gate'), ('Narrative', 'narrative'),
               ('Cards', 'cards'), ('W4Profile', 'w4Profile'), ('Gc013', 'gc013'), ('W4Gate', 'w4Gate'),
