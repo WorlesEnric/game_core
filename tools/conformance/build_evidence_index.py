@@ -179,7 +179,8 @@ class Corpus(object):
         # `<root>/benchmark/raw/runN/`. One walk is easier to keep honest than a list of known subdirectories.
         for directory, _, filenames in os.walk(self.root):
             for name in sorted(filenames):
-                if not name.startswith("probe-") or not name.endswith(".json"):
+                if (not name.startswith("probe-") or not name.endswith(".json")
+                        or name.endswith(".trace.json")):
                     continue
                 path = os.path.join(directory, name)
                 mode, observations, result, _ = _read_probe(path)

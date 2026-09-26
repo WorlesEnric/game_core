@@ -398,7 +398,7 @@ if stage_enabled host; then
   host_check gate-sources "${PYTHON}" tools/check_gate_sources.py --json "${ARTIFACTS}/host/gate-sources.json"
   host_check release-clone-self-test "${PYTHON}" tools/check_release_clone.py --self-test
   host_check genre-audit "${PYTHON}" tools/gc024_genre_audit.py --root "${REPO_ROOT}" \
-    --out "artifacts/gc-024/genre-audit.json"
+    --out "${ARTIFACTS}/genre-audit.json"
   host_check native-leak-attribution "${PYTHON}" tools/attribute_native_leaks.py \
     --log "${ARTIFACTS}/unity/editmode.log" --log "${ARTIFACTS}/unity/playmode.log" \
     --out "${ARTIFACTS}/toolchain/native-leak-attribution.json"
