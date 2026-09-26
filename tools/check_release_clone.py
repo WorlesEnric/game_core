@@ -71,7 +71,8 @@ REMOVED_MODES = [('Faults', 'faults'), ('W5Gate', 'w5Gate'), ('Gc021', 'gc021'),
 KEPT_MODES = [('MissingRegistration', 'missingRegistration'), ('WorldDispatch', 'worldDispatch'),
               ('W1Gate', 'w1Gate'), ('W2Gate', 'w2Gate'), ('W3Gate', 'w3Gate'), ('Narrative', 'narrative'),
               ('Cards', 'cards'), ('W4Profile', 'w4Profile'), ('Gc013', 'gc013'), ('W4Gate', 'w4Gate'),
-              ('Gc018', 'gc018'), ('Gc019', 'gc019'), ('Traversal', 'traversal')]
+              ('Gc018', 'gc018'), ('Gc019', 'gc019'), ('Traversal', 'traversal'),
+              ('CatalogCoverage', 'catalogCoverage')]
 
 problems = []
 files = []

@@ -36,6 +36,22 @@ namespace GameCore.Validation.ProbeHost
         StatePolicy = 9,
         /// <summary>Generated registration kind <c>Handler</c>.</summary>
         Handler = 10,
+
+        /// <summary>A closed-generic root statement: not a <c>FactoryKind</c>, the manifest's own category.</summary>
+        ClosedGenericRoot = 11,
+    }
+
+    /// <summary>Why one manifest root is mandatory: a registration, a schema's serializer, or a root statement.</summary>
+    public enum CatalogReachabilityRole
+    {
+        /// <summary>A generated registration table entry resolved through the table's lookup method.</summary>
+        Registration = 0,
+
+        /// <summary>A declared schema's generated serializer, resolved from the serializer table.</summary>
+        Serializer = 1,
+
+        /// <summary>A generated closed-generic root statement executed through the root method.</summary>
+        ClosedGenericRoot = 2,
     }
 
     /// <summary>One mandatory reachability root of one catalog.</summary>
@@ -46,22 +62,22 @@ namespace GameCore.Validation.ProbeHost
             string catalog,
             string group,
             CatalogReachabilityKind kind,
+            CatalogReachabilityRole role,
             string stableName,
             string keyName,
             ulong keyHigh,
             ulong keyLow,
-            uint keyVersion,
-            bool schemaRoot)
+            uint keyVersion)
         {
             Catalog = catalog;
             Group = group;
             Kind = kind;
+            Role = role;
             StableName = stableName;
             KeyName = keyName;
             KeyHigh = keyHigh;
             KeyLow = keyLow;
             KeyVersion = keyVersion;
-            SchemaRoot = schemaRoot;
         }
 
         /// <summary>Manifest label of the catalog this root belongs to.</summary>
@@ -70,8 +86,11 @@ namespace GameCore.Validation.ProbeHost
         /// <summary>Generated registration table, or the schema-registration table for a serializer root.</summary>
         public string Group { get; }
 
-        /// <summary>Generated registration kind.</summary>
+        /// <summary>Generated registration kind; <c>ClosedGenericRoot</c> for a root statement.</summary>
         public CatalogReachabilityKind Kind { get; }
+
+        /// <summary>Why this root is mandatory.</summary>
+        public CatalogReachabilityRole Role { get; }
 
         /// <summary>Stable name the entry's key is derived from (P-004).</summary>
         public string StableName { get; }
@@ -88,8 +107,6 @@ namespace GameCore.Validation.ProbeHost
         /// <summary>Key version the registration carries.</summary>
         public uint KeyVersion { get; }
 
-        /// <summary>True for a serializer root contributed by a declared schema.</summary>
-        public bool SchemaRoot { get; }
     }
 
     /// <summary>One catalog's reachability summary.</summary>
@@ -207,192 +224,192 @@ namespace GameCore.Validation.ProbeHost
                 "probe",
                 "FamilyEntryRegistrations",
                 CatalogReachabilityKind.PluginFactory,
+                CatalogReachabilityRole.Registration,
                 "gamecore.validation.entry.narrative",
                 "NarrativeFamilyEntryKey",
                 0x81C6EE94C5A5EA51UL,
                 0xE32CE40F411F56CDUL,
-                1U,
-                false),
+                1U),
             new CatalogReachabilityRoot(
                 "probe",
                 "HandlerRegistrations",
                 CatalogReachabilityKind.Handler,
+                CatalogReachabilityRole.Registration,
                 "gamecore.validation.handler.magnitude",
                 "ClosedGenericHandlerKey",
                 0x1C9A1F368FDAD8DDUL,
                 0x4E0CC4C0E9F7DA67UL,
-                1U,
-                false),
+                1U),
             new CatalogReachabilityRoot(
                 "probe",
                 "PluginRegistrations",
                 CatalogReachabilityKind.PluginFactory,
+                CatalogReachabilityRole.Registration,
                 "gamecore.validation.plugin.fixture",
                 "FixturePluginKey",
                 0x0284B6EC6D41B5AAUL,
                 0xD17744CF859C74B6UL,
-                1U,
-                false),
+                1U),
             new CatalogReachabilityRoot(
                 "cards",
                 "FamilyEntryRegistrations",
                 CatalogReachabilityKind.PluginFactory,
+                CatalogReachabilityRole.Registration,
                 "gamecore.validation.entry.cards",
                 "CardFamilyEntryKey",
                 0x6924A730DAE9ADD6UL,
                 0xDE4FC185BD76C778UL,
-                1U,
-                false),
+                1U),
             new CatalogReachabilityRoot(
                 "cards",
                 "PluginRegistrations",
                 CatalogReachabilityKind.PluginFactory,
+                CatalogReachabilityRole.Registration,
                 "cards.factory.card-table-plugin",
                 "CardTablePluginKey",
                 0xBB026AC0599E6783UL,
                 0x83F12FFCA82E5B2BUL,
-                1U,
-                false),
+                1U),
             new CatalogReachabilityRoot(
                 "cards",
                 "ReducerRegistrations",
                 CatalogReachabilityKind.Reducer,
+                CatalogReachabilityRole.Registration,
                 "cards.reducer.int32-sum",
                 "CardSetBonusReducerKey",
                 0xF85B12F56C1232B2UL,
                 0x70108056ACB54B19UL,
-                1U,
-                false),
+                1U),
             new CatalogReachabilityRoot(
                 "cards",
                 "StaticPredicateRegistrations",
                 CatalogReachabilityKind.StaticPredicate,
+                CatalogReachabilityRole.Registration,
                 "cards.predicate.always",
                 "CardAlwaysPredicateKey",
                 0xD8CABB8F16C64380UL,
                 0x102DE6820045DF34UL,
-                1U,
-                false),
+                1U),
             new CatalogReachabilityRoot(
                 "cards",
                 "SystemFactoryRegistrations",
                 CatalogReachabilityKind.SystemFactory,
+                CatalogReachabilityRole.Registration,
                 "cards.system.output",
                 "CardOutputSystemKey",
                 0x2CB9BBFC9BB6CC94UL,
                 0x95666C211E20EE0FUL,
-                1U,
-                false),
+                1U),
             new CatalogReachabilityRoot(
                 "cards",
                 "SystemFactoryRegistrations",
                 CatalogReachabilityKind.SystemFactory,
+                CatalogReachabilityRole.Registration,
                 "cards.system.input",
                 "CardInputSystemKey",
                 0x4522EE4E182F61DCUL,
                 0xE6E7466B929DEE07UL,
-                1U,
-                false),
+                1U),
             new CatalogReachabilityRoot(
                 "cards",
                 "SystemFactoryRegistrations",
                 CatalogReachabilityKind.SystemFactory,
+                CatalogReachabilityRole.Registration,
                 "cards.system.commit",
                 "CardCommitSystemKey",
                 0xA61B22DF091D9AC4UL,
                 0xC299AE0D0AE30F30UL,
-                1U,
-                false),
+                1U),
             new CatalogReachabilityRoot(
                 "cards",
                 "SystemFactoryRegistrations",
                 CatalogReachabilityKind.SystemFactory,
+                CatalogReachabilityRole.Registration,
                 "cards.system.validate",
                 "CardValidateSystemKey",
                 0xE113F54073E28D83UL,
                 0x0803E540BE4EEDFBUL,
-                1U,
-                false),
+                1U),
             new CatalogReachabilityRoot(
                 "traversal",
                 "PluginRegistrations",
                 CatalogReachabilityKind.PluginFactory,
+                CatalogReachabilityRole.Registration,
                 "traversal.factory.course-plugin",
                 "PluginFactoryKey",
                 0x6AB4EE28C7914A6DUL,
                 0x1C321510AA2A39C2UL,
-                1U,
-                false),
+                1U),
             new CatalogReachabilityRoot(
                 "traversal",
                 "ReducerRegistrations",
                 CatalogReachabilityKind.Reducer,
+                CatalogReachabilityRole.Registration,
                 "traversal.reducer.vec3i-sum",
                 "ReducerKey",
                 0xAC39BBF7CC19582FUL,
                 0xFF8FDDC39D1DB6D2UL,
-                1U,
-                false),
+                1U),
             new CatalogReachabilityRoot(
                 "traversal",
                 "StaticPredicateRegistrations",
                 CatalogReachabilityKind.StaticPredicate,
+                CatalogReachabilityRole.Registration,
                 "traversal.predicate.always",
                 "PredicateKey",
                 0x2FB8E2A0A8F97F28UL,
                 0xF73C805A090FAFF2UL,
-                1U,
-                false),
+                1U),
             new CatalogReachabilityRoot(
                 "traversal",
                 "SystemFactoryRegistrations",
                 CatalogReachabilityKind.SystemFactory,
+                CatalogReachabilityRole.Registration,
                 "traversal.system.integrate",
                 "IntegrateSystemKey",
                 0x0B710434FE439447UL,
                 0x697BF7843E390FDCUL,
-                1U,
-                false),
+                1U),
             new CatalogReachabilityRoot(
                 "traversal",
                 "SystemFactoryRegistrations",
                 CatalogReachabilityKind.SystemFactory,
+                CatalogReachabilityRole.Registration,
                 "traversal.system.sense",
                 "SenseSystemKey",
                 0x4B816113044D9926UL,
                 0x1E5061764CBC5C0BUL,
-                1U,
-                false),
+                1U),
             new CatalogReachabilityRoot(
                 "traversal",
                 "SystemFactoryRegistrations",
                 CatalogReachabilityKind.SystemFactory,
+                CatalogReachabilityRole.Registration,
                 "traversal.system.output",
                 "OutputSystemKey",
                 0xA7B1FB1A30A57005UL,
                 0xAB331F36B6F78AE9UL,
-                1U,
-                false),
+                1U),
             new CatalogReachabilityRoot(
                 "traversal",
                 "SystemFactoryRegistrations",
                 CatalogReachabilityKind.SystemFactory,
+                CatalogReachabilityRole.Registration,
                 "traversal.system.checkpoints",
                 "CheckpointSystemKey",
                 0xA8D4EA54F8DAFB72UL,
                 0x37C88D74316D2478UL,
-                1U,
-                false),
+                1U),
             new CatalogReachabilityRoot(
                 "traversal",
                 "SystemFactoryRegistrations",
                 CatalogReachabilityKind.SystemFactory,
+                CatalogReachabilityRole.Registration,
                 "traversal.system.input",
                 "InputSystemKey",
                 0xB893DD85CA45AEE4UL,
                 0x77CF897C4154EE95UL,
-                1U,
-                false),
+                1U),
         };
 
         /// <summary>Every mandatory serializer root contributed by a declared schema.</summary>
@@ -402,169 +419,187 @@ namespace GameCore.Validation.ProbeHost
                 "probe",
                 "SchemaRegistrations",
                 CatalogReachabilityKind.Serializer,
+                CatalogReachabilityRole.Serializer,
                 "gamecore.validation.schema.probe-record",
                 "ProbeRecordSerializerKey",
                 0xB917D6C4A639ECC8UL,
                 0xB217BB961E7592D3UL,
-                1U,
-                true),
+                1U),
             new CatalogReachabilityRoot(
                 "cards",
                 "SchemaRegistrations",
                 CatalogReachabilityKind.Serializer,
+                CatalogReachabilityRole.Serializer,
                 "cards.schema.card-config",
                 "CardConfigSerializerKey",
                 0x02BB49501222979CUL,
                 0xFEA308CE5F5F2CA1UL,
-                1U,
-                true),
+                1U),
             new CatalogReachabilityRoot(
                 "checkpoint",
                 "SchemaRegistrations",
                 CatalogReachabilityKind.Serializer,
+                CatalogReachabilityRole.Serializer,
                 "gamecore.checkpoint.schema.scope",
                 "ScopeRecordSerializerKey",
                 0x1BB5C533DAB84E76UL,
                 0x04C8B98F1B97066AUL,
-                1U,
-                true),
+                1U),
             new CatalogReachabilityRoot(
                 "checkpoint",
                 "SchemaRegistrations",
                 CatalogReachabilityKind.Serializer,
+                CatalogReachabilityRole.Serializer,
                 "gamecore.checkpoint.schema.cursor",
                 "CursorRecordSerializerKey",
                 0x1DDC64B87DAA5363UL,
                 0xE1C1951D44AD5F07UL,
-                1U,
-                true),
+                1U),
             new CatalogReachabilityRoot(
                 "checkpoint",
                 "SchemaRegistrations",
                 CatalogReachabilityKind.Serializer,
+                CatalogReachabilityRole.Serializer,
                 "gamecore.checkpoint.schema.slot",
                 "SlotRecordSerializerKey",
                 0x325EBFC76F751EE2UL,
                 0xC2B4985DF3D088A0UL,
-                1U,
-                true),
+                1U),
             new CatalogReachabilityRoot(
                 "checkpoint",
                 "SchemaRegistrations",
                 CatalogReachabilityKind.Serializer,
+                CatalogReachabilityRole.Serializer,
                 "gamecore.checkpoint.schema.selection",
                 "SelectionRecordSerializerKey",
                 0x4736AFCCC12B5B62UL,
                 0x5ADB5BCDBB714E3FUL,
-                1U,
-                true),
+                1U),
             new CatalogReachabilityRoot(
                 "checkpoint",
                 "SchemaRegistrations",
                 CatalogReachabilityKind.Serializer,
+                CatalogReachabilityRole.Serializer,
                 "gamecore.checkpoint.schema.clock",
                 "ClockRecordSerializerKey",
                 0x49F4779FA88D83EAUL,
                 0x0440E2BAB679D545UL,
-                1U,
-                true),
+                1U),
             new CatalogReachabilityRoot(
                 "checkpoint",
                 "SchemaRegistrations",
                 CatalogReachabilityKind.Serializer,
+                CatalogReachabilityRole.Serializer,
                 "gamecore.checkpoint.schema.grant",
                 "GrantRecordSerializerKey",
                 0x54D0F9CCCEC243B7UL,
                 0x8414EC19245173C6UL,
-                1U,
-                true),
+                1U),
             new CatalogReachabilityRoot(
                 "checkpoint",
                 "SchemaRegistrations",
                 CatalogReachabilityKind.Serializer,
+                CatalogReachabilityRole.Serializer,
                 "gamecore.checkpoint.schema.install",
                 "InstallRecordSerializerKey",
                 0x5666C5DB5D34AD37UL,
                 0xD470140F8C18808FUL,
-                1U,
-                true),
+                1U),
             new CatalogReachabilityRoot(
                 "checkpoint",
                 "SchemaRegistrations",
                 CatalogReachabilityKind.Serializer,
+                CatalogReachabilityRole.Serializer,
                 "gamecore.checkpoint.schema.message",
                 "MessageRecordSerializerKey",
                 0x744D60D006798058UL,
                 0xB50B656C613A21F3UL,
-                1U,
-                true),
+                1U),
             new CatalogReachabilityRoot(
                 "checkpoint",
                 "SchemaRegistrations",
                 CatalogReachabilityKind.Serializer,
+                CatalogReachabilityRole.Serializer,
                 "gamecore.checkpoint.schema.outbox",
                 "OutboxRecordSerializerKey",
                 0xAC96339BD83D4A4CUL,
                 0xA453B3F4E46E4639UL,
-                1U,
-                true),
+                1U),
             new CatalogReachabilityRoot(
                 "checkpoint",
                 "SchemaRegistrations",
                 CatalogReachabilityKind.Serializer,
+                CatalogReachabilityRole.Serializer,
                 "gamecore.checkpoint.schema.target",
                 "TargetRecordSerializerKey",
                 0xB780328C6FA158F7UL,
                 0xBD88603DB3EBAE2FUL,
-                1U,
-                true),
+                1U),
             new CatalogReachabilityRoot(
                 "checkpoint",
                 "SchemaRegistrations",
                 CatalogReachabilityKind.Serializer,
+                CatalogReachabilityRole.Serializer,
                 "gamecore.checkpoint.schema.rng",
                 "RngRecordSerializerKey",
                 0xCD069D4291975928UL,
                 0xEDB3F9E9AF5E037DUL,
-                1U,
-                true),
+                1U),
             new CatalogReachabilityRoot(
                 "checkpoint",
                 "SchemaRegistrations",
                 CatalogReachabilityKind.Serializer,
+                CatalogReachabilityRole.Serializer,
                 "gamecore.checkpoint.schema.header",
                 "HeaderRecordSerializerKey",
                 0xD578E5FE72E484BEUL,
                 0x8D8C015A17D8B66BUL,
-                1U,
-                true),
+                1U),
             new CatalogReachabilityRoot(
                 "checkpoint",
                 "SchemaRegistrations",
                 CatalogReachabilityKind.Serializer,
+                CatalogReachabilityRole.Serializer,
                 "gamecore.checkpoint.schema.command",
                 "CommandRecordSerializerKey",
                 0xEFE5AB3007E3F7B8UL,
                 0x21D96F9264AB31EFUL,
-                1U,
-                true),
+                1U),
             new CatalogReachabilityRoot(
                 "traversal",
                 "SchemaRegistrations",
                 CatalogReachabilityKind.Serializer,
+                CatalogReachabilityRole.Serializer,
                 "traversal.schema.course-config",
                 "ConfigSerializerKey",
                 0xA84CDEF288CAB0B5UL,
                 0xDC1283D7CD208E72UL,
-                1U,
-                true),
+                1U),
         };
 
         /// <summary>Every closed-generic root statement, in catalog and declaration order.</summary>
-        public static readonly string[] ClosedGenericRoots =
+        public static readonly CatalogReachabilityRoot[] ClosedGenericRoots =
         {
-            "ProbeAotRoots.TrackJob(default(ProbeAggregateJob<ProbeVector3Value>))",
-            "ProbeAotRoots.TrackHandler(HandlerRegistrations[0].Implementation)",
+            new CatalogReachabilityRoot(
+                "probe",
+                "RootClosedGenericInstantiations",
+                CatalogReachabilityKind.ClosedGenericRoot,
+                CatalogReachabilityRole.ClosedGenericRoot,
+                "ProbeAotRoots.TrackJob(default(ProbeAggregateJob<ProbeVector3Value>))",
+                string.Empty,
+                0UL,
+                0UL,
+                0U),
+            new CatalogReachabilityRoot(
+                "probe",
+                "RootClosedGenericInstantiations",
+                CatalogReachabilityKind.ClosedGenericRoot,
+                CatalogReachabilityRole.ClosedGenericRoot,
+                "ProbeAotRoots.TrackHandler(HandlerRegistrations[0].Implementation)",
+                string.Empty,
+                0UL,
+                0UL,
+                0U),
         };
 
         /// <summary>Rows of one catalog label; an unknown label yields the count zero with no rows.</summary>

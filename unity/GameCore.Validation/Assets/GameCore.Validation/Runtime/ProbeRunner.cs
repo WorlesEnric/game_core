@@ -159,6 +159,11 @@ namespace GameCore.Validation.ProbeHost
                     ProbeW6Gate.Run(report);
                     report.CompletePositive();
                 }
+                else if (arguments.CatalogCoverage)
+                {
+                    ProbeCatalogCoverage.Run(report);
+                    report.CompletePositive();
+                }
                 else
                 {
                     RunAotRootsProbe(report);
@@ -277,6 +282,11 @@ namespace GameCore.Validation.ProbeHost
             if (arguments.W6Gate)
             {
                 return Named("W6Gate", "W6-GATE");
+            }
+
+            if (arguments.CatalogCoverage)
+            {
+                return Named("CatalogCoverage", "GC-025");
             }
 
             return new ProbeReport(

@@ -277,27 +277,65 @@ namespace GameCore.Validation.ProbeHost
             private readonly IReadOnlyList<CompositionEditPayload> spareScopes;
             private readonly IReadOnlyList<TargetId> courseTargets;
             private readonly IReadOnlyList<ScopeRecord> declaredScopes;
-            private readonly TraversalRunnerApplier runnerApplier;
+            private readonly ITraversalRunnerApplier runnerApplier;
             private readonly TraversalVolumeApplier volumeApplier;
 
             private ulong physicsDeclaredSession;
 
+            /// <summary>The course over the runtime-declared recipe catalog, under the family's fixed session salt.</summary>
             public CourseFamily(
                 ImmutableCatalog catalog,
                 IReadOnlyList<CatalogPluginDeclaration> declarations,
                 string catalogFingerprint)
+                : this(catalog, declarations, catalogFingerprint, RuntimeCatalogCoverageRecipeSource.Instance,
+                    Gc020TraversalHost.SessionSalt)
             {
+            }
+
+            /// <summary>
+            /// The course over one recipe source (GC-025's bake/runtime parity comparison): the runtime-declared
+            /// recipes, or the same recipes materialized from the Editor-baked artifact. The course itself is
+            /// unchanged; only where its recipe data comes from differs.
+            /// </summary>
+            public CourseFamily(
+                ImmutableCatalog catalog,
+                IReadOnlyList<CatalogPluginDeclaration> declarations,
+                string catalogFingerprint,
+                ICatalogCoverageRecipeSource recipeSource)
+                : this(catalog, declarations, catalogFingerprint, recipeSource, Gc020TraversalHost.SessionSalt)
+            {
+            }
+
+            /// <summary>
+            /// The course under an explicit session salt (GC-025). `Gc020Host.SessionSalt` makes a gate run
+            /// reproducible; a caller that needs two provably different sessions calls this overload, because a
+            /// session identity is derived from the salt and is never reused (P-004).
+            /// </summary>
+            public CourseFamily(
+                ImmutableCatalog catalog,
+                IReadOnlyList<CatalogPluginDeclaration> declarations,
+                string catalogFingerprint,
+                ICatalogCoverageRecipeSource recipeSource,
+                ulong sessionSalt)
+            {
+                if (recipeSource == null)
+                {
+                    throw new ArgumentNullException(nameof(recipeSource));
+                }
+
                 this.catalog = catalog ?? throw new ArgumentNullException(nameof(catalog));
                 this.declarations = declarations ?? throw new ArgumentNullException(nameof(declarations));
                 CatalogFingerprint = catalogFingerprint ?? string.Empty;
+                RecipeSourceLabel = recipeSource.Label;
+                SessionSalt = sessionSalt;
 
-                runnerApplier = new TraversalRunnerApplier();
+                runnerApplier = recipeSource.CreateRunnerApplier();
                 volumeApplier = new TraversalVolumeApplier();
 
-                // The fixture's own closed catalog plus the two recipes no fixture declares: the course entity's
-                // storage recipe and the explicitly opted-in runner. Both are ordinary precompiled recipes of this
-                // gate's family, so a seeded or spawned target resolves one (P-015, P-024).
-                var allRecipes = new List<SpawnRecipe>(TraversalCourseRecipes.Catalog(runnerApplier, volumeApplier).Recipes)
+                // The recipe source's own closed catalog plus the two recipes no fixture declares: the course
+                // entity's storage recipe and the explicitly opted-in runner. Both are ordinary precompiled recipes
+                // of this gate's family, so a seeded or spawned target resolves one (P-015, P-024).
+                var allRecipes = new List<SpawnRecipe>(recipeSource.Catalog(runnerApplier, volumeApplier).Recipes)
                 {
                     CourseRecipeOf(new CourseApplier()),
                     OptedInRunner(runnerApplier),
@@ -315,6 +353,7 @@ namespace GameCore.Validation.ProbeHost
 
                 // The runners the course owns, in canonical target order. `runner-c` does not exist until the spawn
                 // publication of observation 9, so a reader of this list checks liveness before reading a target.
+
                 courseTargets = new List<TargetId>
                 {
                     TraversalCourseTargets.RunnerA,
@@ -326,11 +365,14 @@ namespace GameCore.Validation.ProbeHost
                 declaredScopes = CourseScopeRecords();
             }
 
+            /// <summary>Diagnostic label of the recipe source this course materialized its recipes from (GC-025).</summary>
+            public string RecipeSourceLabel { get; }
+
             public string Label => Gc020TraversalHost.Label;
 
             public string CatalogFingerprint { get; }
 
-            public ulong SessionSalt => Gc020TraversalHost.SessionSalt;
+            public ulong SessionSalt { get; }
 
             public Id128 Issuer => TraversalKeys.Issuer;
 

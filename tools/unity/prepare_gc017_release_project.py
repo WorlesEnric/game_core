@@ -213,11 +213,14 @@ def main() -> None:
         replace_once(arguments, removed)
 
     # The constructor call keeps the same members in the same order as the remaining parameters, so the clone's
-    # argument list and its constructor signature agree exactly.
+    # argument list and its constructor signature agree exactly. GC-025 added `catalogCoverage` to the signature and
+    # keeps it here: the release shape runs the catalog coverage probe too (`tools/build_baseline_player.sh`), which
+    # is the point of the marker-free build — every generated root has to survive the shipping stripping settings.
     replace_once(
         arguments,
-        '                w4Gate, faults, gc018, gc019, w5Gate, traversal, gc021, replay, w6Gate, resultPath);',
-        '                w4Gate, gc018, gc019, traversal, resultPath);',
+        '                w4Gate, faults, gc018, gc019, w5Gate, traversal, gc021, replay, w6Gate, catalogCoverage,\n'
+        '                resultPath);',
+        '                w4Gate, gc018, gc019, traversal, catalogCoverage, resultPath);',
     )
     replace_once(arguments, '                lifecycleStress,\n')
 
