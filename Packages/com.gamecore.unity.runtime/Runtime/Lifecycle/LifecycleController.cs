@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using GameCore.Composition;
 using GameCore.Contracts;
+using GameCore.Unity.Runtime.Faults;
 using GameCore.Unity.Runtime.Integration;
 
 namespace GameCore.Unity.Runtime.Lifecycle

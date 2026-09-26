@@ -107,7 +107,7 @@ SUITES=(
   "TEST-017|dotnet/tests/GameCore.Contracts.Tests:FullyQualifiedName~Checkpoint|GameCore.Unity.Recovery.Tests|run_gc018_probe.sh,run_recovery_probe.sh"
   "TEST-018|dotnet/tests/GameCore.Execution.Tests:FullyQualifiedName~WorldResourceLedger|GameCore.Unity.Runtime.Tests|run_world_probe.sh,run_w1_gate_probe.sh"
   "TEST-019|dotnet/tests/GameCore.Adapters.Tests:*|GameCore.Unity.Adapters.Tests|run_gc019_probe.sh,run_traversal_probe.sh"
-  "TEST-020|dotnet/tests/GameCore.Content.Compiler.Tests:FullyQualifiedName~Catalog|GameCore.CatalogCoverage.Tests|run_catalog_coverage_probe.sh"
+  "TEST-020|dotnet/tests/GameCore.Content.Compiler.Tests:FullyQualifiedName~Catalog|GameCore.CatalogCoverage.Tests|run_catalog_coverage_probe.sh:CatalogCoverage"
   "TEST-021|dotnet/tests/GameCore.ReferenceConformance.Tests:FullyQualifiedName~Reference|GameCore.Conformance.Tests|run_conformance_probe.sh,run_narrative_probe.sh,run_cards_probe.sh,run_traversal_probe.sh"
   "TEST-022|dotnet/tests/GameCore.Replay.Tests:FullyQualifiedName~Replay|GameCore.Replay.IntegrationTests|run_replay_probe.sh"
   "TEST-023|dotnet/tests/GameCore.Benchmarks.Tests:FullyQualifiedName~PerformanceBudget|GameCore.Benchmarks.Tests|"

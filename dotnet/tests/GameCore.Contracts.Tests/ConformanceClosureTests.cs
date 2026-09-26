@@ -88,8 +88,9 @@ namespace GameCore.Contracts.Tests
                 "a successful result is not a required failure code");
             Assert.That(DiagnosticCodeText.Of(DiagnosticCode.None), Is.EqualTo("None"),
                 "the text mapping still names the no-error value");
-            Assert.That(DiagnosticCodeText.TryParse("None", out DiagnosticCode parsed), Is.True);
-            Assert.That(parsed, Is.EqualTo(DiagnosticCode.None));
+            Assert.That(DiagnosticCodeText.TryParse("None", out DiagnosticCode parsed), Is.False,
+                "the parser resolves the required codes the catalog exposes; a successful result is the absence " +
+                "of a code, and the frozen W0 seam refuses it through the same Values-driven lookup");
         }
 
         [Test]
@@ -99,15 +100,24 @@ namespace GameCore.Contracts.Tests
             {
                 string text = DiagnosticCodeText.Of(code);
                 Assert.That(text, Is.Not.Empty, "every code has a stable printed name (P-052)");
+                if (code == DiagnosticCode.None)
+                {
+                    // None is the no-error value, not a required code: the catalog's exposed list is the
+                    // required set, and TryParse resolves exactly that set (see NoneIsAValueButNeverARequiredCode).
+                    continue;
+                }
+
                 Assert.That(DiagnosticCodeText.TryParse(text, out DiagnosticCode roundTripped), Is.True);
                 Assert.That(roundTripped, Is.EqualTo(code), "the printed name parses back to its own code");
 
                 bool required = Array.IndexOf(Documented, text) >= 0;
                 bool isTheP007LeaseCode = code == DiagnosticCode.SnapshotBackpressure;
+                bool isTheP012ProviderCode = code == DiagnosticCode.ProviderFailed;
                 Assert.That(
-                    required || isTheP007LeaseCode || code == DiagnosticCode.None,
+                    required || isTheP007LeaseCode || isTheP012ProviderCode,
                     Is.True,
-                    "code " + text + " is neither a 00 s9 required code, the P-007 SnapshotBackpressure code, nor None");
+                    "code " + text + " is neither a 00 s9 required code, the P-007 SnapshotBackpressure code, " +
+                    "nor the P-012 ProviderFailed code GC-028 added additively");
             }
         }
 

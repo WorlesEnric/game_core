@@ -216,9 +216,10 @@ namespace GameCore.Composition.Tests
         [Test]
         public void ADeactivationThatCannotPublishLeavesTheOldAssemblyAndReportsTheRefusal()
         {
-            // A validator that refuses everything is the "cannot publish" injection point on the composition side:
-            // the lane plans, the validator rejects, and nothing is written (P-028). The world's half - admission
-            // closed and Faulted - is the Unity suite's, because the fault latch lives there.
+            // A validator that refuses the deactivation is the "cannot publish" injection point on the
+            // composition side: the lane plans the safe closure, the validator rejects that one proposal, and
+            // nothing is written (P-028). The world's half - admission closed and Faulted - is the Unity suite's,
+            // because the fault latch lives there.
             var rig = new Rig(0x7004UL, new RefusingValidator());
             var world = new Contracted(rig);
 
@@ -250,11 +251,30 @@ namespace GameCore.Composition.Tests
                 "a report either published (token, no code) or did not (code, no token): " + report.Describe());
         }
 
-        /// <summary>Refuses every proposal, so a publication attempt cannot complete (P-028, P-012).</summary>
+        /// <summary>
+        /// Refuses the provider-failure deactivation itself, so its publication attempt cannot complete (P-028,
+        /// P-012). Every other proposal is accepted, exactly like the mode-switch refusing validator of the
+        /// invalidation tests: the fixture world is built through this same lane, because the lane that will
+        /// refuse the deactivation is the one P-012's second half is about. The deactivation is identified by its
+        /// change set - the one edit that moves an installation into `Failed` - rather than by refusing
+        /// everything, which would also refuse the mounts the old assembly is made of.
+        /// </summary>
         private sealed class RefusingValidator : ICompositionEditValidator
         {
-            public EditValidationResult Validate(CompositionState before, CompositionState after, CompositionChangeSet changeSet) =>
-                EditValidationResult.Refuse(DiagnosticCode.OwnershipConflict, "the deactivation was refused by policy (P-012)");
+            public EditValidationResult Validate(CompositionState before, CompositionState after, CompositionChangeSet changeSet)
+            {
+                _ = before;
+                _ = after;
+                for (int i = 0; i < changeSet.InstallEdits.Count; i++)
+                {
+                    if (changeSet.InstallEdits[i].NewState == InstallationState.Failed)
+                    {
+                        return EditValidationResult.Refuse(DiagnosticCode.OwnershipConflict, "the deactivation was refused by policy (P-012)");
+                    }
+                }
+
+                return EditValidationResult.Accept;
+            }
         }
     }
 }

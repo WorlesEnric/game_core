@@ -405,6 +405,25 @@ namespace GameCore.Composition
                     + DiagnosticCodeText.Of(code) + ": " + detail);
             }
 
+            // A provider that is already Failed holds no live authority to lose, so the lane answers a repeated
+            // report as the ordinary no-op publication: NoChange increments neither the revision nor the epoch
+            // (P-006), and the report carries the token of the committed assembly the deactivation already stands
+            // in rather than a second publication's (P-050: the failure is one fact, not two epochs).
+            if (admission.Entry != null && admission.Entry.Outcome == Outcome.NoChange)
+            {
+                return new ProviderFailureReport(
+                    instance,
+                    operation,
+                    true,
+                    new SnapshotToken(World, committed.Epoch, committed.Step),
+                    null,
+                    null,
+                    DiagnosticCode.None,
+                    "the failure was already published as a deactivation, so this repeated report published "
+                    + "nothing: the provider stays Failed and its dependents stay WaitingForDependencies "
+                    + "(P-006, P-050). Reported cause: " + DiagnosticCodeText.Of(code) + ": " + detail);
+            }
+
             // The lane admitted the edit but the publication boundary produced no row for it. That is exactly the
             // "cannot publish" case: report it as a refusal rather than as a deactivation.
             return new ProviderFailureReport(instance, operation, false, null, null, null,

@@ -130,7 +130,7 @@ namespace GameCore.Recovery.Fixtures
         });
 
         /// <summary>
-        /// The thirteen `FaultBoundaryText.Names` values a latch injection point may name, in the order
+        /// The fourteen `FaultBoundaryText.Names` values a latch injection point may name, in the order
         /// `FaultBoundary` declares them.
         ///
         /// They are held here as text rather than read from `FaultBoundaryText`, and that is a deliberate split, not
@@ -157,6 +157,7 @@ namespace GameCore.Recovery.Fixtures
             "restore-reference-repair",
             "restore-apply",
             "recovery-publication",
+            "provider-deactivation-publication",
         });
 
         /// <summary>
