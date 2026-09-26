@@ -267,7 +267,7 @@ namespace GameCore.Validation.ProbeHost
         /// The traversal course's declared facts as the GC-020 scenario's `IGc020Family`: its catalog data, its scope
         /// tree, its live targets, its two acceleration modifiers and its fixed-step identities.
         /// </summary>
-        public sealed class CourseFamily : IGc020Family
+        public sealed partial class CourseFamily : IGc020Family
         {
             private readonly ICatalog catalog;
             private readonly IReadOnlyList<CatalogPluginDeclaration> declarations;

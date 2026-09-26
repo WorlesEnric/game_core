@@ -5,6 +5,24 @@ Run from any directory. The output lives beside GameCore.Validation so its local
 file:../../../Packages dependencies keep resolving. Build it with build_probe.sh
 using UNITY_PROJECT=<printed path>, then pass its Builds/Linux64 directory to
 check_player_fault_free.py. The generated project is disposable and gitignored.
+
+What the clone removes, and why the list is one flat, auditable set:
+
+  * the two qualification marker packages (the fault switch and GC-023's telemetry switch) and the two Unity test
+    packages, plus every `testables` entry, so the clone really is a shipping-shaped configuration;
+  * the `Tests/` tree, which no shipping player compiles;
+  * every qualification-only probe/scenario runtime file. Each named file is either a fault-injection fixture whose
+    types do not exist without the marker package (`FaultScenario*`, `ProbeFaults`, `W5Gate*`, `ProbeW5Gate`), a
+    qualification stress/gate fixture a shipping player has no reason to carry (`ProbeLifecycleStress`, the Wave 6
+    gate's seven files), or a world scenario that only the qualification project drives (`Gc021Scenario`,
+    `Gc021Family`, `ProbeGc021`). Their production seams — the delivery core, the traversal package, the optional
+    engine stages, the four family hosts and the replay package — all stay;
+  * the matching mode wiring in `ProbeRunner.cs` and `ProbeArguments.cs`, one whole block per mode, so the clone
+    compiles without the removed types and no shipping entry point can reach them.
+
+The modes the clone keeps are the ones a shipping build really carries and the release-surface checks really drive:
+the GC-001 positive and expected-negative modes, world dispatch, the narrative/cards/GC-018/GC-019 family probes, the
+GC-020 traversal course and GC-023's replay shape proof.
 """
 
 import json
@@ -48,16 +66,17 @@ def main() -> None:
     manifest["testables"] = []
     manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     (DESTINATION / "Packages/packages-lock.json").unlink()
-    # The fault scenario and the Wave 5 gate name latch types absent from a shipping build, and the GC-022 lifecycle
-    # stress is the 1,000-cycle qualification fixture a shipping player has no reason to carry. The ordinary family
-    # modes — narrative, cards, GC-018, GC-019 and the GC-020 traversal course — remain available.
+
     shutil.rmtree(DESTINATION / "Assets/GameCore.Validation/Tests")
     (DESTINATION / "Assets/GameCore.Validation/Tests.meta").unlink()
+
     for name in (
+        # GC-017: the fault scenario and its probe name latch types a marker-free compilation does not contain.
         "FaultScenario",
         "FaultScenarioHost",
         "FaultScenarioStep",
         "ProbeFaults",
+        # The Wave 5 integration gate: same reason, plus it is a qualification join rather than a shipping path.
         "W5GateScenario",
         "W5GateFamily",
         "W5GateNarrativeHost",
@@ -68,7 +87,24 @@ def main() -> None:
         "Gc021Scenario",
         "Gc021Family",
         "ProbeGc021",
+        # GC-022's 1,000-cycle stress fixture: the shipping player has no reason to carry it. The scenario, both
+        # family adapters, the family contract and the probe are one set — the scenario calls the adapters, so keeping
+        # any of them without the others would not compile — and none of them is referenced by a surviving file.
         "ProbeLifecycleStress",
+        "LifecycleStressScenario",
+        "LifecycleStressFamily",
+        "LifecycleStressNarrativeHost",
+        "LifecycleStressCardsHost",
+        # The Wave 6 integration gate is a qualification fixture like the four above: it builds course worlds with the
+        # local physics scene, samples the cost counters a release build compiles out, and drives the 1,000-cycle loop.
+        # Its production seams — the delivery core, the traversal package and the optional engine stages — all stay.
+        "W6GateScenario",
+        "W6GateFamily",
+        "W6CompositionAudit",
+        "W6FamilyNarrativeHost",
+        "W6FamilyCardsHost",
+        "W6FamilyTraversalHost",
+        "ProbeW6Gate",
     ):
         for suffix in (".cs", ".cs.meta"):
             (DESTINATION / RUNTIME / (name + suffix)).unlink()
@@ -98,6 +134,20 @@ def main() -> None:
     )
     replace_once(
         runner,
+        '            if (arguments.LifecycleStress)\n'
+        '            {\n'
+        '                return Named("LifecycleStress", "GC-022");\n'
+        '            }\n\n',
+    )
+    replace_once(
+        runner,
+        '            if (arguments.W6Gate)\n'
+        '            {\n'
+        '                return Named("W6Gate", "W6-GATE");\n'
+        '            }\n\n',
+    )
+    replace_once(
+        runner,
         '                else if (arguments.Faults)\n'
         '                {\n'
         '                    ProbeFaults.Run(report);\n'
@@ -122,22 +172,24 @@ def main() -> None:
     )
     replace_once(
         runner,
-        '            if (arguments.LifecycleStress)\n'
-        '            {\n'
-        '                return Named("LifecycleStress", "GC-022");\n'
-        '            }\n\n',
-    )
-    replace_once(
-        runner,
         '                else if (arguments.LifecycleStress)\n'
         '                {\n'
         '                    ProbeLifecycleStress.Run(report);\n'
         '                    report.CompletePositive();\n'
         '                }\n',
     )
+    replace_once(
+        runner,
+        '                else if (arguments.W6Gate)\n'
+        '                {\n'
+        '                    ProbeW6Gate.Run(report);\n'
+        '                    report.CompletePositive();\n'
+        '                }\n',
+    )
 
     arguments = DESTINATION / RUNTIME / "ProbeArguments.cs"
     for old in (
+        # ---------------------------------------------------------------- the boot/negative and family modes stay
         '        private const string FaultsArgumentName = "-probeFaults";\n',
         '        private const string W5GateArgumentName = "-probeW5Gate";\n',
         '        private const string Gc021ArgumentName = "-probeGc021";\n',
@@ -180,8 +232,24 @@ def main() -> None:
         '                {\n'
         '                    lifecycleStress = true;\n'
         '                }\n',
+        '        private const string W6GateArgumentName = "-probeW6Gate";\n',
+        '            bool w6Gate,\n',
+        '            W6Gate = w6Gate;\n',
+        '            bool w6Gate = false;\n',
+        '        /// <summary>\n'
+        '        /// Runs the Wave 6 integration-gate mode: the fixed-step traversal course with the cost counters and the\n'
+        '        /// recorded-input replay, the durable reward delivery across an unload/reload of its receiving world, the\n'
+        '        /// composition audit that keeps the optional physics/animation/audio surface out of cards and narrative, and\n'
+        '        /// the create/mount/step/unmount/teardown loop over all three genres (W6-GATE).\n'
+        '        /// </summary>\n'
+        '        public bool W6Gate { get; }\n\n',
+        '                else if (argument == W6GateArgumentName)\n'
+        '                {\n'
+        '                    w6Gate = true;\n'
+        '                }\n',
     ):
         replace_once(arguments, old)
+
     replace_once(
         arguments,
         '            || Gc013 || W4Gate || Faults || Gc018 || Gc019 || W5Gate || Traversal || Gc021\n',
@@ -189,17 +257,16 @@ def main() -> None:
     )
     replace_once(
         arguments,
-        '                w4Gate, faults, gc018, gc019, w5Gate, traversal, gc021, replay, resultPath);',
+        '                w4Gate, faults, gc018, gc019, w5Gate, traversal, gc021, replay, w6Gate, resultPath);',
         '                w4Gate, gc018, gc019, replay, resultPath);',
     )
-    replace_once(
-        arguments,
+    for removed in (
         '            || LifecycleStress\n',
-    )
-    replace_once(
-        arguments,
+        '            || W6Gate\n',
         '                lifecycleStress,\n',
-    )
+    ):
+        replace_once(arguments, removed)
+
     print(f"Marker-free release project: {DESTINATION}")
     print("Build: UNITY_PROJECT=<above> ARTIFACTS=artifacts/faults/release tools/unity/build_probe.sh")
 

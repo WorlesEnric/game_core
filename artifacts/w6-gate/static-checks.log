@@ -1,0 +1,116 @@
+# W6-GATE host-side static checks (this authoring host; NOT a build and NOT a test run)
+#
+# This host has no Unity, no .NET SDK, no Mono and no C# compiler, so nothing in this change set has been
+# compiled, imported, executed or built here. Everything below ran interpreter-level, from the repository root,
+# and each block is that command's own output (or its exit status when it prints nothing).
+
+$ python3 tools/check_game_core_csharp.py
+checked 542 C# file(s)
+ok
+
+$ python3 tools/check_contract_surface_parity.py
+tests/GameCore.ReferenceSeams/api/GameCore.Contracts.api.txt: 221 types (class 89, enum 41, interface 23, struct 68), 41 enums checked against Packages/com.gamecore.contracts/Runtime
+5 addition(s) beyond the frozen snapshot (allowed, must be listed in HANDOFF):
+  + enum EnvelopeError adds DuplicateField = 17
+  + enum EnvelopeError adds MissingRequiredField = 16
+  + enum FactoryKind adds Handler = 10
+  + enum StateDispositionKind adds Reset = 5
+  + enum StateDispositionKind adds RetainDormant = 4
+every snapshotted enum and enum value exists in the production sources with the same numeric value
+
+$ python3 tools/verify_generated_catalog.py
+unity/GameCore.Validation/Assets/GameCore.Validation/Generated/ProbeCatalog.g.cs: 3 groups, 4 factories, 1 schemas, 1 features, 25321 bytes
+file hash and catalog fingerprint both recompute correctly from the generated tables
+
+$ python3 tools/validate_game_core_docs.py --self-test
+Documentation validator self-test passed: 9 isolated positive/negative fixtures.
+
+$ python3 tools/validate_game_core_docs.py
+Game Core documentation validation passed: 14 Markdown documents; local links, anchors, IDs, traceability, task DAG and wave ordering checked.
+No Unity builds, gameplay tests, runtime benchmarks, or remote URL checks were executed.
+
+$ python3 tools/check_release_fault_free.py --no-build
+GC-017 release surface: PASS
+  [not run] the compiled latch assembly in both configurations (--no-build)
+  no runtime source keeps a latch reference once the qualification symbol is undefined
+  the apply path's mask by [System.Diagnostics.Conditional("GAMECORE_FAULT_INJECTION")] is intact (8 call site(s))
+  the symbol is driven by com.gamecore.fault-qualification, referenced only by the validation manifest
+
+$ python3 tools/check_release_telemetry_free.py --no-build
+      },
+      "Packages/com.gamecore.derivation/Runtime/GameCore.Derivation.asmdef": {
+        "defines": [
+          "GAMECORE_TELEMETRY"
+        ],
+        "markers": [
+          "com.gamecore.telemetry-qualification"
+        ]
+      },
+      "Packages/com.gamecore.composition/Runtime/GameCore.Composition.asmdef": {
+        "defines": [
+          "GAMECORE_TELEMETRY"
+        ],
+        "markers": [
+          "com.gamecore.telemetry-qualification"
+        ]
+      },
+      "Packages/com.gamecore.planning/Runtime/GameCore.Planning.asmdef": {
+        "defines": [
+          "GAMECORE_TELEMETRY"
+        ],
+        "markers": [
+          "com.gamecore.telemetry-qualification"
+        ]
+      },
+      "Packages/com.gamecore.unity.runtime/Runtime/GameCore.Unity.Runtime.asmdef": {
+        "defines": [
+          "GAMECORE_FAULT_INJECTION",
+          "GAMECORE_TELEMETRY"
+        ],
+        "markers": [
+          "com.gamecore.fault-qualification",
+          "com.gamecore.telemetry-qualification"
+        ]
+      }
+    },
+    "directoryBuildPropsDefinesSymbol": false
+  }
+}
+
+
+$ python3 tools/make_unity_metas.py   # idempotent: reports 0 creations on a complete tree
+created 0 meta file(s)
+
+$ bash -n tools/run_w6_gate.sh tools/unity/run_w6_gate_probe.sh
+bash -n: both scripts parse
+
+$ python3 tools/unity/prepare_gc017_release_project.py  (then inspect the disposable clone, then remove it)
+Marker-free release project: /Users/yangcao/wkspace/gc-wt/w6-gate/unity/GameCore.ReleaseCheck
+Build: UNITY_PROJECT=<above> ARTIFACTS=artifacts/faults/release tools/unity/build_probe.sh
+-- every replace_once needle matched exactly once; the clone contains:
+   W6Gate references      : 0
+   removed-fixture refs   : 0
+   runtime .cs files kept : 45
+   (clone removed: it is disposable and gitignored)
+
+## Digest literals (recomputed here from the frozen observation tables, then cross-checked against the sources)
+
+The digest is `NarrativeDigest.OfLines` over the LF-joined `<label>/<name>=pass` lines in the frozen order, no
+trailing newline, SHA-256, lowercase hex. It is recomputed below from the name tables read out of
+`W6GateScenario.cs` and compared with every declaration site; a mismatch would be a defect, not a rounding
+difference.
+
+| Run | Literal | Declared in |
+|---|---|---|
+| narrative, generated catalog | `4235cea3c22cf93e38307000fcc863edd4ada3e2fc4a3b475ca719765dc17279` | `W6FamilyNarrativeHost.W6GateGeneratedDigest`, `ProbeW6Gate.NarrativeGeneratedDigest`, `W6GateIntegrationTests` |
+| narrative, fixture catalog | `ab198371e8d276dcc2833e88e64e278abde57274ea3c68e2497fa2b75f97fa73` | `W6FamilyNarrativeHost.W6GateFixtureDigest`, `ProbeW6Gate.NarrativeFixtureDigest`, `W6GateIntegrationTests` |
+| cards, generated catalog | `894a975e4a5eb98d733ec213778ec275e4abe02cb4028271857bd4fa68d6fe80` | `W6FamilyCardsHost.W6GateGeneratedDigest`, `ProbeW6Gate.CardsGeneratedDigest`, `W6GateIntegrationTests` |
+| cards, fixture catalog | `9c3d3b5d2f8e959920aa9678e65f56658cbe4a513fcd2895cd458fbda4f9ea14` | `W6FamilyCardsHost.W6GateFixtureDigest`, `ProbeW6Gate.CardsFixtureDigest`, `W6GateIntegrationTests` |
+| traversal, its one catalog | `ca29b5f7099f9fbc4abeb7031c7b1e35ba39ec1ad39db70dd0f037fa8d45675e` | `Gc020TraversalHost.W6GateDigest`, `ProbeW6Gate.TraversalDigest`, `W6GateIntegrationTests` |
+
+Observation counts: narrative 6, cards 7, traversal 9 — 22 bare names, 41 required player-probe steps
+(3 process steps + 6x2 + 7x2 + 9 + 3 digest steps).
+
+$ independent recomputation of every digest literal
+frozen observation tables match the recomputed literals: True
+every declaration site (3 host files, the probe, the EditMode suite, the probe harness) agrees with them

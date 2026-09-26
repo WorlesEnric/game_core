@@ -366,6 +366,34 @@ namespace GameCore.Validation.Editor
             SessionState.SetBool(Prefix + "inCycle", true);
             SessionState.SetInt(Prefix + "frames", 0);
 
+
+            // The Wave 6 gate's addition to this matrix: the {domain, scene} reload settings must not change how a
+            // THIRD genre's own world behaves, so every session also creates, steps, stops and disposes one traversal
+            // course world, and the process-wide registry — which still holds the application host — must be back
+            // where it started. The route is the genre's real world, built by the qualification ProbeHost assembly
+            // (`Gc020TraversalHost.RunReloadRoute`), not a model of it (P-001, P-035, P-046).
+            int registryBeforeTraversal = UnityWorldRegistry.Count;
+            string traversalRoute;
+            try
+            {
+                traversalRoute = Gc020TraversalHost.RunReloadRoute();
+            }
+            catch (Exception exception)
+            {
+                traversalRoute = "unhandled " + exception.GetType().FullName + ": " + exception.Message;
+            }
+
+            Check(
+                failures,
+                traversalRoute.StartsWith("pass", StringComparison.Ordinal),
+                "the traversal reload route did not pass: " + traversalRoute);
+            Check(
+                failures,
+                UnityWorldRegistry.Count == registryBeforeTraversal,
+                "the traversal reload route left " + Text(UnityWorldRegistry.Count) + " world(s) registered; expected "
+                + Text(registryBeforeTraversal));
+            SessionState.SetString(Prefix + "traversalRoute", traversalRoute);
+
             if (failures.Count != 0)
             {
                 FailWith(failures, "EnteredPlayMode");
@@ -375,7 +403,8 @@ namespace GameCore.Validation.Editor
             Debug.Log(
                 "[GC022] " + combination.Name + " cycle " + Text(attempted) + " entered Play Mode; session=" + session
                 + "; reloadedOnEntry=" + reloadedOnEntry.ToString()
-                + "; runCount=" + Text(GameCoreApplicationReset.RunCount));
+                + "; runCount=" + Text(GameCoreApplicationReset.RunCount)
+                + "; traversalRoute=" + traversalRoute);
         }
 
         private static void OnUpdate()
@@ -628,6 +657,7 @@ namespace GameCore.Validation.Editor
                 + TextField("stage", stage) + ", "
                 + NumberField("failureCount", failures.Count) + ", "
                 + NumberField("wallClockMs", ElapsedMilliseconds()) + ", "
+                + TextField("traversalRoute", SessionState.GetString(Prefix + "traversalRoute", string.Empty)) + ", "
                 + TextField("detail", failures.Count == 0 ? string.Empty : string.Join("; ", failures))
                 + "}\n";
 

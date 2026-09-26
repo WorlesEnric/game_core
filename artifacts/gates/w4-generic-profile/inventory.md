@@ -546,3 +546,55 @@ taken from the new qualification marker package `com.gamecore.telemetry-qualific
 
 **Not proposed.** P-007, P-037, P-039, P-040, P-041, P-043, P-044, P-045, P-048 and P-053 keep their status; no
 operation row changes; TEST-023's measured budget table is not claimed.
+
+## W6-GATE revision notes (Wave 6 integration gate; proposals only — nothing has run)
+
+**Status of every command in this section: `NotRun (pending orchestrator build host)`.** This worktree is `main` plus
+GC-020 with `origin/gc-021`, `origin/gc-022` and `origin/gc-023` merged into it, reconciled by hand where the four
+tasks touched the same files (`artifacts/w6-gate/HANDOFF.md` §4 records every reconciliation). Its own gate has never
+executed here: this authoring host has no .NET SDK, no C# compiler and no Unity.
+
+**No row is promoted by this section.** Everything below is a proposal naming the observation that would carry it and
+the artifacts the build host must first produce; a row is promoted only from an archived passing run.
+
+The gate's own observation tables are three tables (one per genre) with five frozen digest literals, recomputed in
+`artifacts/w6-gate/static-checks.log`. The claims it joins are:
+
+* the fixed-step traversal course with GC-023's cost counters COMPILED IN, where the counters record the admitted steps
+  and the physics gate's simulated-step count and the engine's own `Simulate` count are the same number;
+* a replay of the **recorded** input into a second course world, agreeing at tolerance zero for the pure integer rules
+  and matching at the package's declared tolerance for a perturbed engine observation;
+* GC-021's durable obligation delivered exactly once across a GC-022 unload/reload cycle of the RECEIVING world — the
+  obligation is reinstated into a world of a new session, dispatched, acknowledged, and then reinstated again after the
+  acknowledgement is lost, where the destination is asked twice under one external idempotency key and mutates once;
+* the composition audit from both directions: no traversal stage, stage key, system key, buffer (port), capability,
+  rule, config schema, factory or descriptor slot in cards or narrative, no `GameCore.Unity.Adapters` reference in their
+  loaded assemblies, and the traversal course really carrying the physics, animation and audio stages;
+* the create/mount/step/unmount/teardown loop over all THREE genres with the ledger and fence registries bounded, their
+  high-water marks reported and the world's counters back at the world's own baselines;
+* one digest per genre per catalog over the whole observation table, which the EditMode suite recomputes from the frozen
+  name table alone.
+
+| Id | Current | Proposed | What this gate would evidence | Evidence the build host must first produce |
+| --- | --- | --- | --- | --- |
+| `P-045` | Partial | **promotion is the build host's call** | Durable delivery across a receiving world's unload/reload: one committed event → one durable obligation → reinstated into a new session → dispatched → redelivered under the same external key with no second mutation. | `artifacts/w6-gate/toolchain/probe-w6-gate.json` (×5), `artifacts/w6-gate/unity/editmode-results.xml`, `artifacts/w6-gate/trx/` |
+| `P-049` | Partial | `Partial` (unchanged) | The obligation survives the unload of the world that committed it and is reinstated explicitly; `O-22 RecoverWorld` and host-configured bounded retries remain GC-027's. | the same probe/EditMode artifacts |
+| `P-007` | Partial | `Partial` (unchanged) | Lease and callback counts return to the world's own baselines after 1,000 cycles per genre, with the retired-history and fence high-water marks reported. Long-run retention budgets under memory pressure stay GC-026's. | `probe-w6-gate.json` (`liveLeases=0`, `fenceOutstandingHighWater=0`, `evictedRetired=0`) |
+| `P-001` | Partial | `Partial` (unchanged) | The audit's negative half (cards and narrative carry no action/physics/audio surface or adapter assembly) AND its positive half (the traversal course carries the five stages and all three optional engine stages) in one run over the same revision. The cross-family reward composition is GC-024's. | `probe-w6-gate.json` (`offenders=<none>`, `traversalAdapters=True`) |
+| `P-034` | Partial | `Partial` (unchanged) | One local `PhysicsScene` simulation per admitted step, refused duplicates, and the engine's own `Simulate` count equal to the admitted steps and to the gate's counter. | `probe-w6-gate.json` (`gateSimulatedSteps=5`, `duplicateRefused=True`) |
+| `P-036` | Implemented+Evidenced | unchanged | The traversal course commits no step while no host time elapses, and one declared step per pump; the loop's command-driven genres commit exactly one step per admitted command. | `probe-w6-gate.json` |
+| `P-046` | Partial | **may promote after the gate** | 1,000 real mount/unmount cycles with one admitted step inside each cycle, for all three genres through one loop. | `probe-w6-gate.json` (`completed=1000`), `trx/` |
+| `P-048` | Implemented+Evidenced | unchanged | Each cycle's installation reaches `Disposed` with its lease retired, and the registries are bounded afterwards. | `probe-w6-gate.json`, leak attribution |
+| `P-008` | Partial | `Partial` (unchanged) | Recorded-input replay agreement, the five frozen digest literals, and a table that cannot silently shrink. Cross-platform and native-physics claims stay excluded. | `probe-w6-gate.json`, `unity/editmode-results.xml` |
+| `P-059` | Partial | `Partial` (unchanged) | The third genre runs in the same stripped player as the other two, and the composition audit is made from the traversal side as well. The full transition tables are GC-024's. | `probe-w6-gate.json` |
+| `P-060` | Partial | `Partial` (unchanged) | This gate's evidence set, including the release-surface inspection that proves the qualification markers are absent from a shipping-shaped player. The measured budget table is GC-026's. | `release-gate-surface.json`, `release-surface.json` |
+
+**Contract changes: none.** No file under `Packages/com.gamecore.contracts/` was modified by the gate, no plan DTO was
+touched, and no operation row changes. The reconciliation that DID change shared behaviour is
+`ProbeRunner.CreateReport`'s branch for three probe modes (§4 of the handoff): the merge had left the traversal, GC-021
+and lifecycle-stress branches without their `report.CompletePositive()` call, which would have left those three modes
+unfinalized (result `Fail`, exit 1) in the player. It is fixed in this gate's revision.
+
+**Not proposed.** `O-22 RecoverWorld` stays `Not yet` (GC-027), the measured budgets stay GC-026's, `P-055`'s
+cross-version migration matrix stays GC-027's, and the four rows the merged tasks proposed for themselves are left as
+those tasks' own proposals rather than restated here.

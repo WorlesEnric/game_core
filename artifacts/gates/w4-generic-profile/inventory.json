@@ -3749,5 +3749,151 @@
       "`ITelemetryOwner` is the fixed compact schema's owner seam: each runtime owner implements `TelemetryOwner` (a stable key) and `WriteTelemetry(TelemetryCounterSet)`. Twenty-two owners implement it (derivation result/closure/outcome/recipe cache, service resolution, the operation ledger, the resource ledger, the job fence, the callback gate, the quarantine registry, the planned publication, the execution driver, the guarded dispatch group, the publication store, the committed event store, the world resource ledger, the request ledger, the step message schedule, the input cutoff, the clock registry, the assembly publisher, the derived-assembly pipeline and the observation surface).",
       "The switch is `GAMECORE_TELEMETRY`, taken from the new qualification marker package `com.gamecore.telemetry-qualification` by the contracts, derivation, composition, planning and Unity-runtime asmdefs, and defined unconditionally by the plain-dotnet shadow projects. Shipping projects omit the marker."
     ]
+  },
+  "w6GateRevisions": {
+    "branch": "w6-gate",
+    "contractChanges": "None. No file under Packages/com.gamecore.contracts/ and no plan DTO was modified by this gate.",
+    "mergedTasks": [
+      "GC-020",
+      "GC-021",
+      "GC-022",
+      "GC-023"
+    ],
+    "notProposed": [
+      "O-22 RecoverWorld stays Not yet (GC-027); the measured budget table stays GC-026's; P-055's cross-version migration matrix stays GC-027's.",
+      "Every requirement row not listed above is unchanged and unproposed, including the rows the four merged tasks proposed for themselves."
+    ],
+    "objective": "Integrate the fixed-step action reference, durable reward delivery, unload stress and replay/cost counters on one revision; demonstrate that optional physics/animation are absent from cards and narrative while the traversal course carries them; complete the 1,000-cycle teardown and repeatability fixtures across all three genres.",
+    "observationTables": {
+      "cards": 7,
+      "digests": {
+        "cardsFixture": "9c3d3b5d2f8e959920aa9678e65f56658cbe4a513fcd2895cd458fbda4f9ea14",
+        "cardsGenerated": "894a975e4a5eb98d733ec213778ec275e4abe02cb4028271857bd4fa68d6fe80",
+        "narrativeFixture": "ab198371e8d276dcc2833e88e64e278abde57274ea3c68e2497fa2b75f97fa73",
+        "narrativeGenerated": "4235cea3c22cf93e38307000fcc863edd4ada3e2fc4a3b475ca719765dc17279",
+        "traversal": "ca29b5f7099f9fbc4abeb7031c7b1e35ba39ec1ad39db70dd0f037fa8d45675e"
+      },
+      "narrative": 6,
+      "playerProbeSteps": 41,
+      "traversal": 9
+    },
+    "proposedRows": [
+      {
+        "currentStatus": "Partial",
+        "evidenceToBeProduced": [
+          "artifacts/w6-gate/toolchain/probe-w6-gate.json",
+          "artifacts/w6-gate/unity/editmode-results.xml",
+          "artifacts/w6-gate/trx/"
+        ],
+        "id": "P-045",
+        "observation": "cards/w6-reward-delivery-is-exactly-once-across-a-reload",
+        "proposedStatus": "promotion is the build host's call",
+        "whatChanged": "One committed event becomes one durable obligation, which is reinstated into a world of a NEW session after its receiving world is stopped and disposed, dispatched, acknowledged, and then reinstated once more after the acknowledgement is lost, where the destination is asked twice under one external idempotency key and mutates exactly once."
+      },
+      {
+        "currentStatus": "Partial",
+        "evidenceToBeProduced": [
+          "artifacts/w6-gate/toolchain/probe-w6-gate.json"
+        ],
+        "id": "P-049",
+        "proposedStatus": "Partial",
+        "whatChanged": "The obligation outlives the unload of the world that committed it and is reinstated explicitly; O-22 RecoverWorld and host-configured bounded retries stay GC-027's."
+      },
+      {
+        "currentStatus": "Partial",
+        "evidenceToBeProduced": [
+          "artifacts/w6-gate/toolchain/probe-w6-gate.json",
+          "artifacts/w6-gate/toolchain/native-leak-attribution.json"
+        ],
+        "id": "P-007",
+        "proposedStatus": "Partial",
+        "whatChanged": "Lease and callback counts return to the world's own baselines after 1,000 cycles per genre, with retired-history and fence high-water marks reported; long-run retention under memory pressure stays GC-026's."
+      },
+      {
+        "currentStatus": "Partial",
+        "evidenceToBeProduced": [
+          "artifacts/w6-gate/toolchain/probe-w6-gate.json"
+        ],
+        "id": "P-001",
+        "proposedStatus": "Partial",
+        "whatChanged": "The audit is made from both directions in one run: cards and narrative carry no traversal stage, key, buffer, capability, rule, schema, factory, slot or adapter assembly, and the traversal course carries the five stages plus the physics, animation and audio stages. The cross-family reward composition stays GC-024's."
+      },
+      {
+        "currentStatus": "Partial",
+        "evidenceToBeProduced": [
+          "artifacts/w6-gate/toolchain/probe-w6-gate.json"
+        ],
+        "id": "P-034",
+        "proposedStatus": "Partial",
+        "whatChanged": "One local PhysicsScene simulation per admitted step, a refused and counted duplicate step, and the engine's own Simulate count equal to the admitted steps and to the physics gate's counter."
+      },
+      {
+        "currentStatus": "Implemented+Evidenced",
+        "evidenceToBeProduced": [
+          "artifacts/w6-gate/toolchain/probe-w6-gate.json"
+        ],
+        "id": "P-036",
+        "proposedStatus": "Implemented+Evidenced",
+        "whatChanged": "The traversal course commits no step while no host time elapses and one declared step per pump; the command-driven genres commit exactly one step per admitted command inside the same loop."
+      },
+      {
+        "currentStatus": "Partial",
+        "evidenceToBeProduced": [
+          "artifacts/w6-gate/toolchain/probe-w6-gate.json",
+          "artifacts/w6-gate/trx/"
+        ],
+        "id": "P-046",
+        "proposedStatus": "may promote after the gate",
+        "whatChanged": "1,000 real mount/unmount cycles with one admitted step inside each cycle, driven through ONE loop for all three genres."
+      },
+      {
+        "currentStatus": "Implemented+Evidenced",
+        "evidenceToBeProduced": [
+          "artifacts/w6-gate/toolchain/probe-w6-gate.json"
+        ],
+        "id": "P-048",
+        "proposedStatus": "Implemented+Evidenced",
+        "whatChanged": "Every cycle's installation reaches Disposed with its lease retired, and the registries are bounded afterwards; the registries' high-water marks are reported rather than assumed."
+      },
+      {
+        "currentStatus": "Partial",
+        "evidenceToBeProduced": [
+          "artifacts/w6-gate/toolchain/probe-w6-gate.json",
+          "artifacts/w6-gate/unity/editmode-results.xml"
+        ],
+        "id": "P-008",
+        "proposedStatus": "Partial",
+        "whatChanged": "A replay of the recorded input agrees at tolerance zero and reproduces the rule digest; five frozen digest literals are recomputed by the suite from the name table alone. Cross-platform and native-physics claims stay excluded."
+      },
+      {
+        "currentStatus": "Partial",
+        "evidenceToBeProduced": [
+          "artifacts/w6-gate/toolchain/probe-w6-gate.json"
+        ],
+        "id": "P-059",
+        "proposedStatus": "Partial",
+        "whatChanged": "The third genre runs in the same stripped player as the other two and the composition audit is made from the traversal side as well; the full transition tables stay GC-024's."
+      },
+      {
+        "currentStatus": "Partial",
+        "evidenceToBeProduced": [
+          "artifacts/w6-gate/release-gate-surface.json",
+          "artifacts/w6-gate/release-surface.json"
+        ],
+        "id": "P-060",
+        "proposedStatus": "Partial",
+        "whatChanged": "This gate's evidence set, including a release-surface inspection that proves the union of qualification-only markers is absent from a shipping-shaped player while the production seams remain."
+      }
+    ],
+    "reconciliations": [
+      "The probe host keeps EVERY mode from all four tasks, and tools/unity/prepare_gc017_release_project.py strips only the qualification-only ones (faults, W5 gate, GC-021 seat, lifecycle stress, W6 gate).",
+      "ProbeRunner.CreateReport's per-mode report identity is one independent `if` block per mode, and the dispatch is one `else if` block per mode; the merge had left three blocks (traversal, GC-021, lifecycle stress) without their CompletePositive call, which is fixed on this revision.",
+      "The release clone also removes GC-022's four lifecycle-stress runtime files, which the merge had left behind while stripping the mode, so the clone is one consistent set.",
+      "tools/check_release_gate_free.py is new: it scans a built release player for the union of qualification-only markers and requires the qualification player to show one marker per group, so the scan cannot pass by looking in the wrong place.",
+      "LifecyclePlayModeMatrix drives Gc020TraversalHost.RunReloadRoute once per session, so the {domain, scene} reload matrix covers the traversal genre too."
+    ],
+    "statusOfThisSection": "Proposals only. Counts are unchanged.",
+    "task": "W6-GATE",
+    "verdict": "NotRun (pending orchestrator build host). No requirement or operation row promoted: this section is proposals only, and every proposal names the observation that would carry it and the artifacts the build host must first produce."
   }
 }

@@ -137,18 +137,26 @@ namespace GameCore.Validation.ProbeHost
                 else if (arguments.Traversal)
                 {
                     ProbeTraversal.Run(report);
+                    report.CompletePositive();
                 }
                 else if (arguments.Gc021)
                 {
                     ProbeGc021.Run(report);
+                    report.CompletePositive();
                 }
                 else if (arguments.LifecycleStress)
                 {
                     ProbeLifecycleStress.Run(report);
+                    report.CompletePositive();
                 }
                 else if (arguments.Replay)
                 {
                     ProbeReplay.Run(report);
+                    report.CompletePositive();
+                }
+                else if (arguments.W6Gate)
+                {
+                    ProbeW6Gate.Run(report);
                     report.CompletePositive();
                 }
                 else
@@ -264,6 +272,11 @@ namespace GameCore.Validation.ProbeHost
             if (arguments.Replay)
             {
                 return Named("Replay", "GC-023");
+            }
+
+            if (arguments.W6Gate)
+            {
+                return Named("W6Gate", "W6-GATE");
             }
 
             return new ProbeReport(

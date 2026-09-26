@@ -28,6 +28,7 @@ namespace GameCore.Validation.ProbeHost
         private const string Gc021ArgumentName = "-probeGc021";
         private const string LifecycleStressArgumentName = "-probeLifecycleStress";
         private const string ReplayArgumentName = "-probeReplay";
+        private const string W6GateArgumentName = "-probeW6Gate";
 
         private ProbeArguments(
             bool missingRegistration,
@@ -48,6 +49,7 @@ namespace GameCore.Validation.ProbeHost
             bool traversal,
             bool gc021,
             bool replay,
+            bool w6Gate,
             string? resultPath)
         {
             MissingRegistration = missingRegistration;
@@ -68,6 +70,7 @@ namespace GameCore.Validation.ProbeHost
             Traversal = traversal;
             Gc021 = gc021;
             Replay = replay;
+            W6Gate = w6Gate;
             ResultPath = resultPath;
         }
 
@@ -205,6 +208,14 @@ namespace GameCore.Validation.ProbeHost
         /// </summary>
         public bool Replay { get; }
 
+        /// <summary>
+        /// Runs the Wave 6 integration-gate mode: the fixed-step traversal course with the cost counters and the
+        /// recorded-input replay, the durable reward delivery across an unload/reload of its receiving world, the
+        /// composition audit that keeps the optional physics/animation/audio surface out of cards and narrative, and
+        /// the create/mount/step/unmount/teardown loop over all three genres (W6-GATE).
+        /// </summary>
+        public bool W6Gate { get; }
+
         /// <summary>Destination path of the structured JSON result.</summary>
         public string? ResultPath { get; }
 
@@ -214,6 +225,7 @@ namespace GameCore.Validation.ProbeHost
             || Gc013 || W4Gate || Faults || Gc018 || Gc019 || W5Gate || Traversal || Gc021
             || LifecycleStress
             || Replay
+            || W6Gate
             || !string.IsNullOrEmpty(ResultPath);
 
         /// <summary>True when a result destination was supplied; without it the probe cannot record evidence.</summary>
@@ -239,6 +251,7 @@ namespace GameCore.Validation.ProbeHost
             bool traversal = false;
             bool gc021 = false;
             bool replay = false;
+            bool w6Gate = false;
             string? resultPath = null;
             for (int i = 0; i < arguments.Length; i++)
             {
@@ -315,6 +328,10 @@ namespace GameCore.Validation.ProbeHost
                 {
                     replay = true;
                 }
+                else if (argument == W6GateArgumentName)
+                {
+                    w6Gate = true;
+                }
                 else if (argument == ResultArgumentName && i + 1 < arguments.Length)
                 {
                     resultPath = arguments[i + 1];
@@ -324,7 +341,7 @@ namespace GameCore.Validation.ProbeHost
             return new ProbeArguments(
                 missingRegistration, worldDispatch, w1Gate, w2Gate, w3Gate, narrative, cards, w4Profile, gc013,
                 lifecycleStress,
-                w4Gate, faults, gc018, gc019, w5Gate, traversal, gc021, replay, resultPath);
+                w4Gate, faults, gc018, gc019, w5Gate, traversal, gc021, replay, w6Gate, resultPath);
         }
     }
 }
