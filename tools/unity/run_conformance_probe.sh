@@ -187,6 +187,18 @@ for clause in "${conformance_clauses[@]}"; do
   fi
 done
 
+# The recorded gaps are required by name: a run that could not perform a 07 row must say so. The probe reports such a
+# step with the status `ExpectedNegative` (its vocabulary for a declared, known absence), and the coverage step keeps
+# the run red because `AllPassed` excludes a gap — so a gap can never be read as a satisfied requirement.
+if ! grep -q '"name": "conformance/cross/recorded-gaps"' "${result_file}"; then
+  echo "   FAIL conformance: the combined world reported no recorded-gap step" >&2
+  failures=$((failures + 1))
+fi
+if ! grep -q "gc024.gap.reward-bridge-removal" "${result_file}"; then
+  echo "   FAIL conformance: the run does not name the recorded gap this revision declares (07:276)" >&2
+  failures=$((failures + 1))
+fi
+
 # A player cannot read a project tree, so it must SAY so rather than report a clean build-time audit it never ran.
 if ! grep -q "tree=no project tree on this host" "${result_file}" \
   && ! grep -q "tree=kernel=" "${result_file}"; then

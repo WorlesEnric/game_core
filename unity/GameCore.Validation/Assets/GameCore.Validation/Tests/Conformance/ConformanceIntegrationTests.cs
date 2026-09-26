@@ -70,7 +70,36 @@ namespace GameCore.Validation.ProbeHost.Tests
             ConformanceTableResult result = ConformanceCrossWorld.Run();
             try
             {
-                Assert.That(result.AllPassed, Is.True, result.Describe());
+                // A recorded gap is not a pass, so this run is red by design: 07:276's pending-work unmount refusal
+                // cannot be performed while the reward bridge is an ordinary caller-owned object rather than a
+                // mounted installation. The suite asserts the exact shape of that gap instead of asserting a pass it
+                // would be lying about, and asserts that everything else is green (P-032, P-060).
+                Assert.That(
+                    result.AllPassed,
+                    Is.False,
+                    "a run that records an unmet 07 clause cannot report AllPassed (07:276, P-032)");
+                Assert.That(result.Failures.Count, Is.EqualTo(0), result.Describe());
+                Assert.That(result.Verdict.Passed, Is.True, result.Describe());
+
+                ConformanceTable table = ReferenceTables.ById("cross")!;
+                IReadOnlyList<ConformanceDocGap> declared = ConformanceDocGaps.Of("cross");
+                Assert.That(
+                    result.RecordedGaps.Count,
+                    Is.EqualTo(declared.Count),
+                    "the cross run reports " + result.RecordedGaps.Count.ToString(CultureInfo.InvariantCulture)
+                    + " recorded gap(s) while the fixture declares "
+                    + declared.Count.ToString(CultureInfo.InvariantCulture) + ": " + result.Describe());
+                for (int i = 0; i < declared.Count; i++)
+                {
+                    Assert.That(
+                        result.RecordedGaps[i].Detail,
+                        Does.Contain(declared[i].GapId),
+                        "a recorded gap must name the fixture's own gap identifier");
+                    Assert.That(
+                        declared[i].Clause,
+                        Does.Contain("07:"),
+                        "a recorded gap must name the 07 clause it offends");
+                }
 
                 // The trace must round-trip: what the run recorded is a document the fixture can read back, which is
                 // what makes a committed trace file comparable with a later run (P-054).
@@ -81,20 +110,23 @@ namespace GameCore.Validation.ProbeHost.Tests
                 Assert.That(read, Is.Not.Null);
                 Assert.That(read!.Digest(), Is.EqualTo(result.Trace.Digest()));
 
-                // The cross table's rows must all have been executed and every one of them observed.
-                ConformanceTable table = ReferenceTables.ById("cross")!;
+                // Every row of the cross table must have been executed and observed, the gapped one included: the gap
+                // is an *unperformed operation with a declared reason*, not a missing observation.
                 for (int r = 0; r < table.Rows.Count; r++)
                 {
                     Assert.That(
-                        read.ValueOf("cross", table.Rows[r].RowId, ConformancePhase.After,
-                            table.Rows[r].Expectations[0].Field),
+                        read.ValueOf(
+                            "cross", table.Rows[r].RowId, ConformancePhase.After, table.Rows[r].Expectations[0].Field),
                         Is.Not.Null,
                         "the combined world never observed row '" + table.Rows[r].RowId + "'");
                 }
             }
             finally
             {
-                _ = result;
+                Assert.That(
+                    UnityWorldRegistry.Count,
+                    Is.EqualTo(registryBaseline),
+                    "the combined world survived its test (P-035)");
             }
         }
 
@@ -153,7 +185,7 @@ namespace GameCore.Validation.ProbeHost.Tests
                 ConformanceTable? table = ReferenceTables.ById(script.TableId);
                 Assert.That(table, Is.Not.Null, script.TableId + " has no transcribed table");
 
-                IReadOnlyList<ConformanceStep> steps = script.Steps();
+                IReadOnlyList<ConformanceObservation> steps = script.Steps();
                 var executed = new HashSet<string>(StringComparer.Ordinal);
                 for (int i = 0; i < steps.Count; i++)
                 {

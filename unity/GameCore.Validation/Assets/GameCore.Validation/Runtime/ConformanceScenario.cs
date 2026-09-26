@@ -31,34 +31,67 @@ using GameCore.Unity.Runtime.Time;
 
 namespace GameCore.Validation.ProbeHost
 {
-    /// <summary>One named conformance observation: the step, the outcome, and the fields that disagreed.</summary>
-    public sealed class ConformanceStep
+    /// <summary>What one step's observation says: it held, it failed, or it is a gap the fixture records as one.</summary>
+    public enum ConformanceStepStatus
     {
-        public ConformanceStep(string name, bool passed, string detail)
+        /// <summary>The step did what its 07 row demands.</summary>
+        Pass = 0,
+
+        /// <summary>The step did not hold. A single failure makes the whole run red.</summary>
+        Fail = 1,
+
+        /// <summary>
+        /// The step could not be performed in this revision, for a reason the fixture records as a documentation
+        /// gap (`ConformanceDocGaps`): the 07 clause it serves is named, the mechanism this revision lacks is named,
+        /// and the state the run did observe is recorded. It is *not* a pass — `AllPassed` excludes it and the
+        /// probe reports it as an expected negative — so a gap can never be mistaken for a satisfied requirement.
+        /// </summary>
+        RecordedGap = 2,
+    }
+
+    /// <summary>One named conformance observation: the step, its status, and the values it was computed from.</summary>
+    public sealed class ConformanceObservation
+    {
+        public ConformanceObservation(string name, ConformanceStepStatus status, string detail)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
-            Passed = passed;
+            Status = status;
             Detail = detail ?? string.Empty;
+        }
+
+        /// <summary>Convenience for a step that is a plain pass or fail.</summary>
+        public ConformanceObservation(string name, bool passed, string detail)
+            : this(name, passed ? ConformanceStepStatus.Pass : ConformanceStepStatus.Fail, detail)
+        {
         }
 
         /// <summary>The observation's qualified name.</summary>
         public string Name { get; }
 
-        /// <summary>True when the step did what its 07 row says.</summary>
-        public bool Passed { get; }
+        /// <summary>What the observation says.</summary>
+        public ConformanceStepStatus Status { get; }
 
-        /// <summary>The values the verdict was computed from.</summary>
+        /// <summary>True only for <see cref="ConformanceStepStatus.Pass"/>.</summary>
+        public bool Passed => Status == ConformanceStepStatus.Pass;
+
+        /// <summary>True when this step is a recorded documentation gap rather than a result.</summary>
+        public bool IsRecordedGap => Status == ConformanceStepStatus.RecordedGap;
+
+        /// <summary>The values the status was computed from.</summary>
         public string Detail { get; }
 
-        public override string ToString() => Name + ": " + (Passed ? "Pass" : "Fail") + " (" + Detail + ")";
+        public override string ToString() => Name + ": " + Status + " (" + Detail + ")";
     }
 
     /// <summary>One table's whole result: its observations, its normalized trace and the oracle's verdict.</summary>
     public sealed class ConformanceTableResult
     {
+        private readonly List<ConformanceObservation> failures = new List<ConformanceObservation>();
+        private readonly List<ConformanceObservation> gaps = new List<ConformanceObservation>();
+
         public ConformanceTableResult(
             string tableId,
-            IReadOnlyList<ConformanceStep> steps,
+            IReadOnlyList<ConformanceObservation> steps,
             ConformanceTrace trace,
             ConformanceVerdict verdict,
             string document)
@@ -68,14 +101,30 @@ namespace GameCore.Validation.ProbeHost
             Trace = trace ?? throw new ArgumentNullException(nameof(trace));
             Verdict = verdict ?? throw new ArgumentNullException(nameof(verdict));
             Document = document ?? string.Empty;
-            AllPassed = verdict.Passed;
+
+            for (int i = 0; i < Steps.Count; i++)
+            {
+                if (Steps[i].Status == ConformanceStepStatus.Fail)
+                {
+                    failures.Add(Steps[i]);
+                }
+                else if (Steps[i].Status == ConformanceStepStatus.RecordedGap)
+                {
+                    gaps.Add(Steps[i]);
+                }
+            }
+
+            // The whole run is green only when the oracle accepted the trace AND every observed step held. A step
+            // that could not be performed is a `RecordedGap` and keeps this false: a gap is not a pass, so a
+            // requirement that this revision cannot satisfy can never be reported as satisfied.
+            AllPassed = verdict.Passed && failures.Count == 0;
         }
 
         /// <summary>The 07 table this result is about.</summary>
         public string TableId { get; }
 
         /// <summary>The named observations, in execution order.</summary>
-        public IReadOnlyList<ConformanceStep> Steps { get; }
+        public IReadOnlyList<ConformanceObservation> Steps { get; }
 
         /// <summary>The normalized trace this run recorded.</summary>
         public ConformanceTrace Trace { get; }
@@ -86,12 +135,39 @@ namespace GameCore.Validation.ProbeHost
         /// <summary>The trace's canonical document text, which the caller commits as evidence.</summary>
         public string Document { get; }
 
-        /// <summary>True when every row of the table was executed and every expectation was satisfied.</summary>
+        /// <summary>True when the oracle passed and no step failed; a recorded gap keeps it false.</summary>
         public bool AllPassed { get; }
 
-        public string Describe() => TableId + ": digest=" + Trace.Digest()
-            + "; facts=" + Trace.Count.ToString(CultureInfo.InvariantCulture)
-            + "; " + Verdict.Describe();
+        /// <summary>Every step that did not hold.</summary>
+        public IReadOnlyList<ConformanceObservation> Failures => failures;
+
+        /// <summary>
+        /// Every step this revision could not perform for a reason the fixture records as a documentation gap. An
+        /// empty list is the normal value; a non-empty one is a reported gap, never a silent one.
+        /// </summary>
+        public IReadOnlyList<ConformanceObservation> RecordedGaps => gaps;
+
+        public string Describe()
+        {
+            var text = new System.Text.StringBuilder();
+            text.Append(TableId).Append(": digest=").Append(Trace.Digest())
+                .Append("; facts=").Append(Trace.Count.ToString(CultureInfo.InvariantCulture))
+                .Append("; steps=").Append(Steps.Count.ToString(CultureInfo.InvariantCulture))
+                .Append("; failed=").Append(failures.Count.ToString(CultureInfo.InvariantCulture))
+                .Append("; recordedGaps=").Append(gaps.Count.ToString(CultureInfo.InvariantCulture))
+                .Append("; ").Append(Verdict.Describe());
+            for (int i = 0; i < failures.Count && i < 4; i++)
+            {
+                text.Append("; FAIL ").Append(failures[i].Name).Append(" (").Append(failures[i].Detail).Append(')');
+            }
+
+            for (int i = 0; i < gaps.Count && i < 4; i++)
+            {
+                text.Append("; GAP ").Append(gaps[i].Name).Append(" (").Append(gaps[i].Detail).Append(')');
+            }
+
+            return text.ToString();
+        }
     }
 
     /// <summary>Executes every transcribed 07 table against one genre's real worlds.</summary>
@@ -122,7 +198,7 @@ namespace GameCore.Validation.ProbeHost
                     "no 07 table or script carries the id '" + tableId + "' (GC-024).");
             }
 
-            var steps = new List<ConformanceStep>();
+            var steps = new List<ConformanceObservation>();
             var trace = new ConformanceTrace(family.ConformanceLabel);
             var outcomes = new List<ConformanceOracle.RowOutcomeReport>();
             var sessions = new IdSequence(SessionSalt);
@@ -134,7 +210,7 @@ namespace GameCore.Validation.ProbeHost
             }
 
             ConformanceVerdict verdict = ConformanceOracle.CompareScript(script, trace, outcomes);
-            steps.Add(new ConformanceStep(
+            steps.Add(new ConformanceObservation(
                 StepPrefix + table.TableId + "/verdict",
                 verdict.Passed,
                 verdict.Describe()));
@@ -153,7 +229,7 @@ namespace GameCore.Validation.ProbeHost
             IdSequence sessions,
             ConformanceTrace trace,
             List<ConformanceOracle.RowOutcomeReport> outcomes,
-            List<ConformanceStep> steps)
+            List<ConformanceObservation> steps)
         {
             string label = stage.StageId;
             ConformanceWorld world = ConformanceWorld.Build(family, sessions, TargetCapacity);
@@ -161,14 +237,14 @@ namespace GameCore.Validation.ProbeHost
             {
                 if (!world.Ready)
                 {
-                    steps.Add(new ConformanceStep(
+                    steps.Add(new ConformanceObservation(
                         StepPrefix + table.TableId + "/" + label + "/world",
                         false,
                         "the world could not be built: " + world.Failure));
                     return;
                 }
 
-                steps.Add(new ConformanceStep(
+                steps.Add(new ConformanceObservation(
                     StepPrefix + table.TableId + "/" + label + "/world",
                     world.MatchesPublishedAssembly(),
                     "session=" + world.Host!.World.Session.ToString()
@@ -179,7 +255,7 @@ namespace GameCore.Validation.ProbeHost
                 for (int i = 0; i < stage.Setup.Count; i++)
                 {
                     ConformanceOperationResult setup = family.Apply(stage.Setup[i], 0, world);
-                    steps.Add(new ConformanceStep(
+                    steps.Add(new ConformanceObservation(
                         StepPrefix + table.TableId + "/" + label + "/setup-" + i.ToString(CultureInfo.InvariantCulture),
                         setup.Published,
                         stage.Setup[i] + ": " + setup.Detail));
@@ -189,7 +265,7 @@ namespace GameCore.Validation.ProbeHost
                     }
                 }
 
-                IReadOnlyList<ConformanceStep> tableSteps = stage.Steps;
+                IReadOnlyList<ConformanceObservation> tableSteps = stage.Steps;
                 for (int i = 0; i < tableSteps.Count; i++)
                 {
                     RunStep(family, table, label, tableSteps[i], world, trace, outcomes, steps);
@@ -197,7 +273,7 @@ namespace GameCore.Validation.ProbeHost
             }
             catch (Exception exception)
             {
-                steps.Add(new ConformanceStep(
+                steps.Add(new ConformanceObservation(
                     StepPrefix + table.TableId + "/" + label + "/unhandled",
                     false,
                     "unhandled " + exception.GetType().FullName + ": " + exception.Message));
@@ -205,7 +281,7 @@ namespace GameCore.Validation.ProbeHost
             finally
             {
                 Outcome stop = world.StopAndDispose();
-                steps.Add(new ConformanceStep(
+                steps.Add(new ConformanceObservation(
                     StepPrefix + table.TableId + "/" + label + "/teardown",
                     stop == Outcome.Published || stop == Outcome.NoChange,
                     "stop=" + stop + "; registry=" + UnityWorldRegistry.Count.ToString(CultureInfo.InvariantCulture)));
@@ -217,11 +293,11 @@ namespace GameCore.Validation.ProbeHost
             IConformanceFamily family,
             ConformanceTable table,
             string stageId,
-            ConformanceStep step,
+            ConformanceObservation step,
             ConformanceWorld world,
             ConformanceTrace trace,
             List<ConformanceOracle.RowOutcomeReport> outcomes,
-            List<ConformanceStep> steps)
+            List<ConformanceObservation> steps)
         {
             string name = StepPrefix + table.TableId + "/" + step.RowId;
             IReadOnlyList<ConformanceExpectation> expectations = step.Expectations;
@@ -300,7 +376,7 @@ namespace GameCore.Validation.ProbeHost
                     .Append(before[e]).Append("->").Append(after[e]);
             }
 
-            steps.Add(new ConformanceStep(name, pass, text.ToString()));
+            steps.Add(new ConformanceObservation(name, pass, text.ToString()));
         }
 
         /// <summary>

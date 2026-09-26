@@ -567,6 +567,58 @@ namespace GameCore.ReferenceConformance.Tests
         }
     }
 
+    [TestFixture]
+    public sealed class ConformanceDocGapTests
+    {
+        [Test]
+        public void EveryRecordedGapNamesItsRowItsClauseItsEvidenceAndItsResolution()
+        {
+            IReadOnlyList<ConformanceDocGap> gaps = ConformanceDocGaps.All;
+            Assert.That(gaps.Count, Is.GreaterThan(0),
+                "this revision records at least one gap (07:276's pending-work unmount refusal)");
+
+            var seen = new HashSet<string>(StringComparer.Ordinal);
+            for (int i = 0; i < gaps.Count; i++)
+            {
+                ConformanceDocGap gap = gaps[i];
+                Assert.That(seen.Add(gap.GapId), Is.True, "gap identifiers must be unique: " + gap.GapId);
+                Assert.That(gap.Clause, Does.Contain("07:"),
+                    gap.GapId + " must quote the 07 clause it offends");
+                Assert.That(gap.Missing.Length, Is.GreaterThan(20),
+                    gap.GapId + " must state the mechanism this revision lacks");
+                Assert.That(gap.Evidence.Length, Is.GreaterThan(10),
+                    gap.GapId + " must name where the same absence was already recorded");
+                Assert.That(gap.Resolution.Length, Is.GreaterThan(20),
+                    gap.GapId + " must propose what would close it");
+
+                ConformanceTable? table = ReferenceTables.ById(gap.TableId);
+                Assert.That(table, Is.Not.Null, gap.GapId + " names an unknown table: " + gap.TableId);
+                bool rowExists = false;
+                for (int r = 0; r < table!.Rows.Count; r++)
+                {
+                    if (string.Equals(table.Rows[r].RowId, gap.RowId, StringComparison.Ordinal))
+                    {
+                        rowExists = true;
+                    }
+                }
+
+                Assert.That(rowExists, Is.True,
+                    gap.GapId + " names a row the table does not carry: " + gap.RowId
+                    + " (a gap whose row was removed is a stale declaration)");
+            }
+        }
+
+        [Test]
+        public void TheGapRegistryIsALookupAndNotASecondStatusVocabulary()
+        {
+            Assert.That(ConformanceDocGaps.ById("gc024.gap.does-not-exist"), Is.Null);
+            Assert.That(ConformanceDocGaps.ById(ConformanceDocGaps.RewardBridgeRemovalId), Is.Not.Null);
+            Assert.That(ConformanceDocGaps.Of("cross").Count, Is.EqualTo(1));
+            Assert.That(ConformanceDocGaps.Of("cards").Count, Is.EqualTo(0));
+            Assert.That(ConformanceDocGaps.CanonicalLines().Count, Is.EqualTo(ConformanceDocGaps.All.Count));
+        }
+    }
+
     internal static class FixtureLookup
     {
         internal static ConformanceRow Find(ConformanceTable table, string rowId)

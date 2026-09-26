@@ -135,10 +135,27 @@ namespace GameCore.Validation.ProbeHost
         {
             for (int i = 0; i < result.Steps.Count; i++)
             {
-                ConformanceStep step = result.Steps[i];
-                report.Add(step.Passed
-                    ? ProbeOutcome.Pass(step.Name, step.Detail)
-                    : ProbeOutcome.Fail(step.Name, step.Detail));
+                ConformanceObservation step = result.Steps[i];
+                // A recorded gap is reported as the probe vocabulary's own "expected negative": it is a known,
+                // declared absence rather than a failed check, and it keeps the run red (the coverage step below
+                // requires AllPassed), so it can never be mistaken for a satisfied requirement.
+                report.Add(StepOutcome(step));
+            }
+
+            if (result.RecordedGaps.Count != 0)
+            {
+                var gapText = new System.Text.StringBuilder();
+                gapText.Append(tableId).Append(": ")
+                    .Append(result.RecordedGaps.Count.ToString(CultureInfo.InvariantCulture))
+                    .Append(" recorded gap(s)");
+                for (int i = 0; i < result.RecordedGaps.Count; i++)
+                {
+                    gapText.Append("; ").Append(result.RecordedGaps[i].Name).Append(" (")
+                        .Append(result.RecordedGaps[i].Detail).Append(')');
+                }
+
+                report.Add(ProbeOutcome.ExpectedNegative(
+                    ConformanceScenario.StepPrefix + tableId + "/recorded-gaps", gapText.ToString()));
             }
 
             string digestDetail = "digest=" + result.Trace.Digest()
@@ -149,6 +166,19 @@ namespace GameCore.Validation.ProbeHost
                 : ProbeOutcome.Fail(ConformanceScenario.StepPrefix + tableId + "/trace-digest", digestDetail));
 
             WriteTrace(report, artifactDirectory, tableId, result.Document);
+        }
+
+        /// <summary>One step's probe outcome: a gap is an expected negative, everything else is pass/fail.</summary>
+        private static ProbeOutcome StepOutcome(ConformanceObservation step)
+        {
+            if (step.IsRecordedGap)
+            {
+                return ProbeOutcome.ExpectedNegative(step.Name, step.Detail);
+            }
+
+            return step.Passed
+                ? ProbeOutcome.Pass(step.Name, step.Detail)
+                : ProbeOutcome.Fail(step.Name, step.Detail);
         }
 
         /// <summary>
