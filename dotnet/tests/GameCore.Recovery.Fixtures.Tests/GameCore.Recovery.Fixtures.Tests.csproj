@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- GC-027's recovery suites. The sources live in `tests/GameCore.Recovery/Tests` so the same files also run as
+       Unity EditMode tests (the package is testable). They drive the production recovery types - the checkpoint
+       store's publish/read/refusal contract, the permitted-outcome matrix, the host-configured retry bound, the
+       bounded recovery transcript and the outbox consistency report - which live in `GameCore.Execution` for plain
+       dotnet and inside `GameCore.Unity.Runtime` for the engine build; `GameCore.Contracts` carries the identities,
+       diagnostic codes and outbox record they share with the rest of the runtime. -->
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <AssemblyName>GameCore.Recovery.Fixtures.Tests</AssemblyName>
+    <RootNamespace>GameCore.Recovery.Fixtures.Tests</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="../../../tests/GameCore.Recovery/Tests/**/*.cs"
+             Exclude="../../../tests/GameCore.Recovery/Tests/**/bin/**/*.cs;../../../tests/GameCore.Recovery/Tests/**/obj/**/*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="NUnit" Version="3.14.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/GameCore.Recovery.Fixtures/GameCore.Recovery.Fixtures.csproj" />
+    <ProjectReference Include="../../src/GameCore.Contracts/GameCore.Contracts.csproj" />
+    <ProjectReference Include="../../src/GameCore.Execution/GameCore.Execution.csproj" />
+  </ItemGroup>
+
+</Project>

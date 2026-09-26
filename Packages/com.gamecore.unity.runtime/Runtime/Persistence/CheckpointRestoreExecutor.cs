@@ -22,6 +22,11 @@ using GameCore.Contracts;
 using GameCore.Execution.Persistence;
 using Unity.Collections;
 using Unity.Entities;
+#if GAMECORE_FAULT_INJECTION
+// GC-027: the two recovery latch boundaries this file reaches (postwrite apply and publication). The whole latch
+// lives inside the same guard, so a shipping compilation has no such namespace to import and no reach call to make.
+using GameCore.Unity.Runtime.Faults;
+#endif
 
 namespace GameCore.Unity.Runtime.Persistence
 {
@@ -324,6 +329,34 @@ namespace GameCore.Unity.Runtime.Persistence
             {
                 return Refuse(targetSession, operation, RestoreStage.Build, buildCode, buildDetail);
             }
+#if GAMECORE_FAULT_INJECTION
+            // GC-027's postwrite-apply boundary: the staging world has been written to (its targets, slots, clocks,
+            // composition and re-admitted commands are all applied) and it is not yet published. A fault here must
+            // destroy the staging world rather than expose it: no epoch, revision or session may become reachable,
+            // and the source world is untouched (TEST-016 row 5, P-031, P-049).
+            try
+            {
+                FaultReach.Reach(
+                    staging.Faults,
+                    FaultBoundary.RestoreApply,
+                    operation,
+                    plan.DocumentHash,
+                    "the staging world for session " + targetSession.Session.ToString()
+                    + " has been written to and is not yet published");
+            }
+            catch (FaultInjectedException fault)
+            {
+                Discard(staging);
+                return Refuse(
+                    targetSession,
+                    operation,
+                    RestoreStage.Build,
+                    DiagnosticCode.ApplyFault,
+                    "the postwrite-apply boundary was armed and fired: " + fault.Message
+                    + "; the staging world was destroyed instead of being published, so no incomplete destination "
+                    + "became the running one (P-031, P-049).");
+            }
+#endif
 
             int reinstatedOutboxRows = 0;
             if (builder is IRestoreOutboxBuilder outboxBuilder)
@@ -359,6 +392,34 @@ namespace GameCore.Unity.Runtime.Persistence
                 Discard(staging);
                 return Refuse(targetSession, operation, RestoreStage.Validate, validationCode, validationDetail);
             }
+
+#if GAMECORE_FAULT_INJECTION
+            // GC-027's recovery-publication boundary: the world is validated and is about to become the registry's
+            // published world. A fault here must leave the registry exactly as it was, with the staging world
+            // destroyed: P-030's "no observer sees a mixture of old/new assembly" applied to a restore (P-049).
+            try
+            {
+                FaultReach.Reach(
+                    staging.Faults,
+                    FaultBoundary.RecoveryPublication,
+                    operation,
+                    plan.DocumentHash,
+                    "about to publish the restored session " + targetSession.Session.ToString()
+                    + " into the registry");
+            }
+            catch (FaultInjectedException fault)
+            {
+                Discard(staging);
+                return Refuse(
+                    targetSession,
+                    operation,
+                    RestoreStage.Expose,
+                    DiagnosticCode.ApplyFault,
+                    "the recovery-publication boundary was armed and fired: " + fault.Message
+                    + "; the validated world was destroyed and never exposed, so the registry still holds exactly "
+                    + "the worlds it held before the attempt (P-030, P-049).");
+            }
+#endif
 
             if (!UnityWorldRegistry.TryExpose(staging))
             {

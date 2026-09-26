@@ -144,6 +144,11 @@ namespace GameCore.Validation.ProbeHost
                     ProbeGc021.Run(report);
                     report.CompletePositive();
                 }
+                else if (arguments.Recovery)
+                {
+                    ProbeRecovery.Run(report);
+                    report.CompletePositive();
+                }
                 else if (arguments.LifecycleStress)
                 {
                     ProbeLifecycleStress.Run(report);
@@ -267,6 +272,11 @@ namespace GameCore.Validation.ProbeHost
             if (arguments.Gc021)
             {
                 return Named("Gc021", "GC-021");
+            }
+
+            if (arguments.Recovery)
+            {
+                return Named("Recovery", "GC-027");
             }
 
             if (arguments.LifecycleStress)

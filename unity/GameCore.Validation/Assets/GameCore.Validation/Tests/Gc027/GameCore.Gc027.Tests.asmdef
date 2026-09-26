@@ -1,0 +1,47 @@
+{
+    "name": "GameCore.Gc027.Tests",
+    "rootNamespace": "GameCore.Gc027.Tests",
+    "references": [
+        "GameCore.Composition",
+        "GameCore.Contracts",
+        "GameCore.Derivation",
+        "GameCore.Derivation.Fixtures",
+        "GameCore.Execution",
+        "GameCore.Gameplay.Cards",
+        "GameCore.Gameplay.Cards.Fixtures",
+        "GameCore.Gameplay.Integration",
+        "GameCore.Gameplay.Narrative",
+        "GameCore.Gameplay.Narrative.Fixtures",
+        "GameCore.Planning",
+        "GameCore.Rules.Cards",
+        "GameCore.Rules.Narrative",
+        "GameCore.Unity.Adapters",
+        "GameCore.Unity.Fixtures",
+        "GameCore.Unity.Runtime",
+        "GameCore.Validation.FamilyEntries",
+        "GameCore.Validation.Generated",
+        "GameCore.Validation.GeneratedCards",
+        "GameCore.Validation.GeneratedCheckpoint",
+        "GameCore.Validation.Probe",
+        "GameCore.Validation.ProbeHost",
+        "Unity.Collections",
+        "Unity.Entities",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

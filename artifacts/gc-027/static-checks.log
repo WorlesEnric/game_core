@@ -1,0 +1,93 @@
+# GC-027 host-side static checks (verbatim)
+
+Run on the authoring host (macOS, no Unity, no .NET SDK). None of these is a build, an import, a test or a player run.
+
+## 1. python3 tools/check_game_core_csharp.py
+```
+checked 555 C# file(s)
+ok
+```
+
+## 2. python3 tools/check_release_fault_free.py --no-build
+```
+GC-017 release surface: PASS
+  [not run] the compiled latch assembly in both configurations (--no-build)
+  no runtime source keeps a latch reference once the qualification symbol is undefined
+  the apply path's mask by [System.Diagnostics.Conditional("GAMECORE_FAULT_INJECTION")] is intact (8 call site(s))
+  the symbol is driven by com.gamecore.fault-qualification, referenced only by the validation manifest
+```
+
+## 3. bash -n tools/unity/run_recovery_probe.sh
+```
+(no output; exit 0)
+```
+
+## 4. python tool syntax (ast.parse) over the two edited tools
+```
+```
+ok tools/unity/prepare_gc017_release_project.py
+ok tools/check_release_clone.py
+ok tools/check_release_fault_free.py
+
+## 5. release-clone preparation and verification (run for real, then the clone deleted)
+```
+$ python3 tools/unity/prepare_gc017_release_project.py
+Marker-free release project: <repo>/unity/GameCore.ReleaseCheck
+$ python3 tools/check_release_clone.py
+   kept    W1Gate           wired: True
+   kept    W2Gate           wired: True
+   kept    W3Gate           wired: True
+   kept    Narrative        wired: True
+   kept    Cards            wired: True
+   kept    W4Profile        wired: True
+   kept    Gc013            wired: True
+   kept    W4Gate           wired: True
+   kept    Gc018            wired: True
+   kept    Gc019            wired: True
+   kept    Traversal        wired: True
+
+== 6. manifest and lock ==
+   qualification/replay dependencies: none
+   testables: []
+   lock present: False
+   Tests/ tree present: False
+   LifecyclePlayModeMatrix present: False
+
+VERDICT: clone is clean
+VERDICT: clone is clean (see above)
+```
+
+## 6. every replace_once strip needle matches exactly once
+```
+needles 42 not-matching-exactly-once 0
+```
+
+## 7. the two frozen digest literals recomputed from the frozen name table
+```
+gc018 narrative (algorithm check): f881469b2a2ba43e4c1bf7972913dd2c93f945a623fef770e00319409ece7ac0
+  published literal            : f881469b2a2ba43e4c1bf7972913dd2c93f945a623fef770e00319409ece7ac0
+gc027 narrative: 2644b55aee8bedbbae60e04627e4f6b16d114ac4f418bed4a1e5960e2bdf80f9
+gc027 cards    : 3c5923b2559b869767c49906e181c4e5efd0f351816926c4095e0aa36ff9074c
+```
+
+## 8. re-run after the audit fixes
+```
+$ python3 tools/check_game_core_csharp.py   # checked 555 C# file(s) -> ok
+$ python3 tools/check_release_fault_free.py --no-build   # PASS
+$ python3 tools/check_contract_surface_parity.py   # every snapshotted enum/value exists with the same numeric value
+$ python3 tools/unity/prepare_gc017_release_project.py && python3 tools/check_release_clone.py   # VERDICT: clone is clean (then deleted)
+$ bash -n tools/unity/run_recovery_probe.sh   # exit 0
+```
+
+## 9. round 2 re-verification (traversal family)
+```
+$ python3 tools/check_game_core_csharp.py                       # checked 557 C# file(s) -> ok
+$ python3 tools/check_release_fault_free.py --no-build            # PASS (both source halves)
+$ python3 tools/unity/prepare_gc017_release_project.py && python3 tools/check_release_clone.py
+VERDICT: clone is clean
+$ bash -n tools/unity/run_recovery_probe.sh                       # exit 0
+# interface completeness: every IGc027Family/IGc018Family/IGc013Family member resolved against each
+#   adapter's full partial-file set -> narrative: none missing, cards: none missing, traversal: none missing
+# the harness step lists vs the C# table: narrative order True, traversal order True, blocks cover table True
+# observation table vs methods: 21 names, 21 methods, execution order identical
+```

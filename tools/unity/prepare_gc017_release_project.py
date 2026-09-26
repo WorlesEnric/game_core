@@ -17,7 +17,10 @@ What the clone removes, and why the list is one flat, auditable set:
     (`ReplayParallelJobs`, `ReplayScenario`, `ProbeReplay` — GC-023's recorded-input replay and its real-Burst-jobs
     half are qualification evidence, not shipping behaviour), a qualification stress/gate fixture a shipping player has
     no reason to carry (`ProbeLifecycleStress` and GC-022's four stress runtime files, the Wave 6 gate's seven files),
-    or a world scenario that only the qualification project drives (`Gc021Scenario`, `Gc021Family`, `ProbeGc021`).
+    or a world scenario that only the qualification project drives (`Gc021Scenario`, `Gc021Family`, `ProbeGc021`),
+    and the same shape for GC-027's recovery set (`Gc027Scenario`, `Gc027Family`, `Gc027SourceWorld`,
+    `Gc027RestoreBuilder`, `Gc027PhysicsDomain`, `Gc027NarrativeHost`, `Gc027CardsHost`, `Gc027TraversalHost`,
+    `ProbeRecovery`).
     Their production seams — the delivery core, the traversal package, the optional engine stages and the four family
     hosts — all stay;
   * `Editor/LifecyclePlayModeMatrix.cs`, an editor-only qualification harness: it drives the application world and the
@@ -97,6 +100,12 @@ ARG_NEEDLES = (
     '            bool w6Gate = false;\n',
     '        /// <summary>\n        /// Runs the Wave 6 integration-gate mode: the fixed-step traversal course with the cost counters and the\n        /// recorded-input replay, the durable reward delivery across an unload/reload of its receiving world, the\n        /// composition audit that keeps the optional physics/animation/audio surface out of cards and narrative, and\n        /// the create/mount/step/unmount/teardown loop over all three genres (W6-GATE).\n        /// </summary>\n        public bool W6Gate { get; }\n',
     '                else if (argument == W6GateArgumentName)\n                {\n                    w6Gate = true;\n                }\n',
+    '        private const string RecoveryArgumentName = "-probeRecovery";\n',
+    '            bool recovery,\n',
+    '            Recovery = recovery;\n',
+    '            bool recovery = false;\n',
+    "        /// <summary>\n        /// Runs the GC-027 checkpoint-and-recovery mode: the captured checkpoint that is verified before it is used,\n        /// the fault refusals at the capture-copy, publication, reference-repair, postwrite-apply and\n        /// recovery-publication seams, a recovery into a new session at different native handles with the active and\n        /// dormant state intact, the outbox and its delivery cursor carried across, the outbox-append, delivery and\n        /// acknowledgement faults, a restart from the store alone, a transient failure retried under the host's own\n        /// bound, and a full teardown (P-030, P-045, P-049, P-052, P-053).\n        /// </summary>\n        public bool Recovery { get; }\n",
+    '                else if (argument == RecoveryArgumentName)\n                {\n                    recovery = true;\n                }\n',
 )
 
 def main() -> None:
@@ -116,6 +125,10 @@ def main() -> None:
         # GC-023's replay fixture package: its recorded trace, its real-Burst-jobs half and its probe are qualification
         # evidence.
         "com.gamecore.replay",
+        # GC-027's recovery fixture package: the permitted-outcome matrix, the store-version cases and their reader are
+        # qualification evidence too. Its production half is the engine-free recovery core, which lives in the packages
+        # that stay.
+        "com.gamecore.recovery",
         "com.unity.test-framework",
         "com.unity.test-framework.performance",
     ):
@@ -171,6 +184,18 @@ def main() -> None:
         "W6FamilyCardsHost",
         "W6FamilyTraversalHost",
         "ProbeW6Gate",
+        # GC-027's recovery proof: the scenario, its two genre host halves, the source-world and restore-builder
+        # plumbing they drive and the probe are one set - the scenario calls each of the others, so keeping any of them
+        # without the others would not compile - and no surviving file references them.
+        "Gc027Scenario",
+        "Gc027Family",
+        "Gc027SourceWorld",
+        "Gc027RestoreBuilder",
+        "Gc027PhysicsDomain",
+        "Gc027NarrativeHost",
+        "Gc027CardsHost",
+        "Gc027TraversalHost",
+        "ProbeRecovery",
     ):
         for suffix in (".cs", ".cs.meta"):
             (DESTINATION / RUNTIME / (name + suffix)).unlink()
@@ -178,7 +203,8 @@ def main() -> None:
     runner = DESTINATION / RUNTIME / "ProbeRunner.cs"
     # The report identity is one independent `if` per mode, so removing a mode's branch is a whole block.
     for mode, task in (("Faults", "GC-017"), ("W5Gate", "W5-GATE"), ("Gc021", "GC-021"),
-                       ("LifecycleStress", "GC-022"), ("Replay", "GC-023"), ("W6Gate", "W6-GATE")):
+                       ("LifecycleStress", "GC-022"), ("Replay", "GC-023"), ("W6Gate", "W6-GATE"),
+                       ("Recovery", "GC-027")):
         replace_once(
             runner,
             '            if (arguments.' + mode + ')\n'
@@ -202,7 +228,7 @@ def main() -> None:
     # The qualification-mode expression keeps every surviving mode, so -probeTraversal still counts as a probe.
     replace_once(
         arguments,
-        '            || Gc013 || W4Gate || Faults || Gc018 || Gc019 || W5Gate || Traversal || Gc021\n',
+        '            || Gc013 || W4Gate || Faults || Gc018 || Gc019 || W5Gate || Traversal || Gc021 || Recovery\n',
         '            || Gc013 || W4Gate || Gc018 || Gc019 || Traversal\n',
     )
     for removed in (
@@ -218,7 +244,7 @@ def main() -> None:
     # is the point of the marker-free build — every generated root has to survive the shipping stripping settings.
     replace_once(
         arguments,
-        '                w4Gate, faults, gc018, gc019, w5Gate, traversal, gc021, replay, w6Gate, catalogCoverage,\n'
+        '                w4Gate, faults, gc018, gc019, w5Gate, traversal, gc021, recovery, replay, w6Gate, catalogCoverage,\n'
         '                resultPath);',
         '                w4Gate, gc018, gc019, traversal, catalogCoverage, resultPath);',
     )

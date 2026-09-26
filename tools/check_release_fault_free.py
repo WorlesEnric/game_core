@@ -114,6 +114,15 @@ BOUNDARY_NAMES = (
     "structural-playback",
     "gate-installation",
     "cleanup",
+    # GC-027 appended the recovery boundaries to the same table through the same mechanism: one latch per named
+    # boundary, defended by the same symbol and the same guards. `RestoreApply` and `RecoveryPublication` are reached
+    # from `CheckpointRestoreExecutor`; `CheckpointCaptureCopy` and `CheckpointPublication` from the recovery
+    # composition; `RestoreReferenceRepair` from the recovery entry point.
+    "checkpoint-capture-copy",
+    "checkpoint-publication",
+    "restore-reference-repair",
+    "restore-apply",
+    "recovery-publication",
 )
 DISTINCTIVE_NAMES = tuple(n for n in BOUNDARY_NAMES if "-" in n)
 
@@ -124,6 +133,10 @@ BOUNDARY_OWNERS = (
     ("Packages/com.gamecore.unity.runtime/Runtime/Execution/UnityExecutionDriver.cs", "FaultReach"),
     ("Packages/com.gamecore.unity.runtime/Runtime/Integration/StagedResourceGate.cs", "FaultReach"),
     ("Packages/com.gamecore.unity.runtime/Runtime/WorldHost.cs", "AssemblyFaultInjection"),
+    # GC-027: the restore sequence owns the postwrite-apply and publication boundaries of a staged world.
+    ("Packages/com.gamecore.unity.runtime/Runtime/Persistence/CheckpointRestoreExecutor.cs", "FaultReach"),
+    # GC-027: the recovery composition owns the capture-copy, publication and reference-repair boundaries.
+    ("Packages/com.gamecore.unity.runtime/Runtime/Recovery/WorldRecovery.cs", "FaultReach"),
 )
 
 

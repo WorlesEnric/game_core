@@ -26,6 +26,7 @@ namespace GameCore.Validation.ProbeHost
         private const string W5GateArgumentName = "-probeW5Gate";
         private const string TraversalArgumentName = "-probeTraversal";
         private const string Gc021ArgumentName = "-probeGc021";
+        private const string RecoveryArgumentName = "-probeRecovery";
         private const string LifecycleStressArgumentName = "-probeLifecycleStress";
         private const string ReplayArgumentName = "-probeReplay";
         private const string W6GateArgumentName = "-probeW6Gate";
@@ -49,6 +50,7 @@ namespace GameCore.Validation.ProbeHost
             bool w5Gate,
             bool traversal,
             bool gc021,
+            bool recovery,
             bool replay,
             bool w6Gate,
             bool catalogCoverage,
@@ -71,6 +73,7 @@ namespace GameCore.Validation.ProbeHost
             W5Gate = w5Gate;
             Traversal = traversal;
             Gc021 = gc021;
+            Recovery = recovery;
             Replay = replay;
             W6Gate = w6Gate;
             CatalogCoverage = catalogCoverage;
@@ -195,6 +198,16 @@ namespace GameCore.Validation.ProbeHost
         public bool Gc021 { get; }
 
         /// <summary>
+        /// Runs the GC-027 checkpoint-and-recovery mode: the captured checkpoint that is verified before it is used,
+        /// the fault refusals at the capture-copy, publication, reference-repair, postwrite-apply and
+        /// recovery-publication seams, a recovery into a new session at different native handles with the active and
+        /// dormant state intact, the outbox and its delivery cursor carried across, the outbox-append, delivery and
+        /// acknowledgement faults, a restart from the store alone, a transient failure retried under the host's own
+        /// bound, and a full teardown (P-030, P-045, P-049, P-052, P-053).
+        /// </summary>
+        public bool Recovery { get; }
+
+        /// <summary>
         /// Runs the GC-022 lifecycle stress: the counted mount/unmount cycles over each family's committed generated
         /// catalog and over its fixture identity set, with delayed completions, stalled jobs, a throwing disposer,
         /// required-provider churn and headless cleanup, under native leak detection with full stack traces
@@ -235,7 +248,7 @@ namespace GameCore.Validation.ProbeHost
         /// <summary>True when the process was launched as a probe rather than as a normal player run.</summary>
         public bool IsProbeInvocation =>
             MissingRegistration || WorldDispatch || W1Gate || W2Gate || W3Gate || Narrative || Cards || W4Profile
-            || Gc013 || W4Gate || Faults || Gc018 || Gc019 || W5Gate || Traversal || Gc021
+            || Gc013 || W4Gate || Faults || Gc018 || Gc019 || W5Gate || Traversal || Gc021 || Recovery
             || LifecycleStress
             || Replay
             || W6Gate
@@ -264,6 +277,7 @@ namespace GameCore.Validation.ProbeHost
             bool w5Gate = false;
             bool traversal = false;
             bool gc021 = false;
+            bool recovery = false;
             bool replay = false;
             bool w6Gate = false;
             bool catalogCoverage = false;
@@ -335,6 +349,10 @@ namespace GameCore.Validation.ProbeHost
                 {
                     gc021 = true;
                 }
+                else if (argument == RecoveryArgumentName)
+                {
+                    recovery = true;
+                }
                 else if (argument == LifecycleStressArgumentName)
                 {
                     lifecycleStress = true;
@@ -360,7 +378,7 @@ namespace GameCore.Validation.ProbeHost
             return new ProbeArguments(
                 missingRegistration, worldDispatch, w1Gate, w2Gate, w3Gate, narrative, cards, w4Profile, gc013,
                 lifecycleStress,
-                w4Gate, faults, gc018, gc019, w5Gate, traversal, gc021, replay, w6Gate, catalogCoverage,
+                w4Gate, faults, gc018, gc019, w5Gate, traversal, gc021, recovery, replay, w6Gate, catalogCoverage,
                 resultPath);
         }
     }

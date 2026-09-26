@@ -15,6 +15,7 @@
 // DAG edge of 07 s4.2 is declared as a real `requiredAfter` stage edge rather than left to the scheduler to infer
 // (P-040: "the scheduler MUST NOT invent gameplay order from package load order").
 #nullable enable
+using System;
 using System.Collections.Generic;
 using GameCore.Contracts;
 using GameCore.Rules.Traversal;
@@ -331,8 +332,33 @@ namespace GameCore.Gameplay.Traversal
                     TraversalKeys.SnapshotLayout,
                     new[] { TraversalKeys.SnapshotField },
                     LastSupportPolicy.RemoveDerived),
+                // Portable checkpoint projection of the traversal runtime's authoritative pose/velocity and
+                // progress. The physical ECS components remain the authority; each int32 row is explicitly
+                // declared so a later composition publication can preserve it rather than rejecting unknown
+                // state (P-032, P-053). No second physical field writer is introduced.
+                CheckpointSlot("traversal.slot.motion.position-x"),
+                CheckpointSlot("traversal.slot.motion.position-y"),
+                CheckpointSlot("traversal.slot.motion.position-z"),
+                CheckpointSlot("traversal.slot.motion.velocity-x"),
+                CheckpointSlot("traversal.slot.motion.velocity-y"),
+                CheckpointSlot("traversal.slot.motion.velocity-z"),
+                CheckpointSlot("traversal.slot.motion.grounded"),
+                CheckpointSlot("traversal.slot.progress.present"),
+                CheckpointSlot("traversal.slot.progress.count"),
+                CheckpointSlot("traversal.slot.progress.started"),
+                CheckpointSlot("traversal.slot.progress.checkpoint-low-0"),
+                CheckpointSlot("traversal.slot.progress.checkpoint-low-1"),
+                CheckpointSlot("traversal.slot.progress.checkpoint-high-0"),
+                CheckpointSlot("traversal.slot.progress.checkpoint-high-1"),
+                CheckpointSlot("traversal.slot.progress.crossing-sequence"),
+                CheckpointSlot("traversal.slot.progress.crossing-step-0"),
+                CheckpointSlot("traversal.slot.progress.crossing-step-1"),
             };
         }
+
+        private static StateSlotSpec CheckpointSlot(string stableName) => Slot(
+            TraversalIdentity.Slot(stableName), TraversalKeys.MotionOwner, TraversalKeys.MotionDomain,
+            default(FactoryKey), Array.Empty<FactoryKey>(), LastSupportPolicy.PreserveDormant);
 
         /// <summary>One declared stage with its single system and its declared predecessors.</summary>
         private static StageSpec Stage(
