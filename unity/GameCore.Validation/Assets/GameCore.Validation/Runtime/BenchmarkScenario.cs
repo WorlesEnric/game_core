@@ -572,7 +572,8 @@ namespace GameCore.Validation.ProbeHost
                 for (int i = 0; i < document.Gates.Count; i++)
                 {
                     text.Append("; gate:").Append(document.Gates[i].Name).Append('=')
-                        .Append(document.Gates[i].Passed ? "pass" : "FAIL");
+                        .Append(document.Gates[i].Passed ? "pass" : "FAIL")
+                        .Append('(').Append(document.Gates[i].Detail).Append(')');
                 }
 
                 return text.ToString();

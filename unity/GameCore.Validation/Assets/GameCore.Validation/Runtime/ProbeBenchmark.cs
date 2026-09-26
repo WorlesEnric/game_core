@@ -220,7 +220,15 @@ namespace GameCore.Validation.ProbeHost
             string[] arguments,
             BenchmarkScenarioResult result)
         {
-            string resultPath = ReadString(arguments, "-probeResult", string.Empty);
+            string resultPath = string.Empty;
+            for (int i = 0; i + 1 < arguments.Length; i++)
+            {
+                if (string.Equals(arguments[i], "-probeResult", StringComparison.Ordinal))
+                {
+                    resultPath = arguments[i + 1];
+                    break;
+                }
+            }
             if (resultPath.Length == 0)
             {
                 report.Add(ProbeOutcome.Fail(

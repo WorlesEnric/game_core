@@ -287,14 +287,6 @@ namespace GameCore.Validation.ProbeHost
                     return false;
                 }
 
-                // The world's initial assembly is published for the world definition itself: no target change, so the
-                // call answers the lane's initial publication and leaves the counters joined (P-006).
-                if (!created.PublishUnchanged("initial-assembly"))
-                {
-                    failure = new LiveWorldFailure("initial-assembly", DiagnosticCode.ApplyFault, created.LastFailure);
-                    created.Dispose();
-                    return false;
-                }
 
                 world = created;
                 return true;
