@@ -1213,8 +1213,11 @@ namespace GameCore.Validation.ProbeHost
                     var destination = new Gc021RecordingDestination(SeamDestinationId, SeamCommandSchema);
                     var deliverer = new DurableDeliveryAdapter(
                         rebuilt, new MemoryDeliveryJournal("memory://gc021-unload-successor"));
-                    DeliveryOutcome outcome = deliverer.TryDeliver(
+                    DeliveryOutcome firstOutcome = deliverer.TryDeliver(
                         key.OutboxId, destination, out DiagnosticCode deliveryCode, out string deliveryDetail);
+                    DeliveryOutcome outcome = firstOutcome == DeliveryOutcome.Delivered
+                        ? deliverer.TryAcknowledge(key.OutboxId, out deliveryCode, out deliveryDetail)
+                        : firstOutcome;
 
                     int registryAfter = UnityWorldRegistry.Count;
                     bool successorAlive = UnityWorldRegistry.TryGet(successorSession, out UnityWorldHost? _);
@@ -1291,7 +1294,9 @@ namespace GameCore.Validation.ProbeHost
                         return;
                     }
 
-                    CommandEnvelope envelope = family.QueuedCommand(sourceWorld, NextOperation(sourceWorld));
+                    CommandEnvelope envelope = genre == Gc021Genre.Narrative
+                        ? Gc021Choice.Of(family).Command(NextOperation(sourceWorld))
+                        : family.QueuedCommand(sourceWorld, NextOperation(sourceWorld));
                     CommandAdmissionReceipt receipt = host.Submit(envelope);
                     if (!receipt.Admitted)
                     {
@@ -1382,7 +1387,7 @@ namespace GameCore.Validation.ProbeHost
                         host,
                         time,
                         RewardOwnerId,
-                        family.Issuer,
+                        RewardOwnerId,
                         declaredContent,
                         RewardCapacity,
                         RewardTerminalRetention,
