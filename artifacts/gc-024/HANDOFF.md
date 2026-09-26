@@ -356,9 +356,10 @@ task wrote) were fixed here. The traversal worker's three table mismatches were 
 7. **`ConformanceFields.Cross()`'s `card-tent.*` subjects are new names.** 07 s5 draws a `CardTent` scope; the card
    market's own scope is `cards.table-area`, so the combined world reuses the package's scope and the fixture's fields
    name the combined world's seats with the `card-tent` prefix. Recorded rather than renaming a gameplay scope.
-8. **The gate script's probe list runs the earlier modes too.** That is deliberate (P-059's "with the same built
-   kernel"), but it means a GC-024 gate run also fails if an earlier family probe regresses — which is the intended
-   reading of "the same revision".
+8. **The gate script's probe list is the Wave 6 gate's whole list.** Every mode that gate drove is driven again here
+   (twenty harnesses, each `PROBE_RUNS` times) plus this task's own, which is the strongest available reading of
+   P-059's "with the same built kernel". The consequence is deliberate: a GC-024 gate run also fails if an earlier
+   family probe regresses, which is exactly the intended reading of "the same revision".
 
 ## 9. Inventory proposals (PROPOSALS ONLY — the build host promotes after running)
 
