@@ -59,6 +59,11 @@ def main() -> None:
         "W5GateNarrativeHost",
         "W5GateCardsHost",
         "ProbeW5Gate",
+        # GC-021's world scenario and probe are qualification fixtures like the two above. Its durable delivery core
+        # is production and stays: it is the shipping seam, not a test.
+        "Gc021Scenario",
+        "Gc021Family",
+        "ProbeGc021",
     ):
         for suffix in (".cs", ".cs.meta"):
             (DESTINATION / RUNTIME / (name + suffix)).unlink()
@@ -81,6 +86,13 @@ def main() -> None:
     )
     replace_once(
         runner,
+        '            if (arguments.Gc021)\n'
+        '            {\n'
+        '                return Named("Gc021", "GC-021");\n'
+        '            }\n\n',
+    )
+    replace_once(
+        runner,
         '                else if (arguments.Faults)\n'
         '                {\n'
         '                    ProbeFaults.Run(report);\n'
@@ -95,19 +107,32 @@ def main() -> None:
         '                    report.CompletePositive();\n'
         '                }\n',
     )
+    replace_once(
+        runner,
+        '                else if (arguments.Gc021)\n'
+        '                {\n'
+        '                    ProbeGc021.Run(report);\n'
+        '                    report.CompletePositive();\n'
+        '                }\n',
+    )
 
     arguments = DESTINATION / RUNTIME / "ProbeArguments.cs"
     for old in (
         '        private const string FaultsArgumentName = "-probeFaults";\n',
         '        private const string W5GateArgumentName = "-probeW5Gate";\n',
+        '        private const string Gc021ArgumentName = "-probeGc021";\n',
         '            bool faults,\n',
         '            bool w5Gate,\n',
+        '            bool gc021,\n',
         '            Faults = faults;\n',
         '            W5Gate = w5Gate;\n',
+        '            Gc021 = gc021;\n',
         '            bool faults = false;\n',
         '            bool w5Gate = false;\n',
+        '            bool gc021 = false;\n',
         '        public bool Faults { get; }\n',
         '        public bool W5Gate { get; }\n',
+        '        public bool Gc021 { get; }\n',
         '                else if (argument == FaultsArgumentName)\n'
         '                {\n'
         '                    faults = true;\n'
@@ -116,16 +141,20 @@ def main() -> None:
         '                {\n'
         '                    w5Gate = true;\n'
         '                }\n',
+        '                else if (argument == Gc021ArgumentName)\n'
+        '                {\n'
+        '                    gc021 = true;\n'
+        '                }\n',
     ):
         replace_once(arguments, old)
     replace_once(
         arguments,
-        '            || Gc013 || W4Gate || Faults || Gc018 || Gc019 || W5Gate\n',
+        '            || Gc013 || W4Gate || Faults || Gc018 || Gc019 || W5Gate || Gc021\n',
         '            || Gc013 || W4Gate || Gc018 || Gc019\n',
     )
     replace_once(
         arguments,
-        '                w4Gate, faults, gc018, gc019, w5Gate, resultPath);',
+        '                w4Gate, faults, gc018, gc019, w5Gate, gc021, resultPath);',
         '                w4Gate, gc018, gc019, resultPath);',
     )
     print(f"Marker-free release project: {DESTINATION}")
