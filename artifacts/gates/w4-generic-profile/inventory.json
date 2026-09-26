@@ -6,12 +6,12 @@
     "Partial",
     "Not yet"
   ],
-  "statusAsOf": "W5-GATE Linux build-host run; see artifacts/w5-gate/BUILD_REPORT.md and artifacts/w5-gate/toolchain/probe-w5-gate.json. Counts unchanged: P-049 remains Partial pending O-22 and bounded retry evidence.",
+  "statusAsOf": "W7-GATE Linux build-host run; see artifacts/w7-gate/BUILD_REPORT.md. O-22 promoted from faulted three-genre qualification recovery and marker-free real-file release recovery; performance timing remains Deferred by project-owner decision.",
   "counts": {
     "total": 86,
-    "implementedEvidenced": 41,
+    "implementedEvidenced": 42,
     "partial": 44,
-    "notYet": 1
+    "notYet": 0
   },
   "requirements": [
     {
@@ -2422,7 +2422,7 @@
     {
       "id": "O-22",
       "title": "RecoverWorld: Faulted world plus checkpoint or definition -> new session",
-      "status": "Not yet",
+      "status": "Implemented+Evidenced",
       "ownerTasks": [
         "GC-003",
         "GC-004",
@@ -2443,9 +2443,17 @@
         "TEST-016",
         "TEST-017"
       ],
-      "evidence": [],
-      "gap": "WorldHost can enter Faulted, but no procedure selects a recovery source and publishes a new world session.",
-      "nextOwner": "GC-018"
+      "evidence": [
+        "Packages/com.gamecore.unity.runtime/Runtime/Recovery/WorldRecovery.cs",
+        "artifacts/w7-gate/toolchain/probe-gc027.json",
+        "artifacts/w7-gate/toolchain/probe-w7-gate.json",
+        "artifacts/w7-gate/release/probe-recovery-smoke.json",
+        "artifacts/w7-gate/release/recovery-smoke-narrative.checkpoint",
+        "artifacts/w7-gate/release/recovery-smoke-cards.checkpoint",
+        "artifacts/w7-gate/BUILD_REPORT.md"
+      ],
+      "gap": null,
+      "nextOwner": null
     },
     {
       "id": "O-23",
