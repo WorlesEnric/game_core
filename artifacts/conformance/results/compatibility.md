@@ -6,7 +6,7 @@ committed or recorded file; nothing here is hand-typed.
 | Item | Value |
 | --- | --- |
 | Protocol version | `1.0` |
-| Source revision | `1b5ba7d454412a64a45a643710e01298624f78ad` |
+| Source revision | `119ae110f04f2a30900c1950c95f05e5b6629188` |
 | Manifest | `unity/GameCore.Validation/Packages/manifest.json` |
 | Package lock | `unity/GameCore.Validation/Packages/packages-lock.json` |
 | Local gamecore packages | 21 |
@@ -56,6 +56,7 @@ committed or recorded file; nothing here is hand-typed.
 Record: `artifacts/conformance/results/toolchain/environment.txt`
 
 - `host`: Linux worlesenric 7.0.0-31-generic #31~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Mon Aug 10 09:38:02 UTC 2 x86_64 x86_64 x86_64 GNU/Linux
+- `player_sha256`: aeaf13e291886fbd5a99b7dbd7c113b8ee13ed462a419a4d31a8ecbc3241ac70
 
 ## Three-family audit
 
