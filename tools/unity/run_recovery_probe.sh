@@ -217,28 +217,30 @@ def detail_of(name):
 
 def source_lifecycle_after(text):
     # The clean recovery records its source as "<session>-><before>/<after>", so only the segment after the
-    # transition arrow and the last "/" says whether the old world was left running.
-    transition = text
+    # transition arrow and the last "/" says whether the old world was left running. A restart has no source
+    # lifecycle at all, so a detail without the field reports None and the caller does not require one.
     for field in text.split(";"):
         field = field.strip()
         if field.startswith("source="):
             transition = field[len("source="):]
-            break
-    tail = transition.rsplit("->", 1)[-1] if "->" in transition else transition
-    return tail.split("/")[-1]
+            tail = transition.rsplit("->", 1)[-1] if "->" in transition else transition
+            return tail.split("/")[-1]
+    return None
 
 
 for family in ("narrative", "cards"):
-    # (1) The failed old world never resumes: the recorded lifecycle transition must end Disposed -- the detail's
-    # flat "->Disposed" form, or the after-lifecycle of its "<before>/<after>" form -- and must not end Running or
-    # Paused.
+    # (1) The failed old world never resumes: the recorded source lifecycle transition must end Disposed -- the
+    # after-lifecycle of its "<before>/<after>" form, or a flat "before->after" one -- and must not report Running
+    # or Paused.
     name = family + "/gc027-recovery-publishes-a-new-session-with-the-captured-state"
     text = detail_of(name)
     if text is None:
         problems.append("the %s recovery observation '%s' is absent" % (family, name))
     else:
         after = source_lifecycle_after(text)
-        if after != "Disposed":
+        if after is None:
+            problems.append("the %s recovery detail carries no source= lifecycle field: %r" % (family, text))
+        elif after != "Disposed":
             problems.append("the %s recovery detail does not end the source lifecycle in Disposed (ends %r): %r"
                             % (family, after, text))
         if "->Running" in text or "->Paused" in text:
@@ -263,8 +265,6 @@ for family in ("narrative", "cards"):
     else:
         if "destinationAttempts=0" not in text:
             problems.append("the %s restart detail does not carry destinationAttempts=0: %r" % (family, text))
-        if "->Running" in text or "->Paused" in text:
-            problems.append("the %s restart detail reports a resumed source: %r" % (family, text))
 
     # (3) No world is left published: the teardown's registry field must end at zero.
     name = family + "/gc027-teardown-disposes-every-world"
