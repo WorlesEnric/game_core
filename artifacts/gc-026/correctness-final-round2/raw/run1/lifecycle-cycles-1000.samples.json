@@ -1,0 +1,145 @@
+{
+  "artifact": "gamecore.benchmark.samples/1",
+  "workload": "lifecycle-cycles-1000",
+  "kind": "Change",
+  "dimension": "lifecycle",
+  "runOrdinal": 1,
+  "seed": 20260926,
+  "scopes": 1000,
+  "targets": 10000,
+  "warmupSeconds": 1,
+  "durationSeconds": 2,
+  "repetitionsRequested": 5,
+  "repetitionsExecuted": 5,
+  "stepsAdvanced": 0,
+  "windowMicroseconds": 0,
+  "warmupMicroseconds": 1755118,
+  "passed": true,
+  "gates": [
+    {
+      "name": "lifecycle-counts-return-to-baseline",
+      "passed": true,
+      "detail": "baselineAssemblies=10000; finalAssemblies=10000; baselineContributions=20959; finalContributions=20959; cycles=5; accepted=True"
+    }
+  ],
+  "notes": [
+    "warmupCycles=1; warmupComplete=true",
+    "fixture=fixture{scopes=1000;targets=10000;groups=10;leaves=989;schemaFamilies=3;sharedProviders=11;uniqueProviders=99;baseInstalls=110;reparentScopeTargets=100;seededTagTargets=481;seed=20260926}",
+    "budget=referenceCandidates=1000000;referenceContributions=250000;referenceTargets=100000;configured=PropagationBudget(candidates<=3200000, contributions<=1100000, targets<=100000, bytes<=422400000, prepareMs<=2000, applyUs<=200000000)"
+  ],
+  "phases": [
+    {
+      "phase": "Warmup",
+      "count": 1,
+      "min": 1755118,
+      "p50": 1755118,
+      "p95": 1755118,
+      "p99": 1755118,
+      "max": 1755118,
+      "mean": 1755118,
+      "total": 1755118
+    },
+    {
+      "phase": "Change",
+      "count": 10,
+      "min": 727641,
+      "p50": 805424,
+      "p95": 966923,
+      "p99": 966923,
+      "max": 966923,
+      "mean": 859946.4,
+      "total": 8599464
+    }
+  ],
+  "memory": {
+    "managedHeapStartBytes": 0,
+    "managedHeapEndBytes": 0,
+    "managedAllocatedBytes": 0,
+    "managedAllocationIsThreadComplete": false,
+    "nativeContainerBytes": 0,
+    "leaseBytes": 0,
+    "retainedEventBytes": 0,
+    "retainedEventCount": 0,
+    "cacheBytes": 0,
+    "cacheEntries": 0,
+    "quarantineBytes": 0,
+    "quarantineEntries": 0,
+    "liveLeases": 0,
+    "outstandingCallbacks": 0
+  },
+  "counters": {
+    "control-nodes-visited": 1035435,
+    "candidates-matched": 260010,
+    "contributions-added": 5,
+    "contributions-retracted": 5,
+    "strata-evaluated": 10
+  },
+  "samples": [
+    {
+      "ordinal": 0,
+      "phase": "Warmup",
+      "microseconds": 1755118,
+      "counters": "0"
+    },
+    {
+      "ordinal": 0,
+      "phase": "Change",
+      "microseconds": 889059,
+      "counters": "control-nodes-visited=119038;candidates-matched=31001;contributions-added=1;strata-evaluated=1"
+    },
+    {
+      "ordinal": 0,
+      "phase": "Change",
+      "microseconds": 797959,
+      "counters": "control-nodes-visited=88049;candidates-matched=21001;contributions-retracted=1;strata-evaluated=1"
+    },
+    {
+      "ordinal": 1,
+      "phase": "Change",
+      "microseconds": 966257,
+      "counters": "control-nodes-visited=119038;candidates-matched=31001;contributions-added=1;strata-evaluated=1"
+    },
+    {
+      "ordinal": 1,
+      "phase": "Change",
+      "microseconds": 765388,
+      "counters": "control-nodes-visited=88049;candidates-matched=21001;contributions-retracted=1;strata-evaluated=1"
+    },
+    {
+      "ordinal": 2,
+      "phase": "Change",
+      "microseconds": 966923,
+      "counters": "control-nodes-visited=119038;candidates-matched=31001;contributions-added=1;strata-evaluated=1"
+    },
+    {
+      "ordinal": 2,
+      "phase": "Change",
+      "microseconds": 727641,
+      "counters": "control-nodes-visited=88049;candidates-matched=21001;contributions-retracted=1;strata-evaluated=1"
+    },
+    {
+      "ordinal": 3,
+      "phase": "Change",
+      "microseconds": 951760,
+      "counters": "control-nodes-visited=119038;candidates-matched=31001;contributions-added=1;strata-evaluated=1"
+    },
+    {
+      "ordinal": 3,
+      "phase": "Change",
+      "microseconds": 805424,
+      "counters": "control-nodes-visited=88049;candidates-matched=21001;contributions-retracted=1;strata-evaluated=1"
+    },
+    {
+      "ordinal": 4,
+      "phase": "Change",
+      "microseconds": 947674,
+      "counters": "control-nodes-visited=119038;candidates-matched=31001;contributions-added=1;strata-evaluated=1"
+    },
+    {
+      "ordinal": 4,
+      "phase": "Change",
+      "microseconds": 781379,
+      "counters": "control-nodes-visited=88049;candidates-matched=21001;contributions-retracted=1;strata-evaluated=1"
+    }
+  ]
+}

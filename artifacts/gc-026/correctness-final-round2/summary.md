@@ -2,7 +2,7 @@
 
 Verdict: **FAIL** — 1 budget row(s) MissedTarget.
 
-Status: **TEST-023 timing qualification Deferred by project-owner decision (2026-09-26); not measured at full duration.** This one-run 1 s warmup/2 s steady-window/five-repetition diagnostic asserts 19/19 correctness gates but does not establish full-duration p95/p99 or the 1,000-cycle plateau. Its one provisional whole-world preparation miss remains open; no target was revised. Before the kernel fixes, size-1 prepare took ~12 s; after them, 898936 us p95 in this diagnostic. See `artifacts/gc-026/profile/round2-phases.txt` for measured candidate, explanation, sorting and delta costs. The full catalogue was intentionally stopped at repetition 629/1000 on owner direction; it is not a passing run.
+Status: measured diagnostic evidence from the raw sample documents listed under Evidence. Check Resolved configuration and Wall-clock window per run before comparing against 08's full method; a short or partial run does not qualify the five-run gate.
 
 Hardware: machine=worlesenric, host=Linux worlesenric 7.0.0-31-generic #31~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Mon Aug 10 09:38:02 UTC 2 x86_64 x86_64 x86_64 GNU/Linux, uname_m=x86_64, nproc=20, cpu_model=12th Gen Intel(R) Core(TM) i7-12700KF, lsb_release=Ubuntu 24.04.4 LTS, date_utc=2026-09-26T16:41:34Z, player=/home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation/Builds/Linux64/GameCoreProbe.x86_64, player_bytes=14784, player_sha256=aeaf13e291886fbd5a99b7dbd7c113b8ee13ed462a419a4d31a8ecbc3241ac70.
 
@@ -312,16 +312,16 @@ Every raw document's declared per-phase distributions equal what its own `sample
 
 Every raw file this summary read, so each number above is recomputable from these alone:
 
-- `artifacts/gc-026/correctness-final-round2/environment.txt`
-- `artifacts/gc-026/correctness-final-round2/raw/run1/idle-command-world.samples.json`
-- `artifacts/gc-026/correctness-final-round2/raw/run1/inactive-target-comparison.samples.json`
-- `artifacts/gc-026/correctness-final-round2/raw/run1/lifecycle-cycles-1000.samples.json`
-- `artifacts/gc-026/correctness-final-round2/raw/run1/probe-benchmark.json`
-- `artifacts/gc-026/correctness-final-round2/raw/run1/reparent-100.samples.json`
-- `artifacts/gc-026/correctness-final-round2/raw/run1/spawn-1000.samples.json`
-- `artifacts/gc-026/correctness-final-round2/raw/run1/steady-execution-10000-targets.samples.json`
-- `artifacts/gc-026/correctness-final-round2/raw/run1/steady-unchanged-10000-steps.samples.json`
-- `artifacts/gc-026/correctness-final-round2/raw/run1/update-size-1.samples.json`
-- `artifacts/gc-026/correctness-final-round2/raw/run1/update-size-100.samples.json`
-- `artifacts/gc-026/correctness-final-round2/raw/run1/update-size-10000.samples.json`
-- `artifacts/gc-026/correctness-final-round2/raw/run1/whole-world-mode-switch.samples.json`
+- `/home/worlesenric/wkspace/gc-wt/gc-026/artifacts/gc-026/correctness-final-round2/environment.txt`
+- `/home/worlesenric/wkspace/gc-wt/gc-026/artifacts/gc-026/correctness-final-round2/raw/run1/idle-command-world.samples.json`
+- `/home/worlesenric/wkspace/gc-wt/gc-026/artifacts/gc-026/correctness-final-round2/raw/run1/inactive-target-comparison.samples.json`
+- `/home/worlesenric/wkspace/gc-wt/gc-026/artifacts/gc-026/correctness-final-round2/raw/run1/lifecycle-cycles-1000.samples.json`
+- `/home/worlesenric/wkspace/gc-wt/gc-026/artifacts/gc-026/correctness-final-round2/raw/run1/probe-benchmark.json`
+- `/home/worlesenric/wkspace/gc-wt/gc-026/artifacts/gc-026/correctness-final-round2/raw/run1/reparent-100.samples.json`
+- `/home/worlesenric/wkspace/gc-wt/gc-026/artifacts/gc-026/correctness-final-round2/raw/run1/spawn-1000.samples.json`
+- `/home/worlesenric/wkspace/gc-wt/gc-026/artifacts/gc-026/correctness-final-round2/raw/run1/steady-execution-10000-targets.samples.json`
+- `/home/worlesenric/wkspace/gc-wt/gc-026/artifacts/gc-026/correctness-final-round2/raw/run1/steady-unchanged-10000-steps.samples.json`
+- `/home/worlesenric/wkspace/gc-wt/gc-026/artifacts/gc-026/correctness-final-round2/raw/run1/update-size-1.samples.json`
+- `/home/worlesenric/wkspace/gc-wt/gc-026/artifacts/gc-026/correctness-final-round2/raw/run1/update-size-100.samples.json`
+- `/home/worlesenric/wkspace/gc-wt/gc-026/artifacts/gc-026/correctness-final-round2/raw/run1/update-size-10000.samples.json`
+- `/home/worlesenric/wkspace/gc-wt/gc-026/artifacts/gc-026/correctness-final-round2/raw/run1/whole-world-mode-switch.samples.json`
