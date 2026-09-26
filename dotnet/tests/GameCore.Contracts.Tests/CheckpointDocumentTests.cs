@@ -130,6 +130,7 @@ namespace GameCore.Contracts.Tests
             Assert.That(read.Counts.Messages, Is.EqualTo(0));
             Assert.That(read.Counts.RngStreams, Is.EqualTo(0));
             Assert.That(read.Counts.Cursors, Is.EqualTo(0));
+            Assert.That(read.Counts.Outbox, Is.EqualTo(0));
             Assert.That(read.CountOf(CheckpointRecordKind.Header), Is.EqualTo(1));
             Assert.That(read.Checksum, Is.Not.EqualTo(0UL));
             Assert.That(read.RawBytes, Is.EqualTo(document));
@@ -147,7 +148,8 @@ namespace GameCore.Contracts.Tests
                     read.Counts.Commands,
                     read.Counts.Messages,
                     read.Counts.RngStreams,
-                    read.Counts.Cursors),
+                    read.Counts.Cursors,
+                    read.Counts.Outbox),
                 Is.True);
         }
 
@@ -157,7 +159,7 @@ namespace GameCore.Contracts.Tests
             CheckpointCodecSet codecs = CheckpointTestRecords.SetOf(
                 CheckpointRecordKind.Target,
                 CheckpointRecordKind.Slot);
-            HeaderRecordValue header = CheckpointTestRecords.Header(0, 0, 0, 2, 1, 0, 0, 0, 0, 0, 0);
+            HeaderRecordValue header = CheckpointTestRecords.Header(0, 0, 0, 2, 1, 0, 0, 0, 0, 0, 0, 0);
             TargetRecordValue first = CheckpointTestRecords.SampleTarget(1, 1);
             TargetRecordValue second = CheckpointTestRecords.SampleTarget(2, 1);
             SlotRecordValue slot = CheckpointTestRecords.SampleSlot(2, 1, 1);
@@ -200,7 +202,7 @@ namespace GameCore.Contracts.Tests
             Add(serializer, CheckpointRecordKind.Slot, CheckpointTestRecords.SampleSlot(1, 1, 1));
             SerializeOrFail(
                 serializer,
-                CheckpointTestRecords.Header(0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0),
+                CheckpointTestRecords.Header(0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0),
                 out byte[] document);
 
             List<int> fieldIds = FieldIdsOf(document);
@@ -221,7 +223,7 @@ namespace GameCore.Contracts.Tests
             // does not carry (P-053).
             Assert.That(
                 serializer.TrySerialize(
-                    CheckpointTestRecords.Header(0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0),
+                    CheckpointTestRecords.Header(0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0),
                     out byte[] overDeclared,
                     out DiagnosticCode overCode,
                     out string overDetail),
@@ -233,7 +235,7 @@ namespace GameCore.Contracts.Tests
 
             Assert.That(
                 serializer.TrySerialize(
-                    CheckpointTestRecords.Header(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+                    CheckpointTestRecords.Header(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
                     out byte[] underDeclared,
                     out DiagnosticCode underCode,
                     out string underDetail),
@@ -245,7 +247,7 @@ namespace GameCore.Contracts.Tests
             // The matching declaration is accepted, so the refusal above is the count check and not the capture.
             SerializeOrFail(
                 serializer,
-                CheckpointTestRecords.Header(0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0),
+                CheckpointTestRecords.Header(0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0),
                 out byte[] accepted);
             Assert.That(accepted.Length, Is.GreaterThan(0));
         }
@@ -267,15 +269,16 @@ namespace GameCore.Contracts.Tests
             Assert.That(counts.Scopes, Is.EqualTo(0));
             Assert.That(counts.Total, Is.EqualTo(4));
 
-            HeaderRecordValue header = CheckpointTestRecords.Header(0, 0, 0, 2, 1, 0, 0, 0, 0, 0, 0);
+            HeaderRecordValue header = CheckpointTestRecords.Header(0, 0, 0, 2, 1, 0, 0, 0, 0, 0, 0, 0);
             Assert.That(Match(header, counts), Is.True);
-            Assert.That(Match(header, new CheckpointCounts(0, 0, 0, 3, 1, 0, 0, 0, 0, 0, 0)), Is.False);
-            Assert.That(Match(header, new CheckpointCounts(0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0)), Is.False);
+            Assert.That(Match(header, new CheckpointCounts(0, 0, 0, 3, 1, 0, 0, 0, 0, 0, 0, 0)), Is.False);
+            Assert.That(Match(header, new CheckpointCounts(0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0)), Is.False);
 
             // A declared count is an unsigned count: no negative argument can match it (P-053).
-            Assert.That(header.CountsMatch(-1, 0, 0, 2, 1, 0, 0, 0, 0, 0, 0), Is.False);
-            Assert.That(header.CountsMatch(0, 0, 0, 2, 1, 0, 0, 0, 0, 0, -1), Is.False);
-            Assert.That(header.CountsMatch(0, 0, -1, 2, 1, 0, 0, 0, 0, 0, 0), Is.False);
+            Assert.That(header.CountsMatch(-1, 0, 0, 2, 1, 0, 0, 0, 0, 0, 0, 0), Is.False);
+            Assert.That(header.CountsMatch(0, 0, 0, 2, 1, 0, 0, 0, 0, 0, 0, -1), Is.False);
+            Assert.That(header.CountsMatch(0, 0, -1, 2, 1, 0, 0, 0, 0, 0, 0, 0), Is.False);
+            Assert.That(header.CountsMatch(0, 0, 0, 2, 1, 0, 0, 0, 0, 0, 0, -1), Is.False);
         }
 
         [Test]
@@ -320,7 +323,7 @@ namespace GameCore.Contracts.Tests
             Add(serializer, CheckpointRecordKind.Target, CheckpointTestRecords.SampleTarget(1, 1));
             SerializeOrFail(
                 serializer,
-                CheckpointTestRecords.Header(0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0),
+                CheckpointTestRecords.Header(0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0),
                 out byte[] document);
 
             int[] lengths = { 0, 1, 2, 29, 30, 31, 40, 64, EnvelopeFormat.FixedHeaderSize + 1, document.Length / 2, document.Length - 1 };
@@ -437,7 +440,7 @@ namespace GameCore.Contracts.Tests
             CheckpointCodecSet codecs = CheckpointTestRecords.SetOf(
                 CheckpointRecordKind.Target,
                 CheckpointRecordKind.Slot);
-            byte[] header = HeaderBytes(CheckpointTestRecords.Header(0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0));
+            byte[] header = HeaderBytes(CheckpointTestRecords.Header(0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0));
             byte[] target = TargetBytes(CheckpointTestRecords.SampleTarget(1, 1));
             byte[] slot = SlotBytes(CheckpointTestRecords.SampleSlot(1, 1, 1));
             int targetField = CheckpointFormat.FieldIdOf(CheckpointRecordKind.Target);
@@ -470,7 +473,7 @@ namespace GameCore.Contracts.Tests
         public void ABodyRecordDocumentOfTheWrongSchemaIsRefusedByItsOwnCodec()
         {
             CheckpointCodecSet codecs = CheckpointTestRecords.SetOf(CheckpointRecordKind.Target);
-            byte[] header = HeaderBytes(CheckpointTestRecords.Header(0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0));
+            byte[] header = HeaderBytes(CheckpointTestRecords.Header(0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0));
 
             var foreign = new EnvelopeWriter(
                 new EnvelopeHeader(1, 0, ForeignContainerSchema, CheckpointFormat.KnownFeatureIds),
@@ -495,7 +498,7 @@ namespace GameCore.Contracts.Tests
         public void DeclaredCountsThatDisagreeWithTheRecordsPresentRefuseTheRead()
         {
             CheckpointCodecSet codecs = CheckpointTestRecords.SetOf(CheckpointRecordKind.Target);
-            byte[] header = HeaderBytes(CheckpointTestRecords.Header(0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0));
+            byte[] header = HeaderBytes(CheckpointTestRecords.Header(0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0));
             byte[] document = Container(
                 new[] { CheckpointFormat.HeaderFieldId, CheckpointFormat.FieldIdOf(CheckpointRecordKind.Target) },
                 new[] { header, TargetBytes(CheckpointTestRecords.SampleTarget(1, 1)) });
@@ -530,7 +533,7 @@ namespace GameCore.Contracts.Tests
         public void ADocumentWithNoCodecForAFieldItCarriesIsRefused()
         {
             CheckpointCodecSet codecs = CheckpointTestRecords.SetOf();
-            byte[] header = HeaderBytes(CheckpointTestRecords.Header(0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0));
+            byte[] header = HeaderBytes(CheckpointTestRecords.Header(0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0));
             byte[] document = Container(
                 new[] { CheckpointFormat.HeaderFieldId, CheckpointFormat.FieldIdOf(CheckpointRecordKind.Target) },
                 new[] { header, TargetBytes(CheckpointTestRecords.SampleTarget(1, 1)) });
@@ -568,19 +571,27 @@ namespace GameCore.Contracts.Tests
                 serializer,
                 CheckpointRecordKind.Cursor,
                 CheckpointTestRecords.SampleCursor((uint)CursorRowKind.EventCursor, 5));
+            Add(
+                serializer,
+                CheckpointRecordKind.Outbox,
+                CheckpointTestRecords.SampleOutbox((uint)OutboxRowKind.Obligation, 5));
 
             SerializeOrFail(
                 serializer,
-                CheckpointTestRecords.Header(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+                CheckpointTestRecords.Header(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
                 out byte[] document);
-            Assert.That(serializer.RecordCount, Is.EqualTo(11));
+            Assert.That(serializer.RecordCount, Is.EqualTo(12));
 
             Assert.That(
                 CheckpointDocument.TryRead(document, codecs, out CheckpointDocument? read, out DiagnosticCode code, out string detail),
                 Is.True,
                 detail);
             Assert.That(code, Is.EqualTo(DiagnosticCode.None));
-            Assert.That(read!.Counts.Total, Is.EqualTo(12));
+            Assert.That(read!.Counts.Total, Is.EqualTo(13));
+            Assert.That(
+                read.Counts.Outbox,
+                Is.EqualTo(read.CountOf(CheckpointRecordKind.Outbox)),
+                "the header's outbox count must equal the outbox rows the document carries (P-053)");
             for (int ordinal = 1; ordinal < CheckpointFormat.RecordKindCount; ordinal++)
             {
                 Assert.That(
@@ -605,6 +616,17 @@ namespace GameCore.Contracts.Tests
             Assert.That(slotCode, Is.EqualTo(DiagnosticCode.None));
             Assert.That(slots.Count, Is.EqualTo(1));
             Assert.That(slots[0].Key, Is.EqualTo(CheckpointTestRecords.SampleSlot(1, 1, 1).Key));
+
+            Assert.That(
+                read.TryReadRecords(CheckpointRecordKind.Outbox, out IReadOnlyList<OutboxRecordValue> outbox, out DiagnosticCode outboxCode, out string outboxDetail),
+                Is.True,
+                outboxDetail);
+            Assert.That(outboxCode, Is.EqualTo(DiagnosticCode.None));
+            Assert.That(outbox.Count, Is.EqualTo(read.Counts.Outbox));
+            Assert.That(outbox[0].Row, Is.EqualTo(OutboxRowKind.Obligation));
+            Assert.That(
+                outbox[0].OutboxId,
+                Is.EqualTo(CheckpointTestRecords.SampleOutbox((uint)OutboxRowKind.Obligation, 5).OutboxId));
 
             // The header is read through Header, never as a body record (P-053).
             Assert.That(
@@ -633,7 +655,8 @@ namespace GameCore.Contracts.Tests
                 counts.Commands,
                 counts.Messages,
                 counts.RngStreams,
-                counts.Cursors);
+                counts.Cursors,
+                counts.Outbox);
     }
 
     /// <summary>

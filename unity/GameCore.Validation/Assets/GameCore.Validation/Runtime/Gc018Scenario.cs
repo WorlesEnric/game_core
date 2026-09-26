@@ -3346,8 +3346,9 @@ namespace GameCore.Validation.ProbeHost
             // ------------------------------------------------------------------ helpers
 
             /// <summary>
-            /// Binds the twelve generated serializers of the committed checkpoint catalog to the engine-free codec
-            /// seam. The binding table and its twenty-four field-exact conversions live in
+            /// Binds the thirteen generated serializers of the committed checkpoint catalog to the engine-free
+            /// codec seam (GC-021 appended the outbox section to the format, so the count is thirteen and the
+            /// conversions twenty-six). The binding table and its field-exact conversions live in
             /// <see cref="Gc018CheckpointCodecs"/> (extracted by the Wave 5 integration gate so the gate captures and
             /// restores the same format this scenario proves, rather than a second copy of it), and this scenario
             /// keeps its own instances of the two values. A missing serializer is reported here, before any capture,
@@ -3552,7 +3553,8 @@ namespace GameCore.Validation.ProbeHost
                     1UL,
                     1UL,
                     UnityWorldHost.DefaultHostTicksPerSecond,
-                    0U);
+                    0U,
+                    (uint)counts.Outbox);
 
                 if (!serializer.TrySerialize(header, out document, out code, out detail))
                 {
