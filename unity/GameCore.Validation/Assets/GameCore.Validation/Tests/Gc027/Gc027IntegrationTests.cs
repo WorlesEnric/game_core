@@ -231,24 +231,61 @@ namespace GameCore.Gc027.Tests
         [Test]
         public void TheRecoveryObservationTableIsExactlyThePublishedSequence()
         {
-            Assert.That(Gc027Scenario.ObservationNames.Length, Is.EqualTo(17),
-                "the recovery runner records exactly seventeen named observations");
+            // The full table is what the runner can record for a genre declaring every capability; each family then
+            // records the subset its own declarations allow, and its digest pins that subset (P-008, P-045, P-054).
+            Assert.That(Gc027Scenario.ObservationNames.Length, Is.EqualTo(21),
+                "the recovery runner's full observation table is twenty-one names");
 
-            string[] narrative = Gc027Scenario.QualifiedNames(Gc013NarrativeHost.Label);
-            string[] cards = Gc027Scenario.QualifiedNames(Gc013CardsHost.Label);
-            Assert.That(narrative.Length, Is.EqualTo(17));
-            Assert.That(cards.Length, Is.EqualTo(17));
-            Assert.That(narrative[0], Is.EqualTo(Gc013NarrativeHost.Label + "/" + Gc027Scenario.ObservationNames[0]));
+            IGc027Family narrative = Gc013NarrativeHost.RecoveryFamily();
+            IGc027Family cards = Gc013CardsHost.RecoveryFamily();
+            IGc027Family traversal = Gc027TraversalHost.RecoveryFamily();
 
-            var narrativeResult = new Gc027ScenarioResult(
-                Gc013NarrativeHost.Label, PassingSteps(Gc013NarrativeHost.Label));
-            var cardsResult = new Gc027ScenarioResult(
-                Gc013CardsHost.Label, PassingSteps(Gc013CardsHost.Label));
+            string[] narrativeNames = Gc027Scenario.ExpectedNames(narrative);
+            string[] cardNames = Gc027Scenario.ExpectedNames(cards);
+            string[] traversalNames = Gc027Scenario.ExpectedNames(traversal);
+
+            Assert.That(narrativeNames.Length, Is.EqualTo(17),
+                "a genre with a delivery obligation and no engine domain records seventeen observations");
+            Assert.That(cardNames.Length, Is.EqualTo(17));
+            Assert.That(traversalNames.Length, Is.EqualTo(17),
+                "the traversal course declares no delivery obligation and an engine domain, so its table swaps four "
+                + "observations for four others and stays seventeen long");
+            Assert.That(narrativeNames[0],
+                Is.EqualTo(Gc013NarrativeHost.Label + "/" + Gc027Scenario.ObservationNames[0]));
+            Assert.That(traversalNames, Does.Contain(Gc020TraversalHost.Label
+                + "/gc027-recovered-engine-physics-is-reseeded-not-continued"));
+            Assert.That(traversalNames, Does.Not.Contain(Gc020TraversalHost.Label
+                + "/gc027-outbox-append-fault-refuses-before-delivery"));
+
+            var narrativeResult = new Gc027ScenarioResult(Gc013NarrativeHost.Label, PassingSteps(narrativeNames));
+            var cardsResult = new Gc027ScenarioResult(Gc013CardsHost.Label, PassingSteps(cardNames));
+            var traversalResult = new Gc027ScenarioResult(Gc020TraversalHost.Label, PassingSteps(traversalNames));
 
             AssertDigest(ProbeRecovery.NarrativeDigest, narrativeResult.Digest, "narrative");
             AssertDigest(ProbeRecovery.CardsDigest, cardsResult.Digest, "cards");
+            AssertDigest(ProbeRecovery.TraversalDigest, traversalResult.Digest, "traversal");
             Assert.That(narrativeResult.Digest, Is.Not.EqualTo(cardsResult.Digest),
                 "the two families must not share one literal, or a family could report the other's run");
+            Assert.That(traversalResult.Digest, Is.Not.EqualTo(narrativeResult.Digest));
+            Assert.That(traversalResult.Digest, Is.Not.EqualTo(cardsResult.Digest));
+        }
+
+        /// <summary>
+        /// The traversal course runs the whole recovery sequence too, and two of its observations are the ones the
+        /// review named explicitly: the postwrite-apply fault on a fixed-step world, and the restart from the store
+        /// alone. Its engine-physics observations are the physical-observation limitation stated as an observation.
+        /// </summary>
+        [Test]
+        public void TheTraversalCourseCoversThePostwriteAndRestartFaultPoints()
+        {
+            AssertFamilyObservation(Gc020TraversalHost.Label, "gc027-postwrite-apply-fault-never-exposes-a-destination");
+            AssertFamilyObservation(Gc020TraversalHost.Label, "gc027-recovery-publication-fault-keeps-the-registry-unchanged");
+            AssertFamilyObservation(Gc020TraversalHost.Label, "gc027-restart-from-the-store-recovers-without-in-process-state");
+            AssertFamilyObservation(Gc020TraversalHost.Label, "gc027-restart-without-a-document-or-incompatible-content-exposes-nothing");
+            AssertFamilyObservation(Gc020TraversalHost.Label, "gc027-recovered-engine-physics-is-reseeded-not-continued");
+            AssertFamilyObservation(Gc020TraversalHost.Label, "gc027-source-authoritative-state-survives-the-recovery");
+            AssertFamilyObservation(Gc020TraversalHost.Label, "gc027-recovered-world-refuses-an-old-session-observation");
+            AssertFamilyObservation(Gc020TraversalHost.Label, "gc027-recovered-world-steps-its-engine-once-per-admitted-step");
         }
 
         /// <summary>
@@ -438,13 +475,29 @@ namespace GameCore.Gc027.Tests
             AssertFamilyObservation(Gc013CardsHost.Label, bareName);
         }
 
+        /// <summary>The traversal adapter, built once per fixture so its run is shared like the other two (P-028).</summary>
+        private static IGc027Family TraversalFamily()
+        {
+            IGc027Family? cached;
+            if (Families.TryGetValue(Gc020TraversalHost.Label, out cached) && cached != null)
+            {
+                return cached;
+            }
+
+            IGc027Family built = Gc027TraversalHost.RecoveryFamily();
+            Families[Gc020TraversalHost.Label] = built;
+            return built;
+        }
+
+        private static readonly Dictionary<string, IGc027Family> Families = new Dictionary<string, IGc027Family>();
+
         private static void AssertFamilyObservation(string label, string bareName)
         {
             Gc027ScenarioResult run = RunOf(label);
-            string[] expected = Gc027Scenario.QualifiedNames(label);
+            string[] expected = Gc027Scenario.ExpectedNames(FamilyOf(label));
 
-            Assert.That(run.Steps.Count, Is.EqualTo(Gc027Scenario.ObservationNames.Length),
-                "the run records every named observation exactly once: " + run.Describe());
+            Assert.That(run.Steps.Count, Is.EqualTo(expected.Length),
+                "the run records exactly the observations its own declarations allow: " + run.Describe());
             Assert.That(run.AllPassed, Is.True, run.Describe());
             Assert.That(Names(run), Is.EqualTo(expected), "observation order");
 
@@ -504,11 +557,22 @@ namespace GameCore.Gc027.Tests
                 return cached;
             }
 
-            Gc027ScenarioResult run = string.Equals(label, Gc013NarrativeHost.Label, StringComparison.Ordinal)
-                ? Gc027Scenario.Run(Gc013NarrativeHost.RecoveryFamily())
-                : Gc027Scenario.Run(Gc013CardsHost.RecoveryFamily());
+            Gc027ScenarioResult run = Gc027Scenario.Run(FamilyOf(label));
             Runs[label] = run;
             return run;
+        }
+
+        /// <summary>The adapter behind one label, so a case can ask what that family's table is (P-001).</summary>
+        private static IGc027Family FamilyOf(string label)
+        {
+            if (string.Equals(label, Gc013NarrativeHost.Label, StringComparison.Ordinal))
+            {
+                return Gc013NarrativeHost.RecoveryFamily();
+            }
+
+            return string.Equals(label, Gc013CardsHost.Label, StringComparison.Ordinal)
+                ? Gc013CardsHost.RecoveryFamily()
+                : TraversalFamily();
         }
 
         private static Gc027Step Named(Gc027ScenarioResult run, string qualifiedName)
@@ -536,9 +600,8 @@ namespace GameCore.Gc027.Tests
             return names;
         }
 
-        private static IReadOnlyList<Gc027Step> PassingSteps(string label)
+        private static IReadOnlyList<Gc027Step> PassingSteps(string[] names)
         {
-            string[] names = Gc027Scenario.QualifiedNames(label);
             var steps = new List<Gc027Step>(names.Length);
             for (int i = 0; i < names.Length; i++)
             {

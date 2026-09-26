@@ -386,6 +386,10 @@ namespace GameCore.Validation.ProbeHost
             // command: the family's own runtime module — the one its generated step systems resolve their world
             // through — must be attached with every live target mapped, or the input stage would no-op and leave
             // the ingress lane unconsumed at commit (P-042, P-043).
+            // The family's runtime needs the compiled descriptor before it attaches (the traversal course passes it
+            // to its stage runtime; the other two ignore it), so the build notes it exactly once per world (GC-009).
+            family.NotePipelineForAttach(descriptor);
+
             var runtimeWorld = new Gc018RuntimeWorld(
                 host, targets!, seeder!, descriptor.Compilation!.Schedule!);
             if (!family.TryAttachRuntime(runtimeWorld, out detail))
@@ -436,6 +440,15 @@ namespace GameCore.Validation.ProbeHost
             WorldDeliveryOwner? owner = Delivery;
             if (owner == null)
             {
+                if (!family.HasDeliveryObligation && plan.Outbox.Count == 0)
+                {
+                    // No obligation and no rows to reinstate: there is nothing for a delivery owner to carry, which
+                    // is the honest state of a genre with no external effect (P-003, P-045).
+                    reinstatedRows = 0;
+                    ReinstateAttemptCount++;
+                    return true;
+                }
+
                 code = DiagnosticCode.MissingDependency;
                 detail = "the recovered session " + session.Session.ToString()
                     + " has no delivery owner, so the plan's "
@@ -480,6 +493,14 @@ namespace GameCore.Validation.ProbeHost
             WorldDeliveryOwner? owner = Delivery;
             if (owner == null)
             {
+                if (!family.HasDeliveryObligation && expected.Count == 0)
+                {
+                    // The genre declares no delivery obligation and the checkpoint carried no rows, which is the
+                    // consistent answer rather than a missing owner (P-045).
+                    ProvedRowCount = 0;
+                    return true;
+                }
+
                 code = DiagnosticCode.MissingDependency;
                 detail = "the recovered session " + session.Session.ToString()
                     + " has no delivery owner, so its outbox cannot be proved against the plan's "
@@ -526,6 +547,15 @@ namespace GameCore.Validation.ProbeHost
                 code = DiagnosticCode.MissingDependency;
                 detail = "the recovered world is not built, so it has no delivery state.";
                 return false;
+            }
+
+            if (!family.HasDeliveryObligation)
+            {
+                // A genre with no external effect has no outbox and no destination, so the recovered world has none
+                // either. Inventing one would claim an endpoint the protocol says only a recipient may name (P-003).
+                delivery = null;
+                destination = null;
+                return true;
             }
 
             var owner = new WorldDeliveryOwner(

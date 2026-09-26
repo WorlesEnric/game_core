@@ -28,6 +28,7 @@ using System.Text;
 using GameCore.Contracts;
 using GameCore.Execution;
 using GameCore.Execution.Delivery;
+using GameCore.Execution.Messages;
 using GameCore.Execution.Persistence;
 using GameCore.Execution.Recovery;
 using GameCore.Rules.Narrative;
@@ -134,10 +135,17 @@ namespace GameCore.Validation.ProbeHost
             "gc027-restart-from-the-store-recovers-without-in-process-state",
             "gc027-restart-without-a-document-or-incompatible-content-exposes-nothing",
             "gc027-transient-failure-is-retried-under-the-host-bound",
+            "gc027-recovered-engine-physics-is-reseeded-not-continued",
+            "gc027-source-authoritative-state-survives-the-recovery",
+            "gc027-recovered-world-refuses-an-old-session-observation",
+            "gc027-recovered-world-steps-its-engine-once-per-admitted-step",
             "gc027-teardown-disposes-every-world",
         };
 
-        /// <summary>The observation names one family's run records: <c>&lt;label&gt;/&lt;name&gt;</c>.</summary>
+        /// <summary>
+        /// The observation names one family's run records for a genre declaring every capability, i.e. the full table:
+        /// <c>&lt;label&gt;/&lt;name&gt;</c>. It is what the probe harness's required-step list is built from.
+        /// </summary>
         public static string[] QualifiedNames(string label)
         {
             var names = new string[ObservationNames.Length];
@@ -147,6 +155,74 @@ namespace GameCore.Validation.ProbeHost
             }
 
             return names;
+        }
+
+        /// <summary>
+        /// The observations only a genre committing a delivery obligation can make (P-045). A genre that declares none
+        /// records none of them, so the run reports its own table rather than a pass for an observation it never
+        /// exercised.
+        /// </summary>
+        private static readonly string[] DeliveryObservations =
+        {
+            "gc027-outbox-rows-and-delivery-cursor-survive-the-recovery",
+            "gc027-outbox-append-fault-refuses-before-delivery",
+            "gc027-outbox-delivery-fault-redelivers-with-one-destination-effect",
+            "gc027-outbox-acknowledgement-fault-records-or-redelivers-once",
+        };
+
+        /// <summary>The observations only a genre declaring an engine physical domain can make (04 s7, P-054).</summary>
+        private static readonly string[] PhysicsObservations =
+        {
+            "gc027-recovered-engine-physics-is-reseeded-not-continued",
+            "gc027-source-authoritative-state-survives-the-recovery",
+            "gc027-recovered-world-refuses-an-old-session-observation",
+            "gc027-recovered-world-steps-its-engine-once-per-admitted-step",
+        };
+
+        /// <summary>
+        /// The observation names one family's run records, in execution order, for the capabilities that family
+        /// declares: the full table minus the delivery observations for a genre with no delivery obligation and minus
+        /// the physics observations for a genre with no engine domain. The table is therefore a function of what the
+        /// genre honestly declares, and each family's digest pins its own table (P-008, P-045, P-054).
+        /// </summary>
+        public static string[] ExpectedNames(IGc027Family family)
+        {
+            if (family == null)
+            {
+                throw new ArgumentNullException(nameof(family));
+            }
+
+            var names = new List<string>(ObservationNames.Length);
+            for (int i = 0; i < ObservationNames.Length; i++)
+            {
+                string name = ObservationNames[i];
+                if (!family.HasDeliveryObligation && Contains(DeliveryObservations, name))
+                {
+                    continue;
+                }
+
+                if (!family.DeclaresEnginePhysicsDomain && Contains(PhysicsObservations, name))
+                {
+                    continue;
+                }
+
+                names.Add(family.Label + "/" + name);
+            }
+
+            return names.ToArray();
+        }
+
+        private static bool Contains(string[] table, string name)
+        {
+            for (int i = 0; i < table.Length; i++)
+            {
+                if (string.Equals(table[i], name, StringComparison.Ordinal))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>Runs the whole recovery sequence for one family.</summary>
@@ -190,6 +266,12 @@ namespace GameCore.Validation.ProbeHost
             private WorldId recoveredSession;
             private string lastFailure = string.Empty;
             private ulong operationIssuer;
+            private ulong admittedStepCount;
+            private int sourceEngineSteps;
+            private string sourceAuthoritativeState = string.Empty;
+            private SnapshotToken sourceFirstObservation;
+            private bool sourceFirstObservationCaptured;
+            private Gc027PhysicsDomain? sourcePhysics;
 
             public Executor(IGc027Family family)
             {
@@ -210,15 +292,35 @@ namespace GameCore.Validation.ProbeHost
                 CleanRecovery();
                 RestoredHandles();
                 ActiveAndDormantState();
-                OutboxAcrossTheRecovery();
 
-                OutboxAppendFault();
-                DeliveryFault();
-                AcknowledgementFault();
+                // The delivery observations run only for a genre that declares an obligation, and the engine-physics
+                // observations only for a genre that declares a physical domain. The table the run is compared
+                // against is the same predicate (`ExpectedNames`), so a genre neither records nor is credited with an
+                // observation it cannot honestly make (P-045, P-054).
+                if (family.HasDeliveryObligation)
+                {
+                    OutboxAcrossTheRecovery();
+                }
+
+                if (family.HasDeliveryObligation)
+                {
+                    OutboxAppendFault();
+                    DeliveryFault();
+                    AcknowledgementFault();
+                }
 
                 RestartFromTheStore();
                 RestartWithoutADocument();
                 TransientFailureIsRetried();
+
+                if (family.DeclaresEnginePhysicsDomain)
+                {
+                    EnginePhysicsIsReseededNotContinued();
+                    SourceAuthoritativeStateSurvives();
+                    OldSessionObservationIsRefused();
+                    EngineStepsOncePerAdmittedStep();
+                }
+
                 TearDown();
 
                 if (!built || !faulted)
@@ -244,13 +346,44 @@ namespace GameCore.Validation.ProbeHost
                         return false;
                     }
 
-                    if (!world.TryCommitUndeliveredObligation(out Id128 outboxId, out string obligationDetail))
+                    // The obligation exists only for a genre that declares one. A genre with no external effect
+                    // records an empty obligation id and the run reports that, rather than committing a placeholder
+                    // obligation no destination exists for (P-003, P-045).
+                    Id128 outboxId = default(Id128);
+                    bool obligationCommitted = false;
+                    if (family.HasDeliveryObligation)
                     {
-                        Add(name, false, "the family's obligation could not be committed: " + obligationDetail);
-                        return false;
+                        if (!world.TryCommitUndeliveredObligation(out outboxId, out string obligationDetail))
+                        {
+                            Add(name, false, "the family's obligation could not be committed: " + obligationDetail);
+                            return false;
+                        }
+
+                        obligationCommitted = true;
                     }
 
                     store = new MemoryCheckpointStore("memory://gc027/" + family.Label + "/checkpoint");
+
+                    // The genre's declared steps run BEFORE the capture, so the state the checkpoint carries is a
+                    // value that really advanced and the pending input is genuinely pending (P-036, P-053).
+                    if (!world.TryRunAdmittedSteps(out ulong admittedSteps, out int engineSteps, out string stepDetail))
+                    {
+                        Add(name, false, "the source world could not admit its declared steps: " + stepDetail);
+                        return false;
+                    }
+
+                    admittedStepCount = admittedSteps;
+                    sourceEngineSteps = engineSteps;
+                    sourceAuthoritativeState = family.AuthoritativeStateText(world.Host) ?? string.Empty;
+                    sourcePhysics = family.PhysicsDomain;
+                    if (world.Host.Observation.TryGetLatestBoundary(out SnapshotToken firstObservation))
+                    {
+                        // The image the source world had already committed when it was captured: the token whose
+                        // session the recovered world must refuse (P-004, P-045).
+                        sourceFirstObservation = firstObservation;
+                        sourceFirstObservationCaptured = true;
+                    }
+
                     ulong idleSteps = world.PumpIdleFrames();
                     bool atBoundary = new UnityCommittedBoundaryReader(world.Host, world.Context).IsAtCommittedBoundary;
                     CheckpointPublicationResult publication = world.CaptureAndPublish(store, transcript);
@@ -263,7 +396,13 @@ namespace GameCore.Validation.ProbeHost
                     checkpointBytes = publication.Capture.Document;
                     checkpointHash = publication.Capture.DocumentHash;
 
-                    bool carriedOutbox = publication.Capture.Header.OutboxCount == 1U;
+                    // The header's outbox count is the checkpoint's own statement about what it carries: one row for
+                    // a genre with an obligation and none for a genre without one (P-045, P-053).
+                    uint expectedOutboxRows = obligationCommitted ? 1U : 0U;
+                    bool carriedOutbox = publication.Capture.Header.OutboxCount == expectedOutboxRows;
+                    bool deliveryState = obligationCommitted
+                        ? world.Delivery != null && world.Delivery.Outbox.OpenCount == 1 && world.Delivery.Outbox.IsDurable
+                        : world.Delivery == null;
                     bool pass = atBoundary
                         && idleSteps == 0UL
                         && publication.Stored.DocumentBytes == checkpointBytes.Length
@@ -271,21 +410,22 @@ namespace GameCore.Validation.ProbeHost
                         && carriedOutbox
                         && store.Exists
                         && world.Host.Lifecycle == WorldLifecycleState.Running
-                        && world.Delivery.Outbox.OpenCount == 1
-                        && world.Delivery.Outbox.IsDurable;
+                        && deliveryState;
 
                     Add(name, pass,
                         "session=" + world.World.Session.ToString()
                         + "; liveTargets=" + world.Targets.Count.ToString(CultureInfo.InvariantCulture)
                         + "; targetIndices=" + Join(world.TargetIndices)
                         + "; auxiliaryIndices=" + world.AuxiliaryIndexRange
-                        + "; obligation=" + outboxId.ToString()
+                        + "; obligation=" + (obligationCommitted ? outboxId.ToString() : "<none: genre declares none>")
                         + "; headerOutboxCount=" + publication.Capture.Header.OutboxCount.ToString(CultureInfo.InvariantCulture)
                         + "; document=" + checkpointBytes.Length.ToString(CultureInfo.InvariantCulture) + "B/"
                         + checkpointHash.ToHex()
                         + "; store=" + store.Location
                         + "; envelope=" + publication.Stored.ToString()
                         + "; atCommittedBoundary=" + atBoundary
+                        + "; admittedSteps=" + admittedSteps.ToString(CultureInfo.InvariantCulture)
+                        + "; engineSteps=" + engineSteps.ToString(CultureInfo.InvariantCulture)
                         + "; idleSteps=" + idleSteps.ToString(CultureInfo.InvariantCulture)
                         + "; lifecycle=" + world.Host.Lifecycle
                         + "; permittedResult=the committed boundary was copied and a verified document is stored "
@@ -1121,17 +1261,24 @@ namespace GameCore.Validation.ProbeHost
                         (WorldId _) => restartBuilder.Outbox);
 
                     WorldRecoveryReport report = WorldRecovery.Restart(context, previousSession);
+
+                    // The obligation half is asserted only where the genre declares one: a genre with no external
+                    // effect must instead prove it owns no obligation at all (P-045).
+                    bool obligationCarried = family.HasDeliveryObligation
+                        ? report.Outbox != null
+                            && report.Outbox.Consistent
+                            && report.ObligationsOwed == 1
+                            && restartBuilder.Destination != null
+                            && restartBuilder.Destination.AttemptCount == 0
+                        : restartBuilder.Destination == null && report.ObligationsOwed == 0;
+
                     bool pass = report.Recovered
                         && report.DestinationIsFreshIncarnation
                         && report.Restart != null
                         && report.Restart.DocumentPresent
                         && report.Restart.DocumentHash.Equals(checkpointHash)
                         && report.Restart.ProducedNewSession
-                        && report.Outbox != null
-                        && report.Outbox.Consistent
-                        && report.ObligationsOwed == 1
-                        && restartBuilder.Destination != null
-                        && restartBuilder.Destination.AttemptCount == 0
+                        && obligationCarried
                         && UnityWorldRegistry.Count == registryBefore + 1;
 
                     Add(name, pass,
@@ -1335,6 +1482,274 @@ namespace GameCore.Validation.ProbeHost
                 }
             }
 
+            // ============================================================ 4. the engine physical domain
+
+            /// <summary>
+            /// The recovered world's engine physics is RE-DERIVED from the authoritative ECS state the checkpoint
+            /// carried, never restored from anything the engine held: the recovered scene is its own dedicated local
+            /// scene, it declares the same bodies, each body's ENGINE pose equals the world's authoritative pose, and
+            /// the engine's own simulation counter starts at zero so it counts only the recovered world's steps.
+            /// This is the physical-observation limitation stated as an observation rather than in prose (P-054,
+            /// 06 s7's "adapter restores declared authoritative pose/velocity ... and records any restabilization
+            /// limits").
+            /// </summary>
+            private void EnginePhysicsIsReseededNotContinued()
+            {
+                const string name = "gc027-recovered-engine-physics-is-reseeded-not-continued";
+                try
+                {
+                    if (recovery == null || !recovery.Recovered || recovery.DestinationHost == null
+                        || sourcePhysics == null)
+                    {
+                        Add(name, false, "no recovered world or no source physics domain exists");
+                        return;
+                    }
+
+                    Gc027PhysicsDomain? recovered = family.PhysicsDomain;
+                    if (recovered == null)
+                    {
+                        Add(name, false, "the recovered world did not attach an engine physics domain");
+                        return;
+                    }
+
+                    // The source's engine counter is the continuation that must NOT be reproduced; the recovered
+                    // scene's own counter must be zero until the recovered world steps it itself.
+                    int sourceSimulations = sourcePhysics.EngineSimulationCount();
+                    int recoveredSimulations = recovered.EngineSimulationCount();
+
+                    bool sameBodies = recovered.Bodies.Count == sourcePhysics.Bodies.Count;
+                    int declared = 0;
+                    int poseMatches = 0;
+                    var detail = new StringBuilder();
+                    for (int i = 0; i < recovered.Bodies.Count; i++)
+                    {
+                        TargetId target = recovered.Bodies[i];
+                        if (recovered.TryDeclareBody(target))
+                        {
+                            declared++;
+                        }
+
+                        Gc027PhysicsPose authoritative = recovered.AuthoritativePose(target);
+                        Gc027PhysicsPose engine = recovered.EnginePose(target);
+                        bool matches = engine.PositionX == authoritative.PositionX
+                            && engine.PositionY == authoritative.PositionY
+                            && engine.PositionZ == authoritative.PositionZ
+                            && engine.VelocityX == authoritative.VelocityX
+                            && engine.VelocityY == authoritative.VelocityY
+                            && engine.VelocityZ == authoritative.VelocityZ;
+                        if (matches)
+                        {
+                            poseMatches++;
+                        }
+
+                        detail.Append(target.ToString()).Append("=auth").Append(authoritative.ToString())
+                            .Append("/engine").Append(engine.ToString())
+                            .Append(matches ? "=ok;" : "=MISMATCH;");
+                    }
+
+                    bool pass = recovered.DedicatedLocalScene
+                        && sameBodies
+                        && declared == recovered.Bodies.Count
+                        && poseMatches == recovered.Bodies.Count
+                        && recoveredSimulations == 0;
+
+                    Add(name, pass,
+                        "sourceEngineSimulations=" + sourceSimulations.ToString(CultureInfo.InvariantCulture)
+                        + "; recoveredEngineSimulations=" + recoveredSimulations.ToString(CultureInfo.InvariantCulture)
+                        + "; dedicatedLocalScene=" + recovered.DedicatedLocalScene
+                        + "; bodies=" + recovered.Bodies.Count.ToString(CultureInfo.InvariantCulture)
+                        + " (declared=" + declared.ToString(CultureInfo.InvariantCulture)
+                        + ", enginePoseEqualsAuthoritative=" + poseMatches.ToString(CultureInfo.InvariantCulture) + ")"
+                        + "; " + detail.ToString()
+                        + "; permittedResult=the engine's state is re-derived from the authoritative ECS pose the "
+                        + "checkpoint carried and its own counter starts fresh, so no solver state is continued across "
+                        + "the recovery (P-054)"
+                        + DescribeFailure());
+                }
+                catch (Exception exception)
+                {
+                    Add(name, false, DescribeException(exception));
+                }
+            }
+
+            /// <summary>
+            /// The genre's own authoritative state — for the traversal course, every runner's ECS pose and velocity
+            /// and its accepted-checkpoint progress — is identical in the recovered world, so "the state survived" is
+            /// a comparison of two worlds' own values rather than a claim about a plan (P-053, 07 s4.3).
+            /// </summary>
+            private void SourceAuthoritativeStateSurvives()
+            {
+                const string name = "gc027-source-authoritative-state-survives-the-recovery";
+                try
+                {
+                    if (recovery == null || !recovery.Recovered || recovery.DestinationHost == null
+                        || sourceAuthoritativeState.Length == 0)
+                    {
+                        Add(name, false, "no recovered world or no recorded source authoritative state exists");
+                        return;
+                    }
+
+                    string recoveredState = family.AuthoritativeStateText(recovery.DestinationHost) ?? string.Empty;
+                    bool identical = string.Equals(sourceAuthoritativeState, recoveredState, StringComparison.Ordinal);
+
+                    Add(name, identical,
+                        "capturedState=" + Clip(sourceAuthoritativeState, 300)
+                        + "; recoveredState=" + Clip(recoveredState, 300)
+                        + "; identical=" + identical
+                        + "; permittedResult=the recovered world's authoritative genre state equals the captured "
+                        + "world's, so the checkpoint carried it and the recovery restored it (P-053, P-032)"
+                        + DescribeFailure());
+                }
+                catch (Exception exception)
+                {
+                    Add(name, false, DescribeException(exception));
+                }
+            }
+
+            /// <summary>
+            /// An observation stamped with the OLD session is refused by the recovered world, and the recovered
+            /// world's own first committed image carries the NEW session's step and epoch. That is the observable
+            /// form of "old callbacks/handles never become valid" for a physical observation (P-004, P-005, P-049).
+            /// </summary>
+            private void OldSessionObservationIsRefused()
+            {
+                const string name = "gc027-recovered-world-refuses-an-old-session-observation";
+                try
+                {
+                    if (recovery == null || !recovery.Recovered || recovery.DestinationHost == null
+                        || !sourceFirstObservationCaptured)
+                    {
+                        Add(name, false, "no recovered world or no captured source observation token exists");
+                        return;
+                    }
+
+                    UnityWorldHost destination = recovery.DestinationHost;
+                    SnapshotAcquireResult foreign = destination.Observation.Acquire(sourceFirstObservation);
+                    bool refused = foreign.Outcome == SnapshotAcquireOutcome.ForeignWorld
+                        && foreign.Code == DiagnosticCode.StaleHandle
+                        && foreign.Lease == null;
+
+                    bool recoveredHasOwnImage = destination.Observation.TryGetLatestBoundary(out SnapshotToken own);
+                    bool newSession = recoveredHasOwnImage
+                        && own.World.Session.Equals(destination.World.Session)
+                        && !own.World.Session.Equals(sourceFirstObservation.World.Session);
+
+                    Add(name, refused && recoveredHasOwnImage && newSession,
+                        "oldToken=" + sourceFirstObservation.World.Session.ToString() + "/epoch "
+                        + sourceFirstObservation.AssemblyEpoch.Value.ToString(CultureInfo.InvariantCulture) + "/step "
+                        + sourceFirstObservation.LogicalStepId.Value.ToString(CultureInfo.InvariantCulture)
+                        + "; refusal=" + foreign.Outcome + "/" + foreign.Code
+                        + "; leaseGranted=" + (foreign.Lease != null)
+                        + "; recoveredImage=" + (recoveredHasOwnImage
+                            ? own.World.Session.ToString() + "/epoch "
+                                + own.AssemblyEpoch.Value.ToString(CultureInfo.InvariantCulture) + "/step "
+                                + own.LogicalStepId.Value.ToString(CultureInfo.InvariantCulture)
+                            : "<none>")
+                        + "; recoveredImageBelongsToTheNewSession=" + newSession
+                        + "; permittedResult=an observation stamped by the old session is refused as a stale handle, "
+                        + "and the recovered world's own image is stamped with the new session (P-004, P-005, P-049)"
+                        + DescribeFailure());
+                }
+                catch (Exception exception)
+                {
+                    Add(name, false, DescribeException(exception));
+                }
+            }
+
+            /// <summary>
+            /// The recovered world steps its engine exactly once per step it admits, measured against the world's own
+            /// committed step count: the recovered course is a real fixed-step world whose physical authority is
+            /// admitted per step rather than replayed from the source's history (REF-A06, P-036).
+            /// </summary>
+            private void EngineStepsOncePerAdmittedStep()
+            {
+                const string name = "gc027-recovered-world-steps-its-engine-once-per-admitted-step";
+                try
+                {
+                    if (recovery == null || !recovery.Recovered || recovery.DestinationHost == null)
+                    {
+                        Add(name, false, "no recovered world exists to step");
+                        return;
+                    }
+
+                    Gc027PhysicsDomain? recovered = family.PhysicsDomain;
+                    if (recovered == null)
+                    {
+                        Add(name, false, "the recovered world did not attach an engine physics domain");
+                        return;
+                    }
+
+                    UnityWorldHost destination = recovery.DestinationHost;
+                    if (!UnityWorldRegistry.TryGet(destination.World, out UnityWorldHost? live) || live == null)
+                    {
+                        Add(name, false, "the recovered session is not a registered world");
+                        return;
+                    }
+
+                    FixedStepSettings? fixedStep = family.FixedStep;
+                    if (fixedStep == null)
+                    {
+                        Add(name, false, "the recovered world is engine-physical but declares no fixed step (P-036)");
+                        return;
+                    }
+
+                    ulong stepsBefore = live.CurrentStep.Value;
+                    int simulationsBefore = recovered.EngineSimulationCount();
+                    ulong hostTicks = live.HostTimeOrigin;
+                    int admitted = 0;
+                    int committedStepsDuring = 0;
+                    for (uint i = 0U; i < family.AdmittedStepsBeforeFault; i++)
+                    {
+                        ulong stepBefore = live.CurrentStep.Value;
+                        hostTicks += fixedStep.StepDurationTicks;
+
+                        // The world's own pump commits the step; the count is read from the world's step counter
+                        // rather than assumed from the loop, so a pump that commits nothing advances no engine
+                        // simulation (P-036, REF-A06).
+                        live.PumpFrame(hostTicks);
+                        if (live.CurrentStep.Value == stepBefore)
+                        {
+                            continue;
+                        }
+
+                        committedStepsDuring++;
+                        if (recovered.TryStepOnce(live.CurrentStep.Value, family.FixedStepSeconds)
+                            == PhysicsStepOutcome.Stepped)
+                        {
+                            admitted++;
+                        }
+                    }
+
+                    // A repeated admission for the same step is refused, so authority is never advanced twice.
+                    PhysicsStepOutcome duplicate = recovered.TryStepOnce(live.CurrentStep.Value, family.FixedStepSeconds);
+                    ulong stepsAfter = live.CurrentStep.Value;
+                    int simulationsAfter = recovered.EngineSimulationCount();
+                    int committedSteps = (int)(stepsAfter - stepsBefore);
+
+                    bool pass = committedSteps > 0
+                        && committedStepsDuring == committedSteps
+                        && admitted == committedSteps
+                        && simulationsAfter - simulationsBefore == committedSteps
+                        && duplicate == PhysicsStepOutcome.DuplicateStepRefused;
+
+                    Add(name, pass,
+                        "committedSteps=" + stepsBefore.ToString(CultureInfo.InvariantCulture) + "->"
+                        + stepsAfter.ToString(CultureInfo.InvariantCulture)
+                        + "; engineSimulations=" + simulationsBefore.ToString(CultureInfo.InvariantCulture) + "->"
+                        + simulationsAfter.ToString(CultureInfo.InvariantCulture)
+                        + "; admittedOnce=" + admitted.ToString(CultureInfo.InvariantCulture)
+                        + "; duplicateAdmission=" + duplicate
+                        + "; permittedResult=the recovered world commits its own steps and its engine simulates "
+                        + "exactly once per committed step, refusing a repeat, so no source step is replayed (REF-A06, "
+                        + "P-036)"
+                        + DescribeFailure());
+                }
+                catch (Exception exception)
+                {
+                    Add(name, false, DescribeException(exception));
+                }
+            }
+
             private void TearDown()
             {
                 const string name = "gc027-teardown-disposes-every-world";
@@ -1410,7 +1825,11 @@ namespace GameCore.Validation.ProbeHost
                         activeStore,
                         family.DirectMigrations,
                         family.AllocatedSchemas,
-                        true),
+                        true,
+                        // The genre's own declared temporal settings: a fixed-step course recovers as a fixed-step
+                        // course, and a request naming FixedStep without a valid setting is refused as malformed
+                        // (P-036).
+                        family.FixedStep),
                     family.CreateRegistration(descriptor.Adaptation!),
                     () => new WorldId(sessionSequence.Next()),
                     NextOperation,
@@ -1432,13 +1851,14 @@ namespace GameCore.Validation.ProbeHost
                 new WorldRecoveryRequest(
                     recovery?.Request.Source ?? default(WorldId),
                     recovery?.Request.Definition ?? source!.Request.Definition,
-                    TemporalModel.CommandDriven,
-                    PropagationMode.Automatic,
+                    family.TemporalModel,
+                    recovery?.Request.Mode ?? PropagationMode.Automatic,
                     fingerprint,
                     activeStore,
                     family.DirectMigrations,
                     family.AllocatedSchemas,
-                    true);
+                    true,
+                    family.FixedStep);
 
             /// <summary>Reserves one operation identity of this run, strictly increasing per issuer (P-050).</summary>
             private OperationId NextOperation(WorldId world)
@@ -1557,6 +1977,9 @@ namespace GameCore.Validation.ProbeHost
             }
 
             private string DescribeFailure() => lastFailure.Length == 0 ? string.Empty : "; lastFailure=" + lastFailure;
+
+            private static string Clip(string text, int limit) =>
+                text.Length <= limit ? text : text.Substring(0, limit) + "\u2026";
 
             private static string DescribeException(Exception exception) =>
                 "unhandled " + exception.GetType().FullName + ": " + exception.Message;

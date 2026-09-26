@@ -27,6 +27,13 @@ namespace GameCore.Validation.ProbeHost
         public const string CardsDigest =
             "3c5923b2559b869767c49906e181c4e5efd0f351816926c4095e0aa36ff9074c";
 
+        /// <summary>
+        /// Digest the traversal run must report over its 17 named observations (the shared table minus the four
+        /// delivery ones the course does not declare, plus its four engine-physics ones), all passing (P-008, P-054).
+        /// </summary>
+        public const string TraversalDigest =
+            "30ff0f929889137733dea7bc047692f35488bde6c4d5af093b50af726784cefe";
+
         public static void Run(ProbeReport report)
         {
             if (report == null)
@@ -34,17 +41,30 @@ namespace GameCore.Validation.ProbeHost
                 throw new ArgumentNullException(nameof(report));
             }
 
-            RunFamily(report, Gc013NarrativeHost.Label, NarrativeDigest, true);
-            RunFamily(report, Gc013CardsHost.Label, CardsDigest, false);
+            RunFamily(report, Gc013NarrativeHost.Label, NarrativeDigest, Family.Narrative);
+            RunFamily(report, Gc013CardsHost.Label, CardsDigest, Family.Cards);
+            RunFamily(report, Gc020TraversalHost.Label, TraversalDigest, Family.Traversal);
         }
 
-        private static void RunFamily(ProbeReport report, string label, string expectedDigest, bool narrative)
+        /// <summary>Which family's adapter a run uses; the runner is the same for all three (P-001).</summary>
+        private enum Family
+        {
+            Narrative = 0,
+            Cards = 1,
+            Traversal = 2,
+        }
+
+        private static void RunFamily(ProbeReport report, string label, string expectedDigest, Family family)
         {
             try
             {
-                Gc027ScenarioResult result = narrative
-                    ? Gc027Scenario.Run(Gc013NarrativeHost.RecoveryFamily())
-                    : Gc027Scenario.Run(Gc013CardsHost.RecoveryFamily());
+                IGc027Family adapter = family == Family.Narrative
+                    ? Gc013NarrativeHost.RecoveryFamily()
+                    : family == Family.Cards
+                        ? Gc013CardsHost.RecoveryFamily()
+                        : Gc027TraversalHost.RecoveryFamily();
+                Gc027ScenarioResult result = Gc027Scenario.Run(adapter);
+                int expectedObservations = Gc027Scenario.ExpectedNames(adapter).Length;
 
                 for (int i = 0; i < result.Steps.Count; i++)
                 {
@@ -59,13 +79,13 @@ namespace GameCore.Validation.ProbeHost
                 // named sequence ran and every observation passed (P-008).
                 bool digestHeld = string.Equals(result.Digest, expectedDigest, StringComparison.Ordinal)
                     && result.AllPassed
-                    && result.Steps.Count == Gc027Scenario.ObservationNames.Length;
+                    && result.Steps.Count == expectedObservations;
 
                 string detail = "digest=" + result.Digest
                     + "; expectedDigest=" + expectedDigest
                     + "; observations=" + result.Steps.Count.ToString(CultureInfo.InvariantCulture)
                     + "; expectedObservations="
-                    + Gc027Scenario.ObservationNames.Length.ToString(CultureInfo.InvariantCulture)
+                    + expectedObservations.ToString(CultureInfo.InvariantCulture)
                     + "; " + result.Describe();
 
                 report.Add(digestHeld

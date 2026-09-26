@@ -30,6 +30,7 @@ using System;
 using System.Collections.Generic;
 using GameCore.Contracts;
 using GameCore.Execution.Delivery;
+using GameCore.Execution.Messages;
 using GameCore.Execution.Persistence;
 using GameCore.Planning.Scheduling;
 using GameCore.Unity.Runtime;
@@ -99,6 +100,84 @@ namespace GameCore.Validation.ProbeHost
         /// this set has no path to the build's version, which is what a restore must refuse (P-054).
         /// </summary>
         IReadOnlyList<SchemaRef> AllocatedSchemas { get; }
+
+        /// <summary>
+        /// True when this genre commits delivery obligations the run must carry across a recovery. The two
+        /// reward-consuming genres answer yes; the traversal course declares no destination at all, so it answers no
+        /// and the run skips the delivery observations rather than inventing an endpoint (P-003, P-045).
+        /// </summary>
+        bool HasDeliveryObligation { get; }
+
+        /// <summary>
+        /// True when the run publishes the family's declared `SetupEdits` through the lane. The card and narrative
+        /// worlds have no declared tree of their own, so their setup edits are real scope creations; the traversal
+        /// course's tree is already the world definition's declared tree in its lane seed, so publishing its creates
+        /// would be a duplicate create for scopes the seed already carries (P-010, P-006).
+        /// </summary>
+        bool PublishesDeclaredSetupEdits { get; }
+
+        /// <summary>
+        /// The temporal model a recovered world of this genre is created with. It is the family's own declared model,
+        /// so a fixed-step course recovers as a fixed-step course rather than as a command-driven world (P-036).
+        /// </summary>
+        TemporalModel TemporalModel { get; }
+
+        /// <summary>
+        /// The declared fixed-step settings of that model, or null for a command-driven genre. A recovery request
+        /// that names <see cref="TemporalModel.FixedStep"/> without them is refused as malformed (P-036).
+        /// </summary>
+        FixedStepSettings? FixedStep { get; }
+
+        /// <summary>
+        /// The declared fixed-step duration in seconds, or zero for a command-driven genre. One admitted engine
+        /// simulation is stepped for exactly this interval, so the engine and the world commit the same step (P-036).
+        /// </summary>
+        double FixedStepSeconds { get; }
+
+        /// <summary>
+        /// The compiled pipeline descriptor of the world being built, handed to the family before its runtime is
+        /// attached. A genre whose runtime needs the descriptor (the traversal course passes it to its stage
+        /// runtime) remembers it; a genre whose runtime does not need one ignores it. It is called exactly once per
+        /// world, before <see cref="IGc018Family.TryAttachRuntime"/> (GC-009).
+        /// </summary>
+        void NotePipelineForAttach(PipelineDescriptorReport descriptor);
+
+        /// <summary>
+        /// True when this genre declares an engine physical domain at all. It is the table predicate for the
+        /// physics observations (a family answers it without a world, unlike <see cref="PhysicsDomain"/>), and the
+        /// two ECS-owned genres answer false so their runs record no physics observation (P-034, P-059).
+        /// </summary>
+        bool DeclaresEnginePhysicsDomain { get; }
+
+        /// <summary>
+        /// The input one admitted step of this genre consumes over its own declared route, or null when the genre's
+        /// steps need none. The runner submits it through the ordinary input ingress before it pumps, so a fixed-step
+        /// course's integrate stage really runs and its state is non-trivial before the capture (P-037, P-042).
+        /// </summary>
+        CommandEnvelope? StepInput(WorldId world, OperationId operation);
+
+        /// <summary>
+        /// Admitted steps this genre's source world runs before it is captured and faulted. Zero for a genre whose
+        /// state is already complete at creation; the traversal course runs its declared steps so the recovered
+        /// world's motion state is a value that really moved (P-036).
+        /// </summary>
+        uint AdmittedStepsBeforeFault { get; }
+
+        /// <summary>
+        /// Canonical text of this genre's authoritative state for the recovered world, or null when the genre has
+        /// none to compare beyond the restored slot rows. The traversal course answers its runners' pose, velocity
+        /// and accepted-checkpoint progress, so "the authoritative state survived" is a comparison of two worlds'
+        /// own values rather than a claim about a plan (P-053, REF-A01).
+        /// </summary>
+        string? AuthoritativeStateText(UnityWorldHost world);
+
+        /// <summary>
+        /// The genre's engine-physics domain, or null when it declares none. The card and narrative genres are
+        /// ECS-owned and answer null; the traversal course answers its real local scene so the run can prove the
+        /// engine's own state is re-derived from the authoritative ECS pose rather than restored (P-054, 04 s7).
+        /// It is null until the genre's runtime is attached, and never null afterwards.
+        /// </summary>
+        Gc027PhysicsDomain? PhysicsDomain { get; }
     }
 
     /// <summary>

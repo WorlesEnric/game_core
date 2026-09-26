@@ -68,7 +68,8 @@ fi
 # a full teardown.
 PROBE_LABEL="gc027"
 gc027_steps=()
-for family in narrative cards; do
+# The full table: the runner can record it for a genre declaring every capability.
+for family in narrative cards traversal; do
   for base in \
     gc027-source-world-captures-and-publishes-a-verified-checkpoint \
     gc027-capture-copy-fault-produces-no-checkpoint \
@@ -92,11 +93,24 @@ for family in narrative cards; do
 done
 gc027_steps+=("\"name\": \"gc027-narrative-digest\"")
 gc027_steps+=("\"name\": \"gc027-cards-digest\"")
+gc027_steps+=("\"name\": \"gc027-traversal-digest\"")
+
+# The traversal course declares no delivery obligation and a real engine physical domain, so its seventeen
+# observations are the shared table minus the four delivery ones and plus its four engine-physics ones (P-045,
+# P-054). These are asserted in addition to the superset above, because a superset check alone would pass a run
+# that recorded no traversal physics observation at all.
+gc027_traversal_steps=(
+  "\"name\": \"traversal/gc027-recovered-engine-physics-is-reseeded-not-continued\""
+  "\"name\": \"traversal/gc027-source-authoritative-state-survives-the-recovery\""
+  "\"name\": \"traversal/gc027-recovered-world-refuses-an-old-session-observation\""
+  "\"name\": \"traversal/gc027-recovered-world-steps-its-engine-once-per-admitted-step\""
+)
 
 # The two pinned digest literals: SHA-256 over the 17 qualified names with "=pass" appended, LF separated without a
 # trailing newline. A run that recorded a different set of observations, or a failing one, cannot report them.
 narrative_digest="2644b55aee8bedbbae60e04627e4f6b16d114ac4f418bed4a1e5960e2bdf80f9"
 cards_digest="3c5923b2559b869767c49906e181c4e5efd0f351816926c4095e0aa36ff9074c"
+traversal_digest="30ff0f929889137733dea7bc047692f35488bde6c4d5af093b50af726784cefe"
 
 # A run is only evidence when its own JSON carries the whole claim, so every run's result file is asserted and not
 # just run 1's: the task, the mode, the verdict, the absence of a failing step, all 34 named observations, both
@@ -131,6 +145,7 @@ gc027_assert_result() {
   fi
 
   probe_require_steps "${run_result}" "${gc027_steps[@]}"
+  probe_require_steps "${run_result}" "${gc027_traversal_steps[@]}"
 
   if ! grep -q 'gc027-narrative-digest' "${run_result}"; then
     echo "run_recovery_probe.sh: ${run_label}: the narrative digest step is absent" >&2
@@ -142,16 +157,21 @@ gc027_assert_result() {
     failures=$((failures + 1))
   fi
 
+  if ! grep -q 'gc027-traversal-digest' "${run_result}"; then
+    echo "run_recovery_probe.sh: ${run_label}: the traversal digest step is absent" >&2
+    failures=$((failures + 1))
+  fi
+
   # Each family's digest step detail must carry its pinned literal: the digest is over the qualified observation
   # names and their pass flags, so the literal is the whole claim that the family ran the named sequence to a pass.
-  if ! python3 - "${run_result}" "${narrative_digest}" "${cards_digest}" <<'PY'
+  if ! python3 - "${run_result}" "${narrative_digest}" "${cards_digest}" "${traversal_digest}" <<'PY'
 import json, sys
-path, narrative_literal, cards_literal = sys.argv[1], sys.argv[2], sys.argv[3]
+path, narrative_literal, cards_literal, traversal_literal = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
 with open(path, "r", encoding="utf-8") as handle:
     report = json.load(handle)
 steps = {step.get("name"): step for step in report.get("probes", [])}
 problems = []
-for label, literal in (("narrative", narrative_literal), ("cards", cards_literal)):
+for label, literal in (("narrative", narrative_literal), ("cards", cards_literal), ("traversal", traversal_literal)):
     step = steps.get("gc027-%s-digest" % label)
     if step is None:
         problems.append("the %s digest step is absent" % label)
@@ -184,7 +204,10 @@ PY
     "idempotency key" \
     "retried" \
     "not contacted" \
-    "disposed"; do
+    "disposed" \
+    "re-derived" \
+    "stale handle" \
+    "once per committed step"; do
     if ! grep -q "${clause}" "${run_result}"; then
       echo "run_recovery_probe.sh: ${run_label}: the recovery clause fragment '${clause}' is absent from the result" >&2
       failures=$((failures + 1))

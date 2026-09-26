@@ -129,11 +129,20 @@ namespace GameCore.Validation.ProbeHost
 
         public CheckpointCodecSet Codecs => Require(codecs, "the source codec set");
 
-        /// <summary>The world's delivery owner: the outbox, its journal and its event cursor (GC-021).</summary>
-        public WorldDeliveryOwner Delivery => Require(delivery, "the source delivery owner");
+        /// <summary>
+        /// The world's delivery owner: the outbox, its journal and its event cursor (GC-021), or null for a genre
+        /// that declares no delivery obligation. A caller checks <see cref="HasDelivery"/> rather than assuming one.
+        /// </summary>
+        public WorldDeliveryOwner? Delivery => delivery;
 
-        /// <summary>The recording destination port; the "test destination effect" the task names (P-045).</summary>
-        public Gc027RecordingDestination Destination => Require(destination, "the source destination port");
+        /// <summary>True when this world built a delivery owner, i.e. when its genre declared an obligation (P-045).</summary>
+        public bool HasDelivery => delivery != null;
+
+        /// <summary>
+        /// The recording destination port; the "test destination effect" the task names (P-045), or null for a genre
+        /// with no obligation.
+        /// </summary>
+        public Gc027RecordingDestination? Destination => destination;
 
         /// <summary>The declared capture surface of this world (P-015, P-038, P-053).</summary>
         public CaptureContext Context => Require(context, "the source capture context");
@@ -283,7 +292,10 @@ namespace GameCore.Validation.ProbeHost
                     auxiliaryLastIndex = Math.Max(auxiliaryLastIndex, auxiliary.Index);
                 }
 
-                if (!PublishEdits(family.SetupEdits, out detail))
+                // A genre whose world definition already carries its tree in the lane seed must NOT publish its
+                // declared creates: that would be a duplicate create for scopes the seed owns (P-010, P-006). The
+                // capability is the family's own answer, not a genre test here (P-001).
+                if (family.PublishesDeclaredSetupEdits && !PublishEdits(family.SetupEdits, out detail))
                 {
                     return false;
                 }
@@ -322,6 +334,10 @@ namespace GameCore.Validation.ProbeHost
                     return false;
                 }
 
+                // The family's runtime needs the compiled descriptor before it attaches (the traversal course passes
+                // it to its stage runtime; the other two ignore it), so the runner notes it once here (GC-009).
+                family.NotePipelineForAttach(descriptor);
+
                 context = new CaptureContext(
                     world,
                     request.Definition,
@@ -332,15 +348,20 @@ namespace GameCore.Validation.ProbeHost
                     time.Clocks,
                     rng,
                     lane.Committed.Mode,
-                    StepDurationTicks,
-                    TicksPerSecond,
-                    MaxStepsPerPump,
+                    // The temporal facts are the world's own declaration: a command-driven world declares no step
+                    // duration, and a fixed-step course declares its 20 ms step and its catch-up bound. A capture that
+                    // recorded anything else would describe a world the header does not name (P-036, P-053).
+                    request.FixedStep?.StepDurationTicks ?? 0UL,
+                    request.FixedStep?.TicksPerSecond ?? 0UL,
+                    request.FixedStep?.MaxStepsPerPump ?? 1U,
                     false,
                     lane,
                     publisher,
                     Array.Empty<BufferId>(),
                     null,
-                    delivery.ToRecords());
+                    // A genre with no delivery obligation captures no outbox rows, which is the honest answer of a
+                    // world that has no outbox rather than a claim that its outbox was empty (P-045, P-053).
+                    delivery?.ToRecords());
 
                 // The genre's own runtime module, so the world's ingress stage consumes its lane like any other
                 // world of this genre; a recovered world attaches the same module (P-037, P-042).
@@ -380,6 +401,14 @@ namespace GameCore.Validation.ProbeHost
         {
             outboxId = default(Id128);
             detail = string.Empty;
+            if (!family.HasDeliveryObligation)
+            {
+                // No obligation, no failure: the observation that reads this is skipped for such a genre, and the
+                // run records why rather than a zero that could be mistaken for a committed obligation (P-045).
+                detail = "genre '" + family.Label + "' declares no delivery obligation, so the run commits none.";
+                return false;
+            }
+
             WorldDeliveryOwner owner = Delivery;
             WorldId session = world;
 
@@ -473,6 +502,76 @@ namespace GameCore.Validation.ProbeHost
             return true;
         }
 
+        /// <summary>
+        /// Admits this genre's declared steps before the capture, so the state a recovery carries is a value that has
+        /// really advanced rather than a seed. Each admitted step is one input submitted through the world's own
+        /// ingress and one pump at the declared step interval; when the genre declares an engine physical domain, the
+        /// gate is stepped exactly once for the step that committed, which is the caller obligation 04 s7 states
+        /// (P-036, REF-A06).
+        ///
+        /// The returned counts are the world's own answers: the committed steps its driver reports and the engine
+        /// simulations its gate admitted.
+        /// </summary>
+        public bool TryRunAdmittedSteps(out ulong committed, out int engineSteps, out string detail)
+        {
+            committed = 0UL;
+            engineSteps = 0;
+            detail = string.Empty;
+            if (host == null || time == null)
+            {
+                detail = "the world or its time driver is not built.";
+                return false;
+            }
+
+            uint declared = family.AdmittedStepsBeforeFault;
+            for (uint i = 0U; i < declared; i++)
+            {
+                CommandEnvelope? input = family.StepInput(world, NextOperation(world));
+                if (input != null)
+                {
+                    CommandAdmissionReceipt receipt = host.Submit(input);
+                    if (!receipt.Admitted)
+                    {
+                        detail = "the step input for admitted step " + i.ToString(CultureInfo.InvariantCulture)
+                            + " was not admitted: " + receipt.Result.Kind + "/" + receipt.Result.Reason;
+                        return false;
+                    }
+                }
+
+                // One declared step of host time, so a fixed-step world commits exactly one logical step and a
+                // command-driven world commits none (P-036).
+                hostTicks += family.FixedStep?.StepDurationTicks ?? IdlePumpTicks;
+                ulong committedNow = time.PumpFrame(hostTicks).StepsCommitted;
+                committed += committedNow;
+
+                Gc027PhysicsDomain? physics = family.PhysicsDomain;
+                if (physics == null || committedNow == 0UL)
+                {
+                    continue;
+                }
+
+                // The engine is stepped once for the step that really committed, and never for a pump that committed
+                // nothing: a presentation rate must not advance the authority twice (04 s7, REF-A06).
+                PhysicsStepOutcome outcome = physics.TryStepOnce(host.CurrentStep.Value, family.FixedStepSeconds);
+                if (outcome != PhysicsStepOutcome.Stepped)
+                {
+                    detail = "the engine physics step for admitted step "
+                        + host.CurrentStep.Value.ToString(CultureInfo.InvariantCulture) + " was " + outcome + ".";
+                    return false;
+                }
+
+                engineSteps++;
+            }
+
+            detail = "committed=" + committed.ToString(CultureInfo.InvariantCulture) + "; engineSteps="
+                + engineSteps.ToString(CultureInfo.InvariantCulture) + "; declared="
+                + declared.ToString(CultureInfo.InvariantCulture);
+            return true;
+        }
+
+        /// <summary>The host-time accumulator this world's pumps advance; only the step loop reads it (P-036).</summary>
+        private ulong hostTicks;
+
         /// <summary>Pumps the world a bounded number of idle frames; an idle command-driven world steps zero times.</summary>
         public ulong PumpIdleFrames()
         {
@@ -538,9 +637,21 @@ namespace GameCore.Validation.ProbeHost
             return view.Succeeded ? view.Targets : Array.Empty<DerivationTarget>();
         }
 
+        /// <summary>
+        /// Builds this world's delivery state when its genre declares a delivery obligation, and leaves it unbuilt
+        /// when it does not. A genre with no external effect has no outbox and no destination, and inventing one for
+        /// it would claim an endpoint the protocol says only the recipient's package may name (P-003, P-045).
+        /// </summary>
         private bool TryBuildDelivery(out string detail)
         {
             detail = string.Empty;
+            if (!family.HasDeliveryObligation)
+            {
+                delivery = null;
+                destination = null;
+                return true;
+            }
+
             delivery = new WorldDeliveryOwner(
                 host!,
                 family.Issuer,

@@ -19,7 +19,8 @@ What the clone removes, and why the list is one flat, auditable set:
     no reason to carry (`ProbeLifecycleStress` and GC-022's four stress runtime files, the Wave 6 gate's seven files),
     or a world scenario that only the qualification project drives (`Gc021Scenario`, `Gc021Family`, `ProbeGc021`),
     and the same shape for GC-027's recovery set (`Gc027Scenario`, `Gc027Family`, `Gc027SourceWorld`,
-    `Gc027RestoreBuilder`, `Gc027NarrativeHost`, `Gc027CardsHost`, `ProbeRecovery`).
+    `Gc027RestoreBuilder`, `Gc027PhysicsDomain`, `Gc027NarrativeHost`, `Gc027CardsHost`, `Gc027TraversalHost`,
+    `ProbeRecovery`).
     Their production seams — the delivery core, the traversal package, the optional engine stages and the four family
     hosts — all stay;
   * `Editor/LifecyclePlayModeMatrix.cs`, an editor-only qualification harness: it drives the application world and the
@@ -190,8 +191,10 @@ def main() -> None:
         "Gc027Family",
         "Gc027SourceWorld",
         "Gc027RestoreBuilder",
+        "Gc027PhysicsDomain",
         "Gc027NarrativeHost",
         "Gc027CardsHost",
+        "Gc027TraversalHost",
         "ProbeRecovery",
     ):
         for suffix in (".cs", ".cs.meta"):

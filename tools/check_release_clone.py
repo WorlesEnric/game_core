@@ -59,8 +59,8 @@ REMOVED_TYPES = [
  'W6GateScenario', 'W6GateFamily', 'W6CompositionAudit', 'W6FamilyNarrativeHost', 'W6FamilyCardsHost',
  'W6FamilyTraversalHost', 'ProbeW6Gate', 'W6StageRuntime', 'IW6Family', 'W6RewardDestination',
  'W6FirstCommittedEventSource', 'LifecyclePlayModeMatrix',
- 'Gc027Scenario', 'Gc027Family', 'Gc027SourceWorld', 'Gc027RestoreBuilder', 'Gc027NarrativeHost', 'Gc027CardsHost',
- 'ProbeRecovery',
+ 'Gc027Scenario', 'Gc027Family', 'Gc027SourceWorld', 'Gc027RestoreBuilder', 'Gc027PhysicsDomain', 'Gc027NarrativeHost',
+ 'Gc027CardsHost', 'Gc027TraversalHost', 'ProbeRecovery',
 ]
 REMOVED_MEMBERS = [
  'RunReloadRoute', 'RunBothW6Gate', 'RunW6Gate', 'W6GateDigest', 'W6GateGeneratedDigest', 'W6GateFixtureDigest',
