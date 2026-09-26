@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- GC-024's reference-conformance suite. The sources live in `tests/GameCore.ReferenceConformance/Tests` so the same
+       files also run as Unity EditMode tests (the package is testable). Everything here runs in well under a second:
+       the tables are data, the oracle is a comparison, and the projections delegate to the rules packages. -->
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <AssemblyName>GameCore.ReferenceConformance.Tests</AssemblyName>
+    <RootNamespace>GameCore.ReferenceConformance.Tests</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="../../../tests/GameCore.ReferenceConformance/Tests/**/*.cs"
+             Exclude="../../../tests/GameCore.ReferenceConformance/Tests/**/bin/**/*.cs;../../../tests/GameCore.ReferenceConformance/Tests/**/obj/**/*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="NUnit" Version="3.14.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/GameCore.ReferenceConformance/GameCore.ReferenceConformance.csproj" />
+    <ProjectReference Include="../../src/GameCore.Contracts/GameCore.Contracts.csproj" />
+    <ProjectReference Include="../../src/GameCore.Rules.Cards/GameCore.Rules.Cards.csproj" />
+    <ProjectReference Include="../../src/GameCore.Rules.Narrative/GameCore.Rules.Narrative.csproj" />
+    <ProjectReference Include="../../src/GameCore.Rules.Traversal/GameCore.Rules.Traversal.csproj" />
+  </ItemGroup>
+
+</Project>
