@@ -391,7 +391,7 @@ namespace GameCore.Composition
                     continue;
                 }
 
-                LifecycleCommitReport lifecycle = published[i].Lifecycle;
+                LifecycleCommitReport? lifecycle = published[i].Lifecycle;
                 return new ProviderFailureReport(
                     instance,
                     operation,

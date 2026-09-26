@@ -692,8 +692,8 @@ namespace GameCore.Composition
                             ? "the Active provider " + entry.Instance.ToString()
                               + " failed unexpectedly; its safe dependency-closure deactivation publishes in this revision (P-012)"
                             : "the installation " + entry.Instance.ToString() + " entered Failed (P-046)",
-                        out ActivationAttempt? failed);
-                    _ = failed;
+                        out ActivationAttempt? failedAttempt);
+                    _ = failedAttempt;
                     retractions.Add(Retract(entry.Instance, entry, plan.Operation));
                     break;
                 }
