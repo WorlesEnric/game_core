@@ -1,0 +1,417 @@
+{
+  "packages": [
+    {
+      "package": "com.gamecore.benchmarks",
+      "version": "1.0.0",
+      "directory": "tests/GameCore.Benchmarks",
+      "declared": {
+        "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.derivation": "1.0.0"
+      },
+      "expected": {
+        "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.derivation": "1.0.0"
+      },
+      "kernel": false
+    },
+    {
+      "package": "com.gamecore.composition",
+      "version": "1.0.0",
+      "directory": "Packages/com.gamecore.composition",
+      "declared": {
+        "com.gamecore.contracts": "1.0.0"
+      },
+      "expected": {
+        "com.gamecore.contracts": "1.0.0"
+      },
+      "kernel": true
+    },
+    {
+      "package": "com.gamecore.content.compiler",
+      "version": "1.0.0",
+      "directory": "Packages/com.gamecore.content.compiler",
+      "declared": {
+        "com.gamecore.contracts": "1.0.0"
+      },
+      "expected": {
+        "com.gamecore.contracts": "1.0.0"
+      },
+      "kernel": true
+    },
+    {
+      "package": "com.gamecore.contracts",
+      "version": "1.0.0",
+      "directory": "Packages/com.gamecore.contracts",
+      "declared": {},
+      "expected": {},
+      "kernel": true
+    },
+    {
+      "package": "com.gamecore.derivation",
+      "version": "1.0.0",
+      "directory": "Packages/com.gamecore.derivation",
+      "declared": {
+        "com.gamecore.contracts": "1.0.0"
+      },
+      "expected": {
+        "com.gamecore.contracts": "1.0.0"
+      },
+      "kernel": true
+    },
+    {
+      "package": "com.gamecore.fault-qualification",
+      "version": "1.0.0",
+      "directory": "Packages/com.gamecore.fault-qualification",
+      "declared": {},
+      "expected": {},
+      "kernel": false
+    },
+    {
+      "package": "com.gamecore.gameplay.cards",
+      "version": "1.0.0",
+      "directory": "Packages/com.gamecore.gameplay.cards",
+      "declared": {
+        "com.gamecore.composition": "1.0.0",
+        "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.derivation": "1.0.0",
+        "com.gamecore.planning": "1.0.0",
+        "com.gamecore.rules.cards": "1.0.0",
+        "com.gamecore.unity.runtime": "1.0.0",
+        "com.unity.collections": "2.6.6",
+        "com.unity.entities": "1.4.6"
+      },
+      "expected": {
+        "com.gamecore.composition": "1.0.0",
+        "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.derivation": "1.0.0",
+        "com.gamecore.planning": "1.0.0",
+        "com.gamecore.rules.cards": "1.0.0",
+        "com.gamecore.unity.runtime": "1.0.0",
+        "com.unity.collections": "2.6.6",
+        "com.unity.entities": "1.4.6"
+      },
+      "kernel": false
+    },
+    {
+      "package": "com.gamecore.gameplay.integration",
+      "version": "1.0.0",
+      "directory": "Packages/com.gamecore.gameplay.integration",
+      "declared": {
+        "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.gameplay.cards": "1.0.0",
+        "com.gamecore.gameplay.narrative": "1.0.0",
+        "com.gamecore.rules.cards": "1.0.0",
+        "com.gamecore.rules.narrative": "1.0.0",
+        "com.gamecore.unity.runtime": "1.0.0",
+        "com.unity.collections": "2.6.6",
+        "com.unity.entities": "1.4.6"
+      },
+      "expected": {
+        "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.gameplay.cards": "1.0.0",
+        "com.gamecore.gameplay.narrative": "1.0.0",
+        "com.gamecore.rules.cards": "1.0.0",
+        "com.gamecore.rules.narrative": "1.0.0",
+        "com.gamecore.unity.runtime": "1.0.0",
+        "com.unity.collections": "2.6.6",
+        "com.unity.entities": "1.4.6"
+      },
+      "kernel": false
+    },
+    {
+      "package": "com.gamecore.gameplay.narrative",
+      "version": "1.0.0",
+      "directory": "Packages/com.gamecore.gameplay.narrative",
+      "declared": {
+        "com.gamecore.composition": "1.0.0",
+        "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.derivation": "1.0.0",
+        "com.gamecore.planning": "1.0.0",
+        "com.gamecore.rules.narrative": "1.0.0",
+        "com.gamecore.unity.runtime": "1.0.0",
+        "com.unity.burst": "1.8.28",
+        "com.unity.collections": "2.6.6",
+        "com.unity.entities": "1.4.6"
+      },
+      "expected": {
+        "com.gamecore.composition": "1.0.0",
+        "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.derivation": "1.0.0",
+        "com.gamecore.planning": "1.0.0",
+        "com.gamecore.rules.narrative": "1.0.0",
+        "com.gamecore.unity.runtime": "1.0.0",
+        "com.unity.burst": "1.8.28",
+        "com.unity.collections": "2.6.6",
+        "com.unity.entities": "1.4.6"
+      },
+      "kernel": false
+    },
+    {
+      "package": "com.gamecore.gameplay.rewards",
+      "version": "1.0.0",
+      "directory": "Packages/com.gamecore.gameplay.rewards",
+      "declared": {
+        "com.gamecore.composition": "1.0.0",
+        "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.gameplay.cards": "1.0.0",
+        "com.gamecore.gameplay.integration": "1.0.0",
+        "com.gamecore.gameplay.narrative": "1.0.0",
+        "com.gamecore.planning": "1.0.0",
+        "com.gamecore.unity.runtime": "1.0.0",
+        "com.unity.collections": "2.6.6",
+        "com.unity.entities": "1.4.6"
+      },
+      "expected": {
+        "com.gamecore.composition": "1.0.0",
+        "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.gameplay.cards": "1.0.0",
+        "com.gamecore.gameplay.integration": "1.0.0",
+        "com.gamecore.gameplay.narrative": "1.0.0",
+        "com.gamecore.planning": "1.0.0",
+        "com.gamecore.unity.runtime": "1.0.0",
+        "com.unity.collections": "2.6.6",
+        "com.unity.entities": "1.4.6"
+      },
+      "kernel": false
+    },
+    {
+      "package": "com.gamecore.gameplay.traversal",
+      "version": "1.0.0",
+      "directory": "Packages/com.gamecore.gameplay.traversal",
+      "declared": {
+        "com.gamecore.composition": "1.0.0",
+        "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.derivation": "1.0.0",
+        "com.gamecore.planning": "1.0.0",
+        "com.gamecore.rules.traversal": "1.0.0",
+        "com.gamecore.unity.adapters": "1.0.0",
+        "com.gamecore.unity.runtime": "1.0.0",
+        "com.unity.collections": "2.6.6",
+        "com.unity.entities": "1.4.6"
+      },
+      "expected": {
+        "com.gamecore.composition": "1.0.0",
+        "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.derivation": "1.0.0",
+        "com.gamecore.planning": "1.0.0",
+        "com.gamecore.rules.traversal": "1.0.0",
+        "com.gamecore.unity.adapters": "1.0.0",
+        "com.gamecore.unity.runtime": "1.0.0",
+        "com.unity.collections": "2.6.6",
+        "com.unity.entities": "1.4.6"
+      },
+      "kernel": false
+    },
+    {
+      "package": "com.gamecore.planning",
+      "version": "1.0.0",
+      "directory": "Packages/com.gamecore.planning",
+      "declared": {
+        "com.gamecore.contracts": "1.0.0"
+      },
+      "expected": {
+        "com.gamecore.contracts": "1.0.0"
+      },
+      "kernel": true
+    },
+    {
+      "package": "com.gamecore.recovery",
+      "version": "1.0.0",
+      "directory": "tests/GameCore.Recovery",
+      "declared": {
+        "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.unity.runtime": "1.0.0"
+      },
+      "expected": {
+        "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.unity.runtime": "1.0.0"
+      },
+      "kernel": false
+    },
+    {
+      "package": "com.gamecore.reference-conformance",
+      "version": "1.0.0",
+      "directory": "tests/GameCore.ReferenceConformance",
+      "declared": {
+        "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.planning": "1.0.0",
+        "com.gamecore.rules.cards": "1.0.0",
+        "com.gamecore.rules.narrative": "1.0.0",
+        "com.gamecore.rules.traversal": "1.0.0"
+      },
+      "expected": {
+        "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.planning": "1.0.0",
+        "com.gamecore.rules.cards": "1.0.0",
+        "com.gamecore.rules.narrative": "1.0.0",
+        "com.gamecore.rules.traversal": "1.0.0"
+      },
+      "kernel": false
+    },
+    {
+      "package": "com.gamecore.replay",
+      "version": "1.0.0",
+      "directory": "tests/GameCore.Replay",
+      "declared": {
+        "com.gamecore.composition": "1.0.0",
+        "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.derivation": "1.0.0",
+        "com.gamecore.planning": "1.0.0"
+      },
+      "expected": {
+        "com.gamecore.composition": "1.0.0",
+        "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.derivation": "1.0.0",
+        "com.gamecore.planning": "1.0.0"
+      },
+      "kernel": false
+    },
+    {
+      "package": "com.gamecore.rules.cards",
+      "version": "1.0.0",
+      "directory": "Packages/com.gamecore.rules.cards",
+      "declared": {
+        "com.gamecore.contracts": "1.0.0"
+      },
+      "expected": {
+        "com.gamecore.contracts": "1.0.0"
+      },
+      "kernel": true
+    },
+    {
+      "package": "com.gamecore.rules.narrative",
+      "version": "1.0.0",
+      "directory": "Packages/com.gamecore.rules.narrative",
+      "declared": {
+        "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.derivation": "1.0.0"
+      },
+      "expected": {
+        "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.derivation": "1.0.0"
+      },
+      "kernel": true
+    },
+    {
+      "package": "com.gamecore.rules.traversal",
+      "version": "1.0.0",
+      "directory": "Packages/com.gamecore.rules.traversal",
+      "declared": {
+        "com.gamecore.contracts": "1.0.0"
+      },
+      "expected": {
+        "com.gamecore.contracts": "1.0.0"
+      },
+      "kernel": true
+    },
+    {
+      "package": "com.gamecore.telemetry-qualification",
+      "version": "1.0.0",
+      "directory": "Packages/com.gamecore.telemetry-qualification",
+      "declared": {},
+      "expected": {},
+      "kernel": false
+    },
+    {
+      "package": "com.gamecore.unity.adapters",
+      "version": "1.0.0",
+      "directory": "Packages/com.gamecore.unity.adapters",
+      "declared": {
+        "com.gamecore.composition": "1.0.0",
+        "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.planning": "1.0.0",
+        "com.gamecore.unity.runtime": "1.0.0",
+        "com.unity.collections": "2.6.6",
+        "com.unity.entities": "1.4.6"
+      },
+      "expected": {
+        "com.gamecore.composition": "1.0.0",
+        "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.planning": "1.0.0",
+        "com.gamecore.unity.runtime": "1.0.0",
+        "com.unity.collections": "2.6.6",
+        "com.unity.entities": "1.4.6"
+      },
+      "kernel": false
+    },
+    {
+      "package": "com.gamecore.unity.runtime",
+      "version": "1.0.0",
+      "directory": "Packages/com.gamecore.unity.runtime",
+      "declared": {
+        "com.gamecore.composition": "1.0.0",
+        "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.derivation": "1.0.0",
+        "com.gamecore.planning": "1.0.0",
+        "com.unity.burst": "1.8.28",
+        "com.unity.collections": "2.6.6",
+        "com.unity.entities": "1.4.6"
+      },
+      "expected": {
+        "com.gamecore.composition": "1.0.0",
+        "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.derivation": "1.0.0",
+        "com.gamecore.planning": "1.0.0",
+        "com.unity.burst": "1.8.28",
+        "com.unity.collections": "2.6.6",
+        "com.unity.entities": "1.4.6"
+      },
+      "kernel": false
+    }
+  ],
+  "assemblies": {
+    "GameCore.Benchmarks": "com.gamecore.benchmarks",
+    "GameCore.Benchmarks.Tests": "com.gamecore.benchmarks",
+    "GameCore.Composition": "com.gamecore.composition",
+    "GameCore.Composition.Tests": "com.gamecore.composition",
+    "GameCore.Content.Compiler": "com.gamecore.content.compiler",
+    "GameCore.Content.Compiler.Editor": "com.gamecore.content.compiler",
+    "GameCore.Contracts": "com.gamecore.contracts",
+    "GameCore.Derivation": "com.gamecore.derivation",
+    "GameCore.Derivation.Fixtures": "com.gamecore.derivation",
+    "GameCore.Derivation.Tests": "com.gamecore.derivation",
+    "GameCore.Gameplay.Cards": "com.gamecore.gameplay.cards",
+    "GameCore.Gameplay.Cards.Fixtures": "com.gamecore.gameplay.cards",
+    "GameCore.Gameplay.Integration": "com.gamecore.gameplay.integration",
+    "GameCore.Gameplay.Narrative": "com.gamecore.gameplay.narrative",
+    "GameCore.Gameplay.Narrative.Fixtures": "com.gamecore.gameplay.narrative",
+    "GameCore.Gameplay.Rewards": "com.gamecore.gameplay.rewards",
+    "GameCore.Gameplay.Traversal": "com.gamecore.gameplay.traversal",
+    "GameCore.Gameplay.Traversal.Fixtures": "com.gamecore.gameplay.traversal",
+    "GameCore.Planning": "com.gamecore.planning",
+    "GameCore.Planning.Tests": "com.gamecore.planning",
+    "GameCore.Recovery.Fixtures": "com.gamecore.recovery",
+    "GameCore.Recovery.Fixtures.Tests": "com.gamecore.recovery",
+    "GameCore.ReferenceConformance": "com.gamecore.reference-conformance",
+    "GameCore.ReferenceConformance.Tests": "com.gamecore.reference-conformance",
+    "GameCore.Replay": "com.gamecore.replay",
+    "GameCore.Replay.Tests": "com.gamecore.replay",
+    "GameCore.Rules.Cards": "com.gamecore.rules.cards",
+    "GameCore.Rules.Cards.Tests": "com.gamecore.rules.cards",
+    "GameCore.Rules.Narrative": "com.gamecore.rules.narrative",
+    "GameCore.Rules.Narrative.Tests": "com.gamecore.rules.narrative",
+    "GameCore.Rules.Traversal": "com.gamecore.rules.traversal",
+    "GameCore.Rules.Traversal.Tests": "com.gamecore.rules.traversal",
+    "GameCore.Unity.Adapters": "com.gamecore.unity.adapters",
+    "GameCore.Unity.Adapters.Contract.Tests": "com.gamecore.unity.adapters",
+    "GameCore.Unity.Adapters.Fixtures": "com.gamecore.unity.adapters",
+    "GameCore.Unity.Adapters.PlayMode.Tests": "com.gamecore.unity.adapters",
+    "GameCore.Unity.Adapters.Tests": "com.gamecore.unity.adapters",
+    "GameCore.Unity.Assembly.Tests": "com.gamecore.unity.runtime",
+    "GameCore.Unity.Delivery.Tests": "com.gamecore.unity.runtime",
+    "GameCore.Unity.Faults.Tests": "com.gamecore.unity.runtime",
+    "GameCore.Unity.Fixtures": "com.gamecore.unity.runtime",
+    "GameCore.Unity.Messages.Tests": "com.gamecore.unity.runtime",
+    "GameCore.Unity.Observation.Tests": "com.gamecore.unity.runtime",
+    "GameCore.Unity.Recovery.Tests": "com.gamecore.unity.runtime",
+    "GameCore.Unity.Runtime": "com.gamecore.unity.runtime",
+    "GameCore.Unity.Runtime.Tests": "com.gamecore.unity.runtime"
+  },
+  "engine_pins": {
+    "com.unity.burst": "1.8.28",
+    "com.unity.collections": "2.6.6",
+    "com.unity.entities": "1.4.6",
+    "com.unity.mathematics": "1.3.2"
+  },
+  "problems": []
+}
