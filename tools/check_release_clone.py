@@ -61,6 +61,8 @@ REMOVED_TYPES = [
  'W6FirstCommittedEventSource', 'LifecyclePlayModeMatrix',
  'Gc027Scenario', 'Gc027Family', 'Gc027SourceWorld', 'Gc027RestoreBuilder', 'Gc027PhysicsDomain', 'Gc027NarrativeHost',
  'Gc027CardsHost', 'Gc027TraversalHost', 'ProbeRecovery',
+ 'ProbeBenchmark', 'BenchmarkScenario', 'BenchmarkLiveWorld', 'LiveWorldFailure', 'BenchmarkOptions',
+ 'BenchmarkStep', 'BenchmarkScenarioResult', 'BenchmarkLiveFamily',
 ]
 REMOVED_MEMBERS = [
  'RunReloadRoute', 'RunBothW6Gate', 'RunW6Gate', 'W6GateDigest', 'W6GateGeneratedDigest', 'W6GateFixtureDigest',
@@ -70,7 +72,7 @@ REMOVED_MEMBERS = [
 ]
 REMOVED_MODES = [('Faults', 'faults'), ('W5Gate', 'w5Gate'), ('Gc021', 'gc021'),
                  ('LifecycleStress', 'lifecycleStress'), ('Replay', 'replay'), ('W6Gate', 'w6Gate'),
-                 ('Recovery', 'recovery')]
+                 ('Recovery', 'recovery'), ('Benchmark', 'benchmark')]
 KEPT_MODES = [('MissingRegistration', 'missingRegistration'), ('WorldDispatch', 'worldDispatch'),
               ('W1Gate', 'w1Gate'), ('W2Gate', 'w2Gate'), ('W3Gate', 'w3Gate'), ('Narrative', 'narrative'),
               ('Cards', 'cards'), ('W4Profile', 'w4Profile'), ('Gc013', 'gc013'), ('W4Gate', 'w4Gate'),
@@ -126,10 +128,12 @@ for name, p in list(clone_asmdefs.items()) + list(package_asmdefs.items()):
             continue
         dangling.setdefault(os.path.basename(p), []).append(r)
 print('   assemblies available:', len(available), '| dangling references:', dangling or 'none')
-print('   GameCore.Replay reachable:', 'GameCore.Replay' in available)
+print('   GameCore.Replay reachable:', 'GameCore.Replay' in available,
+      '| GameCore.Benchmarks reachable:', 'GameCore.Benchmarks' in available)
 problems += list(dangling)
-if 'GameCore.Replay' in available:
-    problems.append('GameCore.Replay still reachable')
+for stripped in ('GameCore.Replay', 'GameCore.Benchmarks'):
+    if stripped in available:
+        problems.append(stripped + ' still reachable')
 
 print()
 print('== 3. ProbeArguments constructor call matches its parameter list ==')
@@ -199,15 +203,16 @@ for mode, low in KEPT_MODES:
     if not wired:
         problems.append('kept mode lost its wiring: ' + mode)
 
-print()
-print('== 6. manifest and lock ==')
 manifest = json.load(open(os.path.join(root, 'Packages/manifest.json')))
-stale = [k for k in manifest['dependencies'] if 'qualification' in k or 'replay' in k or 'recovery' in k]
+stale = [k for k in manifest['dependencies']
+         if 'qualification' in k or 'replay' in k or 'recovery' in k or 'benchmarks' in k]
 print('   qualification/replay dependencies:', stale or 'none')
 print('   testables:', manifest['testables'])
 lock_path = os.path.join(root, 'Packages/packages-lock.json')
 lock = json.load(open(lock_path)) if os.path.exists(lock_path) else None
-lock_stale = [k for k in lock['dependencies'] if 'qualification' in k or 'replay' in k] if lock else []
+lock_stale = ([k for k in lock['dependencies']
+               if 'qualification' in k or 'replay' in k or 'recovery' in k or 'benchmarks' in k]
+              if lock else [])
 print('   lock present:', lock is not None)
 print('   lock qualification/replay dependencies:', lock_stale or 'none')
 print('   Tests/ tree present:', os.path.exists(os.path.join(root, 'Assets/GameCore.Validation/Tests')))

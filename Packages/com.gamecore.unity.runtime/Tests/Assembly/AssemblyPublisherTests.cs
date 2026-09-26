@@ -18,6 +18,7 @@ using GameCore.Planning;
 using CompositionProposal = GameCore.Planning.CompositionProposal;
 using GameCore.Unity.Fixtures;
 using GameCore.Unity.Runtime;
+using GameCore.Unity.Runtime.Integration;
 using NUnit.Framework;
 using Unity.Entities;
 
@@ -43,6 +44,65 @@ namespace GameCore.Unity.Runtime.Tests.Assembly
 
             hosts.Clear();
             UnityWorldRegistry.ResetAll();
+        }
+
+        [Test]
+        [Timeout(600000)]
+        public void LiveTargetInsertionAndRetirementMatchAppendAndSortOracle()
+        {
+            foreach (int seed in new[] { 7, 83, 20260926 })
+            {
+                int count = seed == 20260926 ? 10000 : 257;
+                var random = new Random(seed);
+                var index = new LiveTargetIndex(AssemblyFixtureRecipes.Catalog());
+                var oracle = new List<LiveTarget>();
+                var ordinals = new List<int>(count);
+                for (int i = 0; i < count; i++) ordinals.Add(i);
+                for (int i = count - 1; i > 0; i--)
+                {
+                    int j = random.Next(i + 1);
+                    int swap = ordinals[i];
+                    ordinals[i] = ordinals[j];
+                    ordinals[j] = swap;
+                }
+
+                foreach (int ordinal in ordinals)
+                {
+                    TargetId target = AssemblyFixtureKeys.Target((ulong)ordinal);
+                    ScopeId scope = ordinal % 2 == 0 ? AssemblyFixtureKeys.RootScope : AssemblyFixtureKeys.ChildScope;
+                    Assert.That(index.TryRegister(target, scope, AssemblyFixtureKeys.CardRecipe,
+                        out DiagnosticCode code, out string detail), Is.True, detail);
+                    Assert.That(code, Is.EqualTo(DiagnosticCode.None));
+                    oracle.Add(new LiveTarget(target, scope, AssemblyFixtureKeys.CardRecipe));
+                    oracle.Sort((left, right) => left.Target.Value.CompareTo(right.Target.Value));
+                    Assert.That(index.TryRegister(target, scope, AssemblyFixtureKeys.CardRecipe,
+                        out code, out detail), Is.False, "duplicate registration seed=" + seed);
+                    Assert.That(code, Is.EqualTo(DiagnosticCode.OwnershipConflict));
+                }
+
+                AssertOrder();
+                for (int i = 0; i < count / 2; i++)
+                {
+                    TargetId target = AssemblyFixtureKeys.Target((ulong)ordinals[i]);
+                    Assert.That(index.TryRetire(target), Is.True);
+                    Assert.That(index.TryRetire(target), Is.False, "duplicate retirement seed=" + seed);
+                    oracle.RemoveAll(item => item.Target.Equals(target));
+                    if (i % 37 == 0) AssertOrder();
+                }
+
+                AssertOrder();
+
+                void AssertOrder()
+                {
+                    Assert.That(index.Count, Is.EqualTo(oracle.Count), "seed=" + seed);
+                    for (int i = 0; i < oracle.Count; i++)
+                    {
+                        Assert.That(index.Targets[i].Target, Is.EqualTo(oracle[i].Target), "seed=" + seed + " position=" + i);
+                        Assert.That(index.Targets[i].Scope, Is.EqualTo(oracle[i].Scope), "seed=" + seed + " position=" + i);
+                        Assert.That(index.Targets[i].Recipe, Is.EqualTo(oracle[i].Recipe), "seed=" + seed + " position=" + i);
+                    }
+                }
+            }
         }
 
         private sealed class Fixture

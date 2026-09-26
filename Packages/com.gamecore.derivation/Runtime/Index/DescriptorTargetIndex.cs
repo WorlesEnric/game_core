@@ -64,6 +64,23 @@ namespace GameCore.Derivation
             }
         }
 
+        private DescriptorTargetIndex(
+            DerivationSnapshot snapshot,
+            Dictionary<Id128, List<DerivationTarget>> bySchema,
+            Dictionary<Id128, List<DerivationTarget>> byCapability,
+            Dictionary<Id128, List<DerivationTarget>> byTag,
+            Dictionary<Id128, List<DerivationTarget>> byRecipe,
+            Dictionary<Id128, TargetFacts> factsByTarget)
+        {
+            this.snapshot = snapshot;
+            this.bySchema = bySchema;
+            this.byCapability = byCapability;
+            this.byTag = byTag;
+            this.byRecipe = byRecipe;
+            this.factsByTarget = factsByTarget;
+        }
+
+
         /// <summary>Builds the descriptor index of one snapshot.</summary>
         public static DescriptorTargetIndex Build(DerivationSnapshot snapshot)
         {
@@ -73,6 +90,33 @@ namespace GameCore.Derivation
             }
 
             return new DescriptorTargetIndex(snapshot);
+        }
+
+        /// <summary>
+        /// Reuses immutable descriptor buckets when the change set proves every target identity, owner scope and
+        /// descriptor fact is unchanged, while binding candidate enumeration to the current snapshot.
+        /// </summary>
+        internal static DescriptorTargetIndex ReuseUnchangedTargets(
+            DescriptorTargetIndex previous,
+            DerivationSnapshot snapshot)
+        {
+            if (previous == null)
+            {
+                throw new ArgumentNullException(nameof(previous));
+            }
+
+            if (snapshot == null)
+            {
+                throw new ArgumentNullException(nameof(snapshot));
+            }
+
+            return new DescriptorTargetIndex(
+                snapshot,
+                previous.bySchema,
+                previous.byCapability,
+                previous.byTag,
+                previous.byRecipe,
+                previous.factsByTarget);
         }
 
         /// <summary>Targets advertising a schema identity at any version, canonical order (P-015).</summary>
@@ -174,6 +218,7 @@ namespace GameCore.Derivation
                 && left.AssetAdapter.Equals(right.AssetAdapter)
                 && DefinitionsEqual(left.LocalPatches, right.LocalPatches)
                 && ImportsEqual(left.Imports, right.Imports)
+                && OptInsEqual(left.OptIns, right.OptIns)
                 && left.AssetAdapter.AdapterId.Equals(right.AssetAdapter.AdapterId)
                 && left.AssetAdapter.Version == right.AssetAdapter.Version
                 && ExclusionsEqual(left.Exclusions, right.Exclusions);

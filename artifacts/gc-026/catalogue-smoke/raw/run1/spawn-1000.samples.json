@@ -1,0 +1,168 @@
+{
+  "artifact": "gamecore.benchmark.samples/1",
+  "workload": "spawn-1000",
+  "kind": "Change",
+  "dimension": "future-spawn",
+  "runOrdinal": 1,
+  "seed": 20260926,
+  "scopes": 1000,
+  "targets": 10000,
+  "warmupSeconds": 1,
+  "durationSeconds": 2,
+  "repetitionsRequested": 5,
+  "repetitionsExecuted": 5,
+  "stepsAdvanced": 0,
+  "windowMicroseconds": 0,
+  "warmupMicroseconds": 2623685,
+  "passed": true,
+  "gates": [
+    {
+      "name": "spawn-first-visibility-is-fully-assembled",
+      "passed": true,
+      "detail": "spawnedPerRepetition=1000; assembledOnFirstVisibility=1000; capability=CapabilityId(0774f192d6754a88c3215e38cceaf022); accepted=True"
+    },
+    {
+      "name": "live-spawn-publishes-one-complete-publication",
+      "passed": true,
+      "detail": "spawned=1000; code=None; detail=; assembled=1000; outcome=Published; installedRows=2000; seedUs=6546; publishUs=3328424; applyUs=2203"
+    }
+  ],
+  "notes": [
+    "warmupCycles=1; warmupComplete=true",
+    "seedPhase=bulk storage creation for 1000 targets (a fixture operation, measured separately so it cannot hide the publication); applyPhase=the publisher's own fenced window for the ONE publication that installs every spawned target's assembly",
+    "liveWorld=liveScopes=1000; liveTargets=11000; eligible=1100; ineligible=9900; epoch=3; step=0; publications=3; bindingRows=2200; joined=True",
+    "fixture=fixture{scopes=1000;targets=10000;groups=10;leaves=989;schemaFamilies=3;sharedProviders=11;uniqueProviders=99;baseInstalls=110;reparentScopeTargets=100;seededTagTargets=481;seed=20260926}",
+    "budget=referenceCandidates=1000000;referenceContributions=250000;referenceTargets=100000;configured=PropagationBudget(candidates<=3200000, contributions<=1100000, targets<=100000, bytes<=422400000, prepareMs<=2000, applyUs<=200000000)"
+  ],
+  "phases": [
+    {
+      "phase": "Warmup",
+      "count": 1,
+      "min": 2623685,
+      "p50": 2623685,
+      "p95": 2623685,
+      "p99": 2623685,
+      "max": 2623685,
+      "mean": 2623685,
+      "total": 2623685
+    },
+    {
+      "phase": "Prepare",
+      "count": 6,
+      "min": 6546,
+      "p50": 2995490,
+      "p95": 3059771,
+      "p99": 3059771,
+      "max": 3059771,
+      "mean": 2521676,
+      "total": 15130056
+    },
+    {
+      "phase": "Apply",
+      "count": 1,
+      "min": 2203,
+      "p50": 2203,
+      "p95": 2203,
+      "p99": 2203,
+      "max": 2203,
+      "mean": 2203,
+      "total": 2203
+    },
+    {
+      "phase": "EndToEnd",
+      "count": 1,
+      "min": 3328424,
+      "p50": 3328424,
+      "p95": 3328424,
+      "p99": 3328424,
+      "max": 3328424,
+      "mean": 3328424,
+      "total": 3328424
+    }
+  ],
+  "memory": {
+    "managedHeapStartBytes": 236482560,
+    "managedHeapEndBytes": 236482560,
+    "managedAllocatedBytes": 236482560,
+    "managedAllocationIsThreadComplete": false,
+    "nativeContainerBytes": 4320,
+    "leaseBytes": 4320,
+    "retainedEventBytes": 0,
+    "retainedEventCount": 0,
+    "cacheBytes": 0,
+    "cacheEntries": 0,
+    "quarantineBytes": 0,
+    "quarantineEntries": 0,
+    "liveLeases": 9,
+    "outstandingCallbacks": 0
+  },
+  "counters": {
+    "control-nodes-visited": 35020,
+    "candidates-matched": 10000,
+    "contributions-added": 10000,
+    "contributions-retracted": 8000,
+    "strata-evaluated": 5,
+    "apply-us": 2203,
+    "assembly-epoch": 3,
+    "structural-operations": 5000,
+    "live-leases": 9,
+    "lease-bytes": 4320,
+    "apply-samples": 1
+  },
+  "samples": [
+    {
+      "ordinal": 0,
+      "phase": "Warmup",
+      "microseconds": 2623685,
+      "counters": "0"
+    },
+    {
+      "ordinal": 0,
+      "phase": "Prepare",
+      "microseconds": 2995490,
+      "counters": "control-nodes-visited=7004;candidates-matched=2000;contributions-added=2000;strata-evaluated=1"
+    },
+    {
+      "ordinal": 1,
+      "phase": "Prepare",
+      "microseconds": 3038259,
+      "counters": "control-nodes-visited=7004;candidates-matched=2000;contributions-added=2000;contributions-retracted=2000;strata-evaluated=1"
+    },
+    {
+      "ordinal": 2,
+      "phase": "Prepare",
+      "microseconds": 3035124,
+      "counters": "control-nodes-visited=7004;candidates-matched=2000;contributions-added=2000;contributions-retracted=2000;strata-evaluated=1"
+    },
+    {
+      "ordinal": 3,
+      "phase": "Prepare",
+      "microseconds": 2994866,
+      "counters": "control-nodes-visited=7004;candidates-matched=2000;contributions-added=2000;contributions-retracted=2000;strata-evaluated=1"
+    },
+    {
+      "ordinal": 4,
+      "phase": "Prepare",
+      "microseconds": 3059771,
+      "counters": "control-nodes-visited=7004;candidates-matched=2000;contributions-added=2000;contributions-retracted=2000;strata-evaluated=1"
+    },
+    {
+      "ordinal": 0,
+      "phase": "Prepare",
+      "microseconds": 6546,
+      "counters": "0"
+    },
+    {
+      "ordinal": 0,
+      "phase": "EndToEnd",
+      "microseconds": 3328424,
+      "counters": "apply-us=2203;assembly-epoch=3;structural-operations=5000;live-leases=9;lease-bytes=4320;apply-samples=1"
+    },
+    {
+      "ordinal": 0,
+      "phase": "Apply",
+      "microseconds": 2203,
+      "counters": "0"
+    }
+  ]
+}

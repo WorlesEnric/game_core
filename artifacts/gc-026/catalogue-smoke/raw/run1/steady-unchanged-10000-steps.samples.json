@@ -1,0 +1,138 @@
+{
+  "artifact": "gamecore.benchmark.samples/1",
+  "workload": "steady-unchanged-10000-steps",
+  "kind": "Steady",
+  "dimension": "no-composition-change",
+  "runOrdinal": 1,
+  "seed": 20260926,
+  "scopes": 1000,
+  "targets": 10000,
+  "warmupSeconds": 1,
+  "durationSeconds": 2,
+  "repetitionsRequested": 0,
+  "repetitionsExecuted": 0,
+  "stepsAdvanced": 10000,
+  "windowMicroseconds": 100603,
+  "warmupMicroseconds": 1004919,
+  "passed": true,
+  "gates": [
+    {
+      "name": "unchanged-composition-commits-the-declared-steps",
+      "passed": true,
+      "detail": "declared=10000; committed=10000; pumps=10; step=140000; windowUs=100603"
+    },
+    {
+      "name": "zero-stable-control-tree-scans",
+      "passed": true,
+      "detail": "steps=10000; controlNodes=0; candidatesMatched=0; strataEvaluated=0; planPreparedBytes=0"
+    },
+    {
+      "name": "zero-string-service-lookups",
+      "passed": true,
+      "detail": "serviceStringLookups=0"
+    },
+    {
+      "name": "unchanged-composition-publishes-nothing",
+      "passed": true,
+      "detail": "publicationsBefore=1; after=1"
+    }
+  ],
+  "notes": [
+    "warmupPumps=131; warmupMicroseconds=1004919",
+    "liveWorld=liveScopes=1000; liveTargets=10000; eligible=100; ineligible=9900; epoch=1; step=140000; publications=1; bindingRows=0; joined=True",
+    "fixture=fixture{scopes=1000;targets=10000;groups=10;leaves=989;schemaFamilies=3;sharedProviders=11;uniqueProviders=99;baseInstalls=110;reparentScopeTargets=100;seededTagTargets=481;seed=20260926}",
+    "budget=referenceCandidates=1000000;referenceContributions=250000;referenceTargets=100000;configured=PropagationBudget(candidates<=3200000, contributions<=1100000, targets<=100000, bytes<=422400000, prepareMs<=2000, applyUs<=200000000)"
+  ],
+  "phases": [
+    {
+      "phase": "Step",
+      "count": 10,
+      "min": 6091,
+      "p50": 6114,
+      "p95": 22543,
+      "p99": 22543,
+      "max": 22543,
+      "mean": 10060.3,
+      "total": 100603
+    }
+  ],
+  "memory": {
+    "managedHeapStartBytes": 90632192,
+    "managedHeapEndBytes": 90632192,
+    "managedAllocatedBytes": 90632192,
+    "managedAllocationIsThreadComplete": false,
+    "nativeContainerBytes": 4320,
+    "leaseBytes": 4320,
+    "retainedEventBytes": 0,
+    "retainedEventCount": 0,
+    "cacheBytes": 0,
+    "cacheEntries": 0,
+    "quarantineBytes": 0,
+    "quarantineEntries": 0,
+    "liveLeases": 9,
+    "outstandingCallbacks": 0
+  },
+  "counters": {},
+  "samples": [
+    {
+      "ordinal": 1,
+      "phase": "Step",
+      "microseconds": 6114,
+      "counters": "0"
+    },
+    {
+      "ordinal": 2,
+      "phase": "Step",
+      "microseconds": 22543,
+      "counters": "0"
+    },
+    {
+      "ordinal": 3,
+      "phase": "Step",
+      "microseconds": 6108,
+      "counters": "0"
+    },
+    {
+      "ordinal": 4,
+      "phase": "Step",
+      "microseconds": 6091,
+      "counters": "0"
+    },
+    {
+      "ordinal": 5,
+      "phase": "Step",
+      "microseconds": 6103,
+      "counters": "0"
+    },
+    {
+      "ordinal": 6,
+      "phase": "Step",
+      "microseconds": 7020,
+      "counters": "0"
+    },
+    {
+      "ordinal": 7,
+      "phase": "Step",
+      "microseconds": 13484,
+      "counters": "0"
+    },
+    {
+      "ordinal": 8,
+      "phase": "Step",
+      "microseconds": 13058,
+      "counters": "0"
+    },
+    {
+      "ordinal": 9,
+      "phase": "Step",
+      "microseconds": 13991,
+      "counters": "0"
+    },
+    {
+      "ordinal": 10,
+      "phase": "Step",
+      "microseconds": 6091,
+      "counters": "0"
+    }
+  ]
+}

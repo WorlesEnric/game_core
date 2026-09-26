@@ -169,6 +169,11 @@ namespace GameCore.Validation.ProbeHost
                     CatalogCoverageProbe.Run(report);
                     report.CompletePositive();
                 }
+                else if (arguments.Benchmark)
+                {
+                    ProbeBenchmark.Run(report);
+                    report.CompletePositive();
+                }
                 else
                 {
                     RunAotRootsProbe(report);
@@ -297,6 +302,11 @@ namespace GameCore.Validation.ProbeHost
             if (arguments.CatalogCoverage)
             {
                 return Named("CatalogCoverage", "GC-025");
+            }
+
+            if (arguments.Benchmark)
+            {
+                return Named("Benchmark", "GC-026");
             }
 
             return new ProbeReport(

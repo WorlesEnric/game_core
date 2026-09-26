@@ -1,0 +1,441 @@
+The selected window backend is (null) 
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+Initialize engine version: 6000.0.75f1 (26349cd2a5c8)
+[Subsystems] Discovering subsystems at path /home/worlesenric/wkspace/gc-wt/gc-026/unity/GameCore.Validation/Builds/Linux64/GameCoreProbe_Data/UnitySubsystems
+Forcing GfxDevice: Null
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+NullGfxDevice:
+    Version:  NULL 1.0 [1.0]
+    Renderer: Null Device
+    Vendor:   Unity Technologies
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+UnloadTime: 0.128679 ms
+[GC026-bench] run 1 begin; workloads=11; intervalSeconds=30
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:RunBegin(Int32)
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 generating fixture (scopes=1000; targets=10000)
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:Note(String)
+GameCore.Validation.ProbeHost.Executor:PrepareFixture()
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 deriving fixture baseline (the first derivation)
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:Note(String)
+GameCore.Validation.ProbeHost.Executor:PrepareFixture()
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 workload 1/11 idle-command-world begin elapsed=0.7s
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:BeginWorkload(String, Int32, Int32)
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 workload 1/11 idle-command-world warmup elapsed=30.7s
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:Tick(String, Int32, Int32)
+GameCore.Validation.ProbeHost.Executor:WarmUpSteady(Func`1, Int32&)
+GameCore.Validation.ProbeHost.Executor:RunIdleCommandWorld(BenchmarkRunDocument)
+GameCore.Validation.ProbeHost.Executor:RunWorkload(BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 workload 1/11 idle-command-world window elapsed=60.7s
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:Tick(String, Int32, Int32)
+GameCore.Validation.ProbeHost.Executor:RunIdleCommandWorld(BenchmarkRunDocument)
+GameCore.Validation.ProbeHost.Executor:RunWorkload(BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 workload 1/11 idle-command-world window elapsed=90.7s
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:Tick(String, Int32, Int32)
+GameCore.Validation.ProbeHost.Executor:RunIdleCommandWorld(BenchmarkRunDocument)
+GameCore.Validation.ProbeHost.Executor:RunWorkload(BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 workload 1/11 idle-command-world window elapsed=120.7s
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:Tick(String, Int32, Int32)
+GameCore.Validation.ProbeHost.Executor:RunIdleCommandWorld(BenchmarkRunDocument)
+GameCore.Validation.ProbeHost.Executor:RunWorkload(BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 workload 1/11 idle-command-world window elapsed=150.7s
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:Tick(String, Int32, Int32)
+GameCore.Validation.ProbeHost.Executor:RunIdleCommandWorld(BenchmarkRunDocument)
+GameCore.Validation.ProbeHost.Executor:RunWorkload(BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 workload 1/11 idle-command-world done; observations=4; documents=1
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:EndWorkload(Int32, Int32)
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 workload 2/11 steady-unchanged-10000-steps begin elapsed=155.7s
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:BeginWorkload(String, Int32, Int32)
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 workload 2/11 steady-unchanged-10000-steps warmup elapsed=185.7s
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:Tick(String, Int32, Int32)
+GameCore.Validation.ProbeHost.Executor:WarmUpSteady(Func`1, Int32&)
+GameCore.Validation.ProbeHost.Executor:RunSteadyUnchanged(BenchmarkRunDocument)
+GameCore.Validation.ProbeHost.Executor:RunWorkload(BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 workload 2/11 steady-unchanged-10000-steps done; observations=5; documents=2
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:EndWorkload(Int32, Int32)
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 workload 3/11 steady-execution-10000-targets begin elapsed=185.8s
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:BeginWorkload(String, Int32, Int32)
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 workload 3/11 steady-execution-10000-targets warmup elapsed=215.8s
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:Tick(String, Int32, Int32)
+GameCore.Validation.ProbeHost.Executor:WarmUpSteady(Func`1, Int32&)
+GameCore.Validation.ProbeHost.Executor:RunSteadyExecution(BenchmarkRunDocument)
+GameCore.Validation.ProbeHost.Executor:RunWorkload(BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 workload 3/11 steady-execution-10000-targets window elapsed=245.8s
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:Tick(String, Int32, Int32)
+GameCore.Validation.ProbeHost.Executor:RunSteadyExecution(BenchmarkRunDocument)
+GameCore.Validation.ProbeHost.Executor:RunWorkload(BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 workload 3/11 steady-execution-10000-targets window elapsed=275.8s
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:Tick(String, Int32, Int32)
+GameCore.Validation.ProbeHost.Executor:RunSteadyExecution(BenchmarkRunDocument)
+GameCore.Validation.ProbeHost.Executor:RunWorkload(BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 workload 3/11 steady-execution-10000-targets window elapsed=305.8s
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:Tick(String, Int32, Int32)
+GameCore.Validation.ProbeHost.Executor:RunSteadyExecution(BenchmarkRunDocument)
+GameCore.Validation.ProbeHost.Executor:RunWorkload(BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 workload 3/11 steady-execution-10000-targets window elapsed=335.8s
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:Tick(String, Int32, Int32)
+GameCore.Validation.ProbeHost.Executor:RunSteadyExecution(BenchmarkRunDocument)
+GameCore.Validation.ProbeHost.Executor:RunWorkload(BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 workload 3/11 steady-execution-10000-targets done; observations=6; documents=3
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:EndWorkload(Int32, Int32)
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 workload 4/11 update-size-1 begin elapsed=335.9s
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:BeginWorkload(String, Int32, Int32)
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 workload 4/11 update-size-1 warmup 36/2000 elapsed=366.7s
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:Tick(String, Int32, Int32)
+GameCore.Validation.ProbeHost.Executor:WarmUpChange(BenchmarkRunDocument, Int32, Boolean&, Func`3)
+GameCore.Validation.ProbeHost.Executor:RunUpdateSize(BenchmarkRunDocument, Int32, BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWorkload(BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 workload 4/11 update-size-1 repetitions 34/1000 elapsed=397.3s
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:Tick(String, Int32, Int32)
+GameCore.Validation.ProbeHost.Executor:RunUpdateSize(BenchmarkRunDocument, Int32, BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWorkload(BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 workload 4/11 update-size-1 repetitions 69/1000 elapsed=428.0s
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:Tick(String, Int32, Int32)
+GameCore.Validation.ProbeHost.Executor:RunUpdateSize(BenchmarkRunDocument, Int32, BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWorkload(BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 workload 4/11 update-size-1 repetitions 104/1000 elapsed=458.4s
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:Tick(String, Int32, Int32)
+GameCore.Validation.ProbeHost.Executor:RunUpdateSize(BenchmarkRunDocument, Int32, BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWorkload(BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 workload 4/11 update-size-1 repetitions 139/1000 elapsed=488.9s
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:Tick(String, Int32, Int32)
+GameCore.Validation.ProbeHost.Executor:RunUpdateSize(BenchmarkRunDocument, Int32, BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWorkload(BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 workload 4/11 update-size-1 repetitions 174/1000 elapsed=519.4s
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:Tick(String, Int32, Int32)
+GameCore.Validation.ProbeHost.Executor:RunUpdateSize(BenchmarkRunDocument, Int32, BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWorkload(BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 workload 4/11 update-size-1 repetitions 209/1000 elapsed=549.9s
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:Tick(String, Int32, Int32)
+GameCore.Validation.ProbeHost.Executor:RunUpdateSize(BenchmarkRunDocument, Int32, BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWorkload(BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 workload 4/11 update-size-1 still-repetitions 243/1000 elapsed=580.0s
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:Heartbeat(Object)
+System.Threading.ThreadPoolWorkQueue:Dispatch()
+
+[GC026-bench] run 1 workload 4/11 update-size-1 repetitions 279/1000 elapsed=610.8s
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:Tick(String, Int32, Int32)
+GameCore.Validation.ProbeHost.Executor:RunUpdateSize(BenchmarkRunDocument, Int32, BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWorkload(BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 workload 4/11 update-size-1 repetitions 314/1000 elapsed=641.4s
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:Tick(String, Int32, Int32)
+GameCore.Validation.ProbeHost.Executor:RunUpdateSize(BenchmarkRunDocument, Int32, BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWorkload(BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 workload 4/11 update-size-1 repetitions 349/1000 elapsed=672.0s
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:Tick(String, Int32, Int32)
+GameCore.Validation.ProbeHost.Executor:RunUpdateSize(BenchmarkRunDocument, Int32, BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWorkload(BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 workload 4/11 update-size-1 repetitions 384/1000 elapsed=702.7s
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:Tick(String, Int32, Int32)
+GameCore.Validation.ProbeHost.Executor:RunUpdateSize(BenchmarkRunDocument, Int32, BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWorkload(BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 workload 4/11 update-size-1 repetitions 419/1000 elapsed=733.2s
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:Tick(String, Int32, Int32)
+GameCore.Validation.ProbeHost.Executor:RunUpdateSize(BenchmarkRunDocument, Int32, BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWorkload(BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 workload 4/11 update-size-1 repetitions 454/1000 elapsed=763.6s
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:Tick(String, Int32, Int32)
+GameCore.Validation.ProbeHost.Executor:RunUpdateSize(BenchmarkRunDocument, Int32, BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWorkload(BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 workload 4/11 update-size-1 repetitions 489/1000 elapsed=794.4s
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:Tick(String, Int32, Int32)
+GameCore.Validation.ProbeHost.Executor:RunUpdateSize(BenchmarkRunDocument, Int32, BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWorkload(BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 workload 4/11 update-size-1 repetitions 524/1000 elapsed=825.0s
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:Tick(String, Int32, Int32)
+GameCore.Validation.ProbeHost.Executor:RunUpdateSize(BenchmarkRunDocument, Int32, BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWorkload(BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 workload 4/11 update-size-1 repetitions 559/1000 elapsed=855.6s
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:Tick(String, Int32, Int32)
+GameCore.Validation.ProbeHost.Executor:RunUpdateSize(BenchmarkRunDocument, Int32, BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWorkload(BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 workload 4/11 update-size-1 repetitions 594/1000 elapsed=886.0s
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:Tick(String, Int32, Int32)
+GameCore.Validation.ProbeHost.Executor:RunUpdateSize(BenchmarkRunDocument, Int32, BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWorkload(BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+[GC026-bench] run 1 workload 4/11 update-size-1 repetitions 629/1000 elapsed=916.7s
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+GameCore.Validation.ProbeHost.ProgressReporter:Tick(String, Int32, Int32)
+GameCore.Validation.ProbeHost.Executor:RunUpdateSize(BenchmarkRunDocument, Int32, BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWorkload(BenchmarkWorkload)
+GameCore.Validation.ProbeHost.Executor:RunWithProgress()
+GameCore.Validation.ProbeHost.Executor:Run()
+GameCore.Validation.ProbeHost.ProbeBenchmark:Run(ProbeReport)
+GameCore.Validation.ProbeHost.ProbeRunner:Run(ProbeArguments)
+GameCore.Validation.ProbeHost.ProbeRunner:Bootstrap()
+
+Received signal SIGTERM (15) - code:0 errno:0 addr:0x2053eb
+Received signal SIGTERM (15) - code:0 errno:0 addr:0x3e8001fa26c

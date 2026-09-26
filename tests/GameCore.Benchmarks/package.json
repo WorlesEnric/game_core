@@ -1,0 +1,11 @@
+{
+  "name": "com.gamecore.benchmarks",
+  "version": "0.1.0",
+  "displayName": "GameCore Performance Benchmarks",
+  "description": "GC-026's reproducible performance method as executable data: the deterministic 1,000-scope/10,000-target composition fixture generator (TEST-023), the workload catalogue with its declared update sizes, mode switches, spawns, idle and unload workloads, nearest-rank percentile statistics, the raw per-sample record with its JSON and CSV writers, and the provisional budgets of docs/game-core/08 section 3 as comparable rows. Unity-free by design so the same generator, statistics and writers run in plain dotnet, in Unity EditMode and in the IL2CPP qualification player.",
+  "unity": "6000.0",
+  "dependencies": {
+    "com.gamecore.contracts": "0.1.0",
+    "com.gamecore.derivation": "0.1.0"
+  }
+}

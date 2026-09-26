@@ -1,0 +1,17 @@
+# gamecore.benchmark.samples.csv/1 workload=inactive-target-comparison run=1 seed=20260926 scopes=1000 targets=10000 warmupSeconds=1 durationSeconds=2 repetitions=5
+workload,phase,ordinal,microseconds,control-nodes-visited,candidates-matched,contributions-added,contributions-retracted,strata-evaluated,plan-prepared-bytes,apply-us,assembly-epoch,steps-advanced,service-string-lookups,stage-us,stage-samples,job-wait-us,job-wait-samples,structural-operations,request-high-water,request-overflow,stale-results,live-leases,outstanding-callbacks,retained-event-bytes,retained-event-count,quarantine-bytes,quarantine-entries,lease-bytes,cache-bytes,cache-entries,discarded-callbacks,apply-samples
+inactive-target-comparison,Warmup,0,213049,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+inactive-target-comparison,Warmup,1,255684,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+inactive-target-comparison,Warmup,2,283692,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+inactive-target-comparison,Warmup,3,331491,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+inactive-target-comparison,Prepare,0,342131,32493,7100,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+inactive-target-comparison,Prepare,1,391554,36403,8100,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+inactive-target-comparison,Prepare,2,422213,40313,9100,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+inactive-target-comparison,Prepare,3,464964,44223,10100,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+inactive-target-comparison,Prepare,4,502153,48133,11100,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+inactive-target-comparison,Warmup,0,12247135,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+inactive-target-comparison,Prepare,0,15027287,150027,41001,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+inactive-target-comparison,Prepare,1,18065896,181016,51001,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+inactive-target-comparison,Prepare,2,21074030,212005,61001,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+inactive-target-comparison,Prepare,3,24065576,242994,71001,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+inactive-target-comparison,Prepare,4,27545530,273983,81001,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0

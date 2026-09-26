@@ -1,0 +1,151 @@
+{
+  "artifact": "gamecore.benchmark.samples/1",
+  "workload": "reparent-100",
+  "kind": "Change",
+  "dimension": "reparent",
+  "runOrdinal": 1,
+  "seed": 20260926,
+  "scopes": 1000,
+  "targets": 10000,
+  "warmupSeconds": 1,
+  "durationSeconds": 2,
+  "repetitionsRequested": 5,
+  "repetitionsExecuted": 5,
+  "stepsAdvanced": 0,
+  "windowMicroseconds": 0,
+  "warmupMicroseconds": 1033979,
+  "passed": true,
+  "gates": [
+    {
+      "name": "reparent-moves-the-declared-subtree",
+      "passed": true,
+      "detail": "subtreeTargets=100; accepted=True"
+    }
+  ],
+  "notes": [
+    "warmupMoves=7; warmupComplete=true; lastMove=4",
+    "fixture=fixture{scopes=1000;targets=10000;groups=10;leaves=989;schemaFamilies=3;sharedProviders=11;uniqueProviders=99;baseInstalls=110;reparentScopeTargets=100;seededTagTargets=481;seed=20260926}",
+    "budget=referenceCandidates=1000000;referenceContributions=250000;referenceTargets=100000;configured=PropagationBudget(candidates<=3200000, contributions<=1100000, targets<=100000, bytes<=422400000, prepareMs<=2000, applyUs<=200000000)"
+  ],
+  "phases": [
+    {
+      "phase": "Warmup",
+      "count": 7,
+      "min": 133042,
+      "p50": 148966,
+      "p95": 161573,
+      "p99": 161573,
+      "max": 161573,
+      "mean": 147711.286,
+      "total": 1033979
+    },
+    {
+      "phase": "Prepare",
+      "count": 5,
+      "min": 80057,
+      "p50": 81309,
+      "p95": 95312,
+      "p99": 95312,
+      "max": 95312,
+      "mean": 84414.8,
+      "total": 422074
+    }
+  ],
+  "memory": {
+    "managedHeapStartBytes": 0,
+    "managedHeapEndBytes": 0,
+    "managedAllocatedBytes": 0,
+    "managedAllocationIsThreadComplete": false,
+    "nativeContainerBytes": 0,
+    "leaseBytes": 0,
+    "retainedEventBytes": 0,
+    "retainedEventCount": 0,
+    "cacheBytes": 0,
+    "cacheEntries": 0,
+    "quarantineBytes": 0,
+    "quarantineEntries": 0,
+    "liveLeases": 0,
+    "outstandingCallbacks": 0
+  },
+  "counters": {
+    "control-nodes-visited": 6240,
+    "candidates-matched": 1250,
+    "contributions-added": 180,
+    "contributions-retracted": 270,
+    "strata-evaluated": 5
+  },
+  "samples": [
+    {
+      "ordinal": 0,
+      "phase": "Warmup",
+      "microseconds": 154899,
+      "counters": "0"
+    },
+    {
+      "ordinal": 1,
+      "phase": "Warmup",
+      "microseconds": 133042,
+      "counters": "0"
+    },
+    {
+      "ordinal": 2,
+      "phase": "Warmup",
+      "microseconds": 161573,
+      "counters": "0"
+    },
+    {
+      "ordinal": 3,
+      "phase": "Warmup",
+      "microseconds": 148966,
+      "counters": "0"
+    },
+    {
+      "ordinal": 4,
+      "phase": "Warmup",
+      "microseconds": 133542,
+      "counters": "0"
+    },
+    {
+      "ordinal": 5,
+      "phase": "Warmup",
+      "microseconds": 155021,
+      "counters": "0"
+    },
+    {
+      "ordinal": 6,
+      "phase": "Warmup",
+      "microseconds": 146936,
+      "counters": "0"
+    },
+    {
+      "ordinal": 0,
+      "phase": "Prepare",
+      "microseconds": 80057,
+      "counters": "control-nodes-visited=1120;candidates-matched=210;contributions-retracted=90;strata-evaluated=1"
+    },
+    {
+      "ordinal": 1,
+      "phase": "Prepare",
+      "microseconds": 84859,
+      "counters": "control-nodes-visited=1440;candidates-matched=310;contributions-added=90;strata-evaluated=1"
+    },
+    {
+      "ordinal": 2,
+      "phase": "Prepare",
+      "microseconds": 95312,
+      "counters": "control-nodes-visited=1120;candidates-matched=210;contributions-retracted=90;strata-evaluated=1"
+    },
+    {
+      "ordinal": 3,
+      "phase": "Prepare",
+      "microseconds": 81309,
+      "counters": "control-nodes-visited=1440;candidates-matched=310;contributions-added=90;strata-evaluated=1"
+    },
+    {
+      "ordinal": 4,
+      "phase": "Prepare",
+      "microseconds": 80537,
+      "counters": "control-nodes-visited=1120;candidates-matched=210;contributions-retracted=90;strata-evaluated=1"
+    }
+  ]
+}

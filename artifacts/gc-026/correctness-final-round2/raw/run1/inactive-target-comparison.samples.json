@@ -1,0 +1,200 @@
+{
+  "artifact": "gamecore.benchmark.samples/1",
+  "workload": "inactive-target-comparison",
+  "kind": "Change",
+  "dimension": "inactive-targets",
+  "runOrdinal": 1,
+  "seed": 20260926,
+  "scopes": 1000,
+  "targets": 10000,
+  "warmupSeconds": 1,
+  "durationSeconds": 2,
+  "repetitionsRequested": 5,
+  "repetitionsExecuted": 5,
+  "stepsAdvanced": 0,
+  "windowMicroseconds": 0,
+  "warmupMicroseconds": 1960607,
+  "passed": true,
+  "gates": [
+    {
+      "name": "inactive-targets-do-not-add-a-per-change-scan",
+      "passed": true,
+      "detail": "smallTargets=1000; largeTargets=10000; smallUs=852782; largeUs=6246528; ratio=7.325"
+    }
+  ],
+  "notes": [
+    "scale1000warmupCycles=8; warmupComplete=true",
+    "scale10000warmupCycles=2; warmupComplete=true",
+    "smallScaleTargets=1000; largeScaleTargets=10000; smallUs=852782; largeUs=6246528; repetitionsPerScale=5",
+    "fixture=fixture{scopes=1000;targets=10000;groups=10;leaves=989;schemaFamilies=3;sharedProviders=11;uniqueProviders=99;baseInstalls=110;reparentScopeTargets=100;seededTagTargets=481;seed=20260926}",
+    "budget=referenceCandidates=1000000;referenceContributions=250000;referenceTargets=100000;configured=PropagationBudget(candidates<=3200000, contributions<=1100000, targets<=100000, bytes<=422400000, prepareMs<=2000, applyUs<=200000000)"
+  ],
+  "phases": [
+    {
+      "phase": "Warmup",
+      "count": 10,
+      "min": 98949,
+      "p50": 128608,
+      "p95": 1028592,
+      "p99": 1028592,
+      "max": 1028592,
+      "mean": 296638.1,
+      "total": 2966381
+    },
+    {
+      "phase": "Prepare",
+      "count": 10,
+      "min": 156915,
+      "p50": 182858,
+      "p95": 1422713,
+      "p99": 1422713,
+      "max": 1422713,
+      "mean": 709931,
+      "total": 7099310
+    }
+  ],
+  "memory": {
+    "managedHeapStartBytes": 0,
+    "managedHeapEndBytes": 0,
+    "managedAllocatedBytes": 0,
+    "managedAllocationIsThreadComplete": false,
+    "nativeContainerBytes": 0,
+    "leaseBytes": 0,
+    "retainedEventBytes": 0,
+    "retainedEventCount": 0,
+    "cacheBytes": 0,
+    "cacheEntries": 0,
+    "quarantineBytes": 0,
+    "quarantineEntries": 0,
+    "liveLeases": 0,
+    "outstandingCallbacks": 0
+  },
+  "counters": {
+    "control-nodes-visited": 1494735,
+    "candidates-matched": 420505,
+    "contributions-added": 10,
+    "strata-evaluated": 10
+  },
+  "samples": [
+    {
+      "ordinal": 0,
+      "phase": "Warmup",
+      "microseconds": 98949,
+      "counters": "0"
+    },
+    {
+      "ordinal": 1,
+      "phase": "Warmup",
+      "microseconds": 104461,
+      "counters": "0"
+    },
+    {
+      "ordinal": 2,
+      "phase": "Warmup",
+      "microseconds": 118702,
+      "counters": "0"
+    },
+    {
+      "ordinal": 3,
+      "phase": "Warmup",
+      "microseconds": 111365,
+      "counters": "0"
+    },
+    {
+      "ordinal": 4,
+      "phase": "Warmup",
+      "microseconds": 148234,
+      "counters": "0"
+    },
+    {
+      "ordinal": 5,
+      "phase": "Warmup",
+      "microseconds": 128608,
+      "counters": "0"
+    },
+    {
+      "ordinal": 6,
+      "phase": "Warmup",
+      "microseconds": 149248,
+      "counters": "0"
+    },
+    {
+      "ordinal": 7,
+      "phase": "Warmup",
+      "microseconds": 146207,
+      "counters": "0"
+    },
+    {
+      "ordinal": 0,
+      "phase": "Prepare",
+      "microseconds": 158940,
+      "counters": "control-nodes-visited=48133;candidates-matched=11100;contributions-added=1;strata-evaluated=1"
+    },
+    {
+      "ordinal": 1,
+      "phase": "Prepare",
+      "microseconds": 156915,
+      "counters": "control-nodes-visited=52043;candidates-matched=12100;contributions-added=1;strata-evaluated=1"
+    },
+    {
+      "ordinal": 2,
+      "phase": "Prepare",
+      "microseconds": 173567,
+      "counters": "control-nodes-visited=55953;candidates-matched=13100;contributions-added=1;strata-evaluated=1"
+    },
+    {
+      "ordinal": 3,
+      "phase": "Prepare",
+      "microseconds": 182858,
+      "counters": "control-nodes-visited=59863;candidates-matched=14100;contributions-added=1;strata-evaluated=1"
+    },
+    {
+      "ordinal": 4,
+      "phase": "Prepare",
+      "microseconds": 180502,
+      "counters": "control-nodes-visited=63773;candidates-matched=15100;contributions-added=1;strata-evaluated=1"
+    },
+    {
+      "ordinal": 0,
+      "phase": "Warmup",
+      "microseconds": 932015,
+      "counters": "0"
+    },
+    {
+      "ordinal": 1,
+      "phase": "Warmup",
+      "microseconds": 1028592,
+      "counters": "0"
+    },
+    {
+      "ordinal": 0,
+      "phase": "Prepare",
+      "microseconds": 1075293,
+      "counters": "control-nodes-visited=181016;candidates-matched=51001;contributions-added=1;strata-evaluated=1"
+    },
+    {
+      "ordinal": 1,
+      "phase": "Prepare",
+      "microseconds": 1183624,
+      "counters": "control-nodes-visited=212005;candidates-matched=61001;contributions-added=1;strata-evaluated=1"
+    },
+    {
+      "ordinal": 2,
+      "phase": "Prepare",
+      "microseconds": 1224257,
+      "counters": "control-nodes-visited=242994;candidates-matched=71001;contributions-added=1;strata-evaluated=1"
+    },
+    {
+      "ordinal": 3,
+      "phase": "Prepare",
+      "microseconds": 1340641,
+      "counters": "control-nodes-visited=273983;candidates-matched=81001;contributions-added=1;strata-evaluated=1"
+    },
+    {
+      "ordinal": 4,
+      "phase": "Prepare",
+      "microseconds": 1422713,
+      "counters": "control-nodes-visited=304972;candidates-matched=91001;contributions-added=1;strata-evaluated=1"
+    }
+  ]
+}

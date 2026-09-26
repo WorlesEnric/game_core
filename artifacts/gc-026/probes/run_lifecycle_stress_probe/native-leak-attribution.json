@@ -1,0 +1,65 @@
+{
+  "tool": "tools/attribute_native_leaks.py",
+  "task": "GC-022",
+  "logs": [
+    "/home/worlesenric/wkspace/gc-wt/gc-026/artifacts/gc-026/probes/run_lifecycle_stress_probe/player-lifecycle-stress.log",
+    "/home/worlesenric/wkspace/gc-wt/gc-026/artifacts/gc-026/probes/run_lifecycle_stress_probe/player-lifecycle-stress.log.run2",
+    "/home/worlesenric/wkspace/gc-wt/gc-026/artifacts/gc-026/probes/run_lifecycle_stress_probe/player-lifecycle-stress.log.run3",
+    "/home/worlesenric/wkspace/gc-wt/gc-026/artifacts/gc-026/probes/run_lifecycle_stress_probe/player-lifecycle-stress.log.run4",
+    "/home/worlesenric/wkspace/gc-wt/gc-026/artifacts/gc-026/probes/run_lifecycle_stress_probe/player-lifecycle-stress.log.run5"
+  ],
+  "leakHeaders": 0,
+  "headerAllocations": 0,
+  "blocks": 0,
+  "unattributed": 0,
+  "totals": {
+    "allocations": 0,
+    "blocks": 0
+  },
+  "classes": {
+    "gamecore": {
+      "blocks": 0,
+      "allocations": 0,
+      "bytes": null,
+      "signatures": []
+    },
+    "unity-engine": {
+      "blocks": 0,
+      "allocations": 0,
+      "bytes": null,
+      "signatures": []
+    },
+    "third-party": {
+      "blocks": 0,
+      "allocations": 0,
+      "bytes": null,
+      "signatures": []
+    }
+  },
+  "unattributedDetail": {
+    "blocks": 0,
+    "allocations": 0,
+    "bytes": null,
+    "hints": []
+  },
+  "policy": {
+    "path": "/home/worlesenric/wkspace/gc-wt/gc-026/artifacts/gc-022/leak/policy.md",
+    "bounds": [],
+    "problems": [],
+    "uncovered": [],
+    "matched": [],
+    "examples": [
+      {
+        "signature": "<normalised frame signature>",
+        "capacity": "<live allocations>",
+        "bytes": "<byte ceiling>",
+        "releasedBy": "<what releases it>",
+        "line": 48
+      }
+    ]
+  },
+  "baseline": null,
+  "verdict": "clean",
+  "exitCode": 0,
+  "notes": []
+}
