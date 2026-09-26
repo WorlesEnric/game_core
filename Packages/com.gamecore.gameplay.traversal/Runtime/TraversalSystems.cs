@@ -1083,7 +1083,6 @@ namespace GameCore.Gameplay.Traversal
             }
 
             module.RecordIntegration(integrated, externallyOwned, missingStorage, newStep: true);
-            module.SimulateExternalMotion(entityManager);
         }
     }
 
@@ -1120,6 +1119,8 @@ namespace GameCore.Gameplay.Traversal
 
             LogicalStepId step = module.Host.CurrentStep;
             AssemblyEpoch epoch = module.Host.CurrentEpoch;
+            // The local solver runs after input and integration, before downstream gameplay reads a pose.
+            module.SimulateExternalMotion(entityManager);
             IReadOnlyList<TraversalRunnerRef> runners = module.Runners();
             IReadOnlyList<TraversalVolumeRef> volumes = module.Volumes();
             for (int r = 0; r < runners.Count; r++)
