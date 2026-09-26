@@ -78,3 +78,16 @@ $ python3 tools/check_contract_surface_parity.py   # every snapshotted enum/valu
 $ python3 tools/unity/prepare_gc017_release_project.py && python3 tools/check_release_clone.py   # VERDICT: clone is clean (then deleted)
 $ bash -n tools/unity/run_recovery_probe.sh   # exit 0
 ```
+
+## 9. round 2 re-verification (traversal family)
+```
+$ python3 tools/check_game_core_csharp.py                       # checked 557 C# file(s) -> ok
+$ python3 tools/check_release_fault_free.py --no-build            # PASS (both source halves)
+$ python3 tools/unity/prepare_gc017_release_project.py && python3 tools/check_release_clone.py
+VERDICT: clone is clean
+$ bash -n tools/unity/run_recovery_probe.sh                       # exit 0
+# interface completeness: every IGc027Family/IGc018Family/IGc013Family member resolved against each
+#   adapter's full partial-file set -> narrative: none missing, cards: none missing, traversal: none missing
+# the harness step lists vs the C# table: narrative order True, traversal order True, blocks cover table True
+# observation table vs methods: 21 names, 21 methods, execution order identical
+```

@@ -352,6 +352,13 @@ and the audit, the fixes and the compiler-only residual risks are recorded in `a
 The audit is deliberately reported as a *reading* result: it is not a compile, and §3 of that file states exactly
 what only a compiler can settle.
 
+Round 2 (the traversal family) re-ran all of the above on the grown change set (557 C# files) plus three checks
+specific to it: the two declaration audits' outcomes, an interface-completeness pass resolving every
+`IGc027Family`/`IGc018Family`/`IGc013Family` member against each adapter's full set of partial files (all three
+answer every member; none missing, none declared twice), and an order check of the probe harness's step lists against
+the C# observation table and its two capability predicates (each family's list equals its `ExpectedNames` sequence
+exactly).
+
 Also run: the canonical-form check over both committed fixture documents (UTF-8, LF, one trailing newline, 2-space
 indentation, no trailing whitespace); a grep over `Packages`, `unity` and `tools` confirming no gate asserts
 `FaultBoundaryText.Count == 8`; and the two `dotnet` project files checked by hand against their sibling templates.
