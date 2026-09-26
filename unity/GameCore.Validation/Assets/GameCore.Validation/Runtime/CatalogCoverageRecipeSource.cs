@@ -136,17 +136,21 @@ namespace GameCore.Validation.ProbeHost
             // The runner role is the one the bake declares, so its definition, base layout and descriptor tag come
             // from the artifact. The display runner shares the baked base layout under its own course-declared
             // definition and tag, which is exactly how the runtime catalog declares it (P-015, P-024).
+            //
+            // The declaration order is the runtime catalog's own (runner, volume, display runner), because a recipe
+            // catalog's fingerprint walks its recipes in insertion order: parity here has to hold for the whole
+            // table, not only for the runner entry.
             return new SpawnRecipeCatalog(new List<SpawnRecipe>
             {
                 BakedRunnerRecipe(
                     runnerApplier,
                     BakedRunnerDefinition(),
                     CatalogCoverageBaked.RunnerDescriptorTagStableNames[0]),
+                TraversalCourseRecipes.Volume(volumeApplier),
                 BakedRunnerRecipe(
                     runnerApplier,
                     TraversalKeys.DisplayRunnerRecipe,
                     TraversalVocabulary.DisplayRunnerRecipe),
-                TraversalCourseRecipes.Volume(volumeApplier),
             });
         }
 
