@@ -1,6 +1,6 @@
 # Implementation guide
 
-This is the required V1 build plan for the [normative protocol](00-core-protocols.md), not a calendar roadmap. All 30 tasks are required. The early small scenes are risk-reducing vertical slices; they do not reduce final V1 scope. No implementation tasks or Unity suites are claimed complete by this documentation delivery.
+This is the required V1 build plan for the [normative protocol](00-core-protocols.md), not a calendar roadmap. All 30 tasks are required. The early small scenes are risk-reducing vertical slices; they do not reduce final V1 scope. **Implementation status: V1 complete (with owner-approved exception: TEST-023 timing deferred)** — every task and wave below is recorded with its report, evidence, revision and status in [`../../artifacts/release-readiness/evidence-manifest.json`](../../artifacts/release-readiness/evidence-manifest.json), and the decision itself in [10 §5](10-decisions-and-open-questions.md). TEST-023's full-duration **timing** qualification is deferred by project-owner decision (P-060 timing rows) and is never reported as Pass; its correctness gates passed. No other platform is qualified.
 
 GC-002 freezes a compiled test-only reference seam assembly and API snapshots for shared 05 contracts in W0. W1 peers compile against that surface with isolated collaborator fixtures while GC-003 supplies compatible production contracts; the W1 gate substitutes all real modules. A surface change reopens the W0 interface gate.
 

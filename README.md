@@ -6,8 +6,9 @@ contract and rules core so the kernel is testable in plain dotnet.
 - **Protocol:** 1.0
 - **Qualified target:** StandaloneLinux64 x86_64, IL2CPP, Release, High managed stripping, Burst enabled,
   headless. **No other platform is qualified.**
-- **Status:** implementation complete against the protocol's required V1 scope, with one owner-deferred
-  performance qualification recorded as deferred. See [scope](#scope) below.
+- **Status: V1 complete (with owner-approved exception: TEST-023 timing deferred).** The decision, its
+  evidence and its limits are in [`artifacts/release-readiness/`](artifacts/release-readiness/); see
+  [scope](#scope) below.
 
 ## Reproduce from a clean checkout
 
@@ -71,6 +72,10 @@ python3 tools/check_package_metadata.py --self-test    # the package/asmdef rule
 python3 tools/check_package_metadata.py                # audit every local package manifest
 python3 tools/emit_failure_codes.py --check            # the failure-code table is not stale
 python3 tools/check_game_core_csharp.py                # C# shape across the repository
+python3 tools/release_readiness/check_revision_consistency.py --self-test  # evidence revision/digest rules, falsified
+python3 tools/release_readiness/check_revision_consistency.py              # one revision for all release evidence?
+python3 tools/release_readiness/build_release_readiness.py --self-test     # the completion condition, falsified
+python3 tools/release_readiness/build_release_readiness.py --check         # manifest, status and docs agree
 ```
 
 ## Scope
@@ -93,6 +98,11 @@ diagnostic. The measured diagnostic numbers and the open whole-world prepare-cos
 whole-world change at 10,000 targets against a 100 ms target) are recorded in
 [`artifacts/performance/BUDGET_DECISIONS.md`](artifacts/performance/BUDGET_DECISIONS.md). **The deferred timing
 rows are never reported as Pass.** Details: [`docs/operator/deferred-scope.md`](docs/operator/deferred-scope.md).
+The machine-readable completion record is
+[`artifacts/release-readiness/evidence-manifest.json`](artifacts/release-readiness/evidence-manifest.json),
+the qualified profile and accepted budgets
+[`artifacts/release-readiness/supported-profile.md`](artifacts/release-readiness/supported-profile.md), and the
+outstanding items [`artifacts/release-readiness/outstanding-defects.md`](artifacts/release-readiness/outstanding-defects.md).
 
 ## Documentation authority
 

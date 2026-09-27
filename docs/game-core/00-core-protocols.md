@@ -1,6 +1,6 @@
 # Game Core Protocol 1.0
 
-Status: **normative design candidate**, 2026-09-25. Implementation and executable conformance are pending. This document replaces the old protocol; it does not preserve its combat stages or opt-in default. The final instruction in the supplied request establishes English as the documentation language.
+Status: **normative design, protocol 1.0**, 2026-09-25. Implementation status: **V1 complete (with owner-approved exception: TEST-023 timing deferred)** on the one qualified profile — see [10 §5](10-decisions-and-open-questions.md) and the [release-readiness record](../../artifacts/release-readiness/evidence-manifest.json). The exception is TEST-023's full-duration **timing** qualification (P-060 timing rows); it is `Deferred (owner decision)` and is never reported as Pass, while its correctness gates passed. This document replaces the old protocol; it does not preserve its combat stages or opt-in default. The final instruction in the supplied request establishes English as the documentation language.
 
 ## 1. Authority and interpretation
 
@@ -251,4 +251,4 @@ The operation identifiers are stable specification anchors, not required public 
 
 ## 11. Protocol review against game families
 
-The design-level [reference audit](07-reference-compositions.md) maps: card commands to demand-driven steps and one table owner; narrative facts to demand-driven state and chapter-derived bindings; real-time traversal to fixed steps and an optional motion adapter. None needs an ActorCoordinator, action phases, vitality, combat waves, physics phase, or animation phase in the kernel. A narrative-to-card reward crosses a typed command port, not a new universal effect bus. These are paper validations, not executed proof. P-059's executable gates remain mandatory before labeling this candidate stable.
+The design-level [reference audit](07-reference-compositions.md) maps: card commands to demand-driven steps and one table owner; narrative facts to demand-driven state and chapter-derived bindings; real-time traversal to fixed steps and an optional motion adapter. None needs an ActorCoordinator, action phases, vitality, combat waves, physics phase, or animation phase in the kernel. A narrative-to-card reward crosses a typed command port, not a new universal effect bus. The audit's mappings are design statements; the executable P-059 gates are the executed evidence, and they passed at the accepted revision (see [10 §5](10-decisions-and-open-questions.md) and the release-readiness record).

@@ -39,12 +39,20 @@ missing — it was deferred by the project owner on 2026-09-26.**
 
 | Item | Status |
 | --- | --- |
-| TEST-023 **timing** qualification (full-duration p95/p99 catalogues, 30 s warmups + five independent 120 s runs) | **Deferred (owner decision).** Not measured at full duration. **Never to be reported as Pass.** |
+| TEST-023 **timing** qualification (full-duration p95/p99 catalogues, 30 s warmups + five independent 120 s runs) | **Deferred by project-owner decision (2026-09-26).** Not measured at full duration. **Never to be reported as Pass.** |
 | TEST-023 **correctness** gates (zero stable control-tree scans, zero string service lookups, an idle world advancing zero steps, no duplicated authoritative state) | **Required, and passed** in a short diagnostic. |
+| Repeated player/probe runs | Capped at **two** (`PROBE_RUNS=2`) by the same decision. |
 
-The decision is recorded in [`artifacts/performance/BUDGET_DECISIONS.md`](../../artifacts/performance/BUDGET_DECISIONS.md),
-and `tools/check_budget_record.py` mechanically asserts that the record still says so — including refusing a
-section that claims a full-duration measurement while the deferral stands.
+The decision is recorded in [`artifacts/performance/BUDGET_DECISIONS.md`](../../artifacts/performance/BUDGET_DECISIONS.md)
+and in [`docs/game-core/10-decisions-and-open-questions.md`](../game-core/10-decisions-and-open-questions.md) §5;
+`tools/check_budget_record.py` mechanically asserts that the record still says so — including refusing a
+section that claims a full-duration measurement while the deferral stands — and
+`tools/release_readiness/build_release_readiness.py` re-derives the whole V1 status from the evidence and
+refuses to state it when this deferral is missing.
+
+The completion decision, the exact qualified profile and the accepted provisional budgets are in
+[`artifacts/release-readiness/supported-profile.md`](../../artifacts/release-readiness/supported-profile.md);
+the outstanding items are in [`artifacts/release-readiness/outstanding-defects.md`](../../artifacts/release-readiness/outstanding-defects.md).
 
 ### What the short diagnostic did measure
 
