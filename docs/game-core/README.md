@@ -2,7 +2,7 @@
 
 This set specifies a genre-neutral game runtime implemented in **C# and Unity Entities**, with **Automatic capability propagation as the default**. Mounting a plugin changes eligible descendants, including future spawns, through a validated assembly plan. Gameplay packages own their rules and state; the kernel owns composition and execution correctness.
 
-Status: complete design candidate, protocol **1.0**, researched 2026-09-25. This repository currently contains documentation, representative contract code, and a documentation validator. It does not contain the Game Core runtime or a validated Unity player. The baseline is an exact selected build target supported by official constraints; successful resolution/build/execution remains the first implementation gate. No team size, commercial platform list, or production load is assumed.
+Status: **V1 complete (with owner-approved exception: TEST-023 timing deferred)**, protocol **1.0**, on the one qualified profile. The implementation lives in `Packages/com.gamecore.*`, `unity/GameCore.Validation` and `dotnet/`; the completion decision, its evidence and its exception are recorded in [`../../artifacts/release-readiness/`](../../artifacts/release-readiness/) and [`10-decisions-and-open-questions.md`](10-decisions-and-open-questions.md) §5. TEST-023's full-duration **timing** qualification is deferred by project-owner decision and is never reported as Pass; its correctness gates passed in a short diagnostic. No other platform is qualified, and no team size, commercial platform list or production load is assumed.
 
 The supplied request first requested Chinese and finally required all documents in English. This set follows the final instruction while retaining API/type identifiers.
 

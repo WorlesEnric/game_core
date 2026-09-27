@@ -80,3 +80,46 @@ The Cordis annotated tag `v4.0.0-rc.10` resolved through the original Git reposi
 | [Toolchain Linux x64](https://docs.unity3d.com/6000.0/Documentation/Manual/com.unity.toolchain.linux-x86_64.html) | Linux IL2CPP toolchain/sysroot package `com.unity.toolchain.linux-x86_64`; version 2.0.11 is the version released for Unity 6000.0 (2.0.10 also available). The host C++ compiler comes from this package rather than from Xcode, which is why the macOS host/SDK basis no longer applies to the qualification profile. |
 
 Researched: official package metadata, exact Entities archive/source, Cordis tagged source, documented Unity toolchain and package constraints; the earlier Apple/Xcode research is retained only as the record of the replaced profile. Still requiring prototypes: actual UPM resolution; Unity compile/generator compatibility; Burst scheduling/failure boundaries; standalone IL2CPP/stripping; lifecycle/native cleanup; propagation scale; physics/animation adapter behavior. The [validation report](references/documentation-validation.md) records only checks actually performed on this documentation delivery.
+
+## 5. V1 completion decision (2026-09-26)
+
+The ranked unknowns in §2 and the deferred mechanisms in §3 are all resolved or explicitly out of
+scope for V1. This section records the one decision that completes V1, with its exception.
+
+| Decision | Choice and rationale | Consequence / requirement |
+|---|---|---|
+| ADR-017: V1 completion with one owner-approved exception | The project owner directs V1 to be declared **complete** on the one qualified profile, with TEST-023's full-duration timing qualification **deferred** rather than passed. Its correctness gates passed in a short diagnostic, the open prepare-cost miss is a known post-V1 performance issue, and holding the whole release for a timing catalogue would delay verified functionality behind an unproven target. | [P-058](00-core-protocols.md#p-058) profile claims stay inside the qualified profile below; [P-060](00-core-protocols.md#p-060) timing rows are reported `Deferred (owner decision)` and never `Pass`. |
+
+**Who.** Project owner (the person directing this build), deciding on the orchestrator's evidence.
+**When.** 2026-09-26, during the Wave 8 conformance review.
+**What.** V1 is complete with an explicit, owner-approved exception for the Linux x86_64 IL2CPP
+High-stripping headless profile:
+
+* TEST-023 **full-duration timing** qualification (five independent 120 s runs, p95/p99 catalogues)
+  is **Deferred by project-owner decision**; a short diagnostic (1 s warmup, 2 s steady windows, five
+  repetitions, 11 workloads, 19/19 correctness gates) is the accepted correctness evidence.
+* Repeated player/probe runs are capped at **two** (`PROBE_RUNS=2`).
+* The measured diagnostic numbers and the open whole-world/local prepare-cost miss at 10,000 targets
+  (~0.9–1.17 s against a 100 ms provisional target) are recorded as a **known open performance issue
+  for post-V1 work**. No provisional target was revised.
+
+**Why.** The correctness gates that this project actually depends on — zero stable control-tree scans,
+zero string service lookups, an idle world advancing zero steps, no duplicated authoritative state —
+were passed and are executable. The published timing targets are explicitly *provisional engineering
+targets*, not protocol requirements; the protocol's own quotas (P-022) are correctness bounds and are
+untouched. Deferring the timing qualification keeps the completion claim honest instead of either
+claiming an unmeasured pass or blocking verified functionality behind a number the owner declined to
+qualify now.
+
+**Status.** V1 status: V1 complete (with owner-approved exception: TEST-023 timing deferred).
+
+This is the exact sentence the release-readiness tool re-derives from the evidence and refuses to state
+when the evidence no longer supports it; it is written into
+[`../../artifacts/release-readiness/status.json`](../../artifacts/release-readiness/status.json), the
+evidence manifest, and [`../../artifacts/release-readiness/supported-profile.md`](../../artifacts/release-readiness/supported-profile.md).
+The deferral itself lives in
+[`../../artifacts/performance/BUDGET_DECISIONS.md`](../../artifacts/performance/BUDGET_DECISIONS.md),
+and the scope wording for operators in
+[`../operator/deferred-scope.md`](../operator/deferred-scope.md). The one qualified profile is
+recorded in `supported-profile.md` §1 and [`../operator/profile.md`](../operator/profile.md); every
+other platform remains unqualified, as §2 of the ranked unknowns already records.

@@ -1,0 +1,985 @@
+{
+  "artifact": "gamecore.release-readiness.status/1",
+  "generator": "tools/release_readiness/build_release_readiness.py",
+  "protocolVersion": "1.0",
+  "acceptedRevision": "3895d0c632c867ba87d783cd1a1654643dedfeb1",
+  "v1Status": "V1 complete (with owner-approved exception: TEST-023 timing deferred)",
+  "complete": true,
+  "ownerException": {
+    "row": "P-060",
+    "decision": "Deferred by project-owner decision",
+    "date": "2026-09-26",
+    "sentence": "TEST-023 full-duration timing qualification (P-060 timing rows) is Deferred by project-owner decision (2026-09-26); its correctness gates passed; the measured diagnostic numbers and the open whole-world/local prepare-cost miss at 10,000 targets are recorded as a known open performance issue for post-V1 work.",
+    "recordedIn": [
+      "artifacts/performance/BUDGET_DECISIONS.md",
+      "docs/game-core/10-decisions-and-open-questions.md",
+      "artifacts/release-readiness/supported-profile.md",
+      "docs/operator/deferred-scope.md"
+    ]
+  },
+  "revisionConsistency": {
+    "ok": true,
+    "checked": 143,
+    "declaredSkips": 4,
+    "failed": 0,
+    "findings": [
+      {
+        "group": "A: accepted revision",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/reproduction/environment.txt",
+        "detail": "declares 3895d0c632c867ba87d783cd1a1654643dedfeb1"
+      },
+      {
+        "group": "A: accepted revision",
+        "status": "ok",
+        "subject": "artifacts/conformance/compatibility.json",
+        "detail": "declares 3895d0c632c867ba87d783cd1a1654643dedfeb1"
+      },
+      {
+        "group": "A: accepted revision",
+        "status": "ok",
+        "subject": "artifacts/conformance/compatibility.md",
+        "detail": "declares 3895d0c632c867ba87d783cd1a1654643dedfeb1"
+      },
+      {
+        "group": "A: accepted revision",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/matrix/compatibility.json",
+        "detail": "declares 3895d0c632c867ba87d783cd1a1654643dedfeb1"
+      },
+      {
+        "group": "A: accepted revision",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/matrix/compatibility.md",
+        "detail": "declares 3895d0c632c867ba87d783cd1a1654643dedfeb1"
+      },
+      {
+        "group": "A: accepted revision",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/HANDOFF.md",
+        "detail": "declares 3895d0c632c867ba87d783cd1a1654643dedfeb1"
+      },
+      {
+        "group": "A: accepted revision",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/BUILD_REPORT.md",
+        "detail": "declares 3895d0c632c867ba87d783cd1a1654643dedfeb1"
+      },
+      {
+        "group": "A: accepted revision",
+        "status": "ok",
+        "subject": "agreement",
+        "detail": "all accepted records declare 3895d0c632c867ba87d783cd1a1654643dedfeb1"
+      },
+      {
+        "group": "A: accepted revision",
+        "status": "ok",
+        "subject": "3895d0c632c867ba87d783cd1a1654643dedfeb1",
+        "detail": "is an ancestor of HEAD"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/conformance/compatibility.json",
+        "detail": "records 4 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/matrix/compatibility.json",
+        "detail": "records 4 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/conformance/results/compatibility.json",
+        "detail": "records 4 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/baseline/build/qualification/catalog-ledger.json (the GC-025 baseline qualification build ledger)",
+        "detail": "records 4 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/baseline/build/release/catalog-ledger.json (the GC-025 baseline release build ledger)",
+        "detail": "records 4 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/baseline/catalog-reachability.json (the committed catalog reachability manifest)",
+        "detail": "records 4 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/matrix/toolchain/probe-cards.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/matrix/toolchain/probe-catalog-coverage.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/matrix/toolchain/probe-conformance.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/matrix/toolchain/probe-gc013.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/matrix/toolchain/probe-gc017-faults.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/matrix/toolchain/probe-gc018.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/matrix/toolchain/probe-gc019.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/matrix/toolchain/probe-gc021.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/matrix/toolchain/probe-gc027.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/matrix/toolchain/probe-lifecycle-stress.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/matrix/toolchain/probe-narrative.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/matrix/toolchain/probe-negative.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/matrix/toolchain/probe-recovery-smoke.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/matrix/toolchain/probe-replay.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/matrix/toolchain/probe-result.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/matrix/toolchain/probe-traversal.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/matrix/toolchain/probe-w1-gate.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/matrix/toolchain/probe-w2-gate.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/matrix/toolchain/probe-w3-gate.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/matrix/toolchain/probe-w4-gate.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/matrix/toolchain/probe-w4-profile.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/matrix/toolchain/probe-w5-gate.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/matrix/toolchain/probe-w6-gate.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/matrix/toolchain/probe-w7-gate.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/matrix/toolchain/probe-world-dispatch.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/matrix/release/probe-catalog-coverage-release.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/matrix/release/probe-recovery-smoke.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w7-gate/toolchain/probe-cards.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w7-gate/toolchain/probe-catalog-coverage.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w7-gate/toolchain/probe-conformance.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w7-gate/toolchain/probe-gc013.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w7-gate/toolchain/probe-gc017-faults.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w7-gate/toolchain/probe-gc018.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w7-gate/toolchain/probe-gc019.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w7-gate/toolchain/probe-gc021.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w7-gate/toolchain/probe-gc027.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w7-gate/toolchain/probe-lifecycle-stress.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w7-gate/toolchain/probe-narrative.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w7-gate/toolchain/probe-negative.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w7-gate/toolchain/probe-replay.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w7-gate/toolchain/probe-result.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w7-gate/toolchain/probe-traversal.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w7-gate/toolchain/probe-w1-gate.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w7-gate/toolchain/probe-w2-gate.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w7-gate/toolchain/probe-w3-gate.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w7-gate/toolchain/probe-w4-gate.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w7-gate/toolchain/probe-w4-profile.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w7-gate/toolchain/probe-w5-gate.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w7-gate/toolchain/probe-w6-gate.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w7-gate/toolchain/probe-w7-gate.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w7-gate/toolchain/probe-world-dispatch.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w7-gate/release/probe-cards.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w7-gate/release/probe-catalog-coverage-release.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w7-gate/release/probe-gc018.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w7-gate/release/probe-gc019.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w7-gate/release/probe-narrative.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w7-gate/release/probe-recovery-smoke.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w7-gate/release/probe-traversal.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/w7-gate/release/probe-world-dispatch.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/reproducibility/final-clone/probe/probe-cards.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/reproducibility/final-clone/probe/probe-narrative.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/reproducibility/final-clone/probe/probe-traversal.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/reproducibility/final-clone/release/probe-cards.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/reproducibility/final-clone/release/probe-narrative.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/reproducibility/final-clone/release/probe-traversal.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/conformance/results/toolchain/probe-cards.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/conformance/results/toolchain/probe-catalog-coverage.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/conformance/results/toolchain/probe-conformance.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/conformance/results/toolchain/probe-gc013.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/conformance/results/toolchain/probe-gc017-faults.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/conformance/results/toolchain/probe-gc018.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/conformance/results/toolchain/probe-gc019.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/conformance/results/toolchain/probe-gc021.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/conformance/results/toolchain/probe-gc027.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/conformance/results/toolchain/probe-lifecycle-stress.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/conformance/results/toolchain/probe-narrative.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/conformance/results/toolchain/probe-negative.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/conformance/results/toolchain/probe-recovery-smoke.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/conformance/results/toolchain/probe-replay.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/conformance/results/toolchain/probe-result.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/conformance/results/toolchain/probe-traversal.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/conformance/results/toolchain/probe-w1-gate.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/conformance/results/toolchain/probe-w2-gate.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/conformance/results/toolchain/probe-w3-gate.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/conformance/results/toolchain/probe-w4-gate.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/conformance/results/toolchain/probe-w4-profile.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/conformance/results/toolchain/probe-w5-gate.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/conformance/results/toolchain/probe-w6-gate.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/conformance/results/toolchain/probe-w7-gate.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/conformance/results/toolchain/probe-world-dispatch.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/conformance/results/release/probe-catalog-coverage-release.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/conformance/results/release/probe-recovery-smoke.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/baseline/build/probe/probe-catalog-coverage-release.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "artifacts/baseline/build/probe/probe-catalog-coverage.json",
+        "detail": "records 1 catalog(s), identical to the tree"
+      },
+      {
+        "group": "B: catalog identity",
+        "status": "ok",
+        "subject": "player documents",
+        "detail": "94 probe document(s) checked against the tree"
+      },
+      {
+        "group": "C: package identity",
+        "status": "ok",
+        "subject": "artifacts/conformance/compatibility.json / resolvedRegistryVersions",
+        "detail": "12 registry pins identical to the tree lock"
+      },
+      {
+        "group": "C: package identity",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/matrix/compatibility.json / resolvedRegistryVersions",
+        "detail": "12 registry pins identical to the tree lock"
+      },
+      {
+        "group": "C: package identity",
+        "status": "ok",
+        "subject": "artifacts/conformance/results/compatibility.json / resolvedRegistryVersions",
+        "detail": "12 registry pins identical to the tree lock"
+      },
+      {
+        "group": "C: package identity",
+        "status": "ok",
+        "subject": "local package manifests",
+        "detail": "17 package(s) at version 1.0.0"
+      },
+      {
+        "group": "C: package identity",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/matrix/toolchain/environment.txt / packages_manifest_sha256",
+        "detail": "equals the tree's manifest digest"
+      },
+      {
+        "group": "C: package identity",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/matrix/toolchain/environment.txt / catalog_sha256",
+        "detail": "equals the tree's catalog digest"
+      },
+      {
+        "group": "C: package identity",
+        "status": "skip",
+        "subject": "artifacts/w8-gate/matrix/release/environment.txt / packages_manifest_sha256",
+        "detail": "hashes a disposable clone's manifest; recorded value kept, not recomputed here"
+      },
+      {
+        "group": "C: package identity",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/matrix/release/environment.txt / catalog_sha256",
+        "detail": "equals the tree's catalog digest"
+      },
+      {
+        "group": "C: package identity",
+        "status": "ok",
+        "subject": "artifacts/conformance/results/toolchain/environment.txt / packages_manifest_sha256",
+        "detail": "equals the tree's manifest digest"
+      },
+      {
+        "group": "C: package identity",
+        "status": "ok",
+        "subject": "artifacts/conformance/results/toolchain/environment.txt / catalog_sha256",
+        "detail": "equals the tree's catalog digest"
+      },
+      {
+        "group": "C: package identity",
+        "status": "skip",
+        "subject": "artifacts/conformance/results/release/environment.txt / packages_manifest_sha256",
+        "detail": "hashes a disposable clone's manifest; recorded value kept, not recomputed here"
+      },
+      {
+        "group": "C: package identity",
+        "status": "ok",
+        "subject": "artifacts/conformance/results/release/environment.txt / catalog_sha256",
+        "detail": "equals the tree's catalog digest"
+      },
+      {
+        "group": "C: package identity",
+        "status": "ok",
+        "subject": "artifacts/w7-gate/toolchain/environment.txt / packages_manifest_sha256",
+        "detail": "equals the tree's manifest digest"
+      },
+      {
+        "group": "C: package identity",
+        "status": "ok",
+        "subject": "artifacts/w7-gate/toolchain/environment.txt / catalog_sha256",
+        "detail": "equals the tree's catalog digest"
+      },
+      {
+        "group": "C: package identity",
+        "status": "skip",
+        "subject": "artifacts/w7-gate/release/environment.txt / packages_manifest_sha256",
+        "detail": "hashes a disposable clone's manifest; recorded value kept, not recomputed here"
+      },
+      {
+        "group": "C: package identity",
+        "status": "ok",
+        "subject": "artifacts/w7-gate/release/environment.txt / catalog_sha256",
+        "detail": "equals the tree's catalog digest"
+      },
+      {
+        "group": "C: package identity",
+        "status": "ok",
+        "subject": "artifacts/baseline/build/qualification/environment.txt / packages_manifest_sha256",
+        "detail": "differs from the tree and is a declared superseded digest"
+      },
+      {
+        "group": "C: package identity",
+        "status": "ok",
+        "subject": "artifacts/baseline/build/qualification/environment.txt / catalog_sha256",
+        "detail": "equals the tree's catalog digest"
+      },
+      {
+        "group": "C: package identity",
+        "status": "skip",
+        "subject": "artifacts/baseline/build/release/environment.txt / packages_manifest_sha256",
+        "detail": "hashes a disposable clone's manifest; recorded value kept, not recomputed here"
+      },
+      {
+        "group": "C: package identity",
+        "status": "ok",
+        "subject": "artifacts/baseline/build/release/environment.txt / catalog_sha256",
+        "detail": "equals the tree's catalog digest"
+      },
+      {
+        "group": "C: package identity",
+        "status": "ok",
+        "subject": "artifacts/baseline/build/environment.txt / packages_manifest_sha256",
+        "detail": "differs from the tree and is a declared superseded digest"
+      },
+      {
+        "group": "C: package identity",
+        "status": "ok",
+        "subject": "artifacts/baseline/build/environment.txt / packages_lock_sha256",
+        "detail": "differs from the tree and is a declared superseded digest"
+      },
+      {
+        "group": "D: player identity",
+        "status": "ok",
+        "subject": "agreement",
+        "detail": "all 11 records declare aeaf13e291886fbd5a99b7dbd7c113b8ee13ed462a419a4d31a8ecbc3241ac70 (recorded-only; the player binary is a build product)"
+      },
+      {
+        "group": "E: supersession",
+        "status": "ok",
+        "subject": "artifacts/reproducibility/final-clone/environment.txt",
+        "detail": "7d1e305ad1bc26b9900c72b1d46091583f1bcc0a is content-identical to 3895d0c632c8 on catalogs and package files"
+      },
+      {
+        "group": "E: supersession",
+        "status": "ok",
+        "subject": "artifacts/gc-029/BUILD_REPORT.md",
+        "detail": "7d1e305 is content-identical to 3895d0c632c8 on the four catalogs and the package manifest"
+      },
+      {
+        "group": "E: supersession",
+        "status": "ok",
+        "subject": "artifacts/conformance/results/compatibility.json",
+        "detail": "119ae110f04f2a30900c1950c95f05e5b6629188 is content-identical to 3895d0c632c8 on the four catalogs and the package manifest"
+      },
+      {
+        "group": "E: supersession",
+        "status": "ok",
+        "subject": "artifacts/reproducibility/first-clone/environment.txt",
+        "detail": "declares historical revision 62539e236fb69353c51dc602d50e7d4d2121c047: an earlier clean clone of the GC-029 branch whose own run rewrote the committed package lock; it was corrected and re-run, is not cited by any accepted gate record, and must never be presented as gate evidence"
+      },
+      {
+        "group": "E: supersession",
+        "status": "ok",
+        "subject": "artifacts/baseline/ENVIRONMENT.md",
+        "detail": "declares historical revision aad9038ae33a7183071905326f6dcc3c695736ab: the GC-025 baseline player record, taken before GC-029 published package version 1.0.0; the manifest and lock digests it records therefore differ, while its catalog digests do not"
+      },
+      {
+        "group": "E: supersession",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/BUILD_REPORT.md",
+        "detail": "still records the rejection of artifacts/reproducibility/first-clone/environment.txt"
+      },
+      {
+        "group": "E: supersession",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/HANDOFF.md",
+        "detail": "still records the rejection of artifacts/reproducibility/first-clone/environment.txt"
+      },
+      {
+        "group": "F: stale claims",
+        "status": "ok",
+        "subject": "artifacts/conformance/evidence-index.json",
+        "detail": "derives from artifacts/w8-gate/matrix"
+      },
+      {
+        "group": "F: stale claims",
+        "status": "ok",
+        "subject": "artifacts/conformance/suite-status-w7-gate.json",
+        "detail": "derived from the Wave 7 gate corpus, not from a run at the accepted revision; it is recorded for history and is not accepted-revision evidence"
+      },
+      {
+        "group": "F: stale claims",
+        "status": "ok",
+        "subject": "artifacts/w8-gate/matrix/benchmark/BUDGET_DECISIONS.md",
+        "detail": "is the pre-decision template snapshot; the deferral is recorded in artifacts/performance/BUDGET_DECISIONS.md"
+      }
+    ]
+  },
+  "gateCondition": {
+    "acceptedTrees": [
+      "artifacts/w8-gate/matrix",
+      "artifacts/conformance/results"
+    ],
+    "allowedStatuses": [
+      "Pass",
+      "Deferred (owner decision)"
+    ],
+    "problems": []
+  },
+  "evidenceTrees": [
+    {
+      "root": "artifacts/w8-gate/matrix",
+      "label": "Wave 8 gate matrix tree (the gate's own run at the accepted revision)",
+      "summary": {
+        "requirements": 60,
+        "operations": 26,
+        "byStatus": {
+          "Pass": 85,
+          "Deferred": 1
+        },
+        "unresolvedReferenceCount": 0,
+        "nonPass": [
+          {
+            "id": "P-060",
+            "status": "Deferred",
+            "failed_clauses": [
+              "budget numbers are provisional until measured on a named machine"
+            ]
+          }
+        ],
+        "gc028AddedNotYetRecorded": 0
+      },
+      "families": {
+        "narrative": "Pass",
+        "cards": "Pass",
+        "traversal": "Pass"
+      },
+      "diagnostic": {
+        "counts": {
+          "documents": 11,
+          "runs": 1,
+          "workloads": 11,
+          "gates": 19,
+          "gatesFailed": 0,
+          "budgets": 10,
+          "missedTarget": 1,
+          "notMeasured": 0
+        },
+        "missedTarget": [
+          "budget.whole-world-preparation-p95"
+        ]
+      }
+    },
+    {
+      "root": "artifacts/conformance/results",
+      "label": "GC-028 canonical conformance tree (GC-028's own run; superseded revision, identical catalogs and resolved package graph)",
+      "summary": {
+        "requirements": 60,
+        "operations": 26,
+        "byStatus": {
+          "Pass": 85,
+          "Deferred": 1
+        },
+        "unresolvedReferenceCount": 0,
+        "nonPass": [
+          {
+            "id": "P-060",
+            "status": "Deferred",
+            "failed_clauses": [
+              "budget numbers are provisional until measured on a named machine"
+            ]
+          }
+        ],
+        "gc028AddedNotYetRecorded": 0
+      },
+      "families": {
+        "narrative": "Pass",
+        "cards": "Pass",
+        "traversal": "Pass"
+      },
+      "diagnostic": {
+        "counts": {
+          "documents": 11,
+          "runs": 1,
+          "workloads": 11,
+          "gates": 19,
+          "gatesFailed": 0,
+          "budgets": 10,
+          "missedTarget": 1,
+          "notMeasured": 0
+        },
+        "missedTarget": [
+          "budget.whole-world-preparation-p95"
+        ]
+      }
+    }
+  ]
+}
