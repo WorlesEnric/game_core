@@ -42,7 +42,7 @@ assumes why that is acceptable:
 | Record | Revision | Proof the tool performs |
 | --- | --- | --- |
 | `artifacts/reproducibility/final-clone/environment.txt`, `artifacts/gc-029/BUILD_REPORT.md` | `7d1e305` (GC-029's branch) | `git diff --name-only 7d1e305 3895d0c -- <packages + 4 catalog dirs>` is empty: catalogs, manifest and lock are byte-identical. The Wave 8 gate then re-ran the same `tools/reproduce.sh` at the accepted revision (54/54 steps) — that run is GC-029's evidence of record for the gate. |
-| `artifacts/conformance/results/compatibility.json` | `119ae11` (GC-028's branch) | The four catalogs are byte-identical and the lock's resolved `(source, version)` graph is identical; the **lock text** differs only in the local packages' nested dependency version strings (`0.1.0` → `1.0.0`), which GC-029's packaging change caused. The Wave 8 gate re-ran the whole matrix at the accepted revision. |
+| `artifacts/conformance/results/compatibility.json` | `119ae11` (GC-028's branch) | `git diff --name-only 119ae11 3895d0c` over the four catalog directories **and the package manifest** is empty, and the compatibility report's package block (derived from that revision's lock) equals the working tree's resolved registry/builtin/local versions. The **lock text** differs only in the local packages' nested dependency version strings (`0.1.0` → `1.0.0`), which GC-029's packaging change caused, and both differing digests are declared in `SUPERSEDED_DIGESTS` with that reason. The Wave 8 gate re-ran the whole matrix at the accepted revision. |
 
 Two more are declared **historical** with their reason: GC-029's *first* clone (`62539e2`), whose own run
 rewrote the committed lock and which no accepted record cites (the gate still records its rejection —
@@ -112,9 +112,9 @@ never reclassified required capabilities"* — is what §3 enforces.
 
 | File | Lines | Contents |
 | --- | ---: | --- |
-| `tools/release_readiness/readiness_data.py` | 745 | Evidence records with roles, supersession/rejection declarations, declared-superseded and unverifiable digest tables, the catalog/package identity sources, the per-gate pointer registry, the accepted evidence trees and the status/data literals. |
-| `tools/release_readiness/check_revision_consistency.py` | 899 | Groups A–F: accepted-revision agreement (with an ancestor check), catalog identity, package identity, player-digest agreement, supersession/rejection proofs (via `git diff`/`git cat-file`), and stale-claim refusal. `--self-test`, `--json`, `--quiet`. |
-| `tools/release_readiness/build_release_readiness.py` | 855 | The completion condition, the manifest/status generator, the documentation-status check, `--build`, `--check`, `--self-test`. |
+| `tools/release_readiness/readiness_data.py` | 776 | Evidence records with roles, supersession/rejection declarations, declared-superseded and unverifiable digest tables, the catalog/package identity sources, the per-gate pointer registry, the accepted evidence trees and the status/data literals. |
+| `tools/release_readiness/check_revision_consistency.py` | 929 | Groups A–F: accepted-revision agreement (with an ancestor check), catalog identity, package identity, player-digest agreement, supersession/rejection proofs (via `git diff`/`git cat-file`), and stale-claim refusal. `--self-test`, `--json`, `--quiet`. |
+| `tools/release_readiness/build_release_readiness.py` | 913 | The completion condition, the manifest/status generator, the documentation-status check, `--build`, `--check`, `--self-test`. |
 
 ### Artifacts
 
