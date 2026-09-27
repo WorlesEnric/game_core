@@ -492,7 +492,11 @@ def check_supersession(repo, report, accepted, git_runner):
                         "revision " + value + " is not present in this repository")
             continue
         full_identity = record.get("content_identity") == "catalogs_and_packages"
-        paths = list(rd.CATALOG_PACKAGE_PATHS) if full_identity else list(rd.CATALOG_PATHS)
+        if full_identity:
+            paths, described = list(rd.CATALOG_PACKAGE_PATHS), "catalogs and package files"
+        else:
+            paths = list(rd.CATALOG_PATHS) + [rd.MANIFEST_PATH]
+            described = "the four catalogs and the package manifest"
         code, output = git_runner(repo, ["diff", "--name-only", value, accepted, "--"] + paths)
         if code != 0:
             report.fail("E: supersession", label,
@@ -503,8 +507,7 @@ def check_supersession(repo, report, accepted, git_runner):
                         ", ".join(output.splitlines()[:6]))
         else:
             report.ok("E: supersession", label,
-                      value + " is content-identical to " + accepted[:12] + " on " +
-                      ("catalogs and package files" if full_identity else "the four catalogs"))
+                      value + " is content-identical to " + accepted[:12] + " on " + described)
     for record in rd.HISTORICAL_REVISION_RECORDS:
         value, problem = extract_revision(repo, record)
         if problem:
