@@ -138,7 +138,10 @@ sentence), `docs/game-core/09-implementation-guide.md` (line 3), `README.md` (st
 checks, scope pointer), `docs/operator/deferred-scope.md` (§3 table plus pointers).
 
 Nothing in `Packages/`, `dotnet/`, `unity/`, `tests/` or `tools/conformance/` was touched: **no
-production code changed, so no earlier wave's suite is invalidated by this task.**
+production code changed, so no earlier wave's suite is invalidated by this task.** The follow-up
+commits on this branch (`fix:` for the catalogs-tier supersession proof, `evidence:` for this note,
+and the tool change that verifies the profile's hand-written digests) are tool-and-record changes for
+the same reason: they touch `tools/release_readiness/**` and `artifacts/release-readiness/**` only.
 
 ## 6. Exact commands for the Linux build host
 
