@@ -29,7 +29,7 @@ form is [`docs/operator/profile.md`](../../docs/operator/profile.md).
 | Package lock digest (accepted revision) | `350f75841d38cf3db58cddcb9b6761ecc9cd87bc199f74e281f11d9e80ba0d2b` | recomputed from `unity/GameCore.Validation/Packages/packages-lock.json` by the consistency tool |
 | Package manifest digest | `19c09c9cc670b3ffa866bd600814b39766880a32571aeaa9afc23a7dba840ec8` | `artifacts/w8-gate/matrix/toolchain/environment.txt` |
 | Qualification player digest (launcher) | `aeaf13e291886fbd5a99b7dbd7c113b8ee13ed462a419a4d31a8ecbc3241ac70` | eleven evidence records agree; **recorded only** — the player is a build product and is not committed |
-| Committed catalogs | 4 (`ProbeCatalog`, `CardCatalog`, `CheckpointCatalog`, `TraversalCatalog`) | `artifacts/conformance/compatibility.json` |
+| Committed catalogs | 4 (`ProbeCatalog`, `CardCatalog`, `CheckpointCatalog`, `TraversalCatalog`); `ProbeCatalog.g.cs` digest `5298bbc853b35424c7b7e8300b7c39afe6e27ec493027a22a47336a5cb567625` | `artifacts/conformance/compatibility.json`; the digest is the file `tools/unity/build_probe.sh` hashes as `catalog_sha256` |
 
 The launcher digest is the same across the Wave 7, Wave 8 and baseline records because the IL2CPP
 launcher is a fixed shim; the AOT payload is `GameAssembly.so`, whose digest the baseline environment

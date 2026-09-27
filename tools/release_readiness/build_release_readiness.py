@@ -294,8 +294,13 @@ def completion_condition(repo):
 
 # --- documentation status -----------------------------------------------------------------------
 
-def check_docs_status(repo, complete, problems):
-    """A document may claim completion only when the evidence is complete, and then it must."""
+def check_docs_status(repo, complete, problems, digests=None):
+    """A document may claim completion only when the evidence is complete, and then it must.
+
+    The same pass verifies the digests `supported-profile.md` states by hand against the values the
+    builder recomputed, so a lock or manifest that changed without the profile following it fails
+    instead of leaving a stale literal in the release record.
+    """
     for source in rd.DOCS_STATUS_SOURCES:
         path = os.path.join(repo, source["path"])
         if not os.path.exists(path):
@@ -325,8 +330,15 @@ def check_docs_status(repo, complete, problems):
                 problems.append(source["path"] + ": does not record `" + rd.OWNER_EXCEPTION_PHRASE +
                                 "`")
 
-
-# --- manifest -----------------------------------------------------------------------------------
+    profile = os.path.join(repo, rd.SUPPORTED_PROFILE)
+    if os.path.exists(profile):
+        text = read_text(profile)
+        for label in sorted(digests or {}):
+            value = digests[label]
+            if value["sha256"] not in text:
+                problems.append(rd.SUPPORTED_PROFILE + ": does not state the accepted " + label +
+                                " digest `" + value["sha256"] + "` (recomputed from " +
+                                value["path"] + ")")
 
 def traceability(repo, problems):
     path = os.path.join(repo, rd.TRACEABILITY)
@@ -451,6 +463,33 @@ def gate_rows(repo, trees, tasks_by_id, problems):
 
 
 # --- rendering ----------------------------------------------------------------------------------
+def accepted_digests(repo):
+    """The digests of the accepted revision, recomputed from the working tree.
+
+    These are the values a profile record states by hand, so the builder both publishes them in the
+    manifest and requires `supported-profile.md` to state them: a lock or manifest that changes
+    without the profile following it is a failure, not a stale literal nobody notices.
+    """
+    digests = {}
+    for key, relative in (("manifest", rd.MANIFEST_PATH), ("lock", rd.LOCK_PATH),
+                          ("catalog", rd.ENVIRONMENT_CATALOG_FILE)):
+        path = os.path.join(repo, relative)
+        if os.path.exists(path):
+            digests[key] = {"path": relative, "sha256": rcc.sha256_file(path)}
+    for record in rd.DIGEST_RECORDS:
+        for key, kind in record["fields"]:
+            if kind != "player":
+                continue
+            fields = rcc.parse_kv(read_text(os.path.join(repo, record["path"])))
+            if fields.get(key):
+                digests["player"] = {"path": "recorded in " + record["path"],
+                                     "sha256": fields[key]}
+                break
+        if "player" in digests:
+            break
+    return digests
+
+
 
 def build_document(repo, git_runner=None):
     """Run every check and return (document, status_document, problems)."""
@@ -484,8 +523,10 @@ def build_document(repo, git_runner=None):
     if allowed:
         problems.append("gates outside the allowed statuses: " + ", ".join(allowed))
 
+    digests = accepted_digests(repo)
+
     complete = not problems
-    check_docs_status(repo, complete, problems)
+    check_docs_status(repo, complete, problems, digests)
     complete = not problems
 
     accepted_revision = None
@@ -540,6 +581,7 @@ def build_document(repo, git_runner=None):
         "v1Status": status["v1Status"],
         "complete": complete,
         "profile": rd.SUPPORTED_PROFILE,
+        "acceptedDigests": digests,
         "revisionConsistency": {
             "ok": consistency["ok"],
             "checked": consistency["checked"],
@@ -748,8 +790,15 @@ def _sandbox(root):
         else:
             body = "The owner decision records " + rd.OWNER_EXCEPTION_PHRASE + ".\n"
         write_text(os.path.join(root, source["path"]), body)
-    return root
 
+
+    # The sandbox profile must state the digests the builder recomputes, exactly as the real record
+    # does, or the digest check would be untested.
+    digests = accepted_digests(root)
+    with open(os.path.join(root, rd.SUPPORTED_PROFILE), "a", encoding="utf-8") as handle:
+        for label in sorted(digests):
+            handle.write("| " + label + " | `" + digests[label]["sha256"] + "` |\n")
+    return root
 
 def _sandbox_mutations(root):
     return (
@@ -770,6 +819,9 @@ def _sandbox_mutations(root):
             _set_index(root, {"id": "P-002", "status": "NotRun"}),
             write_text(os.path.join(root, "docs/operator/deferred-scope.md"),
                        rd.V1_STATUS_COMPLETE + " " + rd.OWNER_EXCEPTION_PHRASE + "\n"))),
+        ("the profile loses a recomputed digest", lambda: write_text(
+            os.path.join(root, rd.SUPPORTED_PROFILE),
+            "V1 status: " + rd.V1_STATUS_COMPLETE + ".\n" + rd.OWNER_EXCEPTION_PHRASE + "\n")),
     )
 
 

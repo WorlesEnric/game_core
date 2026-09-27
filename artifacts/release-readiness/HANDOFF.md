@@ -77,7 +77,10 @@ The status string is emitted only when, at the accepted revision:
 * every gate keeps the verdict sentence and revision declaration its report recorded, and every gate's
   derived status is `Pass` or `Deferred (owner decision)`;
 * every document that states the status states exactly this status — and **while the evidence is
-  incomplete, a document that still claims completion is itself a failure**.
+  incomplete, a document that still claims completion is itself a failure**;
+* `supported-profile.md` states the manifest, lock, catalog and player digests the builder recomputed
+  from the working tree, so a lock or manifest that changes without the profile following it fails
+  instead of leaving a stale literal in the release record.
 
 One corpus problem is declared rather than silently tolerated: GC-028's canonical tree indexes two
 replay `.trace.json` sidecars as unreadable probe results, because it was built before the sidecar
@@ -114,7 +117,7 @@ never reclassified required capabilities"* — is what §3 enforces.
 | --- | ---: | --- |
 | `tools/release_readiness/readiness_data.py` | 776 | Evidence records with roles, supersession/rejection declarations, declared-superseded and unverifiable digest tables, the catalog/package identity sources, the per-gate pointer registry, the accepted evidence trees and the status/data literals. |
 | `tools/release_readiness/check_revision_consistency.py` | 929 | Groups A–F: accepted-revision agreement (with an ancestor check), catalog identity, package identity, player-digest agreement, supersession/rejection proofs (via `git diff`/`git cat-file`), and stale-claim refusal. `--self-test`, `--json`, `--quiet`. |
-| `tools/release_readiness/build_release_readiness.py` | 913 | The completion condition, the manifest/status generator, the documentation-status check, `--build`, `--check`, `--self-test`. |
+| `tools/release_readiness/build_release_readiness.py` | 965 | The completion condition, the manifest/status generator, the documentation-status and profile-digest checks, `--build`, `--check`, `--self-test`. |
 
 ### Artifacts
 
@@ -233,7 +236,7 @@ deferred the timing qualification).
 ```
 python3 tools/release_readiness/check_revision_consistency.py --self-test   # 16 mutations detected
 python3 tools/release_readiness/check_revision_consistency.py               # 139 ok, 4 declared skips, 0 fail
-python3 tools/release_readiness/build_release_readiness.py --self-test      # complete corpus records the status; 9 mutations refused
+python3 tools/release_readiness/build_release_readiness.py --self-test      # complete corpus records the status; 10 mutations refused
 python3 tools/release_readiness/build_release_readiness.py                  # gate condition satisfied; manifest printed
 python3 tools/release_readiness/build_release_readiness.py --build
 python3 tools/release_readiness/build_release_readiness.py --check

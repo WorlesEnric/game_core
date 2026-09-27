@@ -6,6 +6,24 @@
   "v1Status": "V1 complete (with owner-approved exception: TEST-023 timing deferred)",
   "complete": true,
   "profile": "artifacts/release-readiness/supported-profile.md",
+  "acceptedDigests": {
+    "manifest": {
+      "path": "unity/GameCore.Validation/Packages/manifest.json",
+      "sha256": "19c09c9cc670b3ffa866bd600814b39766880a32571aeaa9afc23a7dba840ec8"
+    },
+    "lock": {
+      "path": "unity/GameCore.Validation/Packages/packages-lock.json",
+      "sha256": "350f75841d38cf3db58cddcb9b6761ecc9cd87bc199f74e281f11d9e80ba0d2b"
+    },
+    "catalog": {
+      "path": "unity/GameCore.Validation/Assets/GameCore.Validation/Generated/ProbeCatalog.g.cs",
+      "sha256": "5298bbc853b35424c7b7e8300b7c39afe6e27ec493027a22a47336a5cb567625"
+    },
+    "player": {
+      "path": "recorded in artifacts/w8-gate/matrix/toolchain/environment.txt",
+      "sha256": "aeaf13e291886fbd5a99b7dbd7c113b8ee13ed462a419a4d31a8ecbc3241ac70"
+    }
+  },
   "revisionConsistency": {
     "ok": true,
     "checked": 143,
