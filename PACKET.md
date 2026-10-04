@@ -74,6 +74,14 @@ is `Unloaded=0, Loading=1, Resident=2, Unloading=3`. Studio can bind by interfac
   RegionEntered/RegionLeft = (from region key, to region key, portal key), ResidencyChanged = (new, old),
   EntityPlaced = (x, y, z, yaw).
 * `GameApplicationRoot.Time` (`WorldTimeDriver`) and `GameApplicationRoot.TimeFrame` (`GameApplicationTimeFrame`).
+* **Root replacement after a restore (P1.2).** A `GameplayWorld` is bound to exactly one `GameApplicationRoot`;
+  nothing in P1.1 caches `GameApplication.Current`. `SaveService.Restore` composes a new root through
+  `GameApplicationRoot.TryCompose` (so the time frame and the plan's adapter frame rebind automatically:
+  `WithAdapterFrame(app => frame.BindRoot(app))`). A game that restores must, on `SaveService.RootChanged`, call
+  `GameplayWorld.Shutdown()` on the old world and `WorldBuilder.Attach(newRoot, plan, seedSlots: false)` (restored
+  slots are kept), then re-create views and call `Streamer.Observe`. Runtime-spawned targets are not re-registered in
+  the new `EntityModule` (they are not in the manifest); save/load is outside P1.1, so this path is documented, not
+  tested here.
 
 ### Compile
 
@@ -113,7 +121,53 @@ is `Unloaded=0, Loading=1, Resident=2, Unloading=3`. Studio can bind by interfac
 
 ## Verification
 
-RESULTS_PLACEHOLDER
+All runs are on the host (`myubuntu`, Unity 6000.0.75f1, .NET 8) at synced commit `68d17c2` (after the merge of
+main `52add45`), one Unity instance. Logs and NUnit XML are in `~/wkspace/gc-studio/p1.1/.unity-logs/`.
+
+| Command | Result | Duration |
+|---|---|---|
+| `studio/tools/unity-compile.sh p1.1 games/hollowmere --tests EditMode --filter 'Hollowmere\.P1_1\..*'` | PASS, 16/16, 0 skipped (`games_hollowmere-editmode-20261005T062518-a1.{log,xml}`) | 175 s |
+| `studio/tools/unity-compile.sh p1.1 games/hollowmere --tests PlayMode --filter 'Hollowmere\.P1_1\..*'` | PASS, 1/1 `ThreeRegionLoop.TravelsVillageMarshBelfryVillage` (`games_hollowmere-playmode-20261005T062956-a1.{log,xml}`) | 131 s (test 1.85 s) |
+| `studio/tools/dotnet-test.sh p1.1 dotnet/tests/GameCore.Rules.Gameplay.Tests` | PASS, 70/70 | 315 ms test time |
+| `studio/tools/dotnet-test.sh p1.1 dotnet/GameCore.sln` | PASS, 19 test assemblies, 0 failures | 146 s |
+| `python3 tools/check_package_metadata.py` | package metadata and asmdef-derived dependencies agree (29 packages) | - |
+| `python3 tools/check_game_core_csharp.py` | ok | - |
+| `python3 tools/validate_game_core_docs.py` | passed | - |
+
+EditMode (all Passed): AuthoringBakeTests - AuthorAndBake_ProducesTheThreeRegionWorld (4.56 s),
+BakeTwice_IsByteIdentical_AndVerifyPasses, OneFieldChange_ChangesOnlyThatDefinitionsRevision,
+VariantEdit_ChangesTheRevisionOfItsDefinition; AuthoringToolTests - AuthoredEntity_IdIsStableOnPrefabInstantiation_AndThePrefabCarriesNone,
+EntityTools_RoundTrip, WorldTools_RoundTrip, HollowmereScenes_PassTheValidators; GameplayWorldTests -
+Boot_SeedsEveryAuthoredTarget_AndEveryRegionStartsUnloaded, Streamer_BringsTheStartRegionResident_ThroughTheLegalResidencySteps,
+Travel_LoopsVillageMarshBelfryVillage_WithEventsResidencyAndPosePersistence, Travel_ToTheSameRegion_OrFromAnUnknownTraveller_IsRefused,
+SetResidency_FromAGameplayIssuer_IsRefused, EntityCommands_DespawnSpawnAndSetVariant_FollowTheRules,
+Spawner_PublishesANewRuntimeTarget_InItsRegionScope, TimeDriver_AdvancesClocksOnCommittedSteps_FeedsWakes_AndFollowsPause.
+
+Bake numbers (EditMode log): world = 3 regions, 3 portals, 7 definitions, 30 entities; catalog fingerprint
+`425508a971072415b8f57e43894083a7f75396c1a47db4691b1a9c1b0e6ec899`. Rebake 554 ms, Verify 287 ms (byte identity);
+author+bake from nothing 3215 ms (first run, bake 576 ms). After the full EditMode and PlayMode runs (which rebake
+the world) the host clone's `git status` was clean: the committed outputs are reproduced byte for byte.
+
+B-REGION (PlayMode, batchmode/nographics, so frame times are not representative of a player; one run, no perf
+benchmark):
+
+| Leg | Time | Frames |
+|---|---|---|
+| boot (Boot.unity load -> world Running, start region Resident) | 1474 ms | 35 |
+| Thornwick Village -> Blackmere Marsh | 7 ms | 6 |
+| Blackmere Marsh -> Drowned Belfry | 323 ms | 17 |
+| Drowned Belfry -> Thornwick Village | 5 ms | 20 |
+| loop total | 43 frames, 43 sanctioned pumps (one per frame); counter sanctioned=80, duplicate=0, bypass=0 | |
+
+How the content was produced: the world is authored by `HollowmereWorldAuthoring.AuthorAndBake()` (through the
+entity/world tools) inside the host EditMode test `AuthorAndBake_ProducesTheThreeRegionWorld`; the generated scenes,
+assets, bake outputs and the re-resolved `packages-lock.json` were committed in the host clone (`341a652`) and merged
+back; metas for the five files written without an AssetDatabase refresh were made with `tools/make_unity_metas.py`.
+The authoring is idempotent: with the world asset present it only rebakes.
+
+Host incident: the first Unity attempt hung in `PackageManager::Project::ResolvePackages` during the initial
+`Library` rebuild (log silent 605 s; main-thread backtrace captured with `sudo -n gdb`), was killed by the
+watchdog and the retry ran normally (docs/operator/editor-hang.md). Not a P1.1 fault; recorded for the hang log.
 
 ## Open
 
@@ -125,4 +179,7 @@ RESULTS_PLACEHOLDER
   which needs a Rigidbody on the traveller's view).
 * IL2CPP/managed stripping: `GameplayCatalog` calls the generated `BuildCatalog()` by reflection; a stripped player
   needs a link.xml entry (or a direct reference from game code) for the generated catalog class.
+* P1.2 integration: no test exercises `SaveService.Restore` with a gameplay world (see API "Root replacement").
+  The new world's streamer reads residency from the restored `world.residency` slots (unverified), but scenes loaded by the old
+  streamer stay loaded; a restore helper that unloads them (or adopts them) belongs to the save/load packet.
 * Animator bindings are data-only in the Hollowmere content (no Animator controllers authored).
