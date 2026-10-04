@@ -53,7 +53,9 @@ directory tree in `/outputs`. Write exactly:
 3. `/outputs/changeset.json` — a `gamecore.studio.changeset/1` change set with the same `id` as
    `request.md`, one `mechanism.propose` operation whose `args` reference both files
    (`{"package": {"artifact": "sha256:<package.tgz>"}, "proposal": {"artifact": "sha256:<proposal.json>"}}`),
-   `applyRequirement: "Compile"`, and both files in `artifacts[]` with their real SHA-256,
+   `applyRequirement: "Compile"`, `requirements: {"max": "Compile", "worldRebuild": false,
+   "compile": true, "build": false}`, `selection` copied from `selection.json`, and both files
+   in `artifacts[]` with their real SHA-256 (64 lowercase hex digits, no prefix),
    `name`, `mediaType` (`application/gzip`, `application/json`), `bytes`, and roles `package`
    and `proposal`.
 

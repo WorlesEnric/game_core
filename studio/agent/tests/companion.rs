@@ -144,7 +144,7 @@ fn changeset(id: &str, artifact: &[u8], claimed_sha: Option<&str>) -> Vec<u8> {
     serde_json::to_vec(&json!({
         "id": id, "schema": "gamecore.studio.changeset/1",
         "intent": {"text": "Give the ferryman a lantern", "origin": "agent"},
-        "selection": {"indexRevision": 12, "targets": []},
+        "selection": {"id": "sel_01J9ZQ00000000000000000001", "mode": "Edit", "indexRevision": 12, "targets": []},
         "operations": [
             {"opId": "op1", "tool": "inventory.grantStarting", "target": {"kind": "Entity", "authoringId": "e-ferryman"},
              "args": {"item": "item.lantern@2", "count": 1}, "dependsOn": [], "preconditions": "stamp", "applyRequirement": "Live"},
@@ -164,15 +164,23 @@ async fn request_task_candidate_with_verified_artifacts() {
     let running = companion(&node, dir.path(), |_| {}).await;
     let api = Api::new(&running, &node);
 
-    let (s, v) = api.post("/v1/requests", edit_request("cs_01abc")).await;
+    let (s, v) = api
+        .post(
+            "/v1/requests",
+            edit_request("cs_01J9ZQ00000000000000000001"),
+        )
+        .await;
     assert_eq!(s, 200, "{v}");
-    assert_eq!(v["requestId"], "cs_01abc");
+    assert_eq!(v["requestId"], "cs_01J9ZQ00000000000000000001");
     assert_eq!(v["state"], "running");
     let task = v["taskId"].as_str().unwrap().to_string();
     let t = node.tasks().into_iter().find(|t| t.id == task).unwrap();
-    assert_eq!(t.request, "cs_01abc");
+    assert_eq!(t.request, "cs_01J9ZQ00000000000000000001");
     assert_eq!(t.worker, "gc-designer");
-    assert_eq!(t.topic, "#agent/gamecore-studio/cs-cs_01abc");
+    assert_eq!(
+        t.topic,
+        "#agent/gamecore-studio/cs-cs_01j9zq00000000000000000001"
+    );
     let names: Vec<String> = t.inputs.iter().map(|r| node.file(r).name).collect();
     assert_eq!(
         names,
@@ -186,7 +194,9 @@ async fn request_task_candidate_with_verified_artifacts() {
     );
     let md = String::from_utf8(node.file(&t.inputs[0]).bytes).unwrap();
     assert!(
-        md.contains("`cs_01abc`") && md.contains("Index revision: `12`") && md.contains("ferryman"),
+        md.contains("`cs_01J9ZQ00000000000000000001`")
+            && md.contains("Index revision: `12`")
+            && md.contains("ferryman"),
         "{md}"
     );
     assert_eq!(node.file(&t.inputs[4]).bytes, b"\x89PNG frame");
@@ -198,23 +208,36 @@ async fn request_task_candidate_with_verified_artifacts() {
     node.complete(
         &task,
         &[
-            ("changeset.json", changeset("cs_01abc", &wav, None)),
+            (
+                "changeset.json",
+                changeset("cs_01J9ZQ00000000000000000001", &wav, None),
+            ),
             ("ferryman_line_07.wav", wav.clone()),
             ("notes.txt", b"scratch".to_vec()),
         ],
     );
-    let v = api.until_state("cs_01abc", "candidate").await;
+    let v = api
+        .until_state("cs_01J9ZQ00000000000000000001", "candidate")
+        .await;
     assert_eq!(v["taskStatus"], "done");
     assert_eq!(v["hasCandidate"], true);
 
-    let (s, c) = api.get("/v1/candidates/cs_01abc").await;
+    let (s, c) = api
+        .get("/v1/candidates/cs_01J9ZQ00000000000000000001")
+        .await;
     assert_eq!(s, 200, "{c}");
     assert_eq!(c["taskId"], task.as_str());
     assert_eq!(c["changeSet"]["operations"].as_array().unwrap().len(), 2);
     let art = &c["artifacts"][0];
     assert_eq!(art["sha256"], sha(&wav));
     assert_eq!(art["mediaType"], "audio/wav");
-    assert_eq!(c["diagnostics"][0]["code"], "output_unlisted");
+    assert_eq!(c["diagnostics"][0]["code"], "CandidateInvalid");
+    assert!(
+        c["diagnostics"][0]["message"]
+            .as_str()
+            .unwrap()
+            .starts_with("output_unlisted: ")
+    );
     let bytes = reqwest::Client::new()
         .get(format!("{}/v1/artifacts/{}", running.url, sha(&wav)))
         .header("x-etos-proxy-token", node.token())
@@ -255,7 +278,7 @@ async fn request_task_candidate_with_verified_artifacts() {
     node.until("gc_changeset candidate trace", |g| {
         g.traces.iter().any(|t| {
             t["kind"] == "gc_changeset"
-                && t["key"] == "cs_01abc"
+                && t["key"] == "cs_01J9ZQ00000000000000000001"
                 && t["values"]["state"] == "candidate"
         }) && g
             .traces
@@ -273,7 +296,12 @@ async fn digest_mismatch_is_reasked_once_with_parent() {
     let dir = tempfile::tempdir().unwrap();
     let running = companion(&node, dir.path(), |_| {}).await;
     let api = Api::new(&running, &node);
-    let (_, v) = api.post("/v1/requests", edit_request("cs_bad")).await;
+    let (_, v) = api
+        .post(
+            "/v1/requests",
+            edit_request("cs_01J9ZQ00000000000000000002"),
+        )
+        .await;
     let first = v["taskId"].as_str().unwrap().to_string();
     let wav = b"RIFFxxxxWAVE".to_vec();
     // The manifest claims bytes that were not delivered.
@@ -282,15 +310,18 @@ async fn digest_mismatch_is_reasked_once_with_parent() {
         &[
             (
                 "changeset.json",
-                changeset("cs_bad", &wav, Some(&sha(b"other"))),
+                changeset("cs_01J9ZQ00000000000000000002", &wav, Some(&sha(b"other"))),
             ),
             ("line.wav", wav.clone()),
         ],
     );
     node.until("re-ask task", |g| g.tasks.len() == 2).await;
     let second = node.tasks()[1].clone();
-    assert_eq!(second.request, "cs_bad.r1");
-    assert_eq!(second.topic, "#agent/gamecore-studio/cs-cs_bad-r1");
+    assert_eq!(second.request, "cs_01J9ZQ00000000000000000002.r1");
+    assert_eq!(
+        second.topic,
+        "#agent/gamecore-studio/cs-cs_01j9zq00000000000000000002-r1"
+    );
     let names: Vec<String> = second.inputs.iter().map(|r| node.file(r).name).collect();
     assert_eq!(names.first().map(String::as_str), Some("request.md"));
     assert_eq!(names.last().map(String::as_str), Some("diagnostics.json"));
@@ -299,27 +330,36 @@ async fn digest_mismatch_is_reasked_once_with_parent() {
     let diags: Value =
         serde_json::from_slice(&node.file(second.inputs.last().unwrap()).bytes).unwrap();
     assert_eq!(diags["parentTask"], first.as_str());
-    assert!(
-        diags["diagnostics"]
-            .as_array()
-            .unwrap()
-            .iter()
-            .any(|d| d["code"] == "artifact_digest_mismatch")
-    );
-    let v = api.until_state("cs_bad", "running").await;
+    assert!(diags["diagnostics"].as_array().unwrap().iter().any(|d| {
+        d["code"] == "CandidateInvalid"
+            && d["message"]
+                .as_str()
+                .unwrap()
+                .starts_with("artifact_digest_mismatch: ")
+    }));
+    let v = api
+        .until_state("cs_01J9ZQ00000000000000000002", "running")
+        .await;
     assert_eq!(v["attempt"], 1);
 
     // The re-ask delivers correctly.
     node.complete(
         &second.id,
         &[
-            ("changeset.json", changeset("cs_bad", &wav, None)),
+            (
+                "changeset.json",
+                changeset("cs_01J9ZQ00000000000000000002", &wav, None),
+            ),
             ("line.wav", wav.clone()),
         ],
     );
-    let v = api.until_state("cs_bad", "candidate").await;
+    let v = api
+        .until_state("cs_01J9ZQ00000000000000000002", "candidate")
+        .await;
     assert_eq!(v["tasks"], json!([first, second.id]));
-    let (_, c) = api.get("/v1/candidates/cs_bad").await;
+    let (_, c) = api
+        .get("/v1/candidates/cs_01J9ZQ00000000000000000002")
+        .await;
     assert_eq!(c["attempt"], 1);
     assert_eq!(node.calls("POST", "/tasks"), 2);
     running.shutdown().await;
@@ -331,7 +371,12 @@ async fn invalid_candidate_without_reask_is_terminal() {
     let dir = tempfile::tempdir().unwrap();
     let running = companion(&node, dir.path(), |c| c.reask_on_invalid = false).await;
     let api = Api::new(&running, &node);
-    let (_, v) = api.post("/v1/requests", edit_request("cs_noreask")).await;
+    let (_, v) = api
+        .post(
+            "/v1/requests",
+            edit_request("cs_01J9ZQ00000000000000000003"),
+        )
+        .await;
     let task = v["taskId"].as_str().unwrap().to_string();
     let wav = b"RIFFyyyyWAVE".to_vec();
     node.complete(
@@ -339,21 +384,29 @@ async fn invalid_candidate_without_reask_is_terminal() {
         &[
             (
                 "changeset.json",
-                changeset("cs_noreask", &wav, Some(&sha(b"x"))),
+                changeset("cs_01J9ZQ00000000000000000003", &wav, Some(&sha(b"x"))),
             ),
             ("line.wav", wav),
         ],
     );
-    let v = api.until_state("cs_noreask", "candidate_invalid").await;
+    let v = api
+        .until_state("cs_01J9ZQ00000000000000000003", "candidate_invalid")
+        .await;
     assert_eq!(v["outcome"]["code"], "candidate_invalid");
     assert!(
         v["outcome"]["diagnostics"]
             .as_array()
             .unwrap()
             .iter()
-            .any(|d| d["code"] == "artifact_digest_mismatch")
+            .any(|d| d["code"] == "CandidateInvalid"
+                && d["message"]
+                    .as_str()
+                    .unwrap()
+                    .starts_with("artifact_digest_mismatch: "))
     );
-    let (s, c) = api.get("/v1/candidates/cs_noreask").await;
+    let (s, c) = api
+        .get("/v1/candidates/cs_01J9ZQ00000000000000000003")
+        .await;
     assert_eq!((s, c["code"].as_str()), (404, Some("not_found")));
     assert_eq!(node.tasks().len(), 1);
     running.shutdown().await;
@@ -365,15 +418,43 @@ async fn cancel_reports_the_etos_status() {
     let dir = tempfile::tempdir().unwrap();
     let running = companion(&node, dir.path(), |_| {}).await;
     let api = Api::new(&running, &node);
-    let (_, v) = api.post("/v1/requests", edit_request("cs_cancel")).await;
+    let (_, v) = api
+        .post(
+            "/v1/requests",
+            edit_request("cs_01J9ZQ00000000000000000004"),
+        )
+        .await;
     let task = v["taskId"].as_str().unwrap().to_string();
-    let (s, v) = api.post("/v1/requests/cs_cancel/cancel", json!({})).await;
+    let (s, v) = api
+        .post(
+            "/v1/requests/cs_01J9ZQ00000000000000000004/cancel",
+            json!({}),
+        )
+        .await;
     assert_eq!(s, 200, "{v}");
     assert_eq!(v["state"], "cancelled");
     assert_eq!(v["taskStatus"], "cancelled");
     assert_eq!(node.calls("POST", &format!("/tasks/{task}/cancel")), 1);
+    // The node then closes the task with a final `failed` record: the request stays cancelled.
+    let topic = node.tasks()[0].topic.clone();
+    node.until("the closing record", |g| {
+        g.topics.get(&topic).is_some_and(|r| r.len() >= 2)
+    })
+    .await;
+    tokio::time::sleep(Duration::from_millis(400)).await;
+    let (_, v) = api.get("/v1/requests/cs_01J9ZQ00000000000000000004").await;
+    assert_eq!(
+        (v["state"].as_str(), v["taskStatus"].as_str()),
+        (Some("cancelled"), Some("cancelled")),
+        "{v}"
+    );
     // Cancelling again is a no-op answered from the ledger.
-    let (s, v) = api.post("/v1/requests/cs_cancel/cancel", json!({})).await;
+    let (s, v) = api
+        .post(
+            "/v1/requests/cs_01J9ZQ00000000000000000004/cancel",
+            json!({}),
+        )
+        .await;
     assert_eq!((s, v["state"].as_str()), (200, Some("cancelled")));
     assert_eq!(node.calls("POST", &format!("/tasks/{task}/cancel")), 1);
     let (s, v) = api.post("/v1/requests/nope/cancel", json!({})).await;
@@ -387,7 +468,12 @@ async fn restart_resumes_from_the_ledger_without_reopening() {
     let dir = tempfile::tempdir().unwrap();
     let a = companion(&node, dir.path(), |_| {}).await;
     let api = Api::new(&a, &node);
-    let (_, v) = api.post("/v1/requests", edit_request("cs_restart")).await;
+    let (_, v) = api
+        .post(
+            "/v1/requests",
+            edit_request("cs_01J9ZQ00000000000000000005"),
+        )
+        .await;
     let task = v["taskId"].as_str().unwrap().to_string();
     let topic = node.tasks()[0].topic.clone();
     // A progress record seen by the first process advances its cursor.
@@ -411,7 +497,10 @@ async fn restart_resumes_from_the_ledger_without_reopening() {
     node.complete(
         &task,
         &[
-            ("changeset.json", changeset("cs_restart", &wav, None)),
+            (
+                "changeset.json",
+                changeset("cs_01J9ZQ00000000000000000005", &wav, None),
+            ),
             ("l.wav", wav),
         ],
     );
@@ -419,7 +508,9 @@ async fn restart_resumes_from_the_ledger_without_reopening() {
 
     let b = companion(&node, dir.path(), |_| {}).await;
     let api = Api::new(&b, &node);
-    let v = api.until_state("cs_restart", "candidate").await;
+    let v = api
+        .until_state("cs_01J9ZQ00000000000000000005", "candidate")
+        .await;
     assert_eq!(v["taskId"], task.as_str());
     assert_eq!(
         node.calls("POST", "/tasks"),
@@ -436,7 +527,12 @@ async fn restart_resumes_from_the_ledger_without_reopening() {
         "resumed from the saved cursor, not from 0 ({resumed_from})"
     );
     // The same request again is answered from the ledger.
-    let (s, v) = api.post("/v1/requests", edit_request("cs_restart")).await;
+    let (s, v) = api
+        .post(
+            "/v1/requests",
+            edit_request("cs_01J9ZQ00000000000000000005"),
+        )
+        .await;
     assert_eq!((s, v["taskId"].as_str()), (200, Some(task.as_str())));
     assert_eq!(node.calls("POST", "/tasks"), 1);
     b.shutdown().await;
@@ -543,6 +639,25 @@ async fn voice_refusal_passes_through() {
     let (_, hello) = api.get("/v1/hello").await;
     assert_eq!(hello["providers"]["voice"], "not_configured");
     running.shutdown().await;
+
+    // Refused at admission with an HTTP answer (the SDK keeps only the status): the code is
+    // still the node's.
+    let dir = tempfile::tempdir().unwrap();
+    let running = companion(&node, dir.path(), |c| {
+        c.voice.provider = "http-refused".into()
+    })
+    .await;
+    let api = Api::new(&running, &node);
+    let mut ws = api.ws("/v1/voice").await;
+    let v = next_json(&mut ws).await;
+    assert_eq!(
+        (v["type"].as_str(), v["code"].as_str()),
+        (Some("error"), Some("not_configured")),
+        "{v}"
+    );
+    let v = next_json(&mut ws).await;
+    assert_eq!(v["type"], "closed");
+    running.shutdown().await;
 }
 
 #[tokio::test]
@@ -641,12 +756,22 @@ async fn requests_are_idempotent_and_conflicts_refused() {
     let dir = tempfile::tempdir().unwrap();
     let running = companion(&node, dir.path(), |_| {}).await;
     let api = Api::new(&running, &node);
-    let (s1, a) = api.post("/v1/requests", edit_request("cs_same")).await;
-    let (s2, b) = api.post("/v1/requests", edit_request("cs_same")).await;
+    let (s1, a) = api
+        .post(
+            "/v1/requests",
+            edit_request("cs_01J9ZQ00000000000000000006"),
+        )
+        .await;
+    let (s2, b) = api
+        .post(
+            "/v1/requests",
+            edit_request("cs_01J9ZQ00000000000000000006"),
+        )
+        .await;
     assert_eq!((s1, s2), (200, 200));
     assert_eq!(a["taskId"], b["taskId"]);
     assert_eq!(node.calls("POST", "/tasks"), 1);
-    let mut other = edit_request("cs_same");
+    let mut other = edit_request("cs_01J9ZQ00000000000000000006");
     other["intent"]["text"] = json!("something else");
     let (s, v) = api.post("/v1/requests", other).await;
     assert_eq!(
@@ -655,18 +780,18 @@ async fn requests_are_idempotent_and_conflicts_refused() {
         "{v}"
     );
     // A catalog revision the companion does not hold.
-    let mut stale = edit_request("cs_stale");
+    let mut stale = edit_request("cs_01J9ZQ00000000000000000007");
     stale["toolCatalogRevision"] = json!("cat-9");
     stale.as_object_mut().unwrap().remove("toolCatalog");
     let (s, v) = api.post("/v1/requests", stale).await;
     assert_eq!((s, v["code"].as_str()), (409, Some("stale_context")), "{v}");
     // A held revision needs no catalog.
-    let mut held = edit_request("cs_held");
+    let mut held = edit_request("cs_01J9ZQ00000000000000000008");
     held.as_object_mut().unwrap().remove("toolCatalog");
     let (s, v) = api.post("/v1/requests", held).await;
     assert_eq!(s, 200, "{v}");
     // An etos refusal passes through and the request is failed.
-    let mut refused = edit_request("cs_refused");
+    let mut refused = edit_request("cs_01J9ZQ00000000000000000009");
     refused["worker"] = json!("nobody");
     let (s, v) = api.post("/v1/requests", refused).await;
     assert_eq!(
@@ -689,7 +814,10 @@ async fn requests_are_idempotent_and_conflicts_refused() {
         .iter()
         .map(|r| r["requestId"].as_str().unwrap())
         .collect();
-    assert!(ids.contains(&"cs_same") && ids.contains(&"cs_held"));
+    assert!(
+        ids.contains(&"cs_01J9ZQ00000000000000000006")
+            && ids.contains(&"cs_01J9ZQ00000000000000000008")
+    );
     let (_, empty) = api
         .get(&format!("/v1/requests?after={}", list["next"]))
         .await;
@@ -703,11 +831,11 @@ async fn etos_task_refusal_passes_through() {
     let dir = tempfile::tempdir().unwrap();
     let running = companion(&node, dir.path(), |c| c.workers.push("nobody".into())).await;
     let api = Api::new(&running, &node);
-    let mut req = edit_request("cs_notyours");
+    let mut req = edit_request("cs_01J9ZQ00000000000000000010");
     req["worker"] = json!("nobody");
     let (s, v) = api.post("/v1/requests", req).await;
     assert_eq!((s, v["code"].as_str()), (403, Some("not_yours")), "{v}");
-    let (_, v) = api.get("/v1/requests/cs_notyours").await;
+    let (_, v) = api.get("/v1/requests/cs_01J9ZQ00000000000000000010").await;
     assert_eq!(v["state"], "failed");
     assert_eq!(v["outcome"]["code"], "not_yours");
     running.shutdown().await;
@@ -728,7 +856,7 @@ async fn ops_generate_stores_artifacts_and_passes_refusals() {
         .post(
             "/v1/ops/generate",
             json!({"op": "image", "spec": {"prompt": "a brass lantern", "size": "512x512"},
-                                          "max_cost_usd": 0.05, "changeSetId": "cs_ops"}),
+                                          "max_cost_usd": 0.05, "changeSetId": "cs_01J9ZQ00000000000000000011"}),
         )
         .await;
     assert_eq!(s, 200, "{v}");
@@ -755,7 +883,7 @@ async fn ops_generate_stores_artifacts_and_passes_refusals() {
     api.post(
         "/v1/ops/generate",
         json!({"op": "image", "spec": {"prompt": "a brass lantern", "size": "512x512"},
-                                         "max_cost_usd": 0.05, "changeSetId": "cs_ops"}),
+                                         "max_cost_usd": 0.05, "changeSetId": "cs_01J9ZQ00000000000000000011"}),
     )
     .await;
     let keys: Vec<Value> = node
@@ -890,7 +1018,7 @@ async fn stage_shell_runs_the_command_or_reports_stage_failed() {
     let (s, v) = api
         .post(
             "/v1/stage",
-            json!({"changeSetId": "cs_stage", "packageRef": "0".repeat(64)}),
+            json!({"changeSetId": "cs_01J9ZQ00000000000000000012", "packageRef": "0".repeat(64)}),
         )
         .await;
     assert_eq!((s, v["code"].as_str()), (503, Some("stage_failed")), "{v}");
@@ -933,7 +1061,7 @@ async fn stage_shell_runs_the_command_or_reports_stage_failed() {
     let (s, job) = api
         .post(
             "/v1/stage",
-            json!({"changeSetId": "cs_stage", "packageRef": format!("sha256:{h}")}),
+            json!({"changeSetId": "cs_01J9ZQ00000000000000000012", "packageRef": format!("sha256:{h}")}),
         )
         .await;
     assert_eq!(s, 202, "{job}");

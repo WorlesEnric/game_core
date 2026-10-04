@@ -414,17 +414,39 @@ async fn get_task(State(n): State<FakeNode>, Path(id): Path<String>) -> Response
     }
 }
 
+/// As the real node: the task is cancelled, and its controller then closes it with a final
+/// `failed` record ("This task was cancelled ...") on the origin topic.
 async fn cancel_task(State(n): State<FakeNode>, Path(id): Path<String>) -> Response {
-    let mut g = n.lock();
-    match g.tasks.iter_mut().find(|t| t.id == id) {
-        Some(t) => {
-            if !matches!(t.status.as_str(), "done" | "failed" | "cancelled") {
-                t.status = "cancelled".into();
+    let (info, close) = {
+        let mut g = n.lock();
+        match g.tasks.iter_mut().find(|t| t.id == id) {
+            Some(t) => {
+                let close = !matches!(t.status.as_str(), "done" | "failed" | "cancelled");
+                if close {
+                    t.status = "cancelled".into();
+                }
+                (
+                    task_info(t),
+                    close.then(|| (t.topic.clone(), format!("{}@fake", t.worker))),
+                )
             }
-            axum::Json(task_info(t)).into_response()
+            None => return refusal(403, "not_yours", "this agent did not open the task"),
         }
-        None => refusal(403, "not_yours", "this agent did not open the task"),
+    };
+    if let Some((topic, sender)) = close {
+        let n2 = n.clone();
+        tokio::spawn(async move {
+            tokio::time::sleep(Duration::from_millis(50)).await;
+            n2.post_record(
+                &topic,
+                &sender,
+                "This task was cancelled (cancelled by the owner); I stopped working on it.",
+                Some("failed"),
+                vec![],
+            );
+        });
     }
+    axum::Json(info).into_response()
 }
 
 async fn read_topic(
@@ -542,6 +564,14 @@ async fn realtime(
     ws: WebSocketUpgrade,
 ) -> Response {
     let provider = q.get("provider").cloned().unwrap_or_default();
+    if provider == "http-refused" {
+        // As etos does for an admission refusal: an HTTP answer instead of the upgrade.
+        return refusal(
+            503,
+            "not_configured",
+            "no realtime adapter is registered for this provider",
+        );
+    }
     ws.on_upgrade(move |socket| realtime_session(n, socket, provider))
 }
 

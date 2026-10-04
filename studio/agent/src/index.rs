@@ -571,6 +571,39 @@ mod tests {
         }
     }
 
+    /// Node `type` is the [Authorable] type id (03 §4, P0.3), e.g. `npc.definition`.
+    #[test]
+    fn authorable_type_ids_map_to_kinds() {
+        let kind = |r: Value, ty: &str| {
+            node_row(&node(json!({"ref": r, "type": ty, "name": "n"}))).map(|(k, _, _)| k)
+        };
+        let ent = json!({"kind": "Entity", "authoringId": "e1", "definition": "npc.ferryman@3"});
+        let def = |d: &str| json!({"kind": "Definition", "definition": d});
+        assert_eq!(kind(ent, "npc.definition"), Some("gc_entity"));
+        assert_eq!(
+            kind(def("npc.ferryman@3"), "npc.definition"),
+            Some("gc_definition")
+        );
+        assert_eq!(
+            kind(def("item.lantern@2"), "item.definition"),
+            Some("gc_definition")
+        );
+        assert_eq!(
+            kind(def("dlg.ferry@1"), "dialogue.graph"),
+            Some("gc_definition")
+        );
+        assert_eq!(
+            kind(def("dlg.ferry.n7@1"), "dialogue.node"),
+            Some("gc_dialogue_node")
+        );
+        assert_eq!(kind(def("q.ferry@1"), "quest.definition"), Some("gc_quest"));
+        assert_eq!(kind(def("r.toll@1"), "logic.rule"), Some("gc_rule"));
+        assert_eq!(
+            kind(json!({"kind": "SceneObject", "path": "/a"}), "scene.object"),
+            None
+        );
+    }
+
     #[test]
     fn nodes_map_to_rows() {
         let n = node(json!({

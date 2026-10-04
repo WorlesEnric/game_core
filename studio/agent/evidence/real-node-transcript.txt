@@ -1,0 +1,194 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.16s
+     Running tests/real_node.rs (target/debug/deps/real_node-8e6b1974efcb5d33)
+
+running 2 tests
+test real_node_end_to_end ... --- GET /v1/hello through the proxy -> 200
+{
+  "app": "gamecore-unity",
+  "capabilities": [
+    "requests",
+    "candidates",
+    "artifacts",
+    "index",
+    "ops",
+    "events",
+    "voice",
+    "stage"
+  ],
+  "connected": true,
+  "indexRevision": null,
+  "node": "studio",
+  "protocol": 1,
+  "providers": {
+    "3d": "not_configured",
+    "describe": "not_configured",
+    "image": "not_configured",
+    "tts": "not_configured",
+    "voice": "unknown"
+  },
+  "providersCheckedAt": 1791138601995,
+  "sdk": "1.0.0",
+  "service": "gamecore-studio",
+  "toolCatalogRevisions": [
+    "p05-cat-1"
+  ],
+  "version": "0.1.0",
+  "workers": [
+    "gc-designer",
+    "gc-mechanic"
+  ]
+}
+--- WS /v1/events?after=0 opened with a ticket (no Authorization header)
+--- POST /v1/requests cs_00000000000017911386019971 -> 200
+{
+  "changeSetId": "cs_00000000000017911386019971",
+  "request": {
+    "attempt": 0,
+    "changeSetId": "cs_00000000000017911386019971",
+    "createdAt": 1791138601997,
+    "hasCandidate": false,
+    "outcome": null,
+    "requestId": "cs_00000000000017911386019971",
+    "seq": 37,
+    "state": "running",
+    "taskId": "tc5de7cad48f8550b70e29762",
+    "taskStatus": "running",
+    "tasks": [
+      "tc5de7cad48f8550b70e29762"
+    ],
+    "topic": "#agent/gamecore-studio/cs-cs_00000000000017911386019971",
+    "updatedAt": 1791138602046,
+    "worker": "gc-designer"
+  },
+  "requestId": "cs_00000000000017911386019971",
+  "state": "running",
+  "taskId": "tc5de7cad48f8550b70e29762",
+  "taskStatus": "running"
+}
+--- same request again -> 200: taskId "tc5de7cad48f8550b70e29762" (first "tc5de7cad48f8550b70e29762")
+  [  0.0s] "running" attempt=0 task="tc5de7cad48f8550b70e29762" status="running"
+  [  6.1s] "running" attempt=1 task=null status=null
+  [  6.4s] "running" attempt=1 task="t8aaefe2dd095ab8ad8909434" status="running"
+  [ 12.3s] "candidate_invalid" attempt=1 task="t8aaefe2dd095ab8ad8909434" status="done"
+--- settled
+{
+  "attempt": 1,
+  "changeSetId": "cs_00000000000017911386019971",
+  "createdAt": 1791138601997,
+  "hasCandidate": false,
+  "outcome": {
+    "code": "candidate_invalid",
+    "diagnostics": [
+      {
+        "code": "CandidateInvalid",
+        "hint": "the worker must write /outputs/changeset.json",
+        "message": "changeset_missing: the task's 0 output file(s) hold no change set (`schema: gamecore.studio.changeset/1`)"
+      }
+    ],
+    "message": "the worker's change set failed validation"
+  },
+  "requestId": "cs_00000000000017911386019971",
+  "seq": 44,
+  "state": "candidate_invalid",
+  "taskId": "t8aaefe2dd095ab8ad8909434",
+  "taskStatus": "done",
+  "tasks": [
+    "tc5de7cad48f8550b70e29762",
+    "t8aaefe2dd095ab8ad8909434"
+  ],
+  "topic": "#agent/gamecore-studio/cs-cs_00000000000017911386019971-r1",
+  "updatedAt": 1791138614287,
+  "worker": "gc-designer"
+}
+--- events seen on the ticketed WebSocket for cs_00000000000017911386019971: ["task_progress#3", "candidate_invalid#4", "task_progress#7", "candidate_invalid#8", "task_progress#13", "task_progress#17", "candidate_invalid#18", "task_progress#21", "candidate_invalid#22", "task_progress#29", "candidate_invalid#30", "task_progress#33", "candidate_invalid#34", "request#36", "request#37", "task_progress#38", "candidate_invalid#39", "request#40", "request#41", "task_progress#42", "candidate_invalid#43", "request#44"]
+    (requests known before: 5)
+--- POST /v1/requests cs_00000000000017911386148592: state "running" task "td26baa42e75dec12a0302009"
+--- POST /v1/requests/cs_00000000000017911386148592/cancel -> 200
+{
+  "attempt": 0,
+  "changeSetId": "cs_00000000000017911386148592",
+  "createdAt": 1791138614863,
+  "hasCandidate": false,
+  "outcome": {
+    "code": "cancelled",
+    "message": "cancelled by the owner"
+  },
+  "requestId": "cs_00000000000017911386148592",
+  "seq": 47,
+  "state": "cancelled",
+  "taskId": "td26baa42e75dec12a0302009",
+  "taskStatus": "cancelled",
+  "tasks": [
+    "td26baa42e75dec12a0302009"
+  ],
+  "topic": "#agent/gamecore-studio/cs-cs_00000000000017911386148592",
+  "updatedAt": 1791138614932,
+  "worker": "gc-designer"
+}
+--- WS /v1/voice first frame
+{
+  "code": "not_configured",
+  "message": "no realtime adapter is registered for this provider",
+  "type": "error"
+}
+    voice: {"reason":"refused","type":"closed"}
+--- POST /v1/ops/generate 3d -> 503
+{
+  "code": "not_configured",
+  "hint": "an operator can add a [[providers]] entry with family = \"3d\" (for example kind = \"predictions\") to ops.toml; see the etops README",
+  "message": "3D model generation is not available on this node: no provider is configured"
+}
+--- POST /v1/index/delta -> 200
+{
+  "queued": 2,
+  "revision": 1,
+  "skipped": 0
+}
+--- POST /api/v1/query gc_entity (app key) -> 400
+{
+  "code": "unknown_table",
+  "hint": "list the tables with `ls /rg/catalog/` or the catalog operation",
+  "message": "there is no table `gc_entity`"
+}
+ok
+test real_node_restart_recovery ... --- POST /v1/requests cs_00000000000017911386179443 -> 200: state "running" task "t05f5366717455542dccc43ca"
+--- etos agent restart gamecore-studio: restarted gamecore-studio
+  [ 0.0s] hello -> 503 "agent_starting"
+  [ 0.3s] new process ready
+  [  0.0s] "running" attempt=0 task="t05f5366717455542dccc43ca" status="running"
+  [  5.9s] "running" attempt=1 task="t37f231d12de83ba7f842f1fe" status="running"
+  [ 12.1s] "candidate_invalid" attempt=1 task="t37f231d12de83ba7f842f1fe" status="done"
+--- settled after the restart
+{
+  "attempt": 1,
+  "changeSetId": "cs_00000000000017911386179443",
+  "createdAt": 1791138617947,
+  "hasCandidate": false,
+  "outcome": {
+    "code": "candidate_invalid",
+    "diagnostics": [
+      {
+        "code": "CandidateInvalid",
+        "hint": "the worker must write /outputs/changeset.json",
+        "message": "changeset_missing: the task's 0 output file(s) hold no change set (`schema: gamecore.studio.changeset/1`)"
+      }
+    ],
+    "message": "the worker's change set failed validation"
+  },
+  "requestId": "cs_00000000000017911386179443",
+  "seq": 56,
+  "state": "candidate_invalid",
+  "taskId": "t37f231d12de83ba7f842f1fe",
+  "taskStatus": "done",
+  "tasks": [
+    "t05f5366717455542dccc43ca",
+    "t37f231d12de83ba7f842f1fe"
+  ],
+  "topic": "#agent/gamecore-studio/cs-cs_00000000000017911386179443-r1",
+  "updatedAt": 1791138630176,
+  "worker": "gc-designer"
+}
+ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 28.43s
+

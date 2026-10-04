@@ -212,7 +212,7 @@ impl Desk {
             .map_err(|e| ApiError::bad_request(format!("not an EditRequest: {e}")))?;
         if !valid_change_set_id(&req.change_set_id) {
             return Err(ApiError::bad_request(
-                "changeSetId has 1 to 96 characters of A-Z a-z 0-9 _ - . :",
+                "changeSetId is not `cs_` plus a 26-character ULID (IdDerivation.NewChangeSetId)",
             ));
         }
         if req.intent.text.trim().is_empty() {
@@ -396,11 +396,15 @@ impl Desk {
              1. Read `tool-catalog.json` first. Produce only operations it lists, with the argument \
                 types, units and constraints it gives.\n\
              2. Write `/outputs/changeset.json`: `{\"id\": <change set id>, \"schema\": \
-                \"gamecore.studio.changeset/1\", \"intent\", \"selection\", \"operations\", \"artifacts\"}`.\n\
-             3. Every asset you produce goes to `/outputs/` and is listed in `artifacts[]` with the \
-                `sha256` of the bytes you wrote (`sha256sum`), `name`, `mediaType`, `bytes`. Never \
-                list an asset you did not write. Operations reference assets as \
-                `{\"artifact\": \"sha256:<hex>\"}`.\n\
+                \"gamecore.studio.changeset/1\", \"intent\", \"selection\", \"operations\", \"artifacts\", \
+                \"requirements\"}` (docs/studio/schemas/change-set.schema.json: no other fields). \
+                `selection` is `selection.json` as given (its `id`, `mode`, `indexRevision`, \
+                `targets`). Op ids are unique; `dependsOn` names earlier ops, with no cycle.\n\
+             3. Every asset you produce goes to `/outputs/` and is listed once in `artifacts[]` with \
+                the `sha256` of the bytes you wrote (`sha256sum`: 64 lowercase hex digits, no \
+                prefix), `name`, `mediaType`, `bytes`. Never list an asset you did not write. \
+                Operations reference assets as `{\"artifact\": \"sha256:<hex>\"}`, and every listed \
+                asset is referenced by an operation.\n\
              4. If two interpretations differ materially, write only `/outputs/clarification.json`: \
                 `{\"status\": \"needs-clarification\", \"question\": \"<one question>\"}`.\n",
         );
@@ -823,6 +827,14 @@ impl Desk {
         if rec.sender.starts_with("agent:") {
             return Flow::Continue;
         }
+        // Settled meanwhile (a cancel through the API): nothing more to do.
+        if self
+            .ledger
+            .request(rid)
+            .is_ok_and(|r| r.state.is_terminal())
+        {
+            return Flow::Exit;
+        }
         let progress = |status: &str| {
             json!({"taskId": task, "attempt": att.attempt, "pos": rec.pos, "sender": rec.sender,
                    "status": status, "text": rec.text, "at": rec.at})
@@ -902,13 +914,10 @@ impl Desk {
                     });
                 }
                 Err(e) if e.is_retryable() => return Err(e.into()),
-                Err(e) => problems.push(
-                    Diagnostic::new(
-                        "output_unreadable",
-                        format!("output {r} cannot be fetched: {e}"),
-                    )
-                    .at(r.clone()),
-                ),
+                Err(e) => problems.push(Diagnostic::candidate(
+                    "output_unreadable",
+                    format!("output {r} cannot be fetched: {e}"),
+                )),
             }
         }
         Ok((files, problems))

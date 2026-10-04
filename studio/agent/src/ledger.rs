@@ -454,6 +454,11 @@ impl Ledger {
     }
 
     /// Change a request; appends a `request` event. Returns the new view and the event cursor.
+    ///
+    /// Terminal states are final: a request already `candidate`, `candidate_invalid`,
+    /// `needs_clarification`, `failed` or `cancelled` is left unchanged (no event; the cursor
+    /// returned is its `seq`). A follower holding an older reading of the request (a cancel
+    /// arrived meanwhile) therefore cannot overwrite the settled outcome.
     pub fn update_request(
         &self,
         request_id: &str,
@@ -461,6 +466,12 @@ impl Ledger {
     ) -> LedgerResult<(RequestView, i64)> {
         let mut conn = self.lock()?;
         let tx = conn.transaction()?;
+        let current = request_in(&tx, request_id)?;
+        if current.state.is_terminal() {
+            let view = view_in(&tx, request_id)?;
+            let seq = view.seq;
+            return Ok((view, seq));
+        }
         let now = now_ms();
         if let Some(s) = upd.state {
             tx.execute(
@@ -1121,6 +1132,21 @@ mod tests {
         let ev = l.events_after(0, 10).unwrap();
         assert_eq!(ev.len(), 2);
         assert_eq!(ev[1].data["state"], "running");
+        // Terminal states are final.
+        let cancel = RequestUpdate {
+            state: Some(RequestState::Cancelled),
+            ..RequestUpdate::default()
+        };
+        let (v3, c3) = l.update_request("cs1", &cancel).unwrap();
+        assert_eq!(v3.state, RequestState::Cancelled);
+        let fail = RequestUpdate {
+            state: Some(RequestState::Failed),
+            task_status: Some(Some("failed".into())),
+            ..RequestUpdate::default()
+        };
+        let (v4, c4) = l.update_request("cs1", &fail).unwrap();
+        assert_eq!((v4.state, c4), (RequestState::Cancelled, c3));
+        assert!(l.open_requests().unwrap().is_empty());
     }
 
     #[test]

@@ -1,6 +1,7 @@
-//! The change-set JSON Schema. By default the vendored copy in `schemas/` (built into the
-//! binary); `schema = <path>` in `config.toml` (or `GAMECORE_STUDIO_SCHEMA`) loads the
-//! generated one from `docs/studio/schemas/` instead. Remote `$ref`s are not resolved.
+//! The change-set JSON Schema. By default the copy in `schemas/` (built into the binary): a
+//! byte-for-byte copy of P0.3's generated `docs/studio/schemas/change-set.schema.json`
+//! (`build.rs` warns when the two differ); `schema = <path>` in `config.toml` (or
+//! `GAMECORE_STUDIO_SCHEMA`) loads another file instead. Remote `$ref`s are not resolved.
 
 use std::path::Path;
 
@@ -42,7 +43,7 @@ impl ChangeSetSchema {
             None => {
                 let v: Value = serde_json::from_str(VENDORED)
                     .map_err(|e| format!("the vendored schema is not JSON: {e}"))?;
-                ChangeSetSchema::compile(&v, "schemas/change-set.schema.json (vendored)")
+                ChangeSetSchema::compile(&v, "schemas/change-set.schema.json (built in, P0.3 copy)")
             }
             Some(p) => {
                 let text = std::fs::read_to_string(p)
@@ -67,7 +68,7 @@ impl ChangeSetSchema {
             .take(50)
             .map(|e| {
                 let at = e.instance_path.to_string();
-                Diagnostic::new("schema_violation", e.to_string()).at(if at.is_empty() {
+                Diagnostic::candidate("schema_violation", e.to_string()).at_path(if at.is_empty() {
                     "/".to_string()
                 } else {
                     at
@@ -86,17 +87,33 @@ mod tests {
     fn vendored_schema_accepts_the_contract_example_and_rejects_garbage() {
         let s = ChangeSetSchema::load(None).unwrap();
         let ok = json!({
-            "id": "cs_1", "schema": "gamecore.studio.changeset/1",
+            "id": "cs_01J9ZQ3K4M5N6P7Q8R9S0TVWXY", "schema": "gamecore.studio.changeset/1",
             "intent": {"text": "lantern", "origin": "agent"},
+            "selection": {"id": "sel_01J9ZQ3K4M5N6P7Q8R9S0TVWXY", "mode": "Edit", "indexRevision": 3,
+                          "targets": [{"kind": "Entity", "authoringId": "7f1c"}]},
             "operations": [{"opId": "op1", "tool": "inventory.grantStarting",
                             "target": {"kind": "Entity", "authoringId": "7f1c"},
-                            "args": {"item": "item.lantern@2", "count": 1}}],
-            "artifacts": [{"sha256": "a".repeat(64), "name": "x.wav", "mediaType": "audio/wav"}]
+                            "args": {"item": "item.lantern@2", "count": 1},
+                            "preconditions": "none", "applyRequirement": "Live"}],
+            "artifacts": [{"sha256": "a".repeat(64), "name": "x.wav", "mediaType": "audio/wav", "bytes": 4}],
+            "requirements": {"max": "Live", "worldRebuild": false, "compile": false, "build": false}
         });
         assert!(s.check(&ok).is_empty(), "{:?}", s.check(&ok));
         let bad = json!({"id": "cs_1", "schema": "other", "operations": [{"tool": 3}]});
+        // P0.3's contract: a ULID id, lowercase bare digests, no unknown fields.
+        for m in [
+            json!({"id": "cs_1"}),
+            json!({"artifacts": [{"sha256": format!("sha256:{}", "a".repeat(64)), "mediaType": "x", "bytes": 1}]}),
+            json!({"extra": true}),
+        ] {
+            let mut v = ok.clone();
+            for (k, x) in m.as_object().unwrap() {
+                v[k] = x.clone();
+            }
+            assert!(!s.check(&v).is_empty(), "accepted {m}");
+        }
         let d = s.check(&bad);
         assert!(d.len() >= 3, "{d:?}");
-        assert!(d.iter().all(|x| x.code == "schema_violation"));
+        assert!(d.iter().all(|x| x.rule() == "schema_violation"));
     }
 }

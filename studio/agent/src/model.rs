@@ -297,7 +297,8 @@ pub struct Operation {
 pub struct ArtifactEntry {
     /// SHA-256 (`<hex>` or `sha256:<hex>`).
     pub sha256: String,
-    /// File name.
+    /// File name (optional in the schema; empty when absent).
+    #[serde(default)]
     pub name: String,
     /// Media type.
     pub media_type: String,
@@ -363,18 +364,25 @@ pub const CHANGESET_SCHEMA: &str = "gamecore.studio.changeset/1";
 // ---------------------------------------------------------------------------------------------
 // §9 Diagnostics.
 
-/// `{code, message, hint, where}`: every refusal and validation failure.
+/// The registered diagnostic code (03 §9, `DiagnosticCodes.CandidateInvalid` in
+/// GameCore.Studio.Model) of every structural finding on a worker's change set: ids, schema,
+/// dependencies, artifacts. The companion's rule is named at the start of the message
+/// (`artifact_digest_mismatch: ...`), as the Unity validator does.
+pub const CANDIDATE_INVALID: &str = "CandidateInvalid";
+
+/// `{code, message, hint, where}`: every refusal and validation failure (03 §9;
+/// `docs/studio/schemas/diagnostic.schema.json`).
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Diagnostic {
-    /// Code.
+    /// A registered PascalCase code (`CandidateInvalid` for the companion's findings).
     pub code: String,
-    /// Message.
+    /// Message; for the companion's findings it starts with the rule (`<rule>: ...`).
     pub message: String,
     /// Hint.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub hint: Option<String>,
-    /// Where: an op id, a JSON pointer, a file, or an `AuthoringRef`.
+    /// Where: an op id (JSON string) or an `AuthoringRef` (JSON object).
     #[serde(default, rename = "where", skip_serializing_if = "Option::is_none")]
     pub location: Option<Value>,
 }
@@ -390,9 +398,38 @@ impl Diagnostic {
         }
     }
 
-    /// The same diagnostic located.
-    pub fn at(mut self, location: impl Into<Value>) -> Diagnostic {
-        self.location = Some(location.into());
+    /// A `CandidateInvalid` finding of the companion's `rule` (snake_case, e.g.
+    /// `artifact_digest_mismatch`), named at the start of the message.
+    pub fn candidate(rule: &str, message: impl AsRef<str>) -> Diagnostic {
+        Diagnostic::new(CANDIDATE_INVALID, format!("{rule}: {}", message.as_ref()))
+    }
+
+    /// The rule a companion finding names (the message up to the first `:`), else the code.
+    pub fn rule(&self) -> &str {
+        if self.code == CANDIDATE_INVALID
+            && let Some((rule, _)) = self.message.split_once(':')
+        {
+            return rule;
+        }
+        &self.code
+    }
+
+    /// The same diagnostic located at an operation.
+    pub fn at_op(mut self, op_id: &str) -> Diagnostic {
+        self.location = Some(Value::String(op_id.to_string()));
+        self
+    }
+
+    /// The same diagnostic with a JSON pointer into the change set added to its message
+    /// (`where` holds only op ids and AuthoringRefs).
+    pub fn at_path(mut self, pointer: impl AsRef<str>) -> Diagnostic {
+        self.message = format!("{} (at {})", self.message, pointer.as_ref());
+        self
+    }
+
+    /// The same diagnostic with a hint.
+    pub fn with_hint(mut self, hint: impl Into<String>) -> Diagnostic {
+        self.hint = Some(hint.into());
         self
     }
 }

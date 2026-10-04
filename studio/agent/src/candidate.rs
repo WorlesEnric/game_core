@@ -7,14 +7,20 @@
 //! routes): the change set by its `schema`, a clarification by `status:
 //! "needs-clarification"`. The candidate is valid when:
 //!
-//! 1. exactly one change set is present and it satisfies the JSON Schema;
-//! 2. its `id` is the requested change-set id, op ids are unique and `dependsOn` resolve;
-//! 3. every manifest entry's digest is the digest of a delivered file (and its `bytes`, when
-//!    given, the file's size): a claimed asset that was not written, or whose bytes differ, is
-//!    `artifact_digest_mismatch`;
-//! 4. every `{"artifact": "sha256:..."}` in an operation's arguments is in the manifest.
+//! 1. exactly one change set is present and it satisfies the JSON Schema
+//!    (`docs/studio/schemas/change-set.schema.json`, P0.3);
+//! 2. its `id` is the requested change-set id; it has operations; op ids are unique;
+//!    `dependsOn` resolve and form no cycle;
+//! 3. every manifest entry is listed once and its digest is the digest of a delivered file
+//!    (and its `bytes` the file's size): a claimed asset that was not written, or whose bytes
+//!    differ, is `artifact_digest_mismatch`;
+//! 4. every `{"artifact": "sha256:<hex>"}` in an operation's arguments is well formed and in
+//!    the manifest, and every manifest entry is used by an operation.
 //!
-//! Delivered files not in the manifest are reported (`output_unlisted`) but not stored.
+//! Findings are `CandidateInvalid` diagnostics (03 §9) naming the rule at the start of the
+//! message, the same structural rules the Unity `ChangeSetValidator` applies (it also checks
+//! the catalog, targets and requirements, which the companion does not). Delivered files not
+//! in the manifest are reported (`output_unlisted`) but not stored.
 
 use std::collections::{BTreeSet, HashMap};
 
@@ -91,7 +97,7 @@ pub fn evaluate(files: &[Fetched], expected_id: &str, schema: &ChangeSetSchema) 
                 .map(str::trim)
                 .unwrap_or_default();
             if question.is_empty() {
-                return Evaluation::Invalid(vec![Diagnostic::new(
+                return Evaluation::Invalid(vec![Diagnostic::candidate(
                     "clarification_invalid",
                     "the clarification has no `question`",
                 )]);
@@ -101,7 +107,7 @@ pub fn evaluate(files: &[Fetched], expected_id: &str, schema: &ChangeSetSchema) 
                 raw: c.clone(),
             };
         }
-        let mut d = Diagnostic::new(
+        let mut d = Diagnostic::candidate(
             "changeset_missing",
             format!(
                 "the task's {} output file(s) hold no change set (`schema: {CHANGESET_SCHEMA}`)",
@@ -112,7 +118,7 @@ pub fn evaluate(files: &[Fetched], expected_id: &str, schema: &ChangeSetSchema) 
         return Evaluation::Invalid(vec![d]);
     }
     if changesets.len() > 1 || !clarifications.is_empty() {
-        return Evaluation::Invalid(vec![Diagnostic::new(
+        return Evaluation::Invalid(vec![Diagnostic::candidate(
             "ambiguous_output",
             format!(
                 "the outputs hold {} change sets and {} clarifications; exactly one document is allowed",
@@ -129,7 +135,7 @@ pub fn evaluate(files: &[Fetched], expected_id: &str, schema: &ChangeSetSchema) 
     let change_set: ChangeSet = match serde_json::from_value(raw.clone()) {
         Ok(c) => c,
         Err(e) => {
-            return Evaluation::Invalid(vec![Diagnostic::new(
+            return Evaluation::Invalid(vec![Diagnostic::candidate(
                 "changeset_unreadable",
                 format!("the change set does not fit the contract: {e}"),
             )]);
@@ -138,22 +144,32 @@ pub fn evaluate(files: &[Fetched], expected_id: &str, schema: &ChangeSetSchema) 
     let mut errors = Vec::new();
     if change_set.id != expected_id {
         errors.push(
-            Diagnostic::new(
+            Diagnostic::candidate(
                 "changeset_id_mismatch",
                 format!(
                     "the change set says id {:?}, the request is {expected_id:?}",
                     change_set.id
                 ),
             )
-            .at("/id"),
+            .at_path("/id")
+            .with_hint("copy the change-set id from request.md"),
         );
+    }
+    if change_set.operations.is_empty() {
+        errors.push(Diagnostic::candidate(
+            "no_operations",
+            "the change set has no operations",
+        ));
     }
     let mut op_ids = BTreeSet::new();
     for op in &change_set.operations {
         if !op_ids.insert(op.op_id.as_str()) {
             errors.push(
-                Diagnostic::new("operation_invalid", format!("op id {:?} repeats", op.op_id))
-                    .at(op.op_id.clone()),
+                Diagnostic::candidate(
+                    "duplicate_op_id",
+                    format!("operation id {:?} is used more than once", op.op_id),
+                )
+                .at_op(&op.op_id),
             );
         }
     }
@@ -161,14 +177,26 @@ pub fn evaluate(files: &[Fetched], expected_id: &str, schema: &ChangeSetSchema) 
         for dep in &op.depends_on {
             if !op_ids.contains(dep.as_str()) {
                 errors.push(
-                    Diagnostic::new(
-                        "operation_invalid",
-                        format!("op {:?} depends on unknown op {dep:?}", op.op_id),
+                    Diagnostic::candidate(
+                        "unknown_dependency",
+                        format!(
+                            "operation {:?} depends on unknown operation {dep:?}",
+                            op.op_id
+                        ),
                     )
-                    .at(op.op_id.clone()),
+                    .at_op(&op.op_id),
                 );
             }
         }
+    }
+    if let Some(cycle) = dependency_cycle(&change_set) {
+        errors.push(Diagnostic::candidate(
+            "dependency_cycle",
+            format!(
+                "operations depend on each other in a cycle: {}",
+                cycle.join(" -> ")
+            ),
+        ));
     }
     let by_digest: HashMap<&str, usize> = files
         .iter()
@@ -181,35 +209,45 @@ pub fn evaluate(files: &[Fetched], expected_id: &str, schema: &ChangeSetSchema) 
     for (n, a) in change_set.artifacts.iter().enumerate() {
         let Some(h) = normalize_sha256(&a.sha256) else {
             errors.push(
-                Diagnostic::new(
+                Diagnostic::candidate(
                     "artifact_digest_invalid",
-                    format!("{:?} is not a sha256", a.sha256),
+                    format!("{:?} is not a sha256 (64 lowercase hex digits)", a.sha256),
                 )
-                .at(format!("/artifacts/{n}/sha256")),
+                .at_path(format!("/artifacts/{n}/sha256")),
             );
             continue;
         };
-        let Some(&i) = by_digest.get(h.as_str()) else {
-            let mut d = Diagnostic::new(
-                "artifact_digest_mismatch",
-                format!(
-                    "no delivered output file has sha256 {h} (claimed for {:?})",
-                    a.name
-                ),
-            )
-            .at(format!("/artifacts/{n}"));
-            d.hint = Some(
-                "write the asset to /outputs and list the sha256 of the bytes actually written"
-                    .into(),
+        if !listed.insert(h.clone()) {
+            errors.push(
+                Diagnostic::candidate(
+                    "artifact_duplicate",
+                    format!("artifact sha256:{h} is listed more than once"),
+                )
+                .at_path(format!("/artifacts/{n}")),
             );
-            errors.push(d);
+            continue;
+        }
+        let Some(&i) = by_digest.get(h.as_str()) else {
+            errors.push(
+                Diagnostic::candidate(
+                    "artifact_digest_mismatch",
+                    format!(
+                        "no delivered output file has sha256 {h} (claimed for {:?})",
+                        a.name
+                    ),
+                )
+                .at_path(format!("/artifacts/{n}"))
+                .with_hint(
+                    "write the asset to /outputs and list the sha256 of the bytes actually written",
+                ),
+            );
             continue;
         };
         if let Some(b) = a.bytes
             && b != files[i].bytes.len() as u64
         {
             errors.push(
-                Diagnostic::new(
+                Diagnostic::candidate(
                     "artifact_size_mismatch",
                     format!(
                         "{:?} claims {b} bytes, the delivered file has {}",
@@ -217,34 +255,61 @@ pub fn evaluate(files: &[Fetched], expected_id: &str, schema: &ChangeSetSchema) 
                         files[i].bytes.len()
                     ),
                 )
-                .at(format!("/artifacts/{n}/bytes")),
+                .at_path(format!("/artifacts/{n}/bytes")),
             );
             continue;
         }
-        if listed.insert(h.clone()) {
-            let mut entry = a.clone();
-            entry.sha256 = h;
-            artifacts.push((entry, i));
-        }
+        let mut entry = a.clone();
+        entry.sha256 = h;
+        artifacts.push((entry, i));
     }
+    let mut used = BTreeSet::new();
     for op in &change_set.operations {
         let mut refs = Vec::new();
         collect_artifact_refs(&Value::Object(op.args.clone()), &mut refs);
         for r in refs {
-            match normalize_sha256(&r) {
-                Some(h) if listed.contains(&h) => {}
-                _ => errors.push(
-                    Diagnostic::new(
-                        "artifact_unlisted_reference",
+            let Some(h) = strict_artifact_ref(&r) else {
+                errors.push(
+                    Diagnostic::candidate(
+                        "artifact_reference_invalid",
                         format!(
-                            "op {:?} references artifact {r:?}, which is not in the manifest",
+                            "artifact reference {r:?} of operation {:?} is not 'sha256:' plus 64 lowercase hex digits",
                             op.op_id
                         ),
                     )
-                    .at(op.op_id.clone()),
-                ),
+                    .at_op(&op.op_id),
+                );
+                continue;
+            };
+            if listed.contains(h) {
+                used.insert(h.to_string());
+            } else {
+                errors.push(
+                    Diagnostic::candidate(
+                        "artifact_unlisted_reference",
+                        format!(
+                            "operation {:?} uses artifact {r}, which the change set does not carry",
+                            op.op_id
+                        ),
+                    )
+                    .at_op(&op.op_id)
+                    .with_hint(
+                        "list every referenced artifact under `artifacts` with its digest, size and media type",
+                    ),
+                );
             }
         }
+    }
+    for h in listed.difference(&used) {
+        errors.push(
+            Diagnostic::candidate(
+                "artifact_unused",
+                format!("artifact sha256:{h} is carried but no operation uses it"),
+            )
+            .with_hint(
+                "remove the artifact or reference it from an operation argument as {\"artifact\": \"sha256:...\"}",
+            ),
+        );
     }
     if !errors.is_empty() {
         return Evaluation::Invalid(errors);
@@ -254,7 +319,7 @@ pub fn evaluate(files: &[Fetched], expected_id: &str, schema: &ChangeSetSchema) 
         .enumerate()
         .filter(|(i, f)| *i != cs_index && !listed.contains(&f.sha256))
         .map(|(_, f)| {
-            Diagnostic::new(
+            Diagnostic::candidate(
                 "output_unlisted",
                 format!(
                     "output {} (sha256 {}) is not in the manifest and was not kept",
@@ -269,6 +334,52 @@ pub fn evaluate(files: &[Fetched], expected_id: &str, schema: &ChangeSetSchema) 
         artifacts,
         warnings,
     }))
+}
+
+/// `sha256:<64 lowercase hex>` (the reference form of 03 §6), as the bare digest.
+fn strict_artifact_ref(r: &str) -> Option<&str> {
+    let h = r.strip_prefix("sha256:")?;
+    (h.len() == 64
+        && h.bytes()
+            .all(|b| b.is_ascii_digit() || (b'a'..=b'f').contains(&b)))
+    .then_some(h)
+}
+
+/// The operations left on a dependency cycle (known dependencies only), if any.
+fn dependency_cycle(cs: &ChangeSet) -> Option<Vec<String>> {
+    let ids: BTreeSet<&str> = cs.operations.iter().map(|o| o.op_id.as_str()).collect();
+    let mut pending: HashMap<&str, BTreeSet<&str>> = HashMap::new();
+    for op in &cs.operations {
+        let deps = pending.entry(op.op_id.as_str()).or_default();
+        deps.extend(
+            op.depends_on
+                .iter()
+                .map(String::as_str)
+                .filter(|d| ids.contains(d)),
+        );
+    }
+    loop {
+        let ready: Vec<&str> = pending
+            .iter()
+            .filter(|(_, deps)| deps.is_empty())
+            .map(|(id, _)| *id)
+            .collect();
+        if ready.is_empty() {
+            break;
+        }
+        for id in ready {
+            pending.remove(id);
+            for deps in pending.values_mut() {
+                deps.remove(id);
+            }
+        }
+    }
+    if pending.is_empty() {
+        return None;
+    }
+    let mut left: Vec<String> = pending.keys().map(|s| s.to_string()).collect();
+    left.sort();
+    Some(left)
 }
 
 /// Every string under an `artifact` key, at any depth.
@@ -296,6 +407,9 @@ mod tests {
     use crate::util::sha256_hex;
     use serde_json::json;
 
+    const ID: &str = "cs_01J9ZQ3K4M5N6P7Q8R9S0TVWXY";
+    const OTHER: &str = "cs_01J9ZQ3K4M5N6P7Q8R9S0TVWXZ";
+
     fn file(r: &str, bytes: &[u8]) -> Fetched {
         Fetched {
             reference: r.into(),
@@ -304,17 +418,32 @@ mod tests {
         }
     }
 
-    fn cs(artifact_sha: &str, bytes: u64) -> Vec<u8> {
-        serde_json::to_vec(&json!({
-            "id": "cs_1", "schema": CHANGESET_SCHEMA, "intent": {"text": "t"},
+    fn doc(artifact_sha: &str, bytes: u64, mutate: impl FnOnce(&mut Value)) -> Vec<u8> {
+        let mut v = json!({
+            "id": ID, "schema": CHANGESET_SCHEMA, "intent": {"text": "t", "origin": "agent"},
             "operations": [
                 {"opId": "op1", "tool": "dialogue.addNode",
                  "args": {"voice": {"artifact": format!("sha256:{artifact_sha}")}}},
                 {"opId": "op2", "tool": "x.y", "dependsOn": ["op1"]}
             ],
             "artifacts": [{"sha256": artifact_sha, "name": "line.wav", "mediaType": "audio/wav", "bytes": bytes}]
-        }))
-        .unwrap()
+        });
+        mutate(&mut v);
+        serde_json::to_vec(&v).unwrap()
+    }
+
+    fn cs(artifact_sha: &str, bytes: u64) -> Vec<u8> {
+        doc(artifact_sha, bytes, |_| {})
+    }
+
+    fn rules(e: Evaluation) -> Vec<String> {
+        match e {
+            Evaluation::Invalid(d) => {
+                assert!(d.iter().all(|x| x.code == "CandidateInvalid"), "{d:?}");
+                d.iter().map(|x| x.rule().to_string()).collect()
+            }
+            other => panic!("accepted: {other:?}"),
+        }
     }
 
     #[test]
@@ -326,13 +455,13 @@ mod tests {
             file("r2", wav),
             file("r3", b"stray"),
         ];
-        let Evaluation::Valid(v) = evaluate(&files, "cs_1", &schema) else {
-            panic!("{:?}", evaluate(&files, "cs_1", &schema))
+        let Evaluation::Valid(v) = evaluate(&files, ID, &schema) else {
+            panic!("{:?}", evaluate(&files, ID, &schema))
         };
         assert_eq!(v.artifacts.len(), 1);
         assert_eq!(v.artifacts[0].1, 1);
         assert_eq!(v.warnings.len(), 1);
-        assert_eq!(v.warnings[0].code, "output_unlisted");
+        assert_eq!(v.warnings[0].rule(), "output_unlisted");
     }
 
     #[test]
@@ -340,53 +469,122 @@ mod tests {
         let schema = ChangeSetSchema::load(None).unwrap();
         let wav = b"RIFF....WAVE";
         let claimed = sha256_hex(b"something else");
-        let files = vec![file("r1", &cs(&claimed, 3)), file("r2", wav)];
-        let Evaluation::Invalid(d) = evaluate(&files, "cs_1", &schema) else {
-            panic!("accepted")
+        let r = rules(evaluate(
+            &[file("r1", &cs(&claimed, 3)), file("r2", wav)],
+            ID,
+            &schema,
+        ));
+        // Listed (so the reference resolves) but never delivered.
+        assert_eq!(r, ["artifact_digest_mismatch"]);
+        let r = rules(evaluate(
+            &[file("r1", &cs(&sha256_hex(wav), 999)), file("r2", wav)],
+            ID,
+            &schema,
+        ));
+        assert!(r.contains(&"artifact_size_mismatch".to_string()), "{r:?}");
+        let r = rules(evaluate(
+            &[file("r1", &cs(&sha256_hex(wav), 12)), file("r2", wav)],
+            OTHER,
+            &schema,
+        ));
+        assert_eq!(r, ["changeset_id_mismatch"]);
+        let Evaluation::Invalid(d) = evaluate(
+            &[file("r1", &cs(&sha256_hex(wav), 12)), file("r2", wav)],
+            OTHER,
+            &schema,
+        ) else {
+            panic!()
         };
-        assert!(d.iter().any(|x| x.code == "artifact_digest_mismatch"));
-        assert!(d.iter().any(|x| x.code == "artifact_unlisted_reference"));
-        let files = vec![file("r1", &cs(&sha256_hex(wav), 999)), file("r2", wav)];
-        let Evaluation::Invalid(d) = evaluate(&files, "cs_1", &schema) else {
-            panic!("accepted")
+        assert!(d[0].message.starts_with("changeset_id_mismatch: "), "{d:?}");
+    }
+
+    #[test]
+    fn structural_rules_match_the_unity_validator() {
+        let schema = ChangeSetSchema::load(None).unwrap();
+        let wav = b"RIFF....WAVE";
+        let h = sha256_hex(wav);
+        let n = wav.len() as u64;
+        let check = |m: fn(&mut Value)| {
+            rules(evaluate(
+                &[file("r1", &doc(&h, n, m)), file("r2", wav)],
+                ID,
+                &schema,
+            ))
         };
-        assert!(d.iter().any(|x| x.code == "artifact_size_mismatch"));
-        let files = vec![file("r1", &cs(&sha256_hex(wav), 12)), file("r2", wav)];
-        let Evaluation::Invalid(d) = evaluate(&files, "cs_2", &schema) else {
-            panic!("accepted")
+        assert_eq!(
+            check(|v| v["operations"][0]["dependsOn"] = json!(["op2"])),
+            ["dependency_cycle"]
+        );
+        assert_eq!(
+            check(|v| v["operations"][1] = json!({"opId": "op1", "tool": "x.y"})),
+            ["duplicate_op_id"]
+        );
+        assert_eq!(
+            check(|v| v["operations"][1]["dependsOn"] = json!(["op9"])),
+            ["unknown_dependency"]
+        );
+        assert_eq!(
+            check(|v| v["operations"][0]["args"] = json!({})),
+            ["artifact_unused"]
+        );
+        let upper = check(|v| {
+            let s = v["operations"][0]["args"]["voice"]["artifact"]
+                .as_str()
+                .unwrap()
+                .to_ascii_uppercase()
+                .replace("SHA256:", "sha256:");
+            v["operations"][0]["args"]["voice"]["artifact"] = json!(s);
+        });
+        assert_eq!(upper, ["artifact_reference_invalid", "artifact_unused"]);
+        // The operation located by op id (`where` is an op id or an AuthoringRef).
+        let Evaluation::Invalid(d) = evaluate(
+            &[
+                file(
+                    "r1",
+                    &doc(&h, n, |v| {
+                        v["operations"][1] = json!({"opId": "op1", "tool": "x.y"})
+                    }),
+                ),
+                file("r2", wav),
+            ],
+            ID,
+            &schema,
+        ) else {
+            panic!()
         };
-        assert_eq!(d[0].code, "changeset_id_mismatch");
+        assert_eq!(d[0].location, Some(json!("op1")));
     }
 
     #[test]
     fn missing_ambiguous_schema_and_clarification() {
         let schema = ChangeSetSchema::load(None).unwrap();
-        let Evaluation::Invalid(d) = evaluate(&[file("r", b"not json")], "cs_1", &schema) else {
-            panic!()
-        };
-        assert_eq!(d[0].code, "changeset_missing");
+        assert_eq!(
+            rules(evaluate(&[file("r", b"not json")], ID, &schema)),
+            ["changeset_missing"]
+        );
         let q = serde_json::to_vec(
             &json!({"status": "needs-clarification", "question": "Which lantern?"}),
         )
         .unwrap();
         assert!(matches!(
-            evaluate(&[file("r", &q)], "cs_1", &schema),
+            evaluate(&[file("r", &q)], ID, &schema),
             Evaluation::Clarification { ref question, .. } if question == "Which lantern?"
         ));
         let bad = serde_json::to_vec(&json!({"schema": CHANGESET_SCHEMA, "id": "cs_1"})).unwrap();
-        let Evaluation::Invalid(d) = evaluate(&[file("r", &bad)], "cs_1", &schema) else {
-            panic!()
-        };
-        assert!(d.iter().all(|x| x.code == "schema_violation"));
+        let r = rules(evaluate(&[file("r", &bad)], ID, &schema));
+        assert!(
+            !r.is_empty() && r.iter().all(|x| x == "schema_violation"),
+            "{r:?}"
+        );
         let one = cs(&sha256_hex(b"a"), 1);
-        let Evaluation::Invalid(d) = evaluate(
-            &[file("r1", &one), file("r2", &one.clone()), file("r3", b"a")],
-            "cs_1",
-            &schema,
-        ) else {
-            panic!()
-        };
         // The same change set delivered twice is still two documents.
-        assert_eq!(d[0].code, "ambiguous_output");
+        assert_eq!(
+            rules(evaluate(
+                &[file("r1", &one), file("r2", &one.clone()), file("r3", b"a")],
+                ID,
+                &schema,
+            )),
+            ["ambiguous_output"]
+        );
     }
 }

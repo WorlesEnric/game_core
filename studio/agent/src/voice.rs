@@ -83,6 +83,45 @@ pub fn refusal_of(e: &etos_sdk::Error) -> (String, String) {
     }
 }
 
+/// The node's refusal of a realtime upgrade, read again with a plain handshake: the SDK's
+/// `open` reports only the HTTP status (`HTTP error: 503`) and drops the body
+/// (`{code, message, hint}`). The probe is refused at admission like the first attempt (no
+/// upstream session is opened; an unexpected success is closed before any configuration).
+async fn probe_refusal(client: &Client, provider: &str) -> Option<(String, String)> {
+    use tokio_tungstenite::tungstenite;
+    use tokio_tungstenite::tungstenite::client::IntoClientRequest;
+    let auth = etos_sdk::providers::url(client, provider).value;
+    let url = format!(
+        "{}/api/v1/realtime/connect?provider={provider}",
+        client.url().replacen("http", "ws", 1)
+    );
+    let mut req = url.into_client_request().ok()?;
+    req.headers_mut()
+        .insert("authorization", auth.parse().ok()?);
+    match tokio::time::timeout(
+        Duration::from_secs(5),
+        tokio_tungstenite::connect_async(req),
+    )
+    .await
+    {
+        Ok(Err(tungstenite::Error::Http(resp))) => {
+            let body: Value = serde_json::from_slice(resp.body().as_deref()?).ok()?;
+            let code = body.get("code")?.as_str()?.to_string();
+            let message = body
+                .get("message")
+                .and_then(Value::as_str)
+                .unwrap_or_default()
+                .to_string();
+            Some((code, message))
+        }
+        Ok(Ok((mut ws, _))) => {
+            let _ = ws.close(None).await;
+            None
+        }
+        _ => None,
+    }
+}
+
 /// The voice bridge.
 pub struct VoiceBridge {
     client: Client,
@@ -173,7 +212,13 @@ impl VoiceBridge {
         let (sender, mut events) = match opened {
             Ok(Ok(pair)) => pair,
             Ok(Err(e)) => {
-                let (code, message) = refusal_of(&e);
+                let (mut code, mut message) = refusal_of(&e);
+                if message.contains("HTTP error")
+                    && let Some((c, m)) = probe_refusal(&self.client, &self.cfg.provider).await
+                {
+                    code = c;
+                    message = m;
+                }
                 match code.as_str() {
                     "not_configured" => self.ops.set_voice_status(status::NOT_CONFIGURED),
                     "not_granted" | "forbidden" | "budget_exhausted" => {

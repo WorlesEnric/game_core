@@ -73,14 +73,18 @@ pub fn canonical_json(v: &Value) -> String {
     out
 }
 
-/// Whether `id` is acceptable as a change-set id: 1 to 96 characters of
-/// `A-Z a-z 0-9 _ - . :`.
+/// A change-set id of the contract (03 §6, P0.3's `IdDerivation.NewChangeSetId`): `cs_` plus
+/// a 26-character Crockford ULID in upper case (`^cs_[0-7][0-9A-HJKMNP-TV-Z]{25}$`).
 pub fn valid_change_set_id(id: &str) -> bool {
-    !id.is_empty()
-        && id.len() <= 96
-        && id
-            .chars()
-            .all(|c| c.is_ascii_alphanumeric() || matches!(c, '_' | '-' | '.' | ':'))
+    let Some(ulid) = id.strip_prefix("cs_") else {
+        return false;
+    };
+    ulid.len() == 26
+        && matches!(ulid.as_bytes()[0], b'0'..=b'7')
+        && ulid.bytes().all(|b| {
+            b.is_ascii_digit()
+                || (b.is_ascii_uppercase() && !matches!(b, b'I' | b'L' | b'O' | b'U'))
+        })
 }
 
 /// One topic segment etos accepts (lowercase letters, digits, `-`, `_`, `.`; at most 64)
@@ -92,7 +96,10 @@ pub fn topic_segment(change_set_id: &str, attempt: u32) -> String {
         .chars()
         .all(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || matches!(c, '-' | '_' | '.'))
         && change_set_id.len() <= 48;
-    let base = if fits {
+    let base = if valid_change_set_id(change_set_id) {
+        // Crockford base32 is case-insensitive: lower-casing keeps ids distinct.
+        format!("cs-{}", change_set_id.to_ascii_lowercase())
+    } else if fits {
         format!("cs-{change_set_id}")
     } else {
         let clean: String = change_set_id
@@ -170,6 +177,10 @@ mod tests {
     fn topic_segments_are_valid_and_distinct() {
         assert_eq!(topic_segment("cs_01abc", 0), "cs-cs_01abc");
         assert_eq!(topic_segment("cs_01abc", 1), "cs-cs_01abc-r1");
+        assert_eq!(
+            topic_segment("cs_01J9ZQ3K4M5N6P7Q8R9S0TVWXY", 1),
+            "cs-cs_01j9zq3k4m5n6p7q8r9s0tvwxy-r1"
+        );
         let a = topic_segment("cs_01J9ZZ", 0);
         let b = topic_segment("cs_01j9zz:", 0);
         assert_ne!(a, b);
@@ -187,8 +198,17 @@ mod tests {
             canonical_json(&json!({"b": 1, "a": {"d": [true], "c": "x"}})),
             r#"{"a":{"c":"x","d":[true]},"b":1}"#
         );
-        assert!(valid_change_set_id("cs_01J9.a:b-c"));
-        assert!(!valid_change_set_id("cs 1"));
+        assert!(valid_change_set_id("cs_01J9ZQ3K4M5N6P7Q8R9S0TVWXY"));
+        for bad in [
+            "cs 1",
+            "cs_01J9.a:b-c",
+            "cs_01j9zq3k4m5n6p7q8r9s0tvwxy",
+            "cs_81J9ZQ3K4M5N6P7Q8R9S0TVWXY",
+            "cs_01J9ZQ3K4M5N6P7Q8R9S0TVWXI",
+            "cs_01J9ZQ3K4M5N6P7Q8R9S0TVWX",
+        ] {
+            assert!(!valid_change_set_id(bad), "{bad}");
+        }
         assert!(new_id("vs").starts_with("vs_"));
     }
 }
