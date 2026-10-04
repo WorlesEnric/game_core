@@ -21,7 +21,9 @@ import sys
 from pathlib import Path
 import uuid
 
-SKIP_DIRS = {"bin", "obj", ".git", "Library", "Temp", "Logs", "obj~", ".vs", ".idea", "Artifacts~"}
+SKIP_DIRS = {"bin", "obj", ".git", "Library", "Temp", "Logs", "obj~", ".vs", ".idea", "Artifacts~",
+             # Claude Code worktrees (other branches' checkouts), Cargo output, node modules.
+             ".claude", "target", "node_modules"}
 ASSET_SUFFIXES = (".cs", ".asmdef", ".json", ".asmref", ".shader", ".asset", ".preset", ".uxml", ".uss",
                   # GameCore Studio content kinds (P0.2): Input System actions, materials, prefabs, scenes,
                   # Shader Graph, textures, audio, models and animation. A meta written here carries only the
