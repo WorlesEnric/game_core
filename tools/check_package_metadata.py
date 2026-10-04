@@ -153,8 +153,10 @@ KERNEL_PACKAGES = {
     "com.gamecore.rules.traversal",
 }
 
+# `.claude` holds Claude Code git worktrees (`.claude/worktrees/<name>`): full checkouts of OTHER branches whose
+# packages are not this tree's packages. `target` is Cargo output (studio/agent).
 PRUNED_DIRS = {".git", "Library", "Temp", "Logs", "Builds", "UserSettings", "bin", "obj", "obj~",
-               "Artifacts~", "node_modules", ".vs", ".idea"}
+               "Artifacts~", "node_modules", ".vs", ".idea", ".claude", "target"}
 ASMDEF_REFERENCE = re.compile(r'"references"\s*:\s*\[(.*?)\]', re.S)
 ASMDEF_NAME = re.compile(r'"name"\s*:\s*"([^"]+)"')
 
@@ -507,9 +509,18 @@ def self_test():
             return check_manifests(root, fresh, discover_asmdefs(fresh),
                                    project or set(), engine or {})[0]
 
+        # A Claude Code worktree (another branch's checkout) and generated trees hold packages that are not
+        # this tree's; discovery must not see them.
+        for skipped in (".claude/worktrees/other/Packages/com.gamecore.unity.app", "Library/PackageCache/x",
+                        "studio/agent/target/x", "web/node_modules/x"):
+            (root / skipped).mkdir(parents=True)
+            manifest(root / skipped, "com.gamecore.unity.app")
+
         # Every fixture exists before discovery, so this is the real discovery contract under test.
         write_user({}, ["GameCore.Kernel"])
         packages = discover_packages(root)
+        check("packages under .claude/, Library/, target/ and node_modules/ are not discovered",
+              "com.gamecore.unity.app" not in packages, str(sorted(packages)))
         assemblies = discover_asmdefs(packages)
         check("every package directory is discovered",
               set(packages) == {"com.gamecore.kernel", "com.gamecore.rules.cards",

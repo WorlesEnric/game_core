@@ -8,9 +8,10 @@
 #   studio/tools/unity-compile.sh p0.2-projects-tooling unity/GameCore.Validation --tests EditMode \
 #       --filter 'GameCore\.Composition\..*'
 #
-# The project must already be on the host at ~/wkspace/gc-studio/<packet-name>/<project-rel-path>
-# (studio/tools/sync-to-host.sh <packet-name> puts it there). Run from the Mac, the script re-runs itself on
-# the host over non-interactive ssh; run on the host, it works directly.
+# The project must already be on the host at ~/wkspace/gc-studio/<packet-name>/<project-rel-path>, inside the
+# packet's clone of the host hub (studio/tools/sync-to-host.sh <packet-name> puts it there). Run from the Mac,
+# the script re-runs itself on the host over non-interactive ssh; run on the host, it works directly. Owner
+# rule: Unity never runs on the Mac.
 #
 # What it does on the host:
 #   * waits for one of at most GC_STUDIO_UNITY_SLOTS (default 3) host-wide Unity batchmode slots: a slot is a
@@ -43,7 +44,7 @@
 set -euo pipefail
 
 usage() {
-  sed -n '2,42p' "${BASH_SOURCE[0]:-$0}" 2>/dev/null | sed 's/^# \{0,1\}//' >&2 || true
+  sed -n '2,43p' "${BASH_SOURCE[0]:-$0}" 2>/dev/null | sed 's/^# \{0,1\}//' >&2 || true
   exit 2
 }
 

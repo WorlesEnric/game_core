@@ -110,6 +110,10 @@ TARGETS = [
 # owning asmdef is Editor-only (`includePlatforms: ["Editor"]`, e.g. EditMode test assemblies), or a line inside an
 # `#if UNITY_EDITOR` block. A runtime assembly that names UnityEditor unguarded compiles in the Editor and fails
 # only in a player build, which is the defect this rule catches early.
+# Directories a glob TARGETS entry never descends into (generated output, other checkouts).
+GLOB_SKIPPED_DIRS = {"Library", "Temp", "Logs", "obj", "Obj", "bin", "target", "node_modules", ".claude"}
+CLAUDE_DIR = ".claude"
+
 STUDIO_EDITOR_SCOPED = (
     "Packages/com.gamecore.studio.",
     "Packages/com.gamecore.gameplay.",
@@ -410,8 +414,10 @@ def main() -> int:
                     and {"bin", "obj"}.intersection(path.relative_to(base).parts)
                 )
             ):
-                if glob_entry and (path in covered or {"Library", "Temp", "Logs", "obj", "Obj"}.intersection(
-                        path.relative_to(base).parts)):
+                if glob_entry and (path in covered or GLOB_SKIPPED_DIRS.intersection(path.relative_to(base).parts)):
+                    continue
+                if CLAUDE_DIR in path.relative_to(ROOT).parts:
+                    # Claude Code worktrees (.claude/worktrees/<name>) are other branches' checkouts.
                     continue
                 covered.add(path)
                 files.append(path)

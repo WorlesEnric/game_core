@@ -8,9 +8,10 @@
 #   studio/tools/dotnet-test.sh p0.3-studio-model dotnet/tests/GameCore.Studio.Model.Tests
 #   GAMECORE_OFFLINE=1 studio/tools/dotnet-test.sh p0.3-studio-model -- --filter 'FullyQualifiedName~ChangeSet'
 #
-# The copy must already be on the host at ~/wkspace/gc-studio/<packet-name>/ (studio/tools/sync-to-host.sh
-# puts it there). Run from the Mac, the script re-runs itself on the host over non-interactive ssh; run on the
-# host, it works directly. The default target is dotnet/GameCore.sln.
+# The packet's clone must already be on the host at ~/wkspace/gc-studio/<packet-name>/ (studio/tools/
+# sync-to-host.sh puts it there, through git). Run from the Mac, the script re-runs itself on the host over
+# non-interactive ssh; run on the host, it works directly. The default target is dotnet/GameCore.sln. Owner
+# rule: dotnet never runs on the Mac.
 #
 # GAMECORE_OFFLINE follows the repository's documented contract (docs/operator/build-and-run.md, section 2.1):
 #   0 (default) the NuGet advisory audit stays on;
@@ -28,7 +29,7 @@
 set -euo pipefail
 
 usage() {
-  sed -n '2,27p' "${BASH_SOURCE[0]:-$0}" 2>/dev/null | sed 's/^# \{0,1\}//' >&2 || true
+  sed -n '2,28p' "${BASH_SOURCE[0]:-$0}" 2>/dev/null | sed 's/^# \{0,1\}//' >&2 || true
   exit 2
 }
 
