@@ -1,0 +1,20 @@
+{
+  "name": "com.gamecore.gameplay.compile",
+  "version": "1.0.0",
+  "displayName": "GameCore Gameplay Compile",
+  "description": "The gameplay content compile pipeline (P1.1). Core (Unity-free, GameCore.Gameplay.Compile.Core): the bake model, definition content hashing (SHA-256 over canonical authorable fields, never the YAML), the deterministic world bake report and the gamecore.catalog-description/1 writer. Editor (GameCore.Gameplay.Compile.Editor): Entry.Bake / Entry.Verify read authored assets and region scenes without leaving them dirty, write the RegionManifest asset, the bake report and the catalog description, run the content compiler, and mark the bake stale on scene save.",
+  "unity": "6000.0",
+  "keywords": [
+    "gamecore",
+    "gameplay",
+    "compile",
+    "bake"
+  ],
+  "dependencies": {
+    "com.gamecore.content.compiler": "1.0.0",
+    "com.gamecore.contracts": "1.0.0",
+    "com.gamecore.gameplay.contracts": "1.0.0",
+    "com.gamecore.gameplay.entities": "1.0.0",
+    "com.gamecore.gameplay.world": "1.0.0"
+  }
+}
