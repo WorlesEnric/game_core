@@ -2,7 +2,7 @@
 # studio/tools/host-build-etos.sh on the build host; do not edit by hand.
 [etos]
 base = "6c2c3f4ea238bd211f9c3e8e9a813b22a13bc9a8"
-commit = "3e8b3363d7ed5bff9d283acf472aa392d392fa2f"
+commit = "5fa113be2e4b8429983d035e212fdb0630e211fa"
 branch = "studio/bailian-tts"
 rust = "1.97.1"
 build = "cargo build --release --locked -p etnode -p etcli; etcli for x86_64-unknown-linux-musl in rust:1.97.1-alpine"
@@ -11,6 +11,6 @@ build = "cargo build --release --locked -p etnode -p etcli; etcli for x86_64-unk
 version = "3"
 
 [sha256]
-etosd = "1843573a781918e2ae0ea8ab4f687ecf6835d0425f021b67a540f84499c97880"
+etosd = "3a683d0c8a84e7a00c657dfca960908629ae84fc7de387423f4fd02ec97a4b6a"
 etos = "bcabe343f501c7e0bffe2d7d583aefc30d6fbe34c00cf88859bde4df0964b467"
 etos-musl = "872b9079e6db9015bb87d1e5305296dda424f3ca8d85bdf866c2c5463bc4d3fd"
