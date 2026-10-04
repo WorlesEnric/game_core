@@ -1,0 +1,25 @@
+{
+    "name": "GameCore.Stage.Harness.Editor",
+    "rootNamespace": "GameCore.Stage.Harness",
+    "references": [
+        "GameCore.Contracts",
+        "GameCore.Stage.Harness",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
