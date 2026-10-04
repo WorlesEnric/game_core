@@ -24,13 +24,14 @@ namespace Hollowmere.P1_1.EditMode.Tests
         public void SetUp()
         {
             WorldTools.EnsureFolder(Temp);
+            HollowmereWorldAuthoring.BeginAuthoring(Temp + "/Scratch.unity");
         }
 
         [TearDown]
         public void TearDown()
         {
             // Temporary scenes are replaced by a fresh empty one before their files are deleted.
-            HollowmereWorldAuthoring.NewAuthoringScene();
+            EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             AssetDatabase.DeleteAsset(Temp);
         }
 
@@ -65,7 +66,7 @@ namespace Hollowmere.P1_1.EditMode.Tests
 
             EditorSceneManager.SaveScene(scene);
             HollowmereWorldAuthoring.CloseAuthoringScene(scene);
-            Scene reopened = EditorSceneManager.OpenScene(Temp + "/Identity.unity", OpenSceneMode.Single);
+            Scene reopened = EditorSceneManager.OpenScene(Temp + "/Identity.unity", OpenSceneMode.Additive);
             var ids = new HashSet<string>();
             foreach (GameObject root in reopened.GetRootGameObjects())
             {

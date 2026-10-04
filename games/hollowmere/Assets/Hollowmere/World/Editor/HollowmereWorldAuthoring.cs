@@ -115,6 +115,7 @@ namespace Hollowmere.WorldAuthoring
             WorldTools.EnsureFolder(Root + "/Definitions");
             WorldTools.EnsureFolder(Root + "/Regions");
             WorldTools.EnsureFolder("Assets/Hollowmere/Regions");
+            BeginAuthoring(VillageScene);
 
             Definitions definitions = CreateDefinitions();
             var village = new RegionPlan("Thornwick Village", VillageScene, new Vector3(0f, 0f, 0f));
@@ -160,13 +161,14 @@ namespace Hollowmere.WorldAuthoring
                 return;
             }
 
-            RegionManifest? manifest = AssetDatabase.LoadAssetAtPath<RegionManifest>(ManifestPath);
-            if (manifest == null)
+            if (AssetDatabase.LoadAssetAtPath<RegionManifest>(ManifestPath) == null)
             {
                 throw new InvalidOperationException("the world must be baked before the boot scene is created");
             }
 
-            Scene scene = NewAuthoringScene();
+            // A Single-mode session of its own: nothing loaded before it is used after it.
+            Scene scene = BeginAuthoring(BootScenePath);
+            RegionManifest manifest = AssetDatabase.LoadAssetAtPath<RegionManifest>(ManifestPath);
             var light = new GameObject("Directional Light");
             Light sun = light.AddComponent<Light>();
             sun.type = LightType.Directional;
@@ -190,23 +192,57 @@ namespace Hollowmere.WorldAuthoring
             fly.Configure(gameBoot);
             SceneManager.MoveGameObjectToScene(cameraObject, scene);
 
-            EditorSceneManager.SaveScene(scene, BootScenePath);
-            CloseAuthoringScene(scene);
+            EditorSceneManager.SaveScene(scene);
         }
 
         /// <summary>
-        /// A new empty scene that replaces whatever is open (Single mode). Unity refuses NewScene(Additive) while an
-        /// untitled scene is open, and every authored scene is saved before the next one is created, so nothing is lost.
+        /// Starts an authoring session: replaces the open scenes with one new empty scene saved at
+        /// <paramref name="scenePath"/>. Call it before creating any asset of the session. Every later scene of the session
+        /// is created additively, because a Single-mode scene change unloads unused assets while ignoring script
+        /// references, which kills the managed wrappers of ScriptableObjects created earlier, and Unity refuses an
+        /// additive new scene while an untitled scene is open.
         /// </summary>
-        public static Scene NewAuthoringScene() => EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+        public static Scene BeginAuthoring(string scenePath)
+        {
+            Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            if (!EditorSceneManager.SaveScene(scene, scenePath))
+            {
+                throw new InvalidOperationException("could not save the authoring scene " + scenePath);
+            }
+
+            return scene;
+        }
+
+        /// <summary>A new empty scene added to the open ones and made active (requires <see cref="BeginAuthoring"/>).</summary>
+        public static Scene NewAuthoringScene()
+        {
+            Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive);
+            SceneManager.SetActiveScene(scene);
+            return scene;
+        }
 
         /// <summary>Closes a saved authoring scene unless it is the last loaded scene (which Unity cannot close).</summary>
         public static void CloseAuthoringScene(Scene scene)
         {
-            if (SceneManager.sceneCount > 1 && scene.IsValid())
+            if (SceneManager.sceneCount <= 1 || !scene.IsValid())
             {
-                EditorSceneManager.CloseScene(scene, true);
+                return;
             }
+
+            if (SceneManager.GetActiveScene() == scene)
+            {
+                for (int i = 0; i < SceneManager.sceneCount; i++)
+                {
+                    Scene other = SceneManager.GetSceneAt(i);
+                    if (other != scene && other.isLoaded)
+                    {
+                        SceneManager.SetActiveScene(other);
+                        break;
+                    }
+                }
+            }
+
+            EditorSceneManager.CloseScene(scene, true);
         }
 
         private static Definitions CreateDefinitions()
@@ -357,7 +393,17 @@ namespace Hollowmere.WorldAuthoring
 
         private static Scene NewRegionScene(RegionPlan plan, out AuthoredRegion region)
         {
-            Scene scene = NewAuthoringScene();
+            // The first region's scene is the session scene BeginAuthoring saved; the others are new additive scenes.
+            Scene scene = SceneManager.GetSceneByPath(plan.Scene);
+            if (scene.IsValid() && scene.isLoaded)
+            {
+                SceneManager.SetActiveScene(scene);
+            }
+            else
+            {
+                scene = NewAuthoringScene();
+            }
+
             var regionObject = new GameObject("Region " + plan.Name);
             SceneManager.MoveGameObjectToScene(regionObject, scene);
             regionObject.transform.position = plan.Center;
