@@ -225,8 +225,14 @@ mod tests {
     fn nulls_are_pruned_and_found() {
         let mut v = json!({"a": null, "b": {"c": null, "d": 1}, "e": [null, {"f": null}]});
         assert_eq!(first_null(&v).as_deref(), Some("/a"));
-        assert_eq!(first_null(&json!({"x": [1, null]})).as_deref(), Some("/x/1"));
-        assert_eq!(first_null(&json!({"x": {"a/b": null}})).as_deref(), Some("/x/a~1b"));
+        assert_eq!(
+            first_null(&json!({"x": [1, null]})).as_deref(),
+            Some("/x/1")
+        );
+        assert_eq!(
+            first_null(&json!({"x": {"a/b": null}})).as_deref(),
+            Some("/x/a~1b")
+        );
         assert_eq!(first_null(&json!({"x": [1, {"y": 2}]})), None);
         prune_nulls(&mut v);
         assert_eq!(v, json!({"b": {"d": 1}, "e": [null, {}]}));
@@ -238,7 +244,10 @@ mod tests {
         let mut b = a.clone();
         b["revision"] = json!("whatever");
         assert_eq!(catalog_revision(&a), catalog_revision(&b));
-        assert_eq!(catalog_revision(&a), sha256_hex(canonical_json(&a).as_bytes()));
+        assert_eq!(
+            catalog_revision(&a),
+            sha256_hex(canonical_json(&a).as_bytes())
+        );
     }
 
     #[test]
@@ -276,6 +285,22 @@ mod tests {
                 || c.is_ascii_digit()
                 || matches!(c, '-' | '_' | '.')));
         }
+    }
+
+    #[test]
+    fn catalog_revision_matches_the_csharp_registry() {
+        // P0.3's sample catalog carries the revision minted by `ToolCatalog.ComputeRevision`
+        // (asserted by its dotnet tests); the companion must compute the same digest.
+        let sample = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("../../dotnet/tests/GameCore.Studio.Model.Tests/Samples/tool-catalog.json");
+        let Ok(text) = std::fs::read_to_string(&sample) else {
+            return; // the crate built outside the game_core tree
+        };
+        let catalog: Value = serde_json::from_str(&text).unwrap();
+        assert_eq!(
+            catalog_revision(&catalog),
+            catalog["revision"].as_str().unwrap()
+        );
     }
 
     #[test]

@@ -119,7 +119,9 @@ fn sync_dir(dir: &Path) -> std::io::Result<()> {
     match std::fs::File::open(dir) {
         Ok(d) => d.sync_all().or_else(|e| {
             // Some filesystems refuse fsync on a directory handle.
-            if e.kind() == std::io::ErrorKind::InvalidInput || e.kind() == std::io::ErrorKind::PermissionDenied {
+            if e.kind() == std::io::ErrorKind::InvalidInput
+                || e.kind() == std::io::ErrorKind::PermissionDenied
+            {
                 Ok(())
             } else {
                 Err(e)

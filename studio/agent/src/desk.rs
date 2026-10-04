@@ -125,16 +125,23 @@ fn is_retryable(e: &ApiError) -> bool {
         || e.status.is_server_error()
 }
 
+/// The outcome of a request whose task etos refused: the registered outcome code
+/// `task_failed` (04 §2), with the refusal as it came (`refusal: {code, status, hint?}`).
 fn outcome_of(e: &ApiError, phase: &str) -> Value {
-    crate::util::pruned(
-        json!({"code": e.body.code, "message": e.body.message, "hint": e.body.hint, "phase": phase}),
-    )
+    crate::util::pruned(json!({
+        "code": "task_failed",
+        "message": e.body.message,
+        "phase": phase,
+        "refusal": {"code": e.body.code, "status": e.status.as_u16(), "hint": e.body.hint},
+    }))
 }
 
 /// The diagnostic of a refusal etos gave (`Refused`, with the refusal as `data`).
 fn refusal_diagnostic(e: &ApiError, what: &str) -> Diagnostic {
     Diagnostic::new("Refused", format!("{what}: {}", e.body.message)).with_data(
-        crate::util::pruned(json!({"code": e.body.code, "status": e.status.as_u16(), "hint": e.body.hint})),
+        crate::util::pruned(
+            json!({"code": e.body.code, "status": e.status.as_u16(), "hint": e.body.hint}),
+        ),
     )
 }
 
@@ -332,14 +339,10 @@ impl Desk {
         })?;
         match &req.tool_catalog {
             Some(cat) => {
-                let mut bare = cat.clone();
-                if let Some(o) = bare.as_object_mut() {
-                    o.remove("revision");
-                }
                 let findings = self
                     .contracts
                     .catalog
-                    .findings(&bare, "InvalidArgs", "toolCatalog");
+                    .findings(cat, "InvalidArgs", "toolCatalog");
                 if !findings.is_empty() {
                     return Err(ApiError::bad_request(
                         "toolCatalog does not fit tool-catalog.schema.json",
@@ -355,7 +358,7 @@ impl Desk {
                     return Err(ApiError::bad_request(format!(
                         "toolCatalogRevision is {revision}, but the catalog's digest is {actual}"
                     ))
-                    .with_hint("the revision is the sha256 of the catalog's canonical JSON (keys sorted, no whitespace) without `revision`"));
+                    .with_hint("toolCatalogRevision and the catalog's `revision` are the sha256 of its canonical JSON (keys sorted, no whitespace) without `revision`"));
                 }
                 self.ledger
                     .put_catalog(&revision, &actual, cat)
@@ -487,8 +490,8 @@ impl Desk {
         files: &[String],
     ) -> String {
         let revision = req.selection.index_revision;
-        let catalog =
-            normalize_sha256(&req.tool_catalog_revision).unwrap_or_else(|| req.tool_catalog_revision.clone());
+        let catalog = normalize_sha256(&req.tool_catalog_revision)
+            .unwrap_or_else(|| req.tool_catalog_revision.clone());
         let mut md = format!(
             "# GameCore Studio request `{id}`\n\n\
              - Change set id: `{id}` — write it as `id` in `/outputs/changeset.json`.\n\
@@ -568,16 +571,16 @@ impl Desk {
             &strip_rg_extensions(&req.context_slice),
             self.cfg.max_slice_bytes,
         )
-            .ok_or_else(|| {
-                ApiError::new(
-                    axum::http::StatusCode::PAYLOAD_TOO_LARGE,
-                    "too_large",
-                    format!(
-                        "the context slice cannot be truncated below {} bytes",
-                        self.cfg.max_slice_bytes
-                    ),
-                )
-            })?;
+        .ok_or_else(|| {
+            ApiError::new(
+                axum::http::StatusCode::PAYLOAD_TOO_LARGE,
+                "too_large",
+                format!(
+                    "the context slice cannot be truncated below {} bytes",
+                    self.cfg.max_slice_bytes
+                ),
+            )
+        })?;
         let mut names: Vec<String> = vec![
             "request.md".into(),
             "selection.json".into(),
@@ -1505,8 +1508,8 @@ mod tests {
     fn body_limit_covers_the_attachment_budget() {
         let b64 = |n: usize| 4 * n.div_ceil(3);
         assert!(MAX_BODY >= b64(MAX_ATTACHMENTS_TOTAL) + MAX_JSON_BODY);
-        assert!(MAX_ATTACHMENTS_TOTAL >= MAX_ATTACHMENT);
-        assert!(MAX_ATTACHMENTS * MAX_ATTACHMENT >= MAX_ATTACHMENTS_TOTAL);
+        const { assert!(MAX_ATTACHMENTS_TOTAL >= MAX_ATTACHMENT) };
+        const { assert!(MAX_ATTACHMENTS * MAX_ATTACHMENT >= MAX_ATTACHMENTS_TOTAL) };
     }
 
     #[test]
@@ -1525,7 +1528,9 @@ mod tests {
 
     #[test]
     fn rg_extensions_are_stripped() {
-        let v = strip_rg_extensions(&json!({"nodes": [{"ref": {}, "type": "t", "rgKind": "gc_quest", "rgKey": "q"}]}));
+        let v = strip_rg_extensions(
+            &json!({"nodes": [{"ref": {}, "type": "t", "rgKind": "gc_quest", "rgKey": "q"}]}),
+        );
         assert_eq!(v, json!({"nodes": [{"ref": {}, "type": "t"}]}));
     }
 

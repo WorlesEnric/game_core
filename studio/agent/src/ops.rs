@@ -210,7 +210,8 @@ impl MediaOps {
         let key = match input.get("key").and_then(Value::as_str) {
             Some(k) => k.to_string(),
             None => {
-                let basis = json!({"cs": req.change_set_id, "op": op, "spec": req.spec, "max": max});
+                let basis =
+                    json!({"cs": req.change_set_id, "op": op, "spec": req.spec, "max": max});
                 let k = format!(
                     "gc-{}",
                     &sha256_hex(canonical_json(&basis).as_bytes())[..40]
@@ -251,16 +252,13 @@ impl MediaOps {
             }
             let reported = field(&["digest", "sha256"]).and_then(|d| normalize_sha256(&d));
             let bytes = self.client.files().get(&id).await?;
-            let (sha, path) = self
-                .store
-                .put(&bytes, reported.as_deref())
-                .map_err(|e| {
-                    ApiError::new(
-                        axum::http::StatusCode::BAD_GATEWAY,
-                        "protocol",
-                        format!("output {id} does not match the digest the node reported: {e}"),
-                    )
-                })?;
+            let (sha, path) = self.store.put(&bytes, reported.as_deref()).map_err(|e| {
+                ApiError::new(
+                    axum::http::StatusCode::BAD_GATEWAY,
+                    "protocol",
+                    format!("output {id} does not match the digest the node reported: {e}"),
+                )
+            })?;
             let media = field(&["media_type", "mediaType"])
                 .filter(|m| !m.is_empty())
                 .unwrap_or_else(|| media_type_for(&name).to_string());

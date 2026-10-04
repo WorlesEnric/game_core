@@ -421,15 +421,25 @@ fn str_list<'a>(v: &'a Value, key: &str) -> Option<Vec<&'a str>> {
 /// The bounded catalog rules (04 §4) for every operation.
 fn catalog_rules(ops: &[Operation], ctx: CatalogContext<'_>) -> Vec<Diagnostic> {
     let catalog = match ctx.catalog {
-        Some(c) if catalog_revision(c) == ctx.revision => c,
         Some(c) => {
-            return vec![
-                Diagnostic::new(
-                    STALE_CONTEXT,
-                    "the tool catalog held for the request's revision does not hash to it",
-                )
-                .with_data(serde_json::json!({"expected": ctx.revision, "actual": catalog_revision(c)})),
-            ];
+            // The catalog's own `revision` (when present) and its content digest must both be
+            // the revision the request was built against.
+            let actual = c
+                .get("revision")
+                .and_then(Value::as_str)
+                .filter(|r| *r != ctx.revision)
+                .map(str::to_string)
+                .unwrap_or_else(|| catalog_revision(c));
+            if actual != ctx.revision {
+                return vec![
+                    Diagnostic::new(
+                        STALE_CONTEXT,
+                        "the tool catalog held for the request is not the revision it was built against",
+                    )
+                    .with_data(serde_json::json!({"expected": ctx.revision, "actual": actual})),
+                ];
+            }
+            c
         }
         None => {
             return vec![
@@ -459,7 +469,10 @@ fn catalog_rules(ops: &[Operation], ctx: CatalogContext<'_>) -> Vec<Diagnostic> 
             d.push(
                 Diagnostic::new(
                     UNKNOWN_TOOL,
-                    format!("operation {:?} uses tool {:?}, which the catalog does not contain", op.op_id, op.tool),
+                    format!(
+                        "operation {:?} uses tool {:?}, which the catalog does not contain",
+                        op.op_id, op.tool
+                    ),
                 )
                 .at_op(&op.op_id)
                 .with_hint("use only the tools listed in tool-catalog.json"),
@@ -473,7 +486,10 @@ fn catalog_rules(ops: &[Operation], ctx: CatalogContext<'_>) -> Vec<Diagnostic> 
                 a.iter()
                     .filter_map(|x| {
                         let name = x.get("name")?.as_str()?;
-                        Some((name, x.get("required").and_then(Value::as_bool).unwrap_or(false)))
+                        Some((
+                            name,
+                            x.get("required").and_then(Value::as_bool).unwrap_or(false),
+                        ))
                     })
                     .collect()
             })
@@ -719,7 +735,7 @@ mod tests {
             &[file("r1", &cs(&claimed, 3)), file("r2", wav)],
             ID,
             &schema,
-        ctx(),
+            ctx(),
         ));
         // Listed (so the reference resolves) but never delivered.
         assert_eq!(r, ["artifact_digest_mismatch"]);
@@ -727,21 +743,21 @@ mod tests {
             &[file("r1", &cs(&sha256_hex(wav), 999)), file("r2", wav)],
             ID,
             &schema,
-        ctx(),
+            ctx(),
         ));
         assert!(r.contains(&"artifact_size_mismatch".to_string()), "{r:?}");
         let r = rules(evaluate(
             &[file("r1", &cs(&sha256_hex(wav), 12)), file("r2", wav)],
             OTHER,
             &schema,
-        ctx(),
+            ctx(),
         ));
         assert_eq!(r, ["changeset_id_mismatch"]);
         let Evaluation::Invalid(d) = evaluate(
             &[file("r1", &cs(&sha256_hex(wav), 12)), file("r2", wav)],
             OTHER,
             &schema,
-        ctx(),
+            ctx(),
         ) else {
             panic!()
         };
@@ -759,7 +775,7 @@ mod tests {
                 &[file("r1", &doc(&h, n, m)), file("r2", wav)],
                 ID,
                 &schema,
-            ctx(),
+                ctx(),
             ))
         };
         assert_eq!(
@@ -800,7 +816,7 @@ mod tests {
             ],
             ID,
             &schema,
-        ctx(),
+            ctx(),
         ) else {
             panic!()
         };
@@ -843,12 +859,20 @@ mod tests {
         // A required target and a required argument missing; then a disallowed kind and scope.
         assert_eq!(
             run(|v| v["operations"][1] = json!({"opId": "op2", "tool": "inventory.grantStarting"})),
-            [c("InvalidArgs", "InvalidArgs"), c("InvalidArgs", "InvalidArgs")]
+            [
+                c("InvalidArgs", "InvalidArgs"),
+                c("InvalidArgs", "InvalidArgs")
+            ]
         );
         assert_eq!(
-            run(|v| v["operations"][1] = json!({"opId": "op2", "tool": "inventory.grantStarting",
-                "target": {"kind": "Region", "authoringId": "r", "scope": "Prefab"}, "args": {"item": "i@1"}})),
-            [c("InvalidArgs", "InvalidArgs"), c("ScopeNotAllowed", "ScopeNotAllowed")]
+            run(
+                |v| v["operations"][1] = json!({"opId": "op2", "tool": "inventory.grantStarting",
+                "target": {"kind": "Region", "authoringId": "r", "scope": "Prefab"}, "args": {"item": "i@1"}})
+            ),
+            [
+                c("InvalidArgs", "InvalidArgs"),
+                c("ScopeNotAllowed", "ScopeNotAllowed")
+            ]
         );
         assert_eq!(
             run(|v| v["state"] = json!("Applied")),
@@ -872,7 +896,10 @@ mod tests {
             Evaluation::Valid(_)
         ));
         // A catalog that is gone, or that does not hash to the revision, is stale; no re-ask.
-        let gone = CatalogContext { revision: &REVISION, catalog: None };
+        let gone = CatalogContext {
+            revision: &REVISION,
+            catalog: None,
+        };
         let Evaluation::Invalid(d) =
             evaluate(&[file("r1", &ok), file("r2", wav)], ID, &schema, gone)
         else {
@@ -880,8 +907,12 @@ mod tests {
         };
         assert_eq!(d[0].code, "StaleContext");
         assert!(!reaskable(&d));
-        let other = json!({"schema": "gamecore.studio.toolcatalog/1", "objectTypes": [], "tools": []});
-        let wrong = CatalogContext { revision: &REVISION, catalog: Some(&other) };
+        let other =
+            json!({"schema": "gamecore.studio.toolcatalog/1", "objectTypes": [], "tools": []});
+        let wrong = CatalogContext {
+            revision: &REVISION,
+            catalog: Some(&other),
+        };
         let Evaluation::Invalid(d) =
             evaluate(&[file("r1", &ok), file("r2", wav)], ID, &schema, wrong)
         else {
@@ -919,7 +950,7 @@ mod tests {
                 &[file("r1", &one), file("r2", &one.clone()), file("r3", b"a")],
                 ID,
                 &schema,
-            ctx(),
+                ctx(),
             )),
             ["ambiguous_output"]
         );

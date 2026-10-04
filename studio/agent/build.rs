@@ -48,6 +48,8 @@ fn main() {
         "selection-snapshot.schema.json",
         "semantic-index.schema.json",
         "tool-catalog.schema.json",
+        "diagnostic.schema.json",
+        "authoring-ref.schema.json",
     ] {
         println!("cargo:rerun-if-changed=schemas/{name}");
         let canonical = here.join("../../docs/studio/schemas").join(name);

@@ -96,7 +96,11 @@ impl Schema {
 
     /// Change-set violations (`CandidateInvalid` / `schema_violation`).
     pub fn check(&self, instance: &Value) -> Vec<Diagnostic> {
-        self.findings(instance, crate::model::CANDIDATE_INVALID, "schema_violation")
+        self.findings(
+            instance,
+            crate::model::CANDIDATE_INVALID,
+            "schema_violation",
+        )
     }
 }
 
@@ -131,14 +135,28 @@ mod tests {
     fn request_schemas_compile_and_check() {
         let r = RequestSchemas::builtin().unwrap();
         let sel = json!({"id": "sel_01J9ZQ3K4M5N6P7Q8R9S0TVWXY", "mode": "Edit", "indexRevision": 1, "targets": []});
-        assert!(r.selection.findings(&sel, "InvalidArgs", "selection").is_empty());
+        assert!(
+            r.selection
+                .findings(&sel, "InvalidArgs", "selection")
+                .is_empty()
+        );
         let bad = json!({"id": "sel_1", "mode": "Edit", "indexRevision": 1, "targets": []});
         let d = r.selection.findings(&bad, "InvalidArgs", "selection");
-        assert!(!d.is_empty() && d[0].message.starts_with("selection: "), "{d:?}");
+        assert!(
+            !d.is_empty() && d[0].message.starts_with("selection: "),
+            "{d:?}"
+        );
         let slice = json!({"project": "p", "revision": 1, "nodes": [{"ref": {"kind": "Entity", "authoringId": "e"}, "type": "npc.definition"}]});
         assert!(r.slice.findings(&slice, "InvalidArgs", "slice").is_empty());
-        let cat = json!({"schema": "gamecore.studio.toolcatalog/1", "objectTypes": [], "tools": []});
-        assert!(r.catalog.findings(&cat, "InvalidArgs", "catalog").is_empty(), "{:?}", r.catalog.findings(&cat, "InvalidArgs", "catalog"));
+        let cat =
+            json!({"schema": "gamecore.studio.toolcatalog/1", "objectTypes": [], "tools": []});
+        assert!(
+            r.catalog
+                .findings(&cat, "InvalidArgs", "catalog")
+                .is_empty(),
+            "{:?}",
+            r.catalog.findings(&cat, "InvalidArgs", "catalog")
+        );
     }
 
     #[test]

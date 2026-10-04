@@ -142,6 +142,13 @@ fn request(id: &str) -> Value {
 }
 
 fn catalog() -> Value {
+    let mut c = bare_catalog();
+    let revision = gamecore_studio::util::catalog_revision(&c);
+    c["revision"] = json!(revision);
+    c
+}
+
+fn bare_catalog() -> Value {
     json!({"schema": "gamecore.studio.toolcatalog/1", "objectTypes": [], "tools": [
         {"id": "inventory.grantStarting", "tier": "Configure", "runtimeApply": "Live", "targetRequired": true,
          "targetKinds": ["Entity"], "args": [{"name": "item", "type": "ref", "required": true}]}

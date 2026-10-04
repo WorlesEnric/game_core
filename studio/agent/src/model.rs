@@ -894,12 +894,26 @@ mod tests {
             json!({"changeSetId": "c", "intent": {"text": "x", "origin": "agent"}, "selection": {"id": "s", "mode": "Walk", "targets": [], "indexRevision": 1}, "contextSlice": {}, "toolCatalogRevision": "a"}),
             json!({"changeSetId": "c", "intent": {"text": "x", "origin": "agent"}, "selection": {"id": "s", "mode": "Edit", "targets": []}, "contextSlice": {}, "toolCatalogRevision": "a"}),
         ] {
-            assert!(serde_json::from_value::<EditRequest>(bad.clone()).is_err(), "{bad}");
+            assert!(
+                serde_json::from_value::<EditRequest>(bad.clone()).is_err(),
+                "{bad}"
+            );
         }
-        let n: IndexNode = serde_json::from_value(json!({"ref": {"kind": "Entity", "authoringId": "e"}, "type": "npc.definition"})).unwrap();
-        assert_eq!(serde_json::to_value(&n).unwrap(), json!({"ref": {"kind": "Entity", "authoringId": "e"}, "type": "npc.definition"}));
+        let n: IndexNode = serde_json::from_value(
+            json!({"ref": {"kind": "Entity", "authoringId": "e"}, "type": "npc.definition"}),
+        )
+        .unwrap();
+        assert_eq!(
+            serde_json::to_value(&n).unwrap(),
+            json!({"ref": {"kind": "Entity", "authoringId": "e"}, "type": "npc.definition"})
+        );
         assert!(serde_json::from_value::<IndexField>(json!({"value": 1})).is_err());
-        assert!(serde_json::from_value::<IndexEdge>(json!({"from": {"kind": "Entity"}, "to": {"kind": "Entity"}, "kind": "owns"})).is_err());
+        assert!(
+            serde_json::from_value::<IndexEdge>(
+                json!({"from": {"kind": "Entity"}, "to": {"kind": "Entity"}, "kind": "owns"})
+            )
+            .is_err()
+        );
         assert!(r.attachments.is_empty());
         let g: GenerateRequest = serde_json::from_value(
             json!({"op": "image", "spec": {"prompt": "p"}, "max_cost_usd": 0.1}),

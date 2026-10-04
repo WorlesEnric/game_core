@@ -69,7 +69,12 @@ impl Api {
         a
     }
 
-    async fn raw(&self, method: reqwest::Method, path: &str, body: Vec<u8>) -> (u16, String, Value) {
+    async fn raw(
+        &self,
+        method: reqwest::Method,
+        path: &str,
+        body: Vec<u8>,
+    ) -> (u16, String, Value) {
         let res = self
             .http
             .request(method, format!("{}{path}", self.url))
@@ -88,7 +93,11 @@ impl Api {
             .unwrap_or_default()
             .to_string();
         let bytes = res.bytes().await.unwrap();
-        (status, ct, serde_json::from_slice(&bytes).unwrap_or(Value::Null))
+        (
+            status,
+            ct,
+            serde_json::from_slice(&bytes).unwrap_or(Value::Null),
+        )
     }
 
     async fn call(&self, method: reqwest::Method, path: &str, body: Option<Value>) -> (u16, Value) {
@@ -156,6 +165,13 @@ async fn next_json(ws: &mut Ws) -> Value {
 
 /// The tool catalog of the fixtures (`tool-catalog.schema.json`).
 fn catalog() -> Value {
+    let mut c = bare_catalog();
+    let revision = gamecore_studio::util::catalog_revision(&c);
+    c["revision"] = json!(revision);
+    c
+}
+
+fn bare_catalog() -> Value {
     json!({"schema": "gamecore.studio.toolcatalog/1", "objectTypes": [], "tools": [
         {"id": "inventory.grantStarting", "tier": "Configure", "runtimeApply": "Live", "targetRequired": true,
          "targetKinds": ["Entity"],
@@ -616,7 +632,10 @@ async fn voice_session_ready_transcripts_and_close() {
         "{refused}"
     );
     // Three frames of at most 24 KiB → three etos chunks.
-    for (i, n) in [24 * 1024, 24 * 1024, 60_000 - 48 * 1024].into_iter().enumerate() {
+    for (i, n) in [24 * 1024, 24 * 1024, 60_000 - 48 * 1024]
+        .into_iter()
+        .enumerate()
+    {
         let b64 = base64::engine::general_purpose::STANDARD.encode(vec![0u8; n]);
         ws.send(Message::Text(
             json!({"type": "audio", "seq": i + 1, "pcm16": b64})
@@ -631,8 +650,14 @@ async fn voice_session_ready_transcripts_and_close() {
     let partial = next_json(&mut ws).await;
     assert_eq!(partial["type"], "transcript", "{partial}");
     assert_eq!(partial["role"], "user");
-    assert!(partial.get("final").is_none() && partial.get("done").is_none(), "{partial}");
-    assert!(partial.get("responseId").is_none(), "no null members: {partial}");
+    assert!(
+        partial.get("final").is_none() && partial.get("done").is_none(),
+        "{partial}"
+    );
+    assert!(
+        partial.get("responseId").is_none(),
+        "no null members: {partial}"
+    );
     ws.send(Message::Text(json!({"type": "stop"}).to_string().into()))
         .await
         .unwrap();
@@ -645,7 +670,11 @@ async fn voice_session_ready_transcripts_and_close() {
         }
     }
     let transcripts: Vec<&Value> = seen.iter().filter(|m| m["type"] == "transcript").collect();
-    assert_eq!(transcripts.len(), 1, "assistant transcripts are dropped: {seen:?}");
+    assert_eq!(
+        transcripts.len(),
+        1,
+        "assistant transcripts are dropped: {seen:?}"
+    );
     let done = transcripts[0];
     assert_eq!(done["text"], "give the ferryman a lantern");
     assert_eq!(done["final"], true);
@@ -874,7 +903,10 @@ async fn requests_are_idempotent_and_conflicts_refused() {
     assert_eq!((s, v["code"].as_str()), (400, Some("bad_request")), "{v}");
     let mut bad_sel = edit_request("cs_01J9ZQ00000000000000000014");
     bad_sel["selection"]["id"] = json!("sel_1");
-    bad_sel["contextSlice"].as_object_mut().unwrap().remove("project");
+    bad_sel["contextSlice"]
+        .as_object_mut()
+        .unwrap()
+        .remove("project");
     let (s, v) = api.post("/v1/requests", bad_sel).await;
     assert_eq!((s, v["code"].as_str()), (400, Some("bad_request")), "{v}");
     let findings: Vec<&str> = v["diagnostics"]
@@ -883,8 +915,14 @@ async fn requests_are_idempotent_and_conflicts_refused() {
         .iter()
         .map(|d| d["message"].as_str().unwrap())
         .collect();
-    assert!(findings.iter().any(|m| m.starts_with("selection: ")), "{findings:?}");
-    assert!(findings.iter().any(|m| m.starts_with("contextSlice: ")), "{findings:?}");
+    assert!(
+        findings.iter().any(|m| m.starts_with("selection: ")),
+        "{findings:?}"
+    );
+    assert!(
+        findings.iter().any(|m| m.starts_with("contextSlice: ")),
+        "{findings:?}"
+    );
     let mut null = edit_request("cs_01J9ZQ00000000000000000015");
     null["worker"] = Value::Null;
     let (s, v) = api.post("/v1/requests", null).await;
@@ -937,7 +975,9 @@ async fn etos_task_refusal_passes_through() {
     assert_eq!((s, v["code"].as_str()), (403, Some("not_yours")), "{v}");
     let (_, v) = api.get("/v1/requests/cs_01J9ZQ00000000000000000010").await;
     assert_eq!(v["state"], "failed");
-    assert_eq!(v["outcome"]["code"], "not_yours");
+    assert_eq!(v["outcome"]["code"], "task_failed");
+    assert_eq!(v["outcome"]["refusal"]["code"], "not_yours");
+    assert_eq!(v["outcome"]["refusal"]["status"], 403);
     running.shutdown().await;
 }
 
@@ -1047,7 +1087,10 @@ async fn ops_generate_stores_artifacts_and_passes_refusals() {
         .cloned()
         .unwrap();
     assert!(b["input"].as_str().unwrap().starts_with("ref_"));
-    assert_eq!(b["max_cost_usd"], 0.02, "every operation carries the ceiling");
+    assert_eq!(
+        b["max_cost_usd"], 0.02,
+        "every operation carries the ceiling"
+    );
     // The node's reported digest is checked: a mismatch is a protocol error, nothing stored.
     node.lock().wrong_digest_ops.push("generate.image".into());
     let (s, v) = api
@@ -1202,7 +1245,6 @@ async fn stage_shell_runs_the_command_or_reports_stage_failed() {
     running.shutdown().await;
 }
 
-
 /// A change set with an unknown tool: one re-ask (the catalog rules count like the schema).
 fn changeset_with_tool(id: &str, tool: &str) -> Vec<u8> {
     serde_json::to_vec(&json!({
@@ -1227,7 +1269,13 @@ async fn catalog_rules_are_reasked_and_a_refused_reask_settles_invalid() {
     let (s, v) = api.post("/v1/requests", edit_request(id)).await;
     assert_eq!(s, 200, "{v}");
     let first = v["taskId"].as_str().unwrap().to_string();
-    node.complete(&first, &[("changeset.json", changeset_with_tool(id, "inventory.grantAll"))]);
+    node.complete(
+        &first,
+        &[(
+            "changeset.json",
+            changeset_with_tool(id, "inventory.grantAll"),
+        )],
+    );
     let deadline = std::time::Instant::now() + Duration::from_secs(10);
     let v = loop {
         let (_, v) = api.get(&format!("/v1/requests/{id}")).await;
@@ -1239,7 +1287,13 @@ async fn catalog_rules_are_reasked_and_a_refused_reask_settles_invalid() {
     };
     assert_eq!(v["outcome"]["diagnostics"][0]["code"], "UnknownTool", "{v}");
     let second = v["taskId"].as_str().unwrap().to_string();
-    node.complete(&second, &[("changeset.json", changeset_with_tool(id, "inventory.grantStarting"))]);
+    node.complete(
+        &second,
+        &[(
+            "changeset.json",
+            changeset_with_tool(id, "inventory.grantStarting"),
+        )],
+    );
     let v = api.until_state(id, "candidate").await;
     assert_eq!(v["tasks"].as_array().unwrap().len(), 2);
     let (_, c) = api.get(&format!("/v1/candidates/{id}")).await;
@@ -1250,7 +1304,13 @@ async fn catalog_rules_are_reasked_and_a_refused_reask_settles_invalid() {
     node.lock().refuse_ids.push(format!("{id}.r1"));
     let (_, v) = api.post("/v1/requests", edit_request(id)).await;
     let task = v["taskId"].as_str().unwrap().to_string();
-    node.complete(&task, &[("changeset.json", changeset_with_tool(id, "inventory.grantAll"))]);
+    node.complete(
+        &task,
+        &[(
+            "changeset.json",
+            changeset_with_tool(id, "inventory.grantAll"),
+        )],
+    );
     let v = api.until_state(id, "candidate_invalid").await;
     let codes: Vec<&str> = v["outcome"]["diagnostics"]
         .as_array()
@@ -1260,8 +1320,7 @@ async fn catalog_rules_are_reasked_and_a_refused_reask_settles_invalid() {
         .collect();
     assert_eq!(codes, ["UnknownTool", "Refused"], "{v}");
     assert_eq!(
-        v["outcome"]["diagnostics"][1]["data"]["code"],
-        "request_rejected",
+        v["outcome"]["diagnostics"][1]["data"]["code"], "request_rejected",
         "{v}"
     );
     assert!(!running.state.ledger.candidate(id).is_ok());
@@ -1270,11 +1329,28 @@ async fn catalog_rules_are_reasked_and_a_refused_reask_settles_invalid() {
     let id = "cs_01J9ZQ00000000000000000022";
     let (_, v) = api.post("/v1/requests", edit_request(id)).await;
     let task = v["taskId"].as_str().unwrap().to_string();
-    let topic = node.tasks().into_iter().find(|t| t.id == task).unwrap().topic;
-    node.post_record(&topic, "gc-designer@fake", "the model failed (etk_secretsecretsecret)", Some("failed"), vec![]);
+    let topic = node
+        .tasks()
+        .into_iter()
+        .find(|t| t.id == task)
+        .unwrap()
+        .topic;
+    node.post_record(
+        &topic,
+        "gc-designer@fake",
+        "the model failed (etk_secretsecretsecret)",
+        Some("failed"),
+        vec![],
+    );
     let v = api.until_state(id, "failed").await;
     assert_eq!(v["outcome"]["code"], "task_failed");
-    assert!(!v["outcome"]["message"].as_str().unwrap().contains("etk_secret"), "redacted: {v}");
+    assert!(
+        !v["outcome"]["message"]
+            .as_str()
+            .unwrap()
+            .contains("etk_secret"),
+        "redacted: {v}"
+    );
     running.shutdown().await;
 }
 
@@ -1293,7 +1369,9 @@ async fn requests_are_scoped_to_the_calling_app_and_rejections_are_etos_shaped()
     assert_eq!(s, 200);
     let (s, v) = other.get(&format!("/v1/requests/{id}")).await;
     assert_eq!((s, v["code"].as_str()), (404, Some("not_found")), "{v}");
-    let (s, _) = other.post(&format!("/v1/requests/{id}/cancel"), json!({})).await;
+    let (s, _) = other
+        .post(&format!("/v1/requests/{id}/cancel"), json!({}))
+        .await;
     assert_eq!(s, 404);
     let (s, _) = other.get(&format!("/v1/candidates/{id}")).await;
     assert_eq!(s, 404);
@@ -1313,7 +1391,10 @@ async fn requests_are_scoped_to_the_calling_app_and_rejections_are_etos_shaped()
     ] {
         let (s, ct, v) = api.raw(method.clone(), path, b"{not json".to_vec()).await;
         assert!(ct.starts_with("application/json"), "{method} {path}: {ct}");
-        assert!(v["code"].is_string() && v["message"].is_string(), "{method} {path}: {v}");
+        assert!(
+            v["code"].is_string() && v["message"].is_string(),
+            "{method} {path}: {v}"
+        );
         if path != "/v1/events" {
             assert_eq!(s, status, "{method} {path}: {v}");
         } else {

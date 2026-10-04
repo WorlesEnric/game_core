@@ -140,7 +140,9 @@ async fn etos_shaped(res: Response) -> Response {
             "too_large",
             format!("a request body is at most {} MiB", MAX_BODY >> 20),
         ),
-        StatusCode::METHOD_NOT_ALLOWED => ("bad_request", "see 04 §2 for the routes and methods".into()),
+        StatusCode::METHOD_NOT_ALLOWED => {
+            ("bad_request", "see 04 §2 for the routes and methods".into())
+        }
         StatusCode::UPGRADE_REQUIRED => ("bad_request", "open this route as a WebSocket".into()),
         StatusCode::NOT_FOUND => ("not_found", "see 04 §2 for the routes".into()),
         s if s.is_server_error() => ("internal", "retry; the companion logs the cause".into()),
@@ -213,7 +215,9 @@ fn parse<T: DeserializeOwned>(body: &Bytes) -> ApiResult<T> {
 fn own_request(s: &AppState, id: &str, app: &str) -> ApiResult<crate::ledger::RequestRow> {
     match s.ledger.request(id) {
         Ok(r) if r.app == app => Ok(r),
-        Ok(_) | Err(LedgerError::NotFound(_)) => Err(ApiError::not_found(format!("no request {id}"))),
+        Ok(_) | Err(LedgerError::NotFound(_)) => {
+            Err(ApiError::not_found(format!("no request {id}")))
+        }
         Err(e) => Err(e.into()),
     }
 }
@@ -450,8 +454,9 @@ async fn events_loop(s: AppState, socket: WebSocket, mut after: i64) {
         let full = batch.len() == 500;
         for e in batch {
             after = e.cursor;
-            let text = serde_json::to_string(&pruned(serde_json::to_value(&e).unwrap_or(Value::Null)))
-                .unwrap_or_default();
+            let text =
+                serde_json::to_string(&pruned(serde_json::to_value(&e).unwrap_or(Value::Null)))
+                    .unwrap_or_default();
             if tx.send(Message::Text(text.into())).await.is_err() {
                 return;
             }
@@ -501,7 +506,9 @@ mod tests {
             .unwrap_or_default();
         let res = etos_shaped(plain).await;
         assert_eq!(res.status(), StatusCode::PAYLOAD_TOO_LARGE);
-        let bytes = axum::body::to_bytes(res.into_body(), 4096).await.unwrap_or_default();
+        let bytes = axum::body::to_bytes(res.into_body(), 4096)
+            .await
+            .unwrap_or_default();
         let v: Value = serde_json::from_slice(&bytes).unwrap_or(Value::Null);
         assert_eq!(v["code"], "too_large", "{v}");
         assert_eq!(v["message"], "length limit exceeded");

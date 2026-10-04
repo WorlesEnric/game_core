@@ -360,8 +360,14 @@ impl Ledger {
         conn.execute_batch(SCHEMA)?;
         // Ledgers written before these columns existed.
         for (col, ddl) in [
-            ("resumes", "ALTER TABLE requests ADD COLUMN resumes INTEGER NOT NULL DEFAULT 0"),
-            ("given_up", "ALTER TABLE requests ADD COLUMN given_up INTEGER NOT NULL DEFAULT 0"),
+            (
+                "resumes",
+                "ALTER TABLE requests ADD COLUMN resumes INTEGER NOT NULL DEFAULT 0",
+            ),
+            (
+                "given_up",
+                "ALTER TABLE requests ADD COLUMN given_up INTEGER NOT NULL DEFAULT 0",
+            ),
         ] {
             let present: i64 = conn.query_row(
                 "SELECT COUNT(*) FROM pragma_table_info('requests') WHERE name = ?1",
@@ -615,7 +621,9 @@ impl Ledger {
         )?;
         attempt_in(&conn, request_id, attempt)?
             .inputs
-            .ok_or_else(|| LedgerError::NotFound(format!("inputs of attempt {attempt} of {request_id}")))
+            .ok_or_else(|| {
+                LedgerError::NotFound(format!("inputs of attempt {attempt} of {request_id}"))
+            })
     }
 
     /// Record the task id of an attempt. A different task id for an attempt that already has
@@ -1279,8 +1287,14 @@ mod tests {
         let l = Ledger::open(&dir.path().join("l.db")).unwrap();
         l.insert_request(&new("cs1", "d1")).unwrap();
         // Inputs: the first writer wins.
-        assert_eq!(l.claim_attempt_inputs("cs1", 0, &json!([1])).unwrap(), json!([1]));
-        assert_eq!(l.claim_attempt_inputs("cs1", 0, &json!([2])).unwrap(), json!([1]));
+        assert_eq!(
+            l.claim_attempt_inputs("cs1", 0, &json!([1])).unwrap(),
+            json!([1])
+        );
+        assert_eq!(
+            l.claim_attempt_inputs("cs1", 0, &json!([2])).unwrap(),
+            json!([1])
+        );
         // A re-ask inserts the attempt and moves the pointer together.
         let a = AttemptRow {
             request_id: "cs1".into(),
@@ -1325,7 +1339,11 @@ mod tests {
         assert!(l.begin_reask(&a2, &upd).unwrap().is_none());
         assert!(l.attempt("cs1", 2).is_err());
         // Giving up applies to unresolved requests only.
-        assert!(l.give_up("cs1", &json!({"code": "unresolved"})).unwrap().is_none());
+        assert!(
+            l.give_up("cs1", &json!({"code": "unresolved"}))
+                .unwrap()
+                .is_none()
+        );
         l.insert_request(&new("cs2", "d")).unwrap();
         l.update_request(
             "cs2",
@@ -1337,7 +1355,11 @@ mod tests {
         .unwrap();
         assert_eq!(l.note_resume("cs2").unwrap(), 1);
         assert_eq!(l.open_requests().unwrap().len(), 1);
-        assert!(l.give_up("cs2", &json!({"code": "unresolved"})).unwrap().is_some());
+        assert!(
+            l.give_up("cs2", &json!({"code": "unresolved"}))
+                .unwrap()
+                .is_some()
+        );
         assert!(l.open_requests().unwrap().is_empty());
         // Scoped listing.
         assert!(l.requests_after("other-app", 0, 10).unwrap().is_empty());

@@ -265,12 +265,8 @@ pub fn node_row(node: &IndexNode) -> Option<(&'static str, String, Map<String, V
             put("name", Some(json!(node.name)));
             put("type", Some(json!(node.ty)));
             put("fields", Some(fields()));
-            let region = link_to(node, "region").or_else(|| {
-                node.reference
-                    .location
-                    .as_ref()
-                    .map(|l| l.region.clone())
-            });
+            let region = link_to(node, "region")
+                .or_else(|| node.reference.location.as_ref().map(|l| l.region.clone()));
             put("region", region.map(Value::String));
             put(
                 "definition",
@@ -619,8 +615,8 @@ mod tests {
         assert_eq!(v["fields"]["speed"]["value"], 1.8);
         let d = node(
             json!({"ref": {"kind": "Definition", "authoringId": "d1", "definition": "quest.lantern@1"},
-                            "type": "quest.QuestDefinition", "name": "Lantern",
-                            "fields": {"stages": {"value": [1, 2]}}}),
+                            "type": "quest.definition", "name": "Lantern",
+                            "fields": {"stages": {"value": [1, 2], "type": "int[]"}}}),
         );
         let (kind, key, v) = node_row(&d).unwrap();
         assert_eq!((kind, key.as_str()), ("gc_quest", "quest.lantern"));

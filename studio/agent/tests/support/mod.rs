@@ -550,7 +550,10 @@ async fn op(State(n): State<FakeNode>, Path(op): Path<String>, body: Bytes) -> R
             } else {
                 format!("sha256:{}", sha(&bytes))
             };
-            let media = answer["media_type"].as_str().unwrap_or("image/png").to_string();
+            let media = answer["media_type"]
+                .as_str()
+                .unwrap_or("image/png")
+                .to_string();
             axum::Json(json!({"key": v["key"], "op": op, "provider": "echo-images", "job_id": "job_1",
                               "state": {"state": "succeeded"},
                               "refs": [{"id": id, "name": name, "kind": "pinned", "size": bytes.len(), "owner": "fake",
