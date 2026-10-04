@@ -100,6 +100,11 @@ namespace GameCore.Studio.Edit
             }
 
             options ??= new StageOptions();
+            if (options.Mode != ValidationMode.Candidate && changeSet.Requirements == null)
+            {
+                changeSet = WithDerivedRequirements(changeSet);
+            }
+
             StagedChangeSet staged = StageCore(changeSet, options, false, true);
             if (options.Mode == ValidationMode.Candidate && options.JournalCandidate && staged.Ok && !_runtime.Journal.Exists(changeSet.Id))
             {
@@ -1066,6 +1071,23 @@ namespace GameCore.Studio.Edit
                 changeSet.Outcomes,
                 changeSet.Policy,
                 changeSet.Timestamps);
+        }
+
+        /// <summary>
+        /// Engine-built change sets (manual edits, tools) get the requirements their tools imply; candidates from agents
+        /// must declare their own (03 s6). An all-Live change set keeps no requirements member.
+        /// </summary>
+        private ChangeSet WithDerivedRequirements(ChangeSet changeSet)
+        {
+            List<RuntimeApply> perOperation = new List<RuntimeApply>();
+            foreach (Operation operation in changeSet.Operations)
+            {
+                IStudioTool? tool = _runtime.Registry.Find(operation.Tool);
+                perOperation.Add(operation.ApplyRequirement ?? tool?.Entry.RuntimeApply ?? RuntimeApply.Live);
+            }
+
+            Requirements implied = Requirements.FromOperations(perOperation);
+            return implied.Max > RuntimeApply.Live ? changeSet.WithRequirements(implied) : changeSet;
         }
 
         private static string Shorten(string text) => text.Length <= 60 ? text : text.Substring(0, 57) + "...";
