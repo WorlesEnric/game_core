@@ -1,0 +1,17 @@
+{
+  "name": "com.gamecore.unity.app",
+  "version": "1.0.0",
+  "displayName": "GameCore Unity Application Root",
+  "description": "SADR-010 application root of a GameCore game: composes the catalog manifest source, the composition lane with its validate-before-commit preflight, the target registry, recipes, migrations, ownership/stage descriptor, assembly publisher, derived-assembly pipeline, world/composition bridge, provenance explanation reader, observation hub and the world's adapter-frame registration with a one-pump counter, from one GameApplicationDefinition. Boots through the MonoBehaviour-free GameApplication.Boot(definition) or, on the player path, through the single application bootstrap in hard-failure mode; a boot either produces the game's world or a typed GameApplicationBootFailed.",
+  "unity": "6000.0",
+  "dependencies": {
+    "com.gamecore.composition": "1.0.0",
+    "com.gamecore.contracts": "1.0.0",
+    "com.gamecore.derivation": "1.0.0",
+    "com.gamecore.planning": "1.0.0",
+    "com.gamecore.unity.adapters": "1.0.0",
+    "com.gamecore.unity.runtime": "1.0.0",
+    "com.unity.collections": "2.6.6",
+    "com.unity.entities": "1.4.6"
+  }
+}

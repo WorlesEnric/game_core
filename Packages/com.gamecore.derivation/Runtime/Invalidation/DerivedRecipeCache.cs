@@ -151,6 +151,16 @@ namespace GameCore.Derivation
                 {
                     AppendRule(text, snapshot, rules[r]);
                 }
+
+                // SADR-013: a configuration-bound payload changes the composed value, so it is part of the
+                // fingerprint; an installation with no binding adds nothing and keeps its previous fingerprint.
+                IReadOnlyList<BoundRulePayload> bound = install.BoundPayloads;
+                for (int b = 0; b < bound.Count; b++)
+                {
+                    text.Append("  bound=").Append(bound[b].Rule.ToString())
+                        .Append(";payload=").Append(PayloadCodec.HashOf(bound[b].Payload).ToHex())
+                        .Append('\n');
+                }
             }
 
             IReadOnlyList<ProviderSelectionOverride> overrides = snapshot.Overrides;

@@ -180,6 +180,7 @@ namespace GameCore.Unity.Runtime.Integration
 
         private DerivationResult? previousDerivation;
         private readonly DerivedRecipeCache? recipeCache;
+        private readonly IReadOnlyList<RuleConfigBinding> configBindings;
 
         public DerivedAssemblyPipeline(
             UnityWorldHost world,
@@ -194,7 +195,8 @@ namespace GameCore.Unity.Runtime.Integration
             IPlanResourceGate gates,
             PlanBudget budget,
             DerivedRecipeCache? recipeCache = null,
-            DerivationOptions? derivationOptions = null)
+            DerivationOptions? derivationOptions = null,
+            IReadOnlyList<RuleConfigBinding>? configBindings = null)
         {
             this.world = world ?? throw new ArgumentNullException(nameof(world));
             this.lane = lane ?? throw new ArgumentNullException(nameof(lane));
@@ -209,6 +211,11 @@ namespace GameCore.Unity.Runtime.Integration
             this.budget = budget ?? throw new ArgumentNullException(nameof(budget));
             this.derivationOptions = derivationOptions ?? DerivationOptions.Default;
             this.recipeCache = recipeCache;
+            this.configBindings = configBindings ?? Array.Empty<RuleConfigBinding>();
+            if (!InstallConfigBinding.TryValidate(this.configBindings, out string bindingDetail))
+            {
+                throw new ArgumentException(bindingDetail + " (SADR-013)", nameof(configBindings));
+            }
 
             if (!lane.World.Session.Equals(world.World.Session))
             {
@@ -223,6 +230,24 @@ namespace GameCore.Unity.Runtime.Integration
                     nameof(publisher));
             }
         }
+
+        /// <summary>The world this pipeline publishes into (P-004: one pipeline per world incarnation).</summary>
+        public UnityWorldHost World => world;
+
+        /// <summary>The control lane whose committed publications this pipeline answers.</summary>
+        public CompositionHost Lane => lane;
+
+        /// <summary>The world's assembly publisher.</summary>
+        public AssemblyPublisher Publisher => publisher;
+
+        /// <summary>The catalog's configuration bindings every derivation input is built with (SADR-013).</summary>
+        public IReadOnlyList<RuleConfigBinding> ConfigBindings => configBindings;
+
+        /// <summary>Validate-before-commit dry runs this pipeline answered (SADR-011).</summary>
+        public int PreflightCount { get; private set; }
+
+        /// <summary>Dry runs that refused: each one became a lane-side rejection, never a lane/world split.</summary>
+        public int PreflightRefusedCount { get; private set; }
 
         /// <summary>The most recent accepted derivation, used as the delta base of the next one (P-023).</summary>
         public DerivationResult? PreviousDerivation => previousDerivation;
@@ -379,7 +404,8 @@ namespace GameCore.Unity.Runtime.Integration
                 lane.Committed,
                 targetView.Targets,
                 ruleKeys,
-                overrides);
+                overrides,
+                configBindings);
             report.Input = input;
             if (!input.Succeeded || input.Snapshot == null)
             {
@@ -453,6 +479,168 @@ namespace GameCore.Unity.Runtime.Integration
             }
 
             return Publish(operation, report, proposal.Proposal);
+        }
+
+        /// <summary>
+        /// SADR-011 validate-before-commit: runs the whole derive-and-plan half of the chain against a *proposed*
+        /// composition, before the lane publishes it, and publishes nothing. The steps are exactly the ones a real
+        /// publication runs - target view, derivation input (with configuration bindings), incremental derivation
+        /// against the last accepted base, proposal translation and the assembly planner against the world's
+        /// published bindings - so a composition the world would refuse is refused here, while the old composition
+        /// and the old assembly are both still published. The planner's staged leases and scratch are released
+        /// before this returns, and neither <see cref="PreviousDerivation"/> nor the publication counters move.
+        /// <para>
+        /// Outcome: <see cref="DerivedAssemblyOutcome.Published"/> means "the world would publish this assembly",
+        /// <see cref="DerivedAssemblyOutcome.NoTargetChange"/> means "the world would publish its unchanged
+        /// assembly", and <see cref="DerivedAssemblyOutcome.Refused"/> carries the refusing module's own code and
+        /// detail (P-028). A refusal after a passing dry run can still happen at publication for reasons no dry run
+        /// can see (a step in progress, a fault after the first live write); those are P-030/P-031 outcomes.
+        /// </para>
+        /// </summary>
+        public DerivedAssemblyReport Preflight(CompositionState proposed, OperationId operation)
+        {
+            if (proposed == null)
+            {
+                throw new ArgumentNullException(nameof(proposed));
+            }
+
+            PreflightCount++;
+            var report = new DerivedAssemblyReport
+            {
+                Operation = operation,
+                LaneRevision = proposed.Revision,
+                LaneEpoch = proposed.Epoch,
+                WorldEpochBefore = world.CurrentEpoch,
+                WorldEpochAfter = world.CurrentEpoch,
+            };
+
+            DerivationInputTargets targetView = targets.BuildDerivationTargets();
+            if (!targetView.Succeeded)
+            {
+                return RefusePreflight(report, targetView.Code, "target view: " + targetView.Detail);
+            }
+
+            DerivationInputReport input = CompositionDerivationInput.Build(
+                proposed,
+                targetView.Targets,
+                ruleKeys,
+                overrides,
+                configBindings);
+            report.Input = input;
+            if (!input.Succeeded || input.Snapshot == null)
+            {
+                return RefusePreflight(report, input.Code, "derivation input: " + input.Detail);
+            }
+
+            IncrementalDerivationOutcome incremental = IncrementalDerivationEngine.Derive(
+                input.Snapshot,
+                values,
+                derivationOptions,
+                previousDerivation,
+                null,
+                recipeCache);
+            DerivationResult derivation = incremental.Result;
+            report.Derivation = derivation;
+            report.Invalidation = incremental.Invalidation;
+            report.IncrementalCounters = incremental.Counters;
+            if (!derivation.Accepted)
+            {
+                return RefusePreflight(
+                    report,
+                    derivation.DiagnosticCode,
+                    "derivation rejected (" + derivation.Rejection.ToString() + "): " + WitnessOf(derivation));
+            }
+
+            if (derivation.Delta != null && derivation.Delta.IsEmpty)
+            {
+                report.Outcome = DerivedAssemblyOutcome.NoTargetChange;
+                report.Code = DiagnosticCode.None;
+                report.Detail = "dry run: the proposed composition changes no target assembly";
+                return report;
+            }
+
+            DerivationProposalReport proposal = DerivedCompositionProposal.Build(
+                derivation,
+                proposed,
+                publisher.PublishedRevision,
+                world.CurrentEpoch,
+                DerivedCompositionProposal.InputHashOf(derivation),
+                input.Snapshot.SnapshotHash,
+                operation,
+                publisher.Published.Bindings);
+            report.Proposal = proposal;
+            if (proposal.Outcome == DerivationProposalOutcome.NoAssemblies)
+            {
+                report.Outcome = DerivedAssemblyOutcome.NoTargetChange;
+                report.Code = DiagnosticCode.None;
+                report.Detail = "dry run: " + proposal.Detail;
+                return report;
+            }
+
+            if (!proposal.Succeeded || proposal.Proposal == null)
+            {
+                return RefusePreflight(report, proposal.Code, "proposal: " + proposal.Detail);
+            }
+
+            var liveSlots = seeder.ReadLiveSlots(TargetIds());
+            PlannedPublication plan = AssemblyPlanner.Build(
+                proposal.Proposal,
+                publisher.Descriptor,
+                publisher.PublishedRevision,
+                world.CurrentEpoch,
+                publisher.Published.Bindings,
+                publisher.Published.Rules,
+                targets.PlannerTargets(),
+                liveSlots,
+                migrations,
+                new MigrationScratch(budget.ScratchCapacityBytes, budget.ScratchBytesPerSlot),
+                new InertAcquisitionSet(gates, operation),
+                budget);
+            report.Plan = plan;
+
+            // A dry run owns its scratch and its inert acquisitions: both are released before anything could observe
+            // them, so a preflight never holds a lease the real publication would then compete with (P-029).
+            plan.Acquisitions.ReleaseAll();
+            plan.Scratch.ReleaseAll();
+
+            if (!plan.IsPrepared)
+            {
+                return RefusePreflight(
+                    report,
+                    plan.State.Code,
+                    "plan " + plan.State.Phase.ToString() + ": " + plan.State.Detail);
+            }
+
+            report.Outcome = DerivedAssemblyOutcome.Published;
+            report.Code = DiagnosticCode.None;
+            report.Detail = "dry run: the world would publish this assembly ("
+                + plan.Installs.Count.ToString(CultureInfo.InvariantCulture) + " installs, "
+                + plan.Removals.Count.ToString(CultureInfo.InvariantCulture) + " removals)";
+            return report;
+        }
+
+        private DerivedAssemblyReport RefusePreflight(DerivedAssemblyReport report, DiagnosticCode code, string detail)
+        {
+            PreflightRefusedCount++;
+            report.Outcome = DerivedAssemblyOutcome.Refused;
+            report.Code = code == DiagnosticCode.None ? DiagnosticCode.StalePlan : code;
+            report.Detail = detail;
+            return report;
+        }
+
+        private static string WitnessOf(DerivationResult derivation)
+        {
+            if (derivation.CompositionFailures.Count != 0)
+            {
+                return derivation.CompositionFailures[0].ToString();
+            }
+
+            if (derivation.ValidationProblems.Count != 0)
+            {
+                return derivation.ValidationProblems[0].ToString();
+            }
+
+            return "no witness retained";
         }
 
         private DerivedAssemblyReport Publish(

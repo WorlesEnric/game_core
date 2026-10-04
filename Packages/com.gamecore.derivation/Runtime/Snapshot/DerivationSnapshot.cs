@@ -846,6 +846,16 @@ namespace GameCore.Derivation
                     .Append(";configHash=").Append(install.Record.ConfigHash.ToHex())
                     .Append(";generation=").Append(install.Record.Generation.Value)
                     .Append(";activation=").Append(install.Record.ActivationEpoch.Value).Append('\n');
+
+                // SADR-013: configuration-bound rule payloads are semantic input. They are appended only when an
+                // installation binds one, so a snapshot without bindings keeps exactly its previous canonical text.
+                IReadOnlyList<BoundRulePayload> bound = install.BoundPayloads;
+                for (int b = 0; b < bound.Count; b++)
+                {
+                    text.Append("  bound=").Append(bound[b].Rule.ToString())
+                        .Append(";payload=").Append(PayloadCodec.HashOf(bound[b].Payload).ToHex()).Append('\n');
+                }
+
                 IReadOnlyList<DerivationRule> rules = install.Manifest.DerivationRules;
                 for (int r = 0; r < rules.Count; r++)
                 {

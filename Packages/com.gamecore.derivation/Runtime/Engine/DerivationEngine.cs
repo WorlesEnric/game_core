@@ -453,12 +453,15 @@ namespace GameCore.Derivation
                                     DerivationRejectionKind.CompositionConflict, snapshot, null, failures, counters);
                             }
 
+                            // SADR-013: an installation whose configuration binds this rule contributes the bound bytes; every
+                            // other rule contributes its manifest's frozen payload, exactly as before.
+                            FrozenPayload contributedPayload = source.Install.PayloadOf(rule);
                             CapabilityContribution contribution = new CapabilityContribution(
                                 key,
                                 schema.Schema,
                                 policy.Policy,
-                                rule.PayloadDefinition,
-                                PayloadCodec.HashOf(rule.PayloadDefinition),
+                                contributedPayload,
+                                PayloadCodec.HashOf(contributedPayload),
                                 ContributionDisposition.Active);
 
                             SlotGroupKey groupKey = new SlotGroupKey(

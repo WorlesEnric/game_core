@@ -123,6 +123,20 @@ namespace GameCore.Unity.Runtime.Integration
             IReadOnlyList<DerivationTarget>? targets,
             IReadOnlyList<DerivationRuleKeys>? ruleKeys,
             IReadOnlyList<ProviderSelectionOverride>? overrides)
+            => Build(committed, targets, ruleKeys, overrides, null);
+
+        /// <summary>
+        /// Builds the snapshot for one committed composition with the catalog's configuration bindings (SADR-013):
+        /// every installation's effective configuration supplies the payload of each rule it binds, so a
+        /// reconfiguration (O-05) is a semantic input of the next derivation. A bound field with no canonical slot
+        /// encoding refuses the input with <see cref="DiagnosticCode.UnsupportedVersion"/>.
+        /// </summary>
+        public static DerivationInputReport Build(
+            CompositionState committed,
+            IReadOnlyList<DerivationTarget>? targets,
+            IReadOnlyList<DerivationRuleKeys>? ruleKeys,
+            IReadOnlyList<ProviderSelectionOverride>? overrides,
+            IReadOnlyList<RuleConfigBinding>? configBindings)
         {
             if (committed == null)
             {
@@ -157,7 +171,21 @@ namespace GameCore.Unity.Runtime.Integration
             for (int i = 0; i < committed.InstallCount; i++)
             {
                 InstallEntry entry = committed.Installs[i];
-                installs.Add(new DerivationInstall(entry.Record, entry.State, entry.Manifest));
+                if (!InstallConfigBinding.TryBind(
+                        entry,
+                        configBindings,
+                        out IReadOnlyList<BoundRulePayload> bound,
+                        out DiagnosticCode bindCode,
+                        out string bindDetail))
+                {
+                    return DerivationInputReport.Refused(
+                        DerivationInputOutcome.InvalidComposition,
+                        contracts,
+                        bindCode,
+                        bindDetail);
+                }
+
+                installs.Add(new DerivationInstall(entry.Record, entry.State, entry.Manifest, bound));
 
                 IReadOnlyList<CapabilityContract> declared = entry.Manifest.CapabilityContracts;
                 for (int c = 0; c < declared.Count; c++)

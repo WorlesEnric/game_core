@@ -447,6 +447,16 @@ namespace GameCore.Planning
                     continue;
                 }
 
+                // A provider that declares this identity again in the proposal states its own current value: its
+                // published row is superseded by that re-declaration, not a second candidate competing with it. Without
+                // this, a reconfigured value (a changed contribution under the same key, P-017; SADR-013) would rank
+                // against its own previous value - an Exclusive slot would conflict with itself and a Replace tie could
+                // keep the stale value. Rows of *other* providers stay candidates, so P-018 precedence is unchanged.
+                if (DeclaresProvider(group, existingRow.Provider))
+                {
+                    continue;
+                }
+
                 group.Add(Candidate.FromExistingRow(existingRow, declaredForRow, known));
             }
 
@@ -1544,6 +1554,19 @@ namespace GameCore.Planning
         /// Finds the declaration of this proposal that governs an existing row's slot, which is what gives an
         /// already-effective row its policy and rule identity for ranking (P-018).
         /// </summary>
+        private static bool DeclaresProvider(List<Candidate> group, ProviderInstallationId provider)
+        {
+            for (int i = 0; i < group.Count; i++)
+            {
+                if (group[i].Provider.Equals(provider))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private static bool TryFindDeclaration(
             CompositionProposal proposal,
             TargetBindingRow row,

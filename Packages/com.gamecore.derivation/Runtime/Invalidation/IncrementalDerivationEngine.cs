@@ -473,12 +473,14 @@ namespace GameCore.Derivation
                                     snapshot, DerivationRejectionKind.CompositionConflict, closure, counters, failures);
                             }
 
+                            // SADR-013: the configuration-bound payload when the installation binds this rule (P-017).
+                            FrozenPayload contributedPayload = source.Install.PayloadOf(rule);
                             CapabilityContribution contribution = new CapabilityContribution(
                                 key,
                                 schema.Schema,
                                 policy.Policy,
-                                rule.PayloadDefinition,
-                                PayloadCodec.HashOf(rule.PayloadDefinition),
+                                contributedPayload,
+                                PayloadCodec.HashOf(contributedPayload),
                                 ContributionDisposition.Active);
 
                             SlotGroupKey groupKey = new SlotGroupKey(target.Target, rule.OutputCapability.Capability, slot);
