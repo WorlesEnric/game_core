@@ -19,8 +19,8 @@
 #   service        ~/.config/systemd/user/etosd.service (user unit, linger enabled)
 #   API            127.0.0.1:7410 (SDK API), broker 172.17.0.1:7411, web UI 127.0.0.1:7400
 #   images         localhost/etos-default:latest, localhost/gc-designer:current, localhost/gc-mechanic:current
-#   workers        gc-designer, gc-mechanic (model alias `default`), created before the agent so
-#                  that `etos agent install` keeps their image and network
+#   workers        gc-designer, gc-mechanic, created (model alias `default`) before the agent so
+#                  that `etos agent install` keeps their image and network; agent.toml sets the model
 #   agent          gamecore-studio (studio/etos/agent, --link; binary built from studio/agent)
 #   app            gamecore-unity, paired key ~/.config/gamecore-studio/app-key.json (0600)
 set -euo pipefail
