@@ -166,9 +166,29 @@ namespace GameCore.Gameplay.Compile
         }
 
         /// <summary>Bakes <paramref name="world"/> into <paramref name="paths"/>.</summary>
-        public static BakeResult Bake(WorldDefinition world, BakePaths paths)
+        public static BakeResult Bake(WorldDefinition world, BakePaths paths) => Bake(world, paths, true);
+
+        /// <summary>
+        /// Bakes <paramref name="world"/>; with <paramref name="refreshAssetDatabase"/> false the generated C# is written
+        /// but not imported (no script compilation, no domain reload: batch and test bakes), and Unity imports it on
+        /// the next project load.
+        /// </summary>
+        public static BakeResult Bake(WorldDefinition world, BakePaths paths, bool refreshAssetDatabase)
         {
             Stopwatch clock = Stopwatch.StartNew();
+            BakeStaleMarker.BeginBake();
+            try
+            {
+                return BakeCore(world, paths, clock, refreshAssetDatabase);
+            }
+            finally
+            {
+                BakeStaleMarker.EndBake(clock.ElapsedMilliseconds);
+            }
+        }
+
+        private static BakeResult BakeCore(WorldDefinition world, BakePaths paths, Stopwatch clock, bool refreshAssetDatabase)
+        {
             Outputs? outputs = Compute(world, paths, out BakeResult? failure);
             if (outputs == null)
             {
@@ -206,7 +226,11 @@ namespace GameCore.Gameplay.Compile
             }
 
             AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+            if (refreshAssetDatabase)
+            {
+                AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+            }
+
             BakeStaleMarker.Clear();
             result.ElapsedMilliseconds = clock.ElapsedMilliseconds;
             return result;
@@ -254,8 +278,9 @@ namespace GameCore.Gameplay.Compile
 
         private sealed class Outputs
         {
-            public Outputs(WorldReadResult read, string description, string generatedCode, string fingerprint, string report)
+            public Outputs(WorldReadResult read, string description, string generatedCode, string fingerprint, string report, string catalogTypeName)
             {
+                CatalogTypeName = catalogTypeName;
                 Read = read;
                 Description = description;
                 GeneratedCode = generatedCode;
@@ -272,6 +297,8 @@ namespace GameCore.Gameplay.Compile
             public string Fingerprint { get; }
 
             public string Report { get; }
+
+            public string CatalogTypeName { get; }
         }
 
         private static Outputs? Compute(WorldDefinition world, BakePaths paths, out BakeResult? failure)
@@ -303,7 +330,7 @@ namespace GameCore.Gameplay.Compile
             string code = compiled.GeneratedCode!;
             string fingerprint = CatalogGenerator.ExtractStringConstant(code, "CatalogFingerprint") ?? string.Empty;
             string report = BakeReportWriter.Write(read.World, fingerprint);
-            return new Outputs(read, description, code, fingerprint, report);
+            return new Outputs(read, description, code, fingerprint, report, paths.Naming.Namespace + "." + paths.Naming.ClassName);
         }
 
         private static bool WriteManifest(string path, Outputs outputs)
@@ -405,7 +432,7 @@ namespace GameCore.Gameplay.Compile
             }
 
             manifest.Assign(world.WorldId, world.WorldName, world.StartRegionId, world.FocusEntityId, world.PreloadNeighbours,
-                outputs.Fingerprint, reportHash, regions, portals, definitions, entities);
+                outputs.Fingerprint, outputs.CatalogTypeName, reportHash, regions, portals, definitions, entities);
             if (created)
             {
                 EnsureDirectory(path);

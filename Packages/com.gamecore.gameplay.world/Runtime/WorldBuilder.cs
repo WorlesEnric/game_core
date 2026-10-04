@@ -28,6 +28,7 @@ using GameCore.Unity.Adapters;
 using GameCore.Unity.App;
 using GameCore.Unity.Runtime;
 using GameCore.Unity.Runtime.Integration;
+using GameCore.Unity.Runtime.Messages;
 using GameCore.Unity.Runtime.Time;
 
 namespace GameCore.Gameplay.World
@@ -333,7 +334,7 @@ namespace GameCore.Gameplay.World
             ConfigDocument local = ConfigDocument.Empty;
             ConfigComposeResult composed = ConfigComposer.Compose(new[]
             {
-                new ConfigLayer(ConfigLayerOrigin.SchemaDefaults, declaration.Manifest.ConfigSchema.Id.Value, declaration.SchemaDefaults ?? ConfigDocument.Empty),
+                new ConfigLayer(ConfigLayerOrigin.SchemaDefaults, declaration.Manifest.ConfigSchema.Id.Value, declaration.SchemaDefaults),
                 new ConfigLayer(ConfigLayerOrigin.LocalPatch, instance.Value, local),
             });
 
@@ -364,7 +365,7 @@ namespace GameCore.Gameplay.World
                 scope,
                 parent,
                 false,
-                null,
+                new IsolationSet(false, null),
                 new IsolationSet(false, null),
                 null,
                 null,

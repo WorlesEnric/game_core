@@ -15,6 +15,7 @@ using GameCore.Unity.Adapters;
 using GameCore.Unity.App;
 using GameCore.Unity.Runtime;
 using GameCore.Unity.Runtime.Integration;
+using GameCore.Unity.Runtime.Messages;
 using UnityEngine;
 
 namespace GameCore.Gameplay.World
@@ -137,6 +138,7 @@ namespace GameCore.Gameplay.World
         private readonly List<IPresentationBinder> binders = new List<IPresentationBinder>();
         private readonly List<IGameplayInputSource> inputs = new List<IGameplayInputSource>();
         private readonly Dictionary<TargetId, int> pendingPortalTravel = new Dictionary<TargetId, int>();
+        private EventCursor eventCursor;
         private int frame;
 
         internal GameplayWorld(GameApplicationRoot root, WorldBuildPlan plan, EntityModule entities, WorldModule worldModule)
@@ -148,6 +150,7 @@ namespace GameCore.Gameplay.World
             Slots = new WorldSlotReader(root.Host.EntityWorld, root.Registry);
             Commands = new GameplayCommands(this, StableNameKeyDerivation.Derive("gameplay.issuer.player." + plan.Manifest.WorldId));
             Spawner = new EntitySpawner(this);
+            eventCursor = new EventCursor(root.World, EventSequence.Zero);
             TargetId focus = AuthoringIds.IsValid(plan.Manifest.FocusEntityId)
                 ? AuthoringIds.TargetIdFor(plan.Manifest.FocusEntityId)
                 : default(TargetId);
@@ -249,6 +252,29 @@ namespace GameCore.Gameplay.World
         }
 
         public void AddInput(IGameplayInputSource input) => inputs.Add(input ?? throw new ArgumentNullException(nameof(input)));
+
+        /// <summary>
+        /// Appends the committed events published since the last call (entity and world events, in commit order) and
+        /// returns how many were read. The world keeps one read cursor; use the host's plane directly for more readers.
+        /// </summary>
+        public int ReadEvents(List<CommittedEvent> into, int maxEvents = 256)
+        {
+            if (into == null)
+            {
+                throw new ArgumentNullException(nameof(into));
+            }
+
+            WorldMessagePlane? plane = Root.Host.Messages;
+            if (plane == null)
+            {
+                return 0;
+            }
+
+            CommittedEventPage page = plane.ReadEvents(eventCursor, maxEvents);
+            into.AddRange(page.Events);
+            eventCursor = page.NextCursor;
+            return page.Events.Count;
+        }
 
         /// <summary>Requests travel through a portal for a traveller standing in one of its regions (portal triggers).</summary>
         public bool RequestPortalTravel(TargetId traveller, string portalId, string fromScenePath)

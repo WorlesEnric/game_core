@@ -88,6 +88,7 @@ namespace GameCore.Gameplay.World
         [SerializeField] private string focusEntityId = string.Empty;
         [SerializeField] private bool preloadNeighbours;
         [SerializeField] private string catalogFingerprint = string.Empty;
+        [SerializeField] private string catalogTypeName = string.Empty;
         [SerializeField] private string bakeReportHash = string.Empty;
         [SerializeField] private List<ManifestRegion> regions = new List<ManifestRegion>();
         [SerializeField] private List<ManifestPortal> portals = new List<ManifestPortal>();
@@ -111,6 +112,9 @@ namespace GameCore.Gameplay.World
 
         /// <summary>SHA-256 of the bake report text: the identity of this bake.</summary>
         public string BakeReportHash => bakeReportHash;
+
+        /// <summary>Full name of the generated catalog class the bake wrote (resolved by <see cref="GameplayCatalog"/>).</summary>
+        public string CatalogTypeName => catalogTypeName;
 
         public IReadOnlyList<ManifestRegion> Regions => regions;
 
@@ -180,6 +184,7 @@ namespace GameCore.Gameplay.World
             string focusEntity,
             bool preload,
             string fingerprint,
+            string catalogType,
             string reportHash,
             List<ManifestRegion> regionList,
             List<ManifestPortal> portalList,
@@ -193,6 +198,7 @@ namespace GameCore.Gameplay.World
             focusEntityId = focusEntity ?? string.Empty;
             preloadNeighbours = preload;
             catalogFingerprint = fingerprint ?? string.Empty;
+            catalogTypeName = catalogType ?? string.Empty;
             bakeReportHash = reportHash ?? string.Empty;
             regions = regionList ?? new List<ManifestRegion>();
             portals = portalList ?? new List<ManifestPortal>();

@@ -1,0 +1,39 @@
+{
+  "name": "Hollowmere.P1_1.EditMode.Tests",
+  "rootNamespace": "Hollowmere.P1_1.EditMode.Tests",
+  "references": [
+    "GameCore.Composition",
+    "GameCore.Contracts",
+    "GameCore.Gameplay.Compile.Core",
+    "GameCore.Gameplay.Compile.Editor",
+    "GameCore.Gameplay.Contracts",
+    "GameCore.Gameplay.Entities",
+    "GameCore.Gameplay.Entities.Editor",
+    "GameCore.Gameplay.World",
+    "GameCore.Gameplay.World.Editor",
+    "GameCore.Rules.Gameplay",
+    "GameCore.Unity.Adapters",
+    "GameCore.Unity.App",
+    "GameCore.Unity.Runtime",
+    "Hollowmere.World.Editor",
+    "Unity.Collections",
+    "Unity.Entities",
+    "UnityEngine.TestRunner",
+    "UnityEditor.TestRunner"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
