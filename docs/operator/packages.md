@@ -99,7 +99,7 @@ cannot drift from the sources it describes:
 
 ```sh
 python3 tools/check_package_metadata.py            # audit
-python3 tools/check_package_metadata.py --self-test # falsify the rules themselves (30 cases)
+python3 tools/check_package_metadata.py --self-test # falsify the rules themselves (31 cases)
 python3 tools/check_package_metadata.py --sync-lock # mirror the lock's dependency maps from the manifests
 python3 tools/check_package_metadata.py --json artifacts/reproducibility/package-metadata.json
 ```
