@@ -1,6 +1,6 @@
 # P0.4 kernel-app — packet report
 
-Branch `worktree-agent-a0524a3d15ab6a066` (merged with `main` at P0.2+P0.3). Owner: Opus 5.5.
+Branch `worktree-agent-a0524a3d15ab6a066` (merged with `main` at `0d99f50`). Owner: Opus 5.5.
 Code commit: `3f6e0df`. Everything below was compiled and run on `myubuntu`; nothing was built on the Mac.
 
 ## 1. Changes by SADR
@@ -235,18 +235,20 @@ Checkers, run through `rtk proxy` to unfiltered files:
 - `python3 tools/check_game_core_csharp.py`: ok, 649 files, including `com.gamecore.unity.app`, which is now in P0.2's
   targets.
 - `python3 tools/validate_game_core_docs.py`: passed.
-- `python3 tools/check_package_metadata.py`: **fails, on one problem I did not introduce.** `com.gamecore.studio.core`
-  (merged from P0.3) is not locked in `unity/GameCore.Validation/Packages/packages-lock.json` or in
-  `games/hollowmere/Packages/packages-lock.json`. `main` has the same gap. Before the merge, this branch passed the
-  check, `com.gamecore.unity.app` included.
+- `python3 tools/check_package_metadata.py`: ok, after merging `main` at `0d99f50`. Its P0.2 follow-up locks
+  `com.gamecore.studio.core` in hollowmere. Before that merge, the check failed on the unlocked studio.core, which
+  this packet did not introduce.
+
+All three checkers were run on the host at `12dca6f` (output in `p04-runs/check_*.py.txt`, `validate_*.py.txt`).
+That merge brought only tooling, docs and hollowmere manifest changes, so the test runs above (at `3f6e0df`) were
+not repeated.
 
 ## 4. Leftovers
 
 1. The P0.4 row's acceptance asks for a hollowmere smoke scene booting through the root with FallbackCount == 0. This
    was not done: hollowmere belongs to P0.2, and the integrator adds `com.gamecore.unity.app` to its manifest. The
    equivalent headless proof is `Boot_ComposesTheRootWithTheRealCatalogHash_AndOnePumpPath`.
-2. `check_package_metadata.py` fails on `main` because `com.gamecore.studio.core` is unlocked (see §3). This is for the
-   integrator or P0.3.
+2. The hollowmere manifest still lacks `com.gamecore.unity.app`. The integrator adds it at merge time, as instructed.
 3. The root does not create a `WorldTimeDriver` and does not call `AdoptResourceTable(adaptation.NativeTable)`. A game
    whose stages publish native producer fences needs that wiring (P1.1).
 4. `CreateCaptureContext()` declares no plugin clocks, RNG streams, next-step buffers, command payloads or outbox
