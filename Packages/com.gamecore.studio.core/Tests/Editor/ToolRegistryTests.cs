@@ -50,7 +50,7 @@ namespace GameCore.Studio.Edit.Tests
             Assert.That(ids, Does.Contain("fixture.setGreeting"));
             Assert.That(ids, Does.Contain("fixture.fail"));
             Assert.That(ids, Does.Not.Contain(BuiltInToolIdsExt.RestoreAsset), "internal journal tools are not exported");
-            Assert.That(ids, Is.Ordered.Using(System.StringComparer.Ordinal));
+            Assert.That(ids, Is.Ordered.Using<string>(System.StringComparer.Ordinal));
 
             ToolEntry? greeting = catalog.FindTool("fixture.setGreeting");
             Assert.That(greeting!.TargetType, Is.EqualTo("fixture.npc"));

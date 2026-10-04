@@ -263,13 +263,13 @@ namespace GameCore.Studio.Edit
             if (info.IsScriptableObject)
             {
                 string path = context.ReplayOrArg("assetPath") ?? PathFor(context.StringArg("path")!, name);
-                ScriptableObject created = ScriptableObject.CreateInstance(info.Type);
-                created.name = Path.GetFileNameWithoutExtension(path);
-                ToolSupport.MintAuthoringId(created, info, id, false);
-                string? fieldProblem = ToolSupport.ApplyFields(context, created, info, context.Arg("fields") as JObject, false);
+                ScriptableObject createdAsset = ScriptableObject.CreateInstance(info.Type);
+                createdAsset.name = Path.GetFileNameWithoutExtension(path);
+                ToolSupport.MintAuthoringId(createdAsset, info, id, false);
+                string? fieldProblem = ToolSupport.ApplyFields(context, createdAsset, info, context.Arg("fields") as JObject, false);
                 if (fieldProblem != null)
                 {
-                    UnityEngine.Object.DestroyImmediate(created);
+                    UnityEngine.Object.DestroyImmediate(createdAsset);
                     return OperationResult.Failed(DiagnosticCodes.InvalidArgs, fieldProblem);
                 }
 
@@ -281,14 +281,14 @@ namespace GameCore.Studio.Edit
                         ToolSupport.EnsureFolder(folder!);
                     }
 
-                    AssetDatabase.CreateAsset(created, path);
-                    AssetDatabase.SaveAssetIfDirty(created);
+                    AssetDatabase.CreateAsset(createdAsset, path);
+                    AssetDatabase.SaveAssetIfDirty(createdAsset);
                 });
-                AuthoringRef? reference = ToolSupport.RefOf(context, created);
+                AuthoringRef? reference = ToolSupport.RefOf(context, createdAsset);
                 return OperationResult.Applied(new JObject { ["ref"] = ToolSupport.RefJson(reference), ["path"] = path })
                     .WithAssetLevelInverse(ToolSupport.InverseOp(BuiltInToolIdsExt.DeleteAsset, null, new JObject { ["path"] = path }))
                     .WithReplay(new JObject { ["authoringId"] = id, ["assetPath"] = path })
-                    .Touch(created);
+                    .Touch(createdAsset);
             }
 
             if (!SceneTools.TryParent(context, "parent", out Transform? parent, out string? problem))
