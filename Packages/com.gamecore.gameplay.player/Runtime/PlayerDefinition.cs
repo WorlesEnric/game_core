@@ -29,6 +29,9 @@ namespace GameCore.Gameplay.Player
         [AuthorRef(Category = "player.inputProfile", Required = false, Doc = "Input actions and sensitivities.")]
         [SerializeField] private InputProfile? input;
 
+        [AuthorRef(Category = "asset.prefab", Required = false, Doc = "Player rig prefab: the CharacterController PlayerLocomotion resolves movement with.")]
+        [SerializeField] private GameObject? rig;
+
         [AuthorField(Unit = "m/s", Min = 0.1, Max = 20, Doc = "Walking speed.")]
         [SerializeField] private float walkSpeed = 2.5f;
 
@@ -110,6 +113,8 @@ namespace GameCore.Gameplay.Player
 
         public InputProfile? Input => input;
 
+        public GameObject? Rig => rig;
+
         public float WalkSpeed => walkSpeed;
 
         public float RunSpeed => runSpeed;
@@ -177,6 +182,8 @@ namespace GameCore.Gameplay.Player
         public void SetEntity(EntityDefinition? value) => entity = value;
 
         public void SetInput(InputProfile? value) => input = value;
+
+        public void SetRig(GameObject? value) => rig = value;
 
         /// <summary>player.tuneMovement: speeds, jump and stamina in one call.</summary>
         public void TuneMovement(float walk, float run, float jump, int maxStamina, int drainPerSecond, int regenPerSecond)

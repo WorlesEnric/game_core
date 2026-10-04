@@ -129,7 +129,6 @@ GameObject:
   m_Component:
   - component: {fileID: 81626897}
   - component: {fileID: 81626895}
-  - component: {fileID: 81626896}
   m_Layer: 0
   m_Name: GameBoot
   m_TagString: Untagged
@@ -151,19 +150,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   manifest: {fileID: 11400000, guid: a4d6d664777e33bdd82ac743031e19ab, type: 2}
   preloadNeighbours: 0
---- !u!114 &81626896
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 81626894}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5674d3950be845b9964c5f9f2696c6dd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  boot: {fileID: 81626895}
 --- !u!4 &81626897
 Transform:
   m_ObjectHideFlags: 0
@@ -190,7 +176,6 @@ GameObject:
   - component: {fileID: 1119193326}
   - component: {fileID: 1119193325}
   - component: {fileID: 1119193324}
-  - component: {fileID: 1119193323}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -198,21 +183,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1119193323
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1119193322}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ec9b669f6bb4b57ada58a7b886b6293, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 12
-  lookDegreesPerPixel: 0.15
-  boot: {fileID: 81626895}
 --- !u!81 &1119193324
 AudioListener:
   m_ObjectHideFlags: 0

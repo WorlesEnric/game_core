@@ -1,6 +1,6 @@
 {
-  "name": "Hollowmere.World.Editor",
-  "rootNamespace": "Hollowmere.World.Editor",
+  "name": "Hollowmere.Gameplay.Editor",
+  "rootNamespace": "Hollowmere.GameplayAuthoring",
   "references": [
     "GameCore.Contracts",
     "GameCore.Gameplay.Compile.Core",
@@ -8,9 +8,19 @@
     "GameCore.Gameplay.Contracts",
     "GameCore.Gameplay.Entities",
     "GameCore.Gameplay.Entities.Editor",
+    "GameCore.Gameplay.Interaction",
+    "GameCore.Gameplay.Interaction.Editor",
+    "GameCore.Gameplay.Npc",
+    "GameCore.Gameplay.Npc.Editor",
+    "GameCore.Gameplay.Player",
+    "GameCore.Gameplay.Player.Editor",
     "GameCore.Gameplay.World",
     "GameCore.Gameplay.World.Editor",
-    "Hollowmere.Boot"
+    "GameCore.Rules.Gameplay",
+    "Hollowmere.Boot",
+    "Hollowmere.World.Editor",
+    "Unity.AI.Navigation",
+    "Unity.InputSystem"
   ],
   "includePlatforms": [
     "Editor"

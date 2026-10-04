@@ -83,7 +83,8 @@ namespace GameCore.Gameplay.Player
 
             var commands = new PlayerCommands(world, extension.Player);
             var input = new PlayerInputAdapter(extension, commands, source);
-            var locomotion = new PlayerLocomotion(world.Views, extension.Player, extension.PlayerAuthoringId, definition, rigPrefab);
+            var locomotion = new PlayerLocomotion(
+                world.Views, extension.Player, extension.PlayerAuthoringId, definition, rigPrefab != null ? rigPrefab : definition != null ? definition.Rig : null);
             input.Resolver = locomotion;
             var focus = new InteractionFocus(extension, commands, definition != null ? definition.ToFocusTuning() : FocusTuning.Default);
             var portals = new PortalProbe(extension, definition != null ? definition.Radius : 0.35f);

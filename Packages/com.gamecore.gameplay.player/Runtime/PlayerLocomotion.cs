@@ -64,6 +64,12 @@ namespace GameCore.Gameplay.Player
 
         public int Resolutions { get; private set; }
 
+        /// <summary>Frames resolved without ground under the committed pose (horizontal only).</summary>
+        public int UngroundedResolutions { get; private set; }
+
+        /// <summary>How far below the committed pose ground is searched for (m).</summary>
+        public float GroundProbeDistance { get; set; } = 20f;
+
         public int FootstepCount { get; private set; }
 
         public Vector3 Resolve(Vector3 from, Vector3 horizontal, bool jump, float deltaTime)
@@ -77,6 +83,16 @@ namespace GameCore.Gameplay.Player
             IgnoreViewColliders();
             rig.transform.position = from;
             Physics.SyncTransforms();
+
+            // No ground under the committed pose (the region scene is still loading, or the pose is off the map): move
+            // horizontally only, never fall into the void.
+            if (!Physics.Raycast(from + Vector3.up * 0.5f, Vector3.down, out RaycastHit _, GroundProbeDistance, ~0, QueryTriggerInteraction.Ignore))
+            {
+                verticalSpeed = 0f;
+                UngroundedResolutions++;
+                return new Vector3(from.x + horizontal.x, from.y, from.z + horizontal.z);
+            }
+
             float gravity = definition != null ? definition.Gravity : 18f;
             if (cc.isGrounded && verticalSpeed < 0f)
             {

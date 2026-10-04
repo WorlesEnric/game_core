@@ -1,6 +1,6 @@
 {
-  "name": "Hollowmere.Boot",
-  "rootNamespace": "Hollowmere.Boot",
+  "name": "Hollowmere.P1_3.PlayMode.Tests",
+  "rootNamespace": "Hollowmere.P1_3.PlayMode.Tests",
   "references": [
     "GameCore.Contracts",
     "GameCore.Gameplay.Contracts",
@@ -9,16 +9,24 @@
     "GameCore.Gameplay.Npc",
     "GameCore.Gameplay.Player",
     "GameCore.Gameplay.World",
+    "GameCore.Rules.Gameplay",
     "GameCore.Unity.Adapters",
-    "GameCore.Unity.App"
+    "GameCore.Unity.App",
+    "GameCore.Unity.Runtime",
+    "Hollowmere.Boot",
+    "UnityEngine.TestRunner"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],
   "allowUnsafeCode": false,
-  "overrideReferences": false,
-  "precompiledReferences": [],
-  "autoReferenced": true,
-  "defineConstraints": [],
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
   "versionDefines": [],
   "noEngineReferences": false
 }
