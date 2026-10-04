@@ -30,11 +30,33 @@ hard-coded table, so it cannot drift from the sources it audits:
 Engine package versions are read from the qualification project's own manifest, so the pins live in
 exactly one place.
 
+SADR-014 (docs/studio/02-architecture.md section 8) extends the rules for the Studio and the games under
+`games/` without loosening them for the kernel:
+
+  7. `ENGINE_ALLOWLIST` names the additional engine/project assemblies a package may reference (Input System,
+     AI Navigation, URP, Unity.Transforms, TextMeshPro/uGUI). Each maps to the package that ships it, and the
+     version is the one pinned by the games projects (`games/*/Packages/manifest.json`, else the version their
+     committed lock resolved). A kernel engine package (`ENGINE_ASSEMBLIES`) keeps the qualification pin, and a
+     games manifest that pins one differently is a problem;
+  8. built-in engine modules (`BUILTIN_MODULES`, e.g. `UnityEngine.UIElementsModule`) need no package
+     dependency;
+  9. `precompiledReferences` other than the project-provided test runner are accepted only for packages named
+     `com.gamecore.studio.*` or `com.gamecore.gameplay.*`, only for DLLs in `PRECOMPILED_ASSEMBLIES`, and they
+     require the DLL's package (e.g. `Newtonsoft.Json.dll` -> `com.unity.nuget.newtonsoft-json`);
+ 10. a package must be locked in at least one of `unity/GameCore.Validation/Packages/packages-lock.json` and
+     `games/*/Packages/packages-lock.json`, and every lock that contains it must carry its exact
+     `com.gamecore.*` dependency map;
+ 11. a kernel package may not depend on a gameplay or Studio package (`com.gamecore.gameplay.*`,
+     `com.gamecore.studio.*`, `com.gamecore.rules.gameplay`);
+ 12. an assembly defined in a games project's own `Assets/` is, like the qualification project's, never a
+     legal package reference.
+
 Usage:
     python3 tools/check_package_metadata.py [--json <path>] [--sync-lock] [--self-test]
 
 `--sync-lock` rewrites the `com.gamecore.*` dependency maps of
-`unity/GameCore.Validation/Packages/packages-lock.json` from the manifests. Unity regenerates that file
+`unity/GameCore.Validation/Packages/packages-lock.json` (and of every `games/*/Packages/packages-lock.json`
+that locks the package) from the manifests. Unity regenerates that file
 on import; mirroring it here is what keeps a committed lock honest between imports, and it is a no-op
 once the two agree.
 
@@ -73,6 +95,51 @@ PROJECT_PROVIDED = {
     "UnityEngine.TestRunner",
     "UnityEditor.TestRunner",
 }
+
+# SADR-014: further engine/project assemblies a package may reference, mapped to the package that ships them.
+# The version is pinned by the games projects (games/*/Packages/manifest.json, falling back to the version their
+# committed lock resolved), except for a package already in ENGINE_ASSEMBLIES (Unity.Transforms ships in
+# com.unity.entities), which keeps the qualification manifest's pin.
+ENGINE_ALLOWLIST = {
+    "Unity.InputSystem": "com.unity.inputsystem",
+    "Unity.AI.Navigation": "com.unity.ai.navigation",
+    "Unity.RenderPipelines.Universal.Runtime": "com.unity.render-pipelines.universal",
+    "Unity.RenderPipelines.Core.Runtime": "com.unity.render-pipelines.core",
+    "Unity.TextMeshPro": "com.unity.ugui",
+    "UnityEngine.UI": "com.unity.ugui",
+    "Unity.Transforms": "com.unity.entities",
+    "Unity.Entities.Hybrid": "com.unity.entities",
+}
+
+# Built-in engine modules: always present in a Unity project, never a package dependency.
+BUILTIN_MODULES = {
+    "UnityEngine.UIElementsModule",
+    "UnityEngine.UIModule",
+    "UnityEngine.AudioModule",
+    "UnityEngine.AnimationModule",
+    "UnityEngine.AIModule",
+    "UnityEngine.PhysicsModule",
+    "UnityEngine.ImageConversionModule",
+    "UnityEngine.JSONSerializeModule",
+    "UnityEngine.UnityWebRequestModule",
+    "UnityEngine.ScreenCaptureModule",
+    "UnityEngine.VideoModule",
+}
+
+# Precompiled DLLs a Studio or gameplay package may name in `precompiledReferences`, mapped to their package.
+PRECOMPILED_ASSEMBLIES = {
+    "Newtonsoft.Json.dll": "com.unity.nuget.newtonsoft-json",
+}
+# Only packages with one of these name prefixes may carry precompiled references beyond the test runner.
+PRECOMPILED_PREFIXES = ("com.gamecore.studio.", "com.gamecore.gameplay.")
+
+# Dependencies a kernel package may never take (P-057, extended to the Studio by SADR-014).
+FORBIDDEN_FOR_KERNEL_PREFIXES = ("com.gamecore.gameplay.", "com.gamecore.studio.")
+FORBIDDEN_FOR_KERNEL = {"com.gamecore.rules.gameplay"}
+
+# Unity projects beside the qualification project (SADR-016). Each is a further lock source, and its manifest
+# pins the allowlisted engine packages.
+GAMES_GLOB = "games/*/Packages"
 
 # The kernel: packages that must never gain a gameplay dependency (P-057, 04 section 2).
 KERNEL_PACKAGES = {
@@ -136,10 +203,10 @@ def discover_asmdefs(packages):
     return assemblies
 
 
-def project_assemblies():
-    """Every assembly defined outside a package: the Unity project's own Assets trees."""
+def project_assemblies(root: Path = ROOT):
+    """Every assembly defined outside a package: the Unity projects' own Assets trees (qualification and games)."""
     assemblies = set()
-    for project in sorted((ROOT / "unity").glob("*/Assets")):
+    for project in sorted(root.glob("unity/*/Assets")) + sorted(root.glob("games/*/Assets")):
         for path in walk(project):
             if path.suffix != ".asmdef":
                 continue
@@ -158,15 +225,44 @@ def referenced_assemblies(path: Path):
     return re.findall(r'"([^"]+)"', match[1])
 
 
-def expected_dependencies(package_dir: Path, assemblies, project, package_name, engine_versions):
+ASMDEF_PRECOMPILED = re.compile(r'"precompiledReferences"\s*:\s*\[(.*?)\]', re.S)
+
+
+def precompiled_references(path: Path):
+    """The `precompiledReferences` array of one asmdef (DLL file names)."""
+    text = path.read_text(encoding="utf-8", errors="replace")
+    match = ASMDEF_PRECOMPILED.search(text)
+    if not match:
+        return []
+    return re.findall(r'"([^"]+)"', match[1])
+
+
+def expected_dependencies(package_dir: Path, assemblies, project, package_name, engine_versions,
+                          allowlist_versions=None):
     """The exact gamecore/engine dependency set one package's asmdefs require."""
+    allowlist_versions = allowlist_versions or {}
     expected = {}
     unknown = []
     for path in walk(package_dir):
         if path.suffix != ".asmdef":
             continue
+        for dll in precompiled_references(path):
+            if dll in PROJECT_PROVIDED:
+                continue
+            if not package_name.startswith(PRECOMPILED_PREFIXES):
+                unknown.append((path, dll, "precompiledReferences are accepted only for "
+                                           "com.gamecore.studio.* and com.gamecore.gameplay.* packages"))
+                continue
+            if dll not in PRECOMPILED_ASSEMBLIES:
+                unknown.append((path, dll, "precompiled assembly is not in the allowlist"))
+                continue
+            owner = PRECOMPILED_ASSEMBLIES[dll]
+            if owner not in allowlist_versions:
+                unknown.append((path, dll, f"{owner} is not pinned by any games/*/Packages manifest or lock"))
+                continue
+            expected[owner] = allowlist_versions[owner]
         for reference in referenced_assemblies(path):
-            if reference in PROJECT_PROVIDED:
+            if reference in PROJECT_PROVIDED or reference in BUILTIN_MODULES:
                 continue
             if reference in ENGINE_ASSEMBLIES:
                 engine = ENGINE_ASSEMBLIES[reference]
@@ -174,6 +270,15 @@ def expected_dependencies(package_dir: Path, assemblies, project, package_name, 
                     unknown.append((path, reference, "engine package version is not pinned in the manifest"))
                     continue
                 expected[engine] = engine_versions[engine]
+                continue
+            if reference in ENGINE_ALLOWLIST:
+                engine = ENGINE_ALLOWLIST[reference]
+                version = engine_versions.get(engine, allowlist_versions.get(engine))
+                if version is None:
+                    unknown.append((path, reference, f"{engine} is not pinned by the qualification manifest or "
+                                                     "any games/*/Packages manifest or lock"))
+                    continue
+                expected[engine] = version
                 continue
             if reference in assemblies:
                 if assemblies[reference] != package_name:
@@ -186,7 +291,7 @@ def expected_dependencies(package_dir: Path, assemblies, project, package_name, 
     return expected, unknown
 
 
-def check_manifests(root, packages, assemblies, project, engine_versions):
+def check_manifests(root, packages, assemblies, project, engine_versions, allowlist_versions=None):
     """Every manifest-level rule. Returns (problems, report)."""
     problems = []
     report = []
@@ -206,7 +311,7 @@ def check_manifests(root, packages, assemblies, project, engine_versions):
             problems.append(f"{name}: unity is {manifest.get('unity')!r}, expected '6000.0'")
 
         expected, unknown = expected_dependencies(
-            directory, assemblies, project, name, engine_versions)
+            directory, assemblies, project, name, engine_versions, allowlist_versions)
         declared = manifest.get("dependencies", {})
         if not isinstance(declared, dict):
             problems.append(f"{name}: dependencies must be an object")
@@ -228,6 +333,8 @@ def check_manifests(root, packages, assemblies, project, engine_versions):
             for key in sorted(declared):
                 if key.startswith("com.gamecore.gameplay."):
                     problems.append(f"{name}: kernel package depends on gameplay package {key}")
+                elif key.startswith(FORBIDDEN_FOR_KERNEL_PREFIXES) or key in FORBIDDEN_FOR_KERNEL:
+                    problems.append(f"{name}: kernel package depends on gameplay/Studio package {key}")
 
         report.append({
             "package": name,
@@ -240,48 +347,113 @@ def check_manifests(root, packages, assemblies, project, engine_versions):
     return problems, report
 
 
-def engine_versions_from_manifest():
+def engine_versions_from_manifest(root: Path = ROOT):
     """The engine pins, read from the qualification project's own manifest (one source of truth)."""
-    dependencies = load_json(MANIFEST).get("dependencies", {})
+    dependencies = load_json(root / MANIFEST.relative_to(ROOT)).get("dependencies", {})
     return {name: version for name, version in dependencies.items()
             if name in set(ENGINE_ASSEMBLIES.values()) and not str(version).startswith("file:")}
 
 
-def lock_report(packages):
-    """Compare the committed lock's com.gamecore.* dependency maps with the manifests."""
-    if not LOCK.exists():
-        return [], None
-    lock = load_json(LOCK)
+def games_package_dirs(root: Path):
+    """`games/<project>/Packages` directories that hold a manifest (SADR-016 projects)."""
+    return sorted(path for path in root.glob(GAMES_GLOB) if (path / "manifest.json").is_file())
+
+
+def allowlist_versions_from_games(root: Path, engine_versions):
+    """Pins of the allowlisted engine packages and precompiled-DLL packages, from the games projects.
+
+    A package's version is the one its games manifest declares, else the version that game's committed lock
+    resolved (a transitive package such as com.unity.render-pipelines.core). Two games that disagree are a
+    problem, and so is a games manifest that pins a kernel engine package (ENGINE_ASSEMBLIES) differently from
+    the qualification manifest. Returns (pins, problems).
+    """
+    kernel_engine = set(ENGINE_ASSEMBLIES.values())
+    wanted = (set(ENGINE_ALLOWLIST.values()) | set(PRECOMPILED_ASSEMBLIES.values())) - kernel_engine
+    pins, sources, problems = {}, {}, []
+    for packages_dir in games_package_dirs(root):
+        label = str(packages_dir.relative_to(root))
+        manifest = load_json(packages_dir / "manifest.json").get("dependencies", {})
+        lock_path = packages_dir / "packages-lock.json"
+        lock = load_json(lock_path).get("dependencies", {}) if lock_path.is_file() else {}
+        for name in sorted(kernel_engine):
+            version = manifest.get(name)
+            if version is not None and name in engine_versions and version != engine_versions[name]:
+                problems.append(f"{label}/manifest.json: {name} is pinned {version!r}, but the qualification "
+                                f"manifest pins {engine_versions[name]!r}")
+        for name in sorted(wanted):
+            version = manifest.get(name)
+            if version is None and isinstance(lock.get(name), dict):
+                version = lock[name].get("version")
+            if version is None or str(version).startswith("file:"):
+                continue
+            if name in pins and pins[name] != version:
+                problems.append(f"{label}: {name} resolves to {version!r}, but {sources[name]} pins {pins[name]!r}")
+                continue
+            pins.setdefault(name, version)
+            sources.setdefault(name, label)
+    return pins, problems
+
+
+def lock_paths(root: Path = ROOT):
+    """Every committed lock a package may be locked in: the qualification project's, then each game's."""
+    paths = []
+    validation = root / LOCK.relative_to(ROOT)
+    if validation.exists():
+        paths.append(validation)
+    paths.extend(path / "packages-lock.json" for path in games_package_dirs(root)
+                 if (path / "packages-lock.json").is_file())
+    return paths
+
+
+def lock_label(root: Path, path: Path):
+    """The qualification lock keeps its historical short name in messages; a game's lock is named by path."""
+    return "packages-lock.json" if path == root / LOCK.relative_to(ROOT) else str(path.relative_to(root))
+
+
+def lock_report(packages, root: Path = ROOT):
+    """Compare the com.gamecore.* dependency maps of every lock that holds a package with its manifest.
+
+    A package must be locked in at least one lock source, and every lock that holds it must agree. Returns
+    (problems, corrections) where corrections maps a lock path to {package: expected map}.
+    """
+    paths = lock_paths(root)
+    if not paths:
+        return [], {}
+    locks = {path: load_json(path) for path in paths}
     corrections = {}
     problems = []
     for name in sorted(packages):
-        entry = lock.get("dependencies", {}).get(name)
-        if entry is None:
-            problems.append(f"packages-lock.json: {name} is not locked")
+        holders = [path for path in paths if name in locks[path].get("dependencies", {})]
+        if not holders:
+            where = "" if len(paths) == 1 else " in any of " + ", ".join(lock_label(root, p) for p in paths)
+            problems.append(f"packages-lock.json: {name} is not locked{where}")
             continue
         declared = packages[name]["manifest"].get("dependencies", {})
         expected = {key: value for key, value in declared.items()
                     if key.startswith("com.gamecore.")}
-        actual = entry.get("dependencies", {})
-        actual_gamecore = {key: value for key, value in actual.items()
-                           if key.startswith("com.gamecore.")}
-        if actual_gamecore != expected:
-            corrections[name] = expected
-            problems.append(
-                f"packages-lock.json: {name} dependency map disagrees with its manifest "
-                f"(locked {actual_gamecore}, manifest {expected})")
+        for path in holders:
+            entry = locks[path]["dependencies"][name]
+            actual = entry.get("dependencies", {})
+            actual_gamecore = {key: value for key, value in actual.items()
+                               if key.startswith("com.gamecore.")}
+            if actual_gamecore != expected:
+                corrections.setdefault(path, {})[name] = expected
+                problems.append(
+                    f"{lock_label(root, path)}: {name} dependency map disagrees with its manifest "
+                    f"(locked {actual_gamecore}, manifest {expected})")
     return problems, corrections
 
 
-def sync_lock(corrections):
-    """Rewrite the lock's gamecore dependency maps, preserving key order and formatting."""
+def sync_lock(corrections, root: Path = ROOT):
+    """Rewrite the locks' gamecore dependency maps, preserving key order and formatting."""
     if not corrections:
         return 0
-    lock = load_json(LOCK)
-    for name, expected in corrections.items():
-        lock["dependencies"][name]["dependencies"] = expected
-    LOCK.write_text(json.dumps(lock, indent=2) + "\n", encoding="utf-8")
-    print(f"-- packages-lock.json: rewrote the com.gamecore.* dependency map of {len(corrections)} package(s)")
+    for path, names in corrections.items():
+        lock = load_json(path)
+        for name, expected in names.items():
+            lock["dependencies"][name]["dependencies"] = expected
+        path.write_text(json.dumps(lock, indent=2) + "\n", encoding="utf-8")
+        print(f"-- {lock_label(root, path)}: rewrote the com.gamecore.* dependency map of {len(names)} package(s)")
     return 1
 
 
@@ -289,9 +461,11 @@ def self_test():
     """Falsify the two rules that matter, on a synthetic package tree, with no repository involved."""
     import tempfile
     failures = 0
+    cases = 0
 
     def check(label, condition, detail=""):
-        nonlocal failures
+        nonlocal failures, cases
+        cases += 1
         if condition:
             print(f"   ok   {label}")
         else:
@@ -390,10 +564,149 @@ def self_test():
         check("a package version other than the release version is reported",
               any("version is '0.1.0'" in p for p in problems), str(problems))
 
+        # --- SADR-014: allowlisted engine assemblies, built-in modules, precompiled DLLs, kernel isolation.
+        write_user({"com.gamecore.kernel": "1.0.0"}, ["GameCore.Kernel"])
+        studio = root / "Packages/com.gamecore.studio.core"
+        studio.mkdir(parents=True)
+        games_pins = {"com.unity.inputsystem": "1.19.0", "com.unity.nuget.newtonsoft-json": "3.2.1"}
+
+        def write_studio(dependencies, references, precompiled=None):
+            manifest(studio, "com.gamecore.studio.core", dependencies)
+            document = {"name": "GameCore.Studio.Model", "references": references}
+            if precompiled is not None:
+                document["overrideReferences"] = True
+                document["precompiledReferences"] = precompiled
+            (studio / "Model.asmdef").write_text(json.dumps(document), encoding="utf-8")
+
+        def analyse_sadr(engine=None, pins=None):
+            fresh = discover_packages(root)
+            return check_manifests(root, fresh, discover_asmdefs(fresh), set(), engine or {},
+                                   games_pins if pins is None else pins)[0]
+
+        write_studio({"com.unity.inputsystem": "1.19.0"}, ["Unity.InputSystem"])
+        problems = analyse_sadr()
+        check("an allowlisted engine assembly resolves to its games-pinned package", problems == [],
+              str(problems))
+
+        write_studio({}, ["Unity.InputSystem"])
+        problems = analyse_sadr()
+        check("an allowlisted engine assembly without its package dependency is reported",
+              any("com.unity.inputsystem but the manifest does not declare it" in p for p in problems),
+              str(problems))
+
+        write_studio({"com.unity.inputsystem": "1.11.2"}, ["Unity.InputSystem"])
+        problems = analyse_sadr()
+        check("an allowlisted engine package pinned off the games manifest is reported",
+              any("pinned '1.11.2', expected '1.19.0'" in p for p in problems), str(problems))
+
+        write_studio({"com.unity.inputsystem": "1.19.0"}, ["Unity.InputSystem"])
+        problems = analyse_sadr(pins={})
+        check("an allowlisted engine package no games project pins is reported",
+              any("is not pinned by the qualification manifest" in p for p in problems), str(problems))
+
+        write_studio({"com.unity.entities": "1.4.6"}, ["Unity.Transforms"])
+        problems = analyse_sadr(engine={"com.unity.entities": "1.4.6"})
+        check("Unity.Transforms resolves to com.unity.entities at the qualification pin", problems == [],
+              str(problems))
+
+        write_studio({}, ["UnityEngine.UIElementsModule"])
+        problems = analyse_sadr()
+        check("a built-in engine module needs no package dependency", problems == [], str(problems))
+
+        write_studio({"com.unity.nuget.newtonsoft-json": "3.2.1"}, [], precompiled=["Newtonsoft.Json.dll"])
+        problems = analyse_sadr()
+        check("a Studio package's allowlisted precompiled DLL resolves to its package", problems == [],
+              str(problems))
+
+        write_studio({}, [], precompiled=["Newtonsoft.Json.dll"])
+        problems = analyse_sadr()
+        check("a precompiled DLL without its package dependency is reported",
+              any("com.unity.nuget.newtonsoft-json but the manifest does not declare it" in p
+                  for p in problems), str(problems))
+
+        write_studio({}, [], precompiled=["Evil.dll"])
+        problems = analyse_sadr()
+        check("a precompiled DLL outside the allowlist is reported",
+              any("precompiled assembly is not in the allowlist" in p for p in problems), str(problems))
+        write_studio({}, [])
+
+        write_user({"com.gamecore.kernel": "1.0.0"}, ["GameCore.Kernel"], )
+        (user / "Cards.asmdef").write_text(json.dumps({
+            "name": "GameCore.Rules.Cards", "references": ["GameCore.Kernel"], "overrideReferences": True,
+            "precompiledReferences": ["Newtonsoft.Json.dll"]}), encoding="utf-8")
+        problems = analyse_sadr()
+        check("a precompiled DLL in a package outside studio/gameplay is reported",
+              any("accepted only for com.gamecore.studio.*" in p for p in problems), str(problems))
+
+        write_user({"com.gamecore.kernel": "1.0.0"}, ["GameCore.Kernel"])
+        (user / "Cards.asmdef").write_text(json.dumps({
+            "name": "GameCore.Rules.Cards", "references": ["GameCore.Kernel"], "overrideReferences": True,
+            "precompiledReferences": ["nunit.framework.dll"]}), encoding="utf-8")
+        problems = analyse_sadr()
+        check("the project-provided nunit DLL stays legal in every package", problems == [], str(problems))
+
+        write_user({"com.gamecore.studio.core": "1.0.0"}, ["GameCore.Studio.Model"])
+        problems = analyse_sadr()
+        check("a kernel package depending on a Studio package is reported",
+              any("kernel package depends on gameplay/Studio package com.gamecore.studio.core" in p
+                  for p in problems), str(problems))
+        write_user({"com.gamecore.kernel": "1.0.0"}, ["GameCore.Kernel"])
+
+        # --- games manifests: allowlist pins, kernel engine pin agreement.
+        game = root / "games/demo/Packages"
+        game.mkdir(parents=True)
+        (game / "manifest.json").write_text(json.dumps({"dependencies": {
+            "com.unity.inputsystem": "1.19.0", "com.unity.entities": "1.4.5"}}), encoding="utf-8")
+        (game / "packages-lock.json").write_text(json.dumps({"dependencies": {
+            "com.unity.render-pipelines.core": {"version": "17.0.4", "depth": 1, "source": "builtin"}}}),
+            encoding="utf-8")
+        pins, pin_problems = allowlist_versions_from_games(root, {"com.unity.entities": "1.4.6"})
+        check("a games manifest pins an allowlisted package; a transitive one comes from its lock",
+              pins == {"com.unity.inputsystem": "1.19.0", "com.unity.render-pipelines.core": "17.0.4"},
+              str(pins))
+        check("a games manifest pinning a kernel engine package differently is reported",
+              any("com.unity.entities is pinned '1.4.5'" in p for p in pin_problems), str(pin_problems))
+
+        # --- lock sources: the qualification lock plus every games lock.
+        validation = root / "unity/GameCore.Validation/Packages"
+        validation.mkdir(parents=True)
+        fresh = discover_packages(root)
+
+        def lock_entry(dependencies):
+            return {"version": "file:x", "depth": 0, "source": "local", "dependencies": dependencies}
+
+        everything = {name: lock_entry({}) for name in fresh}
+        everything["com.gamecore.rules.cards"] = lock_entry({"com.gamecore.kernel": "1.0.0"})
+        without_studio = {k: v for k, v in everything.items() if k != "com.gamecore.studio.core"}
+        (validation / "packages-lock.json").write_text(json.dumps({"dependencies": without_studio}),
+                                                       encoding="utf-8")
+        (game / "packages-lock.json").write_text(json.dumps({"dependencies": {
+            "com.gamecore.studio.core": lock_entry({})}}), encoding="utf-8")
+        problems, _ = lock_report(fresh, root)
+        check("a package locked only in a games lock satisfies the lock rule", problems == [], str(problems))
+
+        (game / "packages-lock.json").write_text(json.dumps({"dependencies": {}}), encoding="utf-8")
+        problems, _ = lock_report(fresh, root)
+        check("a package locked in no lock source is reported",
+              any("com.gamecore.studio.core is not locked in any of" in p for p in problems), str(problems))
+
+        stale = dict(everything)
+        stale["com.gamecore.rules.cards"] = lock_entry({})
+        (game / "packages-lock.json").write_text(json.dumps({"dependencies": stale}), encoding="utf-8")
+        problems, corrections = lock_report(fresh, root)
+        check("a games lock whose dependency map disagrees is reported against that lock",
+              any(p.startswith("games/demo/Packages/packages-lock.json: com.gamecore.rules.cards")
+                  for p in problems) and list(corrections) == [game / "packages-lock.json"],
+              str(problems))
+        sync_lock(corrections, root)
+        problems, corrections = lock_report(fresh, root)
+        check("--sync-lock repairs the games lock it reported", problems == [] and not corrections,
+              str(problems))
+
     if failures:
         print(f"check_package_metadata.py --self-test FAILED ({failures} case(s))")
         return 1
-    print("check_package_metadata.py --self-test passed (12 cases).")
+    print(f"check_package_metadata.py --self-test passed ({cases} cases).")
     return 0
 
 
@@ -417,14 +730,16 @@ def main(argv):
         print(f"check_package_metadata.py: no com.gamecore.* package found under {root}", file=sys.stderr)
         return 2
     assemblies = discover_asmdefs(packages)
-    project = project_assemblies()
-    engine = engine_versions_from_manifest()
+    project = project_assemblies(root)
+    engine = engine_versions_from_manifest(root)
+    allowlist, pin_problems = allowlist_versions_from_games(root, engine)
 
-    problems, report = check_manifests(root, packages, assemblies, project, engine)
-    lock_problems, corrections = lock_report(packages)
+    problems, report = check_manifests(root, packages, assemblies, project, engine, allowlist)
+    problems += pin_problems
+    lock_problems, corrections = lock_report(packages, root)
     if args.sync_lock and corrections:
-        sync_lock(corrections)
-        lock_problems, corrections = lock_report(packages)
+        sync_lock(corrections, root)
+        lock_problems, corrections = lock_report(packages, root)
     problems += lock_problems
 
     if args.json:
@@ -433,12 +748,15 @@ def main(argv):
             "packages": report,
             "assemblies": dict(sorted(assemblies.items())),
             "engine_pins": engine,
+            "allowlist_pins": dict(sorted(allowlist.items())),
+            "lock_sources": [str(path.relative_to(root)) for path in lock_paths(root)],
             "problems": problems,
         }, indent=2) + "\n", encoding="utf-8")
 
     print(f"packages inspected: {len(packages)}; assemblies defined by packages: {len(assemblies)}; "
           f"engine pins: {len(engine)}")
     print(f"release version expected: {RELEASE_VERSION}; kernel packages: {len(KERNEL_PACKAGES)}")
+    print(f"allowlisted engine pins from games/*: {len(allowlist)}; lock sources: {len(lock_paths(root))}")
     if problems:
         print(f"check_package_metadata.py FAILED ({len(problems)} problem(s)):", file=sys.stderr)
         for problem in problems:

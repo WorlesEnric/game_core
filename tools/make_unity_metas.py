@@ -3,8 +3,10 @@
 
 Usage: python3 tools/make_unity_metas.py [root ...]
 
-Defaults to the whole repository. Every `.cs`, `.asmdef`, `.json`, `.preset`, `.shader`, `.asset` and directory
-below a root that is not already covered by a `.meta` gets one, in the exact byte shape this repository uses:
+Defaults to the Unity-imported trees (`Packages/com.gamecore.*`, `unity/*/Assets`, `games/*/Assets`). Every file
+with a suffix in ASSET_SUFFIXES (`.cs`, `.asmdef`, `.json`, `.preset`, `.shader`, `.asset`, ... and the Studio
+content kinds) and every directory below a root that is not already covered by a `.meta` gets one, in the exact
+byte shape this repository uses:
 
   file      fileFormatVersion: 2\n guid: <32 lowercase hex>\n        (no trailing newline)
   directory fileFormatVersion: 2\n guid: <32 lowercase hex>\n folderAsset: yes\n DefaultImporter:\n   externalObjects: {}\n   userData: \n   assetBundleName: \n   assetBundleVariant: \n        (no trailing newline)
@@ -20,7 +22,12 @@ from pathlib import Path
 import uuid
 
 SKIP_DIRS = {"bin", "obj", ".git", "Library", "Temp", "Logs", "obj~", ".vs", ".idea", "Artifacts~"}
-ASSET_SUFFIXES = (".cs", ".asmdef", ".json", ".asmref", ".shader", ".asset", ".preset", ".uxml", ".uss")
+ASSET_SUFFIXES = (".cs", ".asmdef", ".json", ".asmref", ".shader", ".asset", ".preset", ".uxml", ".uss",
+                  # GameCore Studio content kinds (P0.2): Input System actions, materials, prefabs, scenes,
+                  # Shader Graph, textures, audio, models and animation. A meta written here carries only the
+                  # GUID; Unity fills in the importer block on the next import and keeps the GUID.
+                  ".inputactions", ".mat", ".prefab", ".unity", ".shadergraph", ".png", ".wav", ".mp3",
+                  ".ogg", ".fbx", ".anim", ".controller")
 
 GUID_PATTERN = re.compile(r"^guid: ([0-9a-f]{32})$", re.MULTILINE)
 FILE_TEXT = "fileFormatVersion: 2\nguid: {guid}\n"
@@ -112,6 +119,8 @@ def default_roots():
 
     roots = sorted(str(path) for path in Path("Packages").glob("com.gamecore.*") if path.is_dir())
     roots.extend(sorted(str(path) for path in Path("unity").glob("*/Assets") if path.is_dir()))
+    # The games projects (SADR-016) are imported by Unity the same way.
+    roots.extend(sorted(str(path) for path in Path("games").glob("*/Assets") if path.is_dir()))
     return roots
 
 
