@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gamecore.studio/schemas/change-set.schema.json",
+  "title": "ChangeSet",
+  "description": "VENDORED by P0.5 (studio/agent) from docs/studio/03-authoring-contracts.md section 6 because docs/studio/schemas/change-set.schema.json (P0.3) did not exist yet. Replace with the generated schema when it lands; build.rs warns while they differ.",
+  "type": "object",
+  "required": ["id", "schema", "intent", "operations"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "schema": { "const": "gamecore.studio.changeset/1" },
+    "intent": {
+      "type": "object",
+      "required": ["text"],
+      "properties": {
+        "text": { "type": "string" },
+        "voiceTranscriptId": { "type": ["string", "null"] },
+        "origin": { "enum": ["agent", "manual", "voice", "replay"] }
+      }
+    },
+    "selection": { "$ref": "#/$defs/selectionSnapshot" },
+    "baseVersions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["ref", "stamp"],
+        "properties": {
+          "ref": { "$ref": "#/$defs/authoringRef" },
+          "stamp": { "type": "string" }
+        }
+      }
+    },
+    "operations": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/operation" }
+    },
+    "artifacts": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/artifact" }
+    },
+    "validation": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["scenario", "status"],
+        "properties": {
+          "scenario": { "type": "string" },
+          "status": { "enum": ["pending", "pass", "fail"] },
+          "detail": { "type": "string" }
+        }
+      }
+    },
+    "requirements": {
+      "type": "object",
+      "properties": {
+        "max": { "$ref": "#/$defs/applyRequirement" },
+        "worldRebuild": { "type": "boolean" },
+        "compile": { "type": "boolean" },
+        "build": { "type": "boolean" }
+      }
+    },
+    "links": {
+      "type": "object",
+      "properties": {
+        "etosTasks": { "type": "array", "items": { "type": "string" } },
+        "parent": { "type": ["string", "null"] },
+        "gameCoreOps": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "state": {
+      "enum": ["Requested", "Running", "Candidate", "Staged", "Applied", "Rejected", "Failed", "Undone", "Interrupted"]
+    },
+    "outcomes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["opId", "status"],
+        "properties": {
+          "opId": { "type": "string" },
+          "status": { "enum": ["Applied", "Skipped", "Refused", "Failed"] },
+          "code": { "type": "string" },
+          "detail": { "type": "string" },
+          "gameCoreOps": { "type": "array", "items": { "type": "string" } },
+          "undo": { "type": "object" }
+        }
+      }
+    },
+    "policy": { "enum": ["AllOrNothing", "BestEffort"] },
+    "timestamps": {
+      "type": "object",
+      "additionalProperties": { "type": ["string", "null"] }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^(sha256:)?[0-9a-fA-F]{64}$"
+    },
+    "applyRequirement": { "enum": ["Live", "Rebuild", "Compile", "Build"] },
+    "authoringRef": {
+      "type": "object",
+      "required": ["kind"],
+      "properties": {
+        "kind": { "enum": ["Entity", "Definition", "Region", "SceneObject", "Asset", "UiElement", "Scope", "Location"] },
+        "authoringId": { "type": "string" },
+        "global": { "type": "string" },
+        "assetGuid": { "type": "string" },
+        "path": { "type": "string" },
+        "definition": { "type": "string" },
+        "scope": { "enum": ["Instance", "Prefab", "Definition", "Scope"] },
+        "stamp": { "type": "string" },
+        "location": {
+          "type": "object",
+          "required": ["position"],
+          "properties": {
+            "region": { "type": "string" },
+            "position": { "type": "array", "items": { "type": "number" }, "minItems": 3, "maxItems": 3 },
+            "normal": { "type": "array", "items": { "type": "number" }, "minItems": 3, "maxItems": 3 }
+          }
+        }
+      }
+    },
+    "selectionSnapshot": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "mode": { "enum": ["Edit", "Play"] },
+        "targets": { "type": "array", "items": { "$ref": "#/$defs/authoringRef" } },
+        "parts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["owner", "part"],
+            "properties": {
+              "owner": { "$ref": "#/$defs/authoringRef" },
+              "part": { "type": "string" }
+            }
+          }
+        },
+        "regionRect": { "type": "object" },
+        "frame": { "type": "object" },
+        "worldSession": { "type": ["string", "null"] },
+        "indexRevision": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "operation": {
+      "type": "object",
+      "required": ["opId", "tool"],
+      "properties": {
+        "opId": { "type": "string", "minLength": 1 },
+        "tool": { "type": "string", "minLength": 1 },
+        "target": { "$ref": "#/$defs/authoringRef" },
+        "args": { "type": "object" },
+        "dependsOn": { "type": "array", "items": { "type": "string" } },
+        "preconditions": { "enum": ["stamp", "none"] },
+        "applyRequirement": { "$ref": "#/$defs/applyRequirement" }
+      }
+    },
+    "artifact": {
+      "type": "object",
+      "required": ["sha256", "name", "mediaType"],
+      "properties": {
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "name": { "type": "string", "minLength": 1 },
+        "mediaType": { "type": "string", "pattern": "^[^/\\s]+/[^/\\s]+$" },
+        "bytes": { "type": "integer", "minimum": 0 },
+        "producer": { "type": "object" },
+        "role": { "type": "string" },
+        "import": { "type": "object" }
+      }
+    }
+  }
+}
