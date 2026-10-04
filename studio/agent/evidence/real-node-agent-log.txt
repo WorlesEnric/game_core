@@ -1,0 +1,97 @@
+[etosd 2026-10-04T18:15:15.954Z] started /Users/yangcao/.cache/gc-p05/node/agents/gamecore-studio/current/bin/gamecore-studio (pid 42999)
+2026-10-04T18:15:16.395778Z  INFO gamecore_studio: starting version="0.1.0" agent=gamecore-studio
+2026-10-04T18:15:16.442198Z  INFO gamecore_studio::app: change-set schema loaded schema="schemas/change-set.schema.json (vendored)"
+2026-10-04T18:15:16.444451Z  INFO gamecore_studio::app: welcomed by the node agent=gamecore-studio node=studio sdk=1.0.0
+2026-10-04T18:15:16.446621Z  INFO gamecore_studio::app: endpoint registered url=http://127.0.0.1:63504
+2026-10-04T18:15:16.458498Z  INFO gamecore_studio::index: resource graph binding declared app=gamecore-studio
+2026-10-04T18:16:39.629537Z  INFO gamecore_studio::desk: request recorded request=cs_p05_real_1791137799624 worker=gc-designer
+2026-10-04T18:16:39.707160Z  INFO gamecore_studio::desk: task opened request=cs_p05_real_1791137799624 attempt=0 task=t6ed7f557a7f48ab812ef0771 status=running
+2026-10-04T18:16:45.796353Z  WARN gamecore_studio::desk: candidate invalid request=cs_p05_real_1791137799624 task="t6ed7f557a7f48ab812ef0771" problems=1
+2026-10-04T18:16:45.839750Z  INFO gamecore_studio::desk: re-asking once request=cs_p05_real_1791137799624 parent="t6ed7f557a7f48ab812ef0771" attempt=1
+2026-10-04T18:16:45.855308Z  INFO gamecore_studio::desk: task opened request=cs_p05_real_1791137799624 attempt=1 task=t68a4ac3906d4c5d6cc014e1c status=running
+2026-10-04T18:16:51.929478Z  WARN gamecore_studio::desk: candidate invalid request=cs_p05_real_1791137799624 task="t68a4ac3906d4c5d6cc014e1c" problems=1
+2026-10-04T18:16:52.519539Z  INFO gamecore_studio::desk: request recorded request=cs_p05_cancel_1791137812515 worker=gc-designer
+2026-10-04T18:16:52.574052Z  INFO gamecore_studio::desk: task opened request=cs_p05_cancel_1791137812515 attempt=0 task=t512963d49d9e5f496a4248e1 status=running
+2026-10-04T18:16:52.581235Z  INFO gamecore_studio::desk: cancel requested request="cs_p05_cancel_1791137812515" task=t512963d49d9e5f496a4248e1 status=cancelled
+2026-10-04T18:16:52.584945Z  WARN gamecore_studio::voice: voice session refused provider=studio-voice code=realtime_unavailable
+2026-10-04T18:16:52.585931Z  INFO gamecore_studio::ops: running a media operation op="generate.3d" key=gc-25c23a67fe2e9d12c5782dcd9d27d9bd66a30e53
+2026-10-04T18:19:58.370428Z  INFO gamecore_studio::app: companion stopped
+[etosd 2026-10-04T18:19:58.373Z] stopped by the node
+[etosd 2026-10-04T18:19:58.374Z] started /Users/yangcao/.cache/gc-p05/node/agents/gamecore-studio/current/bin/gamecore-studio (pid 45021)
+2026-10-04T18:19:59.075164Z  INFO gamecore_studio: starting version="0.1.0" agent=gamecore-studio
+2026-10-04T18:19:59.123095Z  INFO gamecore_studio::app: change-set schema loaded schema="schemas/change-set.schema.json (vendored)"
+2026-10-04T18:19:59.125181Z  INFO gamecore_studio::app: welcomed by the node agent=gamecore-studio node=studio sdk=1.0.0
+2026-10-04T18:19:59.127213Z  INFO gamecore_studio::app: endpoint registered url=http://127.0.0.1:63504
+2026-10-04T18:19:59.127544Z  INFO gamecore_studio::index: resource graph binding declared app=gamecore-studio
+2026-10-04T18:20:14.014894Z  INFO gamecore_studio::desk: request recorded request=cs_p05_real_1791138014013 worker=gc-designer
+2026-10-04T18:20:14.136981Z  INFO gamecore_studio::desk: task opened request=cs_p05_real_1791138014013 attempt=0 task=tc149a7b07858dcec28ae320c status=running
+2026-10-04T18:20:20.229246Z  WARN gamecore_studio::desk: candidate invalid request=cs_p05_real_1791138014013 task="tc149a7b07858dcec28ae320c" problems=1
+2026-10-04T18:20:20.266410Z  INFO gamecore_studio::desk: re-asking once request=cs_p05_real_1791138014013 parent="tc149a7b07858dcec28ae320c" attempt=1
+2026-10-04T18:20:20.276790Z  INFO gamecore_studio::desk: task opened request=cs_p05_real_1791138014013 attempt=1 task=t216199cd83dfaa4b5538ca09 status=running
+2026-10-04T18:20:26.373307Z  WARN gamecore_studio::desk: candidate invalid request=cs_p05_real_1791138014013 task="t216199cd83dfaa4b5538ca09" problems=1
+2026-10-04T18:20:26.935129Z  INFO gamecore_studio::desk: request recorded request=cs_p05_cancel_1791138026931 worker=gc-designer
+2026-10-04T18:20:26.979690Z  INFO gamecore_studio::desk: task opened request=cs_p05_cancel_1791138026931 attempt=0 task=tfef232dd8e3333e7cc2f348e status=running
+2026-10-04T18:20:26.985255Z  INFO gamecore_studio::desk: cancel requested request="cs_p05_cancel_1791138026931" task=tfef232dd8e3333e7cc2f348e status=cancelled
+2026-10-04T18:20:26.989350Z  WARN gamecore_studio::voice: voice session refused provider=studio-voice code=not_configured
+2026-10-04T18:20:26.990339Z  INFO gamecore_studio::ops: running a media operation op="generate.3d" key=gc-25c23a67fe2e9d12c5782dcd9d27d9bd66a30e53
+2026-10-04T18:20:29.998214Z  INFO gamecore_studio::desk: request recorded request=cs_p05_restart_1791138029996 worker=gc-designer
+2026-10-04T18:20:30.030863Z  INFO gamecore_studio::desk: task opened request=cs_p05_restart_1791138029996 attempt=0 task=t3534a86aae576775b68713df status=running
+2026-10-04T18:20:30.057334Z  INFO gamecore_studio::app: companion stopped
+[etosd 2026-10-04T18:20:30.059Z] stopped by the node
+[etosd 2026-10-04T18:20:30.059Z] started /Users/yangcao/.cache/gc-p05/node/agents/gamecore-studio/current/bin/gamecore-studio (pid 45298)
+2026-10-04T18:20:30.062377Z  INFO gamecore_studio: starting version="0.1.0" agent=gamecore-studio
+2026-10-04T18:20:30.080192Z  INFO gamecore_studio::app: change-set schema loaded schema="schemas/change-set.schema.json (vendored)"
+2026-10-04T18:20:30.081138Z  INFO gamecore_studio::app: welcomed by the node agent=gamecore-studio node=studio sdk=1.0.0
+2026-10-04T18:20:30.081695Z  INFO gamecore_studio::app: endpoint registered url=http://127.0.0.1:63504
+2026-10-04T18:20:30.081749Z  INFO gamecore_studio::desk: resuming request=cs_p05_restart_1791138029996 state="running"
+2026-10-04T18:20:30.081760Z  INFO gamecore_studio::app: resumed open requests requests=1
+2026-10-04T18:20:30.081807Z  INFO gamecore_studio::index: resource graph binding declared app=gamecore-studio
+2026-10-04T18:20:36.064167Z  WARN gamecore_studio::desk: candidate invalid request=cs_p05_restart_1791138029996 task="t3534a86aae576775b68713df" problems=1
+2026-10-04T18:20:36.100647Z  INFO gamecore_studio::desk: re-asking once request=cs_p05_restart_1791138029996 parent="t3534a86aae576775b68713df" attempt=1
+2026-10-04T18:20:36.113860Z  INFO gamecore_studio::desk: task opened request=cs_p05_restart_1791138029996 attempt=1 task=ta6569b37f16a1ea633209bcc status=running
+2026-10-04T18:20:42.213624Z  WARN gamecore_studio::desk: candidate invalid request=cs_p05_restart_1791138029996 task="ta6569b37f16a1ea633209bcc" problems=1
+2026-10-04T18:29:50.645525Z  INFO gamecore_studio::app: companion stopped
+[etosd 2026-10-04T18:29:50.648Z] stopped by the node
+[etosd 2026-10-04T18:29:50.649Z] started /Users/yangcao/.cache/gc-p05/node/agents/gamecore-studio/current/bin/gamecore-studio (pid 47851)
+2026-10-04T18:29:51.403683Z  INFO gamecore_studio: starting version="0.1.0" agent=gamecore-studio
+2026-10-04T18:29:51.438305Z  INFO gamecore_studio::app: change-set schema loaded schema="schemas/change-set.schema.json (vendored)"
+2026-10-04T18:29:51.440213Z  INFO gamecore_studio::app: welcomed by the node agent=gamecore-studio node=studio sdk=1.0.0
+2026-10-04T18:29:51.442469Z  INFO gamecore_studio::app: endpoint registered url=http://127.0.0.1:63504
+2026-10-04T18:29:51.442714Z  INFO gamecore_studio::index: resource graph binding declared app=gamecore-studio
+2026-10-04T18:30:01.998643Z  INFO gamecore_studio::desk: request recorded request=cs_00000000000017911386019971 worker=gc-designer
+2026-10-04T18:30:02.046351Z  INFO gamecore_studio::desk: task opened request=cs_00000000000017911386019971 attempt=0 task=tc5de7cad48f8550b70e29762 status=running
+2026-10-04T18:30:08.135323Z  WARN gamecore_studio::desk: candidate invalid request=cs_00000000000017911386019971 task="tc5de7cad48f8550b70e29762" problems=1
+2026-10-04T18:30:08.176934Z  INFO gamecore_studio::desk: re-asking once request=cs_00000000000017911386019971 parent="tc5de7cad48f8550b70e29762" attempt=1
+2026-10-04T18:30:08.190593Z  INFO gamecore_studio::desk: task opened request=cs_00000000000017911386019971 attempt=1 task=t8aaefe2dd095ab8ad8909434 status=running
+2026-10-04T18:30:14.286987Z  WARN gamecore_studio::desk: candidate invalid request=cs_00000000000017911386019971 task="t8aaefe2dd095ab8ad8909434" problems=1
+2026-10-04T18:30:14.865514Z  INFO gamecore_studio::desk: request recorded request=cs_00000000000017911386148592 worker=gc-designer
+2026-10-04T18:30:14.925300Z  INFO gamecore_studio::desk: task opened request=cs_00000000000017911386148592 attempt=0 task=td26baa42e75dec12a0302009 status=running
+2026-10-04T18:30:14.932128Z  INFO gamecore_studio::desk: cancel requested request="cs_00000000000017911386148592" task=td26baa42e75dec12a0302009 status=cancelled
+2026-10-04T18:30:14.936469Z  WARN gamecore_studio::voice: voice session refused provider=studio-voice code=not_configured
+2026-10-04T18:30:14.937439Z  INFO gamecore_studio::ops: running a media operation op="generate.3d" key=gc-25c23a67fe2e9d12c5782dcd9d27d9bd66a30e53
+2026-10-04T18:30:17.949014Z  INFO gamecore_studio::desk: request recorded request=cs_00000000000017911386179443 worker=gc-designer
+2026-10-04T18:30:18.006660Z  INFO gamecore_studio::desk: task opened request=cs_00000000000017911386179443 attempt=0 task=t05f5366717455542dccc43ca status=running
+2026-10-04T18:30:18.036024Z  INFO gamecore_studio::app: companion stopped
+[etosd 2026-10-04T18:30:18.037Z] stopped by the node
+[etosd 2026-10-04T18:30:18.038Z] started /Users/yangcao/.cache/gc-p05/node/agents/gamecore-studio/current/bin/gamecore-studio (pid 47965)
+2026-10-04T18:30:18.043089Z  INFO gamecore_studio: starting version="0.1.0" agent=gamecore-studio
+2026-10-04T18:30:18.061343Z  INFO gamecore_studio::app: change-set schema loaded schema="schemas/change-set.schema.json (vendored)"
+2026-10-04T18:30:18.062219Z  INFO gamecore_studio::app: welcomed by the node agent=gamecore-studio node=studio sdk=1.0.0
+2026-10-04T18:30:18.062967Z  INFO gamecore_studio::app: endpoint registered url=http://127.0.0.1:63504
+2026-10-04T18:30:18.063041Z  INFO gamecore_studio::desk: resuming request=cs_00000000000017911386179443 state="running"
+2026-10-04T18:30:18.063054Z  INFO gamecore_studio::app: resumed open requests requests=1
+2026-10-04T18:30:18.063075Z  INFO gamecore_studio::index: resource graph binding declared app=gamecore-studio
+2026-10-04T18:30:24.046012Z  WARN gamecore_studio::desk: candidate invalid request=cs_00000000000017911386179443 task="t05f5366717455542dccc43ca" problems=1
+2026-10-04T18:30:24.076446Z  INFO gamecore_studio::desk: re-asking once request=cs_00000000000017911386179443 parent="t05f5366717455542dccc43ca" attempt=1
+2026-10-04T18:30:24.089051Z  INFO gamecore_studio::desk: task opened request=cs_00000000000017911386179443 attempt=1 task=t37f231d12de83ba7f842f1fe status=running
+2026-10-04T18:30:30.176240Z  WARN gamecore_studio::desk: candidate invalid request=cs_00000000000017911386179443 task="t37f231d12de83ba7f842f1fe" problems=1
+2026-10-04T18:31:00.672929Z  INFO gamecore_studio::app: companion stopped
+[etosd 2026-10-04T18:31:00.674Z] stopped by the node
+[etosd 2026-10-04T18:31:09.429Z] started /Users/yangcao/.cache/gc-p05/node/agents/gamecore-studio/current/bin/gamecore-studio (pid 48106)
+2026-10-04T18:31:09.431644Z  INFO gamecore_studio: starting version="0.1.0" agent=gamecore-studio
+2026-10-04T18:31:09.442824Z  INFO gamecore_studio::app: change-set schema loaded schema="schemas/change-set.schema.json (vendored)"
+2026-10-04T18:31:09.443557Z  INFO gamecore_studio::app: welcomed by the node agent=gamecore-studio node=studio sdk=1.0.0
+2026-10-04T18:31:09.444427Z  INFO gamecore_studio::app: endpoint registered url=http://127.0.0.1:63504
+2026-10-04T18:31:09.444501Z  INFO gamecore_studio::index: resource graph binding declared app=gamecore-studio
+2026-10-04T18:31:27.556946Z  WARN gamecore_studio::api: request without the current proxy token refused path=/v1/hello
+2026-10-04T18:31:27.568623Z  WARN gamecore_studio::api: request without the current proxy token refused path=/v1/hello

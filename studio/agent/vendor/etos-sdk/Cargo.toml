@@ -1,0 +1,38 @@
+# etos-sdk: agents and apps in Rust. Its own workspace: it depends on no core crate, and the
+# core workspace excludes it (root Cargo.toml `exclude`).
+[package]
+name = "etos-sdk"
+version = "1.0.0"
+description = "The etos SDK for Rust: the agent channel, tools and services, operations, provider passthrough, data, and the app surface (logger, sources, entrances, queries)."
+edition = "2024"
+rust-version = "1.97.1"
+license = "Apache-2.0"
+publish = false
+
+[workspace]
+
+[lints.rust]
+unsafe_code = "forbid"
+missing_docs = "warn"
+
+[lints.clippy]
+unwrap_used = "deny"
+expect_used = "deny"
+dbg_macro = "deny"
+todo = "deny"
+unimplemented = "deny"
+
+[dependencies]
+base64 = "0.22"
+futures = "0.3"
+getrandom = "0.3"
+hex = "0.4"
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls", "json"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+thiserror = "2"
+tokio = { version = "1", features = ["rt", "macros", "sync", "time", "net"] }
+tokio-tungstenite = { version = "0.29", features = ["rustls-tls-webpki-roots"] }
+tracing = "0.1"
+

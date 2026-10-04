@@ -1,0 +1,65 @@
+# gamecore-studio: the GameCore Studio companion, an installed etos agent
+# (docs/studio/02-architecture.md boundary D, docs/studio/04-etos-integration.md).
+# Its own Cargo workspace; depends on the etos Rust SDK vendored in vendor/etos-sdk (source
+# commit in vendor/README.md and ETOS_PIN; refresh with vendor-etos-sdk.sh).
+[package]
+name = "gamecore-studio"
+version = "0.1.0"
+description = "GameCore Studio companion: an etos agent bridging the Unity editor to etos tasks, files, ops, realtime voice and the Resource Graph."
+edition = "2024"
+rust-version = "1.97.1"
+license = "Apache-2.0"
+publish = false
+build = "build.rs"
+
+[workspace]
+# The vendored SDK keeps its own (empty) workspace table: not a member of this one.
+exclude = ["vendor/etos-sdk"]
+
+[lib]
+name = "gamecore_studio"
+path = "src/lib.rs"
+
+[[bin]]
+name = "gamecore-studio"
+path = "src/main.rs"
+
+[lints.rust]
+unsafe_code = "forbid"
+missing_docs = "warn"
+
+[lints.clippy]
+unwrap_used = "deny"
+expect_used = "deny"
+dbg_macro = "deny"
+todo = "deny"
+unimplemented = "deny"
+
+[dependencies]
+etos-sdk = { path = "vendor/etos-sdk" }
+axum = { version = "0.8", features = ["ws"] }
+base64 = "0.22"
+futures = "0.3"
+getrandom = "0.3"
+hex = "0.4"
+jsonschema = { version = "0.26", default-features = false }
+rusqlite = { version = "0.37", features = ["bundled"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+thiserror = "2"
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "sync", "time", "net", "signal", "process", "fs", "io-util"] }
+# The SDK's own WebSocket crate (same version, no extra build): only to read the node's refusal
+# body when a realtime upgrade is refused (the SDK keeps just the HTTP status).
+tokio-tungstenite = "0.29"
+toml = "0.9"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"] }
+
+# Keep debug builds small (dependencies without debug info).
+[profile.dev.package."*"]
+debug = false
+
+[dev-dependencies]
+reqwest = { version = "0.12", default-features = false, features = ["json"] }
+tempfile = "3"
