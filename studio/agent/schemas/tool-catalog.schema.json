@@ -1,0 +1,315 @@
+{
+  "$defs": {
+    "ArgSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "category": {
+          "type": "string"
+        },
+        "doc": {
+          "type": "string"
+        },
+        "enumValues": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "max": {
+          "type": "number"
+        },
+        "min": {
+          "type": "number"
+        },
+        "name": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "step": {
+          "type": "number"
+        },
+        "type": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "unit": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "required",
+        "type"
+      ],
+      "type": "object"
+    },
+    "AuthorScope": {
+      "enum": [
+        "Instance",
+        "Prefab",
+        "Definition",
+        "Scope"
+      ],
+      "type": "string"
+    },
+    "AuthoringKind": {
+      "enum": [
+        "Entity",
+        "Definition",
+        "Region",
+        "SceneObject",
+        "Asset",
+        "UiElement",
+        "Scope",
+        "Location"
+      ],
+      "type": "string"
+    },
+    "FieldSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "category": {
+          "type": "string"
+        },
+        "doc": {
+          "type": "string"
+        },
+        "enumValues": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "max": {
+          "type": "number"
+        },
+        "min": {
+          "type": "number"
+        },
+        "name": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "step": {
+          "type": "number"
+        },
+        "type": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "unit": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "required",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ObjectTypeEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "displayName": {
+          "type": "string"
+        },
+        "doc": {
+          "type": "string"
+        },
+        "fields": {
+          "items": {
+            "$ref": "#/$defs/FieldSpec"
+          },
+          "type": "array"
+        },
+        "runtimeApply": {
+          "$ref": "#/$defs/RuntimeApply"
+        },
+        "scopes": {
+          "items": {
+            "$ref": "#/$defs/AuthorScope"
+          },
+          "type": "array"
+        },
+        "typeId": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "fields",
+        "runtimeApply",
+        "typeId"
+      ],
+      "type": "object"
+    },
+    "Prerequisite": {
+      "additionalProperties": false,
+      "properties": {
+        "doc": {
+          "type": "string"
+        },
+        "on": {
+          "$ref": "#/$defs/PrerequisiteSubject"
+        },
+        "requires": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "on",
+        "requires"
+      ],
+      "type": "object"
+    },
+    "PrerequisiteSubject": {
+      "enum": [
+        "Project",
+        "Target"
+      ],
+      "type": "string"
+    },
+    "RuntimeApply": {
+      "enum": [
+        "Live",
+        "Rebuild",
+        "Compile",
+        "Build"
+      ],
+      "type": "string"
+    },
+    "ToolEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "args": {
+          "items": {
+            "$ref": "#/$defs/ArgSpec"
+          },
+          "type": "array"
+        },
+        "doc": {
+          "type": "string"
+        },
+        "id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "prerequisites": {
+          "items": {
+            "$ref": "#/$defs/Prerequisite"
+          },
+          "type": "array"
+        },
+        "runtimeApply": {
+          "$ref": "#/$defs/RuntimeApply"
+        },
+        "scopes": {
+          "items": {
+            "$ref": "#/$defs/AuthorScope"
+          },
+          "type": "array"
+        },
+        "targetKinds": {
+          "items": {
+            "$ref": "#/$defs/AuthoringKind"
+          },
+          "type": "array"
+        },
+        "targetRequired": {
+          "type": "boolean"
+        },
+        "targetType": {
+          "type": "string"
+        },
+        "tier": {
+          "$ref": "#/$defs/ToolTier"
+        },
+        "validators": {
+          "items": {
+            "$ref": "#/$defs/ValidatorRef"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "args",
+        "id",
+        "runtimeApply",
+        "targetRequired",
+        "tier"
+      ],
+      "type": "object"
+    },
+    "ToolTier": {
+      "enum": [
+        "Configure",
+        "Compose",
+        "Mechanism"
+      ],
+      "type": "string"
+    },
+    "ValidatorRef": {
+      "additionalProperties": false,
+      "properties": {
+        "codes": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "id": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "codes",
+        "id"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "urn:gamecore:studio:schema:tool-catalog",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "objectTypes": {
+      "items": {
+        "$ref": "#/$defs/ObjectTypeEntry"
+      },
+      "type": "array"
+    },
+    "plugin": {
+      "type": "string"
+    },
+    "revision": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "schema": {
+      "const": "gamecore.studio.toolcatalog/1",
+      "type": "string"
+    },
+    "tools": {
+      "items": {
+        "$ref": "#/$defs/ToolEntry"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "objectTypes",
+    "schema",
+    "tools"
+  ],
+  "title": "ToolCatalog",
+  "type": "object"
+}

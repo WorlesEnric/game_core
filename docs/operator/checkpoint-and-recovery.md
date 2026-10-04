@@ -138,3 +138,92 @@ latches**, in the marker-free release player — which is why that mode is kept 
   counts, the configured budget limit, and a retry classification.
 - `IOperationReader.Read(OperationId)` for the terminal status of a specific attempt; `ResultExpired` once the
   bounded ledger reclaims it.
+
+## 7. Production restore and saves
+
+SADR-012 (studio) adds a production restore path for games and a user-facing save service. Sections 2–4
+still apply; this section covers only what is new.
+
+**Builder.** `ProductionRestoreTargetBuilder` (`com.gamecore.unity.runtime`, `Runtime/Persistence`) is the
+O-21 `IRestoreTargetBuilder` for real games. Its composer (`SaveRestoreComposer` for an application root)
+composes the staging world with the game's own catalog, schedule, recipes and lane. The builder then restores
+targets, slots (dormant rows included), scopes and grants, installations, root boundaries, the propagation
+mode, plugin clocks and wakes, RNG streams, next-step buffer rows, re-admitted commands and the outbox. A game
+can also declare `SaveRestoreHook` as its `IGameApplicationRestoreHook`, so
+`GameApplicationRoot.TryCreateRestoreTargetBuilder` returns this builder.
+
+**Batched publication.** The captured scope tree becomes the lane seed, and targets and slots are written
+directly, so neither costs a publication. Each installation, each scope with imports, each differing root
+boundary and a differing mode costs one publication. The count does not depend on how many targets the
+checkpoint holds. `ProductionRestoreReport.Describe()` prints:
+- every count;
+- the publications and no-change edits;
+- the time spent in each phase.
+
+**Restore refusals added by SADR-012:**
+
+| Condition | Refusal | Code |
+| --- | --- | --- |
+| A target names a recipe this build does not register | `RecipeMissing` | `MissingDependency` |
+| A recipe is registered at another revision; the detail names the recipe, both revisions and the target | `RecipeRevisionMismatch` | `StalePlan` |
+| The checkpoint's temporal model differs from the game's | `TemporalModelMismatch` | `UnsupportedVersion` |
+| A slot row needs a migration that is not registered | slot migration `MigrationPathMissing`; the hint names the schema and both versions | `MigrationRequired` |
+| A slot row is newer than this build | slot migration `Downgrade` | `UnsupportedVersion` |
+
+Each of these refusals leaves the running world untouched and disposes the staging world.
+
+**Slot migrations.** A slot migration is a pure, id-keyed forward step (`SlotMigrationStep`) in a
+`SlotMigrationRegistry`, bound to slots through a `SlotSchemaCatalog`. `SlotMigrationExecutor` runs before
+planning:
+- it rewrites only the slot records of the document;
+- every other record is carried byte for byte;
+- the O-21 plan therefore stays direct.
+
+Ambiguous chains and steps that throw are refusals, never partial results.
+
+**Temporal continuity.** A document whose container declares the feature
+`gamecore.checkpoint.feature.temporal-continuity.v1` restores with its logical step, retained debt, domain
+seconds and issuer high-water marks. Details:
+- The restored world still gets a new `WorldId`.
+- Restored debt is owed at the first running pump.
+- `WorldAdapterFrame` continues a device source's sequence above its saved mark.
+- `UnityWorldHost.RestoredOrigin` reports what was applied.
+
+A document without the feature (every V1 writer) restores at step 0 with zero debt and zero domain time.
+The origin reports `LegacyStepZero`, with a detail naming the feature. A reader that predates the feature
+refuses such a document as an unknown required feature; it does not misread it.
+
+**Save files.** `SaveService` (`com.gamecore.unity.app`) writes each slot as two files under
+`Application.persistentDataPath/saves`:
+- `<slot>.gcc`: the checkpoint document, published atomically by `FileCheckpointStore`;
+- `<slot>.json`: a header with the game id, catalog fingerprint, schema versions, region, play time, UTC
+  timestamp, thumbnail path, logical step, and the document's hash and length.
+
+Slot names are lowercase file stems: `[a-z0-9][a-z0-9_-]{0,63}`.
+
+The two files are not jointly atomic. If a crash lands between them, the header's hash no longer matches the
+document, and the slot reads as `save.corrupt-file`. It is never restored half-old.
+
+A capture pauses a running world for the boundary read, then resumes it.
+
+A restore does the following:
+1. checks the header against the document;
+2. decides catalog compatibility: identical, declared compatible through `CompatibleCatalogs`, or refused;
+3. runs the slot migrations and the O-21 restore;
+4. only after success, stops the previous root and hands over the new one through `SaveService.ActiveRoot` and
+   the `RootChanged` event.
+
+| Save refusal | Meaning |
+| --- | --- |
+| `save.missing-slot` | No document or no header for the slot. |
+| `save.corrupt-file` | The header or document does not parse, the checksum fails, or the two files are from different saves. |
+| `save.catalog-mismatch` | Another game, an undeclared catalog fingerprint, a recipe revision change or a temporal model change. |
+| `save.migration-path-missing` | A slot needs a migration this build does not register; the hint names it. |
+| `save.newer-build` | The header format, document version or a slot row is newer than this build. |
+| `save.unsafe-state` | The world is stopped, faulted, mid-step or not running/paused. |
+| `save.invalid-slot`, `save.capture-failed`, `save.storage-failed`, `save.restore-refused` | As named; the kernel code and detail travel with the refusal. |
+
+`SaveService.Inspect(slot)` reads and verifies a slot and previews its migration without restoring anything.
+`SaveService.TestRoundTrip()` captures, restores into a scratch world, captures again and compares the
+canonical slot hashes and steps, then stops the scratch world. Studio exposes both as `save.inspect` and
+`save.testRoundTrip`.

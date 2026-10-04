@@ -22,11 +22,13 @@ using GameCore.Derivation;
 using GameCore.Execution;
 using GameCore.Execution.Observation;
 using GameCore.Execution.Persistence;
+using GameCore.Execution.Time;
 using GameCore.Planning;
 using GameCore.Unity.Adapters;
 using GameCore.Unity.Runtime;
 using GameCore.Unity.Runtime.Integration;
 using GameCore.Unity.Runtime.Persistence;
+using GameCore.Unity.Runtime.Time;
 
 namespace GameCore.Unity.App
 {
@@ -85,6 +87,17 @@ namespace GameCore.Unity.App
             Explanations = new ProvenanceExplanationReader(provenance);
             operationSequence = firstOperationSequence;
             PumpCounter = new GameApplicationPumpCounter(host);
+
+            // P1.1 (P0.4 leftover 3): the world's time driver runs inside the one-pump counter, and the schedule
+            // adaptation's native dependency table is reset at every step admission (P-041).
+            Time = new WorldTimeDriver(host, new StepInputCutoff(256, 1024), new PluginClockRegistry(64), 1U);
+            NativeDependencyTable? nativeTable = schedule.Adaptation != null ? schedule.Adaptation.NativeTable : null;
+            if (nativeTable != null)
+            {
+                Time.AdoptResourceTable(nativeTable);
+            }
+
+            TimeFrame = new GameApplicationTimeFrame(host, Time);
             State = GameApplicationState.Ready;
         }
 
@@ -145,6 +158,15 @@ namespace GameCore.Unity.App
 
         /// <summary>The one-pump counter, registered as this world's adapter frame (SADR-010).</summary>
         public GameApplicationPumpCounter PumpCounter { get; }
+
+        /// <summary>
+        /// The world's time driver: input cutoff, plugin clocks and the adopted native resource table (P-036..P-038,
+        /// P-041). It runs inside the pump counter through <see cref="TimeFrame"/>; there is no second pump path.
+        /// </summary>
+        public WorldTimeDriver Time { get; }
+
+        /// <summary>The adapter frame that drives <see cref="Time"/>; it forwards to the game's own adapter frame.</summary>
+        public GameApplicationTimeFrame TimeFrame { get; }
 
         public GameApplicationState State { get; private set; }
 
@@ -369,7 +391,8 @@ namespace GameCore.Unity.App
                     root.PumpCounter.UseFrameClock(options.FrameClock);
                 }
 
-                root.PumpCounter.SetInner(definition.AdapterFrame?.Invoke(root));
+                root.TimeFrame.SetInner(definition.AdapterFrame?.Invoke(root));
+                root.PumpCounter.SetInner(root.TimeFrame);
                 AdapterFrameRegistry.Register(root.PumpCounter);
 
                 // The world waits at a committed boundary while the boot script runs; Start makes it Running.
@@ -485,10 +508,19 @@ namespace GameCore.Unity.App
         private OperationResult SetRunState(WorldLifecycleState destination, GameApplicationState state)
         {
             PumpCounter.ObserveHost();
+            GameApplicationState previous = State;
             OperationResult result = Host.SetRunState(NextOperation(), destination);
             if (result.Outcome != Outcome.Rejected)
             {
                 State = state;
+                if (destination == WorldLifecycleState.Paused && previous == GameApplicationState.Running)
+                {
+                    Time.OnWorldPaused();
+                }
+                else if (destination == WorldLifecycleState.Running && previous == GameApplicationState.Paused)
+                {
+                    Time.OnWorldResumed();
+                }
             }
 
             return result;

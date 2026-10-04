@@ -134,7 +134,8 @@ pub async fn start(
         store.clone(),
         schema,
         indexer.clone(),
-    );
+    )
+    .map_err(StartError::Schema)?;
     let ops = Arc::new(MediaOps::new(
         client.clone(),
         ledger.clone(),
@@ -142,6 +143,7 @@ pub async fn start(
         hub.clone(),
         indexer.clone(),
         cfg.hello_cache_s,
+        cfg.ops_max_cost_usd,
     ));
     let voice = Arc::new(VoiceBridge::new(
         client.clone(),
@@ -224,10 +226,12 @@ pub async fn start(
     })
 }
 
-/// Re-register the endpoint whenever the channel comes back (idempotent at the node).
+/// Re-register the endpoint whenever the channel comes back or the welcome's proxy token
+/// changes (idempotent at the node); a failed registration is retried on the next tick.
 async fn monitor(agent: Agent, url: String, mut stop: watch::Receiver<bool>) {
     let mut was = agent.is_connected();
     let mut token = agent.welcome().map(|w| w.proxy_token());
+    let mut pending = false;
     loop {
         tokio::select! {
             _ = tokio::time::sleep(Duration::from_millis(500)) => {}
@@ -238,13 +242,18 @@ async fn monitor(agent: Agent, url: String, mut stop: watch::Receiver<bool>) {
         if current != token {
             tracing::info!("the node issued a new proxy token (reconnect or restart)");
             token = current;
+            pending = true;
         }
         if now && !was {
+            pending = true;
+        }
+        if now && pending {
             match agent.endpoint(&url).await {
-                Ok(_) => tracing::info!(url = %url, "endpoint registered again after a reconnect"),
-                Err(e) => {
-                    tracing::warn!(error = %e, "endpoint registration after reconnect failed")
+                Ok(_) => {
+                    pending = false;
+                    tracing::info!(url = %url, "endpoint registered again");
                 }
+                Err(e) => tracing::warn!(error = %e, "endpoint registration failed; retrying"),
             }
         }
         was = now;

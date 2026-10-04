@@ -1,26 +1,39 @@
 //! The task desk (04 §3): requests become etos tasks on the Studio workers, and finished
 //! tasks become candidates.
 //!
-//! 1. **Submit** (`POST /v1/requests`): validate, resolve the tool catalog revision, persist
-//!    the request (idempotent on `changeSetId`; a different body under the same id is
-//!    `ledger_conflict`), then open the task.
+//! 1. **Submit** (`POST /v1/requests`): validate (the selection, the context slice and the
+//!    tool catalog against their schemas; the catalog's digest against `toolCatalogRevision`),
+//!    persist the request (idempotent on `changeSetId`: the digest covers the body without
+//!    `toolCatalog` and with attachments reduced to `{name, sha256}`; a different request
+//!    under the same id is `ledger_conflict`), then open the task.
 //! 2. **Open**: pack `request.md`, `selection.json`, `index-slice.json` (capped, truncation
 //!    reported), `tool-catalog.json` and the attachments, upload them (`POST /files`), and
-//!    `POST /tasks {worker, text, topic: #agent/<agent>/cs-<id>, inputs, id: <changeSetId>}`.
-//!    The task id is stored before anything else happens; a request that already has a task
-//!    id is never opened again, and etos returns the same task for the same `id` anyway.
+//!    `POST /tasks {worker, text, topic: #agent/<agent>/cs-<lowercase ULID>, inputs,
+//!    id: <changeSetId>}`. Opening is serialised per request; the inputs of an attempt are
+//!    written once (the first packer wins) and the task id is stored before anything else
+//!    happens, so a request that already has a task id is never opened again (etos also
+//!    returns the same task for the same `id`).
 //! 3. **Follow**: a background task long-polls the topic from the saved cursor. Progress
 //!    records become `task_progress` events; `waiting` records leave the request `waiting`
 //!    with the record text (the budget case; never retried); the final `failed` record fails
-//!    it; the final `done` record is evaluated ([`crate::candidate`]).
+//!    it, unless `GET /tasks/{id}` then says `cancelled`; the final `done` record is
+//!    evaluated ([`crate::candidate`]). Record texts and etos errors are redacted before they
+//!    are stored.
 //! 4. **Candidate**: refs are fetched, digests verified against `changeset.json`, the change
-//!    set validated against the schema, artifacts stored content-addressed, `candidate`
-//!    emitted. An invalid candidate is re-asked once (configurable) as a new task
-//!    `<changeSetId>.r1` on topic `cs-<id>-r1` whose `request.md` names the parent task and
-//!    whose inputs add `diagnostics.json`.
+//!    set validated against the schema, candidate mode and the bounded catalog rules,
+//!    artifacts stored content-addressed, the candidate row and the request's settlement
+//!    written in one transaction (never for a request already settled), `candidate` emitted.
+//!    An invalid candidate is re-asked once (configurable) as a new task `<changeSetId>.r1`
+//!    on topic `cs-<ulid>-r1` whose `request.md` names the parent task and whose inputs add
+//!    `diagnostics.json`; the new attempt and the attempt pointer are written together. A
+//!    re-ask etos refuses settles `candidate_invalid` with the original diagnostics plus the
+//!    refusal. A catalog the companion cannot confirm (`StaleContext`) is not re-asked.
 //! 5. **Cancel**: `POST /tasks/{id}/cancel`; the state comes from etos's answer.
 //! 6. **Resume**: on startup every non-terminal request is followed again from its cursor;
-//!    `GET /tasks/{id}` is re-read when the topic is quiet.
+//!    `GET /tasks/{id}` is re-read when the topic is quiet. An `unresolved` request is
+//!    followed again at most [`MAX_UNRESOLVED_RESUMES`] times and for at most
+//!    [`UNRESOLVED_MAX_AGE`] after it became unresolved; then the companion gives up on it
+//!    (it stays `unresolved`, with `outcome.gaveUp`).
 
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
@@ -33,7 +46,7 @@ use serde_json::{Map, Value, json};
 use tokio::sync::watch;
 use tokio::task::JoinHandle;
 
-use crate::candidate::{Evaluation, Fetched, evaluate};
+use crate::candidate::{CatalogContext, Evaluation, Fetched, evaluate, reaskable};
 use crate::config::Config;
 use crate::error::{ApiError, ApiResult, CANDIDATE_INVALID};
 use crate::events::EventHub;
@@ -43,14 +56,30 @@ use crate::ledger::{
     RequestUpdate,
 };
 use crate::model::{Diagnostic, EditRequest, RequestState, RequestView, StoredArtifact};
-use crate::schema::ChangeSetSchema;
+use crate::redact::redact;
+use crate::schema::{ChangeSetSchema, RequestSchemas};
 use crate::store::ArtifactStore;
-use crate::util::{canonical_json, now_ms, sha256_hex, topic_segment, valid_change_set_id};
+use crate::util::{
+    canonical_json, catalog_revision, normalize_sha256, now_ms, sha256_hex, topic_segment,
+    valid_change_set_id,
+};
 
 /// Largest attachment accepted, decoded.
-const MAX_ATTACHMENT: usize = 16 * 1024 * 1024;
+pub const MAX_ATTACHMENT: usize = 16 * 1024 * 1024;
 /// Most attachments per request.
-const MAX_ATTACHMENTS: usize = 8;
+pub const MAX_ATTACHMENTS: usize = 8;
+/// Largest total of a request's attachments, decoded.
+pub const MAX_ATTACHMENTS_TOTAL: usize = 64 * 1024 * 1024;
+/// Room for everything in a request body besides the attachments' base64 (the selection,
+/// the context slice before it is capped, the catalog).
+pub const MAX_JSON_BODY: usize = 24 * 1024 * 1024;
+/// Largest request body: the attachments' budget as base64 plus [`MAX_JSON_BODY`]. A body
+/// within the attachment budget is never refused by the body limit first.
+pub const MAX_BODY: usize = 4 * MAX_ATTACHMENTS_TOTAL.div_ceil(3) + MAX_JSON_BODY;
+/// Follows of an `unresolved` request after restarts before the companion gives up.
+pub const MAX_UNRESOLVED_RESUMES: u32 = 3;
+/// How long after becoming `unresolved` a request is still followed after a restart.
+pub const UNRESOLVED_MAX_AGE: Duration = Duration::from_secs(24 * 3600);
 /// Quiet polls after etos reports `done`/`failed` before the companion stops waiting for the
 /// final record.
 const FINAL_RECORD_GRACE: u32 = 3;
@@ -76,8 +105,10 @@ pub struct Desk {
     hub: EventHub,
     store: ArtifactStore,
     schema: Arc<ChangeSetSchema>,
+    contracts: RequestSchemas,
     indexer: Arc<Indexer>,
     followers: Mutex<HashMap<String, JoinHandle<()>>>,
+    opening: Mutex<HashMap<String, Arc<tokio::sync::Mutex<()>>>>,
     stop: watch::Sender<bool>,
 }
 
@@ -94,16 +125,62 @@ fn is_retryable(e: &ApiError) -> bool {
         || e.status.is_server_error()
 }
 
+/// The outcome of a request whose task etos refused: the registered outcome code
+/// `task_failed` (04 §2), with the refusal as it came (`refusal: {code, status, hint?}`).
 fn outcome_of(e: &ApiError, phase: &str) -> Value {
-    json!({"code": e.body.code, "message": e.body.message, "hint": e.body.hint, "phase": phase})
+    crate::util::pruned(json!({
+        "code": "task_failed",
+        "message": e.body.message,
+        "phase": phase,
+        "refusal": {"code": e.body.code, "status": e.status.as_u16(), "hint": e.body.hint},
+    }))
 }
 
-fn revision_text(v: &Value) -> Option<String> {
-    match v {
-        Value::String(s) if !s.trim().is_empty() => Some(s.trim().to_string()),
-        Value::Number(n) => Some(n.to_string()),
-        _ => None,
+/// The diagnostic of a refusal etos gave (`Refused`, with the refusal as `data`).
+fn refusal_diagnostic(e: &ApiError, what: &str) -> Diagnostic {
+    Diagnostic::new("Refused", format!("{what}: {}", e.body.message)).with_data(
+        crate::util::pruned(
+            json!({"code": e.body.code, "status": e.status.as_u16(), "hint": e.body.hint}),
+        ),
+    )
+}
+
+/// The context slice without the companion's `rgKind`/`rgKey` node extensions (they are
+/// not part of `semantic-index.schema.json` and never reach a worker).
+pub fn strip_rg_extensions(slice: &Value) -> Value {
+    let mut v = slice.clone();
+    if let Some(nodes) = v.get_mut("nodes").and_then(Value::as_array_mut) {
+        for n in nodes {
+            if let Some(o) = n.as_object_mut() {
+                o.remove("rgKind");
+                o.remove("rgKey");
+            }
+        }
     }
+    v
+}
+
+/// The idempotency digest of a request body: canonical JSON without `toolCatalog` (it is
+/// identified by `toolCatalogRevision`) and with each attachment reduced to `{name, sha256}`
+/// (the digest of its decoded bytes).
+pub fn request_digest(raw: &Value) -> String {
+    let mut v = raw.clone();
+    if let Some(o) = v.as_object_mut() {
+        o.remove("toolCatalog");
+        if let Some(Value::Array(atts)) = o.get_mut("attachments") {
+            for a in atts.iter_mut() {
+                let name = a.get("name").cloned().unwrap_or(Value::Null);
+                let sha = a
+                    .get("data")
+                    .and_then(Value::as_str)
+                    .and_then(|d| STANDARD.decode(d.as_bytes()).ok())
+                    .map(|b| json!(sha256_hex(&b)))
+                    .unwrap_or(Value::Null);
+                *a = json!({"name": name, "sha256": sha});
+            }
+        }
+    }
+    sha256_hex(canonical_json(&v).as_bytes())
 }
 
 /// The index slice under `max` bytes: nodes, then edges, then scopes are dropped from the end
@@ -148,19 +225,28 @@ impl Desk {
         store: ArtifactStore,
         schema: Arc<ChangeSetSchema>,
         indexer: Arc<Indexer>,
-    ) -> Arc<Desk> {
+    ) -> Result<Arc<Desk>, String> {
         let (stop, _) = watch::channel(false);
-        Arc::new(Desk {
+        Ok(Arc::new(Desk {
             cfg,
             client,
             ledger,
             hub,
             store,
             schema,
+            contracts: RequestSchemas::builtin()?,
             indexer,
             followers: Mutex::new(HashMap::new()),
+            opening: Mutex::new(HashMap::new()),
             stop,
-        })
+        }))
+    }
+
+    fn open_lock(&self, rid: &str) -> Arc<tokio::sync::Mutex<()>> {
+        match self.opening.lock() {
+            Ok(mut m) => m.entry(rid.to_string()).or_default().clone(),
+            Err(_) => Arc::new(tokio::sync::Mutex::new(())),
+        }
     }
 
     fn topic(&self, change_set_id: &str, attempt: u32) -> String {
@@ -198,7 +284,7 @@ impl Desk {
     }
 
     fn emit(&self, kind: &str, rid: &str, data: Value) {
-        if let Err(e) = self.hub.emit(kind, Some(rid), &data) {
+        if let Err(e) = self.hub.emit(kind, Some(rid), &crate::util::pruned(data)) {
             tracing::error!(request = rid, kind, error = %e, "cannot append an event");
         }
     }
@@ -228,14 +314,54 @@ impl Desk {
                     .with_hint(format!("workers: {}", self.cfg.workers.join(", "))),
             );
         }
-        let revision = revision_text(&req.tool_catalog_revision).ok_or_else(|| {
-            ApiError::bad_request("toolCatalogRevision is a non-empty string or a number")
+        let mut findings = self.contracts.selection.findings(
+            raw.get("selection").unwrap_or(&Value::Null),
+            "InvalidArgs",
+            "selection",
+        );
+        findings.extend(self.contracts.slice.findings(
+            &strip_rg_extensions(&req.context_slice),
+            "InvalidArgs",
+            "contextSlice",
+        ));
+        if !findings.is_empty() {
+            return Err(ApiError::bad_request(format!(
+                "the request does not fit the contract schemas ({} finding(s))",
+                findings.len()
+            ))
+            .with_hint("selection: selection-snapshot.schema.json; contextSlice: semantic-index.schema.json")
+            .with_diagnostics(findings));
+        }
+        let revision = normalize_sha256(&req.tool_catalog_revision).ok_or_else(|| {
+            ApiError::bad_request(
+                "toolCatalogRevision is the sha256 of the catalog's canonical JSON without `revision`",
+            )
         })?;
         match &req.tool_catalog {
             Some(cat) => {
-                let digest = sha256_hex(canonical_json(cat).as_bytes());
+                let findings = self
+                    .contracts
+                    .catalog
+                    .findings(cat, "InvalidArgs", "toolCatalog");
+                if !findings.is_empty() {
+                    return Err(ApiError::bad_request(
+                        "toolCatalog does not fit tool-catalog.schema.json",
+                    )
+                    .with_diagnostics(findings));
+                }
+                let actual = catalog_revision(cat);
+                let claimed = cat
+                    .get("revision")
+                    .and_then(Value::as_str)
+                    .and_then(normalize_sha256);
+                if actual != revision || claimed.is_some_and(|c| c != actual) {
+                    return Err(ApiError::bad_request(format!(
+                        "toolCatalogRevision is {revision}, but the catalog's digest is {actual}"
+                    ))
+                    .with_hint("toolCatalogRevision and the catalog's `revision` are the sha256 of its canonical JSON (keys sorted, no whitespace) without `revision`"));
+                }
                 self.ledger
-                    .put_catalog(&revision, &digest, cat)
+                    .put_catalog(&revision, &actual, cat)
                     .map_err(|e| match e {
                         LedgerError::Conflict(m) => ApiError::ledger_conflict(m),
                         other => other.into(),
@@ -255,19 +381,24 @@ impl Desk {
                 "at most {MAX_ATTACHMENTS} attachments"
             )));
         }
+        let mut total = 0usize;
         for a in &req.attachments {
             let bytes = STANDARD.decode(a.data.as_bytes()).map_err(|_| {
                 ApiError::bad_request(format!("attachment {} is not base64", a.name))
             })?;
-            if bytes.len() > MAX_ATTACHMENT {
+            total += bytes.len();
+            if bytes.len() > MAX_ATTACHMENT || total > MAX_ATTACHMENTS_TOTAL {
                 return Err(ApiError::new(
                     axum::http::StatusCode::PAYLOAD_TOO_LARGE,
                     "too_large",
-                    format!("attachment {} exceeds 16 MiB", a.name),
+                    format!(
+                        "attachments are at most 16 MiB each and {} MiB together",
+                        MAX_ATTACHMENTS_TOTAL >> 20
+                    ),
                 ));
             }
             if let Some(d) = &a.sha256
-                && crate::util::normalize_sha256(d) != Some(sha256_hex(&bytes))
+                && normalize_sha256(d) != Some(sha256_hex(&bytes))
             {
                 return Err(ApiError::bad_request(format!(
                     "attachment {} does not have sha256 {d}",
@@ -275,7 +406,7 @@ impl Desk {
                 )));
             }
         }
-        let digest = sha256_hex(canonical_json(&raw).as_bytes());
+        let digest = request_digest(&raw);
         let new = NewRequest {
             change_set_id: req.change_set_id.clone(),
             digest,
@@ -308,7 +439,7 @@ impl Desk {
                 match opened {
                     Ok(Ok(())) => {}
                     Ok(Err(e)) if !is_retryable(&e) => {
-                        // Recorded as failed by open_attempt; the refusal passes through.
+                        // Settled by open_attempt; the refusal passes through.
                         return Err(e);
                     }
                     Ok(Err(e)) => {
@@ -329,8 +460,23 @@ impl Desk {
 
     async fn upload(&self, name: &str, media: &str, bytes: &[u8]) -> ApiResult<Value> {
         let info = self.client.files().put(name, media, bytes).await?;
+        let ours = sha256_hex(bytes);
+        if let Some(theirs) = normalize_sha256(&info.digest)
+            && theirs != ours
+        {
+            return Err(ApiError::new(
+                axum::http::StatusCode::BAD_GATEWAY,
+                "protocol",
+                format!("the node stored {name} with digest {theirs}, the bytes sent are {ours}"),
+            ));
+        }
+        let media = if info.media_type.is_empty() {
+            media.to_string()
+        } else {
+            info.media_type.clone()
+        };
         Ok(
-            json!({"name": name, "ref": info.reference.id, "digest": info.digest, "mediaType": media}),
+            json!({"name": name, "ref": info.reference.id, "digest": format!("sha256:{ours}"), "mediaType": media}),
         )
     }
 
@@ -343,13 +489,9 @@ impl Desk {
         truncation: Option<&Value>,
         files: &[String],
     ) -> String {
-        let revision = req
-            .selection
-            .index_revision
-            .map(|r| r.to_string())
-            .or_else(|| req.context_slice.get("revision").map(Value::to_string))
-            .unwrap_or_else(|| "unknown".into());
-        let catalog = revision_text(&req.tool_catalog_revision).unwrap_or_default();
+        let revision = req.selection.index_revision;
+        let catalog = normalize_sha256(&req.tool_catalog_revision)
+            .unwrap_or_else(|| req.tool_catalog_revision.clone());
         let mut md = format!(
             "# GameCore Studio request `{id}`\n\n\
              - Change set id: `{id}` — write it as `id` in `/outputs/changeset.json`.\n\
@@ -393,8 +535,9 @@ impl Desk {
         }
         md.push_str(
             "\n## Output contract\n\n\
-             1. Read `tool-catalog.json` first. Produce only operations it lists, with the argument \
-                types, units and constraints it gives.\n\
+             1. Read `tool-catalog.json` first. Produce only operations whose `tool` is the `id` of \
+                a tool it lists, with every required argument, no argument it does not list, a \
+                target when `targetRequired` (of a kind in `targetKinds`, at a scope in `scopes`).\n\
              2. Write `/outputs/changeset.json`: `{\"id\": <change set id>, \"schema\": \
                 \"gamecore.studio.changeset/1\", \"intent\", \"selection\", \"operations\", \"artifacts\", \
                 \"requirements\"}` (docs/studio/schemas/change-set.schema.json: no other fields). \
@@ -406,7 +549,9 @@ impl Desk {
                 Operations reference assets as `{\"artifact\": \"sha256:<hex>\"}`, and every listed \
                 asset is referenced by an operation.\n\
              4. If two interpretations differ materially, write only `/outputs/clarification.json`: \
-                `{\"status\": \"needs-clarification\", \"question\": \"<one question>\"}`.\n",
+                `{\"status\": \"needs-clarification\", \"question\": \"<one question>\"}`.\n\
+             5. Omit optional members; never write `null`. No `state` (or `\"Candidate\"`), no \
+                `outcomes`, no `timestamps.applied`, no `links.gameCoreOps`.\n",
         );
         md
     }
@@ -415,24 +560,27 @@ impl Desk {
     async fn pack(&self, row: &RequestRow) -> ApiResult<Value> {
         let req: EditRequest = serde_json::from_value(row.body.clone())
             .map_err(|e| ApiError::internal(format!("stored request unreadable: {e}")))?;
-        let revision = revision_text(&req.tool_catalog_revision).unwrap_or_default();
+        let revision = normalize_sha256(&req.tool_catalog_revision).unwrap_or_default();
         let catalog = match &req.tool_catalog {
             Some(c) => c.clone(),
             None => self.ledger.catalog(&revision)?.ok_or_else(|| {
                 ApiError::stale_context(format!("tool catalog revision {revision} is gone"))
             })?,
         };
-        let (slice, truncation) = cap_slice(&req.context_slice, self.cfg.max_slice_bytes)
-            .ok_or_else(|| {
-                ApiError::new(
-                    axum::http::StatusCode::PAYLOAD_TOO_LARGE,
-                    "too_large",
-                    format!(
-                        "the context slice cannot be truncated below {} bytes",
-                        self.cfg.max_slice_bytes
-                    ),
-                )
-            })?;
+        let (slice, truncation) = cap_slice(
+            &strip_rg_extensions(&req.context_slice),
+            self.cfg.max_slice_bytes,
+        )
+        .ok_or_else(|| {
+            ApiError::new(
+                axum::http::StatusCode::PAYLOAD_TOO_LARGE,
+                "too_large",
+                format!(
+                    "the context slice cannot be truncated below {} bytes",
+                    self.cfg.max_slice_bytes
+                ),
+            )
+        })?;
         let mut names: Vec<String> = vec![
             "request.md".into(),
             "selection.json".into(),
@@ -448,7 +596,7 @@ impl Desk {
             self.upload(
                 "selection.json",
                 "application/json",
-                &json_bytes(&serde_json::to_value(&req.selection).unwrap_or(Value::Null)),
+                &json_bytes(row.body.get("selection").unwrap_or(&Value::Null)),
             )
             .await?,
             self.upload("index-slice.json", "application/json", &json_bytes(&slice))
@@ -469,9 +617,12 @@ impl Desk {
         Ok(Value::Array(inputs))
     }
 
-    /// Open the task of an attempt unless it is open already. A refusal etos will repeat marks
-    /// the request failed and is returned; transient failures are returned for a retry.
+    /// Open the task of an attempt unless it is open already (serialised per request). A
+    /// refusal etos will repeat settles the request ([`Desk::settle_refusal`]) and is
+    /// returned; transient failures are returned for a retry.
     async fn open_attempt(&self, rid: &str, attempt: u32) -> ApiResult<()> {
+        let lock = self.open_lock(rid);
+        let _guard = lock.lock().await;
         let row = self.ledger.request(rid)?;
         let att = self.ledger.attempt(rid, attempt)?;
         if att.task_id.is_some() || row.state.is_terminal() {
@@ -482,16 +633,40 @@ impl Desk {
             && !is_retryable(e)
         {
             tracing::warn!(request = rid, attempt, error = %e, "task refused");
-            self.update(
-                rid,
-                RequestUpdate {
-                    state: Some(RequestState::Failed),
-                    outcome: Some(Some(outcome_of(e, "open"))),
-                    ..RequestUpdate::default()
-                },
-            )?;
+            self.settle_refusal(rid, attempt, e)?;
         }
         result
+    }
+
+    /// Settle a request whose task etos refused to open: the first attempt fails with the
+    /// refusal; a re-ask settles `candidate_invalid` with the diagnostics that caused it plus
+    /// the refusal.
+    fn settle_refusal(&self, rid: &str, attempt: u32, e: &ApiError) -> Result<(), LedgerError> {
+        let upd = if attempt == 0 {
+            RequestUpdate {
+                state: Some(RequestState::Failed),
+                outcome: Some(Some(outcome_of(e, "open"))),
+                ..RequestUpdate::default()
+            }
+        } else {
+            let mut diags: Vec<Diagnostic> = self
+                .ledger
+                .request(rid)?
+                .outcome
+                .and_then(|o| o.get("diagnostics").cloned())
+                .and_then(|d| serde_json::from_value(d).ok())
+                .unwrap_or_default();
+            diags.push(refusal_diagnostic(e, "the re-ask could not be opened"));
+            RequestUpdate {
+                state: Some(RequestState::CandidateInvalid),
+                task_status: Some(None),
+                outcome: Some(Some(json!({"code": CANDIDATE_INVALID,
+                    "message": "the worker's change set failed validation and the re-ask was refused",
+                    "diagnostics": diags}))),
+                ..RequestUpdate::default()
+            }
+        };
+        self.update(rid, upd).map(|_| ())
     }
 
     async fn open_inner(&self, row: &RequestRow, att: &AttemptRow) -> ApiResult<()> {
@@ -500,8 +675,7 @@ impl Desk {
             None => {
                 let v = self.pack(row).await?;
                 self.ledger
-                    .set_attempt_inputs(&row.request_id, att.attempt, &v)?;
-                v
+                    .claim_attempt_inputs(&row.request_id, att.attempt, &v)?
             }
         };
         let refs: Vec<String> = inputs
@@ -585,11 +759,39 @@ impl Desk {
     /// Follow every request left open by a previous process.
     pub fn resume_all(self: &Arc<Self>) -> Result<usize, LedgerError> {
         let open = self.ledger.open_requests()?;
+        let mut followed = 0;
         for r in &open {
+            if r.state == RequestState::Unresolved {
+                let resumes = self.ledger.note_resume(&r.request_id)?;
+                let age_ms = now_ms().saturating_sub(r.updated_at);
+                let too_old = u128::try_from(age_ms).unwrap_or(0) > UNRESOLVED_MAX_AGE.as_millis();
+                if resumes > MAX_UNRESOLVED_RESUMES || too_old {
+                    let mut outcome = r.outcome.clone().unwrap_or_else(|| json!({}));
+                    if let Some(o) = outcome.as_object_mut() {
+                        o.insert("code".into(), json!("unresolved"));
+                        o.insert("gaveUp".into(), json!(true));
+                        o.insert(
+                            "gaveUpReason".into(),
+                            json!(format!(
+                                "followed again after {} restart(s) over {} h without an outcome",
+                                resumes - 1,
+                                age_ms / 3_600_000
+                            )),
+                        );
+                    }
+                    if let Some((view, cursor)) = self.ledger.give_up(&r.request_id, &outcome)? {
+                        self.hub.notify(cursor);
+                        self.record_changeset(&view);
+                    }
+                    tracing::warn!(request = %r.request_id, resumes, "gave up following an unresolved request");
+                    continue;
+                }
+            }
             tracing::info!(request = %r.request_id, state = r.state.as_str(), "resuming");
             self.spawn_follower(&r.request_id);
+            followed += 1;
         }
-        Ok(open.len())
+        Ok(followed)
     }
 
     fn stopping(&self) -> bool {
@@ -734,7 +936,8 @@ impl Desk {
                     RequestUpdate {
                         state: Some(RequestState::Cancelled),
                         task_status: Some(Some(status.clone())),
-                        outcome: Some(Some(json!({"code": "cancelled", "message": info.error}))),
+                        outcome: Some(Some(json!({"code": "cancelled",
+                            "message": info.error.as_deref().map(redact)}))),
                         ..RequestUpdate::default()
                     },
                 )
@@ -747,8 +950,8 @@ impl Desk {
                         RequestUpdate {
                             state: Some(RequestState::Unresolved),
                             task_status: Some(Some(status.clone())),
-                            outcome: Some(Some(json!({"code": "outcome_unknown",
-                                "message": info.error.unwrap_or_else(|| "etos has no record of the task".into())}))),
+                            outcome: Some(Some(json!({"code": "unresolved",
+                                "message": redact(&info.error.unwrap_or_else(|| "etos has no record of the task".into()))}))),
                             ..RequestUpdate::default()
                         },
                     ).map(|_| Flow::Exit)
@@ -762,7 +965,7 @@ impl Desk {
                     let (state, code) = if status == "failed" {
                         (RequestState::Failed, "task_failed")
                     } else {
-                        (RequestState::Unresolved, "outcome_unknown")
+                        (RequestState::Unresolved, "unresolved")
                     };
                     self.update(
                         rid,
@@ -770,7 +973,7 @@ impl Desk {
                             state: Some(state),
                             task_status: Some(Some(status.clone())),
                             outcome: Some(Some(json!({"code": code,
-                                "message": info.error.unwrap_or_else(|| format!("etos says {status} but the final record never arrived on the topic")),
+                                "message": redact(&info.error.unwrap_or_else(|| format!("etos says {status} but the final record never arrived on the topic"))),
                                 "result": info.result}))),
                             ..RequestUpdate::default()
                         },
@@ -835,9 +1038,10 @@ impl Desk {
         {
             return Flow::Exit;
         }
+        let text = redact(&rec.text);
         let progress = |status: &str| {
             json!({"taskId": task, "attempt": att.attempt, "pos": rec.pos, "sender": rec.sender,
-                   "status": status, "text": rec.text, "at": rec.at})
+                   "status": status, "text": text, "at": rec.at})
         };
         let r = match rec.status {
             None | Some(RecordStatus::Working) => {
@@ -858,7 +1062,7 @@ impl Desk {
             }
             Some(RecordStatus::Waiting) => {
                 self.emit("task_progress", rid, progress("waiting"));
-                let reason = if rec.text.to_ascii_lowercase().contains("budget") {
+                let reason = if text.to_ascii_lowercase().contains("budget") {
                     "budget"
                 } else {
                     "waiting"
@@ -869,7 +1073,7 @@ impl Desk {
                         state: Some(RequestState::Waiting),
                         task_status: Some(Some("waiting".into())),
                         outcome: Some(Some(
-                            json!({"code": "waiting", "reason": reason, "text": rec.text}),
+                            json!({"code": "waiting", "reason": reason, "text": text}),
                         )),
                         ..RequestUpdate::default()
                     },
@@ -878,16 +1082,28 @@ impl Desk {
             }
             Some(RecordStatus::Failed) => {
                 self.emit("task_progress", rid, progress("failed"));
-                self.update(
-                    rid,
+                // The node closes a cancelled task with a `failed` record: ask etos which.
+                let cancelled = match self.client.tasks().get(task).await {
+                    Ok(info) => info.status == "cancelled",
+                    Err(e) if e.is_retryable() => return Flow::Retry,
+                    Err(_) => false,
+                };
+                let upd = if cancelled {
+                    RequestUpdate {
+                        state: Some(RequestState::Cancelled),
+                        task_status: Some(Some("cancelled".into())),
+                        outcome: Some(Some(json!({"code": "cancelled", "message": text}))),
+                        ..RequestUpdate::default()
+                    }
+                } else {
                     RequestUpdate {
                         state: Some(RequestState::Failed),
                         task_status: Some(Some("failed".into())),
-                        outcome: Some(Some(json!({"code": "task_failed", "message": rec.text}))),
+                        outcome: Some(Some(json!({"code": "task_failed", "message": text}))),
                         ..RequestUpdate::default()
-                    },
-                )
-                .map(|_| Flow::Exit)
+                    }
+                };
+                self.update(rid, upd).map(|_| Flow::Exit)
             }
             Some(RecordStatus::Done) => {
                 self.emit("task_progress", rid, progress("done"));
@@ -916,7 +1132,7 @@ impl Desk {
                 Err(e) if e.is_retryable() => return Err(e.into()),
                 Err(e) => problems.push(Diagnostic::candidate(
                     "output_unreadable",
-                    format!("output {r} cannot be fetched: {e}"),
+                    redact(&format!("output {r} cannot be fetched: {e}")),
                 )),
             }
         }
@@ -939,7 +1155,28 @@ impl Desk {
             }
         };
         let evaluation = if problems.is_empty() {
-            evaluate(&files, &row.change_set_id, &self.schema)
+            let revision = row
+                .body
+                .get("toolCatalogRevision")
+                .and_then(Value::as_str)
+                .and_then(normalize_sha256)
+                .unwrap_or_default();
+            let catalog = match self.ledger.catalog(&revision) {
+                Ok(c) => c,
+                Err(e) => {
+                    tracing::error!(request = %rid, error = %e, "cannot read the tool catalog; retrying");
+                    return Flow::Retry;
+                }
+            };
+            evaluate(
+                &files,
+                &row.change_set_id,
+                &self.schema,
+                CatalogContext {
+                    revision: &revision,
+                    catalog: catalog.as_ref(),
+                },
+            )
         } else {
             Evaluation::Invalid(problems)
         };
@@ -972,13 +1209,29 @@ impl Desk {
                     rid,
                     json!({"taskId": task, "attempt": att.attempt, "diagnostics": diags}),
                 );
-                if self.cfg.reask_on_invalid && att.attempt == 0 {
+                if self.cfg.reask_on_invalid && att.attempt == 0 && reaskable(&diags) {
                     match self.reask(row, att, task, &diags).await {
                         Ok(()) => Ok(Flow::Reread),
                         Err(e) if is_retryable(&e) => return Flow::Retry,
                         Err(e) => {
+                            // Settled by settle_refusal when the re-ask's task was refused;
+                            // otherwise (inputs could not be uploaded) settle here.
                             tracing::warn!(request = %rid, error = %e, "re-ask refused");
-                            Ok(Flow::Exit)
+                            let mut all = diags.clone();
+                            all.push(refusal_diagnostic(&e, "the re-ask could not be opened"));
+                            self.update(
+                                rid,
+                                RequestUpdate {
+                                    state: Some(RequestState::CandidateInvalid),
+                                    task_status: Some(Some("done".into())),
+                                    outcome: Some(Some(json!({"code": CANDIDATE_INVALID,
+                                        "message": "the worker's change set failed validation and the re-ask was refused",
+                                        "diagnostics": all}))),
+                                    ..RequestUpdate::default()
+                                },
+                            )
+                            .map(|_| Flow::Exit)
+                            .map_err(ApiError::from)
                         }
                     }
                 } else {
@@ -1053,20 +1306,19 @@ impl Desk {
             });
         }
         let received_at = now_ms();
-        self.ledger.put_candidate(&CandidateRow {
-            change_set_id: row.change_set_id.clone(),
-            request_id: rid.clone(),
-            task_id: task.to_string(),
-            attempt: att.attempt,
-            change_set: v.raw.clone(),
-            artifacts: serde_json::to_value(&stored).unwrap_or(Value::Null),
-            diagnostics: serde_json::to_value(&v.warnings).unwrap_or(Value::Null),
-            received_at,
-        })?;
         let ops = v.change_set.operations.len();
-        self.update(
-            rid,
-            RequestUpdate {
+        let settled = self.ledger.accept_candidate(
+            &CandidateRow {
+                change_set_id: row.change_set_id.clone(),
+                request_id: rid.clone(),
+                task_id: task.to_string(),
+                attempt: att.attempt,
+                change_set: v.raw.clone(),
+                artifacts: serde_json::to_value(&stored).unwrap_or(Value::Null),
+                diagnostics: serde_json::to_value(&v.warnings).unwrap_or(Value::Null),
+                received_at,
+            },
+            &RequestUpdate {
                 state: Some(RequestState::Candidate),
                 task_status: Some(Some("done".into())),
                 outcome: Some(Some(
@@ -1075,6 +1327,12 @@ impl Desk {
                 ..RequestUpdate::default()
             },
         )?;
+        let Some((view, cursor)) = settled else {
+            tracing::info!(request = %rid, task, "request already settled; candidate not recorded");
+            return Ok(Flow::Exit);
+        };
+        self.hub.notify(cursor);
+        self.record_changeset(&view);
         let mut cs = Map::new();
         cs.insert("state".into(), json!("candidate"));
         cs.insert("intent".into(), json!(v.change_set.intent.text));
@@ -1136,20 +1394,19 @@ impl Desk {
             self.upload("diagnostics.json", "application/json", &diag_json)
                 .await?,
         );
-        self.ledger.insert_attempt(&AttemptRow {
-            request_id: row.request_id.clone(),
-            attempt: n,
-            etos_request_id: format!("{}.r{n}", row.change_set_id),
-            topic: self.topic(&row.change_set_id, n),
-            task_id: None,
-            parent_task: Some(task.to_string()),
-            cursor: 0,
-            inputs: Some(Value::Array(inputs)),
-            created_at: now_ms(),
-        })?;
-        self.update(
-            &row.request_id,
-            RequestUpdate {
+        let begun = self.ledger.begin_reask(
+            &AttemptRow {
+                request_id: row.request_id.clone(),
+                attempt: n,
+                etos_request_id: format!("{}.r{n}", row.change_set_id),
+                topic: self.topic(&row.change_set_id, n),
+                task_id: None,
+                parent_task: Some(task.to_string()),
+                cursor: 0,
+                inputs: Some(Value::Array(inputs)),
+                created_at: now_ms(),
+            },
+            &RequestUpdate {
                 state: Some(RequestState::Running),
                 attempt: Some(n),
                 task_status: Some(None),
@@ -1157,6 +1414,11 @@ impl Desk {
                     "parentTask": task, "diagnostics": diags}))),
             },
         )?;
+        let Some((view, cursor)) = begun else {
+            return Ok(());
+        };
+        self.hub.notify(cursor);
+        self.record_changeset(&view);
         tracing::info!(request = %row.request_id, parent = task, attempt = n, "re-asking once");
         match self.open_attempt(&row.request_id, n).await {
             Ok(()) => Ok(()),
@@ -1170,11 +1432,14 @@ impl Desk {
     // Cancel and shutdown.
 
     /// `POST /v1/requests/{id}/cancel`.
-    pub async fn cancel(self: &Arc<Self>, rid: &str) -> ApiResult<RequestView> {
+    pub async fn cancel(self: &Arc<Self>, rid: &str, app: &str) -> ApiResult<RequestView> {
         let row = self.ledger.request(rid).map_err(|e| match e {
             LedgerError::NotFound(_) => ApiError::not_found(format!("no request {rid}")),
             other => other.into(),
         })?;
+        if row.app != app {
+            return Err(ApiError::not_found(format!("no request {rid}")));
+        }
         if row.state.is_terminal() {
             return Ok(self.ledger.request_view(rid)?);
         }
@@ -1197,7 +1462,9 @@ impl Desk {
         };
         if info.status == "cancelled" {
             upd.state = Some(RequestState::Cancelled);
-            upd.outcome = Some(Some(json!({"code": "cancelled", "message": info.error})));
+            upd.outcome = Some(Some(
+                json!({"code": "cancelled", "message": info.error.as_deref().map(redact)}),
+            ));
         }
         let view = self.update(rid, upd)?;
         if !view.state.is_terminal() {
@@ -1236,6 +1503,36 @@ impl Desk {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn body_limit_covers_the_attachment_budget() {
+        let b64 = |n: usize| 4 * n.div_ceil(3);
+        assert!(MAX_BODY >= b64(MAX_ATTACHMENTS_TOTAL) + MAX_JSON_BODY);
+        const { assert!(MAX_ATTACHMENTS_TOTAL >= MAX_ATTACHMENT) };
+        const { assert!(MAX_ATTACHMENTS * MAX_ATTACHMENT >= MAX_ATTACHMENTS_TOTAL) };
+    }
+
+    #[test]
+    fn digest_ignores_the_catalog_and_attachment_encoding() {
+        let data = STANDARD.encode(b"frame");
+        let a = json!({"changeSetId": "c", "toolCatalogRevision": "r",
+                       "attachments": [{"name": "f.png", "mediaType": "image/png", "data": data}]});
+        let mut b = a.clone();
+        b["toolCatalog"] = json!({"tools": []});
+        b["attachments"][0]["sha256"] = json!(sha256_hex(b"frame"));
+        assert_eq!(request_digest(&a), request_digest(&b));
+        let mut c = a.clone();
+        c["attachments"][0]["data"] = json!(STANDARD.encode(b"other"));
+        assert_ne!(request_digest(&a), request_digest(&c));
+    }
+
+    #[test]
+    fn rg_extensions_are_stripped() {
+        let v = strip_rg_extensions(
+            &json!({"nodes": [{"ref": {}, "type": "t", "rgKind": "gc_quest", "rgKey": "q"}]}),
+        );
+        assert_eq!(v, json!({"nodes": [{"ref": {}, "type": "t"}]}));
+    }
 
     #[test]
     fn slices_are_capped_from_the_end() {

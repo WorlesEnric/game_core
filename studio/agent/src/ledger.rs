@@ -59,7 +59,9 @@ CREATE TABLE IF NOT EXISTS requests (
   outcome       TEXT,
   seq           INTEGER NOT NULL DEFAULT 0,
   created_at    INTEGER NOT NULL,
-  updated_at    INTEGER NOT NULL
+  updated_at    INTEGER NOT NULL,
+  resumes       INTEGER NOT NULL DEFAULT 0,
+  given_up      INTEGER NOT NULL DEFAULT 0
 );
 CREATE INDEX IF NOT EXISTS requests_seq ON requests(seq);
 CREATE TABLE IF NOT EXISTS attempts (
@@ -356,6 +358,26 @@ impl Ledger {
         conn.pragma_update(None, "synchronous", "FULL")?;
         conn.busy_timeout(std::time::Duration::from_secs(5))?;
         conn.execute_batch(SCHEMA)?;
+        // Ledgers written before these columns existed.
+        for (col, ddl) in [
+            (
+                "resumes",
+                "ALTER TABLE requests ADD COLUMN resumes INTEGER NOT NULL DEFAULT 0",
+            ),
+            (
+                "given_up",
+                "ALTER TABLE requests ADD COLUMN given_up INTEGER NOT NULL DEFAULT 0",
+            ),
+        ] {
+            let present: i64 = conn.query_row(
+                "SELECT COUNT(*) FROM pragma_table_info('requests') WHERE name = ?1",
+                params![col],
+                |r| r.get(0),
+            )?;
+            if present == 0 {
+                conn.execute_batch(ddl)?;
+            }
+        }
         Ok(Ledger {
             conn: Mutex::new(conn),
         })
@@ -429,28 +451,71 @@ impl Ledger {
         view_in(&conn, request_id)
     }
 
-    /// Requests changed after `after`, oldest change first.
-    pub fn requests_after(&self, after: i64, limit: usize) -> LedgerResult<Vec<RequestView>> {
+    /// Requests of `app` changed after `after`, oldest change first.
+    pub fn requests_after(
+        &self,
+        app: &str,
+        after: i64,
+        limit: usize,
+    ) -> LedgerResult<Vec<RequestView>> {
         let conn = self.lock()?;
         let ids: Vec<String> = {
             let mut stmt = conn.prepare(
-                "SELECT request_id FROM requests WHERE seq > ?1 ORDER BY seq ASC LIMIT ?2",
+                "SELECT request_id FROM requests WHERE seq > ?1 AND app = ?3 ORDER BY seq ASC LIMIT ?2",
             )?;
-            let rows = stmt.query_map(params![after, limit as i64], |r| r.get(0))?;
+            let rows = stmt.query_map(params![after, limit as i64, app], |r| r.get(0))?;
             rows.collect::<rusqlite::Result<_>>()?
         };
         ids.iter().map(|id| view_in(&conn, id)).collect()
     }
 
-    /// Requests the companion still follows (non-terminal states).
+    /// Requests the companion still follows: non-terminal states, except `unresolved`
+    /// requests it has given up on ([`Ledger::give_up`]).
     pub fn open_requests(&self) -> LedgerResult<Vec<RequestRow>> {
         let conn = self.lock()?;
         let mut stmt = conn.prepare(&format!(
-            "SELECT {REQUEST_COLS} FROM requests WHERE state IN ('requested', 'running', 'waiting', 'unresolved') ORDER BY created_at"
+            "SELECT {REQUEST_COLS} FROM requests WHERE state IN ('requested', 'running', 'waiting', 'unresolved') AND given_up = 0 ORDER BY created_at"
         ))?;
         let rows = stmt.query_map([], request_from)?;
         let raw: Vec<_> = rows.collect::<rusqlite::Result<_>>()?;
         raw.into_iter().map(finish_request).collect()
+    }
+
+    /// Count one more follow of a request after a restart; returns the new count.
+    pub fn note_resume(&self, request_id: &str) -> LedgerResult<u32> {
+        let conn = self.lock()?;
+        conn.execute(
+            "UPDATE requests SET resumes = resumes + 1 WHERE request_id = ?1",
+            params![request_id],
+        )?;
+        let n: i64 = conn.query_row(
+            "SELECT resumes FROM requests WHERE request_id = ?1",
+            params![request_id],
+            |r| r.get(0),
+        )?;
+        Ok(n.try_into().unwrap_or(u32::MAX))
+    }
+
+    /// Stop following an `unresolved` request for good, recording `outcome`; returns the new
+    /// view and the event cursor. Other states are left unchanged (`None`).
+    pub fn give_up(
+        &self,
+        request_id: &str,
+        outcome: &Value,
+    ) -> LedgerResult<Option<(RequestView, i64)>> {
+        let mut conn = self.lock()?;
+        let tx = conn.transaction()?;
+        let current = request_in(&tx, request_id)?;
+        if current.state != RequestState::Unresolved {
+            return Ok(None);
+        }
+        tx.execute(
+            "UPDATE requests SET given_up = 1, outcome = ?2, updated_at = ?3 WHERE request_id = ?1",
+            params![request_id, serde_json::to_string(outcome)?, now_ms()],
+        )?;
+        let out = touch(&tx, request_id)?;
+        tx.commit()?;
+        Ok(Some(out))
     }
 
     /// Change a request; appends a `request` event. Returns the new view and the event cursor.
@@ -466,42 +531,51 @@ impl Ledger {
     ) -> LedgerResult<(RequestView, i64)> {
         let mut conn = self.lock()?;
         let tx = conn.transaction()?;
-        let current = request_in(&tx, request_id)?;
-        if current.state.is_terminal() {
-            let view = view_in(&tx, request_id)?;
-            let seq = view.seq;
-            return Ok((view, seq));
+        let out = match apply_in(&tx, request_id, upd)? {
+            Some(out) => out,
+            None => {
+                let view = view_in(&tx, request_id)?;
+                let seq = view.seq;
+                return Ok((view, seq));
+            }
+        };
+        tx.commit()?;
+        Ok(out)
+    }
+
+    /// Start a re-ask in one transaction: insert attempt `a` and apply `upd` (the attempt
+    /// pointer, state and outcome). `None` when the request is already terminal (nothing is
+    /// written).
+    pub fn begin_reask(
+        &self,
+        a: &AttemptRow,
+        upd: &RequestUpdate,
+    ) -> LedgerResult<Option<(RequestView, i64)>> {
+        let mut conn = self.lock()?;
+        let tx = conn.transaction()?;
+        if request_in(&tx, &a.request_id)?.state.is_terminal() {
+            return Ok(None);
         }
-        let now = now_ms();
-        if let Some(s) = upd.state {
-            tx.execute(
-                "UPDATE requests SET state = ?2, updated_at = ?3 WHERE request_id = ?1",
-                params![request_id, s.as_str(), now],
-            )?;
+        insert_attempt_in(&tx, a)?;
+        let out = apply_in(&tx, &a.request_id, upd)?;
+        tx.commit()?;
+        Ok(out)
+    }
+
+    /// Store a candidate and settle its request in one transaction. `None` when the request
+    /// is already terminal (no candidate row is written).
+    pub fn accept_candidate(
+        &self,
+        c: &CandidateRow,
+        upd: &RequestUpdate,
+    ) -> LedgerResult<Option<(RequestView, i64)>> {
+        let mut conn = self.lock()?;
+        let tx = conn.transaction()?;
+        if request_in(&tx, &c.request_id)?.state.is_terminal() {
+            return Ok(None);
         }
-        if let Some(ts) = &upd.task_status {
-            tx.execute(
-                "UPDATE requests SET task_status = ?2, updated_at = ?3 WHERE request_id = ?1",
-                params![request_id, ts, now],
-            )?;
-        }
-        if let Some(a) = upd.attempt {
-            tx.execute(
-                "UPDATE requests SET attempt = ?2, updated_at = ?3 WHERE request_id = ?1",
-                params![request_id, i64::from(a), now],
-            )?;
-        }
-        if let Some(o) = &upd.outcome {
-            let text = match o {
-                Some(v) => Some(serde_json::to_string(v)?),
-                None => None,
-            };
-            tx.execute(
-                "UPDATE requests SET outcome = ?2, updated_at = ?3 WHERE request_id = ?1",
-                params![request_id, text, now],
-            )?;
-        }
-        let out = touch(&tx, request_id)?;
+        put_candidate_in(&tx, c)?;
+        let out = apply_in(&tx, &c.request_id, upd)?;
         tx.commit()?;
         Ok(out)
     }
@@ -521,49 +595,35 @@ impl Ledger {
         attempts_in(&conn, request_id)
     }
 
-    /// Add an attempt (a re-ask).
+    /// Add an attempt (a re-ask; see also [`Ledger::begin_reask`]).
     pub fn insert_attempt(&self, a: &AttemptRow) -> LedgerResult<()> {
         let conn = self.lock()?;
-        let inputs = match &a.inputs {
-            Some(v) => Some(serde_json::to_string(v)?),
-            None => None,
-        };
-        conn.execute(
-            &format!(
-                "INSERT OR IGNORE INTO attempts ({ATTEMPT_COLS}) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9)"
-            ),
-            params![
-                a.request_id,
-                i64::from(a.attempt),
-                a.etos_request_id,
-                a.topic,
-                a.task_id,
-                a.parent_task,
-                a.cursor as i64,
-                inputs,
-                a.created_at
-            ],
-        )?;
-        Ok(())
+        insert_attempt_in(&conn, a)
     }
 
-    /// Record the uploaded inputs of an attempt.
-    pub fn set_attempt_inputs(
+    /// Record the uploaded inputs of an attempt unless it has some already, and return the
+    /// inputs the attempt now holds (the first writer wins: two openers never disagree on
+    /// what the task was given).
+    pub fn claim_attempt_inputs(
         &self,
         request_id: &str,
         attempt: u32,
         inputs: &Value,
-    ) -> LedgerResult<()> {
+    ) -> LedgerResult<Value> {
         let conn = self.lock()?;
         conn.execute(
-            "UPDATE attempts SET inputs = ?3 WHERE request_id = ?1 AND attempt = ?2",
+            "UPDATE attempts SET inputs = ?3 WHERE request_id = ?1 AND attempt = ?2 AND inputs IS NULL",
             params![
                 request_id,
                 i64::from(attempt),
                 serde_json::to_string(inputs)?
             ],
         )?;
-        Ok(())
+        attempt_in(&conn, request_id, attempt)?
+            .inputs
+            .ok_or_else(|| {
+                LedgerError::NotFound(format!("inputs of attempt {attempt} of {request_id}"))
+            })
     }
 
     /// Record the task id of an attempt. A different task id for an attempt that already has
@@ -604,24 +664,11 @@ impl Ledger {
     // -----------------------------------------------------------------------------------------
     // Candidates and artifacts.
 
-    /// Store a candidate (replacing an earlier one of the same change set).
+    /// Store a candidate (replacing an earlier one of the same change set); see also
+    /// [`Ledger::accept_candidate`].
     pub fn put_candidate(&self, c: &CandidateRow) -> LedgerResult<()> {
         let conn = self.lock()?;
-        conn.execute(
-            "INSERT OR REPLACE INTO candidates (change_set_id, request_id, task_id, attempt, change_set, artifacts, diagnostics, received_at)
-             VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)",
-            params![
-                c.change_set_id,
-                c.request_id,
-                c.task_id,
-                i64::from(c.attempt),
-                serde_json::to_string(&c.change_set)?,
-                serde_json::to_string(&c.artifacts)?,
-                serde_json::to_string(&c.diagnostics)?,
-                c.received_at
-            ],
-        )?;
-        Ok(())
+        put_candidate_in(&conn, c)
     }
 
     /// A candidate.
@@ -986,6 +1033,91 @@ impl Ledger {
     }
 }
 
+/// Apply `upd` inside `tx` and append its `request` event. `None` (nothing written) when the
+/// request is already terminal: terminal states are final.
+fn apply_in(
+    tx: &Transaction<'_>,
+    request_id: &str,
+    upd: &RequestUpdate,
+) -> LedgerResult<Option<(RequestView, i64)>> {
+    let current = request_in(tx, request_id)?;
+    if current.state.is_terminal() {
+        return Ok(None);
+    }
+    let now = now_ms();
+    if let Some(s) = upd.state {
+        tx.execute(
+            "UPDATE requests SET state = ?2, updated_at = ?3 WHERE request_id = ?1",
+            params![request_id, s.as_str(), now],
+        )?;
+    }
+    if let Some(ts) = &upd.task_status {
+        tx.execute(
+            "UPDATE requests SET task_status = ?2, updated_at = ?3 WHERE request_id = ?1",
+            params![request_id, ts, now],
+        )?;
+    }
+    if let Some(a) = upd.attempt {
+        tx.execute(
+            "UPDATE requests SET attempt = ?2, updated_at = ?3 WHERE request_id = ?1",
+            params![request_id, i64::from(a), now],
+        )?;
+    }
+    if let Some(o) = &upd.outcome {
+        let text = match o {
+            Some(v) => Some(serde_json::to_string(&crate::util::pruned(v.clone()))?),
+            None => None,
+        };
+        tx.execute(
+            "UPDATE requests SET outcome = ?2, updated_at = ?3 WHERE request_id = ?1",
+            params![request_id, text, now],
+        )?;
+    }
+    Ok(Some(touch(tx, request_id)?))
+}
+
+fn insert_attempt_in(conn: &Connection, a: &AttemptRow) -> LedgerResult<()> {
+    let inputs = match &a.inputs {
+        Some(v) => Some(serde_json::to_string(v)?),
+        None => None,
+    };
+    conn.execute(
+        &format!(
+            "INSERT OR IGNORE INTO attempts ({ATTEMPT_COLS}) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9)"
+        ),
+        params![
+            a.request_id,
+            i64::from(a.attempt),
+            a.etos_request_id,
+            a.topic,
+            a.task_id,
+            a.parent_task,
+            a.cursor as i64,
+            inputs,
+            a.created_at
+        ],
+    )?;
+    Ok(())
+}
+
+fn put_candidate_in(conn: &Connection, c: &CandidateRow) -> LedgerResult<()> {
+    conn.execute(
+        "INSERT OR REPLACE INTO candidates (change_set_id, request_id, task_id, attempt, change_set, artifacts, diagnostics, received_at)
+         VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)",
+        params![
+            c.change_set_id,
+            c.request_id,
+            c.task_id,
+            i64::from(c.attempt),
+            serde_json::to_string(&c.change_set)?,
+            serde_json::to_string(&c.artifacts)?,
+            serde_json::to_string(&c.diagnostics)?,
+            c.received_at
+        ],
+    )?;
+    Ok(())
+}
+
 fn request_in(conn: &Connection, request_id: &str) -> LedgerResult<RequestRow> {
     let raw = conn
         .query_row(
@@ -1126,8 +1258,8 @@ mod tests {
         assert!(c2 > c);
         assert_eq!(v2.task_id.as_deref(), Some("t1"));
         assert_eq!(v2.task_status.as_deref(), Some("queued"));
-        assert_eq!(l.requests_after(c, 10).unwrap().len(), 1);
-        assert_eq!(l.requests_after(c2, 10).unwrap().len(), 0);
+        assert_eq!(l.requests_after("gamecore-unity", c, 10).unwrap().len(), 1);
+        assert_eq!(l.requests_after("gamecore-unity", c2, 10).unwrap().len(), 0);
         assert_eq!(l.open_requests().unwrap().len(), 1);
         let ev = l.events_after(0, 10).unwrap();
         assert_eq!(ev.len(), 2);
@@ -1147,6 +1279,90 @@ mod tests {
         let (v4, c4) = l.update_request("cs1", &fail).unwrap();
         assert_eq!((v4.state, c4), (RequestState::Cancelled, c3));
         assert!(l.open_requests().unwrap().is_empty());
+    }
+
+    #[test]
+    fn reask_candidate_inputs_and_give_up_are_atomic() {
+        let dir = tempfile::tempdir().unwrap();
+        let l = Ledger::open(&dir.path().join("l.db")).unwrap();
+        l.insert_request(&new("cs1", "d1")).unwrap();
+        // Inputs: the first writer wins.
+        assert_eq!(
+            l.claim_attempt_inputs("cs1", 0, &json!([1])).unwrap(),
+            json!([1])
+        );
+        assert_eq!(
+            l.claim_attempt_inputs("cs1", 0, &json!([2])).unwrap(),
+            json!([1])
+        );
+        // A re-ask inserts the attempt and moves the pointer together.
+        let a = AttemptRow {
+            request_id: "cs1".into(),
+            attempt: 1,
+            etos_request_id: "cs1.r1".into(),
+            topic: "t-r1".into(),
+            task_id: None,
+            parent_task: Some("t0".into()),
+            cursor: 0,
+            inputs: None,
+            created_at: 1,
+        };
+        let upd = RequestUpdate {
+            state: Some(RequestState::Running),
+            attempt: Some(1),
+            outcome: Some(Some(json!({"code": "candidate_invalid", "hint": null}))),
+            ..RequestUpdate::default()
+        };
+        let (v, _) = l.begin_reask(&a, &upd).unwrap().unwrap();
+        assert_eq!((v.attempt, v.topic.as_deref()), (1, Some("t-r1")));
+        // Outcomes are stored without nulls.
+        assert_eq!(v.outcome, Some(json!({"code": "candidate_invalid"})));
+        let c = CandidateRow {
+            change_set_id: "cs1".into(),
+            request_id: "cs1".into(),
+            task_id: "t1".into(),
+            attempt: 1,
+            change_set: json!({}),
+            artifacts: json!([]),
+            diagnostics: json!([]),
+            received_at: 1,
+        };
+        let done = RequestUpdate {
+            state: Some(RequestState::Candidate),
+            ..RequestUpdate::default()
+        };
+        assert!(l.accept_candidate(&c, &done).unwrap().is_some());
+        // Terminal: neither a second candidate nor a re-ask is written.
+        assert!(l.accept_candidate(&c, &done).unwrap().is_none());
+        let mut a2 = a.clone();
+        a2.attempt = 2;
+        assert!(l.begin_reask(&a2, &upd).unwrap().is_none());
+        assert!(l.attempt("cs1", 2).is_err());
+        // Giving up applies to unresolved requests only.
+        assert!(
+            l.give_up("cs1", &json!({"code": "unresolved"}))
+                .unwrap()
+                .is_none()
+        );
+        l.insert_request(&new("cs2", "d")).unwrap();
+        l.update_request(
+            "cs2",
+            &RequestUpdate {
+                state: Some(RequestState::Unresolved),
+                ..RequestUpdate::default()
+            },
+        )
+        .unwrap();
+        assert_eq!(l.note_resume("cs2").unwrap(), 1);
+        assert_eq!(l.open_requests().unwrap().len(), 1);
+        assert!(
+            l.give_up("cs2", &json!({"code": "unresolved"}))
+                .unwrap()
+                .is_some()
+        );
+        assert!(l.open_requests().unwrap().is_empty());
+        // Scoped listing.
+        assert!(l.requests_after("other-app", 0, 10).unwrap().is_empty());
     }
 
     #[test]

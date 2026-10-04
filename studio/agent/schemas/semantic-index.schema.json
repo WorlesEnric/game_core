@@ -1,0 +1,282 @@
+{
+  "$defs": {
+    "AuthorScope": {
+      "enum": [
+        "Instance",
+        "Prefab",
+        "Definition",
+        "Scope"
+      ],
+      "type": "string"
+    },
+    "AuthoringKind": {
+      "enum": [
+        "Entity",
+        "Definition",
+        "Region",
+        "SceneObject",
+        "Asset",
+        "UiElement",
+        "Scope",
+        "Location"
+      ],
+      "type": "string"
+    },
+    "AuthoringRef": {
+      "additionalProperties": false,
+      "properties": {
+        "assetGuid": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "authoringId": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "definition": {
+          "pattern": "^[a-z0-9][a-z0-9._-]*@[0-9A-Za-z]+$",
+          "type": "string"
+        },
+        "global": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/AuthoringKind"
+        },
+        "location": {
+          "$ref": "#/$defs/LocationRef"
+        },
+        "path": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/AuthorScope"
+        },
+        "stamp": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "type": "object"
+    },
+    "EdgeKind": {
+      "enum": [
+        "references",
+        "contains",
+        "spawns",
+        "bindsUi",
+        "triggers"
+      ],
+      "type": "string"
+    },
+    "IndexEdge": {
+      "additionalProperties": false,
+      "properties": {
+        "from": {
+          "$ref": "#/$defs/AuthoringRef"
+        },
+        "kind": {
+          "$ref": "#/$defs/EdgeKind"
+        },
+        "to": {
+          "$ref": "#/$defs/AuthoringRef"
+        }
+      },
+      "required": [
+        "from",
+        "kind",
+        "to"
+      ],
+      "type": "object"
+    },
+    "IndexField": {
+      "additionalProperties": false,
+      "properties": {
+        "range": {
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 2,
+          "minItems": 2,
+          "type": "array"
+        },
+        "type": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "unit": {
+          "type": "string"
+        },
+        "value": {}
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "IndexNode": {
+      "additionalProperties": false,
+      "properties": {
+        "capabilities": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "fields": {
+          "additionalProperties": {
+            "$ref": "#/$defs/IndexField"
+          },
+          "type": "object"
+        },
+        "name": {
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "ref": {
+          "$ref": "#/$defs/AuthoringRef"
+        },
+        "refs": {
+          "items": {
+            "$ref": "#/$defs/IndexRef"
+          },
+          "type": "array"
+        },
+        "type": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "ref",
+        "type"
+      ],
+      "type": "object"
+    },
+    "IndexRef": {
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "to": {
+          "$ref": "#/$defs/AuthoringRef"
+        }
+      },
+      "required": [
+        "field",
+        "to"
+      ],
+      "type": "object"
+    },
+    "LocationRef": {
+      "additionalProperties": false,
+      "properties": {
+        "normal": {
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 3,
+          "minItems": 3,
+          "type": "array"
+        },
+        "position": {
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 3,
+          "minItems": 3,
+          "type": "array"
+        },
+        "region": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "position",
+        "region"
+      ],
+      "type": "object"
+    },
+    "Provenance": {
+      "additionalProperties": false,
+      "properties": {
+        "asset": {
+          "type": "string"
+        },
+        "line": {
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "ScopeEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "installs": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "region": {
+          "$ref": "#/$defs/AuthoringRef"
+        },
+        "scope": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "scope"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "urn:gamecore:studio:schema:semantic-index",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "edges": {
+      "items": {
+        "$ref": "#/$defs/IndexEdge"
+      },
+      "type": "array"
+    },
+    "nodes": {
+      "items": {
+        "$ref": "#/$defs/IndexNode"
+      },
+      "type": "array"
+    },
+    "project": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "revision": {
+      "type": "integer"
+    },
+    "scopes": {
+      "items": {
+        "$ref": "#/$defs/ScopeEntry"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "nodes",
+    "project",
+    "revision"
+  ],
+  "title": "SemanticIndex",
+  "type": "object"
+}

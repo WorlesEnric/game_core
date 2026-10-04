@@ -26,6 +26,10 @@
              Exclude="../../../Packages/com.gamecore.unity.runtime/Tests/Observation/**/bin/**/*.cs;../../../Packages/com.gamecore.unity.runtime/Tests/Observation/**/obj/**/*.cs" />
     <Compile Include="../../../Packages/com.gamecore.unity.runtime/Tests/Delivery/**/*.cs"
              Exclude="../../../Packages/com.gamecore.unity.runtime/Tests/Delivery/**/bin/**/*.cs;../../../Packages/com.gamecore.unity.runtime/Tests/Delivery/**/obj/**/*.cs" />
+    <!-- SADR-012 (studio): the save slot header of the application root and the gameplay save rules are engine-free
+         single files (System only), so their parsers and decisions are tested here over the identical sources. -->
+    <Compile Include="../../../Packages/com.gamecore.unity.app/Runtime/SaveSlotHeader.cs" Link="Save/SaveSlotHeader.cs" />
+    <Compile Include="../../../Packages/com.gamecore.rules.gameplay/Runtime/Save/SaveRules.cs" Link="Save/SaveRules.cs" />
   </ItemGroup>
 
   <ItemGroup>

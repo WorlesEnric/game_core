@@ -165,6 +165,19 @@ namespace GameCore.Unity.Runtime
         private bool resumeResetsOrigin;
         private bool hostOriginCaptured;
         private ulong hostTimeOrigin;
+
+        /// <summary>
+        /// SADR-012: restored fixed-step debt not yet handed to the accumulator. It is owed from creation and joins the
+        /// accumulator at the first running sample, so pausing a restored world before its first step loses none of it.
+        /// </summary>
+        private ulong pendingRestoredDebtTicks;
+
+        /// <summary>
+        /// SADR-012: ticks added to every elapsed-host-time reading once restored debt joined the accumulator. Adding
+        /// one constant to every reading moves the accumulator's notion of "now" forward by the debt exactly once and
+        /// leaves every later delta unchanged (P-036).
+        /// </summary>
+        private ulong restoredElapsedOffsetTicks;
         private bool pumping;
         private bool disposed;
 
@@ -243,7 +256,33 @@ namespace GameCore.Unity.Runtime
 
         public TemporalModel TemporalModel => request.TemporalModel;
 
-        public TimeDebt RetainedDebt => temporal.RetainedDebt;
+        /// <summary>
+        /// Retained fixed-step debt (P-036), including restored debt the first running sample has not yet consumed
+        /// (SADR-012), so a capture taken before a restored world's first step records the debt it still owes.
+        /// </summary>
+        public TimeDebt RetainedDebt
+        {
+            get
+            {
+                TimeDebt debt = temporal.RetainedDebt;
+                if (pendingRestoredDebtTicks == 0UL)
+                {
+                    return debt;
+                }
+
+                TimeDebt total = debt.Add(pendingRestoredDebtTicks, out bool accepted);
+                return accepted ? total : debt;
+            }
+        }
+
+        /// <summary>
+        /// The temporal origin this world was created at (SADR-012): <see cref="RestoredTemporalOrigin.Fresh"/> for
+        /// an ordinary world, the continued or legacy-step-0 origin of a restore otherwise.
+        /// </summary>
+        public RestoredTemporalOrigin RestoredOrigin { get; private set; } = RestoredTemporalOrigin.Fresh;
+
+        /// <summary>Restored debt still waiting for the first running sample (SADR-012); zero once it was applied.</summary>
+        public ulong PendingRestoredDebtTicks => pendingRestoredDebtTicks;
 
         public ITemporalAccumulator Temporal => temporal;
 
@@ -497,6 +536,18 @@ namespace GameCore.Unity.Runtime
             WorldCreateRequest request,
             UnityWorldRegistration registration,
             out WorldCreateResult failure)
+            => CreateCore(request, registration, null, out failure);
+
+        /// <summary>
+        /// <see cref="CreateCore(WorldCreateRequest, UnityWorldRegistration, out WorldCreateResult)"/> at a temporal
+        /// origin (SADR-012): the step, domain seconds and pending debt are set before the initial publication, so the
+        /// world's first committed image is already at the continued step and its next step is one greater.
+        /// </summary>
+        internal static UnityWorldHost? CreateCore(
+            WorldCreateRequest request,
+            UnityWorldRegistration registration,
+            RestoredTemporalOrigin? origin,
+            out WorldCreateResult failure)
         {
             string worldName = registration.WorldName + ":" + request.World.Session.ToString();
             var created = new UnityWorld(worldName, WorldFlags.Game);
@@ -510,6 +561,11 @@ namespace GameCore.Unity.Runtime
                 host.lifecycle = WorldLifecycleState.Running;
                 host.currentEpoch = AssemblyEpoch.First;
                 host.currentStep = LogicalStepId.Zero;
+                if (origin != null)
+                {
+                    host.ApplyRestoredOrigin(origin);
+                }
+
                 host.PublishInitialAssembly();
                 failure = new WorldCreateResult(
                     true,
@@ -595,6 +651,91 @@ namespace GameCore.Unity.Runtime
                 host.Lifecycle,
                 DiagnosticCode.None,
                 "World created unexposed: its systems are registered and its initial assembly published, and no caller can route to it until it is exposed.");
+        }
+
+        /// <summary>
+        /// <see cref="TryCreateUnexposed(WorldCreateRequest, UnityWorldRegistration, out UnityWorldHost?)"/> at a
+        /// restored temporal origin (SADR-012). The origin is applied before the initial publication: the world
+        /// publishes its initial assembly at <see cref="RestoredTemporalOrigin.LogicalStep"/>, starts its domain clock at
+        /// <see cref="RestoredTemporalOrigin.DomainSeconds"/> and owes <see cref="RestoredTemporalOrigin.TimeDebtTicks"/>
+        /// at its first running sample. The session id is still the new one the caller allocated (P-049).
+        /// </summary>
+        public static WorldCreateResult TryCreateUnexposed(
+            WorldCreateRequest createRequest,
+            UnityWorldRegistration createdRegistration,
+            RestoredTemporalOrigin? origin,
+            out UnityWorldHost? host)
+        {
+            if (origin == null)
+            {
+                return TryCreateUnexposed(createRequest, createdRegistration, out host);
+            }
+
+            if (createRequest == null)
+            {
+                throw new ArgumentNullException(nameof(createRequest));
+            }
+
+            if (createdRegistration == null)
+            {
+                throw new ArgumentNullException(nameof(createdRegistration));
+            }
+
+            GameCoreThreading.RequireMainThread("UnityWorldHost.TryCreateUnexposed");
+            host = null;
+
+            if (!createRequest.IsValid)
+            {
+                return new WorldCreateResult(
+                    false,
+                    createRequest.World,
+                    WorldLifecycleState.Created,
+                    DiagnosticCode.UnsupportedVersion,
+                    "The create request is invalid: a world session, a definition and, for FixedStep, a valid fixed-step configuration are required (O-01, P-036).");
+            }
+
+            if (createRequest.TemporalModel != TemporalModel.FixedStep && origin.TimeDebtTicks != 0UL)
+            {
+                return new WorldCreateResult(
+                    false,
+                    createRequest.World,
+                    WorldLifecycleState.Created,
+                    DiagnosticCode.UnsupportedVersion,
+                    "A restored origin owes fixed-step debt but the world is " + createRequest.TemporalModel
+                    + "; only a FixedStep world retains debt (P-036, SADR-012).");
+            }
+
+            if (UnityWorldRegistry.TryGet(createRequest.World, out UnityWorldHost? registered) && registered != null)
+            {
+                return new WorldCreateResult(
+                    false,
+                    createRequest.World,
+                    registered.Lifecycle,
+                    DiagnosticCode.OwnershipConflict,
+                    "A live host for this session already exists; an unexposed world is created only for a session the registry does not hold (P-004).");
+            }
+
+            if (!createdRegistration.TryValidate(out DiagnosticCode code, out string detail))
+            {
+                return new WorldCreateResult(false, createRequest.World, WorldLifecycleState.Created, code, detail);
+            }
+
+            host = CreateCore(createRequest, createdRegistration, origin, out WorldCreateResult failure);
+            return host == null ? failure : new WorldCreateResult(
+                true,
+                createRequest.World,
+                host.Lifecycle,
+                DiagnosticCode.None,
+                "World created unexposed at " + origin.ToString()
+                + ": its systems are registered and its initial assembly published, and no caller can route to it until it is exposed.");
+        }
+
+        private void ApplyRestoredOrigin(RestoredTemporalOrigin origin)
+        {
+            RestoredOrigin = origin;
+            currentStep = origin.LogicalStep;
+            domainSeconds = origin.DomainSeconds;
+            pendingRestoredDebtTicks = request.TemporalModel == TemporalModel.FixedStep ? origin.TimeDebtTicks : 0UL;
         }
 
         /// <summary>Idempotent creation: a repeated request returns the same live world (O-01).</summary>
@@ -765,6 +906,7 @@ namespace GameCore.Unity.Runtime
                 }
 
                 ulong elapsedHostTicks = hostTicksNow >= hostTimeOrigin ? hostTicksNow - hostTimeOrigin : 0UL;
+                elapsedHostTicks += restoredElapsedOffsetTicks;
 
                 if (resumeResetsOrigin)
                 {
@@ -782,6 +924,16 @@ namespace GameCore.Unity.Runtime
 
                 if (lifecycle == WorldLifecycleState.Running && !driver.IsFaulted)
                 {
+                    if (pendingRestoredDebtTicks != 0UL && !temporal.IsPaused)
+                    {
+                        // SADR-012: restored debt joins the accumulator at the first running sample, as if that much
+                        // host time had elapsed since the previous sample; every later reading carries the same
+                        // offset, so later deltas are unchanged (P-036).
+                        restoredElapsedOffsetTicks += pendingRestoredDebtTicks;
+                        elapsedHostTicks += pendingRestoredDebtTicks;
+                        pendingRestoredDebtTicks = 0UL;
+                    }
+
                     sample = temporal.Sample(elapsedHostTicks, pendingDemand);
                     if (!sample.Accepted)
                     {

@@ -23,8 +23,10 @@ the `gc_*` states, and generate assets with `etos generate image` or `etos tts`.
 
 ## Rules
 
-1. Produce **only operations listed in `tool-catalog.json`**, with the argument names, types,
-   units and constraints it gives. Never invent a tool.
+1. Produce **only operations listed in `tool-catalog.json`**: `tool` is a tool's `id`; give
+   every argument it marks `required`, no argument it does not list; give a `target` when
+   `targetRequired` is true, of a kind in `targetKinds` and a scope in `scopes` when those are
+   listed. Never invent a tool.
 2. **Never invent object ids.** Targets are AuthoringRefs taken from `selection.json` or
    `index-slice.json`, copied with their `stamp`. New objects are created only through a
    catalog operation that creates them.
@@ -45,6 +47,9 @@ the `gc_*` states, and generate assets with `etos generate image` or `etos tts`.
    `preconditions: "stamp"` unless the catalog says otherwise, `applyRequirement` from the
    catalog (`Live | Rebuild | Compile | Build`).
 7. On a re-ask, fix every problem in `diagnostics.json`; do not repeat them.
+8. Omit optional members when you have nothing for them; **never write `null`**. A change set
+   from you is a candidate: no `state` (or `"Candidate"`), no `outcomes`, no
+   `timestamps.applied`, no `links.gameCoreOps`.
 
 ## Output
 
@@ -72,7 +77,8 @@ assets:
 ```
 
 The companion checks it before the creator sees it: exactly one change set, the JSON Schema,
-the id, unique op ids, resolvable and acyclic `dependsOn`, every artifact's digest and size
-against the files you delivered, and every artifact used by an operation. A failure is sent back once as a re-ask with the reasons. Finish the task
+no `null`, candidate mode, the id, unique op ids, resolvable and acyclic `dependsOn`, every
+artifact's digest and size against the files you delivered, every artifact used by an
+operation, and the catalog rules above (`UnknownTool`, `InvalidArgs`, `ScopeNotAllowed`). A failure is sent back once as a re-ask with the reasons. Finish the task
 after writing the files; your final message should summarise the operations in one or two
 sentences.

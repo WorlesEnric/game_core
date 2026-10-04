@@ -45,9 +45,11 @@ async fn companion(node: &FakeNode, dir: &Path, tweak: impl FnOnce(&mut Config))
 }
 
 /// A direct client of the companion's listener, as the node's proxy would call it.
+#[derive(Clone)]
 struct Api {
     url: String,
     token: String,
+    app: String,
     http: reqwest::Client,
 }
 
@@ -56,8 +58,46 @@ impl Api {
         Api {
             url: running.url.clone(),
             token: node.token(),
+            app: "gamecore-unity".into(),
             http: reqwest::Client::new(),
         }
+    }
+
+    fn as_app(&self, app: &str) -> Api {
+        let mut a = self.clone();
+        a.app = app.into();
+        a
+    }
+
+    async fn raw(
+        &self,
+        method: reqwest::Method,
+        path: &str,
+        body: Vec<u8>,
+    ) -> (u16, String, Value) {
+        let res = self
+            .http
+            .request(method, format!("{}{path}", self.url))
+            .header("x-etos-proxy-token", &self.token)
+            .header("x-etos-app", &self.app)
+            .header("content-type", "application/json")
+            .body(body)
+            .send()
+            .await
+            .unwrap();
+        let status = res.status().as_u16();
+        let ct = res
+            .headers()
+            .get("content-type")
+            .and_then(|v| v.to_str().ok())
+            .unwrap_or_default()
+            .to_string();
+        let bytes = res.bytes().await.unwrap();
+        (
+            status,
+            ct,
+            serde_json::from_slice(&bytes).unwrap_or(Value::Null),
+        )
     }
 
     async fn call(&self, method: reqwest::Method, path: &str, body: Option<Value>) -> (u16, Value) {
@@ -65,7 +105,7 @@ impl Api {
             .http
             .request(method, format!("{}{path}", self.url))
             .header("x-etos-proxy-token", &self.token)
-            .header("x-etos-app", "gamecore-unity");
+            .header("x-etos-app", &self.app);
         if let Some(b) = body {
             req = req.json(&b);
         }
@@ -123,15 +163,40 @@ async fn next_json(ws: &mut Ws) -> Value {
     serde_json::from_str::<Value>(m.to_text().unwrap()).unwrap()
 }
 
+/// The tool catalog of the fixtures (`tool-catalog.schema.json`).
+fn catalog() -> Value {
+    let mut c = bare_catalog();
+    let revision = gamecore_studio::util::catalog_revision(&c);
+    c["revision"] = json!(revision);
+    c
+}
+
+fn bare_catalog() -> Value {
+    json!({"schema": "gamecore.studio.toolcatalog/1", "objectTypes": [], "tools": [
+        {"id": "inventory.grantStarting", "tier": "Configure", "runtimeApply": "Live", "targetRequired": true,
+         "targetKinds": ["Entity"],
+         "args": [{"name": "item", "type": "ref", "required": true}, {"name": "count", "type": "int", "required": false}]},
+        {"id": "dialogue.addNode", "tier": "Compose", "runtimeApply": "Live", "targetRequired": true,
+         "args": [{"name": "text", "type": "string", "required": true}, {"name": "voice", "type": "artifact", "required": false}]}
+    ]})
+}
+
+fn catalog_rev() -> String {
+    gamecore_studio::util::catalog_revision(&catalog())
+}
+
 fn edit_request(id: &str) -> Value {
     json!({
         "changeSetId": id,
         "intent": {"text": "Give the ferryman a lantern and make him mention it", "origin": "agent"},
-        "selection": {"id": "sel_1", "mode": "Edit", "indexRevision": 12,
-                      "targets": [{"kind": "Entity", "authoringId": "e-ferryman", "stamp": "sha256:aa"}]},
-        "contextSlice": {"revision": 12, "project": "hollowmere", "nodes": [], "edges": []},
-        "toolCatalogRevision": "cat-1",
-        "toolCatalog": {"revision": "cat-1", "tools": [{"name": "inventory.grantStarting"}, {"name": "dialogue.addNode"}]},
+        "selection": {"id": "sel_01J9ZQ00000000000000000001", "mode": "Edit", "indexRevision": 12,
+                      "targets": [{"kind": "Entity", "authoringId": "e-ferryman", "stamp": format!("sha256:{}", "a".repeat(64))}]},
+        "contextSlice": {"revision": 12, "project": "hollowmere",
+                         "nodes": [{"ref": {"kind": "Entity", "authoringId": "e-ferryman"}, "type": "npc.definition",
+                                    "name": "Ferryman", "rgKind": "gc_entity"}],
+                         "edges": []},
+        "toolCatalogRevision": catalog_rev(),
+        "toolCatalog": catalog(),
         "attachments": [{"name": "frame.png", "mediaType": "image/png", "role": "frame",
                          "data": base64::engine::general_purpose::STANDARD.encode(b"\x89PNG frame")}]
     })
@@ -179,7 +244,7 @@ async fn request_task_candidate_with_verified_artifacts() {
     assert_eq!(t.worker, "gc-designer");
     assert_eq!(
         t.topic,
-        "#agent/gamecore-studio/cs-cs_01j9zq00000000000000000001"
+        "#agent/gamecore-studio/cs-01j9zq00000000000000000001"
     );
     let names: Vec<String> = t.inputs.iter().map(|r| node.file(r).name).collect();
     assert_eq!(
@@ -192,6 +257,8 @@ async fn request_task_candidate_with_verified_artifacts() {
             "frame.png"
         ]
     );
+    let slice: Value = serde_json::from_slice(&node.file(&t.inputs[2]).bytes).unwrap();
+    assert!(slice["nodes"][0].get("rgKind").is_none(), "{slice}");
     let md = String::from_utf8(node.file(&t.inputs[0]).bytes).unwrap();
     assert!(
         md.contains("`cs_01J9ZQ00000000000000000001`")
@@ -320,7 +387,7 @@ async fn digest_mismatch_is_reasked_once_with_parent() {
     assert_eq!(second.request, "cs_01J9ZQ00000000000000000002.r1");
     assert_eq!(
         second.topic,
-        "#agent/gamecore-studio/cs-cs_01j9zq00000000000000000002-r1"
+        "#agent/gamecore-studio/cs-01j9zq00000000000000000002-r1"
     );
     let names: Vec<String> = second.inputs.iter().map(|r| node.file(r).name).collect();
     assert_eq!(names.first().map(String::as_str), Some("request.md"));
@@ -549,22 +616,47 @@ async fn voice_session_ready_transcripts_and_close() {
     assert_eq!(ready["type"], "ready", "{ready}");
     assert_eq!(ready["sampleRateHz"], 24000);
     let session = ready["sessionId"].as_str().unwrap().to_string();
-    // 60 000 bytes of PCM16 → three etos chunks (24 KiB, 24 KiB, rest).
-    let pcm = vec![0u8; 60_000];
-    let b64 = base64::engine::general_purpose::STANDARD.encode(&pcm);
+    // A frame over 24 KiB raw is refused and not forwarded.
+    let big = base64::engine::general_purpose::STANDARD.encode(vec![0u8; 24 * 1024 + 2]);
     ws.send(Message::Text(
-        json!({"type": "audio", "seq": 0, "pcm16": b64})
+        json!({"type": "audio", "seq": 0, "pcm16": big})
             .to_string()
             .into(),
     ))
     .await
     .unwrap();
+    let refused = next_json(&mut ws).await;
+    assert_eq!(
+        (refused["type"].as_str(), refused["code"].as_str()),
+        (Some("error"), Some("too_large")),
+        "{refused}"
+    );
+    // Three frames of at most 24 KiB → three etos chunks.
+    for (i, n) in [24 * 1024, 24 * 1024, 60_000 - 48 * 1024]
+        .into_iter()
+        .enumerate()
+    {
+        let b64 = base64::engine::general_purpose::STANDARD.encode(vec![0u8; n]);
+        ws.send(Message::Text(
+            json!({"type": "audio", "seq": i + 1, "pcm16": b64})
+                .to_string()
+                .into(),
+        ))
+        .await
+        .unwrap();
+    }
     let started = next_json(&mut ws).await;
     assert_eq!(started["type"], "speech_started");
     let partial = next_json(&mut ws).await;
-    assert_eq!(
-        (partial["type"].as_str(), partial["done"].as_bool()),
-        (Some("transcript"), Some(false))
+    assert_eq!(partial["type"], "transcript", "{partial}");
+    assert_eq!(partial["role"], "user");
+    assert!(
+        partial.get("final").is_none() && partial.get("done").is_none(),
+        "{partial}"
+    );
+    assert!(
+        partial.get("responseId").is_none(),
+        "no null members: {partial}"
     );
     ws.send(Message::Text(json!({"type": "stop"}).to_string().into()))
         .await
@@ -577,9 +669,15 @@ async fn voice_session_ready_transcripts_and_close() {
             break;
         }
     }
-    let done = seen.iter().find(|m| m["type"] == "transcript").unwrap();
+    let transcripts: Vec<&Value> = seen.iter().filter(|m| m["type"] == "transcript").collect();
+    assert_eq!(
+        transcripts.len(),
+        1,
+        "assistant transcripts are dropped: {seen:?}"
+    );
+    let done = transcripts[0];
     assert_eq!(done["text"], "give the ferryman a lantern");
-    assert_eq!(done["done"], true);
+    assert_eq!(done["final"], true);
     assert_eq!(done["revision"], 1);
     assert!(seen.iter().any(|m| m["type"] == "speech_ended"));
     {
@@ -781,7 +879,7 @@ async fn requests_are_idempotent_and_conflicts_refused() {
     );
     // A catalog revision the companion does not hold.
     let mut stale = edit_request("cs_01J9ZQ00000000000000000007");
-    stale["toolCatalogRevision"] = json!("cat-9");
+    stale["toolCatalogRevision"] = json!("0".repeat(64));
     stale.as_object_mut().unwrap().remove("toolCatalog");
     let (s, v) = api.post("/v1/requests", stale).await;
     assert_eq!((s, v["code"].as_str()), (409, Some("stale_context")), "{v}");
@@ -790,6 +888,46 @@ async fn requests_are_idempotent_and_conflicts_refused() {
     held.as_object_mut().unwrap().remove("toolCatalog");
     let (s, v) = api.post("/v1/requests", held).await;
     assert_eq!(s, 200, "{v}");
+    // The idempotency digest leaves out `toolCatalog` and attachment encoding: the same
+    // request without its catalog, and with the attachment's digest spelled out, is the same.
+    let mut again = edit_request("cs_01J9ZQ00000000000000000006");
+    again.as_object_mut().unwrap().remove("toolCatalog");
+    again["attachments"][0]["sha256"] = json!(sha(b"\x89PNG frame"));
+    let (s, v) = api.post("/v1/requests", again).await;
+    assert_eq!((s, &v["taskId"]), (200, &a["taskId"]), "{v}");
+    // A catalog whose digest is not the revision, a selection or slice off the schema, a
+    // null: refused with findings.
+    let mut wrong = edit_request("cs_01J9ZQ00000000000000000013");
+    wrong["toolCatalogRevision"] = json!("1".repeat(64));
+    let (s, v) = api.post("/v1/requests", wrong).await;
+    assert_eq!((s, v["code"].as_str()), (400, Some("bad_request")), "{v}");
+    let mut bad_sel = edit_request("cs_01J9ZQ00000000000000000014");
+    bad_sel["selection"]["id"] = json!("sel_1");
+    bad_sel["contextSlice"]
+        .as_object_mut()
+        .unwrap()
+        .remove("project");
+    let (s, v) = api.post("/v1/requests", bad_sel).await;
+    assert_eq!((s, v["code"].as_str()), (400, Some("bad_request")), "{v}");
+    let findings: Vec<&str> = v["diagnostics"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|d| d["message"].as_str().unwrap())
+        .collect();
+    assert!(
+        findings.iter().any(|m| m.starts_with("selection: ")),
+        "{findings:?}"
+    );
+    assert!(
+        findings.iter().any(|m| m.starts_with("contextSlice: ")),
+        "{findings:?}"
+    );
+    let mut null = edit_request("cs_01J9ZQ00000000000000000015");
+    null["worker"] = Value::Null;
+    let (s, v) = api.post("/v1/requests", null).await;
+    assert_eq!((s, v["code"].as_str()), (400, Some("bad_request")), "{v}");
+    assert!(v["message"].as_str().unwrap().contains("/worker"), "{v}");
     // An etos refusal passes through and the request is failed.
     let mut refused = edit_request("cs_01J9ZQ00000000000000000009");
     refused["worker"] = json!("nobody");
@@ -837,7 +975,9 @@ async fn etos_task_refusal_passes_through() {
     assert_eq!((s, v["code"].as_str()), (403, Some("not_yours")), "{v}");
     let (_, v) = api.get("/v1/requests/cs_01J9ZQ00000000000000000010").await;
     assert_eq!(v["state"], "failed");
-    assert_eq!(v["outcome"]["code"], "not_yours");
+    assert_eq!(v["outcome"]["code"], "task_failed");
+    assert_eq!(v["outcome"]["refusal"]["code"], "not_yours");
+    assert_eq!(v["outcome"]["refusal"]["status"], 403);
     running.shutdown().await;
 }
 
@@ -898,7 +1038,7 @@ async fn ops_generate_stores_artifacts_and_passes_refusals() {
     let (s, v) = api
         .post(
             "/v1/ops/generate",
-            json!({"op": "tts", "spec": {"text": "Mind the lantern."}}),
+            json!({"op": "tts", "spec": {"text": "Mind the lantern."}, "max_cost_usd": 0.01}),
         )
         .await;
     assert_eq!(
@@ -906,10 +1046,18 @@ async fn ops_generate_stores_artifacts_and_passes_refusals() {
         (404, Some("not_configured")),
         "{v}"
     );
+    // A cost ceiling is required (none is configured here).
     let (s, v) = api
         .post(
             "/v1/ops/generate",
-            json!({"op": "3d", "spec": {"prompt": "x"}}),
+            json!({"op": "tts", "spec": {"text": "Mind the lantern."}}),
+        )
+        .await;
+    assert_eq!((s, v["code"].as_str()), (400, Some("bad_request")), "{v}");
+    let (s, v) = api
+        .post(
+            "/v1/ops/generate",
+            json!({"op": "3d", "spec": {"prompt": "x"}, "max_cost_usd": 0.5}),
         )
         .await;
     assert_eq!((s, v["code"].as_str()), (404, Some("not_configured")));
@@ -926,7 +1074,7 @@ async fn ops_generate_stores_artifacts_and_passes_refusals() {
     let (s, v) = api
         .post(
             "/v1/ops/generate",
-            json!({"op": "describe", "spec": {"artifact": sha(b"PNG-lantern")}}),
+            json!({"op": "describe", "spec": {"artifact": sha(b"PNG-lantern")}, "max_cost_usd": 0.02}),
         )
         .await;
     assert_eq!(s, 200, "{v}");
@@ -939,6 +1087,19 @@ async fn ops_generate_stores_artifacts_and_passes_refusals() {
         .cloned()
         .unwrap();
     assert!(b["input"].as_str().unwrap().starts_with("ref_"));
+    assert_eq!(
+        b["max_cost_usd"], 0.02,
+        "every operation carries the ceiling"
+    );
+    // The node's reported digest is checked: a mismatch is a protocol error, nothing stored.
+    node.lock().wrong_digest_ops.push("generate.image".into());
+    let (s, v) = api
+        .post(
+            "/v1/ops/generate",
+            json!({"op": "image", "spec": {"prompt": "another lantern"}, "max_cost_usd": 0.05}),
+        )
+        .await;
+    assert_eq!((s, v["code"].as_str()), (502, Some("protocol")), "{v}");
     running.shutdown().await;
 }
 
@@ -955,8 +1116,8 @@ async fn index_deltas_are_coalesced_and_delivered() {
             .post("/v1/index/delta", json!({
                 "project": "hollowmere", "revision": rev, "projectInfo": {"unity": "6000.0.75f1"},
                 "nodes": [
-                    {"ref": {"kind": "Entity", "authoringId": "e-ferryman", "definition": "npc.ferryman@3"}, "type": "npc.Npc",
-                     "name": format!("Ferryman v{rev}"), "fields": {"speed": {"value": 1.8, "unit": "m/s"}},
+                    {"ref": {"kind": "Entity", "authoringId": "e-ferryman", "definition": "npc.ferryman@3"}, "type": "npc.definition",
+                     "name": format!("Ferryman v{rev}"), "fields": {"speed": {"value": 1.8, "unit": "m/s", "type": "float"}},
                      "refs": [{"field": "region", "to": {"kind": "Region", "authoringId": "marsh"}}]},
                     {"ref": {"kind": "SceneObject", "authoringId": "rock"}, "type": "Rock"}
                 ],
@@ -1082,4 +1243,202 @@ async fn stage_shell_runs_the_command_or_reports_stage_failed() {
     assert_eq!(last["verdict"]["tests"]["passed"], 2);
     assert_eq!(last["verdict"]["exitCode"], 0);
     running.shutdown().await;
+}
+
+/// A change set with an unknown tool: one re-ask (the catalog rules count like the schema).
+fn changeset_with_tool(id: &str, tool: &str) -> Vec<u8> {
+    serde_json::to_vec(&json!({
+        "id": id, "schema": "gamecore.studio.changeset/1",
+        "intent": {"text": "Give the ferryman a lantern", "origin": "agent"},
+        "operations": [
+            {"opId": "op1", "tool": tool, "target": {"kind": "Entity", "authoringId": "e-ferryman"},
+             "args": {"item": "item.lantern@2"}}
+        ]
+    }))
+    .unwrap()
+}
+
+#[tokio::test]
+async fn catalog_rules_are_reasked_and_a_refused_reask_settles_invalid() {
+    let node = FakeNode::start().await;
+    let dir = tempfile::tempdir().unwrap();
+    let running = companion(&node, dir.path(), |_| {}).await;
+    let api = Api::new(&running, &node);
+    // 1. Unknown tool → re-ask → a valid change set.
+    let id = "cs_01J9ZQ00000000000000000020";
+    let (s, v) = api.post("/v1/requests", edit_request(id)).await;
+    assert_eq!(s, 200, "{v}");
+    let first = v["taskId"].as_str().unwrap().to_string();
+    node.complete(
+        &first,
+        &[(
+            "changeset.json",
+            changeset_with_tool(id, "inventory.grantAll"),
+        )],
+    );
+    let deadline = std::time::Instant::now() + Duration::from_secs(10);
+    let v = loop {
+        let (_, v) = api.get(&format!("/v1/requests/{id}")).await;
+        if v["attempt"] == 1 && v["taskId"].is_string() {
+            break v;
+        }
+        assert!(std::time::Instant::now() < deadline, "{v}");
+        tokio::time::sleep(Duration::from_millis(20)).await;
+    };
+    assert_eq!(v["outcome"]["diagnostics"][0]["code"], "UnknownTool", "{v}");
+    let second = v["taskId"].as_str().unwrap().to_string();
+    node.complete(
+        &second,
+        &[(
+            "changeset.json",
+            changeset_with_tool(id, "inventory.grantStarting"),
+        )],
+    );
+    let v = api.until_state(id, "candidate").await;
+    assert_eq!(v["tasks"].as_array().unwrap().len(), 2);
+    let (_, c) = api.get(&format!("/v1/candidates/{id}")).await;
+    assert_eq!(c["toolCatalogRevision"], catalog_rev(), "{c}");
+
+    // 2. The re-ask is refused by etos: candidate_invalid with the original findings and the refusal.
+    let id = "cs_01J9ZQ00000000000000000021";
+    node.lock().refuse_ids.push(format!("{id}.r1"));
+    let (_, v) = api.post("/v1/requests", edit_request(id)).await;
+    let task = v["taskId"].as_str().unwrap().to_string();
+    node.complete(
+        &task,
+        &[(
+            "changeset.json",
+            changeset_with_tool(id, "inventory.grantAll"),
+        )],
+    );
+    let v = api.until_state(id, "candidate_invalid").await;
+    let codes: Vec<&str> = v["outcome"]["diagnostics"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|d| d["code"].as_str().unwrap())
+        .collect();
+    assert_eq!(codes, ["UnknownTool", "Refused"], "{v}");
+    assert_eq!(
+        v["outcome"]["diagnostics"][1]["data"]["code"], "request_rejected",
+        "{v}"
+    );
+    assert!(!running.state.ledger.candidate(id).is_ok());
+
+    // 3. A plain `failed` record (not a cancel) fails the request.
+    let id = "cs_01J9ZQ00000000000000000022";
+    let (_, v) = api.post("/v1/requests", edit_request(id)).await;
+    let task = v["taskId"].as_str().unwrap().to_string();
+    let topic = node
+        .tasks()
+        .into_iter()
+        .find(|t| t.id == task)
+        .unwrap()
+        .topic;
+    node.post_record(
+        &topic,
+        "gc-designer@fake",
+        "the model failed (etk_secretsecretsecret)",
+        Some("failed"),
+        vec![],
+    );
+    let v = api.until_state(id, "failed").await;
+    assert_eq!(v["outcome"]["code"], "task_failed");
+    assert!(
+        !v["outcome"]["message"]
+            .as_str()
+            .unwrap()
+            .contains("etk_secret"),
+        "redacted: {v}"
+    );
+    running.shutdown().await;
+}
+
+#[tokio::test]
+async fn requests_are_scoped_to_the_calling_app_and_rejections_are_etos_shaped() {
+    let node = FakeNode::start().await;
+    let dir = tempfile::tempdir().unwrap();
+    let running = companion(&node, dir.path(), |c| {
+        c.allowed_apps = vec!["gamecore-unity".into(), "other-app".into()];
+    })
+    .await;
+    let api = Api::new(&running, &node);
+    let other = api.as_app("other-app");
+    let id = "cs_01J9ZQ00000000000000000030";
+    let (s, _) = api.post("/v1/requests", edit_request(id)).await;
+    assert_eq!(s, 200);
+    let (s, v) = other.get(&format!("/v1/requests/{id}")).await;
+    assert_eq!((s, v["code"].as_str()), (404, Some("not_found")), "{v}");
+    let (s, _) = other
+        .post(&format!("/v1/requests/{id}/cancel"), json!({}))
+        .await;
+    assert_eq!(s, 404);
+    let (s, _) = other.get(&format!("/v1/candidates/{id}")).await;
+    assert_eq!(s, 404);
+    let (_, list) = other.get("/v1/requests?after=0").await;
+    assert!(list["requests"].as_array().unwrap().is_empty(), "{list}");
+    let (_, mine) = api.get("/v1/requests?after=0").await;
+    assert_eq!(mine["requests"].as_array().unwrap().len(), 1);
+    // Answers carry no null members.
+    let (_, view) = api.get(&format!("/v1/requests/{id}")).await;
+    assert!(gamecore_studio::util::first_null(&view).is_none(), "{view}");
+    // Framework rejections are {code, message, hint}.
+    for (method, path, status) in [
+        (reqwest::Method::GET, "/v1/requests?after=abc", 400u16),
+        (reqwest::Method::PUT, "/v1/hello", 405),
+        (reqwest::Method::GET, "/v1/events", 400),
+        (reqwest::Method::POST, "/v1/requests", 400),
+    ] {
+        let (s, ct, v) = api.raw(method.clone(), path, b"{not json".to_vec()).await;
+        assert!(ct.starts_with("application/json"), "{method} {path}: {ct}");
+        assert!(
+            v["code"].is_string() && v["message"].is_string(),
+            "{method} {path}: {v}"
+        );
+        if path != "/v1/events" {
+            assert_eq!(s, status, "{method} {path}: {v}");
+        } else {
+            assert!(s == 400 || s == 426, "{s}: {v}");
+        }
+    }
+    running.shutdown().await;
+}
+
+#[tokio::test]
+async fn unresolved_requests_are_followed_at_most_three_more_times() {
+    let node = FakeNode::start().await;
+    let dir = tempfile::tempdir().unwrap();
+    let id = "cs_01J9ZQ00000000000000000040";
+    {
+        let running = companion(&node, dir.path(), |_| {}).await;
+        let l = &running.state.ledger;
+        l.insert_request(&gamecore_studio::ledger::NewRequest {
+            change_set_id: id.into(),
+            digest: "d".into(),
+            body: edit_request(id),
+            app: "gamecore-unity".into(),
+            worker: "gc-designer".into(),
+            etos_request_id: id.into(),
+            topic: "#agent/gamecore-studio/cs-gone".into(),
+        })
+        .unwrap();
+        l.set_attempt_task(id, 0, "t-gone").unwrap();
+        l.update_request(
+            id,
+            &gamecore_studio::ledger::RequestUpdate {
+                state: Some(gamecore_studio::model::RequestState::Unresolved),
+                ..Default::default()
+            },
+        )
+        .unwrap();
+        running.shutdown().await;
+    }
+    for round in 1..=4 {
+        let running = companion(&node, dir.path(), |_| {}).await;
+        let row = running.state.ledger.request(id).unwrap();
+        let gave_up = row.outcome.as_ref().is_some_and(|o| o["gaveUp"] == true);
+        assert_eq!(gave_up, round == 4, "round {round}: {:?}", row.outcome);
+        assert_eq!(running.state.desk.following(), usize::from(round < 4));
+        running.shutdown().await;
+    }
 }

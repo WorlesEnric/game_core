@@ -88,17 +88,18 @@ pub fn valid_change_set_id(id: &str) -> bool {
 }
 
 /// One topic segment etos accepts (lowercase letters, digits, `-`, `_`, `.`; at most 64)
-/// derived from a change-set id and an attempt number: `cs-<id>` when the id already fits,
-/// else a sanitised prefix plus 8 hex characters of the id's digest, so distinct ids never
-/// collide. Attempts after the first get `-r<n>`.
+/// derived from a change-set id and an attempt number. For a contract id (`cs_<ULID>`) it is
+/// `cs-<lowercase ULID>` (04 §3: no doubled prefix; Crockford base32 is case-insensitive, so
+/// lower-casing keeps ids distinct). Any other id (never accepted by `POST /v1/requests`)
+/// gets a sanitised prefix plus 8 hex characters of its digest. Attempts after the first get
+/// `-r<n>`.
 pub fn topic_segment(change_set_id: &str, attempt: u32) -> String {
     let fits = change_set_id
         .chars()
         .all(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || matches!(c, '-' | '_' | '.'))
         && change_set_id.len() <= 48;
     let base = if valid_change_set_id(change_set_id) {
-        // Crockford base32 is case-insensitive: lower-casing keeps ids distinct.
-        format!("cs-{}", change_set_id.to_ascii_lowercase())
+        format!("cs-{}", change_set_id[3..].to_ascii_lowercase())
     } else if fits {
         format!("cs-{change_set_id}")
     } else {
@@ -122,6 +123,67 @@ pub fn topic_segment(change_set_id: &str, attempt: u32) -> String {
     } else {
         format!("{base}-r{attempt}")
     }
+}
+
+/// Remove every object member whose value is `null`, at any depth (03 §9 null policy:
+/// optional members are omitted, never written as `null`). Array elements are kept.
+pub fn prune_nulls(v: &mut Value) {
+    match v {
+        Value::Object(map) => {
+            map.retain(|_, child| !child.is_null());
+            map.values_mut().for_each(prune_nulls);
+        }
+        Value::Array(items) => items.iter_mut().for_each(prune_nulls),
+        _ => {}
+    }
+}
+
+/// `v` without `null` object members (see [`prune_nulls`]).
+pub fn pruned(mut v: Value) -> Value {
+    prune_nulls(&mut v);
+    v
+}
+
+/// The JSON pointer of the first `null` in `v` (an object member or an array element), if
+/// any: readers refuse `null` (03 §9).
+pub fn first_null(v: &Value) -> Option<String> {
+    fn walk(v: &Value, at: &mut String) -> bool {
+        match v {
+            Value::Null => true,
+            Value::Object(map) => map.iter().any(|(k, child)| {
+                let len = at.len();
+                at.push('/');
+                at.push_str(&k.replace('~', "~0").replace('/', "~1"));
+                let found = walk(child, at);
+                if !found {
+                    at.truncate(len);
+                }
+                found
+            }),
+            Value::Array(items) => items.iter().enumerate().any(|(i, child)| {
+                let len = at.len();
+                at.push_str(&format!("/{i}"));
+                let found = walk(child, at);
+                if !found {
+                    at.truncate(len);
+                }
+                found
+            }),
+            _ => false,
+        }
+    }
+    let mut at = String::new();
+    walk(v, &mut at).then(|| if at.is_empty() { "/".to_string() } else { at })
+}
+
+/// The revision of a tool catalog (03 §9): the SHA-256 (lowercase hex) of its canonical JSON
+/// without the `revision` member.
+pub fn catalog_revision(catalog: &Value) -> String {
+    let mut c = catalog.clone();
+    if let Some(o) = c.as_object_mut() {
+        o.remove("revision");
+    }
+    sha256_hex(canonical_json(&c).as_bytes())
 }
 
 /// A media type guessed from a file name's extension.
@@ -160,6 +222,35 @@ mod tests {
     use serde_json::json;
 
     #[test]
+    fn nulls_are_pruned_and_found() {
+        let mut v = json!({"a": null, "b": {"c": null, "d": 1}, "e": [null, {"f": null}]});
+        assert_eq!(first_null(&v).as_deref(), Some("/a"));
+        assert_eq!(
+            first_null(&json!({"x": [1, null]})).as_deref(),
+            Some("/x/1")
+        );
+        assert_eq!(
+            first_null(&json!({"x": {"a/b": null}})).as_deref(),
+            Some("/x/a~1b")
+        );
+        assert_eq!(first_null(&json!({"x": [1, {"y": 2}]})), None);
+        prune_nulls(&mut v);
+        assert_eq!(v, json!({"b": {"d": 1}, "e": [null, {}]}));
+    }
+
+    #[test]
+    fn catalog_revision_ignores_the_revision_member() {
+        let a = json!({"schema": "s", "tools": [], "objectTypes": []});
+        let mut b = a.clone();
+        b["revision"] = json!("whatever");
+        assert_eq!(catalog_revision(&a), catalog_revision(&b));
+        assert_eq!(
+            catalog_revision(&a),
+            sha256_hex(canonical_json(&a).as_bytes())
+        );
+    }
+
+    #[test]
     fn digests_normalise() {
         let h = sha256_hex(b"");
         assert_eq!(
@@ -178,8 +269,12 @@ mod tests {
         assert_eq!(topic_segment("cs_01abc", 0), "cs-cs_01abc");
         assert_eq!(topic_segment("cs_01abc", 1), "cs-cs_01abc-r1");
         assert_eq!(
+            topic_segment("cs_01J9ZQ3K4M5N6P7Q8R9S0TVWXY", 0),
+            "cs-01j9zq3k4m5n6p7q8r9s0tvwxy"
+        );
+        assert_eq!(
             topic_segment("cs_01J9ZQ3K4M5N6P7Q8R9S0TVWXY", 1),
-            "cs-cs_01j9zq3k4m5n6p7q8r9s0tvwxy-r1"
+            "cs-01j9zq3k4m5n6p7q8r9s0tvwxy-r1"
         );
         let a = topic_segment("cs_01J9ZZ", 0);
         let b = topic_segment("cs_01j9zz:", 0);
@@ -190,6 +285,22 @@ mod tests {
                 || c.is_ascii_digit()
                 || matches!(c, '-' | '_' | '.')));
         }
+    }
+
+    #[test]
+    fn catalog_revision_matches_the_csharp_registry() {
+        // P0.3's sample catalog carries the revision minted by `ToolCatalog.ComputeRevision`
+        // (asserted by its dotnet tests); the companion must compute the same digest.
+        let sample = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("../../dotnet/tests/GameCore.Studio.Model.Tests/Samples/tool-catalog.json");
+        let Ok(text) = std::fs::read_to_string(&sample) else {
+            return; // the crate built outside the game_core tree
+        };
+        let catalog: Value = serde_json::from_str(&text).unwrap();
+        assert_eq!(
+            catalog_revision(&catalog),
+            catalog["revision"].as_str().unwrap()
+        );
     }
 
     #[test]

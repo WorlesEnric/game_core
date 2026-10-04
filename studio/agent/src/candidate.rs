@@ -17,18 +17,45 @@
 //! 4. every `{"artifact": "sha256:<hex>"}` in an operation's arguments is well formed and in
 //!    the manifest, and every manifest entry is used by an operation.
 //!
-//! Findings are `CandidateInvalid` diagnostics (03 §9) naming the rule at the start of the
-//! message, the same structural rules the Unity `ChangeSetValidator` applies (it also checks
-//! the catalog, targets and requirements, which the companion does not). Delivered files not
-//! in the manifest are reported (`output_unlisted`) but not stored.
+//! 5. it is a candidate (03 §9 candidate mode): `state` absent or `Candidate`, no `outcomes`,
+//!    no `timestamps.applied`, no `links.gameCoreOps`; and it holds no `null` (null policy);
+//! 6. bounded tool-catalog rules (04 §4), against the catalog of the request's revision:
+//!    every tool is in the catalog (`UnknownTool`); required arguments are present and no
+//!    unknown argument is given, a required target is present and its kind is allowed
+//!    (`InvalidArgs`); a target's edit scope is allowed (`ScopeNotAllowed`). A catalog that
+//!    is gone or whose digest is not the request's revision is `StaleContext`.
+//!
+//! Structural findings are `CandidateInvalid` diagnostics (03 §9) naming the rule at the
+//! start of the message, the same rules the Unity `ChangeSetValidator` applies; the catalog
+//! rules use the validator's own codes. The validator's index-dependent checks (targets in
+//! the index, stamps, prerequisites, value ranges, requirements) stay with the engine.
+//! Delivered files not in the manifest are reported (`output_unlisted`) but not stored.
 
 use std::collections::{BTreeSet, HashMap};
 
 use serde_json::Value;
 
-use crate::model::{ArtifactEntry, CHANGESET_SCHEMA, ChangeSet, Diagnostic};
+use crate::model::{ArtifactEntry, CHANGESET_SCHEMA, ChangeSet, Diagnostic, Operation};
 use crate::schema::ChangeSetSchema;
-use crate::util::normalize_sha256;
+use crate::util::{catalog_revision, first_null, normalize_sha256};
+
+/// Code of a tool the catalog does not contain (03 §9 registry).
+pub const UNKNOWN_TOOL: &str = "UnknownTool";
+/// Code of a missing, unknown or misplaced argument or target.
+pub const INVALID_ARGS: &str = "InvalidArgs";
+/// Code of an edit scope the tool does not allow.
+pub const SCOPE_NOT_ALLOWED: &str = "ScopeNotAllowed";
+/// Code of a candidate built against a catalog revision the companion cannot confirm.
+pub const STALE_CONTEXT: &str = "StaleContext";
+
+/// The tool catalog a candidate is checked against.
+#[derive(Debug, Clone, Copy)]
+pub struct CatalogContext<'a> {
+    /// The request's `toolCatalogRevision` (lowercase hex).
+    pub revision: &'a str,
+    /// The catalog held for that revision, if any.
+    pub catalog: Option<&'a Value>,
+}
 
 /// One fetched output reference.
 #[derive(Debug, Clone, PartialEq)]
@@ -75,8 +102,13 @@ fn json_object(bytes: &[u8]) -> Option<Value> {
     v.is_object().then_some(v)
 }
 
-/// Evaluate the outputs of a task opened for `expected_id`.
-pub fn evaluate(files: &[Fetched], expected_id: &str, schema: &ChangeSetSchema) -> Evaluation {
+/// Evaluate the outputs of a task opened for `expected_id`, checked against `catalog`.
+pub fn evaluate(
+    files: &[Fetched],
+    expected_id: &str,
+    schema: &ChangeSetSchema,
+    catalog: CatalogContext<'_>,
+) -> Evaluation {
     let mut changesets = Vec::new();
     let mut clarifications = Vec::new();
     for (i, f) in files.iter().enumerate() {
@@ -128,7 +160,17 @@ pub fn evaluate(files: &[Fetched], expected_id: &str, schema: &ChangeSetSchema) 
         )]);
     }
     let (cs_index, raw) = changesets.remove(0);
-    let violations = schema.check(&raw);
+    let mut violations = Vec::new();
+    if let Some(at) = first_null(&raw) {
+        violations.push(
+            Diagnostic::candidate(
+                "null_member",
+                "optional members are omitted when absent, never written as null",
+            )
+            .at_path(at),
+        );
+    }
+    violations.extend(schema.check(&raw));
     if !violations.is_empty() {
         return Evaluation::Invalid(violations);
     }
@@ -141,7 +183,8 @@ pub fn evaluate(files: &[Fetched], expected_id: &str, schema: &ChangeSetSchema) 
             )]);
         }
     };
-    let mut errors = Vec::new();
+    let mut errors = candidate_mode(&raw);
+    errors.extend(catalog_rules(&change_set.operations, catalog));
     if change_set.id != expected_id {
         errors.push(
             Diagnostic::candidate(
@@ -336,6 +379,205 @@ pub fn evaluate(files: &[Fetched], expected_id: &str, schema: &ChangeSetSchema) 
     }))
 }
 
+/// Candidate-mode findings (03 §9): a worker's change set is a candidate, never a record of
+/// an apply.
+fn candidate_mode(raw: &Value) -> Vec<Diagnostic> {
+    let mut d = Vec::new();
+    if let Some(state) = raw.get("state")
+        && state.as_str() != Some("Candidate")
+    {
+        d.push(
+            Diagnostic::candidate(
+                "candidate_mode",
+                format!("`state` is {state}; a worker's change set has no state or `Candidate`"),
+            )
+            .at_path("/state"),
+        );
+    }
+    for (pointer, what) in [
+        ("/outcomes", "`outcomes`"),
+        ("/timestamps/applied", "`timestamps.applied`"),
+        ("/links/gameCoreOps", "`links.gameCoreOps`"),
+    ] {
+        if raw.pointer(pointer).is_some() {
+            d.push(
+                Diagnostic::candidate(
+                    "candidate_mode",
+                    format!("{what} records an apply; a worker's change set cannot carry it"),
+                )
+                .at_path(pointer),
+            );
+        }
+    }
+    d
+}
+
+fn str_list<'a>(v: &'a Value, key: &str) -> Option<Vec<&'a str>> {
+    v.get(key)
+        .and_then(Value::as_array)
+        .map(|a| a.iter().filter_map(Value::as_str).collect())
+}
+
+/// The bounded catalog rules (04 §4) for every operation.
+fn catalog_rules(ops: &[Operation], ctx: CatalogContext<'_>) -> Vec<Diagnostic> {
+    let catalog = match ctx.catalog {
+        Some(c) => {
+            // The catalog's own `revision` (when present) and its content digest must both be
+            // the revision the request was built against.
+            let actual = c
+                .get("revision")
+                .and_then(Value::as_str)
+                .filter(|r| *r != ctx.revision)
+                .map(str::to_string)
+                .unwrap_or_else(|| catalog_revision(c));
+            if actual != ctx.revision {
+                return vec![
+                    Diagnostic::new(
+                        STALE_CONTEXT,
+                        "the tool catalog held for the request is not the revision it was built against",
+                    )
+                    .with_data(serde_json::json!({"expected": ctx.revision, "actual": actual})),
+                ];
+            }
+            c
+        }
+        None => {
+            return vec![
+                Diagnostic::new(
+                    STALE_CONTEXT,
+                    format!(
+                        "the companion no longer holds tool catalog revision {}",
+                        ctx.revision
+                    ),
+                )
+                .with_data(serde_json::json!({"expected": ctx.revision})),
+            ];
+        }
+    };
+    let tools: HashMap<&str, &Value> = catalog
+        .get("tools")
+        .and_then(Value::as_array)
+        .map(|a| {
+            a.iter()
+                .filter_map(|t| t.get("id").and_then(Value::as_str).map(|id| (id, t)))
+                .collect()
+        })
+        .unwrap_or_default();
+    let mut d = Vec::new();
+    for op in ops {
+        let Some(tool) = tools.get(op.tool.as_str()) else {
+            d.push(
+                Diagnostic::new(
+                    UNKNOWN_TOOL,
+                    format!(
+                        "operation {:?} uses tool {:?}, which the catalog does not contain",
+                        op.op_id, op.tool
+                    ),
+                )
+                .at_op(&op.op_id)
+                .with_hint("use only the tools listed in tool-catalog.json"),
+            );
+            continue;
+        };
+        let args: Vec<(&str, bool)> = tool
+            .get("args")
+            .and_then(Value::as_array)
+            .map(|a| {
+                a.iter()
+                    .filter_map(|x| {
+                        let name = x.get("name")?.as_str()?;
+                        Some((
+                            name,
+                            x.get("required").and_then(Value::as_bool).unwrap_or(false),
+                        ))
+                    })
+                    .collect()
+            })
+            .unwrap_or_default();
+        for name in op.args.keys() {
+            if !args.iter().any(|(n, _)| n == name) {
+                d.push(
+                    Diagnostic::new(
+                        INVALID_ARGS,
+                        format!("tool {:?} has no argument {name:?}", op.tool),
+                    )
+                    .at_op(&op.op_id),
+                );
+            }
+        }
+        for (name, required) in &args {
+            if *required && !op.args.contains_key(*name) {
+                d.push(
+                    Diagnostic::new(
+                        INVALID_ARGS,
+                        format!("tool {:?} requires argument {name:?}", op.tool),
+                    )
+                    .at_op(&op.op_id),
+                );
+            }
+        }
+        let target_required = tool
+            .get("targetRequired")
+            .and_then(Value::as_bool)
+            .unwrap_or(false);
+        match &op.target {
+            None if target_required => d.push(
+                Diagnostic::new(INVALID_ARGS, format!("tool {:?} needs a target", op.tool))
+                    .at_op(&op.op_id),
+            ),
+            None => {}
+            Some(t) => {
+                let kind = serde_json::to_value(t.kind)
+                    .ok()
+                    .and_then(|v| v.as_str().map(str::to_string))
+                    .unwrap_or_default();
+                if let Some(kinds) = str_list(tool, "targetKinds")
+                    && !kinds.contains(&kind.as_str())
+                {
+                    d.push(
+                        Diagnostic::new(
+                            INVALID_ARGS,
+                            format!(
+                                "tool {:?} does not accept target kind {kind} (accepts {})",
+                                op.tool,
+                                kinds.join(", ")
+                            ),
+                        )
+                        .at_op(&op.op_id),
+                    );
+                }
+                if let Some(scope) = t.scope {
+                    let scope = serde_json::to_value(scope)
+                        .ok()
+                        .and_then(|v| v.as_str().map(str::to_string))
+                        .unwrap_or_default();
+                    if let Some(scopes) = str_list(tool, "scopes")
+                        && !scopes.contains(&scope.as_str())
+                    {
+                        d.push(
+                            Diagnostic::new(
+                                SCOPE_NOT_ALLOWED,
+                                format!(
+                                    "tool {:?} cannot edit at scope {scope} (allowed: {})",
+                                    op.tool,
+                                    scopes.join(", ")
+                                ),
+                            )
+                            .at_op(&op.op_id),
+                        );
+                    }
+                }
+            }
+        }
+    }
+    d
+}
+
+/// Whether a re-ask can help: not for a catalog the companion cannot confirm.
+pub fn reaskable(diagnostics: &[Diagnostic]) -> bool {
+    !diagnostics.iter().any(|d| d.code == STALE_CONTEXT)
+}
+
 /// `sha256:<64 lowercase hex>` (the reference form of 03 §6), as the bare digest.
 fn strict_artifact_ref(r: &str) -> Option<&str> {
     let h = r.strip_prefix("sha256:")?;
@@ -408,6 +650,26 @@ mod tests {
     use serde_json::json;
 
     const ID: &str = "cs_01J9ZQ3K4M5N6P7Q8R9S0TVWXY";
+
+    static CATALOG: std::sync::LazyLock<Value> = std::sync::LazyLock::new(|| {
+        json!({"schema": "gamecore.studio.toolcatalog/1", "objectTypes": [], "tools": [
+            {"id": "dialogue.addNode", "tier": "Compose", "runtimeApply": "Live", "targetRequired": false,
+             "args": [{"name": "voice", "type": "artifact", "required": false}]},
+            {"id": "x.y", "tier": "Configure", "runtimeApply": "Live", "targetRequired": false, "args": []},
+            {"id": "inventory.grantStarting", "tier": "Configure", "runtimeApply": "Live", "targetRequired": true,
+             "targetKinds": ["Entity"], "scopes": ["Instance", "Definition"],
+             "args": [{"name": "item", "type": "ref", "required": true}, {"name": "count", "type": "int", "required": false}]}
+        ]})
+    });
+    static REVISION: std::sync::LazyLock<String> =
+        std::sync::LazyLock::new(|| catalog_revision(&CATALOG));
+
+    fn ctx() -> CatalogContext<'static> {
+        CatalogContext {
+            revision: &REVISION,
+            catalog: Some(&CATALOG),
+        }
+    }
     const OTHER: &str = "cs_01J9ZQ3K4M5N6P7Q8R9S0TVWXZ";
 
     fn file(r: &str, bytes: &[u8]) -> Fetched {
@@ -455,8 +717,8 @@ mod tests {
             file("r2", wav),
             file("r3", b"stray"),
         ];
-        let Evaluation::Valid(v) = evaluate(&files, ID, &schema) else {
-            panic!("{:?}", evaluate(&files, ID, &schema))
+        let Evaluation::Valid(v) = evaluate(&files, ID, &schema, ctx()) else {
+            panic!("{:?}", evaluate(&files, ID, &schema, ctx()))
         };
         assert_eq!(v.artifacts.len(), 1);
         assert_eq!(v.artifacts[0].1, 1);
@@ -473,6 +735,7 @@ mod tests {
             &[file("r1", &cs(&claimed, 3)), file("r2", wav)],
             ID,
             &schema,
+            ctx(),
         ));
         // Listed (so the reference resolves) but never delivered.
         assert_eq!(r, ["artifact_digest_mismatch"]);
@@ -480,18 +743,21 @@ mod tests {
             &[file("r1", &cs(&sha256_hex(wav), 999)), file("r2", wav)],
             ID,
             &schema,
+            ctx(),
         ));
         assert!(r.contains(&"artifact_size_mismatch".to_string()), "{r:?}");
         let r = rules(evaluate(
             &[file("r1", &cs(&sha256_hex(wav), 12)), file("r2", wav)],
             OTHER,
             &schema,
+            ctx(),
         ));
         assert_eq!(r, ["changeset_id_mismatch"]);
         let Evaluation::Invalid(d) = evaluate(
             &[file("r1", &cs(&sha256_hex(wav), 12)), file("r2", wav)],
             OTHER,
             &schema,
+            ctx(),
         ) else {
             panic!()
         };
@@ -509,6 +775,7 @@ mod tests {
                 &[file("r1", &doc(&h, n, m)), file("r2", wav)],
                 ID,
                 &schema,
+                ctx(),
             ))
         };
         assert_eq!(
@@ -549,17 +816,117 @@ mod tests {
             ],
             ID,
             &schema,
+            ctx(),
         ) else {
             panic!()
         };
         assert_eq!(d[0].location, Some(json!("op1")));
     }
 
+    fn codes(e: Evaluation) -> Vec<(String, String)> {
+        match e {
+            Evaluation::Invalid(d) => d
+                .iter()
+                .map(|x| (x.code.clone(), x.rule().to_string()))
+                .collect(),
+            other => panic!("accepted: {other:?}"),
+        }
+    }
+
+    #[test]
+    fn catalog_and_candidate_mode_rules() {
+        let schema = ChangeSetSchema::load(None).unwrap();
+        let wav = b"RIFF....WAVE";
+        let h = sha256_hex(wav);
+        let n = wav.len() as u64;
+        let run = |m: fn(&mut Value)| {
+            codes(evaluate(
+                &[file("r1", &doc(&h, n, m)), file("r2", wav)],
+                ID,
+                &schema,
+                ctx(),
+            ))
+        };
+        let c = |code: &str, rule: &str| (code.to_string(), rule.to_string());
+        assert_eq!(
+            run(|v| v["operations"][1]["tool"] = json!("x.unknown")),
+            [c("UnknownTool", "UnknownTool")]
+        );
+        assert_eq!(
+            run(|v| v["operations"][1]["args"] = json!({"bogus": 1})),
+            [c("InvalidArgs", "InvalidArgs")]
+        );
+        // A required target and a required argument missing; then a disallowed kind and scope.
+        assert_eq!(
+            run(|v| v["operations"][1] = json!({"opId": "op2", "tool": "inventory.grantStarting"})),
+            [
+                c("InvalidArgs", "InvalidArgs"),
+                c("InvalidArgs", "InvalidArgs")
+            ]
+        );
+        assert_eq!(
+            run(
+                |v| v["operations"][1] = json!({"opId": "op2", "tool": "inventory.grantStarting",
+                "target": {"kind": "Region", "authoringId": "r", "scope": "Prefab"}, "args": {"item": "i@1"}})
+            ),
+            [
+                c("InvalidArgs", "InvalidArgs"),
+                c("ScopeNotAllowed", "ScopeNotAllowed")
+            ]
+        );
+        assert_eq!(
+            run(|v| v["state"] = json!("Applied")),
+            [c("CandidateInvalid", "candidate_mode")]
+        );
+        assert_eq!(
+            run(|v| v["links"] = json!({"gameCoreOps": ["w:1"]})),
+            [c("CandidateInvalid", "candidate_mode")]
+        );
+        assert_eq!(
+            run(|v| v["outcomes"] = json!([{"opId": "op1", "status": "Applied"}])),
+            [c("CandidateInvalid", "candidate_mode")]
+        );
+        // Null members are refused (with the schema's own complaint).
+        let r = run(|v| v["artifacts"][0]["role"] = Value::Null);
+        assert_eq!(r[0], c("CandidateInvalid", "null_member"));
+        // `state: Candidate` is fine.
+        let ok = doc(&h, n, |v| v["state"] = json!("Candidate"));
+        assert!(matches!(
+            evaluate(&[file("r1", &ok), file("r2", wav)], ID, &schema, ctx()),
+            Evaluation::Valid(_)
+        ));
+        // A catalog that is gone, or that does not hash to the revision, is stale; no re-ask.
+        let gone = CatalogContext {
+            revision: &REVISION,
+            catalog: None,
+        };
+        let Evaluation::Invalid(d) =
+            evaluate(&[file("r1", &ok), file("r2", wav)], ID, &schema, gone)
+        else {
+            panic!()
+        };
+        assert_eq!(d[0].code, "StaleContext");
+        assert!(!reaskable(&d));
+        let other =
+            json!({"schema": "gamecore.studio.toolcatalog/1", "objectTypes": [], "tools": []});
+        let wrong = CatalogContext {
+            revision: &REVISION,
+            catalog: Some(&other),
+        };
+        let Evaluation::Invalid(d) =
+            evaluate(&[file("r1", &ok), file("r2", wav)], ID, &schema, wrong)
+        else {
+            panic!()
+        };
+        assert_eq!(d[0].code, "StaleContext");
+        assert_eq!(d[0].data.as_ref().unwrap()["expected"], json!(*REVISION));
+    }
+
     #[test]
     fn missing_ambiguous_schema_and_clarification() {
         let schema = ChangeSetSchema::load(None).unwrap();
         assert_eq!(
-            rules(evaluate(&[file("r", b"not json")], ID, &schema)),
+            rules(evaluate(&[file("r", b"not json")], ID, &schema, ctx())),
             ["changeset_missing"]
         );
         let q = serde_json::to_vec(
@@ -567,11 +934,11 @@ mod tests {
         )
         .unwrap();
         assert!(matches!(
-            evaluate(&[file("r", &q)], ID, &schema),
+            evaluate(&[file("r", &q)], ID, &schema, ctx()),
             Evaluation::Clarification { ref question, .. } if question == "Which lantern?"
         ));
         let bad = serde_json::to_vec(&json!({"schema": CHANGESET_SCHEMA, "id": "cs_1"})).unwrap();
-        let r = rules(evaluate(&[file("r", &bad)], ID, &schema));
+        let r = rules(evaluate(&[file("r", &bad)], ID, &schema, ctx()));
         assert!(
             !r.is_empty() && r.iter().all(|x| x == "schema_violation"),
             "{r:?}"
@@ -583,6 +950,7 @@ mod tests {
                 &[file("r1", &one), file("r2", &one.clone()), file("r3", b"a")],
                 ID,
                 &schema,
+                ctx(),
             )),
             ["ambiguous_output"]
         );
