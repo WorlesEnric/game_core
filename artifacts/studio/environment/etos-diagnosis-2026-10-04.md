@@ -1,9 +1,11 @@
 # real_node failure: diagnosis (2026-10-04, after the verify run of 20:55 UTC)
 
-The verify run above passed every etos check (node, image, describe, tts, realtime, 3d refusal,
-hello through the proxy) and **failed** the companion's real-node test
-(`studio/agent/tests/real_node.rs`): both scenarios timed out with the designer request still
-`running` (`taskStatus` `starting`, then `queued`), see [real-node.txt](real-node.txt). What was
+This note is kept outside `etos-verify-2026-10-04/`, because every `verify.sh` run replaces that
+directory. The 20:55 UTC verify run (game_core `22e0cc9`, etos `5fa113b`) passed every etos check
+(node, image, describe, tts, realtime, 3d refusal, hello through the proxy) and **failed** the
+companion's real-node test (`studio/agent/tests/real_node.rs`). Both scenarios timed out with the
+designer request still `running` (`taskStatus` `starting`, then `queued`); see `real-node.txt` in
+git at `b08321d`. What was
 established afterwards, by hand on the host (`ETOS_ROOT=~/.local/share/etos-studio`):
 
 1. **Earlier passes were masking a refusal.** Before etos `5fa113b` the same test passed (2 of 2)
@@ -28,10 +30,18 @@ established afterwards, by hand on the host (`ETOS_ROOT=~/.local/share/etos-stud
 4. **The worker's model is down.** The running task's turn then failed on the model:
    `retrying model=echo/claude-opus-5-5 … reason=HTTP 503: auth_unavailable: no auth available (providers=claude, model=claude-opus-5-5); …`
    and `model marked degraded model=echo/claude-opus-5-5` (Echo-side, see
-   [../provider-probe-2026-10-04.md](../provider-probe-2026-10-04.md)). Both test tasks were then
+   [provider-probe-2026-10-04.md](provider-probe-2026-10-04.md)). Both test tasks were then
    cancelled (`etos task cancel`).
 
-Remaining for the integrator: a designer task cannot complete until Echo serves `claude-opus-5-5`
-(or the owner chooses another `default`), and the launch-in-request behaviour (item 2) needs a
-decision in etos (launch detached from the request) or in the companion (a longer timeout for
-`POST /tasks`).
+## Resolution (2026-10-05)
+
+- Item 2, fixed in etos:
+  - `5cec594` (etnode): `Node::open_task`, and the start in `TaskManager::open`, run on tasks of
+    their own. Test: `a_dropped_open_still_starts_the_task` (real containers).
+  - `278ef9c` (etagents): `POST /tasks` runs to its end, so the request→task row is always written.
+    Test: `a_dropped_task_open_is_recorded_and_found_again`, which fails without the fix.
+- Item 4: the workers now use `echo/gpt-6-sol`
+  ([provider-probe-2026-10-05.md](provider-probe-2026-10-05.md)).
+- A third problem appeared once tasks ran: a cancel settled `failed` because the worker's closing
+  record arrived before etos marked the task cancelled. Fixed in the companion (game_core
+  `0e5eecd`).

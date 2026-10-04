@@ -168,13 +168,21 @@ impl Node {
     }
 }
 
+/// A request the catalog can satisfy: the slice names the ferryman and a lantern item, and
+/// `inventory.grantStarting` grants an existing item. (With an empty slice, or an ask for
+/// dialogue the catalog has no tool for, a worker rightly answers `needs_clarification`.)
 fn request(id: &str) -> Value {
     json!({
         "changeSetId": id,
-        "intent": {"text": "Give the ferryman a lantern and make him mention it", "origin": "agent"},
+        "intent": {"text": "Give the ferryman the lantern as a starting item", "origin": "agent"},
         "selection": {"id": "sel_01J9ZQ00000000000000000001", "mode": "Edit", "indexRevision": 1,
                       "targets": [{"kind": "Entity", "authoringId": "e-ferryman"}]},
-        "contextSlice": {"revision": 1, "project": "p05-real", "nodes": []},
+        "contextSlice": {"revision": 1, "project": "p05-real", "nodes": [
+            {"ref": {"kind": "Entity", "authoringId": "e-ferryman"}, "type": "npc.definition",
+             "name": "Ferryman"},
+            {"ref": {"kind": "Definition", "authoringId": "item.lantern"}, "type": "item.definition",
+             "name": "Lantern"}
+        ], "edges": []},
         "toolCatalogRevision": gamecore_studio::util::catalog_revision(&catalog()),
         "toolCatalog": catalog()
     })
