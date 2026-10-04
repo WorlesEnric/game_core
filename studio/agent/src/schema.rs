@@ -1,7 +1,12 @@
-//! The change-set JSON Schema. By default the copy in `schemas/` (built into the binary): a
-//! byte-for-byte copy of P0.3's generated `docs/studio/schemas/change-set.schema.json`
-//! (`build.rs` warns when the two differ); `schema = <path>` in `config.toml` (or
-//! `GAMECORE_STUDIO_SCHEMA`) loads another file instead. Remote `$ref`s are not resolved.
+//! The contract JSON Schemas, built into the binary: byte-for-byte copies of P0.3's generated
+//! `docs/studio/schemas/*.schema.json` in `schemas/` (`build.rs` warns when a copy differs).
+//!
+//! - `change-set.schema.json` checks a worker's change set ([`crate::candidate`]);
+//!   `schema = <path>` in `config.toml` (or `GAMECORE_STUDIO_SCHEMA`) loads another file;
+//! - `selection-snapshot.schema.json`, `semantic-index.schema.json` and
+//!   `tool-catalog.schema.json` check what `POST /v1/requests` carries.
+//!
+//! Remote `$ref`s are not resolved (the generated schemas have none).
 
 use std::path::Path;
 
@@ -9,48 +14,60 @@ use serde_json::Value;
 
 use crate::model::Diagnostic;
 
-/// The vendored schema text.
+/// The built-in change-set schema text.
 pub const VENDORED: &str = include_str!("../schemas/change-set.schema.json");
+/// The built-in selection-snapshot schema text.
+pub const SELECTION: &str = include_str!("../schemas/selection-snapshot.schema.json");
+/// The built-in semantic-index schema text.
+pub const SEMANTIC_INDEX: &str = include_str!("../schemas/semantic-index.schema.json");
+/// The built-in tool-catalog schema text.
+pub const TOOL_CATALOG: &str = include_str!("../schemas/tool-catalog.schema.json");
 
-/// A compiled change-set schema.
-pub struct ChangeSetSchema {
+/// A compiled JSON Schema.
+pub struct Schema {
     validator: jsonschema::Validator,
     source: String,
 }
 
-impl std::fmt::Debug for ChangeSetSchema {
+/// The change-set schema (a [`Schema`]).
+pub type ChangeSetSchema = Schema;
+
+impl std::fmt::Debug for Schema {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.debug_struct("ChangeSetSchema")
+        f.debug_struct("Schema")
             .field("source", &self.source)
             .finish_non_exhaustive()
     }
 }
 
-impl ChangeSetSchema {
+impl Schema {
     /// Compile a schema value; `source` names it in messages.
-    pub fn compile(schema: &Value, source: &str) -> Result<ChangeSetSchema, String> {
+    pub fn compile(schema: &Value, source: &str) -> Result<Schema, String> {
         let validator = jsonschema::validator_for(schema)
-            .map_err(|e| format!("the change-set schema {source} does not compile: {e}"))?;
-        Ok(ChangeSetSchema {
+            .map_err(|e| format!("the schema {source} does not compile: {e}"))?;
+        Ok(Schema {
             validator,
             source: source.to_string(),
         })
     }
 
-    /// The vendored schema, or the file at `path`.
-    pub fn load(path: Option<&Path>) -> Result<ChangeSetSchema, String> {
+    /// A built-in schema from its text.
+    pub fn builtin(text: &str, name: &str) -> Result<Schema, String> {
+        let v: Value = serde_json::from_str(text)
+            .map_err(|e| format!("the built-in schema {name} is not JSON: {e}"))?;
+        Schema::compile(&v, &format!("schemas/{name} (built in, P0.3 copy)"))
+    }
+
+    /// The built-in change-set schema, or the file at `path`.
+    pub fn load(path: Option<&Path>) -> Result<Schema, String> {
         match path {
-            None => {
-                let v: Value = serde_json::from_str(VENDORED)
-                    .map_err(|e| format!("the vendored schema is not JSON: {e}"))?;
-                ChangeSetSchema::compile(&v, "schemas/change-set.schema.json (built in, P0.3 copy)")
-            }
+            None => Schema::builtin(VENDORED, "change-set.schema.json"),
             Some(p) => {
                 let text = std::fs::read_to_string(p)
                     .map_err(|e| format!("cannot read {}: {e}", p.display()))?;
                 let v: Value = serde_json::from_str(&text)
                     .map_err(|e| format!("{} is not JSON: {e}", p.display()))?;
-                ChangeSetSchema::compile(&v, &p.display().to_string())
+                Schema::compile(&v, &p.display().to_string())
             }
         }
     }
@@ -60,15 +77,15 @@ impl ChangeSetSchema {
         &self.source
     }
 
-    /// Schema violations of `instance` as diagnostics (`schema_violation`, located by JSON
-    /// pointer); empty when valid. At most 50 are reported.
-    pub fn check(&self, instance: &Value) -> Vec<Diagnostic> {
+    /// Violations of `instance` as `code` diagnostics naming `rule`, with the JSON pointer
+    /// in the message; empty when valid. At most 50 are reported.
+    pub fn findings(&self, instance: &Value, code: &str, rule: &str) -> Vec<Diagnostic> {
         self.validator
             .iter_errors(instance)
             .take(50)
             .map(|e| {
                 let at = e.instance_path.to_string();
-                Diagnostic::candidate("schema_violation", e.to_string()).at_path(if at.is_empty() {
+                Diagnostic::new(code, format!("{rule}: {e}")).at_path(if at.is_empty() {
                     "/".to_string()
                 } else {
                     at
@@ -76,12 +93,71 @@ impl ChangeSetSchema {
             })
             .collect()
     }
+
+    /// Change-set violations (`CandidateInvalid` / `schema_violation`).
+    pub fn check(&self, instance: &Value) -> Vec<Diagnostic> {
+        self.findings(
+            instance,
+            crate::model::CANDIDATE_INVALID,
+            "schema_violation",
+        )
+    }
+}
+
+/// The request-side schemas of `POST /v1/requests`.
+#[derive(Debug)]
+pub struct RequestSchemas {
+    /// `selection-snapshot.schema.json`.
+    pub selection: Schema,
+    /// `semantic-index.schema.json` (the context slice).
+    pub slice: Schema,
+    /// `tool-catalog.schema.json`.
+    pub catalog: Schema,
+}
+
+impl RequestSchemas {
+    /// The built-in request schemas.
+    pub fn builtin() -> Result<RequestSchemas, String> {
+        Ok(RequestSchemas {
+            selection: Schema::builtin(SELECTION, "selection-snapshot.schema.json")?,
+            slice: Schema::builtin(SEMANTIC_INDEX, "semantic-index.schema.json")?,
+            catalog: Schema::builtin(TOOL_CATALOG, "tool-catalog.schema.json")?,
+        })
+    }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
     use serde_json::json;
+
+    #[test]
+    fn request_schemas_compile_and_check() {
+        let r = RequestSchemas::builtin().unwrap();
+        let sel = json!({"id": "sel_01J9ZQ3K4M5N6P7Q8R9S0TVWXY", "mode": "Edit", "indexRevision": 1, "targets": []});
+        assert!(
+            r.selection
+                .findings(&sel, "InvalidArgs", "selection")
+                .is_empty()
+        );
+        let bad = json!({"id": "sel_1", "mode": "Edit", "indexRevision": 1, "targets": []});
+        let d = r.selection.findings(&bad, "InvalidArgs", "selection");
+        assert!(
+            !d.is_empty() && d[0].message.starts_with("selection: "),
+            "{d:?}"
+        );
+        let slice = json!({"project": "p", "revision": 1, "nodes": [{"ref": {"kind": "Entity", "authoringId": "e"}, "type": "npc.definition"}]});
+        assert!(r.slice.findings(&slice, "InvalidArgs", "slice").is_empty());
+        let cat =
+            json!({"schema": "gamecore.studio.toolcatalog/1", "objectTypes": [], "tools": []});
+        assert!(
+            r.catalog
+                .findings(&cat, "InvalidArgs", "catalog")
+                .is_empty(),
+            "{:?}",
+            r.catalog.findings(&cat, "InvalidArgs", "catalog")
+        );
+    }
 
     #[test]
     fn vendored_schema_accepts_the_contract_example_and_rejects_garbage() {

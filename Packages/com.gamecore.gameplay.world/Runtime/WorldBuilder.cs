@@ -237,7 +237,15 @@ namespace GameCore.Gameplay.World
         /// Seeds every target's slots from the manifest, attaches the per-world modules to the command systems and returns
         /// the running gameplay world. Call once, right after boot, while the world is still Ready (paused).
         /// </summary>
-        public static GameplayWorld Attach(GameApplicationRoot root, WorldBuildPlan plan)
+        public static GameplayWorld Attach(GameApplicationRoot root, WorldBuildPlan plan) => Attach(root, plan, true);
+
+        /// <summary>
+        /// <see cref="Attach(GameApplicationRoot, WorldBuildPlan)"/> with the slot seeding optional. Pass
+        /// <paramref name="seedSlots"/> false for a root composed by a restore (<c>SaveService.RootChanged</c>, P1.2): its
+        /// slots already hold the checkpoint's committed values, and seeding would overwrite them. The previous
+        /// <see cref="GameplayWorld"/> must be shut down first; a gameplay world is bound to exactly one root.
+        /// </summary>
+        public static GameplayWorld Attach(GameApplicationRoot root, WorldBuildPlan plan, bool seedSlots)
         {
             if (root == null)
             {
@@ -256,6 +264,11 @@ namespace GameCore.Gameplay.World
             for (int i = 0; i < manifest.Regions.Count; i++)
             {
                 ManifestRegion region = manifest.Regions[i];
+                if (!seedSlots)
+                {
+                    continue;
+                }
+
                 TargetId target = AuthoringIds.TargetIdFor(region.authoringId);
                 Seed(root, target, GameplaySlots.WorldOwner, GameplaySlots.Residency, (int)RegionResidency.Unloaded);
                 Seed(root, target, GameplaySlots.WorldOwner, GameplaySlots.Visits, 0);
@@ -268,6 +281,11 @@ namespace GameCore.Gameplay.World
                 ManifestRegion? region = manifest.FindRegion(entity.regionId);
                 TargetId target = AuthoringIds.TargetIdFor(entity.authoringId);
                 entityModule.Add(new EntityRecord(target, entity.authoringId, entity.definitionId, definition != null ? definition.variantCount : 1));
+                if (!seedSlots)
+                {
+                    continue;
+                }
+
                 SeedEntity(root, target, entity.alive, entity.variant, entity.scaleMilli, entity.visible);
                 SeedPlacement(root, target, region != null ? region.key : 0, entity.x, entity.y, entity.z, entity.yaw);
             }

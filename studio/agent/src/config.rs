@@ -11,6 +11,7 @@
 //! port = 7451                       # loopback listener; else the saved port, else ephemeral
 //! schema = "/path/to/change-set.schema.json"   # else the vendored copy
 //! follow_wait_ms = 20000
+//! ops_max_cost_usd = 0.10           # default ceiling of /v1/ops/generate when a call has none
 //! [stage]
 //! command = "/home/me/wkspace/game_core/studio/stage/stage.sh"
 //! slots = ["1", "2"]
@@ -79,6 +80,9 @@ pub struct Config {
     pub index_flush_ms: u64,
     /// Cap of the index slice packed for a worker, in bytes (truncated beyond).
     pub max_slice_bytes: usize,
+    /// Default `max_cost_usd` of `/v1/ops/generate` for a call that names none; `None`: such
+    /// a call is refused (`bad_request`).
+    pub ops_max_cost_usd: Option<f64>,
     /// Staging.
     pub stage: StageConfig,
     /// Voice.
@@ -98,6 +102,7 @@ struct FileConfig {
     hello_cache_s: Option<u64>,
     index_flush_ms: Option<u64>,
     max_slice_bytes: Option<usize>,
+    ops_max_cost_usd: Option<f64>,
     stage: Option<FileStage>,
     voice: Option<FileVoice>,
 }
@@ -150,6 +155,7 @@ impl Config {
             hello_cache_s: 60,
             index_flush_ms: 1_000,
             max_slice_bytes: 2 * 1024 * 1024,
+            ops_max_cost_usd: None,
             stage: StageConfig {
                 command: None,
                 slots: vec!["1".into()],
@@ -232,6 +238,9 @@ impl Config {
         }
         if let Some(v) = f.max_slice_bytes {
             self.max_slice_bytes = v;
+        }
+        if let Some(v) = f.ops_max_cost_usd.filter(|v| v.is_finite() && *v >= 0.0) {
+            self.ops_max_cost_usd = Some(v);
         }
         if let Some(s) = f.stage {
             self.stage.command = s.command.or(self.stage.command.take());

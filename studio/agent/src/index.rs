@@ -189,7 +189,7 @@ pub enum IndexError {
 fn field_value(node: &IndexNode, names: &[&str]) -> Option<Value> {
     names
         .iter()
-        .find_map(|n| node.fields.get(*n).map(|f| f.value.clone()))
+        .find_map(|n| node.fields.get(*n).and_then(|f| f.value.clone()))
 }
 
 fn link_to(node: &IndexNode, field: &str) -> Option<String> {
@@ -265,12 +265,8 @@ pub fn node_row(node: &IndexNode) -> Option<(&'static str, String, Map<String, V
             put("name", Some(json!(node.name)));
             put("type", Some(json!(node.ty)));
             put("fields", Some(fields()));
-            let region = link_to(node, "region").or_else(|| {
-                node.reference
-                    .location
-                    .as_ref()
-                    .and_then(|l| l.region.clone())
-            });
+            let region = link_to(node, "region")
+                .or_else(|| node.reference.location.as_ref().map(|l| l.region.clone()));
             put("region", region.map(Value::String));
             put(
                 "definition",
@@ -571,7 +567,7 @@ mod tests {
         }
     }
 
-    /// Node `type` is the [Authorable] type id (03 §4, P0.3), e.g. `npc.definition`.
+    /// Node `type` is the `[Authorable]` type id (03 §3; the attribute is 03 §4), e.g. `npc.definition`.
     #[test]
     fn authorable_type_ids_map_to_kinds() {
         let kind = |r: Value, ty: &str| {
@@ -608,8 +604,8 @@ mod tests {
     fn nodes_map_to_rows() {
         let n = node(json!({
             "ref": {"kind": "Entity", "authoringId": "e1", "definition": "npc.ferryman@3"},
-            "type": "npc.Npc", "name": "Ferryman",
-            "fields": {"speed": {"value": 1.8, "unit": "m/s"}},
+            "type": "npc.definition", "name": "Ferryman",
+            "fields": {"speed": {"value": 1.8, "unit": "m/s", "type": "float"}},
             "refs": [{"field": "region", "to": {"kind": "Region", "authoringId": "marsh"}}]
         }));
         let (kind, key, v) = node_row(&n).unwrap();
@@ -619,8 +615,8 @@ mod tests {
         assert_eq!(v["fields"]["speed"]["value"], 1.8);
         let d = node(
             json!({"ref": {"kind": "Definition", "authoringId": "d1", "definition": "quest.lantern@1"},
-                            "type": "quest.QuestDefinition", "name": "Lantern",
-                            "fields": {"stages": {"value": [1, 2]}}}),
+                            "type": "quest.definition", "name": "Lantern",
+                            "fields": {"stages": {"value": [1, 2], "type": "int[]"}}}),
         );
         let (kind, key, v) = node_row(&d).unwrap();
         assert_eq!((kind, key.as_str()), ("gc_quest", "quest.lantern"));

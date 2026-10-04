@@ -4,8 +4,11 @@
 //! `POST /ops/generate.image | tts | generate.3d | describe` through
 //! `client.ops().call(...)` (not the SDK's `Ops::generate`, which posts the wrong path), with
 //! an etops idempotency `key` derived from the change set and the spec (a lost answer is
-//! looked up by etops, never generated twice). Produced files (`refs`) are fetched, digested
-//! and stored; refusals (`not_configured`, `budget_exhausted`, ...) pass through unchanged.
+//! looked up by etops, never generated twice). Every operation carries a cost ceiling: the
+//! call's `max_cost_usd`, else the configured `ops_max_cost_usd`; with neither the call is
+//! refused. Produced files (`refs`) are fetched, checked against the digest the node reports
+//! (when it reports one), stored under the node's media type (else one guessed from the
+//! name); refusals (`not_configured`, `budget_exhausted`, ...) pass through unchanged.
 //!
 //! Provider status comes from the free `status` operation (`{providers: {op: [names]}}`),
 //! cached for `hello_cache_s`; voice status is what the last realtime session learned
@@ -61,6 +64,7 @@ pub struct MediaOps {
     hub: EventHub,
     indexer: Arc<Indexer>,
     ttl: Duration,
+    default_ceiling: Option<f64>,
     cache: Mutex<StatusCache>,
     voice: Mutex<String>,
 }
@@ -87,6 +91,7 @@ impl MediaOps {
         hub: EventHub,
         indexer: Arc<Indexer>,
         hello_cache_s: u64,
+        default_ceiling: Option<f64>,
     ) -> MediaOps {
         MediaOps {
             client,
@@ -95,6 +100,7 @@ impl MediaOps {
             hub,
             indexer,
             ttl: Duration::from_secs(hello_cache_s),
+            default_ceiling,
             cache: Mutex::new(None),
             voice: Mutex::new(status::UNKNOWN.to_string()),
         }
@@ -185,21 +191,27 @@ impl MediaOps {
                 "`output` is chosen by the node, not the caller",
             ));
         }
-        if op == "describe" {
-            return self.describe(&req, input).await;
-        }
-        if let Some(max) = req.max_cost_usd {
-            if !(max.is_finite() && max >= 0.0) {
+        let max = match req.max_cost_usd.or(self.default_ceiling) {
+            Some(m) if m.is_finite() && m >= 0.0 => m,
+            Some(_) => {
                 return Err(ApiError::bad_request(
                     "max_cost_usd is a non-negative number",
                 ));
             }
-            input.insert("max_cost_usd".into(), json!(max));
+            None => {
+                return Err(ApiError::bad_request("max_cost_usd is required")
+                    .with_hint("send a cost ceiling in USD, or configure ops_max_cost_usd"));
+            }
+        };
+        input.insert("max_cost_usd".into(), json!(max));
+        if op == "describe" {
+            return self.describe(&req, input, max).await;
         }
         let key = match input.get("key").and_then(Value::as_str) {
             Some(k) => k.to_string(),
             None => {
-                let basis = json!({"cs": req.change_set_id, "op": op, "spec": req.spec, "max": req.max_cost_usd});
+                let basis =
+                    json!({"cs": req.change_set_id, "op": op, "spec": req.spec, "max": max});
                 let k = format!(
                     "gc-{}",
                     &sha256_hex(canonical_json(&basis).as_bytes())[..40]
@@ -222,29 +234,34 @@ impl MediaOps {
             .cloned()
             .unwrap_or_default()
         {
+            let field = |k: &[&str]| {
+                k.iter()
+                    .find_map(|k| r.get(*k).and_then(Value::as_str))
+                    .map(str::to_string)
+            };
             let (id, name) = match &r {
                 Value::String(s) => (s.clone(), s.clone()),
-                Value::Object(o) => (
-                    o.get("id")
-                        .and_then(Value::as_str)
-                        .unwrap_or_default()
-                        .to_string(),
-                    o.get("name")
-                        .and_then(Value::as_str)
-                        .unwrap_or_default()
-                        .to_string(),
+                Value::Object(_) => (
+                    field(&["id"]).unwrap_or_default(),
+                    field(&["name"]).unwrap_or_default(),
                 ),
                 _ => continue,
             };
             if id.is_empty() {
                 continue;
             }
+            let reported = field(&["digest", "sha256"]).and_then(|d| normalize_sha256(&d));
             let bytes = self.client.files().get(&id).await?;
-            let (sha, path) = self
-                .store
-                .put(&bytes, None)
-                .map_err(|e| ApiError::internal(e.to_string()))?;
-            let media = media_type_for(&name).to_string();
+            let (sha, path) = self.store.put(&bytes, reported.as_deref()).map_err(|e| {
+                ApiError::new(
+                    axum::http::StatusCode::BAD_GATEWAY,
+                    "protocol",
+                    format!("output {id} does not match the digest the node reported: {e}"),
+                )
+            })?;
+            let media = field(&["media_type", "mediaType"])
+                .filter(|m| !m.is_empty())
+                .unwrap_or_else(|| media_type_for(&name).to_string());
             let producer = json!({"op": op, "provider": provider, "jobId": job, "key": key,
                                   "etosRef": id, "changeSetId": req.change_set_id});
             self.ledger.put_artifact(&ArtifactRow {
@@ -279,7 +296,8 @@ impl MediaOps {
             op: req.op.clone(),
             etos_op: op.to_string(),
             provider,
-            state: answer.get("state").cloned().unwrap_or(Value::Null),
+            state: answer.get("state").cloned().filter(|v| !v.is_null()),
+            max_cost_usd: max,
             artifacts,
             text: None,
             key: Some(key),
@@ -298,6 +316,7 @@ impl MediaOps {
         &self,
         req: &GenerateRequest,
         mut input: Map<String, Value>,
+        max: f64,
     ) -> ApiResult<GenerateResponse> {
         if let Some(sha) = input.remove("artifact") {
             let sha = sha
@@ -334,7 +353,8 @@ impl MediaOps {
                 .get("provider")
                 .and_then(Value::as_str)
                 .map(str::to_string),
-            state: json!("succeeded"),
+            state: Some(json!("succeeded")),
+            max_cost_usd: max,
             artifacts: Vec::new(),
             text: answer
                 .get("text")

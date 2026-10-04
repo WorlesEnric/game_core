@@ -3,7 +3,13 @@
 //! Every request must carry the node's current proxy token (`X-Etos-Proxy-Token`, compared in
 //! constant time with the token of the current welcome, which changes when etosd restarts)
 //! and an allowed calling app (`X-Etos-App`); otherwise `403 forbidden`. Before the first
-//! welcome the answer is `503 agent_starting`. Errors are `{code, message, hint}`.
+//! welcome the answer is `503 agent_starting`. Errors are `{code, message, hint}`, including
+//! the framework's own rejections (an oversized body, a malformed query, a missing WebSocket
+//! upgrade, an unknown method). Requests are scoped to the calling app: another app's
+//! request is `404`.
+//!
+//! Null policy (03 §9): JSON bodies with a `null` anywhere are refused (`400`); answers and
+//! WebSocket frames never carry `null` members.
 //!
 //! | Route | Handler |
 //! |---|---|
@@ -48,11 +54,17 @@ use crate::model::{
 use crate::ops::MediaOps;
 use crate::stage::StageRunner;
 use crate::store::ArtifactStore;
-use crate::util::normalize_sha256;
+use crate::util::{first_null, normalize_sha256, pruned};
 use crate::voice::VoiceBridge;
 
-/// Largest request body (a request with attachments, an index delta).
-pub const MAX_BODY: usize = 160 * 1024 * 1024;
+/// Largest request body (a request with attachments, an index delta); see
+/// [`crate::desk::MAX_BODY`].
+pub const MAX_BODY: usize = crate::desk::MAX_BODY;
+
+/// A JSON answer without `null` members.
+fn out<T: serde::Serialize>(v: &T) -> Json<Value> {
+    Json(pruned(serde_json::to_value(v).unwrap_or(Value::Null)))
+}
 
 /// Everything the handlers share.
 pub struct Shared {
@@ -103,7 +115,47 @@ pub fn router(state: AppState) -> Router {
         .fallback(|| async { ApiError::not_found("no such companion route").into_response() })
         .layer(middleware::from_fn_with_state(state.clone(), authenticate))
         .layer(DefaultBodyLimit::max(MAX_BODY))
+        .layer(middleware::map_response(etos_shaped))
         .with_state(state)
+}
+
+/// Turn a framework rejection (plain text: 400/405/413/415/422/426 ...) into
+/// `{code, message, hint}`. Answers that are JSON already, and successes, pass unchanged.
+async fn etos_shaped(res: Response) -> Response {
+    let status = res.status();
+    let is_json = res
+        .headers()
+        .get(header::CONTENT_TYPE)
+        .and_then(|v| v.to_str().ok())
+        .is_some_and(|v| v.starts_with("application/json"));
+    if !(status.is_client_error() || status.is_server_error()) || is_json {
+        return res;
+    }
+    let text = axum::body::to_bytes(res.into_body(), 4096)
+        .await
+        .map(|b| String::from_utf8_lossy(&b).trim().to_string())
+        .unwrap_or_default();
+    let (code, hint) = match status {
+        StatusCode::PAYLOAD_TOO_LARGE => (
+            "too_large",
+            format!("a request body is at most {} MiB", MAX_BODY >> 20),
+        ),
+        StatusCode::METHOD_NOT_ALLOWED => {
+            ("bad_request", "see 04 §2 for the routes and methods".into())
+        }
+        StatusCode::UPGRADE_REQUIRED => ("bad_request", "open this route as a WebSocket".into()),
+        StatusCode::NOT_FOUND => ("not_found", "see 04 §2 for the routes".into()),
+        s if s.is_server_error() => ("internal", "retry; the companion logs the cause".into()),
+        _ => ("bad_request", "see 04 §2 for the request shapes".into()),
+    };
+    let message = if text.is_empty() {
+        status.canonical_reason().unwrap_or("rejected").to_string()
+    } else {
+        text
+    };
+    ApiError::new(status, code, message)
+        .with_hint(hint)
+        .into_response()
 }
 
 /// Check the proxy token against the current welcome and the calling app.
@@ -143,9 +195,31 @@ async fn authenticate(State(s): State<AppState>, mut req: Request, next: Next) -
     next.run(req).await
 }
 
+/// Read a JSON body: refused when it is not JSON, holds a `null` (03 §9), or does not fit `T`.
+fn parse_value(body: &Bytes) -> ApiResult<Value> {
+    let v: Value = serde_json::from_slice(body)
+        .map_err(|e| ApiError::bad_request(format!("the body is not JSON: {e}")))?;
+    if let Some(at) = first_null(&v) {
+        return Err(ApiError::bad_request(format!("null at {at}"))
+            .with_hint("optional members are omitted when absent, never sent as null"));
+    }
+    Ok(v)
+}
+
 fn parse<T: DeserializeOwned>(body: &Bytes) -> ApiResult<T> {
-    serde_json::from_slice(body)
+    serde_json::from_value(parse_value(body)?)
         .map_err(|e| ApiError::bad_request(format!("the body does not fit: {e}")))
+}
+
+/// The request `id` of the calling app (another app's request is not found).
+fn own_request(s: &AppState, id: &str, app: &str) -> ApiResult<crate::ledger::RequestRow> {
+    match s.ledger.request(id) {
+        Ok(r) if r.app == app => Ok(r),
+        Ok(_) | Err(LedgerError::NotFound(_)) => {
+            Err(ApiError::not_found(format!("no request {id}")))
+        }
+        Err(e) => Err(e.into()),
+    }
 }
 
 fn not_found_or(e: LedgerError, what: impl FnOnce() -> String) -> ApiError {
@@ -158,10 +232,10 @@ fn not_found_or(e: LedgerError, what: impl FnOnce() -> String) -> ApiError {
 async fn hello(
     State(s): State<AppState>,
     Extension(Caller(app)): Extension<Caller>,
-) -> ApiResult<Json<Hello>> {
+) -> ApiResult<Json<Value>> {
     let welcome = s.agent.welcome();
     let (providers, checked) = s.ops.providers().await;
-    Ok(Json(Hello {
+    Ok(out(&Hello {
         service: s.cfg.agent.clone(),
         version: crate::VERSION.to_string(),
         protocol: crate::PROTOCOL,
@@ -195,11 +269,11 @@ async fn submit(
     Extension(Caller(app)): Extension<Caller>,
     body: Bytes,
 ) -> ApiResult<Response> {
-    let raw: Value = parse(&body)?;
+    let raw: Value = parse_value(&body)?;
     let view = s.desk.submit(raw, &app).await?;
     Ok((
         StatusCode::OK,
-        Json(json!({
+        out(&json!({
             "requestId": view.request_id,
             "changeSetId": view.change_set_id,
             "taskId": view.task_id,
@@ -221,31 +295,43 @@ struct ListQuery {
 
 async fn list(
     State(s): State<AppState>,
+    Extension(Caller(app)): Extension<Caller>,
     Query(q): Query<ListQuery>,
-) -> ApiResult<Json<RequestList>> {
+) -> ApiResult<Json<Value>> {
     let limit = q.limit.unwrap_or(200).clamp(1, 1000);
-    let requests = s.ledger.requests_after(q.after, limit)?;
+    let requests = s.ledger.requests_after(&app, q.after, limit)?;
     let next = requests.last().map(|r| r.seq).unwrap_or(q.after);
-    Ok(Json(RequestList { requests, next }))
+    Ok(out(&RequestList { requests, next }))
 }
 
-async fn read_request(State(s): State<AppState>, Path(id): Path<String>) -> ApiResult<Response> {
+async fn read_request(
+    State(s): State<AppState>,
+    Extension(Caller(app)): Extension<Caller>,
+    Path(id): Path<String>,
+) -> ApiResult<Response> {
+    own_request(&s, &id, &app)?;
     let view = s
         .ledger
         .request_view(&id)
         .map_err(|e| not_found_or(e, || format!("no request {id}")))?;
-    Ok(Json(view).into_response())
+    Ok(out(&view).into_response())
 }
 
-async fn cancel(State(s): State<AppState>, Path(id): Path<String>) -> ApiResult<Response> {
-    let view = s.desk.cancel(&id).await?;
-    Ok(Json(view).into_response())
+async fn cancel(
+    State(s): State<AppState>,
+    Extension(Caller(app)): Extension<Caller>,
+    Path(id): Path<String>,
+) -> ApiResult<Response> {
+    let view = s.desk.cancel(&id, &app).await?;
+    Ok(out(&view).into_response())
 }
 
 async fn candidate(
     State(s): State<AppState>,
+    Extension(Caller(app)): Extension<Caller>,
     Path(id): Path<String>,
-) -> ApiResult<Json<CandidateView>> {
+) -> ApiResult<Json<Value>> {
+    let row = own_request(&s, &id, &app)?;
     let c = s.ledger.candidate(&id).map_err(|e| match e {
         LedgerError::NotFound(_) => {
             let state = s
@@ -263,12 +349,19 @@ async fn candidate(
     })?;
     let artifacts: Vec<StoredArtifact> = serde_json::from_value(c.artifacts).unwrap_or_default();
     let diagnostics: Vec<Diagnostic> = serde_json::from_value(c.diagnostics).unwrap_or_default();
-    Ok(Json(CandidateView {
+    let tool_catalog_revision = row
+        .body
+        .get("toolCatalogRevision")
+        .and_then(Value::as_str)
+        .and_then(normalize_sha256)
+        .unwrap_or_default();
+    Ok(out(&CandidateView {
         change_set_id: c.change_set_id,
         task_id: c.task_id,
         attempt: c.attempt,
         change_set: c.change_set,
         artifacts,
+        tool_catalog_revision,
         diagnostics,
         received_at: c.received_at,
     }))
@@ -310,19 +403,19 @@ async fn index_delta(State(s): State<AppState>, body: Bytes) -> ApiResult<Respon
         .with_hint("the node is unreachable or refused the binding; deltas resume when it answers"),
         IndexError::Poisoned => ApiError::internal(e.to_string()),
     })?;
-    Ok(Json(ack).into_response())
+    Ok(out(&ack).into_response())
 }
 
 async fn generate(State(s): State<AppState>, body: Bytes) -> ApiResult<Response> {
     let req: GenerateRequest = parse(&body)?;
-    let out = s.ops.generate(req).await?;
-    Ok(Json(out).into_response())
+    let answer = s.ops.generate(req).await?;
+    Ok(out(&answer).into_response())
 }
 
 async fn stage(State(s): State<AppState>, body: Bytes) -> ApiResult<Response> {
     let req: StageRequest = parse(&body)?;
     let job = s.stage.submit(&req)?;
-    Ok((StatusCode::ACCEPTED, Json(job)).into_response())
+    Ok((StatusCode::ACCEPTED, out(&job)).into_response())
 }
 
 async fn stage_job(State(s): State<AppState>, Path(job): Path<String>) -> ApiResult<Response> {
@@ -330,7 +423,7 @@ async fn stage_job(State(s): State<AppState>, Path(job): Path<String>) -> ApiRes
         .ledger
         .stage(&job)
         .map_err(|e| not_found_or(e, || format!("no stage job {job}")))?;
-    Ok(Json(j).into_response())
+    Ok(out(&j).into_response())
 }
 
 #[derive(Debug, Deserialize)]
@@ -361,7 +454,9 @@ async fn events_loop(s: AppState, socket: WebSocket, mut after: i64) {
         let full = batch.len() == 500;
         for e in batch {
             after = e.cursor;
-            let text = serde_json::to_string(&e).unwrap_or_default();
+            let text =
+                serde_json::to_string(&pruned(serde_json::to_value(&e).unwrap_or(Value::Null)))
+                    .unwrap_or_default();
             if tx.send(Message::Text(text.into())).await.is_err() {
                 return;
             }
@@ -396,4 +491,36 @@ async fn voice(
 ) -> Response {
     let bridge = s.voice.clone();
     ws.on_upgrade(move |socket| bridge.run(socket, app))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[tokio::test]
+    async fn framework_rejections_become_etos_errors() {
+        let plain = Response::builder()
+            .status(StatusCode::PAYLOAD_TOO_LARGE)
+            .header(header::CONTENT_TYPE, "text/plain; charset=utf-8")
+            .body(Body::from("length limit exceeded"))
+            .unwrap_or_default();
+        let res = etos_shaped(plain).await;
+        assert_eq!(res.status(), StatusCode::PAYLOAD_TOO_LARGE);
+        let bytes = axum::body::to_bytes(res.into_body(), 4096)
+            .await
+            .unwrap_or_default();
+        let v: Value = serde_json::from_slice(&bytes).unwrap_or(Value::Null);
+        assert_eq!(v["code"], "too_large", "{v}");
+        assert_eq!(v["message"], "length limit exceeded");
+        assert!(v["hint"].is_string());
+        // JSON answers and successes pass unchanged.
+        let ok = Response::new(Body::from("fine"));
+        assert_eq!(etos_shaped(ok).await.status(), StatusCode::OK);
+        let json = ApiError::stale_context("x").into_response();
+        let bytes = axum::body::to_bytes(etos_shaped(json).await.into_body(), 4096)
+            .await
+            .unwrap_or_default();
+        let v: Value = serde_json::from_slice(&bytes).unwrap_or(Value::Null);
+        assert_eq!(v["code"], "stale_context");
+    }
 }

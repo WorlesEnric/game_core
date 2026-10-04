@@ -1,7 +1,12 @@
 // GameCore.Studio.Model - static validation of a change set against a tool catalog and a semantic index
-// (docs/studio/03-authoring-contracts.md s1, s5, s6, s7, s9). This is the Unity-free part of Precheck: the companion
-// runs it on every agent candidate (CandidateInvalid path, 02 s5) and the edit engine runs it before staging. The
-// Unity-side precheck (live stamps, residency, destroyed objects) stays with the edit engine.
+// (docs/studio/03-authoring-contracts.md s1, s5, s6, s7, s9). This is the Unity-free part of the edit engine's
+// Precheck, run in the Editor before staging (Candidate mode for agent candidates). The companion does not run this
+// class: it validates candidates against the JSON Schemas and re-implements the catalog rules on the JSON (04 s4).
+// The Unity-side precheck (live stamps, residency, destroyed objects) stays with the edit engine.
+//
+// Index completeness: two rules are only sound against the FULL index, not a bounded slice: "target not in the index"
+// (StaleTarget) and Project prerequisites (MissingPrerequisite). Set ChangeSetValidationOptions.IndexIsSlice when the
+// index is a slice; those two rules are then skipped (every other index rule only judges what the slice contains).
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -12,21 +17,49 @@ using Newtonsoft.Json.Linq;
 
 namespace GameCore.Studio.Model
 {
-    /// <summary>Switches for checks whose inputs may legitimately be incomplete.</summary>
+    /// <summary>What kind of change set is being validated.</summary>
+    public enum ValidationMode
+    {
+        /// <summary>Any lifecycle state (journal entries, engine-built change sets).</summary>
+        Journal,
+
+        /// <summary>
+        /// A candidate arriving from a worker (03 s9): <c>state</c> absent or <c>Candidate</c>, no <c>outcomes</c>, no
+        /// <c>timestamps.applied</c>, no <c>links.gameCoreOps</c>; anything else is CandidateInvalid.
+        /// </summary>
+        Candidate,
+    }
+
+    /// <summary>Switches for checks whose inputs may legitimately be incomplete, and the validation mode.</summary>
     public sealed class ChangeSetValidationOptions
     {
+        /// <summary>Default <see cref="ValidationMode.Journal"/>.</summary>
+        public ValidationMode Mode { get; set; } = ValidationMode.Journal;
+
         /// <summary>Compare operation target stamps and base-version stamps with the index (default true).</summary>
         public bool CheckStamps { get; set; } = true;
 
-        /// <summary>Report an operation target missing from the index as <c>StaleTarget</c> (default true).</summary>
+        /// <summary>
+        /// Report an operation target missing from the index as <c>StaleTarget</c> (default true). Sound only against the
+        /// full index; ignored when <see cref="IndexIsSlice"/> is true.
+        /// </summary>
         public bool RequireTargetsInIndex { get; set; } = true;
+
+        /// <summary>
+        /// The index is a bounded slice (03 s3), not the full projection: "target not in the index" and Project
+        /// prerequisites are skipped because absence from a slice proves nothing (default false).
+        /// </summary>
+        public bool IndexIsSlice { get; set; }
     }
 
     /// <summary>
     /// Validates a <see cref="ChangeSet"/> against a <see cref="ToolCatalog"/> and an optional <see cref="SemanticIndex"/>.
     /// Diagnostics are returned in a deterministic order: envelope, operation ids and dependencies, then per operation
     /// (tool, target, scope, prerequisites, arguments, runtime requirement), then artifacts, requirements and base
-    /// versions. Without an index the index-dependent checks are skipped.
+    /// versions. Without an index the index-dependent checks are skipped. Scope rule: when the tool or the target's object
+    /// type restricts scopes, the target must state a <c>scope</c> inside the restriction; an absent scope is
+    /// ScopeNotAllowed. A changed target is Conflict with <c>data {expected, actual}</c>; a target absent from the full
+    /// index is StaleTarget.
     /// </summary>
     public sealed class ChangeSetValidator
     {
@@ -55,7 +88,13 @@ namespace GameCore.Studio.Model
 
             List<Diagnostic> diagnostics = new List<Diagnostic>();
             CheckEnvelope(changeSet, diagnostics);
+            if (_options.Mode == ValidationMode.Candidate)
+            {
+                CheckCandidateMode(changeSet, diagnostics);
+            }
+
             Dictionary<string, Operation> operations = CheckOperationIds(changeSet, diagnostics);
+            CheckOutcomeOperations(changeSet, operations, diagnostics);
             CheckDependencies(changeSet, operations, diagnostics);
 
             List<RuntimeApply> perOperation = new List<RuntimeApply>();
@@ -115,6 +154,51 @@ namespace GameCore.Studio.Model
             }
         }
 
+        private static void CheckCandidateMode(ChangeSet changeSet, List<Diagnostic> diagnostics)
+        {
+            const string Hint = "A worker candidate carries only the plan; the engine fills state, outcomes and applied links.";
+            if (changeSet.State.HasValue && changeSet.State.Value != ChangeSetState.Candidate)
+            {
+                diagnostics.Add(new Diagnostic(
+                    DiagnosticCodes.CandidateInvalid,
+                    "A candidate has state " + changeSet.State.Value.ToString() + "; only Candidate (or no state) is allowed.",
+                    Hint));
+            }
+
+            if (changeSet.Outcomes != null)
+            {
+                diagnostics.Add(new Diagnostic(DiagnosticCodes.CandidateInvalid, "A candidate carries 'outcomes'.", Hint));
+            }
+
+            if (changeSet.Timestamps != null && changeSet.Timestamps.Applied != null)
+            {
+                diagnostics.Add(new Diagnostic(DiagnosticCodes.CandidateInvalid, "A candidate carries 'timestamps.applied'.", Hint));
+            }
+
+            if (changeSet.Links != null && changeSet.Links.GameCoreOps != null)
+            {
+                diagnostics.Add(new Diagnostic(DiagnosticCodes.CandidateInvalid, "A candidate carries 'links.gameCoreOps'.", Hint));
+            }
+        }
+
+        private static void CheckOutcomeOperations(ChangeSet changeSet, Dictionary<string, Operation> operations, List<Diagnostic> diagnostics)
+        {
+            if (changeSet.Outcomes == null)
+            {
+                return;
+            }
+
+            foreach (OperationOutcome outcome in changeSet.Outcomes)
+            {
+                if (!operations.ContainsKey(outcome.OpId))
+                {
+                    diagnostics.Add(new Diagnostic(
+                        DiagnosticCodes.CandidateInvalid,
+                        "Outcome for unknown operation '" + outcome.OpId + "'."));
+                }
+            }
+        }
+
         private static Dictionary<string, Operation> CheckOperationIds(ChangeSet changeSet, List<Diagnostic> diagnostics)
         {
             Dictionary<string, Operation> operations = new Dictionary<string, Operation>(StringComparer.Ordinal);
@@ -156,62 +240,157 @@ namespace GameCore.Studio.Model
                 }
             }
 
-            // Cycle detection over the unique, known operations; each cycle is reported once, at its first member in
-            // document order.
-            Dictionary<string, int> color = new Dictionary<string, int>(StringComparer.Ordinal);
-            HashSet<string> reported = new HashSet<string>(StringComparer.Ordinal);
+            // Kahn's algorithm over the unique, known operations (edges dependency -> dependent), no recursion. The
+            // operations it cannot order lie on a cycle or depend on one.
+            Dictionary<string, int> order = new Dictionary<string, int>(StringComparer.Ordinal);
+            List<string> ids = new List<string>();
             foreach (Operation operation in changeSet.Operations)
             {
-                List<string> path = new List<string>();
-                FindCycle(operation.OpId, operations, color, path, reported, diagnostics);
-            }
-        }
-
-        private static void FindCycle(
-            string opId,
-            Dictionary<string, Operation> operations,
-            Dictionary<string, int> color,
-            List<string> path,
-            HashSet<string> reported,
-            List<Diagnostic> diagnostics)
-        {
-            if (color.TryGetValue(opId, out int state))
-            {
-                if (state == 1)
+                if (!order.ContainsKey(operation.OpId))
                 {
-                    int start = path.IndexOf(opId);
-                    List<string> cycle = path.GetRange(start, path.Count - start);
-                    cycle.Add(opId);
-                    string first = cycle[0];
-                    if (reported.Add(first))
+                    order.Add(operation.OpId, ids.Count);
+                    ids.Add(operation.OpId);
+                }
+            }
+
+            Dictionary<string, int> indegree = new Dictionary<string, int>(StringComparer.Ordinal);
+            Dictionary<string, List<string>> dependents = new Dictionary<string, List<string>>(StringComparer.Ordinal);
+            foreach (string id in ids)
+            {
+                indegree[id] = 0;
+                dependents[id] = new List<string>();
+            }
+
+            foreach (string id in ids)
+            {
+                foreach (string dependency in KnownDependencies(operations[id], operations))
+                {
+                    indegree[id]++;
+                    dependents[dependency].Add(id);
+                }
+            }
+
+            Queue<string> ready = new Queue<string>();
+            foreach (string id in ids)
+            {
+                if (indegree[id] == 0)
+                {
+                    ready.Enqueue(id);
+                }
+            }
+
+            HashSet<string> ordered = new HashSet<string>(StringComparer.Ordinal);
+            while (ready.Count > 0)
+            {
+                string id = ready.Dequeue();
+                ordered.Add(id);
+                foreach (string dependent in dependents[id])
+                {
+                    indegree[dependent]--;
+                    if (indegree[dependent] == 0)
                     {
-                        diagnostics.Add(Diagnostic.AtOperation(
-                            DiagnosticCodes.CandidateInvalid,
-                            first,
-                            "Operations depend on each other in a cycle: " + string.Join(" -> ", cycle) + "."));
+                        ready.Enqueue(dependent);
+                    }
+                }
+            }
+
+            if (ordered.Count == ids.Count)
+            {
+                return;
+            }
+
+            // Every unordered operation has at least one unordered dependency, so following those from any of them
+            // reaches a cycle. Each cycle is reported once, rotated to start at its first member in document order;
+            // operations merely downstream of a cycle are not reported separately.
+            HashSet<string> visited = new HashSet<string>(StringComparer.Ordinal);
+            foreach (string id in ids)
+            {
+                if (ordered.Contains(id) || visited.Contains(id))
+                {
+                    continue;
+                }
+
+                List<string> path = new List<string>();
+                Dictionary<string, int> position = new Dictionary<string, int>(StringComparer.Ordinal);
+                string? current = id;
+                int cycleStart = -1;
+                while (current != null)
+                {
+                    if (position.TryGetValue(current, out int at))
+                    {
+                        cycleStart = at;
+                        break;
+                    }
+
+                    if (visited.Contains(current))
+                    {
+                        // Reached a cycle (or its tail) already reported from an earlier walk.
+                        break;
+                    }
+
+                    visited.Add(current);
+                    position.Add(current, path.Count);
+                    path.Add(current);
+                    string? next = null;
+                    foreach (string dependency in KnownDependencies(operations[current], operations))
+                    {
+                        if (!ordered.Contains(dependency))
+                        {
+                            next = dependency;
+                            break;
+                        }
+                    }
+
+                    current = next;
+                }
+
+                if (cycleStart < 0)
+                {
+                    continue;
+                }
+
+                List<string> cycle = path.GetRange(cycleStart, path.Count - cycleStart);
+                int first = 0;
+                for (int i = 1; i < cycle.Count; i++)
+                {
+                    if (order[cycle[i]] < order[cycle[first]])
+                    {
+                        first = i;
                     }
                 }
 
-                return;
-            }
-
-            if (!operations.TryGetValue(opId, out Operation? operation))
-            {
-                return;
-            }
-
-            color[opId] = 1;
-            path.Add(opId);
-            if (operation.DependsOn != null)
-            {
-                foreach (string dependency in operation.DependsOn)
+                List<string> rotated = new List<string>();
+                for (int i = 0; i < cycle.Count; i++)
                 {
-                    FindCycle(dependency, operations, color, path, reported, diagnostics);
+                    rotated.Add(cycle[(first + i) % cycle.Count]);
+                }
+
+                rotated.Add(rotated[0]);
+                diagnostics.Add(Diagnostic.AtOperation(
+                    DiagnosticCodes.CandidateInvalid,
+                    rotated[0],
+                    "Operations depend on each other in a cycle: " + string.Join(" -> ", rotated) + "."));
+            }
+        }
+
+        /// <summary>The dependencies of <paramref name="operation"/> that name a known operation, without repeats.</summary>
+        private static List<string> KnownDependencies(Operation operation, Dictionary<string, Operation> operations)
+        {
+            List<string> known = new List<string>();
+            if (operation.DependsOn == null)
+            {
+                return known;
+            }
+
+            foreach (string dependency in operation.DependsOn)
+            {
+                if (operations.ContainsKey(dependency) && !known.Contains(dependency))
+                {
+                    known.Add(dependency);
                 }
             }
 
-            path.RemoveAt(path.Count - 1);
-            color[opId] = 2;
+            return known;
         }
 
         private IndexNode? CheckTarget(Operation operation, ToolEntry tool, List<Diagnostic> diagnostics)
@@ -243,7 +422,21 @@ namespace GameCore.Studio.Model
                     "Tool '" + tool.Id + "' does not accept target kind " + target.Kind.ToString() + " (accepts " + JoinKinds(tool.TargetKinds) + ")."));
             }
 
-            if (target.Scope.HasValue)
+            ObjectTypeEntry? targetType = tool.TargetType == null ? null : _catalog.FindObjectType(tool.TargetType);
+            if (!target.Scope.HasValue)
+            {
+                // A restriction cannot be satisfied by an unstated scope: the planner must say what it edits.
+                IReadOnlyList<AuthorScope>? restriction = tool.Scopes ?? (targetType == null ? null : targetType.Scopes);
+                if (restriction != null)
+                {
+                    diagnostics.Add(Diagnostic.AtOperation(
+                        DiagnosticCodes.ScopeNotAllowed,
+                        operation.OpId,
+                        "Target of '" + operation.OpId + "' has no 'scope', but '" + tool.Id + "' only edits at " + JoinScopes(restriction) + ".",
+                        "Set the target ref's scope to one of the allowed scopes."));
+                }
+            }
+            else
             {
                 AuthorScope scope = target.Scope.Value;
                 if (tool.Scopes != null && !Contains(tool.Scopes, scope))
@@ -254,16 +447,12 @@ namespace GameCore.Studio.Model
                         "Tool '" + tool.Id + "' cannot edit at scope " + scope.ToString() + " (allowed: " + JoinScopes(tool.Scopes) + ").",
                         "Choose an allowed scope for the target, or a tool that edits at this scope."));
                 }
-                else
+                else if (targetType != null && targetType.Scopes != null && !Contains(targetType.Scopes, scope))
                 {
-                    ObjectTypeEntry? type = tool.TargetType == null ? null : _catalog.FindObjectType(tool.TargetType);
-                    if (type != null && type.Scopes != null && !Contains(type.Scopes, scope))
-                    {
-                        diagnostics.Add(Diagnostic.AtOperation(
-                            DiagnosticCodes.ScopeNotAllowed,
-                            operation.OpId,
-                            "Object type '" + type.TypeId + "' cannot be edited at scope " + scope.ToString() + " (allowed: " + JoinScopes(type.Scopes) + ")."));
-                    }
+                    diagnostics.Add(Diagnostic.AtOperation(
+                        DiagnosticCodes.ScopeNotAllowed,
+                        operation.OpId,
+                        "Object type '" + targetType.TypeId + "' cannot be edited at scope " + scope.ToString() + " (allowed: " + JoinScopes(targetType.Scopes) + ")."));
                 }
             }
 
@@ -285,14 +474,14 @@ namespace GameCore.Studio.Model
             IndexNode? node = _index.FindNode(target);
             if (node == null)
             {
-                if (_options.RequireTargetsInIndex)
+                if (_options.RequireTargetsInIndex && !_options.IndexIsSlice)
                 {
                     diagnostics.Add(Diagnostic.AtRef(
                         DiagnosticCodes.StaleTarget,
                         target,
                         "Target of '" + operation.OpId + "' is not in the semantic index (revision "
                         + _index.Revision.ToString(CultureInfo.InvariantCulture) + ").",
-                        "The object may have been deleted or is outside the planned slice; re-plan against the current index."));
+                        "The object was deleted or unloaded; re-plan against the current index."));
                 }
 
                 return null;
@@ -309,9 +498,10 @@ namespace GameCore.Studio.Model
             if (_options.CheckStamps && stampChecked && target.Stamp != null && node.Ref.Stamp != null
                 && !string.Equals(target.Stamp, node.Ref.Stamp, StringComparison.Ordinal))
             {
-                diagnostics.Add(Diagnostic.AtRef(
-                    DiagnosticCodes.StaleTarget,
+                diagnostics.Add(Diagnostic.ConflictAt(
                     target,
+                    target.Stamp,
+                    node.Ref.Stamp,
                     "Target of '" + operation.OpId + "' changed since planning (expected " + target.Stamp + ", actual " + node.Ref.Stamp + ").",
                     "Rebase: re-plan the operation against the current stamp, or skip it."));
             }
@@ -339,6 +529,12 @@ namespace GameCore.Studio.Model
                             prerequisite.Doc));
                     }
 
+                    continue;
+                }
+
+                if (_options.IndexIsSlice)
+                {
+                    // Absence from a bounded slice proves nothing about the project.
                     continue;
                 }
 
@@ -672,19 +868,32 @@ namespace GameCore.Studio.Model
             }
         }
 
-        private static void CollectArtifactReferences(JToken token, List<string> into)
+        private static void CollectArtifactReferences(JToken root, List<string> into)
         {
-            string? reference = ArtifactReferenceOf(token);
-            if (reference != null)
+            // Iterative depth-first scan in document order (no recursion on worker-supplied nesting).
+            Stack<JToken> work = new Stack<JToken>();
+            work.Push(root);
+            while (work.Count > 0)
             {
-                into.Add(reference);
-            }
-
-            if (token is JContainer container)
-            {
-                foreach (JToken child in container.Children())
+                JToken token = work.Pop();
+                string? reference = ArtifactReferenceOf(token);
+                if (reference != null)
                 {
-                    CollectArtifactReferences(child is JProperty property ? property.Value : child, into);
+                    into.Add(reference);
+                }
+
+                if (token is JContainer container)
+                {
+                    List<JToken> children = new List<JToken>();
+                    foreach (JToken child in container.Children())
+                    {
+                        children.Add(child is JProperty property ? property.Value : child);
+                    }
+
+                    for (int i = children.Count - 1; i >= 0; i--)
+                    {
+                        work.Push(children[i]);
+                    }
                 }
             }
         }
@@ -765,9 +974,10 @@ namespace GameCore.Studio.Model
                 IndexNode? node = _index.FindNode(version.Ref);
                 if (node != null && node.Ref.Stamp != null && !string.Equals(node.Ref.Stamp, version.Stamp, StringComparison.Ordinal))
                 {
-                    diagnostics.Add(Diagnostic.AtRef(
-                        DiagnosticCodes.Conflict,
+                    diagnostics.Add(Diagnostic.ConflictAt(
                         version.Ref,
+                        version.Stamp,
+                        node.Ref.Stamp,
                         "A read dependency changed since planning (expected " + version.Stamp + ", actual " + node.Ref.Stamp + ").",
                         "Rebase the change set against the current index, or skip the affected operations."));
                 }

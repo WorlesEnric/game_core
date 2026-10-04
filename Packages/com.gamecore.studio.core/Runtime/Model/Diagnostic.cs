@@ -1,6 +1,7 @@
 // GameCore.Studio.Model - diagnostics (docs/studio/03-authoring-contracts.md s9).
-// Every refusal and validation failure is {code, message, hint, where: AuthoringRef|opId}, with the same code
-// whether raised by an inspector, a validator, the kernel bridge or an agent candidate.
+// Every refusal and validation failure is {code, message, hint?, where?: AuthoringRef|opId, data?: object}, with the
+// same code whether raised by an inspector, a validator, the kernel bridge or an agent candidate. `where` is absent
+// for change-set-wide findings; `data` carries a structured witness (Conflict always has {expected, actual}).
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -9,17 +10,18 @@ using Newtonsoft.Json.Linq;
 
 namespace GameCore.Studio.Model
 {
-    /// <summary>One refusal or validation failure (03 s9). Immutable.</summary>
+    /// <summary>One refusal or validation failure (03 s9). Immutable; treat <see cref="Data"/> as read-only.</summary>
     [JsonObject(MemberSerialization.OptIn)]
     public sealed class Diagnostic
     {
         [JsonConstructor]
-        public Diagnostic(string code, string message, string? hint = null, DiagnosticWhere? where = null)
+        public Diagnostic(string code, string message, string? hint = null, DiagnosticWhere? where = null, JObject? data = null)
         {
             Code = ModelLists.NotEmpty(code, nameof(code));
             Message = ModelLists.NotNull(message, nameof(message));
             Hint = hint;
             Where = where;
+            Data = ModelLists.CopyObject(data);
         }
 
         /// <summary>A registered code (<see cref="DiagnosticCodes"/>).</summary>
@@ -30,18 +32,26 @@ namespace GameCore.Studio.Model
         [JsonProperty("message", Required = Required.Always)]
         public string Message { get; }
 
-        [JsonProperty("hint", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("hint", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public string? Hint { get; }
 
         /// <summary>The authored thing or the operation the diagnostic is about; absent for change-set-wide findings.</summary>
-        [JsonProperty("where", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("where", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public DiagnosticWhere? Where { get; }
 
-        public static Diagnostic AtOperation(string code, string opId, string message, string? hint = null) =>
-            new Diagnostic(code, message, hint, DiagnosticWhere.Operation(opId));
+        /// <summary>Structured witness, e.g. <c>{expected, actual}</c> for <see cref="DiagnosticCodes.Conflict"/>.</summary>
+        [JsonProperty("data", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
+        public JObject? Data { get; }
 
-        public static Diagnostic AtRef(string code, AuthoringRef target, string message, string? hint = null) =>
-            new Diagnostic(code, message, hint, DiagnosticWhere.At(target));
+        public static Diagnostic AtOperation(string code, string opId, string message, string? hint = null, JObject? data = null) =>
+            new Diagnostic(code, message, hint, DiagnosticWhere.Operation(opId), data);
+
+        public static Diagnostic AtRef(string code, AuthoringRef target, string message, string? hint = null, JObject? data = null) =>
+            new Diagnostic(code, message, hint, DiagnosticWhere.At(target), data);
+
+        /// <summary>A <see cref="DiagnosticCodes.Conflict"/> at <paramref name="target"/> with <c>data {expected, actual}</c>.</summary>
+        public static Diagnostic ConflictAt(AuthoringRef target, string expected, string actual, string message, string? hint = null) =>
+            AtRef(DiagnosticCodes.Conflict, target, message, hint, new JObject { ["expected"] = expected, ["actual"] = actual });
 
         public override string ToString() =>
             Code + ": " + Message + (Where == null ? string.Empty : " @ " + Where.ToString());
@@ -130,9 +140,9 @@ namespace GameCore.Studio.Model
     /// </summary>
     public static class DiagnosticCodes
     {
-        /// <summary>The target's content stamp changed since planning (or the target no longer exists).</summary>
+        /// <summary>The target no longer exists, is unloaded, or is not in the index (it is gone, not changed).</summary>
         public const string StaleTarget = "StaleTarget";
-        /// <summary>A read dependency or concurrently edited object differs from what the plan expected (03 s7).</summary>
+        /// <summary>The target or a read dependency exists but changed since it was read; <c>data {expected, actual}</c> (03 s7/s9).</summary>
         public const string Conflict = "Conflict";
         /// <summary>The operation names a tool the catalog does not contain.</summary>
         public const string UnknownTool = "UnknownTool";

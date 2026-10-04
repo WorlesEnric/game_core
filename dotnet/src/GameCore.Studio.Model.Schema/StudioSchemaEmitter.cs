@@ -1,6 +1,7 @@
 // GameCore.Studio.Model.Schema - a small reflective JSON Schema (draft 2020-12) emitter for the Studio shapes.
 // It reads exactly what the serializer reads: [JsonObject(OptIn)] types, [JsonProperty] names and Required, enum
-// names or [EnumMember] values, and [SchemaHint] facts. Output is deterministic: keys sorted ordinally at every
+// names or [EnumMember] values, and [SchemaHint] facts. Two model types with the same simple name would share a
+// $defs entry, so that is refused rather than silently merged. Output is deterministic: keys sorted ordinally at every
 // level, two-space indentation, '\n' line endings, one trailing newline.
 #nullable enable
 using System;
@@ -74,16 +75,17 @@ namespace GameCore.Studio.Model.Schema
         /// <summary>The schema tree of one root type (unsorted; <see cref="Write"/> sorts).</summary>
         public static JObject BuildSchema(string stem, Type root)
         {
-            SortedDictionary<string, JObject> definitions = new SortedDictionary<string, JObject>(StringComparer.Ordinal);
+            Definitions definitions = new Definitions();
+            definitions.Owners.Add(root.Name, root);
             JObject schema = ObjectSchema(root, definitions);
             schema["$schema"] = Draft;
             schema["$id"] = "urn:gamecore:studio:schema:" + stem;
             schema["title"] = root.Name;
-            definitions.Remove(root.Name);
-            if (definitions.Count > 0)
+            definitions.Schemas.Remove(root.Name);
+            if (definitions.Schemas.Count > 0)
             {
                 JObject defs = new JObject();
-                foreach (KeyValuePair<string, JObject> definition in definitions)
+                foreach (KeyValuePair<string, JObject> definition in definitions.Schemas)
                 {
                     defs[definition.Key] = definition.Value;
                 }
@@ -94,7 +96,7 @@ namespace GameCore.Studio.Model.Schema
             return schema;
         }
 
-        private static JObject ObjectSchema(Type type, SortedDictionary<string, JObject> definitions)
+        private static JObject ObjectSchema(Type type, Definitions definitions)
         {
             JObject properties = new JObject();
             JArray required = new JArray();
@@ -136,7 +138,7 @@ namespace GameCore.Studio.Model.Schema
             return schema;
         }
 
-        private static JObject ValueSchema(Type type, SchemaHintAttribute? hint, SortedDictionary<string, JObject> definitions)
+        private static JObject ValueSchema(Type type, SchemaHintAttribute? hint, Definitions definitions)
         {
             Type? underlying = Nullable.GetUnderlyingType(type);
             if (underlying != null)
@@ -175,12 +177,12 @@ namespace GameCore.Studio.Model.Schema
 
             if (type == typeof(int) || type == typeof(long))
             {
-                return new JObject { ["type"] = "integer" };
+                return WithMinimum(new JObject { ["type"] = "integer" }, hint);
             }
 
             if (type == typeof(double) || type == typeof(float))
             {
-                return new JObject { ["type"] = "number" };
+                return WithMinimum(new JObject { ["type"] = "number" }, hint);
             }
 
             if (type == typeof(JObject))
@@ -255,12 +257,31 @@ namespace GameCore.Studio.Model.Schema
             throw new InvalidOperationException("No schema mapping for " + type.FullName + ".");
         }
 
-        private static void Define(Type type, SortedDictionary<string, JObject> definitions)
+        private static JObject WithMinimum(JObject schema, SchemaHintAttribute? hint)
         {
-            if (definitions.ContainsKey(type.Name))
+            if (hint != null && !double.IsNaN(hint.Minimum))
             {
+                double minimum = hint.Minimum;
+                schema["minimum"] = Math.Floor(minimum) == minimum ? new JValue((long)minimum) : new JValue(minimum);
+            }
+
+            return schema;
+        }
+
+        private static void Define(Type type, Definitions definitions)
+        {
+            if (definitions.Owners.TryGetValue(type.Name, out Type? owner))
+            {
+                if (owner != type)
+                {
+                    throw new InvalidOperationException(
+                        "$defs name collision: '" + type.Name + "' is both " + owner.FullName + " and " + type.FullName + ".");
+                }
+
                 return;
             }
+
+            definitions.Owners.Add(type.Name, type);
 
             if (type.IsEnum)
             {
@@ -273,13 +294,20 @@ namespace GameCore.Studio.Model.Schema
                     values.Add(member?.Value ?? field.Name);
                 }
 
-                definitions[type.Name] = new JObject { ["type"] = "string", ["enum"] = values };
+                definitions.Schemas[type.Name] = new JObject { ["type"] = "string", ["enum"] = values };
                 return;
             }
 
-            // Reserve the name first so recursive shapes terminate.
-            definitions[type.Name] = new JObject();
-            definitions[type.Name] = ObjectSchema(type, definitions);
+            // The owner entry above already reserves the name, so recursive shapes terminate.
+            definitions.Schemas[type.Name] = ObjectSchema(type, definitions);
+        }
+
+        /// <summary>The $defs of one schema under construction, and which CLR type owns each name.</summary>
+        private sealed class Definitions
+        {
+            public readonly SortedDictionary<string, JObject> Schemas = new SortedDictionary<string, JObject>(StringComparer.Ordinal);
+
+            public readonly Dictionary<string, Type> Owners = new Dictionary<string, Type>(StringComparer.Ordinal);
         }
 
         /// <summary>Serializes with ordinally sorted keys, two-space indentation, '\n' newlines and a trailing newline.</summary>
