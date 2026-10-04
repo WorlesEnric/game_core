@@ -7,7 +7,7 @@ using System.Reflection;
 using GameCore.Contracts;
 using GameCore.Gameplay.Contracts;
 using NUnit.Framework;
-using Studio = GameCore.Studio.Model;
+using StudioModel = GameCore.Studio.Model;
 
 namespace GameCore.Rules.Gameplay.Tests.Local
 {
@@ -28,7 +28,7 @@ namespace GameCore.Rules.Gameplay.Tests.Local
             foreach (string id in SampleIds)
             {
                 Assert.That(AuthoringIds.IsValid(id), Is.True, id);
-                Assert.That(AuthoringIds.TargetIdFor(id), Is.EqualTo(Studio.IdDerivation.TargetIdFor(id)), id);
+                Assert.That(AuthoringIds.TargetIdFor(id), Is.EqualTo(StudioModel.IdDerivation.TargetIdFor(id)), id);
                 Assert.That(AuthoringIds.TargetIdFor(id), Is.EqualTo(new TargetId(StableNameKeyDerivation.Derive("auth." + id))));
             }
 
@@ -36,7 +36,7 @@ namespace GameCore.Rules.Gameplay.Tests.Local
             {
                 string minted = AuthoringIds.Mint();
                 Assert.That(AuthoringIds.IsValid(minted), Is.True, minted);
-                Assert.That(AuthoringIds.TargetIdFor(minted), Is.EqualTo(Studio.IdDerivation.TargetIdFor(minted)));
+                Assert.That(AuthoringIds.TargetIdFor(minted), Is.EqualTo(StudioModel.IdDerivation.TargetIdFor(minted)));
             }
         }
 
@@ -129,12 +129,12 @@ namespace GameCore.Rules.Gameplay.Tests.Local
 
         // ------------------------------------------------------------------ mirror attributes (no studio dependency)
 
-        [TestCase(typeof(AuthorableAttribute), typeof(Studio.AuthorableAttribute))]
-        [TestCase(typeof(AuthorFieldAttribute), typeof(Studio.AuthorFieldAttribute))]
-        [TestCase(typeof(AuthorRefAttribute), typeof(Studio.AuthorRefAttribute))]
-        [TestCase(typeof(AuthorOperationAttribute), typeof(Studio.AuthorOperationAttribute))]
-        [TestCase(typeof(AuthorArgAttribute), typeof(Studio.AuthorArgAttribute))]
-        [TestCase(typeof(AuthorValidatorAttribute), typeof(Studio.AuthorValidatorAttribute))]
+        [TestCase(typeof(AuthorableAttribute), typeof(StudioModel.AuthorableAttribute))]
+        [TestCase(typeof(AuthorFieldAttribute), typeof(StudioModel.AuthorFieldAttribute))]
+        [TestCase(typeof(AuthorRefAttribute), typeof(StudioModel.AuthorRefAttribute))]
+        [TestCase(typeof(AuthorOperationAttribute), typeof(StudioModel.AuthorOperationAttribute))]
+        [TestCase(typeof(AuthorArgAttribute), typeof(StudioModel.AuthorArgAttribute))]
+        [TestCase(typeof(AuthorValidatorAttribute), typeof(StudioModel.AuthorValidatorAttribute))]
         public void MirrorAttribute_HasTheStudioShape(Type mirror, Type studio)
         {
             Assert.That(mirror.Name, Is.EqualTo(studio.Name));
@@ -155,10 +155,10 @@ namespace GameCore.Rules.Gameplay.Tests.Local
             }
         }
 
-        [TestCase(typeof(AuthoringKind), typeof(Studio.AuthoringKind))]
-        [TestCase(typeof(AuthorScope), typeof(Studio.AuthorScope))]
-        [TestCase(typeof(ToolTier), typeof(Studio.ToolTier))]
-        [TestCase(typeof(RuntimeApply), typeof(Studio.RuntimeApply))]
+        [TestCase(typeof(AuthoringKind), typeof(StudioModel.AuthoringKind))]
+        [TestCase(typeof(AuthorScope), typeof(StudioModel.AuthorScope))]
+        [TestCase(typeof(ToolTier), typeof(StudioModel.ToolTier))]
+        [TestCase(typeof(RuntimeApply), typeof(StudioModel.RuntimeApply))]
         public void MirrorEnum_HasTheStudioMembers(Type mirror, Type studio)
         {
             Assert.That(mirror.Name, Is.EqualTo(studio.Name));
