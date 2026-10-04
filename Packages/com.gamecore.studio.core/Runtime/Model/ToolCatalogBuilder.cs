@@ -34,7 +34,7 @@ namespace GameCore.Studio.Model
                 throw new ArgumentNullException(nameof(assembly));
             }
 
-            Type[] types = assembly.GetTypes();
+            Type[] types = LoadableTypes(assembly);
             Array.Sort(types, (left, right) => string.CompareOrdinal(left.FullName, right.FullName));
             foreach (Type type in types)
             {
@@ -42,6 +42,37 @@ namespace GameCore.Studio.Model
             }
 
             return this;
+        }
+
+        /// <summary>
+        /// The types of <paramref name="assembly"/> that could be loaded. A plugin assembly whose optional dependencies
+        /// are missing throws <see cref="ReflectionTypeLoadException"/> from <c>GetTypes</c>; its loadable types are
+        /// still scanned, and the ones that failed are skipped.
+        /// </summary>
+        public static Type[] LoadableTypes(Assembly assembly)
+        {
+            if (assembly == null)
+            {
+                throw new ArgumentNullException(nameof(assembly));
+            }
+
+            try
+            {
+                return assembly.GetTypes();
+            }
+            catch (ReflectionTypeLoadException partial)
+            {
+                List<Type> loaded = new List<Type>();
+                foreach (Type? type in partial.Types)
+                {
+                    if (type != null)
+                    {
+                        loaded.Add(type);
+                    }
+                }
+
+                return loaded.ToArray();
+            }
         }
 
         /// <summary>
@@ -104,10 +135,10 @@ namespace GameCore.Studio.Model
             return this;
         }
 
-        /// <summary>The catalog of everything added so far, sorted by type id and tool id.</summary>
+        /// <summary>The catalog of everything added so far, sorted by type id and tool id, with its revision minted.</summary>
         public ToolCatalog Build(string? plugin = null)
         {
-            return new ToolCatalog(new List<ObjectTypeEntry>(_types.Values), new List<ToolEntry>(_tools.Values), plugin);
+            return new ToolCatalog(new List<ObjectTypeEntry>(_types.Values), new List<ToolEntry>(_tools.Values), plugin).WithRevision();
         }
 
         private void AddObjectType(Type type, AuthorableAttribute authorable)

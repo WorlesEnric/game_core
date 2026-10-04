@@ -42,18 +42,18 @@ namespace GameCore.Studio.Model
         [JsonProperty("targets", Required = Required.Always)]
         public IReadOnlyList<AuthoringRef> Targets { get; }
 
-        [JsonProperty("parts", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("parts", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public IReadOnlyList<PartRef>? Parts { get; }
 
         /// <summary>Box-selection rectangle.</summary>
-        [JsonProperty("regionRect", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("regionRect", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public RegionRect? RegionRect { get; }
 
-        [JsonProperty("frame", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("frame", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public FrameContext? Frame { get; }
 
         /// <summary>WorldId text of the live session; Play only, omitted in Edit.</summary>
-        [JsonProperty("worldSession", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("worldSession", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         [SchemaHint(MinLength = 1)]
         public string? WorldSession { get; }
 
@@ -117,7 +117,7 @@ namespace GameCore.Studio.Model
         public IReadOnlyList<int> Viewport { get; }
 
         /// <summary>Content stamp of the captured frame image (stored in Studio/Artifacts).</summary>
-        [JsonProperty("image", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("image", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         [SchemaHint(Pattern = StudioPatterns.Stamp)]
         public string? Image { get; }
     }

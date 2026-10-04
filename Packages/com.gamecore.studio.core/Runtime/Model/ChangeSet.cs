@@ -61,41 +61,41 @@ namespace GameCore.Studio.Model
         [JsonProperty("intent", Required = Required.Always)]
         public Intent Intent { get; }
 
-        [JsonProperty("selection", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("selection", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public SelectionSnapshot? Selection { get; }
 
         /// <summary>Read dependencies: the stamps the plan was made against.</summary>
-        [JsonProperty("baseVersions", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("baseVersions", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public IReadOnlyList<BaseVersion>? BaseVersions { get; }
 
         [JsonProperty("operations", Required = Required.Always)]
         public IReadOnlyList<Operation> Operations { get; }
 
-        [JsonProperty("artifacts", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("artifacts", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public IReadOnlyList<ArtifactRef>? Artifacts { get; }
 
-        [JsonProperty("validation", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("validation", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public IReadOnlyList<ValidationScenario>? Validation { get; }
 
-        [JsonProperty("requirements", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("requirements", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public Requirements? Requirements { get; }
 
         /// <summary>Filled as they happen.</summary>
-        [JsonProperty("links", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("links", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public Links? Links { get; }
 
         /// <summary>Lifecycle state; absent means <see cref="ChangeSetState.Requested"/>.</summary>
-        [JsonProperty("state", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("state", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public ChangeSetState? State { get; }
 
-        [JsonProperty("outcomes", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("outcomes", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public IReadOnlyList<OperationOutcome>? Outcomes { get; }
 
         /// <summary>Partial-failure policy; absent means <see cref="ApplyPolicy.AllOrNothing"/>.</summary>
-        [JsonProperty("policy", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("policy", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public ApplyPolicy? Policy { get; }
 
-        [JsonProperty("timestamps", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("timestamps", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public Timestamps? Timestamps { get; }
 
         public ChangeSetState EffectiveState => State ?? ChangeSetState.Requested;
@@ -150,7 +150,7 @@ namespace GameCore.Studio.Model
         [JsonProperty("text", Required = Required.Always)]
         public string Text { get; }
 
-        [JsonProperty("voiceTranscriptId", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("voiceTranscriptId", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public string? VoiceTranscriptId { get; }
 
         [JsonProperty("origin", Required = Required.Always)]
@@ -207,21 +207,21 @@ namespace GameCore.Studio.Model
         [SchemaHint(MinLength = 1)]
         public string Tool { get; }
 
-        [JsonProperty("target", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("target", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public AuthoringRef? Target { get; }
 
-        [JsonProperty("args", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("args", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public JObject? Args { get; }
 
-        [JsonProperty("dependsOn", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("dependsOn", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public IReadOnlyList<string>? DependsOn { get; }
 
         /// <summary>Absent means <see cref="Model.Preconditions.Stamp"/>.</summary>
-        [JsonProperty("preconditions", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("preconditions", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public Preconditions? Preconditions { get; }
 
         /// <summary>Planner's declared runtime requirement; absent means the tool's own.</summary>
-        [JsonProperty("applyRequirement", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("applyRequirement", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public RuntimeApply? ApplyRequirement { get; }
 
         public Preconditions EffectivePreconditions => Preconditions ?? Model.Preconditions.Stamp;
@@ -255,7 +255,7 @@ namespace GameCore.Studio.Model
         [SchemaHint(Pattern = StudioPatterns.Sha256Hex)]
         public string Sha256 { get; }
 
-        [JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("name", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public string? Name { get; }
 
         [JsonProperty("mediaType", Required = Required.Always)]
@@ -263,16 +263,17 @@ namespace GameCore.Studio.Model
         public string MediaType { get; }
 
         [JsonProperty("bytes", Required = Required.Always)]
+        [SchemaHint(Minimum = 0)]
         public long Bytes { get; }
 
-        [JsonProperty("producer", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("producer", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public ArtifactProducer? Producer { get; }
 
         /// <summary>Role in the change (e.g. <c>voiceLine</c>).</summary>
-        [JsonProperty("role", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("role", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public string? Role { get; }
 
-        [JsonProperty("import", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("import", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public ArtifactImport? Import { get; }
 
         /// <summary>The form operations use to point at this artifact: <c>sha256:</c> + digest.</summary>
@@ -292,16 +293,16 @@ namespace GameCore.Studio.Model
             Model = model;
         }
 
-        [JsonProperty("etosTask", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("etosTask", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public string? EtosTask { get; }
 
-        [JsonProperty("op", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("op", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public string? Op { get; }
 
-        [JsonProperty("provider", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("provider", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public string? Provider { get; }
 
-        [JsonProperty("model", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("model", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public string? Model { get; }
     }
 
@@ -320,7 +321,7 @@ namespace GameCore.Studio.Model
         [SchemaHint(MinLength = 1)]
         public string Type { get; }
 
-        [JsonProperty("settings", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("settings", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public JObject? Settings { get; }
     }
 
@@ -343,7 +344,7 @@ namespace GameCore.Studio.Model
         [JsonProperty("status", Required = Required.Always)]
         public ScenarioStatus Status { get; }
 
-        [JsonProperty("detail", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("detail", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public string? Detail { get; }
     }
 
@@ -412,15 +413,15 @@ namespace GameCore.Studio.Model
             GameCoreOps = ModelLists.Optional(gameCoreOps, nameof(gameCoreOps));
         }
 
-        [JsonProperty("etosTasks", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("etosTasks", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public IReadOnlyList<string>? EtosTasks { get; }
 
         /// <summary>Parent change-set id (a retry or follow-up), or null.</summary>
-        [JsonProperty("parent", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("parent", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         [SchemaHint(Pattern = StudioPatterns.ChangeSetId)]
         public string? Parent { get; }
 
-        [JsonProperty("gameCoreOps", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("gameCoreOps", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public IReadOnlyList<string>? GameCoreOps { get; }
     }
 
@@ -453,16 +454,16 @@ namespace GameCore.Studio.Model
         public OutcomeStatus Status { get; }
 
         /// <summary>Diagnostic code for Refused/Failed (a <see cref="DiagnosticCodes"/> value); empty or absent otherwise.</summary>
-        [JsonProperty("code", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("code", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public string? Code { get; }
 
-        [JsonProperty("detail", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("detail", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public string? Detail { get; }
 
-        [JsonProperty("gameCoreOps", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("gameCoreOps", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public IReadOnlyList<string>? GameCoreOps { get; }
 
-        [JsonProperty("undo", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("undo", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public OperationUndo? Undo { get; }
     }
 
@@ -476,7 +477,7 @@ namespace GameCore.Studio.Model
             Inverse = ModelLists.CopyObject(inverse);
         }
 
-        [JsonProperty("inverse", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("inverse", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public JObject? Inverse { get; }
     }
 
@@ -492,13 +493,13 @@ namespace GameCore.Studio.Model
             Applied = applied;
         }
 
-        [JsonProperty("requested", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("requested", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public string? Requested { get; }
 
-        [JsonProperty("candidate", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("candidate", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public string? Candidate { get; }
 
-        [JsonProperty("applied", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("applied", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public string? Applied { get; }
     }
 }

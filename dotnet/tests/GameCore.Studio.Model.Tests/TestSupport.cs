@@ -268,6 +268,12 @@ namespace GameCore.Studio.Model.Tests
                 }
             }
 
+            if (schema["minimum"] != null && (value.Type == JTokenType.Integer || value.Type == JTokenType.Float)
+                && value.Value<double>() < (double)schema["minimum"]!)
+            {
+                errors.Add(path + ": " + value + " is below the minimum " + schema["minimum"]);
+            }
+
             if (value is JObject instance)
             {
                 JObject properties = schema["properties"] as JObject ?? new JObject();

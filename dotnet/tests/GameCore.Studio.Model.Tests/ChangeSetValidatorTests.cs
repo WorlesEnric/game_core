@@ -167,7 +167,8 @@ namespace GameCore.Studio.Model.Tests
         {
             IReadOnlyList<Diagnostic> diagnostics = Validate(cs => Op(cs, "op1")["target"] = JObject.Parse(
                 "{\"kind\":\"Location\",\"authoringId\":\"x\",\"location\":{\"region\":\"marsh\",\"position\":[1,2,3]}}"));
-            Assert.That(diagnostics.Select(d => d.Code), Is.EquivalentTo(new[] { DiagnosticCodes.CandidateInvalid, DiagnosticCodes.InvalidArgs }));
+            Assert.That(diagnostics.Select(d => d.Code),
+                Is.EquivalentTo(new[] { DiagnosticCodes.CandidateInvalid, DiagnosticCodes.InvalidArgs, DiagnosticCodes.ScopeNotAllowed }));
             Assert.That(diagnostics.First(d => d.Code == DiagnosticCodes.CandidateInvalid).Where!.Ref, Is.Not.Null);
         }
 
@@ -235,7 +236,13 @@ namespace GameCore.Studio.Model.Tests
         [Test]
         public void DuplicateOperationIds()
         {
-            Diagnostic diagnostic = Single(Validate(cs => Op(cs, "op2")["opId"] = "op1"), DiagnosticCodes.CandidateInvalid);
+            Diagnostic diagnostic = Single(
+                Validate(cs =>
+                {
+                    Op(cs, "op2")["opId"] = "op1";
+                    cs.Remove("outcomes");
+                }),
+                DiagnosticCodes.CandidateInvalid);
             Assert.That(diagnostic.Message, Does.Contain("used more than once"));
         }
 
@@ -307,14 +314,18 @@ namespace GameCore.Studio.Model.Tests
         }
 
         [Test]
-        public void StaleTargetStamp()
+        public void ChangedTargetIsAConflictWithWitness()
         {
             string edited = ContentStamp.OfUtf8("ferryman-edited");
             IReadOnlyList<Diagnostic> diagnostics = Validate(index: i => i["nodes"]![0]!["ref"]!["stamp"] = edited);
-            Assert.That(diagnostics.Select(d => d.Code), Is.EqualTo(new[] { DiagnosticCodes.StaleTarget, DiagnosticCodes.Conflict }));
-            Diagnostic stale = diagnostics[0];
-            Assert.That(stale.Message, Does.Contain("expected " + FerrymanStamp + ", actual " + edited));
-            Assert.That(stale.Where!.Ref!.AuthoringId, Is.EqualTo("7f1c2a9e-4b3d-4e8f-9a1b-2c3d4e5f6a7b"));
+            Assert.That(diagnostics.Select(d => d.Code), Is.EqualTo(new[] { DiagnosticCodes.Conflict, DiagnosticCodes.Conflict }),
+                "the op target and the base version both changed");
+            Diagnostic changed = diagnostics[0];
+            Assert.That(changed.Message, Does.Contain("expected " + FerrymanStamp + ", actual " + edited));
+            Assert.That(changed.Where!.Ref!.AuthoringId, Is.EqualTo("7f1c2a9e-4b3d-4e8f-9a1b-2c3d4e5f6a7b"));
+            Assert.That((string?)changed.Data!["expected"], Is.EqualTo(FerrymanStamp));
+            Assert.That((string?)changed.Data!["actual"], Is.EqualTo(edited));
+            Assert.That((string?)diagnostics[1].Data!["actual"], Is.EqualTo(edited));
 
             Assert.That(
                 Validate(index: i => i["nodes"]![0]!["ref"]!["stamp"] = edited, options: new ChangeSetValidationOptions { CheckStamps = false })
@@ -337,6 +348,131 @@ namespace GameCore.Studio.Model.Tests
         }
 
         [Test]
+        public void TargetWithoutScopeUnderARestriction()
+        {
+            Diagnostic diagnostic = Single(Validate(cs => ((JObject)Op(cs, "op2")["target"]!).Remove("scope")), DiagnosticCodes.ScopeNotAllowed);
+            Assert.That(diagnostic.Message, Does.Contain("has no 'scope'"));
+            Assert.That(diagnostic.Where!.OpId, Is.EqualTo("op2"));
+
+            Diagnostic fromType = Single(
+                Validate(
+                    cs => ((JObject)Op(cs, "op1")["target"]!).Remove("scope"),
+                    catalog: c => Samples.Tool(c, "inventory.grantStarting").Remove("scopes")),
+                DiagnosticCodes.ScopeNotAllowed);
+            Assert.That(fromType.Message, Does.Contain("only edits at Instance, Definition"), "the object type's restriction applies");
+
+            Assert.That(
+                Validate(
+                    cs => ((JObject)Op(cs, "op1")["target"]!).Remove("scope"),
+                    catalog: c =>
+                    {
+                        Samples.Tool(c, "inventory.grantStarting").Remove("scopes");
+                        ((JObject)c["objectTypes"]![2]!).Remove("scopes");
+                    }).Select(d => d.ToString()),
+                Is.Empty,
+                "no restriction, no scope needed");
+        }
+
+        [Test]
+        public void CandidateModeRefusesLifecycleFields()
+        {
+            ChangeSetValidationOptions candidate = new ChangeSetValidationOptions { Mode = ValidationMode.Candidate };
+            Action<JObject> asCandidate = cs =>
+            {
+                cs["state"] = "Candidate";
+                cs.Remove("outcomes");
+                ((JObject)cs["timestamps"]!).Remove("applied");
+                ((JObject)cs["links"]!).Remove("gameCoreOps");
+            };
+            Assert.That(Validate(asCandidate, options: candidate).Select(d => d.ToString()), Is.Empty);
+            Assert.That(Validate(cs => { asCandidate(cs); cs.Remove("state"); }, options: candidate).Select(d => d.ToString()), Is.Empty,
+                "no state is allowed");
+
+            Assert.That(Single(Validate(cs => { asCandidate(cs); cs["state"] = "Applied"; }, options: candidate), DiagnosticCodes.CandidateInvalid).Message,
+                Does.Contain("state Applied"));
+            Assert.That(Single(Validate(cs => { asCandidate(cs); cs["outcomes"] = new JArray(); }, options: candidate), DiagnosticCodes.CandidateInvalid).Message,
+                Does.Contain("'outcomes'"));
+            Assert.That(Single(Validate(cs => { asCandidate(cs); cs["timestamps"]!["applied"] = "2026-10-04T08:21:03.004Z"; }, options: candidate),
+                DiagnosticCodes.CandidateInvalid).Message, Does.Contain("'timestamps.applied'"));
+            Assert.That(Single(Validate(cs => { asCandidate(cs); cs["links"]!["gameCoreOps"] = new JArray(); }, options: candidate),
+                DiagnosticCodes.CandidateInvalid).Message, Does.Contain("'links.gameCoreOps'"));
+
+            IReadOnlyList<Diagnostic> journal = Validate(options: candidate);
+            Assert.That(journal.Select(d => d.Code), Is.All.EqualTo(DiagnosticCodes.CandidateInvalid));
+            Assert.That(journal, Has.Count.EqualTo(4), "the applied journal sample violates all four candidate rules");
+            Assert.That(Validate().Select(d => d.ToString()), Is.Empty, "the same document is a valid journal entry");
+        }
+
+        [Test]
+        public void OutcomeForAnUnknownOperation()
+        {
+            Diagnostic diagnostic = Single(Validate(cs => cs["outcomes"]![1]!["opId"] = "op7"), DiagnosticCodes.CandidateInvalid);
+            Assert.That(diagnostic.Message, Does.Contain("unknown operation 'op7'"));
+            Assert.That(diagnostic.Where, Is.Null);
+        }
+
+        [Test]
+        public void IndexSliceSkipsAbsenceRules()
+        {
+            ChangeSetValidationOptions slice = new ChangeSetValidationOptions { IndexIsSlice = true };
+            Assert.That(
+                Validate(cs => Op(cs, "op1")["target"]!["authoringId"] = "00000000-0000-4000-8000-000000000000", options: slice)
+                    .Select(d => d.ToString()),
+                Is.Empty,
+                "absence from a slice is not StaleTarget");
+
+            Action<JObject> place = cs => AddOperation(cs,
+                "{\"opId\":\"op3\",\"tool\":\"npc.place\",\"target\":" + FerrymanRef(cs) + ",\"args\":{\"position\":[1,0,2]}}");
+            Assert.That(Validate(place, index: i => ((JArray)i["nodes"]!).RemoveAt(3), options: slice).Select(d => d.ToString()), Is.Empty,
+                "absence from a slice is not MissingPrerequisite");
+            Single(Validate(place, index: i => ((JArray)i["nodes"]!).RemoveAt(3)), DiagnosticCodes.MissingPrerequisite);
+
+            Single(Validate(cs => Op(cs, "op1")["args"]!["count"] = 120, options: slice), DiagnosticCodes.InvalidArgs);
+        }
+
+        [Test]
+        public void LongDependencyChainsDoNotRecurse()
+        {
+            const int Count = 20000;
+            IReadOnlyList<Diagnostic> diagnostics = Validate(cs =>
+            {
+                JArray operations = (JArray)cs["operations"]!;
+                operations.Clear();
+                for (int i = 0; i < Count; i++)
+                {
+                    JObject operation = new JObject { ["opId"] = "c" + i, ["tool"] = "project.noop" };
+                    if (i > 0)
+                    {
+                        operation["dependsOn"] = new JArray("c" + (i - 1));
+                    }
+
+                    operations.Add(operation);
+                }
+
+                operations[0]!["dependsOn"] = new JArray("c" + (Count - 1));
+                cs.Remove("artifacts");
+                cs.Remove("outcomes");
+            });
+            List<Diagnostic> cycles = diagnostics.Where(d => d.Code == DiagnosticCodes.CandidateInvalid).ToList();
+            Assert.That(cycles, Has.Count.EqualTo(1), "one cycle through all operations, reported once");
+            Assert.That(cycles[0].Where!.OpId, Is.EqualTo("c0"));
+            Assert.That(cycles[0].Message, Does.StartWith("Operations depend on each other in a cycle: c0 -> c" + (Count - 1) + " -> "));
+            Assert.That(diagnostics.Count(d => d.Code == DiagnosticCodes.UnknownTool), Is.EqualTo(Count));
+        }
+
+        [Test]
+        public void CycleWithADownstreamTailIsReportedOnce()
+        {
+            Diagnostic cycle = Single(Validate(cs =>
+            {
+                Op(cs, "op1")["dependsOn"] = new JArray("op2");
+                AddOperation(cs, "{\"opId\":\"op3\",\"tool\":\"npc.setPatrol\",\"target\":" + FerrymanRef(cs)
+                    + ",\"args\":{\"points\":[[1,2,3]]},\"dependsOn\":[\"op2\"]}");
+            }), DiagnosticCodes.CandidateInvalid);
+            Assert.That(cycle.Message, Does.Contain("op1 -> op2 -> op1"));
+        }
+
+        [Test]
         public void TargetMissingFromTheIndex()
         {
             Diagnostic diagnostic = Single(
@@ -356,6 +492,8 @@ namespace GameCore.Studio.Model.Tests
                 Validate(cs => cs["baseVersions"]![0]!["stamp"] = ContentStamp.OfUtf8("ferryman-older")),
                 DiagnosticCodes.Conflict);
             Assert.That(diagnostic.Where!.Ref, Is.Not.Null);
+            Assert.That((string?)diagnostic.Data!["expected"], Is.EqualTo(ContentStamp.OfUtf8("ferryman-older")));
+            Assert.That((string?)diagnostic.Data!["actual"], Is.EqualTo(FerrymanStamp));
             Single(Validate(cs => cs["baseVersions"]![0]!["stamp"] = "sha256:short"), DiagnosticCodes.CandidateInvalid);
         }
 

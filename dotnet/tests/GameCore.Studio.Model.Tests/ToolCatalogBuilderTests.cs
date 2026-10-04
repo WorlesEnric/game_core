@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using GameCore.Studio.Model;
 using GameCore.Studio.Model.Tests.Plugin;
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
 namespace GameCore.Studio.Model.Tests
@@ -30,6 +31,54 @@ namespace GameCore.Studio.Model.Tests
                 JsonEquivalence.Difference(Samples.Token("tool-catalog.json"), StudioJson.ToToken(catalog)),
                 Is.Null);
             Assert.That(MiniSchemaValidator.For(typeof(ToolCatalog)).Validate(StudioJson.ToToken(catalog)), Is.Empty);
+        }
+
+        [Test]
+        public void RevisionIsTheSha256OfTheCanonicalJsonWithoutRevision()
+        {
+            ToolCatalog sample = Samples.Catalog();
+            // The sample's revision was computed by an independent Python canonicalizer (sorted keys, no whitespace).
+            Assert.That(sample.Revision, Is.EqualTo("5030be2d4ce49fc84062ac6982fd0b4c93429d7d710278b5c9bc01b577859266"));
+            Assert.That(sample.ComputeRevision(), Is.EqualTo(sample.Revision));
+            Assert.That(sample.HasValidRevision(), Is.True);
+            Assert.That(BuildSample().Revision, Is.EqualTo(sample.Revision), "the builder mints the same revision");
+
+            ToolCatalog reordered = Samples.Catalog(c =>
+            {
+                JToken tools = c["tools"]!;
+                c.Remove("tools");
+                c.AddFirst(new JProperty("tools", tools));
+                c["revision"] = new string('0', 64);
+            });
+            Assert.That(reordered.ComputeRevision(), Is.EqualTo(sample.Revision), "key order and the revision member do not matter");
+            Assert.That(reordered.HasValidRevision(), Is.False);
+
+            ToolCatalog changed = Samples.Catalog(c => Samples.Tool(c, "npc.place")["doc"] = "Place an NPC");
+            Assert.That(changed.ComputeRevision(), Is.Not.EqualTo(sample.Revision));
+        }
+
+        [Test]
+        public void CanonicalTextOfASmallCatalog()
+        {
+            ToolCatalog tiny = new ToolCatalog(
+                new ObjectTypeEntry[0],
+                new[] { new ToolEntry("a.b", ToolTier.Configure, RuntimeApply.Live, false, new[] { new ArgSpec("n", "int", true, max: 6) }) },
+                "p");
+            const string canonical =
+                "{\"objectTypes\":[],\"plugin\":\"p\",\"schema\":\"gamecore.studio.toolcatalog/1\",\"tools\":[{\"args\":[{\"max\":6.0,\"name\":\"n\","
+                + "\"required\":true,\"type\":\"int\"}],\"id\":\"a.b\",\"runtimeApply\":\"Live\",\"targetRequired\":false,\"tier\":\"Configure\"}]}";
+            Assert.That(StudioJson.Canonical(StudioJson.ToToken(tiny)), Is.EqualTo(canonical));
+            Assert.That(tiny.ComputeRevision(), Is.EqualTo(ContentStamp.Sha256Hex(System.Text.Encoding.UTF8.GetBytes(canonical))));
+            Assert.That(tiny.Revision, Is.Null, "the plain constructor does not mint");
+            Assert.That(tiny.WithRevision().Revision, Is.EqualTo(tiny.ComputeRevision()));
+        }
+
+        [Test]
+        public void LoadableTypesOfAnAssembly()
+        {
+            Type[] types = ToolCatalogBuilder.LoadableTypes(typeof(NpcDefinition).Assembly);
+            Assert.That(types, Does.Contain(typeof(NpcDefinition)));
+            Assert.That(types, Does.Contain(typeof(DuplicateTools)));
         }
 
         [Test]
@@ -133,6 +182,7 @@ namespace GameCore.Studio.Model.Tests
             ToolCatalog dialogue = new ToolCatalogBuilder().AddType(typeof(DialogueGraph)).AddType(typeof(DialogueTools)).Build("dialogue");
             ToolCatalog merged = ToolCatalog.Merge(new[] { dialogue, npc });
             Assert.That(merged.Plugin, Is.Null);
+            Assert.That(merged.HasValidRevision(), Is.True, "Merge mints the revision");
             Assert.That(merged.Tools, Has.Count.EqualTo(3));
             Assert.That(merged.Tools[0].Id, Is.EqualTo("dialogue.addNode"));
             Assert.That(merged.ObjectTypes, Has.Count.EqualTo(2));
