@@ -201,13 +201,13 @@ namespace GameCore.Studio.UI
                 painter.Stroke();
                 painter.fillColor = painter.strokeColor;
                 painter.BeginPath();
-                painter.Arc(_ends[axis], 5f, 0f, 360f);
+                painter.Arc(_ends[axis], 5f, Angle.Degrees(0f), Angle.Degrees(360f));
                 painter.Fill();
             }
 
             painter.fillColor = new Color(1f, 1f, 1f, 0.8f);
             painter.BeginPath();
-            painter.Arc(_origin, 3.5f, 0f, 360f);
+            painter.Arc(_origin, 3.5f, Angle.Degrees(0f), Angle.Degrees(360f));
             painter.Fill();
         }
 
