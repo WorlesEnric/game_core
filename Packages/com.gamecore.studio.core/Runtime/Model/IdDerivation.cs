@@ -1,19 +1,13 @@
 // GameCore.Studio.Model - identity derivation (docs/studio/02-architecture.md s6, 03 s1/s6).
 //
-// TargetId: 02 s6 / 03 s1 write the rule as StableNameKeyDerivation("auth:" + authoringId). The contracts'
-// StableNameKeyDerivation.Derive refuses ':' (its admissible alphabet is a-z 0-9 . _ -), so calling it with that
-// name always throws. This file applies the identical derivation (StableNameKeyDerivation.Scope: SHA-256 over the
-// UTF-8 name, first 16 digest bytes read as two big-endian 64-bit words) to the exact documented name
-// "auth:" + authoringId, after checking that the authoring id itself is canonical stable-name text. The derived
-// key is therefore bit-identical to what the documented formula means; only the alphabet check of the colon
-// separator is bypassed. Recorded in PACKET.md for the contract owner.
+// TargetId: TargetId = StableNameKeyDerivation.Derive("auth." + authoringId) (02 s6, 03 s1), using the kernel
+// helper itself so the key is the contracts' registration-key rule and nothing else.
 //
 // Change-set and selection ids: prefix + 26-character Crockford base32 ULID (48-bit Unix milliseconds, 80 random
 // bits). The clock and the entropy are supplied by the caller, so ids are deterministic under test.
 #nullable enable
 using System;
 using System.Security.Cryptography;
-using System.Text;
 using System.Text.RegularExpressions;
 using GameCore.Contracts;
 
@@ -49,7 +43,7 @@ namespace GameCore.Studio.Model
     public static class IdDerivation
     {
         /// <summary>Prefix of the stable name a TargetId is derived from (02 s6).</summary>
-        public const string AuthoringNamePrefix = "auth:";
+        public const string AuthoringNamePrefix = "auth.";
 
         public const string ChangeSetPrefix = "cs_";
 
@@ -66,9 +60,9 @@ namespace GameCore.Studio.Model
         private static readonly Regex SelectionIdPattern = new Regex(StudioPatterns.SelectionId, RegexOptions.CultureInvariant);
 
         /// <summary>
-        /// <c>TargetId</c> of an authored entity/definition: the stable-name key of <c>"auth:" + authoringId</c>
-        /// (SHA-256 of the UTF-8 name, first 16 bytes as big-endian High/Low; see the file header). Prefab-variant
-        /// instances pass their instance id (03 s1).
+        /// <c>TargetId</c> of an authored entity/definition: <c>StableNameKeyDerivation.Derive("auth." + authoringId)</c>
+        /// (02 s6). Prefab-variant instances pass their instance id (03 s1). The authoring id must be canonical
+        /// stable-name text (lowercase GUID text).
         /// </summary>
         public static TargetId TargetIdFor(string authoringId)
         {
@@ -85,33 +79,7 @@ namespace GameCore.Studio.Model
                     nameof(authoringId));
             }
 
-            return new TargetId(DeriveKey(AuthoringNamePrefix + authoringId));
-        }
-
-        /// <summary>
-        /// The StableNameKeyDerivation rule applied to <paramref name="name"/> without the alphabet check. Equal to
-        /// <see cref="StableNameKeyDerivation.Derive"/> for every canonical name.
-        /// </summary>
-        public static Id128 DeriveKey(string name)
-        {
-            if (string.IsNullOrEmpty(name))
-            {
-                throw new ArgumentException("A key name cannot be empty.", nameof(name));
-            }
-
-            byte[] digest;
-            using (SHA256 sha256 = SHA256.Create())
-            {
-                digest = sha256.ComputeHash(Encoding.UTF8.GetBytes(name));
-            }
-
-            Id128 key = new Id128(ReadBigEndian(digest, 0), ReadBigEndian(digest, 8));
-            if (key.IsDefault)
-            {
-                throw new InvalidOperationException("The derived key is all-zero, which is not a valid identity.");
-            }
-
-            return key;
+            return new TargetId(StableNameKeyDerivation.Derive(AuthoringNamePrefix + authoringId));
         }
 
         /// <summary>A new change-set id <c>cs_</c> + ULID from the given time and entropy.</summary>
@@ -197,17 +165,6 @@ namespace GameCore.Studio.Model
             }
 
             return new string(text);
-        }
-
-        private static ulong ReadBigEndian(byte[] bytes, int offset)
-        {
-            ulong value = 0UL;
-            for (int i = 0; i < 8; i++)
-            {
-                value = (value << 8) | bytes[offset + i];
-            }
-
-            return value;
         }
     }
 }

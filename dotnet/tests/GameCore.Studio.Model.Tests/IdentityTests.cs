@@ -1,4 +1,4 @@
-// Identity derivation (02 s6): TargetId from an authoring id, ULID-style change-set/selection ids, content stamps.
+// Identity derivation (02 s6): TargetId = StableNameKeyDerivation.Derive("auth." + authoringId), ULID-style change-set/selection ids, content stamps.
 #nullable enable
 using System;
 using System.Security.Cryptography;
@@ -26,46 +26,20 @@ namespace GameCore.Studio.Model.Tests
             }
         }
 
-        private static Id128 ManualKey(string name)
-        {
-            byte[] digest = SHA256.HashData(Encoding.UTF8.GetBytes(name));
-            ulong high = 0;
-            ulong low = 0;
-            for (int i = 0; i < 8; i++)
-            {
-                high = (high << 8) | digest[i];
-                low = (low << 8) | digest[8 + i];
-            }
-
-            return new Id128(high, low);
-        }
-
         [Test]
-        public void TargetIdIsTheStableNameKeyOfAuthPrefixedId()
+        public void TargetIdIsTheKernelDerivationOfAuthPrefixedId()
         {
             const string authoringId = "7f1c2a9e-4b3d-4e8f-9a1b-2c3d4e5f6a7b";
             TargetId target = IdDerivation.TargetIdFor(authoringId);
-            Assert.That(target.Value, Is.EqualTo(ManualKey("auth:" + authoringId)));
+            Assert.That(target.Value, Is.EqualTo(StableNameKeyDerivation.Derive("auth." + authoringId)));
+            Assert.That(IdDerivation.AuthoringNamePrefix, Is.EqualTo("auth."));
             Assert.That(target.IsDefault, Is.False);
             Assert.That(IdDerivation.TargetIdFor(authoringId), Is.EqualTo(target), "stable across calls");
             Assert.That(IdDerivation.TargetIdFor("7f1c2a9e4b3d4e8f9a1b2c3d4e5f6a7b"), Is.Not.EqualTo(target));
-        }
-
-        [Test]
-        public void DeriveKeyIsTheContractsDerivationForCanonicalNames()
-        {
-            foreach (string name in new[] { "npc.ferryman", "auth.7f1c2a9e", "a", "x_y-z.0" })
+            foreach (string id in new[] { "a", "0123abcd", "x_y-z.0" })
             {
-                Assert.That(IdDerivation.DeriveKey(name), Is.EqualTo(StableNameKeyDerivation.Derive(name)), name);
+                Assert.That(IdDerivation.TargetIdFor(id).Value, Is.EqualTo(StableNameKeyDerivation.Derive("auth." + id)), id);
             }
-        }
-
-        [Test]
-        public void TheDocumentedNameIsNotAdmissibleToStableNameKeyDerivation()
-        {
-            // 02 s6 / 03 s1 write TargetId = StableNameKeyDerivation("auth:" + id); ':' is outside the admissible
-            // alphabet, which is why IdDerivation applies the same rule directly (see PACKET.md).
-            Assert.Throws<ArgumentException>(() => StableNameKeyDerivation.Derive("auth:7f1c2a9e"));
         }
 
         [Test]
@@ -76,6 +50,7 @@ namespace GameCore.Studio.Model.Tests
             Assert.Throws<ArgumentException>(() => IdDerivation.TargetIdFor("7F1C2A9E"));
             Assert.Throws<ArgumentException>(() => IdDerivation.TargetIdFor("{7f1c2a9e}"));
             Assert.Throws<ArgumentException>(() => IdDerivation.TargetIdFor(".7f1c"));
+            Assert.Throws<ArgumentException>(() => IdDerivation.TargetIdFor("auth:7f1c"));
         }
 
         [Test]

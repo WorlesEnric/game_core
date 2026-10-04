@@ -13,7 +13,7 @@ started at `0523bea`, so it was fast-forwarded to `7a9c409` to get `docs/studio/
 | `Packages/com.gamecore.studio.core/Runtime/Model/*.cs` (13 files, all with `.meta`) | the Unity-free model (API summary below) |
 | `dotnet/src/GameCore.Studio.Model/` | netstandard2.1 project over the package sources (same pattern as `GameCore.Rules.Narrative`), NuGet Newtonsoft.Json 13.0.3, project reference to `GameCore.Contracts` |
 | `dotnet/src/GameCore.Studio.Model.Schema/` | net8.0 console app: a small reflective JSON Schema (draft 2020-12) emitter, `--out <dir>` |
-| `dotnet/tests/GameCore.Studio.Model.Tests/` | NUnit tests (80) + `Samples/*.json` (concrete versions of the 03 samples, plus the tool-catalog sample) |
+| `dotnet/tests/GameCore.Studio.Model.Tests/` | NUnit tests (78) + `Samples/*.json` (concrete versions of the 03 samples, plus the tool-catalog sample) |
 | `dotnet/GameCore.sln` | the three projects added, with GUIDs `{5D0D1E00-0303-4A51-9C03-00000000030x}` (picked so they can't collide with other packets' GUIDs) |
 | `tools/studio/emit_studio_schemas.py` | stdlib-only driver: regenerates `docs/studio/schemas/`. `--check` fails on any difference. Exits 2 when no .NET SDK is present (the Mac has none) |
 | `docs/studio/schemas/*.schema.json` | authoring-ref, selection-snapshot, semantic-index, tool-catalog, change-set, diagnostic (generated on the host, committed) |
@@ -45,12 +45,12 @@ wrote 6 schema(s) to docs/studio/schemas
 studio schemas are up to date (6 file(s))
 
 $ dotnet test dotnet/tests/GameCore.Studio.Model.Tests/GameCore.Studio.Model.Tests.csproj
-Passed!  - Failed: 0, Passed: 80, Skipped: 0, Total: 80, Duration: 262 ms - GameCore.Studio.Model.Tests.dll (net8.0)
+Passed!  - Failed: 0, Passed: 78, Skipped: 0, Total: 78, Duration: 428 ms - GameCore.Studio.Model.Tests.dll (net8.0)
 
 $ dotnet sln dotnet/GameCore.sln list   -> lists the three Studio projects
 ```
 
-What the 80 tests cover:
+What the 78 tests cover:
 - **Round trips** (9 samples). For each one: parse into its type, re-serialize, check it is equal modulo key order
   and int/float spelling, check a second round trip is byte-identical, and check both the sample and the
   re-serialized form against the emitted schema. The schema check uses a minimal draft-2020-12 checker in the test
@@ -61,8 +61,8 @@ What the 80 tests cover:
 - **Schemas**: `CommittedSchemasAreCurrent` (committed files byte-equal a fresh emission; this is the in-test form of
   `--check`), deterministic emission with sorted keys, and contract facts (const schema id, id pattern, enum
   spellings, `where` as a `oneOf`).
-- **Identity**: TargetId equals a hand-computed SHA-256 key of `"auth:" + id`. `DeriveKey` equals
-  `StableNameKeyDerivation.Derive` for canonical names. ULID encoding matches the ULID spec vector
+- **Identity**: `TargetIdFor(id)` equals `StableNameKeyDerivation.Derive("auth." + id)` (asserted directly against
+  the kernel helper), and non-canonical ids are refused. ULID encoding matches the ULID spec vector
   (`01ARYZ6S41`), and `cs_01K6Q0ACC07E5S3HTP4YZEASPW` was cross-checked with an independent Python encoder. Content
   stamps are checked against the known SHA-256 vectors for "abc" and the empty input.
 - **ToolCatalogBuilder** over annotated sample types (`AnnotatedSamples.cs`) produces exactly
@@ -85,27 +85,25 @@ Checkers on the Mac:
 Not run: the Unity batchmode compile of the package (no Unity project lists it yet; P0.2 and P1.6), and the
 solution-wide `dotnet test` (that is the integration owner's gate).
 
-## Contract findings for Fable (please decide)
+## Contract findings for Fable (decided 2026-10-04)
 
-1. **TargetId formula as written throws.** 02 s6 and 03 s1 say `StableNameKeyDerivation("auth:" + authoringId)`.
-   But `StableNameKeyDerivation.Derive` refuses `:` (its alphabet is `a-z 0-9 . _ -`). `IdDerivation.TargetIdFor`
-   therefore applies the identical rule (SHA-256 over UTF-8, first 16 bytes read as big-endian High/Low) directly
-   to the exact name `"auth:" + id`, after checking that the authoring id itself is canonical (lowercase GUID
-   text). Two tests document this: the result is bit-identical to `Derive` for canonical names, and
-   `Derive("auth:x")` throws. If you'd rather change the separator to `auth.`, that is a one-line change and
-   P0.5's Rust mirror must follow it.
-2. **03 s3 sample `type`.** The sample index node uses `"type": "npc.NpcDefinition"`. The validator compares
+1. **TargetId formula (resolved).** 02 s6 / 03 s1 originally said `StableNameKeyDerivation("auth:" + authoringId)`,
+   and `Derive` refuses `:`. Fable decided to use the kernel helper with a dot prefix:
+   `IdDerivation.TargetIdFor(id) = StableNameKeyDerivation.Derive("auth." + id)`. That is implemented, the earlier
+   parallel SHA rule (`DeriveKey`) is removed, and Fable is updating 02 s6 and 03 s1. P0.5's Rust mirror must use
+   `"auth." + id`.
+2. **03 s3 sample `type` (accepted; docs being updated).** The sample index node uses `"type": "npc.NpcDefinition"`. The validator compares
    `IndexNode.Type` with the tool's `targetType`, which is the `[Authorable]` typeId (e.g. `npc.definition`). So
    the index builder (P1.6) must project the typeId. The samples here use typeIds.
-3. **Diagnostic codes for structural rules.** 03 s9 lists no code for dependency cycles, duplicate op ids, unused
+3. **Diagnostic codes for structural rules (accepted).** 03 s9 lists no code for dependency cycles, duplicate op ids, unused
    or missing artifacts, or inconsistent requirements. All of them use `CandidateInvalid`, and the message says
    which rule fired. `Diagnostic` keeps the 03 shape exactly (`code, message, hint?, where?`), with no `severity`
    field.
-4. **Stamp checks in the validator.** It compares op target stamps with the index (`StaleTarget`) and base-version
+4. **Stamp checks in the validator (accepted).** It compares op target stamps with the index (`StaleTarget`) and base-version
    stamps with the index (`Conflict`, per 03 s7). It also refuses a stamp-precondition op whose target has no stamp
    (`CandidateInvalid`). Both checks can be switched off with `ChangeSetValidationOptions`. The live Unity precheck
    stays with P1.6.
-5. **Additions beyond the 03 text, needed to make s4 exportable.** `AuthorValidatorAttribute(id){Codes}` (the
+5. **Additions beyond the 03 text, needed to make s4 exportable (accepted).** `AuthorValidatorAttribute(id){Codes}` (the
    "validators and their diagnostic codes" part), `AuthorOperation.Requires/RequiresOnTarget/Scope/TargetKinds`,
    `AuthorArg/AuthorField.Type` (value-type override, e.g. `ref` for a DefinitionRef passed as text, or
    `artifact`), and `AuthorArg.Name/Category/Required`. `AuthorableAttribute`'s id property is called
@@ -166,7 +164,7 @@ Optional members are omitted, never `null`. Required members are the schema `req
 | `ApplyPolicy` / `Timestamps` | `AllOrNothing, BestEffort` / `{requested?, candidate?, applied?}` (ISO-8601 text) |
 | `Diagnostic` / `DiagnosticWhere` | `{code, message, hint?, where?}`, where `where` is an opId string or an AuthoringRef object |
 | `DiagnosticCodes` | `StaleTarget, Conflict, UnknownTool, InvalidArgs, MissingPrerequisite, ScopeNotAllowed, ValidationFailed, Refused, CandidateInvalid, StaleContext, StageFailed, LedgerConflict, NotConfigured, OutcomeUnknown, Blocked`. Also `All`, `IsRegistered` |
-| `IdDerivation` | `TargetIdFor(authoringId) -> GameCore.Contracts.TargetId`, `DeriveKey`, `NewChangeSetId(ms, IIdEntropy)` / `NewChangeSetId()`, `NewSelectionId`, `FormatUlid`, `IsChangeSetId`, `IsSelectionId`. Also `IIdEntropy`, `CryptoIdEntropy` |
+| `IdDerivation` | `TargetIdFor(authoringId) -> GameCore.Contracts.TargetId` = `StableNameKeyDerivation.Derive("auth." + authoringId)` (`AuthoringNamePrefix = "auth."`), `NewChangeSetId(ms, IIdEntropy)` / `NewChangeSetId()`, `NewSelectionId`, `FormatUlid`, `IsChangeSetId`, `IsSelectionId`. Also `IIdEntropy`, `CryptoIdEntropy` |
 | `ContentStamp` | `Of(bytes)`, `OfUtf8`, `Sha256Hex`, `IsValid`, `IsValidHex`, `DigestOf` |
 | `StudioJson` | `CreateSettings`, `Serialize`, `Deserialize<T>`, `ToToken`, `ParseToken`. Also `StrictStringEnumConverter`, `SchemaHintAttribute`, `StudioPatterns` |
 | Attributes | `AuthorableAttribute(typeId){DisplayName, Scope, RuntimeApplicability, Doc}` (property `ObjectTypeId`), `AuthorFieldAttribute{Type, Unit, Min, Max, Step, Doc, Required}`, `AuthorRefAttribute{Category, Required=true, Doc}`, `AuthorOperationAttribute(toolId){Doc, Validator, Tier, RuntimeApplicability, Scope, Requires, RequiresOnTarget, TargetKinds}`, `AuthorArgAttribute{Name, Type, Unit, Min, Max, Step, Doc, Category, Required=true}`, `AuthorValidatorAttribute(id){Codes}` |
