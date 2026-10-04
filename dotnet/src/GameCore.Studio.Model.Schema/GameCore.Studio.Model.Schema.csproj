@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- JSON Schema emitter for the Studio interchange shapes (P0.3). Reflects over GameCore.Studio.Model and writes
+       docs/studio/schemas/*.schema.json (draft 2020-12, sorted keys). Driven by tools/studio/emit_studio_schemas.py;
+       the model tests also call it to prove the committed schemas are current. Host tool only, never in Unity. -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <AssemblyName>GameCore.Studio.Model.Schema</AssemblyName>
+    <RootNamespace>GameCore.Studio.Model.Schema</RootNamespace>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../GameCore.Studio.Model/GameCore.Studio.Model.csproj" />
+  </ItemGroup>
+
+</Project>

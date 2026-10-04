@@ -1,0 +1,130 @@
+{
+  "$defs": {
+    "AuthorScope": {
+      "enum": [
+        "Instance",
+        "Prefab",
+        "Definition",
+        "Scope"
+      ],
+      "type": "string"
+    },
+    "AuthoringKind": {
+      "enum": [
+        "Entity",
+        "Definition",
+        "Region",
+        "SceneObject",
+        "Asset",
+        "UiElement",
+        "Scope",
+        "Location"
+      ],
+      "type": "string"
+    },
+    "AuthoringRef": {
+      "additionalProperties": false,
+      "properties": {
+        "assetGuid": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "authoringId": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "definition": {
+          "pattern": "^[a-z0-9][a-z0-9._-]*@[0-9A-Za-z]+$",
+          "type": "string"
+        },
+        "global": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/AuthoringKind"
+        },
+        "location": {
+          "$ref": "#/$defs/LocationRef"
+        },
+        "path": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/AuthorScope"
+        },
+        "stamp": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "type": "object"
+    },
+    "LocationRef": {
+      "additionalProperties": false,
+      "properties": {
+        "normal": {
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 3,
+          "minItems": 3,
+          "type": "array"
+        },
+        "position": {
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 3,
+          "minItems": 3,
+          "type": "array"
+        },
+        "region": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "position",
+        "region"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "urn:gamecore:studio:schema:diagnostic",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "code": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "hint": {
+      "type": "string"
+    },
+    "message": {
+      "type": "string"
+    },
+    "where": {
+      "oneOf": [
+        {
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "$ref": "#/$defs/AuthoringRef"
+        }
+      ]
+    }
+  },
+  "required": [
+    "code",
+    "message"
+  ],
+  "title": "Diagnostic",
+  "type": "object"
+}
