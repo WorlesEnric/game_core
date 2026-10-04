@@ -1,17 +1,19 @@
 {
-    "name": "GameCore.Gameplay.Player.Editor",
-    "rootNamespace": "GameCore.Gameplay.Player.Editor",
+    "name": "GameCore.Gameplay.Npc",
+    "rootNamespace": "GameCore.Gameplay.Npc",
     "references": [
-        "GameCore.Gameplay.Compile.Core",
+        "GameCore.Composition",
+        "GameCore.Contracts",
         "GameCore.Gameplay.Contracts",
         "GameCore.Gameplay.Entities",
-        "GameCore.Gameplay.Player",
         "GameCore.Gameplay.World",
-        "Unity.InputSystem"
+        "GameCore.Rules.Gameplay",
+        "GameCore.Unity.App",
+        "GameCore.Unity.Runtime",
+        "Unity.Collections",
+        "Unity.Entities"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

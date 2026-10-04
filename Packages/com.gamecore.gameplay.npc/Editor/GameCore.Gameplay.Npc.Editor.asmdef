@@ -1,13 +1,12 @@
 {
-    "name": "GameCore.Gameplay.Player.Editor",
-    "rootNamespace": "GameCore.Gameplay.Player.Editor",
+    "name": "GameCore.Gameplay.Npc.Editor",
+    "rootNamespace": "GameCore.Gameplay.Npc.Editor",
     "references": [
         "GameCore.Gameplay.Compile.Core",
         "GameCore.Gameplay.Contracts",
         "GameCore.Gameplay.Entities",
-        "GameCore.Gameplay.Player",
-        "GameCore.Gameplay.World",
-        "Unity.InputSystem"
+        "GameCore.Gameplay.Entities.Editor",
+        "GameCore.Gameplay.Npc"
     ],
     "includePlatforms": [
         "Editor"

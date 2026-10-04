@@ -47,6 +47,58 @@ namespace GameCore.Gameplay.World
         public SystemRegistration Registration { get; }
     }
 
+    /// <summary>
+    /// An independent read cursor over the world's committed events (GameplayWorld.ReadEvents keeps a single cursor of
+    /// its own; every extension dispatcher holds one of these instead, so readers never steal each other's events).
+    /// </summary>
+    public sealed class GameplayEventCursor
+    {
+        private EventCursor cursor;
+        private bool started;
+
+        public int Read { get; private set; }
+
+        /// <summary>Gaps reported because the cursor lagged behind the retained window (P-045).</summary>
+        public int Gaps { get; private set; }
+
+        /// <summary>Appends the committed events published since the last call; returns how many were read.</summary>
+        public int ReadInto(GameplayWorld world, List<CommittedEvent> into, int maxEvents = 256)
+        {
+            if (world == null)
+            {
+                throw new ArgumentNullException(nameof(world));
+            }
+
+            if (into == null)
+            {
+                throw new ArgumentNullException(nameof(into));
+            }
+
+            WorldMessagePlane? plane = world.Root.Host.Messages;
+            if (plane == null)
+            {
+                return 0;
+            }
+
+            if (!started)
+            {
+                cursor = new EventCursor(world.Root.World, EventSequence.Zero);
+                started = true;
+            }
+
+            CommittedEventPage page = plane.ReadEvents(cursor, maxEvents);
+            if (page.Outcome != CursorOutcome.Ok)
+            {
+                Gaps++;
+            }
+
+            into.AddRange(page.Events);
+            cursor = page.NextCursor;
+            Read += page.Events.Count;
+            return page.Events.Count;
+        }
+    }
+
     /// <summary>A gameplay plugin composed into a gameplay world by <see cref="WorldBuilder"/>.</summary>
     public interface IGameplayWorldExtension
     {

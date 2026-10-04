@@ -38,13 +38,15 @@ namespace GameCore.Rules.Gameplay.Player
                 return 0L;
             }
 
-            long root = (long)Math.Sqrt(value);
+            // 3037000499 is the largest root whose square fits a long; the bound keeps (root + 1)^2 from overflowing.
+            const long MaxRoot = 3037000499L;
+            long root = Math.Min((long)Math.Sqrt(value), MaxRoot);
             while (root * root > value)
             {
                 root--;
             }
 
-            while ((root + 1L) * (root + 1L) <= value)
+            while (root < MaxRoot && (root + 1L) * (root + 1L) <= value)
             {
                 root++;
             }

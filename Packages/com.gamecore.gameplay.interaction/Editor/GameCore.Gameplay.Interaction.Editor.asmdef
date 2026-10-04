@@ -1,13 +1,13 @@
 {
-    "name": "GameCore.Gameplay.Player.Editor",
-    "rootNamespace": "GameCore.Gameplay.Player.Editor",
+    "name": "GameCore.Gameplay.Interaction.Editor",
+    "rootNamespace": "GameCore.Gameplay.Interaction.Editor",
     "references": [
         "GameCore.Gameplay.Compile.Core",
         "GameCore.Gameplay.Contracts",
         "GameCore.Gameplay.Entities",
-        "GameCore.Gameplay.Player",
-        "GameCore.Gameplay.World",
-        "Unity.InputSystem"
+        "GameCore.Gameplay.Entities.Editor",
+        "GameCore.Gameplay.Interaction",
+        "GameCore.Rules.Gameplay"
     ],
     "includePlatforms": [
         "Editor"
