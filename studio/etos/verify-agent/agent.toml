@@ -1,0 +1,10 @@
+# A throwaway agent used only by studio/etos/verify.sh: installing it makes etosd write an
+# agent key (<root>/agents/verify/key, mode 0600) limited to these grants, which verify.sh uses
+# for the agent-only routes (/ops, /files, /realtime). It has no process, workers or
+# entrances. verify.sh uninstalls it with --purge when it finishes.
+agent = "verify"
+version = "0.1.0"
+label = "GameCore Studio W0 verification"
+sdk = ">=1, <2"
+grants = ["ops", "realtime", "files"]
+providers = ["studio-voice"]
