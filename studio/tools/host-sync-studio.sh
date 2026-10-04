@@ -16,7 +16,7 @@ ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)"
 case "${1:-}" in
 push)
     ssh "$STUDIO_HOST" "mkdir -p ~/$STUDIO_HOST_DIR/artifacts/studio/environment"
-    rsync -a --delete --itemize-changes --exclude 'bin/' --exclude 'obj/' --exclude '/etos/etos.lock' \
+    rsync -a --delete --itemize-changes --exclude 'bin/' --exclude 'obj/' --exclude 'target/' --exclude '/etos/etos.lock' \
         "$ROOT/studio/" "$STUDIO_HOST:$STUDIO_HOST_DIR/studio/" | sed 's/^/  /'
     # The lock is the host's output; seed it only when the host has none.
     if [ -f "$ROOT/studio/etos/etos.lock" ]; then

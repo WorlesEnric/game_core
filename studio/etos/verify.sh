@@ -13,6 +13,8 @@
 #   6. /realtime/connect?provider=studio-voice: 2 s of a 440 Hz tone, expects ready + clean close
 #   7. POST /ops/generate.3d -> expected refusal not_configured (no 3D provider, SADR-020)
 #   8. `etos agent uninstall verify --purge` (also on failure)
+#   9. with the companion installed (P0.5): GET .../agents/gamecore-studio/http/v1/hello with the
+#      paired app key, and studio/agent's real-node test (cargo test --test real_node -- --ignored)
 # Writes transcript.txt, the artifacts and README.md to
 # artifacts/studio/environment/etos-verify-<UTC date>/ (keys and signed URLs redacted).
 # Exit status: 0 when every check passed, 1 otherwise.
@@ -152,12 +154,43 @@ run etos agent uninstall verify --purge && record verify_agent_removed ok "" || 
 trap - EXIT
 rm -rf "$TMP"
 
+echo; echo "## 9. companion through the proxy (app key) and its real-node test"
+APP_KEY="$HOME/.config/gamecore-studio/app-key.json"
+if etos --json agent list | grep -q '"gamecore-studio"' && [ -f "$APP_KEY" ]; then
+    run etos agent list
+    mkdir -p "$TMP" && chmod 700 "$TMP"
+    ( umask 077; python3 -c 'import json,sys; print("Authorization: Bearer " + json.load(open(sys.argv[1]))["key"])' "$APP_KEY" > "$TMP/app-auth" )
+    echo "\$ GET /api/v1/agents/gamecore-studio/http/v1/hello (app key)"
+    code="$(curl -sS --noproxy '*' -m 30 -H @"$TMP/app-auth" "$API/agents/gamecore-studio/http/v1/hello" -o "$OUT/hello.json" -w '%{http_code}')"
+    echo "HTTP $code"; python3 -m json.tool "$OUT/hello.json" 2>/dev/null || cat "$OUT/hello.json"; echo
+    if [ "$code" = 200 ]; then record hello ok "$(head -c 200 "$OUT/hello.json" | tr '\n' ' ')"; else record hello FAILED "HTTP $code"; fi
+    echo "\$ (cd studio/agent && STUDIO_REAL_APP_KEY=$APP_KEY STUDIO_REAL_ETOS=$BIN/etos cargo test --test real_node -- --ignored --nocapture --test-threads 1)"
+    proxy_env=()
+    if ss -ltn 2>/dev/null | grep -q '127.0.0.1:7897 '; then
+        proxy_env=(http_proxy=http://127.0.0.1:7897 https_proxy=http://127.0.0.1:7897)
+    fi
+    if (cd "$REPO/studio/agent" && env -u HTTP_PROXY -u HTTPS_PROXY -u ALL_PROXY -u all_proxy "${proxy_env[@]}" \
+            NO_PROXY=127.0.0.1,localhost no_proxy=127.0.0.1,localhost PATH="$HOME/.cargo/bin:$PATH" \
+            STUDIO_REAL_APP_KEY="$APP_KEY" STUDIO_REAL_ETOS="$BIN/etos" \
+            cargo test --locked --test real_node -- --ignored --nocapture --test-threads 1) > "$OUT/real-node.txt" 2>&1; then
+        record real_node ok "$(grep -E '^test result' "$OUT/real-node.txt" | tail -n 1)"
+    else
+        record real_node FAILED "$(grep -E '^test result|panicked' "$OUT/real-node.txt" | tail -n 2 | tr '\n' ' ')"
+    fi
+    sed 's/^/  | /' "$OUT/real-node.txt" | tail -n 80
+else
+    record hello skipped "agent gamecore-studio not installed or no paired app key"
+    record real_node skipped "agent gamecore-studio not installed or no paired app key"
+fi
+
+rm -rf "$TMP"
+
 echo; echo "## results"
 failed=0
 for r in "${results[@]}"; do
     IFS='|' read -r name outcome detail <<< "$r"
     printf '  %-22s %-20s %s\n' "$name" "$outcome" "$detail"
-    case "$outcome" in ok|"blocked (expected)") ;; *) failed=1 ;; esac
+    case "$outcome" in ok|"blocked (expected)"|skipped) ;; *) failed=1 ;; esac
 done
 
 {
@@ -181,7 +214,7 @@ done
         echo "| $name | $outcome | $(echo "$detail" | tr '|' '/' | cut -c1-300) |"
     done
     echo
-    echo "Artifacts: \`image.png\` (generate.image), \`describe.json\`, \`welcome.wav\` (tts), \`realtime.jsonl\`"
+    echo "Artifacts: \`image.png\` (generate.image), \`describe.json\`, \`welcome.wav\` (tts), \`realtime.jsonl\`, \`hello.json\`, \`real-node.txt\`"
     echo "(one line per realtime event, audio replaced by its length), \`3d.refusal.json\`, and the job answers \`*.job.json\`."
 } | redact > "$OUT/README.md"
 

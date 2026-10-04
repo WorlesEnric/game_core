@@ -19,7 +19,10 @@
 #   service        ~/.config/systemd/user/etosd.service (user unit, linger enabled)
 #   API            127.0.0.1:7410 (SDK API), broker 172.17.0.1:7411, web UI 127.0.0.1:7400
 #   images         localhost/etos-default:latest, localhost/gc-designer:current, localhost/gc-mechanic:current
-#   workers        gc-designer, gc-mechanic (model alias `default`)
+#   workers        gc-designer, gc-mechanic (model alias `default`), created before the agent so
+#                  that `etos agent install` keeps their image and network
+#   agent          gamecore-studio (studio/etos/agent, --link; binary built from studio/agent)
+#   app            gamecore-unity, paired key ~/.config/gamecore-studio/app-key.json (0600)
 set -euo pipefail
 
 HERE="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
@@ -181,19 +184,55 @@ for w in gc-designer gc-mechanic; do
     fi
 done
 
-step "companion agent and Unity app"
+step "companion agent gamecore-studio"
+# etos refuses `..` in an agent's paths, so the manifest's `bin/gamecore-studio` is a symlink
+# (bin/ is git-ignored) to the release build of studio/agent, installed with --link.
+AGENT_DIR="$HERE/agent"
+AGENT_SRC="$HERE/../agent"
 agents="$(etos --json agent list | names)"
-if [ -f "$HERE/agent/agent.toml" ]; then
-    if echo "$agents" | grep -qx gamecore-studio; then
-        same "agent gamecore-studio installed"
-    else
-        etos agent install "$HERE/agent" --link | sed 's/^/    /'
-        changed "agent gamecore-studio installed (--link)"
-        agents="gamecore-studio"
-    fi
+if [ ! -f "$AGENT_DIR/agent.toml" ] || [ ! -f "$AGENT_SRC/Cargo.toml" ]; then
+    skipped+=("agent: studio/etos/agent/agent.toml or studio/agent is absent (packet P0.5)")
 else
-    skipped+=("agent: studio/etos/agent/agent.toml is absent (packet P0.5); later: etos agent install studio/etos/agent --link")
+    cargo_env=(env PATH="$HOME/.cargo/bin:$PATH")
+    if ss -ltn 2>/dev/null | grep -q '127.0.0.1:7897 '; then
+        cargo_env+=(http_proxy=http://127.0.0.1:7897 https_proxy=http://127.0.0.1:7897)
+    fi
+    if ! (cd "$AGENT_SRC" && "${cargo_env[@]}" cargo build --release --locked -q); then
+        echo "cargo build --release in studio/agent failed" >&2; exit 1
+    fi
+    mkdir -p "$AGENT_DIR/bin"
+    link="$AGENT_DIR/bin/gamecore-studio"
+    target="../../../agent/target/release/gamecore-studio"
+    if [ "$(readlink "$link" 2>/dev/null)" = "$target" ]; then
+        same "$link -> $target"
+    else
+        ln -sfn "$target" "$link"; changed "$link -> $target"
+    fi
+    agent_stamp="$ROOT/.studio-agent.sha256"
+    agent_now="$(cat "$AGENT_DIR/agent.toml" "$AGENT_DIR"/workers/*.md "$AGENT_SRC/target/release/gamecore-studio" | sha256sum | cut -d' ' -f1)"
+    if ! echo "$agents" | grep -qx gamecore-studio; then
+        etos agent install --link "$AGENT_DIR" | sed 's/^/    /'
+        changed "agent gamecore-studio installed (--link $AGENT_DIR)"
+    elif [ "$(cat "$agent_stamp" 2>/dev/null)" != "$agent_now" ]; then
+        etos agent upgrade --link "$AGENT_DIR" | sed 's/^/    /'
+        changed "agent gamecore-studio upgraded (manifest, instructions or binary changed)"
+    else
+        same "agent gamecore-studio installed"
+    fi
+    echo "$agent_now" > "$agent_stamp"
+    state=""
+    for _ in $(seq 1 30); do
+        state="$(etos --json agent list | python3 -c 'import json,sys
+for a in json.load(sys.stdin):
+    if a.get("agent", a.get("name")) == "gamecore-studio": print(a.get("state", ""))')"
+        [ "$state" = ready ] && break
+        sleep 1
+    done
+    echo "  agent state: ${state:-unknown}"
+    agents="gamecore-studio"
 fi
+
+step "Unity app gamecore-unity"
 if echo "$agents" | grep -qx gamecore-studio; then
     apps="$(etos --json app list | names)"
     if echo "$apps" | grep -qx gamecore-unity; then
@@ -203,12 +242,14 @@ if echo "$agents" | grep -qx gamecore-studio; then
         changed "app gamecore-unity installed"
     fi
     key="$HOME/.config/gamecore-studio/app-key.json"
-    if [ -f "$key" ]; then
+    paired="$(etos --json app list | python3 -c 'import json,sys
+d=json.load(sys.stdin); print(sum(1 for k in d.get("keys", []) if k.get("app") == "gamecore-unity"))')"
+    if [ -f "$key" ] && [ "${paired:-0}" -gt 0 ]; then
         same "$key (paired)"
     else
-        etos app pair gamecore-unity --approve --out "$key" >/dev/null
+        ( umask 077; etos app pair gamecore-unity --approve --out "$key" >/dev/null )
         chmod 600 "$key"
-        changed "$key written (app pair gamecore-unity --approve)"
+        changed "$key written (etos app pair gamecore-unity --approve)"
     fi
 else
     skipped+=("app: needs the agent first; later: etos app install studio/etos/app")
