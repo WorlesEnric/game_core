@@ -1,0 +1,10 @@
+# The Unity side of GameCore Studio (docs/studio/04-etos-integration.md §1-§2). Installed with
+# `etos app install studio/etos/app` after the companion agent `gamecore-studio` is installed,
+# then paired: `etos app pair gamecore-unity --approve --out ~/.config/gamecore-studio/app-key.json`.
+# proxy: the companion's HTTP/WebSocket API through /api/v1/agents/gamecore-studio/http/...;
+# query: read-only queries of the companion's tables; changes: the change feed;
+# entrances: requests to the companion's entrances, if it declares any.
+app = "gamecore-unity"
+label = "GameCore Studio (Unity)"
+routes = ["proxy", "query", "changes", "entrances"]
+uses = ["gamecore-studio"]
