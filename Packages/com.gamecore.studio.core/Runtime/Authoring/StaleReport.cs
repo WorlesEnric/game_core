@@ -39,7 +39,10 @@ namespace GameCore.Studio.Authoring
 
         public StaleReason Reason { get; }
 
-        /// <summary>A diagnostic with a registered code (StaleTarget for every reason).</summary>
+        /// <summary>
+        /// A diagnostic with a registered code: Conflict with <c>data {expected, actual}</c> for a changed stamp (the
+        /// target exists but changed), StaleTarget for a destroyed, unloaded or moved target (03 s9).
+        /// </summary>
         public Diagnostic Diagnostic { get; }
 
         /// <summary>The current stamp when the object still exists.</summary>
@@ -80,7 +83,10 @@ namespace GameCore.Studio.Authoring
                     break;
             }
 
-            return new StaleEntry(target, reason, Diagnostic.AtRef(DiagnosticCodes.StaleTarget, target, message, hint), actualStamp, actualPath);
+            Diagnostic diagnostic = (reason == StaleReason.StampChanged || reason == StaleReason.AssetChanged) && target.Stamp != null && actualStamp != null
+                ? Diagnostic.ConflictAt(target, target.Stamp, actualStamp, message, hint)
+                : Diagnostic.AtRef(DiagnosticCodes.StaleTarget, target, message, hint);
+            return new StaleEntry(target, reason, diagnostic, actualStamp, actualPath);
         }
     }
 

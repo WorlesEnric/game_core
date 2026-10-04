@@ -203,6 +203,12 @@ namespace GameCore.Studio.Authoring
 
         private readonly Dictionary<Type, AuthoringTypeInfo?> _cache = new Dictionary<Type, AuthoringTypeInfo?>();
 
+        /// <summary>Forgets cached type metadata (after a code change).</summary>
+        public void Invalidate()
+        {
+            _cache.Clear();
+        }
+
         /// <summary>The metadata of <paramref name="type"/>, or null when the type has no [Authorable].</summary>
         public AuthoringTypeInfo? Describe(Type type)
         {

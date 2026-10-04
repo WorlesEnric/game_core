@@ -118,7 +118,8 @@ namespace GameCore.Studio.Edit
         }
 
         /// <summary>
-        /// The catalog: object types from the Unity pass, every non-internal tool entry (built-ins and plugins), sorted.
+        /// The catalog: object types from the Unity pass, every non-internal tool entry (built-ins and plugins), sorted,
+        /// with its content revision minted (requests carry it as toolCatalogRevision; 03 s9).
         /// </summary>
         public ToolCatalog BuildCatalog()
         {
@@ -133,7 +134,7 @@ namespace GameCore.Studio.Edit
             }
 
             tools.Sort((left, right) => string.CompareOrdinal(left.Id, right.Id));
-            return new ToolCatalog(_runtime.Types.ObjectTypeEntries(), tools);
+            return new ToolCatalog(_runtime.Types.ObjectTypeEntries(), tools).WithRevision();
         }
 
         /// <summary>Writes tool-catalog.json (default: Library/GameCoreStudio/tool-catalog.json) and returns the path.</summary>
@@ -158,8 +159,9 @@ namespace GameCore.Studio.Edit
         }
 
         /// <summary>
-        /// Invokes a read-only tool (inspect/query/preview) outside any change set and returns its output. Mutating
-        /// tools are refused here: they go through the edit engine so they are staged, applied and journaled.
+        /// Invokes a read-only tool (inspect/query) or a direct tool (preview/history/project) outside any change set and
+        /// returns its output. Other mutating tools are refused here: they go through the edit engine so they are staged,
+        /// applied and journaled.
         /// </summary>
         public OperationResult Invoke(string toolId, AuthoringRef? target, JObject? args)
         {
@@ -169,7 +171,7 @@ namespace GameCore.Studio.Edit
                 return OperationResult.Refused(DiagnosticCodes.UnknownTool, "Tool '" + toolId + "' is not registered.");
             }
 
-            if (!tool.ReadOnly)
+            if (!tool.ReadOnly && !(tool is IDirectTool))
             {
                 return OperationResult.Refused(DiagnosticCodes.Refused, "Tool '" + toolId + "' changes the project; submit it in a change set (ChangeSetEngine.Stage/Apply).");
             }

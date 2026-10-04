@@ -366,7 +366,20 @@ namespace GameCore.Studio.Edit
             }
 
             IReadOnlyList<string>? capabilities = context.Identity.GetCapabilities(candidate);
-            return capabilities != null && capabilities.Contains(category);
+            if (capabilities == null)
+            {
+                return false;
+            }
+
+            foreach (string capability in capabilities)
+            {
+                if (string.Equals(capability, category, StringComparison.Ordinal))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private static object ToCollection(AuthorMemberInfo member, List<object?> items)

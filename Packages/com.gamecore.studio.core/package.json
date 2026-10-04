@@ -2,7 +2,7 @@
   "name": "com.gamecore.studio.core",
   "version": "1.0.0",
   "displayName": "GameCore Studio Core",
-  "description": "GameCore Studio authoring and edit-execution core (docs/studio/02-architecture.md boundaries B and C). Runtime/Model holds the Unity-free GameCore.Studio.Model assembly: AuthoringRef, SelectionSnapshot, SemanticIndex, ToolCatalog and the authoring metadata attributes, ChangeSet, Diagnostic and DiagnosticCodes, identity derivation, content stamps and change-set validation, with Newtonsoft.Json contracts matching docs/studio/03-authoring-contracts.md. The same sources build under plain dotnet (dotnet/src/GameCore.Studio.Model).",
+  "description": "GameCore Studio authoring and edit-execution core (docs/studio/02-architecture.md boundaries B and C). Runtime/Model holds the Unity-free GameCore.Studio.Model assembly: AuthoringRef, SelectionSnapshot, SemanticIndex, ToolCatalog and the authoring metadata attributes, ChangeSet, Diagnostic and DiagnosticCodes, identity derivation, content stamps and change-set validation, with Newtonsoft.Json contracts matching docs/studio/03-authoring-contracts.md. The same sources build under plain dotnet (dotnet/src/GameCore.Studio.Model). Runtime/Authoring (GameCore.Studio.Authoring, Editor-only) holds the authoring identity, ref resolver and picking contracts and the picking service; Editor (GameCore.Studio.Core.Editor) holds the ref resolver, semantic index, tool registry and built-in tools, the change-set engine with journal, undo/redo, artifact retention and apply queue, and the generated inspectors and move gizmo.",
   "unity": "6000.0",
   "keywords": [
     "gamecore",
@@ -10,7 +10,10 @@
     "authoring"
   ],
   "dependencies": {
+    "com.gamecore.composition": "1.0.0",
     "com.gamecore.contracts": "1.0.0",
+    "com.gamecore.unity.app": "1.0.0",
+    "com.gamecore.unity.runtime": "1.0.0",
     "com.unity.nuget.newtonsoft-json": "3.2.1"
   }
 }

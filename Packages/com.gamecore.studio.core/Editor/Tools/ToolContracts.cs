@@ -165,6 +165,14 @@ namespace GameCore.Studio.Edit
         OperationResult Apply(EditContext context);
     }
 
+    /// <summary>
+    /// A tool that runs directly (ToolRegistry.Invoke), never inside a change set: history (undo/redo operate on the
+    /// journal itself), preview and project lifecycle tools. The engine refuses it in a change set.
+    /// </summary>
+    public interface IDirectTool
+    {
+    }
+
     /// <summary>A tool that can re-plan an operation against the current stamp of its target (03 s7 rebase).</summary>
     public interface IReplannableTool
     {
