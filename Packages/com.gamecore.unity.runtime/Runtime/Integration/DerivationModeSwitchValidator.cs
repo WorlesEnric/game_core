@@ -38,6 +38,7 @@ namespace GameCore.Unity.Runtime.Integration
         private readonly IReadOnlyList<DerivationRuleKeys> ruleKeys;
         private readonly IReadOnlyList<ProviderSelectionOverride> overrides;
         private readonly DerivationOptions options;
+        private readonly IReadOnlyList<RuleConfigBinding> configBindings;
 
         /// <summary>
         /// Creates the validator. <paramref name="targets"/> is read lazily on every check, so a world whose live
@@ -48,13 +49,15 @@ namespace GameCore.Unity.Runtime.Integration
             Func<IReadOnlyList<DerivationTarget>> targets,
             IReadOnlyList<DerivationRuleKeys>? ruleKeys = null,
             IReadOnlyList<ProviderSelectionOverride>? overrides = null,
-            DerivationOptions? options = null)
+            DerivationOptions? options = null,
+            IReadOnlyList<RuleConfigBinding>? configBindings = null)
         {
             this.values = values ?? throw new ArgumentNullException(nameof(values));
             this.targets = targets ?? throw new ArgumentNullException(nameof(targets));
             this.ruleKeys = ruleKeys ?? Array.Empty<DerivationRuleKeys>();
             this.overrides = overrides ?? Array.Empty<ProviderSelectionOverride>();
             this.options = options ?? DerivationOptions.Default;
+            this.configBindings = configBindings ?? Array.Empty<RuleConfigBinding>();
         }
 
         /// <summary>Mode-switch proposals this validator actually derived.</summary>
@@ -97,7 +100,8 @@ namespace GameCore.Unity.Runtime.Integration
             }
 
             Checks++;
-            DerivationInputReport input = CompositionDerivationInput.Build(after, targets(), ruleKeys, overrides);
+            DerivationInputReport input = CompositionDerivationInput.Build(
+                after, targets(), ruleKeys, overrides, configBindings);
             if (!input.Succeeded || input.Snapshot == null)
             {
                 // An unbuildable input refuses every proposal at the pipeline's own step; refusing here would

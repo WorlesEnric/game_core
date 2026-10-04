@@ -495,7 +495,33 @@ namespace GameCore.Derivation
                 }
             }
 
-            return ServiceDeclarationsEqual(left.Manifest, right.Manifest);
+            return BoundPayloadsEqual(left, right) && ServiceDeclarationsEqual(left.Manifest, right.Manifest);
+        }
+
+        /// <summary>
+        /// True when two installations bind the same rules to the same bytes (SADR-013). A reconfiguration whose
+        /// bound payload moved is an install change, so the installation's reach is re-derived instead of carried with
+        /// its old contribution values (P-017, P-023).
+        /// </summary>
+        private static bool BoundPayloadsEqual(DerivationInstall left, DerivationInstall right)
+        {
+            IReadOnlyList<BoundRulePayload> oldBound = left.BoundPayloads;
+            IReadOnlyList<BoundRulePayload> newBound = right.BoundPayloads;
+            if (oldBound.Count != newBound.Count)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < oldBound.Count; i++)
+            {
+                if (!oldBound[i].Rule.Equals(newBound[i].Rule)
+                    || !SlotComposer.PayloadEquals(oldBound[i].Payload, newBound[i].Payload))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         /// <summary>

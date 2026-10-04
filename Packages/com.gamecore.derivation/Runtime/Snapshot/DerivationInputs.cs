@@ -264,13 +264,56 @@ namespace GameCore.Derivation
     }
 
     /// <summary>
+    /// One rule payload of one installation that its effective configuration supplies instead of the manifest's
+    /// frozen payload (SADR-013). The binding is resolved outside derivation, from the installation's composed
+    /// configuration document, and handed in as bytes, so derivation still reads only immutable input (P-023):
+    /// a reconfiguration (O-05) produces a new snapshot whose contribution for the rule carries the new bytes under
+    /// the same contribution key (P-017), which is exactly a "changed" contribution and never a remove-and-add.
+    /// </summary>
+    public readonly struct BoundRulePayload
+    {
+        public BoundRulePayload(RuleId rule, FrozenPayload payload)
+        {
+            if (rule.IsDefault)
+            {
+                throw new ArgumentException("A bound payload names a real rule identity (P-004).", nameof(rule));
+            }
+
+            Rule = rule;
+            Payload = payload ?? throw new ArgumentNullException(nameof(payload));
+        }
+
+        public RuleId Rule { get; }
+
+        public FrozenPayload Payload { get; }
+
+        public override string ToString() => "bound(" + Rule.ToString() + ")";
+    }
+
+    /// <summary>
     /// One installation plus the manifest that declares its rules (P-009, P-046). Only an <c>Active</c>
     /// installation contributes: a waiting, suspended or retiring installation has retracted its
     /// contributions (P-012).
     /// </summary>
     public sealed class DerivationInstall
     {
+        private readonly Dictionary<Id128, FrozenPayload>? boundByRule;
+
         public DerivationInstall(InstallRecord record, InstallationState state, PluginManifest manifest)
+            : this(record, state, manifest, null)
+        {
+        }
+
+        /// <summary>
+        /// An installation whose effective configuration binds some of its rules' payloads (SADR-013). Every bound
+        /// rule must be declared by <paramref name="manifest"/> and bound once; anything else is refused here, so a
+        /// binding can never invent a contribution the manifest does not declare (P-009, P-017).
+        /// </summary>
+        public DerivationInstall(
+            InstallRecord record,
+            InstallationState state,
+            PluginManifest manifest,
+            IReadOnlyList<BoundRulePayload>? boundPayloads)
         {
             if (record == null)
             {
@@ -290,6 +333,40 @@ namespace GameCore.Derivation
             Record = record;
             State = state;
             Manifest = manifest;
+
+            if (boundPayloads == null || boundPayloads.Count == 0)
+            {
+                BoundPayloads = Array.Empty<BoundRulePayload>();
+                return;
+            }
+
+            boundByRule = new Dictionary<Id128, FrozenPayload>(boundPayloads.Count);
+            var ordered = new List<BoundRulePayload>(boundPayloads.Count);
+            for (int i = 0; i < boundPayloads.Count; i++)
+            {
+                BoundRulePayload bound = boundPayloads[i];
+                if (!Declares(manifest, bound.Rule))
+                {
+                    throw new ArgumentException(
+                        "Installation " + record.Instance.ToString() + " binds rule " + bound.Rule.ToString()
+                        + " which its manifest does not declare (P-009, SADR-013).",
+                        nameof(boundPayloads));
+                }
+
+                if (boundByRule.ContainsKey(bound.Rule.Value))
+                {
+                    throw new ArgumentException(
+                        "Installation " + record.Instance.ToString() + " binds rule " + bound.Rule.ToString()
+                        + " twice; one rule has one effective payload (P-017, SADR-013).",
+                        nameof(boundPayloads));
+                }
+
+                boundByRule.Add(bound.Rule.Value, bound.Payload);
+                ordered.Add(bound);
+            }
+
+            ordered.Sort((left, right) => left.Rule.Value.CompareTo(right.Rule.Value));
+            BoundPayloads = ordered.AsReadOnly();
         }
 
         public InstallRecord Record { get; }
@@ -298,9 +375,48 @@ namespace GameCore.Derivation
 
         public PluginManifest Manifest { get; }
 
+        /// <summary>
+        /// Rule payloads this installation's configuration binds, in canonical rule order; empty when every rule
+        /// contributes its manifest's frozen payload (SADR-013).
+        /// </summary>
+        public IReadOnlyList<BoundRulePayload> BoundPayloads { get; }
+
         public PluginInstanceId Instance => Record.Instance;
 
         public ScopeId Scope => Record.Scope;
+
+        /// <summary>
+        /// The payload this installation contributes for <paramref name="rule"/>: the configuration-bound bytes when
+        /// the installation binds the rule, otherwise the manifest's frozen payload (P-017, SADR-013).
+        /// </summary>
+        public FrozenPayload PayloadOf(DerivationRule rule)
+        {
+            if (rule == null)
+            {
+                throw new ArgumentNullException(nameof(rule));
+            }
+
+            if (boundByRule != null && boundByRule.TryGetValue(rule.RuleId.Value, out FrozenPayload? bound) && bound != null)
+            {
+                return bound;
+            }
+
+            return rule.PayloadDefinition;
+        }
+
+        private static bool Declares(PluginManifest manifest, RuleId rule)
+        {
+            IReadOnlyList<DerivationRule> rules = manifest.DerivationRules;
+            for (int i = 0; i < rules.Count; i++)
+            {
+                if (rules[i].RuleId.Equals(rule))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         public bool IsActive => State == InstallationState.Active;
 

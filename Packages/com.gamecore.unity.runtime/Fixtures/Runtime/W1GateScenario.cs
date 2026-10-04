@@ -645,7 +645,19 @@ namespace GameCore.Unity.Fixtures
                         W1GateKeys.RootScope(1UL),
                         declarations[0].SchemaDefaults);
 
+                    LogicalStepId stepBeforeEdit = worldA.CurrentStep;
                     WorldAdmissionReport report = bridgeA.SubmitAndExecute(payload, operationOne);
+
+                    // SADR-011 (studio) changed this by design: a composition-only edit publishes an assembly epoch
+                    // and is not a command, so the bridge no longer charges the world one logical step for it (04 s3,
+                    // P-036). The gate's guarded step that follows is driven by one explicit command, admitted here
+                    // exactly as a real command source admits it; the step, demand and stage assertions downstream are
+                    // unchanged.
+                    bool editChargedNoStep = !report.CommandSubmitted
+                        && report.DemandAfter == 0UL
+                        && report.StepAfter.Equals(stepBeforeEdit)
+                        && worldA.CurrentStep.Equals(stepBeforeEdit);
+                    worldA.NotifyCommandAdmitted(1U);
 
                     facts.LaneARevision = laneA.Committed.Revision.Value;
                     facts.LaneAEpoch = laneA.Committed.Epoch.Value;
@@ -679,8 +691,8 @@ namespace GameCore.Unity.Fixtures
                         && report.PublicationOutcome == Outcome.Published
                         && report.PublicationCode == DiagnosticCode.None
                         && tokenOwnedByA
-                        && report.CommandSubmitted
-                        && report.DemandAfter == 1UL
+                        && editChargedNoStep
+                        && worldA.PendingDemand == 1UL
                         && facts.LaneARevision == 2UL
                         && facts.LaneAEpoch == 2UL
                         && facts.WorldAEpoch == 2UL
@@ -697,7 +709,9 @@ namespace GameCore.Unity.Fixtures
                         + "; token=" + (report.PublishedToken.HasValue ? report.PublishedToken.Value.ToString() : "<none>")
                         + "; resultReadable=" + resultReadable
                         + "; commandSubmitted=" + report.CommandSubmitted
-                        + "; demand=" + report.DemandAfter
+                        + "; demandAfterEdit=" + report.DemandAfter
+                        + "; editChargedNoStep=" + editChargedNoStep
+                        + "; demandAfterCommand=" + worldA.PendingDemand
                         + "; revision=" + facts.LaneARevision
                         + "; epoch=" + facts.LaneAEpoch
                         + "; worldRevision=" + worldA.PublishedCompositionRevision.Value
@@ -903,6 +917,10 @@ namespace GameCore.Unity.Fixtures
                         declarations[0].SchemaDefaults);
 
                     WorldAdmissionReport admitted = bridgeA.SubmitAndExecute(payload, operationTwo);
+
+                    // SADR-011: the edit itself charges no step; the faulting step is driven by one explicit command.
+                    bool editChargedNoStep = !admitted.CommandSubmitted && admitted.DemandAfter == 0UL;
+                    worldA.NotifyCommandAdmitted(1U);
                     int imagesBeforeStep = worldA.Publications.PublishedCount;
 
                     // The second composition publication (revision/epoch 3) was joined to the world before its
@@ -948,7 +966,7 @@ namespace GameCore.Unity.Fixtures
 
                     bool pass = admitted.Outcome == BridgeOutcome.Executed
                         && admitted.PublicationOutcome == Outcome.Published
-                        && admitted.CommandSubmitted
+                        && editChargedNoStep
                         && countersAgree
                         && secondLaneEpoch == 3UL
                         && secondWorldEpoch == 3UL
@@ -974,6 +992,7 @@ namespace GameCore.Unity.Fixtures
                     string detail = "admission=" + admitted.Outcome
                         + "/" + admitted.PublicationOutcome
                         + "; commandSubmitted=" + admitted.CommandSubmitted
+                        + "; editChargedNoStep=" + editChargedNoStep
                         + "; advanceOutcome=" + (pump.Advance != null ? pump.Advance.Outcome.ToString() : "<none>")
                         + "; faultCode=" + worldA.Driver.FaultCode
                         + "; lifecycle=" + worldA.Lifecycle
