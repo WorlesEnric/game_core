@@ -1,0 +1,15 @@
+{
+  "name": "com.gamecore.gameplay.contracts",
+  "version": "1.0.0",
+  "displayName": "GameCore Gameplay Contracts",
+  "description": "Tiny Unity-free contracts shared by the gameplay plugin library (P1.1): authoring identity (AuthoringIds, IAuthoredObject, IDefinitionAsset), the authoring metadata attributes plugins annotate definitions and tools with, stable slot/route/schema id derivation (SlotNames, GameplayIds), units and scales (mm, mrad, ms), the presentation binder and residency interfaces, the little-endian gameplay payload codec and the gameplay diagnostic codes.",
+  "unity": "6000.0",
+  "keywords": [
+    "gamecore",
+    "gameplay",
+    "contracts"
+  ],
+  "dependencies": {
+    "com.gamecore.contracts": "1.0.0"
+  }
+}

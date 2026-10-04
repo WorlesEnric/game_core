@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- P1.1 gameplay tests under plain dotnet:
+         * the gameplay rules tests (Packages/com.gamecore.rules.gameplay/Tests, which also run as Unity EditMode tests);
+         * the Unity-free gameplay sources compiled in: gameplay.contracts Runtime (ids, units, payloads, catalog names,
+           mirror authoring attributes) and gameplay.compile Core (bake model, definition hashing, canonical JSON, catalog
+           description writer, bake validator and report);
+         * Local/: authoring-id parity with the Studio model (IdDerivation.TargetIdFor), mirror-attribute shape parity
+           with GameCore.Studio.Model, the catalog description validating through the real content compiler, and bake
+           determinism. Nothing here references UnityEngine. -->
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <AssemblyName>GameCore.Rules.Gameplay.Tests</AssemblyName>
+    <RootNamespace>GameCore.Rules.Gameplay.Tests</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="../../../Packages/com.gamecore.rules.gameplay/Tests/**/*.cs"
+             Exclude="../../../Packages/com.gamecore.rules.gameplay/Tests/**/bin/**/*.cs;../../../Packages/com.gamecore.rules.gameplay/Tests/**/obj/**/*.cs" />
+    <Compile Include="../../../Packages/com.gamecore.gameplay.contracts/Runtime/**/*.cs"
+             Exclude="../../../Packages/com.gamecore.gameplay.contracts/Runtime/**/bin/**/*.cs;../../../Packages/com.gamecore.gameplay.contracts/Runtime/**/obj/**/*.cs" />
+    <Compile Include="../../../Packages/com.gamecore.gameplay.compile/Core/**/*.cs"
+             Exclude="../../../Packages/com.gamecore.gameplay.compile/Core/**/bin/**/*.cs;../../../Packages/com.gamecore.gameplay.compile/Core/**/obj/**/*.cs" />
+    <Compile Include="Local/**/*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="NUnit" Version="3.14.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/GameCore.Rules.Gameplay/GameCore.Rules.Gameplay.csproj" />
+    <ProjectReference Include="../../src/GameCore.Contracts/GameCore.Contracts.csproj" />
+    <ProjectReference Include="../../src/GameCore.Content.Compiler/GameCore.Content.Compiler.csproj" />
+    <ProjectReference Include="../../src/GameCore.Studio.Model/GameCore.Studio.Model.csproj" />
+  </ItemGroup>
+
+</Project>

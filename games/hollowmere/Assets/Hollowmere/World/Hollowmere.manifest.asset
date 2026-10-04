@@ -1,0 +1,519 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57e05f2cfdad4dd08516fda5498e5103, type: 3}
+  m_Name: Hollowmere.manifest
+  m_EditorClassIdentifier: 
+  format: gamecore.gameplay-manifest/1
+  worldId: a2e71200-b7bb-4d4a-8aec-26370b7da0f3
+  worldName: Hollowmere
+  startRegionId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
+  focusEntityId: 90f935f8-12d5-4278-b336-107b081e1dfd
+  preloadNeighbours: 0
+  catalogFingerprint: 425508a971072415b8f57e43894083a7f75396c1a47db4691b1a9c1b0e6ec899
+  catalogTypeName: Hollowmere.Generated.HollowmereCatalog
+  bakeReportHash: f968542a9498e4f6a49720ca83d175068650e8da70e95d7aa280de090763f70b
+  regions:
+  - authoringId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
+    name: Thornwick Village
+    scenePath: Assets/Hollowmere/Regions/ThornwickVillage.unity
+    key: 529176640
+    spawnX: 0
+    spawnY: 0
+    spawnZ: -12000
+    spawnYaw: 0
+  - authoringId: 1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18
+    name: Drowned Belfry
+    scenePath: Assets/Hollowmere/Regions/DrownedBelfry.unity
+    key: 2053726868
+    spawnX: 100000
+    spawnY: 0
+    spawnZ: 186000
+    spawnYaw: 0
+  - authoringId: 7f21b99a-8e74-412f-a1da-5f7d60843080
+    name: Blackmere Marsh
+    scenePath: Assets/Hollowmere/Regions/BlackmereMarsh.unity
+    key: 2118164163
+    spawnX: 190000
+    spawnY: 0
+    spawnZ: 0
+    spawnYaw: 1571
+  portals:
+  - authoringId: 68bf5935-dbc0-4c24-b344-35782ef929bf
+    name: ThornwickVillage_BlackmereMarsh
+    key: 203911975
+    regionA: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
+    regionB: 7f21b99a-8e74-412f-a1da-5f7d60843080
+    arrivalAX: 32500
+    arrivalAY: 0
+    arrivalAZ: 0
+    arrivalAYaw: 4712
+    arrivalBX: 167500
+    arrivalBY: 0
+    arrivalBZ: 0
+    arrivalBYaw: 1571
+  - authoringId: 75251765-e092-4fa4-981d-b2258693ec31
+    name: BlackmereMarsh_DrownedBelfry
+    key: 326991361
+    regionA: 7f21b99a-8e74-412f-a1da-5f7d60843080
+    regionB: 1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18
+    arrivalAX: 185466
+    arrivalAY: 0
+    arrivalAZ: 29069
+    arrivalAYaw: 2678
+    arrivalBX: 114534
+    arrivalBY: 0
+    arrivalBZ: 170931
+    arrivalBYaw: 5820
+  - authoringId: 89836cc9-4d04-4634-90ad-1f52cd0698df
+    name: DrownedBelfry_ThornwickVillage
+    key: 1973623197
+    regionA: 1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18
+    regionB: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
+    arrivalAX: 85466
+    arrivalAY: 0
+    arrivalAZ: 170931
+    arrivalAYaw: 464
+    arrivalBX: 14534
+    arrivalBY: 0
+    arrivalBZ: 29069
+    arrivalBYaw: 3605
+  definitions:
+  - authoringId: 05b934c3-466a-4cbd-9ec5-e887ecf26794
+    name: Bell
+    definition: {fileID: 11400000, guid: 1d4b2e8101dbaea66a3fb54c1fc9e507, type: 2}
+    contentStamp: 7ab8a57185fab2735b12fb126a990e23a22ce1f0a3218e2e5d198b4066b28e98
+    variantCount: 2
+  - authoringId: 18779563-f74f-4223-947f-19f0502c5a63
+    name: Lantern
+    definition: {fileID: 11400000, guid: b2a9c9d308ca808c7968da017d5b089f, type: 2}
+    contentStamp: 0c14854565b9a313764e4ce50b842616d6b227e65a46adfca67a1dba08438aa7
+    variantCount: 2
+  - authoringId: 193f7ebc-6242-4813-b1cc-6afeea0918b9
+    name: Traveller
+    definition: {fileID: 11400000, guid: 0bdcbdc77a8fe6e64bb1d135d9b9ff27, type: 2}
+    contentStamp: 9bb98190c06b04c187d9218a2833c5d9e8e897c8b8aca14ba0a14934db56223f
+    variantCount: 1
+  - authoringId: 58338d2c-5721-4ba3-8c6e-96f863268d8b
+    name: Crate
+    definition: {fileID: 11400000, guid: 7904be7b2e80d2fb4b0a170cae2fcc57, type: 2}
+    contentStamp: 2adc9cde53c408f520951781ead083f132e2c76e1f5ff51ade48fd3b659a0bb3
+    variantCount: 2
+  - authoringId: acefbaad-340d-466f-9d66-214afb15646f
+    name: Stone
+    definition: {fileID: 11400000, guid: 59f550ace0092d66a8c292df84a423e7, type: 2}
+    contentStamp: 2759395ed49c610d4d09103d84b5abb76b0f76215ff23007dd3235c5e5cb73a1
+    variantCount: 1
+  - authoringId: b69745cd-c1d0-4d13-84a4-f1bc351f5948
+    name: Reed
+    definition: {fileID: 11400000, guid: 772847e89f0fd59f59429d20ade552e8, type: 2}
+    contentStamp: bc8b0ed35828c5586db8b83e229a6b12fad7bc3a93a4ee6aca9e577fc428c371
+    variantCount: 1
+  - authoringId: d7081228-f497-4a3d-811e-0bb0e3c72807
+    name: Signpost
+    definition: {fileID: 11400000, guid: 6823d6f31a6524606825fca1a7107720, type: 2}
+    contentStamp: d8eb40a3f2087b5cb0a07f1fc4542553ed0d72f83d637d933015e5f00e19bb80
+    variantCount: 1
+  entities:
+  - authoringId: 0e714e11-b708-4dfa-a7d5-5ddb99f8724b
+    name: Village Signpost
+    regionId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
+    definitionId: d7081228-f497-4a3d-811e-0bb0e3c72807
+    x: 4000
+    y: 0
+    z: -16000
+    yaw: 524
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: 5536e67e-9df5-48d1-8e4e-dde2fac37d97
+    name: Crate 2
+    regionId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
+    definitionId: 58338d2c-5721-4ba3-8c6e-96f863268d8b
+    x: -10000
+    y: 0
+    z: 2000
+    yaw: 0
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: 575fe140-5c48-49e0-8fdd-4ddd1344176f
+    name: Lantern East
+    regionId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
+    definitionId: 18779563-f74f-4223-947f-19f0502c5a63
+    x: 4000
+    y: 0
+    z: -6000
+    yaw: 0
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: 5da00079-ec5a-4f59-a2ec-b669010f1c12
+    name: Stone 4
+    regionId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
+    definitionId: acefbaad-340d-466f-9d66-214afb15646f
+    x: -4114
+    y: 0
+    z: -5663
+    yaw: 628
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: 6e61f1c8-b9e4-4144-b5e5-81c28c117f55
+    name: Stone 2
+    regionId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
+    definitionId: acefbaad-340d-466f-9d66-214afb15646f
+    x: 6657
+    y: 0
+    z: 2163
+    yaw: 4398
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: 70edd5d3-9a2c-4f87-92b1-cd3b5fe7b8a3
+    name: Market Crate
+    regionId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
+    definitionId: 58338d2c-5721-4ba3-8c6e-96f863268d8b
+    x: -10000
+    y: 0
+    z: -2000
+    yaw: 0
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: 7f182be0-b3b5-4823-82d2-acaefad6bb7f
+    name: Crate 3
+    regionId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
+    definitionId: 58338d2c-5721-4ba3-8c6e-96f863268d8b
+    x: -10000
+    y: 0
+    z: 6000
+    yaw: 0
+    variant: 0
+    scaleMilli: 1500
+    visible: 1
+    alive: 1
+    overrides:
+    - field: scaleMilli
+      value: 1500
+  - authoringId: 81278897-3ba4-4dd1-8b29-028a831c6018
+    name: Stone 1
+    regionId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
+    definitionId: acefbaad-340d-466f-9d66-214afb15646f
+    x: 0
+    y: 0
+    z: 7000
+    yaw: 3142
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: 90f935f8-12d5-4278-b336-107b081e1dfd
+    name: Traveller
+    regionId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
+    definitionId: 193f7ebc-6242-4813-b1cc-6afeea0918b9
+    x: 0
+    y: 0
+    z: -12000
+    yaw: 0
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: c2b6586b-55d7-4891-977f-9b2d92324532
+    name: Stone 5
+    regionId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
+    definitionId: acefbaad-340d-466f-9d66-214afb15646f
+    x: -6657
+    y: 0
+    z: 2163
+    yaw: 1885
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: e0981979-d2fd-4cbc-8261-2e2f83eab806
+    name: Lantern West
+    regionId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
+    definitionId: 18779563-f74f-4223-947f-19f0502c5a63
+    x: -4000
+    y: 0
+    z: -6000
+    yaw: 0
+    variant: 1
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: e74544f2-0c65-40fa-aec5-5126b86754d1
+    name: Stone 3
+    regionId: 11e8dd95-6622-43d0-8b48-5e17b72f0bb8
+    definitionId: acefbaad-340d-466f-9d66-214afb15646f
+    x: 4114
+    y: 0
+    z: -5663
+    yaw: 5655
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: 5a17c7fd-d5ee-4f4d-8393-ef97267b8136
+    name: Belfry Lantern
+    regionId: 1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18
+    definitionId: 18779563-f74f-4223-947f-19f0502c5a63
+    x: 92000
+    y: 0
+    z: 190000
+    yaw: 0
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: 6a6129c6-dab0-4b03-a935-0459bf02354f
+    name: Stone 4
+    regionId: 1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18
+    definitionId: acefbaad-340d-466f-9d66-214afb15646f
+    x: 95757
+    y: 0
+    z: 202243
+    yaw: 2356
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: 7a39f27f-7f89-4855-9c7d-62f2f7dec386
+    name: Stone 1
+    regionId: 1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18
+    definitionId: acefbaad-340d-466f-9d66-214afb15646f
+    x: 104243
+    y: 0
+    z: 202243
+    yaw: 3927
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: 93b747d7-8bfd-4973-a727-a73e21f0d55b
+    name: Stone 3
+    regionId: 1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18
+    definitionId: acefbaad-340d-466f-9d66-214afb15646f
+    x: 95757
+    y: 0
+    z: 193757
+    yaw: 785
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: aef0bdae-1d73-4283-ae97-8dce12658586
+    name: Crate 1
+    regionId: 1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18
+    definitionId: 58338d2c-5721-4ba3-8c6e-96f863268d8b
+    x: 108000
+    y: 0
+    z: 190000
+    yaw: 1571
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: d6506291-4824-43c5-b113-260293881862
+    name: Crate 2
+    regionId: 1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18
+    definitionId: 58338d2c-5721-4ba3-8c6e-96f863268d8b
+    x: 112000
+    y: 0
+    z: 190000
+    yaw: 1571
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: e45e9ce2-198c-48ee-8a4e-b01bc4bf0bbf
+    name: Drowned Bell
+    regionId: 1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18
+    definitionId: 05b934c3-466a-4cbd-9ec5-e887ecf26794
+    x: 100000
+    y: 0
+    z: 198000
+    yaw: 0
+    variant: 1
+    scaleMilli: 1500
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: f4d48126-e58d-4dd5-8c47-f01dea7e7f4c
+    name: Stone 2
+    regionId: 1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18
+    definitionId: acefbaad-340d-466f-9d66-214afb15646f
+    x: 104243
+    y: 0
+    z: 193757
+    yaw: 5498
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: 041817b7-8aaf-4a0c-84f5-c2826612563a
+    name: Reed 5
+    regionId: 7f21b99a-8e74-412f-a1da-5f7d60843080
+    definitionId: b69745cd-c1d0-4d13-84a4-f1bc351f5948
+    x: 198273
+    y: 0
+    z: 3929
+    yaw: 1309
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: 26d3a9df-8316-4c10-8c33-b82ba8f68d38
+    name: Reed 4
+    regionId: 7f21b99a-8e74-412f-a1da-5f7d60843080
+    definitionId: b69745cd-c1d0-4d13-84a4-f1bc351f5948
+    x: 203929
+    y: 0
+    z: -1727
+    yaw: 262
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: 27bdeb0d-b36c-447c-b827-4122c7c31461
+    name: Stone 3
+    regionId: 7f21b99a-8e74-412f-a1da-5f7d60843080
+    definitionId: acefbaad-340d-466f-9d66-214afb15646f
+    x: 198000
+    y: 0
+    z: -14000
+    yaw: 1893
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: 4a5e74a1-c6a4-4769-9683-823a32cba083
+    name: Reed 6
+    regionId: 7f21b99a-8e74-412f-a1da-5f7d60843080
+    definitionId: b69745cd-c1d0-4d13-84a4-f1bc351f5948
+    x: 200343
+    y: 0
+    z: 11657
+    yaw: 2356
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: 4b2ce3a3-23f1-4fab-9d2e-b0e56d1b3d22
+    name: Stone 1
+    regionId: 7f21b99a-8e74-412f-a1da-5f7d60843080
+    definitionId: acefbaad-340d-466f-9d66-214afb15646f
+    x: 186000
+    y: 0
+    z: -10000
+    yaw: 1893
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: 678aa351-4c7a-41c3-8146-a81e488dc269
+    name: Reed 1
+    regionId: 7f21b99a-8e74-412f-a1da-5f7d60843080
+    definitionId: b69745cd-c1d0-4d13-84a4-f1bc351f5948
+    x: 208071
+    y: 0
+    z: 13727
+    yaw: 3403
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: 7a2034e5-4ccb-4621-8c06-fbfe18bda89d
+    name: Stone 2
+    regionId: 7f21b99a-8e74-412f-a1da-5f7d60843080
+    definitionId: acefbaad-340d-466f-9d66-214afb15646f
+    x: 192000
+    y: 0
+    z: -12000
+    yaw: 1893
+    variant: 0
+    scaleMilli: 1000
+    visible: 0
+    alive: 1
+    overrides:
+    - field: visible
+      value: false
+  - authoringId: db488917-7d9b-49d7-827d-b42b3712aa01
+    name: Reed 3
+    regionId: 7f21b99a-8e74-412f-a1da-5f7d60843080
+    definitionId: b69745cd-c1d0-4d13-84a4-f1bc351f5948
+    x: 211657
+    y: 0
+    z: 343
+    yaw: 5498
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: e32488d4-b4f8-4450-b6cc-3a5c1773e795
+    name: Marsh Lantern
+    regionId: 7f21b99a-8e74-412f-a1da-5f7d60843080
+    definitionId: 18779563-f74f-4223-947f-19f0502c5a63
+    x: 194000
+    y: 0
+    z: -4000
+    yaw: 0
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []
+  - authoringId: eccb1ef1-18b0-4b23-8382-833fcbd1d825
+    name: Reed 2
+    regionId: 7f21b99a-8e74-412f-a1da-5f7d60843080
+    definitionId: b69745cd-c1d0-4d13-84a4-f1bc351f5948
+    x: 213727
+    y: 0
+    z: 8071
+    yaw: 4451
+    variant: 0
+    scaleMilli: 1000
+    visible: 1
+    alive: 1
+    overrides: []

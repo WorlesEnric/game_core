@@ -1,0 +1,27 @@
+{
+  "name": "com.gamecore.gameplay.world",
+  "version": "1.0.0",
+  "displayName": "GameCore Gameplay World",
+  "description": "Catalog row 2 of the gameplay plugin library (P1.1): regions, portals and streaming. Authoring: RegionDefinition, PortalDefinition, WorldDefinition, AuthoredRegion, RegionBounds and the RegionPortal trigger. Kernel half: one composition scope per region under the world scope, the world.residency/visits region slots and the world.region/posX/posY/posZ/yaw entity slots, the world.travel, host-only world.setResidency and world.place routes, and the RegionEntered/RegionLeft events. Runtime: WorldBuilder (application definition from the baked RegionManifest; every authored entity becomes a target), RegionStreamer (additive scene streaming with residency 0..3, neighbour preload, view suspension, IResidencyQuery), EntitySpawner and the presentation frame. Editor: world.connectRegions, world.addPortal and world.setSpawnPoint.",
+  "unity": "6000.0",
+  "keywords": [
+    "gamecore",
+    "gameplay",
+    "world",
+    "streaming"
+  ],
+  "dependencies": {
+    "com.gamecore.composition": "1.0.0",
+    "com.gamecore.contracts": "1.0.0",
+    "com.gamecore.derivation": "1.0.0",
+    "com.gamecore.gameplay.contracts": "1.0.0",
+    "com.gamecore.gameplay.entities": "1.0.0",
+    "com.gamecore.planning": "1.0.0",
+    "com.gamecore.rules.gameplay": "1.0.0",
+    "com.gamecore.unity.adapters": "1.0.0",
+    "com.gamecore.unity.app": "1.0.0",
+    "com.gamecore.unity.runtime": "1.0.0",
+    "com.unity.collections": "2.6.6",
+    "com.unity.entities": "1.4.6"
+  }
+}
