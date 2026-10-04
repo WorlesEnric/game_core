@@ -334,6 +334,11 @@ namespace GameCore.Gameplay.World
         public void Shutdown()
         {
             Plan.Frame.Detach();
+            for (int i = Plan.Extensions.Count - 1; i >= 0; i--)
+            {
+                Plan.Extensions[i].Detach(this);
+            }
+
             Streamer.Cancel();
             if (Views != null)
             {

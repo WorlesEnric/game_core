@@ -427,7 +427,7 @@ namespace GameCore.Rules.Gameplay.Npc
 
         public static int ClampMood(int mood) => mood < MoodMin ? MoodMin : (mood > MoodMax ? MoodMax : mood);
 
-        private static NpcTransition StepPatrol(NpcSnapshot state, NpcProfile profile, IReadOnlyList<PatrolPoint> route, int elapsed)
+        private static NpcTransition StepPatrol(NpcSnapshot state, NpcProfile profile, IReadOnlyList<PatrolPoint>? route, int elapsed)
         {
             if (route == null || route.Count == 0)
             {
@@ -502,7 +502,7 @@ namespace GameCore.Rules.Gameplay.Npc
         }
 
         // The standing behaviour as a state: a patrol re-aims at its current point.
-        private static NpcSnapshot Resume(NpcSnapshot state, IReadOnlyList<PatrolPoint> route)
+        private static NpcSnapshot Resume(NpcSnapshot state, IReadOnlyList<PatrolPoint>? route)
         {
             int behaviour = state.Behaviour;
             if (behaviour == (int)NpcStateCode.Patrol)
