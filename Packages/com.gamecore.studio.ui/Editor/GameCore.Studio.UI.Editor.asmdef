@@ -1,0 +1,27 @@
+{
+    "name": "GameCore.Studio.UI.Editor",
+    "rootNamespace": "GameCore.Studio.UI",
+    "references": [
+        "GameCore.Studio.Model",
+        "GameCore.Studio.Authoring",
+        "GameCore.Studio.Core.Editor",
+        "GameCore.Contracts",
+        "GameCore.Unity.Runtime",
+        "GameCore.Unity.Adapters",
+        "GameCore.Unity.App",
+        "Unity.InputSystem"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "Newtonsoft.Json.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

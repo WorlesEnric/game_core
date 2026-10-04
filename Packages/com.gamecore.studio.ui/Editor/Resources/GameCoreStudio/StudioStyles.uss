@@ -1,0 +1,472 @@
+/* GameCore Studio UI - shared styles (P2.1). Every panel must stay usable at 1280x720. */
+
+.gcs-root {
+    flex-grow: 1;
+}
+
+.gcs-grow {
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+.gcs-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.gcs-row {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+.gcs-wrap-row {
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.gcs-toolbar {
+    min-height: 24px;
+    padding: 2px 4px;
+    border-bottom-width: 1px;
+    border-color: rgba(0, 0, 0, 0.35);
+    background-color: rgba(0, 0, 0, 0.12);
+}
+
+.gcs-separator {
+    width: 1px;
+    height: 16px;
+    margin: 0 6px;
+    background-color: rgba(128, 128, 128, 0.5);
+}
+
+.gcs-title {
+    font-size: 14px;
+    -unity-font-style: bold;
+    margin: 4px 2px;
+}
+
+.gcs-section {
+    margin: 6px 4px;
+    padding: 4px;
+    border-width: 1px;
+    border-radius: 3px;
+    border-color: rgba(128, 128, 128, 0.35);
+}
+
+.gcs-section__title {
+    -unity-font-style: bold;
+    margin: 6px 2px 2px 2px;
+}
+
+.gcs-wrap {
+    white-space: normal;
+}
+
+.gcs-muted {
+    opacity: 0.65;
+    white-space: normal;
+}
+
+.gcs-status {
+    color: rgb(130, 200, 255);
+    white-space: normal;
+}
+
+.gcs-diagnostic {
+    color: rgb(240, 120, 100);
+    white-space: normal;
+}
+
+.gcs-code {
+    font-size: 11px;
+    min-height: 120px;
+}
+
+.gcs-chip,
+.gcs-badge {
+    padding: 1px 5px;
+    margin: 1px 2px;
+    border-radius: 7px;
+    font-size: 10px;
+    background-color: rgba(128, 128, 128, 0.3);
+    color: rgb(230, 230, 230);
+}
+
+.gcs-chip--live,
+.gcs-state--candidate,
+.gcs-badge--applied {
+    background-color: rgba(60, 160, 80, 0.75);
+}
+
+.gcs-chip--not-configured,
+.gcs-state--cancelled {
+    background-color: rgba(110, 110, 110, 0.6);
+}
+
+.gcs-chip--blocked,
+.gcs-state--task-failed,
+.gcs-state--refused,
+.gcs-state--candidate-invalid,
+.gcs-badge--error,
+.gcs-badge--failed,
+.gcs-badge--rejected {
+    background-color: rgba(190, 60, 50, 0.8);
+}
+
+.gcs-chip--unknown,
+.gcs-state--unresolved,
+.gcs-state--waiting,
+.gcs-state--needs-clarification,
+.gcs-badge--warn,
+.gcs-badge--interrupted {
+    background-color: rgba(200, 140, 30, 0.8);
+}
+
+.gcs-state--queued,
+.gcs-state--running,
+.gcs-badge--previewing,
+.gcs-badge--location {
+    background-color: rgba(50, 120, 200, 0.8);
+}
+
+.gcs-badge--agent {
+    background-color: rgba(120, 80, 190, 0.8);
+}
+
+.gcs-badge--voice {
+    background-color: rgba(170, 70, 150, 0.8);
+}
+
+.gcs-badge--disabled {
+    opacity: 0.5;
+}
+
+/* ---------------------------------------------------------------- viewport */
+
+.gcs-viewport__area {
+    flex-grow: 1;
+    flex-shrink: 1;
+    overflow: hidden;
+    background-color: rgb(24, 24, 24);
+    min-height: 120px;
+}
+
+.gcs-mode {
+    min-width: 54px;
+}
+
+.gcs-mode--active {
+    background-color: rgb(58, 121, 187);
+    color: rgb(255, 255, 255);
+}
+
+.gcs-pump {
+    padding: 1px 6px;
+    border-radius: 3px;
+    background-color: rgba(128, 128, 128, 0.3);
+}
+
+.gcs-pump--ok {
+    background-color: rgba(60, 160, 80, 0.8);
+}
+
+.gcs-pump--bad {
+    background-color: rgba(200, 50, 40, 0.9);
+    color: rgb(255, 255, 255);
+}
+
+.gcs-hover-box {
+    position: absolute;
+    display: none;
+    border-width: 2px;
+    border-color: rgb(255, 210, 60);
+}
+
+.gcs-marquee {
+    position: absolute;
+    display: none;
+    border-width: 1px;
+    border-color: rgb(110, 180, 255);
+    background-color: rgba(110, 180, 255, 0.15);
+}
+
+.gcs-marker {
+    position: absolute;
+    display: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 7px;
+    border-width: 2px;
+    border-color: rgb(255, 255, 255);
+    background-color: rgba(255, 80, 60, 0.85);
+    overflow: visible;
+}
+
+.gcs-marker__label {
+    position: absolute;
+    left: 16px;
+    top: -4px;
+    font-size: 10px;
+    color: rgb(255, 255, 255);
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 0 3px;
+    white-space: nowrap;
+}
+
+.gcs-card {
+    position: absolute;
+    display: none;
+    width: 250px;
+    padding: 6px;
+    border-radius: 4px;
+    background-color: rgba(20, 20, 24, 0.92);
+    border-width: 1px;
+    border-color: rgba(255, 255, 255, 0.25);
+    color: rgb(235, 235, 235);
+}
+
+.gcs-card__title {
+    -unity-font-style: bold;
+}
+
+.gcs-badges {
+    position: absolute;
+    left: 6px;
+    top: 6px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-width: 70%;
+}
+
+.gcs-viewport__status {
+    position: absolute;
+    left: 6px;
+    bottom: 4px;
+    color: rgb(230, 230, 230);
+    background-color: rgba(0, 0, 0, 0.45);
+    padding: 1px 4px;
+    font-size: 11px;
+}
+
+.gcs-popup {
+    background-color: rgba(28, 28, 32, 0.96);
+    border-width: 1px;
+    border-color: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    padding: 4px;
+    max-width: 420px;
+}
+
+.gcs-popup__item {
+    -unity-text-align: middle-left;
+    flex-grow: 1;
+}
+
+.gcs-popup__item--occluded {
+    opacity: 0.7;
+}
+
+.gcs-strip {
+    position: absolute;
+    right: 6px;
+    bottom: 6px;
+    width: 300px;
+    max-height: 70%;
+    padding: 4px;
+    border-radius: 4px;
+    background-color: rgba(24, 24, 28, 0.9);
+    color: rgb(235, 235, 235);
+}
+
+.gcs-strip__card {
+    border-top-width: 1px;
+    border-color: rgba(255, 255, 255, 0.2);
+    padding: 3px 0;
+}
+
+/* ---------------------------------------------------------------- prompt */
+
+.gcs-prompt {
+    padding: 4px;
+    border-top-width: 1px;
+    border-color: rgba(0, 0, 0, 0.35);
+    flex-shrink: 0;
+}
+
+.gcs-prompt__input {
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-height: 38px;
+    max-height: 90px;
+}
+
+.gcs-prompt__input > .unity-text-field__input {
+    white-space: normal;
+}
+
+.gcs-prompt__mic {
+    min-width: 44px;
+    height: 34px;
+}
+
+.gcs-prompt__mic--active {
+    background-color: rgb(200, 60, 50);
+    color: rgb(255, 255, 255);
+}
+
+.gcs-prompt__level {
+    width: 0;
+    height: 6px;
+    margin: 0 2px;
+    background-color: rgb(80, 200, 100);
+}
+
+.gcs-prompt__send {
+    min-width: 60px;
+    height: 34px;
+}
+
+.gcs-prompt__transcript {
+    font-size: 11px;
+    -unity-font-style: italic;
+    opacity: 0.8;
+    white-space: normal;
+}
+
+.gcs-prompt__reason {
+    flex-grow: 1;
+    font-size: 11px;
+    opacity: 0.75;
+    -unity-text-align: middle-right;
+    white-space: normal;
+}
+
+/* ---------------------------------------------------------------- lists */
+
+.gcs-split {
+    flex-direction: row;
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+.gcs-split__list {
+    flex-grow: 1;
+    flex-basis: 50%;
+    min-width: 180px;
+}
+
+.gcs-split__details {
+    flex-grow: 1;
+    flex-basis: 50%;
+    min-width: 180px;
+    border-left-width: 1px;
+    border-color: rgba(128, 128, 128, 0.35);
+    padding-left: 4px;
+}
+
+.gcs-tray__row {
+    flex-direction: row;
+    align-items: center;
+    padding: 2px;
+    border-bottom-width: 1px;
+    border-color: rgba(128, 128, 128, 0.2);
+}
+
+.gcs-tray__row--selected {
+    background-color: rgba(58, 121, 187, 0.45);
+}
+
+.gcs-tray__row:focus {
+    border-color: rgb(58, 121, 187);
+}
+
+.gcs-tray__intent {
+    flex-grow: 1;
+    flex-shrink: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin: 0 4px;
+}
+
+.gcs-history__row--interrupted {
+    background-color: rgba(200, 140, 30, 0.35);
+}
+
+.gcs-op {
+    margin: 2px 0;
+    padding: 2px;
+    border-left-width: 2px;
+    border-color: rgba(128, 128, 128, 0.4);
+}
+
+.gcs-table {
+    margin: 2px 0;
+}
+
+.gcs-table__row {
+    flex-direction: row;
+}
+
+.gcs-table__row--header {
+    -unity-font-style: bold;
+}
+
+.gcs-table__row--changed {
+    background-color: rgba(200, 160, 40, 0.18);
+}
+
+.gcs-table__cell {
+    flex-grow: 1;
+    flex-basis: 25%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 1px 3px;
+}
+
+.gcs-image-cell {
+    width: 30%;
+    margin: 2px;
+}
+
+.gcs-image-cell__image {
+    height: 96px;
+}
+
+.gcs-tool {
+    margin: 2px;
+}
+
+.gcs-tool--agent {
+    border-color: rgb(120, 80, 190);
+}
+
+.gcs-tool--query {
+    opacity: 0.9;
+}
+
+.gcs-primary {
+    background-color: rgb(58, 121, 187);
+    color: rgb(255, 255, 255);
+}
+
+/* ---------------------------------------------------------------- first run */
+
+.gcs-first-run {
+    flex-grow: 1;
+    padding: 10px;
+}
+
+.gcs-first-run__page {
+    flex-grow: 1;
+}
+
+.gcs-first-run__page > Label {
+    white-space: normal;
+    margin-bottom: 6px;
+}
