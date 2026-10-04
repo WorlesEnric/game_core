@@ -107,6 +107,17 @@
         "com.unity.entities": "1.4.6"
       }
     },
+    "com.gamecore.gameplay.save": {
+      "version": "file:../../../Packages/com.gamecore.gameplay.save",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.studio.core": "1.0.0",
+        "com.gamecore.unity.app": "1.0.0",
+        "com.gamecore.unity.runtime": "1.0.0"
+      }
+    },
     "com.gamecore.gameplay.traversal": {
       "version": "file:../../../Packages/com.gamecore.gameplay.traversal",
       "depth": 0,
@@ -186,6 +197,15 @@
       "source": "local",
       "dependencies": {
         "com.gamecore.contracts": "1.0.0"
+      }
+    },
+    "com.gamecore.studio.core": {
+      "version": "file:../../../Packages/com.gamecore.studio.core",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.gamecore.contracts": "1.0.0",
+        "com.unity.nuget.newtonsoft-json": "3.2.1"
       }
     },
     "com.gamecore.telemetry-qualification": {
@@ -297,6 +317,13 @@
     "com.unity.nuget.mono-cecil": {
       "version": "1.11.6",
       "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.nuget.newtonsoft-json": {
+      "version": "3.2.1",
+      "depth": 0,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
