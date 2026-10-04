@@ -45,6 +45,7 @@
       "additionalProperties": false,
       "properties": {
         "bytes": {
+          "minimum": 0,
           "type": "integer"
         },
         "import": {

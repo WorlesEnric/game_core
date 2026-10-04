@@ -43,40 +43,40 @@ namespace GameCore.Studio.Model
         public AuthoringKind Kind { get; }
 
         /// <summary>GUID minted once by the authoring importer; absent for Location and Asset.</summary>
-        [JsonProperty("authoringId", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("authoringId", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         [SchemaHint(MinLength = 1)]
         public string? AuthoringId { get; }
 
         /// <summary>Unity GlobalObjectId text; absent for Location.</summary>
-        [JsonProperty("global", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("global", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         [SchemaHint(MinLength = 1)]
         public string? Global { get; }
 
-        [JsonProperty("assetGuid", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("assetGuid", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         [SchemaHint(MinLength = 1)]
         public string? AssetGuid { get; }
 
         /// <summary>Asset path, optionally with a <c>#/hierarchy/path</c> suffix for scene objects.</summary>
-        [JsonProperty("path", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("path", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         [SchemaHint(MinLength = 1)]
         public string? Path { get; }
 
         /// <summary>DefinitionRef text form <c>name@revision</c> when the thing has a definition.</summary>
-        [JsonProperty("definition", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("definition", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         [SchemaHint(Pattern = StudioPatterns.DefinitionRef)]
         public string? Definition { get; }
 
         /// <summary>What the user chose to edit; a single value.</summary>
-        [JsonProperty("scope", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("scope", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public AuthorScope? Scope { get; }
 
         /// <summary>Content stamp at selection time; the precondition value of an operation (03 s1).</summary>
-        [JsonProperty("stamp", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("stamp", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         [SchemaHint(Pattern = StudioPatterns.Stamp)]
         public string? Stamp { get; }
 
         /// <summary>Kind=Location only.</summary>
-        [JsonProperty("location", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("location", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public LocationRef? Location { get; }
 
         /// <summary>
@@ -286,7 +286,7 @@ namespace GameCore.Studio.Model
         public IReadOnlyList<double> Position { get; }
 
         /// <summary>Surface normal, [x, y, z].</summary>
-        [JsonProperty("normal", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("normal", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         [SchemaHint(MinItems = 3, MaxItems = 3)]
         public IReadOnlyList<double>? Normal { get; }
 
