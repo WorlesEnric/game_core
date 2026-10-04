@@ -9,8 +9,11 @@ never edits outside its listed paths. Shared files (`games/*/Packages/manifest.j
 
 - Each packet runs in its own git worktree on the Mac checkout (branch `studio/<packet>`), commits there, and
   reports. Fable merges packets into `main` in dependency order and runs the integration checks on the Linux host.
+- **No builds on the Mac:** nothing is compiled, built or tested on the Mac; code reaches the host only through
+  git (`studio/tools/sync-to-host.sh` pushes the branch to the host hub `~/wkspace/gc-studio/hub.git`), never rsync.
 - Compile and test feedback during a packet: the worker syncs its branch to its own directory on the Linux host
-  (`ssh myubuntu`, `~/wkspace/gc-studio/<packet>/`, created by `studio/tools/sync-to-host.sh <packet>`), runs
+  (`ssh myubuntu`, `~/wkspace/gc-studio/<packet>/`, a clone of the hub checked out at the packet's branch,
+  created by `studio/tools/sync-to-host.sh <packet>`), runs
   `dotnet build/test` for Unity-free code and `studio/tools/unity-compile.sh <project>` (batchmode compile +
   optional EditMode filter) for Unity code. At most three concurrent Unity batchmode instances host-wide; each
   packet uses only its own project copy. Workers never run `tools/reproduce.sh` or project-wide gates; the

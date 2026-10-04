@@ -9,4 +9,10 @@ dotnet/**/TestResults/
 # raw run logs and measurements (summaries and result indexes stay versioned)
 artifacts/**/raw/
 
-unity/GameCore.ReleaseCheck/.claude/
+unity/GameCore.ReleaseCheck/
+
+# Claude Code worktrees and session state
+.claude/
+
+# host-side Unity logs written by studio/tools/unity-compile.sh
+.unity-logs/
