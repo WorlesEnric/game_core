@@ -269,7 +269,7 @@ pub fn node_row(node: &IndexNode) -> Option<(&'static str, String, Map<String, V
                 node.reference
                     .location
                     .as_ref()
-                    .and_then(|l| l.region.clone())
+                    .map(|l| l.region.clone())
             });
             put("region", region.map(Value::String));
             put(
