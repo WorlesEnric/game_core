@@ -4,7 +4,7 @@ The packet plan puts this file at the branch root, but this packet may write onl
 `studio/agent/**` and `studio/etos/agent/**`, so it lives here.
 
 **Branch:** `worktree-agent-a87161a756b3b10dc`, based on main `7a9c409`.
-**etos pin:** `6c2c3f4ea238bd211f9c3e8e9a813b22a13bc9a8`. It is recorded in `ETOS_PIN`, and `build.rs` warns (without failing) when `../../../etos` is at a different commit.
+**etos SDK:** vendored. `vendor/etos-sdk/` is a copy of etos `sdk/rust` (Apache-2.0) at commit `6c2c3f4ea238bd211f9c3e8e9a813b22a13bc9a8`, used as `etos-sdk = { path = "vendor/etos-sdk" }`. `vendor/README.md` records the source, commit and licence. `ETOS_PIN` names the same commit, and `build.rs` warns (without failing) if `ETOS_PIN` and `vendor/README.md` disagree. No etos checkout is needed to build.
 **Toolchain:** Rust 1.97.1. The crate has its own Cargo workspace.
 
 ## 1. What was built
@@ -25,6 +25,18 @@ The packet plan puts this file at the branch root, but this packet may write onl
 | Logging | `src/redact.rs` | `tracing` to stderr through a redacting writer (removes `etk_/ett_/etp_/eta_` tokens and `Bearer …`). The environment is never logged. The stage child gets an allowlisted env with secret-like names removed. |
 | Manifest | `studio/etos/agent/agent.toml` | `command = "bin/gamecore-studio"`. Grants: `logger, query, changes, tasks, files, topics, ops, providers, realtime, proxy, services`. `providers = ["studio-voice"]`. Workers `gc-designer` and `gc-mechanic` use `model = "default"`. |
 | Workers | `studio/etos/agent/workers/*.md` | Per 04 §4: read the tool catalog first, produce only catalog ops, never invent ids, copy `selection.json`, write `/outputs/changeset.json` (with the P0.3 schema fields only) with an artifacts sha256 list, ask at most one clarification question via `/outputs/clarification.json`, never claim unwritten assets. The mechanic also uses the 03 §8 package layout, runs `dotnet test` first, and writes `proposal.json`, `package.tgz` and a `mechanism.propose` change set. |
+
+### Vendored SDK (coordinator decision, applied)
+
+- **What was copied:** `vendor/etos-sdk/` contains etos `sdk/rust` at `6c2c3f4`: `src/` (byte-identical to the commit), `README.md`, and `Cargo.toml` with its `[dev-dependencies]` and `[[example]]` sections removed. Examples, tests, `target/`, `clippy.toml` and `.gitignore` are not copied. The etos repository has no LICENSE file at that commit; the licence (Apache-2.0) is the one declared in the crate's `Cargo.toml`.
+- **Workspace setup:** the crate keeps its own empty `[workspace]` table, and the companion's workspace lists it in `exclude`, so it is not a member of the companion workspace.
+- **Refreshing it:** run `studio/agent/vendor-etos-sdk.sh <etos-checkout>`.
+  - It copies from the commit named in `studio/etos/etos.lock`. The script accepts a line `commit = "<sha>"`, `etos_commit=<sha>` or `commit: <sha>`, and the first one wins. If the lock is absent or names no commit, it falls back to the checkout's `HEAD`. `ETOS_COMMIT=<rev>` overrides both.
+  - It copies through `git archive`, so uncommitted edits in the checkout never get in.
+  - It rewrites `vendor/README.md` and `ETOS_PIN`.
+  - `studio/etos/etos.lock` does not exist yet, so this copy was made with `ETOS_COMMIT=6c2c3f4…`.
+- **Removed:** the `.claude/worktrees/etos` symlink and the git check in `build.rs`.
+- **Kept on purpose:** P0.1's patched SDK is expected to fix the `generate` op name and the voice refusal body. The `ops().call("generate.image")` workaround and the extra voice handshake both stay in place, so re-vendoring from that pin needs no code change.
 
 ### P0.3 contract alignment (coordinator update, applied)
 
@@ -55,7 +67,8 @@ The fake node is an axum server. It implements the agent WebSocket and welcome, 
 
 - **13/13 pass**, five consecutive runs at about 0.6 s each.
 - **26** library unit tests pass.
-- `cargo fmt --check` and `cargo clippy --all-targets -- -D warnings` are clean.
+- `cargo fmt --check` and `cargo clippy --all-targets -- -D warnings` are clean (re-run with the vendored SDK).
+- **Correction:** my earlier clippy runs went through a command proxy that summarised the output, and my grep missed two test-only findings. One was `manual_is_multiple_of` in the fake node. The other was a `MutexGuard` held across an await in the index test; it was already dropped explicitly before the await, but clippy still flagged it, so the guard now lives in a block. Both are fixed. Clippy has since been run with unfiltered output.
 
 | Test | Covers |
 |---|---|
@@ -134,7 +147,7 @@ The full transcript is in `evidence/real-node-transcript.txt` and the agent log 
 6. Voice provider status is `unknown` in hello until the first session, because no cheap realtime probe exists without opening a session.
 7. The media-op idempotency key covers (changeSetId, op, spec, max cost). Repeating an identical request returns the first result. For a variation, the client changes the spec (e.g. a `seed`) or the changeSetId.
 8. The `IndexNode` in the companion's delta API accepts two optional extensions, `rgKind` and `rgKey`. P0.3's `semantic-index.schema.json` node has `additionalProperties: false`, so P2.2 must strip them before validating a node against that schema, or not send them. Deltas also accept `baseRevision`, `projectInfo` and `removals`.
-9. **Worktree path dependency:** `etos-sdk = { path = "../../../etos/sdk/rust" }` resolves next to the repo root. In this worktree a sibling symlink `.claude/worktrees/etos` points at a `git clone --shared` of etos at the pin. P0.1 works in the main etos checkout on branch `studio/bailian-tts`, which is at a different commit, so `build.rs` prints its pin warning there.
+9. **SDK source:** resolved by vendoring (see §1). When P0.1's patched SDK lands, the integrator runs `vendor-etos-sdk.sh <etos checkout>` with `studio/etos/etos.lock` naming the new commit, then rebuilds. If the patched `Error`/`Ops` APIs change shape, `src/error.rs` and `src/ops.rs` are the only places that touch them.
 10. The Unity app cannot query `gc_*` with its key (point 11 above). P2.2 reads the index through its own index or the companion. If P2.2 needs RG reads from the editor, a companion `GET /v1/index/query` passthrough is a small addition.
 
 ## 4. API summary for P2.2 (all under `/api/v1/agents/gamecore-studio/http` on the node, app key)
@@ -159,7 +172,8 @@ Errors are always `{code, message, hint?}`. Etos refusals keep their status and 
 
 ## 5. Expectations for P0.1 (install)
 
-- **Build:** `cargo build --release --manifest-path studio/agent/Cargo.toml`. It needs `../etos` next to the game_core checkout at the pin (or accept the warning). The build takes about 1 minute after deps; the first build compiles 182 crates.
+- **Build:** `cargo build --release --manifest-path studio/agent/Cargo.toml`. It is self-contained: the SDK is vendored, and no etos checkout is needed. The build takes about 1 minute after deps; the first build compiles 182 crates.
+- **After the etos pin moves:** run `studio/agent/vendor-etos-sdk.sh <etos-checkout>`, then commit the refreshed `vendor/`, `vendor/README.md` and `ETOS_PIN`. The script reads the commit from `studio/etos/etos.lock`, which P0.1 writes; see §1 for the accepted line formats.
 - **Link:** `ln -sfn ../../../agent/target/release/gamecore-studio studio/etos/agent/bin/gamecore-studio`, then `etos agent install --link studio/etos/agent`. The workers are created by the install (`created worker gc-designer`, `gc-mechanic`); they need a model aliased `default` in `models.toml`.
 - **App:** `studio/etos/app/app.toml` must declare `app = "gamecore-unity"`, `routes = ["proxy","query","changes","entrances"]` and `uses = ["gamecore-studio"]` (the temporary copy used here). Then `etos app pair gamecore-unity --approve --out ~/.config/gamecore-studio/app-key.json`.
 - **Optional `$ETOS_STATE_DIR/config.toml`:** unknown keys are an error. Keys: `allowed_apps`, `workers`, `default_worker`, `reask_on_invalid`, `port`, `schema`, `follow_wait_ms`, `hello_cache_s`, `index_flush_ms`, `max_slice_bytes`, `[stage] command/slots/timeout_s`, `[voice] provider/instructions/max_sessions`. Environment overrides: `GAMECORE_STUDIO_ALLOWED_APP`, `GAMECORE_STUDIO_STAGE_COMMAND`, `GAMECORE_STUDIO_SCHEMA`, `GAMECORE_STUDIO_PORT`.

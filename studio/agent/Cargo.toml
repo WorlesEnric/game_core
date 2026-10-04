@@ -1,7 +1,7 @@
 # gamecore-studio: the GameCore Studio companion, an installed etos agent
 # (docs/studio/02-architecture.md boundary D, docs/studio/04-etos-integration.md).
-# Its own Cargo workspace; depends on the etos Rust SDK by path, at the commit in ETOS_PIN
-# (build.rs warns when the checkout differs).
+# Its own Cargo workspace; depends on the etos Rust SDK vendored in vendor/etos-sdk (source
+# commit in vendor/README.md and ETOS_PIN; refresh with vendor-etos-sdk.sh).
 [package]
 name = "gamecore-studio"
 version = "0.1.0"
@@ -13,6 +13,8 @@ publish = false
 build = "build.rs"
 
 [workspace]
+# The vendored SDK keeps its own (empty) workspace table: not a member of this one.
+exclude = ["vendor/etos-sdk"]
 
 [lib]
 name = "gamecore_studio"
@@ -34,7 +36,7 @@ todo = "deny"
 unimplemented = "deny"
 
 [dependencies]
-etos-sdk = { path = "../../../etos/sdk/rust" }
+etos-sdk = { path = "vendor/etos-sdk" }
 axum = { version = "0.8", features = ["ws"] }
 base64 = "0.22"
 futures = "0.3"

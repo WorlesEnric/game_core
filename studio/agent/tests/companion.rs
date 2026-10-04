@@ -975,34 +975,35 @@ async fn index_deltas_are_coalesced_and_delivered() {
             .any(|t| t["kind"] == "gc_entity" && t["key"] == "e-ferryman")
     })
     .await;
-    let g = node.lock();
-    let ferry: Vec<&Value> = g
-        .traces
-        .iter()
-        .filter(|t| t["kind"] == "gc_entity" && t["key"] == "e-ferryman")
-        .collect();
-    assert_eq!(
-        ferry.len(),
-        1,
-        "five deltas within one window coalesce into one row"
-    );
-    assert_eq!(ferry[0]["values"]["name"], "Ferryman v5");
-    assert_eq!(ferry[0]["values"]["region"], "marsh");
-    assert!(ferry[0]["user"].is_null(), "global state");
-    assert!(g.traces.iter().any(|t| t["kind"] == "gc_entity"
-        && t["key"] == "e-old"
-        && t["values"]["removed"] == true));
-    assert!(
-        g.traces
+    {
+        let g = node.lock();
+        let ferry: Vec<&Value> = g
+            .traces
             .iter()
-            .any(|t| t["kind"] == "gc_project" && t["values"]["index_revision"] == 5)
-    );
-    assert!(
-        g.trace_posts - posts_before <= 2,
-        "at most one batch per window ({})",
-        g.trace_posts - posts_before
-    );
-    drop(g);
+            .filter(|t| t["kind"] == "gc_entity" && t["key"] == "e-ferryman")
+            .collect();
+        assert_eq!(
+            ferry.len(),
+            1,
+            "five deltas within one window coalesce into one row"
+        );
+        assert_eq!(ferry[0]["values"]["name"], "Ferryman v5");
+        assert_eq!(ferry[0]["values"]["region"], "marsh");
+        assert!(ferry[0]["user"].is_null(), "global state");
+        assert!(g.traces.iter().any(|t| t["kind"] == "gc_entity"
+            && t["key"] == "e-old"
+            && t["values"]["removed"] == true));
+        assert!(
+            g.traces
+                .iter()
+                .any(|t| t["kind"] == "gc_project" && t["values"]["index_revision"] == 5)
+        );
+        assert!(
+            g.trace_posts - posts_before <= 2,
+            "at most one batch per window ({})",
+            g.trace_posts - posts_before
+        );
+    }
     let (_, hello) = api.get("/v1/hello").await;
     assert_eq!(hello["indexRevision"], 5);
     running.shutdown().await;

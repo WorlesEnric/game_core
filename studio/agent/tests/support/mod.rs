@@ -617,7 +617,7 @@ async fn realtime_session(n: FakeNode, socket: WebSocket, provider: String) {
                     || c["id"] != format!("audio-{seq}")
                     || bytes.is_empty()
                     || bytes.len() > 32 * 1024
-                    || bytes.len() % 2 != 0
+                    || !bytes.len().is_multiple_of(2)
                 {
                     n.lock().rt_errors.push(format!("bad chunk {seq}"));
                     let _ = tx.send(Message::Text(frame(json!({"type": "error", "code": "bad_realtime_command", "message": "gap"})).into())).await;
