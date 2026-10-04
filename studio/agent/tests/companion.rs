@@ -1442,3 +1442,86 @@ async fn unresolved_requests_are_followed_at_most_three_more_times() {
         running.shutdown().await;
     }
 }
+
+#[tokio::test]
+async fn a_slow_task_open_is_reread_not_failed() {
+    let node = FakeNode::start().await;
+    {
+        let mut g = node.lock();
+        g.slow_opens = 1;
+        g.open_delay_ms = 2_500;
+    }
+    let dir = tempfile::tempdir().unwrap();
+    let running = companion(&node, dir.path(), |c| c.task_open_timeout_secs = 1).await;
+    let api = Api::new(&running, &node);
+    let id = "cs_01J9ZQ00000000000000000050";
+    let (s, v) = api.post("/v1/requests", edit_request(id)).await;
+    assert_eq!(s, 200, "{v}");
+    assert_ne!(
+        v["state"], "failed",
+        "a timed-out open is not a failure: {v}"
+    );
+    // The open timed out after 1 s; the desk asks again by request id and gets the task
+    // etos had already opened. One task, never a second.
+    let deadline = std::time::Instant::now() + Duration::from_secs(20);
+    let v = loop {
+        let (_, v) = api.get(&format!("/v1/requests/{id}")).await;
+        if v["taskId"].is_string() {
+            break v;
+        }
+        assert!(std::time::Instant::now() < deadline, "{v}");
+        tokio::time::sleep(Duration::from_millis(50)).await;
+    };
+    assert_eq!(v["state"], "running", "{v}");
+    assert_eq!(node.tasks().len(), 1);
+    assert!(node.calls("POST", "/tasks") >= 2, "re-read by request id");
+    let task = v["taskId"].as_str().unwrap().to_string();
+    node.complete(
+        &task,
+        &[(
+            "changeset.json",
+            changeset_with_tool(id, "inventory.grantStarting"),
+        )],
+    );
+    api.until_state(id, "candidate").await;
+    running.shutdown().await;
+}
+
+#[tokio::test]
+async fn a_degraded_model_is_named_in_the_outcome() {
+    let node = FakeNode::start().await;
+    let dir = tempfile::tempdir().unwrap();
+    let running = companion(&node, dir.path(), |_| {}).await;
+    let api = Api::new(&running, &node);
+    let id = "cs_01J9ZQ00000000000000000051";
+    let (_, v) = api.post("/v1/requests", edit_request(id)).await;
+    let task = v["taskId"].as_str().unwrap().to_string();
+    let topic = node
+        .tasks()
+        .into_iter()
+        .find(|t| t.id == task)
+        .unwrap()
+        .topic;
+    node.lock().task_error = Some(
+        "HTTP 503: auth_unavailable: no auth available (providers=claude, model=claude-opus-5-5)"
+            .into(),
+    );
+    node.post_record(
+        &topic,
+        "gc-designer@fake",
+        "the turn failed",
+        Some("failed"),
+        vec![],
+    );
+    let v = api.until_state(id, "failed").await;
+    assert_eq!(v["outcome"]["code"], "task_failed", "{v}");
+    assert_eq!(v["outcome"]["reason"], "model_degraded", "{v}");
+    assert!(
+        v["outcome"]["message"]
+            .as_str()
+            .unwrap()
+            .contains("auth_unavailable"),
+        "{v}"
+    );
+    running.shutdown().await;
+}
