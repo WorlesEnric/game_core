@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="menu-root" class="gc-screen">
+        <ui:VisualElement name="menu-panel" class="gc-panel">
+            <ui:Label name="menu-title" text="Hollowmere" class="gc-title" />
+            <ui:Button name="menu-new" text="New game" class="gc-button" />
+            <ui:Button name="menu-continue" text="Continue" class="gc-button" />
+            <ui:Button name="menu-load" text="Load game" class="gc-button" />
+            <ui:Button name="menu-settings" text="Settings" class="gc-button" />
+            <ui:Button name="menu-quit" text="Quit" class="gc-button" />
+            <ui:Label name="menu-message" text="" class="gc-muted" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

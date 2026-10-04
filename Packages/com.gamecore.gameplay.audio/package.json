@@ -1,0 +1,25 @@
+{
+  "name": "com.gamecore.gameplay.audio",
+  "version": "1.0.0",
+  "displayName": "GameCore Gameplay Audio",
+  "description": "Catalog row 11 of the gameplay plugin library (P1.5): audio and atmosphere. Kernel half: the audio plugin (owner gameplay.audio.owner) with the audio.musicState, audio.ambienceZone and audio.volumeMaster/Music/Sfx/Voice slots on a per-world audio session target, the audio.setMusicState, audio.setAmbienceZone, audio.setVolume, audio.playSfx, audio.playVoice and audio.stopVoice routes and their events (MusicStateChanged, AmbienceChanged, VolumeChanged, SfxPlayed, VoicePlayed, VoiceStopped), mounted through the world extension seam; the rules live in com.gamecore.rules.gameplay (Runtime/Audio). Runtime: AudioRuntime (follows committed slots and events, directs ambience from RegionEntered, registers IVoiceLinePlayer, IFeedbackSink and IVolumeSettingsSink), MusicController (states, stingers, equal-power crossfades), AmbienceZoneBinder, SfxPool, VoicePlayer, AudioMixerBinding (exposed volume parameters), AudioEngineHost (AudioSources only when a graphics device exists), AnimationEventRelay (footsteps to IFeedbackSink) and the authorable AudioBankDefinition, MusicStateDefinition, AmbienceDefinition and AudioSetDefinition. Editor: audio.assignClip, audio.setAmbience, audio.setMusicState, audio.generateVoice and audio.generateSfx (through IMediaGenerationGateway; NotConfigured until the Studio ETOS client supplies one), the audio validator and the deterministic procedural placeholder generator (.wav plus .manifest.json).",
+  "unity": "6000.0",
+  "keywords": [
+    "gamecore",
+    "gameplay",
+    "audio",
+    "music",
+    "ambience"
+  ],
+  "dependencies": {
+    "com.gamecore.contracts": "1.0.0",
+    "com.gamecore.gameplay.contracts": "1.0.0",
+    "com.gamecore.gameplay.entities": "1.0.0",
+    "com.gamecore.gameplay.world": "1.0.0",
+    "com.gamecore.rules.gameplay": "1.0.0",
+    "com.gamecore.unity.app": "1.0.0",
+    "com.gamecore.unity.runtime": "1.0.0",
+    "com.unity.collections": "2.6.6",
+    "com.unity.entities": "1.4.6"
+  }
+}

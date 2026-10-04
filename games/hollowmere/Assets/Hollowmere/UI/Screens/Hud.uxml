@@ -1,0 +1,15 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="hud-root" class="gc-hud" picking-mode="Ignore">
+        <ui:VisualElement name="hud-top" class="gc-hud-top" picking-mode="Ignore">
+            <ui:Label name="objective-line" text="Objective" class="gc-objective" />
+            <ui:ProgressBar name="stamina-bar" title="Stamina" low-value="0" high-value="100" value="100" class="gc-stamina" />
+        </ui:VisualElement>
+        <ui:VisualElement name="region-banner" class="gc-banner" picking-mode="Ignore">
+            <ui:Label name="region-name" text="Region" class="gc-banner-text" />
+        </ui:VisualElement>
+        <ui:Label name="message" text="" class="gc-message" />
+        <ui:VisualElement name="prompt" class="gc-prompt" picking-mode="Ignore">
+            <ui:Label name="prompt-text" text="Interact" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

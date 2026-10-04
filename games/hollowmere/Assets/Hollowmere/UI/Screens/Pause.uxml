@@ -1,0 +1,17 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="pause-root" class="gc-screen">
+        <ui:VisualElement name="pause-panel" class="gc-panel">
+            <ui:Label name="pause-title" text="Paused" class="gc-title" />
+            <ui:Button name="pause-resume" text="Resume" class="gc-button" />
+            <ui:Button name="pause-save" text="Save game" class="gc-button" />
+            <ui:Button name="pause-load" text="Load game" class="gc-button" />
+            <ui:Button name="pause-settings" text="Settings" class="gc-button" />
+            <ui:Button name="pause-menu" text="Quit to main menu" class="gc-button" />
+            <ui:Button name="pause-quit" text="Quit" class="gc-button" />
+            <ui:VisualElement name="pause-volume-row" class="gc-row">
+                <ui:Label name="pause-volume-label" text="Master volume" class="gc-muted" />
+                <ui:Label name="pause-volume" text="" class="gc-muted" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

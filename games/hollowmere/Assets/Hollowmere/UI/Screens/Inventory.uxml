@@ -1,0 +1,18 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="inventory-root" class="gc-screen">
+        <ui:VisualElement name="inventory-panel" class="gc-panel">
+            <ui:Label name="inventory-title" text="Inventory" class="gc-title" />
+            <ui:VisualElement name="inventory-grid" class="gc-grid" />
+            <ui:VisualElement name="inventory-info" class="gc-row">
+                <ui:Label name="inventory-selected" text="" class="gc-text" />
+                <ui:Label name="inventory-currency" text="" class="gc-muted" />
+            </ui:VisualElement>
+            <ui:VisualElement name="inventory-actions" class="gc-row">
+                <ui:Button name="inventory-use" text="Use" class="gc-button" />
+                <ui:Button name="inventory-drop" text="Drop" class="gc-button" />
+                <ui:Button name="inventory-journal" text="Journal" class="gc-button" />
+                <ui:Button name="inventory-close" text="Close" class="gc-button" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
