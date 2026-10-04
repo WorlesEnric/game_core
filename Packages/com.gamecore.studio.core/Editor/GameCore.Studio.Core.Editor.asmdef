@@ -1,0 +1,25 @@
+{
+    "name": "GameCore.Studio.Core.Editor",
+    "rootNamespace": "GameCore.Studio.Edit",
+    "references": [
+        "GameCore.Studio.Model",
+        "GameCore.Studio.Authoring",
+        "GameCore.Contracts",
+        "GameCore.Composition",
+        "GameCore.Unity.Runtime",
+        "GameCore.Unity.App"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "Newtonsoft.Json.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
