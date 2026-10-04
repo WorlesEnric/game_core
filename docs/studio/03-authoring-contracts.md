@@ -43,7 +43,7 @@ Rules:
   "regionRect": { "screen": [x0,y0,x1,y1] },           // for box selections
   "frame": { "camera": { "position": [...], "rotation": [...], "fov": 60, "aspect": 1.78 },
              "viewport": [w,h], "image": "sha256:…" },  // image stored in Studio/Artifacts, never inline
-  "worldSession": "WorldId | null",     // Play only
+  "worldSession": "WorldId",            // Play only; optional fields are omitted when absent, never null
   "indexRevision": 1234                 // semantic index revision the snapshot was taken against
 }
 ```
@@ -115,7 +115,7 @@ from traces), `query.references`, `query.impact`, `preview.stage`, `preview.comp
 ```jsonc
 {
   "id": "cs_01J…", "schema": "gamecore.studio.changeset/1",
-  "intent": { "text": "Give the ferryman a lantern and make him mention it", "voiceTranscriptId": "tr_…|null",
+  "intent": { "text": "Give the ferryman a lantern and make him mention it", "voiceTranscriptId": "tr_…"   // optional: omitted when absent, never null,
               "origin": "agent | manual | voice | replay" },
   "selection": SelectionSnapshot,
   "baseVersions": [ { "ref": AuthoringRef, "stamp": "sha256:…" } ],   // read dependencies
@@ -131,7 +131,7 @@ from traces), `query.references`, `query.impact`, `preview.stage`, `preview.comp
                    "role": "voiceLine", "import": { "type": "AudioClip", "settings": {} } } ],
   "validation": [ { "scenario": "dialogue.reachable", "status": "pending | pass | fail", "detail": "" } ],
   "requirements": { "max": "Live", "worldRebuild": false, "compile": false, "build": false },
-  "links": { "etosTasks": ["t_…"], "parent": "cs_…|null", "gameCoreOps": [] },   // filled as they happen
+  "links": { "etosTasks": ["t_…"], "parent": "cs_…", "gameCoreOps": [] },   // filled as they happen; parent omitted when absent
   "state": "Requested | Running | Candidate | Staged | Applied | Rejected | Failed | Undone | Interrupted",
   "outcomes": [ { "opId": "op1", "status": "Applied | Skipped | Refused | Failed", "code": "", "detail": "",
                   "gameCoreOps": ["w:…/i:…/s:42"], "undo": { "inverse": { … } } } ],
@@ -168,6 +168,16 @@ Journal location: `<project>/Studio/History/YYYY/MM/<id>.json` (tracked) and `St
 
 ## 9. Diagnostics
 
-Every refusal and validation failure is `{code, message, hint, where: AuthoringRef|opId}` with the same code
-whether raised by an inspector, a validator, the kernel bridge or an agent candidate. Codes are registered in
+Every refusal and validation failure is `{code, message, hint?, where?: AuthoringRef|opId, data?: object}` with the
+same code whether raised by an inspector, a validator, the kernel bridge or an agent candidate. `where` is absent
+for change-set-wide findings (envelope, artifacts, requirements). `data` carries a structured witness when one
+exists: `Conflict` always has `data: {expected, actual}` (stamps or revisions); `StaleTarget` means the target no
+longer exists or is unloaded, `Conflict` means it exists but changed since it was read.
+
+**Null policy (all shapes):** optional members are omitted when absent and are never written as `null`; readers
+refuse `null`. **Candidate mode:** a change set arriving from a worker may carry only `state: "Candidate"` (or no
+state), no `outcomes`, no `timestamps.applied`, no `links.gameCoreOps`; the companion and the engine refuse
+anything else. **Catalog revision:** `ToolCatalog.revision` is the sha256 of the catalog's canonical JSON without
+the `revision` member, minted by the tool registry; requests carry it as `toolCatalogRevision` and a candidate
+built against another revision is `StaleContext`. Codes are registered in
 `GameCore.Studio.Model.DiagnosticCodes` and listed in [09-plugin-developer-guide.md](09-plugin-developer-guide.md).

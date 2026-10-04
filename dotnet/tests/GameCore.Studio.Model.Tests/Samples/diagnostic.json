@@ -1,5 +1,5 @@
 {
-  "code": "StaleTarget",
+  "code": "Conflict",
   "message": "Target of 'op1' changed since planning (expected sha256:5c4c5ccee970fa522dc13e61b2e21cddfc2d5e69a6311f37f000b7ecd77635b5, actual sha256:198dc8420b2ce7145d691e987a6be2e296eaee20dcc59d206ff301701df51406).",
   "hint": "Rebase: re-plan the operation against the current stamp, or skip it.",
   "where": {
@@ -11,5 +11,9 @@
     "definition": "npc.ferryman@3",
     "scope": "Instance",
     "stamp": "sha256:5c4c5ccee970fa522dc13e61b2e21cddfc2d5e69a6311f37f000b7ecd77635b5"
+  },
+  "data": {
+    "expected": "sha256:5c4c5ccee970fa522dc13e61b2e21cddfc2d5e69a6311f37f000b7ecd77635b5",
+    "actual": "sha256:198dc8420b2ce7145d691e987a6be2e296eaee20dcc59d206ff301701df51406"
   }
 }

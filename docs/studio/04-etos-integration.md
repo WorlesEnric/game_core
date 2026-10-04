@@ -37,19 +37,23 @@ ticket: `POST /tickets {path}` → `?etos_ticket=` (single use, 30 s, `crates/et
 | `POST /v1/index/delta` | semantic index delta (nodes, edges, removals, revision) | companion logs `gc_*` traces |
 | `POST /v1/ops/generate` | direct media op for a tool (`asset.generate`): `{op: image\|tts\|3d, spec, max_cost_usd, changeSetId}` | runs `POST /ops/generate.image` etc.; returns artifact refs |
 | `WS /v1/events?after=` | request/task/candidate/voice events, ordered, with cursor | reconnect with `after` |
-| `WS /v1/voice` | duplex: client → `{type:"audio", seq, pcm16 base64}` / `{type:"stop"}`; server → transcript revisions, speech boundaries, errors | one session per Studio instance |
+| `WS /v1/voice` | duplex: client → `{type:"audio", seq, pcm16 base64}` (≤ 24 KiB raw = 32 KiB base64 per frame) / `{type:"stop"}`; server → transcript revisions (`role` always `user`; `final` only on `done`), speech boundaries, errors | one session per Studio instance |
 | `POST /v1/stage` / `GET /v1/stage/{job}` | stage a mechanism package; verdict | §6 |
 
 Error bodies are etos-shaped `{code, message, hint}`; etos refusal codes pass through unchanged
 (`not_configured`, `outcome_unknown`, `request_rejected`, `budget_exhausted`, `too_large`, `agent_starting`,
-`forbidden`, …). The companion adds only `candidate_invalid`, `stale_context`, `stage_failed`, `ledger_conflict`.
+`forbidden`, …). The companion adds `candidate_invalid`, `stale_context`, `stage_failed`, `ledger_conflict` and the
+transport-level `bad_request`, `not_found`, `internal`, `transport`, `protocol`, `invalid`, `backpressure`
+(the last five are the SDK's own error kinds, passed through by name). Request outcome codes shown in the tray are
+`candidate`, `task_failed`, `waiting`, `needs_clarification`, `cancelled`, `unresolved`. `/v1/hello` reports providers
+`image`, `tts`, `voice`, `3d`, `describe` each as `live | not_configured | blocked | unknown`.
 
 ## 3. Task lifecycle mapping
 
 | Step | etos call (agent key) | Citation |
 |---|---|---|
 | Upload context + attachments | `POST /files?name=&media_type=` (≤ 64 MiB each) → `FileInfo{id,digest}` | `crates/etapi/src/http.rs:109-112,676-695` |
-| Open task | `POST /tasks {worker, text, topic, inputs:[fileIds], id: changeSetId}`; the topic is `#agent/gamecore-studio/cs-<id>` | `crates/etagents/src/wire.rs:110-126`; `tasks.rs:103-131` |
+| Open task | `POST /tasks {worker, text, topic, inputs:[fileIds], id: changeSetId}`; the topic is `#agent/gamecore-studio/cs-<ulid>` (lowercase ULID without the `cs_` prefix; etos topic segments are lowercase) | `crates/etagents/src/wire.rs:110-126`; `tasks.rs:103-131` |
 | Follow | `GET /topics/agent/gamecore-studio/cs-<id>/records?after=&wait_ms=60000` (≤ 1000 records; progress records, final `done\|failed` record carries `refs`) | `crates/etagents/src/topics.rs:166-217`; `crates/etagent/src/controller.rs:556-581` |
 | Status | `GET /tasks/{id}` → `queued\|starting\|running\|waiting\|done\|failed\|cancelled\|unknown` | `wire.rs:129-150` |
 | Cancel | `POST /tasks/{id}/cancel` (no-op if ended) | `tasks.rs:249-261`; `crates/etnode/src/node.rs:784-812` |
@@ -70,8 +74,8 @@ UI label for etos `unknown` and `outcome_unknown`, never a success.
 Worker instructions (`studio/etos/agent/workers/*.md`) specify: read the tool catalog first; produce only
 operations in the catalog; never invent object ids; cite the `indexRevision`; stop and return `status: needs-clarification`
 with at most one question when two interpretations differ materially; never claim an asset you did not write to
-`/outputs`. The companion rejects a change set that violates the schema and sends one re-ask as a new task with
-`parent`.
+`/outputs`. The companion rejects a change set that violates the schema **or the tool catalog** (unknown tool, missing required
+args, disallowed target kind, candidate-mode fields) and sends one re-ask as a new task with `parent`.
 
 ## 5. Media and voice
 
