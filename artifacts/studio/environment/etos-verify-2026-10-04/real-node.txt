@@ -1,0 +1,152 @@
+   Compiling gamecore-studio v0.1.0 (/home/worlesenric/wkspace/gc-studio/p0.1-host-etos/studio/agent)
+   Compiling etos-sdk v1.0.0 (/home/worlesenric/wkspace/gc-studio/p0.1-host-etos/studio/agent/vendor/etos-sdk)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 8m 55s
+     Running tests/real_node.rs (target/debug/deps/real_node-42d6f237759e8fa7)
+
+running 2 tests
+test real_node_end_to_end ... --- GET /v1/hello through the proxy -> 200
+{
+  "app": "gamecore-unity",
+  "capabilities": [
+    "requests",
+    "candidates",
+    "artifacts",
+    "index",
+    "ops",
+    "events",
+    "voice",
+    "stage"
+  ],
+  "connected": true,
+  "indexRevision": null,
+  "node": "studio",
+  "protocol": 1,
+  "providers": {
+    "3d": "not_configured",
+    "describe": "live",
+    "image": "live",
+    "tts": "live",
+    "voice": "unknown"
+  },
+  "providersCheckedAt": 1791147933984,
+  "sdk": "1.0.0",
+  "service": "gamecore-studio",
+  "toolCatalogRevisions": [
+    "p05-cat-1"
+  ],
+  "version": "0.1.0",
+  "workers": [
+    "gc-designer",
+    "gc-mechanic"
+  ]
+}
+--- WS /v1/events?after=0 opened with a ticket (no Authorization header)
+--- POST /v1/requests cs_00000000000017911479345081 -> 200
+{
+  "changeSetId": "cs_00000000000017911479345081",
+  "request": {
+    "attempt": 0,
+    "changeSetId": "cs_00000000000017911479345081",
+    "createdAt": 1791147934784,
+    "hasCandidate": false,
+    "outcome": null,
+    "requestId": "cs_00000000000017911479345081",
+    "seq": 9,
+    "state": "requested",
+    "taskId": null,
+    "taskStatus": null,
+    "tasks": [],
+    "topic": "#agent/gamecore-studio/cs-cs_00000000000017911479345081",
+    "updatedAt": 1791147934784,
+    "worker": "gc-designer"
+  },
+  "requestId": "cs_00000000000017911479345081",
+  "state": "requested",
+  "taskId": null,
+  "taskStatus": null
+}
+--- same request again -> 200: taskId null (first null)
+  [  0.0s] "requested" attempt=0 task=null status=null
+  [106.1s] "requested" attempt=0 task="t658160503cb112b318184111" status=null
+  [110.2s] "running" attempt=0 task="t658160503cb112b318184111" status="starting"
+
+thread 'real_node_end_to_end' (2514960) panicked at tests/real_node.rs:126:13:
+cs_00000000000017911479345081 did not settle: {"attempt":0,"changeSetId":"cs_00000000000017911479345081","createdAt":1791147934784,"hasCandidate":false,"outcome":null,"requestId":"cs_00000000000017911479345081","seq":10,"state":"running","taskId":"t658160503cb112b318184111","taskStatus":"starting","tasks":["t658160503cb112b318184111"],"topic":"#agent/gamecore-studio/cs-cs_00000000000017911479345081","updatedAt":1791148090932,"worker":"gc-designer"}
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+test real_node_restart_recovery ... --- POST /v1/requests cs_00000000000017911481643063 -> 200: state "requested" task null
+--- etos agent restart gamecore-studio: restarted gamecore-studio
+  [ 0.8s] hello -> 503 "agent_starting"
+  [ 2.8s] hello -> 503 "agent_starting"
+  [ 3.1s] hello -> 503 "agent_starting"
+  [ 3.4s] hello -> 503 "agent_starting"
+  [ 3.7s] hello -> 503 "agent_starting"
+  [ 4.0s] hello -> 503 "agent_starting"
+  [ 4.3s] hello -> 503 "agent_starting"
+  [ 4.6s] hello -> 503 "agent_starting"
+  [ 4.9s] hello -> 503 "agent_starting"
+  [ 5.2s] hello -> 503 "agent_starting"
+  [ 5.5s] hello -> 503 "agent_starting"
+  [ 5.8s] hello -> 503 "agent_starting"
+  [ 6.1s] hello -> 503 "agent_starting"
+  [ 6.4s] hello -> 503 "agent_starting"
+  [ 6.7s] hello -> 503 "agent_starting"
+  [ 7.0s] hello -> 503 "agent_starting"
+  [ 7.3s] hello -> 503 "agent_starting"
+  [ 7.6s] hello -> 503 "agent_starting"
+  [ 9.4s] hello -> 503 "agent_starting"
+  [ 9.7s] hello -> 503 "agent_starting"
+  [10.0s] hello -> 503 "agent_starting"
+  [10.3s] hello -> 503 "agent_starting"
+  [10.7s] hello -> 503 "agent_starting"
+  [11.0s] hello -> 503 "agent_starting"
+  [11.4s] hello -> 503 "agent_starting"
+  [11.7s] hello -> 503 "agent_starting"
+  [12.0s] hello -> 503 "agent_starting"
+  [12.5s] hello -> 503 "agent_starting"
+  [12.8s] hello -> 503 "agent_starting"
+  [13.3s] hello -> 503 "agent_starting"
+  [13.6s] hello -> 503 "agent_starting"
+  [14.1s] hello -> 503 "agent_starting"
+  [14.4s] hello -> 503 "agent_starting"
+  [14.7s] hello -> 503 "agent_starting"
+  [15.0s] hello -> 503 "agent_starting"
+  [15.3s] hello -> 503 "agent_starting"
+  [15.6s] hello -> 503 "agent_starting"
+  [16.4s] hello -> 503 "agent_starting"
+  [16.7s] hello -> 503 "agent_starting"
+  [17.0s] hello -> 503 "agent_starting"
+  [17.3s] hello -> 503 "agent_starting"
+  [17.6s] hello -> 503 "agent_starting"
+  [17.9s] hello -> 503 "agent_starting"
+  [18.5s] hello -> 503 "agent_starting"
+  [18.8s] hello -> 503 "agent_starting"
+  [19.1s] hello -> 503 "agent_starting"
+  [19.4s] hello -> 503 "agent_starting"
+  [19.7s] hello -> 503 "agent_starting"
+  [20.1s] hello -> 503 "agent_starting"
+  [20.4s] hello -> 503 "agent_starting"
+  [21.0s] hello -> 503 "agent_starting"
+  [21.3s] hello -> 503 "agent_starting"
+  [21.9s] hello -> 503 "agent_starting"
+  [22.3s] hello -> 503 "agent_starting"
+  [22.6s] hello -> 503 "agent_starting"
+  [23.0s] hello -> 503 "agent_starting"
+  [23.3s] hello -> 503 "agent_starting"
+  [24.7s] new process ready
+  [  0.2s] "requested" attempt=0 task=null status=null
+  [100.6s] "running" attempt=0 task="t131be22ff26f0ef9309e9e9c" status="queued"
+
+thread 'real_node_restart_recovery' (2524867) panicked at tests/real_node.rs:126:13:
+cs_00000000000017911481643063 did not settle: {"attempt":0,"changeSetId":"cs_00000000000017911481643063","createdAt":1791148165936,"hasCandidate":false,"outcome":null,"requestId":"cs_00000000000017911481643063","seq":12,"state":"running","taskId":"t131be22ff26f0ef9309e9e9c","taskStatus":"queued","tasks":["t131be22ff26f0ef9309e9e9c"],"topic":"#agent/gamecore-studio/cs-cs_00000000000017911481643063","updatedAt":1791148335270,"worker":"gc-designer"}
+FAILED
+
+failures:
+
+failures:
+    real_node_end_to_end
+    real_node_restart_recovery
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 484.43s
+
+error: test failed, to rerun pass `--test real_node`
