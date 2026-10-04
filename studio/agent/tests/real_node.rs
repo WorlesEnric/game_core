@@ -10,6 +10,12 @@
 //!
 //! It prints a transcript. It never asks for paid work: `/v1/ops/generate` is called only
 //! with `STUDIO_REAL_ALLOW_OPS=1`, and the voice session sends 0.2 s of silence.
+//!
+//! A designer request passes only when it ends `candidate` or `needs_clarification`: a
+//! `failed` request (a refusal at `phase: open`, a failed task turn, a degraded model), an
+//! invalid candidate or an unresolved one fails the test and prints the outcome and the
+//! refusal. (Before etos `5fa113b` this test "passed" while every request had failed at
+//! `phase: open`.) `STUDIO_REAL_SETTLE_S` (default 600) bounds the wait.
 
 use std::time::{Duration, Instant};
 
@@ -40,6 +46,39 @@ fn node() -> Option<Node> {
 
 fn say(what: &str, v: &Value) {
     println!("--- {what}\n{}", serde_json::to_string_pretty(v).unwrap());
+}
+
+fn settle_limit() -> Duration {
+    Duration::from_secs(
+        std::env::var("STUDIO_REAL_SETTLE_S")
+            .ok()
+            .and_then(|s| s.parse().ok())
+            .unwrap_or(600),
+    )
+}
+
+/// A designer request must produce something the creator can act on.
+fn assert_productive(id: &str, settled: &Value) {
+    let state = settled["state"].as_str().unwrap_or_default();
+    if matches!(state, "candidate" | "needs_clarification") {
+        return;
+    }
+    let outcome = &settled["outcome"];
+    let refusal = &outcome["refusal"];
+    panic!(
+        "{id} ended `{state}`, not `candidate` or `needs_clarification`\n  outcome code: {}\n  phase: {}\n  message: {}\n  refusal: {}\n  reason: {}\n  model error: {}\n  diagnostics: {}\n  full: {settled}",
+        outcome["code"],
+        outcome["phase"],
+        outcome["message"],
+        if refusal.is_null() {
+            "(none)".to_string()
+        } else {
+            refusal.to_string()
+        },
+        outcome["reason"],
+        outcome["modelError"],
+        outcome["diagnostics"],
+    );
 }
 
 impl Node {
@@ -200,8 +239,9 @@ async fn real_node_end_to_end() {
         again["taskId"], v["taskId"]
     );
     assert_eq!(again["taskId"], v["taskId"]);
-    let settled = n.until_settled(&id, Duration::from_secs(180)).await;
+    let settled = n.until_settled(&id, settle_limit()).await;
     say("settled", &settled);
+    assert_productive(&id, &settled);
     let mut kinds = Vec::new();
     while let Ok(Some(Ok(m))) = tokio::time::timeout(Duration::from_millis(500), ws.next()).await {
         if let Message::Text(t) = m {
@@ -239,6 +279,10 @@ async fn real_node_end_to_end() {
         .await;
     say(&format!("POST /v1/requests/{cid}/cancel -> {s}"), &c);
     assert_eq!(s, 200);
+    assert_eq!(
+        c["state"], "cancelled",
+        "cancel must settle `cancelled`, not a refusal at open: {c}"
+    );
 
     // 5. voice through a ticketed WebSocket.
     let mut vws = n.ticketed_ws("/v1/voice", "").await;
@@ -359,8 +403,9 @@ async fn real_node_restart_recovery() {
         assert!(start.elapsed() < Duration::from_secs(60));
         tokio::time::sleep(Duration::from_millis(300)).await;
     }
-    let settled = n.until_settled(&id, Duration::from_secs(180)).await;
+    let settled = n.until_settled(&id, settle_limit()).await;
     say("settled after the restart", &settled);
+    assert_productive(&id, &settled);
     assert_eq!(
         settled["tasks"][0], first_task,
         "the first task was kept, never reopened"

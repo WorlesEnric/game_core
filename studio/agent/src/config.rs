@@ -12,6 +12,7 @@
 //! schema = "/path/to/change-set.schema.json"   # else the vendored copy
 //! follow_wait_ms = 20000
 //! ops_max_cost_usd = 0.10           # default ceiling of /v1/ops/generate when a call has none
+//! task_open_timeout_secs = 180      # POST /tasks launches the task inline; give it time
 //! [stage]
 //! command = "/home/me/wkspace/game_core/studio/stage/stage.sh"
 //! slots = ["1", "2"]
@@ -76,6 +77,9 @@ pub struct Config {
     pub follow_wait_ms: u64,
     /// How long `/v1/hello` reuses the provider status, in seconds.
     pub hello_cache_s: u64,
+    /// Timeout of one `POST /tasks` call, in seconds. etos launches the task inside that
+    /// request, so a short client timeout can drop it mid-launch (P0.1 DIAGNOSIS item 2).
+    pub task_open_timeout_secs: u64,
     /// Coalescing window of index deltas, in ms (at most one batch per window).
     pub index_flush_ms: u64,
     /// Cap of the index slice packed for a worker, in bytes (truncated beyond).
@@ -100,6 +104,7 @@ struct FileConfig {
     schema: Option<PathBuf>,
     follow_wait_ms: Option<u64>,
     hello_cache_s: Option<u64>,
+    task_open_timeout_secs: Option<u64>,
     index_flush_ms: Option<u64>,
     max_slice_bytes: Option<usize>,
     ops_max_cost_usd: Option<f64>,
@@ -153,6 +158,7 @@ impl Config {
             schema: None,
             follow_wait_ms: 20_000,
             hello_cache_s: 60,
+            task_open_timeout_secs: 180,
             index_flush_ms: 1_000,
             max_slice_bytes: 2 * 1024 * 1024,
             ops_max_cost_usd: None,
@@ -232,6 +238,9 @@ impl Config {
         }
         if let Some(v) = f.hello_cache_s {
             self.hello_cache_s = v;
+        }
+        if let Some(v) = f.task_open_timeout_secs {
+            self.task_open_timeout_secs = v.max(1);
         }
         if let Some(v) = f.index_flush_ms {
             self.index_flush_ms = v.max(100);
