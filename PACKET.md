@@ -2,8 +2,8 @@
 
 Owner: Opus 5.5. Contract: [docs/studio/03-authoring-contracts.md](docs/studio/03-authoring-contracts.md) (all
 sections, Unity side), 02 s1, s2 B/C, s5 to s8, SADR-007/008/009/011; packets P0.3 (model), P0.4 s2 (kernel app
-bridge), P0.2 (host tooling). Branch `worktree-agent-a004eae06ca97de37`, merged with `main` at `fee0793` (the P0.3
-review fixes).
+bridge), P0.2 (host tooling). Branch `worktree-agent-a004eae06ca97de37`, merged with `main` at `444e266` (P0.3
+review fixes and P1.1).
 
 ## Built
 
@@ -17,14 +17,39 @@ review fixes).
 | `Editor/Journal/**` | `Journal`, `ArtifactStore`, `HistoryService` (undo/redo/recovery) |
 | `Editor/Services/**` | `StudioRuntime` (+ options), `StudioServiceRegistry`, `StudioServices` (ScriptableSingleton), `StudioIndexTriggers` + asset postprocessor |
 | `Editor/Inspector/**` | `AuthoringInspectorBuilder` (UI Toolkit), `ManualEditCommitter`, `MoveChangeSets`, `GizmoMoveController`, fallback editors, `StudioMoveTool` (EditorTool) |
-| `Tests/Fixtures/**` | asmdef `GameCore.Studio.Core.Tests.Fixtures` (Editor, `UNITY_INCLUDE_TESTS`): fixture item/NPC definitions, entity, duck-typed entity, region, mood enum, fixture tools `fixture.setGreeting` and `fixture.fail` |
+| `Tests/Fixtures/**` | asmdef `GameCore.Studio.Core.Tests.Fixtures` (runtime, no references, `UNITY_INCLUDE_TESTS`): a mirror attribute set like gameplay.contracts', fixture item/NPC definitions, entity, duck-typed entity, region, mood enum, fixture tools `fixture.setGreeting` and `fixture.fail` |
 | `Tests/Editor/**` | asmdef `GameCore.Studio.Core.Editor.Tests`: EditMode tests (list below) |
 | `package.json` | deps now `com.gamecore.composition`, `com.gamecore.contracts`, `com.gamecore.unity.app`, `com.gamecore.unity.runtime`, `com.unity.nuget.newtonsoft-json` (exact set of the asmdef references) |
 | `games/hollowmere/Packages/manifest.json` + lock | `"testables": ["com.gamecore.studio.core"]`; lock dependency map of studio.core updated |
+| `games/hollowmere/Assets/Hollowmere/Tests/P1_6/EditMode/**` | asmdef `GameCore.Studio.Hollowmere.Tests` (refs only Studio assemblies): `HollowmereDiscoveryTests` |
+| `unity/GameCore.Validation/Packages/packages-lock.json` | outside the exclusive paths, mechanical: the studio.core dependency map follows the new `package.json` (the metadata checker failed otherwise after the merge) |
 
 Runtime/Model was not touched (no missing shape).
 
-VERIFIED_PLACEHOLDER
+## Verified (host myubuntu, Unity 6000.0.75f1, one instance)
+
+`studio/tools/unity-compile.sh p1.6 games/hollowmere --tests EditMode --filter 'GameCore\.Studio\..*'` at the
+P1.6 head (merged with `main` `444e266`, P1.1 included): compile clean, **37/37 passed**, 0 failed/skipped; test run
+7.2 s (Unity process 56 s with a warm Library; the first run on a fresh copy took 981 s on the loaded host).
+
+| Fixture | Tests | Duration |
+|---|---|---|
+| `GameCore.Studio.Edit.Tests.AuthoringRefResolverTests` | 4 | 0.78 s |
+| `ChangeSetEngineTests` (W-EDIT-02 AllOrNothing/BestEffort, rollback, rebase, journal path, queue) | 6 | 1.62 s |
+| `HistoryTests` (undo/redo with retained artifacts, undo conflict, reload, crash rollback/resume) | 6 | 1.05 s |
+| `LiveEditTests` (OperationId, StalePlan as Conflict) | 2 | 0.32 s |
+| `ManualEditTests` (W-EDIT-05, inspector rows, inline validation) | 4 | 0.65 s |
+| `PickingServiceTests` (depth/occlusion/ground, overlap groups, UI first, marquee, point-at, validate) | 6 | 1.27 s |
+| `SemanticIndexTests` | 4 | 1.15 s |
+| `ToolRegistryTests` | 3 | 0.29 s |
+| `GameCore.Studio.Hollowmere.Tests.HollowmereDiscoveryTests` (P1.1 `entity.place` in the catalog; every minted Hollowmere `EntityDefinition` is an `entity.definition` node) | 2 | 0.04 s |
+
+Timing logs (`[P1.6] ...`, single samples, not benchmarks): index rebuild 6 objects 2.9 ms, incremental flush
+0.2 ms, slice 0.4 ms; Hollowmere index rebuild (17 nodes) 19 ms; catalog build with TypeCache (38 tools) 10 ms;
+W-EDIT-02 apply 5 ops 2.9 ms (AllOrNothing) / 7.4 ms (BestEffort); journal undo 16.1 ms, redo 16.6 ms; pick 1.8 ms,
+overlap pick 3.1 ms, UI pick 4.6 ms, marquee 3.1 ms, point-at 0.5 ms.
+
+Static: `tools/check_game_core_csharp.py` ok; `tools/check_package_metadata.py` agrees.
 
 ## API (namespace `GameCore.Studio.Edit` unless noted)
 
@@ -63,8 +88,19 @@ VERIFIED_PLACEHOLDER
   would duplicate the contract, so `GameCore.Studio.Authoring` is `includePlatforms: ["Editor"]`. Runtime-side
   picking for a shipped game is out of scope for Studio (the game uses its own input).
 - Duck-typed identity (coordinator note): an interface named `IAuthoredObject` from any assembly, else a public
-  `AuthoringId` property, else a serialized `authoringId` field. `IResidencyQuery` defaults to "all resident"; the
-  integrator wires P1.1's RegionStreamer through an adapter. No dependency on the P1.1 packages.
+  `AuthoringId` property, else a serialized `authoringId` field. `IResidencyQuery` defaults to "all resident";
+  `NamedResidencyQuery.TryWrap(streamer)` binds P1.1's `RegionStreamer` by interface name (`ResidencyOf(string)` by
+  reflection, enum by member name; `RegionOf` maps a target to its region id, default: region refs and locations).
+  No dependency on the P1.1 packages.
+- **Mirror attributes by name.** `AuthoringMetadata` (Authoring) is the single reader: it returns the Model
+  attribute, else converts an attribute of the same type name from any other assembly (gameplay.contracts) into a
+  Model attribute instance, reading same-named properties and converting enums by member name.
+  `AuthoringIdentity` (index, inspector), `ReflectedTool`, `AuthorableTypeRegistry` and the tool catalog
+  pass all go through it; `AuthoringTypeCache` finds mirror-attributed types and methods with TypeCache. Mirror tool
+  entries are built by `AuthoringMetadata.BuildToolEntry` with `ToolCatalogBuilder`'s rules (Model-attributed
+  methods still use `ToolCatalogBuilder` itself).
+- Engine-built change sets (manual edits, tools; any mode but `Candidate`) get `requirements` derived from their
+  tools when they declare none; agent candidates must declare their own (03 s6).
 - Stamp changes are `Conflict` with `data {expected, actual}`; `StaleTarget` only for destroyed or unloaded targets.
   A moved target (renamed, reparented) is reported but does not block.
 - The engine validates with the model's `ChangeSetValidator` (stamp checks off) and does live stamp/existence checks
@@ -114,8 +150,10 @@ VERIFIED_PLACEHOLDER
 
 ## Left open
 
-- `games/hollowmere/Assets/Hollowmere/Tests/P1_6/` holds nothing: the tests build their fixtures programmatically in
-  a temporary folder, so no committed YAML fixtures were needed.
+- The package tests build their fixtures programmatically in a temporary folder (no committed YAML fixtures);
+  `Tests/P1_6` holds only the Hollowmere discovery tests, which read the shipped assets.
+- `BuildToolEntry` duplicates `ToolCatalogBuilder`'s method rules for mirror methods; if P0.3's builder learns to
+  read by name, the copy can go.
 - Duplicated prefab instances share an authoring id until a Studio duplicate mints new ones (Unity's own
   Ctrl+D copies the serialized id). A validator that reports duplicate ids is a follow-up.
 - The fixture tools are discovered by `TypeCache` in hollowmere because studio.core is a testable there; the
