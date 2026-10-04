@@ -1,8 +1,6 @@
 // GameCore.Studio fixtures - a region root (provides world.region, so authored children get contains edges from it).
 #nullable enable
 using System.Collections.Generic;
-using GameCore.Studio.Authoring;
-using GameCore.Studio.Model;
 using UnityEngine;
 
 namespace GameCore.Studio.Fixtures

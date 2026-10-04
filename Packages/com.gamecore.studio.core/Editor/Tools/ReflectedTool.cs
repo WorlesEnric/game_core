@@ -27,13 +27,13 @@ namespace GameCore.Studio.Edit
         {
             _method = method ?? throw new ArgumentNullException(nameof(method));
             Entry = entry ?? throw new ArgumentNullException(nameof(entry));
-            _operation = method.GetCustomAttribute<AuthorOperationAttribute>(false)!;
+            _operation = AuthoringMetadata.Operation(method)!;
             _parameters = method.GetParameters();
             _targetIndex = -1;
             for (int i = 0; i < _parameters.Length; i++)
             {
-                if (_parameters[i].GetCustomAttribute<AuthorArgAttribute>(false) == null
-                    && _parameters[i].ParameterType.GetCustomAttribute<AuthorableAttribute>(false) != null)
+                if (AuthoringMetadata.Arg(_parameters[i]) == null
+                    && AuthoringMetadata.Authorable(_parameters[i].ParameterType) != null)
                 {
                     _targetIndex = i;
                     break;
@@ -175,7 +175,7 @@ namespace GameCore.Studio.Edit
             for (int i = 0; i < _parameters.Length; i++)
             {
                 ParameterInfo parameter = _parameters[i];
-                AuthorArgAttribute? arg = parameter.GetCustomAttribute<AuthorArgAttribute>(false);
+                AuthorArgAttribute? arg = AuthoringMetadata.Arg(parameter);
                 if (arg == null)
                 {
                     if (parameter.ParameterType == typeof(EditContext))

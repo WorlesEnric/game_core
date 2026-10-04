@@ -34,11 +34,16 @@ namespace GameCore.Studio.Edit.Tests
             string notePath = _bed.Folder + "/FerrymanNote.txt";
             string noteFile = Path.Combine(StudioTestBed.ProjectRoot, notePath);
 
-            ChangeSet changeSet = StudioTestBed.NewChangeSet(
-                "import a note and edit the lantern",
-                null,
-                StudioTestBed.Op("op1", BuiltInToolIds.AssetImport, null, new JObject { ["path"] = notePath, ["artifact"] = new JObject { ["artifact"] = ContentStamp.Prefix + digest } }),
-                StudioTestBed.Set("op2", _bed.Ref(lantern), "weight", 6));
+            ChangeSet changeSet = new ChangeSet(
+                IdDerivation.NewChangeSetId(),
+                ChangeSet.SchemaId,
+                new Intent("import a note and edit the lantern", IntentOrigin.Manual),
+                new[]
+                {
+                    StudioTestBed.Op("op1", BuiltInToolIds.AssetImport, null, new JObject { ["path"] = notePath, ["artifact"] = new JObject { ["artifact"] = ContentStamp.Prefix + digest } }),
+                    StudioTestBed.Set("op2", _bed.Ref(lantern), "weight", 6),
+                },
+                artifacts: new[] { new ArtifactRef(digest, "text/plain", note.LongLength, "FerrymanNote.txt") });
             ApplyReport applied = _bed.Runtime.Engine.Apply(changeSet);
             Assert.That(applied.State, Is.EqualTo(ChangeSetState.Applied), string.Join("; ", applied.Diagnostics));
             Assert.That(File.Exists(noteFile), Is.True);

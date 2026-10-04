@@ -1,7 +1,6 @@
 // GameCore.Studio fixtures - an authored component identified only by a serialized authoringId field (duck typing:
 // no IAuthoredObject, no AuthoringId property).
 #nullable enable
-using GameCore.Studio.Model;
 using UnityEngine;
 
 namespace GameCore.Studio.Fixtures

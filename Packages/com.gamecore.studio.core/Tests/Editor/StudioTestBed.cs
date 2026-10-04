@@ -73,7 +73,7 @@ namespace GameCore.Studio.Edit.Tests
         {
             foreach (MethodInfo method in typeof(FixtureTools).GetMethods(BindingFlags.Public | BindingFlags.Static))
             {
-                if (method.GetCustomAttribute<AuthorOperationAttribute>(false) != null)
+                if (AuthoringMetadata.Operation(method) != null)
                 {
                     yield return method;
                 }

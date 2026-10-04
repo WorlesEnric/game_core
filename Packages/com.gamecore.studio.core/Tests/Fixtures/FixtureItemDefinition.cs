@@ -1,7 +1,5 @@
-// GameCore.Studio fixtures - an item definition (ScriptableObject asset) implementing this package's IAuthoredObject.
+// GameCore.Studio fixtures - an item definition (ScriptableObject asset) implementing the mirror IAuthoredObject.
 #nullable enable
-using GameCore.Studio.Authoring;
-using GameCore.Studio.Model;
 using UnityEngine;
 
 namespace GameCore.Studio.Fixtures

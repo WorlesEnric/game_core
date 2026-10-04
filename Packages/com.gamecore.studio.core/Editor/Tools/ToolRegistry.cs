@@ -33,7 +33,7 @@ namespace GameCore.Studio.Edit
         }
 
         /// <summary>Where [AuthorOperation] methods come from (TypeCache by default).</summary>
-        public Func<IEnumerable<MethodInfo>> MethodSource { get; set; } = () => TypeCache.GetMethodsWithAttribute<AuthorOperationAttribute>();
+        public Func<IEnumerable<MethodInfo>> MethodSource { get; set; } = AuthoringTypeCache.ToolMethods;
 
         /// <summary>Declaration problems (duplicate ids, bad signatures), as CandidateInvalid diagnostics.</summary>
         public IReadOnlyList<Diagnostic> Problems
@@ -213,7 +213,7 @@ namespace GameCore.Studio.Edit
                 ToolEntry entry;
                 try
                 {
-                    entry = new ToolCatalogBuilder().AddMethod(method).Build().Tools[0];
+                    entry = AuthoringMetadata.BuildToolEntry(method);
                 }
                 catch (Exception error) when (error is InvalidOperationException || error is ArgumentException)
                 {

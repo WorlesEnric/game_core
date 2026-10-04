@@ -1,7 +1,5 @@
 // GameCore.Studio fixtures - an NPC definition with a value field, an enum field and a reference to an item.
 #nullable enable
-using GameCore.Studio.Authoring;
-using GameCore.Studio.Model;
 using UnityEngine;
 
 namespace GameCore.Studio.Fixtures

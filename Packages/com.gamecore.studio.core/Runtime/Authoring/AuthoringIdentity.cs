@@ -428,7 +428,7 @@ namespace GameCore.Studio.Authoring
 
         private static AuthoringTypeInfo? Build(Type type)
         {
-            AuthorableAttribute? authorable = type.GetCustomAttribute<AuthorableAttribute>(false);
+            AuthorableAttribute? authorable = AuthoringMetadata.Authorable(type);
             if (authorable == null)
             {
                 return null;
@@ -497,8 +497,8 @@ namespace GameCore.Studio.Authoring
 
         private static AuthorMemberInfo? BuildMember(MemberInfo member, Type memberType, bool serialized)
         {
-            AuthorFieldAttribute? field = member.GetCustomAttribute<AuthorFieldAttribute>(true);
-            AuthorRefAttribute? reference = member.GetCustomAttribute<AuthorRefAttribute>(true);
+            AuthorFieldAttribute? field = AuthoringMetadata.Field(member);
+            AuthorRefAttribute? reference = AuthoringMetadata.Reference(member);
             if (field == null && reference == null)
             {
                 return null;
@@ -515,7 +515,7 @@ namespace GameCore.Studio.Authoring
             {
                 bool collection = memberType != typeof(string) && (memberType.IsArray || (memberType.IsGenericType && memberType.GetGenericTypeDefinition() == typeof(List<>)));
                 Type element = collection ? (memberType.IsArray ? memberType.GetElementType()! : memberType.GetGenericArguments()[0]) : memberType;
-                string? category = reference.Category ?? element.GetCustomAttribute<AuthorableAttribute>(false)?.ObjectTypeId;
+                string? category = reference.Category ?? AuthoringMetadata.Authorable(element)?.ObjectTypeId;
                 spec = new FieldSpec(member.Name, collection ? ValueTypes.Ref + ValueTypes.ArraySuffix : ValueTypes.Ref, reference.Required, category: category, doc: reference.Doc);
             }
             else

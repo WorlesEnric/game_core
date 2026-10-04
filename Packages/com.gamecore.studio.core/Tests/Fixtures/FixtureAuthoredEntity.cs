@@ -1,8 +1,6 @@
 // GameCore.Studio fixtures - a scene entity referencing an NPC definition, with a capability.
 #nullable enable
 using System.Collections.Generic;
-using GameCore.Studio.Authoring;
-using GameCore.Studio.Model;
 using UnityEngine;
 
 namespace GameCore.Studio.Fixtures

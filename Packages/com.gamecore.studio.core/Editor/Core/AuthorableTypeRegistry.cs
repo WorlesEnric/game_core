@@ -21,7 +21,7 @@ namespace GameCore.Studio.Edit
 
         /// <summary>Types from <c>TypeCache.GetTypesWithAttribute&lt;AuthorableAttribute&gt;()</c>.</summary>
         public AuthorableTypeRegistry(AuthoringIdentity identity)
-            : this(identity, () => TypeCache.GetTypesWithAttribute<AuthorableAttribute>())
+            : this(identity, AuthoringTypeCache.AuthorableTypes)
         {
         }
 
