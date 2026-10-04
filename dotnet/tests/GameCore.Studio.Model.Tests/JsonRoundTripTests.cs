@@ -87,6 +87,52 @@ namespace GameCore.Studio.Model.Tests
                 "{\"id\":\"cs_01K6Q0ACC07E5S3HTP4YZEASPW\",\"schema\":\"gamecore.studio.changeset/1\",\"operations\":[]}"));
         }
 
+        private static IEnumerable<TestCaseData> NullOptionalCases()
+        {
+            // Null policy (03 s9): optional members are omitted, never null, and readers refuse null.
+            yield return new TestCaseData(typeof(ChangeSet), "change-set.json", "intent", "voiceTranscriptId").SetName("NullRefused_voiceTranscriptId");
+            yield return new TestCaseData(typeof(ChangeSet), "change-set.json", "links", "parent").SetName("NullRefused_linksParent");
+            yield return new TestCaseData(typeof(ChangeSet), "change-set.json", "", "selection").SetName("NullRefused_selection");
+            yield return new TestCaseData(typeof(ChangeSet), "change-set.json", "", "policy").SetName("NullRefused_policy");
+            yield return new TestCaseData(typeof(ChangeSet), "change-set.json", "timestamps", "applied").SetName("NullRefused_timestampsApplied");
+            yield return new TestCaseData(typeof(SelectionSnapshot), "selection-snapshot-play.json", "", "worldSession").SetName("NullRefused_worldSession");
+            yield return new TestCaseData(typeof(AuthoringRef), "authoring-ref.json", "", "stamp").SetName("NullRefused_stamp");
+            yield return new TestCaseData(typeof(AuthoringRef), "authoring-ref.json", "", "scope").SetName("NullRefused_scope");
+            yield return new TestCaseData(typeof(SemanticIndex), "semantic-index.json", "", "edges").SetName("NullRefused_edges");
+            yield return new TestCaseData(typeof(ToolCatalog), "tool-catalog.json", "", "revision").SetName("NullRefused_revision");
+            yield return new TestCaseData(typeof(Diagnostic), "diagnostic.json", "", "where").SetName("NullRefused_where");
+            yield return new TestCaseData(typeof(Diagnostic), "diagnostic.json", "", "data").SetName("NullRefused_data");
+        }
+
+        [TestCaseSource(nameof(NullOptionalCases))]
+        public void NullForAnOptionalMemberIsRefused(Type type, string sample, string parent, string member)
+        {
+            JObject document = Samples.Object(sample);
+            JObject owner = parent.Length == 0 ? document : (JObject)document[parent]!;
+            owner[member] = JValue.CreateNull();
+            JsonSerializationException error = Assert.Throws<JsonSerializationException>(
+                () => JsonConvert.DeserializeObject(document.ToString(), type, StudioJson.CreateSettings()))!;
+            Assert.That(error.Message, Does.Contain("'" + member + "'"), "the error names the member");
+
+            // Plain JsonConvert (no Studio settings) refuses it too: the rule is on the members, not in the settings.
+            Assert.Throws<JsonSerializationException>(() => JsonConvert.DeserializeObject(document.ToString(), type));
+
+            // Omitting the member instead round-trips, and nothing is ever written as null.
+            owner.Remove(member);
+            object model = JsonConvert.DeserializeObject(document.ToString(), type, StudioJson.CreateSettings())!;
+            string written = StudioJson.Serialize(model);
+            Assert.That(written, Does.Not.Contain("null"));
+            Assert.That(JsonEquivalence.Difference(document, StudioJson.ParseToken(written)), Is.Null);
+        }
+
+        [Test]
+        public void AbsentIndexFieldValueIsOmittedNotNull()
+        {
+            IndexField field = new IndexField("ref", JValue.CreateNull());
+            Assert.That(field.Value, Is.Null);
+            Assert.That(StudioJson.Serialize(field, indented: false), Is.EqualTo("{\"type\":\"ref\"}"));
+        }
+
         [Test]
         public void UnknownMemberIsRefused()
         {
@@ -156,6 +202,12 @@ namespace GameCore.Studio.Model.Tests
             Diagnostic atOp = StudioJson.Deserialize<Diagnostic>(Samples.Read("diagnostic-op.json"));
             Assert.That(atOp.Where!.OpId, Is.EqualTo("op1"));
             Assert.That(atOp.Where.Ref, Is.Null);
+
+            Assert.That((string?)atRef.Data!["expected"], Is.EqualTo(ContentStamp.OfUtf8("ferryman")));
+            Assert.That((string?)atRef.Data!["actual"], Is.EqualTo(ContentStamp.OfUtf8("ferryman-edited")));
+            Diagnostic conflict = Diagnostic.ConflictAt(atRef.Where.Ref!, "sha256:a", "sha256:b", "changed");
+            Assert.That(conflict.Code, Is.EqualTo(DiagnosticCodes.Conflict));
+            Assert.That(StudioJson.Serialize(conflict, indented: false), Does.Contain("\"data\":{\"expected\":\"sha256:a\",\"actual\":\"sha256:b\"}"));
 
             Diagnostic bare = new Diagnostic(DiagnosticCodes.Blocked, "no provider");
             Assert.That(StudioJson.Serialize(bare, indented: false), Is.EqualTo("{\"code\":\"Blocked\",\"message\":\"no provider\"}"));

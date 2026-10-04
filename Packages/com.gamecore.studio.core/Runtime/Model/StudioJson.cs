@@ -2,6 +2,8 @@
 // Newtonsoft.Json only (Unity ships it as com.unity.nuget.newtonsoft-json); System.Text.Json is not used.
 // Every model type is [JsonObject(MemberSerialization.OptIn)] with explicit camelCase [JsonProperty] names, so a
 // default JsonConvert call and these settings produce the same keys; the settings add the strict read rules.
+// Null policy (03 s9): every optional member is [JsonProperty(Required = DisallowNull, NullValueHandling = Ignore)],
+// so it is omitted when absent, never written as null, and a JSON null is refused on read by any Newtonsoft caller.
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -104,6 +106,89 @@ namespace GameCore.Studio.Model
             return JToken.FromObject(value, JsonSerializer.Create(CreateSettings()));
         }
 
+        /// <summary>
+        /// Canonical text of a JSON tree: object keys sorted ordinally at every level, no whitespace, values written as
+        /// Newtonsoft writes them (invariant culture). Used for <see cref="ToolCatalog.ComputeRevision"/>.
+        /// </summary>
+        public static string Canonical(JToken token)
+        {
+            if (token == null)
+            {
+                throw new ArgumentNullException(nameof(token));
+            }
+
+            using (StringWriter text = new StringWriter(CultureInfo.InvariantCulture))
+            {
+                using (JsonTextWriter writer = new JsonTextWriter(text))
+                {
+                    writer.Formatting = Formatting.None;
+                    WriteCanonical(writer, token);
+                }
+
+                return text.ToString();
+            }
+        }
+
+        private static void WriteCanonical(JsonWriter writer, JToken token)
+        {
+            // Iterative, so an arbitrarily deep payload cannot exhaust the stack.
+            Stack<object> work = new Stack<object>();
+            work.Push(token);
+            while (work.Count > 0)
+            {
+                object item = work.Pop();
+                if (item is JsonToken end)
+                {
+                    if (end == JsonToken.EndObject)
+                    {
+                        writer.WriteEndObject();
+                    }
+                    else
+                    {
+                        writer.WriteEndArray();
+                    }
+
+                    continue;
+                }
+
+                if (item is string name)
+                {
+                    writer.WritePropertyName(name);
+                    continue;
+                }
+
+                JToken current = (JToken)item;
+                if (current is JObject value)
+                {
+                    List<JProperty> properties = new List<JProperty>(value.Properties());
+                    properties.Sort((left, right) => string.CompareOrdinal(left.Name, right.Name));
+                    writer.WriteStartObject();
+                    work.Push(JsonToken.EndObject);
+                    for (int i = properties.Count - 1; i >= 0; i--)
+                    {
+                        work.Push(properties[i].Value);
+                        work.Push(properties[i].Name);
+                    }
+
+                    continue;
+                }
+
+                if (current is JArray array)
+                {
+                    writer.WriteStartArray();
+                    work.Push(JsonToken.EndArray);
+                    for (int i = array.Count - 1; i >= 0; i--)
+                    {
+                        work.Push(array[i]);
+                    }
+
+                    continue;
+                }
+
+                current.WriteTo(writer);
+            }
+        }
+
         /// <summary>Parses JSON text into a tree without date sniffing (free-form payloads keep their strings).</summary>
         public static JToken ParseToken(string json)
         {
@@ -195,6 +280,9 @@ namespace GameCore.Studio.Model
 
         /// <summary>Pattern of each string item of an array property.</summary>
         public string? ItemPattern { get; set; }
+
+        /// <summary>Inclusive minimum of a numeric property; NaN means unset.</summary>
+        public double Minimum { get; set; } = double.NaN;
     }
 
     /// <summary>Shared patterns of the Studio documents.</summary>

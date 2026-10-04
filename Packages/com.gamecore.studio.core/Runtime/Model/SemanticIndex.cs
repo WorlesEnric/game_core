@@ -38,10 +38,10 @@ namespace GameCore.Studio.Model
         [JsonProperty("nodes", Required = Required.Always)]
         public IReadOnlyList<IndexNode> Nodes { get; }
 
-        [JsonProperty("edges", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("edges", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public IReadOnlyList<IndexEdge>? Edges { get; }
 
-        [JsonProperty("scopes", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("scopes", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public IReadOnlyList<ScopeEntry>? Scopes { get; }
 
         /// <summary>The node naming the same authored thing as <paramref name="target"/>, or null (linear scan).</summary>
@@ -109,22 +109,22 @@ namespace GameCore.Studio.Model
         [SchemaHint(MinLength = 1)]
         public string Type { get; }
 
-        [JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("name", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public string? Name { get; }
 
         /// <summary>Current field values keyed by field name.</summary>
-        [JsonProperty("fields", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("fields", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public IReadOnlyDictionary<string, IndexField>? Fields { get; }
 
         /// <summary>Outgoing references held in fields.</summary>
-        [JsonProperty("refs", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("refs", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public IReadOnlyList<IndexRef>? Refs { get; }
 
         /// <summary>Capability ids the node provides (e.g. <c>dialogue.speaker</c>).</summary>
-        [JsonProperty("capabilities", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("capabilities", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public IReadOnlyList<string>? Capabilities { get; }
 
-        [JsonProperty("provenance", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("provenance", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public Provenance? Provenance { get; }
 
         /// <summary>True when the node's type equals <paramref name="typeOrCapability"/> or it lists it as a capability.</summary>
@@ -160,20 +160,21 @@ namespace GameCore.Studio.Model
         public IndexField(string type, JToken? value = null, string? unit = null, IReadOnlyList<double>? range = null)
         {
             Type = ModelLists.NotEmpty(type, nameof(type));
-            Value = value?.DeepClone();
+            // Null policy (03 s9): an absent value is omitted, never written as JSON null.
+            Value = value == null || value.Type == JTokenType.Null ? null : value.DeepClone();
             Unit = unit;
             Range = ModelLists.Optional(range, nameof(range));
         }
 
         /// <summary>Any JSON value; treat as read-only.</summary>
-        [JsonProperty("value", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("value", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public JToken? Value { get; }
 
-        [JsonProperty("unit", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("unit", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public string? Unit { get; }
 
         /// <summary>[min, max] of the declared range.</summary>
-        [JsonProperty("range", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("range", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         [SchemaHint(MinItems = 2, MaxItems = 2)]
         public IReadOnlyList<double>? Range { get; }
 
@@ -241,11 +242,11 @@ namespace GameCore.Studio.Model
         [SchemaHint(MinLength = 1)]
         public string Scope { get; }
 
-        [JsonProperty("region", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("region", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public AuthoringRef? Region { get; }
 
         /// <summary>Installed plugin types as <c>name@version</c>.</summary>
-        [JsonProperty("installs", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("installs", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public IReadOnlyList<string>? Installs { get; }
     }
 
@@ -260,10 +261,10 @@ namespace GameCore.Studio.Model
             Line = line;
         }
 
-        [JsonProperty("asset", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("asset", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public string? Asset { get; }
 
-        [JsonProperty("line", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("line", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public int? Line { get; }
     }
 }

@@ -1,6 +1,7 @@
 // Schema emission: the committed docs/studio/schemas files are byte-identical to a fresh emission, emission is
 // deterministic with sorted keys, and the conformance checker used by the round-trip tests rejects bad instances.
 #nullable enable
+using System;
 using System.IO;
 using GameCore.Studio.Model;
 using GameCore.Studio.Model.Schema;
@@ -55,8 +56,18 @@ namespace GameCore.Studio.Model.Tests
             Assert.That(changeSet["$defs"]!["IntentOrigin"]!["enum"]!.ToObject<string[]>(), Is.EqualTo(new[] { "agent", "manual", "voice", "replay" }));
             Assert.That(changeSet["$defs"]!["Operation"]!["properties"]!["args"]!["type"]!.ToString(), Is.EqualTo("object"));
 
+            Assert.That((long?)changeSet["$defs"]!["ArtifactRef"]!["properties"]!["bytes"]!["minimum"], Is.EqualTo(0));
+
             JObject diagnostic = StudioSchemaEmitter.BuildSchema("diagnostic", typeof(Diagnostic));
             Assert.That(diagnostic["properties"]!["where"]!["oneOf"], Is.Not.Null);
+            Assert.That((string?)diagnostic["properties"]!["data"]!["type"], Is.EqualTo("object"));
+            Assert.That(diagnostic["required"]!.ToObject<string[]>(), Is.EqualTo(new[] { "code", "message" }));
+
+            JObject catalog = StudioSchemaEmitter.BuildSchema("tool-catalog", typeof(ToolCatalog));
+            Assert.That((string?)catalog["properties"]!["revision"]!["pattern"], Is.EqualTo(StudioPatterns.Sha256Hex));
+
+            JObject selection = StudioSchemaEmitter.BuildSchema("selection-snapshot", typeof(SelectionSnapshot));
+            Assert.That((string?)selection["properties"]!["worldSession"]!["type"], Is.EqualTo("string"), "optional members stay plain types (never null)");
 
             JObject index = StudioSchemaEmitter.BuildSchema("semantic-index", typeof(SemanticIndex));
             Assert.That(index["$defs"]!["EdgeKind"]!["enum"]!.ToObject<string[]>(),
@@ -64,6 +75,14 @@ namespace GameCore.Studio.Model.Tests
             Assert.That((int?)index["$defs"]!["LocationRef"]!["properties"]!["position"]!["minItems"], Is.EqualTo(3));
             Assert.That(index["$defs"]!["IndexNode"]!["properties"]!["fields"]!["additionalProperties"]!["$ref"]!.ToString(),
                 Is.EqualTo("#/$defs/IndexField"));
+        }
+
+        [Test]
+        public void DefsNameCollisionIsRefused()
+        {
+            InvalidOperationException error = Assert.Throws<InvalidOperationException>(
+                () => StudioSchemaEmitter.BuildSchema("collision", typeof(Collision.Root)))!;
+            Assert.That(error.Message, Does.Contain("$defs name collision: 'Item'"));
         }
 
         [Test]
@@ -97,6 +116,10 @@ namespace GameCore.Studio.Model.Tests
             badType["artifacts"]![0]!["bytes"] = "48213";
             Assert.That(schema.Validate(badType), Has.Some.Contains("expected integer"));
 
+            JObject negative = (JObject)good.DeepClone();
+            negative["artifacts"]![0]!["bytes"] = -1;
+            Assert.That(schema.Validate(negative), Has.Some.Contains("below the minimum"));
+
             JObject badArity = (JObject)good.DeepClone();
             badArity["selection"]!["frame"]!["viewport"] = new JArray(1920);
             Assert.That(schema.Validate(badArity), Has.Some.Contains("fewer than 2 items"));
@@ -104,5 +127,38 @@ namespace GameCore.Studio.Model.Tests
             MiniSchemaValidator diagnostic = MiniSchemaValidator.For(typeof(Diagnostic));
             Assert.That(diagnostic.Validate(JObject.Parse("{\"code\":\"X\",\"message\":\"m\",\"where\":3}")), Has.Some.Contains("oneOf"));
         }
+    }
+}
+
+namespace GameCore.Studio.Model.Tests.Collision
+{
+    [Newtonsoft.Json.JsonObject(Newtonsoft.Json.MemberSerialization.OptIn)]
+    public sealed class Root
+    {
+        [Newtonsoft.Json.JsonProperty("a")]
+        public A.Item? First { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("b")]
+        public B.Item? Second { get; set; }
+    }
+}
+
+namespace GameCore.Studio.Model.Tests.Collision.A
+{
+    [Newtonsoft.Json.JsonObject(Newtonsoft.Json.MemberSerialization.OptIn)]
+    public sealed class Item
+    {
+        [Newtonsoft.Json.JsonProperty("x")]
+        public int X { get; set; }
+    }
+}
+
+namespace GameCore.Studio.Model.Tests.Collision.B
+{
+    [Newtonsoft.Json.JsonObject(Newtonsoft.Json.MemberSerialization.OptIn)]
+    public sealed class Item
+    {
+        [Newtonsoft.Json.JsonProperty("y")]
+        public string? Y { get; set; }
     }
 }

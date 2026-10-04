@@ -4,7 +4,9 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
+using System.Text;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace GameCore.Studio.Model
 {
@@ -20,15 +22,17 @@ namespace GameCore.Studio.Model
             string schema,
             IReadOnlyList<ObjectTypeEntry> objectTypes,
             IReadOnlyList<ToolEntry> tools,
-            string? plugin = null)
+            string? plugin = null,
+            string? revision = null)
         {
             Schema = ModelLists.NotEmpty(schema, nameof(schema));
             ObjectTypes = ModelLists.Required(objectTypes, nameof(objectTypes));
             Tools = ModelLists.Required(tools, nameof(tools));
             Plugin = plugin;
+            Revision = revision;
         }
 
-        /// <summary>A catalog with the current schema id.</summary>
+        /// <summary>A catalog with the current schema id and no revision (see <see cref="WithRevision"/>).</summary>
         public ToolCatalog(IReadOnlyList<ObjectTypeEntry> objectTypes, IReadOnlyList<ToolEntry> tools, string? plugin = null)
             : this(SchemaId, objectTypes, tools, plugin)
         {
@@ -38,8 +42,35 @@ namespace GameCore.Studio.Model
         [SchemaHint(Const = SchemaId)]
         public string Schema { get; }
 
+        /// <summary>
+        /// Content revision: lowercase sha256 hex of the catalog's canonical JSON with this member omitted
+        /// (<see cref="ComputeRevision"/>). Minted by the tool registry (<see cref="Merge"/>,
+        /// <see cref="ToolCatalogBuilder.Build"/>); requests carry it as <c>toolCatalogRevision</c> and a candidate
+        /// built against another revision is StaleContext (03 s9).
+        /// </summary>
+        [JsonProperty("revision", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
+        [SchemaHint(Pattern = StudioPatterns.Sha256Hex)]
+        public string? Revision { get; }
+
+        /// <summary>
+        /// The sha256 (lowercase hex) of <see cref="StudioJson.Canonical"/> of this catalog without <c>revision</c>:
+        /// keys sorted ordinally at every level, no whitespace, numbers and strings as Newtonsoft writes them, UTF-8.
+        /// </summary>
+        public string ComputeRevision()
+        {
+            JObject content = (JObject)StudioJson.ToToken(this);
+            content.Remove("revision");
+            return ContentStamp.Sha256Hex(Encoding.UTF8.GetBytes(StudioJson.Canonical(content)));
+        }
+
+        /// <summary>A copy carrying its computed <see cref="Revision"/>.</summary>
+        public ToolCatalog WithRevision() => new ToolCatalog(Schema, ObjectTypes, Tools, Plugin, ComputeRevision());
+
+        /// <summary>True when <see cref="Revision"/> is present and equals <see cref="ComputeRevision"/>.</summary>
+        public bool HasValidRevision() => Revision != null && string.Equals(Revision, ComputeRevision(), StringComparison.Ordinal);
+
         /// <summary>Exporting plugin (package name) or null for a merged project catalog.</summary>
-        [JsonProperty("plugin", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("plugin", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public string? Plugin { get; }
 
         [JsonProperty("objectTypes", Required = Required.Always)]
@@ -77,8 +108,8 @@ namespace GameCore.Studio.Model
         }
 
         /// <summary>
-        /// Merges plugin catalogs into one project catalog (plugin = null), sorted by id. A tool id or type id declared by
-        /// two catalogs is a conflict and throws: two plugins may not claim the same tool.
+        /// Merges plugin catalogs into one project catalog (plugin = null, revision minted), sorted by id. A tool id or
+        /// type id declared by two catalogs is a conflict and throws: two plugins may not claim the same tool.
         /// </summary>
         public static ToolCatalog Merge(IEnumerable<ToolCatalog> catalogs)
         {
@@ -117,7 +148,7 @@ namespace GameCore.Studio.Model
                 }
             }
 
-            return new ToolCatalog(new List<ObjectTypeEntry>(types.Values), new List<ToolEntry>(tools.Values));
+            return new ToolCatalog(new List<ObjectTypeEntry>(types.Values), new List<ToolEntry>(tools.Values)).WithRevision();
         }
     }
 
@@ -146,14 +177,14 @@ namespace GameCore.Studio.Model
         [SchemaHint(MinLength = 1)]
         public string TypeId { get; }
 
-        [JsonProperty("displayName", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("displayName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public string? DisplayName { get; }
 
-        [JsonProperty("doc", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("doc", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public string? Doc { get; }
 
         /// <summary>Edit scopes the type supports; null means unrestricted.</summary>
-        [JsonProperty("scopes", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("scopes", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public IReadOnlyList<AuthorScope>? Scopes { get; }
 
         /// <summary>How a field change of this type reaches a running world.</summary>
@@ -207,27 +238,27 @@ namespace GameCore.Studio.Model
         [JsonProperty("required", Required = Newtonsoft.Json.Required.Always)]
         public bool Required { get; }
 
-        [JsonProperty("unit", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("unit", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public string? Unit { get; }
 
-        [JsonProperty("min", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("min", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public double? Min { get; }
 
-        [JsonProperty("max", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("max", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public double? Max { get; }
 
-        [JsonProperty("step", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("step", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public double? Step { get; }
 
         /// <summary>Reference category for <c>ref</c> values (an authorable type id or capability, e.g. <c>dialogue.graph</c>).</summary>
-        [JsonProperty("category", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("category", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public string? Category { get; }
 
-        [JsonProperty("doc", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("doc", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public string? Doc { get; }
 
         /// <summary>Accepted names for <c>enum</c> values.</summary>
-        [JsonProperty("enumValues", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("enumValues", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public IReadOnlyList<string>? EnumValues { get; }
     }
 
@@ -312,15 +343,15 @@ namespace GameCore.Studio.Model
         [JsonProperty("tier", Required = Required.Always)]
         public ToolTier Tier { get; }
 
-        [JsonProperty("doc", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("doc", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public string? Doc { get; }
 
         /// <summary>Authorable type id the target must have; null means any type.</summary>
-        [JsonProperty("targetType", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("targetType", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public string? TargetType { get; }
 
         /// <summary>Authoring kinds the target may have; null means any kind.</summary>
-        [JsonProperty("targetKinds", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("targetKinds", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public IReadOnlyList<AuthoringKind>? TargetKinds { get; }
 
         /// <summary>True when an operation must name a target; false when the tool takes none (e.g. <c>project.save</c>).</summary>
@@ -328,19 +359,19 @@ namespace GameCore.Studio.Model
         public bool TargetRequired { get; }
 
         /// <summary>Edit scopes the tool may be applied in; null means unrestricted.</summary>
-        [JsonProperty("scopes", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("scopes", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public IReadOnlyList<AuthorScope>? Scopes { get; }
 
         [JsonProperty("args", Required = Required.Always)]
         public IReadOnlyList<ArgSpec> Args { get; }
 
-        [JsonProperty("prerequisites", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("prerequisites", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public IReadOnlyList<Prerequisite>? Prerequisites { get; }
 
         [JsonProperty("runtimeApply", Required = Required.Always)]
         public RuntimeApply RuntimeApply { get; }
 
-        [JsonProperty("validators", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("validators", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public IReadOnlyList<ValidatorRef>? Validators { get; }
 
         /// <summary>The argument spec named <paramref name="name"/>, or null.</summary>
@@ -377,7 +408,7 @@ namespace GameCore.Studio.Model
         [JsonProperty("on", Required = Required.Always)]
         public PrerequisiteSubject On { get; }
 
-        [JsonProperty("doc", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("doc", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public string? Doc { get; }
     }
 
