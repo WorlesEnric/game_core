@@ -180,7 +180,9 @@ namespace GameCore.Unity.Runtime.Persistence
 
             parts = composed;
 
-            // 4. Targets, base layouts, slot rows, prune.
+            // 4. Targets and base layouts. Slot rows are written after the composition replay (step 5b): an install's
+            // preflight checks every live slot against the declared descriptors (P-032), and a row owned by an
+            // installation that is not replayed yet would be refused as undeclared.
             phase.Restart();
             if (!SeedTargets(composed, plan, report, out code, out detail))
             {
@@ -197,6 +199,15 @@ namespace GameCore.Unity.Runtime.Persistence
             }
 
             report.ReplayMilliseconds = phase.Elapsed.TotalMilliseconds;
+
+            // 5b. Slot rows (dormant rows included), then prune rows the capture never carried.
+            phase.Restart();
+            if (!RestoreSlots(composed, plan, report, out code, out detail))
+            {
+                return Abandon(report, ProductionRestoreRefusal.StateSeedRefused, code, detail, out staging, out code, out detail);
+            }
+
+            report.SeedMilliseconds += phase.Elapsed.TotalMilliseconds;
 
             // 6. Modules and the message plane.
             phase.Restart();
@@ -394,7 +405,7 @@ namespace GameCore.Unity.Runtime.Persistence
             return seed;
         }
 
-        // ------------------------------------------------------------------ 4. targets and slots
+        // ------------------------------------------------------------------ 4. targets
 
         private static bool SeedTargets(
             ProductionWorldParts composed,
@@ -435,6 +446,22 @@ namespace GameCore.Unity.Runtime.Persistence
                 report.Targets++;
             }
 
+            return true;
+        }
+
+        // ------------------------------------------------------------------ 5b. slot rows
+
+        private static bool RestoreSlots(
+            ProductionWorldParts composed,
+            RestorePlan plan,
+            ProductionRestoreReport report,
+            out DiagnosticCode code,
+            out string detail)
+        {
+            code = DiagnosticCode.None;
+            detail = string.Empty;
+            EntityManager entityManager = composed.Host.EntityWorld.EntityManager;
+            LiveTargetSeeder seeder = composed.Seeder;
             for (int i = 0; i < plan.Slots.Count; i++)
             {
                 SlotRecordValue row = plan.Slots[i];
@@ -452,8 +479,8 @@ namespace GameCore.Unity.Runtime.Persistence
                 }
             }
 
-            // A base layout may declare rows the capture never carried; the restored state is the captured state and
-            // nothing else (P-032, P-053).
+            // A base layout or a replayed installation's state policy may create rows the capture never carried; the
+            // restored state is the captured state and nothing else (P-032, P-053).
             var planned = new HashSet<(Id128 target, Id128 owner, Id128 slot)>();
             for (int i = 0; i < plan.Slots.Count; i++)
             {
