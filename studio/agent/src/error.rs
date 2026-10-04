@@ -1,9 +1,11 @@
 //! Etos-shaped errors of the Unity-facing API: `{code, message, hint}` with an HTTP status.
 //!
 //! etos refusals pass through unchanged (status, code, message, hint). The companion adds
-//! only [`CANDIDATE_INVALID`], [`STALE_CONTEXT`], [`STAGE_FAILED`] and [`LEDGER_CONFLICT`],
-//! plus the generic request codes every etos route uses (`bad_request`, `not_found`,
-//! `forbidden`, `agent_starting`, `too_large`, `internal`).
+//! [`CANDIDATE_INVALID`], [`STALE_CONTEXT`], [`STAGE_FAILED`] and [`LEDGER_CONFLICT`], and
+//! the transport-level codes registered in 04 §2: `bad_request`, `not_found`, `internal`,
+//! `transport`, `protocol`, `invalid`, `backpressure` (the last five are the SDK's own error
+//! kinds, passed through by name). `forbidden`, `agent_starting` and `too_large` are etos
+//! codes the companion answers with the same meaning.
 
 use axum::Json;
 use axum::http::StatusCode;
@@ -23,7 +25,7 @@ pub const STAGE_FAILED: &str = "stage_failed";
 pub const LEDGER_CONFLICT: &str = "ledger_conflict";
 
 /// The serialised body of an error.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct ErrorBody {
     /// Stable machine-readable code.
     pub code: String,
@@ -32,10 +34,13 @@ pub struct ErrorBody {
     /// What to do instead, when there is something to do.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub hint: Option<String>,
+    /// Itemised findings (03 §9 diagnostics) when the request failed a contract check.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub diagnostics: Vec<crate::model::Diagnostic>,
 }
 
 /// An error answered to Unity.
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct ApiError {
     /// HTTP status.
     pub status: StatusCode,
@@ -55,6 +60,7 @@ impl ApiError {
                 code: code.to_string(),
                 message: redact(&message.into()),
                 hint: None,
+                diagnostics: Vec::new(),
             },
         }
     }
@@ -62,6 +68,15 @@ impl ApiError {
     /// The same error with a hint.
     pub fn with_hint(mut self, hint: impl Into<String>) -> ApiError {
         self.body.hint = Some(redact(&hint.into()));
+        self
+    }
+
+    /// The same error with itemised findings (messages redacted).
+    pub fn with_diagnostics(mut self, mut d: Vec<crate::model::Diagnostic>) -> ApiError {
+        for x in &mut d {
+            x.message = redact(&x.message);
+        }
+        self.body.diagnostics = d;
         self
     }
 
