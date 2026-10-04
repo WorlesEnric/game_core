@@ -166,10 +166,7 @@ namespace Hollowmere.WorldAuthoring
                 throw new InvalidOperationException("the world must be baked before the boot scene is created");
             }
 
-            PrepareScenes();
-            Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive);
-            Scene previous = SceneManager.GetActiveScene();
-            SceneManager.SetActiveScene(scene);
+            Scene scene = NewAuthoringScene();
             var light = new GameObject("Directional Light");
             Light sun = light.AddComponent<Light>();
             sun.type = LightType.Directional;
@@ -194,21 +191,21 @@ namespace Hollowmere.WorldAuthoring
             SceneManager.MoveGameObjectToScene(cameraObject, scene);
 
             EditorSceneManager.SaveScene(scene, BootScenePath);
-            SceneManager.SetActiveScene(previous);
-            EditorSceneManager.CloseScene(scene, true);
+            CloseAuthoringScene(scene);
         }
 
         /// <summary>
-        /// Makes additive scene creation possible: Unity refuses NewScene(Additive) while the untitled scene has unsaved
-        /// changes (objects created and destroyed in it while building prefabs), so a dirty untitled scene is replaced by
-        /// a fresh empty one. A saved or clean active scene is left alone.
+        /// A new empty scene that replaces whatever is open (Single mode). Unity refuses NewScene(Additive) while an
+        /// untitled scene is open, and every authored scene is saved before the next one is created, so nothing is lost.
         /// </summary>
-        public static void PrepareScenes()
+        public static Scene NewAuthoringScene() => EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+
+        /// <summary>Closes a saved authoring scene unless it is the last loaded scene (which Unity cannot close).</summary>
+        public static void CloseAuthoringScene(Scene scene)
         {
-            Scene active = SceneManager.GetActiveScene();
-            if (string.IsNullOrEmpty(active.path) && active.isDirty)
+            if (SceneManager.sceneCount > 1 && scene.IsValid())
             {
-                EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+                EditorSceneManager.CloseScene(scene, true);
             }
         }
 
@@ -360,9 +357,7 @@ namespace Hollowmere.WorldAuthoring
 
         private static Scene NewRegionScene(RegionPlan plan, out AuthoredRegion region)
         {
-            PrepareScenes();
-            Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive);
-            SceneManager.SetActiveScene(scene);
+            Scene scene = NewAuthoringScene();
             var regionObject = new GameObject("Region " + plan.Name);
             SceneManager.MoveGameObjectToScene(regionObject, scene);
             regionObject.transform.position = plan.Center;
@@ -404,17 +399,7 @@ namespace Hollowmere.WorldAuthoring
         private static void Save(Scene scene)
         {
             EditorSceneManager.SaveScene(scene);
-            for (int i = 0; i < SceneManager.sceneCount; i++)
-            {
-                Scene other = SceneManager.GetSceneAt(i);
-                if (other != scene && other.isLoaded)
-                {
-                    SceneManager.SetActiveScene(other);
-                    break;
-                }
-            }
-
-            EditorSceneManager.CloseScene(scene, true);
+            CloseAuthoringScene(scene);
         }
     }
 }

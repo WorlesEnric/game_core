@@ -440,10 +440,4 @@ namespace GameCore.Gameplay.World
             return true;
         }
     }
-
-    /// <summary>Holds the running gameplay world in a scene (portal triggers and debug tools find it here).</summary>
-    public sealed class GameplayWorldBehaviour : MonoBehaviour
-    {
-        public GameplayWorld? World { get; set; }
-    }
 }

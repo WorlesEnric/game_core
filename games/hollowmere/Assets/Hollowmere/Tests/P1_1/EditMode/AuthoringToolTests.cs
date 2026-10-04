@@ -29,15 +29,8 @@ namespace Hollowmere.P1_1.EditMode.Tests
         [TearDown]
         public void TearDown()
         {
-            for (int i = SceneManager.sceneCount - 1; i >= 0; i--)
-            {
-                Scene scene = SceneManager.GetSceneAt(i);
-                if (scene.path.StartsWith(Temp) && SceneManager.sceneCount > 1)
-                {
-                    EditorSceneManager.CloseScene(scene, true);
-                }
-            }
-
+            // Temporary scenes are replaced by a fresh empty one before their files are deleted.
+            HollowmereWorldAuthoring.NewAuthoringScene();
             AssetDatabase.DeleteAsset(Temp);
         }
 
@@ -52,8 +45,7 @@ namespace Hollowmere.P1_1.EditMode.Tests
             Object.DestroyImmediate(source);
             Assert.That(prefab.GetComponent<AuthoredEntity>().AuthoringId, Is.Empty, "a prefab asset never carries an authoring id");
 
-            HollowmereWorldAuthoring.PrepareScenes();
-            Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive);
+            Scene scene = HollowmereWorldAuthoring.NewAuthoringScene();
             EditorSceneManager.SaveScene(scene, Temp + "/Identity.unity");
             var a = (GameObject)PrefabUtility.InstantiatePrefab(prefab, scene);
             var b = (GameObject)PrefabUtility.InstantiatePrefab(prefab, scene);
@@ -72,8 +64,8 @@ namespace Hollowmere.P1_1.EditMode.Tests
             Assert.That(ea.TargetId, Is.EqualTo(AuthoringIds.TargetIdFor(idA)));
 
             EditorSceneManager.SaveScene(scene);
-            EditorSceneManager.CloseScene(scene, true);
-            Scene reopened = EditorSceneManager.OpenScene(Temp + "/Identity.unity", OpenSceneMode.Additive);
+            HollowmereWorldAuthoring.CloseAuthoringScene(scene);
+            Scene reopened = EditorSceneManager.OpenScene(Temp + "/Identity.unity", OpenSceneMode.Single);
             var ids = new HashSet<string>();
             foreach (GameObject root in reopened.GetRootGameObjects())
             {
@@ -87,7 +79,7 @@ namespace Hollowmere.P1_1.EditMode.Tests
             Assert.That(reopened.isDirty, Is.False, "reopening mints nothing");
             Assert.That(AssetDatabase.LoadAssetAtPath<GameObject>(Temp + "/ProbeWithEntity.prefab").GetComponent<AuthoredEntity>().AuthoringId,
                 Is.Empty, "instantiation never writes an id back into the prefab asset");
-            EditorSceneManager.CloseScene(reopened, true);
+            HollowmereWorldAuthoring.CloseAuthoringScene(reopened);
         }
 
         [Test]
@@ -189,7 +181,7 @@ namespace Hollowmere.P1_1.EditMode.Tests
                 }
                 finally
                 {
-                    EditorSceneManager.CloseScene(scene, true);
+                    HollowmereWorldAuthoring.CloseAuthoringScene(scene);
                 }
             }
         }
@@ -217,8 +209,7 @@ namespace Hollowmere.P1_1.EditMode.Tests
 
         private static Scene TempRegionScene(string name, out AuthoredRegion region, RegionDefinition? definition = null)
         {
-            HollowmereWorldAuthoring.PrepareScenes();
-            Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive);
+            Scene scene = HollowmereWorldAuthoring.NewAuthoringScene();
             var marker = new GameObject("Region " + name);
             SceneManager.MoveGameObjectToScene(marker, scene);
             region = marker.AddComponent<AuthoredRegion>();

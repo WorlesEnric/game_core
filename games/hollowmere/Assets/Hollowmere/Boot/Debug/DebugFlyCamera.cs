@@ -1,12 +1,5 @@
-// Hollowmere - debug fly camera and keyboard travel (P1.1).
-//
-// REPLACED BY P1.3: these are throwaway debug controls for walking the three-region loop before the player controller
-// exists. P1.3 deletes this folder and drives travel through the player controller and portal triggers.
-//
-//   DebugFlyCamera   right mouse drag looks around, WASD moves, Q/E down/up, Shift is fast; F re-centres on the
-//                    focus traveller's view.
-//   DebugTravelKeys  1/2/3 send world.travel for the focus traveller to the 1st/2nd/3rd region of the world (in the
-//                    manifest's canonical order); P toggles neighbour preloading.
+// Hollowmere - debug fly camera (P1.1). REPLACED BY P1.3: throwaway debug control; P1.3 deletes Boot/Debug.
+//   right mouse drag looks around, WASD moves, Q/E down/up, Shift is fast, F re-centres on the focus traveller's view.
 #nullable enable
 using GameCore.Contracts;
 using GameCore.Gameplay.World;
@@ -106,44 +99,6 @@ namespace Hollowmere.Boot.Debug
                 transform.LookAt(view.transform.position);
                 OnEnable();
             }
-        }
-    }
-
-    /// <summary>Keyboard travel for the focus traveller (replaced by P1.3).</summary>
-    public sealed class DebugTravelKeys : MonoBehaviour
-    {
-        [SerializeField] private GameBoot? boot;
-
-        public int Requests { get; private set; }
-
-        public void Configure(GameBoot gameBoot) => boot = gameBoot;
-
-        private void Update()
-        {
-            Keyboard? keyboard = Keyboard.current;
-            GameplayWorld? world = boot != null ? boot.World : null;
-            if (keyboard == null || world == null || world.Focus.IsDefault)
-            {
-                return;
-            }
-
-            if (keyboard.pKey.wasPressedThisFrame)
-            {
-                world.Streamer.PreloadNeighbours = !world.Streamer.PreloadNeighbours;
-            }
-
-            int index = keyboard.digit1Key.wasPressedThisFrame ? 0
-                : keyboard.digit2Key.wasPressedThisFrame ? 1
-                : keyboard.digit3Key.wasPressedThisFrame ? 2
-                : -1;
-            if (index < 0 || index >= world.Worlds.Regions.Count)
-            {
-                return;
-            }
-
-            Requests++;
-            CommandAdmissionReceipt receipt = world.Commands.Travel(world.Focus, world.Worlds.Regions[index].AuthoringId);
-            UnityEngine.Debug.Log("[Hollowmere/debug] travel to " + world.Worlds.Regions[index].Name + ": admitted=" + receipt.Admitted);
         }
     }
 }

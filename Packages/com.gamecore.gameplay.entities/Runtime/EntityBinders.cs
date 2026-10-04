@@ -71,20 +71,6 @@ namespace GameCore.Gameplay.Entities
         public IReadOnlyDictionary<string, string> Overrides { get; }
     }
 
-    /// <summary>Tags a view object with the kernel target it presents.</summary>
-    public sealed class EntityViewTag : MonoBehaviour
-    {
-        public TargetId Target { get; private set; }
-
-        public string AuthoringId { get; private set; } = string.Empty;
-
-        public void Bind(TargetId target, string authoringId)
-        {
-            Target = target;
-            AuthoringId = authoringId;
-        }
-    }
-
     /// <summary>A hook told when entity views appear and disappear (audio, effects). Implemented by game code.</summary>
     public interface IEntityViewHook
     {
@@ -528,20 +514,6 @@ namespace GameCore.Gameplay.Entities
         }
 
         public int Present(ICommittedSlotReader slots) => 0;
-    }
-
-    /// <summary>The marker the interaction binder puts on interactable views.</summary>
-    public sealed class InteractionTargetMarker : MonoBehaviour, IInteractionTarget
-    {
-        public TargetId Target { get; private set; }
-
-        public string InteractionKind { get; private set; } = string.Empty;
-
-        public void Bind(TargetId target, string kind)
-        {
-            Target = target;
-            InteractionKind = kind;
-        }
     }
 
     /// <summary>Stub: marks views of definitions with an interaction kind. Interaction itself is P1.3.</summary>
