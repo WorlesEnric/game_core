@@ -1,0 +1,101 @@
+{
+  "schema": "gamecore.studio.toolcatalog/1",
+  "plugin": "com.gamecore.gameplay.sample",
+  "objectTypes": [
+    {
+      "typeId": "dialogue.graph",
+      "displayName": "Dialogue graph",
+      "scopes": ["Definition"],
+      "runtimeApply": "Live",
+      "fields": [
+        { "name": "title", "type": "string", "required": true, "doc": "Graph title" }
+      ]
+    },
+    {
+      "typeId": "item.definition",
+      "displayName": "Item",
+      "scopes": ["Definition"],
+      "runtimeApply": "Rebuild",
+      "fields": [
+        { "name": "stackLimit", "type": "int", "required": false, "min": 0.0, "step": 1.0 }
+      ]
+    },
+    {
+      "typeId": "npc.definition",
+      "displayName": "NPC",
+      "doc": "A non-player character definition",
+      "scopes": ["Instance", "Definition"],
+      "runtimeApply": "Live",
+      "fields": [
+        { "name": "speed", "type": "float", "required": false, "unit": "m/s", "min": 0.5, "max": 6.0, "doc": "Walking speed" },
+        { "name": "dialogue", "type": "ref", "required": false, "category": "dialogue.graph" },
+        { "name": "prefab", "type": "ref", "required": true, "category": "prefab.character" },
+        { "name": "mood", "type": "enum", "required": false, "doc": "Behaviour mode", "enumValues": ["Calm", "Wary", "hostile"] }
+      ]
+    }
+  ],
+  "tools": [
+    {
+      "id": "dialogue.addNode",
+      "tier": "Compose",
+      "doc": "Append a line node",
+      "targetType": "dialogue.graph",
+      "targetRequired": true,
+      "scopes": ["Definition"],
+      "args": [
+        { "name": "text", "type": "string", "required": true },
+        { "name": "voice", "type": "artifact", "required": false, "doc": "Voice line" }
+      ],
+      "prerequisites": [
+        { "requires": "dialogue.graph", "on": "Target" }
+      ],
+      "runtimeApply": "Live"
+    },
+    {
+      "id": "inventory.grantStarting",
+      "tier": "Configure",
+      "doc": "Grant a starting item",
+      "targetType": "npc.definition",
+      "targetKinds": ["Entity", "Definition"],
+      "targetRequired": true,
+      "scopes": ["Instance", "Definition"],
+      "args": [
+        { "name": "item", "type": "ref", "required": true, "category": "item.definition", "doc": "Item definition" },
+        { "name": "count", "type": "int", "required": true, "min": 1.0, "max": 99.0 }
+      ],
+      "runtimeApply": "Live"
+    },
+    {
+      "id": "npc.place",
+      "tier": "Compose",
+      "doc": "Place an NPC in a region",
+      "targetType": "npc.definition",
+      "targetKinds": ["Entity"],
+      "targetRequired": true,
+      "scopes": ["Instance"],
+      "args": [
+        { "name": "position", "type": "vector3", "required": true, "unit": "m" },
+        { "name": "yaw", "type": "float", "required": false, "unit": "deg", "min": 0.0, "max": 360.0 }
+      ],
+      "prerequisites": [
+        { "requires": "world.region", "on": "Project" }
+      ],
+      "runtimeApply": "Live"
+    },
+    {
+      "id": "npc.setPatrol",
+      "tier": "Configure",
+      "doc": "Replace the patrol route",
+      "targetType": "npc.definition",
+      "targetRequired": true,
+      "scopes": ["Instance", "Definition"],
+      "args": [
+        { "name": "points", "type": "vector3[]", "required": true, "unit": "m", "doc": "Patrol points" }
+      ],
+      "runtimeApply": "Live",
+      "validators": [
+        { "id": "npc.patrol", "codes": ["InvalidArgs", "ValidationFailed"] }
+      ]
+    }
+  ]
+}

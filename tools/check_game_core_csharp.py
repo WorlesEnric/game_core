@@ -8,6 +8,7 @@ and namespace/using sanity. It is a smoke check, not a compiler substitute; the 
 
 from __future__ import annotations
 
+import json
 import re
 import sys
 from pathlib import Path
@@ -90,7 +91,31 @@ TARGETS = [
     # outbox slot row it writes through the world's EntityManager), the composition host and the state-policy
     # pipeline — so the balance and forbidden-construct checks cover it while it stays out of `engine_free`.
     "Packages/com.gamecore.gameplay.rewards",
+    # GameCore Studio (SADR-014, docs/studio/02-architecture.md section 3): every Studio package, every gameplay
+    # package (including the plugin library's new ones), the production application root and the Unity-free rule
+    # halves of the plugin library. A trailing `*` is a glob over package directories; files already covered by
+    # an entry above are counted once. `com.gamecore.rules.gameplay` and the Studio model (`Runtime/Model` of
+    # `com.gamecore.studio.core`) join `engine_free` below; `STUDIO_EDITOR_SCOPED` limits `UnityEditor` in the
+    # rest to Editor code.
+    "Packages/com.gamecore.studio.*",
+    "Packages/com.gamecore.gameplay.*",
+    "Packages/com.gamecore.unity.app",
+    "Packages/com.gamecore.rules.gameplay",
+    # The games projects (SADR-016) hold ordinary Unity scripts (scenes' glue, tests), checked like the
+    # validation project's Assets.
+    "games/*/Assets",
 ]
+
+# Packages in which `UnityEditor` may appear only in Editor code: a file under an `Editor/` folder, a file whose
+# owning asmdef is Editor-only (`includePlatforms: ["Editor"]`, e.g. EditMode test assemblies), or a line inside an
+# `#if UNITY_EDITOR` block. A runtime assembly that names UnityEditor unguarded compiles in the Editor and fails
+# only in a player build, which is the defect this rule catches early.
+STUDIO_EDITOR_SCOPED = (
+    "Packages/com.gamecore.studio.",
+    "Packages/com.gamecore.gameplay.",
+    "Packages/com.gamecore.unity.app/",
+    "Packages/com.gamecore.rules.gameplay/",
+)
 
 FORBIDDEN = {
     "file-scoped namespace": re.compile(r"^\s*namespace\s+[\w\.]+\s*;", re.M),
@@ -104,7 +129,63 @@ FORBIDDEN = {
 }
 
 # Unity type names that must never appear in the engine-free assemblies.
-ENGINE_TYPES = re.compile(r"\bUnityEngine\b|\bUnity\.Entities\b|\bUnityEngine\.|Unity\.Burst|\bGameObject\b|\bJobHandle\b", re.M)
+ENGINE_TYPES = re.compile(r"\bUnityEngine\b|\bUnity\.Entities\b|\bUnityEngine\.|Unity\.Burst|\bGameObject\b|\bJobHandle\b|\bUnityEditor\b", re.M)
+
+UNITY_EDITOR_TOKEN = re.compile(r"\bUnityEditor\b")
+PREPROCESSOR = re.compile(r"^\s*#\s*(if|elif|else|endif)\b(.*)$")
+
+
+def editor_guarded_lines(code: str) -> set[int]:
+    """1-based line numbers that sit inside an `#if UNITY_EDITOR` (or `#if ... && UNITY_EDITOR`) branch."""
+    guarded: set[int] = set()
+    stack: list[bool] = []
+    for number, line in enumerate(code.split("\n"), start=1):
+        match = PREPROCESSOR.match(line)
+        if match:
+            keyword, condition = match.group(1), match.group(2)
+            positive = "UNITY_EDITOR" in condition and "!UNITY_EDITOR" not in condition.replace(" ", "")
+            if keyword == "if":
+                stack.append(positive and "||" not in condition)
+            elif keyword in ("elif", "else") and stack:
+                stack[-1] = False
+            elif keyword == "endif" and stack:
+                stack.pop()
+            continue
+        if any(stack):
+            guarded.add(number)
+    return guarded
+
+
+def owning_asmdef_is_editor_only(path: Path) -> bool:
+    """True when the nearest asmdef above `path` declares `includePlatforms: ["Editor"]`."""
+    for directory in path.parents:
+        asmdefs = sorted(directory.glob("*.asmdef"))
+        if asmdefs:
+            try:
+                document = json.loads(asmdefs[0].read_text(encoding="utf-8"))
+            except (OSError, UnicodeError, json.JSONDecodeError):
+                return False
+            return document.get("includePlatforms") == ["Editor"]
+        if directory == ROOT:
+            break
+    return False
+
+
+def check_editor_scope(path: Path, rel: Path, code: str, problems: list[str]) -> None:
+    """In Studio/gameplay/app packages, UnityEditor is legal only in Editor code (see STUDIO_EDITOR_SCOPED)."""
+    rel_text = rel.as_posix()
+    if not rel_text.startswith(STUDIO_EDITOR_SCOPED):
+        return
+    if "Editor" in rel.parts[:-1] or not UNITY_EDITOR_TOKEN.search(code):
+        return
+    if owning_asmdef_is_editor_only(path):
+        return
+    guarded = editor_guarded_lines(code)
+    for number, line in enumerate(code.split("\n"), start=1):
+        if UNITY_EDITOR_TOKEN.search(line) and number not in guarded:
+            problems.append(f"{rel}:{number}: UnityEditor outside Editor code (use an Editor/ folder, an "
+                            "Editor-only asmdef or #if UNITY_EDITOR)")
+            return
 
 
 def strip_code(text: str) -> str:
@@ -247,20 +328,93 @@ def check_balance(path: Path, text: str, problems: list[str]) -> None:
         problems.append(f"{path}: unbalanced '{opener}' opened at line {opener_line}")
 
 
+def self_test() -> int:
+    """Falsify the Studio rules (Editor scoping, engine-free Studio model) on synthetic files."""
+    import tempfile
+
+    failures = 0
+    cases = 0
+
+    def check(label: str, condition: bool, detail: str = "") -> None:
+        nonlocal failures, cases
+        cases += 1
+        print(("   ok   " if condition else "   FAIL ") + label + ("" if condition else " " + detail))
+        if not condition:
+            failures += 1
+
+    with tempfile.TemporaryDirectory() as tmp:
+        base = Path(tmp)
+
+        def scope(rel_text: str, source: str, asmdef: dict | None = None) -> list[str]:
+            path = base / rel_text
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(source, encoding="utf-8")
+            for stale in path.parent.glob("*.asmdef"):
+                stale.unlink()
+            if asmdef is not None:
+                (path.parent / "Test.asmdef").write_text(json.dumps(asmdef), encoding="utf-8")
+            found: list[str] = []
+            check_editor_scope(path, Path(rel_text), strip_code(source), found)
+            return found
+
+        unguarded = "using UnityEditor;\nclass A { }\n"
+        guarded = "#if UNITY_EDITOR\nusing UnityEditor;\n#endif\nclass A { }\n"
+        else_branch = "#if UNITY_EDITOR\n#else\nusing UnityEditor;\n#endif\n"
+        check("UnityEditor in a Studio runtime file is reported",
+              bool(scope("Packages/com.gamecore.studio.ui/Runtime/A.cs", unguarded)))
+        check("UnityEditor under an Editor/ folder is legal",
+              not scope("Packages/com.gamecore.studio.ui/Editor/A.cs", unguarded))
+        check("UnityEditor inside #if UNITY_EDITOR is legal",
+              not scope("Packages/com.gamecore.gameplay.npc/Runtime/A.cs", guarded))
+        check("UnityEditor in the #else branch of UNITY_EDITOR is reported",
+              bool(scope("Packages/com.gamecore.gameplay.npc/Runtime/B.cs", else_branch)))
+        check("UnityEditor in an Editor-only asmdef (EditMode tests) is legal",
+              not scope("Packages/com.gamecore.unity.app/Tests/A.cs", unguarded,
+                        {"name": "T", "includePlatforms": ["Editor"]}))
+        check("UnityEditor in a player-included test asmdef is reported",
+              bool(scope("Packages/com.gamecore.unity.app/Tests/B.cs", unguarded,
+                         {"name": "T", "includePlatforms": []})))
+        check("a UnityEditor mention in a comment is ignored",
+              not scope("Packages/com.gamecore.studio.core/Runtime/C.cs", "// UnityEditor\nclass C { }\n"))
+        check("the kernel packages are outside the Studio Editor-scope rule",
+              not scope("Packages/com.gamecore.unity.adapters/Runtime/A.cs", unguarded))
+        check("an engine-free Studio model file naming UnityEditor matches ENGINE_TYPES",
+              bool(ENGINE_TYPES.search(strip_code(guarded))))
+
+    if failures:
+        print(f"check_game_core_csharp.py --self-test FAILED ({failures} of {cases} case(s))")
+        return 1
+    print(f"check_game_core_csharp.py --self-test passed ({cases} cases).")
+    return 0
+
+
 def main() -> int:
+    if "--self-test" in sys.argv[1:]:
+        return self_test()
     problems: list[str] = []
     files: list[Path] = []
     for target in TARGETS:
-        base = ROOT / target
-        if not base.exists():
-            continue
-        files.extend(sorted(
-            path for path in base.rglob("*.cs")
-            if not (
-                path.is_relative_to(ROOT / "dotnet")
-                and {"bin", "obj"}.intersection(path.relative_to(base).parts)
-            )
-        ))
+        # A plain entry behaves exactly as it always has (an overlap with an earlier entry is checked again). A
+        # `*` entry expands to every matching directory, skips files an earlier entry already covers and skips the
+        # Unity-generated trees of a games project.
+        glob_entry = "*" in target
+        bases = sorted(ROOT.glob(target)) if glob_entry else [ROOT / target]
+        covered = set(files)
+        for base in bases:
+            if not base.exists():
+                continue
+            for path in sorted(
+                path for path in base.rglob("*.cs")
+                if not (
+                    path.is_relative_to(ROOT / "dotnet")
+                    and {"bin", "obj"}.intersection(path.relative_to(base).parts)
+                )
+            ):
+                if glob_entry and (path in covered or {"Library", "Temp", "Logs", "obj", "Obj"}.intersection(
+                        path.relative_to(base).parts)):
+                    continue
+                covered.add(path)
+                files.append(path)
 
     if not files:
         print("no C# files found; nothing checked")
@@ -297,6 +451,11 @@ def main() -> int:
         # projections and the build-time genre audit) are Unity-free by design, which is what lets the same assertions
         # run in plain dotnet, in EditMode and in the player (P-001, P-057).
         ROOT / "tests/GameCore.ReferenceConformance",
+        # GameCore Studio (SADR-008, SADR-014): the plugin library's rule halves and the Studio's change-set model
+        # are Unity-free by design (compiled by plain dotnet as well as by Unity), so no Unity type, and no
+        # UnityEditor, may appear in them.
+        ROOT / "Packages/com.gamecore.rules.gameplay",
+        ROOT / "Packages/com.gamecore.studio.core/Runtime/Model",
     )
 
     for path in files:
@@ -318,10 +477,10 @@ def main() -> int:
             problems.append(f"{rel}: missing '#nullable enable'")
 
         if "UnityEngine" in stripped and "com.gamecore." not in str(rel):
-            try:
-                rel.relative_to("unity")
-            except ValueError:
+            if rel.parts[0] not in ("unity", "games"):
                 problems.append(f"{rel}: UnityEngine reference outside the Unity project")
+
+        check_editor_scope(path, rel, stripped, problems)
 
         for base in engine_free:
             try:

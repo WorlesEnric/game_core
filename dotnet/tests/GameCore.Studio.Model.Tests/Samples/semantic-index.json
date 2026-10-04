@@ -1,0 +1,193 @@
+{
+  "revision": 1234,
+  "project": "hollowmere",
+  "nodes": [
+    {
+      "ref": {
+        "kind": "Entity",
+        "authoringId": "7f1c2a9e-4b3d-4e8f-9a1b-2c3d4e5f6a7b",
+        "global": "GlobalObjectId_V1-2-8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a-5501297385643191912-0",
+        "assetGuid": "8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a",
+        "path": "Assets/Hollowmere/Regions/Marsh.unity#/NPCs/Ferryman",
+        "definition": "npc.ferryman@3",
+        "scope": "Instance",
+        "stamp": "sha256:5c4c5ccee970fa522dc13e61b2e21cddfc2d5e69a6311f37f000b7ecd77635b5"
+      },
+      "type": "npc.definition",
+      "name": "Ferryman",
+      "fields": {
+        "speed": {
+          "value": 1.8,
+          "unit": "m/s",
+          "range": [
+            0.5,
+            6
+          ],
+          "type": "float"
+        }
+      },
+      "refs": [
+        {
+          "field": "dialogue",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "b0e4f7a2-19c3-4d6e-a8f1-5c6d7e8f9012",
+            "global": "GlobalObjectId_V1-1-2f4e6a8c0b1d3f5e7a9c1b3d5f7e9a0c-11400000-0",
+            "assetGuid": "2f4e6a8c0b1d3f5e7a9c1b3d5f7e9a0c",
+            "path": "Assets/Hollowmere/Dialogue/FerrymanTalk.asset",
+            "definition": "dialogue.ferryman-talk@5",
+            "scope": "Definition",
+            "stamp": "sha256:abe0ba24dae6eb854ba26a5f2f34497e2be2df3daaa9acbc4e6d3cf6f05065d7"
+          }
+        }
+      ],
+      "capabilities": [
+        "dialogue.speaker",
+        "quest.giver"
+      ],
+      "provenance": {
+        "asset": "Assets/Hollowmere/Definitions/Npc/Ferryman.asset",
+        "line": 0
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "b0e4f7a2-19c3-4d6e-a8f1-5c6d7e8f9012",
+        "global": "GlobalObjectId_V1-1-2f4e6a8c0b1d3f5e7a9c1b3d5f7e9a0c-11400000-0",
+        "assetGuid": "2f4e6a8c0b1d3f5e7a9c1b3d5f7e9a0c",
+        "path": "Assets/Hollowmere/Dialogue/FerrymanTalk.asset",
+        "definition": "dialogue.ferryman-talk@5",
+        "scope": "Definition",
+        "stamp": "sha256:abe0ba24dae6eb854ba26a5f2f34497e2be2df3daaa9acbc4e6d3cf6f05065d7"
+      },
+      "type": "dialogue.graph",
+      "name": "Ferryman talk",
+      "fields": {
+        "title": {
+          "value": "The crossing",
+          "type": "string"
+        }
+      },
+      "provenance": {
+        "asset": "Assets/Hollowmere/Dialogue/FerrymanTalk.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "c4d5e6f7-0a1b-4c2d-8e3f-a4b5c6d7e8f9",
+        "assetGuid": "9a8b7c6d5e4f30211203f4e5d6c7b8a9",
+        "path": "Assets/Hollowmere/Items/Lantern.asset",
+        "definition": "item.lantern@2",
+        "scope": "Definition",
+        "stamp": "sha256:c5220b3c4266890f047190c18dc4243e0dac079d43ca8065899c4f9f3cf124ef"
+      },
+      "type": "item.definition",
+      "name": "Lantern",
+      "fields": {
+        "stackLimit": {
+          "value": 1,
+          "type": "int"
+        }
+      }
+    },
+    {
+      "ref": {
+        "kind": "Region",
+        "authoringId": "3a9d0c1e-77b2-4f10-8c55-1d2e3f405162",
+        "assetGuid": "5e6f708192a3b4c5d6e7f8091a2b3c4d",
+        "path": "Assets/Hollowmere/Regions/Marsh.unity",
+        "stamp": "sha256:428e626f22d0273bb2741c8747418eaff1828bcd397fe7d00f3ec30d4519d95d"
+      },
+      "type": "world.region",
+      "name": "Marsh",
+      "capabilities": [
+        "world.region"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": {
+        "kind": "Entity",
+        "authoringId": "7f1c2a9e-4b3d-4e8f-9a1b-2c3d4e5f6a7b",
+        "global": "GlobalObjectId_V1-2-8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a-5501297385643191912-0",
+        "assetGuid": "8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a",
+        "path": "Assets/Hollowmere/Regions/Marsh.unity#/NPCs/Ferryman",
+        "definition": "npc.ferryman@3",
+        "scope": "Instance",
+        "stamp": "sha256:5c4c5ccee970fa522dc13e61b2e21cddfc2d5e69a6311f37f000b7ecd77635b5"
+      },
+      "to": {
+        "kind": "Definition",
+        "authoringId": "b0e4f7a2-19c3-4d6e-a8f1-5c6d7e8f9012",
+        "global": "GlobalObjectId_V1-1-2f4e6a8c0b1d3f5e7a9c1b3d5f7e9a0c-11400000-0",
+        "assetGuid": "2f4e6a8c0b1d3f5e7a9c1b3d5f7e9a0c",
+        "path": "Assets/Hollowmere/Dialogue/FerrymanTalk.asset",
+        "definition": "dialogue.ferryman-talk@5",
+        "scope": "Definition",
+        "stamp": "sha256:abe0ba24dae6eb854ba26a5f2f34497e2be2df3daaa9acbc4e6d3cf6f05065d7"
+      },
+      "kind": "references"
+    },
+    {
+      "from": {
+        "kind": "Region",
+        "authoringId": "3a9d0c1e-77b2-4f10-8c55-1d2e3f405162",
+        "assetGuid": "5e6f708192a3b4c5d6e7f8091a2b3c4d",
+        "path": "Assets/Hollowmere/Regions/Marsh.unity",
+        "stamp": "sha256:428e626f22d0273bb2741c8747418eaff1828bcd397fe7d00f3ec30d4519d95d"
+      },
+      "to": {
+        "kind": "Entity",
+        "authoringId": "7f1c2a9e-4b3d-4e8f-9a1b-2c3d4e5f6a7b",
+        "global": "GlobalObjectId_V1-2-8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a-5501297385643191912-0",
+        "assetGuid": "8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a",
+        "path": "Assets/Hollowmere/Regions/Marsh.unity#/NPCs/Ferryman",
+        "definition": "npc.ferryman@3",
+        "scope": "Instance",
+        "stamp": "sha256:5c4c5ccee970fa522dc13e61b2e21cddfc2d5e69a6311f37f000b7ecd77635b5"
+      },
+      "kind": "contains"
+    },
+    {
+      "from": {
+        "kind": "Entity",
+        "authoringId": "7f1c2a9e-4b3d-4e8f-9a1b-2c3d4e5f6a7b",
+        "global": "GlobalObjectId_V1-2-8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a-5501297385643191912-0",
+        "assetGuid": "8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a",
+        "path": "Assets/Hollowmere/Regions/Marsh.unity#/NPCs/Ferryman",
+        "definition": "npc.ferryman@3",
+        "scope": "Instance",
+        "stamp": "sha256:5c4c5ccee970fa522dc13e61b2e21cddfc2d5e69a6311f37f000b7ecd77635b5"
+      },
+      "to": {
+        "kind": "Definition",
+        "authoringId": "c4d5e6f7-0a1b-4c2d-8e3f-a4b5c6d7e8f9",
+        "assetGuid": "9a8b7c6d5e4f30211203f4e5d6c7b8a9",
+        "path": "Assets/Hollowmere/Items/Lantern.asset",
+        "definition": "item.lantern@2",
+        "scope": "Definition",
+        "stamp": "sha256:c5220b3c4266890f047190c18dc4243e0dac079d43ca8065899c4f9f3cf124ef"
+      },
+      "kind": "bindsUi"
+    }
+  ],
+  "scopes": [
+    {
+      "scope": "world/marsh",
+      "region": {
+        "kind": "Region",
+        "authoringId": "3a9d0c1e-77b2-4f10-8c55-1d2e3f405162",
+        "assetGuid": "5e6f708192a3b4c5d6e7f8091a2b3c4d",
+        "path": "Assets/Hollowmere/Regions/Marsh.unity",
+        "stamp": "sha256:428e626f22d0273bb2741c8747418eaff1828bcd397fe7d00f3ec30d4519d95d"
+      },
+      "installs": [
+        "npc.behaviour@1",
+        "dialogue.runtime@1"
+      ]
+    }
+  ]
+}

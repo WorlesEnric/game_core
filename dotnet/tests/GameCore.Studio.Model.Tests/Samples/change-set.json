@@ -1,0 +1,212 @@
+{
+  "id": "cs_01K6Q0ACC07E5S3HTP4YZEASPW",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Give the ferryman a lantern and make him mention it",
+    "voiceTranscriptId": "tr_01K6Q09ZM3",
+    "origin": "agent"
+  },
+  "selection": {
+    "id": "sel_01K6Q0A2KGD48GSVXZX80RVZQS",
+    "mode": "Edit",
+    "targets": [
+      {
+        "kind": "Entity",
+        "authoringId": "7f1c2a9e-4b3d-4e8f-9a1b-2c3d4e5f6a7b",
+        "global": "GlobalObjectId_V1-2-8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a-5501297385643191912-0",
+        "assetGuid": "8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a",
+        "path": "Assets/Hollowmere/Regions/Marsh.unity#/NPCs/Ferryman",
+        "definition": "npc.ferryman@3",
+        "scope": "Instance",
+        "stamp": "sha256:5c4c5ccee970fa522dc13e61b2e21cddfc2d5e69a6311f37f000b7ecd77635b5"
+      }
+    ],
+    "parts": [
+      {
+        "owner": {
+          "kind": "Entity",
+          "authoringId": "7f1c2a9e-4b3d-4e8f-9a1b-2c3d4e5f6a7b",
+          "global": "GlobalObjectId_V1-2-8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a-5501297385643191912-0",
+          "assetGuid": "8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a",
+          "path": "Assets/Hollowmere/Regions/Marsh.unity#/NPCs/Ferryman",
+          "definition": "npc.ferryman@3",
+          "scope": "Instance",
+          "stamp": "sha256:5c4c5ccee970fa522dc13e61b2e21cddfc2d5e69a6311f37f000b7ecd77635b5"
+        },
+        "part": "Mesh:Lantern_Glass"
+      }
+    ],
+    "regionRect": {
+      "screen": [
+        812,
+        240,
+        1104,
+        690
+      ]
+    },
+    "frame": {
+      "camera": {
+        "position": [
+          10.0,
+          1.7,
+          -8.5
+        ],
+        "rotation": [
+          0.0,
+          0.2588,
+          0.0,
+          0.9659
+        ],
+        "fov": 60,
+        "aspect": 1.78
+      },
+      "viewport": [
+        1920,
+        1080
+      ],
+      "image": "sha256:9dff50df08c635815f4b19da10f756605a34a79a48d4ba48712782502975a70e"
+    },
+    "indexRevision": 1234
+  },
+  "baseVersions": [
+    {
+      "ref": {
+        "kind": "Entity",
+        "authoringId": "7f1c2a9e-4b3d-4e8f-9a1b-2c3d4e5f6a7b",
+        "global": "GlobalObjectId_V1-2-8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a-5501297385643191912-0",
+        "assetGuid": "8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a",
+        "path": "Assets/Hollowmere/Regions/Marsh.unity#/NPCs/Ferryman",
+        "definition": "npc.ferryman@3",
+        "scope": "Instance",
+        "stamp": "sha256:5c4c5ccee970fa522dc13e61b2e21cddfc2d5e69a6311f37f000b7ecd77635b5"
+      },
+      "stamp": "sha256:5c4c5ccee970fa522dc13e61b2e21cddfc2d5e69a6311f37f000b7ecd77635b5"
+    }
+  ],
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "inventory.grantStarting",
+      "target": {
+        "kind": "Entity",
+        "authoringId": "7f1c2a9e-4b3d-4e8f-9a1b-2c3d4e5f6a7b",
+        "global": "GlobalObjectId_V1-2-8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a-5501297385643191912-0",
+        "assetGuid": "8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a",
+        "path": "Assets/Hollowmere/Regions/Marsh.unity#/NPCs/Ferryman",
+        "definition": "npc.ferryman@3",
+        "scope": "Instance",
+        "stamp": "sha256:5c4c5ccee970fa522dc13e61b2e21cddfc2d5e69a6311f37f000b7ecd77635b5"
+      },
+      "args": {
+        "item": "item.lantern@2",
+        "count": 1
+      },
+      "dependsOn": [],
+      "preconditions": "stamp",
+      "applyRequirement": "Live"
+    },
+    {
+      "opId": "op2",
+      "tool": "dialogue.addNode",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "b0e4f7a2-19c3-4d6e-a8f1-5c6d7e8f9012",
+        "global": "GlobalObjectId_V1-1-2f4e6a8c0b1d3f5e7a9c1b3d5f7e9a0c-11400000-0",
+        "assetGuid": "2f4e6a8c0b1d3f5e7a9c1b3d5f7e9a0c",
+        "path": "Assets/Hollowmere/Dialogue/FerrymanTalk.asset",
+        "definition": "dialogue.ferryman-talk@5",
+        "scope": "Definition",
+        "stamp": "sha256:abe0ba24dae6eb854ba26a5f2f34497e2be2df3daaa9acbc4e6d3cf6f05065d7"
+      },
+      "args": {
+        "text": "Mind the lantern; the marsh takes the careless.",
+        "voice": {
+          "artifact": "sha256:61e25c2cdda1758ce167dbeb7e6d776c5cd6c2f12168f190ef0dca674ff60e6c"
+        }
+      },
+      "dependsOn": [
+        "op1"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "61e25c2cdda1758ce167dbeb7e6d776c5cd6c2f12168f190ef0dca674ff60e6c",
+      "name": "ferryman_line_07.wav",
+      "mediaType": "audio/wav",
+      "bytes": 48213,
+      "producer": {
+        "etosTask": "t_01K6Q0B1XH",
+        "op": "tts",
+        "provider": "dashscope",
+        "model": "qwen3-tts-flash"
+      },
+      "role": "voiceLine",
+      "import": {
+        "type": "AudioClip",
+        "settings": {}
+      }
+    }
+  ],
+  "validation": [
+    {
+      "scenario": "dialogue.reachable",
+      "status": "pending",
+      "detail": ""
+    }
+  ],
+  "requirements": {
+    "max": "Live",
+    "worldRebuild": false,
+    "compile": false,
+    "build": false
+  },
+  "links": {
+    "etosTasks": [
+      "t_01K6Q0B1XH"
+    ],
+    "gameCoreOps": []
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "code": "",
+      "detail": "",
+      "gameCoreOps": [
+        "w:0a1b2c3d4e5f60718293a4b5c6d7e8f9/i:studio/s:42"
+      ],
+      "undo": {
+        "inverse": {
+          "tool": "inventory.revokeStarting",
+          "args": {
+            "item": "item.lantern@2",
+            "count": 1
+          }
+        }
+      }
+    },
+    {
+      "opId": "op2",
+      "status": "Applied",
+      "code": "",
+      "detail": "",
+      "gameCoreOps": [],
+      "undo": {
+        "inverse": {
+          "tool": "dialogue.removeNode",
+          "args": {
+            "node": "n_17"
+          }
+        }
+      }
+    }
+  ],
+  "policy": "AllOrNothing",
+  "timestamps": {
+    "requested": "2026-10-04T08:20:00.000Z",
+    "candidate": "2026-10-04T08:20:41.512Z",
+    "applied": "2026-10-04T08:21:03.004Z"
+  }
+}

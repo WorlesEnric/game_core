@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- GameCore Studio model tests (P0.3): JSON round trips of the 03 samples with schema conformance, schema
+       freshness against docs/studio/schemas, identity derivation, content stamps, ToolCatalogBuilder over annotated
+       sample types and every ChangeSetValidator rule. Unity-free. -->
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <AssemblyName>GameCore.Studio.Model.Tests</AssemblyName>
+    <RootNamespace>GameCore.Studio.Model.Tests</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="Samples/*.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="NUnit" Version="3.14.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/GameCore.Studio.Model/GameCore.Studio.Model.csproj" />
+    <ProjectReference Include="../../src/GameCore.Studio.Model.Schema/GameCore.Studio.Model.Schema.csproj" />
+    <ProjectReference Include="../../src/GameCore.Contracts/GameCore.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

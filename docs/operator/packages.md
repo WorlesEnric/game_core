@@ -99,7 +99,7 @@ cannot drift from the sources it describes:
 
 ```sh
 python3 tools/check_package_metadata.py            # audit
-python3 tools/check_package_metadata.py --self-test # falsify the rules themselves (12 cases)
+python3 tools/check_package_metadata.py --self-test # falsify the rules themselves (30 cases)
 python3 tools/check_package_metadata.py --sync-lock # mirror the lock's dependency maps from the manifests
 python3 tools/check_package_metadata.py --json artifacts/reproducibility/package-metadata.json
 ```
@@ -122,3 +122,56 @@ import): a qualification-only package name, and a `com.gamecore.*` entry the man
 
 `PlayerSettings.bundleVersion` is `0.1.0`. That is the **player's** version string and it is unrelated to the
 package versions above. Nothing asserts it; see [profile.md §5](profile.md).
+
+## 9. Studio, gameplay and games projects (SADR-014)
+
+GameCore Studio ([02-architecture.md §8](../studio/02-architecture.md)) adds packages that legitimately use
+more of the engine, and Unity projects under `games/` beside the qualification project. The rules above are
+unchanged for the kernel; the checkers know about the new shapes as follows.
+
+**Engine allowlist.** Besides Burst/Collections/Entities/Mathematics, a package may reference these assemblies,
+and must then declare the package that ships them, at the version the games projects pin
+(`games/*/Packages/manifest.json`, or the version their committed lock resolved for a transitive package):
+
+| Assembly | Package | Pin on this revision (`games/hollowmere`) |
+| --- | --- | --- |
+| `Unity.InputSystem` | `com.unity.inputsystem` | 1.19.0 |
+| `Unity.AI.Navigation` | `com.unity.ai.navigation` | 2.0.12 |
+| `Unity.RenderPipelines.Universal.Runtime` | `com.unity.render-pipelines.universal` | 17.0.4 |
+| `Unity.RenderPipelines.Core.Runtime` | `com.unity.render-pipelines.core` | 17.0.4 (resolved) |
+| `Unity.TextMeshPro`, `UnityEngine.UI` | `com.unity.ugui` | 2.0.0 (resolved) |
+| `Unity.Transforms`, `Unity.Entities.Hybrid` | `com.unity.entities` | 1.4.6 (the qualification pin) |
+
+Built-in modules (`UnityEngine.UIElementsModule`, `UnityEngine.UIModule`, audio, animation, AI, physics, ...)
+need no dependency. A games manifest that pins a kernel engine package differently from the qualification
+manifest is a problem.
+
+**Precompiled references.** Only `com.gamecore.studio.*` and `com.gamecore.gameplay.*` packages may name a
+DLL in `precompiledReferences` (beyond the project-provided `nunit.framework.dll`), only `Newtonsoft.Json.dll`
+is allowlisted, and it requires `com.unity.nuget.newtonsoft-json` (3.2.1).
+
+**Lock sources.** A package must be locked in at least one of
+`unity/GameCore.Validation/Packages/packages-lock.json` and `games/*/Packages/packages-lock.json`; every lock
+that holds it must carry its exact `com.gamecore.*` dependency map, and `--sync-lock` repairs each lock it
+reports. A new package therefore passes once a project that uses it has been resolved and its lock committed.
+
+**Kernel isolation.** The eight kernel packages of [§2](#2-the-engine-free-kernel) may depend on no
+`com.gamecore.gameplay.*`, no `com.gamecore.studio.*` and not on `com.gamecore.rules.gameplay`.
+
+**C# checks** (`tools/check_game_core_csharp.py`). Every `Packages/com.gamecore.studio.*` and
+`Packages/com.gamecore.gameplay.*` package, `com.gamecore.unity.app`, `com.gamecore.rules.gameplay` and
+`games/*/Assets` get the balance, forbidden-construct and `#nullable` checks.
+`com.gamecore.rules.gameplay` and `com.gamecore.studio.core/Runtime/Model` are engine-free: no `UnityEngine`,
+`Unity.Entities`, `Unity.Burst`, `GameObject`, `JobHandle` or `UnityEditor`. In the other Studio, gameplay and
+app packages, `UnityEditor` is legal only in Editor code: a file under an `Editor/` folder, a file whose owning
+asmdef is Editor-only (`includePlatforms: ["Editor"]`, e.g. an EditMode test assembly), or a line inside
+`#if UNITY_EDITOR`. A runtime assembly that names `UnityEditor` otherwise compiles in the Editor and fails only
+in a player build.
+
+```sh
+python3 tools/check_game_core_csharp.py --self-test   # falsify the Studio rules (9 cases)
+```
+
+**Meta files.** `tools/make_unity_metas.py` also covers `games/*/Assets` and the Studio content kinds
+(`.inputactions`, `.mat`, `.prefab`, `.unity`, `.shadergraph`, `.png`, `.wav`, `.mp3`, `.ogg`, `.fbx`, `.anim`,
+`.controller`). A meta it writes carries only the GUID; Unity adds the importer block on the next import.

@@ -1,0 +1,16 @@
+{
+  "name": "com.gamecore.studio.core",
+  "version": "1.0.0",
+  "displayName": "GameCore Studio Core",
+  "description": "GameCore Studio authoring and edit-execution core (docs/studio/02-architecture.md boundaries B and C). Runtime/Model holds the Unity-free GameCore.Studio.Model assembly: AuthoringRef, SelectionSnapshot, SemanticIndex, ToolCatalog and the authoring metadata attributes, ChangeSet, Diagnostic and DiagnosticCodes, identity derivation, content stamps and change-set validation, with Newtonsoft.Json contracts matching docs/studio/03-authoring-contracts.md. The same sources build under plain dotnet (dotnet/src/GameCore.Studio.Model).",
+  "unity": "6000.0",
+  "keywords": [
+    "gamecore",
+    "studio",
+    "authoring"
+  ],
+  "dependencies": {
+    "com.gamecore.contracts": "1.0.0",
+    "com.unity.nuget.newtonsoft-json": "3.2.1"
+  }
+}

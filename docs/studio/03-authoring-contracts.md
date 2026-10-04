@@ -26,7 +26,7 @@ JSON is the interchange form; C# shapes live in `com.gamecore.studio.core/Runtim
 Rules:
 - `authoringId` is minted once by `AuthoredEntity`/`AuthoredDefinition` importers and never regenerated on copy
   unless the copy is a *new* object (prefab instances keep the prefab's id plus an instance id).
-- `TargetId = StableNameKeyDerivation("auth:" + authoringId)`; prefab-variant instances derive from the instance id.
+- `TargetId = StableNameKeyDerivation.Derive("auth." + authoringId)` (the kernel helper refuses `:`); prefab-variant instances derive from the instance id.
 - `stamp` is the precondition value; the edit engine refuses an op whose target stamp changed (`StaleTarget`) unless
   the op declares `preconditions: "none"`.
 - Unity instance IDs, `Entity` indices and `TargetHandle`s never appear in a change set.
@@ -64,7 +64,7 @@ The index is a projection, rebuilt incrementally from `AssetPostprocessor`/scene
 
 ```jsonc
 { "revision": 1234, "project": "hollowmere",
-  "nodes": [ { "ref": AuthoringRef, "type": "npc.NpcDefinition", "name": "Ferryman",
+  "nodes": [ { "ref": AuthoringRef, "type": "npc.definition", "name": "Ferryman",   // the [Authorable] type id
                "fields": { "speed": { "value": 1.8, "unit": "m/s", "range": [0.5, 6], "type": "float" } },
                "refs": [ { "field": "dialogue", "to": AuthoringRef } ],
                "capabilities": ["dialogue.speaker", "quest.giver"],

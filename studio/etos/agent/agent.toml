@@ -1,0 +1,41 @@
+# gamecore-studio: the GameCore Studio companion (docs/studio/04-etos-integration.md).
+# Installing this directory (`etos agent install studio/etos/agent [--link]`) is the operator's
+# approval of the grants below; the node writes the agent key (rotated on every install or
+# upgrade) and supervises the process with ETOS_URL, ETOS_KEY_FILE, ETOS_AGENT, ETOS_STATE_DIR.
+#
+# The process inherits etosd's environment (provider keys included): the companion never logs
+# or forwards it. Unity reaches it only through the node's proxy with the paired app key of
+# `gamecore-unity` (studio/etos/app/app.toml, `uses = ["gamecore-studio"]`).
+
+agent = "gamecore-studio"
+version = "0.1.0"
+label = "GameCore Studio companion"
+sdk = ">=1, <2"
+
+# logger/query: the gamecore-studio Resource Graph binding (gc_* states) and reads of it;
+# changes: the change feed of the apps that use the agent; tasks/topics/files: Studio worker
+# tasks, their topics and their inputs/outputs; ops: generate.image, tts, describe,
+# generate.3d (charged to the agent's budget); providers + realtime: the studio-voice realtime
+# session (transcription only); proxy: the loopback listener Unity reaches; services: `status`.
+grants = ["logger", "query", "changes", "tasks", "files", "topics", "ops", "providers", "realtime", "proxy", "services"]
+providers = ["studio-voice"]
+
+[process]
+# A path inside this directory (the node refuses `..`). `bin/gamecore-studio` is a symlink or
+# copy of studio/agent/target/release/gamecore-studio created by studio/etos/install.sh
+# (`cargo build --release` in studio/agent first). bin/ is not committed.
+command = "bin/gamecore-studio"
+restart = "always"
+env = { RUST_LOG = "info,gamecore_studio=info" }
+
+# Image and network are set beforehand with `etos worker create <name> --image ... --network
+# allowlist:` (install preserves them); the manifest sets the model and the instructions.
+[[worker]]
+name = "gc-designer"
+model = "default"
+instructions = "workers/gc-designer.md"
+
+[[worker]]
+name = "gc-mechanic"
+model = "default"
+instructions = "workers/gc-mechanic.md"
