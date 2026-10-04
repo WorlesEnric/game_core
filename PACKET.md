@@ -27,7 +27,27 @@ because Echo's `claude-opus-5-5` (the workers' `default` model) is down and a ta
 Each of the last two is a separate commit so it can be taken or dropped on its own.
 
 `scripts/check.sh rust` (fmt, clippy -D warnings, tests, doc, boundaries, cargo-deny, budgets) runs on
-the host in `~/wkspace/etos-studio`: @GATES@
+the host in `~/wkspace/etos-studio` at `5fa113b` (`/tmp/gc-p01-check/` on the host). It is **not fully green
+on this host**:
+
+- fmt, clippy, doc, boundaries and deny are `ok`. Line budgets are all within limits (etops 7335 / 8000,
+  etrg 9000 / 16000).
+- **test FAILED.** `cargo test --workspace --locked --no-fail-fast` (`/tmp/gc-p01-nff.txt`): 103 test targets ok,
+  4 targets with one failing test each:
+  - `etactor` `process::resource_limits_stop_a_runaway_process`: the spinner dies by `signal: 9 (SIGKILL)` where
+    the test expects `SIGXCPU`. `ulimit -t` sets soft = hard, and this host's kernel (7.0) delivers SIGKILL.
+  - `etapi` `agent_data::agents_manage_real_core_actors_with_durable_identity_and_owned_descendants`:
+    `bwrap cannot create a sandbox (… bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted)`.
+  - `etnode` `term_ssh::git_clone_through_the_git_user`: `out/README` missing after the clone (NotFound).
+  - `etnode` `delegate_vendor::an_interrupted_delegation_follows_the_same_conversation_after_a_restart`:
+    `Connection reset by peer`. It passes when run alone (2/2).
+- **The first three fail identically at the base `6c2c3f4`.** I ran them there on the same host with the same
+  command, so they are host-environment failures, not caused by this branch.
+- Every test in the crates this branch changes passes, including the new ones (`bailian_tts_*`,
+  `media_by_signature_without_an_extension`, `worker_names_follow_the_node`). sdk/rust is outside the
+  workspace: `cargo test --test agent` there gives 9 passed.
+- `node` must be on `PATH` (`~/.local/bin`). Without it, 12 more JS actor-host tests fail with `node is not
+  installed`.
 
 ### Host (`myubuntu`, user `worlesenric`)
 
@@ -133,6 +153,9 @@ All on the host; the Mac only edits and runs git.
 - Pre-existing etos issues outside this packet's gates, present at `6c2c3f4`: `sdk/rust` clippy
   `manual_is_multiple_of` (`src/realtime.rs:364`) and a failing `tests/schema.rs` (schema types the SDK does not
   implement, e.g. `RealtimeEvent`).
+- `scripts/check.sh rust` cannot be fully green on myubuntu until its environment allows `bwrap` sandboxes
+  (unprivileged user namespaces) and the RLIMIT_CPU and term_ssh failures are understood. These failures occur at
+  `6c2c3f4` too (§1).
 - `studio/agent/vendor-etos-sdk.sh` can now be run against `5fa113b` (the lock's `commit =` line); that commit
   contains the `sdk/rust` change (`generate(family, …)`).
 
