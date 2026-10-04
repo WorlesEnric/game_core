@@ -136,9 +136,16 @@ fn request(id: &str) -> Value {
         "selection": {"id": "sel_01J9ZQ00000000000000000001", "mode": "Edit", "indexRevision": 1,
                       "targets": [{"kind": "Entity", "authoringId": "e-ferryman"}]},
         "contextSlice": {"revision": 1, "project": "p05-real", "nodes": []},
-        "toolCatalogRevision": "p05-cat-1",
-        "toolCatalog": {"revision": "p05-cat-1", "tools": [{"name": "inventory.grantStarting"}]}
+        "toolCatalogRevision": gamecore_studio::util::catalog_revision(&catalog()),
+        "toolCatalog": catalog()
     })
+}
+
+fn catalog() -> Value {
+    json!({"schema": "gamecore.studio.toolcatalog/1", "objectTypes": [], "tools": [
+        {"id": "inventory.grantStarting", "tier": "Configure", "runtimeApply": "Live", "targetRequired": true,
+         "targetKinds": ["Entity"], "args": [{"name": "item", "type": "ref", "required": true}]}
+    ]})
 }
 
 fn stamp() -> u128 {
@@ -273,7 +280,7 @@ async fn real_node_end_to_end() {
             .call(
                 reqwest::Method::POST,
                 "/v1/ops/generate",
-                Some(json!({"op": "3d", "spec": {"prompt": "lantern"}})),
+                Some(json!({"op": "3d", "spec": {"prompt": "lantern"}, "max_cost_usd": 0.5})),
             )
             .await;
         say(&format!("POST /v1/ops/generate 3d -> {s}"), &v);
@@ -283,7 +290,7 @@ async fn real_node_end_to_end() {
     let (s, v) = n
         .call(reqwest::Method::POST, "/v1/index/delta", Some(json!({
             "project": "p05-real", "revision": 1,
-            "nodes": [{"ref": {"kind": "Entity", "authoringId": "e-ferryman"}, "type": "npc.Npc", "name": "Ferryman"}]
+            "nodes": [{"ref": {"kind": "Entity", "authoringId": "e-ferryman"}, "type": "npc.definition", "name": "Ferryman"}]
         })))
         .await;
     say(&format!("POST /v1/index/delta -> {s}"), &v);

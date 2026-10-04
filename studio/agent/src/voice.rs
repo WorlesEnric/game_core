@@ -1,15 +1,17 @@
 //! The voice bridge (04 §5): `WS /v1/voice` ↔ etos `GET /realtime/connect?provider=studio-voice`.
 //!
 //! Client → companion (JSON text frames):
-//! - `{"type":"audio","seq":<n>,"pcm16":"<base64 PCM16 mono 24 kHz>"}` — any size; the
-//!   companion re-chunks it into etos `input_audio` commands of at most 24 KiB raw (32 KiB
-//!   base64), with its own gapless sequence and ids `audio-<seq>`;
+//! - `{"type":"audio","seq":<n>,"pcm16":"<base64 PCM16 mono 24 kHz>"}` — at most 24 KiB raw
+//!   (32 KiB base64) per frame (04 §2; a larger frame is refused with `too_large` and not
+//!   forwarded); each frame becomes one etos `input_audio` command with the companion's own
+//!   gapless sequence and ids `audio-<seq>`;
 //! - `{"type":"stop"}` — close the session (pending transcripts are still forwarded).
 //!
 //! Companion → client:
 //! - `{"type":"ready","sessionId","audioFormat":"pcm16","sampleRateHz":24000,"maxChunkBytes":24576}`;
-//! - `{"type":"transcript","role","itemId","revision","text","done"}` (a full revision, not
-//!   a delta; only `done: true` text belongs in the prompt box);
+//! - `{"type":"transcript","role":"user","itemId","revision","text","final"?}` — the user's
+//!   speech only (other roles are dropped); a full revision, not a delta; `final: true` is
+//!   present only on the last revision of an item (only that text belongs in the prompt box);
 //! - `{"type":"speech_started","itemId"}`, `{"type":"speech_ended","itemId"}`;
 //! - `{"type":"usage","usage"}`, `{"type":"error","code","message"}`, `{"type":"closed","reason"}`.
 //!
@@ -151,6 +153,7 @@ impl Drop for Active<'_> {
 type Sink = futures::stream::SplitSink<WebSocket, Message>;
 
 async fn send(tx: &mut Sink, v: Value) -> bool {
+    let v = crate::util::pruned(v);
     tx.send(Message::Text(v.to_string().into())).await.is_ok()
 }
 
@@ -298,7 +301,12 @@ impl VoiceBridge {
                                     last_client = cseq;
                                 }
                                 let bytes = match STANDARD.decode(pcm16.as_bytes()) {
-                                    Ok(b) if !b.is_empty() && b.len() % 2 == 0 => b,
+                                    Ok(b) if b.len() > MAX_CHUNK => {
+                                        send(&mut tx, json!({"type": "error", "code": "too_large",
+                                            "message": format!("an audio frame is at most {MAX_CHUNK} bytes of PCM16 ({} base64); this one has {}", MAX_CHUNK / 3 * 4, b.len())})).await;
+                                        continue;
+                                    }
+                                    Ok(b) if !b.is_empty() && b.len().is_multiple_of(2) => b,
                                     _ => {
                                         send(&mut tx, json!({"type": "error", "code": "bad_audio",
                                             "message": "pcm16 is base64 of a non-empty, even number of bytes"})).await;
@@ -351,15 +359,19 @@ impl VoiceBridge {
                     match ev {
                         Some(Ok(frame)) => match frame.event {
                             RealtimeEvent::Transcript { role, item_id, revision, text, done, .. } => {
+                                // The user's speech only (04 §2).
+                                if role != "user" {
+                                    continue;
+                                }
+                                let mut frame = json!({"type": "transcript", "role": "user", "itemId": item_id,
+                                    "revision": revision, "text": text});
                                 if done {
                                     transcripts += 1;
-                                    if role == "user" {
-                                        let _ = self.hub.emit("voice_transcript", None,
-                                            &json!({"sessionId": session_id, "itemId": item_id, "text": text}));
-                                    }
+                                    frame["final"] = json!(true);
+                                    let _ = self.hub.emit("voice_transcript", None,
+                                        &json!({"sessionId": session_id, "itemId": item_id, "text": text}));
                                 }
-                                send(&mut tx, json!({"type": "transcript", "role": role, "itemId": item_id,
-                                    "revision": revision, "text": text, "done": done})).await;
+                                send(&mut tx, frame).await;
                             }
                             RealtimeEvent::SpeechStarted { item_id } => {
                                 send(&mut tx, json!({"type": "speech_started", "itemId": item_id})).await;

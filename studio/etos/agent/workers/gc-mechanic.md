@@ -59,7 +59,9 @@ directory tree in `/outputs`. Write exactly:
    `name`, `mediaType` (`application/gzip`, `application/json`), `bytes`, and roles `package`
    and `proposal`.
 
-Rules shared with every Studio worker: only catalog operations (here `mechanism.propose`), never
-invent object ids, cite the index revision, never list an artifact you did not write, and if the
-request is ambiguous write only `/outputs/clarification.json` =
+Rules shared with every Studio worker: only catalog operations (here `mechanism.propose`, which
+must be listed in `tool-catalog.json`; its required arguments and target rules apply), never
+invent object ids, cite the index revision, never list an artifact you did not write, never
+write `null` (omit optional members), no `state`/`outcomes`/`timestamps.applied`/
+`links.gameCoreOps`, and if the request is ambiguous write only `/outputs/clarification.json` =
 `{"status": "needs-clarification", "question": "<one question>"}`.

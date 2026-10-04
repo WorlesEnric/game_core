@@ -1,8 +1,8 @@
 //! The content-addressed artifact store: `ETOS_STATE_DIR/artifacts/sha256/<aa>/<hash>`.
 //!
-//! A file is written to a temporary name, its digest computed from the bytes written and
-//! compared with the expected digest (when one is given), then renamed into place. A digest
-//! already present is not rewritten.
+//! A file is written to a temporary name with a random suffix, fsynced, its digest computed
+//! from the bytes written and compared with the expected digest (when one is given), then
+//! renamed into place and the directory fsynced. A digest already present is not rewritten.
 
 use std::io::Write;
 use std::path::{Path, PathBuf};
@@ -69,9 +69,21 @@ impl ArtifactStore {
         }
         let dir = path.parent().unwrap_or(Path::new("."));
         std::fs::create_dir_all(dir)?;
-        let tmp = dir.join(format!(".{actual}.{}.tmp", std::process::id()));
+        // A random suffix: concurrent writers of one digest never share a temporary file.
+        let mut nonce = [0u8; 8];
+        if getrandom::fill(&mut nonce).is_err() {
+            nonce = crate::util::now_ms().to_le_bytes();
+        }
+        let tmp = dir.join(format!(
+            ".{actual}.{}.{}.tmp",
+            std::process::id(),
+            hex::encode(nonce)
+        ));
         {
-            let mut f = std::fs::File::create(&tmp)?;
+            let mut f = std::fs::OpenOptions::new()
+                .write(true)
+                .create_new(true)
+                .open(&tmp)?;
             f.write_all(bytes)?;
             f.sync_all()?;
         }
@@ -86,6 +98,8 @@ impl ArtifactStore {
             });
         }
         std::fs::rename(&tmp, &path)?;
+        // Make the rename durable: fsync the directory entry.
+        sync_dir(dir)?;
         Ok((actual, path))
     }
 
@@ -97,6 +111,21 @@ impl ArtifactStore {
             Err(e) if e.kind() == std::io::ErrorKind::NotFound => Ok(None),
             Err(e) => Err(e.into()),
         }
+    }
+}
+
+/// Flush a directory's entries to disk (a no-op where directories cannot be opened).
+fn sync_dir(dir: &Path) -> std::io::Result<()> {
+    match std::fs::File::open(dir) {
+        Ok(d) => d.sync_all().or_else(|e| {
+            // Some filesystems refuse fsync on a directory handle.
+            if e.kind() == std::io::ErrorKind::InvalidInput || e.kind() == std::io::ErrorKind::PermissionDenied {
+                Ok(())
+            } else {
+                Err(e)
+            }
+        }),
+        Err(_) => Ok(()),
     }
 }
 

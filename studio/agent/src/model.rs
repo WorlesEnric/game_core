@@ -1,8 +1,12 @@
 //! Serde mirrors of the authoring contracts (docs/studio/03-authoring-contracts.md §1–§6,
-//! §9) and the companion's own API shapes (04 §2). JSON is camelCase. Contract types accept
-//! unknown fields (forward compatibility: the C# shapes in `GameCore.Studio.Model` own them);
-//! the change set is additionally validated against its JSON Schema ([`crate::schema`]) and
-//! stored verbatim, so nothing a worker wrote is lost by this mirror.
+//! §9) and the companion's own API shapes (04 §2). JSON is camelCase. Required members and
+//! enums follow `docs/studio/schemas/*.schema.json`; the selection, the context slice and the
+//! change set are additionally validated against those schemas ([`crate::schema`]) and kept
+//! verbatim, so nothing a client or worker wrote is lost by this mirror.
+//!
+//! Null policy (03 §9): optional members are omitted when absent, never written as `null`
+//! (every `Option` here is `skip_serializing_if = "Option::is_none"`, empty lists of index
+//! nodes are skipped), and the API refuses `null` in what it reads.
 
 use std::collections::BTreeMap;
 
@@ -50,9 +54,8 @@ pub enum EditScope {
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Location {
-    /// Owning region id.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub region: Option<String>,
+    /// Owning region id (required).
+    pub region: String,
     /// Position in metres.
     pub position: [f64; 3],
     /// Surface normal.
@@ -105,16 +108,23 @@ pub struct SelectedPart {
     pub part: String,
 }
 
+/// `Edit` or `Play`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+pub enum SelectionMode {
+    /// The editor.
+    Edit,
+    /// A running world.
+    Play,
+}
+
 /// `SelectionSnapshot`, captured when a prompt is sent.
-#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SelectionSnapshot {
-    /// Snapshot id.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub id: Option<String>,
+    /// Snapshot id (`sel_<ULID>`).
+    pub id: String,
     /// `Edit` or `Play`.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub mode: Option<String>,
+    pub mode: SelectionMode,
     /// Logical targets.
     #[serde(default)]
     pub targets: Vec<AuthoringRef>,
@@ -131,8 +141,7 @@ pub struct SelectionSnapshot {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub world_session: Option<String>,
     /// Semantic index revision of the snapshot.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub index_revision: Option<u64>,
+    pub index_revision: u64,
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -142,17 +151,18 @@ pub struct SelectionSnapshot {
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct IndexField {
-    /// Current value.
-    pub value: Value,
+    /// Current value (omitted when the field has none).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub value: Option<Value>,
     /// Unit.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub unit: Option<String>,
     /// Allowed range.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub range: Option<Value>,
-    /// Field type.
-    #[serde(default, rename = "type", skip_serializing_if = "Option::is_none")]
-    pub ty: Option<String>,
+    /// Field type (required).
+    #[serde(rename = "type")]
+    pub ty: String,
 }
 
 /// A reference held by a node's field.
@@ -172,30 +182,48 @@ pub struct IndexNode {
     /// What it is.
     #[serde(rename = "ref")]
     pub reference: AuthoringRef,
-    /// Its authored type (`npc.NpcDefinition`).
-    #[serde(default, rename = "type")]
+    /// Its `[Authorable]` type id (`npc.definition`).
+    #[serde(rename = "type")]
     pub ty: String,
     /// Display name.
-    #[serde(default)]
+    #[serde(default, skip_serializing_if = "String::is_empty")]
     pub name: String,
     /// Fields.
-    #[serde(default)]
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub fields: BTreeMap<String, IndexField>,
     /// References.
-    #[serde(default)]
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub refs: Vec<IndexRefLink>,
     /// Capabilities (`dialogue.speaker`).
-    #[serde(default)]
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub capabilities: Vec<String>,
     /// Where it comes from.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub provenance: Option<Value>,
-    /// Explicit Resource Graph kind (`gc_quest`), overriding the companion's mapping.
+    /// Companion extension (not in `semantic-index.schema.json`; stripped before schema
+    /// validation and before the slice reaches a worker): explicit Resource Graph kind
+    /// (`gc_quest`), overriding the companion's mapping.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub rg_kind: Option<String>,
-    /// Explicit Resource Graph key, overriding the companion's mapping.
+    /// Companion extension (stripped like `rgKind`): explicit Resource Graph key.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub rg_key: Option<String>,
+}
+
+/// The kind of an index edge.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub enum EdgeKind {
+    /// A field references the target.
+    References,
+    /// Hierarchy.
+    Contains,
+    /// Spawns at runtime.
+    Spawns,
+    /// Binds a UI element.
+    BindsUi,
+    /// Triggers.
+    Triggers,
 }
 
 /// An edge of the semantic index.
@@ -206,8 +234,8 @@ pub struct IndexEdge {
     pub from: AuthoringRef,
     /// To.
     pub to: AuthoringRef,
-    /// `references | contains | spawns | bindsUi | triggers`.
-    pub kind: String,
+    /// Kind.
+    pub kind: EdgeKind,
 }
 
 /// `POST /v1/index/delta`: the nodes changed since `baseRevision`, the removed refs, and the
@@ -252,8 +280,22 @@ pub struct IndexDeltaAck {
 // ---------------------------------------------------------------------------------------------
 // §6 Change set.
 
+/// Where an intent came from.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum IntentOrigin {
+    /// A prompt to the agent.
+    Agent,
+    /// A manual edit.
+    Manual,
+    /// A voice prompt.
+    Voice,
+    /// A replay.
+    Replay,
+}
+
 /// The change set's intent.
-#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Intent {
     /// The prompt text.
@@ -261,9 +303,8 @@ pub struct Intent {
     /// The voice transcript it came from.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub voice_transcript_id: Option<String>,
-    /// `agent | manual | voice | replay`.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub origin: Option<String>,
+    /// Origin (required).
+    pub origin: IntentOrigin,
 }
 
 /// One operation of a change set.
@@ -382,9 +423,13 @@ pub struct Diagnostic {
     /// Hint.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub hint: Option<String>,
-    /// Where: an op id (JSON string) or an `AuthoringRef` (JSON object).
+    /// Where: an op id (JSON string) or an `AuthoringRef` (JSON object); absent for
+    /// change-set-wide findings.
     #[serde(default, rename = "where", skip_serializing_if = "Option::is_none")]
     pub location: Option<Value>,
+    /// A structured witness (`{expected, actual}` for `Conflict`/`StaleContext`).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub data: Option<Map<String, Value>>,
 }
 
 impl Diagnostic {
@@ -395,6 +440,7 @@ impl Diagnostic {
             message: message.into(),
             hint: None,
             location: None,
+            data: None,
         }
     }
 
@@ -432,6 +478,14 @@ impl Diagnostic {
         self.hint = Some(hint.into());
         self
     }
+
+    /// The same diagnostic with a structured witness (`data`).
+    pub fn with_data(mut self, data: Value) -> Diagnostic {
+        if let Value::Object(m) = data {
+            self.data = Some(m);
+        }
+        self
+    }
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -463,14 +517,14 @@ pub struct EditRequest {
     pub change_set_id: String,
     /// What the user asked.
     pub intent: Intent,
-    /// What was selected.
-    #[serde(default)]
+    /// What was selected (validated against `selection-snapshot.schema.json`).
     pub selection: SelectionSnapshot,
-    /// The bounded index slice (03 §3), packed as `index-slice.json`.
-    #[serde(default)]
+    /// The bounded index slice (03 §3; validated against `semantic-index.schema.json`),
+    /// packed as `index-slice.json`.
     pub context_slice: Value,
-    /// The tool catalog revision the request was built against.
-    pub tool_catalog_revision: Value,
+    /// The tool catalog revision the request was built against: the SHA-256 of the
+    /// catalog's canonical JSON without `revision` (03 §9), `<hex>` or `sha256:<hex>`.
+    pub tool_catalog_revision: String,
     /// The tool catalog itself; optional when the companion already holds that revision.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub tool_catalog: Option<Value>,
@@ -564,21 +618,23 @@ pub struct RequestView {
     /// Companion state.
     pub state: RequestState,
     /// The current attempt's etos task id.
-    #[serde(default)]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub task_id: Option<String>,
     /// The etos task status, verbatim (`queued|starting|running|waiting|done|failed|cancelled|unknown`).
-    #[serde(default)]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub task_status: Option<String>,
     /// The current attempt's topic.
-    #[serde(default)]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub topic: Option<String>,
     /// 0 for the first task, 1 for the re-ask.
     pub attempt: u32,
     /// Every etos task opened for the request, oldest first.
     #[serde(default)]
     pub tasks: Vec<String>,
-    /// What ended it: `{code, message, hint?, text?, diagnostics?}`.
-    #[serde(default)]
+    /// What ended it: `{code, message?, hint?, text?, diagnostics?}`; `code` is one of
+    /// `candidate`, `candidate_invalid`, `task_failed`, `waiting`, `needs_clarification`,
+    /// `cancelled`, `unresolved`, or an etos refusal code when the task could not be opened.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub outcome: Option<Value>,
     /// Whether `/v1/candidates/{id}` has a candidate.
     pub has_candidate: bool,
@@ -636,8 +692,11 @@ pub struct CandidateView {
     pub change_set: Value,
     /// Its artifacts, verified and stored.
     pub artifacts: Vec<StoredArtifact>,
+    /// The tool catalog revision it was built and checked against (the engine compares it
+    /// with its current revision: another revision is `StaleContext`).
+    pub tool_catalog_revision: String,
     /// Non-fatal findings (unlisted output files).
-    #[serde(default)]
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub diagnostics: Vec<Diagnostic>,
     /// When it was accepted (ms).
     pub received_at: i64,
@@ -677,10 +736,10 @@ pub struct Hello {
     /// The calling app.
     pub app: String,
     /// The node's name (from the welcome).
-    #[serde(default)]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub node: Option<String>,
     /// The node's SDK API version.
-    #[serde(default)]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub sdk: Option<String>,
     /// Whether the agent channel is connected.
     pub connected: bool,
@@ -689,14 +748,14 @@ pub struct Hello {
     /// `image`, `tts`, `voice`, `3d`, `describe`.
     pub providers: BTreeMap<String, ProviderStatus>,
     /// When the provider status was read (ms).
-    #[serde(default)]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub providers_checked_at: Option<i64>,
     /// Workers requests may name.
     pub workers: Vec<String>,
     /// Tool catalog revisions the companion holds.
     pub tool_catalog_revisions: Vec<String>,
     /// The highest index revision received.
-    #[serde(default)]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub index_revision: Option<u64>,
 }
 
@@ -710,7 +769,8 @@ pub struct GenerateRequest {
     /// `describe`, `artifact` (a stored digest) or `input` (an etos reference) names the file.
     #[serde(default)]
     pub spec: Map<String, Value>,
-    /// Cost ceiling (`max_cost_usd` of etops).
+    /// Cost ceiling (`max_cost_usd` of etops). Required unless the companion is configured
+    /// with a default ceiling (`ops_max_cost_usd`); sent with every operation.
     #[serde(default, rename = "max_cost_usd", alias = "maxCostUsd")]
     pub max_cost_usd: Option<f64>,
     /// The change set the asset is for (also makes the op idempotent per spec).
@@ -727,11 +787,13 @@ pub struct GenerateResponse {
     /// The etos operation run (`generate.image`).
     pub etos_op: String,
     /// Provider that served it.
-    #[serde(default)]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub provider: Option<String>,
     /// The etops job state (`succeeded`, `failed`, ...), verbatim.
-    #[serde(default)]
-    pub state: Value,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub state: Option<Value>,
+    /// The ceiling sent with the operation.
+    pub max_cost_usd: f64,
     /// Produced files, verified and stored.
     #[serde(default)]
     pub artifacts: Vec<StoredArtifact>,
@@ -766,11 +828,11 @@ pub struct StageJobView {
     /// `queued | running | done | failed`.
     pub state: String,
     /// Slot used.
-    #[serde(default)]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub slot: Option<String>,
     /// The verdict `{ok, compile, tests, forbidden, durationMs}` (from `stage.sh`), or the
     /// failure `{code, message, hint}`.
-    #[serde(default)]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub verdict: Option<Value>,
     /// Created (ms).
     pub created_at: i64,
@@ -818,13 +880,26 @@ mod tests {
     #[test]
     fn edit_requests_parse() {
         let r: EditRequest = serde_json::from_value(json!({
-            "changeSetId": "cs_1", "intent": {"text": "x"},
-            "selection": {"targets": [], "indexRevision": 3},
-            "contextSlice": {"revision": 3, "nodes": []},
-            "toolCatalogRevision": 7
+            "changeSetId": "cs_1", "intent": {"text": "x", "origin": "agent"},
+            "selection": {"id": "sel_1", "mode": "Edit", "targets": [], "indexRevision": 3},
+            "contextSlice": {"revision": 3, "project": "p", "nodes": []},
+            "toolCatalogRevision": "ab"
         }))
         .unwrap();
-        assert_eq!(r.selection.index_revision, Some(3));
+        assert_eq!(r.selection.index_revision, 3);
+        assert_eq!(r.selection.mode, SelectionMode::Edit);
+        // Required members and enums are enforced by the mirror.
+        for bad in [
+            json!({"changeSetId": "c", "intent": {"text": "x"}, "selection": {"id": "s", "mode": "Edit", "targets": [], "indexRevision": 1}, "contextSlice": {}, "toolCatalogRevision": "a"}),
+            json!({"changeSetId": "c", "intent": {"text": "x", "origin": "agent"}, "selection": {"id": "s", "mode": "Walk", "targets": [], "indexRevision": 1}, "contextSlice": {}, "toolCatalogRevision": "a"}),
+            json!({"changeSetId": "c", "intent": {"text": "x", "origin": "agent"}, "selection": {"id": "s", "mode": "Edit", "targets": []}, "contextSlice": {}, "toolCatalogRevision": "a"}),
+        ] {
+            assert!(serde_json::from_value::<EditRequest>(bad.clone()).is_err(), "{bad}");
+        }
+        let n: IndexNode = serde_json::from_value(json!({"ref": {"kind": "Entity", "authoringId": "e"}, "type": "npc.definition"})).unwrap();
+        assert_eq!(serde_json::to_value(&n).unwrap(), json!({"ref": {"kind": "Entity", "authoringId": "e"}, "type": "npc.definition"}));
+        assert!(serde_json::from_value::<IndexField>(json!({"value": 1})).is_err());
+        assert!(serde_json::from_value::<IndexEdge>(json!({"from": {"kind": "Entity"}, "to": {"kind": "Entity"}, "kind": "owns"})).is_err());
         assert!(r.attachments.is_empty());
         let g: GenerateRequest = serde_json::from_value(
             json!({"op": "image", "spec": {"prompt": "p"}, "max_cost_usd": 0.1}),

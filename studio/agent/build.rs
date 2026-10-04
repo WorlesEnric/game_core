@@ -3,8 +3,8 @@
 //! 1. `ETOS_PIN` names the commit the vendored SDK was copied from (the `Commit` row of
 //!    `vendor/README.md`, written by `vendor-etos-sdk.sh`); compared by prefix, so a short
 //!    pin works too;
-//! 2. the built-in change-set schema (`schemas/change-set.schema.json`) matches the
-//!    canonical one in `docs/studio/schemas/` once that file exists.
+//! 2. each built-in contract schema in `schemas/` matches the canonical one in
+//!    `docs/studio/schemas/` when that file exists.
 
 use std::path::Path;
 
@@ -23,7 +23,6 @@ fn main() {
     println!("cargo:rerun-if-changed=ETOS_PIN");
     println!("cargo:rerun-if-changed=build.rs");
     println!("cargo:rerun-if-changed=vendor/README.md");
-    println!("cargo:rerun-if-changed=schemas/change-set.schema.json");
 
     let pin = std::fs::read_to_string(here.join("ETOS_PIN"))
         .map(|s| s.trim().to_string())
@@ -44,15 +43,23 @@ fn main() {
         Some(_) => {}
     }
 
-    let canonical = here.join("../../docs/studio/schemas/change-set.schema.json");
-    if canonical.exists() {
-        println!("cargo:rerun-if-changed={}", canonical.display());
-        let a = std::fs::read(&canonical).unwrap_or_default();
-        let b = std::fs::read(here.join("schemas/change-set.schema.json")).unwrap_or_default();
-        if a != b {
-            println!(
-                "cargo:warning=schemas/change-set.schema.json differs from docs/studio/schemas/change-set.schema.json; copy it again"
-            );
+    for name in [
+        "change-set.schema.json",
+        "selection-snapshot.schema.json",
+        "semantic-index.schema.json",
+        "tool-catalog.schema.json",
+    ] {
+        println!("cargo:rerun-if-changed=schemas/{name}");
+        let canonical = here.join("../../docs/studio/schemas").join(name);
+        if canonical.exists() {
+            println!("cargo:rerun-if-changed={}", canonical.display());
+            let a = std::fs::read(&canonical).unwrap_or_default();
+            let b = std::fs::read(here.join("schemas").join(name)).unwrap_or_default();
+            if a != b {
+                println!(
+                    "cargo:warning=schemas/{name} differs from docs/studio/schemas/{name}; copy it again"
+                );
+            }
         }
     }
 }

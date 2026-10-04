@@ -189,7 +189,7 @@ pub enum IndexError {
 fn field_value(node: &IndexNode, names: &[&str]) -> Option<Value> {
     names
         .iter()
-        .find_map(|n| node.fields.get(*n).map(|f| f.value.clone()))
+        .find_map(|n| node.fields.get(*n).and_then(|f| f.value.clone()))
 }
 
 fn link_to(node: &IndexNode, field: &str) -> Option<String> {
@@ -571,7 +571,7 @@ mod tests {
         }
     }
 
-    /// Node `type` is the [Authorable] type id (03 §4, P0.3), e.g. `npc.definition`.
+    /// Node `type` is the `[Authorable]` type id (03 §3; the attribute is 03 §4), e.g. `npc.definition`.
     #[test]
     fn authorable_type_ids_map_to_kinds() {
         let kind = |r: Value, ty: &str| {
@@ -608,8 +608,8 @@ mod tests {
     fn nodes_map_to_rows() {
         let n = node(json!({
             "ref": {"kind": "Entity", "authoringId": "e1", "definition": "npc.ferryman@3"},
-            "type": "npc.Npc", "name": "Ferryman",
-            "fields": {"speed": {"value": 1.8, "unit": "m/s"}},
+            "type": "npc.definition", "name": "Ferryman",
+            "fields": {"speed": {"value": 1.8, "unit": "m/s", "type": "float"}},
             "refs": [{"field": "region", "to": {"kind": "Region", "authoringId": "marsh"}}]
         }));
         let (kind, key, v) = node_row(&n).unwrap();

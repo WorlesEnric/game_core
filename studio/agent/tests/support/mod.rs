@@ -83,6 +83,10 @@ pub struct Inner {
     /// Decoded size of each audio chunk.
     pub rt_chunks: Vec<usize>,
     pub rt_errors: Vec<String>,
+    /// Task request ids `POST /tasks` refuses (403 `request_rejected`).
+    pub refuse_ids: Vec<String>,
+    /// Operations whose produced file is reported with a wrong digest.
+    pub wrong_digest_ops: Vec<String>,
 }
 
 #[derive(Clone)]
@@ -378,6 +382,9 @@ async fn open_task(State(n): State<FakeNode>, body: Bytes) -> Response {
     if worker == "nobody" {
         return refusal(403, "not_yours", "not a worker of the agent");
     }
+    if n.lock().refuse_ids.contains(&request) {
+        return refusal(403, "request_rejected", "the node refused this task");
+    }
     if let Some(t) = n.lock().tasks.iter().find(|t| t.request == request) {
         return axum::Json(task_info(t)).into_response();
     }
@@ -538,9 +545,16 @@ async fn op(State(n): State<FakeNode>, Path(op): Path<String>, body: Bytes) -> R
                 .to_vec();
             let name = answer["name"].as_str().unwrap_or("image-1.png").to_string();
             let id = n.put(&name, &bytes);
+            let digest = if n.lock().wrong_digest_ops.contains(&op) {
+                format!("sha256:{}", sha(b"something else"))
+            } else {
+                format!("sha256:{}", sha(&bytes))
+            };
+            let media = answer["media_type"].as_str().unwrap_or("image/png").to_string();
             axum::Json(json!({"key": v["key"], "op": op, "provider": "echo-images", "job_id": "job_1",
                               "state": {"state": "succeeded"},
-                              "refs": [{"id": id, "name": name, "kind": "pinned", "size": bytes.len(), "owner": "fake"}]}))
+                              "refs": [{"id": id, "name": name, "kind": "pinned", "size": bytes.len(), "owner": "fake",
+                                        "media_type": media, "digest": digest}]}))
             .into_response()
         }
         Some((200, answer)) => axum::Json(answer).into_response(),
@@ -645,6 +659,8 @@ async fn realtime_session(n: FakeNode, socket: WebSocket, provider: String) {
             "close" => {
                 for ev in [
                     json!({"type": "speech_ended", "item_id": "it1"}),
+                    json!({"type": "transcript", "role": "assistant", "item_id": "it2", "response_id": null,
+                           "revision": 0, "text": "(assistant speech)", "done": true}),
                     json!({"type": "transcript", "role": "user", "item_id": "it1", "response_id": null,
                            "revision": 1, "text": "give the ferryman a lantern", "done": true}),
                     json!({"type": "closed", "reason": "closed by the client"}),
