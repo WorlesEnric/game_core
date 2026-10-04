@@ -87,6 +87,12 @@ pub struct Inner {
     pub refuse_ids: Vec<String>,
     /// Operations whose produced file is reported with a wrong digest.
     pub wrong_digest_ops: Vec<String>,
+    /// The next N task opens record the task, then answer only after `open_delay_ms` (as
+    /// etos does when it launches the task inside `POST /tasks` on a loaded host).
+    pub slow_opens: usize,
+    pub open_delay_ms: u64,
+    /// `error` reported by `GET /tasks/{id}` (e.g. a degraded model).
+    pub task_error: Option<String>,
 }
 
 #[derive(Clone)]
@@ -371,6 +377,14 @@ fn task_info(t: &Task) -> Value {
     json!({"task": t.id, "worker": t.worker, "topic": t.topic, "status": t.status, "created_at": 1})
 }
 
+fn task_info_with(n: &FakeNode, t: &Task) -> Value {
+    let mut v = task_info(t);
+    if let Some(e) = n.lock().task_error.clone() {
+        v["error"] = json!(e);
+    }
+    v
+}
+
 async fn open_task(State(n): State<FakeNode>, body: Bytes) -> Response {
     let v: Value = serde_json::from_slice(&body).unwrap();
     let request = v["id"].as_str().unwrap().to_string();
@@ -411,12 +425,25 @@ async fn open_task(State(n): State<FakeNode>, body: Bytes) -> Response {
         None,
         vec![],
     );
+    let delay = {
+        let mut g = n.lock();
+        if g.slow_opens > 0 {
+            g.slow_opens -= 1;
+            g.open_delay_ms
+        } else {
+            0
+        }
+    };
+    if delay > 0 {
+        tokio::time::sleep(Duration::from_millis(delay)).await;
+    }
     axum::Json(info).into_response()
 }
 
 async fn get_task(State(n): State<FakeNode>, Path(id): Path<String>) -> Response {
-    match n.lock().tasks.iter().find(|t| t.id == id) {
-        Some(t) => axum::Json(task_info(t)).into_response(),
+    let task = n.lock().tasks.iter().find(|t| t.id == id).cloned();
+    match task {
+        Some(t) => axum::Json(task_info_with(&n, &t)).into_response(),
         None => refusal(404, "not_found", "no such task"),
     }
 }
