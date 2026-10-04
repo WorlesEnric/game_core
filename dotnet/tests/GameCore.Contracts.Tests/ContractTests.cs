@@ -659,6 +659,13 @@ namespace GameCore.Contracts.Tests
                 "type interface GameCore.Contracts.ITelemetryOwner",
                 "type struct GameCore.Contracts.TelemetryRetention",
                 "type struct GameCore.Contracts.TelemetrySeriesEntry",
+                // SADR-012 (studio) adds the restored temporal origin of a continued restore: the origin, one issuer's
+                // high-water mark and where an origin came from. The new CheckpointFormat/CheckpointSerializer/
+                // CheckpointDocument members (temporal-continuity feature, declared features, byte-preserving rewrite)
+                // are members of types already listed above.
+                "type class GameCore.Contracts.RestoredTemporalOrigin",
+                "type struct GameCore.Contracts.IssuerHighWaterMark",
+                "type enum GameCore.Contracts.TemporalOriginSource : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable",
             };
             foreach (string addition in comparison.AddedLines)
             {

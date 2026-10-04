@@ -111,12 +111,48 @@ namespace GameCore.Contracts
         private readonly CheckpointCodecSet codecs;
         private readonly SerializationLimits limits;
         private readonly List<byte[]>[] records = new List<byte[]>[CheckpointFormat.RecordKindCount];
+        private readonly IReadOnlyList<Id128> declaredFeatures;
         private int total;
 
         public CheckpointSerializer(CheckpointCodecSet codecs, SerializationLimits? limits = null)
+            : this(codecs, limits, null)
+        {
+        }
+
+        /// <summary>
+        /// A serializer whose container declares <paramref name="declaredFeatures"/> (SADR-012). Null keeps the V1
+        /// set <see cref="CheckpointFormat.KnownFeatureIds"/>; any other set must name the V1 feature and only features
+        /// this build can read, so a writer never produces a document its own reader refuses (P-055).
+        /// </summary>
+        public CheckpointSerializer(
+            CheckpointCodecSet codecs,
+            SerializationLimits? limits,
+            IReadOnlyList<Id128>? declaredFeatures)
         {
             this.codecs = codecs ?? throw new ArgumentNullException(nameof(codecs));
             this.limits = limits ?? CheckpointFormat.Limits;
+            if (declaredFeatures == null)
+            {
+                this.declaredFeatures = CheckpointFormat.KnownFeatureIds;
+            }
+            else
+            {
+                if (!CheckpointFormat.IsWritableContainerFeatureSet(declaredFeatures))
+                {
+                    throw new ArgumentException(
+                        "A checkpoint container declares the V1 feature and only features this build reads, each once (P-055).",
+                        nameof(declaredFeatures));
+                }
+
+                var copy = new Id128[declaredFeatures.Count];
+                for (int i = 0; i < copy.Length; i++)
+                {
+                    copy[i] = declaredFeatures[i];
+                }
+
+                this.declaredFeatures = Array.AsReadOnly(copy);
+            }
+
             for (int i = 0; i < records.Length; i++)
             {
                 records[i] = new List<byte[]>();
@@ -124,6 +160,9 @@ namespace GameCore.Contracts
         }
 
         public CheckpointCodecSet Codecs => codecs;
+
+        /// <summary>The feature ids the serialized container declares (P-055, SADR-012).</summary>
+        public IReadOnlyList<Id128> DeclaredFeatureIds => declaredFeatures;
 
         /// <summary>Records collected so far, the header excluded.</summary>
         public int RecordCount => total;
@@ -207,6 +246,71 @@ namespace GameCore.Contracts
         }
 
         /// <summary>
+        /// Appends one record that is already encoded, after validating it through its kind's codec exactly as a
+        /// reader would. A rewrite of a verified document uses this so every record it does not change is carried
+        /// byte for byte instead of being decoded and re-encoded (P-054, SADR-012).
+        /// </summary>
+        public bool TryAddEncoded(
+            CheckpointRecordKind kind,
+            byte[]? encoded,
+            out DiagnosticCode code,
+            out string detail)
+        {
+            code = DiagnosticCode.None;
+            detail = string.Empty;
+
+            if (kind == CheckpointRecordKind.Header || !CheckpointFormat.IsDeclared(kind))
+            {
+                code = DiagnosticCode.OwnershipConflict;
+                detail = "an encoded body record names kind " + kind + ", which is not a kind of body record; see P-053.";
+                return false;
+            }
+
+            if (encoded == null || encoded.Length == 0)
+            {
+                code = DiagnosticCode.ResourceUnavailable;
+                detail = "an encoded " + kind + " record carries no bytes (05 s6).";
+                return false;
+            }
+
+            if (!codecs.TryGet(kind, out ICheckpointRecordCodec? codec) || codec == null)
+            {
+                code = DiagnosticCode.MissingDependency;
+                detail = "no codec is registered for record kind " + kind + " (P-054).";
+                return false;
+            }
+
+            if (!codec.TryValidate(encoded, out EnvelopeError error))
+            {
+                code = CheckpointErrors.CodeFor(error);
+                detail = "the encoded " + kind + " record was refused: " + error + " (P-054).";
+                return false;
+            }
+
+            if (encoded.Length > limits.MaxFieldBytes)
+            {
+                code = DiagnosticCode.BudgetExceeded;
+                detail = "one " + kind + " record is " + encoded.Length.ToString(CultureInfo.InvariantCulture)
+                    + " bytes, above the configured bound for one record; see P-022 and P-054.";
+                return false;
+            }
+
+            if (total >= CheckpointFormat.MaxRecordCount)
+            {
+                code = DiagnosticCode.BudgetExceeded;
+                detail = "the document exceeds the " + CheckpointFormat.MaxRecordCount.ToString(CultureInfo.InvariantCulture)
+                    + "-record bound, per P-022.";
+                return false;
+            }
+
+            var copy = new byte[encoded.Length];
+            Array.Copy(encoded, copy, encoded.Length);
+            records[(int)kind].Add(copy);
+            total++;
+            return true;
+        }
+
+        /// <summary>
         /// Serializes one complete document: the header record first, then every body record in the format's kind
         /// order, then the envelope's trailing checksum. Refuses when the header's declared counts disagree with the
         /// records actually collected, so a document can never claim a target it does not carry (P-053).
@@ -267,7 +371,7 @@ namespace GameCore.Contracts
                         CheckpointFormat.ProtocolMajor,
                         CheckpointFormat.ProtocolMinor,
                         CheckpointFormat.DocumentSchema,
-                        CheckpointFormat.KnownFeatureIds),
+                        declaredFeatures),
                     limits);
 
                 writer.WriteBytesField(CheckpointFormat.HeaderFieldId, headerCodec.Encode(header));
@@ -332,6 +436,7 @@ namespace GameCore.Contracts
     {
         private readonly List<byte[]>[] records = new List<byte[]>[CheckpointFormat.RecordKindCount];
         private readonly CheckpointCodecSet codecs;
+        private IReadOnlyList<Id128> declaredFeatures = CheckpointFormat.KnownFeatureIds;
 
         private CheckpointDocument(CheckpointCodecSet codecs, HeaderRecordValue header, ulong checksum, byte[] rawBytes)
         {
@@ -343,6 +448,96 @@ namespace GameCore.Contracts
             {
                 records[i] = new List<byte[]>();
             }
+        }
+
+        /// <summary>The feature ids the container declares, in envelope order (P-055).</summary>
+        public IReadOnlyList<Id128> DeclaredFeatureIds => declaredFeatures;
+
+        /// <summary>
+        /// True when the container declares the SADR-012 temporal-continuity feature: the header's step, debt and
+        /// domain seconds and the issuer high-water cursors are an origin to continue from. False for every document a
+        /// pre-SADR-012 writer produced, which a restore therefore treats with step-0 semantics (P-055).
+        /// </summary>
+        public bool DeclaresTemporalContinuity => DeclaresFeature(CheckpointFormat.TemporalContinuityFeatureId);
+
+        /// <summary>True when the container declares <paramref name="feature"/>.</summary>
+        public bool DeclaresFeature(Id128 feature)
+        {
+            for (int i = 0; i < declaredFeatures.Count; i++)
+            {
+                if (declaredFeatures[i].Equals(feature))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Writes this verified document again with <paramref name="replacementSlots"/> in place of its slot records
+        /// (null keeps them) and with <paramref name="features"/> declared on the container (null keeps the declared
+        /// set). Every other record is carried byte for byte, the header is unchanged and must still count exactly the
+        /// records written, so a rewrite can migrate slot values or declare continuity but can never add, drop or
+        /// reorder state (P-053, P-054, SADR-012).
+        /// </summary>
+        public bool TryRewrite(
+            IReadOnlyList<SlotRecordValue>? replacementSlots,
+            IReadOnlyList<Id128>? features,
+            out byte[] document,
+            out DiagnosticCode code,
+            out string detail)
+        {
+            document = Array.Empty<byte>();
+            code = DiagnosticCode.None;
+            detail = string.Empty;
+
+            IReadOnlyList<Id128> declared = features ?? declaredFeatures;
+            if (!CheckpointFormat.IsWritableContainerFeatureSet(declared))
+            {
+                code = DiagnosticCode.UnsupportedVersion;
+                detail = "a rewritten checkpoint declares the V1 feature and only features this build reads (P-055).";
+                return false;
+            }
+
+            if (replacementSlots != null && (long)replacementSlots.Count != Header.SlotCount)
+            {
+                code = DiagnosticCode.OwnershipConflict;
+                detail = "the rewrite supplies " + replacementSlots.Count.ToString(CultureInfo.InvariantCulture)
+                    + " slot record(s) for a header that declares "
+                    + Header.SlotCount.ToString(CultureInfo.InvariantCulture)
+                    + "; a migration changes slot values, never the slot set (P-032, P-053).";
+                return false;
+            }
+
+            var serializer = new CheckpointSerializer(codecs, null, declared);
+            for (int k = 1; k < CheckpointFormat.RecordKindCount; k++)
+            {
+                var kind = (CheckpointRecordKind)k;
+                if (kind == CheckpointRecordKind.Slot && replacementSlots != null)
+                {
+                    for (int i = 0; i < replacementSlots.Count; i++)
+                    {
+                        if (!serializer.TryAdd(kind, replacementSlots[i], out code, out detail))
+                        {
+                            return false;
+                        }
+                    }
+
+                    continue;
+                }
+
+                List<byte[]> bucket = records[k];
+                for (int i = 0; i < bucket.Count; i++)
+                {
+                    if (!serializer.TryAddEncoded(kind, bucket[i], out code, out detail))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return serializer.TrySerialize(Header, out document, out code, out detail);
         }
 
         public HeaderRecordValue Header { get; private set; }
@@ -408,7 +603,7 @@ namespace GameCore.Contracts
             }
 
             var reader = new EnvelopeReader(document, CheckpointFormat.Limits);
-            if (!reader.TryReadHeader(CheckpointFormat.KnownFeatureIds, out EnvelopeHeader header))
+            if (!reader.TryReadHeader(CheckpointFormat.ReadableFeatureIds, out EnvelopeHeader header))
             {
                 code = CheckpointErrors.CodeFor(reader.LastError);
                 detail = "the checkpoint document header was refused: " + reader.LastError + " (P-055).";
@@ -424,6 +619,7 @@ namespace GameCore.Contracts
             }
 
             var pending = new CheckpointDocument(codecs, default(HeaderRecordValue), 0UL, document);
+            pending.declaredFeatures = header.RequiredFeatureIds;
             bool sawHeader = false;
             bool sawChecksum = false;
             int lastFieldId = CheckpointFormat.HeaderFieldId - 1;

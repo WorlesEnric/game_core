@@ -1,0 +1,39 @@
+{
+  "name": "GameCore.Persistence.Tests",
+  "rootNamespace": "GameCore.Persistence.Tests",
+  "references": [
+    "GameCore.App.Tests",
+    "GameCore.Composition",
+    "GameCore.Contracts",
+    "GameCore.Derivation",
+    "GameCore.Derivation.Fixtures",
+    "GameCore.Gameplay.Save",
+    "GameCore.Planning",
+    "GameCore.Studio.Model",
+    "GameCore.Unity.Adapters",
+    "GameCore.Unity.App",
+    "GameCore.Unity.Fixtures",
+    "GameCore.Unity.Runtime",
+    "GameCore.Validation.GeneratedCheckpoint",
+    "GameCore.Validation.ProbeHost",
+    "Unity.Collections",
+    "Unity.Entities",
+    "UnityEngine.TestRunner",
+    "UnityEditor.TestRunner"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

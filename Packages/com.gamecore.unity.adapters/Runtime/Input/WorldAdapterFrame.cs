@@ -63,6 +63,35 @@ namespace GameCore.Unity.Adapters.Input
                     "An adapter frame stamps commands for exactly the world it drives (P-004).",
                     nameof(ingress));
             }
+
+            // SADR-012: a restored world carries its issuers' admission high-water marks. The device source continues
+            // above its mark, so a press after a restore can never reuse a sequence the saved world already admitted
+            // (P-050).
+            if (device != null && host.RestoredOrigin.TryGetIssuerHighWater(device.SourceId, out ulong highWater))
+            {
+                ResumeIssuerSequence(highWater);
+            }
+        }
+
+        /// <summary>The source sequence the frame resumed above, or zero for a frame that did not resume (SADR-012).</summary>
+        public ulong ResumedFromSequence { get; private set; }
+
+        /// <summary>The last source sequence this frame stamped.</summary>
+        public ulong DeviceSequence => deviceSequence;
+
+        /// <summary>
+        /// Continues the device source's sequence above <paramref name="highWater"/> (SADR-012, P-050). The sequence
+        /// never moves backwards: a mark below the current sequence changes nothing.
+        /// </summary>
+        public void ResumeIssuerSequence(ulong highWater)
+        {
+            if (highWater <= deviceSequence)
+            {
+                return;
+            }
+
+            deviceSequence = highWater;
+            ResumedFromSequence = highWater;
         }
 
         public WorldId World => host.World;
