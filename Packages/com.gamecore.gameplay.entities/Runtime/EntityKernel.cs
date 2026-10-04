@@ -19,6 +19,7 @@ using GameCore.Execution.Messages;
 using GameCore.Gameplay.Contracts;
 using GameCore.Rules.Gameplay.Entities;
 using GameCore.Unity.Runtime;
+using GameCore.Unity.Runtime.Messages;
 using Unity.Entities;
 
 namespace GameCore.Gameplay.Entities

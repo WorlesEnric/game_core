@@ -16,6 +16,7 @@ using GameCore.Gameplay.Contracts;
 using GameCore.Gameplay.Entities;
 using GameCore.Rules.Gameplay.World;
 using GameCore.Unity.Runtime;
+using GameCore.Unity.Runtime.Messages;
 using Unity.Entities;
 
 namespace GameCore.Gameplay.World
