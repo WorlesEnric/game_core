@@ -7,6 +7,10 @@ using UnityEngine;
 
 namespace GameCore.Gameplay.Entities
 {
+    /// <summary>The definition a placed entity instantiates: prefab, defaults, variants and what instances may override.</summary>
+    [Authorable("entity.definition", DisplayName = "Entity Definition", Scope = AuthorScope.Definition,
+        RuntimeApplicability = RuntimeApply.Rebuild,
+        Doc = "An entity definition: the prefab a placed entity presents, its defaults, variants and overridable fields.")]
     [CreateAssetMenu(menuName = "GameCore/Gameplay/Entity Definition", fileName = "EntityDefinition")]
     public sealed class EntityDefinition : ScriptableObject, IDefinitionAsset
     {
