@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- GameCore Studio ETOS protocol client (P2.2, docs/studio/04-etos-integration.md s2): HTTP and WebSocket to the
+       gamecore-studio companion through the etos node's proxied agent route with a paired app key, tickets, resumable
+       events with backoff, verified artifact downloads, voice framing, credential redaction. Same sources as
+       Packages/com.gamecore.studio.etos/Client (the Unity-free GameCore.Studio.Etos.Client asmdef), so the protocol
+       layer is tested here without Unity. -->
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>GameCore.Studio.Etos.Client</AssemblyName>
+    <RootNamespace>GameCore.Studio.Etos.Client</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="../../../Packages/com.gamecore.studio.etos/Client/**/*.cs"
+             Exclude="../../../Packages/com.gamecore.studio.etos/Client/**/bin/**/*.cs;../../../Packages/com.gamecore.studio.etos/Client/**/obj/**/*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+</Project>

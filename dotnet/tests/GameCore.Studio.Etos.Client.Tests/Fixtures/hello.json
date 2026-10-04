@@ -1,0 +1,21 @@
+{
+  "kind": "hello",
+  "status": 200,
+  "recordedFrom": "live node (myubuntu, etos-studio root) GET /api/v1/agents/gamecore-studio/http/v1/hello with the paired app key, before the P2.2 live run",
+  "recordedAt": "2026-10-04 22:58:41Z",
+  "body": {
+    "service": "gamecore-studio",
+    "version": "0.1.0",
+    "protocol": 1,
+    "app": "gamecore-unity",
+    "node": "studio",
+    "sdk": "1.0.0",
+    "connected": true,
+    "capabilities": ["requests", "candidates", "artifacts", "index", "ops", "events", "voice", "stage"],
+    "providers": { "3d": "not_configured", "describe": "live", "image": "live", "tts": "live", "voice": "unknown" },
+    "providersCheckedAt": 1791154721705,
+    "workers": ["gc-designer", "gc-mechanic"],
+    "toolCatalogRevisions": ["p05-cat-1"],
+    "indexRevision": null
+  }
+}
