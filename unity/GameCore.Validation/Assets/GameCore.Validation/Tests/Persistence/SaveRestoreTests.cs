@@ -125,6 +125,7 @@ namespace GameCore.Persistence.Tests
             Assert.That(restored.Build.ReplayedInstalls, Is.EqualTo(1));
             Assert.That(restored.Build.Publications, Is.EqualTo(1), "one install, one publication; targets and slots cost none");
             Assert.That(next.Lane.FindInstall(AppProbe.ProbeInstance), Is.Not.Null);
+            NUnit.Framework.TestContext.Out.WriteLine("P1.2-RESTORE-1 build=" + restored.Build.Describe());
 
             SaveResult again = service.Capture("slot-2");
             Assert.That(again.Succeeded, Is.True, again.ToString());
