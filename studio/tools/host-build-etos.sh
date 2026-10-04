@@ -3,7 +3,7 @@
 #
 #   studio/tools/host-build-etos.sh            (run on the host, from the game_core checkout)
 #
-# In ~/wkspace/etos-studio (synced by host-sync-etos.sh):
+# In ~/wkspace/etos-studio (a git clone made by host-sync-etos.sh; the lock pins its HEAD):
 #   1. `cargo build --release --locked -p etnode -p etcli`  -> etosd, etos (glibc, for the host)
 #   2. the static musl etos in an Alpine container (etos docs/operator.md §1), for the image layer
 #   3. installs them to ~/.local/opt/etos/bin/{etosd,etos,etos-musl} (only when they differ)
@@ -20,10 +20,11 @@ RUST_IMAGE="rust:1.97.1-alpine"
 CARGO_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/gamecore-studio/cargo-musl"
 export PATH="$HOME/.cargo/bin:$PATH"
 
-[ -f "$SRC/ETOS_COMMIT" ] || { echo "no $SRC/ETOS_COMMIT: run studio/tools/host-sync-etos.sh on the Mac first" >&2; exit 1; }
-commit="$(sed -n 's/^commit=//p' "$SRC/ETOS_COMMIT")"
-branch="$(sed -n 's/^branch=//p' "$SRC/ETOS_COMMIT")"
-base="$(sed -n 's/^base=//p' "$SRC/ETOS_COMMIT")"
+[ -d "$SRC/.git" ] || { echo "$SRC is not a git clone: run studio/tools/host-sync-etos.sh on the Mac first" >&2; exit 1; }
+[ -z "$(git -C "$SRC" status --porcelain --untracked-files=no)" ] || { echo "$SRC has local changes" >&2; exit 1; }
+commit="$(git -C "$SRC" rev-parse HEAD)"
+branch="$(git -C "$SRC" rev-parse --abbrev-ref HEAD)"
+base="$(git -C "$SRC" rev-parse 6c2c3f4)"
 command -v cc >/dev/null || { echo "a C toolchain (cc) is required" >&2; exit 1; }
 
 echo "== cargo build --release (etnode, etcli) at $commit"
@@ -80,5 +81,4 @@ etos = "$(sum "$BIN/etos")"
 etos-musl = "$(sum "$BIN/etos-musl")"
 EOF
 if cmp -s "$tmp" "$LOCK"; then rm "$tmp"; echo "== $LOCK unchanged"; else mv "$tmp" "$LOCK"; echo "== $LOCK written"; fi
-case "$commit" in *-dirty) echo "WARNING: built from a dirty tree; do not commit this lock" >&2 ;; esac
 "$BIN/etos" --version 2>/dev/null || true

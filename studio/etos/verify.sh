@@ -58,9 +58,10 @@ trap cleanup EXIT
 echo "# GameCore Studio etos W0 verification, $STAMP"
 echo "host: $(hostname) ($(uname -sr)), user $(id -un)"
 echo "node root: $ROOT; binaries: $BIN"
-echo "etos source: $(tr '\n' ' ' < "$HOME/wkspace/etos-studio/ETOS_COMMIT" 2>/dev/null)"
+echo "etos source: $(git -C "$HOME/wkspace/etos-studio" log -1 --format='%H (%D)' 2>/dev/null)"
 echo "etos.lock:"; sed 's/^/  /' "$HERE/etos.lock" 2>/dev/null
-echo "game_core: ${GC_REV:-unknown (set GC_REV when running from a checkout without git)}"
+GC_REV="${GC_REV:-$(git -C "$REPO" log -1 --format='%H (%D)' 2>/dev/null || echo unknown)}"
+echo "game_core: $GC_REV"
 echo
 
 echo "## 1. node"
@@ -202,7 +203,7 @@ done
     echo "| Item | Value |"
     echo "|---|---|"
     echo "| Host | $(hostname), $(uname -sr), user $(id -un) |"
-    echo "| etos | $(sed -n 's/^commit=//p' "$HOME/wkspace/etos-studio/ETOS_COMMIT" 2>/dev/null) (branch $(sed -n 's/^branch=//p' "$HOME/wkspace/etos-studio/ETOS_COMMIT" 2>/dev/null)), binaries per \`studio/etos/etos.lock\` |"
+    echo "| etos | $(git -C "$HOME/wkspace/etos-studio" rev-parse HEAD 2>/dev/null) (branch $(git -C "$HOME/wkspace/etos-studio" rev-parse --abbrev-ref HEAD 2>/dev/null)), binaries per \`studio/etos/etos.lock\` |"
     echo "| game_core | ${GC_REV:-unknown} |"
     echo "| Node | root \`$ROOT\`, unit \`etosd.service\` (user), API \`127.0.0.1:7410\`, broker \`172.17.0.1:7411\` |"
     echo "| Key used | throwaway agent \`verify\` (grants ops, realtime, files; providers studio-voice), uninstalled with --purge at the end |"
