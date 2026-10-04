@@ -760,4 +760,66 @@ namespace GameCore.Execution.Persistence
         private static bool IsDeclaredOutboxRow(OutboxRowKind row) =>
             row == OutboxRowKind.Obligation || row == OutboxRowKind.Terminal || row == OutboxRowKind.Cursor;
     }
+
+    /// <summary>How a checkpoint's catalog fingerprint relates to this build's (SADR-012 (studio), P-028, P-054).</summary>
+    public enum CatalogCompatibility
+    {
+        /// <summary>The document names this build's catalog fingerprint.</summary>
+        Identical = 0,
+
+        /// <summary>
+        /// The document names another fingerprint that this build explicitly declares compatible, because every
+        /// difference between the two catalogs is covered by registered forward migrations.
+        /// </summary>
+        DeclaredCompatible = 1,
+
+        /// <summary>The document names a fingerprint this build does not declare compatible: the restore refuses.</summary>
+        Incompatible = 2,
+    }
+
+    /// <summary>
+    /// The SADR-012 catalog compatibility rule. V1 restored only a document whose catalog fingerprint equals the
+    /// build's (P-028). A game build may additionally *declare* earlier catalog fingerprints compatible - a content
+    /// revision whose only state change is covered by registered forward slot migrations. Compatibility is never
+    /// inferred from content: an undeclared fingerprint stays a refusal, so a save from an unknown build cannot be
+    /// restored into the wrong content revision (P-028, P-054). A planner request made for a declared-compatible
+    /// document sets <see cref="CheckpointRestoreRequest.RequireCatalogMatch"/> to false; the slot rows are migrated
+    /// before the plan is built, so the plan itself remains direct.
+    /// </summary>
+    public static class CheckpointCatalogCompatibility
+    {
+        public static CatalogCompatibility Decide(
+            ContentHash captured,
+            ContentHash current,
+            IReadOnlyList<ContentHash>? declaredCompatible,
+            out string detail)
+        {
+            if (captured.Equals(current))
+            {
+                detail = "the checkpoint names this build's catalog " + current.ToHex() + ".";
+                return CatalogCompatibility.Identical;
+            }
+
+            if (declaredCompatible != null)
+            {
+                for (int i = 0; i < declaredCompatible.Count; i++)
+                {
+                    if (declaredCompatible[i].Equals(captured))
+                    {
+                        detail = "the checkpoint names catalog " + captured.ToHex() + ", which this build (catalog "
+                            + current.ToHex() + ") declares compatible through registered forward migrations.";
+                        return CatalogCompatibility.DeclaredCompatible;
+                    }
+                }
+            }
+
+            detail = "the checkpoint names catalog " + captured.ToHex() + " and this build is catalog " + current.ToHex()
+                + "; the build declares no compatible migration from that catalog (P-028, P-054).";
+            return CatalogCompatibility.Incompatible;
+        }
+
+        /// <summary>True when a planner request for this document may skip the exact catalog match.</summary>
+        public static bool AllowsRestore(CatalogCompatibility compatibility) =>
+            compatibility == CatalogCompatibility.Identical || compatibility == CatalogCompatibility.DeclaredCompatible;
+    }
 }

@@ -110,9 +110,86 @@ namespace GameCore.Contracts
         /// </summary>
         public static readonly Id128 RequiredFeatureId = new Id128(0x9138C1DCDA9A0A87UL, 0x2360071679D5859AUL);
 
-        /// <summary>Feature ids this build knows; an unknown declared feature rejects (P-055).</summary>
+        /// <summary>
+        /// Feature ids every V1 checkpoint document and record declares, and the set a record serializer writes. It is
+        /// deliberately unchanged by SADR-012: a document's *container* may additionally declare
+        /// <see cref="TemporalContinuityFeatureId"/>, which only readers of this build accept (see
+        /// <see cref="ReadableFeatureIds"/>), so a pre-SADR-012 reader refuses such a document instead of silently
+        /// restoring it at step 0 (P-055).
+        /// </summary>
         public static IReadOnlyList<Id128> KnownFeatureIds { get; } =
             Array.AsReadOnly(new[] { RequiredFeatureId });
+
+        /// <summary>
+        /// Stable name of the SADR-012 (studio) temporal-continuity feature. A container document that declares it
+        /// promises that its header's logical step, retained fixed-step debt and domain seconds, together with its
+        /// per-issuer high-water cursor rows, are the temporal origin a restore continues from rather than restarting
+        /// at step 0 (P-053, P-055).
+        /// </summary>
+        public const string TemporalContinuityFeatureStableName = "gamecore.checkpoint.feature.temporal-continuity.v1";
+
+        /// <summary>
+        /// Required feature id of temporal continuity, derived from <see cref="TemporalContinuityFeatureStableName"/>
+        /// by <see cref="StableNameKeyDerivation.Derive"/> (SHA-256 over the UTF-8 stable name, first 16 digest bytes as
+        /// two big-endian 64-bit words). It is additive: no record field changes, so a document without it is an
+        /// ordinary V1 document and restores with step-0 semantics, reported as such (P-055).
+        /// </summary>
+        public static readonly Id128 TemporalContinuityFeatureId = new Id128(0xFECBF4909803FE3DUL, 0xAA4AAE5DEE22E293UL);
+
+        /// <summary>
+        /// Every feature id a container document may declare for this build to read it: the V1 feature and the
+        /// SADR-012 temporal-continuity feature. Any other declared feature still rejects before decoding (P-055).
+        /// </summary>
+        public static IReadOnlyList<Id128> ReadableFeatureIds { get; } =
+            Array.AsReadOnly(new[] { RequiredFeatureId, TemporalContinuityFeatureId });
+
+        /// <summary>The feature set a temporally continuous capture declares on its container (SADR-012).</summary>
+        public static IReadOnlyList<Id128> TemporalContinuityFeatureIds { get; } =
+            Array.AsReadOnly(new[] { RequiredFeatureId, TemporalContinuityFeatureId });
+
+        /// <summary>
+        /// True when <paramref name="declared"/> is a feature set a writer of this build may put on a container: it
+        /// names the V1 feature, names only readable features and names none twice (P-055).
+        /// </summary>
+        public static bool IsWritableContainerFeatureSet(IReadOnlyList<Id128>? declared)
+        {
+            if (declared == null || declared.Count == 0)
+            {
+                return false;
+            }
+
+            bool sawRequired = false;
+            for (int i = 0; i < declared.Count; i++)
+            {
+                Id128 feature = declared[i];
+                bool readable = false;
+                for (int r = 0; r < ReadableFeatureIds.Count; r++)
+                {
+                    if (ReadableFeatureIds[r].Equals(feature))
+                    {
+                        readable = true;
+                        break;
+                    }
+                }
+
+                if (!readable)
+                {
+                    return false;
+                }
+
+                for (int j = 0; j < i; j++)
+                {
+                    if (declared[j].Equals(feature))
+                    {
+                        return false;
+                    }
+                }
+
+                sawRequired |= feature.Equals(RequiredFeatureId);
+            }
+
+            return sawRequired;
+        }
 
         /// <summary>Stable name of the container document's schema; a diagnostic label only (P-004).</summary>
         public const string DocumentSchemaStableName = "gamecore.checkpoint.schema.document";
