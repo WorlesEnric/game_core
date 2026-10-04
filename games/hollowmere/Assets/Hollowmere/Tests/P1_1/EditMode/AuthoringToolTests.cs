@@ -52,6 +52,7 @@ namespace Hollowmere.P1_1.EditMode.Tests
             Object.DestroyImmediate(source);
             Assert.That(prefab.GetComponent<AuthoredEntity>().AuthoringId, Is.Empty, "a prefab asset never carries an authoring id");
 
+            HollowmereWorldAuthoring.PrepareScenes();
             Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive);
             EditorSceneManager.SaveScene(scene, Temp + "/Identity.unity");
             var a = (GameObject)PrefabUtility.InstantiatePrefab(prefab, scene);
@@ -216,6 +217,7 @@ namespace Hollowmere.P1_1.EditMode.Tests
 
         private static Scene TempRegionScene(string name, out AuthoredRegion region, RegionDefinition? definition = null)
         {
+            HollowmereWorldAuthoring.PrepareScenes();
             Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive);
             var marker = new GameObject("Region " + name);
             SceneManager.MoveGameObjectToScene(marker, scene);
