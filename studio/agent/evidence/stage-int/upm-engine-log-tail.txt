@@ -1,0 +1,78 @@
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (2478ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (38ms)
+			SetLoadedEditorAssemblies (4ms)
+			BeforeProcessingInitializeOnLoad (123ms)
+			ProcessInitializeOnLoadAttributes (2154ms)
+			ProcessInitializeOnLoadMethodAttributes (156ms)
+			AfterProcessingInitializeOnLoad (4ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (5ms)
+Shader Hidden/ProbeVolume/VoxelizeScene is not supported: GPU does not support conservative rasterization
+Asset Pipeline Refresh (id=6c70d24ac5d2dc4f99fabb54aaa1fa6c): Total: 4.574 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=3034 ms
+		Asset DB Callback time: managed=162 ms, native=260 ms
+		Scripting: domain reloads=1, domain reload time=499 ms, compile time=588 ms, other=28 ms
+		Project Asset Count: scripts=1228, non-scripts=2133
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 1
+	InvokeCustomDependenciesCallbacks: 0.003ms
+	InvokePackagesCallback: 260.985ms
+	ApplyChangesToAssetFolders: 0.453ms
+	Scan: 210.167ms
+	OnSourceAssetsModified: 0.003ms
+	CategorizeAssetsWithTransientArtifact: 41.114ms
+	ProcessAssetsWithTransientArtifactChanges: 43.386ms
+	CategorizeAssets: 35.831ms
+	ImportOutOfDateAssets: 2618.714ms (2029.637ms without children)
+		CompileScripts: 587.767ms
+		ReloadNativeAssets: 0.000ms
+		UnloadImportedAssets: 0.212ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.554ms
+		InitializingProgressBar: 0.000ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.543ms
+	PostProcessAllAssets: 162.275ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.001ms
+	UnloadStreamsBegin: 0.611ms
+	PersistCurrentRevisions: 0.134ms
+	UnloadStreamsEnd: 0.001ms
+	GenerateScriptTypeHashes: 2.596ms
+	Untracked: 1200.535ms
+
+Application.AssetDatabase Initial Refresh End
+Scanning for USB devices : 1.835ms
+Initializing Unity extensions:
+UpdateMenuTitleForLanguage: 10
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-project
+Curl error 6: Could not resolve host: config.uca.cloud.unity3d.com
+Unloading 201 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 5147 unused Assets / (6.2 MB). Loaded Objects now: 5752.
+Memory consumption went from 193.3 MB to 187.2 MB.
+Total: 65.570944 ms (FindLiveObjects: 0.356801 ms CreateObjectMapping: 0.351694 ms MarkObjects: 60.826245 ms  DeleteObjects: 4.035533 ms)
+
+Batchmode quit successfully invoked - shutting down!
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 0 unused Assets / (0 B). Loaded Objects now: 5758.
+Memory consumption went from 148.3 MB to 148.3 MB.
+Total: 5.733803 ms (FindLiveObjects: 0.246598 ms CreateObjectMapping: 0.250190 ms MarkObjects: 5.229980 ms  DeleteObjects: 0.006329 ms)
+
+[Physics::Module] Cleanup current backned.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input System polling thread exited.
+Input System module state changed to: Shutdown.
+AcceleratorClientConnectionCallback - disconnected - :0
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Application is shutting down...
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      ALC ILPP context 1 is unloading
+Cleanup mono
+debugger-agent: Unable to listen on 38
+Exiting batchmode successfully now!

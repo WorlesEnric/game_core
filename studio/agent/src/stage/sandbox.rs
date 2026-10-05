@@ -158,9 +158,13 @@ impl Sandbox {
                 "--env",
                 "DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1",
                 "--env",
+                "DOTNET_PROCESSOR_COUNT=4",
+                "--env",
                 &format!("TMPDIR={}", self.slot.join("tmp").display()),
                 "--env",
                 &format!("NUGET_PACKAGES={}/nuget", self.cache.display()),
+                "--env",
+                &format!("UPM_CACHE_ROOT={}/upm", self.cache.display()),
             ]);
             std::fs::create_dir_all(self.slot.join("tmp")).map_err(|e| e.to_string())?;
             for (path, writable) in [
@@ -217,8 +221,42 @@ impl Sandbox {
         Ok(cmd)
     }
 
+    /// Verify both the pinned archives and expanded compiler inputs before launching Docker.
+    pub fn verify_cache(&self) -> Result<(), String> {
+        let script = self
+            .packages
+            .parent()
+            .ok_or("trusted repository missing")?
+            .join("studio/stage/cache.py");
+        let output = Command::new("/usr/bin/python3")
+            .env_clear()
+            .envs(super::env::stage_env())
+            .arg(script)
+            .arg(&self.cache)
+            .arg("--verify")
+            .output()
+            .map_err(|e| e.to_string())?;
+        if output.status.success() {
+            Ok(())
+        } else {
+            Err("cache_invalid: provision the exact versioned cache with studio/stage/provision-cache.sh".into())
+        }
+    }
+
     /// Run the exact command in the selected boundary; all output is redacted on write.
     pub fn run(&self, original: &Command, log: &Path, timeout: Duration) -> ChildOutcome {
+        let verified = match self.mode {
+            Confinement::Docker => self.verify_cache(),
+            Confinement::Host => Ok(()),
+        };
+        if let Err(error) = verified {
+            return ChildOutcome {
+                code: None,
+                timed_out: false,
+                output: error,
+                elapsed: Duration::ZERO,
+            };
+        }
         let requested = Path::new(original.get_program());
         let executable = if self.mode == Confinement::Docker
             && requested.file_name().is_some_and(|n| n == "dotnet")
@@ -332,8 +370,8 @@ impl Sandbox {
             .arg(label)
             .arg("--timeout")
             .arg(timeout.as_secs().to_string())
-            .args(["--attempts", "2", "--"])
-            .args(args);
+            .args(["--attempts", "2"])
+            .args(batch_test_args(args));
         let out = run_child(
             &mut cmd,
             &[("UNITY", &wrapper.display().to_string()), ("HOME", &home)],
@@ -349,6 +387,8 @@ impl Sandbox {
         if self.mode == Confinement::Host {
             return Ok("operator opted into host confinement".into());
         }
+        // Fail before acquiring an Editor allocation when provisioning is missing.
+        self.verify_cache()?;
         let project = self.slot.join("probe-project");
         std::fs::create_dir_all(project.join("Assets")).map_err(|e| e.to_string())?;
         std::fs::create_dir_all(project.join("ProjectSettings")).map_err(|e| e.to_string())?;
@@ -396,6 +436,26 @@ impl Sandbox {
     }
 }
 
+// The host allocator owns the results path; it rejects raw -testResults after --.
+fn batch_test_args(args: &[String]) -> Vec<String> {
+    let mut wrapper = Vec::new();
+    let mut engine = Vec::new();
+    let mut args = args.iter();
+    while let Some(arg) = args.next() {
+        if arg.eq_ignore_ascii_case("-testResults") {
+            wrapper.push("--results".into());
+            if let Some(path) = args.next() {
+                wrapper.push(path.clone());
+            }
+        } else {
+            engine.push(arg.clone());
+        }
+    }
+    wrapper.push("--".into());
+    wrapper.extend(engine);
+    wrapper
+}
+
 fn probe_passed(out: &ChildOutcome, engine_output: &str) -> bool {
     out.ok()
         && engine_output.contains("Batchmode quit successfully invoked")
@@ -410,6 +470,11 @@ pub fn unity_wrapper(config: &Path, args: &[String]) -> Result<i32, String> {
         serde_json::from_slice(&std::fs::read(config).map_err(|e| e.to_string())?)
             .map_err(|e| e.to_string())?;
     let mut cmd = Command::new(sandbox.editor.join("Unity"));
+    if sandbox.mode == Confinement::Docker {
+        // Host core counts otherwise create hundreds of compiler threads and exhaust
+        // the unchanged 512-PID boundary. The outer job deadline remains authoritative.
+        cmd.args(["-job-worker-count", "4", "-diag-debug-shader-compiler"]);
+    }
     let mut log = None;
     let mut it = args.iter();
     while let Some(arg) = it.next() {
@@ -437,6 +502,48 @@ pub fn unity_wrapper(config: &Path, args: &[String]) -> Result<i32, String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn r2_11_stage_int_results_are_owned_by_host_allocator() {
+        let args = [
+            "-runTests",
+            "-testPlatform",
+            "EditMode",
+            "-testResults",
+            "/slot/out/editmode.xml",
+        ];
+        assert_eq!(
+            batch_test_args(&args.map(str::to_string)),
+            [
+                "--results",
+                "/slot/out/editmode.xml",
+                "--",
+                "-runTests",
+                "-testPlatform",
+                "EditMode"
+            ]
+        );
+    }
+
+    #[test]
+    fn r2_11_stage_int_launcher_refuses_missing_cache_before_execution() {
+        let dir = tempfile::tempdir().unwrap();
+        let repo = Path::new(env!("CARGO_MANIFEST_DIR"))
+            .ancestors()
+            .nth(2)
+            .unwrap();
+        let sandbox = Sandbox::defaults(&dir.path().join("slot"), &dir.path().join("cache"), repo);
+        let out = sandbox.run(
+            &Command::new("must-never-execute"),
+            &dir.path().join("log"),
+            Duration::from_secs(1),
+        );
+        assert!(!out.ok());
+        assert!(out.output.contains("cache_invalid"));
+        assert!(!sandbox.slot.exists());
+        assert!(sandbox.probe().unwrap_err().contains("cache_invalid"));
+        assert!(!sandbox.slot.exists());
+    }
+
     #[test]
     fn r2_f2_licensing_command_mounts_only_private_state_and_fixed_identity() {
         use std::os::unix::fs::MetadataExt;
@@ -487,6 +594,11 @@ mod tests {
                 format!("{}:{}", metadata.uid(), metadata.gid()),
             ],
             vec!["--env".into(), "HOME=/home/creator".into()],
+            vec!["--env".into(), "DOTNET_PROCESSOR_COUNT=4".into()],
+            vec![
+                "--env".into(),
+                format!("UPM_CACHE_ROOT={}/upm", sandbox.cache.display()),
+            ],
         ] {
             assert!(args.windows(2).any(|v| v == pair));
         }
@@ -534,6 +646,18 @@ mod tests {
             .parent()
             .unwrap();
         let sandbox = Sandbox::defaults(&dir.path().join("slot"), &dir.path().join("cache"), repo);
+        assert!(
+            Command::new(repo.join("studio/stage/provision-cache.sh"))
+                .arg(&sandbox.cache)
+                .arg("--offline-from")
+                .arg(
+                    PathBuf::from(std::env::var_os("HOME").unwrap())
+                        .join(".cache/gamecore-studio/stage-int/bootstrap-nuget")
+                )
+                .status()
+                .unwrap()
+                .success()
+        );
         std::fs::create_dir_all(&sandbox.slot).unwrap();
         let outside = dir.path().join("outside-sentinel");
         std::fs::write(&outside, "host-only").unwrap();

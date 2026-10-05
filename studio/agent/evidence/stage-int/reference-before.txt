@@ -1,0 +1,6 @@
+Initial integrated analyzer run: duplicate legacy/modular Unity references; SG012 refuses (37 findings).
+Editor/PressurePlateTools.cs(28,75): error CS0433: The type 'Vector3' exists in both 'UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' and 'UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null'
+Editor/PressurePlateTools.cs(38,52): error CS0433: The type 'Scene' exists in both 'UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' and 'UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null'
+Editor/PressurePlateTools.cs(38,65): error CS0433: The type 'Vector3' exists in both 'UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' and 'UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null'
+Editor/PressurePlateTools.cs(76,38): error CS0433: The type 'Vector3' exists in both 'UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' and 'UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null'
+Runtime/PressurePlateAuthoring.cs(46,51): error CS0433: The type 'ScriptableObject' exists in both 'UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' and 'UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null'

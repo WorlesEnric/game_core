@@ -13,13 +13,25 @@ fn r2_f2_default_docker_launcher_licenses_offline_and_removes_private_state() {
         .nth(2)
         .unwrap();
     let root =
-        PathBuf::from(std::env::var_os("HOME").unwrap()).join(".cache/gamecore-studio/r2-f2");
+        PathBuf::from(std::env::var_os("HOME").unwrap()).join(".cache/gamecore-studio/stage-int");
     std::fs::create_dir_all(&root).unwrap();
     let job = tempfile::Builder::new()
         .prefix("licensing-acceptance-")
         .tempdir_in(root)
         .unwrap();
     let sandbox = Sandbox::defaults(&job.path().join("slot"), &job.path().join("cache"), repo);
+    assert!(
+        Command::new(repo.join("studio/stage/provision-cache.sh"))
+            .arg(&sandbox.cache)
+            .arg("--offline-from")
+            .arg(
+                PathBuf::from(std::env::var_os("HOME").unwrap())
+                    .join(".cache/gamecore-studio/stage-int/bootstrap-nuget")
+            )
+            .status()
+            .unwrap()
+            .success()
+    );
     let config = job.path().join("sandbox.json");
     std::fs::write(&config, serde_json::to_vec(&sandbox).unwrap()).unwrap();
     let output = Command::new(env!("CARGO_BIN_EXE_gamecore-studio"))

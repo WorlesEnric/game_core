@@ -5,16 +5,47 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using System.Text.Json.Serialization;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
 namespace GameCore.Stage.Analysis
 {
+    [JsonUnmappedMemberHandling(JsonUnmappedMemberHandling.Disallow)]
+    public sealed class Policy
+    {
+        [JsonRequired] public string Mode { get; set; } = "";
+    }
+    [JsonUnmappedMemberHandling(JsonUnmappedMemberHandling.Disallow)]
     public sealed class Rules
     {
-        public int Schema { get; set; }
-        public string[] References { get; set; } = Array.Empty<string>();
-        public string[] SupportSources { get; set; } = Array.Empty<string>();
+        [JsonRequired] public string Schema { get; set; } = "";
+        [JsonRequired] public string[] References { get; set; } = Array.Empty<string>();
+        [JsonRequired] public string[] SupportSources { get; set; } = Array.Empty<string>();
+        [JsonRequired] public Policy Policy { get; set; } = new Policy();
+        public static Rules Parse(string json)
+        {
+            using var document = JsonDocument.Parse(json);
+            Unique(document.RootElement);
+            var rules = JsonSerializer.Deserialize<Rules>(json, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }) ?? throw new InvalidDataException();
+            if (rules.Schema != "gamecore.stage.analyze/1" || rules.Policy == null || rules.Policy.Mode != "D1" ||
+                rules.References == null || rules.SupportSources == null ||
+                rules.References.Concat(rules.SupportSources).Any(p => p == null || !Path.IsPathFullyQualified(p))) throw new InvalidDataException();
+            return rules;
+        }
+        private static void Unique(JsonElement value)
+        {
+            if (value.ValueKind == JsonValueKind.Object)
+            {
+                var names = new HashSet<string>(StringComparer.Ordinal);
+                foreach (var property in value.EnumerateObject())
+                {
+                    if (!names.Add(property.Name)) throw new InvalidDataException();
+                    Unique(property.Value);
+                }
+            }
+            else if (value.ValueKind == JsonValueKind.Array) foreach (var item in value.EnumerateArray()) Unique(item);
+        }
     }
     public static class Program
     {
@@ -25,8 +56,7 @@ namespace GameCore.Stage.Analysis
                 if (args.Length != 6 || args[0] != "--root" || args[2] != "--rules" || args[4] != "--out") return 2;
                 var root = Path.GetFullPath(args[1]);
                 if ((File.GetAttributes(root) & FileAttributes.ReparsePoint) != 0) throw new InvalidDataException();
-                var rules = JsonSerializer.Deserialize<Rules>(File.ReadAllText(args[3])) ?? throw new InvalidDataException();
-                if (rules.Schema != 1) throw new InvalidDataException();
+                var rules = Rules.Parse(File.ReadAllText(args[3]));
                 var packageRoot = root;
                 if (File.Exists(Path.Combine(root, "stage.json")))
                 {
@@ -45,10 +75,10 @@ namespace GameCore.Stage.Analysis
                 var support = rules.SupportSources.SelectMany(p => ReadSources(p, p)).ToArray();
                 var references = PlatformReferences().Concat(rules.References.Select(p => MetadataReference.CreateFromFile(Path.GetFullPath(p))));
                 var findings = new Scan(package).Run(sources, references, support);
-                File.WriteAllText(args[5], JsonSerializer.Serialize(new { schema = "gamecore.stage.findings/1", findings }, new JsonSerializerOptions { WriteIndented = true }) + "\n");
+                File.WriteAllText(args[5], JsonSerializer.Serialize(new { schema = "gamecore.stage.findings/1", pass = findings.Count == 0, findings = findings.Select(f => new { rule = f.RuleId, file = f.File, line = f.Line, message = f.Message }) }, new JsonSerializerOptions { WriteIndented = true }) + "\n");
                 return findings.Count == 0 ? 0 : 3;
             }
-            catch (Exception error) when (error is IOException || error is UnauthorizedAccessException || error is JsonException || error is ArgumentException || error is KeyNotFoundException || error is BadImageFormatException || error is InvalidOperationException || error is NotSupportedException)
+            catch (Exception error) when (error is InvalidDataException || error is IOException || error is UnauthorizedAccessException || error is JsonException || error is ArgumentException || error is KeyNotFoundException || error is BadImageFormatException || error is InvalidOperationException || error is NotSupportedException)
             {
                 Console.Error.WriteLine("stage_analyzer_error: invalid input or unavailable trusted analysis context");
                 return 2;

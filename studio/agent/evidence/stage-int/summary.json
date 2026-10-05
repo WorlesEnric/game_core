@@ -1,0 +1,31 @@
+{
+  "implementationRevision": "c2b8f7b56fac84fe27d566aeebca6789d966ccdc",
+  "dockerStage": "BLOCKED",
+  "blocker": "com.gamecore.gameplay.world requires excluded com.gamecore.studio.core",
+  "rustPassed": 116,
+  "rustSuites": {
+    "cargo-tests": 114,
+    "docker-isolation": 1,
+    "docker-licensing": 1
+  },
+  "fullStageAcceptanceBlocked": 1,
+  "analyzerHostPassed": 50,
+  "analyzerDockerPassed": 50,
+  "pythonPassed": 16,
+  "slotCheckerSelfTestsPassed": 29,
+  "unityOnlyCompileProbe": "PASS",
+  "signedPassingVerdictIssued": false,
+  "failedJobVerdictEndpointHttpStatus": 404,
+  "negativeSemanticRules": [
+    "SG001",
+    "SG002",
+    "SG003",
+    "SG004",
+    "SG005",
+    "SG006",
+    "SG007",
+    "SG008",
+    "SG009",
+    "SG010"
+  ]
+}

@@ -27,6 +27,8 @@ use super::slot;
 use super::verdict::{STEP_IDS, StepStatus};
 
 const USAGE: &str = "usage:
+  gamecore-studio stage cache-path --repo DIR --source-project DIR --root DIR
+  gamecore-studio stage sandbox-exec CONFIG COMMAND [ARGS...] (trusted operator only)
   gamecore-studio stage run <slot> [--candidate DIR | --package-dir DIR --change-set-id ID]
                                    [--source-project DIR] [--root DIR] [--repo DIR]
                                    [--steps scan,checkers,...] [--budget-s N] [--force] [--verdict-out FILE]
@@ -115,6 +117,29 @@ pub fn main(args: &[String]) -> i32 {
             }
         };
     }
+    if args.first().is_some_and(|s| s == "sandbox-exec") {
+        let result = (|| -> Result<i32, String> {
+            if args.len() < 3 {
+                return Err("sandbox-exec requires trusted config and command".into());
+            }
+            let sandbox: super::sandbox::Sandbox =
+                serde_json::from_slice(&std::fs::read(&args[1]).map_err(|e| e.to_string())?)
+                    .map_err(|e| e.to_string())?;
+            let mut command = std::process::Command::new(&args[2]);
+            command.args(&args[3..]);
+            let outcome = sandbox.run(
+                &command,
+                &sandbox.slot.join("sandbox-exec.log"),
+                Duration::from_secs(600),
+            );
+            print!("{}", outcome.output);
+            Ok(outcome.code.unwrap_or(2))
+        })();
+        return match result {
+            Ok(code) => code,
+            Err(error) => fail(&error),
+        };
+    }
     if args.first().is_some_and(|s| s == "sandbox-unity") {
         return match args
             .get(1)
@@ -137,6 +162,29 @@ pub fn main(args: &[String]) -> i32 {
         Err(e) => return fail(&e),
     };
     match command.as_str() {
+        "cache-path" => {
+            if let Err(error) = parsed.check(&["repo", "source-project", "root"]) {
+                return fail(&error);
+            }
+            let repo = parsed
+                .get("repo")
+                .map(PathBuf::from)
+                .unwrap_or_else(|| std::env::current_dir().unwrap_or_default());
+            let mut opts = StageOptions::from_env(&repo, "cache-path", SlotSource::Existing);
+            if let Some(project) = parsed.get("source-project") {
+                opts.source_project = PathBuf::from(project);
+            }
+            if let Some(root) = parsed.get("root") {
+                opts.root = PathBuf::from(root);
+            }
+            match pipeline::cache_version(&opts) {
+                Ok(version) => {
+                    println!("{}", opts.root.join("_warm").join(version).display());
+                    0
+                }
+                Err(error) => fail(&error),
+            }
+        }
         "run" => run(&parsed),
         "gc" => gc(&parsed),
         "discard" => discard(&parsed),

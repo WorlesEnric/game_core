@@ -114,6 +114,14 @@ pub struct SlotLock {
     _file: std::fs::File,
 }
 
+impl Drop for SlotLock {
+    fn drop(&mut self) {
+        // Release the lease explicitly: a concurrent fork may still hold a duplicate
+        // description until exec, even though our File uses CLOEXEC.
+        let _ = self._file.unlock();
+    }
+}
+
 fn lock_path(slot_dir: &Path) -> Result<PathBuf, String> {
     let parent = slot_dir.parent().ok_or("slot has no parent")?;
     let name = slot_dir.file_name().ok_or("slot has no name")?;
@@ -128,7 +136,7 @@ impl SlotLock {
     pub fn acquire(slot_dir: &Path, _stale_after: Duration) -> Result<SlotLock, String> {
         use std::io::Write;
         let path = lock_path(slot_dir)?;
-        let mut file = std::fs::OpenOptions::new()
+        let file = std::fs::OpenOptions::new()
             .read(true)
             .write(true)
             .create(true)
@@ -137,13 +145,14 @@ impl SlotLock {
             .map_err(|e| e.to_string())?;
         file.try_lock()
             .map_err(|_| "one stage per slot: slot is being staged".to_string())?;
+        let mut lock = SlotLock { _file: file };
         let mut token = [0u8; 16];
         getrandom::fill(&mut token).map_err(|e| e.to_string())?;
-        file.set_len(0).map_err(|e| e.to_string())?;
-        writeln!(file, "{} {}", std::process::id(), hex::encode(token))
+        lock._file.set_len(0).map_err(|e| e.to_string())?;
+        writeln!(lock._file, "{} {}", std::process::id(), hex::encode(token))
             .map_err(|e| e.to_string())?;
-        file.sync_all().map_err(|e| e.to_string())?;
-        Ok(SlotLock { _file: file })
+        lock._file.sync_all().map_err(|e| e.to_string())?;
+        Ok(lock)
     }
 }
 
@@ -309,6 +318,20 @@ mod tests {
         }
         assert_eq!(std::fs::metadata(path).unwrap().ino(), inode);
         assert!(slot.exists());
+    }
+
+    #[test]
+    fn r2_16_stage_int_guard_drop_unlocks_inherited_description() {
+        let dir = tempfile::tempdir().unwrap();
+        let slot = dir.path().join("s1");
+        let lock = SlotLock::acquire(&slot, MAX_SLOT_AGE).unwrap();
+        // A concurrent fork briefly inherits this same open file description before
+        // exec closes CLOEXEC descriptors. Closing only the parent's fd is insufficient.
+        let inherited = lock._file.try_clone().unwrap();
+        assert!(is_locked(&slot));
+        drop(lock);
+        assert!(!is_locked(&slot));
+        drop(inherited);
     }
 
     #[test]
