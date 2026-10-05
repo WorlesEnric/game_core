@@ -30,7 +30,7 @@ namespace GameCore.Gameplay.Inventory
         [AuthorField(Unit = "m", Doc = "Position in the region.")]
         [SerializeField] private Vector3 position;
 
-        [AuthorField(Type = "authoringId", Doc = "Placed scene entity that shows it (optional; P1.3's interactable).")]
+        [AuthorRef(Category = AuthorRefCategories.EntityInstance, Required = false, Doc = "Placed scene entity that shows it, by authoring id (optional; P1.3's interactable).")]
         [SerializeField] private string entityId = string.Empty;
 
         public override string NarrativeKind => NarrativeKinds.WorldItem;

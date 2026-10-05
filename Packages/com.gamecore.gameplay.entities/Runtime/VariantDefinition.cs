@@ -15,7 +15,7 @@ namespace GameCore.Gameplay.Entities
     {
         [SerializeField] private string authoringId = string.Empty;
 
-        [AuthorRef(Category = "asset.prefab", Required = false, Doc = "Replaces the definition's prefab when set.")]
+        [AuthorRef(Category = "asset.prefab", Required = false, Structural = true, Doc = "Replaces the definition's prefab when set.")]
         [SerializeField] private GameObject? prefab;
 
         [AuthorField(Doc = "Tint applied to the view's renderers (white = none).")]

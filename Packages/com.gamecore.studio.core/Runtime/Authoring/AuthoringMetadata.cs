@@ -84,6 +84,7 @@ namespace GameCore.Studio.Authoring
                 Step = Number(mirror, "Step"),
                 Doc = Get<string>(mirror, "Doc"),
                 Required = Flag(mirror, "Required", false),
+                Structural = Flag(mirror, "Structural", false),
             };
         }
 
@@ -106,6 +107,7 @@ namespace GameCore.Studio.Authoring
                 Category = Get<string>(mirror, "Category"),
                 Required = Flag(mirror, "Required", true),
                 Doc = Get<string>(mirror, "Doc"),
+                Structural = Flag(mirror, "Structural", false),
             };
         }
 
@@ -144,6 +146,7 @@ namespace GameCore.Studio.Authoring
                 Requires = Get<string>(mirror, "Requires"),
                 RequiresOnTarget = Get<string>(mirror, "RequiresOnTarget"),
                 TargetKinds = kinds,
+                ReadOnly = Flag(mirror, "ReadOnly", false),
             };
         }
 

@@ -204,7 +204,7 @@ namespace GameCore.Studio.Model
             {
                 string referenceType = IsCollection(memberType, out _) ? ValueTypes.Ref + ValueTypes.ArraySuffix : ValueTypes.Ref;
                 string? category = reference.Category ?? AuthorableCategory(ElementType(memberType));
-                return new FieldSpec(member.Name, referenceType, reference.Required, category: category, doc: reference.Doc);
+                return new FieldSpec(member.Name, referenceType, reference.Required, category: category, doc: reference.Doc, structural: reference.Structural);
             }
 
             AuthorFieldAttribute value = field!;
@@ -224,7 +224,8 @@ namespace GameCore.Studio.Model
                 Number(value.Step),
                 inferredCategory,
                 value.Doc,
-                enumValues);
+                enumValues,
+                value.Structural);
         }
 
         private ToolEntry BuildTool(MethodInfo method, AuthorOperationAttribute operation)

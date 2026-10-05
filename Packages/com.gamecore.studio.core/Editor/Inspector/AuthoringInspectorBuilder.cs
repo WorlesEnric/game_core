@@ -87,8 +87,9 @@ namespace GameCore.Studio.Edit
 
         private VisualElement Control(UnityEngine.Object target, AuthorMemberInfo member, string label, JToken current, Label error)
         {
-            string type = member.Spec.Type;
-            if (member.IsReference && !member.IsCollection)
+            // A string [AuthorRef] (an authoring-id, asset-path or bank-id reference, P1.7b) is edited as text.
+            string type = member.IsReference && member.ValueType == typeof(string) ? ValueTypes.String : member.Spec.Type;
+            if (member.IsReference && !member.IsCollection && member.ValueType != typeof(string))
             {
                 ObjectField field = new ObjectField(label)
                 {
