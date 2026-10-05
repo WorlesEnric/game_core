@@ -118,6 +118,12 @@ namespace GameCore.Studio.UI
     {
         private const BindingFlags Public = BindingFlags.Public | BindingFlags.Instance;
 
+        /// <summary>Optional worker discovery seam, populated from the companion hello.</summary>
+        public static IReadOnlyList<string> Workers(IAgentGateway gateway)
+        {
+            return gateway.GetType().GetProperty("Workers", Public)?.GetValue(gateway) as IReadOnlyList<string> ?? Array.Empty<string>();
+        }
+
         /// <summary>The change set the gateway staged itself for <paramref name="requestId"/> (unconsumed), or null.</summary>
         public static StagedChangeSet? StagedBy(IAgentGateway gateway, string requestId)
         {

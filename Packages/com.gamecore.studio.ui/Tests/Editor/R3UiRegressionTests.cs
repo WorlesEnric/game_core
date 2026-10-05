@@ -1,5 +1,6 @@
 #nullable enable
 using System.Collections;
+using System.Reflection;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
@@ -18,18 +19,44 @@ namespace GameCore.Studio.UI.Tests
             DropdownField? selector = bar.Q<DropdownField>("prompt-worker");
             Assert.That(selector, Is.Not.Null, "P3.2 D16: worker selector missing");
             Assert.That(selector!.choices, Is.EqualTo(new[] { "gc-designer", "gc-mechanic" }));
-            selector.value = "gc-mechanic";
+            bar.SelectedWorker = "gc-mechanic";
             PromptBar reopened = new PromptBar(bed.Context);
             Assert.That(reopened.Q<DropdownField>("prompt-worker").value, Is.EqualTo("gc-mechanic"));
             bar.Text = "Add a pressure plate mechanism";
             bar.SubmitAsync().GetAwaiter().GetResult();
             Assert.That(bed.Gateway.Submitted[0].Mode, Is.EqualTo("gc-mechanic"));
-            selector.value = "gc-designer";
+            bar.SelectedWorker = "gc-designer";
+        }
+
+        [UnityTest]
+        public IEnumerator D12_DeferredPlacementRunsOnceWithoutOpeningGraphics()
+        {
+            System.Type? scheduler = typeof(StudioMenu).Assembly.GetType("GameCore.Studio.UI.StudioDeferredLayout");
+            Assert.That(scheduler, Is.Not.Null, "D12: OpenStudio has no deferred placement scheduler");
+            object owner = scheduler!.BaseType!.GetProperty("instance", BindingFlags.Public | BindingFlags.Static)!.GetValue(null)!;
+            MethodInfo place = scheduler.GetMethod("Place")!;
+            StudioViewportWindow window = ScriptableObject.CreateInstance<StudioViewportWindow>();
+            Rect expected = StudioMenu.Layout(new Rect(20, 40, 1600, 1000))[0];
+            try
+            {
+                place.Invoke(owner, new object[] { window, expected });
+                place.Invoke(owner, new object[] { window, expected });
+                window.position = new Rect(100, 100, 800, 700);
+                yield return null;
+                yield return null;
+                Assert.That(window.position, Is.EqualTo(expected));
+                Rect user = new Rect(60, 60, 900, 700);
+                window.position = user;
+                yield return null;
+                Assert.That(window.position, Is.EqualTo(user));
+            }
+            finally { Object.DestroyImmediate(window); }
         }
 
         [UnityTest]
         public IEnumerator D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce()
         {
+            if (!ViewportRenderer.CanRender) Assert.Ignore("D12 physical window-manager placement requires a graphical Editor; the separate scheduler regression runs headless.");
             bool wizard = StudioUiSettings.FirstRunDone;
             StudioUiSettings.FirstRunDone = true;
             Rect area = new Rect(20, 40, 1600, 1000);

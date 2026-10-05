@@ -186,7 +186,7 @@ namespace GameCore.Studio.Etos
                 }).ConfigureAwait(false);
                 await _sending.ConfigureAwait(false);
                 string reason = await channel.StopAsync(TimeSpan.FromSeconds(10)).ConfigureAwait(false);
-                // This barrier follows all transcript callbacks, so StopAsync means the prompt has received them.
+                // This barrier follows all transcript callbacks, so StopAsync completes only after main-thread transcript delivery.
                 await _queue.Run(() =>
                 {
                     OnClosed(reason);

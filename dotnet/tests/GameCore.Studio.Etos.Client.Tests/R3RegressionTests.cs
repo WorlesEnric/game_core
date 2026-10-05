@@ -13,6 +13,27 @@ namespace GameCore.Studio.Etos.Client.Tests
     public sealed class R3RegressionTests
     {
         [Test]
+        public async Task D13_BufferedFailureReplaysWithoutAcknowledgingLaterEvents()
+        {
+            using FakeSetup setup = new FakeSetup();
+            MemoryCursorStore cursors = new MemoryCursorStore();
+            using EventStream stream = new EventStream(setup.Client, cursors, new BackoffPolicy(TimeSpan.FromMilliseconds(50), TimeSpan.FromMilliseconds(100)));
+            stream.MaxPendingEvents = 16;
+            int fail = 1;
+            ConcurrentQueue<long> received = new ConcurrentQueue<long>();
+            stream.HandleAsync = (frame, token) => frame.Cursor == 2 && Volatile.Read(ref fail) == 1
+                ? Task.FromException(new InvalidOperationException("fixture handler failure")) : Task.CompletedTask;
+            stream.Received += frame => received.Enqueue(frame.Cursor);
+            for (int n = 0; n < 3; n++) setup.Fake.Emit("request", "cs_failure", new JObject());
+            stream.Start();
+            await Wait.Until(() => stream.LastError?.Code == "event_handler_failed", TimeSpan.FromSeconds(10), "failed buffered handler");
+            Assert.That(cursors.Load(), Is.EqualTo(1));
+            Volatile.Write(ref fail, 0);
+            await Wait.Until(() => cursors.Load() == 3, TimeSpan.FromSeconds(10), "replayed buffered events");
+            Assert.That(received.ToArray(), Is.EqualTo(new long[] { 1, 2, 3 }));
+        }
+
+        [Test]
         public async Task D13_ReadAheadIsBoundedAndNeverAcknowledgesQueuedWork()
         {
             using FakeSetup setup = new FakeSetup();

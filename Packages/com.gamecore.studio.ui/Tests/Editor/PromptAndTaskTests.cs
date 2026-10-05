@@ -64,7 +64,7 @@ namespace GameCore.Studio.UI.Tests
             PreparedRequest prepared = bar.LastRequest!;
             Assert.That(request.Intent, Is.EqualTo("Make this blacksmith greet travellers"));
             Assert.That(prepared.Intent.Origin, Is.EqualTo(IntentOrigin.Agent));
-            Assert.That(request.Mode, Is.EqualTo("design"));
+            Assert.That(request.Mode, Is.EqualTo("gc-designer"));
             Assert.That(request.ChangeSetId, Is.EqualTo(prepared.ChangeSetId));
             Assert.That(request.Selection.Mode, Is.EqualTo(SelectionMode.Edit));
             Assert.That(request.Selection.Targets.Count, Is.EqualTo(1));
