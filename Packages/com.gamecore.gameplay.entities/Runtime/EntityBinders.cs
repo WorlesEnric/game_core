@@ -142,6 +142,14 @@ namespace GameCore.Gameplay.Entities
             IsActive = !BinderEnvironment.IsHeadless && parent != null;
         }
 
+        private readonly Dictionary<TargetId, Func<int>> appearances = new Dictionary<TargetId, Func<int>>();
+
+        /// <summary>Registers a live definition-default variant resolver (NPC session); explicit slot variants win.</summary>
+        public void BindAppearance(TargetId target, Func<int> variant) => appearances[target] = variant;
+
+        public int ResolveVariant(TargetId target, int committedVariant) => committedVariant != 0 ? committedVariant
+            : appearances.TryGetValue(target, out Func<int> resolve) ? Math.Max(0, resolve()) : 0;
+
         public string BinderName => "gameplay.prefab-view";
 
         public bool IsActive { get; }
@@ -309,7 +317,7 @@ namespace GameCore.Gameplay.Entities
                 return false;
             }
 
-            int variant = slots.TryRead(spec.Target, entityOwner, GameplaySlots.Variant, out int variantValue) ? variantValue : 0;
+            int variant = ResolveVariant(spec.Target, slots.TryRead(spec.Target, entityOwner, GameplaySlots.Variant, out int variantValue) ? variantValue : 0);
             int scale = slots.TryRead(spec.Target, entityOwner, GameplaySlots.ScaleMilli, out int scaleValue) ? scaleValue : GameplayUnits.ScaleOne;
             int regionKey = slots.TryRead(spec.Target, worldOwner, GameplaySlots.Region, out int regionValue) ? regionValue : 0;
             string regionId = RegionIdOf(regionKey);
