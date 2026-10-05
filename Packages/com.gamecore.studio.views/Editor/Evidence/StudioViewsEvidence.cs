@@ -236,11 +236,12 @@ namespace GameCore.Studio.Views.Evidence
                     Shoot(Shots[6], step);
                     return;
                 case 15:
-                    ((ChangesView)((StudioViewWindow)_window!).View!).ShowTab(ChangesView.DependenciesTab);
+                    ChangesView dependencies = (ChangesView)((StudioViewWindow)_window!).View!;
+                    dependencies.ShowTab(ChangesView.DependenciesTab);
+                    Note("dependencies", "packages " + dependencies.Packages?.Packages.Count + ", problems " + dependencies.Packages?.ProblemCount);
                     Next(step, 2.5);
                     return;
                 case 16:
-                    Note("dependencies", "packages " + ((ChangesView)((StudioViewWindow)_window!).View!).Packages?.Packages.Count + ", problems " + ((ChangesView)((StudioViewWindow)_window!).View!).Packages?.ProblemCount);
                     Shoot(Shots[7], step);
                     return;
                 case 17:
@@ -386,8 +387,9 @@ namespace GameCore.Studio.Views.Evidence
         {
             CloseWindow();
             T window = EditorWindow.CreateWindow<T>();
-            window.position = new Rect(40f, 40f, StudioViewIds.DefaultWidth, StudioViewIds.DefaultHeight);
+            Pin(window);
             window.Show();
+            Pin(window);
             window.Host(_context!);
             setUp(window.View!);
             window.Focus();
@@ -399,10 +401,20 @@ namespace GameCore.Studio.Views.Evidence
         {
             CloseWindow();
             EvidenceCanvasWindow window = EditorWindow.CreateWindow<EvidenceCanvasWindow>("Relationships (2,000 synthetic nodes)");
-            window.position = new Rect(40f, 40f, StudioViewIds.DefaultWidth, StudioViewIds.DefaultHeight);
+            Pin(window);
             window.Show();
+            Pin(window);
             window.Build(2000, 13);
             _window = window;
+        }
+
+        /// <summary>Fixes the window at 1280x720 (min = max size, so the window manager cannot keep another size).</summary>
+        private static void Pin(EditorWindow window)
+        {
+            Vector2 size = new Vector2(StudioViewIds.DefaultWidth, StudioViewIds.DefaultHeight);
+            window.minSize = size;
+            window.maxSize = size;
+            window.position = new Rect(40f, 40f, size.x, size.y);
         }
 
         private void CloseWindow()
@@ -446,7 +458,7 @@ namespace GameCore.Studio.Views.Evidence
             {
                 // The window manager can ignore the first placement of a new window; place it again and let it lay out.
                 _resizeTries++;
-                window.position = new Rect(40f, 40f, StudioViewIds.DefaultWidth, StudioViewIds.DefaultHeight);
+                Pin(window);
                 window.Repaint();
                 _waitUntil = EditorApplication.timeSinceStartup + 1.5;
                 return;
