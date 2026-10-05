@@ -96,6 +96,9 @@ namespace Hollowmere.UiAudioAuthoring
             public int Layer { get; }
         }
 
+        /// <summary>Once this asset exists (P3.1 AuthorAll), the P1.5 content is no longer regenerated here.</summary>
+        public const string P31SupersededMarker = "Assets/Hollowmere/Game/HollowmereDirector.asset";
+
         [MenuItem("Hollowmere/Author UI and Audio")]
         public static void AuthorMenu()
         {
@@ -167,6 +170,24 @@ namespace Hollowmere.UiAudioAuthoring
         public static UiAudioAuthoringReport Author()
         {
             var report = new UiAudioAuthoringReport();
+            if (AssetDatabase.LoadMainAssetAtPath(P31SupersededMarker) != null)
+            {
+                // P3.1 owns the UI and audio content now (bank additions, HUD bindings): validate only.
+                AudioSetDefinition? existingSet = AssetDatabase.LoadAssetAtPath<AudioSetDefinition>(AudioRoot + "/Definitions/HollowmereAudio.asset");
+                ScreenFlowDefinition? existingFlow = AssetDatabase.LoadAssetAtPath<HollowmereUiAudioContent>(ContentPath)?.Flow;
+                if (existingSet != null)
+                {
+                    report.Diagnostics.AddRange(AudioValidator.Validate(existingSet));
+                }
+
+                if (existingFlow != null)
+                {
+                    report.Diagnostics.AddRange(UiValidator.Validate(existingFlow));
+                }
+
+                return report;
+            }
+
             EnsureFolder(AudioRoot + "/Definitions");
             EnsureFolder(GeneratedFolder);
             EnsureFolder(UiRoot + "/Definitions");

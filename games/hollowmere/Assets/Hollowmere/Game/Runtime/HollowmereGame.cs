@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using GameCore.Contracts;
 using GameCore.Gameplay.Contracts;
+using GameCore.Gameplay.Entities;
 using GameCore.Gameplay.Interaction;
 using GameCore.Gameplay.Logic;
 using GameCore.Gameplay.Npc;
@@ -30,23 +31,29 @@ using UnityEngine;
 namespace Hollowmere.Game
 {
     /// <summary>Saves, restore re-attach, the director and the player command line of Hollowmere.</summary>
+    [Authorable("hollowmere.game", DisplayName = "Hollowmere Game", Scope = AuthorScope.Instance, RuntimeApplicability = RuntimeApply.Rebuild,
+        Doc = "The game half next to GameBoot: saves and restore re-attach, the director, the player command line (frame log, autoplay).")]
     [DefaultExecutionOrder(100)]
     [DisallowMultipleComponent]
     [RequireComponent(typeof(GameBoot))]
-    public sealed class HollowmereGame : MonoBehaviour
+    public sealed class HollowmereGame : MonoBehaviour, IAuthoredObject
     {
         public const string DefaultGameId = "hollowmere";
         public const string SaveFolder = "saves";
 
-        [Tooltip("The authored presentation data (Assets/Hollowmere/Game/HollowmereDirector.asset).")]
+        [SerializeField] private string authoringId = string.Empty;
+
+        [AuthorRef(Category = "hollowmere.director", Doc = "The authored presentation data (Assets/Hollowmere/Game/HollowmereDirector.asset).")]
         [SerializeField] private HollowmereDirectorDefinition? director;
 
-        [Tooltip("The save game id (slot headers and the save folder).")]
+        [AuthorField(Doc = "The save game id (slot headers and the save folder).")]
         [SerializeField] private string gameId = DefaultGameId;
 
         private GameBoot? boot;
         private HollowmereUiAudio? rig;
         private AutoplayIntentSource? autoplayIntents;
+
+        public string AuthoringId => authoringId;
 
         /// <summary>The director asset (null: the game runs without endings and consequences).</summary>
         public HollowmereDirectorDefinition? DirectorDefinition => director;
@@ -108,6 +115,16 @@ namespace Hollowmere.Game
         {
             director = directorDefinition;
             gameId = string.IsNullOrEmpty(saveGameId) ? DefaultGameId : saveGameId;
+        }
+
+        private void Reset() => authoringId = AuthoringIdField.Ensure(authoringId);
+
+        private void OnValidate()
+        {
+            if (!AuthoringIds.IsValid(authoringId))
+            {
+                authoringId = AuthoringIdField.Ensure(authoringId);
+            }
         }
 
         private void Start()
