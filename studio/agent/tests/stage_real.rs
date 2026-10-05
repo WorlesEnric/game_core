@@ -8,7 +8,8 @@
 //! budget to seed `<root>/_warm/Library`. The measured stage then starts from a fresh slot with
 //! the warm Library copied in, under B-STAGE (6 min), and its duration is written to
 //! `<root>/stage-real.json` (and printed) for the P2.4 evidence. The two negative fixtures
-//! must fail at the scan and at the EditMode step respectively.
+//! must fail at the scan and at the EditMode step respectively (the latter from the warm Library,
+//! under B-STAGE).
 
 use std::path::{Path, PathBuf};
 use std::time::Duration;
@@ -35,6 +36,11 @@ fn stage(slot_id: &str, candidate: &Path, budget: Duration) -> StageVerdict {
     let mut opts =
         StageOptions::from_env(&r, slot_id, SlotSource::Candidate(candidate.to_path_buf()));
     opts.budget = budget;
+    // A cold slot (no warm Library yet) imports the whole project in its first Editor run; let
+    // one attempt use the whole (longer) budget there. Under B-STAGE the runner's own bound holds.
+    if budget > Duration::from_millis(B_STAGE_MS) {
+        opts.unity_attempt = budget;
+    }
     opts.force = true;
     let v = pipeline::run_stage(&opts).unwrap();
     for s in &v.steps {
@@ -50,25 +56,32 @@ fn status(v: &StageVerdict, id: &str) -> StepStatus {
     v.step(id).unwrap().status
 }
 
+/// Seeds `<root>/_warm/Library` with one cold stage of the clean candidate (30-minute budget)
+/// unless it exists; returns the warm-up duration when one ran.
+fn warm_up() -> Option<u64> {
+    let root = slot::default_root();
+    if root.join("_warm").join("Library").is_dir() {
+        return None;
+    }
+    let v = stage(
+        "warmup-plate",
+        &fixture("candidate"),
+        Duration::from_secs(1800),
+    );
+    assert!(
+        v.step("unity-editmode").unwrap().status == StepStatus::Pass,
+        "warm-up compile failed: {}",
+        serde_json::to_string_pretty(&v.to_value()).unwrap()
+    );
+    slot::remove_slot(&root.join("warmup-plate")).unwrap();
+    Some(v.duration_ms)
+}
+
 #[test]
 #[ignore = "host only: batchmode Unity, dotnet and python3 (cargo test -- --ignored stage_real)"]
 fn stage_real_pressure_plate() {
     let root = slot::default_root();
-    let warm = root.join("_warm").join("Library");
-    let mut warmup_ms = None;
-    if !warm.is_dir() {
-        let v = stage(
-            "warmup-plate",
-            &fixture("candidate"),
-            Duration::from_secs(1800),
-        );
-        warmup_ms = Some(v.duration_ms);
-        assert!(
-            v.step("unity-editmode").unwrap().status == StepStatus::Pass,
-            "warm-up compile failed"
-        );
-        slot::remove_slot(&root.join("warmup-plate")).unwrap();
-    }
+    let warmup_ms = warm_up();
     let slot_id = "stage-real-plate";
     slot::remove_slot(&root.join(slot_id)).unwrap();
     let v = stage(
@@ -125,10 +138,11 @@ fn stage_real_negative_fixtures() {
     assert!(rules.contains(&"static-mutable"), "{rules:?}");
     assert_eq!(status(&v, "unity-editmode"), StepStatus::Skipped);
 
+    warm_up();
     let v = stage(
         "stage-real-failing-test",
         &fixture("candidate-failing-test"),
-        Duration::from_secs(1800),
+        Duration::from_millis(B_STAGE_MS),
     );
     assert!(!v.pass);
     assert_eq!(status(&v, "scan"), StepStatus::Pass);

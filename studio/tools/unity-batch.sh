@@ -145,6 +145,25 @@ rc=0
 log=""
 attempts_run=0
 start="$(date +%s)"
+watched=""
+# A caller that gives up (the stage runner's B-STAGE deadline, Ctrl-C) signals this script's process group, but
+# `timeout` runs the Editor in its own process group: forward the signal so no Editor outlives its runner (and keeps
+# holding a host-wide Unity slot through the inherited lock descriptor).
+stop_editor() {
+  if [[ -n "${watched}" ]] && kill -0 "${watched}" 2>/dev/null; then
+    echo "-- interrupted: stopping the Editor" >&2
+    kill -TERM "${watched}" 2>/dev/null || true
+    # At most 5 s (watch-loop sleep) + 8 s, inside the stage runner's 15 s grace before it kills this group.
+    for _ in 1 2 3 4 5 6 7 8; do
+      kill -0 "${watched}" 2>/dev/null || break
+      sleep 1
+    done
+    pkill -KILL -P "${watched}" 2>/dev/null || true
+    kill -KILL "${watched}" 2>/dev/null || true
+  fi
+  exit 143
+}
+trap stop_editor TERM INT HUP
 for ((attempt = 1; attempt <= max_attempts; attempt++)); do
   attempts_run="${attempt}"
   log="${log_dir}/${label}-${stamp}-a${attempt}.log"
