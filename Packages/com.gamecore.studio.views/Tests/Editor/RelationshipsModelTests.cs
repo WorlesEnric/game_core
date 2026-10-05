@@ -129,12 +129,13 @@ namespace GameCore.Studio.Views.Tests
 
             canvas.FrameAll();
             int compactCards = canvas.VisibleCardCount;
+            bool compact = canvas.IsCompact;
             canvas.Select(root.IdentityKey, true);
             int framedCards = canvas.VisibleCardCount;
             UnityEngine.Debug.Log("[P2.3] 2000-node relationships: index graph " + buildGraph.ToString("0.0") + " ms, neighbourhood " + neighbourhood.Milliseconds.ToString("0.0")
                 + " ms, SetGraph " + setGraph.ToString("0.0") + " ms, layout " + layout.Steps + " slices max " + layout.MaxStepMilliseconds.ToString("0.00")
                 + " ms total " + layout.TotalMilliseconds.ToString("0.0") + " ms, refresh max " + maxRefresh.ToString("0.00") + " ms, cards framed-all "
-                + compactCards + " (compact " + canvas.IsCompact + "), cards at root " + framedCards);
+                + compactCards + " (compact " + compact + "), cards at root " + framedCards + " (compact " + canvas.IsCompact + ")");
 
             Assert.That(layout.MaxStepMilliseconds, Is.LessThan(16.0), "one layout slice per editor frame stays under 16 ms");
             Assert.That(maxRefresh, Is.LessThan(16.0), "a pan/zoom refresh stays under 16 ms");

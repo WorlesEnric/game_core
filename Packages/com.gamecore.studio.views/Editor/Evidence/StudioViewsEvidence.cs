@@ -5,10 +5,11 @@
 //
 // A frame-driven script (EditorApplication.update): it opens ThornwickVillage, builds a Studio runtime over Hollowmere
 // with a temporary state root, opens each view in a floating 1280x720 window, sets it up (roots, graph, preview,
-// simulation, inspected candidate...), waits for layout and repaint, and captures the window's screen pixels
-// (InternalEditorUtility.ReadScreenPixel) to <dir>/<shot>.png, downscaled until it is at most 300 KB. When the read
-// returns a blank image, it writes <dir>/.request-<shot>.json with the window rect and waits for the shell script to
-// capture it with `import -window root -crop`. A synthetic 2,000-node graph is shown on the canvas with its frame
+// simulation, inspected candidate...), waits for layout and repaint, and captures the window's pixels (its own host
+// view through GUIView.GrabPixels; InternalEditorUtility.ReadScreenPixel when that is unavailable) to
+// <dir>/<shot>.png, downscaled until it is at most 300 KB. When both come back blank, it writes
+// <dir>/.request-<shot>.json with the window rect and waits for the shell script to capture it with
+// `import -window root -crop`. A synthetic 2,000-node graph is shown on the canvas with its frame
 // timings. Then (unless -p23NoPlay) it enters Play Mode in Boot.unity and captures the Quests and World views with the
 // running world's overlays, resuming after the domain reload from SessionState. It writes <dir>/capture.json and exits.
 #nullable enable
@@ -16,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using GameCore.Studio.Authoring;
 using GameCore.Studio.Edit;
 using GameCore.Studio.Model;
@@ -435,11 +437,20 @@ namespace GameCore.Studio.Views.Evidence
             }
 
             EditorWindow window = _window!;
-            window.Repaint();
             Rect rect = window.position;
             int width = Mathf.RoundToInt(rect.width);
             int height = Mathf.RoundToInt(rect.height);
-            Color[] pixels = InternalEditorUtility.ReadScreenPixel(rect.position, width, height);
+            Color[]? pixels = GrabWindow(window, out int grabWidth, out int grabHeight, out string? problem);
+            if (pixels != null && !IsBlank(pixels))
+            {
+                long grabbed = WritePng(pixels, grabWidth, grabHeight, path);
+                Note(shot, grabWidth + "x" + grabHeight + " from the window's own view (GUIView.GrabPixels), " + grabbed + " bytes");
+                Next(step, 0.3);
+                return;
+            }
+
+            Note(shot, "window grab unavailable (" + (problem ?? "blank") + "); reading the screen");
+            pixels = InternalEditorUtility.ReadScreenPixel(rect.position, width, height);
             if (IsBlank(pixels))
             {
                 File.WriteAllText(request, new JObject { ["x"] = Mathf.RoundToInt(rect.x), ["y"] = Mathf.RoundToInt(rect.y), ["width"] = width, ["height"] = height, ["png"] = path }.ToString());
@@ -451,6 +462,88 @@ namespace GameCore.Studio.Views.Evidence
             long bytes = WritePng(pixels, width, height, path);
             Note(shot, width + "x" + height + " read from the screen, " + bytes + " bytes");
             Next(step, 0.3);
+        }
+
+        /// <summary>
+        /// Repaints the window and reads its host view into a render texture (GUIView.GrabPixels, internal API reached
+        /// by reflection): only the window's own pixels, never the desktop. Rows are bottom-up, as Texture2D expects.
+        /// </summary>
+        private static Color[]? GrabWindow(EditorWindow window, out int width, out int height, out string? problem)
+        {
+            width = 0;
+            height = 0;
+            problem = null;
+            const BindingFlags Any = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;
+            object? parent = typeof(EditorWindow).GetField("m_Parent", Any)?.GetValue(window);
+            if (parent == null)
+            {
+                problem = "no host view";
+                return null;
+            }
+
+            MethodInfo? repaint = typeof(EditorWindow).GetMethod("RepaintImmediately", Any);
+            if (repaint != null)
+            {
+                repaint.Invoke(window, null);
+            }
+
+            MethodInfo? grab = null;
+            PropertyInfo? position = null;
+            for (Type? type = parent.GetType(); type != null && (grab == null || position == null); type = type.BaseType)
+            {
+                grab ??= type.GetMethod("GrabPixels", Any | BindingFlags.DeclaredOnly, null, new[] { typeof(RenderTexture), typeof(Rect) }, null);
+                PropertyInfo? candidate = type.GetProperty("position", Any | BindingFlags.DeclaredOnly);
+                if (position == null && candidate != null && candidate.PropertyType == typeof(Rect))
+                {
+                    position = candidate;
+                }
+            }
+
+            if (grab == null || position == null)
+            {
+                problem = "GUIView.GrabPixels is not available";
+                return null;
+            }
+
+            Rect view = (Rect)position.GetValue(parent)!;
+            width = Mathf.Clamp(Mathf.RoundToInt(view.width), 4, 4096);
+            height = Mathf.Clamp(Mathf.RoundToInt(view.height), 4, 4096);
+            RenderTexture target = new RenderTexture(width, height, 0, RenderTextureFormat.ARGB32) { hideFlags = HideFlags.HideAndDontSave };
+            RenderTexture? previous = RenderTexture.active;
+            try
+            {
+                target.Create();
+                grab.Invoke(parent, new object[] { target, new Rect(0f, 0f, width, height) });
+                RenderTexture.active = target;
+                Texture2D texture = new Texture2D(width, height, TextureFormat.RGB24, false) { hideFlags = HideFlags.HideAndDontSave };
+                texture.ReadPixels(new Rect(0, 0, width, height), 0, 0, false);
+                texture.Apply(false, false);
+                Color[] pixels = texture.GetPixels();
+                UnityEngine.Object.DestroyImmediate(texture);
+                if (Environment.GetEnvironmentVariable("GCS_FLIP") == "1")
+                {
+                    Color[] flipped = new Color[pixels.Length];
+                    for (int row = 0; row < height; row++)
+                    {
+                        Array.Copy(pixels, row * width, flipped, (height - 1 - row) * width, width);
+                    }
+
+                    pixels = flipped;
+                }
+
+                return pixels;
+            }
+            catch (TargetInvocationException error)
+            {
+                problem = "GrabPixels failed: " + (error.InnerException?.Message ?? error.Message);
+                return null;
+            }
+            finally
+            {
+                RenderTexture.active = previous;
+                target.Release();
+                UnityEngine.Object.DestroyImmediate(target);
+            }
         }
 
         private static bool IsBlank(Color[] pixels)
