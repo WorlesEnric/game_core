@@ -9,7 +9,7 @@
 #       --log-dir ~/.cache/gamecore-studio/stage/cs-01ja/out/logs --label editmode \
 #       --results ~/.cache/gamecore-studio/stage/cs-01ja/out/editmode.xml -- -runTests -testPlatform EditMode
 #   studio/tools/unity-batch.sh --project "$PWD/games/hollowmere" --log-dir /tmp/l --label admit -- \
-#       -executeMethod GameCore.Studio.Stage.StageCommandLine.Admit
+#       -executeMethod GameCore.Studio.Edit.StageCommandLine.Admit
 #
 # This is the lock protocol of studio/tools/unity-compile.sh, factored for callers that are not a packet clone
 # (the P2.4 stage runner launches batchmode Editors on staging slots under ~/.cache, and on the live project for
@@ -47,6 +47,7 @@ project=""
 log_dir=""
 label=""
 results=""
+required_tests=()
 attempt_timeout="${UNITY_TIMEOUT:-1500}"
 max_attempts=2
 while [[ $# -gt 0 ]]; do
@@ -55,6 +56,7 @@ while [[ $# -gt 0 ]]; do
     --log-dir) [[ $# -ge 2 ]] || usage; log_dir="$2"; shift 2 ;;
     --label) [[ $# -ge 2 ]] || usage; label="$2"; shift 2 ;;
     --results) [[ $# -ge 2 ]] || usage; results="$2"; shift 2 ;;
+    --require-test) [[ $# -ge 2 ]] || usage; required_tests+=("$2"); shift 2 ;;
     --timeout) [[ $# -ge 2 ]] || usage; attempt_timeout="$2"; shift 2 ;;
     --attempts) [[ $# -ge 2 ]] || usage; max_attempts="$2"; shift 2 ;;
     --) shift; break ;;
@@ -62,7 +64,11 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 extra=("$@")
+for arg in "${extra[@]}"; do
+  case "${arg,,}" in -logfile|-projectpath|-testresults) echo 'reserved Unity argument' >&2; exit 2;; esac
+done
 
+if (( ${#required_tests[@]} > 0 )) && [[ -z "$results" ]]; then echo "--require-test needs --results" >&2; exit 2; fi
 if [[ -z "${project}" || -z "${log_dir}" || -z "${label}" ]]; then
   usage
 fi
@@ -102,44 +108,11 @@ for tool in timeout flock pgrep; do
 done
 mkdir -p "${log_dir}" "${slot_dir}"
 
-# Batchmode Editors running host-wide, whoever started them (same rule as unity-compile.sh).
-count_batchmode_editors() {
-  local pid n=0
-  for pid in $(pgrep -x Unity 2>/dev/null || true); do
-    if tr '\0' ' ' < "/proc/${pid}/cmdline" 2>/dev/null | grep -- '-batchmode' | grep -vq 'AssetImportWorker'; then
-      n=$((n + 1))
-    fi
-  done
-  echo "${n}"
-}
-
-acquire_slot() {
-  local waited=0 i fd running
-  while true; do
-    for ((i = 1; i <= slots; i++)); do
-      exec {fd}>"${slot_dir}/slot${i}.lock"
-      if flock -n "${fd}"; then
-        running="$(count_batchmode_editors)"
-        if (( running < slots )); then
-          printf '%s pid=%s caller=unity-batch label=%s project=%s since=%s\n' "$(hostname)" "$$" "${label}" \
-            "${project}" "$(date -Is)" > "${slot_dir}/slot${i}.owner"
-          echo "-- Unity slot ${i}/${slots} acquired (${running} batchmode Editor(s) already running host-wide)"
-          return 0
-        fi
-        flock -u "${fd}"
-      fi
-      exec {fd}>&-
-    done
-    if (( waited % 60 == 0 )); then
-      echo "-- waiting for a Unity slot (${slots} max host-wide; waited ${waited}s)"
-    fi
-    sleep 10
-    waited=$((waited + 10))
-  done
-}
-
-stamp="$(date +%Y%m%dT%H%M%S)"
-acquire_slot
+unity_tools_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "${unity_tools_dir}/unity-slot.sh"
+unity_slot_acquire
+trap unity_slot_release EXIT
+stamp="$(date +%Y%m%dT%H%M%S)-$$"
 
 rc=0
 log=""
@@ -153,8 +126,8 @@ stop_editor() {
   if [[ -n "${watched}" ]] && kill -0 "${watched}" 2>/dev/null; then
     echo "-- interrupted: stopping the Editor" >&2
     kill -TERM "${watched}" 2>/dev/null || true
-    # At most 5 s (watch-loop sleep) + 8 s, inside the stage runner's 15 s grace before it kills this group.
-    for _ in 1 2 3 4 5 6 7 8; do
+    # The redacting child kills its entire process group after eight seconds; allow it to reap.
+    for _ in 1 2 3 4 5 6 7 8 9 10 11 12; do
       kill -0 "${watched}" 2>/dev/null || break
       sleep 1
     done
@@ -167,43 +140,19 @@ trap stop_editor TERM INT HUP
 for ((attempt = 1; attempt <= max_attempts; attempt++)); do
   attempts_run="${attempt}"
   log="${log_dir}/${label}-${stamp}-a${attempt}.log"
-  args=(-batchmode -nographics -projectPath "${project}" -logFile "${log}")
+  args=(-batchmode -nographics -projectPath "${project}" -logFile -)
   if [[ -n "${results}" ]]; then
     rm -f "${results}"
     args+=(-testResults "${results}")
   fi
   args+=("${extra[@]}")
-  echo "-- attempt ${attempt}/${max_attempts}: ${unity} ${args[*]}"
+  echo "-- attempt ${attempt}/${max_attempts}: Unity (arguments withheld from logs)"
   rc=0
   attempt_start="$(date +%s)"
-  timeout --signal=TERM --kill-after=60 "${attempt_timeout}" "${unity}" "${args[@]}" &
+  python3 "${unity_tools_dir}/../stage/run-redacted.py" --log "$log" --timeout "$attempt_timeout" --silence "$silence_limit" -- "${unity}" "${args[@]}" &
   watched=$!
-  silenced=0
-  while kill -0 "${watched}" 2>/dev/null; do
-    sleep 5
-    if (( silence_limit > 0 )); then
-      now="$(date +%s)"
-      last="${attempt_start}"
-      if [[ -f "${log}" ]]; then
-        last="$(stat -c %Y "${log}")"
-      fi
-      if (( now - last > silence_limit )); then
-        echo "   Unity log silent for $((now - last))s (> ${silence_limit}s): killing the Editor as hung" >&2
-        silenced=1
-        pkill -TERM -P "${watched}" 2>/dev/null || true
-        for _ in 1 2 3 4 5 6 7 8 9 10 11 12; do
-          kill -0 "${watched}" 2>/dev/null || break
-          sleep 5
-        done
-        pkill -KILL -P "${watched}" 2>/dev/null || true
-        break
-      fi
-    fi
-  done
-  wait "${watched}" || rc=$?
-  if (( silenced == 1 )); then
-    rc=124
-  fi
+  wait "$watched" || rc=$?
+  watched=""
   if (( rc == 124 || rc == 137 )); then
     echo "   Unity Editor timed out (limit ${attempt_timeout}s, silence limit ${silence_limit}s; exit ${rc}, attempt ${attempt}/${max_attempts})" >&2
     if (( attempt < max_attempts )); then
@@ -214,6 +163,11 @@ for ((attempt = 1; attempt <= max_attempts; attempt++)); do
   break
 done
 elapsed=$(( $(date +%s) - start ))
+if [[ -n "$results" && -s "$results" && "$rc" != 124 && "$rc" != 137 ]]; then
+  summary_rc=0
+  python3 "${unity_tools_dir}/../stage/test-results.py" "$results" "${required_tests[@]}" || summary_rc=$?
+  if (( summary_rc == 0 && (rc == 0 || rc == 2) )); then rc=0; else rc=1; fi
+fi
 
 errors="$(grep -E 'error CS[0-9]+|Scripts have compiler errors|Aborting batchmode|An error occurred while resolving packages|\[Package Manager\].*[Ee]rror|Compilation failed|Fatal Error' "${log}" 2>/dev/null | sort -u | head -n 200 || true)"
 if [[ -n "${errors}" ]]; then

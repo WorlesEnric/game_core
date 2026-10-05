@@ -57,6 +57,7 @@ project="$2"
 shift 2
 tests=""
 filter=""
+required_tests=()
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --tests)
@@ -64,6 +65,7 @@ while [[ $# -gt 0 ]]; do
       tests="$2"
       shift 2
       ;;
+    --require-test) [[ $# -ge 2 ]] || usage; required_tests+=(--require-test "$2"); shift 2 ;;
     --filter)
       [[ $# -ge 2 ]] || usage
       filter="$2"
@@ -106,7 +108,7 @@ if [[ "${GC_STUDIO_ON_HOST:-0}" != "1" ]] && { [[ "$(uname -s)" != "Linux" ]] ||
   if [[ -n "${UNITY:-}" ]]; then
     remote_env+=" UNITY=$(printf '%q' "${UNITY}")"
   fi
-  forwarded=("${packet}" "${project}")
+  forwarded=("${packet}" "${project}" "${required_tests[@]}")
   [[ -n "${tests}" ]] && forwarded+=(--tests "${tests}")
   [[ -n "${filter}" ]] && forwarded+=(--filter "${filter}")
   rc=0
@@ -115,202 +117,18 @@ if [[ "${GC_STUDIO_ON_HOST:-0}" != "1" ]] && { [[ "$(uname -s)" != "Linux" ]] ||
   exit "${rc}"
 fi
 
-unity="${UNITY:-${default_unity}}"
-unity_timeout="${UNITY_TIMEOUT:-1500}"
-silence_limit="${UNITY_SILENCE_TIMEOUT:-600}"
-slots="${GC_STUDIO_UNITY_SLOTS:-3}"
 base="${HOME}/${remote_base}/${packet}"
 project_dir="${base}/${project%/}"
 logs="${base}/.unity-logs"
-slot_dir="${HOME}/${remote_base}/.unity-slots"
-
-if [[ ! -x "${unity}" ]]; then
-  echo "unity-compile.sh: Unity Editor not executable: ${unity}" >&2
-  exit 2
-fi
-if [[ ! -d "${project_dir}/ProjectSettings" || ! -f "${project_dir}/Packages/manifest.json" ]]; then
-  echo "unity-compile.sh: no Unity project at ${project_dir} (run studio/tools/sync-to-host.sh ${packet} first)" >&2
-  exit 2
-fi
-for tool in timeout flock python3; do
-  command -v "${tool}" >/dev/null 2>&1 || { echo "unity-compile.sh: '${tool}' is required" >&2; exit 2; }
-done
-mkdir -p "${logs}" "${slot_dir}"
-
-# Batchmode Editors running host-wide, whoever started them (the process name of the Editor is "Unity").
-count_batchmode_editors() {
-  local pid n=0
-  for pid in $(pgrep -x Unity 2>/dev/null || true); do
-    # Asset import workers are Editor children (`-batchMode -name AssetImportWorkerN`), not instances.
-    if tr '\0' ' ' < "/proc/${pid}/cmdline" 2>/dev/null | grep -- '-batchmode' | grep -vq 'AssetImportWorker'; then
-      n=$((n + 1))
-    fi
-  done
-  echo "${n}"
-}
-
-slot_fd=""
-acquire_slot() {
-  local waited=0 i fd running
-  while true; do
-    for ((i = 1; i <= slots; i++)); do
-      exec {fd}>"${slot_dir}/slot${i}.lock"
-      if flock -n "${fd}"; then
-        running="$(count_batchmode_editors)"
-        if (( running < slots )); then
-          slot_fd="${fd}"
-          printf '%s pid=%s packet=%s project=%s since=%s\n' "$(hostname)" "$$" "${packet}" "${project}" \
-            "$(date -Is)" > "${slot_dir}/slot${i}.owner"
-          echo "-- Unity slot ${i}/${slots} acquired (${running} batchmode Editor(s) already running host-wide)"
-          return 0
-        fi
-        flock -u "${fd}"
-      fi
-      exec {fd}>&-
-    done
-    if (( waited % 60 == 0 )); then
-      echo "-- waiting for a Unity slot (${slots} max host-wide; waited ${waited}s)"
-    fi
-    sleep 10
-    waited=$((waited + 10))
-  done
-}
-
-stamp="$(date +%Y%m%dT%H%M%S)"
 slug="$(printf '%s' "${project%/}" | tr '/ ' '__')"
 mode="compile"
-[[ -n "${tests}" ]] && mode="$(printf '%s' "${tests}" | tr '[:upper:]' '[:lower:]')"
-
-acquire_slot
-
-rc=0
-log=""
-results=""
-start="$(date +%s)"
-for attempt in 1 2; do
-  log="${logs}/${slug}-${mode}-${stamp}-a${attempt}.log"
-  results="${logs}/${slug}-${mode}-${stamp}-a${attempt}.xml"
-  args=(-batchmode -nographics -projectPath "${project_dir}" -logFile "${log}")
-  if [[ -n "${tests}" ]]; then
-    args+=(-runTests -testPlatform "${tests}" -testResults "${results}")
-    [[ -n "${filter}" ]] && args+=(-testFilter "${filter}")
-  else
-    args+=(-quit)
-  fi
-  echo "-- attempt ${attempt}/2: ${unity} ${args[*]}"
-  rc=0
-  attempt_start="$(date +%s)"
-  timeout --signal=TERM --kill-after=60 "${unity_timeout}" "${unity}" "${args[@]}" &
-  watched=$!
-  silenced=0
-  # Log-silence watchdog: the known hang (docs/operator/editor-hang.md) shows as a log that stops moving, at
-  # startup or after "Batchmode quit successfully invoked". Kill such a run early instead of waiting for the full
-  # timeout; it is then handled exactly like a timeout (retry once, never a pass).
-  while kill -0 "${watched}" 2>/dev/null; do
-    sleep 5
-    if (( silence_limit > 0 )); then
-      now="$(date +%s)"
-      last="${attempt_start}"
-      if [[ -f "${log}" ]]; then
-        last="$(stat -c %Y "${log}")"
-      fi
-      if (( now - last > silence_limit )); then
-        echo "   Unity log silent for $((now - last))s (> ${silence_limit}s): killing the Editor as hung" >&2
-        echo "   (diagnose a live one with: sudo -n gdb -p <pid> -batch -ex 'thread apply all bt')" >&2
-        silenced=1
-        pkill -TERM -P "${watched}" 2>/dev/null || true
-        for _ in 1 2 3 4 5 6 7 8 9 10 11 12; do
-          kill -0 "${watched}" 2>/dev/null || break
-          sleep 5
-        done
-        pkill -KILL -P "${watched}" 2>/dev/null || true
-        break
-      fi
-    fi
-  done
-  wait "${watched}" || rc=$?
-  if (( silenced == 1 )); then
-    rc=124
-  fi
-  if (( rc == 124 || rc == 137 )); then
-    echo "   Unity Editor timed out (limit ${unity_timeout}s, log-silence limit ${silence_limit}s; exit ${rc}, attempt ${attempt}/2)" >&2
-    if (( attempt == 1 )); then
-      echo "-- retrying once after a timeout (the Editor has an intermittent pre-dispatch hang; docs/operator/editor-hang.md)"
-      continue
-    fi
-    echo "   FAIL: Unity Editor timed out twice; this is not the known intermittent pre-dispatch hang" >&2
-  fi
-  break
-done
-end="$(date +%s)"
-elapsed=$((end - start))
-
-# Error lines: compiler errors, package-manager errors, batchmode aborts. Deduplicated, capped.
-errors="$(grep -E 'error CS[0-9]+|Scripts have compiler errors|Aborting batchmode|An error occurred while resolving packages|\[Package Manager\].*[Ee]rror|Compilation failed|Fatal Error' "${log}" 2>/dev/null | sort -u | head -n 200 || true)"
-compile_errors=0
-if grep -qE 'error CS[0-9]+|Scripts have compiler errors' "${log}" 2>/dev/null; then
-  compile_errors=1
+args=(-quit)
+result_args=()
+if [[ -n "$tests" ]]; then
+  mode="${tests,,}"
+  args=(-runTests -testPlatform "$tests")
+  [[ -z "$filter" ]] || args+=(-testFilter "$filter")
+  result_args=(--results "${logs}/${slug}-${mode}-$(date +%Y%m%dT%H%M%S)-$$.xml")
 fi
-if [[ -n "${errors}" ]]; then
-  echo "-- error lines from ${log}:"
-  printf '%s\n' "${errors}" | sed 's/^/   /'
-fi
-
-verdict="PASS"
-if (( rc == 124 || rc == 137 )); then
-  verdict="FAIL (timeout twice)"
-elif [[ -z "${tests}" ]]; then
-  if (( rc != 0 || compile_errors == 1 )); then
-    verdict="FAIL"
-  fi
-else
-  if [[ ! -s "${results}" ]]; then
-    echo "   no test results at ${results}: the run produced no verdict, which is NotRun, not Pass" >&2
-    verdict="FAIL (NotRun)"
-  else
-    summary_rc=0
-    python3 - "${results}" <<'PY' || summary_rc=$?
-import sys
-import xml.etree.ElementTree as ET
-
-root = ET.parse(sys.argv[1]).getroot()
-run = root if root.tag == "test-run" else root.find(".//test-run")
-attrs = run.attrib if run is not None else root.attrib
-print("-- tests: result={0} total={1} passed={2} failed={3} skipped={4} inconclusive={5}".format(
-    attrs.get("result"), attrs.get("total"), attrs.get("passed"), attrs.get("failed"),
-    attrs.get("skipped"), attrs.get("inconclusive")))
-failed = [case for case in root.iter("test-case") if case.get("result") == "Failed"]
-for case in failed[:100]:
-    message = case.find("./failure/message")
-    text = (message.text or "").strip().splitlines()[0] if message is not None and message.text else ""
-    print("   FAILED {0}: {1}".format(case.get("fullname"), text[:300]))
-inconclusive = [case for case in root.iter("test-case") if case.get("result") == "Inconclusive"]
-for case in inconclusive[:100]:
-    message = case.find("./reason/message")
-    text = (message.text or "").strip().splitlines()[0] if message is not None and message.text else ""
-    print("   INCONCLUSIVE {0}: {1}".format(case.get("fullname"), text[:300]))
-total = int(attrs.get("total") or 0)
-passed = int(attrs.get("passed") or 0)
-# The run-level result is Passed, or Skipped:Ignored / Inconclusive when every non-pass is ignored or inconclusive;
-# only Failed (or nothing passing) fails the verdict.
-outcome = str(attrs.get("result", ""))
-sys.exit(1 if failed or total == 0 or passed == 0 or outcome.startswith("Failed") else 0)
-PY
-    # Unity exits 2 whenever a run is not all-green, including runs whose only non-passes are Inconclusive. The XML
-    # is the verdict: 0 failed and >0 passed is a PASS even with exit 2.
-    tests_rc_ok=0
-    if (( rc == 0 || (rc == 2 && summary_rc == 0) )); then
-      tests_rc_ok=1
-    fi
-    if (( summary_rc != 0 || tests_rc_ok == 0 || compile_errors == 1 )); then
-      verdict="FAIL"
-    fi
-  fi
-fi
-
-echo "RESULT ${mode} ${project}: ${verdict} (unity exit ${rc}, ${elapsed}s, log ${log})"
-if [[ "${verdict}" != "PASS" ]]; then
-  tail -n 30 "${log}" 2>/dev/null | sed 's/^/   | /' >&2 || true
-  exit 1
-fi
-exit 0
+exec bash "${base}/studio/tools/unity-batch.sh" --project "$project_dir" --log-dir "$logs" \
+  --label "${slug}-${mode}" "${result_args[@]}" "${required_tests[@]}" -- "${args[@]}"
