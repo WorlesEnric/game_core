@@ -55,3 +55,50 @@ Branch: `codex/r2-a`. Build host: myubuntu. Scope: studio.core excluding Editor/
 - D3 Docker/licence qualification belongs to the stage lane packets. R2-A has no stage child launcher and did not claim a confined staging verdict or run paid/node operations.
 - Extension operations must call `EditContext.PrepareInverse` before additional filesystem mutations. Generic reflected target-member preimages do not infer arbitrary plugin side effects. The stage/extension contract must require authors to use this protocol.
 - Actual OS kill/domain reload acceptance belongs to R2-H. Core tests use deterministic fault injection and fresh StudioRuntime reconstruction; that is not a claim of a killed Editor acceptance run.
+
+## R2-A-int
+
+The dotnet model project compiles `Packages/com.gamecore.studio.core/Runtime/Model/**/*.cs` directly via its
+`Compile Include`; there are no copied or symlinked model sources to synchronize. `ToolEntry.ReadOnly` and
+`RuntimeOnly` already exist with false defaults. Regenerated all six schemas using
+`python3 tools/studio/emit_studio_schemas.py`; only `tool-catalog.schema.json` changed, adding both optional booleans.
+
+### R2 fixes
+
+- R2-02/07/08: `DiagnosticCodeRegistryIsComplete` now asserts the exact 19-code registry, including
+  `MediaTypeForbidden`, `MediaPathForbidden`, `MediaImporterInvalid`, and `ArtifactSourceForbidden`.
+- R2-06/33: regenerated catalog schema; regression test `CommittedSchemasAreCurrent`.
+- Both named tests failed before these changes (2/2) and pass in the full model suite afterward (101/101).
+  This supersedes the two model-suite blockers recorded above.
+
+### Verification
+
+- `dotnet test dotnet/tests/GameCore.Studio.Model.Tests`: 101 passed, 0 failed, 0 skipped.
+- `dotnet test dotnet/GameCore.sln`: 20 suites, 1,796 passed, 1 failed, 5 skipped (1,802 total), exit 1.
+  The sole failure is the out-of-scope gameplay attribute parity test below; the five ETOS live tests require
+  `GAMECORE_ETOS_LIVE=1` and were not enabled under the no-paid/node-operations rule.
+- `python3 tools/studio/emit_studio_schemas.py --check`: all six schemas current.
+- `python3 tools/check_package_metadata.py`: passed (41 packages, 88 assemblies).
+- `python3 tools/check_game_core_csharp.py`: passed (1,081 files); `git diff --check`: passed.
+- Host evidence: `/tmp/r2-a-int-before/r2-a-int-before.trx`,
+  `/tmp/r2-a-int-model/r2-a-int-model.trx`, `/tmp/r2-a-int-solution/*.trx`,
+  `/tmp/r2-a-int-solution.log`. Counts verified from TRX results. No Unity or Rust source changed or run.
+
+### Requests to other packets
+
+- **Integrator / gameplay contracts owner**: in
+  `Packages/com.gamecore.gameplay.contracts/Runtime/AuthoringMetadata.cs`, add
+  `public bool ReadOnly { get; set; }` and `public bool RuntimeOnly { get; set; }` to
+  `AuthorOperationAttribute`, both defaulting to false, matching the Studio attribute. Required by
+  `GameplayContractsTests.MirrorAttribute_HasTheStudioShape` for the AuthorOperationAttribute pair.
+- **R2-F / companion schema owner**: synchronize `studio/agent/schemas/tool-catalog.schema.json` from
+  `docs/studio/schemas/tool-catalog.schema.json`; mirror optional boolean `readOnly`/`runtimeOnly` with false
+  defaults in `studio/agent/src/model.rs` and accept the four diagnostic codes above. No companion file was edited.
+- **R2-H docs**: reconcile the historical 99/101 model result in
+  `docs/studio/packets/P0.3-studio-model.md` with this integration result. This micro-packet permits only the
+  root packet appendix and its explicit code/schema paths, so that shared note remains unchanged.
+
+### Left open
+
+- Whole-solution green is blocked by the gameplay `AuthorOperationAttribute` parity failure named above;
+  the required source is outside this micro-packet's exclusive paths. No test or contract was weakened.
