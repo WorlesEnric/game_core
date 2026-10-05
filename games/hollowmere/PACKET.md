@@ -1,0 +1,26 @@
+# P3.1b — Hollowmere frame-time follow-ups
+
+Branch: `codex/p3.1b`. Host: myubuntu. `git fetch origin && git merge origin/main` reported already up to date.
+Exclusive edits: games/hollowmere, SaveService.cs (necessary capture/write seam), P3.1b evidence, P3.1 packet appendix.
+
+## R2 fixes
+
+These follow-ups are the P3.1 B-FRAME observations, not newly numbered R2 review findings.
+
+- P31b-SAVE: keep capture, delivery ownership, serialization and canonical slot hashing on the main thread; write only the immutable snapshot on a worker. `CaptureSnapshot`, `WriteCapturedAsync`, `CaptureAsync` share the original capture path. Header rename commits a content-addressed checkpoint; legacy slot.gcc remains readable. Keep current and previous generations, collect older generations after commit. Refuse overlapping save/load/delete. The game supplies the public BindingHost callback (including mouse/controller activation and autoplay); show “Saving…” until completion, then the saved HUD message. Tests: `P31b_SAVE_AsyncWriteRestoresCapturedHashAndConfirmsAfterWrite`, `P31b_SAVE_InterruptedCaptureAndFailedHeaderKeepPreviousSave`. Before: the game command immediately blocks on file writes, and a failed header publication can make the old checkpoint unreadable.
+- P31b-BELFRY: enable streamer neighbour preloading while the player has the clapper in the marsh, before the ferry conversation. Disable on departure; no custom residency writes or extra pumps. Tests: `P31b_BELFRY_PreloadIsLimitedToFerryPreparation`, `P31b_BELFRY_PreloadedRegionReallyUnloadsAndReloads`. Before: belfry is unloaded until travel commits.
+- P31b-BOOT: defer first-region IO for three menu presentation frames, with low-priority background asset integration; retain real scene loader reconciliation and restoration. Test: `P31b_BOOT_FirstRegionWaitsForMenuFramesWithoutFakingResidency`. Before: loader begins IO immediately. The B-FRAME window is unchanged: 07 has no boot exemption.
+
+## Verification
+
+Pending host runs; XML is authoritative. Evidence under artifacts/studio/evidence/P3.1b.
+The existing video (20,223,247 bytes; 636.533 seconds container duration) and keyframes predate these fixes. No recording is redone.
+
+## Requests to other packets
+
+None currently. The shared gameplay UI runtime remains synchronous for its generic callers; Hollowmere supplies its own command callback through the existing BindingHost surface.
+
+## Left open
+
+- The P3.1 note names an xvfb headless rehearsal but commits no distinct frame-time probe executable or command transcript for it. This packet will retain its player, autoplay script, FrameLogRecorder and exact statistics calculation; command/environment differences will be recorded with the new evidence.
+- Budget outcomes are pending measurement. The first ready frame still includes boot; it is not suppressed or relabelled.
