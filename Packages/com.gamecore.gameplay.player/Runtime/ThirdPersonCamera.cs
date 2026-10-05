@@ -105,8 +105,8 @@ namespace GameCore.Gameplay.Player
         public int Present(ICommittedSlotReader slots)
         {
             if (!IsActive || camera == null
-                || !slots.TryRead(player, PlayerSlots.Owner, PlayerSlots.PosX, out int x)
-                || !slots.TryRead(player, PlayerSlots.Owner, PlayerSlots.PosZ, out int z))
+                || !slots.TryRead(player, GameplaySlots.WorldOwner, GameplaySlots.PosX, out int x)
+                || !slots.TryRead(player, GameplaySlots.WorldOwner, GameplaySlots.PosZ, out int z))
             {
                 return 0;
             }

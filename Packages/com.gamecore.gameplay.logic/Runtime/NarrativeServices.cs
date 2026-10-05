@@ -292,7 +292,8 @@ namespace GameCore.Gameplay.Logic
             }
 
             pickups++;
-            int requestId = NarrativeKeys.NameKey("gameplay.pickup." + runtime.Index.WorldId + "." + runtime.Host.World + "." + pickups.ToString(CultureInfo.InvariantCulture));
+            // P1.7a (A6): (issuer, logical step, serial) - never a per-boot counter alone, which a restored world reused.
+            int requestId = runtime.Submitter.NextRequestId();
             CommandAdmissionReceipt receipt = runtime.Submitter.Submit(
                 InventoryIds.PickupRoute,
                 inventory,

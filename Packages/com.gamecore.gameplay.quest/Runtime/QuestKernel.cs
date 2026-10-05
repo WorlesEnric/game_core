@@ -12,9 +12,21 @@
 // exactly one inventory.grant (or narrative.setFact) whose request id derives from the event, so a replayed outbox or a
 // lost acknowledgement never grants twice. The quest stage runs after the world and inventory stages.
 //
-// QuestTracker is the host half: it collects talk and interact signals from the committed events, reads level
-// objectives (collect, reach, fact) from committed state and submits quest.setObjective for every changed objective,
-// and quest.fail when an active quest's fail conditions hold.
+// QuestTracker is the host half: it reads level objectives (collect, reach, fact) from committed state and submits
+// quest.setObjective for every changed objective, and quest.fail when an active quest's fail conditions hold.
+//
+// P1.7a:
+//   * Edge objectives (talk, interact) are no longer collected by the tracker from a host cursor: the narrative delivery
+//     records a quest.setObjective obligation for every edge objective a committed talk/interact signal advances, in the
+//     committing step (A1), so a save taken after that step holds it. quest.setObjective takes an optional request id.
+//   * Every request id is admitted through NarrativeObligations (ring + obligation claim) and an obligation is settled in
+//     the step that commits it.
+//   * Prerequisites: quest.start is refused (Ineligible) while a prerequisite quest is not completed. Fail closes
+//     dependents: a quest.fail that commits also fails, in the same step, every inactive or active quest the failed
+//     quest's dependents name or that lists it as a prerequisite (QuestRules.DependentsOf/CloseDependent). The fields are
+//     QuestModel.Prerequisites/Dependents; the definition fields and the converter that fills them are P1.7b's.
+//   * The tracker's quest.fail is retried every ResubmitFrames while the quest stays active (it was submitted once per
+//     boot before, so a refused fail never retried), with request ids from NarrativeSubmitter.NextRequestId (A6).
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -44,7 +56,7 @@ namespace GameCore.Gameplay.Quest
             var spec = new NarrativePluginSpec(Stem, NarrativeCatalogNames.Quest, QuestIds.Owner)
                 .Route(QuestIds.StartRoute, QuestIds.StartCommand, "start", 1)
                 .Route(QuestIds.AdvanceRoute, QuestIds.AdvanceCommand, "advance", 2)
-                .Route(QuestIds.SetObjectiveRoute, QuestIds.SetObjectiveCommand, "set-objective", 2)
+                .Route(QuestIds.SetObjectiveRoute, QuestIds.SetObjectiveCommand, "set-objective", 2, 1)
                 .Route(QuestIds.FailRoute, QuestIds.FailCommand, "fail", 1)
                 .Route(QuestIds.CompleteRoute, QuestIds.CompleteCommand, "complete", 1)
                 .Slot(QuestIds.Status, 0, "status")
@@ -112,6 +124,12 @@ namespace GameCore.Gameplay.Quest
         public int Malformed { get; private set; }
 
         public int RewardsGranted { get; private set; }
+
+        /// <summary>quest.start commands refused because a prerequisite quest is not completed (P1.7a).</summary>
+        public int PrerequisiteRefusals { get; private set; }
+
+        /// <summary>Dependent quests a fail closed in its step (P1.7a).</summary>
+        public int DependentsClosed { get; private set; }
 
         public void Declare(NarrativeComposition composition)
         {
@@ -213,23 +231,26 @@ namespace GameCore.Gameplay.Quest
             var produced = new List<QuestEvent>();
             int requestId = 0;
             QuestRefusal refusal;
-            if (message.Route.Equals(QuestIds.SetObjectiveRoute))
+            bool setObjective = message.Route.Equals(QuestIds.SetObjectiveRoute);
+            requestId = setObjective ? NarrativeObligations.OptionalRequest(command, 2)
+                : (message.Route.Equals(QuestIds.AdvanceRoute) ? command[1] : command[0]);
+            int[]? ring = RequestRing.IsTracked(requestId) ? NarrativeSlots.ReadRing(rt.Registry, em, target, QuestIds.Owner, QuestIds.Req) : null;
+            if (NarrativeObligations.Admit(rt.Tap, ring, requestId) != DiagnosticCode.None)
+            {
+                Refuse(plane, message, DiagnosticCode.IdempotencyConflict);
+                return;
+            }
+
+            var closed = new List<KeyValuePair<TargetId, QuestState>>();
+            if (setObjective)
             {
                 refusal = QuestRules.SetObjective(quest, state, command[0], command[1], produced);
             }
             else
             {
-                requestId = message.Route.Equals(QuestIds.AdvanceRoute) ? command[1] : command[0];
-                if (RequestRing.IsTracked(requestId)
-                    && RequestRing.Contains(NarrativeSlots.ReadRing(rt.Registry, em, target, QuestIds.Owner, QuestIds.Req), requestId))
-                {
-                    Refuse(plane, message, DiagnosticCode.IdempotencyConflict);
-                    return;
-                }
-
                 if (message.Route.Equals(QuestIds.StartRoute))
                 {
-                    refusal = QuestRules.Start(quest, state, produced);
+                    refusal = QuestRules.Start(quest, state, key => StatusOf(rt, em, key), produced);
                 }
                 else if (message.Route.Equals(QuestIds.AdvanceRoute))
                 {
@@ -252,11 +273,41 @@ namespace GameCore.Gameplay.Quest
 
             if (refusal != QuestRefusal.None)
             {
-                Refuse(plane, message, refusal == QuestRefusal.AlreadyStarted || refusal == QuestRefusal.NotActive ? DiagnosticCode.Ineligible : DiagnosticCode.ResourceUnavailable);
+                if (refusal == QuestRefusal.PrerequisitesUnmet)
+                {
+                    PrerequisiteRefusals++;
+                }
+
+                Refuse(plane, message, refusal == QuestRefusal.AlreadyStarted || refusal == QuestRefusal.NotActive || refusal == QuestRefusal.PrerequisitesUnmet
+                    ? DiagnosticCode.Ineligible : DiagnosticCode.ResourceUnavailable);
                 return;
             }
 
             var events = new StepEventBatch();
+            if (message.Route.Equals(QuestIds.FailRoute))
+            {
+                // Fail closes dependents in the same step (P1.7a).
+                List<int> dependents = QuestRules.DependentsOf(quest, rt.Models.Quests);
+                for (int d = 0; d < dependents.Count; d++)
+                {
+                    TargetId dependentTarget = rt.Index.TargetOf(NarrativeTargetKind.Quest, dependents[d]);
+                    if (dependentTarget.IsDefault || dependentTarget.Equals(target)
+                        || !questsByTarget.TryGetValue(dependentTarget, out QuestModel? dependent) || dependent == null
+                        || !NarrativeSlots.TryEntity(rt.Registry, em, dependentTarget, out Entity _))
+                    {
+                        continue;
+                    }
+
+                    QuestState dependentState = ReadLive(rt, em, dependent, dependentTarget);
+                    var dependentEvents = new List<QuestEvent>();
+                    if (QuestRules.CloseDependent(dependentState, dependentEvents))
+                    {
+                        events.Add(QuestIds.FailedEvent, dependentTarget, dependent.Key, dependentState.Stage, 0, 0, 0, 0);
+                        closed.Add(new KeyValuePair<TargetId, QuestState>(dependentTarget, dependentState));
+                    }
+                }
+            }
+
             int rewards = 0;
             for (int i = 0; i < produced.Count; i++)
             {
@@ -293,16 +344,33 @@ namespace GameCore.Gameplay.Quest
                 events.Add(QuestIds.ObjectiveUpdatedEvent, target, quest.Key, objective, count, done, 0, 0);
             }
 
-            if (!events.CommitAll(plane, message))
+            if (!events.CommitAll(plane, message, rt.Tap))
             {
                 Refuse(plane, message, DiagnosticCode.BudgetExceeded);
                 return;
             }
 
             Write(rt, em, target, quest, state);
+            for (int c = 0; c < closed.Count; c++)
+            {
+                if (questsByTarget.TryGetValue(closed[c].Key, out QuestModel? dependent) && dependent != null)
+                {
+                    Write(rt, em, closed[c].Key, dependent, closed[c].Value);
+                    DependentsClosed++;
+                }
+            }
+
             NarrativeSlots.PushRing(rt.Registry, em, target, QuestIds.Owner, QuestIds.ReqHead, QuestIds.Req, requestId);
+            NarrativeObligations.Settle(rt.Tap, requestId);
             Commands++;
             RewardsGranted += rewards;
+        }
+
+        /// <summary>The live quest.status of a quest key (in-step; an unknown key reads as inactive).</summary>
+        private int StatusOf(NarrativeRuntime rt, EntityManager em, int questKey)
+        {
+            TargetId target = rt.Index.TargetOf(NarrativeTargetKind.Quest, questKey);
+            return target.IsDefault ? QuestRules.Inactive : NarrativeSlots.Read(rt.Registry, em, target, QuestIds.Owner, QuestIds.Status, QuestRules.Inactive);
         }
 
         private static QuestState ReadLive(NarrativeRuntime rt, EntityManager em, QuestModel quest, TargetId target)
@@ -349,8 +417,7 @@ namespace GameCore.Gameplay.Quest
         private readonly List<ObjectiveSignal> signals = new List<ObjectiveSignal>();
         private readonly Dictionary<long, int> lastSubmitted = new Dictionary<long, int>();
         private readonly Dictionary<long, int> lastFrame = new Dictionary<long, int>();
-        private readonly HashSet<int> failSubmitted = new HashSet<int>();
-        private int failSerial;
+        private readonly Dictionary<int, int> failFrame = new Dictionary<int, int>();
 
         public QuestTracker(NarrativeRuntime runtime)
         {
@@ -363,22 +430,12 @@ namespace GameCore.Gameplay.Quest
 
         public int Fails { get; private set; }
 
+        /// <summary>
+        /// Talk and interact signals become quest.setObjective obligations in the committing step (NarrativeDelivery,
+        /// P1.7a); the tracker only follows level objectives and fail conditions.
+        /// </summary>
         public void OnEvent(CommittedEvent committed)
         {
-            SchemaRef schema = committed.Schema;
-            if (schema.Equals(DialogueIds.EndedEvent) && NarrativeEvent.TryDecode(committed.Payload, out NarrativeEvent ended))
-            {
-                Signal(ObjectiveKind.Talk, ended.A);
-            }
-            else if (schema.Equals(LogicDeclarations.InteractionSucceededEvent) && committed.Payload.Length >= 16)
-            {
-                var reader = new GameplayPayloadReader(committed.Payload.Bytes);
-                Signal(ObjectiveKind.Interact, runtime.Index.EntityKeyOf(new TargetId(reader.Id())));
-            }
-            else if (schema.Equals(LogicIds.ActionsRunEvent) && NarrativeEvent.TryDecode(committed.Payload, out NarrativeEvent run) && run.C != 0)
-            {
-                Signal(ObjectiveKind.Interact, run.C);
-            }
         }
 
         public void AfterEvents(int frame)
@@ -394,17 +451,22 @@ namespace GameCore.Gameplay.Quest
                 QuestState state = QuestDeclarations.ReadState(quest, target, runtime.Slots);
                 if (state.Status != QuestRules.Active)
                 {
+                    failFrame.Remove(quest.Key);
                     continue;
                 }
 
-                if (quest.FailConditions != null && !failSubmitted.Contains(quest.Key)
+                if (quest.FailConditions != null
                     && ConditionRules.Evaluate(quest.FailConditions, runtime.State, runtime.Models, new ConditionContext(runtime.ActorKey, 0)).Passed)
                 {
-                    failSerial++;
-                    failSubmitted.Add(quest.Key);
-                    runtime.Submitter.Submit(QuestIds.FailRoute, target, QuestIds.FailCommand,
-                        NarrativeCommands.QuestFail(NarrativeKeys.NameKey("gameplay.quest-fail." + quest.Key + "." + failSerial)));
-                    Fails++;
+                    // Submitted again every ResubmitFrames while the quest stays active (a refused fail retries, P1.7a).
+                    if (!failFrame.TryGetValue(quest.Key, out int when) || frame - when >= ResubmitFrames)
+                    {
+                        failFrame[quest.Key] = frame;
+                        runtime.Submitter.Submit(QuestIds.FailRoute, target, QuestIds.FailCommand,
+                            NarrativeCommands.QuestFail(runtime.Submitter.NextRequestId()));
+                        Fails++;
+                    }
+
                     continue;
                 }
 
@@ -413,8 +475,12 @@ namespace GameCore.Gameplay.Quest
                 {
                     ObjectiveUpdate update = updates[i];
                     long slot = ((long)quest.Key << 32) | (uint)update.Objective;
-                    bool edge = !quest.Objectives[update.Objective].IsLevel;
-                    if (!edge && lastSubmitted.TryGetValue(slot, out int earlier) && earlier == update.Count
+                    if (!quest.Objectives[update.Objective].IsLevel)
+                    {
+                        continue;
+                    }
+
+                    if (lastSubmitted.TryGetValue(slot, out int earlier) && earlier == update.Count
                         && lastFrame.TryGetValue(slot, out int when) && frame - when < ResubmitFrames)
                     {
                         continue;
@@ -431,14 +497,8 @@ namespace GameCore.Gameplay.Quest
             signals.Clear();
         }
 
-        private void Signal(ObjectiveKind kind, int key)
-        {
-            if (key != 0)
-            {
-                signals.Add(new ObjectiveSignal(kind, key));
-                Signals++;
-            }
-        }
+        /// <summary>Edge-objective signals recorded by the narrative delivery in-step (P1.7a).</summary>
+        public int EdgeSignals => runtime.Delivery.Signals;
     }
 
     /// <summary>The quest command stage.</summary>

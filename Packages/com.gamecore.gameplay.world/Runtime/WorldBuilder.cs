@@ -369,6 +369,10 @@ namespace GameCore.Gameplay.World
                 TargetId target = AuthoringIds.TargetIdFor(region.authoringId);
                 Seed(root, target, GameplaySlots.WorldOwner, GameplaySlots.Residency, (int)RegionResidency.Unloaded);
                 Seed(root, target, GameplaySlots.WorldOwner, GameplaySlots.Visits, 0);
+                if (target.Equals(worldModule.AnchorTarget))
+                {
+                    Seed(root, target, GameplaySlots.WorldOwner, GameplaySlots.SpawnOrdinal, 0);
+                }
             }
 
             for (int i = 0; i < manifest.Entities.Count; i++)
@@ -398,6 +402,13 @@ namespace GameCore.Gameplay.World
             entitySystem.Module = entityModule;
             worldSystem.Module = worldModule;
             var world = new GameplayWorld(root, plan, entityModule, worldModule);
+            if (!seedSlots)
+            {
+                // A restored root: its runtime-spawned targets are live kernel targets again; give them back their module
+                // records and view specs (P1.7a, A2).
+                world.RestoreRuntimeEntities();
+            }
+
             for (int i = 0; i < plan.Extensions.Count; i++)
             {
                 plan.Extensions[i].Attach(world, seedSlots);
@@ -423,6 +434,10 @@ namespace GameCore.Gameplay.World
             Seed(root, target, GameplaySlots.WorldOwner, GameplaySlots.PosZ, z);
             Seed(root, target, GameplaySlots.WorldOwner, GameplaySlots.Yaw, yaw);
         }
+
+        /// <summary>Seeds (or replaces) one live slot outside a step (spawn bookkeeping, attach seeding).</summary>
+        internal static void SeedSlot(GameApplicationRoot root, TargetId target, OwnerId owner, SlotId slot, int value) =>
+            Seed(root, target, owner, slot, value);
 
         private static void Seed(GameApplicationRoot root, TargetId target, OwnerId owner, SlotId slot, int value)
         {

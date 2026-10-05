@@ -7,13 +7,28 @@
 // copy of the command, which records no second ledger row) and RegionEntered (the command's own committed result).
 // world.setResidency is host-only: the system refuses it unless the request's issuer is the application root's issuer,
 // so only the region streamer, which owns scene loading, can move the residency state machine.
+//
+// P1.7a:
+//   * world.posX/Y/Z/yaw is the authoritative pose of every entity (A4); world.place is accepted only from the host
+//     issuer (the application root) or the Studio issuer, and a place on the player or an NPC is adopted by their
+//     kernels (they read world.pos for every decision).
+//   * A portal may carry a condition reference (ManifestPortal.conditionRef, P1.7b's PortalDefinition field once it
+//     lands): travel through it is evaluated through the world's IConditionEvaluator and refused with a stable GP-WLD
+//     code unless the verdict is True.
+//   * Every refusal records an explain entry (the stable code, the subject and why) in the module's explain ring.
+//   * world.travel accepts an optional trailing request id (12-byte payload). A negative id is an outbox obligation's
+//     (the narrative "world-travel" port): it is claimed through the world's step tap and applied at most once.
+//   * Committed RegionEntered events are handed to the step tap, so rule triggers on them become outbox obligations in
+//     the same step.
 #nullable enable
 using System;
 using System.Collections.Generic;
 using GameCore.Contracts;
 using GameCore.Execution.Messages;
 using GameCore.Gameplay.Contracts;
+using GameCore.Gameplay.Contracts.Narrative;
 using GameCore.Gameplay.Entities;
+using GameCore.Rules.Gameplay.Logic;
 using GameCore.Rules.Gameplay.World;
 using GameCore.Unity.Runtime;
 using GameCore.Unity.Runtime.Messages;
@@ -21,23 +36,40 @@ using Unity.Entities;
 
 namespace GameCore.Gameplay.World
 {
-    /// <summary>world.travel payload: destination region key and portal key (zero = any connecting portal).</summary>
+    /// <summary>
+    /// world.travel payload: destination region key and portal key (zero = any connecting portal), optionally followed by
+    /// a request id (<see cref="LengthWithRequest"/> bytes; P1.7a).
+    /// </summary>
     public readonly struct TravelPayload
     {
         public const int Length = 8;
 
+        public const int LengthWithRequest = 12;
+
         public TravelPayload(int destination, int portal)
+            : this(destination, portal, 0)
+        {
+        }
+
+        public TravelPayload(int destination, int portal, int requestId)
         {
             Destination = destination;
             Portal = portal;
+            RequestId = requestId;
         }
 
         public int Destination { get; }
 
         public int Portal { get; }
 
+        /// <summary>0 when the command carries none; negative for an outbox obligation's id.</summary>
+        public int RequestId { get; }
+
         public static FrozenPayload Encode(int destination, int portal) =>
             new GameplayPayloadWriter().Int32(destination).Int32(portal).Freeze();
+
+        public static FrozenPayload Encode(int destination, int portal, int requestId) =>
+            new GameplayPayloadWriter().Int32(destination).Int32(portal).Int32(requestId).Freeze();
     }
 
     /// <summary>world.setResidency payload: the next residency value.</summary>
@@ -87,9 +119,14 @@ namespace GameCore.Gameplay.World
         public TravelPayload Read(IReadOnlyList<byte> payload)
         {
             var reader = new GameplayPayloadReader(payload);
+            if (reader.HasLength(TravelPayload.LengthWithRequest))
+            {
+                return new TravelPayload(reader.Int32(), reader.Int32(), reader.Int32());
+            }
+
             if (!reader.HasLength(TravelPayload.Length))
             {
-                throw new FormatException("a travel command is exactly " + TravelPayload.Length + " bytes");
+                throw new FormatException("a travel command is " + TravelPayload.Length + " or " + TravelPayload.LengthWithRequest + " bytes");
             }
 
             return new TravelPayload(reader.Int32(), reader.Int32());
@@ -247,9 +284,13 @@ namespace GameCore.Gameplay.World
             RegionB = keyB;
             ArrivalA = new[] { portal.arrivalAX, portal.arrivalAY, portal.arrivalAZ, portal.arrivalAYaw };
             ArrivalB = new[] { portal.arrivalBX, portal.arrivalBY, portal.arrivalBZ, portal.arrivalBYaw };
+            ConditionRef = portal.conditionRef ?? string.Empty;
         }
 
         public string AuthoringId { get; }
+
+        /// <summary>The portal's travel condition (empty = always allowed; P1.7a).</summary>
+        public string ConditionRef { get; }
 
         public int Key { get; }
 
@@ -270,8 +311,14 @@ namespace GameCore.Gameplay.World
     }
 
     /// <summary>The world plugin's state of one world. Instance state only.</summary>
-    public sealed class WorldModule
+    public sealed class WorldModule : IGameplayStepTapHost
     {
+        /// <summary>Refusal explain records the module keeps (newest first through <see cref="RecentRefusals"/>).</summary>
+        public const int ExplainCapacity = 64;
+
+        private readonly BoundedRing<ExplainRecord> explain = new BoundedRing<ExplainRecord>(ExplainCapacity);
+        private readonly Dictionary<TargetId, int> entityKeys = new Dictionary<TargetId, int>();
+        private readonly Dictionary<TargetId, string> entityIds = new Dictionary<TargetId, string>();
         private readonly Dictionary<int, RegionRecord> regionsByKey = new Dictionary<int, RegionRecord>();
         private readonly Dictionary<string, RegionRecord> regionsById = new Dictionary<string, RegionRecord>(StringComparer.Ordinal);
         private readonly Dictionary<int, PortalRecord> portals = new Dictionary<int, PortalRecord>();
@@ -286,6 +333,29 @@ namespace GameCore.Gameplay.World
             if (manifest == null)
             {
                 throw new ArgumentNullException(nameof(manifest));
+            }
+
+            WorldId = manifest.WorldId;
+            StudioIssuer = StudioIssuerOf(manifest.WorldId);
+            for (int i = 0; i < manifest.Entities.Count; i++)
+            {
+                TargetId target = AuthoringIds.TargetIdFor(manifest.Entities[i].authoringId);
+                entityKeys[target] = AuthoringIds.StableKey(manifest.Entities[i].authoringId);
+                entityIds[target] = manifest.Entities[i].authoringId;
+            }
+
+            if (manifest.Regions.Count > 0)
+            {
+                string anchor = manifest.Regions[0].authoringId;
+                for (int i = 1; i < manifest.Regions.Count; i++)
+                {
+                    if (string.CompareOrdinal(manifest.Regions[i].authoringId, anchor) < 0)
+                    {
+                        anchor = manifest.Regions[i].authoringId;
+                    }
+                }
+
+                AnchorTarget = AuthoringIds.TargetIdFor(anchor);
             }
 
             var keys = new List<int>();
@@ -331,6 +401,30 @@ namespace GameCore.Gameplay.World
         /// <summary>The application root's issuer: the only issuer world.setResidency accepts.</summary>
         public Id128 HostIssuer { get; }
 
+        /// <summary>The world's authoring id.</summary>
+        public string WorldId { get; }
+
+        /// <summary>Studio's issuer of this world: world.place accepts it beside the host issuer (P1.7a).</summary>
+        public Id128 StudioIssuer { get; }
+
+        /// <summary>The world's anchor region target (first region in ordinal authoring-id order): holds world.spawnOrdinal.</summary>
+        public TargetId AnchorTarget { get; }
+
+        /// <summary>The world's in-step outbox seam (the narrative delivery sets it); null without one.</summary>
+        public IGameplayStepTap? StepTap { get; set; }
+
+        /// <summary>Evaluates portal conditions (P1.4's evaluator in a narrative world); null = no evaluator (Unknown).</summary>
+        public IConditionEvaluator? Conditions { get; set; }
+
+        /// <summary>The committed-slot reader conditions read through (set by the gameplay world on attach).</summary>
+        public ICommittedSlotReader? Slots { get; set; }
+
+        /// <summary>The stable code of the last refusal (empty before any).</summary>
+        public string LastRefusalCode { get; private set; } = string.Empty;
+
+        /// <summary>The Studio issuer of a world authoring id.</summary>
+        public static Id128 StudioIssuerOf(string worldId) => GameplayIssuers.Studio(worldId);
+
         public RegionGraph Graph { get; }
 
         /// <summary>Regions in canonical (ordinal authoring id) order.</summary>
@@ -355,6 +449,53 @@ namespace GameCore.Gameplay.World
         internal void CountTravel() => Travels++;
 
         internal void CountRefused() => Refused++;
+
+        /// <summary>Up to <paramref name="max"/> refusal explain records, newest first.</summary>
+        public IReadOnlyList<ExplainRecord> RecentRefusals(int max) => explain.Recent(max);
+
+        /// <summary>The stable key of a placed entity's target (0 for a target the manifest does not place).</summary>
+        public int EntityKeyOf(TargetId target) => entityKeys.TryGetValue(target, out int key) ? key : 0;
+
+        /// <summary>The authoring id of a placed entity's target (empty for a runtime target).</summary>
+        public string EntityIdOf(TargetId target) => entityIds.TryGetValue(target, out string? id) ? id : string.Empty;
+
+        /// <summary>True when world.place accepts <paramref name="issuer"/> (the host or Studio).</summary>
+        public bool MayPlace(Id128 issuer) => issuer.Equals(HostIssuer) || issuer.Equals(StudioIssuer);
+
+        /// <summary>The verdict of a portal's condition for a traveller (True for a portal without one).</summary>
+        public ConditionVerdict EvaluatePortal(PortalRecord portal, TargetId traveller)
+        {
+            if (portal == null || string.IsNullOrEmpty(portal.ConditionRef))
+            {
+                return ConditionVerdict.True;
+            }
+
+            IConditionEvaluator? evaluator = Conditions;
+            if (evaluator == null)
+            {
+                return ConditionVerdict.Unknown;
+            }
+
+            return evaluator.Evaluate(portal.ConditionRef, new InteractionContext(portal.AuthoringId, portal.Key, EntityKeyOf(traveller), 0, Slots ?? NullSlots.Instance));
+        }
+
+        internal void Explain(StepMessage message, string route, string subject, string code, string detail)
+        {
+            LastRefusalCode = code;
+            explain.Add(new ExplainRecord(subject, route, (long)message.Step.Value, false, code, -1, detail, Array.Empty<string>()));
+        }
+
+        /// <summary>A reader that holds nothing (conditions asked before the world attached its reader).</summary>
+        private sealed class NullSlots : ICommittedSlotReader
+        {
+            public static readonly NullSlots Instance = new NullSlots();
+
+            public bool TryRead(TargetId target, OwnerId owner, SlotId slot, out int value)
+            {
+                value = 0;
+                return false;
+            }
+        }
 
         internal void CountResidency() => ResidencyChanges++;
 
@@ -422,20 +563,31 @@ namespace GameCore.Gameplay.World
             if (plane.Readers.TryRead<TravelPayload>(message.PayloadSchema, payload, out TravelPayload travel, out string _)
                 != PayloadDecodeOutcome.Decoded)
             {
-                Refuse(module, plane, message, DiagnosticCode.UnsupportedVersion);
+                Refuse(module, plane, message, DiagnosticCode.UnsupportedVersion, "world.travel", WorldRefusalCodes.MalformedCommand, "malformed travel payload");
+                return;
+            }
+
+            string subject = module.EntityIdOf(message.Target);
+            if (GameplayObligations.Claim(module.StepTap, travel.RequestId) == ObligationClaim.AlreadyApplied)
+            {
+                Refuse(module, plane, message, DiagnosticCode.IdempotencyConflict, "world.travel", WorldRefusalCodes.TravelAlreadyApplied,
+                    "the travel obligation was already applied");
                 return;
             }
 
             if (!module.Registry.TryResolveTarget(message.Target, out TargetHandle _, out Entity traveller)
                 || !SlotState.TryRead(entityManager, traveller, GameplaySlots.WorldOwner, GameplaySlots.Region, out int from))
             {
-                Refuse(module, plane, message, DiagnosticCode.StaleHandle);
+                Refuse(module, plane, message, DiagnosticCode.StaleHandle, "world.travel", WorldRefusalCodes.TravelStaleTraveller,
+                    "the traveller is not a live target with a region");
                 return;
             }
 
-            if (TravelRules.Validate(module.Graph, from, travel.Destination, travel.Portal) != TravelRefusal.None)
+            TravelRefusal validation = TravelRules.Validate(module.Graph, from, travel.Destination, travel.Portal);
+            if (validation != TravelRefusal.None)
             {
-                Refuse(module, plane, message, DiagnosticCode.Ineligible);
+                Refuse(module, plane, message, DiagnosticCode.Ineligible, "world.travel", WorldRefusalCodes.OfTravel(validation),
+                    "travel from region " + from + " to " + travel.Destination + " refused: " + validation);
                 return;
             }
 
@@ -449,7 +601,18 @@ namespace GameCore.Gameplay.World
                 || !module.TryRegion(travel.Destination, out RegionRecord? destination) || destination == null
                 || !module.Registry.TryResolveTarget(destination.Target, out TargetHandle _, out Entity regionEntity))
             {
-                Refuse(module, plane, message, DiagnosticCode.MissingDependency);
+                Refuse(module, plane, message, DiagnosticCode.MissingDependency, "world.travel", WorldRefusalCodes.TravelMissingPortal,
+                    "portal " + portalKey + " or region " + travel.Destination + " is missing");
+                return;
+            }
+
+            ConditionVerdict verdict = module.EvaluatePortal(portal, message.Target);
+            if (verdict != ConditionVerdict.True)
+            {
+                bool unknown = verdict == ConditionVerdict.Unknown;
+                Refuse(module, plane, message, DiagnosticCode.Ineligible, "world.travel",
+                    unknown ? WorldRefusalCodes.TravelConditionUnknown : WorldRefusalCodes.TravelConditionFailed,
+                    "portal " + portal.AuthoringId + " condition '" + portal.ConditionRef + "' is " + (unknown ? "unknown" : "false"));
                 return;
             }
 
@@ -466,19 +629,23 @@ namespace GameCore.Gameplay.World
                 message.Producer,
                 0,
                 0);
-            if (!plane.Commit(left, WorldDeclarations.RegionLeftEvent,
-                    WorldEvent.Encode(message.Target, from, travel.Destination, portalKey, 0), plane.ExecutingStep, out string _))
+            FrozenPayload leftEvent = WorldEvent.Encode(message.Target, from, travel.Destination, portalKey, 0);
+            if (!plane.Commit(left, WorldDeclarations.RegionLeftEvent, leftEvent, plane.ExecutingStep, out string _))
             {
-                Refuse(module, plane, message, DiagnosticCode.BudgetExceeded);
+                Refuse(module, plane, message, DiagnosticCode.BudgetExceeded, "world.travel", WorldRefusalCodes.MalformedCommand, "the step's event budget is spent");
                 return;
             }
 
-            if (!plane.Commit(message, WorldDeclarations.RegionEnteredEvent,
-                    WorldEvent.Encode(message.Target, from, travel.Destination, portalKey, 0), plane.ExecutingStep, out string _))
+            module.StepTap?.OnCommitted(WorldDeclarations.RegionLeftEvent, leftEvent, message.Request);
+            FrozenPayload enteredEvent = WorldEvent.Encode(message.Target, from, travel.Destination, portalKey, 0);
+            if (!plane.Commit(message, WorldDeclarations.RegionEnteredEvent, enteredEvent, plane.ExecutingStep, out string _))
             {
-                Refuse(module, plane, message, DiagnosticCode.BudgetExceeded);
+                Refuse(module, plane, message, DiagnosticCode.BudgetExceeded, "world.travel", WorldRefusalCodes.MalformedCommand, "the step's event budget is spent");
                 return;
             }
+
+            module.StepTap?.OnCommitted(WorldDeclarations.RegionEnteredEvent, enteredEvent, message.Request);
+            GameplayObligations.Settle(module.StepTap, travel.RequestId);
 
             int[] arrival = portal.ArrivalInto(travel.Destination);
             SlotState.Write(entityManager, traveller, GameplaySlots.WorldOwner, GameplaySlots.Region, travel.Destination);
@@ -492,7 +659,8 @@ namespace GameCore.Gameplay.World
         {
             if (!message.Request.IssuerId.Equals(module.HostIssuer))
             {
-                Refuse(module, plane, message, DiagnosticCode.Ineligible);
+                Refuse(module, plane, message, DiagnosticCode.Ineligible, "world.setResidency", GameplayDiagnosticCodes.ResidencyNotHost,
+                    "world.setResidency is accepted from the host issuer only");
                 return;
             }
 
@@ -513,7 +681,8 @@ namespace GameCore.Gameplay.World
             int current = SlotState.ReadOrDefault(entityManager, region, GameplaySlots.WorldOwner, GameplaySlots.Residency, Residency.Unloaded);
             if (ResidencyRules.Check(current, residency.Value) != ResidencyRefusal.None)
             {
-                Refuse(module, plane, message, DiagnosticCode.Ineligible);
+                Refuse(module, plane, message, DiagnosticCode.Ineligible, "world.setResidency", GameplayDiagnosticCodes.ResidencyIllegalTransition,
+                    "residency " + Residency.Name(current) + " -> " + Residency.Name(residency.Value) + " is not a legal transition");
                 return;
             }
 
@@ -530,6 +699,13 @@ namespace GameCore.Gameplay.World
 
         private static void Place(WorldModule module, WorldMessagePlane plane, EntityManager entityManager, StepMessage message)
         {
+            if (!module.MayPlace(message.Request.IssuerId))
+            {
+                Refuse(module, plane, message, DiagnosticCode.Ineligible, "world.place", WorldRefusalCodes.PlaceNotAllowed,
+                    "world.place is accepted from the host or Studio issuer only");
+                return;
+            }
+
             byte[] payload = plane.PayloadOf(message);
             if (plane.Readers.TryRead<PlacePayload>(message.PayloadSchema, payload, out PlacePayload place, out string _)
                 != PayloadDecodeOutcome.Decoded)
@@ -541,7 +717,8 @@ namespace GameCore.Gameplay.World
             if (!module.Registry.TryResolveTarget(message.Target, out TargetHandle _, out Entity entity)
                 || !SlotState.TryRead(entityManager, entity, GameplaySlots.WorldOwner, GameplaySlots.Region, out int _))
             {
-                Refuse(module, plane, message, DiagnosticCode.StaleHandle);
+                Refuse(module, plane, message, DiagnosticCode.StaleHandle, "world.place", WorldRefusalCodes.PlaceStaleTarget,
+                    "the target is not a live target with a region");
                 return;
             }
 
@@ -558,7 +735,14 @@ namespace GameCore.Gameplay.World
 
         private static void Refuse(WorldModule module, WorldMessagePlane plane, StepMessage message, DiagnosticCode code)
         {
+            Refuse(module, plane, message, code, "world", code == DiagnosticCode.StaleHandle ? WorldRefusalCodes.PlaceStaleTarget : WorldRefusalCodes.MalformedCommand,
+                "refused: " + code);
+        }
+
+        private static void Refuse(WorldModule module, WorldMessagePlane plane, StepMessage message, DiagnosticCode code, string route, string stable, string detail)
+        {
             module.CountRefused();
+            module.Explain(message, route, module.EntityIdOf(message.Target), stable, detail);
             plane.Reject(message, code, plane.ExecutingStep);
         }
     }

@@ -15,6 +15,14 @@
 // Everything is sorted by authoring id, every id is GUID-derived and every text file is LF/UTF-8 without BOM, so two
 // bakes of the same content are byte-identical. Verify recomputes everything in memory and compares it with the files
 // on disk byte for byte (and the manifest by its recorded bake-report hash) without writing anything.
+//
+// P1.7a hardening (A8, A10):
+//   - the planning step (Compute, shared by Bake and Verify) never mints an authoring id, never calls SetDirty and never
+//     saves: every definition is checked by DefinitionCanonicalizer.Validate first, and an un-minted or malformed id,
+//     or a reference that is neither a saved asset nor an authored object, refuses the bake with a GP-ID-* diagnostic;
+//   - each baked definition carries its structural hash; the recipe revision (manifest, catalog recipe implementation
+//     id, bake report) derives from it, so a cosmetic or tuning edit keeps the revision;
+//   - BakeResult.ChangedFiles is sorted ordinal and holds each path once.
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -237,6 +245,7 @@ namespace GameCore.Gameplay.Compile
             }
 
             BakeStaleMarker.Clear();
+            SortChangedFiles(result);
             result.ElapsedMilliseconds = clock.ElapsedMilliseconds;
             return result;
         }
@@ -272,6 +281,7 @@ namespace GameCore.Gameplay.Compile
                 result.ChangedFiles.Add(mismatches[i].SubjectId);
             }
 
+            SortChangedFiles(result);
             result.ElapsedMilliseconds = clock.ElapsedMilliseconds;
             return result;
         }
@@ -322,6 +332,7 @@ namespace GameCore.Gameplay.Compile
 
             WorldReadResult read = WorldReader.Read(world);
             var diagnostics = new List<GameplayDiagnostic>(read.Diagnostics);
+            StampStructure(read, diagnostics);
             diagnostics.AddRange(BakeValidator.Validate(read.World));
             GameplayBakeContext extensions = GameplayBakeExtensions.Plan(world, paths, read.World);
             diagnostics.AddRange(extensions.Diagnostics);
@@ -343,6 +354,34 @@ namespace GameCore.Gameplay.Compile
             string fingerprint = CatalogGenerator.ExtractStringConstant(code, "CatalogFingerprint") ?? string.Empty;
             string report = BakeReportWriter.Write(read.World, fingerprint);
             return new Outputs(read, description, code, fingerprint, report, paths.Naming.Namespace + "." + paths.Naming.ClassName, extensions);
+        }
+
+        /// <summary>
+        /// Validates every read definition (A10: no minting, no unsaved references) and records its structural hash (A8) on
+        /// the bake model, in authoring-id order so the diagnostics are deterministic.
+        /// </summary>
+        private static void StampStructure(WorldReadResult read, List<GameplayDiagnostic> diagnostics)
+        {
+            var ids = new List<string>(read.Definitions.Keys);
+            ids.Sort(string.CompareOrdinal);
+            for (int i = 0; i < ids.Count; i++)
+            {
+                EntityDefinition asset = read.Definitions[ids[i]];
+                IReadOnlyList<GameplayDiagnostic> problems = DefinitionCanonicalizer.Validate(asset);
+                diagnostics.AddRange(problems);
+                BakedDefinition? baked = read.World.FindDefinition(ids[i]);
+                if (baked != null && problems.Count == 0)
+                {
+                    baked.StructuralHash = DefinitionCanonicalizer.StructuralStamp(asset);
+                }
+            }
+        }
+
+        private static void SortChangedFiles(BakeResult result)
+        {
+            var unique = new SortedSet<string>(result.ChangedFiles, StringComparer.Ordinal);
+            result.ChangedFiles.Clear();
+            result.ChangedFiles.AddRange(unique);
         }
 
         private static bool WriteManifest(string path, Outputs outputs)
@@ -398,6 +437,7 @@ namespace GameCore.Gameplay.Compile
                     name = definition.Name,
                     definition = asset,
                     contentStamp = definition.ContentHash,
+                    structuralStamp = definition.RecipeHash,
                     variantCount = definition.VariantCount,
                 });
             }

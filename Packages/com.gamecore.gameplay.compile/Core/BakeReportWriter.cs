@@ -44,7 +44,8 @@ namespace GameCore.Gameplay.Compile
                 json.String("id", definition.AuthoringId);
                 json.String("name", definition.Name);
                 json.String("contentHash", definition.ContentHash);
-                json.Number("revision", definition.ContentHash.Length >= 16 ? DefinitionHashing.RevisionOf(definition.ContentHash) : 0UL);
+                json.String("structuralHash", definition.RecipeHash);
+                json.Number("revision", definition.RecipeHash.Length >= 16 ? DefinitionHashing.RevisionOf(definition.RecipeHash) : 0UL);
                 json.Number("variantCount", definition.VariantCount);
                 Strings(json, "variants", definition.VariantIds);
                 var fields = new List<string>(definition.OverridableFields);

@@ -76,6 +76,22 @@ namespace GameCore.Unity.App
         /// <summary>The definition <see cref="Register"/> installed for the player path, or null.</summary>
         public static GameApplicationDefinition? Registered => registered;
 
+        /// <summary>
+        /// P1.7a (A11): with domain reload disabled (Enter Play Mode options) statics survive from one play session to the
+        /// next, so a stale <see cref="Current"/> root, failure, counters and BootFailed subscribers would leak into the
+        /// new session. They are reset at SubsystemRegistration. The registration itself is not: a game registers from
+        /// its own SubsystemRegistration method, and Unity does not order those calls, so clearing it here could undo it.
+        /// </summary>
+        [UnityEngine.RuntimeInitializeOnLoadMethod(UnityEngine.RuntimeInitializeLoadType.SubsystemRegistration)]
+        internal static void ResetSessionStatics()
+        {
+            Current = null;
+            LastFailure = null;
+            BootCount = 0;
+            FailureCount = 0;
+            BootFailed = null;
+        }
+
         /// <summary>Boots <paramref name="definition"/> with the production options; throws on failure.</summary>
         public static GameApplicationRoot Boot(GameApplicationDefinition definition) =>
             Boot(definition, GameApplicationBootOptions.Default);

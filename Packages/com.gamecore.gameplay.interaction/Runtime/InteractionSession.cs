@@ -7,11 +7,13 @@
 //                          runs the definition's action ref through IActionRunner and sends a cue through IFeedbackSink;
 //                          a committed InteractionRefused sends a refusal cue; a committed first trigger entry runs the
 //                          trigger's action ref.
-//   ProximityInteractor    judges trigger volumes from committed positions (the focus actor's pose against each
-//                          trigger's committed placement and size) and submits interact.trigger on enter / exit.
+//   ProximityInteractor    judges trigger volumes from committed positions (the focus actor's world.pos against each
+//                          trigger's committed placement and size) and submits interact.trigger on enter / exit; whether
+//                          the actor is inside is its committed bit in the trigger's interact.occupants mask (P1.7a).
 // After the pump (binders):
 //   InteractableBinder     gives each interactable view a collider (when it has none) and its per-state look
 //                          (doors/gates swing open and stop colliding, switches tint on); headless it touches nothing.
+//                          It is residency-aware: interactables whose committed region is not Resident are skipped.
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -164,8 +166,9 @@ namespace GameCore.Gameplay.Interaction
                     {
                         Succeeded++;
                         var context = new InteractionContext(record.AuthoringId, record.Key, e.A, e.B, world.Slots);
-                        if (!string.IsNullOrEmpty(record.ActionRef))
+                        if (!string.IsNullOrEmpty(record.ActionRef) && world.StepTap == null)
                         {
+                            // With a step tap the action became an outbox obligation in the committing step (P1.7a, A1).
                             Actions.Run(record.ActionRef, context);
                         }
 
@@ -183,7 +186,7 @@ namespace GameCore.Gameplay.Interaction
                 }
                 else if (committed.Schema.Equals(InteractionSlots.TriggerEnteredEvent))
                 {
-                    if (e.C != 0 && module.TryGet(e.Target, out InteractableRecord? record) && record != null && !string.IsNullOrEmpty(record.ActionRef))
+                    if (e.C != 0 && world.StepTap == null && module.TryGet(e.Target, out InteractableRecord? record) && record != null && !string.IsNullOrEmpty(record.ActionRef))
                     {
                         Actions.Run(record.ActionRef, new InteractionContext(record.AuthoringId, record.Key, e.A, e.B, world.Slots));
                     }
@@ -261,12 +264,21 @@ namespace GameCore.Gameplay.Interaction
         }
     }
 
-    /// <summary>Submits interact.trigger when the focus actor's committed pose enters or leaves a trigger volume.</summary>
+    /// <summary>
+    /// Submits interact.trigger when the focus actor's committed pose (world.pos) enters or leaves a trigger volume.
+    /// "Inside" is the actor's committed bit in the trigger's interact.occupants mask, so a restore or a refused command
+    /// never leaves this interactor out of step with the kernel. After a submit the trigger is left alone until the bit
+    /// agrees, or for <see cref="ResubmitFrames"/> frames, after which the same transit is submitted again.
+    /// </summary>
     public sealed class ProximityInteractor : IGameplayInputSource
     {
-        private readonly HashSet<TargetId> inside = new HashSet<TargetId>();
+        /// <summary>Frames to wait for a submitted transit to commit before submitting it again.</summary>
+        public const int ResubmitFrames = 30;
+
+        private readonly Dictionary<TargetId, PendingTransit> pending = new Dictionary<TargetId, PendingTransit>();
         private readonly InteractionWorldExtension extension;
         private readonly InteractionCommands commands;
+        private int frame;
 
         public ProximityInteractor(InteractionWorldExtension extension, InteractionCommands commands, TargetId actor)
         {
@@ -278,22 +290,25 @@ namespace GameCore.Gameplay.Interaction
 
         public TargetId Actor { get; }
 
-        /// <summary>The actor's stable key carried in trigger events.</summary>
+        /// <summary>The actor's stable key carried in trigger events; 0 means "no actor" and nothing is submitted.</summary>
         public int ActorKey { get; set; }
 
         public int Transits { get; private set; }
 
+        /// <summary>Transits submitted again because the committed bit still disagreed after <see cref="ResubmitFrames"/>.</summary>
+        public int Resubmits { get; private set; }
+
         public int Collect(GameplayWorld world)
         {
-            if (extension.Module == null || !InteractionModule.TryActorPosition(world.Slots, Actor, out int x, out int z))
+            frame++;
+            int bit = OccupancyRules.BitOf(ActorKey);
+            if (bit == 0 || extension.Module == null || !InteractionModule.TryActorPosition(world.Slots, Actor, out int x, out int z))
             {
                 return 0;
             }
 
-            int y = world.Slots.TryRead(Actor, PlayerSlots.Owner, PlayerSlots.PosY, out int py) ? py
-                : world.Slots.ReadOrDefault(Actor, GameplaySlots.WorldOwner, GameplaySlots.PosY, 0);
-            int region = world.Slots.TryRead(Actor, PlayerSlots.Owner, PlayerSlots.RegionKey, out int pr) ? pr
-                : world.Slots.ReadOrDefault(Actor, GameplaySlots.WorldOwner, GameplaySlots.Region, 0);
+            int y = world.Slots.ReadOrDefault(Actor, GameplaySlots.WorldOwner, GameplaySlots.PosY, 0);
+            int region = world.Slots.ReadOrDefault(Actor, GameplaySlots.WorldOwner, GameplaySlots.Region, 0);
             int submitted = 0;
             IReadOnlyList<InteractableRecord> records = extension.Module.Records;
             for (int i = 0; i < records.Count; i++)
@@ -306,38 +321,60 @@ namespace GameCore.Gameplay.Interaction
 
                 bool sameRegion = world.Slots.ReadOrDefault(record.Target, GameplaySlots.WorldOwner, GameplaySlots.Region, 0) == region;
                 bool now = sameRegion && volume.Contains(x, y, z);
-                bool was = inside.Contains(record.Target);
+                int occupants = world.Slots.ReadOrDefault(record.Target, InteractionSlots.Owner, InteractionSlots.Occupants, 0);
+                bool was = (occupants & bit) != 0;
                 if (now == was)
                 {
+                    pending.Remove(record.Target);
                     continue;
+                }
+
+                bool resubmit = false;
+                if (pending.TryGetValue(record.Target, out PendingTransit last) && last.Entered == now)
+                {
+                    if (frame - last.Frame < ResubmitFrames)
+                    {
+                        continue;
+                    }
+
+                    resubmit = true;
                 }
 
                 if (commands.Trigger(record.Target, ActorKey, now).Admitted)
                 {
-                    if (now)
-                    {
-                        inside.Add(record.Target);
-                    }
-                    else
-                    {
-                        inside.Remove(record.Target);
-                    }
-
+                    pending[record.Target] = new PendingTransit(frame, now);
                     Transits++;
+                    Resubmits += resubmit ? 1 : 0;
                     submitted++;
                 }
             }
 
             return submitted;
         }
+
+        private readonly struct PendingTransit
+        {
+            public PendingTransit(int frame, bool entered)
+            {
+                Frame = frame;
+                Entered = entered;
+            }
+
+            public int Frame { get; }
+
+            public bool Entered { get; }
+        }
     }
 
     /// <summary>Per-state look of interactable views; adds a collider to views that have none.</summary>
-    public sealed class InteractableBinder : IPresentationBinder
+    public sealed class InteractableBinder : IPresentationBinder, IResidencyAware
     {
         private readonly PrefabViewBinder views;
         private readonly InteractionWorldExtension extension;
+        private readonly RegionResidencySet residency = new RegionResidencySet();
         private readonly Dictionary<TargetId, int> presented = new Dictionary<TargetId, int>();
+        private readonly Dictionary<TargetId, string> presentedRegions = new Dictionary<TargetId, string>();
+        private readonly List<TargetId> evicted = new List<TargetId>();
         private readonly MaterialPropertyBlock block = new MaterialPropertyBlock();
 
         public InteractableBinder(PrefabViewBinder views, InteractionWorldExtension extension)
@@ -349,6 +386,31 @@ namespace GameCore.Gameplay.Interaction
         public string BinderName => "gameplay.interactable";
 
         public bool IsActive => views != null && views.IsActive;
+
+        public void OnResidencyChanged(string regionId, RegionResidency value)
+        {
+            if (residency.Set(regionId, value))
+            {
+                return;
+            }
+
+            evicted.Clear();
+            foreach (KeyValuePair<TargetId, string> pair in presentedRegions)
+            {
+                if (string.Equals(pair.Value, regionId, StringComparison.Ordinal))
+                {
+                    evicted.Add(pair.Key);
+                }
+            }
+
+            for (int i = 0; i < evicted.Count; i++)
+            {
+                presented.Remove(evicted[i]);
+                presentedRegions.Remove(evicted[i]);
+            }
+
+            evicted.Clear();
+        }
 
         public int Present(ICommittedSlotReader slots)
         {
@@ -362,7 +424,13 @@ namespace GameCore.Gameplay.Interaction
             for (int i = 0; i < records.Count; i++)
             {
                 InteractableRecord record = records[i];
-                if (record.IsTrigger || record.Interactable == null || !views.TryGetView(record.Target, out GameObject? view) || view == null)
+                if (record.IsTrigger || record.Interactable == null)
+                {
+                    continue;
+                }
+
+                string regionId = views.RegionIdOf(slots.TryRead(record.Target, GameplaySlots.WorldOwner, GameplaySlots.Region, out int regionKey) ? regionKey : 0);
+                if (!residency.IsResident(regionId) || !views.TryGetView(record.Target, out GameObject? view) || view == null)
                 {
                     continue;
                 }
@@ -375,6 +443,7 @@ namespace GameCore.Gameplay.Interaction
                 int state = slots.TryRead(record.Target, InteractionSlots.Owner, InteractionSlots.State, out int value) ? value : 0;
                 Apply(view, record.Interactable.Kind, state);
                 presented[record.Target] = state;
+                presentedRegions[record.Target] = regionId;
                 touched++;
             }
 

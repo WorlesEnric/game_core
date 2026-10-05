@@ -5,14 +5,19 @@
 //                                                     + InteractableStateChanged (A new, B old) when the state changed
 //                                                  -> InteractionRefused (A actor, B refusal code, C state) otherwise
 //   interact.setState  state                       -> InteractableStateChanged (refusals are rejected)
-//   interact.trigger   actor key, entered (1/0)    -> TriggerEntered / TriggerExited (A actor, B occupants)
+//   interact.trigger   actor key, entered (1/0)    -> TriggerEntered / TriggerExited (A actor, B occupant count,
+//                                                     C first entry); interact.occupants is a bit set of actor keys
 //
 // A use is refused as a committed outcome (InteractionRefused carries the code, P-045): the command commits, the slots
 // do not change. Only a malformed command or an unknown target is rejected. The use range is measured from the actor's
-// committed position (player.pos, else npc.pos, else world.pos) to the interactable's world.pos. The condition ref is
+// committed world.pos (authoritative for every entity, P1.7a) to the interactable's world.pos. The condition ref is
 // evaluated through IConditionEvaluator with a committed-slot context: while the interactable is Locked it is the
 // unlock condition, otherwise the use precondition (NullConditionEvaluator: Unknown, so uses pass and locks hold).
 // After the commands, every interactable with a running cooldown counts it down by the step length.
+//
+// P1.7a (A1): a committed success or trigger transit is handed to the world's step tap (GameplayStepTaps.Of), and the
+// interactable's action reference is recorded as an outbox obligation in the same step; the host-side dispatcher runs
+// the action itself only when the world has no tap.
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -20,6 +25,7 @@ using GameCore.Contracts;
 using GameCore.Execution.Messages;
 using GameCore.Gameplay.Contracts;
 using GameCore.Gameplay.Entities;
+using GameCore.Gameplay.World;
 using GameCore.Rules.Gameplay.Interaction;
 using GameCore.Rules.Gameplay.Player;
 using GameCore.Unity.Runtime;
@@ -152,7 +158,22 @@ namespace GameCore.Gameplay.Interaction
 
         public bool IsTrigger => Trigger != null;
 
-        public InteractableProfile Profile { get; }
+        /// <summary>The definition's numeric tuning; <see cref="Retune"/> re-reads it (SADR-013 Live edit, P1.7a).</summary>
+        public InteractableProfile Profile { get; private set; }
+
+        /// <summary>Re-reads the numeric tuning from the (edited) interactable definition; slots are untouched. True when it changed.</summary>
+        public bool Retune()
+        {
+            if (Interactable == null)
+            {
+                return false;
+            }
+
+            InteractableProfile next = Interactable.ToProfile();
+            bool changed = !next.Equals(Profile);
+            Profile = next;
+            return changed;
+        }
 
         public string ConditionRef => Interactable != null ? Interactable.ConditionRef : (Trigger != null ? Trigger.ConditionRef : string.Empty);
 
@@ -213,6 +234,21 @@ namespace GameCore.Gameplay.Interaction
 
         public bool TryGet(TargetId target, out InteractableRecord? record) => byTarget.TryGetValue(target, out record);
 
+        /// <summary>Re-reads every interactable's numeric tuning (a SADR-013 Live edit, between frames). Returns how many changed.</summary>
+        public int RetuneAll()
+        {
+            int changed = 0;
+            for (int i = 0; i < ordered.Count; i++)
+            {
+                if (ordered[i].Retune())
+                {
+                    changed++;
+                }
+            }
+
+            return changed;
+        }
+
         public bool TryGetByKey(int key, out InteractableRecord? record) => byKey.TryGetValue(key, out record);
 
         internal void CountSuccess() => Successes++;
@@ -238,19 +274,9 @@ namespace GameCore.Gameplay.Interaction
             SlotState.Write(entityManager, entity, InteractionSlots.Owner, InteractionSlots.CooldownMs, state.CooldownMilliseconds);
         }
 
-        /// <summary>The committed planar position of an actor: player.pos, then npc.pos, then world.pos.</summary>
+        /// <summary>The committed planar position of an actor: world.pos only (the one pose every plugin writes).</summary>
         public static bool TryActorPosition(ICommittedSlotReader slots, TargetId actor, out int x, out int z)
         {
-            if (slots.TryRead(actor, PlayerSlots.Owner, PlayerSlots.PosX, out x) && slots.TryRead(actor, PlayerSlots.Owner, PlayerSlots.PosZ, out z))
-            {
-                return true;
-            }
-
-            if (slots.TryRead(actor, NpcSlots.Owner, NpcSlots.PosX, out x) && slots.TryRead(actor, NpcSlots.Owner, NpcSlots.PosZ, out z))
-            {
-                return true;
-            }
-
             if (slots.TryRead(actor, GameplaySlots.WorldOwner, GameplaySlots.PosX, out x) && slots.TryRead(actor, GameplaySlots.WorldOwner, GameplaySlots.PosZ, out z))
             {
                 return true;
@@ -285,6 +311,7 @@ namespace GameCore.Gameplay.Interaction
             }
 
             EntityManager entityManager = EntityManager;
+            IGameplayStepTap? tap = GameplayStepTaps.Of(World);
             IReadOnlyList<StepMessage> batch = plane.DrainOwnerBatch(InteractionDeclarations.Owner);
             var used = new HashSet<TargetId>();
             for (int i = 0; i < batch.Count; i++)
@@ -307,7 +334,7 @@ namespace GameCore.Gameplay.Interaction
 
                 if (message.Route.Equals(InteractionSlots.UseRoute))
                 {
-                    Use(module, plane, entityManager, entity, record, message);
+                    Use(module, plane, entityManager, entity, record, message, tap);
                     used.Add(record.Target);
                 }
                 else if (message.Route.Equals(InteractionSlots.SetStateRoute))
@@ -316,7 +343,7 @@ namespace GameCore.Gameplay.Interaction
                 }
                 else if (message.Route.Equals(InteractionSlots.TriggerRoute))
                 {
-                    Transit(module, plane, entityManager, entity, record, message);
+                    Transit(module, plane, entityManager, entity, record, message, tap);
                 }
                 else
                 {
@@ -356,7 +383,7 @@ namespace GameCore.Gameplay.Interaction
             return plane.Readers.TryRead<InteractionValuePayload>(message.PayloadSchema, payload, out value, out string _) == PayloadDecodeOutcome.Decoded;
         }
 
-        private static void Use(InteractionModule module, WorldMessagePlane plane, EntityManager entityManager, Entity entity, InteractableRecord record, StepMessage message)
+        private static void Use(InteractionModule module, WorldMessagePlane plane, EntityManager entityManager, Entity entity, InteractableRecord record, StepMessage message, IGameplayStepTap? tap)
         {
             if (!TryRead(plane, message, out UsePayload use))
             {
@@ -401,8 +428,8 @@ namespace GameCore.Gameplay.Interaction
             }
 
             InteractableSnapshot after = outcome.After;
-            if (!plane.Commit(message, InteractionSlots.SucceededEvent,
-                    GameplayActorEvent.Encode(message.Target, use.ActorKey, after.State, after.Uses, state.State), plane.ExecutingStep, out string _))
+            FrozenPayload succeeded = GameplayActorEvent.Encode(message.Target, use.ActorKey, after.State, after.Uses, state.State);
+            if (!plane.Commit(message, InteractionSlots.SucceededEvent, succeeded, plane.ExecutingStep, out string _))
             {
                 module.CountRejected();
                 plane.Reject(message, DiagnosticCode.BudgetExceeded, plane.ExecutingStep);
@@ -411,6 +438,17 @@ namespace GameCore.Gameplay.Interaction
 
             InteractionModule.Write(entityManager, entity, after);
             module.CountSuccess();
+
+            // P1.7a (A1): the success's rule triggers and quest signal, and the interactable's action, become outbox
+            // obligations in this step (the host-side dispatcher no longer runs the action when a tap is set).
+            if (tap != null)
+            {
+                tap.OnCommitted(InteractionSlots.SucceededEvent, succeeded, message.Request);
+                if (!string.IsNullOrEmpty(record.ActionRef))
+                {
+                    tap.OnActionDemand(record.ActionRef, record.AuthoringId, record.Key, use.ActorKey, after.State, message.Request);
+                }
+            }
             if (outcome.StateChanged)
             {
                 Emit(module, plane, message, InteractionSlots.StateChangedEvent, after.State, state.State, use.ActorKey, 0);
@@ -446,7 +484,7 @@ namespace GameCore.Gameplay.Interaction
             InteractionModule.Write(entityManager, entity, outcome.After);
         }
 
-        private static void Transit(InteractionModule module, WorldMessagePlane plane, EntityManager entityManager, Entity entity, InteractableRecord record, StepMessage message)
+        private static void Transit(InteractionModule module, WorldMessagePlane plane, EntityManager entityManager, Entity entity, InteractableRecord record, StepMessage message, IGameplayStepTap? tap)
         {
             if (!TryRead(plane, message, out InteractionValuePayload value) || !record.IsTrigger)
             {
@@ -459,7 +497,7 @@ namespace GameCore.Gameplay.Interaction
             int occupants = SlotState.ReadOrDefault(entityManager, entity, InteractionSlots.Owner, InteractionSlots.Occupants, 0);
             if (entered && !string.IsNullOrEmpty(record.ConditionRef))
             {
-                var context = new InteractionContext(record.AuthoringId, record.Key, value.A, occupants, module.Slots);
+                var context = new InteractionContext(record.AuthoringId, record.Key, value.A, OccupancyRules.Count(occupants), module.Slots);
                 if (module.Conditions.Evaluate(record.ConditionRef, context) == ConditionVerdict.False)
                 {
                     module.CountRejected();
@@ -468,7 +506,7 @@ namespace GameCore.Gameplay.Interaction
                 }
             }
 
-            TriggerOutcome outcome = TriggerRules.Transit(occupants, entered, record.Trigger!.MaxOccupants);
+            OccupancyOutcome outcome = OccupancyRules.Transit(occupants, value.A, entered, record.Trigger!.MaxOccupants);
             if (!outcome.Accepted)
             {
                 module.CountRejected();
@@ -477,15 +515,24 @@ namespace GameCore.Gameplay.Interaction
             }
 
             SchemaRef schema = entered ? InteractionSlots.TriggerEnteredEvent : InteractionSlots.TriggerExitedEvent;
-            if (!plane.Commit(message, schema, GameplayActorEvent.Encode(message.Target, value.A, outcome.Occupants, outcome.FirstEntered ? 1 : 0, 0), plane.ExecutingStep, out string _))
+            FrozenPayload transit = GameplayActorEvent.Encode(message.Target, value.A, outcome.Occupants, outcome.FirstEntered ? 1 : 0, 0);
+            if (!plane.Commit(message, schema, transit, plane.ExecutingStep, out string _))
             {
                 module.CountRejected();
                 plane.Reject(message, DiagnosticCode.BudgetExceeded, plane.ExecutingStep);
                 return;
             }
 
-            SlotState.Write(entityManager, entity, InteractionSlots.Owner, InteractionSlots.Occupants, outcome.Occupants);
+            SlotState.Write(entityManager, entity, InteractionSlots.Owner, InteractionSlots.Occupants, outcome.Mask);
             module.CountTransit();
+            if (tap != null)
+            {
+                tap.OnCommitted(schema, transit, message.Request);
+                if (entered && outcome.FirstEntered && !string.IsNullOrEmpty(record.ActionRef))
+                {
+                    tap.OnActionDemand(record.ActionRef, record.AuthoringId, record.Key, value.A, outcome.Occupants, message.Request);
+                }
+            }
         }
 
         private static void Refuse(InteractionModule module, WorldMessagePlane plane, StepMessage message, int actorKey, InteractionRefusal refusal, int state)

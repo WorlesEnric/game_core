@@ -33,6 +33,8 @@
     <Compile Include="Player/**/*.cs;Npc/**/*.cs;Interaction/**/*.cs" />
     <!-- P1.4: dialogue, quest, inventory and logic rules tests. -->
     <Compile Include="Dialogue/**/*.cs;Quest/**/*.cs;Inventory/**/*.cs;Logic/**/*.cs" />
+    <!-- P1.7a: gameplay hardening rules tests (occupancy, vertical motion, request ids, clock, streaming, quests). -->
+    <Compile Include="P1_7a/**/*.cs" />
   </ItemGroup>
 
   <ItemGroup>

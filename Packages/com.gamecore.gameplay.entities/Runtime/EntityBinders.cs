@@ -1,10 +1,16 @@
 // GameCore.Gameplay.Entities - presentation binders (P1.1; P-045: presentation reads committed output only).
 //
 //   PrefabViewBinder        instantiates each alive+visible entity's definition prefab (or its variant's replacement)
-//                           under the root of the region the entity is in, applies pose, scale, tint and overrides,
-//                           keeps one view pool per region and destroys a view when its entity despawns. It is
-//                           residency-aware: a region that is not Resident has its view root deactivated.
-//   AnimatorBinder          drives Animator integer parameters from entity slots by a name map on the definition.
+//                           under the root of the region the entity is in, applies pose (world.pos), scale, tint and
+//                           overrides, keeps one view pool per region and destroys a view when its entity despawns. It
+//                           is residency-aware (P1.7a, A7): views exist only in Resident regions. A region it has had no
+//                           residency notification for counts as not Resident. When a region stops being Resident all
+//                           of its views are destroyed (the region holds zero views); they are recreated on the first
+//                           Present after it is Resident again. A view whose entity moves region is moved to the new
+//                           region's root, or destroyed when that region is not Resident.
+//   AnimatorBinder          drives Animator integer parameters from entity slots by a name map on the definition;
+//                           residency-aware like every view-reading binder (it skips targets in non-Resident regions
+//                           and forgets their cached animators when the region goes non-Resident).
 //   AudioSourceBinder       hook only: forwards spawn/despawn of views to registered audio hooks.
 //   InteractionTargetBinder stub: tags each view with its target so interaction systems (P1.3) can resolve it.
 //
@@ -87,7 +93,31 @@ namespace GameCore.Gameplay.Entities
         string InteractionKind { get; }
     }
 
-    /// <summary>Instantiates and maintains entity views from committed slots.</summary>
+    /// <summary>
+    /// The last residency notified for each region (by authoring id), for binders that implement IResidencyAware. A
+    /// region never notified is not Resident. The streamer replays every notified region to a listener when it is added,
+    /// so a binder that records each call here knows the current residency from its first Present.
+    /// </summary>
+    public sealed class RegionResidencySet
+    {
+        private readonly Dictionary<string, RegionResidency> states = new Dictionary<string, RegionResidency>(StringComparer.Ordinal);
+
+        /// <summary>Records a notification; returns true when the region is Resident afterwards.</summary>
+        public bool Set(string regionId, RegionResidency residency)
+        {
+            states[regionId ?? string.Empty] = residency;
+            return residency == RegionResidency.Resident;
+        }
+
+        /// <summary>True only for a region whose last notification was Resident.</summary>
+        public bool IsResident(string regionId) =>
+            states.TryGetValue(regionId ?? string.Empty, out RegionResidency state) && state == RegionResidency.Resident;
+
+        /// <summary>The last notified residency; false when the region was never notified.</summary>
+        public bool TryGet(string regionId, out RegionResidency residency) => states.TryGetValue(regionId ?? string.Empty, out residency);
+    }
+
+    /// <summary>Instantiates and maintains entity views from committed slots, only in Resident regions.</summary>
     public sealed class PrefabViewBinder : IPresentationBinder, IResidencyAware
     {
         private readonly Transform parent;
@@ -96,7 +126,8 @@ namespace GameCore.Gameplay.Entities
         private readonly List<EntityViewSpec> specs = new List<EntityViewSpec>();
         private readonly Dictionary<TargetId, View> views = new Dictionary<TargetId, View>();
         private readonly Dictionary<string, Transform> regionRoots = new Dictionary<string, Transform>(StringComparer.Ordinal);
-        private readonly Dictionary<string, RegionResidency> residency = new Dictionary<string, RegionResidency>(StringComparer.Ordinal);
+        private readonly RegionResidencySet residency = new RegionResidencySet();
+        private readonly List<TargetId> evicted = new List<TargetId>();
         private readonly List<IEntityViewHook> hooks = new List<IEntityViewHook>();
         private readonly MaterialPropertyBlock block = new MaterialPropertyBlock();
 
@@ -116,6 +147,27 @@ namespace GameCore.Gameplay.Entities
         public bool IsActive { get; }
 
         public int ViewCount => views.Count;
+
+        /// <summary>Live views under the region's root (always 0 for a region that is not Resident).</summary>
+        public int ViewCountIn(string regionId)
+        {
+            int count = 0;
+            foreach (View view in views.Values)
+            {
+                if (view.Instance != null && string.Equals(view.RegionId, regionId, StringComparison.Ordinal))
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        /// <summary>True when the region's last residency notification was Resident (never notified: false).</summary>
+        public bool IsResident(string regionId) => residency.IsResident(regionId);
+
+        /// <summary>The authoring id of a region stable key (the world.region slot value); empty when unknown.</summary>
+        public string RegionIdOf(int regionKey) => regionByKey.TryGetValue(regionKey, out string? id) ? id : string.Empty;
 
         public int CreatedCount { get; private set; }
 
@@ -164,15 +216,18 @@ namespace GameCore.Gameplay.Entities
 
         public void OnResidencyChanged(string regionId, RegionResidency value)
         {
-            residency[regionId] = value;
+            bool live = residency.Set(regionId, value);
             if (!IsActive)
             {
                 return;
             }
 
-            Transform root = RootOf(regionId);
-            bool live = value == RegionResidency.Resident;
-            if (root.gameObject.activeSelf != live)
+            if (!live)
+            {
+                EvictRegion(regionId ?? string.Empty);
+            }
+
+            if (regionRoots.TryGetValue(regionId ?? string.Empty, out Transform? root) && root != null && root.gameObject.activeSelf != live)
             {
                 root.gameObject.SetActive(live);
             }
@@ -214,6 +269,26 @@ namespace GameCore.Gameplay.Entities
             regionRoots.Clear();
         }
 
+        private void EvictRegion(string regionId)
+        {
+            evicted.Clear();
+            foreach (KeyValuePair<TargetId, View> pair in views)
+            {
+                if (string.Equals(pair.Value.RegionId, regionId, StringComparison.Ordinal))
+                {
+                    evicted.Add(pair.Key);
+                }
+            }
+
+            for (int i = 0; i < evicted.Count; i++)
+            {
+                DestroyView(evicted[i], views[evicted[i]]);
+                views.Remove(evicted[i]);
+            }
+
+            evicted.Clear();
+        }
+
         private bool PresentOne(ICommittedSlotReader slots, EntityViewSpec spec)
         {
             OwnerId entityOwner = GameplaySlots.EntityOwner;
@@ -237,7 +312,18 @@ namespace GameCore.Gameplay.Entities
             int variant = slots.TryRead(spec.Target, entityOwner, GameplaySlots.Variant, out int variantValue) ? variantValue : 0;
             int scale = slots.TryRead(spec.Target, entityOwner, GameplaySlots.ScaleMilli, out int scaleValue) ? scaleValue : GameplayUnits.ScaleOne;
             int regionKey = slots.TryRead(spec.Target, worldOwner, GameplaySlots.Region, out int regionValue) ? regionValue : 0;
-            string regionId = regionByKey.TryGetValue(regionKey, out string? id) ? id : string.Empty;
+            string regionId = RegionIdOf(regionKey);
+            if (!residency.IsResident(regionId))
+            {
+                if (view != null)
+                {
+                    DestroyView(spec.Target, view);
+                    views.Remove(spec.Target);
+                    return true;
+                }
+
+                return false;
+            }
 
             if (view != null && view.Variant != variant)
             {
@@ -341,15 +427,20 @@ namespace GameCore.Gameplay.Entities
 
         private Transform RootOf(string regionId)
         {
+            bool live = residency.IsResident(regionId);
             if (regionRoots.TryGetValue(regionId, out Transform? existing) && existing != null)
             {
+                if (existing.gameObject.activeSelf != live)
+                {
+                    existing.gameObject.SetActive(live);
+                }
+
                 return existing;
             }
 
             string label = regionNames.TryGetValue(regionId, out string? name) ? name : (regionId.Length == 0 ? "No Region" : regionId);
             var root = new GameObject("[Views] " + label);
             root.transform.SetParent(parent, false);
-            bool live = !residency.TryGetValue(regionId, out RegionResidency state) || state == RegionResidency.Resident;
             root.SetActive(live);
             regionRoots[regionId] = root.transform;
             return root.transform;
@@ -389,11 +480,13 @@ namespace GameCore.Gameplay.Entities
         }
     }
 
-    /// <summary>Drives Animator integer parameters from entity slots (definition's AnimatorBindings).</summary>
-    public sealed class AnimatorBinder : IPresentationBinder
+    /// <summary>Drives Animator integer parameters from entity slots (definition's AnimatorBindings), in Resident regions.</summary>
+    public sealed class AnimatorBinder : IPresentationBinder, IResidencyAware
     {
         private readonly PrefabViewBinder views;
-        private readonly Dictionary<Animator, HashSet<string>> parameters = new Dictionary<Animator, HashSet<string>>();
+        private readonly RegionResidencySet residency = new RegionResidencySet();
+        private readonly Dictionary<TargetId, AnimatorParameters> parameters = new Dictionary<TargetId, AnimatorParameters>();
+        private readonly List<TargetId> evicted = new List<TargetId>();
 
         public AnimatorBinder(PrefabViewBinder views)
         {
@@ -404,6 +497,30 @@ namespace GameCore.Gameplay.Entities
         public string BinderName => "gameplay.animator";
 
         public bool IsActive { get; }
+
+        public void OnResidencyChanged(string regionId, RegionResidency value)
+        {
+            if (residency.Set(regionId, value))
+            {
+                return;
+            }
+
+            evicted.Clear();
+            foreach (KeyValuePair<TargetId, AnimatorParameters> pair in parameters)
+            {
+                if (string.Equals(pair.Value.RegionId, regionId, StringComparison.Ordinal))
+                {
+                    evicted.Add(pair.Key);
+                }
+            }
+
+            for (int i = 0; i < evicted.Count; i++)
+            {
+                parameters.Remove(evicted[i]);
+            }
+
+            evicted.Clear();
+        }
 
         public int Present(ICommittedSlotReader slots)
         {
@@ -421,13 +538,20 @@ namespace GameCore.Gameplay.Entities
                     continue;
                 }
 
+                int regionKey = slots.TryRead(pair.Key, GameplaySlots.WorldOwner, GameplaySlots.Region, out int regionValue) ? regionValue : 0;
+                string regionId = views.RegionIdOf(regionKey);
+                if (!residency.IsResident(regionId))
+                {
+                    continue;
+                }
+
                 Animator? animator = pair.Value.GetComponentInChildren<Animator>();
                 if (animator == null || animator.runtimeAnimatorController == null)
                 {
                     continue;
                 }
 
-                HashSet<string> known = ParametersOf(animator);
+                HashSet<string> known = ParametersOf(pair.Key, animator, regionId);
                 IReadOnlyList<AnimatorSlotBinding> bindings = spec.Definition.AnimatorBindings;
                 for (int i = 0; i < bindings.Count; i++)
                 {
@@ -450,14 +574,15 @@ namespace GameCore.Gameplay.Entities
             return touched;
         }
 
-        private HashSet<string> ParametersOf(Animator animator)
+        private HashSet<string> ParametersOf(TargetId target, Animator animator, string regionId)
         {
-            if (parameters.TryGetValue(animator, out HashSet<string>? known))
+            if (parameters.TryGetValue(target, out AnimatorParameters? cached) && cached.Animator == animator)
             {
-                return known;
+                cached.RegionId = regionId;
+                return cached.Known;
             }
 
-            known = new HashSet<string>(StringComparer.Ordinal);
+            var known = new HashSet<string>(StringComparer.Ordinal);
             AnimatorControllerParameter[] declared = animator.parameters;
             for (int i = 0; i < declared.Length; i++)
             {
@@ -467,8 +592,24 @@ namespace GameCore.Gameplay.Entities
                 }
             }
 
-            parameters[animator] = known;
+            parameters[target] = new AnimatorParameters(animator, known, regionId);
             return known;
+        }
+
+        private sealed class AnimatorParameters
+        {
+            public AnimatorParameters(Animator animator, HashSet<string> known, string regionId)
+            {
+                Animator = animator;
+                Known = known;
+                RegionId = regionId;
+            }
+
+            public Animator Animator { get; }
+
+            public HashSet<string> Known { get; }
+
+            public string RegionId { get; set; }
         }
     }
 
