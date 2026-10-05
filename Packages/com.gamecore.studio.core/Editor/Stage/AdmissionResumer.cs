@@ -1,9 +1,5 @@
 #nullable enable
-// GameCore.Studio.Edit - continues admissions across the domain reload their compile causes (P2.4).
-// An admission writes Library/GameCoreStudio/stage/pending-<id>.json before it recompiles; after the reload this
-// [InitializeOnLoad] hook finds the record and runs StageAdmission.ResumePending (checkers, re-bake, catalog check,
-// Applied or rollback; or the catalog check of an undo). Nothing happens when no record exists, so ordinary reloads
-// (and test runs) never create a Studio runtime here.
+using System;
 using System.IO;
 using UnityEditor;
 
@@ -14,41 +10,56 @@ namespace GameCore.Studio.Edit
     {
         static AdmissionResumer()
         {
-            // A few idle seconds after the reload: the Editor imports the new package's assets right after it.
-            StageAdmission.UnityDefer(3, Resume);
+            Wake();
+            EditorApplication.playModeStateChanged += _ => Wake();
         }
 
-        internal static string StateRoot => Path.Combine(StudioPaths.ForCurrentProject().LibraryRoot, "stage");
+        internal static string StateRoot => Path.Combine(StudioPaths.ForCurrentProject().StateRoot, "Studio", "Admission");
 
-        private static void Resume()
+        internal static void Wake()
         {
-            string state = StateRoot;
-            if (!Directory.Exists(state))
+            if (AdmissionSession.instance.ResumeScheduled) return;
+            AdmissionSession.instance.ResumeScheduled = true;
+            StageAdmission.UnityDefer(3, () =>
             {
-                return;
-            }
+                AdmissionSession.instance.ResumeScheduled = false;
+                Resume();
+            });
+        }
 
-            bool pending = Directory.GetFiles(state, "pending-cs_*.json").Length > 0;
-            bool commandLine = File.Exists(Path.Combine(state, StageCommandLine.RequestFile));
-            if (!pending && !commandLine)
-            {
-                return;
-            }
+        private static bool HasPending(string root) => Directory.Exists(root)
+            && (Directory.GetFiles(root, "pending-cs_*.json").Length > 0 || Directory.GetFiles(root, "admit-after-play-cs_*.json").Length > 0);
 
-            if (EditorApplication.isCompiling || EditorApplication.isUpdating)
+        private static async void Resume()
+        {
+            if (AdmissionSession.instance.Resuming) { Wake(); return; }
+            AdmissionSession.instance.Resuming = true;
+            bool waiting = false;
+            try
             {
-                EditorApplication.delayCall += Resume;
-                return;
-            }
-
-            StageAdmission admission = StageAdmission.Of(StudioServices.Runtime);
-            StageCommandLine.Attach(admission);
-            if (pending)
-            {
+                string legacy = Path.Combine(StudioPaths.ForCurrentProject().LibraryRoot, "stage");
+                if (!HasPending(StateRoot) && !HasPending(legacy)) return;
+                StageAdmission admission = StageAdmission.Of(StudioServices.Runtime);
+                StageCommandLine.Attach(admission);
+                try { await admission.RefreshPendingVerdicts(); }
+                catch (Exception)
+                {
+                    // Additions wait for authenticated client rebinding; owned removals can still recover.
+                }
                 foreach (AdmissionResult result in admission.ResumePending())
                 {
+                    waiting |= result.Outcome == AdmissionOutcome.Pending;
                     UnityEngine.Debug.Log("[GameCore Studio] stage: resumed " + result.ChangeSetId + " -> " + result.Outcome + ": " + result.Detail);
                 }
+            }
+            catch (Exception)
+            {
+                UnityEngine.Debug.LogWarning("[GameCore Studio] Admission recovery could not read its durable state; the record is retained for review.");
+            }
+            finally
+            {
+                AdmissionSession.instance.Resuming = false;
+                if (waiting) Wake();
             }
         }
     }

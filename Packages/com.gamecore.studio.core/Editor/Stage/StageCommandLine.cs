@@ -3,7 +3,7 @@
 //
 //   Unity -batchmode -nographics -projectPath games/hollowmere -logFile admit.log \
 //     -executeMethod GameCore.Studio.Edit.StageCommandLine.Admit \
-//     -gcCandidate <candidate dir> -gcVerdict <verdict.json> -gcResult <result.json> [-gcShared]
+//     -gcCandidate <candidate dir> -gcStageJob <job> -gcSourceProject <trusted-project-mapping> -gcResult <result.json> [-gcShared]
 //   Unity ... -executeMethod GameCore.Studio.Edit.StageCommandLine.Undo -gcChangeSet <cs_id> -gcResult <result.json>
 //
 // No -quit: the admission recompiles, the domain reloads, AdmissionResumer finishes the admission in the new domain and
@@ -22,15 +22,16 @@ namespace GameCore.Studio.Edit
     {
         public const string RequestFile = "commandline.json";
 
-        /// <summary>Admits a candidate directory with a verdict file.</summary>
-        public static void Admit()
+        /// <summary>Admits a retained candidate only after the configured companion verifies its stage job.</summary>
+        public static async void Admit()
         {
             string? candidate = Argument("-gcCandidate");
-            string? verdict = Argument("-gcVerdict");
+            string? job = Argument("-gcStageJob");
+            string? sourceProject = Argument("-gcSourceProject");
             string? resultPath = Argument("-gcResult");
-            if (candidate == null || verdict == null || resultPath == null)
+            if (candidate == null || job == null || sourceProject == null || resultPath == null)
             {
-                Fail(resultPath, "usage: -gcCandidate <dir> -gcVerdict <verdict.json> -gcResult <result.json> [-gcShared]");
+                Fail(resultPath, "usage: -gcCandidate <dir> -gcStageJob <job> -gcSourceProject <trusted-project-mapping> -gcResult <result.json> [-gcShared]");
                 return;
             }
 
@@ -41,11 +42,13 @@ namespace GameCore.Studio.Edit
             AdmissionResult result;
             try
             {
-                result = admission.Admit(admission.RetainCandidate(candidate), File.ReadAllBytes(verdict));
+                var retained = admission.RetainCandidate(candidate);
+                await admission.FetchVerdict(job, admission.BuildStageRequest(retained, sourceProject));
+                result = admission.Admit(retained);
             }
-            catch (Exception error) when (error is IOException || error is ArtifactStoreException || error is ArgumentException || error is JsonException)
+            catch (Exception error) when (error is IOException || error is ArtifactStoreException || error is ArgumentException || error is JsonException || error is InvalidOperationException)
             {
-                Fail(resultPath, "the candidate or verdict could not be read: " + error.Message);
+                Fail(resultPath, "The candidate or authenticated stage verdict could not be verified.");
                 return;
             }
 
