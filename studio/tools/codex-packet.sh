@@ -68,6 +68,9 @@ if [ -f "$dir/.codex/$packet.pid" ] && kill -0 "$(cat "$dir/.codex/$packet.pid")
   echo "-- codex already running for $packet (pid $(cat "$dir/.codex/$packet.pid"))"; exit 0
 fi
 export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$HOME/.dotnet:$PATH"
+# The host reaches the public internet only through its local proxy (set for login shells in ~/.bashrc);
+# codex exec runs detached from a login shell, so import exactly those proxy variables.
+eval "$(grep -E '^export (http_proxy|https_proxy|HTTP_PROXY|HTTPS_PROXY|all_proxy|ALL_PROXY|no_proxy|NO_PROXY)=' "$HOME/.bashrc" 2>/dev/null || true)"
 cd "$dir"
 nohup setsid codex exec \
   -m "$model" -c "model_reasoning_effort=\"$effort\"" \
