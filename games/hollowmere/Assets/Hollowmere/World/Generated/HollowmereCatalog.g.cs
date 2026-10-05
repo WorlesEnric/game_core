@@ -41,7 +41,7 @@ namespace Hollowmere.Generated
         public const string CatalogFingerprintScope = "SHA-256 over, in this fixed order: (1) every registered factory key in canonical ascending order as 16-byte big-endian id, 4-byte big-endian key version, 4-byte big-endian factory kind, 16-byte big-endian owner package id, 16-byte big-endian implementation id, 4-byte big-endian contract version; (2) every accepted schema in ascending schema-id order as 16-byte big-endian id, 4-byte big-endian schema version, one byte 1 when required and 0 when optional, 16-byte big-endian serializer key id, 4-byte big-endian serializer key version, 16-byte big-endian owner package id; (3) every supported feature id in ascending order as 16 bytes. Declaration order, registration timing, machine paths and timestamps are excluded (P-008, P-028, P-053).";
 
         /// <summary>Canonical fingerprint of the registrations below (P-028, P-053).</summary>
-        public const string CatalogFingerprint = "7d9e8e46289a3053cb24dff861590c8eeeaec1a9bb7a98c5c09ae186c7f39e9e";
+        public const string CatalogFingerprint = "2141c797a101a08dff74450a39c563bb49330b0ddffa971910a0497ab3c138f0";
 
         /// <summary>Supported protocol feature ids, in canonical identity order (P-055).</summary>
         public static readonly Id128[] SupportedFeatureIds =
@@ -789,85 +789,85 @@ namespace Hollowmere.Generated
                 Recipeb30c7c024a114a929bf9b15f89b7acaf,
                 FactoryKind.LayoutApply,
                 new Id128(0x401691215250B041UL, 0x448008843372A06CUL),
-                new Id128(0x9EA6E7E818365E91UL, 0x3D15D521BBD2C031UL),
+                new Id128(0xB9B09195E51727E5UL, 0x180DF00BDB2D86F5UL),
                 1U),
             new FactoryRegistration(
                 Recipe2e855e9641a64b39b5a056319b43c989,
                 FactoryKind.LayoutApply,
                 new Id128(0x401691215250B041UL, 0x448008843372A06CUL),
-                new Id128(0x9EA6E7E818365E91UL, 0x3D15D521BBD2C031UL),
+                new Id128(0xB9B09195E51727E5UL, 0x180DF00BDB2D86F5UL),
                 1U),
             new FactoryRegistration(
                 Recipeb69745cdc1d04d1384a4f1bc351f5948,
                 FactoryKind.LayoutApply,
                 new Id128(0x401691215250B041UL, 0x448008843372A06CUL),
-                new Id128(0xBC8B0ED35828C558UL, 0x6DB8B83E229A6B12UL),
+                new Id128(0x6774E23BE712D4E0UL, 0x0DF62AECE426E563UL),
                 1U),
             new FactoryRegistration(
                 Recipe58338d2c57214ba38c6e96f863268d8b,
                 FactoryKind.LayoutApply,
                 new Id128(0x401691215250B041UL, 0x448008843372A06CUL),
-                new Id128(0x2ADC9CDE53C408F5UL, 0x20951781EAD083F1UL),
+                new Id128(0xDB635BFEFF6CB63DUL, 0x8BB808A36B810861UL),
                 1U),
             new FactoryRegistration(
                 Recipeada7a79263fb480a94453b61f5dece1b,
                 FactoryKind.LayoutApply,
                 new Id128(0x401691215250B041UL, 0x448008843372A06CUL),
-                new Id128(0xE6330A261E4598DEUL, 0xB22C11B653A1CC80UL),
+                new Id128(0x8C8436DD0C9F2D00UL, 0x1D30F4C71A3D56B3UL),
                 1U),
             new FactoryRegistration(
                 Recipeacefbaad340d466f9d66214afb15646f,
                 FactoryKind.LayoutApply,
                 new Id128(0x401691215250B041UL, 0x448008843372A06CUL),
-                new Id128(0x2759395ED49C610DUL, 0x4D09103D84B5ABB7UL),
+                new Id128(0x0B8EC0E8133F3EBCUL, 0xBB7CC36AE5AA7FF0UL),
                 1U),
             new FactoryRegistration(
                 Recipece5030244b28419488658eec9dd6d8a7,
                 FactoryKind.LayoutApply,
                 new Id128(0x401691215250B041UL, 0x448008843372A06CUL),
-                new Id128(0x9EA6E7E818365E91UL, 0x3D15D521BBD2C031UL),
+                new Id128(0xB9B09195E51727E5UL, 0x180DF00BDB2D86F5UL),
                 1U),
             new FactoryRegistration(
                 Recipe2a8a3d762dea4c2c88a313be92ea473f,
                 FactoryKind.LayoutApply,
                 new Id128(0x401691215250B041UL, 0x448008843372A06CUL),
-                new Id128(0x9EA6E7E818365E91UL, 0x3D15D521BBD2C031UL),
+                new Id128(0xB9B09195E51727E5UL, 0x180DF00BDB2D86F5UL),
                 1U),
             new FactoryRegistration(
                 Recipe19b21d1c92034d9aa4fdcb3e57a6ac54,
                 FactoryKind.LayoutApply,
                 new Id128(0x401691215250B041UL, 0x448008843372A06CUL),
-                new Id128(0xDC5F5BC786D47BC8UL, 0x3AA1DE6AF4AB4AF6UL),
+                new Id128(0xF6DAFE12297CD6B2UL, 0x4DB4E44855FAEF22UL),
                 1U),
             new FactoryRegistration(
                 Reciped7081228f4974a3d811e0bb0e3c72807,
                 FactoryKind.LayoutApply,
                 new Id128(0x401691215250B041UL, 0x448008843372A06CUL),
-                new Id128(0xD8EB40A3F2087B5CUL, 0xB0A07F1FC4542553UL),
+                new Id128(0x339361070744B591UL, 0x8A91E3ABB69E38FBUL),
                 1U),
             new FactoryRegistration(
                 Recipe68d2519f2a40439bbe2d63d16581cd06,
                 FactoryKind.LayoutApply,
                 new Id128(0x401691215250B041UL, 0x448008843372A06CUL),
-                new Id128(0x9EA6E7E818365E91UL, 0x3D15D521BBD2C031UL),
+                new Id128(0xB9B09195E51727E5UL, 0x180DF00BDB2D86F5UL),
                 1U),
             new FactoryRegistration(
                 Recipe05b934c3466a4cbd9ec5e887ecf26794,
                 FactoryKind.LayoutApply,
                 new Id128(0x401691215250B041UL, 0x448008843372A06CUL),
-                new Id128(0x7AB8A57185FAB273UL, 0x5B12FB126A990E23UL),
+                new Id128(0x3C11F0416EED6438UL, 0x4D875D67EABE98C5UL),
                 1U),
             new FactoryRegistration(
                 Recipe18779563f74f4223947f19f0502c5a63,
                 FactoryKind.LayoutApply,
                 new Id128(0x401691215250B041UL, 0x448008843372A06CUL),
-                new Id128(0x0C14854565B9A313UL, 0x764E4CE50B842616UL),
+                new Id128(0x3DE6A1C808E47043UL, 0x5A325BAE916FA868UL),
                 1U),
             new FactoryRegistration(
                 Recipe193f7ebc62424813b1cc6afeea0918b9,
                 FactoryKind.LayoutApply,
                 new Id128(0x401691215250B041UL, 0x448008843372A06CUL),
-                new Id128(0x9BB98190C06B04C1UL, 0x87D9218A2833C5D9UL),
+                new Id128(0x2600ADFF4FB65F3BUL, 0x03ECE5E0E192C300UL),
                 1U),
         };
 
@@ -4046,6 +4046,6 @@ namespace Hollowmere.Generated
         public const int SchemaCount = 25;
 
         /// <summary>Hash of the generated source that precedes this declaration.</summary>
-        public const string CatalogFileHash = "0ea9b651fefc728abb1745416988ed0a14683d8a9e5b5d3c44ad3c488d0c3149";
+        public const string CatalogFileHash = "d64acab45e034ab466615baa2d46c7a931904c8b4ba7826533a0a12b0b34ba69";
     }
 }

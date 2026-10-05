@@ -5,7 +5,17 @@
 // displacement the presentation's collision resolver produced for this step; the rules clamp it to what the tuning
 // allows (walk or run speed over the move window), charge or regenerate stamina, and pay for a jump. Nothing here
 // depends on frame time: the same commands from the same state give the same slots, which is what replay relies on.
+//
+// P1.7a (A6): vertical motion is authoritative state too. The vertical speed (mm/s) and the grounded flag are player
+// slots integrated here: a paid jump from the ground sets the jump speed, an airborne step applies gravity (clamped to
+// the terminal speed), a grounded step rests at zero. The presentation's collision resolver only reports what it
+// resolved: the step's displacement and, through AirborneFlag, that the character is not standing on anything. The
+// resolver reads the committed vertical speed to propose the next step's vertical displacement, so a frame-time
+// dependent integrator no longer lives in the presentation. A jump needs the ground (committed grounded flag).
+// player.restoreStamina (P3.1 request) adds stamina clamped to the maximum and refuses an unchanged value.
 #nullable enable
+using System;
+
 namespace GameCore.Rules.Gameplay.Player
 {
     /// <summary>Integer tuning of one player (converted once from the authored PlayerDefinition).</summary>
@@ -21,7 +31,10 @@ namespace GameCore.Rules.Gameplay.Player
             int staminaDrainPerSecond,
             int staminaRegenPerSecond,
             int staminaRegenDelayMilliseconds,
-            int jumpCost)
+            int jumpCost,
+            int jumpSpeedMillimetresPerSecond = DefaultJumpSpeed,
+            int gravityMillimetresPerSecondSquared = DefaultGravity,
+            int terminalSpeedMillimetresPerSecond = DefaultTerminalSpeed)
         {
             WalkMillimetresPerSecond = walkMillimetresPerSecond < 0 ? 0 : walkMillimetresPerSecond;
             RunMillimetresPerSecond = runMillimetresPerSecond < WalkMillimetresPerSecond ? WalkMillimetresPerSecond : runMillimetresPerSecond;
@@ -33,7 +46,19 @@ namespace GameCore.Rules.Gameplay.Player
             StaminaRegenPerSecond = staminaRegenPerSecond < 0 ? 0 : staminaRegenPerSecond;
             StaminaRegenDelayMilliseconds = staminaRegenDelayMilliseconds < 0 ? 0 : staminaRegenDelayMilliseconds;
             JumpCost = jumpCost < 0 ? 0 : jumpCost;
+            JumpSpeedMillimetresPerSecond = jumpSpeedMillimetresPerSecond < 0 ? 0 : jumpSpeedMillimetresPerSecond;
+            GravityMillimetresPerSecondSquared = gravityMillimetresPerSecondSquared < 0 ? 0 : gravityMillimetresPerSecondSquared;
+            TerminalSpeedMillimetresPerSecond = terminalSpeedMillimetresPerSecond < 1 ? 1 : terminalSpeedMillimetresPerSecond;
         }
+
+        /// <summary>Default jump take-off speed: 6 m/s (a 1 m jump under 18 m/s2, PlayerDefinition's defaults).</summary>
+        public const int DefaultJumpSpeed = 6000;
+
+        /// <summary>Default gravity: 18 m/s2 (PlayerDefinition's default).</summary>
+        public const int DefaultGravity = 18000;
+
+        /// <summary>Default terminal falling speed: 50 m/s.</summary>
+        public const int DefaultTerminalSpeed = 50000;
 
         public int WalkMillimetresPerSecond { get; }
 
@@ -59,6 +84,32 @@ namespace GameCore.Rules.Gameplay.Player
         public int StaminaRegenDelayMilliseconds { get; }
 
         public int JumpCost { get; }
+
+        /// <summary>Vertical take-off speed of a jump (mm/s).</summary>
+        public int JumpSpeedMillimetresPerSecond { get; }
+
+        /// <summary>Gravity (mm/s2) applied to an airborne player.</summary>
+        public int GravityMillimetresPerSecondSquared { get; }
+
+        /// <summary>The fastest fall (mm/s).</summary>
+        public int TerminalSpeedMillimetresPerSecond { get; }
+
+        /// <summary>Speed lost to gravity in one step (mm/s; at least 1 when gravity is on).</summary>
+        public int GravityPerStep => PerStep(GravityMillimetresPerSecondSquared);
+
+        /// <summary>
+        /// This tuning with the vertical motion of an authored gravity (m/s2) and jump height (m): the take-off speed is
+        /// sqrt(2 g h), computed in integers.
+        /// </summary>
+        public PlayerTuning WithVertical(double gravityMetresPerSecondSquared, double jumpHeightMetres)
+        {
+            int gravity = (int)Math.Round(Math.Max(0.0, gravityMetresPerSecondSquared) * 1000.0, MidpointRounding.AwayFromZero);
+            int height = (int)Math.Round(Math.Max(0.0, jumpHeightMetres) * 1000.0, MidpointRounding.AwayFromZero);
+            return new PlayerTuning(
+                WalkMillimetresPerSecond, RunMillimetresPerSecond, StepMilliseconds, MoveWindowMilliseconds, MaxVerticalMillimetresPerStep,
+                StaminaMax, StaminaDrainPerSecond, StaminaRegenPerSecond, StaminaRegenDelayMilliseconds, JumpCost,
+                PlayerRules.JumpSpeed(gravity, height), gravity, TerminalSpeedMillimetresPerSecond);
+        }
 
         /// <summary>Stamina drained by one running step (at least 1 when draining is on).</summary>
         public int DrainPerStep => PerStep(StaminaDrainPerSecond);
@@ -89,6 +140,11 @@ namespace GameCore.Rules.Gameplay.Player
     public readonly struct PlayerState
     {
         public PlayerState(int posX, int posY, int posZ, int yaw, int stamina, int focus, int regionKey, int regenDelayMilliseconds)
+            : this(posX, posY, posZ, yaw, stamina, focus, regionKey, regenDelayMilliseconds, 0, true)
+        {
+        }
+
+        public PlayerState(int posX, int posY, int posZ, int yaw, int stamina, int focus, int regionKey, int regenDelayMilliseconds, int verticalSpeed, bool grounded)
         {
             PosX = posX;
             PosY = posY;
@@ -98,6 +154,8 @@ namespace GameCore.Rules.Gameplay.Player
             Focus = focus;
             RegionKey = regionKey;
             RegenDelayMilliseconds = regenDelayMilliseconds;
+            VerticalSpeed = verticalSpeed;
+            Grounded = grounded;
         }
 
         public int PosX { get; }
@@ -119,19 +177,27 @@ namespace GameCore.Rules.Gameplay.Player
 
         public int RegenDelayMilliseconds { get; }
 
+        /// <summary>Vertical speed in mm/s (positive up; P1.7a slot player.verticalSpeed).</summary>
+        public int VerticalSpeed { get; }
+
+        /// <summary>True while the player stands on something (P1.7a slot player.grounded, 0/1).</summary>
+        public bool Grounded { get; }
+
         public bool HasFocus => Focus != PlayerRules.NoFocus;
 
-        public PlayerState WithPose(int x, int y, int z, int yaw) => new PlayerState(x, y, z, yaw, Stamina, Focus, RegionKey, RegenDelayMilliseconds);
+        public PlayerState WithPose(int x, int y, int z, int yaw) => new PlayerState(x, y, z, yaw, Stamina, Focus, RegionKey, RegenDelayMilliseconds, VerticalSpeed, Grounded);
 
-        public PlayerState WithStamina(int stamina, int regenDelay) => new PlayerState(PosX, PosY, PosZ, Yaw, stamina, Focus, RegionKey, regenDelay);
+        public PlayerState WithStamina(int stamina, int regenDelay) => new PlayerState(PosX, PosY, PosZ, Yaw, stamina, Focus, RegionKey, regenDelay, VerticalSpeed, Grounded);
 
-        public PlayerState WithFocus(int focus) => new PlayerState(PosX, PosY, PosZ, Yaw, Stamina, focus, RegionKey, RegenDelayMilliseconds);
+        public PlayerState WithFocus(int focus) => new PlayerState(PosX, PosY, PosZ, Yaw, Stamina, focus, RegionKey, RegenDelayMilliseconds, VerticalSpeed, Grounded);
 
-        public PlayerState WithRegion(int regionKey) => new PlayerState(PosX, PosY, PosZ, Yaw, Stamina, Focus, regionKey, RegenDelayMilliseconds);
+        public PlayerState WithRegion(int regionKey) => new PlayerState(PosX, PosY, PosZ, Yaw, Stamina, Focus, regionKey, RegenDelayMilliseconds, VerticalSpeed, Grounded);
+
+        public PlayerState WithVertical(int verticalSpeed, bool grounded) => new PlayerState(PosX, PosY, PosZ, Yaw, Stamina, Focus, RegionKey, RegenDelayMilliseconds, verticalSpeed, grounded);
 
         public override string ToString() =>
             "player(pos=" + PosX + "," + PosY + "," + PosZ + " yaw=" + Yaw + " stamina=" + Stamina + " focus=" + Focus
-            + " region=" + RegionKey + ")";
+            + " region=" + RegionKey + " vy=" + VerticalSpeed + (Grounded ? " grounded" : " airborne") + ")";
     }
 
     /// <summary>One sampled move: the step's displacement (mm), the facing (mrad) and the run/jump flags.</summary>
@@ -145,6 +211,7 @@ namespace GameCore.Rules.Gameplay.Player
             Yaw = yaw;
             Run = run;
             Jump = jump;
+            Airborne = false;
             ExtraFlags = 0;
         }
 
@@ -156,6 +223,7 @@ namespace GameCore.Rules.Gameplay.Player
             Yaw = yaw;
             Run = (flags & PlayerRules.RunFlag) != 0;
             Jump = (flags & PlayerRules.JumpFlag) != 0;
+            Airborne = (flags & PlayerRules.AirborneFlag) != 0;
             ExtraFlags = flags & ~PlayerRules.KnownFlags;
         }
 
@@ -171,11 +239,14 @@ namespace GameCore.Rules.Gameplay.Player
 
         public bool Jump { get; }
 
+        /// <summary>The collision resolver found nothing under the player this step (P1.7a; absent = grounded).</summary>
+        public bool Airborne { get; }
+
         /// <summary>Flag bits the rules do not know (a newer writer); a move carrying any is refused.</summary>
         public int ExtraFlags { get; }
 
         /// <summary>Flag bits as carried in the command payload.</summary>
-        public int Flags => (Run ? PlayerRules.RunFlag : 0) | (Jump ? PlayerRules.JumpFlag : 0) | ExtraFlags;
+        public int Flags => (Run ? PlayerRules.RunFlag : 0) | (Jump ? PlayerRules.JumpFlag : 0) | (Airborne ? PlayerRules.AirborneFlag : 0) | ExtraFlags;
 
         public static PlayerMove FromFlags(int dx, int dy, int dz, int yaw, int flags) => new PlayerMove(dx, dy, dz, yaw, flags);
     }
@@ -188,6 +259,18 @@ namespace GameCore.Rules.Gameplay.Player
         FocusUnchanged = 2,
         NoFocus = 3,
         UnknownFlags = 4,
+
+        /// <summary>player.restoreStamina would leave stamina where it is (already full).</summary>
+        StaminaUnchanged = 5,
+
+        /// <summary>player.restoreStamina with an amount that is not positive.</summary>
+        InvalidAmount = 6,
+
+        /// <summary>player.restoreStamina from an issuer other than the host or the narrative delivery.</summary>
+        IssuerNotAllowed = 7,
+
+        /// <summary>player.restoreStamina carrying an obligation that was already applied.</summary>
+        AlreadyApplied = 8,
     }
 
     /// <summary>Stable refusal codes of the player rules.</summary>
@@ -197,6 +280,10 @@ namespace GameCore.Rules.Gameplay.Player
         public const string FocusUnchanged = "player.focus-unchanged";
         public const string NoFocus = "player.no-focus";
         public const string UnknownFlags = "player.unknown-flags";
+        public const string StaminaUnchanged = "player.stamina-unchanged";
+        public const string InvalidAmount = "player.invalid-amount";
+        public const string IssuerNotAllowed = "player.issuer-not-allowed";
+        public const string AlreadyApplied = "player.already-applied";
 
         public static string Code(PlayerRefusal refusal)
         {
@@ -206,6 +293,10 @@ namespace GameCore.Rules.Gameplay.Player
                 case PlayerRefusal.FocusUnchanged: return FocusUnchanged;
                 case PlayerRefusal.NoFocus: return NoFocus;
                 case PlayerRefusal.UnknownFlags: return UnknownFlags;
+                case PlayerRefusal.StaminaUnchanged: return StaminaUnchanged;
+                case PlayerRefusal.InvalidAmount: return InvalidAmount;
+                case PlayerRefusal.IssuerNotAllowed: return IssuerNotAllowed;
+                case PlayerRefusal.AlreadyApplied: return AlreadyApplied;
                 default: return string.Empty;
             }
         }
@@ -241,6 +332,20 @@ namespace GameCore.Rules.Gameplay.Player
         public bool JumpRefused { get; }
     }
 
+    /// <summary>One step of vertical motion: the next vertical speed (mm/s) and grounded flag.</summary>
+    public readonly struct VerticalMotion
+    {
+        public VerticalMotion(int speed, bool grounded)
+        {
+            Speed = speed;
+            Grounded = grounded;
+        }
+
+        public int Speed { get; }
+
+        public bool Grounded { get; }
+    }
+
     /// <summary>The outcome of a focus or interact command.</summary>
     public readonly struct PlayerTransition
     {
@@ -270,7 +375,10 @@ namespace GameCore.Rules.Gameplay.Player
 
         public const int JumpFlag = 2;
 
-        public const int KnownFlags = RunFlag | JumpFlag;
+        /// <summary>The resolver found no ground under the player this step (P1.7a).</summary>
+        public const int AirborneFlag = 4;
+
+        public const int KnownFlags = RunFlag | JumpFlag | AirborneFlag;
 
         /// <summary>Displacements shorter than this (mm) count as standing still for stamina.</summary>
         public const int StillThreshold = 1;
@@ -316,7 +424,15 @@ namespace GameCore.Rules.Gameplay.Player
 
             if (move.Jump)
             {
-                if (stamina >= tuning.JumpCost)
+                if (!state.Grounded)
+                {
+                    jumpRefused = true;
+                    if (dy > 0 && state.VerticalSpeed <= 0)
+                    {
+                        dy = 0;
+                    }
+                }
+                else if (stamina >= tuning.JumpCost)
                 {
                     stamina -= tuning.JumpCost;
                     jumped = true;
@@ -354,10 +470,88 @@ namespace GameCore.Rules.Gameplay.Player
             }
 
             stamina = ClampStamina(stamina, tuning);
+            VerticalMotion vertical = Vertical(state.VerticalSpeed, !move.Airborne, jumped, tuning);
             PlayerState next = state
                 .WithPose(PlanarMath.Add(state.PosX, dx), PlanarMath.Add(state.PosY, dy), PlanarMath.Add(state.PosZ, dz), PlanarMath.NormalizeYaw(move.Yaw))
-                .WithStamina(stamina, regenDelay);
+                .WithStamina(stamina, regenDelay)
+                .WithVertical(vertical.Speed, vertical.Grounded);
             return new PlayerMoveResult(next, PlayerRefusal.None, clamped, ran, jumped, jumpRefused);
+        }
+
+        /// <summary>
+        /// One step of vertical motion (P1.7a, A6): a paid jump takes off at the jump speed and leaves the ground; a
+        /// grounded step rests at zero; an airborne step loses <see cref="PlayerTuning.GravityPerStep"/>, never falling
+        /// faster than the terminal speed.
+        /// </summary>
+        public static VerticalMotion Vertical(int speed, bool groundedByResolver, bool jumped, PlayerTuning tuning)
+        {
+            if (jumped)
+            {
+                return new VerticalMotion(tuning.JumpSpeedMillimetresPerSecond, false);
+            }
+
+            if (groundedByResolver && speed <= 0)
+            {
+                return new VerticalMotion(0, true);
+            }
+
+            long next = (long)speed - tuning.GravityPerStep;
+            if (next < -tuning.TerminalSpeedMillimetresPerSecond)
+            {
+                next = -tuning.TerminalSpeedMillimetresPerSecond;
+            }
+
+            return new VerticalMotion((int)next, false);
+        }
+
+        /// <summary>The vertical displacement (mm) one step at <paramref name="speed"/> mm/s covers (truncated toward zero).</summary>
+        public static int VerticalStepMillimetres(int speed, PlayerTuning tuning) =>
+            (int)((long)speed * tuning.StepMilliseconds / 1000L);
+
+        /// <summary>Take-off speed (mm/s) reaching <paramref name="heightMillimetres"/> under <paramref name="gravityMillimetres"/> mm/s2: sqrt(2 g h).</summary>
+        public static int JumpSpeed(int gravityMillimetres, int heightMillimetres)
+        {
+            if (gravityMillimetres <= 0 || heightMillimetres <= 0)
+            {
+                return 0;
+            }
+
+            // g [mm/s2] * h [mm] = mm2/s2; the root is mm/s. Integer square root, rounded down.
+            ulong value = 2UL * (ulong)gravityMillimetres * (ulong)heightMillimetres;
+            ulong root = (ulong)Math.Sqrt(value);
+            while (root * root > value)
+            {
+                root--;
+            }
+
+            while ((root + 1UL) * (root + 1UL) <= value)
+            {
+                root++;
+            }
+
+            return root > int.MaxValue ? int.MaxValue : (int)root;
+        }
+
+        /// <summary>
+        /// player.restoreStamina: adds <paramref name="amount"/> stamina, clamped to the maximum. Refused (no write) when the
+        /// amount is not positive or stamina would not change (already full).
+        /// </summary>
+        public static PlayerTransition RestoreStamina(PlayerState state, int amount, PlayerTuning tuning)
+        {
+            if (amount <= 0)
+            {
+                return PlayerTransition.Refuse(PlayerRefusal.InvalidAmount, state);
+            }
+
+            int current = ClampStamina(state.Stamina, tuning);
+            long raised = (long)current + amount;
+            int next = raised >= tuning.StaminaMax ? tuning.StaminaMax : (int)raised;
+            if (next == state.Stamina)
+            {
+                return PlayerTransition.Refuse(PlayerRefusal.StaminaUnchanged, state);
+            }
+
+            return PlayerTransition.Accept(state.WithStamina(next, state.RegenDelayMilliseconds));
         }
 
         /// <summary>

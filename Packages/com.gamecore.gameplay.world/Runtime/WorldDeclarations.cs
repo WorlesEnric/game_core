@@ -116,6 +116,7 @@ namespace GameCore.Gameplay.World
             {
                 Slot(GameplaySlots.Residency, RegionDomain, RegionLayout, "world.field.residency"),
                 Slot(GameplaySlots.Visits, RegionDomain, RegionLayout, "world.field.visits"),
+                Slot(GameplaySlots.SpawnOrdinal, RegionDomain, RegionLayout, "world.field.spawn-ordinal"),
                 Slot(GameplaySlots.Region, PlacementDomain, PlacementLayout, "world.field.region"),
                 Slot(GameplaySlots.PosX, PlacementDomain, PlacementLayout, "world.field.pos-x"),
                 Slot(GameplaySlots.PosY, PlacementDomain, PlacementLayout, "world.field.pos-y"),

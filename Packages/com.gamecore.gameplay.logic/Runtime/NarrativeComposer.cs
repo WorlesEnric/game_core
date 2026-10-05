@@ -9,6 +9,14 @@
 // the narrative host (event routing, quest tracking, rule triggers, delivery) joins the world's input phase.
 //
 // Modules are passed in by the game (or a test); nothing is discovered by reflection and nothing is static.
+//
+// P1.7a (A1/A2):
+//   * Attach re-attaches the narrative layer to a root composed by a restore (SaveService.RootChanged): the base world
+//     (WorldBuilder.Attach without seeding), the four modules' systems, the host, the explain trace and the delivery on
+//     the restored root's delivery owner (the one SaveService's DeliveryFactory made and reinstated the checkpoint's
+//     obligations into). Models and the index are rebuilt from the same content, so keys and targets are identical.
+//   * Every attach hands the world its step tap (the narrative delivery) and the portal condition evaluator.
+//   * TryBoot reports a boot or attach failure instead of throwing; the root is stopped on an attach failure.
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -21,6 +29,7 @@ using GameCore.Gameplay.World;
 using GameCore.Rules.Gameplay.Logic;
 using GameCore.Unity.App;
 using GameCore.Unity.Runtime;
+using GameCore.Unity.Runtime.Delivery;
 using GameCore.Unity.Runtime.Integration;
 using GameCore.Unity.Runtime.Messages;
 using GameCore.Unity.Runtime.Time;
@@ -283,6 +292,12 @@ namespace GameCore.Gameplay.Logic
         private readonly List<IPresentationBinder> presenters = new List<IPresentationBinder>();
 
         public NarrativeRuntime(GameApplicationRoot root, GameplayWorld world, RegionManifest manifest, GameplayContentManifest content, NarrativeModelSet models, NarrativeIndex index)
+            : this(root, world, manifest, content, models, index, null)
+        {
+        }
+
+        /// <summary>The runtime of one world whose delivery runs on <paramref name="owner"/> (null = a new narrative owner).</summary>
+        public NarrativeRuntime(GameApplicationRoot root, GameplayWorld world, RegionManifest manifest, GameplayContentManifest content, NarrativeModelSet models, NarrativeIndex index, WorldDeliveryOwner? owner)
         {
             Root = root ?? throw new ArgumentNullException(nameof(root));
             World = world ?? throw new ArgumentNullException(nameof(world));
@@ -293,7 +308,7 @@ namespace GameCore.Gameplay.Logic
             State = new NarrativeState(world.Slots, index, models, root.Host);
             Submitter = new NarrativeSubmitter(root.Host, GameplayIds.Id("gameplay.issuer.narrative." + manifest.WorldId));
             Explain = new ExplainTrace(models);
-            Delivery = new NarrativeDelivery(this);
+            Delivery = new NarrativeDelivery(this, owner);
         }
 
         public GameApplicationRoot Root { get; }
@@ -321,6 +336,9 @@ namespace GameCore.Gameplay.Logic
         public ExplainTrace Explain { get; }
 
         public NarrativeDelivery Delivery { get; }
+
+        /// <summary>The world's in-step outbox seam (P1.7a, A1): the delivery. Kernels pass it to StepEventBatch.CommitAll.</summary>
+        public IGameplayStepTap Tap => Delivery;
 
         /// <summary>Where playAudio actions go (P1.3's IFeedbackSink; P1.5 renders the cues).</summary>
         public IFeedbackSink Feedback { get; private set; } = new NullFeedbackSink();
@@ -410,6 +428,11 @@ namespace GameCore.Gameplay.Logic
         /// <summary>Disposes the delivery owner, detaches the world and stops the root.</summary>
         public void Shutdown()
         {
+            if (ReferenceEquals(World.StepTap, Runtime.Delivery))
+            {
+                World.StepTap = null;
+            }
+
             Runtime.Delivery.Dispose();
             World.Shutdown();
             Root.Stop("narrative world shut down");
@@ -484,22 +507,7 @@ namespace GameCore.Gameplay.Logic
             try
             {
                 GameplayWorld world = WorldBuilder.Attach(root, plan);
-                var runtime = new NarrativeRuntime(root, world, manifest, content, models, index);
-                for (int i = 0; i < modules.Count; i++)
-                {
-                    modules[i].Attach(runtime, true);
-                }
-
-                var host = new NarrativeHost(runtime);
-                world.AddInput(host);
-                narrative = new NarrativeWorld(world, runtime, host);
-                for (int i = 0; i < modules.Count; i++)
-                {
-                    if (modules[i] is INarrativeWorldAware aware)
-                    {
-                        aware.OnWorld(narrative);
-                    }
-                }
+                narrative = AttachCore(world, content, models, index, modules, true, null);
             }
             catch (Exception)
             {
@@ -514,6 +522,161 @@ namespace GameCore.Gameplay.Logic
                 {
                     root.Stop("narrative start refused");
                     throw new InvalidOperationException("the narrative world refused to start: " + started.Code);
+                }
+            }
+
+            return narrative;
+        }
+
+        /// <summary>
+        /// <see cref="Boot"/> that reports instead of throwing (P1.7a, A11): false with the failure text when the content is
+        /// stale, the catalog does not build, the root refuses to boot or start, or a module's attach fails (the root is
+        /// stopped then).
+        /// </summary>
+        public static bool TryBoot(
+            RegionManifest manifest,
+            GameplayContentManifest content,
+            IReadOnlyList<INarrativeModule> modules,
+            GameApplicationBootOptions? options,
+            WorldBuildOptions? build,
+            bool start,
+            out NarrativeWorld? world,
+            out string failure)
+        {
+            world = null;
+            failure = string.Empty;
+            try
+            {
+                world = Boot(manifest, content, modules, options, build, start);
+                return true;
+            }
+            catch (InvalidOperationException exception)
+            {
+                failure = exception.Message;
+                return false;
+            }
+            catch (ArgumentException exception)
+            {
+                failure = exception.Message;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Re-attaches the narrative layer to <paramref name="root"/> (P1.7a, A2): attaches the base world from
+        /// <paramref name="plan"/> (seeding only when <paramref name="seedSlots"/>; a restored root already holds the
+        /// checkpoint's slots), then the modules, the host and the delivery on <paramref name="owner"/> - the restored
+        /// root's delivery owner (SaveService.Modules.Delivery), which already holds the reinstated obligations.
+        /// </summary>
+        public static NarrativeWorld Attach(
+            GameApplicationRoot root,
+            WorldBuildPlan plan,
+            GameplayContentManifest content,
+            IReadOnlyList<INarrativeModule> modules,
+            bool seedSlots,
+            WorldDeliveryOwner? owner = null)
+        {
+            if (root == null)
+            {
+                throw new ArgumentNullException(nameof(root));
+            }
+
+            if (plan == null)
+            {
+                throw new ArgumentNullException(nameof(plan));
+            }
+
+            GameplayWorld world = WorldBuilder.Attach(root, plan, seedSlots);
+            return Attach(world, content, modules, seedSlots, owner);
+        }
+
+        /// <summary>
+        /// <see cref="Attach(GameApplicationRoot, WorldBuildPlan, GameplayContentManifest, IReadOnlyList{INarrativeModule}, bool, WorldDeliveryOwner)"/>
+        /// for a base world that is already attached (UiRuntime's restore path attaches it first).
+        /// </summary>
+        public static NarrativeWorld Attach(
+            GameplayWorld world,
+            GameplayContentManifest content,
+            IReadOnlyList<INarrativeModule> modules,
+            bool seedSlots,
+            WorldDeliveryOwner? owner = null)
+        {
+            if (world == null)
+            {
+                throw new ArgumentNullException(nameof(world));
+            }
+
+            if (content == null)
+            {
+                throw new ArgumentNullException(nameof(content));
+            }
+
+            if (modules == null)
+            {
+                throw new ArgumentNullException(nameof(modules));
+            }
+
+            RegionManifest manifest = world.Manifest;
+            if (!string.Equals(content.FormatId, GameplayContentManifest.Format, StringComparison.Ordinal)
+                || !string.Equals(content.WorldId, manifest.WorldId, StringComparison.Ordinal))
+            {
+                throw new InvalidOperationException(NarrativeDiagnosticCodes.ContentStale
+                    + ": the content manifest is not a bake of world " + manifest.WorldId + "; re-run GameCore.Gameplay.Compile.Entry.Bake");
+            }
+
+            var converters = new List<INarrativeContentConverter>();
+            for (int i = 0; i < modules.Count; i++)
+            {
+                if (modules[i].Converter != null)
+                {
+                    converters.Add(modules[i].Converter!);
+                }
+            }
+
+            NarrativeModelSet models = NarrativeContent.Build(content, converters);
+            var index = new NarrativeIndex(manifest, content, models);
+            return AttachCore(world, content, models, index, modules, seedSlots, owner);
+        }
+
+        /// <summary>
+        /// The restore re-attach (P1.7a, A2): <see cref="Attach(GameplayWorld, GameplayContentManifest, IReadOnlyList{INarrativeModule}, bool, WorldDeliveryOwner)"/>
+        /// without seeding, on <paramref name="service"/>'s restored delivery owner (it holds the reinstated obligations).
+        /// </summary>
+        public static NarrativeWorld AttachRestored(SaveService service, GameplayWorld restored, GameplayContentManifest content, IReadOnlyList<INarrativeModule> modules)
+        {
+            if (service == null)
+            {
+                throw new ArgumentNullException(nameof(service));
+            }
+
+            return Attach(restored, content, modules, false, service.Modules.Delivery);
+        }
+
+        private static NarrativeWorld AttachCore(
+            GameplayWorld world,
+            GameplayContentManifest content,
+            NarrativeModelSet models,
+            NarrativeIndex index,
+            IReadOnlyList<INarrativeModule> modules,
+            bool seedSlots,
+            WorldDeliveryOwner? owner)
+        {
+            var runtime = new NarrativeRuntime(world.Root, world, world.Manifest, content, models, index, owner);
+            for (int i = 0; i < modules.Count; i++)
+            {
+                modules[i].Attach(runtime, seedSlots);
+            }
+
+            var host = new NarrativeHost(runtime);
+            world.AddInput(host);
+            var narrative = new NarrativeWorld(world, runtime, host);
+            world.StepTap = runtime.Delivery;
+            world.Worlds.Conditions = narrative.Conditions;
+            for (int i = 0; i < modules.Count; i++)
+            {
+                if (modules[i] is INarrativeWorldAware aware)
+                {
+                    aware.OnWorld(narrative);
                 }
             }
 

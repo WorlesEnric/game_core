@@ -9,8 +9,11 @@
 // committed as one ActionDue event, which the narrative delivery turns into exactly one destination command. The
 // explain trace records every decision with the first failed condition and the inputs read.
 //
-// The host half of the module (INarrativeEventListener) turns trigger events of the previous step into logic.evaluate
-// commands for every rule whose trigger matches, in priority order.
+// P1.7a (A1): trigger routing moved into the committing step. The narrative delivery (the world's step tap) sees every
+// committed trigger event and records one logic.evaluate obligation per selected rule, in priority order; TryTrigger is
+// the shared decoder. Both routes take an optional trailing request id (the obligation's): evaluate 5(+1), runActions
+// 3(+1); an obligation is claimed before the decision and settled in the step that commits it. Rule time (cooldowns,
+// time conditions) is GameplayClock time through NarrativeState.NowMs (A5).
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -40,8 +43,8 @@ namespace GameCore.Gameplay.Logic
         public static NarrativePluginSpec Spec()
         {
             return new NarrativePluginSpec(Stem, NarrativeCatalogNames.Logic, LogicIds.Owner)
-                .Route(LogicIds.EvaluateRoute, LogicIds.EvaluateCommand, "evaluate", 5)
-                .Route(LogicIds.RunActionsRoute, LogicIds.RunActionsCommand, "run-actions", 3)
+                .Route(LogicIds.EvaluateRoute, LogicIds.EvaluateCommand, "evaluate", 5, 1)
+                .Route(LogicIds.RunActionsRoute, LogicIds.RunActionsCommand, "run-actions", 3, 1)
                 .Slot(LogicIds.Fired, 0, "fired")
                 .Slot(LogicIds.CooldownMs, 0, "cooldown-ms")
                 .Slot(LogicIds.Counter, 0, "counter")
@@ -103,7 +106,11 @@ namespace GameCore.Gameplay.Logic
 
         public int Malformed { get; private set; }
 
-        public int Triggered { get; private set; }
+        /// <summary>Rule evaluations recorded from trigger events (by the narrative delivery, in-step; P1.7a).</summary>
+        public int Triggered => runtime != null ? runtime.Delivery.Triggered : 0;
+
+        /// <summary>Evaluations or runs refused because their obligation was already applied.</summary>
+        public int AlreadyApplied { get; private set; }
 
         public void Declare(NarrativeComposition composition)
         {
@@ -154,28 +161,11 @@ namespace GameCore.Gameplay.Logic
 
         public bool TryRuleTarget(int ruleKey, out TargetId target) => targetsByRule.TryGetValue(ruleKey, out target);
 
-        // ---- host half: trigger routing -------------------------------------------------------------------------
+        // ---- host half -------------------------------------------------------------------------------------------
 
+        /// <summary>Trigger events become logic.evaluate obligations in the committing step (NarrativeDelivery); nothing to do here.</summary>
         public void OnEvent(CommittedEvent committed)
         {
-            NarrativeRuntime? rt = runtime;
-            if (rt == null || !TryTrigger(rt, committed, out TriggerKind kind, out int key, out int value, out int actor, out int subject))
-            {
-                return;
-            }
-
-            List<RuleModel> rules = RuleRules.Select(rt.Models.Rules, kind, key, value);
-            for (int i = 0; i < rules.Count; i++)
-            {
-                if (!targetsByRule.TryGetValue(rules[i].Key, out TargetId target))
-                {
-                    continue;
-                }
-
-                Triggered++;
-                rt.Submitter.Submit(LogicIds.EvaluateRoute, target, LogicIds.EvaluateCommand,
-                    NarrativeCommands.Evaluate(actor, subject, (int)kind, key, value));
-            }
         }
 
         public void AfterEvents(int frame)
@@ -183,17 +173,25 @@ namespace GameCore.Gameplay.Logic
         }
 
         /// <summary>The trigger kind, key and value of a committed event (false for events no rule can trigger on).</summary>
-        public static bool TryTrigger(NarrativeRuntime rt, CommittedEvent committed, out TriggerKind kind, out int key, out int value, out int actor, out int subject)
+        public static bool TryTrigger(NarrativeRuntime rt, CommittedEvent committed, out TriggerKind kind, out int key, out int value, out int actor, out int subject) =>
+            TryTrigger(rt, committed.Schema, committed.Payload, out kind, out key, out value, out actor, out subject);
+
+        /// <summary>The trigger kind, key and value of an event by schema and payload (in-step, P1.7a).</summary>
+        public static bool TryTrigger(NarrativeRuntime rt, SchemaRef schema, FrozenPayload? payload, out TriggerKind kind, out int key, out int value, out int actor, out int subject)
         {
             kind = TriggerKind.Manual;
             key = 0;
             value = 0;
             actor = rt.ActorKey;
             subject = 0;
-            SchemaRef schema = committed.Schema;
+            if (payload == null)
+            {
+                return false;
+            }
+
             if (schema.Equals(WorldDeclarations.RegionEnteredEvent))
             {
-                if (!WorldEvent.TryDecode(committed.Payload, out WorldEvent world))
+                if (!WorldEvent.TryDecode(payload, out WorldEvent world))
                 {
                     return false;
                 }
@@ -207,16 +205,16 @@ namespace GameCore.Gameplay.Logic
 
             if (schema.Equals(LogicDeclarations.InteractionSucceededEvent))
             {
-                if (committed.Payload.Length < 16)
+                if (payload.Length < 16)
                 {
                     return false;
                 }
 
-                var reader = new GameplayPayloadReader(committed.Payload.Bytes);
+                var reader = new GameplayPayloadReader(payload.Bytes);
                 kind = TriggerKind.Interacted;
                 key = rt.Index.EntityKeyOf(new TargetId(reader.Id()));
                 subject = key;
-                if (committed.Payload.Length >= 20)
+                if (payload.Length >= 20)
                 {
                     int interactor = reader.Int32();
                     if (interactor != 0)
@@ -228,7 +226,7 @@ namespace GameCore.Gameplay.Logic
                 return key != 0;
             }
 
-            if (!NarrativeEvent.TryDecode(committed.Payload, out NarrativeEvent e))
+            if (!NarrativeEvent.TryDecode(payload, out NarrativeEvent e))
             {
                 return false;
             }
@@ -377,6 +375,14 @@ namespace GameCore.Gameplay.Logic
             }
 
             TargetId target = message.Target;
+            int requestId = NarrativeObligations.OptionalRequest(command, 5);
+            if (NarrativeObligations.Admit(rt.Tap, null, requestId) != DiagnosticCode.None)
+            {
+                AlreadyApplied++;
+                Refuse(plane, message, DiagnosticCode.IdempotencyConflict);
+                return;
+            }
+
             var state = new RuleState(
                 NarrativeSlots.Read(rt.Registry, entityManager, target, LogicIds.Owner, LogicIds.Fired, 0),
                 NarrativeSlots.Read(rt.Registry, entityManager, target, LogicIds.Owner, LogicIds.CooldownMs, 0),
@@ -397,11 +403,13 @@ namespace GameCore.Gameplay.Logic
                 events.Add(LogicIds.RuleSkippedEvent, target, rule.Key, (int)decision.Reason, failed, actor, 0, 0);
             }
 
-            if (!events.CommitAll(plane, message))
+            if (!events.CommitAll(plane, message, rt.Tap))
             {
                 Refuse(plane, message, DiagnosticCode.BudgetExceeded);
                 return;
             }
+
+            NarrativeObligations.Settle(rt.Tap, requestId);
 
             NarrativeSlots.Write(rt.Registry, entityManager, target, LogicIds.Owner, LogicIds.Fired, decision.Next.Fired);
             NarrativeSlots.Write(rt.Registry, entityManager, target, LogicIds.Owner, LogicIds.CooldownMs, decision.Next.CooldownUntilMs);
@@ -426,15 +434,25 @@ namespace GameCore.Gameplay.Logic
                 return;
             }
 
+            int requestId = NarrativeObligations.OptionalRequest(command, 3);
+            if (NarrativeObligations.Admit(rt.Tap, null, requestId) != DiagnosticCode.None)
+            {
+                AlreadyApplied++;
+                Refuse(plane, message, DiagnosticCode.IdempotencyConflict);
+                return;
+            }
+
             int invocations = NarrativeSlots.Read(rt.Registry, entityManager, message.Target, LogicIds.Owner, LogicIds.Invocations, 0) + 1;
             var events = new StepEventBatch();
             NarrativeActions.AddDue(events, rt.Index.HubTarget, set, command[1], command[2], LogicIds.SourceRun, false);
             events.Add(LogicIds.ActionsRunEvent, message.Target, set.Key, command[1], command[2], invocations, 0, 0);
-            if (!events.CommitAll(plane, message))
+            if (!events.CommitAll(plane, message, rt.Tap))
             {
                 Refuse(plane, message, DiagnosticCode.BudgetExceeded);
                 return;
             }
+
+            NarrativeObligations.Settle(rt.Tap, requestId);
 
             NarrativeSlots.Write(rt.Registry, entityManager, message.Target, LogicIds.Owner, LogicIds.Invocations, invocations);
             Runs++;

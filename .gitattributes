@@ -1,0 +1,8 @@
+# Generated and canonical files are compared byte for byte (bake Verify, catalog fingerprints, Studio change detection):
+# pin them to LF on every platform regardless of core.autocrlf (P1.7a, A10).
+*.catalog.json  text eol=lf
+*.g.cs          text eol=lf
+*.bake.json     text eol=lf
+*.manifest.json text eol=lf
+*.asmdef        text eol=lf
+*.json          text eol=lf

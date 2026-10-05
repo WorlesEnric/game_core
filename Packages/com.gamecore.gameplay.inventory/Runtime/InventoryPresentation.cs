@@ -21,7 +21,6 @@ namespace GameCore.Gameplay.Inventory
     public sealed class InventoryCommands
     {
         private readonly NarrativeRuntime runtime;
-        private int serial;
 
         public InventoryCommands(NarrativeRuntime runtime)
         {
@@ -32,12 +31,11 @@ namespace GameCore.Gameplay.Inventory
 
         public int Refused { get; private set; }
 
-        /// <summary>A fresh request id (deterministic per world and call order; never 0).</summary>
-        public int NextRequestId()
-        {
-            serial++;
-            return NarrativeKeys.NameKey("gameplay.inventory-request." + runtime.Index.WorldId + "." + serial);
-        }
+        /// <summary>
+        /// A fresh request id (P1.7a, A6): NarrativeSubmitter.NextRequestId - (issuer, logical step, serial), so a restored
+        /// world never mints an id an applied request already holds in the inventory's ring (the per-boot serial did).
+        /// </summary>
+        public int NextRequestId() => runtime.Submitter.NextRequestId();
 
         public CommandAdmissionReceipt Grant(string itemRef, int count, int requestId = 0, string inventoryRef = "") =>
             Submit(inventoryRef, InventoryIds.GrantRoute, InventoryIds.GrantCommand, NarrativeCommands.Grant(Key(itemRef), count, Fresh(requestId)));

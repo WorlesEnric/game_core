@@ -12,6 +12,15 @@
 //   StepEventBatch        commits several events for one command (extra events as request-kind copies, then the
 //                         command's own result last), the shape the world plugin uses for RegionLeft/RegionEntered
 //   NarrativeSubmitter    submits narrative commands with one issuer and a strictly increasing sequence
+//
+// P1.7a:
+//   * A route may accept optional trailing int32 values (the obligation request id the delivery ports append, A1): the
+//     reader accepts Ints..Ints+Optional values; absent values read as 0.
+//   * StepEventBatch.CommitAll takes the world's step tap: it refuses before mutation when the outbox has no room, and
+//     hands every committed event to the tap, which records the deliveries it owes in the same step (A1).
+//   * NarrativeObligations is the destination half: the claim/ring decision and the settle after the effect committed.
+//   * NarrativeState.NowMs reads GameplayClock (step x stepMs in a command-driven world, A5).
+//   * NarrativeSubmitter.NextRequestId derives command request ids from (issuer, logical step, serial) (A6).
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -47,27 +56,40 @@ namespace GameCore.Gameplay.Logic
         public int this[int index] => values != null && index >= 0 && index < values.Length ? values[index] : 0;
     }
 
-    /// <summary>Reader of one narrative command schema: exactly <see cref="Ints"/> int32 values.</summary>
+    /// <summary>Reader of one narrative command schema: <see cref="Ints"/> int32 values plus up to <see cref="Optional"/> more.</summary>
     public sealed class NarrativeCommandReader : ICommandPayloadReader<NarrativeCommand>
     {
         public NarrativeCommandReader(SchemaRef schema, int ints)
+            : this(schema, ints, 0)
+        {
+        }
+
+        public NarrativeCommandReader(SchemaRef schema, int ints, int optional)
         {
             Schema = schema;
             Ints = ints;
+            Optional = optional < 0 ? 0 : optional;
         }
 
         public SchemaRef Schema { get; }
 
         public int Ints { get; }
 
+        /// <summary>Optional trailing int32 values (P1.7a: the obligation request id).</summary>
+        public int Optional { get; }
+
         public NarrativeCommand Read(IReadOnlyList<byte> payload)
         {
-            if (!NarrativeCommands.TryReadInts(payload, Ints, out int[] values))
+            for (int extra = 0; extra <= Optional; extra++)
             {
-                throw new FormatException("a " + Schema + " command is exactly " + (Ints * 4).ToString(CultureInfo.InvariantCulture) + " bytes");
+                if (NarrativeCommands.TryReadInts(payload, Ints + extra, out int[] values))
+                {
+                    return new NarrativeCommand(values);
+                }
             }
 
-            return new NarrativeCommand(values);
+            throw new FormatException("a " + Schema + " command is " + (Ints * 4).ToString(CultureInfo.InvariantCulture)
+                + (Optional > 0 ? ".." + ((Ints + Optional) * 4).ToString(CultureInfo.InvariantCulture) : string.Empty) + " bytes");
         }
     }
 
@@ -75,12 +97,21 @@ namespace GameCore.Gameplay.Logic
     public sealed class NarrativeRoute
     {
         public NarrativeRoute(RouteId route, SchemaRef command, string name, int ints)
+            : this(route, command, name, ints, 0)
+        {
+        }
+
+        public NarrativeRoute(RouteId route, SchemaRef command, string name, int ints, int optional)
         {
             Route = route;
             Command = command;
             Name = name;
             Ints = ints;
+            Optional = optional < 0 ? 0 : optional;
         }
+
+        /// <summary>Optional trailing int32 values (P1.7a).</summary>
+        public int Optional { get; }
 
         public RouteId Route { get; }
 
@@ -194,6 +225,13 @@ namespace GameCore.Gameplay.Logic
         public NarrativePluginSpec Route(RouteId route, SchemaRef command, string name, int ints)
         {
             routes.Add(new NarrativeRoute(route, command, name, ints));
+            return this;
+        }
+
+        /// <summary>A route whose command may carry <paramref name="optional"/> trailing int32 values (P1.7a).</summary>
+        public NarrativePluginSpec Route(RouteId route, SchemaRef command, string name, int ints, int optional)
+        {
+            routes.Add(new NarrativeRoute(route, command, name, ints, optional));
             return this;
         }
 
@@ -342,7 +380,7 @@ namespace GameCore.Gameplay.Logic
             for (int i = 0; i < routes.Count; i++)
             {
                 NarrativeRoute route = routes[i];
-                int bytes = Math.Max(256, LaneCapacity * route.Ints * 4);
+                int bytes = Math.Max(256, LaneCapacity * (route.Ints + route.Optional) * 4);
                 list.Add(new MessageBufferDescriptor(
                     BufferOf(route),
                     route.Command,
@@ -365,7 +403,7 @@ namespace GameCore.Gameplay.Logic
         {
             for (int i = 0; i < routes.Count; i++)
             {
-                if (!readers.TryBind(new NarrativeCommandReader(routes[i].Command, routes[i].Ints), out string failure))
+                if (!readers.TryBind(new NarrativeCommandReader(routes[i].Command, routes[i].Ints, routes[i].Optional), out string failure))
                 {
                     throw new InvalidOperationException(Stem + " reader registration failed: " + failure);
                 }
@@ -745,12 +783,26 @@ namespace GameCore.Gameplay.Logic
             this.host = host;
         }
 
+        /// <summary>Milliseconds one logical step stands for (GameplayClock; P1.7a A5).</summary>
+        public int StepMilliseconds { get; set; } = GameplayClock.DefaultStepMilliseconds;
+
+        /// <summary>
+        /// Gameplay time (P1.7a, A5): step x stepMs in a command-driven world (the executing step inside a step, else the
+        /// current step), the domain clock in a fixed-step world. The old DomainSeconds read stood still in a command-driven
+        /// world, so cooldowns never ran out.
+        /// </summary>
         public int NowMs
         {
             get
             {
-                double ms = host.DomainSeconds * 1000.0;
-                return ms >= int.MaxValue ? int.MaxValue : (ms <= 0 ? 0 : (int)ms);
+                ulong step = host.CurrentStep.Value;
+                WorldMessagePlane? plane = host.Messages;
+                if (plane != null && plane.ExecutingStep.Value > step)
+                {
+                    step = plane.ExecutingStep.Value;
+                }
+
+                return GameplayClock.NowMs32(host.TemporalModel, step, StepMilliseconds, host.DomainSeconds);
             }
         }
 
@@ -868,9 +920,21 @@ namespace GameCore.Gameplay.Logic
             Add(schema, NarrativeEvent.Encode(target, a, b, c, d, e, f));
 
         /// <summary>Commits every event in order; false when the step's event budget refused one (nothing after it is committed).</summary>
-        public bool CommitAll(WorldMessagePlane plane, StepMessage message)
+        public bool CommitAll(WorldMessagePlane plane, StepMessage message) => CommitAll(plane, message, null);
+
+        /// <summary>
+        /// <see cref="CommitAll(WorldMessagePlane, StepMessage)"/> with the world's step tap (P1.7a, A1): false before
+        /// anything is committed when the outbox has no room for what the events may owe; after each committed event the
+        /// tap records the deliveries it owes, in this step.
+        /// </summary>
+        public bool CommitAll(WorldMessagePlane plane, StepMessage message, IGameplayStepTap? tap)
         {
             if (schemas.Count == 0)
+            {
+                return false;
+            }
+
+            if (tap != null && !tap.HasRoom(schemas.Count))
             {
                 return false;
             }
@@ -894,10 +958,52 @@ namespace GameCore.Gameplay.Logic
                 {
                     return false;
                 }
+
+                tap?.OnCommitted(schemas[i], payloads[i], message.Request);
             }
 
-            return plane.Commit(message, schemas[schemas.Count - 1], payloads[payloads.Count - 1], plane.ExecutingStep, out string _);
+            int last = schemas.Count - 1;
+            if (!plane.Commit(message, schemas[last], payloads[last], plane.ExecutingStep, out string _))
+            {
+                return false;
+            }
+
+            tap?.OnCommitted(schemas[last], payloads[last], message.Request);
+            return true;
         }
+    }
+
+    /// <summary>
+    /// The destination half of the in-step outbox (P1.7a, A1). A request id is decided before the command mutates:
+    /// 0 is not deduplicated; an id in the target's request ring (when it has one) was applied; an obligation id is claimed
+    /// through the step tap (open -> apply, settled or unknown -> already applied); any other id is new. After the effect
+    /// committed the destination pushes the id into its ring (when it has one) and settles a claimed obligation.
+    /// </summary>
+    public static class NarrativeObligations
+    {
+        /// <summary>None to apply, IdempotencyConflict when the request was already applied.</summary>
+        public static DiagnosticCode Admit(IGameplayStepTap? tap, IReadOnlyList<int>? ring, int requestId)
+        {
+            if (!RequestRing.IsTracked(requestId))
+            {
+                return DiagnosticCode.None;
+            }
+
+            if (ring != null && RequestRing.Contains(ring, requestId))
+            {
+                return DiagnosticCode.IdempotencyConflict;
+            }
+
+            return GameplayObligations.Claim(tap, requestId) == ObligationClaim.AlreadyApplied
+                ? DiagnosticCode.IdempotencyConflict
+                : DiagnosticCode.None;
+        }
+
+        /// <summary>Settles an obligation id after the destination committed its effect (no-op for other ids).</summary>
+        public static void Settle(IGameplayStepTap? tap, int requestId) => GameplayObligations.Settle(tap, requestId);
+
+        /// <summary>The optional trailing request id of a command (0 when absent).</summary>
+        public static int OptionalRequest(NarrativeCommand command, int index) => command.Count > index ? command[index] : 0;
     }
 
     /// <summary>Submits narrative commands with one issuer and a strictly increasing sequence (P-050).</summary>
@@ -917,6 +1023,19 @@ namespace GameCore.Gameplay.Logic
         public int Submitted { get; private set; }
 
         public int Refused { get; private set; }
+
+        private ulong requestSerial;
+
+        /// <summary>
+        /// A fresh command request id (P1.7a, A6): positive int31 of (issuer, the logical step it is made at, a serial), so
+        /// a restored world - which resumes at the captured step - never mints an id an applied request already holds,
+        /// and two boots fed the same commands mint the same ids.
+        /// </summary>
+        public int NextRequestId()
+        {
+            requestSerial++;
+            return GameplayRequestIds.OfCommand(Issuer, host.CurrentStep.Value, requestSerial);
+        }
 
         public CommandAdmissionReceipt Submit(RouteId route, TargetId target, SchemaRef schema, FrozenPayload payload)
         {
