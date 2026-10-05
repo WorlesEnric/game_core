@@ -64,7 +64,8 @@ namespace Hollowmere.P3_1.EditMode.Tests
             Assert.That(admission.Options.Capture, Is.InstanceOf<SaveServiceAdmissionCapture>(), "R2-G: the game bound its SaveService capture");
             Assert.That(admission.Options.SessionReady, Is.Not.Null, "R2-G: the game bound its session readiness");
             Assert.That(admission.Options.SessionReady!(), Is.True, "the running game's session is ready");
-            Assert.That(admission.Options.SmokeTest, Is.Not.Null, "R2-G: the game bound its live smoke dispatcher");
+            Assert.That(admission.Options.PollSmokeTest, Is.Not.Null, "R2-G2: the game bound its tri-state live smoke poll");
+            Assert.That(admission.Options.SmokeTestFrameBudget, Is.GreaterThanOrEqualTo(HollowmereAdmittedSmoke.FrameBudget), "the poll budget covers the entry's steps");
             IAdmissionCapture capture = admission.Options.Capture!;
             HollowmereGame game = UnityEngine.Object.FindAnyObjectByType<HollowmereGame>()!;
 
