@@ -1,0 +1,33 @@
+{
+  "kind": "event",
+  "status": 200,
+  "recordedFrom": "live node via P2.2 LiveTests",
+  "recordedAt": "2026-10-05 00:31:38Z",
+  "body": {
+    "cursor": 52,
+    "at": 1791160294443,
+    "type": "request",
+    "requestId": "cs_0B348BC41DF504666ABE261C12",
+    "data": {
+      "attempt": 0,
+      "changeSetId": "cs_0B348BC41DF504666ABE261C12",
+      "createdAt": 1791160289333,
+      "hasCandidate": false,
+      "outcome": {
+        "code": "cancelled",
+        "message": "This task was cancelled (cancelled by the owner); I stopped working on it."
+      },
+      "requestId": "cs_0B348BC41DF504666ABE261C12",
+      "seq": 52,
+      "state": "cancelled",
+      "taskId": "tb1983df3976acb59924f6b64",
+      "taskStatus": "cancelled",
+      "tasks": [
+        "tb1983df3976acb59924f6b64"
+      ],
+      "topic": "#agent/gamecore-studio/cs-0b348bc41df504666abe261c12",
+      "updatedAt": 1791160294443,
+      "worker": "gc-designer"
+    }
+  }
+}

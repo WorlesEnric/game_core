@@ -1,0 +1,100 @@
+{
+  "exchanges": [
+    {
+      "method": "GET",
+      "path": "/v1/hello",
+      "status": 200,
+      "ms": 1741.3,
+      "code": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/agents/etos-other-agent/http/v1/hello",
+      "status": 404,
+      "ms": 5.2,
+      "code": "agent_unknown"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/t000000000000000000000000",
+      "status": 403,
+      "ms": 0.9,
+      "code": "forbidden"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/tickets",
+      "status": 200,
+      "ms": 506.5,
+      "code": null
+    },
+    {
+      "method": "WS",
+      "path": "/v1/events",
+      "status": 101,
+      "ms": 513.4,
+      "code": null
+    },
+    {
+      "method": "GET",
+      "path": "/v1/hello",
+      "status": 200,
+      "ms": 0.8,
+      "code": null
+    },
+    {
+      "method": "POST",
+      "path": "/v1/requests",
+      "status": 200,
+      "ms": 24802.6,
+      "code": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/tickets",
+      "status": 200,
+      "ms": 0.7,
+      "code": null
+    },
+    {
+      "method": "WS",
+      "path": "/v1/events",
+      "status": 101,
+      "ms": 0.7,
+      "code": null
+    },
+    {
+      "method": "POST",
+      "path": "/v1/requests/cs_070CF6254E80B47C1A69384EA8/cancel",
+      "status": 200,
+      "ms": 921.5,
+      "code": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/tickets",
+      "status": 200,
+      "ms": 0.7,
+      "code": null
+    },
+    {
+      "method": "WS",
+      "path": "/v1/events",
+      "status": 101,
+      "ms": 1.6,
+      "code": null
+    },
+    {
+      "method": "GET",
+      "path": "/v1/requests/cs_070CF6254E80B47C1A69384EA8",
+      "status": 200,
+      "ms": 1.0,
+      "code": null
+    }
+  ],
+  "log": [
+    "[etos] GET /api/v1/agents/etos-other-agent/http/v1/hello -> agent_unknown: this node has no agent `etos-other-agent` [HTTP 404]",
+    "[etos] GET /api/v1/tasks/t000000000000000000000000 -> forbidden: this app key may not use the tasks routes (add the route group to the key's `routes` in etos.toml) [HTTP 403]",
+    "[etos] event stream reconnected after 148 ms at cursor 59"
+  ]
+}

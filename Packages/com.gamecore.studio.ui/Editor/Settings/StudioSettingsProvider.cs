@@ -134,22 +134,27 @@ namespace GameCore.Studio.UI
             picking.Add(hz);
 
             VisualElement agent = Section(root, "Agent gateway");
-            IStudioAgentGateway gateway = StudioAgentGateways.Resolve(runtime);
-            agent.Add(new Label("Gateway: " + (gateway is NullStudioAgentGateway ? "none registered (NullStudioAgentGateway)" : gateway.GetType().FullName)));
+            IAgentGateway gateway = StudioAgentGateways.Resolve(runtime);
+            agent.Add(new Label("Gateway: " + (gateway is NullAgentGateway ? "none registered (NullAgentGateway)" : gateway.GetType().FullName)));
             ProviderStatus status = gateway.Status;
-            agent.Add(new Label("Connection: " + status.Connection + (status.Code != null ? " (" + status.Code + ")" : string.Empty)));
-            if (status.Detail != null)
+            agent.Add(new Label("Connection: " + ProviderNames.ConnectionOf(status) + (status.Problem != null ? " (" + status.Problem.Code + ")" : string.Empty)
+                + (status.CompanionVersion != null ? ", companion " + status.CompanionVersion : string.Empty)));
+            if (status.Problem != null)
             {
-                Label detail = new Label(status.Detail);
+                Label detail = new Label(status.Problem.Message + (status.Problem.Hint != null ? " " + status.Problem.Hint : string.Empty));
                 detail.AddToClassList("gcs-wrap");
                 agent.Add(detail);
             }
+
+            Label etos = new Label("The key file, node URL and connection test are on Project Settings > GameCore Studio > ETOS (P2.2).");
+            etos.AddToClassList("gcs-wrap");
+            agent.Add(etos);
 
             VisualElement chips = new VisualElement();
             chips.AddToClassList("gcs-row");
             foreach (string name in ProviderNames.All)
             {
-                chips.Add(StudioStyles.ProviderChip(name, status.Of(name)));
+                chips.Add(StudioStyles.ProviderChip(name, status.For(name)));
             }
 
             agent.Add(chips);

@@ -1165,11 +1165,18 @@ impl Desk {
             }
             Some(RecordStatus::Failed) => {
                 self.emit("task_progress", rid, progress("failed"));
-                // The node closes a cancelled task with a `failed` record: ask etos which.
+                // The node closes a cancelled task with a `failed` record: ask etos which. The
+                // worker's controller posts that record (refusal code `cancelled`) as soon as
+                // the cancel reaches it, which can be before etos reports the task cancelled.
+                let said_cancelled =
+                    rec.data.pointer("/refusal/code").and_then(Value::as_str) == Some("cancelled");
                 let (cancelled, task_error) = match self.client.tasks().get(task).await {
-                    Ok(info) => (info.status == "cancelled", info.error.map(|e| redact(&e))),
+                    Ok(info) => (
+                        said_cancelled || info.status == "cancelled",
+                        info.error.map(|e| redact(&e)),
+                    ),
                     Err(e) if e.is_retryable() => return Flow::Retry,
-                    Err(_) => (false, None),
+                    Err(_) => (said_cancelled, None),
                 };
                 let upd = if cancelled {
                     RequestUpdate {

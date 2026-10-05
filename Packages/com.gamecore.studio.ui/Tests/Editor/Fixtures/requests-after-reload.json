@@ -1,6 +1,6 @@
 {
-  "comment": "What the companion reports after a domain reload: the submitted request moved on to candidate. $request, $csid and $intent are substituted by the test.",
+  "comment": "What P2.2's gateway lists after a domain reload (RequestView shape): the submitted request moved on to candidate. $request, $csid and $intent are substituted by the test.",
   "requests": [
-    { "requestId": "$request", "changeSetId": "$csid", "state": "candidate", "intentText": "$intent", "worker": "studio-agent", "costUsd": 0.042, "taskIds": [ "t_fixture_1" ], "sequence": 7, "etosStatus": "completed" }
+    { "requestId": "$request", "changeSetId": "$csid", "state": "candidate", "intent": "$intent", "worker": "gc-designer", "taskId": "t_fixture_1", "taskStatus": "done", "tasks": [ "t_fixture_1" ], "hasCandidate": true, "seq": 7, "createdAt": 1791000000000, "updatedAt": 1791000030000 }
   ]
 }

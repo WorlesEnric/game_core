@@ -1,0 +1,38 @@
+{
+  "kind": "generate",
+  "status": 200,
+  "recordedFrom": "live node via P2.2 LiveTests",
+  "recordedAt": "2026-10-05 00:31:44Z",
+  "body": {
+    "artifacts": [
+      {
+        "bytes": 111404,
+        "mediaType": "audio/wav",
+        "name": "out.wav",
+        "producer": {
+          "etosRef": "ref_01m44qjgw2422z9gntgvkedme5",
+          "key": "gc-ddc1e042bd26a87a40f8187c791aa929353dda9c",
+          "op": "tts",
+          "provider": "bailian-tts"
+        },
+        "sha256": "d0eaabf17d831ad84d7e4f0f769cbcb99b15b8ef4a53cd4c56ab66b16d7a937f",
+        "url": "/v1/artifacts/d0eaabf17d831ad84d7e4f0f769cbcb99b15b8ef4a53cd4c56ab66b16d7a937f"
+      }
+    ],
+    "etosOp": "tts",
+    "key": "gc-ddc1e042bd26a87a40f8187c791aa929353dda9c",
+    "maxCostUsd": 0.5,
+    "op": "tts",
+    "provider": "bailian-tts",
+    "state": {
+      "state": "succeeded",
+      "usage": {
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "quantity": 31.0,
+        "unit": "character"
+      }
+    }
+  }
+}

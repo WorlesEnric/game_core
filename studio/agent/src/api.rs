@@ -48,8 +48,7 @@ use crate::events::EventHub;
 use crate::index::{IndexError, Indexer};
 use crate::ledger::{Ledger, LedgerError};
 use crate::model::{
-    CandidateView, Diagnostic, GenerateRequest, Hello, IndexDelta, RequestList, StageRequest,
-    StoredArtifact,
+    CandidateView, Diagnostic, GenerateRequest, Hello, IndexDelta, RequestList, StoredArtifact,
 };
 use crate::ops::MediaOps;
 use crate::stage::StageRunner;
@@ -413,9 +412,10 @@ async fn generate(State(s): State<AppState>, body: Bytes) -> ApiResult<Response>
 }
 
 async fn stage(State(s): State<AppState>, body: Bytes) -> ApiResult<Response> {
-    let req: StageRequest = parse(&body)?;
-    let job = s.stage.submit(&req)?;
-    Ok((StatusCode::ACCEPTED, out(&job)).into_response())
+    // `{changeSetId, packageRef}` is the legacy shell; `{changeSetId, slot?, steps?}` the
+    // staging lane (P2.4); `{changeSetId, action: "discard"}` removes the change set's slot.
+    let answer = s.stage.request(parse_value(&body)?)?;
+    Ok((answer.status, out(&answer.body)).into_response())
 }
 
 async fn stage_job(State(s): State<AppState>, Path(job): Path<String>) -> ApiResult<Response> {

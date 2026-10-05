@@ -1,0 +1,15 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="saveload-root" class="gc-screen">
+        <ui:VisualElement name="saveload-panel" class="gc-panel">
+            <ui:Label name="saveload-title" text="Save game" class="gc-title" />
+            <ui:VisualElement name="saveload-slots" class="gc-list" />
+            <ui:VisualElement name="saveload-actions" class="gc-row">
+                <ui:Button name="saveload-confirm" text="Confirm" class="gc-button" />
+                <ui:Button name="saveload-delete" text="Delete" class="gc-button" />
+                <ui:Button name="saveload-back" text="Back" class="gc-button" />
+            </ui:VisualElement>
+            <ui:Label name="saveload-status" text="" class="gc-text" />
+            <ui:Label name="saveload-code" text="" class="gc-code" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

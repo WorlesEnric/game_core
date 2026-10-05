@@ -1,0 +1,8 @@
+$ unity-batch.sh editmode (EditMode)  (exit Some(0), 270653 ms)
+-- waiting for a Unity slot (3 max host-wide; waited 0s)
+-- waiting for a Unity slot (3 max host-wide; waited 60s)
+-- waiting for a Unity slot (3 max host-wide; waited 120s)
+-- waiting for a Unity slot (3 max host-wide; waited 180s)
+-- Unity slot 3/3 acquired (2 batchmode Editor(s) already running host-wide)
+-- attempt 1/2: /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Unity -batchmode -nographics -projectPath /home/worlesenric/.cache/gamecore-studio/stage/stage-real-plate/project -logFile /home/worlesenric/.cache/gamecore-studio/stage/stage-real-plate/out/logs/editmode-20261005T102427-a1.log -testResults /home/worlesenric/.cache/gamecore-studio/stage/stage-real-plate/out/editmode.xml -runTests -testPlatform EditMode
+RESULT editmode: PASS (unity exit 0, 50s, attempts 1, log /home/worlesenric/.cache/gamecore-studio/stage/stage-real-plate/out/logs/editmode-20261005T102427-a1.log)

@@ -155,6 +155,30 @@ run etos agent uninstall verify --purge && record verify_agent_removed ok "" || 
 trap - EXIT
 rm -rf "$TMP"
 
+# The `state` of every "--- settled" record the real-node test prints, in order.
+settled_states() {
+    python3 - "$1" <<'PY'
+import json, sys
+lines = open(sys.argv[1], encoding="utf-8", errors="replace").read().split("\n")
+states, i = [], 0
+while i < len(lines):
+    if lines[i].startswith("--- settled"):
+        buf, j = [], i + 1
+        while j < len(lines):
+            buf.append(lines[j])
+            if lines[j] == "}":
+                break
+            j += 1
+        try:
+            states.append(str(json.loads("\n".join(buf)).get("state")))
+        except ValueError:
+            states.append("unparsed")
+        i = j
+    i += 1
+print(" ".join(states))
+PY
+}
+
 echo; echo "## 9. companion through the proxy (app key) and its real-node test"
 APP_KEY="$HOME/.config/gamecore-studio/app-key.json"
 if etos --json agent list | grep -q '"gamecore-studio"' && [ -f "$APP_KEY" ]; then
@@ -174,7 +198,14 @@ if etos --json agent list | grep -q '"gamecore-studio"' && [ -f "$APP_KEY" ]; th
             NO_PROXY=127.0.0.1,localhost no_proxy=127.0.0.1,localhost PATH="$HOME/.cargo/bin:$PATH" \
             STUDIO_REAL_APP_KEY="$APP_KEY" STUDIO_REAL_ETOS="$BIN/etos" \
             cargo test --locked --test real_node -- --ignored --nocapture --test-threads 1) > "$OUT/real-node.txt" 2>&1; then
-        record real_node ok "$(grep -E '^test result' "$OUT/real-node.txt" | tail -n 1)"
+        # Strict: the test accepts any terminal state; the environment check wants both
+        # scenarios to end with a candidate (a worker task that ran and returned a change set).
+        states="$(settled_states "$OUT/real-node.txt")"
+        if [ "$states" = "candidate candidate" ]; then
+            record real_node ok "$(grep -E '^test result' "$OUT/real-node.txt" | tail -n 1) outcomes: $states"
+        else
+            record real_node FAILED "test passed but the outcomes are '$states' (both must be candidate)"
+        fi
     else
         record real_node FAILED "$(grep -E '^test result|panicked' "$OUT/real-node.txt" | tail -n 2 | tr '\n' ' ')"
     fi

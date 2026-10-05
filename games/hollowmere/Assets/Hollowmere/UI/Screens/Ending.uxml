@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="ending-root" class="gc-screen">
+        <ui:VisualElement name="ending-panel" class="gc-panel">
+            <ui:Label name="ending-title" text="The End" class="gc-title" />
+            <ui:Label name="ending-body" text="" class="gc-text" />
+            <ui:Button name="ending-restart" text="Play again" class="gc-button" />
+            <ui:Button name="ending-menu" text="Main menu" class="gc-button" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

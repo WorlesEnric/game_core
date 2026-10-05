@@ -1,0 +1,27 @@
+{
+  "name": "com.gamecore.gameplay.dialogue",
+  "version": "1.0.0",
+  "displayName": "GameCore Gameplay Dialogue",
+  "description": "Catalog row 6 of the gameplay plugin library (P1.4): dialogue and narrative. Authoring: FactDefinition (name, initial value, persistence) and DialogueGraphDefinition (line, choice, branch, action and end nodes joined by edges). Kernel half: the narrative state target with the dialogue.active/graph/node/speaker/listener/choiceCount slots and one narrative.fact.<name> slot per baked fact, visited bits per graph, the dialogue.start/choose/advance/interrupt and narrative.setFact routes and the Started/LineShown/ChoiceOffered/ChoiceMade/DialogueEnded/FactSet/ActionNode events. Runtime: DialogueRunner (IConversationStarter), DialoguePresenter (IDialogueView) and VoiceLinePlayer (IVoiceLinePlayer). Editor: dialogue.addLine, addChoice, linkCondition, setFact, preview and generateVoice.",
+  "unity": "6000.0",
+  "keywords": [
+    "gamecore",
+    "gameplay",
+    "dialogue",
+    "narrative"
+  ],
+  "dependencies": {
+    "com.gamecore.composition": "1.0.0",
+    "com.gamecore.contracts": "1.0.0",
+    "com.gamecore.gameplay.compile": "1.0.0",
+    "com.gamecore.gameplay.contracts": "1.0.0",
+    "com.gamecore.gameplay.entities": "1.0.0",
+    "com.gamecore.gameplay.logic": "1.0.0",
+    "com.gamecore.gameplay.world": "1.0.0",
+    "com.gamecore.rules.gameplay": "1.0.0",
+    "com.gamecore.unity.app": "1.0.0",
+    "com.gamecore.unity.runtime": "1.0.0",
+    "com.unity.collections": "2.6.6",
+    "com.unity.entities": "1.4.6"
+  }
+}

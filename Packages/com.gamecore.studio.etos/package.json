@@ -1,0 +1,16 @@
+{
+  "name": "com.gamecore.studio.etos",
+  "version": "1.0.0",
+  "displayName": "GameCore Studio ETOS Client",
+  "description": "GameCore Studio boundary D on the Unity side (docs/studio/02-architecture.md, docs/studio/04-etos-integration.md): the Unity-free protocol client GameCore.Studio.Etos.Client (HTTP and WebSocket to the gamecore-studio companion through the etos node's proxied agent route with a paired app key, tickets, cursor resume with backoff, verified artifact downloads, voice framing, credential redaction; the same sources build under plain dotnet as dotnet/src/GameCore.Studio.Etos.Client) and the Editor assembly GameCore.Studio.Etos (the agent gateway registered into the Studio runtime, context packing, candidate import and staging, provider status, microphone capture and the voice session, media generation adapters and the ETOS settings page). Editor-only: a built game never references etos.",
+  "unity": "6000.0",
+  "keywords": [
+    "gamecore",
+    "studio",
+    "etos"
+  ],
+  "dependencies": {
+    "com.gamecore.studio.core": "1.0.0",
+    "com.unity.nuget.newtonsoft-json": "3.2.1"
+  }
+}

@@ -25,7 +25,7 @@ namespace GameCore.Studio.UI
         }
 
         /// <summary>A provider status chip (<c>image: live</c>).</summary>
-        public static Label ProviderChip(string name, ProviderAvailability availability)
+        public static Label ProviderChip(string name, ProviderState availability)
         {
             Label chip = new Label(name + ": " + ProviderNames.Wire(availability)) { name = "provider-" + name };
             chip.AddToClassList("gcs-chip");

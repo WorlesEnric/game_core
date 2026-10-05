@@ -58,7 +58,7 @@ namespace GameCore.Studio.UI
         {
             foreach (Operation operation in changeSet.Operations)
             {
-                if (string.Equals(operation.Tool, BuiltInToolIds.MechanismPropose, StringComparison.Ordinal))
+                if (string.Equals(operation.Tool, BuiltInToolIds.MechanismPropose, StringComparison.Ordinal) || string.Equals(operation.Tool, MechanismAdmission.AdmitTool, StringComparison.Ordinal))
                 {
                     return true;
                 }

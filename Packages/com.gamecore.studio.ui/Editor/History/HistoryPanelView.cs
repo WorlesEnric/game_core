@@ -1,5 +1,6 @@
 // GameCore.Studio.UI - the history panel (GameCore/Studio/History; SR-3.3, SADR-009, W-EDIT-03/05, W-REC-01): journal
-// entries newest first (time, origin agent/manual/voice/replay, summary, state), Undo/Redo bound to HistoryService,
+// entries newest first (time, origin agent/manual/voice/replay, summary, state), Undo/Redo bound to HistoryService (an
+// admission entry, mechanism.admit, is undone through StageAdmission.Undo: package removed, recompiled, catalog hash checked),
 // Interrupted entries highlighted with Resume/Rollback, a target filter, open-in-journal (reveals the entry's JSON file)
 // and the retained artifact list with sizes and a "retained" marker (referenced by a journal entry).
 #nullable enable
@@ -154,13 +155,36 @@ namespace GameCore.Studio.UI
 
         public string StatusText => _status.text ?? string.Empty;
 
+        /// <summary>
+        /// Undoes <paramref name="changeSetId"/> (or the newest undoable entry). An admission (mechanism.admit) goes
+        /// through StageAdmission.Undo, which removes the package, recompiles and checks the catalog hash (P2.4); its
+        /// outcome is kept in <see cref="LastAdmission"/> (Pending while the recompile runs, then Undone or UndoFailed).
+        /// </summary>
         public HistoryResult Undo(string? changeSetId)
         {
-            HistoryResult result = _context.Runtime.History.Undo(changeSetId);
-            _status.text = Describe("Undo", result);
+            string? target = changeSetId ?? _context.Runtime.History.NextUndo;
+            ChangeSet? entry = target != null && _context.Runtime.Journal.Exists(target) ? _context.Runtime.Journal.Read(target) : null;
+            HistoryResult result;
+            if (entry != null && CandidateStaging.IsAdmission(entry))
+            {
+                AdmissionResult admission = StageAdmission.Of(_context.Runtime).Undo(entry.Id);
+                LastAdmission = admission;
+                bool ok = admission.Outcome == AdmissionOutcome.Pending || admission.Outcome == AdmissionOutcome.Undone;
+                result = new HistoryResult(entry.Id, ok, ok ? ChangeSetState.Undone : (ChangeSetState?)null, admission.Diagnostics, null);
+                _status.text = "Undo of admission " + entry.Id + ": " + admission.Outcome + (admission.Reason != null ? " (" + admission.Reason + ")" : string.Empty) + " - " + admission.Detail;
+            }
+            else
+            {
+                result = _context.Runtime.History.Undo(changeSetId);
+                _status.text = Describe("Undo", result);
+            }
+
             Rebuild();
             return result;
         }
+
+        /// <summary>The last admission undo routed through StageAdmission (null when none).</summary>
+        public AdmissionResult? LastAdmission { get; private set; }
 
         public HistoryResult Redo(string? changeSetId)
         {

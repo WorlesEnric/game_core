@@ -1087,10 +1087,26 @@ async fn ops_generate_stores_artifacts_and_passes_refusals() {
         .cloned()
         .unwrap();
     assert!(b["input"].as_str().unwrap().starts_with("ref_"));
-    assert_eq!(
-        b["max_cost_usd"], 0.02,
-        "every operation carries the ceiling"
+    assert!(
+        b.get("max_cost_usd").is_none(),
+        "describe's etops input has no max_cost_usd: {b}"
     );
+    assert!(v.get("max_cost_usd").is_none(), "{v}");
+    // Without any ceiling describe still runs (none configured here); a ceiling of 0 refuses it.
+    let (s, v) = api
+        .post(
+            "/v1/ops/generate",
+            json!({"op": "describe", "spec": {"artifact": sha(b"PNG-lantern")}}),
+        )
+        .await;
+    assert_eq!(s, 200, "{v}");
+    let (s, v) = api
+        .post(
+            "/v1/ops/generate",
+            json!({"op": "describe", "spec": {"artifact": sha(b"PNG-lantern")}, "max_cost_usd": 0.0}),
+        )
+        .await;
+    assert_eq!((s, v["code"].as_str()), (400, Some("bad_request")), "{v}");
     // The node's reported digest is checked: a mismatch is a protocol error, nothing stored.
     node.lock().wrong_digest_ops.push("generate.image".into());
     let (s, v) = api
@@ -1523,5 +1539,44 @@ async fn a_degraded_model_is_named_in_the_outcome() {
             .contains("auth_unavailable"),
         "{v}"
     );
+    running.shutdown().await;
+}
+
+#[tokio::test]
+async fn a_slow_media_op_is_held_up_to_the_op_timeout() {
+    let node = FakeNode::start().await;
+    node.set_op(
+        "generate.image",
+        200,
+        json!({"name": "lantern.png", "bytes": "PNG-slow-lantern"}),
+    );
+    let dir = tempfile::tempdir().unwrap();
+    let running = companion(&node, dir.path(), |c| c.ops_timeout_secs = 2).await;
+    let api = Api::new(&running, &node);
+    let body = json!({"op": "image", "spec": {"prompt": "a slow lantern"}, "max_cost_usd": 0.05});
+    // Slower than nothing, within the op timeout: the request is held and answered.
+    node.lock().op_delay_ms = 1_000;
+    let (s, v) = api.post("/v1/ops/generate", body.clone()).await;
+    assert_eq!(s, 200, "{v}");
+    assert_eq!(v["artifacts"][0]["sha256"], sha(b"PNG-slow-lantern"));
+    let key = v["key"].as_str().unwrap().to_string();
+    // Past the op timeout: 504 `transport` naming the key a resend reuses.
+    node.lock().op_delay_ms = 3_500;
+    let (s, v) = api.post("/v1/ops/generate", body.clone()).await;
+    assert_eq!((s, v["code"].as_str()), (504, Some("transport")), "{v}");
+    assert_eq!(v["data"]["key"], key.as_str(), "{v}");
+    assert!(v["hint"].as_str().unwrap().contains(&key), "{v}");
+    // The identical resend carries the same key (etops answers it without generating again).
+    node.lock().op_delay_ms = 0;
+    let (s, v) = api.post("/v1/ops/generate", body).await;
+    assert_eq!((s, v["key"].as_str()), (200, Some(key.as_str())), "{v}");
+    let keys: Vec<Value> = node
+        .lock()
+        .op_calls
+        .iter()
+        .filter(|(o, _)| o == "generate.image")
+        .map(|(_, b)| b["key"].clone())
+        .collect();
+    assert!(keys.iter().all(|k| k == key.as_str()), "{keys:?}");
     running.shutdown().await;
 }

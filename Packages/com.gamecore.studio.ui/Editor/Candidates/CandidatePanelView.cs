@@ -2,8 +2,11 @@
 // (SR-3.2/3.5/1.8 from the review side): per candidate the summary (ops by tool, targets, requirement badges), Preview
 // (staged with ghosts, before/after toggle, per-op list with stale/conflict findings and skip/rebase controls), Compare
 // (property diff, image before/after/diff, audio playback), Apply (policy picker, what happens in Play vs Edit, timed,
-// per-op outcomes) and Reject (reason sent back through the gateway). All actions go through CandidateCoordinator,
-// which only calls the edit engine.
+// per-op outcomes) and Reject (reason kept by the gateway). A change set that proposes a mechanism shows its staging
+// state instead of Apply (journal `validation`: verdict pending/pass/fail, admission, undo) with Stage (the companion's
+// staging lane through the gateway), Record verdict (a verdict file from `gamecore-studio stage run`) and Admit
+// (StageAdmission, enabled only on a passing verdict). All actions go through CandidateCoordinator, which only calls
+// the edit engine and StageAdmission.
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -74,6 +77,12 @@ namespace GameCore.Studio.UI
                 row.AddToClassList("gcs-tray__row");
                 row.EnableInClassList("gcs-tray__row--selected", entry.Id == _selected);
                 row.Add(StudioStyles.Badge(entry.Stage.ToString(), entry.Stage.ToString().ToLowerInvariant()));
+                if (CandidateRequirements.NeedsStageVerdict(entry.ChangeSet))
+                {
+                    StageState stage = _context.Candidates.StageStateOf(entry);
+                    row.Add(StudioStyles.Badge(stage.Label, VerdictModifier(stage)));
+                }
+
                 Label summary = new Label(entry.ChangeSet.Intent.Text + " - " + entry.Summary) { tooltip = entry.Id };
                 summary.AddToClassList("gcs-tray__intent");
                 row.Add(summary);
@@ -190,6 +199,12 @@ namespace GameCore.Studio.UI
                 _details.Add(BuildAudioRow(clip));
             }
 
+            // ---------------------------------------------------------------- staging lane
+            if (CandidateRequirements.NeedsStageVerdict(changeSet))
+            {
+                BuildStaging(entry);
+            }
+
             // ---------------------------------------------------------------- apply
             _details.Add(StudioStyles.Header("Apply"));
             List<string> policies = new List<string> { ApplyPolicy.AllOrNothing.ToString(), ApplyPolicy.BestEffort.ToString() };
@@ -213,7 +228,7 @@ namespace GameCore.Studio.UI
             reason.AddToClassList("gcs-grow");
             reason.tooltip = "Why you reject it (sent back to the companion)";
             applyRow.Add(reason);
-            Button reject = new Button(() => Run(() => _ = _context.Candidates.Reject(entry, reason.value), "Rejected.")) { name = "candidate-reject", text = "Reject" };
+            Button reject = new Button(() => Run(() => _context.Candidates.Reject(entry, reason.value), "Rejected.")) { name = "candidate-reject", text = "Reject" };
             reject.SetEnabled(entry.Stage != CandidateStage.Applied && entry.Stage != CandidateStage.Rejected);
             applyRow.Add(reject);
             _details.Add(applyRow);
@@ -244,6 +259,88 @@ namespace GameCore.Studio.UI
             {
                 _details.Add(StudioStyles.Text(LastMessage, "gcs-status"));
             }
+        }
+
+        /// <summary>The staging-lane block: verdict state from the journal, Stage / Record verdict / Admit.</summary>
+        private void BuildStaging(CandidateEntry entry)
+        {
+            _details.Add(StudioStyles.Header("Staging lane"));
+            StageState stage = _context.Candidates.StageStateOf(entry);
+            VisualElement states = new VisualElement { name = "candidate-stage-state" };
+            states.AddToClassList("gcs-row");
+            states.Add(StudioStyles.Badge(stage.Label, VerdictModifier(stage)));
+            if (entry.Staging)
+            {
+                states.Add(StudioStyles.Badge("staging...", "pending"));
+            }
+
+            _details.Add(states);
+            foreach (ValidationScenario? scenario in new[] { stage.Verdict, stage.Admission, stage.Undo })
+            {
+                if (scenario?.Detail != null)
+                {
+                    _details.Add(StudioStyles.Text(scenario.Scenario + ": " + scenario.Detail, scenario.Status == ScenarioStatus.Fail ? "gcs-diagnostic" : "gcs-muted"));
+                }
+            }
+
+            _details.Add(StudioStyles.Text("Generated code reaches the editor only with a passing verdict for exactly these artifacts and an explicit Admit (compile, checkers, catalog check; rolled back on any failure).", "gcs-muted"));
+            VisualElement row = new VisualElement();
+            row.AddToClassList("gcs-row");
+            bool canStage = _context.Candidates.CanRequestStage;
+            Button stageButton = new Button(() => _ = StageAsync(entry)) { name = "candidate-stage", text = "Stage" };
+            stageButton.tooltip = canStage ? "Stage in an isolated slot project (POST /v1/stage); the verdict is recorded in the journal." : "The registered gateway has no staging lane; run gamecore-studio stage run and use Record verdict.";
+            stageButton.SetEnabled(canStage && entry.IsOpen && !entry.Staging);
+            row.Add(stageButton);
+            Button record = new Button(() => Run(() =>
+            {
+                string path = EditorUtility.OpenFilePanel("Stage verdict", string.Empty, "json");
+                if (!string.IsNullOrEmpty(path))
+                {
+                    StageVerdict verdict = _context.Candidates.RecordVerdictFile(entry, path);
+                    LastMessage = "Verdict " + (verdict.Pass ? "pass" : "fail") + " recorded: " + verdict.Summary;
+                }
+            }, null))
+            { name = "candidate-record-verdict", text = "Record verdict...", tooltip = "Record a verdict file (gamecore-studio stage run --verdict-out FILE)" };
+            record.SetEnabled(entry.IsOpen);
+            row.Add(record);
+            Toggle capture = new Toggle("Capture and stop Play") { name = "candidate-admit-capture", value = EditorApplication.isPlaying };
+            capture.SetEnabled(EditorApplication.isPlaying);
+            row.Add(capture);
+            Button admit = new Button(() => Run(() =>
+            {
+                AdmissionResult result = _context.Candidates.Admit(entry, capture.value);
+                LastMessage = "Admit " + result.Outcome + (result.Reason != null ? " (" + result.Reason + ")" : string.Empty) + ": " + result.Detail;
+            }, null))
+            { name = "candidate-admit", text = "Admit" };
+            admit.AddToClassList("gcs-primary");
+            admit.tooltip = stage.VerdictPassed ? "Install the staged package through StageAdmission (compile, checkers, catalog check)." : "Admit needs a passing stage verdict.";
+            admit.SetEnabled(entry.IsOpen && stage.VerdictPassed && !entry.Staging);
+            row.Add(admit);
+            _details.Add(row);
+            if (entry.Admission != null)
+            {
+                _details.Add(StudioStyles.Text("Admission: " + entry.Admission.Outcome + (entry.Admission.Reason != null ? " (" + entry.Admission.Reason + ")" : string.Empty) + " - " + entry.Admission.Detail, entry.Admission.Outcome == AdmissionOutcome.Admitted || entry.Admission.Outcome == AdmissionOutcome.Pending ? "gcs-muted" : "gcs-diagnostic"));
+            }
+        }
+
+        private async System.Threading.Tasks.Task StageAsync(CandidateEntry entry)
+        {
+            LastMessage = "Staging " + entry.Id + "...";
+            Rebuild();
+            Diagnostic? failure = await _context.Candidates.RequestStage(entry);
+            LastMessage = failure == null ? "Stage verdict recorded: " + _context.Candidates.StageStateOf(entry).Label + "." : "Stage failed: " + failure.Code + ": " + failure.Message;
+            Rebuild();
+            return;
+        }
+
+        internal static string VerdictModifier(StageState stage)
+        {
+            if (stage.Verdict == null)
+            {
+                return "stale";
+            }
+
+            return stage.Verdict.Status == ScenarioStatus.Pass ? "applied" : stage.Verdict.Status == ScenarioStatus.Fail ? "failed" : "pending";
         }
 
         private VisualElement BuildOperationRow(CandidateEntry entry, Operation operation, StagedOperation? staged)
@@ -503,11 +600,18 @@ namespace GameCore.Studio.UI
                 summary.AddToClassList("gcs-tray__intent");
                 card.Add(summary);
                 card.Add(new Label(entry.Summary + " · " + entry.Stage));
+                bool staging = CandidateRequirements.NeedsStageVerdict(entry.ChangeSet);
+                StageState? stage = staging ? _context.Candidates.StageStateOf(entry) : null;
                 VisualElement badges = new VisualElement();
                 badges.AddToClassList("gcs-row");
                 foreach (string badge in entry.Badges)
                 {
                     badges.Add(StudioStyles.Badge(badge));
+                }
+
+                if (stage != null)
+                {
+                    badges.Add(StudioStyles.Badge(stage.Label, CandidatePanelView.VerdictModifier(stage)));
                 }
 
                 card.Add(badges);
@@ -519,9 +623,20 @@ namespace GameCore.Studio.UI
                     ApplyReport report = _context.Candidates.Apply(entry);
                     LastMessage = "Apply " + report.State + " in " + (entry.ApplyMilliseconds ?? 0).ToString("0.0", CultureInfo.InvariantCulture) + " ms";
                 }, null)) { text = "Apply" };
-                apply.SetEnabled(!CandidateRequirements.NeedsStageVerdict(entry.ChangeSet));
+                apply.SetEnabled(!staging);
                 buttons.Add(apply);
-                buttons.Add(new Button(() => Run(() => _ = _context.Candidates.Reject(entry, "Rejected from the viewport strip."), "Rejected " + entry.Id)) { text = "Reject" });
+                if (stage != null)
+                {
+                    Button admit = new Button(() => Run(() =>
+                    {
+                        AdmissionResult result = _context.Candidates.Admit(entry, EditorApplication.isPlaying);
+                        LastMessage = "Admit " + result.Outcome + (result.Reason != null ? " (" + result.Reason + ")" : string.Empty);
+                    }, null)) { text = "Admit", tooltip = stage.VerdictPassed ? "Admit through StageAdmission" : "Admit needs a passing stage verdict (open the panel to stage)." };
+                    admit.SetEnabled(stage.VerdictPassed && entry.IsOpen);
+                    buttons.Add(admit);
+                }
+
+                buttons.Add(new Button(() => Run(() => _context.Candidates.Reject(entry, "Rejected from the viewport strip."), "Rejected " + entry.Id)) { text = "Reject" });
                 buttons.Add(new Button(() => StudioCandidatesWindow.Open(entry.Id)) { text = "...", tooltip = "Open the candidate panel" });
                 card.Add(buttons);
                 Add(card);

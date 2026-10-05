@@ -44,7 +44,7 @@ namespace Hollowmere.P2_1.Tests
                 LoadIndexCache = false,
             });
             _runtime.Index.Rebuild();
-            _context = new StudioUiContext(_runtime, () => NullStudioAgentGateway.Instance, new SelectionModel(_runtime), new TaskLedger(new MemoryTaskRowStore()), false);
+            _context = new StudioUiContext(_runtime, () => NullAgentGateway.Instance, new SelectionModel(_runtime), new TaskLedger(new MemoryTaskRowStore()), false);
         }
 
         [TearDown]
@@ -93,16 +93,17 @@ namespace Hollowmere.P2_1.Tests
             Debug.Log("[P2.1] hollowmere B-SELECT " + timings.Report() + "; point-at hit=" + location.Hit);
 
             SelectionSnapshot snapshot = _context.Selection.Capture(SelectionMode.Edit);
-            AgentRequest request = _context.Requests.Build("Make these feel more lived-in", snapshot, AgentRequestMode.Edit);
+            PreparedRequest request = _context.Requests.Build("Make these feel more lived-in", snapshot);
             ToolCatalog catalog = runtime.Registry.Catalog;
             Assert.That(request.ToolCatalogRevision, Is.EqualTo(catalog.Revision ?? catalog.ComputeRevision()));
             Assert.That(request.ContextBytes, Is.LessThanOrEqualTo(AgentRequestBuilder.SliceByteCap));
             Assert.That(request.Selection.Targets.Count, Is.EqualTo(snapshot.Targets.Count));
             Debug.Log("[P2.1] hollowmere request slice " + request.ContextBytes + " bytes, truncated=" + request.ContextTruncated + ", omitted=" + request.ContextOmittedNodes);
 
-            RequestHandle handle = _context.Submit(request).Result;
-            Assert.That(handle.State, Is.EqualTo(AgentRequestState.Refused), "without a gateway the request is refused, never faked");
-            Assert.That(handle.Refusal!.Code, Is.EqualTo(DiagnosticCodes.NotConfigured));
+            PromptSubmission handle = _context.Submit(request).Result;
+            Assert.That(handle.Accepted, Is.False, "without a gateway the request is refused, never faked");
+            Assert.That(handle.Refusal!.Code, Is.EqualTo("not_configured"));
+            Assert.That(_context.Tasks.Find(request.ChangeSetId)!.State, Is.EqualTo(AgentRequestState.Refused));
         }
 
         [Test]

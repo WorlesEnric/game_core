@@ -1,6 +1,7 @@
-// GameCore.Studio.UI - builds an AgentRequest from the prompt bar (docs/studio/04-etos-integration.md s2 EditRequest,
-// 03 s2/s3/s9): intent, SelectionSnapshot, the bounded index slice of the selection closure (depth 2, 64 KiB, truncation
-// reported), the tool catalog revision, mode and attachments. The change-set id is minted here (02 s4 step 1).
+// GameCore.Studio.UI - builds P2.2's AgentRequest from the prompt bar (docs/studio/04-etos-integration.md s2
+// EditRequest, 03 s2/s3/s9): intent, SelectionSnapshot, the bounded index slice of the selection closure (depth 2,
+// 64 KiB, truncation reported), the tool catalog revision, worker mode and attachments (read from disk, at most 16 MiB
+// each). The change-set id is minted here (02 s4 step 1); P2.2 answers with it as the request id.
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -9,10 +10,63 @@ using System.Text.RegularExpressions;
 using GameCore.Studio.Authoring.Agent;
 using GameCore.Studio.Edit;
 using GameCore.Studio.Model;
-using Newtonsoft.Json.Linq;
+using AgentAttachment = GameCore.Studio.Authoring.Agent.Attachment;
 
 namespace GameCore.Studio.UI
 {
+    /// <summary>A file dragged onto the prompt bar (read when the request is built).</summary>
+    public sealed class PromptAttachment
+    {
+        public PromptAttachment(string path, string name, string mediaType, long bytes)
+        {
+            Path = path ?? throw new ArgumentNullException(nameof(path));
+            Name = name ?? throw new ArgumentNullException(nameof(name));
+            MediaType = mediaType ?? throw new ArgumentNullException(nameof(mediaType));
+            Bytes = bytes;
+        }
+
+        public string Path { get; }
+
+        public string Name { get; }
+
+        public string MediaType { get; }
+
+        public long Bytes { get; }
+    }
+
+    /// <summary>A built request plus what the UI shows about it (slice size and truncation, viewport mode, intent origin).</summary>
+    public sealed class PreparedRequest
+    {
+        public PreparedRequest(AgentRequest request, Intent intent, int contextBytes, bool contextTruncated, int contextOmittedNodes)
+        {
+            Request = request ?? throw new ArgumentNullException(nameof(request));
+            Intent = intent ?? throw new ArgumentNullException(nameof(intent));
+            ContextBytes = contextBytes;
+            ContextTruncated = contextTruncated;
+            ContextOmittedNodes = contextOmittedNodes;
+        }
+
+        /// <summary>What is sent (P2.2's request; its ChangeSetId is set).</summary>
+        public AgentRequest Request { get; }
+
+        public string ChangeSetId => Request.ChangeSetId ?? string.Empty;
+
+        /// <summary>The intent with its origin (agent or voice) and transcript id.</summary>
+        public Intent Intent { get; }
+
+        public SelectionSnapshot Selection => Request.Selection;
+
+        public string ToolCatalogRevision => Request.ToolCatalogRevision;
+
+        public string? Parent => Request.Parent;
+
+        public int ContextBytes { get; }
+
+        public bool ContextTruncated { get; }
+
+        public int ContextOmittedNodes { get; }
+    }
+
     /// <summary>Request construction and the prompt bar's enablement rules.</summary>
     public sealed class AgentRequestBuilder
     {
@@ -21,6 +75,12 @@ namespace GameCore.Studio.UI
 
         /// <summary>Byte cap of the context slice sent with a prompt (P2.1: 64 KiB; the companion caps at 2 MiB).</summary>
         public const int SliceByteCap = 64 * 1024;
+
+        /// <summary>Attachments larger than this are refused (04 s2: 16 MiB).</summary>
+        public const long MaxAttachmentBytes = 16L * 1024 * 1024;
+
+        /// <summary>The default worker mode (gc-designer); <c>mechanism</c> selects gc-mechanic.</summary>
+        public const string DesignWorker = "design";
 
         private static readonly Regex SelectionWords = new Regex(
             @"\b(this|these|that|those|it|them|selected|selection|here|there)\b",
@@ -40,15 +100,14 @@ namespace GameCore.Studio.UI
         public int ByteCap { get; set; } = SliceByteCap;
 
         /// <summary>Builds a request; nothing is sent.</summary>
-        public AgentRequest Build(
+        public PreparedRequest Build(
             string text,
             SelectionSnapshot selection,
-            AgentRequestMode mode,
             IntentOrigin origin = IntentOrigin.Agent,
             string? voiceTranscriptId = null,
-            IReadOnlyList<AgentAttachment>? attachments = null,
+            IReadOnlyList<PromptAttachment>? attachments = null,
             string? parent = null,
-            string? worker = null)
+            string worker = DesignWorker)
         {
             if (string.IsNullOrWhiteSpace(text))
             {
@@ -83,42 +142,55 @@ namespace GameCore.Studio.UI
             }
 
             IndexSlice slice = _runtime.Index.Slice(closure, Depth, ByteCap);
-            JObject sliceJson = (JObject)StudioJson.ToToken(slice.Index);
             ToolCatalog catalog = _runtime.Registry.Catalog;
             string revision = catalog.Revision ?? catalog.ComputeRevision();
             Intent intent = new Intent(text.Trim(), origin, voiceTranscriptId);
-            return new AgentRequest(
-                IdDerivation.NewChangeSetId(),
-                intent,
-                selection,
-                sliceJson,
-                slice.Truncated,
-                slice.Bytes,
-                slice.OmittedNodes,
-                revision,
-                mode,
-                attachments,
-                parent,
-                worker);
+            AgentRequest request = new AgentRequest(intent.Text, selection, slice.Index, revision)
+            {
+                Mode = worker,
+                Parent = parent,
+                VoiceTranscriptId = voiceTranscriptId,
+                ChangeSetId = IdDerivation.NewChangeSetId(),
+            };
+            foreach (PromptAttachment attachment in attachments ?? Array.Empty<PromptAttachment>())
+            {
+                FileInfo file = new FileInfo(attachment.Path);
+                if (!file.Exists)
+                {
+                    throw new FileNotFoundException("The attachment is gone: " + attachment.Path, attachment.Path);
+                }
+
+                if (file.Length > MaxAttachmentBytes)
+                {
+                    throw new ArgumentException("The attachment " + attachment.Name + " is larger than 16 MiB.", nameof(attachments));
+                }
+
+                request.Attachments.Add(new AgentAttachment(attachment.Name, attachment.MediaType, File.ReadAllBytes(file.FullName), "reference"));
+            }
+
+            return new PreparedRequest(request, intent, slice.Bytes, slice.Truncated, slice.OmittedNodes);
         }
 
         /// <summary>True when the intent text refers to a selection ("this", "these", "here", ...).</summary>
         public static bool IsSelectionScoped(string text) => !string.IsNullOrEmpty(text) && SelectionWords.IsMatch(text);
 
         /// <summary>
-        /// Why the prompt cannot be sent, or null when it can: no gateway/node, no key (not configured), a refused or
-        /// unreachable companion, no text, or a selection-scoped intent without a selection.
+        /// Why the prompt cannot be sent, or null when it can: no gateway/key (not configured), an unreachable or
+        /// refusing companion, an agent not connected yet, no text, or a selection-scoped intent without a selection.
         /// </summary>
         public static string? DisabledReason(ProviderStatus status, string text, bool hasSelection)
         {
-            switch (status.Connection)
+            Diagnostic? problem = status.Problem;
+            switch (ProviderNames.ConnectionOf(status))
             {
                 case GatewayConnection.NotConfigured:
-                    return "Not configured: " + (status.Detail ?? "no Studio companion is paired (GameCore/Studio/Settings).");
+                    return "Not configured: " + (problem?.Message ?? "no Studio companion is paired (Project Settings > GameCore Studio > ETOS).");
                 case GatewayConnection.Disconnected:
-                    return "No node: the Studio companion does not answer" + (status.Detail != null ? " (" + status.Detail + ")" : string.Empty) + ".";
+                    return "No node: the Studio companion does not answer" + (problem != null ? " (" + problem.Code + ": " + problem.Message + ")" : string.Empty) + ".";
                 case GatewayConnection.Refused:
-                    return "Refused by the node" + (status.Code != null ? " (" + status.Code + ")" : string.Empty) + ": " + (status.Detail ?? "check the app key and pairing.");
+                    return "Refused by the node (" + problem?.Code + "): " + (problem?.Hint ?? problem?.Message ?? "check the app key and pairing.");
+                case GatewayConnection.AgentStarting:
+                    return "The Studio agent is not connected yet" + (problem != null ? " (" + problem.Code + ")" : string.Empty) + "; wait a moment.";
                 case GatewayConnection.Connecting:
                     return "Connecting to the Studio companion...";
             }
@@ -163,10 +235,10 @@ namespace GameCore.Studio.UI
         }
 
         /// <summary>An attachment for a dragged file (media type from the extension).</summary>
-        public static AgentAttachment AttachmentFor(string path)
+        public static PromptAttachment AttachmentFor(string path)
         {
             FileInfo info = new FileInfo(path);
-            return new AgentAttachment(info.FullName, info.Name, MediaTypeOf(info.Extension), info.Exists ? info.Length : 0);
+            return new PromptAttachment(info.FullName, info.Name, MediaTypeOf(info.Extension), info.Exists ? info.Length : 0);
         }
 
         public static string MediaTypeOf(string extension)

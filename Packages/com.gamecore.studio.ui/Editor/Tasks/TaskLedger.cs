@@ -1,13 +1,13 @@
 // GameCore.Studio.UI - task tray state (docs/studio/04-etos-integration.md s2/s3, SR-4.4, SR-8.3). One row per request:
-// state (the companion's vocabulary, see AgentRequestState), elapsed, worker, cost, etos task ids, diagnostics and the
-// clarification question. Rows live in a ScriptableSingleton persisted under Library/, so they survive domain reloads
-// and editor restarts; on enable the tray re-fetches them from the gateway (the companion's ledger is the authority,
-// the local rows only bridge the reload).
+// state (the companion's vocabulary, see AgentRequestState), elapsed, worker, etos task ids and status, the gateway's
+// import state and progress, diagnostics and the clarification question. Rows live in a ScriptableSingleton persisted
+// under Library/, so they survive domain reloads and editor restarts; the tray merges the gateway's RequestViews on
+// every RequestChanged and on refresh (P2.2's gateway recovers them from the companion's ledger, the authority; the
+// local rows only bridge the reload).
 #nullable enable
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Threading.Tasks;
 using GameCore.Studio.Authoring.Agent;
 using GameCore.Studio.Model;
 using Newtonsoft.Json;
@@ -26,8 +26,8 @@ namespace GameCore.Studio.UI
         public string intent = string.Empty;
         public string worker = string.Empty;
         public string waitingReason = string.Empty;
-        public bool hasCost;
-        public double costUsd;
+        public string localState = string.Empty;
+        public string progress = string.Empty;
         public long createdTicks;
         public long updatedTicks;
         public List<string> taskIds = new List<string>();
@@ -187,7 +187,7 @@ namespace GameCore.Studio.UI
         }
 
         /// <summary>Records a request being submitted (state queued, no request id yet).</summary>
-        public TaskRow AddSubmitted(AgentRequest request, string selectionSummary)
+        public TaskRow AddSubmitted(PreparedRequest request, string selectionSummary)
         {
             if (request == null)
             {
@@ -203,8 +203,7 @@ namespace GameCore.Studio.UI
             row.toolCatalogRevision = request.ToolCatalogRevision;
             row.selectionSummary = selectionSummary;
             row.selectionJson = StudioJson.Serialize(request.Selection, false);
-            row.mode = request.Mode.ToString();
-            row.worker = request.Worker ?? row.worker;
+            row.mode = request.Selection.Mode.ToString();
             if (!_store.Rows.Contains(row))
             {
                 _store.Rows.Insert(0, row);
@@ -215,27 +214,32 @@ namespace GameCore.Studio.UI
             return row;
         }
 
-        /// <summary>Applies the gateway's answer to a submission.</summary>
-        public TaskRow? ApplyHandle(RequestHandle handle)
+        /// <summary>The gateway accepted a submission: the row gets its request id (state unchanged until the gateway reports it).</summary>
+        public TaskRow? ApplySubmitted(string changeSetId, string requestId)
         {
-            TaskRow? row = Find(handle.ChangeSetId);
+            TaskRow? row = Find(changeSetId);
             if (row == null)
             {
                 return null;
             }
 
-            row.state = AgentRequestStates.Wire(handle.State);
-            row.requestId = handle.RequestId ?? row.requestId;
-            if (handle.TaskId != null && !row.taskIds.Contains(handle.TaskId))
+            row.requestId = requestId;
+            row.updatedTicks = DateTime.UtcNow.Ticks;
+            Save();
+            return row;
+        }
+
+        /// <summary>The gateway refused a submission: state Refused with the diagnostic (code preserved).</summary>
+        public TaskRow? ApplyRefusal(string changeSetId, Diagnostic refusal)
+        {
+            TaskRow? row = Find(changeSetId);
+            if (row == null)
             {
-                row.taskIds.Add(handle.TaskId);
+                return null;
             }
 
-            if (handle.Refusal != null)
-            {
-                row.diagnostics.Add(StudioJson.Serialize(handle.Refusal, false));
-            }
-
+            row.state = AgentRequestStates.Wire(AgentRequestState.Refused);
+            row.diagnostics.Add(StudioJson.Serialize(refusal, false));
             row.updatedTicks = DateTime.UtcNow.Ticks;
             Save();
             return row;
@@ -265,8 +269,8 @@ namespace GameCore.Studio.UI
 
             row.worker = info.Worker ?? row.worker;
             row.waitingReason = info.WaitingReason ?? string.Empty;
-            row.hasCost = info.CostUsd.HasValue;
-            row.costUsd = info.CostUsd ?? 0;
+            row.localState = info.LocalState ?? row.localState;
+            row.progress = info.Progress ?? row.progress;
             row.updatedTicks = info.UpdatedUtc.Ticks;
             if (row.createdTicks == 0)
             {
@@ -288,8 +292,6 @@ namespace GameCore.Studio.UI
             }
 
             row.question = info.Question ?? string.Empty;
-            row.parent = info.Parent ?? row.parent;
-            row.toolCatalogRevision = info.ToolCatalogRevision ?? row.toolCatalogRevision;
             row.etosStatus = info.EtosStatus ?? row.etosStatus;
             row.sequence = Math.Max(row.sequence, info.Sequence);
             if (info.Sequence > _store.Cursor)
@@ -303,20 +305,20 @@ namespace GameCore.Studio.UI
         }
 
         /// <summary>
-        /// Re-fetches every request the companion holds for this app and merges them (after a domain reload or when the
-        /// tray opens). Rows the gateway does not know keep their last local state.
+        /// Merges every request the gateway knows (P2.2 recovers them from the companion after a domain reload). Rows
+        /// the gateway does not know keep their last local state. Returns the number of requests merged.
         /// </summary>
-        public async Task<int> Refresh(IStudioAgentGateway gateway)
+        public int Refresh(IAgentGateway gateway)
         {
             if (gateway == null)
             {
                 throw new ArgumentNullException(nameof(gateway));
             }
 
-            IReadOnlyList<AgentRequestInfo> requests = await gateway.ListRequests(0);
-            foreach (AgentRequestInfo info in requests)
+            IReadOnlyList<RequestView> requests = gateway.Requests;
+            foreach (RequestView view in requests)
             {
-                Apply(info);
+                Apply(AgentRequestInfo.From(view));
             }
 
             Refreshes++;

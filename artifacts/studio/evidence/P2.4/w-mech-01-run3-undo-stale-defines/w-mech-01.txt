@@ -1,0 +1,110 @@
+
+== build gamecore-studio (2026-10-05T10:50:24+08:00)
+
+== stage cs_01K6RW0MECH00000000000000A (2026-10-05T10:50:24+08:00)
+-- stage w-mech-01 (root /home/worlesenric/.cache/gamecore-studio/stage, source /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere, budget 360 s)
+   scan            pass       11 ms  52 file(s) clean
+   checkers        pass      101 ms  14 C# file(s), 6 asmdef(s), slot clean
+   dotnet          pass     2502 ms  15 dotnet test(s) passed
+   unity-editmode  pass    35150 ms  compiled; 27 EditMode test(s) passed
+   playmode-smoke  pass    35138 ms  120 frame(s), 120 sanctioned pump(s), no violation, no exception
+   determinism     pass        0 ms  both smoke runs end at slot hash 5aa1e545c15d
+   budget          pass        0 ms  73 s within B-STAGE 360 s
+RESULT stage w-mech-01: PASS (73007 ms of 360000 ms; verdict b83d538f5ee42802b859c33898adfc7c2e95838321595184d4d83f1fabc19ffa at /home/worlesenric/.cache/gamecore-studio/stage/w-mech-01/out/verdict.json)
+
+== admit into games/hollowmere (2026-10-05T10:51:37+08:00)
+-- Unity slot 2/3 acquired (1 batchmode Editor(s) already running host-wide)
+-- attempt 1/1: /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Unity -batchmode -nographics -projectPath /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere -logFile /tmp/p24-wmech/logs/admit-20261005T105137-a1.log -executeMethod GameCore.Studio.Edit.StageCommandLine.Admit -gcCandidate /home/worlesenric/wkspace/gc-studio/p2.4/samples/mechanisms/pressure-plate/candidate -gcVerdict /tmp/p24-wmech/verdict.json -gcResult /tmp/p24-wmech/admit.json
+RESULT admit: PASS (unity exit 0, 70s, attempts 1, log /tmp/p24-wmech/logs/admit-20261005T105137-a1.log)
+{
+  "changeSetId": "cs_01K6RW0MECH00000000000000A",
+  "outcome": "Admitted",
+  "detail": "Admitted com.hollowmere.mechanism.pressureplate; live catalog-set hash equals the predicted catalogDelta.",
+  "milliseconds": 29986.0,
+  "package": "com.hollowmere.mechanism.pressureplate",
+  "directory": "Packages/com.hollowmere.mechanism.pressureplate",
+  "verdict": "sha256:b83d538f5ee42802b859c33898adfc7c2e95838321595184d4d83f1fabc19ffa",
+  "slot": "w-mech-01",
+  "before": "425508a971072415b8f57e43894083a7f75396c1a47db4691b1a9c1b0e6ec899",
+  "live": "1d45d1c96570bb2d1d8b2be003cc9fe791f54e97a067aa2962452e044011d9fb",
+  "predicted": "1d45d1c96570bb2d1d8b2be003cc9fe791f54e97a067aa2962452e044011d9fb",
+  "operation": "admit",
+  "ok": true
+}
+
+== Hollowmere PlayMode: place a plate in the village and press it (2026-10-05T10:52:48+08:00)
+-- Unity slot 2/3 acquired (0 batchmode Editor(s) already running host-wide)
+-- attempt 1/2: /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Unity -batchmode -nographics -projectPath /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere -logFile /tmp/p24-wmech/logs/playmode-20261005T105248-a1.log -testResults /tmp/p24-wmech/playmode.xml -runTests -testPlatform PlayMode -testFilter Hollowmere\.P2_4\..*
+RESULT playmode: PASS (unity exit 0, 30s, attempts 1, log /tmp/p24-wmech/logs/playmode-20261005T105248-a1.log)
+[W-MECH-01] plate placed in Thornwick Village; pressed after 1 frame(s), released after 1 frame(s); frames=2 sanctionedPumps=2 violations=0 catalogSet=1d45d1c96570bb2d1d8b2be003cc9fe791f54e97a067aa2962452e044011d9fb world=425508a971072415b8f57e43894083a7f75396c1a47db4691b1a9c1b0e6ec899 plate=eabc05e00b2ad24fedbee8f283cd60e66782415e00865936919672ce1dab3f21
+
+== undo the admission (2026-10-05T10:53:18+08:00)
+-- Unity slot 2/3 acquired (1 batchmode Editor(s) already running host-wide)
+-- attempt 1/1: /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Unity -batchmode -nographics -projectPath /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere -logFile /tmp/p24-wmech/logs/undo-20261005T105318-a1.log -executeMethod GameCore.Studio.Edit.StageCommandLine.Undo -gcChangeSet cs_01K6RW0MECH00000000000000A -gcResult /tmp/p24-wmech/undo.json
+-- error lines from /tmp/p24-wmech/logs/undo-20261005T105318-a1.log:
+   Assets/Hollowmere/Tests/P2_4/PlayMode/PressurePlateInHollowmere.cs(15,18): error CS0234: The type or namespace name 'Mechanism' does not exist in the namespace 'Hollowmere' (are you missing an assembly reference?)
+   Assets/Hollowmere/Tests/P2_4/PlayMode/PressurePlateInHollowmere.cs(16,18): error CS0234: The type or namespace name 'Mechanism' does not exist in the namespace 'Hollowmere' (are you missing an assembly reference?)
+   [GameCore Studio] stage: undo finished: {"changeSetId":"cs_01K6RW0MECH00000000000000A","outcome":"UndoFailed","detail":"the recompile after the undo failed: 2 compile error(s); first: Assets/Hollowmere/Tests/P2_4/PlayMode/PressurePlateInHollowmere.cs(15,18): error CS0234: The type or namespace name 'Mechanism' does not exist in the namespace 'Hollowmere' (are you missing an assembly reference?)","milliseconds":5480.8,"package":"com.hollowmere.mechanism.pressureplate","before":"425508a971072415b8f57e43894083a7f75396c1a47db4691b1a9c1b0e6ec899","operation":"undo","ok":false}
+RESULT undo: FAIL (unity exit 1, 35s, attempts 1, log /tmp/p24-wmech/logs/undo-20261005T105318-a1.log)
+{
+  "changeSetId": "cs_01K6RW0MECH00000000000000A",
+  "outcome": "UndoFailed",
+  "detail": "the recompile after the undo failed: 2 compile error(s); first: Assets/Hollowmere/Tests/P2_4/PlayMode/PressurePlateInHollowmere.cs(15,18): error CS0234: The type or namespace name 'Mechanism' does not exist in the namespace 'Hollowmere' (are you missing an assembly reference?)",
+  "milliseconds": 5480.8,
+  "package": "com.hollowmere.mechanism.pressureplate",
+  "before": "425508a971072415b8f57e43894083a7f75396c1a47db4691b1a9c1b0e6ec899",
+  "operation": "undo",
+  "ok": false
+}
+
+== summary (2026-10-05T10:53:53+08:00)
+{
+  "changeSetId": "cs_01K6RW0MECH00000000000000A",
+  "stage": {
+    "pass": true,
+    "durationMs": 73007,
+    "budgetMs": 360000,
+    "wallSeconds": 73,
+    "steps": {
+      "scan": "pass",
+      "checkers": "pass",
+      "dotnet": "pass",
+      "unity-editmode": "pass",
+      "playmode-smoke": "pass",
+      "determinism": "pass",
+      "budget": "pass"
+    }
+  },
+  "catalogDelta": {
+    "mechanisms": [
+      {
+        "catalogType": "Hollowmere.Mechanism.PressurePlate.Generated.PressurePlateCatalog",
+        "fingerprint": "eabc05e00b2ad24fedbee8f283cd60e66782415e00865936919672ce1dab3f21",
+        "package": "com.hollowmere.mechanism.pressureplate"
+      }
+    ],
+    "predicted": "1d45d1c96570bb2d1d8b2be003cc9fe791f54e97a067aa2962452e044011d9fb",
+    "world": "425508a971072415b8f57e43894083a7f75396c1a47db4691b1a9c1b0e6ec899"
+  },
+  "admit": {
+    "ok": true,
+    "before": "425508a971072415b8f57e43894083a7f75396c1a47db4691b1a9c1b0e6ec899",
+    "live": "1d45d1c96570bb2d1d8b2be003cc9fe791f54e97a067aa2962452e044011d9fb",
+    "predicted": "1d45d1c96570bb2d1d8b2be003cc9fe791f54e97a067aa2962452e044011d9fb",
+    "admissionMs": 29986.0,
+    "editorWallSeconds": 71
+  },
+  "playmode": {
+    "total": 1,
+    "passed": 1,
+    "failed": 0
+  },
+  "undo": {
+    "ok": false,
+    "live": null,
+    "before": "425508a971072415b8f57e43894083a7f75396c1a47db4691b1a9c1b0e6ec899"
+  },
+  "catalogHashReturned": false,
+  "pass": false
+}
+EXIT=1

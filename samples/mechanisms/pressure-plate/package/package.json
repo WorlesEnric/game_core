@@ -1,0 +1,26 @@
+{
+  "name": "com.hollowmere.mechanism.pressureplate",
+  "version": "0.1.0",
+  "displayName": "Hollowmere Pressure Plate Mechanism",
+  "description": "Sample mechanism package (W-MECH-01): a pressure plate. Pure rules (Rules/, engine-free, dotnet-testable): a press is one actor stepping on or off; the plate is pressed while its weight reaches the threshold; refusals plate.not-loaded, plate.overloaded, plate.unknown. Kernel half: one plugin with the plate.pressed and plate.weight slots, the plate.press route and the PlatePressed, PlateReleased and PlateWeightChanged events, its own generated catalog composed with the world catalog through CatalogSet.Combine. Runtime: PressurePlateMechanism.Extend/Attach, PressurePlateWorld, the PressurePlateSmoke world, the pressureplate.definition authorable and a headless-safe binder. Editor: the mechanism.pressurePlate.add tool.",
+  "unity": "6000.0",
+  "keywords": [
+    "hollowmere",
+    "mechanism",
+    "pressure-plate"
+  ],
+  "dependencies": {
+    "com.gamecore.composition": "1.0.0",
+    "com.gamecore.contracts": "1.0.0",
+    "com.gamecore.derivation": "1.0.0",
+    "com.gamecore.gameplay.contracts": "1.0.0",
+    "com.gamecore.gameplay.entities": "1.0.0",
+    "com.gamecore.gameplay.world": "1.0.0",
+    "com.gamecore.planning": "1.0.0",
+    "com.gamecore.unity.adapters": "1.0.0",
+    "com.gamecore.unity.app": "1.0.0",
+    "com.gamecore.unity.runtime": "1.0.0",
+    "com.unity.collections": "2.6.6",
+    "com.unity.entities": "1.4.6"
+  }
+}

@@ -1,0 +1,100 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c73814afb7e044cca84eb43c1d27a9b5, type: 3}
+  m_Name: Doc_Settings
+  m_EditorClassIdentifier: GameCore.Gameplay.Ui:GameCore.Gameplay.Ui:UiDocumentDefinition
+  authoringId: 71dc6df6-2349-47b7-a28a-a60f5926a2e9
+  screen: 4
+  layer: 10
+  uxml: {fileID: 9197481963319205126, guid: d0146786f1af4433812efdf78be78909, type: 3}
+  styles: []
+  bindings:
+  - element: settings-master
+    property: value
+    source: vm:settings.MasterVolume
+    format: 
+  - element: settings-music
+    property: value
+    source: vm:settings.MusicVolume
+    format: 
+  - element: settings-sfx
+    property: value
+    source: vm:settings.SfxVolume
+    format: 
+  - element: settings-voice
+    property: value
+    source: vm:settings.VoiceVolume
+    format: 
+  - element: settings-master
+    property: changed
+    source: command:volume.0
+    format: 
+  - element: settings-music
+    property: changed
+    source: command:volume.1
+    format: 
+  - element: settings-sfx
+    property: changed
+    source: command:volume.2
+    format: 
+  - element: settings-voice
+    property: changed
+    source: command:volume.3
+    format: 
+  - element: settings-master
+    property: enabled
+    source: vm:settings.AudioAvailable
+    format: 
+  - element: settings-music
+    property: enabled
+    source: vm:settings.AudioAvailable
+    format: 
+  - element: settings-sfx
+    property: enabled
+    source: vm:settings.AudioAvailable
+    format: 
+  - element: settings-voice
+    property: enabled
+    source: vm:settings.AudioAvailable
+    format: 
+  - element: settings-sensitivity
+    property: value
+    source: vm:settings.Sensitivity
+    format: 
+  - element: settings-sensitivity
+    property: changed
+    source: command:sensitivity
+    format: 
+  - element: settings-resolution
+    property: items
+    source: vm:settings.Resolutions
+    format: 
+  - element: settings-resolution
+    property: value
+    source: vm:settings.ResolutionIndex
+    format: 
+  - element: settings-resolution
+    property: changed
+    source: command:resolution
+    format: 
+  - element: settings-fullscreen
+    property: value
+    source: vm:settings.Fullscreen
+    format: 
+  - element: settings-fullscreen
+    property: changed
+    source: command:fullscreen
+    format: 
+  - element: settings-back
+    property: clicked
+    source: command:close
+    format: 

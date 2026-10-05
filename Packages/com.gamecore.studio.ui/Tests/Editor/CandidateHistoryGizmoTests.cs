@@ -1,19 +1,21 @@
 // GameCore.Studio.UI.Tests - candidates replayed from JSON fixtures drive the edit engine and the journal: receive
 // (artifacts fetched and retained), Preview (staged in Candidate mode, ghosts for moves), Compare (property diff), Apply
-// (journal Applied, measured), Reject (journal Rejected, reason sent through the gateway), a tampered artifact makes the
-// candidate invalid, a stale catalog revision is reported as StaleContext. History panel undo/redo; the viewport move
-// gizmo produces the same journal entry as a typed move (W-EDIT-05).
+// (journal Applied, measured), Reject (journal Rejected, the gateway told), a tampered artifact makes the candidate
+// invalid, a stale catalog revision is reported as StaleContext. A mechanism candidate shows the stage verdict from the
+// journal and admits only through StageAdmission with a passing verdict. History panel undo/redo (an admission's undo
+// goes through StageAdmission.Undo); the viewport move gizmo produces the same journal entry as a typed move
+// (W-EDIT-05).
 #nullable enable
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using GameCore.Studio.Authoring;
-using GameCore.Studio.Authoring.Agent;
 using GameCore.Studio.Edit;
 using GameCore.Studio.Fixtures;
 using GameCore.Studio.Model;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace GameCore.Studio.UI.Tests
 {
@@ -49,8 +51,8 @@ namespace GameCore.Studio.UI.Tests
 
         private CandidateEntry Receive(string fixture, string? catalog = null)
         {
-            AgentCandidate candidate = _bed.Gateway.LoadCandidate(fixture, Refs(), catalog ?? _bed.CatalogRevision());
-            Task<CandidateEntry> task = _bed.Context.ReceiveCandidate(candidate.RequestId, candidate.ChangeSet.Id);
+            TestCandidate candidate = _bed.Gateway.LoadCandidate(fixture, Refs(), catalog ?? _bed.CatalogRevision());
+            Task<CandidateEntry> task = _bed.Context.ReceiveCandidate(candidate.RequestId, candidate.ChangeSet.Id, candidate.ToolCatalogRevision);
             Assert.That(task.IsCompleted, Is.True);
             return task.Result;
         }
@@ -104,11 +106,10 @@ namespace GameCore.Studio.UI.Tests
         {
             CandidateEntry entry = Receive("candidate-greeting.json");
             _bed.Context.Candidates.Preview(entry);
-            Task reject = _bed.Context.Candidates.Reject(entry, "Too informal for a blacksmith");
-            Assert.That(reject.IsCompleted, Is.True);
+            _bed.Context.Candidates.Reject(entry, "Too informal for a blacksmith");
             Assert.That(entry.Stage, Is.EqualTo(CandidateStage.Rejected));
             Assert.That(_bed.Gateway.Rejected.Count, Is.EqualTo(1));
-            Assert.That(_bed.Gateway.Rejected[0].Key, Is.EqualTo(entry.Id));
+            Assert.That(_bed.Gateway.Rejected[0].Key, Is.EqualTo(entry.RequestId));
             Assert.That(_bed.Gateway.Rejected[0].Value, Is.EqualTo("Too informal for a blacksmith"));
             Assert.That(_bed.Runtime.Journal.Read(entry.Id)!.EffectiveState, Is.EqualTo(ChangeSetState.Rejected));
             Assert.That(_smith.greeting, Is.EqualTo("Hello"));
@@ -155,7 +156,7 @@ namespace GameCore.Studio.UI.Tests
             ChangeSet agent = new ChangeSet(IdDerivation.NewChangeSetId(), ChangeSet.SchemaId, new Intent("Move the guard to the gate", IntentOrigin.Agent), typed.Operations,
                 requirements: CandidateRequirements.Implied(_bed.Runtime, typed));
             Assert.That(CandidateRequirements.Badges(agent), Does.Contain(CandidateRequirements.RequiresPlayStop), "a move needs a world rebuild");
-            CandidateEntry entry = _bed.Context.Candidates.Add(new AgentCandidate("req_move", agent, _bed.CatalogRevision()));
+            CandidateEntry entry = _bed.Context.Candidates.Add("req_move", agent, _bed.CatalogRevision());
             StagedChangeSet staged = _bed.Context.Candidates.Preview(entry);
             Assert.That(staged.Ok, Is.True, string.Join("; ", staged.Diagnostics));
             Assert.That(_bed.Runtime.Staging.GhostsOf(entry.Id).Count, Is.GreaterThanOrEqualTo(1), "a move previews as a ghost");
@@ -167,6 +168,82 @@ namespace GameCore.Studio.UI.Tests
             Assert.That(report.Ok, Is.True, string.Join("; ", report.Diagnostics));
             Assert.That(_guard.transform.position, Is.EqualTo(new Vector3(5f, 0f, 2f)));
             Assert.That(_bed.Runtime.Staging.GhostsOf(entry.Id), Is.Empty);
+        }
+
+        [Test]
+        public void MechanismCandidate_ShowsTheVerdictFromTheJournalAndAdmitsOnlyWithAPass()
+        {
+            byte[] package = System.Text.Encoding.UTF8.GetBytes("not a real archive");
+            string digest = ContentStamp.Sha256Hex(package);
+            _bed.Runtime.Artifacts.Put(package, new ArtifactRef(digest, "application/gzip", package.LongLength, "package.tgz", null, "package"));
+            Operation propose = new Operation("op1", BuiltInToolIds.MechanismPropose, null, new JObject
+            {
+                ["description"] = "A pressure plate",
+                ["package"] = new JObject { ["artifact"] = ContentStamp.Prefix + digest },
+                ["stageInputs"] = new JArray("Assets/Hollowmere/World"),
+            });
+            ChangeSet changeSet = new ChangeSet(IdDerivation.NewChangeSetId(), ChangeSet.SchemaId, new Intent("Add a pressure plate", IntentOrigin.Agent), new[] { propose },
+                artifacts: new[] { new ArtifactRef(digest, "application/gzip", package.LongLength, "package.tgz", null, "package") },
+                requirements: new Requirements(RuntimeApply.Compile, false, true, false));
+            CandidateEntry entry = _bed.Context.Candidates.Add("req_mechanism", changeSet, _bed.CatalogRevision());
+            Assert.That(CandidateRequirements.NeedsStageVerdict(entry.ChangeSet), Is.True);
+            Assert.That(CandidateStaging.PackageRef(entry.ChangeSet), Is.EqualTo(ContentStamp.Prefix + digest));
+            Assert.That(_bed.Context.Candidates.StageStateOf(entry).Label, Is.EqualTo("not staged"));
+            Assert.That(() => _bed.Context.Candidates.Apply(entry), Throws.InvalidOperationException, "a mechanism never applies directly");
+            Assert.That(() => _bed.Context.Candidates.Admit(entry, false), Throws.InvalidOperationException, "Admit needs a passing verdict");
+            Assert.That(_bed.Context.Candidates.CanRequestStage, Is.False, "the test gateway has no staging lane");
+
+            _bed.Runtime.Journal.Write(changeSet.WithState(ChangeSetState.Candidate));
+            StageAdmission.Of(_bed.Runtime).MarkStagePending(entry.Id, "slot-7");
+            StageState pending = _bed.Context.Candidates.StageStateOf(entry);
+            Assert.That(pending.Label, Is.EqualTo("verdict pending"));
+            Assert.That(pending.Verdict!.Detail, Does.Contain("slot-7"));
+            CandidateStaging.MarkVerdict(_bed.Runtime, entry.Id, ScenarioStatus.Fail, "unity-editmode failed");
+            Assert.That(_bed.Context.Candidates.StageStateOf(entry).Label, Is.EqualTo("verdict fail"));
+            Assert.That(_bed.Context.Candidates.StageStateOf(entry).VerdictPassed, Is.False);
+
+            CandidatePanelView panel = new CandidatePanelView(_bed.Context);
+            panel.Select(entry.Id);
+            Assert.That(panel.Q<VisualElement>("candidate-stage-state"), Is.Not.Null);
+            Assert.That(panel.Q<Button>("candidate-admit").enabledSelf, Is.False);
+            Assert.That(panel.Q<Button>("candidate-apply").enabledSelf, Is.False);
+        }
+
+        [Test]
+        public void History_UndoOfAnAdmissionGoesThroughStageAdmission()
+        {
+            Operation admit = new Operation("op1", MechanismAdmission.AdmitTool, null, new JObject { ["package"] = new JObject { ["artifact"] = ContentStamp.Prefix + new string('a', 64) } }, null, null, RuntimeApply.Compile);
+            ChangeSet admitted = new ChangeSet(IdDerivation.NewChangeSetId(), ChangeSet.SchemaId, new Intent("Admit a pressure plate", IntentOrigin.Agent), new[] { admit });
+            _bed.Runtime.Journal.Write(admitted.WithState(ChangeSetState.Applied));
+            StageAdmission.Configure(_bed.Runtime, new AdmissionOptions { Compiler = new NoCompile(), Catalog = new FixedCatalog(), PlayModeProbe = () => false });
+            HistoryPanelView history = new HistoryPanelView(_bed.Context);
+            HistoryResult result = history.Undo(admitted.Id);
+            Assert.That(history.LastAdmission, Is.Not.Null, "an admission is undone by StageAdmission.Undo, not the plain journal undo");
+            Assert.That(history.LastAdmission!.ChangeSetId, Is.EqualTo(admitted.Id));
+            Assert.That(history.StatusText, Does.Contain("Undo of admission"));
+            Assert.That(result.Ok, Is.EqualTo(history.LastAdmission.Outcome == AdmissionOutcome.Pending || history.LastAdmission.Outcome == AdmissionOutcome.Undone));
+        }
+
+        /// <summary>A compiler that never compiles (the admission seam; no recompile inside a test).</summary>
+        private sealed class NoCompile : IAdmissionCompiler
+        {
+            public void Compile(string reason, System.Action<AdmissionCompileResult> done) => done(new AdmissionCompileResult(true, false, "not compiled in tests"));
+        }
+
+        /// <summary>A catalog with a fixed world fingerprint and no mechanisms.</summary>
+        private sealed class FixedCatalog : IAdmissionCatalog
+        {
+            public string? WorldFingerprint(out string? problem)
+            {
+                problem = null;
+                return "sha256:" + new string('1', 64);
+            }
+
+            public string? MechanismFingerprint(string catalogType, out string? problem)
+            {
+                problem = null;
+                return null;
+            }
         }
 
         [Test]

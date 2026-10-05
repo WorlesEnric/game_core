@@ -30,6 +30,24 @@
         "com.gamecore.contracts": "1.0.0"
       }
     },
+    "com.gamecore.gameplay.audio": {
+      "version": "file:../../../Packages/com.gamecore.gameplay.audio",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.gamecore.composition": "1.0.0",
+        "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.gameplay.compile": "1.0.0",
+        "com.gamecore.gameplay.contracts": "1.0.0",
+        "com.gamecore.gameplay.entities": "1.0.0",
+        "com.gamecore.gameplay.world": "1.0.0",
+        "com.gamecore.rules.gameplay": "1.0.0",
+        "com.gamecore.unity.app": "1.0.0",
+        "com.gamecore.unity.runtime": "1.0.0",
+        "com.unity.collections": "2.6.6",
+        "com.unity.entities": "1.4.6"
+      }
+    },
     "com.gamecore.gameplay.cards": {
       "version": "file:../../../Packages/com.gamecore.gameplay.cards",
       "depth": 0,
@@ -63,6 +81,25 @@
       "source": "local",
       "dependencies": {
         "com.gamecore.contracts": "1.0.0"
+      }
+    },
+    "com.gamecore.gameplay.dialogue": {
+      "version": "file:../../../Packages/com.gamecore.gameplay.dialogue",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.gamecore.composition": "1.0.0",
+        "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.gameplay.compile": "1.0.0",
+        "com.gamecore.gameplay.contracts": "1.0.0",
+        "com.gamecore.gameplay.entities": "1.0.0",
+        "com.gamecore.gameplay.logic": "1.0.0",
+        "com.gamecore.gameplay.world": "1.0.0",
+        "com.gamecore.rules.gameplay": "1.0.0",
+        "com.gamecore.unity.app": "1.0.0",
+        "com.gamecore.unity.runtime": "1.0.0",
+        "com.unity.collections": "2.6.6",
+        "com.unity.entities": "1.4.6"
       }
     },
     "com.gamecore.gameplay.entities": {
@@ -105,6 +142,46 @@
         "com.gamecore.gameplay.entities": "1.0.0",
         "com.gamecore.gameplay.world": "1.0.0",
         "com.gamecore.rules.gameplay": "1.0.0",
+        "com.gamecore.unity.app": "1.0.0",
+        "com.gamecore.unity.runtime": "1.0.0",
+        "com.unity.collections": "2.6.6",
+        "com.unity.entities": "1.4.6"
+      }
+    },
+    "com.gamecore.gameplay.inventory": {
+      "version": "file:../../../Packages/com.gamecore.gameplay.inventory",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.gamecore.composition": "1.0.0",
+        "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.gameplay.compile": "1.0.0",
+        "com.gamecore.gameplay.contracts": "1.0.0",
+        "com.gamecore.gameplay.entities": "1.0.0",
+        "com.gamecore.gameplay.logic": "1.0.0",
+        "com.gamecore.gameplay.world": "1.0.0",
+        "com.gamecore.rules.gameplay": "1.0.0",
+        "com.gamecore.unity.app": "1.0.0",
+        "com.gamecore.unity.runtime": "1.0.0",
+        "com.unity.collections": "2.6.6",
+        "com.unity.entities": "1.4.6"
+      }
+    },
+    "com.gamecore.gameplay.logic": {
+      "version": "file:../../../Packages/com.gamecore.gameplay.logic",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.gamecore.composition": "1.0.0",
+        "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.derivation": "1.0.0",
+        "com.gamecore.gameplay.compile": "1.0.0",
+        "com.gamecore.gameplay.contracts": "1.0.0",
+        "com.gamecore.gameplay.entities": "1.0.0",
+        "com.gamecore.gameplay.world": "1.0.0",
+        "com.gamecore.planning": "1.0.0",
+        "com.gamecore.rules.gameplay": "1.0.0",
+        "com.gamecore.unity.adapters": "1.0.0",
         "com.gamecore.unity.app": "1.0.0",
         "com.gamecore.unity.runtime": "1.0.0",
         "com.unity.collections": "2.6.6",
@@ -164,6 +241,25 @@
         "com.unity.inputsystem": "1.19.0"
       }
     },
+    "com.gamecore.gameplay.quest": {
+      "version": "file:../../../Packages/com.gamecore.gameplay.quest",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.gamecore.composition": "1.0.0",
+        "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.gameplay.compile": "1.0.0",
+        "com.gamecore.gameplay.contracts": "1.0.0",
+        "com.gamecore.gameplay.entities": "1.0.0",
+        "com.gamecore.gameplay.logic": "1.0.0",
+        "com.gamecore.gameplay.world": "1.0.0",
+        "com.gamecore.rules.gameplay": "1.0.0",
+        "com.gamecore.unity.app": "1.0.0",
+        "com.gamecore.unity.runtime": "1.0.0",
+        "com.unity.collections": "2.6.6",
+        "com.unity.entities": "1.4.6"
+      }
+    },
     "com.gamecore.gameplay.rewards": {
       "version": "file:../../../Packages/com.gamecore.gameplay.rewards",
       "depth": 0,
@@ -180,6 +276,17 @@
         "com.unity.entities": "1.4.6"
       }
     },
+    "com.gamecore.gameplay.save": {
+      "version": "file:../../../Packages/com.gamecore.gameplay.save",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.studio.core": "1.0.0",
+        "com.gamecore.unity.app": "1.0.0",
+        "com.gamecore.unity.runtime": "1.0.0"
+      }
+    },
     "com.gamecore.gameplay.traversal": {
       "version": "file:../../../Packages/com.gamecore.gameplay.traversal",
       "depth": 0,
@@ -194,6 +301,26 @@
         "com.gamecore.unity.runtime": "1.0.0",
         "com.unity.collections": "2.6.6",
         "com.unity.entities": "1.4.6"
+      }
+    },
+    "com.gamecore.gameplay.ui": {
+      "version": "file:../../../Packages/com.gamecore.gameplay.ui",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.gamecore.composition": "1.0.0",
+        "com.gamecore.contracts": "1.0.0",
+        "com.gamecore.gameplay.compile": "1.0.0",
+        "com.gamecore.gameplay.contracts": "1.0.0",
+        "com.gamecore.gameplay.entities": "1.0.0",
+        "com.gamecore.gameplay.save": "1.0.0",
+        "com.gamecore.gameplay.world": "1.0.0",
+        "com.gamecore.rules.gameplay": "1.0.0",
+        "com.gamecore.unity.app": "1.0.0",
+        "com.gamecore.unity.runtime": "1.0.0",
+        "com.unity.collections": "2.6.6",
+        "com.unity.entities": "1.4.6",
+        "com.unity.inputsystem": "1.19.0"
       }
     },
     "com.gamecore.gameplay.world": {
@@ -263,6 +390,15 @@
         "com.gamecore.contracts": "1.0.0",
         "com.gamecore.unity.app": "1.0.0",
         "com.gamecore.unity.runtime": "1.0.0",
+        "com.unity.nuget.newtonsoft-json": "3.2.1"
+      }
+    },
+    "com.gamecore.studio.etos": {
+      "version": "file:../../../Packages/com.gamecore.studio.etos",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.gamecore.studio.core": "1.0.0",
         "com.unity.nuget.newtonsoft-json": "3.2.1"
       }
     },
@@ -397,6 +533,116 @@
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
+    },
+    "com.unity.modules.ai": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.animation": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.assetbundle": {
+      "version": "1.0.0",
+      "depth": 1,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.audio": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.hierarchycore": {
+      "version": "1.0.0",
+      "depth": 1,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.imageconversion": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.imgui": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.jsonserialize": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.physics": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.screencapture": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.modules.imageconversion": "1.0.0"
+      }
+    },
+    "com.unity.modules.terrain": {
+      "version": "1.0.0",
+      "depth": 2,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.ui": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.uielements": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.modules.ui": "1.0.0",
+        "com.unity.modules.imgui": "1.0.0",
+        "com.unity.modules.jsonserialize": "1.0.0",
+        "com.unity.modules.hierarchycore": "1.0.0"
+      }
+    },
+    "com.unity.modules.unityanalytics": {
+      "version": "1.0.0",
+      "depth": 1,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.modules.unitywebrequest": "1.0.0",
+        "com.unity.modules.jsonserialize": "1.0.0"
+      }
+    },
+    "com.unity.modules.unitywebrequest": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.video": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.modules.audio": "1.0.0",
+        "com.unity.modules.ui": "1.0.0",
+        "com.unity.modules.unitywebrequest": "1.0.0"
+      }
     },
     "com.unity.nuget.mono-cecil": {
       "version": "1.11.6",
@@ -551,116 +797,6 @@
       "dependencies": {
         "com.unity.modules.ui": "1.0.0",
         "com.unity.modules.imgui": "1.0.0"
-      }
-    },
-    "com.unity.modules.ai": {
-      "version": "1.0.0",
-      "depth": 0,
-      "source": "builtin",
-      "dependencies": {}
-    },
-    "com.unity.modules.animation": {
-      "version": "1.0.0",
-      "depth": 0,
-      "source": "builtin",
-      "dependencies": {}
-    },
-    "com.unity.modules.assetbundle": {
-      "version": "1.0.0",
-      "depth": 1,
-      "source": "builtin",
-      "dependencies": {}
-    },
-    "com.unity.modules.audio": {
-      "version": "1.0.0",
-      "depth": 0,
-      "source": "builtin",
-      "dependencies": {}
-    },
-    "com.unity.modules.hierarchycore": {
-      "version": "1.0.0",
-      "depth": 1,
-      "source": "builtin",
-      "dependencies": {}
-    },
-    "com.unity.modules.imageconversion": {
-      "version": "1.0.0",
-      "depth": 0,
-      "source": "builtin",
-      "dependencies": {}
-    },
-    "com.unity.modules.imgui": {
-      "version": "1.0.0",
-      "depth": 0,
-      "source": "builtin",
-      "dependencies": {}
-    },
-    "com.unity.modules.jsonserialize": {
-      "version": "1.0.0",
-      "depth": 0,
-      "source": "builtin",
-      "dependencies": {}
-    },
-    "com.unity.modules.physics": {
-      "version": "1.0.0",
-      "depth": 0,
-      "source": "builtin",
-      "dependencies": {}
-    },
-    "com.unity.modules.screencapture": {
-      "version": "1.0.0",
-      "depth": 0,
-      "source": "builtin",
-      "dependencies": {
-        "com.unity.modules.imageconversion": "1.0.0"
-      }
-    },
-    "com.unity.modules.terrain": {
-      "version": "1.0.0",
-      "depth": 2,
-      "source": "builtin",
-      "dependencies": {}
-    },
-    "com.unity.modules.ui": {
-      "version": "1.0.0",
-      "depth": 0,
-      "source": "builtin",
-      "dependencies": {}
-    },
-    "com.unity.modules.uielements": {
-      "version": "1.0.0",
-      "depth": 0,
-      "source": "builtin",
-      "dependencies": {
-        "com.unity.modules.ui": "1.0.0",
-        "com.unity.modules.imgui": "1.0.0",
-        "com.unity.modules.jsonserialize": "1.0.0",
-        "com.unity.modules.hierarchycore": "1.0.0"
-      }
-    },
-    "com.unity.modules.unityanalytics": {
-      "version": "1.0.0",
-      "depth": 1,
-      "source": "builtin",
-      "dependencies": {
-        "com.unity.modules.unitywebrequest": "1.0.0",
-        "com.unity.modules.jsonserialize": "1.0.0"
-      }
-    },
-    "com.unity.modules.unitywebrequest": {
-      "version": "1.0.0",
-      "depth": 0,
-      "source": "builtin",
-      "dependencies": {}
-    },
-    "com.unity.modules.video": {
-      "version": "1.0.0",
-      "depth": 0,
-      "source": "builtin",
-      "dependencies": {
-        "com.unity.modules.audio": "1.0.0",
-        "com.unity.modules.ui": "1.0.0",
-        "com.unity.modules.unitywebrequest": "1.0.0"
       }
     }
   }

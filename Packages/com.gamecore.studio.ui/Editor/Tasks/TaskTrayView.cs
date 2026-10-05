@@ -1,12 +1,13 @@
 // GameCore.Studio.UI - the task tray (SR-4.4, SR-8.3, B-AGENT-UX): one row per request with its state chip (the
-// companion's vocabulary), elapsed time, worker, cost when reported and a cancel button; selecting a row shows the
+// companion's vocabulary), elapsed time, worker, the gateway's import state and a cancel button; selecting a row shows the
 // details (intent, selection, diagnostics, etos task ids, links) and, for needs_clarification, an inline answer that
 // re-submits with parent = the original change set. Rows come from the TaskLedger (persisted across domain reloads) and
-// are re-fetched from the gateway when the tray attaches.
+// are merged with the gateway's requests when the tray attaches (P2.2 RequestView has no cost field, so none is shown).
 #nullable enable
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Threading;
 using System.Threading.Tasks;
 using GameCore.Studio.Authoring.Agent;
 using GameCore.Studio.Model;
@@ -39,7 +40,7 @@ namespace GameCore.Studio.UI
             _header = new Label("Tasks");
             _header.AddToClassList("gcs-section__title");
             toolbar.Add(_header);
-            toolbar.Add(new Button(() => _ = RefreshFromGateway()) { name = "tasks-refresh", text = "Refresh", tooltip = "Re-fetch requests from the Studio companion" });
+            toolbar.Add(new Button(() => RefreshFromGateway()) { name = "tasks-refresh", text = "Refresh", tooltip = "Re-fetch requests from the Studio companion" });
             toolbar.Add(new Button(() => _context.Tasks.ClearClosed()) { name = "tasks-clear", text = "Clear closed" });
             Add(toolbar);
 
@@ -64,13 +65,13 @@ namespace GameCore.Studio.UI
         /// <summary>Rows rendered by the last rebuild.</summary>
         public int RenderedRows { get; private set; }
 
-        /// <summary>Re-fetches rows from the gateway (domain reload recovery); the number of requests reported, -1 on failure.</summary>
-        public async Task<int> RefreshFromGateway()
+        /// <summary>Merges the gateway's requests into the rows (domain reload recovery); the number of requests reported, -1 on failure.</summary>
+        public int RefreshFromGateway()
         {
             int reported;
             try
             {
-                reported = await _context.Tasks.Refresh(_context.Gateway);
+                reported = _context.Tasks.Refresh(_context.Gateway);
             }
             catch (Exception error) when (!(error is OutOfMemoryException))
             {
@@ -96,17 +97,22 @@ namespace GameCore.Studio.UI
                 return;
             }
 
-            AgentRequestInfo? info = await _context.Gateway.Cancel(row.requestId);
-            if (info != null)
+            try
             {
-                _context.Tasks.Apply(info);
+                await _context.Gateway.CancelAsync(row.requestId, CancellationToken.None);
+            }
+            catch (Exception error) when (!(error is OutOfMemoryException))
+            {
+                Diagnostic refusal = GatewayErrors.ToDiagnostic(error);
+                row.diagnostics.Add(StudioJson.Serialize(new Diagnostic(refusal.Code, "Cancel refused: " + refusal.Message, refusal.Hint), false));
+                _context.Tasks.Store.Save();
             }
 
             Rebuild();
         }
 
         /// <summary>Answers a clarification: a new request with parent = the row's change set.</summary>
-        public async Task<RequestHandle?> Answer(TaskRow row, string answer)
+        public async Task<PromptSubmission?> Answer(TaskRow row, string answer)
         {
             if (string.IsNullOrWhiteSpace(answer))
             {
@@ -117,8 +123,8 @@ namespace GameCore.Studio.UI
                 ? StudioJson.Deserialize<SelectionSnapshot>(row.selectionJson)
                 : _context.Selection.Capture(row.mode == "Play" ? SelectionMode.Play : SelectionMode.Edit);
             string text = row.intent + "\nAnswer to \"" + row.question + "\": " + answer.Trim();
-            AgentRequest request = _context.Requests.Build(text, selection, row.mode == "Play" ? AgentRequestMode.Play : AgentRequestMode.Edit, IntentOrigin.Agent, null, null, row.changeSetId);
-            RequestHandle handle = await _context.Submit(request);
+            PreparedRequest request = _context.Requests.Build(text, selection, IntentOrigin.Agent, null, null, row.changeSetId);
+            PromptSubmission handle = await _context.Submit(request);
             _selected = handle.ChangeSetId;
             Rebuild();
             return handle;
@@ -165,9 +171,9 @@ namespace GameCore.Studio.UI
                 element.Add(new Label(row.worker) { tooltip = "worker" });
             }
 
-            if (row.hasCost)
+            if (row.localState.Length > 0)
             {
-                element.Add(new Label("$" + row.costUsd.ToString("0.000", CultureInfo.InvariantCulture)) { tooltip = "cost reported by etos" });
+                element.Add(new Label(row.localState) { name = "local-state", tooltip = "Studio-side import state reported by the gateway" });
             }
 
             Button cancel = new Button(() => _ = Cancel(row)) { name = "cancel", text = "Cancel", tooltip = "Cancel through etos (a no-op once the task ended)" };
@@ -213,6 +219,15 @@ namespace GameCore.Studio.UI
             _details.Add(StudioStyles.Text("Mode: " + row.mode + "  Worker: " + (row.worker.Length > 0 ? row.worker : "default")));
             _details.Add(StudioStyles.Text("Created: " + row.CreatedUtc.ToString("u", CultureInfo.InvariantCulture) + "  Updated: " + row.UpdatedUtc.ToString("u", CultureInfo.InvariantCulture)));
             _details.Add(StudioStyles.Text("etos tasks: " + (row.taskIds.Count == 0 ? "-" : string.Join(", ", row.taskIds))));
+            if (row.localState.Length > 0)
+            {
+                _details.Add(StudioStyles.Text("Import: " + row.localState));
+            }
+
+            if (row.progress.Length > 0)
+            {
+                _details.Add(StudioStyles.Text("Progress: " + row.progress));
+            }
             if (row.toolCatalogRevision.Length > 0)
             {
                 _details.Add(StudioStyles.Text("Tool catalog: " + row.toolCatalogRevision.Substring(0, Math.Min(16, row.toolCatalogRevision.Length)) + "..."));
@@ -255,7 +270,7 @@ namespace GameCore.Studio.UI
             _context.Tasks.Changed += Rebuild;
             _context.Candidates.Changed += Rebuild;
             schedule.Execute(Tick).Every(1000);
-            _ = RefreshFromGateway();
+            RefreshFromGateway();
         }
 
         private void Detach()

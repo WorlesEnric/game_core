@@ -1,0 +1,9 @@
+-- stage w-mech-01 (root /home/worlesenric/.cache/gamecore-studio/stage, source /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere, budget 360 s)
+   scan            pass       11 ms  52 file(s) clean
+   checkers        pass      101 ms  14 C# file(s), 6 asmdef(s), slot clean
+   dotnet          pass     2502 ms  15 dotnet test(s) passed
+   unity-editmode  pass    35150 ms  compiled; 27 EditMode test(s) passed
+   playmode-smoke  pass    35138 ms  120 frame(s), 120 sanctioned pump(s), no violation, no exception
+   determinism     pass        0 ms  both smoke runs end at slot hash 5aa1e545c15d
+   budget          pass        0 ms  73 s within B-STAGE 360 s
+RESULT stage w-mech-01: PASS (73007 ms of 360000 ms; verdict b83d538f5ee42802b859c33898adfc7c2e95838321595184d4d83f1fabc19ffa at /home/worlesenric/.cache/gamecore-studio/stage/w-mech-01/out/verdict.json)

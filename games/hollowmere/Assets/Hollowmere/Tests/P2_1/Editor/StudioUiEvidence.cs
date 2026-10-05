@@ -3,11 +3,14 @@
 // (step index in SessionState, so it continues across the domain reload of entering Play Mode) opens Thornwick Village,
 // lays out the Studio, then: first-run guide, Select click on the Village Well, Inspect hover card, marquee, point-at
 // marker, a canned candidate (a move of the well, built locally as evidence input) previewed with its ghost, applied
-// and undone from History, the prompt bar's disabled reason without a gateway, then Play Mode from Boot.unity with the
+// and undone from History, then one live prompt through the real gateway (P2.2's EtosAgentGateway; the well selected,
+// the companion's gc-designer answers, the etos gateway stages the candidate, the panel adopts it, the run rejects it so
+// the scene stays as it was; the key never appears on screen), then Play Mode from Boot.unity with the
 // viewport in Play mode on the player camera, W held through the Input System (the player must move), the pump
 // indicator, Maren (patrolling NPC) and the well selected in Play, and Pause. After each step the Studio windows' own
 // pixels are composed into a PNG in GCS_EVIDENCE_DIR (UnityWindowCapture; the desktop is never grabbed);
-// evidence-log.jsonl records the step, time, pump readout and B-SELECT timings. The editor exits when done (exit code 0, or 1 when a step failed).
+// evidence-log.jsonl records the step, time, pump readout and B-SELECT timings. The editor exits when done (exit code
+// 0, or 1 when a step failed).
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -41,6 +44,12 @@ namespace Hollowmere.P2_1.Evidence
         private const string FailedKey = "GameCore.Studio.P21.Evidence.Failed";
         private const string FirstRunKey = "GameCore.Studio.P21.Evidence.FirstRunWas";
         private const double StepSeconds = 2.5;
+
+        /// <summary>The one prompt sent to the real gateway (gc-designer), with the Village Well selected.</summary>
+        private const string LivePrompt = "Move this well one metre to the east";
+
+        /// <summary>How long the live request may take before the run records it as unanswered.</summary>
+        private const double LiveTimeoutSeconds = 540;
 
         static StudioUiEvidence()
         {
@@ -202,7 +211,7 @@ namespace Hollowmere.P2_1.Evidence
                     ChangeSet candidate = new ChangeSet(IdDerivation.NewChangeSetId(), ChangeSet.SchemaId, new Intent("Move " + target.name + " closer to the well (P2.1 evidence candidate)", IntentOrigin.Agent), typed.Operations,
                         requirements: CandidateRequirements.Implied(context.Runtime, typed));
                     ToolCatalog catalog = context.Runtime.Registry.Catalog;
-                    CandidateEntry entry = context.Candidates.Add(new AgentCandidate("req_p21_evidence", candidate, catalog.Revision ?? catalog.ComputeRevision()));
+                    CandidateEntry entry = context.Candidates.Add("req_p21_evidence", candidate, catalog.Revision ?? catalog.ComputeRevision());
                     clock.CandidateId = entry.Id;
                     StagedChangeSet staged = context.Candidates.Preview(entry);
                     StudioCandidatesWindow.Open(entry.Id);
@@ -230,21 +239,104 @@ namespace Hollowmere.P2_1.Evidence
 
                 case 10:
                 {
+                    // The real gateway (P2.2's EtosAgentGateway, registered by its session on load) must report the
+                    // companion's agent as connected before the prompt can be sent.
                     StudioViewportWindow viewport = Viewport();
-                    if (viewport.Prompt != null)
+                    GameObject? target = Find(clock.TargetName) ?? throw new InvalidOperationException("The target disappeared.");
+                    viewport.Context.Selection.Set(new[] { viewport.Context.Selection.RefOf(target)! });
+                    PromptBar prompt = viewport.Prompt ?? throw new InvalidOperationException("The viewport has no prompt bar.");
+                    prompt.Text = LivePrompt;
+                    prompt.Refresh();
+                    ProviderStatus status = viewport.Context.Gateway.Status;
+                    if (prompt.DisabledReason != null && clock.Waits++ < 48)
                     {
-                        viewport.Prompt.Text = "Make these villagers greet the player";
+                        if (clock.Waits % 8 == 0)
+                        {
+                            Debug.Log("[P2.1 evidence] waiting for the gateway: " + prompt.DisabledReason);
+                        }
+
+                        return false;
                     }
 
-                    Shot(step, "prompt-bar", "Prompt bar with provider chips; Send is disabled with the reason (no gateway registered on this host run).");
+                    clock.Waits = 0;
+                    Shot(step, "prompt-bar", "Prompt bar with the live provider chips (" + ProviderNames.ConnectionOf(status) + ", gateway " + viewport.Context.Gateway.GetType().Name + "); "
+                        + (prompt.DisabledReason == null ? "Send is enabled for \"" + LivePrompt + "\" with the well selected." : "Send is disabled: " + prompt.DisabledReason));
                     return true;
                 }
 
                 case 11:
+                {
+                    StudioViewportWindow viewport = Viewport();
+                    PromptBar prompt = viewport.Prompt ?? throw new InvalidOperationException("The viewport has no prompt bar.");
+                    if (prompt.DisabledReason != null)
+                    {
+                        throw new InvalidOperationException("The live prompt cannot be sent: " + prompt.DisabledReason);
+                    }
+
+                    clock.LiveStartedAt = EditorApplication.timeSinceStartup;
+                    _ = prompt.SubmitAsync();
+                    clock.LiveId = prompt.LastRequest?.ChangeSetId ?? string.Empty;
+                    StudioTasksWindow.Open();
+                    Log(step, "live-submit", "Submitted \"" + LivePrompt + "\" through the real gateway as " + clock.LiveId + " (slice " + prompt.LastRequest?.ContextBytes + " bytes).", null);
+                    return true;
+                }
+
+                case 12:
+                {
+                    StudioUiContext context = Viewport().Context;
+                    TaskRow? row = context.Tasks.Find(clock.LiveId);
+                    CandidateEntry? entry = context.Candidates.Find(clock.LiveId);
+                    bool final = row != null && (row.State == AgentRequestState.TaskFailed || row.State == AgentRequestState.Refused || row.State == AgentRequestState.Cancelled
+                        || row.State == AgentRequestState.Unresolved || row.State == AgentRequestState.CandidateInvalid || row.State == AgentRequestState.NeedsClarification);
+                    double waited = EditorApplication.timeSinceStartup - clock.LiveStartedAt;
+                    if (entry == null && !final && waited < LiveTimeoutSeconds)
+                    {
+                        if (clock.Waits++ % 8 == 0)
+                        {
+                            Debug.Log("[P2.1 evidence] live request " + clock.LiveId + ": " + (row != null ? row.StateLabel + " " + row.localState + " " + row.progress : "no row") + " after " + waited.ToString("0", CultureInfo.InvariantCulture) + " s");
+                        }
+
+                        return false;
+                    }
+
+                    clock.Waits = 0;
+                    if (entry != null)
+                    {
+                        StudioCandidatesWindow.Open(entry.Id);
+                    }
+
+                    StudioTasksWindow.Open();
+                    string outcome = entry != null
+                        ? "candidate " + entry.Stage + (entry.GatewayStaged ? " (staged by the etos gateway, adopted by the panel)" : string.Empty) + ": " + entry.Summary
+                        : row != null ? "request " + row.StateLabel + (row.Diagnostics().Count > 0 ? " - " + row.Diagnostics()[0].Code + ": " + row.Diagnostics()[0].Message : string.Empty) : "no answer";
+                    Shot(step, "live-request", "Live gateway round trip for \"" + LivePrompt + "\" (" + clock.LiveId + ") after " + waited.ToString("0", CultureInfo.InvariantCulture) + " s: " + outcome
+                        + (row != null ? "; worker " + row.worker + ", etos " + row.etosStatus + ", tasks " + string.Join(",", row.taskIds) : string.Empty) + ".");
+                    if (entry == null)
+                    {
+                        SessionState.SetBool(FailedKey, true);
+                    }
+
+                    return true;
+                }
+
+                case 13:
+                {
+                    StudioUiContext context = Viewport().Context;
+                    CandidateEntry? entry = context.Candidates.Find(clock.LiveId);
+                    if (entry != null && entry.IsOpen)
+                    {
+                        context.Candidates.Reject(entry, "P2.1 evidence run: reviewed, not applied.");
+                    }
+
+                    Log(step, "live-reject", entry != null ? "The live candidate was reviewed and rejected (journal " + context.Runtime.Journal.Read(entry.Id)?.EffectiveState + "); the scene is unchanged." : "No live candidate to reject.", null);
+                    return true;
+                }
+
+                case 14:
                     EditorSceneManager.OpenScene(BootScene, OpenSceneMode.Single);
                     EditorApplication.EnterPlaymode();
                     return true;
-                case 12:
+                case 15:
                 {
                     if (!EditorApplication.isPlaying)
                     {
@@ -271,7 +363,7 @@ namespace Hollowmere.P2_1.Evidence
                     return true;
                 }
 
-                case 13:
+                case 16:
                 {
                     StudioViewportWindow viewport = Viewport();
                     viewport.Focus();
@@ -290,7 +382,7 @@ namespace Hollowmere.P2_1.Evidence
                     return true;
                 }
 
-                case 14:
+                case 17:
                 {
                     StudioViewportWindow viewport = Viewport();
                     GameObject? maren = FindByName("Maren");
@@ -325,7 +417,7 @@ namespace Hollowmere.P2_1.Evidence
                     return true;
                 }
 
-                case 15:
+                case 18:
                 {
                     StudioViewportWindow viewport = Viewport();
                     GameApplicationRoot? root = GameApplication.Current;
@@ -338,14 +430,14 @@ namespace Hollowmere.P2_1.Evidence
                     return true;
                 }
 
-                case 16:
+                case 19:
                     if (EditorApplication.isPlaying)
                     {
                         EditorApplication.ExitPlaymode();
                     }
 
                     return true;
-                case 17:
+                case 20:
                 {
                     if (EditorApplication.isPlaying)
                     {
@@ -568,6 +660,24 @@ namespace Hollowmere.P2_1.Evidence
         [SerializeField]
         private string candidateId = string.Empty;
 
+        [SerializeField]
+        private string liveId = string.Empty;
+
+        [SerializeField]
+        private double liveStartedAt;
+
+        public string LiveId
+        {
+            get => liveId;
+            set => liveId = value ?? string.Empty;
+        }
+
+        public double LiveStartedAt
+        {
+            get => liveStartedAt;
+            set => liveStartedAt = value;
+        }
+
         public double NextAt { get; set; }
 
         public int Waits { get; set; }
@@ -608,6 +718,8 @@ namespace Hollowmere.P2_1.Evidence
             Waits = 0;
             targetName = string.Empty;
             candidateId = string.Empty;
+            liveId = string.Empty;
+            liveStartedAt = 0;
         }
     }
 }

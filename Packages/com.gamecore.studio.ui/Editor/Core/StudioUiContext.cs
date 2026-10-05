@@ -2,31 +2,55 @@
 // coordinator and the gateway event pump. The project's context lives in StudioUiSession (a ScriptableSingleton, rebuilt
 // after every domain reload); tests build their own over a test runtime, a test gateway and an in-memory task store.
 //
-// Gateway events may arrive on any thread; the context marshals them onto the main thread (MainThreadQueue) and then:
-// RequestUpdated -> task ledger; CandidateReady -> candidate coordinator (fetch + retain artifacts); VoiceTranscript ->
-// VoiceTranscriptReceived; ProviderStatusChanged -> StatusChanged. The gateway is resolved on every tick, so a gateway
-// registered after the UI opened (P2.2 on load) is picked up and subscribed.
+// The gateway is P2.2's GameCore.Studio.Authoring.Agent.IAgentGateway. Its events are posted onto the context's
+// MainThreadQueue and handled on the next tick: RequestChanged -> task ledger, and the candidate coordinator when the
+// gateway reports an imported candidate (LocalState staged / stage_refused / import_failed: the etos gateway imports and
+// stages its own requests' candidates, the UI adopts that staged change set instead of staging it twice);
+// CandidateReady -> the coordinator fetches the candidate itself when the gateway does not import it;
+// StatusChanged -> StatusChanged. The gateway is resolved on every tick, so a gateway registered after the UI opened
+// (P2.2 on load) is picked up and subscribed.
 #nullable enable
 using System;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using GameCore.Studio.Authoring.Agent;
 using GameCore.Studio.Edit;
 using GameCore.Studio.Model;
 using UnityEditor;
 using UnityEngine;
-using SelectionMode = GameCore.Studio.Model.SelectionMode;
 
 namespace GameCore.Studio.UI
 {
+    /// <summary>The outcome of a prompt submission.</summary>
+    public sealed class PromptSubmission
+    {
+        public PromptSubmission(string changeSetId, string? requestId, Diagnostic? refusal)
+        {
+            ChangeSetId = changeSetId;
+            RequestId = requestId;
+            Refusal = refusal;
+        }
+
+        public string ChangeSetId { get; }
+
+        /// <summary>The gateway's request id (P2.2: the change-set id), null when refused.</summary>
+        public string? RequestId { get; }
+
+        /// <summary>Why the gateway refused (code preserved: not_configured, stale_context, transport, ...).</summary>
+        public Diagnostic? Refusal { get; }
+
+        public bool Accepted => Refusal == null && RequestId != null;
+    }
+
     /// <summary>The services every Studio panel uses.</summary>
     public sealed class StudioUiContext : IDisposable
     {
-        private readonly Func<IStudioAgentGateway> _gatewayProvider;
+        private readonly Func<IAgentGateway> _gatewayProvider;
         private readonly bool _hooked;
-        private IStudioAgentGateway? _subscribedGateway;
-        private IDisposable? _subscription;
+        private IAgentGateway? _subscribedGateway;
 
-        public StudioUiContext(StudioRuntime runtime, Func<IStudioAgentGateway>? gateway, SelectionModel selection, TaskLedger tasks, bool hookEditorUpdate)
+        public StudioUiContext(StudioRuntime runtime, Func<IAgentGateway>? gateway, SelectionModel selection, TaskLedger tasks, bool hookEditorUpdate)
         {
             Runtime = runtime ?? throw new ArgumentNullException(nameof(runtime));
             _gatewayProvider = gateway ?? (() => StudioAgentGateways.Resolve(runtime));
@@ -57,19 +81,17 @@ namespace GameCore.Studio.UI
         public MainThreadQueue Dispatcher { get; }
 
         /// <summary>The gateway in use (resolved on each access).</summary>
-        public IStudioAgentGateway Gateway => _gatewayProvider();
+        public IAgentGateway Gateway => _gatewayProvider();
 
-        /// <summary>Events seen (all kinds), for status displays and tests.</summary>
+        /// <summary>Gateway events handled (all kinds), for status displays and tests.</summary>
         public int EventsSeen { get; private set; }
 
         /// <summary>A panel asked the prompt bar to show text (Agent-tier tools); the viewport handles it.</summary>
         public event Action<string>? PromptPrefillRequested;
 
-        public event Action<VoiceTranscript>? VoiceTranscriptReceived;
-
         public event Action<ProviderStatus>? StatusChanged;
 
-        /// <summary>Raised when a candidate arrived (after its artifacts were retained) or failed to arrive.</summary>
+        /// <summary>Raised when a candidate arrived (fetched, or adopted from the gateway's import) or failed to arrive.</summary>
         public event Action<CandidateEntry>? CandidateArrived;
 
         public void RequestPrompt(string text) => PromptPrefillRequested?.Invoke(text);
@@ -82,85 +104,89 @@ namespace GameCore.Studio.UI
         }
 
         /// <summary>Submits a built request: records the row, awaits the gateway, records the answer.</summary>
-        public async Task<RequestHandle> Submit(AgentRequest request)
+        public async Task<PromptSubmission> Submit(PreparedRequest request)
         {
             Tasks.AddSubmitted(request, AgentRequestBuilder.Summarize(request.Selection));
-            RequestHandle handle;
+            PromptSubmission submission;
             try
             {
-                handle = await Gateway.Submit(request);
-            }
-            catch (AgentGatewayException error)
-            {
-                handle = RequestHandle.Refused(request.ChangeSetId, error.Diagnostic);
+                string requestId = await Gateway.SubmitAsync(request.Request, CancellationToken.None);
+                submission = new PromptSubmission(request.ChangeSetId, requestId, null);
+                Tasks.ApplySubmitted(request.ChangeSetId, requestId);
             }
             catch (Exception error) when (!(error is OutOfMemoryException))
             {
-                handle = RequestHandle.Refused(request.ChangeSetId, new Diagnostic(DiagnosticCodes.Refused, "transport: " + error.Message));
+                submission = new PromptSubmission(request.ChangeSetId, null, GatewayErrors.ToDiagnostic(error));
+                Tasks.ApplyRefusal(request.ChangeSetId, submission.Refusal!);
             }
 
-            Tasks.ApplyHandle(handle);
-            return handle;
+            return submission;
         }
 
-        /// <summary>Handles one gateway event on the main thread (the observer posts here; tests call it directly).</summary>
-        public void Handle(AgentEvent agentEvent)
+        /// <summary>Handles a request view on the main thread (the subscription posts here; tests call it directly).</summary>
+        public void HandleRequest(RequestView view)
         {
             EventsSeen++;
-            switch (agentEvent.Kind)
+            AgentRequestInfo info = AgentRequestInfo.From(view);
+            Tasks.Apply(info);
+            IAgentGateway gateway = Gateway;
+            switch (view.LocalState)
             {
-                case AgentEventKind.RequestUpdated:
-                    if (agentEvent.Request != null)
+                case "staged":
+                case "stage_refused":
+                {
+                    StagedChangeSet? staged = GatewayExtras.StagedBy(gateway, view.RequestId);
+                    if (staged != null)
                     {
-                        Tasks.Apply(agentEvent.Request);
-                        if (agentEvent.Request.State == AgentRequestState.Candidate)
-                        {
-                            _ = ReceiveCandidate(agentEvent.Request.RequestId, agentEvent.Request.ChangeSetId);
-                        }
+                        CandidateArrived?.Invoke(Candidates.Adopt(view.RequestId, staged));
+                    }
+                    else if (Candidates.Find(view.ChangeSetId) == null)
+                    {
+                        _ = ReceiveCandidate(view.RequestId, view.ChangeSetId);
                     }
 
-                    break;
-                case AgentEventKind.CandidateReady:
-                    if (agentEvent.RequestId != null)
-                    {
-                        _ = ReceiveCandidate(agentEvent.RequestId, agentEvent.ChangeSetId);
-                    }
+                    return;
+                }
 
-                    break;
-                case AgentEventKind.VoiceTranscript:
-                    if (agentEvent.Transcript != null)
-                    {
-                        VoiceTranscriptReceived?.Invoke(agentEvent.Transcript);
-                    }
+                case "import_failed":
+                    CandidateArrived?.Invoke(Candidates.AddInvalid(view.RequestId, view.ChangeSetId, info.Diagnostics));
+                    return;
+            }
 
-                    break;
-                case AgentEventKind.ProviderStatusChanged:
-                    if (agentEvent.Status != null)
-                    {
-                        StatusChanged?.Invoke(agentEvent.Status);
-                    }
+            if (info.State == AgentRequestState.Candidate && view.HasCandidate && !GatewayExtras.ImportsItself(gateway, view.RequestId) && Candidates.Find(view.ChangeSetId) == null)
+            {
+                _ = ReceiveCandidate(view.RequestId, view.ChangeSetId);
+            }
+        }
 
-                    break;
+        /// <summary>Handles a candidate notice on the main thread: fetched here unless the gateway imports it itself.</summary>
+        public void HandleCandidate(CandidateNotice notice)
+        {
+            EventsSeen++;
+            if (!GatewayExtras.ImportsItself(Gateway, notice.RequestId))
+            {
+                _ = ReceiveCandidate(notice.RequestId, notice.ChangeSetId);
             }
         }
 
         /// <summary>Fetches a candidate (once) and announces it.</summary>
-        public async Task<CandidateEntry> ReceiveCandidate(string requestId, string? changeSetId)
+        public async Task<CandidateEntry> ReceiveCandidate(string requestId, string? changeSetId, string? toolCatalogRevision = null)
         {
-            CandidateEntry entry = await Candidates.Receive(requestId, changeSetId);
+            CandidateEntry entry = await Candidates.Receive(requestId, changeSetId, toolCatalogRevision);
             CandidateArrived?.Invoke(entry);
             return entry;
         }
 
         /// <summary>
-        /// Recovery after a domain reload: re-fetches the tray rows and the candidates of rows in state candidate that
-        /// are not under review yet.
+        /// Recovery after a domain reload: merges the gateway's requests into the tray, then brings rows in state
+        /// candidate under review (adopting what the gateway staged, fetching the rest).
         /// </summary>
         public async Task RecoverAsync()
         {
+            IAgentGateway gateway = Gateway;
             try
             {
-                await Tasks.Refresh(Gateway);
+                Tasks.Refresh(gateway);
             }
             catch (Exception error) when (!(error is OutOfMemoryException))
             {
@@ -168,9 +194,19 @@ namespace GameCore.Studio.UI
                 return;
             }
 
-            foreach (TaskRow row in Tasks.Rows)
+            foreach (TaskRow row in new List<TaskRow>(Tasks.Rows))
             {
-                if (row.State == AgentRequestState.Candidate && row.requestId.Length > 0 && Candidates.Find(row.changeSetId) == null)
+                if (row.State != AgentRequestState.Candidate || row.requestId.Length == 0 || Candidates.Find(row.changeSetId) != null)
+                {
+                    continue;
+                }
+
+                StagedChangeSet? staged = GatewayExtras.StagedBy(gateway, row.requestId);
+                if (staged != null)
+                {
+                    CandidateArrived?.Invoke(Candidates.Adopt(row.requestId, staged));
+                }
+                else
                 {
                     await ReceiveCandidate(row.requestId, row.changeSetId);
                 }
@@ -184,48 +220,45 @@ namespace GameCore.Studio.UI
                 EditorApplication.update -= Tick;
             }
 
-            _subscription?.Dispose();
-            _subscription = null;
-            _subscribedGateway = null;
+            Unsubscribe();
             Dispatcher.Dispose();
             Selection.Dispose();
         }
 
         private void EnsureSubscribed()
         {
-            IStudioAgentGateway gateway = Gateway;
+            IAgentGateway gateway = Gateway;
             if (ReferenceEquals(gateway, _subscribedGateway))
             {
                 return;
             }
 
-            _subscription?.Dispose();
+            Unsubscribe();
             _subscribedGateway = gateway;
-            _subscription = gateway.Events.Subscribe(new Observer(this));
+            gateway.RequestChanged += OnRequestChanged;
+            gateway.CandidateReady += OnCandidateReady;
+            gateway.StatusChanged += OnStatusChanged;
         }
 
-        private sealed class Observer : IObserver<AgentEvent>
+        private void Unsubscribe()
         {
-            private readonly StudioUiContext _owner;
-
-            public Observer(StudioUiContext owner)
+            if (_subscribedGateway != null)
             {
-                _owner = owner;
-            }
-
-            public void OnCompleted()
-            {
-            }
-
-            public void OnError(Exception error)
-            {
-                _owner.Dispatcher.Post(() => Debug.LogWarning("GameCore Studio: the agent event stream failed: " + error.Message));
-            }
-
-            public void OnNext(AgentEvent value)
-            {
-                _owner.Dispatcher.Post(() => _owner.Handle(value));
+                _subscribedGateway.RequestChanged -= OnRequestChanged;
+                _subscribedGateway.CandidateReady -= OnCandidateReady;
+                _subscribedGateway.StatusChanged -= OnStatusChanged;
+                _subscribedGateway = null;
             }
         }
+
+        private void OnRequestChanged(RequestView view) => Dispatcher.Post(() => HandleRequest(view));
+
+        private void OnCandidateReady(CandidateNotice notice) => Dispatcher.Post(() => HandleCandidate(notice));
+
+        private void OnStatusChanged(ProviderStatus status) => Dispatcher.Post(() =>
+        {
+            EventsSeen++;
+            StatusChanged?.Invoke(status);
+        });
     }
 }

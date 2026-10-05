@@ -136,15 +136,18 @@ pub async fn start(
         indexer.clone(),
     )
     .map_err(StartError::Schema)?;
-    let ops = Arc::new(MediaOps::new(
-        client.clone(),
-        ledger.clone(),
-        store.clone(),
-        hub.clone(),
-        indexer.clone(),
-        cfg.hello_cache_s,
-        cfg.ops_max_cost_usd,
-    ));
+    let ops = Arc::new(
+        MediaOps::new(
+            client.clone(),
+            ledger.clone(),
+            store.clone(),
+            hub.clone(),
+            indexer.clone(),
+            cfg.hello_cache_s,
+            cfg.ops_max_cost_usd,
+        )
+        .with_op_timeout(Duration::from_secs(cfg.ops_timeout_secs)),
+    );
     let voice = Arc::new(VoiceBridge::new(
         client.clone(),
         cfg.voice.clone(),

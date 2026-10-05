@@ -93,6 +93,8 @@ pub struct Inner {
     pub open_delay_ms: u64,
     /// `error` reported by `GET /tasks/{id}` (e.g. a degraded model).
     pub task_error: Option<String>,
+    /// Operations answer only after this long (a slow image provider).
+    pub op_delay_ms: u64,
 }
 
 #[derive(Clone)]
@@ -227,6 +229,19 @@ impl FakeNode {
         status: Option<&str>,
         refs: Vec<String>,
     ) {
+        self.post_record_with(topic, sender, text, status, refs, Value::Null);
+    }
+
+    /// [`FakeNode::post_record`] with the record's `data`.
+    pub fn post_record_with(
+        &self,
+        topic: &str,
+        sender: &str,
+        text: &str,
+        status: Option<&str>,
+        refs: Vec<String>,
+        data: Value,
+    ) {
         {
             let mut g = self.lock();
             let records = g.topics.entry(topic.to_string()).or_default();
@@ -237,6 +252,9 @@ impl FakeNode {
             }
             if !refs.is_empty() {
                 r["refs"] = json!(refs);
+            }
+            if !data.is_null() {
+                r["data"] = data;
             }
             records.push(r);
         }
@@ -448,39 +466,40 @@ async fn get_task(State(n): State<FakeNode>, Path(id): Path<String>) -> Response
     }
 }
 
-/// As the real node: the task is cancelled, and its controller then closes it with a final
-/// `failed` record ("This task was cancelled ...") on the origin topic.
+/// As the real node: the node first tells the worker's controller, which at once posts a final
+/// `failed` record ("This task was cancelled ...", refusal code `cancelled`) on the origin
+/// topic; only then does the node mark the task cancelled and answer.
 async fn cancel_task(State(n): State<FakeNode>, Path(id): Path<String>) -> Response {
-    let (info, close) = {
-        let mut g = n.lock();
-        match g.tasks.iter_mut().find(|t| t.id == id) {
-            Some(t) => {
-                let close = !matches!(t.status.as_str(), "done" | "failed" | "cancelled");
-                if close {
-                    t.status = "cancelled".into();
-                }
-                (
-                    task_info(t),
-                    close.then(|| (t.topic.clone(), format!("{}@fake", t.worker))),
-                )
-            }
+    let open = {
+        let g = n.lock();
+        match g.tasks.iter().find(|t| t.id == id) {
+            Some(t) => (!matches!(t.status.as_str(), "done" | "failed" | "cancelled"))
+                .then(|| (t.topic.clone(), format!("{}@fake", t.worker))),
             None => return refusal(403, "not_yours", "this agent did not open the task"),
         }
     };
-    if let Some((topic, sender)) = close {
-        let n2 = n.clone();
-        tokio::spawn(async move {
-            tokio::time::sleep(Duration::from_millis(50)).await;
-            n2.post_record(
-                &topic,
-                &sender,
-                "This task was cancelled (cancelled by the owner); I stopped working on it.",
-                Some("failed"),
-                vec![],
-            );
-        });
+    if let Some((topic, sender)) = open {
+        let text = "This task was cancelled (cancelled by the owner); I stopped working on it.";
+        n.post_record_with(
+            &topic,
+            &sender,
+            text,
+            Some("failed"),
+            vec![],
+            json!({"refusal": {"code": "cancelled", "message": text}}),
+        );
+        // The node's own cancel (container, queue) takes a moment: the follower sees the
+        // record first.
+        tokio::time::sleep(Duration::from_millis(300)).await;
     }
-    axum::Json(info).into_response()
+    let mut g = n.lock();
+    let Some(t) = g.tasks.iter_mut().find(|t| t.id == id) else {
+        return refusal(403, "not_yours", "this agent did not open the task");
+    };
+    if !matches!(t.status.as_str(), "done" | "failed" | "cancelled") {
+        t.status = "cancelled".into();
+    }
+    axum::Json(task_info(t)).into_response()
 }
 
 async fn read_topic(
@@ -561,6 +580,18 @@ async fn get_file(State(n): State<FakeNode>, Path(id): Path<String>) -> Response
 async fn op(State(n): State<FakeNode>, Path(op): Path<String>, body: Bytes) -> Response {
     let v: Value = serde_json::from_slice(&body).unwrap_or(Value::Null);
     n.lock().op_calls.push((op.clone(), v.clone()));
+    // As etops: describe's input schema has no `max_cost_usd` (unknown fields are refused).
+    if op == "describe" && v.get("max_cost_usd").is_some() {
+        return refusal(
+            400,
+            "bad_request",
+            "invalid describe input: unknown field `max_cost_usd`",
+        );
+    }
+    let delay = n.lock().op_delay_ms;
+    if delay > 0 {
+        tokio::time::sleep(Duration::from_millis(delay)).await;
+    }
     let scripted = n.lock().ops.get(&op).cloned();
     match scripted {
         Some((200, answer)) if op.starts_with("generate.") || op == "tts" => {
