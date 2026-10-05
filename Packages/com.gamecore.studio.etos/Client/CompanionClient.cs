@@ -320,10 +320,36 @@ namespace GameCore.Studio.Etos.Client
                     deadline.CancelAfter(Options.RequestTimeout);
                     try
                     {
-                        await socket.ConnectAsync(uri, deadline.Token).ConfigureAwait(false);
+                        // Mono's pending HTTP upgrade may ignore ConnectAsync's token until the server replies.
+                        // Explicitly abort/dispose the owner and unblock the caller even in that implementation.
+                        var cancelled = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+                        using (deadline.Token.Register(() =>
+                        {
+                            socket.Abort();
+                            socket.Dispose();
+                            cancelled.TrySetResult(true);
+                        }))
+                        {
+                            Task connecting = socket.ConnectAsync(uri, deadline.Token);
+                            if (await Task.WhenAny(connecting, cancelled.Task).ConfigureAwait(false) != connecting)
+                            {
+                                _ = ObserveConnectionEnd(connecting);
+                                throw new OperationCanceledException(deadline.Token);
+                            }
+                            await connecting.ConfigureAwait(false);
+                            deadline.Token.ThrowIfCancellationRequested();
+                        }
                         Record("WS", companionPath, 101, watch, null);
                         transferred = true;
                         return socket;
+                    }
+                    catch (Exception) when (ct.IsCancellationRequested)
+                    {
+                        throw new OperationCanceledException(ct);
+                    }
+                    catch (Exception) when (deadline.IsCancellationRequested)
+                    {
+                        throw new EtosException(new EtosError(0, EtosCodes.Timeout, "The WebSocket connection deadline expired."));
                     }
                     catch (Exception error) when (error is WebSocketException || error is HttpRequestException || (error is OperationCanceledException && !ct.IsCancellationRequested))
                     {
@@ -336,6 +362,14 @@ namespace GameCore.Studio.Etos.Client
             {
                 if (!transferred) socket.Dispose();
             }
+        }
+
+        private static async Task ObserveConnectionEnd(Task connecting)
+        {
+            // The socket has already been disposed; consume a late completion without retaining raw exceptions.
+            try { await connecting.ConfigureAwait(false); }
+            catch (Exception) { }
+            return;
         }
 
         public void Dispose()

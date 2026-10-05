@@ -110,8 +110,10 @@ namespace GameCore.Studio.Etos.Client.Tests
                 await Wait.Until(() => setup.Fake.EventConnections == 0, TimeSpan.FromSeconds(5), "reload closed connection");
             }
             // A failed ownership transfer after a successful upgrade must also release the actual socket.
+            int opened = setup.Fake.OpenedEventConnections;
             setup.Client.Exchanged += exchange => { if (exchange.Method == "WS") throw new InvalidOperationException("observer failed"); };
             Assert.ThrowsAsync<InvalidOperationException>(() => setup.Client.ConnectWebSocketAsync("/v1/events", "after=0"));
+            await Wait.Until(() => setup.Fake.OpenedEventConnections > opened, TimeSpan.FromSeconds(5), "upgraded connection observed");
             await Wait.Until(() => setup.Fake.EventConnections == 0, TimeSpan.FromSeconds(5), "unsuccessful ownership transfer disposed");
             Assert.That(setup.Fake.Calls.Where(c => c.Path.EndsWith("/v1/events")).All(c => c.ProjectId == setup.Options.ProjectId), Is.True);
         }

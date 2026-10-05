@@ -133,6 +133,8 @@ namespace GameCore.Studio.Etos.Testing
 
         public bool StallWebSocketUpgrade { get; set; }
         private int _pendingUpgrades;
+        private int _openedEventConnections;
+        public int OpenedEventConnections => Volatile.Read(ref _openedEventConnections);
         public int PendingUpgrades => Volatile.Read(ref _pendingUpgrades);
         public JObject? SignedStageVerdict { get; set; }
         public bool VerifyStageVerdict { get; set; } = true;
@@ -888,6 +890,7 @@ namespace GameCore.Studio.Etos.Testing
             lock (_gate)
             {
                 _eventSockets.Add(socket);
+                Interlocked.Increment(ref _openedEventConnections);
             }
 
             Task<string?> receive = socket.ReceiveTextAsync();
