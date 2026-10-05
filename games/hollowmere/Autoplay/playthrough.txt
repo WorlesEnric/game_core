@@ -1,13 +1,14 @@
 # Hollowmere recorded playthrough (P3.1 W-GAME-07): menu -> new game -> Thornwick Village (Maren, coins, Bram's lantern)
 # -> Warden Hale's gate -> Blackmere Marsh (shrine puzzle, clapper, save) -> Odd's ferry -> the Drowned Belfry (the Echo,
 # the bell) -> Ending C -> restart -> load the mid-quest save -> a walk on the causeway -> quit. About eleven and a half
-# minutes at walking pace (the recording's B-FRAME steady window needs >= 9.9 minutes).
+# minutes at walking pace on a 60 Hz display (the recording's B-FRAME steady window needs >= 9.9 minutes; the first
+# :1 recording of the shorter script played 523 s because vsynced walking is faster than the headless rehearsal).
 # Positions are world metres (village centre 0,0; marsh 200,0; belfry 100,200). Every interaction first approaches the
 # entity by its baked name (re-targeted each frame, so patrolling NPCs are reached), then waits for its prompt.
 
 waituntil ready timeout 120
 mark menu
-wait 6
+wait 12
 ui newgame
 waituntil ready timeout 120
 mark new-game
@@ -102,7 +103,12 @@ wait 4
 walk 12 1
 walk 22 0
 face 90
-wait 2
+wait 4
+log the road east: a last look back at the village
+face -90
+wait 8
+face 90
+wait 4
 mark gate
 walk 30 0
 walk 166.5 0 timeout 40
@@ -125,7 +131,11 @@ wait 4
 advance
 waituntil dialogue none timeout 10
 waituntil fact gate_open >= 1 timeout 10
-wait 2
+wait 4
+face 0
+wait 6
+face 90
+wait 3
 approach "Causeway Gate" within 1.6 timeout 20
 waituntil prompt gate timeout 10
 interact
@@ -149,8 +159,10 @@ waituntil prompt east timeout 10
 interact
 waituntil fact shrine_lit >= 1 timeout 10
 mark shrine-lit
-wait 10
+wait 12
 face 180
+wait 8
+face 0
 wait 6
 
 mark clapper
@@ -170,7 +182,7 @@ wait 1
 ui save.1
 waituntil slot slot-1 timeout 20
 mark saved
-wait 2
+wait 4
 ui close
 wait 1
 ui resume
@@ -197,6 +209,7 @@ advance
 wait 3
 choose 0
 waituntil region Belfry timeout 30
+wait 4
 
 # --- The Drowned Belfry -------------------------------------------------------------------------------------------
 mark belfry
@@ -266,5 +279,25 @@ walk 200 16
 wait 6
 face 90
 wait 10
+log back along the causeway to the shrine and the gate
+walk 192 0
+wait 4
+walk 192 -1
+face 180
+wait 10
+walk 180 2
+wait 6
+walk 172 2
+face 0
+wait 10
+face 180
+wait 8
+walk 180 2
+walk 192 -1
+face 90
+wait 12
+walk 196 0
+face 0
+wait 15
 mark done
 quit 0
