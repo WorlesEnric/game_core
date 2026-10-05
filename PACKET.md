@@ -1,8 +1,8 @@
 # P1.4 dialogue-quest-logic-inventory
 
 Catalog rows 6 (dialogue & narrative), 7 (quests), 8 (items & economy) and 9 (reusable rules/logic) of the gameplay
-plugin library, their pure rules halves, a bake extension point in the gameplay compile pipeline, and the Hollowmere
-quest "The Drowned Bell".
+plugin library, their pure rules halves, a bake extension point for package outputs in the gameplay compile pipeline,
+and the Hollowmere quest "The Drowned Bell", played through P1.3's NPCs and interactables (main ad28bb3 merged).
 
 Branch: `worktree-agent-a833890c84121beac`. Host clone: `~/wkspace/gc-studio/p1.4`.
 
@@ -10,24 +10,24 @@ Branch: `worktree-agent-a833890c84121beac`. Host clone: `~/wkspace/gc-studio/p1.
 
 | Package / path | Content |
 |---|---|
-| `Packages/com.gamecore.gameplay.contracts/Runtime/Narrative/` (additive, engine-free) | `NarrativeIds` (route/command/event/slot/owner ids of the four plugins, `narrative.fact.<name>` slots, request-id derivation `NarrativeKeys.RequestIdOf(outboxId)`), `NarrativeCatalogNames`, `NarrativeDefinitions` (`INarrativeDefinition`, `IFactDefinition`, `NarrativeKinds`), `NarrativeSeams` (`EvaluationContext`, `IConversationStarter`, `IConditionEvaluator`, `IActionRunner`, feedback/message sinks, `IVoiceLinePlayer`, `IExplainSource`+`ExplainRecord`, `IMediaGenerationGateway`+`NotConfiguredMediaGateway`, a null object for each), `NarrativeViewModels` (`DialogueViewModel`, `JournalViewModel`, `InventoryViewModel` and `IDialogueView`/`IJournalView`/`IInventoryView` with null views). |
+| `Packages/com.gamecore.gameplay.contracts/Runtime/Narrative/` (additive, engine-free) | `NarrativeIds` (route/command/event/slot/owner ids of the four plugins, `narrative.fact.<name>` slots, request-id derivation `NarrativeKeys.RequestIdOf(outboxId)`), `NarrativeCatalogNames`, `NarrativeDefinitions` (`INarrativeDefinition`, `IFactDefinition`, `NarrativeKinds`), `NarrativeSeams` (`EvaluationContext` with `FromInteraction(InteractionContext)`, `INarrativeMessageSink`, `IVoiceLinePlayer`, `IExplainSource`+`ExplainRecord`, `IMediaGenerationGateway`+`NotConfiguredMediaGateway`, a null object for each; the interaction seams are P1.3's), `NarrativeViewModels` (`DialogueViewModel`, `JournalViewModel`, `InventoryViewModel` and `IDialogueView`/`IJournalView`/`IInventoryView` with null views). |
 | `Packages/com.gamecore.rules.gameplay/Runtime/{Dialogue,Quest,Inventory,Logic}` (pure, noEngineReferences) | `DialogueRules` (graph validation, node stepping, option availability, visited bits), `QuestRules` (stage/objective/branch progression, fail conditions, reward selection per branch), `InventoryRules` (stacking, weight, slots, grant/consume/drop/transfer/trade with typed refusals, request-id ring of 8), `ConditionRules`/`ActionRules`/`RuleRules` (condition sets over facts/items/currency/quests/visited/time, the action kinds, trigger matching, once/cooldown/counter, `BoundedRing<T>`). |
-| `dotnet/tests/GameCore.Rules.Gameplay.Tests/{Dialogue,Quest,Inventory,Logic}` | 131 NUnit tests (>= 12 per area). |
-| `Packages/com.gamecore.gameplay.logic` | Authoring: `NarrativeDefinitionAsset` base, `GameplayContentSet` (the authored list), `GameplayContentManifest` (baked), `ConditionSetDefinition`, `ActionSetDefinition`, `RuleDefinition`. Runtime: `NarrativeComposer`/`NarrativeComposition`/`NarrativeRuntime`/`NarrativeWorld` (composition onto the P1.1 world plan), `NarrativeContent` (models + index), `NarrativeHost` (event routing, one delivery pump per frame), `NarrativeDelivery` (outbox ports), `NarrativeConditionEvaluator`, `NarrativeActionRunner`, `ExplainTrace` (ring of 256), `LogicModule` + `[DisableAutoCreation] LogicCommandSystem` (stage `logic`, after world/inventory/quest/dialogue). Editor: `NarrativeBake` + `LogicBakeExtension`, `NarrativeAuthoring` helpers, `logic.addRule/explain/test`, `LogicValidator`. |
-| `Packages/com.gamecore.gameplay.dialogue` | `FactDefinition`, `DialogueGraphDefinition` (line/choice/branch/action/end nodes, edges by port), `DialogueContentConverter`, `DialogueModule` + `DialogueCommandSystem`, `DialogueRunner` (`IConversationStarter`), `DialoguePresenter`, `VoiceLinePlayer`. Editor: `dialogue.addLine/addChoice/linkCondition/setFact/preview/generateVoice`, `DialogueValidator`, `DialogueBakeExtension`. |
-| `Packages/com.gamecore.gameplay.quest` | `QuestDefinition`, `ObjectiveDefinition`, `QuestContentConverter`, `QuestModule` + `QuestTracker` + `QuestCommandSystem`, `JournalPresenter`, `ObjectiveMarker`. Editor: `quest.addStage/addObjective/linkReward/simulate`, `QuestValidator`, `QuestBakeExtension`. |
-| `Packages/com.gamecore.gameplay.inventory` | `ItemDefinition`, `InventoryDefinition`, `VendorDefinition`, `LootTableDefinition`, `WorldItemDefinition`, `InventoryContentConverter`, `InventoryModule` + `InventoryCommandSystem`, `InventoryCommands`, `InventoryPresenter`, `WorldItemBinder`, `VendorBinder`. Editor: `inventory.grantStarting/placeItem/setStock`, `InventoryValidator`, `InventoryBakeExtension`. |
-| `Packages/com.gamecore.gameplay.compile/Editor/Extensions/GameplayBakeExtensions.cs` (new) | `IGameplayBakeExtension` (Contribute/Write/Verify), `GameplayBakeContext`, discovery through `TypeCache` ordered by `ExtensionId`. |
-| `games/hollowmere` | Manifest adds the four packages (lock re-resolved on the host). `Assets/Hollowmere/Rules/Runtime` (`Hollowmere.Narrative`: module list and `Boot`), `Rules/Editor/HollowmereNarrativeAuthoring` (authors the content through the tools and bakes), the authored content under `Dialogue/`, `Quests/`, `Items/`, `Rules/`, tests under `Tests/P1_4`. |
+| `dotnet/tests/GameCore.Rules.Gameplay.Tests/{Dialogue,Quest,Inventory,Logic}` | 61 NUnit test methods (Dialogue 14, Quest 14, Inventory 14, Logic 19); the whole project runs 184 cases with P1.1's and P1.3's. |
+| `Packages/com.gamecore.gameplay.logic` | Authoring: `NarrativeDefinitionAsset` base, `GameplayContentSet` (the authored list), `GameplayContentManifest` (baked), `ConditionSetDefinition`, `ActionSetDefinition`, `RuleDefinition`. Runtime: `NarrativeComposer`/`NarrativeComposition`/`NarrativeRuntime`/`NarrativeWorld` (composition onto the P1.1 world plan), `NarrativeContent` (models + index), `NarrativeHost` (event routing, one delivery pump per frame), `NarrativeDelivery` (outbox ports), `NarrativeConditionEvaluator` (P1.3's `IConditionEvaluator`), `NarrativeActionRunner` (P1.3's `IActionRunner`), `ExplainTrace` (ring of 256), `LogicModule` + `[DisableAutoCreation] LogicCommandSystem` (stage `logic`, after world/inventory/quest/dialogue). Editor: `NarrativeBake` + `LogicBakeExtension` (content manifest) + `LogicCatalogContributor`, `NarrativeAuthoring` helpers, `logic.addRule/explain/test`, `LogicValidator`. |
+| `Packages/com.gamecore.gameplay.dialogue` | `FactDefinition`, `DialogueGraphDefinition` (line/choice/branch/action/end nodes, edges by port), `DialogueContentConverter`, `DialogueModule` + `DialogueCommandSystem`, `DialogueRunner` (P1.3's `IConversationStarter`), `DialoguePresenter`, `VoiceLinePlayer`. Editor: `dialogue.addLine/addChoice/linkCondition/setFact/preview/generateVoice`, `DialogueValidator`, `DialogueCatalogContributor`. |
+| `Packages/com.gamecore.gameplay.quest` | `QuestDefinition`, `ObjectiveDefinition`, `QuestContentConverter`, `QuestModule` + `QuestTracker` + `QuestCommandSystem`, `JournalPresenter`, `ObjectiveMarker`. Editor: `quest.addStage/addObjective/linkReward/simulate`, `QuestValidator`, `QuestCatalogContributor`. |
+| `Packages/com.gamecore.gameplay.inventory` | `ItemDefinition`, `InventoryDefinition`, `VendorDefinition`, `LootTableDefinition`, `WorldItemDefinition`, `InventoryContentConverter`, `InventoryModule` + `InventoryCommandSystem`, `InventoryCommands`, `InventoryPresenter`, `WorldItemBinder`, `VendorBinder`. Editor: `inventory.grantStarting/placeItem/setStock`, `InventoryValidator`, `InventoryCatalogContributor`. |
+| `Packages/com.gamecore.gameplay.compile/Editor/Extensions/GameplayBakeExtensions.cs` (new) | `IGameplayBakeExtension` (Plan/Write/Verify) for a package's own bake outputs, `GameplayBakeContext`, discovery through `TypeCache` ordered by `ExtensionId`. Catalog registrations use P1.3's `IGameplayCatalogContributor`. |
+| `games/hollowmere` | Manifest adds the four packages (lock re-resolved on the host). `Assets/Hollowmere/Rules/Runtime` (`Hollowmere.Narrative`: module list, `Boot` with P1.3's extensions, `Wire` for P1.3's seams), `Rules/Editor/HollowmereNarrativeAuthoring` (authors the content through the tools and bakes), the authored content under `Dialogue/`, `Quests/`, `Items/`, `Rules/`, tests under `Tests/P1_4`. |
 
 ### Out-of-path edits (allowed minimal call sites)
 
-* `Packages/com.gamecore.gameplay.compile/Core/CatalogDescriptionWriter.cs`: `Write(world, naming)` delegates to a new
-  overload `Write(world, naming, extraSchemas, extraEntries)`; with no extras the output is byte-identical (P1.1 bake
-  outputs unchanged when no extension contributes).
-* `Packages/com.gamecore.gameplay.compile/Editor/Entry.cs`: `Compute` calls `GameplayBakeExtensions.Contribute` and
-  passes the contributed schemas/entries to the writer; `BakeCore` calls `GameplayBakeExtensions.Write` after the
-  manifest; `Verify` calls `GameplayBakeExtensions.Verify`; header comment step 6.
+* `Packages/com.gamecore.gameplay.compile/Editor/Entry.cs` (on top of P1.3's contribution call): `Compute` calls
+  `GameplayBakeExtensions.Plan` and adds its diagnostics; `BakeCore` calls `GameplayBakeExtensions.Write` after the
+  manifest; `Verify` calls `GameplayBakeExtensions.Verify`; `Outputs` carries the context; header comment step 6.
+  17 changed lines against main.
+* `CatalogDescriptionWriter.cs` is main's (P1.3) unchanged: the earlier P1.4 overload was dropped in favour of P1.3's
+  `GameplayCatalogContribution`.
 * `dotnet/src/GameCore.Rules.Gameplay` csproj Compile line (done before this packet started).
 
 ## API (for P1.5, P3.1, P3.2)
@@ -36,7 +36,11 @@ Branch: `worktree-agent-a833890c84121beac`. Host clone: `~/wkspace/gc-studio/p1.
 
 ```csharp
 var modules = new HollowmereNarrativeModules();          // Logic, Inventory, Quest, Dialogue (game-owned list)
-NarrativeWorld game = HollowmereNarrative.Boot(regionManifest, contentManifest, modules, options, start: true);
+var build = new WorldBuildOptions { Name = "Hollowmere", MaxEventsPerStep = 64, MaxRetainedEvents = 1024 };
+build.Extensions.Add(new NpcWorldExtension(npcRoster));                 // P1.3's extensions, composed by WorldBuilder
+build.Extensions.Add(interactions = new InteractionWorldExtension(interactionRoster));
+NarrativeWorld game = HollowmereNarrative.Boot(regionManifest, contentManifest, modules, options, build, start: true);
+HollowmereNarrative.Wire(game, interactions, interactionSession, npcSession);   // P1.3 seams -> P1.4 (nulls allowed)
 // generic form: NarrativeComposer.Boot(RegionManifest, GameplayContentManifest, IReadOnlyList<INarrativeModule>,
 //                                      GameApplicationBootOptions?, WorldBuildOptions?, bool start)
 game.Shutdown();                                          // disposes delivery, detaches the world, stops the root
@@ -44,31 +48,45 @@ game.Shutdown();                                          // disposes delivery, 
 
 `NarrativeWorld` exposes `World` (the P1.1 `GameplayWorld`), `Runtime`, `Root`, `Host`, `Conditions`, `Actions`,
 `Conversations`, `Explain`, `Delivery`. The content manifest must match the world (`FormatId`, `WorldId`), otherwise
-boot fails with ContentStale. P1.1's `GameBoot` still boots without narrative; switching the boot scene is left to
-the owner of the boot scene (P1.5/P3.1).
+boot fails with ContentStale. P1.3's `GameBoot` still boots without narrative; switching it to `HollowmereNarrative.Boot`
++ `Wire` is left to the owner of the boot scene (P1.5/P3.1). `NarrativeComposition.Extend` copies the whole plan
+definition, so P1.3's extension plugins, systems, routes, lanes, readers and dispatch kinds come along unchanged.
 
-### Seams (namespace `GameCore.Gameplay.Contracts.Narrative`)
+### Seams
+
+P1.3's (`GameCore.Gameplay.Contracts`), implemented here:
 
 ```csharp
-bool IConversationStarter.TryStart(string npcAuthoringId, string dialogueGraphRef);          // DialogueRunner
-bool IConditionEvaluator.Evaluate(string conditionSetRef, in EvaluationContext ctx, out string failedCondition);
-bool IActionRunner.TryRun(string actionSetRef, in EvaluationContext ctx);                   // "inventory.pickup" = pick up ctx's world item
+ConversationStart IConversationStarter.TryStart(string npcAuthoringId, string graphRef);   // DialogueRunner (game.Conversations)
+ConditionVerdict IConditionEvaluator.Evaluate(string conditionRef, InteractionContext context); // game.Conditions: True/False, Unknown for an undeclared ref
+void IActionRunner.Run(string actionRef, InteractionContext context);                    // game.Actions; "inventory.pickup" picks up the subject world item
+void IFeedbackSink.OnFeedback(FeedbackCue cue);      // playAudio actions -> runtime.UseFeedback(sink) (target = subject entity, cue = audio id)
+```
+
+Richer forms on the same classes: `bool NarrativeConditionEvaluator.Evaluate(string ref, in EvaluationContext ctx, out
+string failedCondition)`, `bool NarrativeActionRunner.TryRun(string ref, in EvaluationContext ctx)`, `bool
+DialogueRunner.Start(string npcAuthoringId, string graphRef)`.
+
+P1.4's own (`GameCore.Gameplay.Contracts.Narrative`):
+
+```csharp
 void IVoiceLinePlayer.Play(VoiceLineRequest request);
-void INarrativeFeedbackSink.OnFeedback(NarrativeFeedbackCue cue);   // playAudio actions -> runtime.UseFeedback(sink)
 void INarrativeMessageSink.Show(NarrativeMessage message);          // showMessage actions -> runtime.UseMessages(sink)
 void IDialogueView.Show(DialogueViewModel m); void IJournalView.Show(JournalViewModel m); void IInventoryView.Show(InventoryViewModel m);
 IExplainSource: Count, Recent(max), TryExplain(ruleRef, out ExplainRecord?)                // game.Explain
 ```
 
-Refs are authoring ids or definition names. `EvaluationContext.ForSubject(authoringId)` builds a context about a
-subject with the player as actor; condition refs also accept the shorthand `narrative.fact.<name>[op N]`.
+Refs are authoring ids or definition names; a dialogue graph also answers to its `npcGraphRef` (P1.3's
+`NpcDefinition.dialogueGraph`, e.g. `dialogue.maren`). `EvaluationContext.ForSubject(authoringId)` builds a context
+about a subject with the player as actor; condition refs also accept the shorthand `narrative.fact.<name>[op N]`
+(the Causeway Gate's lock condition).
 Views are assigned on the modules before boot (`modules.Dialogue.View`, `modules.Quest.View`,
 `modules.Inventory.View`, `modules.Dialogue.VoicePlayer`); presenters push only when the committed state changed.
 
 ### Commands and slots
 
 * Dialogue: `dialogue.start{graph, speaker, listener}`, `choose{index}`, `advance`, `interrupt`, `narrative.setFact{fact, value, request}`
-  via `DialogueRunner` (`TryStart`, `Advance`, `Choose`, `Interrupt`, `SetFact`). Slots `dialogue.active/node/speaker/choiceCount/serial`,
+  via `DialogueRunner` (`TryStart`/`Start`, `Advance`, `Choose`, `Interrupt`, `SetFact`). Slots `dialogue.active/node/speaker/choiceCount/serial`,
   visited bit words per graph, facts `narrative.fact.<name>`. Events LineShown, ChoiceOffered, ChoiceMade, DialogueEnded, FactSet.
 * Quest: `quest.start`, `advance{stage, branch}`, `setObjective{n, count}`, `fail`, `complete`; slots `quest.status/stage/branch`,
   `quest.obj.<n>.count/done`; events QuestStarted, StageEntered, ObjectiveUpdated, QuestCompleted, QuestFailed, RewardGranted.
@@ -87,9 +105,9 @@ Every cross-plugin effect (rewards, rule actions, dialogue actions, use effects)
 * **Content is a list, not a scene.** Narrative definitions are ScriptableObjects listed on one `GameplayContentSet`
   per world (`world` ref). The bake (logic's `IGameplayBakeExtension`) writes `<set>.content.asset`
   (`GameplayContentManifest`, format `gamecore.gameplay-content/1`: entries sorted by authoring id with kind, key,
-  name and content stamp; facts sorted by name; SHA-256 content hash) and stamps every definition. The dialogue, quest
-  and inventory extensions add their plugin's catalog registrations only when the world has content, so a world
-  without narrative bakes byte-identically to P1.1.
+  name and content stamp; facts sorted by name; SHA-256 content hash) and stamps every definition. The four plugins'
+  catalog registrations come from one `IGameplayCatalogContributor` per package (P1.3's seam), like P1.3's plugins:
+  a project with the packages installed always registers them.
 * **One file per ScriptableObject class.** Unity resolves an asset's script by file name; the definition classes each
   live in `<Class>.cs` (supporting entry types stay in `*Definitions.cs`).
 * **Keys.** Every definition key is `AuthoringIds.StableKey(authoringId)`; refs in tools and seams accept the
@@ -118,13 +136,23 @@ Every cross-plugin effect (rewards, rule actions, dialogue actions, use effects)
 * **`dialogue.generateVoice`** is declared `ToolTier.Mechanism` (the mirror enum has no Agent tier) and calls
   `IMediaGenerationGateway`, which is `NotConfiguredMediaGateway` until P3.x wires etos TTS; it returns
   `NotConfigured` and changes nothing.
-* **Interaction seams.** P1.3 declares its own `IConditionEvaluator`/`IActionRunner` in `GameCore.Gameplay.Contracts`
-  with different signatures; the P1.4 seams keep the brief's signatures in `GameCore.Gameplay.Contracts.Narrative`.
-  `NarrativeInteractions.Use(world, subjectId, conditionRef, actionRef, out failed)` evaluates and runs the pair
-  the way an interaction does; the PlayMode test uses it for the gate and the bell.
-* **Hollowmere has no gate or NPC entities yet.** NPCs speak by name; the marsh gate is the fixed subject id
-  `HollowmereNarrative.GateId`. Rewards: the lantern and `maren_grateful` on both branches, the three coins back on
-  the pay branch. Odd's stall sells the gate key for three old coins; `odd_paid` is set by the `OddPaidOnTrade` rule
+* **Interaction seams are P1.3's.** The brief sketched `bool TryStart`, `bool Evaluate(ref, in ctx, out failed)` and
+  `bool TryRun(ref, in ctx)`; after merging main the P1.3 interfaces are authoritative and implemented as they are
+  (`ConversationStart`, `ConditionVerdict`, `void Run`). The brief's forms survive as extra methods on the same classes
+  (they report the failed condition / admission, which tools and tests use). An undeclared condition ref answers
+  `Unknown`, an empty ref `True`. `DialogueRunner.TryStart` returns hold 0 (the NPC's default converse hold); the
+  conversation itself lasts until it ends.
+* **Composition stays NarrativeComposer.** P1.3's `IGameplayWorldExtension` has no spawn recipes, seeded targets or
+  input sources, which the narrative plugins need (hub, quest, graph, inventory, rule targets; the narrative host).
+  The composer builds on the plan WorldBuilder makes with P1.3's extensions in `WorldBuildOptions` and copies it whole,
+  so both compose into one world (the PlayMode test boots NPC + interaction + the four narrative plugins).
+* **Hollowmere uses P1.3's NPCs and interactables.** Each graph names its placed NPC entity (`speakerEntityId`) and
+  answers to the NPC definition's `dialogueGraph` ref (`npcGraphRef`, e.g. `dialogue.maren`). The Causeway Gate is
+  locked by `narrative.fact.gate_open`: the `GateKeyOpensGate` rule (ItemGranted of the gate key, condition
+  `HasGateKey`, actions `OpenGate`) sets it, then P1.3's interaction unlocks the gate. The bell rings through P1.3's
+  `InteractionSucceeded` on the Drowned Bell: rule `RingBellOnUse` (condition `HasBellClapper`, actions `RingBell`).
+  No P1.3 asset is edited (the interactables' action refs stay empty; the rules listen to committed events).
+  Rewards: the lantern and `maren_grateful` on both branches, the three coins back on the pay branch. Odd's stall sells the gate key for three old coins; `odd_paid` is set by the `OddPaidOnTrade` rule
   on TradeDone (subject the stall, value the gate key); persuading Odd (needs `maren_trusts_player`, hidden otherwise)
   grants the key through the outbox.
 * **No save format change.** Narrative state is ordinary slots of ordinary targets (facts, quest, inventory, rule
@@ -138,15 +166,11 @@ VERIFICATION_PLACEHOLDER
 
 ## Open
 
-* **P1.3 adapter.** Bridge P1.3's `GameCore.Gameplay.Contracts.IConditionEvaluator`/`IActionRunner`
-  (`ConditionVerdict Evaluate(string, InteractionContext)`, `void Run(string, InteractionContext)`) to
-  `NarrativeWorld.Conditions`/`Actions` when the two packets merge (a two-class adapter; `InteractionContext` ->
-  `EvaluationContext` with the actor key and subject id). Until then `NarrativeInteractions.Use` stands in for
-  `interact.use`, and logic listens to P1.3's `interaction.event.succeeded` by schema name.
-* **Boot scene.** `GameBoot` (P1.1) still boots without narrative; switching it to `HollowmereNarrative.Boot` and
-  assigning the UI views/feedback sinks belongs to the boot-scene owner (P1.5/P3.1).
-* **Gate and NPC entities.** When P1.3 places Maren, Odd, Pip, Hale and a gate entity, set `speakerEntityId` on the
-  graphs and replace `GateId` with the gate entity's authoring id (one asset field each).
+* **Boot scene.** P1.3's `GameBoot` still boots without narrative; switching it to `HollowmereNarrative.Boot` + `Wire`
+  (after `InteractionSession.Install` / `NpcSession.Install`) and assigning the UI views and sinks belongs to the
+  boot-scene owner (P1.5/P3.1).
+* **NPC converse hold.** `TryStart` answers hold 0 (definition default). Holding converse until the conversation ends
+  (`NpcSlots.HoldUntilEnded` + `npc.converse 0` on DialogueEnded) needs a dialogue -> npc command; left for P3.x.
 * **ToolTier Agent.** If Studio adds an Agent tier to the mirror enums, move `dialogue.generateVoice` to it.
 * **ToolCatalogBuilder** (P1.6) must match the mirror attributes by name to list the 16 narrative tools (same
   question as P1.1).

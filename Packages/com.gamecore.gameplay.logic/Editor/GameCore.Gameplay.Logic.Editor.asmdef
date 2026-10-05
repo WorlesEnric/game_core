@@ -1,23 +1,24 @@
 {
-    "name": "GameCore.Gameplay.Logic.Editor",
-    "rootNamespace": "GameCore.Gameplay.Logic.Editor",
-    "references": [
-        "GameCore.Contracts",
-        "GameCore.Gameplay.Compile.Editor",
-        "GameCore.Gameplay.Contracts",
-        "GameCore.Gameplay.Logic",
-        "GameCore.Gameplay.World",
-        "GameCore.Rules.Gameplay"
-    ],
-    "includePlatforms": [
-        "Editor"
-    ],
-    "excludePlatforms": [],
-    "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
-    "autoReferenced": true,
-    "defineConstraints": [],
-    "versionDefines": [],
-    "noEngineReferences": false
+  "name": "GameCore.Gameplay.Logic.Editor",
+  "rootNamespace": "GameCore.Gameplay.Logic.Editor",
+  "references": [
+    "GameCore.Contracts",
+    "GameCore.Gameplay.Compile.Core",
+    "GameCore.Gameplay.Compile.Editor",
+    "GameCore.Gameplay.Contracts",
+    "GameCore.Gameplay.Logic",
+    "GameCore.Gameplay.World",
+    "GameCore.Rules.Gameplay"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
 }
