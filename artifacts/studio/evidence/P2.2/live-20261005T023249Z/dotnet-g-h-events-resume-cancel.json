@@ -1,0 +1,72 @@
+{
+  "requestId": "cs_0E9C135BA826E4985BDA08DC20",
+  "taskId": "t68925a78e59f9d87c054fdf8",
+  "submitMs": 15393.3,
+  "firstEventMs": 15393.8,
+  "cancelAckMs": 8896.1,
+  "replayedBeforeStart": 121,
+  "startCursor": 121,
+  "connects": 2,
+  "reconnectMs": 256.5,
+  "received": [
+    {
+      "cursor": 122,
+      "type": "request",
+      "requestId": "cs_0E9C135BA826E4985BDA08DC20",
+      "state": "requested",
+      "taskStatus": null,
+      "latencyMs": 1287
+    },
+    {
+      "cursor": 123,
+      "type": "request",
+      "requestId": "cs_0E9C135BA826E4985BDA08DC20",
+      "state": "running",
+      "taskStatus": "running",
+      "latencyMs": 522
+    },
+    {
+      "cursor": 124,
+      "type": "task_progress",
+      "requestId": "cs_0E9C135BA826E4985BDA08DC20",
+      "state": null,
+      "taskStatus": null,
+      "latencyMs": 192
+    },
+    {
+      "cursor": 125,
+      "type": "request",
+      "requestId": "cs_0E9C135BA826E4985BDA08DC20",
+      "state": "cancelled",
+      "taskStatus": "cancelled",
+      "latencyMs": 263
+    }
+  ],
+  "replayCursors": [
+    122,
+    123,
+    124,
+    125
+  ],
+  "final": {
+    "attempt": 0,
+    "changeSetId": "cs_0E9C135BA826E4985BDA08DC20",
+    "createdAt": 1791167585310,
+    "hasCandidate": false,
+    "outcome": {
+      "code": "cancelled",
+      "message": "This task was cancelled (cancelled by the owner); I stopped working on it."
+    },
+    "requestId": "cs_0E9C135BA826E4985BDA08DC20",
+    "seq": 125,
+    "state": "cancelled",
+    "taskId": "t68925a78e59f9d87c054fdf8",
+    "taskStatus": "cancelled",
+    "tasks": [
+      "t68925a78e59f9d87c054fdf8"
+    ],
+    "topic": "#agent/gamecore-studio/cs-0e9c135ba826e4985bda08dc20",
+    "updatedAt": 1791167602849,
+    "worker": "gc-designer"
+  }
+}

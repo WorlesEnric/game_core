@@ -1,0 +1,213 @@
+{
+  "requestId": "cs_01M44YMHWNPRW2DY01M6QNNDBF",
+  "selection": {
+    "id": "sel_01M44YMHY64384KDZJ88TJGCD0",
+    "mode": "Edit",
+    "targets": [
+      {
+        "kind": "Entity",
+        "authoringId": "90f935f8-12d5-4278-b336-107b081e1dfd",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1435685095-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Traveller",
+        "stamp": "sha256:7d6278a7aeeadf2380605d6ea4936803ee716caafef5ab33f52bd36142610139"
+      }
+    ],
+    "indexRevision": 1
+  },
+  "sliceBytes": 3826,
+  "attachments": [
+    {
+      "name": "scene-context.json",
+      "bytes": 930,
+      "content": {
+        "schema": "gamecore.studio.scenecontext/1",
+        "units": "metres",
+        "axes": {
+          "north": "+z",
+          "east": "+x",
+          "up": "+y"
+        },
+        "objects": [
+          {
+            "name": "Traveller",
+            "path": "Traveller",
+            "scene": "Assets/Hollowmere/Regions/ThornwickVillage.unity",
+            "position": [
+              0.0,
+              0.0,
+              -12.0
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "ref": {
+              "kind": "Entity",
+              "authoringId": "90f935f8-12d5-4278-b336-107b081e1dfd",
+              "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1435685095-0",
+              "assetGuid": "6cba302899c45bb919b097ade959283c",
+              "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Traveller",
+              "stamp": "sha256:7d6278a7aeeadf2380605d6ea4936803ee716caafef5ab33f52bd36142610139"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "catalogRevision": "da53ff35bfddc7c0456d285caadbadade8c6a813cd84816e93a8b8b99c26a3e8",
+  "submitMs": 30535.4,
+  "totalMs": 156388,
+  "timeline": [
+    {
+      "ms": 450,
+      "state": "requested",
+      "taskStatus": null,
+      "local": null,
+      "progress": null
+    },
+    {
+      "ms": 30532,
+      "state": "requested",
+      "taskStatus": null,
+      "local": null,
+      "progress": null
+    },
+    {
+      "ms": 46393,
+      "state": "running",
+      "taskStatus": "running",
+      "local": null,
+      "progress": null
+    },
+    {
+      "ms": 154027,
+      "state": "running",
+      "taskStatus": "running",
+      "local": null,
+      "progress": "done: Wrote `/outputs/changeset.json` proposing one move: the selected NPC’s world position changes from `(0, 0, -12)` to `(0, 0, -10)`, two metres north. Verified the selection, position, and operation against the supplied inputs and tool catalog."
+    },
+    {
+      "ms": 156321,
+      "state": "candidate",
+      "taskStatus": "done",
+      "local": null,
+      "progress": "done: Wrote `/outputs/changeset.json` proposing one move: the selected NPC’s world position changes from `(0, 0, -12)` to `(0, 0, -10)`, two metres north. Verified the selection, position, and operation against the supplied inputs and tool catalog."
+    },
+    {
+      "ms": 156323,
+      "state": "candidate",
+      "taskStatus": "done",
+      "local": "importing",
+      "progress": "done: Wrote `/outputs/changeset.json` proposing one move: the selected NPC’s world position changes from `(0, 0, -12)` to `(0, 0, -10)`, two metres north. Verified the selection, position, and operation against the supplied inputs and tool catalog."
+    },
+    {
+      "ms": 156388,
+      "state": "candidate",
+      "taskStatus": "done",
+      "local": "staged",
+      "progress": "done: Wrote `/outputs/changeset.json` proposing one move: the selected NPC’s world position changes from `(0, 0, -12)` to `(0, 0, -10)`, two metres north. Verified the selection, position, and operation against the supplied inputs and tool catalog."
+    }
+  ],
+  "recoveredForeignRequests": 19,
+  "stagedForeign": 0,
+  "final": {
+    "state": "candidate",
+    "taskStatus": "done",
+    "tasks": [
+      "tb0fec1af63e78e9a74901cdb"
+    ],
+    "outcome": {
+      "artifacts": 0,
+      "code": "candidate",
+      "operations": 1
+    },
+    "local": "staged"
+  },
+  "staging": {
+    "ok": true,
+    "importMs": 65.2,
+    "diagnostics": [],
+    "changeSet": {
+      "id": "cs_01M44YMHWNPRW2DY01M6QNNDBF",
+      "schema": "gamecore.studio.changeset/1",
+      "intent": {
+        "text": "Move this NPC two metres north.",
+        "origin": "agent"
+      },
+      "selection": {
+        "id": "sel_01M44YMHY64384KDZJ88TJGCD0",
+        "mode": "Edit",
+        "targets": [
+          {
+            "kind": "Entity",
+            "authoringId": "90f935f8-12d5-4278-b336-107b081e1dfd",
+            "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1435685095-0",
+            "assetGuid": "6cba302899c45bb919b097ade959283c",
+            "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Traveller",
+            "stamp": "sha256:7d6278a7aeeadf2380605d6ea4936803ee716caafef5ab33f52bd36142610139"
+          }
+        ],
+        "indexRevision": 1
+      },
+      "baseVersions": [
+        {
+          "ref": {
+            "kind": "Entity",
+            "authoringId": "90f935f8-12d5-4278-b336-107b081e1dfd",
+            "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1435685095-0",
+            "assetGuid": "6cba302899c45bb919b097ade959283c",
+            "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Traveller",
+            "stamp": "sha256:7d6278a7aeeadf2380605d6ea4936803ee716caafef5ab33f52bd36142610139"
+          },
+          "stamp": "sha256:7d6278a7aeeadf2380605d6ea4936803ee716caafef5ab33f52bd36142610139"
+        }
+      ],
+      "operations": [
+        {
+          "opId": "op1",
+          "tool": "move",
+          "target": {
+            "kind": "Entity",
+            "authoringId": "90f935f8-12d5-4278-b336-107b081e1dfd",
+            "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1435685095-0",
+            "assetGuid": "6cba302899c45bb919b097ade959283c",
+            "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Traveller",
+            "stamp": "sha256:7d6278a7aeeadf2380605d6ea4936803ee716caafef5ab33f52bd36142610139"
+          },
+          "args": {
+            "position": [
+              0.0,
+              0.0,
+              -10.0
+            ]
+          },
+          "dependsOn": [],
+          "preconditions": "stamp",
+          "applyRequirement": "Rebuild"
+        }
+      ],
+      "artifacts": [],
+      "requirements": {
+        "max": "Rebuild",
+        "worldRebuild": true,
+        "compile": false,
+        "build": false
+      },
+      "links": {
+        "etosTasks": [
+          "tb0fec1af63e78e9a74901cdb"
+        ]
+      }
+    },
+    "journalState": "Candidate"
+  },
+  "rejectedAfter": "Rejected"
+}
