@@ -126,3 +126,79 @@ Result hashes (SHA-256):
   live Stage → Admit, or sandbox child is run here. D3's actual Docker Unity licensing result is
   recorded by R2-F in `studio/agent/evidence/r2-f-sandbox-probe.txt` (no valid Unity licence, exit 198).
   This client neither opts into host confinement nor falls back to it.
+
+## R2-D2
+
+Branch `codex/r2-d2`, based on `2ed48b96`, Linux build host `myubuntu`.
+This appendix is the R2-D2 PACKET.md record within the packet's exclusive documentation path.
+The historical parameterless-discovery claim above predates R2-G's provider lookup contract.
+
+### R2 fixes
+
+- R2-41: `EtosStudioSession` implements `IMediaGenerationGatewayProvider`. Its nonserialized
+  cache returns one `EtosMediaGenerator` over the current session gateway/runtime/queue;
+  gateway replacement or project/app identity changes rebuild it. Stop and before-reload
+  teardown clear the registration/cache; the existing bootstrap starts a fresh session after
+  reload. An unpaired session returns null and lookup remains NotConfigured. No SFX
+  capability is advertised because the companion adapter has no SFX operation.
+- Regression tests in `Hollowmere.R2_D.MediaProviderTests`:
+  `R2_41_ConfiguredSessionIsTheOnlyActiveProviderAndCachesAdapter`,
+  `R2_41_UnpairedSessionExposesNoActiveProvider`,
+  `R2_41_RebindingRebuildsCachedMediaGateway` (gateway/project/app), and
+  `R2_41_ReloadTeardownUnregistersAndRestartCreatesFreshAdapter`.
+- Existing `R2EtosTests.R2_41_AudioToolDiscoversGatewayAndImportsVerifiedVoiceThroughEngine`
+  is unchanged. In this base revision it is in `Tests/P2_2/EditMode/R2EtosTests.cs`, not
+  `Tests/R2_G`. It exercises real lookup, configured cost, verified voice import through
+  the engine/journal, digest mismatch refusal, and explicit SFX NotConfigured.
+
+### Requests to other packets
+
+None for this fix: the gameplay provider interface, package references and project locks
+already exist on the base revision. The historical requests above are not reopened here.
+
+### Left open
+
+- Live/paid provider and actual cross-domain reload qualification are excluded from this
+  offline packet run. The reload regression invokes the production before-reload teardown
+  and rebinds a fresh fake-companion gateway; it does not claim a killed/restarted Editor test.
+
+### Verification
+
+- Before fix, on `35095220`: `.unity-logs/r2-d2-before.xml` reports **7 failed,
+  0 passed/skipped/inconclusive**. All six new provider cases fail on the missing interface;
+  the unchanged audio integration test receives NotConfiguredMediaGateway. First Editor
+  attempt timed out after 600 seconds of silence at package resolve; automatic retry
+  compiled and ran the tests. Total wrapper time 929 seconds, Unity test exit 2.
+- `dotnet test dotnet/tests/GameCore.Studio.Etos.Client.Tests --logger
+  'trx;LogFileName=r2-d2.trx' --results-directory /tmp/r2-d2-dotnet`: **63 passed,
+  0 failed, 6 credential-gated live tests skipped**, 69 total, confirmed from TRX cases.
+  No client transport source changed in R2-D2.
+
+Exact full EditMode invocation:
+
+```bash
+bash studio/tools/unity-batch.sh --project "$PWD/games/hollowmere" \
+  --log-dir "$PWD/.unity-logs" --label r2-d2-final \
+  --results "$PWD/.unity-logs/r2-d2-final.xml" -- \
+  -runTests -testPlatform EditMode \
+  -testFilter 'GameCore\.Studio\.Etos.*|Hollowmere\.P2_2.*|Hollowmere\.R2_D.*|Hollowmere\.R2_G.*'
+```
+
+The wrapper supplies `-batchmode -nographics -projectPath -logFile - -testResults` and
+holds one host-wide Editor reservation, as used by `unity-compile.sh`.
+
+Evidence SHA-256:
+
+- `.unity-logs/r2-d2-before.xml`: `07fa4a413e9803c6867b415b8249a510d8aca9582f93232b7c9f650ce47e1cc2`.
+- `/tmp/r2-d2-dotnet/r2-d2.trx`: `6e050bc039628e9eda939bd70ae09bcbd6b4f646bd225087d621465330aa2095`.
+
+- Final requested EditMode filter on implementation `cd8bd5f4`: **46 passed, 0 failed,
+  4 skipped, 0 inconclusive**, 50 total. This includes all six R2-D2 cases, the unchanged
+  R2-41 audio import regression, all 15 existing offline P2.2 tests, the other six ETOS
+  R2 regressions, and 18 R2-G tests. Unity exit 0; one attempt, 180 seconds wrapper time,
+  1.856 seconds XML test duration. The wrapper exits 1 / PARTIAL because four selected
+  credential-gated P2.2 live cases were skipped, not because a test failed.
+- Final `python3 tools/check_package_metadata.py`: pass, 41 packages / 90 package assemblies.
+  `python3 tools/check_game_core_csharp.py`: pass, 1,137 files. `git diff --check`: pass.
+  No manifest, lockfile, R2-G/P2.2 test, installed service or credential was edited.
+- Final XML SHA-256: `b219e3258d53bba2ee03d2a8b8cf549cc50a0ccd6603b7a6bd5f22027788568f`.
