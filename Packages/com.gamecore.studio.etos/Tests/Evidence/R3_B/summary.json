@@ -1,0 +1,64 @@
+{
+  "packet": "R3-B",
+  "host": "myubuntu",
+  "base": "ed760892",
+  "implementationCommit": "828cd44a",
+  "unityFinal": {
+    "total": 88,
+    "passed": 81,
+    "failed": 0,
+    "skipped": 7,
+    "inconclusive": 0
+  },
+  "dotnetFinal": {
+    "total": 73,
+    "passed": 67,
+    "failed": 0,
+    "skipped": 6
+  },
+  "trayLatencyMs": {
+    "samples": 20,
+    "beforeP95": 1645,
+    "finalP95": 110,
+    "finalMax": 117,
+    "budgetP95": 1000
+  },
+  "skippedUnity": [
+    {
+      "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.B_NpcRequest_ReachesStaging",
+      "reason": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+    },
+    {
+      "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.C_D_E_F_I_MediaOps",
+      "reason": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+    },
+    {
+      "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.J_Voice_FromASpokenWav",
+      "reason": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+    },
+    {
+      "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.J_Voice_FromTheEditorMicrophone",
+      "reason": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+    },
+    {
+      "name": "GameCore.Studio.UI.Tests.R2UiRegressionTests.R2_29_KeyDownUpOnPromptAndControlsNeverEnterViewportHandlers",
+      "reason": "R2-29/R2-37: UI Toolkit window event delivery requires a graphics device; R2-H graphical qualification required."
+    },
+    {
+      "name": "GameCore.Studio.UI.Tests.R3UiRegressionTests.D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce",
+      "reason": "D12 physical window-manager placement requires a graphical Editor; the separate scheduler regression runs headless."
+    },
+    {
+      "name": "GameCore.Studio.UI.Tests.ViewportWindowTests.Render_TargetMatchesTheViewportArea",
+      "reason": "R2-37: graphical qualification required; not rendered: no graphics device (-nographics). The graphical evidence run (studio/tools/evidence-p2.1.sh) covers rendering."
+    }
+  ],
+  "sha256": {
+    "unity-before.xml": "eef240882699abb2954dbed2f534f0765ed133e284d049f3f48d6cc0f8c24244",
+    "unity-intermediate.xml": "3624c9cb46ec503d6274878f0b37a2b27cdb663ae608682730b1080552cb34aa",
+    "unity-final.xml": "444672f2f8157a9559356e669bb8ee58e1bacd900cdbc4de214bb2de304ec6c7",
+    "dotnet-before.trx": "d8802243fc162f7b252732232d2f60ef2c7180b104c9d6a57d72feae5a3765cb",
+    "dotnet-final.trx": "5f6ab55539f4c1a951828b19f6341f8a96b81fdb475f8ddb17c84c0b597871e8"
+  },
+  "evidenceRedaction": "Six synthetic credential-shaped values in dotnet parameterized test names masked; original host TRX remains in TestResults. Counts and R3 finding names unchanged."
+}
