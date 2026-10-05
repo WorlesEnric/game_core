@@ -988,14 +988,10 @@ namespace GameCore.Studio.Edit
                 return FinishUndo(changeSetId, false, "the live catalog hash " + (live ?? "(" + problem + ")") + " did not return to " + (expected ?? "(unknown)"));
             }
 
-            AdmissionResult result = FinishUndo(changeSetId, true, "catalog hash returned to " + live);
-            result.Live = live;
-            result.Before = expected;
-            result.Package = (string?)pending["package"];
-            return result;
+            return FinishUndo(changeSetId, true, "catalog hash returned to " + live, live);
         }
 
-        private AdmissionResult FinishUndo(string changeSetId, bool ok, string detail)
+        private AdmissionResult FinishUndo(string changeSetId, bool ok, string detail, string? live = null)
         {
             JObject? pending = ReadPending(changeSetId);
             ChangeSet? entry = _runtime.Journal.Read(changeSetId);
@@ -1009,6 +1005,7 @@ namespace GameCore.Studio.Edit
             {
                 Package = (string?)pending?["package"],
                 Before = (string?)pending?["before"],
+                Live = live,
                 Milliseconds = Elapsed(changeSetId, pending),
             };
             Finished?.Invoke(result);
