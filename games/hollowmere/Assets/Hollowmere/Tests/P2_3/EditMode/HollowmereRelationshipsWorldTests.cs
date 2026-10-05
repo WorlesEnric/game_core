@@ -69,8 +69,14 @@ namespace GameCore.Studio.Views.Hollowmere.Tests
             }
 
             Assert.That(reward!.Field, Does.StartWith("objectives["), "the row names the objective field");
-            Assert.That(impact.Affects(loot.Ref.IdentityKey), Is.True, "the marsh loot table entry");
             Assert.That(impact.CountsByType.ContainsKey("quest.quest"), Is.True);
+
+            // P3.1's marsh loot table rolls coins, herbs and oil (the lantern is no longer loot): the oil flask's impact
+            // lists it.
+            IndexNode oil = NodeAt(Root + "/Items/OilFlask.asset");
+            view.SetRoots(new[] { oil.Ref.IdentityKey });
+            Log("oil flask impact: " + string.Join("; ", Describe(view.Impact!)));
+            Assert.That(view.Impact!.Affects(loot.Ref.IdentityKey), Is.True, "the marsh loot table entry");
 
             view.SetRoots(new[] { gateKey.Ref.IdentityKey });
             Log("gate key impact: " + string.Join("; ", Describe(view.Impact!)));
