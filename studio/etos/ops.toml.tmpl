@@ -2,8 +2,8 @@
 # <root>/ops.toml by studio/etos/install.sh (no substitutions). Keys are credential references
 # resolved by etosd from its environment; none is written here.
 #
-# Prices (`[providers.cost]`) are not configured: no verified price list. `max_cost_usd` checks
-# therefore estimate 0 until an operator adds `per_unit`.
+# List prices checked 2026-10-05. Companion caps fail closed if no matching ops_prices
+# entry exists. Image per_unit is an output-only estimate, not a total fixed tariff.
 
 # Voice input: transcript-only realtime sessions (the companion never sends response_create).
 [[realtime]]
@@ -27,6 +27,15 @@ options = { quality = "low", response_format = "b64_json" }
 [providers.limits]
 timeout = "300s"
 max_outputs = 4
+# Source: https://developers.openai.com/api/docs/guides/image-generation
+# GPT Image 2 low 1024x1024: $0.006 output-only estimate per image.
+# Source: https://developers.openai.com/api/docs/models/gpt-image-2
+# Text input $2.50/M; image output $15/M. Input images cost $4/M, so reference edits
+# need a separately priced provider. Echo markup is unverified; see R3 Left open.
+[providers.cost]
+per_unit = 0.006
+per_1m_input_tokens = 2.5
+per_1m_output_tokens = 15.0
 
 # Image description: a vision chat model of models.toml.
 [[providers]]
@@ -34,6 +43,10 @@ name = "echo-describe"
 family = "describe"
 kind = "chat"
 model = "echo/gpt-5.6-sol"
+# Source: https://developers.openai.com/api/docs/models/gpt-5.6-sol
+[providers.cost]
+per_1m_input_tokens = 4.0
+per_1m_output_tokens = 20.0
 
 # Text to speech: DashScope native multimodal-generation (etos kind `bailian-tts`, SADR-005).
 [[providers]]
@@ -46,6 +59,10 @@ model = "qwen3-tts-flash"
 options = { voice = "Cherry", language_type = "English" }
 [providers.limits]
 timeout = "120s"
+# Source: https://www.alibabacloud.com/help/en/model-studio/model-pricing
+# Qwen3-TTS-Flash, Chinese mainland: $0.114682 / 10,000 input characters.
+[providers.cost]
+per_unit = 0.0000114682
 
 # 3D generation (family "3d", kind "predictions") is deliberately absent: no provider
 # credential exists on this host (SADR-020). `POST /ops/generate.3d` therefore answers

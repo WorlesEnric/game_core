@@ -21,7 +21,7 @@
 #   images         localhost/etos-default:latest, localhost/gc-designer:current, localhost/gc-mechanic:current
 #   workers        gc-designer, gc-mechanic, created (model alias `default`) before the agent so
 #                  that `etos agent install` keeps their image and network; agent.toml sets the model
-#   agent          gamecore-studio (studio/etos/agent, --link; binary built from studio/agent)
+#   agent          gamecore-studio (<root>/agents/gamecore-studio/<version>; copied release binary)
 #   app            gamecore-unity, paired key ~/.config/gamecore-studio/app-key.json (0600)
 set -euo pipefail
 
@@ -35,7 +35,18 @@ UNIT="etosd.service"
 NODE_NAME="studio"
 OWNER="$(id -un)"
 SKIP_IMAGES=0
-[ "${1:-}" = "--skip-images" ] && SKIP_IMAGES=1
+PROJECT="$HERE/../../games/hollowmere"
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        --skip-images) SKIP_IMAGES=1; shift ;;
+        --project) PROJECT="$2"; shift 2 ;;
+        --register-project)
+            exec python3 "$HERE/install-state.py" --root "$ROOT" register "$2" "$3" ;;
+        --apply-prices)
+            exec python3 "$HERE/install-state.py" --root "$ROOT" prices ;;
+        *) echo "unknown argument: $1" >&2; exit 2 ;;
+    esac
+done
 
 export ETOS_ROOT="$ROOT"
 export PATH="$BIN:$PATH"
@@ -185,8 +196,7 @@ for w in gc-designer gc-mechanic; do
 done
 
 step "companion agent gamecore-studio"
-# etos refuses `..` in an agent's paths, so the manifest's `bin/gamecore-studio` is a symlink
-# (bin/ is git-ignored) to the release build of studio/agent, installed with --link.
+# Releases contain copied binaries and checksums. Only current is a symlink, to a retained release.
 AGENT_DIR="$HERE/agent"
 AGENT_SRC="$HERE/../agent"
 agents="$(etos --json agent list | names)"
@@ -200,35 +210,8 @@ else
     if ! (cd "$AGENT_SRC" && "${cargo_env[@]}" cargo build --release --locked -q); then
         echo "cargo build --release in studio/agent failed" >&2; exit 1
     fi
-    mkdir -p "$AGENT_DIR/bin"
-    link="$AGENT_DIR/bin/gamecore-studio"
-    target="../../../agent/target/release/gamecore-studio"
-    if [ "$(readlink "$link" 2>/dev/null)" = "$target" ]; then
-        same "$link -> $target"
-    else
-        ln -sfn "$target" "$link"; changed "$link -> $target"
-    fi
-    agent_stamp="$ROOT/.studio-agent.sha256"
-    agent_now="$(cat "$AGENT_DIR/agent.toml" "$AGENT_DIR"/workers/*.md "$AGENT_SRC/target/release/gamecore-studio" | sha256sum | cut -d' ' -f1)"
-    if ! echo "$agents" | grep -qx gamecore-studio; then
-        etos agent install --link "$AGENT_DIR" | sed 's/^/    /'
-        changed "agent gamecore-studio installed (--link $AGENT_DIR)"
-    elif [ "$(cat "$agent_stamp" 2>/dev/null)" != "$agent_now" ]; then
-        etos agent upgrade --link "$AGENT_DIR" | sed 's/^/    /'
-        changed "agent gamecore-studio upgraded (manifest, instructions or binary changed)"
-    else
-        same "agent gamecore-studio installed"
-    fi
-    echo "$agent_now" > "$agent_stamp"
-    state=""
-    for _ in $(seq 1 30); do
-        state="$(etos --json agent list | python3 -c 'import json,sys
-for a in json.load(sys.stdin):
-    if a.get("agent", a.get("name")) == "gamecore-studio": print(a.get("state", ""))')"
-        [ "$state" = ready ] && break
-        sleep 1
-    done
-    echo "  agent state: ${state:-unknown}"
+    python3 "$HERE/install-state.py" --root "$ROOT" register auto "$PROJECT"
+    python3 "$HERE/install-state.py" --root "$ROOT" release "$AGENT_SRC/target/release/gamecore-studio" --etos "$BIN/etos"
     agents="gamecore-studio"
 fi
 

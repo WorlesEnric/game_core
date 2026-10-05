@@ -1,3 +1,13 @@
+# Capped image/describe calls remain budget_unpriced: the node's image tariff is
+# output-only and Echo's reseller rates are unverified. Do not fabricate a fixed call price.
+[[ops_prices]]
+op = "tts"
+provider = "bailian-tts"
+unit = "bailian_character"
+# Source: https://www.alibabacloud.com/help/en/model-studio/model-pricing
+# Mainland Qwen3-TTS-Flash: $0.114682 / 10,000 characters, checked 2026-10-05.
+per_unit = 0.0000114682
+
 # Copy the required keys into the companion state directory's config.toml.
 # This is an example only; no installed service configuration is changed by R2-F.
 [stage]

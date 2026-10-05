@@ -2,9 +2,9 @@
 # <root>/models.toml by studio/etos/install.sh (no substitutions). The key is resolved by
 # etosd from its environment on every call and is never written here.
 #
-# Prices are deliberately not configured: no provider price list was verified for this host,
-# so usage is reported in tokens and the catalog's cost is 0 (budgets in USD do not bind chat
-# models until an operator adds [models.sla] cost entries).
+# List prices checked 2026-10-05 from the model publishers. Echo's reseller tariff is
+# not publicly verifiable; the integrator must reconcile any markup before deployment.
+# No zero-price model entries. Rates below are USD / million tokens at standard context.
 
 [endpoints.echo]
 base_url = "https://api.echo-coding.com/v1"
@@ -21,6 +21,11 @@ id = "echo/claude-opus-5-5"
 aliases = ["default"]
 roles = ["worker", "planning", "controller", "compaction"]
 cost_class = "high"
+# Source (all three rates): https://platform.claude.com/docs/en/models/opus-5-5/whats-new-opus-5-5
+[models.sla.cost]
+input = 4.0
+cached_input = 0.2
+output = 20.0
 [models.capabilities]
 context_window = 200000
 max_output = 32000
@@ -34,6 +39,11 @@ id = "echo/gpt-6-sol"
 aliases = ["fast"]
 roles = ["worker", "planning", "controller", "compaction"]
 cost_class = "high"
+# Source (all three rates): https://developers.openai.com/api/docs/models/gpt-6-sol
+[models.sla.cost]
+input = 2.0
+cached_input = 0.2
+output = 10.0
 [models.capabilities]
 context_window = 400000
 max_output = 128000
@@ -48,6 +58,11 @@ id = "echo/gpt-5.6-sol"
 aliases = ["describe"]
 roles = ["controller"]
 cost_class = "high"
+# Source (all three rates): https://developers.openai.com/api/docs/models/gpt-5.6-sol
+[models.sla.cost]
+input = 4.0
+cached_input = 0.4
+output = 20.0
 [models.capabilities]
 context_window = 400000
 max_output = 128000
