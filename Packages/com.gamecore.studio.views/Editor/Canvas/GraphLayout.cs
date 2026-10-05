@@ -18,6 +18,9 @@ namespace GameCore.Studio.Views.Canvas
         public const float ColumnGap = 90f;
         public const float RowGap = 26f;
 
+        /// <summary>Cards per lane before a layer wraps into another lane.</summary>
+        public const int MaxPerLane = 40;
+
         private readonly List<CanvasNode> _nodes;
         private readonly Dictionary<string, CanvasNode> _byId = new Dictionary<string, CanvasNode>(StringComparer.Ordinal);
         private readonly Dictionary<string, List<string>> _next = new Dictionary<string, List<string>>(StringComparer.Ordinal);
@@ -234,17 +237,28 @@ namespace GameCore.Studio.Views.Canvas
                 rowHeight = Math.Max(rowHeight, node.Size.y);
             }
 
-            foreach (KeyValuePair<int, List<CanvasNode>> pair in layers)
+            // A layer wider than MaxPerLane cards wraps into several adjacent lanes, so a 1,800-card layer stays a
+            // block instead of a strip too tall to frame.
+            List<int> keys = new List<int>(layers.Keys);
+            keys.Sort();
+            float alongStep = (_vertical ? columnWidth : rowHeight) + (_vertical ? ColumnGap * 0.4f : RowGap);
+            float acrossStep = (_vertical ? rowHeight : columnWidth) + (_vertical ? RowGap * 2.5f : ColumnGap);
+            int lane = 0;
+            foreach (int key in keys)
             {
-                List<CanvasNode> list = pair.Value;
-                float extent = list.Count * ((_vertical ? columnWidth : rowHeight) + (_vertical ? ColumnGap * 0.4f : RowGap));
+                List<CanvasNode> list = layers[key];
+                int lanes = Math.Max(1, (list.Count + MaxPerLane - 1) / MaxPerLane);
+                int perLane = (list.Count + lanes - 1) / Math.Max(1, lanes);
+                float extent = Math.Min(list.Count, Math.Max(1, perLane)) * alongStep;
                 for (int i = 0; i < list.Count; i++)
                 {
                     CanvasNode node = list[i];
                     if (!node.HasPosition)
                     {
-                        float along = i * ((_vertical ? columnWidth : rowHeight) + (_vertical ? ColumnGap * 0.4f : RowGap)) - extent * 0.5f;
-                        float across = pair.Key * ((_vertical ? rowHeight : columnWidth) + (_vertical ? RowGap * 2.5f : ColumnGap));
+                        int slot = perLane == 0 ? 0 : i % perLane;
+                        int sub = perLane == 0 ? 0 : i / perLane;
+                        float along = slot * alongStep - extent * 0.5f;
+                        float across = (lane + sub) * acrossStep;
                         node.Position = _vertical ? new Vector2(along, across) : new Vector2(across, along);
                         node.HasPosition = true;
                     }
@@ -254,6 +268,8 @@ namespace GameCore.Studio.Views.Canvas
                         yield return false;
                     }
                 }
+
+                lane += lanes;
             }
 
             yield return true;

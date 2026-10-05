@@ -49,6 +49,9 @@ namespace GameCore.Studio.Views.Canvas
         private GraphLayout? _layout;
         private IVisualElementScheduledItem? _layoutTicker;
         private bool _frameWhenLaidOut;
+
+        // True while the view shows "everything, fitted" and the user has not panned or zoomed since: a resize refits.
+        private bool _fitted;
         private string? _selectedId;
         private Gesture _gesture;
         private int _pointerId = -1;
@@ -90,7 +93,7 @@ namespace GameCore.Studio.Views.Canvas
             _status.style.color = ViewPalette.SubText;
             Add(_status);
             ApplyTransform();
-            RegisterCallback<GeometryChangedEvent>(_ => Refresh());
+            RegisterCallback<GeometryChangedEvent>(OnGeometryChanged);
             RegisterCallback<WheelEvent>(OnWheel);
             RegisterCallback<PointerDownEvent>(OnPointerDown);
             RegisterCallback<PointerMoveEvent>(OnPointerMove);
@@ -268,6 +271,7 @@ namespace GameCore.Studio.Views.Canvas
 
             Rect bounds = BoundsOf(_nodes);
             FrameRect(bounds, 1.0f);
+            _fitted = true;
         }
 
         public void FrameNode(CanvasNode node)
@@ -278,6 +282,7 @@ namespace GameCore.Studio.Views.Canvas
             rect.yMin -= 120f;
             rect.yMax += 120f;
             FrameRect(rect, Mathf.Max(_zoom, 0.8f));
+            _fitted = false;
         }
 
         public void ZoomBy(float factor, Vector2? aroundLocal = null)
@@ -287,6 +292,7 @@ namespace GameCore.Studio.Views.Canvas
             Vector2 world = (around - _pan) / _zoom;
             _zoom = Mathf.Clamp(_zoom * factor, 0.05f, 3f);
             _pan = around - world * _zoom;
+            _fitted = false;
             ApplyTransform();
             Refresh();
         }
@@ -362,6 +368,17 @@ namespace GameCore.Studio.Views.Canvas
             VisibleCardCount = bound;
             RefreshEdgeLabels(visible);
             LastRefreshMilliseconds = watch.Elapsed.TotalMilliseconds;
+        }
+
+        private void OnGeometryChanged(GeometryChangedEvent evt)
+        {
+            if (_fitted && evt.oldRect.size != evt.newRect.size && evt.newRect.width > 1f && evt.newRect.height > 1f)
+            {
+                FrameAll();
+                return;
+            }
+
+            Refresh();
         }
 
         private Vector2 Viewport
@@ -724,6 +741,7 @@ namespace GameCore.Studio.Views.Canvas
             {
                 case Gesture.Pan:
                     _pan += delta;
+                    _fitted = false;
                     ApplyTransform();
                     Refresh();
                     break;

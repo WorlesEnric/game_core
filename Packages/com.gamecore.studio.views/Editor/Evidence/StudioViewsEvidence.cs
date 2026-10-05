@@ -58,6 +58,9 @@ namespace GameCore.Studio.Views.Evidence
         [NonSerialized]
         private int _requestWait;
 
+        [NonSerialized]
+        private int _resizeTries;
+
         private static readonly IReadOnlyList<string> Shots = new[]
         {
             "01-relationships-maren", "02-relationships-impact-lantern", "03-dialogue-maren-preview", "04-quests-drowned-bell",
@@ -140,7 +143,9 @@ namespace GameCore.Studio.Views.Evidence
                     {
                         RelationshipsView relationships = (RelationshipsView)view;
                         relationships.Depth = 2;
-                        relationships.SetRoots(new[] { Key(Root + "/Npcs/Definitions/Maren.asset") });
+                        string maren = Key(Root + "/Npcs/Definitions/Maren.asset");
+                        relationships.SetRoots(new[] { maren });
+                        relationships.Canvas.Select(maren);
                     });
                     Next(step, 2.5);
                     return;
@@ -437,6 +442,17 @@ namespace GameCore.Studio.Views.Evidence
             }
 
             EditorWindow window = _window!;
+            if ((Mathf.Abs(window.position.width - StudioViewIds.DefaultWidth) > 2f || Mathf.Abs(window.position.height - StudioViewIds.DefaultHeight) > 2f) && _resizeTries < 4)
+            {
+                // The window manager can ignore the first placement of a new window; place it again and let it lay out.
+                _resizeTries++;
+                window.position = new Rect(40f, 40f, StudioViewIds.DefaultWidth, StudioViewIds.DefaultHeight);
+                window.Repaint();
+                _waitUntil = EditorApplication.timeSinceStartup + 1.5;
+                return;
+            }
+
+            _resizeTries = 0;
             Rect rect = window.position;
             int width = Mathf.RoundToInt(rect.width);
             int height = Mathf.RoundToInt(rect.height);
@@ -650,6 +666,17 @@ namespace GameCore.Studio.Views.Evidence
             }
 
             ApplyReport one = _context.Edits.Apply(TableModel.CommitRow(rows[0], new JObject { ["price"] = 20 }, "Items"));
+            _runtime.Index.Flush();
+            items = TableModel.ForType(_runtime.Registry.Catalog, _context.Graph(), "inventory.item", "Items");
+            rows.Clear();
+            foreach (TableRow row in items.AllRows)
+            {
+                if (rows.Count < 3)
+                {
+                    rows.Add(row);
+                }
+            }
+
             ApplyReport many = _context.Edits.Apply(TableModel.ApplyToRows(rows, "price", new JValue(9), "Items"));
             HistoryResult undoMany = _context.Edits.Undo(many.Entry.Id);
             HistoryResult undoOne = _context.Edits.Undo(one.Entry.Id);
