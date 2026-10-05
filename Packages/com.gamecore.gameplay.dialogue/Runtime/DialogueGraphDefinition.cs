@@ -26,7 +26,7 @@ namespace GameCore.Gameplay.Dialogue
         [SerializeField] private string speakerEntityId = string.Empty;
 
         // Legacy (P1.4): the NPC string id this graph answers to; see the file header.
-        [SerializeField, HideInInspector] private string npcGraphRef = string.Empty;
+        [SerializeField, HideInInspector, AuthorField(Doc = "Legacy (P1.3/P1.4) string reference, read only while the typed field is empty; authoring.migrateRefs moves it into the typed field and clears it.")] private string npcGraphRef = string.Empty;
 
         [AuthorField(Min = 0, Doc = "Entry node index.")]
         [SerializeField] private int entry;

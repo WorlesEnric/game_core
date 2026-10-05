@@ -73,7 +73,7 @@ namespace GameCore.Gameplay.Interaction
 
         // Legacy (P1.3): the condition as a string ref (a condition set id/name or narrative.fact.<name>[op N]). Read only
         // when no typed condition is set; authoring.migrateRefs moves it into the typed fields and clears it.
-        [SerializeField, HideInInspector] private string conditionRef = string.Empty;
+        [SerializeField, HideInInspector, AuthorField(Doc = "Legacy (P1.3/P1.4) string reference, read only while the typed field is empty; authoring.migrateRefs moves it into the typed field and clears it.")] private string conditionRef = string.Empty;
 
         [AuthorRef(Category = "logic.actionSet", Required = false, Doc = "Action set run after a committed success (through the outbox).")]
         [SerializeField] private ScriptableObject? actions;
@@ -82,7 +82,7 @@ namespace GameCore.Gameplay.Interaction
         [SerializeField] private string builtInAction = string.Empty;
 
         // Legacy (P1.3): the action as a string ref; migrated like conditionRef.
-        [SerializeField, HideInInspector] private string actionRef = string.Empty;
+        [SerializeField, HideInInspector, AuthorField(Doc = "Legacy (P1.3/P1.4) string reference, read only while the typed field is empty; authoring.migrateRefs moves it into the typed field and clears it.")] private string actionRef = string.Empty;
 
         [AuthorField(Min = 0, Max = 100000, Doc = "Maximum uses (0 = unlimited).")]
         [SerializeField] private int maxUses;
