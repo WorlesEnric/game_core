@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Failed(Child)" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-05 22:22:44Z" end-time="2026-10-05 22:22:52Z" duration="8.1614237">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="472" result="Failed" site="Child" start-time="2026-10-05 22:22:44Z" end-time="2026-10-05 22:22:52Z" duration="8.161424" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1220" name="GameCore.Studio.UI.Editor.Tests.dll" fullname="~/wkspace/gc-studio/r4-b/games/hollowmere/Library/ScriptAssemblies/GameCore.Studio.UI.Editor.Tests.dll" runstate="Runnable" testcasecount="60" result="Failed" site="Child" start-time="2026-10-05 22:22:44Z" end-time="2026-10-05 22:22:52Z" duration="8.151182" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="4052012" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1221" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="60" result="Failed" site="Child" start-time="2026-10-05 22:22:44Z" end-time="2026-10-05 22:22:52Z" duration="8.150178" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1222" name="Studio" fullname="GameCore.Studio" runstate="Runnable" testcasecount="60" result="Failed" site="Child" start-time="2026-10-05 22:22:44Z" end-time="2026-10-05 22:22:52Z" duration="8.149385" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestSuite" id="1223" name="UI" fullname="GameCore.Studio.UI" runstate="Runnable" testcasecount="60" result="Failed" site="Child" start-time="2026-10-05 22:22:44Z" end-time="2026-10-05 22:22:52Z" duration="8.148587" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="TestSuite" id="1224" name="Tests" fullname="GameCore.Studio.UI.Tests" runstate="Runnable" testcasecount="60" result="Failed" site="Child" start-time="2026-10-05 22:22:44Z" end-time="2026-10-05 22:22:52Z" duration="8.147666" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-suite type="TestFixture" id="1193" name="R3UiRegressionTests" fullname="GameCore.Studio.UI.Tests.R3UiRegressionTests" classname="GameCore.Studio.UI.Tests.R3UiRegressionTests" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-05 22:22:44Z" end-time="2026-10-05 22:22:52Z" duration="8.146009" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <failure>
+                  <message><![CDATA[One or more child tests had errors]]></message>
+                </failure>
+                <test-case id="1196" name="D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce" fullname="GameCore.Studio.UI.Tests.R3UiRegressionTests.D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce" methodname="D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce" classname="GameCore.Studio.UI.Tests.R3UiRegressionTests" runstate="Runnable" seed="1675277682" result="Failed" start-time="2026-10-05 22:22:44Z" end-time="2026-10-05 22:22:52Z" duration="8.137090" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[  Expected: (x:20.00, y:40.00, width:1048.00, height:772.00)
+  But was:  (x:20.00, y:69.00, width:1048.00, height:772.00)
+]]></message>
+                    <stack-trace><![CDATA[at GameCore.Studio.UI.Tests.R3UiRegressionTests+<D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce>d__3.MoveNext () [0x00196] in ~/wkspace/gc-studio/r4-b/Packages/com.gamecore.studio.ui/Tests/Editor/R3UiRegressionTests.cs:87
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
+]]></stack-trace>
+                  </failure>
+                  <output><![CDATA[[R4-B layout] StudioViewportWindow attempt=2 observed=(x:100.00, y:100.00, width:800.00, height:700.00) command=(x:20.00, y:40.00, width:1048.00, height:772.00) immediate=(x:20.00, y:40.00, width:1048.00, height:772.00) frame=(x:100.00, y:100.00, width:800.00, height:726.00) border=RectOffset (l:0 r:0 t:26 b:0)
+[R4-B layout] StudioContextWindow attempt=2 observed=(x:1076.00, y:69.00, width:320.00, height:240.00) command=(x:1076.00, y:40.00, width:544.00, height:336.00) immediate=(x:1076.00, y:40.00, width:544.00, height:336.00) frame=(x:1076.00, y:69.00, width:320.00, height:266.00) border=RectOffset (l:0 r:0 t:26 b:0)
+[R4-B layout] StudioHistoryWindow attempt=2 observed=(x:0.00, y:26.00, width:320.00, height:200.00) command=(x:1076.00, y:745.00, width:544.00, height:295.00) immediate=(x:1076.00, y:745.00, width:544.00, height:295.00) frame=(x:1076.00, y:745.00, width:320.00, height:226.00) border=RectOffset (l:0 r:0 t:26 b:0)
+[R4-B layout] StudioViewportWindow attempt=3 observed=(x:100.00, y:100.00, width:800.00, height:700.00) command=(x:-60.00, y:-20.00, width:1048.00, height:772.00) immediate=(x:-60.00, y:-20.00, width:1048.00, height:772.00) frame=(x:20.00, y:69.00, width:1048.00, height:798.00) border=RectOffset (l:0 r:0 t:26 b:0)
+[R4-B layout] StudioContextWindow attempt=3 observed=(x:0.00, y:26.00, width:544.00, height:336.00) command=(x:2152.00, y:54.00, width:544.00, height:336.00) immediate=(x:2152.00, y:54.00, width:544.00, height:336.00) frame=(x:1076.00, y:69.00, width:544.00, height:362.00) border=RectOffset (l:0 r:0 t:26 b:0)
+[R4-B layout] StudioHistoryWindow attempt=3 observed=(x:1076.00, y:745.00, width:320.00, height:200.00) command=(x:1076.00, y:745.00, width:544.00, height:295.00) immediate=(x:1076.00, y:745.00, width:544.00, height:295.00) frame=(x:1076.00, y:745.00, width:320.00, height:226.00) border=RectOffset (l:0 r:0 t:26 b:0)
+[R4-B layout] StudioViewportWindow attempt=4 observed=(x:100.00, y:100.00, width:800.00, height:700.00) command=(x:20.00, y:40.00, width:1048.00, height:772.00) immediate=(x:0.00, y:26.00, width:800.00, height:700.00) frame=(x:100.00, y:100.00, width:800.00, height:726.00) border=RectOffset (l:0 r:0 t:26 b:0)
+[R4-B layout] StudioContextWindow attempt=4 observed=(x:1076.00, y:69.00, width:544.00, height:336.00) command=(x:1076.00, y:40.00, width:544.00, height:336.00) immediate=(x:1076.00, y:40.00, width:544.00, height:336.00) frame=(x:1376.00, y:69.00, width:544.00, height:362.00) border=RectOffset (l:0 r:0 t:26 b:0)
+[R4-B layout] StudioHistoryWindow attempt=4 observed=(x:1076.00, y:745.00, width:320.00, height:200.00) command=(x:1076.00, y:745.00, width:544.00, height:295.00) immediate=(x:1076.00, y:745.00, width:544.00, height:295.00) frame=(x:1076.00, y:745.00, width:320.00, height:226.00) border=RectOffset (l:0 r:0 t:26 b:0)
+[R4-B layout] StudioViewportWindow attempt=5 observed=(x:100.00, y:100.00, width:800.00, height:700.00) command=(x:-60.00, y:-20.00, width:1048.00, height:772.00) immediate=(x:-60.00, y:-20.00, width:1048.00, height:772.00) frame=(x:100.00, y:100.00, width:800.00, height:726.00) border=RectOffset (l:0 r:0 t:26 b:0)
+[R4-B layout] StudioContextWindow attempt=5 observed=(x:1376.00, y:69.00, width:544.00, height:336.00) command=(x:776.00, y:11.00, width:544.00, height:336.00) immediate=(x:776.00, y:11.00, width:544.00, height:336.00) frame=(x:1376.00, y:69.00, width:544.00, height:362.00) border=RectOffset (l:0 r:0 t:26 b:0)
+[R4-B layout] StudioViewportWindow attempt=6 observed=(x:100.00, y:100.00, width:800.00, height:700.00) command=(x:20.00, y:40.00, width:1048.00, height:772.00) immediate=(x:20.00, y:40.00, width:1048.00, height:772.00) frame=(x:20.00, y:69.00, width:800.00, height:726.00) border=RectOffset (l:0 r:0 t:26 b:0)
+[R4-B layout] StudioContextWindow attempt=6 observed=(x:776.00, y:11.00, width:544.00, height:336.00) command=(x:1076.00, y:40.00, width:544.00, height:336.00) immediate=(x:1076.00, y:40.00, width:544.00, height:336.00) frame=(x:776.00, y:69.00, width:544.00, height:362.00) border=RectOffset (l:0 r:0 t:26 b:0)
+[R4-B layout] StudioViewportWindow attempt=7 observed=(x:20.00, y:69.00, width:1048.00, height:772.00) command=(x:20.00, y:11.00, width:1048.00, height:772.00) immediate=(x:20.00, y:11.00, width:1048.00, height:772.00) frame=(x:20.00, y:69.00, width:1048.00, height:798.00) border=RectOffset (l:0 r:0 t:26 b:0)
+[R4-B layout] StudioViewportWindow attempt=8 observed=(x:20.00, y:69.00, width:1048.00, height:772.00) command=(x:20.00, y:40.00, width:1048.00, height:772.00) immediate=(x:20.00, y:40.00, width:1048.00, height:772.00) frame=(x:20.00, y:69.00, width:1048.00, height:798.00) border=RectOffset (l:0 r:0 t:26 b:0)
+[R4-B layout] StudioViewportWindow attempt=9 observed=(x:20.00, y:69.00, width:1048.00, height:772.00) command=(x:20.00, y:11.00, width:1048.00, height:772.00) immediate=(x:20.00, y:11.00, width:1048.00, height:772.00) frame=(x:20.00, y:69.00, width:1048.00, height:798.00) border=RectOffset (l:0 r:0 t:26 b:0)
+[R4-B layout] StudioViewportWindow attempt=10 observed=(x:20.00, y:69.00, width:1048.00, height:772.00) command=(x:20.00, y:40.00, width:1048.00, height:772.00) immediate=(x:20.00, y:40.00, width:1048.00, height:772.00) frame=(x:20.00, y:69.00, width:1048.00, height:798.00) border=RectOffset (l:0 r:0 t:26 b:0)
+[R4-B layout] StudioViewportWindow attempt=11 observed=(x:20.00, y:69.00, width:1048.00, height:772.00) command=(x:20.00, y:11.00, width:1048.00, height:772.00) immediate=(x:20.00, y:11.00, width:1048.00, height:772.00) frame=(x:20.00, y:69.00, width:1048.00, height:798.00) border=RectOffset (l:0 r:0 t:26 b:0)
+[R4-B layout] StudioViewportWindow attempt=12 observed=(x:20.00, y:69.00, width:1048.00, height:772.00) command=(x:20.00, y:40.00, width:1048.00, height:772.00) immediate=(x:20.00, y:40.00, width:1048.00, height:772.00) frame=(x:20.00, y:69.00, width:1048.00, height:798.00) border=RectOffset (l:0 r:0 t:26 b:0)
+[R4-B layout] StudioViewportWindow attempt=13 observed=(x:20.00, y:69.00, width:1048.00, height:772.00) command=(x:20.00, y:11.00, width:1048.00, height:772.00) immediate=(x:20.00, y:11.00, width:1048.00, height:772.00) frame=(x:20.00, y:69.00, width:1048.00, height:798.00) border=RectOffset (l:0 r:0 t:26 b:0)
+[R4-B layout] StudioViewportWindow attempt=14 observed=(x:20.00, y:69.00, width:1048.00, height:772.00) command=(x:20.00, y:40.00, width:1048.00, height:772.00) immediate=(x:20.00, y:40.00, width:1048.00, height:772.00) frame=(x:20.00, y:69.00, width:1048.00, height:798.00) border=RectOffset (l:0 r:0 t:26 b:0)
+[R4-B layout] StudioViewportWindow attempt=15 observed=(x:20.00, y:69.00, width:1048.00, height:772.00) command=(x:20.00, y:11.00, width:1048.00, height:772.00) immediate=(x:20.00, y:11.00, width:1048.00, height:772.00) frame=(x:20.00, y:69.00, width:1048.00, height:798.00) border=RectOffset (l:0 r:0 t:26 b:0)
+GameCore Studio [layout_timeout]: StudioViewportWindow requested (x:20.00, y:40.00, width:1048.00, height:772.00), observed (x:20.00, y:69.00, width:1048.00, height:772.00); placement did not settle within 5 seconds / 120 placement attempts. Move the window manually or reopen Studio.
+Saving results to: ~/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

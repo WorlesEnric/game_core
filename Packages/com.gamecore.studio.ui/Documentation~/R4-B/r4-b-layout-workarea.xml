@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="5" result="Failed(Child)" total="5" passed="4" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-05 22:26:26Z" end-time="2026-10-05 22:26:35Z" duration="9.0800486">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="472" result="Failed" site="Child" start-time="2026-10-05 22:26:26Z" end-time="2026-10-05 22:26:35Z" duration="9.080049" total="5" passed="4" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1220" name="GameCore.Studio.UI.Editor.Tests.dll" fullname="~/wkspace/gc-studio/r4-b/games/hollowmere/Library/ScriptAssemblies/GameCore.Studio.UI.Editor.Tests.dll" runstate="Runnable" testcasecount="60" result="Failed" site="Child" start-time="2026-10-05 22:26:26Z" end-time="2026-10-05 22:26:35Z" duration="9.066703" total="5" passed="4" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="4061568" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1221" name="GameCore" fullname="GameCore" runstate="Runnable" testcasecount="60" result="Failed" site="Child" start-time="2026-10-05 22:26:26Z" end-time="2026-10-05 22:26:35Z" duration="9.065105" total="5" passed="4" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1222" name="Studio" fullname="GameCore.Studio" runstate="Runnable" testcasecount="60" result="Failed" site="Child" start-time="2026-10-05 22:26:26Z" end-time="2026-10-05 22:26:35Z" duration="9.063788" total="5" passed="4" failed="1" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestSuite" id="1223" name="UI" fullname="GameCore.Studio.UI" runstate="Runnable" testcasecount="60" result="Failed" site="Child" start-time="2026-10-05 22:26:26Z" end-time="2026-10-05 22:26:35Z" duration="9.061315" total="5" passed="4" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="TestSuite" id="1224" name="Tests" fullname="GameCore.Studio.UI.Tests" runstate="Runnable" testcasecount="60" result="Failed" site="Child" start-time="2026-10-05 22:26:26Z" end-time="2026-10-05 22:26:35Z" duration="9.058215" total="5" passed="4" failed="1" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-suite type="TestFixture" id="1193" name="R3UiRegressionTests" fullname="GameCore.Studio.UI.Tests.R3UiRegressionTests" classname="GameCore.Studio.UI.Tests.R3UiRegressionTests" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-05 22:26:26Z" end-time="2026-10-05 22:26:33Z" duration="7.784685" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <failure>
+                  <message><![CDATA[One or more child tests had errors]]></message>
+                </failure>
+                <test-case id="1196" name="D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce" fullname="GameCore.Studio.UI.Tests.R3UiRegressionTests.D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce" methodname="D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce" classname="GameCore.Studio.UI.Tests.R3UiRegressionTests" runstate="Runnable" seed="458990755" result="Failed" start-time="2026-10-05 22:26:26Z" end-time="2026-10-05 22:26:33Z" duration="7.774728" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[  settled layout must unsubscribe and preserve creator moves
+  Expected: (x:60.00, y:60.00, width:900.00, height:700.00)
+  But was:  (x:20.00, y:100.00, width:1048.00, height:694.00)
+]]></message>
+                    <stack-trace><![CDATA[at GameCore.Studio.UI.Tests.R3UiRegressionTests+<D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce>d__3.MoveNext () [0x0020b] in ~/wkspace/gc-studio/r4-b/Packages/com.gamecore.studio.ui/Tests/Editor/R3UiRegressionTests.cs:94
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44
+]]></stack-trace>
+                  </failure>
+                  <output><![CDATA[[R4-B layout] StudioViewportWindow attempt=2 observed=(x:100.00, y:100.00, width:800.00, height:700.00) command=(x:20.00, y:100.00, width:1048.00, height:694.00) immediate=(x:20.00, y:100.00, width:1048.00, height:694.00) frame=(x:100.00, y:100.00, width:800.00, height:726.00) border=RectOffset (l:0 r:0 t:26 b:0)
+[R4-B layout] StudioContextWindow attempt=2 observed=(x:1076.00, y:100.00, width:320.00, height:240.00) command=(x:1076.00, y:100.00, width:544.00, height:302.00) immediate=(x:1076.00, y:100.00, width:544.00, height:302.00) frame=(x:1076.00, y:100.00, width:320.00, height:266.00) border=RectOffset (l:0 r:0 t:26 b:0)
+[R4-B layout] StudioViewportWindow attempt=3 observed=(x:100.00, y:100.00, width:800.00, height:700.00) command=(x:20.00, y:100.00, width:1048.00, height:694.00) immediate=(x:20.00, y:100.00, width:1048.00, height:694.00) frame=(x:20.00, y:100.00, width:1048.00, height:720.00) border=RectOffset (l:0 r:0 t:26 b:0)
+[R4-B layout] StudioContextWindow attempt=3 observed=(x:0.00, y:26.00, width:544.00, height:302.00) command=(x:1076.00, y:100.00, width:544.00, height:302.00) immediate=(x:1076.00, y:100.00, width:544.00, height:302.00) frame=(x:1076.00, y:100.00, width:544.00, height:328.00) border=RectOffset (l:0 r:0 t:26 b:0)
+[R4-B layout] StudioViewportWindow attempt=4 observed=(x:100.00, y:100.00, width:800.00, height:700.00) command=(x:20.00, y:100.00, width:1048.00, height:694.00) immediate=(x:0.00, y:26.00, width:800.00, height:700.00) frame=(x:100.00, y:100.00, width:800.00, height:726.00) border=RectOffset (l:0 r:0 t:26 b:0)
+[R4-B layout] StudioViewportWindow attempt=5 observed=(x:100.00, y:100.00, width:800.00, height:700.00) command=(x:20.00, y:100.00, width:1048.00, height:694.00) immediate=(x:20.00, y:100.00, width:1048.00, height:694.00) frame=(x:100.00, y:100.00, width:800.00, height:726.00) border=RectOffset (l:0 r:0 t:26 b:0)
+[R4-B layout] StudioViewportWindow attempt=6 observed=(x:100.00, y:100.00, width:800.00, height:700.00) command=(x:20.00, y:100.00, width:1048.00, height:694.00) immediate=(x:20.00, y:100.00, width:1048.00, height:694.00) frame=(x:20.00, y:100.00, width:800.00, height:726.00) border=RectOffset (l:0 r:0 t:26 b:0)
+[R4-B layout] StudioViewportWindow attempt=7 observed=(x:0.00, y:26.00, width:1048.00, height:694.00) command=(x:20.00, y:100.00, width:1048.00, height:694.00) immediate=(x:20.00, y:100.00, width:1048.00, height:694.00) frame=(x:20.00, y:100.00, width:1048.00, height:720.00) border=RectOffset (l:0 r:0 t:26 b:0)
+]]></output>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1197" name="R4UiRegressionTests" fullname="GameCore.Studio.UI.Tests.R4UiRegressionTests" classname="GameCore.Studio.UI.Tests.R4UiRegressionTests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-10-05 22:26:33Z" end-time="2026-10-05 22:26:35Z" duration="1.267747" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1199" name="P42_UI_02_ClampedReadbackRetriesTheRequestedRectWithoutDrifting" fullname="GameCore.Studio.UI.Tests.R4UiRegressionTests.P42_UI_02_ClampedReadbackRetriesTheRequestedRectWithoutDrifting" methodname="P42_UI_02_ClampedReadbackRetriesTheRequestedRectWithoutDrifting" classname="GameCore.Studio.UI.Tests.R4UiRegressionTests" runstate="Runnable" seed="844215235" result="Passed" start-time="2026-10-05 22:26:33Z" end-time="2026-10-05 22:26:33Z" duration="0.002448" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1198" name="P42_UI_02_LatePlacementIsRetriedUntilStable" fullname="GameCore.Studio.UI.Tests.R4UiRegressionTests.P42_UI_02_LatePlacementIsRetriedUntilStable" methodname="P42_UI_02_LatePlacementIsRetriedUntilStable" classname="GameCore.Studio.UI.Tests.R4UiRegressionTests" runstate="Runnable" seed="293976223" result="Passed" start-time="2026-10-05 22:26:33Z" end-time="2026-10-05 22:26:35Z" duration="1.258017" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1200" name="P42_UI_02_StableObservationsDoNotSpendRetryBudget" fullname="GameCore.Studio.UI.Tests.R4UiRegressionTests.P42_UI_02_StableObservationsDoNotSpendRetryBudget" methodname="P42_UI_02_StableObservationsDoNotSpendRetryBudget" classname="GameCore.Studio.UI.Tests.R4UiRegressionTests" runstate="Runnable" seed="1710189760" result="Passed" start-time="2026-10-05 22:26:35Z" end-time="2026-10-05 22:26:35Z" duration="0.001031" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1201" name="P42_UI_02_TimeoutDiagnosesAndUnsubscribes" fullname="GameCore.Studio.UI.Tests.R4UiRegressionTests.P42_UI_02_TimeoutDiagnosesAndUnsubscribes" methodname="P42_UI_02_TimeoutDiagnosesAndUnsubscribes" classname="GameCore.Studio.UI.Tests.R4UiRegressionTests" runstate="Runnable" seed="2089233534" result="Passed" start-time="2026-10-05 22:26:35Z" end-time="2026-10-05 22:26:35Z" duration="0.003157" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[GameCore Studio [layout_timeout]: StudioViewportWindow requested (x:20.00, y:40.00, width:1048.00, height:772.00), observed (x:100.00, y:100.00, width:800.00, height:700.00); placement did not settle within 5 seconds / 120 placement attempts. Move the window manually or reopen Studio.
+Saving results to: ~/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
