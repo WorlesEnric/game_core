@@ -15,6 +15,11 @@
 // Grants are idempotent by request id: an id already in the target's ring is rejected as IdempotencyConflict, which
 // the narrative outbox reads as "already applied". A grant that does not fit commits InventoryFull without recording
 // its id, so the outbox retries it later. The inventory stage runs after the world stage.
+//
+// P1.7a (A1): an obligation request id (negative, from the narrative outbox) is also claimed through the world's step
+// tap - an obligation that is no longer open answers IdempotencyConflict even when the ring has forgotten it - and is
+// settled in the step that applies it. Committed events go through the tap, so the ActionDue events of a consumed item's
+// use actions become obligations in the same step.
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -287,8 +292,8 @@ namespace GameCore.Gameplay.Inventory
                 : route.Equals(InventoryIds.PickupRoute) ? 1
                 : route.Equals(InventoryIds.GrantRoute) || route.Equals(InventoryIds.ConsumeRoute) ? 2 : -1;
             int requestId = requestIndex >= 0 ? command[requestIndex] : 0;
-            if (RequestRing.IsTracked(requestId)
-                && RequestRing.Contains(NarrativeSlots.ReadRing(rt.Registry, em, target, InventoryIds.Owner, InventoryIds.Req), requestId))
+            int[]? ring = RequestRing.IsTracked(requestId) ? NarrativeSlots.ReadRing(rt.Registry, em, target, InventoryIds.Owner, InventoryIds.Req) : null;
+            if (NarrativeObligations.Admit(rt.Tap, ring, requestId) != DiagnosticCode.None)
             {
                 Refuse(plane, message, DiagnosticCode.IdempotencyConflict);
                 return;
@@ -334,7 +339,7 @@ namespace GameCore.Gameplay.Inventory
                 return;
             }
 
-            if (!step.Events.CommitAll(plane, message))
+            if (!step.Events.CommitAll(plane, message, rt.Tap))
             {
                 Refuse(plane, message, DiagnosticCode.BudgetExceeded);
                 return;
@@ -344,6 +349,7 @@ namespace GameCore.Gameplay.Inventory
             if (step.Applied)
             {
                 NarrativeSlots.PushRing(rt.Registry, em, target, InventoryIds.Owner, InventoryIds.ReqHead, InventoryIds.Req, requestId);
+                NarrativeObligations.Settle(rt.Tap, requestId);
             }
 
             Granted += step.GrantCount;

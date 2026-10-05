@@ -1,16 +1,20 @@
 // GameCore.Gameplay.Npc - NPC presentation: NavMeshAgentBinder, NpcAnimatorBinder, NpcBubbleBinder (P1.3).
 //
-// All three read committed npc slots only (P-045) and run after the prefab view binder, which places every view at its
-// world.pos (the NPC's baked placement - the npc plugin moves npc.pos, not world.pos). They are headless-safe: they act
-// only through the prefab view binder's live views, which do not exist headless.
+// All three read committed slots only (P-045) and run after the prefab view binder, which places every view at its
+// world.pos. The NPC's pose is world.pos (P1.7a: the one pose every plugin writes); npc.pos is never read here. They
+// are headless-safe: they act only through the prefab view binder's live views, which do not exist headless.
 //
-// NavMeshAgentBinder (resident regions only, because only resident regions have views): each NPC view gets a
-// NavMeshAgent that is never in charge of the transform (updatePosition/updateRotation off). Each frame the agent is
-// steered toward the committed logical pose and the view is placed at the agent's simulated position, so the view walks
-// around obstacles on the region's baked NavMesh; when the agent is off the NavMesh, or drifts further than SnapDistance
-// from the logical pose, it is warped there (the logical pose always wins). Without a NavMesh the view is placed at the
-// logical pose directly.
+// All three are residency-aware (P1.7a, A7): they record every residency notification (including the replay the
+// streamer sends when a binder is added), skip NPCs whose committed world.region is not Resident (never notified counts
+// as not Resident), and drop per-NPC state cached for a region when it stops being Resident.
+//
+// NavMeshAgentBinder: each NPC view gets a NavMeshAgent that is never in charge of the transform (updatePosition and
+// updateRotation off). Each frame the agent is steered toward the committed logical pose (world.pos) and the view is
+// placed at the agent's simulated position, so the view walks around obstacles on the region's baked NavMesh; when the
+// agent is off the NavMesh, or drifts further than SnapDistance from the logical pose, it is warped there (the logical
+// pose always wins). Without a NavMesh the view is placed at the logical pose directly.
 #nullable enable
+using System;
 using System.Collections.Generic;
 using GameCore.Contracts;
 using GameCore.Gameplay.Contracts;
@@ -20,12 +24,22 @@ using UnityEngine.AI;
 
 namespace GameCore.Gameplay.Npc
 {
-    /// <summary>Moves NPC views along the NavMesh toward their committed logical pose.</summary>
-    public sealed class NavMeshAgentBinder : IPresentationBinder
+    /// <summary>The committed region (world.region) of an NPC as an authoring id; empty when unknown.</summary>
+    internal static class NpcResidency
+    {
+        public static string RegionOf(ICommittedSlotReader slots, PrefabViewBinder views, TargetId target) =>
+            views.RegionIdOf(slots.TryRead(target, GameplaySlots.WorldOwner, GameplaySlots.Region, out int key) ? key : 0);
+    }
+
+    /// <summary>Moves NPC views along the NavMesh toward their committed logical pose (world.pos).</summary>
+    public sealed class NavMeshAgentBinder : IPresentationBinder, IResidencyAware
     {
         private readonly PrefabViewBinder views;
         private readonly NpcWorldExtension extension;
+        private readonly RegionResidencySet residency = new RegionResidencySet();
         private readonly Dictionary<TargetId, NavMeshAgent> agents = new Dictionary<TargetId, NavMeshAgent>();
+        private readonly Dictionary<TargetId, string> agentRegions = new Dictionary<TargetId, string>();
+        private readonly List<TargetId> evicted = new List<TargetId>();
 
         public NavMeshAgentBinder(PrefabViewBinder views, NpcWorldExtension extension)
         {
@@ -42,6 +56,31 @@ namespace GameCore.Gameplay.Npc
 
         public int Warps { get; private set; }
 
+        public void OnResidencyChanged(string regionId, RegionResidency value)
+        {
+            if (residency.Set(regionId, value))
+            {
+                return;
+            }
+
+            evicted.Clear();
+            foreach (KeyValuePair<TargetId, string> pair in agentRegions)
+            {
+                if (string.Equals(pair.Value, regionId, StringComparison.Ordinal))
+                {
+                    evicted.Add(pair.Key);
+                }
+            }
+
+            for (int i = 0; i < evicted.Count; i++)
+            {
+                agents.Remove(evicted[i]);
+                agentRegions.Remove(evicted[i]);
+            }
+
+            evicted.Clear();
+        }
+
         public int Present(ICommittedSlotReader slots)
         {
             if (!IsActive)
@@ -54,15 +93,20 @@ namespace GameCore.Gameplay.Npc
             for (int i = 0; i < records.Count; i++)
             {
                 NpcRecord record = records[i];
-                if (!views.TryGetView(record.Target, out GameObject? view) || view == null
-                    || !slots.TryRead(record.Target, NpcSlots.Owner, NpcSlots.PosX, out int x)
-                    || !slots.TryRead(record.Target, NpcSlots.Owner, NpcSlots.PosZ, out int z))
+                string regionId = NpcResidency.RegionOf(slots, views, record.Target);
+                if (!residency.IsResident(regionId)
+                    || !views.TryGetView(record.Target, out GameObject? view) || view == null
+                    || !slots.TryRead(record.Target, GameplaySlots.WorldOwner, GameplaySlots.PosX, out int x)
+                    || !slots.TryRead(record.Target, GameplaySlots.WorldOwner, GameplaySlots.PosZ, out int z))
                 {
                     continue;
                 }
 
-                int yaw = slots.TryRead(record.Target, NpcSlots.Owner, NpcSlots.Yaw, out int yawValue) ? yawValue : 0;
-                float y = view.transform.localPosition.y;
+                int yaw = slots.TryRead(record.Target, GameplaySlots.WorldOwner, GameplaySlots.Yaw, out int yawValue) ? yawValue : 0;
+                float y = slots.TryRead(record.Target, GameplaySlots.WorldOwner, GameplaySlots.PosY, out int py)
+                    ? (float)GameplayUnits.ToMetres(py)
+                    : view.transform.localPosition.y;
+                agentRegions[record.Target] = regionId;
                 var local = new Vector3((float)GameplayUnits.ToMetres(x), y, (float)GameplayUnits.ToMetres(z));
                 Transform? parent = view.transform.parent;
                 Vector3 logical = parent != null ? parent.TransformPoint(local) : local;
@@ -119,12 +163,13 @@ namespace GameCore.Gameplay.Npc
     }
 
     /// <summary>Drives an NPC view's Animator (Speed, State) from committed slots, when the view has one.</summary>
-    public sealed class NpcAnimatorBinder : IPresentationBinder
+    public sealed class NpcAnimatorBinder : IPresentationBinder, IResidencyAware
     {
         private static readonly int SpeedParameter = Animator.StringToHash("Speed");
         private static readonly int StateParameter = Animator.StringToHash("State");
         private readonly PrefabViewBinder views;
         private readonly NpcWorldExtension extension;
+        private readonly RegionResidencySet residency = new RegionResidencySet();
 
         public NpcAnimatorBinder(PrefabViewBinder views, NpcWorldExtension extension)
         {
@@ -135,6 +180,8 @@ namespace GameCore.Gameplay.Npc
         public string BinderName => "gameplay.npc-animator";
 
         public bool IsActive => views != null && views.IsActive;
+
+        public void OnResidencyChanged(string regionId, RegionResidency value) => residency.Set(regionId, value);
 
         public int Present(ICommittedSlotReader slots)
         {
@@ -148,7 +195,8 @@ namespace GameCore.Gameplay.Npc
             for (int i = 0; i < records.Count; i++)
             {
                 NpcRecord record = records[i];
-                if (!views.TryGetView(record.Target, out GameObject? view) || view == null)
+                if (!residency.IsResident(NpcResidency.RegionOf(slots, views, record.Target))
+                    || !views.TryGetView(record.Target, out GameObject? view) || view == null)
                 {
                     continue;
                 }
@@ -171,10 +219,11 @@ namespace GameCore.Gameplay.Npc
     }
 
     /// <summary>Writes "Name" plus the state (e.g. "Maren - patrol") into each NPC view's bubble.</summary>
-    public sealed class NpcBubbleBinder : IPresentationBinder
+    public sealed class NpcBubbleBinder : IPresentationBinder, IResidencyAware
     {
         private readonly PrefabViewBinder views;
         private readonly NpcWorldExtension extension;
+        private readonly RegionResidencySet residency = new RegionResidencySet();
 
         public NpcBubbleBinder(PrefabViewBinder views, NpcWorldExtension extension)
         {
@@ -185,6 +234,8 @@ namespace GameCore.Gameplay.Npc
         public string BinderName => "gameplay.npc-bubble";
 
         public bool IsActive => views != null && views.IsActive;
+
+        public void OnResidencyChanged(string regionId, RegionResidency value) => residency.Set(regionId, value);
 
         public static string TextFor(string displayName, int state) => displayName + "\n(" + NpcSlots.StateName(state) + ")";
 
@@ -200,7 +251,8 @@ namespace GameCore.Gameplay.Npc
             for (int i = 0; i < records.Count; i++)
             {
                 NpcRecord record = records[i];
-                if (!views.TryGetView(record.Target, out GameObject? view) || view == null)
+                if (!residency.IsResident(NpcResidency.RegionOf(slots, views, record.Target))
+                    || !views.TryGetView(record.Target, out GameObject? view) || view == null)
                 {
                     continue;
                 }

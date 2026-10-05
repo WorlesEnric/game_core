@@ -344,19 +344,19 @@ namespace GameCore.Gameplay.Contracts
         public const string EntityReferenceInvalid = "GP-REF-005";
 
         /// <summary>A portal names a spawn point its region does not declare.</summary>
-        public const string PortalSpawnPointMissing = "GP-WLD-030";
+        public const string PortalSpawnPointMissing = "GP-WLD-050";
 
         /// <summary>A region lists a neighbour that is not in the world or not reachable through a portal.</summary>
-        public const string RegionNeighbourUnconnected = "GP-WLD-031";
+        public const string RegionNeighbourUnconnected = "GP-WLD-051";
 
         /// <summary>A region's bounds have a non-positive size.</summary>
-        public const string RegionBoundsInvalid = "GP-WLD-032";
+        public const string RegionBoundsInvalid = "GP-WLD-052";
 
         /// <summary>Two spawn points of a region share a name.</summary>
-        public const string RegionSpawnPointDuplicate = "GP-WLD-033";
+        public const string RegionSpawnPointDuplicate = "GP-WLD-053";
 
         /// <summary>The world's start spawn point is not declared by the start region.</summary>
-        public const string WorldStartPointMissing = "GP-WLD-034";
+        public const string WorldStartPointMissing = "GP-WLD-054";
 
         /// <summary>An NPC's appearance is not one of its entity definition's variants.</summary>
         public const string NpcAppearanceNotVariant = "GP-NPC-008";

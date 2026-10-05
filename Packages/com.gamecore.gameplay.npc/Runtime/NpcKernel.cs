@@ -11,6 +11,14 @@
 // resident every step, NPCs elsewhere every UnloadedStride-th step with that many steps of time (all NPCs move whether
 // their region is loaded or not; their views exist only while it is). A schedule phase change, an arrival or a state
 // change commits an event through an internal message (default causal request = internal work, P-045).
+//
+// P1.7a:
+//   * Pose authority (A4): world.posX/posZ/yaw is the NPC's authoritative pose (world.posY is left to the world). The
+//     system reads it for every decision and writes it in the step that moves the NPC; npc.posX/posZ/yaw are mirrors. A
+//     mirror that differs from world.pos at the start of an update means a host/Studio world.place moved the NPC: the
+//     pose is adopted, and an NPC that was standing (not walking a route or approaching) keeps standing at the new spot
+//     instead of walking back - so a moved NPC stays where it was put across region unloads, saves and restores.
+//   * Schedules read GameplayClock (A5): world time = step x stepMs + the schedule's start offset.
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -130,7 +138,22 @@ namespace GameCore.Gameplay.Npc
 
         public NpcDefinition? Definition { get; }
 
-        public NpcProfile Profile { get; }
+        /// <summary>The definition's numeric tuning in rule units; <see cref="Retune"/> re-reads it (SADR-013 Live edit, P1.7a).</summary>
+        public NpcProfile Profile { get; private set; }
+
+        /// <summary>Re-reads the numeric tuning from the (edited) definition; the slot state is untouched. True when it changed.</summary>
+        public bool Retune()
+        {
+            if (Definition == null)
+            {
+                return false;
+            }
+
+            NpcProfile next = Definition.ToProfile();
+            bool changed = !next.Equals(Profile);
+            Profile = next;
+            return changed;
+        }
 
         public IReadOnlyList<PatrolPoint> Route { get; }
 
@@ -181,7 +204,7 @@ namespace GameCore.Gameplay.Npc
             bool phaseChanged = false;
             if (record.HasSchedule)
             {
-                long time = ScheduleRules.WorldTime(step, stepMilliseconds, record.StartOffsetMilliseconds);
+                long time = GameplayClock.StepTimeMs(step, stepMilliseconds) + record.StartOffsetMilliseconds;
                 int phase = ScheduleRules.PhaseAt(time, record.DayLengthMilliseconds, record.Phases);
                 if (phase >= 0 && phase != current.SchedulePhase)
                 {
@@ -257,7 +280,25 @@ namespace GameCore.Gameplay.Npc
 
         public int DroppedEvents { get; private set; }
 
+        /// <summary>Updates that adopted a pose the world wrote (world.place), P1.7a.</summary>
+        public int Adoptions { get; private set; }
+
         public bool TryGet(TargetId target, out NpcRecord? record) => byTarget.TryGetValue(target, out record);
+
+        /// <summary>Re-reads every NPC's numeric tuning from its definition (a SADR-013 Live edit, between frames). Returns how many changed.</summary>
+        public int RetuneAll()
+        {
+            int changed = 0;
+            for (int i = 0; i < ordered.Count; i++)
+            {
+                if (ordered[i].Retune())
+                {
+                    changed++;
+                }
+            }
+
+            return changed;
+        }
 
         public bool TryGetByKey(int key, out NpcRecord? record) => byKey.TryGetValue(key, out record);
 
@@ -280,8 +321,15 @@ namespace GameCore.Gameplay.Npc
 
         internal void CountDropped() => DroppedEvents++;
 
-        public static NpcSnapshot Read(EntityManager entityManager, Entity entity) =>
-            new NpcSnapshot(
+        internal void CountAdoption() => Adoptions++;
+
+        /// <summary>The NPC's state with its authoritative pose (world.posX/posZ/yaw; the npc.pos mirror only as a fallback).</summary>
+        public static NpcSnapshot Read(EntityManager entityManager, Entity entity)
+        {
+            int mirrorX = SlotState.ReadOrDefault(entityManager, entity, NpcSlots.Owner, NpcSlots.PosX, 0);
+            int mirrorZ = SlotState.ReadOrDefault(entityManager, entity, NpcSlots.Owner, NpcSlots.PosZ, 0);
+            int mirrorYaw = SlotState.ReadOrDefault(entityManager, entity, NpcSlots.Owner, NpcSlots.Yaw, 0);
+            return new NpcSnapshot(
                 SlotState.ReadOrDefault(entityManager, entity, NpcSlots.Owner, NpcSlots.State, 0),
                 SlotState.ReadOrDefault(entityManager, entity, NpcSlots.Owner, NpcSlots.Behaviour, 0),
                 SlotState.ReadOrDefault(entityManager, entity, NpcSlots.Owner, NpcSlots.PatrolIndex, 0),
@@ -289,13 +337,42 @@ namespace GameCore.Gameplay.Npc
                 SlotState.ReadOrDefault(entityManager, entity, NpcSlots.Owner, NpcSlots.SchedulePhase, 0),
                 SlotState.ReadOrDefault(entityManager, entity, NpcSlots.Owner, NpcSlots.TargetX, 0),
                 SlotState.ReadOrDefault(entityManager, entity, NpcSlots.Owner, NpcSlots.TargetZ, 0),
-                SlotState.ReadOrDefault(entityManager, entity, NpcSlots.Owner, NpcSlots.PosX, 0),
-                SlotState.ReadOrDefault(entityManager, entity, NpcSlots.Owner, NpcSlots.PosZ, 0),
-                SlotState.ReadOrDefault(entityManager, entity, NpcSlots.Owner, NpcSlots.Yaw, 0),
+                SlotState.ReadOrDefault(entityManager, entity, GameplaySlots.WorldOwner, GameplaySlots.PosX, mirrorX),
+                SlotState.ReadOrDefault(entityManager, entity, GameplaySlots.WorldOwner, GameplaySlots.PosZ, mirrorZ),
+                SlotState.ReadOrDefault(entityManager, entity, GameplaySlots.WorldOwner, GameplaySlots.Yaw, mirrorYaw),
                 SlotState.ReadOrDefault(entityManager, entity, NpcSlots.Owner, NpcSlots.TimerMs, 0));
+        }
 
+        /// <summary>True when the npc.pos mirror differs from world.pos (a host/Studio world.place moved the NPC).</summary>
+        public static bool MirrorDiffers(EntityManager entityManager, Entity entity)
+        {
+            return Differs(entityManager, entity, NpcSlots.PosX, GameplaySlots.PosX)
+                || Differs(entityManager, entity, NpcSlots.PosZ, GameplaySlots.PosZ)
+                || Differs(entityManager, entity, NpcSlots.Yaw, GameplaySlots.Yaw);
+        }
+
+        /// <summary>
+        /// The state after adopting a pose the world wrote: a standing NPC (idle, or waiting at a point) takes the new spot
+        /// as its target too, so it stays there; a walking NPC resumes its route from the new spot.
+        /// </summary>
+        public static NpcSnapshot Adopt(NpcSnapshot state)
+        {
+            bool walking = state.StateCode == NpcStateCode.Patrol || state.StateCode == NpcStateCode.Approach;
+            return walking ? state : state.With(targetX: state.PosX, targetZ: state.PosZ);
+        }
+
+        private static bool Differs(EntityManager entityManager, Entity entity, SlotId mirror, SlotId authoritative)
+        {
+            return SlotState.TryRead(entityManager, entity, GameplaySlots.WorldOwner, authoritative, out int world)
+                && SlotState.ReadOrDefault(entityManager, entity, NpcSlots.Owner, mirror, world) != world;
+        }
+
+        /// <summary>Writes the state: the pose to world.posX/posZ/yaw (authoritative) and to the npc.pos mirror.</summary>
         public static void Write(EntityManager entityManager, Entity entity, NpcSnapshot state)
         {
+            SlotState.Write(entityManager, entity, GameplaySlots.WorldOwner, GameplaySlots.PosX, state.PosX);
+            SlotState.Write(entityManager, entity, GameplaySlots.WorldOwner, GameplaySlots.PosZ, state.PosZ);
+            SlotState.Write(entityManager, entity, GameplaySlots.WorldOwner, GameplaySlots.Yaw, state.Yaw);
             SlotState.Write(entityManager, entity, NpcSlots.Owner, NpcSlots.State, state.State);
             SlotState.Write(entityManager, entity, NpcSlots.Owner, NpcSlots.Behaviour, state.Behaviour);
             SlotState.Write(entityManager, entity, NpcSlots.Owner, NpcSlots.PatrolIndex, state.PatrolIndex);
@@ -355,6 +432,12 @@ namespace GameCore.Gameplay.Npc
                 }
 
                 NpcSnapshot before = NpcModule.Read(entityManager, entity);
+                if (NpcModule.MirrorDiffers(entityManager, entity))
+                {
+                    before = NpcModule.Adopt(before);
+                    module.CountAdoption();
+                }
+
                 NpcLogicalMover.Update update = NpcLogicalMover.Advance(before, record, step, module.StepMilliseconds, resident, module.UnloadedStride);
                 NpcModule.Write(entityManager, entity, update.After);
                 module.CountUpdate(resident);

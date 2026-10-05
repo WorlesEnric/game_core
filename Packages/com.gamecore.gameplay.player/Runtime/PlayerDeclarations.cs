@@ -72,23 +72,19 @@ namespace GameCore.Gameplay.Player
         public static readonly BufferId InteractBuffer = GameplayIds.Buffer("player.buffer.interact");
         public static readonly BufferId SetFocusBuffer = GameplayIds.Buffer("player.buffer.set-focus");
 
+        /// <summary>P1.7a (P3.1 request): the lane of player.restoreStamina.</summary>
+        public static readonly BufferId RestoreStaminaBuffer = GameplayIds.Buffer("player.buffer.restore-stamina");
+
         public static readonly FactoryKey MoveOrder = GameplayIds.Key("player.order.move");
         public static readonly FactoryKey InteractOrder = GameplayIds.Key("player.order.interact");
         public static readonly FactoryKey SetFocusOrder = GameplayIds.Key("player.order.set-focus");
 
-        /// <summary>The tool/action id of the stamina restore command (ActionKind.RestoreStamina runs it).</summary>
-        public const string RestoreStaminaCommandId = "player.restoreStamina";
-
         /// <summary>
-        /// player.restoreStamina: payload <see cref="RestoreStaminaPayload"/> (one int32 <c>amount</c>, stamina units, &gt; 0),
-        /// targeted at the player's entity. The player clamps the result to PlayerDefinition.staminaMax. Declared by P1.7b;
-        /// the handler in the player command system is P1.7a's (until then the system rejects it as Ineligible).
+        /// The tool/action id of the stamina restore command (ActionKind.RestoreStamina runs it). Route, schema and
+        /// lane: PlayerMotionSlots.RestoreStaminaRoute/RestoreStaminaCommand and RestoreStaminaBuffer (P1.7a); payload:
+        /// <see cref="RestoreStaminaPayload"/> (one int32 amount, stamina units, &gt; 0).
         /// </summary>
-        public static readonly RouteId RestoreStaminaRoute = GameplayIds.Route("player.route.restore-stamina");
-
-        public static readonly SchemaRef RestoreStaminaCommand = GameplayIds.Schema("player.command.restore-stamina", 1U);
-
-        public static readonly BufferId RestoreStaminaBuffer = GameplayIds.Buffer("player.buffer.restore-stamina");
+        public const string RestoreStaminaCommandId = "player.restoreStamina";
 
         public static readonly FactoryKey RestoreStaminaOrder = GameplayIds.Key("player.order.restore-stamina");
 
@@ -146,6 +142,8 @@ namespace GameCore.Gameplay.Player
                 Slot(PlayerSlots.Focus, "player.field.focus"),
                 Slot(PlayerSlots.RegionKey, "player.field.region-key"),
                 Slot(PlayerSlots.RegenDelayMs, "player.field.regen-delay-ms"),
+                Slot(PlayerMotionSlots.VerticalSpeed, "player.field.vertical-speed"),
+                Slot(PlayerMotionSlots.Grounded, "player.field.grounded"),
             };
         }
 
@@ -178,7 +176,7 @@ namespace GameCore.Gameplay.Player
                 Buffer(MoveBuffer, PlayerSlots.MoveCommand, MoveOrder),
                 Buffer(InteractBuffer, PlayerSlots.InteractCommand, InteractOrder),
                 Buffer(SetFocusBuffer, PlayerSlots.SetFocusCommand, SetFocusOrder),
-                Buffer(RestoreStaminaBuffer, RestoreStaminaCommand, RestoreStaminaOrder),
+                Buffer(RestoreStaminaBuffer, PlayerMotionSlots.RestoreStaminaCommand, RestoreStaminaOrder),
             };
         }
 
@@ -189,7 +187,7 @@ namespace GameCore.Gameplay.Player
                 new CommandRoute(PlayerSlots.MoveRoute, Owner, PlayerSlots.MoveCommand, Stage, Stage, MoveBuffer, IngressProducer, LaneCapacity, false),
                 new CommandRoute(PlayerSlots.InteractRoute, Owner, PlayerSlots.InteractCommand, Stage, Stage, InteractBuffer, IngressProducer, LaneCapacity, false),
                 new CommandRoute(PlayerSlots.SetFocusRoute, Owner, PlayerSlots.SetFocusCommand, Stage, Stage, SetFocusBuffer, IngressProducer, LaneCapacity, false),
-                new CommandRoute(RestoreStaminaRoute, Owner, RestoreStaminaCommand, Stage, Stage, RestoreStaminaBuffer, IngressProducer, LaneCapacity, false),
+                new CommandRoute(PlayerMotionSlots.RestoreStaminaRoute, Owner, PlayerMotionSlots.RestoreStaminaCommand, Stage, Stage, RestoreStaminaBuffer, IngressProducer, LaneCapacity, false),
             };
         }
 
@@ -200,7 +198,7 @@ namespace GameCore.Gameplay.Player
                 Lane(MoveBuffer, PlayerSlots.MoveCommand, MoveOrder),
                 Lane(InteractBuffer, PlayerSlots.InteractCommand, InteractOrder),
                 Lane(SetFocusBuffer, PlayerSlots.SetFocusCommand, SetFocusOrder),
-                Lane(RestoreStaminaBuffer, RestoreStaminaCommand, RestoreStaminaOrder),
+                Lane(RestoreStaminaBuffer, PlayerMotionSlots.RestoreStaminaCommand, RestoreStaminaOrder),
             };
         }
 

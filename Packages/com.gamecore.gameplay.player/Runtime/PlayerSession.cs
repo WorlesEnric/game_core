@@ -76,6 +76,12 @@ namespace GameCore.Gameplay.Player
             }
 
             PlayerDefinition? definition = extension.Definition;
+            if (definition != null)
+            {
+                // P1.7a (A6): the kernel integrates vertical motion; give it the authored gravity and jump height.
+                extension.Module.Tuning = extension.Module.Tuning.WithVertical(definition.Gravity, definition.JumpHeight);
+            }
+
             InputSystemIntentSource? owned = null;
             IPlayerIntentSource source = intents ?? (owned = new InputSystemIntentSource(
                 definition != null && definition.Input != null ? definition.Input.Actions : null,
@@ -89,7 +95,7 @@ namespace GameCore.Gameplay.Player
             var focus = new InteractionFocus(extension, commands, definition != null ? definition.ToFocusTuning() : FocusTuning.Default);
             var portals = new PortalProbe(extension, definition != null ? definition.Radius : 0.35f);
             float initialYaw = (float)GameplayUnits.MilliradiansToDegrees(
-                world.Slots.ReadOrDefault(extension.Player, PlayerSlots.Owner, PlayerSlots.Yaw, 0));
+                world.Slots.ReadOrDefault(extension.Player, GameplaySlots.WorldOwner, GameplaySlots.Yaw, 0));
             var orbit = new ThirdPersonCamera(camera, extension.Player, input, OrbitSettings.From(definition), initialYaw);
             if (orbit.IsActive)
             {
@@ -103,6 +109,23 @@ namespace GameCore.Gameplay.Player
             world.AddBinder(focus);
             world.AddBinder(orbit);
             return new PlayerSession(extension, commands, input, locomotion, focus, portals, orbit, owned);
+        }
+
+        /// <summary>
+        /// A SADR-013 Live edit (P1.7a, A9): re-reads the definition's numeric tuning (speeds, stamina, costs, gravity, jump
+        /// height) into the player module between frames. Slot state, recipes and the recipe revision are untouched.
+        /// </summary>
+        public bool Retune()
+        {
+            PlayerDefinition? definition = Extension.Definition;
+            PlayerModule? module = Extension.Module;
+            if (definition == null || module == null)
+            {
+                return false;
+            }
+
+            module.Tuning = definition.ToTuning().WithVertical(definition.Gravity, definition.JumpHeight);
+            return true;
         }
 
         public void Dispose()

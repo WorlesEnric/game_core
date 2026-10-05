@@ -47,10 +47,10 @@ namespace GameCore.Gameplay.Npc
         public CommandAdmissionReceipt Converse(TargetId npc, int holdMilliseconds) =>
             world.Commands.Submit(NpcSlots.ConverseRoute, npc, NpcSlots.ConverseCommand, NpcCommandPayload.Encode(holdMilliseconds, 0));
 
-        /// <summary>The committed planar position of a target: player.pos, then npc.pos, then world.pos.</summary>
+        /// <summary>The committed planar position of a target: world.pos (authoritative for every entity, P1.7a A4), then the npc.pos mirror.</summary>
         public static bool TryPosition(ICommittedSlotReader slots, TargetId target, out int x, out int z)
         {
-            if (slots.TryRead(target, PlayerSlots.Owner, PlayerSlots.PosX, out x) && slots.TryRead(target, PlayerSlots.Owner, PlayerSlots.PosZ, out z))
+            if (slots.TryRead(target, GameplaySlots.WorldOwner, GameplaySlots.PosX, out x) && slots.TryRead(target, GameplaySlots.WorldOwner, GameplaySlots.PosZ, out z))
             {
                 return true;
             }
@@ -70,7 +70,7 @@ namespace GameCore.Gameplay.Npc
         }
     }
 
-    /// <summary>One NPC as a focus candidate (position = committed npc.pos, region = world.region).</summary>
+    /// <summary>One NPC as a focus candidate (position = committed world.pos, region = world.region; P1.7a A4).</summary>
     public sealed class NpcInteractable : IInteractable
     {
         private readonly NpcRecord record;
@@ -94,8 +94,8 @@ namespace GameCore.Gameplay.Npc
             regionKey = slots.TryRead(record.Target, GameplaySlots.WorldOwner, GameplaySlots.Region, out int region) ? region : 0;
             bool alive = !slots.TryRead(record.Target, GameplaySlots.EntityOwner, GameplaySlots.Alive, out int aliveValue) || aliveValue != 0;
             z = 0;
-            return slots.TryRead(record.Target, NpcSlots.Owner, NpcSlots.PosX, out x)
-                && slots.TryRead(record.Target, NpcSlots.Owner, NpcSlots.PosZ, out z)
+            return slots.TryRead(record.Target, GameplaySlots.WorldOwner, GameplaySlots.PosX, out x)
+                && slots.TryRead(record.Target, GameplaySlots.WorldOwner, GameplaySlots.PosZ, out z)
                 && alive;
         }
 

@@ -63,10 +63,10 @@ namespace GameCore.Rules.Gameplay.Logic
         /// <summary>inv.pickup: Ref = world item authoring id (empty = the subject).</summary>
         Pickup = 16,
 
-        /// <summary>player.restoreStamina: Value = stamina units restored to the player (P1.7b declaration; P1.7a port).</summary>
+        /// <summary>player.restoreStamina of the actor: Value = amount (clamped to staminaMax by the player rules). P1.7a.</summary>
         RestoreStamina = 17,
 
-        /// <summary>inv.buy for the actor: Key = item key, Key2 = vendor key, Value = count (P1.7b declaration; P1.7a port).</summary>
+        /// <summary>inv.buy into the actor's inventory: Key = item key, Key2 = vendor key, Value = count. P1.7a.</summary>
         Buy = 18,
     }
 
@@ -130,7 +130,7 @@ namespace GameCore.Rules.Gameplay.Logic
                 case ActionKind.RunActionSet: return "run " + what;
                 case ActionKind.Pickup: return "pick up " + (Ref.Length > 0 ? what : "subject");
                 case ActionKind.RestoreStamina: return "restore " + value + " stamina";
-                case ActionKind.Buy: return "buy " + value + " x " + what;
+                case ActionKind.Buy: return "buy " + value + " x " + what + " from vendor " + Key2.ToString(CultureInfo.InvariantCulture);
                 default: return Kind.ToString();
             }
         }

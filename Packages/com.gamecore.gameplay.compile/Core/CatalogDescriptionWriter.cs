@@ -4,9 +4,10 @@
 // (GameplayCatalogNames: the two plugin factories, the two command systems, the recipe appliers, the slot layouts and
 // the five one-field schemas), then the registrations gameplay packages contribute (GameplayCatalogContribution, P1.3
 // seam, in package-name order), and, per baked entity definition, one LayoutApply registration
-// `gameplay.recipe.<authoring id>` whose implementation id is the first sixteen bytes of the definition's content hash.
-// A definition edit therefore changes exactly one registration and the catalog fingerprint, which is how a running
-// game detects a stale catalog (GP-CMP-004), and adding a definition adds exactly one registration.
+// `gameplay.recipe.<authoring id>` whose implementation id is the first sixteen bytes of the definition's recipe hash
+// (BakedDefinition.RecipeHash: the structural hash, P1.7a A8). A structural definition edit therefore changes exactly
+// one registration and the catalog fingerprint, which is how a running game detects a stale catalog (GP-CMP-004); a
+// cosmetic or tuning edit changes neither; adding a definition adds exactly one registration.
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -186,7 +187,7 @@ namespace GameCore.Gameplay.Compile
                     GameplayIds.StableName(RecipeName(definition.AuthoringId)),
                     RecipeKeyName(definition.AuthoringId),
                     owner,
-                    DefinitionHashing.ImplementationIdOf(definition.ContentHash));
+                    DefinitionHashing.ImplementationIdOf(definition.RecipeHash));
             }
 
             json.EndArray();

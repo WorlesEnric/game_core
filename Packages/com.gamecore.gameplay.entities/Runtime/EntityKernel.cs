@@ -11,6 +11,10 @@
 //
 // The system finds its world's module through a property the application root sets after boot ("per-world modules
 // attached in the application root"); there is no static registry, so two worlds never share entity state.
+//
+// P1.7a (A1): a command may carry a trailing request id (8-byte payload). A negative id is an outbox obligation's (the
+// narrative entity ports): the system claims it through the world's step tap before applying, and settles it in the
+// same step, so a redelivered obligation (after a lost acknowledgement or a restore) changes nothing.
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -24,19 +28,35 @@ using Unity.Entities;
 
 namespace GameCore.Gameplay.Entities
 {
-    /// <summary>The payload of every entity command: one int32 (the variant for setVariant, zero otherwise).</summary>
+    /// <summary>
+    /// The payload of every entity command: one int32 (the variant for setVariant, zero otherwise), optionally followed
+    /// by a request id (<see cref="LengthWithRequest"/> bytes; P1.7a).
+    /// </summary>
     public readonly struct EntityCommand
     {
         public EntityCommand(int value)
+            : this(value, 0)
+        {
+        }
+
+        public EntityCommand(int value, int requestId)
         {
             Value = value;
+            RequestId = requestId;
         }
 
         public int Value { get; }
 
+        /// <summary>0 when the command carries none; negative for an outbox obligation's id.</summary>
+        public int RequestId { get; }
+
         public const int Length = 4;
 
+        public const int LengthWithRequest = 8;
+
         public static FrozenPayload Encode(int value) => new GameplayPayloadWriter().Int32(value).Freeze();
+
+        public static FrozenPayload Encode(int value, int requestId) => new GameplayPayloadWriter().Int32(value).Int32(requestId).Freeze();
     }
 
     /// <summary>Generated-style reader of one entity command schema.</summary>
@@ -52,9 +72,14 @@ namespace GameCore.Gameplay.Entities
         public EntityCommand Read(IReadOnlyList<byte> payload)
         {
             var reader = new GameplayPayloadReader(payload);
+            if (reader.HasLength(EntityCommand.LengthWithRequest))
+            {
+                return new EntityCommand(reader.Int32(), reader.Int32());
+            }
+
             if (!reader.HasLength(EntityCommand.Length))
             {
-                throw new FormatException("an entity command is exactly " + EntityCommand.Length + " bytes");
+                throw new FormatException("an entity command is " + EntityCommand.Length + " or " + EntityCommand.LengthWithRequest + " bytes");
             }
 
             return new EntityCommand(reader.Int32());
@@ -181,7 +206,7 @@ namespace GameCore.Gameplay.Entities
     }
 
     /// <summary>The entities plugin's state of one world: its host, registry and entity records. Instance state only.</summary>
-    public sealed class EntityModule
+    public sealed class EntityModule : IGameplayStepTapHost
     {
         private readonly Dictionary<TargetId, EntityRecord> records = new Dictionary<TargetId, EntityRecord>();
 
@@ -195,7 +220,13 @@ namespace GameCore.Gameplay.Entities
 
         public TargetRegistry Registry { get; }
 
+        /// <summary>The world's in-step outbox seam (set by the gameplay world); null without one.</summary>
+        public IGameplayStepTap? StepTap { get; set; }
+
         public int RecordCount => records.Count;
+
+        /// <summary>Every entity record, authored and runtime-spawned.</summary>
+        public IEnumerable<EntityRecord> Records => records.Values;
 
         public int Committed { get; private set; }
 
@@ -280,6 +311,13 @@ namespace GameCore.Gameplay.Entities
                 return;
             }
 
+            if (GameplayObligations.Claim(module.StepTap, command.RequestId) == ObligationClaim.AlreadyApplied)
+            {
+                module.CountRefused();
+                plane.Reject(message, DiagnosticCode.IdempotencyConflict, plane.ExecutingStep);
+                return;
+            }
+
             if (!module.Registry.TryResolveTarget(message.Target, out TargetHandle _, out Entity entity)
                 || !entityManager.Exists(entity)
                 || !module.TryGet(message.Target, out EntityRecord? record)
@@ -323,7 +361,8 @@ namespace GameCore.Gameplay.Entities
             }
 
             int eventValue = message.Route.Equals(EntityDeclarations.DespawnRoute) ? 0 : transition.State.Variant;
-            if (!plane.Commit(message, eventSchema, EntityEvent.Encode(message.Target, eventValue), plane.ExecutingStep, out string _))
+            FrozenPayload committed = EntityEvent.Encode(message.Target, eventValue);
+            if (!plane.Commit(message, eventSchema, committed, plane.ExecutingStep, out string _))
             {
                 module.CountRefused();
                 plane.Reject(message, DiagnosticCode.BudgetExceeded, plane.ExecutingStep);
@@ -331,6 +370,8 @@ namespace GameCore.Gameplay.Entities
             }
 
             EntityModule.Write(entityManager, entity, transition.State);
+            module.StepTap?.OnCommitted(eventSchema, committed, message.Request);
+            GameplayObligations.Settle(module.StepTap, command.RequestId);
             module.CountCommitted();
         }
     }

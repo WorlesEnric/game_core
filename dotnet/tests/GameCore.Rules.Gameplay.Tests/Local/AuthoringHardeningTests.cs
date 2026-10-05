@@ -60,7 +60,10 @@ namespace GameCore.Rules.Gameplay.Tests.Local
         public void HardeningCodes_ReuseNoCodeOfAnotherTable()
         {
             var hardening = new HashSet<string>(Constants(typeof(AuthoringHardeningCodes)).Select(c => c.Value), StringComparer.Ordinal);
-            IEnumerable<(string Owner, string Value)> others = typeof(AuthoringHardeningCodes).Assembly.GetTypes()
+            // The contracts (compiled into this assembly) and the rules (WorldRefusalCodes, QuestRefusal codes, ...).
+            IEnumerable<(string Owner, string Value)> others = new[] { typeof(AuthoringHardeningCodes).Assembly, typeof(ActionModel).Assembly }
+                .Distinct()
+                .SelectMany(assembly => assembly.GetTypes())
                 .Where(t => t != typeof(AuthoringHardeningCodes))
                 .SelectMany(t => Constants(t).Select(c => (Owner: t.FullName + "." + c.Name, c.Value)))
                 .Where(c => CodePattern.IsMatch(c.Value));
@@ -76,7 +79,7 @@ namespace GameCore.Rules.Gameplay.Tests.Local
             Assert.That((int)ActionKind.RestoreStamina, Is.EqualTo(17));
             Assert.That((int)ActionKind.Buy, Is.EqualTo(18));
             Assert.That(new ActionModel(ActionKind.RestoreStamina, 0, 0, 25, string.Empty, string.Empty, "stamina").Describe(), Is.EqualTo("restore 25 stamina"));
-            Assert.That(new ActionModel(ActionKind.Buy, 7, 9, 2, string.Empty, string.Empty, "Lantern").Describe(), Is.EqualTo("buy 2 x Lantern"));
+            Assert.That(new ActionModel(ActionKind.Buy, 7, 9, 2, string.Empty, string.Empty, "Lantern").Describe(), Is.EqualTo("buy 2 x Lantern from vendor 9"));
         }
 
         [Test]
