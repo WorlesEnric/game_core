@@ -196,3 +196,40 @@ Unity XML counts and retained failures are recorded below. Regression names:
 - Final source policy rerun after the fixture corrections: **pass, 1,102 C# files**,
   `/tmp/r2-g-csharp-final.txt`. No Unity/Rust test or external acceptance failure is
   hidden by the successful focused selection.
+
+## R2-G2 — tri-state gameplay admission (PACKET.md)
+
+Branch `codex/r2-g2`, based on `46357460`, Linux build host `myubuntu`.
+This appendix is the packet report: a root PACKET.md is outside the exclusive paths.
+Earlier R2-G verification and open items above are historical; the dispositions below
+supersede requests #2, #4–#6 only to the extent explicitly stated.
+
+### R2 fixes
+
+- R2-G request #2: world `package.json` declares its asmdef-derived dependencies
+  `com.gamecore.studio.core: 1.0.0` and `com.unity.nuget.newtonsoft-json: 3.2.1`.
+  The checker reports **no layering violation**. Its two remaining errors are
+  stale project lock dependency maps, outside R2-G2's exclusive paths.
+
+### Requests to other packets
+
+- **Metadata/integration owner:** in
+  `games/hollowmere/Packages/packages-lock.json` and
+  `games/cleanproof/Packages/packages-lock.json`, synchronize
+  `dependencies["com.gamecore.gameplay.world"].dependencies` with the package manifest:
+  add `"com.gamecore.studio.core": "1.0.0"` and
+  `"com.unity.nuget.newtonsoft-json": "3.2.1"`, preserving existing pins.
+  Exact checker messages are
+  `games/hollowmere/Packages/packages-lock.json: com.gamecore.gameplay.world dependency map disagrees with its manifest`
+  and the identical message with `games/cleanproof/Packages/packages-lock.json`.
+  The checker compares the local `com.gamecore.*` map; Unity's resolved lock should
+  also include the declared Newtonsoft dependency. No checker exemption is needed.
+
+### Left open
+
+- The repository-wide metadata gate cannot pass on this packet alone: both locking
+  projects are outside the authorized file set. The manifest itself now matches its
+  assembly references; the exact two lock changes are requested above.
+- No APP-1 note or restore-adoption note is present in the local `origin/main`
+  documentation tree at this packet's baseline. No restore-adoption behaviour is
+  inferred, and no game/kernel source is edited by this packet.
