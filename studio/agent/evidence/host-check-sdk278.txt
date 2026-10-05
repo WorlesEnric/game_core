@@ -1,0 +1,101 @@
+# host: worlesenric, cargo 1.97.1 (c980f4866 2026-06-30), commit ae543855, vendored etos-sdk 278ef9cf421f5e64e83a402960def0c51e3833c3
+$ diff -r <git archive 278ef9c sdk/rust/src> vendor/etos-sdk/src
+IDENTICAL
+$ git -C ~/wkspace/etos-studio diff --stat 278ef9c -- sdk/rust/src
+(end)
+$ cargo fmt --check
+exit=0
+$ cargo clippy --all-targets -- -D warnings
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1m 00s
+exit=0
+$ cargo test
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2m 36s
+     Running unittests src/lib.rs (target/debug/deps/gamecore_studio-7c49548b0c6f1153)
+
+running 37 tests
+test desk::tests::body_limit_covers_the_attachment_budget ... ok
+test desk::tests::degraded_models_are_named_in_outcomes ... ok
+test desk::tests::rg_extensions_are_stripped ... ok
+test api::tests::framework_rejections_become_etos_errors ... ok
+test config::tests::unknown_keys_are_errors ... ok
+test error::tests::refusals_pass_through ... ok
+test config::tests::file_and_env_override_defaults ... ok
+test desk::tests::digest_ignores_the_catalog_and_attachment_encoding ... ok
+test error::tests::messages_are_redacted ... ok
+test index::tests::authorable_type_ids_map_to_kinds ... ok
+test index::tests::nodes_map_to_rows ... ok
+test index::tests::states_are_consistent ... ok
+test ops::tests::studio_ops_map_to_etos_ops ... ok
+test model::tests::contract_examples_round_trip ... ok
+test index::tests::deltas_coalesce_per_key ... ok
+test redact::tests::keys_tokens_and_bearers_are_redacted ... ok
+test util::tests::canonical_json_sorts_keys ... ok
+test model::tests::edit_requests_parse ... ok
+test stage::tests::verdicts_and_env ... ok
+test util::tests::catalog_revision_ignores_the_revision_member ... ok
+test voice::tests::realtime_refusals_are_recovered_from_sdk_errors ... ok
+test util::tests::nulls_are_pruned_and_found ... ok
+test util::tests::topic_segments_are_valid_and_distinct ... ok
+test util::tests::digests_normalise ... ok
+test store::tests::put_verifies_and_addresses_by_content ... ok
+test util::tests::catalog_revision_matches_the_csharp_registry ... ok
+test desk::tests::slices_are_capped_from_the_end ... ok
+test ledger::tests::catalogs_meta_and_stage_jobs ... ok
+test ledger::tests::requests_are_idempotent_and_conflicts_refused ... ok
+test ledger::tests::reask_candidate_inputs_and_give_up_are_atomic ... ok
+test candidate::tests::missing_ambiguous_schema_and_clarification ... ok
+test candidate::tests::a_complete_output_is_valid ... ok
+test schema::tests::vendored_schema_accepts_the_contract_example_and_rejects_garbage ... ok
+test candidate::tests::digest_size_id_and_reference_failures_are_reported ... ok
+test candidate::tests::structural_rules_match_the_unity_validator ... ok
+test candidate::tests::catalog_and_candidate_mode_rules ... ok
+test schema::tests::request_schemas_compile_and_check ... ok
+
+test result: ok. 37 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+
+     Running unittests src/main.rs (target/debug/deps/gamecore_studio-ab4b71f1ada7955a)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/companion.rs (target/debug/deps/companion-3ff459fa4248762f)
+
+running 19 tests
+test etos_task_refusal_passes_through ... ok
+test ops_generate_stores_artifacts_and_passes_refusals ... ok
+test requests_are_scoped_to_the_calling_app_and_rejections_are_etos_shaped ... ok
+test proxy_token_and_app_are_checked_and_follow_restarts ... ok
+test requests_are_idempotent_and_conflicts_refused ... ok
+test a_degraded_model_is_named_in_the_outcome ... ok
+test stage_shell_runs_the_command_or_reports_stage_failed ... ok
+test voice_session_ready_transcripts_and_close ... ok
+test invalid_candidate_without_reask_is_terminal ... ok
+test voice_refusal_passes_through ... ok
+test digest_mismatch_is_reasked_once_with_parent ... ok
+test restart_resumes_from_the_ledger_without_reopening ... ok
+test request_task_candidate_with_verified_artifacts ... ok
+test catalog_rules_are_reasked_and_a_refused_reask_settles_invalid ... ok
+test index_deltas_are_coalesced_and_delivered ... ok
+test cancel_reports_the_etos_status ... ok
+test a_slow_task_open_is_reread_not_failed ... ok
+test a_slow_media_op_is_held_up_to_the_op_timeout ... ok
+test unresolved_requests_are_followed_at_most_three_more_times ... ok
+
+test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 9.32s
+
+     Running tests/real_node.rs (target/debug/deps/real_node-42d6f237759e8fa7)
+
+running 2 tests
+test real_node_end_to_end ... ignored, needs a real etosd with gamecore-studio installed (STUDIO_REAL_APP_KEY)
+test real_node_restart_recovery ... ignored, needs a real etosd and STUDIO_REAL_ETOS (restarts the agent)
+
+test result: ok. 0 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests gamecore_studio
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+exit=0
