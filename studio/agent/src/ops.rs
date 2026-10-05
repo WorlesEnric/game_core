@@ -217,7 +217,7 @@ impl MediaOps {
     }
 
     /// `POST /v1/ops/generate`.
-    pub async fn generate(&self, req: GenerateRequest) -> ApiResult<GenerateResponse> {
+    pub async fn generate(&self, req: GenerateRequest, owner: &str) -> ApiResult<GenerateResponse> {
         let op = etos_op(&req.op).ok_or_else(|| {
             ApiError::bad_request(format!(
                 "op {:?} is not one of image, tts, 3d, describe",
@@ -245,26 +245,19 @@ impl MediaOps {
                         .with_hint("send a positive max_cost_usd, or raise ops_max_cost_usd"),
                 );
             }
-            return self.describe(&req, input).await;
+            return self.describe(&req, input, owner).await;
         }
         let Some(max) = ceiling else {
             return Err(ApiError::bad_request("max_cost_usd is required")
                 .with_hint("send a cost ceiling in USD, or configure ops_max_cost_usd"));
         };
         input.insert("max_cost_usd".into(), json!(max));
-        let key = match input.get("key").and_then(Value::as_str) {
-            Some(k) => k.to_string(),
-            None => {
-                let basis =
-                    json!({"cs": req.change_set_id, "op": op, "spec": req.spec, "max": max});
-                let k = format!(
-                    "gc-{}",
-                    &sha256_hex(canonical_json(&basis).as_bytes())[..40]
-                );
-                input.insert("key".into(), json!(k));
-                k
-            }
-        };
+        let basis = json!({"owner":owner,"cs":req.change_set_id,"op":op,"spec":req.spec,"max":max});
+        let key = format!(
+            "gc-{}",
+            &sha256_hex(canonical_json(&basis).as_bytes())[..40]
+        );
+        input.insert("key".into(), json!(key));
         tracing::info!(op, key = %key, "running a media operation");
         let input = Value::Object(input);
         let ops = self.op_client.ops();
@@ -335,6 +328,7 @@ impl MediaOps {
                 a.insert("changeset".into(), json!(cs));
             }
             self.indexer.record("gc_asset", &sha, a);
+            self.ledger.grant("artifact", &sha, owner)?;
             artifacts.push(StoredArtifact {
                 url: format!("/v1/artifacts/{sha}"),
                 sha256: sha,
@@ -355,7 +349,8 @@ impl MediaOps {
             text: None,
             key: Some(key),
         };
-        if let Err(e) = self.hub.emit(
+        if let Err(e) = self.hub.emit_owned(
+            owner,
             "asset",
             req.change_set_id.as_deref(),
             &serde_json::to_value(&response).unwrap_or(Value::Null),
@@ -369,12 +364,21 @@ impl MediaOps {
         &self,
         req: &GenerateRequest,
         mut input: Map<String, Value>,
+        owner: &str,
     ) -> ApiResult<GenerateResponse> {
+        if input.contains_key("input") {
+            return Err(ApiError::bad_request(
+                "describe accepts an owned artifact digest, not an arbitrary node reference",
+            ));
+        }
         if let Some(sha) = input.remove("artifact") {
             let sha = sha
                 .as_str()
                 .and_then(normalize_sha256)
                 .ok_or_else(|| ApiError::bad_request("`artifact` is a sha256 digest"))?;
+            if !self.ledger.owns("artifact", &sha, owner)? {
+                return Err(ApiError::not_found("no owned artifact"));
+            }
             let bytes = self
                 .store
                 .get(&sha)

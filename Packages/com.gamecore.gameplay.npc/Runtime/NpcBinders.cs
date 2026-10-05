@@ -24,6 +24,18 @@ using UnityEngine.AI;
 
 namespace GameCore.Gameplay.Npc
 {
+    /// <summary>Connects each NPC's current appearance definition to the residency-aware prefab/material binder.</summary>
+    public sealed class NpcAppearanceBinder
+    {
+        public NpcAppearanceBinder(PrefabViewBinder views, NpcWorldExtension extension)
+        {
+            foreach (NpcRecord record in extension.Records)
+            {
+                views.BindAppearance(record.Target, () => record.Definition != null ? record.Definition.AppearanceVariant : 0);
+            }
+        }
+    }
+
     /// <summary>The committed region (world.region) of an NPC as an authoring id; empty when unknown.</summary>
     internal static class NpcResidency
     {

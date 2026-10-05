@@ -72,6 +72,7 @@ namespace GameCore.Gameplay.Logic
     /// <summary>What the modules declare before boot.</summary>
     public sealed class NarrativeComposition
     {
+        private readonly List<RuleConfigBinding> configBindings = new List<RuleConfigBinding>();
         private readonly List<NarrativePluginSpec> plugins = new List<NarrativePluginSpec>();
         private readonly List<SystemRegistration> systems = new List<SystemRegistration>();
         private readonly List<SpawnRecipe> recipes = new List<SpawnRecipe>();
@@ -101,6 +102,8 @@ namespace GameCore.Gameplay.Logic
         public IReadOnlyList<SpawnRecipe> Recipes => recipes;
 
         public IReadOnlyList<NarrativeSeed> Seeds => seeds;
+
+        public void AddConfigBinding(RuleConfigBinding binding) => configBindings.Add(binding);
 
         public void AddPlugin(NarrativePluginSpec spec, SystemRegistration system)
         {
@@ -142,7 +145,7 @@ namespace GameCore.Gameplay.Logic
             var declarations = new List<CatalogPluginDeclaration>();
             for (int i = 0; i < plugins.Count; i++)
             {
-                var declaration = new CatalogPluginDeclaration(plugins[i].Manifest(), ConfigDocument.Empty);
+                var declaration = new CatalogPluginDeclaration(plugins[i].Manifest(), plugins[i].ConfigDefaults);
                 declarations.Add(declaration);
                 builder.AddPlugin(declaration);
             }
@@ -236,6 +239,11 @@ namespace GameCore.Gameplay.Logic
                 builder.BindRuleToConfig(b.ConfigBindings[i].Rule, b.ConfigBindings[i].ConfigField);
             }
 
+            foreach (RuleConfigBinding binding in configBindings)
+            {
+                builder.BindRuleToConfig(binding.Rule, binding.ConfigField);
+            }
+
             builder.WithBudget(b.Budget, b.StagedByteCeiling)
                 .WithTargetCapacity(b.TargetCapacity + seeds.Count + 32)
                 .WithIssuer(b.Issuer)
@@ -309,6 +317,16 @@ namespace GameCore.Gameplay.Logic
             Submitter = new NarrativeSubmitter(root.Host, GameplayIds.Id("gameplay.issuer.narrative." + manifest.WorldId));
             Explain = new ExplainTrace(models);
             Delivery = new NarrativeDelivery(this, owner);
+        }
+
+        private readonly Dictionary<Type, object> queries = new Dictionary<Type, object>();
+
+        public void RegisterQuery<T>(T query) where T : class => queries[typeof(T)] = query ?? throw new ArgumentNullException(nameof(query));
+
+        public bool TryQuery<T>(out T? query) where T : class
+        {
+            query = queries.TryGetValue(typeof(T), out object value) ? value as T : null;
+            return query != null && !Delivery.Owner.IsDisposed;
         }
 
         public GameApplicationRoot Root { get; }

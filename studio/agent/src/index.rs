@@ -357,7 +357,7 @@ impl Indexer {
     /// Declare the binding (retrying with backoff until it succeeds) and run the ticker.
     pub fn start(self: &Arc<Self>) -> tokio::task::JoinHandle<()> {
         let me = self.clone();
-        tokio::spawn(async move { me.run().await })
+        crate::blocking::spawn(async move { me.run().await })
     }
 
     async fn run(self: Arc<Self>) {
@@ -456,6 +456,22 @@ impl Indexer {
 
     /// Queue an index delta.
     pub fn ingest(&self, delta: &IndexDelta) -> Result<IndexDeltaAck, IndexError> {
+        self.ingest_owned(delta, "")
+    }
+
+    /// Namespace every Resource Graph key with the authenticated app/project identity.
+    pub fn ingest_owned(
+        &self,
+        delta: &IndexDelta,
+        owner: &str,
+    ) -> Result<IndexDeltaAck, IndexError> {
+        let scoped = |key: &str| {
+            if owner.is_empty() {
+                key.to_string()
+            } else {
+                format!("{}:{key}", crate::util::sha256_hex(owner.as_bytes()))
+            }
+        };
         let mut queued = 0;
         let mut skipped = 0;
         let corr = Some(format!("{}@{}", delta.project, delta.revision));
@@ -471,7 +487,7 @@ impl Indexer {
         }
         self.enqueue(
             "gc_project",
-            delta.project.clone(),
+            scoped(&delta.project),
             project,
             "index",
             corr.clone(),
@@ -479,8 +495,13 @@ impl Indexer {
         queued += 1;
         for node in &delta.nodes {
             match node_row(node) {
-                Some((kind, key, values)) => {
-                    self.enqueue(kind, key, values, "index", corr.clone())?;
+                Some((kind, key, mut values)) => {
+                    for link in ["region", "definition", "speaker", "graph"] {
+                        if let Some(Value::String(key)) = values.get_mut(link) {
+                            *key = scoped(key);
+                        }
+                    }
+                    self.enqueue(kind, scoped(&key), values, "index", corr.clone())?;
                     queued += 1;
                 }
                 None => skipped += 1,
@@ -502,7 +523,7 @@ impl Indexer {
             };
             let mut v = Map::new();
             v.insert("removed".into(), Value::Bool(true));
-            self.enqueue(kind, key, v, "remove", corr.clone())?;
+            self.enqueue(kind, scoped(&key), v, "remove", corr.clone())?;
             queued += 1;
         }
         if let Ok(mut q) = self.queue.lock() {

@@ -111,6 +111,8 @@ pub fn router(state: AppState) -> Router {
         .route("/v1/voice", get(voice))
         .route("/v1/stage", post(stage))
         .route("/v1/stage/{job}", get(stage_job))
+        .route("/v1/stage/{job}/verdict", get(stage_verdict))
+        .route("/v1/stage/{job}/verify", post(stage_verify))
         .fallback(|| async { ApiError::not_found("no such companion route").into_response() })
         .layer(middleware::from_fn_with_state(state.clone(), authenticate))
         .layer(DefaultBodyLimit::max(MAX_BODY))
@@ -190,8 +192,23 @@ async fn authenticate(State(s): State<AppState>, mut req: Request, next: Next) -
             .with_hint(format!("allowed: {}", s.cfg.allowed_apps.join(", ")))
             .into_response();
     }
-    req.extensions_mut().insert(Caller(app));
-    next.run(req).await
+    let project = req
+        .headers()
+        .get("X-GameCore-Project")
+        .and_then(|v| v.to_str().ok())
+        .and_then(normalize_sha256);
+    let Some(project) = project else {
+        return ApiError::bad_request(
+            "X-GameCore-Project must be this project's stable SHA-256 identity",
+        )
+        .into_response();
+    };
+    // JSON tuple encoding cannot collide if an app name contains separators.
+    req.extensions_mut()
+        .insert(Caller(json!([app, project]).to_string()));
+    crate::blocking::spawn(async move { next.run(req).await })
+        .await
+        .unwrap_or_else(|_| ApiError::internal("service lane interrupted").into_response())
 }
 
 /// Read a JSON body: refused when it is not JSON, holds a `null` (03 §9), or does not fit `T`.
@@ -238,7 +255,10 @@ async fn hello(
         service: s.cfg.agent.clone(),
         version: crate::VERSION.to_string(),
         protocol: crate::PROTOCOL,
-        app,
+        app: serde_json::from_str::<Value>(&app)
+            .ok()
+            .and_then(|v| v[0].as_str().map(str::to_string))
+            .unwrap_or_default(),
         node: welcome.as_ref().map(|w| w.node.clone()),
         sdk: welcome.as_ref().map(|w| w.sdk.clone()),
         connected: s.agent.is_connected(),
@@ -258,8 +278,11 @@ async fn hello(
         providers,
         providers_checked_at: checked,
         workers: s.cfg.workers.clone(),
-        tool_catalog_revisions: s.ledger.catalog_revisions()?,
-        index_revision: s.indexer.revision(),
+        tool_catalog_revisions: s.ledger.owned_catalog_revisions(&app)?,
+        index_revision: s
+            .ledger
+            .meta(&format!("index-revision:{app}"))?
+            .and_then(|v| v.parse().ok()),
     }))
 }
 
@@ -366,8 +389,15 @@ async fn candidate(
     }))
 }
 
-async fn artifact(State(s): State<AppState>, Path(sha): Path<String>) -> ApiResult<Response> {
+async fn artifact(
+    State(s): State<AppState>,
+    Extension(Caller(app)): Extension<Caller>,
+    Path(sha): Path<String>,
+) -> ApiResult<Response> {
     let h = normalize_sha256(&sha).ok_or_else(|| ApiError::bad_request("not a sha256 digest"))?;
+    if !s.ledger.owns("artifact", &h, &app)? {
+        return Err(ApiError::not_found("no artifact"));
+    }
     let bytes = s
         .store
         .get(&h)
@@ -391,9 +421,13 @@ async fn artifact(State(s): State<AppState>, Path(sha): Path<String>) -> ApiResu
     Ok(res)
 }
 
-async fn index_delta(State(s): State<AppState>, body: Bytes) -> ApiResult<Response> {
+async fn index_delta(
+    State(s): State<AppState>,
+    Extension(Caller(app)): Extension<Caller>,
+    body: Bytes,
+) -> ApiResult<Response> {
     let delta: IndexDelta = parse(&body)?;
-    let ack = s.indexer.ingest(&delta).map_err(|e| match e {
+    let ack = s.indexer.ingest_owned(&delta, &app).map_err(|e| match e {
         IndexError::Backpressure(_) => ApiError::new(
             StatusCode::SERVICE_UNAVAILABLE,
             "backpressure",
@@ -402,28 +436,73 @@ async fn index_delta(State(s): State<AppState>, body: Bytes) -> ApiResult<Respon
         .with_hint("the node is unreachable or refused the binding; deltas resume when it answers"),
         IndexError::Poisoned => ApiError::internal(e.to_string()),
     })?;
+    s.ledger.set_meta(
+        &format!("index-revision:{app}"),
+        &delta.revision.to_string(),
+    )?;
     Ok(out(&ack).into_response())
 }
 
-async fn generate(State(s): State<AppState>, body: Bytes) -> ApiResult<Response> {
+async fn generate(
+    State(s): State<AppState>,
+    Extension(Caller(app)): Extension<Caller>,
+    body: Bytes,
+) -> ApiResult<Response> {
     let req: GenerateRequest = parse(&body)?;
-    let answer = s.ops.generate(req).await?;
+    if let Some(id) = &req.change_set_id {
+        own_request(&s, id, &app)?;
+    }
+    let answer = s.ops.generate(req, &app).await?;
     Ok(out(&answer).into_response())
 }
 
-async fn stage(State(s): State<AppState>, body: Bytes) -> ApiResult<Response> {
-    // `{changeSetId, packageRef}` is the legacy shell; `{changeSetId, slot?, steps?}` the
-    // staging lane (P2.4); `{changeSetId, action: "discard"}` removes the change set's slot.
-    let answer = s.stage.request(parse_value(&body)?)?;
+async fn stage(
+    State(s): State<AppState>,
+    Extension(Caller(app)): Extension<Caller>,
+    body: Bytes,
+) -> ApiResult<Response> {
+    let body = parse_value(&body)?;
+    let id = body["changeSetId"]
+        .as_str()
+        .ok_or_else(|| ApiError::bad_request("changeSetId required"))?;
+    own_request(&s, id, &app)?;
+    let answer = s.stage.request_owned(body, &app)?;
     Ok((answer.status, out(&answer.body)).into_response())
 }
 
-async fn stage_job(State(s): State<AppState>, Path(job): Path<String>) -> ApiResult<Response> {
+async fn stage_job(
+    State(s): State<AppState>,
+    Extension(Caller(app)): Extension<Caller>,
+    Path(job): Path<String>,
+) -> ApiResult<Response> {
     let j = s
         .ledger
         .stage(&job)
         .map_err(|e| not_found_or(e, || format!("no stage job {job}")))?;
+    own_request(&s, &j.change_set_id, &app)?;
     Ok(out(&j).into_response())
+}
+
+async fn stage_verdict(
+    State(s): State<AppState>,
+    Extension(Caller(app)): Extension<Caller>,
+    Path(job): Path<String>,
+) -> ApiResult<Response> {
+    let row = s.ledger.stage(&job)?;
+    own_request(&s, &row.change_set_id, &app)?;
+    Ok(out(&s.stage.signed_verdict(&job)?).into_response())
+}
+
+async fn stage_verify(
+    State(s): State<AppState>,
+    Extension(Caller(app)): Extension<Caller>,
+    Path(job): Path<String>,
+    body: Bytes,
+) -> ApiResult<Response> {
+    let row = s.ledger.stage(&job)?;
+    own_request(&s, &row.change_set_id, &app)?;
+    let record = parse_value(&body)?;
+    Ok(out(&json!({"verified": s.stage.verify_verdict(&job, &record)?})).into_response())
 }
 
 #[derive(Debug, Deserialize)]
@@ -434,13 +513,16 @@ struct AfterQuery {
 
 async fn events(
     State(s): State<AppState>,
+    Extension(Caller(app)): Extension<Caller>,
     Query(q): Query<AfterQuery>,
     ws: WebSocketUpgrade,
 ) -> Response {
-    ws.on_upgrade(move |socket| events_loop(s, socket, q.after))
+    ws.on_upgrade(move |socket| async move {
+        let _ = crate::blocking::spawn(events_loop(s, socket, q.after, app)).await;
+    })
 }
 
-async fn events_loop(s: AppState, socket: WebSocket, mut after: i64) {
+async fn events_loop(s: AppState, socket: WebSocket, mut after: i64, app: String) {
     let (mut tx, mut rx) = socket.split();
     let mut latest = s.hub.subscribe();
     loop {
@@ -454,6 +536,9 @@ async fn events_loop(s: AppState, socket: WebSocket, mut after: i64) {
         let full = batch.len() == 500;
         for e in batch {
             after = e.cursor;
+            if !s.ledger.owns_event(&e, &app).unwrap_or(false) {
+                continue;
+            }
             let text =
                 serde_json::to_string(&pruned(serde_json::to_value(&e).unwrap_or(Value::Null)))
                     .unwrap_or_default();
@@ -490,7 +575,9 @@ async fn voice(
     ws: WebSocketUpgrade,
 ) -> Response {
     let bridge = s.voice.clone();
-    ws.on_upgrade(move |socket| bridge.run(socket, app))
+    ws.on_upgrade(move |socket| async move {
+        let _ = crate::blocking::spawn(async move { bridge.run(socket, app).await }).await;
+    })
 }
 
 #[cfg(test)]

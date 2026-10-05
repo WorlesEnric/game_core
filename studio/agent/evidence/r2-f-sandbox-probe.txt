@@ -1,0 +1,52 @@
+R2-F sandbox probe, myubuntu, 2026-10-05
+
+Outcome: Docker isolation runs, but Unity cannot acquire a valid licence in the container.
+Unity 6000.0.75f1 exits 198. Default confinement remains docker and refuses with
+stage_failed{sandbox_unavailable}; no signed verdict is issued. Host confinement was
+not selected or qualified for real Unity execution. Host mode is only an explicit
+operator opt-in; host fixture runs are not a live-Unity qualification.
+
+Locally provisioned image: gamecore-stage:6000.0.75f1-v1
+Image id: sha256:5014b94071091ad96bb8ebceda587264f786d4a4e0671c812323dab04c68d975
+Reproduction Dockerfile: r2-f-sandbox.Dockerfile (Ubuntu 24.04, .NET 8, Unity shared libraries).
+The initial image lacked libGL.so.1; that dependency was added before the licence test.
+The initial synthetic probe project also lacked Assets/ and slot-local preference/cache
+parents. Those were corrected before the final licence test; the real launcher now
+creates them and the actual Unity version's ProjectVersion.txt.
+
+The host-wide unity-batch.sh allocator held one reservation. The trusted engine wrapper
+invoked Unity inside Docker with -batchmode -nographics -projectPath <synthetic project>
+-quit -logFile -. No test suite or XML result is claimed for this licence-only probe.
+Docker flags include --network none, --read-only, --cap-drop=ALL,
+--security-opt=no-new-privileges, --pids-limit=512, and the host user's numeric UID/GID.
+Read-only mounts: Unity Editor installation, trusted Packages, and
+/home/worlesenric/.config/unity3d/Unity/licenses (the actual entitlement directory).
+Writable mounts: the one /tmp/r2-f-sandbox-probe/slot and versioned probe cache;
+/tmp is backed by slot/tmp. HOME is slot/home. The live project and host credential
+stores are not mounted. Host Docker configuration is an empty trusted directory outside
+the mounts, so candidate-written Docker credential helpers cannot run on the host.
+No licence or credential file was inspected or printed by the engineer.
+
+Final allocated licence probe (already redacted by the Rust streaming writer):
+-- Unity slot 2/3 acquired (2 batchmode Editor(s) already running host-wide)
+-- attempt 1/2: /tmp/r2-f-sandbox-probe/.launch/8ee4a83bb5f3654feb66763b953d620f3b56a673a6892ed5f8a88243d72126f8/unity-confined -batchmode -nographics -projectPath /tmp/r2-f-sandbox-probe/slot/probe-project -logFile /tmp/r2-f-sandbox-probe/slot/out/logs/r2-f-container-licence-mounted-20261005T144213-a1.log -quit
+Unity Editor version:    6000.0.75f1 (26349cd2a5c8)
+[Licensing::Client] Error: Code 404 while processing request (status: Found 0 entitlement groups and 0 free entitlements matching requested entitlement ids)
+[Licensing::Client] Error: Code 404 while processing request (status: Found 0 entitlement groups and 0 free entitlements matching requested entitlement ids)
+[Licensing::Client] Error: Code 404 while processing request (status: Found 0 entitlement groups and 0 free entitlements matching requested entitlement ids)
+No valid Unity Editor license found. Please activate your license.
+RESULT r2-f-container-licence-mounted: FAIL (unity exit 198, 5s, attempts 1, log /tmp/r2-f-sandbox-probe/slot/out/logs/r2-f-container-licence-mounted-20261005T144213-a1.log)
+
+Actual OS isolation regression:
+  cargo test r2_11_docker_isolation -- --ignored
+  PASS: outside-slot host sentinel and live project absent; ETOS_STATE_DIR absent;
+  root filesystem write refused; /proc/net/route contains no network route;
+  slot write succeeds. No Unity or ETOS operation is involved in this regression.
+
+Earlier allocator-bounded startup-style probe (no Editor reservation acquired):
+sandbox_unavailable: Unity container probe exit None: -- waiting for a Unity slot (3 max host-wide; waited 0s)
+-- waiting for a Unity slot (3 max host-wide; waited 60s)
+-- waiting for a Unity slot (3 max host-wide; waited 120s)
+-- waiting for a Unity slot (3 max host-wide; waited 180s)
+
+[stage] killed after 210 s (stage budget)

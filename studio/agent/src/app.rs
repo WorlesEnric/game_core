@@ -101,6 +101,16 @@ pub async fn start(
     client: Client,
     options: AgentOptions,
 ) -> Result<Running, StartError> {
+    crate::blocking::spawn(start_inner(cfg, client, options))
+        .await
+        .map_err(|e| std::io::Error::other(e.to_string()))?
+}
+
+async fn start_inner(
+    cfg: Config,
+    client: Client,
+    options: AgentOptions,
+) -> Result<Running, StartError> {
     let client = if client.agent().is_some() {
         client
     } else {
@@ -163,6 +173,7 @@ pub async fn start(
         &state_dir,
     );
     stage.settle_interrupted();
+    stage.probe_startup();
     let state: AppState = Arc::new(Shared {
         cfg: cfg.clone(),
         agent: agent.clone(),

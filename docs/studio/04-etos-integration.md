@@ -106,12 +106,41 @@ No voice utterance triggers a tool directly.
 
 ## 6. Staging (code admission)
 
-`POST /v1/stage {changeSetId, packageRef}`: the companion exports the package into `studio/stage/slots/<n>/Packages/<name>`
-(a copy of the game project made by `studio/stage/make-slot.sh`), then runs `dotnet test` on `Rules/` and
-`Unity -batchmode -nographics -projectPath <slot> -executeMethod GameCore.Studio.Stage.Entry.Run -quit` with a
-10-minute watchdog (the Editor hang documented in `docs/operator/editor-hang.md` is retried once). Verdicts are
-`{ok, compile:{errors[]}, tests:{passed,failed,names[]}, forbidden:[...], durationMs}` stored in the ledger and
-shown in Unity before *Admit*. Staging never shares `Library/` with the live project.
+R2 uses a candidate-only typed request. All routes require the authenticated proxy app and
+`X-GameCore-Project: <stable project SHA-256>`; cross-owner jobs/artifacts/candidates return 404.
+
+```json
+{"changeSetId":"cs_...","projectId":"<64 hex>","sourceRevision":"<git commit>","catalogRevision":"<64 hex>"}
+```
+
+`POST /v1/stage` resolves the validated candidate and all its proposal/stageInputs from the ledger.
+The operator's `[stage.projects]` map resolves `projectId` to an absolute source Unity project;
+request-supplied `sourceProject` paths and legacy `packageRef` extraction are refused. Optional
+`steps` creates a diagnostic partial run that cannot admit; optional `slot` selects a slot within
+this owner's namespace. The response is 202 with `jobId`; `GET /v1/stage/{job}` returns status and
+retained `verdictRef` evidence. Discard is `POST /v1/stage {changeSetId,projectId,action:"discard"}`
+and holds the slot lock while deleting.
+
+`GET /v1/stage/{job}/verdict` returns the companion-issued signed passing record only.
+`POST /v1/stage/{job}/verify` accepts that entire record and returns `{verified:true|false}`.
+The HMAC binds job/app/project/source/catalog, package/proposal digests, all seven step results,
+`confinement`, `coldCache`, and the evidence reference. The installation key stays in companion
+state with mode 0600. Unity trusts the authenticated transport and verifier, never candidate or
+CAS verdict bytes. Partial, failed, missing-step and unauthenticated records cannot authorize Admit.
+
+Minimal slots run scan, checkers, dotnet (including mandatory Roslyn semantic analysis), Unity
+EditMode, PlayMode smoke, determinism, and budget. The warm budget is 360 seconds; cold cache runs
+may take longer and record `coldCache:true`. Cache identity includes Unity and kernel/gameplay
+package versions. `[stage] confinement="docker"` is the default: no network, no live project or
+host credentials, read-only Unity/licences/trusted packages, and only slot/cache writable. Startup
+and per-job probe failure yields `stage_failed` with `reason:"sandbox_unavailable"` and no issued
+verdict. The explicit operator opt-in `confinement="host"` is recorded in every resulting verdict
+and must be shown as a degraded-mode warning by admission UI. There is no automatic fallback.
+
+Unity still runs through `studio/tools/unity-batch.sh` under the shared host allocation protocol.
+Its Rust engine wrapper routes stdout/stderr and `-logFile -` through the shared redactor before
+writing persistent logs. The analyzer CLI and full wire contract are in
+[the R2-F packet](../../studio/agent/evidence/PACKET.md).
 
 ## 7. Resource Graph publication
 
