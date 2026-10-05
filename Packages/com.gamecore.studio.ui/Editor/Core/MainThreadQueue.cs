@@ -50,7 +50,7 @@ namespace GameCore.Studio.UI
                 }
                 catch (Exception error)
                 {
-                    Debug.LogException(error);
+                    Debug.LogError(StudioStyles.Safe(error.ToString()));
                 }
             }
 

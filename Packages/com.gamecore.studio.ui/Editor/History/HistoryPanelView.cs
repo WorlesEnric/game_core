@@ -1,6 +1,6 @@
 // GameCore.Studio.UI - the history panel (GameCore/Studio/History; SR-3.3, SADR-009, W-EDIT-03/05, W-REC-01): journal
 // entries newest first (time, origin agent/manual/voice/replay, summary, state), Undo/Redo bound to HistoryService (an
-// admission entry, mechanism.admit, is undone through StageAdmission.Undo: package removed, recompiled, catalog hash checked),
+// admission entries dispatch through the same HistoryService lifecycle handler as every other entry point),
 // Interrupted entries highlighted with Resume/Rollback, a target filter, open-in-journal (reveals the entry's JSON file)
 // and the retained artifact list with sizes and a "retained" marker (referenced by a journal entry).
 #nullable enable
@@ -155,41 +155,19 @@ namespace GameCore.Studio.UI
 
         public string StatusText => _status.text ?? string.Empty;
 
-        /// <summary>
-        /// Undoes <paramref name="changeSetId"/> (or the newest undoable entry). An admission (mechanism.admit) goes
-        /// through StageAdmission.Undo, which removes the package, recompiles and checks the catalog hash (P2.4); its
-        /// outcome is kept in <see cref="LastAdmission"/> (Pending while the recompile runs, then Undone or UndoFailed).
-        /// </summary>
+        /// <summary>All history lifecycle dispatch belongs to HistoryService.</summary>
         public HistoryResult Undo(string? changeSetId)
         {
-            string? target = changeSetId ?? _context.Runtime.History.NextUndo;
-            ChangeSet? entry = target != null && _context.Runtime.Journal.Exists(target) ? _context.Runtime.Journal.Read(target) : null;
-            HistoryResult result;
-            if (entry != null && CandidateStaging.IsAdmission(entry))
-            {
-                AdmissionResult admission = StageAdmission.Of(_context.Runtime).Undo(entry.Id);
-                LastAdmission = admission;
-                bool ok = admission.Outcome == AdmissionOutcome.Pending || admission.Outcome == AdmissionOutcome.Undone;
-                result = new HistoryResult(entry.Id, ok, ok ? ChangeSetState.Undone : (ChangeSetState?)null, admission.Diagnostics, null);
-                _status.text = "Undo of admission " + entry.Id + ": " + admission.Outcome + (admission.Reason != null ? " (" + admission.Reason + ")" : string.Empty) + " - " + admission.Detail;
-            }
-            else
-            {
-                result = _context.Runtime.History.Undo(changeSetId);
-                _status.text = Describe("Undo", result);
-            }
-
+            HistoryResult result = _context.Runtime.History.Undo(changeSetId);
+            _status.text = StudioStyles.Safe(Describe("Undo", result));
             Rebuild();
             return result;
         }
 
-        /// <summary>The last admission undo routed through StageAdmission (null when none).</summary>
-        public AdmissionResult? LastAdmission { get; private set; }
-
         public HistoryResult Redo(string? changeSetId)
         {
             HistoryResult result = _context.Runtime.History.Redo(changeSetId);
-            _status.text = Describe("Redo", result);
+            _status.text = StudioStyles.Safe(Describe("Redo", result));
             Rebuild();
             return result;
         }
@@ -210,8 +188,8 @@ namespace GameCore.Studio.UI
             string? nextRedo = history.NextRedo;
             _undo.SetEnabled(nextUndo != null);
             _redo.SetEnabled(nextRedo != null);
-            _undo.tooltip = nextUndo != null ? "Undo " + nextUndo : "Nothing to undo";
-            _redo.tooltip = nextRedo != null ? "Redo " + nextRedo : "Nothing to redo";
+            _undo.tooltip = StudioStyles.Safe(nextUndo != null ? "Undo " + nextUndo : "Nothing to undo");
+            _redo.tooltip = StudioStyles.Safe(nextRedo != null ? "Redo " + nextRedo : "Nothing to redo");
 
             IReadOnlyList<JournalRecord> records = journal.List();
             List<HistoryRowInfo> shown = new List<HistoryRowInfo>();
@@ -267,10 +245,10 @@ namespace GameCore.Studio.UI
             element.AddToClassList("gcs-tray__row");
             element.EnableInClassList("gcs-tray__row--selected", row.Id == _selected);
             element.EnableInClassList("gcs-history__row--interrupted", row.State == ChangeSetState.Interrupted);
-            element.Add(new Label(row.Time.ToLocalTime().ToString("HH:mm:ss", CultureInfo.InvariantCulture)));
+            element.Add(new Label(StudioStyles.Safe(row.Time.ToLocalTime().ToString("HH:mm:ss", CultureInfo.InvariantCulture))));
             element.Add(StudioStyles.Badge(row.Origin, row.Origin));
             element.Add(StudioStyles.Badge(row.State.ToString(), row.State.ToString().ToLowerInvariant()));
-            Label summary = new Label(row.Summary) { tooltip = row.Summary };
+            Label summary = new Label(StudioStyles.Safe(row.Summary)) { tooltip = StudioStyles.Safe(row.Summary) };
             summary.AddToClassList("gcs-tray__intent");
             element.Add(summary);
             if (row.State == ChangeSetState.Interrupted)
@@ -292,10 +270,10 @@ namespace GameCore.Studio.UI
             return element;
         }
 
-        private void Recover(string id, bool resume)
+        public void Recover(string id, bool resume)
         {
             HistoryResult result = resume ? _context.Runtime.History.ResumeInterrupted(id) : _context.Runtime.History.RollbackInterrupted(id);
-            _status.text = Describe(resume ? "Resume" : "Rollback", result);
+            _status.text = StudioStyles.Safe(Describe(resume ? "Resume" : "Rollback", result));
             _cache.Remove(id);
             Rebuild();
         }
@@ -322,7 +300,7 @@ namespace GameCore.Studio.UI
             redo.SetEnabled(row.State == ChangeSetState.Undone);
             buttons.Add(redo);
             string path = row.Record.Path;
-            buttons.Add(new Button(() => EditorUtility.RevealInFinder(path)) { name = "history-open-journal", text = "Open in journal", tooltip = path });
+            buttons.Add(new Button(() => EditorUtility.RevealInFinder(path)) { name = "history-open-journal", text = "Open in journal", tooltip = StudioStyles.Safe(path) });
             _details.Add(buttons);
             if (entry != null)
             {
@@ -341,7 +319,7 @@ namespace GameCore.Studio.UI
                     _details.Add(StudioStyles.Text(outcome.OpId + ": " + outcome.Status + (outcome.Code != null ? " " + outcome.Code : string.Empty) + (outcome.Detail != null ? " - " + outcome.Detail : string.Empty)));
                 }
 
-                TextField json = new TextField { name = "history-json", multiline = true, isReadOnly = true, value = StudioJson.Serialize(entry) };
+                TextField json = new TextField { name = "history-json", multiline = true, isReadOnly = true, value = StudioStyles.Safe(StudioJson.Serialize(entry)) };
                 json.AddToClassList("gcs-code");
                 _details.Add(json);
             }
@@ -367,7 +345,7 @@ namespace GameCore.Studio.UI
                 }
             }
 
-            Foldout foldout = new Foldout { name = "history-artifacts", text = "Artifacts (" + entries.Count + ")", value = _selected == null };
+            Foldout foldout = new Foldout { name = "history-artifacts", text = StudioStyles.Safe("Artifacts (" + entries.Count + ")"), value = _selected == null };
             foreach (ArtifactManifestEntry artifact in entries)
             {
                 string label = artifact.Sha256.Substring(0, 12) + "  " + (artifact.Name ?? "-") + "  " + Bytes(artifact.Bytes) + "  " + (artifact.MediaType ?? string.Empty)
