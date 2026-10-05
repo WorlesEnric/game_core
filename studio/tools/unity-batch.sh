@@ -152,11 +152,12 @@ for ((attempt = 1; attempt <= max_attempts; attempt++)); do
   fi
   if grep -qE "Can't find file /tmp/ilpp[.]sock-[A-Za-z0-9]+" "$log"; then
     rc=1
-    if (( attempt < max_attempts )); then
+    startup_errors=$(python3 "${unity_tools_dir}/unity-diagnostics.py" errors "$log" "$project" "$attempt_start")
+    if (( attempt < max_attempts )) && [[ -z "$startup_errors" ]] && [[ -z "$results" || ! -s "$results" ]]; then
       echo "-- retrying once after documented ILPP startup fault: Can't find file /tmp/ilpp.sock-* (log ${log})"
       continue
     fi
-    echo '-- ILPP startup fault persists or retry disabled; failing this invocation'
+    echo '-- ILPP fault: retry exhausted/disabled or compile/test evidence present; failing this invocation'
   fi
   break
 done

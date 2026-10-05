@@ -1,4 +1,4 @@
-"""Offline R3 regressions; fake Editors still use the shared host allocator."""
+"""Offline runner-policy regressions; allocator coverage is in unity-batch-lock.sh."""
 import json
 import os
 from pathlib import Path
@@ -57,6 +57,11 @@ mode = sys.argv[-1]
 if mode in ('ilpp', 'ilpp-always') and (n == 1 or mode == 'ilpp-always'):
     print((root / 'ilpp.txt').read_text())
     sys.exit(0)  # The retained fault can leave the Editor alive/success-shaped.
+if mode == 'ilpp-compile':
+    print((root / 'ilpp.txt').read_text())
+    print('error CS0246: actual compile failure')
+    sys.exit(1)
+if mode == 'ilpp-tests': print((root / 'ilpp.txt').read_text())
 if mode == 'timeout': sys.exit(124)
 if mode == 'failure': sys.exit(1)
 if mode == 'bee':
@@ -143,6 +148,15 @@ def test_D18_retry_can_be_disabled(runner):
     result = runner('ilpp', options=['--attempts', '1'])
     assert result.returncode == 1
     assert 'attempts 1' in result.stdout
+
+
+@pytest.mark.parametrize('mode', ['ilpp-compile', 'ilpp-tests'])
+def test_D18_ilpp_does_not_retry_compile_or_executed_test_failures(runner, mode):
+    xml = '<test-run result="Failed"><test-case result="Failed" /></test-run>' if mode == 'ilpp-tests' else None
+    result = runner(mode, xml)
+    assert result.returncode == 1
+    assert 'attempts 1' in result.stdout
+    assert 'retrying once' not in result.stdout
 
 
 def test_D17_empty_arrays_are_bash3_safe():

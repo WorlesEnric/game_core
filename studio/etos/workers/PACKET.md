@@ -34,6 +34,13 @@ negative variants. Other tests cover current Markdown inputs, required prompt ga
 schema-copy drift and the two mech-b refused stage records. Initial test run: 8
 failures, 2 passes. Final local run: 10 passes (offline, no model).
 
+The Docker layer also built successfully on myubuntu as
+`localhost/gc-mechanic-r3-e:test` (isolated verification tag). Four checks in that
+image with `--network none` pass: reconstructed retained rejection (exit 1),
+intent repair (exit 0), idempotent check (exit 0), unrelated null defect (exit 1).
+The request was bind-mounted read-only; outputs were a temporary fixture folder.
+Production image tags, workers and installed services were not changed.
+
 The self-check is not a replacement for companion catalog, artifact integrity,
 semantic scan, sandbox execution, signing or explicit creator Admit.
 

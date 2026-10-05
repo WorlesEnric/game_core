@@ -9,7 +9,7 @@ paid model call, installed companion change, or secret file access is needed.
 |---|---|---|
 | D25 | `run-redacted.py` forwards the documented non-secret `GAMECORE_*` namespace. XML skip reasons yield `RESULT ...: SKIPPED (env-gated): <names>`, exit 1; original XML stays intact and no passing verdict is synthesized. Failed tests/compiler errors retain FAIL precedence. | `test_D25_environment_prefix_excludes_credentials`, `test_D25_retained_skips_name_gate`, `test_D25_failures_take_precedence_over_skips` |
 | D17 | Bash-3-safe optional array expansion in both SSH and host dispatch. Current-invocation Bee JSON/JSONL and Editor CS diagnostics are redacted and printed beside the result; stale Bee logs are ignored. | `test_D17_empty_arrays_are_bash3_safe`, `test_D17_ssh_forwarding_preserves_optional_arrays`, `test_D17_bee_compile_errors_are_redacted_and_visible` |
-| D18 | Only `Can't find file /tmp/ilpp.sock-<id>` retries, at most once, with the first attempt log retained and named. Persistent symptoms fail even with exit 0; `--attempts 1` disables retry. Generic timeouts and other failures never retry. | `test_D18_retained_ilpp_retries_once`, `test_D18_persistent_ilpp_never_passes`, `test_D18_other_failures_never_retry`, `test_D18_retry_can_be_disabled` |
+| D18 | Only `Can't find file /tmp/ilpp.sock-<id>` retries, at most once, with the first attempt log retained and named. Compiler diagnostics or an existing test result prohibit retry. Persistent symptoms fail even with exit 0; `--attempts 1` disables retry. Generic timeouts and other failures never retry. | `test_D18_retained_ilpp_retries_once`, `test_D18_persistent_ilpp_never_passes`, `test_D18_other_failures_never_retry`, `test_D18_retry_can_be_disabled`, `test_D18_ilpp_does_not_retry_compile_or_executed_test_failures` |
 | W-AI-03 mechanic output (brief identifier) | Exact request intent, local full JSON Schema self-check and narrowly scoped intent post-processing, packaged into an offline worker image layer. | `studio/etos/workers/tests/test_mechanic.py` (see worker packet) |
 
 ### Environment contract
@@ -44,6 +44,32 @@ worker harness failed 8/10 (missing self-check and prompt contract); the retaine
 intent defect independently produces exactly three JSON Schema errors. Final
 counts are recorded below after validation. Fake-Editor policy tests isolate the
 allocator; `unity-batch-lock.sh` remains the production allocator regression.
+
+Final verification on myubuntu (2026-10-05):
+
+- **25/25 new regressions**: 15 host + 10 worker, using
+  `R3_BASH32=/tmp/r3-e-bash32/bash-3.2/bash /tmp/r3-e-test-env/bin/python -m pytest -q studio/tools/tests/test_r3_host.py studio/etos/workers/tests`.
+  The temporary venv contains pytest/jsonschema. GNU Bash 3.2 was built on this
+  host from the upstream release; no Mac execution. With the added Bash 3.2
+  forwarding checks, base `ed76089` failed 9/12 host tests (including the actual
+  empty-array SSH forwarding case); the last three added cases cover stale Bee
+  logs and suppression of retries after compile/test execution.
+- **15/16 existing stage Python tests**: the sole failure is the obsolete
+  `test_R2_18_EnvironmentIsEnumerated` assertion detailed below. No hidden waiver.
+- Existing `unity-batch-lock.sh`: **PASS**, seven concurrent fake Editors, peak 3,
+  stale owners, TERM/reaping, redaction, compiler/partial/missing-case refusals.
+  Executed on this host in `localhost/gc-mechanic:current` with `--network none`
+  and a read-only repo mount, so fake process inventory cannot contend with the
+  three busy real Editors in other clones. No real Unity process was started.
+- Worker layer built as `localhost/gc-mechanic-r3-e:test`, without retagging the
+  installed image; **4/4 offline container checks** (bad intent rejected, repaired,
+  idempotently accepted, unrelated null still refused). Direct apt download stalled;
+  the build succeeded with the same local proxy build arguments used by the host
+  image builder. Runtime verification used `--network none`.
+- Metadata **PASS** (42 packages, 91 assemblies, 3 lock sources); C# **PASS**
+  (1,141 files); changed shell syntax and `git diff --check` **PASS**.
+- No Rust/C# source changes, paid operations, stage/admit claims, installed
+  companion restarts, or access to credential files.
 
 ## Requests to other packets
 
