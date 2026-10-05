@@ -1,0 +1,786 @@
+Unity Editor version:    6000.0.75f1 (26349cd2a5c8)
+Branch:                  6000.0/staging
+Build type:              Release
+Batch mode:              YES
+System name:             Linux
+Distro version:          #31~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Mon Aug 10 09:38:02 UTC 2
+Kernel version:          7.0.0-31-generic
+Architecture:            x86_64
+Available memory:        31897 MB
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Initialize udev device monitor.
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-worlesenric" at "2026-10-05T03:03:52.37647Z"
+[SignatureVerifier] Application signature verification not supported on this platform.
+
+COMMAND LINE ARGUMENTS:
+/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Unity
+-batchmode
+-nographics
+-projectPath
+/home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere
+-logFile
+/tmp/p24-wmech/logs/undo-20261005T110352-a1.log
+-executeMethod
+GameCore.Studio.Edit.StageCommandLine.Undo
+-gcChangeSet
+cs_01K6RW0MECH00000000000000A
+-gcResult
+/tmp/p24-wmech/undo.json
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.17.4+4293ba1
+  Session Id:              cd36b82d0a5b464da8afc5d0257dc26b
+  Correlation Id:          70dec6492dd8776ac9455dd9efce7e71
+  External correlation Id: 8356567533057529688
+  Machine Id:              jd93gYTNlAg1qIhTY9iII/nAhSo=
+Successfully changed project path to: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-worlesenric" (connect: 0.00s, validation: 0.00s, handshake: 0.00s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-worlesenric-notifications" at "2026-10-05T03:03:52.378255Z"
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully resolved entitlement details
+
+(process:3852534): Gtk-CRITICAL **: 11:03:52.378: gtk_label_set_text: assertion 'GTK_IS_LABEL (label)' failed
+[Licensing::Module] License group:
+  Id: 1375999166540-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.00
+
+(process:3852534): Gtk-CRITICAL **: 11:03:52.379: gtk_label_set_text: assertion 'GTK_IS_LABEL (label)' failed
+/home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Licensing Background thread has ended after 0.00s
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gfx=262144"
+Player connection [126873201235264]  Target information:
+
+Player connection [126873201235264]  * "[IP] 192.168.0.21 [Port] 55504 [Flags] 2 [Guid] 745156267 [EditorId] 745156267 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+
+Player connection [126873201235264]  * "[IP] 172.18.0.1 [Port] 55504 [Flags] 2 [Guid] 745156267 [EditorId] 745156267 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+
+Player connection [126873201235264]  * "[IP] 172.17.0.1 [Port] 55504 [Flags] 2 [Guid] 745156267 [EditorId] 745156267 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+
+Player connection [126873201235264]  * "[IP] 10.42.0.0 [Port] 55504 [Flags] 2 [Guid] 745156267 [EditorId] 745156267 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+
+Player connection [126873201235264]  * "[IP] 10.42.0.1 [Port] 55504 [Flags] 2 [Guid] 745156267 [EditorId] 745156267 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+
+Player connection [126873201235264]  * "[IP] 100.66.195.58 [Port] 55504 [Flags] 2 [Guid] 745156267 [EditorId] 745156267 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+
+Player connection [126873201235264]  * "[IP] 172.19.0.1 [Port] 55504 [Flags] 2 [Guid] 745156267 [EditorId] 745156267 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+
+Player connection [126873201235264]  * "[IP] 172.20.0.1 [Port] 55504 [Flags] 2 [Guid] 745156267 [EditorId] 745156267 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+
+Player connection [126873201235264] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [126873201235264] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+[Package Manager] Connected to IPC stream "Upm-3852534" after 0.1 seconds.
+Library Redirect Path: Library/
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Refreshing native plugins compatible for Editor in 0.14 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 6000.0.75f1 (26349cd2a5c8)
+[Subsystems] Discovering subsystems at path /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Assets
+Forcing GfxDevice: Null
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+NullGfxDevice:
+    Version:  NULL 1.0 [1.0]
+    Renderer: Null Device
+    Vendor:   Unity Technologies
+Shader Hidden/ProbeVolume/VoxelizeScene is not supported: GPU does not support conservative rasterization
+Initialize mono
+Mono path[0] = '/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Managed'
+Mono path[1] = '/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-linux'
+Mono config path = '/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56534
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll
+Register platform support module: /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll
+Registered in 0.001004 seconds.
+- Loaded All Assemblies, in  0.229 seconds
+Native extension for LinuxStandalone target not found
+Package Manager log level set to [2]
+[Licensing::Client] Successfully resolved entitlement details
+Native extension for OSXStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in 15.224 seconds
+Domain Reload Profiling: 15453ms
+	BeginReloadAssembly (54ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (0ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (0ms)
+	RebuildCommonClasses (26ms)
+	RebuildNativeTypeToScriptingClass (6ms)
+	initialDomainReloadingComplete (38ms)
+	LoadAllAssembliesAndSetupDomain (105ms)
+		LoadAssemblies (54ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (103ms)
+			TypeCache.Refresh (102ms)
+				TypeCache.ScanAssembly (93ms)
+			BuildScriptInfoCaches (0ms)
+			ResolveRequiredComponents (0ms)
+	FinalizeReload (15225ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (15198ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (15016ms)
+			SetLoadedEditorAssemblies (4ms)
+			BeforeProcessingInitializeOnLoad (44ms)
+			ProcessInitializeOnLoadAttributes (97ms)
+			ProcessInitializeOnLoadMethodAttributes (37ms)
+			AfterProcessingInitializeOnLoad (0ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (0ms)
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+[Package Manager] Restoring resolved packages state from cache
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 63 packages:
+  Packages from [https://packages.unity.com]:
+    com.unity.ai.navigation@2.0.12 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.ai.navigation@734c2c4c5591)
+    com.unity.burst@1.8.28 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.burst@07790c2d06d9)
+    com.unity.collections@2.6.6 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.collections@9796e5ee0d9e)
+    com.unity.entities@1.4.6 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.entities@e90944159b94)
+    com.unity.inputsystem@1.19.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.inputsystem@21a28c3a6c83)
+    com.unity.mathematics@1.3.2 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.mathematics@8017b507cc74)
+    com.unity.nuget.newtonsoft-json@3.2.1 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.nuget.newtonsoft-json@74deb55db2a0)
+    com.unity.toolchain.linux-x86_64@2.0.11 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.toolchain.linux-x86_64@53b88ff74b51)
+    com.unity.sysroot@2.0.10 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.sysroot@7bbbb9339c14)
+    com.unity.sysroot.linux-x86_64@2.0.9 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.sysroot.linux-x86_64@1998d1c7730e)
+    com.unity.serialization@3.1.5 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.serialization@c463b52e88d7)
+    com.unity.profiling.core@1.0.3 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.profiling.core@8a49f7027d06)
+    com.unity.nuget.mono-cecil@1.11.6 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.nuget.mono-cecil@ecb9724e46ff)
+    com.unity.scriptablebuildpipeline@2.6.1 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.scriptablebuildpipeline@36e3b5898ee2)
+    com.unity.test-framework.performance@3.4.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.test-framework.performance@aa81a99c4a75)
+    com.unity.searcher@4.9.3 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.searcher@1e17ce91558d)
+  Built-in packages:
+    com.unity.modules.ai@1.0.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.modules.ai)
+    com.unity.modules.animation@1.0.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.modules.animation)
+    com.unity.modules.audio@1.0.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.modules.audio)
+    com.unity.modules.imageconversion@1.0.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.modules.imageconversion)
+    com.unity.modules.imgui@1.0.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.modules.imgui)
+    com.unity.modules.jsonserialize@1.0.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.modules.jsonserialize)
+    com.unity.modules.physics@1.0.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.modules.physics)
+    com.unity.modules.screencapture@1.0.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.modules.screencapture)
+    com.unity.modules.ui@1.0.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.modules.ui)
+    com.unity.modules.uielements@1.0.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.modules.uielements)
+    com.unity.modules.unitywebrequest@1.0.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.modules.unitywebrequest)
+    com.unity.modules.video@1.0.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.modules.video)
+    com.unity.render-pipelines.universal@17.0.4 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.render-pipelines.universal@a1a2df1d8dcb)
+    com.unity.test-framework@1.6.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.test-framework@bd52b1c23814)
+    com.unity.ext.nunit@2.0.5 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.ext.nunit@b16e6d09cd93)
+    com.unity.render-pipelines.core@17.0.4 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.render-pipelines.core@2fecbe5ecc80)
+    com.unity.shadergraph@17.0.4 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.shadergraph@029994c473dc)
+    com.unity.render-pipelines.universal-config@17.0.3 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.render-pipelines.universal-config@e48fefd716b5)
+    com.unity.modules.hierarchycore@1.0.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.modules.hierarchycore)
+    com.unity.modules.assetbundle@1.0.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.modules.assetbundle)
+    com.unity.modules.unityanalytics@1.0.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.modules.unityanalytics)
+    com.unity.ugui@2.0.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.ugui@a477a4a18974)
+    com.unity.modules.terrain@1.0.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.modules.terrain)
+    com.unity.rendering.light-transport@1.0.1 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.rendering.light-transport@fd597d1a9e15)
+  Embedded packages:
+    com.hollowmere.mechanism.pressureplate@file:/home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Packages/com.hollowmere.mechanism.pressureplate (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Packages/com.hollowmere.mechanism.pressureplate)
+  Local packages:
+    com.gamecore.composition@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.composition (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.composition)
+    com.gamecore.content.compiler@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.content.compiler (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.content.compiler)
+    com.gamecore.contracts@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.contracts (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.contracts)
+    com.gamecore.derivation@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.derivation (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.derivation)
+    com.gamecore.gameplay.cards@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.gameplay.cards (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.gameplay.cards)
+    com.gamecore.gameplay.compile@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.gameplay.compile (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.gameplay.compile)
+    com.gamecore.gameplay.contracts@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.gameplay.contracts (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.gameplay.contracts)
+    com.gamecore.gameplay.entities@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.gameplay.entities (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.gameplay.entities)
+    com.gamecore.gameplay.integration@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.gameplay.integration (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.gameplay.integration)
+    com.gamecore.gameplay.narrative@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.gameplay.narrative (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.gameplay.narrative)
+    com.gamecore.gameplay.rewards@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.gameplay.rewards (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.gameplay.rewards)
+    com.gamecore.gameplay.traversal@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.gameplay.traversal (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.gameplay.traversal)
+    com.gamecore.gameplay.world@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.gameplay.world (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.gameplay.world)
+    com.gamecore.planning@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.planning (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.planning)
+    com.gamecore.rules.cards@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.rules.cards (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.rules.cards)
+    com.gamecore.rules.gameplay@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.rules.gameplay (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.rules.gameplay)
+    com.gamecore.rules.narrative@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.rules.narrative (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.rules.narrative)
+    com.gamecore.rules.traversal@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.rules.traversal (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.rules.traversal)
+    com.gamecore.studio.core@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core)
+    com.gamecore.unity.adapters@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.unity.adapters (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.unity.adapters)
+    com.gamecore.unity.app@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.unity.app (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.unity.app)
+    com.gamecore.unity.runtime@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.unity.runtime (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.unity.runtime)
+[Subsystems] No new subsystems found in resolved package list.
+[Package Manager] Done registering packages in 0.00 seconds
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://unix:/tmp/ilpp.sock-dc4ef42c76f55b404deb22ccf5b2f27f
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Production
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Content root path: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 29.1805ms
+Starting: /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/2400b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+[40m[1m[33mwarn[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Assembly system.runtime.interopservices.windowsruntime has duplicate hint path. Ignoring "/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Runtime.InteropServices.WindowsRuntime.dll" in favor of "/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/NetStandard/Extensions/2.0.0/System.Runtime.InteropServices.WindowsRuntime.dll"
+[40m[1m[33mwarn[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Assembly system.componentmodel.composition has duplicate hint path. Ignoring "/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.ComponentModel.Composition.dll" in favor of "/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/NetStandard/compat/2.1.0/shims/netfx/System.ComponentModel.Composition.dll"
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Burst.Cecil, Version=0.11.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library/PackageCache/com.unity.burst@07790c2d06d9/Unity.Burst.CodeGen/Unity.Burst.Cecil.dll
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Mono.Cecil, Version=0.11.5.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library/PackageCache/com.unity.nuget.mono-cecil@ecb9724e46ff/Mono.Cecil.dll
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Entities, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null with Library/Bee/artifacts/2400b0aE.dag/Unity.Entities.dll
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc - - 200 - application/grpc 29.1409ms
+DisplayProgressbar: Compiling Scripts
+ExitCode: 0 Duration: 0s254ms
+[ 926/1278  0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+*** Tundra build success (0.22 seconds), 1 items updated, 1278 evaluated
+AssetDatabase: script compilation time: 0.645209s
+Total cache size 268325004
+Begin MonoManager ReloadAssembly
+Total cache size after purge 268325004, took 00:00:00.1249570
+Symbol file LoadedFromMemory is not a mono symbol file
+- Loaded All Assemblies, in  0.488 seconds
+Refreshing native plugins compatible for Editor in 0.19 ms, found 1 plugins.
+Native extension for LinuxStandalone target not found
+Native extension for OSXStandalone target not found
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+TypeManager.Initialize took: 115ms
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  2.836 seconds
+Domain Reload Profiling: 3321ms
+	BeginReloadAssembly (106ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (11ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (28ms)
+	RebuildCommonClasses (27ms)
+	RebuildNativeTypeToScriptingClass (6ms)
+	initialDomainReloadingComplete (21ms)
+	LoadAllAssembliesAndSetupDomain (325ms)
+		LoadAssemblies (190ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (177ms)
+			TypeCache.Refresh (122ms)
+				TypeCache.ScanAssembly (111ms)
+			BuildScriptInfoCaches (47ms)
+			ResolveRequiredComponents (7ms)
+	FinalizeReload (2837ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (2679ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (44ms)
+			SetLoadedEditorAssemblies (3ms)
+			BeforeProcessingInitializeOnLoad (107ms)
+			ProcessInitializeOnLoadAttributes (2411ms)
+			ProcessInitializeOnLoadMethodAttributes (111ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (4ms)
+Asset Pipeline Refresh (id=796c2c4c775b3a3c3aaf45fbb68f3ccd): Total: 4.609 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=3405 ms
+		Asset DB Callback time: managed=22 ms, native=4 ms
+		Scripting: domain reloads=1, domain reload time=488 ms, compile time=646 ms, other=41 ms
+		Project Asset Count: scripts=1518, non-scripts=2202
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 1
+	InvokeCustomDependenciesCallbacks: 0.003ms
+	InvokePackagesCallback: 5.041ms
+	ApplyChangesToAssetFolders: 0.368ms
+	Scan: 361.999ms
+	OnSourceAssetsModified: 0.003ms
+	CategorizeAssetsWithTransientArtifact: 27.877ms
+	ProcessAssetsWithTransientArtifactChanges: 45.404ms
+	CategorizeAssets: 36.424ms
+	ImportOutOfDateAssets: 2843.011ms (2194.002ms without children)
+		CompileScripts: 646.491ms
+		ReloadNativeAssets: 0.020ms
+		UnloadImportedAssets: 1.227ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.670ms
+		InitializingProgressBar: 0.000ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.601ms
+	PostProcessAllAssets: 22.485ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.000ms
+	UnloadStreamsBegin: 1.363ms
+	PersistCurrentRevisions: 0.137ms
+	UnloadStreamsEnd: 0.001ms
+	GenerateScriptTypeHashes: 2.174ms
+	Untracked: 1264.655ms
+
+Application.AssetDatabase Initial Refresh End
+Scanning for USB devices : 0.853ms
+Initializing Unity extensions:
+UpdateMenuTitleForLanguage: 10
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-Hollowmere
+Unloading 16 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 5709 unused Assets / (3.6 MB). Loaded Objects now: 6384.
+Memory consumption went from 182.4 MB to 178.8 MB.
+Total: 11.538668 ms (FindLiveObjects: 0.417287 ms CreateObjectMapping: 0.479217 ms MarkObjects: 7.515911 ms  DeleteObjects: 3.125433 ms)
+
+Opening scene 'Assets/Hollowmere/Regions/ThornwickVillage.unity additively'
+Loaded scene 'Assets/Hollowmere/Regions/ThornwickVillage.unity'
+	Deserialize:            4.571 ms
+	Integration:            5.939 ms
+	Integration of assets:  0.589 ms
+	Thread Wait Time:       0.004 ms
+	Total Operation Time:   11.103 ms
+Opening scene 'Assets/Hollowmere/Regions/BlackmereMarsh.unity additively'
+Loaded scene 'Assets/Hollowmere/Regions/BlackmereMarsh.unity'
+	Deserialize:            1.519 ms
+	Integration:            0.562 ms
+	Integration of assets:  0.031 ms
+	Thread Wait Time:       0.007 ms
+	Total Operation Time:   2.118 ms
+Opening scene 'Assets/Hollowmere/Regions/DrownedBelfry.unity additively'
+Loaded scene 'Assets/Hollowmere/Regions/DrownedBelfry.unity'
+	Deserialize:            1.277 ms
+	Integration:            0.521 ms
+	Integration of assets:  0.023 ms
+	Thread Wait Time:       0.004 ms
+	Total Operation Time:   1.826 ms
+Asset Pipeline Refresh (id=899746043a5befd5ba1f92ecdd530530): Total: 0.029 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+[GameCore.Studio/stage] removed com.hollowmere.mechanism.pressureplate from Packages/com.hollowmere.mechanism.pressureplate
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.Authoring.UnityStudioLog:Emit (GameCore.Studio.Authoring.StudioLogEntry) (at /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:146)
+GameCore.Studio.Authoring.StudioLogBase:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:121)
+GameCore.Studio.Edit.MechanismAdmission:Remove (GameCore.Studio.Edit.EditContext,string,string,bool,Newtonsoft.Json.Linq.JObject,Newtonsoft.Json.Linq.JObject,Newtonsoft.Json.Linq.JObject) (at /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Editor/Stage/MechanismTools.cs:304)
+System.Reflection.RuntimeMethodInfo:Invoke (object,System.Reflection.BindingFlags,System.Reflection.Binder,object[],System.Globalization.CultureInfo)
+System.Reflection.MethodBase:Invoke (object,object[])
+GameCore.Studio.Edit.ReflectedTool:Apply (GameCore.Studio.Edit.EditContext) (at /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Editor/Tools/ReflectedTool.cs:129)
+GameCore.Studio.Edit.ChangeSetEngine:ApplyOne (GameCore.Studio.Edit.StagedChangeSet,GameCore.Studio.Edit.StagedOperation,Newtonsoft.Json.Linq.JObject,System.Nullable`1<ulong>&,System.Collections.Generic.List`1<GameCore.Studio.Model.Diagnostic>) (at /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Editor/Engine/ChangeSetEngine.cs:761)
+GameCore.Studio.Edit.ChangeSetEngine:ApplyCore (GameCore.Studio.Edit.StagedChangeSet,System.Collections.Generic.IReadOnlyDictionary`2<string, Newtonsoft.Json.Linq.JObject>,bool) (at /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Editor/Engine/ChangeSetEngine.cs:622)
+GameCore.Studio.Edit.ChangeSetEngine:ApplyForHistory (GameCore.Studio.Model.ChangeSet,System.Collections.Generic.IReadOnlyDictionary`2<string, Newtonsoft.Json.Linq.JObject>,bool) (at /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Editor/Engine/ChangeSetEngine.cs:309)
+GameCore.Studio.Edit.HistoryService:Undo (string,bool) (at /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Editor/Journal/HistoryService.cs:149)
+GameCore.Studio.Edit.StageAdmission:Undo (string) (at /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Editor/Stage/StageAdmission.cs:937)
+GameCore.Studio.Edit.StageCommandLine:Undo () (at /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Editor/Stage/StageCommandLine.cs:69)
+
+(Filename: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs Line: 146)
+
+Asset Pipeline Refresh (id=e9221c0c6cdb15dbe961772f80dc60e9): Total: 0.001 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+[GameCore.Studio/engine] history apply cs_01M4509QHGCT8WTE998GFB10TE -> Applied (1 op(s), 58.5 ms)
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.Authoring.UnityStudioLog:Emit (GameCore.Studio.Authoring.StudioLogEntry) (at /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:146)
+GameCore.Studio.Authoring.StudioLogBase:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:121)
+GameCore.Studio.Edit.ChangeSetEngine:Finish (GameCore.Studio.Edit.StagedChangeSet,GameCore.Studio.Model.ChangeSet,System.Collections.Generic.List`1<GameCore.Studio.Model.Diagnostic>,bool,bool,System.Diagnostics.Stopwatch,System.Collections.Generic.IReadOnlyList`1<GameCore.Studio.Edit.OperationResult>) (at /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Editor/Engine/ChangeSetEngine.cs:874)
+GameCore.Studio.Edit.ChangeSetEngine:ApplyCore (GameCore.Studio.Edit.StagedChangeSet,System.Collections.Generic.IReadOnlyDictionary`2<string, Newtonsoft.Json.Linq.JObject>,bool) (at /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Editor/Engine/ChangeSetEngine.cs:694)
+GameCore.Studio.Edit.ChangeSetEngine:ApplyForHistory (GameCore.Studio.Model.ChangeSet,System.Collections.Generic.IReadOnlyDictionary`2<string, Newtonsoft.Json.Linq.JObject>,bool) (at /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Editor/Engine/ChangeSetEngine.cs:309)
+GameCore.Studio.Edit.HistoryService:Undo (string,bool) (at /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Editor/Journal/HistoryService.cs:149)
+GameCore.Studio.Edit.StageAdmission:Undo (string) (at /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Editor/Stage/StageAdmission.cs:937)
+GameCore.Studio.Edit.StageCommandLine:Undo () (at /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Editor/Stage/StageCommandLine.cs:69)
+
+(Filename: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs Line: 146)
+
+[GameCore.Studio/history] undid cs_01K6RW0MECH00000000000000A (1 inverse op(s))
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.Authoring.UnityStudioLog:Emit (GameCore.Studio.Authoring.StudioLogEntry) (at /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:146)
+GameCore.Studio.Authoring.StudioLogBase:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:121)
+GameCore.Studio.Edit.HistoryService:Undo (string,bool) (at /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Editor/Journal/HistoryService.cs:160)
+GameCore.Studio.Edit.StageAdmission:Undo (string) (at /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Editor/Stage/StageAdmission.cs:937)
+GameCore.Studio.Edit.StageCommandLine:Undo () (at /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Editor/Stage/StageCommandLine.cs:69)
+
+(Filename: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs Line: 146)
+
+[GameCore Studio] stage: resolving packages (undo cs_01K6RW0MECH00000000000000A)
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.Edit.UnityAdmissionCompiler:Compile (string,System.Action`1<GameCore.Studio.Edit.AdmissionCompileResult>) (at /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Editor/Stage/UnityAdmissionServices.cs:135)
+GameCore.Studio.Edit.StageAdmission:Undo (string) (at /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Editor/Stage/StageAdmission.cs:963)
+GameCore.Studio.Edit.StageCommandLine:Undo () (at /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Editor/Stage/StageCommandLine.cs:69)
+
+(Filename: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Editor/Stage/UnityAdmissionServices.cs Line: 135)
+
+[GameCore Studio] stage: undo cs_01K6RW0MECH00000000000000A -> Pending: Removed com.hollowmere.mechanism.pressureplate; verifying the catalog after the domain reload.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.Edit.StageCommandLine:Undo () (at /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Editor/Stage/StageCommandLine.cs:70)
+
+(Filename: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Editor/Stage/StageCommandLine.cs Line: 70)
+
+
+(process:3852534): GLib-GObject-CRITICAL **: 11:04:13.790: g_object_unref: assertion 'G_IS_OBJECT (object)' failed
+
+(process:3852534): GLib-GObject-CRITICAL **: 11:04:13.790: g_object_unref: assertion 'G_IS_OBJECT (object)' failed
+
+(process:3852534): GLib-GObject-CRITICAL **: 11:04:13.790: g_object_unref: assertion 'G_IS_OBJECT (object)' failed
+
+(process:3852534): Gtk-CRITICAL **: 11:04:13.790: gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+Disable old input system
+[Project] Loading completed in 21.422 seconds
+	Project init time: 				20.539 seconds
+		Template init time: 		0.000 seconds
+		Package Manager init time: 		0.130 seconds
+		Asset Database init time: 		0.046 seconds
+		Global illumination init time: 	0.002 seconds
+		Assemblies load time: 			15.464 seconds
+		Unity extensions init time: 	0.028 seconds
+		Asset Database refresh time: 	4.609 seconds
+	Scene opening time: 			0.874 seconds
+##utp:{"type":"ProjectInfo","version":2,"phase":"Immediate","time":1791169453790,"processId":3852534,"projectLoad":21.42241141,"projectInit":20.539208804,"templateInit":0.0,"packageManagerInit":0.130174779,"assetDatabaseInit":0.04584451,"globalIlluminationInit":0.002281313,"assembliesLoad":15.463536737,"unityExtensionsInit":0.027625266,"assetDatabaseRefresh":4.608834253,"sceneOpening":0.874390555}
+##utp:{"type":"EditorInfo","version":2,"phase":"Immediate","time":1791169453790,"processId":3852534,"editorVersion":"6000.0.75f1 (26349cd2a5c8)","branch":"6000.0/staging","buildType":"Release","platform":"Linux"}
+[Package Manager] Done resolving packages in 1.25 seconds
+[Package Manager] Lock file was modified
+[Package Manager] Registered 62 packages:
+  Packages from [https://packages.unity.com]:
+    com.unity.ai.navigation@2.0.12 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.ai.navigation@734c2c4c5591)
+    com.unity.burst@1.8.28 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.burst@07790c2d06d9)
+    com.unity.collections@2.6.6 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.collections@9796e5ee0d9e)
+    com.unity.entities@1.4.6 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.entities@e90944159b94)
+    com.unity.inputsystem@1.19.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.inputsystem@21a28c3a6c83)
+    com.unity.mathematics@1.3.2 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.mathematics@8017b507cc74)
+    com.unity.nuget.newtonsoft-json@3.2.1 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.nuget.newtonsoft-json@74deb55db2a0)
+    com.unity.toolchain.linux-x86_64@2.0.11 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.toolchain.linux-x86_64@53b88ff74b51)
+    com.unity.sysroot@2.0.10 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.sysroot@7bbbb9339c14)
+    com.unity.sysroot.linux-x86_64@2.0.9 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.sysroot.linux-x86_64@1998d1c7730e)
+    com.unity.serialization@3.1.5 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.serialization@c463b52e88d7)
+    com.unity.profiling.core@1.0.3 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.profiling.core@8a49f7027d06)
+    com.unity.nuget.mono-cecil@1.11.6 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.nuget.mono-cecil@ecb9724e46ff)
+    com.unity.scriptablebuildpipeline@2.6.1 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.scriptablebuildpipeline@36e3b5898ee2)
+    com.unity.test-framework.performance@3.4.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.test-framework.performance@aa81a99c4a75)
+    com.unity.searcher@4.9.3 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.searcher@1e17ce91558d)
+  Built-in packages:
+    com.unity.modules.ai@1.0.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.modules.ai)
+    com.unity.modules.animation@1.0.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.modules.animation)
+    com.unity.modules.audio@1.0.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.modules.audio)
+    com.unity.modules.imageconversion@1.0.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.modules.imageconversion)
+    com.unity.modules.imgui@1.0.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.modules.imgui)
+    com.unity.modules.jsonserialize@1.0.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.modules.jsonserialize)
+    com.unity.modules.physics@1.0.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.modules.physics)
+    com.unity.modules.screencapture@1.0.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.modules.screencapture)
+    com.unity.modules.ui@1.0.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.modules.ui)
+    com.unity.modules.uielements@1.0.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.modules.uielements)
+    com.unity.modules.unitywebrequest@1.0.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.modules.unitywebrequest)
+    com.unity.modules.video@1.0.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.modules.video)
+    com.unity.render-pipelines.universal@17.0.4 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.render-pipelines.universal@a1a2df1d8dcb)
+    com.unity.test-framework@1.6.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.test-framework@bd52b1c23814)
+    com.unity.ext.nunit@2.0.5 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.ext.nunit@b16e6d09cd93)
+    com.unity.render-pipelines.core@17.0.4 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.render-pipelines.core@2fecbe5ecc80)
+    com.unity.shadergraph@17.0.4 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.shadergraph@029994c473dc)
+    com.unity.render-pipelines.universal-config@17.0.3 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.render-pipelines.universal-config@e48fefd716b5)
+    com.unity.modules.hierarchycore@1.0.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.modules.hierarchycore)
+    com.unity.modules.assetbundle@1.0.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.modules.assetbundle)
+    com.unity.modules.unityanalytics@1.0.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.modules.unityanalytics)
+    com.unity.ugui@2.0.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.ugui@a477a4a18974)
+    com.unity.modules.terrain@1.0.0 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.modules.terrain)
+    com.unity.rendering.light-transport@1.0.1 (location: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/PackageCache/com.unity.rendering.light-transport@fd597d1a9e15)
+  Local packages:
+    com.gamecore.composition@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.composition (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.composition)
+    com.gamecore.content.compiler@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.content.compiler (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.content.compiler)
+    com.gamecore.contracts@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.contracts (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.contracts)
+    com.gamecore.derivation@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.derivation (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.derivation)
+    com.gamecore.gameplay.cards@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.gameplay.cards (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.gameplay.cards)
+    com.gamecore.gameplay.compile@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.gameplay.compile (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.gameplay.compile)
+    com.gamecore.gameplay.contracts@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.gameplay.contracts (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.gameplay.contracts)
+    com.gamecore.gameplay.entities@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.gameplay.entities (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.gameplay.entities)
+    com.gamecore.gameplay.integration@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.gameplay.integration (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.gameplay.integration)
+    com.gamecore.gameplay.narrative@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.gameplay.narrative (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.gameplay.narrative)
+    com.gamecore.gameplay.rewards@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.gameplay.rewards (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.gameplay.rewards)
+    com.gamecore.gameplay.traversal@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.gameplay.traversal (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.gameplay.traversal)
+    com.gamecore.gameplay.world@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.gameplay.world (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.gameplay.world)
+    com.gamecore.planning@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.planning (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.planning)
+    com.gamecore.rules.cards@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.rules.cards (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.rules.cards)
+    com.gamecore.rules.gameplay@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.rules.gameplay (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.rules.gameplay)
+    com.gamecore.rules.narrative@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.rules.narrative (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.rules.narrative)
+    com.gamecore.rules.traversal@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.rules.traversal (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.rules.traversal)
+    com.gamecore.studio.core@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core)
+    com.gamecore.unity.adapters@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.unity.adapters (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.unity.adapters)
+    com.gamecore.unity.app@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.unity.app (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.unity.app)
+    com.gamecore.unity.runtime@file:/home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.unity.runtime (location: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.unity.runtime)
+[Subsystems] No new subsystems found in resolved package list.
+[Package Manager] Done registering packages in 0.01 seconds
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+[ScriptCompilation] Requested script compilation because: Assembly Definition File(s) changed
+[ScriptCompilation] Requested script compilation because: Assetdatabase observed changes in script compilation related files
+AssetDatabase: script compilation time: 0.000381s
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 0.4994ms
+Starting: /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/2400b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Current configuration matches the requested one, skipping
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc - - 200 - application/grpc 0.6835ms
+ExitCode: 4 Duration: 1s370ms
+[ 919/1278  0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+Rebuilding DAG because FileSignature timestamp changed: Library/Bee/2400b0aE-inputdata.json
+*** Tundra requires additional run (1.30 seconds), 3 items updated, 1249 evaluated
+Starting: /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Tools/netcorerun/netcorerun "/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Tools/BuildPipeline/ScriptCompilationBuildProgram.exe" "Library/Bee/2400b0aE.dag.json" "Library/Bee/2400b0aE-inputdata.json" "Library/Bee/buildprogram0.traceevents"
+WorkingDir: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere
+ExitCode: 0 Duration: 2s654ms
+Starting: /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Data/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/2400b0aE.dag" --continue-on-failure --dagfilejson="Library/Bee/2400b0aE.dag.json" --profile="Library/Bee/backend2.traceevents" ScriptAssemblies
+WorkingDir: /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Current configuration matches the requested one, skipping
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc - - 200 - application/grpc 0.5160ms
+ExitCode: 0 Duration: 1s899ms
+Finished compiling graph: 1218 nodes, 23229 flattened edges (17607 ToBuild, 230 ToUse), maximum node priority 1778
+[           0s] Delete 64 artifact files that are no longer in use. (like Library/Bee/artifacts/2400b0aE.dag/Hollowmere.P2_4.PlayMode.Tests.dll)
+[ 884/1215  0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+*** Tundra build success (1.84 seconds), 1 items updated, 1215 evaluated
+Reloading assemblies after forced synchronous recompile.
+Total cache size 268325004
+Begin MonoManager ReloadAssembly
+Total cache size after purge 268325004, took 00:00:00.5948239
+Symbol file LoadedFromMemory is not a mono symbol file
+- Loaded All Assemblies, in  0.717 seconds
+Refreshing native plugins compatible for Editor in 0.36 ms, found 1 plugins.
+Native extension for LinuxStandalone target not found
+Native extension for OSXStandalone target not found
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+TypeManager.Initialize took: 85ms
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  1.023 seconds
+Domain Reload Profiling: 1739ms
+	BeginReloadAssembly (461ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (13ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (277ms)
+	RebuildCommonClasses (53ms)
+	RebuildNativeTypeToScriptingClass (12ms)
+	initialDomainReloadingComplete (30ms)
+	LoadAllAssembliesAndSetupDomain (159ms)
+		LoadAssemblies (95ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (129ms)
+			TypeCache.Refresh (8ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (111ms)
+			ResolveRequiredComponents (8ms)
+	FinalizeReload (1024ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (791ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (78ms)
+			SetLoadedEditorAssemblies (5ms)
+			BeforeProcessingInitializeOnLoad (218ms)
+			ProcessInitializeOnLoadAttributes (395ms)
+			ProcessInitializeOnLoadMethodAttributes (92ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (22ms)
+Refreshing native plugins compatible for Editor in 0.22 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=6871b840aba0fdcc9b48d47383437b35): Total: 10.354 seconds - Initiated by RefreshV2(ForceSynchronousImport)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=1962 ms
+		Asset DB Callback time: managed=125 ms, native=1285 ms
+		Scripting: domain reloads=1, domain reload time=854 ms, compile time=6125 ms, other=0 ms
+		Project Asset Count: scripts=1503, non-scripts=2200
+		Asset File Changes: new=0, changed=0, moved=0, deleted=31
+		Scan Filter Count: 1
+	InvokeCustomDependenciesCallbacks: 0.003ms
+	InvokePackagesCallback: 1278.819ms
+	ApplyChangesToAssetFolders: 0.553ms
+	Scan: 805.226ms
+	OnSourceAssetsModified: 0.633ms
+	CategorizeAssetsWithTransientArtifact: 0.126ms
+	ProcessAssetsWithTransientArtifactChanges: 3.463ms
+	UnregisterDeletedAssets: 0.006ms
+	CategorizeAssets: 40.763ms
+	ImportOutOfDateAssets: 1030.253ms (-5116.281ms without children)
+		CompileScripts: 6125.277ms
+		CollectScriptTypesHashes: 18.898ms
+		ReloadNativeAssets: 0.859ms
+		UnloadImportedAssets: 0.352ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.820ms
+		InitializingProgressBar: 0.000ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.328ms
+	PostProcessAllAssets: 132.739ms
+	Hotreload: 1.338ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.450ms
+	UnloadStreamsBegin: 0.065ms
+	PersistCurrentRevisions: 0.237ms
+	UnloadStreamsEnd: 0.001ms
+	GenerateScriptTypeHashes: 7.357ms
+	Untracked: 7059.127ms
+
+Asset Pipeline Refresh (id=ac49ce4289adc1b35a8552a78b978a84): Total: 0.214 seconds - Initiated by RefreshV2(NoUpdateAssetOptions)
+Shader Hidden/ProbeVolume/VoxelizeScene is not supported: GPU does not support conservative rasterization
+[MODES] ModeService[default].LoadModes
+Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 111 unused Assets / (19.0 KB). Loaded Objects now: 6413.
+Memory consumption went from 181.8 MB to 181.8 MB.
+Total: 7.972612 ms (FindLiveObjects: 0.206354 ms CreateObjectMapping: 0.135198 ms MarkObjects: 7.483042 ms  DeleteObjects: 0.147213 ms)
+
+[UnityConnectServicesConfig] config is NOT valid, switching to default
+Created GICache directory at /home/worlesenric/.cache/unity3d/GiCache. Took: 0.001s, timestamps: [21.432 - 21.433]
+Opening scene 'Assets/Hollowmere/Regions/ThornwickVillage.unity additively'
+Loaded scene 'Assets/Hollowmere/Regions/ThornwickVillage.unity'
+	Deserialize:            5.062 ms
+	Integration:            7.932 ms
+	Integration of assets:  0.129 ms
+	Thread Wait Time:       0.012 ms
+	Total Operation Time:   13.135 ms
+Opening scene 'Assets/Hollowmere/Regions/BlackmereMarsh.unity additively'
+Loaded scene 'Assets/Hollowmere/Regions/BlackmereMarsh.unity'
+	Deserialize:            1.842 ms
+	Integration:            1.060 ms
+	Integration of assets:  0.043 ms
+	Thread Wait Time:       0.016 ms
+	Total Operation Time:   2.962 ms
+Opening scene 'Assets/Hollowmere/Regions/DrownedBelfry.unity additively'
+Loaded scene 'Assets/Hollowmere/Regions/DrownedBelfry.unity'
+	Deserialize:            1.815 ms
+	Integration:            1.001 ms
+	Integration of assets:  0.044 ms
+	Thread Wait Time:       0.016 ms
+	Total Operation Time:   2.876 ms
+[GameCore Studio] stage: undo finished: {"changeSetId":"cs_01K6RW0MECH00000000000000A","outcome":"Undone","detail":"catalog hash returned to 425508a971072415b8f57e43894083a7f75396c1a47db4691b1a9c1b0e6ec899","milliseconds":12840.0,"package":"com.hollowmere.mechanism.pressureplate","before":"425508a971072415b8f57e43894083a7f75396c1a47db4691b1a9c1b0e6ec899","live":"425508a971072415b8f57e43894083a7f75396c1a47db4691b1a9c1b0e6ec899","operation":"undo","ok":true}
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /home/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.Edit.StageCommandLine:OnFinished (GameCore.Studio.Edit.AdmissionResult) (at /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Editor/Stage/StageCommandLine.cs:108)
+GameCore.Studio.Edit.StageAdmission:FinishUndo (string,bool,string,string) (at /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Editor/Stage/StageAdmission.cs:1011)
+GameCore.Studio.Edit.StageAdmission:VerifyUndo (string) (at /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Editor/Stage/StageAdmission.cs:991)
+GameCore.Studio.Edit.StageAdmission:ResumePending () (at /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Editor/Stage/StageAdmission.cs:757)
+GameCore.Studio.Edit.AdmissionResumer:Resume () (at /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Editor/Stage/AdmissionResumer.cs:48)
+GameCore.Studio.Edit.StageAdmission/<>c__DisplayClass53_0:<UnityDefer>b__0 () (at /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Editor/Stage/StageAdmission.cs:1055)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at /home/bokken/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: /home/worlesenric/wkspace/gc-studio/p2.4/Packages/com.gamecore.studio.core/Editor/Stage/StageCommandLine.cs Line: 108)
+
+Unloading 28 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 77 unused Assets / (17.2 KB). Loaded Objects now: 6413.
+Memory consumption went from 199.2 MB to 199.2 MB.
+Total: 9.903385 ms (FindLiveObjects: 0.246168 ms CreateObjectMapping: 0.193343 ms MarkObjects: 9.393896 ms  DeleteObjects: 0.069044 ms)
+
+[Physics::Module] Cleanup current backned.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input System polling thread exited.
+Input System module state changed to: Shutdown.
+[Licensing::IpcConnector] LicenseClient-worlesenric-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-worlesenric channel disconnected successfully.
+AcceleratorClientConnectionCallback - disconnected - :0
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Application is shutting down...
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      ALC ILPP context 1 is unloading
+Cleanup mono
+debugger-agent: Unable to listen on 45
+[Package Manager] Server process was shutdown
+Checking for leaked weakptr:
+  Found no leaked weakptrs.
+##utp:{"type":"MemoryLeaks","version":2,"phase":"Immediate","time":1791169468882,"processId":3852534,"allocatedMemory":14128040,"memoryLabels":[{"Default":23549},{"Permanent":16147},{"Thread":1084616},{"Manager":2817905},{"VertexData":8},{"Geometry":408},{"VFX":-104},{"Texture":296},{"Shader":79299},{"Material":24},{"GfxDevice":35976},{"Animation":456},{"Audio":4032},{"FontEngine":320},{"Physics":2081},{"Serialization":376},{"Input":26752},{"JobScheduler":33024},{"TextLib":160},{"Mono":32},{"MonoCode":96},{"ScriptingNativeRuntime":155096},{"BaseObject":1622832},{"Resource":1032},{"Renderer":2928},{"Transform":4678},{"File":9615},{"WebCam":80},{"Culling":32},{"Terrain":11298},{"Wind":24},{"String":23284},{"DynamicArray":105146},{"HashMap":123954},{"Utility":2665104},{"PoolAlloc":3776},{"AI":72},{"TypeTree":49981},{"ScriptManager":512},{"RuntimeInitializeOnLoadManager":64},{"SpriteAtlas":112},{"GI":7448},{"Director":8208},{"CloudService":8624},{"WebRequest":808},{"VR":45689},{"SceneManager":528},{"Video":64},{"LazyScriptCache":32},{"NativeArray":540},{"Camera":17},{"Secure":8401},{"SerializationCache":1576},{"APIUpdating":10320},{"Subsystems":336},{"VirtualTexturing":57552},{"StaticSafetyDebugInfo":278528},{"Analytics":384},{"Hierarchy":832},{"CoreStats":12456},{"Identifiers":12384},{"Gui":112},{"EditorUtility":20773},{"VersionControl":4},{"Undo":979},{"AssetDatabase":4706210},{"EditorGi":328},{"UnityConnect":24816},{"Upm":1852},{"DrivenProperties":72},{"LocalIPC":210},{"ProfilerEditor":9746},{"CoreBusinessMetrics":2386},{"Licensing":688},{"AssetReference":32},{"IPCStream":32}]}

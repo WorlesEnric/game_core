@@ -1,0 +1,110 @@
+
+== reset the journal entry of cs_01K6RW0MECH00000000000000A (2026-10-05T11:01:23+08:00)
+
+== build gamecore-studio (2026-10-05T11:01:23+08:00)
+
+== stage cs_01K6RW0MECH00000000000000A (2026-10-05T11:01:23+08:00)
+-- stage w-mech-01 (root /home/worlesenric/.cache/gamecore-studio/stage, source /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere, budget 360 s)
+   scan            pass       13 ms  52 file(s) clean
+   checkers        pass      201 ms  14 C# file(s), 6 asmdef(s), slot clean
+   dotnet          pass     2404 ms  15 dotnet test(s) passed
+   unity-editmode  pass    35154 ms  compiled; 27 EditMode test(s) passed
+   playmode-smoke  pass    35155 ms  120 frame(s), 120 sanctioned pump(s), no violation, no exception
+   determinism     pass        0 ms  both smoke runs end at slot hash 5aa1e545c15d
+   budget          pass        0 ms  73 s within B-STAGE 360 s
+RESULT stage w-mech-01: PASS (73032 ms of 360000 ms; verdict b1ba6aedf8d179810344dde62d741c32af151bc478677cd961f0b3710e33a75b at /home/worlesenric/.cache/gamecore-studio/stage/w-mech-01/out/verdict.json)
+
+== admit into games/hollowmere (2026-10-05T11:02:37+08:00)
+-- Unity slot 2/3 acquired (0 batchmode Editor(s) already running host-wide)
+-- attempt 1/1: /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Unity -batchmode -nographics -projectPath /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere -logFile /tmp/p24-wmech/logs/admit-20261005T110237-a1.log -executeMethod GameCore.Studio.Edit.StageCommandLine.Admit -gcCandidate /home/worlesenric/wkspace/gc-studio/p2.4/samples/mechanisms/pressure-plate/candidate -gcVerdict /tmp/p24-wmech/verdict.json -gcResult /tmp/p24-wmech/admit.json
+RESULT admit: PASS (unity exit 0, 45s, attempts 1, log /tmp/p24-wmech/logs/admit-20261005T110237-a1.log)
+{
+  "changeSetId": "cs_01K6RW0MECH00000000000000A",
+  "outcome": "Admitted",
+  "detail": "Admitted com.hollowmere.mechanism.pressureplate; live catalog-set hash equals the predicted catalogDelta.",
+  "milliseconds": 10424.0,
+  "package": "com.hollowmere.mechanism.pressureplate",
+  "directory": "Packages/com.hollowmere.mechanism.pressureplate",
+  "verdict": "sha256:b1ba6aedf8d179810344dde62d741c32af151bc478677cd961f0b3710e33a75b",
+  "slot": "w-mech-01",
+  "before": "425508a971072415b8f57e43894083a7f75396c1a47db4691b1a9c1b0e6ec899",
+  "live": "1d45d1c96570bb2d1d8b2be003cc9fe791f54e97a067aa2962452e044011d9fb",
+  "predicted": "1d45d1c96570bb2d1d8b2be003cc9fe791f54e97a067aa2962452e044011d9fb",
+  "operation": "admit",
+  "ok": true
+}
+
+== Hollowmere PlayMode: place a plate in the village and press it (2026-10-05T11:03:22+08:00)
+-- Unity slot 1/3 acquired (0 batchmode Editor(s) already running host-wide)
+-- attempt 1/2: /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Unity -batchmode -nographics -projectPath /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere -logFile /tmp/p24-wmech/logs/playmode-20261005T110322-a1.log -testResults /tmp/p24-wmech/playmode.xml -runTests -testPlatform PlayMode -testFilter Hollowmere\.P2_4\..*
+RESULT playmode: PASS (unity exit 0, 30s, attempts 1, log /tmp/p24-wmech/logs/playmode-20261005T110322-a1.log)
+[W-MECH-01] plate placed in Thornwick Village; pressed after 1 frame(s), released after 1 frame(s); frames=2 sanctionedPumps=2 violations=0 catalogSet=1d45d1c96570bb2d1d8b2be003cc9fe791f54e97a067aa2962452e044011d9fb world=425508a971072415b8f57e43894083a7f75396c1a47db4691b1a9c1b0e6ec899 plate=eabc05e00b2ad24fedbee8f283cd60e66782415e00865936919672ce1dab3f21
+
+== undo the admission (2026-10-05T11:03:52+08:00)
+-- Unity slot 1/3 acquired (0 batchmode Editor(s) already running host-wide)
+-- attempt 1/1: /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Unity -batchmode -nographics -projectPath /home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere -logFile /tmp/p24-wmech/logs/undo-20261005T110352-a1.log -executeMethod GameCore.Studio.Edit.StageCommandLine.Undo -gcChangeSet cs_01K6RW0MECH00000000000000A -gcResult /tmp/p24-wmech/undo.json
+RESULT undo: PASS (unity exit 0, 40s, attempts 1, log /tmp/p24-wmech/logs/undo-20261005T110352-a1.log)
+{
+  "changeSetId": "cs_01K6RW0MECH00000000000000A",
+  "outcome": "Undone",
+  "detail": "catalog hash returned to 425508a971072415b8f57e43894083a7f75396c1a47db4691b1a9c1b0e6ec899",
+  "milliseconds": 12840.0,
+  "package": "com.hollowmere.mechanism.pressureplate",
+  "before": "425508a971072415b8f57e43894083a7f75396c1a47db4691b1a9c1b0e6ec899",
+  "live": "425508a971072415b8f57e43894083a7f75396c1a47db4691b1a9c1b0e6ec899",
+  "operation": "undo",
+  "ok": true
+}
+
+== summary (2026-10-05T11:04:32+08:00)
+{
+  "changeSetId": "cs_01K6RW0MECH00000000000000A",
+  "stage": {
+    "pass": true,
+    "durationMs": 73032,
+    "budgetMs": 360000,
+    "wallSeconds": 74,
+    "steps": {
+      "scan": "pass",
+      "checkers": "pass",
+      "dotnet": "pass",
+      "unity-editmode": "pass",
+      "playmode-smoke": "pass",
+      "determinism": "pass",
+      "budget": "pass"
+    }
+  },
+  "catalogDelta": {
+    "mechanisms": [
+      {
+        "catalogType": "Hollowmere.Mechanism.PressurePlate.Generated.PressurePlateCatalog",
+        "fingerprint": "eabc05e00b2ad24fedbee8f283cd60e66782415e00865936919672ce1dab3f21",
+        "package": "com.hollowmere.mechanism.pressureplate"
+      }
+    ],
+    "predicted": "1d45d1c96570bb2d1d8b2be003cc9fe791f54e97a067aa2962452e044011d9fb",
+    "world": "425508a971072415b8f57e43894083a7f75396c1a47db4691b1a9c1b0e6ec899"
+  },
+  "admit": {
+    "ok": true,
+    "before": "425508a971072415b8f57e43894083a7f75396c1a47db4691b1a9c1b0e6ec899",
+    "live": "1d45d1c96570bb2d1d8b2be003cc9fe791f54e97a067aa2962452e044011d9fb",
+    "predicted": "1d45d1c96570bb2d1d8b2be003cc9fe791f54e97a067aa2962452e044011d9fb",
+    "admissionMs": 10424.0,
+    "editorWallSeconds": 45
+  },
+  "playmode": {
+    "total": 1,
+    "passed": 1,
+    "failed": 0
+  },
+  "undo": {
+    "ok": true,
+    "live": "425508a971072415b8f57e43894083a7f75396c1a47db4691b1a9c1b0e6ec899",
+    "before": "425508a971072415b8f57e43894083a7f75396c1a47db4691b1a9c1b0e6ec899"
+  },
+  "catalogHashReturned": true,
+  "pass": true
+}
+W-MECH-01 PASS
+EXIT=0
