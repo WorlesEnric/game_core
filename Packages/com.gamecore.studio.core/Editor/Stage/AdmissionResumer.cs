@@ -41,6 +41,7 @@ namespace GameCore.Studio.Edit
                 if (!HasPending(StateRoot) && !HasPending(legacy)) return;
                 StageAdmission admission = StageAdmission.Of(StudioServices.Runtime);
                 StageCommandLine.Attach(admission);
+                admission.ResumeSmokePolling();
                 try { await admission.RefreshPendingVerdicts(); }
                 catch (Exception)
                 {
