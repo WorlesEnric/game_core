@@ -209,12 +209,44 @@
       "sha256": "c27d2446574af3242d7ccb5f59bc0c57ab1ee2207877df1f1bba1c7fbdb24730",
       "bytes": 74430,
       "costUsd": 0
+    },
+    {
+      "path": "Assets/Hollowmere/Media/Portraits/Maren.png",
+      "origin": "etos",
+      "op": "generate.image",
+      "prompt": "Painterly portrait of Maren, a kind middle-aged village healer with grey-streaked auburn hair tied back, sage-green shawl, herbs at her collar, warm candlelight, dark muted background, storybook fantasy style, head and shoulders",
+      "speaker": "Maren",
+      "voice": null,
+      "costUsd": 0.5,
+      "calls": 1,
+      "sha256": "ec10d63b73cadca012f7703863e497d00a52fca6879f1d40c09c5eca71beb7d1",
+      "bytes": 128301,
+      "provider": "echo-images",
+      "key": "out.png",
+      "journalState": "Applied",
+      "reportedCost": null
+    },
+    {
+      "path": "Assets/Hollowmere/Media/Voices/Maren_greet.wav",
+      "origin": "etos",
+      "op": "tts",
+      "prompt": "Traveller, you look half drowned yourself. Sit a moment. I am Maren, the healer here.",
+      "speaker": "Maren",
+      "voice": "Katerina",
+      "costUsd": 0.1,
+      "calls": 1,
+      "sha256": "bd85eeef16a751c35b8c9a827563a2fc6ef787b4c9ad7607ec801c27612d081d",
+      "bytes": 345644,
+      "provider": "bailian-tts",
+      "key": "out.wav",
+      "journalState": "Applied",
+      "reportedCost": null
     }
   ],
   "summary": {
-    "etosCalls": 0,
-    "ceilingUsdSpent": 0.0,
+    "etosCalls": 2,
+    "ceilingUsdSpent": 0.6,
     "procedural": 23,
-    "entries": 23
+    "entries": 25
   }
 }
