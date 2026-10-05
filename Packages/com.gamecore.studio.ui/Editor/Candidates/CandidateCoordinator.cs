@@ -7,7 +7,7 @@
 // Then the user previews (ghosts; StaleContext when the catalog moved), compares, skips or rebases operations, picks a
 // policy and applies (ChangeSetEngine.Apply, timed), or rejects (ChangeSetEngine.Discard with reject; the gateway's
 // Reject when it has one). A change set that proposes a mechanism goes through the staging lane instead (P2.4): Stage
-// asks the companion for a verdict (POST /v1/stage through the etos gateway) or records a verdict file, and Admit calls
+// asks the configured companion service for a verified verdict, and the explicit creator Admit calls
 // StageAdmission. Nothing here writes project state except through the engine and StageAdmission.
 #nullable enable
 using System;
@@ -268,6 +268,7 @@ namespace GameCore.Studio.UI
             if (entry == null)
             {
                 entry = new CandidateEntry(requestId, staged.ChangeSet, RevisionOf(requestId, staged.Id));
+                RestoreStageJob(entry);
                 _entries.Add(entry);
             }
             else

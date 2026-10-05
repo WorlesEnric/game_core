@@ -151,7 +151,7 @@ namespace GameCore.Studio.UI
                 if (node["fields"] is JObject fields)
                     foreach (JProperty field in new List<JProperty>(fields.Properties()))
                         if (field.Value is not JObject) field.Remove();
-            bool truncated = slice.Truncated || closure.Count < selection.Targets.Count + (selection.Parts?.Count ?? 0);
+            bool truncated = slice.Truncated || (selection.Parts != null && selection.Targets.Count + selection.Parts.Count > MaxContextObjects);
             int omitted = slice.OmittedNodes;
             // Core estimates node bytes; enforce the actual envelope including property names and UTF-8.
             while (JsonBytes(packed).Length > ByteCap)
@@ -226,6 +226,7 @@ namespace GameCore.Studio.UI
         /// </summary>
         public AgentAttachment? SceneContext(IReadOnlyList<AuthoringRef> targets)
         {
+            if (ByteCap < 256 || ByteCap > SliceByteCap) throw new ArgumentOutOfRangeException(nameof(ByteCap));
             JArray objects = new JArray();
             JObject document = new JObject
             {

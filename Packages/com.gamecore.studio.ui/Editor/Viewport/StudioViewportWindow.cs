@@ -398,6 +398,8 @@ namespace GameCore.Studio.UI
             EditorApplication.hierarchyChanged += MarkRenderDirty;
             Undo.undoRedoPerformed += MarkRenderDirty;
             wantsMouseMove = true;
+            _routing.Guard(() => EditorApplication.isPlaying && focusedWindow == this
+                && !OwnsGameInput(mode, !EditorApplication.isPaused, true, _image, rootVisualElement.focusController?.focusedElement));
         }
 
         private void OnLostFocus() => ReleaseInput();

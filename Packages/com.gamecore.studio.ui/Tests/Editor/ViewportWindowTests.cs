@@ -100,7 +100,7 @@ namespace GameCore.Studio.UI.Tests
         {
             if (!ViewportRenderer.CanRender)
             {
-                Assert.Pass("Not rendered: no graphics device (-nographics). The graphical evidence run (studio/tools/evidence-p2.1.sh) covers rendering.");
+                Assert.Ignore("R2-37: graphical qualification required; not rendered: no graphics device (-nographics). The graphical evidence run (studio/tools/evidence-p2.1.sh) covers rendering.");
             }
 
             _bed.SpawnEntity("Npc", Vector3.zero);
@@ -113,7 +113,7 @@ namespace GameCore.Studio.UI.Tests
 
             if (window.Area == null || float.IsNaN(window.Area.contentRect.width) || window.Area.contentRect.width < 2f)
             {
-                Assert.Pass("Not rendered: the editor did not lay the window out in this session (batch mode).");
+                Assert.Ignore("R2-37: graphical qualification required; not rendered: the editor did not lay the window out in this session (batch mode).");
             }
 
             Assert.That(window.RenderNow(), Is.True);

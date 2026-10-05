@@ -36,6 +36,8 @@ namespace GameCore.Studio.UI
     {
         private readonly Action<InputEventPtr, InputDevice> _handler;
         private bool _active;
+        private bool _subscribed;
+        private Func<bool>? _blockInput;
         private InputSettings.EditorInputBehaviorInPlayMode _previous;
         private InputSettings.BackgroundBehavior _previousBackground;
 
@@ -45,6 +47,19 @@ namespace GameCore.Studio.UI
         }
 
         public bool Active => _active;
+
+        public void Guard(Func<bool> blockInput)
+        {
+            _blockInput = blockInput;
+            Subscribe();
+        }
+
+        private void Subscribe()
+        {
+            if (_subscribed) return;
+            InputSystem.onEvent += _handler;
+            _subscribed = true;
+        }
 
         /// <summary>Input System events seen while routing (keyboard/mouse/gamepad state and delta events).</summary>
         public long EventsRouted { get; private set; }
@@ -61,7 +76,7 @@ namespace GameCore.Studio.UI
                 // With all input going to the game, the background behaviour applies as in a player; the Game view is
                 // not focused while the viewport is, so devices must not be disabled for lack of focus.
                 settings.backgroundBehavior = InputSettings.BackgroundBehavior.IgnoreFocus;
-                InputSystem.onEvent += _handler;
+                Subscribe();
                 _active = true;
             }
             else if (!route && _active)
@@ -70,7 +85,13 @@ namespace GameCore.Studio.UI
             }
         }
 
-        public void Dispose() => Stop();
+        public void Dispose()
+        {
+            Stop();
+            if (_subscribed) InputSystem.onEvent -= _handler;
+            _subscribed = false;
+            _blockInput = null;
+        }
 
         private void Stop()
         {
@@ -83,7 +104,6 @@ namespace GameCore.Studio.UI
             // Cancel held actions before another control can receive input.
             foreach (InputDevice device in InputSystem.devices)
                 if (device is Keyboard || device is Mouse || device is Gamepad) InputSystem.ResetDevice(device);
-            InputSystem.onEvent -= _handler;
             InputSettings settings = InputSystem.settings;
             if (settings != null)
             {
@@ -94,7 +114,12 @@ namespace GameCore.Studio.UI
 
         private void OnEvent(InputEventPtr eventPtr, InputDevice device)
         {
-            EventsRouted++;
+            if (_blockInput?.Invoke() == true && (device is Keyboard || device is Mouse || device is Gamepad))
+            {
+                eventPtr.handled = true;
+                return;
+            }
+            if (_active) EventsRouted++;
         }
     }
 

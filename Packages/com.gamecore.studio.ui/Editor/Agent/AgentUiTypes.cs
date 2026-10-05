@@ -330,9 +330,9 @@ namespace GameCore.Studio.UI
     public sealed class StudioGatewayException : Exception
     {
         public StudioGatewayException(Diagnostic diagnostic)
-            : base(diagnostic?.Code + ": " + diagnostic?.Message)
+            : base(StudioStyles.Safe(diagnostic?.Code + ": " + diagnostic?.Message))
         {
-            Diagnostic = diagnostic ?? throw new ArgumentNullException(nameof(diagnostic));
+            Diagnostic = GatewayErrors.Redact(diagnostic ?? throw new ArgumentNullException(nameof(diagnostic)));
         }
 
         public Diagnostic Diagnostic { get; }
@@ -341,6 +341,10 @@ namespace GameCore.Studio.UI
     /// <summary>Gateway exceptions as diagnostics, etos codes preserved.</summary>
     public static class GatewayErrors
     {
+        public static Diagnostic Redact(Diagnostic diagnostic) => new Diagnostic(diagnostic.Code,
+            StudioStyles.Safe(diagnostic.Message), diagnostic.Hint == null ? null : StudioStyles.Safe(diagnostic.Hint), diagnostic.Where,
+            diagnostic.Data == null ? null : (JObject)new GameCore.Studio.Authoring.SecretRedactor().RedactJson(diagnostic.Data));
+
         /// <summary>
         /// The diagnostic of a failed gateway call: a <see cref="StudioGatewayException"/>'s own; for P2.2's etos
         /// exceptions (this package does not reference com.gamecore.studio.etos) the public <c>Code</c>,
@@ -369,10 +373,10 @@ namespace GameCore.Studio.UI
                 object? inner = error.GetType().GetProperty("Error", BindingFlags.Public | BindingFlags.Instance)?.GetValue(error);
                 string? hint = inner?.GetType().GetProperty("Hint", BindingFlags.Public | BindingFlags.Instance)?.GetValue(inner) as string;
                 string? message = inner?.GetType().GetProperty("Message", BindingFlags.Public | BindingFlags.Instance)?.GetValue(inner) as string;
-                return new Diagnostic(code, message ?? error.Message, hint);
+                return Redact(new Diagnostic(code, message ?? error.Message, hint));
             }
 
-            return new Diagnostic("transport", error.Message);
+            return Redact(new Diagnostic("transport", error.Message));
         }
     }
 }

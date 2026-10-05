@@ -4,7 +4,7 @@
 // (property diff, image before/after/diff, audio playback), Apply (policy picker, what happens in Play vs Edit, timed,
 // per-op outcomes) and Reject (reason kept by the gateway). A change set that proposes a mechanism shows its staging
 // state instead of Apply (journal `validation`: verdict pending/pass/fail, admission, undo) with Stage (the companion's
-// staging lane through the gateway), Record verdict (a verdict file from `gamecore-studio stage run`) and Admit
+// staging lane through IStageService), Refresh verdict (authenticated after reload) and Admit
 // (StageAdmission, enabled only on a passing verdict). All actions go through CandidateCoordinator, which only calls
 // the edit engine and StageAdmission.
 #nullable enable
@@ -261,7 +261,7 @@ namespace GameCore.Studio.UI
             }
         }
 
-        /// <summary>The staging-lane block: verdict state from the journal, Stage / Record verdict / Admit.</summary>
+        /// <summary>The staging-lane block: journal progress, authenticated verdict details and explicit Admit.</summary>
         private void BuildStaging(CandidateEntry entry)
         {
             _details.Add(StudioStyles.Header("Staging lane"));

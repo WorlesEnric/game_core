@@ -1,6 +1,5 @@
 // GameCore.Studio.UI - the viewport's move gizmo (SR-1.6, W-EDIT-05). In Select mode with one selected scene object, three
-// axis handles are drawn over the viewport image at the object's projected position; dragging a handle moves the object
-// live along that world axis through P1.6's GizmoMoveController (no Undo, no journal while dragging) and mouse-up
+// axis handles project the preview transform; dragging never changes the real target. Mouse-up
 // applies exactly one `move` change set (identical to typing the final position). Escape cancels the drag.
 #nullable enable
 using System;
