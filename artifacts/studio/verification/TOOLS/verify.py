@@ -2,7 +2,9 @@
 """Retain every attempt; XML/TRX dispositions, never stdout, determine suite acceptance."""
 import argparse
 import collections
+import contextlib
 import datetime
+import fcntl
 import hashlib
 import json
 import os
@@ -19,6 +21,7 @@ ROOT = Path(__file__).resolve().parents[4]
 OUT = ROOT / 'artifacts/studio/verification'
 HOME = str(Path.home())
 RESULTS = []
+MEMORY_OBSERVED = False
 
 
 def scrub(value):
@@ -34,6 +37,19 @@ def utc():
 
 def git(*args):
     return subprocess.check_output(['git', *args], cwd=ROOT, text=True).strip()
+
+
+@contextlib.contextmanager
+def editor_lease():
+    directory = Path.home() / '.cache/gamecore-studio/verification'
+    directory.mkdir(parents=True, exist_ok=True)
+    identity = hashlib.sha256(str(ROOT).encode()).hexdigest()[:16]
+    with (directory / (identity + '.editor.lock')).open('a') as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            fcntl.flock(lock, fcntl.LOCK_UN)
 
 
 def xml_counts(path):
@@ -68,19 +84,19 @@ def finish(folder, record):
         f'{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.relative_to(folder)}\n' for p in paths))
 
 
-def run(row, label, command, cwd=ROOT, results=None, env=None, timeout=None, expected_http=None):
+def run(row, label, command, cwd=ROOT, results=None, env=None, timeout=None, expected_http=None, editor=False):
     stamp = datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%S.%fZ')
     folder = OUT / row / f'{label}-{stamp}'
     folder.mkdir(parents=True)
     command = [str(x).replace('{out}', str(folder)) for x in command]
     start = time.monotonic()
     record = dict(label=label, revision=git('rev-parse', 'HEAD'), host=platform.node(),
-                  started=utc(), command=shlex.join(command), cwd=str(cwd))
+                  started=utc(), command=shlex.join(command), cwd=str(cwd), evidencePath=os.path.relpath(folder, ROOT))
     child_env = dict(os.environ, PYTHONDONTWRITEBYTECODE='1', DOTNET_CLI_TELEMETRY_OPTOUT='1',
-                     DOTNET_NOLOGO='1', GC_STUDIO_UNITY_SLOTS='1', PROBE_RUNS='2')
-    child_env.update(env or {})
+                     DOTNET_NOLOGO='1', GC_STUDIO_UNITY_SLOTS=os.environ.get('GC_STUDIO_UNITY_SLOTS', '3'), PROBE_RUNS='2', GAMECORE_ETOS_LIVE='0')
+    child_env.update({k: str(v).replace('{out}', str(folder)) for k, v in (env or {}).items()})
     print(f"START {row}/{label}", flush=True)
-    with (folder / 'command.log').open('w') as log:
+    with (folder / 'command.log').open('w') as log, (editor_lease() if editor else contextlib.nullcontext()):
         try:
             proc = subprocess.Popen(command, cwd=cwd, env=child_env, stdout=subprocess.PIPE,
                                     stderr=subprocess.STDOUT, text=True, errors='replace')
@@ -134,10 +150,25 @@ def static():
 
 
 def unity_run(game, mode, label=None, test_filter='.*'):
-    return run('UNITY-' + game.upper(), label or mode.lower(), ['bash', 'studio/tools/unity-batch.sh',
+    global MEMORY_OBSERVED
+    memory_report = ROOT / 'artifacts/studio/evidence/P3.1/memory-cycles.json'
+    old_memory = memory_report.read_bytes() if memory_report.exists() else None
+    result = run('UNITY-' + game.upper(), label or mode.lower(), ['bash', 'studio/tools/unity-batch.sh',
         '--project', ROOT / 'games' / game, '--log-dir', '{out}/logs', '--label', label or mode.lower(),
         '--results', '{out}/results.xml', '--', '-runTests', '-testPlatform', mode, '-testFilter', test_filter],
-        results='results.xml', env={'GAMECORE_ETOS_AUTOSTART': '0'})
+        results='results.xml', env={'GAMECORE_ETOS_AUTOSTART': '0'}, editor=True)
+    if game == 'hollowmere' and mode == 'EditMode' and memory_report.exists() and memory_report.read_bytes() != old_memory:
+        data = json.loads(memory_report.read_text())
+        folder = OUT / 'W-GAME-08' / ('memory-' + datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%S.%fZ'))
+        folder.mkdir(parents=True)
+        (folder / 'memory-cycles.json').write_text(json.dumps(data, indent=2) + '\n')
+        growth = data['allocatedGrowthPctCycle10']
+        finish(folder, dict(result, label='B-MEMORY-15-percent', status='FAIL' if growth > 15 else 'BLOCKED',
+                            note=f'Allocated growth {growth}%; budget 15%. Full Memory Profiler snapshots are absent.'))
+        MEMORY_OBSERVED = True
+        if old_memory is None: memory_report.unlink()
+        else: memory_report.write_bytes(old_memory)
+    return result
 
 
 def unity():
@@ -152,7 +183,7 @@ def bake():
         ('cleanproof', 'Saltmarsh.Authoring.SaltmarshAuthoring.AuthorAll', ['-quit'])):
         run('W-PLUG-12', 'bake-' + game, ['bash', 'studio/tools/unity-batch.sh', '--project', ROOT / 'games' / game,
             '--log-dir', '{out}/logs', '--label', 'bake-' + game, '--', '-executeMethod', method, *extra],
-            env={'GAMECORE_ETOS_AUTOSTART': '0'})
+            env={'GAMECORE_ETOS_AUTOSTART': '0'}, editor=True)
 
 
 def clean():
@@ -167,7 +198,7 @@ def perf():
     for n in (1, 2):
         unity_run('hollowmere', 'PlayMode', 'perf-probe-' + str(n),
                   'Hollowmere\\.P1_1\\..*|Hollowmere\\.P1_3\\..*|Hollowmere\\.P1_7a\\..*')
-    if list((OUT / 'W-GAME-08').glob('*/memory-cycles.json')):
+    if MEMORY_OBSERVED:
         print('Memory series already retained; not repeating ten cycles.', flush=True)
         return
     report = ROOT / 'artifacts/studio/evidence/P3.1/memory-cycles.json'
@@ -199,13 +230,15 @@ def recovery():
                   '--log-dir', '{out}/logs']
         crash = run('W-REC-01', mode + '-killed-editor', [*common, '--label', 'recovery-crash', '--',
             '-executeMethod', 'Hollowmere.P4_2.ProcessRecovery.Crash', '-p42State', state,
-            '-p42Recovery', mode], env={'GAMECORE_ETOS_AUTOSTART': '0'})
+            '-p42Recovery', mode], env={'GAMECORE_ETOS_AUTOSTART': '0'}, editor=True)
         if not (state / 'crash.json').exists():
             print('No crash marker: recovery not claimed.', flush=True)
             continue
+        crash['expectedTerminationObserved'] = True
+        finish(ROOT / crash['evidencePath'], crash)
         recovered = run('W-REC-01', mode + '-reopened-editor', [*common, '--label', 'recovery-reopen', '--',
             '-executeMethod', 'Hollowmere.P4_2.ProcessRecovery.Recover', '-p42State', state],
-            env={'GAMECORE_ETOS_AUTOSTART': '0'})
+            env={'GAMECORE_ETOS_AUTOSTART': '0'}, editor=True)
         passed = False
         if (state / 'recovery-result.json').exists():
             result = json.loads((state / 'recovery-result.json').read_text())
@@ -214,9 +247,10 @@ def recovery():
                       status='PASS' if passed else 'FAIL',
                       note='A real SIGKILL at the engine fault hook; the killed-editor attempt is an expected nonzero exit, retained separately. Recovery is checked in a different Editor process.')
         finish(state, record)
+        RESULTS.append(record)
 
 
-def graphical_tests():
+def graphical_tests(test_filter=None, row='GRAPHICAL', label='graphics-required-tests'):
     # Interactive Editor is necessary for the tests skipped by -nographics. Same allocator as unity-batch.
     display = os.environ.get('EVIDENCE_DISPLAY', ':1')
     wrapper = '''set -euo pipefail
@@ -228,17 +262,17 @@ python3 studio/stage/run-redacted.py --log "$1/editor.log" --timeout 1500 --sile
   "$HOME/Unity/Hub/Editor/6000.0.75f1/Editor/Unity" -projectPath "$PWD/games/hollowmere" \
   -logFile - -runTests -testPlatform EditMode -testFilter "$2" -testResults "$1/results.xml"
 '''
-    test_filter = ('R2_29_KeyDownUpOnPromptAndControlsNeverEnterViewportHandlers|'
+    test_filter = test_filter or ('R2_29_KeyDownUpOnPromptAndControlsNeverEnterViewportHandlers|'
                    'D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce|'
                    'Render_TargetMatchesTheViewportArea|PreviewScreenCapturesARenderTextureOrSkipsHeadless')
-    run('GRAPHICAL', 'graphics-required-tests', ['bash', '-c', wrapper, 'p42-graphical', '{out}', test_filter],
-        results='results.xml', env={'DISPLAY': display, 'GAMECORE_ETOS_AUTOSTART': '0'})
+    return run(row, label, ['bash', '-c', wrapper, 'p42-graphical', '{out}', test_filter],
+        results='results.xml', env={'DISPLAY': display, 'GAMECORE_ETOS_AUTOSTART': '0', 'GAMECORE_P42_EVIDENCE': '{out}'}, editor=True)
 
 
 def graphical_views():
     run('W-VIEW-01', 'views-capture', ['bash', 'studio/tools/evidence-p2.3.sh', ROOT.name, 'games/hollowmere'],
         env={'EVIDENCE_DEST': str(OUT / 'W-VIEW-01' / ('captures-' + datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%SZ'))),
-             'GAMECORE_ETOS_AUTOSTART': '0'})
+             'GAMECORE_ETOS_AUTOSTART': '0'}, editor=True)
 
 
 def security_scan():
@@ -321,7 +355,7 @@ def main():
     if args.mode in ('all', 'clean'): clean()
     if args.mode in ('all', 'security'): security()
     summary()
-    return int(any(r['status'] != 'PASS' for r in RESULTS))
+    return int(any(r['status'] != 'PASS' and not r.get('expectedTerminationObserved') for r in RESULTS))
 
 
 if __name__ == '__main__':

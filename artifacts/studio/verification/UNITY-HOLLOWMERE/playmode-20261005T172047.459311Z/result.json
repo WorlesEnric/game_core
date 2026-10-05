@@ -1,0 +1,22 @@
+{
+  "label": "playmode",
+  "revision": "3c5f817aa45a86d0af85cd8af6e953d128524a02",
+  "host": "worlesenric",
+  "started": "2026-10-05T17:20:47.461611+00:00",
+  "command": "bash studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2/games/hollowmere --log-dir ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/UNITY-HOLLOWMERE/playmode-20261005T172047.459311Z/logs --label playmode --results ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/UNITY-HOLLOWMERE/playmode-20261005T172047.459311Z/results.xml -- -runTests -testPlatform PlayMode -testFilter '.*'",
+  "cwd": "~/wkspace/gc-studio/p4.2",
+  "exitCode": 0,
+  "status": "PASS",
+  "ended": "2026-10-05T17:22:47.407322+00:00",
+  "seconds": 119.94792246702127,
+  "suites": {
+    "results.xml": {
+      "total": 19,
+      "counts": {
+        "Passed": 19
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    }
+  }
+}

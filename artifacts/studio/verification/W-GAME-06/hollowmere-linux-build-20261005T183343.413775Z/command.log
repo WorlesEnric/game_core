@@ -1,0 +1,37 @@
+== Hollowmere Linux player build ==
+clone    : ~/wkspace/gc-studio/p4.2
+revision : 20e34d1e6a6800e4b0bd4a1e3ebd44611a968c55
+unity    : ~/Unity/Hub/Editor/6000.0.75f1/Editor/Unity (6000.0.75f1)
+output   : ~/wkspace/gc-studio/p4.2/build/HollowmereLinux
+-- attempt 1/2: Unity (arguments withheld from logs)
+RESULT build: FAIL (unity exit 1, 515s, attempts 1, log ~/wkspace/gc-studio/p4.2/.unity-logs/build-20261006T023343-3314221-a1.log)
+HOLLOWMERE-BUILD result=Failed size=55484954 seconds=466.0 errors=1 warnings=5 output=~/wkspace/gc-studio/p4.2/build/HollowmereLinux/Hollowmere.x86_64
+-- sha256.txt:
+build failed (unity-batch exit 1); see ~/wkspace/gc-studio/p4.2/build/build.log
+-- data-manifest.txt: 0 files
+-- build-summary.json:
+{
+  "buildReport": {
+    "development": false,
+    "errors": 1,
+    "managedStripping": "Low",
+    "platform": "StandaloneLinux64",
+    "result": "Failed",
+    "scriptingBackend": "IL2CPP",
+    "totalSize": 55484954,
+    "totalTimeSeconds": 465.951,
+    "warnings": 5
+  },
+  "buildSeconds": 516,
+  "executable": "HollowmereLinux/Hollowmere.x86_64",
+  "executableBytes": 14784,
+  "executableSha256": "",
+  "fileCount": 34,
+  "notShippedBytes": 671168824,
+  "outputBytes": 74162543,
+  "result": "failed",
+  "revision": "20e34d1e6a6800e4b0bd4a1e3ebd44611a968c55",
+  "unityBatchExit": 1,
+  "unityVersion": "6000.0.75f1"
+}
+RESULT build_game_player p4.2: FAIL (build; revision 20e34d1e6a6800e4b0bd4a1e3ebd44611a968c55)

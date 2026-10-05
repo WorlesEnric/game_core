@@ -1,0 +1,2160 @@
+Unity Editor version:    6000.0.75f1 (26349cd2a5c8)
+Branch:                  6000.0/staging
+Build type:              Release
+Batch mode:              NO
+System name:             Linux
+Distro version:          #31~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Mon Aug 10 09:38:02 UTC 2
+Kernel version:          7.0.0-31-generic
+Architecture:            x86_64
+Available memory:        31897 MB
+[Licensing::Module] Trying to connect to existing licensing client channel...
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-worlesenric" at "2026-10-05T18:17:41.000503Z"
+[SignatureVerifier] Application signature verification not supported on this platform.
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.17.4+4293ba1
+  Session Id:              e6b6e0ee1e2a44ee80aefc8e1c688308
+  Correlation Id:          70dec6492dd8776ac9455dd9efce7e71
+  External correlation Id: 224814065083844483
+  Machine Id:              jd93gYTNlAg1qIhTY9iII/nAhSo=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-worlesenric" (connect: 0.00s, validation: 0.00s, handshake: 0.00s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-worlesenric-notifications" at "2026-10-05T18:17:41.001569Z"
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: 1375999166540-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.00
+[Licensing::Module] Licensing Background thread has ended after 0.00s
+The selected window backend is (null)
+Desktop is 1920 x 1080 @ 60 Hz
+Initialize udev device monitor.
+
+COMMAND LINE ARGUMENTS:
+~/Unity/Hub/Editor/6000.0.75f1/Editor/Unity
+-projectPath
+~/wkspace/gc-studio/p4.2/games/hollowmere
+-logFile
+-
+-runTests
+-testPlatform
+EditMode
+-testFilter
+R2_38_W_UI_04_W_GAME_08_TenCyclesWithSnapshotsAndOnePump
+-testResults
+~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-08/native-memory-and-pumps-20261005T181112.083902Z/results.xml
+Successfully changed project path to: ~/wkspace/gc-studio/p4.2/games/hollowmere
+~/wkspace/gc-studio/p4.2/games/hollowmere
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+"memorysetup-bucket-allocator-granularity=16"
+"memorysetup-bucket-allocator-bucket-count=8"
+"memorysetup-bucket-allocator-block-size=33554432"
+"memorysetup-bucket-allocator-block-count=8"
+"memorysetup-main-allocator-block-size=16777216"
+"memorysetup-thread-allocator-block-size=16777216"
+"memorysetup-gfx-main-allocator-block-size=16777216"
+"memorysetup-gfx-thread-allocator-block-size=16777216"
+"memorysetup-cache-allocator-block-size=4194304"
+"memorysetup-typetree-allocator-block-size=2097152"
+"memorysetup-profiler-bucket-allocator-granularity=16"
+"memorysetup-profiler-bucket-allocator-bucket-count=8"
+"memorysetup-profiler-bucket-allocator-block-size=33554432"
+"memorysetup-profiler-bucket-allocator-block-count=8"
+"memorysetup-profiler-allocator-block-size=16777216"
+"memorysetup-profiler-editor-allocator-block-size=1048576"
+"memorysetup-temp-allocator-size-main=16777216"
+"memorysetup-job-temp-allocator-block-size=2097152"
+"memorysetup-job-temp-allocator-block-size-background=1048576"
+"memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+"memorysetup-allocator-temp-initial-block-size-main=262144"
+"memorysetup-allocator-temp-initial-block-size-worker=262144"
+"memorysetup-temp-allocator-size-background-worker=32768"
+"memorysetup-temp-allocator-size-job-worker=262144"
+"memorysetup-temp-allocator-size-preload-manager=33554432"
+"memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+"memorysetup-temp-allocator-size-audio-worker=65536"
+"memorysetup-temp-allocator-size-cloud-worker=32768"
+"memorysetup-temp-allocator-size-gi-baking-worker=262144"
+"memorysetup-temp-allocator-size-gi-baking-worker=262144"
+"memorysetup-temp-allocator-size-gi-baking-worker=262144"
+"memorysetup-temp-allocator-size-gi-baking-worker=262144"
+"memorysetup-temp-allocator-size-gi-baking-worker=262144"
+"memorysetup-temp-allocator-size-gfx=262144"
+Player connection [123165952349504]  Target information:
+
+Player connection [123165952349504]  * "[IP] 192.168.0.21 [Port] 55504 [Flags] 2 [Guid] 2308914776 [EditorId] 2308914776 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor"
+
+Player connection [123165952349504]  * "[IP] 172.18.0.1 [Port] 55504 [Flags] 2 [Guid] 2308914776 [EditorId] 2308914776 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor"
+
+Player connection [123165952349504]  * "[IP] 172.17.0.1 [Port] 55504 [Flags] 2 [Guid] 2308914776 [EditorId] 2308914776 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor"
+
+Player connection [123165952349504]  * "[IP] 10.42.0.0 [Port] 55504 [Flags] 2 [Guid] 2308914776 [EditorId] 2308914776 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor"
+
+Player connection [123165952349504]  * "[IP] 10.42.0.1 [Port] 55504 [Flags] 2 [Guid] 2308914776 [EditorId] 2308914776 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor"
+
+Player connection [123165952349504]  * "[IP] 100.66.195.58 [Port] 55504 [Flags] 2 [Guid] 2308914776 [EditorId] 2308914776 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor"
+
+Player connection [123165952349504]  * "[IP] 172.19.0.1 [Port] 55504 [Flags] 2 [Guid] 2308914776 [EditorId] 2308914776 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor"
+
+Player connection [123165952349504]  * "[IP] 172.20.0.1 [Port] 55504 [Flags] 2 [Guid] 2308914776 [EditorId] 2308914776 [Version] 1048832 [Id] LinuxEditor(16,192.168.0.21) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor"
+
+Player connection [123165952349504] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [123165952349504] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+[Package Manager] Connected to IPC stream "Upm-3260304" after 0.1 seconds.
+Library Redirect Path: Library/
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Artifact Garbage Collection - Removed 2 unused hashed content filesRefreshing native plugins compatible for Editor in 0.10 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 6000.0.75f1 (26349cd2a5c8)
+[Subsystems] Discovering subsystems at path ~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path ~/wkspace/gc-studio/p4.2/games/hollowmere/Assets
+kGfxThreadingModeNonThreaded is not supported on OpenGL Core. Reverting to kGfxThreadingModeDirect instead.
+GfxDevice: creating device client; kGfxThreadingModeDirect
+GLX Extensions: GLX_ARB_get_proc_address GLX_ARB_multisample GLX_EXT_visual_info GLX_EXT_visual_rating GLX_EXT_import_context GLX_SGI_video_sync GLX_SGIX_fbconfig GLX_SGIX_pbuffer GLX_SGI_swap_control GLX_EXT_swap_control GLX_EXT_swap_control_tear GLX_EXT_buffer_age GLX_ARB_create_context GLX_ARB_create_context_profile GLX_NV_float_buffer GLX_ARB_fbconfig_float GLX_EXT_texture_from_pixmap GLX_EXT_framebuffer_sRGB GLX_NV_copy_image GLX_EXT_create_context_es_profile GLX_EXT_create_context_es2_profile GLX_ARB_create_context_no_error GLX_ARB_create_context_robustness GLX_NV_delay_before_swap GLX_EXT_stereo_tree GLX_ARB_context_flush_control GLX_NV_robustness_video_memory_purge GLX_NV_multigpu_context
+Renderer: NVIDIA GeForce RTX 4060 Ti/PCIe/SSE2
+Vendor:   NVIDIA Corporation
+Version:  4.5.0 NVIDIA 595.84
+GLES:     0
+ GL_AMD_multi_draw_indirect GL_AMD_seamless_cubemap_per_texture GL_AMD_vertex_shader_viewport_index GL_AMD_vertex_shader_layer GL_ARB_arrays_of_arrays GL_ARB_base_instance GL_ARB_bindless_texture GL_ARB_blend_func_extended GL_ARB_buffer_storage GL_ARB_clear_buffer_object GL_ARB_clear_texture GL_ARB_clip_control GL_ARB_color_buffer_float GL_ARB_compressed_texture_pixel_storage GL_ARB_conservative_depth GL_ARB_compute_shader GL_ARB_compute_variable_group_size GL_ARB_conditional_render_inverted GL_ARB_copy_buffer GL_ARB_copy_image GL_ARB_cull_distance GL_ARB_debug_output GL_ARB_depth_buffer_float GL_ARB_depth_clamp GL_ARB_depth_texture GL_ARB_derivative_control GL_ARB_direct_state_access GL_ARB_draw_buffers GL_ARB_draw_buffers_blend GL_ARB_draw_indirect GL_ARB_draw_elements_base_vertex GL_ARB_draw_instanced GL_ARB_enhanced_layouts GL_ARB_ES2_compatibility GL_ARB_ES3_compatibility GL_ARB_ES3_1_compatibility GL_ARB_ES3_2_compatibility GL_ARB_explicit_attrib_location GL_ARB_explicit_uniform_location GL_ARB_fragmen
+t_coord_conventions GL_ARB_fragment_layer_viewport GL_ARB_fragment_program GL_ARB_fragment_program_shadow GL_ARB_fragment_shader GL_ARB_fragment_shader_interlock GL_ARB_framebuffer_no_attachments GL_ARB_framebuffer_object GL_ARB_framebuffer_sRGB GL_ARB_geometry_shader4 GL_ARB_get_program_binary GL_ARB_get_texture_sub_image GL_ARB_gl_spirv GL_ARB_gpu_shader5 GL_ARB_gpu_shader_fp64 GL_ARB_gpu_shader_int64 GL_ARB_half_float_pixel GL_ARB_half_float_vertex GL_ARB_imaging GL_ARB_indirect_parameters GL_ARB_instanced_arrays GL_ARB_internalformat_query GL_ARB_internalformat_query2 GL_ARB_invalidate_subdata GL_ARB_map_buffer_alignment GL_ARB_map_buffer_range GL_ARB_multi_bind GL_ARB_multi_draw_indirect GL_ARB_multisample GL_ARB_multitexture GL_ARB_occlusion_query GL_ARB_occlusion_query2 GL_ARB_parallel_shader_compile GL_ARB_pipeline_statistics_query GL_ARB_pixel_buffer_object GL_ARB_point_parameters GL_ARB_point_sprite GL_ARB_polygon_offset_clamp GL_ARB_post_depth_coverage GL_ARB_program_interface_query GL_ARB_provoki
+ng_vertex GL_ARB_query_buffer_object GL_ARB_robust_buffer_access_behavior GL_ARB_robustness GL_ARB_sample_locations GL_ARB_sample_shading GL_ARB_sampler_objects GL_ARB_seamless_cube_map GL_ARB_seamless_cubemap_per_texture GL_ARB_separate_shader_objects GL_ARB_shader_atomic_counter_ops GL_ARB_shader_atomic_counters GL_ARB_shader_ballot GL_ARB_shader_bit_encoding GL_ARB_shader_clock GL_ARB_shader_draw_parameters GL_ARB_shader_group_vote GL_ARB_shader_image_load_store GL_ARB_shader_image_size GL_ARB_shader_objects GL_ARB_shader_precision GL_ARB_shader_storage_buffer_object GL_ARB_shader_subroutine GL_ARB_shader_texture_image_samples GL_ARB_shader_texture_lod GL_ARB_shading_language_100 GL_ARB_shader_viewport_layer_array GL_ARB_shading_language_420pack GL_ARB_shading_language_include GL_ARB_shading_language_packing GL_ARB_shadow GL_ARB_sparse_buffer GL_ARB_sparse_texture GL_ARB_sparse_texture2 GL_ARB_sparse_texture_clamp GL_ARB_spirv_extensions GL_ARB_stencil_texturing GL_ARB_sync GL_ARB_tessellation_shader GL_A
+RB_texture_barrier GL_ARB_texture_border_clamp GL_ARB_texture_buffer_object GL_ARB_texture_buffer_object_rgb32 GL_ARB_texture_buffer_range GL_ARB_texture_compression GL_ARB_texture_compression_bptc GL_ARB_texture_compression_rgtc GL_ARB_texture_cube_map GL_ARB_texture_cube_map_array GL_ARB_texture_env_add GL_ARB_texture_env_combine GL_ARB_texture_env_crossbar GL_ARB_texture_env_dot3 GL_ARB_texture_filter_anisotropic GL_ARB_texture_filter_minmax GL_ARB_texture_float GL_ARB_texture_gather GL_ARB_texture_mirror_clamp_to_edge GL_ARB_texture_mirrored_repeat GL_ARB_texture_multisample GL_ARB_texture_non_power_of_two GL_ARB_texture_query_levels GL_ARB_texture_query_lod GL_ARB_texture_rectangle GL_ARB_texture_rg GL_ARB_texture_rgb10_a2ui GL_ARB_texture_stencil8 GL_ARB_texture_storage GL_ARB_texture_storage_multisample GL_ARB_texture_swizzle GL_ARB_texture_view GL_ARB_timer_query GL_ARB_transform_feedback2 GL_ARB_transform_feedback3 GL_ARB_transform_feedback_instanced GL_ARB_transform_feedback_overflow_query GL_ARB_t
+ranspose_matrix GL_ARB_uniform_buffer_object GL_ARB_vertex_array_bgra GL_ARB_vertex_array_object GL_ARB_vertex_attrib_64bit GL_ARB_vertex_attrib_binding GL_ARB_vertex_buffer_object GL_ARB_vertex_program GL_ARB_vertex_shader GL_ARB_vertex_type_10f_11f_11f_rev GL_ARB_vertex_type_2_10_10_10_rev GL_ARB_viewport_array GL_ARB_window_pos GL_ATI_draw_buffers GL_ATI_texture_float GL_ATI_texture_mirror_once GL_S3_s3tc GL_EXT_texture_env_add GL_EXT_abgr GL_EXT_bgra GL_EXT_bindable_uniform GL_EXT_blend_color GL_EXT_blend_equation_separate GL_EXT_blend_func_separate GL_EXT_blend_minmax GL_EXT_blend_subtract GL_EXT_compiled_vertex_array GL_EXT_Cg_shader GL_EXT_depth_bounds_test GL_EXT_direct_state_access GL_EXT_draw_buffers2 GL_EXT_draw_instanced GL_EXT_draw_range_elements GL_EXT_fog_coord GL_EXT_framebuffer_blit GL_EXT_framebuffer_multisample GL_EXTX_framebuffer_mixed_formats GL_EXT_framebuffer_multisample_blit_scaled GL_EXT_framebuffer_object GL_EXT_framebuffer_sRGB GL_EXT_geometry_shader4 GL_EXT_gpu_program_parameters
+GL_EXT_gpu_shader4 GL_EXT_multi_draw_arrays GL_EXT_multiview_texture_multisample GL_EXT_multiview_timer_query GL_EXT_packed_depth_stencil GL_EXT_packed_float GL_EXT_packed_pixels GL_EXT_pixel_buffer_object GL_EXT_point_parameters GL_EXT_polygon_offset_clamp GL_EXT_post_depth_coverage GL_EXT_provoking_vertex GL_EXT_raster_multisample GL_EXT_rescale_normal GL_EXT_secondary_color GL_EXT_separate_shader_objects GL_EXT_separate_specular_color GL_EXT_shader_image_load_formatted GL_EXT_shader_image_load_store GL_EXT_shader_integer_mix GL_EXT_shadow_funcs GL_EXT_sparse_texture2 GL_EXT_stencil_two_side GL_EXT_stencil_wrap GL_EXT_texture3D GL_EXT_texture_array GL_EXT_texture_buffer_object GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_latc GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_cube_map GL_EXT_texture_edge_clamp GL_EXT_texture_env_combine GL_EXT_texture_env_dot3 GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_integer GL_EXT_texture_lod G
+L_EXT_texture_lod_bias GL_EXT_texture_mirror_clamp GL_EXT_texture_object GL_EXT_texture_shadow_lod GL_EXT_texture_shared_exponent GL_EXT_texture_sRGB GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_decode GL_EXT_texture_storage GL_EXT_texture_swizzle GL_EXT_timer_query GL_EXT_transform_feedback2 GL_EXT_vertex_array GL_EXT_vertex_array_bgra GL_EXT_vertex_attrib_64bit GL_EXT_window_rectangles GL_EXT_x11_sync_object GL_EXT_import_sync_object GL_NV_robustness_video_memory_purge GL_IBM_rasterpos_clip GL_IBM_texture_mirrored_repeat GL_KHR_context_flush_control GL_KHR_debug GL_EXT_memory_object GL_EXT_memory_object_fd GL_NV_memory_object_sparse GL_KHR_parallel_shader_compile GL_KHR_no_error GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_EXT_semaphore GL_EXT_semaphore_fd GL_NV_timeline_semaphore GL_KHR_shader_subgroup GL_KTX_buffer_region GL_NV_alpha_to_coverage_dither_control GL_NV_bindless_multi_draw_indirect GL_NV_bindless_multi_draw_indirect_count GL_NV_bindless_texture GL_NV_blend_equation_advanced GL_NV_
+blend_equation_advanced_coherent GL_NVX_blend_equation_advanced_multi_draw_buffers GL_NV_blend_minmax_factor GL_NV_blend_square GL_NV_clip_space_w_scaling GL_NV_command_list GL_NV_compute_program5 GL_NV_compute_shader_derivatives GL_NV_conditional_render GL_NV_conservative_raster GL_NV_conservative_raster_dilate GL_NV_conservative_raster_pre_snap GL_NV_conservative_raster_pre_snap_triangles GL_NV_conservative_raster_underestimation GL_NV_copy_depth_to_color GL_NV_copy_image GL_NV_depth_buffer_float GL_NV_depth_clamp GL_NV_draw_texture GL_NV_draw_vulkan_image GL_NV_ES1_1_compatibility GL_NV_ES3_1_compatibility GL_NV_explicit_multisample GL_NV_feature_query GL_NV_fence GL_NV_fill_rectangle GL_NV_float_buffer GL_NV_fog_distance GL_NV_fragment_coverage_to_color GL_NV_fragment_program GL_NV_fragment_program_option GL_NV_fragment_program2 GL_NV_fragment_shader_barycentric GL_NV_fragment_shader_interlock GL_NV_framebuffer_mixed_samples GL_NV_framebuffer_multisample_coverage GL_NV_geometry_shader4 GL_NV_geometry_sha
+der_passthrough GL_NV_gpu_program4 GL_NV_internalformat_sample_query GL_NV_gpu_program4_1 GL_NV_gpu_program5 GL_NV_gpu_program5_mem_extended GL_NV_gpu_program_fp64 GL_NV_gpu_program_multiview GL_NV_gpu_shader5 GL_NV_half_float GL_NV_light_max_exponent GL_NV_memory_attachment GL_NV_mesh_shader GL_NV_multisample_coverage GL_NV_multisample_filter_hint GL_NV_occlusion_query GL_NV_packed_depth_stencil GL_NV_parameter_buffer_object GL_NV_parameter_buffer_object2 GL_NV_path_rendering GL_NV_path_rendering_shared_edge GL_NV_pixel_data_range GL_NV_point_sprite GL_NV_primitive_restart GL_NV_primitive_shading_rate GL_NV_query_resource GL_NV_query_resource_tag GL_NV_register_combiners GL_NV_register_combiners2 GL_NV_representative_fragment_test GL_NV_sample_locations GL_NV_sample_mask_override_coverage GL_NV_scissor_exclusive GL_NV_shader_atomic_counters GL_NV_shader_atomic_float GL_NV_shader_atomic_float64 GL_NV_shader_atomic_fp16_vector GL_NV_shader_atomic_int64 GL_NV_shader_buffer_load GL_NV_shader_storage_buffer_obje
+ct GL_NV_shader_subgroup_partitioned GL_NV_shader_texture_footprint GL_NV_shading_rate_image GL_NV_stereo_view_rendering GL_NV_texgen_reflection GL_NV_texture_barrier GL_NV_texture_compression_vtc GL_NV_texture_dirty_tile_map GL_NV_texture_env_combine4 GL_NV_texture_multisample GL_NV_texture_rectangle GL_NV_texture_rectangle_compressed GL_NV_texture_shader GL_NV_texture_shader2 GL_NV_texture_shader3 GL_NV_transform_feedback GL_NV_transform_feedback2 GL_NV_uniform_buffer_unified_memory GL_NV_uniform_buffer_std430_layout GL_NV_vdpau_interop GL_NV_vdpau_interop2 GL_NV_vertex_array_range GL_NV_vertex_array_range2 GL_NV_vertex_attrib_integer_64bit GL_NV_vertex_buffer_unified_memory GL_NV_vertex_program GL_NV_vertex_program1_1 GL_NV_vertex_program2 GL_NV_vertex_program2_option GL_NV_vertex_program3 GL_NV_viewport_array2 GL_NV_viewport_swizzle GL_NVX_conditional_render GL_NV_gpu_multicast GL_NVX_progress_fence GL_NVX_gpu_memory_info GL_NVX_nvenc_interop GL_NV_shader_thread_group GL_NV_shader_thread_shuffle GL_KHR_b
+lend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_OVR_multiview GL_OVR_multiview2 GL_SGIS_generate_mipmap GL_SGIS_texture_lod GL_SGIX_depth_texture GL_SGIX_shadow GL_SUN_slice_accum
+OPENGL LOG: Creating OpenGL 4.5 graphics device ; Context level  <OpenGL 4.5> ; Context handle -63805336
+Initialize mono
+Mono path[0] = '~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Managed'
+Mono path[1] = '~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-linux'
+Mono config path = '~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56304
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: ~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll
+Register platform support module: ~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll
+Registered in 0.000948 seconds.
+- Loaded All Assemblies, in  0.215 seconds
+Native extension for LinuxStandalone target not found
+Package Manager log level set to [2]
+[Licensing::Client] Successfully resolved entitlement details
+Native extension for OSXStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in 20.213 seconds
+Domain Reload Profiling: 20428ms
+	BeginReloadAssembly (53ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (0ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (1ms)
+	RebuildCommonClasses (24ms)
+	RebuildNativeTypeToScriptingClass (5ms)
+	initialDomainReloadingComplete (35ms)
+	LoadAllAssembliesAndSetupDomain (98ms)
+		LoadAssemblies (52ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (96ms)
+			TypeCache.Refresh (95ms)
+				TypeCache.ScanAssembly (87ms)
+			BuildScriptInfoCaches (0ms)
+			ResolveRequiredComponents (0ms)
+	FinalizeReload (20213ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (20189ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (20010ms)
+			SetLoadedEditorAssemblies (4ms)
+			BeforeProcessingInitializeOnLoad (41ms)
+			ProcessInitializeOnLoadAttributes (90ms)
+			ProcessInitializeOnLoadMethodAttributes (45ms)
+			AfterProcessingInitializeOnLoad (0ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (0ms)
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+[Package Manager] Restoring resolved packages state from cache
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 76 packages:
+  Packages from [https://packages.unity.com]:
+    com.unity.ai.navigation@2.0.12 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.ai.navigation@734c2c4c5591)
+    com.unity.burst@1.8.28 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.burst@07790c2d06d9)
+    com.unity.collections@2.6.6 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.collections@9796e5ee0d9e)
+    com.unity.entities@1.4.6 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.entities@e90944159b94)
+    com.unity.inputsystem@1.19.0 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.inputsystem@21a28c3a6c83)
+    com.unity.mathematics@1.3.2 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.mathematics@8017b507cc74)
+    com.unity.nuget.newtonsoft-json@3.2.1 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.nuget.newtonsoft-json@74deb55db2a0)
+    com.unity.toolchain.linux-x86_64@2.0.11 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.toolchain.linux-x86_64@53b88ff74b51)
+    com.unity.sysroot@2.0.10 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.sysroot@7bbbb9339c14)
+    com.unity.sysroot.linux-x86_64@2.0.9 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.sysroot.linux-x86_64@1998d1c7730e)
+    com.unity.serialization@3.1.5 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.serialization@c463b52e88d7)
+    com.unity.profiling.core@1.0.3 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.profiling.core@8a49f7027d06)
+    com.unity.nuget.mono-cecil@1.11.6 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.nuget.mono-cecil@ecb9724e46ff)
+    com.unity.scriptablebuildpipeline@2.6.1 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.scriptablebuildpipeline@36e3b5898ee2)
+    com.unity.test-framework.performance@3.4.0 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.test-framework.performance@aa81a99c4a75)
+    com.unity.searcher@4.9.3 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.searcher@1e17ce91558d)
+  Built-in packages:
+    com.unity.modules.ai@1.0.0 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.modules.ai)
+    com.unity.modules.animation@1.0.0 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.modules.animation)
+    com.unity.modules.audio@1.0.0 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.modules.audio)
+    com.unity.modules.imageconversion@1.0.0 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.modules.imageconversion)
+    com.unity.modules.imgui@1.0.0 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.modules.imgui)
+    com.unity.modules.jsonserialize@1.0.0 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.modules.jsonserialize)
+    com.unity.modules.physics@1.0.0 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.modules.physics)
+    com.unity.modules.screencapture@1.0.0 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.modules.screencapture)
+    com.unity.modules.ui@1.0.0 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.modules.ui)
+    com.unity.modules.uielements@1.0.0 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.modules.uielements)
+    com.unity.modules.unitywebrequest@1.0.0 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.modules.unitywebrequest)
+    com.unity.modules.video@1.0.0 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.modules.video)
+    com.unity.render-pipelines.universal@17.0.4 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.render-pipelines.universal@a1a2df1d8dcb)
+    com.unity.test-framework@1.6.0 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.test-framework@bd52b1c23814)
+    com.unity.ext.nunit@2.0.5 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.ext.nunit@b16e6d09cd93)
+    com.unity.render-pipelines.core@17.0.4 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.render-pipelines.core@2fecbe5ecc80)
+    com.unity.shadergraph@17.0.4 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.shadergraph@029994c473dc)
+    com.unity.render-pipelines.universal-config@17.0.3 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.render-pipelines.universal-config@e48fefd716b5)
+    com.unity.modules.hierarchycore@1.0.0 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.modules.hierarchycore)
+    com.unity.modules.assetbundle@1.0.0 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.modules.assetbundle)
+    com.unity.modules.unityanalytics@1.0.0 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.modules.unityanalytics)
+    com.unity.ugui@2.0.0 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.ugui@a477a4a18974)
+    com.unity.modules.terrain@1.0.0 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.modules.terrain)
+    com.unity.rendering.light-transport@1.0.1 (location: ~/wkspace/gc-studio/p4.2/games/hollowmere/Library/PackageCache/com.unity.rendering.light-transport@fd597d1a9e15)
+  Local packages:
+    com.gamecore.composition@file:~/wkspace/gc-studio/p4.2/Packages/com.gamecore.composition (location: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.composition)
+    com.gamecore.content.compiler@file:~/wkspace/gc-studio/p4.2/Packages/com.gamecore.content.compiler (location: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.content.compiler)
+    com.gamecore.contracts@file:~/wkspace/gc-studio/p4.2/Packages/com.gamecore.contracts (location: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.contracts)
+    com.gamecore.derivation@file:~/wkspace/gc-studio/p4.2/Packages/com.gamecore.derivation (location: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.derivation)
+    com.gamecore.gameplay.audio@file:~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.audio (location: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.audio)
+    com.gamecore.gameplay.cards@file:~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.cards (location: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.cards)
+    com.gamecore.gameplay.compile@file:~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.compile (location: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.compile)
+    com.gamecore.gameplay.contracts@file:~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.contracts (location: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.contracts)
+    com.gamecore.gameplay.dialogue@file:~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.dialogue (location: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.dialogue)
+    com.gamecore.gameplay.entities@file:~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.entities (location: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.entities)
+    com.gamecore.gameplay.integration@file:~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.integration (location: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.integration)
+    com.gamecore.gameplay.interaction@file:~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.interaction (location: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.interaction)
+    com.gamecore.gameplay.inventory@file:~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.inventory (location: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.inventory)
+    com.gamecore.gameplay.logic@file:~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.logic (location: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.logic)
+    com.gamecore.gameplay.narrative@file:~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.narrative (location: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.narrative)
+    com.gamecore.gameplay.npc@file:~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.npc (location: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.npc)
+    com.gamecore.gameplay.player@file:~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.player (location: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.player)
+    com.gamecore.gameplay.quest@file:~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.quest (location: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.quest)
+    com.gamecore.gameplay.rewards@file:~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.rewards (location: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.rewards)
+    com.gamecore.gameplay.save@file:~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.save (location: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.save)
+    com.gamecore.gameplay.traversal@file:~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.traversal (location: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.traversal)
+    com.gamecore.gameplay.ui@file:~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.ui (location: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.ui)
+    com.gamecore.gameplay.world@file:~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.world (location: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.gameplay.world)
+    com.gamecore.planning@file:~/wkspace/gc-studio/p4.2/Packages/com.gamecore.planning (location: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.planning)
+    com.gamecore.rules.cards@file:~/wkspace/gc-studio/p4.2/Packages/com.gamecore.rules.cards (location: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.rules.cards)
+    com.gamecore.rules.gameplay@file:~/wkspace/gc-studio/p4.2/Packages/com.gamecore.rules.gameplay (location: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.rules.gameplay)
+    com.gamecore.rules.narrative@file:~/wkspace/gc-studio/p4.2/Packages/com.gamecore.rules.narrative (location: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.rules.narrative)
+    com.gamecore.rules.traversal@file:~/wkspace/gc-studio/p4.2/Packages/com.gamecore.rules.traversal (location: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.rules.traversal)
+    com.gamecore.studio.core@file:~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core (location: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core)
+    com.gamecore.studio.etos@file:~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos (location: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos)
+    com.gamecore.studio.gameplay@file:~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.gameplay (location: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.gameplay)
+    com.gamecore.studio.ui@file:~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.ui (location: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.ui)
+    com.gamecore.studio.views@file:~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.views (location: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.views)
+    com.gamecore.unity.adapters@file:~/wkspace/gc-studio/p4.2/Packages/com.gamecore.unity.adapters (location: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.unity.adapters)
+    com.gamecore.unity.app@file:~/wkspace/gc-studio/p4.2/Packages/com.gamecore.unity.app (location: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.unity.app)
+    com.gamecore.unity.runtime@file:~/wkspace/gc-studio/p4.2/Packages/com.gamecore.unity.runtime (location: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.unity.runtime)
+[Subsystems] No new subsystems found in resolved package list.
+[Package Manager] Done registering packages in 0.01 seconds
+A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+[ScriptCompilation] Requested script compilation because: Assembly Definition File(s) changed
+[ScriptCompilation] Requested script compilation because: Assetdatabase observed changes in script compilation related files
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://unix:/tmp/ilpp.sock-05972e3374176574ea43b01a3d39be79
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Production
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Content root path: ~/wkspace/gc-studio/p4.2/games/hollowmere/
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 29.8948ms
+Starting: ~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/2400b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: ~/wkspace/gc-studio/p4.2/games/hollowmere
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+[40m[1m[33mwarn[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Assembly system.runtime.interopservices.windowsruntime has duplicate hint path. Ignoring "~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Runtime.InteropServices.WindowsRuntime.dll" in favor of "~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/NetStandard/Extensions/2.0.0/System.Runtime.InteropServices.WindowsRuntime.dll"
+[40m[1m[33mwarn[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Assembly system.componentmodel.composition has duplicate hint path. Ignoring "~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.ComponentModel.Composition.dll" in favor of "~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/NetStandard/compat/2.1.0/shims/netfx/System.ComponentModel.Composition.dll"
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Burst.Cecil, Version=0.11.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library/PackageCache/com.unity.burst@07790c2d06d9/Unity.Burst.CodeGen/Unity.Burst.Cecil.dll
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Mono.Cecil, Version=0.11.5.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library/PackageCache/com.unity.nuget.mono-cecil@ecb9724e46ff/Mono.Cecil.dll
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Entities, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null with Library/Bee/artifacts/2400b0aE.dag/Unity.Entities.dll
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc - - 200 - application/grpc 27.0372ms
+ExitCode: 4 Duration: 0s192ms
+[1280/1809  0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+Rebuilding DAG because FileSignature timestamp changed: Library/Bee/2400b0aE-inputdata.json
+*** Tundra requires additional run (0.17 seconds), 1 items updated, 1809 evaluated
+Starting: ~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Tools/netcorerun/netcorerun "~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/Tools/BuildPipeline/ScriptCompilationBuildProgram.exe" "Library/Bee/2400b0aE.dag.json" "Library/Bee/2400b0aE-inputdata.json" "Library/Bee/buildprogram0.traceevents"
+WorkingDir: ~/wkspace/gc-studio/p4.2/games/hollowmere
+ExitCode: 0 Duration: 1s329ms
+Starting: ~/Unity/Hub/Editor/6000.0.75f1/Editor/Data/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/2400b0aE.dag" --continue-on-failure --dagfilejson="Library/Bee/2400b0aE.dag.json" --profile="Library/Bee/backend2.traceevents" ScriptAssemblies
+WorkingDir: ~/wkspace/gc-studio/p4.2/games/hollowmere
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Current configuration matches the requested one, skipping
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc - - 200 - application/grpc 1.0711ms
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/2400b0aE.dag/Hollowmere.P4_2.Tests.dll, with 122 defines and 265 references
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Entities.CodeGen.EntitiesILPostProcessors
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 12.5008ms
+ExitCode: 0 Duration: 1s711ms
+Finished compiling graph: 1821 nodes, 42476 flattened edges (30258 ToBuild, 364 ToUse), maximum node priority 3227
+[ 808/1818  0s] WriteText Library/Bee/artifacts/2400b0aE.dag/Hollowmere.P4_2.Tests.dll.mvfrm.rsp
+[ 813/1818  0s] WriteText Library/Bee/artifacts/2400b0aE.dag/Hollowmere.P4_2.Tests.UnityAdditionalFile.txt
+[ 828/1818  0s] WriteText Library/Bee/artifacts/2400b0aE.dag/Hollowmere.P4_2.Tests.rsp2
+[ 885/1818  0s] WriteText Library/Bee/artifacts/2400b0aE.dag/Hollowmere.P4_2.Tests.rsp
+[1284/1818  0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+[1813/1818  0s] MovedFromExtractor-Combine Library/Bee/artifacts/2400b0aE.dag/Hollowmere.P4_2.Tests.dll.mvfrm
+[1814/1818  1s] Csc Library/Bee/artifacts/2400b0aE.dag/Hollowmere.P4_2.Tests.dll (+2 others)
+[1815/1818  0s] ILPostProcess Library/Bee/artifacts/2400b0aE.dag/post-processed/Hollowmere.P4_2.Tests.dll (+pdb)
+Processing assembly Library/Bee/artifacts/2400b0aE.dag/Hollowmere.P4_2.Tests.dll, with 122 defines and 265 references
+processors: Unity.Entities.CodeGen.EntitiesILPostProcessors, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+running Unity.Entities.CodeGen.EntitiesILPostProcessors
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[1816/1818  0s] CopyFiles Library/ScriptAssemblies/Hollowmere.P4_2.Tests.dll
+[1817/1818  0s] CopyFiles Library/ScriptAssemblies/Hollowmere.P4_2.Tests.pdb
+*** Tundra build success (1.68 seconds), 10 items updated, 1818 evaluated
+AssetDatabase: script compilation time: 3.587438s
+Total cache size 268434868
+Total cache size after purge 268434868, took 00:00:00.1262063
+A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory is not a mono symbol file
+- Loaded All Assemblies, in  0.518 seconds
+A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+Start importing Assets/Hollowmere/Tests/P4_2/EditMode using Guid(0be6666b6a31440880601a0e2f49b6e3) (DefaultImporter) -> (artifact id: '0b995d002ea4e81e6aaef47fc24fd885') in 0.017034093 seconds
+Start importing Assets/Hollowmere/Tests/P4_2/EditMode/Hollowmere.P4_2.Tests.asmdef using Guid(33ff4f6edd624b19a1d8fc88f2fb2485) (AssemblyDefinitionImporter) -> (artifact id: '67d229edfbd59e73c8b33e5e9adf2205') in 0.000646445 seconds
+Refreshing native plugins compatible for Editor in 0.16 ms, found 1 plugins.
+Native extension for LinuxStandalone target not found
+Native extension for OSXStandalone target not found
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+TypeManager.Initialize took: 247ms
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  2.797 seconds
+Domain Reload Profiling: 3311ms
+	BeginReloadAssembly (130ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (29ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (31ms)
+	RebuildCommonClasses (25ms)
+	RebuildNativeTypeToScriptingClass (5ms)
+	initialDomainReloadingComplete (20ms)
+	LoadAllAssembliesAndSetupDomain (333ms)
+		LoadAssemblies (192ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (181ms)
+			TypeCache.Refresh (121ms)
+				TypeCache.ScanAssembly (109ms)
+			BuildScriptInfoCaches (52ms)
+			ResolveRequiredComponents (6ms)
+	FinalizeReload (2798ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (2636ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (40ms)
+			SetLoadedEditorAssemblies (5ms)
+			BeforeProcessingInitializeOnLoad (115ms)
+			ProcessInitializeOnLoadAttributes (2236ms)
+			ProcessInitializeOnLoadMethodAttributes (239ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (5ms)
+A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+Refreshing native plugins compatible for Editor in 0.24 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=4c7b050008137c080901599ac8c4730b): Total: 8.029 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	Summary:
+		Imports: total=2 (actual=2, local cache=0, cache server=0)
+		Asset DB Process Time: managed=2 ms, native=3551 ms
+		Asset DB Callback time: managed=303 ms, native=19 ms
+		Scripting: domain reloads=1, domain reload time=523 ms, compile time=3589 ms, other=39 ms
+		Project Asset Count: scripts=1759, non-scripts=2575
+		Asset File Changes: new=3, changed=3, moved=0, deleted=0
+		Scan Filter Count: 1
+	InvokeCustomDependenciesCallbacks: 0.002ms
+	InvokePackagesCallback: 13.093ms
+	ApplyChangesToAssetFolders: 0.352ms
+	Scan: 509.643ms
+	OnSourceAssetsModified: 0.615ms
+	CategorizeAssetsWithTransientArtifact: 24.382ms
+	ProcessAssetsWithTransientArtifactChanges: 61.218ms
+	CategorizeAssets: 34.435ms
+	ImportOutOfDateAssets: 2831.250ms (-781.177ms without children)
+		ImportManagerImport: 21.297ms (3.386ms without children)
+			ImportInProcess: 17.899ms
+			UpdateCategorizedAssets: 0.012ms
+		CompileScripts: 3588.519ms
+		ReloadNativeAssets: 0.016ms
+		UnloadImportedAssets: 1.385ms
+		ReloadImportedAssets: 0.000ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.694ms
+		InitializingProgressBar: 0.000ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.515ms
+	PostProcessAllAssets: 304.737ms
+	Hotreload: 5.575ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.000ms
+	UnloadStreamsBegin: 0.261ms
+	PersistCurrentRevisions: 0.173ms
+	UnloadStreamsEnd: 0.001ms
+	GenerateScriptTypeHashes: 1.773ms
+	Untracked: 4243.015ms
+
+Application.AssetDatabase Initial Refresh End
+Scanning for USB devices : 0.873ms
+Initializing Unity extensions:
+UpdateMenuTitleForLanguage: 10
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-Hollowmere
+Unloading 48 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6098 unused Assets / (10.3 MB). Loaded Objects now: 6729.
+Memory consumption went from 191.7 MB to 181.5 MB.
+Total: 13.451294 ms (FindLiveObjects: 0.441496 ms CreateObjectMapping: 0.574961 ms MarkObjects: 7.186110 ms  DeleteObjects: 5.247932 ms)
+
+[LAYOUT] About to load UserSettings/Layouts/default-6000.dwlt, keepMainWindow=False
+GLX Extensions: GLX_ARB_get_proc_address GLX_ARB_multisample GLX_EXT_visual_info GLX_EXT_visual_rating GLX_EXT_import_context GLX_SGI_video_sync GLX_SGIX_fbconfig GLX_SGIX_pbuffer GLX_SGI_swap_control GLX_EXT_swap_control GLX_EXT_swap_control_tear GLX_EXT_buffer_age GLX_ARB_create_context GLX_ARB_create_context_profile GLX_NV_float_buffer GLX_ARB_fbconfig_float GLX_EXT_texture_from_pixmap GLX_EXT_framebuffer_sRGB GLX_NV_copy_image GLX_EXT_create_context_es_profile GLX_EXT_create_context_es2_profile GLX_ARB_create_context_no_error GLX_ARB_create_context_robustness GLX_NV_delay_before_swap GLX_EXT_stereo_tree GLX_ARB_context_flush_control GLX_NV_robustness_video_memory_purge GLX_NV_multigpu_context
+GLX Extensions: GLX_ARB_get_proc_address GLX_ARB_multisample GLX_EXT_visual_info GLX_EXT_visual_rating GLX_EXT_import_context GLX_SGI_video_sync GLX_SGIX_fbconfig GLX_SGIX_pbuffer GLX_SGI_swap_control GLX_EXT_swap_control GLX_EXT_swap_control_tear GLX_EXT_buffer_age GLX_ARB_create_context GLX_ARB_create_context_profile GLX_NV_float_buffer GLX_ARB_fbconfig_float GLX_EXT_texture_from_pixmap GLX_EXT_framebuffer_sRGB GLX_NV_copy_image GLX_EXT_create_context_es_profile GLX_EXT_create_context_es2_profile GLX_ARB_create_context_no_error GLX_ARB_create_context_robustness GLX_NV_delay_before_swap GLX_EXT_stereo_tree GLX_ARB_context_flush_control GLX_NV_robustness_video_memory_purge GLX_NV_multigpu_context
+GLX Extensions: GLX_ARB_get_proc_address GLX_ARB_multisample GLX_EXT_visual_info GLX_EXT_visual_rating GLX_EXT_import_context GLX_SGI_video_sync GLX_SGIX_fbconfig GLX_SGIX_pbuffer GLX_SGI_swap_control GLX_EXT_swap_control GLX_EXT_swap_control_tear GLX_EXT_buffer_age GLX_ARB_create_context GLX_ARB_create_context_profile GLX_NV_float_buffer GLX_ARB_fbconfig_float GLX_EXT_texture_from_pixmap GLX_EXT_framebuffer_sRGB GLX_NV_copy_image GLX_EXT_create_context_es_profile GLX_EXT_create_context_es2_profile GLX_ARB_create_context_no_error GLX_ARB_create_context_robustness GLX_NV_delay_before_swap GLX_EXT_stereo_tree GLX_ARB_context_flush_control GLX_NV_robustness_video_memory_purge GLX_NV_multigpu_context
+GLX Extensions: GLX_ARB_get_proc_address GLX_ARB_multisample GLX_EXT_visual_info GLX_EXT_visual_rating GLX_EXT_import_context GLX_SGI_video_sync GLX_SGIX_fbconfig GLX_SGIX_pbuffer GLX_SGI_swap_control GLX_EXT_swap_control GLX_EXT_swap_control_tear GLX_EXT_buffer_age GLX_ARB_create_context GLX_ARB_create_context_profile GLX_NV_float_buffer GLX_ARB_fbconfig_float GLX_EXT_texture_from_pixmap GLX_EXT_framebuffer_sRGB GLX_NV_copy_image GLX_EXT_create_context_es_profile GLX_EXT_create_context_es2_profile GLX_ARB_create_context_no_error GLX_ARB_create_context_robustness GLX_NV_delay_before_swap GLX_EXT_stereo_tree GLX_ARB_context_flush_control GLX_NV_robustness_video_memory_purge GLX_NV_multigpu_context
+GLX Extensions: GLX_ARB_get_proc_address GLX_ARB_multisample GLX_EXT_visual_info GLX_EXT_visual_rating GLX_EXT_import_context GLX_SGI_video_sync GLX_SGIX_fbconfig GLX_SGIX_pbuffer GLX_SGI_swap_control GLX_EXT_swap_control GLX_EXT_swap_control_tear GLX_EXT_buffer_age GLX_ARB_create_context GLX_ARB_create_context_profile GLX_NV_float_buffer GLX_ARB_fbconfig_float GLX_EXT_texture_from_pixmap GLX_EXT_framebuffer_sRGB GLX_NV_copy_image GLX_EXT_create_context_es_profile GLX_EXT_create_context_es2_profile GLX_ARB_create_context_no_error GLX_ARB_create_context_robustness GLX_NV_delay_before_swap GLX_EXT_stereo_tree GLX_ARB_context_flush_control GLX_NV_robustness_video_memory_purge GLX_NV_multigpu_context
+GLX Extensions: GLX_ARB_get_proc_address GLX_ARB_multisample GLX_EXT_visual_info GLX_EXT_visual_rating GLX_EXT_import_context GLX_SGI_video_sync GLX_SGIX_fbconfig GLX_SGIX_pbuffer GLX_SGI_swap_control GLX_EXT_swap_control GLX_EXT_swap_control_tear GLX_EXT_buffer_age GLX_ARB_create_context GLX_ARB_create_context_profile GLX_NV_float_buffer GLX_ARB_fbconfig_float GLX_EXT_texture_from_pixmap GLX_EXT_framebuffer_sRGB GLX_NV_copy_image GLX_EXT_create_context_es_profile GLX_EXT_create_context_es2_profile GLX_ARB_create_context_no_error GLX_ARB_create_context_robustness GLX_NV_delay_before_swap GLX_EXT_stereo_tree GLX_ARB_context_flush_control GLX_NV_robustness_video_memory_purge GLX_NV_multigpu_context
+Warning: X server took longer than 305 milliseconds to respond to ShowGtkWidget
+Warning: X server took longer than 397 milliseconds to respond to SetGtkWindowSizePosition
+GLX Extensions: GLX_ARB_get_proc_address GLX_ARB_multisample GLX_EXT_visual_info GLX_EXT_visual_rating GLX_EXT_import_context GLX_SGI_video_sync GLX_SGIX_fbconfig GLX_SGIX_pbuffer GLX_SGI_swap_control GLX_EXT_swap_control GLX_EXT_swap_control_tear GLX_EXT_buffer_age GLX_ARB_create_context GLX_ARB_create_context_profile GLX_NV_float_buffer GLX_ARB_fbconfig_float GLX_EXT_texture_from_pixmap GLX_EXT_framebuffer_sRGB GLX_NV_copy_image GLX_EXT_create_context_es_profile GLX_EXT_create_context_es2_profile GLX_ARB_create_context_no_error GLX_ARB_create_context_robustness GLX_NV_delay_before_swap GLX_EXT_stereo_tree GLX_ARB_context_flush_control GLX_NV_robustness_video_memory_purge GLX_NV_multigpu_context
+Warning: X server took longer than 306 milliseconds to respond to ShowGtkWidget
+GLX Extensions: GLX_ARB_get_proc_address GLX_ARB_multisample GLX_EXT_visual_info GLX_EXT_visual_rating GLX_EXT_import_context GLX_SGI_video_sync GLX_SGIX_fbconfig GLX_SGIX_pbuffer GLX_SGI_swap_control GLX_EXT_swap_control GLX_EXT_swap_control_tear GLX_EXT_buffer_age GLX_ARB_create_context GLX_ARB_create_context_profile GLX_NV_float_buffer GLX_ARB_fbconfig_float GLX_EXT_texture_from_pixmap GLX_EXT_framebuffer_sRGB GLX_NV_copy_image GLX_EXT_create_context_es_profile GLX_EXT_create_context_es2_profile GLX_ARB_create_context_no_error GLX_ARB_create_context_robustness GLX_NV_delay_before_swap GLX_EXT_stereo_tree GLX_ARB_context_flush_control GLX_NV_robustness_video_memory_purge GLX_NV_multigpu_context
+Warning: X server took longer than 371 milliseconds to respond to ShowGtkWidget
+Warning: X server took longer than 400 milliseconds to respond to SetGtkWindowSizePosition
+[MODES] ModeService[default].InitializeCurrentMode
+[MODES] ModeService[default].RaiseModeChanged(default, default)
+Disable old input system
+[Project] Loading completed in 32.518 seconds
+	Project init time: 				29.224 seconds
+		Template init time: 		0.000 seconds
+		Package Manager init time: 		0.147 seconds
+		Asset Database init time: 		0.041 seconds
+		Global illumination init time: 	0.002 seconds
+		Assemblies load time: 			20.441 seconds
+		Unity extensions init time: 	0.007 seconds
+		Asset Database refresh time: 	8.033 seconds
+	Scene opening time: 			2.752 seconds
+##utp:{"type": "ProjectInfo", "version": 2, "phase": "Immediate", "time": 1791224293513, "processId": 3260304, "projectLoad": 32.517689702, "projectInit": 29.224473206, "templateInit": 0.0, "packageManagerInit": 0.146987775, "assetDatabaseInit": 0.040751402, "globalIlluminationInit": 0.002027637, "assembliesLoad": 20.44128769, "unityExtensionsInit": 0.007021161, "assetDatabaseRefresh": 8.033282728, "sceneOpening": 2.75162219}
+##utp:{"type": "EditorInfo", "version": 2, "phase": "Immediate", "time": 1791224293513, "processId": 3260304, "editorVersion": "6000.0.75f1 (26349cd2a5c8)", "branch": "6000.0/staging", "buildType": "Release", "platform": "Linux"}
+A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+Asset Pipeline Refresh (id=2491a6568311a06b9a28c7eee3638d2a): Total: 0.217 seconds - Initiated by RefreshV2(ForceSynchronousImport)
+A meta data file (.meta) exists but its folder 'Packages/com.gamecore.studio.gameplay/Tests~' can't be found, and has been created. Empty directories cannot be stored in version control, so it's assumed that the meta data file is for an empty directory in version control. When moving or deleting folders outside of Unity, please ensure that the corresponding .meta file is moved or deleted along with it.
+Asset Pipeline Refresh (id=67e6641daecacfd1e8a869fe968878a1): Total: 0.129 seconds - Initiated by RefreshV2(NoUpdateAssetOptions)
+Launched and connected shader compiler UnityShaderCompiler after 0.02 seconds
+Running tests for ExecutionSettings with details:
+targetPlatform =
+playerHeartbeatTimeout = 600
+filters[0] =
+   Filter with settings:
+   testMode = EditMode
+   targetPlatform =
+   testNames = null
+   groupNames = R2_38_W_UI_04_W_GAME_08_TenCyclesWithSnapshotsAndOnePump
+   categoryNames = null
+   assemblyNames = null
+ignoreTests = {}
+featureFlags = null
+
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+UnityEditor.TestTools.TestRunner.CommandLineTest.Executer:InitializeAndExecuteRun (string[]) (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/CommandLineTest/Executer.cs:53)
+UnityEditor.TestTools.TestRunner.CommandLineTest.TestStarter:InitializeAndExecuteRun () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/CommandLineTest/TestStarter.cs:64)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/CommandLineTest/Executer.cs Line: 53)
+
+[GameCore.Studio/etos] etos session started: node (from key file), key file ~/.config/gamecore-studio/app-key.json, app gamecore-unity, max_cost_usd 0.50
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.Authoring.UnityStudioLog:Emit (GameCore.Studio.Authoring.StudioLogEntry) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:205)
+GameCore.Studio.Authoring.StudioLogBase:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:180)
+GameCore.Studio.Etos.RedactingStudioLog:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/RedactingStudioLog.cs:24)
+GameCore.Studio.Etos.EtosStudioSession:StartCore (GameCore.Studio.Edit.StudioRuntime) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:160)
+GameCore.Studio.Etos.EtosStudioSession:Start () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:100)
+GameCore.Studio.Etos.EtosBootstrap:StartIfWanted () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:288)
+UnityEditor.EditorApplication:Internal_CallDelayFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:399)
+
+(Filename: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs Line: 205)
+
+Request Asset Garbage Collect because used heap size increased from 181.6 MB to 448.5 MB, exceeding the threshold of 256.0 MB.
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+Created GICache directory at ~/.cache/unity3d/GiCache. Took: 0.001s, timestamps: [32.827 - 32.828]
+Unloading 55 unused Assets / (13.9 MB). Loaded Objects now: 7947.
+Memory consumption went from 447.9 MB to 433.9 MB.
+Total: 17.202455 ms (FindLiveObjects: 0.266232 ms CreateObjectMapping: 0.201543 ms MarkObjects: 14.633775 ms  DeleteObjects: 2.100197 ms)
+
+[GameCore.Studio/etos] provider status: node reachable, agent ready; image Live, tts Live, voice Unknown, 3d NotConfigured, describe Live
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.Authoring.UnityStudioLog:Emit (GameCore.Studio.Authoring.StudioLogEntry) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:205)
+GameCore.Studio.Authoring.StudioLogBase:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:180)
+GameCore.Studio.Etos.RedactingStudioLog:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/RedactingStudioLog.cs:24)
+GameCore.Studio.Etos.RedactingStudioLog:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/RedactingStudioLog.cs:24)
+GameCore.Studio.Etos.EtosAgentGateway/<>c__DisplayClass61_0:<RefreshStatusAsync>b__0 () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosAgentGateway.cs:318)
+GameCore.Studio.Etos.MainThreadQueue:Pump (int) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/MainThreadQueue.cs:87)
+GameCore.Studio.Etos.EtosStudioSession:Pump () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:240)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs Line: 205)
+
+[Licensing::Client] Successfully updated the access token
+[Licensing::Module] Successfully updated access token: "r0aE-C7r"... (expires: 2027-10-05T18:18:15Z)
+Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 0 unused Assets / (0 B). Loaded Objects now: 7971.
+Memory consumption went from 430.3 MB to 430.3 MB.
+Total: 13.648988 ms (FindLiveObjects: 0.269078 ms CreateObjectMapping: 0.168846 ms MarkObjects: 13.193990 ms  DeleteObjects: 0.016138 ms)
+
+[Licensing::Client] Successfully updated the access token
+[Licensing::Module] Successfully updated access token: "r0aE-C7r"... (expires: 2027-10-05T18:18:16Z)
+Executing IPrebuildSetup for: Unity.PerformanceTesting.Editor.TestRunBuilder.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+UnityEditor.TestTools.TestRunner.TestRun.Tasks.BuildActionTaskBase`1/<ExecuteMethods>d__8<UnityEngine.TestTools.IPrebuildSetup>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/Tasks/BuildActionTaskBase.cs:48)
+UnityEditor.TestTools.TestRunner.TestRun.Tasks.BuildActionTaskBase`1/<Execute>d__7<UnityEngine.TestTools.IPrebuildSetup>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/Tasks/BuildActionTaskBase.cs:34)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteStep () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:173)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteCallback () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:108)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/Tasks/BuildActionTaskBase.cs Line: 48)
+
+Opening scene 'Assets/Hollowmere/Boot/Boot.unity'
+Unloading 225 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Assets/Hollowmere/Boot/Boot.unity'
+	Deserialize:            23.724 ms
+	Integration:            142.738 ms
+	Integration of assets:  0.923 ms
+	Thread Wait Time:       0.003 ms
+	Total Operation Time:   167.387 ms
+Unloading 1 unused Assets / (1.5 KB). Loaded Objects now: 8228.
+Memory consumption went from 348.8 MB to 348.8 MB.
+Total: 13.658924 ms (FindLiveObjects: 0.285373 ms CreateObjectMapping: 0.179296 ms MarkObjects: 13.171130 ms  DeleteObjects: 0.022349 ms)
+
+Reloading assemblies for play mode.
+Reloading assemblies after forced synchronous recompile.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory is not a mono symbol file
+- Loaded All Assemblies, in  0.706 seconds
+Refreshing native plugins compatible for Editor in 0.19 ms, found 1 plugins.
+Native extension for LinuxStandalone target not found
+Native extension for OSXStandalone target not found
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+TypeManager.Initialize took: 76ms
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  1.434 seconds
+Domain Reload Profiling: 2138ms
+	BeginReloadAssembly (491ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (41ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (247ms)
+	RebuildCommonClasses (27ms)
+	RebuildNativeTypeToScriptingClass (6ms)
+	initialDomainReloadingComplete (20ms)
+	LoadAllAssembliesAndSetupDomain (160ms)
+		LoadAssemblies (69ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (128ms)
+			TypeCache.Refresh (5ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (113ms)
+			ResolveRequiredComponents (8ms)
+	FinalizeReload (1434ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (660ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (65ms)
+			SetLoadedEditorAssemblies (5ms)
+			BeforeProcessingInitializeOnLoad (98ms)
+			ProcessInitializeOnLoadAttributes (333ms)
+			ProcessInitializeOnLoadMethodAttributes (156ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (381ms)
+Asset Pipeline Refresh (id=b769e602c1177a4d39b88f13130b7f4a): Total: 2.247 seconds - Initiated by StopAssetImportingV2(ForceSynchronousImport | ForceDomainReload)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=1516 ms
+		Asset DB Callback time: managed=14 ms, native=0 ms
+		Scripting: domain reloads=1, domain reload time=714 ms, compile time=1 ms, other=0 ms
+		Project Asset Count: scripts=1759, non-scripts=2575
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokeCustomDependenciesCallbacks: 0.002ms
+	InvokePackagesCallback: 1.978ms
+	ApplyChangesToAssetFolders: 0.337ms
+	Scan: 0.001ms
+	OnSourceAssetsModified: 0.001ms
+	CategorizeAssetsWithTransientArtifact: 0.003ms
+	ProcessAssetsWithTransientArtifactChanges: 2.860ms
+	CategorizeAssets: 36.905ms
+	ImportOutOfDateAssets: 1440.292ms (1435.205ms without children)
+		CompileScripts: 0.944ms
+		CollectScriptTypesHashes: 1.375ms
+		ReloadNativeAssets: 0.972ms
+		UnloadImportedAssets: 0.958ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.554ms
+		InitializingProgressBar: 0.000ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.282ms
+	PostProcessAllAssets: 14.654ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.152ms
+	UnloadStreamsBegin: 1.211ms
+	PersistCurrentRevisions: 0.126ms
+	UnloadStreamsEnd: 0.001ms
+	GenerateScriptTypeHashes: 3.329ms
+	Untracked: 748.562ms
+
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            0.628 ms
+	Integration:            277.344 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       0.010 ms
+	Total Operation Time:   277.983 ms
+Refreshing native plugins compatible for Editor in 0.18 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+[GameCore.Studio/etos] etos session started: node (from key file), key file ~/.config/gamecore-studio/app-key.json, app gamecore-unity, max_cost_usd 0.50
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.Authoring.UnityStudioLog:Emit (GameCore.Studio.Authoring.StudioLogEntry) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:205)
+GameCore.Studio.Authoring.StudioLogBase:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:180)
+GameCore.Studio.Etos.RedactingStudioLog:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/RedactingStudioLog.cs:24)
+GameCore.Studio.Etos.EtosStudioSession:StartCore (GameCore.Studio.Edit.StudioRuntime) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:160)
+GameCore.Studio.Etos.EtosStudioSession:Start () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:100)
+GameCore.Studio.Etos.EtosBootstrap:StartIfWanted () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:288)
+UnityEditor.EditorApplication:Internal_CallDelayFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:399)
+
+(Filename: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs Line: 205)
+
+[GameCore.Studio/etos] provider status: node reachable, agent ready; image Live, tts Live, voice Unknown, 3d NotConfigured, describe Live
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.Authoring.UnityStudioLog:Emit (GameCore.Studio.Authoring.StudioLogEntry) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:205)
+GameCore.Studio.Authoring.StudioLogBase:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:180)
+GameCore.Studio.Etos.RedactingStudioLog:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/RedactingStudioLog.cs:24)
+GameCore.Studio.Etos.RedactingStudioLog:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/RedactingStudioLog.cs:24)
+GameCore.Studio.Etos.EtosAgentGateway/<>c__DisplayClass61_0:<RefreshStatusAsync>b__0 () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosAgentGateway.cs:318)
+GameCore.Studio.Etos.MainThreadQueue:Pump (int) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/MainThreadQueue.cs:87)
+GameCore.Studio.Etos.EtosStudioSession:Pump () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:240)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs Line: 205)
+
+Loaded scene 'Assets/Hollowmere/Regions/ThornwickVillage.unity'
+	Deserialize:            10.180 ms
+	Integration:            32.729 ms
+	Integration of assets:  0.006 ms
+	Thread Wait Time:       85.727 ms
+	Total Operation Time:   128.642 ms
+Unloading 119 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            0.763 ms
+	Integration:            144.265 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       0.005 ms
+	Total Operation Time:   145.034 ms
+Unloading 43 unused Assets / (49.0 MB). Loaded Objects now: 8357.
+Memory consumption went from 460.1 MB to 411.1 MB.
+Total: 14.631386 ms (FindLiveObjects: 0.302140 ms CreateObjectMapping: 0.178713 ms MarkObjects: 13.686138 ms  DeleteObjects: 0.463609 ms)
+
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 3 unused Assets / (55.5 KB). Loaded Objects now: 8535.
+Memory consumption went from 370.5 MB to 370.5 MB.
+Total: 14.395132 ms (FindLiveObjects: 0.321752 ms CreateObjectMapping: 0.199858 ms MarkObjects: 13.759796 ms  DeleteObjects: 0.112494 ms)
+
+MemoryCapture: Header Serialization : 0 ms
+MemoryCapture: Waiting for current load operation to finish : 0 ms
+MemoryCapture: Metadata Serialization : 0 ms
+MemoryCapture: Capture flags Serialization : 44 ms
+MemoryCapture: Managed Heaps : 348 ms
+MemoryCapture: Managed Stacks : 6 ms
+MemoryCapture: Managed Metadata : 53 ms
+MemoryCapture: GC Handles : 0 ms
+MemoryCapture: Native Types : 1 ms
+MemoryCapture: Native Objects : 4 ms
+MemoryCapture: Scene Objects : 0 ms
+MemoryCapture: Runtime Information Serialization : 0 ms
+MemoryCapture: Native Allocation Header : 0 ms
+MemoryCapture: Native Allocation Labels : 0 ms
+MemoryCapture: Native Root References : 1 ms
+MemoryCapture: Native Gfx Resource References : 0 ms
+MemoryCapture: Native Allocators : 0 ms
+MemoryCapture: Native Memory Region : 21 ms
+MemoryCapture: Native Allocation Footer : 0 ms
+MemoryCapture: Process Profile Target Info : 0 ms
+MemoryCapture: Process Profile Target Memory Stats : 0 ms
+MemoryCapture: System Memory Regions : 0 ms
+MemoryCapture: System Memory Resident Pages : 0 ms
+MemoryCapture took: 478 ms
+Reloading assemblies for play mode.
+Reloading assemblies after forced synchronous recompile.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory is not a mono symbol file
+- Loaded All Assemblies, in  0.654 seconds
+Refreshing native plugins compatible for Editor in 0.17 ms, found 1 plugins.
+Native extension for LinuxStandalone target not found
+Native extension for OSXStandalone target not found
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+TypeManager.Initialize took: 74ms
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  1.461 seconds
+Domain Reload Profiling: 2113ms
+	BeginReloadAssembly (443ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (30ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (250ms)
+	RebuildCommonClasses (25ms)
+	RebuildNativeTypeToScriptingClass (6ms)
+	initialDomainReloadingComplete (19ms)
+	LoadAllAssembliesAndSetupDomain (158ms)
+		LoadAssemblies (71ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (125ms)
+			TypeCache.Refresh (5ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (110ms)
+			ResolveRequiredComponents (8ms)
+	FinalizeReload (1461ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (664ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (67ms)
+			SetLoadedEditorAssemblies (5ms)
+			BeforeProcessingInitializeOnLoad (99ms)
+			ProcessInitializeOnLoadAttributes (325ms)
+			ProcessInitializeOnLoadMethodAttributes (164ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (397ms)
+Asset Pipeline Refresh (id=a8828da934299010cbe8423757421280): Total: 2.212 seconds - Initiated by StopAssetImportingV2(ForceSynchronousImport | ForceDomainReload)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=1533 ms
+		Asset DB Callback time: managed=14 ms, native=0 ms
+		Scripting: domain reloads=1, domain reload time=662 ms, compile time=1 ms, other=0 ms
+		Project Asset Count: scripts=1759, non-scripts=2575
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokeCustomDependenciesCallbacks: 0.001ms
+	InvokePackagesCallback: 1.787ms
+	ApplyChangesToAssetFolders: 0.295ms
+	Scan: 0.001ms
+	OnSourceAssetsModified: 0.001ms
+	CategorizeAssetsWithTransientArtifact: 0.003ms
+	ProcessAssetsWithTransientArtifactChanges: 2.840ms
+	CategorizeAssets: 34.554ms
+	ImportOutOfDateAssets: 1466.384ms (1462.856ms without children)
+		CompileScripts: 0.904ms
+		CollectScriptTypesHashes: 0.700ms
+		ReloadNativeAssets: 1.114ms
+		UnloadImportedAssets: 0.033ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.484ms
+		InitializingProgressBar: 0.000ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.293ms
+	PostProcessAllAssets: 14.754ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.127ms
+	UnloadStreamsBegin: 0.011ms
+	PersistCurrentRevisions: 0.121ms
+	UnloadStreamsEnd: 0.001ms
+	GenerateScriptTypeHashes: 2.649ms
+	Untracked: 691.364ms
+
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            0.937 ms
+	Integration:            274.566 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       0.005 ms
+	Total Operation Time:   275.508 ms
+[GameCore.Studio/etos] etos session started: node (from key file), key file ~/.config/gamecore-studio/app-key.json, app gamecore-unity, max_cost_usd 0.50
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.Authoring.UnityStudioLog:Emit (GameCore.Studio.Authoring.StudioLogEntry) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:205)
+GameCore.Studio.Authoring.StudioLogBase:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:180)
+GameCore.Studio.Etos.RedactingStudioLog:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/RedactingStudioLog.cs:24)
+GameCore.Studio.Etos.EtosStudioSession:StartCore (GameCore.Studio.Edit.StudioRuntime) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:160)
+GameCore.Studio.Etos.EtosStudioSession:Start () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:100)
+GameCore.Studio.Etos.EtosBootstrap:StartIfWanted () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:288)
+UnityEditor.EditorApplication:Internal_CallDelayFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:399)
+
+(Filename: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs Line: 205)
+
+[GameCore.Studio/etos] provider status: node reachable, agent ready; image Live, tts Live, voice Unknown, 3d NotConfigured, describe Live
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.Authoring.UnityStudioLog:Emit (GameCore.Studio.Authoring.StudioLogEntry) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:205)
+GameCore.Studio.Authoring.StudioLogBase:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:180)
+GameCore.Studio.Etos.RedactingStudioLog:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/RedactingStudioLog.cs:24)
+GameCore.Studio.Etos.RedactingStudioLog:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/RedactingStudioLog.cs:24)
+GameCore.Studio.Etos.EtosAgentGateway/<>c__DisplayClass61_0:<RefreshStatusAsync>b__0 () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosAgentGateway.cs:318)
+GameCore.Studio.Etos.MainThreadQueue:Pump (int) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/MainThreadQueue.cs:87)
+GameCore.Studio.Etos.EtosStudioSession:Pump () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:240)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs Line: 205)
+
+Loaded scene 'Assets/Hollowmere/Regions/ThornwickVillage.unity'
+	Deserialize:            7.857 ms
+	Integration:            8.725 ms
+	Integration of assets:  0.005 ms
+	Thread Wait Time:       70.344 ms
+	Total Operation Time:   86.931 ms
+Unloading 36 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            0.756 ms
+	Integration:            142.033 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       0.008 ms
+	Total Operation Time:   142.798 ms
+Unloading 43 unused Assets / (60.6 MB). Loaded Objects now: 8409.
+Memory consumption went from 456.0 MB to 395.5 MB.
+Total: 15.352417 ms (FindLiveObjects: 0.299521 ms CreateObjectMapping: 0.174590 ms MarkObjects: 14.407563 ms  DeleteObjects: 0.469885 ms)
+
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 3 unused Assets / (55.4 KB). Loaded Objects now: 8588.
+Memory consumption went from 371.9 MB to 371.9 MB.
+Total: 13.996593 ms (FindLiveObjects: 0.312302 ms CreateObjectMapping: 0.172770 ms MarkObjects: 13.406716 ms  DeleteObjects: 0.103323 ms)
+
+Reloading assemblies for play mode.
+Reloading assemblies after forced synchronous recompile.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory is not a mono symbol file
+- Loaded All Assemblies, in  0.669 seconds
+Refreshing native plugins compatible for Editor in 0.17 ms, found 1 plugins.
+Native extension for LinuxStandalone target not found
+Native extension for OSXStandalone target not found
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+TypeManager.Initialize took: 75ms
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  1.527 seconds
+Domain Reload Profiling: 2194ms
+	BeginReloadAssembly (456ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (41ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (249ms)
+	RebuildCommonClasses (25ms)
+	RebuildNativeTypeToScriptingClass (6ms)
+	initialDomainReloadingComplete (20ms)
+	LoadAllAssembliesAndSetupDomain (159ms)
+		LoadAssemblies (72ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (126ms)
+			TypeCache.Refresh (5ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (111ms)
+			ResolveRequiredComponents (8ms)
+	FinalizeReload (1528ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (688ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (75ms)
+			SetLoadedEditorAssemblies (6ms)
+			BeforeProcessingInitializeOnLoad (105ms)
+			ProcessInitializeOnLoadAttributes (330ms)
+			ProcessInitializeOnLoadMethodAttributes (169ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (434ms)
+Asset Pipeline Refresh (id=046c1969871cb08d48fa89ca34af2a23): Total: 2.292 seconds - Initiated by StopAssetImportingV2(ForceSynchronousImport | ForceDomainReload)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=1598 ms
+		Asset DB Callback time: managed=15 ms, native=0 ms
+		Scripting: domain reloads=1, domain reload time=677 ms, compile time=1 ms, other=0 ms
+		Project Asset Count: scripts=1759, non-scripts=2575
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokeCustomDependenciesCallbacks: 0.001ms
+	InvokePackagesCallback: 1.848ms
+	ApplyChangesToAssetFolders: 0.311ms
+	Scan: 0.000ms
+	OnSourceAssetsModified: 0.001ms
+	CategorizeAssetsWithTransientArtifact: 0.002ms
+	ProcessAssetsWithTransientArtifactChanges: 2.900ms
+	CategorizeAssets: 34.602ms
+	ImportOutOfDateAssets: 1532.816ms (1529.417ms without children)
+		CompileScripts: 0.898ms
+		CollectScriptTypesHashes: 0.577ms
+		ReloadNativeAssets: 1.129ms
+		UnloadImportedAssets: 0.034ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.483ms
+		InitializingProgressBar: 0.000ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.277ms
+	PostProcessAllAssets: 15.386ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.135ms
+	UnloadStreamsBegin: 0.012ms
+	PersistCurrentRevisions: 0.121ms
+	UnloadStreamsEnd: 0.000ms
+	GenerateScriptTypeHashes: 2.525ms
+	Untracked: 704.215ms
+
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            0.866 ms
+	Integration:            274.012 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       0.011 ms
+	Total Operation Time:   274.890 ms
+[GameCore.Studio/etos] etos session started: node (from key file), key file ~/.config/gamecore-studio/app-key.json, app gamecore-unity, max_cost_usd 0.50
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.Authoring.UnityStudioLog:Emit (GameCore.Studio.Authoring.StudioLogEntry) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:205)
+GameCore.Studio.Authoring.StudioLogBase:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:180)
+GameCore.Studio.Etos.RedactingStudioLog:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/RedactingStudioLog.cs:24)
+GameCore.Studio.Etos.EtosStudioSession:StartCore (GameCore.Studio.Edit.StudioRuntime) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:160)
+GameCore.Studio.Etos.EtosStudioSession:Start () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:100)
+GameCore.Studio.Etos.EtosBootstrap:StartIfWanted () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:288)
+UnityEditor.EditorApplication:Internal_CallDelayFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:399)
+
+(Filename: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs Line: 205)
+
+[GameCore.Studio/etos] provider status: node reachable, agent ready; image Live, tts Live, voice Unknown, 3d NotConfigured, describe Live
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.Authoring.UnityStudioLog:Emit (GameCore.Studio.Authoring.StudioLogEntry) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:205)
+GameCore.Studio.Authoring.StudioLogBase:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:180)
+GameCore.Studio.Etos.RedactingStudioLog:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/RedactingStudioLog.cs:24)
+GameCore.Studio.Etos.RedactingStudioLog:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/RedactingStudioLog.cs:24)
+GameCore.Studio.Etos.EtosAgentGateway/<>c__DisplayClass61_0:<RefreshStatusAsync>b__0 () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosAgentGateway.cs:318)
+GameCore.Studio.Etos.MainThreadQueue:Pump (int) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/MainThreadQueue.cs:87)
+GameCore.Studio.Etos.EtosStudioSession:Pump () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:240)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs Line: 205)
+
+Loaded scene 'Assets/Hollowmere/Regions/ThornwickVillage.unity'
+	Deserialize:            7.169 ms
+	Integration:            8.399 ms
+	Integration of assets:  0.005 ms
+	Thread Wait Time:       69.714 ms
+	Total Operation Time:   85.287 ms
+Unloading 36 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            0.692 ms
+	Integration:            141.532 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       0.007 ms
+	Total Operation Time:   142.232 ms
+Unloading 43 unused Assets / (42.0 MB). Loaded Objects now: 8461.
+Memory consumption went from 456.7 MB to 414.6 MB.
+Total: 14.894675 ms (FindLiveObjects: 0.314339 ms CreateObjectMapping: 0.181711 ms MarkObjects: 13.911420 ms  DeleteObjects: 0.486498 ms)
+
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 3 unused Assets / (55.4 KB). Loaded Objects now: 8639.
+Memory consumption went from 372.6 MB to 372.5 MB.
+Total: 17.574558 ms (FindLiveObjects: 0.321723 ms CreateObjectMapping: 0.189196 ms MarkObjects: 16.937453 ms  DeleteObjects: 0.124910 ms)
+
+Reloading assemblies for play mode.
+Reloading assemblies after forced synchronous recompile.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory is not a mono symbol file
+- Loaded All Assemblies, in  0.767 seconds
+Refreshing native plugins compatible for Editor in 0.18 ms, found 1 plugins.
+Native extension for LinuxStandalone target not found
+Native extension for OSXStandalone target not found
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+TypeManager.Initialize took: 81ms
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  1.532 seconds
+Domain Reload Profiling: 2297ms
+	BeginReloadAssembly (549ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (72ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (257ms)
+	RebuildCommonClasses (26ms)
+	RebuildNativeTypeToScriptingClass (6ms)
+	initialDomainReloadingComplete (20ms)
+	LoadAllAssembliesAndSetupDomain (164ms)
+		LoadAssemblies (74ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (128ms)
+			TypeCache.Refresh (5ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (113ms)
+			ResolveRequiredComponents (8ms)
+	FinalizeReload (1533ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (717ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (82ms)
+			SetLoadedEditorAssemblies (6ms)
+			BeforeProcessingInitializeOnLoad (111ms)
+			ProcessInitializeOnLoadAttributes (348ms)
+			ProcessInitializeOnLoadMethodAttributes (169ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (393ms)
+Asset Pipeline Refresh (id=4b976156a6af7ca74a80ca02c6be9767): Total: 2.399 seconds - Initiated by StopAssetImportingV2(ForceSynchronousImport | ForceDomainReload)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=1606 ms
+		Asset DB Callback time: managed=15 ms, native=0 ms
+		Scripting: domain reloads=1, domain reload time=775 ms, compile time=1 ms, other=0 ms
+		Project Asset Count: scripts=1759, non-scripts=2575
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokeCustomDependenciesCallbacks: 0.001ms
+	InvokePackagesCallback: 1.823ms
+	ApplyChangesToAssetFolders: 0.311ms
+	Scan: 0.000ms
+	OnSourceAssetsModified: 0.001ms
+	CategorizeAssetsWithTransientArtifact: 0.003ms
+	ProcessAssetsWithTransientArtifactChanges: 2.946ms
+	CategorizeAssets: 35.798ms
+	ImportOutOfDateAssets: 1537.878ms (1534.259ms without children)
+		CompileScripts: 0.973ms
+		CollectScriptTypesHashes: 0.733ms
+		ReloadNativeAssets: 1.107ms
+		UnloadImportedAssets: 0.039ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.482ms
+		InitializingProgressBar: 0.000ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.285ms
+	PostProcessAllAssets: 15.002ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.126ms
+	UnloadStreamsBegin: 0.016ms
+	PersistCurrentRevisions: 0.121ms
+	UnloadStreamsEnd: 0.000ms
+	GenerateScriptTypeHashes: 2.568ms
+	Untracked: 804.605ms
+
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            1.065 ms
+	Integration:            288.918 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       0.003 ms
+	Total Operation Time:   289.988 ms
+[GameCore.Studio/etos] etos session started: node (from key file), key file ~/.config/gamecore-studio/app-key.json, app gamecore-unity, max_cost_usd 0.50
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.Authoring.UnityStudioLog:Emit (GameCore.Studio.Authoring.StudioLogEntry) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:205)
+GameCore.Studio.Authoring.StudioLogBase:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:180)
+GameCore.Studio.Etos.RedactingStudioLog:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/RedactingStudioLog.cs:24)
+GameCore.Studio.Etos.EtosStudioSession:StartCore (GameCore.Studio.Edit.StudioRuntime) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:160)
+GameCore.Studio.Etos.EtosStudioSession:Start () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:100)
+GameCore.Studio.Etos.EtosBootstrap:StartIfWanted () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:288)
+UnityEditor.EditorApplication:Internal_CallDelayFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:399)
+
+(Filename: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs Line: 205)
+
+[GameCore.Studio/etos] provider status: node reachable, agent ready; image Live, tts Live, voice Unknown, 3d NotConfigured, describe Live
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.Authoring.UnityStudioLog:Emit (GameCore.Studio.Authoring.StudioLogEntry) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:205)
+GameCore.Studio.Authoring.StudioLogBase:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:180)
+GameCore.Studio.Etos.RedactingStudioLog:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/RedactingStudioLog.cs:24)
+GameCore.Studio.Etos.RedactingStudioLog:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/RedactingStudioLog.cs:24)
+GameCore.Studio.Etos.EtosAgentGateway/<>c__DisplayClass61_0:<RefreshStatusAsync>b__0 () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosAgentGateway.cs:318)
+GameCore.Studio.Etos.MainThreadQueue:Pump (int) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/MainThreadQueue.cs:87)
+GameCore.Studio.Etos.EtosStudioSession:Pump () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:240)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs Line: 205)
+
+Loaded scene 'Assets/Hollowmere/Regions/ThornwickVillage.unity'
+	Deserialize:            10.817 ms
+	Integration:            8.930 ms
+	Integration of assets:  0.005 ms
+	Thread Wait Time:       66.370 ms
+	Total Operation Time:   86.123 ms
+Unloading 36 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            0.610 ms
+	Integration:            142.281 ms
+	Integration of assets:  0.002 ms
+	Thread Wait Time:       0.007 ms
+	Total Operation Time:   142.900 ms
+Unloading 43 unused Assets / (35.1 MB). Loaded Objects now: 8513.
+Memory consumption went from 457.8 MB to 422.7 MB.
+Total: 18.275899 ms (FindLiveObjects: 0.312870 ms CreateObjectMapping: 0.183823 ms MarkObjects: 17.280461 ms  DeleteObjects: 0.498106 ms)
+
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 3 unused Assets / (55.3 KB). Loaded Objects now: 8691.
+Memory consumption went from 373.7 MB to 373.7 MB.
+Total: 14.681201 ms (FindLiveObjects: 0.321296 ms CreateObjectMapping: 0.185699 ms MarkObjects: 14.048727 ms  DeleteObjects: 0.124602 ms)
+
+Reloading assemblies for play mode.
+Reloading assemblies after forced synchronous recompile.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory is not a mono symbol file
+- Loaded All Assemblies, in  0.734 seconds
+Refreshing native plugins compatible for Editor in 0.18 ms, found 1 plugins.
+Native extension for LinuxStandalone target not found
+Native extension for OSXStandalone target not found
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+TypeManager.Initialize took: 77ms
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  1.476 seconds
+Domain Reload Profiling: 2207ms
+	BeginReloadAssembly (516ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (52ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (262ms)
+	RebuildCommonClasses (27ms)
+	RebuildNativeTypeToScriptingClass (6ms)
+	initialDomainReloadingComplete (20ms)
+	LoadAllAssembliesAndSetupDomain (162ms)
+		LoadAssemblies (72ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (129ms)
+			TypeCache.Refresh (5ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (114ms)
+			ResolveRequiredComponents (8ms)
+	FinalizeReload (1476ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (672ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (71ms)
+			SetLoadedEditorAssemblies (5ms)
+			BeforeProcessingInitializeOnLoad (101ms)
+			ProcessInitializeOnLoadAttributes (333ms)
+			ProcessInitializeOnLoadMethodAttributes (158ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (395ms)
+Asset Pipeline Refresh (id=e8d240e894b6281a0b8273e1e9c47dd3): Total: 2.306 seconds - Initiated by StopAssetImportingV2(ForceSynchronousImport | ForceDomainReload)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=1548 ms
+		Asset DB Callback time: managed=15 ms, native=0 ms
+		Scripting: domain reloads=1, domain reload time=741 ms, compile time=1 ms, other=0 ms
+		Project Asset Count: scripts=1759, non-scripts=2575
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokeCustomDependenciesCallbacks: 0.001ms
+	InvokePackagesCallback: 1.841ms
+	ApplyChangesToAssetFolders: 0.309ms
+	Scan: 0.000ms
+	OnSourceAssetsModified: 0.001ms
+	CategorizeAssetsWithTransientArtifact: 0.002ms
+	ProcessAssetsWithTransientArtifactChanges: 2.925ms
+	CategorizeAssets: 34.561ms
+	ImportOutOfDateAssets: 1481.297ms (1477.792ms without children)
+		CompileScripts: 0.915ms
+		CollectScriptTypesHashes: 0.692ms
+		ReloadNativeAssets: 1.094ms
+		UnloadImportedAssets: 0.038ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.482ms
+		InitializingProgressBar: 0.000ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.284ms
+	PostProcessAllAssets: 15.097ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.128ms
+	UnloadStreamsBegin: 0.018ms
+	PersistCurrentRevisions: 0.121ms
+	UnloadStreamsEnd: 0.001ms
+	GenerateScriptTypeHashes: 2.500ms
+	Untracked: 770.078ms
+
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            1.003 ms
+	Integration:            276.173 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       0.002 ms
+	Total Operation Time:   277.180 ms
+[GameCore.Studio/etos] etos session started: node (from key file), key file ~/.config/gamecore-studio/app-key.json, app gamecore-unity, max_cost_usd 0.50
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.Authoring.UnityStudioLog:Emit (GameCore.Studio.Authoring.StudioLogEntry) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:205)
+GameCore.Studio.Authoring.StudioLogBase:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:180)
+GameCore.Studio.Etos.RedactingStudioLog:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/RedactingStudioLog.cs:24)
+GameCore.Studio.Etos.EtosStudioSession:StartCore (GameCore.Studio.Edit.StudioRuntime) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:160)
+GameCore.Studio.Etos.EtosStudioSession:Start () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:100)
+GameCore.Studio.Etos.EtosBootstrap:StartIfWanted () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:288)
+UnityEditor.EditorApplication:Internal_CallDelayFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:399)
+
+(Filename: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs Line: 205)
+
+TrimDiskCacheJob: Current cache size 0mb
+[GameCore.Studio/etos] provider status: node reachable, agent ready; image Live, tts Live, voice Unknown, 3d NotConfigured, describe Live
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.Authoring.UnityStudioLog:Emit (GameCore.Studio.Authoring.StudioLogEntry) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:205)
+GameCore.Studio.Authoring.StudioLogBase:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:180)
+GameCore.Studio.Etos.RedactingStudioLog:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/RedactingStudioLog.cs:24)
+GameCore.Studio.Etos.RedactingStudioLog:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/RedactingStudioLog.cs:24)
+GameCore.Studio.Etos.EtosAgentGateway/<>c__DisplayClass61_0:<RefreshStatusAsync>b__0 () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosAgentGateway.cs:318)
+GameCore.Studio.Etos.MainThreadQueue:Pump (int) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/MainThreadQueue.cs:87)
+GameCore.Studio.Etos.EtosStudioSession:Pump () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:240)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs Line: 205)
+
+Loaded scene 'Assets/Hollowmere/Regions/ThornwickVillage.unity'
+	Deserialize:            8.767 ms
+	Integration:            8.858 ms
+	Integration of assets:  0.005 ms
+	Thread Wait Time:       67.855 ms
+	Total Operation Time:   85.485 ms
+Unloading 36 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            0.625 ms
+	Integration:            151.445 ms
+	Integration of assets:  0.002 ms
+	Thread Wait Time:       0.012 ms
+	Total Operation Time:   152.083 ms
+Unloading 43 unused Assets / (392.1 KB). Loaded Objects now: 8565.
+Memory consumption went from 458.9 MB to 458.5 MB.
+Total: 15.786415 ms (FindLiveObjects: 0.464173 ms CreateObjectMapping: 0.296400 ms MarkObjects: 14.367144 ms  DeleteObjects: 0.657584 ms)
+
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 3 unused Assets / (55.4 KB). Loaded Objects now: 8743.
+Memory consumption went from 374.8 MB to 374.8 MB.
+Total: 14.986009 ms (FindLiveObjects: 0.337087 ms CreateObjectMapping: 0.187268 ms MarkObjects: 14.348727 ms  DeleteObjects: 0.111886 ms)
+
+Reloading assemblies for play mode.
+Reloading assemblies after forced synchronous recompile.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory is not a mono symbol file
+- Loaded All Assemblies, in  0.739 seconds
+Refreshing native plugins compatible for Editor in 0.18 ms, found 1 plugins.
+Native extension for LinuxStandalone target not found
+Native extension for OSXStandalone target not found
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+TypeManager.Initialize took: 77ms
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  1.508 seconds
+Domain Reload Profiling: 2246ms
+	BeginReloadAssembly (522ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (58ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (261ms)
+	RebuildCommonClasses (26ms)
+	RebuildNativeTypeToScriptingClass (7ms)
+	initialDomainReloadingComplete (20ms)
+	LoadAllAssembliesAndSetupDomain (163ms)
+		LoadAssemblies (74ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (129ms)
+			TypeCache.Refresh (5ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (113ms)
+			ResolveRequiredComponents (8ms)
+	FinalizeReload (1509ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (698ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (75ms)
+			SetLoadedEditorAssemblies (6ms)
+			BeforeProcessingInitializeOnLoad (106ms)
+			ProcessInitializeOnLoadAttributes (339ms)
+			ProcessInitializeOnLoadMethodAttributes (170ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (397ms)
+Asset Pipeline Refresh (id=617e749ceb5110427a3c833d4ccd36b5): Total: 2.346 seconds - Initiated by StopAssetImportingV2(ForceSynchronousImport | ForceDomainReload)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=1580 ms
+		Asset DB Callback time: managed=15 ms, native=0 ms
+		Scripting: domain reloads=1, domain reload time=748 ms, compile time=1 ms, other=0 ms
+		Project Asset Count: scripts=1759, non-scripts=2575
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokeCustomDependenciesCallbacks: 0.002ms
+	InvokePackagesCallback: 1.846ms
+	ApplyChangesToAssetFolders: 0.307ms
+	Scan: 0.000ms
+	OnSourceAssetsModified: 0.001ms
+	CategorizeAssetsWithTransientArtifact: 0.003ms
+	ProcessAssetsWithTransientArtifactChanges: 3.080ms
+	CategorizeAssets: 35.234ms
+	ImportOutOfDateAssets: 1513.887ms (1510.415ms without children)
+		CompileScripts: 0.923ms
+		CollectScriptTypesHashes: 0.574ms
+		ReloadNativeAssets: 1.118ms
+		UnloadImportedAssets: 0.047ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.485ms
+		InitializingProgressBar: 0.000ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.326ms
+	PostProcessAllAssets: 15.267ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.145ms
+	UnloadStreamsBegin: 0.012ms
+	PersistCurrentRevisions: 0.121ms
+	UnloadStreamsEnd: 0.000ms
+	GenerateScriptTypeHashes: 2.505ms
+	Untracked: 775.753ms
+
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            0.762 ms
+	Integration:            275.735 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       0.051 ms
+	Total Operation Time:   276.549 ms
+[GameCore.Studio/etos] etos session started: node (from key file), key file ~/.config/gamecore-studio/app-key.json, app gamecore-unity, max_cost_usd 0.50
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.Authoring.UnityStudioLog:Emit (GameCore.Studio.Authoring.StudioLogEntry) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:205)
+GameCore.Studio.Authoring.StudioLogBase:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:180)
+GameCore.Studio.Etos.RedactingStudioLog:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/RedactingStudioLog.cs:24)
+GameCore.Studio.Etos.EtosStudioSession:StartCore (GameCore.Studio.Edit.StudioRuntime) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:160)
+GameCore.Studio.Etos.EtosStudioSession:Start () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:100)
+GameCore.Studio.Etos.EtosBootstrap:StartIfWanted () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:288)
+UnityEditor.EditorApplication:Internal_CallDelayFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:399)
+
+(Filename: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs Line: 205)
+
+[GameCore.Studio/etos] provider status: node reachable, agent ready; image Live, tts Live, voice Unknown, 3d NotConfigured, describe Live
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.Authoring.UnityStudioLog:Emit (GameCore.Studio.Authoring.StudioLogEntry) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:205)
+GameCore.Studio.Authoring.StudioLogBase:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:180)
+GameCore.Studio.Etos.RedactingStudioLog:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/RedactingStudioLog.cs:24)
+GameCore.Studio.Etos.RedactingStudioLog:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/RedactingStudioLog.cs:24)
+GameCore.Studio.Etos.EtosAgentGateway/<>c__DisplayClass61_0:<RefreshStatusAsync>b__0 () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosAgentGateway.cs:318)
+GameCore.Studio.Etos.MainThreadQueue:Pump (int) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/MainThreadQueue.cs:87)
+GameCore.Studio.Etos.EtosStudioSession:Pump () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:240)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs Line: 205)
+
+Loaded scene 'Assets/Hollowmere/Regions/ThornwickVillage.unity'
+	Deserialize:            8.236 ms
+	Integration:            8.630 ms
+	Integration of assets:  0.005 ms
+	Thread Wait Time:       70.713 ms
+	Total Operation Time:   87.584 ms
+Unloading 36 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            0.828 ms
+	Integration:            147.396 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       0.005 ms
+	Total Operation Time:   148.230 ms
+Unloading 43 unused Assets / (46.7 MB). Loaded Objects now: 8617.
+Memory consumption went from 460.0 MB to 413.4 MB.
+Total: 15.235331 ms (FindLiveObjects: 0.327035 ms CreateObjectMapping: 0.189171 ms MarkObjects: 14.204830 ms  DeleteObjects: 0.513504 ms)
+
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 3 unused Assets / (55.4 KB). Loaded Objects now: 8795.
+Memory consumption went from 375.9 MB to 375.9 MB.
+Total: 14.756997 ms (FindLiveObjects: 0.323470 ms CreateObjectMapping: 0.177383 ms MarkObjects: 14.145482 ms  DeleteObjects: 0.109735 ms)
+
+Reloading assemblies for play mode.
+Reloading assemblies after forced synchronous recompile.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory is not a mono symbol file
+- Loaded All Assemblies, in  0.756 seconds
+Refreshing native plugins compatible for Editor in 0.18 ms, found 1 plugins.
+Native extension for LinuxStandalone target not found
+Native extension for OSXStandalone target not found
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+TypeManager.Initialize took: 77ms
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  1.500 seconds
+Domain Reload Profiling: 2253ms
+	BeginReloadAssembly (524ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (57ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (270ms)
+	RebuildCommonClasses (29ms)
+	RebuildNativeTypeToScriptingClass (7ms)
+	initialDomainReloadingComplete (21ms)
+	LoadAllAssembliesAndSetupDomain (172ms)
+		LoadAssemblies (76ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (136ms)
+			TypeCache.Refresh (5ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (121ms)
+			ResolveRequiredComponents (8ms)
+	FinalizeReload (1500ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (688ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (74ms)
+			SetLoadedEditorAssemblies (6ms)
+			BeforeProcessingInitializeOnLoad (104ms)
+			ProcessInitializeOnLoadAttributes (338ms)
+			ProcessInitializeOnLoadMethodAttributes (165ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (400ms)
+Asset Pipeline Refresh (id=f80d991bb3935ff5890bbc20ab681739): Total: 2.352 seconds - Initiated by StopAssetImportingV2(ForceSynchronousImport | ForceDomainReload)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=1570 ms
+		Asset DB Callback time: managed=15 ms, native=0 ms
+		Scripting: domain reloads=1, domain reload time=764 ms, compile time=1 ms, other=0 ms
+		Project Asset Count: scripts=1759, non-scripts=2575
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokeCustomDependenciesCallbacks: 0.001ms
+	InvokePackagesCallback: 1.818ms
+	ApplyChangesToAssetFolders: 0.309ms
+	Scan: 0.000ms
+	OnSourceAssetsModified: 0.001ms
+	CategorizeAssetsWithTransientArtifact: 0.003ms
+	ProcessAssetsWithTransientArtifactChanges: 2.988ms
+	CategorizeAssets: 34.572ms
+	ImportOutOfDateAssets: 1505.033ms (1501.525ms without children)
+		CompileScripts: 0.989ms
+		CollectScriptTypesHashes: 0.567ms
+		ReloadNativeAssets: 1.129ms
+		UnloadImportedAssets: 0.039ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.484ms
+		InitializingProgressBar: 0.000ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.299ms
+	PostProcessAllAssets: 15.937ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.127ms
+	UnloadStreamsBegin: 0.012ms
+	PersistCurrentRevisions: 0.122ms
+	UnloadStreamsEnd: 0.001ms
+	GenerateScriptTypeHashes: 2.551ms
+	Untracked: 790.966ms
+
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            0.977 ms
+	Integration:            284.078 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       0.003 ms
+	Total Operation Time:   285.059 ms
+[GameCore.Studio/etos] etos session started: node (from key file), key file ~/.config/gamecore-studio/app-key.json, app gamecore-unity, max_cost_usd 0.50
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.Authoring.UnityStudioLog:Emit (GameCore.Studio.Authoring.StudioLogEntry) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:205)
+GameCore.Studio.Authoring.StudioLogBase:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:180)
+GameCore.Studio.Etos.RedactingStudioLog:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/RedactingStudioLog.cs:24)
+GameCore.Studio.Etos.EtosStudioSession:StartCore (GameCore.Studio.Edit.StudioRuntime) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:160)
+GameCore.Studio.Etos.EtosStudioSession:Start () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:100)
+GameCore.Studio.Etos.EtosBootstrap:StartIfWanted () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:288)
+UnityEditor.EditorApplication:Internal_CallDelayFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:399)
+
+(Filename: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs Line: 205)
+
+[GameCore.Studio/etos] provider status: node reachable, agent ready; image Live, tts Live, voice Unknown, 3d NotConfigured, describe Live
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.Authoring.UnityStudioLog:Emit (GameCore.Studio.Authoring.StudioLogEntry) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:205)
+GameCore.Studio.Authoring.StudioLogBase:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:180)
+GameCore.Studio.Etos.RedactingStudioLog:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/RedactingStudioLog.cs:24)
+GameCore.Studio.Etos.RedactingStudioLog:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/RedactingStudioLog.cs:24)
+GameCore.Studio.Etos.EtosAgentGateway/<>c__DisplayClass61_0:<RefreshStatusAsync>b__0 () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosAgentGateway.cs:318)
+GameCore.Studio.Etos.MainThreadQueue:Pump (int) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/MainThreadQueue.cs:87)
+GameCore.Studio.Etos.EtosStudioSession:Pump () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:240)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs Line: 205)
+
+Loaded scene 'Assets/Hollowmere/Regions/ThornwickVillage.unity'
+	Deserialize:            10.379 ms
+	Integration:            9.228 ms
+	Integration of assets:  0.005 ms
+	Thread Wait Time:       71.561 ms
+	Total Operation Time:   91.174 ms
+Unloading 36 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            0.647 ms
+	Integration:            150.639 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       0.004 ms
+	Total Operation Time:   151.292 ms
+Unloading 43 unused Assets / (39.7 MB). Loaded Objects now: 8669.
+Memory consumption went from 461.3 MB to 421.5 MB.
+Total: 15.323288 ms (FindLiveObjects: 0.333835 ms CreateObjectMapping: 0.183404 ms MarkObjects: 14.285643 ms  DeleteObjects: 0.519651 ms)
+
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 3 unused Assets / (55.4 KB). Loaded Objects now: 8847.
+Memory consumption went from 377.2 MB to 377.1 MB.
+Total: 14.780980 ms (FindLiveObjects: 0.336533 ms CreateObjectMapping: 0.197636 ms MarkObjects: 14.131406 ms  DeleteObjects: 0.114469 ms)
+
+Reloading assemblies for play mode.
+Reloading assemblies after forced synchronous recompile.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory is not a mono symbol file
+- Loaded All Assemblies, in  0.762 seconds
+Refreshing native plugins compatible for Editor in 0.18 ms, found 1 plugins.
+Native extension for LinuxStandalone target not found
+Native extension for OSXStandalone target not found
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+TypeManager.Initialize took: 77ms
+[Licensing::Client] Successfully resolved entitlement details
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  1.522 seconds
+Domain Reload Profiling: 2281ms
+	BeginReloadAssembly (542ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (74ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (274ms)
+	RebuildCommonClasses (27ms)
+	RebuildNativeTypeToScriptingClass (7ms)
+	initialDomainReloadingComplete (20ms)
+	LoadAllAssembliesAndSetupDomain (163ms)
+		LoadAssemblies (73ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (128ms)
+			TypeCache.Refresh (5ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (113ms)
+			ResolveRequiredComponents (8ms)
+	FinalizeReload (1522ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (705ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (75ms)
+			SetLoadedEditorAssemblies (6ms)
+			BeforeProcessingInitializeOnLoad (104ms)
+			ProcessInitializeOnLoadAttributes (334ms)
+			ProcessInitializeOnLoadMethodAttributes (185ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (400ms)
+Asset Pipeline Refresh (id=57010ff76b013151bb29939d72588493): Total: 2.380 seconds - Initiated by StopAssetImportingV2(ForceSynchronousImport | ForceDomainReload)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=1593 ms
+		Asset DB Callback time: managed=15 ms, native=0 ms
+		Scripting: domain reloads=1, domain reload time=770 ms, compile time=1 ms, other=0 ms
+		Project Asset Count: scripts=1759, non-scripts=2575
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokeCustomDependenciesCallbacks: 0.001ms
+	InvokePackagesCallback: 1.800ms
+	ApplyChangesToAssetFolders: 0.287ms
+	Scan: 0.000ms
+	OnSourceAssetsModified: 0.001ms
+	CategorizeAssetsWithTransientArtifact: 0.002ms
+	ProcessAssetsWithTransientArtifactChanges: 2.933ms
+	CategorizeAssets: 34.520ms
+	ImportOutOfDateAssets: 1527.122ms (1523.772ms without children)
+		CompileScripts: 0.916ms
+		CollectScriptTypesHashes: 0.547ms
+		ReloadNativeAssets: 1.104ms
+		UnloadImportedAssets: 0.035ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.477ms
+		InitializingProgressBar: 0.000ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.271ms
+	PostProcessAllAssets: 15.562ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.124ms
+	UnloadStreamsBegin: 0.011ms
+	PersistCurrentRevisions: 0.121ms
+	UnloadStreamsEnd: 0.001ms
+	GenerateScriptTypeHashes: 2.505ms
+	Untracked: 797.858ms
+
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            0.653 ms
+	Integration:            283.701 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       0.004 ms
+	Total Operation Time:   284.359 ms
+[Licensing::Client] Successfully resolved entitlement details
+[GameCore.Studio/etos] etos session started: node (from key file), key file ~/.config/gamecore-studio/app-key.json, app gamecore-unity, max_cost_usd 0.50
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.Authoring.UnityStudioLog:Emit (GameCore.Studio.Authoring.StudioLogEntry) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:205)
+GameCore.Studio.Authoring.StudioLogBase:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:180)
+GameCore.Studio.Etos.RedactingStudioLog:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/RedactingStudioLog.cs:24)
+GameCore.Studio.Etos.EtosStudioSession:StartCore (GameCore.Studio.Edit.StudioRuntime) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:160)
+GameCore.Studio.Etos.EtosStudioSession:Start () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:100)
+GameCore.Studio.Etos.EtosBootstrap:StartIfWanted () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:288)
+UnityEditor.EditorApplication:Internal_CallDelayFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:399)
+
+(Filename: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs Line: 205)
+
+[GameCore.Studio/etos] provider status: node reachable, agent ready; image Live, tts Live, voice Unknown, 3d NotConfigured, describe Live
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.Authoring.UnityStudioLog:Emit (GameCore.Studio.Authoring.StudioLogEntry) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:205)
+GameCore.Studio.Authoring.StudioLogBase:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:180)
+GameCore.Studio.Etos.RedactingStudioLog:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/RedactingStudioLog.cs:24)
+GameCore.Studio.Etos.RedactingStudioLog:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/RedactingStudioLog.cs:24)
+GameCore.Studio.Etos.EtosAgentGateway/<>c__DisplayClass61_0:<RefreshStatusAsync>b__0 () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosAgentGateway.cs:318)
+GameCore.Studio.Etos.MainThreadQueue:Pump (int) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/MainThreadQueue.cs:87)
+GameCore.Studio.Etos.EtosStudioSession:Pump () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:240)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs Line: 205)
+
+Loaded scene 'Assets/Hollowmere/Regions/ThornwickVillage.unity'
+	Deserialize:            9.588 ms
+	Integration:            8.979 ms
+	Integration of assets:  0.005 ms
+	Thread Wait Time:       68.758 ms
+	Total Operation Time:   87.331 ms
+Unloading 36 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            0.553 ms
+	Integration:            144.460 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       0.005 ms
+	Total Operation Time:   145.019 ms
+Unloading 43 unused Assets / (83.7 MB). Loaded Objects now: 8721.
+Memory consumption went from 462.4 MB to 378.7 MB.
+Total: 15.332714 ms (FindLiveObjects: 0.317864 ms CreateObjectMapping: 0.180587 ms MarkObjects: 14.306827 ms  DeleteObjects: 0.526506 ms)
+
+[Licensing::Client] Successfully resolved entitlement details
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 3 unused Assets / (55.3 KB). Loaded Objects now: 8899.
+Memory consumption went from 378.3 MB to 378.3 MB.
+Total: 17.523621 ms (FindLiveObjects: 0.382982 ms CreateObjectMapping: 0.226879 ms MarkObjects: 16.797558 ms  DeleteObjects: 0.115087 ms)
+
+Reloading assemblies for play mode.
+Reloading assemblies after forced synchronous recompile.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory is not a mono symbol file
+- Loaded All Assemblies, in  0.743 seconds
+Refreshing native plugins compatible for Editor in 0.25 ms, found 1 plugins.
+Native extension for LinuxStandalone target not found
+Native extension for OSXStandalone target not found
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+TypeManager.Initialize took: 77ms
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  1.521 seconds
+Domain Reload Profiling: 2262ms
+	BeginReloadAssembly (518ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (53ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (270ms)
+	RebuildCommonClasses (29ms)
+	RebuildNativeTypeToScriptingClass (7ms)
+	initialDomainReloadingComplete (20ms)
+	LoadAllAssembliesAndSetupDomain (165ms)
+		LoadAssemblies (74ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (130ms)
+			TypeCache.Refresh (5ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (115ms)
+			ResolveRequiredComponents (8ms)
+	FinalizeReload (1521ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (693ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (74ms)
+			SetLoadedEditorAssemblies (6ms)
+			BeforeProcessingInitializeOnLoad (109ms)
+			ProcessInitializeOnLoadAttributes (338ms)
+			ProcessInitializeOnLoadMethodAttributes (165ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (410ms)
+Asset Pipeline Refresh (id=87923d7bdf6758711963982380d7f96a): Total: 2.364 seconds - Initiated by StopAssetImportingV2(ForceSynchronousImport | ForceDomainReload)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=1595 ms
+		Asset DB Callback time: managed=15 ms, native=0 ms
+		Scripting: domain reloads=1, domain reload time=751 ms, compile time=1 ms, other=0 ms
+		Project Asset Count: scripts=1759, non-scripts=2575
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokeCustomDependenciesCallbacks: 0.002ms
+	InvokePackagesCallback: 2.137ms
+	ApplyChangesToAssetFolders: 0.351ms
+	Scan: 0.001ms
+	OnSourceAssetsModified: 0.001ms
+	CategorizeAssetsWithTransientArtifact: 0.003ms
+	ProcessAssetsWithTransientArtifactChanges: 3.033ms
+	CategorizeAssets: 36.214ms
+	ImportOutOfDateAssets: 1526.986ms (1523.409ms without children)
+		CompileScripts: 0.967ms
+		CollectScriptTypesHashes: 0.561ms
+		ReloadNativeAssets: 1.174ms
+		UnloadImportedAssets: 0.050ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.535ms
+		InitializingProgressBar: 0.000ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.289ms
+	PostProcessAllAssets: 15.920ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.154ms
+	UnloadStreamsBegin: 0.017ms
+	PersistCurrentRevisions: 0.129ms
+	UnloadStreamsEnd: 0.001ms
+	GenerateScriptTypeHashes: 2.613ms
+	Untracked: 779.129ms
+
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            0.736 ms
+	Integration:            285.445 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       0.007 ms
+	Total Operation Time:   286.189 ms
+[GameCore.Studio/etos] etos session started: node (from key file), key file ~/.config/gamecore-studio/app-key.json, app gamecore-unity, max_cost_usd 0.50
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.Authoring.UnityStudioLog:Emit (GameCore.Studio.Authoring.StudioLogEntry) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:205)
+GameCore.Studio.Authoring.StudioLogBase:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:180)
+GameCore.Studio.Etos.RedactingStudioLog:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/RedactingStudioLog.cs:24)
+GameCore.Studio.Etos.EtosStudioSession:StartCore (GameCore.Studio.Edit.StudioRuntime) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:160)
+GameCore.Studio.Etos.EtosStudioSession:Start () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:100)
+GameCore.Studio.Etos.EtosBootstrap:StartIfWanted () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:288)
+UnityEditor.EditorApplication:Internal_CallDelayFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:399)
+
+(Filename: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs Line: 205)
+
+[GameCore.Studio/etos] provider status: node reachable, agent ready; image Live, tts Live, voice Unknown, 3d NotConfigured, describe Live
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.Authoring.UnityStudioLog:Emit (GameCore.Studio.Authoring.StudioLogEntry) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:205)
+GameCore.Studio.Authoring.StudioLogBase:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:180)
+GameCore.Studio.Etos.RedactingStudioLog:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/RedactingStudioLog.cs:24)
+GameCore.Studio.Etos.RedactingStudioLog:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/RedactingStudioLog.cs:24)
+GameCore.Studio.Etos.EtosAgentGateway/<>c__DisplayClass61_0:<RefreshStatusAsync>b__0 () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosAgentGateway.cs:318)
+GameCore.Studio.Etos.MainThreadQueue:Pump (int) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/MainThreadQueue.cs:87)
+GameCore.Studio.Etos.EtosStudioSession:Pump () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:240)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs Line: 205)
+
+Loaded scene 'Assets/Hollowmere/Regions/ThornwickVillage.unity'
+	Deserialize:            7.264 ms
+	Integration:            8.662 ms
+	Integration of assets:  0.005 ms
+	Thread Wait Time:       71.114 ms
+	Total Operation Time:   87.044 ms
+Unloading 36 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            0.734 ms
+	Integration:            144.741 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       0.008 ms
+	Total Operation Time:   145.484 ms
+Unloading 43 unused Assets / (14.3 MB). Loaded Objects now: 8773.
+Memory consumption went from 463.5 MB to 449.2 MB.
+Total: 14.903587 ms (FindLiveObjects: 0.342330 ms CreateObjectMapping: 0.192780 ms MarkObjects: 13.837063 ms  DeleteObjects: 0.530686 ms)
+
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 3 unused Assets / (55.3 KB). Loaded Objects now: 8951.
+Memory consumption went from 379.4 MB to 379.4 MB.
+Total: 19.588934 ms (FindLiveObjects: 0.348414 ms CreateObjectMapping: 0.195301 ms MarkObjects: 18.870778 ms  DeleteObjects: 0.173127 ms)
+
+Reloading assemblies for play mode.
+Reloading assemblies after forced synchronous recompile.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory is not a mono symbol file
+- Loaded All Assemblies, in  0.750 seconds
+Refreshing native plugins compatible for Editor in 0.18 ms, found 1 plugins.
+Native extension for LinuxStandalone target not found
+Native extension for OSXStandalone target not found
+Assembly reference Packages/com.unity.entities/Unity.Scenes.Editor/Internals/Properties/Unity.Properties.Internals.asmref has no target assembly definition
+TypeManager.Initialize took: 76ms
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  1.501 seconds
+Domain Reload Profiling: 2249ms
+	BeginReloadAssembly (527ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (65ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (270ms)
+	RebuildCommonClasses (26ms)
+	RebuildNativeTypeToScriptingClass (7ms)
+	initialDomainReloadingComplete (20ms)
+	LoadAllAssembliesAndSetupDomain (168ms)
+		LoadAssemblies (73ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (134ms)
+			TypeCache.Refresh (5ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (118ms)
+			ResolveRequiredComponents (8ms)
+	FinalizeReload (1501ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (675ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (73ms)
+			SetLoadedEditorAssemblies (6ms)
+			BeforeProcessingInitializeOnLoad (102ms)
+			ProcessInitializeOnLoadAttributes (331ms)
+			ProcessInitializeOnLoadMethodAttributes (161ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (400ms)
+Asset Pipeline Refresh (id=b2a2a9d147e7e6bedb2024af8c305cfc): Total: 2.348 seconds - Initiated by StopAssetImportingV2(ForceSynchronousImport | ForceDomainReload)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=1572 ms
+		Asset DB Callback time: managed=15 ms, native=0 ms
+		Scripting: domain reloads=1, domain reload time=758 ms, compile time=1 ms, other=0 ms
+		Project Asset Count: scripts=1759, non-scripts=2575
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokeCustomDependenciesCallbacks: 0.002ms
+	InvokePackagesCallback: 1.815ms
+	ApplyChangesToAssetFolders: 0.300ms
+	Scan: 0.001ms
+	OnSourceAssetsModified: 0.001ms
+	CategorizeAssetsWithTransientArtifact: 0.003ms
+	ProcessAssetsWithTransientArtifactChanges: 3.050ms
+	CategorizeAssets: 34.665ms
+	ImportOutOfDateAssets: 1506.524ms (1503.134ms without children)
+		CompileScripts: 0.952ms
+		CollectScriptTypesHashes: 0.541ms
+		ReloadNativeAssets: 1.100ms
+		UnloadImportedAssets: 0.042ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.476ms
+		InitializingProgressBar: 0.000ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.278ms
+	PostProcessAllAssets: 15.791ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.123ms
+	UnloadStreamsBegin: 0.011ms
+	PersistCurrentRevisions: 0.122ms
+	UnloadStreamsEnd: 0.001ms
+	GenerateScriptTypeHashes: 2.543ms
+	Untracked: 785.541ms
+
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            0.951 ms
+	Integration:            282.248 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       0.008 ms
+	Total Operation Time:   283.208 ms
+[GameCore.Studio/etos] etos session started: node (from key file), key file ~/.config/gamecore-studio/app-key.json, app gamecore-unity, max_cost_usd 0.50
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.Authoring.UnityStudioLog:Emit (GameCore.Studio.Authoring.StudioLogEntry) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:205)
+GameCore.Studio.Authoring.StudioLogBase:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:180)
+GameCore.Studio.Etos.RedactingStudioLog:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/RedactingStudioLog.cs:24)
+GameCore.Studio.Etos.EtosStudioSession:StartCore (GameCore.Studio.Edit.StudioRuntime) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:160)
+GameCore.Studio.Etos.EtosStudioSession:Start () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:100)
+GameCore.Studio.Etos.EtosBootstrap:StartIfWanted () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:288)
+UnityEditor.EditorApplication:Internal_CallDelayFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:399)
+
+(Filename: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs Line: 205)
+
+[GameCore.Studio/etos] provider status: node reachable, agent ready; image Live, tts Live, voice Unknown, 3d NotConfigured, describe Live
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+GameCore.Studio.Authoring.UnityStudioLog:Emit (GameCore.Studio.Authoring.StudioLogEntry) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:205)
+GameCore.Studio.Authoring.StudioLogBase:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs:180)
+GameCore.Studio.Etos.RedactingStudioLog:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/RedactingStudioLog.cs:24)
+GameCore.Studio.Etos.RedactingStudioLog:Write (GameCore.Studio.Authoring.StudioLogLevel,string,string,GameCore.Studio.Model.Diagnostic) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/RedactingStudioLog.cs:24)
+GameCore.Studio.Etos.EtosAgentGateway/<>c__DisplayClass61_0:<RefreshStatusAsync>b__0 () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosAgentGateway.cs:318)
+GameCore.Studio.Etos.MainThreadQueue:Pump (int) (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/MainThreadQueue.cs:87)
+GameCore.Studio.Etos.EtosStudioSession:Pump () (at ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.etos/Editor/EtosStudioSession.cs:240)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.core/Runtime/Authoring/StudioLog.cs Line: 205)
+
+Loaded scene 'Assets/Hollowmere/Regions/ThornwickVillage.unity'
+	Deserialize:            7.125 ms
+	Integration:            8.612 ms
+	Integration of assets:  0.005 ms
+	Thread Wait Time:       68.923 ms
+	Total Operation Time:   84.664 ms
+Unloading 36 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            0.709 ms
+	Integration:            148.192 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       0.011 ms
+	Total Operation Time:   148.912 ms
+Unloading 43 unused Assets / (46.7 MB). Loaded Objects now: 8825.
+Memory consumption went from 464.6 MB to 418.0 MB.
+Total: 14.912771 ms (FindLiveObjects: 0.334494 ms CreateObjectMapping: 0.182389 ms MarkObjects: 13.893458 ms  DeleteObjects: 0.501728 ms)
+
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 3 unused Assets / (55.4 KB). Loaded Objects now: 9003.
+Memory consumption went from 380.6 MB to 380.5 MB.
+Total: 15.323196 ms (FindLiveObjects: 0.344409 ms CreateObjectMapping: 0.199266 ms MarkObjects: 14.664438 ms  DeleteObjects: 0.114194 ms)
+
+MemoryCapture: Header Serialization : 0 ms
+MemoryCapture: Waiting for current load operation to finish : 0 ms
+MemoryCapture: Metadata Serialization : 0 ms
+MemoryCapture: Capture flags Serialization : 49 ms
+MemoryCapture: Managed Heaps : 364 ms
+MemoryCapture: Managed Stacks : 7 ms
+MemoryCapture: Managed Metadata : 53 ms
+MemoryCapture: GC Handles : 0 ms
+MemoryCapture: Native Types : 1 ms
+MemoryCapture: Native Objects : 4 ms
+MemoryCapture: Scene Objects : 0 ms
+MemoryCapture: Runtime Information Serialization : 0 ms
+MemoryCapture: Native Allocation Header : 0 ms
+MemoryCapture: Native Allocation Labels : 0 ms
+MemoryCapture: Native Root References : 1 ms
+MemoryCapture: Native Gfx Resource References : 0 ms
+MemoryCapture: Native Allocators : 0 ms
+MemoryCapture: Native Memory Region : 21 ms
+MemoryCapture: Native Allocation Footer : 0 ms
+MemoryCapture: Process Profile Target Info : 0 ms
+MemoryCapture: Process Profile Target Memory Stats : 0 ms
+MemoryCapture: System Memory Regions : 1 ms
+MemoryCapture: System Memory Resident Pages : 0 ms
+MemoryCapture took: 501 ms
+Saving results to: ~/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+Saving results to: ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/W-GAME-08/native-memory-and-pumps-20261005T181112.083902Z/results.xml
+Executing IPostBuildCleanup for: Unity.PerformanceTesting.Editor.TestRunBuilder.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+UnityEditor.TestTools.TestRunner.TestRun.Tasks.BuildActionTaskBase`1/<ExecuteMethods>d__8<UnityEngine.TestTools.IPostBuildCleanup>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/Tasks/BuildActionTaskBase.cs:48)
+UnityEditor.TestTools.TestRunner.TestRun.Tasks.BuildActionTaskBase`1/<Execute>d__7<UnityEngine.TestTools.IPostBuildCleanup>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/Tasks/BuildActionTaskBase.cs:34)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteStep () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:173)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteCallback () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:108)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/TestRun/Tasks/BuildActionTaskBase.cs Line: 48)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6 unused Assets / (37.8 KB). Loaded Objects now: 9004.
+Memory consumption went from 380.9 MB to 380.9 MB.
+Total: 14.539979 ms (FindLiveObjects: 0.331896 ms CreateObjectMapping: 0.183926 ms MarkObjects: 13.816638 ms  DeleteObjects: 0.206848 ms)
+
+Test run completed. Exiting with code 0 (Ok). Run completed.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at ~/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+UnityEditor.TestTools.TestRunner.CommandLineTest.Executer:ExitApplication (UnityEditor.TestTools.TestRunner.CommandLineTest.Executer/ReturnCodes,string) (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/CommandLineTest/Executer.cs:81)
+UnityEditor.TestTools.TestRunner.CommandLineTest.Executer:ExitIfRunIsCompleted () (at ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/CommandLineTest/Executer.cs:74)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at ~/build/output/unity/unity/Editor/Mono/EditorApplication.cs:384)
+
+(Filename: ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEditor.TestRunner/CommandLineTest/Executer.cs Line: 81)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
+Start importing Assets/Hollowmere/UI/Theme/HollowmerePanelSettings.asset using Guid(b90fff993fc6f94c49bc2b03d2512844) (NativeFormatImporter) -> (artifact id: '0a210f3fc6608e91f5427242957f9fce') in 0.003402432 seconds
+Refreshing native plugins compatible for Editor in 0.20 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=292c18f0510f34a95b2d9a2208405771): Total: 0.045 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Unloading 4 unused Assets / (0 B). Loaded Objects now: 8882.
+Memory consumption went from 395.3 MB to 395.3 MB.
+Total: 14.894303 ms (FindLiveObjects: 0.327784 ms CreateObjectMapping: 0.188287 ms MarkObjects: 14.357101 ms  DeleteObjects: 0.020378 ms)
+
+[Physics::Module] Cleanup current backned.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input System polling thread exited.
+Input System module state changed to: Shutdown.
+[Licensing::IpcConnector] LicenseClient-worlesenric-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-worlesenric channel disconnected successfully.
+AcceleratorClientConnectionCallback - disconnected - :0
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Application is shutting down...
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      ALC ILPP context 1 is unloading
+Cleanup mono
+debugger-agent: Unable to listen on 68
+[Package Manager] Server process was shutdown
+Checking for leaked weakptr:
+  Found no leaked weakptrs.
+##utp:{"type": "MemoryLeaks", "version": 2, "phase": "Immediate", "time": 1791224378416, "processId": 3260304, "allocatedMemory": 14758173, "memoryLabels": [{"Default": 13965}, {"Permanent": 16147}, {"Thread": 1084616}, {"Manager": 3081585}, {"VertexData": 8}, {"Geometry": 408}, {"VFX": -104}, {"Texture": 3152}, {"Shader": 79299}, {"Material": 24}, {"GfxDevice": 36624}, {"Animation": 456}, {"Audio": 4032}, {"FontEngine": 320}, {"Physics": 2081}, {"Serialization": 376}, {"Input": 26752}, {"JobScheduler": 33024}, {"TextLib": 160}, {"Mono": 32}, {"MonoCode": 96}, {"ScriptingNativeRuntime": 155096}, {"BaseObject": 1622832}, {"Resource": 1032}, {"Renderer": 2928}, {"Transform": 4678}, {"File": 6674}, {"WebCam": 80}, {"Culling": 32}, {"Terrain": 11298}, {"Wind": 24}, {"String": 37100}, {"DynamicArray": 109602}, {"HashMap": 136615}, {"Utility": 2665104}, {"PoolAlloc": 4160}, {"AI": 72}, {"TypeTree": 5005}, {"ScriptManager": 512}, {"RuntimeInitializeOnLoadManager": 64}, {"SpriteAtlas": 112}, {"GI": 7448}, {"Director": 8208}, {"WebRequest": 808}, {"VR": 45689}, {"SceneManager": 528}, {"Video": 64}, {"LazyScriptCache": 32}, {"NativeArray": 5940}, {"Camera": 17}, {"Secure": 8401}, {"SerializationCache": 1576}, {"APIUpdating": 10320}, {"Subsystems": 336}, {"VirtualTexturing": 57552}, {"StaticSafetyDebugInfo": 278528}, {"Analytics": 256}, {"Hierarchy": 832}, {"CoreStats": 12456}, {"Identifiers": 12384}, {"Gui": 268285}, {"EditorUtility": 104646}, {"VersionControl": 4}, {"Undo": 979}, {"AssetDatabase": 4739578}, {"EditorGi": 328}, {"UnityConnect": 25736}, {"Upm": 1852}, {"DrivenProperties": 72}, {"HubClient": 6115}, {"LocalIPC": 266}, {"ProfilerEditor": 9746}, {"CoreBusinessMetrics": 2366}, {"Licensing": 688}, {"AssetReference": 32}, {"IPCStream": 32}]}

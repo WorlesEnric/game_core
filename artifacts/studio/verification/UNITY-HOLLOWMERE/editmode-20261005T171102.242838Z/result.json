@@ -1,0 +1,80 @@
+{
+  "label": "editmode",
+  "revision": "3c5f817aa45a86d0af85cd8af6e953d128524a02",
+  "host": "worlesenric",
+  "started": "2026-10-05T17:11:02.244330+00:00",
+  "command": "bash studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2/games/hollowmere --log-dir ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/UNITY-HOLLOWMERE/editmode-20261005T171102.242838Z/logs --label editmode --results ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/UNITY-HOLLOWMERE/editmode-20261005T171102.242838Z/results.xml -- -runTests -testPlatform EditMode -testFilter '.*'",
+  "cwd": "~/wkspace/gc-studio/p4.2",
+  "exitCode": 1,
+  "status": "BLOCKED",
+  "ended": "2026-10-05T17:20:47.295670+00:00",
+  "seconds": 585.0527235029731,
+  "suites": {
+    "results.xml": {
+      "total": 456,
+      "counts": {
+        "Passed": 445,
+        "Skipped": 11
+      },
+      "failedSuites": [],
+      "nonpassing": [
+        {
+          "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.B_NpcRequest_ReachesStaging",
+          "result": "Skipped",
+          "detail": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+        },
+        {
+          "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.C_D_E_F_I_MediaOps",
+          "result": "Skipped",
+          "detail": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+        },
+        {
+          "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.J_Voice_FromASpokenWav",
+          "result": "Skipped",
+          "detail": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+        },
+        {
+          "name": "GameCore.Studio.Hollowmere.P2_2.Live.EtosLiveTests.J_Voice_FromTheEditorMicrophone",
+          "result": "Skipped",
+          "detail": "SetUp : live etos tests run only with GAMECORE_ETOS_LIVE=1 (studio/tools/live-etos-tests.sh)"
+        },
+        {
+          "name": "GameCore.Studio.UI.Tests.R2UiRegressionTests.R2_29_KeyDownUpOnPromptAndControlsNeverEnterViewportHandlers",
+          "result": "Skipped",
+          "detail": "R2-29/R2-37: UI Toolkit window event delivery requires a graphics device; R2-H graphical qualification required."
+        },
+        {
+          "name": "GameCore.Studio.UI.Tests.R3UiRegressionTests.D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce",
+          "result": "Skipped",
+          "detail": "D12 physical window-manager placement requires a graphical Editor; the separate scheduler regression runs headless."
+        },
+        {
+          "name": "GameCore.Studio.UI.Tests.ViewportWindowTests.Render_TargetMatchesTheViewportArea",
+          "result": "Skipped",
+          "detail": "R2-37: graphical qualification required; not rendered: no graphics device (-nographics). The graphical evidence run (studio/tools/evidence-p2.1.sh) covers rendering."
+        },
+        {
+          "name": "Hollowmere.P1_5.EditMode.Tests.UiAudioContentTests.PreviewScreenCapturesARenderTextureOrSkipsHeadless",
+          "result": "Skipped",
+          "detail": "ui.previewScreen skipped: GP-UI-008: no graphics device (-nographics); run the preview in a graphical Editor"
+        },
+        {
+          "name": "Hollowmere.P3_2.Headless.HeadlessWorkflowTests.H1_TypedEdit_OnASelection",
+          "result": "Skipped",
+          "detail": "SetUp : P3.2 headless workflows run only with GAMECORE_ETOS_LIVE=1 (studio/tools/workflow-p3.2-harness.sh)"
+        },
+        {
+          "name": "Hollowmere.P3_2.Headless.HeadlessWorkflowTests.H2_Media_GenerateImportAssign",
+          "result": "Skipped",
+          "detail": "SetUp : P3.2 headless workflows run only with GAMECORE_ETOS_LIVE=1 (studio/tools/workflow-p3.2-harness.sh)"
+        },
+        {
+          "name": "Hollowmere.P3_2.Headless.HeadlessWorkflowTests.H3_Cancel_WhileRunning",
+          "result": "Skipped",
+          "detail": "SetUp : P3.2 headless workflows run only with GAMECORE_ETOS_LIVE=1 (studio/tools/workflow-p3.2-harness.sh)"
+        }
+      ]
+    }
+  },
+  "note": "See XML dispositions and nonpassing case details in result.json."
+}

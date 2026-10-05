@@ -1,0 +1,22 @@
+{
+  "label": "playmode",
+  "revision": "3c5f817aa45a86d0af85cd8af6e953d128524a02",
+  "host": "worlesenric",
+  "started": "2026-10-05T17:23:29.748469+00:00",
+  "command": "bash studio/tools/unity-batch.sh --project ~/wkspace/gc-studio/p4.2/games/cleanproof --log-dir ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/UNITY-CLEANPROOF/playmode-20261005T172329.747118Z/logs --label playmode --results ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/UNITY-CLEANPROOF/playmode-20261005T172329.747118Z/results.xml -- -runTests -testPlatform PlayMode -testFilter '.*'",
+  "cwd": "~/wkspace/gc-studio/p4.2",
+  "exitCode": 0,
+  "status": "PASS",
+  "ended": "2026-10-05T17:25:27.851936+00:00",
+  "seconds": 118.10473357094452,
+  "suites": {
+    "results.xml": {
+      "total": 3,
+      "counts": {
+        "Passed": 3
+      },
+      "failedSuites": [],
+      "nonpassing": []
+    }
+  }
+}

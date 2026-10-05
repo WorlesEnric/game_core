@@ -11,4 +11,4 @@ Command (from repository root unless cwd specified):
 dotnet test dotnet/GameCore.sln --logger trx --results-directory ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/STATIC/dotnet-20261005T170105.969990Z/trx
 ```
 
-Text evidence redacts credentials and substitutes `~` for absolute home paths. XML dispositions are unchanged. Hashes describe these retained sanitized bytes.
+Text evidence redacts credentials and substitutes `~` for absolute home paths. XML dispositions are unchanged; trailing log whitespace is normalized. Hashes describe these retained sanitized bytes.

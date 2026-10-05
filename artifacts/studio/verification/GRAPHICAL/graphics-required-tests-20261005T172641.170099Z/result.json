@@ -1,0 +1,44 @@
+{
+  "label": "graphics-required-tests",
+  "revision": "3c5f817aa45a86d0af85cd8af6e953d128524a02",
+  "host": "worlesenric",
+  "started": "2026-10-05T17:26:41.171596+00:00",
+  "command": "bash -c 'set -euo pipefail\nunity_tools_dir=\"$PWD/studio/tools\"\nsource \"$unity_tools_dir/unity-slot.sh\"\nunity_slot_acquire\ntrap unity_slot_release EXIT\npython3 studio/stage/run-redacted.py --log \"$1/editor.log\" --timeout 1500 --silence 600 --   \"$HOME/Unity/Hub/Editor/6000.0.75f1/Editor/Unity\" -projectPath \"$PWD/games/hollowmere\"   -logFile - -runTests -testPlatform EditMode -testFilter \"$2\" -testResults \"$1/results.xml\"\n' p42-graphical ~/wkspace/gc-studio/p4.2/artifacts/studio/verification/GRAPHICAL/graphics-required-tests-20261005T172641.170099Z 'R2_29_KeyDownUpOnPromptAndControlsNeverEnterViewportHandlers|D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce|Render_TargetMatchesTheViewportArea|PreviewScreenCapturesARenderTextureOrSkipsHeadless'",
+  "cwd": "~/wkspace/gc-studio/p4.2",
+  "exitCode": 2,
+  "status": "FAIL",
+  "ended": "2026-10-05T17:39:33.452196+00:00",
+  "seconds": 772.2820465008263,
+  "suites": {
+    "results.xml": {
+      "total": 4,
+      "counts": {
+        "Failed": 2,
+        "Passed": 2
+      },
+      "failedSuites": [
+        "Hollowmere",
+        "~/wkspace/gc-studio/p4.2/games/hollowmere/Library/ScriptAssemblies/GameCore.Studio.UI.Editor.Tests.dll",
+        "GameCore",
+        "GameCore.Studio",
+        "GameCore.Studio.UI",
+        "GameCore.Studio.UI.Tests",
+        "GameCore.Studio.UI.Tests.R2UiRegressionTests",
+        "GameCore.Studio.UI.Tests.R3UiRegressionTests"
+      ],
+      "nonpassing": [
+        {
+          "name": "GameCore.Studio.UI.Tests.R2UiRegressionTests.R2_29_KeyDownUpOnPromptAndControlsNeverEnterViewportHandlers",
+          "result": "Failed",
+          "detail": "real UI Toolkit event delivery\n  Expected: 1\n  But was:  0\n \n                     at GameCore.Studio.UI.Tests.R2UiRegressionTests.R2_29_KeyDownUpOnPromptAndControlsNeverEnterViewportHandlers () [0x00140] in ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.ui/Tests/Editor/R2UiRegressionTests.cs:219"
+        },
+        {
+          "name": "GameCore.Studio.UI.Tests.R3UiRegressionTests.D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce",
+          "result": "Failed",
+          "detail": "Expected: (x:20.00, y:40.00, width:1048.00, height:772.00)\n  But was:  (x:100.00, y:100.00, width:800.00, height:700.00)\n \n                     at GameCore.Studio.UI.Tests.R3UiRegressionTests+<D12_DeferredRelayoutSurvivesWindowManagerPlacementAndRunsOnce>d__2.MoveNext () [0x000e9] in ~/wkspace/gc-studio/p4.2/Packages/com.gamecore.studio.ui/Tests/Editor/R3UiRegressionTests.cs:70\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@bd52b1c23814/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44"
+        }
+      ]
+    }
+  },
+  "note": "See XML dispositions and nonpassing case details in result.json."
+}

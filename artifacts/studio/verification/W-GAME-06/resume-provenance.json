@@ -1,0 +1,7 @@
+{
+  "sourceScript": "tools/run_w7_gate.sh",
+  "sha256": "e7285dda7ec8bb4fdcd5542930ebc1c6e78a3c32ffb9c6a920ccc162bc70353d",
+  "omittedPhases": "1-5 already executed successfully in the retained original invocation; resume begins at phase 6, repeating its first completed codegen harmlessly. Original ended by cancellation of an unstarted waiting wrapper to correct our slot policy.",
+  "qualifiedSourceScope": "Packages/, dotnet/, unity/GameCore.Validation/ have empty worktree diffs. Test-only game additions receive separate static checks.",
+  "fullReproduction": "Use unmodified tools/run_w7_gate.sh with UNITY pointing at TOOLS/unity-gate-adapter.py and PROBE_RUNS=2; v1-resume.sh is this retained interrupted-run continuation only."
+}
