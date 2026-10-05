@@ -93,7 +93,7 @@ namespace GameCore.Studio.Etos
             try
             {
                 result = await GenerateSpeechAsync(request.Text, path, request.Voice,
-                    (_gateway as EtosAgentGateway)?.Options.MaxCostUsd, id).ConfigureAwait(false);
+                    (_gateway as EtosAgentGateway)?.Options.MaxCostUsd).ConfigureAwait(false);
             }
             catch (Exception error)
             {

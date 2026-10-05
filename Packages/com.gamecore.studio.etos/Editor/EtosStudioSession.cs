@@ -58,6 +58,12 @@ namespace GameCore.Studio.Etos
         [NonSerialized]
         private bool _hooked;
 
+        [NonSerialized]
+        private double _nextPairingCheck;
+
+        /// <summary>Idempotent entry seam for OpenStudio and domain reload.</summary>
+        public static bool EnsureStarted() => instance._gateway != null || Start();
+
         /// <summary>The running gateway, or null (not configured, or not started).</summary>
         public static EtosAgentGateway? Gateway => instance._gateway;
 
@@ -130,17 +136,13 @@ namespace GameCore.Studio.Etos
         {
             StopCore();
             _runtime = runtime;
-            EtosSettings settings = EtosSettings.Load(runtime.Paths.ProjectRoot);
-            if (!settings.IsConfigured)
-            {
-                _problem = new Diagnostic(EtosCodes.NotConfigured, "No app key file: Project Settings > GameCore Studio > ETOS, or " + EtosCredentials.KeyFileVariable + ".");
-                Hook();
-                return false;
-            }
-
             try
             {
-                EtosCredentials credentials = settings.ReadCredentials();
+                EtosSettings settings = EtosSettings.Load(runtime.Paths.ProjectRoot);
+                // A stale project key-file preference must not hide an installed host pairing.
+                string? keyFile = EtosCredentials.ResolveAutomaticKeyFile();
+                EtosCredentials credentials = EtosCredentials.FromKeyFile(keyFile ?? string.Empty);
+                settings.KeyFile = keyFile ?? string.Empty;
                 RedactingStudioLog log = new RedactingStudioLog(runtime.Log);
                 CompanionClient client = new CompanionClient(settings.ToClientOptions(credentials, line => log.Write(StudioLogLevel.Debug, "etos", line)), credentials);
                 MainThreadQueue queue = new MainThreadQueue(log);
@@ -165,6 +167,7 @@ namespace GameCore.Studio.Etos
                 _gateway = null;
             }
 
+            _nextPairingCheck = EditorApplication.timeSinceStartup + 1;
             Hook();
             return _gateway != null;
         }
@@ -241,6 +244,14 @@ namespace GameCore.Studio.Etos
                 gateway.Tick();
             }
 
+            if (_gateway == null && _problem?.Code == EtosCodes.NotConfigured
+                && EditorApplication.timeSinceStartup >= _nextPairingCheck)
+            {
+                _nextPairingCheck = EditorApplication.timeSinceStartup + 1;
+                string? keyFile = EtosCredentials.ResolveAutomaticKeyFile();
+                if (keyFile != null && File.Exists(keyFile)) StartCore(StudioServices.Runtime);
+            }
+
             if (_runtime != null && StudioServices.HasRuntime && !ReferenceEquals(StudioServices.Runtime, _runtime))
             {
                 StartCore(StudioServices.Runtime);
@@ -285,7 +296,7 @@ namespace GameCore.Studio.Etos
                 return;
             }
 
-            EtosStudioSession.Start();
+            EtosStudioSession.EnsureStarted();
         }
     }
 }
