@@ -1,0 +1,27 @@
+{
+  "name": "com.gamecore.gameplay.inventory",
+  "version": "1.0.0",
+  "displayName": "GameCore Gameplay Inventory",
+  "description": "Catalog row 8 of the gameplay plugin library (P1.4): items and economy. Authoring: ItemDefinition, InventoryDefinition, VendorDefinition, LootTableDefinition and WorldItemDefinition. Kernel half: inventory and vendor targets with the inv.item.<k>/inv.count.<k>/inv.currency slots and a request ring, world item targets with item.taken, the inventory.grant (idempotent by request id), consume, drop, transfer, buy, sell and pickup routes and the ItemGranted/ItemConsumed/ItemDropped/ItemTransferred/TradeDone/InventoryFull/ItemPickedUp events. Runtime: InventoryCommands, InventoryPresenter (IInventoryView), WorldItemBinder (pickup through the action ref inventory.pickup) and VendorBinder. Editor: inventory.grantStarting, placeItem and setStock.",
+  "unity": "6000.0",
+  "keywords": [
+    "gamecore",
+    "gameplay",
+    "inventory",
+    "economy"
+  ],
+  "dependencies": {
+    "com.gamecore.composition": "1.0.0",
+    "com.gamecore.contracts": "1.0.0",
+    "com.gamecore.gameplay.compile": "1.0.0",
+    "com.gamecore.gameplay.contracts": "1.0.0",
+    "com.gamecore.gameplay.entities": "1.0.0",
+    "com.gamecore.gameplay.logic": "1.0.0",
+    "com.gamecore.gameplay.world": "1.0.0",
+    "com.gamecore.rules.gameplay": "1.0.0",
+    "com.gamecore.unity.app": "1.0.0",
+    "com.gamecore.unity.runtime": "1.0.0",
+    "com.unity.collections": "2.6.6",
+    "com.unity.entities": "1.4.6"
+  }
+}

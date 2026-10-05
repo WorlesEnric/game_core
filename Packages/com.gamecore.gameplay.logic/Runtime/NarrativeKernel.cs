@@ -673,6 +673,13 @@ namespace GameCore.Gameplay.Logic
     }
 
     /// <summary>Owned-slot reads and writes on narrative targets.</summary>
+    /// <summary>Committed reads with a fallback over any ICommittedSlotReader.</summary>
+    public static class CommittedSlotReads
+    {
+        public static int ReadOrDefault(this ICommittedSlotReader slots, TargetId target, OwnerId owner, SlotId slot, int fallback) =>
+            slots != null && slots.TryRead(target, owner, slot, out int value) ? value : fallback;
+    }
+
     public static class NarrativeSlots
     {
         public static bool TryEntity(TargetRegistry registry, EntityManager entityManager, TargetId target, out Entity entity)
