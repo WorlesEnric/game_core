@@ -1,0 +1,58 @@
+{"show":
+{
+  "task": {
+    "id": "t2ffc0841d756f3e0e3f5ade6",
+    "worker": "gc-designer",
+    "parent": null,
+    "key": null,
+    "origin": {
+      "topic": "#agent/gamecore-studio/cs-01m45b19062b5mk5x4kxhqhzkr",
+      "position": 1,
+      "requester": "agent:gamecore-studio"
+    },
+    "text": "GameCore Studio change set cs_01M45B19062B5MK5X4KXHQHZKR (attempt 0): Make one of them patrol around the well.\n\nRead /inputs/request.md first. Write /outputs/changeset.json (or /outputs/clarification.json).",
+    "repo": null,
+    "mounts": [],
+    "env": {},
+    "image": null,
+    "image_tag": "localhost/etos-task:15d2f8ac8327e9c751d52f4bdca1c23e",
+    "post_create": [],
+    "status": "done",
+    "container": null,
+    "hostless": false,
+    "result": {
+      "text": "I need the well’s world-space position and an approximate distance for the patrol route before I can propose waypoints around it. I wrote the clarification question to `/outputs/clarification.json`.",
+      "refs": []
+    },
+    "error": null,
+    "created_at": 1791180711020,
+    "started_at": 1791180711022,
+    "ended_at": 1791180815446
+  },
+  "agent": "gc-designer@studio",
+  "turns": 1
+}
+,"budget":
+{
+  "task": {
+    "scope": "task:t2ffc0841d756f3e0e3f5ade6",
+    "limits": {},
+    "used": {
+      "input_tokens": 171826,
+      "micro_usd": 0,
+      "output_tokens": 846,
+      "tokens": 172672
+    }
+  },
+  "worker": {
+    "scope": "worker:gc-designer",
+    "limits": {},
+    "used": {
+      "input_tokens": 3061161,
+      "micro_usd": 0,
+      "output_tokens": 35884,
+      "tokens": 3097045
+    }
+  }
+}
+}

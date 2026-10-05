@@ -1,0 +1,472 @@
+{
+  "id": "cs_01M45BKRQ6EMTFENXAERWYGVDC",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Create a new NPC called Ferryman Bram at the selected location, with short dialogue about the Drowned Bell, a patrol within 3 m, and navigation like the other village NPCs.",
+    "origin": "agent"
+  },
+  "selection": {
+    "id": "sel_01M45BGBA1F5KY83YW0R2JESZZ",
+    "mode": "Edit",
+    "targets": [
+      {
+        "kind": "Definition",
+        "authoringId": "1ba7716b-d38c-4db3-9c0e-2a06f43c3716",
+        "global": "GlobalObjectId_V1-3-25f002ae09ef0ad13a564e056685a8ce-11400000-0",
+        "assetGuid": "25f002ae09ef0ad13a564e056685a8ce",
+        "path": "Assets/Hollowmere/Npcs/Definitions/Odd.asset",
+        "stamp": "sha256:122bae7b2dd37346fadad69bf7d863e95494f91bd63e4d673da281ce2b4ce440"
+      },
+      {
+        "kind": "Location",
+        "location": {
+          "region": "thornwickvillage",
+          "position": [
+            4.0,
+            0.083,
+            1.1
+          ],
+          "normal": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        }
+      }
+    ],
+    "indexRevision": 1
+  },
+  "baseVersions": [
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "7b933192-e58d-4f37-9f61-822393f69ab5",
+        "global": "GlobalObjectId_V1-3-22b625447999bf8e0b5abf693995fa30-11400000-0",
+        "assetGuid": "22b625447999bf8e0b5abf693995fa30",
+        "path": "Assets/Hollowmere/Npcs/NpcRoster.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a2b39624e5f647af6a54577e19267874dc7e69186694d5d2dbc1c4655f32e309"
+      },
+      "stamp": "sha256:a2b39624e5f647af6a54577e19267874dc7e69186694d5d2dbc1c4655f32e309"
+    }
+  ],
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "create",
+      "args": {
+        "fields": {
+          "defaultScaleMilli": 1000,
+          "prefab": "Assets/Hollowmere/Npcs/Prefabs/NpcCapsule.prefab#/NpcCapsule",
+          "startsAlive": true,
+          "startsVisible": true
+        },
+        "name": "FerrymanBramEntity",
+        "path": "Assets/Hollowmere/Npcs/Definitions/FerrymanBramEntity.asset",
+        "type": "entity.definition"
+      },
+      "dependsOn": [],
+      "preconditions": "stamp",
+      "applyRequirement": "Rebuild"
+    },
+    {
+      "opId": "op2",
+      "tool": "create",
+      "args": {
+        "fields": {
+          "kind": "Patrol",
+          "patrolPoints": [
+            [
+              4.0,
+              0.083,
+              1.1
+            ],
+            [
+              5.3,
+              0.083,
+              1.1
+            ],
+            [
+              4.6,
+              0.083,
+              2.3
+            ]
+          ],
+          "waitSeconds": 2.0
+        },
+        "name": "FerrymanBramBehaviour",
+        "path": "Assets/Hollowmere/Npcs/Definitions/FerrymanBramBehaviour.asset",
+        "type": "npc.behaviour"
+      },
+      "dependsOn": [],
+      "preconditions": "stamp",
+      "applyRequirement": "Rebuild"
+    },
+    {
+      "opId": "op3",
+      "tool": "create",
+      "args": {
+        "fields": {
+          "edges": [],
+          "entry": 0,
+          "nodes": [
+            {
+              "kind": "Line",
+              "text": "Hear the Drowned Bell beneath the water? When it tolls, keep your feet on the shore."
+            }
+          ],
+          "npcGraphRef": "dialogue.ferryman_bram",
+          "speaker": "Ferryman Bram"
+        },
+        "name": "FerrymanBramDialogue",
+        "path": "Assets/Hollowmere/Dialogue/FerrymanBramDialogue.asset",
+        "type": "dialogue.graph"
+      },
+      "dependsOn": [],
+      "preconditions": "stamp",
+      "applyRequirement": "Rebuild"
+    },
+    {
+      "opId": "op4",
+      "tool": "create",
+      "args": {
+        "fields": {
+          "arriveRadius": 0.05,
+          "behaviour": "Assets/Hollowmere/Npcs/Definitions/FerrymanBramBehaviour.asset",
+          "dialogueGraph": "Assets/Hollowmere/Dialogue/FerrymanBramDialogue.asset",
+          "displayName": "Ferryman Bram",
+          "entity": "Assets/Hollowmere/Npcs/Definitions/FerrymanBramEntity.asset",
+          "speed": 1.6,
+          "talkRange": 2.5
+        },
+        "name": "FerrymanBram",
+        "path": "Assets/Hollowmere/Npcs/Definitions/FerrymanBram.asset",
+        "type": "npc.definition"
+      },
+      "dependsOn": [
+        "op1",
+        "op2",
+        "op3"
+      ],
+      "preconditions": "stamp",
+      "applyRequirement": "Rebuild"
+    },
+    {
+      "opId": "op5",
+      "tool": "assign",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7b933192-e58d-4f37-9f61-822393f69ab5",
+        "global": "GlobalObjectId_V1-3-22b625447999bf8e0b5abf693995fa30-11400000-0",
+        "assetGuid": "22b625447999bf8e0b5abf693995fa30",
+        "path": "Assets/Hollowmere/Npcs/NpcRoster.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a2b39624e5f647af6a54577e19267874dc7e69186694d5d2dbc1c4655f32e309"
+      },
+      "args": {
+        "append": true,
+        "field": "npcs",
+        "value": "Assets/Hollowmere/Npcs/Definitions/FerrymanBram.asset"
+      },
+      "dependsOn": [
+        "op4"
+      ],
+      "preconditions": "stamp",
+      "applyRequirement": "Rebuild"
+    },
+    {
+      "opId": "op6",
+      "tool": "create",
+      "args": {
+        "fields": {
+          "definition": "Assets/Hollowmere/Npcs/Definitions/FerrymanBramEntity.asset",
+          "variant": 0
+        },
+        "name": "Ferryman Bram",
+        "position": [
+          4.0,
+          0.083,
+          1.1
+        ],
+        "type": "entity.instance"
+      },
+      "dependsOn": [
+        "op4"
+      ],
+      "preconditions": "stamp",
+      "applyRequirement": "Rebuild"
+    }
+  ],
+  "artifacts": [],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "links": {
+    "etosTasks": [
+      "t10cfcf004d69d6da2dbcb456"
+    ],
+    "parent": "cs_01M45BGBB0FV6QGXARA76AAG79"
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Npcs/Definitions/FerrymanBramEntity.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "dc6118c1-94a2-4735-bc36-ed265da2630c",
+                "global": "GlobalObjectId_V1-3-9172f26ed4e44c8fa96a1c548c8b6deb-11400000-0",
+                "assetGuid": "9172f26ed4e44c8fa96a1c548c8b6deb",
+                "path": "Assets/Hollowmere/Npcs/Definitions/FerrymanBramEntity.asset"
+              },
+              "stamp": "sha256:132c5de705c41ffbbe0e09eed2eb6b3579ad28d0c26267c667e73087fc878fea"
+            }
+          ],
+          "replay": {
+            "authoringId": "a2451e549e13415a9384f18e2751b1c2",
+            "assetPath": "Assets/Hollowmere/Npcs/Definitions/FerrymanBramEntity.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "op2",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Npcs/Definitions/FerrymanBramBehaviour.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "48f515eb-0cbf-4319-b473-1f17b883c75a",
+                "global": "GlobalObjectId_V1-3-9b9b19de28c72d465a415eccb8ff617f-11400000-0",
+                "assetGuid": "9b9b19de28c72d465a415eccb8ff617f",
+                "path": "Assets/Hollowmere/Npcs/Definitions/FerrymanBramBehaviour.asset"
+              },
+              "stamp": "sha256:e69fd9b15e1b0255f9b8e88bfab040e86e9a510a1455870670bf3bcd8679ce76"
+            }
+          ],
+          "replay": {
+            "authoringId": "1c0c479a476945a7bcc1873c98cbceb6",
+            "assetPath": "Assets/Hollowmere/Npcs/Definitions/FerrymanBramBehaviour.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "op3",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Dialogue/FerrymanBramDialogue.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "5c74c801-ac45-4816-ae31-e6f4f8c588fa",
+                "global": "GlobalObjectId_V1-3-93fa47fb5c964f5a492e9a4f8c13c047-11400000-0",
+                "assetGuid": "93fa47fb5c964f5a492e9a4f8c13c047",
+                "path": "Assets/Hollowmere/Dialogue/FerrymanBramDialogue.asset"
+              },
+              "stamp": "sha256:756d23665421a0a5bb405df4fd85ba4027e07c842bc861c016c55653d6855b2b"
+            }
+          ],
+          "replay": {
+            "authoringId": "53f21c92f3e94b3c9973467c20a8de3b",
+            "assetPath": "Assets/Hollowmere/Dialogue/FerrymanBramDialogue.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "op4",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Npcs/Definitions/FerrymanBram.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "d2c21f52-c796-40b5-ba9c-6bf5d3f7b44d",
+                "global": "GlobalObjectId_V1-3-3afb713553cbbe7ae86e023ef00a50b2-11400000-0",
+                "assetGuid": "3afb713553cbbe7ae86e023ef00a50b2",
+                "path": "Assets/Hollowmere/Npcs/Definitions/FerrymanBram.asset"
+              },
+              "stamp": "sha256:5ca347cd7c26e6b040b663cc771faa605069261c7938b9bff257c515e5997b89"
+            }
+          ],
+          "replay": {
+            "authoringId": "f50f0ab3163b4e4691eb2069fcb6a6dd",
+            "assetPath": "Assets/Hollowmere/Npcs/Definitions/FerrymanBram.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "op5",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "set",
+              "target": {
+                "kind": "Definition",
+                "authoringId": "7b933192-e58d-4f37-9f61-822393f69ab5",
+                "global": "GlobalObjectId_V1-3-22b625447999bf8e0b5abf693995fa30-11400000-0",
+                "assetGuid": "22b625447999bf8e0b5abf693995fa30",
+                "path": "Assets/Hollowmere/Npcs/NpcRoster.asset"
+              },
+              "args": {
+                "fields": {
+                  "npcs": [
+                    {
+                      "kind": "Definition",
+                      "authoringId": "b2252b06-3508-485b-abe4-9506dc0639a2",
+                      "global": "GlobalObjectId_V1-3-cbf0b51cebb9c3db49d49f29b2615d0f-11400000-0",
+                      "assetGuid": "cbf0b51cebb9c3db49d49f29b2615d0f",
+                      "path": "Assets/Hollowmere/Npcs/Definitions/Maren.asset"
+                    },
+                    {
+                      "kind": "Definition",
+                      "authoringId": "1ba7716b-d38c-4db3-9c0e-2a06f43c3716",
+                      "global": "GlobalObjectId_V1-3-25f002ae09ef0ad13a564e056685a8ce-11400000-0",
+                      "assetGuid": "25f002ae09ef0ad13a564e056685a8ce",
+                      "path": "Assets/Hollowmere/Npcs/Definitions/Odd.asset"
+                    },
+                    {
+                      "kind": "Definition",
+                      "authoringId": "70af11c6-4048-4745-8b6f-88870cb92d03",
+                      "global": "GlobalObjectId_V1-3-f2c6d2d7305f551a49f285681abad139-11400000-0",
+                      "assetGuid": "f2c6d2d7305f551a49f285681abad139",
+                      "path": "Assets/Hollowmere/Npcs/Definitions/Pip.asset"
+                    },
+                    {
+                      "kind": "Definition",
+                      "authoringId": "41c5b083-a381-47e7-be27-ad89ab6370bc",
+                      "global": "GlobalObjectId_V1-3-9453e6aa57d45cf418b51c585df9a0db-11400000-0",
+                      "assetGuid": "9453e6aa57d45cf418b51c585df9a0db",
+                      "path": "Assets/Hollowmere/Npcs/Definitions/Hale.asset"
+                    },
+                    {
+                      "kind": "Definition",
+                      "authoringId": "fb54875d-05d9-478c-be6c-62b13bddfaac",
+                      "global": "GlobalObjectId_V1-3-e38cdce45e4cc3b78a855c042dcdb11e-11400000-0",
+                      "assetGuid": "e38cdce45e4cc3b78a855c042dcdb11e",
+                      "path": "Assets/Hollowmere/Npcs/Definitions/BelfryEcho.asset"
+                    }
+                  ]
+                }
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7b933192-e58d-4f37-9f61-822393f69ab5",
+                "global": "GlobalObjectId_V1-3-22b625447999bf8e0b5abf693995fa30-11400000-0",
+                "assetGuid": "22b625447999bf8e0b5abf693995fa30",
+                "path": "Assets/Hollowmere/Npcs/NpcRoster.asset"
+              },
+              "stamp": "sha256:68974e847fe9479521aee054b5dac4bf4c87cfed8695363d1033b5212be91d7a"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "op6",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "delete",
+              "target": {
+                "kind": "Entity",
+                "authoringId": "1bfdc25b-9ea7-42d8-b4eb-ce8156db2a34",
+                "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-483357209-0",
+                "assetGuid": "6cba302899c45bb919b097ade959283c",
+                "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Ferryman Bram"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Entity",
+                "authoringId": "1bfdc25b-9ea7-42d8-b4eb-ce8156db2a34",
+                "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-483357209-0",
+                "assetGuid": "6cba302899c45bb919b097ade959283c",
+                "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Ferryman Bram"
+              },
+              "stamp": "sha256:07404c59fdac19e7e84e34e1a89ffb98e4dc606ceca7649816afd4137aa1190e"
+            }
+          ],
+          "replay": {
+            "authoringId": "92229a6e91104563a31eb61ce0eaa757"
+          }
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:30:19.557Z",
+    "applied": "2026-10-05T06:30:20.228Z"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "stage": "Invalid",
+  "gatewayStaged": true,
+  "summary": "2 ops: move x1, npc.setPatrol x1",
+  "badges": [
+    "Edit-time",
+    "RequiresPlayStop"
+  ],
+  "problems": [
+    {
+      "code": "InvalidArgs",
+      "message": "Tool 'npc.setPatrol' needs a target of type 'npc.definition', but the target is 'npc.behaviour'.",
+      "where": "op2"
+    }
+  ],
+  "stagedDiagnostics": [
+    {
+      "code": "InvalidArgs",
+      "message": "Tool 'npc.setPatrol' needs a target of type 'npc.definition', but the target is 'npc.behaviour'.",
+      "where": "op2"
+    }
+  ],
+  "stagedOk": false
+}

@@ -1,0 +1,58 @@
+{"show":
+{
+  "task": {
+    "id": "t35d405baff469fed8508809a",
+    "worker": "gc-designer",
+    "parent": null,
+    "key": null,
+    "origin": {
+      "topic": "#agent/gamecore-studio/cs-01m45b4gbdycx0br5ccj3ygj9k",
+      "position": 1,
+      "requester": "agent:gamecore-studio"
+    },
+    "text": "GameCore Studio change set cs_01M45B4GBDYCX0BR5CCJ3YGJ9K (attempt 0): Make one of them patrol around the well.\nAnswer to \"Where is the well in ThornwickVillage (world-space x, y, z), and approximately how far from it should the patrol route run?\": Maren (npc.definition Maren). Centre a loop of four points on the Village Well, about 3 m from it (+Z north, +X east, metr\n\nRead /inputs/request.md first. Write /outputs/changeset.json (or /outputs/clarification.json).",
+    "repo": null,
+    "mounts": [],
+    "env": {},
+    "image": null,
+    "image_tag": "localhost/etos-task:15d2f8ac8327e9c751d52f4bdca1c23e",
+    "post_create": [],
+    "status": "done",
+    "container": null,
+    "hostless": false,
+    "result": {
+      "text": "I couldn’t locate the Village Well’s world-space position in the supplied scene context or index, so I wrote a clarification request for its coordinates. No change set was proposed.",
+      "refs": []
+    },
+    "error": null,
+    "created_at": 1791180817039,
+    "started_at": 1791180817050,
+    "ended_at": 1791180946472
+  },
+  "agent": "gc-designer@studio",
+  "turns": 1
+}
+,"budget":
+{
+  "task": {
+    "scope": "task:t35d405baff469fed8508809a",
+    "limits": {},
+    "used": {
+      "input_tokens": 108240,
+      "micro_usd": 0,
+      "output_tokens": 969,
+      "tokens": 109209
+    }
+  },
+  "worker": {
+    "scope": "worker:gc-designer",
+    "limits": {},
+    "used": {
+      "input_tokens": 3061161,
+      "micro_usd": 0,
+      "output_tokens": 35884,
+      "tokens": 3097045
+    }
+  }
+}
+}

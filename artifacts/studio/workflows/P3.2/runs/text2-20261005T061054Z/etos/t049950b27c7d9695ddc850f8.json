@@ -1,0 +1,58 @@
+{"show":
+{
+  "task": {
+    "id": "t049950b27c7d9695ddc850f8",
+    "worker": "gc-designer",
+    "parent": null,
+    "key": null,
+    "origin": {
+      "topic": "#agent/gamecore-studio/cs-01m45bgbb0fv6qgxara76aag79",
+      "position": 1,
+      "requester": "agent:gamecore-studio"
+    },
+    "text": "GameCore Studio change set cs_01M45BGBB0FV6QGXARA76AAG79 (attempt 0): Add a ferryman NPC here who talks about the bell.\n\nRead /inputs/request.md first. Write /outputs/changeset.json (or /outputs/clarification.json).",
+    "repo": null,
+    "mounts": [],
+    "env": {},
+    "image": null,
+    "image_tag": "localhost/etos-task:15d2f8ac8327e9c751d52f4bdca1c23e",
+    "post_create": [],
+    "status": "done",
+    "container": null,
+    "hostless": false,
+    "result": {
+      "text": "I need one clarification before proposing the change set: should Odd become the ferryman, or should I add a separate ferryman at the marked location?",
+      "refs": []
+    },
+    "error": null,
+    "created_at": 1791181205065,
+    "started_at": 1791181205069,
+    "ended_at": 1791181298049
+  },
+  "agent": "gc-designer@studio",
+  "turns": 1
+}
+,"budget":
+{
+  "task": {
+    "scope": "task:t049950b27c7d9695ddc850f8",
+    "limits": {},
+    "used": {
+      "input_tokens": 79299,
+      "micro_usd": 0,
+      "output_tokens": 1051,
+      "tokens": 80350
+    }
+  },
+  "worker": {
+    "scope": "worker:gc-designer",
+    "limits": {},
+    "used": {
+      "input_tokens": 3061161,
+      "micro_usd": 0,
+      "output_tokens": 35884,
+      "tokens": 3097045
+    }
+  }
+}
+}

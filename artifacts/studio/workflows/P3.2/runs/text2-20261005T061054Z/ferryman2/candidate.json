@@ -1,0 +1,213 @@
+{
+  "id": "cs_01M45BKRQ6EMTFENXAERWYGVDC",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Create a new NPC called Ferryman Bram at the selected location, with short dialogue about the Drowned Bell, a patrol within 3 m, and navigation like the other village NPCs.",
+    "origin": "agent"
+  },
+  "selection": {
+    "id": "sel_01M45BGBA1F5KY83YW0R2JESZZ",
+    "mode": "Edit",
+    "targets": [
+      {
+        "kind": "Definition",
+        "authoringId": "1ba7716b-d38c-4db3-9c0e-2a06f43c3716",
+        "global": "GlobalObjectId_V1-3-25f002ae09ef0ad13a564e056685a8ce-11400000-0",
+        "assetGuid": "25f002ae09ef0ad13a564e056685a8ce",
+        "path": "Assets/Hollowmere/Npcs/Definitions/Odd.asset",
+        "stamp": "sha256:122bae7b2dd37346fadad69bf7d863e95494f91bd63e4d673da281ce2b4ce440"
+      },
+      {
+        "kind": "Location",
+        "location": {
+          "region": "thornwickvillage",
+          "position": [
+            4.0,
+            0.083,
+            1.1
+          ],
+          "normal": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        }
+      }
+    ],
+    "indexRevision": 1
+  },
+  "baseVersions": [
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "7b933192-e58d-4f37-9f61-822393f69ab5",
+        "global": "GlobalObjectId_V1-3-22b625447999bf8e0b5abf693995fa30-11400000-0",
+        "assetGuid": "22b625447999bf8e0b5abf693995fa30",
+        "path": "Assets/Hollowmere/Npcs/NpcRoster.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a2b39624e5f647af6a54577e19267874dc7e69186694d5d2dbc1c4655f32e309"
+      },
+      "stamp": "sha256:a2b39624e5f647af6a54577e19267874dc7e69186694d5d2dbc1c4655f32e309"
+    }
+  ],
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "create",
+      "args": {
+        "fields": {
+          "defaultScaleMilli": 1000,
+          "prefab": "Assets/Hollowmere/Npcs/Prefabs/NpcCapsule.prefab#/NpcCapsule",
+          "startsAlive": true,
+          "startsVisible": true
+        },
+        "name": "FerrymanBramEntity",
+        "path": "Assets/Hollowmere/Npcs/Definitions/FerrymanBramEntity.asset",
+        "type": "entity.definition"
+      },
+      "dependsOn": [],
+      "preconditions": "stamp",
+      "applyRequirement": "Rebuild"
+    },
+    {
+      "opId": "op2",
+      "tool": "create",
+      "args": {
+        "fields": {
+          "kind": "Patrol",
+          "patrolPoints": [
+            [
+              4.0,
+              0.083,
+              1.1
+            ],
+            [
+              5.3,
+              0.083,
+              1.1
+            ],
+            [
+              4.6,
+              0.083,
+              2.3
+            ]
+          ],
+          "waitSeconds": 2.0
+        },
+        "name": "FerrymanBramBehaviour",
+        "path": "Assets/Hollowmere/Npcs/Definitions/FerrymanBramBehaviour.asset",
+        "type": "npc.behaviour"
+      },
+      "dependsOn": [],
+      "preconditions": "stamp",
+      "applyRequirement": "Rebuild"
+    },
+    {
+      "opId": "op3",
+      "tool": "create",
+      "args": {
+        "fields": {
+          "edges": [],
+          "entry": 0,
+          "nodes": [
+            {
+              "kind": "Line",
+              "text": "Hear the Drowned Bell beneath the water? When it tolls, keep your feet on the shore."
+            }
+          ],
+          "npcGraphRef": "dialogue.ferryman_bram",
+          "speaker": "Ferryman Bram"
+        },
+        "name": "FerrymanBramDialogue",
+        "path": "Assets/Hollowmere/Dialogue/FerrymanBramDialogue.asset",
+        "type": "dialogue.graph"
+      },
+      "dependsOn": [],
+      "preconditions": "stamp",
+      "applyRequirement": "Rebuild"
+    },
+    {
+      "opId": "op4",
+      "tool": "create",
+      "args": {
+        "fields": {
+          "arriveRadius": 0.05,
+          "behaviour": "Assets/Hollowmere/Npcs/Definitions/FerrymanBramBehaviour.asset",
+          "dialogueGraph": "Assets/Hollowmere/Dialogue/FerrymanBramDialogue.asset",
+          "displayName": "Ferryman Bram",
+          "entity": "Assets/Hollowmere/Npcs/Definitions/FerrymanBramEntity.asset",
+          "speed": 1.6,
+          "talkRange": 2.5
+        },
+        "name": "FerrymanBram",
+        "path": "Assets/Hollowmere/Npcs/Definitions/FerrymanBram.asset",
+        "type": "npc.definition"
+      },
+      "dependsOn": [
+        "op1",
+        "op2",
+        "op3"
+      ],
+      "preconditions": "stamp",
+      "applyRequirement": "Rebuild"
+    },
+    {
+      "opId": "op5",
+      "tool": "assign",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7b933192-e58d-4f37-9f61-822393f69ab5",
+        "global": "GlobalObjectId_V1-3-22b625447999bf8e0b5abf693995fa30-11400000-0",
+        "assetGuid": "22b625447999bf8e0b5abf693995fa30",
+        "path": "Assets/Hollowmere/Npcs/NpcRoster.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a2b39624e5f647af6a54577e19267874dc7e69186694d5d2dbc1c4655f32e309"
+      },
+      "args": {
+        "append": true,
+        "field": "npcs",
+        "value": "Assets/Hollowmere/Npcs/Definitions/FerrymanBram.asset"
+      },
+      "dependsOn": [
+        "op4"
+      ],
+      "preconditions": "stamp",
+      "applyRequirement": "Rebuild"
+    },
+    {
+      "opId": "op6",
+      "tool": "create",
+      "args": {
+        "fields": {
+          "definition": "Assets/Hollowmere/Npcs/Definitions/FerrymanBramEntity.asset",
+          "variant": 0
+        },
+        "name": "Ferryman Bram",
+        "position": [
+          4.0,
+          0.083,
+          1.1
+        ],
+        "type": "entity.instance"
+      },
+      "dependsOn": [
+        "op4"
+      ],
+      "preconditions": "stamp",
+      "applyRequirement": "Rebuild"
+    }
+  ],
+  "artifacts": [],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "links": {
+    "etosTasks": [
+      "t10cfcf004d69d6da2dbcb456"
+    ],
+    "parent": "cs_01M45BGBB0FV6QGXARA76AAG79"
+  }
+}

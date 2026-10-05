@@ -1,0 +1,1124 @@
+{
+  "revision": 1,
+  "project": "hollowmere",
+  "nodes": [
+    {
+      "ref": {
+        "kind": "Entity",
+        "authoringId": "da525107-c2c1-4626-ac08-5058a1e01c06",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1121024804-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Maren",
+        "scope": "Instance",
+        "stamp": "sha256:1b19c39ebb72ed5b6c13ff1edbeceef90a44860c94a0dd5a994c71d906f459b8"
+      },
+      "type": "entity.instance",
+      "name": "Maren",
+      "fields": {
+        "overrides": {
+          "value": {
+            "entries": []
+          },
+          "type": "object"
+        },
+        "variant": {
+          "value": 0,
+          "type": "int"
+        }
+      },
+      "refs": [
+        {
+          "field": "definition",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "ce503024-4b28-4194-8865-8eec9dd6d8a7",
+            "global": "GlobalObjectId_V1-3-1a0820b9c500f9195a0c9ab649618e27-11400000-0",
+            "assetGuid": "1a0820b9c500f9195a0c9ab649618e27",
+            "path": "Assets/Hollowmere/Npcs/Definitions/MarenEntity.asset"
+          }
+        }
+      ],
+      "provenance": {
+        "asset": "Assets/Hollowmere/Regions/ThornwickVillage.unity"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Entity",
+        "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well",
+        "scope": "Instance",
+        "stamp": "sha256:87a59125d1a36edd07a455ecf7dbe84f417d4f4dd046d4159f2369b48d3605a0"
+      },
+      "type": "entity.instance",
+      "name": "Village Well",
+      "fields": {
+        "overrides": {
+          "value": {
+            "entries": []
+          },
+          "type": "object"
+        },
+        "variant": {
+          "value": 0,
+          "type": "int"
+        }
+      },
+      "refs": [
+        {
+          "field": "definition",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "19b21d1c-9203-4d9a-a4fd-cb3e57a6ac54",
+            "global": "GlobalObjectId_V1-3-30fd77047fcfeb484a281c97ce32f960-11400000-0",
+            "assetGuid": "30fd77047fcfeb484a281c97ce32f960",
+            "path": "Assets/Hollowmere/Interactables/Definitions/WellBucketEntity.asset"
+          }
+        }
+      ],
+      "provenance": {
+        "asset": "Assets/Hollowmere/Regions/ThornwickVillage.unity"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "b2252b06-3508-485b-abe4-9506dc0639a2",
+        "global": "GlobalObjectId_V1-3-cbf0b51cebb9c3db49d49f29b2615d0f-11400000-0",
+        "assetGuid": "cbf0b51cebb9c3db49d49f29b2615d0f",
+        "path": "Assets/Hollowmere/Npcs/Definitions/Maren.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a9979d084df76fcf031d4257d2ad5d79e7c01b1baafa4d7d01eec2b8c3449372"
+      },
+      "type": "npc.definition",
+      "name": "Maren",
+      "fields": {
+        "arriveRadius": {
+          "value": 0.05,
+          "unit": "m",
+          "range": [
+            0.01,
+            2.0
+          ],
+          "type": "float"
+        },
+        "converseSeconds": {
+          "value": 4.0,
+          "unit": "s",
+          "range": [
+            0.5,
+            600.0
+          ],
+          "type": "float"
+        },
+        "displayName": {
+          "value": "Maren",
+          "type": "string"
+        },
+        "focusPriority": {
+          "value": 1,
+          "range": [
+            -100.0,
+            100.0
+          ],
+          "type": "int"
+        },
+        "mood": {
+          "value": 0,
+          "range": [
+            -100.0,
+            100.0
+          ],
+          "type": "int"
+        },
+        "speed": {
+          "value": 1.8,
+          "unit": "m/s",
+          "range": [
+            0.1,
+            10.0
+          ],
+          "type": "float"
+        },
+        "talkRange": {
+          "value": 2.5,
+          "unit": "m",
+          "range": [
+            0.5,
+            5.0
+          ],
+          "type": "float"
+        },
+        "voiceId": {
+          "value": "voice.maren",
+          "type": "string"
+        }
+      },
+      "refs": [
+        {
+          "field": "entity",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "ce503024-4b28-4194-8865-8eec9dd6d8a7",
+            "global": "GlobalObjectId_V1-3-1a0820b9c500f9195a0c9ab649618e27-11400000-0",
+            "assetGuid": "1a0820b9c500f9195a0c9ab649618e27",
+            "path": "Assets/Hollowmere/Npcs/Definitions/MarenEntity.asset"
+          }
+        },
+        {
+          "field": "behaviour",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "dabf28ee-6c4f-4ca2-9793-9d2f2b9817e5",
+            "global": "GlobalObjectId_V1-3-bc2ff8f1451bf7e67980eed38b3d4eae-11400000-0",
+            "assetGuid": "bc2ff8f1451bf7e67980eed38b3d4eae",
+            "path": "Assets/Hollowmere/Npcs/Definitions/MarenBehaviour.asset"
+          }
+        }
+      ],
+      "provenance": {
+        "asset": "Assets/Hollowmere/Npcs/Definitions/Maren.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "ce503024-4b28-4194-8865-8eec9dd6d8a7",
+        "global": "GlobalObjectId_V1-3-1a0820b9c500f9195a0c9ab649618e27-11400000-0",
+        "assetGuid": "1a0820b9c500f9195a0c9ab649618e27",
+        "path": "Assets/Hollowmere/Npcs/Definitions/MarenEntity.asset",
+        "scope": "Definition",
+        "stamp": "sha256:132c5de705c41ffbbe0e09eed2eb6b3579ad28d0c26267c667e73087fc878fea"
+      },
+      "type": "entity.definition",
+      "name": "MarenEntity",
+      "fields": {
+        "animatorBindings": {
+          "value": [],
+          "type": "object[]"
+        },
+        "defaultScaleMilli": {
+          "value": 1000,
+          "unit": "milli",
+          "range": [
+            1.0,
+            100000.0
+          ],
+          "type": "int"
+        },
+        "interactionKind": {
+          "value": "",
+          "type": "string"
+        },
+        "overridableFields": {
+          "value": [
+            "scaleMilli",
+            "visible",
+            "tint"
+          ],
+          "type": "string[]"
+        },
+        "startsAlive": {
+          "value": true,
+          "type": "bool"
+        },
+        "startsVisible": {
+          "value": true,
+          "type": "bool"
+        }
+      },
+      "refs": [
+        {
+          "field": "prefab",
+          "to": {
+            "kind": "SceneObject",
+            "global": "GlobalObjectId_V1-1-596458344de352360aa8f29ac9a49551-6480318929854239657-0",
+            "assetGuid": "596458344de352360aa8f29ac9a49551",
+            "path": "Assets/Hollowmere/Npcs/Prefabs/NpcCapsule.prefab#/NpcCapsule"
+          }
+        }
+      ],
+      "provenance": {
+        "asset": "Assets/Hollowmere/Npcs/Definitions/MarenEntity.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "19b21d1c-9203-4d9a-a4fd-cb3e57a6ac54",
+        "global": "GlobalObjectId_V1-3-30fd77047fcfeb484a281c97ce32f960-11400000-0",
+        "assetGuid": "30fd77047fcfeb484a281c97ce32f960",
+        "path": "Assets/Hollowmere/Interactables/Definitions/WellBucketEntity.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a91f4093122034dec0cc5b88f41f5e172715eb3f24ae9a19546c079aafd44d4e"
+      },
+      "type": "entity.definition",
+      "name": "WellBucketEntity",
+      "fields": {
+        "animatorBindings": {
+          "value": [],
+          "type": "object[]"
+        },
+        "defaultScaleMilli": {
+          "value": 1000,
+          "unit": "milli",
+          "range": [
+            1.0,
+            100000.0
+          ],
+          "type": "int"
+        },
+        "interactionKind": {
+          "value": "",
+          "type": "string"
+        },
+        "overridableFields": {
+          "value": [
+            "scaleMilli",
+            "visible",
+            "tint"
+          ],
+          "type": "string[]"
+        },
+        "startsAlive": {
+          "value": true,
+          "type": "bool"
+        },
+        "startsVisible": {
+          "value": true,
+          "type": "bool"
+        }
+      },
+      "refs": [
+        {
+          "field": "prefab",
+          "to": {
+            "kind": "SceneObject",
+            "global": "GlobalObjectId_V1-1-7a6a9214c66806d5abc472287fa8c670-328063053743465943-0",
+            "assetGuid": "7a6a9214c66806d5abc472287fa8c670",
+            "path": "Assets/Hollowmere/Interactables/Prefabs/WellBucket.prefab#/WellBucket"
+          }
+        }
+      ],
+      "provenance": {
+        "asset": "Assets/Hollowmere/Interactables/Definitions/WellBucketEntity.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "7b933192-e58d-4f37-9f61-822393f69ab5",
+        "global": "GlobalObjectId_V1-3-22b625447999bf8e0b5abf693995fa30-11400000-0",
+        "assetGuid": "22b625447999bf8e0b5abf693995fa30",
+        "path": "Assets/Hollowmere/Npcs/NpcRoster.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a2b39624e5f647af6a54577e19267874dc7e69186694d5d2dbc1c4655f32e309"
+      },
+      "type": "npc.roster",
+      "name": "NpcRoster",
+      "fields": {
+        "stepMilliseconds": {
+          "value": 20,
+          "unit": "ms",
+          "range": [
+            5.0,
+            100.0
+          ],
+          "type": "int"
+        },
+        "unloadedStride": {
+          "value": 8,
+          "range": [
+            1.0,
+            64.0
+          ],
+          "type": "int"
+        }
+      },
+      "refs": [
+        {
+          "field": "npcs",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "b2252b06-3508-485b-abe4-9506dc0639a2",
+            "global": "GlobalObjectId_V1-3-cbf0b51cebb9c3db49d49f29b2615d0f-11400000-0",
+            "assetGuid": "cbf0b51cebb9c3db49d49f29b2615d0f",
+            "path": "Assets/Hollowmere/Npcs/Definitions/Maren.asset"
+          }
+        },
+        {
+          "field": "npcs",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "1ba7716b-d38c-4db3-9c0e-2a06f43c3716",
+            "global": "GlobalObjectId_V1-3-25f002ae09ef0ad13a564e056685a8ce-11400000-0",
+            "assetGuid": "25f002ae09ef0ad13a564e056685a8ce",
+            "path": "Assets/Hollowmere/Npcs/Definitions/Odd.asset"
+          }
+        },
+        {
+          "field": "npcs",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "70af11c6-4048-4745-8b6f-88870cb92d03",
+            "global": "GlobalObjectId_V1-3-f2c6d2d7305f551a49f285681abad139-11400000-0",
+            "assetGuid": "f2c6d2d7305f551a49f285681abad139",
+            "path": "Assets/Hollowmere/Npcs/Definitions/Pip.asset"
+          }
+        },
+        {
+          "field": "npcs",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "41c5b083-a381-47e7-be27-ad89ab6370bc",
+            "global": "GlobalObjectId_V1-3-9453e6aa57d45cf418b51c585df9a0db-11400000-0",
+            "assetGuid": "9453e6aa57d45cf418b51c585df9a0db",
+            "path": "Assets/Hollowmere/Npcs/Definitions/Hale.asset"
+          }
+        },
+        {
+          "field": "npcs",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "fb54875d-05d9-478c-be6c-62b13bddfaac",
+            "global": "GlobalObjectId_V1-3-e38cdce45e4cc3b78a855c042dcdb11e-11400000-0",
+            "assetGuid": "e38cdce45e4cc3b78a855c042dcdb11e",
+            "path": "Assets/Hollowmere/Npcs/Definitions/BelfryEcho.asset"
+          }
+        }
+      ],
+      "provenance": {
+        "asset": "Assets/Hollowmere/Npcs/NpcRoster.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "dabf28ee-6c4f-4ca2-9793-9d2f2b9817e5",
+        "global": "GlobalObjectId_V1-3-bc2ff8f1451bf7e67980eed38b3d4eae-11400000-0",
+        "assetGuid": "bc2ff8f1451bf7e67980eed38b3d4eae",
+        "path": "Assets/Hollowmere/Npcs/Definitions/MarenBehaviour.asset",
+        "scope": "Definition",
+        "stamp": "sha256:57b73260aaaa85f5617bd4d6d267cf4ac9da2309f7cd84852d84df3a4580acb0"
+      },
+      "type": "npc.behaviour",
+      "name": "MarenBehaviour",
+      "fields": {
+        "customId": {
+          "value": "",
+          "type": "string"
+        },
+        "kind": {
+          "value": "Patrol",
+          "type": "enum"
+        },
+        "patrolPoints": {
+          "value": [
+            [
+              -8.0,
+              0.0,
+              -12.0
+            ],
+            [
+              -8.0,
+              0.0,
+              -4.0
+            ]
+          ],
+          "unit": "m",
+          "type": "vector3[]"
+        },
+        "waitSeconds": {
+          "value": 1.5,
+          "unit": "s",
+          "range": [
+            0.0,
+            600.0
+          ],
+          "type": "float"
+        }
+      },
+      "provenance": {
+        "asset": "Assets/Hollowmere/Npcs/Definitions/MarenBehaviour.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "d0e07a7e-7f26-4c76-a782-5c4f171c030d",
+        "global": "GlobalObjectId_V1-3-abf1477b24d3dd38193b3d1ba100db0a-11400000-0",
+        "assetGuid": "abf1477b24d3dd38193b3d1ba100db0a",
+        "path": "Assets/Hollowmere/Interactables/Definitions/VillageWell.asset",
+        "scope": "Definition",
+        "stamp": "sha256:3492c9ce1c3b2092ee13481d56dee841dd316c68945e20c5b358f6bfdf7805ec"
+      },
+      "type": "interaction.interactable",
+      "name": "VillageWell",
+      "fields": {
+        "cooldownSeconds": {
+          "value": 0.5,
+          "unit": "s",
+          "range": [
+            0.0,
+            3600.0
+          ],
+          "type": "float"
+        },
+        "cue": {
+          "value": "",
+          "type": "string"
+        },
+        "focusHeight": {
+          "value": 1.0,
+          "unit": "m",
+          "range": [
+            0.0,
+            10.0
+          ],
+          "type": "float"
+        },
+        "focusPriority": {
+          "value": 0,
+          "range": [
+            -100.0,
+            100.0
+          ],
+          "type": "int"
+        },
+        "initialState": {
+          "value": "idle",
+          "type": "string"
+        },
+        "kind": {
+          "value": "Examinable",
+          "type": "enum"
+        },
+        "maxUses": {
+          "value": 0,
+          "range": [
+            0.0,
+            100000.0
+          ],
+          "type": "int"
+        },
+        "prompts": {
+          "value": [
+            {
+              "state": "idle",
+              "text": "Examine the well"
+            }
+          ],
+          "type": "object[]"
+        },
+        "range": {
+          "value": 3.0,
+          "unit": "m",
+          "range": [
+            0.0,
+            20.0
+          ],
+          "type": "float"
+        }
+      },
+      "refs": [
+        {
+          "field": "entity",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "19b21d1c-9203-4d9a-a4fd-cb3e57a6ac54",
+            "global": "GlobalObjectId_V1-3-30fd77047fcfeb484a281c97ce32f960-11400000-0",
+            "assetGuid": "30fd77047fcfeb484a281c97ce32f960",
+            "path": "Assets/Hollowmere/Interactables/Definitions/WellBucketEntity.asset"
+          }
+        }
+      ],
+      "provenance": {
+        "asset": "Assets/Hollowmere/Interactables/Definitions/VillageWell.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "1ba7716b-d38c-4db3-9c0e-2a06f43c3716",
+        "global": "GlobalObjectId_V1-3-25f002ae09ef0ad13a564e056685a8ce-11400000-0",
+        "assetGuid": "25f002ae09ef0ad13a564e056685a8ce",
+        "path": "Assets/Hollowmere/Npcs/Definitions/Odd.asset",
+        "scope": "Definition",
+        "stamp": "sha256:122bae7b2dd37346fadad69bf7d863e95494f91bd63e4d673da281ce2b4ce440"
+      },
+      "type": "npc.definition",
+      "name": "Odd",
+      "fields": {
+        "arriveRadius": {
+          "value": 0.05,
+          "unit": "m",
+          "range": [
+            0.01,
+            2.0
+          ],
+          "type": "float"
+        },
+        "converseSeconds": {
+          "value": 4.0,
+          "unit": "s",
+          "range": [
+            0.5,
+            600.0
+          ],
+          "type": "float"
+        },
+        "displayName": {
+          "value": "Odd",
+          "type": "string"
+        },
+        "focusPriority": {
+          "value": 1,
+          "range": [
+            -100.0,
+            100.0
+          ],
+          "type": "int"
+        },
+        "mood": {
+          "value": 0,
+          "range": [
+            -100.0,
+            100.0
+          ],
+          "type": "int"
+        },
+        "speed": {
+          "value": 1.6,
+          "unit": "m/s",
+          "range": [
+            0.1,
+            10.0
+          ],
+          "type": "float"
+        },
+        "talkRange": {
+          "value": 2.5,
+          "unit": "m",
+          "range": [
+            0.5,
+            5.0
+          ],
+          "type": "float"
+        },
+        "voiceId": {
+          "value": "voice.odd",
+          "type": "string"
+        }
+      },
+      "refs": [
+        {
+          "field": "entity",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "b30c7c02-4a11-4a92-9bf9-b15f89b7acaf",
+            "global": "GlobalObjectId_V1-3-c85061092bd3b67cc84cae5e7bd3a3bb-11400000-0",
+            "assetGuid": "c85061092bd3b67cc84cae5e7bd3a3bb",
+            "path": "Assets/Hollowmere/Npcs/Definitions/OddEntity.asset"
+          }
+        },
+        {
+          "field": "behaviour",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "fe1e2693-bf69-4db6-b2dd-02255ae5ff98",
+            "global": "GlobalObjectId_V1-3-32e55272ca8b6609cb80675b342f4401-11400000-0",
+            "assetGuid": "32e55272ca8b6609cb80675b342f4401",
+            "path": "Assets/Hollowmere/Npcs/Definitions/OddBehaviour.asset"
+          }
+        }
+      ],
+      "provenance": {
+        "asset": "Assets/Hollowmere/Npcs/Definitions/Odd.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "41c5b083-a381-47e7-be27-ad89ab6370bc",
+        "global": "GlobalObjectId_V1-3-9453e6aa57d45cf418b51c585df9a0db-11400000-0",
+        "assetGuid": "9453e6aa57d45cf418b51c585df9a0db",
+        "path": "Assets/Hollowmere/Npcs/Definitions/Hale.asset",
+        "scope": "Definition",
+        "stamp": "sha256:99eb21952c0f4810a0f6c361555d84ec98799d02c59db5854ccbcdda850ac90b"
+      },
+      "type": "npc.definition",
+      "name": "Hale",
+      "fields": {
+        "arriveRadius": {
+          "value": 0.05,
+          "unit": "m",
+          "range": [
+            0.01,
+            2.0
+          ],
+          "type": "float"
+        },
+        "converseSeconds": {
+          "value": 4.0,
+          "unit": "s",
+          "range": [
+            0.5,
+            600.0
+          ],
+          "type": "float"
+        },
+        "displayName": {
+          "value": "Hale",
+          "type": "string"
+        },
+        "focusPriority": {
+          "value": 1,
+          "range": [
+            -100.0,
+            100.0
+          ],
+          "type": "int"
+        },
+        "mood": {
+          "value": 0,
+          "range": [
+            -100.0,
+            100.0
+          ],
+          "type": "int"
+        },
+        "speed": {
+          "value": 1.5,
+          "unit": "m/s",
+          "range": [
+            0.1,
+            10.0
+          ],
+          "type": "float"
+        },
+        "talkRange": {
+          "value": 2.5,
+          "unit": "m",
+          "range": [
+            0.5,
+            5.0
+          ],
+          "type": "float"
+        },
+        "voiceId": {
+          "value": "voice.hale",
+          "type": "string"
+        }
+      },
+      "refs": [
+        {
+          "field": "entity",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "68d2519f-2a40-439b-be2d-63d16581cd06",
+            "global": "GlobalObjectId_V1-3-8925e4c338fef6c91879d6e770181bdf-11400000-0",
+            "assetGuid": "8925e4c338fef6c91879d6e770181bdf",
+            "path": "Assets/Hollowmere/Npcs/Definitions/HaleEntity.asset"
+          }
+        },
+        {
+          "field": "behaviour",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "63b0096d-625a-4bd5-bda6-4397fb98f039",
+            "global": "GlobalObjectId_V1-3-8e3681212e040ec439d6a09318cfc9fd-11400000-0",
+            "assetGuid": "8e3681212e040ec439d6a09318cfc9fd",
+            "path": "Assets/Hollowmere/Npcs/Definitions/HaleBehaviour.asset"
+          }
+        }
+      ],
+      "provenance": {
+        "asset": "Assets/Hollowmere/Npcs/Definitions/Hale.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "70af11c6-4048-4745-8b6f-88870cb92d03",
+        "global": "GlobalObjectId_V1-3-f2c6d2d7305f551a49f285681abad139-11400000-0",
+        "assetGuid": "f2c6d2d7305f551a49f285681abad139",
+        "path": "Assets/Hollowmere/Npcs/Definitions/Pip.asset",
+        "scope": "Definition",
+        "stamp": "sha256:39626e43a69600bd79d0fbd4fdb7188491b3146dedb2c55098f28947befafc51"
+      },
+      "type": "npc.definition",
+      "name": "Pip",
+      "fields": {
+        "arriveRadius": {
+          "value": 0.05,
+          "unit": "m",
+          "range": [
+            0.01,
+            2.0
+          ],
+          "type": "float"
+        },
+        "converseSeconds": {
+          "value": 4.0,
+          "unit": "s",
+          "range": [
+            0.5,
+            600.0
+          ],
+          "type": "float"
+        },
+        "displayName": {
+          "value": "Pip",
+          "type": "string"
+        },
+        "focusPriority": {
+          "value": 1,
+          "range": [
+            -100.0,
+            100.0
+          ],
+          "type": "int"
+        },
+        "mood": {
+          "value": 0,
+          "range": [
+            -100.0,
+            100.0
+          ],
+          "type": "int"
+        },
+        "speed": {
+          "value": 2.2,
+          "unit": "m/s",
+          "range": [
+            0.1,
+            10.0
+          ],
+          "type": "float"
+        },
+        "talkRange": {
+          "value": 2.5,
+          "unit": "m",
+          "range": [
+            0.5,
+            5.0
+          ],
+          "type": "float"
+        },
+        "voiceId": {
+          "value": "voice.pip",
+          "type": "string"
+        }
+      },
+      "refs": [
+        {
+          "field": "entity",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "2e855e96-41a6-4b39-b5a0-56319b43c989",
+            "global": "GlobalObjectId_V1-3-2970f8269becd59aea9228da6f3781cc-11400000-0",
+            "assetGuid": "2970f8269becd59aea9228da6f3781cc",
+            "path": "Assets/Hollowmere/Npcs/Definitions/PipEntity.asset"
+          }
+        },
+        {
+          "field": "behaviour",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "65001da5-9052-42fb-847c-3d60dff8cc23",
+            "global": "GlobalObjectId_V1-3-297603b250412e27da1c772965982384-11400000-0",
+            "assetGuid": "297603b250412e27da1c772965982384",
+            "path": "Assets/Hollowmere/Npcs/Definitions/PipBehaviour.asset"
+          }
+        },
+        {
+          "field": "schedule",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "7493b3f3-fd29-4b35-bc06-a59dddc36c99",
+            "global": "GlobalObjectId_V1-3-ba7502546006b2d77901c118a9717103-11400000-0",
+            "assetGuid": "ba7502546006b2d77901c118a9717103",
+            "path": "Assets/Hollowmere/Npcs/Definitions/PipDayNight.asset"
+          }
+        }
+      ],
+      "provenance": {
+        "asset": "Assets/Hollowmere/Npcs/Definitions/Pip.asset"
+      }
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "fb54875d-05d9-478c-be6c-62b13bddfaac",
+        "global": "GlobalObjectId_V1-3-e38cdce45e4cc3b78a855c042dcdb11e-11400000-0",
+        "assetGuid": "e38cdce45e4cc3b78a855c042dcdb11e",
+        "path": "Assets/Hollowmere/Npcs/Definitions/BelfryEcho.asset",
+        "scope": "Definition",
+        "stamp": "sha256:e49272b6553ddb183e58069cef308c8bc9138a32f57b5f52da8a7fab796bb44d"
+      },
+      "type": "npc.definition",
+      "name": "BelfryEcho",
+      "fields": {
+        "arriveRadius": {
+          "value": 0.05,
+          "unit": "m",
+          "range": [
+            0.01,
+            2.0
+          ],
+          "type": "float"
+        },
+        "converseSeconds": {
+          "value": 4.0,
+          "unit": "s",
+          "range": [
+            0.5,
+            600.0
+          ],
+          "type": "float"
+        },
+        "displayName": {
+          "value": "Belfry Echo",
+          "type": "string"
+        },
+        "focusPriority": {
+          "value": 1,
+          "range": [
+            -100.0,
+            100.0
+          ],
+          "type": "int"
+        },
+        "mood": {
+          "value": 0,
+          "range": [
+            -100.0,
+            100.0
+          ],
+          "type": "int"
+        },
+        "speed": {
+          "value": 1.2,
+          "unit": "m/s",
+          "range": [
+            0.1,
+            10.0
+          ],
+          "type": "float"
+        },
+        "talkRange": {
+          "value": 2.5,
+          "unit": "m",
+          "range": [
+            0.5,
+            5.0
+          ],
+          "type": "float"
+        },
+        "voiceId": {
+          "value": "voice.echo",
+          "type": "string"
+        }
+      },
+      "refs": [
+        {
+          "field": "entity",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "2a8a3d76-2dea-4c2c-88a3-13be92ea473f",
+            "global": "GlobalObjectId_V1-3-da0512e079b8b8726926a321501301dd-11400000-0",
+            "assetGuid": "da0512e079b8b8726926a321501301dd",
+            "path": "Assets/Hollowmere/Npcs/Definitions/BelfryEchoEntity.asset"
+          }
+        },
+        {
+          "field": "behaviour",
+          "to": {
+            "kind": "Definition",
+            "authoringId": "f887a0e1-939c-45bb-b7cf-61caf86216bb",
+            "global": "GlobalObjectId_V1-3-bfc27c460eaa24cdd87cd49fbb29f6dc-11400000-0",
+            "assetGuid": "bfc27c460eaa24cdd87cd49fbb29f6dc",
+            "path": "Assets/Hollowmere/Npcs/Definitions/BelfryEchoBehaviour.asset"
+          }
+        }
+      ],
+      "provenance": {
+        "asset": "Assets/Hollowmere/Npcs/Definitions/BelfryEcho.asset"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": {
+        "kind": "Definition",
+        "authoringId": "7b933192-e58d-4f37-9f61-822393f69ab5",
+        "global": "GlobalObjectId_V1-3-22b625447999bf8e0b5abf693995fa30-11400000-0",
+        "assetGuid": "22b625447999bf8e0b5abf693995fa30",
+        "path": "Assets/Hollowmere/Npcs/NpcRoster.asset"
+      },
+      "to": {
+        "kind": "Definition",
+        "authoringId": "1ba7716b-d38c-4db3-9c0e-2a06f43c3716",
+        "global": "GlobalObjectId_V1-3-25f002ae09ef0ad13a564e056685a8ce-11400000-0",
+        "assetGuid": "25f002ae09ef0ad13a564e056685a8ce",
+        "path": "Assets/Hollowmere/Npcs/Definitions/Odd.asset"
+      },
+      "kind": "references"
+    },
+    {
+      "from": {
+        "kind": "Definition",
+        "authoringId": "7b933192-e58d-4f37-9f61-822393f69ab5",
+        "global": "GlobalObjectId_V1-3-22b625447999bf8e0b5abf693995fa30-11400000-0",
+        "assetGuid": "22b625447999bf8e0b5abf693995fa30",
+        "path": "Assets/Hollowmere/Npcs/NpcRoster.asset"
+      },
+      "to": {
+        "kind": "Definition",
+        "authoringId": "41c5b083-a381-47e7-be27-ad89ab6370bc",
+        "global": "GlobalObjectId_V1-3-9453e6aa57d45cf418b51c585df9a0db-11400000-0",
+        "assetGuid": "9453e6aa57d45cf418b51c585df9a0db",
+        "path": "Assets/Hollowmere/Npcs/Definitions/Hale.asset"
+      },
+      "kind": "references"
+    },
+    {
+      "from": {
+        "kind": "Definition",
+        "authoringId": "7b933192-e58d-4f37-9f61-822393f69ab5",
+        "global": "GlobalObjectId_V1-3-22b625447999bf8e0b5abf693995fa30-11400000-0",
+        "assetGuid": "22b625447999bf8e0b5abf693995fa30",
+        "path": "Assets/Hollowmere/Npcs/NpcRoster.asset"
+      },
+      "to": {
+        "kind": "Definition",
+        "authoringId": "70af11c6-4048-4745-8b6f-88870cb92d03",
+        "global": "GlobalObjectId_V1-3-f2c6d2d7305f551a49f285681abad139-11400000-0",
+        "assetGuid": "f2c6d2d7305f551a49f285681abad139",
+        "path": "Assets/Hollowmere/Npcs/Definitions/Pip.asset"
+      },
+      "kind": "references"
+    },
+    {
+      "from": {
+        "kind": "Definition",
+        "authoringId": "7b933192-e58d-4f37-9f61-822393f69ab5",
+        "global": "GlobalObjectId_V1-3-22b625447999bf8e0b5abf693995fa30-11400000-0",
+        "assetGuid": "22b625447999bf8e0b5abf693995fa30",
+        "path": "Assets/Hollowmere/Npcs/NpcRoster.asset"
+      },
+      "to": {
+        "kind": "Definition",
+        "authoringId": "b2252b06-3508-485b-abe4-9506dc0639a2",
+        "global": "GlobalObjectId_V1-3-cbf0b51cebb9c3db49d49f29b2615d0f-11400000-0",
+        "assetGuid": "cbf0b51cebb9c3db49d49f29b2615d0f",
+        "path": "Assets/Hollowmere/Npcs/Definitions/Maren.asset"
+      },
+      "kind": "references"
+    },
+    {
+      "from": {
+        "kind": "Definition",
+        "authoringId": "7b933192-e58d-4f37-9f61-822393f69ab5",
+        "global": "GlobalObjectId_V1-3-22b625447999bf8e0b5abf693995fa30-11400000-0",
+        "assetGuid": "22b625447999bf8e0b5abf693995fa30",
+        "path": "Assets/Hollowmere/Npcs/NpcRoster.asset"
+      },
+      "to": {
+        "kind": "Definition",
+        "authoringId": "fb54875d-05d9-478c-be6c-62b13bddfaac",
+        "global": "GlobalObjectId_V1-3-e38cdce45e4cc3b78a855c042dcdb11e-11400000-0",
+        "assetGuid": "e38cdce45e4cc3b78a855c042dcdb11e",
+        "path": "Assets/Hollowmere/Npcs/Definitions/BelfryEcho.asset"
+      },
+      "kind": "references"
+    },
+    {
+      "from": {
+        "kind": "Definition",
+        "authoringId": "b2252b06-3508-485b-abe4-9506dc0639a2",
+        "global": "GlobalObjectId_V1-3-cbf0b51cebb9c3db49d49f29b2615d0f-11400000-0",
+        "assetGuid": "cbf0b51cebb9c3db49d49f29b2615d0f",
+        "path": "Assets/Hollowmere/Npcs/Definitions/Maren.asset"
+      },
+      "to": {
+        "kind": "Definition",
+        "authoringId": "ce503024-4b28-4194-8865-8eec9dd6d8a7",
+        "global": "GlobalObjectId_V1-3-1a0820b9c500f9195a0c9ab649618e27-11400000-0",
+        "assetGuid": "1a0820b9c500f9195a0c9ab649618e27",
+        "path": "Assets/Hollowmere/Npcs/Definitions/MarenEntity.asset"
+      },
+      "kind": "references"
+    },
+    {
+      "from": {
+        "kind": "Definition",
+        "authoringId": "b2252b06-3508-485b-abe4-9506dc0639a2",
+        "global": "GlobalObjectId_V1-3-cbf0b51cebb9c3db49d49f29b2615d0f-11400000-0",
+        "assetGuid": "cbf0b51cebb9c3db49d49f29b2615d0f",
+        "path": "Assets/Hollowmere/Npcs/Definitions/Maren.asset"
+      },
+      "to": {
+        "kind": "Definition",
+        "authoringId": "dabf28ee-6c4f-4ca2-9793-9d2f2b9817e5",
+        "global": "GlobalObjectId_V1-3-bc2ff8f1451bf7e67980eed38b3d4eae-11400000-0",
+        "assetGuid": "bc2ff8f1451bf7e67980eed38b3d4eae",
+        "path": "Assets/Hollowmere/Npcs/Definitions/MarenBehaviour.asset"
+      },
+      "kind": "references"
+    },
+    {
+      "from": {
+        "kind": "Definition",
+        "authoringId": "d0e07a7e-7f26-4c76-a782-5c4f171c030d",
+        "global": "GlobalObjectId_V1-3-abf1477b24d3dd38193b3d1ba100db0a-11400000-0",
+        "assetGuid": "abf1477b24d3dd38193b3d1ba100db0a",
+        "path": "Assets/Hollowmere/Interactables/Definitions/VillageWell.asset"
+      },
+      "to": {
+        "kind": "Definition",
+        "authoringId": "19b21d1c-9203-4d9a-a4fd-cb3e57a6ac54",
+        "global": "GlobalObjectId_V1-3-30fd77047fcfeb484a281c97ce32f960-11400000-0",
+        "assetGuid": "30fd77047fcfeb484a281c97ce32f960",
+        "path": "Assets/Hollowmere/Interactables/Definitions/WellBucketEntity.asset"
+      },
+      "kind": "references"
+    },
+    {
+      "from": {
+        "kind": "Entity",
+        "authoringId": "da525107-c2c1-4626-ac08-5058a1e01c06",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1121024804-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Maren"
+      },
+      "to": {
+        "kind": "Definition",
+        "authoringId": "ce503024-4b28-4194-8865-8eec9dd6d8a7",
+        "global": "GlobalObjectId_V1-3-1a0820b9c500f9195a0c9ab649618e27-11400000-0",
+        "assetGuid": "1a0820b9c500f9195a0c9ab649618e27",
+        "path": "Assets/Hollowmere/Npcs/Definitions/MarenEntity.asset"
+      },
+      "kind": "references"
+    },
+    {
+      "from": {
+        "kind": "Entity",
+        "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well"
+      },
+      "to": {
+        "kind": "Definition",
+        "authoringId": "19b21d1c-9203-4d9a-a4fd-cb3e57a6ac54",
+        "global": "GlobalObjectId_V1-3-30fd77047fcfeb484a281c97ce32f960-11400000-0",
+        "assetGuid": "30fd77047fcfeb484a281c97ce32f960",
+        "path": "Assets/Hollowmere/Interactables/Definitions/WellBucketEntity.asset"
+      },
+      "kind": "references"
+    }
+  ]
+}
