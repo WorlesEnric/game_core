@@ -69,7 +69,7 @@ def xml_counts(path):
 def finish(folder, record):
     # Unity writes XML/logs itself. Scrub text paths after exit; preserve original XML outcomes.
     for path in folder.rglob('*'):
-        if path.is_file() and path.suffix in ('.xml', '.trx', '.log', '.txt', '.json'):
+        if path.is_file() and path.suffix in ('.xml', '.trx', '.log', '.txt', '.json', '.md'):
             data = path.read_text(errors='replace')
             path.write_text(('\n'.join(line.rstrip() for line in scrub(data).splitlines()).rstrip() + '\n') if data else '')
     (folder / 'result.json').write_text(scrub(json.dumps(record, indent=2)) + '\n')

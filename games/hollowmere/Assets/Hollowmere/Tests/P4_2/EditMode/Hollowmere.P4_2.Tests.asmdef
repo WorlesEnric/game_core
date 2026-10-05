@@ -1,14 +1,33 @@
 {
   "name": "Hollowmere.P4_2.Tests",
   "rootNamespace": "Hollowmere.P4_2",
-  "references": ["GameCore.Studio.Model", "GameCore.Studio.Authoring", "GameCore.Studio.Core.Editor", "GameCore.Studio.UI.Editor", "GameCore.Unity.App", "GameCore.Contracts", "GameCore.Gameplay.World", "Hollowmere.Game", "UnityEngine.TestRunner", "UnityEditor.TestRunner"],
-  "includePlatforms": ["Editor"],
+  "references": [
+    "GameCore.Studio.Model",
+    "GameCore.Studio.Authoring",
+    "GameCore.Studio.Core.Editor",
+    "GameCore.Studio.UI.Editor",
+    "GameCore.Unity.App",
+    "GameCore.Contracts",
+    "GameCore.Gameplay.World",
+    "Hollowmere.Game",
+    "UnityEngine.TestRunner",
+    "UnityEditor.TestRunner",
+    "Hollowmere.P2_1.Evidence"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
   "excludePlatforms": [],
   "allowUnsafeCode": false,
   "overrideReferences": true,
-  "precompiledReferences": ["nunit.framework.dll", "Newtonsoft.Json.dll"],
+  "precompiledReferences": [
+    "nunit.framework.dll",
+    "Newtonsoft.Json.dll"
+  ],
   "autoReferenced": false,
-  "defineConstraints": ["UNITY_INCLUDE_TESTS"],
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
   "versionDefines": [],
   "noEngineReferences": false
 }
