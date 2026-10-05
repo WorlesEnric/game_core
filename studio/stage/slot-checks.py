@@ -88,6 +88,10 @@ def metadata_checks(cpm, repo: Path, package_dir: Path, package_name: str, probl
     # Every com.gamecore.* package lives in the repository's Packages/ (P0.2 layout); walking only that directory keeps
     # the check off the large artifacts/ tree. The discovery function itself is the checker's own.
     packages = cpm.discover_packages(repo / "Packages")
+    # An admitted package installed under the shared policy is itself one of the repository packages; it is checked as
+    # the candidate, not as a duplicate of itself.
+    packages = {name: info for name, info in packages.items()
+                if Path(info["dir"]).resolve() != package_dir.resolve()}
     assemblies = cpm.discover_asmdefs(packages)
     own = cpm.discover_asmdefs({package_name: {"dir": package_dir}})
     for assembly, owner in own.items():

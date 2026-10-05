@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="7" result="Passed" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-05 01:29:42Z" end-time="2026-10-05 01:29:46Z" duration="3.1834405">
+  <test-suite type="TestSuite" id="1000" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="60" result="Passed" start-time="2026-10-05 01:29:42Z" end-time="2026-10-05 01:29:46Z" duration="3.183441" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1089" name="Hollowmere.P2_4.EditMode.Tests.dll" fullname="/home/worlesenric/wkspace/gc-studio/p2.4/games/hollowmere/Library/ScriptAssemblies/Hollowmere.P2_4.EditMode.Tests.dll" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-05 01:29:42Z" end-time="2026-10-05 01:29:46Z" duration="3.174206" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="3396557" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1090" name="Hollowmere" fullname="Hollowmere" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-05 01:29:42Z" end-time="2026-10-05 01:29:46Z" duration="3.173898" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1091" name="P2_4" fullname="Hollowmere.P2_4" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-05 01:29:42Z" end-time="2026-10-05 01:29:46Z" duration="3.173719" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1092" name="EditMode" fullname="Hollowmere.P2_4.EditMode" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-05 01:29:42Z" end-time="2026-10-05 01:29:46Z" duration="3.173575" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1093" name="Tests" fullname="Hollowmere.P2_4.EditMode.Tests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-05 01:29:42Z" end-time="2026-10-05 01:29:46Z" duration="3.173387" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1081" name="StageAdmissionTests" fullname="Hollowmere.P2_4.EditMode.Tests.StageAdmissionTests" classname="Hollowmere.P2_4.EditMode.Tests.StageAdmissionTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-05 01:29:42Z" end-time="2026-10-05 01:29:46Z" duration="3.172610" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1085" name="ACompileFailureRollsTheAdmissionBack" fullname="Hollowmere.P2_4.EditMode.Tests.StageAdmissionTests.ACompileFailureRollsTheAdmissionBack" methodname="ACompileFailureRollsTheAdmissionBack" classname="Hollowmere.P2_4.EditMode.Tests.StageAdmissionTests" runstate="Runnable" seed="766362917" result="Passed" start-time="2026-10-05 01:29:42Z" end-time="2026-10-05 01:29:45Z" duration="3.023592" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1084" name="AdmissionIsRefusedWithATamperedArtifact" fullname="Hollowmere.P2_4.EditMode.Tests.StageAdmissionTests.AdmissionIsRefusedWithATamperedArtifact" methodname="AdmissionIsRefusedWithATamperedArtifact" classname="Hollowmere.P2_4.EditMode.Tests.StageAdmissionTests" runstate="Runnable" seed="1471944579" result="Passed" start-time="2026-10-05 01:29:45Z" end-time="2026-10-05 01:29:45Z" duration="0.044720" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1082" name="AdmissionIsRefusedWithoutAVerdict" fullname="Hollowmere.P2_4.EditMode.Tests.StageAdmissionTests.AdmissionIsRefusedWithoutAVerdict" methodname="AdmissionIsRefusedWithoutAVerdict" classname="Hollowmere.P2_4.EditMode.Tests.StageAdmissionTests" runstate="Runnable" seed="585880895" result="Passed" start-time="2026-10-05 01:29:45Z" end-time="2026-10-05 01:29:46Z" duration="0.027700" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1083" name="AdmissionSucceedsWithAMatchingVerdict" fullname="Hollowmere.P2_4.EditMode.Tests.StageAdmissionTests.AdmissionSucceedsWithAMatchingVerdict" methodname="AdmissionSucceedsWithAMatchingVerdict" classname="Hollowmere.P2_4.EditMode.Tests.StageAdmissionTests" runstate="Runnable" seed="965333482" result="Passed" start-time="2026-10-05 01:29:46Z" end-time="2026-10-05 01:29:46Z" duration="0.026428" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1086" name="AFaultAfterTheCompileRollsTheAdmissionBack" fullname="Hollowmere.P2_4.EditMode.Tests.StageAdmissionTests.AFaultAfterTheCompileRollsTheAdmissionBack" methodname="AFaultAfterTheCompileRollsTheAdmissionBack" classname="Hollowmere.P2_4.EditMode.Tests.StageAdmissionTests" runstate="Runnable" seed="1580691772" result="Passed" start-time="2026-10-05 01:29:46Z" end-time="2026-10-05 01:29:46Z" duration="0.010708" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1087" name="AMismatchedLiveCatalogRollsTheAdmissionBack" fullname="Hollowmere.P2_4.EditMode.Tests.StageAdmissionTests.AMismatchedLiveCatalogRollsTheAdmissionBack" methodname="AMismatchedLiveCatalogRollsTheAdmissionBack" classname="Hollowmere.P2_4.EditMode.Tests.StageAdmissionTests" runstate="Runnable" seed="1790838303" result="Passed" start-time="2026-10-05 01:29:46Z" end-time="2026-10-05 01:29:46Z" duration="0.010033" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1088" name="UndoAfterAdmitRemovesThePackageAndRestoresTheCatalogHash" fullname="Hollowmere.P2_4.EditMode.Tests.StageAdmissionTests.UndoAfterAdmitRemovesThePackageAndRestoresTheCatalogHash" methodname="UndoAfterAdmitRemovesThePackageAndRestoresTheCatalogHash" classname="Hollowmere.P2_4.EditMode.Tests.StageAdmissionTests" runstate="Runnable" seed="1697962169" result="Passed" start-time="2026-10-05 01:29:46Z" end-time="2026-10-05 01:29:46Z" duration="0.019204" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[Saving results to: /home/worlesenric/.config/unity3d/GameCore/Hollowmere/TestResults.xml
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
