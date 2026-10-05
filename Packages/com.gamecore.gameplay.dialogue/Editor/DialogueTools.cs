@@ -251,7 +251,7 @@ namespace GameCore.Gameplay.Dialogue.Editor
             [AuthorArg(Doc = "Line node index.")] int node,
             [AuthorArg(Required = false, Doc = "Voice name for the provider.")] string voice = "")
         {
-            return GenerateVoice(graph, node, voice, new NotConfiguredMediaGateway());
+            return GenerateVoice(graph, node, voice, MediaGenerationLookup.Resolve(Resources.FindObjectsOfTypeAll<ScriptableObject>()));
         }
 
         /// <summary>The same request through an explicit gateway (P3 passes a configured one).</summary>

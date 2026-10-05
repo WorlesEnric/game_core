@@ -4,12 +4,9 @@
 //   audio.setAmbience    give a region its ambience loop (creates the AmbienceDefinition and adds it to the set)
 //   audio.setMusicState  add or edit a music state of a set (loop clip, crossfade, stinger), optionally the start state
 //   audio.generateVoice  request a spoken line through the media gateway (agent tool)
-//   audio.generateSfx    request a sound effect (agent tool; no gateway operation exists yet)
-// The generate tools never call a provider: voice goes through P1.4's IMediaGenerationGateway.RequestVoiceLine, whose
-// default (NotConfiguredMediaGateway) answers NotConfigured until P2.2 supplies a gateway; a Requested line arrives
-// later as a candidate clip, which audio.assignClip puts into the bank. The gateway contract has no sound-effect request,
-// so audio.generateSfx answers NotConfigured (GP-AUD-020). Nothing changes on disk in either case. 05 calls their tier
-// "Agent"; 03's ToolTier has no such member, so they are Compose tools with Requires = "agent.media".
+//   audio.generateSfx    request a sound effect through an optional registered capability
+// Generation is delegated to the configured session gateway; artifacts arrive as candidates for journaled import/bind.
+// No gateway or no sound-effect capability answers NotConfigured. These tools never import returned raw bytes.
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -209,7 +206,7 @@ namespace GameCore.Gameplay.Audio.Editor
         }
 
         [AuthorOperation("audio.generateSfx", Tier = ToolTier.Compose, RuntimeApplicability = RuntimeApply.Live, Requires = AgentMedia,
-            Doc = "Requests a sound effect; the media gateway contract has no sound-effect operation yet, so this answers NotConfigured (GP-AUD-020) and changes nothing.")]
+            Doc = "Requests a sound effect through the registered optional sound-effect capability; otherwise answers NotConfigured (GP-AUD-020).")]
         public static MediaGenerationResult GenerateSfx(
             AudioBankDefinition bank,
             [AuthorArg(Doc = "Bank clip id (e.g. sfx.door.creak).")] string clipId,
@@ -222,11 +219,15 @@ namespace GameCore.Gameplay.Audio.Editor
                 throw new ArgumentException(PresentationDiagnosticCodes.MediaRefused + ": a description is required");
             }
 
-            return new MediaGenerationResult(
-                MediaGenerationStatus.NotConfigured,
-                string.Empty,
-                PresentationDiagnosticCodes.MediaNotConfigured + ": the media gateway contract (IMediaGenerationGateway) has no sound-effect request; "
-                    + "generate the clip elsewhere and assign it with audio.assignClip");
+            if (durationMs < 0 || durationMs > 30000)
+            {
+                throw new ArgumentException(PresentationDiagnosticCodes.MediaRefused + ": duration must be between 0 and 30000 ms");
+            }
+
+            return MediaGateways.Resolve() is ISoundEffectGenerationGateway gateway
+                ? gateway.RequestSoundEffect(clipId, description, durationMs)
+                : new MediaGenerationResult(MediaGenerationStatus.NotConfigured, string.Empty,
+                    PresentationDiagnosticCodes.MediaNotConfigured + ": the registered gateway has no sound-effect capability");
         }
 
         private static void RequireClipId(AudioBankDefinition bank, string clipId)
@@ -270,30 +271,12 @@ namespace GameCore.Gameplay.Audio.Editor
         }
     }
 
-    /// <summary>
-    /// Finds the media gateway: the first concrete IMediaGenerationGateway (ordinal by full type name) with a public
-    /// parameterless constructor among the loaded editor types, other than P1.4's NotConfiguredMediaGateway (P2.2 adds
-    /// one); otherwise NotConfiguredMediaGateway. Discovery only: nothing is cached or registered.
-    /// </summary>
+    /// <summary>Looks up the configured gateway from the live Editor session, without constructing providers.</summary>
     public static class MediaGateways
     {
         public static IMediaGenerationGateway Resolve()
         {
-            Type? chosen = null;
-            foreach (Type type in TypeCache.GetTypesDerivedFrom<IMediaGenerationGateway>())
-            {
-                if (type.IsAbstract || type.IsInterface || type == typeof(NotConfiguredMediaGateway) || type.GetConstructor(Type.EmptyTypes) == null)
-                {
-                    continue;
-                }
-
-                if (chosen == null || string.CompareOrdinal(type.FullName, chosen.FullName) < 0)
-                {
-                    chosen = type;
-                }
-            }
-
-            return chosen != null && Activator.CreateInstance(chosen) is IMediaGenerationGateway gateway ? gateway : new NotConfiguredMediaGateway();
+            return MediaGenerationLookup.Resolve(Resources.FindObjectsOfTypeAll<ScriptableObject>());
         }
     }
 }
