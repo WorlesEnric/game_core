@@ -1,0 +1,22 @@
+ENGINE: /usr/bin/docker --config /home/worlesenric/.cache/gamecore-studio/r2-f2/docker-client run --rm --pull=never --name r2-f2-copy --network none --read-only --cap-drop=ALL --security-opt=no-new-privileges --pids-limit=512 --user 1000:1000 --env HOME=/home/worlesenric --env PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --mount type=bind,src=/home/worlesenric/.cache/gamecore-studio/r2-f2/copy,dst=/home/worlesenric/.cache/gamecore-studio/r2-f2/copy --mount type=bind,src=/home/worlesenric/.cache/gamecore-studio/r2-f2/copy/home,dst=/home/worlesenric --mount type=bind,src=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor,dst=/home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor,readonly --tmpfs /tmp:rw,nosuid,nodev --workdir /home/worlesenric/.cache/gamecore-studio/r2-f2/copy/project gamecore-stage:6000.0.75f1-v1 /home/worlesenric/Unity/Hub/Editor/6000.0.75f1/Editor/Unity <unity-batch arguments>
+COMMAND: UNITY=/home/worlesenric/.cache/gamecore-studio/r2-f2/copy/docker-unity bash /home/worlesenric/wkspace/gc-studio/r2-f2/studio/tools/unity-batch.sh --project /home/worlesenric/.cache/gamecore-studio/r2-f2/copy/project --log-dir /home/worlesenric/.cache/gamecore-studio/r2-f2/copy/logs --label r2-f2-copy --timeout 180 --attempts 1 -- -quit
+WRAPPER_EXIT: 1
+LOG: /home/worlesenric/.cache/gamecore-studio/r2-f2/copy/logs/r2-f2-copy-20261005T181604-1488818-a1.log
+[Licensing::Module] Trying to connect to existing licensing client channel...
+[Licensing::IpcConnector] Channel LicenseClient-ubuntu doesn't exist
+[Licensing::Module] Successfully launched the LicensingClient (PId: 30)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-ubuntu" at "2026-10-05T10:16:05.04847Z"
+[Licensing::Client] Handshaking with LicensingClient:
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-ubuntu" (connect: 0.57s, validation: 0.04s, handshake: 0.00s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-ubuntu-notifications" at "2026-10-05T10:16:05.09079Z"
+[Licensing::Module] Connected to LicensingClient (PId: 30, launch time: 0.00, total connection time: 0.61s)
+[licensing identifier/token line omitted]
+[Licensing::Client] Error: Code 404 while processing request (status: Found 0 entitlement groups and 0 free entitlements matching requested entitlement ids)
+[Licensing::Client] Successfully updated license, isAsync: False, time: 0.02
+[Licensing::Client] Error: Code 404 while processing request (status: Found 0 entitlement groups and 0 free entitlements matching requested entitlement ids)
+[Licensing::Module] Error: 'com.unity.editor.headless' was not found.
+[Licensing::Module] Licensing Background thread has ended after 0.64s
+[Licensing::Client] Error: Code 404 while processing request (status: Found 0 entitlement groups and 0 free entitlements matching requested entitlement ids)
+No valid Unity Editor license found. Please activate your license.
+RESULT r2-f2-copy: FAIL (unity exit 198, 1s, attempts 1, log /home/worlesenric/.cache/gamecore-studio/r2-f2/copy/logs/r2-f2-copy-20261005T181604-1488818-a1.log)
+PRIVATE_LICENSE_COPY_DELETED (cleanup recovered Docker-created root-owned nested mount directories)

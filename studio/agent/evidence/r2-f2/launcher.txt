@@ -1,0 +1,22 @@
+Command: studio/agent/target/debug/gamecore-studio stage sandbox-probe /home/worlesenric/.cache/gamecore-studio/r2-f2/launcher.json
+Exit: 0; default Docker launcher built in this clone; network none.
+RESULT sandbox-probe: PASS (unity exit 0, 3s, attempts 1, log /home/worlesenric/.cache/gamecore-studio/r2-f2/launcher/slot/out/logs/sandbox-probe-20261005T182614-1525458-a1.log)
+[Licensing::Module] Trying to connect to existing licensing client channel...
+[Licensing::IpcConnector] Channel LicenseClient-ubuntu doesn't exist
+[Licensing::Module] Successfully launched the LicensingClient (PId: 29)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-ubuntu" at "2026-10-05T10:26:15.299632Z"
+[Licensing::Client] Handshaking with LicensingClient:
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-ubuntu" (connect: 0.25s, validation: 0.06s, handshake: 0.00s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-ubuntu-notifications" at "2026-10-05T10:26:15.360838Z"
+[Licensing::Module] Connected to LicensingClient (PId: 29, launch time: 0.00, total connection time: 0.31s)
+[licensing identifier/token line omitted]
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.01
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Licensing Background thread has ended after 0.37s
+[Licensing::Client] Successfully resolved entitlement details
+Batchmode quit successfully invoked - shutting down!
+[Licensing::IpcConnector] LicenseClient-ubuntu-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-ubuntu channel disconnected successfully.
+Private .licensing-* directories remaining in slot: 0
