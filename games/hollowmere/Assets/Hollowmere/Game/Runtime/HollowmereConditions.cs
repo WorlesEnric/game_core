@@ -13,7 +13,7 @@
 //   prompt <text...>              the interaction prompt shows and contains the text
 //   near <x> <z> [radius]         the player is within radius (default 1.5 m) of (x, z)
 //   restored                      a save was restored into this game
-//   slot <name>                   the save slot exists
+//   slot <name|n>                 the save slot exists (n: the manual slot slot-n)
 #nullable enable
 using System;
 using System.Globalization;
@@ -136,7 +136,11 @@ namespace Hollowmere.Game
                 {
                     ISaveSlotCatalog? catalog = game.Rig != null ? game.Rig.Ui.SlotCatalog : null;
                     catalog?.Refresh();
-                    bool exists = catalog != null && words.Length > 1 && catalog.TryGet(words[1], out SaveSlotHeader? header) && header != null;
+                    // "slot 1" is the manual slot "slot-1" (SaveSlotNaming); any other text is a slot name as is.
+                    string slotName = words.Length > 1 && int.TryParse(words[1], NumberStyles.None, CultureInfo.InvariantCulture, out int manual)
+                        ? SaveSlotNaming.SlotName(manual)
+                        : (words.Length > 1 ? words[1] : string.Empty);
+                    bool exists = catalog != null && slotName.Length > 0 && catalog.TryGet(slotName, out SaveSlotHeader? header) && header != null;
                     detail = "slot " + (words.Length > 1 ? words[1] : "?") + (exists ? " exists" : " missing");
                     return exists;
                 }

@@ -131,10 +131,21 @@ waituntil prompt clapper timeout 10
 interact
 waituntil item BellClapper >= 1 timeout 10
 wait 2
+ui open.pause
+waituntil screen Pause timeout 10
+wait 1
+ui open.save
+waituntil screen Save timeout 10
+wait 1
 ui save.1
-waituntil slot 1 timeout 20
+waituntil slot slot-1 timeout 20
 mark saved
-wait 3
+wait 2
+ui close
+wait 1
+ui resume
+waituntil screen Hud timeout 10
+wait 2
 
 log the satchel in the reeds
 walk 190 -6
@@ -187,6 +198,12 @@ ui restart
 waituntil ready timeout 120
 mark restarted
 wait 6
+ui open.pause
+waituntil screen Pause timeout 10
+wait 1
+ui open.load
+waituntil screen Load timeout 10
+wait 1
 ui load.1
 waituntil restored timeout 60
 mark loaded
