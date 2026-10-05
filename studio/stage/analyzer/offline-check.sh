@@ -17,7 +17,10 @@ for name in ('pressure-plate','negative-semantic'):
 editor=pathlib.Path.home()/'Unity/Hub/Editor/6000.0.75f1/Editor'
 refs=[str(p) for p in sorted((editor/'Data/Managed/UnityEngine').glob('*.dll')) if p.name.startswith(('UnityEngine','UnityEditor'))]
 lock=json.loads((repo/'studio/stage/cache/unity-metadata-lock.json').read_text())
-refs += [str(cache/'Library'/p) for p in lock]
+sys.path.insert(0,str(repo/'studio/stage'))
+import analysis_context
+for p,digest in lock.items(): analysis_context.checked(cache/'analysis-context',p,digest)
+refs += [str(cache/'analysis-context'/p) for p in lock]
 (work/'request.json').write_text(json.dumps({'schema':'gamecore.stage.analyze/1','references':refs,'supportSources':[str(repo/'Packages')],'policy':{'mode':'D1'}}))
 (work/'sandbox.json').write_text(json.dumps({'mode':'docker','image':'gamecore-stage:6000.0.75f1-v1','editor':str(editor),'home':str(pathlib.Path.home()),'hostname':socket.gethostname(),'licences':[str(pathlib.Path.home()/'.config/unity3d/Unity'),str(pathlib.Path.home()/'.local/share/unity3d/Unity'),'/var/lib/unity'],'slot':str(work),'cache':str(cache),'packages':str(repo/'Packages')}))
 PY

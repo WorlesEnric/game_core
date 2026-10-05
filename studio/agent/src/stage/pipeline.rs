@@ -236,6 +236,18 @@ pub fn run_child(
     scratch: &Path,
     timeout: Duration,
 ) -> ChildOutcome {
+    run_child_controlled(cmd, extra_env, scratch, timeout, false, None)
+}
+
+// The Unity wrapper retains each attempt and forwards only already-redacted records.
+pub(super) fn run_child_controlled(
+    cmd: &mut Command,
+    extra_env: &[(&str, &str)],
+    scratch: &Path,
+    timeout: Duration,
+    stream: bool,
+    cancelled: Option<&std::sync::atomic::AtomicBool>,
+) -> ChildOutcome {
     use std::os::unix::process::CommandExt;
     let started = Instant::now();
     let fail = |message: String| ChildOutcome {
@@ -267,14 +279,20 @@ pub fn run_child(
     let stderr = child.stderr.take();
     let out_writer = std::thread::spawn(move || {
         if let Some(pipe) = stdout {
-            crate::redact::copy_redacted(pipe, crate::redact::BoundedLog::new(file))
+            crate::redact::copy_redacted(
+                pipe,
+                crate::redact::BoundedLog::new(StreamLog { file, stream }),
+            )
         } else {
             Ok(())
         }
     });
     let err_writer = std::thread::spawn(move || {
         if let Some(pipe) = stderr {
-            crate::redact::copy_redacted(pipe, crate::redact::BoundedLog::new(err))
+            crate::redact::copy_redacted(
+                pipe,
+                crate::redact::BoundedLog::new(StreamLog { file: err, stream }),
+            )
         } else {
             Ok(())
         }
@@ -287,7 +305,9 @@ pub fn run_child(
             Ok(None) => {}
             Err(_) => break None,
         }
-        if started.elapsed() >= timeout {
+        if started.elapsed() >= timeout
+            || cancelled.is_some_and(|flag| flag.load(std::sync::atomic::Ordering::Relaxed))
+        {
             timed_out = true;
             kill_group(pid, "TERM");
             let grace = Instant::now();
@@ -310,7 +330,9 @@ pub fn run_child(
         matches!(out_writer.join(), Ok(Ok(()))) && matches!(err_writer.join(), Ok(Ok(())));
     let code = if written { code } else { None };
     let raw = std::fs::read(scratch).unwrap_or_default();
-    let _ = std::fs::remove_file(scratch);
+    if !stream {
+        let _ = std::fs::remove_file(scratch);
+    }
     let mut output = redact_all(&String::from_utf8_lossy(&raw));
     if timed_out {
         output.push_str(&format!(
@@ -323,6 +345,28 @@ pub fn run_child(
         timed_out,
         output,
         elapsed: started.elapsed(),
+    }
+}
+
+// copy_redacted is upstream of both sinks; BoundedLog bounds both together.
+struct StreamLog {
+    file: File,
+    stream: bool,
+}
+impl std::io::Write for StreamLog {
+    fn write(&mut self, bytes: &[u8]) -> std::io::Result<usize> {
+        self.file.write_all(bytes)?;
+        if self.stream {
+            std::io::stdout().write_all(bytes)?;
+        }
+        Ok(bytes.len())
+    }
+    fn flush(&mut self) -> std::io::Result<()> {
+        self.file.flush()?;
+        if self.stream {
+            std::io::stdout().flush()?;
+        }
+        Ok(())
     }
 }
 

@@ -1,0 +1,14 @@
+{
+  "NetworkMode": "none",
+  "ReadonlyRootfs": true,
+  "CapDrop": [
+    "ALL"
+  ],
+  "SecurityOpt": [
+    "no-new-privileges"
+  ],
+  "PidsLimit": 512,
+  "Tmpfs": {
+    "/run/gcs": "rw,noexec,nosuid,nodev,size=16m,mode=0700,uid=1000,gid=1000"
+  }
+}

@@ -1,0 +1,98 @@
+[
+  {
+    "run": "cold",
+    "pass": true,
+    "durationMs": 417486,
+    "budgetMs": 360000,
+    "coldCache": true,
+    "confinement": "docker",
+    "configuredBudgetMs": 360000,
+    "executionBudgetMs": 1800000,
+    "warmMeasurementReason": "Cold acceptance run; warm measurement is the subsequent request",
+    "serviceJobElapsedMs": 426197,
+    "warmMeasurement": false,
+    "status": "verdict-produced",
+    "candidateXmlCounts": {
+      "editmode": {
+        "id": "2",
+        "testcasecount": "33",
+        "result": "Passed",
+        "total": "33",
+        "passed": "33",
+        "failed": "0",
+        "inconclusive": "0",
+        "skipped": "0",
+        "asserts": "0",
+        "engine-version": "3.5.0.0",
+        "clr-version": "4.0.30319.42000",
+        "start-time": "2026-10-05 15:11:20Z",
+        "end-time": "2026-10-05 15:11:21Z",
+        "duration": "0.8112546"
+      },
+      "playmode": {
+        "id": "2",
+        "testcasecount": "2",
+        "result": "Passed",
+        "total": "2",
+        "passed": "2",
+        "failed": "0",
+        "inconclusive": "0",
+        "skipped": "0",
+        "asserts": "0",
+        "engine-version": "3.5.0.0",
+        "clr-version": "4.0.30319.42000",
+        "start-time": "2026-10-05 15:12:03Z",
+        "end-time": "2026-10-05 15:12:03Z",
+        "duration": "0.2845628"
+      }
+    }
+  },
+  {
+    "run": "warm",
+    "pass": true,
+    "durationMs": 265617,
+    "budgetMs": 360000,
+    "coldCache": false,
+    "confinement": "docker",
+    "configuredBudgetMs": 360000,
+    "executionBudgetMs": 360000,
+    "warmMeasurementReason": null,
+    "serviceJobElapsedMs": 265653,
+    "warmMeasurement": true,
+    "status": "verdict-produced",
+    "candidateXmlCounts": {
+      "editmode": {
+        "id": "2",
+        "testcasecount": "33",
+        "result": "Passed",
+        "total": "33",
+        "passed": "33",
+        "failed": "0",
+        "inconclusive": "0",
+        "skipped": "0",
+        "asserts": "0",
+        "engine-version": "3.5.0.0",
+        "clr-version": "4.0.30319.42000",
+        "start-time": "2026-10-05 15:15:58Z",
+        "end-time": "2026-10-05 15:16:00Z",
+        "duration": "1.5169335"
+      },
+      "playmode": {
+        "id": "2",
+        "testcasecount": "2",
+        "result": "Passed",
+        "total": "2",
+        "passed": "2",
+        "failed": "0",
+        "inconclusive": "0",
+        "skipped": "0",
+        "asserts": "0",
+        "engine-version": "3.5.0.0",
+        "clr-version": "4.0.30319.42000",
+        "start-time": "2026-10-05 15:16:40Z",
+        "end-time": "2026-10-05 15:16:40Z",
+        "duration": "0.6756901"
+      }
+    }
+  }
+]

@@ -1,0 +1,435 @@
+{
+  "changeSetId": "cs_01K6RW0MECH00000000000000A",
+  "createdAt": 1791213141433,
+  "jobId": "stg_1a10c9f7db974c21d153650",
+  "packageRef": "10d9bb703386cf050596dab6e62610ae68161cc43c3ac391c75136d341f4b4ec",
+  "slot": "cs-01k6rw0mech00000000000000a",
+  "state": "done",
+  "updatedAt": 1791213407086,
+  "verdict": {
+    "app": "gamecore-unity",
+    "artifacts": [
+      {
+        "role": "package",
+        "sha256": "10d9bb703386cf050596dab6e62610ae68161cc43c3ac391c75136d341f4b4ec"
+      },
+      {
+        "role": "proposal",
+        "sha256": "ecda0696a036f51e3c2cabeae984129df5991ed84d7a7ec20aa09756708c8e94"
+      }
+    ],
+    "budgetMs": 360000,
+    "candidateDigest": "3cda38eec5fdc0642fdafb3c4525d8dbea1b6a83aa2b91549cd1d2ad73a2ecef",
+    "catalogDelta": {
+      "mechanisms": [
+        {
+          "catalogType": "Hollowmere.Mechanism.PressurePlate.Generated.PressurePlateCatalog",
+          "fingerprint": "eabc05e00b2ad24fedbee8f283cd60e66782415e00865936919672ce1dab3f21",
+          "package": "com.hollowmere.mechanism.pressureplate"
+        }
+      ]
+    },
+    "catalogRevision": "2222222222222222222222222222222222222222222222222222222222222222",
+    "changeSetId": "cs_01K6RW0MECH00000000000000A",
+    "coldCache": false,
+    "confinement": "docker",
+    "createdAt": 1791213407071,
+    "durationMs": 265617,
+    "files": [
+      {
+        "bytes": 3860,
+        "path": "Catalog/PressurePlateCatalog.catalog.json",
+        "sha256": "471645845134a586abc24811f1e0f8c0d5923ead438f6611393b24acd017a3ab"
+      },
+      {
+        "bytes": 60,
+        "path": "Catalog/PressurePlateCatalog.catalog.json.meta",
+        "sha256": "9c2a7d5104b9afadde49c25a0a00391c4fb1c43dd4c6e7c0436dbd96e65ebdc9"
+      },
+      {
+        "bytes": 172,
+        "path": "Catalog.meta",
+        "sha256": "dbd88567006527ccabacb361a441021c82093c70c6aea22c1584b47198c23351"
+      },
+      {
+        "bytes": 609,
+        "path": "Editor/Hollowmere.Mechanism.PressurePlate.Editor.asmdef",
+        "sha256": "9dd708590674a9f7bbc61b4c1c51ea6928aa0ea8e62d90eb0d4e7df6a51125f7"
+      },
+      {
+        "bytes": 166,
+        "path": "Editor/Hollowmere.Mechanism.PressurePlate.Editor.asmdef.meta",
+        "sha256": "30136c2caa64cff7e1749c691e0d5bddb983e8e845a91d12487bcb91cd6ffd6e"
+      },
+      {
+        "bytes": 3959,
+        "path": "Editor/PressurePlateTools.cs",
+        "sha256": "e016171da98df515d051b8c5555dd10faa11571ab32ecd00dce0d4ea6945177e"
+      },
+      {
+        "bytes": 60,
+        "path": "Editor/PressurePlateTools.cs.meta",
+        "sha256": "f7878b18296e51907fabe4a2381b7c31629a025bb970aff7f064089a0a64d485"
+      },
+      {
+        "bytes": 172,
+        "path": "Editor.meta",
+        "sha256": "de11052f207c6fc0c9ade49a3c53c50978da35efe364202322784f1847b750d7"
+      },
+      {
+        "bytes": 413,
+        "path": "Rules/Hollowmere.Mechanism.PressurePlate.Rules.asmdef",
+        "sha256": "35b93296039c9d4bb013bb849177e7de4b5a5f911e7d3b835989e41cac75bf50"
+      },
+      {
+        "bytes": 166,
+        "path": "Rules/Hollowmere.Mechanism.PressurePlate.Rules.asmdef.meta",
+        "sha256": "82643ab77dc1ccb9bb71dc36b7afe65ab881bb2d7c57ea33c9a81ba873076d3c"
+      },
+      {
+        "bytes": 5918,
+        "path": "Rules/PressurePlateRules.cs",
+        "sha256": "045c01ba1157b169b6eed47cef63dcbc9e1782e68405ab7637bbdd8ff8aee806"
+      },
+      {
+        "bytes": 60,
+        "path": "Rules/PressurePlateRules.cs.meta",
+        "sha256": "6d1d90fd58c96642676ee706ec39b46b10a81bd2c92132851cfc5e72c0e2d4c4"
+      },
+      {
+        "bytes": 172,
+        "path": "Rules.meta",
+        "sha256": "dad6a1cb3d83658cbcc719af8710397132335b632eb6065d082e8b2b1c21ac84"
+      },
+      {
+        "bytes": 7546,
+        "path": "Runtime/CompositeCatalog.cs",
+        "sha256": "f7b5039bfa6066aa14585076252c3dbbcb9ed9aba92c975b7595c6c6e09c9552"
+      },
+      {
+        "bytes": 60,
+        "path": "Runtime/CompositeCatalog.cs.meta",
+        "sha256": "86cd6a18b97c5b13768a94c472c86088b7dfd72c1e09ec7e57b8540503bcef0b"
+      },
+      {
+        "bytes": 496,
+        "path": "Runtime/Generated/Hollowmere.Mechanism.PressurePlate.Generated.asmdef",
+        "sha256": "82b93c47a8304be3cff9d12b0532332cfaf21e453dfec8bea2b363d364281e89"
+      },
+      {
+        "bytes": 166,
+        "path": "Runtime/Generated/Hollowmere.Mechanism.PressurePlate.Generated.asmdef.meta",
+        "sha256": "5011e6316f6754933e89b9ced15a7a4304d006ca2832d4a8b3e151c738527662"
+      },
+      {
+        "bytes": 26726,
+        "path": "Runtime/Generated/PressurePlateCatalog.g.cs",
+        "sha256": "059a9a9363fd574d1bddabd4b00093c9d5405295c1c7f4b9448db1c26a579fe0"
+      },
+      {
+        "bytes": 60,
+        "path": "Runtime/Generated/PressurePlateCatalog.g.cs.meta",
+        "sha256": "e9a930a6ab3b400397fa3e33a3ed14d1379870513da29447eb9fcbc5646d65f0"
+      },
+      {
+        "bytes": 7383,
+        "path": "Runtime/Generated/PressurePlateCatalogCoverage.g.cs",
+        "sha256": "b8e30ffca7df89e98c96b862e43f1edb861f18a4e8a3760c81bb77e17100b314"
+      },
+      {
+        "bytes": 60,
+        "path": "Runtime/Generated/PressurePlateCatalogCoverage.g.cs.meta",
+        "sha256": "6ebd3e3f5d91e5b6f5e5cbfb0460c4709f8f2208492002af7641aa47f907524d"
+      },
+      {
+        "bytes": 172,
+        "path": "Runtime/Generated.meta",
+        "sha256": "b5b11f8138fa92fc3fd71bab8f5325f03c52661c2539e70735174c8dcafb3d22"
+      },
+      {
+        "bytes": 902,
+        "path": "Runtime/Hollowmere.Mechanism.PressurePlate.asmdef",
+        "sha256": "7e1e9b21977e72ecada2921a39ecef1d2d7c58ab12c92d2a88672eedae61b272"
+      },
+      {
+        "bytes": 166,
+        "path": "Runtime/Hollowmere.Mechanism.PressurePlate.asmdef.meta",
+        "sha256": "2a8ab4289c5b980ea6aa850862aab3db7722bce17a575de3f15c91aaae642202"
+      },
+      {
+        "bytes": 6949,
+        "path": "Runtime/PressurePlateAuthoring.cs",
+        "sha256": "07f3dc6c60479b0401f9c8cc7c86889d8fdb0148b812cea1045ef071b56a12af"
+      },
+      {
+        "bytes": 60,
+        "path": "Runtime/PressurePlateAuthoring.cs.meta",
+        "sha256": "210e9cf5a85f3f32390326b51b65b38b49b8dcea770dbb39f44a01f0433251ea"
+      },
+      {
+        "bytes": 3046,
+        "path": "Runtime/PressurePlateBinder.cs",
+        "sha256": "1dc217cbc9b74b13cf0bc4d0d5bf27286b0a99f8d0beb5623a29982c7656ca8d"
+      },
+      {
+        "bytes": 60,
+        "path": "Runtime/PressurePlateBinder.cs.meta",
+        "sha256": "df61d6df8c19b1043e655f658e8613aaedf0bb54833fa759d744cd34440ec29d"
+      },
+      {
+        "bytes": 10007,
+        "path": "Runtime/PressurePlateDeclarations.cs",
+        "sha256": "c2d5a42ccd9bf8383ac7e2035e61eff64084108e52f725f5aa35e0ccccc07b6d"
+      },
+      {
+        "bytes": 60,
+        "path": "Runtime/PressurePlateDeclarations.cs.meta",
+        "sha256": "d1618cf4e8768951d8a13bfa31579da856de63cec9a8c79a19ffe575a2a72f70"
+      },
+      {
+        "bytes": 15120,
+        "path": "Runtime/PressurePlateKernel.cs",
+        "sha256": "1b8aa803eae7283523bc1936583450a72a2901970728ef729a5a76d5c57523de"
+      },
+      {
+        "bytes": 60,
+        "path": "Runtime/PressurePlateKernel.cs.meta",
+        "sha256": "8099b64dd9f4d40d3ad6d6e061aebf7422ce2a19e8ca90bf2387c5e3efddcf01"
+      },
+      {
+        "bytes": 11509,
+        "path": "Runtime/PressurePlateMechanism.cs",
+        "sha256": "f2728de3b44cd3a5f704c16ef2b51ecd8c89716f1fcec7801e8d87862d1f5a9b"
+      },
+      {
+        "bytes": 60,
+        "path": "Runtime/PressurePlateMechanism.cs.meta",
+        "sha256": "a6e628be3d11be99618f8af65291a5c89e8494229c2b8feda6f695cc67eff12f"
+      },
+      {
+        "bytes": 10648,
+        "path": "Runtime/PressurePlateSmoke.cs",
+        "sha256": "5bf9dd90a5bfe7a7ef76ba5df0e02c20dd40e369844d39e1df4d6468f35a1419"
+      },
+      {
+        "bytes": 60,
+        "path": "Runtime/PressurePlateSmoke.cs.meta",
+        "sha256": "cf265bc5f046c27b004ba9b8c1e68908fb58cb2949ff3c7ff74e5d8892c681f3"
+      },
+      {
+        "bytes": 9168,
+        "path": "Runtime/PressurePlateWorld.cs",
+        "sha256": "70565f8e3c0ab4efe8e1fdc7b7fba1e0463352f9d9cfd04b3d71dbe4e4b244ef"
+      },
+      {
+        "bytes": 60,
+        "path": "Runtime/PressurePlateWorld.cs.meta",
+        "sha256": "39d9ae1ada56f19ed156303f64853a0f341f83b17fbaa90031d4b25cf1c182cb"
+      },
+      {
+        "bytes": 172,
+        "path": "Runtime.meta",
+        "sha256": "4ca0bb95fa621c0f226f724ce662b03f82c1566564c69f04a576047c87312cca"
+      },
+      {
+        "bytes": 1187,
+        "path": "Tests/Editor/Hollowmere.Mechanism.PressurePlate.Editor.Tests.asmdef",
+        "sha256": "ca930733ba17ada4a00d51021a3660bdbca32620fd335155dfd127eb8ea7f3e5"
+      },
+      {
+        "bytes": 166,
+        "path": "Tests/Editor/Hollowmere.Mechanism.PressurePlate.Editor.Tests.asmdef.meta",
+        "sha256": "c40ee5f0f81a68b91a2af87a2014532c35b67687975fa6837eacc7c8c0cb0148"
+      },
+      {
+        "bytes": 17242,
+        "path": "Tests/Editor/PressurePlateEditorTests.cs",
+        "sha256": "daa9179b3224558861695362e38f9d0e49c7801f5f5178492af588595a7e73ee"
+      },
+      {
+        "bytes": 60,
+        "path": "Tests/Editor/PressurePlateEditorTests.cs.meta",
+        "sha256": "2f07ad83092f3e4aa80caf4032b5cded531859c78741fec0b9fddf3a06c96854"
+      },
+      {
+        "bytes": 172,
+        "path": "Tests/Editor.meta",
+        "sha256": "514583e926f9fc58c66340dc2ca8ab52cb800c9b621c4037264467a55ff20725"
+      },
+      {
+        "bytes": 642,
+        "path": "Tests/Rules/Hollowmere.Mechanism.PressurePlate.Rules.Tests.asmdef",
+        "sha256": "87ddb2e0f8364eb621f81e1592744cc8af49b5e20c3f9226be858e100af5a4c0"
+      },
+      {
+        "bytes": 166,
+        "path": "Tests/Rules/Hollowmere.Mechanism.PressurePlate.Rules.Tests.asmdef.meta",
+        "sha256": "204c9c32a4bef152305d2d662a1432f1ce533208711a1c8415703c592262f4f7"
+      },
+      {
+        "bytes": 7300,
+        "path": "Tests/Rules/PressurePlateRulesTests.cs",
+        "sha256": "c9058aff9f99552dc08e9c31bf65092313ec23e76a651a27b80895d852fc515f"
+      },
+      {
+        "bytes": 60,
+        "path": "Tests/Rules/PressurePlateRulesTests.cs.meta",
+        "sha256": "24ed9b4c222b09d3c1f7c0ff87976fa894ce346d36505cae2d6eaae5130ad2da"
+      },
+      {
+        "bytes": 172,
+        "path": "Tests/Rules.meta",
+        "sha256": "c077c933fad992d34608223b33f1721e6e25be0e415fbd16aa30ff8c2fcf2eba"
+      },
+      {
+        "bytes": 172,
+        "path": "Tests.meta",
+        "sha256": "0ebd57d419c29d7f76539d815a5bd00d29ec2fb045bde1c12bace69e433865fe"
+      },
+      {
+        "bytes": 1497,
+        "path": "package.json",
+        "sha256": "e6960ef4c7de7fbf3ab00fb0afd167ee65e997c19aafa22ec82875086debed2a"
+      },
+      {
+        "bytes": 163,
+        "path": "package.json.meta",
+        "sha256": "b538efdbee8293c7dc217aeb3512b5416a20beb249dce67a3d5982b47a453832"
+      }
+    ],
+    "forbiddenHits": [],
+    "jobId": "stg_1a10c9f7db974c21d153650",
+    "origin": "agent",
+    "package": "com.hollowmere.mechanism.pressureplate",
+    "packageDigest": "10d9bb703386cf050596dab6e62610ae68161cc43c3ac391c75136d341f4b4ec",
+    "pass": true,
+    "projectId": "1111111111111111111111111111111111111111111111111111111111111111",
+    "proposalDigest": "ecda0696a036f51e3c2cabeae984129df5991ed84d7a7ec20aa09756708c8e94",
+    "runner": {
+      "host": "worlesenric",
+      "sourceCommit": "6e8156f203fa66fe1a9490bc35eaea53176ae653",
+      "template": "0e9f71bc6d8cd2117d36f1e575ecffc0e76fed937c74dc5a82b9e656f790b422",
+      "version": "0.1.0"
+    },
+    "schema": "gamecore.studio.stage-verdict/1",
+    "signature": "c4cbbaee7438fbf86047c0366d564f2503ee1e4e29bcf1ceb3025ba0e10066d6",
+    "slot": "cs-01k6rw0mech00000000000000a",
+    "sourceRevision": "6e8156f203fa66fe1a9490bc35eaea53176ae653",
+    "steps": [
+      {
+        "detail": "52 file(s) clean",
+        "durationMs": 12,
+        "facts": {
+          "bytes": 155562,
+          "exempted": {},
+          "files": 52,
+          "hits": 0
+        },
+        "id": "scan",
+        "logRef": "0754d182c6bbbd2e0b38239bbd3e5821bfcfea589f326f1d70ff84b73b42a2a0",
+        "status": "pass"
+      },
+      {
+        "detail": "14 C# file(s), 6 asmdef(s), slot clean",
+        "durationMs": 1205,
+        "facts": {
+          "asmdefs": 6,
+          "csharpFiles": 14,
+          "ok": true,
+          "problems": 0,
+          "slotProblems": 0
+        },
+        "id": "checkers",
+        "logRef": "0b3a03fead04a370c872785677f9c9dac04ca8efd7408b411b2f4b8c3598b32a",
+        "status": "pass"
+      },
+      {
+        "detail": "15 dotnet test(s) passed",
+        "durationMs": 100258,
+        "facts": {
+          "assembly": "Hollowmere.Mechanism.PressurePlate.Rules",
+          "build": true,
+          "tests": {
+            "failed": 0,
+            "passed": 15,
+            "skipped": 0,
+            "total": 15
+          }
+        },
+        "id": "dotnet",
+        "logRef": "0218e795db644db83a58cf6a92d494c335562d5b329bf0a50f2af4cc297b391d",
+        "status": "pass"
+      },
+      {
+        "detail": "compiled; 33 EditMode test(s) passed",
+        "durationMs": 59881,
+        "facts": {
+          "compileErrors": [],
+          "integrity": 0,
+          "tests": {
+            "failed": 0,
+            "failures": [],
+            "passed": 33,
+            "skipped": 0,
+            "total": 33
+          },
+          "unityExit": 0
+        },
+        "id": "unity-editmode",
+        "logRef": "ad33e3267ea08966de9c30815a58f6a3a358cb4709720e350c7fe6a24d8f927d",
+        "status": "pass"
+      },
+      {
+        "detail": "120 frame(s), 120 sanctioned pump(s), no violation, no exception",
+        "durationMs": 41259,
+        "facts": {
+          "integrity": 0,
+          "smoke": {
+            "bypassPumps": 0,
+            "duplicateFramePumps": 0,
+            "errors": 0,
+            "frames": 120,
+            "milliseconds": 562,
+            "run": 1,
+            "sanctionedPumps": 120,
+            "slotHash": "5aa1e545c15decb392160ed7784fdc221908bc9a4be571224809b74acbb2cd3a",
+            "status": "ran",
+            "steps": 120
+          },
+          "tests": {
+            "failed": 0,
+            "failures": [],
+            "passed": 2,
+            "skipped": 0,
+            "total": 2
+          },
+          "unityExit": 0
+        },
+        "id": "playmode-smoke",
+        "logRef": "6196c7b4c04bc6734e5e0c61cf3a620987141e7c335fee9829933fc334529722",
+        "status": "pass"
+      },
+      {
+        "detail": "both smoke runs end at slot hash 5aa1e545c15d",
+        "durationMs": 0,
+        "facts": {
+          "slotHash1": "5aa1e545c15decb392160ed7784fdc221908bc9a4be571224809b74acbb2cd3a",
+          "slotHash2": "5aa1e545c15decb392160ed7784fdc221908bc9a4be571224809b74acbb2cd3a"
+        },
+        "id": "determinism",
+        "status": "pass"
+      },
+      {
+        "detail": "265 s within B-STAGE 360 s",
+        "durationMs": 0,
+        "facts": {
+          "budgetMs": 360000,
+          "elapsedMs": 265617
+        },
+        "id": "budget",
+        "status": "pass"
+      }
+    ],
+    "verdictRef": "5bc9a857648181c73374020ef2380e9117eb640119c895b5fd55b9a5fa9235fd"
+  }
+}

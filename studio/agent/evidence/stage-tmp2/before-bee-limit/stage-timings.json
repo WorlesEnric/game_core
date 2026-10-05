@@ -1,0 +1,32 @@
+[
+  {
+    "run": "cold",
+    "pass": false,
+    "durationMs": 287098,
+    "budgetMs": 360000,
+    "coldCache": true,
+    "confinement": "docker",
+    "configuredBudgetMs": 360000,
+    "executionBudgetMs": 1800000,
+    "warmMeasurementReason": "No completed cold import seeded a warm cache",
+    "serviceJobElapsedMs": 287129,
+    "warmMeasurement": false,
+    "status": "verdict-produced",
+    "candidateXmlCounts": {}
+  },
+  {
+    "run": "warm",
+    "pass": false,
+    "durationMs": 314619,
+    "budgetMs": 360000,
+    "coldCache": true,
+    "confinement": "docker",
+    "configuredBudgetMs": 360000,
+    "executionBudgetMs": 360000,
+    "warmMeasurementReason": "No completed cold import seeded a warm cache",
+    "serviceJobElapsedMs": 315352,
+    "warmMeasurement": false,
+    "status": "verdict-produced",
+    "candidateXmlCounts": {}
+  }
+]

@@ -67,11 +67,13 @@ class HostTests(unittest.TestCase):
         import os
         with tempfile.TemporaryDirectory() as directory:
             log = Path(directory) / 'log'
-            env = dict(os.environ, DOTNET_STARTUP_HOOKS='sentinel', UNITY_ATTACK='sentinel', GAMECORE_TEST='sentinel')
-            child = 'import os,json; print(json.dumps({k:os.environ.get(k) for k in ["DOTNET_STARTUP_HOOKS","UNITY_ATTACK","GAMECORE_TEST"]}))'
+            env = dict(os.environ, DOTNET_STARTUP_HOOKS='sentinel', UNITY_ATTACK='sentinel', GAMECORE_TEST='sentinel', GAMECORE_API_KEY='sentinel', HTTPS_PROXY='sentinel')
+            child = 'import os,json; print(json.dumps({"gate":os.environ.get("GAMECORE_TEST"), "excluded":all(k not in os.environ for k in ["DOTNET_STARTUP_HOOKS","UNITY_ATTACK","GAMECORE_API_KEY","HTTPS_PROXY"])}))'
             proc = subprocess.run([sys.executable, str(STAGE / 'run-redacted.py'), '--log', str(log), '--timeout', '10', '--silence', '0', '--', sys.executable, '-c', child], env=env)
             self.assertEqual(0, proc.returncode)
-            self.assertNotIn('sentinel', log.read_text())
+            values = json.loads(log.read_text())
+            self.assertEqual(values.pop('gate'), 'sentinel')
+            self.assertTrue(values["excluded"])
 
     def test_O52_JournalResetRequiresScratchMarker(self):
         project = STAGE.parents[1] / 'games/hollowmere'
