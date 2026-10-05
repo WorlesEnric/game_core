@@ -23,6 +23,15 @@ def stop(sig,frame):
     event('term'); sys.exit(143)
 signal.signal(signal.SIGTERM,stop)
 event('start')
+if '-compile-error' in sys.argv:
+    print('error CS0001: synthetic compilation failure',flush=True)
+    event('end'); sys.exit(0)
+if '-testResults' in sys.argv:
+    result=sys.argv[sys.argv.index('-testResults')+1]
+    partial='-partial' in sys.argv
+    with open(result,'w') as f:
+        f.write('<test-run result="'+('Inconclusive' if partial else 'Passed')+'"><test-case fullname="Present" result="Passed" />'+('<test-case result="Inconclusive" />' if partial else '')+'</test-run>')
+    event('end'); sys.exit(2 if partial else 0)
 print('etk_fixture ett_fixture etp_fixture eta_fixture Bearer fixture sk-fixture',flush=True)
 print('{"privateKey":"fixture-private", "nested":{"myToken":{"x":"fixture-nested"}}}',flush=True)
 if '-hold' in sys.argv: time.sleep(60)
@@ -67,3 +76,18 @@ assert '[REDACTED]' in logs
 assert not list(root.rglob('*.raw'))
 print('R2_17_StaleOwnerAndTerm / R2_19_StreamRedaction: PASS')
 PY
+
+for mode in compiler partial required; do
+  args=()
+  unity_args=(-compile-error)
+  if [[ "$mode" != compiler ]]; then
+    args=(--results "$work/results.xml")
+    unity_args=()
+    if [[ "$mode" == partial ]]; then unity_args=(-partial); else args+=(--require-test Missing); fi
+  fi
+  rc=0
+  bash "$repo/studio/tools/unity-batch.sh" --project "$work/project" --log-dir "$work/logs" --label "$mode" --attempts 1 "${args[@]}" -- "${unity_args[@]}" > "$work/$mode" 2>&1 || rc=$?
+  [[ "$rc" == 1 ]]
+  grep -q "RESULT $mode: FAIL" "$work/$mode"
+done
+echo 'R2_37_CompilerErrorsPartialAndMissingCases: PASS'

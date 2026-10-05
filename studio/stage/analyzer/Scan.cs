@@ -128,6 +128,8 @@ namespace GameCore.Stage.Analysis
                         Report("SG005", node, "Filesystem handle types are forbidden.");
                     if (ns == "System.Reflection.Emit" || ns.StartsWith("System.Reflection.Emit.", StringComparison.Ordinal))
                         Report("SG002", node, "Reflection emit is forbidden.");
+                    if (full == "System.Environment" && symbol?.Name == "CurrentDirectory")
+                        Report("SG005", node, "Changing or depending on the process working directory is forbidden.");
                     if (full == "System.Diagnostics.Process" || full == "System.Diagnostics.ProcessStartInfo" || full == "System.Runtime.InteropServices.NativeLibrary")
                         Report("SG003", node, "Process execution is forbidden.");
                     if (ns == "System.Net" || ns.StartsWith("System.Net.", StringComparison.Ordinal) || ns == "UnityEngine.Networking" || full == "UnityEngine.WWW")
@@ -158,7 +160,10 @@ namespace GameCore.Stage.Analysis
                         {
                             var paths = operation?.Arguments.Where(a => a.Parameter?.Type.SpecialType == SpecialType.System_String &&
                                 (a.Parameter.Name.Contains("path", StringComparison.OrdinalIgnoreCase) || a.Parameter.Name.Contains("file", StringComparison.OrdinalIgnoreCase))).ToArray();
-                            if ((full != "System.IO.File" && full != "System.IO.Directory") || paths == null || paths.Length == 0 ||
+                            var patternsSafe = operation == null || operation.Arguments.Where(a => a.Parameter?.Name == "searchPattern").All(a =>
+                                a.Value.ConstantValue.HasValue && a.Value.ConstantValue.Value is string pattern && Relative(pattern) && !pattern.Contains('/'));
+                            if ((full != "System.IO.File" && full != "System.IO.Directory") || paths == null || paths.Length == 0 || !patternsSafe ||
+                                method?.Name == "SetCurrentDirectory" || method?.Name == "GetParent" ||
                                 paths.Any(a => !SafePath(a.Value.Syntax as ExpressionSyntax, model, candidates)))
                                 Report("SG005", node, "Filesystem access must prove every path stays within package Assets or persistentDataPath.");
                         }

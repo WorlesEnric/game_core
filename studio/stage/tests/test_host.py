@@ -73,6 +73,15 @@ class HostTests(unittest.TestCase):
             self.assertEqual(0, proc.returncode)
             self.assertNotIn('sentinel', log.read_text())
 
+    def test_O52_JournalResetRequiresScratchMarker(self):
+        project = STAGE.parents[1] / 'games/hollowmere'
+        self.assertFalse((project / '.gamecore-stage-scratch').exists())
+        with tempfile.TemporaryDirectory() as directory:
+            result = subprocess.run(['bash', str(STAGE / 'w-mech-01.sh'), directory, '--reset-journal'], capture_output=True)
+            self.assertEqual(1, result.returncode)
+            self.assertIn(b'requires an operator-created .gamecore-stage-scratch', result.stderr)
+            self.assertFalse((Path(directory) / 'stage.txt').exists())
+
     def test_O52_CacheKeyTracksVersions(self):
         with tempfile.TemporaryDirectory() as directory:
             project = Path(directory)

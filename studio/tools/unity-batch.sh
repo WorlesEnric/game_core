@@ -152,6 +152,7 @@ for ((attempt = 1; attempt <= max_attempts; attempt++)); do
   fi
   break
 done
+unity_rc="$rc"
 elapsed=$(( $(date +%s) - start ))
 if [[ -n "$results" && -s "$results" && "$rc" != 124 && "$rc" != 137 ]]; then
   summary_rc=0
@@ -181,5 +182,5 @@ elif [[ -n "${results}" && ! -s "${results}" ]]; then
   verdict="FAIL"
   exit_code=1
 fi
-echo "RESULT ${label}: ${verdict} (unity exit ${rc}, ${elapsed}s, attempts ${attempts_run}, log ${log})"
+echo "RESULT ${label}: ${verdict} (unity exit ${unity_rc}, ${elapsed}s, attempts ${attempts_run}, log ${log})"
 exit "${exit_code}"

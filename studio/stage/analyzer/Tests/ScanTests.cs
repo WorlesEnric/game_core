@@ -49,6 +49,7 @@ namespace GameCore.Gameplay.Contracts {
         public void R2_11_ForbiddenSemanticSymbols(string code, string rule) => Assert.That(Rules(code), Does.Contain(rule));
 
         [TestCase("System.IO.Path.GetTempFileName();")]
+        [TestCase("System.IO.Directory.EnumerateFiles(\"Assets/com.example.plate\", \"../*\");")]
         [TestCase("System.IO.File.ReadAllText(\"/etc/passwd\");")]
         [TestCase("System.IO.File.WriteAllText(\"Assets/com.example.plate/../../escape\", \"x\");")]
         [TestCase("System.IO.File.WriteAllText(\"/outside\", UnityEngine.Application.persistentDataPath);")]
