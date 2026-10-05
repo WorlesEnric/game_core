@@ -12,7 +12,7 @@ No paid operations; retained P3.2 JSON and fake media provider only.
 
 ## Requests to other packets
 
-R3-A: In `Packages/com.gamecore.studio.core/Editor/{Engine/ChangeSetEngine.cs,Core/AuthoringRefResolver.cs,Tools/ReflectedTool.cs}`, add candidate-local dependency-ordered output resolution to `AuthoringRefResolver.Resolve(AuthoringRef)` / reflected argument binding: resolve a fact AuthoringRef by its candidate-assigned authoringId from an earlier successful `dialogue.setFact` result during stage/apply, reject unknown/forward/cyclic/wrong-type refs before writes, and preserve that identity for history replay; R3-D supplies `DialogueTools.SetFactCondition(ConditionSetDefinition condition, FactDefinition fact, CompareOp comparison = CompareOp.Equal, int value = 1)` with a typed fact argument.
+R3-A: In `Packages/com.gamecore.studio.core/Editor/{Engine/ChangeSetEngine.cs,Core/AuthoringRefResolver.cs,Tools/ReflectedTool.cs}`, add candidate-local dependency-ordered output resolution to `AuthoringRefResolver.Resolve(AuthoringRef)` / reflected argument binding: resolve a fact AuthoringRef by its candidate-assigned authoringId from an earlier successful `dialogue.setFact` result during stage/apply, reject unknown/forward/cyclic/wrong-type refs before writes, and preserve that identity for history replay; R3-D supplies optional `DialogueTools.SetFact(..., string authoringId = "")` for the candidate-assigned identity and `DialogueTools.SetFactCondition(ConditionSetDefinition condition, FactDefinition fact, CompareOp comparison = CompareOp.Equal, int value = 1)` with a typed fact argument.
 
 ## Left open
 
@@ -21,4 +21,4 @@ R3-A: In `Packages/com.gamecore.studio.core/Editor/{Engine/ChangeSetEngine.cs,Co
 
 ## Verification
 
-Pending host Unity regressions and requested suites. Rules: 307 passed, zero failed/skipped (TRX under dotnet/tests/GameCore.Rules.Gameplay.Tests/TestResults/r3-d-rules.trx).
+Pending host Unity regressions and requested suites. Rules: 309 passed, zero failed/skipped (TRX under dotnet/tests/GameCore.Rules.Gameplay.Tests/TestResults/r3-d-rules.trx).

@@ -143,6 +143,23 @@ namespace GameCore.Gameplay.Dialogue.Editor
             EditorUtility.SetDirty(graph);
         }
 
+        [AuthorOperation("dialogue.setFactCondition", Tier = ToolTier.Configure, RuntimeApplicability = RuntimeApply.Rebuild,
+            Scope = AuthorScope.Definition, Validator = typeof(DialogueValidator),
+            Doc = "Replaces a condition set with one typed fact comparison. The fact AuthoringRef can name an earlier candidate output once the engine resolves dependency-ordered references; link this condition with dialogue.linkCondition.")]
+        public static void SetFactCondition(
+            ConditionSetDefinition condition,
+            [AuthorArg(Category = NarrativeKinds.Fact, Doc = "Fact AuthoringRef, including the output of an earlier dialogue.setFact operation.")] FactDefinition fact,
+            [AuthorArg(Required = false)] CompareOp comparison = CompareOp.Equal,
+            [AuthorArg(Required = false)] int value = 1)
+        {
+            if (condition == null || fact == null || !NarrativeKeys.IsValidFactName(fact.FactName)
+                || !Enum.IsDefined(typeof(CompareOp), comparison))
+                throw new ArgumentException(NarrativeDiagnosticCodes.ConditionInvalid + ": a condition set, valid fact and comparison are required");
+            Undo.RecordObject(condition, "dialogue.setFactCondition");
+            condition.Configure(ConditionMode.All, new[] { ConditionEntry.Of(ConditionKind.Fact, fact, comparison, value) });
+            EditorUtility.SetDirty(condition);
+        }
+
         [AuthorOperation("dialogue.setFact", Tier = ToolTier.Configure, RuntimeApplicability = RuntimeApply.Rebuild,
             Validator = typeof(DialogueValidator), Requires = NarrativeKinds.ContentSet,
             Doc = "Creates (or updates) a fact on a content set: name, initial value and whether it persists past a conversation.")]
@@ -150,7 +167,8 @@ namespace GameCore.Gameplay.Dialogue.Editor
             GameplayContentSet contentSet,
             [AuthorArg(Doc = "Fact name (lowercase letters, digits, underscores).")] string factName,
             [AuthorArg(Required = false, Doc = "Initial value.")] int initial = 0,
-            [AuthorArg(Required = false, Doc = "False = reset when a conversation ends.")] bool persistent = true)
+            [AuthorArg(Required = false, Doc = "False = reset when a conversation ends.")] bool persistent = true,
+            [AuthorArg(Required = false, Doc = "Optional canonical GUID for a newly created fact; later candidate refs use this authoringId. Existing facts cannot be re-identified.")] string authoringId = "")
         {
             if (!NarrativeKeys.IsValidFactName(factName))
             {
@@ -162,10 +180,28 @@ namespace GameCore.Gameplay.Dialogue.Editor
                 throw new ArgumentException(NarrativeDiagnosticCodes.ContentSetMissingWorld + ": a content set is required");
             }
 
+            if (!string.IsNullOrEmpty(authoringId))
+            {
+                if (!AuthoringIds.IsValid(authoringId))
+                    throw new ArgumentException(GameplayDiagnosticCodes.InvalidAuthoringId + ": fact authoringId must be a canonical GUID");
+                foreach (string guid in AssetDatabase.FindAssets("t:ScriptableObject", new[] { "Assets" }))
+                {
+                    ScriptableObject asset = AssetDatabase.LoadAssetAtPath<ScriptableObject>(AssetDatabase.GUIDToAssetPath(guid));
+                    if (!(asset is IAuthoredObject authored) || authored.AuthoringId != authoringId) continue;
+                    bool sameFact = asset is FactDefinition named && named.FactName == factName;
+                    bool inSet = false;
+                    foreach (ScriptableObject member in contentSet.Definitions) if (member == asset) inSet = true;
+                    if (!sameFact || !inSet)
+                        throw new ArgumentException(GameplayDiagnosticCodes.DuplicateAuthoringId + ": fact authoringId is already used");
+                }
+            }
+
             for (int i = 0; i < contentSet.Definitions.Count; i++)
             {
                 if (contentSet.Definitions[i] is FactDefinition existing && existing.FactName == factName)
                 {
+                    if (!string.IsNullOrEmpty(authoringId) && existing.AuthoringId != authoringId)
+                        throw new ArgumentException(GameplayDiagnosticCodes.InvalidAuthoringId + ": an existing fact keeps its authoringId");
                     Undo.RecordObject(existing, "dialogue.setFact");
                     existing.Configure(factName, initial, persistent);
                     EditorUtility.SetDirty(existing);
@@ -174,6 +210,12 @@ namespace GameCore.Gameplay.Dialogue.Editor
             }
 
             FactDefinition fact = NarrativeAuthoring.CreateAsset<FactDefinition>(contentSet, factName, "Facts", string.Empty, "dialogue.setFact");
+            if (!string.IsNullOrEmpty(authoringId))
+            {
+                var serialized = new SerializedObject(fact);
+                serialized.FindProperty("authoringId").stringValue = authoringId;
+                serialized.ApplyModifiedPropertiesWithoutUndo();
+            }
             fact.Configure(factName, initial, persistent);
             EditorUtility.SetDirty(fact);
             return fact;
@@ -245,7 +287,7 @@ namespace GameCore.Gameplay.Dialogue.Editor
 
         [AuthorOperation("dialogue.generateVoice", Tier = ToolTier.Compose, RuntimeApplicability = RuntimeApply.Rebuild,
             Validator = typeof(DialogueValidator), Requires = NarrativeKinds.Graph,
-            Doc = "Studio tier Agent: requests a generated voice clip for a line through the media generation gateway (NotConfigured until P3 wires a provider).")]
+            Doc = "Studio tier Agent: requests a generated voice clip for a line through the media generation gateway (the paired Editor session supplies the provider).")]
         public static MediaGenerationResult GenerateVoice(
             DialogueGraphDefinition graph,
             [AuthorArg(Doc = "Line node index.")] int node,
@@ -298,6 +340,8 @@ namespace GameCore.Gameplay.Dialogue.Editor
         NarrativeDiagnosticCodes.GraphUnreachableNode,
         NarrativeDiagnosticCodes.GraphTooManyNodes,
         NarrativeDiagnosticCodes.FactInvalidName,
+        GameplayDiagnosticCodes.InvalidAuthoringId,
+        GameplayDiagnosticCodes.DuplicateAuthoringId,
         NarrativeDiagnosticCodes.FactDuplicate,
         NarrativeDiagnosticCodes.ConditionInvalid,
         AuthoringHardeningCodes.DialogueNodeNotAction,
