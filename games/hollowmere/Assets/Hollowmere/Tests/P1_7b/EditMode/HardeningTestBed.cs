@@ -176,7 +176,7 @@ namespace Hollowmere.P1_7b.EditMode.Tests
             }
         }
 
-        private static void EnsureTempFolder()
+        public static void EnsureTempFolder()
         {
             if (!AssetDatabase.IsValidFolder(TempFolder))
             {

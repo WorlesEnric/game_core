@@ -15,19 +15,6 @@ using GameCore.Unity.Runtime;
 
 namespace GameCore.Gameplay.Player
 {
-    /// <summary>player.restoreStamina payload layout: one int32, the stamina units to restore (&gt; 0).</summary>
-    public readonly struct RestoreStaminaPayload
-    {
-        public const int Length = 4;
-
-        public RestoreStaminaPayload(int amount)
-        {
-            Amount = amount;
-        }
-
-        public int Amount { get; }
-    }
-
     /// <summary>Identities and declarations of the player plugin.</summary>
     public static class PlayerDeclarations
     {
@@ -205,7 +192,7 @@ namespace GameCore.Gameplay.Player
         public static SystemRegistration CommandSystemRegistration() =>
             new ManagedSystemRegistration<PlayerCommandSystem>(CommandSystem, Stage, "GameplayPlayerCommandSystem");
 
-        /// <summary>Encodes a player.restoreStamina payload (refuses a non-positive amount).</summary>
+        /// <summary>Encodes a player.restoreStamina payload (P1.7a's layout), refusing a non-positive amount (GP-LOG-031).</summary>
         public static FrozenPayload EncodeRestoreStamina(int amount)
         {
             if (amount <= 0)
@@ -213,32 +200,7 @@ namespace GameCore.Gameplay.Player
                 throw new System.ArgumentOutOfRangeException(nameof(amount), AuthoringHardeningCodes.RestoreStaminaInvalid + ": stamina amounts are positive");
             }
 
-            return new GameplayPayloadWriter().Int32(amount).Freeze();
-        }
-
-        /// <summary>Decodes a player.restoreStamina payload; false when it is not exactly one positive int32.</summary>
-        public static bool TryDecodeRestoreStamina(IReadOnlyList<byte> payload, out RestoreStaminaPayload value)
-        {
-            value = default(RestoreStaminaPayload);
-            if (payload == null)
-            {
-                return false;
-            }
-
-            var reader = new GameplayPayloadReader(payload);
-            if (!reader.HasLength(RestoreStaminaPayload.Length))
-            {
-                return false;
-            }
-
-            int amount = reader.Int32();
-            if (amount <= 0)
-            {
-                return false;
-            }
-
-            value = new RestoreStaminaPayload(amount);
-            return true;
+            return RestoreStaminaPayload.Encode(amount);
         }
 
         private static StateSlotSpec Slot(SlotId slot, string field)
