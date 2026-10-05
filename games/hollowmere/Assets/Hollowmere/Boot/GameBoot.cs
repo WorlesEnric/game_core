@@ -65,6 +65,25 @@ namespace Hollowmere.Boot
         /// <summary>The narrative world around <see cref="World"/>; null before Start or when the boot refused.</summary>
         public NarrativeWorld? Narrative { get; private set; }
 
+        /// <summary>The save service of the last <see cref="UseSaves"/> call (null before it).</summary>
+        public SaveService? Saves { get; private set; }
+
+        /// <summary>
+        /// Raised at the start of every <see cref="UseSaves"/> (before the UI-rig early return), so a trusted Editor
+        /// integration can bind Studio admission (R2-G request 4: capture, session readiness, live smoke) to the new
+        /// service. An instance event: nothing subscribes in a player build, and GameBoot references no Editor assembly.
+        /// </summary>
+        public event Action<GameBoot, SaveService>? SavesInstalled;
+
+        /// <summary>
+        /// The admission session readiness of <paramref name="service"/> (R2-G request 4): the world and its narrative
+        /// layer exist and the world's root is both the save service's active root and the application's current root.
+        /// Follows World and Narrative after every re-attach.
+        /// </summary>
+        public bool AdmissionReady(SaveService service) =>
+            service != null && World != null && Narrative != null
+            && ReferenceEquals(World.Root, service.ActiveRoot) && ReferenceEquals(World.Root, GameApplication.Current);
+
         /// <summary>The narrative modules of the world (their presenters, runner and commands).</summary>
         public HollowmereNarrativeModules? Modules { get; private set; }
 
@@ -277,6 +296,8 @@ namespace Hollowmere.Boot
                 throw new ArgumentNullException(nameof(service));
             }
 
+            Saves = service;
+            SavesInstalled?.Invoke(this, service);
             Hollowmere.UiAudio.HollowmereUiAudio? rig = UiAudioBootstrap.RigOf(gameObject);
             if (rig != null)
             {

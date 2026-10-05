@@ -1,0 +1,255 @@
+// Hollowmere - the trusted Editor binding of Studio admission to the running game (R2-G request 4; P2.4 open item 2).
+//
+// GameBoot.UseSaves raises GameBoot.SavesInstalled on every call (before its UI-rig early return). This Editor-only,
+// game-owned integration answers each one with
+//
+//   StudioAdmissionServices.BindAdmission(runtime, () => service, () => boot.AdmissionReady(service),
+//       verdict => StudioAdmissionServices.RunSmokeTest(runtime, verdict,
+//           (type, method, steps) => smoke.RunAdmittedSmokeEntry(verdict, type, method, steps)))
+//
+// for StudioServices.Runtime, so a staged mechanism admitted from Play Mode captures the running game through its
+// SaveService ("admit-<id>"), waits for the restarted game's session, restores the capture and runs the mechanism's
+// live smoke against the active world. It also binds on entering Play Mode and after a domain reload while playing (a
+// game already past UseSaves). The readiness lambda reads GameBoot.World/Narrative, so it follows every restored-world
+// re-attach. GameBoot only raises an instance event: player builds reference no Editor assembly.
+//
+// HollowmereAdmittedSmoke is the live smoke registry. It runs only entries compiled into this assembly whose package is
+// the verdict's admitted package, never a type or method named by candidate data, and never the sandbox Begin()
+// harness (that would boot a second root and displace the restored game). An entry asserts against the active world
+// without pumping it; it is a pure check, so a re-run after an admission crash recovery gives the same answer.
+#nullable enable
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using GameCore.Gameplay.World.Editor;
+using GameCore.Studio.Edit;
+using GameCore.Unity.App;
+using Hollowmere.Boot;
+using UnityEditor;
+using UnityEngine;
+using Object = UnityEngine.Object;
+
+namespace Hollowmere.Authoring
+{
+    /// <summary>Binds Studio admission (capture, session readiness, live smoke) to every running Hollowmere game.</summary>
+    [InitializeOnLoad]
+    public static class HollowmereStudioAdmission
+    {
+        static HollowmereStudioAdmission()
+        {
+            EditorApplication.playModeStateChanged -= OnPlayModeChanged;
+            EditorApplication.playModeStateChanged += OnPlayModeChanged;
+            if (EditorApplication.isPlaying)
+            {
+                EditorApplication.delayCall += () => AttachAll();
+            }
+        }
+
+        /// <summary>
+        /// Subscribes to every loaded GameBoot and binds Studio admission to the ones already past UseSaves (idempotent).
+        /// Returns how many were bound now.
+        /// </summary>
+        public static int AttachAll()
+        {
+            int bound = 0;
+            foreach (GameBoot boot in Object.FindObjectsByType<GameBoot>(FindObjectsSortMode.None))
+            {
+                boot.SavesInstalled -= OnSavesInstalled;
+                boot.SavesInstalled += OnSavesInstalled;
+                if (boot.Saves != null)
+                {
+                    Bind(StudioServices.Runtime, boot, boot.Saves);
+                    bound++;
+                }
+            }
+
+            return bound;
+        }
+
+        /// <summary>The R2-G binding of <paramref name="runtime"/>'s admission to <paramref name="boot"/>'s <paramref name="service"/>.</summary>
+        public static HollowmereAdmittedSmoke Bind(StudioRuntime runtime, GameBoot boot, SaveService service)
+        {
+            if (runtime == null)
+            {
+                throw new ArgumentNullException(nameof(runtime));
+            }
+
+            if (boot == null)
+            {
+                throw new ArgumentNullException(nameof(boot));
+            }
+
+            if (service == null)
+            {
+                throw new ArgumentNullException(nameof(service));
+            }
+
+            var smoke = new HollowmereAdmittedSmoke(boot, service);
+            StudioAdmissionServices.BindAdmission(
+                runtime,
+                () => service,
+                () => boot != null && boot.AdmissionReady(service),
+                verdict => StudioAdmissionServices.RunSmokeTest(runtime, verdict, (type, method, steps) => smoke.RunAdmittedSmokeEntry(verdict, type, method, steps)));
+            return smoke;
+        }
+
+        private static void OnPlayModeChanged(PlayModeStateChange change)
+        {
+            if (change == PlayModeStateChange.EnteredPlayMode)
+            {
+                AttachAll();
+            }
+        }
+
+        private static void OnSavesInstalled(GameBoot boot, SaveService service) => Bind(StudioServices.Runtime, boot, service);
+    }
+
+    /// <summary>The live smoke registry of admitted mechanisms (trusted entries compiled into the game's Editor assembly).</summary>
+    public sealed class HollowmereAdmittedSmoke
+    {
+        /// <summary>The pressure plate sample's smoke type (samples/mechanisms/pressure-plate, proposal.json smokeTest.type).</summary>
+        public const string PressurePlateType = "Hollowmere.Mechanism.PressurePlate.PressurePlateSmoke";
+
+        /// <summary>The pressure plate sample's package.</summary>
+        public const string PressurePlatePackage = "com.hollowmere.mechanism.pressureplate";
+
+        private static readonly IReadOnlyList<Entry> Entries = Array.AsReadOnly(new[]
+        {
+            new Entry(PressurePlateType, "Begin", PressurePlatePackage),
+        });
+
+        private readonly GameBoot boot;
+        private readonly SaveService service;
+
+        public HollowmereAdmittedSmoke(GameBoot boot, SaveService service)
+        {
+            this.boot = boot;
+            this.service = service;
+        }
+
+        /// <summary>Runs (this binding) so far.</summary>
+        public int Runs { get; private set; }
+
+        /// <summary>The last run's outcome line ("pass: ..." or "fail: ...").</summary>
+        public string LastReport { get; private set; } = string.Empty;
+
+        /// <summary>
+        /// R2-G's dispatcher: runs the trusted entry registered for <paramref name="type"/>.<paramref name="method"/> when
+        /// it belongs to the verdict's admitted package, against the active world. True only after every assertion passed.
+        /// </summary>
+        public bool RunAdmittedSmokeEntry(StageVerdict verdict, string type, string method, int steps)
+        {
+            Runs++;
+            string? failure = Check(verdict, type, method, steps, out string detail);
+            LastReport = (failure == null ? "pass: " + detail : "fail: " + failure) + " [" + type + "." + method + ", steps " + steps.ToString(CultureInfo.InvariantCulture) + "]";
+            if (failure == null)
+            {
+                Debug.Log("[Hollowmere] admitted smoke " + LastReport);
+            }
+            else
+            {
+                Debug.LogWarning("[Hollowmere] admitted smoke " + LastReport);
+            }
+
+            return failure == null;
+        }
+
+        private string? Check(StageVerdict verdict, string type, string method, int steps, out string detail)
+        {
+            detail = string.Empty;
+            if (verdict == null)
+            {
+                return "no verdict";
+            }
+
+            Entry? entry = null;
+            foreach (Entry candidate in Entries)
+            {
+                if (string.Equals(candidate.Type, type, StringComparison.Ordinal) && string.Equals(candidate.Method, method, StringComparison.Ordinal))
+                {
+                    entry = candidate;
+                }
+            }
+
+            if (entry == null)
+            {
+                return "no trusted smoke entry is registered for " + type + "." + method;
+            }
+
+            if (!string.Equals(verdict.Package, entry.Package, StringComparison.Ordinal))
+            {
+                return "the entry belongs to " + entry.Package + ", the verdict admits " + verdict.Package;
+            }
+
+            if (!verdict.Pass)
+            {
+                return "the verdict did not pass";
+            }
+
+            if (steps <= 0)
+            {
+                return "steps must be positive";
+            }
+
+            return LiveWorld(steps, out detail);
+        }
+
+        /// <summary>
+        /// The live assertions of an admitted mechanism in the active Hollowmere world: the session is ready (the restored
+        /// root is the save service's and the application's), the root runs, and the restored world round-trips through its
+        /// save codecs with an equal canonical slot hash. Synchronous and side-effect free: the multi-frame smoke protocol
+        /// needs R2-B's polled smoke status (R2-G request 5), so <paramref name="steps"/> is reported, not pumped.
+        /// </summary>
+        private string? LiveWorld(int steps, out string detail)
+        {
+            detail = string.Empty;
+            if (boot == null)
+            {
+                return "the game that was bound is gone";
+            }
+
+            if (!boot.AdmissionReady(service))
+            {
+                return "the game session is not ready (world, narrative, active root)";
+            }
+
+            GameApplicationRoot root = boot.World!.Root;
+            if (root.State != GameApplicationState.Running && root.State != GameApplicationState.Paused)
+            {
+                return "the active root is " + root.State;
+            }
+
+            SaveRoundTripReport roundTrip = service.TestRoundTrip();
+            if (roundTrip.Refusal != null)
+            {
+                return "the active world's round trip was refused: " + roundTrip;
+            }
+
+            if (!roundTrip.Equal)
+            {
+                return "the active world's round trip differs: " + roundTrip.Detail;
+            }
+
+            detail = "active root " + root.State + ", catalog " + root.CatalogHash.ToHex().Substring(0, 12) + ", round trip equal (slot hash "
+                + roundTrip.SourceSlotHash.Substring(0, Math.Min(12, roundTrip.SourceSlotHash.Length)) + "), " + steps.ToString(CultureInfo.InvariantCulture)
+                + " step(s) requested, checked synchronously";
+            return null;
+        }
+
+        private sealed class Entry
+        {
+            public Entry(string type, string method, string package)
+            {
+                Type = type;
+                Method = method;
+                Package = package;
+            }
+
+            public string Type { get; }
+
+            public string Method { get; }
+
+            public string Package { get; }
+        }
+    }
+}

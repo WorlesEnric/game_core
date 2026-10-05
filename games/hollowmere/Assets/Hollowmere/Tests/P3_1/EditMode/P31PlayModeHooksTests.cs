@@ -1,5 +1,6 @@
 // Hollowmere P3.1 EditMode (Play Mode entered from the Editor) -
-//   AdmissionFromPlayModeCaptures: with Boot.unity playing, the registered admission capture adapter checkpoints the
+//   AdmissionFromPlayModeCaptures: with Boot.unity playing, the game's R2-G binding (HollowmereStudioAdmission) is in
+//     place (capture, session readiness, smoke) and the bound capture adapter checkpoints the
 //     running game through HollowmereGame's SaveService and reuses the checkpoint on a retry (P2.4 open item 2; R2-B's
 //     capture contract). An unverified StageAdmission.Admit(captureAndStop) refuses as verdict_missing - never
 //     capture_failed - since R2-B captures only after an authenticated companion verdict (Stopping Play Mode is stubbed).
@@ -59,7 +60,11 @@ namespace Hollowmere.P3_1.EditMode.Tests
             yield return WaitForGame(60);
 
             StageAdmission admission = StageAdmission.Of(StudioServices.Runtime);
-            Assert.That(HollowmereAdmissionCapture.Register() || admission.Options.Capture != null, Is.True, "a capture hook is registered");
+            HollowmereStudioAdmission.AttachAll();
+            Assert.That(admission.Options.Capture, Is.InstanceOf<SaveServiceAdmissionCapture>(), "R2-G: the game bound its SaveService capture");
+            Assert.That(admission.Options.SessionReady, Is.Not.Null, "R2-G: the game bound its session readiness");
+            Assert.That(admission.Options.SessionReady!(), Is.True, "the running game's session is ready");
+            Assert.That(admission.Options.SmokeTest, Is.Not.Null, "R2-G: the game bound its live smoke dispatcher");
             IAdmissionCapture capture = admission.Options.Capture!;
             HollowmereGame game = UnityEngine.Object.FindAnyObjectByType<HollowmereGame>()!;
 
