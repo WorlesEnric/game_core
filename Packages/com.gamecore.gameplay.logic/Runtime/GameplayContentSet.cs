@@ -20,7 +20,7 @@ namespace GameCore.Gameplay.Logic
         [AuthorRef(Category = "world.definition", Doc = "The world this content belongs to.")]
         [SerializeField] private WorldDefinition? world;
 
-        [AuthorRef(Category = "narrative.definition", Doc = "Every narrative definition of the world.")]
+        [AuthorRef(Category = NarrativeKinds.Definition, Doc = "Every narrative definition of the world (any type providing the narrative.definition capability).")]
         [SerializeField] private List<ScriptableObject> definitions = new List<ScriptableObject>();
 
         public WorldDefinition? World => world;
