@@ -86,7 +86,7 @@ if [[ "${GC_STUDIO_ON_HOST:-0}" != "1" ]] && { [[ "$(uname -s)" != "Linux" ]] ||
   if [[ -n "${UNITY:-}" ]]; then
     remote_env+=" UNITY=$(printf '%q' "${UNITY}")"
   fi
-  forwarded=("${packet}" "${project}" "${required_tests[@]}")
+  forwarded=("${packet}" "${project}" ${required_tests[@]+"${required_tests[@]}"})
   [[ -n "${tests}" ]] && forwarded+=(--tests "${tests}")
   [[ -n "${filter}" ]] && forwarded+=(--filter "${filter}")
   rc=0
