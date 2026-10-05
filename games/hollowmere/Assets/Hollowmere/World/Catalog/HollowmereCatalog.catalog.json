@@ -102,6 +102,44 @@
       ]
     },
     {
+      "stableName": "gameplay.audio.serializer.config",
+      "valueTypeName": "AudioConfigValue",
+      "serializerTypeName": "AudioConfigSerializer",
+      "serializerKeyName": "AudioConfigSerializerKey",
+      "schemaId": "56e032f53333ee2c6dc6e1a6698f7900",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "0248eb1dc93bbd432cca1d673be5812d",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "SchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gameplay.audio.serializer.domain-session",
+      "valueTypeName": "AudioSessionDomainValue",
+      "serializerTypeName": "AudioSessionDomainSerializer",
+      "serializerKeyName": "AudioSessionDomainSerializerKey",
+      "schemaId": "1bc456373fbe3f868bc2e5c177007664",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "0248eb1dc93bbd432cca1d673be5812d",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "SchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
+    },
+    {
       "stableName": "gameplay.dialogue.serializer.config",
       "valueTypeName": "DialogueConfigValue",
       "serializerTypeName": "DialogueConfigSerializer",
@@ -404,6 +442,44 @@
           "required": true
         }
       ]
+    },
+    {
+      "stableName": "gameplay.ui.serializer.config",
+      "valueTypeName": "UiConfigValue",
+      "serializerTypeName": "UiConfigSerializer",
+      "serializerKeyName": "UiConfigSerializerKey",
+      "schemaId": "526e30afb16e0beb969141e359dff9fd",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "59e3e7c00e9c7331fec41e405ed7f9a4",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "SchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
+    },
+    {
+      "stableName": "gameplay.ui.serializer.domain-session",
+      "valueTypeName": "UiSessionDomainValue",
+      "serializerTypeName": "UiSessionDomainSerializer",
+      "serializerKeyName": "UiSessionDomainSerializerKey",
+      "schemaId": "514b9cfaae18602912501c90f1c06da4",
+      "schemaVersion": 1,
+      "serializerKeyVersion": 1,
+      "ownerPackageId": "59e3e7c00e9c7331fec41e405ed7f9a4",
+      "required": true,
+      "fields": [
+        {
+          "id": 1,
+          "name": "SchemaVersion",
+          "wireType": "UInt32",
+          "required": true
+        }
+      ]
     }
   ],
   "groups": [
@@ -429,6 +505,14 @@
           "ownerPackageId": "097c7524bc7c9ac65817b4e931a440ae",
           "implementationId": "620272d3adb5d74a4ceba02958c433e3",
           "implementationExpression": "new GameplayCatalogEntry(WorldPluginKey)"
+        },
+        {
+          "stableName": "gameplay.audio.plugin",
+          "keyName": "AudioPluginKey",
+          "keyVersion": 1,
+          "ownerPackageId": "0248eb1dc93bbd432cca1d673be5812d",
+          "implementationId": "3d11c67e99ebf0c22d651747169cee8c",
+          "implementationExpression": "new GameplayCatalogEntry(AudioPluginKey)"
         },
         {
           "stableName": "gameplay.dialogue.plugin",
@@ -485,6 +569,14 @@
           "ownerPackageId": "bfbde0469a539d071855617eb34b4429",
           "implementationId": "992be007c8076d0e2a0bec213731ebc4",
           "implementationExpression": "new GameplayCatalogEntry(QuestPluginKey)"
+        },
+        {
+          "stableName": "gameplay.ui.plugin",
+          "keyName": "UiPluginKey",
+          "keyVersion": 1,
+          "ownerPackageId": "59e3e7c00e9c7331fec41e405ed7f9a4",
+          "implementationId": "831405303ddd09243ed045e6d16a6708",
+          "implementationExpression": "new GameplayCatalogEntry(UiPluginKey)"
         }
       ]
     },
@@ -510,6 +602,14 @@
           "ownerPackageId": "097c7524bc7c9ac65817b4e931a440ae",
           "implementationId": "aad9d9e51de0ab68b90722029f91a94c",
           "implementationExpression": "new GameplayCatalogEntry(WorldCommandSystemKey)"
+        },
+        {
+          "stableName": "gameplay.audio.system.command",
+          "keyName": "AudioCommandSystemKey",
+          "keyVersion": 1,
+          "ownerPackageId": "0248eb1dc93bbd432cca1d673be5812d",
+          "implementationId": "91c4998b997deb4d5f7075c806dc48ed",
+          "implementationExpression": "new GameplayCatalogEntry(AudioCommandSystemKey)"
         },
         {
           "stableName": "gameplay.dialogue.system.command",
@@ -566,6 +666,14 @@
           "ownerPackageId": "bfbde0469a539d071855617eb34b4429",
           "implementationId": "c387c3ac389208d3e3ae33437f3b946f",
           "implementationExpression": "new GameplayCatalogEntry(QuestCommandSystemKey)"
+        },
+        {
+          "stableName": "gameplay.ui.system.command",
+          "keyName": "UiCommandSystemKey",
+          "keyVersion": 1,
+          "ownerPackageId": "59e3e7c00e9c7331fec41e405ed7f9a4",
+          "implementationId": "9b88925250c20213e4a27ac6b2777879",
+          "implementationExpression": "new GameplayCatalogEntry(UiCommandSystemKey)"
         }
       ]
     },
@@ -615,6 +723,22 @@
           "ownerPackageId": "097c7524bc7c9ac65817b4e931a440ae",
           "implementationId": "de483dbfb5e314a1a46897cb62bbfdf5",
           "implementationExpression": "new GameplayCatalogEntry(PlacementLayoutKey)"
+        },
+        {
+          "stableName": "gameplay.audio.session-applier",
+          "keyName": "AudioSessionApplierKey",
+          "keyVersion": 1,
+          "ownerPackageId": "0248eb1dc93bbd432cca1d673be5812d",
+          "implementationId": "72b66b7d5778469747c1f544a92c8634",
+          "implementationExpression": "new GameplayCatalogEntry(AudioSessionApplierKey)"
+        },
+        {
+          "stableName": "gameplay.audio.layout.session",
+          "keyName": "AudioSessionLayoutKey",
+          "keyVersion": 1,
+          "ownerPackageId": "0248eb1dc93bbd432cca1d673be5812d",
+          "implementationId": "8c1f83ade5d35e781174168dfb927f62",
+          "implementationExpression": "new GameplayCatalogEntry(AudioSessionLayoutKey)"
         },
         {
           "stableName": "gameplay.dialogue.applier",
@@ -719,6 +843,22 @@
           "ownerPackageId": "bfbde0469a539d071855617eb34b4429",
           "implementationId": "f4c0ff66bb8147420c9e672926ee1980",
           "implementationExpression": "new GameplayCatalogEntry(QuestLayout1Key)"
+        },
+        {
+          "stableName": "gameplay.ui.session-applier",
+          "keyName": "UiSessionApplierKey",
+          "keyVersion": 1,
+          "ownerPackageId": "59e3e7c00e9c7331fec41e405ed7f9a4",
+          "implementationId": "57d695a5c5027926d188d7ab60945224",
+          "implementationExpression": "new GameplayCatalogEntry(UiSessionApplierKey)"
+        },
+        {
+          "stableName": "gameplay.ui.layout.session",
+          "keyName": "UiSessionLayoutKey",
+          "keyVersion": 1,
+          "ownerPackageId": "59e3e7c00e9c7331fec41e405ed7f9a4",
+          "implementationId": "a3a3f67f0313b484905fe636f930ef5a",
+          "implementationExpression": "new GameplayCatalogEntry(UiSessionLayoutKey)"
         }
       ]
     },
