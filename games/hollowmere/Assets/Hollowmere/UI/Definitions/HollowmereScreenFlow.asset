@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc72bb8a4fc24d1bbd4231e989473459, type: 3}
+  m_Name: HollowmereScreenFlow
+  m_EditorClassIdentifier: GameCore.Gameplay.Ui:GameCore.Gameplay.Ui:ScreenFlowDefinition
+  authoringId: 356d6efe-17bb-43b9-a5c6-0b69fdad9731
+  gameTitle: Hollowmere
+  startScreen: 2
+  theme: {fileID: 11400000, guid: 607cfd3e74dd3c14a9f91a79c3bd525b, type: 2}
+  documents:
+  - {fileID: 11400000, guid: 42910ef6c7c4d13f5a85ccbb2ef3b3f6, type: 2}
+  - {fileID: 11400000, guid: 8cb07182d124b2c32b4c32633c4f92e0, type: 2}
+  - {fileID: 11400000, guid: 408da00e5cf270f66a1a576e84354a22, type: 2}
+  - {fileID: 11400000, guid: 920fc548b2dc087d49ee963d9c7c9a79, type: 2}
+  - {fileID: 11400000, guid: 0d75b3bd36a7ae2fd8cac3c16ca7ca41, type: 2}
+  - {fileID: 11400000, guid: 965c25f13438b937a896b860bc3b7bba, type: 2}
+  - {fileID: 11400000, guid: 65608b6c3fccf1e4e8d4e1c74a5767ee, type: 2}
+  - {fileID: 11400000, guid: 5d34aaef2dc3cd14591bc4ec03cbff43, type: 2}
+  - {fileID: 11400000, guid: 081a3bd9797dd3158bf3b99bf79f6ed7, type: 2}
+  - {fileID: 11400000, guid: 8041706833783c2f180a5e45d16cca2d, type: 2}
+  messages:
+  - id: ui.saved
+    text: Game saved.
+  - id: ui.loaded
+    text: Game loaded.
+  - id: ui.deleted
+    text: Save deleted.
+  - id: ui.no-save
+    text: There is no saved game yet.
+  - id: ui.save-unavailable
+    text: Saving is not available in this build (GP-UI-014).
+  - id: save.missing-slot
+    text: 'save.missing-slot: there is no save in this slot; choose another slot'
+  - id: save.corrupt-file
+    text: 'save.corrupt-file: the save file is damaged and cannot be loaded; delete
+      it or load another slot'
+  - id: save.catalog-mismatch
+    text: 'save.catalog-mismatch: the save belongs to another content version of
+      the game and this build declares no migration from it'
+  - id: save.migration-path-missing
+    text: 'save.migration-path-missing: the save needs a data migration this build
+      does not include'
+  - id: save.unsafe-state
+    text: 'save.unsafe-state: the game is busy; try again at the next pause'
+  - id: save.invalid-slot
+    text: 'save.invalid-slot: slot names are 1-64 characters of a-z, 0-9, ''-'' and
+      ''_'', starting with a letter or digit; received ''null'''
+  - id: save.capture-failed
+    text: 'save.capture-failed: the game could not be captured at a safe point; try
+      again'
+  - id: save.storage-failed
+    text: 'save.storage-failed: the save could not be written to disk; check free
+      space and permissions'
+  - id: save.restore-refused
+    text: 'save.restore-refused: the save could not be rebuilt into a running world'
+  - id: save.newer-build
+    text: 'save.newer-build: the save was written by a newer build of the game; load
+      it with that build'
+  regionBannerMs: 3000

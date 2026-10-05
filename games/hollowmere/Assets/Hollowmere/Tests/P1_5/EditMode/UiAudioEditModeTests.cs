@@ -42,6 +42,39 @@ namespace Hollowmere.P1_5.EditMode.Tests
         }
 
         [Test]
+        public void EveryContentAssetIsBoundToItsScript()
+        {
+            HollowmereUiAudioContent content = UiAudioHarness.Content();
+            var assets = new List<ScriptableObject> { content, content.Flow!, content.Flow!.Theme!, content.Audio!, content.Audio!.Bank! };
+            for (int i = 0; i < content.Flow.Documents.Count; i++)
+            {
+                assets.Add(content.Flow.Documents[i]);
+            }
+
+            for (int i = 0; i < content.Audio.MusicStates.Count; i++)
+            {
+                assets.Add(content.Audio.MusicStates[i]);
+            }
+
+            for (int i = 0; i < content.Audio.Ambiences.Count; i++)
+            {
+                assets.Add(content.Audio.Ambiences[i]);
+            }
+
+            foreach (ScriptableObject asset in assets)
+            {
+                Assert.That(asset, Is.Not.Null);
+                MonoScript? script = MonoScript.FromScriptableObject(asset);
+                Assert.That(script, Is.Not.Null, asset.name + " has a script");
+                Assert.That(script!.GetClass(), Is.EqualTo(asset.GetType()), asset.name);
+                string path = AssetDatabase.GetAssetPath(asset);
+                Assert.That(File.ReadAllText(path), Does.Not.Contain("m_Script: {fileID: 0}"), path + " references its script");
+            }
+
+            Assert.That(assets.Count, Is.EqualTo(21));
+        }
+
+        [Test]
         public void BindingMapResolvesEveryElementOfEveryDocument()
         {
             HollowmereUiAudioContent content = UiAudioHarness.Content();

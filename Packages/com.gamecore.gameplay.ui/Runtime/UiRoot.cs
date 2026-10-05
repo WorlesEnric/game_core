@@ -20,16 +20,6 @@ using UnityEngine.UIElements;
 
 namespace GameCore.Gameplay.Ui
 {
-    /// <summary>Drives the runtime's host actions between frames.</summary>
-    public sealed class UiHostDriver : MonoBehaviour
-    {
-        public UiRuntime? Runtime { get; set; }
-
-        private void LateUpdate()
-        {
-            Runtime?.RunHostActions();
-        }
-    }
 
     /// <summary>The runtime UI Toolkit root of a game.</summary>
     public sealed class UiRoot : MonoBehaviour

@@ -1,0 +1,105 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d98cbda7e319411cb50e51d82f05dfac, type: 3}
+  m_Name: HollowmereAudioBank
+  m_EditorClassIdentifier: GameCore.Gameplay.Audio:GameCore.Gameplay.Audio:AudioBankDefinition
+  authoringId: bc03a8e0-e3ac-4999-85c8-d944c078d1bb
+  entries:
+  - id: ambience.village
+    clip: {fileID: 8300000, guid: f86f4b08159131b50a7f5b9cd8fed81a, type: 3}
+    group: 1
+    volume: 1
+    loop: 1
+    spatial: 0
+    minDistance: 1
+    maxDistance: 25
+  - id: ambience.marsh
+    clip: {fileID: 8300000, guid: 8a661f3ab4bd6ade281cc347a010858a, type: 3}
+    group: 1
+    volume: 1
+    loop: 1
+    spatial: 0
+    minDistance: 1
+    maxDistance: 25
+  - id: ambience.belfry
+    clip: {fileID: 8300000, guid: 8003c33ed28d8d889bcc46fb9febf41a, type: 3}
+    group: 1
+    volume: 1
+    loop: 1
+    spatial: 0
+    minDistance: 1
+    maxDistance: 25
+  - id: music.explore
+    clip: {fileID: 8300000, guid: 8ce9e58764acf10cfabb61176f8c0463, type: 3}
+    group: 0
+    volume: 1
+    loop: 1
+    spatial: 0
+    minDistance: 1
+    maxDistance: 25
+  - id: music.tense
+    clip: {fileID: 8300000, guid: 828b46ab8d8171486b008104bb77f207, type: 3}
+    group: 0
+    volume: 1
+    loop: 1
+    spatial: 0
+    minDistance: 1
+    maxDistance: 25
+  - id: music.ending
+    clip: {fileID: 8300000, guid: 4ed2138372a982cfbb901f93714d1b9c, type: 3}
+    group: 0
+    volume: 1
+    loop: 1
+    spatial: 0
+    minDistance: 1
+    maxDistance: 25
+  - id: stinger.bell
+    clip: {fileID: 8300000, guid: 3a284137c24767ff39dfbe0b4974d4de, type: 3}
+    group: 0
+    volume: 1
+    loop: 0
+    spatial: 0
+    minDistance: 1
+    maxDistance: 25
+  - id: sfx.footstep
+    clip: {fileID: 8300000, guid: e64251fec8038f3d5b381635d04b8f85, type: 3}
+    group: 2
+    volume: 0.9
+    loop: 0
+    spatial: 1
+    minDistance: 1
+    maxDistance: 25
+  - id: sfx.footstep.stone
+    clip: {fileID: 8300000, guid: 82dd88e1522f6ec07a2a3c35e4c260ec, type: 3}
+    group: 2
+    volume: 0.9
+    loop: 0
+    spatial: 1
+    minDistance: 1
+    maxDistance: 25
+  - id: sfx.ui.click
+    clip: {fileID: 8300000, guid: b39cf369306737da09d29e3efb9027c1, type: 3}
+    group: 4
+    volume: 1
+    loop: 0
+    spatial: 0
+    minDistance: 1
+    maxDistance: 25
+  - id: sfx.ui.confirm
+    clip: {fileID: 8300000, guid: b1d6c647bfec992459ce4b8ed8f37046, type: 3}
+    group: 4
+    volume: 1
+    loop: 0
+    spatial: 0
+    minDistance: 1
+    maxDistance: 25
+  mixer: {fileID: 24100000, guid: 7a2b430ec72e351279302c652d74fe0a, type: 2}
