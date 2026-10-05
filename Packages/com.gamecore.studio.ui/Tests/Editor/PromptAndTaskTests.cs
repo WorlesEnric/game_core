@@ -280,8 +280,10 @@ namespace GameCore.Studio.UI.Tests
             _bed.Context.Tick();
             if (_bed.Context.Candidates.Entries.Count == 0)
             {
-                _bed.Context.HandleRequest(stagedView);
-                Assert.That(_bed.Context.Candidates.Entries.Count, Is.EqualTo(1), "direct HandleRequest adopts");
+                StagedChangeSet? seen = GatewayExtras.StagedBy(_bed.Context.Gateway, stagedView.RequestId);
+                Assert.That(seen, Is.Not.Null, "StagedBy through the context's gateway");
+                CandidateEntry adopted = _bed.Context.Candidates.Adopt(stagedView.RequestId, seen!);
+                Assert.That(_bed.Context.Candidates.Entries.Count, Is.EqualTo(1), "direct Adopt adds (" + adopted.Id + ")");
                 Assert.Fail("HandleRequest through the dispatcher did not adopt, a direct call did");
             }
             CandidateEntry? entry = _bed.Context.Candidates.Find(id);
