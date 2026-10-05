@@ -1,4 +1,7 @@
 // GameCore.Gameplay.Dialogue - DialogueGraphDefinition (its own file: Unity resolves a ScriptableObject script by file name).
+// P1.7b: NPCs reference a graph by object (NpcDefinition.dialogue, AuthorRef dialogue.graph). The P1.4 npcGraphRef
+// string is no longer authored; it stays stored (hidden) as the graph's alias so unmigrated NPC string ids still resolve
+// (DialogueContent aliases it, authoring.migrateRefs resolves it through IAuthoringAlias).
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -14,16 +17,16 @@ namespace GameCore.Gameplay.Dialogue
     [Authorable(NarrativeKinds.Graph, DisplayName = "Dialogue Graph", Scope = AuthorScope.Definition, RuntimeApplicability = RuntimeApply.Rebuild,
         Doc = "A conversation: line, choice, branch, action and end nodes joined by edges; conditions read facts and state.")]
     [CreateAssetMenu(menuName = "GameCore/Narrative/Dialogue Graph", fileName = "DialogueGraph")]
-    public sealed class DialogueGraphDefinition : NarrativeDefinitionAsset
+    public sealed class DialogueGraphDefinition : NarrativeDefinitionAsset, IAuthoringAlias
     {
         [AuthorField(Doc = "Default speaker name of the graph's lines.")]
         [SerializeField] private string speaker = string.Empty;
 
-        [AuthorField(Type = "authoringId", Doc = "Default speaker entity authoring id (optional).")]
+        [AuthorRef(Category = AuthorRefCategories.EntityInstance, Required = false, Doc = "Default speaker entity, by authoring id (optional).")]
         [SerializeField] private string speakerEntityId = string.Empty;
 
-        [AuthorField(Doc = "The NPC graph reference this graph answers to (NpcDefinition.dialogueGraph, e.g. dialogue.maren; optional).")]
-        [SerializeField] private string npcGraphRef = string.Empty;
+        // Legacy (P1.4): the NPC string id this graph answers to; see the file header.
+        [SerializeField, HideInInspector, AuthorField(Doc = "Legacy (P1.3/P1.4) string reference, read only while the typed field is empty; authoring.migrateRefs moves it into the typed field and clears it.")] private string npcGraphRef = string.Empty;
 
         [AuthorField(Min = 0, Doc = "Entry node index.")]
         [SerializeField] private int entry;
@@ -40,7 +43,10 @@ namespace GameCore.Gameplay.Dialogue
 
         public string SpeakerEntityId => speakerEntityId;
 
+        /// <summary>The legacy NPC string id this graph answers to (unmigrated NpcDefinition.dialogueGraph values).</summary>
         public string NpcGraphRef => npcGraphRef;
+
+        string IAuthoringAlias.AuthoringAlias => npcGraphRef;
 
         public int Entry => entry;
 
@@ -55,7 +61,7 @@ namespace GameCore.Gameplay.Dialogue
             entry = entryNode;
         }
 
-        /// <summary>Names the NPC graph reference (P1.3's NpcDefinition.dialogueGraph) that starts this graph.</summary>
+        /// <summary>Names the legacy NPC string id (P1.3's NpcDefinition.dialogueGraph) that starts this graph; new content uses npc.setDialogue.</summary>
         public void AnswerTo(string graphRef) => npcGraphRef = graphRef ?? string.Empty;
 
         /// <summary>Appends a node and returns its index.</summary>

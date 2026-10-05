@@ -18,7 +18,7 @@ namespace GameCore.Gameplay.Inventory
     [CreateAssetMenu(menuName = "GameCore/Narrative/Inventory", fileName = "Inventory")]
     public sealed class InventoryDefinition : NarrativeDefinitionAsset
     {
-        [AuthorField(Min = 1, Max = 64, Doc = "Slot count.")]
+        [AuthorField(Min = 1, Max = 64, Structural = true, Doc = "Slot count (the inventory's slot layout).")]
         [SerializeField] private int slotCount = 12;
 
         [AuthorField(Min = 0, Unit = "g", Doc = "Weight limit (0 = unlimited).")]
@@ -30,7 +30,7 @@ namespace GameCore.Gameplay.Inventory
         [AuthorField(Doc = "Starting items.")]
         [SerializeField] private List<ItemStackEntry> starting = new List<ItemStackEntry>();
 
-        [AuthorField(Type = "authoringId", Doc = "Owner entity authoring id (optional).")]
+        [AuthorRef(Category = AuthorRefCategories.EntityInstance, Required = false, Doc = "Owner entity, by authoring id (optional).")]
         [SerializeField] private string ownerEntityId = string.Empty;
 
         [AuthorField(Doc = "The player's inventory (grants, pickups and purchases go here).")]

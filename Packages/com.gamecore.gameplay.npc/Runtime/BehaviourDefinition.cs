@@ -22,7 +22,7 @@ namespace GameCore.Gameplay.Npc
     {
         [SerializeField] private string authoringId = string.Empty;
 
-        [AuthorField(Doc = "Idle, Patrol or Custom.")]
+        [AuthorField(Structural = true, Doc = "Idle, Patrol or Custom.")]
         [SerializeField] private NpcBehaviourKind kind = NpcBehaviourKind.Idle;
 
         [AuthorField(Unit = "m", Doc = "Patrol points in world space, visited in order and looped.")]

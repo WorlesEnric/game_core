@@ -4,6 +4,10 @@
 //   ObjectiveDefinition   one objective of a stage: talk (graph), collect (item), reach (region), interact (entity),
 //                         fact (fact value); objectives with a branch number form alternative ways through a stage
 //
+// P1.7b: an objective's and a reward's target is one typed [AuthorRef] per kind (graph, item, region, fact); the P1.4
+// single `target` (pseudo-category narrative.subject) is a hidden legacy field migrated on load and by
+// authoring.migrateRefs, and the `target` accessor reads the field the kind uses.
+//
 // A stage is satisfied when every branch-0 objective is done and, if the stage has branch objectives, every objective
 // of one branch is done; the first satisfying branch is latched as the quest branch. Rewards with a branch number are
 // granted only on that branch - the pay-or-persuade quest of Hollowmere uses this.
@@ -15,7 +19,9 @@ using GameCore.Gameplay.Contracts.Narrative;
 using GameCore.Gameplay.Logic;
 using GameCore.Rules.Gameplay.Logic;
 using GameCore.Rules.Gameplay.Quest;
+using GameCore.Gameplay.World;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace GameCore.Gameplay.Quest
 {
@@ -36,7 +42,7 @@ namespace GameCore.Gameplay.Quest
 
     /// <summary>One objective of a quest stage.</summary>
     [Serializable]
-    public sealed class ObjectiveDefinition
+    public sealed class ObjectiveDefinition : ISerializationCallbackReceiver
     {
         [AuthorField(Min = 0, Doc = "Stage index the objective belongs to.")]
         public int stage;
@@ -44,10 +50,19 @@ namespace GameCore.Gameplay.Quest
         [AuthorField(Doc = "Talk, collect, reach, interact or fact.")]
         public ObjectiveKind kind = ObjectiveKind.Fact;
 
-        [AuthorRef(Category = "narrative.subject", Required = false, Doc = "Dialogue graph (talk), item (collect), region (reach) or fact (fact).")]
-        public ScriptableObject? target;
+        [AuthorRef(Category = NarrativeKinds.Graph, Required = false, Doc = "The dialogue graph (talk objectives).")]
+        public ScriptableObject? graph;
 
-        [AuthorField(Type = "authoringId", Doc = "Entity authoring id (interact objectives).")]
+        [AuthorRef(Category = NarrativeKinds.Item, Required = false, Doc = "The item (collect objectives).")]
+        public ScriptableObject? item;
+
+        [AuthorRef(Category = NarrativeSubjects.Region, Required = false, Doc = "The region (reach objectives).")]
+        public RegionDefinition? region;
+
+        [AuthorRef(Category = NarrativeKinds.Fact, Required = false, Doc = "The fact (fact objectives).")]
+        public ScriptableObject? fact;
+
+        [AuthorRef(Category = AuthorRefCategories.EntityInstance, Required = false, Doc = "Entity authoring id (interact objectives).")]
         public string targetEntityId = string.Empty;
 
         [AuthorField(Min = 1, Doc = "Count needed (collect: items held; fact: the value reached; talk/interact: times).")]
@@ -58,17 +73,127 @@ namespace GameCore.Gameplay.Quest
 
         [AuthorField(Doc = "Journal text.")]
         public string text = string.Empty;
+
+        // Legacy P1.4 storage (pseudo-category narrative.subject); see the file header.
+        [SerializeField, HideInInspector, FormerlySerializedAs("target")] private ScriptableObject? legacyTarget;
+
+        /// <summary>The objective's target: the typed field the kind uses (the legacy field until migrated). Setting it stores it by its own kind.</summary>
+        public ScriptableObject? target
+        {
+            get
+            {
+                ScriptableObject? typed = kind switch
+                {
+                    ObjectiveKind.Talk => graph,
+                    ObjectiveKind.Collect => item,
+                    ObjectiveKind.Reach => region,
+                    ObjectiveKind.Fact => fact,
+                    _ => null,
+                };
+                return typed != null ? typed : legacyTarget;
+            }
+
+            set => Assign(value);
+        }
+
+        public ScriptableObject? LegacyTarget => legacyTarget;
+
+        public bool MigrateLegacy()
+        {
+            if (ReferenceEquals(legacyTarget, null) || NarrativeSubjects.KindOf(legacyTarget).Length == 0)
+            {
+                return false;
+            }
+
+            ScriptableObject moved = legacyTarget!;
+            Assign(moved);
+            return true;
+        }
+
+        void ISerializationCallbackReceiver.OnBeforeSerialize()
+        {
+        }
+
+        void ISerializationCallbackReceiver.OnAfterDeserialize() => MigrateLegacy();
+
+        private void Assign(ScriptableObject? next)
+        {
+            graph = null;
+            item = null;
+            region = null;
+            fact = null;
+            legacyTarget = null;
+            switch (NarrativeSubjects.KindOf(next))
+            {
+                case NarrativeKinds.Graph: graph = next; break;
+                case NarrativeKinds.Item: item = next; break;
+                case NarrativeSubjects.Region: region = (RegionDefinition)next!; break;
+                case NarrativeKinds.Fact: fact = next; break;
+                default: legacyTarget = next; break;
+            }
+        }
     }
 
     /// <summary>One reward of a quest, granted exactly once (through the outbox) when the quest completes.</summary>
     [Serializable]
-    public sealed class QuestRewardEntry
+    public sealed class QuestRewardEntry : ISerializationCallbackReceiver
     {
         [AuthorField(Doc = "Item or fact.")]
         public RewardKind kind = RewardKind.Item;
 
-        [AuthorRef(Category = "narrative.subject", Doc = "The item granted or the fact set.")]
-        public ScriptableObject? target;
+        [AuthorRef(Category = NarrativeKinds.Item, Required = false, Doc = "The item granted (item rewards).")]
+        public ScriptableObject? item;
+
+        [AuthorRef(Category = NarrativeKinds.Fact, Required = false, Doc = "The fact set (fact rewards).")]
+        public ScriptableObject? fact;
+
+        // Legacy P1.4 storage (pseudo-category narrative.subject); see the file header.
+        [SerializeField, HideInInspector, FormerlySerializedAs("target")] private ScriptableObject? legacyTarget;
+
+        /// <summary>The reward's target: the item or the fact by kind (the legacy field until migrated). Setting it stores it by its own kind.</summary>
+        public ScriptableObject? target
+        {
+            get
+            {
+                ScriptableObject? typed = kind == RewardKind.Fact ? fact : item;
+                return typed != null ? typed : legacyTarget;
+            }
+
+            set => Assign(value);
+        }
+
+        public ScriptableObject? LegacyTarget => legacyTarget;
+
+        public bool MigrateLegacy()
+        {
+            if (ReferenceEquals(legacyTarget, null) || NarrativeSubjects.KindOf(legacyTarget).Length == 0)
+            {
+                return false;
+            }
+
+            ScriptableObject moved = legacyTarget!;
+            Assign(moved);
+            return true;
+        }
+
+        void ISerializationCallbackReceiver.OnBeforeSerialize()
+        {
+        }
+
+        void ISerializationCallbackReceiver.OnAfterDeserialize() => MigrateLegacy();
+
+        private void Assign(ScriptableObject? next)
+        {
+            item = null;
+            fact = null;
+            legacyTarget = null;
+            switch (NarrativeSubjects.KindOf(next))
+            {
+                case NarrativeKinds.Item: item = next; break;
+                case NarrativeKinds.Fact: fact = next; break;
+                default: legacyTarget = next; break;
+            }
+        }
 
         [AuthorField(Doc = "Count (items) or value (facts).")]
         public int value = 1;
@@ -186,7 +311,28 @@ namespace GameCore.Gameplay.Quest
             }
 
             ConditionSetModel? fail = conversion.ConditionSet(quest.FailConditions);
-            return new QuestModel(key, quest.DefinitionName, stages, objectives, rewards, fail, quest.BranchNames);
+
+            // P1.7b -> P1.7a: prerequisite quest keys (each prerequisite is converted too); the kernel derives the
+            // dependents a failure closes from every quest's prerequisites (QuestRules.DependentsOf).
+            var prerequisites = new List<int>();
+            for (int p = 0; p < quest.Prerequisites.Count; p++)
+            {
+                QuestDefinition? prerequisite = quest.Prerequisites[p];
+                int prerequisiteKey = NarrativeRefs.KeyOf(prerequisite);
+                if (prerequisite == null || prerequisiteKey == 0 || prerequisite == quest)
+                {
+                    conversion.Problem(quest, AuthoringHardeningCodes.QuestPrerequisiteCycle + ": prerequisite " + p + " of quest " + quest.name + " is empty or the quest itself");
+                    continue;
+                }
+
+                conversion.Convert(prerequisite);
+                if (!prerequisites.Contains(prerequisiteKey))
+                {
+                    prerequisites.Add(prerequisiteKey);
+                }
+            }
+
+            return new QuestModel(key, quest.DefinitionName, stages, objectives, rewards, fail, quest.BranchNames, prerequisites, null);
         }
     }
 

@@ -209,6 +209,8 @@ namespace Hollowmere.P1_3.EditMode.Tests
                 "player.setSpawn", "player.tuneMovement", "player.setCamera",
                 "npc.addAt", "npc.setPatrol", "npc.setSchedule", "npc.setBehaviour",
                 "interaction.addDoor", "interaction.addExaminable", "interaction.addTrigger", "interaction.setStates", "interaction.linkCondition",
+                // P1.7b (05 amendments): typed dialogue/appearance refs, action sets and explain.
+                "npc.setDialogue", "npc.setAppearance", "interaction.setActions", "interaction.explain",
             };
             var found = new Dictionary<string, MethodInfo>(StringComparer.Ordinal);
             foreach (Type tools in new[] { typeof(PlayerTools), typeof(NpcTools), typeof(InteractionTools) })

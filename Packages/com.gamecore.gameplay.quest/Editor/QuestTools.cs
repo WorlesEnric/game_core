@@ -4,7 +4,13 @@
 //   quest.addObjective  add an objective to a stage (talk/collect/reach/interact/fact, count, branch)
 //   quest.linkReward    add a reward (item or fact) granted exactly once on completion, optionally on one branch only
 //   quest.simulate      play a path ("talk:Maren; fact:odd_paid=1; collect:bell_clapper=1; reach:Drowned Belfry")
-//                       through the pure quest rules and print every stage, objective and reward event
+//                       through the pure quest rules and print every stage, objective and reward event; a failed
+//                       quest lists the dependents it closes (P1.7b)
+//   quest.setBranch     put an objective on a branch and name the branch (P1.7b)
+//   quest.setConsequence the action sets run on completion and on failure (P1.7b)
+//   quest.inspectRuntime a quest's status, stage, branch and objectives over a state (P1.7b; the live slot reader is
+//                       P1.7a's seam)
+//   quest.setPrerequisites the quests that must complete first (P1.7b)
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -52,7 +58,7 @@ namespace GameCore.Gameplay.Quest.Editor
             QuestDefinition quest,
             [AuthorArg(Doc = "Stage index.")] int stage,
             [AuthorArg(Doc = "Objective kind.")] ObjectiveKind kind,
-            [AuthorArg(Category = "narrative.subject", Required = false, Doc = "Graph, item, region or fact.")] ScriptableObject? target = null,
+            [AuthorArg(Required = false, Doc = "The dialogue graph (talk), item (collect), region (reach) or fact (fact).")] ScriptableObject? target = null,
             [AuthorArg(Required = false, Doc = "Entity authoring id (interact).")] string targetEntityId = "",
             [AuthorArg(Required = false, Min = 1, Doc = "Count needed.")] int required = 1,
             [AuthorArg(Required = false, Min = 0, Doc = "0 = always needed; n = part of branch n.")] int branch = 0,
@@ -100,7 +106,7 @@ namespace GameCore.Gameplay.Quest.Editor
         public static int LinkReward(
             QuestDefinition quest,
             [AuthorArg(Doc = "Item or fact.")] RewardKind kind,
-            [AuthorArg(Category = "narrative.subject", Doc = "The item or the fact.")] ScriptableObject target,
+            [AuthorArg(Doc = "The item (item rewards) or the fact (fact rewards).")] ScriptableObject target,
             [AuthorArg(Required = false, Doc = "Count or value.")] int value = 1,
             [AuthorArg(Required = false, Min = 0, Doc = "0 = always; n = only on branch n.")] int branch = 0)
         {
@@ -117,14 +123,263 @@ namespace GameCore.Gameplay.Quest.Editor
             return index;
         }
 
-        [AuthorOperation("quest.simulate", Tier = ToolTier.Configure, RuntimeApplicability = RuntimeApply.Live,
+        [AuthorOperation("quest.simulate", ReadOnly = true, Tier = ToolTier.Configure, RuntimeApplicability = RuntimeApply.Live,
             Validator = typeof(QuestValidator), Requires = NarrativeKinds.Quest,
             Doc = "Plays a path through the quest rules: start; advance:n; fail; fact:<name>=v; talk:<graph>; collect:<item>=n; reach:<region>; interact:<entity id>.")]
         public static string Simulate(
             QuestDefinition quest,
             [AuthorArg(Doc = "Steps separated by ';'.")] string path)
         {
-            return SimulateResult(quest, path).Text;
+            SimulationResult result = SimulateResult(quest, path);
+            if (result.State.Status != QuestRules.Failed)
+            {
+                return result.Text;
+            }
+
+            IReadOnlyList<QuestDefinition> closed = ClosedBy(quest);
+            var lines = new List<string> { result.Text };
+            for (int i = 0; i < closed.Count; i++)
+            {
+                lines.Add(AuthoringHardeningCodes.QuestClosedByPrerequisite + ": closes " + closed[i].Title + " (prerequisite " + quest.Title + " failed)");
+            }
+
+            return string.Join("\n", lines);
+        }
+
+        /// <summary>
+        /// Every quest that fails closed when <paramref name="quest"/> fails: the quests naming it as a prerequisite,
+        /// transitively, in name order (the "failure closes dependents" semantics of 05 row 7).
+        /// </summary>
+        public static IReadOnlyList<QuestDefinition> ClosedBy(QuestDefinition quest)
+        {
+            var result = new List<QuestDefinition>();
+            if (quest == null)
+            {
+                return result;
+            }
+
+            IReadOnlyList<QuestDefinition> all = AllQuests();
+            var closed = new HashSet<QuestDefinition> { quest };
+            bool grew = true;
+            while (grew)
+            {
+                grew = false;
+                for (int i = 0; i < all.Count; i++)
+                {
+                    QuestDefinition candidate = all[i];
+                    if (closed.Contains(candidate))
+                    {
+                        continue;
+                    }
+
+                    for (int p = 0; p < candidate.Prerequisites.Count; p++)
+                    {
+                        if (candidate.Prerequisites[p] != null && closed.Contains(candidate.Prerequisites[p]))
+                        {
+                            closed.Add(candidate);
+                            result.Add(candidate);
+                            grew = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            result.Sort((a, b) => string.CompareOrdinal(a.name, b.name));
+            return result;
+        }
+
+        [AuthorOperation("quest.setPrerequisites", Tier = ToolTier.Configure, RuntimeApplicability = RuntimeApply.Rebuild,
+            Validator = typeof(QuestValidator), Requires = NarrativeKinds.Quest,
+            Doc = "Sets the quests that must be completed before this one starts; a failed prerequisite closes this quest.")]
+        public static void SetPrerequisites(
+            QuestDefinition quest,
+            [AuthorArg(Category = NarrativeKinds.Quest, Required = false, Doc = "The prerequisite quests (empty: none).")] QuestDefinition[]? prerequisites = null)
+        {
+            Require(quest);
+            var list = new List<QuestDefinition>();
+            QuestDefinition[] given = prerequisites ?? Array.Empty<QuestDefinition>();
+            for (int i = 0; i < given.Length; i++)
+            {
+                if (given[i] != null && !list.Contains(given[i]))
+                {
+                    list.Add(given[i]);
+                }
+            }
+
+            if (ReachesThrough(list, quest))
+            {
+                throw new ArgumentException(AuthoringHardeningCodes.QuestPrerequisiteCycle + ": " + quest.name + " would become its own prerequisite");
+            }
+
+            Undo.RecordObject(quest, "quest.setPrerequisites");
+            quest.SetPrerequisites(list);
+            EditorUtility.SetDirty(quest);
+        }
+
+        [AuthorOperation("quest.setBranch", Tier = ToolTier.Configure, RuntimeApplicability = RuntimeApply.Rebuild,
+            Validator = typeof(QuestValidator), Requires = NarrativeKinds.Quest,
+            Doc = "Puts an objective on a branch (0 = always needed, n = an alternative way through its stage) and optionally names branch n.")]
+        public static void SetBranch(
+            QuestDefinition quest,
+            [AuthorArg(Min = 0, Doc = "Objective index.")] int objective,
+            [AuthorArg(Min = 0, Doc = "Branch number (0 = always needed).")] int branch,
+            [AuthorArg(Required = false, Doc = "Name of branch n (journal, simulate); empty keeps the current name.")] string branchName = "")
+        {
+            Require(quest);
+            if (objective < 0 || objective >= quest.Objectives.Count)
+            {
+                throw new ArgumentException(NarrativeDiagnosticCodes.QuestObjectiveTarget + ": quest " + quest.name + " has no objective " + objective);
+            }
+
+            // Branches are unnamed until the first name is given; once named, an objective's branch names one of them
+            // (or the branch named by this call).
+            bool legal = branch == 0
+                || (branch > 0 && (!string.IsNullOrEmpty(branchName) || quest.BranchNames.Count == 0 || branch <= quest.BranchNames.Count));
+            if (!legal)
+            {
+                throw new ArgumentException(AuthoringHardeningCodes.QuestBranchOutOfRange + ": branch " + branch + " is not one of the quest's " + quest.BranchNames.Count + " named branches");
+            }
+
+            Undo.RecordObject(quest, "quest.setBranch");
+            quest.Objectives[objective].branch = branch;
+            if (branch > 0 && !string.IsNullOrEmpty(branchName))
+            {
+                quest.SetBranchName(branch, branchName);
+            }
+
+            EditorUtility.SetDirty(quest);
+        }
+
+        [AuthorOperation("quest.setConsequence", Tier = ToolTier.Configure, RuntimeApplicability = RuntimeApply.Rebuild,
+            Validator = typeof(QuestValidator), Requires = NarrativeKinds.Quest,
+            Doc = "Sets the action sets run once when the quest completes (after its rewards) and when it fails; null clears one.")]
+        public static void SetConsequence(
+            QuestDefinition quest,
+            [AuthorArg(Category = NarrativeKinds.ActionSet, Required = false, Doc = "Run on completion.")] ActionSetDefinition? onComplete = null,
+            [AuthorArg(Category = NarrativeKinds.ActionSet, Required = false, Doc = "Run on failure.")] ActionSetDefinition? onFail = null)
+        {
+            Require(quest);
+            Undo.RecordObject(quest, "quest.setConsequence");
+            quest.SetConsequences(onComplete, onFail);
+            EditorUtility.SetDirty(quest);
+            NarrativeAuthoring.ThrowIfInvalid(quest);
+        }
+
+        [AuthorOperation("quest.inspectRuntime", ReadOnly = true, Tier = ToolTier.Configure, RuntimeApplicability = RuntimeApply.Live,
+            Validator = typeof(QuestValidator), Requires = NarrativeKinds.Quest,
+            Doc = "Reports a quest's status, stage, branch, objectives and prerequisites over a state (logic.test terms; empty: the initial state).")]
+        public static QuestInspection InspectRuntime(
+            QuestDefinition quest,
+            [AuthorArg(Required = false, Doc = "State terms, e.g. quest.<quest>.status=1; quest.<quest>.stage=2; fact.<name>=v.")] string state = "")
+        {
+            Require(quest);
+            NarrativeModelSet models = NarrativeAuthoring.Models(string.Empty, quest);
+            if (!models.TryResolve(quest.AuthoringId, out int key) || !models.TryGetQuest(key, out QuestModel? model) || model == null)
+            {
+                throw new ArgumentException(models.Problems.Count > 0 ? models.Problems[0] : NarrativeDiagnosticCodes.QuestUnknown + ": the quest did not convert");
+            }
+
+            StateSnapshot snapshot = NarrativeAuthoring.ParseState(state ?? string.Empty, models, out RuleState _);
+            int status = snapshot.Quest(key, QuestField.Status);
+            int stage = snapshot.Quest(key, QuestField.Stage);
+            int branch = snapshot.Quest(key, QuestField.Branch);
+            var objectives = new List<string>();
+            for (int i = 0; i < model.Objectives.Count; i++)
+            {
+                ObjectiveModel objective = model.Objectives[i];
+                bool done = snapshot.ObjectiveDone(key, i) != 0;
+                objectives.Add("#" + i + " stage " + objective.Stage + (objective.Branch > 0 ? " branch " + objective.Branch : string.Empty) + " "
+                    + objective.Kind + " " + objective.TargetLabel + " x" + objective.Required + (done ? " done" : (objective.Stage == stage && status == QuestRules.Active ? " open" : string.Empty)));
+            }
+
+            var prerequisites = new List<string>();
+            for (int i = 0; i < quest.Prerequisites.Count; i++)
+            {
+                QuestDefinition? prerequisite = quest.Prerequisites[i];
+                if (prerequisite != null)
+                {
+                    prerequisites.Add(prerequisite.Title);
+                }
+            }
+
+            var closes = new List<string>();
+            IReadOnlyList<QuestDefinition> closed = ClosedBy(quest);
+            for (int i = 0; i < closed.Count; i++)
+            {
+                closes.Add(closed[i].Title);
+            }
+
+            return new QuestInspection(quest.Title, StatusName(status), stage, branch,
+                branch > 0 && branch <= quest.BranchNames.Count ? quest.BranchNames[branch - 1] : string.Empty, objectives, prerequisites, closes,
+                state == null || state.Trim().Length == 0 ? "initial" : "state");
+        }
+
+        private static string StatusName(int status)
+        {
+            switch (status)
+            {
+                case QuestRules.Inactive: return "inactive";
+                case QuestRules.Active: return "active";
+                case QuestRules.Completed: return "completed";
+                case QuestRules.Failed: return "failed";
+                default: return status.ToString(CultureInfo.InvariantCulture);
+            }
+        }
+
+        private static IReadOnlyList<QuestDefinition> AllQuests()
+        {
+            var quests = new List<QuestDefinition>();
+            string[] guids = AssetDatabase.FindAssets("t:" + nameof(QuestDefinition));
+            Array.Sort(guids, StringComparer.Ordinal);
+            for (int i = 0; i < guids.Length; i++)
+            {
+                QuestDefinition? loaded = AssetDatabase.LoadAssetAtPath<QuestDefinition>(AssetDatabase.GUIDToAssetPath(guids[i]));
+                if (loaded != null)
+                {
+                    quests.Add(loaded);
+                }
+            }
+
+            return quests;
+        }
+
+        /// <summary>True when following prerequisites from <paramref name="start"/> reaches <paramref name="target"/>.</summary>
+        internal static bool ReachesThrough(IReadOnlyList<QuestDefinition> start, QuestDefinition target)
+        {
+            var seen = new HashSet<QuestDefinition>();
+            var stack = new Stack<QuestDefinition>();
+            for (int i = 0; i < start.Count; i++)
+            {
+                if (start[i] != null)
+                {
+                    stack.Push(start[i]);
+                }
+            }
+
+            while (stack.Count > 0)
+            {
+                QuestDefinition next = stack.Pop();
+                if (next == target)
+                {
+                    return true;
+                }
+
+                if (!seen.Add(next))
+                {
+                    continue;
+                }
+
+                for (int i = 0; i < next.Prerequisites.Count; i++)
+                {
+                    if (next.Prerequisites[i] != null)
+                    {
+                        stack.Push(next.Prerequisites[i]);
+                    }
+                }
+            }
+
+            return false;
         }
 
         /// <summary>The structured result of quest.simulate (EditMode tests assert on it).</summary>
@@ -247,6 +502,44 @@ namespace GameCore.Gameplay.Quest.Editor
         }
     }
 
+    /// <summary>quest.inspectRuntime's result.</summary>
+    public sealed class QuestInspection
+    {
+        public QuestInspection(string quest, string status, int stage, int branch, string branchName, IReadOnlyList<string> objectives,
+            IReadOnlyList<string> prerequisites, IReadOnlyList<string> closesOnFailure, string source)
+        {
+            Quest = quest;
+            Status = status;
+            Stage = stage;
+            Branch = branch;
+            BranchName = branchName;
+            Objectives = objectives;
+            Prerequisites = prerequisites;
+            ClosesOnFailure = closesOnFailure;
+            Source = source;
+        }
+
+        public string Quest { get; }
+
+        public string Status { get; }
+
+        public int Stage { get; }
+
+        public int Branch { get; }
+
+        public string BranchName { get; }
+
+        public IReadOnlyList<string> Objectives { get; }
+
+        public IReadOnlyList<string> Prerequisites { get; }
+
+        /// <summary>The dependents that close when this quest fails.</summary>
+        public IReadOnlyList<string> ClosesOnFailure { get; }
+
+        /// <summary><c>initial</c> or <c>state</c> (a live world reader is P1.7a's seam).</summary>
+        public string Source { get; }
+    }
+
     /// <summary>Validation of quests.</summary>
     [AuthorValidator("quest.validator", Codes = new[]
     {
@@ -255,10 +548,50 @@ namespace GameCore.Gameplay.Quest.Editor
         NarrativeDiagnosticCodes.QuestTooManyObjectives,
         NarrativeDiagnosticCodes.QuestObjectiveTarget,
         NarrativeDiagnosticCodes.ConditionInvalid,
+        AuthoringHardeningCodes.QuestPrerequisiteCycle,
+        AuthoringHardeningCodes.QuestBranchOutOfRange,
+        AuthoringHardeningCodes.LegacyReference,
     })]
     public static class QuestValidator
     {
-        public static IReadOnlyList<GameplayDiagnostic> Validate(ScriptableObject definition) => LogicValidator.Validate(definition);
+        public static IReadOnlyList<GameplayDiagnostic> Validate(ScriptableObject definition)
+        {
+            var diagnostics = new List<GameplayDiagnostic>(LogicValidator.Validate(definition));
+            if (definition is QuestDefinition quest)
+            {
+                if (QuestTools.ReachesThrough(quest.Prerequisites, quest))
+                {
+                    diagnostics.Add(new GameplayDiagnostic(AuthoringHardeningCodes.QuestPrerequisiteCycle, quest.AuthoringId, quest.name + " is its own prerequisite"));
+                }
+
+                for (int i = 0; i < quest.Objectives.Count; i++)
+                {
+                    ObjectiveDefinition objective = quest.Objectives[i];
+                    if (objective.branch > 0 && quest.BranchNames.Count > 0 && objective.branch > quest.BranchNames.Count)
+                    {
+                        diagnostics.Add(new GameplayDiagnostic(AuthoringHardeningCodes.QuestBranchOutOfRange, quest.AuthoringId,
+                            quest.name + " objective " + i + " is on branch " + objective.branch + " of " + quest.BranchNames.Count));
+                    }
+
+                    if (objective.LegacyTarget != null)
+                    {
+                        diagnostics.Add(new GameplayDiagnostic(AuthoringHardeningCodes.LegacyReference, quest.AuthoringId,
+                            quest.name + " objective " + i + " still stores an untyped target; run authoring.migrateRefs"));
+                    }
+                }
+
+                for (int i = 0; i < quest.Rewards.Count; i++)
+                {
+                    if (quest.Rewards[i].LegacyTarget != null)
+                    {
+                        diagnostics.Add(new GameplayDiagnostic(AuthoringHardeningCodes.LegacyReference, quest.AuthoringId,
+                            quest.name + " reward " + i + " still stores an untyped target; run authoring.migrateRefs"));
+                    }
+                }
+            }
+
+            return diagnostics;
+        }
     }
 
     /// <summary>The quest plugin's catalog registrations (P1.3's catalog contribution seam).</summary>

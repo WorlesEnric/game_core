@@ -4,9 +4,12 @@
 // restoring it. `save.testRoundTrip` captures the running world, restores the capture into a new world, captures that
 // world and compares the canonical slot hashes and logical steps; nothing is written to disk and the running world is
 // kept. Both are read-only with respect to the game's content, so they carry no change set.
+//
+// P1.7b (B5): an Editor assembly (GameCore.Gameplay.Save.Editor) using the GameCore.Gameplay.Contracts mirror
+// attributes, so the runtime package depends on no Studio package.
 #nullable enable
 using System;
-using GameCore.Studio.Model;
+using GameCore.Gameplay.Contracts;
 using GameCore.Unity.App;
 
 namespace GameCore.Gameplay.Save
@@ -15,7 +18,7 @@ namespace GameCore.Gameplay.Save
     public static class SaveStudioOperations
     {
         /// <summary>Reads, verifies and previews one save slot.</summary>
-        [AuthorOperation("save.inspect", Tier = ToolTier.Configure, RuntimeApplicability = RuntimeApply.Live,
+        [AuthorOperation("save.inspect", Tier = ToolTier.Configure, RuntimeApplicability = RuntimeApply.Live, Validator = typeof(SaveValidator),
             Doc = "Read and verify one save slot (header, checksums, catalog compatibility) and preview the forward slot migration a restore would run.")]
         public static SaveSlotInspection Inspect(
             SaveSchemaDefinition schema,
@@ -32,7 +35,7 @@ namespace GameCore.Gameplay.Save
         }
 
         /// <summary>Capture, restore into a new world, capture again, compare.</summary>
-        [AuthorOperation("save.testRoundTrip", Tier = ToolTier.Configure, RuntimeApplicability = RuntimeApply.Live,
+        [AuthorOperation("save.testRoundTrip", Tier = ToolTier.Configure, RuntimeApplicability = RuntimeApply.Live, Validator = typeof(SaveValidator),
             Doc = "Capture the running world, restore it into a new world and compare canonical slot hashes and logical steps; writes nothing and keeps the running world.")]
         public static SaveRoundTripReport TestRoundTrip(SaveSchemaDefinition schema, SaveService service)
         {

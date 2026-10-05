@@ -1,4 +1,7 @@
 // GameCore.Gameplay.Quest - QuestDefinition (its own file: Unity resolves a ScriptableObject script by file name).
+// P1.7b (05 row 7): prerequisites (a quest starts only after its prerequisites completed; a failed prerequisite closes
+// its dependents) and completion / failure consequences. Studio's quest.simulate reports both; the quest kernel's
+// gating and consequence runs are P1.7a's wiring (see PACKET.md, "needs from P1.7a").
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -13,7 +16,7 @@ namespace GameCore.Gameplay.Quest
 {
     /// <summary>A quest.</summary>
     [Authorable(NarrativeKinds.Quest, DisplayName = "Quest", Scope = AuthorScope.Definition, RuntimeApplicability = RuntimeApply.Rebuild,
-        Doc = "A quest: stages of objectives (with alternative branches), rewards granted exactly once, optional fail conditions.")]
+        Doc = "A quest: prerequisites, stages of objectives (with alternative branches), rewards granted exactly once, optional fail conditions, and the actions run on completion or failure.")]
     [CreateAssetMenu(menuName = "GameCore/Narrative/Quest", fileName = "Quest")]
     public sealed class QuestDefinition : NarrativeDefinitionAsset
     {
@@ -35,6 +38,15 @@ namespace GameCore.Gameplay.Quest
         [AuthorField(Doc = "Names of branches 1..n (journal, simulate).")]
         [SerializeField] private List<string> branchNames = new List<string>();
 
+        [AuthorRef(Category = NarrativeKinds.Quest, Required = false, Doc = "Quests that must be completed before this one can start; when one of them fails, this quest closes (fails without starting).")]
+        [SerializeField] private List<QuestDefinition> prerequisites = new List<QuestDefinition>();
+
+        [AuthorRef(Category = NarrativeKinds.ActionSet, Required = false, Doc = "Actions run (once, through the outbox) when the quest completes, after its rewards.")]
+        [SerializeField] private ActionSetDefinition? completionActions;
+
+        [AuthorRef(Category = NarrativeKinds.ActionSet, Required = false, Doc = "Actions run (once, through the outbox) when the quest fails.")]
+        [SerializeField] private ActionSetDefinition? failActions;
+
         public override string NarrativeKind => NarrativeKinds.Quest;
 
         public string Title => title.Length > 0 ? title : name;
@@ -48,6 +60,12 @@ namespace GameCore.Gameplay.Quest
         public ConditionSetDefinition? FailConditions => failConditions;
 
         public IReadOnlyList<string> BranchNames => branchNames;
+
+        public IReadOnlyList<QuestDefinition> Prerequisites => prerequisites;
+
+        public ActionSetDefinition? CompletionActions => completionActions;
+
+        public ActionSetDefinition? FailActions => failActions;
 
         public void Configure(string journalTitle, ConditionSetDefinition? fail, IEnumerable<string>? branches)
         {
@@ -72,6 +90,34 @@ namespace GameCore.Gameplay.Quest
         {
             rewards.Add(reward ?? throw new ArgumentNullException(nameof(reward)));
             return rewards.Count - 1;
+        }
+
+        public void SetPrerequisites(IEnumerable<QuestDefinition>? quests)
+        {
+            prerequisites = quests != null ? new List<QuestDefinition>(quests) : new List<QuestDefinition>();
+        }
+
+        /// <summary>quest.setConsequence: the actions run on completion and on failure (null: none).</summary>
+        public void SetConsequences(ActionSetDefinition? onComplete, ActionSetDefinition? onFail)
+        {
+            completionActions = onComplete;
+            failActions = onFail;
+        }
+
+        /// <summary>quest.setBranch: names branch <paramref name="branch"/> (1..n), growing the list with empty names.</summary>
+        public void SetBranchName(int branch, string branchName)
+        {
+            if (branch < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(branch));
+            }
+
+            while (branchNames.Count < branch)
+            {
+                branchNames.Add(string.Empty);
+            }
+
+            branchNames[branch - 1] = branchName ?? string.Empty;
         }
     }
 }

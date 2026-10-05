@@ -409,6 +409,22 @@ namespace GameCore.Gameplay.Logic
                 case ActionKind.ShowMessage:
                     Require(!string.IsNullOrEmpty(entry.text), owner, entry.kind + " needs text");
                     break;
+                case ActionKind.RestoreStamina:
+                    // P1.7b declaration (player.restoreStamina{amount}); the port is P1.7a's.
+                    if (entry.value <= 0)
+                    {
+                        Problem(owner, AuthoringHardeningCodes.RestoreStaminaInvalid + ": restoreStamina needs a positive amount");
+                    }
+
+                    return new ActionModel(ActionKind.RestoreStamina, 0, 0, entry.value, string.Empty, entry.text, "stamina");
+                case ActionKind.Buy:
+                    // P1.7b declaration (inv.buy{vendor, item, count} for the actor); the port is P1.7a's.
+                    if (key == 0 || NarrativeRefs.KeyOf(entry.vendor) == 0 || entry.value <= 0)
+                    {
+                        Problem(owner, AuthoringHardeningCodes.BuyActionInvalid + ": buy needs a vendor, an item and a positive count");
+                    }
+
+                    return new ActionModel(ActionKind.Buy, key, NarrativeRefs.KeyOf(entry.vendor), entry.value, reference, entry.text, label);
             }
 
             return new ActionModel(entry.kind, key, NarrativeRefs.KeyOf(entry.inventory), entry.value, reference, entry.text, label);
