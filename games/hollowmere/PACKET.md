@@ -31,3 +31,5 @@ None currently. The shared gameplay UI runtime remains synchronous for its gener
 - Full Hollowmere PlayMode XML: **22/22 passed** (P3.1's 19 plus three regressions). New manual-save capture measured 47.159 ms in this run. Both new save tests and real belfry unload/reload pass.
 - dotnet Execution: **178/178 passed**. Required metadata and C# checks pass.
 - The suite's rebake exposed merged main's new cosmetic `EntityDefinition.materialTextures` field. Keep the 28 refreshed definition stamps and two bake outputs: their only definition changes are empty `materialTextures` plus content stamps; structural stamps, catalog fingerprint and recipe revisions remain unchanged. These are needed for Verify on the delivered checkout, rather than discarding them as transient test edits.
+- Isolated `P31AuthoringTests.BakeVerifies`: **1/1 passed** after committing the refreshed bake. This checks the delivered assets without a preceding authoring fixture mutating them.
+- Existing P1.1 PlayMode region loop: marsh→belfry **9 ms**, 10 frames; full loop 33 frames / 33 sanctioned pumps / zero violations. This is a suite diagnostic, not the required player measurement.
