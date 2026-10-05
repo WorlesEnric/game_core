@@ -68,7 +68,7 @@ namespace Hollowmere.P1_7b.EditMode.Tests
             foreach (string id in new[] { "dialogue.generateVoice", "audio.generateVoice", "audio.generateSfx" })
             {
                 ToolEntry tool = catalog.Tools.Single(t => t.Id == id);
-                Assert.That(tool.Tier, Is.EqualTo(ToolTier.Compose), id);
+                Assert.That(tool.Tier, Is.EqualTo(GameCore.Studio.Model.ToolTier.Compose), id);
                 Assert.That(tool.Prerequisites, Has.Some.Matches<Prerequisite>(p => p.Requires == "agent.media"), id);
             }
 
