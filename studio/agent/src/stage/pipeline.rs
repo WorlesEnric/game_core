@@ -172,10 +172,10 @@ pub fn discover_repo() -> Option<PathBuf> {
         return Some(PathBuf::from(v));
     }
     let has = |d: &Path| d.join("studio/stage/make-slot.py").is_file();
-    if let Ok(exe) = std::env::current_exe().and_then(|e| e.canonicalize())
-        && let Some(d) = exe.ancestors().find(|d| has(d))
-    {
-        return Some(d.to_path_buf());
+    if let Ok(exe) = std::env::current_exe().and_then(|e| e.canonicalize()) {
+        if let Some(d) = exe.ancestors().find(|d| has(d)) {
+            return Some(d.to_path_buf());
+        }
     }
     Path::new(env!("CARGO_MANIFEST_DIR"))
         .ancestors()
@@ -1351,10 +1351,10 @@ pub fn run_stage(opts: &StageOptions) -> Result<StageVerdict, String> {
     {
         return Err("source revision changed while preparing the stage slot".into());
     }
-    if let SlotSource::PackageDir { change_set_id, .. } = &opts.source
-        && record["changeSetId"].as_str() != Some(change_set_id.as_str())
-    {
-        return Err("the slot holds another change set".into());
+    if let SlotSource::PackageDir { change_set_id, .. } = &opts.source {
+        if record["changeSetId"].as_str() != Some(change_set_id.as_str()) {
+            return Err("the slot holds another change set".into());
+        }
     }
     std::fs::create_dir_all(slot_dir.join("out").join("logs"))
         .map_err(|e| format!("cannot create the slot's out directory: {e}"))?;
@@ -1436,9 +1436,7 @@ pub fn run_stage(opts: &StageOptions) -> Result<StageVerdict, String> {
             blocked = Some("skipped: playmode-smoke failed".into());
         }
     }
-    if let Some(why) = &blocked
-        && smoke.is_none()
-    {
+    if let Some(why) = blocked.as_ref().filter(|_| smoke.is_none()) {
         run.skip("determinism", why);
     } else if !run.requested("determinism") {
         run.skip("determinism", "not requested");
@@ -1669,9 +1667,7 @@ mod tests {
         assert!(out.ok(), "{out:?}");
         assert!(out.output.contains("GAMECORE_STAGE_MARK=1"));
         for line in out.output.lines() {
-            if let Some((name, _)) = line.split_once('=')
-                && !name.contains(' ')
-            {
+            if let Some((name, _)) = line.split_once('=').filter(|(name, _)| !name.contains(' ')) {
                 assert!(
                     super::super::env::allowed(name)
                         || name == "GAMECORE_STAGE_MARK"

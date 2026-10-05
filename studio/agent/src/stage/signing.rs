@@ -47,7 +47,7 @@ fn installation_secret(state: &Path) -> Result<Vec<u8>, String> {
     Ok(bytes)
 }
 
-fn hmac(key: &[u8], message: &[u8]) -> Vec<u8> {
+pub(crate) fn hmac(key: &[u8], message: &[u8]) -> Vec<u8> {
     let key = if key.len() > 64 {
         Sha256::digest(key).to_vec()
     } else {

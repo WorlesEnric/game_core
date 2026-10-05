@@ -286,9 +286,7 @@ pub fn evaluate(
             );
             continue;
         };
-        if let Some(b) = a.bytes
-            && b != files[i].bytes.len() as u64
-        {
+        if let Some(b) = a.bytes.filter(|b| *b != files[i].bytes.len() as u64) {
             errors.push(
                 Diagnostic::candidate(
                     "artifact_size_mismatch",
@@ -383,8 +381,9 @@ pub fn evaluate(
 /// an apply.
 fn candidate_mode(raw: &Value) -> Vec<Diagnostic> {
     let mut d = Vec::new();
-    if let Some(state) = raw.get("state")
-        && state.as_str() != Some("Candidate")
+    if let Some(state) = raw
+        .get("state")
+        .filter(|state| state.as_str() != Some("Candidate"))
     {
         d.push(
             Diagnostic::candidate(
@@ -531,8 +530,8 @@ fn catalog_rules(ops: &[Operation], ctx: CatalogContext<'_>) -> Vec<Diagnostic> 
                     .ok()
                     .and_then(|v| v.as_str().map(str::to_string))
                     .unwrap_or_default();
-                if let Some(kinds) = str_list(tool, "targetKinds")
-                    && !kinds.contains(&kind.as_str())
+                if let Some(kinds) =
+                    str_list(tool, "targetKinds").filter(|kinds| !kinds.contains(&kind.as_str()))
                 {
                     d.push(
                         Diagnostic::new(
@@ -551,8 +550,8 @@ fn catalog_rules(ops: &[Operation], ctx: CatalogContext<'_>) -> Vec<Diagnostic> 
                         .ok()
                         .and_then(|v| v.as_str().map(str::to_string))
                         .unwrap_or_default();
-                    if let Some(scopes) = str_list(tool, "scopes")
-                        && !scopes.contains(&scope.as_str())
+                    if let Some(scopes) =
+                        str_list(tool, "scopes").filter(|scopes| !scopes.contains(&scope.as_str()))
                     {
                         d.push(
                             Diagnostic::new(
@@ -629,9 +628,7 @@ fn collect_artifact_refs(v: &Value, out: &mut Vec<String>) {
     match v {
         Value::Object(map) => {
             for (k, child) in map {
-                if k == "artifact"
-                    && let Some(s) = child.as_str()
-                {
+                if let Some(s) = child.as_str().filter(|_| k == "artifact") {
                     out.push(s.to_string());
                 } else {
                     collect_artifact_refs(child, out);

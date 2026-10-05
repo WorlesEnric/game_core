@@ -513,6 +513,42 @@ impl Ledger {
         Ok(Inserted::Created(view, cursor))
     }
 
+    /// Atomically retain a creator candidate without opening an ETOS task. Replays are
+    /// immutable and cannot replace either another owner's or an agent's request.
+    pub fn retain_app_candidate(
+        &self,
+        new: &NewRequest,
+        candidate: &CandidateRow,
+    ) -> LedgerResult<()> {
+        let mut conn = self.lock()?;
+        let tx = conn.transaction()?;
+        let existing: Option<(String, String)> = tx
+            .query_row(
+                "SELECT digest, app FROM requests WHERE request_id=?1",
+                params![new.change_set_id],
+                |r| Ok((r.get(0)?, r.get(1)?)),
+            )
+            .optional()?;
+        if let Some((digest, owner)) = existing {
+            if owner != new.app {
+                return Err(LedgerError::NotFound("candidate".into()));
+            }
+            if digest != new.digest {
+                return Err(LedgerError::Conflict(
+                    "candidate id already binds different bytes or origin".into(),
+                ));
+            }
+            return Ok(());
+        }
+        let now = now_ms();
+        tx.execute(&format!("INSERT INTO requests ({REQUEST_COLS}) VALUES (?1, ?1, ?2, ?3, ?4, ?5, ?6, NULL, 0, NULL, 0, ?7, ?7)"),
+            params![new.change_set_id, new.digest, serde_json::to_string(&new.body)?, new.app, "app", RequestState::Candidate.as_str(), now])?;
+        put_candidate_in(&tx, candidate)?;
+        touch(&tx, &new.change_set_id)?;
+        tx.commit()?;
+        Ok(())
+    }
+
     /// A request.
     pub fn request(&self, request_id: &str) -> LedgerResult<RequestRow> {
         let conn = self.lock()?;
@@ -1083,9 +1119,10 @@ impl Ledger {
         let mut stmt = conn.prepare(
             "SELECT id FROM resource_owners WHERE kind='catalog' AND owner=?1 ORDER BY id LIMIT 20",
         )?;
-        Ok(stmt
+        let rows = stmt
             .query_map(params![owner], |r| r.get(0))?
-            .collect::<rusqlite::Result<_>>()?)
+            .collect::<rusqlite::Result<_>>()?;
+        Ok(rows)
     }
 
     /// Revisions of the stored tool catalogs, newest first.

@@ -31,6 +31,7 @@ pub mod index;
 pub mod ledger;
 pub mod model;
 pub mod ops;
+pub mod pricing;
 pub mod redact;
 pub mod schema;
 pub mod stage;

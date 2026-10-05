@@ -301,10 +301,10 @@ fn run(a: &Args) -> i32 {
         reference,
         opts.slot_dir().join("out/verdict.json").display()
     );
-    if let Some(path) = a.get("verdict-out")
-        && let Err(e) = std::fs::write(path, verdict.bytes())
-    {
-        eprintln!("gamecore-studio stage: cannot write {path}: {e}");
+    if let Some(path) = a.get("verdict-out") {
+        if let Err(e) = std::fs::write(path, verdict.bytes()) {
+            eprintln!("gamecore-studio stage: cannot write {path}: {e}");
+        }
     }
     println!("{}", String::from_utf8_lossy(&verdict.bytes()));
     if verdict.pass { 0 } else { 1 }

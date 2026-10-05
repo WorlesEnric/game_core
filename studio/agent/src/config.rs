@@ -97,6 +97,8 @@ pub struct Config {
     /// Default `max_cost_usd` of `/v1/ops/generate` for a call that names none; `None`: such
     /// a call is refused (`bad_request`).
     pub ops_max_cost_usd: Option<f64>,
+    /// Verified operator prices. An absent entry refuses capped calls.
+    pub ops_prices: Vec<crate::pricing::OpPrice>,
     /// Staging.
     pub stage: StageConfig,
     /// Voice.
@@ -119,6 +121,7 @@ struct FileConfig {
     index_flush_ms: Option<u64>,
     max_slice_bytes: Option<usize>,
     ops_max_cost_usd: Option<f64>,
+    ops_prices: Option<Vec<crate::pricing::OpPrice>>,
     stage: Option<FileStage>,
     voice: Option<FileVoice>,
 }
@@ -177,6 +180,7 @@ impl Config {
             index_flush_ms: 1_000,
             max_slice_bytes: 2 * 1024 * 1024,
             ops_max_cost_usd: None,
+            ops_prices: Vec::new(),
             stage: StageConfig {
                 confinement: Default::default(),
                 docker_image: "gamecore-stage:6000.0.75f1-v1".into(),
@@ -271,6 +275,9 @@ impl Config {
         }
         if let Some(v) = f.ops_max_cost_usd.filter(|v| v.is_finite() && *v >= 0.0) {
             self.ops_max_cost_usd = Some(v);
+        }
+        if let Some(p) = f.ops_prices {
+            self.ops_prices = p;
         }
         if let Some(s) = f.stage {
             if let Some(mode) = s.confinement {

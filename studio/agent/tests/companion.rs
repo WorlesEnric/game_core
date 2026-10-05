@@ -28,6 +28,23 @@ async fn companion(node: &FakeNode, dir: &Path, tweak: impl FnOnce(&mut Config))
     cfg.follow_wait_ms = 200;
     cfg.index_flush_ms = 100;
     cfg.hello_cache_s = 0;
+    // Explicit fake tariffs; production defaults remain empty/fail-closed.
+    cfg.ops_prices = [
+        ("image", "echo-images", "image", 0.006),
+        ("tts", "bailian-tts", "character", 0.00001),
+        ("3d", "fake-3d", "call", 0.01),
+        ("describe", "echo-chat", "call", 0.01),
+    ]
+    .into_iter()
+    .map(
+        |(op, provider, unit, per_unit)| gamecore_studio::pricing::OpPrice {
+            op: op.into(),
+            provider: provider.into(),
+            unit: unit.into(),
+            per_unit,
+        },
+    )
+    .collect();
     tweak(&mut cfg);
     let client = Client::new(&node.url, AGENT_KEY)
         .unwrap()
@@ -1139,7 +1156,7 @@ async fn ops_generate_stores_artifacts_and_passes_refusals() {
             json!({"op": "describe", "spec": {"artifact": sha(b"PNG-lantern")}, "max_cost_usd": 0.0}),
         )
         .await;
-    assert_eq!((s, v["code"].as_str()), (400, Some("bad_request")), "{v}");
+    assert_eq!((s, v["code"].as_str()), (409, Some("over_budget")), "{v}");
     // The node's reported digest is checked: a mismatch is a protocol error, nothing stored.
     node.lock().wrong_digest_ops.push("generate.image".into());
     let (s, v) = api
@@ -1244,7 +1261,7 @@ async fn r2_19_legacy_stage_extractor_is_retired() {
             json!({"changeSetId":"cs_01J9ZQ00000000000000000012","packageRef":"a".repeat(64)}),
         )
         .await;
-    assert_eq!(status, 404); // no owned candidate, before any extraction
+    assert_eq!(status, 400); // retired packageRef shape, before any extraction
     assert!(
         running
             .state
@@ -1680,7 +1697,8 @@ async fn r2_25_all_routes_isolate_apps_and_projects_and_replay_cursors() {
     );
     assert_eq!(owner.post("/v1/requests", request).await.0, 200);
     let (status, failure) = owner.post("/v1/stage", json!({"changeSetId":id,"projectId":owner.project,"sourceRevision":"a".repeat(40),"catalogRevision":catalog_rev()})).await;
-    assert_eq!(status, 503, "{failure}");
+    assert_eq!(status, 409, "{failure}");
+    assert_eq!(failure["code"], "stage_project_unregistered");
     assert!(failure["message"].as_str().unwrap().contains("registered"));
     running.shutdown().await;
 }
@@ -1695,7 +1713,7 @@ async fn r2_09_signed_verdict_transport_rejects_tampering_and_partial_jobs() {
     let api = Api::new(&running, &node);
     let id = "cs_01J9ZQ00000000000000000092";
     assert_eq!(api.post("/v1/requests", edit_request(id)).await.0, 200);
-    let record = signing::sign(dir.path(), json!({"jobId":"stg_signed","projectId":api.project,"sourceRevision":"a".repeat(40),"catalogRevision":catalog_rev(),"packageDigest":"b".repeat(64),"proposalDigest":"c".repeat(64),"steps":gamecore_studio::stage::verdict::STEP_IDS.iter().map(|id|json!({"id":id,"status":"pass"})).collect::<Vec<_>>(),"forbiddenHits":[],"pass":true,"confinement":"docker","coldCache":false})).unwrap();
+    let record = signing::sign(dir.path(), json!({"jobId":"stg_signed","origin":"agent","candidateDigest":"d".repeat(64),"projectId":api.project,"sourceRevision":"a".repeat(40),"catalogRevision":catalog_rev(),"packageDigest":"b".repeat(64),"proposalDigest":"c".repeat(64),"steps":gamecore_studio::stage::verdict::STEP_IDS.iter().map(|id|json!({"id":id,"status":"pass"})).collect::<Vec<_>>(),"forbiddenHits":[],"pass":true,"confinement":"docker","coldCache":false})).unwrap();
     // A fixture representing the trusted stage service's persisted record.
     running
         .state
@@ -1720,6 +1738,8 @@ async fn r2_09_signed_verdict_transport_rejects_tampering_and_partial_jobs() {
     );
     for field in [
         "jobId",
+        "origin",
+        "candidateDigest",
         "projectId",
         "sourceRevision",
         "catalogRevision",
@@ -1746,5 +1766,304 @@ async fn r2_09_signed_verdict_transport_rejects_tampering_and_partial_jobs() {
         )
         .unwrap();
     assert_eq!(api.get("/v1/stage/stg_signed/verdict").await.0, 404);
+    running.shutdown().await;
+}
+
+#[tokio::test]
+async fn r3_d14_retained_budget_refuses_unpriced_before_provider_call() {
+    let retained: Value = serde_json::from_str(include_str!("../../../artifacts/studio/workflows/P3.2/runs/honesty-20261005T095503Z/budget/generate.json")).unwrap();
+    assert_eq!(retained["ok"], true);
+    let node = FakeNode::start().await;
+    node.set_op(
+        "generate.image",
+        200,
+        json!({"name":"swatch.png", "bytes":"PNG"}),
+    );
+    let dir = tempfile::tempdir().unwrap();
+    let running = companion(&node, dir.path(), |cfg| cfg.ops_prices.clear()).await;
+    let api = Api::new(&running, &node);
+    let (_, result) = api.post("/v1/ops/generate", json!({"op":"image", "spec":{"prompt":retained["prompt"]}, "max_cost_usd":retained["maxCostUsd"]})).await;
+    assert_eq!(result["code"], "budget_unpriced", "{result}");
+    assert_eq!(node.calls("POST", "/ops/generate.image"), 0);
+    running.shutdown().await;
+}
+
+#[tokio::test]
+async fn r3_d24_unregistered_project_has_registration_hint() {
+    let retained: Value = serde_json::from_str(include_str!("../../../artifacts/studio/workflows/P3.2/runs/mech-b-20261005T124205Z/mech/panel-stage.json")).unwrap();
+    assert!(
+        retained["problem"]["message"]
+            .as_str()
+            .unwrap()
+            .contains("no request cs_01K6RW0MECH00000000000000A")
+    );
+    let node = FakeNode::start().await;
+    let dir = tempfile::tempdir().unwrap();
+    let running = companion(&node, dir.path(), |_| {}).await;
+    let api = Api::new(&running, &node);
+    let (_, result) = api
+        .post(
+            "/v1/stage",
+            json!({"changeSetId":"cs_01K6RW0MECH00000000000000A", "projectId":api.project}),
+        )
+        .await;
+    assert_eq!(result["code"], "stage_project_unregistered", "{result}");
+    assert!(
+        result["hint"]
+            .as_str()
+            .unwrap()
+            .contains("--register-project")
+    );
+    running.shutdown().await;
+}
+
+#[tokio::test]
+async fn r3_d3b_hello_negotiates_before_project_header() {
+    let node = FakeNode::start().await;
+    let dir = tempfile::tempdir().unwrap();
+    let running = companion(&node, dir.path(), |_| {}).await;
+    let res = reqwest::Client::new()
+        .get(format!("{}/v1/hello", running.url))
+        .header("x-etos-proxy-token", node.token())
+        .header("x-etos-app", "gamecore-unity")
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(res.status(), 200);
+    let hello: Value = res.json().await.unwrap();
+    assert_eq!(hello["minimumClientContract"], 2);
+    assert_eq!(hello["minimumClientRevision"], "4635746");
+    running.shutdown().await;
+}
+
+#[tokio::test]
+async fn r3_d14_priced_budget_binds_quantity_and_provider() {
+    let node = FakeNode::start().await;
+    node.set_op(
+        "generate.image",
+        200,
+        json!({"name":"swatch.png", "bytes":"PNG"}),
+    );
+    let dir = tempfile::tempdir().unwrap();
+    let running = companion(&node, dir.path(), |_| {}).await;
+    let api = Api::new(&running, &node);
+    for (spec, expected) in [
+        (json!({"prompt":"swatch"}), "over_budget"),
+        (
+            json!({"prompt":"swatch", "provider":"unpriced"}),
+            "budget_unpriced",
+        ),
+        (
+            json!({"prompt":"swatch", "params":{"quality":"high"}}),
+            "budget_unpriced",
+        ),
+    ] {
+        let (_, result) = api
+            .post(
+                "/v1/ops/generate",
+                json!({"op":"image","spec":spec,"max_cost_usd":0.001}),
+            )
+            .await;
+        assert_eq!(result["code"], expected, "{result}");
+    }
+    let (_, result) = api
+        .post(
+            "/v1/ops/generate",
+            json!({"op":"image","spec":{"prompt":"swatch", "count":2},"max_cost_usd":0.006}),
+        )
+        .await;
+    assert_eq!(result["code"], "over_budget");
+    assert_eq!(node.calls("POST", "/ops/generate.image"), 0);
+    let (status, result) = api
+        .post(
+            "/v1/ops/generate",
+            json!({"op":"image","spec":{"prompt":"swatch", "count":2},"max_cost_usd":0.012}),
+        )
+        .await;
+    assert_eq!(status, 200, "{result}");
+    let input = node
+        .lock()
+        .op_calls
+        .iter()
+        .find(|(op, _)| op == "generate.image")
+        .unwrap()
+        .1
+        .clone();
+    assert_eq!(input["provider"], "echo-images");
+    assert_eq!(input["max_cost_usd"], 0.012);
+    running.shutdown().await;
+}
+
+fn app_envelope(payload: &Value, key: &str) -> Value {
+    let bytes = serde_json::to_vec(payload).unwrap();
+    let mut inner = [0x36u8; 64];
+    let mut outer = [0x5cu8; 64];
+    for (i, b) in key.bytes().enumerate() {
+        inner[i] ^= b;
+        outer[i] ^= b;
+    }
+    let mut hash = Sha256::new();
+    hash.update(inner);
+    hash.update(b"gamecore.stage.app-candidate/1\n");
+    hash.update(&bytes);
+    let mut final_hash = Sha256::new();
+    final_hash.update(outer);
+    final_hash.update(hash.finalize());
+    json!({"payloadBase64":base64::engine::general_purpose::STANDARD.encode(bytes), "signature":hex::encode(final_hash.finalize())})
+}
+
+#[tokio::test]
+async fn r3_d23_retained_sample_signed_app_stage_and_tamper_refusals() {
+    let node = FakeNode::start().await;
+    let dir = tempfile::tempdir().unwrap();
+    let repo = Path::new(env!("CARGO_MANIFEST_DIR"))
+        .ancestors()
+        .nth(2)
+        .unwrap();
+    let source = repo.join("games/hollowmere");
+    let project = "a".repeat(64);
+    let running = companion(&node, dir.path(), |cfg| {
+        cfg.stage.command = Some(repo.join("studio/stage/stage.sh"));
+        cfg.stage.projects.insert(project.clone(), source);
+        // Never launch an Editor/container in this regression: the unavailable image
+        // produces a retained failing verdict and cannot admit anything.
+        cfg.stage.docker_image = "r3-c-deliberately-unavailable:test".into();
+    })
+    .await;
+    let api = Api::new(&running, &node);
+    let sample = repo.join("samples/mechanisms/pressure-plate/candidate");
+    let change_set: Value =
+        serde_json::from_slice(&std::fs::read(sample.join("change-set.json")).unwrap()).unwrap();
+    assert_eq!(change_set["id"], "cs_01K6RW0MECH00000000000000A");
+    let mut cat = json!({"schema":"gamecore.studio.toolcatalog/1", "objectTypes":[], "tools":[
+        {"id":"mechanism.propose","tier":"Compose","runtimeApply":"Compile","targetRequired":false,
+        "args":[{"name":"description","type":"string","required":true},{"name":"package","type":"artifact","required":true},
+        {"name":"proposal","type":"artifact","required":false},{"name":"stageInputs","type":"string[]","required":false}]}]});
+    let revision = gamecore_studio::util::catalog_revision(&cat);
+    cat["revision"] = json!(revision);
+    let source_revision = String::from_utf8(
+        std::process::Command::new("git")
+            .args(["rev-parse", "HEAD"])
+            .current_dir(repo)
+            .output()
+            .unwrap()
+            .stdout,
+    )
+    .unwrap()
+    .trim()
+    .to_string();
+    let files: Vec<_> = ["package.tgz","proposal.json"].iter().map(|name| json!({"bytesBase64":base64::engine::general_purpose::STANDARD.encode(std::fs::read(sample.join("artifacts").join(name)).unwrap())})).collect();
+    let payload = json!({"app":"gamecore-unity", "request":{"changeSetId":change_set["id"],"projectId":project,"sourceRevision":source_revision,"catalogRevision":revision,"steps":["scan"]},
+        "changeSet":change_set, "toolCatalog":cat, "files":files});
+    let send = |value: Value, key: &str| {
+        reqwest::Client::new()
+            .post(format!("{}/v1/stage/app-candidate", running.url))
+            .header("x-etos-proxy-token", node.token())
+            .header("x-etos-app", "gamecore-unity")
+            .header("x-gamecore-project", &project)
+            .header("x-gamecore-stage-key", key)
+            .json(&value)
+            .send()
+    };
+    let mut forged = app_envelope(&payload, APP_KEY);
+    forged["signature"] = json!("00".repeat(32));
+    assert_eq!(send(forged, APP_KEY).await.unwrap().status(), 403);
+    assert_eq!(
+        send(app_envelope(&payload, "wrong-key"), "wrong-key")
+            .await
+            .unwrap()
+            .status(),
+        403
+    );
+    let mut cross = payload.clone();
+    cross["request"]["projectId"] = json!("b".repeat(64));
+    assert_eq!(
+        send(app_envelope(&cross, APP_KEY), APP_KEY)
+            .await
+            .unwrap()
+            .status(),
+        403
+    );
+    let mut bad_bytes = payload.clone();
+    bad_bytes["files"][0]["bytesBase64"] = json!("dGFtcGVyZWQ=");
+    let r = send(app_envelope(&bad_bytes, APP_KEY), APP_KEY)
+        .await
+        .unwrap();
+    assert_eq!(r.status(), 400);
+    assert_eq!(
+        r.json::<Value>().await.unwrap()["code"],
+        "candidate_invalid"
+    );
+    let response = send(app_envelope(&payload, APP_KEY), APP_KEY)
+        .await
+        .unwrap();
+    let status = response.status();
+    let job: Value = response.json().await.unwrap();
+    assert_eq!(status, 202, "{job}");
+    let request = running
+        .state
+        .ledger
+        .request(change_set["id"].as_str().unwrap())
+        .unwrap();
+    assert_eq!(request.app, json!(["gamecore-unity", project]).to_string());
+    assert_eq!(request.body["origin"], "app");
+    assert_eq!(
+        request.body["candidateDigest"],
+        sha(gamecore_studio::util::canonical_json(&change_set).as_bytes())
+    );
+    let (status, recovered) = api
+        .get(&format!(
+            "/v1/candidates/{}",
+            change_set["id"].as_str().unwrap()
+        ))
+        .await;
+    assert_eq!(status, 200);
+    assert_eq!(recovered["artifacts"].as_array().unwrap().len(), 2);
+    for artifact in recovered["artifacts"].as_array().unwrap() {
+        let url = artifact["url"].as_str().unwrap();
+        assert_eq!(api.get(url).await.0, 200);
+        let mut foreign = api.clone();
+        foreign.project = "b".repeat(64);
+        assert_eq!(foreign.get(url).await.0, 404);
+    }
+    assert_eq!(node.lock().tasks.len(), 0);
+    let mut changed = payload.clone();
+    changed["changeSet"]["intent"]["text"] = json!("different candidate");
+    let r = send(app_envelope(&changed, APP_KEY), APP_KEY)
+        .await
+        .unwrap();
+    assert_eq!(r.status(), 409);
+    let mut other = api.clone();
+    other.project = "b".repeat(64);
+    assert_eq!(
+        other
+            .get(&format!("/v1/stage/{}", job["jobId"].as_str().unwrap()))
+            .await
+            .0,
+        404
+    );
+    for _ in 0..100 {
+        let (_, view) = api
+            .get(&format!("/v1/stage/{}", job["jobId"].as_str().unwrap()))
+            .await;
+        if view["state"] == "failed" || view["state"] == "done" {
+            assert_eq!(view["verdict"]["origin"], "app");
+            assert_eq!(
+                view["verdict"]["candidateDigest"],
+                request.body["candidateDigest"]
+            );
+            break;
+        }
+        tokio::time::sleep(Duration::from_millis(20)).await;
+    }
+    assert_eq!(
+        api.get(&format!(
+            "/v1/stage/{}/verdict",
+            job["jobId"].as_str().unwrap()
+        ))
+        .await
+        .0,
+        404
+    );
     running.shutdown().await;
 }

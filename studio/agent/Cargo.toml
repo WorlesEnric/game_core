@@ -6,7 +6,7 @@
 name = "gamecore-studio"
 version = "0.1.0"
 description = "GameCore Studio companion: an etos agent bridging the Unity editor to etos tasks, files, ops, realtime voice and the Resource Graph."
-edition = "2024"
+edition = "2021"
 rust-version = "1.97.1"
 license = "Apache-2.0"
 publish = false
@@ -36,6 +36,7 @@ todo = "deny"
 unimplemented = "deny"
 
 [dependencies]
+reqwest = { version = "0.12", default-features = false, features = ["json"] }
 etos-sdk = { path = "vendor/etos-sdk" }
 axum = { version = "0.8", features = ["ws"] }
 base64 = "0.22"
@@ -61,5 +62,4 @@ tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"] }
 debug = false
 
 [dev-dependencies]
-reqwest = { version = "0.12", default-features = false, features = ["json"] }
 tempfile = "3"
