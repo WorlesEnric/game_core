@@ -1,0 +1,21 @@
+{
+  "name": "com.gamecore.studio.ui",
+  "version": "1.0.0",
+  "displayName": "GameCore Studio UI",
+  "description": "GameCore Studio creator-facing editor surface (docs/studio/02-architecture.md boundary A, packet P2.1): the Studio Viewport window rendering the game camera with Play/Select/Inspect modes, Input System routing, picking UX (hover, click, shift-add, ctrl-toggle, marquee, overlap list, point-at), pump-per-frame assertion and frame time, the prompt bar with voice transcript and provider status, the task tray, the candidate strip and panel (preview, compare, apply, reject, rebase), the contextual control panel (generated inspector, tools, diagnostics, references, impact, explain), the history panel, the viewport move gizmo, Studio settings and the first-run wizard. All edits go through the com.gamecore.studio.core edit engine; agent work arrives through IStudioAgentGateway (implemented by com.gamecore.studio.etos).",
+  "unity": "6000.0",
+  "keywords": [
+    "gamecore",
+    "studio",
+    "editor"
+  ],
+  "dependencies": {
+    "com.gamecore.contracts": "1.0.0",
+    "com.gamecore.studio.core": "1.0.0",
+    "com.gamecore.unity.adapters": "1.0.0",
+    "com.gamecore.unity.app": "1.0.0",
+    "com.gamecore.unity.runtime": "1.0.0",
+    "com.unity.inputsystem": "1.19.0",
+    "com.unity.nuget.newtonsoft-json": "3.2.1"
+  }
+}

@@ -1,0 +1,143 @@
+# PACKET P2.3 studio-views
+
+Owner: Opus 5.5. Branch `worktree-agent-a61c8c439837536f1`, based on main d04ce65, with main 168c93f (P1.5, P2.4) merged in.
+
+Paths changed, all within the packet's exclusive set:
+- `Packages/com.gamecore.studio.views/**`
+- `games/hollowmere/Assets/Hollowmere/Tests/P2_3/**`
+- `games/hollowmere/Packages/manifest.json` and `packages-lock.json`
+- `artifacts/studio/evidence/P2.3/**`
+- `studio/tools/evidence-p2.3.sh`
+
+No gameplay, studio.core or other package file was changed.
+
+## Built
+
+`com.gamecore.studio.views` 1.0.0 is an Editor-only package with one assembly, `GameCore.Studio.Views.Editor`. It depends on `com.gamecore.studio.core` and Newtonsoft. It holds about 12k lines of C# 9 with `#nullable enable`, uses UI Toolkit, and contains no TODOs.
+
+### Views
+
+Each view is a `StudioViewBase` (a VisualElement) hosted in a `StudioViewWindow`, under the menu `GameCore/Studio/<View>` (priorities 2100-2105).
+
+| Id | View | What it does |
+|---|---|---|
+| `gamecore.studio.views.relationships` | W-VIEW-01 Relationships | Neighbourhood of the selection or a search hit, depth 1-3, with per-edge-kind toggles (references, contains, spawns, bindsUi, triggers) and field labels on edges (`rewards[0].target`). Cards show the region and its residency (Resident/Unloaded, live in Play Mode), a stale-stamp marker, and list fields summarised as counts ("2 patrol points"). "Impact of deleting" lists transitive referrers with counts by type. Exports JSON (`gamecore.studio.views.subgraph/1`) and Mermaid. Click selects through the bridge; double-click or Enter focuses. |
+| `gamecore.studio.views.dialogue` | W-VIEW-02 Dialogue | Graph picker, vertical node canvas with an END card. Badges for entry, condition, actions and visited (live). Add line (`dialogue.addLine`), add choice (`dialogue.addChoice`), link condition (`dialogue.linkCondition`). Connect/disconnect, text, speaker and option rename go through `set` (partial `nodes` elements or the full `edges` list); remove node through `set`; delete graph through `delete`. Preview panel with fact fields: `dialogue.preview` highlights the reached nodes. "Play from here" uses the gameplay bridge. |
+| `gamecore.studio.views.quests` | W-VIEW-03 Quests | Stage columns, objective cards and a Complete card whose badges are the rewards, with branch badges. In Play Mode: live status, stage and objectives done. Inspector with inline `set` edits, add stage (`quest.addStage`), add objective (`quest.addObjective`), link reward (`quest.linkReward`). Simulate panel: a generated path per branch, `quest.simulate`, the parsed result. Rules sidebar: rules that reference the quest, directly or via a condition/action set, with `logic.explain` and the running world's recent decisions. |
+| `gamecore.studio.views.world` | W-VIEW-04 World | Regions on a ring, two directed edges per portal, start badge, residency, indexed object count, spawn. Activating a region loads its scene additively in Edit Mode and travels in Play Mode (bridge). Connect regions, place portal end (`world.addPortal`), set spawn point. NPC schedule strip (phases across one day). |
+| `gamecore.studio.views.tables` | W-VIEW-05 Tables | Tabs for Entities, Definitions, Items, Facts (with a live value column in Play Mode), Save slots, and any authorable type. MultiColumnListView with TextField editors; values are checked against the FieldSpec (FieldValueChecker). A row commit is one `set {fields}` op; "apply to selected rows" gives N ops in one AllOrNothing change set. Sort, filter, CSV (RFC 4180). |
+| `gamecore.studio.views.changes` | W-VIEW-06 Changes | **Pending:** previews plus any change set passed to `Inspect`, staged in Journal mode with nothing written. Shows the op tree, diagnostics with expected/actual from `data`, hints, "go to" navigation, and a dependsOn canvas. **Diagnostics:** validators ([AuthorValidator] `Validate`/`ValidateScene`) plus staged diagnostics, deduplicated, with an origin filter. **Dependencies:** the com.gamecore package graph by layer, with metadata checks (version, unity, kernel independence). **Journal:** the timeline with origin filter and a stamp diff between two entries. |
+
+### Shared pieces (all in the package)
+
+- **`GraphCanvas`:** a custom UI Toolkit canvas. It holds at most 300 pooled cards and virtualises them over a 512-unit spatial grid. Edges are drawn with Painter2D, batched by colour. Below zoom 0.4 it switches to compact rectangles. Layout is time-sliced (`GraphLayout`, 8 ms per editor frame, layered BFS plus barycentre). Wide layers wrap into lanes of 40, referrers are placed before the nodes they point at, and a resize refits while the view is fitted. Keyboard: arrows move the selection, Enter activates, F frames, A frames all, +/- zoom, [ and ] step through history, Delete.
+- **`IndexGraph`:** an adjacency view over a `SemanticIndex` revision, cached per revision.
+  - `byname:<category>:<value>` references are resolved by node name, authoring id, definition prefix, or an equal string field.
+  - Edge field labels come from `NestedReferenceContributor`, an `IIndexContributor` registered on the runtime's index by `ViewIndexContributors.Ensure`. It adds:
+    - nested `[AuthorRef]` edges, up to depth 4, with their field paths;
+    - `[AuthorField(Type = "authoringId")]` entity references;
+    - Triggers/Spawns/BindsUi classification;
+    - region-to-scene Contains edges via the region marker.
+- **`ImpactAnalysis`:** transitive referrers over the graph above, not only `SemanticIndexService.ImpactOf`, which misses nested references.
+- **`ViewEdits`:** every edit becomes a Manual change set (`IdDerivation.NewChangeSetId`) applied by `ChangeSetEngine.Apply`; undo and redo go through `HistoryService`.
+  - Definition targets without a scope get `AuthorScope.Definition`, because the Definition-only model tools refuse unscoped targets.
+  - `ApplySequence` applies ordered change sets and flushes the index between steps.
+- **`ReadOnlyToolInvoker`:** runs `dialogue.preview`, `quest.simulate`, `logic.explain` and `logic.test` by reflection on their [AuthorOperation] methods, with arguments bound by the ValueCodec. These tools are not marked ReadOnly, so `ToolRegistry.Invoke` refuses them (see Left open).
+- **`ChangeSetInspection`:** `ChangeSetEngine.Stage` with `Mode=Journal`, `Previews=false` and `JournalCandidate=false`, then `Discard`. Nothing is written.
+- **`StudioViewContext`:** a coalesced `Changed` event (index `Changed`, `Engine.Applied`, `Journal.Written`, play-mode changes) and an index pump every 0.5 s. Views re-derive their model from the cached revision graph on `Changed`. The canvas keeps existing card positions (`keepPositions`) and lays out only new cards, so an edit does not reshuffle the view.
+
+## Verified (host myubuntu, Unity 6000.0.75f1)
+
+Nothing was compiled, built or tested on the Mac. Mac-side checks were interpreter-only: `tools/check_package_metadata.py` (OK, 40 packages) and `tools/check_game_core_csharp.py` (OK, 1025 files).
+
+Commands:
+- `studio/tools/sync-to-host.sh p2.3`
+- `studio/tools/unity-compile.sh p2.3 games/hollowmere`: PASS, 35-41 s, no warnings in the views package or the P2_3 tests.
+- `studio/tools/unity-compile.sh p2.3 games/hollowmere --tests EditMode --filter <regex>`
+
+The script reports FAIL with "unity exit 2" whenever a run contains Inconclusive results, even when the result is Passed with 0 failed. The numbers below are taken from the result XML.
+
+| Run | Tree | Filter | Result |
+|---|---|---|---|
+| final, unpatched | this branch as committed | `GameCore\.Studio\..*` | 80 tests: 70 passed, 0 failed, 4 skipped (P2.2 live etos tests, no key), 6 inconclusive (the P2.3 tests blocked by the `authoringId` defect below). P2.2 Hollowmere (15), studio.core Edit (35) and Studio Hollowmere (2) tests all pass alongside the new package. 55 s. |
+| final, host-only patch | plus the 3-line `authoringId` alias (below), applied after sync and never committed | `GameCore\.Studio\.Views\..*` | 24 tests: 22 passed, 0 failed, 2 inconclusive (the dialogue undos blocked by the set-inverse defect below). 40 s. |
+
+After every run the host tree shows no asset modification (`git status`).
+
+Package tests (`Packages/com.gamecore.studio.views/Tests/Editor`, 14 tests):
+- `IndexGraph` name resolution and labels; neighbourhood depth and kinds; transitive impact; JSON and Mermaid export.
+- Dialogue edit builders (add line, connect, partial text/rename, remove node with reindexing).
+- Quest path and parse; table parse, row commit, bulk and CSV; package-graph problems.
+- `TwoThousandNodes_RenderWithinTheFrameBudget`, logged as: `2000-node relationships: index graph 4.8 ms, neighbourhood 1.5 ms, SetGraph 10.7 ms, layout 2 slices max 5.09 ms total 7.6 ms, refresh max 0.24 ms, cards framed-all 0 (compact True), cards at root 36`. It asserts that each layout slice, each pan/zoom refresh and SetGraph stays under 16 ms, and that at most 300 cards are bound.
+
+Hollowmere tests (`games/hollowmere/Assets/Hollowmere/Tests/P2_3/EditMode`, 10 tests). They run on ThornwickVillage with a temporary Studio state root. A byte backup restores every asset they may touch, after saving dirty assets.
+
+| Test | Patched result | Checks |
+|---|---|---|
+| `Maren_ShowsHerDialogueGraphPatrolPointsAndRegion` | pass | At depth 2: 16 nodes and 22 links. Contains the Maren dialogue graph (the `dialogue.maren` string resolved), MarenBehaviour with "2 patrol points", and her placed entity in the ThornwickVillage region. |
+| `LanternImpact_..._GateKeyImpactListsTheVendorStock` | pass | Lantern: DrownedBell `rewards[0].target`, MarshLoot `entries[1].item`, HollowmereContent, then transitively MarenIntro, ReturnToMaren, the Maren graph, Maren, NpcRoster. GateKey: OddsStall `stock[0].item` (see the data deviation below). |
+| `World_ListsThreeRegionsAndThePortalTriangle` | pass | 3 regions; a portal between every pair; Thornwick Resident with indexed objects and a spawn; 6 canvas edges. |
+| `World_AddPortalAndConnectRegionsMakeChangeSets` | pass | `world.addPortal` is journaled and refused (`GP-WLD-006`, unbound `region`; the test asserts Ok once the tool binds). Connect regions applies `create world.portal` and `set portals` as 2 journaled change sets: 4 portals and 8 edges. Undoing both gives 3 portals. |
+| `Dialogue_AddLineConnectRename_AreJournaledChangeSetsAndUndoRestores` | inconclusive at the undo step | On a fresh graph: add line, add choice, add line, connect, rename option, set text. Each is one op with the expected tool, journaled Applied with origin Manual. Undo is refused by the set-inverse defect. |
+| `Dialogue_UndoOnMarenKeepsTheConditionReferences` | inconclusive | Same defect, on Maren. |
+| `Dialogue_PreviewDiffersByFact` | pass | The default preview and the `bell_rung=1` preview differ; the reached path is highlighted. |
+| `Quest_SimulatePassesOnBothBranches` | pass | Generated paths for branch 1 (pay Odd) and branch 2 (persuade Odd) both complete, and rewards are granted. |
+| `Table_InlineEditIsOneSetOp_MultiRowIsNOpsInOneChangeSet` | pass | The row commit is 1 `set` op with 2 fields (AllOrNothing). The bulk apply is 3 ops in one change set. Undo restores the Lantern price 12. |
+| `Changes_RendersACandidateWithAConflictDiagnostic` | pass | Conflict count 1; `data.expected` and `data.actual` match the stamps; the op tree shows "Conflict" and "expected"; the dependsOn canvas has 1 edge; nothing is journaled. |
+
+Graphical evidence is in `artifacts/studio/evidence/P2.3/`: 12 PNGs at 1280x746, each 41-246 KB, plus `README.md` and `capture.json`.
+- Command: `studio/tools/evidence-p2.3.sh p2.3 games/hollowmere`, an interactive Editor on `:1` that exited 0 after 141 s.
+- Coverage: every view, the impact mode, the 2,000-node canvas, and Quests and World in Play Mode on Boot.unity (the bridge found `NarrativeWorld via GameBoot.Narrative`).
+- It was taken with the same host-only `authoringId` patch, so the dialogue and quest views have content; the README says so.
+
+## API (for P2.1 studio-ui, P3.1, P3.2, plugins)
+
+- **`IStudioSelectionBridge`** (`GameCore.Studio.Views`):
+  - Members: `IReadOnlyList<AuthoringRef> Current`, `event Action? SelectionChanged`, `Select(IReadOnlyList<AuthoringRef>)` and `Focus(AuthoringRef)`.
+  - The default `EditorSelectionBridge(runtime)` maps to `UnityEditor.Selection` and frames in the SceneView. `ListSelectionBridge` is an in-memory version.
+  - P2.1 binds its Studio selection with `StudioViewsSession.BindSelection(bridge)`. The views never reference P2.1 types or window ids.
+- **`IGameplayCommandBridge`:**
+  - Members: `IsAvailable`, `HasNarrative`, `Describe`, `TryReadFact(name, out int)`, `TryReadQuest(questRef, out QuestLiveState)`, `TryReadObjectiveDone`, `TryReadVisited`, `RecentExplain(max)` (newest first), `TryResidency(regionId, out string)`, `StartDialogue(graphRef, speakerEntityId)` and `Travel(regionId)`. The commands return `GameplayCommandResult{Status: Submitted|NotAvailable|Refused|Unsupported, Detail}`.
+  - The default `ReflectionGameplayBridge` finds a `NarrativeWorld`/`GameplayWorld` member on a live MonoBehaviour (Hollowmere `GameBoot.Narrative`) at most once a second. A game can call `StudioViewsSession.RegisterRunningWorld(world)` or `BindGameplay(bridge)` instead.
+  - `StartDialogue` calls `NarrativeWorld.Conversations.TryStart(npcAuthoringId, graphRef)`. `Travel` calls the running world's `Commands.Travel(focus, region, portal)` when that member exists. Otherwise each returns `Unsupported` with the reason. Neither command is exercised by the tests or the evidence; the evidence reads live state only.
+- **View ids** (`StudioViewIds`):
+  - Ids: `gamecore.studio.views.{relationships,dialogue,quests,world,tables,changes}`.
+  - Menus: `GameCore/Studio/{Relationships,...}`.
+  - Minimum size 640x360, default 1280x720.
+  - `StudioViewRegistry.Open(viewId)` opens any view by id.
+- **Plugin extension points:**
+  - `IStudioViewProvider{ViewId, Title, Create(StudioViewContext)}`. Implementations are discovered with TypeCache and opened through `StudioViewRegistry`/`PluginViewWindow`.
+  - `StudioViewBase` is subclassed for new views. It provides Toolbar/Body/status, `ApplyEdit(ChangeSet)` and the `Changed`/selection hooks.
+  - `GraphCanvas`, `CanvasNode` and `CanvasEdge` are reusable.
+  - `ValidatorConsole` picks up any [AuthorValidator] class.
+  - Index contributors: implement `IIndexContributor` and add it to `runtime.Index`.
+- **Edit builders**, usable without UI: `DialogueEdits`, `QuestEdits`, `WorldEdits`, `TableModel.CommitRow`/`ApplyToRows`, `ViewEdits.Op`/`SetOp`/`SetFieldsOp`/`Build`/`Apply`/`ApplySequence`. `ChangeSetInspection.Inspect(runtime, cs)` gives a candidate's op tree and diagnostics without writing anything.
+
+## Decisions
+
+1. **Custom canvas instead of GraphView.** GraphView creates a VisualElement per node, port and edge and lays them all out every frame, which does not keep a 2,000-node neighbourhood under 16 ms; it is also experimental API. The canvas keeps nodes as data and binds at most 300 pooled cards to the visible rect. It draws edges with one Painter2D pass per colour, switches to compact rectangles when zoomed out, and spreads the layout over editor frames.
+2. **Contributor-based edge labels.** The views register `NestedReferenceContributor` on the runtime's index instead of re-scanning assets. This also gives `byname:` and authoring-id edges to any other index user. It belongs in studio.core (see Left open).
+3. **Reflection gameplay bridge.** The bridge is reflection-based because the views must not depend on gameplay packages and P3.1 has not yet published a command seam. Any game can replace it.
+4. **Read-only tools by reflection.** Simulation and preview are pure tools, so calling them directly writes nothing. All mutations go through `ChangeSetEngine` with existing tool ids; no view writes an asset directly.
+5. **Generic tools where a model tool is missing.** Text, speaker, option rename, connect/disconnect and remove node use `set` with partial list elements or the full edges list. Delete graph uses `delete`. World connect without a bindable `world.connectRegions` uses `create world.portal` plus `set portals`. Spawn without a bindable `world.setSpawnPoint` uses `move` on the region's SpawnPoint.
+6. **Connect regions is two change sets.** The engine defers only unresolved op targets to apply time; a reference inside a value (the new portal in `portals`) must resolve at stage time. The new portal is named by its asset path, and both change sets are undone newest first.
+7. **"Rename" in the dialogue test means renaming a choice option** (plus text and speaker sets). "Delete" is remove-node; the `delete` tool deletes the whole graph.
+8. **No static mutable state.** Session bindings live in `StudioViewsSession` (a ScriptableSingleton with [NonSerialized] bridges, reset on play-mode exit). The evidence driver keeps its step in `SessionState`.
+
+## Left open (for the integrator and owners)
+
+1. **Blocking, studio.core (P1.6/P1.7b) vs gameplay (P1.4).** The gameplay definitions declare `[AuthorField(Type = "authoringId")]`: DialogueGraphDefinition.speakerEntityId, DialogueNodeEntry.speakerEntityId, quest objectives' entity ids, and inventory and logic definitions (16 places). `ValueTypes` does not know `authoringId`, so `AuthoringIdentity.Describe` throws "declares unknown value type 'authoringId'".
+   - On main, Studio therefore does not index dialogue graphs or quests, does not catalog their types (`create dialogue.graph` is refused as "not a concrete [Authorable] type"), and cannot build a ref to them.
+   - Fix: add `ValueTypes.AuthoringId` with string semantics in studio.core, or change those attributes to `Type = "string"`.
+   - Six P2.3 tests report Inconclusive (not pass, not fail) until then. They pass with a host-only alias in `AuthoringIdentity.BuildMember`, `AuthoringMetadata` (argument types) and `ToolCatalogBuilder.CheckedOverride`.
+2. **Blocking undo, studio.core `set` inverse.** `ConfigureTools` records the before-value with `ValueCodec.FromClr`. For a list of [Serializable] class elements (DialogueNodeEntry), `JToken.FromObject` throws, and FromClr falls back to `ToString()`. The inverse therefore holds type names, and undo is refused with "'nodes': [i] expected object, got string \"GameCore.Gameplay.Dialogue.DialogueNodeEntry\"".
+   - This happens even on a fresh graph with no object references.
+   - Fix: capture the before-value through SerializedProperty (`ValueCodec.ReadMember`), which also handles nested object references.
+   - The two dialogue undo tests report Inconclusive until then. Every forward edit already passes.
+3. **P1.1 world tools cannot be bound by the engine.** `ReflectedTool` binds only an Authorable target and [AuthorArg] parameters. `world.addPortal(AuthoredRegion region, ...)`, `world.connectRegions(regionA, regionB)` and `world.setSpawnPoint` therefore receive null and are refused (`GP-WLD-006`). They need [AuthorArg] reference arguments. The view warns and uses the generic fallbacks; the add-portal test turns into an Ok assertion once the tool binds.
+4. **Pure tools are not marked ReadOnly.** `dialogue.preview`, `quest.simulate`, `logic.explain` and `logic.test` are not ReadOnly, so `ToolRegistry.Invoke` refuses them. Mark them ReadOnly and `ReadOnlyToolInvoker` can go.
+5. **Missing model tools for P3.1:** `dialogue.link`/`unlink`, `dialogue.removeNode`, `dialogue.setLine`, `dialogue.startAt`, `quest.removeObjective`, `world.removePortal`. The views use `set`/`delete` for these meanwhile.
+6. **Move `NestedReferenceContributor` into studio.core**, so `ImpactOf` and every index user see nested references and field labels.
+7. **Data deviation.** The brief's "lantern impact lists the vendor stock" does not hold for Hollowmere: Odd's stall (OddsStall) stocks the GateKey, not the Lantern. The test checks the lantern against the quest reward and the marsh loot table, and the gate key against the vendor stock.
+8. **The gameplay bridge's `Travel`/`StartDialogue` are reached by reflection** (`Commands.Travel`, `Conversations.TryStart`) and have not been exercised in Play Mode. P3.1 should confirm these entry points, or publish a typed seam the bridge can bind to.
+9. **Tooling.** `unity-compile.sh` reports FAIL ("unity exit 2") for a Passed result with Inconclusive cases. Consider PASS when `failed=0`.

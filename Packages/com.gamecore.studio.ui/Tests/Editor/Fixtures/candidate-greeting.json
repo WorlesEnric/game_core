@@ -1,0 +1,35 @@
+{
+  "comment": "Canned candidate replayed by TestAgentGateway (EditMode tests only). $ref:<name>, $csid and $catalog are substituted by the test.",
+  "requestId": "req_fixture_greeting",
+  "toolCatalogRevision": "$catalog",
+  "taskId": "t_fixture_greeting",
+  "changeSet": {
+    "id": "$csid",
+    "schema": "gamecore.studio.changeset/1",
+    "intent": {
+      "text": "Make the blacksmith greet travellers warmly and raise the guard's level",
+      "origin": "agent"
+    },
+    "policy": "AllOrNothing",
+    "operations": [
+      {
+        "opId": "op1",
+        "tool": "set",
+        "target": "$ref:npc",
+        "args": {
+          "field": "greeting",
+          "value": "Welcome, traveller!"
+        }
+      },
+      {
+        "opId": "op2",
+        "tool": "set",
+        "target": "$ref:entity",
+        "args": {
+          "field": "level",
+          "value": 4
+        }
+      }
+    ]
+  }
+}
