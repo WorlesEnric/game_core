@@ -10,7 +10,9 @@
 //   <field name>=<escaped value> LF        (one line per field, ordinal field-name order)
 //
 // The definition revision is the first eight digest bytes read big-endian, so one field change changes exactly that
-// definition's revision and nothing else (the zero revision is reserved and maps to one).
+// definition's revision and nothing else (the zero revision is reserved and maps to one). The recipe revision is the
+// revision of the structural hash (the same text over the structural fields only, P1.7a A8), so only a structural field
+// change changes it; the content hash still covers every field.
 #nullable enable
 using System;
 using System.Collections.Generic;

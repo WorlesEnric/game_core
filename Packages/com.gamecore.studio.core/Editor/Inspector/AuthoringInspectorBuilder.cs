@@ -71,7 +71,7 @@ namespace GameCore.Studio.Edit
             error.style.color = new Color(0.9f, 0.3f, 0.3f);
             error.style.display = DisplayStyle.None;
             string label = Label(member);
-            JToken current = _codec.FromClr(member.GetValue(target));
+            JToken current = _codec.ReadMember(target, member);
             bool writable = member.IsSerializedField || (member.Member is System.Reflection.PropertyInfo property && property.CanWrite);
             VisualElement control = Control(target, member, label, current, error);
             control.SetEnabled(writable);
@@ -133,6 +133,7 @@ namespace GameCore.Studio.Edit
                 }
 
                 case ValueTypes.String:
+                case ValueTypes.AuthoringId:
                 {
                     TextField field = new TextField(label) { isDelayed = true, value = current.Type == JTokenType.String ? current.Value<string>() : string.Empty };
                     field.RegisterValueChangedCallback(change => Commit(target, member, new JValue(change.newValue), error));

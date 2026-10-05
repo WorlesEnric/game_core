@@ -12,7 +12,15 @@
 //
 // The UI starts on the main menu, which pauses gameplay input; New Game shows the HUD. Saving needs Hollowmere's
 // checkpoint codecs (P3.1); until then the save and load screens answer GP-UI-014.
+//
+// P1.7a (A2/A11): the boot goes through NarrativeComposer.TryBoot, and a failure after the root booted (views, sessions,
+// wiring) shuts the narrative world down, which stops the root. Install is the per-root half (streaming options, views,
+// P1.3 sessions, P1.4/P1.5 wiring) and runs again for a restored root: UseSaves(service) connects the save service
+// (through the UI runtime's restore path when the UI rig exists, else RootChanged directly) and every restore re-attaches
+// the narrative layer on the restored root's delivery owner (NarrativeComposer.Attach) and reinstalls the sessions.
+// ConfigureSaves(options) sets SaveServiceOptions.DeliveryFactory to the narrative delivery's owner (one owner per world).
 #nullable enable
+using System;
 using GameCore.Gameplay.Interaction;
 using GameCore.Gameplay.Logic;
 using GameCore.Gameplay.Npc;
@@ -82,6 +90,24 @@ namespace Hollowmere.Boot
 
         public InteractionSession? Interactions { get; private set; }
 
+        /// <summary>Restores this boot re-attached the narrative layer and the sessions for (P1.7a).</summary>
+        public int Reattachments { get; private set; }
+
+        /// <summary>
+        /// Sets <paramref name="options"/>' DeliveryFactory (P1.7a, A1): the narrative delivery's own owner for the booted
+        /// root, a new narrative owner for a restored one. False before the boot.
+        /// </summary>
+        public bool ConfigureSaves(SaveServiceOptions options)
+        {
+            if (options == null || Narrative == null)
+            {
+                return false;
+            }
+
+            NarrativeDelivery.Configure(options, Narrative);
+            return true;
+        }
+
         public void Configure(RegionManifest regionManifest, bool preload)
         {
             manifest = regionManifest;
@@ -128,17 +154,41 @@ namespace Hollowmere.Boot
             var modules = new HollowmereNarrativeModules();
             UiAudioBootstrap.AssignViews(UiAudioBootstrap.RigOf(gameObject), modules);
 
-            NarrativeWorld game;
+            if (!NarrativeComposer.TryBoot(manifest, content, modules.All, new GameApplicationBootOptions(), build, false, out NarrativeWorld? booted, out string failure)
+                || booted == null)
+            {
+                Refuse(failure);
+                return;
+            }
+
+            NarrativeWorld game = booted;
+            PlayerExtension = playerExtension;
+            NpcExtension = npcExtension;
+            InteractionExtension = interactionExtension;
+            Modules = modules;
             try
             {
-                game = HollowmereNarrative.Boot(manifest, content, modules, new GameApplicationBootOptions(), build, false);
+                Install(game);
             }
-            catch (System.InvalidOperationException refused)
+            catch (Exception refused) when (refused is InvalidOperationException || refused is ArgumentException)
             {
+                // A11: a refusal after the root booted stops it (no half-wired world keeps running).
+                Narrative = null;
+                World = null;
+                Player?.Dispose();
+                game.Shutdown();
                 Refuse(refused.Message);
                 return;
             }
 
+            GameplayWorldBehaviour holder = gameObject.AddComponent<GameplayWorldBehaviour>();
+            holder.World = game.World;
+            game.Root.Start();
+        }
+
+        /// <summary>The per-root half of the boot: streaming options, views, the P1.3 sessions and their wiring.</summary>
+        private void Install(NarrativeWorld game)
+        {
             GameplayWorld world = game.World;
             if (preloadNeighbours)
             {
@@ -147,24 +197,73 @@ namespace Hollowmere.Boot
 
             world.Streamer.Observe(destroyCancellationToken);
             world.CreateViews(transform);
-            PlayerExtension = playerExtension;
-            NpcExtension = npcExtension;
-            InteractionExtension = interactionExtension;
             Camera? orbit = playerCamera != null ? playerCamera : Camera.main;
-            Player = PlayerSession.Install(world, playerExtension, orbit);
-            Npcs = NpcSession.Install(world, npcExtension);
-            Interactions = InteractionSession.Install(world, interactionExtension, playerExtension.Player, playerExtension.PlayerKey);
+            Player = PlayerSession.Install(world, PlayerExtension!, orbit);
+            Npcs = NpcSession.Install(world, NpcExtension!);
+            Interactions = InteractionSession.Install(world, InteractionExtension!, PlayerExtension!.Player, PlayerExtension.PlayerKey);
             Player.Focus.AddSource(Npcs.Candidates);
             Player.Focus.AddSource(Interactions.Candidates);
-            HollowmereNarrative.Wire(game, interactionExtension, Interactions, Npcs);
-            PresentationSeams = UiAudioBootstrap.Wire(world, Player, Interactions, game, modules);
-
-            GameplayWorldBehaviour holder = gameObject.AddComponent<GameplayWorldBehaviour>();
-            holder.World = world;
-            Modules = modules;
+            HollowmereNarrative.Wire(game, InteractionExtension, Interactions, Npcs);
+            PresentationSeams = UiAudioBootstrap.Wire(world, Player, Interactions, game, Modules);
             Narrative = game;
             World = world;
-            game.Root.Start();
+        }
+
+        /// <summary>
+        /// Connects a save service (P1.7a, A2): through the UI runtime's restore path when the UI rig exists (it attaches
+        /// the base world; PrepareRestored adds the rest), else straight on RootChanged.
+        /// </summary>
+        public void UseSaves(SaveService service)
+        {
+            if (service == null)
+            {
+                throw new ArgumentNullException(nameof(service));
+            }
+
+            Hollowmere.UiAudio.HollowmereUiAudio? rig = UiAudioBootstrap.RigOf(gameObject);
+            if (rig != null)
+            {
+                rig.UseSaves(service, PrepareRestored(service));
+                return;
+            }
+
+            service.RootChanged += (previous, restored) =>
+            {
+                NarrativeWorld? old = Narrative;
+                if (old != null)
+                {
+                    old.World.Shutdown();
+                    Reattach(service, WorldBuilder.Attach(restored, old.World.Plan, false));
+                }
+            };
+        }
+
+        /// <summary>The UI runtime's prepareRestoredWorld callback: re-attaches the narrative layer and the sessions.</summary>
+        public Action<GameplayWorld> PrepareRestored(SaveService service) => next => Reattach(service, next);
+
+        /// <summary>
+        /// Re-attaches the narrative layer to a restored base world (the save service's restored delivery owner holds the
+        /// reinstated obligations) and reinstalls the sessions and presentation wiring (P1.7a, A2).
+        /// </summary>
+        public void Reattach(SaveService service, GameplayWorld next)
+        {
+            NarrativeWorld? old = Narrative;
+            if (service == null || next == null || old == null || content == null || Modules == null)
+            {
+                return;
+            }
+
+            Player?.Dispose();
+            old.Delivery.Dispose();
+            NarrativeWorld game = NarrativeComposer.AttachRestored(service, next, content, Modules.All);
+            Install(game);
+            GameplayWorldBehaviour? holder = GetComponent<GameplayWorldBehaviour>();
+            if (holder != null)
+            {
+                holder.World = next;
+            }
+
+            Reattachments++;
         }
 
         private void Refuse(string failure)

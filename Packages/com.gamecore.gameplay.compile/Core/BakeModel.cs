@@ -19,6 +19,15 @@ namespace GameCore.Gameplay.Compile
         /// <summary>Lowercase hex SHA-256 of the definition's canonical authorable fields.</summary>
         public string ContentHash { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Lowercase hex SHA-256 of the definition's structural fields only (P1.7a A8, SADR-012 studio); empty means the
+        /// whole content is structural (the recipe then derives from <see cref="ContentHash"/>).
+        /// </summary>
+        public string StructuralHash { get; set; } = string.Empty;
+
+        /// <summary>The hash the recipe revision and the catalog recipe implementation id derive from.</summary>
+        public string RecipeHash => StructuralHash.Length == 64 ? StructuralHash : ContentHash;
+
         /// <summary>Number of variants (at least one: variant 0 is the base definition).</summary>
         public int VariantCount { get; set; } = 1;
 

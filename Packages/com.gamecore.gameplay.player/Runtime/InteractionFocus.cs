@@ -80,14 +80,15 @@ namespace GameCore.Gameplay.Player
             }
 
             var player = extension.Player;
-            if (!world.Slots.TryRead(player, PlayerSlots.Owner, PlayerSlots.PosX, out int px)
-                || !world.Slots.TryRead(player, PlayerSlots.Owner, PlayerSlots.PosZ, out int pz))
+            // P1.7a (A4): world.pos / world.region are the authoritative pose.
+            if (!world.Slots.TryRead(player, GameplaySlots.WorldOwner, GameplaySlots.PosX, out int px)
+                || !world.Slots.TryRead(player, GameplaySlots.WorldOwner, GameplaySlots.PosZ, out int pz))
             {
                 return 0;
             }
 
-            int yaw = world.Slots.ReadOrDefault(player, PlayerSlots.Owner, PlayerSlots.Yaw, 0);
-            int region = world.Slots.ReadOrDefault(player, PlayerSlots.Owner, PlayerSlots.RegionKey, 0);
+            int yaw = world.Slots.ReadOrDefault(player, GameplaySlots.WorldOwner, GameplaySlots.Yaw, 0);
+            int region = world.Slots.ReadOrDefault(player, GameplaySlots.WorldOwner, GameplaySlots.Region, 0);
             int focus = world.Slots.ReadOrDefault(player, PlayerSlots.Owner, PlayerSlots.Focus, PlayerRules.NoFocus);
             candidates.Clear();
             for (int i = 0; i < sources.Count; i++)

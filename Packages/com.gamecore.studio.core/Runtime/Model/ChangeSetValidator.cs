@@ -65,6 +65,10 @@ namespace GameCore.Studio.Model
     {
         private static readonly Regex ColorText = new Regex("^#([0-9a-fA-F]{6}|[0-9a-fA-F]{8})$", RegexOptions.CultureInvariant);
 
+        private static readonly Regex AuthoringIdText = new Regex(StudioPatterns.AuthoringId, RegexOptions.CultureInvariant);
+
+        private const string ZeroAuthoringId = "00000000-0000-0000-0000-000000000000";
+
         private readonly ToolCatalog _catalog;
 
         private readonly SemanticIndex? _index;
@@ -658,6 +662,9 @@ namespace GameCore.Studio.Model
                 case ValueTypes.String:
                     Expect(value.Type == JTokenType.String, type, value, problems);
                     return;
+                case ValueTypes.AuthoringId:
+                    CheckAuthoringId(spec, value, problems);
+                    return;
                 case ValueTypes.Enum:
                     if (value.Type != JTokenType.String)
                     {
@@ -700,6 +707,31 @@ namespace GameCore.Studio.Model
                 default:
                     // An unknown type name is a catalog defect, not a change-set defect; any value is accepted.
                     return;
+            }
+        }
+
+        private static void CheckAuthoringId(ValueSpec spec, JToken value, List<string> problems)
+        {
+            if (value.Type != JTokenType.String)
+            {
+                problems.Add("expected an authoring id string, got " + Describe(value));
+                return;
+            }
+
+            string text = value.Value<string>() ?? string.Empty;
+            if (text.Length == 0)
+            {
+                if (spec.Required)
+                {
+                    problems.Add("an authoring id is required (empty means none)");
+                }
+
+                return;
+            }
+
+            if (!AuthoringIdText.IsMatch(text) || string.Equals(text, ZeroAuthoringId, StringComparison.Ordinal))
+            {
+                problems.Add("'" + text + "' is not an authoring id (a lowercase, non-zero D-format GUID)");
             }
         }
 

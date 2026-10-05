@@ -2,14 +2,15 @@
 //
 // Two halves with different rules:
 //   * the resolver (IPlayerMotionResolver) owns a "player rig" GameObject with a CharacterController (slopes, steps,
-//     gravity). Each frame, before the pump, it is teleported to the COMMITTED pose and moved by the requested
-//     displacement; where it ends is fed back to PlayerInputAdapter as the next player.move. It is input resolution, not
-//     presentation: it runs whenever the application is playing - headless batchmode included, because region scenes
-//     and their colliders load there too - and never in edit mode (the adapter then falls back to the kinematic
-//     resolver). The rig is never the authority: the kernel clamps what the rig proposes.
-//   * the binder (IPresentationBinder) puts the player's entity view at the committed player pose after the prefab view
-//     binder ran (that binder places views from world.pos, which the player plugin does not move), and emits footsteps
-//     by stride from the committed travel. It is headless-safe: without a view it touches no engine object.
+//     collision only). Each frame, before the pump, it is teleported to the COMMITTED pose and moved by the requested
+//     horizontal displacement plus the COMMITTED vertical speed (player.verticalSpeed; P1.7a A6: gravity and jump
+//     take-off are integrated by the kernel, not here); where it ends, and whether it found ground, is fed back to
+//     PlayerInputAdapter as the next player.move. It is input resolution, not presentation: it runs whenever the
+//     application is playing - headless batchmode included, because region scenes and their colliders load there too -
+//     and never in edit mode (the adapter then falls back to the kinematic resolver). The rig is never the authority:
+//     the kernel clamps what the rig proposes.
+//   * the binder (IPresentationBinder) puts the player's entity view at the committed pose (world.pos, P1.7a A4) and
+//     emits footsteps by stride from the committed travel. It is inactive headless (batchmode without graphics).
 #nullable enable
 using System;
 using GameCore.Contracts;
@@ -29,7 +30,6 @@ namespace GameCore.Gameplay.Player
         private GameObject? rig;
         private CharacterController? controller;
         private GameObject? ignoredView;
-        private float verticalSpeed;
         private bool hasLast;
         private Vector3 lastPosition;
         private int lastStamina;
@@ -50,8 +50,8 @@ namespace GameCore.Gameplay.Player
 
         public string BinderName => "gameplay.player-locomotion";
 
-        /// <summary>The binder half presents (footsteps from committed travel; the view only when one exists).</summary>
-        public bool IsActive => true;
+        /// <summary>The binder half presents (footsteps from committed travel; the view only when one exists); never headless.</summary>
+        public bool IsActive => !BinderEnvironment.IsHeadless;
 
         /// <summary>The resolver half runs whenever the rig exists (play mode, headless included).</summary>
         public bool IsResolving => controller != null && controller.enabled;
@@ -72,8 +72,9 @@ namespace GameCore.Gameplay.Player
 
         public int FootstepCount { get; private set; }
 
-        public Vector3 Resolve(Vector3 from, Vector3 horizontal, bool jump, float deltaTime)
+        public Vector3 Resolve(Vector3 from, Vector3 horizontal, float verticalSpeed, float deltaTime, out bool airborne)
         {
+            airborne = false;
             CharacterController? cc = controller;
             if (cc == null || rig == null)
             {
@@ -85,42 +86,32 @@ namespace GameCore.Gameplay.Player
             Physics.SyncTransforms();
 
             // No ground under the committed pose (the region scene is still loading, or the pose is off the map): move
-            // horizontally only, never fall into the void.
+            // horizontally only and report grounded, never fall into the void.
             if (!Physics.Raycast(from + Vector3.up * 0.5f, Vector3.down, out RaycastHit _, GroundProbeDistance, ~0, QueryTriggerInteraction.Ignore))
             {
-                verticalSpeed = 0f;
                 UngroundedResolutions++;
                 return new Vector3(from.x + horizontal.x, from.y, from.z + horizontal.z);
             }
 
-            float gravity = definition != null ? definition.Gravity : 18f;
-            if (cc.isGrounded && verticalSpeed < 0f)
-            {
-                verticalSpeed = -1f;
-            }
-
-            if (jump && cc.isGrounded)
-            {
-                float height = definition != null ? definition.JumpHeight : 1f;
-                verticalSpeed = Mathf.Sqrt(2f * gravity * Mathf.Max(0f, height));
-            }
-
-            verticalSpeed -= gravity * deltaTime;
-            cc.Move(new Vector3(horizontal.x, verticalSpeed * deltaTime, horizontal.z));
+            // A resting or falling player is pushed down at least 1 m/s so the controller keeps its ground contact on
+            // slopes and steps; a rising player moves up by the committed speed.
+            float vertical = verticalSpeed > 0f ? verticalSpeed : Mathf.Min(verticalSpeed, -1f);
+            cc.Move(new Vector3(horizontal.x, vertical * deltaTime, horizontal.z));
+            airborne = !cc.isGrounded;
             Resolutions++;
             return rig.transform.position;
         }
 
         public int Present(ICommittedSlotReader slots)
         {
-            if (!slots.TryRead(player, PlayerSlots.Owner, PlayerSlots.PosX, out int x)
-                || !slots.TryRead(player, PlayerSlots.Owner, PlayerSlots.PosZ, out int z))
+            if (!slots.TryRead(player, GameplaySlots.WorldOwner, GameplaySlots.PosX, out int x)
+                || !slots.TryRead(player, GameplaySlots.WorldOwner, GameplaySlots.PosZ, out int z))
             {
                 return 0;
             }
 
-            int y = slots.TryRead(player, PlayerSlots.Owner, PlayerSlots.PosY, out int py) ? py : 0;
-            int yaw = slots.TryRead(player, PlayerSlots.Owner, PlayerSlots.Yaw, out int pyaw) ? pyaw : 0;
+            int y = slots.TryRead(player, GameplaySlots.WorldOwner, GameplaySlots.PosY, out int py) ? py : 0;
+            int yaw = slots.TryRead(player, GameplaySlots.WorldOwner, GameplaySlots.Yaw, out int pyaw) ? pyaw : 0;
             int stamina = slots.TryRead(player, PlayerSlots.Owner, PlayerSlots.Stamina, out int ps) ? ps : 0;
             var committed = new Vector3((float)GameplayUnits.ToMetres(x), (float)GameplayUnits.ToMetres(y), (float)GameplayUnits.ToMetres(z));
             EmitFootsteps(committed, stamina);

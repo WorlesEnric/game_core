@@ -60,7 +60,7 @@ namespace GameCore.Studio.Edit
 
                 preview[member.Name] = new JObject
                 {
-                    ["before"] = context.Codec.FromClr(member.GetValue(context.Target!)),
+                    ["before"] = context.Codec.ReadMember(context.Target!, member),
                     ["after"] = assignment.Value.DeepClone(),
                 };
             }
@@ -84,7 +84,7 @@ namespace GameCore.Studio.Edit
             foreach (KeyValuePair<AuthorMemberInfo, JToken> assignment in assignments)
             {
                 AuthorMemberInfo member = assignment.Key;
-                before[member.Name] = context.Codec.FromClr(member.GetValue(target));
+                before[member.Name] = context.Codec.ReadMember(target, member, serialized);
                 if (!member.IsSerializedField && !recorded)
                 {
                     context.RecordUndo(target);
@@ -223,7 +223,7 @@ namespace GameCore.Studio.Edit
             result.Preview = new JObject
             {
                 ["field"] = member.Name,
-                ["before"] = context.Codec.FromClr(member.GetValue(context.Target!)),
+                ["before"] = context.Codec.ReadMember(context.Target!, member),
                 ["after"] = value?.DeepClone() ?? JValue.CreateNull(),
             };
             return result;
@@ -264,7 +264,7 @@ namespace GameCore.Studio.Edit
         internal static OperationResult AssignReference(EditContext context, AuthorMemberInfo member, UnityEngine.Object? referenced, bool append, int? index)
         {
             UnityEngine.Object target = context.Target!;
-            JToken before = context.Codec.FromClr(member.GetValue(target));
+            JToken before = context.Codec.ReadMember(target, member);
             SerializedObject serialized = new SerializedObject(target);
             SerializedProperty? property = member.IsSerializedField ? serialized.FindProperty(member.Name) : null;
             if (property != null)

@@ -335,6 +335,7 @@ namespace GameCore.Unity.App
 
             if (!TryRestoreBytes(root, document, result, out GameApplicationRoot? restored) || restored == null)
             {
+                RebindAdapterFrame(root);
                 return Finish(result, clock);
             }
 
@@ -504,6 +505,7 @@ namespace GameCore.Unity.App
             if (!TryRestoreBytes(root, document, scratch, out GameApplicationRoot? restored) || restored == null)
             {
                 Modules = keptModules;
+                RebindAdapterFrame(root);
                 report.Refusal = scratch.Refusal;
                 return report;
             }
@@ -529,8 +531,34 @@ namespace GameCore.Unity.App
             {
                 restored.Stop("save round trip finished");
                 Modules = keptModules;
+                RebindAdapterFrame(root);
             }
         }
+
+        /// <summary>
+        /// P1.7a (A11): composing a scratch root (a round trip, or a restore that was refused after composition) runs the
+        /// definition's adapter-frame factory for that root, and a factory that hands out one shared frame - the gameplay
+        /// presentation frame - rebinds it to the scratch root. Running the factory for the kept root binds the shared
+        /// frame back; a factory that makes a new frame per root leaves the kept root's frame untouched.
+        /// </summary>
+        private void RebindAdapterFrame(GameApplicationRoot kept)
+        {
+            Func<GameApplicationRoot, IAdapterFrame?>? factory = kept.Definition.AdapterFrame;
+            IAdapterFrame? current = kept.TimeFrame.Inner;
+            if (factory == null || current == null || kept.State == GameApplicationState.Stopped)
+            {
+                return;
+            }
+
+            // A per-root factory returns a new frame here, which is discarded: the kept root's own frame was never rebound.
+            if (ReferenceEquals(factory(kept), current))
+            {
+                FrameRebinds++;
+            }
+        }
+
+        /// <summary>Shared adapter frames bound back to the kept root after a scratch composition (P1.7a, A11).</summary>
+        public int FrameRebinds { get; private set; }
 
         /// <summary>The canonical hash of a document's slot rows: sorted, field by field (lowercase hex).</summary>
         public static string SlotHashOf(CheckpointDocument document)

@@ -7,6 +7,14 @@
 // examinable stays idle and only counts. A locked interactable opens only when its unlock condition is affirmatively
 // true; an unknown verdict (no condition system installed) keeps it locked. A use precondition passes unless it is
 // affirmatively false, so the null evaluator means "always allowed".
+//
+// Trigger occupancy (P1.7a, A6) is a bitmask in the interact.occupants slot, not a count: each actor owns the bit
+// BitOf(actorKey) = 1 << (actorKey mod 31), so a repeated enter or exit by the same actor is refused instead of
+// drifting the count, and a restore replays the exact set of actors inside. The occupant count is the popcount of the
+// mask (event payload B and the InteractionContext still carry that count). Limitation: actors whose keys are equal
+// mod 31 share one bit, so while one of them is inside the other's enter is refused as AlreadyInside and its exit is
+// accepted as if it were the first; actor key 0 has no bit and every transit it asks for is refused. Bit 31 (the sign
+// bit) is never used, and a negative slot value read from an older save is masked to its low 31 bits.
 #nullable enable
 namespace GameCore.Rules.Gameplay.Interaction
 {
@@ -371,7 +379,7 @@ namespace GameCore.Rules.Gameplay.Interaction
         public bool Accepted { get; }
     }
 
-    /// <summary>Pure trigger-volume occupancy.</summary>
+    /// <summary>Pure trigger-volume occupancy by count (kept for compatibility; the kernel uses <see cref="OccupancyRules"/>).</summary>
     public static class TriggerRules
     {
         /// <summary>An actor entered (<paramref name="entered"/>) or left the volume; exits never go below zero.</summary>
@@ -394,6 +402,127 @@ namespace GameCore.Rules.Gameplay.Interaction
             }
 
             return new TriggerOutcome(current - 1, false, current == 1, true);
+        }
+
+        /// <summary>The bitmask transit (same as <see cref="OccupancyRules.Transit"/>).</summary>
+        public static OccupancyOutcome Transit(int mask, int actorKey, bool entered, int maxOccupants) =>
+            OccupancyRules.Transit(mask, actorKey, entered, maxOccupants);
+    }
+
+    /// <summary>Why a bitmask trigger transit was refused.</summary>
+    public enum OccupancyRefusal
+    {
+        None = 0,
+
+        /// <summary>Actor key 0 has no occupancy bit.</summary>
+        NoActor = 1,
+
+        /// <summary>An enter by an actor whose bit is already set.</summary>
+        AlreadyInside = 2,
+
+        /// <summary>An exit by an actor whose bit is clear.</summary>
+        NotInside = 3,
+
+        /// <summary>An enter while the volume already holds maxOccupants actors (maxOccupants &gt; 0).</summary>
+        Full = 4,
+    }
+
+    /// <summary>The outcome of a bitmask trigger enter or exit.</summary>
+    public readonly struct OccupancyOutcome
+    {
+        public OccupancyOutcome(OccupancyRefusal refusal, int mask, bool firstEntered, bool lastExited)
+        {
+            Refusal = refusal;
+            Mask = mask;
+            Occupants = OccupancyRules.Count(mask);
+            FirstEntered = firstEntered;
+            LastExited = lastExited;
+        }
+
+        public OccupancyRefusal Refusal { get; }
+
+        public bool Accepted => Refusal == OccupancyRefusal.None;
+
+        /// <summary>The interact.occupants slot after the transition (unchanged, sanitised, when refused).</summary>
+        public int Mask { get; }
+
+        /// <summary>Actors inside after the transition: the popcount of <see cref="Mask"/>.</summary>
+        public int Occupants { get; }
+
+        /// <summary>The volume went from empty to occupied.</summary>
+        public bool FirstEntered { get; }
+
+        /// <summary>The volume went from occupied to empty.</summary>
+        public bool LastExited { get; }
+    }
+
+    /// <summary>Pure trigger-volume occupancy as a bitmask of actor bits (see the file header for the mod-31 limit).</summary>
+    public static class OccupancyRules
+    {
+        /// <summary>Number of distinct actor bits (bits 0..30; the sign bit is never used).</summary>
+        public const int Bits = 31;
+
+        /// <summary>The occupancy bit of an actor: 1 &lt;&lt; (actorKey mod 31) over the unsigned key; 0 for actor key 0.</summary>
+        public static int BitOf(int actorKey) => actorKey == 0 ? 0 : 1 << (int)((uint)actorKey % 31u);
+
+        /// <summary>True when the actor's bit is set in the mask (always false for actor key 0).</summary>
+        public static bool Contains(int mask, int actorKey)
+        {
+            int bit = BitOf(actorKey);
+            return bit != 0 && (mask & bit) != 0;
+        }
+
+        /// <summary>The number of actors in the mask (popcount of its low 31 bits).</summary>
+        public static int Count(int mask)
+        {
+            uint value = (uint)(mask & int.MaxValue);
+            int count = 0;
+            while (value != 0u)
+            {
+                value &= value - 1u;
+                count++;
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// The actor entered (<paramref name="entered"/>) or left the volume. Refused: actor key 0 (NoActor), an enter
+        /// with the bit already set (AlreadyInside), an exit with the bit clear (NotInside), an enter when the count is
+        /// at least <paramref name="maxOccupants"/> and that is above zero (Full).
+        /// </summary>
+        public static OccupancyOutcome Transit(int mask, int actorKey, bool entered, int maxOccupants)
+        {
+            int current = mask & int.MaxValue;
+            int bit = BitOf(actorKey);
+            if (bit == 0)
+            {
+                return new OccupancyOutcome(OccupancyRefusal.NoActor, current, false, false);
+            }
+
+            int count = Count(current);
+            if (entered)
+            {
+                if ((current & bit) != 0)
+                {
+                    return new OccupancyOutcome(OccupancyRefusal.AlreadyInside, current, false, false);
+                }
+
+                if (maxOccupants > 0 && count >= maxOccupants)
+                {
+                    return new OccupancyOutcome(OccupancyRefusal.Full, current, false, false);
+                }
+
+                return new OccupancyOutcome(OccupancyRefusal.None, current | bit, count == 0, false);
+            }
+
+            if ((current & bit) == 0)
+            {
+                return new OccupancyOutcome(OccupancyRefusal.NotInside, current, false, false);
+            }
+
+            int after = current & ~bit;
+            return new OccupancyOutcome(OccupancyRefusal.None, after, false, after == 0);
         }
     }
 }

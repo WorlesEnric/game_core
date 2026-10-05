@@ -158,7 +158,9 @@ namespace Hollowmere.P1_3.EditMode.Tests
                 Slot(Player.Player, PlayerSlots.Owner, PlayerSlots.Stamina),
                 Slot(Player.Player, PlayerSlots.Owner, PlayerSlots.Focus),
                 Slot(Player.Player, PlayerSlots.Owner, PlayerSlots.RegionKey),
-                Slot(Player.Player, PlayerSlots.Owner, PlayerSlots.RegenDelayMs));
+                Slot(Player.Player, PlayerSlots.Owner, PlayerSlots.RegenDelayMs),
+                World.Slots.ReadOrDefault(Player.Player, PlayerSlots.Owner, PlayerMotionSlots.VerticalSpeed, 0),
+                World.Slots.ReadOrDefault(Player.Player, PlayerSlots.Owner, PlayerMotionSlots.Grounded, 1) != 0); // P1.7a (A6): vertical motion slots
 
         public NpcRecord Npc(string name)
         {
@@ -440,7 +442,10 @@ namespace Hollowmere.P1_3.EditMode.Tests
             w.Player.Attach(w.World, false);
             Assert.That(w.PlayerState().ToString(), Is.EqualTo(moved.ToString()));
             w.Player.Attach(w.World, true);
-            Assert.That(w.PlayerState().PosZ, Is.Not.EqualTo(moved.PosZ), "seeding returns to the baked placement");
+
+            // P1.7a (A4): world.pos is the authoritative pose; seeding mirrors it (it no longer teleports back to the bake).
+            Assert.That(w.PlayerState().PosZ, Is.EqualTo(w.Slot(w.Player.Player, GameplaySlots.WorldOwner, GameplaySlots.PosZ)), "seeding mirrors world.pos");
+            Assert.That(w.PlayerState().PosZ, Is.EqualTo(moved.PosZ));
         }
 
         private static string LastRefusal(P13World w)

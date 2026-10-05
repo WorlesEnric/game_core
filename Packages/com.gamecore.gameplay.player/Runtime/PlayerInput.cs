@@ -128,19 +128,26 @@ namespace GameCore.Gameplay.Player
 
         /// <param name="from">The committed pose, metres.</param>
         /// <param name="horizontal">Requested horizontal displacement this frame, metres.</param>
-        /// <param name="jump">Start a jump (when grounded).</param>
-        /// <param name="deltaTime">Frame time, seconds (gravity).</param>
+        /// <param name="verticalSpeed">
+        /// The committed vertical speed (player.verticalSpeed, m/s; the jump take-off speed when this move jumps). The
+        /// kernel integrates gravity (P1.7a, A6); the resolver only moves by it and reports where collision stops it.
+        /// </param>
+        /// <param name="deltaTime">Frame time, seconds.</param>
+        /// <param name="airborne">True when the resolver found nothing under the player (the move's AirborneFlag).</param>
         /// <returns>Where the player ends up, metres.</returns>
-        Vector3 Resolve(Vector3 from, Vector3 horizontal, bool jump, float deltaTime);
+        Vector3 Resolve(Vector3 from, Vector3 horizontal, float verticalSpeed, float deltaTime, out bool airborne);
     }
 
-    /// <summary>No collision: the horizontal displacement is passed through and the height is kept.</summary>
+    /// <summary>No collision: the horizontal displacement is passed through, the height is kept and the player is grounded.</summary>
     public sealed class KinematicMotionResolver : IPlayerMotionResolver
     {
         public bool IsResolving => true;
 
-        public Vector3 Resolve(Vector3 from, Vector3 horizontal, bool jump, float deltaTime) =>
-            new Vector3(from.x + horizontal.x, from.y, from.z + horizontal.z);
+        public Vector3 Resolve(Vector3 from, Vector3 horizontal, float verticalSpeed, float deltaTime, out bool airborne)
+        {
+            airborne = false;
+            return new Vector3(from.x + horizontal.x, from.y, from.z + horizontal.z);
+        }
     }
 
     /// <summary>Submits the player's commands with the world's gameplay issuer.</summary>
@@ -219,11 +226,14 @@ namespace GameCore.Gameplay.Player
             LastIntent = intent;
             RaiseUi(intent);
 
+            // P1.7a (A4): world.pos is the authoritative pose; (A6) the vertical speed and grounded flag are slots.
             TargetId player = extension.Player;
-            int x = world.Slots.ReadOrDefault(player, PlayerSlots.Owner, PlayerSlots.PosX, 0);
-            int y = world.Slots.ReadOrDefault(player, PlayerSlots.Owner, PlayerSlots.PosY, 0);
-            int z = world.Slots.ReadOrDefault(player, PlayerSlots.Owner, PlayerSlots.PosZ, 0);
-            int yaw = world.Slots.ReadOrDefault(player, PlayerSlots.Owner, PlayerSlots.Yaw, 0);
+            int x = world.Slots.ReadOrDefault(player, GameplaySlots.WorldOwner, GameplaySlots.PosX, 0);
+            int y = world.Slots.ReadOrDefault(player, GameplaySlots.WorldOwner, GameplaySlots.PosY, 0);
+            int z = world.Slots.ReadOrDefault(player, GameplaySlots.WorldOwner, GameplaySlots.PosZ, 0);
+            int yaw = world.Slots.ReadOrDefault(player, GameplaySlots.WorldOwner, GameplaySlots.Yaw, 0);
+            int verticalSpeed = world.Slots.ReadOrDefault(player, PlayerSlots.Owner, PlayerMotionSlots.VerticalSpeed, 0);
+            bool grounded = world.Slots.ReadOrDefault(player, PlayerSlots.Owner, PlayerMotionSlots.Grounded, 1) != 0;
             int stamina = world.Slots.ReadOrDefault(player, PlayerSlots.Owner, PlayerSlots.Stamina, 0);
             int focus = world.Slots.ReadOrDefault(player, PlayerSlots.Owner, PlayerSlots.Focus, PlayerRules.NoFocus);
 
@@ -238,17 +248,18 @@ namespace GameCore.Gameplay.Player
             float speed = (running ? tuning.RunMillimetresPerSecond : tuning.WalkMillimetresPerSecond) / 1000f;
             float window = tuning.MoveWindowMilliseconds / 1000f;
             float dt = Mathf.Clamp(DeltaTime(), 0f, window);
-            bool jump = intent.Jump && stamina >= tuning.JumpCost;
+            bool jump = intent.Jump && grounded && stamina >= tuning.JumpCost;
+            int takeOff = jump ? tuning.JumpSpeedMillimetresPerSecond : verticalSpeed;
 
             var from = new Vector3((float)GameplayUnits.ToMetres(x), (float)GameplayUnits.ToMetres(y), (float)GameplayUnits.ToMetres(z));
             IPlayerMotionResolver resolver = Resolver != null && Resolver.IsResolving ? Resolver : kinematic;
-            Vector3 to = resolver.Resolve(from, direction * (speed * dt), jump, dt);
+            Vector3 to = resolver.Resolve(from, direction * (speed * dt), takeOff / 1000f, dt, out bool airborne);
 
             int dx = GameplayUnits.ToMillimetres(to.x) - x;
             int dy = GameplayUnits.ToMillimetres(to.y) - y;
             int dz = GameplayUnits.ToMillimetres(to.z) - z;
             int facing = dx != 0 || dz != 0 ? PlanarMath.YawTowards(dx, dz) : yaw;
-            int flags = (running ? PlayerSlots.RunFlag : 0) | (jump ? PlayerSlots.JumpFlag : 0);
+            int flags = (running ? PlayerSlots.RunFlag : 0) | (jump ? PlayerSlots.JumpFlag : 0) | (airborne ? PlayerRules.AirborneFlag : 0);
             int submitted = 0;
             if (Commands.Move(dx, dy, dz, facing, flags).Admitted)
             {
