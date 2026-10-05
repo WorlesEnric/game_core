@@ -115,7 +115,7 @@ namespace GameCore.Studio.UI
             get => _input.value ?? string.Empty;
             set
             {
-                _input.value = value ?? string.Empty;
+                _input.value = StudioStyles.Safe(value);
                 Refresh();
             }
         }
@@ -151,6 +151,11 @@ namespace GameCore.Studio.UI
                 return;
             }
 
+            if (_attachments.Count >= AgentRequestBuilder.MaxAttachments)
+            {
+                _reason.text = "At most eight attachments are allowed.";
+                return;
+            }
             _attachments.Add(attachment);
             RebuildAttachments();
         }
@@ -168,14 +173,15 @@ namespace GameCore.Studio.UI
 
             DisabledReason = _submitting ? "Sending..." : AgentRequestBuilder.DisabledReason(status, Text, !_context.Selection.IsEmpty);
             _send.SetEnabled(DisabledReason == null);
-            _reason.text = DisabledReason ?? (LastHandle != null ? LastHandleText(LastHandle) : string.Empty);
-            _send.tooltip = DisabledReason ?? "Send (Ctrl+Enter)";
+            _reason.text = StudioStyles.Safe(DisabledReason ?? (LastHandle != null ? LastHandleText(LastHandle) : string.Empty));
+            if (LastRequest?.ContextTruncated == true) _reason.text += " Context truncated to byte/object limits (" + LastRequest.ContextOmittedNodes + " index nodes omitted).";
+            _send.tooltip = StudioStyles.Safe(DisabledReason ?? "Send (Ctrl+Enter)");
 
             bool voiceAvailable = status.Voice != ProviderState.NotConfigured && status.Voice != ProviderState.Blocked;
             _mic.SetEnabled(voiceAvailable || VoiceActive);
-            _mic.tooltip = voiceAvailable
+            _mic.tooltip = StudioStyles.Safe(voiceAvailable
                 ? "Voice: hold to talk, or click to toggle. The final transcript is placed in the field; nothing is sent until you press Send."
-                : "Voice unavailable: the voice provider is " + ProviderNames.Wire(status.Voice) + ".";
+                : "Voice unavailable: the voice provider is " + ProviderNames.Wire(status.Voice) + ".");
             _mic.EnableInClassList("gcs-prompt__mic--active", VoiceActive);
         }
 
@@ -200,7 +206,7 @@ namespace GameCore.Studio.UI
             }
             catch (Exception error) when (error is System.IO.IOException || error is ArgumentException || error is UnauthorizedAccessException)
             {
-                _reason.text = "Not sent: " + error.Message;
+                _reason.text = StudioStyles.Safe("Not sent: " + error.Message);
                 return null;
             }
 
@@ -253,7 +259,7 @@ namespace GameCore.Studio.UI
 
             if (!transcript.Final)
             {
-                _transcript.text = "listening (rev " + transcript.Revision + "): " + transcript.Text;
+                _transcript.text = StudioStyles.Safe("listening (rev " + transcript.Revision + "): " + transcript.Text);
                 _transcript.style.display = DisplayStyle.Flex;
                 return;
             }
@@ -351,7 +357,7 @@ namespace GameCore.Studio.UI
 
         private void OnVoiceFailed(Diagnostic diagnostic) => _context.Dispatcher.Post(() =>
         {
-            _transcript.text = "Voice: " + diagnostic.Code + ": " + diagnostic.Message;
+            _transcript.text = StudioStyles.Safe("Voice: " + diagnostic.Code + ": " + diagnostic.Message);
             _transcript.style.display = DisplayStyle.Flex;
             _voiceActive = false;
             _voiceToggled = false;
@@ -400,7 +406,7 @@ namespace GameCore.Studio.UI
                     _attachments.Remove(captured);
                     RebuildAttachments();
                 })
-                { text = attachment.Name + " x", tooltip = attachment.MediaType + ", " + attachment.Bytes + " bytes (click to remove)" };
+                { text = StudioStyles.Safe(attachment.Name + " x"), tooltip = StudioStyles.Safe(attachment.MediaType + ", " + attachment.Bytes + " bytes (click to remove)") };
                 chip.AddToClassList("gcs-chip");
                 _attachmentsRow.Add(chip);
             }

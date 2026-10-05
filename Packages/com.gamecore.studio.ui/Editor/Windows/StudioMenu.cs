@@ -28,11 +28,12 @@ namespace GameCore.Studio.UI
             bool candidatesExisted = !reposition && HasOpenInstances<StudioCandidatesWindow>();
             bool historyExisted = !reposition && HasOpenInstances<StudioHistoryWindow>();
 
-            float top = area.y + 60f;
-            float height = Mathf.Max(480f, area.height - 80f);
+            area = EnforceMinimum(area);
+            float top = area.y;
+            float height = area.height;
             float viewportWidth = Mathf.Max(640f, area.width * 0.64f);
             float sideWidth = Mathf.Max(300f, area.width - viewportWidth - 12f);
-            float viewportHeight = height * 0.68f;
+            float viewportHeight = Mathf.Max(480f, height * 0.68f);
             float bottomHeight = height - viewportHeight - 8f;
             float bottomWidth = viewportWidth / 3f;
 
@@ -71,6 +72,8 @@ namespace GameCore.Studio.UI
                 FirstRunWizardWindow.Open();
             }
         }
+
+        public static Rect EnforceMinimum(Rect area) => new Rect(area.x, area.y, Mathf.Max(1280f, area.width), Mathf.Max(720f, area.height));
 
         private static bool HasOpenInstances<T>()
             where T : EditorWindow

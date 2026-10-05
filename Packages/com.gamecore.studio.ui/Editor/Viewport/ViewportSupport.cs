@@ -80,6 +80,9 @@ namespace GameCore.Studio.UI
             }
 
             _active = false;
+            // Cancel held actions before another control can receive input.
+            foreach (InputDevice device in InputSystem.devices)
+                if (device is Keyboard || device is Mouse || device is Gamepad) InputSystem.ResetDevice(device);
             InputSystem.onEvent -= _handler;
             InputSettings settings = InputSystem.settings;
             if (settings != null)
@@ -183,7 +186,7 @@ namespace GameCore.Studio.UI
         {
             Candidates = candidates;
             Clear();
-            Label title = new Label(candidates.Count + " objects here (nearest first)");
+            Label title = new Label(StudioStyles.Safe(candidates.Count + " objects here (nearest first)"));
             title.AddToClassList("gcs-section__title");
             Add(title);
             for (int i = 0; i < candidates.Count; i++)
@@ -199,7 +202,7 @@ namespace GameCore.Studio.UI
                     Hide();
                     _choose(candidate, false);
                 })
-                { text = text, name = "overlap-" + i.ToString(CultureInfo.InvariantCulture) };
+                { text = StudioStyles.Safe(text), name = "overlap-" + i.ToString(CultureInfo.InvariantCulture) };
                 choose.AddToClassList("gcs-popup__item");
                 choose.EnableInClassList("gcs-popup__item--occluded", candidate.Occluded);
                 row.Add(choose);
@@ -209,7 +212,7 @@ namespace GameCore.Studio.UI
                     {
                         Hide();
                         _choose(candidate, true);
-                    }) { text = "part " + candidate.Part, tooltip = "Select this part (the logical owner stays the target)" });
+                    }) { text = StudioStyles.Safe("part " + candidate.Part), tooltip = "Select this part (the logical owner stays the target)" });
                 }
 
                 Add(row);

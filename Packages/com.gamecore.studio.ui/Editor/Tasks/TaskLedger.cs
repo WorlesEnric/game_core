@@ -348,6 +348,19 @@ namespace GameCore.Studio.UI
 
         private void Save()
         {
+            foreach (TaskRow row in _store.Rows)
+            {
+                row.intent = StudioStyles.Safe(row.intent);
+                row.worker = StudioStyles.Safe(row.worker);
+                row.waitingReason = StudioStyles.Safe(row.waitingReason);
+                row.progress = StudioStyles.Safe(row.progress);
+                row.question = StudioStyles.Safe(row.question);
+                row.localState = StudioStyles.Safe(row.localState);
+                row.etosStatus = StudioStyles.Safe(row.etosStatus);
+                row.selectionSummary = StudioStyles.Safe(row.selectionSummary);
+                row.selectionJson = StudioStyles.Safe(row.selectionJson);
+                for (int i = 0; i < row.diagnostics.Count; i++) row.diagnostics[i] = StudioStyles.Safe(row.diagnostics[i]);
+            }
             _store.Save();
             Changed?.Invoke();
         }

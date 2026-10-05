@@ -66,7 +66,7 @@ namespace GameCore.Studio.UI
                 LastReport = _controller.End();
                 if (LastReport != null && !LastReport.Ok && LastReport.Diagnostics.Count > 0)
                 {
-                    Debug.LogWarning("GameCore Studio move refused: " + LastReport.Diagnostics[0]);
+                    Debug.LogWarning(StudioStyles.Safe("GameCore Studio move refused: " + LastReport.Diagnostics[0]));
                 }
             }
         }

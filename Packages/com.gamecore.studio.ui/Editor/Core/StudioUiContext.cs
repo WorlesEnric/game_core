@@ -213,7 +213,7 @@ namespace GameCore.Studio.UI
             }
             catch (Exception error) when (!(error is OutOfMemoryException))
             {
-                Debug.LogWarning("GameCore Studio: the task tray could not be refreshed from the gateway: " + error.Message);
+                Debug.LogWarning(StudioStyles.Safe("GameCore Studio: the task tray could not be refreshed from the gateway: " + error.Message));
                 return;
             }
 
@@ -277,7 +277,7 @@ namespace GameCore.Studio.UI
         /// <summary>A fire-and-forget receive never fails silently: a fault is logged.</summary>
         private static void Observe(Task task)
         {
-            task.ContinueWith(done => Debug.LogException(done.Exception!.GetBaseException()), TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.ExecuteSynchronously);
+            task.ContinueWith(done => Debug.LogError(StudioStyles.Safe(done.Exception!.GetBaseException().ToString())), TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.ExecuteSynchronously);
         }
 
         private void OnRequestChanged(RequestView view) => Dispatcher.Post(() => HandleRequest(view));

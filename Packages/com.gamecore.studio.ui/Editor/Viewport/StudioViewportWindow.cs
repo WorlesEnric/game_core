@@ -107,7 +107,7 @@ namespace GameCore.Studio.UI
         public static StudioViewportWindow Open()
         {
             StudioViewportWindow window = GetWindow<StudioViewportWindow>(StudioWindowIds.ViewportTitle);
-            window.minSize = new Vector2(480f, 320f);
+            window.minSize = new Vector2(640f, 480f);
             window.Show();
             return window;
         }
@@ -174,6 +174,7 @@ namespace GameCore.Studio.UI
             }
 
             mode = next;
+            ReleaseInput();
             _hover = null;
             _overlap?.Hide();
             if (_gizmo != null && _gizmo.Dragging)
@@ -266,9 +267,9 @@ namespace GameCore.Studio.UI
                 _markerWorld = location.Position;
                 if (_markerLabel != null)
                 {
-                    _markerLabel.text = location.Source + " " + location.Position.x.ToString("0.0", CultureInfo.InvariantCulture) + ", "
+                    _markerLabel.text = StudioStyles.Safe(location.Source + " " + location.Position.x.ToString("0.0", CultureInfo.InvariantCulture) + ", "
                         + location.Position.y.ToString("0.0", CultureInfo.InvariantCulture) + ", " + location.Position.z.ToString("0.0", CultureInfo.InvariantCulture)
-                        + " (" + (location.Location?.Location?.Region ?? "?") + ")";
+                        + " (" + (location.Location?.Location?.Region ?? "?") + ")");
                 }
             }
 
@@ -390,6 +391,7 @@ namespace GameCore.Studio.UI
 
         private void OnEnable()
         {
+            minSize = new Vector2(640f, 480f);
             titleContent = new GUIContent(StudioWindowIds.ViewportTitle);
             EditorApplication.update += Tick;
             EditorApplication.playModeStateChanged += OnPlayModeChanged;
@@ -397,6 +399,24 @@ namespace GameCore.Studio.UI
             Undo.undoRedoPerformed += MarkRenderDirty;
             wantsMouseMove = true;
         }
+
+        private void OnLostFocus() => ReleaseInput();
+
+        private void ReleaseInput()
+        {
+            _routing.Update(false);
+            _keys.Clear();
+            _looking = false;
+        }
+
+        private void RefreshInputRouting()
+        {
+            _routing.Update(OwnsGameInput(mode, EditorApplication.isPlaying && !EditorApplication.isPaused,
+                focusedWindow == this, _image, rootVisualElement.focusController?.focusedElement));
+        }
+
+        public static bool OwnsGameInput(ViewportMode mode, bool playing, bool windowFocused, Image? image, Focusable? focused)
+            => mode == ViewportMode.Play && playing && windowFocused && image != null && ReferenceEquals(image, focused);
 
         private void OnDisable()
         {
@@ -469,11 +489,12 @@ namespace GameCore.Studio.UI
             toolbar.Add(_pumpLabel);
             toolbar.Add(new Button(FirstRunWizardWindow.Open) { text = "?", tooltip = "How the Studio modes work" });
 
-            _area = new VisualElement { name = "viewport-area", focusable = true };
+            _area = new VisualElement { name = "viewport-area" };
             _area.AddToClassList("gcs-viewport__area");
-            _area.tabIndex = 0;
+            _area.style.minWidth = 640f;
+            _area.style.minHeight = 360f;
             root.Add(_area);
-            _image = new Image { name = "viewport-image", scaleMode = ScaleMode.StretchToFill, pickingMode = PickingMode.Ignore };
+            _image = new Image { name = "viewport-image", scaleMode = ScaleMode.StretchToFill, focusable = true, tabIndex = 0 };
             _image.AddToClassList("gcs-fill");
             _area.Add(_image);
 
@@ -520,8 +541,18 @@ namespace GameCore.Studio.UI
                 UpdateHoverVisuals();
             });
             _area.RegisterCallback<WheelEvent>(OnWheel);
-            _area.RegisterCallback<KeyDownEvent>(OnKeyDown, TrickleDown.TrickleDown);
-            _area.RegisterCallback<KeyUpEvent>(evt => _keys.Remove(evt.keyCode));
+            _image.RegisterCallback<KeyDownEvent>(OnKeyDown);
+            _image.RegisterCallback<KeyUpEvent>(evt =>
+            {
+                _keys.Remove(evt.keyCode);
+                if (_routing.Active) { evt.StopPropagation(); evt.PreventDefault(); }
+            });
+            _image.RegisterCallback<FocusInEvent>(_ => RefreshInputRouting());
+            _image.RegisterCallback<FocusOutEvent>(_ => ReleaseInput());
+            root.RegisterCallback<PointerDownEvent>(evt =>
+            {
+                if (evt.target != _image && evt.target != _area) { _image.Blur(); ReleaseInput(); }
+            }, TrickleDown.TrickleDown);
             _area.RegisterCallback<GeometryChangedEvent>(_ => MarkRenderDirty());
             _area.RegisterCallback<NavigationMoveEvent>(evt =>
             {
@@ -595,8 +626,7 @@ namespace GameCore.Studio.UI
                 }
             }
 
-            bool shouldRoute = mode == ViewportMode.Play && EditorApplication.isPlaying && focusedWindow == this;
-            _routing.Update(shouldRoute);
+            RefreshInputRouting();
             if (_looking && _renderer.Source == ViewportCameraSource.FreeCamera)
             {
                 FlyFreeCamera((float)delta);
@@ -639,7 +669,7 @@ namespace GameCore.Studio.UI
 
             if (_pumpLabel != null)
             {
-                _pumpLabel.text = _pump.Text();
+                _pumpLabel.text = StudioStyles.Safe(_pump.Text());
                 _pumpLabel.EnableInClassList("gcs-pump--ok", _pump.Health == PumpHealth.Ok);
                 _pumpLabel.EnableInClassList("gcs-pump--bad", _pump.Health == PumpHealth.Violation);
             }
@@ -672,7 +702,9 @@ namespace GameCore.Studio.UI
 
         private void OnPointerDown(PointerDownEvent evt)
         {
-            _area?.Focus();
+            if (evt.target != _image && evt.target != _area) return;
+            _image?.Focus();
+            RefreshInputRouting();
             _pointer = evt.localPosition;
             if (mode == ViewportMode.Play)
             {
@@ -813,9 +845,11 @@ namespace GameCore.Studio.UI
 
         private void OnKeyDown(KeyDownEvent evt)
         {
+            if (evt.target != _image) return;
             if (HandleKey(evt.keyCode))
             {
                 evt.StopPropagation();
+                evt.PreventDefault();
             }
         }
 
@@ -857,7 +891,7 @@ namespace GameCore.Studio.UI
 
             if (mode == ViewportMode.Play)
             {
-                return false;
+                return _routing.Active;
             }
 
             if (key != KeyCode.None)
@@ -1008,15 +1042,15 @@ namespace GameCore.Studio.UI
 
             SelectionBadge badge = SelectionModel.DescribeRef(Context.Runtime, _hover.Ref);
             _hoverCard.Clear();
-            Label name = new Label(badge.Label);
+            Label name = new Label(StudioStyles.Safe(badge.Label));
             name.AddToClassList("gcs-card__title");
             _hoverCard.Add(name);
-            _hoverCard.Add(new Label("type " + badge.TypeId));
-            _hoverCard.Add(new Label("id " + (_hover.Ref.AuthoringId ?? "-")));
-            _hoverCard.Add(new Label("definition " + (_hover.Ref.Definition ?? "-")));
+            _hoverCard.Add(new Label(StudioStyles.Safe("type " + badge.TypeId)));
+            _hoverCard.Add(new Label(StudioStyles.Safe("id " + (_hover.Ref.AuthoringId ?? "-"))));
+            _hoverCard.Add(new Label(StudioStyles.Safe("definition " + (_hover.Ref.Definition ?? "-"))));
             if (_hover.Part != null)
             {
-                _hoverCard.Add(new Label("part " + _hover.Part));
+                _hoverCard.Add(new Label(StudioStyles.Safe("part " + _hover.Part)));
             }
 
             if (badge.Stale)
@@ -1091,7 +1125,7 @@ namespace GameCore.Studio.UI
             _badges.Clear();
             foreach (SelectionBadge badge in Context.Selection.Describe())
             {
-                Label label = new Label(badge.Label + (badge.Stale ? "  stale" : string.Empty)) { tooltip = badge.ResidencyReason ?? badge.StaleReason ?? badge.TypeId };
+                Label label = new Label(StudioStyles.Safe(badge.Label + (badge.Stale ? "  stale" : string.Empty))) { tooltip = StudioStyles.Safe(badge.ResidencyReason ?? badge.StaleReason ?? badge.TypeId) };
                 label.AddToClassList("gcs-badge");
                 label.EnableInClassList("gcs-badge--disabled", !badge.Resident);
                 label.EnableInClassList("gcs-badge--error", badge.Stale);
@@ -1123,14 +1157,14 @@ namespace GameCore.Studio.UI
             _stepButton?.SetEnabled(live && root!.State != GameApplicationState.Running);
             if (_appStateLabel != null)
             {
-                _appStateLabel.text = root == null ? "no world" : root.State.ToString();
+                _appStateLabel.text = StudioStyles.Safe(root == null ? "no world" : root.State.ToString());
             }
 
             if (_cameraLabel != null)
             {
                 Camera? camera = _renderer.Current;
-                _cameraLabel.text = (_renderer.Source == ViewportCameraSource.GameCamera ? "game camera" : "free camera") + (camera != null ? " (" + camera.name + ")" : string.Empty)
-                    + (_routing.Active ? " · input → game" : string.Empty);
+                _cameraLabel.text = StudioStyles.Safe((_renderer.Source == ViewportCameraSource.GameCamera ? "game camera" : "free camera") + (camera != null ? " (" + camera.name + ")" : string.Empty)
+                    + (_routing.Active ? " · input → game" : string.Empty));
             }
         }
 
@@ -1165,7 +1199,7 @@ namespace GameCore.Studio.UI
         {
             if (_statusLabel != null)
             {
-                _statusLabel.text = text;
+                _statusLabel.text = StudioStyles.Safe(text);
             }
         }
 
@@ -1177,6 +1211,7 @@ namespace GameCore.Studio.UI
 
         private void OnPlayModeChanged(PlayModeStateChange change)
         {
+            ReleaseInput();
             if (change == PlayModeStateChange.EnteredPlayMode)
             {
                 SetMode(ViewportMode.Play);
@@ -1218,7 +1253,7 @@ namespace GameCore.Studio.UI
 
         private Button ModeButton(VisualElement toolbar, string text, ViewportMode target, string tooltip)
         {
-            Button button = new Button(() => SetMode(target)) { name = "mode-" + text.ToLowerInvariant(), text = text, tooltip = tooltip + " (Tab cycles)" };
+            Button button = new Button(() => SetMode(target)) { name = "mode-" + text.ToLowerInvariant(), text = StudioStyles.Safe(text), tooltip = StudioStyles.Safe(tooltip + " (Tab cycles)") };
             button.AddToClassList("gcs-mode");
             toolbar.Add(button);
             return button;

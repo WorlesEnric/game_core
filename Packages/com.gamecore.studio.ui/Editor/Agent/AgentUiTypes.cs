@@ -271,10 +271,10 @@ namespace GameCore.Studio.UI
         public const string ThreeD = "3d";
         public const string Describe = "describe";
 
-        public static readonly IReadOnlyList<string> All = new[] { Image, Tts, Voice, ThreeD, Describe };
+        public static IReadOnlyList<string> All => new[] { Image, Tts, Voice, ThreeD, Describe };
 
         /// <summary>Codes that mean the node answered and refused this app.</summary>
-        private static readonly IReadOnlyList<string> RefusalCodes = new[] { "unauthorized", "forbidden", "agent_unknown", "blocked", "invalid_key", "app_unknown" };
+        private static IReadOnlyList<string> RefusalCodes => new[] { "unauthorized", "forbidden", "agent_unknown", "blocked", "invalid_key", "app_unknown" };
 
         public static string Wire(ProviderState state)
         {
