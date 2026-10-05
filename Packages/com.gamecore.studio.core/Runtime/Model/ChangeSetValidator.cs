@@ -57,7 +57,7 @@ namespace GameCore.Studio.Model
     /// Diagnostics are returned in a deterministic order: envelope, operation ids and dependencies, then per operation
     /// (tool, target, scope, prerequisites, arguments, runtime requirement), then artifacts, requirements and base
     /// versions. Without an index the index-dependent checks are skipped. Scope rule: when the tool or the target's object
-    /// type restricts scopes, the target must state a <c>scope</c> inside the restriction; an absent scope is
+    /// type restricts scopes, an absent scope is inferred only for a singleton intersection; otherwise it is
     /// ScopeNotAllowed. A changed target is Conflict with <c>data {expected, actual}</c>; a target absent from the full
     /// index is StaleTarget.
     /// </summary>
@@ -90,6 +90,7 @@ namespace GameCore.Studio.Model
                 throw new ArgumentNullException(nameof(changeSet));
             }
 
+            changeSet = NormalizeScopes(changeSet);
             List<Diagnostic> diagnostics = new List<Diagnostic>();
             CheckEnvelope(changeSet, diagnostics);
             bool runtimeOnly = false;
@@ -128,6 +129,7 @@ namespace GameCore.Studio.Model
                 IndexNode? node = CheckTarget(operation, tool, diagnostics);
                 CheckPrerequisites(operation, tool, node, diagnostics);
                 CheckArguments(operation, tool, diagnostics);
+                CheckInstanceTint(operation, tool, diagnostics);
                 perOperation.Add(CheckApplyRequirement(operation, tool, diagnostics));
             }
 
@@ -135,6 +137,70 @@ namespace GameCore.Studio.Model
             CheckRequirements(changeSet, perOperation, diagnostics);
             CheckBaseVersions(changeSet, diagnostics);
             return diagnostics;
+        }
+
+        /// <summary>Non-blocking evidence of unambiguous scope inference from the most recent validation.</summary>
+        public IReadOnlyList<Diagnostic> Inferences { get; private set; } = Array.Empty<Diagnostic>();
+
+        /// <summary>Returns a copy with only uniquely determined missing scopes filled in.</summary>
+        public ChangeSet NormalizeScopes(ChangeSet changeSet)
+        {
+            if (changeSet == null) throw new ArgumentNullException(nameof(changeSet));
+            List<Operation> operations = new List<Operation>();
+            List<Diagnostic> inferences = new List<Diagnostic>();
+            foreach (Operation operation in changeSet.Operations)
+            {
+                ToolEntry? tool = _catalog.FindTool(operation.Tool);
+                AuthoringRef? target = operation.Target;
+                AuthorScope? inferred = target != null && !target.Scope.HasValue && tool != null ? InferScope(target, tool) : null;
+                if (inferred.HasValue)
+                {
+                    operations.Add(new Operation(operation.OpId, operation.Tool, target!.WithScope(inferred), operation.Args,
+                        operation.DependsOn, operation.Preconditions, operation.ApplyRequirement));
+                    inferences.Add(Diagnostic.AtOperation(DiagnosticCodes.ScopeInferred, operation.OpId,
+                        "Target scope inferred as " + inferred.Value + " from the tool/type intersection.",
+                        data: new JObject { ["inferred"] = true, ["scope"] = inferred.Value.ToString() }));
+                }
+                else operations.Add(operation);
+            }
+            Inferences = inferences.AsReadOnly();
+            return new ChangeSet(changeSet.Id, changeSet.Schema, changeSet.Intent, operations, changeSet.Selection,
+                changeSet.BaseVersions, changeSet.Artifacts, changeSet.Validation, changeSet.Requirements,
+                changeSet.Links, changeSet.State, changeSet.Outcomes, changeSet.Policy, changeSet.Timestamps);
+        }
+
+        private ObjectTypeEntry? TargetType(AuthoringRef target, ToolEntry tool)
+        {
+            string? type = _index?.FindNode(target)?.Type ?? tool.TargetType;
+            return type == null ? null : _catalog.FindObjectType(type);
+        }
+
+        private AuthorScope? InferScope(AuthoringRef target, ToolEntry tool)
+        {
+            IReadOnlyList<AuthorScope>? typeScopes = TargetType(target, tool)?.Scopes;
+            IReadOnlyList<AuthorScope>? choices = tool.Scopes ?? typeScopes;
+            if (choices == null) return null;
+            HashSet<AuthorScope> allowed = new HashSet<AuthorScope>(choices);
+            if (typeScopes != null) allowed.IntersectWith(typeScopes);
+            if (allowed.Count != 1) return null;
+            foreach (AuthorScope scope in allowed) return scope;
+            return null;
+        }
+
+        // GP-ENT-004 is the instance override contract, not the general Color codec contract.
+        // This canonical text field deliberately does not accept alpha, arrays or Unity colour names.
+        private static void CheckInstanceTint(Operation operation, ToolEntry tool, List<Diagnostic> diagnostics)
+        {
+            if (tool.Id != "entity.applyOverride" || tool.TargetType != "entity.instance"
+                || operation.Target?.Kind != AuthoringKind.Entity
+                || operation.Args?["field"]?.Type != JTokenType.String || (string?)operation.Args["field"] != "tint") return;
+            JToken? value = operation.Args?["value"];
+            if (value == null) return; // omitted/empty clears the override, as declared by the tool
+            string? text = value.Type == JTokenType.String ? value.Value<string>() : null;
+            if (text == "" || (text != null && text.Length == 7 && ColorText.IsMatch(text))) return;
+            diagnostics.Add(Diagnostic.AtOperation(DiagnosticCodes.InvalidArgs, operation.OpId,
+                "GP-ENT-004: instance override tint must be #rrggbb (six hex digits), or empty to clear it.",
+                data: new JObject { ["contract"] = "GP-ENT-004", ["field"] = "tint", ["expected"] = "#rrggbb", ["actual"] = value.DeepClone() }));
         }
 
         private static void CheckEnvelope(ChangeSet changeSet, List<Diagnostic> diagnostics)
@@ -436,10 +502,10 @@ namespace GameCore.Studio.Model
                     "Tool '" + tool.Id + "' does not accept target kind " + target.Kind.ToString() + " (accepts " + JoinKinds(tool.TargetKinds) + ")."));
             }
 
-            ObjectTypeEntry? targetType = tool.TargetType == null ? null : _catalog.FindObjectType(tool.TargetType);
+            ObjectTypeEntry? targetType = TargetType(target, tool);
             if (!target.Scope.HasValue)
             {
-                // A restriction cannot be satisfied by an unstated scope: the planner must say what it edits.
+                // Singleton intersections were normalized before validation; ambiguity still requires a choice.
                 IReadOnlyList<AuthorScope>? restriction = tool.Scopes ?? (targetType == null ? null : targetType.Scopes);
                 if (restriction != null)
                 {

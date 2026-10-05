@@ -150,6 +150,8 @@ namespace GameCore.Studio.Model
         public const string InvalidArgs = "InvalidArgs";
         /// <summary>A tool prerequisite (type or capability) is not present.</summary>
         public const string MissingPrerequisite = "MissingPrerequisite";
+        /// <summary>Informational evidence: the tool/type intersection uniquely determines a missing scope.</summary>
+        public const string ScopeInferred = "ScopeInferred";
         /// <summary>The tool or object type does not allow the chosen edit scope.</summary>
         public const string ScopeNotAllowed = "ScopeNotAllowed";
         /// <summary>A tool validator or validation scenario failed.</summary>
@@ -178,7 +180,7 @@ namespace GameCore.Studio.Model
         /// <summary>Every registered code, in registry order.</summary>
         public static readonly IReadOnlyList<string> All = new[]
         {
-            StaleTarget, Conflict, UnknownTool, InvalidArgs, MissingPrerequisite, ScopeNotAllowed, ValidationFailed,
+            StaleTarget, Conflict, UnknownTool, InvalidArgs, MissingPrerequisite, ScopeNotAllowed, ScopeInferred, ValidationFailed,
             Refused, CandidateInvalid, StaleContext, StageFailed, LedgerConflict, NotConfigured, OutcomeUnknown, Blocked, MediaTypeForbidden, MediaPathForbidden, MediaImporterInvalid, ArtifactSourceForbidden,
         };
 
