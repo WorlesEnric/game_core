@@ -19,6 +19,12 @@
 // (through the UI runtime's restore path when the UI rig exists, else RootChanged directly) and every restore re-attaches
 // the narrative layer on the restored root's delivery owner (NarrativeComposer.Attach) and reinstalls the sessions.
 // ConfigureSaves(options) sets SaveServiceOptions.DeliveryFactory to the narrative delivery's owner (one owner per world).
+//
+// P3.1 (A11, additive): in the player, HollowmereApplication registers Hollowmere's definition at SubsystemRegistration,
+// so the application bootstrap composes the game root before this scene loads. Start then adopts that root (Adopted):
+// the UI/audio rig, plan, extensions and modules come from the registration, NarrativeComposer.Attach attaches the
+// narrative layer, and Install / Start run as for a booted root. Without an adoptable registration (Editor Play Mode,
+// -noRegister, New Game / Restart reloads) GameBoot boots its own root as before.
 #nullable enable
 using System;
 using GameCore.Gameplay.Interaction;
@@ -143,6 +149,12 @@ namespace Hollowmere.Boot
                 return;
             }
 
+            HollowmereApplication? registered = FindAnyObjectByType<HollowmereApplication>();
+            if (registered != null && Adopt(registered))
+            {
+                return;
+            }
+
             var playerExtension = new PlayerWorldExtension(player);
             var npcExtension = new NpcWorldExtension(npcs);
             var interactionExtension = new InteractionWorldExtension(interactions);
@@ -184,6 +196,53 @@ namespace Hollowmere.Boot
             GameplayWorldBehaviour holder = gameObject.AddComponent<GameplayWorldBehaviour>();
             holder.World = game.World;
             game.Root.Start();
+        }
+
+        /// <summary>True when this boot adopted the root registered at SubsystemRegistration (HollowmereApplication, A11).</summary>
+        public bool Adopted { get; private set; }
+
+        /// <summary>
+        /// Adopts the registered root (P3.1, A11): true when the boot is handled here (adopted, or refused after the
+        /// hand-over); false when the registration is not adoptable and was discarded, so Start boots its own root.
+        /// </summary>
+        private bool Adopt(HollowmereApplication registered)
+        {
+            GameApplicationRoot? root = registered.AdoptableRoot(manifest, content, player, npcs, interactions);
+            HollowmereComposition? composition = registered.Composition;
+            if (root == null || composition == null || content == null)
+            {
+                registered.Discard(composition == null
+                    ? "the registration has no composition (" + registered.Failure + ")"
+                    : "the live root is not the registered Ready root, or GameBoot holds other assets than Resources/" + HollowmereApplicationAssets.ResourcePath);
+                return false;
+            }
+
+            registered.HandOver(transform);
+            PlayerExtension = composition.PlayerExtension;
+            NpcExtension = composition.NpcExtension;
+            InteractionExtension = composition.InteractionExtension;
+            Modules = composition.Modules;
+            try
+            {
+                NarrativeWorld game = NarrativeComposer.Attach(root, composition.Plan, content, composition.Modules.All, true);
+                Install(game);
+            }
+            catch (Exception refused) when (refused is InvalidOperationException || refused is ArgumentException)
+            {
+                Narrative = null;
+                World = null;
+                Player?.Dispose();
+                root.Stop("Hollowmere could not adopt the registered root");
+                Refuse("adopting the registered root failed: " + refused.Message);
+                return true;
+            }
+
+            GameplayWorldBehaviour holder = gameObject.AddComponent<GameplayWorldBehaviour>();
+            holder.World = World!;
+            root.Start();
+            Adopted = true;
+            Debug.Log("[Hollowmere] adopted the application root registered at SubsystemRegistration");
+            return true;
         }
 
         /// <summary>The per-root half of the boot: streaming options, views, the P1.3 sessions and their wiring.</summary>

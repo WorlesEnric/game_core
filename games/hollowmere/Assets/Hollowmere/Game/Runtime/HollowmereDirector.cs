@@ -9,8 +9,8 @@
 //   * the interim fact-request bridge (inventory buy, loot rolls, stamina restore - replaced by P1.7a/b's declared
 //     ActionKind.Buy / RestoreStamina);
 //   * portraits next to the dialogue text (the UI package shows none), world-item presence (a taken pickup's view
-//     hides) and the HUD stamina bar's visibility;
-//   * the residency repair operations of a restore (InterimRestoreReattach) are polled here.
+//     hides) and the HUD stamina bar's visibility.
+// A restore re-attaches it to the restored narrative world (HollowmereGame, after GameBoot's P1.7a re-attach).
 // It never writes slots directly: every state change is an ordinary typed command.
 #nullable enable
 using System;
@@ -51,7 +51,6 @@ namespace Hollowmere.Game
         private readonly Dictionary<string, int> itemKeys = new Dictionary<string, int>(StringComparer.Ordinal);
         private readonly Dictionary<string, string> idsByName = new Dictionary<string, string>(StringComparer.Ordinal);
         private readonly Dictionary<string, int> requestSeen = new Dictionary<string, int>(StringComparer.Ordinal);
-        private readonly List<ISceneOperation> sceneOperations = new List<ISceneOperation>();
         private readonly WorldItemPresence presence = new WorldItemPresence();
         private NarrativeWorld? narrative;
         private HollowmereNarrativeModules? modules;
@@ -163,15 +162,6 @@ namespace Hollowmere.Game
             regionId = string.Empty;
         }
 
-        /// <summary>Adds scene operations to poll (restore residency repair).</summary>
-        public void Poll(IReadOnlyList<ISceneOperation> operations)
-        {
-            for (int i = 0; i < operations.Count; i++)
-            {
-                sceneOperations.Add(operations[i]);
-            }
-        }
-
         // ------------------------------------------------------------------ queries
 
         /// <summary>A fact's committed value by name (0 when unknown).</summary>
@@ -202,7 +192,6 @@ namespace Hollowmere.Game
 
         public void Tick()
         {
-            PollSceneOperations();
             NarrativeWorld? world = narrative;
             if (world == null || definition == null || world.Root.State != GameApplicationState.Running)
             {
@@ -220,17 +209,6 @@ namespace Hollowmere.Game
             if (rig != null && rig.Ui.Screen == UiScreen.Hud)
             {
                 rig.Ui.Models.Hud.StaminaVisible = true;
-            }
-        }
-
-        private void PollSceneOperations()
-        {
-            for (int i = sceneOperations.Count - 1; i >= 0; i--)
-            {
-                if (sceneOperations[i].IsDone)
-                {
-                    sceneOperations.RemoveAt(i);
-                }
             }
         }
 

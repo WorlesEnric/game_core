@@ -634,10 +634,14 @@ namespace Hollowmere.Authoring
         // ------------------------------------------------------------------ declared trade and stamina actions
 
         /// <summary>
-        /// True once P1.7a/P1.7b deliver ActionKind.Buy and ActionKind.RestoreStamina: the inn's purchases and the herbs'
-        /// stamina become declared actions and the director's interim fact-request bridge is emptied.
+        /// The inn's purchases and the herbs' stamina as declared actions (the director's interim fact-request bridge is
+        /// then reduced to the satchel's loot roll). ActionKind.Buy / RestoreStamina and their delivery ports are on main
+        /// with P1.7a; a Buy's vendor needs P1.7b's typed ActionEntry.vendor ref (VendorDefinition does not provide the
+        /// legacy 'inventory' category), so the switch follows the typed schema and turns on when P1.7b merges.
         /// </summary>
-        public static readonly bool DeclaredTradeActions = false;
+        public static bool DeclaredTradeActions => NarrativeSchema.Typed
+            && Enum.IsDefined(typeof(GameCore.Rules.Gameplay.Logic.ActionKind), "Buy")
+            && Enum.IsDefined(typeof(GameCore.Rules.Gameplay.Logic.ActionKind), "RestoreStamina");
 
         private static void DeclaredTrade(StudioAuthor a)
         {

@@ -2,9 +2,11 @@
 //
 // GameBoot (P1.3-P1.5) boots the world and installs the plugins; HollowmereGame runs after it (execution order 100) and
 // adds what makes Hollowmere a finished game rather than a plugin showcase:
-//   * saves: the checkpoint codecs of Assets/Hollowmere/Save (Gc018 catalog) behind a SaveService, connected to the
-//     save/load screens through the rig's UseSaves; a restore replaces the root, and InterimRestoreReattach re-attaches
-//     the narrative modules and the P1.3 sessions to the restored world (until P1.7a's NarrativeComposer re-attach);
+//   * saves: the checkpoint codecs of Assets/Hollowmere/Save (Gc018 catalog) behind a SaveService created through
+//     GameBoot.ConfigureSaves (P1.7a: the narrative delivery owns the save's delivery) and connected with
+//     GameBoot.UseSaves (the UI's save/load screens; a restore replaces the root and GameBoot re-attaches the narrative
+//     layer with NarrativeComposer.AttachRestored and reinstalls the sessions); on SaveService.Restored this component
+//     picks up GameBoot's re-attached narrative world and sessions and re-attaches the director;
 //   * the director (HollowmereDirector): endings, music and ambience consequences, the interim fact-request bridge,
 //     portraits, world-item presence and region atmosphere, all from the authored HollowmereDirectorDefinition;
 //   * the player command line: -frameLog, -autoplay, -saveDir, -quitAfterFrames (HollowmerePersistentSession keeps the
@@ -162,7 +164,7 @@ namespace Hollowmere.Game
         private void UseSaves()
         {
             GameplayWorld? world = World;
-            if (world == null || rig == null)
+            if (world == null)
             {
                 return;
             }
@@ -174,45 +176,48 @@ namespace Hollowmere.Game
             }
 
             string directory = CommandLine.SaveDirectory ?? Path.Combine(Application.persistentDataPath, SaveFolder);
-            Saves = new SaveService(world.Root, new SaveServiceOptions(gameId, codecs)
+            var options = new SaveServiceOptions(gameId, codecs)
             {
                 Directory = directory,
                 RegionId = CurrentRegionId,
                 PlayTimeSeconds = () => Time.realtimeSinceStartupAsDouble,
-            });
-            rig.UseSaves(Saves, OnRestoredWorld);
+            };
+            if (boot == null || !boot.ConfigureSaves(options))
+            {
+                Debug.LogError("[Hollowmere] GameBoot could not configure the save service's delivery; saving is unavailable");
+                return;
+            }
+
+            Saves = new SaveService(world.Root, options);
+            Saves.Restored += OnRestored;
+            boot.UseSaves(Saves);
         }
 
-        private void OnRestoredWorld(GameplayWorld restored)
+        /// <summary>After a restore GameBoot has re-attached the narrative layer and the sessions; follow it.</summary>
+        private void OnRestored(SaveResult result)
         {
-            if (boot == null || boot.Modules == null || Narrative == null)
+            if (boot == null || boot.Narrative == null || boot.Modules == null)
             {
-                RestoreFailure = "no booted narrative world to re-attach";
+                RestoreFailure = "GameBoot has no narrative world after the restore of " + result.Slot;
                 Debug.LogError("[Hollowmere] restore: " + RestoreFailure);
                 return;
             }
 
-            InterimRestoreReattach.Result result;
-            try
+            if (ReferenceEquals(boot.Narrative, Narrative))
             {
-                result = InterimRestoreReattach.Reattach(boot, Narrative, boot.Modules, restored, Player, destroyCancellationToken);
-            }
-            catch (InvalidOperationException problem)
-            {
-                RestoreFailure = problem.Message;
-                Debug.LogError("[Hollowmere] restore re-attach failed: " + problem.Message);
+                RestoreFailure = "GameBoot did not re-attach the restored world of " + result.Slot;
+                Debug.LogError("[Hollowmere] restore: " + RestoreFailure);
                 return;
             }
 
-            Narrative = result.Narrative;
-            Player = result.Player;
-            Npcs = result.Npcs;
-            Interactions = result.Interactions;
+            Narrative = boot.Narrative;
+            Player = boot.Player;
+            Npcs = boot.Npcs;
+            Interactions = boot.Interactions;
             RestoreFailure = string.Empty;
             Restores++;
             InstallAutoplayIntents();
-            Director?.Attach(result.Narrative, boot.Modules);
-            Director?.Poll(result.SceneOperations);
+            Director?.Attach(boot.Narrative, boot.Modules);
             Session?.Mark("restore");
         }
 
@@ -299,24 +304,15 @@ namespace Hollowmere.Game
 
         private void OnDestroy()
         {
+            // GameBoot owns the (possibly restored) world and shuts it down; the director only lets go of it.
+            if (Saves != null)
+            {
+                Saves.Restored -= OnRestored;
+            }
+
             Director?.Dispose();
             Director = null;
-            if (boot != null && Narrative != null && !ReferenceEquals(Narrative, boot.Narrative))
-            {
-                // A restore replaced GameBoot's world; GameBoot shuts down its own (stale) world, this one is ours.
-                Player?.Dispose();
-                NarrativeWorld current = Narrative;
-                Narrative = null;
-                if (current.Root.State == GameApplicationState.Stopped)
-                {
-                    current.Delivery.Dispose();
-                    current.World.Shutdown();
-                }
-                else
-                {
-                    current.Shutdown();
-                }
-            }
+            Narrative = null;
         }
 
         /// <summary>Formats a float for logs and checks.</summary>

@@ -263,6 +263,11 @@ namespace Hollowmere.Authoring
                 }),
             });
 
+            a.Step("closure.application-registration", "Place the boot assets under Resources so the player registers Hollowmere at SubsystemRegistration (P1.7a A11)", () => new List<Operation>
+            {
+                StudioAuthor.Call("register", "hollowmere.registerApplication", null, new JObject()),
+            });
+
             var artifacts = new List<ArtifactRef>();
             a.Step("closure.run-action", "Add the Run action (left shift, left stick press) to the player input actions", () =>
             {
