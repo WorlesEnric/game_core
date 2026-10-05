@@ -103,6 +103,8 @@ namespace GameCore.Studio.Etos
         private readonly List<string> _order = new List<string>();
         private readonly Dictionary<string, StagedChangeSet> _staged = new Dictionary<string, StagedChangeSet>(StringComparer.Ordinal);
         private readonly Stopwatch _sinceStatus = new Stopwatch();
+        private readonly Stopwatch _sinceRecovery = new Stopwatch();
+        private int _recoveryInFlight;
         private readonly ISet<string> _own;
         private ProviderStatus _status = ProviderStatus.Unknown;
         private HelloInfo? _hello;
@@ -118,6 +120,7 @@ namespace GameCore.Studio.Etos
             _log = new RedactingStudioLog(log ?? runtime.Log);
             _own = _options.OwnRequests ?? new HashSet<string>(StringComparer.Ordinal);
             Events = new EventStream(client, cursors ?? throw new ArgumentNullException(nameof(cursors)), _options.Backoff);
+            Events.MaxPendingEvents = 256;
             Events.HandleAsync = (frame, token) => _queue.Run(() => OnEvent(frame), token);
             Events.StateChanged += (state, error) => _queue.Post(() => OnStreamState(state, error));
         }
@@ -158,6 +161,9 @@ namespace GameCore.Studio.Etos
 
         /// <summary>The last hello (null before the first answer).</summary>
         public HelloInfo? Hello => _hello;
+
+        /// <summary>Exact worker ids advertised by the authenticated companion hello.</summary>
+        public IReadOnlyList<string> Workers => _hello?.Workers ?? Array.Empty<string>();
 
         // ------------------------------------------------------------------------------- tool-facing gateway
 
@@ -255,6 +261,8 @@ namespace GameCore.Studio.Etos
         /// <summary>Main-thread tick: polls the provider status every <see cref="EtosGatewayOptions.StatusInterval"/>.</summary>
         public void Tick()
         {
+            if (Events.State != EventStreamState.Connected && (!_sinceRecovery.IsRunning || _sinceRecovery.Elapsed >= TimeSpan.FromSeconds(1)))
+                _ = RecoverAsync();
             if (!_sinceStatus.IsRunning || _sinceStatus.Elapsed >= _options.StatusInterval)
             {
                 _ = RefreshStatusAsync();
@@ -318,6 +326,8 @@ namespace GameCore.Studio.Etos
         /// <summary>Recovers this app's requests from the companion's ledger (after a domain reload or restart).</summary>
         public async Task RecoverAsync()
         {
+            if (Interlocked.Exchange(ref _recoveryInFlight, 1) == 1) return;
+            _sinceRecovery.Restart();
             try
             {
                 long after = 0;
@@ -346,6 +356,8 @@ namespace GameCore.Studio.Etos
             {
                 _queue.Post(() => _log.Write(StudioLogLevel.Warning, "etos", "request recovery failed", DiagnosticOf(error.Error)));
             }
+
+            finally { Interlocked.Exchange(ref _recoveryInFlight, 0); }
 
             return;
         }
