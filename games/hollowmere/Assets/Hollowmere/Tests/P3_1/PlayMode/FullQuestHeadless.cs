@@ -38,7 +38,7 @@ using Object = UnityEngine.Object;
 
 namespace Hollowmere.P3_1.PlayMode.Tests
 {
-    public sealed class FullQuestHeadless
+    public sealed partial class FullQuestHeadless
     {
         private const string BootScene = "Assets/Hollowmere/Boot/Boot.unity";
         private const string VillageId = "11e8dd95-6622-43d0-8b48-5e17b72f0bb8";

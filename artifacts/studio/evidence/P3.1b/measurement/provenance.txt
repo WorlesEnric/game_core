@@ -1,0 +1,7 @@
+revision=2151e274855ce7c03611bb3fbffa8246371668da
+player_revision=2151e274855ce7c03611bb3fbffa8246371668da
+host=worlesenric
+started=2026-10-06T01:45:01+08:00
+PROBE_RUNS=2; one allocator reservation, allocator mutex held; no Editor active
+xvfb-run -a Hollowmere.x86_64 -batchmode -nographics -frameLog <run>/frame-log.csv -autoplay games/hollowmere/Autoplay/playthrough.txt -saveDir <run>/saves
+The P3.1 video predates these fixes and is not re-recorded.

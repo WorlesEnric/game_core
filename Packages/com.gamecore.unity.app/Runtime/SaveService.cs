@@ -10,8 +10,10 @@
 //
 //   * Capture(slot) pauses a running world at its committed boundary when needed, captures it through
 //     `CheckpointPublication.CaptureAndPublish`, declares the SADR-012 temporal-continuity feature on the document,
-//     writes `<slot>.gcc` through the kernel's atomic file store and `<slot>.json` through an atomic replace, and
+//     writes `<slot>.gcc` and `<slot>.json` using the legacy synchronous storage contract, and
 //     resumes the world;
+//   * CaptureAsync(slot) uses that same capture on the main thread, then writes an immutable `<slot>.<digest>.gcc`
+//     on a worker and atomically renames `<slot>.json` as the only commit point (previous saves survive interruption);
 //   * Restore(slot) verifies the files (envelope checksum, header/document hash, document decoding), applies the
 //     catalog compatibility rule, migrates slot rows forward, rebuilds the world through the production restore
 //     builder into a NEW session, adopts the restored root and then stops the old root;
@@ -25,6 +27,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using GameCore.Contracts;
 using GameCore.Execution.Persistence;
 using GameCore.Execution.Recovery;
@@ -209,6 +213,21 @@ namespace GameCore.Unity.App
             "roundTrip(" + (Refusal != null ? "refused " + Refusal : (Equal ? "equal" : "DIFFERENT: " + Detail)) + ")";
     }
 
+    /// <summary>An immutable serialized boundary; creating it never replaces the previous save.</summary>
+    public sealed class SaveServiceCapture
+    {
+        internal SaveServiceCapture(SaveService service, SaveResult result, byte[]? document = null)
+        {
+            Service = service;
+            Result = result;
+            Document = document ?? Array.Empty<byte>();
+        }
+        internal SaveService Service { get; }
+        internal byte[] Document { get; }
+        internal bool Published { get; set; }
+        public SaveResult Result { get; }
+    }
+
     /// <summary>The save service of one game (SADR-012).</summary>
     public sealed class SaveService
     {
@@ -216,6 +235,9 @@ namespace GameCore.Unity.App
         public const string HeaderExtension = ".json";
 
         private readonly SaveServiceOptions options;
+        private bool writing;
+
+        public bool IsWriting => writing;
         private readonly RestoreReservationLedger reservations = new RestoreReservationLedger(64);
 
         public SaveService(GameApplicationRoot root, SaveServiceOptions options)
@@ -249,7 +271,24 @@ namespace GameCore.Unity.App
 
         public event Action<SaveResult>? Refused;
 
-        public string DocumentPath(string slot) => Path.Combine(Directory, slot + DocumentExtension);
+        public string DocumentPath(string slot)
+        {
+            string legacy = Path.Combine(Directory, slot + DocumentExtension);
+            try
+            {
+                if (File.Exists(HeaderPath(slot))
+                    && SaveSlotHeader.TryParse(File.ReadAllText(HeaderPath(slot)), out SaveSlotHeader? header, out _)
+                    && header != null)
+                {
+                    string generation = GenerationPath(slot, header.DocumentHash);
+                    if (File.Exists(generation)) return generation;
+                }
+            }
+            catch (IOException) { }
+            return legacy;
+        }
+
+        private string GenerationPath(string slot, string hash) => Path.Combine(Directory, slot + "." + hash + DocumentExtension);
 
         public string HeaderPath(string slot) => Path.Combine(Directory, slot + HeaderExtension);
 
@@ -258,24 +297,41 @@ namespace GameCore.Unity.App
         /// <summary>Captures the active world into <paramref name="slot"/> (O-20, P-053).</summary>
         public SaveResult Capture(string slot, string? thumbnailPath = null)
         {
+            SaveServiceCapture capture = CaptureSnapshot(slot, thumbnailPath);
+            if (!capture.Result.Succeeded) return capture.Result;
+            Stopwatch clock = Stopwatch.StartNew();
+            if (!TryWriteSlot(slot, capture.Document, capture.Result.Header!, out string detail))
+                return Refuse(capture.Result, SaveRefusalCode.StorageFailed, string.Empty, DiagnosticCode.ResourceUnavailable, detail, clock);
+            capture.Result.Milliseconds += clock.Elapsed.TotalMilliseconds;
+            Written?.Invoke(capture.Result);
+            return capture.Result;
+        }
+
+        /// <summary>Captures and hashes on the calling main thread, without filesystem writes.</summary>
+        public SaveServiceCapture CaptureSnapshot(string slot, string? thumbnailPath = null)
+        {
             Stopwatch clock = Stopwatch.StartNew();
             var result = new SaveResult(slot ?? string.Empty);
             GameApplicationRoot root = ActiveRoot;
             result.SourceWorld = root.World;
             if (!SaveSlotNames.IsValid(slot))
             {
-                return Refuse(result, SaveRefusalCode.InvalidSlot, SaveSlotNames.Describe(slot), DiagnosticCode.UnsupportedVersion, string.Empty, clock);
+                return new SaveServiceCapture(this, Refuse(result, SaveRefusalCode.InvalidSlot, SaveSlotNames.Describe(slot), DiagnosticCode.UnsupportedVersion, string.Empty, clock));
             }
+
+            if (writing)
+                return new SaveServiceCapture(this, Refuse(result, SaveRefusalCode.UnsafeState, "a save is being written",
+                    DiagnosticCode.TooLate, string.Empty, clock));
 
             if (!IsSafe(root, out string unsafeDetail))
             {
-                return Refuse(result, SaveRefusalCode.UnsafeState, string.Empty, DiagnosticCode.TooLate, unsafeDetail, clock);
+                return new SaveServiceCapture(this, Refuse(result, SaveRefusalCode.UnsafeState, string.Empty, DiagnosticCode.TooLate, unsafeDetail, clock));
             }
 
             if (!TryCaptureDocument(root, true, out byte[] document, out CheckpointDocument? read, out SaveRefusal? refusal) || read == null)
             {
                 result.Refusal = refusal;
-                return Finish(result, clock);
+                return new SaveServiceCapture(this, Finish(result, clock));
             }
 
             var header = new SaveSlotHeader(
@@ -292,16 +348,44 @@ namespace GameCore.Unity.App
                 document.LongLength,
                 read.DeclaresTemporalContinuity);
 
-            if (!TryWriteSlot(slot!, document, header, out string storageDetail))
-            {
-                return Refuse(result, SaveRefusalCode.StorageFailed, string.Empty, DiagnosticCode.ResourceUnavailable, storageDetail, clock);
-            }
-
             result.Header = header;
             result.SlotHash = SlotHashOf(read);
             Finish(result, clock);
-            Written?.Invoke(result);
-            return result;
+            return new SaveServiceCapture(this, result, document);
+        }
+
+        /// <summary>Capture stays synchronous; only serialized bytes are written on a worker.</summary>
+        public Task<SaveResult> CaptureAsync(string slot, CancellationToken cancellation = default) =>
+            WriteCapturedAsync(CaptureSnapshot(slot), cancellation);
+
+        /// <summary>Publishes an immutable capture. Await from the main thread; events return to that context.</summary>
+        public async Task<SaveResult> WriteCapturedAsync(SaveServiceCapture capture, CancellationToken cancellation = default)
+        {
+            if (capture == null || !ReferenceEquals(capture.Service, this))
+                throw new ArgumentException("capture belongs to another save service", nameof(capture));
+            SaveResult result = capture.Result;
+            if (!result.Succeeded) return result;
+            Stopwatch clock = Stopwatch.StartNew();
+            if (writing || capture.Published)
+                return Refuse(new SaveResult(result.Slot), SaveRefusalCode.UnsafeState, "a save is being written or already published",
+                    DiagnosticCode.TooLate, string.Empty, clock);
+            writing = true;
+            capture.Published = true;
+            try
+            {
+                string failure = await Task.Run(() =>
+                {
+                    if (cancellation.IsCancellationRequested) return "save cancelled before publication";
+                    return TryWriteSlot(result.Slot, capture.Document, result.Header!, out string detail, cancellation, immutable: true)
+                        ? string.Empty : detail;
+                });
+                if (failure.Length != 0)
+                    return Refuse(result, SaveRefusalCode.StorageFailed, string.Empty, DiagnosticCode.ResourceUnavailable, failure, clock);
+                result.Milliseconds += clock.Elapsed.TotalMilliseconds;
+                Written?.Invoke(result);
+                return result;
+            }
+            finally { writing = false; }
         }
 
         // ------------------------------------------------------------------ restore
@@ -317,6 +401,8 @@ namespace GameCore.Unity.App
             var result = new SaveResult(slot ?? string.Empty);
             GameApplicationRoot root = ActiveRoot;
             result.SourceWorld = root.World;
+            if (writing)
+                return Refuse(result, SaveRefusalCode.UnsafeState, "a save is being written", DiagnosticCode.TooLate, string.Empty, clock);
             if (!SaveSlotNames.IsValid(slot))
             {
                 return Refuse(result, SaveRefusalCode.InvalidSlot, SaveSlotNames.Describe(slot), DiagnosticCode.UnsupportedVersion, string.Empty, clock);
@@ -366,6 +452,8 @@ namespace GameCore.Unity.App
             Stopwatch clock = Stopwatch.StartNew();
             var result = new SaveResult(slot ?? string.Empty);
             result.SourceWorld = ActiveRoot.World;
+            if (writing)
+                return Refuse(result, SaveRefusalCode.UnsafeState, "a save is being written", DiagnosticCode.TooLate, string.Empty, clock);
             if (!SaveSlotNames.IsValid(slot))
             {
                 return Refuse(result, SaveRefusalCode.InvalidSlot, SaveSlotNames.Describe(slot), DiagnosticCode.UnsupportedVersion, string.Empty, clock);
@@ -390,6 +478,10 @@ namespace GameCore.Unity.App
                 {
                     File.Delete(documentPath);
                 }
+                foreach (string generation in System.IO.Directory.GetFiles(Directory, slot + ".*" + DocumentExtension))
+                    File.Delete(generation);
+                string legacy = Path.Combine(Directory, slot + DocumentExtension);
+                if (File.Exists(legacy)) File.Delete(legacy);
             }
             catch (Exception exception)
             {
@@ -734,12 +826,18 @@ namespace GameCore.Unity.App
             }
         }
 
-        private bool TryWriteSlot(string slot, byte[] document, SaveSlotHeader header, out string detail)
+        private bool TryWriteSlot(string slot, byte[] document, SaveSlotHeader header, out string detail,
+            CancellationToken cancellation = default, bool immutable = false)
         {
             try
             {
                 System.IO.Directory.CreateDirectory(Directory);
-                var store = new FileCheckpointStore(DocumentPath(slot));
+                // Async saves commit by header rename. Keep the synchronous API's legacy writable document path
+                // for checkpoint migration tools that rewrite a document and then update its header.
+                string previous = DocumentPath(slot);
+                string generation = immutable ? GenerationPath(slot, header.DocumentHash)
+                    : Path.Combine(Directory, slot + DocumentExtension);
+                var store = new FileCheckpointStore(generation);
                 if (!store.TryPublish(document, out StoredCheckpoint _, out DiagnosticCode code, out detail))
                 {
                     detail = DiagnosticCodeText.Of(code) + ": " + detail;
@@ -748,7 +846,13 @@ namespace GameCore.Unity.App
 
                 string headerPath = HeaderPath(slot);
                 string partial = headerPath + ".partial";
-                File.WriteAllText(partial, header.ToJson(), new System.Text.UTF8Encoding(false));
+                byte[] json = new System.Text.UTF8Encoding(false).GetBytes(header.ToJson());
+                using (var stream = new FileStream(partial, FileMode.Create, FileAccess.Write, FileShare.None))
+                {
+                    stream.Write(json, 0, json.Length);
+                    stream.Flush(true);
+                }
+                cancellation.ThrowIfCancellationRequested();
                 if (File.Exists(headerPath))
                 {
                     File.Replace(partial, headerPath, null);
@@ -758,6 +862,13 @@ namespace GameCore.Unity.App
                     File.Move(partial, headerPath);
                 }
 
+                try
+                {
+                    foreach (string obsolete in System.IO.Directory.GetFiles(Directory, slot + ".*" + DocumentExtension))
+                        if (obsolete != generation && (!immutable || obsolete != previous)) File.Delete(obsolete);
+                }
+                catch (IOException) { } // Publication succeeded; retained generations are safe to collect next time.
+                catch (UnauthorizedAccessException) { }
                 detail = string.Empty;
                 return true;
             }
@@ -809,6 +920,8 @@ namespace GameCore.Unity.App
                 return false;
             }
 
+            string generation = GenerationPath(slot, header.DocumentHash);
+            if (File.Exists(generation)) documentPath = generation;
             var store = new FileCheckpointStore(documentPath);
             if (!store.TryRead(out byte[]? bytes, out StoredCheckpoint _, out DiagnosticCode code, out string detail) || bytes == null)
             {
