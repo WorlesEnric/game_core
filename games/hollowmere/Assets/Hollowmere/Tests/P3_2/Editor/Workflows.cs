@@ -65,7 +65,8 @@ namespace Hollowmere.P3_2.Workflows
                 case "reopen": return Reopen();
                 case "persist": return Persist();
                 case "voice": return Voice();
-                case "batch": return Batch();
+                case "batch": return Batch(false);
+                case "batch2": return Batch(true);
                 case "honesty": return Honesty();
                 case "mech-a": return MechA();
                 case "mech-b": return MechB();
@@ -788,18 +789,45 @@ namespace Hollowmere.P3_2.Workflows
 
         // ------------------------------------------------------------------------------------------------- batch
 
-        private static IReadOnlyList<Step> Batch()
+        /// <summary>
+        /// Batch / multi-target edit with a conflict. <paramref name="retry"/> is the one retry: attempt 1 selected only the
+        /// crates, and the worker twice asked for the well's position (scene-context.json carries selected objects only);
+        /// the retry Ctrl-adds the Village Well to the selection and the tray answer states its position.
+        /// </summary>
+        private static IReadOnlyList<Step> Batch(bool retry)
         {
             string[] crates = { "Crate 2", "Crate 3", "Market Crate" };
-            return new[]
+            List<Step> steps = new List<Step>
             {
                 S.OpenScene(S.VillageScene), S.Relayout(),
                 S.WaitGateway(),
                 S.Do("marquee crates", () => Marquee(crates)),
+            };
+            if (retry)
+            {
+                steps.Add(S.Note("ctrl-add the well", () =>
+                {
+                    GameObject well = S.Require("Village Well");
+                    AuthoringRef reference = S.Context.Selection.RefOf(well) ?? throw new InvalidOperationException("no ref for the well");
+                    S.Context.Selection.Set(new[] { reference }, SelectionOp.Add);
+                    string badges = string.Join(", ", S.Context.Selection.Describe().Select(b => b.Label + " [" + b.TypeId + "]"));
+                    WorkflowRunner.Shot("ring-add-well", "Ctrl-added the Village Well to the marquee selection: " + badges + ".", new JObject { ["selection"] = badges });
+                }));
+            }
+
+            steps.AddRange(new[]
+            {
                 S.Note("roster before", () => Roster("ring", "before")),
-                S.Send("ring", "Arrange these crates evenly in a ring of radius 3 metres around the Village Well."),
-                S.Await("ring", q => "The three selected crates; the ring is centred on the Village Well (position in scene-context.json or the index slice), radius 3 m, " +
-                                     "evenly spaced, same height as now. Use one move per crate.", 1200),
+                S.Send("ring", retry
+                    ? "Arrange the selected crates evenly in a ring of radius 3 metres around the selected Village Well. Do not move the well."
+                    : "Arrange these crates evenly in a ring of radius 3 metres around the Village Well."),
+                S.Await("ring", q =>
+                {
+                    Vector3 well = S.Require("Village Well").transform.position;
+                    return "The three selected crates; the ring is centred on the Village Well at (" + well.x.ToString("0.00", CultureInfo.InvariantCulture) + ", " +
+                           well.y.ToString("0.00", CultureInfo.InvariantCulture) + ", " + well.z.ToString("0.00", CultureInfo.InvariantCulture) +
+                           ") metres (+X east, +Z north), radius 3 m, evenly spaced, same height as now. Use one move per crate; do not move the well.";
+                }, 1200),
                 S.Do("preview ring", () => Guard("ring", () => S.Preview("ring").Run())),
                 S.Do("make one target stale", () => Guard("ring", () => MakeStale("ring"))),
                 S.Do("apply AllOrNothing", () => Guard("ring", () => S.Apply("ring", ApplyPolicy.AllOrNothing, "apply-all-or-nothing").Run())),
@@ -823,7 +851,8 @@ namespace Hollowmere.P3_2.Workflows
                     RejectIfOpen("ring");
                     WorkflowRunner.Recording(false);
                 }),
-            };
+            });
+            return steps;
         }
 
         private static bool Marquee(string[] names)

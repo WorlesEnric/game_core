@@ -282,7 +282,7 @@ namespace Hollowmere.P3_2.Workflows
             string file = n.ToString("000", CultureInfo.InvariantCulture) + "-" + Slug(name) + ".png";
             string? problem = Capture(Path.Combine(OutputDir, "keyframes", file));
             JObject line = extra ?? new JObject();
-            line["keyframe"] = "keyframes/" + file;
+            line["shot"] = "keyframes/" + file; // not "keyframe": EtosRedaction hides values of fields named *key*
             if (problem != null)
             {
                 line["captureProblem"] = problem;
