@@ -138,7 +138,7 @@ namespace GameCore.Studio.UI
                     StagedChangeSet? staged = GatewayExtras.StagedBy(gateway, view.RequestId);
                     if (staged != null)
                     {
-                        CandidateArrived?.Invoke(Candidates.Adopt(view.RequestId, staged));
+                        Announce(Candidates.Adopt(view.RequestId, staged));
                     }
                     else if (Candidates.Find(view.ChangeSetId) == null)
                     {
@@ -149,7 +149,7 @@ namespace GameCore.Studio.UI
                 }
 
                 case "import_failed":
-                    CandidateArrived?.Invoke(Candidates.AddInvalid(view.RequestId, view.ChangeSetId, info.Diagnostics));
+                    Announce(Candidates.AddInvalid(view.RequestId, view.ChangeSetId, info.Diagnostics));
                     return;
             }
 
@@ -169,11 +169,14 @@ namespace GameCore.Studio.UI
             }
         }
 
+        /// <summary>Raises CandidateArrived (the entry is created by the caller whether or not anyone listens).</summary>
+        private void Announce(CandidateEntry entry) => CandidateArrived?.Invoke(entry);
+
         /// <summary>Fetches a candidate (once) and announces it.</summary>
         public async Task<CandidateEntry> ReceiveCandidate(string requestId, string? changeSetId, string? toolCatalogRevision = null)
         {
             CandidateEntry entry = await Candidates.Receive(requestId, changeSetId, toolCatalogRevision);
-            CandidateArrived?.Invoke(entry);
+            Announce(entry);
             return entry;
         }
 
@@ -204,7 +207,7 @@ namespace GameCore.Studio.UI
                 StagedChangeSet? staged = GatewayExtras.StagedBy(gateway, row.requestId);
                 if (staged != null)
                 {
-                    CandidateArrived?.Invoke(Candidates.Adopt(row.requestId, staged));
+                    Announce(Candidates.Adopt(row.requestId, staged));
                 }
                 else
                 {

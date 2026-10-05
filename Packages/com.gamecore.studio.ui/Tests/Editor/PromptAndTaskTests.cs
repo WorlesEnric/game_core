@@ -271,25 +271,10 @@ namespace GameCore.Studio.UI.Tests
             Assert.That(imported.Ok, Is.True, string.Join("; ", imported.Diagnostics));
             Assert.That(GatewayExtras.ImportsItself(_bed.Gateway, id), Is.True);
             Assert.That(GatewayExtras.StagedBy(_bed.Gateway, id), Is.SameAs(imported), "the gateway's staged change set is visible to the UI");
-            RequestView stagedView = TestAgentGateway.View(id, "candidate", request.Intent.Text, localState: "staged", hasCandidate: true, seq: 5);
-            Assert.That(stagedView.LocalState, Is.EqualTo("staged"));
-            Assert.That(stagedView.RequestId, Is.EqualTo(id));
-            Assert.That(_bed.Context.Gateway, Is.SameAs(_bed.Gateway));
-            _bed.Gateway.Emit(stagedView);
-            Assert.That(_bed.Context.Dispatcher.Pending, Is.EqualTo(1));
+            _bed.Gateway.Emit(TestAgentGateway.View(id, "candidate", request.Intent.Text, localState: "staged", hasCandidate: true, seq: 5));
             _bed.Context.Tick();
-            if (_bed.Context.Candidates.Entries.Count == 0)
-            {
-                StagedChangeSet? seen = GatewayExtras.StagedBy(_bed.Context.Gateway, stagedView.RequestId);
-                Assert.That(seen, Is.Not.Null, "StagedBy through the context's gateway");
-                CandidateEntry adopted = _bed.Context.Candidates.Adopt(stagedView.RequestId, seen!);
-                Assert.That(_bed.Context.Candidates.Entries.Count, Is.EqualTo(1), "direct Adopt adds (" + adopted.Id + ")");
-                Assert.Fail("HandleRequest through the dispatcher did not adopt, a direct call did");
-            }
             CandidateEntry? entry = _bed.Context.Candidates.Find(id);
-            TaskRow trayRow = _bed.Context.Tasks.Find(id)!;
-            Assert.That(entry, Is.Not.Null, "adopted on the staged report (" + _bed.Context.Candidates.Entries.Count + " entries, " + _bed.Context.EventsSeen + " events, row " + trayRow.state + "/" + trayRow.localState
-                + ", staged visible " + (GatewayExtras.StagedBy(_bed.Gateway, id) != null) + ", pending " + _bed.Context.Dispatcher.Pending + ")");
+            Assert.That(entry, Is.Not.Null, "adopted when the gateway reports the candidate staged");
             Assert.That(entry!.GatewayStaged, Is.True);
             Assert.That(entry.Staged, Is.SameAs(imported), "the gateway's staged change set is adopted, not staged again");
             Assert.That(entry.Stage, Is.EqualTo(CandidateStage.Previewing));
