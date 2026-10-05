@@ -28,7 +28,7 @@ namespace GameCore.Studio.Edit
         {
             Status = status;
             Code = code == null ? null : StudioDiagnostics.Registered(code);
-            Detail = detail;
+            Detail = detail == null ? null : new SecretRedactor().Redact(detail);
         }
 
         public OutcomeStatus Status { get; }
@@ -96,7 +96,7 @@ namespace GameCore.Studio.Edit
 
         public OperationResult WithDetail(string? detail)
         {
-            Detail = detail;
+            Detail = detail == null ? null : new SecretRedactor().Redact(detail);
             return this;
         }
 
@@ -303,6 +303,9 @@ namespace GameCore.Studio.Edit
 
             return StringArg(name);
         }
+
+        /// <summary>Durably retain inverse operations before a tool's first side effect. Safe to call more than once.</summary>
+        public void PrepareInverse(Operation[] inverse, bool assetLevel = false) => Runtime.Engine.PrepareInverse(inverse, assetLevel);
 
         public void RecordUndo(UnityEngine.Object target)
         {

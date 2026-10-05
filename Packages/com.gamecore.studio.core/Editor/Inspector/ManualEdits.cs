@@ -2,7 +2,7 @@
 // gizmo drags go through the same tools agents use, so they are validated, journaled and undoable the same way).
 //   ManualEditCommitter  inspector field commits -> one `set` (values) or `assign` (references) change set
 //   MoveChangeSets       one `move` change set for a target pose; shared by the gizmo and the typed path (W-EDIT-05)
-//   GizmoMoveController  a drag moves the object live without Undo; mouse-up restores the start pose and applies one
+//   GizmoMoveController  a drag moves the object live without Undo; mouse-up discards the preview and applies one
 //                        `move` change set, so a drag is one journal entry identical to typing the final position
 #nullable enable
 using System;
@@ -141,6 +141,10 @@ namespace GameCore.Studio.Edit
         private GameObject? _target;
         private Vector3 _startPosition;
         private Vector3 _current;
+        private GameObject? _ghost;
+        private AuthoringRef? _startRef;
+
+        public Transform? PreviewTransform => _ghost == null ? null : _ghost.transform;
 
         public GizmoMoveController(StudioRuntime runtime)
         {
@@ -163,9 +167,12 @@ namespace GameCore.Studio.Edit
             _target = target;
             _startPosition = target.transform.position;
             _current = _startPosition;
+            _startRef = MoveChangeSets.Build(_runtime, target, _startPosition)?.Operations[0].Target;
+            _ghost = new GameObject("Studio move preview") { hideFlags = HideFlags.HideAndDontSave };
+            _ghost.transform.position = _startPosition;
         }
 
-        /// <summary>Moves the object live (no Undo record, no journal entry).</summary>
+        /// <summary>Moves only the hidden, unsaved preview transform.</summary>
         public void DragTo(Vector3 position)
         {
             if (_target == null)
@@ -174,10 +181,10 @@ namespace GameCore.Studio.Edit
             }
 
             _current = position;
-            _target.transform.position = position;
+            if (_ghost != null) _ghost.transform.position = position;
         }
 
-        /// <summary>Ends the drag (mouse-up): restores the start pose and applies one <c>move</c> change set.</summary>
+        /// <summary>Ends the drag (mouse-up): discards the preview and applies one <c>move</c> change set.</summary>
         public ApplyReport? End()
         {
             if (_target == null)
@@ -193,7 +200,8 @@ namespace GameCore.Studio.Edit
                 return null;
             }
 
-            ChangeSet? changeSet = MoveChangeSets.Build(_runtime, target, final);
+            ChangeSet? changeSet = _startRef == null ? null : StudioRuntime.Single("Move " + target.name, IntentOrigin.Manual,
+                new Operation("op1", BuiltInToolIdsExt.Move, _startRef, new JObject { ["position"] = new JArray(ValueCodec.Widen(final.x), ValueCodec.Widen(final.y), ValueCodec.Widen(final.z)) }));
             return changeSet == null ? null : _runtime.Engine.Apply(changeSet);
         }
 
@@ -208,11 +216,8 @@ namespace GameCore.Studio.Edit
 
         private void Restore()
         {
-            if (_target != null)
-            {
-                _target.transform.position = _startPosition;
-            }
-
+            if (_ghost != null) UnityEngine.Object.DestroyImmediate(_ghost);
+            _ghost = null;
             _target = null;
         }
     }

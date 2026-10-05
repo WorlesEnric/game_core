@@ -45,7 +45,7 @@ namespace GameCore.Studio.Edit
 
         public bool Internal => false;
 
-        public bool ReadOnly => false;
+        public bool ReadOnly => Entry.ReadOnly;
 
         public MethodInfo Method => _method;
 
@@ -117,8 +117,8 @@ namespace GameCore.Studio.Edit
             }
 
             AuthoringTypeInfo? info = target == null ? null : context.Identity.Describe(target);
-            JObject? before = info == null ? null : ToolSupport.CaptureMembers(context, target!, info);
-            if (target != null)
+            JObject? before = info == null || ReadOnly ? null : ToolSupport.CaptureMembers(context, target!, info);
+            if (target != null && !ReadOnly)
             {
                 context.RecordUndo(target);
             }
@@ -134,7 +134,7 @@ namespace GameCore.Studio.Edit
                 return OperationResult.Failed(DiagnosticCodes.Refused, Entry.Id + " failed: " + inner.GetType().Name + ": " + inner.Message);
             }
 
-            if (target != null)
+            if (target != null && !ReadOnly)
             {
                 EditorUtility.SetDirty(target);
             }

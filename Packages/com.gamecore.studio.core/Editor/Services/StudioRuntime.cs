@@ -71,6 +71,8 @@ namespace GameCore.Studio.Edit
             Engine = new ChangeSetEngine(this, options.Engine);
             Queue = new ApplyQueue(() => Engine.IsApplying);
             History = new HistoryService(this);
+            References = new NestedReferenceContributor(this);
+            Index.Contributors.Add(References);
             if (options.LoadIndexCache)
             {
                 Index.LoadCache();
@@ -90,6 +92,8 @@ namespace GameCore.Studio.Edit
         public AuthoringRefResolver Resolver { get; }
 
         public SemanticIndexService Index { get; }
+
+        public NestedReferenceContributor References { get; }
 
         public ArtifactStore Artifacts { get; }
 

@@ -68,6 +68,45 @@ namespace GameCore.Studio.Edit
             _runtime = runtime ?? throw new ArgumentNullException(nameof(runtime));
         }
 
+        private readonly Dictionary<HistoryEntryKind, IHistoryEntryHandler> _handlers = new Dictionary<HistoryEntryKind, IHistoryEntryHandler>();
+
+        public void RegisterHandler(IHistoryEntryHandler handler) => _handlers[handler.Kind] = handler ?? throw new ArgumentNullException(nameof(handler));
+
+        public static HistoryEntryKind KindOf(ChangeSet entry)
+        {
+            foreach (Operation op in entry.Operations)
+                if (op.Tool == "mechanism.admit" || op.Tool == "mechanism.remove") return HistoryEntryKind.Admission;
+            return HistoryEntryKind.Edit;
+        }
+
+        private HistoryResult? Dispatch(ChangeSet entry, HistoryAction action, bool force = false)
+        {
+            HistoryEntryKind kind = KindOf(entry);
+            if (kind == HistoryEntryKind.Edit) return null;
+            return _handlers.TryGetValue(kind, out IHistoryEntryHandler? handler) ? handler.Handle(entry, action, force)
+                : HistoryResult.Refused(entry.Id, DiagnosticCodes.NotConfigured, "No history handler is registered for " + kind + ".");
+        }
+
+        private string TransitionPath(string id) => Path.Combine(_runtime.Paths.LibraryRoot, "history-" + id + ".json");
+
+        private ApplyReport Transition(ChangeSet entry, ChangeSet work, string action, IReadOnlyDictionary<string, JObject>? replay, bool skip)
+        {
+            JObject record = new JObject { ["original"] = StudioJson.ToToken(entry), ["action"] = action, ["work"] = StudioJson.ToToken(work.WithState(ChangeSetState.Interrupted)) };
+            void Save(ChangeSet progress)
+            {
+                record["work"] = StudioJson.ToToken(progress);
+                StudioPaths.WriteAllTextAtomic(TransitionPath(entry.Id), record.ToString(Formatting.None));
+                _runtime.Journal.Write(entry.WithState(ChangeSetState.Interrupted));
+            }
+            Save(work.WithState(ChangeSetState.Interrupted));
+            return _runtime.Engine.ApplyForHistory(work, replay, skip, Save);
+        }
+
+        private void ClearTransition(string id)
+        {
+            if (File.Exists(TransitionPath(id))) File.Delete(TransitionPath(id));
+        }
+
         public string RedoStackPath => Path.Combine(_runtime.Paths.LibraryRoot, "redo.json");
 
         /// <summary>Undone entry ids, most recent last.</summary>
@@ -113,6 +152,11 @@ namespace GameCore.Studio.Edit
                 return HistoryResult.Refused(id, DiagnosticCodes.Refused, "Change set " + id + " is not Applied (state " + (entry?.EffectiveState.ToString() ?? "missing") + ").");
             }
 
+            HistoryResult? dispatched = Dispatch(entry, HistoryAction.Undo, force);
+            if (dispatched != null) return dispatched;
+            foreach (OperationOutcome appliedOutcome in entry.Outcomes ?? Array.Empty<OperationOutcome>())
+                if (appliedOutcome.Status == OutcomeStatus.Applied && appliedOutcome.GameCoreOps != null && appliedOutcome.GameCoreOps.Count > 0 && appliedOutcome.Undo == null)
+                    return HistoryResult.Refused(id, DiagnosticCodes.Refused, "Runtime actions are non-undoable.");
             List<Diagnostic> diagnostics = new List<Diagnostic>();
             List<Operation> inverses = new List<Operation>();
             IReadOnlyList<OperationOutcome> outcomes = entry.Outcomes ?? Array.Empty<OperationOutcome>();
@@ -146,14 +190,15 @@ namespace GameCore.Studio.Edit
             ApplyReport? report = null;
             if (inverses.Count > 0)
             {
-                report = _runtime.Engine.ApplyForHistory(InternalChangeSet(entry, "Undo: " + entry.Intent.Text, Renumber(inverses, "u")), null, true);
+                report = Transition(entry, InternalChangeSet(entry, "Undo: " + entry.Intent.Text, Renumber(inverses, "u")), "undo", null, true);
                 if (!report.Ok)
                 {
-                    return new HistoryResult(id, false, ChangeSetState.Applied, report.Diagnostics, report);
+                    return new HistoryResult(id, false, ChangeSetState.Interrupted, report.Diagnostics, report);
                 }
             }
 
             _runtime.Journal.Write(entry.WithState(ChangeSetState.Undone));
+            ClearTransition(id);
             Redo_.Remove(id);
             Redo_.Add(id);
             SaveRedo();
@@ -176,6 +221,8 @@ namespace GameCore.Studio.Edit
                 return HistoryResult.Refused(id, DiagnosticCodes.Refused, "Change set " + id + " is not Undone (state " + (entry?.EffectiveState.ToString() ?? "missing") + ").");
             }
 
+            HistoryResult? dispatched = Dispatch(entry, HistoryAction.Redo);
+            if (dispatched != null) return dispatched;
             Dictionary<string, JObject> replay = new Dictionary<string, JObject>(StringComparer.Ordinal);
             HashSet<string> wasApplied = new HashSet<string>(StringComparer.Ordinal);
             foreach (OperationOutcome outcome in entry.Outcomes ?? Array.Empty<OperationOutcome>())
@@ -211,10 +258,10 @@ namespace GameCore.Studio.Edit
             List<OperationOutcome> outcomes = new List<OperationOutcome>();
             if (operations.Count > 0)
             {
-                report = _runtime.Engine.ApplyForHistory(InternalChangeSet(entry, "Redo: " + entry.Intent.Text, operations), replay, false);
+                report = Transition(entry, InternalChangeSet(entry, "Redo: " + entry.Intent.Text, operations), "redo", replay, false);
                 if (!report.Ok)
                 {
-                    return new HistoryResult(id, false, ChangeSetState.Undone, report.Diagnostics, report);
+                    return new HistoryResult(id, false, ChangeSetState.Interrupted, report.Diagnostics, report);
                 }
 
                 outcomes.AddRange(report.Outcomes);
@@ -236,6 +283,7 @@ namespace GameCore.Studio.Edit
 
             Timestamps stamps = new Timestamps(entry.Timestamps?.Requested, entry.Timestamps?.Candidate, Journal.Now());
             _runtime.Journal.Write(entry.WithState(ChangeSetState.Applied).WithOutcomes(ordered).WithTimestamps(stamps));
+            ClearTransition(id);
             Redo_.Remove(id);
             SaveRedo();
             _runtime.Log.Write(StudioLogLevel.Info, "history", "redid " + id + " (" + operations.Count + " op(s))");
@@ -258,37 +306,37 @@ namespace GameCore.Studio.Edit
                 return HistoryResult.Refused(changeSetId, DiagnosticCodes.Refused, "Change set " + changeSetId + " is not Interrupted.");
             }
 
-            List<Operation> inverses = new List<Operation>();
-            IReadOnlyList<OperationOutcome> outcomes = entry.Outcomes ?? Array.Empty<OperationOutcome>();
+            HistoryResult? dispatched = Dispatch(entry, HistoryAction.Rollback);
+            if (dispatched != null) return dispatched;
+            if (File.Exists(TransitionPath(changeSetId))) return RecoverTransition(entry, false);
+            List<OperationOutcome> outcomes = new List<OperationOutcome>(entry.Outcomes ?? Array.Empty<OperationOutcome>());
+            List<Diagnostic> diagnostics = new List<Diagnostic>();
+            ApplyReport? report = null;
             for (int i = outcomes.Count - 1; i >= 0; i--)
             {
-                if (outcomes[i].Status == OutcomeStatus.Applied && outcomes[i].Undo != null)
+                OperationOutcome outcome = outcomes[i];
+                if (outcome.Undo == null) continue;
+                UndoPayload? payload = UndoPayload.Parse(outcome.Undo.Inverse, out string? problem);
+                if (payload == null) return HistoryResult.Refused(changeSetId, DiagnosticCodes.CandidateInvalid, "Malformed inverse: " + problem);
+                List<Operation> remaining = new List<Operation>(payload.Operations);
+                while (remaining.Count > 0)
                 {
-                    UndoPayload? payload = UndoPayload.Parse(outcomes[i].Undo!.Inverse, out _);
-                    if (payload != null)
+                    ChangeSet rollback = InternalChangeSet(entry, "Recover rollback", Renumber(new List<Operation> { remaining[0] }, "r"));
+                    report = _runtime.Engine.ApplyForHistory(rollback, null, true);
+                    diagnostics.AddRange(report.Diagnostics);
+                    if (!report.Ok)
                     {
-                        inverses.AddRange(payload.Operations);
+                        _runtime.Journal.Write(entry.WithOutcomes(outcomes));
+                        return new HistoryResult(changeSetId, false, ChangeSetState.Interrupted, diagnostics, report);
                     }
+                    remaining.RemoveAt(0);
+                    outcomes[i] = new OperationOutcome(outcome.OpId, remaining.Count == 0 ? OutcomeStatus.Skipped : outcome.Status,
+                        null, remaining.Count == 0 ? "Rolled back after interruption." : "Rollback in progress.", null,
+                        remaining.Count == 0 ? null : new OperationUndo(new UndoPayload(remaining, payload.AssetLevel, payload.After, payload.Replay).ToJson()));
+                    _runtime.Journal.Write(entry.WithOutcomes(outcomes));
                 }
             }
-
-            ApplyReport? report = null;
-            List<Diagnostic> diagnostics = new List<Diagnostic>();
-            if (inverses.Count > 0)
-            {
-                // Best effort: a crash lost unsaved scene edits, so some inverses find nothing to revert.
-                ChangeSet rollback = InternalChangeSet(entry, "Recover (rollback): " + entry.Intent.Text, Renumber(inverses, "r"));
-                report = _runtime.Engine.ApplyForHistory(new ChangeSet(rollback.Id, rollback.Schema, rollback.Intent, rollback.Operations, links: rollback.Links, policy: ApplyPolicy.BestEffort), null, true);
-                diagnostics.AddRange(report.Diagnostics);
-            }
-
-            List<OperationOutcome> rolled = new List<OperationOutcome>();
-            foreach (Operation operation in entry.Operations)
-            {
-                rolled.Add(new OperationOutcome(operation.OpId, OutcomeStatus.Skipped, null, "Rolled back after an interrupted apply."));
-            }
-
-            _runtime.Journal.Write(entry.WithState(ChangeSetState.Failed).WithOutcomes(rolled));
+            _runtime.Journal.Write(entry.WithState(ChangeSetState.Failed).WithOutcomes(outcomes));
             return new HistoryResult(changeSetId, true, ChangeSetState.Failed, diagnostics, report);
         }
 
@@ -300,6 +348,13 @@ namespace GameCore.Studio.Edit
             {
                 return HistoryResult.Refused(changeSetId, DiagnosticCodes.Refused, "Change set " + changeSetId + " is not Interrupted.");
             }
+
+            HistoryResult? dispatched = Dispatch(entry, HistoryAction.Resume);
+            if (dispatched != null) return dispatched;
+            if (File.Exists(TransitionPath(changeSetId))) return RecoverTransition(entry, true);
+            foreach (OperationOutcome outcome in entry.Outcomes ?? Array.Empty<OperationOutcome>())
+                if (outcome.Detail == "Prepared; completion unknown.")
+                    return HistoryResult.Refused(changeSetId, DiagnosticCodes.Refused, "An operation has an unknown completion; roll back its retained preimage before retrying.");
 
             Dictionary<string, OperationOutcome> done = new Dictionary<string, OperationOutcome>(StringComparer.Ordinal);
             foreach (OperationOutcome outcome in entry.Outcomes ?? Array.Empty<OperationOutcome>())
@@ -321,7 +376,15 @@ namespace GameCore.Studio.Edit
             {
                 if (!done.ContainsKey(operation.OpId))
                 {
-                    remaining.Add(new Operation(operation.OpId, operation.Tool, operation.Target, operation.Args, Filter(operation.DependsOn, null, done.Keys), operation.Preconditions, operation.ApplyRequirement));
+                    bool blockedDependency = false;
+                    foreach (string dependency in operation.DependsOn ?? Array.Empty<string>())
+                        if (done.TryGetValue(dependency, out OperationOutcome? prior) && prior.Status != OutcomeStatus.Applied) blockedDependency = true;
+                    if (blockedDependency)
+                    {
+                        done[operation.OpId] = new OperationOutcome(operation.OpId, OutcomeStatus.Skipped, null, "Dependency did not apply.");
+                        continue;
+                    }
+                    remaining.Add(new Operation(operation.OpId, operation.Tool, operation.Target, operation.Args, Filter(operation.DependsOn, null, applied), operation.Preconditions, operation.ApplyRequirement));
                 }
             }
 
@@ -329,7 +392,12 @@ namespace GameCore.Studio.Edit
             if (remaining.Count > 0)
             {
                 ChangeSet resumed = InternalChangeSet(entry, entry.Intent.Text, remaining);
-                report = _runtime.Engine.ApplyForHistory(new ChangeSet(resumed.Id, resumed.Schema, resumed.Intent, resumed.Operations, links: resumed.Links, policy: entry.EffectivePolicy), null, false);
+                report = _runtime.Engine.ApplyForHistory(new ChangeSet(resumed.Id, resumed.Schema, resumed.Intent, resumed.Operations, links: resumed.Links, policy: entry.EffectivePolicy), null, false, progress =>
+                {
+                    Dictionary<string, OperationOutcome> saved = new Dictionary<string, OperationOutcome>(done);
+                    foreach (OperationOutcome next in progress.Outcomes ?? Array.Empty<OperationOutcome>()) saved[next.OpId] = next;
+                    _runtime.Journal.Write(entry.WithOutcomes(new List<OperationOutcome>(saved.Values)));
+                });
                 foreach (OperationOutcome outcome in report.Outcomes)
                 {
                     done[outcome.OpId] = outcome;
@@ -347,6 +415,12 @@ namespace GameCore.Studio.Edit
                 }
             }
 
+            bool anyFailed = ordered.Exists(outcome => outcome.Status != OutcomeStatus.Applied);
+            if (entry.EffectivePolicy == ApplyPolicy.AllOrNothing && anyFailed)
+            {
+                _runtime.Journal.Write(entry.WithOutcomes(ordered));
+                return RollbackInterrupted(changeSetId);
+            }
             ChangeSetState state = anyApplied ? ChangeSetState.Applied : ChangeSetState.Failed;
             Timestamps stamps = new Timestamps(entry.Timestamps?.Requested, entry.Timestamps?.Candidate, state == ChangeSetState.Applied ? Journal.Now() : null);
             _runtime.Journal.Write(entry.WithState(state).WithOutcomes(ordered).WithTimestamps(stamps));
@@ -356,6 +430,27 @@ namespace GameCore.Studio.Edit
             }
 
             return new HistoryResult(changeSetId, state == ChangeSetState.Applied, state, report?.Diagnostics ?? Array.Empty<Diagnostic>(), report);
+        }
+
+        private HistoryResult RecoverTransition(ChangeSet interrupted, bool resume)
+        {
+            JObject record = JObject.Parse(File.ReadAllText(TransitionPath(interrupted.Id)));
+            ChangeSet original = StudioJson.Deserialize<ChangeSet>(record["original"]!.ToString());
+            ChangeSet work = StudioJson.Deserialize<ChangeSet>(record["work"]!.ToString());
+            _runtime.Journal.Write(work.WithState(ChangeSetState.Interrupted));
+            HistoryResult recovered = resume ? ResumeInterrupted(work.Id) : RollbackInterrupted(work.Id);
+            ChangeSet progress = _runtime.Journal.Read(work.Id)!;
+            record["work"] = StudioJson.ToToken(progress);
+            StudioPaths.WriteAllTextAtomic(TransitionPath(original.Id), record.ToString(Formatting.None));
+            if (!recovered.Ok) return new HistoryResult(original.Id, false, ChangeSetState.Interrupted, recovered.Diagnostics, recovered.Report);
+            bool undo = (string?)record["action"] == "undo";
+            ChangeSet final = !resume ? original : undo ? original.WithState(ChangeSetState.Undone) : original.WithState(ChangeSetState.Applied).WithOutcomes(progress.Outcomes);
+            _runtime.Journal.Write(final);
+            ClearTransition(original.Id);
+            if (final.EffectiveState == ChangeSetState.Undone && !Redo_.Contains(original.Id)) Redo_.Add(original.Id);
+            else if (final.EffectiveState == ChangeSetState.Applied) Redo_.Remove(original.Id);
+            SaveRedo();
+            return new HistoryResult(original.Id, true, final.EffectiveState, recovered.Diagnostics, recovered.Report);
         }
 
         /// <summary>A new change set was applied: the redo stack is cleared.</summary>

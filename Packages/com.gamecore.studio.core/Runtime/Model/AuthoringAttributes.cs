@@ -77,6 +77,10 @@ namespace GameCore.Studio.Model
 
         public string ToolId { get; }
 
+        public bool ReadOnly { get; set; }
+
+        public bool RuntimeOnly { get; set; }
+
         public string? Doc { get; set; }
 
         /// <summary>A validator type; its <see cref="AuthorValidatorAttribute"/> supplies the id and codes.</summary>

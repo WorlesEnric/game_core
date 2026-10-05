@@ -305,7 +305,7 @@ namespace GameCore.Studio.Model
                 operation.TargetKinds == null ? null : new List<AuthoringKind>(operation.TargetKinds),
                 ExpandScopes(scope),
                 prerequisites.Count == 0 ? null : prerequisites,
-                validators);
+                validators, operation.ReadOnly, operation.RuntimeOnly);
         }
 
         private static ValidatorRef BuildValidator(Type validator)

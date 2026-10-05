@@ -320,7 +320,9 @@ namespace GameCore.Studio.Model
             IReadOnlyList<AuthoringKind>? targetKinds = null,
             IReadOnlyList<AuthorScope>? scopes = null,
             IReadOnlyList<Prerequisite>? prerequisites = null,
-            IReadOnlyList<ValidatorRef>? validators = null)
+            IReadOnlyList<ValidatorRef>? validators = null,
+            bool readOnly = false,
+            bool runtimeOnly = false)
         {
             Id = ModelLists.NotEmpty(id, nameof(id));
             Tier = tier;
@@ -333,7 +335,15 @@ namespace GameCore.Studio.Model
             Scopes = ModelLists.Optional(scopes, nameof(scopes));
             Prerequisites = ModelLists.Optional(prerequisites, nameof(prerequisites));
             Validators = ModelLists.Optional(validators, nameof(validators));
+            ReadOnly = readOnly;
+            RuntimeOnly = runtimeOnly;
         }
+
+        [JsonProperty("readOnly", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public bool ReadOnly { get; }
+
+        [JsonProperty("runtimeOnly", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public bool RuntimeOnly { get; }
 
         /// <summary>Tool id (e.g. <c>npc.setPatrol</c>).</summary>
         [JsonProperty("id", Required = Required.Always)]

@@ -273,6 +273,7 @@ namespace GameCore.Studio.Edit
                     return OperationResult.Failed(DiagnosticCodes.InvalidArgs, fieldProblem);
                 }
 
+                context.PrepareInverse(new[] { ToolSupport.InverseOp(BuiltInToolIdsExt.DeleteAsset, null, new JObject { ["path"] = path }) }, true);
                 context.OutsideAssetEditing(() =>
                 {
                     string? folder = Path.GetDirectoryName(path)?.Replace('\\', '/');
@@ -399,6 +400,7 @@ namespace GameCore.Studio.Edit
                 string name = context.StringArg("name") ?? asset.name + " Copy";
                 string destination = context.ReplayOrArg("assetPath")
                     ?? AssetDatabase.GenerateUniqueAssetPath(context.StringArg("path") ?? (Path.GetDirectoryName(source)!.Replace('\\', '/') + "/" + name + ".asset"));
+                context.PrepareInverse(new[] { ToolSupport.InverseOp(BuiltInToolIdsExt.DeleteAsset, null, new JObject { ["path"] = destination }) }, true);
                 bool copied = false;
                 context.OutsideAssetEditing(() => copied = AssetDatabase.CopyAsset(source, destination));
                 ScriptableObject? copy = copied ? AssetDatabase.LoadAssetAtPath<ScriptableObject>(destination) : null;
@@ -539,6 +541,7 @@ namespace GameCore.Studio.Edit
             {
                 string path = AssetDatabase.GetAssetPath(target);
                 ToolSupport.RetainAssetFiles(context, path, out string fileSha, out string? metaSha);
+                context.PrepareInverse(AssetImporting.InverseOf(new ImportOutcome(path, fileSha, false, true, fileSha, metaSha)), true);
                 bool deleted = false;
                 context.OutsideAssetEditing(() => deleted = AssetDatabase.DeleteAsset(path));
                 if (!deleted)
@@ -569,6 +572,7 @@ namespace GameCore.Studio.Edit
             }
 
             JObject restore = SceneTools.RestoreArgs(context, gameObject, blob);
+            context.PrepareInverse(new[] { ToolSupport.InverseOp(BuiltInToolIdsExt.RestoreObject, null, restore) });
             Undo.DestroyObjectImmediate(gameObject);
             return OperationResult.Applied().WithInverse(ToolSupport.InverseOp(BuiltInToolIdsExt.RestoreObject, null, restore));
         }
@@ -821,6 +825,19 @@ namespace GameCore.Studio.Edit
             }
 
             Transform transform = gameObject.transform;
+            AuthoringRef? preparedRef = SceneTools.OwnerRef(context, gameObject);
+            Quaternion beforeRotation = transform.rotation;
+            JObject preparedPose = new JObject
+            {
+                ["position"] = SceneTools.Vector(transform.position),
+                ["rotation"] = new JArray(ValueCodec.Widen(beforeRotation.x), ValueCodec.Widen(beforeRotation.y), ValueCodec.Widen(beforeRotation.z), ValueCodec.Widen(beforeRotation.w)),
+                ["scale"] = SceneTools.Vector(transform.localScale),
+                ["siblingIndex"] = transform.GetSiblingIndex(),
+            };
+            AuthoringRef? preparedParent = SceneTools.OwnerRef(context, transform.parent == null ? null : transform.parent.gameObject);
+            if (preparedParent == null) preparedPose["unparent"] = true;
+            else preparedPose["parent"] = StudioJson.ToToken(preparedParent);
+            if (preparedRef != null) context.PrepareInverse(new[] { ToolSupport.InverseOp(BuiltInToolIdsExt.Move, preparedRef, preparedPose) });
             JObject inverse = new JObject();
             if (context.Arg("parent") != null || context.BoolArg("unparent"))
             {
@@ -1147,6 +1164,7 @@ namespace GameCore.Studio.Edit
             }
 
             AuthoringRef? owner = ToolSupport.RefOf(context, gameObject);
+            if (owner != null) context.PrepareInverse(new[] { ToolSupport.InverseOp(BuiltInToolIdsExt.AddComponent, owner, args) });
             Undo.DestroyObjectImmediate(component);
             OperationResult result = OperationResult.Applied().Touch(gameObject);
             if (owner != null)
