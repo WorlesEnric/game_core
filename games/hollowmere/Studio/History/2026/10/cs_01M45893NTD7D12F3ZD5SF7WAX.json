@@ -1,0 +1,606 @@
+{
+  "id": "cs_01M45893NTD7D12F3ZD5SF7WAX",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:dress.materials] Create 19 URP Lit materials over the procedural textures",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "m_GroundVillage",
+      "tool": "hollowmere.createMaterial",
+      "args": {
+        "path": "Assets/Hollowmere/Scenery/Materials/GroundVillage.mat",
+        "baseColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "smoothness": 0.1,
+        "metallic": 0.0,
+        "tiling": [
+          20.0,
+          20.0
+        ],
+        "emission": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "transparent": false,
+        "baseMap": "Assets/Hollowmere/Scenery/Textures/grass.png"
+      }
+    },
+    {
+      "opId": "m_GroundMarsh",
+      "tool": "hollowmere.createMaterial",
+      "args": {
+        "path": "Assets/Hollowmere/Scenery/Materials/GroundMarsh.mat",
+        "baseColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "smoothness": 0.35,
+        "metallic": 0.0,
+        "tiling": [
+          20.0,
+          20.0
+        ],
+        "emission": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "transparent": false,
+        "baseMap": "Assets/Hollowmere/Scenery/Textures/mud.png"
+      }
+    },
+    {
+      "opId": "m_GroundBelfry",
+      "tool": "hollowmere.createMaterial",
+      "args": {
+        "path": "Assets/Hollowmere/Scenery/Materials/GroundBelfry.mat",
+        "baseColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "smoothness": 0.2,
+        "metallic": 0.0,
+        "tiling": [
+          16.0,
+          16.0
+        ],
+        "emission": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "transparent": false,
+        "baseMap": "Assets/Hollowmere/Scenery/Textures/mossStone.png"
+      }
+    },
+    {
+      "opId": "m_Plaster",
+      "tool": "hollowmere.createMaterial",
+      "args": {
+        "path": "Assets/Hollowmere/Scenery/Materials/Plaster.mat",
+        "baseColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "smoothness": 0.1,
+        "metallic": 0.0,
+        "tiling": [
+          0.5,
+          0.5
+        ],
+        "emission": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "transparent": false,
+        "baseMap": "Assets/Hollowmere/Scenery/Textures/plaster.png"
+      }
+    },
+    {
+      "opId": "m_Thatch",
+      "tool": "hollowmere.createMaterial",
+      "args": {
+        "path": "Assets/Hollowmere/Scenery/Materials/Thatch.mat",
+        "baseColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "smoothness": 0.05,
+        "metallic": 0.0,
+        "tiling": [
+          0.5,
+          0.5
+        ],
+        "emission": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "transparent": false,
+        "baseMap": "Assets/Hollowmere/Scenery/Textures/thatch.png"
+      }
+    },
+    {
+      "opId": "m_Timber",
+      "tool": "hollowmere.createMaterial",
+      "args": {
+        "path": "Assets/Hollowmere/Scenery/Materials/Timber.mat",
+        "baseColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "smoothness": 0.15,
+        "metallic": 0.0,
+        "tiling": [
+          0.5,
+          0.5
+        ],
+        "emission": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "transparent": false,
+        "baseMap": "Assets/Hollowmere/Scenery/Textures/timber.png"
+      }
+    },
+    {
+      "opId": "m_Stone",
+      "tool": "hollowmere.createMaterial",
+      "args": {
+        "path": "Assets/Hollowmere/Scenery/Materials/Stone.mat",
+        "baseColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "smoothness": 0.15,
+        "metallic": 0.0,
+        "tiling": [
+          0.5,
+          0.5
+        ],
+        "emission": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "transparent": false,
+        "baseMap": "Assets/Hollowmere/Scenery/Textures/stone.png"
+      }
+    },
+    {
+      "opId": "m_MossStone",
+      "tool": "hollowmere.createMaterial",
+      "args": {
+        "path": "Assets/Hollowmere/Scenery/Materials/MossStone.mat",
+        "baseColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "smoothness": 0.2,
+        "metallic": 0.0,
+        "tiling": [
+          0.5,
+          0.5
+        ],
+        "emission": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "transparent": false,
+        "baseMap": "Assets/Hollowmere/Scenery/Textures/mossStone.png"
+      }
+    },
+    {
+      "opId": "m_Planks",
+      "tool": "hollowmere.createMaterial",
+      "args": {
+        "path": "Assets/Hollowmere/Scenery/Materials/Planks.mat",
+        "baseColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "smoothness": 0.2,
+        "metallic": 0.0,
+        "tiling": [
+          0.5,
+          0.5
+        ],
+        "emission": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "transparent": false,
+        "baseMap": "Assets/Hollowmere/Scenery/Textures/planks.png"
+      }
+    },
+    {
+      "opId": "m_Cobble",
+      "tool": "hollowmere.createMaterial",
+      "args": {
+        "path": "Assets/Hollowmere/Scenery/Materials/Cobble.mat",
+        "baseColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "smoothness": 0.25,
+        "metallic": 0.0,
+        "tiling": [
+          0.4,
+          0.4
+        ],
+        "emission": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "transparent": false,
+        "baseMap": "Assets/Hollowmere/Scenery/Textures/cobble.png"
+      }
+    },
+    {
+      "opId": "m_Bark",
+      "tool": "hollowmere.createMaterial",
+      "args": {
+        "path": "Assets/Hollowmere/Scenery/Materials/Bark.mat",
+        "baseColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "smoothness": 0.1,
+        "metallic": 0.0,
+        "tiling": [
+          0.5,
+          0.5
+        ],
+        "emission": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "transparent": false,
+        "baseMap": "Assets/Hollowmere/Scenery/Textures/bark.png"
+      }
+    },
+    {
+      "opId": "m_Leaves",
+      "tool": "hollowmere.createMaterial",
+      "args": {
+        "path": "Assets/Hollowmere/Scenery/Materials/Leaves.mat",
+        "baseColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "smoothness": 0.1,
+        "metallic": 0.0,
+        "tiling": [
+          0.5,
+          0.5
+        ],
+        "emission": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "transparent": false,
+        "baseMap": "Assets/Hollowmere/Scenery/Textures/leaves.png"
+      }
+    },
+    {
+      "opId": "m_Reed",
+      "tool": "hollowmere.createMaterial",
+      "args": {
+        "path": "Assets/Hollowmere/Scenery/Materials/Reed.mat",
+        "baseColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "smoothness": 0.1,
+        "metallic": 0.0,
+        "tiling": [
+          0.5,
+          0.5
+        ],
+        "emission": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "transparent": false,
+        "baseMap": "Assets/Hollowmere/Scenery/Textures/reed.png"
+      }
+    },
+    {
+      "opId": "m_Cloth",
+      "tool": "hollowmere.createMaterial",
+      "args": {
+        "path": "Assets/Hollowmere/Scenery/Materials/Cloth.mat",
+        "baseColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "smoothness": 0.1,
+        "metallic": 0.0,
+        "tiling": [
+          1.0,
+          1.0
+        ],
+        "emission": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "transparent": false,
+        "baseMap": "Assets/Hollowmere/Scenery/Textures/cloth.png"
+      }
+    },
+    {
+      "opId": "m_Bronze",
+      "tool": "hollowmere.createMaterial",
+      "args": {
+        "path": "Assets/Hollowmere/Scenery/Materials/Bronze.mat",
+        "baseColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "smoothness": 0.6,
+        "metallic": 0.8,
+        "tiling": [
+          1.0,
+          1.0
+        ],
+        "emission": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "transparent": false,
+        "baseMap": "Assets/Hollowmere/Scenery/Textures/bronze.png"
+      }
+    },
+    {
+      "opId": "m_Water",
+      "tool": "hollowmere.createMaterial",
+      "args": {
+        "path": "Assets/Hollowmere/Scenery/Materials/Water.mat",
+        "baseColor": [
+          0.35,
+          0.45,
+          0.4,
+          0.78
+        ],
+        "smoothness": 0.92,
+        "metallic": 0.0,
+        "tiling": [
+          0.15,
+          0.15
+        ],
+        "emission": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "transparent": true,
+        "baseMap": "Assets/Hollowmere/Scenery/Textures/water.png"
+      }
+    },
+    {
+      "opId": "m_BlackWater",
+      "tool": "hollowmere.createMaterial",
+      "args": {
+        "path": "Assets/Hollowmere/Scenery/Materials/BlackWater.mat",
+        "baseColor": [
+          0.12,
+          0.16,
+          0.15,
+          0.88
+        ],
+        "smoothness": 0.95,
+        "metallic": 0.0,
+        "tiling": [
+          0.1,
+          0.1
+        ],
+        "emission": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "transparent": true,
+        "baseMap": "Assets/Hollowmere/Scenery/Textures/water.png"
+      }
+    },
+    {
+      "opId": "m_LanternGlow",
+      "tool": "hollowmere.createMaterial",
+      "args": {
+        "path": "Assets/Hollowmere/Scenery/Materials/LanternGlow.mat",
+        "baseColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "smoothness": 0.5,
+        "metallic": 0.0,
+        "tiling": [
+          1.0,
+          1.0
+        ],
+        "emission": [
+          1.6,
+          1.1,
+          0.5,
+          1.0
+        ],
+        "transparent": false,
+        "baseMap": "Assets/Hollowmere/Scenery/Textures/glow.png"
+      }
+    },
+    {
+      "opId": "m_ShrineGlow",
+      "tool": "hollowmere.createMaterial",
+      "args": {
+        "path": "Assets/Hollowmere/Scenery/Materials/ShrineGlow.mat",
+        "baseColor": [
+          0.7,
+          1.0,
+          0.8,
+          1.0
+        ],
+        "smoothness": 0.5,
+        "metallic": 0.0,
+        "tiling": [
+          1.0,
+          1.0
+        ],
+        "emission": [
+          0.3,
+          1.2,
+          0.6,
+          1.0
+        ],
+        "transparent": false,
+        "baseMap": "Assets/Hollowmere/Scenery/Textures/glow.png"
+      }
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "m_GroundVillage",
+      "status": "Applied"
+    },
+    {
+      "opId": "m_GroundMarsh",
+      "status": "Applied"
+    },
+    {
+      "opId": "m_GroundBelfry",
+      "status": "Applied"
+    },
+    {
+      "opId": "m_Plaster",
+      "status": "Applied"
+    },
+    {
+      "opId": "m_Thatch",
+      "status": "Applied"
+    },
+    {
+      "opId": "m_Timber",
+      "status": "Applied"
+    },
+    {
+      "opId": "m_Stone",
+      "status": "Applied"
+    },
+    {
+      "opId": "m_MossStone",
+      "status": "Applied"
+    },
+    {
+      "opId": "m_Planks",
+      "status": "Applied"
+    },
+    {
+      "opId": "m_Cobble",
+      "status": "Applied"
+    },
+    {
+      "opId": "m_Bark",
+      "status": "Applied"
+    },
+    {
+      "opId": "m_Leaves",
+      "status": "Applied"
+    },
+    {
+      "opId": "m_Reed",
+      "status": "Applied"
+    },
+    {
+      "opId": "m_Cloth",
+      "status": "Applied"
+    },
+    {
+      "opId": "m_Bronze",
+      "status": "Applied"
+    },
+    {
+      "opId": "m_Water",
+      "status": "Applied"
+    },
+    {
+      "opId": "m_BlackWater",
+      "status": "Applied"
+    },
+    {
+      "opId": "m_LanternGlow",
+      "status": "Applied"
+    },
+    {
+      "opId": "m_ShrineGlow",
+      "status": "Applied"
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:23:41.897Z",
+    "applied": "2026-10-05T05:23:42.034Z"
+  }
+}

@@ -20,7 +20,7 @@ namespace Hollowmere.Generated
     public static class HollowmereCatalogCoverage
     {
         /// <summary>Number of generated registration entries this exercise resolves by key.</summary>
-        public const int RegistrationCount = 58;
+        public const int RegistrationCount = 72;
 
         /// <summary>
         /// Resolves every generated registration through the table's own generated lookup method and checks that a
@@ -58,7 +58,7 @@ namespace Hollowmere.Generated
                 exercised++;
             }
 
-            // RecipeRegistrations (LayoutApply, 14 entries)
+            // RecipeRegistrations (LayoutApply, 28 entries)
             for (int i = 0; i < HollowmereCatalog.RecipeRegistrations.Length; i++)
             {
                 FactoryKey key = HollowmereCatalog.RecipeRegistrations[i].Key;

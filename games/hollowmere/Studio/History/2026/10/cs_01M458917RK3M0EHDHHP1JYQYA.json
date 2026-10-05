@@ -1,0 +1,127 @@
+{
+  "id": "cs_01M458917RK3M0EHDHHP1JYQYA",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:world.marsh-npcs] Odd waits at the marsh jetty; Warden Hale guards the causeway gate",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "odd",
+      "tool": "npc.addAt",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "1ba7716b-d38c-4db3-9c0e-2a06f43c3716",
+        "global": "GlobalObjectId_V1-3-25f002ae09ef0ad13a564e056685a8ce-11400000-0",
+        "assetGuid": "25f002ae09ef0ad13a564e056685a8ce",
+        "path": "Assets/Hollowmere/Npcs/Definitions/Odd.asset",
+        "scope": "Definition",
+        "stamp": "sha256:122bae7b2dd37346fadad69bf7d863e95494f91bd63e4d673da281ce2b4ce440"
+      },
+      "args": {
+        "location": [
+          221.0,
+          0.0,
+          20.0
+        ],
+        "yaw": 45.0,
+        "name": "Odd"
+      }
+    },
+    {
+      "opId": "hale",
+      "tool": "move",
+      "target": {
+        "kind": "Entity",
+        "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+        "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+        "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+        "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale",
+        "scope": "Instance",
+        "stamp": "sha256:8e663c23e8777338a6d53f6b265ef5605a2c82bbc71ff822045507b2690f06c4"
+      },
+      "args": {
+        "position": [
+          167.5,
+          0.0,
+          4.5
+        ]
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "odd",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "1ba7716b-d38c-4db3-9c0e-2a06f43c3716",
+                "global": "GlobalObjectId_V1-3-25f002ae09ef0ad13a564e056685a8ce-11400000-0",
+                "assetGuid": "25f002ae09ef0ad13a564e056685a8ce",
+                "path": "Assets/Hollowmere/Npcs/Definitions/Odd.asset"
+              },
+              "stamp": "sha256:122bae7b2dd37346fadad69bf7d863e95494f91bd63e4d673da281ce2b4ce440"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "hale",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "move",
+              "target": {
+                "kind": "Entity",
+                "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+              },
+              "args": {
+                "position": [
+                  196.0,
+                  0.0,
+                  4.0
+                ]
+              },
+              "preconditions": "none"
+            }
+          ],
+          "after": [
+            {
+              "ref": {
+                "kind": "Entity",
+                "authoringId": "3f2e423d-ec9f-4051-8713-662180be4db9",
+                "global": "GlobalObjectId_V1-2-b257f6aa8330ff40e817274b932b2dd1-1530000564-0",
+                "assetGuid": "b257f6aa8330ff40e817274b932b2dd1",
+                "path": "Assets/Hollowmere/Regions/BlackmereMarsh.unity#/Hale"
+              },
+              "stamp": "sha256:604617df59c8e73a0bb70cb07381239ea05443ffda2734444548db0cc981fb89"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:23:39.398Z",
+    "applied": "2026-10-05T05:23:39.407Z"
+  }
+}

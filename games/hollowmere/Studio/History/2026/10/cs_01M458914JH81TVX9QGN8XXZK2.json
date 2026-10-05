@@ -1,0 +1,76 @@
+{
+  "id": "cs_01M458914JH81TVX9QGN8XXZK2",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:world.odd-leaves-village] Odd the ferryman leaves the village square",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "delete",
+      "tool": "delete",
+      "target": {
+        "kind": "Entity",
+        "authoringId": "feae7fb3-57f9-4711-8549-04fa8f161ac2",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-708947954-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Odd",
+        "scope": "Instance",
+        "stamp": "sha256:6aa58329ffbb13e31299e0ae1c4bf1d2fcfb94848efc2e3053869152ac6d1915"
+      },
+      "args": {}
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "delete",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.restoreObject",
+              "args": {
+                "localPosition": [
+                  -8.0,
+                  0.0,
+                  6.0
+                ],
+                "localRotation": [
+                  0.0,
+                  1.0,
+                  0.0,
+                  -4.371139E-08
+                ],
+                "localScale": [
+                  1.0,
+                  1.0,
+                  1.0
+                ],
+                "siblingIndex": 20,
+                "blob": {
+                  "artifact": "sha256:2552b26db46d16a707813e445046d5a91a4cb1e64b73b0c4ea7e8eb7860c0b9e"
+                },
+                "name": "Odd",
+                "scene": "Assets/Hollowmere/Regions/ThornwickVillage.unity"
+              },
+              "preconditions": "none"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:23:39.290Z",
+    "applied": "2026-10-05T05:23:39.382Z"
+  }
+}

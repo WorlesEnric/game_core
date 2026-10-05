@@ -1,0 +1,275 @@
+{
+  "id": "cs_01M45894B101EAX7YD301DRKGK",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:dress.atmosphere] Region atmospheres: warm dusk in the village, green murk in the marsh, cold night at the belfry",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "atm_ThornwickVillage",
+      "tool": "hollowmere.setAtmosphere",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "fogColor": [
+          0.64,
+          0.6,
+          0.55,
+          1.0
+        ],
+        "fogDensity": 0.01,
+        "ambientSky": [
+          0.55,
+          0.6,
+          0.72,
+          1.0
+        ],
+        "ambientEquator": [
+          0.46,
+          0.42,
+          0.38,
+          1.0
+        ],
+        "ambientGround": [
+          0.2,
+          0.18,
+          0.15,
+          1.0
+        ],
+        "sunColor": [
+          1.0,
+          0.84,
+          0.64,
+          1.0
+        ],
+        "sunIntensity": 1.25,
+        "sunEuler": [
+          32.0,
+          -35.0,
+          0.0
+        ],
+        "postExposure": 0.15,
+        "saturation": 6.0,
+        "contrast": 8.0,
+        "bloomIntensity": 0.45,
+        "vignetteIntensity": 0.22,
+        "colorFilter": [
+          1.0,
+          0.97,
+          0.92,
+          1.0
+        ]
+      }
+    },
+    {
+      "opId": "atm_BlackmereMarsh",
+      "tool": "hollowmere.setAtmosphere",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "fogColor": [
+          0.3,
+          0.36,
+          0.31,
+          1.0
+        ],
+        "fogDensity": 0.032,
+        "ambientSky": [
+          0.25,
+          0.32,
+          0.3,
+          1.0
+        ],
+        "ambientEquator": [
+          0.2,
+          0.25,
+          0.22,
+          1.0
+        ],
+        "ambientGround": [
+          0.08,
+          0.1,
+          0.08,
+          1.0
+        ],
+        "sunColor": [
+          0.72,
+          0.82,
+          0.74,
+          1.0
+        ],
+        "sunIntensity": 0.55,
+        "sunEuler": [
+          18.0,
+          60.0,
+          0.0
+        ],
+        "postExposure": 0.0,
+        "saturation": -18.0,
+        "contrast": 12.0,
+        "bloomIntensity": 0.8,
+        "vignetteIntensity": 0.38,
+        "colorFilter": [
+          0.86,
+          1.0,
+          0.9,
+          1.0
+        ]
+      }
+    },
+    {
+      "opId": "atm_DrownedBelfry",
+      "tool": "hollowmere.setAtmosphere",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+        "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+        "assetGuid": "832904035182b2712b3f6c244c515dea",
+        "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset",
+        "scope": "Definition",
+        "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+      },
+      "args": {
+        "fogColor": [
+          0.18,
+          0.22,
+          0.3,
+          1.0
+        ],
+        "fogDensity": 0.024,
+        "ambientSky": [
+          0.2,
+          0.25,
+          0.38,
+          1.0
+        ],
+        "ambientEquator": [
+          0.14,
+          0.16,
+          0.22,
+          1.0
+        ],
+        "ambientGround": [
+          0.05,
+          0.05,
+          0.08,
+          1.0
+        ],
+        "sunColor": [
+          0.6,
+          0.7,
+          1.0,
+          1.0
+        ],
+        "sunIntensity": 0.4,
+        "sunEuler": [
+          48.0,
+          150.0,
+          0.0
+        ],
+        "postExposure": -0.15,
+        "saturation": -10.0,
+        "contrast": 15.0,
+        "bloomIntensity": 1.0,
+        "vignetteIntensity": 0.45,
+        "colorFilter": [
+          0.86,
+          0.9,
+          1.0,
+          1.0
+        ]
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "atm_ThornwickVillage",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "atm_BlackmereMarsh",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "atm_DrownedBelfry",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "1c5a1ae9-bec2-4201-be5f-3ff8bf8e1d18",
+                "global": "GlobalObjectId_V1-3-832904035182b2712b3f6c244c515dea-11400000-0",
+                "assetGuid": "832904035182b2712b3f6c244c515dea",
+                "path": "Assets/Hollowmere/World/Regions/DrownedBelfry.asset"
+              },
+              "stamp": "sha256:ea2bdfa290d5e46b40c3cf33c5eb5b5003686e72fcfbb0351e8560a79201c79e"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:23:42.568Z",
+    "applied": "2026-10-05T05:23:42.575Z"
+  }
+}

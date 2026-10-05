@@ -1,0 +1,1580 @@
+{
+  "id": "cs_01M45893TQ2MM7H49MPHC9ZVAM",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:dress.village-scenery] Dress Thornwick Village: barn, healer's cottage, the Drowned Lantern inn, huts, roads, trees, lanterns",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "s0",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "kind": "house",
+        "position": [
+          14.0,
+          0.0,
+          12.0
+        ],
+        "yaw": 180.0,
+        "size": [
+          10.0,
+          6.0,
+          8.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Planks.mat",
+          "Assets/Hollowmere/Scenery/Materials/Thatch.mat"
+        ],
+        "collider": true,
+        "name": "Barn"
+      }
+    },
+    {
+      "opId": "s1",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "kind": "house",
+        "position": [
+          -14.0,
+          0.0,
+          10.0
+        ],
+        "yaw": 0.0,
+        "size": [
+          8.0,
+          5.0,
+          6.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Plaster.mat",
+          "Assets/Hollowmere/Scenery/Materials/Thatch.mat"
+        ],
+        "collider": true,
+        "name": "Healer's Cottage"
+      }
+    },
+    {
+      "opId": "s2",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "kind": "inn",
+        "position": [
+          17.0,
+          0.0,
+          -14.0
+        ],
+        "yaw": -90.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Timber.mat",
+          "Assets/Hollowmere/Scenery/Materials/Thatch.mat"
+        ],
+        "collider": true,
+        "name": "The Drowned Lantern Inn"
+      }
+    },
+    {
+      "opId": "s3",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "kind": "well",
+        "position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "yaw": 0.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Stone.mat",
+          "Assets/Hollowmere/Scenery/Materials/Planks.mat"
+        ],
+        "collider": true,
+        "name": "Village Well Stones"
+      }
+    },
+    {
+      "opId": "s4",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "kind": "hut",
+        "position": [
+          -20.0,
+          0.0,
+          -14.0
+        ],
+        "yaw": 30.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Plaster.mat",
+          "Assets/Hollowmere/Scenery/Materials/Thatch.mat"
+        ],
+        "collider": true,
+        "name": "Weaver's Hut"
+      }
+    },
+    {
+      "opId": "s5",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "kind": "house",
+        "position": [
+          -24.0,
+          0.0,
+          2.0
+        ],
+        "yaw": 90.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Timber.mat",
+          "Assets/Hollowmere/Scenery/Materials/Thatch.mat"
+        ],
+        "collider": true,
+        "name": "Miller's House"
+      }
+    },
+    {
+      "opId": "s6",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "kind": "hut",
+        "position": [
+          22.0,
+          0.0,
+          20.0
+        ],
+        "yaw": 200.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Plaster.mat",
+          "Assets/Hollowmere/Scenery/Materials/Thatch.mat"
+        ],
+        "collider": true,
+        "name": "Shepherd's Hut"
+      }
+    },
+    {
+      "opId": "s7",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "kind": "causeway",
+        "position": [
+          18.0,
+          0.0,
+          -1.0
+        ],
+        "yaw": 90.0,
+        "size": [
+          3.0,
+          0.05,
+          28.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Cobble.mat"
+        ],
+        "collider": false,
+        "name": "Gate Road"
+      }
+    },
+    {
+      "opId": "s8",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "kind": "causeway",
+        "position": [
+          2.0,
+          0.0,
+          -7.0
+        ],
+        "yaw": 0.0,
+        "size": [
+          3.0,
+          0.05,
+          10.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Cobble.mat"
+        ],
+        "collider": false,
+        "name": "Square Road"
+      }
+    },
+    {
+      "opId": "s9",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "kind": "stall",
+        "position": [
+          -12.5,
+          0.0,
+          2.0
+        ],
+        "yaw": 90.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Planks.mat",
+          "Assets/Hollowmere/Scenery/Materials/Cloth.mat"
+        ],
+        "collider": true,
+        "name": "Market Stall"
+      }
+    },
+    {
+      "opId": "s10",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "kind": "barrel",
+        "position": [
+          12.2,
+          0.0,
+          -9.6
+        ],
+        "yaw": 0.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Planks.mat"
+        ],
+        "collider": true,
+        "name": "Inn Barrel 1"
+      }
+    },
+    {
+      "opId": "s11",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "kind": "barrel",
+        "position": [
+          12.9,
+          0.0,
+          -10.5
+        ],
+        "yaw": 40.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Planks.mat"
+        ],
+        "collider": true,
+        "name": "Inn Barrel 2"
+      }
+    },
+    {
+      "opId": "s12",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "kind": "fence",
+        "position": [
+          -14.0,
+          0.0,
+          17.0
+        ],
+        "yaw": 0.0,
+        "size": [
+          8.0,
+          1.1,
+          0.15
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Timber.mat"
+        ],
+        "collider": true,
+        "name": "Garden Fence North"
+      }
+    },
+    {
+      "opId": "s13",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "kind": "fence",
+        "position": [
+          -18.0,
+          0.0,
+          15.0
+        ],
+        "yaw": 90.0,
+        "size": [
+          4.0,
+          1.1,
+          0.15
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Timber.mat"
+        ],
+        "collider": true,
+        "name": "Garden Fence West"
+      }
+    },
+    {
+      "opId": "s14",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "kind": "lanternPost",
+        "position": [
+          9.0,
+          0.0,
+          -3.0
+        ],
+        "yaw": 0.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Timber.mat",
+          "Assets/Hollowmere/Scenery/Materials/LanternGlow.mat"
+        ],
+        "collider": true,
+        "name": "Road Lantern 1"
+      }
+    },
+    {
+      "opId": "s15",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "kind": "lanternPost",
+        "position": [
+          21.0,
+          0.0,
+          -3.0
+        ],
+        "yaw": 0.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Timber.mat",
+          "Assets/Hollowmere/Scenery/Materials/LanternGlow.mat"
+        ],
+        "collider": true,
+        "name": "Road Lantern 2"
+      }
+    },
+    {
+      "opId": "s16",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "kind": "lanternPost",
+        "position": [
+          31.0,
+          0.0,
+          -2.6
+        ],
+        "yaw": 0.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Timber.mat",
+          "Assets/Hollowmere/Scenery/Materials/LanternGlow.mat"
+        ],
+        "collider": true,
+        "name": "Gate Lantern South"
+      }
+    },
+    {
+      "opId": "s17",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "kind": "lanternPost",
+        "position": [
+          31.0,
+          0.0,
+          2.6
+        ],
+        "yaw": 0.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Timber.mat",
+          "Assets/Hollowmere/Scenery/Materials/LanternGlow.mat"
+        ],
+        "collider": true,
+        "name": "Gate Lantern North"
+      }
+    },
+    {
+      "opId": "s18",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "kind": "tree",
+        "position": [
+          -27.0,
+          0.0,
+          20.0
+        ],
+        "yaw": 0.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Bark.mat",
+          "Assets/Hollowmere/Scenery/Materials/Leaves.mat"
+        ],
+        "collider": true,
+        "name": "Oak 1"
+      }
+    },
+    {
+      "opId": "s19",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "kind": "tree",
+        "position": [
+          -31.0,
+          0.0,
+          -8.0
+        ],
+        "yaw": 47.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Bark.mat",
+          "Assets/Hollowmere/Scenery/Materials/Leaves.mat"
+        ],
+        "collider": true,
+        "name": "Oak 2"
+      }
+    },
+    {
+      "opId": "s20",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "kind": "tree",
+        "position": [
+          27.0,
+          0.0,
+          27.0
+        ],
+        "yaw": 94.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Bark.mat",
+          "Assets/Hollowmere/Scenery/Materials/Leaves.mat"
+        ],
+        "collider": true,
+        "name": "Oak 3"
+      }
+    },
+    {
+      "opId": "s21",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "kind": "tree",
+        "position": [
+          26.0,
+          0.0,
+          -28.0
+        ],
+        "yaw": 141.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Bark.mat",
+          "Assets/Hollowmere/Scenery/Materials/Leaves.mat"
+        ],
+        "collider": true,
+        "name": "Oak 4"
+      }
+    },
+    {
+      "opId": "s22",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "kind": "tree",
+        "position": [
+          -12.0,
+          0.0,
+          -27.0
+        ],
+        "yaw": 188.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Bark.mat",
+          "Assets/Hollowmere/Scenery/Materials/Leaves.mat"
+        ],
+        "collider": true,
+        "name": "Oak 5"
+      }
+    },
+    {
+      "opId": "s23",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "kind": "tree",
+        "position": [
+          4.0,
+          0.0,
+          27.0
+        ],
+        "yaw": 235.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Bark.mat",
+          "Assets/Hollowmere/Scenery/Materials/Leaves.mat"
+        ],
+        "collider": true,
+        "name": "Oak 6"
+      }
+    },
+    {
+      "opId": "s24",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "kind": "tree",
+        "position": [
+          -30.0,
+          0.0,
+          30.0
+        ],
+        "yaw": 282.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Bark.mat",
+          "Assets/Hollowmere/Scenery/Materials/Leaves.mat"
+        ],
+        "collider": true,
+        "name": "Oak 7"
+      }
+    },
+    {
+      "opId": "s25",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "kind": "tree",
+        "position": [
+          33.0,
+          0.0,
+          -16.0
+        ],
+        "yaw": 329.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Bark.mat",
+          "Assets/Hollowmere/Scenery/Materials/Leaves.mat"
+        ],
+        "collider": true,
+        "name": "Oak 8"
+      }
+    },
+    {
+      "opId": "s26",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "kind": "rock",
+        "position": [
+          -6.0,
+          0.0,
+          22.0
+        ],
+        "yaw": 0.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Stone.mat"
+        ],
+        "collider": true,
+        "name": "Field Rock 1"
+      }
+    },
+    {
+      "opId": "s27",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "kind": "rock",
+        "position": [
+          18.0,
+          0.0,
+          30.0
+        ],
+        "yaw": 70.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Stone.mat"
+        ],
+        "collider": true,
+        "name": "Field Rock 2"
+      }
+    },
+    {
+      "opId": "s28",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+        "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+        "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+        "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset",
+        "scope": "Definition",
+        "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+      },
+      "args": {
+        "kind": "rock",
+        "position": [
+          -26.0,
+          0.0,
+          -24.0
+        ],
+        "yaw": 140.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Stone.mat"
+        ],
+        "collider": true,
+        "name": "Field Rock 3"
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "s0",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s2",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s3",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s4",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s5",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s6",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s7",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s8",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s9",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s10",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s11",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s12",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s13",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s14",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s15",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s16",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s17",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s18",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s19",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s20",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s21",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s22",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s23",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s24",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s25",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s26",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s27",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s28",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "11e8dd95-6622-43d0-8b48-5e17b72f0bb8",
+                "global": "GlobalObjectId_V1-3-6d0c50f8843e0a791bb54f18201c0bca-11400000-0",
+                "assetGuid": "6d0c50f8843e0a791bb54f18201c0bca",
+                "path": "Assets/Hollowmere/World/Regions/ThornwickVillage.asset"
+              },
+              "stamp": "sha256:96ee10663eb93b48ffaa3ae68757f46b89aaddfd2013e54f875b539cc004bad9"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:23:42.051Z",
+    "applied": "2026-10-05T05:23:42.153Z"
+  }
+}

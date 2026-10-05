@@ -1,0 +1,133 @@
+{
+  "id": "cs_01M4588Z4Z7NNG0PHDHNK0JFR2",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:story.items] Create the oil flask and marsh herbs items",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "i_oil",
+      "tool": "create",
+      "args": {
+        "type": "inventory.item",
+        "path": "Assets/Hollowmere/Items/OilFlask.asset",
+        "name": "OilFlask",
+        "authoringId": "bc9e0772-4981-4a2e-8e1b-03be5c839d18",
+        "fields": {
+          "displayName": "Oil Flask",
+          "maxStack": 5,
+          "weight": 300,
+          "price": 2,
+          "tags": [
+            "consumable",
+            "pitch"
+          ]
+        }
+      }
+    },
+    {
+      "opId": "i_herbs",
+      "tool": "create",
+      "args": {
+        "type": "inventory.item",
+        "path": "Assets/Hollowmere/Items/MarshHerbs.asset",
+        "name": "MarshHerbs",
+        "authoringId": "b6075680-f754-4b81-9079-7190f0cb8fe5",
+        "fields": {
+          "displayName": "Marsh Herbs",
+          "maxStack": 10,
+          "weight": 50,
+          "price": 1,
+          "tags": [
+            "herb",
+            "heal"
+          ]
+        }
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "i_oil",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Items/OilFlask.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "bc9e0772-4981-4a2e-8e1b-03be5c839d18",
+                "global": "GlobalObjectId_V1-3-344e1560f458dcce8b088aebc730d844-11400000-0",
+                "assetGuid": "344e1560f458dcce8b088aebc730d844",
+                "path": "Assets/Hollowmere/Items/OilFlask.asset"
+              },
+              "stamp": "sha256:8c005e02b561411aa2b16fa0a4e303262f8ad8d1a49e54963b19e2661dac014c"
+            }
+          ],
+          "replay": {
+            "authoringId": "bc9e0772-4981-4a2e-8e1b-03be5c839d18",
+            "assetPath": "Assets/Hollowmere/Items/OilFlask.asset"
+          }
+        }
+      }
+    },
+    {
+      "opId": "i_herbs",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Items/MarshHerbs.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "b6075680-f754-4b81-9079-7190f0cb8fe5",
+                "global": "GlobalObjectId_V1-3-ffdbcfebb268de301b2946345b0b0d5d-11400000-0",
+                "assetGuid": "ffdbcfebb268de301b2946345b0b0d5d",
+                "path": "Assets/Hollowmere/Items/MarshHerbs.asset"
+              },
+              "stamp": "sha256:1f2e0e88833c27bb3211c2822ed954023578c738a020782a974d0f11b8473ddb"
+            }
+          ],
+          "replay": {
+            "authoringId": "b6075680-f754-4b81-9079-7190f0cb8fe5",
+            "assetPath": "Assets/Hollowmere/Items/MarshHerbs.asset"
+          }
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:23:37.257Z",
+    "applied": "2026-10-05T05:23:37.298Z"
+  }
+}

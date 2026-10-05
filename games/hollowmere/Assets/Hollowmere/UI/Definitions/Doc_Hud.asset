@@ -28,8 +28,8 @@ MonoBehaviour:
     format: 
   - element: stamina-bar
     property: value
-    source: vm:hud.Stamina
-    format: 
+    source: slot:player.owner/player.stamina@focus
+    format: percent:1000
   - element: stamina-bar
     property: visible
     source: vm:hud.StaminaVisible

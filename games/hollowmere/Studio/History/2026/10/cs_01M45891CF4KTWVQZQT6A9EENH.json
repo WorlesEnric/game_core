@@ -1,0 +1,165 @@
+{
+  "id": "cs_01M45891CF4KTWVQZQT6A9EENH",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:game.director] Create the Hollowmere director: endings, music, the shrine's ambience layer, interim fact requests",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "director",
+      "tool": "create",
+      "args": {
+        "type": "hollowmere.director",
+        "path": "Assets/Hollowmere/Game/HollowmereDirector.asset",
+        "name": "HollowmereDirector",
+        "authoringId": "aba08c89-cd6d-450d-a9ba-ad9167691d2e",
+        "fields": {
+          "quest": "DrownedBell",
+          "endings": [
+            {
+              "branch": 1,
+              "title": "Ending A: The Silence",
+              "body": "You let the Drowned Bell sleep. The Echo fades into the stones and Blackmere keeps its silence. Thornwick never learns how close the marsh came to waking.",
+              "musicState": "music.ending"
+            },
+            {
+              "branch": 2,
+              "title": "Ending B: The Toll",
+              "body": "The bell tolls once across the black water. Thornwick sleeps soundly for the first time since the flood, though in the belfry the Echo stays, bound to its bell.",
+              "musicState": "music.ending"
+            },
+            {
+              "branch": 3,
+              "title": "Ending C: The Freed Echo",
+              "body": "With the shrine alight, the toll carries the Echo out over the water like a lantern on the tide. The marsh is only a marsh again, and Maren lights a candle for the drowned.",
+              "musicState": "music.ending"
+            },
+            {
+              "branch": -1,
+              "title": "The Marsh Keeps What It Takes",
+              "body": "Your last light sinks into Blackmere. In the dark the reeds close behind you, and the bell stays silent.",
+              "musicState": "music.tense"
+            }
+          ],
+          "music": [
+            {
+              "fact": "gate_open",
+              "value": 1,
+              "musicState": "music.explore"
+            },
+            {
+              "fact": "lantern_lost",
+              "value": 1,
+              "musicState": "music.tense"
+            },
+            {
+              "fact": "bell_rung",
+              "value": 1,
+              "musicState": "music.ending"
+            }
+          ],
+          "layers": [
+            {
+              "fact": "shrine_lit",
+              "value": 1,
+              "regionId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+              "clipId": "ambience.shrine",
+              "volume": 0.55
+            }
+          ],
+          "requests": [
+            {
+              "fact": "buy_lantern",
+              "kind": "Buy",
+              "vendor": "InnStock",
+              "item": "Lantern",
+              "count": 1,
+              "lootTable": null
+            },
+            {
+              "fact": "buy_oil",
+              "kind": "Buy",
+              "vendor": "InnStock",
+              "item": "OilFlask",
+              "count": 1,
+              "lootTable": null
+            },
+            {
+              "fact": "buy_herbs",
+              "kind": "Buy",
+              "vendor": "InnStock",
+              "item": "MarshHerbs",
+              "count": 1,
+              "lootTable": null
+            },
+            {
+              "fact": "herbs_used",
+              "kind": "RestoreStamina",
+              "vendor": "",
+              "item": "",
+              "count": 400,
+              "lootTable": null
+            },
+            {
+              "fact": "search_satchel",
+              "kind": "Loot",
+              "vendor": "",
+              "item": "",
+              "count": 1,
+              "lootTable": "Assets/Hollowmere/Items/MarshLoot.asset"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "director",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Game/HollowmereDirector.asset"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "aba08c89-cd6d-450d-a9ba-ad9167691d2e",
+                "global": "GlobalObjectId_V1-3-a0680c439cb442f0190cf5d8972ec266-11400000-0",
+                "assetGuid": "a0680c439cb442f0190cf5d8972ec266",
+                "path": "Assets/Hollowmere/Game/HollowmereDirector.asset"
+              },
+              "stamp": "sha256:5b3073c95348d1022a5c61dee7c6676fd37249cbfd0fb78c9402257bc8a00a82"
+            }
+          ],
+          "replay": {
+            "authoringId": "aba08c89-cd6d-450d-a9ba-ad9167691d2e",
+            "assetPath": "Assets/Hollowmere/Game/HollowmereDirector.asset"
+          }
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:23:39.542Z",
+    "applied": "2026-10-05T05:23:39.564Z"
+  }
+}

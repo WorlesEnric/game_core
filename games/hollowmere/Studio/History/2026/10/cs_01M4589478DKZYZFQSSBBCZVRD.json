@@ -1,0 +1,176 @@
+{
+  "id": "cs_01M4589478DKZYZFQSSBBCZVRD",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:dress.marsh-lights] Marsh light: the gate and jetty lanterns, the shrine's faint glow",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "l0",
+      "tool": "hollowmere.addLight",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "name": "Gate Lantern Light",
+        "position": [
+          171.0,
+          2.5,
+          -0.8
+        ],
+        "color": [
+          1.0,
+          0.72,
+          0.4,
+          1.0
+        ],
+        "intensity": 2.5,
+        "range": 9.0,
+        "shadows": false
+      }
+    },
+    {
+      "opId": "l1",
+      "tool": "hollowmere.addLight",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "name": "Jetty Lantern Light",
+        "position": [
+          219.5,
+          2.5,
+          18.0
+        ],
+        "color": [
+          1.0,
+          0.72,
+          0.4,
+          1.0
+        ],
+        "intensity": 2.5,
+        "range": 9.0,
+        "shadows": false
+      }
+    },
+    {
+      "opId": "l2",
+      "tool": "hollowmere.addLight",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "name": "Shrine Glow",
+        "position": [
+          206.0,
+          2.0,
+          9.5
+        ],
+        "color": [
+          0.45,
+          1.0,
+          0.6,
+          1.0
+        ],
+        "intensity": 1.2,
+        "range": 8.0,
+        "shadows": false
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "l0",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "l1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "l2",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:23:42.449Z",
+    "applied": "2026-10-05T05:23:42.455Z"
+  }
+}

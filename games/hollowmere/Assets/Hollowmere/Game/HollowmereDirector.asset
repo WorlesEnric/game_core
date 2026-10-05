@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49e7ae7b633a1a2a12f7e95abbb6944c, type: 3}
+  m_Name: HollowmereDirector
+  m_EditorClassIdentifier: 
+  authoringId: aba08c89-cd6d-450d-a9ba-ad9167691d2e
+  quest: DrownedBell
+  endings:
+  - branch: 1
+    title: 'Ending A: The Silence'
+    body: You let the Drowned Bell sleep. The Echo fades into the stones and Blackmere
+      keeps its silence. Thornwick never learns how close the marsh came to waking.
+    musicState: music.ending
+  - branch: 2
+    title: 'Ending B: The Toll'
+    body: The bell tolls once across the black water. Thornwick sleeps soundly for
+      the first time since the flood, though in the belfry the Echo stays, bound
+      to its bell.
+    musicState: music.ending
+  - branch: 3
+    title: 'Ending C: The Freed Echo'
+    body: With the shrine alight, the toll carries the Echo out over the water like
+      a lantern on the tide. The marsh is only a marsh again, and Maren lights a
+      candle for the drowned.
+    musicState: music.ending
+  - branch: -1
+    title: The Marsh Keeps What It Takes
+    body: Your last light sinks into Blackmere. In the dark the reeds close behind
+      you, and the bell stays silent.
+    musicState: music.tense
+  music:
+  - fact: gate_open
+    value: 1
+    musicState: music.explore
+  - fact: lantern_lost
+    value: 1
+    musicState: music.tense
+  - fact: bell_rung
+    value: 1
+    musicState: music.ending
+  layers:
+  - fact: shrine_lit
+    value: 1
+    regionId: 7f21b99a-8e74-412f-a1da-5f7d60843080
+    clipId: ambience.shrine
+    volume: 0.55
+  requests:
+  - fact: buy_lantern
+    kind: 0
+    vendor: InnStock
+    item: Lantern
+    count: 1
+    lootTable: {fileID: 0}
+  - fact: buy_oil
+    kind: 0
+    vendor: InnStock
+    item: OilFlask
+    count: 1
+    lootTable: {fileID: 0}
+  - fact: buy_herbs
+    kind: 0
+    vendor: InnStock
+    item: MarshHerbs
+    count: 1
+    lootTable: {fileID: 0}
+  - fact: herbs_used
+    kind: 2
+    vendor: 
+    item: 
+    count: 400
+    lootTable: {fileID: 0}
+  - fact: search_satchel
+    kind: 1
+    vendor: 
+    item: 
+    count: 1
+    lootTable: {fileID: 11400000, guid: 445637ba7c003e982be814e23a7fe908, type: 2}
+  portraits: []
+  worldItems: []

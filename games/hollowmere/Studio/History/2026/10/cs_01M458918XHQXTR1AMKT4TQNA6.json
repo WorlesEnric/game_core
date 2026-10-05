@@ -1,0 +1,195 @@
+{
+  "id": "cs_01M458918XHQXTR1AMKT4TQNA6",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:world.place-village] Place the pickups and story interactables of ThornwickVillage",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "p0",
+      "tool": "interaction.addExaminable",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "dd40bbdf-8491-48a0-a879-6b252119270c",
+        "global": "GlobalObjectId_V1-3-bf7c86a105692fa619538f41b8c659f2-11400000-0",
+        "assetGuid": "bf7c86a105692fa619538f41b8c659f2",
+        "path": "Assets/Hollowmere/Interactables/Definitions/PickupLantern.asset",
+        "scope": "Definition",
+        "stamp": "sha256:f557209f94d1c14dcc377e9eb6f96e1a75f31ec18d24e3a8691511ef5d79b9cd"
+      },
+      "args": {
+        "location": [
+          8.0,
+          0.0,
+          7.0
+        ],
+        "yaw": 0.0,
+        "name": "Lantern (barn)"
+      }
+    },
+    {
+      "opId": "p1",
+      "tool": "interaction.addExaminable",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "49c6ed2a-cba1-442f-92b0-30ec7e6b65ea",
+        "global": "GlobalObjectId_V1-3-06028de006b42c698a3f95cbe4268fda-11400000-0",
+        "assetGuid": "06028de006b42c698a3f95cbe4268fda",
+        "path": "Assets/Hollowmere/Interactables/Definitions/PickupHerbs.asset",
+        "scope": "Definition",
+        "stamp": "sha256:d48a4bf1eafa3f36a9aed36ccd31a2a824015785ffcf0d3ffcc74ffd6f3a4e32"
+      },
+      "args": {
+        "location": [
+          -9.0,
+          0.0,
+          15.0
+        ],
+        "yaw": 0.0,
+        "name": "Marsh Herbs (garden)"
+      }
+    },
+    {
+      "opId": "p2",
+      "tool": "interaction.addExaminable",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "bb729b45-41da-4e1d-aa65-d574c5db0201",
+        "global": "GlobalObjectId_V1-3-7bb9fcd8d520fd5159d10c216b89fbe8-11400000-0",
+        "assetGuid": "7bb9fcd8d520fd5159d10c216b89fbe8",
+        "path": "Assets/Hollowmere/Interactables/Definitions/PickupCoins.asset",
+        "scope": "Definition",
+        "stamp": "sha256:94b58daa7f70eb378eda58238d1b5bcd7d2e5065fabfe23e608fea813ce7b038"
+      },
+      "args": {
+        "location": [
+          4.0,
+          0.0,
+          -3.0
+        ],
+        "yaw": 0.0,
+        "name": "Coins (square)"
+      }
+    },
+    {
+      "opId": "f3",
+      "tool": "interaction.addExaminable",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "06408cc5-bdd2-400f-8db6-52514b43c804",
+        "global": "GlobalObjectId_V1-3-708da97207d48818daa335384d74d878-11400000-0",
+        "assetGuid": "708da97207d48818daa335384d74d878",
+        "path": "Assets/Hollowmere/Interactables/Definitions/TinkersBench.asset",
+        "scope": "Definition",
+        "stamp": "sha256:4415321c04c900d344d0fd78456b3d37e2531f08c544291ddc537246ed811c37"
+      },
+      "args": {
+        "location": [
+          11.0,
+          0.0,
+          -17.5
+        ],
+        "yaw": 90.0,
+        "name": "Tinker's Bench"
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "p0",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "dd40bbdf-8491-48a0-a879-6b252119270c",
+                "global": "GlobalObjectId_V1-3-bf7c86a105692fa619538f41b8c659f2-11400000-0",
+                "assetGuid": "bf7c86a105692fa619538f41b8c659f2",
+                "path": "Assets/Hollowmere/Interactables/Definitions/PickupLantern.asset"
+              },
+              "stamp": "sha256:f557209f94d1c14dcc377e9eb6f96e1a75f31ec18d24e3a8691511ef5d79b9cd"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "p1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "49c6ed2a-cba1-442f-92b0-30ec7e6b65ea",
+                "global": "GlobalObjectId_V1-3-06028de006b42c698a3f95cbe4268fda-11400000-0",
+                "assetGuid": "06028de006b42c698a3f95cbe4268fda",
+                "path": "Assets/Hollowmere/Interactables/Definitions/PickupHerbs.asset"
+              },
+              "stamp": "sha256:d48a4bf1eafa3f36a9aed36ccd31a2a824015785ffcf0d3ffcc74ffd6f3a4e32"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "p2",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "bb729b45-41da-4e1d-aa65-d574c5db0201",
+                "global": "GlobalObjectId_V1-3-7bb9fcd8d520fd5159d10c216b89fbe8-11400000-0",
+                "assetGuid": "7bb9fcd8d520fd5159d10c216b89fbe8",
+                "path": "Assets/Hollowmere/Interactables/Definitions/PickupCoins.asset"
+              },
+              "stamp": "sha256:94b58daa7f70eb378eda58238d1b5bcd7d2e5065fabfe23e608fea813ce7b038"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "f3",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "06408cc5-bdd2-400f-8db6-52514b43c804",
+                "global": "GlobalObjectId_V1-3-708da97207d48818daa335384d74d878-11400000-0",
+                "assetGuid": "708da97207d48818daa335384d74d878",
+                "path": "Assets/Hollowmere/Interactables/Definitions/TinkersBench.asset"
+              },
+              "stamp": "sha256:4415321c04c900d344d0fd78456b3d37e2531f08c544291ddc537246ed811c37"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:23:39.429Z",
+    "applied": "2026-10-05T05:23:39.438Z"
+  }
+}

@@ -1,0 +1,2200 @@
+{
+  "id": "cs_01M45893ZPY0F9P8Y2V6KPG4YW",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "[P3.1:dress.marsh-scenery] Dress Blackmere Marsh: pools, sunken shrine, dead willow, reeds, jetty, punt, Odd's hut, causeway fence",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "s0",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "water",
+        "position": [
+          206.0,
+          0.03,
+          6.0
+        ],
+        "yaw": 0.0,
+        "size": [
+          14.0,
+          0.0,
+          10.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Water.mat"
+        ],
+        "collider": false,
+        "name": "Sunken Pool"
+      }
+    },
+    {
+      "opId": "s1",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "water",
+        "position": [
+          228.0,
+          0.02,
+          30.0
+        ],
+        "yaw": 0.0,
+        "size": [
+          24.0,
+          0.0,
+          20.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/BlackWater.mat"
+        ],
+        "collider": false,
+        "name": "Black Water"
+      }
+    },
+    {
+      "opId": "s2",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "water",
+        "position": [
+          216.0,
+          0.03,
+          -12.0
+        ],
+        "yaw": 0.0,
+        "size": [
+          6.0,
+          0.0,
+          5.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/BlackWater.mat"
+        ],
+        "collider": false,
+        "name": "Sinkhole Water"
+      }
+    },
+    {
+      "opId": "s3",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "water",
+        "position": [
+          180.0,
+          0.03,
+          -22.0
+        ],
+        "yaw": 0.0,
+        "size": [
+          16.0,
+          0.0,
+          12.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Water.mat"
+        ],
+        "collider": false,
+        "name": "Marsh Pool South"
+      }
+    },
+    {
+      "opId": "s4",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "shrine",
+        "position": [
+          206.0,
+          0.0,
+          9.5
+        ],
+        "yaw": 180.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/MossStone.mat",
+          "Assets/Hollowmere/Scenery/Materials/Stone.mat"
+        ],
+        "collider": true,
+        "name": "Sunken Shrine"
+      }
+    },
+    {
+      "opId": "s5",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "deadTree",
+        "position": [
+          192.0,
+          0.0,
+          12.0
+        ],
+        "yaw": 0.0,
+        "size": [
+          2.4,
+          7.0,
+          2.4
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Bark.mat"
+        ],
+        "collider": true,
+        "name": "Dead Willow"
+      }
+    },
+    {
+      "opId": "s6",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "deadTree",
+        "position": [
+          178.0,
+          0.0,
+          18.0
+        ],
+        "yaw": 60.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Bark.mat"
+        ],
+        "collider": true,
+        "name": "Dead Tree 2"
+      }
+    },
+    {
+      "opId": "s7",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "deadTree",
+        "position": [
+          232.0,
+          0.0,
+          -4.0
+        ],
+        "yaw": 120.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Bark.mat"
+        ],
+        "collider": true,
+        "name": "Dead Tree 3"
+      }
+    },
+    {
+      "opId": "s8",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "deadTree",
+        "position": [
+          196.0,
+          0.0,
+          -28.0
+        ],
+        "yaw": 200.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Bark.mat"
+        ],
+        "collider": true,
+        "name": "Dead Tree 4"
+      }
+    },
+    {
+      "opId": "s9",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "jetty",
+        "position": [
+          224.0,
+          0.0,
+          24.0
+        ],
+        "yaw": 45.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Planks.mat"
+        ],
+        "collider": false,
+        "name": "Odd's Jetty"
+      }
+    },
+    {
+      "opId": "s10",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "punt",
+        "position": [
+          229.6,
+          0.05,
+          26.8
+        ],
+        "yaw": 45.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Planks.mat"
+        ],
+        "collider": false,
+        "name": "The Old Punt"
+      }
+    },
+    {
+      "opId": "s11",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "hut",
+        "position": [
+          214.0,
+          0.0,
+          27.0
+        ],
+        "yaw": 200.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Timber.mat",
+          "Assets/Hollowmere/Scenery/Materials/Thatch.mat"
+        ],
+        "collider": true,
+        "name": "Odd's Hut"
+      }
+    },
+    {
+      "opId": "s12",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "causeway",
+        "position": [
+          178.0,
+          0.0,
+          2.0
+        ],
+        "yaw": 90.0,
+        "size": [
+          3.0,
+          0.08,
+          16.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Planks.mat"
+        ],
+        "collider": false,
+        "name": "Causeway"
+      }
+    },
+    {
+      "opId": "s13",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "lanternPost",
+        "position": [
+          171.0,
+          0.0,
+          -0.8
+        ],
+        "yaw": 0.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Timber.mat",
+          "Assets/Hollowmere/Scenery/Materials/LanternGlow.mat"
+        ],
+        "collider": true,
+        "name": "Gate Lantern"
+      }
+    },
+    {
+      "opId": "s14",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "lanternPost",
+        "position": [
+          219.5,
+          0.0,
+          18.0
+        ],
+        "yaw": 0.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Timber.mat",
+          "Assets/Hollowmere/Scenery/Materials/LanternGlow.mat"
+        ],
+        "collider": true,
+        "name": "Jetty Lantern"
+      }
+    },
+    {
+      "opId": "s15",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "reeds",
+        "position": [
+          200.0,
+          0.0,
+          14.0
+        ],
+        "yaw": 0.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Reed.mat"
+        ],
+        "collider": false,
+        "name": "Reeds 1"
+      }
+    },
+    {
+      "opId": "s16",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "reeds",
+        "position": [
+          212.5,
+          0.0,
+          12.0
+        ],
+        "yaw": 33.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Reed.mat"
+        ],
+        "collider": false,
+        "name": "Reeds 2"
+      }
+    },
+    {
+      "opId": "s17",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "reeds",
+        "position": [
+          185.0,
+          0.0,
+          -12.0
+        ],
+        "yaw": 66.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Reed.mat"
+        ],
+        "collider": false,
+        "name": "Reeds 3"
+      }
+    },
+    {
+      "opId": "s18",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "reeds",
+        "position": [
+          213.0,
+          0.0,
+          -9.0
+        ],
+        "yaw": 99.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Reed.mat"
+        ],
+        "collider": false,
+        "name": "Reeds 4"
+      }
+    },
+    {
+      "opId": "s19",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "reeds",
+        "position": [
+          223.0,
+          0.0,
+          16.0
+        ],
+        "yaw": 132.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Reed.mat"
+        ],
+        "collider": false,
+        "name": "Reeds 5"
+      }
+    },
+    {
+      "opId": "s20",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "reeds",
+        "position": [
+          178.0,
+          0.0,
+          7.0
+        ],
+        "yaw": 165.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Reed.mat"
+        ],
+        "collider": false,
+        "name": "Reeds 6"
+      }
+    },
+    {
+      "opId": "s21",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "reeds",
+        "position": [
+          205.0,
+          0.0,
+          -20.0
+        ],
+        "yaw": 198.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Reed.mat"
+        ],
+        "collider": false,
+        "name": "Reeds 7"
+      }
+    },
+    {
+      "opId": "s22",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "reeds",
+        "position": [
+          230.0,
+          0.0,
+          14.0
+        ],
+        "yaw": 231.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Reed.mat"
+        ],
+        "collider": false,
+        "name": "Reeds 8"
+      }
+    },
+    {
+      "opId": "s23",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "reeds",
+        "position": [
+          189.0,
+          0.0,
+          -24.0
+        ],
+        "yaw": 264.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Reed.mat"
+        ],
+        "collider": false,
+        "name": "Reeds 9"
+      }
+    },
+    {
+      "opId": "s24",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "rock",
+        "position": [
+          188.0,
+          0.0,
+          4.0
+        ],
+        "yaw": 0.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/MossStone.mat"
+        ],
+        "collider": true,
+        "name": "Mossy Rock 1"
+      }
+    },
+    {
+      "opId": "s25",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "rock",
+        "position": [
+          219.0,
+          0.0,
+          6.0
+        ],
+        "yaw": 51.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/MossStone.mat"
+        ],
+        "collider": true,
+        "name": "Mossy Rock 2"
+      }
+    },
+    {
+      "opId": "s26",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "rock",
+        "position": [
+          231.0,
+          0.0,
+          9.0
+        ],
+        "yaw": 102.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/MossStone.mat"
+        ],
+        "collider": true,
+        "name": "Mossy Rock 3"
+      }
+    },
+    {
+      "opId": "s27",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "rock",
+        "position": [
+          214.5,
+          0.0,
+          -14.5
+        ],
+        "yaw": 153.0,
+        "size": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/MossStone.mat"
+        ],
+        "collider": true,
+        "name": "Mossy Rock 4"
+      }
+    },
+    {
+      "opId": "s28",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "fence",
+        "position": [
+          169.5,
+          0.0,
+          -2.5
+        ],
+        "yaw": 90.0,
+        "size": [
+          6.0,
+          1.4,
+          0.2
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Timber.mat"
+        ],
+        "collider": true,
+        "name": "Causeway Fence South 1"
+      }
+    },
+    {
+      "opId": "s29",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "fence",
+        "position": [
+          169.5,
+          0.0,
+          -8.5
+        ],
+        "yaw": 90.0,
+        "size": [
+          6.0,
+          1.4,
+          0.2
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Timber.mat"
+        ],
+        "collider": true,
+        "name": "Causeway Fence South 2"
+      }
+    },
+    {
+      "opId": "s30",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "fence",
+        "position": [
+          169.5,
+          0.0,
+          -14.5
+        ],
+        "yaw": 90.0,
+        "size": [
+          6.0,
+          1.4,
+          0.2
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Timber.mat"
+        ],
+        "collider": true,
+        "name": "Causeway Fence South 3"
+      }
+    },
+    {
+      "opId": "s31",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "fence",
+        "position": [
+          169.5,
+          0.0,
+          -20.5
+        ],
+        "yaw": 90.0,
+        "size": [
+          6.0,
+          1.4,
+          0.2
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Timber.mat"
+        ],
+        "collider": true,
+        "name": "Causeway Fence South 4"
+      }
+    },
+    {
+      "opId": "s32",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "fence",
+        "position": [
+          169.5,
+          0.0,
+          -26.5
+        ],
+        "yaw": 90.0,
+        "size": [
+          6.0,
+          1.4,
+          0.2
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Timber.mat"
+        ],
+        "collider": true,
+        "name": "Causeway Fence South 5"
+      }
+    },
+    {
+      "opId": "s33",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "fence",
+        "position": [
+          169.5,
+          0.0,
+          -32.5
+        ],
+        "yaw": 90.0,
+        "size": [
+          6.0,
+          1.4,
+          0.2
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Timber.mat"
+        ],
+        "collider": true,
+        "name": "Causeway Fence South 6"
+      }
+    },
+    {
+      "opId": "s34",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "fence",
+        "position": [
+          169.5,
+          0.0,
+          -38.5
+        ],
+        "yaw": 90.0,
+        "size": [
+          6.0,
+          1.4,
+          0.2
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Timber.mat"
+        ],
+        "collider": true,
+        "name": "Causeway Fence South 7"
+      }
+    },
+    {
+      "opId": "s35",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "fence",
+        "position": [
+          169.5,
+          0.0,
+          6.5
+        ],
+        "yaw": 90.0,
+        "size": [
+          6.0,
+          1.4,
+          0.2
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Timber.mat"
+        ],
+        "collider": true,
+        "name": "Causeway Fence North 1"
+      }
+    },
+    {
+      "opId": "s36",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "fence",
+        "position": [
+          169.5,
+          0.0,
+          12.5
+        ],
+        "yaw": 90.0,
+        "size": [
+          6.0,
+          1.4,
+          0.2
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Timber.mat"
+        ],
+        "collider": true,
+        "name": "Causeway Fence North 2"
+      }
+    },
+    {
+      "opId": "s37",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "fence",
+        "position": [
+          169.5,
+          0.0,
+          18.5
+        ],
+        "yaw": 90.0,
+        "size": [
+          6.0,
+          1.4,
+          0.2
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Timber.mat"
+        ],
+        "collider": true,
+        "name": "Causeway Fence North 3"
+      }
+    },
+    {
+      "opId": "s38",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "fence",
+        "position": [
+          169.5,
+          0.0,
+          24.5
+        ],
+        "yaw": 90.0,
+        "size": [
+          6.0,
+          1.4,
+          0.2
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Timber.mat"
+        ],
+        "collider": true,
+        "name": "Causeway Fence North 4"
+      }
+    },
+    {
+      "opId": "s39",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "fence",
+        "position": [
+          169.5,
+          0.0,
+          30.5
+        ],
+        "yaw": 90.0,
+        "size": [
+          6.0,
+          1.4,
+          0.2
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Timber.mat"
+        ],
+        "collider": true,
+        "name": "Causeway Fence North 5"
+      }
+    },
+    {
+      "opId": "s40",
+      "tool": "hollowmere.addScenery",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+        "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+        "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+        "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+      },
+      "args": {
+        "kind": "fence",
+        "position": [
+          169.5,
+          0.0,
+          36.5
+        ],
+        "yaw": 90.0,
+        "size": [
+          6.0,
+          1.4,
+          0.2
+        ],
+        "materials": [
+          "Assets/Hollowmere/Scenery/Materials/Timber.mat"
+        ],
+        "collider": true,
+        "name": "Causeway Fence North 6"
+      }
+    }
+  ],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "s0",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s2",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s3",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s4",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s5",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s6",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s7",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s8",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s9",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s10",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s11",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s12",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s13",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s14",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s15",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s16",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s17",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s18",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s19",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s20",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s21",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s22",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s23",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s24",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s25",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s26",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s27",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s28",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s29",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s30",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s31",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s32",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s33",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s34",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s35",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s36",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s37",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s38",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s39",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "opId": "s40",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [],
+          "after": [
+            {
+              "ref": {
+                "kind": "Definition",
+                "authoringId": "7f21b99a-8e74-412f-a1da-5f7d60843080",
+                "global": "GlobalObjectId_V1-3-5ac39ef35c75d413fa35301a51d79374-11400000-0",
+                "assetGuid": "5ac39ef35c75d413fa35301a51d79374",
+                "path": "Assets/Hollowmere/World/Regions/BlackmereMarsh.asset"
+              },
+              "stamp": "sha256:a5ddd73afc6559d1abf7aa39afe9acf605b3af8248ea601e7c173c27bb918be0"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:23:42.210Z",
+    "applied": "2026-10-05T05:23:42.421Z"
+  }
+}

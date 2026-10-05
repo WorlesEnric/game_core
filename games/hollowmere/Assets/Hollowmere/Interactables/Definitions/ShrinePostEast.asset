@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc812b8873eb43b0accf5886186f52db, type: 3}
+  m_Name: ShrinePostEast
+  m_EditorClassIdentifier: 
+  authoringId: 1af26fb0-16c3-40a3-889f-05cd60067ede
+  entity: {fileID: 11400000, guid: 1ab4d95d6ffe8caa29ad5a25a9ca9e74, type: 2}
+  kind: 4
+  initialState: off
+  prompts:
+  - state: off
+    text: Light the east shrine lantern
+  - state: on
+    text: The east lantern burns
+  conditionRef: 23b3180d-6b41-4b6b-a274-5d08a8ab4123
+  actionRef: 
+  maxUses: 0
+  cooldownSeconds: 0.5
+  range: 2.6
+  focusPriority: 2
+  focusHeight: 0.8
+  cue: sfx.ui.click
+  contentStamp: 
