@@ -335,12 +335,12 @@ namespace GameCore.Studio.Edit
                         _runtime.Journal.Write(entry.WithOutcomes(outcomes));
                         return new HistoryResult(changeSetId, false, ChangeSetState.Interrupted, diagnostics, report);
                     }
-                    ClearTransition(entry.Id);
                     remaining.RemoveAt(0);
                     outcomes[i] = new OperationOutcome(outcome.OpId, remaining.Count == 0 ? OutcomeStatus.Skipped : outcome.Status,
                         null, remaining.Count == 0 ? "Rolled back after interruption." : "Rollback in progress.", null,
                         remaining.Count == 0 ? null : new OperationUndo(new UndoPayload(remaining, payload.AssetLevel, payload.After, payload.Replay).ToJson()));
                     _runtime.Journal.Write(entry.WithOutcomes(outcomes));
+                    ClearTransition(entry.Id);
                 }
             }
             _runtime.Journal.Write(entry.WithState(ChangeSetState.Failed).WithOutcomes(outcomes));

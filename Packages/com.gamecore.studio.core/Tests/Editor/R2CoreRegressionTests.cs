@@ -86,6 +86,27 @@ namespace GameCore.Studio.Edit.Tests
         }
 
         [Test]
+        public void R2_03_RecoveryKeepsTransitionUntilJournalCheckpoint()
+        {
+            ChangeSet change = Import(_bed.Folder + "/recover.txt");
+            _bed.Runtime.Engine.Options.FaultHook = (point, _) => { if (point == EngineFaultPoint.AfterFileWrite) throw new SimulatedCrashException("write crash"); };
+            Assert.Throws<SimulatedCrashException>(() => _bed.Runtime.Engine.Apply(change));
+            StudioRuntime reloaded = _bed.Reload();
+            bool sawCheckpoint = false;
+            reloaded.Journal.Written += (id, state) =>
+            {
+                if (id != change.Id || state != ChangeSetState.Interrupted) return;
+                ChangeSet saved = reloaded.Journal.Read(id)!;
+                if (saved.Outcomes?.Any(outcome => outcome.Status == OutcomeStatus.Skipped) != true) return;
+                sawCheckpoint = true;
+                Assert.That(File.Exists(Path.Combine(reloaded.Paths.HistoryRoot, "transitions", id + ".pending")), Is.True,
+                    "The durable transition must outlive the completed inverse's journal checkpoint.");
+            };
+            Assert.That(reloaded.History.RollbackInterrupted(change.Id).Ok, Is.True);
+            Assert.That(sawCheckpoint, Is.True);
+        }
+
+        [Test]
         public void R2_04_FailedInverseRemainsInterruptedWithEvidence()
         {
             ChangeSet change = Import(_bed.Folder + "/data.txt");
