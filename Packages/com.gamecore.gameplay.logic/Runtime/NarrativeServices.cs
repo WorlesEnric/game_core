@@ -240,7 +240,8 @@ namespace GameCore.Gameplay.Logic
         private bool RunPickup(in EvaluationContext ctx, int actor)
         {
             int worldItem = ctx.SubjectKey;
-            if (worldItem == 0 && ctx.SubjectAuthoringId.Length > 0 && runtime.Models.TryResolve(ctx.SubjectAuthoringId, out int resolved))
+            if (!runtime.Models.TryGetWorldItem(worldItem, out WorldItemModel? _)
+                && ctx.SubjectAuthoringId.Length > 0 && runtime.Models.TryResolve(ctx.SubjectAuthoringId, out int resolved))
             {
                 worldItem = resolved;
             }

@@ -219,7 +219,12 @@ namespace GameCore.Gameplay.Inventory
         public bool IsActive => true;
 
         /// <summary>Picks up a world item (authoring id or name, or the placed entity's authoring id) into the player's inventory.</summary>
-        public bool TryPickup(string worldItemRef) => actions.TryRun(NarrativeActionRunner.Pickup, EvaluationContext.ForSubject(worldItemRef));
+        public bool TryPickup(string worldItemRef)
+        {
+            int key = runtime.Models.TryResolve(worldItemRef ?? string.Empty, out int resolved) ? resolved : 0;
+            var context = new EvaluationContext(0, key, worldItemRef ?? string.Empty, default(TargetId), default(TargetId));
+            return actions.TryRun(NarrativeActionRunner.Pickup, context);
+        }
 
         public bool IsTaken(string worldItemRef, ICommittedSlotReader slots)
         {

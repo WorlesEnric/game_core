@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using GameCore.Contracts;
 using GameCore.Gameplay.Contracts;
 using GameCore.Gameplay.Contracts.Narrative;
 using GameCore.Gameplay.World;

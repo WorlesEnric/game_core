@@ -407,10 +407,12 @@ namespace GameCore.Gameplay.Logic
 
         public NarrativeDelivery Delivery => Runtime.Delivery;
 
+        /// <summary>Disposes the delivery owner, detaches the world and stops the root.</summary>
         public void Shutdown()
         {
             Runtime.Delivery.Dispose();
             World.Shutdown();
+            Root.Stop("narrative world shut down");
         }
     }
 

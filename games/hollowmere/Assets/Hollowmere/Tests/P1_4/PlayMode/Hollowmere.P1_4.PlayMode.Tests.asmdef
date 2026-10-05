@@ -1,0 +1,33 @@
+{
+  "name": "Hollowmere.P1_4.PlayMode.Tests",
+  "rootNamespace": "Hollowmere.P1_4.PlayMode.Tests",
+  "references": [
+    "GameCore.Contracts",
+    "GameCore.Gameplay.Contracts",
+    "GameCore.Gameplay.Dialogue",
+    "GameCore.Gameplay.Entities",
+    "GameCore.Gameplay.Inventory",
+    "GameCore.Gameplay.Logic",
+    "GameCore.Gameplay.Quest",
+    "GameCore.Gameplay.World",
+    "GameCore.Rules.Gameplay",
+    "GameCore.Unity.Adapters",
+    "GameCore.Unity.App",
+    "GameCore.Unity.Runtime",
+    "Hollowmere.Narrative",
+    "UnityEngine.TestRunner"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
