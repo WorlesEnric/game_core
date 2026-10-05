@@ -19,11 +19,12 @@ bash studio/tools/unity-batch.sh --project "$PWD/games/cleanproof" --log-dir "$P
 bash studio/tools/unity-batch.sh --project "$PWD/games/cleanproof" --log-dir "$PWD/artifacts/studio/cleanproof/editmode" --label editmode --results "$PWD/artifacts/studio/cleanproof/editmode/results.xml" -- -runTests -testPlatform EditMode -testFilter 'Saltmarsh.Tests'
 bash studio/tools/unity-batch.sh --project "$PWD/games/cleanproof" --log-dir "$PWD/artifacts/studio/cleanproof/playmode" --label playmode --results "$PWD/artifacts/studio/cleanproof/playmode/results.xml" -- -runTests -testPlatform PlayMode -testFilter 'Saltmarsh.Tests'
 bash games/cleanproof/Tools/build.sh
-games/cleanproof/Builds/Linux/Saltmarsh.x86_64 -batchmode -nographics -saltmarshAutoplay -logFile artifacts/studio/cleanproof/player.log
+bash games/cleanproof/Tools/run-headless.sh
+python3 games/cleanproof/Tools/verify_evidence.py
 ```
 
 `new-project.sh` is idempotent and preserves every existing file. Its content-free template
-contains only host-compatible project defaults and a setup Editor assembly. It never copies
+contains host-compatible project defaults, a camera/light Boot scene, URP settings and a setup Editor assembly. It never copies
 Hollowmere content, a Library, or a lock. Unity creates the lock when resolving the pins.
 
 `AuthorAll` uses the registered `saltmarsh.author` operation through `ChangeSetEngine.Apply`.
@@ -35,6 +36,9 @@ WASD moves, mouse looks, E interacts, Shift runs, Space jumps, J opens the journ
 I opens inventory and Escape pauses. New Game starts from the package menu; Save and Load
 are on the pause menu. The headless hook drives the same game through typed commands,
 checks save/restore and quest completion, and exits after at least 600 frames.
+The run wrapper selects `DISPLAY=:1 XDG_SESSION_TYPE=x11` while retaining `-batchmode -nographics`;
+this avoids the pinned Unity player's native null-backend crash in a tty shell. Override the
+host display with `SALTMARSH_DISPLAY` if needed. Audio remains enabled in the product settings.
 
 The verification status, exact source revision, logs and reusability gaps are recorded in
 `artifacts/studio/cleanproof/README.md` and `docs/studio/packets/P4.1-clean-proof.md`.

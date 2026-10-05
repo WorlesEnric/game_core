@@ -8,6 +8,7 @@ set -euo pipefail
 repo="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 python3 - "$repo" "${1:-games/cleanproof}" "${2:-Saltmarsh}" <<'PY'
 import json, os, pathlib, re, sys
+from xml.sax.saxutils import quoteattr
 repo=pathlib.Path(sys.argv[1]); target=(repo/sys.argv[2]).resolve(); title=sys.argv[3]
 if target.parent != repo/'games' or not re.fullmatch(r'[A-Za-z0-9_-]+',target.name):
     raise SystemExit('project must be a direct games/<name> child')
@@ -26,7 +27,7 @@ write('ProjectSettings/ProjectSettings.asset','''%YAML 1.1
 PlayerSettings:
   serializedVersion: 27
   companyName: GameCore
-  productName: '''+title+'''
+  productName: '''+json.dumps(title, ensure_ascii=False)+'''
   m_ActiveColorSpace: 1
   activeInputHandler: 1
   scriptingBackend:
@@ -36,6 +37,6 @@ PlayerSettings:
   runInBackground: 1
 ''')
 write('.gitignore','Library/\nTemp/\nObj/\nLogs/\nUserSettings/\nBuilds/\nMemoryCaptures/\n*.csproj\n*.sln\n')
-write('Assets/link.xml','<linker>\n  <assembly fullname="Saltmarsh" preserve="all" />\n</linker>\n'.replace('Saltmarsh',title))
+write('Assets/link.xml','<linker>\n  <assembly fullname='+quoteattr(title)+' preserve="all" />\n</linker>\n')
 print('Scaffold ready:',target,'(existing files preserved; Unity resolves its own lock)')
 PY

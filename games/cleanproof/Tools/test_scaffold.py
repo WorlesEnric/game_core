@@ -7,6 +7,7 @@ import shutil
 import subprocess
 import tempfile
 import unittest
+import xml.etree.ElementTree as ET
 
 REPO = Path(__file__).resolve().parents[3]
 
@@ -23,7 +24,7 @@ class ScaffoldTests(unittest.TestCase):
                 dest = root / "Packages" / package.parent.name / "package.json"
                 dest.parent.mkdir(parents=True)
                 shutil.copyfile(package, dest)
-            subprocess.run(["bash", str(script), "games/probe", "Probe"], check=True)
+            subprocess.run(["bash", str(script), "games/probe", "Probe: Light & Sea"], check=True)
             project = root / "games/probe"
             def snapshot():
                 return {str(p.relative_to(project)): hashlib.sha256(p.read_bytes()).hexdigest()
@@ -34,12 +35,18 @@ class ScaffoldTests(unittest.TestCase):
                     self.assertTrue((project / "Packages" / version.removeprefix("file:")).resolve().is_dir())
             self.assertEqual(manifest["dependencies"]["com.unity.inputsystem"], "1.19.0")
             self.assertFalse((project / "Packages/packages-lock.json").exists())
+            self.assertEqual(ET.parse(project / "Assets/link.xml").find("assembly").attrib["fullname"], "Probe: Light & Sea")
+            self.assertIn('productName: "Probe: Light & Sea"', (project / "ProjectSettings/ProjectSettings.asset").read_text())
+            self.assertTrue((project / "Assets/Boot/Boot.unity").is_file())
+            self.assertTrue((project / "ProjectSettings/EditorBuildSettings.asset").is_file())
+            self.assertTrue((project / "Assets/Settings/Pipeline.asset").is_file())
+            self.assertNotIn("Saltmarsh", (project / "Assets/Boot/Boot.unity").read_text())
             self.assertFalse((project / "Assets/Hollowmere").exists())
             self.assertFalse((project / "Assets/Saltmarsh").exists())
             sentinel = project / "Assets/Creator.txt"
             sentinel.write_text("creator content")
             before = snapshot()
-            subprocess.run(["bash", str(script), "games/probe", "Probe"], check=True)
+            subprocess.run(["bash", str(script), "games/probe", "Probe: Light & Sea"], check=True)
             self.assertEqual(snapshot(), before)
             refused = subprocess.run(["bash", str(script), "../escape", "Probe"], capture_output=True)
             self.assertNotEqual(refused.returncode, 0)
