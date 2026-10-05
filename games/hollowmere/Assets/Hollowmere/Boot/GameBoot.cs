@@ -76,24 +76,13 @@ namespace Hollowmere.Boot
         public event Action<GameBoot, SaveService>? SavesInstalled;
 
         /// <summary>
-        /// The admission session readiness of <paramref name="service"/> (R2-G request 4): the world and its narrative
+        /// The admission session readiness of <paramref name="service"/> (R2-G2's exact lambda): the world and its narrative
         /// layer exist and the world's root is both the save service's active root and the application's current root.
-        /// Follows World and Narrative after every re-attach. One state is also accepted: right after a restore,
-        /// SaveService.Restore stops the previous root (which clears GameApplication.Current) and nothing makes the
-        /// restored root current, so after a re-attach a null Current with the world on the service's active root counts
-        /// as ready. Interim until Codex packet APP-1 (codex/app-1: SaveService.Restore adopts the restored root as Current
-        /// when the replaced root was Current) lands; then this branch is never taken and the game owner may remove it.
+        /// Follows World and Narrative after every re-attach; a restore makes the restored root current (SADR-021, APP-1).
         /// </summary>
-        public bool AdmissionReady(SaveService service)
-        {
-            if (service == null || World == null || Narrative == null || !ReferenceEquals(World.Root, service.ActiveRoot))
-            {
-                return false;
-            }
-
-            GameApplicationRoot? current = GameApplication.Current;
-            return ReferenceEquals(World.Root, current) || (current == null && Reattachments > 0);
-        }
+        public bool AdmissionReady(SaveService service) =>
+            service != null && World != null && Narrative != null
+            && ReferenceEquals(World.Root, service.ActiveRoot) && ReferenceEquals(World.Root, GameApplication.Current);
 
         /// <summary>The narrative modules of the world (their presenters, runner and commands).</summary>
         public HollowmereNarrativeModules? Modules { get; private set; }
