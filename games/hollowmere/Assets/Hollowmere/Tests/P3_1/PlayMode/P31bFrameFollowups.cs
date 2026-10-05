@@ -45,7 +45,9 @@ namespace Hollowmere.P3_1.PlayMode.Tests
             yield return Boot();
             SaveService saves = game.Saves!;
             const string slot = "p31b-crash";
-            SaveResult previous = saves.Capture(slot);
+            var initialWrite = saves.CaptureAsync(slot);
+            yield return Until(() => initialWrite.IsCompleted, "previous async save");
+            SaveResult previous = initialWrite.GetAwaiter().GetResult();
             Assert.That(previous.Succeeded, Is.True);
             string header = File.ReadAllText(saves.HeaderPath(slot));
             string document = saves.DocumentPath(slot);

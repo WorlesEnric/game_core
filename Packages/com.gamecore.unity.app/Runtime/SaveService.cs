@@ -10,8 +10,10 @@
 //
 //   * Capture(slot) pauses a running world at its committed boundary when needed, captures it through
 //     `CheckpointPublication.CaptureAndPublish`, declares the SADR-012 temporal-continuity feature on the document,
-//     writes an immutable `<slot>.<digest>.gcc` through the atomic file store, commits `<slot>.json` by rename, and
+//     writes `<slot>.gcc` and `<slot>.json` using the legacy synchronous storage contract, and
 //     resumes the world;
+//   * CaptureAsync(slot) uses that same capture on the main thread, then writes an immutable `<slot>.<digest>.gcc`
+//     on a worker and atomically renames `<slot>.json` as the only commit point (previous saves survive interruption);
 //   * Restore(slot) verifies the files (envelope checksum, header/document hash, document decoding), applies the
 //     catalog compatibility rule, migrates slot rows forward, rebuilds the world through the production restore
 //     builder into a NEW session, adopts the restored root and then stops the old root;
@@ -374,7 +376,7 @@ namespace GameCore.Unity.App
                 string failure = await Task.Run(() =>
                 {
                     if (cancellation.IsCancellationRequested) return "save cancelled before publication";
-                    return TryWriteSlot(result.Slot, capture.Document, result.Header!, out string detail, cancellation)
+                    return TryWriteSlot(result.Slot, capture.Document, result.Header!, out string detail, cancellation, immutable: true)
                         ? string.Empty : detail;
                 });
                 if (failure.Length != 0)
@@ -824,14 +826,17 @@ namespace GameCore.Unity.App
             }
         }
 
-        private bool TryWriteSlot(string slot, byte[] document, SaveSlotHeader header, out string detail, CancellationToken cancellation = default)
+        private bool TryWriteSlot(string slot, byte[] document, SaveSlotHeader header, out string detail,
+            CancellationToken cancellation = default, bool immutable = false)
         {
             try
             {
                 System.IO.Directory.CreateDirectory(Directory);
-                // The header is the sole commit point. Until its rename, readers still name the previous immutable document.
+                // Async saves commit by header rename. Keep the synchronous API's legacy writable document path
+                // for checkpoint migration tools that rewrite a document and then update its header.
                 string previous = DocumentPath(slot);
-                string generation = GenerationPath(slot, header.DocumentHash);
+                string generation = immutable ? GenerationPath(slot, header.DocumentHash)
+                    : Path.Combine(Directory, slot + DocumentExtension);
                 var store = new FileCheckpointStore(generation);
                 if (!store.TryPublish(document, out StoredCheckpoint _, out DiagnosticCode code, out detail))
                 {
@@ -860,7 +865,7 @@ namespace GameCore.Unity.App
                 try
                 {
                     foreach (string obsolete in System.IO.Directory.GetFiles(Directory, slot + ".*" + DocumentExtension))
-                        if (obsolete != generation && obsolete != previous) File.Delete(obsolete);
+                        if (obsolete != generation && (!immutable || obsolete != previous)) File.Delete(obsolete);
                 }
                 catch (IOException) { } // Publication succeeded; retained generations are safe to collect next time.
                 catch (UnauthorizedAccessException) { }

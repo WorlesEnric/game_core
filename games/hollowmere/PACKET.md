@@ -33,3 +33,7 @@ None currently. The shared gameplay UI runtime remains synchronous for its gener
 - The suite's rebake exposed merged main's new cosmetic `EntityDefinition.materialTextures` field. Keep the 28 refreshed definition stamps and two bake outputs: their only definition changes are empty `materialTextures` plus content stamps; structural stamps, catalog fingerprint and recipe revisions remain unchanged. These are needed for Verify on the delivered checkout, rather than discarding them as transient test edits.
 - Isolated `P31AuthoringTests.BakeVerifies`: **1/1 passed** after committing the refreshed bake. This checks the delivered assets without a preceding authoring fixture mutating them.
 - Existing P1.1 PlayMode region loop: marsh→belfry **9 ms**, 10 frames; full loop 33 frames / 33 sanctioned pumps / zero violations. This is a suite diagnostic, not the required player measurement.
+
+### Compatibility regression caught before build
+
+The additional shared `GameCore.Persistence.Tests` run initially failed 5/17: legacy migration helpers rewrite the pathname returned by `DocumentPath` before updating the header. Applying content-addressed storage to the synchronous API made those paths disappear when the header hash changed. Keep `Capture`'s legacy writable file contract; only `CaptureAsync` / `WriteCapturedAsync` use immutable generations and a single atomic header commit. The new interrupted-publication regression now starts from an asynchronous prior save. Final shared and Hollowmere suite reruns follow this correction.
