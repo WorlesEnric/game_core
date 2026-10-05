@@ -4,19 +4,19 @@
 // (NarrativeComposer) on the real PlayerLoop pump, with an ImmediateSceneLoader (no region scenes, no rendering), wires
 // P1.3's seams to the narrative implementations (HollowmereNarrative.Wire), then:
 //
+//   (P3.1 re-scripted the steps on the reference game's story; the invariants are P1.4's.)
 //   1. Maren's conversation started the way P1.3's NPC talk dispatcher starts it (IConversationStarter.TryStart with
-//      Maren's entity and her NpcDefinition graph ref dialogue.maren); advance, choose "I'll find the clapper", advance
-//      to the end -> heard_rumour, maren_trusts_player, quest started (through the outbox) and in stage 1
-//   2. world.travel to the marsh; interact.use on the Causeway Gate -> refused: the lock condition
-//      narrative.fact.gate_open answers False
-//   3. inventory.grant 3 old coins, inventory.buy the gate key from Odd -> odd_paid (rule on TradeDone) and gate_open
-//      (rule on ItemGranted) -> quest stage 2 on the pay branch; interact.use on the gate -> unlocked
-//   4. inventory.pickup of the clapper, world.travel to the belfry
-//   5. interact.use on the Drowned Bell -> P1.3's InteractionSucceeded -> RingBellOnUse (HasBellClapper) -> bell_rung,
-//      quest stage 3, gate_open kept by BellKeepsGateOpen
-//   6. world.travel home, Maren again ("You rang it!") to the end -> quest completed, rewards delivered once
-//   7. the outbox records captured while the rewards were in flight are reinstated (a replayed outbox): every reward
-//      obligation is delivered again and answers AlreadyApplied - no second lantern, no extra coins
+//      Maren's entity and her graph ref dialogue.maren), "I will go" -> heard_rumour, quest started (through the
+//      outbox) and in stage 1
+//   2. inventory.grant up to four old coins, inventory.buy Bram's lantern at the inn -> quest stage 2
+//   3. world.travel to the marsh; interact.use on the Causeway Gate -> refused (narrative.fact.gate_open is False);
+//      Warden Hale sees the lantern and opens it (gate_open); interact.use -> unlocked
+//   4. inventory.pickup of the clapper, world.travel to the belfry -> quest stage 3
+//   5. interact.use on the Drowned Bell -> RingBellOnUse -> bell_rung, ending B (the shrine is dark), the quest
+//      completed on branch 2 with maren_grateful; the bell's outbox records are captured while in flight
+//   6. world.travel home, Maren again ("The bell rang") to the end
+//   7. the captured records are reinstated (a replayed outbox): every obligation answers AlreadyApplied - no reward,
+//      fact or item changes
 //
 // It asserts facts, quest and interactable slots and inventories from committed slots, exactly one sanctioned pump per
 // frame, and logs [P1.4] lines with frame counts and durations of every phase.
@@ -98,7 +98,6 @@ namespace Hollowmere.P1_4.PlayMode.Tests
 
             int startFrame = Time.frameCount;
             int startPumps = root.PumpCounter.SanctionedPumps;
-            DialogueRunner talk = modules.Dialogue.Runner!;
             InventoryCommands inventory = modules.Inventory.Commands!;
             int questKey = Key(HollowmereNarrative.Quest);
             TargetId quest = rt.Index.TargetOf(NarrativeTargetKind.Quest, questKey);
@@ -110,24 +109,25 @@ namespace Hollowmere.P1_4.PlayMode.Tests
             // 1. Maren tells the rumour and starts the quest (started the way P1.3's NPC talk dispatcher starts it).
             var phase = Stopwatch.StartNew();
             int frames = 0;
-            ConversationStart started = game.Conversations.TryStart(HollowmereNarrative.MarenId, HollowmereNarrative.MarenGraphRef);
-            Assert.That(started.Started, Is.True, started.Detail);
-            yield return Until(() => Presented().Active && Presented().Kind == "line", "Maren's first line", f => frames += f);
-            StringAssert.Contains("silent since the flood", Presented().Text);
-            Assert.That(talk.Advance(), Is.True);
-            yield return Until(() => Presented().Kind == "choice", "Maren's question", f => frames += f);
-            Assert.That(Presented().Choices.Count, Is.EqualTo(2));
-            Assert.That(talk.Choose(0), Is.True);
-            yield return Until(() => Presented().Text.StartsWith("Bless you", System.StringComparison.Ordinal), "Maren's thanks", f => frames += f);
-            Assert.That(talk.Advance(), Is.True);
-            yield return Until(() => !Presented().Active, "the end of the conversation", f => frames += f);
+            yield return Converse(HollowmereNarrative.MarenId, HollowmereNarrative.MarenGraphRef, new[] { 2 }, "Maren's rumour", f => frames += f,
+                first => StringAssert.Contains("I am Maren", first));
             yield return Until(() => QuestSlot(quest, QuestIds.Stage) == 1, "quest stage 1 (startQuest delivered, rumour heard)", f => frames += f);
             Assert.That(Fact("heard_rumour"), Is.EqualTo(1));
-            Assert.That(Fact("maren_trusts_player"), Is.EqualTo(1));
             Assert.That(QuestSlot(quest, QuestIds.Status), Is.EqualTo(QuestIds.Active));
             Timing("maren intro", phase.ElapsedMilliseconds, frames);
 
-            // 2. The marsh, and a gate that stays locked.
+            // 2. Bram's lantern: up to four coins, then inventory.buy at the inn (four coins) -> quest stage 2.
+            phase.Restart();
+            frames = 0;
+            int startCoins = Held(HollowmereNarrative.OldCoin);
+            Assert.That(inventory.Grant(HollowmereNarrative.OldCoin, 4 - startCoins).Admitted, Is.True);
+            yield return Until(() => Held(HollowmereNarrative.OldCoin) == 4, "four old coins", f => frames += f);
+            Assert.That(inventory.Buy("InnStock", HollowmereNarrative.Lantern, 1).Admitted, Is.True);
+            yield return Until(() => Held(HollowmereNarrative.Lantern) == 1 && Held(HollowmereNarrative.OldCoin) == 0, "the lantern for four coins", f => frames += f);
+            yield return Until(() => QuestSlot(quest, QuestIds.Stage) == 2, "quest stage 2 (the crossing)", f => frames += f);
+            Timing("lantern", phase.ElapsedMilliseconds, frames);
+
+            // 3. The marsh: a gate that stays locked until Warden Hale, seeing the lantern, opens it.
             phase.Restart();
             frames = 0;
             Assert.That(game.World.Commands.Travel(traveller, MarshId).Admitted, Is.True);
@@ -140,95 +140,82 @@ namespace Hollowmere.P1_4.PlayMode.Tests
             Assert.That(InteractState(gate), Is.EqualTo(InteractableStates.Locked));
             Assert.That(game.Conditions.Evaluate("narrative.fact.gate_open", EvaluationContext.None, out string whyLocked), Is.False);
             Debug.Log("[P1.4] locked gate: " + whyLocked);
-            Timing("locked gate", phase.ElapsedMilliseconds, frames);
-
-            // 3. Coins, Odd's gate key, and the gate.
-            phase.Restart();
-            frames = 0;
-            Assert.That(inventory.Grant(HollowmereNarrative.OldCoin, 3).Admitted, Is.True);
-            yield return Until(() => Held(HollowmereNarrative.OldCoin) == 3, "three old coins", f => frames += f);
-            Assert.That(inventory.Buy(HollowmereNarrative.Vendor, HollowmereNarrative.GateKey, 1).Admitted, Is.True);
-            yield return Until(() => Held(HollowmereNarrative.GateKey) == 1 && Fact("odd_paid") == 1 && Fact("gate_open") == 1,
-                "the gate key, odd_paid and gate_open", f => frames += f);
-            Assert.That(Held(HollowmereNarrative.OldCoin), Is.EqualTo(0), "the key cost three old coins");
-            yield return Until(() => QuestSlot(quest, QuestIds.Stage) == 2, "quest stage 2", f => frames += f);
-            Assert.That(QuestSlot(quest, QuestIds.Branch), Is.EqualTo(1), "the quest passed the gate on the pay branch");
+            yield return Converse(HollowmereNarrative.HaleId, HollowmereNarrative.HaleGraphRef, System.Array.Empty<int>(), "Hale opens the gate", f => frames += f, null);
+            yield return Until(() => Fact("gate_open") == 1, "gate_open", f => frames += f);
+            yield return new WaitForSecondsRealtime(1f); // the gate's 0.5 s use cooldown (interaction.cooling-down)
             int successes = interactions.Module!.Successes;
             Assert.That(interact.Use(traveller, rt.ActorKey, gate).Admitted, Is.True);
             yield return Until(() => interactions.Module!.Successes > successes && InteractState(gate) != InteractableStates.Locked,
                 "the gate unlocks (lock condition narrative.fact.gate_open is True)", f => frames += f);
-            Timing("key and gate", phase.ElapsedMilliseconds, frames);
+            Timing("hale and gate", phase.ElapsedMilliseconds, frames);
 
-            // 4. The clapper, the belfry.
+            // 4. The clapper, the belfry (the Reach objective -> quest stage 3).
             phase.Restart();
             frames = 0;
             Assert.That(modules.Inventory.WorldItems!.TryPickup(HollowmereNarrative.ClapperWorldItem), Is.True);
             yield return Until(() => Held(HollowmereNarrative.BellClapper) == 1, "the bell clapper", f => frames += f);
             Assert.That(game.World.Commands.Travel(traveller, BelfryId).Admitted, Is.True);
             yield return Until(() => RegionOf(traveller) == AuthoringIds.StableKey(BelfryId), "arrival in the belfry", f => frames += f);
+            yield return Until(() => QuestSlot(quest, QuestIds.Stage) == 3, "quest stage 3 (the drowned belfry)", f => frames += f);
             Timing("clapper and belfry", phase.ElapsedMilliseconds, frames);
 
-            // 5. The bell, rung through P1.3's interaction.
+            // 5. The bell, rung through P1.3's interaction: bell_rung, ending B (the shrine is dark), the quest completed on
+            //    branch 2 with Maren's gratitude; the bell's outbox records are captured while in flight.
             phase.Restart();
             frames = 0;
             yield return StandBy(bell, f => frames += f);
             Assert.That(interact.Use(traveller, rt.ActorKey, bell).Admitted, Is.True);
-            yield return Until(() => Fact("bell_rung") == 1 && QuestSlot(quest, QuestIds.Stage) == 3, "bell_rung and quest stage 3", f => frames += f);
-            Assert.That(Fact("gate_open"), Is.EqualTo(1), "the gate stays open after the bell");
-            Assert.That(game.Explain.TryExplain("RingBellOnUse", out ExplainRecord? rang) && rang != null && rang.Fired, Is.True);
-            Timing("bell", phase.ElapsedMilliseconds, frames);
-
-            // 6. Home to Maren.
-            phase.Restart();
-            frames = 0;
-            Assert.That(game.World.Commands.Travel(traveller, VillageId).Admitted, Is.True);
-            yield return Until(() => RegionOf(traveller) == AuthoringIds.StableKey(VillageId), "arrival home", f => frames += f);
-            started = game.Conversations.TryStart(HollowmereNarrative.MarenId, HollowmereNarrative.MarenGraphRef);
-            Assert.That(started.Started, Is.True, started.Detail);
-            yield return Until(() => Presented().Active && Presented().Kind == "line", "Maren's thanks line", f => frames += f);
-            StringAssert.Contains("You rang it", Presented().Text);
-            Assert.That(talk.Advance(), Is.True);
             IReadOnlyList<OutboxRecordValue>? inFlight = null;
-            Id128 grantPort = NarrativeDelivery.DestinationOf("grant");
-            for (int i = 0; i < MaxFrames && !(QuestSlot(quest, QuestIds.Status) == QuestIds.Completed && Held(HollowmereNarrative.Lantern) == 1
-                && Held(HollowmereNarrative.OldCoin) == 3 && Fact("maren_grateful") == 1 && OpenGrants(game.Delivery.Owner.ToRecords(), grantPort) == 0); i++)
+            for (int i = 0; i < MaxFrames && inFlight == null; i++)
             {
-                IReadOnlyList<OutboxRecordValue> rows = game.Delivery.Owner.ToRecords();
-                if (inFlight == null && OpenGrants(rows, grantPort) >= 2)
+                if (game.Delivery.Owner.Outbox.OpenCount > 0)
                 {
-                    inFlight = rows;
+                    inFlight = game.Delivery.Owner.ToRecords();
+                    break;
                 }
 
                 frames++;
                 yield return null;
             }
 
-            Assert.That(QuestSlot(quest, QuestIds.Status), Is.EqualTo(QuestIds.Completed));
-            Assert.That(Held(HollowmereNarrative.Lantern), Is.EqualTo(1), "the lantern reward");
-            Assert.That(Held(HollowmereNarrative.OldCoin), Is.EqualTo(3), "the pay-branch coins");
-            Assert.That(Fact("maren_grateful"), Is.EqualTo(1));
-            Assert.That(inFlight, Is.Not.Null, "the reward grants were seen in flight");
+            Assert.That(inFlight, Is.Not.Null, "the bell's obligations were seen in flight");
+            yield return Until(() => Fact("bell_rung") == 1 && Fact("ending_b") == 1 && QuestSlot(quest, QuestIds.Status) == QuestIds.Completed
+                && game.Delivery.Owner.Outbox.OpenCount == 0, "bell_rung, ending B and the quest completed", f => frames += f);
+            Assert.That(QuestSlot(quest, QuestIds.Branch), Is.EqualTo(2), "ringing without the shrine is branch 2 (ending B)");
+            Assert.That(Fact("maren_grateful"), Is.EqualTo(1), "ending B's reward");
+            Assert.That(Fact("shrine_lit"), Is.EqualTo(0));
+            Assert.That(game.Explain.TryExplain("RingBellOnUse", out ExplainRecord? rang) && rang != null && rang.Fired, Is.True);
+            Timing("bell", phase.ElapsedMilliseconds, frames);
+
+            // 6. Home to Maren: her lines follow bell_rung.
+            phase.Restart();
+            frames = 0;
+            Assert.That(game.World.Commands.Travel(traveller, VillageId).Admitted, Is.True);
+            yield return Until(() => RegionOf(traveller) == AuthoringIds.StableKey(VillageId), "arrival home", f => frames += f);
+            yield return Converse(HollowmereNarrative.MarenId, HollowmereNarrative.MarenGraphRef, System.Array.Empty<int>(), "Maren's thanks", f => frames += f,
+                first => StringAssert.Contains("The bell rang", first));
             Timing("return to maren", phase.ElapsedMilliseconds, frames);
 
-            // 7. Replay the outbox: the reward obligations are delivered again and change nothing.
+            // 7. Replay the bell's outbox records: every obligation is delivered again and changes nothing.
             phase.Restart();
             frames = 0;
             int acknowledgedBefore = game.Delivery.Owner.AcknowledgedCount;
             int alreadyBefore = game.Delivery.Owner.AlreadyAppliedCount;
-            int grantedBefore = modules.Inventory.Granted;
+            int rewardsBefore = modules.Quest.RewardsGranted;
+            int clappers = Held(HollowmereNarrative.BellClapper);
             Assert.That(game.Delivery.Reinstate(inFlight!, out string detail), Is.True, detail);
-            Assert.That(OpenGrants(game.Delivery.Owner.ToRecords(), grantPort), Is.GreaterThanOrEqualTo(2), "the replayed grants are open again");
-            yield return Until(() => OpenGrants(game.Delivery.Owner.ToRecords(), grantPort) == 0, "the replayed grants settle", f => frames += f);
+            yield return Until(() => game.Delivery.Owner.Outbox.OpenCount == 0, "the replayed obligations settle", f => frames += f);
             for (int i = 0; i < 10; i++)
             {
                 frames++;
                 yield return null;
             }
 
-            Assert.That(Held(HollowmereNarrative.Lantern), Is.EqualTo(1), "a replayed outbox grants the lantern exactly once");
-            Assert.That(Held(HollowmereNarrative.OldCoin), Is.EqualTo(3), "a replayed outbox grants the coins exactly once");
-            Assert.That(modules.Inventory.Granted, Is.EqualTo(grantedBefore), "no grant applied again");
-            Assert.That(game.Delivery.Owner.AlreadyAppliedCount - alreadyBefore, Is.GreaterThanOrEqualTo(2), "the replayed obligations answered AlreadyApplied");
+            Assert.That(Fact("bell_rung"), Is.EqualTo(1));
+            Assert.That(Fact("ending_b"), Is.EqualTo(1));
+            Assert.That(Held(HollowmereNarrative.BellClapper), Is.EqualTo(clappers), "a replayed outbox changes no inventory");
+            Assert.That(modules.Quest.RewardsGranted, Is.EqualTo(rewardsBefore), "no reward granted again");
+            Assert.That(game.Delivery.Owner.AlreadyAppliedCount - alreadyBefore, Is.GreaterThanOrEqualTo(1), "the replayed obligations answered AlreadyApplied");
             Timing("outbox replay", phase.ElapsedMilliseconds, frames);
 
             int elapsedFrames = Time.frameCount - startFrame;
@@ -242,11 +229,10 @@ namespace Hollowmere.P1_4.PlayMode.Tests
                 + " | " + string.Join(" | ", timings));
             Assert.That(pumps, Is.EqualTo(elapsedFrames).Within(1), "one sanctioned pump per frame");
             Assert.That(root.PumpCounter.Violations, Is.EqualTo(0), root.PumpCounter.LastViolation);
-            Assert.That(modules.Quest.RewardsGranted, Is.EqualTo(3), "three rewards, granted once");
+            Assert.That(modules.Quest.RewardsGranted, Is.EqualTo(1), "ending B's one reward, granted once");
             Assert.That(game.Delivery.Owner.RejectedCount, Is.EqualTo(0), "no obligation was refused");
             Assert.That(acknowledgedBefore, Is.GreaterThan(0));
-            Assert.That(modules.Logic.Fired, Is.GreaterThanOrEqualTo(5), "odd_paid, gate key, bell, the gate-keeping rule and return-to-Maren fired");
-            Assert.That(game.Explain.TryExplain("OddPaidOnTrade", out ExplainRecord? explained) && explained != null && explained.Fired, Is.True);
+            Assert.That(modules.Logic.Fired, Is.GreaterThanOrEqualTo(3), "the bell, its ending and the gate-keeping rules fired");
 #else
             Assert.Ignore("DrownedBellHeadless loads baked assets by path and runs in the Editor only");
             yield break;
@@ -277,6 +263,46 @@ namespace Hollowmere.P1_4.PlayMode.Tests
         }
 
         private DialogueViewModel Presented() => modules.Dialogue.Presenter!.Last;
+
+        /// <summary>Talks a conversation through: advances lines, picks the planned choices in order, until it ends.</summary>
+        private IEnumerator Converse(string npcId, string graphRef, int[] choices, string what, System.Action<int> count, System.Action<string>? firstLine)
+        {
+            ConversationStart started = world!.Conversations.TryStart(npcId, graphRef);
+            Assert.That(started.Started, Is.True, what + ": " + started.Detail);
+            DialogueRunner talk = modules.Dialogue.Runner!;
+            var queue = new Queue<int>(choices);
+            bool first = true;
+            for (int steps = 0; steps < 40; steps++)
+            {
+                yield return Until(() => !Presented().Active || Presented().CanAdvance || Presented().Kind == "choice", what + ": a line or a choice", count);
+                DialogueViewModel shown = Presented();
+                if (!shown.Active)
+                {
+                    break;
+                }
+
+                if (first && shown.Kind == "line")
+                {
+                    firstLine?.Invoke(shown.Text);
+                    first = false;
+                }
+
+                int node = shown.Node;
+                if (shown.Kind == "choice")
+                {
+                    Assert.That(queue.Count, Is.GreaterThan(0), what + ": an unplanned choice (" + shown.Text + ")");
+                    Assert.That(talk.Choose(queue.Dequeue()), Is.True, what + ": choose");
+                }
+                else
+                {
+                    Assert.That(talk.Advance(), Is.True, what + ": advance");
+                }
+
+                yield return Until(() => !Presented().Active || Presented().Node != node, what + ": the next node", count);
+            }
+
+            Assert.That(Presented().Active, Is.False, what + ": the conversation ended");
+        }
 
         /// <summary>Places the traveller one metre from an interactable (within its range) and waits for the pose.</summary>
         private IEnumerator StandBy(TargetId interactable, System.Action<int> count)

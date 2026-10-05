@@ -81,7 +81,8 @@ namespace Hollowmere.Boot
         /// Follows World and Narrative after every re-attach. One state is also accepted: right after a restore,
         /// SaveService.Restore stops the previous root (which clears GameApplication.Current) and nothing makes the
         /// restored root current, so after a re-attach a null Current with the world on the service's active root counts
-        /// as ready (reported to the kernel owner; with a restore that adopts Current this branch is never taken).
+        /// as ready. Interim until Codex packet APP-1 (codex/app-1: SaveService.Restore adopts the restored root as Current
+        /// when the replaced root was Current) lands; then this branch is never taken and the game owner may remove it.
         /// </summary>
         public bool AdmissionReady(SaveService service)
         {
