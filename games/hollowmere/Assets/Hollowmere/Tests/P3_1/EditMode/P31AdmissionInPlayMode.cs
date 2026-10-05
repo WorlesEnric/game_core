@@ -12,7 +12,8 @@
 //     Mode to start; Play Mode starts a fresh game (2 coins); the admission is re-configured from its durable record with
 //     fresh trust (RefreshPendingVerdicts, as after a domain reload), the fresh game binds, the session becomes ready,
 //     the capture is restored into the fresh game (9 coins again) and the live smoke runs in the active world
-//     (HollowmereAdmittedSmoke: session ready, root running, equal round-trip slot hash) -> Admitted.
+//     (HollowmereAdmittedSmoke: session ready, root running, equal round-trip slot hash), then R2-B's polled smoke stays
+//     Pending while the active world steps the proposal's 120 frames and passes the same assertions -> Admitted.
 //
 // Compile and catalog are fakes (as in P2.4/R2-B's admission tests): the real compile, domain reload and catalog proof
 // belong to the staging lane's own tests. Domain reload on entering Play Mode is disabled for this test (restored
@@ -107,12 +108,22 @@ namespace Hollowmere.P3_1.EditMode.Tests
             bed.Reconfigure();
             smoke = HollowmereStudioAdmission.Bind(bed.Runtime, freshBoot, freshBoot.Saves!);
             AdmissionResult done = Resume(candidate.Id);
-            Debug.Log("[P3.1] admission after the restart: " + done.Outcome + " (" + done.Reason + ") " + done.Detail + "; smoke " + smoke.LastReport);
+            int polledFrames = 0;
+            for (; polledFrames < 1200 && done.Outcome == AdmissionOutcome.Pending; polledFrames++)
+            {
+                yield return null; // R2-B's polled smoke: the active world advances the proposal's 120 steps on its own pump
+                done = bed.Admission.Resume(candidate.Id);
+            }
+
+            Debug.Log("[P3.1] admission after the restart: " + done.Outcome + " (" + done.Reason + ") " + done.Detail + " after " + polledFrames
+                + " polled frame(s); smoke " + smoke.LastReport);
             Assert.That(done.Outcome, Is.EqualTo(AdmissionOutcome.Admitted), done.Detail + " | smoke " + smoke.LastReport + " | reason "
                 + (string?)bed.Admission.ReadPending(candidate.Id)?["reason"] + " | ready " + freshBoot.AdmissionReady(freshBoot.Saves!)
                 + " | log " + string.Join(" / ", bed.Lines));
-            Assert.That(smoke.Runs, Is.EqualTo(1), "the live smoke ran once");
-            StringAssert.StartsWith("pass:", smoke.LastReport);
+            Assert.That(smoke.Runs, Is.EqualTo(1), "the synchronous live smoke ran once");
+            Assert.That(smoke.Polls, Is.EqualTo(1), "the polled live smoke reached one verdict");
+            StringAssert.StartsWith("poll pass:", smoke.LastReport);
+            Assert.That(polledFrames, Is.GreaterThanOrEqualTo(100), "the polled smoke waited for the world to step (" + polledFrames + " editor frames)");
             yield return Until(() => fresh.Director!.ItemCount("OldCoin") == playedCoins, "the captured game restored into the fresh one", 300);
             SaveRoundTripReport roundTrip = freshBoot.Saves!.TestRoundTrip();
             Assert.That(roundTrip.Equal, Is.True, roundTrip.ToString());

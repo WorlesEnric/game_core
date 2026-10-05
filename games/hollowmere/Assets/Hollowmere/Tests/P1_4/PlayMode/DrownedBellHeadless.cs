@@ -14,9 +14,10 @@
 //   4. inventory.pickup of the clapper, world.travel to the belfry -> quest stage 3
 //   5. interact.use on the Drowned Bell -> RingBellOnUse -> bell_rung, ending B (the shrine is dark), the quest
 //      completed on branch 2 with maren_grateful; the bell's outbox records are captured while in flight
-//   6. world.travel home, Maren again ("The bell rang") to the end
-//   7. the captured records are reinstated (a replayed outbox): every obligation answers AlreadyApplied - no reward,
-//      fact or item changes
+//   6. world.travel home, Maren again ("The bell rang") to the end; interact.use on the square's coins -> the pickup's
+//      outbox records are captured in flight, three coins
+//   7. the captured bell and pickup records are reinstated (a replayed outbox): no reward, fact or item changes, and
+//      the pickup answers AlreadyApplied
 //
 // It asserts facts, quest and interactable slots and inventories from committed slots, exactly one sanctioned pump per
 // frame, and logs [P1.4] lines with frame counts and durations of every phase.
@@ -194,6 +195,40 @@ namespace Hollowmere.P1_4.PlayMode.Tests
             yield return Until(() => RegionOf(traveller) == AuthoringIds.StableKey(VillageId), "arrival home", f => frames += f);
             yield return Converse(HollowmereNarrative.MarenId, HollowmereNarrative.MarenGraphRef, System.Array.Empty<int>(), "Maren's thanks", f => frames += f,
                 first => StringAssert.Contains("The bell rang", first));
+
+            // The square's coins: inventory.pickup through the rule Take_OldCoins_Village, its outbox records captured in flight.
+            string coinsId = string.Empty;
+            foreach (ManifestEntity entity in manifest!.Entities)
+            {
+                if (entity.name == "Coins (square)")
+                {
+                    coinsId = entity.authoringId;
+                }
+            }
+
+            Assert.That(coinsId, Is.Not.Empty, "the square's coins are placed");
+            TargetId coins = AuthoringIds.TargetIdFor(coinsId);
+            int coinsBefore = Held(HollowmereNarrative.OldCoin);
+            yield return StandBy(coins, f => frames += f);
+            Id128 pickupPort = NarrativeDelivery.DestinationOf("pickup");
+            Assert.That(interact.Use(traveller, rt.ActorKey, coins).Admitted, Is.True);
+            IReadOnlyList<OutboxRecordValue>? pickupInFlight = null;
+            for (int i = 0; i < MaxFrames && pickupInFlight == null; i++)
+            {
+                IReadOnlyList<OutboxRecordValue> rows = game.Delivery.Owner.ToRecords();
+                if (OpenGrants(rows, pickupPort) >= 1)
+                {
+                    pickupInFlight = rows;
+                    break;
+                }
+
+                frames++;
+                yield return null;
+            }
+
+            Assert.That(pickupInFlight, Is.Not.Null, "the pickup was seen in flight");
+            yield return Until(() => Held(HollowmereNarrative.OldCoin) == coinsBefore + 3 && OpenGrants(game.Delivery.Owner.ToRecords(), pickupPort) == 0,
+                "the square's three coins", f => frames += f);
             Timing("return to maren", phase.ElapsedMilliseconds, frames);
 
             // 7. Replay the bell's outbox records: every obligation is delivered again and changes nothing.
@@ -204,7 +239,9 @@ namespace Hollowmere.P1_4.PlayMode.Tests
             int rewardsBefore = modules.Quest.RewardsGranted;
             int clappers = Held(HollowmereNarrative.BellClapper);
             Assert.That(game.Delivery.Reinstate(inFlight!, out string detail), Is.True, detail);
-            yield return Until(() => game.Delivery.Owner.Outbox.OpenCount == 0, "the replayed obligations settle", f => frames += f);
+            yield return Until(() => game.Delivery.Owner.Outbox.OpenCount == 0, "the replayed bell obligations settle", f => frames += f);
+            Assert.That(game.Delivery.Reinstate(pickupInFlight!, out detail), Is.True, detail);
+            yield return Until(() => game.Delivery.Owner.Outbox.OpenCount == 0, "the replayed pickup settles", f => frames += f);
             for (int i = 0; i < 10; i++)
             {
                 frames++;
@@ -214,8 +251,11 @@ namespace Hollowmere.P1_4.PlayMode.Tests
             Assert.That(Fact("bell_rung"), Is.EqualTo(1));
             Assert.That(Fact("ending_b"), Is.EqualTo(1));
             Assert.That(Held(HollowmereNarrative.BellClapper), Is.EqualTo(clappers), "a replayed outbox changes no inventory");
+            Assert.That(Held(HollowmereNarrative.OldCoin), Is.EqualTo(coinsBefore + 3), "a replayed pickup picks up nothing twice");
             Assert.That(modules.Quest.RewardsGranted, Is.EqualTo(rewardsBefore), "no reward granted again");
-            Assert.That(game.Delivery.Owner.AlreadyAppliedCount - alreadyBefore, Is.GreaterThanOrEqualTo(1), "the replayed obligations answered AlreadyApplied");
+            Assert.That(game.Delivery.Owner.AlreadyAppliedCount - alreadyBefore, Is.GreaterThanOrEqualTo(1), "the replayed pickup answered AlreadyApplied");
+            Debug.Log("[P1.4] replay: alreadyApplied +" + (game.Delivery.Owner.AlreadyAppliedCount - alreadyBefore).ToString(CultureInfo.InvariantCulture)
+                + " acknowledged +" + (game.Delivery.Owner.AcknowledgedCount - acknowledgedBefore).ToString(CultureInfo.InvariantCulture));
             Timing("outbox replay", phase.ElapsedMilliseconds, frames);
 
             int elapsedFrames = Time.frameCount - startFrame;

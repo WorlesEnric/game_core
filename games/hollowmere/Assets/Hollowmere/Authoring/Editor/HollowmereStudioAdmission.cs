@@ -13,10 +13,15 @@
 // game already past UseSaves). The readiness lambda reads GameBoot.World/Narrative, so it follows every restored-world
 // re-attach. GameBoot only raises an instance event: player builds reference no Editor assembly.
 //
+// The binding also sets R2-B's polled smoke (AdmissionOptions.PollSmokeTest): after the synchronous check, the
+// admission stays Pending while the active root advances the proposal's smoke steps (sanctioned frames, pumped by the
+// PlayerLoop as always - never by the smoke), then the live assertions run again -> Passed or Failed.
+//
 // HollowmereAdmittedSmoke is the live smoke registry. It runs only entries compiled into this assembly whose package is
 // the verdict's admitted package, never a type or method named by candidate data, and never the sandbox Begin()
-// harness (that would boot a second root and displace the restored game). An entry asserts against the active world
-// without pumping it; it is a pure check, so a re-run after an admission crash recovery gives the same answer.
+// harness (that would boot a second root and displace the restored game). An entry observes and asserts the active
+// world without driving it, so a re-run after an admission crash recovery gives the same answer (the frame count
+// restarts with the new binding).
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -90,6 +95,31 @@ namespace Hollowmere.Authoring
                 () => service,
                 () => boot != null && boot.AdmissionReady(service),
                 verdict => StudioAdmissionServices.RunSmokeTest(runtime, verdict, (type, method, steps) => smoke.RunAdmittedSmokeEntry(verdict, type, method, steps)));
+            StageAdmission.Of(runtime).Options.PollSmokeTest = verdict =>
+            {
+                if (!ReferenceEquals(StageAdmission.Of(runtime).VerdictOf(verdict.ChangeSetId), verdict))
+                {
+                    return AdmissionSmokeStatus.Failed;
+                }
+
+                if (boot == null || !boot.AdmissionReady(service))
+                {
+                    return AdmissionSmokeStatus.Pending;
+                }
+
+                // The proposal's entry, resolved by R2-G's verified lookup (the callback only records it).
+                string? type = null;
+                string? method = null;
+                int steps = 0;
+                bool resolved = StudioAdmissionServices.RunSmokeTest(runtime, verdict, (t, m, n) =>
+                {
+                    type = t;
+                    method = m;
+                    steps = n;
+                    return true;
+                });
+                return resolved ? smoke.PollAdmittedSmokeEntry(verdict, type!, method!, steps) : AdmissionSmokeStatus.Failed;
+            };
             return smoke;
         }
 
@@ -120,6 +150,7 @@ namespace Hollowmere.Authoring
 
         private readonly GameBoot boot;
         private readonly SaveService service;
+        private readonly Dictionary<string, Observation> observations = new Dictionary<string, Observation>(StringComparer.Ordinal);
 
         public HollowmereAdmittedSmoke(GameBoot boot, SaveService service)
         {
@@ -154,7 +185,59 @@ namespace Hollowmere.Authoring
             return failure == null;
         }
 
-        private string? Check(StageVerdict verdict, string type, string method, int steps, out string detail)
+        /// <summary>
+        /// R2-B's polled smoke for the same trusted entry: Pending until the active root advanced <paramref name="steps"/>
+        /// sanctioned frames since the first poll (a restored root restarts the count), then the live assertions again,
+        /// round trip included -> Passed or Failed. Never pumps the world.
+        /// </summary>
+        public AdmissionSmokeStatus PollAdmittedSmokeEntry(StageVerdict verdict, string type, string method, int steps)
+        {
+            string? failure = Check(verdict, type, method, steps, out string detail, false);
+            if (failure != null)
+            {
+                Finish("fail: " + failure, type, method, steps, false);
+                return AdmissionSmokeStatus.Failed;
+            }
+
+            GameApplicationRoot root = boot.World!.Root;
+            int pumps = root.PumpCounter.SanctionedPumps;
+            if (!observations.TryGetValue(verdict.Digest, out Observation? seen) || !ReferenceEquals(seen.Root, root))
+            {
+                observations[verdict.Digest] = new Observation(root, pumps);
+                return AdmissionSmokeStatus.Pending;
+            }
+
+            int advanced = pumps - seen.Pumps;
+            if (advanced < steps)
+            {
+                return AdmissionSmokeStatus.Pending;
+            }
+
+            failure = LiveWorld(steps, true, out detail);
+            observations.Remove(verdict.Digest);
+            Finish(failure == null ? "pass: " + detail + "; observed " + advanced.ToString(CultureInfo.InvariantCulture) + " frame(s)" : "fail: " + failure,
+                type, method, steps, failure == null);
+            return failure == null ? AdmissionSmokeStatus.Passed : AdmissionSmokeStatus.Failed;
+        }
+
+        /// <summary>Polled smoke runs that reached a verdict (Passed or Failed).</summary>
+        public int Polls { get; private set; }
+
+        private void Finish(string report, string type, string method, int steps, bool passed)
+        {
+            Polls++;
+            LastReport = "poll " + report + " [" + type + "." + method + ", steps " + steps.ToString(CultureInfo.InvariantCulture) + "]";
+            if (passed)
+            {
+                Debug.Log("[Hollowmere] admitted smoke " + LastReport);
+            }
+            else
+            {
+                Debug.LogWarning("[Hollowmere] admitted smoke " + LastReport);
+            }
+        }
+
+        private string? Check(StageVerdict verdict, string type, string method, int steps, out string detail, bool roundTrip = true)
         {
             detail = string.Empty;
             if (verdict == null)
@@ -191,16 +274,16 @@ namespace Hollowmere.Authoring
                 return "steps must be positive";
             }
 
-            return LiveWorld(steps, out detail);
+            return LiveWorld(steps, roundTrip, out detail);
         }
 
         /// <summary>
         /// The live assertions of an admitted mechanism in the active Hollowmere world: the session is ready (the restored
         /// root is the save service's and the application's), the root runs, and the restored world round-trips through its
-        /// save codecs with an equal canonical slot hash. Synchronous and side-effect free: the multi-frame smoke protocol
-        /// needs R2-B's polled smoke status (R2-G request 5), so <paramref name="steps"/> is reported, not pumped.
+        /// save codecs with an equal canonical slot hash (when <paramref name="roundTrip"/>). Synchronous and side-effect
+        /// free; the frames themselves are observed by <see cref="PollAdmittedSmokeEntry"/>.
         /// </summary>
-        private string? LiveWorld(int steps, out string detail)
+        private string? LiveWorld(int steps, bool roundTrip, out string detail)
         {
             detail = string.Empty;
             if (boot == null)
@@ -219,21 +302,39 @@ namespace Hollowmere.Authoring
                 return "the active root is " + root.State;
             }
 
-            SaveRoundTripReport roundTrip = service.TestRoundTrip();
-            if (roundTrip.Refusal != null)
+            detail = "active root " + root.State + ", catalog " + root.CatalogHash.ToHex().Substring(0, 12);
+            if (!roundTrip)
             {
-                return "the active world's round trip was refused: " + roundTrip;
+                return null;
             }
 
-            if (!roundTrip.Equal)
+            SaveRoundTripReport report = service.TestRoundTrip();
+            if (report.Refusal != null)
             {
-                return "the active world's round trip differs: " + roundTrip.Detail;
+                return "the active world's round trip was refused: " + report;
             }
 
-            detail = "active root " + root.State + ", catalog " + root.CatalogHash.ToHex().Substring(0, 12) + ", round trip equal (slot hash "
-                + roundTrip.SourceSlotHash.Substring(0, Math.Min(12, roundTrip.SourceSlotHash.Length)) + "), " + steps.ToString(CultureInfo.InvariantCulture)
-                + " step(s) requested, checked synchronously";
+            if (!report.Equal)
+            {
+                return "the active world's round trip differs: " + report.Detail;
+            }
+
+            detail += ", round trip equal (slot hash " + report.SourceSlotHash.Substring(0, Math.Min(12, report.SourceSlotHash.Length)) + "), "
+                + steps.ToString(CultureInfo.InvariantCulture) + " step(s) requested";
             return null;
+        }
+
+        private sealed class Observation
+        {
+            public Observation(GameApplicationRoot root, int pumps)
+            {
+                Root = root;
+                Pumps = pumps;
+            }
+
+            public GameApplicationRoot Root { get; }
+
+            public int Pumps { get; }
         }
 
         private sealed class Entry
