@@ -1,0 +1,26 @@
+{
+  "stage": "Invalid",
+  "gatewayStaged": true,
+  "summary": "2 ops: move x1, npc.setPatrol x1",
+  "badges": [
+    "Edit-time",
+    "RequiresPlayStop"
+  ],
+  "problems": [
+    {
+      "code": "MissingPrerequisite",
+      "message": "Tool 'npc.setPatrol' needs 'npc.definition' in the project, and the index has none.",
+      "hint": "Create the prerequisite first (for example with a Compose tool), then retry.",
+      "where": "op2"
+    }
+  ],
+  "stagedDiagnostics": [
+    {
+      "code": "MissingPrerequisite",
+      "message": "Tool 'npc.setPatrol' needs 'npc.definition' in the project, and the index has none.",
+      "hint": "Create the prerequisite first (for example with a Compose tool), then retry.",
+      "where": "op2"
+    }
+  ],
+  "stagedOk": false
+}

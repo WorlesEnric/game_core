@@ -1,0 +1,833 @@
+{
+  "assumedRates": {
+    "inputPerM": 2.5,
+    "outputPerM": 15.0,
+    "image": 0.04,
+    "tts": 0.002,
+    "voice": 0.01,
+    "describe": 0.02
+  },
+  "runs": [
+    {
+      "run": "batch-20261005T100136Z",
+      "workflow": "batch",
+      "revision": "f01f65f9afe0a5b83527506e60b2b813d9bdb229",
+      "exit": 0,
+      "tasks": [
+        "t0f61eea375dbb7064f2567d9",
+        "t3db1a0cc70c5294d3cb6fa6a"
+      ],
+      "requests": [
+        {
+          "tag": "ring",
+          "result": "needs_clarification",
+          "tasks": [
+            "t3db1a0cc70c5294d3cb6fa6a",
+            "t0f61eea375dbb7064f2567d9"
+          ],
+          "submitToAcceptedMs": 629,
+          "submitToFirstEventMs": 140,
+          "submitToCandidateMs": null,
+          "candidateImportMs": null,
+          "previewMs": null,
+          "applyMs": null,
+          "undoMs": null,
+          "cancelAckMs": null,
+          "visibleLagP95Ms": 4886,
+          "visibleLagMaxMs": 4886,
+          "visibleLagN": 6
+        }
+      ],
+      "usage": {
+        "input_tokens": 291225,
+        "output_tokens": 1976,
+        "tasks": 2,
+        "images": 0,
+        "tts": 0,
+        "voice": 0,
+        "describe": 0,
+        "estimatedUsd": 0.76
+      }
+    },
+    {
+      "run": "batch2-20261005T104639Z",
+      "workflow": "batch2",
+      "revision": "fc1e0b094380c3c4974ccfdb17dfb883829b29c8",
+      "exit": 0,
+      "tasks": [
+        "t5260bdefda4bfc9440d66227"
+      ],
+      "requests": [
+        {
+          "tag": "ring",
+          "result": "candidate",
+          "tasks": [
+            "t5260bdefda4bfc9440d66227"
+          ],
+          "submitToAcceptedMs": 1541,
+          "submitToFirstEventMs": 228,
+          "submitToCandidateMs": 91836,
+          "candidateImportMs": 121.9,
+          "previewMs": 121.9,
+          "applyMs": null,
+          "undoMs": null,
+          "cancelAckMs": null,
+          "visibleLagP95Ms": 158,
+          "visibleLagMaxMs": 158,
+          "visibleLagN": 3
+        }
+      ],
+      "usage": {
+        "input_tokens": 135855,
+        "output_tokens": 2108,
+        "tasks": 1,
+        "images": 0,
+        "tts": 0,
+        "voice": 0,
+        "describe": 0,
+        "estimatedUsd": 0.37
+      }
+    },
+    {
+      "run": "harness-20261005T124954Z",
+      "workflow": null,
+      "revision": null,
+      "exit": null,
+      "tasks": [],
+      "requests": [],
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "tasks": 0,
+        "images": 0,
+        "tts": 0,
+        "voice": 0,
+        "describe": 0,
+        "estimatedUsd": 0.0
+      }
+    },
+    {
+      "run": "harness-20261005T130114Z",
+      "workflow": null,
+      "revision": null,
+      "exit": null,
+      "tasks": [
+        "t79d745a84a6e913884a66940",
+        "ta374179e81fa7bcd52846f30"
+      ],
+      "requests": [],
+      "usage": {
+        "input_tokens": 104377,
+        "output_tokens": 1053,
+        "tasks": 2,
+        "images": 2,
+        "tts": 1,
+        "voice": 0,
+        "describe": 0,
+        "estimatedUsd": 0.36
+      }
+    },
+    {
+      "run": "honesty-20261005T093618Z",
+      "workflow": "honesty",
+      "revision": "a212892eb294d9e5f85596c16ded37ce1089d8b0",
+      "exit": 1,
+      "tasks": [],
+      "requests": [
+        {
+          "tag": "cancel",
+          "result": null,
+          "tasks": null,
+          "submitToAcceptedMs": null,
+          "submitToFirstEventMs": null,
+          "submitToCandidateMs": null,
+          "candidateImportMs": null,
+          "previewMs": null,
+          "applyMs": null,
+          "undoMs": null,
+          "cancelAckMs": null,
+          "visibleLagP95Ms": null,
+          "visibleLagMaxMs": null,
+          "visibleLagN": 0
+        }
+      ],
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "tasks": 0,
+        "images": 0,
+        "tts": 0,
+        "voice": 0,
+        "describe": 0,
+        "estimatedUsd": 0.0
+      }
+    },
+    {
+      "run": "honesty-20261005T095503Z",
+      "workflow": "honesty",
+      "revision": "f01f65f9afe0a5b83527506e60b2b813d9bdb229",
+      "exit": 0,
+      "tasks": [
+        "tbedaa9b82c7f64b5e9661ed3",
+        "td5bc986613730159a237608c"
+      ],
+      "requests": [
+        {
+          "tag": "cancel",
+          "result": "cancelled",
+          "tasks": [
+            "tbedaa9b82c7f64b5e9661ed3"
+          ],
+          "submitToAcceptedMs": 782,
+          "submitToFirstEventMs": 168,
+          "submitToCandidateMs": null,
+          "candidateImportMs": null,
+          "previewMs": null,
+          "applyMs": null,
+          "undoMs": null,
+          "cancelAckMs": 224,
+          "visibleLagP95Ms": 207,
+          "visibleLagMaxMs": 207,
+          "visibleLagN": 3
+        },
+        {
+          "tag": "explain",
+          "result": "candidate",
+          "tasks": [
+            "td5bc986613730159a237608c"
+          ],
+          "submitToAcceptedMs": 1141,
+          "submitToFirstEventMs": 329,
+          "submitToCandidateMs": 69508,
+          "candidateImportMs": 223.4,
+          "previewMs": null,
+          "applyMs": null,
+          "undoMs": null,
+          "cancelAckMs": null,
+          "visibleLagP95Ms": 150,
+          "visibleLagMaxMs": 150,
+          "visibleLagN": 3
+        }
+      ],
+      "usage": {
+        "input_tokens": 116374,
+        "output_tokens": 1656,
+        "tasks": 2,
+        "images": 1,
+        "tts": 0,
+        "voice": 0,
+        "describe": 1,
+        "estimatedUsd": 0.38
+      }
+    },
+    {
+      "run": "mech-a-20261005T113219Z",
+      "workflow": "mech-a",
+      "revision": "53df3e5529fd1807e720fde50542fa6cf94be65e",
+      "exit": 0,
+      "tasks": [
+        "t16cb27e25a1cbf156a9474e5",
+        "t60d38464f28fd858cca07ce8"
+      ],
+      "requests": [
+        {
+          "tag": "mech",
+          "result": "candidate_invalid",
+          "tasks": [
+            "t16cb27e25a1cbf156a9474e5",
+            "t60d38464f28fd858cca07ce8"
+          ],
+          "submitToAcceptedMs": 4726,
+          "submitToFirstEventMs": 231,
+          "submitToCandidateMs": null,
+          "candidateImportMs": null,
+          "previewMs": null,
+          "applyMs": null,
+          "undoMs": null,
+          "cancelAckMs": null,
+          "visibleLagP95Ms": 2331,
+          "visibleLagMaxMs": 2331,
+          "visibleLagN": 6
+        }
+      ],
+      "usage": {
+        "input_tokens": 1198091,
+        "output_tokens": 12554,
+        "tasks": 2,
+        "images": 0,
+        "tts": 0,
+        "voice": 0,
+        "describe": 0,
+        "estimatedUsd": 3.18
+      }
+    },
+    {
+      "run": "mech-b-20261005T120918Z",
+      "workflow": "mech-b",
+      "revision": "53df3e5529fd1807e720fde50542fa6cf94be65e",
+      "exit": 1,
+      "tasks": [],
+      "requests": [],
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "tasks": 0,
+        "images": 0,
+        "tts": 0,
+        "voice": 0,
+        "describe": 0,
+        "estimatedUsd": 0.0
+      }
+    },
+    {
+      "run": "mech-b-20261005T124205Z",
+      "workflow": "mech-b",
+      "revision": "53df3e5529fd1807e720fde50542fa6cf94be65e",
+      "exit": 1,
+      "tasks": [],
+      "requests": [],
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "tasks": 0,
+        "images": 0,
+        "tts": 0,
+        "voice": 0,
+        "describe": 0,
+        "estimatedUsd": 0.0
+      }
+    },
+    {
+      "run": "narrative-20261005T072920Z",
+      "workflow": "narrative",
+      "revision": "a618d01c6355ac91e88d8d188839bbf247411a13",
+      "exit": 1,
+      "tasks": [
+        "t28c03fc3a61c6f0ea6c2da9a",
+        "t3d3b31b2754049487d964134",
+        "tb2c186da6539f7ff26ecab18",
+        "td662950caf4892786a4154bd",
+        "tdf99497e601db67cdf64dabf",
+        "te4674ea132021d6758b199a3"
+      ],
+      "requests": [
+        {
+          "tag": "hud",
+          "result": "needs_clarification",
+          "tasks": [
+            "t28c03fc3a61c6f0ea6c2da9a",
+            "t3d3b31b2754049487d964134"
+          ],
+          "submitToAcceptedMs": 17900,
+          "submitToFirstEventMs": 2296,
+          "submitToCandidateMs": null,
+          "candidateImportMs": null,
+          "previewMs": null,
+          "applyMs": null,
+          "undoMs": null,
+          "cancelAckMs": null,
+          "visibleLagP95Ms": 3849,
+          "visibleLagMaxMs": 3849,
+          "visibleLagN": 6
+        },
+        {
+          "tag": "odd-line",
+          "result": "needs_clarification",
+          "tasks": [
+            "te4674ea132021d6758b199a3",
+            "tb2c186da6539f7ff26ecab18"
+          ],
+          "submitToAcceptedMs": 14489,
+          "submitToFirstEventMs": 235,
+          "submitToCandidateMs": null,
+          "candidateImportMs": null,
+          "previewMs": null,
+          "applyMs": null,
+          "undoMs": null,
+          "cancelAckMs": null,
+          "visibleLagP95Ms": 2846,
+          "visibleLagMaxMs": 2846,
+          "visibleLagN": 6
+        },
+        {
+          "tag": "quest",
+          "result": "candidate_invalid",
+          "tasks": [
+            "td662950caf4892786a4154bd",
+            "tdf99497e601db67cdf64dabf"
+          ],
+          "submitToAcceptedMs": 1567,
+          "submitToFirstEventMs": 369,
+          "submitToCandidateMs": 219026,
+          "candidateImportMs": 127.2,
+          "previewMs": 127.2,
+          "applyMs": null,
+          "undoMs": null,
+          "cancelAckMs": null,
+          "visibleLagP95Ms": 3695,
+          "visibleLagMaxMs": 3695,
+          "visibleLagN": 7
+        }
+      ],
+      "usage": {
+        "input_tokens": 1015783,
+        "output_tokens": 7200,
+        "tasks": 6,
+        "images": 0,
+        "tts": 0,
+        "voice": 0,
+        "describe": 0,
+        "estimatedUsd": 2.65
+      }
+    },
+    {
+      "run": "persist-20261005T080347Z",
+      "workflow": "persist",
+      "revision": "b83623b2f60b428384f0aaf5208e44fce5dfc0c0",
+      "exit": 0,
+      "tasks": [],
+      "requests": [],
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "tasks": 0,
+        "images": 1,
+        "tts": 1,
+        "voice": 0,
+        "describe": 0,
+        "estimatedUsd": 0.04
+      }
+    },
+    {
+      "run": "reopen-20261005T083218Z",
+      "workflow": "reopen",
+      "revision": "b83623b2f60b428384f0aaf5208e44fce5dfc0c0",
+      "exit": 0,
+      "tasks": [],
+      "requests": [],
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "tasks": 0,
+        "images": 0,
+        "tts": 0,
+        "voice": 0,
+        "describe": 0,
+        "estimatedUsd": 0.0
+      }
+    },
+    {
+      "run": "robe-20261005T055032Z",
+      "workflow": "robe",
+      "revision": "38891db6265b8145014e44e9b2f69312f82b3a68",
+      "exit": 1,
+      "tasks": [
+        "t0d55d526d33714d30204b784",
+        "t8a544b1e2b54dc00c8b818f8"
+      ],
+      "requests": [
+        {
+          "tag": "robe",
+          "result": "candidate",
+          "tasks": [
+            "t0d55d526d33714d30204b784",
+            "t8a544b1e2b54dc00c8b818f8"
+          ],
+          "submitToAcceptedMs": 522,
+          "submitToFirstEventMs": 209,
+          "submitToCandidateMs": 135001,
+          "candidateImportMs": 121.1,
+          "previewMs": 121.1,
+          "applyMs": 131.9,
+          "undoMs": null,
+          "cancelAckMs": null,
+          "visibleLagP95Ms": 132,
+          "visibleLagMaxMs": 132,
+          "visibleLagN": 6
+        }
+      ],
+      "usage": {
+        "input_tokens": 245646,
+        "output_tokens": 2653,
+        "tasks": 2,
+        "images": 1,
+        "tts": 1,
+        "voice": 0,
+        "describe": 0,
+        "estimatedUsd": 0.7
+      }
+    },
+    {
+      "run": "robe2-20261005T064834Z",
+      "workflow": "robe2",
+      "revision": "5a651839046809bc41f8ee0189fd1bedbd5fcf46",
+      "exit": 0,
+      "tasks": [],
+      "requests": [
+        {
+          "tag": "robe",
+          "result": "refused",
+          "tasks": [],
+          "submitToAcceptedMs": 165,
+          "submitToFirstEventMs": 313,
+          "submitToCandidateMs": null,
+          "candidateImportMs": null,
+          "previewMs": null,
+          "applyMs": null,
+          "undoMs": null,
+          "cancelAckMs": null,
+          "visibleLagP95Ms": null,
+          "visibleLagMaxMs": null,
+          "visibleLagN": 0
+        }
+      ],
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "tasks": 0,
+        "images": 2,
+        "tts": 1,
+        "voice": 0,
+        "describe": 0,
+        "estimatedUsd": 0.08
+      }
+    },
+    {
+      "run": "robe2-20261005T070105Z",
+      "workflow": "robe2",
+      "revision": "ae494b8dcd4831644c6471a1999b2f7a9b38763c",
+      "exit": 1,
+      "tasks": [
+        "t73ad0f6f20ac65571b2ddff9"
+      ],
+      "requests": [
+        {
+          "tag": "robe",
+          "result": "candidate_invalid",
+          "tasks": [
+            "t73ad0f6f20ac65571b2ddff9"
+          ],
+          "submitToAcceptedMs": 1013,
+          "submitToFirstEventMs": 395,
+          "submitToCandidateMs": 106311,
+          "candidateImportMs": 112.5,
+          "previewMs": 112.5,
+          "applyMs": null,
+          "undoMs": null,
+          "cancelAckMs": null,
+          "visibleLagP95Ms": 302,
+          "visibleLagMaxMs": 302,
+          "visibleLagN": 3
+        }
+      ],
+      "usage": {
+        "input_tokens": 71803,
+        "output_tokens": 1007,
+        "tasks": 1,
+        "images": 2,
+        "tts": 1,
+        "voice": 0,
+        "describe": 0,
+        "estimatedUsd": 0.28
+      }
+    },
+    {
+      "run": "text-20261005T052459Z",
+      "workflow": "text",
+      "revision": "e1cf52c79b63a6ff15e9d9c372f98b04829c1af2",
+      "exit": 1,
+      "tasks": [
+        "t06b09f0561ee4d59983ccdac",
+        "t1d062d1abb5a3d0c28a5db5e",
+        "t525d2057e49ba6ce4ea0fa92",
+        "tbe66ce5f3dc2411e206120c7"
+      ],
+      "requests": [
+        {
+          "tag": "clarify",
+          "result": "needs_clarification",
+          "tasks": [
+            "t06b09f0561ee4d59983ccdac",
+            "t525d2057e49ba6ce4ea0fa92"
+          ],
+          "submitToAcceptedMs": 862,
+          "submitToFirstEventMs": 252,
+          "submitToCandidateMs": null,
+          "candidateImportMs": null,
+          "previewMs": null,
+          "applyMs": null,
+          "undoMs": null,
+          "cancelAckMs": null,
+          "visibleLagP95Ms": 154,
+          "visibleLagMaxMs": 154,
+          "visibleLagN": 6
+        },
+        {
+          "tag": "move-patrol",
+          "result": "needs_clarification",
+          "tasks": [
+            "t1d062d1abb5a3d0c28a5db5e",
+            "tbe66ce5f3dc2411e206120c7"
+          ],
+          "submitToAcceptedMs": 359,
+          "submitToFirstEventMs": 148,
+          "submitToCandidateMs": null,
+          "candidateImportMs": null,
+          "previewMs": null,
+          "applyMs": null,
+          "undoMs": null,
+          "cancelAckMs": null,
+          "visibleLagP95Ms": 136,
+          "visibleLagMaxMs": 136,
+          "visibleLagN": 6
+        }
+      ],
+      "usage": {
+        "input_tokens": 445906,
+        "output_tokens": 4345,
+        "tasks": 4,
+        "images": 0,
+        "tts": 0,
+        "voice": 0,
+        "describe": 0,
+        "estimatedUsd": 1.18
+      }
+    },
+    {
+      "run": "text2-20261005T053552Z",
+      "workflow": "text2",
+      "revision": "2ff643604ec9f227d3c4a045db91c68d1a2b98ff",
+      "exit": 1,
+      "tasks": [
+        "t0e47053edf5ea6ac27f85a9b",
+        "t6fc7ab0f2e4ca22b1ef914b3",
+        "td6670495ac94353ea2c57572",
+        "td6d2750514d1f12813feb8aa",
+        "tef89e4b197000d0ec921818f"
+      ],
+      "requests": [
+        {
+          "tag": "clarify2",
+          "result": "needs_clarification",
+          "tasks": [
+            "td6670495ac94353ea2c57572",
+            "t0e47053edf5ea6ac27f85a9b"
+          ],
+          "submitToAcceptedMs": 442,
+          "submitToFirstEventMs": 86,
+          "submitToCandidateMs": null,
+          "candidateImportMs": null,
+          "previewMs": null,
+          "applyMs": null,
+          "undoMs": null,
+          "cancelAckMs": null,
+          "visibleLagP95Ms": 101,
+          "visibleLagMaxMs": 101,
+          "visibleLagN": 6
+        },
+        {
+          "tag": "ferryman2",
+          "result": "needs_clarification",
+          "tasks": [
+            "td6d2750514d1f12813feb8aa",
+            "tef89e4b197000d0ec921818f"
+          ],
+          "submitToAcceptedMs": 346,
+          "submitToFirstEventMs": 132,
+          "submitToCandidateMs": null,
+          "candidateImportMs": null,
+          "previewMs": null,
+          "applyMs": null,
+          "undoMs": null,
+          "cancelAckMs": null,
+          "visibleLagP95Ms": 120,
+          "visibleLagMaxMs": 120,
+          "visibleLagN": 6
+        },
+        {
+          "tag": "move-patrol2",
+          "result": "candidate_invalid",
+          "tasks": [
+            "t6fc7ab0f2e4ca22b1ef914b3"
+          ],
+          "submitToAcceptedMs": 451,
+          "submitToFirstEventMs": 141,
+          "submitToCandidateMs": 85214,
+          "candidateImportMs": 51.0,
+          "previewMs": 51.0,
+          "applyMs": null,
+          "undoMs": null,
+          "cancelAckMs": null,
+          "visibleLagP95Ms": 114,
+          "visibleLagMaxMs": 114,
+          "visibleLagN": 3
+        }
+      ],
+      "usage": {
+        "input_tokens": 627068,
+        "output_tokens": 5642,
+        "tasks": 5,
+        "images": 0,
+        "tts": 0,
+        "voice": 0,
+        "describe": 0,
+        "estimatedUsd": 1.65
+      }
+    },
+    {
+      "run": "text2-20261005T060332Z",
+      "workflow": "text2",
+      "revision": "f0c1b14079c54953697b9def91064190cacc8fc0",
+      "exit": 255,
+      "tasks": [
+        "t69738f23b0fe0fd52531db74",
+        "t9a55f92f3c2b97e40e881186"
+      ],
+      "requests": [],
+      "usage": {
+        "input_tokens": 182581,
+        "output_tokens": 1688,
+        "tasks": 2,
+        "images": 0,
+        "tts": 0,
+        "voice": 0,
+        "describe": 0,
+        "estimatedUsd": 0.48
+      }
+    },
+    {
+      "run": "text2-20261005T061054Z",
+      "workflow": "text2",
+      "revision": "ff43da577bea84aa95d089358ef99125fe360a7a",
+      "exit": 1,
+      "tasks": [
+        "t049950b27c7d9695ddc850f8",
+        "t10cfcf004d69d6da2dbcb456",
+        "t2ffc0841d756f3e0e3f5ade6",
+        "t35d405baff469fed8508809a",
+        "tb1fea55ca92175c876b9a7d3"
+      ],
+      "requests": [
+        {
+          "tag": "clarify2",
+          "result": "needs_clarification",
+          "tasks": [
+            "t2ffc0841d756f3e0e3f5ade6",
+            "t35d405baff469fed8508809a"
+          ],
+          "submitToAcceptedMs": 575,
+          "submitToFirstEventMs": 77,
+          "submitToCandidateMs": null,
+          "candidateImportMs": null,
+          "previewMs": null,
+          "applyMs": null,
+          "undoMs": null,
+          "cancelAckMs": null,
+          "visibleLagP95Ms": 1217,
+          "visibleLagMaxMs": 1217,
+          "visibleLagN": 6
+        },
+        {
+          "tag": "ferryman2",
+          "result": "candidate",
+          "tasks": [
+            "t049950b27c7d9695ddc850f8",
+            "t10cfcf004d69d6da2dbcb456"
+          ],
+          "submitToAcceptedMs": 1022,
+          "submitToFirstEventMs": 509,
+          "submitToCandidateMs": 611617,
+          "candidateImportMs": 125.0,
+          "previewMs": 125.0,
+          "applyMs": 675.5,
+          "undoMs": 519.2,
+          "cancelAckMs": null,
+          "visibleLagP95Ms": 10130,
+          "visibleLagMaxMs": 10130,
+          "visibleLagN": 7
+        },
+        {
+          "tag": "move-patrol2",
+          "result": "candidate_invalid",
+          "tasks": [
+            "tb1fea55ca92175c876b9a7d3"
+          ],
+          "submitToAcceptedMs": 494,
+          "submitToFirstEventMs": 181,
+          "submitToCandidateMs": 217155,
+          "candidateImportMs": 631.0,
+          "previewMs": 631.0,
+          "applyMs": null,
+          "undoMs": null,
+          "cancelAckMs": null,
+          "visibleLagP95Ms": 10089,
+          "visibleLagMaxMs": 10089,
+          "visibleLagN": 4
+        }
+      ],
+      "usage": {
+        "input_tokens": 757058,
+        "output_tokens": 8638,
+        "tasks": 5,
+        "images": 0,
+        "tts": 0,
+        "voice": 0,
+        "describe": 0,
+        "estimatedUsd": 2.02
+      }
+    },
+    {
+      "run": "voice-20261005T105318Z",
+      "workflow": "voice",
+      "revision": "fc1e0b094380c3c4974ccfdb17dfb883829b29c8",
+      "exit": 1,
+      "tasks": [],
+      "requests": [],
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "tasks": 0,
+        "images": 0,
+        "tts": 2,
+        "voice": 2,
+        "describe": 0,
+        "estimatedUsd": 0.02
+      }
+    },
+    {
+      "run": "voice2-20261005T112002Z",
+      "workflow": "voice2",
+      "revision": "53df3e5529fd1807e720fde50542fa6cf94be65e",
+      "exit": 1,
+      "tasks": [],
+      "requests": [],
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "tasks": 0,
+        "images": 0,
+        "tts": 2,
+        "voice": 2,
+        "describe": 0,
+        "estimatedUsd": 0.02
+      }
+    }
+  ],
+  "totals": {
+    "input_tokens": 5191767,
+    "output_tokens": 50520,
+    "tasks": 34,
+    "images": 9,
+    "tts": 9,
+    "voice": 4,
+    "describe": 1,
+    "estimatedUsd": 14.18,
+    "estimatedUsdHigh": 27.41,
+    "stateVisibleLagMs": {
+      "n": 93,
+      "p95": 4886,
+      "max": 10130,
+      "note": "Unity receipt minus companion updatedAt, state transitions only (B-AGENT-UX <= 1 s)"
+    }
+  }
+}

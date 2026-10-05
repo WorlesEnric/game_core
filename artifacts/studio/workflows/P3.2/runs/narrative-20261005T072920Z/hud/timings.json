@@ -1,0 +1,32 @@
+{
+  "submittedMs": 1791185826270,
+  "cs_01M45FXCFP05V8PASJH7BXMB9N": {
+    "submitToAcceptedMs": 17900,
+    "submitToFirstEventMs": 2296,
+    "refusal": null,
+    "stateMsFromSubmit": {
+      "requested": 2296,
+      "running": 17902,
+      "needs_clarification": 104592
+    }
+  },
+  "cs_01M45G0K7VEWQY82RNDM7Y2ER1": {
+    "submitToAcceptedMs": 105925,
+    "submitToFirstEventMs": 105372,
+    "refusal": null,
+    "stateMsFromSubmit": {
+      "requested": 105372,
+      "running": 105926,
+      "needs_clarification": 193471
+    }
+  },
+  "submitToCandidateMs": null,
+  "candidateImportMs": null,
+  "settledMs": 194068,
+  "visibleLagMs": {
+    "n": 6,
+    "max": 3849,
+    "p95": 3849,
+    "note": "Unity receipt of a RequestView minus the companion's updatedAt (same host clock)"
+  }
+}

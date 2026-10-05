@@ -1,0 +1,51 @@
+{
+  "result": "candidate_invalid",
+  "changeSetId": "cs_01M45G5MR740PTMTZWJD1KD4GK",
+  "requests": [
+    "cs_01M45G3FWTZ2TNEZT0M20KQK2B",
+    "cs_01M45G5MR740PTMTZWJD1KD4GK"
+  ],
+  "tasks": [
+    "td662950caf4892786a4154bd",
+    "tdf99497e601db67cdf64dabf"
+  ],
+  "row": {
+    "state": "candidate",
+    "label": "candidate",
+    "worker": "gc-designer",
+    "etosStatus": "done",
+    "localState": "stage_refused",
+    "progress": "done: I wrote a candidate change set to create an Oil Flask item and add a stage 1 objective in The Drowned Bell to collect two, leaving the existing objectives unchanged. I verified that `/outputs/changeset.json` is valid JSON; Studio has not yet validated or applied it.",
+    "waitingReason": "",
+    "question": "",
+    "parent": "cs_01M45G3FWTZ2TNEZT0M20KQK2B",
+    "diagnostics": [
+      {
+        "code": "ScopeNotAllowed",
+        "message": "Target of 'op2' has no 'scope', but 'quest.addObjective' only edits at Definition.",
+        "hint": "Set the target ref's scope to one of the allowed scopes.",
+        "where": "op2"
+      }
+    ]
+  },
+  "view": {
+    "state": "candidate",
+    "taskStatus": "done",
+    "attempt": 0,
+    "local": "stage_refused",
+    "outcome": {
+      "artifacts": 0,
+      "code": "candidate",
+      "operations": 2
+    },
+    "outcomeLabel": "candidate",
+    "diagnostics": [
+      {
+        "code": "ScopeNotAllowed",
+        "message": "Target of 'op2' has no 'scope', but 'quest.addObjective' only edits at Definition.",
+        "hint": "Set the target ref's scope to one of the allowed scopes.",
+        "where": "op2"
+      }
+    ]
+  }
+}

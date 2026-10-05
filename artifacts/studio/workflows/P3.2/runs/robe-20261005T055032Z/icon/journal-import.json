@@ -1,0 +1,70 @@
+{
+  "id": "cs_01M45A12YQHVV5GZ9YHRZGHGZM",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Generate image: A small inventory icon of an old brass marsh lantern with a warm flame, hand-painted game UI style, centred, plain dark background.",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Generated/P3_2/lantern_icon.png",
+        "artifact": {
+          "artifact": "sha256:682883487fa665c38d66c33fc8bbc6dcfb23dd5960e5883eabf3f358ca1e7b08"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "682883487fa665c38d66c33fc8bbc6dcfb23dd5960e5883eabf3f358ca1e7b08",
+      "name": "lantern_icon.png",
+      "mediaType": "image/png",
+      "bytes": 99265,
+      "producer": {
+        "op": "generate.image",
+        "provider": "echo-images"
+      },
+      "role": "texture"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Generated/P3_2/lantern_icon.png"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-d97e17cd82f693b9988d8186bbc65f1e-2800000-0",
+                "assetGuid": "d97e17cd82f693b9988d8186bbc65f1e",
+                "path": "Assets/Hollowmere/Generated/P3_2/lantern_icon.png"
+              },
+              "stamp": "sha256:682883487fa665c38d66c33fc8bbc6dcfb23dd5960e5883eabf3f358ca1e7b08"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T05:54:16.152Z",
+    "applied": "2026-10-05T05:54:16.302Z"
+  }
+}

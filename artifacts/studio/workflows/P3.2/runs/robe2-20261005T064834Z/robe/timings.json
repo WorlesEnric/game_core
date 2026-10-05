@@ -1,0 +1,23 @@
+{
+  "submittedMs": 1791183068477,
+  "cs_01M45D97CCSK3H6G1HKN50Z30A": {
+    "submitToAcceptedMs": 165,
+    "submitToFirstEventMs": 313,
+    "refusal": {
+      "code": "bad_request",
+      "message": "toolCatalog does not fit tool-catalog.schema.json"
+    },
+    "stateMsFromSubmit": {
+      "requested/submit_failed": 313
+    }
+  },
+  "submitToCandidateMs": null,
+  "candidateImportMs": null,
+  "settledMs": 1232,
+  "visibleLagMs": {
+    "n": 0,
+    "max": null,
+    "p95": null,
+    "note": "Unity receipt of a RequestView minus the companion's updatedAt (same host clock)"
+  }
+}

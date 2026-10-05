@@ -1,0 +1,22 @@
+{
+  "texture": "Assets/Hollowmere/Generated/P3_2/lantern_icon.png",
+  "importedAsSprite": false,
+  "textureType": "Default",
+  "state": "Rejected",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Refused",
+      "code": "InvalidArgs",
+      "detail": "'icon': the reference resolves to a Texture2D, expected Sprite."
+    }
+  ],
+  "diagnostics": [
+    {
+      "code": "InvalidArgs",
+      "message": "'icon': the reference resolves to a Texture2D, expected Sprite.",
+      "where": "op1"
+    }
+  ],
+  "applyMs": 0.8
+}

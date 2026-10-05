@@ -1,0 +1,144 @@
+{
+  "id": "cs_01M4595DCVDFMPHPS5T1J56JCF",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Move Maren two metres north and make her patrol around the well.",
+    "origin": "agent"
+  },
+  "selection": {
+    "id": "sel_01M4595DCVEJ2T9TPNY8SBCCHV",
+    "mode": "Edit",
+    "targets": [
+      {
+        "kind": "Entity",
+        "authoringId": "da525107-c2c1-4626-ac08-5058a1e01c06",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1121024804-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Maren",
+        "stamp": "sha256:1b19c39ebb72ed5b6c13ff1edbeceef90a44860c94a0dd5a994c71d906f459b8"
+      },
+      {
+        "kind": "Entity",
+        "authoringId": "e3baad87-1923-4823-82fe-69c3cc399bf4",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-480431702-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Village Well",
+        "stamp": "sha256:87a59125d1a36edd07a455ecf7dbe84f417d4f4dd046d4159f2369b48d3605a0"
+      },
+      {
+        "kind": "Definition",
+        "authoringId": "b2252b06-3508-485b-abe4-9506dc0639a2",
+        "global": "GlobalObjectId_V1-3-cbf0b51cebb9c3db49d49f29b2615d0f-11400000-0",
+        "assetGuid": "cbf0b51cebb9c3db49d49f29b2615d0f",
+        "path": "Assets/Hollowmere/Npcs/Definitions/Maren.asset",
+        "stamp": "sha256:a9979d084df76fcf031d4257d2ad5d79e7c01b1baafa4d7d01eec2b8c3449372"
+      }
+    ],
+    "indexRevision": 51
+  },
+  "baseVersions": [
+    {
+      "ref": {
+        "kind": "Entity",
+        "authoringId": "da525107-c2c1-4626-ac08-5058a1e01c06",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1121024804-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Maren",
+        "scope": "Instance",
+        "stamp": "sha256:1b19c39ebb72ed5b6c13ff1edbeceef90a44860c94a0dd5a994c71d906f459b8"
+      },
+      "stamp": "sha256:1b19c39ebb72ed5b6c13ff1edbeceef90a44860c94a0dd5a994c71d906f459b8"
+    },
+    {
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "b2252b06-3508-485b-abe4-9506dc0639a2",
+        "global": "GlobalObjectId_V1-3-cbf0b51cebb9c3db49d49f29b2615d0f-11400000-0",
+        "assetGuid": "cbf0b51cebb9c3db49d49f29b2615d0f",
+        "path": "Assets/Hollowmere/Npcs/Definitions/Maren.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a9979d084df76fcf031d4257d2ad5d79e7c01b1baafa4d7d01eec2b8c3449372"
+      },
+      "stamp": "sha256:a9979d084df76fcf031d4257d2ad5d79e7c01b1baafa4d7d01eec2b8c3449372"
+    }
+  ],
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "move",
+      "target": {
+        "kind": "Entity",
+        "authoringId": "da525107-c2c1-4626-ac08-5058a1e01c06",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1121024804-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Maren",
+        "scope": "Instance",
+        "stamp": "sha256:1b19c39ebb72ed5b6c13ff1edbeceef90a44860c94a0dd5a994c71d906f459b8"
+      },
+      "args": {
+        "position": [
+          -8.0,
+          0.0,
+          -6.0
+        ]
+      },
+      "dependsOn": [],
+      "preconditions": "stamp",
+      "applyRequirement": "Rebuild"
+    },
+    {
+      "opId": "op2",
+      "tool": "npc.setPatrol",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "b2252b06-3508-485b-abe4-9506dc0639a2",
+        "global": "GlobalObjectId_V1-3-cbf0b51cebb9c3db49d49f29b2615d0f-11400000-0",
+        "assetGuid": "cbf0b51cebb9c3db49d49f29b2615d0f",
+        "path": "Assets/Hollowmere/Npcs/Definitions/Maren.asset",
+        "scope": "Definition",
+        "stamp": "sha256:a9979d084df76fcf031d4257d2ad5d79e7c01b1baafa4d7d01eec2b8c3449372"
+      },
+      "args": {
+        "points": [
+          [
+            -2.5,
+            0.0,
+            -1.9
+          ],
+          [
+            0.0,
+            0.0,
+            0.6
+          ],
+          [
+            2.5,
+            0.0,
+            -1.9
+          ],
+          [
+            0.0,
+            0.0,
+            -4.4
+          ]
+        ]
+      },
+      "dependsOn": [
+        "op1"
+      ],
+      "preconditions": "stamp",
+      "applyRequirement": "Rebuild"
+    }
+  ],
+  "artifacts": [],
+  "requirements": {
+    "max": "Rebuild",
+    "worldRebuild": true,
+    "compile": false,
+    "build": false
+  },
+  "links": {
+    "etosTasks": [
+      "t6fc7ab0f2e4ca22b1ef914b3"
+    ]
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "stage": "Invalid",
+  "ok": false,
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "move",
+      "diagnostics": []
+    },
+    {
+      "opId": "op2",
+      "tool": "npc.setPatrol",
+      "diagnostics": [
+        {
+          "code": "MissingPrerequisite",
+          "message": "Tool 'npc.setPatrol' needs 'npc.definition' in the project, and the index has none.",
+          "hint": "Create the prerequisite first (for example with a Compose tool), then retry.",
+          "where": "op2"
+        }
+      ]
+    }
+  ],
+  "diagnostics": [
+    {
+      "code": "MissingPrerequisite",
+      "message": "Tool 'npc.setPatrol' needs 'npc.definition' in the project, and the index has none.",
+      "hint": "Create the prerequisite first (for example with a Compose tool), then retry.",
+      "where": "op2"
+    }
+  ],
+  "previewMs": 51.0
+}

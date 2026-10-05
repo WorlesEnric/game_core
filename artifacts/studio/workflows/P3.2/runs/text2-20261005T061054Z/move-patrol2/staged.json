@@ -1,0 +1,30 @@
+{
+  "stage": "Invalid",
+  "ok": false,
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "move",
+      "diagnostics": []
+    },
+    {
+      "opId": "op2",
+      "tool": "npc.setPatrol",
+      "diagnostics": [
+        {
+          "code": "InvalidArgs",
+          "message": "Tool 'npc.setPatrol' needs a target of type 'npc.definition', but the target is 'npc.behaviour'.",
+          "where": "op2"
+        }
+      ]
+    }
+  ],
+  "diagnostics": [
+    {
+      "code": "InvalidArgs",
+      "message": "Tool 'npc.setPatrol' needs a target of type 'npc.definition', but the target is 'npc.behaviour'.",
+      "where": "op2"
+    }
+  ],
+  "previewMs": 631.0
+}

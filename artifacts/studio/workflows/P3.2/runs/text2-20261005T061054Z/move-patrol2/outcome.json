@@ -1,0 +1,47 @@
+{
+  "result": "candidate_invalid",
+  "changeSetId": "cs_01M45B93ZY07E94WSV7YZGHJPD",
+  "requests": [
+    "cs_01M45B93ZY07E94WSV7YZGHJPD"
+  ],
+  "tasks": [
+    "tb1fea55ca92175c876b9a7d3"
+  ],
+  "row": {
+    "state": "candidate",
+    "label": "candidate",
+    "worker": "gc-designer",
+    "etosStatus": "done",
+    "localState": "stage_refused",
+    "progress": "done: Wrote the proposed change set: move Maren two metres north, then set a looping patrol around the Village Well. Verified the JSON, selection, tool IDs, and stamped target references.",
+    "waitingReason": "",
+    "question": "",
+    "parent": "",
+    "diagnostics": [
+      {
+        "code": "InvalidArgs",
+        "message": "Tool 'npc.setPatrol' needs a target of type 'npc.definition', but the target is 'npc.behaviour'.",
+        "where": "op2"
+      }
+    ]
+  },
+  "view": {
+    "state": "candidate",
+    "taskStatus": "done",
+    "attempt": 0,
+    "local": "stage_refused",
+    "outcome": {
+      "artifacts": 0,
+      "code": "candidate",
+      "operations": 2
+    },
+    "outcomeLabel": "candidate",
+    "diagnostics": [
+      {
+        "code": "InvalidArgs",
+        "message": "Tool 'npc.setPatrol' needs a target of type 'npc.definition', but the target is 'npc.behaviour'.",
+        "where": "op2"
+      }
+    ]
+  }
+}

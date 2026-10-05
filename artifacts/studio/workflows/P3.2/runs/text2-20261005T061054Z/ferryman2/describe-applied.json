@@ -1,0 +1,166 @@
+{
+  "7b933192-e58d-4f37-9f61-822393f69ab5": {
+    "op": "op5",
+    "tool": "assign",
+    "status": "Applied",
+    "output": {
+      "node": {
+        "ref": {
+          "kind": "Definition",
+          "authoringId": "7b933192-e58d-4f37-9f61-822393f69ab5",
+          "global": "GlobalObjectId_V1-3-22b625447999bf8e0b5abf693995fa30-11400000-0",
+          "assetGuid": "22b625447999bf8e0b5abf693995fa30",
+          "path": "Assets/Hollowmere/Npcs/NpcRoster.asset",
+          "scope": "Definition",
+          "stamp": "sha256:68974e847fe9479521aee054b5dac4bf4c87cfed8695363d1033b5212be91d7a"
+        },
+        "type": "npc.roster",
+        "name": "NpcRoster",
+        "fields": {
+          "stepMilliseconds": {
+            "value": 20,
+            "unit": "ms",
+            "range": [
+              5.0,
+              100.0
+            ],
+            "type": "int"
+          },
+          "unloadedStride": {
+            "value": 8,
+            "range": [
+              1.0,
+              64.0
+            ],
+            "type": "int"
+          }
+        },
+        "refs": [
+          {
+            "field": "npcs",
+            "to": {
+              "kind": "Definition",
+              "authoringId": "b2252b06-3508-485b-abe4-9506dc0639a2",
+              "global": "GlobalObjectId_V1-3-cbf0b51cebb9c3db49d49f29b2615d0f-11400000-0",
+              "assetGuid": "cbf0b51cebb9c3db49d49f29b2615d0f",
+              "path": "Assets/Hollowmere/Npcs/Definitions/Maren.asset"
+            }
+          },
+          {
+            "field": "npcs",
+            "to": {
+              "kind": "Definition",
+              "authoringId": "1ba7716b-d38c-4db3-9c0e-2a06f43c3716",
+              "global": "GlobalObjectId_V1-3-25f002ae09ef0ad13a564e056685a8ce-11400000-0",
+              "assetGuid": "25f002ae09ef0ad13a564e056685a8ce",
+              "path": "Assets/Hollowmere/Npcs/Definitions/Odd.asset"
+            }
+          },
+          {
+            "field": "npcs",
+            "to": {
+              "kind": "Definition",
+              "authoringId": "70af11c6-4048-4745-8b6f-88870cb92d03",
+              "global": "GlobalObjectId_V1-3-f2c6d2d7305f551a49f285681abad139-11400000-0",
+              "assetGuid": "f2c6d2d7305f551a49f285681abad139",
+              "path": "Assets/Hollowmere/Npcs/Definitions/Pip.asset"
+            }
+          },
+          {
+            "field": "npcs",
+            "to": {
+              "kind": "Definition",
+              "authoringId": "41c5b083-a381-47e7-be27-ad89ab6370bc",
+              "global": "GlobalObjectId_V1-3-9453e6aa57d45cf418b51c585df9a0db-11400000-0",
+              "assetGuid": "9453e6aa57d45cf418b51c585df9a0db",
+              "path": "Assets/Hollowmere/Npcs/Definitions/Hale.asset"
+            }
+          },
+          {
+            "field": "npcs",
+            "to": {
+              "kind": "Definition",
+              "authoringId": "fb54875d-05d9-478c-be6c-62b13bddfaac",
+              "global": "GlobalObjectId_V1-3-e38cdce45e4cc3b78a855c042dcdb11e-11400000-0",
+              "assetGuid": "e38cdce45e4cc3b78a855c042dcdb11e",
+              "path": "Assets/Hollowmere/Npcs/Definitions/BelfryEcho.asset"
+            }
+          },
+          {
+            "field": "npcs",
+            "to": {
+              "kind": "Definition",
+              "authoringId": "d2c21f52-c796-40b5-ba9c-6bf5d3f7b44d",
+              "global": "GlobalObjectId_V1-3-3afb713553cbbe7ae86e023ef00a50b2-11400000-0",
+              "assetGuid": "3afb713553cbbe7ae86e023ef00a50b2",
+              "path": "Assets/Hollowmere/Npcs/Definitions/FerrymanBram.asset"
+            }
+          }
+        ],
+        "provenance": {
+          "asset": "Assets/Hollowmere/Npcs/NpcRoster.asset"
+        }
+      },
+      "ref": {
+        "kind": "Definition",
+        "authoringId": "7b933192-e58d-4f37-9f61-822393f69ab5",
+        "global": "GlobalObjectId_V1-3-22b625447999bf8e0b5abf693995fa30-11400000-0",
+        "assetGuid": "22b625447999bf8e0b5abf693995fa30",
+        "path": "Assets/Hollowmere/Npcs/NpcRoster.asset",
+        "stamp": "sha256:68974e847fe9479521aee054b5dac4bf4c87cfed8695363d1033b5212be91d7a"
+      },
+      "name": "NpcRoster",
+      "unityType": "GameCore.Gameplay.Npc.NpcRoster",
+      "type": "npc.roster",
+      "values": {
+        "npcs": [
+          {
+            "kind": "Definition",
+            "authoringId": "b2252b06-3508-485b-abe4-9506dc0639a2",
+            "global": "GlobalObjectId_V1-3-cbf0b51cebb9c3db49d49f29b2615d0f-11400000-0",
+            "assetGuid": "cbf0b51cebb9c3db49d49f29b2615d0f",
+            "path": "Assets/Hollowmere/Npcs/Definitions/Maren.asset"
+          },
+          {
+            "kind": "Definition",
+            "authoringId": "1ba7716b-d38c-4db3-9c0e-2a06f43c3716",
+            "global": "GlobalObjectId_V1-3-25f002ae09ef0ad13a564e056685a8ce-11400000-0",
+            "assetGuid": "25f002ae09ef0ad13a564e056685a8ce",
+            "path": "Assets/Hollowmere/Npcs/Definitions/Odd.asset"
+          },
+          {
+            "kind": "Definition",
+            "authoringId": "70af11c6-4048-4745-8b6f-88870cb92d03",
+            "global": "GlobalObjectId_V1-3-f2c6d2d7305f551a49f285681abad139-11400000-0",
+            "assetGuid": "f2c6d2d7305f551a49f285681abad139",
+            "path": "Assets/Hollowmere/Npcs/Definitions/Pip.asset"
+          },
+          {
+            "kind": "Definition",
+            "authoringId": "41c5b083-a381-47e7-be27-ad89ab6370bc",
+            "global": "GlobalObjectId_V1-3-9453e6aa57d45cf418b51c585df9a0db-11400000-0",
+            "assetGuid": "9453e6aa57d45cf418b51c585df9a0db",
+            "path": "Assets/Hollowmere/Npcs/Definitions/Hale.asset"
+          },
+          {
+            "kind": "Definition",
+            "authoringId": "fb54875d-05d9-478c-be6c-62b13bddfaac",
+            "global": "GlobalObjectId_V1-3-e38cdce45e4cc3b78a855c042dcdb11e-11400000-0",
+            "assetGuid": "e38cdce45e4cc3b78a855c042dcdb11e",
+            "path": "Assets/Hollowmere/Npcs/Definitions/BelfryEcho.asset"
+          },
+          {
+            "kind": "Definition",
+            "authoringId": "d2c21f52-c796-40b5-ba9c-6bf5d3f7b44d",
+            "global": "GlobalObjectId_V1-3-3afb713553cbbe7ae86e023ef00a50b2-11400000-0",
+            "assetGuid": "3afb713553cbbe7ae86e023ef00a50b2",
+            "path": "Assets/Hollowmere/Npcs/Definitions/FerrymanBram.asset"
+          }
+        ],
+        "stepMilliseconds": 20,
+        "unloadedStride": 8
+      }
+    },
+    "detail": "{\"node\":{\"ref\":{\"kind\":\"Definition\",\"authoringId\":\"7b933192-e58d-4f37-9f61-822393f69ab5\",\"global\":\"GlobalObjectId_V1-3-22b625447999bf8e0b5abf693995fa30-11400000-0\",\"assetGuid\":\"22b625447999bf8e0b5abf693995fa30\",\"path\":\"Assets/Hollowmere/Npcs/NpcRoster.asset\",\"scope\":\"Definition\",\"stamp\":\"sha256:68974e847fe9479521aee054b5dac4bf4c87cfed8695363d1033b5212be91d7a\"},\"type\":\"npc.roster\",\"name\":\"NpcRoster\",\"fields\":{\"stepMilliseconds\":{\"value\":20,\"unit\":\"ms\",\"range\":[5.0,100.0],\"type\":\"int\"},\"unloadedStride\":{\"value\":8,\"range\":[1.0,64.0],\"type\":\"int\"}},\"refs\":[{\"field\":\"npcs\",\"to\":{\"kind\":\"Definition\",\"authoringId\":\"b2252b06-3508-485b-abe4-9506dc0639a2\",\"global\":\"GlobalObjectId_V1-3-cbf0b51cebb9c3db49d49f29b2615d0f-11400000-0\",\"assetGuid\":\"cbf0b51cebb9c3db49d49f29b2615d0f\",\"path\":\"Assets/Hollowmere/Npcs/Definitions/Maren.asset\"}},{\"field\":\"npcs\",\"to\":{\"kind\":\"Definition\",\"authoringId\":\"1ba7716b-d38c-4db3-9c0e-2a06f43c3716\",\"global\":\"GlobalObjectId_V1-3-25f002ae09ef0ad13a564e056685a8ce-11400000-0\",\"assetGuid\":\"25f002ae09ef0ad13a564e056685a8ce\",\"path\":\"Assets/Hollowmere/Npcs/Definitions/Odd.asset\"}},{\"field\":\"npcs\",\"to\":{\"kind\":\"Definition\",\"authoringId\":\"70af11c6-4048-4745-8b6f-88870cb92d03\",\"global\":\"GlobalObjectId_V1-3-f2c6d2d7305f551a49f285681abad139-11400000-0\",\"assetGuid\":\"f2c6d2d7305f551a49f285681abad139\",\"path\":\"Assets/Hollowmere/Npcs/Definitions/Pip.asset\"}},{\"field\":\"npcs\",\"to\":{\"kind\":\"Definition\",\"authoringId\":\"41c5b083-a381-47e7-be27-ad89ab6370bc\",\"global\":\"GlobalObjectId_V1-3-9453e6aa57d45cf418b51c585df9a0db-11400000-0\",\"assetGuid\":\"9453e6aa57d45cf418b51c585df9a0db\",\"path\":\"Assets/Hollowmere/Npcs/Definitions/Hale.asset\"}},{\"field\":\"npcs\",\"to\":{\"kind\":\"Definition\",\"authoringId\":\"fb54875d-05d9-478c-be6c-62b13bddfaac\",\"global\":\"GlobalObjectId_V1-3-e38cdce45e4cc3b78a855c042dcdb11e-11400000-0\",\"assetGuid\":\"e38cdce45e4cc3b78a855c042dcdb11e\",\"path\":\"Assets/Hollowmere/Npcs/Definitions/BelfryEcho.asset\"}},{\"field\":\"npcs\",\"to\":{\"kind\":\"Definition\",\"authoringId\":\"d2c21f52-c796-40b5-ba9c-6bf5d3f7b44d\",\"global\":\"GlobalObjectId_V1-3-3afb713553cbbe7ae86e023ef00a50b2-11400000-0\",\"assetGuid\":\"3afb713553cbbe7ae86e023ef00a50b2\",\"path\":\"Assets/Hollowmere/Npcs/Definitions/FerrymanBram.asset\"}}],\"provenance\":{\"asset\":\"Assets/Hollowmere/Npcs/NpcRoster.asset\"}},\"ref\":{\"kind\":\"Definition\",\"authoringId\":\"7b933192-e58d-4f37-9f61-822393f69ab5\",\"global\":\"GlobalObjectId_V1-3-22b625447999bf8e0b5abf693995fa30-11400000-0\",\"assetGuid\":\"22b625447999bf8e0b5abf693995fa30\",\"path\":\"Assets/Hollowmere/Npcs/NpcRoster.asset\",\"stamp\":\"sha256:68974e847fe9479521aee054b5dac4bf4c87cfed8695363d1033b5212be91d7a\"},\"name\":\"NpcRoster\",\"unityType\":\"GameCore.Gameplay.Npc.NpcRoster\",\"type\":\"npc.roster\",\"values\":{\"npcs\":[{\"kind\":\"Definition\",\"authoringId\":\"b2252b06-3508-485b-abe4-9506dc0639a2\",\"global\":\"GlobalObjectId_V1-3-cbf0b51cebb9c3db49d49f29b2615d0f-11400000-0\",\"assetGuid\":\"cbf0b51cebb9c3db49d49f29b2615d0f\",\"path\":\"Assets/Hollowmere/Npcs/Definitions/Maren.asset\"},{\"kind\":\"Definition\",\"authoringId\":\"1ba7716b-d38c-4db3-9c0e-2a06f43c3716\",\"global\":\"GlobalObjectId_V1-3-25f002ae09ef0ad13a564e056685a8ce-11400000-0\",\"assetGuid\":\"25f002ae09ef0ad13a564e056685a8ce\",\"path\":\"Assets/Hollowmere/Npcs/Definitions/Odd.asset\"},{\"kind\":\"Definition\",\"authoringId\":\"70af11c6-4048-4745-8b6f-88870cb92d03\",\"global\":\"GlobalObjectId_V1-3-f2c6d2d7305f551a49f285681abad139-11400000-0\",\"assetGuid\":\"f2c6d2d7305f551a49f285681abad139\",\"path\":\"Assets/Hollowmere/Npcs/Definitions/Pip.asset\"},{\"kind\":\"Definition\",\"authoringId\":\"41c5b083-a381-47e7-be27-ad89ab6370bc\",\"global\":\"GlobalObjectId_V1-3-9453e6aa57d45cf418b51c585df9a0db-11400000-0\",\"assetGuid\":\"9453e6aa57d45cf418b51c585df9a0db\",\"path\":\"Assets/Hollowmere/Npcs/Definitions/Hale.asset\"},{\"kind\":\"Definition\",\"authoringId\":\"fb54875d-05d9-478c-be6c-62b13bddfaac\",\"global\":\"GlobalObjectId_V1-3-e38cdce45e4cc3b78a855c042dcdb11e-11400000-0\",\"assetGuid\":\"e38cdce45e4cc3b78a855c042dcdb11e\",\"path\":\"Assets/Hollowmere/Npcs/Definitions/BelfryEcho.asset\"},{\"kind\":\"Definiti..."
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "changeSetId": "cs_01M45FXCFP05V8PASJH7BXMB9N",
+  "question": "Which supported UI binding source exposes the current quest stage name? The HUD index only shows vm:hud.ObjectiveText for the objective label, and the catalog does not identify a stage-name property.",
+  "answer": "Use the HUD document's objective label element (the one that shows the current objective). Give it the label text 'Current stage' and bind its text to the active quest's current stage title (the stage name of The Drowned Bell). Change nothing else.",
+  "afterSeconds": 105.0,
+  "tasks": [
+    "t28c03fc3a61c6f0ea6c2da9a"
+  ]
+}

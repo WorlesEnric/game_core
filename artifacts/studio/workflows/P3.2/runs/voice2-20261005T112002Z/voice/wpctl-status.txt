@@ -1,0 +1,22 @@
+Audio
+ ├─ Devices:
+ │      46. HDA NVidia                          [alsa]
+ │      47. Built-in Audio                      [alsa]
+ │  
+ ├─ Sinks:
+ │  *   48. Built-in Audio Digital Stereo (IEC958) [vol: 0.40]
+ │      72. GC_P3.2_sink                        [vol: 1.00]
+ │  
+ ├─ Sink endpoints:
+ │  
+ ├─ Sources:
+ │      49. Built-in Audio Analog Stereo        [vol: 1.00]
+ │  *   61. GC_P3.2_mic                         [vol: 1.00]
+ │  
+ ├─ Source endpoints:
+ │  
+ └─ Streams:
+
+Video
+         0. Audio/Sink    alsa_output.pci-0000_01_00.1.hdmi-stereo
+         1. Audio/Source  gc_p32_mic

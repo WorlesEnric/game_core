@@ -1,0 +1,70 @@
+{
+  "id": "cs_01M45DC2Y4BWDRJ1FXP33XFNP7",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Speak: The bell has been silent for three winters. Find its clapper, and Thornwick will sleep again.",
+    "origin": "agent"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "asset.import",
+      "args": {
+        "path": "Assets/Hollowmere/Generated/P3_2/maren_line.wav",
+        "artifact": {
+          "artifact": "sha256:4bd9b1c650dee7e06ee150cbbaf29de4c7b3e7f57b46bef7c9df5dbdb2395868"
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "4bd9b1c650dee7e06ee150cbbaf29de4c7b3e7f57b46bef7c9df5dbdb2395868",
+      "name": "maren_line.wav",
+      "mediaType": "audio/wav",
+      "bytes": 265004,
+      "producer": {
+        "op": "tts",
+        "provider": "bailian-tts"
+      },
+      "role": "voiceLine"
+    }
+  ],
+  "state": "Applied",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Applied",
+      "undo": {
+        "inverse": {
+          "operations": [
+            {
+              "opId": "inverse",
+              "tool": "history.deleteAsset",
+              "args": {
+                "path": "Assets/Hollowmere/Generated/P3_2/maren_line.wav"
+              },
+              "preconditions": "none"
+            }
+          ],
+          "assetLevel": true,
+          "after": [
+            {
+              "ref": {
+                "kind": "Asset",
+                "global": "GlobalObjectId_V1-1-ef88a077f24c6e5cb94a8b7eb8abb833-8300000-0",
+                "assetGuid": "ef88a077f24c6e5cb94a8b7eb8abb833",
+                "path": "Assets/Hollowmere/Generated/P3_2/maren_line.wav"
+              },
+              "stamp": "sha256:4bd9b1c650dee7e06ee150cbbaf29de4c7b3e7f57b46bef7c9df5dbdb2395868"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:52:42.308Z",
+    "applied": "2026-10-05T06:52:42.502Z"
+  }
+}

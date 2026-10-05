@@ -1,0 +1,196 @@
+{
+  "changeSetId": "cs_01M45AKVZZYT39HMJ9A7ZQDAD2",
+  "intent": {
+    "text": "Make one of them patrol around the well.",
+    "origin": "agent"
+  },
+  "parent": null,
+  "worker": "design",
+  "toolCatalogRevision": "ebb5764ed08b6e6ac566a4d9bff90517c61196c5868df2883cb812c644f5f30d",
+  "contextBytes": 2669,
+  "contextTruncated": false,
+  "contextOmittedNodes": 0,
+  "selection": {
+    "id": "sel_01M45AKVZYBRXBJENAH5Z1F9FV",
+    "mode": "Edit",
+    "targets": [
+      {
+        "kind": "Entity",
+        "authoringId": "da525107-c2c1-4626-ac08-5058a1e01c06",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1121024804-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Maren",
+        "stamp": "sha256:1b19c39ebb72ed5b6c13ff1edbeceef90a44860c94a0dd5a994c71d906f459b8"
+      },
+      {
+        "kind": "Entity",
+        "authoringId": "508f7d78-7b44-42e8-8028-be4b2c9ee4b0",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-644198870-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Pip",
+        "stamp": "sha256:df04e0e8c931c7ce15841f79c057a7654303ae3a146f674ed3546ceb73f64311"
+      },
+      {
+        "kind": "Entity",
+        "authoringId": "feae7fb3-57f9-4711-8549-04fa8f161ac2",
+        "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-708947954-0",
+        "assetGuid": "6cba302899c45bb919b097ade959283c",
+        "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Odd",
+        "stamp": "sha256:6aa58329ffbb13e31299e0ae1c4bf1d2fcfb94848efc2e3053869152ac6d1915"
+      },
+      {
+        "kind": "Definition",
+        "authoringId": "b2252b06-3508-485b-abe4-9506dc0639a2",
+        "global": "GlobalObjectId_V1-3-cbf0b51cebb9c3db49d49f29b2615d0f-11400000-0",
+        "assetGuid": "cbf0b51cebb9c3db49d49f29b2615d0f",
+        "path": "Assets/Hollowmere/Npcs/Definitions/Maren.asset",
+        "stamp": "sha256:a9979d084df76fcf031d4257d2ad5d79e7c01b1baafa4d7d01eec2b8c3449372"
+      },
+      {
+        "kind": "Definition",
+        "authoringId": "70af11c6-4048-4745-8b6f-88870cb92d03",
+        "global": "GlobalObjectId_V1-3-f2c6d2d7305f551a49f285681abad139-11400000-0",
+        "assetGuid": "f2c6d2d7305f551a49f285681abad139",
+        "path": "Assets/Hollowmere/Npcs/Definitions/Pip.asset",
+        "stamp": "sha256:39626e43a69600bd79d0fbd4fdb7188491b3146dedb2c55098f28947befafc51"
+      },
+      {
+        "kind": "Definition",
+        "authoringId": "1ba7716b-d38c-4db3-9c0e-2a06f43c3716",
+        "global": "GlobalObjectId_V1-3-25f002ae09ef0ad13a564e056685a8ce-11400000-0",
+        "assetGuid": "25f002ae09ef0ad13a564e056685a8ce",
+        "path": "Assets/Hollowmere/Npcs/Definitions/Odd.asset",
+        "stamp": "sha256:122bae7b2dd37346fadad69bf7d863e95494f91bd63e4d673da281ce2b4ce440"
+      }
+    ],
+    "frame": {
+      "camera": {
+        "position": [
+          -1.8000001907348633,
+          0.75724995136260986,
+          -76.6458969116211
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "fov": 60.0,
+        "aspect": 2.271062271062271
+      },
+      "viewport": [
+        1240,
+        532
+      ],
+      "image": "sha256:9ad74011e369c680b1bef647748a897778b3bb15a682c41424712698447a25b5"
+    },
+    "indexRevision": 56
+  },
+  "attachments": [
+    {
+      "name": "scene-context.json",
+      "mediaType": "application/json",
+      "role": "context",
+      "bytes": 2429,
+      "content": {
+        "schema": "gamecore.studio.scenecontext/1",
+        "units": "metres",
+        "axes": {
+          "north": "+z",
+          "east": "+x",
+          "up": "+y"
+        },
+        "objects": [
+          {
+            "ref": {
+              "kind": "Entity",
+              "authoringId": "da525107-c2c1-4626-ac08-5058a1e01c06",
+              "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-1121024804-0",
+              "assetGuid": "6cba302899c45bb919b097ade959283c",
+              "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Maren",
+              "stamp": "sha256:1b19c39ebb72ed5b6c13ff1edbeceef90a44860c94a0dd5a994c71d906f459b8"
+            },
+            "name": "Maren",
+            "path": "Maren",
+            "scene": "Assets/Hollowmere/Regions/ThornwickVillage.unity",
+            "position": [
+              -8.0,
+              0.0,
+              -8.0
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "ref": {
+              "kind": "Entity",
+              "authoringId": "508f7d78-7b44-42e8-8028-be4b2c9ee4b0",
+              "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-644198870-0",
+              "assetGuid": "6cba302899c45bb919b097ade959283c",
+              "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Pip",
+              "stamp": "sha256:df04e0e8c931c7ce15841f79c057a7654303ae3a146f674ed3546ceb73f64311"
+            },
+            "name": "Pip",
+            "path": "Pip",
+            "scene": "Assets/Hollowmere/Regions/ThornwickVillage.unity",
+            "position": [
+              5.0,
+              0.0,
+              3.0
+            ],
+            "rotation": [
+              0.0,
+              0.7071,
+              0.0,
+              0.7071
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "ref": {
+              "kind": "Entity",
+              "authoringId": "feae7fb3-57f9-4711-8549-04fa8f161ac2",
+              "global": "GlobalObjectId_V1-2-6cba302899c45bb919b097ade959283c-708947954-0",
+              "assetGuid": "6cba302899c45bb919b097ade959283c",
+              "path": "Assets/Hollowmere/Regions/ThornwickVillage.unity#/Odd",
+              "stamp": "sha256:6aa58329ffbb13e31299e0ae1c4bf1d2fcfb94848efc2e3053869152ac6d1915"
+            },
+            "name": "Odd",
+            "path": "Odd",
+            "scene": "Assets/Hollowmere/Regions/ThornwickVillage.unity",
+            "position": [
+              -8.0,
+              0.0,
+              6.0
+            ],
+            "rotation": [
+              0.0,
+              1.0,
+              0.0,
+              0.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

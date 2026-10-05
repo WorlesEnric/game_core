@@ -1,0 +1,44 @@
+{
+  "id": "cs_01M45DBW6YT5E19VN6DTG9KW0W",
+  "schema": "gamecore.studio.changeset/1",
+  "intent": {
+    "text": "Bind the generated lantern icon to the Lantern item",
+    "origin": "manual"
+  },
+  "operations": [
+    {
+      "opId": "op1",
+      "tool": "bind",
+      "target": {
+        "kind": "Definition",
+        "authoringId": "6bb88144-376c-4507-8429-e78247b14e66",
+        "global": "GlobalObjectId_V1-3-fffb111048bcd5d6ea31bc57defa7c6d-11400000-0",
+        "assetGuid": "fffb111048bcd5d6ea31bc57defa7c6d",
+        "path": "Assets/Hollowmere/Items/Lantern.asset",
+        "stamp": "sha256:e3206d52eb9cd8ef6cf9ac6c6db2c8e44ccb27ad68bd71ce0615d0427022f411"
+      },
+      "args": {
+        "field": "icon",
+        "artifact": {
+          "artifact": "sha256:682883487fa665c38d66c33fc8bbc6dcfb23dd5960e5883eabf3f358ca1e7b08"
+        },
+        "path": "Assets/Hollowmere/Generated/P3_2/lantern_icon_sprite.png",
+        "importer": {
+          "textureType": "Sprite"
+        }
+      }
+    }
+  ],
+  "state": "Rejected",
+  "outcomes": [
+    {
+      "opId": "op1",
+      "status": "Refused",
+      "code": "CandidateInvalid",
+      "detail": "Operation 'op1' uses artifact sha256:682883487fa665c38d66c33fc8bbc6dcfb23dd5960e5883eabf3f358ca1e7b08, which the change set does not carry."
+    }
+  ],
+  "timestamps": {
+    "requested": "2026-10-05T06:52:35.422Z"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "stage": "Invalid",
+  "gatewayStaged": true,
+  "summary": "1 op: entity.applyOverride x1",
+  "badges": [
+    "Edit-time",
+    "RequiresPlayStop"
+  ],
+  "problems": [
+    {
+      "code": "ScopeNotAllowed",
+      "message": "Target of 'op1' has no 'scope', but 'entity.applyOverride' only edits at Instance, Prefab.",
+      "hint": "Set the target ref's scope to one of the allowed scopes.",
+      "where": "op1"
+    }
+  ],
+  "stagedDiagnostics": [
+    {
+      "code": "ScopeNotAllowed",
+      "message": "Target of 'op1' has no 'scope', but 'entity.applyOverride' only edits at Instance, Prefab.",
+      "hint": "Set the target ref's scope to one of the allowed scopes.",
+      "where": "op1"
+    }
+  ],
+  "stagedOk": false
+}

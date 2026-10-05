@@ -1,0 +1,73 @@
+{
+  "revision": 56,
+  "nodes": 33,
+  "edges": 38,
+  "types": {
+    "entity.definition": 7,
+    "entity.instance": 16,
+    "entity.variant": 3,
+    "world.definition": 1,
+    "world.portal": 3,
+    "world.region": 3
+  },
+  "found": {
+    "Assets/Hollowmere/Npcs/Definitions/Maren.asset": {
+      "ref": "Definition(auth:b2252b06-3508-485b-abe4-9506dc0639a2)",
+      "node": null,
+      "refsFrom": null
+    },
+    "Assets/Hollowmere/Npcs/Definitions/Pip.asset": {
+      "ref": "Definition(auth:70af11c6-4048-4745-8b6f-88870cb92d03)",
+      "node": null,
+      "refsFrom": null
+    },
+    "Assets/Hollowmere/Npcs/Definitions/Odd.asset": {
+      "ref": "Definition(auth:1ba7716b-d38c-4db3-9c0e-2a06f43c3716)",
+      "node": null,
+      "refsFrom": null
+    },
+    "Assets/Hollowmere/Npcs/Definitions/MarenEntity.asset": {
+      "ref": "Definition(auth:ce503024-4b28-4194-8865-8eec9dd6d8a7)",
+      "node": null,
+      "refsFrom": null
+    },
+    "Maren": {
+      "ref": "Entity(auth:da525107-c2c1-4626-ac08-5058a1e01c06)",
+      "node": "entity.instance",
+      "refs": [
+        "definition -> Assets/Hollowmere/Npcs/Definitions/MarenEntity.asset"
+      ]
+    },
+    "Pip": {
+      "ref": "Entity(auth:508f7d78-7b44-42e8-8028-be4b2c9ee4b0)",
+      "node": "entity.instance",
+      "refs": [
+        "definition -> Assets/Hollowmere/Npcs/Definitions/PipEntity.asset"
+      ]
+    },
+    "Odd": {
+      "ref": "Entity(auth:feae7fb3-57f9-4711-8549-04fa8f161ac2)",
+      "node": "entity.instance",
+      "refs": [
+        "definition -> Assets/Hollowmere/Npcs/Definitions/OddEntity.asset"
+      ]
+    },
+    "Village Well": {
+      "ref": "Entity(auth:e3baad87-1923-4823-82fe-69c3cc399bf4)",
+      "node": "entity.instance",
+      "refs": [
+        "definition -> Assets/Hollowmere/Interactables/Definitions/WellBucketEntity.asset"
+      ]
+    }
+  },
+  "slice": {
+    "bytes": 3574,
+    "nodes": [
+      "Maren [entity.instance]",
+      "Pip [entity.instance]",
+      "Odd [entity.instance]",
+      "Village Well [entity.instance]"
+    ],
+    "truncated": false
+  }
+}

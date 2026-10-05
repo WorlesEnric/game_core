@@ -1,0 +1,58 @@
+{"show":
+{
+  "task": {
+    "id": "t3db1a0cc70c5294d3cb6fa6a",
+    "worker": "gc-designer",
+    "parent": null,
+    "key": null,
+    "origin": {
+      "topic": "#agent/gamecore-studio/cs-01m45sa3hn1xx3wpfa87bnt8my",
+      "position": 1,
+      "requester": "agent:gamecore-studio"
+    },
+    "text": "GameCore Studio change set cs_01M45SA3HN1XX3WPFA87BNT8MY (attempt 0): Arrange these crates evenly in a ring of radius 3 metres around the Village Well.\n\nRead /inputs/request.md first. Write /outputs/changeset.json (or /outputs/clarification.json).",
+    "repo": null,
+    "mounts": [],
+    "env": {},
+    "image": null,
+    "image_tag": "localhost/etos-task:15d2f8ac8327e9c751d52f4bdca1c23e",
+    "post_create": [],
+    "status": "done",
+    "container": null,
+    "hostless": false,
+    "result": {
+      "text": "I need the Village Well’s world-space centre (x, y, z) to place the three selected crates evenly on a 3-metre ring. The supplied scene context includes the crates’ positions but not the well’s.",
+      "refs": []
+    },
+    "error": null,
+    "created_at": 1791195680416,
+    "started_at": 1791195680421,
+    "ended_at": 1791195863439
+  },
+  "agent": "gc-designer@studio",
+  "turns": 1
+}
+,"budget":
+{
+  "task": {
+    "scope": "task:t3db1a0cc70c5294d3cb6fa6a",
+    "limits": {},
+    "used": {
+      "input_tokens": 160701,
+      "micro_usd": 0,
+      "output_tokens": 922,
+      "tokens": 161623
+    }
+  },
+  "worker": {
+    "scope": "worker:gc-designer",
+    "limits": {},
+    "used": {
+      "input_tokens": 4556346,
+      "micro_usd": 0,
+      "output_tokens": 47723,
+      "tokens": 4604069
+    }
+  }
+}
+}
