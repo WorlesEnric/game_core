@@ -157,24 +157,47 @@ namespace GameCore.Studio.Views.Canvas
                 maxLayer = Math.Max(maxLayer, value);
             }
 
+            // Unreached nodes (they only point at the roots' side: an impact or "used by" view) go one layer before the
+            // earliest neighbour they point at, repeatedly, so a chain of referrers fans out to the left (layers may go
+            // negative; positions only use their order). Whatever is still unreached is isolated: a last column.
+            bool placed = true;
+            while (placed)
+            {
+                placed = false;
+                foreach (CanvasNode node in _nodes)
+                {
+                    if (layer.ContainsKey(node.Id) || !_next.TryGetValue(node.Id, out List<string>? outs))
+                    {
+                        continue;
+                    }
+
+                    int best = int.MaxValue;
+                    foreach (string target in outs)
+                    {
+                        if (layer.TryGetValue(target, out int targetLayer))
+                        {
+                            best = Math.Min(best, targetLayer - 1);
+                        }
+                    }
+
+                    if (best != int.MaxValue)
+                    {
+                        layer[node.Id] = best;
+                        placed = true;
+                    }
+
+                    if (++work % 64 == 0)
+                    {
+                        yield return false;
+                    }
+                }
+            }
+
             foreach (CanvasNode node in _nodes)
             {
                 if (!layer.ContainsKey(node.Id))
                 {
-                    // Unreached (only incoming links or isolated): one layer before the first neighbour, else a last column.
-                    int best = maxLayer + 1;
-                    if (_next.TryGetValue(node.Id, out List<string>? outs))
-                    {
-                        foreach (string target in outs)
-                        {
-                            if (layer.TryGetValue(target, out int targetLayer))
-                            {
-                                best = Math.Min(best, Math.Max(0, targetLayer - 1));
-                            }
-                        }
-                    }
-
-                    layer[node.Id] = best;
+                    layer[node.Id] = maxLayer + 1;
                 }
             }
 
