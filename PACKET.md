@@ -191,7 +191,43 @@ The gate verdict is tied to the clone revision, so each main merge meant a rebui
 
 ## 6. Recorded playthrough on :1
 
-RECORDING_SECTION
+The recording was made with `studio/tools/record_playthrough.sh p3.1 games/hollowmere/Autoplay/playthrough.txt --minutes 11 --label playthrough-d59a1af5`, using the d59a1af5 player (the gated build), fullscreen on the host display `:1` with `-frameLog`.
+
+**Evidence.** In the repo: `artifacts/studio/evidence/P3.1/recording/`. On the host: `~/wkspace/gc-studio/evidence/p3.1/playthrough-d59a1af5/`.
+
+| | |
+|---|---|
+| Played | **633 s** (10 min 33 s); player **exit 0**; autoplay `quit 0` at frame 36,465 |
+| Route | menu → new game → Thornwick (Maren's rumour, the coins, Pip's shrine hint, Bram's lantern) → Hale's gate → Blackmere (the shrine lanterns west to east, the clapper, **manual save to slot 1**, the satchel) → Odd's ferry → the Drowned Belfry (the Echo, **ring** the bell) → **Ending C "The Freed Echo"** → **restart** → **load slot 1 mid-quest** → a walk on the causeway → quit. Every `mark` was reached (`player.log`). |
+| etosd | User unit `etosd.service`. **Stopped at 2026-10-05T23:28:05+08:00 and restarted at 23:38:43+08:00** (systemd user journal), with 0 etosd processes during the run. Before launch, the script checks `pgrep -f 'live-etos-tests\|gc-studio/p2'` and found nothing. |
+| Network | `unshare -rn` is refused on this host (`kernel.apparmor_restrict_unprivileged_userns=1`; "write failed /proc/self/uid_map: Operation not permitted"). The fallback was `ss -tunap` snapshots every 5 s, filtered to the player PID, with the verdict **"no inet sockets opened by the player"** (`network-verdict.txt`). The full host-wide snapshot file stays on the host; its sha256 is in `playthrough.sha256`. |
+| Video | `playthrough.mp4`: 20,223,247 bytes (≤ 25 MB, committed); sha256 `ba2ea75016c0d5555f76eecc2b4872c935100b2d4cd8b53413e9bafe7b9a886d`; x11grab 1280x720 at 30 fps with PulseAudio monitor audio |
+| Keyframes | `keyframes/kf-0000s.png` … `kf-0630s.png`, every 30 s (22 files, each ≤ 280 KB) |
+| Save headers | `save-headers.json`. `slot-1.gcc` is 260,236 bytes (`GCCK` header) and `slot-1.json` is format 1, gameId hollowmere, catalog `d82aed185b6d…`, region `7f21b99a…` (Blackmere), playTime 289.97 s, logicalStep 17182, `temporalContinuity: true`, documentHash `2fb8c659…`. |
+| Frame data | `frame-log.csv` (36,465 rows) and `frame-stats.json` |
+
+**B-FRAME** (16.7 / 100 / 250 ms): **FAIL**.
+
+| Check | Result | Status |
+|---|---|---|
+| p95 ≤ 16.7 ms | **p95 21.82 ms** (p50 16.67, p99 25.42, mean 16.78; 59.9 fps mean) | FAIL |
+| Per-region p95 | village 17.92 ms, marsh 22.27 ms, belfry 21.68 ms | the marsh and belfry scenes are the heavier ones |
+| No frame > 100 ms outside the 1 s after a transition | **3 frames** | FAIL |
+| Transition hitches ≤ 250 ms | village→marsh 17.7 ms; **marsh→belfry 267.1 ms**; belfry→village (restart) 44.6 ms; load (restore) 61.3 ms | FAIL (the belfry transition only) |
+| Steady window ≥ 0.9 × budget | 608.6 s | pass |
+
+The three frames over 100 ms:
+- Frames 1 and 2 (2,900 ms and 612 ms) are the boot load. The rule starts the steady window at the first `ready` marker, which is the menu's first frame.
+- Frame 17183 (288 ms) is the **manual save**, a synchronous write of the 260 KB checkpoint.
+
+**What this shows:**
+- Two real costs in the game: the synchronous save (~290 ms) and the belfry region load (~267–269 ms, also in run 1). Both are follow-ups for the game owner: an asynchronous checkpoint write, and preloading or splitting the belfry region.
+- Frame pacing: the mean is exactly 60 fps, but 47% of frames exceed 16.7 ms. That is pacing jitter while x11grab encodes the same display, on a shared host (load average 7–22 during this session from other packets' Unity instances). Run 1 on a quieter stretch measured p95 17.10 ms.
+- The verdict is reported as measured; the rule was not changed after seeing results.
+
+**Run 1** (c8497644, kept in `recording-run1/`) also exited 0 but played only 523 s: vsynced walking is faster than the headless rehearsal, so the script was lengthened. Its B-FRAME was also FAIL: p95 17.10 ms, two village stalls of 464 ms and 805 ms, and the belfry transition at 269 ms.
+
+Before both recordings, a headless rehearsal ran the script under `xvfb-run -a`: 632 s, `quit 0`.
 
 ## 7. Findings
 
