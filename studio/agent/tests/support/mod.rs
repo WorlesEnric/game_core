@@ -612,7 +612,7 @@ async fn op(State(n): State<FakeNode>, Path(op): Path<String>, body: Bytes) -> R
                 .as_str()
                 .unwrap_or("image/png")
                 .to_string();
-            axum::Json(json!({"key": v["key"], "op": op, "provider": "echo-images", "job_id": "job_1",
+            axum::Json(json!({"key": v["key"], "op": op, "provider": v["provider"], "job_id": "job_1",
                               "state": {"state": "succeeded"},
                               "refs": [{"id": id, "name": name, "kind": "pinned", "size": bytes.len(), "owner": "fake",
                                         "media_type": media, "digest": digest}]}))

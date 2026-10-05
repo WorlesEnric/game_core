@@ -75,6 +75,7 @@ pub struct MediaOps {
     ttl: Duration,
     default_ceiling: Option<f64>,
     prices: Vec<crate::pricing::OpPrice>,
+    price_config: Option<std::path::PathBuf>,
     cache: Mutex<StatusCache>,
     voice: Mutex<String>,
 }
@@ -137,6 +138,7 @@ impl MediaOps {
             ttl: Duration::from_secs(hello_cache_s),
             default_ceiling,
             prices: Vec::new(),
+            price_config: None,
             cache: Mutex::new(None),
             voice: Mutex::new(status::UNKNOWN.to_string()),
         }
@@ -146,6 +148,77 @@ impl MediaOps {
     pub fn with_prices(mut self, prices: Vec<crate::pricing::OpPrice>) -> Self {
         self.prices = prices;
         self
+    }
+
+    /// Reload only operator-owned tariffs from disk for each operation/hello.
+    /// Other process configuration still requires an integrator restart.
+    pub fn with_price_config(mut self, path: std::path::PathBuf) -> Self {
+        self.price_config = Some(path);
+        self
+    }
+
+    fn prices(&self) -> ApiResult<Vec<crate::pricing::OpPrice>> {
+        let Some(path) = &self.price_config else {
+            return Ok(self.prices.clone());
+        };
+        let text = match std::fs::read_to_string(path) {
+            Ok(text) => text,
+            Err(e) if e.kind() == std::io::ErrorKind::NotFound => return Ok(Vec::new()),
+            Err(_) => {
+                return Err(ApiError::new(
+                    axum::http::StatusCode::CONFLICT,
+                    "budget_unpriced",
+                    "tariff configuration is unreadable",
+                ));
+            }
+        };
+        #[derive(serde::Deserialize)]
+        struct Prices {
+            #[serde(default)]
+            ops_prices: Vec<crate::pricing::OpPrice>,
+        }
+        toml::from_str::<Prices>(&text)
+            .map(|p| p.ops_prices)
+            .map_err(|_| {
+                ApiError::new(
+                    axum::http::StatusCode::CONFLICT,
+                    "budget_unpriced",
+                    "tariff configuration is invalid",
+                )
+            })
+    }
+
+    /// Verified tariffs currently available, including published/operator kind.
+    pub fn tariffs(&self) -> Vec<Value> {
+        self.prices()
+            .unwrap_or_default()
+            .iter()
+            .filter(|p| p.verified())
+            .map(|p| json!({"op":p.op,"tariff":p.tariff()}))
+            .collect()
+    }
+
+    async fn configured(&self, op: &str, input: &Map<String, Value>) -> ApiResult<Vec<String>> {
+        // Free status read precedes every budget diagnostic, including unpriced.
+        let status = self.client.ops().call("status", json!({})).await?;
+        let requested = input.get("provider").and_then(Value::as_str);
+        let names: Vec<String> = status
+            .pointer(&format!("/providers/{op}"))
+            .and_then(Value::as_array)
+            .into_iter()
+            .flatten()
+            .filter_map(Value::as_str)
+            .filter(|name| requested.is_none_or(|requested| requested == *name))
+            .map(str::to_owned)
+            .collect();
+        if names.is_empty() {
+            return Err(ApiError::new(
+                axum::http::StatusCode::NOT_FOUND,
+                "not_configured",
+                format!("no configured provider for {op} and the selected provider"),
+            ));
+        }
+        Ok(names)
     }
 
     /// Run operations with `timeout` per call (the SDK default is 30 s).
@@ -241,19 +314,25 @@ impl MediaOps {
                 "`output` is chosen by the node, not the caller",
             ));
         }
+        let configured = self.configured(&req.op, &input).await?;
         let ceiling = req.max_cost_usd.or(self.default_ceiling);
         if ceiling.is_some_and(|m| !m.is_finite() || m < 0.0) {
             return Err(ApiError::bad_request(
                 "max_cost_usd is a non-negative number",
             ));
         }
-        if let Some(max) = ceiling {
-            crate::pricing::check(&self.prices, &req.op, &mut input, max)?;
-        }
+        let prices: Vec<_> = self
+            .prices()?
+            .into_iter()
+            .filter(|p| configured.contains(&p.provider))
+            .collect();
+        let mut charge = ceiling
+            .map(|max| crate::pricing::check(&prices, &req.op, &mut input, max))
+            .transpose()?;
         if op == "describe" {
             // The node's describe schema has no ceiling field. Any supplied ceiling
             // has already been enforced above; uncapped describe retains its contract.
-            return self.describe(&req, input, owner).await;
+            return self.describe(&req, input, owner, charge).await;
         }
         let Some(max) = ceiling else {
             return Err(ApiError::bad_request("max_cost_usd is required")
@@ -276,6 +355,11 @@ impl MediaOps {
             other => ops.call(other, input).await,
         }
         .map_err(|e| op_timeout(e.into(), op, Some(&key)))?;
+        if let Some(estimate) = &charge {
+            self.ledger.record_media_charge(&key, owner, estimate)?;
+            // Preserve the first bound charge when the node replays an idempotent job.
+            charge = self.ledger.media_charge(&key)?;
+        }
         let provider = answer
             .get("provider")
             .and_then(Value::as_str)
@@ -317,7 +401,7 @@ impl MediaOps {
                 .filter(|m| !m.is_empty())
                 .unwrap_or_else(|| media_type_for(&name).to_string());
             let producer = json!({"op": op, "provider": provider, "jobId": job, "key": key,
-                                  "etosRef": id, "changeSetId": req.change_set_id});
+                                  "etosRef": id, "changeSetId": req.change_set_id, "charge":charge});
             self.ledger.put_artifact(&ArtifactRow {
                 sha256: sha.clone(),
                 path: path.display().to_string(),
@@ -348,6 +432,7 @@ impl MediaOps {
             });
         }
         let response = GenerateResponse {
+            charge: charge.clone(),
             op: req.op.clone(),
             etos_op: op.to_string(),
             provider,
@@ -373,6 +458,7 @@ impl MediaOps {
         req: &GenerateRequest,
         mut input: Map<String, Value>,
         owner: &str,
+        charge: Option<crate::pricing::Charge>,
     ) -> ApiResult<GenerateResponse> {
         if input.contains_key("input") {
             return Err(ApiError::bad_request(
@@ -411,7 +497,12 @@ impl MediaOps {
             .describe(Value::Object(input))
             .await
             .map_err(|e| op_timeout(e.into(), "describe", None))?;
+        let key = crate::util::new_id("describe");
+        if let Some(charge) = &charge {
+            self.ledger.record_media_charge(&key, owner, charge)?;
+        }
         Ok(GenerateResponse {
+            charge,
             op: req.op.clone(),
             etos_op: "describe".into(),
             provider: answer
@@ -425,7 +516,7 @@ impl MediaOps {
                 .get("text")
                 .and_then(Value::as_str)
                 .map(str::to_string),
-            key: None,
+            key: Some(key),
         })
     }
 }

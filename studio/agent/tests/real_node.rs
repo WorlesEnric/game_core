@@ -419,3 +419,66 @@ async fn real_node_restart_recovery() {
         "the first task was kept, never reopened"
     );
 }
+
+/// One explicitly authorized cheap call after the integrator activates the R4 companion.
+#[tokio::test]
+#[ignore = "requires live-run guard, R4 companion, paired client, and explicit paid TTS opt-in"]
+async fn r4_one_priced_tts_records_published_tariff() {
+    assert_eq!(std::env::var("STUDIO_REAL_ALLOW_OPS").as_deref(), Ok("1"));
+    assert_eq!(std::env::var("STUDIO_REAL_R4_LIVE").as_deref(), Ok("1"));
+    let node = node().expect("paired client is required");
+    let project = std::env::var("GAMECORE_ETOS_PROJECT_ID").expect("project authority is required");
+    let out = std::path::PathBuf::from(
+        std::env::var("R4_EVIDENCE_DIR").expect("evidence directory is required"),
+    );
+    std::fs::create_dir_all(&out).unwrap();
+    let (status, hello) = node.call(reqwest::Method::GET, "/v1/hello", None).await;
+    std::fs::write(
+        out.join("hello.json"),
+        serde_json::to_vec_pretty(&hello).unwrap(),
+    )
+    .unwrap();
+    assert_eq!(status, 200, "authenticated hello refused");
+    assert!(
+        hello["tariffs"].as_array().is_some_and(|entries| entries
+            .iter()
+            .any(|entry| entry["op"] == "tts" && entry["tariff"]["kind"] == "published")),
+        "installed companion has no R4 published TTS tariff; integrator activation required; no paid call made"
+    );
+    let response = node.http.post(format!("{}/v1/ops/generate", node.base()))
+        .bearer_auth(&node.key).header("x-gamecore-project", project)
+        .json(&json!({"op":"tts","spec":{"text":"Hi.","provider":"bailian-tts"},"max_cost_usd":0.001}))
+        .send().await.unwrap();
+    let status = response.status();
+    let result: Value = response.json().await.unwrap();
+    std::fs::write(
+        out.join("tts.json"),
+        serde_json::to_vec_pretty(&result).unwrap(),
+    )
+    .unwrap();
+    assert!(status.is_success(), "priced TTS refused: {result}");
+    assert_eq!(result["charge"]["tariff"]["kind"], "published");
+    assert!(
+        result["charge"]["costUsd"]
+            .as_f64()
+            .is_some_and(|cost| cost > 0.0 && cost <= 0.001)
+    );
+    let home = std::env::var("HOME").unwrap();
+    let db = rusqlite::Connection::open_with_flags(
+        format!("{home}/.local/share/etos-studio/agents/gamecore-studio/state/ledger.db"),
+        rusqlite::OpenFlags::SQLITE_OPEN_READ_ONLY,
+    )
+    .unwrap();
+    let charge: String = db
+        .query_row(
+            "SELECT charge FROM media_charges WHERE key=?1",
+            [result["key"].as_str().unwrap()],
+            |r| r.get(0),
+        )
+        .unwrap();
+    assert_eq!(
+        serde_json::from_str::<Value>(&charge).unwrap(),
+        result["charge"]
+    );
+    std::fs::write(out.join("ledger-charge.json"), charge).unwrap();
+}

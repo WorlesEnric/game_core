@@ -38,6 +38,10 @@ async fn companion(node: &FakeNode, dir: &Path, tweak: impl FnOnce(&mut Config))
     .into_iter()
     .map(
         |(op, provider, unit, per_unit)| gamecore_studio::pricing::OpPrice {
+            source: "operator".into(),
+            url: String::new(),
+            note: "Fake test tariff".into(),
+            model: "fake".into(),
             op: op.into(),
             provider: provider.into(),
             unit: unit.into(),
@@ -46,6 +50,13 @@ async fn companion(node: &FakeNode, dir: &Path, tweak: impl FnOnce(&mut Config))
     )
     .collect();
     tweak(&mut cfg);
+    if !dir.join("config.toml").exists() {
+        std::fs::write(
+            dir.join("config.toml"),
+            toml::to_string(&json!({"ops_prices":cfg.ops_prices})).unwrap(),
+        )
+        .unwrap();
+    }
     let client = Client::new(&node.url, AGENT_KEY)
         .unwrap()
         .with_agent(AGENT)
@@ -1100,7 +1111,7 @@ async fn ops_generate_stores_artifacts_and_passes_refusals() {
     let (s, v) = api
         .post(
             "/v1/ops/generate",
-            json!({"op": "tts", "spec": {"text": "Mind the lantern."}}),
+            json!({"op": "image", "spec": {"prompt": "lantern"}}),
         )
         .await;
     assert_eq!((s, v["code"].as_str()), (400, Some("bad_request")), "{v}");
@@ -1851,7 +1862,7 @@ async fn r3_d14_priced_budget_binds_quantity_and_provider() {
         (json!({"prompt":"swatch"}), "over_budget"),
         (
             json!({"prompt":"swatch", "provider":"unpriced"}),
-            "budget_unpriced",
+            "not_configured",
         ),
         (
             json!({"prompt":"swatch", "params":{"quality":"high"}}),
@@ -2065,5 +2076,216 @@ async fn r3_d23_retained_sample_signed_app_stage_and_tamper_refusals() {
         .0,
         404
     );
+    running.shutdown().await;
+}
+
+#[tokio::test]
+async fn p42_ops_01_retained_unconfigured_3d_precedes_budget() {
+    let retained: Value = serde_json::from_str(include_str!("../../../artifacts/studio/verification/W-AI-07/installed-3d-refusal-tts-tamper-20261005T192945.989942Z/fixtures/error-generate-3d.json")).unwrap();
+    assert_eq!(retained["body"]["code"], "budget_unpriced");
+    let node = FakeNode::start().await;
+    let dir = tempfile::tempdir().unwrap();
+    let running = companion(&node, dir.path(), |cfg| cfg.ops_prices.clear()).await;
+    let api = Api::new(&running, &node);
+    for cap in [json!(0), json!(0.1), Value::Null] {
+        let mut request = json!({"op":"3d","spec":{"prompt":"well"},"max_cost_usd":cap});
+        if cap.is_null() {
+            request.as_object_mut().unwrap().remove("max_cost_usd");
+        }
+        let (_, result) = api.post("/v1/ops/generate", request).await;
+        assert_eq!(result["code"], "not_configured", "{result}");
+    }
+    assert_eq!(node.calls("POST", "/ops/generate.3d"), 0);
+    running.shutdown().await;
+}
+
+#[tokio::test]
+async fn r4_tariffs_operator_cap_pair_ledger_and_hot_reload() {
+    let node = FakeNode::start().await;
+    node.set_op(
+        "generate.image",
+        200,
+        json!({"name":"swatch.png","bytes":"PNG"}),
+    );
+    let dir = tempfile::tempdir().unwrap();
+    std::fs::write(
+        dir.path().join("config.toml"),
+        r#"
+[[ops_prices]]
+op = "image"
+provider = "echo-images"
+model = "gpt-image-2"
+source = "operator"
+note = "Fake-node operator estimate including input"
+unit = "image"
+per_unit = 0.006
+"#,
+    )
+    .unwrap();
+    let running = companion(&node, dir.path(), |_| {}).await;
+    let api = Api::new(&running, &node);
+    let body = json!({"op":"image","spec":{"prompt":"swatch","count":2},"max_cost_usd":0.012});
+    let (_, hello) = api.get("/v1/hello").await;
+    assert_eq!(hello["tariffs"][0]["tariff"]["kind"], "operator");
+    let mut low = body.clone();
+    low["max_cost_usd"] = json!(0.011);
+    let (_, refused) = api.post("/v1/ops/generate", low).await;
+    assert_eq!(refused["code"], "over_budget");
+    assert_eq!(refused["data"]["tariff"]["kind"], "operator");
+    assert_eq!(node.calls("POST", "/ops/generate.image"), 0);
+    let (status, result) = api.post("/v1/ops/generate", body.clone()).await;
+    assert_eq!(status, 200, "{result}");
+    assert_eq!(result["charge"]["tariff"]["kind"], "operator");
+    assert_eq!(result["charge"]["costUsd"], 0.012);
+    let key = result["key"].as_str().unwrap();
+    let charge = running.state.ledger.media_charge(key).unwrap().unwrap();
+    assert_eq!(charge.cost_usd, 0.012);
+    assert_eq!(charge.tariff["kind"], "operator");
+    api.post("/v1/ops/generate", body.clone()).await;
+    assert_eq!(
+        running.state.ledger.media_charge(key).unwrap().unwrap(),
+        charge
+    );
+    // A tariff edit must not change the node's idempotency key or re-price a completed job.
+    let path = dir.path().join("config.toml");
+    let changed = std::fs::read_to_string(&path)
+        .unwrap()
+        .replace("0.006", "0.005");
+    std::fs::write(&path, changed).unwrap();
+    let (_, replay) = api.post("/v1/ops/generate", body.clone()).await;
+    assert_eq!(replay["key"], key);
+    assert_eq!(replay["charge"], result["charge"]);
+    // The operator file is re-read; removing the tariff fails closed without a process restart.
+    std::fs::write(dir.path().join("config.toml"), "ops_prices = []\n").unwrap();
+    let (_, refused) = api.post("/v1/ops/generate", body).await;
+    assert_eq!(refused["code"], "budget_unpriced");
+    assert!(
+        api.get("/v1/hello").await.1["tariffs"]
+            .as_array()
+            .unwrap()
+            .is_empty()
+    );
+    std::fs::remove_file(dir.path().join("config.toml")).unwrap();
+    assert!(
+        api.get("/v1/hello").await.1["tariffs"]
+            .as_array()
+            .unwrap()
+            .is_empty()
+    );
+    running.shutdown().await;
+}
+
+#[tokio::test]
+async fn p42_live_01_ambiguous_scope_reasks_exactly_once() {
+    let node = FakeNode::start().await;
+    let dir = tempfile::tempdir().unwrap();
+    let running = companion(&node, dir.path(), |_| {}).await;
+    let api = Api::new(&running, &node);
+    let id = "cs_01J9ZQ00000000000000000079";
+    let mut request = edit_request(id);
+    let mut catalog = bare_catalog();
+    catalog["tools"][0]["scopes"] = json!(["Instance", "Prefab"]);
+    let revision = gamecore_studio::util::catalog_revision(&catalog);
+    request["toolCatalog"] = catalog;
+    request["toolCatalogRevision"] = json!(revision);
+    let (status, submitted) = api.post("/v1/requests", request).await;
+    assert_eq!(status, 200, "{submitted}");
+    let first = submitted["taskId"].as_str().unwrap();
+    let mut candidate: Value =
+        serde_json::from_slice(&changeset_with_tool(id, "inventory.grantStarting")).unwrap();
+    candidate["operations"][0]["target"]
+        .as_object_mut()
+        .unwrap()
+        .remove("scope");
+    let bytes = serde_json::to_vec(&candidate).unwrap();
+    node.complete(first, &[("changeset.json", bytes.clone())]);
+    let deadline = std::time::Instant::now() + Duration::from_secs(10);
+    let second = loop {
+        let (_, view) = api.get(&format!("/v1/requests/{id}")).await;
+        if view["attempt"] == 1 && view["taskId"].as_str().is_some_and(|t| t != first) {
+            break view["taskId"].as_str().unwrap().to_string();
+        }
+        assert!(std::time::Instant::now() < deadline, "{view}");
+        tokio::time::sleep(Duration::from_millis(20)).await;
+    };
+    node.complete(&second, &[("changeset.json", bytes)]);
+    let result = api.until_state(id, "candidate_invalid").await;
+    assert_eq!(result["tasks"].as_array().unwrap().len(), 2);
+    assert!(
+        result["outcome"]["diagnostics"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .any(|d| d["code"] == "ScopeNotAllowed")
+    );
+    assert!(running.state.ledger.candidate(id).is_err());
+    running.shutdown().await;
+}
+
+#[tokio::test]
+async fn p42_live_01_published_candidate_uses_request_index_slice() {
+    let node = FakeNode::start().await;
+    let dir = tempfile::tempdir().unwrap();
+    let running = companion(&node, dir.path(), |_| {}).await;
+    let api = Api::new(&running, &node);
+    let context: Value = serde_json::from_str(include_str!("fixtures/r4_c/context.json")).unwrap();
+    let envelope: Value = serde_json::from_str(include_str!("../../../artifacts/studio/verification/W-EDIT-07/live-catalog-candidate-mode-20261005T194931.456257Z/real-candidate.json")).unwrap();
+    let candidate = &envelope["changeSet"];
+    let id = candidate["id"].as_str().unwrap();
+    let mut request = edit_request(id);
+    request["selection"] = candidate["selection"].clone();
+    request["contextSlice"] = context["index"].clone();
+    request["toolCatalog"] = context["catalog"].clone();
+    request["toolCatalogRevision"] =
+        json!(gamecore_studio::util::catalog_revision(&context["catalog"]));
+    let (status, submitted) = api.post("/v1/requests", request).await;
+    assert_eq!(status, 200, "{submitted}");
+    node.complete(
+        submitted["taskId"].as_str().unwrap(),
+        &[("changeset.json", serde_json::to_vec(candidate).unwrap())],
+    );
+    let settled = api.until_state(id, "candidate").await;
+    assert_eq!(settled["tasks"].as_array().unwrap().len(), 1);
+    let (_, published) = api.get(&format!("/v1/candidates/{id}")).await;
+    assert_eq!(
+        published["changeSet"]["operations"][0]["target"]["scope"],
+        "Instance"
+    );
+    running.shutdown().await;
+}
+
+#[tokio::test]
+async fn r4_published_tts_charge_and_configured_missing_tariff() {
+    let node = FakeNode::start().await;
+    node.set_op("status", 200, json!({"providers":{"tts":["bailian-tts"]}}));
+    node.set_op(
+        "tts",
+        200,
+        json!({"name":"hi.wav","bytes":"WAV","media_type":"audio/wav"}),
+    );
+    let dir = tempfile::tempdir().unwrap();
+    let running = companion(&node, dir.path(), |cfg| cfg.ops_prices.clear()).await;
+    let api = Api::new(&running, &node);
+    let request = json!({"op":"tts","spec":{"text":"Hi."},"max_cost_usd":0.001});
+    let (_, missing) = api.post("/v1/ops/generate", request.clone()).await;
+    assert_eq!(missing["code"], "budget_unpriced");
+    assert_eq!(node.calls("POST", "/ops/tts"), 0);
+    std::fs::write(
+        dir.path().join("config.toml"),
+        include_str!("../../etos/agent/config.example.toml"),
+    )
+    .unwrap();
+    let (status, result) = api.post("/v1/ops/generate", request).await;
+    assert_eq!(status, 200, "{result}");
+    assert_eq!(result["provider"], "bailian-tts");
+    assert_eq!(result["charge"]["tariff"]["kind"], "published");
+    assert_eq!(result["charge"]["quantity"], 3.0);
+    let charge = running
+        .state
+        .ledger
+        .media_charge(result["key"].as_str().unwrap())
+        .unwrap()
+        .unwrap();
+    assert!((charge.cost_usd - 3.0 * 0.0000114682).abs() < 1e-12);
     running.shutdown().await;
 }

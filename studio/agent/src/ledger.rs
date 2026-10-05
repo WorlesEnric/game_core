@@ -46,6 +46,9 @@ pub enum LedgerError {
 pub type LedgerResult<T> = Result<T, LedgerError>;
 
 const SCHEMA: &str = r#"
+CREATE TABLE IF NOT EXISTS media_charges (
+  key TEXT PRIMARY KEY, owner TEXT NOT NULL, charge TEXT NOT NULL, created_at INTEGER NOT NULL
+);
 CREATE TABLE IF NOT EXISTS requests (
   request_id    TEXT PRIMARY KEY,
   change_set_id TEXT NOT NULL UNIQUE,
@@ -391,6 +394,35 @@ impl Ledger {
 
     fn lock(&self) -> LedgerResult<MutexGuard<'_, Connection>> {
         self.conn.lock().map_err(|_| LedgerError::Poisoned)
+    }
+
+    /// Record one binding tariff charge per idempotent operation, never double charge a retry.
+    pub fn record_media_charge(
+        &self,
+        key: &str,
+        owner: &str,
+        charge: &crate::pricing::Charge,
+    ) -> LedgerResult<()> {
+        self.lock()?.execute(
+            "INSERT OR IGNORE INTO media_charges(key,owner,charge,created_at) VALUES (?1,?2,?3,?4)",
+            params![key, owner, serde_json::to_string(charge)?, now_ms()],
+        )?;
+        Ok(())
+    }
+
+    /// Read a charge for diagnostics and verification.
+    pub fn media_charge(&self, key: &str) -> LedgerResult<Option<crate::pricing::Charge>> {
+        let value: Option<String> = self
+            .lock()?
+            .query_row(
+                "SELECT charge FROM media_charges WHERE key=?1",
+                [key],
+                |r| r.get(0),
+            )
+            .optional()?;
+        value
+            .map(|value| serde_json::from_str(&value).map_err(LedgerError::from))
+            .transpose()
     }
 
     /// Associate a resource with an authenticated app/project owner.

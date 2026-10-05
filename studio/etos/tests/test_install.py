@@ -107,17 +107,46 @@ if sys.argv[1:] == ["--json","agent","list"]:
         config_path = self.root / "agents/gamecore-studio/state/config.toml"
         config_path.parent.mkdir(parents=True)
         config_path.write_text('port = 7451\n[stage.projects]\n"' + "c" * 64 + '" = "/kept/project"\n')
-        result = subprocess.run(["bash", str(HERE / "install.sh"), "--apply-prices"],
+        result = subprocess.run(["bash", str(HERE / "install.sh"), "--apply-prices", "--only", "tts"],
                                 env={**os.environ, "ETOS_STUDIO_ROOT": str(self.root)}, capture_output=True, text=True, check=True)
         self.assertIn("---", result.stdout)
         self.assertIn("+++", result.stdout)
-        for name in ["models", "ops"]:
-            self.assertEqual((self.root / f"{name}.toml").read_bytes(), (HERE / f"{name}.toml.tmpl").read_bytes())
+        self.assertEqual((self.root / "models.toml").read_text(), "# old\n")
+        installed = tomllib.loads((self.root / "ops.toml").read_text())
+        self.assertEqual(installed["providers"], [tts])
         config = tomllib.loads((self.root / "agents/gamecore-studio/state/config.toml").read_text())
         self.assertEqual(config["ops_prices"], companion["ops_prices"])
         self.assertEqual(config["port"], 7451)
         self.assertEqual(config["stage"]["projects"]["c" * 64], "/kept/project")
         self.assertFalse((self.root / "calls").exists())
+
+    def test_r4_placeholder_refuses_before_any_write(self):
+        for name in ["models", "ops"]:
+            (self.root / f"{name}.toml").write_text("# untouched\n")
+        result = subprocess.run(["bash", str(HERE / "install.sh"), "--apply-prices"],
+            env={**os.environ, "ETOS_STUDIO_ROOT": str(self.root)}, capture_output=True, text=True)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("tariff_placeholder", result.stderr)
+        for name in ["models", "ops"]:
+            self.assertEqual((self.root / f"{name}.toml").read_text(), "# untouched\n")
+        self.assertFalse((self.root / "agents").exists())
+
+    def test_r4_operator_declaration_and_provider_binding(self):
+        template = (HERE / "ops.toml.tmpl").read_text()
+        template = template.replace('per_unit = "SET_BY_OPERATOR"', 'per_unit = 0.02')
+        with self.assertRaisesRegex(ValueError, "tariff_placeholder"):
+            mod.tariffs(template)
+        template = template.replace("SET_BY_OPERATOR: declare a total per-image estimate and its basis",
+                                    "Operator estimate including input for low quality images")
+        prices = mod.tariffs(template)
+        image = next(p for p in prices if p["op"] == "image")
+        self.assertEqual(image["source"], "operator")
+        self.assertEqual(image["provider"], "echo-images")
+        self.assertEqual(image["model"], "gpt-image-2")
+        self.assertEqual(image["per_unit"], 0.02)
+        tts = next(p for p in prices if p["op"] == "tts")
+        self.assertEqual(tts["source"], "published")
+        self.assertTrue(tts["url"].startswith("https://www.alibabacloud.com/"))
 
 
 if __name__ == "__main__":

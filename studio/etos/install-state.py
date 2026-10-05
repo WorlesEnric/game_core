@@ -75,25 +75,89 @@ def register(root, project, identity):
     print(f"registered {identity} -> {project}")
 
 
-def apply_prices(root):
-    for name in ("models", "ops"):
-        path = root / f"{name}.toml"
-        before = path.read_text() if path.exists() else ""
-        after = (HERE / f"{name}.toml.tmpl").read_text()
-        tomllib.loads(after)
+def provider_blocks(text):
+    return re.findall(r"(?ms)^\[\[providers\]\].*?(?=^\[\[providers\]\]|\Z)", text)
+
+
+def tariffs(text, only=None):
+    """Provenance is a TOML comment extension because pinned etops denies new fields.
+
+    Each # @studio line is parsed as TOML and bound to the enclosing provider/model/cost.
+    It stays in ops.toml, cannot change a provider request's parameters, and is never a
+    second independent price value. Placeholder templates fail before any write.
+    """
+    import math
+    result = []
+    for block in provider_blocks(text):
+        provider = tomllib.loads(block)["providers"][0]
+        if only and provider["family"] != only:
+            continue
+        metadata = "\n".join(re.findall(r"(?m)^# @studio (.*)$", block))
+        if not metadata:
+            continue
+        meta = tomllib.loads(metadata)
+        price = provider.get("cost", {}).get("per_unit")
+        if not isinstance(price, (float, int)) or not math.isfinite(price) or price <= 0:
+            raise ValueError("tariff_placeholder: set a positive operator per_unit before applying templates")
+        if meta.get("source") == "operator":
+            if not meta.get("note", "").strip() or "SET_BY_OPERATOR" in meta["note"]:
+                raise ValueError("tariff_placeholder: operator tariff requires an explicit non-placeholder note")
+        elif meta.get("source") == "published":
+            if not meta.get("url", "").startswith("https://"):
+                raise ValueError("published tariff requires the provider list-price URL")
+        else:
+            raise ValueError("tariff source must be published or operator")
+        result.append(dict(meta, op=provider["family"], provider=provider["name"],
+                           model=provider["model"], per_unit=price))
+    return result
+
+
+def validate_prices():
+    tariffs((HERE / "ops.toml.tmpl").read_text())
+
+
+def apply_prices(root, only=None):
+    if root.resolve() == (Path.home() / ".local/share/etos-studio").resolve():
+        guard = subprocess.run(["pgrep", "-f", "[g]c-studio/p3"], capture_output=True)
+        if guard.returncode == 0:
+            raise ValueError("live_run_active: a P3 live run is active; no config changes made")
+        if guard.returncode != 1:
+            raise ValueError("live_run_guard_unavailable: no config changes made")
+    template = (HERE / "ops.toml.tmpl").read_text()
+    prices = tariffs(template, only)  # Validate every selected tariff before any write.
+    path = root / "ops.toml"
+    before = path.read_text() if path.exists() else ""
+    after = template
+    if only:
+        blocks = [b for b in provider_blocks(template) if tomllib.loads(b)["providers"][0]["family"] == only]
+        if len(blocks) != 1:
+            raise ValueError("selected provider template must be unique")
+        after = before
+        for block in provider_blocks(before):
+            if tomllib.loads(block)["providers"][0]["family"] == only:
+                after = after.replace(block, "")
+        after = after.rstrip() + "\n\n" + blocks[0]
+    tomllib.loads(after)
+    writes = [(path, before, after)]
+    if not only:
+        path = root / "models.toml"
+        writes.append((path, path.read_text() if path.exists() else "", (HERE / "models.toml.tmpl").read_text()))
+    path = root / "agents/gamecore-studio/state/config.toml"
+    before = path.read_text() if path.exists() else ""
+    # Keep other settings, replace only the selected operation's tariffs on a partial apply.
+    def remove_price(match):
+        block = match[0]
+        return block if only and tomllib.loads(block)["ops_prices"][0]["op"] != only else ""
+    after = re.sub(r"(?ms)^\[\[ops_prices\]\]\s*\n.*?(?=^\[|\Z)", remove_price, before).rstrip()
+    for price in prices:
+        after += "\n\n[[ops_prices]]\n" + "".join(f"{key} = {json.dumps(value)}\n" for key, value in price.items())
+    tomllib.loads(after)
+    writes.append((path, before, after))
+    for path, before, after in writes:
         if before != after:
             print("".join(difflib.unified_diff(before.splitlines(True), after.splitlines(True), fromfile=str(path), tofile=str(path))))
             atomic_write(path, after)
-    path = root / "agents/gamecore-studio/state/config.toml"
-    before = path.read_text() if path.exists() else ""
-    # Price replacement is explicit: do not preserve unverifiable old image/call tariffs.
-    without_prices = re.sub(r"(?ms)^\[\[ops_prices\]\]\s*\n.*?(?=^\[|\Z)", "", before)
-    prices = (HERE / "agent/config.example.toml").read_text().split("[stage]", 1)[0]
-    after = without_prices.rstrip() + "\n\n" + prices
-    if tomllib.loads(before).get("ops_prices") != tomllib.loads(after).get("ops_prices"):
-        print("".join(difflib.unified_diff(before.splitlines(True), after.splitlines(True), fromfile=str(path), tofile=str(path))))
-        atomic_write(path, after)
-    print("Price templates applied. Integrator must reload node/companion; no services restarted.")
+    print("Price templates applied. R4 companion reloads tariffs on next call; older binaries require integrator restart. No services restarted.")
 
 
 def release(root, binary, manifest_dir, etos, attempts=30):
@@ -168,7 +232,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, required=True)
     sub = parser.add_subparsers(dest="action", required=True)
-    sub.add_parser("prices")
+    price_parser = sub.add_parser("prices")
+    price_parser.add_argument("--only", choices=["tts"])
+    sub.add_parser("validate-prices")
     reg = sub.add_parser("register")
     reg.add_argument("identity")
     reg.add_argument("project")
@@ -177,7 +243,9 @@ def main():
     rel.add_argument("--etos", default="etos")
     args = parser.parse_args()
     if args.action == "prices":
-        apply_prices(args.root)
+        apply_prices(args.root, args.only)
+    elif args.action == "validate-prices":
+        validate_prices()
     elif args.action == "register":
         register(args.root, args.project, args.identity)
     else:
