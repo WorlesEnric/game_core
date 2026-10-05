@@ -72,7 +72,7 @@ namespace Hollowmere.P1_4.EditMode.Tests
                 Assert.That(description, Does.Contain(plugin), "the catalog description registers " + plugin);
             }
 
-            Assert.That(description, Does.Contain(NarrativeCatalogNames.DialogueStateDomain));
+            Assert.That(description, Does.Contain("dialogue.serializer.domain-state"), "the dialogue state domain is registered");
 
             clock.Restart();
             BakeResult second = Entry.Bake(world, paths, false);

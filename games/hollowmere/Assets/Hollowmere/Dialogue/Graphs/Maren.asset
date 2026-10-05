@@ -1,0 +1,129 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 462857f60b974425a195c77a8b2d2c21, type: 3}
+  m_Name: Maren
+  m_EditorClassIdentifier: 
+  authoringId: 8e52f233-3797-4396-89c4-24f00fceef8a
+  contentStamp: c9282a36edc4d1020408a81c5d7c1f19f4d66a5f767aea8566d10afe8924d8ed
+  speaker: Maren
+  speakerEntityId: 
+  entry: 0
+  nodes:
+  - kind: 2
+    speaker: 
+    speakerEntityId: 
+    text: 
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 11400000, guid: d66ae1abc322a07808fa7b06454ea935, type: 2}
+    actions: {fileID: 0}
+    options: []
+  - kind: 0
+    speaker: 
+    speakerEntityId: 
+    text: Traveller! The Drowned Bell has been silent since the flood took the old
+      belfry.
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options: []
+  - kind: 3
+    speaker: 
+    speakerEntityId: 
+    text: 
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 11400000, guid: ba43f30d66eafe8f18f1f03897adc684, type: 2}
+    options: []
+  - kind: 1
+    speaker: 
+    speakerEntityId: 
+    text: Will you help us?
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options:
+    - text: I'll find the clapper and ring it.
+      condition: {fileID: 0}
+      hideWhenUnavailable: 0
+    - text: Why should I help?
+      condition: {fileID: 0}
+      hideWhenUnavailable: 0
+  - kind: 3
+    speaker: 
+    speakerEntityId: 
+    text: 
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 11400000, guid: 88396701f9b310954b1cc1781dbb7fe0, type: 2}
+    options: []
+  - kind: 0
+    speaker: 
+    speakerEntityId: 
+    text: Bless you. Odd keeps the marsh gate key, and he will want coin for it.
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options: []
+  - kind: 0
+    speaker: 
+    speakerEntityId: 
+    text: Because the marsh will not let anyone rest until that bell rings again.
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options: []
+  - kind: 0
+    speaker: 
+    speakerEntityId: 
+    text: You rang it! Hollowmere can sleep again. Take my lantern, you have earned
+      it.
+    voiceClip: {fileID: 0}
+    portrait: {fileID: 0}
+    condition: {fileID: 0}
+    actions: {fileID: 0}
+    options: []
+  edges:
+  - from: 0
+    port: 1
+    option: 0
+    to: 1
+  - from: 1
+    port: 0
+    option: 0
+    to: 2
+  - from: 3
+    port: 2
+    option: 0
+    to: 4
+  - from: 3
+    port: 2
+    option: 1
+    to: 6
+  - from: 2
+    port: 0
+    option: 0
+    to: 3
+  - from: 4
+    port: 0
+    option: 0
+    to: 5
+  - from: 0
+    port: 0
+    option: 0
+    to: 7

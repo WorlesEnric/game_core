@@ -1,0 +1,310 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15e5b65982f74d69919496795afdca14, type: 3}
+  m_Name: HollowmereContent.content
+  m_EditorClassIdentifier: 
+  formatId: gamecore.gameplay-content/1
+  worldId: a2e71200-b7bb-4d4a-8aec-26370b7da0f3
+  contentHash: 7ba5baf2893695f137aef6b169720d0d9701ab6a4bc7e8d42416ad0c174d333e
+  entries:
+  - kind: logic.actionSet
+    authoringId: 0207a68e-bc01-457e-a2d4-69736a0658f0
+    name: RingBell
+    key: 1295824752
+    contentStamp: a0eb86a8e50dce61b545a846b675ce620ef638b68ef1e39cce1a848f588dbf94
+    asset: {fileID: 11400000, guid: b70253e3a9d620b5bb5e878d1e097766, type: 2}
+  - kind: narrative.fact
+    authoringId: 09ad393c-e99a-4165-8745-aab9f23ac790
+    name: pip_asked
+    key: 1728563486
+    contentStamp: 2a2322d96b1ebe6dbce47e7351f81ac17877685d9cb420487af98782778e734f
+    asset: {fileID: 11400000, guid: b76c6a70e9eb5d669b683f1be049c075, type: 2}
+  - kind: quest.quest
+    authoringId: 0db698bb-d2d3-45b7-94cb-1bd81e90e6c2
+    name: DrownedBell
+    key: 424028396
+    contentStamp: 20409a4810944b2ce8c7158c83d9368c4dff2d739c37f7526de173d0080e4b8c
+    asset: {fileID: 11400000, guid: fda8b12320d283ee8b163ac69ca3f69e, type: 2}
+  - kind: narrative.fact
+    authoringId: 0f06b03c-98f7-4b7a-b4c7-70950667b31a
+    name: odd_paid
+    key: 1622060798
+    contentStamp: a58ffa5ee37168b8d36e4e69e8855afc2364199d1c68705435406c1e5ff39869
+    asset: {fileID: 11400000, guid: 8ab54c2459c66f432b6f2b39c8b5fe68, type: 2}
+  - kind: logic.rule
+    authoringId: 12fd6b07-8dab-4d77-a1dc-ce30262983a5
+    name: BellKeepsGateOpen
+    key: 1621334270
+    contentStamp: 7304e2def12a7a569ac5af49e1cb0ec54b0553f802b0fee00defc01c1f9ffcda
+    asset: {fileID: 11400000, guid: cafb8164e9818b0ebad3fe14bf9fec71, type: 2}
+  - kind: logic.conditionSet
+    authoringId: 131e9a71-1319-41a1-88c9-0b923510ae1b
+    name: BellRung
+    key: 1574244091
+    contentStamp: 386729237a5e5ff96efd1d5fab6003f85c2d90b81f1ab4b29dd84f1b387b2075
+    asset: {fileID: 11400000, guid: d66ae1abc322a07808fa7b06454ea935, type: 2}
+  - kind: inventory.vendor
+    authoringId: 15ce0205-6068-4b27-9c55-3b2084b0ec81
+    name: OddsStall
+    key: 34876076
+    contentStamp: ec7d0c72077d4ffe794e992b2ab7a3e4841bbdb06f495234f2eb1405d0f9bb60
+    asset: {fileID: 11400000, guid: b231a08b2c6d11481be84bd69f97e822, type: 2}
+  - kind: inventory.worldItem
+    authoringId: 16b73b9b-6003-42ad-982c-d85426d1dc64
+    name: OldCoins_Village
+    key: 472049397
+    contentStamp: 220790d3806918b3428e7dadc2679466777933e0d97f7d2c46aa42850a7632eb
+    asset: {fileID: 11400000, guid: 719fc7ffeeceb049abd61c04ce9b6f7a, type: 2}
+  - kind: inventory.item
+    authoringId: 19942a74-dafe-4daf-a9d4-26bea7aad898
+    name: OldCoin
+    key: 1904349393
+    contentStamp: da70e8ce23f4d4e2d771136f8fb14cef2086767ad33c065226b36f3654e491e9
+    asset: {fileID: 11400000, guid: 84a1a139dbbe5f1519e35f7c9f049356, type: 2}
+  - kind: logic.conditionSet
+    authoringId: 1c70446b-7b7c-4fc7-8b5d-6dafb0de98c2
+    name: MarenTrustsPlayer
+    key: 666685549
+    contentStamp: 1d801d4905b641cce0c66309a0223bf1d7cbec660b7595fd25cce9710da144ff
+    asset: {fileID: 11400000, guid: f844f31f91c68c8f1a597004bb15e78a, type: 2}
+  - kind: logic.actionSet
+    authoringId: 266d333d-2e6d-47e6-8e71-8004cf7f4aca
+    name: MarenIntro
+    key: 534818769
+    contentStamp: c953e7e01d66fb7330a3570290c573e224e78d0de6900e85a4cc9335ab800cde
+    asset: {fileID: 11400000, guid: ba43f30d66eafe8f18f1f03897adc684, type: 2}
+  - kind: logic.actionSet
+    authoringId: 2beb7fe9-752d-4e57-a701-e3bf4a64de70
+    name: OddPersuaded
+    key: 1985600777
+    contentStamp: 82ca889a5393ce1d7de147c9c691e0eaa1011a77cf1036ac4e4b9141374b3ff8
+    asset: {fileID: 11400000, guid: 67c20dd1d1f0282d4954f2863303007a, type: 2}
+  - kind: logic.conditionSet
+    authoringId: 3335bea3-1074-4a9e-bb5e-fbd62deea390
+    name: HasGateKey
+    key: 1943310654
+    contentStamp: 85f4476aa704be433b393f6c2ae689b81973a5d865a25826f38901919e827816
+    asset: {fileID: 11400000, guid: 10f9ca00b9a8c311081708612bbcd54a, type: 2}
+  - kind: inventory.inventory
+    authoringId: 392e67f7-738f-403d-81f1-52fb78205528
+    name: PlayerInventory
+    key: 2018103523
+    contentStamp: e8358ef18bf5c729bff1f50f0a3a3f733a829ecc2d0921bb5c40c759110c6faa
+    asset: {fileID: 11400000, guid: 664f37a180ccafbbdb22f9979729d158, type: 2}
+  - kind: logic.conditionSet
+    authoringId: 39b2f636-d880-4a2f-bda0-2a6af23ec1ef
+    name: HasThreeOldCoins
+    key: 1178876214
+    contentStamp: 85283166650da3f7f3bfa8c18466ccb627f79da7890ac6fe28ce9db7cff290aa
+    asset: {fileID: 11400000, guid: 15cab9d4851d1b20a9c603203c748fc4, type: 2}
+  - kind: logic.actionSet
+    authoringId: 42f181e3-ef95-4ce3-82e7-2c2d0b79d494
+    name: OpenGate
+    key: 699525991
+    contentStamp: bc320afe022e67777a7d142847709169ac305e95f54ca86c76833b3472ca8ffb
+    asset: {fileID: 11400000, guid: 768a0dc928b36b4bd9aa0a0ae4fe6bf9, type: 2}
+  - kind: inventory.worldItem
+    authoringId: 43793255-287c-42c9-998b-fd8c45b448a2
+    name: BellClapper_Marsh
+    key: 68349148
+    contentStamp: 41d678672609e393e9e62a6081b9a4b153febe18337ebbab3b79666f5968b9f7
+    asset: {fileID: 11400000, guid: 1a4871e459fb293e286adee29f3e54f2, type: 2}
+  - kind: logic.conditionSet
+    authoringId: 45e8c82c-389b-49fb-aa35-e526fffc6c4a
+    name: GateOpen
+    key: 199792780
+    contentStamp: 7124c0fcc5486d90f80a5090520f084884a90673d60b0be9d01466f43528babe
+    asset: {fileID: 11400000, guid: 879d3bcc5ce318510a3a07a99e20a121, type: 2}
+  - kind: inventory.lootTable
+    authoringId: 5b597ed8-0d3c-4e49-9b96-578a988de75b
+    name: MarshLoot
+    key: 763858791
+    contentStamp: 7f13845cfb15891758f6afe0a1423685fd9031698872d1436075ab33986e2170
+    asset: {fileID: 11400000, guid: dcc24a99bd2fb059ca47da4e309f8dc3, type: 2}
+  - kind: inventory.item
+    authoringId: 6bb88144-376c-4507-8429-e78247b14e66
+    name: Lantern
+    key: 632557500
+    contentStamp: 4cada9036f497e5139ce24b2c1132dce12cb591e35d09f93db827a8979a7deb5
+    asset: {fileID: 11400000, guid: da88a02d7d687c57f87e0e14355a675b, type: 2}
+  - kind: logic.rule
+    authoringId: 78bdc449-3fc2-4935-8847-8c732163dd22
+    name: ReturnToMaren
+    key: 1243082529
+    contentStamp: 6b5725cc1a4e40b47fc30d6128037b73acad3d68d23ddf9da66c4ce03af24f89
+    asset: {fileID: 11400000, guid: 5fedf5cd120f097f9bbdebbb2ada56e5, type: 2}
+  - kind: narrative.fact
+    authoringId: 8508a66a-cbc1-4729-9be5-fb7befe04391
+    name: heard_rumour
+    key: 1271179059
+    contentStamp: 2ab9627589e3f0f2ad4c3baeaf5dd97e4eba7ce31803f42cd279f993c46a37fb
+    asset: {fileID: 11400000, guid: dd31bcf80c92ccdc9858323521614b44, type: 2}
+  - kind: dialogue.graph
+    authoringId: 8e52f233-3797-4396-89c4-24f00fceef8a
+    name: Maren
+    key: 1086615526
+    contentStamp: c9282a36edc4d1020408a81c5d7c1f19f4d66a5f767aea8566d10afe8924d8ed
+    asset: {fileID: 11400000, guid: 94bbe348aae3a8eb5bcb6adab0141c20, type: 2}
+  - kind: narrative.fact
+    authoringId: 9ad3fb8b-f42d-45fa-9fef-5d5ffb061752
+    name: maren_grateful
+    key: 626780239
+    contentStamp: f91481d5f3777c0ad8c251a3fd3ff7e65b56e1632a2a6c973673fd7f82d77227
+    asset: {fileID: 11400000, guid: 13bd75cd0760d27e0855319422892a99, type: 2}
+  - kind: narrative.fact
+    authoringId: a1381dc8-8045-4ba2-a1dc-8a2f5f5d8509
+    name: belfry_echo_freed
+    key: 1054465700
+    contentStamp: 1ffa43937af7dd4abd07b38ce8be33c60eefaa7ae8e835f77304f9c9bd1b789c
+    asset: {fileID: 11400000, guid: dde8da9c8d066e9a5896de145e8a8eeb, type: 2}
+  - kind: dialogue.graph
+    authoringId: a82ac490-3bac-45c7-9e27-65a59d7cc6cf
+    name: Hale
+    key: 1588189666
+    contentStamp: 42b454ff78343a3e2a091b7dd8d93223ecfa1f4e8e7bbcf836b04b04d4ac7ec6
+    asset: {fileID: 11400000, guid: 6d760de0279b060ce913b5adea947ad2, type: 2}
+  - kind: dialogue.graph
+    authoringId: aa779457-076d-496c-84b5-72019a826681
+    name: Odd
+    key: 943731399
+    contentStamp: 26a974827d2e5c3131a4d5aaea3cc7b7b54b56d0f6d6b291c41d9db202fe67b5
+    asset: {fileID: 11400000, guid: ba23a4ac82109a5b1b5a78d17f05bf92, type: 2}
+  - kind: dialogue.graph
+    authoringId: b9b85886-492d-40a3-9edb-02c9d9a417b0
+    name: BelfryEcho
+    key: 664060485
+    contentStamp: adbbd4367f755632b7fd46c0311169419087753412228635713ec2a4223ec77a
+    asset: {fileID: 11400000, guid: 16f3f770835db425abee45c0285c8129, type: 2}
+  - kind: narrative.fact
+    authoringId: bd21363a-d9b9-479c-ba80-dde87c541ae8
+    name: odd_persuaded
+    key: 1465165466
+    contentStamp: 42aa3a6e7c53b2076135a874156d4b4b3431761a69693b0eff9558c52d0fd40f
+    asset: {fileID: 11400000, guid: 87f83867bf94a1aa7ac354ac6c5055a8, type: 2}
+  - kind: logic.actionSet
+    authoringId: c0b46d92-87ea-4b10-b523-3e28d5b338f2
+    name: MarenTrust
+    key: 1944714447
+    contentStamp: 0aa3a71a68e9ea15fdbd29ee954c4148753a533cd8784fba9a1a3f63b6847334
+    asset: {fileID: 11400000, guid: 88396701f9b310954b1cc1781dbb7fe0, type: 2}
+  - kind: logic.actionSet
+    authoringId: ca415c6a-b951-4501-b70f-594d657bb5a9
+    name: PipAsked
+    key: 921829199
+    contentStamp: e6a70cf88cea2dc5fceb28ba46b002eebde4aef42d53268e38cde3c72aa10000
+    asset: {fileID: 11400000, guid: d6e7dff0c9153f6b4afdfa80709b16fd, type: 2}
+  - kind: narrative.fact
+    authoringId: d92de012-492f-42b1-8527-302c94471b73
+    name: gate_open
+    key: 794206167
+    contentStamp: 58b41ce7e9dad035bdb0c3648f922c450cea3973d06188c40a8d4e2f2926630f
+    asset: {fileID: 11400000, guid: 1df021ec907468e1dba031ce5b84e148, type: 2}
+  - kind: dialogue.graph
+    authoringId: dc88c507-3b24-44ea-8eb8-fcb35dcf733e
+    name: Pip
+    key: 1971386714
+    contentStamp: 23796a781b21eda61b5d62ea8cd139ea85d3296fcf7030702234730a93681bab
+    asset: {fileID: 11400000, guid: c47b5a6c4027da65d8f3a79dee34a418, type: 2}
+  - kind: logic.rule
+    authoringId: de03f0af-388d-4797-9d6e-3af2faa2a466
+    name: EchoFreedAmbience
+    key: 1035448097
+    contentStamp: 7906799928180ab090253a1f0997d3d2282fb5491e7b9fbb6560ad8f61553e96
+    asset: {fileID: 11400000, guid: a34e9b4a4d7e90b04a795b79246920ec, type: 2}
+  - kind: narrative.fact
+    authoringId: deae77f6-2b47-4c20-a4ab-11e1b8496514
+    name: maren_trusts_player
+    key: 1999758519
+    contentStamp: 3096f8df01d608c67f8228b5128221105e36e67de9559410345478113e9a9fb0
+    asset: {fileID: 11400000, guid: 037249084ac946fd3a0c9921087098bd, type: 2}
+  - kind: inventory.item
+    authoringId: e1d08e53-755f-4d05-a23d-c84d98a29897
+    name: GateKey
+    key: 1674190604
+    contentStamp: 7c7bf0b1474cfb791e413a26b2b495d21c304f4bd6542b5943b066b6fb627956
+    asset: {fileID: 11400000, guid: 03fedded603aafc81818fc34d4e0576a, type: 2}
+  - kind: inventory.item
+    authoringId: e51c9d68-54de-4f7d-96e4-23b8807194ee
+    name: BellClapper
+    key: 1669328081
+    contentStamp: 508e4afa1b63b577261000073d4661d1051f51674dd174354a342720d0900ddd
+    asset: {fileID: 11400000, guid: aa8bd972714aca924906ac45e5ef0e95, type: 2}
+  - kind: narrative.fact
+    authoringId: e7b37913-f43a-4a88-ba31-59e248433998
+    name: bell_rung
+    key: 1332231502
+    contentStamp: ec30d275dab3e381f0b0485f8a3814bba93901fef796b9c311cdd96f20ccdec3
+    asset: {fileID: 11400000, guid: d350efe116f59ea5e8635294c29b71bd, type: 2}
+  - kind: logic.rule
+    authoringId: ebee54ff-745b-4c42-8f41-bb5bd5efadee
+    name: OddPaidOnTrade
+    key: 440479092
+    contentStamp: d75328f16b95c4319d3d32dfe737ce4f12f104cb37e361661db5be3421986b95
+    asset: {fileID: 11400000, guid: f5c0ab5e269753f118d2fd690ab7c2f7, type: 2}
+  - kind: logic.conditionSet
+    authoringId: ee1253a8-ef88-4fb0-a173-6af02114b21c
+    name: HasBellClapper
+    key: 846974347
+    contentStamp: d814057a376d1f6c9b1a20645c2dcc485eabcb5ea17b9f68d31784194340641b
+    asset: {fileID: 11400000, guid: 19c6e2287e74eee7596713d063673185, type: 2}
+  - kind: logic.actionSet
+    authoringId: f8f82ca0-fc26-440b-87a3-75b5f13b721d
+    name: EchoFreed
+    key: 1115030438
+    contentStamp: 15c262a6588de49b9a88dd9f80bac4f0379bbc29d7a425d992e6da970e1fcb12
+    asset: {fileID: 11400000, guid: 3f32acf967150cbe195253004fc59d4b, type: 2}
+  facts:
+  - name: belfry_echo_freed
+    key: 1054465700
+    initial: 0
+    persistent: 1
+    authoringId: a1381dc8-8045-4ba2-a1dc-8a2f5f5d8509
+  - name: bell_rung
+    key: 1332231502
+    initial: 0
+    persistent: 1
+    authoringId: e7b37913-f43a-4a88-ba31-59e248433998
+  - name: gate_open
+    key: 794206167
+    initial: 0
+    persistent: 1
+    authoringId: d92de012-492f-42b1-8527-302c94471b73
+  - name: heard_rumour
+    key: 1271179059
+    initial: 0
+    persistent: 1
+    authoringId: 8508a66a-cbc1-4729-9be5-fb7befe04391
+  - name: maren_grateful
+    key: 626780239
+    initial: 0
+    persistent: 1
+    authoringId: 9ad3fb8b-f42d-45fa-9fef-5d5ffb061752
+  - name: maren_trusts_player
+    key: 1999758519
+    initial: 0
+    persistent: 1
+    authoringId: deae77f6-2b47-4c20-a4ab-11e1b8496514
+  - name: odd_paid
+    key: 1622060798
+    initial: 0
+    persistent: 1
+    authoringId: 0f06b03c-98f7-4b7a-b4c7-70950667b31a
+  - name: odd_persuaded
+    key: 1465165466
+    initial: 0
+    persistent: 1
+    authoringId: bd21363a-d9b9-479c-ba80-dde87c541ae8
+  - name: pip_asked
+    key: 1728563486
+    initial: 0
+    persistent: 0
+    authoringId: 09ad393c-e99a-4165-8745-aab9f23ac790

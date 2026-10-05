@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 494b37e78cd74d7a8e434f56e187b92d, type: 3}
+  m_Name: BellKeepsGateOpen
+  m_EditorClassIdentifier: 
+  authoringId: 12fd6b07-8dab-4d77-a1dc-ce30262983a5
+  contentStamp: 7304e2def12a7a569ac5af49e1cb0ec54b0553f802b0fee00defc01c1f9ffcda
+  trigger: 1
+  triggerSubject: {fileID: 11400000, guid: d350efe116f59ea5e8635294c29b71bd, type: 2}
+  triggerEntityId: 
+  triggerValue: 1
+  matchAnyValue: 0
+  conditionSet: {fileID: 0}
+  conditions: []
+  actionSet: {fileID: 0}
+  actions:
+  - kind: 0
+    target: {fileID: 11400000, guid: 1df021ec907468e1dba031ce5b84e148, type: 2}
+    inventory: {fileID: 0}
+    entityId: 
+    value: 1
+    text: 
+  once: 1
+  cooldownMs: 0
+  maxFires: 0
+  priority: 0
