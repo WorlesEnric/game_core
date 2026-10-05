@@ -1,6 +1,7 @@
 # Hollowmere recorded playthrough (P3.1 W-GAME-07): menu -> new game -> Thornwick Village (Maren, coins, Bram's lantern)
 # -> Warden Hale's gate -> Blackmere Marsh (shrine puzzle, clapper, save) -> Odd's ferry -> the Drowned Belfry (the Echo,
-# the bell) -> Ending C -> restart -> load the mid-quest save -> quit. About ten and a half minutes at walking pace.
+# the bell) -> Ending C -> restart -> load the mid-quest save -> a walk on the causeway -> quit. About eleven and a half
+# minutes at walking pace (the recording's B-FRAME steady window needs >= 9.9 minutes).
 # Positions are world metres (village centre 0,0; marsh 200,0; belfry 100,200). Every interaction first approaches the
 # entity by its baked name (re-targeted each frame, so patrolling NPCs are reached), then waits for its prompt.
 
@@ -15,10 +16,13 @@ wait 4
 # --- Thornwick Village --------------------------------------------------------------------------------------------
 log a look around the square
 face 30
-wait 3
+wait 5
 face -40
-wait 3
+wait 5
+face 160
+wait 5
 face 0
+wait 4
 walk -2 -6
 mark maren
 approach Maren within 1.8 timeout 40
@@ -43,6 +47,21 @@ waituntil prompt coins timeout 10
 interact
 waituntil item OldCoin >= 5 timeout 10
 wait 2
+
+log Pip knows the shrine order
+mark pip
+approach Pip within 1.8 timeout 60
+waituntil prompt Pip timeout 15
+interact
+waituntil dialogue active timeout 10
+wait 5
+advance
+wait 3
+choose 1
+wait 7
+advance
+waituntil dialogue none timeout 10
+wait 4
 
 mark bram
 walk 6 -8
@@ -75,8 +94,11 @@ walk 4 -6
 walk 2 6
 walk -6 12
 face 0
-wait 4
+wait 10
+face -90
+wait 6
 walk 2 4
+wait 4
 walk 12 1
 walk 22 0
 face 90
@@ -88,7 +110,13 @@ waituntil region Blackmere timeout 30
 
 # --- Blackmere Marsh ----------------------------------------------------------------------------------------------
 mark marsh
-wait 5
+wait 6
+face 45
+wait 6
+face -60
+wait 6
+face 90
+wait 3
 approach Hale within 1.8 timeout 30
 waituntil prompt Hale timeout 15
 interact
@@ -121,6 +149,8 @@ waituntil prompt east timeout 10
 interact
 waituntil fact shrine_lit >= 1 timeout 10
 mark shrine-lit
+wait 10
+face 180
 wait 6
 
 mark clapper
@@ -170,9 +200,13 @@ waituntil region Belfry timeout 30
 
 # --- The Drowned Belfry -------------------------------------------------------------------------------------------
 mark belfry
+wait 8
+face 90
+wait 6
+face -90
 wait 6
 face 0
-wait 3
+wait 4
 approach "Belfry Echo" within 1.8 timeout 30
 waituntil prompt Echo timeout 15
 interact
@@ -191,13 +225,18 @@ interact
 waituntil fact bell_rung >= 1 timeout 10
 waituntil ending timeout 30
 mark ending
-wait 14
+wait 24
 
 # --- Restart and the mid-quest save -------------------------------------------------------------------------------
 ui restart
 waituntil ready timeout 120
 mark restarted
 wait 6
+log a last look at the square before loading
+face 160
+wait 5
+face 0
+wait 4
 ui open.pause
 waituntil screen Pause timeout 10
 wait 1
@@ -207,9 +246,25 @@ wait 1
 ui load.1
 waituntil restored timeout 60
 mark loaded
-wait 4
+wait 6
+log a walk on the causeway at dusk
 walk 196 0
 face 90
+wait 8
+walk 192 -1
+wait 5
+walk 180 2
+face -90
+wait 8
+walk 172 2
+wait 5
+walk 180 2
+walk 192 -1
+face 0
+wait 10
+walk 200 16
 wait 6
+face 90
+wait 10
 mark done
 quit 0
