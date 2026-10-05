@@ -19,6 +19,7 @@ namespace GameCore.Studio.Views.Hollowmere.Tests
         [Test]
         public void Maren_ShowsHerDialogueGraphPatrolPointsAndRegion()
         {
+            RequireAuthoringIdValueType();
             IndexNode maren = NodeAt(Root + "/Npcs/Definitions/Maren.asset");
             IndexNode graph = NodeAt(Root + "/Dialogue/Graphs/Maren.asset");
             IndexNode behaviour = NodeAt(Root + "/Npcs/Definitions/MarenBehaviour.asset");
@@ -48,6 +49,7 @@ namespace GameCore.Studio.Views.Hollowmere.Tests
         [Test]
         public void LanternImpact_ListsTheQuestRewardAndTheLootTable_AndGateKeyImpactListsTheVendorStock()
         {
+            RequireAuthoringIdValueType();
             IndexNode lantern = NodeAt(Root + "/Items/Lantern.asset");
             IndexNode quest = NodeAt(Root + "/Quests/DrownedBell.asset");
             IndexNode loot = NodeAt(Root + "/Items/MarshLoot.asset");

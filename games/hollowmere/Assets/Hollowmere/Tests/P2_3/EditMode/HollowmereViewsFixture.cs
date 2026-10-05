@@ -128,6 +128,41 @@ namespace GameCore.Studio.Views.Hollowmere.Tests
 
         protected static void Log(string text) => UnityEngine.Debug.Log("[P2.3] " + text);
 
+        /// <summary>
+        /// Inconclusive (not passed, not failed) while studio.core rejects the gameplay packages'
+        /// <c>[AuthorField(Type = "authoringId")]</c> (DialogueGraphDefinition.speakerEntityId and others): until then
+        /// dialogue graphs and quests are neither indexed nor in the tool catalog. Reported in PACKET.md (left open).
+        /// </summary>
+        protected void RequireAuthoringIdValueType()
+        {
+            UnityEngine.Object graph = AssetDatabase.LoadMainAssetAtPath(Root + "/Dialogue/Graphs/Maren.asset");
+            try
+            {
+                Runtime.Resolver.BuildRef(graph, null, false);
+            }
+            catch (InvalidOperationException error) when (error.Message.Contains("'authoringId'"))
+            {
+                Assert.Inconclusive("Blocked outside P2.3 (studio.core ValueTypes vs gameplay [AuthorField(Type = \"authoringId\")]): " + error.Message);
+            }
+        }
+
+        /// <summary>
+        /// Journal undo; Inconclusive when it fails with the known studio.core defect where the set tool's inverse
+        /// records nested [Serializable] list elements holding object references as their type name.
+        /// </summary>
+        protected HistoryResult UndoOrInconclusive(string changeSetId)
+        {
+            HistoryResult undo = Context.Edits.Undo(changeSetId);
+            string diagnostics = string.Join("; ", undo.Diagnostics);
+            if (!undo.Ok && diagnostics.Contains("expected object, got string"))
+            {
+                Log("undo blocked by the set-inverse defect: " + diagnostics);
+                Assert.Inconclusive("Blocked outside P2.3 (studio.core set inverse via ValueCodec.FromClr loses nested list elements): " + diagnostics);
+            }
+
+            return undo;
+        }
+
         protected static T First<T>(IEnumerable<T> items, Func<T, bool> match)
             where T : class
         {

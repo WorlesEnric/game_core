@@ -349,7 +349,7 @@ namespace GameCore.Studio.Views
         /// <summary>
         /// The change sets that connect two regions, applied in order. With a bindable world.connectRegions it is one
         /// change set of one op. Otherwise it is two: <c>create world.portal</c> (with a minted authoring id and both
-        /// regions), then <c>set portals</c> on the world. They cannot share a change set because the engine defers only
+        /// regions), at a fresh asset path, then <c>set portals</c> on the world naming it by that path. They cannot share a change set because the engine defers only
         /// unresolved op targets to apply time; a reference inside a value (the new portal in <c>portals</c>) must
         /// resolve at stage time.
         /// </summary>
@@ -374,11 +374,13 @@ namespace GameCore.Studio.Views
                 ["regionA"] = StudioJson.ToToken(SemanticIndexService.EdgeRef(a.Ref)),
                 ["regionB"] = StudioJson.ToToken(SemanticIndexService.EdgeRef(b.Ref)),
             };
+            string name = Safe(a.Name) + "_" + Safe(b.Name);
+            string assetPath = AssetDatabase.GenerateUniqueAssetPath(folder.TrimEnd('/') + "/" + name + ".asset");
             Operation create = ViewEdits.Op("op1", BuiltInToolIdsExt.Create, null, new JObject
             {
                 ["type"] = "world.portal",
-                ["name"] = Safe(a.Name) + "_" + Safe(b.Name),
-                ["path"] = folder,
+                ["name"] = name,
+                ["path"] = assetPath,
                 ["authoringId"] = id,
                 ["fields"] = fields,
             });
@@ -388,7 +390,8 @@ namespace GameCore.Studio.Views
                 portals.Add(StudioJson.ToToken(SemanticIndexService.EdgeRef(portal.Ref)));
             }
 
-            portals.Add(StudioJson.ToToken(new AuthoringRef(AuthoringKind.Definition, authoringId: id)));
+            // By asset path: the resolver loads it directly, without waiting for the index to see the new asset.
+            portals.Add(new JValue(assetPath));
             Operation list = ViewEdits.Op("op1", BuiltInToolIdsExt.Set, world.Ref, new JObject { ["field"] = "portals", ["value"] = portals });
             return new IReadOnlyList<Operation>[] { new[] { create }, new[] { list } };
         }

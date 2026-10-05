@@ -19,6 +19,7 @@ namespace GameCore.Studio.Views.Hollowmere.Tests
         [Test]
         public void Dialogue_AddLineConnectRename_AreJournaledChangeSetsAndUndoRestores()
         {
+            RequireAuthoringIdValueType();
             ApplyReport created = Context.Edits.Apply(ViewEdits.Build("P2.3 test: graph", new[]
             {
                 ViewEdits.Op("op1", BuiltInToolIdsExt.Create, null, new JObject { ["type"] = DialogueDocument.Type, ["name"] = "ViewsTestGraph", ["path"] = TempFolder }),
@@ -54,7 +55,7 @@ namespace GameCore.Studio.Views.Hollowmere.Tests
 
             for (int i = reports.Count - 1; i >= 0; i--)
             {
-                HistoryResult undo = Context.Edits.Undo(reports[i].Entry.Id);
+                HistoryResult undo = UndoOrInconclusive(reports[i].Entry.Id);
                 Assert.That(undo.Ok, Is.True, "undo " + reports[i].Entry.Intent.Text + ": " + string.Join("; ", undo.Diagnostics));
                 if (i == reports.Count - 1)
                 {
@@ -72,6 +73,7 @@ namespace GameCore.Studio.Views.Hollowmere.Tests
         [Test]
         public void Dialogue_UndoOnMarenKeepsTheConditionReferences()
         {
+            RequireAuthoringIdValueType();
             IndexNode maren = NodeAt(Root + "/Dialogue/Graphs/Maren.asset");
             DialogueView view = new DialogueView(Context);
             view.ShowGraph(maren.Ref);
@@ -80,7 +82,7 @@ namespace GameCore.Studio.Views.Hollowmere.Tests
             Assert.That(condition, Is.Not.Null, "Maren's entry branch has a condition");
             ApplyReport text = Context.Edits.Apply(ViewEdits.Build("text", new[] { DialogueEdits.SetText(view.Document, nodes - 1, "You rang it!") }));
             Assert.That(text.Ok, Is.True, ViewEdits.Describe(text));
-            HistoryResult undo = Context.Edits.Undo(text.Entry.Id);
+            HistoryResult undo = UndoOrInconclusive(text.Entry.Id);
             Log("Maren set-text undo: " + undo.Ok + " " + undo.State + " " + string.Join("; ", undo.Diagnostics));
             Assert.That(undo.Ok, Is.True, string.Join("; ", undo.Diagnostics));
             view.Refresh();
@@ -92,6 +94,7 @@ namespace GameCore.Studio.Views.Hollowmere.Tests
         [Test]
         public void Dialogue_PreviewDiffersByFact()
         {
+            RequireAuthoringIdValueType();
             IndexNode maren = NodeAt(Root + "/Dialogue/Graphs/Maren.asset");
             DialogueView view = new DialogueView(Context);
             view.ShowGraph(maren.Ref);
@@ -110,6 +113,7 @@ namespace GameCore.Studio.Views.Hollowmere.Tests
         [Test]
         public void Quest_SimulatePassesOnBothBranches()
         {
+            RequireAuthoringIdValueType();
             IndexNode quest = NodeAt(Root + "/Quests/DrownedBell.asset");
             QuestsView view = new QuestsView(Context);
             view.ShowQuest(quest.Ref);

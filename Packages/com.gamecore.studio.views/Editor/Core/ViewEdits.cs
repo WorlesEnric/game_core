@@ -37,8 +37,18 @@ namespace GameCore.Studio.Views
             return new ChangeSet(IdDerivation.NewChangeSetId(), ChangeSet.SchemaId, new Intent(intent, IntentOrigin.Manual), operations, policy: policy);
         }
 
+        /// <remarks>
+        /// A definition target without a scope gets <see cref="AuthorScope.Definition"/>: model tools declared
+        /// Definition-only (dialogue.addLine, quest.addStage...) refuse an unscoped target, and the index strips scopes
+        /// from the references the views start from.
+        /// </remarks>
         public static Operation Op(string opId, string tool, AuthoringRef? target, JObject? args = null, IReadOnlyList<string>? dependsOn = null)
         {
+            if (target != null && target.Scope == null && target.Kind == AuthoringKind.Definition)
+            {
+                target = target.WithScope(AuthorScope.Definition);
+            }
+
             return new Operation(opId, tool, target, args, dependsOn);
         }
 
