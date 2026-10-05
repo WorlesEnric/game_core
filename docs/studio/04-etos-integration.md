@@ -88,9 +88,18 @@ args, disallowed target kind, candidate-mode fields) and sends one re-ask as a n
 | 3D generation | `family="3d" kind="predictions"` | `POST /ops/generate.3d` | **blocked**: no provider credential; UI shows `not_configured` |
 | File transcription | not used (voice is realtime) | — | — |
 
-Known SDK defect: `sdk/rust` `Ops::generate` posts `generate` instead of `generate.image`
-(`sdk/rust/src/data.rs:128-130` vs `crates/etagents/src/ops.rs:161-178`); the companion uses `ops().call("generate.image", …)`
-and the SDK fix is proposed upstream as part of SADR-005's PR.
+SDK: `Ops::generate` used to post `generate` instead of `generate.image`; fixed in the pinned etos `278ef9c`
+(`Ops::generate(family, input)` posts `generate.<family>`), and the companion now uses it (P0.5).
+
+Operation timeout: the companion runs each media op on its own client timeout, `ops_timeout_secs` (default 300 s,
+companion `config.toml`), because `generate.image` blocks until done and outlives the SDK's 30 s default. It **holds**
+`POST /v1/ops/generate` until the node answers. Past the timeout it answers 504 `transport`, with the op's idempotency
+`key` in `hint` and in `data.key`. The client recovers by resending the identical request: same spec and changeSetId
+give the same key, and etops answers a known key with the finished result instead of generating again. The etos proxy
+between Unity and the companion must allow a request this long.
+
+`max_cost_usd` goes only to `generate.image`, `tts` and `generate.3d`. etops' `describe` input has no such field and
+refuses unknown fields, so the companion omits it and refuses `describe` itself when the ceiling is 0 (P0.5).
 
 Partial speech: transcript events carry `revision` and `done`; only `done=true` text is placed in the prompt box.
 No voice utterance triggers a tool directly.

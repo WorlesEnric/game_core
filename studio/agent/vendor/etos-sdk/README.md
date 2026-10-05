@@ -83,7 +83,7 @@ cache lives in memory: after the agent process restarts, a redelivered `safe` ca
 
 | Item | Route |
 |---|---|
-| `client.ops().decide/rank/choose/ocr/transcribe/describe/generate/tts/search(input)`, `.call(op, input)`, `.for_task(task)` | `POST /ops/{op}` with the operation's JSON input; `for_task` sends `?task=<id>` to charge the task. |
+| `client.ops().decide/rank/choose/ocr/transcribe/describe/tts/search(input)`, `.generate(family, input)`, `.call(op, input)`, `.for_task(task)` | `POST /ops/{op}` with the operation's JSON input; `generate("image", …)` posts `generate.image` (likewise `video`, `music`, `3d`); `for_task` sends `?task=<id>` to charge the task. |
 | `providers::url(&client, provider)` | `ProviderUrl { base_url: <node>/api/v1/providers/<provider>, header: "Authorization", value: "Bearer <key>" }`; append the provider's own path. No request is made. |
 | `client.changes(after, tables)` → `Changes`, `.wait(duration)`, `.app(app)` (only that app's changes) | `GET /changes?after=&tables=a,b&wait_ms=25000`, answered `ChangePage {changes: [ChangeEntry {pos, app, table, partition, key, at}], next}`; the position moves to `next`. `next_change()`, `page()`, `position()`, `into_stream()`. |
 | `client.tasks().open(&TaskRequest {worker, text, topic, inputs, id})` → `TaskInfo`, `.get(id)` | `POST /tasks` (retried only when `id` is set), `GET /tasks/{id}`. |

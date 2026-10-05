@@ -1,0 +1,49 @@
+{
+  "changeSetId": "cs_01K6RW0MECH00000000000000A",
+  "stage": {
+    "pass": true,
+    "durationMs": 73007,
+    "budgetMs": 360000,
+    "wallSeconds": 73,
+    "steps": {
+      "scan": "pass",
+      "checkers": "pass",
+      "dotnet": "pass",
+      "unity-editmode": "pass",
+      "playmode-smoke": "pass",
+      "determinism": "pass",
+      "budget": "pass"
+    }
+  },
+  "catalogDelta": {
+    "mechanisms": [
+      {
+        "catalogType": "Hollowmere.Mechanism.PressurePlate.Generated.PressurePlateCatalog",
+        "fingerprint": "eabc05e00b2ad24fedbee8f283cd60e66782415e00865936919672ce1dab3f21",
+        "package": "com.hollowmere.mechanism.pressureplate"
+      }
+    ],
+    "predicted": "1d45d1c96570bb2d1d8b2be003cc9fe791f54e97a067aa2962452e044011d9fb",
+    "world": "425508a971072415b8f57e43894083a7f75396c1a47db4691b1a9c1b0e6ec899"
+  },
+  "admit": {
+    "ok": true,
+    "before": "425508a971072415b8f57e43894083a7f75396c1a47db4691b1a9c1b0e6ec899",
+    "live": "1d45d1c96570bb2d1d8b2be003cc9fe791f54e97a067aa2962452e044011d9fb",
+    "predicted": "1d45d1c96570bb2d1d8b2be003cc9fe791f54e97a067aa2962452e044011d9fb",
+    "admissionMs": 29986.0,
+    "editorWallSeconds": 71
+  },
+  "playmode": {
+    "total": 1,
+    "passed": 1,
+    "failed": 0
+  },
+  "undo": {
+    "ok": false,
+    "live": null,
+    "before": "425508a971072415b8f57e43894083a7f75396c1a47db4691b1a9c1b0e6ec899"
+  },
+  "catalogHashReturned": false,
+  "pass": false
+}

@@ -12,7 +12,8 @@
 //     is not loaded - is a live kernel target from the first committed boundary;
 //   * the two command systems, their routes, lanes and readers are registered; the world is command-driven;
 //   * every IGameplayWorldExtension of the options adds its plugins (mounted at the world scope after the two above),
-//     systems, routes, lanes and readers (P1.3 seam).
+//     systems, routes, lanes and readers (P1.3 seam); an extension that also implements IGameplayWorldTargets adds its
+//     recipes and seeds its world-scope session targets (P1.5, see WorldExtensions.cs).
 //
 // After boot, Attach seeds every target's slots from the manifest (entities: alive/variant/scale/visible; placement:
 // region/pose; regions: residency = Unloaded, visits = 0) while the world is still paused, and hands each command
@@ -75,6 +76,12 @@ namespace GameCore.Gameplay.World
 
         /// <summary>Committed events the world retains for readers (P-045).</summary>
         public int MaxRetainedEvents { get; set; } = 512;
+
+        /// <summary>
+        /// The presentation service registry of the world (P1.5). It belongs to the plan, so it survives a root
+        /// replacement after a restore: services registered once stay registered for the restored world.
+        /// </summary>
+        public PresentationServices Presentation { get; set; } = new PresentationServices();
     }
 
     /// <summary>A built (not yet booted) gameplay world: the application definition and what Attach needs.</summary>
@@ -85,17 +92,22 @@ namespace GameCore.Gameplay.World
             GameApplicationDefinition definition,
             GameplayPresentationFrame frame,
             Id128 issuer,
-            IReadOnlyList<IGameplayWorldExtension> extensions)
+            IReadOnlyList<IGameplayWorldExtension> extensions,
+            PresentationServices presentation)
         {
             Manifest = manifest;
             Definition = definition;
             Frame = frame;
             Issuer = issuer;
             Extensions = extensions;
+            Presentation = presentation;
         }
 
         /// <summary>The extensions composed into this world, in composition order.</summary>
         public IReadOnlyList<IGameplayWorldExtension> Extensions { get; }
+
+        /// <summary>The world's presentation service registry (P1.5).</summary>
+        public PresentationServices Presentation { get; }
 
         public RegionManifest Manifest { get; }
 
@@ -183,6 +195,10 @@ namespace GameCore.Gameplay.World
                 extensions[i].Validate(manifest);
                 routes.AddRange(extensions[i].Routes);
                 lanes.AddRange(extensions[i].Lanes);
+                if (extensions[i] is IGameplayWorldTargets withTargets)
+                {
+                    recipes.AddRange(withTargets.Recipes());
+                }
             }
 
             var plane = new MessagePlaneRegistration(
@@ -272,6 +288,21 @@ namespace GameCore.Gameplay.World
                     recipe));
             }
 
+            for (int i = 0; i < extensions.Count; i++)
+            {
+                if (!(extensions[i] is IGameplayWorldTargets withTargets))
+                {
+                    continue;
+                }
+
+                IReadOnlyList<GameplayExtensionTarget> targets = withTargets.Targets(manifest);
+                for (int t = 0; t < targets.Count; t++)
+                {
+                    builder.AddBootStep(GameApplicationBootStep.Seed(
+                        "seed-" + extensions[i].Name + ":" + targets[t].Name, targets[t].Target, root, targets[t].Recipe));
+                }
+            }
+
             builder.AddBootStep(GameApplicationBootStep.Apply("mount-entities", Mount(entitiesDeclaration, EntityDeclarations.Instance, root)));
             builder.AddBootStep(GameApplicationBootStep.Apply("mount-world", Mount(worldDeclaration, WorldDeclarations.Instance, root)));
             for (int i = 0; i < extensions.Count; i++)
@@ -296,7 +327,7 @@ namespace GameCore.Gameplay.World
                 }
             }
 
-            return new WorldBuildPlan(manifest, builder.Build(), frame, issuer, extensions.AsReadOnly());
+            return new WorldBuildPlan(manifest, builder.Build(), frame, issuer, extensions.AsReadOnly(), settings.Presentation);
         }
 
         /// <summary>

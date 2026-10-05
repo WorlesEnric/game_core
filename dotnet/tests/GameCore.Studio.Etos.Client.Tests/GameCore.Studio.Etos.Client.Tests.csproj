@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- GameCore Studio ETOS client tests (P2.2): every companion route against the in-process fake companion
+       (Packages/com.gamecore.studio.etos/Tests/Fake, compiled in here from the same sources the EditMode tests use),
+       error pass-through, ticket flow, cursor resume, sha256 refusal, redaction, backoff schedule and voice framing;
+       replay of transcripts recorded on the real node (Fixtures/, redacted). Tests in the "Live" category run only with
+       GAMECORE_ETOS_LIVE=1 and GAMECORE_ETOS_KEY_FILE pointing at the paired app key (studio/tools/live-etos-tests.sh). -->
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <AssemblyName>GameCore.Studio.Etos.Client.Tests</AssemblyName>
+    <RootNamespace>GameCore.Studio.Etos.Client.Tests</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="../../../Packages/com.gamecore.studio.etos/Tests/Fake/**/*.cs" Link="Fake/%(RecursiveDir)%(Filename)%(Extension)" />
+    <None Include="Fixtures/*.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="Fixtures/*.wav" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="NUnit" Version="3.14.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/GameCore.Studio.Etos.Client/GameCore.Studio.Etos.Client.csproj" />
+  </ItemGroup>
+
+</Project>

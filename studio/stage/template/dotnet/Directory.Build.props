@@ -1,0 +1,20 @@
+<Project>
+
+  <!-- Staging slot dotnet workspace (P2.4): the same shared settings as dotnet/Directory.Build.props of the repository,
+       so the Unity-free half of a staged mechanism builds under exactly the rules the repository's own rule halves
+       build under (C# 9, nullable, warnings as errors, deterministic). -->
+
+  <PropertyGroup>
+    <LangVersion>9.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Deterministic>true</Deterministic>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <EnableNETAnalyzers>false</EnableNETAnalyzers>
+    <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+    <DebugType>portable</DebugType>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+</Project>

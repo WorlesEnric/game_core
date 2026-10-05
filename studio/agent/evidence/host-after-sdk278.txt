@@ -1,0 +1,230 @@
+# reinstall at 2026-10-05T02:39:40Z, commit 1001ade2
+== preflight
+  binaries in /home/worlesenric/.local/opt/etos/bin, docker reachable, user manager running
+== node root /home/worlesenric/.local/share/etos-studio
+  unchanged: /home/worlesenric/.local/share/etos-studio (initialized)
+== configuration
+  unchanged: /home/worlesenric/.local/share/etos-studio/etos.toml
+  unchanged: /home/worlesenric/.local/share/etos-studio/models.toml
+  unchanged: /home/worlesenric/.local/share/etos-studio/ops.toml
+  unchanged: /home/worlesenric/.local/share/etos-studio/bin/etos
+== provider environment
+== service etosd.service
+  unchanged: /home/worlesenric/.config/systemd/user/etosd.service
+  unchanged: etosd.service enabled
+  unchanged: linger for worlesenric
+  unchanged: etosd.service running
+  healthy: etos node status ok, SDK API answers on 127.0.0.1:7410
+== images
+  skipped (--skip-images)
+== workers
+  unchanged: worker gc-designer
+  unchanged: worker gc-mechanic
+== companion agent gamecore-studio
+  unchanged: /home/worlesenric/wkspace/gc-studio/p05/studio/etos/agent/bin/gamecore-studio -> ../../../agent/target/release/gamecore-studio
+    upgraded gamecore-studio from 0.1.0 to 0.1.0
+    updated worker gc-designer
+    updated worker gc-mechanic
+  changed: agent gamecore-studio upgraded (manifest, instructions or binary changed)
+  agent state: ready
+== Unity app gamecore-unity
+  unchanged: app gamecore-unity installed
+  unchanged: /home/worlesenric/.config/gamecore-studio/app-key.json (paired)
+
+install.sh: 1 change(s) applied
+install exit=0 at 2026-10-05T02:44:09Z
+gamecore-studio 0.1.0 ready restarts 0
+
+# describe through the proxy at 2026-10-05T02:44:09Z
+POST /v1/ops/generate {op: describe} -> 200
+{
+  "artifacts": [],
+  "etosOp": "describe",
+  "op": "describe",
+  "provider": "echo-describe",
+  "state": "succeeded",
+  "text": "A stylized three-dimensional illustration of a rustic water well on a black background. The well has a circular base built from three courses of large, irregular gray stone blocks, with patches of green moss near the bottom. Two vertical wooden posts support a pitched, shingled wooden roof. A horizontal wooden spindle spans the posts beneath the roof, with rope wound around its center. The rope hangs down into the well and supports a small wooden bucket with a dark metal band and arched handle. On the right side, the spindle connects to an L-shaped wooden crank with a cylindrical grip. Dark metal collars and round fasteners secure the spindle to the posts."
+}
+
+# real-node test at 2026-10-05T02:44:18Z
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 50.90s
+     Running tests/real_node.rs (target/debug/deps/real_node-42d6f237759e8fa7)
+
+running 2 tests
+test real_node_end_to_end ... --- GET /v1/hello through the proxy -> 200
+{
+  "app": "gamecore-unity",
+  "capabilities": [
+    "requests",
+    "candidates",
+    "artifacts",
+    "index",
+    "ops",
+    "events",
+    "voice",
+    "stage"
+  ],
+  "connected": true,
+  "node": "studio",
+  "protocol": 1,
+  "providers": {
+    "3d": "not_configured",
+    "describe": "live",
+    "image": "live",
+    "tts": "live",
+    "voice": "unknown"
+  },
+  "providersCheckedAt": 1791168309771,
+  "sdk": "1.0.0",
+  "service": "gamecore-studio",
+  "toolCatalogRevisions": [
+    "da53ff35bfddc7c0456d285caadbadade8c6a813cd84816e93a8b8b99c26a3e8",
+    "5c3e2dd2fe3d693fefa0c354e935c24b9dc1570c6cdf245aa7301039b01bef49",
+    "9629ec6f02d611a3fc9b559e8eaeeee9df939e2b33735a0978af40330106d71e",
+    "p05-cat-1"
+  ],
+  "version": "0.1.0",
+  "workers": [
+    "gc-designer",
+    "gc-mechanic"
+  ]
+}
+--- WS /v1/events?after=0 opened with a ticket (no Authorization header)
+--- POST /v1/requests cs_00000000000017911683098161 -> 200
+{
+  "changeSetId": "cs_00000000000017911683098161",
+  "request": {
+    "attempt": 0,
+    "changeSetId": "cs_00000000000017911683098161",
+    "createdAt": 1791168309818,
+    "hasCandidate": false,
+    "requestId": "cs_00000000000017911683098161",
+    "seq": 146,
+    "state": "running",
+    "taskId": "t4332f72446e2b588b26b3eb5",
+    "taskStatus": "running",
+    "tasks": [
+      "t4332f72446e2b588b26b3eb5"
+    ],
+    "topic": "#agent/gamecore-studio/cs-00000000000017911683098161",
+    "updatedAt": 1791168310678,
+    "worker": "gc-designer"
+  },
+  "requestId": "cs_00000000000017911683098161",
+  "state": "running",
+  "taskId": "t4332f72446e2b588b26b3eb5",
+  "taskStatus": "running"
+}
+--- same request again -> 200: taskId "t4332f72446e2b588b26b3eb5" (first "t4332f72446e2b588b26b3eb5")
+  [  0.0s] "running" attempt=0 task="t4332f72446e2b588b26b3eb5" status="running"
+  [ 44.8s] "candidate" attempt=0 task="t4332f72446e2b588b26b3eb5" status="done"
+--- settled
+{
+  "attempt": 0,
+  "changeSetId": "cs_00000000000017911683098161",
+  "createdAt": 1791168309818,
+  "hasCandidate": true,
+  "outcome": {
+    "artifacts": 0,
+    "code": "candidate",
+    "operations": 1
+  },
+  "requestId": "cs_00000000000017911683098161",
+  "seq": 148,
+  "state": "candidate",
+  "taskId": "t4332f72446e2b588b26b3eb5",
+  "taskStatus": "done",
+  "tasks": [
+    "t4332f72446e2b588b26b3eb5"
+  ],
+  "topic": "#agent/gamecore-studio/cs-00000000000017911683098161",
+  "updatedAt": 1791168355278,
+  "worker": "gc-designer"
+}
+--- events seen on the ticketed WebSocket for cs_00000000000017911683098161: ["voice_session#5", "voice_session#6", "task_progress#17", "task_progress#21", "clarification#22", "task_progress#26", "task_progress#30", "clarification#31", "task_progress#35", "candidate#37", "task_progress#40", "voice_session#42", "voice_session#43", "task_progress#46", "candidate#48", "task_progress#51", "asset#53", "voice_session#54", "voice_transcript#55", "voice_session#56", "asset#57", "task_progress#60", "asset#62", "voice_session#63", "voice_transcript#64", "voice_session#65", "asset#66", "task_progress#69", "clarification#70", "asset#72", "asset#73", "voice_session#74", "voice_transcript#75", "voice_session#76", "voice_session#77", "voice_transcript#78", "voice_session#79", "task_progress#82", "asset#84", "voice_session#85", "voice_transcript#86", "voice_session#87", "asset#88", "task_progress#91", "clarification#92", "asset#94", "asset#95", "asset#96", "task_progress#99", "candidate_invalid#100", "task_progress#108", "clarification#109", "task_progress#111", "clarification#112", "asset#114", "asset#115", "asset#116", "voice_session#117", "voice_transcript#118", "voice_session#119", "voice_session#120", "voice_session#121", "task_progress#124", "asset#126", "voice_session#127", "voice_transcript#128", "voice_session#129", "asset#130", "task_progress#133", "candidate#135", "asset#136", "asset#137", "asset#138", "voice_session#139", "voice_transcript#140", "voice_session#141", "voice_session#142", "voice_transcript#143", "voice_session#144", "request#145", "request#146", "task_progress#147", "request#148", "candidate#149"]
+    (requests known before: 20)
+--- POST /v1/requests cs_00000000000017911683559952: state "running" task "t9b6e6a416dc07c74846e71e1"
+--- POST /v1/requests/cs_00000000000017911683559952/cancel -> 200
+{
+  "attempt": 0,
+  "changeSetId": "cs_00000000000017911683559952",
+  "createdAt": 1791168355996,
+  "hasCandidate": false,
+  "outcome": {
+    "code": "cancelled",
+    "message": "This task was cancelled (cancelled by the owner); I stopped working on it."
+  },
+  "requestId": "cs_00000000000017911683559952",
+  "seq": 153,
+  "state": "cancelled",
+  "taskId": "t9b6e6a416dc07c74846e71e1",
+  "taskStatus": "cancelled",
+  "tasks": [
+    "t9b6e6a416dc07c74846e71e1"
+  ],
+  "topic": "#agent/gamecore-studio/cs-00000000000017911683559952",
+  "updatedAt": 1791168356583,
+  "worker": "gc-designer"
+}
+--- WS /v1/voice first frame
+{
+  "audioFormat": "pcm16",
+  "maxChunkBytes": 24576,
+  "sampleRateHz": 24000,
+  "sessionId": "vs_1a109f421274837330f3f00",
+  "type": "ready"
+}
+    voice: {"reason":"client closed","type":"closed"}
+--- POST /v1/ops/generate 3d -> 503
+{
+  "code": "not_configured",
+  "hint": "an operator can add a [[providers]] entry with family = \"3d\" (for example kind = \"predictions\") to ops.toml; see the etops README",
+  "message": "3D model generation is not available on this node: no provider is configured"
+}
+--- POST /v1/index/delta -> 200
+{
+  "queued": 2,
+  "revision": 1,
+  "skipped": 0
+}
+--- POST /api/v1/query gc_entity (app key) -> 400
+{
+  "code": "unknown_table",
+  "hint": "list the tables with `ls /rg/catalog/` or the catalog operation",
+  "message": "there is no table `gc_entity`"
+}
+ok
+test real_node_restart_recovery ... --- POST /v1/requests cs_00000000000017911683600273 -> 200: state "running" task "t202dafa454fd5c332fed4571"
+--- etos agent restart gamecore-studio: restarted gamecore-studio
+  [ 0.0s] hello -> 503 "agent_starting"
+  [ 0.3s] new process ready
+  [  0.0s] "running" attempt=0 task="t202dafa454fd5c332fed4571" status="running"
+  [ 29.9s] "candidate" attempt=0 task="t202dafa454fd5c332fed4571" status="done"
+--- settled after the restart
+{
+  "attempt": 0,
+  "changeSetId": "cs_00000000000017911683600273",
+  "createdAt": 1791168360028,
+  "hasCandidate": true,
+  "outcome": {
+    "artifacts": 0,
+    "code": "candidate",
+    "operations": 1
+  },
+  "requestId": "cs_00000000000017911683600273",
+  "seq": 159,
+  "state": "candidate",
+  "taskId": "t202dafa454fd5c332fed4571",
+  "taskStatus": "done",
+  "tasks": [
+    "t202dafa454fd5c332fed4571"
+  ],
+  "topic": "#agent/gamecore-studio/cs-00000000000017911683600273",
+  "updatedAt": 1791168390543,
+  "worker": "gc-designer"
+}
+ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 81.01s
+
+real_node exit=0 at 2026-10-05T02:46:30Z

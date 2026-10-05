@@ -1,0 +1,188 @@
+/* Hollowmere - the one UI theme: dusk marsh palette, lantern-amber accent, serif-free plain type. */
+
+.gc-root {
+    flex-grow: 1;
+    color: rgb(226, 220, 204);
+    font-size: 18px;
+}
+
+.gc-layer {
+    flex-grow: 1;
+}
+
+.gc-screen {
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(10, 14, 16, 0.72);
+}
+
+.gc-panel {
+    min-width: 420px;
+    max-width: 80%;
+    padding: 24px 32px;
+    background-color: rgba(24, 31, 33, 0.94);
+    border-width: 2px;
+    border-color: rgb(92, 82, 58);
+    border-radius: 6px;
+}
+
+.gc-title {
+    font-size: 34px;
+    -unity-font-style: bold;
+    color: rgb(232, 186, 98);
+    margin-bottom: 16px;
+    -unity-text-align: middle-center;
+}
+
+.gc-subtitle {
+    font-size: 22px;
+    color: rgb(232, 186, 98);
+    margin-bottom: 8px;
+}
+
+.gc-text {
+    white-space: normal;
+    margin-bottom: 8px;
+}
+
+.gc-muted {
+    color: rgb(150, 146, 134);
+    font-size: 15px;
+}
+
+.gc-code {
+    color: rgb(214, 120, 96);
+    font-size: 15px;
+}
+
+.gc-button,
+.gc-item {
+    min-height: 36px;
+    margin: 4px 0;
+    padding: 4px 12px;
+    background-color: rgb(40, 50, 52);
+    border-width: 1px;
+    border-color: rgb(72, 80, 78);
+    border-radius: 4px;
+    color: rgb(226, 220, 204);
+    -unity-text-align: middle-left;
+}
+
+.gc-button:hover,
+.gc-item:hover,
+.gc-button:focus,
+.gc-item:focus {
+    background-color: rgb(58, 70, 70);
+    border-color: rgb(232, 186, 98);
+}
+
+.gc-button:disabled {
+    color: rgb(110, 110, 104);
+    background-color: rgb(30, 36, 38);
+}
+
+.gc-selected {
+    background-color: rgb(86, 72, 40);
+    border-color: rgb(232, 186, 98);
+}
+
+.gc-row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.gc-list {
+    flex-direction: column;
+    margin: 8px 0;
+}
+
+.gc-grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 440px;
+}
+
+.gc-grid > .gc-item {
+    width: 100px;
+    height: 72px;
+    margin: 4px;
+    -unity-text-align: middle-center;
+    white-space: normal;
+}
+
+/* HUD */
+
+.gc-hud {
+    flex-grow: 1;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.gc-hud-top {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.gc-banner {
+    align-self: center;
+    padding: 8px 28px;
+    background-color: rgba(10, 14, 16, 0.6);
+    border-radius: 4px;
+}
+
+.gc-banner-text {
+    font-size: 30px;
+    color: rgb(232, 186, 98);
+    -unity-font-style: bold;
+}
+
+.gc-objective {
+    max-width: 420px;
+    padding: 6px 12px;
+    background-color: rgba(10, 14, 16, 0.55);
+    border-left-width: 3px;
+    border-color: rgb(232, 186, 98);
+    white-space: normal;
+}
+
+.gc-stamina {
+    width: 260px;
+}
+
+.gc-prompt {
+    align-self: center;
+    margin-bottom: 120px;
+    padding: 6px 18px;
+    background-color: rgba(10, 14, 16, 0.7);
+    border-radius: 4px;
+}
+
+.gc-message {
+    align-self: center;
+    color: rgb(232, 186, 98);
+    padding: 4px 12px;
+}
+
+/* Dialogue */
+
+.gc-dialogue {
+    position: absolute;
+    left: 10%;
+    right: 10%;
+    bottom: 32px;
+    padding: 18px 24px;
+    background-color: rgba(18, 24, 26, 0.95);
+    border-width: 2px;
+    border-color: rgb(92, 82, 58);
+    border-radius: 6px;
+}
+
+.gc-speaker {
+    font-size: 20px;
+    color: rgb(232, 186, 98);
+    -unity-font-style: bold;
+    margin-bottom: 6px;
+}

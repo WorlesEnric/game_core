@@ -93,6 +93,8 @@ pub struct Inner {
     pub open_delay_ms: u64,
     /// `error` reported by `GET /tasks/{id}` (e.g. a degraded model).
     pub task_error: Option<String>,
+    /// Operations answer only after this long (a slow image provider).
+    pub op_delay_ms: u64,
 }
 
 #[derive(Clone)]
@@ -578,6 +580,18 @@ async fn get_file(State(n): State<FakeNode>, Path(id): Path<String>) -> Response
 async fn op(State(n): State<FakeNode>, Path(op): Path<String>, body: Bytes) -> Response {
     let v: Value = serde_json::from_slice(&body).unwrap_or(Value::Null);
     n.lock().op_calls.push((op.clone(), v.clone()));
+    // As etops: describe's input schema has no `max_cost_usd` (unknown fields are refused).
+    if op == "describe" && v.get("max_cost_usd").is_some() {
+        return refusal(
+            400,
+            "bad_request",
+            "invalid describe input: unknown field `max_cost_usd`",
+        );
+    }
+    let delay = n.lock().op_delay_ms;
+    if delay > 0 {
+        tokio::time::sleep(Duration::from_millis(delay)).await;
+    }
     let scripted = n.lock().ops.get(&op).cloned();
     match scripted {
         Some((200, answer)) if op.starts_with("generate.") || op == "tts" => {

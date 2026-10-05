@@ -1,0 +1,176 @@
+# PACKET P2.4 staging-lane
+
+Owner: Opus 5.5. Contract: [docs/studio/03-authoring-contracts.md](docs/studio/03-authoring-contracts.md) s8
+(staging and admission), 02 s7, 04 (companion `/v1/stage`), 06 (P2.4 row), W-MECH-01. Depends on P0.5 (companion),
+P1.6 (studio core), P0.2 (host tooling), P1.2 (SaveService checkpoint). Branch
+`worktree-agent-ac88111c121c22ef3`. It contains the sample-mechanism fork
+(`worktree-agent-a2af8babf66209325`, merged at `86e450c`).
+
+Rule kept throughout: generated code is staged and validated in an isolated slot project, and it reaches the live
+editor only through a **passing StageVerdict for exactly its artifacts** plus an **explicit Admit**. No path runs
+arbitrary scripts.
+
+## Built
+
+| Path | What |
+|---|---|
+| `studio/stage/make-slot.py` | Slot creator. The slot is an isolated minimal Unity project (`project/`) plus a dotnet workspace (`dotnet/`), `stage.json` (schema `gamecore.studio.stage-slot/1`), `candidate/` and `out/`. Artifacts are sha-checked and the archive is extracted safely. Only the candidate's `stageInputs` are copied in. Library is reused for the same change set and seeded from `_warm/Library`. |
+| `studio/stage/allowlist.json` | Manifest allowlist: Unity packages by name; Studio and qualification packages denied. Also `scanExemptions` (one entry, documented). |
+| `studio/stage/slot-checks.py` | The `checkers` step. Applies `check_game_core_csharp.py` and `check_package_metadata.py` rules to the slot package, plus `tools/check_stage_slot.py`. The `--package-dir` mode serves the admission's re-check. |
+| `tools/check_stage_slot.py` | Slot validator. Checks the allowlist, absolute `file:` pins into the repo, `testables == [candidate]`, candidate files == declared outputs, nothing extra in Assets or the project root. `--self-test` runs 14 cases. |
+| `studio/stage/template/**` | Slot harness. `GameCore.Stage.Harness` (config, JSON); EditMode `CatalogProbe`, which writes the catalog delta; PlayMode `SmokeRunner`, which runs the proposal's smoke entry for N frames twice and asserts one sanctioned pump per frame, no exception, and a slot hash. Also dotnet csproj templates and `EditorBuildSettings`. |
+| `studio/tools/unity-batch.sh` | Shared batchmode runner. Uses the **same host-wide flock protocol as `unity-compile.sh`** (`~/wkspace/gc-studio/.unity-slots`, at most 3 Editors host-wide). It runs one Editor at a time, has a 600 s silence watchdog, retries once on the known hang, and forwards TERM/INT to the Editor so a killed runner leaves no orphan Editor. |
+| `studio/agent/src/stage/{env,scan,verdict,slot,pipeline,cli}.rs` | The runner. `env`: child env allowlist, no secret-like names. `scan`: C# lexer plus 12 forbidden rules and documented exemptions. `verdict`: `gamecore.studio.stage-verdict/1` (canonical JSON, sha id). `slot`: ids, one lock per slot, GC. `pipeline`: 7 steps, B-STAGE. `cli`: `gamecore-studio stage run/gc/discard/scan`. |
+| `studio/agent/src/stage.rs` | `StageRunner`. `POST /v1/stage` covers the lane (`{changeSetId, slot?, steps?, sourceProject?}`), discard (`{changeSetId, action:"discard"}`) and the legacy `{changeSetId, packageRef}` shell. Jobs go to the ledger; `stage` events; the verdict is stored as an artifact (`verdictRef`). |
+| `studio/agent/src/api.rs` | Stage route handler only: it now passes the JSON value to `StageRunner::request`. |
+| `studio/agent/src/main.rs` | **Deviation, outside the exclusive paths:** three lines, so that `gamecore-studio stage ...` dispatches to `stage::cli::main` before the server starts. A CLI entry is not possible without touching main.rs. |
+| `studio/agent/tests/stage_lane.rs`, `stage_real.rs` | Host tests. `stage_lane` (no Unity, 3 tests) covers the companion lane, one stage per slot, forbidden content and strict requests. `stage_real` (ignored, 2 tests) covers the real lane with Unity and B-STAGE. |
+| `studio/stage/stage.sh`, `w-mech-01.sh`, `README.md`, `forbidden-rules.md` | `stage.sh`: the legacy companion command, a wrapper over `stage run`. `w-mech-01.sh`: W-MECH-01 end to end on the host. Plus the lane documentation and every rule with its exemption. |
+| `Packages/com.gamecore.studio.core/Editor/Stage/StageVerdictModel.cs` | `StageVerdict.Parse`, `VerdictCheck.Check` (pass, change set, package/proposal digests, file-by-file sha), `VerdictReasons`, `CatalogSet.Combine`. |
+| `.../Editor/Stage/PackageArchive.cs` | Safe tar/tgz reader: no absolute paths, `..`, links or devices; at most 64 MB and 4000 files; GNU long names and pax paths supported. |
+| `.../Editor/Stage/MechanismTools.cs` | Validator `RequiresStageVerdict`. Tools `mechanism.admit`: writes the package from the retained archive through a staging dir and then a move; asset-level inverse is `mechanism.remove`. `mechanism.remove`: deletes the package directory and its `.meta`, optionally removes the manifest entry; its inverse is admit. |
+| `.../Editor/Stage/StageAdmission.cs` | The admission service: `RecordVerdict`, `MarkStagePending`, `ToAdmission`, `Admit`, `Finalize`, rollback, `Undo`, `ResumePending`, `RestoreCapture`, `LiveHash`. Also its options and result types, the seams (compiler, catalog, checker, capture) and the fault hook. |
+| `.../Editor/Stage/UnityAdmissionServices.cs` | Unity defaults. `UnityAdmissionCompiler`: Package Manager resolve, then a compile only after the package list is registered. `ReflectionAdmissionCatalog`: `Entry.Verify` re-bake plus the mechanism catalog's generated fingerprint. `PythonAdmissionChecker`: `slot-checks.py --package-dir`. |
+| `.../Editor/Stage/SaveServiceAdmissionCapture.cs` | The P1.2 checkpoint: capture to `admit-<id>` before Play Mode stops, offer restore after a rollback. |
+| `.../Editor/Stage/AdmissionResumer.cs`, `StageCommandLine.cs` | `AdmissionResumer` (`[InitializeOnLoad]`) continues an admission or undo across the domain reload after a short idle settle. `StageCommandLine` provides the batchmode `Admit` and `Undo` entries (result JSON, `EditorApplication.Exit`). |
+| `games/hollowmere/Assets/Hollowmere/Tests/P2_4/EditMode/**` | `Hollowmere.P2_4.EditMode.Tests`: 8 admission tests over a temporary runtime and packages root with fake compiler, catalog, checker and capture. |
+| `samples/mechanisms/pressure-plate/**`, `games/hollowmere/Assets/Hollowmere/Tests/P2_4/PlayMode/**` | From the fork. The pressure-plate package `com.hollowmere.mechanism.pressureplate` 0.1.0, the three candidates (clean, forbidden, failing-test), and the Hollowmere PlayMode test. See `samples/mechanisms/pressure-plate/README.md`. |
+| `artifacts/studio/evidence/P2.4/**` | Evidence with a README. |
+
+## Verified (host myubuntu, Unity 6000.0.75f1, .NET 8, Rust 1.97.1)
+
+| Command | Result |
+|---|---|
+| `ssh myubuntu 'cd ~/wkspace/gc-studio/p2.4/studio/agent && ~/.cargo/bin/cargo test'` | lib 68 passed (34 in `stage::`), companion 18, `stage_lane` 3 (43 s), `stage_real` 2 ignored; 0 failed |
+| `cargo fmt --check`, `cargo clippy --all-targets -- -D warnings` | clean |
+| `cargo test --test stage_real -- --ignored --test-threads=1 stage_real` | 2 passed, 1418 s total. **B-STAGE measured once: 312 068 ms of 360 000** (warm Library). The cold warm-up was 745 s. The failing-test fixture fails at `unity-editmode` in 317 s, and the forbidden fixture fails at `scan` in 20 ms. |
+| `studio/tools/unity-compile.sh p2.4 games/hollowmere --tests EditMode --filter '(Hollowmere\.P2_4\|GameCore\.Studio)\..*'` | 45/45 passed, 50 s. These are the 8 P2.4 tests plus the 37 studio.core / P1.6 tests. The whole Hollowmere project compiled with `Editor/Stage`. |
+| `studio/tools/unity-compile.sh p2.4 unity/GameCore.Validation` | PASS (compile, 110 s; the project includes studio.core) |
+| `ssh myubuntu 'cd ~/wkspace/gc-studio/p2.4 && bash studio/stage/w-mech-01.sh /tmp/w-mech-01 --reset-journal'` | **W-MECH-01 PASS**. Stage pass in 73 s. Admit: live catalog-set `1d45d1c9…` == predicted; 45 s Editor run, 10.4 s admission. Hollowmere PlayMode 1/1: the plate is pressed and released in Thornwick Village. Undo: package removed and hash back to `425508a9…`. |
+| `python3 tools/check_stage_slot.py --self-test`; `check_game_core_csharp.py`; `check_package_metadata.py`; `validate_game_core_docs.py`; `make-candidate.py --check` | all pass (on the host, interpreter only) |
+
+The 8 EditMode tests:
+
+- refused without a verdict, and refused with a failing verdict;
+- admitted with a matching verdict: files byte-equal, journal Applied, `stage.verdict` carries the verdict id and
+  slot, `stage.admission` pass;
+- refused with a tampered artifact: a staged file differs, another archive digest, or another change set;
+- rollback on a simulated compile failure: package deleted, entry Failed, recompile requested;
+- rollback on a fault-hook exception before the catalog check;
+- rollback on a live-catalog mismatch;
+- Play Mode must stop or be captured: refused, then refused without a capture hook, then captured, stopped and
+  admitted, then restore;
+- undo after admit: package removed, hash returns, `stage.undo` pass; redo re-admits.
+
+Two failures on the way are kept as evidence. In W-MECH-01 run 1 the live re-bake ran too early after the domain
+reload; it was refused, so the admission **rolled back for real**. In run 3 the undo compiled against the stale
+package list. Both were fixed (idle settle with re-bake retries; resolve before compile), and run 5 passed
+end to end.
+
+## API for P2.1 (studio-ui), P2.2 (etos client), P3.2 (ai-workflows), P4.1 (clean-proof)
+
+**Companion** (`docs/studio/04`):
+
+- `POST /v1/stage {changeSetId, slot?, steps?, sourceProject?}` returns 202 with
+  `{jobId, changeSetId, packageRef, state:"queued", slot}`. The candidate must be in the ledger and carry a
+  `mechanism.propose` with a package artifact.
+- 409 `ledger_conflict` while the slot is staging (one stage per slot; one slot per change set).
+- `GET /v1/stage/{job}`: `state` goes `queued → running → done|failed`. `verdict` is the StageVerdict plus
+  `verdictRef`, or `{code:"stage_failed", reason, message, hint}` (`reason` is `timeout` when B-STAGE is exceeded).
+  Each transition is also a `stage` event on `/v1/events`.
+- `POST /v1/stage {changeSetId, action:"discard"}` (on Reject) returns `{discarded, slot}`.
+- `GET /v1/artifacts/{verdictRef}` returns the verdict bytes.
+
+**CLI** (host operators, P3.2 recordings, P4.1 on another project): `gamecore-studio stage run <slot>
+--candidate DIR [--source-project games/<game>] [--steps a,b] [--budget-s N] [--verdict-out FILE] [--force]`.
+Exit 0/1/2; the last stdout line is the verdict JSON. Also `stage gc [--max-age-days 7]`, `stage discard <slot>` and
+`stage scan <package-dir>`. Environment: `GAMECORE_STAGE_ROOT`, `GAMECORE_STAGE_SOURCE_PROJECT`,
+`GAMECORE_STAGE_BUDGET_S`, `GAMECORE_STAGE_UNITY_TIMEOUT_S`, `GAMECORE_STAGE_REPO`.
+
+**Unity** (`GameCore.Studio.Edit`, assembly `GameCore.Studio.Core.Editor`):
+
+```csharp
+StageAdmission a = StageAdmission.Of(StudioServices.Runtime);       // or Configure(runtime, AdmissionOptions)
+a.MarkStagePending(changeSetId, slot);                               // journal stage.verdict = pending
+StageVerdict v = a.RecordVerdict(verdictBytes);                      // retain + stage.verdict = pass|fail
+ChangeSet cs = a.RetainCandidate(candidateDir);                      // change-set.json + artifacts/
+AdmissionResult r = a.Admit(cs, verdictBytes: null, captureAndStop: false);
+// r.Outcome: Pending (compiling; continues after the reload) | Admitted | Refused | RolledBack
+// r.Reason: verdict_missing | verdict_failed | artifact_mismatch | play_mode | capture_failed | compile_failed |
+//           checkers_failed | rebake_failed | catalog_missing | catalog_mismatch | fault
+a.Finished += result => { /* Admitted / RolledBack / Undone / UndoFailed */ };
+AdmissionResult u = a.Undo(changeSetId);                             // Pending, then Undone | UndoFailed
+a.RestoreCapture(r.CaptureSlot!, out string? problem);              // after a RolledBack with a capture
+a.Options.Capture = new SaveServiceAdmissionCapture(() => runningSaveService);   // the game registers its SaveService
+```
+
+- **Journal `validation`, which the UI reads.** The scenarios are `stage.verdict`, `stage.admission` and
+  `stage.undo`, each with status `pending|pass|fail`. For `stage.verdict`, detail is
+  `"<summary>; sha256:<verdict id>"` and the summary names the slot. P2.1 shows "verdict pending/pass/fail" from
+  `stage.verdict`.
+- **The Admit button** calls `Admit(changeSet, null, captureAndStop)`. It is enabled only when `stage.verdict` is
+  pass. The validator refuses anything else regardless.
+- **P2.2.** When a stage job finishes, call `RecordVerdict(GET /v1/artifacts/{verdictRef})`. Call
+  `MarkStagePending` on submit.
+- **Batchmode entries:**
+  - `-executeMethod GameCore.Studio.Edit.StageCommandLine.Admit -gcCandidate DIR -gcVerdict FILE -gcResult FILE [-gcShared]`
+  - `-executeMethod GameCore.Studio.Edit.StageCommandLine.Undo -gcChangeSet cs_... -gcResult FILE`
+- **P4.1.** The lane is project-agnostic: `sourceProject` / `--source-project` names the game, and slot manifests
+  pin that project's packages. The pressure-plate package and `make-candidate.py` are the template for a
+  mechanism candidate. `proposal.json` declares `smokeTest {type, method, steps}`, `catalog {type}`,
+  `rules {assembly, directory, tests}`, `blobs`, `allowUnsafe`, and `stageInputs`.
+
+## Decisions
+
+- **Admission is a change set.** The candidate's `mechanism.propose` becomes a `mechanism.admit` operation (same
+  change-set id; package, proposal and verdict artifacts) and goes through `ChangeSetEngine`:
+  - the validator `RequiresStageVerdict` runs at Stage, so no verdict means no apply;
+  - the journal checkpoints the op (Interrupted → Applied);
+  - undo and redo use the asset-level inverse `mechanism.remove` / `mechanism.admit`, so redo re-verifies the
+    retained artifacts;
+  - recovery is `RollbackInterrupted`.
+
+  The entry stays Interrupted (`stage.admission` pending) until the post-compile checks pass.
+- **The verdict is bound to exact bytes.** The bound covers the change-set id, the package and proposal digests,
+  and every file of the archive by sha256 (`files[]`). The verdict id is the sha256 of its canonical JSON.
+- **The catalog set is predicted and then proven.** The slot's `CatalogProbe` computes
+  `predicted = sha256("gamecore.catalog-set/1\n" + world + "\n" + sorted mechanism fingerprints)`. After the
+  admission, the live Editor re-bakes the world (`Entry.Verify`), reads the mechanism's generated fingerprint and
+  must reproduce `predicted`. Otherwise it rolls back.
+- **Default install** is embedded at `<project>/Packages/<name>`. The shared policy installs at
+  `<repo>/Packages/<name>` with a manifest `file:` entry.
+- **Safety before speed in the slot.** `scan` and `checkers` run before any candidate code. Children get
+  `env_clear()` plus an allowlist with no secret-like names. Logs are redacted before they are written and hashed.
+  Unity runs under the shared host lock, at most one Editor per stage, inside the B-STAGE deadline. The first stage
+  on a host seeds `_warm/Library`.
+- **Scan exemptions are explicit data, not rule changes.** Only `generated-catalog-tables` exists: `static readonly`
+  arrays in `Generated/*.g.cs` files with the CatalogEmitter header, the same shape every gameplay catalog has.
+  stage_real found it. Exempted hits are logged and counted in `facts.exempted`.
+- **Compile only after packages re-register.** `UnityAdmissionCompiler` waits for
+  `PackageManager.Events.registeredPackages` before it compiles, so `versionDefines` follow the new package list.
+  The resumer waits for an idle Editor, and a refused re-bake retries 3 times at 10 s before rolling back.
+- **The legacy stage shell is kept.** `stage.sh` wraps the new lane and adds `ok` to its last line.
+- **`unity-compile.sh` was not refactored**, because it is outside the exclusive paths. `unity-batch.sh`
+  implements the same flock-slot protocol, so both count against one host-wide limit.
+
+## Open items
+
+1. **Candidate args vs the built-in `mechanism.propose` schema.** The worker candidate's propose op carries
+   `{description, package, proposal, stageInputs}`, while the built-in (P1.6 `AssetTools.cs`) declares
+   `{description, context, options}`. The lane and `StageAdmission.ToAdmission` read the candidate shape and never
+   apply `mechanism.propose` itself (the built-in only asks the gateway and never installs code). The integrator
+   should add `package`, `proposal` and `stageInputs` as optional args to the built-in entry, and may add
+   `validators: ["RequiresStageVerdict"]` for symmetry. Both are one-line edits outside P2.4.
+2. **No default SaveService capture.** A SaveService is game-specific (codecs, slot schemas), so the game (P3.1) must
+   register `new SaveServiceAdmissionCapture(() => service)`. Without it, capture-and-stop is refused with
+   `capture_failed`, and a plain Admit in Play Mode is refused with `play_mode`.
+3. **Plain journal undo of an admission** (history panel, `HistoryService.Undo`) removes the package but does not
+   recompile or verify the catalog. Use `StageAdmission.Undo` for the verified path. P2.1 should route undo of
+   `mechanism.admit` entries there.
+4. **WorldBuilder has no extension seam** (fork). `PressurePlateMechanism.Extend` extends the already built
+   application definition.
+5. **`main.rs` deviation** (three lines for the CLI dispatch) needs the integrator's acknowledgement.
+6. **Warm Library invalidation.** `_warm/Library` is reused until removed. After a Unity or kernel-package upgrade,
+   delete `<stage root>/_warm` (the next stage re-seeds it in about 12 minutes).
+7. **The fixed id of the sample candidate** means the journal applies it once per project. `w-mech-01.sh
+   --reset-journal` is for scratch clones only.

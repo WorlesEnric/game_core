@@ -37,6 +37,9 @@ pub struct ErrorBody {
     /// Itemised findings (03 §9 diagnostics) when the request failed a contract check.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub diagnostics: Vec<crate::model::Diagnostic>,
+    /// A structured witness (e.g. the media operation `key` a resend reuses).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub data: Option<Box<serde_json::Value>>,
 }
 
 /// An error answered to Unity.
@@ -61,6 +64,7 @@ impl ApiError {
                 message: redact(&message.into()),
                 hint: None,
                 diagnostics: Vec::new(),
+                data: None,
             },
         }
     }
@@ -68,6 +72,12 @@ impl ApiError {
     /// The same error with a hint.
     pub fn with_hint(mut self, hint: impl Into<String>) -> ApiError {
         self.body.hint = Some(redact(&hint.into()));
+        self
+    }
+
+    /// The same error with a structured witness.
+    pub fn with_data(mut self, data: serde_json::Value) -> ApiError {
+        self.body.data = Some(Box::new(data));
         self
     }
 

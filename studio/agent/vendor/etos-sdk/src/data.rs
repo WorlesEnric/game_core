@@ -124,9 +124,15 @@ impl Ops {
         self.call("describe", input).await
     }
 
-    /// Generated media (`generate`).
-    pub async fn generate(&self, input: Value) -> Result<Value> {
-        self.call("generate", input).await
+    /// Generated media of `family` (`image`, `video`, `music`, `3d`): the operation
+    /// `generate.<family>`, a long operation the node runs to completion (or its `max_wait`).
+    pub async fn generate(&self, family: &str, input: Value) -> Result<Value> {
+        if family.is_empty() || family.contains(['.', '/']) {
+            return Err(Error::Invalid(format!(
+                "`{family}` is not a generation family (image, video, music, 3d)"
+            )));
+        }
+        self.call(&format!("generate.{family}"), input).await
     }
 
     /// Speech from text (`tts`).

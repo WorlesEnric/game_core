@@ -26,6 +26,9 @@
     <Compile Include="../../../Packages/com.gamecore.gameplay.compile/Core/**/*.cs"
              Exclude="../../../Packages/com.gamecore.gameplay.compile/Core/**/bin/**/*.cs;../../../Packages/com.gamecore.gameplay.compile/Core/**/obj/**/*.cs" />
     <Compile Include="Local/**/*.cs" />
+    <!-- P1.5: rules tests of the UI flow and audio halves (Runtime/Ui, Runtime/Audio). -->
+    <Compile Include="Ui/**/*.cs" />
+    <Compile Include="Audio/**/*.cs" />
     <!-- P1.3: player, NPC and interaction rules tests. -->
     <Compile Include="Player/**/*.cs;Npc/**/*.cs;Interaction/**/*.cs" />
     <!-- P1.4: dialogue, quest, inventory and logic rules tests. -->
