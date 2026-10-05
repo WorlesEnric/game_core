@@ -32,7 +32,7 @@ namespace GameCore.Unity.App.Tests
             public RecordCodec(CheckpointRecordKind kind)
             {
                 Kind = kind;
-                Schema = new SchemaRef(new SchemaId(StableNameKeyDerivation.Derive("app1.codec." + kind)), 1U);
+                Schema = new SchemaRef(new SchemaId(StableNameKeyDerivation.Derive("app1.codec." + kind.ToString().ToLowerInvariant())), 1U);
             }
             public CheckpointRecordKind Kind { get; }
             public SchemaRef Schema { get; }

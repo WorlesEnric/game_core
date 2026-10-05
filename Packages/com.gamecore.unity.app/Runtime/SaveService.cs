@@ -14,7 +14,7 @@
 //     resumes the world;
 //   * Restore(slot) verifies the files (envelope checksum, header/document hash, document decoding), applies the
 //     catalog compatibility rule, migrates slot rows forward, rebuilds the world through the production restore
-//     builder into a NEW session, stops the old root and makes the restored root the active one;
+//     builder into a NEW session, adopts the restored root and then stops the old root;
 //   * Delete(slot) removes both files.
 //
 // Every refusal is a typed `SaveRefusal` (missing slot, corrupt file, catalog mismatch, migration path missing, unsafe
@@ -308,7 +308,8 @@ namespace GameCore.Unity.App
 
         /// <summary>
         /// Restores <paramref name="slot"/> into a new world (O-21, P-049). On success the restored root is the active
-        /// root and the previous root is stopped; on refusal the running world is untouched.
+        /// root and the previous root is stopped; if the previous root was GameApplication.Current, ownership
+        /// transfers before its stop callbacks. On refusal the running world is untouched.
         /// </summary>
         public SaveResult Restore(string slot)
         {
@@ -341,13 +342,16 @@ namespace GameCore.Unity.App
 
             // The restored root continues the old root's run state; the old root stops (O-19).
             bool wasRunning = root.State == GameApplicationState.Running;
-            root.Stop("restored from save slot " + slot);
             if (!wasRunning)
             {
                 restored.Pause();
             }
 
+            // Restore and lifecycle operations run on the main thread. Publish both references without any
+            // intervening callback before Stop can notify observers or clear application ownership (APP-1).
             ActiveRoot = restored;
+            GameApplication.AdoptRestoredRoot(root, restored);
+            root.Stop("restored from save slot " + slot);
             LastRestoredPlayTimeSeconds = header.PlayTimeSeconds;
             Finish(result, clock);
             RootChanged?.Invoke(root, restored);

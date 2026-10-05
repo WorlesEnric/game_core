@@ -5,6 +5,8 @@
     "GameCore.Unity.App",
     "GameCore.Contracts",
     "GameCore.Composition",
+    "GameCore.Derivation",
+    "GameCore.Unity.Fixtures",
     "GameCore.Unity.Runtime",
     "GameCore.Unity.Adapters",
     "UnityEngine.TestRunner",
@@ -20,7 +22,9 @@
     "nunit.framework.dll"
   ],
   "autoReferenced": false,
-  "defineConstraints": [],
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
   "versionDefines": [],
   "noEngineReferences": false
 }

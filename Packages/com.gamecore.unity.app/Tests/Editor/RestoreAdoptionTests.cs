@@ -4,8 +4,11 @@ using System.Collections.Generic;
 using System.IO;
 using GameCore.Contracts;
 using GameCore.Execution;
+using GameCore.Derivation;
 using GameCore.Unity.Adapters;
 using GameCore.Unity.Runtime;
+using GameCore.Unity.Runtime.Integration;
+using GameCore.Unity.Fixtures;
 using NUnit.Framework;
 
 namespace GameCore.Unity.App.Tests
@@ -129,9 +132,18 @@ namespace GameCore.Unity.App.Tests
 
         private GameApplicationDefinition Definition()
         {
-            ICatalog catalog = ImmutableCatalog.Build(null, null, null, null).Catalog!;
+            ICatalog catalog = W1GateCatalog.Build().Catalog!;
+            var stage = new StageSpec(new StageId(StableNameKeyDerivation.Derive("app1.stage")), 1U,
+                StableNameKeyDerivation.Derive("app1.package"), HostAffinity.ManagedMain,
+                null, null, new AccessSet(null), null, null, null, null, null, null);
+            var manifest = new PluginManifest(new PluginTypeId(StableNameKeyDerivation.Derive("app1.plugin")),
+                "1.0.0", ContentHash.Empty, new SupportedProtocolRange(1, 0, 0), null,
+                W1GateKeys.CatalogSchema, W1GateCatalog.PluginFactoryKey, null, null, null, null, null, null,
+                new[] { stage }, null, null);
             return new GameApplicationDefinition.Builder("APP-1")
                 .WithCatalog(catalog, catalog.Fingerprint)
+                .WithValues(EmptyDerivationValueSource.Instance)
+                .AddPlugin(new CatalogPluginDeclaration(manifest, null))
                 .WithWorld(new WorldDefinitionId(StableNameKeyDerivation.Derive("app1.world")), TemporalModel.CommandDriven)
                 .WithRootScope(new ScopeId(StableNameKeyDerivation.Derive("app1.root")))
                 .WithIssuer(StableNameKeyDerivation.Derive("app1.issuer"))
