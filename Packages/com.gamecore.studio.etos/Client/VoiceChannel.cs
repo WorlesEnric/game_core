@@ -69,7 +69,7 @@ namespace GameCore.Studio.Etos.Client
         private readonly CancellationTokenSource _life = new CancellationTokenSource();
         private readonly TaskCompletionSource<VoiceReady> _ready = new TaskCompletionSource<VoiceReady>(TaskCreationOptions.RunContinuationsAsynchronously);
         private readonly TaskCompletionSource<string> _closed = new TaskCompletionSource<string>(TaskCreationOptions.RunContinuationsAsynchronously);
-        private ClientWebSocket? _socket;
+        private WebSocket? _socket;
         private Task? _receive;
         private long _seq;
         private EtosError? _firstError;
@@ -136,7 +136,7 @@ namespace GameCore.Studio.Etos.Client
         /// <summary>Sends PCM16 mono 24 kHz audio as gapless frames of at most 24 KiB.</summary>
         public async Task SendPcmAsync(byte[] pcm16, CancellationToken ct = default)
         {
-            ClientWebSocket socket = _socket ?? throw new InvalidOperationException("Connect first.");
+            WebSocket socket = _socket ?? throw new InvalidOperationException("Connect first.");
             await _send.WaitAsync(ct).ConfigureAwait(false);
             try
             {
@@ -163,7 +163,7 @@ namespace GameCore.Studio.Etos.Client
         /// <summary>Sends stop, waits up to <paramref name="wait"/> for the companion's closed (pending transcripts arrive first), then closes.</summary>
         public async Task<string> StopAsync(TimeSpan wait)
         {
-            ClientWebSocket? socket = _socket;
+            WebSocket? socket = _socket;
             if (socket == null)
             {
                 return "not connected";
@@ -202,7 +202,7 @@ namespace GameCore.Studio.Etos.Client
 
         private async Task AbortAsync()
         {
-            ClientWebSocket? socket = _socket;
+            WebSocket? socket = _socket;
             if (socket != null)
             {
                 await WebSocketText.CloseAsync(socket, TimeSpan.FromSeconds(2)).ConfigureAwait(false);
@@ -225,7 +225,7 @@ namespace GameCore.Studio.Etos.Client
             return;
         }
 
-        private async Task ReceiveLoop(ClientWebSocket socket, CancellationToken ct)
+        private async Task ReceiveLoop(WebSocket socket, CancellationToken ct)
         {
             try
             {

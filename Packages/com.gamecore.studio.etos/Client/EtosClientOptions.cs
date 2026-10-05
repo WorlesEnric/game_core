@@ -34,6 +34,9 @@ namespace GameCore.Studio.Etos.Client
         /// <summary>Use the system HTTP proxy. Off by default: the node listens on loopback and desktop proxies break it.</summary>
         public bool UseSystemProxy { get; set; }
 
+        /// <summary>Mono needs an owned TCP/TLS upgrade to guarantee cancellation closes its connection.</summary>
+        public bool UseOwnedWebSocketUpgrade { get; set; } = Type.GetType("Mono.Runtime") != null;
+
         /// <summary>Where downloads are written before verification (default: the system temp directory).</summary>
         public string? TempDirectory { get; set; }
 

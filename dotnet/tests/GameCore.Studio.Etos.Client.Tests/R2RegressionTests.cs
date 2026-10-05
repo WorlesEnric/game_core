@@ -85,18 +85,19 @@ namespace GameCore.Studio.Etos.Client.Tests
             }
         }
 
-        [Test]
-        public async Task R2_21_CancelTicketedConnectAndRepeatedReloadLeaveNoConnections()
+        [TestCase(false)]
+        [TestCase(true)]
+        public async Task R2_21_CancelTicketedConnectAndRepeatedReloadLeaveNoConnections(bool ownedUpgrade)
         {
-            using var setup = new FakeSetup();
+            using var setup = new FakeSetup(options => options.UseOwnedWebSocketUpgrade = ownedUpgrade);
             setup.Fake.StallWebSocketUpgrade = true;
             for (int i = 0; i < 3; i++)
             {
                 using var cancel = new CancellationTokenSource();
-                Task<ClientWebSocket> connect = setup.Client.ConnectWebSocketAsync("/v1/events", "after=0", cancel.Token);
+                Task<WebSocket> connect = setup.Client.ConnectWebSocketAsync("/v1/events", "after=0", cancel.Token);
                 await Wait.Until(() => setup.Fake.PendingUpgrades == 1, TimeSpan.FromSeconds(5), "pending handshake");
                 cancel.Cancel();
-                try { using ClientWebSocket unexpected = await connect; Assert.Fail("connect must cancel"); }
+                try { using WebSocket unexpected = await connect; Assert.Fail("connect must cancel"); }
                 catch (OperationCanceledException) { }
                 await Wait.Until(() => setup.Fake.PendingUpgrades == 0, TimeSpan.FromSeconds(5), "closed handshake");
             }

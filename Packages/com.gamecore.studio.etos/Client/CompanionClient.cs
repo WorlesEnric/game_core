@@ -303,9 +303,11 @@ namespace GameCore.Studio.Etos.Client
         }
 
         /// <summary>Obtains a ticket and opens a WebSocket on a proxied companion path (<c>/v1/events</c>, <c>/v1/voice</c>).</summary>
-        public async Task<ClientWebSocket> ConnectWebSocketAsync(string companionPath, string? query, CancellationToken ct = default)
+        public async Task<WebSocket> ConnectWebSocketAsync(string companionPath, string? query, CancellationToken ct = default)
         {
             string ticket = await IssueTicketAsync(companionPath, ct).ConfigureAwait(false);
+            if (Options.UseOwnedWebSocketUpgrade)
+                return await ConnectOwnedUpgrade(companionPath, query, ticket, ct).ConfigureAwait(false);
             ClientWebSocket socket = new ClientWebSocket();
             bool transferred = false;
             try
@@ -361,6 +363,32 @@ namespace GameCore.Studio.Etos.Client
             finally
             {
                 if (!transferred) socket.Dispose();
+            }
+        }
+
+        private async Task<WebSocket> ConnectOwnedUpgrade(string companionPath, string? query, string ticket, CancellationToken ct)
+        {
+            if (Options.UseSystemProxy)
+                throw new EtosException(new EtosError(0, EtosCodes.NotConfigured, "Mono's owned WebSocket upgrade requires a direct node connection."));
+            WebSocket? socket = null;
+            bool transferred = false;
+            using (var deadline = CancellationTokenSource.CreateLinkedTokenSource(ct))
+            {
+                deadline.CancelAfter(Options.RequestTimeout);
+                try
+                {
+                    Stopwatch watch = Stopwatch.StartNew();
+                    socket = await OwnedUpgradeWebSocket.ConnectAsync(WebSocketUri(companionPath, query, ticket), Options.ProjectId, deadline.Token).ConfigureAwait(false);
+                    Record("WS", companionPath, 101, watch, null);
+                    transferred = true;
+                    return socket;
+                }
+                catch (Exception) when (ct.IsCancellationRequested) { throw new OperationCanceledException(ct); }
+                catch (Exception) when (deadline.IsCancellationRequested)
+                { throw new EtosException(new EtosError(0, EtosCodes.Timeout, "The WebSocket connection deadline expired.")); }
+                catch (Exception error) when (error is System.Net.Sockets.SocketException || error is IOException || error is System.Security.Authentication.AuthenticationException)
+                { throw EtosException.Transport("The WebSocket could not be opened through the node", error); }
+                finally { if (!transferred) socket?.Dispose(); }
             }
         }
 

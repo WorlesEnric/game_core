@@ -32,7 +32,7 @@ namespace GameCore.Studio.Etos.Client
         private readonly object _gate = new object();
         private CancellationTokenSource? _stop;
         private Task? _loop;
-        private ClientWebSocket? _socket;
+        private WebSocket? _socket;
         private long _cursor;
         private int _connects;
 
@@ -140,7 +140,7 @@ namespace GameCore.Studio.Etos.Client
                     SetState(EventStreamState.Connecting, null);
                 }
 
-                ClientWebSocket? socket = null;
+                WebSocket? socket = null;
                 try
                 {
                     socket = await _client.ConnectWebSocketAsync("/v1/events", "after=" + Cursor.ToString(CultureInfo.InvariantCulture), token).ConfigureAwait(false);
