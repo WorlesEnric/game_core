@@ -102,3 +102,75 @@ The dotnet model project compiles `Packages/com.gamecore.studio.core/Runtime/Mod
 
 - Whole-solution green is blocked by the gameplay `AuthorOperationAttribute` parity failure named above;
   the required source is outside this micro-packet's exclusive paths. No test or contract was weakened.
+
+## R2-int1
+
+Integrated on Linux in this `codex/r2-a` clone with `origin/main` at `d0f08805`.
+Merge commit `8cf4725d` preserves both packet-note sections in P1.6 and P2.4.
+
+- `ChangeSetEngine`: retained durable prepare/inverse checkpoints, failed-operation preimages,
+  media-only imports, apply-time catalog/baseVersions checks and runtime-only live dispatch;
+  retained P1.7b's successful-operation list and post-StopAssetEditing Rewitness without adding
+  an operation twice to the rollback list. Pure tools do not prepare mutation inverses.
+- `ReflectedTool`: ReadOnly comes from the exported entry, populated from AuthorOperation;
+  pure calls capture no preimage/touched target; returned authored objects remain touched.
+  Attribute readers retain Structural and both ReadOnly/RuntimeOnly. Removed the duplicate
+  automatically merged ReadOnly declaration; added gameplay-contract RuntimeOnly mirror parity.
+- One core `Editor/Journal/IHistoryEntryHandler` remains. Admission registers on every runtime
+  creation and reconfiguration through `runtime.History.RegisterHandler(...)`. All four history
+  actions dispatch to the durable admission lifecycle. Finished updates redo bookkeeping only
+  after verified completion; Pending retains the existing stack. Tests cover real HistoryService
+  undo/default redo, deferred compile completion, and reconfigured recovery with exact preimages.
+  R2-B no longer exposes generic mutation tools: its durable pre-effect checkpoint owns package
+  installation/removal rather than replaying through EditContext.
+- One C# `GameCore.Studio.Authoring.Agent.StageCandidateRequest` retains local project context
+  and R2-B's artifact digest/stage-input binding fields. The full constructor validates data paths
+  and restores persisted requests. R2-B service docs now use that type and explicitly distinguish
+  local verification DTOs from R2-F's HTTP shapes; R2-D still owns the authenticated adapter.
+- Stage/admission uses core SecretRedactor, including compiler Errors as well as Detail. No
+  second Stage redactor was added. Successful admission rollback reports a successful history result.
+- Regenerated the authoritative six schemas and copied all six byte-identically into the companion.
+  Rust metadata projections retain readOnly/runtimeOnly/structural with false defaults. New tests
+  validate the committed .NET sample catalog, current flag-bearing catalogs and invalid flag types,
+  plus byte equality of all embedded schemas. Raw catalog JSON remains authoritative for hashing.
+
+### Verification
+
+- `cargo fmt --check`; `cargo clippy --all-targets -- -D warnings`: pass.
+- `cargo test`: **105 passed, 0 failed, 5 ignored** (80 unit, 21 fake-node, 4 stage-lane).
+  Ignored: Docker isolation qualification, two real-node tests, two real-Unity stage tests.
+- `dotnet test dotnet/GameCore.sln`: **20 suites, 1,810 passed, 0 failed, 5 skipped** (1,815 total).
+  Studio.Model 104/104; gameplay attribute parity now passes. Skips are the five credential-gated
+  ETOS live tests. TRX evidence: `/tmp/r2-int1-dotnet/*.trx`, log `/tmp/r2-int1-dotnet.log`.
+- First unfiltered Hollowmere EditMode XML: 304 total, 298 passed, 1 failed, 5 skipped,
+  0 inconclusive. The sole failure was RelationshipsModelTests.TwoThousandNodes_RenderWithinTheFrameBudget:
+  SetGraph 18.3464 ms against an unchanged 16 ms threshold during concurrent host workflows.
+  XML `.unity-logs/r2-int1.xml`; retained as failed evidence, never counted as a passing run.
+- Fresh **unfiltered** Hollowmere EditMode rerun: **304 total, 299 passed, 0 failed, 5 skipped,
+  0 inconclusive**, Editor exit 0. XML `.unity-logs/r2-int1-rerun.xml`, 78.704 s test duration.
+  The original 16 ms performance threshold is unchanged. Core 67/67, UI 31/31, Views 14/14,
+  Views.Hollowmere 10/10, P1.7b 28/28, P2.4 8/8, R2-B 60/60. Studio P2.2 15 passed + four
+  credential-gated live skips; the fifth skip is P1.5's graphics-only preview under -nographics.
+  Both full runs used `GC_STUDIO_UNITY_SLOTS=1 bash studio/tools/unity-batch.sh` and XML was read.
+  Rerun XML SHA256: `da0af69dc3342dae6291547c3f4ba25e39fdaea5819dc6ea7ee9865b1a7c296d`.
+  First (failed) XML SHA256: `80d830135c4214daf7c0e1823aff18d4efe7eb678dec90a120b34d9c9d70b8c3`.
+- `python3 tools/studio/emit_studio_schemas.py --check`: all six current.
+- `python3 tools/check_package_metadata.py`: 41 packages, 89 assemblies, pass.
+- `python3 tools/check_game_core_csharp.py`: 1,095 C# files, pass.
+- `cargo build --release --locked`: pass. Generated migration-test asset reserialization was
+  restored after Editor exit; no sample content changes are included in this integration.
+
+### Installed companion
+
+**Reinstall skipped: live-run guard remained busy at the end of the 45-minute window.**
+Polling began `2026-10-05T07:02:53Z` every 60 seconds; final confirmation was `2026-10-05T07:48:13.899734+00:00`.
+A brief empty poll at 42 minutes was followed by a nonempty immediate pre-install recheck;
+the guarded launcher exited 75 before invoking install.sh. No service restart or installation
+mutation occurred. The release build is ready, but the installed companion has **not** received
+this branch's schema fix. See the exact guarded commands and redacted status in
+`docs/studio/packets/P0.5-companion.md` §R2-int1. Guard evidence: `/tmp/r2-int1-live-gate.json`.
+
+
+Historical packet restrictions and isolated-branch blockers above are superseded only by this
+integration's explicitly authorized work and measured results. No passing Docker Unity staging,
+paid provider workflow, or complete Stage → Admit transport qualification is claimed here.
