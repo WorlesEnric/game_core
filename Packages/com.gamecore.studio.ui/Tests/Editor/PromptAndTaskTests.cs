@@ -274,7 +274,9 @@ namespace GameCore.Studio.UI.Tests
             _bed.Gateway.Emit(TestAgentGateway.View(id, "candidate", request.Intent.Text, localState: "staged", hasCandidate: true, seq: 5));
             _bed.Context.Tick();
             CandidateEntry? entry = _bed.Context.Candidates.Find(id);
-            Assert.That(entry, Is.Not.Null, "adopted on the staged report (" + _bed.Context.Candidates.Entries.Count + " entries, " + _bed.Context.EventsSeen + " events)");
+            TaskRow trayRow = _bed.Context.Tasks.Find(id)!;
+            Assert.That(entry, Is.Not.Null, "adopted on the staged report (" + _bed.Context.Candidates.Entries.Count + " entries, " + _bed.Context.EventsSeen + " events, row " + trayRow.state + "/" + trayRow.localState
+                + ", staged visible " + (GatewayExtras.StagedBy(_bed.Gateway, id) != null) + ", pending " + _bed.Context.Dispatcher.Pending + ")");
             Assert.That(entry!.GatewayStaged, Is.True);
             Assert.That(entry.Staged, Is.SameAs(imported), "the gateway's staged change set is adopted, not staged again");
             Assert.That(entry.Stage, Is.EqualTo(CandidateStage.Previewing));
