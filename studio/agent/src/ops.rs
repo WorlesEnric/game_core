@@ -7,7 +7,8 @@
 //! looked up by etops, never generated twice). Every operation carries a cost ceiling: the
 //! call's `max_cost_usd`, else the configured `ops_max_cost_usd`; with neither the call is
 //! refused. `describe` is the exception: its etops input has no `max_cost_usd` (etops refuses
-//! unknown fields), so the ceiling is not sent and a ceiling of 0 refuses it here. The operation runs on its own client timeout (`ops_timeout_secs`, default 300 s;
+//! unknown fields), so the ceiling is enforced locally against a fixed per-call tariff.
+//! Any capped operation without an operator price refuses with `budget_unpriced`. The operation runs on its own client timeout (`ops_timeout_secs`, default 300 s;
 //! `generate.image` on a slow provider takes well over the SDK's 30 s default): the caller's
 //! request is held until the node answers. Past the timeout the answer is 504 `transport` with
 //! the operation's `key` in the hint and in `data`; resending the identical request asks etops
@@ -73,6 +74,7 @@ pub struct MediaOps {
     indexer: Arc<Indexer>,
     ttl: Duration,
     default_ceiling: Option<f64>,
+    prices: Vec<crate::pricing::OpPrice>,
     cache: Mutex<StatusCache>,
     voice: Mutex<String>,
 }
@@ -134,9 +136,16 @@ impl MediaOps {
             indexer,
             ttl: Duration::from_secs(hello_cache_s),
             default_ceiling,
+            prices: Vec::new(),
             cache: Mutex::new(None),
             voice: Mutex::new(status::UNKNOWN.to_string()),
         }
+    }
+
+    /// Use only operator-configured prices for capped calls.
+    pub fn with_prices(mut self, prices: Vec<crate::pricing::OpPrice>) -> Self {
+        self.prices = prices;
+        self
     }
 
     /// Run operations with `timeout` per call (the SDK default is 30 s).
@@ -160,7 +169,8 @@ impl MediaOps {
             .map(|v| v.clone())
             .unwrap_or_else(|_| status::UNKNOWN.into());
         if let Ok(c) = self.cache.lock() {
-            if let Some((_, at, map)) = c.as_ref().filter(|(when, _, _)| when.elapsed() < self.ttl) {
+            if let Some((_, at, map)) = c.as_ref().filter(|(when, _, _)| when.elapsed() < self.ttl)
+            {
                 let mut m = map.clone();
                 m.insert("voice".into(), voice);
                 return (m, Some(*at));
@@ -237,15 +247,12 @@ impl MediaOps {
                 "max_cost_usd is a non-negative number",
             ));
         }
+        if let Some(max) = ceiling {
+            crate::pricing::check(&self.prices, &req.op, &mut input, max)?;
+        }
         if op == "describe" {
-            // etops' describe input has no `max_cost_usd` (it refuses unknown fields): the
-            // ceiling is enforced here, where 0 means "no paid calls".
-            if ceiling == Some(0.0) {
-                return Err(
-                    ApiError::bad_request("describe is refused under a cost ceiling of 0")
-                        .with_hint("send a positive max_cost_usd, or raise ops_max_cost_usd"),
-                );
-            }
+            // The node's describe schema has no ceiling field. Any supplied ceiling
+            // has already been enforced above; uncapped describe retains its contract.
             return self.describe(&req, input, owner).await;
         }
         let Some(max) = ceiling else {
@@ -253,7 +260,7 @@ impl MediaOps {
                 .with_hint("send a cost ceiling in USD, or configure ops_max_cost_usd"));
         };
         input.insert("max_cost_usd".into(), json!(max));
-        let basis = json!({"owner":owner,"cs":req.change_set_id,"op":op,"spec":req.spec,"max":max});
+        let basis = json!({"owner":owner,"cs":req.change_set_id,"op":op,"spec":input,"max":max});
         let key = format!(
             "gc-{}",
             &sha256_hex(canonical_json(&basis).as_bytes())[..40]

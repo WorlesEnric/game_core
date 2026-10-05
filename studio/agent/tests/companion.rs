@@ -28,6 +28,23 @@ async fn companion(node: &FakeNode, dir: &Path, tweak: impl FnOnce(&mut Config))
     cfg.follow_wait_ms = 200;
     cfg.index_flush_ms = 100;
     cfg.hello_cache_s = 0;
+    // Explicit fake tariffs; production defaults remain empty/fail-closed.
+    cfg.ops_prices = [
+        ("image", "echo-images", "image", 0.006),
+        ("tts", "bailian-tts", "character", 0.00001),
+        ("3d", "fake-3d", "call", 0.01),
+        ("describe", "echo-chat", "call", 0.01),
+    ]
+    .into_iter()
+    .map(
+        |(op, provider, unit, per_unit)| gamecore_studio::pricing::OpPrice {
+            op: op.into(),
+            provider: provider.into(),
+            unit: unit.into(),
+            per_unit,
+        },
+    )
+    .collect();
     tweak(&mut cfg);
     let client = Client::new(&node.url, AGENT_KEY)
         .unwrap()
@@ -1139,7 +1156,7 @@ async fn ops_generate_stores_artifacts_and_passes_refusals() {
             json!({"op": "describe", "spec": {"artifact": sha(b"PNG-lantern")}, "max_cost_usd": 0.0}),
         )
         .await;
-    assert_eq!((s, v["code"].as_str()), (400, Some("bad_request")), "{v}");
+    assert_eq!((s, v["code"].as_str()), (409, Some("over_budget")), "{v}");
     // The node's reported digest is checked: a mismatch is a protocol error, nothing stored.
     node.lock().wrong_digest_ops.push("generate.image".into());
     let (s, v) = api
@@ -1746,5 +1763,82 @@ async fn r2_09_signed_verdict_transport_rejects_tampering_and_partial_jobs() {
         )
         .unwrap();
     assert_eq!(api.get("/v1/stage/stg_signed/verdict").await.0, 404);
+    running.shutdown().await;
+}
+
+#[tokio::test]
+async fn r3_d14_retained_budget_refuses_unpriced_before_provider_call() {
+    let retained: Value = serde_json::from_str(include_str!("../../../artifacts/studio/workflows/P3.2/runs/honesty-20261005T095503Z/budget/generate.json")).unwrap();
+    assert_eq!(retained["ok"], true);
+    let node = FakeNode::start().await;
+    node.set_op(
+        "generate.image",
+        200,
+        json!({"name":"swatch.png", "bytes":"PNG"}),
+    );
+    let dir = tempfile::tempdir().unwrap();
+    let running = companion(&node, dir.path(), |cfg| cfg.ops_prices.clear()).await;
+    let api = Api::new(&running, &node);
+    let (_, result) = api.post("/v1/ops/generate", json!({"op":"image", "spec":{"prompt":retained["prompt"]}, "max_cost_usd":retained["maxCostUsd"]})).await;
+    assert_eq!(result["code"], "budget_unpriced", "{result}");
+    assert_eq!(node.calls("POST", "/ops/generate.image"), 0);
+    running.shutdown().await;
+}
+
+#[tokio::test]
+async fn r3_d14_priced_budget_binds_quantity_and_provider() {
+    let node = FakeNode::start().await;
+    node.set_op(
+        "generate.image",
+        200,
+        json!({"name":"swatch.png", "bytes":"PNG"}),
+    );
+    let dir = tempfile::tempdir().unwrap();
+    let running = companion(&node, dir.path(), |_| {}).await;
+    let api = Api::new(&running, &node);
+    for (spec, expected) in [
+        (json!({"prompt":"swatch"}), "over_budget"),
+        (
+            json!({"prompt":"swatch", "provider":"unpriced"}),
+            "budget_unpriced",
+        ),
+        (
+            json!({"prompt":"swatch", "params":{"quality":"high"}}),
+            "budget_unpriced",
+        ),
+    ] {
+        let (_, result) = api
+            .post(
+                "/v1/ops/generate",
+                json!({"op":"image","spec":spec,"max_cost_usd":0.001}),
+            )
+            .await;
+        assert_eq!(result["code"], expected, "{result}");
+    }
+    let (_, result) = api
+        .post(
+            "/v1/ops/generate",
+            json!({"op":"image","spec":{"prompt":"swatch", "count":2},"max_cost_usd":0.006}),
+        )
+        .await;
+    assert_eq!(result["code"], "over_budget");
+    assert_eq!(node.calls("POST", "/ops/generate.image"), 0);
+    let (status, result) = api
+        .post(
+            "/v1/ops/generate",
+            json!({"op":"image","spec":{"prompt":"swatch", "count":2},"max_cost_usd":0.012}),
+        )
+        .await;
+    assert_eq!(status, 200, "{result}");
+    let input = node
+        .lock()
+        .op_calls
+        .iter()
+        .find(|(op, _)| op == "generate.image")
+        .unwrap()
+        .1
+        .clone();
+    assert_eq!(input["provider"], "echo-images");
+    assert_eq!(input["max_cost_usd"], 0.012);
     running.shutdown().await;
 }

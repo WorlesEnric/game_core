@@ -156,6 +156,7 @@ async fn start_inner(
             cfg.hello_cache_s,
             cfg.ops_max_cost_usd,
         )
+        .with_prices(cfg.ops_prices.clone())
         .with_op_timeout(Duration::from_secs(cfg.ops_timeout_secs)),
     );
     let voice = Arc::new(VoiceBridge::new(
