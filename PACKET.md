@@ -2,76 +2,179 @@
 
 The creator-facing editor surface of GameCore Studio (docs/studio/02-architecture.md boundary A): the Studio
 Viewport, the prompt bar, the task tray, the candidate strip and panel, the context panel, the history panel, the
-viewport move gizmo, Studio settings and the first-run guide. Every edit goes through the P1.6 `ChangeSetEngine`;
-agent work arrives through `IStudioAgentGateway` (implemented by P2.2).
+viewport move gizmo, Studio settings and the first-run guide. Every edit goes through the P1.6 `ChangeSetEngine` (and,
+for mechanisms, P2.4's `StageAdmission`). Agent work arrives through P2.2's
+`GameCore.Studio.Authoring.Agent.IAgentGateway`.
 
-Branch: `worktree-agent-a595188d74c6b5b39`. Host clone: `~/wkspace/gc-studio/p2.1`.
+Branch: `worktree-agent-a595188d74c6b5b39`, with `main` merged at `168c93f` (P1.3, P1.4, P1.5, P2.2 and P2.4 are in).
+Host clone: `~/wkspace/gc-studio/p2.1`.
 
 ## What was built
 
 | Path | Content |
 |---|---|
-| `Packages/com.gamecore.studio.core/Runtime/Authoring/Agent/` (additive) | `AgentGatewayContracts.cs`: `IStudioAgentGateway : IAgentGateway` (Status, Events, Voice, Submit, Cancel, ListRequests, FetchCandidate, FetchArtifact, RejectCandidate), `ProviderStatus`/`ProviderAvailability`/`ProviderNames`/`GatewayConnection`, `AgentRequest` (+`ToJson`), `AgentRequestMode`, `AgentRequestState` (+`AgentRequestStates.Wire/Parse/IsOpen`, P0.5 wire names), `RequestHandle`, `AgentRequestInfo`, `AgentCandidate`, `AgentAttachment`, `VoiceTranscript`, `IVoiceSession`, `AgentEvent`/`AgentEventKind`, `AgentGatewayException`. `NullStudioAgentGateway`: NotConfigured everywhere, never a candidate, transcript or artifact. |
-| `Packages/com.gamecore.studio.ui` (asmdef `GameCore.Studio.UI.Editor`, Editor-only) | `Core/` context (`StudioUiContext`, `StudioUiSession` ScriptableSingleton, `MainThreadQueue`, `StudioStyles`, `StudioAgentGateways`, menu ids); `Selection/` (`SelectionModel` with the loop-safe Unity mirror, `StudioSelection` ScriptableSingleton persistence); `Viewport/` (`StudioViewportWindow`, `ViewportRenderer`, `ViewportPicker`, `PumpMonitor`, `PlayInputRouting`, `SelectTimings`, `OverlapPopup`, `ViewportMode`); `Prompt/` (`PromptBar`, `AgentRequestBuilder`); `Tasks/` (`TaskLedger`, `TaskRow`, `StudioTaskStore`, `MemoryTaskRowStore`, `TaskTrayView`); `Candidates/` (`CandidateCoordinator`, `CandidateEntry`, `CandidateRequirements`, `CandidateCompare`, `CandidatePanelView`, `CandidateStripView`, `EditorAudioPlayer`); `Context/` (`ContextPanelView`, `ContextTools`, `ValidatorDiagnostics`); `History/HistoryPanelView`; `Gizmo/` (`ViewportMoveGizmo`, `StudioSelectMoveTool` EditorTool); `Settings/` (`StudioUiSettings`, `StudioSettingsProvider`, `IStudioSettingsSection`); `Windows/` (Context/Tasks/Candidates/History windows, `StudioMenu`, `FirstRunWizardWindow`); `Resources/GameCoreStudio/StudioStyles.uss`, `FirstRun.uxml`. |
-| `Packages/com.gamecore.studio.ui/Tests/Editor` | `UiTestBed`, `TestAgentGateway` (EditMode only; replays `Fixtures/*.json`), `ScriptedVoiceSession`; tests `SelectionAndPickingTests`, `PromptAndTaskTests`, `CandidateHistoryGizmoTests`, `ContextPanelTests`, `ViewportWindowTests`. |
-| `games/hollowmere/Assets/Hollowmere/Tests/P2_1` | `EditMode/HollowmereStudioUiTests` (real Thornwick Village: pick, request, context tools, settings); `Editor/StudioUiEvidence` (interactive evidence step machine). |
-| `games/hollowmere/Packages/manifest.json` + lock | `com.gamecore.studio.ui` added and testable. |
-| `studio/tools/evidence-p2.1.sh` | Runs the evidence entry in an interactive Editor on the host display, shrinks the PNGs, writes `artifacts/studio/evidence/P2.1/README.md`. |
+| `Packages/com.gamecore.studio.ui` (asmdef `GameCore.Studio.UI.Editor`, Editor-only) | See the folders below. |
+| `.../Editor/Agent/` | `AgentUiTypes.cs`: the tray's `AgentRequestState` (the companion's RequestView states plus the local `Refused`), `AgentRequestInfo.From(RequestView)`, `GatewayConnection` + `ProviderNames.ConnectionOf(ProviderStatus)`, `StudioGatewayException`, `GatewayErrors.ToDiagnostic` (etos codes kept). `StudioAgentGateways.cs`: `Resolve` (`AgentGatewayLookup.From(...)` or `NullAgentGateway`), `NullAgentGateway` (not_configured everywhere; never a candidate, transcript or artifact), and `GatewayExtras` (the etos gateway members beyond the interface, read by name: `Staged`, `Options.AutoImport`, `IsOwn`, `Reject`, `Client.StageAsync/GetStageAsync`). |
+| `.../Editor/Core/` | `StudioUiContext` (gateway event pump, `Submit` -> `PromptSubmission`, `HandleRequest`, `HandleCandidate`, `RecoverAsync`, `IsOwn`), `StudioUiSession` (ScriptableSingleton), `MainThreadQueue`, `StudioStyles`, menu ids. |
+| `.../Editor/Selection/` | `SelectionModel` (mirrors the Unity selection both ways without loops) and `StudioSelection` (persistence). |
+| `.../Editor/Viewport/` | `StudioViewportWindow`, `ViewportRenderer`, `ViewportPicker`, `RuntimeViewMapper`, `PumpMonitor`, `PlayInputRouting`, `SelectTimings`, `OverlapPopup`, `ViewportMode`. |
+| `.../Editor/Prompt/` | `PromptBar` and `AgentRequestBuilder` (builds P2.2's `AgentRequest` as a `PreparedRequest`). |
+| `.../Editor/Tasks/` | `TaskLedger`, `TaskRow`, `StudioTaskStore`, `MemoryTaskRowStore`, `TaskTrayView`. |
+| `.../Editor/Candidates/` | `CandidateCoordinator` (fetch or adopt, preview, skip/rebase, policy, apply, reject, plus Stage, Record verdict and Admit), `CandidateStaging` and `StageState` (journal `validation`), `CandidateRequirements`, `CandidateCompare`, `CandidatePanelView`, `CandidateStripView`, `EditorAudioPlayer`. |
+| `.../Editor/Context/` | `ContextPanelView`, `ContextTools`, `ValidatorDiagnostics`. |
+| `.../Editor/` (other folders) | `History/HistoryPanelView` (undo of an admission goes through `StageAdmission.Undo`). `Gizmo/` (`ViewportMoveGizmo`, `StudioSelectMoveTool`). `Settings/` (`StudioUiSettings`, `StudioSettingsProvider`, `IStudioSettingsSection`). `Windows/` (panel windows, `StudioMenu`, `FirstRunWizardWindow`). `Resources/GameCoreStudio/StudioStyles.uss` and `FirstRun.uxml`. |
+| `.../Tests/Editor` | `UiTestBed`; `TestAgentGateway` (P2.2's interface plus the P1.6 tool-facing one, EditMode only; replays `Fixtures/*.json`; an `AutoImport` look-alike); `ScriptedVoiceSession`. Five test classes: `SelectionAndPickingTests`, `PromptAndTaskTests`, `CandidateHistoryGizmoTests`, `ContextPanelTests`, `ViewportWindowTests`. |
+| `.../Tests/Fixtures` | `GameCore.Studio.UI.Tests.Fixtures`, a runtime test assembly holding the `EntityViewTag` stand-in. A MonoBehaviour cannot live in an Editor assembly. |
+| `games/hollowmere/Assets/Hollowmere/Tests/P2_1` | `EditMode/HollowmereStudioUiTests` runs against the real Thornwick Village: pick, request (refused not_configured by the null gateway), context tools and settings. `Editor/StudioUiEvidence` is the interactive evidence step machine. `Editor/UnityWindowCapture` composes the Studio windows' own pixels. |
+| `games/hollowmere/Packages/manifest.json` + lock | `com.gamecore.studio.ui` added, next to P2.2's `com.gamecore.studio.etos`; both are testable. |
+| `studio/tools/evidence-p2.1.sh` | Takes a host slot and starts the interactive Editor on `:1`, guarded by a log-silence watchdog with one retry. It kills only its own PID. It then shrinks the PNGs and writes `artifacts/studio/evidence/P2.1/README.md`. |
+| `artifacts/studio/evidence/P2.1/` | 14 PNGs (each ≤ 300 KB), `evidence-log.jsonl` and `README.md`. |
+| `Packages/com.gamecore.studio.core/Editor/Tools/BuiltIn/AssetTools.cs` | The one-line edit the coordinator allowed. The built-in `mechanism.propose` now declares the optional args `package` (artifact), `proposal` (artifact) and `stageInputs` (string[]), per P2.4 open item 1. |
 
-## Verification
+## Reconciliation with P2.2 (what changed)
 
-See the section "Host runs" at the end (commands, counts, durations, evidence).
+P2.1 had added its own `AgentGatewayContracts.cs` and `NullStudioAgentGateway.cs` under
+`studio.core/Runtime/Authoring/Agent/`. Both are **deleted**, and the UI consumes P2.2's `AgentContracts.cs`. The
+drift and how it was resolved:
 
-## API for P2.2 / P2.3 / P3.x
+| P2.1 had | P2.2's contract | Now |
+|---|---|---|
+| `IStudioAgentGateway : IAgentGateway` with `Events` (an `IObservable<AgentEvent>`) | `Agent.IAgentGateway` with `StatusChanged`, `RequestChanged` and `CandidateReady` events, raised on the main thread | The context subscribes to the three events. It still posts them through its `MainThreadQueue`, so tests and real use behave the same way. |
+| `Submit` returned a `RequestHandle` (refusal as a value) | `SubmitAsync` -> request id (the change-set id); a refusal is an exception | `StudioUiContext.Submit` returns a `PromptSubmission`. The exception becomes a diagnostic with its etos code kept (`GatewayErrors`). The row becomes `Refused`. |
+| `ListRequests(after)` | the `Requests` property, recovered by the gateway | `TaskLedger.Refresh(gateway, include)` |
+| `AgentRequestInfo` with cost and a waiting reason | `RequestView`, which has no cost field | Mapped by `AgentRequestInfo.From`. The tray now shows the gateway's import state and progress instead of cost. An unknown state is shown as Unresolved, never as success. |
+| `FetchCandidate` returned an envelope (catalog revision, artifacts, warnings) | `FetchCandidateAsync` returns a bare `ChangeSet` | The catalog revision comes from the task row, or from an explicit `Receive(..., toolCatalogRevision)`. The artifacts come from `ChangeSet.Artifacts`. |
+| `RejectCandidate(id, reason)` | no reject in the interface; the etos gateway has `Reject(id, reason)` | The engine discards the stage, then the gateway's `Reject` is called when it has one. |
+| `ProviderStatus(Connection, Providers, Detail, Code)` | `ProviderStatus(Image..Describe, NodeReachable, AgentReady, CompanionVersion, Problem)` | `ProviderNames.ConnectionOf` derives NotConfigured, Connecting, Disconnected, Refused, AgentStarting or Connected. |
+| `IVoiceSession` (`Start`/`Stop`, `VoiceTranscript`, `Failed`) on `gateway.Voice` | `CreateVoiceSession()` returns `IVoiceSession` (`StartAsync`/`StopAsync`, `TranscriptUpdate`, `Error`) | The prompt bar creates one session per gateway. Only final user transcripts reach the field, and nothing is sent by itself. |
+| `AgentRequest` (P2.1 shape, with `ToJson`) | `AgentRequest(intent, selection, SemanticIndex slice, catalog revision)` plus Mode, Attachments (bytes), Parent, VoiceTranscriptId and ChangeSetId | `AgentRequestBuilder.Build` returns a `PreparedRequest` that wraps P2.2's request together with the slice bytes, truncation and intent origin. Attachments are read from disk (16 MiB cap). P2.2's `scene-context.json` (`gamecore.studio.scenecontext/1`, same format) is attached for selected scene objects. |
 
-* **Gateway (P2.2).** Implement `GameCore.Studio.Authoring.Agent.IStudioAgentGateway` and register it as
-  `StudioServices.Runtime.Services.AgentGateway` (the existing `IAgentGateway` slot). The UI resolves it on every tick
-  (`StudioAgentGateways.Resolve`) and subscribes to `Events` when it changes, so registering on load is enough.
-  * `Submit(AgentRequest)` -> `RequestHandle` (state Queued with request/task ids, or `RequestHandle.Refused` with the
-    node's code; transport exceptions become Refused rows, never a fabricated success). `AgentRequest.ToJson()` is the
-    04 s2 EditRequest body (changeSetId, intent, selection snapshot, contextSlice + truncated/bytes/omittedNodes,
-    toolCatalogRevision, mode, attachments, parent, worker).
-  * `Events`: `AgentEvent.RequestUpdated(info)` (task tray; state `candidate` makes the UI call `FetchCandidate`),
-    `CandidateReady(requestId, changeSetId)`, `Voice(transcript)`, `StatusChanged(status)`. Emit from any thread; the
-    UI marshals to the main thread.
-  * `FetchCandidate(requestId)` -> `AgentCandidate(requestId, changeSet, toolCatalogRevision, artifacts, warnings,
-    taskId)`; the UI then calls `FetchArtifact(sha256)` for every artifact the store lacks and verifies it with
-    `ArtifactStore.Put` (a mismatch makes the candidate Invalid and imports nothing).
-  * `RejectCandidate(changeSetId, reason)`, `Cancel(requestId)` (return the updated info when known),
-    `ListRequests(after)` (re-fetch after a domain reload; rows are matched by changeSetId then requestId).
-  * `Voice`: an `IVoiceSession` (Start/Stop, `Transcript` revisions with `IsFinal` on the done revision, `Level`,
-    `Failed`). The prompt bar shows partial text, places only final text in the field and never submits by itself.
-  * `Status`: `ProviderStatus` drives the provider chips and the prompt bar's disabled reason (NotConfigured /
-    Disconnected "No node" / Refused with code / Connecting).
-* **UI context.** `StudioUiSession.Context` (project) or `new StudioUiContext(runtime, gatewayProvider, selection,
-  ledger, hookEditorUpdate)` (tests): `Selection`, `Tasks`, `Candidates`, `Requests`, `Submit`, `Handle(AgentEvent)`,
-  `ReceiveCandidate`, `RecoverAsync`, `RequestPrompt(text)`.
-* **Selection (P2.3 graph views, P3.x).** `SelectionModel.Set(refs, SelectionOp, regionRect?, parts?)`, `Clear`,
-  `SetLocation`, `Capture(mode, frame?, worldSession?)` -> `SelectionSnapshot`, `Changed`, `Describe()` badges
-  (residency, stale). Mirrors `UnityEditor.Selection` both ways without loops.
-* **Settings sections.** Implement `GameCore.Studio.UI.IStudioSettingsSection` (Id, Title, Order, Build) in any Editor
-  assembly; the settings page discovers it through TypeCache (P2.2 adds pairing/keys status there).
+One more behaviour changed. **The etos gateway imports and stages its own candidates** (`AutoImport`), so the panel
+**adopts** that staged change set when the request reports `LocalState` `staged`/`stage_refused`; it does not stage a
+second time. `import_failed` becomes an Invalid entry. For a gateway that does not import candidates itself, the panel
+fetches the candidate and stages it on Preview, as before. The companion ledger is shared by every client of the app, so
+the tray and the panel only list and review **this project's** requests: those with a local row, or those the gateway
+reports as `IsOwn`.
+
+## Verification (host myubuntu, Unity 6000.0.75f1; nothing compiled or tested on the Mac)
+
+| Command | Result |
+|---|---|
+| `studio/tools/unity-compile.sh p2.1 games/hollowmere --tests EditMode --filter 'GameCore\.Studio\.UI\..*\|Hollowmere\.P2_1\..*'` at `585cd77` | compile clean; **34/34 passed**, 0 failed, 0 skipped; 50 s |
+| same project, filter `(Hollowmere\.P2_4\|Hollowmere\.P2_1\|GameCore\.Studio\|GameCore\.Studio\.Hollowmere\.P2_2\.Tests\.EtosGatewayTests)\..*` at `5a2688b` | **94 passed, 0 failed, 4 skipped**; 80 s. The 4 skipped tests are P2.2's live tests (`EtosLiveTests`, env-gated by `GAMECORE_ETOS_LIVE=1`). The script prints FAIL only because the overall result is `Skipped:Ignored`. |
+| `studio/tools/evidence-p2.1.sh p2.1 games/hollowmere` at `585cd77` (run `P2.1-20261005T042735Z`) | editor exit 0; 14 PNGs; README with no problems |
+| `tools/check_game_core_csharp.py`, `tools/check_package_metadata.py` (Mac, static) | ok |
+
+The 34 P2.1 tests cover the following areas:
+
+- **Selection:** the Unity mirror is loop-safe, and the selection persists.
+- **Picking:** click, Shift, Ctrl and empty clicks; the overlap list; marquee with partial and full containment; point-at; runtime NPC views map to their authored objects.
+- **Selection badges:** residency and stale.
+- **Request contents:** a request carries the selection snapshot, a depth-2 slice under 64 KiB, the catalog revision, worker mode, attachment bytes and `scene-context.json`. Truncation is reported.
+- **Prompt bar:** disabled reasons follow `ProviderStatus` (not configured, connecting, no node, refused with a code, agent starting). A refusal keeps its code (`stale_context`), and the null gateway never fakes an answer.
+- **Voice:** voice partials stay out of the field, the final transcript lands in it, and voice errors are shown.
+- **Tray:** the tray follows RequestViews (running with progress, needs_clarification with the question, failed with `task_failed`, unknown shown as unresolved). Cancel works. An answer is sent with the parent id. Another client's request is neither listed nor reviewed.
+- **Recovery:** the tray survives a simulated domain reload, and the candidate is recovered.
+- **Gateway-imported candidates:** a candidate the gateway imported is adopted, not staged twice. Reject discards the stage, then tells the gateway.
+- **Candidate review:** Preview, Compare and Apply drive the journal; history undo and redo work; Reject; an artifact is retained and an unused one is reported; tampered bytes make the candidate invalid; a stale catalog is reported as StaleContext; a move previews as a ghost.
+- **Mechanism candidates:** the panel shows the journal verdict (not staged, then pending with the slot, then fail). Apply refuses, and Admit stays disabled without a pass.
+- **Admission undo:** undo of an admission goes through `StageAdmission.Undo`, using a fake compiler and catalog so no recompile runs inside a test.
+- **History and gizmo:** the history filter works, and W-EDIT-05 holds (a gizmo drag journals the same entry as a typed move).
+- **Context, viewport and Hollowmere:** the context panel, the viewport window keys, and the Hollowmere tests (village pick, request, tools, settings).
+
+Measured timings (Stopwatch, inside the tests):
+
+- B-SELECT on Thornwick Village: hover n=20, p95 0.31 ms; click 0.86 ms; marquee 0.97 ms.
+- Candidate apply: 7.3 ms.
+- Request slice on the village: 19.8 KB.
+
+In the interactive evidence run on the loaded host, the cumulative click report reached p95 43.8 ms, from two Play-mode
+clicks that include physics raycasts. No full p95/p99 benchmark was run, per the standing instruction.
+
+## Evidence (`artifacts/studio/evidence/P2.1/README.md`)
+
+The run is interactive, on display `:1`. Each PNG is composed from the Studio windows' own pixels
+(`UnityWindowCapture`, which uses GUIView grabs). The desktop is never captured, so nothing else on the host display
+can appear. The first attempt used ffmpeg x11grab; those images showed the host's desktop overview and were deleted
+without being committed.
+
+The 14 screenshots:
+
+1. First-run guide.
+2. Studio layout.
+3. Select click on the Village Well, chosen from the overlap list.
+4. Inspect hover card.
+5. Marquee.
+6. Point-at.
+7. A canned candidate (a move of the well) previewed with its ghost.
+8. That candidate applied.
+9. Undone from History.
+10. The prompt bar with live provider chips (Connected, `EtosAgentGateway`).
+11. The live request.
+12. Play mode on the player camera. W was routed through the Input System to `PlayerInputAdapter`, and the player moved 0.25 m. Earlier runs before the P1.5 merge moved it 2.5–6.2 m.
+13. Maren and the Village Well selected in Play.
+14. Pause.
+
+The live request (screenshot 11):
+
+- The prompt was "Move this well one metre to the east", with the well selected, sent through P2.2's real gateway.
+- Within 47 s, gc-designer returned a `move` candidate.
+- The etos gateway staged it, and the panel adopted it (Previewing).
+- The run then rejected it (journal Rejected), so the scene is unchanged.
+
+An earlier run without `scene-context.json` got `needs_clarification` instead: the worker asked for the well's world
+position. The evidence step answers such a question from the tray, which is why the builder now attaches the scene
+context. No key appears anywhere: the key file is read by P2.2, the ETOS settings page is never opened, and a scan of
+the evidence for `etk_` finds nothing.
+
+## API for P2.3 / P3.x
+
+* **UI context.** `StudioUiSession.Context` for the project, or `new StudioUiContext(runtime, gatewayProvider,
+  selection, ledger, hookEditorUpdate)`. Members: `Selection`, `Tasks`, `Candidates`, `Requests`,
+  `Submit(PreparedRequest)`, `HandleRequest(RequestView)`, `HandleCandidate(CandidateNotice)`,
+  `ReceiveCandidate(requestId, changeSetId, revision?)`, `RecoverAsync`, `IsOwn`, `RequestPrompt(text)`,
+  `CandidateArrived`, `StatusChanged`.
+* **Selection** (P2.3 graph views). `SelectionModel.Set(refs, SelectionOp, regionRect?, parts?)`, `Clear`,
+  `SetLocation`, `Capture(mode, frame?, worldSession?)` -> `SelectionSnapshot`, `Changed`, and `Describe()` badges.
+* **Candidates.** `CandidateCoordinator` methods: `Receive`, `Add`, `Adopt`, `AddInvalid`, `Preview`, `ShowAfter`,
+  `Skip`, `Rebase`, `SetPolicy`, `Apply`, `Reject`. The staging lane adds `StageStateOf`, `CanRequestStage`,
+  `RequestStage`, `RecordVerdictFile` and `Admit(entry, captureAndStop)`.
+* **Settings sections.** Implement `GameCore.Studio.UI.IStudioSettingsSection` in any Editor assembly. The settings
+  page discovers it through TypeCache.
 * **Panels as elements.** `CandidatePanelView`, `CandidateStripView`, `TaskTrayView`, `HistoryPanelView`,
-  `ContextPanelView`, `PromptBar` are `VisualElement`s over a `StudioUiContext` and can be hosted elsewhere.
+  `ContextPanelView` and `PromptBar` are `VisualElement`s over a `StudioUiContext`.
 
 ## Decisions
 
-* The gateway interface is `IStudioAgentGateway : IAgentGateway` (P1.6 already owns the name `IAgentGateway`), so one
-  registration slot serves both the engine's `asset.generate`/`mechanism.propose` calls and the UI.
-* `FetchCandidate` returns an envelope (`AgentCandidate`) rather than a bare `ChangeSet`: the candidate needs the tool
-  catalog revision it was planned against (StaleContext check) and its artifact list.
-* `Refused` is the only state the UI creates locally (a submission the gateway did not accept); every other state comes
-  from the companion's wire names.
-* Open Studio tiles floating windows over the main window (Unity has no public split-dock API); windows the user
-  already docked keep their place.
-* Play-mode input routing switches the Input System's editor play-mode behaviour to "all device input goes to the
-  game" while the viewport is focused in Play mode and restores it afterwards; there is no second input path.
-* Step = Resume, then Pause after exactly one more sanctioned pump (the root has no step API).
-* No static mutable state: caches are instance members; persistent UI state is in ScriptableSingletons
-  (`StudioUiSession`, `StudioSelection`, `StudioTaskStore` in Library/GameCoreStudio, `StudioUiSettings` in
-  ProjectSettings) and the first-run flag in EditorPrefs.
+* **The etos extras are read by name** (`GatewayExtras`), so `com.gamecore.studio.ui` does not depend on
+  `com.gamecore.studio.etos`. P2.2 says P2.1 reaches the gateway "without referencing this package". Without the etos
+  package, the UI works through the interface alone.
+* **The staging lane in the panel.** Stage calls `POST /v1/stage {changeSetId, packageRef}` through the etos gateway's
+  client, polls the job (with a 420 s budget against the 360 s B-STAGE) and records the verdict with
+  `StageAdmission.RecordVerdict`. A failed job marks `stage.verdict` fail with its reason. Record verdict… takes an
+  operator's `--verdict-out` file. Admit calls `StageAdmission.Admit(candidate, null, captureAndStop)` only on a
+  passing verdict. Apply refuses mechanism candidates.
+* **Undo routing.** The history panel routes undo of a `mechanism.admit` entry to `StageAdmission.Undo`. The result
+  is exposed as `LastAdmission`: Pending while the recompile runs, then Undone or UndoFailed.
+* **Only own requests.** The tray and the panel list and review only this project's requests (see the
+  reconciliation section). P2.2 made the same decision for staging.
+* **Windows are tiled, not docked.** Open Studio tiles floating windows, because Unity has no public split-dock API.
+  `OpenStudio(area, reposition)` re-tiles.
+* **Play input routing.** While the viewport is focused in Play mode, the editor's play-mode input behaviour is set
+  to "all device input goes to the game" and the background behaviour to IgnoreFocus. Both are restored afterwards.
+  This feeds P1.3's `PlayerInputAdapter` through the Input System; there is no second input path.
+* **Cameras.** The game camera is `Camera.main`, which is the camera the `ThirdPersonCamera` drives.
+* **Runtime NPC picks.** A Play-mode pick on a runtime NPC view maps to its authored object through `EntityViewTag`.
+* **No static mutable state.** The UI uses ScriptableSingletons, EditorPrefs (the first-run flag) and instance caches.
+  `NullAgentGateway.Instance` is immutable, and its events are no-ops.
 
 ## Left open
 
-* Microphone capture, the etos HTTP/WS client and artifact import are P2.2; graph views and tables are P2.3; the staging
-  lane shows only the RequiresStageVerdict badge (P2.4).
+* **Live staging not exercised.** The Stage and Admit path is tested with recorded journal states and fake admission
+  seams. No live `POST /v1/stage` was run from the panel: B-STAGE is about 5 minutes on the host, and P2.4's W-MECH-01
+  already covers the lane end to end.
+* **Small Play-mode movement.** The player moved only 0.25 m in the final evidence run, against 2.5–6.2 m before the
+  P1.5 merge. Input still reaches `PlayerInputAdapter` (routing active, the player moved). The drop probably comes from
+  P1.5's boot (UI/narrative state at start). It was not investigated, because it is gameplay, outside P2.1.
+* **Viewport size in evidence.** The viewport window in the evidence run is about 480×212 pt. The host's window
+  manager kept the tiled size small, even with a 1600×900 tiling area.
