@@ -1,6 +1,5 @@
 // GameCore.Studio.UI - the viewport's move gizmo (SR-1.6, W-EDIT-05). In Select mode with one selected scene object, three
-// axis handles are drawn over the viewport image at the object's projected position; dragging a handle moves the object
-// live along that world axis through P1.6's GizmoMoveController (no Undo, no journal while dragging) and mouse-up
+// axis handles project the preview transform; dragging never changes the real target. Mouse-up
 // applies exactly one `move` change set (identical to typing the final position). Escape cancels the drag.
 #nullable enable
 using System;
@@ -16,8 +15,8 @@ namespace GameCore.Studio.UI
         public const float HandleLength = 70f;
         public const float HandleHitWidth = 8f;
 
-        private static readonly Vector3[] Axes = { Vector3.right, Vector3.up, Vector3.forward };
-        private static readonly Color[] AxisColors = { new Color(0.95f, 0.3f, 0.3f), new Color(0.4f, 0.9f, 0.35f), new Color(0.3f, 0.55f, 1f) };
+        private readonly Vector3[] Axes = { Vector3.right, Vector3.up, Vector3.forward };
+        private readonly Color[] AxisColors = { new Color(0.95f, 0.3f, 0.3f), new Color(0.4f, 0.9f, 0.35f), new Color(0.3f, 0.55f, 1f) };
 
         private readonly Func<StudioRuntime> _runtime;
         private GizmoMoveController? _controller;
@@ -52,6 +51,8 @@ namespace GameCore.Studio.UI
 
         public GameObject? Target => _target;
 
+        public Vector3 PreviewPosition => _controller?.PreviewTransform != null ? _controller.PreviewTransform.position : (_target != null ? _target.transform.position : Vector3.zero);
+
         /// <summary>
         /// Updates the target and its projection (call every frame). <paramref name="project"/> maps a world point to the
         /// viewport's pixel space (null behind the camera).
@@ -68,7 +69,7 @@ namespace GameCore.Studio.UI
             _visible = false;
             if (_target != null)
             {
-                Vector2? origin = project(_target.transform.position);
+                Vector2? origin = project(PreviewPosition);
                 if (origin.HasValue)
                 {
                     _origin = origin.Value;
@@ -167,7 +168,7 @@ namespace GameCore.Studio.UI
 
         public int PointerId => _pointerId;
 
-        private Vector2 ScreenAxis(int axis) => _target == null ? Vector2.zero : ScreenAxisAt(_target.transform.position, axis);
+        private Vector2 ScreenAxis(int axis) => _target == null ? Vector2.zero : ScreenAxisAt(PreviewPosition, axis);
 
         /// <summary>Pixels per world unit along an axis at a world position (projected).</summary>
         private Vector2 ScreenAxisAt(Vector3 position, int axis)

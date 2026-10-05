@@ -28,6 +28,8 @@ namespace GameCore.Studio.Etos
         /// <summary>The key file path; empty means "GAMECORE_ETOS_KEY_FILE, else the pairing default".</summary>
         public string KeyFile { get; set; } = string.Empty;
 
+        public string ProjectId { get; set; } = string.Empty;
+
         public string AppName { get; set; } = "gamecore-unity";
 
         public string AgentName { get; set; } = "gamecore-studio";
@@ -49,7 +51,7 @@ namespace GameCore.Studio.Etos
 
         public static EtosSettings Load(string projectRoot)
         {
-            EtosSettings settings = new EtosSettings();
+            EtosSettings settings = new EtosSettings { ProjectId = EtosProjectContext.LoadProjectId(projectRoot) };
             string path = PathFor(projectRoot);
             if (!File.Exists(path))
             {
@@ -178,9 +180,10 @@ namespace GameCore.Studio.Etos
             return new EtosClientOptions
             {
                 NodeUrl = node,
+                ProjectId = ProjectId,
                 AgentName = string.IsNullOrWhiteSpace(AgentName) ? "gamecore-studio" : AgentName,
                 AppName = string.IsNullOrWhiteSpace(AppName) ? "gamecore-unity" : AppName,
-                DefaultMaxCostUsd = MaxCostUsd > 0 ? MaxCostUsd : DefaultMaxCostUsd,
+                DefaultMaxCostUsd = MaxCostUsd >= 0 ? MaxCostUsd : DefaultMaxCostUsd,
                 Log = log,
             };
         }

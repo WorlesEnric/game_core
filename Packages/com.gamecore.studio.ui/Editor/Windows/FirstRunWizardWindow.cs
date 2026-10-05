@@ -89,7 +89,7 @@ namespace GameCore.Studio.UI
             Label? counter = rootVisualElement.Q<Label>("first-run-counter");
             if (counter != null)
             {
-                counter.text = (_page + 1) + " / " + count;
+                counter.text = StudioStyles.Safe((_page + 1) + " / " + count);
             }
         }
     }

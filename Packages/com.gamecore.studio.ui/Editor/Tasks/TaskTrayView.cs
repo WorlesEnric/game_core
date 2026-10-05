@@ -76,7 +76,7 @@ namespace GameCore.Studio.UI
             }
             catch (Exception error) when (!(error is OutOfMemoryException))
             {
-                Debug.LogWarning("GameCore Studio: task refresh failed: " + error.Message);
+                Debug.LogWarning(StudioStyles.Safe("GameCore Studio: task refresh failed: " + error.Message));
                 reported = -1;
             }
 
@@ -148,7 +148,7 @@ namespace GameCore.Studio.UI
             }
 
             RenderedRows = _context.Tasks.Rows.Count;
-            _header.text = "Tasks (" + open.ToString(CultureInfo.InvariantCulture) + " open)";
+            _header.text = StudioStyles.Safe("Tasks (" + open.ToString(CultureInfo.InvariantCulture) + " open)");
             if (_context.Tasks.Rows.Count == 0)
             {
                 _list.Add(StudioStyles.Text("No requests yet. Type an intent in the viewport's prompt bar and press Ctrl+Enter.", "gcs-muted"));
@@ -163,18 +163,18 @@ namespace GameCore.Studio.UI
             element.AddToClassList("gcs-tray__row");
             element.EnableInClassList("gcs-tray__row--selected", row.changeSetId == _selected);
             element.Add(StudioStyles.StateChip(row.StateLabel, row.State));
-            Label intent = new Label(row.intent) { tooltip = row.intent };
+            Label intent = new Label(StudioStyles.Safe(row.intent)) { tooltip = StudioStyles.Safe(row.intent) };
             intent.AddToClassList("gcs-tray__intent");
             element.Add(intent);
-            element.Add(new Label(row.ElapsedText(now)) { name = "elapsed", tooltip = "elapsed" });
+            element.Add(new Label(StudioStyles.Safe(row.ElapsedText(now))) { name = "elapsed", tooltip = "elapsed" });
             if (row.worker.Length > 0)
             {
-                element.Add(new Label(row.worker) { tooltip = "worker" });
+                element.Add(new Label(StudioStyles.Safe(row.worker)) { tooltip = "worker" });
             }
 
             if (row.localState.Length > 0)
             {
-                element.Add(new Label(row.localState) { name = "local-state", tooltip = "Studio-side import state reported by the gateway" });
+                element.Add(new Label(StudioStyles.Safe(row.localState)) { name = "local-state", tooltip = "Studio-side import state reported by the gateway" });
             }
 
             Button cancel = new Button(() => _ = Cancel(row)) { name = "cancel", text = "Cancel", tooltip = "Cancel through etos (a no-op once the task ended)" };
@@ -312,7 +312,7 @@ namespace GameCore.Studio.UI
                 Label? elapsed = child.Q<Label>("elapsed");
                 if (elapsed != null)
                 {
-                    elapsed.text = _context.Tasks.Rows[index].ElapsedText(utc);
+                    elapsed.text = StudioStyles.Safe(_context.Tasks.Rows[index].ElapsedText(utc));
                 }
 
                 index++;

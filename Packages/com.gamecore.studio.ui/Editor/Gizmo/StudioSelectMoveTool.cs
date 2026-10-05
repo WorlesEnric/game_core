@@ -1,5 +1,5 @@
 // GameCore.Studio.UI - the Scene view half of the Studio move gizmo (SR-1.6, W-EDIT-05): an EditorTool the viewport
-// activates while it is in Select mode. A position-handle drag moves the selection live through P1.6's
+// activates while it is in Select mode. A position-handle drag moves the preview through P1.6's
 // GizmoMoveController and mouse-up applies one `move` change set (never Undo.RecordObject directly). Escape cancels.
 #nullable enable
 using GameCore.Studio.Edit;
@@ -48,7 +48,7 @@ namespace GameCore.Studio.UI
                 return;
             }
 
-            Transform transform = selected.transform;
+            Transform transform = _controller.PreviewTransform ?? selected.transform;
             EditorGUI.BeginChangeCheck();
             Vector3 position = Handles.PositionHandle(transform.position, Tools.pivotRotation == PivotRotation.Local ? transform.rotation : Quaternion.identity);
             if (EditorGUI.EndChangeCheck())
@@ -66,7 +66,7 @@ namespace GameCore.Studio.UI
                 LastReport = _controller.End();
                 if (LastReport != null && !LastReport.Ok && LastReport.Diagnostics.Count > 0)
                 {
-                    Debug.LogWarning("GameCore Studio move refused: " + LastReport.Diagnostics[0]);
+                    Debug.LogWarning(StudioStyles.Safe("GameCore Studio move refused: " + LastReport.Diagnostics[0]));
                 }
             }
         }

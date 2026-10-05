@@ -79,7 +79,7 @@ namespace GameCore.Studio.Etos.Testing
     /// <summary>One HTTP call the fake received (for assertions; Authorization is recorded as present/absent only).</summary>
     public sealed class FakeCall
     {
-        public FakeCall(string method, string path, string query, bool authorized, string? app, string body)
+        public FakeCall(string method, string path, string query, bool authorized, string? app, string body, string? projectId = null)
         {
             Method = method;
             Path = path;
@@ -87,6 +87,7 @@ namespace GameCore.Studio.Etos.Testing
             Authorized = authorized;
             App = app;
             Body = body;
+            ProjectId = projectId;
         }
 
         public string Method { get; }
@@ -100,6 +101,8 @@ namespace GameCore.Studio.Etos.Testing
         public string? App { get; }
 
         public string Body { get; }
+
+        public string? ProjectId { get; }
     }
 
     /// <summary>The fake node + companion.</summary>
@@ -127,6 +130,14 @@ namespace GameCore.Studio.Etos.Testing
         private long _cursor;
         private int _taskCounter;
         private int _ticketCounter;
+
+        public bool StallWebSocketUpgrade { get; set; }
+        private int _pendingUpgrades;
+        private int _openedEventConnections;
+        public int OpenedEventConnections => Volatile.Read(ref _openedEventConnections);
+        public int PendingUpgrades => Volatile.Read(ref _pendingUpgrades);
+        public JObject? SignedStageVerdict { get; set; }
+        public bool VerifyStageVerdict { get; set; } = true;
 
         public FakeCompanion()
         {
@@ -301,7 +312,7 @@ namespace GameCore.Studio.Etos.Testing
             bool authorized = request.Header("authorization") == "Bearer " + AppKey;
             lock (_gate)
             {
-                _calls.Add(new FakeCall(request.Method, request.Path, string.Join("&", request.Query.Where(q => q.Key != "etos_ticket").Select(q => q.Key + "=" + q.Value)), authorized, request.Header("x-etos-app"), request.BodyText));
+                _calls.Add(new FakeCall(request.Method, request.Path, string.Join("&", request.Query.Where(q => q.Key != "etos_ticket").Select(q => q.Key + "=" + q.Value)), authorized, request.Header("x-etos-app"), request.BodyText, request.Header("x-gamecore-project")));
             }
 
             Tuple<int, JObject>? failure = TakeFailure(request.Path);
@@ -497,11 +508,24 @@ namespace GameCore.Studio.Etos.Testing
             if (route == "/v1/stage" && method == "POST")
             {
                 JObject body = JObject.Parse(request.BodyText);
+                if (body["packageRef"] != null || body["sourceProject"] != null
+                    || (string?)body["projectId"] != request.Header("x-gamecore-project")
+                    || body.Properties().Any(p => !new[] { "changeSetId", "projectId", "sourceRevision", "catalogRevision", "action" }.Contains(p.Name)))
+                {
+                    await Refuse(connection, 400, "bad_request", "stage_context_invalid").ConfigureAwait(false);
+                    return;
+                }
+                if ((string?)body["action"] == "discard")
+                {
+                    await connection.RespondJsonAsync(200, "{\"discarded\":true}").ConfigureAwait(false);
+                    return;
+                }
                 JObject job = new JObject
                 {
                     ["jobId"] = "sj_" + Interlocked.Increment(ref _taskCounter).ToString(CultureInfo.InvariantCulture),
                     ["changeSetId"] = body["changeSetId"],
-                    ["packageRef"] = body["packageRef"],
+                    ["projectId"] = body["projectId"],
+                    ["app"] = request.Header("x-etos-app"),
                     ["state"] = "queued",
                     ["createdAt"] = Now(),
                     ["updatedAt"] = Now(),
@@ -515,22 +539,33 @@ namespace GameCore.Studio.Etos.Testing
                 return;
             }
 
-            if (route.StartsWith("/v1/stage/", StringComparison.Ordinal) && method == "GET")
+            if (route.StartsWith("/v1/stage/", StringComparison.Ordinal))
             {
-                string id = route.Substring("/v1/stage/".Length);
+                string[] parts = route.Substring("/v1/stage/".Length).Split('/');
+                string id = parts[0];
                 JObject? job;
-                lock (_gate)
+                lock (_gate) job = _stageJobs.TryGetValue(id, out JObject? j) ? j : null;
+                if (job == null || (string?)job["projectId"] != request.Header("x-gamecore-project") || (string?)job["app"] != request.Header("x-etos-app"))
                 {
-                    job = _stageJobs.TryGetValue(id, out JObject? j) ? j : null;
-                }
-
-                if (job == null)
-                {
-                    await Refuse(connection, 404, "not_found", "no stage job " + id).ConfigureAwait(false);
+                    await Refuse(connection, 404, "not_found", "no stage job").ConfigureAwait(false);
                     return;
                 }
+                if (parts.Length == 2 && parts[1] == "verdict" && method == "GET")
+                {
+                    if (SignedStageVerdict == null) await Refuse(connection, 409, "stage_failed", "no issued verdict").ConfigureAwait(false);
+                    else await connection.RespondJsonAsync(200, SignedStageVerdict.ToString(Formatting.None)).ConfigureAwait(false);
+                }
+                else if (parts.Length == 2 && parts[1] == "verify" && method == "POST")
+                    await connection.RespondJsonAsync(200, new JObject { ["verified"] = VerifyStageVerdict && JToken.DeepEquals(JObject.Parse(request.BodyText), SignedStageVerdict) }.ToString()).ConfigureAwait(false);
+                else await connection.RespondJsonAsync(200, job.ToString(Formatting.None)).ConfigureAwait(false);
+                return;
+            }
 
-                await connection.RespondJsonAsync(200, job.ToString(Formatting.None)).ConfigureAwait(false);
+            if (request.WantsWebSocket && StallWebSocketUpgrade)
+            {
+                Interlocked.Increment(ref _pendingUpgrades);
+                try { await connection.WaitForDisconnectAsync().ConfigureAwait(false); }
+                finally { Interlocked.Decrement(ref _pendingUpgrades); }
                 return;
             }
 
@@ -855,6 +890,7 @@ namespace GameCore.Studio.Etos.Testing
             lock (_gate)
             {
                 _eventSockets.Add(socket);
+                Interlocked.Increment(ref _openedEventConnections);
             }
 
             Task<string?> receive = socket.ReceiveTextAsync();

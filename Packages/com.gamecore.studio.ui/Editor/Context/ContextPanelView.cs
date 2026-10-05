@@ -325,7 +325,7 @@ namespace GameCore.Studio.UI
                 : SelectionModel.DescribeRef(runtime, target);
 
             // ------------------------------------------------------------- header
-            Label title = new Label(badge.Label) { name = "context-title" };
+            Label title = new Label(StudioStyles.Safe(badge.Label)) { name = "context-title" };
             title.AddToClassList("gcs-title");
             _scroll.Add(title);
             _scroll.Add(StudioStyles.Text("type " + badge.TypeId + " · kind " + target.Kind + (target.Scope.HasValue ? " · scope " + target.Scope : string.Empty)));
@@ -381,6 +381,8 @@ namespace GameCore.Studio.UI
                 if (inspector != null)
                 {
                     inspector.SetEnabled(badge.Resident);
+                    StudioStyles.SanitizeInspector(inspector);
+                    inspector.RegisterCallback<ChangeEvent<string>>(_ => StudioStyles.SanitizeInspector(inspector));
                     _scroll.Add(inspector);
                 }
                 else
@@ -399,7 +401,7 @@ namespace GameCore.Studio.UI
                 if (tier != tool.Entry.Tier || group == null)
                 {
                     tier = tool.Entry.Tier;
-                    _scroll.Add(new Label(tier.ToString()) { name = "tier-" + tier });
+                    _scroll.Add(new Label(StudioStyles.Safe(tier.ToString())) { name = "tier-" + tier });
                     group = new VisualElement();
                     group.AddToClassList("gcs-wrap-row");
                     _scroll.Add(group);
@@ -481,14 +483,14 @@ namespace GameCore.Studio.UI
                         ServiceResult result = source.Explain(target, null);
                         LastOutput = result.Output?.ToString(Formatting.Indented) ?? (result.Diagnostic != null ? result.Diagnostic.Code + ": " + result.Diagnostic.Message : result.Status.ToString());
                         Rebuild();
-                    }) { name = "explain", text = "Explain (" + source.Id + ")" });
+                    }) { name = "explain", text = StudioStyles.Safe("Explain (" + source.Id + ")") });
                 }
             }
 
             if (LastOutput.Length > 0)
             {
                 _scroll.Add(StudioStyles.Header("Output"));
-                TextField output = new TextField { name = "context-output", multiline = true, isReadOnly = true, value = LastOutput };
+                TextField output = new TextField { name = "context-output", multiline = true, isReadOnly = true, value = StudioStyles.Safe(LastOutput) };
                 _scroll.Add(output);
             }
         }
@@ -506,7 +508,7 @@ namespace GameCore.Studio.UI
         private VisualElement BuildToolButton(IStudioTool tool, AuthoringRef target, string targetName, bool resident)
         {
             ToolButtonKind kind = ContextTools.KindOf(tool);
-            Button button = new Button { name = "tool-" + tool.Entry.Id, text = tool.Entry.Id, tooltip = (tool.Entry.Doc ?? tool.Entry.Id) + " [" + kind + ", " + tool.Entry.RuntimeApply + "]" };
+            Button button = new Button { name = "tool-" + tool.Entry.Id, text = StudioStyles.Safe(tool.Entry.Id), tooltip = StudioStyles.Safe((tool.Entry.Doc ?? tool.Entry.Id) + " [" + kind + ", " + tool.Entry.RuntimeApply + "]") };
             button.AddToClassList("gcs-tool");
             button.AddToClassList("gcs-tool--" + kind.ToString().ToLowerInvariant());
             button.SetEnabled(resident || kind == ToolButtonKind.Query);
@@ -567,7 +569,7 @@ namespace GameCore.Studio.UI
             foreach (ArgSpec arg in tool.Entry.Args)
             {
                 TextField field = new TextField(arg.Name + (arg.Required ? " *" : string.Empty) + " (" + arg.Type + (arg.Unit != null ? ", " + arg.Unit : string.Empty) + ")") { name = "arg-" + arg.Name };
-                field.tooltip = arg.Doc ?? string.Empty;
+                field.tooltip = StudioStyles.Safe(arg.Doc ?? string.Empty);
                 if (arg.EnumValues != null && arg.EnumValues.Count > 0)
                 {
                     field.tooltip += " Values: " + string.Join(", ", arg.EnumValues);
@@ -594,12 +596,12 @@ namespace GameCore.Studio.UI
                 }
 
                 ApplyReport report = RunDirect(tool, target, args, targetName);
-                result.text = LastOutput;
+                result.text = StudioStyles.Safe(LastOutput);
                 if (report.Ok)
                 {
                     Rebuild();
                 }
-            }) { name = "tool-run", text = "Run " + tool.Entry.Id });
+            }) { name = "tool-run", text = StudioStyles.Safe("Run " + tool.Entry.Id) });
             form.Add(result);
         }
 

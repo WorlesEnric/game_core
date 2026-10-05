@@ -104,14 +104,17 @@ namespace GameCore.Studio.Etos
                 RedactingStudioLog log = new RedactingStudioLog(runtime.Log);
                 CompanionClient client = new CompanionClient(settings.ToClientOptions(credentials, line => log.Write(StudioLogLevel.Debug, "etos", line)), credentials);
                 MainThreadQueue queue = new MainThreadQueue(log);
-                FileCursorStore cursors = new FileCursorStore(Path.Combine(runtime.Paths.LibraryRoot, CursorFileName));
+                string cursorScope = Json.Sha256Hex(System.Text.Encoding.UTF8.GetBytes(client.Options.AppName + "\n" + client.Options.ProjectId));
+                FileCursorStore cursors = new FileCursorStore(Path.Combine(runtime.Paths.LibraryRoot, cursorScope + "-" + CursorFileName));
                 HashSet<string> own = new HashSet<string>(ownRequests, StringComparer.Ordinal);
                 EtosGatewayOptions options = new EtosGatewayOptions { MaxCostUsd = settings.MaxCostUsd, AutoImport = settings.AutoImport, GeneratedFolder = settings.GeneratedFolder, OwnRequests = own };
                 _gateway = new EtosAgentGateway(client, runtime, queue, cursors, options, log);
                 _gateway.RequestChanged += view => RememberOwn(view.RequestId);
                 runtime.Services.AgentGateway = _gateway;
-                _gateway.Start();
+                EtosProjectContext.Bind(runtime, client);
                 _problem = null;
+                _ = RefreshVerdicts(runtime);
+                _gateway.Start();
                 starts++;
                 Save(true);
                 log.Write(StudioLogLevel.Info, "etos", "etos session started: " + settings);
@@ -124,6 +127,13 @@ namespace GameCore.Studio.Etos
 
             Hook();
             return _gateway != null;
+        }
+
+        private async Task RefreshVerdicts(StudioRuntime runtime)
+        {
+            try { await StageAdmission.Of(runtime).RefreshPendingVerdicts(); }
+            catch (Exception error) { _problem = new Diagnostic(EtosCodes.StageFailed, EtosRedaction.Redact(error.Message)); }
+            return;
         }
 
         private void RememberOwn(string requestId)
@@ -152,6 +162,7 @@ namespace GameCore.Studio.Etos
                     _runtime.Services.AgentGateway = null;
                 }
 
+                if (_runtime != null) StageAdmission.Of(_runtime).Options.StageService = null;
                 _gateway.Dispose();
                 _gateway.Client.Dispose();
                 _gateway = null;

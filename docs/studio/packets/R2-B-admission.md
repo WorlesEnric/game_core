@@ -112,3 +112,150 @@ R2-D still owns the concrete authenticated transport binding.
 
 History integration and shared redaction are now present. The R2_15 regression calls the real
 HistoryService, checks its default redo selection, and retains exact package preimages.
+
+## R2-B2 — asynchronous admission smoke (PACKET.md)
+
+Branch `codex/r2-b2`, Linux build host `myubuntu`. This appendix is the packet report;
+no root PACKET.md is created because the exclusive documentation path is this file.
+Only `Editor/Stage/**`, Hollowmere `Tests/R2_B/**`, and this appendix are edited.
+
+### R2 fixes
+
+- R2-14 / R2-G request #5: `AdmissionOptions.PollSmokeTest` has type
+  `Func<StageVerdict, AdmissionSmokeStatus>?`, with `Pending`, `Passed`, `Failed`.
+  The existing `SmokeTest` bool callback remains an immediate assertion. When both
+  are bound, that assertion must pass before asynchronous polling begins; poll-only
+  adapters are supported. Trusted game bootstrap must rebind after domain reload.
+- Smoke polling uses idle `EditorApplication.update` frames. The durable
+  `Studio/Admission/pending-cs_*.json` record keeps phase `smoke-pending`, status,
+  start time, consumed frames and the selected limits. Limits default to
+  `SmokeTestFrameBudget = 120` and `SmokeTestTimeoutSeconds = 60`; whichever is
+  exhausted first fails with `smoke_budget_exhausted` and starts verified rollback.
+  Limits cannot be reset by changing options or recreating the admission service.
+- R2-15: Undo during a pending lifecycle refuses with `admission_pending`, including
+  forced Undo through AdmissionHistoryHandler. History diagnostics use registered
+  `Refused` with structured `data.reason = "admission_pending"`; direct admission
+  results use `Reason = "admission_pending"`. Core HistoryService currently
+  refuses Interrupted entries earlier with its existing `Refused` code (request
+  below). The journal stays Interrupted with the
+  admission scenario Pending; refusal does not advance the poll or emit Finished.
+
+Regression fixture: `Hollowmere.R2_B.Tests.AdmissionSmokeTests`.
+
+| Finding | Regression |
+|---|---|
+| R2-14 | `R2_14_PendingSmokePassesAcrossEditorFrames` |
+| R2-14 | `R2_14_PendingSmokeFailureRollsBack` |
+| R2-14 | `R2_14_PendingSmokeFrameBudgetExhaustion` |
+| R2-14 | `R2_14_PendingSmokeWallBudgetSurvivesReloadWithoutTrust` |
+| R2-14 | `R2_14_ReloadDuringPendingSmokeResumesWithRetainedBudget` |
+| R2-14 | `R2_14_ReloadWithoutSmokeAdapterFailsClosed` |
+| R2-14 | `R2_14_PollOnlySmokeNeedsNoSynchronousAdapter` |
+| R2-14 | `R2_14_PendingSmokeExceptionFailsClosed` |
+| R2-14 compatibility | `R2_14_SynchronousSmokeFailureStillRollsBackImmediately` |
+| R2-15 | `R2_15_UndoRefusesWhileSmokePendingWithoutAdvancing(false/true)` |
+
+### Requests to other packets
+
+- **R2-G / P3.1**, `Packages/com.gamecore.gameplay.world/Editor/StudioAdmissionServices.cs`
+  and trusted Hollowmere Editor bootstrap: bind
+  `StageAdmission.Of(runtime).Options.PollSmokeTest = verdict => ...` using the
+  tri-state signature above. Return Pending until the restored world's real frame
+  assertions finish, Passed only after all assertions, Failed on failure. Keep
+  callbacks idempotent across crash/reload and rebind with the active session;
+  do not drive the world in a synchronous loop. The existing bool binding stays
+  valid for immediate assertions. A missing poll adapter after reload must never
+  fall back to a passing bool assertion.
+- **Metadata/integration owner**, `Packages/com.gamecore.gameplay.world/package.json`:
+  declare the already referenced `com.gamecore.studio.core: 1.0.0` and
+  `com.unity.nuget.newtonsoft-json: 3.2.1` dependencies.
+- **Metadata/integration owner**, `games/cleanproof/Packages/packages-lock.json`
+  and `games/hollowmere/Packages/packages-lock.json`: synchronize the
+  `com.gamecore.studio.etos` dependency map with its manifest, retaining
+  `com.gamecore.studio.core: 1.0.0` and adding
+  `com.gamecore.gameplay.contracts: 1.0.0`. These paths are outside this packet.
+
+- **R2-A**, `Packages/com.gamecore.studio.core/Editor/Journal/HistoryService.cs`,
+  `public HistoryResult Undo(string? changeSetId = null, bool force = false)`:
+  after reading a non-null entry, dispatch `HistoryAction.Undo` to its registered
+  admission handler **before** the generic Applied-only guard. Currently the guard
+  returns `Refused` with null result State for Interrupted admissions, so our handler
+  cannot supply `data.reason = "admission_pending"` and `State = Interrupted` through that public
+  route. Preserve the generic guard for unhandled edit entries. Handler/direct
+  admission refusals, both force values, and the current safe generic refusal are
+  tested; no temporary Applied state or alternate history path was introduced.
+
+### R2-G broad-run failure attribution
+
+Read-only inspection of `/home/worlesenric/wkspace/gc-studio/r2-g/.unity-logs/r2-g-broad.xml`
+confirmed 142 total, 140 passed, 1 failed, 1 skipped. Its only failed EditMode test was
+`Hollowmere.P1_7b.EditMode.Tests.ToolJournalTests.Catalog_ExportsEveryNewTool_AndTheMediaToolsAreComposeToolsThatRequireAgentMedia`.
+The assertion named `dialogue.generateVoice` and expected a prerequisite matching
+its lambda. This is the obsolete authored `agent.media` expectation documented by
+R2-G request #6. It is **not an R2-B/admission test**, and that sibling clone was
+not modified.
+
+### Left open
+
+- Core HistoryService Undo rejects Interrupted before typed dispatch. It safely
+  refuses without advancing the admission, but returning the admission-specific
+  reason witness and Interrupted result State through that route needs the R2-A change above.
+- The metadata checker has four inherited errors in the dependency files listed
+  above. Exclusive path ownership prevents this packet from repairing them.
+- Real Hollowmere restored-world smoke dispatch, real domain reload/Editor process
+  kill, and the 90-second end-to-end admission budget require the game bootstrap
+  and stage integration outside these paths. The regression fixtures run actual
+  Editor update callbacks with deterministic compiler/catalog/capture doubles and
+  rebuild StageAdmission from its durable record; they do not claim those external
+  acceptance results.
+
+### Verification (R2-B2)
+
+The before run retained the new enum/options and tests but the original admission
+behavior. XML `.unity-logs/r2-b2-before.xml`: **11 total, 1 passed, 10 failed,
+0 skipped/inconclusive**. All asynchronous/undo regressions failed; the synchronous
+bool failure compatibility case already passed. No baseline failure is counted
+as acceptance.
+
+Intermediate full selections are retained: `.unity-logs/r2-b2-admission.xml`
+**143 passed / 3 failed** (Editor-update timing assumption and the two early
+HistoryService-dispatch refusals), and `.unity-logs/r2-b2-final.xml`
+**144 passed / 2 failed** (unregistered diagnostic codes were normalized to
+ValidationFailed). Tests now wait for an observed Editor update; Stage emits the
+registered Refused diagnostic with a structured admission_pending reason. All
+135 pre-existing selected cases passed in both intermediate runs.
+
+- `dotnet test dotnet/tests/GameCore.Studio.Model.Tests/GameCore.Studio.Model.Tests.csproj`:
+  **104 passed, 0 failed/skipped** on myubuntu (.NET 8.0.425).
+- `python3 tools/check_game_core_csharp.py`: **pass, 1,130 C# files**.
+- `git diff --check`: **pass**.
+- Rust sources were not changed; no Rust, ETOS paid operation, credential-file read,
+  service restart, or sibling-clone mutation was performed.
+
+Unity commands use `bash studio/tools/unity-batch.sh --project "$PWD/games/hollowmere"
+--log-dir "$PWD/.unity-logs" --label <label> --results <absolute XML> -- -runTests
+-testPlatform EditMode -testFilter 'Hollowmere\.R2_B.*|Hollowmere\.P2_4.*|GameCore\.Studio\.Core.*'`.
+The wrapper owns `-testResults` through `--results` and rejects a duplicate explicit
+argument. This matches unity-compile.sh's test-run arguments and the host-wide
+allocation protocol; this packet held at most one Editor. Counts come from XML.
+The before selection used only `Hollowmere\.R2_B\.Tests\.AdmissionSmokeTests.*`.
+
+XML SHA-256:
+
+- before: `6b0b75a44b5abcaea9f0ea30c9f48f7e9e9d52ac4dab096eff5d9d58833dcdde`
+- first intermediate: `53a202f9a561e423fffbdcc14521ef8d8eec874e09f7ad0c8aae6784b6b44ef1`
+- R2-G broad XML (read-only attribution): `27aa52d464551717f19da33d83162be9fdaf5575981ef0aaa03a0a15c7da78d3`
+
+Final full selection on implementation commit `57e11c49` (same source bytes as the
+verified run): `.unity-logs/r2-b2-verified.xml`, **146/146 passed, 0 failed,
+0 skipped/inconclusive**; R2-B **71/71** (60 existing + 11 new), P2.4 **8/8**, core
+**67/67**. XML test duration 22.742 s; wrapper 65 s, one attempt. SHA-256:
+`c88f8c6e6fdcb18a41dae73ec1f5c0478374e73a7c8ccdf1ef54dab16c31546d`.
+Second intermediate XML SHA-256:
+`a244ba21041b6ff6d0e82cfb1101f0b3a6b9848401d371d8a37473be89c56429`.
+The implementation checkpoint was committed and pushed before this report commit.
+
+Final metadata validation after restoring Unity-generated lockfile changes:
+**failed, exactly the same four inherited errors** listed in Requests/Left open
+(41 packages, 89 assemblies). No dependency manifests/locks were committed by this
+packet. The existing untracked `.codex/` launcher directory was left untouched.

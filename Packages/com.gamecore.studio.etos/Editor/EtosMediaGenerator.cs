@@ -1,5 +1,4 @@
-// GameCore.Studio.Etos - direct media generation (04 s5) for the Studio: no IMediaGenerationGateway exists in
-// studio.core, so this adapter sits on IAgentGateway.GenerateAsync. image, tts and describe run through the companion
+// GameCore.Studio.Etos - gameplay IMediaGenerationGateway over IAgentGateway.GenerateAsync. image, tts and describe run through the companion
 // (POST /v1/ops/generate, max_cost_usd always sent); the verified bytes are retained in Studio/Artifacts and imported by
 // a journaled change set of one asset.import operation, so the import is validated, undoable and re-hashed on disk.
 // generate.3d goes to the companion too and its refusal is passed through untouched (blocked/not_configured until a
@@ -10,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using GameCore.Gameplay.Contracts.Narrative;
 using GameCore.Studio.Authoring;
 using GameCore.Studio.Authoring.Agent;
 using GameCore.Studio.Edit;
@@ -50,11 +50,64 @@ namespace GameCore.Studio.Etos
     }
 
     /// <summary>Generates media through the companion and imports it into the project.</summary>
-    public sealed class EtosMediaGenerator
+    public sealed class EtosMediaGenerator : IMediaGenerationGateway
     {
-        private readonly Authoring.Agent.IAgentGateway _gateway;
-        private readonly StudioRuntime _runtime;
-        private readonly MainThreadQueue _queue;
+        private readonly Authoring.Agent.IAgentGateway? _gateway;
+        private readonly StudioRuntime? _runtime;
+        private readonly MainThreadQueue? _queue;
+
+        /// <summary>Discovered by gameplay tools; resolves the current session on each request, including after reload.</summary>
+        public EtosMediaGenerator() { }
+
+        private Authoring.Agent.IAgentGateway Gateway => _gateway ?? throw NotConfigured();
+        private StudioRuntime Runtime => _runtime ?? throw NotConfigured();
+        private MainThreadQueue Queue => _queue ?? throw NotConfigured();
+        private static EtosException NotConfigured() => new EtosException(new EtosError(0, EtosCodes.NotConfigured,
+            "Direct media APIs require a configured gateway; the discovered adapter exposes RequestVoiceLine."));
+
+        public Task<MediaImport>? PendingVoice { get; private set; }
+
+        public MediaGenerationResult RequestVoiceLine(VoiceGenerationRequest request)
+        {
+            if (_gateway == null)
+            {
+                EtosAgentGateway? gateway = EtosStudioSession.Gateway;
+                if (gateway == null) return new MediaGenerationResult(MediaGenerationStatus.NotConfigured, "", "not_configured: no ETOS session");
+                var adapter = new EtosMediaGenerator(gateway, gateway.Runtime, gateway.Queue);
+                MediaGenerationResult result = adapter.RequestVoiceLine(request);
+                PendingVoice = adapter.PendingVoice;
+                return result;
+            }
+            if (request == null || string.IsNullOrWhiteSpace(request.Text))
+                return new MediaGenerationResult(MediaGenerationStatus.Refused, "", "invalid_args: voice text is required");
+            string id = IdDerivation.NewChangeSetId();
+            string folder = (_gateway as EtosAgentGateway)?.Options.GeneratedFolder ?? "Assets/Generated/Studio";
+            string path = folder.TrimEnd('/') + "/voice-" + id + ".wav";
+            PendingVoice = GenerateRequestedVoice(request, path, id);
+            return new MediaGenerationResult(MediaGenerationStatus.Requested, id, "Voice generation requested; verified media is imported through asset.import at " + path);
+        }
+
+        private async Task<MediaImport> GenerateRequestedVoice(VoiceGenerationRequest request, string path, string id)
+        {
+            MediaImport result;
+            try
+            {
+                result = await GenerateSpeechAsync(request.Text, path, request.Voice,
+                    (_gateway as EtosAgentGateway)?.Options.MaxCostUsd, id).ConfigureAwait(false);
+            }
+            catch (Exception error)
+            {
+                var problem = new Diagnostic(EtosCodes.Transport, EtosRedaction.Redact(error.Message));
+                result = new MediaImport(OpResult.Refused(problem), path, null, null, new[] { problem });
+            }
+            await Queue.Run(() =>
+            {
+                Runtime.Log.Write(result.Ok ? StudioLogLevel.Info : StudioLogLevel.Warning, "etos.media",
+                    result.Ok ? "Voice request " + id + " imported " + path : "Voice request " + id + " failed", result.Problem);
+                return true;
+            }).ConfigureAwait(false);
+            return result;
+        }
 
         public EtosMediaGenerator(Authoring.Agent.IAgentGateway gateway, StudioRuntime runtime, MainThreadQueue queue)
         {
@@ -69,8 +122,8 @@ namespace GameCore.Studio.Etos
         /// </summary>
         public async Task<MediaImport> GenerateImageAsync(string prompt, string assetPath, int? squareSize = null, double? maxCostUsd = null, string? changeSetId = null, CancellationToken ct = default)
         {
-            OpResult result = await _gateway.GenerateAsync(new OpRequest("generate.image", new JObject { ["prompt"] = prompt }, maxCostUsd) { ChangeSetId = changeSetId }, ct).ConfigureAwait(false);
-            return await _queue.Run(() => ImportOnMain(result, assetPath, "texture", "Generate image: " + prompt, squareSize)).ConfigureAwait(false);
+            OpResult result = await Gateway.GenerateAsync(new OpRequest("generate.image", new JObject { ["prompt"] = prompt }, maxCostUsd) { ChangeSetId = changeSetId }, ct).ConfigureAwait(false);
+            return await Queue.Run(() => ImportOnMain(result, assetPath, "texture", "Generate image: " + prompt, squareSize)).ConfigureAwait(false);
         }
 
         /// <summary>Text to speech → WAV at <paramref name="assetPath"/>.</summary>
@@ -82,8 +135,8 @@ namespace GameCore.Studio.Etos
                 inputs["voice"] = voice;
             }
 
-            OpResult result = await _gateway.GenerateAsync(new OpRequest("tts", inputs, maxCostUsd) { ChangeSetId = changeSetId }, ct).ConfigureAwait(false);
-            return await _queue.Run(() => ImportOnMain(result, assetPath, "voiceLine", "Speak: " + text, null)).ConfigureAwait(false);
+            OpResult result = await Gateway.GenerateAsync(new OpRequest("tts", inputs, maxCostUsd) { ChangeSetId = changeSetId }, ct).ConfigureAwait(false);
+            return await Queue.Run(() => ImportOnMain(result, assetPath, "voiceLine", "Speak: " + text, null)).ConfigureAwait(false);
         }
 
         /// <summary>Describes a retained (or companion-stored) artifact; the answer is text.</summary>
@@ -95,14 +148,14 @@ namespace GameCore.Studio.Etos
                 inputs["prompt"] = prompt;
             }
 
-            return _gateway.GenerateAsync(new OpRequest("describe", inputs, maxCostUsd), ct);
+            return Gateway.GenerateAsync(new OpRequest("describe", inputs, maxCostUsd), ct);
         }
 
         /// <summary>3D mesh; the companion's refusal (SADR-020) is returned as it came.</summary>
         public async Task<MediaImport> Generate3dAsync(string prompt, string assetPath, double? maxCostUsd = null, string? changeSetId = null, CancellationToken ct = default)
         {
-            OpResult result = await _gateway.GenerateAsync(new OpRequest("generate.3d", new JObject { ["prompt"] = prompt }, maxCostUsd) { ChangeSetId = changeSetId }, ct).ConfigureAwait(false);
-            return await _queue.Run(() => ImportOnMain(result, assetPath, "mesh", "Generate mesh: " + prompt, null)).ConfigureAwait(false);
+            OpResult result = await Gateway.GenerateAsync(new OpRequest("generate.3d", new JObject { ["prompt"] = prompt }, maxCostUsd) { ChangeSetId = changeSetId }, ct).ConfigureAwait(false);
+            return await Queue.Run(() => ImportOnMain(result, assetPath, "mesh", "Generate mesh: " + prompt, null)).ConfigureAwait(false);
         }
 
         /// <summary>Sound effects: no companion op exists, so this is an honest not_configured.</summary>
@@ -122,6 +175,11 @@ namespace GameCore.Studio.Etos
             }
 
             byte[] bytes = result.Bytes;
+            if (Json.Sha256Hex(bytes) != Json.NormalizeSha256(result.Sha256))
+            {
+                var problem = new Diagnostic(EtosCodes.ArtifactDigestMismatch, "Generated media digest does not match its bytes.");
+                return new MediaImport(OpResult.Refused(problem), assetPath, null, null, new[] { problem });
+            }
             string mediaType = result.MediaType ?? "application/octet-stream";
             if (squareSize.HasValue && mediaType == "image/png")
             {
@@ -133,17 +191,17 @@ namespace GameCore.Studio.Etos
             ArtifactRef artifact = new ArtifactRef(sha, mediaType, bytes.LongLength, System.IO.Path.GetFileName(assetPath), producer, role);
             try
             {
-                _runtime.Artifacts.Put(bytes, artifact);
+                Runtime.Artifacts.Put(bytes, artifact);
             }
             catch (ArtifactStoreException error)
             {
-                Diagnostic problem = new Diagnostic(DiagnosticCodes.StageFailed, "artifact_retention: " + error.Message);
+                Diagnostic problem = new Diagnostic(DiagnosticCodes.StageFailed, EtosRedaction.Redact("artifact_retention: " + error.Message));
                 return new MediaImport(result, assetPath, artifact, null, new[] { problem });
             }
 
             Operation import = new Operation("op1", BuiltInToolIds.AssetImport, null, new JObject { ["path"] = assetPath, ["artifact"] = new JObject { ["artifact"] = artifact.Reference } });
             ChangeSet changeSet = new ChangeSet(IdDerivation.NewChangeSetId(), ChangeSet.SchemaId, new Intent(intent, IntentOrigin.Agent), new[] { import }, artifacts: new[] { artifact });
-            ApplyReport report = _runtime.Engine.Apply(changeSet);
+            ApplyReport report = Runtime.Engine.Apply(changeSet);
             return new MediaImport(result, assetPath, artifact, report, report.Diagnostics);
         }
 

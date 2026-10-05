@@ -111,7 +111,7 @@ namespace GameCore.Studio.UI
             }
             catch (Exception error) when (error is JsonException || error is ArgumentException || error is InvalidOperationException)
             {
-                Debug.LogWarning("GameCore Studio: the persisted selection could not be read and was dropped: " + error.Message);
+                Debug.LogWarning(StudioStyles.Safe("GameCore Studio: the persisted selection could not be read and was dropped: " + error.Message));
             }
         }
 

@@ -6,6 +6,7 @@
 #nullable enable
 using System.Text;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json.Linq;
 
 namespace GameCore.Studio.Etos.Client
 {
@@ -15,7 +16,7 @@ namespace GameCore.Studio.Etos.Client
         /// <summary>The replacement for a secret value.</summary>
         public const string Mask = "[redacted]";
 
-        private static readonly Regex PrefixedToken = new Regex(@"(etk_|ett_|etp_|eta_)[A-Za-z0-9_\-\.~\+/=]{4,}", RegexOptions.CultureInvariant);
+        private static readonly Regex PrefixedToken = new Regex(@"(etk_|ett_|etp_|eta_|sk-)[A-Za-z0-9_\-\.~\+/=]+", RegexOptions.CultureInvariant);
 
         private static readonly Regex BearerValue = new Regex(@"(?i)\b(bearer\s+)[A-Za-z0-9_\-\.~\+/=]+", RegexOptions.CultureInvariant);
 
@@ -24,15 +25,33 @@ namespace GameCore.Studio.Etos.Client
         /// <summary><paramref name="text"/> with every etos credential, bearer value and ticket replaced by <see cref="Mask"/>.</summary>
         public static string Redact(string? text)
         {
-            if (string.IsNullOrEmpty(text))
-            {
-                return text ?? string.Empty;
-            }
+            // Normalize transport URL/token syntax before the shared policy (core also covers JSON and sk-).
+            string value = TicketQuery.Replace(text ?? string.Empty, "$1" + Mask);
+            value = PrefixedToken.Replace(value, Mask);
+            return new GameCore.Studio.Authoring.SecretRedactor().Redact(value);
+        }
 
-            string result = BearerValue.Replace(text!, "$1" + Mask);
-            result = PrefixedToken.Replace(result, "$1" + Mask);
-            result = TicketQuery.Replace(result, "$1" + Mask);
-            return result;
+        /// <summary>Transport token normalization followed by the core's recursive secret-key policy.</summary>
+        public static JToken RedactJson(JToken value)
+        {
+            return new GameCore.Studio.Authoring.SecretRedactor().RedactJson(NormalizeTransport(value));
+        }
+
+        private static JToken NormalizeTransport(JToken value)
+        {
+            if (value is JObject obj)
+            {
+                var copy = new JObject();
+                foreach (JProperty property in obj.Properties()) copy[property.Name] = NormalizeTransport(property.Value);
+                return copy;
+            }
+            if (value is JArray array)
+            {
+                var copy = new JArray();
+                foreach (JToken item in array) copy.Add(NormalizeTransport(item));
+                return copy;
+            }
+            return value.Type == JTokenType.String ? new JValue(Redact(value.Value<string>())) : value.DeepClone();
         }
 
         /// <summary>True when <paramref name="text"/> still holds something that looks like an etos credential.</summary>

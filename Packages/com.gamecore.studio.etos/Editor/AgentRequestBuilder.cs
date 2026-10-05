@@ -32,8 +32,10 @@ namespace GameCore.Studio.Etos
             }
 
             List<AuthoringRef> refs = new List<AuthoringRef>();
+            int inspected = 0;
             foreach (UnityEngine.Object target in targets ?? Array.Empty<UnityEngine.Object>())
             {
+                if (inspected++ >= SceneContextObjects) break;
                 AuthoringRef? reference = target == null ? null : runtime.Resolver.BuildRef(target, scope, true);
                 if (reference != null)
                 {
@@ -66,6 +68,9 @@ namespace GameCore.Studio.Etos
 
         /// <summary>The attachment name of <see cref="SceneContext"/>.</summary>
         public const string SceneContextName = "scene-context.json";
+        public const int SceneContextBytes = 64 * 1024;
+        public const int SceneContextObjects = 128;
+        public const int SceneTextCharacters = 512;
 
         /// <summary>
         /// A request for <paramref name="targets"/>: the selection snapshot, the slice, the catalog revision and, when
@@ -93,34 +98,46 @@ namespace GameCore.Studio.Etos
         public static Attachment? SceneContext(StudioRuntime runtime, IReadOnlyList<UnityEngine.Object> targets)
         {
             JArray objects = new JArray();
+            bool truncated = false;
+            int packedBytes = 512; // Envelope and truncation metadata reserve.
+            int examined = 0;
             foreach (UnityEngine.Object target in targets)
             {
+                if (examined++ >= SceneContextObjects) { truncated = true; break; }
                 UnityEngine.GameObject? gameObject = target as UnityEngine.GameObject ?? (target as UnityEngine.Component)?.gameObject;
                 if (gameObject == null || !gameObject.scene.IsValid())
                 {
                     continue;
                 }
 
+                if (gameObject.name.Length > SceneTextCharacters || gameObject.scene.path.Length > SceneTextCharacters) truncated = true;
                 UnityEngine.Transform transform = gameObject.transform;
                 AuthoringRef? reference = runtime.Resolver.BuildRef(target, null, true);
                 JObject entry = new JObject
                 {
-                    ["name"] = gameObject.name,
+                    ["name"] = BoundedText(gameObject.name),
                     ["path"] = HierarchyPath(transform),
-                    ["scene"] = gameObject.scene.path,
+                    ["scene"] = BoundedText(gameObject.scene.path),
                     ["position"] = new JArray(Round(transform.position.x), Round(transform.position.y), Round(transform.position.z)),
                     ["rotation"] = new JArray(Round(transform.rotation.x), Round(transform.rotation.y), Round(transform.rotation.z), Round(transform.rotation.w)),
                     ["scale"] = new JArray(Round(transform.localScale.x), Round(transform.localScale.y), Round(transform.localScale.z)),
                 };
                 if (reference != null)
                 {
-                    entry["ref"] = StudioJson.ToToken(reference);
+                    JObject referenceJson = (JObject)new SecretRedactor().RedactJson(StudioJson.ToToken(reference));
+                    foreach (JProperty property in referenceJson.Properties())
+                        if (property.Value.Type == JTokenType.String) property.Value = BoundedText(property.Value.Value<string>() ?? "");
+                    entry["ref"] = referenceJson;
                 }
 
+                entry = (JObject)new SecretRedactor().RedactJson(entry);
+                int entryBytes = System.Text.Encoding.UTF8.GetByteCount(entry.ToString(Newtonsoft.Json.Formatting.None)) + 1;
+                if (packedBytes + entryBytes > SceneContextBytes) { truncated = true; break; }
+                packedBytes += entryBytes;
                 objects.Add(entry);
             }
 
-            if (objects.Count == 0)
+            if (objects.Count == 0 && !truncated)
             {
                 return null;
             }
@@ -131,22 +148,30 @@ namespace GameCore.Studio.Etos
                 ["units"] = "metres",
                 ["axes"] = new JObject { ["north"] = "+z", ["east"] = "+x", ["up"] = "+y" },
                 ["objects"] = objects,
+                ["truncated"] = truncated,
             };
-            byte[] bytes = System.Text.Encoding.UTF8.GetBytes(document.ToString(Newtonsoft.Json.Formatting.Indented));
+            byte[] bytes = System.Text.Encoding.UTF8.GetBytes(document.ToString(Newtonsoft.Json.Formatting.None));
             return new Attachment(SceneContextName, "application/json", bytes, "context");
         }
 
         private static double Round(float value) => Math.Round(value, 4);
 
+        private static string BoundedText(string text)
+        {
+            string redacted = new SecretRedactor().Redact(text);
+            return redacted.Length <= SceneTextCharacters ? redacted : redacted.Substring(0, SceneTextCharacters);
+        }
+
         private static string HierarchyPath(UnityEngine.Transform transform)
         {
-            string path = transform.name;
-            for (UnityEngine.Transform? parent = transform.parent; parent != null; parent = parent.parent)
+            string path = BoundedText(transform.name);
+            int depth = 0;
+            for (UnityEngine.Transform? parent = transform.parent; parent != null && depth++ < 32; parent = parent.parent)
             {
-                path = parent.name + "/" + path;
+                path = BoundedText(parent.name) + "/" + path;
+                if (path.Length >= SceneTextCharacters) break;
             }
-
-            return path;
+            return BoundedText(path);
         }
 
         /// <summary>The companion body of <paramref name="request"/>; the catalog is attached only when given.</summary>

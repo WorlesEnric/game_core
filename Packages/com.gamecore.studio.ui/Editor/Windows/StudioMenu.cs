@@ -1,5 +1,5 @@
 // GameCore.Studio.UI - GameCore/Studio/Open Studio: opens the viewport, context, tasks, candidates and history windows
-// and tiles them over the main editor window (viewport left, context right, tasks/candidates/history below). Windows
+// and tiles them over the main editor window (viewport/tasks left, context/candidates/history right). Windows
 // already docked by the user keep their place; only windows this call creates are positioned.
 #nullable enable
 using UnityEditor;
@@ -28,41 +28,35 @@ namespace GameCore.Studio.UI
             bool candidatesExisted = !reposition && HasOpenInstances<StudioCandidatesWindow>();
             bool historyExisted = !reposition && HasOpenInstances<StudioHistoryWindow>();
 
-            float top = area.y + 60f;
-            float height = Mathf.Max(480f, area.height - 80f);
-            float viewportWidth = Mathf.Max(640f, area.width * 0.64f);
-            float sideWidth = Mathf.Max(300f, area.width - viewportWidth - 12f);
-            float viewportHeight = height * 0.68f;
-            float bottomHeight = height - viewportHeight - 8f;
-            float bottomWidth = viewportWidth / 3f;
+            Rect[] layout = Layout(area);
 
             StudioViewportWindow viewport = StudioViewportWindow.Open();
             if (!viewportExisted)
             {
-                viewport.position = new Rect(area.x + 4f, top, viewportWidth, viewportHeight);
+                viewport.position = layout[0];
             }
 
             if (!contextExisted)
             {
                 StudioContextWindow.Open();
-                EditorWindow.GetWindow<StudioContextWindow>().position = new Rect(area.x + viewportWidth + 8f, top, sideWidth, height);
+                EditorWindow.GetWindow<StudioContextWindow>().position = layout[1];
             }
 
             if (!tasksExisted)
             {
                 StudioTasksWindow.Open();
-                EditorWindow.GetWindow<StudioTasksWindow>().position = new Rect(area.x + 4f, top + viewportHeight + 8f, bottomWidth - 4f, bottomHeight);
+                EditorWindow.GetWindow<StudioTasksWindow>().position = layout[2];
             }
 
             if (!candidatesExisted)
             {
-                StudioCandidatesWindow.Open(null).position = new Rect(area.x + bottomWidth + 4f, top + viewportHeight + 8f, bottomWidth - 4f, bottomHeight);
+                StudioCandidatesWindow.Open(null).position = layout[3];
             }
 
             if (!historyExisted)
             {
                 StudioHistoryWindow.Open();
-                EditorWindow.GetWindow<StudioHistoryWindow>().position = new Rect(area.x + (2f * bottomWidth) + 4f, top + viewportHeight + 8f, bottomWidth - 4f, bottomHeight);
+                EditorWindow.GetWindow<StudioHistoryWindow>().position = layout[4];
             }
 
             viewport.Focus();
@@ -71,6 +65,30 @@ namespace GameCore.Studio.UI
                 FirstRunWizardWindow.Open();
             }
         }
+
+        /// <summary>Viewport/tasks on the left; context/candidates/history on the right. No window is tiled below its minimum.</summary>
+        public static Rect[] Layout(Rect requested)
+        {
+            Rect area = EnforceMinimum(requested);
+            const float gap = 8f;
+            float side = Mathf.Max(420f, area.width * .34f);
+            float left = area.width - side - gap;
+            float tasks = Mathf.Max(160f, area.height * .22f);
+            float extra = area.height - 716f;
+            float context = 240f + extra * .34f;
+            float candidates = 260f + extra * .33f;
+            float right = area.x + left + gap;
+            return new[]
+            {
+                new Rect(area.x, area.y, left, area.height - tasks - gap),
+                new Rect(right, area.y, side, context),
+                new Rect(area.x, area.yMax - tasks, left, tasks),
+                new Rect(right, area.y + context + gap, side, candidates),
+                new Rect(right, area.y + context + candidates + 2 * gap, side, 200f + extra * .33f),
+            };
+        }
+
+        public static Rect EnforceMinimum(Rect area) => new Rect(area.x, area.y, Mathf.Max(1280f, area.width), Mathf.Max(720f, area.height));
 
         private static bool HasOpenInstances<T>()
             where T : EditorWindow

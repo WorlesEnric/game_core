@@ -16,6 +16,9 @@
 
   <ItemGroup>
     <Compile Include="../../../Packages/com.gamecore.studio.etos/Tests/Fake/**/*.cs" Link="Fake/%(RecursiveDir)%(Filename)%(Extension)" />
+    <Compile Include="../../../Packages/com.gamecore.studio.core/Runtime/Authoring/Agent/StageCandidateRequest.cs" Link="Core/StageCandidateRequest.cs" />
+    <Compile Include="../../../Packages/com.gamecore.studio.core/Editor/Stage/StageServiceContract.cs" Link="Core/StageServiceContract.cs" />
+    <Compile Include="../../../Packages/com.gamecore.studio.etos/Editor/CompanionStageService.cs" Link="Editor/CompanionStageService.cs" />
     <None Include="Fixtures/*.json" CopyToOutputDirectory="PreserveNewest" />
     <None Include="Fixtures/*.wav" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>

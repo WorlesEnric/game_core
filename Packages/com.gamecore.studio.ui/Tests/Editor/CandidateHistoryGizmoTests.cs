@@ -218,10 +218,9 @@ namespace GameCore.Studio.UI.Tests
             StageAdmission.Configure(_bed.Runtime, new AdmissionOptions { Compiler = new NoCompile(), Catalog = new FixedCatalog(), PlayModeProbe = () => false });
             HistoryPanelView history = new HistoryPanelView(_bed.Context);
             HistoryResult result = history.Undo(admitted.Id);
-            Assert.That(history.LastAdmission, Is.Not.Null, "an admission is undone by StageAdmission.Undo, not the plain journal undo");
-            Assert.That(history.LastAdmission!.ChangeSetId, Is.EqualTo(admitted.Id));
-            Assert.That(history.StatusText, Does.Contain("Undo of admission"));
-            Assert.That(result.Ok, Is.EqualTo(history.LastAdmission.Outcome == AdmissionOutcome.Pending || history.LastAdmission.Outcome == AdmissionOutcome.Undone));
+            Assert.That(result.Ok, Is.False, "the fabricated admission has no trusted durable record");
+            Assert.That(history.StatusText, Does.Contain("Undo refused"));
+            Assert.That(_bed.Runtime.Journal.Read(admitted.Id)!.EffectiveState, Is.EqualTo(ChangeSetState.Applied));
         }
 
         /// <summary>A compiler that never compiles (the admission seam; no recompile inside a test).</summary>
