@@ -15,7 +15,9 @@
 #      apply, undo, prompt bar, Play mode on the player camera with W routed through the Input System and the pump
 #      indicator, Maren and the well selected in Play, pause). After each step it composes the Studio windows' own
 #      pixels into a PNG (never the desktop, so nothing else on the host display can appear) and finally exits;
-#   2. waits for that Editor's PID (EVIDENCE_TIMEOUT seconds, default 1800); on timeout it kills only that PID;
+#   2. waits for that Editor's PID (EVIDENCE_TIMEOUT seconds, default 1800, and a log-silence watchdog of
+#      EVIDENCE_SILENCE_TIMEOUT seconds, default 600); on either it kills only that PID and retries exactly once
+#      (the Editor's known intermittent startup hang, docs/operator/editor-hang.md);
 #   3. shrinks every PNG below 300 KB with PIL (resize to <= 1600 px wide, then palette quantization if needed);
 #   4. copies the PNGs and evidence-log.jsonl to artifacts/studio/evidence/P2.1/ and writes README.md there (index
 #      with step, file, UTC time, caption, pump readout, B-SELECT timings, commit sha, host).
@@ -106,27 +108,46 @@ if [[ -f "${project_dir}/Temp/UnityLockfile" ]]; then
 fi
 
 screen="$(xdpyinfo -display "${EVIDENCE_DISPLAY}" 2>/dev/null | awk '/dimensions:/{print $2}')"
-DISPLAY="${EVIDENCE_DISPLAY}" GCS_EVIDENCE_DIR="${out}" GCS_FLIP="${GCS_FLIP}" nohup "${unity}" -projectPath "${project_dir}" \
-  -executeMethod Hollowmere.P2_1.Evidence.StudioUiEvidence.Run -logFile "${out}/editor.log" >/dev/null 2>&1 &
-pid=$!
-echo "-- interactive Editor pid ${pid} on ${EVIDENCE_DISPLAY} (${screen}); output ${out}" >&2
-start=$(date +%s)
+silence_limit="${EVIDENCE_SILENCE_TIMEOUT:-600}"
 rc=0
-while kill -0 "${pid}" 2>/dev/null; do
-  if (( $(date +%s) - start > EVIDENCE_TIMEOUT )); then
-    echo "-- timeout after ${EVIDENCE_TIMEOUT}s; killing pid ${pid}" >&2
-    kill -TERM "${pid}" 2>/dev/null || true
-    sleep 20
-    kill -KILL "${pid}" 2>/dev/null || true
-    rc=124
+for attempt in 1 2; do
+  rm -f "${out}"/*.png "${out}/evidence-log.jsonl"
+  log="${out}/editor-a${attempt}.log"
+  DISPLAY="${EVIDENCE_DISPLAY}" GCS_EVIDENCE_DIR="${out}" GCS_FLIP="${GCS_FLIP}" nohup "${unity}" -projectPath "${project_dir}" \
+    -executeMethod Hollowmere.P2_1.Evidence.StudioUiEvidence.Run -logFile "${log}" >/dev/null 2>&1 &
+  pid=$!
+  echo "-- attempt ${attempt}/2: interactive Editor pid ${pid} on ${EVIDENCE_DISPLAY} (${screen}); output ${out}" >&2
+  start=$(date +%s)
+  last_size=-1
+  last_change=${start}
+  rc=0
+  while kill -0 "${pid}" 2>/dev/null; do
+    now=$(date +%s)
+    size=$(stat -c %s "${log}" 2>/dev/null || echo 0)
+    if [[ "${size}" != "${last_size}" ]]; then
+      last_size="${size}"
+      last_change=${now}
+    fi
+    if (( now - start > EVIDENCE_TIMEOUT || (silence_limit > 0 && now - last_change > silence_limit) )); then
+      echo "-- no progress (timeout ${EVIDENCE_TIMEOUT}s / log silent ${silence_limit}s); killing pid ${pid} (docs/operator/editor-hang.md)" >&2
+      kill -TERM "${pid}" 2>/dev/null || true
+      sleep 20
+      kill -KILL "${pid}" 2>/dev/null || true
+      rc=124
+      break
+    fi
+    sleep 5
+  done
+  if (( rc == 0 )); then
+    wait "${pid}" || rc=$?
+  fi
+  echo "-- attempt ${attempt} finished rc=${rc} after $(( $(date +%s) - start ))s" >&2
+  cp -f "${log}" "${out}/editor.log" 2>/dev/null || true
+  if (( rc != 124 )); then
     break
   fi
-  sleep 5
+  rm -f "${project_dir}/Temp/UnityLockfile"
 done
-if (( rc == 0 )); then
-  wait "${pid}" || rc=$?
-fi
-echo "-- Editor finished rc=${rc} after $(( $(date +%s) - start ))s" >&2
 
 python3 - "${out}" <<'PY' >&2
 import os, sys
@@ -197,7 +218,7 @@ selects = [entry.get("bSelect") for entry in entries if entry.get("bSelect")]
 lines.append(f"Last cumulative report: `{selects[-1]}`" if selects else "No picking samples were recorded.")
 problems = [entry for entry in entries if entry.get("problem") or entry.get("name") == "error"]
 lines += ["", "## Problems", ""]
-lines += [f"- step {entry['step']}: {entry.get('problem') or entry.get('caption')}" for entry in problems] or ["None."]
+lines += [f"- step {entry['step']}: {entry.get('problem') or entry.get('caption')}" for entry in problems] or (["None."] if int(rc) == 0 else [f"The Editor run ended with exit code {rc} (124 = killed by the watchdog)."])
 lines += ["", f"{len(pngs)} screenshot(s), each under 300 KB. Each is composed from the Studio windows' own pixels (no desktop capture); no gateway key is configured in this run, so no secret can be on screen."]
 with open(os.path.join(dest, "README.md"), "w", encoding="utf-8") as handle:
     handle.write("\n".join(lines) + "\n")
