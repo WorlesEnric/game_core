@@ -615,6 +615,24 @@ namespace Hollowmere.Authoring.Tools
             controller.AddParameter(SpeedParameter, AnimatorControllerParameterType.Float);
             controller.AddParameter(StateParameter, AnimatorControllerParameterType.Int);
 
+            // A controller created inside the engine's AssetDatabase edit block is written before its sub-assets can be
+            // added (the layer's state machine, states and transitions are lost on import). Once imported, a re-run
+            // repairs it here: a missing layer or state machine is created as a sub-asset of the imported controller.
+            AnimatorControllerLayer[] layers = controller.layers;
+            if (layers.Length == 0)
+            {
+                controller.AddLayer("Base Layer");
+                layers = controller.layers;
+            }
+
+            if (layers[0].stateMachine == null)
+            {
+                var created = new AnimatorStateMachine { name = layers[0].name, hideFlags = HideFlags.HideInHierarchy };
+                AssetDatabase.AddObjectToAsset(created, controller);
+                layers[0].stateMachine = created;
+                controller.layers = layers;
+            }
+
             AnimatorStateMachine machine = controller.layers[0].stateMachine;
             ChildAnimatorState[] states = machine.states;
             for (int i = states.Length - 1; i >= 0; i--)

@@ -406,6 +406,13 @@ namespace Hollowmere.Authoring
                 StudioAuthor.Call("anim", "hollowmere.generateNpcAnimator", a.Ref(Npc("MarenEntity")), new JObject { ["folder"] = Animators, ["bodyChild"] = "Body" }),
             });
 
+            // The controller created by the step above is written inside the engine's asset edit block, before its state
+            // machine could be added; this second change set runs on the imported controller and adds the states.
+            a.Step("dress.npc-animator-states", "Complete the NPC Animator's state machine on the imported controller", () => new List<Operation>
+            {
+                StudioAuthor.Call("anim", "hollowmere.generateNpcAnimator", a.Ref(Npc("MarenEntity")), new JObject { ["folder"] = Animators, ["bodyChild"] = "Body" }),
+            });
+
             a.Step("dress.prop-skins", "Texture the NPC body and the prop prefabs (lanterns, reeds, stones, crates, bell, signpost, bucket)", () => new List<Operation>
             {
                 SkinPrefab(a, "npc", Npc("MarenEntity"), "Body", "Cloth"),
