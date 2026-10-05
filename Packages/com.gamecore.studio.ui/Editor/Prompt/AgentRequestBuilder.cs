@@ -145,14 +145,25 @@ namespace GameCore.Studio.UI
                     if (closure.Count < MaxContextObjects) closure.Add(part.Owner);
 
             IndexSlice slice = _runtime.Index.Slice(closure, Depth, ByteCap);
-            JObject packed = (JObject)new SecretRedactor().RedactJson(StudioJson.ToToken(slice.Index));
+            IndexSlice mentioned = _runtime.Index.ResolvePromptReferences(text, closure, ByteCap, MaxContextObjects);
+            List<IndexNode> merged = new List<IndexNode>(slice.Index.Nodes);
+            foreach (IndexNode node in mentioned.Index.Nodes)
+                if (!merged.Exists(existing => existing.Ref.SameTarget(node.Ref))) merged.Add(node);
+            SemanticIndex context = new SemanticIndex(slice.Index.Revision, slice.Index.Project, merged, slice.Index.Edges, slice.Index.Scopes);
+            JObject packed = (JObject)new SecretRedactor().RedactJson(StudioJson.ToToken(context));
             // Secret-key fields are omitted rather than deserialized into an invalid IndexField shape.
             foreach (JObject node in packed["nodes"] as JArray ?? new JArray())
                 if (node["fields"] is JObject fields)
                     foreach (JProperty field in new List<JProperty>(fields.Properties()))
                         if (field.Value is not JObject) field.Remove();
-            bool truncated = slice.Truncated || (selection.Parts != null && selection.Targets.Count + selection.Parts.Count > MaxContextObjects);
-            int omitted = slice.OmittedNodes;
+            bool truncated = slice.Truncated || mentioned.Truncated || (selection.Parts != null && selection.Targets.Count + selection.Parts.Count > MaxContextObjects);
+            int omitted = slice.OmittedNodes + mentioned.OmittedNodes;
+            while (((JArray)packed["nodes"]!).Count > MaxContextObjects)
+            {
+                packed["nodes"]!.Last!.Remove();
+                truncated = true;
+                omitted++;
+            }
             // Core estimates node bytes; enforce the actual envelope including property names and UTF-8.
             while (JsonBytes(packed).Length > ByteCap)
             {
@@ -175,7 +186,12 @@ namespace GameCore.Studio.UI
             };
             IReadOnlyList<PromptAttachment> files = attachments ?? Array.Empty<PromptAttachment>();
             if (files.Count > MaxAttachments) throw new ArgumentException("At most eight attachments are allowed.", nameof(attachments));
-            AgentAttachment? scene = SceneContext(closure);
+            List<AuthoringRef> sceneRefs = new List<AuthoringRef>(closure);
+            // Only add mentions retained by the final packed slice; selection stays unchanged.
+            foreach (IndexNode node in boundedIndex.Nodes)
+                if (mentioned.Index.FindNode(node.Ref) != null && !sceneRefs.Exists(reference => reference.SameTarget(node.Ref)))
+                    sceneRefs.Add(node.Ref);
+            AgentAttachment? scene = SceneContext(sceneRefs, truncated);
             long total = scene?.Data.LongLength ?? 0;
             // Validate the complete budget before reading any attachment bytes.
             foreach (PromptAttachment attachment in files)
@@ -224,7 +240,9 @@ namespace GameCore.Studio.UI
         /// <summary>
         /// <c>scene-context.json</c> for the targets that resolve to scene objects (P2.2's format), or null when none does.
         /// </summary>
-        public AgentAttachment? SceneContext(IReadOnlyList<AuthoringRef> targets)
+        public AgentAttachment? SceneContext(IReadOnlyList<AuthoringRef> targets) => SceneContext(targets, false);
+
+        private AgentAttachment? SceneContext(IReadOnlyList<AuthoringRef> targets, bool truncated)
         {
             if (ByteCap < 256 || ByteCap > SliceByteCap) throw new ArgumentOutOfRangeException(nameof(ByteCap));
             JArray objects = new JArray();
@@ -232,7 +250,7 @@ namespace GameCore.Studio.UI
             {
                 ["schema"] = "gamecore.studio.scenecontext/1", ["units"] = "metres",
                 ["axes"] = new JObject { ["north"] = "+z", ["east"] = "+x", ["up"] = "+y" },
-                ["objects"] = objects, ["truncated"] = false,
+                ["objects"] = objects, ["truncated"] = truncated,
             };
             int scanned = 0;
             foreach (AuthoringRef target in targets)

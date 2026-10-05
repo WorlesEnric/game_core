@@ -107,3 +107,12 @@ Editor regression. Tray-state p95 **110 ms**, max **117 ms** (20 samples). The s
 physical D12 check, two existing graphical checks, and four live-node checks. Dotnet: **67 passed / 6 live skipped**.
 The headless worker tests use `PromptBar.SelectedWorker`, the same controller called by the dropdown callback;
 detached UI Toolkit fields do not emit real panel change events. No graphical input pass is inferred from that.
+
+## R3-F — cross-package UI handoffs
+
+### R2 fixes / R3 follow-through
+
+- D21: the prompt builder consumes `ResolvePromptReferences`, merges minimal mentioned nodes into its bounded index slice, and adds retained mention refs to `scene-context.json`. It keeps the creator's selection unchanged, enforces the existing UTF-8 and object caps, and carries truncation/omitted evidence. Tests: `R3FHandoffTests.D21_RetainedRingPromptIncludesUnselectedWell` (exact retained ring intent), `D21_PromptReferencesRespectCapsAndReportTruncation`.
+- D5: candidate review renders `StagedChangeSet.Inferences` in its own informational section, separate from refusal diagnostics. `D5_ScopeInferenceIsVisibleInformationAndDoesNotBlockApply` checks the visible evidence and successful Apply.
+
+Host results and packet seams: [R3-F packet](../../../Packages/com.gamecore.studio.ui/PACKET.md).
