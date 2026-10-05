@@ -13,6 +13,13 @@ namespace Hollowmere.P4_2
 {
     public sealed class DirectMediaTests
     {
+        [SetUp]
+        public void RequireLiveQualification()
+        {
+            if (Environment.GetEnvironmentVariable("GAMECORE_ETOS_LIVE") != "1")
+                Assert.Ignore("P4.2 live acceptance requires GAMECORE_ETOS_LIVE=1; run the documented installed-node command.");
+        }
+
         [UnityTest]
         [Explicit("One direct image request against the installed operator pricing policy")]
         [Timeout(360000)]

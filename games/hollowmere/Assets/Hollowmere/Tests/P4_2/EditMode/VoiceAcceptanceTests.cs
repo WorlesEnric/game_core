@@ -17,6 +17,13 @@ namespace Hollowmere.P4_2
 {
     public sealed class VoiceAcceptanceTests
     {
+        [SetUp]
+        public void RequireLiveQualification()
+        {
+            if (Environment.GetEnvironmentVariable("GAMECORE_ETOS_LIVE") != "1")
+                Assert.Ignore("P4.2 live acceptance requires GAMECORE_ETOS_LIVE=1; run the documented installed-node command.");
+        }
+
         [UnityTest]
         [Explicit("P4.2 real PipeWire microphone and installed companion; reuses recorded WAV")]
         [Timeout(180000)]

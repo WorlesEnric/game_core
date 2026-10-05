@@ -16,6 +16,13 @@ namespace Hollowmere.P4_2
 {
     public sealed class CatalogLiveTests
     {
+        [SetUp]
+        public void RequireLiveQualification()
+        {
+            if (Environment.GetEnvironmentVariable("GAMECORE_ETOS_LIVE") != "1")
+                Assert.Ignore("P4.2 live acceptance requires GAMECORE_ETOS_LIVE=1; run the documented installed-node command.");
+        }
+
         [UnityTest]
         [Explicit("Fetches the retained real worker candidate; no new task or paid operation")]
         public IEnumerator R2_05_R2_38_LiveCandidateCatalogChangeRefusesStaleContext()
