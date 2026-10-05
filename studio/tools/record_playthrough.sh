@@ -14,7 +14,8 @@
 # clone). Run from the Mac, the script re-runs the clone's copy on the host over ssh; nothing runs on the Mac.
 #
 # On the host it:
-#   1. refuses when a Hollowmere player or an x11grab recording of :1 is already running, or :1 is not answering;
+#   1. refuses when a Hollowmere player or an x11grab recording of :1 is already running, when etosd is in use
+#      (pgrep -f 'live-etos-tests|gc-studio/p2'), or :1 is not answering;
 #   2. stops the user service etosd.service (systemctl --user) for the whole run and restarts it on exit (trap), only
 #      if it was active - "etosd stopped" for the recording;
 #   3. network: probes `unshare -rn true`; when user namespaces are allowed the player runs inside `unshare -rn` (no
@@ -121,6 +122,12 @@ if pgrep -f 'Hollowmere\.x86_64' >/dev/null 2>&1; then
 fi
 if pgrep -af ffmpeg 2>/dev/null | grep -q 'x11grab.*:1'; then
   echo "record_playthrough.sh: another x11grab recording of :1 is running; refusing" >&2
+  exit 2
+fi
+# etosd is stopped for the recording: refuse while live etos tests or a P2 packet clone are using it.
+if pgrep -f 'live-etos-tests|gc-studio/p2' >/dev/null 2>&1; then
+  echo "record_playthrough.sh: etosd is in use (pgrep -f 'live-etos-tests|gc-studio/p2'); refusing to stop it" >&2
+  pgrep -af 'live-etos-tests|gc-studio/p2' | cut -c1-160 >&2 || true
   exit 2
 fi
 if ! xdpyinfo -display :1 >/dev/null 2>&1; then
