@@ -1,0 +1,22 @@
+   Compiling gamecore-studio v0.1.0 (/home/worlesenric/wkspace/gc-studio/stage-tmp/studio/agent)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2m 30s
+     Running tests/stage_tmp.rs (studio/agent/target/debug/deps/stage_tmp-90ff5afb62bf83cf)
+
+running 1 test
+test stage_tmp_docker_cold_warm_pressure has been running for over 60 seconds
+
+thread 'stage_tmp_docker_cold_warm_pressure' (2353840) panicked at tests/stage_tmp.rs:294:5:
+assertion `left == right` failed: pressure acceptance blocked; see retained evidence
+  left: [false, false]
+ right: [true, true]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test stage_tmp_docker_cold_warm_pressure ... FAILED
+
+failures:
+
+failures:
+    stage_tmp_docker_cold_warm_pressure
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 882.92s
+
+error: test failed, to rerun pass `--test stage_tmp`

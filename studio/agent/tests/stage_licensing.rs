@@ -12,8 +12,7 @@ fn r2_f2_default_docker_launcher_licenses_offline_and_removes_private_state() {
         .ancestors()
         .nth(2)
         .unwrap();
-    let root =
-        PathBuf::from(std::env::var_os("HOME").unwrap()).join(".cache/gamecore-studio/stage-int");
+    let root = std::env::temp_dir().join("gamecore-stage-licensing");
     std::fs::create_dir_all(&root).unwrap();
     let job = tempfile::Builder::new()
         .prefix("licensing-acceptance-")
@@ -25,8 +24,10 @@ fn r2_f2_default_docker_launcher_licenses_offline_and_removes_private_state() {
             .arg(&sandbox.cache)
             .arg("--offline-from")
             .arg(
-                PathBuf::from(std::env::var_os("HOME").unwrap())
-                    .join(".cache/gamecore-studio/stage-int/bootstrap-nuget")
+                std::env::var_os("STAGE_TMP_CACHE")
+                    .map(|cache| PathBuf::from(cache).join("nuget"))
+                    .unwrap_or_else(|| PathBuf::from(std::env::var_os("HOME").unwrap())
+                        .join(".cache/gamecore-studio/stage-int/bootstrap-nuget"))
             )
             .status()
             .unwrap()

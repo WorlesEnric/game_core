@@ -1,0 +1,20 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 34.93s
+     Running tests/stage_licensing.rs (studio/agent/target/debug/deps/stage_licensing-17142875a684025a)
+
+running 1 test
+test r2_f2_default_docker_launcher_licenses_offline_and_removes_private_state has been running for over 60 seconds
+stage cache: verified pinned analyzer/Rules closures and expanded payloads
+
+thread 'r2_f2_default_docker_launcher_licenses_offline_and_removes_private_state' (2317642) panicked at tests/stage_licensing.rs:44:5:
+licensing probe exit Some(1)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test r2_f2_default_docker_launcher_licenses_offline_and_removes_private_state ... FAILED
+
+failures:
+
+failures:
+    r2_f2_default_docker_launcher_licenses_offline_and_removes_private_state
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 315.17s
+
+error: test failed, to rerun pass `--test stage_licensing`

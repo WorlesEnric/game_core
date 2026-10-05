@@ -1,0 +1,35 @@
+{
+  "blocker": "Host-wide Unity allocator capacity exhausted before the mandatory Docker probe could start",
+  "locations": {
+    "admission": "studio/tools/unity-slot.sh:26",
+    "waitLog": "studio/tools/unity-slot.sh:41",
+    "wrapperDeadline": "studio/agent/src/stage/sandbox.rs:493",
+    "probeTimeout": "studio/agent/src/stage/sandbox.rs:538"
+  },
+  "requestedConfinement": "docker",
+  "configuredBudgetMs": 360000,
+  "wrapperDeadlineSeconds": 210,
+  "candidateExecuted": false,
+  "engineStartedInPressureAttempts": false,
+  "signedVerdictAvailable": false,
+  "candidateXmlAvailable": false,
+  "warmMeasurementAvailable": false,
+  "attempts": [
+    {
+      "label": "cold",
+      "jobId": "stg_1a10c54b56b4953469f7bd1",
+      "elapsedMs": 211965,
+      "reason": "sandbox_unavailable",
+      "message": "sandbox_unavailable: Unity container probe exit None: -- waiting for a host-wide Unity slot\n-- waiting for a host-wide Unity slot\n-- waiting for a host-wide Unity slot\n\n[stage] killed after 210 s (stage budget)\n\n",
+      "verdictHttpStatus": 404
+    },
+    {
+      "label": "warm",
+      "jobId": "stg_1a10c57f717c11618ee2701",
+      "elapsedMs": 221105,
+      "reason": "sandbox_unavailable",
+      "message": "sandbox_unavailable: Unity container probe exit None: -- waiting for a host-wide Unity slot\n-- waiting for a host-wide Unity slot\n-- waiting for a host-wide Unity slot\n-- waiting for a host-wide Unity slot\n\n[stage] killed after 210 s (stage budget)\n\n",
+      "verdictHttpStatus": 404
+    }
+  ]
+}

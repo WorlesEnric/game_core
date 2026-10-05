@@ -25,7 +25,7 @@ pub(super) fn mount_path(path: &Path) -> Result<(), String> {
     Ok(())
 }
 
-fn no_links(path: &Path) -> Result<(), String> {
+pub(super) fn no_links(path: &Path) -> Result<(), String> {
     for ancestor in path.ancestors() {
         match fs::symlink_metadata(ancestor) {
             Ok(m) if m.file_type().is_symlink() => {
@@ -77,6 +77,12 @@ fn copy_state(source: &Path, target: &Path) -> Result<(), String> {
         return Err("Unity licence state must contain only regular files and directories".into());
     }
     Ok(())
+}
+
+// Called only after manifest verification. Copy into disposable private HOME on every
+// Unity launch so neither another job nor a previous candidate can supply UPM inputs.
+pub(super) fn copy_unity_cache(sandbox: &Sandbox, private_home: &Path) -> Result<(), String> {
+    copy_state(&sandbox.cache.join("upm"), &private_home.join(".cache/upm"))
 }
 
 impl LicenseHome {
@@ -159,6 +165,30 @@ impl LicenseHome {
 mod tests {
     use super::*;
     use std::os::unix::fs::{MetadataExt, symlink};
+
+    #[test]
+    fn stage_tmp_unity_cache_copy_is_private_and_disposable() {
+        let temp = tempfile::tempdir().unwrap();
+        let sandbox = fixture(temp.path());
+        fs::create_dir_all(sandbox.cache.join("upm")).unwrap();
+        fs::write(sandbox.cache.join("upm/pinned"), "verified").unwrap();
+        let first = LicenseHome::prepare(&sandbox).unwrap();
+        let second = LicenseHome::prepare(&sandbox).unwrap();
+        copy_unity_cache(&sandbox, &first.0).unwrap();
+        copy_unity_cache(&sandbox, &second.0).unwrap();
+        fs::write(first.0.join(".cache/upm/pinned"), "candidate write").unwrap();
+        assert_eq!(
+            fs::read_to_string(second.0.join(".cache/upm/pinned")).unwrap(),
+            "verified"
+        );
+        assert_eq!(
+            fs::read_to_string(sandbox.cache.join("upm/pinned")).unwrap(),
+            "verified"
+        );
+        let removed = first.0.clone();
+        drop(first);
+        assert!(!removed.exists());
+    }
 
     fn fixture(temp: &Path) -> Sandbox {
         let host = temp.join("host");

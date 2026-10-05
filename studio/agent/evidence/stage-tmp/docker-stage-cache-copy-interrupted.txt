@@ -1,0 +1,9 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.09s
+     Running tests/stage_tmp.rs (studio/agent/target/debug/deps/stage_tmp-90ff5afb62bf83cf)
+
+running 1 test
+test stage_tmp_docker_cold_warm_pressure has been running for over 60 seconds
+error: test failed, to rerun pass `--test stage_tmp`
+
+Caused by:
+  process didn't exit successfully: `/home/worlesenric/wkspace/gc-studio/stage-tmp/studio/agent/target/debug/deps/stage_tmp-90ff5afb62bf83cf --ignored --nocapture` (signal: 15, SIGTERM: termination signal)

@@ -1,0 +1,113 @@
+out/logs/checkers.log
+$ slot-checks.py  (exit Some(0), 601 ms)
+slot-checks: 14 C# file(s), 6 asmdef(s), 0 problem(s)
+{"asmdefs": 6, "csharpFiles": 14, "ok": true, "problems": [], "slotProblems": 0}
+
+out/logs/dotnet.log
+$ Roslyn semantic analyzer  (exit Some(1), 0 ms)
+trusted semantic context unavailable: trusted Unity metadata missing: No such file or directory (os error 2)
+
+out/logs/scan.log
+scanned 52 file(s), 155562 byte(s): 0 hit(s)
+
+unity-stream.log
+Total cache size after purge 0, took 00:00:00.0097746
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.198 seconds
+Refreshing native plugins compatible for Editor in 0.00 ms, found 0 plugins.
+Native extension for LinuxStandalone target not found
+Native extension for OSXStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.404 seconds
+Domain Reload Profiling: 602ms
+	BeginReloadAssembly (129ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (9ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (34ms)
+	RebuildCommonClasses (31ms)
+	RebuildNativeTypeToScriptingClass (7ms)
+	initialDomainReloadingComplete (20ms)
+	LoadAllAssembliesAndSetupDomain (12ms)
+		LoadAssemblies (61ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (8ms)
+			TypeCache.Refresh (5ms)
+				TypeCache.ScanAssembly (1ms)
+			BuildScriptInfoCaches (1ms)
+			ResolveRequiredComponents (0ms)
+	FinalizeReload (404ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (280ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (37ms)
+			SetLoadedEditorAssemblies (5ms)
+			BeforeProcessingInitializeOnLoad (93ms)
+			ProcessInitializeOnLoadAttributes (124ms)
+			ProcessInitializeOnLoadMethodAttributes (19ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (7ms)
+Asset Pipeline Refresh (id=04340e659ebdc798188138b3446c4f91): Total: 1.222 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=491 ms
+		Asset DB Callback time: managed=13 ms, native=95 ms
+		Scripting: domain reloads=1, domain reload time=197 ms, compile time=420 ms, other=3 ms
+		Project Asset Count: scripts=39, non-scripts=16
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 1
+	InvokeCustomDependenciesCallbacks: 0.003ms
+	InvokePackagesCallback: 95.705ms
+	ApplyChangesToAssetFolders: 0.067ms
+	Scan: 31.727ms
+	OnSourceAssetsModified: 0.003ms
+	CategorizeAssetsWithTransientArtifact: 0.097ms
+	ProcessAssetsWithTransientArtifactChanges: 0.161ms
+	CategorizeAssets: 0.235ms
+	ImportOutOfDateAssets: 404.971ms (-15.188ms without children)
+		CompileScripts: 419.793ms
+		ReloadNativeAssets: 0.000ms
+		UnloadImportedAssets: 0.189ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.013ms
+		InitializingProgressBar: 0.000ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.163ms
+	PostProcessAllAssets: 13.412ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.001ms
+	UnloadStreamsBegin: 0.357ms
+	PersistCurrentRevisions: 0.002ms
+	UnloadStreamsEnd: 0.001ms
+	GenerateScriptTypeHashes: 0.004ms
+	Untracked: 675.540ms
+
+Application.AssetDatabase Initial Refresh End
+Scanning for USB devices : 1.476ms
+Initializing Unity extensions:
+UpdateMenuTitleForLanguage: 10
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-p
+Curl error 6: Could not resolve host: config.uca.cloud.unity3d.com
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 24 unused Assets / (0.6 MB). Loaded Objects now: 521.
+Memory consumption went from 73.3 MB to 72.7 MB.
+Total: 4.320746 ms (FindLiveObjects: 0.024451 ms CreateObjectMapping: 0.003037 ms MarkObjects: 3.910892 ms  DeleteObjects: 0.381632 ms)
+
+Batchmode quit successfully invoked - shutting down!
+[Physics::Module] Cleanup current backned.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input System polling thread exited.
+Input System module state changed to: Shutdown.
+[Licensing::IpcConnector] LicenseClient-ubuntu-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-ubuntu channel disconnected successfully.
+AcceleratorClientConnectionCallback - disconnected - :0
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Application is shutting down...
+Cleanup mono
+debugger-agent: Unable to listen on 38
+Exiting batchmode successfully now!
