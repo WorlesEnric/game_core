@@ -4,15 +4,21 @@
     "references": [
         "GameCore.Gameplay.Contracts",
         "GameCore.Gameplay.Entities",
-        "GameCore.Gameplay.World"
+        "GameCore.Gameplay.World",
+        "GameCore.Composition",
+        "GameCore.Unity.App",
+        "GameCore.Studio.Core.Editor",
+        "GameCore.Studio.Model"
     ],
     "includePlatforms": [
         "Editor"
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "Newtonsoft.Json.dll"
+    ],
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],

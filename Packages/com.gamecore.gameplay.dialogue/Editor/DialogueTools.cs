@@ -244,14 +244,14 @@ namespace GameCore.Gameplay.Dialogue.Editor
         }
 
         [AuthorOperation("dialogue.generateVoice", Tier = ToolTier.Compose, RuntimeApplicability = RuntimeApply.Rebuild,
-            Validator = typeof(DialogueValidator), Requires = NarrativeKinds.Graph + ",agent.media",
+            Validator = typeof(DialogueValidator), Requires = NarrativeKinds.Graph,
             Doc = "Studio tier Agent: requests a generated voice clip for a line through the media generation gateway (NotConfigured until P3 wires a provider).")]
         public static MediaGenerationResult GenerateVoice(
             DialogueGraphDefinition graph,
             [AuthorArg(Doc = "Line node index.")] int node,
             [AuthorArg(Required = false, Doc = "Voice name for the provider.")] string voice = "")
         {
-            return GenerateVoice(graph, node, voice, new NotConfiguredMediaGateway());
+            return GenerateVoice(graph, node, voice, MediaGenerationLookup.Resolve(Resources.FindObjectsOfTypeAll<ScriptableObject>()));
         }
 
         /// <summary>The same request through an explicit gateway (P3 passes a configured one).</summary>
