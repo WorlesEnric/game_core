@@ -118,6 +118,8 @@ namespace Hollowmere.R4_A
             File.WriteAllText(Path.Combine(root, "ProjectSettings/ProjectSettings.asset"), "productGUID: " + new string('b', 32));
             string? previous = Environment.GetEnvironmentVariable(EtosCredentials.KeyFileVariable);
             var session = EtosStudioSession.instance;
+            FieldInfo runtimeField = typeof(StudioServices).GetField("_runtime", BindingFlags.Instance | BindingFlags.NonPublic)!;
+            object? previousRuntime = runtimeField.GetValue(StudioServices.instance);
             using var fake = new GameCore.Studio.Etos.Testing.FakeCompanion();
             fake.Start();
             string fixture = Path.Combine(root, "fixture-pairing.json");
@@ -130,7 +132,10 @@ namespace Hollowmere.R4_A
                 Environment.SetEnvironmentVariable(EtosCredentials.KeyFileVariable, fixture);
                 for (int take = 0; take < 2; take++)
                 {
-                    Assert.That(start.Invoke(session, new object[] { runtime }), Is.True);
+                    runtimeField.SetValue(StudioServices.instance, runtime);
+                    EtosStudioSession.EnableAutomaticStartup();
+                    typeof(EtosStudioSession).GetMethod("Pump", BindingFlags.Instance | BindingFlags.NonPublic)!.Invoke(session, null);
+                    Assert.That(EtosStudioSession.Gateway, Is.Not.Null, "OpenStudio/runtime creation triggers automatic binding");
                     Assert.That(runtime.Services.AgentGateway, Is.SameAs(EtosStudioSession.Gateway));
                     Assert.That(EtosStudioSession.Gateway!.Client.NodeUrl, Is.EqualTo(fake.NodeUrl));
                     reload.Invoke(session, null);
@@ -144,6 +149,7 @@ namespace Hollowmere.R4_A
             finally
             {
                 reload.Invoke(session, null);
+                runtimeField.SetValue(StudioServices.instance, previousRuntime);
                 Environment.SetEnvironmentVariable(EtosCredentials.KeyFileVariable, previous);
                 Directory.Delete(root, true);
             }

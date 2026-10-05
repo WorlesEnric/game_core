@@ -61,6 +61,17 @@ namespace GameCore.Studio.Etos
         [NonSerialized]
         private double _nextPairingCheck;
 
+        [NonSerialized]
+        private bool _automatic;
+
+        /// <summary>Observe Studio runtime creation on Open Studio and after domain reload.</summary>
+        public static void EnableAutomaticStartup()
+        {
+            instance._automatic = true;
+            instance._nextPairingCheck = 0;
+            instance.Hook();
+        }
+
         /// <summary>Idempotent entry seam for OpenStudio and domain reload.</summary>
         public static bool EnsureStarted() => instance._gateway != null || Start();
 
@@ -103,12 +114,14 @@ namespace GameCore.Studio.Etos
         /// <summary>Starts (or restarts) the session over the project's runtime; false with <see cref="Problem"/> set when it cannot.</summary>
         public static bool Start()
         {
+            instance._automatic = true;
             return instance.StartCore(StudioServices.Runtime);
         }
 
         /// <summary>Stops the session and unregisters the gateway.</summary>
         public static void Stop()
         {
+            instance._automatic = false;
             instance.StopCore();
         }
 
@@ -244,18 +257,14 @@ namespace GameCore.Studio.Etos
                 gateway.Tick();
             }
 
-            if (_gateway == null && _problem?.Code == EtosCodes.NotConfigured
+            // Opening Studio creates its runtime. Wait for that boundary instead of creating it during
+            // package/domain initialization, when optional services and project identity may not be ready.
+            if (_automatic && _gateway == null && StudioServices.HasRuntime
                 && EditorApplication.timeSinceStartup >= _nextPairingCheck)
-            {
-                _nextPairingCheck = EditorApplication.timeSinceStartup + 1;
-                string? keyFile = EtosCredentials.ResolveAutomaticKeyFile();
-                if (keyFile != null && File.Exists(keyFile)) StartCore(StudioServices.Runtime);
-            }
-
-            if (_runtime != null && StudioServices.HasRuntime && !ReferenceEquals(StudioServices.Runtime, _runtime))
-            {
                 StartCore(StudioServices.Runtime);
-            }
+
+            if (_automatic && _runtime != null && StudioServices.HasRuntime && !ReferenceEquals(StudioServices.Runtime, _runtime))
+                StartCore(StudioServices.Runtime);
         }
 
         private void OnFocus(bool focused)
@@ -268,6 +277,7 @@ namespace GameCore.Studio.Etos
 
         private void OnBeforeReload()
         {
+            _automatic = false;
             StopCore();
             if (_hooked)
             {
@@ -296,7 +306,7 @@ namespace GameCore.Studio.Etos
                 return;
             }
 
-            EtosStudioSession.EnsureStarted();
+            EtosStudioSession.EnableAutomaticStartup();
         }
     }
 }
