@@ -350,9 +350,8 @@ namespace GameCore.Studio.Model.Tests
         [Test]
         public void TargetWithoutScopeUnderARestriction()
         {
-            Diagnostic diagnostic = Single(Validate(cs => ((JObject)Op(cs, "op2")["target"]!).Remove("scope")), DiagnosticCodes.ScopeNotAllowed);
-            Assert.That(diagnostic.Message, Does.Contain("has no 'scope'"));
-            Assert.That(diagnostic.Where!.OpId, Is.EqualTo("op2"));
+            Assert.That(Validate(cs => ((JObject)Op(cs, "op2")["target"]!).Remove("scope")), Is.Empty,
+                "D5: the definition-only tool/type intersection infers the missing scope");
 
             Diagnostic fromType = Single(
                 Validate(

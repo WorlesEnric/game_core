@@ -13,7 +13,7 @@ using UnityEngine.SceneManagement;
 namespace GameCore.Studio.Edit
 {
     /// <summary>Enumerates authored objects from the AssetDatabase and the loaded scenes.</summary>
-    public sealed class DefaultAuthoringSource : IAuthoringSource
+    public sealed class DefaultAuthoringSource : IAuthoringSource, IAuthoringSourceFingerprints
     {
         private readonly AuthoringIdentity _identity;
         private readonly AuthorableTypeRegistry _types;
@@ -162,6 +162,19 @@ namespace GameCore.Studio.Edit
             }
 
             return new List<string>(paths);
+        }
+
+        public IReadOnlyDictionary<string, string> AssetFingerprints()
+        {
+            // Imported dependency hashes include file/meta/dependency changes. The type modules also
+            // invalidate projections after a metadata/compiler change even when asset bytes are unchanged.
+            SortedSet<string> modules = new SortedSet<string>(StringComparer.Ordinal);
+            foreach (AuthoringTypeInfo info in _types.Types) modules.Add(info.Type.Module.ModuleVersionId.ToString());
+            string version = Application.unityVersion + ":" + string.Join(":", modules);
+            Dictionary<string, string> fingerprints = new Dictionary<string, string>(StringComparer.Ordinal);
+            foreach (string path in AssetPaths())
+                fingerprints[AuthoringSourceKeys.ForAsset(path)] = version + ":" + AssetDatabase.GetAssetDependencyHash(path);
+            return fingerprints;
         }
 
         private string[] ValidFolders()

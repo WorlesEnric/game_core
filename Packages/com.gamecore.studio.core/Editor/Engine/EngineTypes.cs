@@ -168,6 +168,9 @@ namespace GameCore.Studio.Edit
 
         public ChangeSet ChangeSet { get; }
 
+        /// <summary>Non-blocking scope inference evidence; never included in refusal diagnostics.</summary>
+        public IReadOnlyList<Diagnostic> Inferences { get; internal set; } = Array.Empty<Diagnostic>();
+
         public StageOptions Options { get; }
 
         public IReadOnlyList<StagedOperation> Operations { get; }

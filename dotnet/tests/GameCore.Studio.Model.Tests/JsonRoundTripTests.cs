@@ -219,7 +219,7 @@ namespace GameCore.Studio.Model.Tests
         {
             string[] expected =
             {
-                "StaleTarget", "Conflict", "UnknownTool", "InvalidArgs", "MissingPrerequisite", "ScopeNotAllowed",
+                "StaleTarget", "Conflict", "UnknownTool", "InvalidArgs", "MissingPrerequisite", "ScopeNotAllowed", "ScopeInferred",
                 "ValidationFailed", "Refused", "CandidateInvalid", "StaleContext", "StageFailed", "LedgerConflict",
                 "NotConfigured", "OutcomeUnknown", "Blocked",
                 "MediaTypeForbidden", "MediaPathForbidden", "MediaImporterInvalid", "ArtifactSourceForbidden",

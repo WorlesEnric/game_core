@@ -156,6 +156,7 @@ namespace GameCore.Studio.Edit
         private readonly HashSet<string> _dirtyAssets = new HashSet<string>(StringComparer.Ordinal);
         private readonly List<Scene> _dirtyScenes = new List<Scene>();
         private readonly HashSet<string> _removedSources = new HashSet<string>(StringComparer.Ordinal);
+        private Dictionary<string, string>? _assetFingerprints;
         private bool _stageDirty;
         private bool _built;
         private Maps? _maps;
@@ -212,6 +213,13 @@ namespace GameCore.Studio.Edit
                 _sources[pair.Key] = BuildSource(pair.Key, pair.Value);
             }
 
+            _assetFingerprints = null;
+            if ((Scope & AuthoringSourceScope.Assets) != 0 && _source is IAuthoringSourceFingerprints fingerprints)
+            {
+                _assetFingerprints = new Dictionary<string, string>(StringComparer.Ordinal);
+                foreach (KeyValuePair<string, string> pair in fingerprints.AssetFingerprints())
+                    _assetFingerprints.Add(pair.Key, pair.Value);
+            }
             _built = true;
             _maps = null;
             Revision++;
@@ -333,9 +341,12 @@ namespace GameCore.Studio.Edit
                 return;
             }
 
+            IReadOnlyDictionary<string, string>? currentFingerprints = _dirtyAssets.Count > 0 && _source is IAuthoringSourceFingerprints fingerprints
+                ? fingerprints.AssetFingerprints() : null;
             foreach (string key in _removedSources)
             {
                 _sources.Remove(key);
+                _assetFingerprints?.Remove(key);
             }
 
             _removedSources.Clear();
@@ -343,6 +354,12 @@ namespace GameCore.Studio.Edit
             {
                 string key = AuthoringSourceKeys.ForAsset(path);
                 List<AuthoredObjectEntry> entries = new List<AuthoredObjectEntry>(_source.EnumerateAsset(path));
+                if (_assetFingerprints != null)
+                {
+                    if (currentFingerprints != null && currentFingerprints.TryGetValue(key, out string? fingerprint))
+                        _assetFingerprints[key] = fingerprint;
+                    else _assetFingerprints.Remove(key);
+                }
                 if (entries.Count == 0)
                 {
                     _sources.Remove(key);
@@ -655,6 +672,71 @@ namespace GameCore.Studio.Edit
             return new IndexSlice(slice, truncated, bytes, omitted);
         }
 
+        /// <summary>
+        /// Minimal projections of unselected authored objects explicitly named by prompt (display name or id).
+        /// Duplicate names remain multiple matches; this resolver never chooses an ambiguous target for an edit.
+        /// The caller merges these refs into scene context and these nodes into its slice under the same total cap.
+        /// </summary>
+        public IndexSlice ResolvePromptReferences(string prompt, IReadOnlyList<AuthoringRef> selection,
+            int byteCap = DefaultByteCap, int maxObjects = 128)
+        {
+            if (prompt == null) throw new ArgumentNullException(nameof(prompt));
+            if (selection == null) throw new ArgumentNullException(nameof(selection));
+            if (byteCap < 256 || byteCap > DefaultByteCap) throw new ArgumentOutOfRangeException(nameof(byteCap));
+            if (maxObjects < 1 || maxObjects > 128) throw new ArgumentOutOfRangeException(nameof(maxObjects));
+            Flush();
+            List<IndexNode> nodes = new List<IndexNode>();
+            int omitted = 0;
+            // The request has its own text limit; keep standalone resolver work bounded as well.
+            bool truncated = prompt.Length > 65536;
+            string text = prompt.Length > 65536 ? prompt.Substring(0, 65536) : prompt;
+            foreach (IndexNode node in CurrentMaps().Nodes)
+            {
+                bool selected = false;
+                foreach (AuthoringRef reference in selection) selected |= reference.SameTarget(node.Ref);
+                string? displayName = node.Fields != null && node.Fields.TryGetValue("displayName", out IndexField? label)
+                    && label.Value?.Type == JTokenType.String ? label.Value.Value<string>() : null;
+                if (selected || (!Mentions(text, node.Name) && !Mentions(text, displayName) && !Mentions(text, node.Ref.AuthoringId)
+                    && !Mentions(text, node.Ref.Definition) && !Mentions(text, node.Ref.Global))) continue;
+                if (nodes.Count >= maxObjects) { omitted++; continue; }
+                Dictionary<string, IndexField> fields = new Dictionary<string, IndexField>(StringComparer.Ordinal);
+                UnityEngine.Object? target = _resolver.Find(node.Ref);
+                GameObject? gameObject = target as GameObject ?? (target as Component)?.gameObject;
+                if (gameObject != null && gameObject.scene.IsValid())
+                {
+                    Vector3 position = gameObject.transform.position;
+                    fields["world.posX"] = new IndexField(ValueTypes.Float, new JValue(position.x), "m");
+                    fields["world.posY"] = new IndexField(ValueTypes.Float, new JValue(position.y), "m");
+                    fields["world.posZ"] = new IndexField(ValueTypes.Float, new JValue(position.z), "m");
+                }
+                nodes.Add(new IndexNode(node.Ref, node.Type, displayName ?? node.Name, fields.Count == 0 ? null : fields));
+                if (Utf8Length(StudioJson.Serialize(new SemanticIndex(Revision, _paths.ProjectName, nodes), false)) > byteCap)
+                {
+                    nodes.RemoveAt(nodes.Count - 1);
+                    omitted++;
+                }
+            }
+            SemanticIndex projection = new SemanticIndex(Revision, _paths.ProjectName, nodes);
+            return new IndexSlice(projection, truncated || omitted > 0,
+                Utf8Length(StudioJson.Serialize(projection, false)), omitted);
+        }
+
+        private static bool Mentions(string text, string? name)
+        {
+            if (string.IsNullOrWhiteSpace(name)) return false;
+            int from = 0;
+            while (from <= text.Length - name!.Length)
+            {
+                int at = text.IndexOf(name, from, StringComparison.OrdinalIgnoreCase);
+                if (at < 0) return false;
+                int end = at + name.Length;
+                if ((at == 0 || !char.IsLetterOrDigit(text[at - 1]) && text[at - 1] != '_')
+                    && (end == text.Length || !char.IsLetterOrDigit(text[end]) && text[end] != '_')) return true;
+                from = at + 1;
+            }
+            return false;
+        }
+
         /// <summary>Writes the full index (the SemanticIndex JSON shape) to <paramref name="path"/>.</summary>
         public void Export(string path)
         {
@@ -665,7 +747,9 @@ namespace GameCore.Studio.Edit
         public void SaveCache()
         {
             Flush();
-            SourceCache cache = new SourceCache { Revision = Revision, Project = _paths.ProjectName };
+            SourceCache cache = new SourceCache { Revision = Revision, Project = _paths.ProjectName, Scope = (int)Scope, Projection = ProjectionFingerprint() };
+            // Persist fingerprints of the projection, never bless unobserved disk changes while saving.
+            cache.Fingerprints = _assetFingerprints == null ? null : new Dictionary<string, string>(_assetFingerprints);
             List<string> keys = new List<string>(_sources.Keys);
             keys.Sort(StringComparer.Ordinal);
             foreach (string key in keys)
@@ -697,11 +781,23 @@ namespace GameCore.Studio.Edit
                 return false;
             }
 
-            if (cache == null || cache.Schema != "gamecore.studio.indexsources/2" || !string.Equals(cache.Project, _paths.ProjectName, StringComparison.Ordinal))
+            if (cache == null || cache.Schema != "gamecore.studio.indexsources/3" || cache.Scope != (int)Scope || cache.Projection != ProjectionFingerprint() || !string.Equals(cache.Project, _paths.ProjectName, StringComparison.Ordinal))
             {
                 return false;
             }
 
+            IReadOnlyDictionary<string, string>? current = null;
+            if ((Scope & AuthoringSourceScope.Assets) != 0)
+            {
+                // A custom source without fingerprints cannot establish cache freshness: rebuild it.
+                if (!(_source is IAuthoringSourceFingerprints fingerprints) || cache.Fingerprints == null) return false;
+                current = fingerprints.AssetFingerprints();
+                foreach (KeyValuePair<string, string> pair in current)
+                    if (!cache.Fingerprints.TryGetValue(pair.Key, out string? previous) || previous != pair.Value)
+                        _dirtyAssets.Add(pair.Key.Substring(AuthoringSourceKeys.AssetPrefix.Length));
+            }
+
+            _assetFingerprints = cache.Fingerprints == null ? null : new Dictionary<string, string>(cache.Fingerprints);
             _sources.Clear();
             foreach (SourceCacheEntry entry in cache.Sources)
             {
@@ -715,6 +811,12 @@ namespace GameCore.Studio.Edit
                     continue;
                 }
 
+                if (entry.Key.StartsWith(AuthoringSourceKeys.AssetPrefix, StringComparison.Ordinal)
+                    && (current == null || !current.ContainsKey(entry.Key)))
+                {
+                    _removedSources.Add(entry.Key);
+                    continue;
+                }
                 _sources[entry.Key] = new SourceRecord(entry.Nodes ?? new List<IndexNode>(), entry.Edges ?? new List<IndexEdge>(), entry.Scopes ?? new List<ScopeEntry>());
             }
 
@@ -742,6 +844,14 @@ namespace GameCore.Studio.Edit
         public static AuthoringRef EdgeRef(AuthoringRef reference)
         {
             return reference.WithStamp(null).WithScope(null);
+        }
+
+        private string ProjectionFingerprint()
+        {
+            List<string> versions = new List<string> { typeof(SemanticIndexService).Module.ModuleVersionId.ToString() };
+            foreach (IIndexContributor contributor in Contributors)
+                versions.Add(contributor.GetType().AssemblyQualifiedName + ":" + contributor.GetType().Module.ModuleVersionId);
+            return ContentStamp.OfUtf8(string.Join(";", versions));
         }
 
         private static bool IsIndexedAsset(string path)
@@ -1157,7 +1267,16 @@ namespace GameCore.Studio.Edit
         internal sealed class SourceCache
         {
             [JsonProperty("schema")]
-            public string Schema = "gamecore.studio.indexsources/2";
+            public string Schema = "gamecore.studio.indexsources/3";
+
+            [JsonProperty("scope")]
+            public int Scope;
+
+            [JsonProperty("projection")]
+            public string? Projection;
+
+            [JsonProperty("fingerprints")]
+            public Dictionary<string, string>? Fingerprints;
 
             [JsonProperty("project")]
             public string Project = string.Empty;

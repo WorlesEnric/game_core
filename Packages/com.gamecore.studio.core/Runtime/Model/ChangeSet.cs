@@ -116,6 +116,9 @@ namespace GameCore.Studio.Model
             return null;
         }
 
+        public ChangeSet WithBaseVersions(IReadOnlyList<BaseVersion>? versions) =>
+            new ChangeSet(Id, Schema, Intent, Operations, Selection, versions, Artifacts, Validation, Requirements, Links, State, Outcomes, Policy, Timestamps);
+
         public ChangeSet WithState(ChangeSetState state) =>
             new ChangeSet(Id, Schema, Intent, Operations, Selection, BaseVersions, Artifacts, Validation, Requirements, Links, state, Outcomes, Policy, Timestamps);
 
