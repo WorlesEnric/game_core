@@ -90,7 +90,7 @@ namespace Hollowmere.R3_A
             serialized.Update();
             Assert.That(serialized.FindProperty("icon").objectReferenceValue, Is.TypeOf<Sprite>());
             TextureImporter importer = (TextureImporter)AssetImporter.GetAtPath(path);
-            Assert.That(importer.spriteImportMode, Is.EqualTo((int)SpriteImportMode.Single));
+            Assert.That(importer.spriteImportMode, Is.EqualTo(SpriteImportMode.Single));
             Assert.That(importer.spritePixelsPerUnit, Is.EqualTo(100));
             Assert.That(_runtime.History.Undo(candidate.Id).Ok, Is.True);
             serialized.Update();

@@ -173,7 +173,8 @@ namespace GameCore.Studio.Edit
                     if (importer is TextureImporter && setting.Name == "spriteImportMode")
                     {
                         if ((string?)setting.Value != "Single") return "spriteImportMode must be Single";
-                        value = (int)SpriteImportMode.Single;
+                        value = property.PropertyType.IsEnum
+                            ? Enum.Parse(property.PropertyType, "Single") : (object)(int)SpriteImportMode.Single;
                     }
                     else if (property.PropertyType.IsEnum)
                     {

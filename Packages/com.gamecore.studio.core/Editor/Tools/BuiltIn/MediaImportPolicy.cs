@@ -56,9 +56,15 @@ namespace GameCore.Studio.Edit
                 if ((setting.Name == "spriteImportMode" || setting.Name == "spritePixelsPerUnit")
                     && (settings["textureType"]?.Type != JTokenType.String || (string?)settings["textureType"] != "Sprite"))
                     return "media_importer_invalid: sprite settings require textureType Sprite.";
-                if (setting.Name == "spriteImportMode") continue; // Unity exposes this enum as an int property.
                 PropertyInfo? property = type!.GetProperty(setting.Name);
                 if (property == null || !property.CanWrite) return "media_importer_invalid: unavailable setting " + setting.Name;
+                // Unity versions expose this setting as an enum or int; the wire value is always Single.
+                if (setting.Name == "spriteImportMode")
+                {
+                    if (property.PropertyType != typeof(SpriteImportMode) && property.PropertyType != typeof(int))
+                        return "media_importer_invalid: unsupported spriteImportMode property type.";
+                    continue;
+                }
                 try
                 {
                     if (property.PropertyType.IsEnum)
