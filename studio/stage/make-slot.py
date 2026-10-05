@@ -493,6 +493,15 @@ def make_slot(args) -> dict:
 
     dotnet = write_dotnet(slot, package_dir, proposal)
 
+    if args.warm_library:
+        import analysis_context
+        warm = Path(args.warm_library).expanduser()
+        context = warm.parent / 'analysis-context'
+        # Migrate an old operator seed only after verifying every pinned byte.
+        if not context.exists():
+            analysis_context.seed(warm, context)
+        analysis_context.seed(context, slot / 'analysis-context')
+
     if not reused and args.warm_library and not library.exists():
         warm = Path(args.warm_library).expanduser()
         if (warm / "ArtifactDB").exists() or warm.is_dir():

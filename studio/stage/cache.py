@@ -12,6 +12,7 @@ import tempfile
 import zipfile
 from urllib.parse import unquote
 import upm_cache
+import analysis_context
 
 HERE = Path(__file__).resolve().parent
 
@@ -62,6 +63,9 @@ def verify(cache, expected=None):
                 allowed.add((relative / name).as_posix())
     if actual != allowed:
         raise ValueError('cache_invalid: unexpected or missing package files')
+    if (cache / 'analysis-context').exists():
+        for relative, digest in analysis_context.pinned().items():
+            analysis_context.checked(cache / 'analysis-context', relative, digest)
     if (cache / 'upm').exists():
         upm_cache.verify(cache / 'upm')
 
@@ -102,6 +106,7 @@ def seed_unity(cache, source):
         path = source / relative
         if hashlib.sha256(regular(path)).hexdigest() != digest:
             raise ValueError('cache_invalid: trusted Unity metadata mismatch')
+    analysis_context.seed(source, cache / 'analysis-context')
     library = cache / 'Library'
     if (library / 'ArtifactDB').exists():
         return

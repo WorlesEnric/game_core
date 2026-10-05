@@ -72,7 +72,9 @@ fn files(root: &Path, paths: &mut Vec<PathBuf>) -> Result<(), String> {
 }
 
 pub(super) fn request(opts: &StageOptions) -> Result<Request, String> {
-    let project = opts.slot_dir().join("project");
+    let context = opts.slot_dir().join("analysis-context");
+    let mut context_files = Vec::new();
+    files(&context, &mut context_files)?;
     let mut engine = Vec::new();
     files(
         &opts.sandbox.editor.join("Data/Managed/UnityEngine"),
@@ -94,15 +96,7 @@ pub(super) fn request(opts: &StageOptions) -> Result<Request, String> {
         "../../../stage/cache/unity-metadata-lock.json"
     ))
     .map_err(|e| e.to_string())?;
-    for (relative, digest) in trusted {
-        let path = project.join("Library").join(relative);
-        let bytes =
-            std::fs::read(&path).map_err(|e| format!("trusted Unity metadata missing: {e}"))?;
-        if crate::util::sha256_hex(&bytes) != digest {
-            return Err("trusted Unity metadata digest mismatch".into());
-        }
-        references.push(path);
-    }
+    references.extend(metadata_references(&context, trusted)?);
     references.sort();
     let request = Request {
         schema: "gamecore.stage.analyze/1".into(),
@@ -111,6 +105,23 @@ pub(super) fn request(opts: &StageOptions) -> Result<Request, String> {
         policy: Policy { mode: "D1".into() },
     };
     Ok(request)
+}
+
+fn metadata_references(
+    context: &Path,
+    trusted: std::collections::BTreeMap<String, String>,
+) -> Result<Vec<PathBuf>, String> {
+    let mut references = Vec::new();
+    for (relative, digest) in trusted {
+        let path = context.join(relative);
+        let bytes = std::fs::read(&path)
+            .map_err(|e| format!("trusted Unity metadata source incomplete: {e}"))?;
+        if crate::util::sha256_hex(&bytes) != digest {
+            return Err("trusted Unity metadata digest mismatch".into());
+        }
+        references.push(path);
+    }
+    Ok(references)
 }
 
 /// Refuse incompatible trusted package closures before launching Unity or asking UPM
@@ -154,6 +165,34 @@ pub(super) fn check_dependency_boundary(opts: &StageOptions) -> Result<(), Strin
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn stage_tmp2_metadata_ignores_mutable_library_and_rejects_corruption() {
+        let temp = tempfile::tempdir().unwrap();
+        let context = temp.path().join("analysis-context");
+        std::fs::create_dir_all(context.join("ScriptAssemblies")).unwrap();
+        let relative = "ScriptAssemblies/Unity.Core.Editor.dll";
+        let pinned = b"pinned Unity metadata";
+        let manifest =
+            std::collections::BTreeMap::from([(relative.into(), crate::util::sha256_hex(pinned))]);
+        std::fs::write(context.join(relative), pinned).unwrap();
+        assert_eq!(
+            metadata_references(&context, manifest.clone()).unwrap(),
+            vec![context.join(relative)]
+        );
+        std::fs::write(context.join(relative), b"candidate bytes").unwrap();
+        assert!(
+            metadata_references(&context, manifest.clone())
+                .unwrap_err()
+                .contains("digest mismatch")
+        );
+        std::fs::remove_file(context.join(relative)).unwrap();
+        assert!(
+            metadata_references(&context, manifest)
+                .unwrap_err()
+                .contains("source incomplete")
+        );
+    }
+
     #[test]
     fn r2_11_stage_int_denied_transitive_dependency_has_named_seam() {
         let temp = tempfile::tempdir().unwrap();

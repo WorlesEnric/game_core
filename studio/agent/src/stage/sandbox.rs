@@ -32,6 +32,9 @@ impl Confinement {
 /// Trusted sandbox launch specification, never accepted from candidates.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Sandbox {
+    /// Trusted wrapper invocation identity (never supplied by a candidate).
+    #[serde(default)]
+    pub attempt: Option<String>,
     /// Mode.
     pub mode: Confinement,
     /// Pre-provisioned image with dotnet, Python and Unity runtime dependencies.
@@ -56,6 +59,7 @@ impl Sandbox {
     pub fn defaults(slot: &Path, cache: &Path, repo: &Path) -> Self {
         let home = PathBuf::from(std::env::var_os("HOME").unwrap_or_default());
         Self {
+            attempt: None,
             mode: Confinement::Docker,
             image: "gamecore-stage:6000.0.75f1-v1".into(),
             editor: home.join("Unity/Hub/Editor/6000.0.75f1/Editor"),
@@ -105,8 +109,9 @@ impl Sandbox {
 
     fn container_name(&self) -> String {
         format!(
-            "gc-stage-{}",
-            crate::util::sha256_hex(self.slot.to_string_lossy().as_bytes())
+            "gc-stage-{}-{}",
+            &crate::util::sha256_hex(self.slot.to_string_lossy().as_bytes())[..32],
+            self.attempt.as_deref().unwrap_or("tool")
         )
     }
 
@@ -177,6 +182,13 @@ impl Sandbox {
             let metadata = std::fs::metadata(&self.slot).map_err(|e| e.to_string())?;
             cmd.arg("--user")
                 .arg(format!("{}:{}", metadata.uid(), metadata.gid()));
+            // Compiler diagnostics stay in container-private memory, never raw host logs.
+            cmd.arg("--tmpfs").arg(format!(
+                "/run/gcs:rw,noexec,nosuid,nodev,size=16m,mode=0700,uid={},gid={}",
+                metadata.uid(),
+                metadata.gid()
+            ));
+            cmd.args(["--env", "RoslynCommandLineLogFile=/run/gcs"]);
             if self.home.as_os_str().as_encoded_bytes().len() + "/.config/unity3d/Unity".len() > 90
             {
                 return Err("Unity HOME-derived paths exceed 90 bytes".into());
@@ -203,6 +215,10 @@ impl Sandbox {
                 "DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1",
                 "--env",
                 "DOTNET_PROCESSOR_COUNT=4",
+                // Bee's native scheduler does not observe DOTNET_PROCESSOR_COUNT.
+                // Bound its compiler/ILPP fan-out within the unchanged PID limit.
+                "--env",
+                "BEE_BUILD_THREADS=4",
                 "--env",
                 &format!("TMPDIR={runtime}"),
                 "--env",
@@ -252,6 +268,17 @@ impl Sandbox {
                     target,
                     if readonly { ",readonly" } else { "" }
                 ));
+            }
+            let context = self.slot.join("analysis-context");
+            if context.exists() {
+                licensing::no_links(&context)?;
+                for target in [context.clone(), PathBuf::from("/w/s/analysis-context")] {
+                    cmd.arg("--mount").arg(format!(
+                        "type=bind,src={},dst={},readonly",
+                        context.display(),
+                        target.display()
+                    ));
+                }
             }
             if let Some(project) = project {
                 licensing::mount_path(project)?;
@@ -320,6 +347,16 @@ impl Sandbox {
 
     /// Run the exact command in the selected boundary; all output is redacted on write.
     pub fn run(&self, original: &Command, log: &Path, timeout: Duration) -> ChildOutcome {
+        self.run_controlled(original, log, timeout, None)
+    }
+
+    fn run_controlled(
+        &self,
+        original: &Command,
+        log: &Path,
+        timeout: Duration,
+        cancelled: Option<&std::sync::atomic::AtomicBool>,
+    ) -> ChildOutcome {
         let verified = match self.mode {
             Confinement::Docker => self.verify_cache(),
             Confinement::Host => Ok(()),
@@ -369,7 +406,11 @@ impl Sandbox {
         } else {
             None
         };
-        if unity && let Err(error) = licensing::copy_unity_cache(self, home_path) {
+        if let Err(error) = if unity {
+            licensing::copy_unity_cache(self, home_path)
+        } else {
+            Ok(())
+        } {
             return ChildOutcome {
                 code: None,
                 timed_out: false,
@@ -411,7 +452,14 @@ impl Sandbox {
             }
         }
         let home = self.slot.join("home").display().to_string();
-        let out = run_child(&mut cmd, &[("HOME", &home)], log, timeout);
+        let out = super::pipeline::run_child_controlled(
+            &mut cmd,
+            &[("HOME", &home)],
+            log,
+            timeout,
+            cancelled.is_some(),
+            cancelled,
+        );
         self.stop_container();
         out
     }
@@ -580,7 +628,7 @@ fn probe_passed(out: &ChildOutcome, engine_output: &str) -> bool {
 /// Host unity-batch invokes this wrapper, preserving its global allocation protocol. The
 /// engine writes only to stdout; the wrapper writes the selected Unity log after redaction.
 pub fn unity_wrapper(config: &Path, args: &[String]) -> Result<i32, String> {
-    let sandbox: Sandbox =
+    let mut sandbox: Sandbox =
         serde_json::from_slice(&std::fs::read(config).map_err(|e| e.to_string())?)
             .map_err(|e| e.to_string())?;
     let mut cmd = Command::new(sandbox.editor.join("Unity"));
@@ -602,14 +650,59 @@ pub fn unity_wrapper(config: &Path, args: &[String]) -> Result<i32, String> {
         }
     }
     cmd.args(["-logFile", "-"]);
-    let capture = log
-        .clone()
-        .unwrap_or_else(|| sandbox.slot.join("unity-stream.log"));
-    let out = sandbox.run(&cmd, &capture, Duration::from_secs(1800));
-    // run_child consumes its scratch file; retain the redacted engine stream for the
-    // readiness check even when unity-batch requested stdout via -logFile -.
-    std::fs::write(&capture, &out.output).map_err(|e| e.to_string())?;
-    print!("{}", out.output);
+    // Allocate outside candidate mounts, so retries and later invocations cannot overwrite.
+    let launch = config.parent().ok_or("launcher parent missing")?;
+    let mut attempt = 1u64;
+    loop {
+        match std::fs::OpenOptions::new()
+            .write(true)
+            .create_new(true)
+            .open(launch.join(format!("attempt-{attempt}")))
+        {
+            Ok(_) => break,
+            Err(e) if e.kind() == std::io::ErrorKind::AlreadyExists => attempt += 1,
+            Err(e) => return Err(e.to_string()),
+        }
+    }
+    sandbox.attempt = Some(format!("a{attempt}"));
+    let capture = sandbox.slot.join(format!("unity-stream-a{attempt}.log"));
+    let cancelled = std::sync::Arc::new(std::sync::atomic::AtomicBool::new(false));
+    let mut term = tokio::signal::unix::signal(tokio::signal::unix::SignalKind::terminate())
+        .map_err(|e| e.to_string())?;
+    let mut interrupt = tokio::signal::unix::signal(tokio::signal::unix::SignalKind::interrupt())
+        .map_err(|e| e.to_string())?;
+    let mut hangup = tokio::signal::unix::signal(tokio::signal::unix::SignalKind::hangup())
+        .map_err(|e| e.to_string())?;
+    let flag = cancelled.clone();
+    let signals = tokio::spawn(async move {
+        tokio::select! { _ = term.recv() => {}, _ = interrupt.recv() => {}, _ = hangup.recv() => {} }
+        flag.store(true, std::sync::atomic::Ordering::Relaxed);
+    });
+    let done = std::sync::Arc::new(std::sync::atomic::AtomicBool::new(false));
+    let cleanup = {
+        let sandbox = sandbox.clone();
+        let cancelled = cancelled.clone();
+        let done = done.clone();
+        std::thread::spawn(move || {
+            while !done.load(std::sync::atomic::Ordering::Relaxed) {
+                if cancelled.load(std::sync::atomic::Ordering::Relaxed) {
+                    sandbox.stop_container();
+                    break;
+                }
+                std::thread::sleep(Duration::from_millis(50));
+            }
+        })
+    };
+    let out = sandbox.run_controlled(&cmd, &capture, Duration::from_secs(1800), Some(&cancelled));
+    done.store(true, std::sync::atomic::Ordering::Relaxed);
+    let _ = cleanup.join();
+    signals.abort();
+    // Compatibility summary for probe readers; attempt streams above are never replaced.
+    std::fs::write(
+        log.unwrap_or_else(|| sandbox.slot.join("unity-stream.log")),
+        &out.output,
+    )
+    .map_err(|e| e.to_string())?;
     Ok(out.code.unwrap_or(124))
 }
 
@@ -827,6 +920,7 @@ mod tests {
             ],
             vec!["--env".into(), "HOME=/home/creator".into()],
             vec!["--env".into(), "DOTNET_PROCESSOR_COUNT=4".into()],
+            vec!["--env".into(), "BEE_BUILD_THREADS=4".into()],
             vec![
                 "--env".into(),
                 format!("UPM_CACHE_ROOT={}/cache/upm", sandbox.runtime_dir()),
