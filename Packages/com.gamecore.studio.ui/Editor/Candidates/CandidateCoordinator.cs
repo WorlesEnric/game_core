@@ -13,13 +13,14 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using GameCore.Studio.Authoring.Agent;
 using GameCore.Studio.Edit;
 using GameCore.Studio.Model;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using UnityEditor;
 using UnityEngine;
 
 namespace GameCore.Studio.UI
@@ -68,6 +69,10 @@ namespace GameCore.Studio.UI
         /// <summary>A stage request to the companion is in flight.</summary>
         public bool Staging { get; internal set; }
 
+        public string? StageJobId { get; internal set; }
+        public StageCandidateRequest? StageRequest { get; internal set; }
+        public StageVerdict? VerifiedVerdict { get; internal set; }
+
         /// <summary>The revision the candidate was planned against (candidate envelope, else the request's).</summary>
         public string? ToolCatalogRevision { get; }
 
@@ -105,9 +110,6 @@ namespace GameCore.Studio.UI
     /// <summary>Fetches, stages, applies and rejects candidates.</summary>
     public sealed class CandidateCoordinator
     {
-        /// <summary>How long a stage job may take before the panel stops waiting (B-STAGE is 360 s).</summary>
-        public static readonly TimeSpan StageBudget = TimeSpan.FromSeconds(420);
-
         private readonly StudioRuntime _runtime;
         private readonly Func<IAgentGateway> _gateway;
         private readonly TaskLedger? _tasks;
@@ -240,6 +242,7 @@ namespace GameCore.Studio.UI
             }
 
             CandidateEntry entry = new CandidateEntry(requestId, changeSet, toolCatalogRevision ?? RevisionOf(requestId, changeSet.Id));
+            RestoreStageJob(entry);
             _entries.Add(entry);
             Changed?.Invoke();
             return entry;
@@ -429,46 +432,47 @@ namespace GameCore.Studio.UI
         /// <summary>The staging state (journal validation) of a candidate.</summary>
         public StageState StageStateOf(CandidateEntry entry) => CandidateStaging.StateOf(_runtime, entry.Id, entry.ChangeSet);
 
-        /// <summary>True when the gateway exposes the companion's staging lane.</summary>
-        public bool CanRequestStage => GatewayExtras.HasStageLane(_gateway());
+        public bool CanRequestStage => StageAdmission.Of(_runtime).Options.StageService != null;
 
-        /// <summary>
-        /// Asks the companion to stage the candidate (POST /v1/stage with its package artifact), waits for the job and
-        /// records the verdict (StageAdmission.RecordVerdict: retained, journal stage.verdict pass|fail). A failed job
-        /// marks stage.verdict fail with its reason. Returns the diagnostic of a failure, or null.
-        /// </summary>
-        public async Task<Diagnostic?> RequestStage(CandidateEntry entry, TimeSpan? poll = null)
+        public bool CanAdmit(CandidateEntry entry)
         {
-            string? packageRef = CandidateStaging.PackageRef(entry.ChangeSet);
-            if (packageRef == null)
-            {
-                return Problem(entry, new Diagnostic(DiagnosticCodes.StageFailed, "The candidate carries no package artifact to stage."));
-            }
-
-            IAgentGateway gateway = _gateway();
             StageAdmission admission = StageAdmission.Of(_runtime);
-            admission.MarkStagePending(entry.Id, null);
+            StageVerdict? verdict = admission.VerdictOf(entry.Id);
+            return entry.IsOpen && !entry.Staging && entry.VerifiedVerdict != null
+                && ReferenceEquals(verdict, entry.VerifiedVerdict) && verdict.Pass
+                && (verdict.Confinement == "docker" || (verdict.Confinement == "host" && admission.Options.AllowHostConfinement));
+        }
+
+        /// <summary>Submit the complete candidate binding through the trusted project stage service.
+        /// GetVerdict waits for a terminal job; the companion owns warm/cold deadlines.</summary>
+        public async Task<Diagnostic?> RequestStage(CandidateEntry entry)
+        {
+            RequireOpen(entry);
+            if (entry.Staging) return new Diagnostic(DiagnosticCodes.StageFailed, "This candidate is already staging.");
+            StageAdmission admission = StageAdmission.Of(_runtime);
+            entry.VerifiedVerdict = null;
             entry.Staging = true;
             Changed?.Invoke();
             try
             {
-                JObject job = await GatewayExtras.StageAsync(gateway, entry.Id, packageRef, poll ?? TimeSpan.FromSeconds(3), StageBudget, CancellationToken.None);
-                string? verdictRef = CandidateStaging.VerdictRef(job);
-                if (verdictRef != null)
+                IStageService service = admission.Options.StageService ?? throw new InvalidOperationException("stage_service_unavailable");
+                StageCandidateRequest request = admission.BuildStageRequest(entry.ChangeSet, _runtime.Paths.ProjectRoot);
+                entry.StageRequest = request;
+                admission.MarkStagePending(entry.Id, null);
+                entry.StageJobId = await service.RequestStage(request);
+                if (string.IsNullOrWhiteSpace(entry.StageJobId)) throw new InvalidOperationException("stage_job_missing");
+                SessionState.SetString(StageJobKey(entry), new JObject
                 {
-                    byte[] bytes = await gateway.FetchArtifactAsync(CandidateStaging.Digest(verdictRef), CancellationToken.None);
-                    admission.RecordVerdict(bytes);
-                    return null;
-                }
-
-                Diagnostic failure = CandidateStaging.FailureOf(job) ?? new Diagnostic(DiagnosticCodes.StageFailed, "The stage job ended without a verdict (state " + job["state"] + ").");
-                CandidateStaging.MarkVerdict(_runtime, entry.Id, ScenarioStatus.Fail, failure.Message);
-                return Problem(entry, failure);
+                    ["jobId"] = entry.StageJobId, ["request"] = JObject.FromObject(request),
+                }.ToString(Formatting.None));
+                Changed?.Invoke();
+                entry.VerifiedVerdict = await admission.FetchVerdict(entry.StageJobId, request);
+                return null;
             }
             catch (Exception error) when (!(error is OutOfMemoryException))
             {
-                Diagnostic failure = error is ArgumentException ? new Diagnostic(DiagnosticCodes.StageFailed, error.Message) : GatewayErrors.ToDiagnostic(error);
-                CandidateStaging.MarkVerdict(_runtime, entry.Id, ScenarioStatus.Fail, failure.Code + ": " + failure.Message);
+                Diagnostic failure = new Diagnostic(DiagnosticCodes.StageFailed, StudioStyles.Safe(error.Message));
+                CandidateStaging.MarkVerdict(_runtime, entry.Id, ScenarioStatus.Fail, failure.Message);
                 return Problem(entry, failure);
             }
             finally
@@ -478,17 +482,46 @@ namespace GameCore.Studio.UI
             }
         }
 
-        /// <summary>Records a verdict file (an operator's <c>gamecore-studio stage run --verdict-out</c>) for the candidate.</summary>
-        public StageVerdict RecordVerdictFile(CandidateEntry entry, string path)
-        {
-            StageVerdict verdict = StageAdmission.Of(_runtime).RecordVerdict(File.ReadAllBytes(path));
-            if (verdict.ChangeSetId != entry.Id)
-            {
-                entry.AddProblem(new Diagnostic(DiagnosticCodes.StageFailed, "The verdict is for " + verdict.ChangeSetId + ", not " + entry.Id + "."));
-            }
+        private string StageJobKey(CandidateEntry entry) => "GameCore.Studio.UI.Stage." + ContentStamp.Sha256Hex(System.Text.Encoding.UTF8.GetBytes(_runtime.Paths.ProjectRoot)) + "." + entry.Id;
 
+        private void RestoreStageJob(CandidateEntry entry)
+        {
+            string saved = SessionState.GetString(StageJobKey(entry), string.Empty);
+            if (saved.Length == 0) return;
+            try
+            {
+                JObject record = JObject.Parse(saved);
+                entry.StageJobId = (string?)record["jobId"];
+                entry.StageRequest = record["request"]?.ToObject<StageCandidateRequest>();
+            }
+            catch (Exception error) when (error is JsonException || error is ArgumentException)
+            {
+                entry.AddProblem(new Diagnostic(DiagnosticCodes.StageFailed, StudioStyles.Safe(error.Message)));
+            }
+        }
+
+        public async Task<Diagnostic?> RefreshStage(CandidateEntry entry)
+        {
+            RequireOpen(entry);
+            if (entry.Staging) return new Diagnostic(DiagnosticCodes.StageFailed, "This candidate is already staging.");
+            entry.VerifiedVerdict = null;
+            entry.Staging = true;
             Changed?.Invoke();
-            return verdict;
+            try
+            {
+                StageAdmission admission = StageAdmission.Of(_runtime);
+                StageCandidateRequest current = admission.BuildStageRequest(entry.ChangeSet, _runtime.Paths.ProjectRoot);
+                if (entry.StageRequest == null || string.IsNullOrEmpty(entry.StageJobId)
+                    || !JToken.DeepEquals(JObject.FromObject(current), JObject.FromObject(entry.StageRequest)))
+                    throw new InvalidOperationException("stage_context_changed: restage this candidate");
+                entry.VerifiedVerdict = await admission.FetchVerdict(entry.StageJobId!, entry.StageRequest);
+                return null;
+            }
+            catch (Exception error) when (!(error is OutOfMemoryException))
+            {
+                return Problem(entry, new Diagnostic(DiagnosticCodes.StageFailed, StudioStyles.Safe(error.Message)));
+            }
+            finally { entry.Staging = false; Changed?.Invoke(); }
         }
 
         /// <summary>
@@ -498,7 +531,7 @@ namespace GameCore.Studio.UI
         public AdmissionResult Admit(CandidateEntry entry, bool captureAndStop)
         {
             RequireOpen(entry);
-            if (!StageStateOf(entry).VerdictPassed)
+            if (!CanAdmit(entry))
             {
                 throw new InvalidOperationException("Candidate " + entry.Id + " has no passing stage verdict; stage it first.");
             }
