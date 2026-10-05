@@ -84,7 +84,53 @@ Every cross-plugin effect (rewards, rule actions, dialogue actions, use effects)
 
 ## Decisions (where 05 was silent)
 
-DECISIONS_PLACEHOLDER
+* **Content is a list, not a scene.** Narrative definitions are ScriptableObjects listed on one `GameplayContentSet`
+  per world (`world` ref). The bake (logic's `IGameplayBakeExtension`) writes `<set>.content.asset`
+  (`GameplayContentManifest`, format `gamecore.gameplay-content/1`: entries sorted by authoring id with kind, key,
+  name and content stamp; facts sorted by name; SHA-256 content hash) and stamps every definition. The dialogue, quest
+  and inventory extensions add their plugin's catalog registrations only when the world has content, so a world
+  without narrative bakes byte-identically to P1.1.
+* **One file per ScriptableObject class.** Unity resolves an asset's script by file name; the definition classes each
+  live in `<Class>.cs` (supporting entry types stay in `*Definitions.cs`).
+* **Keys.** Every definition key is `AuthoringIds.StableKey(authoringId)`; refs in tools and seams accept the
+  authoring id or the definition name. Ids use the package stems (`inventory.command.grant`, `quest.event.completed`,
+  ...) as P1.1 does; 05's short names (`inv.grant`) appear as route names in the catalog.
+* **Facts** are int32 slots `narrative.fact.<name>` on one narrative hub target; flags are 0/1. A fact is persistent
+  by default; a non-persistent fact (Hollowmere's `pip_asked`) is reset when the conversation that set it ends.
+  Facts are written by `narrative.setFact` (dialogue plugin) only, with a request ring so a replay changes nothing.
+* **Stage order** world -> inventory -> quest -> dialogue -> logic (`optionalAfter`), so a rule sees the step's
+  committed gameplay effects.
+* **Every cross-plugin effect is an outbox obligation.** Dialogue action nodes, rule actions, item use effects and
+  quest rewards commit an `ActionDue`/`RewardGranted` event; `NarrativeDelivery` (a `WorldDeliveryOwner`, capacity
+  256, 64 per pass, one pump per frame from the narrative host) delivers it through one port per target command with
+  `requestId = RequestIdOf(outboxId)`. Targets keep a ring of the last 8 request ids: a duplicate is
+  `IdempotencyConflict` -> the port answers AlreadyApplied. `InventoryFull` commits without consuming the id, so a
+  later retry can still apply. playAudio/showMessage go to presentation sinks once per outbox id.
+* **Quest branches.** Objectives carry a branch (0 = every branch). A stage passes when all its branch-0 objectives
+  and all objectives of one branch are done; the first branch completed is recorded in `quest.branch` and selects the
+  branch rewards. Objectives advance from committed events and committed levels (`QuestTracker`): Fact, Collect
+  (item count), Reach (RegionEntered), Talk (conversation with the graph), Interact (interaction succeeded).
+* **setInteractableState** sets the target entity's variant (`entity.setVariant`); spawn/despawn/travel use the P1.1
+  entity and world commands.
+* **Rules** trigger on committed events (RegionEntered, interaction succeeded, FactSet, item and trade events, quest
+  events, dialogue ended / choice made, rule fired, actions run) with an optional subject and value filter, then
+  conditions, once/cooldown/max-fires limits; the decision and every condition read go to the 256-entry explain ring.
+* **`dialogue.generateVoice`** is declared `ToolTier.Mechanism` (the mirror enum has no Agent tier) and calls
+  `IMediaGenerationGateway`, which is `NotConfiguredMediaGateway` until P3.x wires etos TTS; it returns
+  `NotConfigured` and changes nothing.
+* **Interaction seams.** P1.3 declares its own `IConditionEvaluator`/`IActionRunner` in `GameCore.Gameplay.Contracts`
+  with different signatures; the P1.4 seams keep the brief's signatures in `GameCore.Gameplay.Contracts.Narrative`.
+  `NarrativeInteractions.Use(world, subjectId, conditionRef, actionRef, out failed)` evaluates and runs the pair
+  the way an interaction does; the PlayMode test uses it for the gate and the bell.
+* **Hollowmere has no gate or NPC entities yet.** NPCs speak by name; the marsh gate is the fixed subject id
+  `HollowmereNarrative.GateId`. Rewards: the lantern and `maren_grateful` on both branches, the three coins back on
+  the pay branch. Odd's stall sells the gate key for three old coins; `odd_paid` is set by the `OddPaidOnTrade` rule
+  on TradeDone (subject the stall, value the gate key); persuading Odd (needs `maren_trusts_player`, hidden otherwise)
+  grants the key through the outbox.
+* **No save format change.** Narrative state is ordinary slots of ordinary targets (facts, quest, inventory, rule
+  slots), which P1.2's save already covers. The narrative outbox is its own `WorldDeliveryOwner`
+  (`game.Delivery.Owner.ToRecords()` / `game.Delivery.Reinstate(rows)`); the PlayMode test replays it, but adding it
+  to P1.2's checkpoint sections is listed under Open.
 
 ## Verification
 
@@ -92,4 +138,18 @@ VERIFICATION_PLACEHOLDER
 
 ## Open
 
-OPEN_PLACEHOLDER
+* **P1.3 adapter.** Bridge P1.3's `GameCore.Gameplay.Contracts.IConditionEvaluator`/`IActionRunner`
+  (`ConditionVerdict Evaluate(string, InteractionContext)`, `void Run(string, InteractionContext)`) to
+  `NarrativeWorld.Conditions`/`Actions` when the two packets merge (a two-class adapter; `InteractionContext` ->
+  `EvaluationContext` with the actor key and subject id). Until then `NarrativeInteractions.Use` stands in for
+  `interact.use`, and logic listens to P1.3's `interaction.event.succeeded` by schema name.
+* **Boot scene.** `GameBoot` (P1.1) still boots without narrative; switching it to `HollowmereNarrative.Boot` and
+  assigning the UI views/feedback sinks belongs to the boot-scene owner (P1.5/P3.1).
+* **Gate and NPC entities.** When P1.3 places Maren, Odd, Pip, Hale and a gate entity, set `speakerEntityId` on the
+  graphs and replace `GateId` with the gate entity's authoring id (one asset field each).
+* **ToolTier Agent.** If Studio adds an Agent tier to the mirror enums, move `dialogue.generateVoice` to it.
+* **ToolCatalogBuilder** (P1.6) must match the mirror attributes by name to list the 16 narrative tools (same
+  question as P1.1).
+* **Narrative outbox in the checkpoint.** Register `NarrativeDelivery.Owner` with P1.2's save composer so pending
+  rewards survive a save/load (records and reinstate exist and are tested; the registration is P1.2's call site).
+* **Loot tables** are authored and converted but no runtime command rolls them yet (no catalog row needs it in P1).
