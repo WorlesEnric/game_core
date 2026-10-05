@@ -103,7 +103,8 @@ whole project. After a successful EditMode run the runner seeds `_warm/Library`,
 `StageAdmission.Of(runtime).Admit(candidate, verdictBytes?, captureAndStop)` runs these steps:
 
 1. Play Mode must be stopped. With `captureAndStop`, the game is first captured to save slot `admit-<id>` through
-   `AdmissionOptions.Capture` and then stopped.
+   `AdmissionOptions.Capture` and then stopped. The game registers `SaveServiceAdmissionCapture`, the P1.2
+   SaveService checkpoint.
 2. The candidate's `mechanism.propose` becomes `mechanism.admit`, keeping the same change-set id and artifacts and
    adding the verdict artifact. Its validator `RequiresStageVerdict` refuses the operation unless the verdict:
    - passes,
@@ -115,13 +116,15 @@ whole project. After a successful EditMode run the runner seeds `_warm/Library`,
 3. The engine applies the change set (journal Interrupted, checkpoint, Applied), writing the package from the
    retained archive into `<project>/Packages/<name>`. With the shared policy it goes to `<repo>/Packages/<name>`
    with a manifest entry. The entry is then held Interrupted with `stage.admission` pending, a pending record is
-   written to `Library/GameCoreStudio/stage/`, and the project recompiles.
+   written to `Library/GameCoreStudio/stage/`, and the project recompiles. The compile waits until the Package
+   Manager has registered the changed package list, so `versionDefines` follow it.
 4. A compile error, a failing checker run (`slot-checks.py --package-dir`), a failing re-bake (`Entry.Verify`), a
    missing mechanism catalog, or a live catalog-set hash that differs from `catalogDelta.predicted` each roll the
    admission back. The rollback runs `RollbackInterrupted` (the `mechanism.remove` inverse deletes the package),
    writes `stage.admission` fail, recompiles, and offers the capture slot for restore.
 5. Otherwise the entry becomes Applied with `stage.admission` pass. After a domain reload, `AdmissionResumer`
-   continues steps 4 and 5.
+   continues steps 4 and 5 once the Editor has been idle for a few seconds. A refused re-bake is retried 3 times
+   at 10 s intervals before the admission rolls back.
 
 `Undo(id)` journal-undoes the admission (the package is removed), recompiles, and checks that the live catalog
 hash has returned to its value before the admission (`stage.undo`).
