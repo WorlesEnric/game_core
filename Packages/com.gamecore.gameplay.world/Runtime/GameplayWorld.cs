@@ -92,8 +92,10 @@ namespace GameCore.Gameplay.World
             return receipt;
         }
 
-        public CommandAdmissionReceipt Spawn(TargetId target) =>
-            Submit(EntityDeclarations.SpawnRoute, target, EntityDeclarations.SpawnCommand, EntityCommand.Encode(0));
+        public CommandAdmissionReceipt Spawn(TargetId target) => Spawn(target, null);
+
+        public CommandAdmissionReceipt Spawn(TargetId target, bool? visible) =>
+            Submit(EntityDeclarations.SpawnRoute, target, EntityDeclarations.SpawnCommand, EntityCommand.EncodeSpawn(visible));
 
         public CommandAdmissionReceipt Despawn(TargetId target) =>
             Submit(EntityDeclarations.DespawnRoute, target, EntityDeclarations.DespawnCommand, EntityCommand.Encode(0));
@@ -490,8 +492,11 @@ namespace GameCore.Gameplay.World
         public int CommittedOrdinal =>
             world.Worlds.AnchorTarget.IsDefault ? 0 : world.Slots.ReadOrDefault(world.Worlds.AnchorTarget, GameplaySlots.WorldOwner, GameplaySlots.SpawnOrdinal, 0);
 
-        /// <summary>Spawns one entity of a baked definition in a region at a pose (mm, mrad); alive and visible.</summary>
-        public bool TrySpawn(string definitionId, string regionId, int x, int y, int z, int yaw, out TargetId target, out string detail)
+        /// <summary>Spawns one entity of a baked definition in a region at a pose (mm, mrad); visibility defaults to the definition.</summary>
+        public bool TrySpawn(string definitionId, string regionId, int x, int y, int z, int yaw, out TargetId target, out string detail) =>
+            TrySpawn(definitionId, regionId, x, y, z, yaw, out target, out detail, null);
+
+        public bool TrySpawn(string definitionId, string regionId, int x, int y, int z, int yaw, out TargetId target, out string detail, bool? visible)
         {
             target = default(TargetId);
             ManifestDefinition? definition = world.Manifest.FindDefinition(definitionId);
@@ -548,7 +553,9 @@ namespace GameCore.Gameplay.World
                 WorldBuilder.SeedSlot(root, world.Worlds.AnchorTarget, GameplaySlots.WorldOwner, GameplaySlots.SpawnOrdinal, ordinal);
             }
 
-            WorldBuilder.SeedEntity(root, candidate, true, 0, GameplayUnits.ScaleOne, true);
+            WorldBuilder.SeedEntity(root, candidate, true, 0,
+                definition.definition != null ? definition.definition.DefaultScaleMilli : GameplayUnits.ScaleOne,
+                visible ?? (definition.definition == null || definition.definition.StartsVisible));
             WorldBuilder.SeedPlacement(root, candidate, region.Key, x, y, z, yaw);
             world.AddRuntimeEntity(candidate, definitionId, (definition.definition != null ? definition.definition.name : "Spawned") + " #" + ordinal, null);
             target = candidate;

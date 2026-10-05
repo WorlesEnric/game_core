@@ -18,6 +18,8 @@
 using System;
 using System.Collections.Generic;
 using GameCore.Contracts;
+using GameCore.Composition;
+using GameCore.Unity.Runtime.Integration;
 using GameCore.Execution.Messages;
 using GameCore.Gameplay.Contracts;
 using GameCore.Gameplay.Contracts.Narrative;
@@ -96,6 +98,61 @@ namespace GameCore.Gameplay.Logic
 
         public NarrativeRuntime? Runtime => runtime;
 
+        /// <summary>SADR-013 per-install configuration rows consumed by the generated rule tuning buffer.</summary>
+        public IReadOnlyList<RuleConfigBinding> ConfigBindings => configBindings.AsReadOnly();
+
+        private readonly List<RuleConfigBinding> configBindings = new List<RuleConfigBinding>();
+
+        public static Id128 TuningField(int ruleKey, string field) => GameplayIds.Id("logic.tuning." + ruleKey.ToString(System.Globalization.CultureInfo.InvariantCulture) + "." + field.ToLowerInvariant());
+
+        /// <summary>Publishes numeric Live tuning through O-05; runtime counters and cooldown deadlines are preserved.</summary>
+        public bool Retune(int ruleKey, int cooldownMs, int maxFires, out string detail)
+        {
+            detail = string.Empty;
+            NarrativeRuntime? rt = runtime;
+            if (rt == null || cooldownMs < 0 || maxFires < 0 || !targetsByRule.ContainsKey(ruleKey)
+                || !rt.Root.Lane.Committed.TryGetInstall(GameplayIds.Instance("logic.instance"), out InstallEntry? entry) || entry == null)
+            {
+                detail = "unknown rule, inactive installation or negative tuning";
+                return false;
+            }
+
+            ConfigDocument patch = ConfigDocument.Of(
+                new ConfigField(TuningField(ruleKey, "cooldownMs"), ConfigFieldValue.OfInt32(cooldownMs)),
+                new ConfigField(TuningField(ruleKey, "maxFires"), ConfigFieldValue.OfInt32(maxFires)));
+            ConfigComposeResult composed = ConfigComposer.Compose(new[]
+            {
+                new ConfigLayer(ConfigLayerOrigin.InheritedContribution, entry.Instance.Value, entry.Config),
+                new ConfigLayer(ConfigLayerOrigin.LocalPatch, entry.Instance.Value, patch),
+            });
+            var edit = new CompositionEditPayload(CompositionEditSubject.InstallReconfigure, entry.Record.Scope,
+                default(ScopeId), false, null, null, null, null, entry.Record.PluginType, entry.Instance,
+                new DefinitionRevision(entry.Record.ConfigRevision.Value + 1), ConfigDocumentCodec.HashOf(composed.Value), patch,
+                0, null, PropagationMode.Automatic);
+            EditAdmission admission = rt.Root.Lane.SubmitEdit(edit, rt.Root.NextOperation(), rt.Root.Lane.Committed.Revision);
+            if (!admission.Staged) { detail = admission.Code.ToString(); return false; }
+            IReadOnlyList<PublishedOperation> result = rt.Root.Lane.Drain();
+            if (result.Count == 0 || result[0].Outcome == Outcome.Rejected) { detail = "rule tuning publication refused"; return false; }
+            return true;
+        }
+
+        private RuleModel ConfiguredRule(RuleModel rule)
+        {
+            if (runtime == null || !runtime.Root.Lane.Committed.TryGetInstall(GameplayIds.Instance("logic.instance"), out InstallEntry? entry) || entry == null)
+                return rule;
+            int Read(string field, int fallback)
+            {
+                Id128 key = TuningField(rule.Key, field);
+                // These are the per-install buffer rows. Read the committed effective config, never the authored asset.
+                foreach (RuleConfigBinding binding in configBindings)
+                    if (binding.ConfigField.Equals(key) && entry.Config.TryGetField(key, out ConfigFieldValue value)
+                        && value.Kind == ConfigValueKind.Int32) return Math.Max(0, value.AsInt32);
+                return fallback;
+            }
+            return new RuleModel(rule.Key, rule.Name, rule.Trigger, rule.Conditions, rule.Actions, rule.Once,
+                Read("cooldownMs", rule.CooldownMs), Read("maxFires", rule.MaxFires), rule.Priority);
+        }
+
         public int Fired { get; private set; }
 
         public int Skipped { get; private set; }
@@ -115,6 +172,20 @@ namespace GameCore.Gameplay.Logic
         public void Declare(NarrativeComposition composition)
         {
             NarrativePluginSpec spec = LogicDeclarations.Spec();
+            var fields = new List<ConfigField>();
+            configBindings.Clear();
+            foreach (RuleModel rule in composition.Models.Rules)
+            {
+                foreach (string field in new[] { "cooldownMs", "maxFires" })
+                {
+                    Id128 key = TuningField(rule.Key, field);
+                    var binding = new RuleConfigBinding(new RuleId(key), key);
+                    configBindings.Add(binding);
+                    composition.AddConfigBinding(binding);
+                    fields.Add(new ConfigField(key, ConfigFieldValue.OfInt32(field == "cooldownMs" ? rule.CooldownMs : rule.MaxFires)));
+                }
+            }
+            spec.ConfigDefaults = new ConfigDocument(fields);
             composition.AddPlugin(spec, new ManagedSystemRegistration<LogicCommandSystem>(spec.CommandSystem, spec.Stage, "GameplayLogicCommandSystem"));
             composition.AddRecipe(spec.CreateRecipe("hub"));
             composition.AddRecipe(spec.CreateRecipe("rule"));
@@ -140,6 +211,11 @@ namespace GameCore.Gameplay.Logic
                     continue;
                 }
 
+                foreach (string field in new[] { "cooldownMs", "maxFires" })
+                {
+                    Id128 key = TuningField(rule.Key, field);
+                    if (!configBindings.Exists(row => row.ConfigField.Equals(key))) configBindings.Add(new RuleConfigBinding(new RuleId(key), key));
+                }
                 rulesByTarget[target] = rule;
                 targetsByRule[rule.Key] = target;
                 if (seedSlots)
@@ -390,7 +466,7 @@ namespace GameCore.Gameplay.Logic
             int actor = command[0];
             int subject = command[1];
             var context = new ConditionContext(actor, subject);
-            RuleDecision decision = RuleRules.Decide(rule, state, rt.State.NowMs, rt.State, rt.Models, context);
+            RuleDecision decision = RuleRules.Decide(ConfiguredRule(rule), state, rt.State.NowMs, rt.State, rt.Models, context);
             var events = new StepEventBatch();
             if (decision.Fire)
             {
