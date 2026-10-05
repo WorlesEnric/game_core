@@ -231,3 +231,4 @@ Host command: `bash studio/tools/unity-batch.sh --project "$PWD/games/hollowmere
 - The two inherited model schema/registry failures cannot be corrected inside R2-E's exclusive paths.
 - D3 confinement/licence qualification belongs to the stage service packets. This packet launches only the requested test Editor under unity-batch's host lock, and issues no staging verdict; no Docker/host staging claim is made.
 - Canvas measurements are headless Editor CPU/managed-allocation measurements, not graphical GPU frame or playthrough qualification. Graphical evidence was explicitly excluded for this packet.
+CORE-RENAME: Renamed ChangeSetEngineTests.World to FakeWorld and all uses in that file; no other core test references found. python3 tools/check_gate_sources.py with the exact seven --file arguments from tools/run_w7_gate.sh exited 0 (unresolved: none); python3 tools/check_game_core_csharp.py exited 0 (1,136 C# files). Checker unchanged; Unity not started.
