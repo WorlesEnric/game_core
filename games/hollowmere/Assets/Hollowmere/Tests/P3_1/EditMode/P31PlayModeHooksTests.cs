@@ -1,7 +1,8 @@
 // Hollowmere P3.1 EditMode (Play Mode entered from the Editor) -
-//   AdmissionFromPlayModeCaptures: with Boot.unity playing, StageAdmission.Admit(captureAndStop) captures the running
-//     game through HollowmereGame's SaveService ("admit-<id>") instead of refusing with capture_failed (P2.4 open item 2).
-//     Stopping Play Mode is stubbed so the admission stays Pending (nothing is admitted).
+//   AdmissionFromPlayModeCaptures: with Boot.unity playing, the registered admission capture adapter checkpoints the
+//     running game through HollowmereGame's SaveService and reuses the checkpoint on a retry (P2.4 open item 2; R2-B's
+//     capture contract). An unverified StageAdmission.Admit(captureAndStop) refuses as verdict_missing - never
+//     capture_failed - since R2-B captures only after an authenticated companion verdict (Stopping Play Mode is stubbed).
 //   TenPlayEditCycles (W-GAME-08, explicit): ten Play/Edit cycles of Boot.unity; after each exit the managed and native
 //     memory (Profiler.GetTotalAllocatedMemoryLong / GetTotalReservedMemoryLong) is recorded and compared with cycle 1;
 //     the series is written to artifacts/studio/evidence/P3.1/memory-cycles.json.
@@ -30,6 +31,8 @@ namespace Hollowmere.P3_1.EditMode.Tests
     {
         private const string MemoryKey = "Hollowmere.P3_1.MemoryCycles";
 
+        private static string SlotFile(HollowmereGame game, string slot) => game.Saves!.DocumentPath(slot);
+
         private static IEnumerator WaitForGame(double seconds)
         {
             DateTime end = DateTime.UtcNow.AddSeconds(seconds);
@@ -57,6 +60,11 @@ namespace Hollowmere.P3_1.EditMode.Tests
 
             StageAdmission admission = StageAdmission.Of(StudioServices.Runtime);
             Assert.That(HollowmereAdmissionCapture.Register() || admission.Options.Capture != null, Is.True, "a capture hook is registered");
+            IAdmissionCapture capture = admission.Options.Capture!;
+            HollowmereGame game = UnityEngine.Object.FindAnyObjectByType<HollowmereGame>()!;
+
+            // R2-B: a capture happens only after an authenticated companion verdict; without one Admit refuses as a missing
+            // verdict (not capture_failed) and writes no checkpoint.
             Func<bool>? probe = admission.Options.PlayModeProbe;
             Action? stop = admission.Options.StopPlayMode;
             admission.Options.StopPlayMode = () => { };
@@ -76,12 +84,20 @@ namespace Hollowmere.P3_1.EditMode.Tests
                 admission.Options.StopPlayMode = stop;
             }
 
-            Debug.Log("[P3.1] admission from Play Mode: " + result.Outcome + " (" + result.Reason + ") capture " + result.CaptureSlot);
+            Debug.Log("[P3.1] unverified admission from Play Mode: " + result.Outcome + " (" + result.Reason + ")");
+            Assert.That(result.Reason, Is.EqualTo(VerdictReasons.Missing), result.Detail);
             Assert.That(result.Reason, Is.Not.EqualTo("capture_failed"), result.Detail);
-            Assert.That(result.Outcome, Is.EqualTo(AdmissionOutcome.Pending), result.Detail);
-            Assert.That(result.CaptureSlot, Does.StartWith("admit-"));
-            HollowmereGame game = UnityEngine.Object.FindAnyObjectByType<HollowmereGame>()!;
-            Assert.That(game.Saves!.Exists(result.CaptureSlot!), Is.True, "the capture slot was written");
+
+            // The capture adapter itself (what a verified admission calls): it checkpoints the running game through
+            // HollowmereGame's SaveService, and a retry reuses the checkpoint instead of overwriting it.
+            string slot = "admit-p31-" + Guid.NewGuid().ToString("N").Substring(0, 8);
+            Assert.That(capture.TryCapture(slot, out string? problem), Is.True, problem);
+            Assert.That(game.Saves!.Exists(slot), Is.True, "the capture slot was written");
+            byte[] first = File.ReadAllBytes(SlotFile(game, slot));
+            Assert.That(capture.TryCapture(slot, out problem), Is.True, "a retry reuses the checkpoint: " + problem);
+            Assert.That(File.ReadAllBytes(SlotFile(game, slot)), Is.EqualTo(first), "the retry did not overwrite the checkpoint");
+            Debug.Log("[P3.1] admission capture adapter wrote " + slot + " (" + first.Length + " bytes); the retry reused it");
+            game.Saves.Delete(slot);
             yield return new ExitPlayMode();
         }
 

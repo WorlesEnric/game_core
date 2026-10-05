@@ -117,14 +117,23 @@ namespace GameCore.Studio.Views.Hollowmere.Tests
             IndexNode quest = NodeAt(Root + "/Quests/DrownedBell.asset");
             QuestsView view = new QuestsView(Context);
             view.ShowQuest(quest.Ref);
-            Assert.That(view.Document!.BranchCount, Is.EqualTo(2));
-            foreach (int branch in new[] { 1, 2 })
+            // P3.1's Drowned Bell: three endings (1 let it sleep, 2 ring the bell, 3 free the echo); Maren's gratitude is the
+            // reward of the two endings that ring the bell.
+            Assert.That(view.Document!.BranchCount, Is.EqualTo(3));
+            foreach (int branch in new[] { 1, 2, 3 })
             {
                 QuestSimulation simulation = view.RunSimulation(branch)!;
                 Log("simulate branch " + branch + " (" + view.Document.BranchName(branch) + "): " + simulation.Path + "\n" + QuestEdits.Describe(simulation));
                 Assert.That(simulation.Ok, Is.True, simulation.Text);
                 Assert.That(simulation.Completed, Is.True, simulation.Text);
-                Assert.That(simulation.Rewards.Count, Is.GreaterThan(0), "the branch's rewards are granted");
+                if (branch == 1)
+                {
+                    Assert.That(simulation.Rewards.Count, Is.EqualTo(0), "letting the bell sleep earns nothing");
+                }
+                else
+                {
+                    Assert.That(simulation.Rewards.Count, Is.GreaterThan(0), "the branch's rewards are granted");
+                }
             }
 
             Assert.That(view.RuleKeys.Count, Is.GreaterThanOrEqualTo(0));
@@ -138,6 +147,7 @@ namespace GameCore.Studio.Views.Hollowmere.Tests
             view.ShowTab(TablesView.ItemsTab);
             TableModel model = view.Model!;
             TableRow lantern = First(model.AllRows, row => row.Name == "Lantern");
+            string originalPrice = lantern.Text("price");
             Assert.That(view.Stage(lantern, "price", "15"), Is.True, view.StatusText);
             Assert.That(view.Stage(lantern, "weight", "950"), Is.True, view.StatusText);
             ApplyReport row = view.CommitRow(lantern)!;
@@ -170,7 +180,7 @@ namespace GameCore.Studio.Views.Hollowmere.Tests
             Assert.That(Context.Edits.Undo(bulk.Entry.Id).Ok, Is.True);
             Assert.That(Context.Edits.Undo(row.Entry.Id).Ok, Is.True);
             view.Refresh();
-            Assert.That(First(view.Model!.AllRows, item => item.Name == "Lantern").Text("price"), Is.EqualTo("12"), "undo restores the price");
+            Assert.That(First(view.Model!.AllRows, item => item.Name == "Lantern").Text("price"), Is.EqualTo(originalPrice), "undo restores the price");
             Log("table csv:\n" + view.Model.ToCsv());
             view.Dispose();
         }

@@ -73,7 +73,8 @@ namespace Hollowmere.P1_7b.EditMode.Tests
             QuestDefinition quest = HardeningTestBed.Load<QuestDefinition>("DrownedBell");
             ItemDefinition lantern = HardeningTestBed.Load<ItemDefinition>("Lantern");
             VendorDefinition stall = HardeningTestBed.Load<VendorDefinition>("OddsStall");
-            Assert.That(quest.Rewards.Any(r => r.target == lantern), Is.True, "the Drowned Bell rewards the lantern");
+            // P3.1's Drowned Bell asks for the lantern (the stage-1 Collect objective) instead of rewarding it.
+            Assert.That(quest.Objectives.Any(o => o.item == lantern), Is.True, "the Drowned Bell's objective collects the lantern");
 
             List<IFactDefinition> facts = FactsOf(HardeningTestBed.Load<GameplayContentSet>("HollowmereContent"));
             Assert.That(facts.Count, Is.GreaterThanOrEqualTo(2), "the content declares facts");
@@ -95,15 +96,15 @@ namespace Hollowmere.P1_7b.EditMode.Tests
             Bed.Runtime.Index.Rebuild();
             AssertReferences(maren, marenGraph, "dialogue");
             AssertReferences(gate, ferry, "condition");
-            AssertReferences(quest, lantern, "rewards[");
+            AssertReferences(quest, lantern, "objectives[");
             AssertReferences(stall, lantern, "stock[");
             AssertReferences(portal, ferry, "condition");
 
             ImpactReport impact = Bed.Runtime.Index.ImpactOf(Bed.Ref(lantern));
             List<string> impacted = impact.Items.Select(item => item.Ref.AuthoringId ?? string.Empty).ToList();
-            Assert.That(impacted, Does.Contain(quest.AuthoringId), "ImpactOf(lantern) lists the quest reward");
+            Assert.That(impacted, Does.Contain(quest.AuthoringId), "ImpactOf(lantern) lists the quest objective");
             Assert.That(impacted, Does.Contain(stall.AuthoringId), "ImpactOf(lantern) lists the vendor stock");
-            Assert.That(impact.Items.Where(i => i.Ref.AuthoringId == quest.AuthoringId).Select(i => i.Field), Has.Some.StartsWith("rewards["));
+            Assert.That(impact.Items.Where(i => i.Ref.AuthoringId == quest.AuthoringId).Select(i => i.Field), Has.Some.StartsWith("objectives["));
         }
 
         private void AssertReferences(UnityEngine.Object from, UnityEngine.Object to, string fieldPrefix)
