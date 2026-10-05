@@ -141,7 +141,15 @@ namespace Hollowmere.UiAudio
             foreach (UiDocumentDefinition definition in Root.Flow!.Documents)
             {
                 VisualElement layer = root.Q<VisualElement>("layer-" + definition.name);
-                if (layer != null) gameBindings.Bind(layer, definition.Bindings);
+                if (layer != null && definition.Uxml != null)
+                {
+                    // BindingHost.Clear detaches model subscriptions, but its command closures belong to the old
+                    // elements. Re-clone their contents so a click cannot also call the generic synchronous saver.
+                    layer.Clear();
+                    definition.Uxml.CloneTree(layer);
+                    gameBindings.Bind(layer, definition.Bindings);
+                    if (definition.Screen == Ui.Screen) layer.Q<Button>()?.Focus();
+                }
             }
             boundLayer = root[0];
         }

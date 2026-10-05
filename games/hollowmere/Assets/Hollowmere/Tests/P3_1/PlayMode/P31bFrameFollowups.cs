@@ -79,7 +79,8 @@ namespace Hollowmere.P3_1.PlayMode.Tests
             yield return Gate();
             yield return Interact("Bell Clapper", () => Item("BellClapper") == 1, "clapper");
             var world = game.World!;
-            yield return Until(() => world.Streamer.IsSettled, "preload");
+            yield return Until(() => world.Streamer.PreloadNeighbours && world.Streamer.IsSettled
+                && world.Streamer.ResidencyOf(BelfryId) == RegionResidency.Resident, "preload");
             Assert.That(world.Streamer.PreloadNeighbours, Is.True);
             Assert.That(world.Streamer.ResidencyOf(BelfryId), Is.EqualTo(RegionResidency.Resident));
             yield return Travel(BelfryId, "belfry");
